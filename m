@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-107055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C40ECA029F0
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:29:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E35EDA02C0C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:49:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5B4E163E95
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:28:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2C8D1613D2
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43600153808;
-	Mon,  6 Jan 2025 15:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4406088F;
+	Mon,  6 Jan 2025 15:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHS54C7G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IadHdPe3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0A782D98;
-	Mon,  6 Jan 2025 15:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2A41DB92A;
+	Mon,  6 Jan 2025 15:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177318; cv=none; b=mMB9DgACJxTQPpRYxwr7lo9peShKNQ2F4ssTCPvX125B1nWF6egrftOu566Pqu5BfGwZskuQCrgiK1Jvlhn5okydcEUwTOvSVV1nLLrcjFPj5RDLzs2BBhpYGoOySO9AVc6vNQwseDoDjDW+durFd5p6m5wTKB/1gIcc6/Dff9w=
+	t=1736178552; cv=none; b=fc4cU0IkAvSCDT685jFkuzU5YrC88Xf6xbtb9Lxs8UhbtxicHZ+rd8qde7VFnkx4nmJnSpA7zXHzvDAV2QXEwSwExdV+2VSFi39KxLkj0ZmoB90H3zfT6G6WBMwFzyFsarP26JkBLGhd3rbsuyNj+w/DSzZejJWpLykslhOkXao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177318; c=relaxed/simple;
-	bh=YOx1wtp08iybp4cRQhbjkFxLIwZT8iYio33AZjJ99+U=;
+	s=arc-20240116; t=1736178552; c=relaxed/simple;
+	bh=XChnWrM18rg83wFGNbe/6GPuktgxMx4azPd3ZjbI9SE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EN5XaEGoAdz+EMa0wp0lgaP8R7Koi9DUOuLHKRyGt1sCz6QdS0t7c2B9Prn7wxLj0sIIA9JwRBfxrivTyj6tIDJ7hiX6Os0T/5rDzdMibBJXOGMEsQsgy6QxFV2RH7/3KlWBbhGqlofGZGI0FMj1/tltaJrMHfibq5G0OTVMwqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHS54C7G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA58AC4CED2;
-	Mon,  6 Jan 2025 15:28:36 +0000 (UTC)
+	 MIME-Version; b=uB4Y6CXuTcpJtktpy+TTQRoDKrBEMN+0TV1vtW/LSagcKtFjk1JeIGCPkSU/Bn6seBDjJzDum8sZ18x+oEdE2rVQWZyi+VlLE6RZcNSQ3JKNxoX5+dV6WVXTqw+Kd4b1e7BlZ70xtDf7SbPuooV4wPF2wo5QJf2mXYTO73uEGY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IadHdPe3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E04DC4CED2;
+	Mon,  6 Jan 2025 15:49:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177317;
-	bh=YOx1wtp08iybp4cRQhbjkFxLIwZT8iYio33AZjJ99+U=;
+	s=korg; t=1736178552;
+	bh=XChnWrM18rg83wFGNbe/6GPuktgxMx4azPd3ZjbI9SE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GHS54C7GbFMrAO4nvVb/IhZKe27f6MkI4ihvt4SozGhqD5bAigyAjACl7kZbDtWoN
-	 EQS8MoV8nyH9GMtzYeVrRd1wNwvZREvnf6f8GVxhfEOd8aiSC+IW7tozwP9AWHEskp
-	 2XEf5//Swe9Jk/g09rJ4O55nVQ4IpfZb4vPc6zvU=
+	b=IadHdPe3NI+aI9Wqo70cM1yh7oSuTZ1YJ/eW07Kx6P0r7xfWPJjBMEb6rix4MkhuA
+	 fihFW9+egHJu/Ak6t2yxaNf7nADxuieifUpuvzO6yW8BzZc/Sitjzq910lRLF4v8un
+	 FmTsMLYdnnVTOcAjUDmBNYrzSSvrXCpjcVWvMxhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Justin Stitt <justinstitt@google.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Petr Mladek <pmladek@suse.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Kees Cook <keescook@chromium.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 122/222] powerpc: Remove initialisation of readpos
+Subject: [PATCH 5.15 018/168] ionic: Fix netdev notifier unregister on failure
 Date: Mon,  6 Jan 2025 16:15:26 +0100
-Message-ID: <20250106151155.227307401@linuxfoundation.org>
+Message-ID: <20250106151139.151182569@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,48 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Brett Creeley <brett.creeley@amd.com>
 
-[ Upstream commit 0f7f544af60a6082cfaa3ed4c8f4ca1a858807ee ]
+[ Upstream commit 9590d32e090ea2751e131ae5273859ca22f5ac14 ]
 
-While powerpc doesn't use the seq_buf readpos, it did explicitly
-initialise it for no good reason.
+If register_netdev() fails, then the driver leaks the netdev notifier.
+Fix this by calling ionic_lif_unregister() on register_netdev()
+failure. This will also call ionic_lif_unregister_phc() if it has
+already been registered.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20231024145600.739451-1-willy@infradead.org
-
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Fixes: d0ed46b60396 ("tracing: Move readpos from seq_buf to trace_seq")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 30b87ab4c0b3 ("ionic: remove lif list concept")
+Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20241212213157.12212-2-shannon.nelson@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/setup-common.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/pensando/ionic/ionic_lif.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index d43db8150767..dddf4f31c219 100644
---- a/arch/powerpc/kernel/setup-common.c
-+++ b/arch/powerpc/kernel/setup-common.c
-@@ -601,7 +601,6 @@ struct seq_buf ppc_hw_desc __initdata = {
- 	.buffer = ppc_hw_desc_buf,
- 	.size = sizeof(ppc_hw_desc_buf),
- 	.len = 0,
--	.readpos = 0,
- };
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+index 910d8973a4b0..cdc3c55fab6a 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+@@ -3514,8 +3514,8 @@ int ionic_lif_register(struct ionic_lif *lif)
+ 	/* only register LIF0 for now */
+ 	err = register_netdev(lif->netdev);
+ 	if (err) {
+-		dev_err(lif->ionic->dev, "Cannot register net device, aborting\n");
+-		ionic_lif_unregister_phc(lif);
++		dev_err(lif->ionic->dev, "Cannot register net device: %d, aborting\n", err);
++		ionic_lif_unregister(lif);
+ 		return err;
+ 	}
  
- static __init void probe_machine(void)
 -- 
 2.39.5
 
