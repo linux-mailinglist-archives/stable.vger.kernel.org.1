@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96A65A02AAB
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 294ADA029E9
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:28:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 314B31882001
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:36:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E6D21886EB6
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:27:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FFB41553BB;
-	Mon,  6 Jan 2025 15:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB7ED1D5146;
+	Mon,  6 Jan 2025 15:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WW8ZOQfj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4z4xywp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9F786332;
-	Mon,  6 Jan 2025 15:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75AFB1D86F1;
+	Mon,  6 Jan 2025 15:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177763; cv=none; b=D5mKOISFkBNM9noaA6S7zp/sGd9fWWFXwmcK4CukXTAkuzDkehnLEtb4VQPgplKhh8U7fNswlHcynqhOEZ8ENhVY4XANRp3eY9EBRzfCk6v6lNyb10Pi4rPVFNbnkCjTkcwrDcL3BeDYYuEEKFf/602Zb8YlqN0YZsd18VjmlXw=
+	t=1736177241; cv=none; b=lXNkGpJqfiItIsXxBYLTzP6Y7fJjGyOLsgBImmCsGo5kqS4j0t1dLhnuR3I0CVwOmTDSmDfqdlceCEpLCNy/49tJMxyuQMZ6pCKbnp1GCwc1omL0D1SDvzJRAMl5hRCaQfahpsuCk5zgy8/jt29oPDOf+WS3e+XlgweFUbeInCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177763; c=relaxed/simple;
-	bh=Ffe5/Msku3Jcj15suzpdo5FSn6JDtnYI80ROpey9qg8=;
+	s=arc-20240116; t=1736177241; c=relaxed/simple;
+	bh=bROvTR9ejw47CNelZQ5LOgaoxK4BrFOQ9zUqcD30t9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KxRONJseFQ7GW6KNM3f+Env3BLLOdugii6drqFHG7whtnoVqF/+O3qNRFEA0AqpGdEgNFkZ97M6UOGTBP7aT1F9Pq0EoN7Y7OBtNOCE4t2LdGgX9qNLHDWrBtZIUXp4wsEmvzh+8U5ER/ykG+XPrxfB6590s8e+G3HyUkmHbT1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WW8ZOQfj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75C76C4CED2;
-	Mon,  6 Jan 2025 15:36:02 +0000 (UTC)
+	 MIME-Version; b=cF5sQ4+t/2aLuFqo6Db4uBwG0Vxk5YJek/aeqJyjnZ5UNW2R8S9iHQu3ACr01gbTf7dHVg+E2+3jN0etjpMOvvbb+dImKJK4i5Bo2/9+OcKd1ABJrwWwayktxybcmMA12qnlAZ9Dlw2Nr306Vmsd+DVOt2wBXTM8ueUO9fxhKUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4z4xywp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAFB0C4CEDF;
+	Mon,  6 Jan 2025 15:27:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177762;
-	bh=Ffe5/Msku3Jcj15suzpdo5FSn6JDtnYI80ROpey9qg8=;
+	s=korg; t=1736177241;
+	bh=bROvTR9ejw47CNelZQ5LOgaoxK4BrFOQ9zUqcD30t9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WW8ZOQfjwywfeJJc3d6flQsJpSBoEuKtfqNmOlHL0EkIpRivQRWhG7e927y/Qyxtn
-	 mU5wXKGiwMT2JG+qlO0G4iDmD0aSUq4Bo4s9VKDjVJxYvLZay+dL64G5cK0afrfvm4
-	 8l6aq5MDh3r7QVKiA8FMeOfhxFEre/0bNf6Awe5k=
+	b=J4z4xywplK0ryya/+4yFxcJEImH14tFvk4NP7up44bq7PHPS3ID0FH7Tcm5GlKRre
+	 Wo6VKBlObgSmeWudMSR/8ftUXrx4wnZdej5y7h9qLhvjdIbFjjGBHNNgbHznyo0Uxm
+	 /vU/GzSUnWGZaCUfAeWb/pkAaLeVgsdO/4j/jF0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	"Xin Li (Intel)" <xin@zytor.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 017/156] RDMA/bnxt_re: Avoid sending the modify QP workaround for latest adapters
+Subject: [PATCH 6.6 099/222] x86/fred: Clear WFE in missing-ENDBRANCH #CPs
 Date: Mon,  6 Jan 2025 16:15:03 +0100
-Message-ID: <20250106151142.392336791@linuxfoundation.org>
+Message-ID: <20250106151154.343171694@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kashyap Desai <kashyap.desai@broadcom.com>
+From: Xin Li (Intel) <xin@zytor.com>
 
-[ Upstream commit 064c22408a73b9e945139b64614c534cbbefb591 ]
+[ Upstream commit dc81e556f2a017d681251ace21bf06c126d5a192 ]
 
-The workaround to modify the UD QP from RTS to RTS is required
-only for older adapters. Issuing this for latest adapters can caus
-some unexpected behavior. Fix it
+An indirect branch instruction sets the CPU indirect branch tracker
+(IBT) into WAIT_FOR_ENDBRANCH (WFE) state and WFE stays asserted
+across the instruction boundary.  When the decoder finds an
+inappropriate instruction while WFE is set ENDBR, the CPU raises a #CP
+fault.
 
-Fixes: 1801d87b3598 ("RDMA/bnxt_re: Support new 5760X P7 devices")
-Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/20241204075416.478431-4-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+For the "kernel IBT no ENDBR" selftest where #CPs are deliberately
+triggered, the WFE state of the interrupted context needs to be
+cleared to let execution continue.  Otherwise when the CPU resumes
+from the instruction that just caused the previous #CP, another
+missing-ENDBRANCH #CP is raised and the CPU enters a dead loop.
+
+This is not a problem with IDT because it doesn't preserve WFE and
+IRET doesn't set WFE.  But FRED provides space on the entry stack
+(in an expanded CS area) to save and restore the WFE state, thus the
+WFE state is no longer clobbered, so software must clear it.
+
+Clear WFE to avoid dead looping in ibt_clear_fred_wfe() and the
+!ibt_fatal code path when execution is allowed to continue.
+
+Clobbering WFE in any other circumstance is a security-relevant bug.
+
+[ dhansen: changelog rewording ]
+
+Fixes: a5f6c2ace997 ("x86/shstk: Add user control-protection fault handler")
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241113175934.3897541-1-xin%40zytor.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cet.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index 160096792224..390162018647 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -2763,7 +2763,8 @@ static int bnxt_re_post_send_shadow_qp(struct bnxt_re_dev *rdev,
- 		wr = wr->next;
- 	}
- 	bnxt_qplib_post_send_db(&qp->qplib_qp);
--	bnxt_ud_qp_hw_stall_workaround(qp);
-+	if (!bnxt_qplib_is_chip_gen_p5_p7(qp->rdev->chip_ctx))
-+		bnxt_ud_qp_hw_stall_workaround(qp);
- 	spin_unlock_irqrestore(&qp->sq_lock, flags);
- 	return rc;
- }
-@@ -2875,7 +2876,8 @@ int bnxt_re_post_send(struct ib_qp *ib_qp, const struct ib_send_wr *wr,
- 		wr = wr->next;
- 	}
- 	bnxt_qplib_post_send_db(&qp->qplib_qp);
--	bnxt_ud_qp_hw_stall_workaround(qp);
-+	if (!bnxt_qplib_is_chip_gen_p5_p7(qp->rdev->chip_ctx))
-+		bnxt_ud_qp_hw_stall_workaround(qp);
- 	spin_unlock_irqrestore(&qp->sq_lock, flags);
+diff --git a/arch/x86/kernel/cet.c b/arch/x86/kernel/cet.c
+index d2c732a34e5d..303bf74d175b 100644
+--- a/arch/x86/kernel/cet.c
++++ b/arch/x86/kernel/cet.c
+@@ -81,6 +81,34 @@ static void do_user_cp_fault(struct pt_regs *regs, unsigned long error_code)
  
- 	return rc;
+ static __ro_after_init bool ibt_fatal = true;
+ 
++/*
++ * By definition, all missing-ENDBRANCH #CPs are a result of WFE && !ENDBR.
++ *
++ * For the kernel IBT no ENDBR selftest where #CPs are deliberately triggered,
++ * the WFE state of the interrupted context needs to be cleared to let execution
++ * continue.  Otherwise when the CPU resumes from the instruction that just
++ * caused the previous #CP, another missing-ENDBRANCH #CP is raised and the CPU
++ * enters a dead loop.
++ *
++ * This is not a problem with IDT because it doesn't preserve WFE and IRET doesn't
++ * set WFE.  But FRED provides space on the entry stack (in an expanded CS area)
++ * to save and restore the WFE state, thus the WFE state is no longer clobbered,
++ * so software must clear it.
++ */
++static void ibt_clear_fred_wfe(struct pt_regs *regs)
++{
++	/*
++	 * No need to do any FRED checks.
++	 *
++	 * For IDT event delivery, the high-order 48 bits of CS are pushed
++	 * as 0s into the stack, and later IRET ignores these bits.
++	 *
++	 * For FRED, a test to check if fred_cs.wfe is set would be dropped
++	 * by compilers.
++	 */
++	regs->fred_cs.wfe = 0;
++}
++
+ static void do_kernel_cp_fault(struct pt_regs *regs, unsigned long error_code)
+ {
+ 	if ((error_code & CP_EC) != CP_ENDBR) {
+@@ -90,6 +118,7 @@ static void do_kernel_cp_fault(struct pt_regs *regs, unsigned long error_code)
+ 
+ 	if (unlikely(regs->ip == (unsigned long)&ibt_selftest_noendbr)) {
+ 		regs->ax = 0;
++		ibt_clear_fred_wfe(regs);
+ 		return;
+ 	}
+ 
+@@ -97,6 +126,7 @@ static void do_kernel_cp_fault(struct pt_regs *regs, unsigned long error_code)
+ 	if (!ibt_fatal) {
+ 		printk(KERN_DEFAULT CUT_HERE);
+ 		__warn(__FILE__, __LINE__, (void *)regs->ip, TAINT_WARN, regs, NULL);
++		ibt_clear_fred_wfe(regs);
+ 		return;
+ 	}
+ 	BUG();
 -- 
 2.39.5
 
