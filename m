@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-107395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6064A02BBD
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:46:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 163C0A02A54
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:33:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FCA316622F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:45:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0803A164AB6
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A221DE4DB;
-	Mon,  6 Jan 2025 15:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85B214884C;
+	Mon,  6 Jan 2025 15:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qY7+TMjR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJNE8Wxs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030A81DDC1B;
-	Mon,  6 Jan 2025 15:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020341607AA;
+	Mon,  6 Jan 2025 15:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178335; cv=none; b=cc0fUVfgKfj0Yx7cParpsetTFoDt9YTHOcAJdReNOa0j4WKhendsL5z344LSoa+J50R9huYcq5000+dhuDHVsoHIh7PCCXxloam7bMymTJhR432/3bBYsONfmxsXNr5JoPNs6JGROtTr8Ou5IDbhUDcmYl1nWtwa8Bt+/ECwypo=
+	t=1736177556; cv=none; b=IPK/6O6NiP8Xszqwj3GKpDk8H72UUJLdIUHW5/UXwCDtApM7fWKqQhyLlcqmqjozh0tid4JdIY3Fs4qFbp/F5rXGzfDTwoMx/3eJ9Bv0wInLbRaq1bvSEdSQ1XOv//JZa1vTNxcfeRBgHEnCGUP2uw71UKnzB01A1MeKEhCQ7pM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178335; c=relaxed/simple;
-	bh=hGGFewUx2zKTgItt4m+79UYLe4OXlTrMI+zRAmFkW0A=;
+	s=arc-20240116; t=1736177556; c=relaxed/simple;
+	bh=ROlbMpSVcyif2jip0gJ6TdDDZWLXIpsJ7Y9WUgMhoAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mlPSffZFfOTGkmA4bPDJxPDnleE9D3h9/0HH8vFxqFOFxKehUO+FbimVoTGF0WH9AHAr+JjbJmZ0ARHjDy48pRRr8o+QsJ4TO7MlZZAK5rk8fCrzRLXe65rFOUgZdl4yvDVCIKvmvOCyCVIGCsGVq3eJ5Nk0BBoz3/Sbk5ZwSFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qY7+TMjR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBD6C4CED2;
-	Mon,  6 Jan 2025 15:45:34 +0000 (UTC)
+	 MIME-Version; b=H+s01cnc9dPH7AkJvXY0flBqlazfCkAmLJ9IIUmJW/S9md9GO/3f+kQAswK3Y7lxz65RT8bObrM+j9vmnUSuYes/MXODE1ffK3IW9HrDn8GP9x40UzMpox5g6xRC5HShCahBBVi4nr47IuIlvO15tCX/grYXTtOljWtS7J6E68U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJNE8Wxs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09FDCC4CED6;
+	Mon,  6 Jan 2025 15:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178334;
-	bh=hGGFewUx2zKTgItt4m+79UYLe4OXlTrMI+zRAmFkW0A=;
+	s=korg; t=1736177554;
+	bh=ROlbMpSVcyif2jip0gJ6TdDDZWLXIpsJ7Y9WUgMhoAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qY7+TMjRAePiBJIDmCDaSLp20Tzs8+dxMByE8f2uHKZa+1lMSD03c5L5K3CLhTCdB
-	 hffSLXnZhiF82Kio87PsGRRm4yF0eIT2/NsM8ZGQ2xjln6yWs+qVnCt1jEb5ROin3o
-	 BxOJ59uoeGJkmLXUa286PrUDKKYgpMCHa9B9Bc8s=
+	b=pJNE8WxssyOwcUUO7TDSxr3fGl1FxCQBdMYKLLMKDuSMcDRGIx9nfp83NCW6rgPDv
+	 4VJn9clQQ5n/JiKVg/HS2G0r10RH3Q6/7QokywFboeuXfGxnAdeg4/KJLOD+s54KX7
+	 6skOVk7p3kIVLJDicLiBx3+7oFkdbz2oxKKasvKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Paasch <christoph.paasch@gmail.com>,
-	Vasily Averin <vvs@virtuozzo.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 082/138] skb_expand_head() adjust skb->truesize incorrectly
+	Dennis Lam <dennis.lamerice@gmail.com>,
+	syzbot+d173bf8a5a7faeede34c@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 202/222] ocfs2: fix slab-use-after-free due to dangling pointer dqi_priv
 Date: Mon,  6 Jan 2025 16:16:46 +0100
-Message-ID: <20250106151136.335201726@linuxfoundation.org>
+Message-ID: <20250106151158.408429128@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +68,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Averin <vvs@virtuozzo.com>
+From: Dennis Lam <dennis.lamerice@gmail.com>
 
-commit 7f678def99d29c520418607509bb19c7fc96a6db upstream.
+commit 5f3fd772d152229d94602bca243fbb658068a597 upstream.
 
-Christoph Paasch reports [1] about incorrect skb->truesize
-after skb_expand_head() call in ip6_xmit.
-This may happen because of two reasons:
-- skb_set_owner_w() for newly cloned skb is called too early,
-before pskb_expand_head() where truesize is adjusted for (!skb-sk) case.
-- pskb_expand_head() does not adjust truesize in (skb->sk) case.
-In this case sk->sk_wmem_alloc should be adjusted too.
+When mounting ocfs2 and then remounting it as read-only, a
+slab-use-after-free occurs after the user uses a syscall to
+quota_getnextquota.  Specifically, sb_dqinfo(sb, type)->dqi_priv is the
+dangling pointer.
 
-[1] https://lkml.org/lkml/2021/8/20/1082
+During the remounting process, the pointer dqi_priv is freed but is never
+set as null leaving it to be accessed.  Additionally, the read-only option
+for remounting sets the DQUOT_SUSPENDED flag instead of setting the
+DQUOT_USAGE_ENABLED flags.  Moreover, later in the process of getting the
+next quota, the function ocfs2_get_next_id is called and only checks the
+quota usage flags and not the quota suspended flags.
 
-Fixes: f1260ff15a71 ("skbuff: introduce skb_expand_head()")
-Fixes: 2d85a1b31dde ("ipv6: ip6_finish_output2: set sk into newly allocated nskb")
-Reported-by: Christoph Paasch <christoph.paasch@gmail.com>
-Signed-off-by: Vasily Averin <vvs@virtuozzo.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/644330dd-477e-0462-83bf-9f514c41edd1@virtuozzo.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+To fix this, I set dqi_priv to null when it is freed after remounting with
+read-only and put a check for DQUOT_SUSPENDED in ocfs2_get_next_id.
+
+[akpm@linux-foundation.org: coding-style cleanups]
+Link: https://lkml.kernel.org/r/20241218023924.22821-2-dennis.lamerice@gmail.com
+Fixes: 8f9e8f5fcc05 ("ocfs2: Fix Q_GETNEXTQUOTA for filesystem without quotas")
+Signed-off-by: Dennis Lam <dennis.lamerice@gmail.com>
+Reported-by: syzbot+d173bf8a5a7faeede34c@syzkaller.appspotmail.com
+Tested-by: syzbot+d173bf8a5a7faeede34c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6731d26f.050a0220.1fb99c.014b.GAE@google.com/T/
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/skbuff.c |   36 +++++++++++++++++++++++-------------
- 1 file changed, 23 insertions(+), 13 deletions(-)
- create mode 100644 net/core/sock_destructor.h
+ fs/ocfs2/quota_global.c |    2 +-
+ fs/ocfs2/quota_local.c  |    1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -79,6 +79,7 @@
- #include <linux/indirect_call_wrapper.h>
+--- a/fs/ocfs2/quota_global.c
++++ b/fs/ocfs2/quota_global.c
+@@ -881,7 +881,7 @@ static int ocfs2_get_next_id(struct supe
+ 	int status = 0;
  
- #include "datagram.h"
-+#include "sock_destructor.h"
- 
- struct kmem_cache *skbuff_head_cache __ro_after_init;
- static struct kmem_cache *skbuff_fclone_cache __ro_after_init;
-@@ -1747,30 +1748,39 @@ EXPORT_SYMBOL(skb_realloc_headroom);
- struct sk_buff *skb_expand_head(struct sk_buff *skb, unsigned int headroom)
- {
- 	int delta = headroom - skb_headroom(skb);
-+	int osize = skb_end_offset(skb);
-+	struct sock *sk = skb->sk;
- 
- 	if (WARN_ONCE(delta <= 0,
- 		      "%s is expecting an increase in the headroom", __func__))
- 		return skb;
- 
--	/* pskb_expand_head() might crash, if skb is shared */
--	if (skb_shared(skb)) {
-+	delta = SKB_DATA_ALIGN(delta);
-+	/* pskb_expand_head() might crash, if skb is shared. */
-+	if (skb_shared(skb) || !is_skb_wmem(skb)) {
- 		struct sk_buff *nskb = skb_clone(skb, GFP_ATOMIC);
- 
--		if (likely(nskb)) {
--			if (skb->sk)
--				skb_set_owner_w(nskb, skb->sk);
--			consume_skb(skb);
--		} else {
--			kfree_skb(skb);
--		}
-+		if (unlikely(!nskb))
-+			goto fail;
-+
-+		if (sk)
-+			skb_set_owner_w(nskb, sk);
-+		consume_skb(skb);
- 		skb = nskb;
+ 	trace_ocfs2_get_next_id(from_kqid(&init_user_ns, *qid), type);
+-	if (!sb_has_quota_loaded(sb, type)) {
++	if (!sb_has_quota_active(sb, type)) {
+ 		status = -ESRCH;
+ 		goto out;
  	}
--	if (skb &&
--	    pskb_expand_head(skb, SKB_DATA_ALIGN(delta), 0, GFP_ATOMIC)) {
--		kfree_skb(skb);
--		skb = NULL;
-+	if (pskb_expand_head(skb, delta, 0, GFP_ATOMIC))
-+		goto fail;
-+
-+	if (sk && is_skb_wmem(skb)) {
-+		delta = skb_end_offset(skb) - osize;
-+		refcount_add(delta, &sk->sk_wmem_alloc);
-+		skb->truesize += delta;
- 	}
- 	return skb;
-+
-+fail:
-+	kfree_skb(skb);
-+	return NULL;
+--- a/fs/ocfs2/quota_local.c
++++ b/fs/ocfs2/quota_local.c
+@@ -864,6 +864,7 @@ out:
+ 	brelse(oinfo->dqi_libh);
+ 	brelse(oinfo->dqi_lqi_bh);
+ 	kfree(oinfo);
++	info->dqi_priv = NULL;
+ 	return status;
  }
- EXPORT_SYMBOL(skb_expand_head);
  
 
 
