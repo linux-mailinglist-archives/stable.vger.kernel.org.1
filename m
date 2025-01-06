@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 246B9A02C51
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5680AA02CC1
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:57:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC55018875C7
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1992D7A29E6
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:57:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB54C142E7C;
-	Mon,  6 Jan 2025 15:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E55701482F2;
+	Mon,  6 Jan 2025 15:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWqGAlvq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XeFcxrJB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98CE513AD20;
-	Mon,  6 Jan 2025 15:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8746313B59A;
+	Mon,  6 Jan 2025 15:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178776; cv=none; b=WFlJyumJI71XIMPrCW2pX6pr5AHmDPYdzn15yQde9Q3tnOTRTW5BAV0ANkyWxpdum2HI6WEOPHXUc79mhzMHf960ygRtTMMD5kqOL8tQyXIW7G8euqD6IaY1/oxNUqk/4/eIARHHcMDu/BH4ViaLVylH3ryh7RgGBL6gay1AFh4=
+	t=1736179045; cv=none; b=EHQwfHQpzi9D9EQ758rldsWiVABNVxV5C63Kiauv0TMbTCX69PDs8gt02U79iP1YisTR08hWL9Nycf85UoK3WWAqmIbIq/tOdvEToIHSvpSFJIUnaJsqPsaLrUArObV1jbCkH9VNN1YkLZpdOnRXzk+90fWO7rJFvYqjb43ij3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178776; c=relaxed/simple;
-	bh=guSrVGcQkIDqj0p9gBXU47BT0HS9xiQfb5U5N7UdV0c=;
+	s=arc-20240116; t=1736179045; c=relaxed/simple;
+	bh=GHR3uQB8XyOwPG+qHgPghhqaz7cffBmsWt/CuuUcFDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cwe8/yYaXI1pMmhPTUDILDl0OU3S3GS/MDZepZOb0b7+ty2ebIXXbZh0tv4imHfwe1rmfgxWIKML6cXJW0rqbvJ+hQZ8XYchmIXODBxV7tArk5ZRkW3uTHbWjPZGvsQTmPER/zcoE71lBaqReDxfN/QXnmcReM+pe55EvFly6jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWqGAlvq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F9CC4CED2;
-	Mon,  6 Jan 2025 15:52:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qviqpxkJ1FIqaNb2+vrwacSKhCrNQsoNHi4XxzdYBb4OJrVy8ClbDvKJRgfPmjuhB8fZapBCRGjps/Tm1z4fhTKfd0NVKX239xK5YvxQ27J1ABS5TqTKErLmwEzFFUJRKFOJSEb26ve23rWSgdt5JDHnYLvxiv8bRew7jDeydoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XeFcxrJB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ED49C4CED2;
+	Mon,  6 Jan 2025 15:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178776;
-	bh=guSrVGcQkIDqj0p9gBXU47BT0HS9xiQfb5U5N7UdV0c=;
+	s=korg; t=1736179045;
+	bh=GHR3uQB8XyOwPG+qHgPghhqaz7cffBmsWt/CuuUcFDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vWqGAlvq+aF7CavJjOb2kxbjOijW7TwYT8fa9VaKstpzA4snHbMXCtDgeDhTtx+y0
-	 WmyzUAQrrqRVfUjJ8iDMoWFWdGFwpiNsc51+r1mqSrbnB/TSlDlND+rrVG7sam/Vw5
-	 vpijXoJQ1N9n50NX2GbgEJXgNhCH49xlGhg8Kzcg=
+	b=XeFcxrJBH2aUB7VQ4Un3MwuF/isvQpgp7SlXCgbJqQWhecEy/LHx+zGQBgHqEY1vK
+	 b8ZAzEA9owSz8SNkTvKlbU/NpV0zyIZ7izlqNqd7SakAMbsqzNVEcxlqNfDvcVXpLO
+	 RG4vF40tYBhUhq3aFP/O4lyVgD8GvmwdhXl6OvLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lyude Paul <lyude@redhat.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 088/168] drm/dp_mst: Fix MST sideband message body length check
-Date: Mon,  6 Jan 2025 16:16:36 +0100
-Message-ID: <20250106151141.786278643@linuxfoundation.org>
+	Lion Ackermann <nnamrec@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Artem Metla <ametla@google.com>
+Subject: [PATCH 5.4 01/93] net: sched: fix ordering of qlen adjustment
+Date: Mon,  6 Jan 2025 16:16:37 +0100
+Message-ID: <20250106151128.746093928@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Lion Ackermann <nnamrec@gmail.com>
 
-[ Upstream commit bd2fccac61b40eaf08d9546acc9fef958bfe4763 ]
+commit 5eb7de8cd58e73851cd37ff8d0666517d9926948 upstream.
 
-Fix the MST sideband message body length check, which must be at least 1
-byte accounting for the message body CRC (aka message data CRC) at the
-end of the message.
+Changes to sch->q.qlen around qdisc_tree_reduce_backlog() need to happen
+_before_ a call to said function because otherwise it may fail to notify
+parent qdiscs when the child is about to become empty.
 
-This fixes a case where an MST branch device returns a header with a
-correct header CRC (indicating a correctly received body length), with
-the body length being incorrectly set to 0. This will later lead to a
-memory corruption in drm_dp_sideband_append_payload() and the following
-errors in dmesg:
-
-   UBSAN: array-index-out-of-bounds in drivers/gpu/drm/display/drm_dp_mst_topology.c:786:25
-   index -1 is out of range for type 'u8 [48]'
-   Call Trace:
-    drm_dp_sideband_append_payload+0x33d/0x350 [drm_display_helper]
-    drm_dp_get_one_sb_msg+0x3ce/0x5f0 [drm_display_helper]
-    drm_dp_mst_hpd_irq_handle_event+0xc8/0x1580 [drm_display_helper]
-
-   memcpy: detected field-spanning write (size 18446744073709551615) of single field "&msg->msg[msg->curlen]" at drivers/gpu/drm/display/drm_dp_mst_topology.c:791 (size 256)
-   Call Trace:
-    drm_dp_sideband_append_payload+0x324/0x350 [drm_display_helper]
-    drm_dp_get_one_sb_msg+0x3ce/0x5f0 [drm_display_helper]
-    drm_dp_mst_hpd_irq_handle_event+0xc8/0x1580 [drm_display_helper]
-
-Cc: <stable@vger.kernel.org>
-Cc: Lyude Paul <lyude@redhat.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241125205314.1725887-1-imre.deak@intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lion Ackermann <nnamrec@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: Artem Metla <ametla@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_dp_mst_topology.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/sched/sch_cake.c  |    2 +-
+ net/sched/sch_choke.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_dp_mst_topology.c b/drivers/gpu/drm/drm_dp_mst_topology.c
-index f24667a003a2..f72b4ff169a8 100644
---- a/drivers/gpu/drm/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/drm_dp_mst_topology.c
-@@ -319,6 +319,9 @@ static bool drm_dp_decode_sideband_msg_hdr(const struct drm_dp_mst_topology_mgr
- 	hdr->broadcast = (buf[idx] >> 7) & 0x1;
- 	hdr->path_msg = (buf[idx] >> 6) & 0x1;
- 	hdr->msg_len = buf[idx] & 0x3f;
-+	if (hdr->msg_len < 1)		/* min space for body CRC */
-+		return false;
-+
- 	idx++;
- 	hdr->somt = (buf[idx] >> 7) & 0x1;
- 	hdr->eomt = (buf[idx] >> 6) & 0x1;
--- 
-2.39.5
-
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -1505,7 +1505,6 @@ static unsigned int cake_drop(struct Qdi
+ 	b->backlogs[idx]    -= len;
+ 	b->tin_backlog      -= len;
+ 	sch->qstats.backlog -= len;
+-	qdisc_tree_reduce_backlog(sch, 1, len);
+ 
+ 	flow->dropped++;
+ 	b->tin_dropped++;
+@@ -1516,6 +1515,7 @@ static unsigned int cake_drop(struct Qdi
+ 
+ 	__qdisc_drop(skb, to_free);
+ 	sch->q.qlen--;
++	qdisc_tree_reduce_backlog(sch, 1, len);
+ 
+ 	cake_heapify(q, 0);
+ 
+--- a/net/sched/sch_choke.c
++++ b/net/sched/sch_choke.c
+@@ -124,10 +124,10 @@ static void choke_drop_by_idx(struct Qdi
+ 	if (idx == q->tail)
+ 		choke_zap_tail_holes(q);
+ 
++	--sch->q.qlen;
+ 	qdisc_qstats_backlog_dec(sch, skb);
+ 	qdisc_tree_reduce_backlog(sch, 1, qdisc_pkt_len(skb));
+ 	qdisc_drop(skb, sch, to_free);
+-	--sch->q.qlen;
+ }
+ 
+ struct choke_skb_cb {
 
 
 
