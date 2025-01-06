@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-107398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF194A02BA7
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:45:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D719DA02958
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:22:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66A131885134
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:45:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96DD93A1A19
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF321DACBB;
-	Mon,  6 Jan 2025 15:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDD9149C7B;
+	Mon,  6 Jan 2025 15:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MuQBTI4j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLJgIDaB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB351DE4D2;
-	Mon,  6 Jan 2025 15:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B998634A;
+	Mon,  6 Jan 2025 15:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178343; cv=none; b=OI2kTg9/m0yzS5Eki3jlC/jp89LxckqAwhKTmlUD8sRjgF/gNLC0f8DRXpZtWRiBypQmbTr89eKHgheRwmHuJ3Z7d1QBULNHiEumocV0K4WX1Mo2NFU/MSEPpdFdjkjS7G5tGLUF41wYTCDNZ0PtzZ51GLG0R30MKiSVHexB6Ms=
+	t=1736176934; cv=none; b=bXpvibliV9jM6UvuBoH8D1QSCWVJPrKIYM3si6mKRYQ5NLqWxJjlp7vtUFcHOsOn23JERagbQtY9sRzVaUIHVDzdVZ6dWbajmnfiUGwcIOT/B/4O81RTG7ejOl4H9dMteEEXwlo4lk5IcgVC+hsWBZg6tljbnSJmw07T67OPCdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178343; c=relaxed/simple;
-	bh=ESPycb9pUBLp8UIzFVsuM/Uyf4F3K6AVxrrEZX0EcbQ=;
+	s=arc-20240116; t=1736176934; c=relaxed/simple;
+	bh=CQSHYMaIdfgNA7jiv++gRMA5/5rxaBzmjbMmZDGTZ8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pNaKvgzt6uq+bVOT3jJbLYSJ4gbx9jIcJ8VNqxlmt3cjVf0JtbVqwcouRJfHNnHMAsU77WqoYaLueNdJn5ERmPwf6uvXz8az5kczrlFANF8OvYRCFlIdnkP82vq41XOzaEN2A8oRGj4gmE7hEMUFvG9hKa669DEakIx4YRV4XaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MuQBTI4j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51826C4CED2;
-	Mon,  6 Jan 2025 15:45:43 +0000 (UTC)
+	 MIME-Version; b=QlCxFSk7LS7gznRDq2nunoSKV2XZobpQJdc9Ly5ypwUUcQbbwd2v9uciZrYEPojv1h71YJbGLZFhwzPv4GJbg6eFKSTlAuVuDEVVdxz81NLW44nAdBLNW6mNYXfLWIbvm/6AiDH/BlGUO+NGvcF4E2uqMwO8VEgcAdt3R/msz1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLJgIDaB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 345ADC4CED2;
+	Mon,  6 Jan 2025 15:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178343;
-	bh=ESPycb9pUBLp8UIzFVsuM/Uyf4F3K6AVxrrEZX0EcbQ=;
+	s=korg; t=1736176933;
+	bh=CQSHYMaIdfgNA7jiv++gRMA5/5rxaBzmjbMmZDGTZ8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MuQBTI4jr0sR6vzyF4T+cxhiapC2Ms1RCFfMK0DmKsINHQicQXCW2d9l/+pTUWtNW
-	 sYVnel4NlRN1ocIOBTwPY24qxpH+UzdiuE7xDzfebf/1aKNTqN8MtcFoO+sF/o7Sur
-	 9TcN1wWV4G0mmrCtrgJGEUeMX3w4usE/wUOJi4bc=
+	b=eLJgIDaBZSN9V30ew/s/Hj3NmB/lDVEAJbMynhGGgIKCFKYSomO2GCbgWYsqdXwMw
+	 09i6jz0ezS0shBEEbVUZXM4s46HLTkGVqjMxtek2RPyRXuMhPVGvwI6Y3XGH/Nyk8h
+	 n8A8KbppNmG2mV5imMOYhj/407uqj8jjXA2G0Gls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thi=C3=A9baud=20Weksteen?= <tweek@google.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 5.10 085/138] selinux: ignore unknown extended permissions
+	Yafang Shao <laoar.shao@gmail.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 77/81] mm/readahead: fix large folio support in async readahead
 Date: Mon,  6 Jan 2025 16:16:49 +0100
-Message-ID: <20250106151136.452477153@linuxfoundation.org>
+Message-ID: <20250106151132.334164998@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +62,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thiébaud Weksteen <tweek@google.com>
+From: Yafang Shao <laoar.shao@gmail.com>
 
-commit 900f83cf376bdaf798b6f5dcb2eae0c822e908b6 upstream.
+commit 158cdce87c8c172787063998ad5dd3e2f658b963 upstream.
 
-When evaluating extended permissions, ignore unknown permissions instead
-of calling BUG(). This commit ensures that future permissions can be
-added without interfering with older kernels.
+When testing large folio support with XFS on our servers, we observed that
+only a few large folios are mapped when reading large files via mmap.
+After a thorough analysis, I identified it was caused by the
+`/sys/block/*/queue/read_ahead_kb` setting.  On our test servers, this
+parameter is set to 128KB.  After I tune it to 2MB, the large folio can
+work as expected.  However, I believe the large folio behavior should not
+be dependent on the value of read_ahead_kb.  It would be more robust if
+the kernel can automatically adopt to it.
 
-Cc: stable@vger.kernel.org
-Fixes: fa1aa143ac4a ("selinux: extended permissions for ioctls")
-Signed-off-by: Thiébaud Weksteen <tweek@google.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Acked-by: Paul Moore <paul@paul-moore.com>
+With /sys/block/*/queue/read_ahead_kb set to 128KB and performing a
+sequential read on a 1GB file using MADV_HUGEPAGE, the differences in
+/proc/meminfo are as follows:
+
+- before this patch
+  FileHugePages:     18432 kB
+  FilePmdMapped:      4096 kB
+
+- after this patch
+  FileHugePages:   1067008 kB
+  FilePmdMapped:   1048576 kB
+
+This shows that after applying the patch, the entire 1GB file is mapped to
+huge pages.  The stable list is CCed, as without this patch, large folios
+don't function optimally in the readahead path.
+
+It's worth noting that if read_ahead_kb is set to a larger value that
+isn't aligned with huge page sizes (e.g., 4MB + 128KB), it may still fail
+to map to hugepages.
+
+Link: https://lkml.kernel.org/r/20241108141710.9721-1-laoar.shao@gmail.com
+Link: https://lkml.kernel.org/r/20241206083025.3478-1-laoar.shao@gmail.com
+Fixes: 4687fdbb805a ("mm/filemap: Support VM_HUGEPAGE for file mappings")
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Tested-by: kernel test robot <oliver.sang@intel.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/selinux/ss/services.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ mm/readahead.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/security/selinux/ss/services.c
-+++ b/security/selinux/ss/services.c
-@@ -970,7 +970,10 @@ void services_compute_xperms_decision(st
- 					xpermd->driver))
- 			return;
- 	} else {
--		BUG();
-+		pr_warn_once(
-+			"SELinux: unknown extended permission (%u) will be ignored\n",
-+			node->datum.u.xperms->specified);
-+		return;
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -599,7 +599,11 @@ static void ondemand_readahead(struct re
+ 			1UL << order);
+ 	if (index == expected || index == (ra->start + ra->size)) {
+ 		ra->start += ra->size;
+-		ra->size = get_next_ra_size(ra, max_pages);
++		/*
++		 * In the case of MADV_HUGEPAGE, the actual size might exceed
++		 * the readahead window.
++		 */
++		ra->size = max(ra->size, get_next_ra_size(ra, max_pages));
+ 		ra->async_size = ra->size;
+ 		goto readit;
  	}
- 
- 	if (node->key.specified == AVTAB_XPERMS_ALLOWED) {
-@@ -1007,7 +1010,8 @@ void services_compute_xperms_decision(st
- 					node->datum.u.xperms->perms.p[i];
- 		}
- 	} else {
--		BUG();
-+		pr_warn_once("SELinux: unknown specified key (%u)\n",
-+			     node->key.specified);
- 	}
- }
- 
 
 
 
