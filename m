@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 941F5A02A34
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36688A02AEC
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:38:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 139297A24EF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:31:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF6AE165535
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99D891DB951;
-	Mon,  6 Jan 2025 15:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C98DC157E82;
+	Mon,  6 Jan 2025 15:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CujOpXuQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XokFudkh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F8A15855C;
-	Mon,  6 Jan 2025 15:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864F1146D6B;
+	Mon,  6 Jan 2025 15:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177466; cv=none; b=IaAoCE3/D4dlnVYPc7bRMVa2okPHDik639hvdveC//zzOXWZYifrGHF/ZSBbTtFBX3yHGxDZBCu1fDqtVKwzZLmpOS4aZlewtXbSkysV5gbAhjzhnmmPGW+dwwfyaQ4Od6/EjCBzwDcoGZZ79yh3VTUGlNzQ4e5sl1L/Frm6JoU=
+	t=1736177891; cv=none; b=Nm9ZAuPXIzUb5rZdYG6QD2ZNfmFJxekIW2gu/d4/a3mbpEf4kDe/baQAt196Ae97OdYHSDYUacDirzcw97HL8Ft1a93O0rrbFNa8pt+TYMJ89vbaQEggoldHqy+ItySCWNep0rN8A7hzAberrC8PSg0OqQBaZnxAEyMndrHI0TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177466; c=relaxed/simple;
-	bh=rdmCn2zVCWJneRqgmWh40yifPYJWHSzPAWHzbasrjHw=;
+	s=arc-20240116; t=1736177891; c=relaxed/simple;
+	bh=/oELpSGNvwWKajDqFGel/XJmVN+MNMnuc4YR+xpia7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fJbkVtGXe/s21xtMFEiqNAiwH61IlQZHuzvU0wjUyp1p3YtRtCCOI4WeKnKlWAEc0XxT1a8PnYm+NeNq2phQD81ujIPpAXcmwOD2YfWaN0XDeFMuGCY/LvSAHN0UYgFeXfcZ7rCh8D8o7SY1TdItX8UU6/UuMuLPIE9mSZwpeGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CujOpXuQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F161C4CED6;
-	Mon,  6 Jan 2025 15:31:05 +0000 (UTC)
+	 MIME-Version; b=Wo20q6VIVgt3X7qwLc9sTGBpjXApLrtXvipAsm5MCEEFR9h25BoHi2ADYgXaBqY2HWbcSj7qTCu9HLui/GEwySyy+Ew7JBdUBlhsgA56XdXfpRmZItZ0MNwDzerdFkhTEPlakVD2MmggZGTMegLOuwx6QqGRr7auStBzrLbFwVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XokFudkh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E36C4CED2;
+	Mon,  6 Jan 2025 15:38:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177466;
-	bh=rdmCn2zVCWJneRqgmWh40yifPYJWHSzPAWHzbasrjHw=;
+	s=korg; t=1736177891;
+	bh=/oELpSGNvwWKajDqFGel/XJmVN+MNMnuc4YR+xpia7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CujOpXuQd4iyG073FUdbWN2YtNrhV7nOi4TK4Yoko1IJoLHPWZY0gnkkcwdLQNv5O
-	 745gvDOjfnaISEq3JwePuwrNEvApfRttZ4ZWO4+s34NqNBGRhKibQbXJx5SMqWLFxP
-	 s3z8bKlFwvOpsvmCk2EkksR6Y6l8ll60RVX3Oi0Q=
+	b=XokFudkhMakkLut0acWFGNni1mBIDuW4TlntHnpirv5t+ciA5UYBH9xwt9h5j5+Vq
+	 9F4IvKU2sF2vl0Pq9pq5MGREDdrAnuvhX0IbeYgc46RA8G+XtoO7E9qmdavpKyVwPC
+	 3+H/2MJBoWAjxoGf5p19F1OgM/PWyZ18JHRyQdDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Stephen Gordon <gordoste@iinet.net.au>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 173/222] net: wwan: iosm: Properly check for valid exec stage in ipc_mmio_init()
-Date: Mon,  6 Jan 2025 16:16:17 +0100
-Message-ID: <20250106151157.312551016@linuxfoundation.org>
+Subject: [PATCH 6.12 092/156] ASoC: audio-graph-card: Call of_node_put() on correct node
+Date: Mon,  6 Jan 2025 16:16:18 +0100
+Message-ID: <20250106151145.192089651@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+From: Stephen Gordon <gordoste@iinet.net.au>
 
-[ Upstream commit a7af435df0e04cfb4a4004136d597c42639a2ae7 ]
+[ Upstream commit 687630aa582acf674120c87350beb01d836c837c ]
 
-ipc_mmio_init() used the post-decrement operator in its loop continuing
-condition of "retries" counter being "> 0", which meant that when this
-condition caused loop exit "retries" counter reached -1.
-
-But the later valid exec stage failure check only tests for "retries"
-counter being exactly zero, so it didn't trigger in this case (but
-would wrongly trigger if the code reaches a valid exec stage in the
-very last loop iteration).
-
-Fix this by using the pre-decrement operator instead, so the loop counter
-is exactly zero on valid exec stage failure.
-
-Fixes: dc0514f5d828 ("net: iosm: mmio scratchpad")
-Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
-Link: https://patch.msgid.link/8b19125a825f9dcdd81c667c1e5c48ba28d505a6.1735490770.git.mail@maciej.szmigiero.name
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Stephen Gordon <gordoste@iinet.net.au>
+Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/20241207122257.165096-1-gordoste@iinet.net.au
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wwan/iosm/iosm_ipc_mmio.c | 2 +-
+ sound/soc/generic/audio-graph-card2.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wwan/iosm/iosm_ipc_mmio.c b/drivers/net/wwan/iosm/iosm_ipc_mmio.c
-index 63eb08c43c05..6764c13530b9 100644
---- a/drivers/net/wwan/iosm/iosm_ipc_mmio.c
-+++ b/drivers/net/wwan/iosm/iosm_ipc_mmio.c
-@@ -104,7 +104,7 @@ struct iosm_mmio *ipc_mmio_init(void __iomem *mmio, struct device *dev)
- 			break;
- 
- 		msleep(20);
--	} while (retries-- > 0);
-+	} while (--retries > 0);
- 
- 	if (!retries) {
- 		dev_err(ipc_mmio->dev, "invalid exec stage %X", stage);
+diff --git a/sound/soc/generic/audio-graph-card2.c b/sound/soc/generic/audio-graph-card2.c
+index 93eee40cec76..63837e259659 100644
+--- a/sound/soc/generic/audio-graph-card2.c
++++ b/sound/soc/generic/audio-graph-card2.c
+@@ -779,7 +779,7 @@ static void graph_link_init(struct simple_util_priv *priv,
+ 	of_node_get(port_codec);
+ 	if (graph_lnk_is_multi(port_codec)) {
+ 		ep_codec = graph_get_next_multi_ep(&port_codec);
+-		of_node_put(port_cpu);
++		of_node_put(port_codec);
+ 		port_codec = ep_to_port(ep_codec);
+ 	} else {
+ 		ep_codec = port_to_endpoint(port_codec);
 -- 
 2.39.5
 
