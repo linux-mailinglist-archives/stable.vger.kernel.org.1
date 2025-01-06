@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-107294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDFE6A02B2C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4028A02BCF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:47:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97EE516529E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:40:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CCBB166664
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA3C1D7E21;
-	Mon,  6 Jan 2025 15:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE131DE8AB;
+	Mon,  6 Jan 2025 15:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8YqavAa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vYxAlJ4d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0738634A;
-	Mon,  6 Jan 2025 15:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AD314A617;
+	Mon,  6 Jan 2025 15:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178034; cv=none; b=NzWmDSHG0ccw/AFLMlYFksdY3nojc+AVD1HYANX/MCiatuTi75BYqHek+L7reTDffHZOUutyZBzAQyJIijaT3t44iqbBj6wyhnz4X3iORwYmgKXeM8UnAhtXNEbg4qkssMn2xVxXfHRsxL4148nPmlnUGwKyTsP7W4VbwgkaaDI=
+	t=1736178385; cv=none; b=iJUt6Rt/ZPglSRnDOws6/rNUNvR6EZ8TH8LQ6kzBkoxRnbSGAJpZTO1jjaX9+EUsQIVyA6JA10juVRMGhKN+X544ciuM9fTH7lB4yq/IUKIp+pCiR2FPnmCIJmdpCDJDYOOpo10RlA6bbEYMMuFCLGwj0AlddpqwDUyd6yNQFxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178034; c=relaxed/simple;
-	bh=Tj2kzQUseOSg+oWCGQV1rCtpnb3xgLSYw3wXSkQNtr8=;
+	s=arc-20240116; t=1736178385; c=relaxed/simple;
+	bh=GGdsNym6rLa3k/W50l/Un8emF+ShPhFcNyNYTUbYnfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K408+9RREtYxtYz/FaGeGc9f2lMGBY3BXgAlymVgrXi7I50QRhSRjJ9GMpD6cM7m0FDTXaY1m+a9FUOUjxZUzYHyDqSIwMOeN5jyyq0P7CUT9mR5H2A14SFpI6kLJ7SHggywSLnx+XkUqqZCOm/gOzqYZTROyDcdQ+sQjWfYCr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8YqavAa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702BBC4CED2;
-	Mon,  6 Jan 2025 15:40:33 +0000 (UTC)
+	 MIME-Version; b=FZuZ+hhxk1yNmpqGMEMz6RdWZtpeQd6NHeseo9mnRqax0vclQNpcAAyE5Z9FgPU2xAI4pzrNHuVhIzdyAYAgyHYq2DQCYEWPFW3ozARAgeME1ONKOdQFgWoKUCo/kl7CeaDbVYz7MSIWWa2MBrib68O56hzPpL/JvkcicdpYaPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vYxAlJ4d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01821C4CED2;
+	Mon,  6 Jan 2025 15:46:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178033;
-	bh=Tj2kzQUseOSg+oWCGQV1rCtpnb3xgLSYw3wXSkQNtr8=;
+	s=korg; t=1736178385;
+	bh=GGdsNym6rLa3k/W50l/Un8emF+ShPhFcNyNYTUbYnfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d8YqavAaAwNuevKoOYXdD1SNfY6INx/G1TumQt+Mm3dPxNSRoMXKt1upvVv5iSmyo
-	 E3Tak4PSxsaaY7qshe9r89D4e1Orwtir4W1Iv959buc7iR1RTGYmUmhdmnNFeAgH8j
-	 Jr414UqhYUF/w9+0nqvZWNm44qKvNMQwBD/Qqzhc=
+	b=vYxAlJ4dG3e2VAarKYcUahQq2g2aa2KJJDXQZ7QWZa4e/1sVMsTZP97aiB68vfksl
+	 yPPEz9djH88Kz2ic+zwOLaNCQ+GyiNlhk/YrwAR1ZX6KbRW/QOhE5zu6ICLOcVemQc
+	 zjtYDYU886Y5jZMxiwWg+NwF3S9ZMg6NjzKNtZlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 139/156] mm/damon/core: fix new damon_target objects leaks on damon_commit_targets()
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 101/138] RDMA/bnxt_re: Add check for path mtu in modify_qp
 Date: Mon,  6 Jan 2025 16:17:05 +0100
-Message-ID: <20250106151146.966148375@linuxfoundation.org>
+Message-ID: <20250106151137.055788610@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
 
-commit 8debfc5b1aa569d3d2ac836af2553da037611c61 upstream.
+[ Upstream commit 798653a0ee30d3cd495099282751c0f248614ae7 ]
 
-Patch series "mm/damon/core: fix memory leaks and ignored inputs from
-damon_commit_ctx()".
+When RDMA app configures path MTU, add a check in modify_qp verb
+to make sure that it doesn't go beyond interface MTU. If this
+check fails, driver will fail the modify_qp verb.
 
-Due to two bugs in damon_commit_targets() and damon_commit_schemes(),
-which are called from damon_commit_ctx(), some user inputs can be ignored,
-and some mmeory objects can be leaked.  Fix those.
-
-Note that only DAMON sysfs interface users are affected.  Other DAMON core
-API user modules that more focused more on simple and dedicated production
-usages, including DAMON_RECLAIM and DAMON_LRU_SORT are not using the buggy
-function in the way, so not affected.
-
-
-This patch (of 2):
-
-When new DAMON targets are added via damon_commit_targets(), the newly
-created targets are not deallocated when updating the internal data
-(damon_commit_target()) is failed.  Worse yet, even if the setup is
-successfully done, the new target is not linked to the context.  Hence,
-the new targets are always leaked regardless of the internal data setup
-failure.  Fix the leaks.
-
-Link: https://lkml.kernel.org/r/20241222231222.85060-2-sj@kernel.org
-Fixes: 9cb3d0b9dfce ("mm/damon/core: implement DAMON context commit function")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/20241211083931.968831-3-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/core.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 26 +++++++++++++-----------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -966,8 +966,11 @@ static int damon_commit_targets(
- 			return -ENOMEM;
- 		err = damon_commit_target(new_target, false,
- 				src_target, damon_target_has_pid(src));
--		if (err)
-+		if (err) {
-+			damon_destroy_target(new_target);
- 			return err;
-+		}
-+		damon_add_target(dst, new_target);
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index 9ffd28ab526a..ea03da8056af 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -1938,18 +1938,20 @@ int bnxt_re_modify_qp(struct ib_qp *ib_qp, struct ib_qp_attr *qp_attr,
+ 		}
  	}
- 	return 0;
- }
+ 
+-	if (qp_attr_mask & IB_QP_PATH_MTU) {
+-		qp->qplib_qp.modify_flags |=
+-				CMDQ_MODIFY_QP_MODIFY_MASK_PATH_MTU;
+-		qp->qplib_qp.path_mtu = __from_ib_mtu(qp_attr->path_mtu);
+-		qp->qplib_qp.mtu = ib_mtu_enum_to_int(qp_attr->path_mtu);
+-	} else if (qp_attr->qp_state == IB_QPS_RTR) {
+-		qp->qplib_qp.modify_flags |=
+-			CMDQ_MODIFY_QP_MODIFY_MASK_PATH_MTU;
+-		qp->qplib_qp.path_mtu =
+-			__from_ib_mtu(iboe_get_mtu(rdev->netdev->mtu));
+-		qp->qplib_qp.mtu =
+-			ib_mtu_enum_to_int(iboe_get_mtu(rdev->netdev->mtu));
++	if (qp_attr->qp_state == IB_QPS_RTR) {
++		enum ib_mtu qpmtu;
++
++		qpmtu = iboe_get_mtu(rdev->netdev->mtu);
++		if (qp_attr_mask & IB_QP_PATH_MTU) {
++			if (ib_mtu_enum_to_int(qp_attr->path_mtu) >
++			    ib_mtu_enum_to_int(qpmtu))
++				return -EINVAL;
++			qpmtu = qp_attr->path_mtu;
++		}
++
++		qp->qplib_qp.modify_flags |= CMDQ_MODIFY_QP_MODIFY_MASK_PATH_MTU;
++		qp->qplib_qp.path_mtu = __from_ib_mtu(qpmtu);
++		qp->qplib_qp.mtu = ib_mtu_enum_to_int(qpmtu);
+ 	}
+ 
+ 	if (qp_attr_mask & IB_QP_TIMEOUT) {
+-- 
+2.39.5
+
 
 
 
