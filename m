@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-106958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2393AA02984
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:24:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70408A02967
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:23:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6FF418864CE
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:24:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E01A163F8A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2839716A92E;
-	Mon,  6 Jan 2025 15:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317CC1547F2;
+	Mon,  6 Jan 2025 15:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iyNDZBWJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKByf+E4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE7215958A;
-	Mon,  6 Jan 2025 15:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20C6146D6B;
+	Mon,  6 Jan 2025 15:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177026; cv=none; b=A6/dr90Kyfyd1v97tqsokezUHZX+TeCY4jGmgfuqGjyxxISmOw19JFowhu4TPI5yqPFaHETM8YJpa0NviJaZ2X5nuDpsivMP6mjxLf1Jx3u6vX/33HZ+8GQCBv66EXxM86JndnWZGtrT6/ZkGadPvkxtz8yW+Hu6dn+0w0cz1JQ=
+	t=1736176975; cv=none; b=XhA+j/gL3cmO5VAbwHwVWv8ZS/TGHm61VKysNux9tU8teQrNtfnQlLCFxYOA9htJ8nlimxk48U6sUBdNZXJowPBrzEPB8fGwAvW1ykGKFyKjcJAnCPeKOfW4GruYAhNIMiIl8vkcocJcugWsYzCqtjhlV0XWG7wwfBvYhR8n56o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177026; c=relaxed/simple;
-	bh=pl1YTFsKKvXWYutO8QB/E9OtFitEtA38E/C1FhezDN4=;
+	s=arc-20240116; t=1736176975; c=relaxed/simple;
+	bh=QNqC+HTgejrIlanHjsIJCrz6PMCI06PJxlAu1x2AsBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lqp6U1rCB0T8V28oHsGMnaGyAE23YqCTmK1RDER5QasCOwDjqU+BM2tJqvR7T6vHdeuOWgoBzFES89WCzsIgcX+Sp0chEmUJF3llW6rZb507088Jk4GvpP2zj4uW1xhv2UkJbE5BlxZjHfegX1BMhxN/woLjDpSSqrtLdBsvmqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iyNDZBWJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51EEAC4CED2;
-	Mon,  6 Jan 2025 15:23:46 +0000 (UTC)
+	 MIME-Version; b=kPT1uJOdSmNxIEe+TMWLNlHrABSKsJHwYTVy/yW3lfiRl2gZt3l0mkOykI8zIk7UWBIXQAmPM63Ac1Dt/ShfzmmdFiz8CryF8iu4oXsrH3GfAAev3ZXFI3vKsTC875jMBx9o3QUCQyaf37lKxMQvHkKmMF2OB8tR2cn60+8tPdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKByf+E4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6C9C4CED2;
+	Mon,  6 Jan 2025 15:22:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177026;
-	bh=pl1YTFsKKvXWYutO8QB/E9OtFitEtA38E/C1FhezDN4=;
+	s=korg; t=1736176974;
+	bh=QNqC+HTgejrIlanHjsIJCrz6PMCI06PJxlAu1x2AsBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iyNDZBWJGum0xpSjDxozNO+tyv1sqhfSzzy+67phSpGkaKLvli0+A00JEGwWLc5+o
-	 4OI0mC1yv1KFLYQXrKcBhKL5RPikuKMprP5lqRhCnItP2zZAXs/d+hSJU+3x0HroiD
-	 ooXBx+/5BMYD7HZWbS56KWbhs6gu7cprlTDfHupw=
+	b=OKByf+E4bqSWbUZYFOG/fRJfVayjfOP4iopEC+dn88Cc2wEoqt9vJTFGTt5YMT6M4
+	 FdAaD9h1usVhB8qNjfIOdlj2LSLZ9+cm8iLQPdQVsFRT9sh0SgZ1Dn2Zqak93AxHyP
+	 MmtBzxlS+SGeYto5jX84kyLyKE2fhX32QjVci95k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ralph Boehme <slow@samba.org>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/222] fs/smb/client: implement chmod() for SMB3 POSIX Extensions
-Date: Mon,  6 Jan 2025 16:13:33 +0100
-Message-ID: <20250106151150.951062428@linuxfoundation.org>
+Subject: [PATCH 6.6 010/222] smb: client: stop flooding dmesg in smb2_calc_signature()
+Date: Mon,  6 Jan 2025 16:13:34 +0100
+Message-ID: <20250106151150.987811136@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
 References: <20250106151150.585603565@linuxfoundation.org>
@@ -66,246 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ralph Boehme <slow@samba.org>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit d413eabff18d640031fc955d107ad9c03c3bf9f1 ]
+[ Upstream commit a13ca780afab350f37f8be9eda2bf79d1aed9bdd ]
 
-The NT ACL format for an SMB3 POSIX Extensions chmod() is a single ACE with the
-magic S-1-5-88-3-mode SID:
+When having several mounts that share same credential and the client
+couldn't re-establish an SMB session due to an expired kerberos ticket
+or rotated password, smb2_calc_signature() will end up flooding dmesg
+when not finding SMB sessions to calculate signatures.
 
-  NT Security Descriptor
-      Revision: 1
-      Type: 0x8004, Self Relative, DACL Present
-      Offset to owner SID: 56
-      Offset to group SID: 124
-      Offset to SACL: 0
-      Offset to DACL: 20
-      Owner: S-1-5-21-3177838999-3893657415-1037673384-1000
-      Group: S-1-22-2-1000
-      NT User (DACL) ACL
-          Revision: NT4 (2)
-          Size: 36
-          Num ACEs: 1
-          NT ACE: S-1-5-88-3-438, flags 0x00, Access Allowed, mask 0x00000000
-              Type: Access Allowed
-              NT ACE Flags: 0x00
-              Size: 28
-              Access required: 0x00000000
-              SID: S-1-5-88-3-438
-
-Owner and Group should be NULL, but the server is not required to fail the
-request if they are present.
-
-Signed-off-by: Ralph Boehme <slow@samba.org>
-Cc: stable@vger.kernel.org
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: 343d7fe6df9e ("smb: client: fix use-after-free of signing key")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsacl.c   | 50 +++++++++++++++++++++++----------------
- fs/smb/client/cifsproto.h |  4 +++-
- fs/smb/client/inode.c     |  4 +++-
- fs/smb/client/smb2pdu.c   |  2 +-
- 4 files changed, 37 insertions(+), 23 deletions(-)
+ fs/smb/client/smb2transport.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifsacl.c b/fs/smb/client/cifsacl.c
-index e2ec1d934335..bff8d0dd74fe 100644
---- a/fs/smb/client/cifsacl.c
-+++ b/fs/smb/client/cifsacl.c
-@@ -885,12 +885,17 @@ unsigned int setup_authusers_ACE(struct smb_ace *pntace)
-  * Fill in the special SID based on the mode. See
-  * https://technet.microsoft.com/en-us/library/hh509017(v=ws.10).aspx
-  */
--unsigned int setup_special_mode_ACE(struct smb_ace *pntace, __u64 nmode)
-+unsigned int setup_special_mode_ACE(struct smb_ace *pntace,
-+				    bool posix,
-+				    __u64 nmode)
- {
- 	int i;
- 	unsigned int ace_size = 28;
+diff --git a/fs/smb/client/smb2transport.c b/fs/smb/client/smb2transport.c
+index 4ca04e62a993..73eae1b16034 100644
+--- a/fs/smb/client/smb2transport.c
++++ b/fs/smb/client/smb2transport.c
+@@ -242,7 +242,7 @@ smb2_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server,
  
--	pntace->type = ACCESS_DENIED_ACE_TYPE;
-+	if (posix)
-+		pntace->type = ACCESS_ALLOWED_ACE_TYPE;
-+	else
-+		pntace->type = ACCESS_DENIED_ACE_TYPE;
- 	pntace->flags = 0x0;
- 	pntace->access_req = 0;
- 	pntace->sid.num_subauth = 3;
-@@ -933,7 +938,8 @@ static void populate_new_aces(char *nacl_base,
- 		struct smb_sid *pownersid,
- 		struct smb_sid *pgrpsid,
- 		__u64 *pnmode, u32 *pnum_aces, u16 *pnsize,
--		bool modefromsid)
-+		bool modefromsid,
-+		bool posix)
- {
- 	__u64 nmode;
- 	u32 num_aces = 0;
-@@ -950,13 +956,15 @@ static void populate_new_aces(char *nacl_base,
- 	num_aces = *pnum_aces;
- 	nsize = *pnsize;
- 
--	if (modefromsid) {
--		pnntace = (struct smb_ace *) (nacl_base + nsize);
--		nsize += setup_special_mode_ACE(pnntace, nmode);
--		num_aces++;
-+	if (modefromsid || posix) {
- 		pnntace = (struct smb_ace *) (nacl_base + nsize);
--		nsize += setup_authusers_ACE(pnntace);
-+		nsize += setup_special_mode_ACE(pnntace, posix, nmode);
- 		num_aces++;
-+		if (modefromsid) {
-+			pnntace = (struct smb_ace *) (nacl_base + nsize);
-+			nsize += setup_authusers_ACE(pnntace);
-+			num_aces++;
-+		}
- 		goto set_size;
+ 	ses = smb2_find_smb_ses(server, le64_to_cpu(shdr->SessionId));
+ 	if (unlikely(!ses)) {
+-		cifs_server_dbg(VFS, "%s: Could not find session\n", __func__);
++		cifs_server_dbg(FYI, "%s: Could not find session\n", __func__);
+ 		return -ENOENT;
  	}
  
-@@ -1076,7 +1084,7 @@ static __u16 replace_sids_and_copy_aces(struct smb_acl *pdacl, struct smb_acl *p
- 
- static int set_chmod_dacl(struct smb_acl *pdacl, struct smb_acl *pndacl,
- 		struct smb_sid *pownersid,	struct smb_sid *pgrpsid,
--		__u64 *pnmode, bool mode_from_sid)
-+		__u64 *pnmode, bool mode_from_sid, bool posix)
- {
- 	int i;
- 	u16 size = 0;
-@@ -1094,11 +1102,11 @@ static int set_chmod_dacl(struct smb_acl *pdacl, struct smb_acl *pndacl,
- 	nsize = sizeof(struct smb_acl);
- 
- 	/* If pdacl is NULL, we don't have a src. Simply populate new ACL. */
--	if (!pdacl) {
-+	if (!pdacl || posix) {
- 		populate_new_aces(nacl_base,
- 				pownersid, pgrpsid,
- 				pnmode, &num_aces, &nsize,
--				mode_from_sid);
-+				mode_from_sid, posix);
- 		goto finalize_dacl;
- 	}
- 
-@@ -1115,7 +1123,7 @@ static int set_chmod_dacl(struct smb_acl *pdacl, struct smb_acl *pndacl,
- 			populate_new_aces(nacl_base,
- 					pownersid, pgrpsid,
- 					pnmode, &num_aces, &nsize,
--					mode_from_sid);
-+					mode_from_sid, posix);
- 
- 			new_aces_set = true;
- 		}
-@@ -1144,7 +1152,7 @@ static int set_chmod_dacl(struct smb_acl *pdacl, struct smb_acl *pndacl,
- 		populate_new_aces(nacl_base,
- 				pownersid, pgrpsid,
- 				pnmode, &num_aces, &nsize,
--				mode_from_sid);
-+				mode_from_sid, posix);
- 
- 		new_aces_set = true;
- 	}
-@@ -1251,7 +1259,7 @@ static int parse_sec_desc(struct cifs_sb_info *cifs_sb,
- /* Convert permission bits from mode to equivalent CIFS ACL */
- static int build_sec_desc(struct smb_ntsd *pntsd, struct smb_ntsd *pnntsd,
- 	__u32 secdesclen, __u32 *pnsecdesclen, __u64 *pnmode, kuid_t uid, kgid_t gid,
--	bool mode_from_sid, bool id_from_sid, int *aclflag)
-+	bool mode_from_sid, bool id_from_sid, bool posix, int *aclflag)
- {
- 	int rc = 0;
- 	__u32 dacloffset;
-@@ -1288,7 +1296,7 @@ static int build_sec_desc(struct smb_ntsd *pntsd, struct smb_ntsd *pnntsd,
- 		ndacl_ptr->num_aces = cpu_to_le32(0);
- 
- 		rc = set_chmod_dacl(dacl_ptr, ndacl_ptr, owner_sid_ptr, group_sid_ptr,
--				    pnmode, mode_from_sid);
-+				    pnmode, mode_from_sid, posix);
- 
- 		sidsoffset = ndacloffset + le16_to_cpu(ndacl_ptr->size);
- 		/* copy the non-dacl portion of secdesc */
-@@ -1587,6 +1595,7 @@ id_mode_to_cifs_acl(struct inode *inode, const char *path, __u64 *pnmode,
- 	struct tcon_link *tlink = cifs_sb_tlink(cifs_sb);
- 	struct smb_version_operations *ops;
- 	bool mode_from_sid, id_from_sid;
-+	bool posix = tlink_tcon(tlink)->posix_extensions;
- 	const u32 info = 0;
- 
- 	if (IS_ERR(tlink))
-@@ -1622,12 +1631,13 @@ id_mode_to_cifs_acl(struct inode *inode, const char *path, __u64 *pnmode,
- 		id_from_sid = false;
- 
- 	/* Potentially, five new ACEs can be added to the ACL for U,G,O mapping */
--	nsecdesclen = secdesclen;
- 	if (pnmode && *pnmode != NO_CHANGE_64) { /* chmod */
--		if (mode_from_sid)
--			nsecdesclen += 2 * sizeof(struct smb_ace);
-+		if (posix)
-+			nsecdesclen = 1 * sizeof(struct smb_ace);
-+		else if (mode_from_sid)
-+			nsecdesclen = secdesclen + (2 * sizeof(struct smb_ace));
- 		else /* cifsacl */
--			nsecdesclen += 5 * sizeof(struct smb_ace);
-+			nsecdesclen = secdesclen + (5 * sizeof(struct smb_ace));
- 	} else { /* chown */
- 		/* When ownership changes, changes new owner sid length could be different */
- 		nsecdesclen = sizeof(struct smb_ntsd) + (sizeof(struct smb_sid) * 2);
-@@ -1657,7 +1667,7 @@ id_mode_to_cifs_acl(struct inode *inode, const char *path, __u64 *pnmode,
- 	}
- 
- 	rc = build_sec_desc(pntsd, pnntsd, secdesclen, &nsecdesclen, pnmode, uid, gid,
--			    mode_from_sid, id_from_sid, &aclflag);
-+			    mode_from_sid, id_from_sid, posix, &aclflag);
- 
- 	cifs_dbg(NOISY, "build_sec_desc rc: %d\n", rc);
- 
-diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
-index 6399dbd04625..a151ffffc6f3 100644
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -242,7 +242,9 @@ extern int cifs_set_acl(struct mnt_idmap *idmap,
- extern int set_cifs_acl(struct smb_ntsd *pntsd, __u32 len, struct inode *ino,
- 				const char *path, int flag);
- extern unsigned int setup_authusers_ACE(struct smb_ace *pace);
--extern unsigned int setup_special_mode_ACE(struct smb_ace *pace, __u64 nmode);
-+extern unsigned int setup_special_mode_ACE(struct smb_ace *pace,
-+					   bool posix,
-+					   __u64 nmode);
- extern unsigned int setup_special_user_owner_ACE(struct smb_ace *pace);
- 
- extern void dequeue_mid(struct mid_q_entry *mid, bool malformed);
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index ce7e0aed8f7d..b3e59a7c7120 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -3087,6 +3087,7 @@ cifs_setattr_nounix(struct dentry *direntry, struct iattr *attrs)
- 	int rc = -EACCES;
- 	__u32 dosattr = 0;
- 	__u64 mode = NO_CHANGE_64;
-+	bool posix = cifs_sb_master_tcon(cifs_sb)->posix_extensions;
- 
- 	xid = get_xid();
- 
-@@ -3177,7 +3178,8 @@ cifs_setattr_nounix(struct dentry *direntry, struct iattr *attrs)
- 		mode = attrs->ia_mode;
- 		rc = 0;
- 		if ((cifs_sb->mnt_cifs_flags & CIFS_MOUNT_CIFS_ACL) ||
--		    (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_MODE_FROM_SID)) {
-+		    (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_MODE_FROM_SID) ||
-+		    posix) {
- 			rc = id_mode_to_cifs_acl(inode, full_path, &mode,
- 						INVALID_UID, INVALID_GID);
- 			if (rc) {
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 101c80f22d77..c012fbc2638e 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -2672,7 +2672,7 @@ create_sd_buf(umode_t mode, bool set_owner, unsigned int *len)
- 	ptr += sizeof(struct smb3_acl);
- 
- 	/* create one ACE to hold the mode embedded in reserved special SID */
--	acelen = setup_special_mode_ACE((struct smb_ace *)ptr, (__u64)mode);
-+	acelen = setup_special_mode_ACE((struct smb_ace *)ptr, false, (__u64)mode);
- 	ptr += acelen;
- 	acl_size = acelen + sizeof(struct smb3_acl);
- 	ace_count = 1;
 -- 
 2.39.5
 
