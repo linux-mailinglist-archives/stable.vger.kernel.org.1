@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-107261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 338F3A02B0A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E313BA02A52
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:32:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B589164570
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:39:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E3551886A05
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:32:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B101791F4;
-	Mon,  6 Jan 2025 15:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA491662EF;
+	Mon,  6 Jan 2025 15:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jj4+KwwW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aX+4pLdq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1112F7082A;
-	Mon,  6 Jan 2025 15:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7498B1DED4C;
+	Mon,  6 Jan 2025 15:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177936; cv=none; b=ALX0eGS7XIWnS4OqWKPQZZcF5x+dl9AeE05v3J2YCM9j0SATry/mzAVFXaFx8StOE8/nURT8osaafU9YRP+XGYHFNLE448pYCYZxCyfWXXF0wQheGJ/8t7nPYcHDNxz4ZuhLK1P4AMXcAhzJoH1IKX3l7yXD4YblZoZMLJZ8mys=
+	t=1736177520; cv=none; b=F51S6XU1nR5K1EEW/oSdhEDCdc4Whp9jmGEeUWM8Vc8AKn/RULGfuzlMcJ0bJ+08yWIpYdsyqqFDhR6qk/v13s5nVEuV8Yvwgd87F4zO+y5C7yiZoGJXi0BlCjGtQckXw4o8dwEEdjHof89sdSVrA4g90JlTzEpNeBvfi27vjaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177936; c=relaxed/simple;
-	bh=JXoQy2ZkmnML1vQr2ytdHEAybVRptx7lCiCxPZfZDiA=;
+	s=arc-20240116; t=1736177520; c=relaxed/simple;
+	bh=ZGXkf6IDVK4Ghgd78ytghRtP5lZF+lftA1O2e+Udot4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RrQigJ02F5QU+enVup10V4yfYJXStzLjr1+k+7LXbTC6rSG5FvE24YsuL8qb3siXBH+GQOo3sq8jhaIIiL+R7W8VAYNtSqk4s8xj+hYPMZXIEU3nn1zFDeDdvFwIGs7Vks/KMCWQX92aveJZOkmcJHpB+bDGR4LNHJKwQhgXeeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jj4+KwwW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88166C4CED2;
-	Mon,  6 Jan 2025 15:38:55 +0000 (UTC)
+	 MIME-Version; b=J8wtRUT3+wGkaxMTHR7WrX6SJO3l3gfx8WT6/3X1RbWr96z1zQwm5dQn2pxqU+Xy5rTmSwxn8/shzT95UCmH6kVCdrcMVltnIr8cLzR863irQOQHeOL7RP0B5VECrcEKmR4Ez7sP0zbGibtMv9GA+o2j6jEI+0rNRAA5j/y2qKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aX+4pLdq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99AC6C4CEE3;
+	Mon,  6 Jan 2025 15:31:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177935;
-	bh=JXoQy2ZkmnML1vQr2ytdHEAybVRptx7lCiCxPZfZDiA=;
+	s=korg; t=1736177519;
+	bh=ZGXkf6IDVK4Ghgd78ytghRtP5lZF+lftA1O2e+Udot4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jj4+KwwWlg2FXTQ2/l208snq54+c2LMYwOerQ9DEcoRroPXQoNuEax5U/QivTvskb
-	 JnF+BLBALXM+YhyjMZdS7EnCami+ZwgZQ9u9Qew2DXMT2Bi36r63B/fBUAXNBnvVJ+
-	 ZxHxyZ3yyfEvAh73BBpnuUZiCw3Fx4cx+ayW+4rU=
+	b=aX+4pLdqxPNZGLWT+2w58sX7IcUebZ4F2TT1Lgg14XYXm9135qSqDDM9KHZ0aIe2l
+	 GZ04QVRngTNr/ZhdgeWsGGC0sDJ32lzJaZbbRLQqMwC76mxv8kRTa0au/7JtMVy1TN
+	 9zV1dinVU4AHIys+Agz3RBYeZcVlMgEWodzbi6y0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maksim Kiselev <bigunclemax@gmail.com>,
-	Xi Ruoyao <xry111@xry111.site>,
-	Drew Fustini <dfustini@tenstorrent.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	David Disseldorp <ddiss@suse.de>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 106/156] clk: thead: Fix TH1520 emmc and shdci clock rate
+Subject: [PATCH 6.6 188/222] ksmbd: set ATTR_CTIME flags when setting mtime
 Date: Mon,  6 Jan 2025 16:16:32 +0100
-Message-ID: <20250106151145.720137573@linuxfoundation.org>
+Message-ID: <20250106151157.880138098@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maksim Kiselev <bigunclemax@gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit f4bf0b909a6bf64a2220a42a7c8b8c2ee1b77b89 ]
+[ Upstream commit 21e46a79bbe6c4e1aa73b3ed998130f2ff07b128 ]
 
-In accordance with LicheePi 4A BSP the clock that comes to emmc/sdhci
-is 198Mhz which is got through frequency division of source clock
-VIDEO PLL by 4 [1].
+David reported that the new warning from setattr_copy_mgtime is coming
+like the following.
 
-But now the AP_SUBSYS driver sets the CLK EMMC SDIO to the same
-frequency as the VIDEO PLL, equal to 792 MHz. This causes emmc/sdhci
-to work 4 times slower.
+[  113.215316] ------------[ cut here ]------------
+[  113.215974] WARNING: CPU: 1 PID: 31 at fs/attr.c:300 setattr_copy+0x1ee/0x200
+[  113.219192] CPU: 1 UID: 0 PID: 31 Comm: kworker/1:1 Not tainted 6.13.0-rc1+ #234
+[  113.220127] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
+[  113.221530] Workqueue: ksmbd-io handle_ksmbd_work [ksmbd]
+[  113.222220] RIP: 0010:setattr_copy+0x1ee/0x200
+[  113.222833] Code: 24 28 49 8b 44 24 30 48 89 53 58 89 43 6c 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 48 89 df e8 77 d6 ff ff e9 cd fe ff ff <0f> 0b e9 be fe ff ff 66 0
+[  113.225110] RSP: 0018:ffffaf218010fb68 EFLAGS: 00010202
+[  113.225765] RAX: 0000000000000120 RBX: ffffa446815f8568 RCX: 0000000000000003
+[  113.226667] RDX: ffffaf218010fd38 RSI: ffffa446815f8568 RDI: ffffffff94eb03a0
+[  113.227531] RBP: ffffaf218010fb90 R08: 0000001a251e217d R09: 00000000675259fa
+[  113.228426] R10: 0000000002ba8a6d R11: ffffa4468196c7a8 R12: ffffaf218010fd38
+[  113.229304] R13: 0000000000000120 R14: ffffffff94eb03a0 R15: 0000000000000000
+[  113.230210] FS:  0000000000000000(0000) GS:ffffa44739d00000(0000) knlGS:0000000000000000
+[  113.231215] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  113.232055] CR2: 00007efe0053d27e CR3: 000000000331a000 CR4: 00000000000006b0
+[  113.232926] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[  113.233812] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[  113.234797] Call Trace:
+[  113.235116]  <TASK>
+[  113.235393]  ? __warn+0x73/0xd0
+[  113.235802]  ? setattr_copy+0x1ee/0x200
+[  113.236299]  ? report_bug+0xf3/0x1e0
+[  113.236757]  ? handle_bug+0x4d/0x90
+[  113.237202]  ? exc_invalid_op+0x13/0x60
+[  113.237689]  ? asm_exc_invalid_op+0x16/0x20
+[  113.238185]  ? setattr_copy+0x1ee/0x200
+[  113.238692]  btrfs_setattr+0x80/0x820 [btrfs]
+[  113.239285]  ? get_stack_info_noinstr+0x12/0xf0
+[  113.239857]  ? __module_address+0x22/0xa0
+[  113.240368]  ? handle_ksmbd_work+0x6e/0x460 [ksmbd]
+[  113.240993]  ? __module_text_address+0x9/0x50
+[  113.241545]  ? __module_address+0x22/0xa0
+[  113.242033]  ? unwind_next_frame+0x10e/0x920
+[  113.242600]  ? __pfx_stack_trace_consume_entry+0x10/0x10
+[  113.243268]  notify_change+0x2c2/0x4e0
+[  113.243746]  ? stack_depot_save_flags+0x27/0x730
+[  113.244339]  ? set_file_basic_info+0x130/0x2b0 [ksmbd]
+[  113.244993]  set_file_basic_info+0x130/0x2b0 [ksmbd]
+[  113.245613]  ? process_scheduled_works+0xbe/0x310
+[  113.246181]  ? worker_thread+0x100/0x240
+[  113.246696]  ? kthread+0xc8/0x100
+[  113.247126]  ? ret_from_fork+0x2b/0x40
+[  113.247606]  ? ret_from_fork_asm+0x1a/0x30
+[  113.248132]  smb2_set_info+0x63f/0xa70 [ksmbd]
 
-Let's fix this issue by adding fixed factor clock that divides
-VIDEO PLL by 4 for emmc/sdhci.
+ksmbd is trying to set the atime and mtime via notify_change without also
+setting the ctime. so This patch add ATTR_CTIME flags when setting mtime
+to avoid a warning.
 
-Link: https://github.com/revyos/thead-kernel/blob/7563179071a314f41cdcdbfd8cf6e101e73707f3/drivers/clk/thead/clk-light-fm.c#L454
-
-Fixes: ae81b69fd2b1 ("clk: thead: Add support for T-Head TH1520 AP_SUBSYS clocks")
-Signed-off-by: Maksim Kiselev <bigunclemax@gmail.com>
-Link: https://lore.kernel.org/r/20241210083029.92620-1-bigunclemax@gmail.com
-Tested-by: Xi Ruoyao <xry111@xry111.site>
-Reviewed-by: Drew Fustini <dfustini@tenstorrent.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Reported-by: David Disseldorp <ddiss@suse.de>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/thead/clk-th1520-ap.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/clk/thead/clk-th1520-ap.c b/drivers/clk/thead/clk-th1520-ap.c
-index 17e32ae08720..1015fab95251 100644
---- a/drivers/clk/thead/clk-th1520-ap.c
-+++ b/drivers/clk/thead/clk-th1520-ap.c
-@@ -779,6 +779,13 @@ static struct ccu_div dpu1_clk = {
- 	},
- };
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 7216e2cc498b..2884ebdc0eda 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -6017,15 +6017,13 @@ static int set_file_basic_info(struct ksmbd_file *fp,
+ 		attrs.ia_valid |= (ATTR_ATIME | ATTR_ATIME_SET);
+ 	}
  
-+static CLK_FIXED_FACTOR_HW(emmc_sdio_ref_clk, "emmc-sdio-ref",
-+			   &video_pll_clk.common.hw, 4, 1, 0);
-+
-+static const struct clk_parent_data emmc_sdio_ref_clk_pd[] = {
-+	{ .hw = &emmc_sdio_ref_clk.hw },
-+};
-+
- static CCU_GATE(CLK_BROM, brom_clk, "brom", ahb2_cpusys_hclk_pd, 0x100, BIT(4), 0);
- static CCU_GATE(CLK_BMU, bmu_clk, "bmu", axi4_cpusys2_aclk_pd, 0x100, BIT(5), 0);
- static CCU_GATE(CLK_AON2CPU_A2X, aon2cpu_a2x_clk, "aon2cpu-a2x", axi4_cpusys2_aclk_pd,
-@@ -798,7 +805,7 @@ static CCU_GATE(CLK_PERISYS_APB4_HCLK, perisys_apb4_hclk, "perisys-apb4-hclk", p
- 		0x150, BIT(12), 0);
- static CCU_GATE(CLK_NPU_AXI, npu_axi_clk, "npu-axi", axi_aclk_pd, 0x1c8, BIT(5), 0);
- static CCU_GATE(CLK_CPU2VP, cpu2vp_clk, "cpu2vp", axi_aclk_pd, 0x1e0, BIT(13), 0);
--static CCU_GATE(CLK_EMMC_SDIO, emmc_sdio_clk, "emmc-sdio", video_pll_clk_pd, 0x204, BIT(30), 0);
-+static CCU_GATE(CLK_EMMC_SDIO, emmc_sdio_clk, "emmc-sdio", emmc_sdio_ref_clk_pd, 0x204, BIT(30), 0);
- static CCU_GATE(CLK_GMAC1, gmac1_clk, "gmac1", gmac_pll_clk_pd, 0x204, BIT(26), 0);
- static CCU_GATE(CLK_PADCTRL1, padctrl1_clk, "padctrl1", perisys_apb_pclk_pd, 0x204, BIT(24), 0);
- static CCU_GATE(CLK_DSMART, dsmart_clk, "dsmart", perisys_apb_pclk_pd, 0x204, BIT(23), 0);
-@@ -1059,6 +1066,10 @@ static int th1520_clk_probe(struct platform_device *pdev)
- 		return ret;
- 	priv->hws[CLK_PLL_GMAC_100M] = &gmac_pll_clk_100m.hw;
+-	attrs.ia_valid |= ATTR_CTIME;
+ 	if (file_info->ChangeTime)
+-		attrs.ia_ctime = ksmbd_NTtimeToUnix(file_info->ChangeTime);
+-	else
+-		attrs.ia_ctime = inode_get_ctime(inode);
++		inode_set_ctime_to_ts(inode,
++				ksmbd_NTtimeToUnix(file_info->ChangeTime));
  
-+	ret = devm_clk_hw_register(dev, &emmc_sdio_ref_clk.hw);
-+	if (ret)
-+		return ret;
-+
- 	ret = devm_of_clk_add_hw_provider(dev, of_clk_hw_onecell_get, priv);
- 	if (ret)
- 		return ret;
+ 	if (file_info->LastWriteTime) {
+ 		attrs.ia_mtime = ksmbd_NTtimeToUnix(file_info->LastWriteTime);
+-		attrs.ia_valid |= (ATTR_MTIME | ATTR_MTIME_SET);
++		attrs.ia_valid |= (ATTR_MTIME | ATTR_MTIME_SET | ATTR_CTIME);
+ 	}
+ 
+ 	if (file_info->Attributes) {
+@@ -6067,8 +6065,6 @@ static int set_file_basic_info(struct ksmbd_file *fp,
+ 			return -EACCES;
+ 
+ 		inode_lock(inode);
+-		inode_set_ctime_to_ts(inode, attrs.ia_ctime);
+-		attrs.ia_valid &= ~ATTR_CTIME;
+ 		rc = notify_change(idmap, dentry, &attrs, NULL);
+ 		inode_unlock(inode);
+ 	}
 -- 
 2.39.5
 
