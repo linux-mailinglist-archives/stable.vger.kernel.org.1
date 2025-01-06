@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-107080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E017EA02A29
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D3B6A02C27
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:51:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B85BF1881586
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B447318872BE
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853241474A0;
-	Mon,  6 Jan 2025 15:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5BB1DED4A;
+	Mon,  6 Jan 2025 15:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTmjkYOY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2irU+UqG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430A9136E09;
-	Mon,  6 Jan 2025 15:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4181014A095;
+	Mon,  6 Jan 2025 15:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177391; cv=none; b=gESXO+cXysk8YRlN+KWIGLIge1RTW+eDgTP+oILPnfvw3hzTcT4bkui45x71QOHCAGxAsLCdWO9wN02/4qsFUxStMIRnm8GacStTgQe2+BdJisJIMuPxvRt2O5eNakzapX5TI1n4PNtPuDyZ4t2+3wCCIDcinCxWQ0zXgyWfq+M=
+	t=1736178637; cv=none; b=fWrC3rIzS+KjAWXQ9WYImUDZohm5iqX0m67seXx9j+FVTfwHp1ULTDVS3bzD1W6zk6fNjx+hZwYX4iw0GOuQIz6EylrgV39qnC7Lu9CoaNQIa7KvoxKC7p48uroT8MlTIILH+6jaCwlrbZ5HZq+xaVfK32YYPPNNc/Q1kq1a13E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177391; c=relaxed/simple;
-	bh=U9lIpYmxppOnB499+gb+NXRqrPZY/XcR5oDiwuZw6e4=;
+	s=arc-20240116; t=1736178637; c=relaxed/simple;
+	bh=49EO99zNfYJXf6ESRBqydqgQARDH76jEbBALHkYxndg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e40WtnHdJwJd+IaQP4sr4dT83BZDDhJx3zZWzcHMrm0Ax5O2wPheEkz39LfGx1u9I5k0rBY9qHHKZO+iYBXLYRTogSGauhR/0pW3d+efauUrdGPdrOT++PHIh01IcdTERdQWjq6PIYbMKr0IvKC8BzP5X5PN3ffStwoBnoydijA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hTmjkYOY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0944C4CED2;
-	Mon,  6 Jan 2025 15:29:50 +0000 (UTC)
+	 MIME-Version; b=XIjgww9TXOKLkzKnQu2lzjf6gfqwwVEevQIUtv+z9Dow5zbQKXNPPYz+LEk8VFVhmEbH7XVNazbrc/rJNcCn+RCxo6+PLeOEtFAoqxkWbGAPxk7Hl9jxxkHWucHwh15Ys2n/2GC9PA6r1NgxAQxy8KX0jR8tjViQKphe2iKqldk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2irU+UqG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91CE5C4CEDF;
+	Mon,  6 Jan 2025 15:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177391;
-	bh=U9lIpYmxppOnB499+gb+NXRqrPZY/XcR5oDiwuZw6e4=;
+	s=korg; t=1736178637;
+	bh=49EO99zNfYJXf6ESRBqydqgQARDH76jEbBALHkYxndg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hTmjkYOY5eD+UxMda0zfTVORJVWV09vgYjPvYbdnl+1VcXj10ubBpOTAIvhZzToS2
-	 hA9zk475wOb8wM84QZ85Paq0woYdWeHkq0TOpbcjpNPb4FUED86Tk+lL7I+JTQx7ON
-	 MTwsdZYMXQksxcUP2DRlArZ0NSTdXWG6mY9Ze0Sk=
+	b=2irU+UqGU5/DNwQbNo+HFynOL4tpqJ/DoI71eM+m/FdLXlkdrSHEkmjk9qsOWMnWk
+	 Oq46blCB+lkAVjQnV2CSP0frcI7F3jQym5WLBdsDbCwdlmsxe0RydUIUt8BiBKUjCY
+	 Wf0E4854rIiS0oBm8A5VoVPm7fML6gYLQOlWU3dQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 148/222] RDMA/hns: Fix warning storm caused by invalid input in IO path
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.15 044/168] KVM: x86: Play nice with protected guests in complete_hypercall_exit()
 Date: Mon,  6 Jan 2025 16:15:52 +0100
-Message-ID: <20250106151156.368175796@linuxfoundation.org>
+Message-ID: <20250106151140.127863316@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +65,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit fa5c4ba8cdbfd2c2d6422e001311c8213283ebbf ]
+commit 9b42d1e8e4fe9dc631162c04caa69b0d1860b0f0 upstream.
 
-WARN_ON() is called in the IO path. And it could lead to a warning
-storm. Use WARN_ON_ONCE() instead of WARN_ON().
+Use is_64_bit_hypercall() instead of is_64_bit_mode() to detect a 64-bit
+hypercall when completing said hypercall.  For guests with protected state,
+e.g. SEV-ES and SEV-SNP, KVM must assume the hypercall was made in 64-bit
+mode as the vCPU state needed to detect 64-bit mode is unavailable.
 
-Fixes: 12542f1de179 ("RDMA/hns: Refactor process about opcode in post_send()")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20241220055249.146943-4-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Hacking the sev_smoke_test selftest to generate a KVM_HC_MAP_GPA_RANGE
+hypercall via VMGEXIT trips the WARN:
+
+  ------------[ cut here ]------------
+  WARNING: CPU: 273 PID: 326626 at arch/x86/kvm/x86.h:180 complete_hypercall_exit+0x44/0xe0 [kvm]
+  Modules linked in: kvm_amd kvm ... [last unloaded: kvm]
+  CPU: 273 UID: 0 PID: 326626 Comm: sev_smoke_test Not tainted 6.12.0-smp--392e932fa0f3-feat #470
+  Hardware name: Google Astoria/astoria, BIOS 0.20240617.0-0 06/17/2024
+  RIP: 0010:complete_hypercall_exit+0x44/0xe0 [kvm]
+  Call Trace:
+   <TASK>
+   kvm_arch_vcpu_ioctl_run+0x2400/0x2720 [kvm]
+   kvm_vcpu_ioctl+0x54f/0x630 [kvm]
+   __se_sys_ioctl+0x6b/0xc0
+   do_syscall_64+0x83/0x160
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
+
+Fixes: b5aead0064f3 ("KVM: x86: Assume a 64-bit hypercall for guests with protected state")
+Cc: stable@vger.kernel.org
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Link: https://lore.kernel.org/r/20241128004344.4072099-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kvm/x86.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index aed9c403f3be..c9c9be122471 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -471,7 +471,7 @@ static inline int set_ud_wqe(struct hns_roce_qp *qp,
- 	valid_num_sge = calc_wr_sge_num(wr, &msg_len);
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8946,7 +8946,7 @@ static int complete_hypercall_exit(struc
+ {
+ 	u64 ret = vcpu->run->hypercall.ret;
  
- 	ret = set_ud_opcode(ud_sq_wqe, wr);
--	if (WARN_ON(ret))
-+	if (WARN_ON_ONCE(ret))
- 		return ret;
- 
- 	ud_sq_wqe->msg_len = cpu_to_le32(msg_len);
-@@ -575,7 +575,7 @@ static inline int set_rc_wqe(struct hns_roce_qp *qp,
- 	rc_sq_wqe->msg_len = cpu_to_le32(msg_len);
- 
- 	ret = set_rc_opcode(hr_dev, rc_sq_wqe, wr);
--	if (WARN_ON(ret))
-+	if (WARN_ON_ONCE(ret))
- 		return ret;
- 
- 	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_SO,
--- 
-2.39.5
-
+-	if (!is_64_bit_mode(vcpu))
++	if (!is_64_bit_hypercall(vcpu))
+ 		ret = (u32)ret;
+ 	kvm_rax_write(vcpu, ret);
+ 	++vcpu->stat.hypercalls;
 
 
 
