@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-106861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3015A028FD
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:18:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D633FA02AB4
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B415C161B67
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:18:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CD9C18814E0
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:36:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADCC18635E;
-	Mon,  6 Jan 2025 15:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10967143C7E;
+	Mon,  6 Jan 2025 15:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afNOJP2d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTyM4hcz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666B97081C;
-	Mon,  6 Jan 2025 15:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06AA44C7C;
+	Mon,  6 Jan 2025 15:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176727; cv=none; b=rSRJy+Nkm4EuDJX4Z+tbMMo/l6Oa90n0yJ7Rotuht0/QprCFbtpW+ZiF36s+Nq4PEAX3TjakGJg2LOvBbR8ipRIShc1NwgDARjy1lorgthjmsE6+HqCbypea+khDNIW102G/nz2jFeDfjmRr/dIIHM387FzauHhDSmQEQzi8IuM=
+	t=1736177789; cv=none; b=gd+bmJdkr/4YWqLRqzk7kpgElyvgBqn4hWUAA4xrOYXBtglcsjGdDN1vq5t0LP+EX72p8I/yN/mtlw29m74KvXYAJZaUuOn7PDCLnFQ0NqoiCKF3Z85bNGQF0xCCzfzwJ72ojQCuqgaVD3mgKVEl8rQx/gaAhhVxLDytZE2h3jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176727; c=relaxed/simple;
-	bh=PPsHDC9HttrLUJy5kLrEtwgbo6RLMdZa4a72aghkO6w=;
+	s=arc-20240116; t=1736177789; c=relaxed/simple;
+	bh=1abBKTiJGk33eazEzHS56DxDbyvdRkycRwts5caXAa0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MYF0zpQQFF/zhFuRt0O9JfNn85EtbMVEjmXi+wP9QhZ3+2wi7+NzShQyV1L5iLXQ3r9hY8A6XJ5jUMjVhll/aMf25dg3XtotXM4AAtUV0rBWBZeiUljx/C1ldccqP2nvatWak37rtt6A+B5d0+s1nzBl74QDCQIA9AlKikpAM/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afNOJP2d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C05FC4CED2;
-	Mon,  6 Jan 2025 15:18:46 +0000 (UTC)
+	 MIME-Version; b=HpTnnNCxtEO7xhrjl7pmeKmOG8JOpy3ugMQIwcg2F25eYuTRrGhq22/XsIhFPJ4ZWGtIN8/NeKL9dmd1zYupSDeO6CDLOJOG7i5sNKi6gav4LI5ZuJCFNWwugEqQ2J3lmZywABOz2wqEikT8gxKcFSnQM2J+6o/z8Myz/8V2+Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTyM4hcz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AD59C4CED2;
+	Mon,  6 Jan 2025 15:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176726;
-	bh=PPsHDC9HttrLUJy5kLrEtwgbo6RLMdZa4a72aghkO6w=;
+	s=korg; t=1736177789;
+	bh=1abBKTiJGk33eazEzHS56DxDbyvdRkycRwts5caXAa0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=afNOJP2dX6NGam0n2LQuvAWwxT7Q0rfq7Ife5aD+x5ZHkD+zxT0+qIvh8Cy/tpkXg
-	 6B5COrawGNOnVPrG0GgCzS37RgqtCK83+oPjcAfqzsuy+di9fKOKlp6ayX8LDbSZIv
-	 ucIALgKlG6pAjZuqGQbIHJt+DYyQ5L+HCkYJ9luQ=
+	b=LTyM4hczPR7z9AyzaugwkfDdCTI9ViRAAB9R40Qm0SyRaLLrhsa4JxyiFi53/rS0V
+	 YCDI5cedqNN/e9tZjzH4Nos2AutQpmDpydRAV2dFK2FmI1BHyXESyEuQhT0MNGKtMG
+	 cujFhnTLuOv8wBaaYbrgx2eU0QPv5JQVNyRB8Uh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Bloch <mbloch@nvidia.com>,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Antonio Pastor <antonio.pastor@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 12/81] RDMA/mlx5: Enforce same type port association for multiport RoCE
+Subject: [PATCH 6.12 058/156] net: llc: reset skb->transport_header
 Date: Mon,  6 Jan 2025 16:15:44 +0100
-Message-ID: <20250106151129.902292234@linuxfoundation.org>
+Message-ID: <20250106151143.922655543@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Antonio Pastor <antonio.pastor@gmail.com>
 
-[ Upstream commit e05feab22fd7dabcd6d272c4e2401ec1acdfdb9b ]
+[ Upstream commit a024e377efed31ecfb39210bed562932321345b3 ]
 
-Different core device types such as PFs and VFs shouldn't be affiliated
-together since they have different capabilities, fix that by enforcing
-type check before doing the affiliation.
+802.2+LLC+SNAP frames received by napi_complete_done with GRO and DSA
+have skb->transport_header set two bytes short, or pointing 2 bytes
+before network_header & skb->data. As snap_rcv expects transport_header
+to point to SNAP header (OID:PID) after LLC processing advances offset
+over LLC header (llc_rcv & llc_fixup_skb), code doesn't find a match
+and packet is dropped.
 
-Fixes: 32f69e4be269 ("{net, IB}/mlx5: Manage port association for multiport RoCE")
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Link: https://patch.msgid.link/88699500f690dff1c1852c1ddb71f8a1cc8b956e.1733233480.git.leonro@nvidia.com
-Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Between napi_complete_done and snap_rcv, transport_header is not used
+until __netif_receive_skb_core, where originally it was being reset.
+Commit fda55eca5a33 ("net: introduce skb_transport_header_was_set()")
+only does so if not set, on the assumption the value was set correctly
+by GRO (and also on assumption that "network stacks usually reset the
+transport header anyway"). Afterwards it is moved forward by
+llc_fixup_skb.
+
+Locally generated traffic shows up at __netif_receive_skb_core with no
+transport_header set and is processed without issue. On a setup with
+GRO but no DSA, transport_header and network_header are both set to
+point to skb->data which is also correct.
+
+As issue is LLC specific, to avoid impacting non-LLC traffic, and to
+follow up on original assumption made on previous code change,
+llc_fixup_skb to reset the offset after skb pull. llc_fixup_skb
+assumes the LLC header is at skb->data, and by definition SNAP header
+immediately follows.
+
+Fixes: fda55eca5a33 ("net: introduce skb_transport_header_was_set()")
+Signed-off-by: Antonio Pastor <antonio.pastor@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241225010723.2830290-1-antonio.pastor@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/main.c | 6 ++++--
- include/linux/mlx5/driver.h       | 6 ++++++
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ net/llc/llc_input.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
-index bce31e28eb30..45a414e8d35f 100644
---- a/drivers/infiniband/hw/mlx5/main.c
-+++ b/drivers/infiniband/hw/mlx5/main.c
-@@ -3265,7 +3265,8 @@ static int mlx5_ib_init_multiport_master(struct mlx5_ib_dev *dev)
- 		list_for_each_entry(mpi, &mlx5_ib_unaffiliated_port_list,
- 				    list) {
- 			if (dev->sys_image_guid == mpi->sys_image_guid &&
--			    (mlx5_core_native_port_num(mpi->mdev) - 1) == i) {
-+			    (mlx5_core_native_port_num(mpi->mdev) - 1) == i &&
-+			    mlx5_core_same_coredev_type(dev->mdev, mpi->mdev)) {
- 				bound = mlx5_ib_bind_slave_port(dev, mpi);
- 			}
+diff --git a/net/llc/llc_input.c b/net/llc/llc_input.c
+index 51bccfb00a9c..61b0159b2fbe 100644
+--- a/net/llc/llc_input.c
++++ b/net/llc/llc_input.c
+@@ -124,8 +124,8 @@ static inline int llc_fixup_skb(struct sk_buff *skb)
+ 	if (unlikely(!pskb_may_pull(skb, llc_len)))
+ 		return 0;
  
-@@ -4280,7 +4281,8 @@ static int mlx5r_mp_probe(struct auxiliary_device *adev,
- 
- 	mutex_lock(&mlx5_ib_multiport_mutex);
- 	list_for_each_entry(dev, &mlx5_ib_dev_list, ib_dev_list) {
--		if (dev->sys_image_guid == mpi->sys_image_guid)
-+		if (dev->sys_image_guid == mpi->sys_image_guid &&
-+		    mlx5_core_same_coredev_type(dev->mdev, mpi->mdev))
- 			bound = mlx5_ib_bind_slave_port(dev, mpi);
- 
- 		if (bound) {
-diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
-index 1cae12185cf0..2588ddd3512b 100644
---- a/include/linux/mlx5/driver.h
-+++ b/include/linux/mlx5/driver.h
-@@ -1212,6 +1212,12 @@ static inline bool mlx5_core_is_vf(const struct mlx5_core_dev *dev)
- 	return dev->coredev_type == MLX5_COREDEV_VF;
- }
- 
-+static inline bool mlx5_core_same_coredev_type(const struct mlx5_core_dev *dev1,
-+					       const struct mlx5_core_dev *dev2)
-+{
-+	return dev1->coredev_type == dev2->coredev_type;
-+}
-+
- static inline bool mlx5_core_is_ecpf(const struct mlx5_core_dev *dev)
- {
- 	return dev->caps.embedded_cpu;
+-	skb->transport_header += llc_len;
+ 	skb_pull(skb, llc_len);
++	skb_reset_transport_header(skb);
+ 	if (skb->protocol == htons(ETH_P_802_2)) {
+ 		__be16 pdulen;
+ 		s32 data_size;
 -- 
 2.39.5
 
