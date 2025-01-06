@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-107576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4494CA02C8E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E40B1A02B2F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 219CB164ACE
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 631F81885403
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:41:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF60EDF71;
-	Mon,  6 Jan 2025 15:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21EAF18B46A;
+	Mon,  6 Jan 2025 15:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgKoystD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDRA7I3P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1B38634A;
-	Mon,  6 Jan 2025 15:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9902D156C5E;
+	Mon,  6 Jan 2025 15:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178883; cv=none; b=RR+tcVdH/VOUsiwZPs2hwCePMtpNSxELND4zwskrTNGvF7K7UDv7/1aUoMx+SkhDOFVZLgwzUbDtzdpEkR8KBG8Z5/dBdKc1k1MOEMwbHV6MsdSpDsuhPJ/lDABKp6GDNTqfe9b2AN3Jn4zXg4f44tQG+RUqorbw8gxM6yVLcAE=
+	t=1736178057; cv=none; b=JNRg6htqfZBNdgd1Str1EjIDHG5Us25+gKQ/tz0zJYJbJqC/xtPomSomymtaKje7dSFlnmuiLo/x6dGQPOOVlCa0xTxdbBK4yJr54afIuJRstSa5WRglAg/uclJNVlc0/bTdfotV9/aQDu3AWuxKLvMnPa9vBls8BLBVQTGIJLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178883; c=relaxed/simple;
-	bh=2y3J9U46AztJw8A3bsNLRxBJda8ONocPQzw8FeOCxBc=;
+	s=arc-20240116; t=1736178057; c=relaxed/simple;
+	bh=tWfOdCm46Ku3flze02GJx8ZWvB6lwLrcKOlMs0GXe7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QHGzVvtqKpe1AInkW20dkneUNAF3LrMhI8n3kgZ1XNMiVk+aNO4ZhTeI98JBShIK/rmuklUhaISshEfN6nNYRGM1BwbmevyTDJ4NDcobdMb2bZ+/WhsPOO0GfpEGbcY25LnGWuR02OJyffY++EmwbHVV+XLFv6KBeu5TAaEw7dU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgKoystD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6582C4CED2;
-	Mon,  6 Jan 2025 15:54:42 +0000 (UTC)
+	 MIME-Version; b=kzkSbuwSSazbJUYPq2bdYoBZdsKAa9s7SeuJC9TRgaFTZnb+5A3iylPXH/M9ntCQaWdN+SKB+0b0zPCaBDqS2a8OQCn31CQWJelXC36MXegWCP5PEv3H5KWwttb0T0uNGPd0CT4cnDbH1/pVDY0BLNrJ2ixxQOpjhFm6Z0rKTmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDRA7I3P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21DA0C4CED2;
+	Mon,  6 Jan 2025 15:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178883;
-	bh=2y3J9U46AztJw8A3bsNLRxBJda8ONocPQzw8FeOCxBc=;
+	s=korg; t=1736178057;
+	bh=tWfOdCm46Ku3flze02GJx8ZWvB6lwLrcKOlMs0GXe7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SgKoystDqYRGIIDubKM6YdfB55KKrHkMkIK4ssr53zc047qIZFzijrTsBNxnQIfiv
-	 KAP2IZMelSoJ7p3tuYV4B496irhstFIqT3M5j+Gnog5iWOGDE6NRp1Bq0WIY/KQHCQ
-	 qqe2+91D+2348NADcT6n9+GUZyhomM/AOD2wRu3M=
+	b=gDRA7I3PkGyhQYo71Cx5btkibz+iF0JgoC4jbQeHcGIcVwRUHx7VeGjWZcMUOZgRN
+	 hjAQDxVyqa3zudM7FHp/L4Nrw0HcxRU4ru4uDOMJa9b6c3WhuapAXGgCdwiFZBPI7V
+	 GDdbiZY7NpJOkf63QacKGtyj7ojhY0KXM+NUS7fA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunsheng Lin <linyunsheng@huawei.com>,
-	Haoyue Xu <xuhaoyue1@hisilicon.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 124/168] RDMA/hns: Remove redundant bt_level for hem_list_alloc_item()
+	Joshua Washington <joshwash@google.com>,
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Shailend Chand <shailend@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.12 146/156] gve: fix XDP allocation path in edge cases
 Date: Mon,  6 Jan 2025 16:17:12 +0100
-Message-ID: <20250106151143.130262591@linuxfoundation.org>
+Message-ID: <20250106151147.227373805@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +64,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunsheng Lin <linyunsheng@huawei.com>
+From: Joshua Washington <joshwash@google.com>
 
-[ Upstream commit be1eeb667eb748391b1c8158678fe4d892187793 ]
+commit de63ac44a527b2c5067551dbd70d939fe151325a upstream.
 
-The 'bt_level' parameter is not used in hem_list_alloc_item(),
-so remove it.
+This patch fixes a number of consistency issues in the queue allocation
+path related to XDP.
 
-Link: https://lore.kernel.org/r/20220922123315.3732205-6-xuhaoyue1@hisilicon.com
-Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
-Signed-off-by: Haoyue Xu <xuhaoyue1@hisilicon.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Stable-dep-of: 8673a6c2d9e4 ("RDMA/hns: Fix mapping error of zero-hop WQE buffer")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As it stands, the number of allocated XDP queues changes in three
+different scenarios.
+1) Adding an XDP program while the interface is up via
+   gve_add_xdp_queues
+2) Removing an XDP program while the interface is up via
+   gve_remove_xdp_queues
+3) After queues have been allocated and the old queue memory has been
+   removed in gve_queues_start.
+
+However, the requirement for the interface to be up for
+gve_(add|remove)_xdp_queues to be called, in conjunction with the fact
+that the number of queues stored in priv isn't updated until _after_ XDP
+queues have been allocated in the normal queue allocation path means
+that if an XDP program is added while the interface is down, XDP queues
+won't be added until the _second_ if_up, not the first.
+
+Given the expectation that the number of XDP queues is equal to the
+number of RX queues, scenario (3) has another problematic implication.
+When changing the number of queues while an XDP program is loaded, the
+number of XDP queues must be updated as well, as there is logic in the
+driver (gve_xdp_tx_queue_id()) which relies on every RX queue having a
+corresponding XDP TX queue. However, the number of XDP queues stored in
+priv would not be updated until _after_ a close/open leading to a
+mismatch in the number of XDP queues reported vs the number of XDP
+queues which actually exist after the queue count update completes.
+
+This patch remedies these issues by doing the following:
+1) The allocation config getter function is set up to retrieve the
+   _expected_ number of XDP queues to allocate instead of relying
+   on the value stored in `priv` which is only updated once the queues
+   have been allocated.
+2) When adjusting queues, XDP queues are adjusted to match the number of
+   RX queues when XDP is enabled. This only works in the case when
+   queues are live, so part (1) of the fix must still be available in
+   the case that queues are adjusted when there is an XDP program and
+   the interface is down.
+
+Fixes: 5f08cd3d6423 ("gve: Alloc before freeing when adjusting queues")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joshua Washington <joshwash@google.com>
+Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Reviewed-by: Shailend Chand <shailend@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hem.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/google/gve/gve_main.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.c b/drivers/infiniband/hw/hns/hns_roce_hem.c
-index ce2ace2c850d..09298f38be23 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hem.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hem.c
-@@ -988,7 +988,7 @@ struct hns_roce_hem_head {
- 
- static struct hns_roce_hem_item *
- hem_list_alloc_item(struct hns_roce_dev *hr_dev, int start, int end, int count,
--		    bool exist_bt, int bt_level)
-+		    bool exist_bt)
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -930,11 +930,13 @@ static void gve_init_sync_stats(struct g
+ static void gve_tx_get_curr_alloc_cfg(struct gve_priv *priv,
+ 				      struct gve_tx_alloc_rings_cfg *cfg)
  {
- 	struct hns_roce_hem_item *hem;
++	int num_xdp_queues = priv->xdp_prog ? priv->rx_cfg.num_queues : 0;
++
+ 	cfg->qcfg = &priv->tx_cfg;
+ 	cfg->raw_addressing = !gve_is_qpl(priv);
+ 	cfg->ring_size = priv->tx_desc_cnt;
+ 	cfg->start_idx = 0;
+-	cfg->num_rings = gve_num_tx_queues(priv);
++	cfg->num_rings = priv->tx_cfg.num_queues + num_xdp_queues;
+ 	cfg->tx = priv->tx;
+ }
  
-@@ -1199,7 +1199,7 @@ static int hem_list_alloc_mid_bt(struct hns_roce_dev *hr_dev,
- 		start_aligned = (distance / step) * step + r->offset;
- 		end = min_t(u64, start_aligned + step - 1, max_ofs);
- 		cur = hem_list_alloc_item(hr_dev, start_aligned, end, unit,
--					  true, level);
-+					  true);
- 		if (!cur) {
- 			ret = -ENOMEM;
- 			goto err_exit;
-@@ -1251,7 +1251,7 @@ alloc_root_hem(struct hns_roce_dev *hr_dev, int unit, int *max_ba_num,
- 	/* indicate to last region */
- 	r = &regions[region_cnt - 1];
- 	hem = hem_list_alloc_item(hr_dev, offset, r->offset + r->count - 1,
--				  ba_num, true, 0);
-+				  ba_num, true);
- 	if (!hem)
- 		return ERR_PTR(-ENOMEM);
+@@ -1843,6 +1845,7 @@ int gve_adjust_queues(struct gve_priv *p
+ {
+ 	struct gve_tx_alloc_rings_cfg tx_alloc_cfg = {0};
+ 	struct gve_rx_alloc_rings_cfg rx_alloc_cfg = {0};
++	int num_xdp_queues;
+ 	int err;
  
-@@ -1268,7 +1268,7 @@ static int alloc_fake_root_bt(struct hns_roce_dev *hr_dev, void *cpu_base,
- 	struct hns_roce_hem_item *hem;
+ 	gve_get_curr_alloc_cfgs(priv, &tx_alloc_cfg, &rx_alloc_cfg);
+@@ -1853,6 +1856,10 @@ int gve_adjust_queues(struct gve_priv *p
+ 	rx_alloc_cfg.qcfg = &new_rx_config;
+ 	tx_alloc_cfg.num_rings = new_tx_config.num_queues;
  
- 	hem = hem_list_alloc_item(hr_dev, r->offset, r->offset + r->count - 1,
--				  r->count, false, 0);
-+				  r->count, false);
- 	if (!hem)
- 		return -ENOMEM;
- 
--- 
-2.39.5
-
++	/* Add dedicated XDP TX queues if enabled. */
++	num_xdp_queues = priv->xdp_prog ? new_rx_config.num_queues : 0;
++	tx_alloc_cfg.num_rings += num_xdp_queues;
++
+ 	if (netif_running(priv->dev)) {
+ 		err = gve_adjust_config(priv, &tx_alloc_cfg, &rx_alloc_cfg);
+ 		return err;
 
 
 
