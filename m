@@ -1,185 +1,305 @@
-Return-Path: <stable+bounces-106853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81DF1A027C2
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:22:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07BBDA02867
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B43D3A2CEB
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 14:22:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53FB1161577
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 14:47:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 981761DB92A;
-	Mon,  6 Jan 2025 14:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47DBE86328;
+	Mon,  6 Jan 2025 14:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="vfrr8YWb"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aIMl9Iht"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0641DA100
-	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 14:21:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69611DED59
+	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 14:45:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736173292; cv=none; b=S45pZO7ojnoPgqn0K9vZ2sm+cxsCCnhra7Vi1GZtx+eWy158rId3zX4ldrBtjVii+GTRWya3dMUYAOhAbXSnw3vkDwWmKIxKSAUUzDEPRVJinEVQRperr+douLMEFKejLHMzhdctMyqOvXsStDlcz6QUG/3mMVZgJ16taSK+eO0=
+	t=1736174740; cv=none; b=PPMDyjbWtwNWLpUGO2aAPcvN9AdyT3wEDIlwpo1XrvLmxptYO229oz+J73KMONXJ+Upx/ApM9p3Rumg3glyVEiB7RkfsWIYHVE067yd+8Xh7UTDKn/anVG156tB3Io7mCpnGZ8bM+RfQZ2KjeA+AoMMRm+MBkVmQodUmgGulXOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736173292; c=relaxed/simple;
-	bh=bpcQ5iTdn6CB5361++j1CZnyzJyU1mFT39iHUXgNkQA=;
+	s=arc-20240116; t=1736174740; c=relaxed/simple;
+	bh=VKg+j5w7wrkL7MH5JEo2mPVnNHRy9ewZkjBYWhlqiCs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AZsrXz5kQJyfPN6YOEF9bljLyXSIKpJhBN3GgJ9j0yqNbyEQ35A6Bk5IsC9X3vajG78nasO/3bw4lbu1yJ9e6mewNBPu/G49vOBtPz0FMwMY9Zs2FXX1tf4vsE6aL03RB0wDYplNqrzY/yPz+rorTNXaxZtsLhxiiVu8+WWq2fI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=vfrr8YWb; arc=none smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id ACF9E400B0
-	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 14:21:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1736173287;
-	bh=qbDWqCuNcewT8f9DXqrmemzcQOt3kQMP17+0aEFRW6I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:In-Reply-To;
-	b=vfrr8YWbmWk1hqhFXXQrc6NT7d1c/kZSRPpxs/qQ3uAP+lD0dwgrbtDo9ttB/1hsP
-	 beGUlUCUZIp4uOPFiLX/BAbOvcRexAIHvYEHVVdXW3ViZMSJPLnfCQT5PGR9oOYInQ
-	 /z3rdApKMpuZq5admgEvAnr50VMrSF54zA2Y7wr4UX+hA9zANiokNqE0acfFIt62qA
-	 bjDDuV2UIiz+p2Gyppy6Kj/obsnd342iHdyeLILrm+9SlIt2ffGlvwDobpWq1C+VVX
-	 LQm7Tu4wBrcY4IKYS4ULbKovn4NHoBAkMxrwUl1yUzorU1m9mcgE0tWWcaotzXEK3f
-	 c17rtdWlqkSCA==
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2163c2f32fdso325910875ad.2
-        for <stable@vger.kernel.org>; Mon, 06 Jan 2025 06:21:27 -0800 (PST)
+	 Content-Type:Content-Disposition:In-Reply-To; b=OyA4B792qBsBbyiBdrSYAbo/tgQMJGJp4RkP94POqnKSF7OcYmeeY3ojVMQjPD9SJowXh959eku0CDoJABtCSasf3DguIUbZ95PM9VFOA7VVSj1s6oROUcrenuyu/hi91OnA2zZah3bW16dnmB9H5dJfYuxhPyXSF4w4erE2sq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aIMl9Iht; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736174736;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7OKi4mQUPHQzwet86Fodk/kjXwZzb1xN6oJud0vG8Zw=;
+	b=aIMl9Iht/nm4mZnmT2Dcbse54MbQe2CqfrlSdFt3bh871Oplis4U0aEFe7Q3ey+jlbPJBX
+	QPA4m7N8vh56sRX1zklf9NOQt/CROavqesIodcytDGIpWrGAOHPiMThJLyfiegSXBcDuxE
+	SxRrAQNHS7jZx4RqjYJxk1MjeB9yc48=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-90-88yJv6kENPqnzapV04h4-A-1; Mon, 06 Jan 2025 09:45:34 -0500
+X-MC-Unique: 88yJv6kENPqnzapV04h4-A-1
+X-Mimecast-MFC-AGG-ID: 88yJv6kENPqnzapV04h4-A
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-385f0829430so8959624f8f.1
+        for <stable@vger.kernel.org>; Mon, 06 Jan 2025 06:45:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736173286; x=1736778086;
+        d=1e100.net; s=20230601; t=1736174733; x=1736779533;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qbDWqCuNcewT8f9DXqrmemzcQOt3kQMP17+0aEFRW6I=;
-        b=g0bqD4iN0ze0NH1lct87n/0WN/6p8Z/wgwFvNScFQzgstdc870QLKNCI7lUMaz646M
-         YuYEzt41rpyvcm522QJYjCkC/CP09Zp6icC6wOb0UB6DFmJGyBGo07U/qHUyIReIbKtl
-         cdjXzm7+LUuLnl4auH0bYjTLFSCpxXZ6oIGaxny8ZuNcMXREJmCrS3jBcdZeoJk2ZW9Q
-         QWgqHYJEdE0Q0cS5lR25mGSFebxjJVImFTPNyzmzPYz52yCM4GaazABXEhdrMHnn4ELp
-         DkY73VibNTY7b/5xp7KXVlatvTTaj6qe3IDGWFufylwmnBLixcUlaQd0zsbDK8J2MvXQ
-         KC4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXMPw+F2dpcZ4KrdPR/+wN1z6JrGj2oFCDdn5c+YJZJ87vOGGDVkMSDVIjM2vY3jdc7ny52w2k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxidi45JPqNMpQWbP/Qeo/U2PcH3cdgEmH3YIRV2TeHiJ7qVAq8
-	AngciyopCwXyWVKN6SkbA74R+/nn2jE4aG2QtsXUYuuHNzrOgUxYdRT2sk36vqQbRwse4L3AuVy
-	/OiArNpJnz/+gJbpjAN7DnxaipR/KrU8wRFKyGMzJ7/4drcUjTCY8ccXJ4lp+l8ODT++FWg==
-X-Gm-Gg: ASbGnctDQt4UpxhfCA9tYfYz9f0Np0lWdUEuq/GBMRUxirAjSxdAxsRzVbsvFU9Te2h
-	LTsNFLh25u06OKwMikArvy3e54i5xfP0C/VnPGUBeGmxU4yZN9YUtYYl4xo2GUpoQ4laBHNvzhS
-	6J81gH36p9Uo+JJ+H/zcij79D4CHnt5VXb8KC737z1UNgdwQM1vWRwjgUAWNc//0ZKJYTzzJV/9
-	d489TnMPeMqlBv/QL3xGlfVm2zrB2TJLC2RmsJYZe89+Ctom0bJkMzt
-X-Received: by 2002:a05:6a21:e92:b0:1e1:a885:3e21 with SMTP id adf61e73a8af0-1e5e044ed2cmr93245967637.7.1736173286004;
-        Mon, 06 Jan 2025 06:21:26 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGMz0viZgHKzG8gwnx4F3jtIuw4qMDBR5tML/mVasoPhC1+TTPfikgUn8Q/WjYFWIaXDpXEkw==
-X-Received: by 2002:a05:6a21:e92:b0:1e1:a885:3e21 with SMTP id adf61e73a8af0-1e5e044ed2cmr93245937637.7.1736173285663;
-        Mon, 06 Jan 2025 06:21:25 -0800 (PST)
-Received: from localhost ([240f:74:7be:1:de1c:d045:9b:980c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad8344desm31371636b3a.54.2025.01.06.06.21.24
+        bh=7OKi4mQUPHQzwet86Fodk/kjXwZzb1xN6oJud0vG8Zw=;
+        b=BR4TKLS/LNejyE3LFQC2NMjDAoL90m58igw8uGRufhCQOx+80YBoAKORJu++toGoTb
+         h/udq11dYvTAABu/24pd/XmCgInryiUe8qu/oOrdX+kPdl1XctpWrGOl2DLNO0f0NoW5
+         OlXT0ibjhd5XlBzD99j8pzHKeVutnohk9YvStvjQY1js8+u4uINJjSbbEzIemPkP6rB4
+         FyTL9dfJ79Kzh0HlGg82RyQuXcFU1+j7lmXs3XSOlHTBYdJndh4jIZ70iOq12i2QLdYE
+         EHRG799grcp4Fjtmew6YbPpNGGMP2tltro61u329krEzUdsUI1LikyZMJqgwMXM3qMHB
+         MnUg==
+X-Forwarded-Encrypted: i=1; AJvYcCVpGuIATGF7xShzLdSOuxMnNv4UeG2639cdMvCy7+5FYk8R+gkEdTZeyt3hZA8xtWg7rkXJV84=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzo5Nz5cGFwsTc7DB6we0SnssteM6U5c7WGD9HEvJnGeUh7TEsr
+	k3gcJ0sjcpCTcDrHSusZC7L10YsSBFSzed4X4V1dUFg2+bsotDP/BuR0sCJLyfkzgT3GUe0HI1u
+	Irv+X7wmFKJSzdoHGOv/cwT+F3CTMc1kjEwgMserz/9C0uD8fm2158A==
+X-Gm-Gg: ASbGncuu1Q5spBhkpq/MSgPgfcHpH0P6ZyovOMYRx9uhRdGWIo2ne4DZMbdQ09gDdj9
+	yl447ljQYh9fKovLo4phKxJDKhVo1VBhmaVdIi+lg2ClH7WhZvEO0cgWB7UQ/Is19lwJWFrfWW3
+	/WDW5bce7r5trQ2QUt/imIChVgAfVqXWAmBkbYxdT//G8PmcKExyLTtq3Muh97IJ2KGLL4F6PWe
+	arHVGnkKAe+RYAOak3x1l6/nzf4j+RV
+X-Received: by 2002:a5d:6d84:0:b0:382:46ea:113f with SMTP id ffacd0b85a97d-38a221e2799mr60265809f8f.10.1736174732705;
+        Mon, 06 Jan 2025 06:45:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE4T4QlC5/jRrR6iDjWhKyBAT5NxE9LiMCGpKSmGfpcDUEiXBkKD2KSgBJpvYDW3z5/4WnSqg==
+X-Received: by 2002:a5d:6d84:0:b0:382:46ea:113f with SMTP id ffacd0b85a97d-38a221e2799mr60265764f8f.10.1736174732103;
+        Mon, 06 Jan 2025 06:45:32 -0800 (PST)
+Received: from localhost ([2a01:e0a:b25:f902::ff])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c832e74sm47373903f8f.30.2025.01.06.06.45.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jan 2025 06:21:25 -0800 (PST)
-Date: Mon, 6 Jan 2025 23:21:23 +0900
-From: Koichiro Den <koichiro.den@canonical.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org
-Subject: Re: Linux 6.13-rc6
-Message-ID: <g4sefofdrwu72ijhse7k57wuvrwhvn2eoqmc4jdoepkcgs7h5n@hmuhkwnye6pe>
-References: <CAHk-=wgjfaLyhU2L84XbkY+Jj47hryY_f1SBxmnnZi4QOJKGaw@mail.gmail.com>
- <20250106131817.GAZ3vYGVr3-hWFFPLj@fat_crate.local>
+        Mon, 06 Jan 2025 06:45:31 -0800 (PST)
+Date: Mon, 6 Jan 2025 15:45:31 +0100
+From: Maxime Ripard <mripard@redhat.com>
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Liu Ying <victor.liu@nxp.com>, Abel Vesa <abelvesa@kernel.org>, 
+	Peng Fan <peng.fan@nxp.com>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Marek Vasut <marex@denx.de>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	Abel Vesa <abel.vesa@linaro.org>, Herve Codina <herve.codina@bootlin.com>, 
+	Luca Ceresoli <luca.ceresoli@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	Ian Ray <ian.ray@ge.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 0/5] clk: Fix simple video pipelines on i.MX8
+Message-ID: <20250106-poetic-conscious-worm-387b2c@houat>
+References: <20241121-ge-ian-debug-imx8-clk-tree-v1-0-0f1b722588fe@bootlin.com>
+ <b98fdf46-3d09-4693-86fe-954fc723e3a6@nxp.com>
+ <87zflrpp8w.fsf@bootlin.com>
+ <20241217-didactic-hedgehog-from-heaven-004c37@houat>
+ <87ttaurzt5.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="75haewkz6w363ceg"
 Content-Disposition: inline
-In-Reply-To: <20250106131817.GAZ3vYGVr3-hWFFPLj@fat_crate.local>
+In-Reply-To: <87ttaurzt5.fsf@bootlin.com>
 
-On Mon, Jan 06, 2025 at 02:18:17PM +0100, Borislav Petkov wrote:
-> On Sun, Jan 05, 2025 at 02:20:54PM -0800, Linus Torvalds wrote:
-> > So we had a slight pickup in commits this last week, but as expected
-> > and hoped for, things were still pretty quiet. About twice as many
-> > commits as the holiday week, but that's still not all that many.
-> > 
-> > I expect things will start becoming more normal now that people are
-> > back from the holidays and are starting to recover and wake up from
-> > their food comas.
-> > 
-> > In the meantime, below is the shortlog for the last week. Nothing
-> > particularly stands out, the changes are dominated by various driver
-> > updates (gpu, rdma and networking), with a random smattering of fixes
-> > elsewhere.
-> 
-> Something not well baked managed to sneak in and it is tagged for stable:
-> 
-> adcfb264c3ed ("vmstat: disable vmstat_work on vmstat_cpu_down_prep()")
-> 
-> Reverting it fixes the warn splat below.
-> 
-> [    0.310373] smpboot: x86: Booting SMP configuration:
-> [    0.311074] .... node  #0, CPUs:        #1  #2  #3  #4  #5  #6  #7  #8  #9 #10 #11 #12 #13 #14 #15
-> [    0.313798] ------------[ cut here ]------------
-> [    0.317530] workqueue: work disable count underflowed
-> [    0.317530] WARNING: CPU: 1 PID: 21 at kernel/workqueue.c:4317 enable_work+0xa4/0xb0
-> [    0.317530] Modules linked in:
-> [    0.317530] CPU: 1 UID: 0 PID: 21 Comm: cpuhp/1 Not tainted 6.13.0-rc6 #11
-> [    0.317530] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 2023.11-8 02/21/2024
-> [    0.317530] RIP: 0010:enable_work+0xa4/0xb0
-> [    0.317530] Code: c0 48 83 c4 18 5b 5d e9 ca 25 9f 00 80 3d 0a c7 48 08 00 75 b3 c6 05 01 c7 48 08 01 90 48 c7 c7 c8 eb 1d 82 e8 5d 77 fd ff 90 <0f> 0b 90 90 eb 98 90 0f 0b 90 eb b1 90 90 90 90 90 90 90 90 90 90
-> [    0.317530] RSP: 0018:ffffc90000137e18 EFLAGS: 00010082
-> [    0.317530] RAX: 0000000000000029 RBX: ffff88807d66dda0 RCX: 00000000ffefffff
-> [    0.317530] RDX: 0000000000000001 RSI: ffffc90000137ce0 RDI: 0000000000000001
-> [    0.317530] RBP: 0000000000000000 R08: 00000000ffefffff R09: 0000000000000058
-> [    0.317530] R10: 0000000000000000 R11: ffffffff8244df00 R12: 0000000000000000
-> [    0.317530] R13: ffff88807d6604e0 R14: ffffffff812439f0 R15: ffff88807d660508
-> [    0.317530] FS:  0000000000000000(0000) GS:ffff88807d640000(0000) knlGS:0000000000000000
-> [    0.317530] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [    0.317530] CR2: 0000000000000000 CR3: 0000000002c1a000 CR4: 00000000003506f0
-> [    0.317530] Call Trace:
-> [    0.317530]  <TASK>
-> [    0.317530]  ? __warn+0xa0/0x160
-> [    0.317530]  ? enable_work+0xa4/0xb0
-> [    0.317530]  ? report_bug+0x18c/0x1c0
-> [    0.317530]  ? handle_bug+0x54/0x90
-> [    0.317530]  ? exc_invalid_op+0x1b/0x80
-> [    0.317530]  ? asm_exc_invalid_op+0x1a/0x20
-> [    0.317530]  ? __pfx_vmstat_cpu_online+0x10/0x10
-> [    0.317530]  ? enable_work+0xa4/0xb0
-> [    0.317530]  ? enable_work+0xa3/0xb0
-> [    0.317530]  vmstat_cpu_online+0x61/0x80
-> [    0.317530]  cpuhp_invoke_callback+0x10f/0x480
-> [    0.317530]  ? srso_return_thunk+0x5/0x5f
-> [    0.317530]  cpuhp_thread_fun+0xd4/0x160
-> [    0.317530]  smpboot_thread_fn+0xdd/0x1f0
-> [    0.317530]  ? __pfx_smpboot_thread_fn+0x10/0x10
-> [    0.317530]  kthread+0xca/0xf0
-> [    0.317530]  ? __pfx_kthread+0x10/0x10
-> [    0.317530]  ret_from_fork+0x50/0x60
-> [    0.317530]  ? __pfx_kthread+0x10/0x10
-> [    0.317530]  ret_from_fork_asm+0x1a/0x30
-> [    0.317530]  </TASK>
-> [    0.317530] ---[ end trace 0000000000000000 ]---
-> [    0.377680] smp: Brought up 1 node, 16 CPUs
-> [    0.378345] smpboot: Total of 16 processors activated (118393.24 BogoMIPS)
 
-Thanks for letting me know, and apologies for the inconvenience caused.
-In the thread [1], I'm working on a follow-up fix with help from Lorenzo
-and others. Please feel free to take any necessary action (e.g. revert).
-Also, thank you, Greg, for [2].
+--75haewkz6w363ceg
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 0/5] clk: Fix simple video pipelines on i.MX8
+MIME-Version: 1.0
 
-[1]: https://lore.kernel.org/all/20241221033321.4154409-1-koichiro.den@canonical.com/T/#m11d983715699d3cea295b8618aba7b6ccec4db55
-[2]: https://lore.kernel.org/stable/2025010603-tabasco-laziness-db0e@gregkh/
+On Mon, Dec 23, 2024 at 07:59:02PM +0100, Miquel Raynal wrote:
+> Hello,
+>=20
+> >> >> [After applying PATCH "clk: imx: clk-imx8mp: Allow LDB serializer c=
+lock reconfigure parent rate"]
+> >> >>=20
+> >> >> This is a commit from Marek, which is, I believe going in the right
+> >> >> direction, so I am including it. Just with this change, the situati=
+on is
+> >> >> slightly different, but the result is the same:
+> >> >> - media_disp[12]_pix is set to freq A by using a divisor of 1 and
+> >> >>   setting video_pll1 to freq A.
+> >> >> - media_ldb is set to 7*A by using a divisor of 1 and setting video=
+_pll1
+> >> >>   to freq 7*A.
+> >> >>   /!\ This as the side effect of changing media_disp[12]_pix from f=
+req A
+> >> >>   to freq 7*A.
+> >> >
+> >> > Although I'm not of a fan of setting CLK_SET_RATE_PARENT flag to the
+> >> > LDB clock and pixel clocks,
+> >>=20
+> >> I haven't commented much on this. For me, inaccurate pixel clocks most=
+ly
+> >> work fine (if not too inaccurate), but it is true that having very
+> >> powerful PLL like the PLL1443, it is a pity not to use them at their
+> >> highest capabilities. However, I consider "not breaking users" more
+> >> important than having "perfect clock rates".
+> >
+> > Whether an inaccurate clock "works" depends on the context. A .5%
+> > deviation will be out of spec for HDMI for example. An inaccurate VBLANK
+> > frequency might also break some use cases.
+> >
+> > So that your display still works is not enough to prove it works.
+>=20
+> Well, my display used to work. And now it no longer does.
 
--Koichiro Den
+I'm not disputing that.
 
-> 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> https://people.kernel.org/tglx/notes-about-netiquette
+> The perfect has become the enemy of the good.
+
+What I'm disputing however is that your display might never have been
+good or perfect in the first place.
+
+> >> This series has one unique goal: accepting more accurate frequencies
+> >> *and* not breaking users in the most simplest cases.
+> >>=20
+> >> > would it work if the pixel clock rate is
+> >> > set after the LDB clock rate is set in fsl_ldb_atomic_enable()?
+> >>=20
+> >> The situation would be:
+> >> - media_ldb is set to 7*A by using a divisor of 1 and setting video_pl=
+l1
+> >>   to freq 7*A.
+> >> - media_disp[12]_pix is set to freq A by using a divisor of 7.
+> >>=20
+> >> So yes, and the explanation of why is there:
+> >> https://elixir.bootlin.com/linux/v6.11.8/source/drivers/clk/clk-divide=
+r.c#L322
+> >>=20
+> >> > The
+> >> > pixel clock can be got from LDB's remote input LCDIF DT node by
+> >> > calling of_clk_get_by_name() in fsl_ldb_probe() like the below patch
+> >> > does. Similar to setting pixel clock rate, I think a chance is that
+> >> > pixel clock enablement can be moved from LCDIF driver to
+> >> > fsl_ldb_atomic_enable() to avoid on-the-fly division ratio change.
+> >>=20
+> >> TBH, this sounds like a hack and is no longer required with this serie=
+s.
+> >>=20
+> >> You are just trying to circumvent the fact that until now, applying a
+> >> rate in an upper clock would unconfigure the downstream rates, and I
+> >> think this is our first real problem.
+> >>=20
+> >> > https://patchwork.kernel.org/project/linux-clk/patch/20241114065759.=
+3341908-6-victor.liu@nxp.com/
+> >> >
+> >> > Actually, one sibling patch of the above patch reverts ff06ea04e4cf
+> >> > because I thought "fixed PLL rate" is the only solution, though I'm
+> >> > discussing any alternative solution of "dynamically changeable PLL
+> >> > rate" with Marek in the thread of the sibling patch.
+> >>=20
+> >> I don't think we want fixed PLL rates. Especially if you start using
+> >> external (hot-pluggable) displays with different needs: it just does n=
+ot
+> >> fly. There is one situation that cannot yet be handled and needs
+> >> manual reparenting: using 3 displays with a non-divisible pixel
+> >> frequency.
+> >
+> > Funnily, external interfaces (ie, HDMI, DP) tend to be easier to work
+> > with than panels. HDMI for example works with roughly three frequencies:
+> > 148.5MHz, 297MHz and 594MHz. If you set the PLL to 594MHz and the
+> > downstream clock has a basic divider, it works just fine.
+> >
+> >> FYI we managed this specific "advanced" case with assigned-clock-paren=
+ts
+> >> using an audio PLL as hinted by Marek. It mostly works, event though t=
+he
+> >> PLL1416 are less precise and offer less accurate pixel clocks.
+> >
+> > Note that assigned-clock-parents doesn't provide any guarantee on
+> > whether the parent will change in the future or not. It's strictly
+> > equivalent to calling clk_set_parent in the driver's probe.
+>=20
+> Oh yeah, but here I'm mentioning en even more complex case where we
+> connect three panels with pixel clocks that cannot be all three derived
+> from the same parent. There has never been any upstream support for
+> that and I doubt we will have any anytime soon because we need a central
+> (drm) place to be aware of the clock limitations and make these
+> decisions.
+
+I'm not sure why DRM would be involved here. It's internal clock
+details, putting that in the consumer is an abstraction violation. Also,
+this will happen with any clock that needs accurate frequency. If the
+conflict happens between ALSA and MMC, how will you deal with it?
+
+> >> +       /*
+> >> +        * Dual cases require a 3.5 rate division on the pixel clocks,=
+ which
+> >> +        * cannot be achieved with regular single divisors. Instead, d=
+ouble the
+> >> +        * parent PLL rate in the first place. In order to do that, we=
+ first
+> >> +        * require twice the target clock rate, which will program the=
+ upper
+> >> +        * PLL. Then, we ask for the actual targeted rate, which can b=
+e achieved
+> >> +        * by dividing by 2 the already configured upper PLL rate, wit=
+hout
+> >> +        * making further changes to it.
+> >> +        */
+> >> +       if (fsl_ldb_is_dual(fsl_ldb))
+> >> +               clk_set_rate(fsl_ldb->clk, requested_link_freq * 2);
+> >>         clk_set_rate(fsl_ldb->clk, requested_link_freq);
+> >
+> > This has nothing to do in a DRM driver. The clock driver logic needs
+> > to handle it.
+>=20
+> The approach I am proposing in this series can sadly not work, because
+> it is not possible to slightly modify a clock after the crtc has been
+> set up without getting back into drm for further tuning.
+
+I'm not sure what you mean or what you want here, sorry.
+
+> I observed that my series was dependent on the probe order, because
+> the exact same clock tree would work and not work depending on the
+> order.
+>=20
+> To get back to your comment, unfortunately, there will be no other
+> choice than having drm drivers being aware of clock limitations, just
+> because the clock subsystem alone, even if it would do the right thing
+> behind the hood, would still sometimes break displays. This means drm
+> drivers will have to care about clock constraints.
+
+Clock constraints, sure. Like, if the clock cannot provide a given
+frequency within a reasonable tolerance, DRM should indeed ignore that
+mode. Trying to arbitrate between clocks and find a good configuration
+for a given platform, absolutely not.
+
+> As an example here, I am fine arguing about the way (calling
+> clk_set_rate twice on the same clock), but the fact that the parent
+> clock must be multiplied: this is drm business, because it is a drm
+> requirement.
+
+That's not what the abstraction is though. Any driver should call
+clk_set_rate_exclusive on a clock once, and expect the clock to remain
+the same going forward. That's what is documented, that's what the
+driver will rely on. If or how the API implementation is able to perform
+that task is none of the consumer's business.
+
+Maxime
+
+--75haewkz6w363ceg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZ3vsigAKCRAnX84Zoj2+
+dvOAAYDMG9y6CoudQtjyH363osJ/SPKHskXTxR1vA85r3y4/gv0PEyEfQ3TugjPc
+fBCYlusBfiElRsO8Ea4TYRBaqDd4iXqGSQSdrBwsoWdi7UwMxqfc177GP9AGsxOL
+eqBaIJ0EaQ==
+=5+xQ
+-----END PGP SIGNATURE-----
+
+--75haewkz6w363ceg--
+
 
