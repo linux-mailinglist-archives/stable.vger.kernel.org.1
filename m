@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-107061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4BFBA029F2
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:29:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A65A02AAB
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C701B16485F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 314B31882001
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC19156238;
-	Mon,  6 Jan 2025 15:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FFB41553BB;
+	Mon,  6 Jan 2025 15:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dx25wd0J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WW8ZOQfj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B99078F49;
-	Mon,  6 Jan 2025 15:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9F786332;
+	Mon,  6 Jan 2025 15:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177335; cv=none; b=PLBVvHeLPVSwyFn2bGrJVCa8c9lT4C4Gmkm/gdTLlhrlJSJDWPuZvKIjk3kiH4vEF5Pf0KIRuCUP/sRschyk91zccUqVbVblvtJBCXvIVkvnOR3ylrQcbSMboOnem8bryXbZ2LkMWW/RL9hcXBvlCOlxEFyqrxmzbSgZkZAM3HM=
+	t=1736177763; cv=none; b=D5mKOISFkBNM9noaA6S7zp/sGd9fWWFXwmcK4CukXTAkuzDkehnLEtb4VQPgplKhh8U7fNswlHcynqhOEZ8ENhVY4XANRp3eY9EBRzfCk6v6lNyb10Pi4rPVFNbnkCjTkcwrDcL3BeDYYuEEKFf/602Zb8YlqN0YZsd18VjmlXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177335; c=relaxed/simple;
-	bh=oaJqkThNypgSzAQGpT8EdChSlFJeC8Sz40filrnGVbw=;
+	s=arc-20240116; t=1736177763; c=relaxed/simple;
+	bh=Ffe5/Msku3Jcj15suzpdo5FSn6JDtnYI80ROpey9qg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=flot8DZB4V0OjDGZmjIJaS/2Bk7e8NVt2swA4P3ys4Q7cWX5CU8rDbppRKU7aHJrScO/AY+aZJ4sb1etfXHx5ybQZzToG/ybQNSKEeO2eRVLQFcBDmQnaOdW3cWLLowGRJFuxNg/5DfFKAdNe590kWYT4oKSjkqS4X+d4M0RdJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dx25wd0J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1105C4CED2;
-	Mon,  6 Jan 2025 15:28:54 +0000 (UTC)
+	 MIME-Version; b=KxRONJseFQ7GW6KNM3f+Env3BLLOdugii6drqFHG7whtnoVqF/+O3qNRFEA0AqpGdEgNFkZ97M6UOGTBP7aT1F9Pq0EoN7Y7OBtNOCE4t2LdGgX9qNLHDWrBtZIUXp4wsEmvzh+8U5ER/ykG+XPrxfB6590s8e+G3HyUkmHbT1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WW8ZOQfj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75C76C4CED2;
+	Mon,  6 Jan 2025 15:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177335;
-	bh=oaJqkThNypgSzAQGpT8EdChSlFJeC8Sz40filrnGVbw=;
+	s=korg; t=1736177762;
+	bh=Ffe5/Msku3Jcj15suzpdo5FSn6JDtnYI80ROpey9qg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dx25wd0JMiwN2BJvoUNy6q8+ybzwymTWTsjLS/wCpQYD9FOrGEjihzFk8rl7H3/Ix
-	 rh5Dh9kmlNBNK+d0osF9SPJYzZ9vF9mUrZkWu8ogEHzka3CM4ztEN+IoN5TzQ0vGC5
-	 xlqC+1YCWEwKDiaN2GXDxWS7qF4VAR+auTPDu4bg=
+	b=WW8ZOQfjwywfeJJc3d6flQsJpSBoEuKtfqNmOlHL0EkIpRivQRWhG7e927y/Qyxtn
+	 mU5wXKGiwMT2JG+qlO0G4iDmD0aSUq4Bo4s9VKDjVJxYvLZay+dL64G5cK0afrfvm4
+	 8l6aq5MDh3r7QVKiA8FMeOfhxFEre/0bNf6Awe5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Xin Li <xin3.li@intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Shan Kang <shan.kang@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	"H. Peter Anvin (Intel)" <hpa@zytor.com>
-Subject: [PATCH 6.6 098/222] x86/ptrace: Add FRED additional information to the pt_regs structure
-Date: Mon,  6 Jan 2025 16:15:02 +0100
-Message-ID: <20250106151154.305482563@linuxfoundation.org>
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 017/156] RDMA/bnxt_re: Avoid sending the modify QP workaround for latest adapters
+Date: Mon,  6 Jan 2025 16:15:03 +0100
+Message-ID: <20250106151142.392336791@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,139 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Li <xin3.li@intel.com>
+From: Kashyap Desai <kashyap.desai@broadcom.com>
 
-[ Upstream commit 3c77bf02d0c03beb3efdf7a5b427fb2e1a76c265 ]
+[ Upstream commit 064c22408a73b9e945139b64614c534cbbefb591 ]
 
-FRED defines additional information in the upper 48 bits of cs/ss
-fields. Therefore add the information definitions into the pt_regs
-structure.
+The workaround to modify the UD QP from RTS to RTS is required
+only for older adapters. Issuing this for latest adapters can caus
+some unexpected behavior. Fix it
 
-Specifically introduce a new structure fred_ss to denote the FRED flags
-above SS selector, which avoids FRED_SSX_ macros and makes the code
-simpler and easier to read.
-
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Originally-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Signed-off-by: Xin Li <xin3.li@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Shan Kang <shan.kang@intel.com>
-Link: https://lore.kernel.org/r/20231205105030.8698-15-xin3.li@intel.com
-Stable-dep-of: dc81e556f2a0 ("x86/fred: Clear WFE in missing-ENDBRANCH #CPs")
+Fixes: 1801d87b3598 ("RDMA/bnxt_re: Support new 5760X P7 devices")
+Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/20241204075416.478431-4-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/ptrace.h | 66 ++++++++++++++++++++++++++++++++---
- 1 file changed, 61 insertions(+), 5 deletions(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/ptrace.h b/arch/x86/include/asm/ptrace.h
-index b268cd2a2d01..5a83fbd9bc0b 100644
---- a/arch/x86/include/asm/ptrace.h
-+++ b/arch/x86/include/asm/ptrace.h
-@@ -56,6 +56,50 @@ struct pt_regs {
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index 160096792224..390162018647 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -2763,7 +2763,8 @@ static int bnxt_re_post_send_shadow_qp(struct bnxt_re_dev *rdev,
+ 		wr = wr->next;
+ 	}
+ 	bnxt_qplib_post_send_db(&qp->qplib_qp);
+-	bnxt_ud_qp_hw_stall_workaround(qp);
++	if (!bnxt_qplib_is_chip_gen_p5_p7(qp->rdev->chip_ctx))
++		bnxt_ud_qp_hw_stall_workaround(qp);
+ 	spin_unlock_irqrestore(&qp->sq_lock, flags);
+ 	return rc;
+ }
+@@ -2875,7 +2876,8 @@ int bnxt_re_post_send(struct ib_qp *ib_qp, const struct ib_send_wr *wr,
+ 		wr = wr->next;
+ 	}
+ 	bnxt_qplib_post_send_db(&qp->qplib_qp);
+-	bnxt_ud_qp_hw_stall_workaround(qp);
++	if (!bnxt_qplib_is_chip_gen_p5_p7(qp->rdev->chip_ctx))
++		bnxt_ud_qp_hw_stall_workaround(qp);
+ 	spin_unlock_irqrestore(&qp->sq_lock, flags);
  
- #else /* __i386__ */
- 
-+struct fred_cs {
-+		/* CS selector */
-+	u64	cs	: 16,
-+		/* Stack level at event time */
-+		sl	:  2,
-+		/* IBT in WAIT_FOR_ENDBRANCH state */
-+		wfe	:  1,
-+			: 45;
-+};
-+
-+struct fred_ss {
-+		/* SS selector */
-+	u64	ss	: 16,
-+		/* STI state */
-+		sti	:  1,
-+		/* Set if syscall, sysenter or INT n */
-+		swevent	:  1,
-+		/* Event is NMI type */
-+		nmi	:  1,
-+			: 13,
-+		/* Event vector */
-+		vector	:  8,
-+			:  8,
-+		/* Event type */
-+		type	:  4,
-+			:  4,
-+		/* Event was incident to enclave execution */
-+		enclave	:  1,
-+		/* CPU was in long mode */
-+		lm	:  1,
-+		/*
-+		 * Nested exception during FRED delivery, not set
-+		 * for #DF.
-+		 */
-+		nested	:  1,
-+			:  1,
-+		/*
-+		 * The length of the instruction causing the event.
-+		 * Only set for INTO, INT1, INT3, INT n, SYSCALL
-+		 * and SYSENTER.  0 otherwise.
-+		 */
-+		insnlen	:  4;
-+};
-+
- struct pt_regs {
- 	/*
- 	 * C ABI says these regs are callee-preserved. They aren't saved on
-@@ -85,6 +129,12 @@ struct pt_regs {
- 	 * - the syscall number (syscall, sysenter, int80)
- 	 * - error_code stored by the CPU on traps and exceptions
- 	 * - the interrupt number for device interrupts
-+	 *
-+	 * A FRED stack frame starts here:
-+	 *   1) It _always_ includes an error code;
-+	 *
-+	 *   2) The return frame for ERET[US] starts here, but
-+	 *      the content of orig_ax is ignored.
- 	 */
- 	unsigned long orig_ax;
- 
-@@ -92,24 +142,30 @@ struct pt_regs {
- 	unsigned long ip;
- 
- 	union {
--		/* The full 64-bit data slot containing CS */
--		u64		csx;
- 		/* CS selector */
- 		u16		cs;
-+		/* The extended 64-bit data slot containing CS */
-+		u64		csx;
-+		/* The FRED CS extension */
-+		struct fred_cs	fred_cs;
- 	};
- 
- 	unsigned long flags;
- 	unsigned long sp;
- 
- 	union {
--		/* The full 64-bit data slot containing SS */
--		u64		ssx;
- 		/* SS selector */
- 		u16		ss;
-+		/* The extended 64-bit data slot containing SS */
-+		u64		ssx;
-+		/* The FRED SS extension */
-+		struct fred_ss	fred_ss;
- 	};
- 
- 	/*
--	 * Top of stack on IDT systems.
-+	 * Top of stack on IDT systems, while FRED systems have extra fields
-+	 * defined above for storing exception related information, e.g. CR2 or
-+	 * DR6.
- 	 */
- };
- 
+ 	return rc;
 -- 
 2.39.5
 
