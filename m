@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-107212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D633FA02AB4
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 833E6A02A28
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CD9C18814E0
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:36:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88B7F3A6A90
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10967143C7E;
-	Mon,  6 Jan 2025 15:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18CEC1547F2;
+	Mon,  6 Jan 2025 15:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTyM4hcz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Og7e5DmL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06AA44C7C;
-	Mon,  6 Jan 2025 15:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DDC155325;
+	Mon,  6 Jan 2025 15:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177789; cv=none; b=gd+bmJdkr/4YWqLRqzk7kpgElyvgBqn4hWUAA4xrOYXBtglcsjGdDN1vq5t0LP+EX72p8I/yN/mtlw29m74KvXYAJZaUuOn7PDCLnFQ0NqoiCKF3Z85bNGQF0xCCzfzwJ72ojQCuqgaVD3mgKVEl8rQx/gaAhhVxLDytZE2h3jg=
+	t=1736177364; cv=none; b=ePSFwZ3vv+qqGR6grxSV5KRys9sgy6ZtObVY+LHz2LU48rqx4L9Cntc3X9Kg736F3BosPsSRugLT5pf/CYkXK/fYVEtrMg8XlEAdu73MmCEj3igvtbbd9l9NtDaX2Ol++kAOEySnsP2Kew9fPQGvGa8LPFONG5F8U2mR+u/toSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177789; c=relaxed/simple;
-	bh=1abBKTiJGk33eazEzHS56DxDbyvdRkycRwts5caXAa0=;
+	s=arc-20240116; t=1736177364; c=relaxed/simple;
+	bh=fVaL2GGZwFAI1x8Y0OdUfpKEoJllukFY0zy4PnQd2lA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HpTnnNCxtEO7xhrjl7pmeKmOG8JOpy3ugMQIwcg2F25eYuTRrGhq22/XsIhFPJ4ZWGtIN8/NeKL9dmd1zYupSDeO6CDLOJOG7i5sNKi6gav4LI5ZuJCFNWwugEqQ2J3lmZywABOz2wqEikT8gxKcFSnQM2J+6o/z8Myz/8V2+Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTyM4hcz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AD59C4CED2;
-	Mon,  6 Jan 2025 15:36:29 +0000 (UTC)
+	 MIME-Version; b=cj7YTBKO/Qe1LcqOgJ7YHmw0n0453Ag6/wyQxhbLTaFFpkEAX/bDR11XFRN+rDGS+jBzyizxzglo9PvVh9hKgqCAY/FbkAK1OH5cE25B4tWFYUtqNmy4x078tz08nEpaC1FcMqWyBrfTbuRjI6Aszu+PKL0sCljFq43wiIzpxM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Og7e5DmL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BBA7C4CED2;
+	Mon,  6 Jan 2025 15:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177789;
-	bh=1abBKTiJGk33eazEzHS56DxDbyvdRkycRwts5caXAa0=;
+	s=korg; t=1736177364;
+	bh=fVaL2GGZwFAI1x8Y0OdUfpKEoJllukFY0zy4PnQd2lA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LTyM4hczPR7z9AyzaugwkfDdCTI9ViRAAB9R40Qm0SyRaLLrhsa4JxyiFi53/rS0V
-	 YCDI5cedqNN/e9tZjzH4Nos2AutQpmDpydRAV2dFK2FmI1BHyXESyEuQhT0MNGKtMG
-	 cujFhnTLuOv8wBaaYbrgx2eU0QPv5JQVNyRB8Uh8=
+	b=Og7e5DmLNwYPMmhSwVBCVly7My6OnlrmUNWoAWnwnt+eQ+CVooChrwAMlRwgvQMYd
+	 BOGmDZnn+umFBehX+LTT9OFBmyqBBBxx4V4xAyAzbBlMKTVV1Pp1j4pvDdXaENxrLe
+	 IZta4THDm9WeLwJzHOfDR11Q0Tyn2gba9IJ3kxIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonio Pastor <antonio.pastor@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 058/156] net: llc: reset skb->transport_header
+Subject: [PATCH 6.6 140/222] RDMA/bnxt_re: Fix MSN table size for variable wqe mode
 Date: Mon,  6 Jan 2025 16:15:44 +0100
-Message-ID: <20250106151143.922655543@linuxfoundation.org>
+Message-ID: <20250106151156.066821881@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antonio Pastor <antonio.pastor@gmail.com>
+From: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
 
-[ Upstream commit a024e377efed31ecfb39210bed562932321345b3 ]
+[ Upstream commit bb839f3ace0fee532a0487b692cc4d868fccb7cf ]
 
-802.2+LLC+SNAP frames received by napi_complete_done with GRO and DSA
-have skb->transport_header set two bytes short, or pointing 2 bytes
-before network_header & skb->data. As snap_rcv expects transport_header
-to point to SNAP header (OID:PID) after LLC processing advances offset
-over LLC header (llc_rcv & llc_fixup_skb), code doesn't find a match
-and packet is dropped.
+For variable size wqe mode, the MSN table size should be
+half the size of the SQ depth. Fixing this to avoid wrap
+around problems in the retransmission path.
 
-Between napi_complete_done and snap_rcv, transport_header is not used
-until __netif_receive_skb_core, where originally it was being reset.
-Commit fda55eca5a33 ("net: introduce skb_transport_header_was_set()")
-only does so if not set, on the assumption the value was set correctly
-by GRO (and also on assumption that "network stacks usually reset the
-transport header anyway"). Afterwards it is moved forward by
-llc_fixup_skb.
-
-Locally generated traffic shows up at __netif_receive_skb_core with no
-transport_header set and is processed without issue. On a setup with
-GRO but no DSA, transport_header and network_header are both set to
-point to skb->data which is also correct.
-
-As issue is LLC specific, to avoid impacting non-LLC traffic, and to
-follow up on original assumption made on previous code change,
-llc_fixup_skb to reset the offset after skb pull. llc_fixup_skb
-assumes the LLC header is at skb->data, and by definition SNAP header
-immediately follows.
-
-Fixes: fda55eca5a33 ("net: introduce skb_transport_header_was_set()")
-Signed-off-by: Antonio Pastor <antonio.pastor@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241225010723.2830290-1-antonio.pastor@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: de1d364c3815 ("RDMA/bnxt_re: Add support for Variable WQE in Genp7 adapters")
+Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/20241217102649.1377704-5-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/llc/llc_input.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/llc/llc_input.c b/net/llc/llc_input.c
-index 51bccfb00a9c..61b0159b2fbe 100644
---- a/net/llc/llc_input.c
-+++ b/net/llc/llc_input.c
-@@ -124,8 +124,8 @@ static inline int llc_fixup_skb(struct sk_buff *skb)
- 	if (unlikely(!pskb_may_pull(skb, llc_len)))
- 		return 0;
- 
--	skb->transport_header += llc_len;
- 	skb_pull(skb, llc_len);
-+	skb_reset_transport_header(skb);
- 	if (skb->protocol == htons(ETH_P_802_2)) {
- 		__be16 pdulen;
- 		s32 data_size;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index 2f85245d1285..1355061d698d 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -1013,7 +1013,12 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
+ 				    : 0;
+ 	/* Update msn tbl size */
+ 	if (qp->is_host_msn_tbl && psn_sz) {
+-		hwq_attr.aux_depth = roundup_pow_of_two(bnxt_qplib_set_sq_size(sq, qp->wqe_mode));
++		if (qp->wqe_mode == BNXT_QPLIB_WQE_MODE_STATIC)
++			hwq_attr.aux_depth =
++				roundup_pow_of_two(bnxt_qplib_set_sq_size(sq, qp->wqe_mode));
++		else
++			hwq_attr.aux_depth =
++				roundup_pow_of_two(bnxt_qplib_set_sq_size(sq, qp->wqe_mode)) / 2;
+ 		qp->msn_tbl_sz = hwq_attr.aux_depth;
+ 		qp->msn = 0;
+ 	}
 -- 
 2.39.5
 
