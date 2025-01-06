@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-107435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B02DBA02BD9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:47:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC025A02C8F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4391E1886BE1
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EAF81882B95
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE3E6088F;
-	Mon,  6 Jan 2025 15:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1056E145A03;
+	Mon,  6 Jan 2025 15:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rGp9jeOL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RkmQAh/W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6891547D8;
-	Mon,  6 Jan 2025 15:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10A9182D2;
+	Mon,  6 Jan 2025 15:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178454; cv=none; b=tRRrFTxEKgb4nyW3bQAxrOHJiVvTa94aOyOuUhlg7agvpttxR4srNracFIha9LVzpgR7ntCm9VXd5M+3CuB2GUM3wsJFjrTdBy8b9tkzi5WKvW9krHWYHJertUSMcDaj0djKUAID5WAvAcJNAo1pqVVJxPdPZH1YSda0vZ4HsvM=
+	t=1736178930; cv=none; b=LfeDyVvxMlUxhsKYX+mwXx5yL3BHAZSU/0qV2mqCiX2uxyDreQgd+yIv36NwiofmlC/PzaD3Vg1P8tHEUZGchCWQg/LEeMEcO4Z9cG7ZVokxb/6NGaLlE4diB2jddxBiGYGQC2L9roXLFON4cWFjx57/utZjaJHh66538KTPNT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178454; c=relaxed/simple;
-	bh=XH1OJ6WSUNMCWPR2hszxTkJBf0FLHtAgMg3J1OipIp4=;
+	s=arc-20240116; t=1736178930; c=relaxed/simple;
+	bh=ti1edcRxYLmdqvJAysqNtu7jaBeTi2PEXFqhpDytblY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iyg/k6A7nZSftvOrAU4jI0fxWEvv75zYFRFqlHrnsqL+ODTnhEjv+eI0P4gE61AYonSW/NMJ5GZUbGIv+SueiBXDPZ9wvQTYghfSNzd63nQyP2XHvLtnyZf/Z3FHD+o+E4DlldfFdJZ3/djdKsuS8o+5rgpIsACJ1BP2O/vHg3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rGp9jeOL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8CCBC4CED6;
-	Mon,  6 Jan 2025 15:47:33 +0000 (UTC)
+	 MIME-Version; b=Oq1OmgMHxSNQVIfbJ902h90ony50Oh4DjM1t2jb5gEvO8lZ013iu68V3fa6oqtgJAFjWRfHa0BsZWBIiBZQvHRitF0FVBbLCTcfKpyaCmtkRCHHMKZePx7Net5y6feClqHanEtyOMBpS7Kb7y28X8Z5X8HFoaBPN7zVCNKOnPZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RkmQAh/W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D12C4CED2;
+	Mon,  6 Jan 2025 15:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178454;
-	bh=XH1OJ6WSUNMCWPR2hszxTkJBf0FLHtAgMg3J1OipIp4=;
+	s=korg; t=1736178930;
+	bh=ti1edcRxYLmdqvJAysqNtu7jaBeTi2PEXFqhpDytblY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rGp9jeOLfphzLZQqVna05/wnZ1Q0Q7IpgcuEhTl51YMSDOjwdhgyWAiaIEfc1ekTu
-	 pVnQWxFRfkmbl2gehuyZmbYElDT0Qr362FFgC0AI+hShJyJqT681IXZ4HIjBTt6/sx
-	 YlWYUGWzmPFdStQhv537xlnpiR7LXCExLjB9nTtg=
+	b=RkmQAh/Wfiu09X7c1A+rYIr0652GmCo/wGDgkXXWDRg3uWg7fGC1wRPH4RPD7upZ9
+	 YBXsgg/g3ebv0GAv9mbTvhzT4/Fye7HZRgQuD0bhr4UUxLtxy8peI8j3ixu8kHpbZm
+	 96Xx1Fq8zc+HorPszZthYikEH88YAxdlDkLuiy88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 092/138] loop: let set_capacity_revalidate_and_notify update the bdev size
+Subject: [PATCH 5.15 108/168] thunderbolt: Add support for Intel Meteor Lake
 Date: Mon,  6 Jan 2025 16:16:56 +0100
-Message-ID: <20250106151136.714988655@linuxfoundation.org>
+Message-ID: <20250106151142.537160667@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit 3b4f85d02a4bd85cbea999a064235a47694bbb7b ]
+[ Upstream commit 32249fd8c8cccd7a1ed86c3b6d9b6ae9b4a83623 ]
 
-There is no good reason to call revalidate_disk_size separately.
+Intel Meteor Lake has the same integrated Thunderbolt/USB4 controller as
+Intel Alder Lake. Add the Intel Meteor Lake PCI IDs to the driver list
+of supported devices.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 74363ec674cb ("zram: fix uninitialized ZRAM not releasing backing device")
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Stable-dep-of: 8644b48714dc ("thunderbolt: Add support for Intel Panther Lake-M/P")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/loop.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/thunderbolt/icm.c | 3 +++
+ drivers/thunderbolt/nhi.c | 6 ++++++
+ drivers/thunderbolt/nhi.h | 3 +++
+ 3 files changed, 12 insertions(+)
 
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 7444cc2a6c86..198f7ce3234b 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -238,12 +238,8 @@ static void __loop_update_dio(struct loop_device *lo, bool dio)
-  */
- static void loop_set_size(struct loop_device *lo, loff_t size)
- {
--	struct block_device *bdev = lo->lo_device;
--
--	bd_set_nr_sectors(bdev, size);
--
--	if (!set_capacity_revalidate_and_notify(lo->lo_disk, size, false))
--		kobject_uevent(&disk_to_dev(bdev->bd_disk)->kobj, KOBJ_CHANGE);
-+	if (!set_capacity_revalidate_and_notify(lo->lo_disk, size, true))
-+		kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
- }
+diff --git a/drivers/thunderbolt/icm.c b/drivers/thunderbolt/icm.c
+index e4e92f014a8b..e6849a272f8d 100644
+--- a/drivers/thunderbolt/icm.c
++++ b/drivers/thunderbolt/icm.c
+@@ -2513,6 +2513,9 @@ struct tb *icm_probe(struct tb_nhi *nhi)
+ 	case PCI_DEVICE_ID_INTEL_ADL_NHI1:
+ 	case PCI_DEVICE_ID_INTEL_RPL_NHI0:
+ 	case PCI_DEVICE_ID_INTEL_RPL_NHI1:
++	case PCI_DEVICE_ID_INTEL_MTL_M_NHI0:
++	case PCI_DEVICE_ID_INTEL_MTL_P_NHI0:
++	case PCI_DEVICE_ID_INTEL_MTL_P_NHI1:
+ 		icm->is_supported = icm_tgl_is_supported;
+ 		icm->driver_ready = icm_icl_driver_ready;
+ 		icm->set_uuid = icm_icl_set_uuid;
+diff --git a/drivers/thunderbolt/nhi.c b/drivers/thunderbolt/nhi.c
+index 99faa8a5e9c0..3b47eb2397a1 100644
+--- a/drivers/thunderbolt/nhi.c
++++ b/drivers/thunderbolt/nhi.c
+@@ -1441,6 +1441,12 @@ static struct pci_device_id nhi_ids[] = {
+ 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_RPL_NHI1),
+ 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_MTL_M_NHI0),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_MTL_P_NHI0),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_MTL_P_NHI1),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
  
- static inline int
+ 	/* Any USB4 compliant host */
+ 	{ PCI_DEVICE_CLASS(PCI_CLASS_SERIAL_USB_USB4, ~0) },
+diff --git a/drivers/thunderbolt/nhi.h b/drivers/thunderbolt/nhi.h
+index 01190d9ced16..b0718020c6f5 100644
+--- a/drivers/thunderbolt/nhi.h
++++ b/drivers/thunderbolt/nhi.h
+@@ -75,6 +75,9 @@ extern const struct tb_nhi_ops icl_nhi_ops;
+ #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_DD_BRIDGE	0x15ef
+ #define PCI_DEVICE_ID_INTEL_ADL_NHI0			0x463e
+ #define PCI_DEVICE_ID_INTEL_ADL_NHI1			0x466d
++#define PCI_DEVICE_ID_INTEL_MTL_M_NHI0			0x7eb2
++#define PCI_DEVICE_ID_INTEL_MTL_P_NHI0			0x7ec2
++#define PCI_DEVICE_ID_INTEL_MTL_P_NHI1			0x7ec3
+ #define PCI_DEVICE_ID_INTEL_ICL_NHI1			0x8a0d
+ #define PCI_DEVICE_ID_INTEL_ICL_NHI0			0x8a17
+ #define PCI_DEVICE_ID_INTEL_TGL_NHI0			0x9a1b
 -- 
 2.39.5
 
