@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42BB1A02CAB
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:56:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F031A02B14
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:40:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C39CC3A7234
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F727165790
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECAF616D9B8;
-	Mon,  6 Jan 2025 15:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0267DF71;
+	Mon,  6 Jan 2025 15:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqpZrMdN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtlL9gRK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C1513BC39;
-	Mon,  6 Jan 2025 15:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D6F14D28C;
+	Mon,  6 Jan 2025 15:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178835; cv=none; b=rCmzyjQKuzY1T67dzo+SZYfkx//Bj4U/2PpyRau1LZnTtolcdFua5Y94ruv/rptIi0mT/Y4FDYDqAxSZBgYqhoqF7t2WUbfcWCuzHjUuu1ZyBjW9DF0n8v1E9WLXC2A1BXELn2JMX2zUctv9f96i5kmv/9i0Maa6aNptP7g34hY=
+	t=1736177980; cv=none; b=Jmk06sf8Ug9kYyLQka+At585PpZeRBwp//TRbD0yhLORieAvUyJkT+5F99wQ8TmoC7iLyKlbG8vQtMHt/d1K5LMeu0kj4Lbm3ehVovm/0fcZ2M2n6jdj2doQh6WbbP2H+UuWOxCB+RYyWtO9EOyj0TRsZPBYDN4G+DX/Z6jJ8jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178835; c=relaxed/simple;
-	bh=cLFIzJcPaWNTsKrrXTPxFsBJZQM9/Gh10AToL68T7BQ=;
+	s=arc-20240116; t=1736177980; c=relaxed/simple;
+	bh=83YCLa6WFLIBBtc9q6EjTGq6iZKbPbP0lvFMZLiRMOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vn0F8CzveS+WIV9Y3xX5fgE1dh04EFbVV1cVL4kmOoLh10wVXrPW3PHNkQH/ohZMyglgSRs7jY1pydtEFwhpwHN4X3QndBEu3l6CY+rja7j7T3hT99OpaH9tZRbrbveMmCUUH8tJZ1F+R82qy7K9pFKyW85LkuNrF1QyDYMY9sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqpZrMdN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3314FC4CED6;
-	Mon,  6 Jan 2025 15:53:55 +0000 (UTC)
+	 MIME-Version; b=bsqfP5SQG9RuxkaAABZerBQ+w6JwWhf+rlWf9HxdfL+CC3ZQLhFF2UYiRy8+/B2qa/Uf8Ko7Aadh3m1Sdfte4rIpxey4iz7EGEiU1VwBQKGNoIP45SxGAIstazLiXda1oAJA4HmMqwhC709vj7ydZ1rMVD1EChXweGuYKgyVtpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtlL9gRK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080D2C4CED2;
+	Mon,  6 Jan 2025 15:39:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178835;
-	bh=cLFIzJcPaWNTsKrrXTPxFsBJZQM9/Gh10AToL68T7BQ=;
+	s=korg; t=1736177980;
+	bh=83YCLa6WFLIBBtc9q6EjTGq6iZKbPbP0lvFMZLiRMOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cqpZrMdNiNzcbH4xEiUwPfYPKffyhf3dJ5SBb7veiXA2gpNk6+6KEoOkq/jCTaLg9
-	 fqoZJ6CtOLT8zyAQ7dP8+T+37VT4XjZcFeQAV7KmD6JDUx71uo9DVPtYa2WVQvnCC/
-	 GA+JkQ3bDHzj3NQsRLF+KB9ntGwN+ugnugiaRNZU=
+	b=VtlL9gRKhV629M5xjE+rwcejGAz5MrvVMNG4z8wv9+o9YxSt0s3rx7qYcvLYnqr6T
+	 KUpjkei/kA8h9TA/iKDXpS6PgSxEt1xRTh9YkjfftXjEbdKB2IIu7JpNKMObIidjCB
+	 fV5JmVgtyL6vzb9/4uRnjWG/NZrOoydh08vAVaus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.15 067/168] phy: core: Fix an OF node refcount leakage in of_phy_provider_lookup()
-Date: Mon,  6 Jan 2025 16:16:15 +0100
-Message-ID: <20250106151140.992696801@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.com>,
+	Adrian Ratiu <adrian.ratiu@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 090/156] sound: usb: format: dont warn that raw DSD is unsupported
+Date: Mon,  6 Jan 2025 16:16:16 +0100
+Message-ID: <20250106151145.118282637@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Adrian Ratiu <adrian.ratiu@collabora.com>
 
-commit a2d633cb1421e679b56f1a9fe1f42f089706f1ed upstream.
+[ Upstream commit b50a3e98442b8d72f061617c7f7a71f7dba19484 ]
 
-For macro for_each_child_of_node(parent, child), refcount of @child has
-been increased before entering its loop body, so normally needs to call
-of_node_put(@child) before returning from the loop body to avoid refcount
-leakage.
+UAC 2 & 3 DAC's set bit 31 of the format to signal support for a
+RAW_DATA type, typically used for DSD playback.
 
-of_phy_provider_lookup() has such usage but does not call of_node_put()
-before returning, so cause leakage of the OF node refcount.
+This is correctly tested by (format & UAC*_FORMAT_TYPE_I_RAW_DATA),
+fp->dsd_raw = true; and call snd_usb_interface_dsd_format_quirks(),
+however a confusing and unnecessary message gets printed because
+the bit is not properly tested in the last "unsupported" if test:
+if (format & ~0x3F) { ... }
 
-Fix by simply calling of_node_put() before returning from the loop body.
+For example the output:
 
-The APIs affected by this issue are shown below since they indirectly
-invoke problematic of_phy_provider_lookup().
-phy_get()
-of_phy_get()
-devm_phy_get()
-devm_of_phy_get()
-devm_of_phy_get_by_index()
+usb 7-1: new high-speed USB device number 5 using xhci_hcd
+usb 7-1: New USB device found, idVendor=262a, idProduct=9302, bcdDevice=0.01
+usb 7-1: New USB device strings: Mfr=1, Product=2, SerialNumber=6
+usb 7-1: Product: TC44C
+usb 7-1: Manufacturer: TC44C
+usb 7-1: SerialNumber: 5000000001
+hid-generic 0003:262A:9302.001E: No inputs registered, leaving
+hid-generic 0003:262A:9302.001E: hidraw6: USB HID v1.00 Device [DDHIFI TC44C] on usb-0000:08:00.3-1/input0
+usb 7-1: 2:4 : unsupported format bits 0x100000000
 
-Fixes: 2a4c37016ca9 ("phy: core: Fix of_phy_provider_lookup to return PHY provider for sub node")
-Cc: stable@vger.kernel.org
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-5-40ae28f5015a@quicinc.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This last "unsupported format" is actually wrong: we know the
+format is a RAW_DATA which we assume is DSD, so there is no need
+to print the confusing message.
+
+This we unset bit 31 of the format after recognizing it, to avoid
+the message.
+
+Suggested-by: Takashi Iwai <tiwai@suse.com>
+Signed-off-by: Adrian Ratiu <adrian.ratiu@collabora.com>
+Link: https://patch.msgid.link/20241209090529.16134-2-adrian.ratiu@collabora.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/phy-core.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/usb/format.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/phy/phy-core.c
-+++ b/drivers/phy/phy-core.c
-@@ -138,8 +138,10 @@ static struct phy_provider *of_phy_provi
- 			return phy_provider;
+diff --git a/sound/usb/format.c b/sound/usb/format.c
+index 0cbf1d4fbe6e..6049d957694c 100644
+--- a/sound/usb/format.c
++++ b/sound/usb/format.c
+@@ -60,6 +60,8 @@ static u64 parse_audio_format_i_type(struct snd_usb_audio *chip,
+ 			pcm_formats |= SNDRV_PCM_FMTBIT_SPECIAL;
+ 			/* flag potentially raw DSD capable altsettings */
+ 			fp->dsd_raw = true;
++			/* clear special format bit to avoid "unsupported format" msg below */
++			format &= ~UAC2_FORMAT_TYPE_I_RAW_DATA;
+ 		}
  
- 		for_each_child_of_node(phy_provider->children, child)
--			if (child == node)
-+			if (child == node) {
-+				of_node_put(child);
- 				return phy_provider;
-+			}
- 	}
+ 		format <<= 1;
+@@ -71,8 +73,11 @@ static u64 parse_audio_format_i_type(struct snd_usb_audio *chip,
+ 		sample_width = as->bBitResolution;
+ 		sample_bytes = as->bSubslotSize;
  
- 	return ERR_PTR(-EPROBE_DEFER);
+-		if (format & UAC3_FORMAT_TYPE_I_RAW_DATA)
++		if (format & UAC3_FORMAT_TYPE_I_RAW_DATA) {
+ 			pcm_formats |= SNDRV_PCM_FMTBIT_SPECIAL;
++			/* clear special format bit to avoid "unsupported format" msg below */
++			format &= ~UAC3_FORMAT_TYPE_I_RAW_DATA;
++		}
+ 
+ 		format <<= 1;
+ 		break;
+-- 
+2.39.5
+
 
 
 
