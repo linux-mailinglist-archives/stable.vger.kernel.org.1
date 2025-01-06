@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27738A02BE9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:48:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1B35A02D1F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:01:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BE231886DF7
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:48:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 899C8166759
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:01:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E96E91422DD;
-	Mon,  6 Jan 2025 15:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F961DE4DB;
+	Mon,  6 Jan 2025 16:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mhpbRAwb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YjKiZ/Z6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A568713B592;
-	Mon,  6 Jan 2025 15:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E512F1DE4DE;
+	Mon,  6 Jan 2025 16:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178504; cv=none; b=cRSsPs6UYuLO6jFp8Td4aCb7D3V1yZrtwAmYys70PWixivmgjOrPZdcg4cwXp9Zg3YXaHmuMsTbNGozqDG3dogGrk1uRteIV15PHNSEA5fI6OUU8jZURdQnuH+kG9PUpP2tCcpgd/2YH/sfhWAakK5SBRRd/pFCJz+uDn57Nrds=
+	t=1736179278; cv=none; b=S3FeRtyNIAphUBIC7YiyLBblQJPRZIH2n2xwRTCmArWrWwZw/sPdTURSLoTw5yYXUq86oGmwsFPChxq+j6XqqLluDkJ/pKEIWNz6I4OzbOyA47QMErkghf56EvTEpxrnx3tgmblnPSWRFSG8MekL8rFlBTxmw5nGRWxPUKXHOM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178504; c=relaxed/simple;
-	bh=VHlgCjQ25kzWdW4J7BQGLJu0/A9Ws2UFxhPAEpOwtWc=;
+	s=arc-20240116; t=1736179278; c=relaxed/simple;
+	bh=lscQCtdvwwKJ3L7ngJJCfC7aZ7q7JB559+5vUAeYWcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PP5GjTgL0wObTvkvtTnJc7MrVo9JvyjW5r9zBt87uBBvHLz4aVwKp+2Cfdu0+lZ0nHBLSmTl3Geb4cyZ1aGOeeW8Nae+G+n10BBe8F/zN7xwE3YkZ0CewLxZITncQ00OopvD/TZrIA7S66MOo3CrWi2VYiCNfQ70oj88hiHJH5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mhpbRAwb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06353C4CED2;
-	Mon,  6 Jan 2025 15:48:23 +0000 (UTC)
+	 MIME-Version; b=YpmoRNxAKgr+D2DdSk1VC/LvlNYx+MUjDjVAcXbqd2EVgDMFS9MBfUeCJr2geZ1PFcz2/0jMl3CSNZWttQ8LrPSJeDRqgMdBliLl1TGTjOqv1Gw829MHFAkpIzy+nuhkRbkOSC9k8tyEfZFMTWLz1k4iBQ3CuzgLu5hs0BrQU28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YjKiZ/Z6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9B5C4CED2;
+	Mon,  6 Jan 2025 16:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178504;
-	bh=VHlgCjQ25kzWdW4J7BQGLJu0/A9Ws2UFxhPAEpOwtWc=;
+	s=korg; t=1736179277;
+	bh=lscQCtdvwwKJ3L7ngJJCfC7aZ7q7JB559+5vUAeYWcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mhpbRAwbEZEyy60j15YAxZhjZ8WdA5TxxfAMvequHGwSROJAbxxqGpvw/2S45yg11
-	 E4aBylaYEsHSYHznXOCYkKRNsJzmDcS8oY92jHAD8Y8wr8yfHNlTA8B4iackANsvQp
-	 k92OM7Vx7a5wzFVAVwHQLh+cKg7Cxyc+Ybq5Fy34=
+	b=YjKiZ/Z6opbF3wPiwIDQQS0yPVvk9Yg233tDJV8v1ezPigY+1x+NAd4nYnU2R7Fa1
+	 on7lrc6G1jR6EfbsDY2ApFGnts/DLLdawr6lJagq1SbHgW252WTvNZ9hcYRovuKX6v
+	 50LFv/gqE7je4FEdBjmPxdnl5ZKYVOI5e+3kDSNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.com>,
-	Adrian Ratiu <adrian.ratiu@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Vasily Averin <vvs@virtuozzo.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Harshvardhan Jha <harshvardhan.j.jha@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 124/138] sound: usb: format: dont warn that raw DSD is unsupported
-Date: Mon,  6 Jan 2025 16:17:28 +0100
-Message-ID: <20250106151137.926857583@linuxfoundation.org>
+Subject: [PATCH 5.4 53/93] skbuff: introduce skb_expand_head()
+Date: Mon,  6 Jan 2025 16:17:29 +0100
+Message-ID: <20250106151130.706132180@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Ratiu <adrian.ratiu@collabora.com>
+From: Vasily Averin <vvs@virtuozzo.com>
 
-[ Upstream commit b50a3e98442b8d72f061617c7f7a71f7dba19484 ]
+[ Upstream commit f1260ff15a71b8fc122b2c9abd8a7abffb6e0168 ]
 
-UAC 2 & 3 DAC's set bit 31 of the format to signal support for a
-RAW_DATA type, typically used for DSD playback.
+Like skb_realloc_headroom(), new helper increases headroom of specified skb.
+Unlike skb_realloc_headroom(), it does not allocate a new skb if possible;
+copies skb->sk on new skb when as needed and frees original skb in case
+of failures.
 
-This is correctly tested by (format & UAC*_FORMAT_TYPE_I_RAW_DATA),
-fp->dsd_raw = true; and call snd_usb_interface_dsd_format_quirks(),
-however a confusing and unnecessary message gets printed because
-the bit is not properly tested in the last "unsupported" if test:
-if (format & ~0x3F) { ... }
+This helps to simplify ip[6]_finish_output2() and a few other similar cases.
 
-For example the output:
-
-usb 7-1: new high-speed USB device number 5 using xhci_hcd
-usb 7-1: New USB device found, idVendor=262a, idProduct=9302, bcdDevice=0.01
-usb 7-1: New USB device strings: Mfr=1, Product=2, SerialNumber=6
-usb 7-1: Product: TC44C
-usb 7-1: Manufacturer: TC44C
-usb 7-1: SerialNumber: 5000000001
-hid-generic 0003:262A:9302.001E: No inputs registered, leaving
-hid-generic 0003:262A:9302.001E: hidraw6: USB HID v1.00 Device [DDHIFI TC44C] on usb-0000:08:00.3-1/input0
-usb 7-1: 2:4 : unsupported format bits 0x100000000
-
-This last "unsupported format" is actually wrong: we know the
-format is a RAW_DATA which we assume is DSD, so there is no need
-to print the confusing message.
-
-This we unset bit 31 of the format after recognizing it, to avoid
-the message.
-
-Suggested-by: Takashi Iwai <tiwai@suse.com>
-Signed-off-by: Adrian Ratiu <adrian.ratiu@collabora.com>
-Link: https://patch.msgid.link/20241209090529.16134-2-adrian.ratiu@collabora.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Vasily Averin <vvs@virtuozzo.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit f1260ff15a71b8fc122b2c9abd8a7abffb6e0168)
+Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/format.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/linux/skbuff.h |  1 +
+ net/core/skbuff.c      | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 43 insertions(+)
 
-diff --git a/sound/usb/format.c b/sound/usb/format.c
-index 29ed301c6f06..552094012c49 100644
---- a/sound/usb/format.c
-+++ b/sound/usb/format.c
-@@ -61,6 +61,8 @@ static u64 parse_audio_format_i_type(struct snd_usb_audio *chip,
- 			pcm_formats |= SNDRV_PCM_FMTBIT_SPECIAL;
- 			/* flag potentially raw DSD capable altsettings */
- 			fp->dsd_raw = true;
-+			/* clear special format bit to avoid "unsupported format" msg below */
-+			format &= ~UAC2_FORMAT_TYPE_I_RAW_DATA;
- 		}
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 3191d0ffc6e9..4edce28fb454 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -1118,6 +1118,7 @@ static inline struct sk_buff *__pskb_copy(struct sk_buff *skb, int headroom,
+ int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail, gfp_t gfp_mask);
+ struct sk_buff *skb_realloc_headroom(struct sk_buff *skb,
+ 				     unsigned int headroom);
++struct sk_buff *skb_expand_head(struct sk_buff *skb, unsigned int headroom);
+ struct sk_buff *skb_copy_expand(const struct sk_buff *skb, int newheadroom,
+ 				int newtailroom, gfp_t priority);
+ int __must_check skb_to_sgvec_nomark(struct sk_buff *skb, struct scatterlist *sg,
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 82be36c87eb6..115c7265c7d6 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -1726,6 +1726,48 @@ struct sk_buff *skb_realloc_headroom(struct sk_buff *skb, unsigned int headroom)
+ }
+ EXPORT_SYMBOL(skb_realloc_headroom);
  
- 		format <<= 1;
-@@ -72,8 +74,11 @@ static u64 parse_audio_format_i_type(struct snd_usb_audio *chip,
- 		sample_width = as->bBitResolution;
- 		sample_bytes = as->bSubslotSize;
- 
--		if (format & UAC3_FORMAT_TYPE_I_RAW_DATA)
-+		if (format & UAC3_FORMAT_TYPE_I_RAW_DATA) {
- 			pcm_formats |= SNDRV_PCM_FMTBIT_SPECIAL;
-+			/* clear special format bit to avoid "unsupported format" msg below */
-+			format &= ~UAC3_FORMAT_TYPE_I_RAW_DATA;
++/**
++ *	skb_expand_head - reallocate header of &sk_buff
++ *	@skb: buffer to reallocate
++ *	@headroom: needed headroom
++ *
++ *	Unlike skb_realloc_headroom, this one does not allocate a new skb
++ *	if possible; copies skb->sk to new skb as needed
++ *	and frees original skb in case of failures.
++ *
++ *	It expect increased headroom and generates warning otherwise.
++ */
++
++struct sk_buff *skb_expand_head(struct sk_buff *skb, unsigned int headroom)
++{
++	int delta = headroom - skb_headroom(skb);
++
++	if (WARN_ONCE(delta <= 0,
++		      "%s is expecting an increase in the headroom", __func__))
++		return skb;
++
++	/* pskb_expand_head() might crash, if skb is shared */
++	if (skb_shared(skb)) {
++		struct sk_buff *nskb = skb_clone(skb, GFP_ATOMIC);
++
++		if (likely(nskb)) {
++			if (skb->sk)
++				skb_set_owner_w(nskb, skb->sk);
++			consume_skb(skb);
++		} else {
++			kfree_skb(skb);
 +		}
- 
- 		format <<= 1;
- 		break;
++		skb = nskb;
++	}
++	if (skb &&
++	    pskb_expand_head(skb, SKB_DATA_ALIGN(delta), 0, GFP_ATOMIC)) {
++		kfree_skb(skb);
++		skb = NULL;
++	}
++	return skb;
++}
++EXPORT_SYMBOL(skb_expand_head);
++
+ /**
+  *	skb_copy_expand	-	copy and expand sk_buff
+  *	@skb: buffer to copy
 -- 
 2.39.5
 
