@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-106867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46D89A02903
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:19:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75A39A02B83
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:44:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E00A161D6C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:19:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD44A1887049
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D23835973;
-	Mon,  6 Jan 2025 15:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C737165F1F;
+	Mon,  6 Jan 2025 15:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNljUalB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="re4+APx1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE48200A3;
-	Mon,  6 Jan 2025 15:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0C7136E09;
+	Mon,  6 Jan 2025 15:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176747; cv=none; b=TRAwXIbogfpeoNRAAWGiETbP1jV6aQ83kM6MrTaHqs6HC12iS4TLo1piZSN+a8SqJF+j4S/bBV14xwIFDTEmVNkM7cs9qFsACIVPnotCjUhYv3l9UGDjy6NyN8Ubr4c3w4oIPuFediyQtuPPEan4Ofq4fpI+2vAMpNZ8JgEiWyo=
+	t=1736178256; cv=none; b=CbCcT56kGywxgc/+PKUYre4xF5DI79nqfAxLJuF6wRUpY5CNWlPLEutMW2n8mWhH8EiIxDUjaRBA553k4UTyEBjSX9Po1EcOlCZ5+DpoQUtbCVei9MKah/emmg/oeS6eKdkljLpNOpAmNRx1r1zp2inRkaSVR3Ue/zP+z2TmuEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176747; c=relaxed/simple;
-	bh=xklYoeTmbwkLhRx96PStFby+A74ba5x2vYxzN/cfkuE=;
+	s=arc-20240116; t=1736178256; c=relaxed/simple;
+	bh=77bsat+nDpHbH9230QtItEJ/K6fKyB8DRA1fVwit60I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AQ1/hGaEKpudD+Ilr9CCbUy1gZjClZuYbW0vb9qqvpOIV0mBJpdoICs69Z0Zj9c8uWCzub36/OERxGeN7VxD7tcKRX/8UCm6Yc2aH8AaszkDbe/aOk4W26eG/mOh7f9fCM/or2s0eIn5r7t4EwScb37jNCs1kxbpwk3fygfXgZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNljUalB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52917C4CED6;
-	Mon,  6 Jan 2025 15:19:06 +0000 (UTC)
+	 MIME-Version; b=hT4VyZ7L86nO6yfS6yzGRrwGX2u8Q1p+zfkI0d+LUntsP1j0ODM763lxVX3JnCnTdW/OMVS0/vzEuCU7DoQuyFhjLUZFU8HoHBCnN/54mMBjSEgVm/Xenxmel92GTTcmv1nIpcFheX1mMNNGupEN7zyKjqgn35Kbqpn2iJT3GoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=re4+APx1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74340C4CED2;
+	Mon,  6 Jan 2025 15:44:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176746;
-	bh=xklYoeTmbwkLhRx96PStFby+A74ba5x2vYxzN/cfkuE=;
+	s=korg; t=1736178255;
+	bh=77bsat+nDpHbH9230QtItEJ/K6fKyB8DRA1fVwit60I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SNljUalBNPbgEPZu1lEPzH/3WHDGWihW+WJZVGzopAkcAh1GFyrsAYRRdXpcs0m8g
-	 nPPj1nwcmaoz9ToUxSNfF1329YygDyuXGnbjT6vYLhjD/5m35NC7SzepntubfpGa80
-	 uhXsxHufM/BuYtRE2oPH0XKqL/5s5spk50RnIQ3U=
+	b=re4+APx182lGkI8AdnNWyrIGkGXHumiT7a1YUhKvlY27KjM69MJoi6hVSDYTjm5YN
+	 5lXOL5uDUghcWOKr1/VbYczBLuiWxfyOIGKpXExAe2ijmS9Tw0hlr4YVDQh98/5F7T
+	 L9tc1TD2Xh7xG+XtmEv32obqZ0Nhe60Lb/xsAr1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristram Ha <tristram.ha@microchip.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 18/81] net: dsa: microchip: Fix KSZ9477 set_ageing_time function
+	Michal Hrusecky <michal.hrusecky@turris.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 026/138] USB: serial: option: add MeiG Smart SLM770A
 Date: Mon,  6 Jan 2025 16:15:50 +0100
-Message-ID: <20250106151130.123570236@linuxfoundation.org>
+Message-ID: <20250106151134.209934794@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,130 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristram Ha <tristram.ha@microchip.com>
+From: Michal Hrusecky <michal.hrusecky@turris.com>
 
-[ Upstream commit 262bfba8ab820641c8cfbbf03b86d6c00242c078 ]
+commit 724d461e44dfc0815624d2a9792f2f2beb7ee46d upstream.
 
-The aging count is not a simple 11-bit value but comprises a 3-bit
-multiplier and an 8-bit second count.  The code tries to use the
-original multiplier which is 4 as the second count is still 300 seconds
-by default.
+Update the USB serial option driver to support MeiG Smart SLM770A.
 
-Fixes: 2c119d9982b1 ("net: dsa: microchip: add the support for set_ageing_time")
-Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20241218020224.70590-2-Tristram.Ha@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ID 2dee:4d57 Marvell Mobile Composite Device Bus
+
+T:  Bus=02 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=2dee ProdID=4d57 Rev= 1.00
+S:  Manufacturer=Marvell
+S:  Product=Mobile Composite Device Bus
+C:* #Ifs= 6 Cfg#= 1 Atr=c0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=03
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
+E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=89(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0e(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Tested successfully connecting to the Internet via rndis interface after
+dialing via AT commands on If#=3 or If#=4.
+Not sure of the purpose of the other serial interfaces.
+
+Signed-off-by: Michal Hrusecky <michal.hrusecky@turris.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/microchip/ksz9477.c     | 47 +++++++++++++++++++------
- drivers/net/dsa/microchip/ksz9477_reg.h |  4 +--
- 2 files changed, 37 insertions(+), 14 deletions(-)
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/dsa/microchip/ksz9477.c b/drivers/net/dsa/microchip/ksz9477.c
-index e9fa92a83322..b854ee425fcd 100644
---- a/drivers/net/dsa/microchip/ksz9477.c
-+++ b/drivers/net/dsa/microchip/ksz9477.c
-@@ -2,7 +2,7 @@
- /*
-  * Microchip KSZ9477 switch driver main logic
-  *
-- * Copyright (C) 2017-2019 Microchip Technology Inc.
-+ * Copyright (C) 2017-2024 Microchip Technology Inc.
-  */
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -625,6 +625,8 @@ static void option_instat_callback(struc
+ #define MEIGSMART_PRODUCT_SRM825L		0x4d22
+ /* MeiG Smart SLM320 based on UNISOC UIS8910 */
+ #define MEIGSMART_PRODUCT_SLM320		0x4d41
++/* MeiG Smart SLM770A based on ASR1803 */
++#define MEIGSMART_PRODUCT_SLM770A		0x4d57
  
- #include <linux/kernel.h>
-@@ -964,26 +964,51 @@ void ksz9477_get_caps(struct ksz_device *dev, int port,
- int ksz9477_set_ageing_time(struct ksz_device *dev, unsigned int msecs)
- {
- 	u32 secs = msecs / 1000;
--	u8 value;
--	u8 data;
-+	u8 data, mult, value;
-+	u32 max_val;
- 	int ret;
+ /* Device flags */
  
--	value = FIELD_GET(SW_AGE_PERIOD_7_0_M, secs);
-+#define MAX_TIMER_VAL	((1 << 8) - 1)
- 
--	ret = ksz_write8(dev, REG_SW_LUE_CTRL_3, value);
--	if (ret < 0)
--		return ret;
-+	/* The aging timer comprises a 3-bit multiplier and an 8-bit second
-+	 * value.  Either of them cannot be zero.  The maximum timer is then
-+	 * 7 * 255 = 1785 seconds.
-+	 */
-+	if (!secs)
-+		secs = 1;
- 
--	data = FIELD_GET(SW_AGE_PERIOD_10_8_M, secs);
-+	/* Return error if too large. */
-+	else if (secs > 7 * MAX_TIMER_VAL)
-+		return -EINVAL;
- 
- 	ret = ksz_read8(dev, REG_SW_LUE_CTRL_0, &value);
- 	if (ret < 0)
- 		return ret;
- 
--	value &= ~SW_AGE_CNT_M;
--	value |= FIELD_PREP(SW_AGE_CNT_M, data);
-+	/* Check whether there is need to update the multiplier. */
-+	mult = FIELD_GET(SW_AGE_CNT_M, value);
-+	max_val = MAX_TIMER_VAL;
-+	if (mult > 0) {
-+		/* Try to use the same multiplier already in the register as
-+		 * the hardware default uses multiplier 4 and 75 seconds for
-+		 * 300 seconds.
-+		 */
-+		max_val = DIV_ROUND_UP(secs, mult);
-+		if (max_val > MAX_TIMER_VAL || max_val * mult != secs)
-+			max_val = MAX_TIMER_VAL;
-+	}
-+
-+	data = DIV_ROUND_UP(secs, max_val);
-+	if (mult != data) {
-+		value &= ~SW_AGE_CNT_M;
-+		value |= FIELD_PREP(SW_AGE_CNT_M, data);
-+		ret = ksz_write8(dev, REG_SW_LUE_CTRL_0, value);
-+		if (ret < 0)
-+			return ret;
-+	}
- 
--	return ksz_write8(dev, REG_SW_LUE_CTRL_0, value);
-+	value = DIV_ROUND_UP(secs, data);
-+	return ksz_write8(dev, REG_SW_LUE_CTRL_3, value);
- }
- 
- void ksz9477_port_setup(struct ksz_device *dev, int port, bool cpu_port)
-diff --git a/drivers/net/dsa/microchip/ksz9477_reg.h b/drivers/net/dsa/microchip/ksz9477_reg.h
-index 04086e9ab0a0..ffb9484018ed 100644
---- a/drivers/net/dsa/microchip/ksz9477_reg.h
-+++ b/drivers/net/dsa/microchip/ksz9477_reg.h
-@@ -2,7 +2,7 @@
- /*
-  * Microchip KSZ9477 register definitions
-  *
-- * Copyright (C) 2017-2018 Microchip Technology Inc.
-+ * Copyright (C) 2017-2024 Microchip Technology Inc.
-  */
- 
- #ifndef __KSZ9477_REGS_H
-@@ -190,8 +190,6 @@
- #define SW_VLAN_ENABLE			BIT(7)
- #define SW_DROP_INVALID_VID		BIT(6)
- #define SW_AGE_CNT_M			GENMASK(5, 3)
--#define SW_AGE_CNT_S			3
--#define SW_AGE_PERIOD_10_8_M		GENMASK(10, 8)
- #define SW_RESV_MCAST_ENABLE		BIT(2)
- #define SW_HASH_OPTION_M		0x03
- #define SW_HASH_OPTION_CRC		1
--- 
-2.39.5
-
+@@ -2382,6 +2384,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM770A, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },
 
 
 
