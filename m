@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-107710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1429A02D3E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:02:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 908D6A02D28
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:01:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 806643A639C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:01:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 827A216680D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A2E158DD0;
-	Mon,  6 Jan 2025 16:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D71719B5AC;
+	Mon,  6 Jan 2025 16:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lj9m5PZ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZT2SwUG0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136BF35945;
-	Mon,  6 Jan 2025 16:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC85F1DE2DF;
+	Mon,  6 Jan 2025 16:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179295; cv=none; b=Nk0UBa2Q3xV4+FYGN/Gv7hRw2TXUpSaKlm8/5JDzWXLwH6OwHK3XrcixRMh4tf87AeXl9AYgMmOXqQzi6L/8z9nzEZdlP88pUZYbFUz/FTPnb+kZyRriDAlWDFyf9QMIVZunzrtvHlNkfDCanSlzmcfvCSXjGNdIFrvYrrKIYOU=
+	t=1736179307; cv=none; b=JHAvG3+11KMWjV5cPiViUS0JeSLqn6mrDfKB0WWQTNN9K0toZLOSPJf92TBVW7Q52CFHD0kBLm4LwTKL5+c9OyMKcr8K0tC/JAWG2qhcQO28CS7JFYpoYFgRtGYHyDdiy379skb3B5wsVnxr3Q7LzC7nHjUIZyryfq92vN8Gvj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179295; c=relaxed/simple;
-	bh=pVy55OOvRTXnO+o3bLwTfVpPAfpI4uvVVln8Dc+g5sw=;
+	s=arc-20240116; t=1736179307; c=relaxed/simple;
+	bh=jnMm1fcdw2w1cMU97vZMjW+eRBDE/mad1MuJnUf5q0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lpeKNoN/oJHcK7LP5utCGa5qOf/QFfCrRuONs2J7EY2QTsL0Qf7TrLfN9bJQM3dL1STCMCgAq3sC5BZqw1psBmbwQCoBbcXP3sOkQ0eSmp9DEAAtbfzjdLmhemnhIJ0/2BBk806LxbP2SK/tDry0M9LY2xrPQE9WZREvZQSswn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lj9m5PZ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A7CC4CED2;
-	Mon,  6 Jan 2025 16:01:34 +0000 (UTC)
+	 MIME-Version; b=Te/ySHIFhPE4wmvGJr2csGCY9TNS+Spd9wugz2t5tJnO9TM7Oehbu8MR0yr54//piDxTwaC0oTrUMj0f4x2O3sjYE5ABpgCj051mptlbDrEB9k1MfnblkKaDGjpRusvEdIKbImRn1A7mTnXoJBrW6/dTEVR8lN8ILdF4HdF3NXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZT2SwUG0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59166C4CED2;
+	Mon,  6 Jan 2025 16:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179294;
-	bh=pVy55OOvRTXnO+o3bLwTfVpPAfpI4uvVVln8Dc+g5sw=;
+	s=korg; t=1736179306;
+	bh=jnMm1fcdw2w1cMU97vZMjW+eRBDE/mad1MuJnUf5q0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lj9m5PZ/3viEYhgonHYuhHVDauSDbixb5VCAzjI08TUlQD8gEd9p1szJg43xLGXZq
-	 9UGihw7mGYFIMUG4W38fib7BsCKeYScgRZOWrKTQXWoiVTtgwuqm1/0RJ9FnQYCm/p
-	 72M73bz15hcMMZoFaaGDHJoHG4c+vICBdN+mExJc=
+	b=ZT2SwUG04FHyKcRN7lFb/ZFhxwuGI6GIXF9KPtyX42LiXht+3ackQdMCwhhLa1mXR
+	 Z1Rk8iOdwYdrSy0G5pKXKxJ0H+iJmrHwIcNK+FUKTQ7O6WqD3KE/kUE7PPg1mnIeVr
+	 cDbptOWlhsu1ZfbU1bpvtN8qYJS4AvFtaC0ZHh4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Protopopov <aspsk@isovalent.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Daniele Palmas <dnlplm@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 82/93] bpf: fix potential error return
-Date: Mon,  6 Jan 2025 16:17:58 +0100
-Message-ID: <20250106151131.800565031@linuxfoundation.org>
+Subject: [PATCH 5.4 83/93] net: usb: qmi_wwan: add Telit FE910C04 compositions
+Date: Mon,  6 Jan 2025 16:17:59 +0100
+Message-ID: <20250106151131.838099194@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
 References: <20250106151128.686130933@linuxfoundation.org>
@@ -68,50 +66,107 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Anton Protopopov <aspsk@isovalent.com>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-[ Upstream commit c4441ca86afe4814039ee1b32c39d833c1a16bbc ]
+[ Upstream commit 3b58b53a26598209a7ad8259a5114ce71f7c3d64 ]
 
-The bpf_remove_insns() function returns WARN_ON_ONCE(error), where
-error is a result of bpf_adj_branches(), and thus should be always 0
-However, if for any reason it is not 0, then it will be converted to
-boolean by WARN_ON_ONCE and returned to user space as 1, not an actual
-error value. Fix this by returning the original err after the WARN check.
+Add the following Telit FE910C04 compositions:
 
-Signed-off-by: Anton Protopopov <aspsk@isovalent.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20241210114245.836164-1-aspsk@isovalent.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+0x10c0: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
+T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 13 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10c0 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FE910
+S:  SerialNumber=f71b8b32
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+0x10c4: rmnet + tty (AT) + tty (AT) + tty (diag)
+T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 14 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10c4 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FE910
+S:  SerialNumber=f71b8b32
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+0x10c8: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
+T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 17 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10c8 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FE910
+S:  SerialNumber=f71b8b32
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Link: https://patch.msgid.link/20241209151821.3688829-1-dnlplm@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/core.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/usb/qmi_wwan.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index dde21d23f220..9fb103426cf0 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -496,6 +496,8 @@ struct bpf_prog *bpf_patch_insn_single(struct bpf_prog *prog, u32 off,
- 
- int bpf_remove_insns(struct bpf_prog *prog, u32 off, u32 cnt)
- {
-+	int err;
-+
- 	/* Branch offsets can't overflow when program is shrinking, no need
- 	 * to call bpf_adj_branches(..., true) here
- 	 */
-@@ -503,7 +505,9 @@ int bpf_remove_insns(struct bpf_prog *prog, u32 off, u32 cnt)
- 		sizeof(struct bpf_insn) * (prog->len - off - cnt));
- 	prog->len -= cnt;
- 
--	return WARN_ON_ONCE(bpf_adj_branches(prog, off, off + cnt, off, false));
-+	err = bpf_adj_branches(prog, off, off + cnt, off, false);
-+	WARN_ON_ONCE(err);
-+	return err;
- }
- 
- static void bpf_prog_kallsyms_del_subprogs(struct bpf_prog *fp)
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index af787088f1ae..347521ec52c3 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1328,6 +1328,9 @@ static const struct usb_device_id products[] = {
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a0, 0)}, /* Telit FN920C04 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a4, 0)}, /* Telit FN920C04 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a9, 0)}, /* Telit FN920C04 */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c0, 0)}, /* Telit FE910C04 */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c4, 0)}, /* Telit FE910C04 */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c8, 0)}, /* Telit FE910C04 */
+ 	{QMI_FIXED_INTF(0x1bc7, 0x1100, 3)},	/* Telit ME910 */
+ 	{QMI_FIXED_INTF(0x1bc7, 0x1101, 3)},	/* Telit ME910 dual modem */
+ 	{QMI_FIXED_INTF(0x1bc7, 0x1200, 5)},	/* Telit LE920 */
 -- 
 2.39.5
 
