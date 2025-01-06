@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEF29A029D2
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:28:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DE1AA02C29
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:51:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9542162513
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:28:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 349E4165492
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D50918A6C1;
-	Mon,  6 Jan 2025 15:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F361DD0FE;
+	Mon,  6 Jan 2025 15:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zy6IRb/C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0OjAOPi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048E016DEBB;
-	Mon,  6 Jan 2025 15:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AD813B592;
+	Mon,  6 Jan 2025 15:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177274; cv=none; b=OfTT18XSrZELJxOZQU3kjzsvV2PdOXNc4iF6ICl/nSG9FJJlyba3TNCUYQSY1HTczBnUSMB3HNzmZC0V/8/xb5EcQum6JBZlTnwAVYHFor4hbX4WrbWkzBdGP6E5TdldiPyBH8BlVcQMwWsJICX1WofqmZhRZy4zYRnAa3AEeuU=
+	t=1736178611; cv=none; b=QkeOeo4MC4j/1dR24NfeghBv6gxTpmBhFP0IzWy8C05eeiKjA7/WkLOI1RMMrR1pt6NtiOvf1wEReJFYXwwSBZgObxWnz0ks9wnvKdzPvWSkN4jbVK5VlssI9j8tDKBoIZ4W8e70oPvk+1zsKFgjc5SgRGUlzXXt10EXwEKf57g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177274; c=relaxed/simple;
-	bh=ElsgxJ8mucW4rAnNFgcK8l1BP0iTjf7owbSHqhpkNk0=;
+	s=arc-20240116; t=1736178611; c=relaxed/simple;
+	bh=X6DLRzdAp8HP0EbiLTtbsLLMv2D8yB8w5ERFyhlBqDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IcOLyjb1VYMpz0OUvc1F5zAzbxedND1dgq9R6smey29VlWqBbx/c/MG9De15TiqB7K4RNP+vktb2qpf1wjDHH3IWIUvv1LBa0WnC5BveCZLxZeA4O0em26xSbcHa8zASycQ/Z+WVgkbNRyOp+vZh/VucBqRlOkyj4qdykQG8/jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zy6IRb/C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A44C4CEDF;
-	Mon,  6 Jan 2025 15:27:53 +0000 (UTC)
+	 MIME-Version; b=Pc5BJnONIkg0lPbsjRSoWRr1vMjMzlkWTMfk4nkJ2+1wInwLV4d781Saa8RIowfdgP178tMIN+q04lNUlJnyW2TEMa4ftTFPp1+/Alnp2WMsH5xHYhbXSopZuLz3gpfRVyfKi0g0umUqAEYP8te4KxDnAN0Kt3Hu4O1qoWZcI8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0OjAOPi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 668BEC4CED2;
+	Mon,  6 Jan 2025 15:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177273;
-	bh=ElsgxJ8mucW4rAnNFgcK8l1BP0iTjf7owbSHqhpkNk0=;
+	s=korg; t=1736178610;
+	bh=X6DLRzdAp8HP0EbiLTtbsLLMv2D8yB8w5ERFyhlBqDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zy6IRb/C7dIok3W+IKf9fD/HbUQTTaUjmUFYTObBhU5p9gOtEK6jqMGFJ1ogSDLPO
-	 1wotBCxOv/vnf8nP/8I5D3auk+4TclBSLXvy9ZWU1tfAsGcV1iOPCeK2CC1kynt/bv
-	 YdZufFUtYecIutSFBxzCjtvhl4gbKa+PM9Zj8Yxw=
+	b=C0OjAOPi94axUUjxeSzN+wmMZAZ0gJgV22DeQHVIogbDt8hNbiO9k68Wz4usz1AmV
+	 qUCGZjev8af7KyY3xSAVgPPIKjs2T4EQUZz7eOcQiaRBWU9UJiNSbNXcr1L8Ku55h1
+	 7v6N8krd/F8/dFm6NPymUhTemQLx5//R4FNOAywI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Ravi Gunasekaran <r-gunasekaran@ti.com>,
+	Peter Chen <peter.chen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 109/222] usb: xhci: Avoid queuing redundant Stop Endpoint commands
+Subject: [PATCH 5.15 005/168] usb: cdns3: Add quirk flag to enable suspend residency
 Date: Mon,  6 Jan 2025 16:15:13 +0100
-Message-ID: <20250106151154.723051503@linuxfoundation.org>
+Message-ID: <20250106151138.662703777@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,123 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Roger Quadros <rogerq@kernel.org>
 
-[ Upstream commit 474538b8dd1cd9c666e56cfe8ef60fbb0fb513f4 ]
+[ Upstream commit 0aca19e4037a4143273e90f1b44666b78b4dde9b ]
 
-Stop Endpoint command on an already stopped endpoint fails and may be
-misinterpreted as a known hardware bug by the completion handler. This
-results in an unnecessary delay with repeated retries of the command.
+Some platforms (e.g. ti,j721e-usb, ti,am64-usb) require
+this bit to be set to workaround a lockup issue with PHY
+short suspend intervals [1]. Add a platform quirk flag
+to indicate if Suspend Residency should be enabled.
 
-Avoid queuing this command when endpoint state flags indicate that it's
-stopped or halted and the command will fail. If commands are pending on
-the endpoint, their completion handlers will process cancelled TDs so
-it's done. In case of waiting for external operations like clearing TT
-buffer, the endpoint is stopped and cancelled TDs can be processed now.
+[1] - https://www.ti.com/lit/er/sprz457h/sprz457h.pdf
+i2409 - USB: USB2 PHY locks up due to short suspend
 
-This eliminates practically all unnecessary retries because an endpoint
-with pending URBs is maintained in Running state by the driver, unless
-aforementioned commands or other operations are pending on it. This is
-guaranteed by xhci_ring_ep_doorbell() and by the fact that it is called
-every time any of those operations completes.
-
-The only known exceptions are hardware bugs (the endpoint never starts
-at all) and Stream Protocol errors not associated with any TRB, which
-cause an endpoint reset not followed by restart. Sounds like a bug.
-
-Generally, these retries are only expected to happen when the endpoint
-fails to start for unknown/no reason, which is a worse problem itself,
-and fixing the bug eliminates the retries too.
-
-All cases were tested and found to work as expected. SET_DEQ_PENDING
-was produced by patching uvcvideo to unlink URBs in 100us intervals,
-which then runs into this case very often. EP_HALTED was produced by
-restarting 'cat /dev/ttyUSB0' on a serial dongle with broken cable.
-EP_CLEARING_TT by the same, with the dongle on an external hub.
-
-Fixes: fd9d55d190c0 ("xhci: retry Stop Endpoint on buggy NEC controllers")
-CC: stable@vger.kernel.org
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20241106101459.775897-34-mathias.nyman@linux.intel.com
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20240516044537.16801-2-r-gunasekaran@ti.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 13 +++++++++++++
- drivers/usb/host/xhci.c      | 19 +++++++++++++++----
- drivers/usb/host/xhci.h      |  1 +
- 3 files changed, 29 insertions(+), 4 deletions(-)
+ drivers/usb/cdns3/core.h |  1 +
+ drivers/usb/cdns3/drd.c  | 10 +++++++++-
+ drivers/usb/cdns3/drd.h  |  3 +++
+ 3 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 729319d81753..0d628af5c3ba 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1092,6 +1092,19 @@ static int xhci_invalidate_cancelled_tds(struct xhci_virt_ep *ep)
- 	return 0;
- }
+diff --git a/drivers/usb/cdns3/core.h b/drivers/usb/cdns3/core.h
+index 1726799367d1..7d4b8311051d 100644
+--- a/drivers/usb/cdns3/core.h
++++ b/drivers/usb/cdns3/core.h
+@@ -44,6 +44,7 @@ struct cdns3_platform_data {
+ 			bool suspend, bool wakeup);
+ 	unsigned long quirks;
+ #define CDNS3_DEFAULT_PM_RUNTIME_ALLOW	BIT(0)
++#define CDNS3_DRD_SUSPEND_RESIDENCY_ENABLE	BIT(1)
+ };
  
-+/*
-+ * Erase queued TDs from transfer ring(s) and give back those the xHC didn't
-+ * stop on. If necessary, queue commands to move the xHC off cancelled TDs it
-+ * stopped on. Those will be given back later when the commands complete.
-+ *
-+ * Call under xhci->lock on a stopped endpoint.
-+ */
-+void xhci_process_cancelled_tds(struct xhci_virt_ep *ep)
-+{
-+	xhci_invalidate_cancelled_tds(ep);
-+	xhci_giveback_invalidated_tds(ep);
-+}
+ /**
+diff --git a/drivers/usb/cdns3/drd.c b/drivers/usb/cdns3/drd.c
+index 33ba30f79b33..8e19ee72c120 100644
+--- a/drivers/usb/cdns3/drd.c
++++ b/drivers/usb/cdns3/drd.c
+@@ -385,7 +385,7 @@ static irqreturn_t cdns_drd_irq(int irq, void *data)
+ int cdns_drd_init(struct cdns *cdns)
+ {
+ 	void __iomem *regs;
+-	u32 state;
++	u32 state, reg;
+ 	int ret;
+ 
+ 	regs = devm_ioremap_resource(cdns->dev, &cdns->otg_res);
+@@ -429,6 +429,14 @@ int cdns_drd_init(struct cdns *cdns)
+ 			cdns->otg_irq_regs = (struct cdns_otg_irq_regs __iomem *)
+ 					      &cdns->otg_v1_regs->ien;
+ 			writel(1, &cdns->otg_v1_regs->simulate);
 +
- /*
-  * Returns the TD the endpoint ring halted on.
-  * Only call for non-running rings without streams.
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index 0b3688478ed3..70e6c240a540 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -1738,10 +1738,21 @@ static int xhci_urb_dequeue(struct usb_hcd *hcd, struct urb *urb, int status)
- 		}
- 	}
- 
--	/* Queue a stop endpoint command, but only if this is
--	 * the first cancellation to be handled.
--	 */
--	if (!(ep->ep_state & EP_STOP_CMD_PENDING)) {
-+	/* These completion handlers will sort out cancelled TDs for us */
-+	if (ep->ep_state & (EP_STOP_CMD_PENDING | EP_HALTED | SET_DEQ_PENDING)) {
-+		xhci_dbg(xhci, "Not queuing Stop Endpoint on slot %d ep %d in state 0x%x\n",
-+				urb->dev->slot_id, ep_index, ep->ep_state);
-+		goto done;
-+	}
++			if (cdns->pdata &&
++			    (cdns->pdata->quirks & CDNS3_DRD_SUSPEND_RESIDENCY_ENABLE)) {
++				reg = readl(&cdns->otg_v1_regs->susp_ctrl);
++				reg |= SUSP_CTRL_SUSPEND_RESIDENCY_ENABLE;
++				writel(reg, &cdns->otg_v1_regs->susp_ctrl);
++			}
 +
-+	/* In this case no commands are pending but the endpoint is stopped */
-+	if (ep->ep_state & EP_CLEARING_TT) {
-+		/* and cancelled TDs can be given back right away */
-+		xhci_dbg(xhci, "Invalidating TDs instantly on slot %d ep %d in state 0x%x\n",
-+				urb->dev->slot_id, ep_index, ep->ep_state);
-+		xhci_process_cancelled_tds(ep);
-+	} else {
-+		/* Otherwise, queue a new Stop Endpoint command */
- 		command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
- 		if (!command) {
- 			ret = -ENOMEM;
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index d89010ac5f8a..fddb3a90dae3 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1952,6 +1952,7 @@ void xhci_ring_doorbell_for_active_rings(struct xhci_hcd *xhci,
- void xhci_cleanup_command_queue(struct xhci_hcd *xhci);
- void inc_deq(struct xhci_hcd *xhci, struct xhci_ring *ring);
- unsigned int count_trbs(u64 addr, u64 len);
-+void xhci_process_cancelled_tds(struct xhci_virt_ep *ep);
+ 			cdns->version  = CDNS3_CONTROLLER_V1;
+ 		} else {
+ 			dev_err(cdns->dev, "not supporte DID=0x%08x\n", state);
+diff --git a/drivers/usb/cdns3/drd.h b/drivers/usb/cdns3/drd.h
+index d72370c321d3..1e2aee14d629 100644
+--- a/drivers/usb/cdns3/drd.h
++++ b/drivers/usb/cdns3/drd.h
+@@ -193,6 +193,9 @@ struct cdns_otg_irq_regs {
+ /* OTGREFCLK - bitmasks */
+ #define OTGREFCLK_STB_CLK_SWITCH_EN	BIT(31)
  
- /* xHCI roothub code */
- void xhci_set_link_state(struct xhci_hcd *xhci, struct xhci_port *port,
++/* SUPS_CTRL - bitmasks */
++#define SUSP_CTRL_SUSPEND_RESIDENCY_ENABLE	BIT(17)
++
+ /* OVERRIDE - bitmasks */
+ #define OVERRIDE_IDPULLUP		BIT(0)
+ /* Only for CDNS3_CONTROLLER_V0 version */
 -- 
 2.39.5
 
