@@ -1,85 +1,36 @@
-Return-Path: <stable+bounces-106840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BFF3A025F0
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 13:49:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38098A0264F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 14:15:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23A7A1644D1
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 12:49:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96B633A19EA
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 13:15:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFD31DF247;
-	Mon,  6 Jan 2025 12:47:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bnxxEAY1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6158B1DDC23;
+	Mon,  6 Jan 2025 13:15:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FBAF1DE8B3
-	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 12:47:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B291DDA32;
+	Mon,  6 Jan 2025 13:15:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736167663; cv=none; b=i6ncmk5y8hCBfYZxL+t+i6zbbby99jIJvzmqF8BNbAl6OcsLHLt2H3dlxRR8O5amArFJzDPkdEmEh7o+J5sT0KBVzWCikqO9yur+Ek6w2gqUdS3QWXrarKAw0sYaMap0+Bbvh3lKweSdLXD/GnVnwuu0+vjljELWKQh+jPotxfs=
+	t=1736169333; cv=none; b=U/zbkrzRp66PDQynlARzhDdEzfCeTNtNUn/S/ZNkgz9JzhcuydG+JT0HBwOV0IfbMquNxJNhZ1vtnThzeJc8WHucrJ5FVN11zfLsh1pE0dvkJD8HubqMbWgQE6qLwSSqbRakP/57oOLkIU6s11o1H2H3URnB+BTxRUbiwZFtABw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736167663; c=relaxed/simple;
-	bh=cKNc9KoYETCeTPuJLTqCyQX106fXhXFr33sir8gG/24=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=tqOccCZSS1O4N7PdkRbPWPuFMfP5t+XUDvUwxKyWKVFfWk+DSWDIgE7O7/3nrF3ZZp65bjAuzRzLZhoc+9DrGwsinQ+u+niY2h/sfdsXuIZ0Dq/Huoc17KjeQuZYIgcycwMES1Trluu4XMy0afMIKAvW8GsjpnmBV1vdWOq+pMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bnxxEAY1; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736167659;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Dkb+rY3M+7dZ1Zo79DORBPQFm2iH+/jBnX4+iKG/QsU=;
-	b=bnxxEAY1VBhCsclVXQP+SRqaOlQi8wIr1IihPT5kaOwIUHWjxOc1nhRy3gLFdsss6XZSll
-	mVaJ3D3HhfrZXdky7ShPtKLKrEUdtZFxesdJ3JnXpDGPHMViXzgYtXqOdTF6rf57n8il7K
-	2s42NucbuvjqJoLAThbDRBwJxFG1im4=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-341-z2jMMqmjM7-aVegpkdq1ow-1; Mon, 06 Jan 2025 07:47:38 -0500
-X-MC-Unique: z2jMMqmjM7-aVegpkdq1ow-1
-X-Mimecast-MFC-AGG-ID: z2jMMqmjM7-aVegpkdq1ow
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-aa634496f58so781922666b.2
-        for <stable@vger.kernel.org>; Mon, 06 Jan 2025 04:47:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736167657; x=1736772457;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dkb+rY3M+7dZ1Zo79DORBPQFm2iH+/jBnX4+iKG/QsU=;
-        b=EV6bfUDwRmmESR7bThoJO0+vhrS0HXhnVroUsktrXjQYruKXAsBf3uJE2nK/yQObUe
-         0PNWHQ9aXwaspYyTA8IxGaPEGsV2PPVQPg1LOq6wn5X0LRdddg8jWKbGWrAeXyIF8fWr
-         Tsj20qvGYKMptoRRJ9h04SPkqLtikuCNppMGkwkCo8R35vMcgpIUwCwfiESrtQmdBDEU
-         jtslMK+v8wLpVyTlSXo3GfOhZ84dkufZK/BUu5MJul0HDJ2aurcY2SVD3GJLFXUThDb5
-         8vFkfjRRSca1VcqZWFb3X0YRV+l3fksIWJeYh3bHwv6p6ZmxyYpSo/6mZDk4yvXCnvQA
-         g74g==
-X-Forwarded-Encrypted: i=1; AJvYcCXIf1A1Ujzu1NubTQaHpXUJgmNLdlR+k+ZlzwDq1+1Z/RHvyAAhDtiu+W4FjDS0qReTzbTwfI0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8cxwj/GsrfZUajCmct/t75mGJ9efKn57lzZFADEzpFzZ7yIzL
-	TTEo/Tj4VrvC3ukwvgyAAtjJGTOouESReNwgl+sfNtzupo5f3NbLTUMJDr18tb9uAnHXODGJSxx
-	ODBQpT8CWUbc7zaUS72RbzFG/CAAZzD/8oPuDuVHfTkx743nsGlhy3043KfOMDw==
-X-Gm-Gg: ASbGncuEGHmele85KnbfS8b3E0+mvcjwdYige7KzYbeIwYdxXpWHJUE5RBvmAPCh9jv
-	YKPdXC3gyTphKp7/VIi+KgDmjHHsQgNp8roUXPwLdAGANZUnXBWEN9dNAbX3CKIM+2FLEpprE8Z
-	j2HYQjpNk4gtl+bO+N3FGxUMvsPWAZIEykDHtSlwXtozHgP9WYGdcgOZjpPyuue74jyFdVZg65L
-	d6WjoT2g/d5WkgfZhWqgw2oyamGWdi3jYfuNLl20pXcLkZZNc8VBXFAaO5B518=
-X-Received: by 2002:a17:907:3f9e:b0:aa6:7f99:81aa with SMTP id a640c23a62f3a-aac2d446f68mr4754742366b.6.1736167657216;
-        Mon, 06 Jan 2025 04:47:37 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE2ZtMJkNlBqhQHyaJJvhOgi94/VowQ89yDD5sfDE7wLG6cS+OJlemHSlP0Pxsa12YGeTk1xw==
-X-Received: by 2002:a17:907:3f9e:b0:aa6:7f99:81aa with SMTP id a640c23a62f3a-aac2d446f68mr4754741066b.6.1736167656855;
-        Mon, 06 Jan 2025 04:47:36 -0800 (PST)
-Received: from [192.168.245.203] ([109.37.140.14])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0e830af1sm2241780866b.14.2025.01.06.04.47.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Jan 2025 04:47:36 -0800 (PST)
-Message-ID: <f46c5c52-b49a-433b-81cb-ae1e5d5d3ed7@redhat.com>
-Date: Mon, 6 Jan 2025 13:47:35 +0100
+	s=arc-20240116; t=1736169333; c=relaxed/simple;
+	bh=up81xfhYj3kH2+FjlokG/f4N9nQHVhtss6yXY7eccRE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h0OeGX5uZ7ZhBLSIOy3Be3tdxZsovTfujClU6HiGjG9xPTEaqRldKnmTtUzjTwQgmELjnpZvfVYicCBRawqPwbXEggRAST35uKtrj9AVIhKCMJfpkwqgBhT8F1eWrypwCmaYbbt4IyqYWziUvxh/9T/jqoPAzYbVLM/Hla/WcxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60EF3C4CEE0;
+	Mon,  6 Jan 2025 13:15:30 +0000 (UTC)
+Message-ID: <bd751d52-c378-4706-b93d-a063d1b8352d@xs4all.nl>
+Date: Mon, 6 Jan 2025 14:15:28 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -87,75 +38,122 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: resource: Add Asus Vivobook X1504VAP to
- irq1_level_low_skip_override[]
-To: Gustavo Azor <gazo11@mail.com>, bugzilla-daemon@kernel.org,
- jwrdegoede@fedoraproject.org, linux-acpi@vger.kernel.org,
- stable@vger.kernel.org, rafael@kernel.org
-References: <trinity-13f8fb07-bab6-4449-acb7-77c6d708cc37-1735365047718@3c-app-mailcom-lxa14>
-Content-Language: en-US
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <trinity-13f8fb07-bab6-4449-acb7-77c6d708cc37-1735365047718@3c-app-mailcom-lxa14>
+Subject: Re: [PATCHv3 1/2] media: venus: destroy hfi session after m2m_ctx
+ release
+To: Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+ Vikash Garodia <quic_vgarodia@quicinc.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Nathan Hebert <nhebert@google.com>
+References: <20241224072444.2044956-1-senozhatsky@chromium.org>
+ <20241224072444.2044956-2-senozhatsky@chromium.org>
+Content-Language: en-US, nl
+From: Hans Verkuil <hverkuil@xs4all.nl>
+Autocrypt: addr=hverkuil@xs4all.nl; keydata=
+ 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
+In-Reply-To: <20241224072444.2044956-2-senozhatsky@chromium.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Hi Gustavo,
+Hi Sergey,
 
-Most of us have taken 2 weeks off around Christmas + New year.
+On 24/12/2024 08:24, Sergey Senozhatsky wrote:
+> This partially reverts commit that made hfi_session_destroy()
+> the first step of vdec/venc close().  The reason being is a
+> regression report when, supposedly, encode/decoder is closed
+> with still active streaming (no ->stop_streaming() call before
+> close()) and pending pkts, so isr_thread cannot find instance
+> and fails to process those pending pkts.  This was the idea
+> behind the original patch - make it impossible to use instance
+> under destruction, because this is racy, but apparently there
+> are uses cases that depend on that unsafe pattern.  Return to
+> the old (unsafe) behaviour for the time being (until a better
+> fix is found).
+> 
+> Fixes: 45b1a1b348ec1 ("media: venus: sync with threaded IRQ during inst destruction")
+> Cc: stable@vger.kernel.org
+> Reported-by: Nathan Hebert <nhebert@google.com>
 
-Normal kernel patch review processes should be starting up again now,
-so some patience please and then this patch should be merged soon.
+Do you have a link to Nathan's report so I can add a 'Closes' tag
+afterwards?
 
 Regards,
 
-Hans
+	Hans
 
-
-
-On 28-Dec-24 6:50 AM, Gustavo Azor wrote:
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> ---
+>  drivers/media/platform/qcom/venus/core.c | 8 ++------
+>  1 file changed, 2 insertions(+), 6 deletions(-)
 > 
-> 
->  
-> 
-> Estimated people:
-> Seems to me, I browse drivers/acpi/resources.c: the patch was not included in kernel versions stable 6.12.7 or long term 6.6.68.
-> I hope will be include in mainline 6.13.-rc5 to inform if work in the ASUS Vivobook 15 X1504VAP_X1504VA keyboard.
-> I have not idea how work with git diff or compiling kernels to try the patch, and need to try in installed kernel.
-> Thanks.Regards.
-> 
-> Sent: Friday, December 20, 2024 at 8:23 PM
-> From: bugzilla-daemon@kernel.org
-> To: gazo11@mail.com
-> Subject: [Bug 219224] Laptop Internal Keyboard not working on ASUS VivoBook E1404GA on ubuntu 24.04.
-> https://bugzilla.kernel.org/show_bug.cgi?id=219224
-> 
-> --- Comment #11 from Hans de Goede (jwrdegoede@fedoraproject.org) ---
-> (In reply to gazo11 from comment #10)
->> Hello I have the same problem for dmidecode:
->>
->>
->> System Information
->> Manufacturer: ASUSTeK COMPUTER INC.
->> Product Name: ASUS Vivobook 15 X1504VAP_X1504VA
->> Version: 1.0
->> Serial Number: S1N0CV02L86302G
->> UUID: cdc508f0-d3f1-f743-bce4-5eb9d4c06fda
->> Wake-up Type: Power Switch
->> SKU Number:
->> Family: ASUS Vivobook 15
->>
->> Its possible to get this model listed in future kernels? Thanks!
-> 
-> Thank you for reporting this, I've submitted a patch to add this to the
-> irq1_level_low_skip_override[] list:
-> 
-> https://lore.kernel.org/linux-acpi/20241220181352.25974-1-hdegoede@redhat.com/[https://lore.kernel.org/linux-acpi/20241220181352.25974-1-hdegoede@redhat.com/]
-> 
-> --
-> You may reply to this email to add a comment.
-> 
-> You are receiving this mail because:
-> You are on the CC list for the bug.
-> 
+> diff --git a/drivers/media/platform/qcom/venus/core.c b/drivers/media/platform/qcom/venus/core.c
+> index 2d27c5167246..807487a1f536 100644
+> --- a/drivers/media/platform/qcom/venus/core.c
+> +++ b/drivers/media/platform/qcom/venus/core.c
+> @@ -506,18 +506,14 @@ static __maybe_unused int venus_runtime_suspend(struct device *dev)
+>  void venus_close_common(struct venus_inst *inst)
+>  {
+>  	/*
+> -	 * First, remove the inst from the ->instances list, so that
+> -	 * to_instance() will return NULL.
+> -	 */
+> -	hfi_session_destroy(inst);
+> -	/*
+> -	 * Second, make sure we don't have IRQ/IRQ-thread currently running
+> +	 * Make sure we don't have IRQ/IRQ-thread currently running
+>  	 * or pending execution, which would race with the inst destruction.
+>  	 */
+>  	synchronize_irq(inst->core->irq);
+>  
+>  	v4l2_m2m_ctx_release(inst->m2m_ctx);
+>  	v4l2_m2m_release(inst->m2m_dev);
+> +	hfi_session_destroy(inst);
+>  	v4l2_fh_del(&inst->fh);
+>  	v4l2_fh_exit(&inst->fh);
+>  	v4l2_ctrl_handler_free(&inst->ctrl_handler);
 
 
