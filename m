@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1B35A02D1F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:01:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 997EFA02CE7
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:59:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 899C8166759
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:01:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 042B63A6063
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:57:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F961DE4DB;
-	Mon,  6 Jan 2025 16:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD45D1553BB;
+	Mon,  6 Jan 2025 15:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YjKiZ/Z6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPj3buDV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E512F1DE4DE;
-	Mon,  6 Jan 2025 16:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8B086332;
+	Mon,  6 Jan 2025 15:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179278; cv=none; b=S3FeRtyNIAphUBIC7YiyLBblQJPRZIH2n2xwRTCmArWrWwZw/sPdTURSLoTw5yYXUq86oGmwsFPChxq+j6XqqLluDkJ/pKEIWNz6I4OzbOyA47QMErkghf56EvTEpxrnx3tgmblnPSWRFSG8MekL8rFlBTxmw5nGRWxPUKXHOM4=
+	t=1736179030; cv=none; b=eTserXbK7eXifxnQSb3ogVyigN3h2fy7pQ4DIg3lM3V0Hxf4UWIwhW+ZqEjLErfpCQzzhaBtTWQBQWThrR80lSSFHfLKSObGsV5EjaljhhjAryESScSfhYZRIXtnwLbeneWLE56qotadkWNDTLKTouRqYgWtBPTi2SFyiOKjOOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179278; c=relaxed/simple;
-	bh=lscQCtdvwwKJ3L7ngJJCfC7aZ7q7JB559+5vUAeYWcM=;
+	s=arc-20240116; t=1736179030; c=relaxed/simple;
+	bh=cq+4m9dGfsy4+z7xQeVrz2q527+V58LStslb3DvZ+64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YpmoRNxAKgr+D2DdSk1VC/LvlNYx+MUjDjVAcXbqd2EVgDMFS9MBfUeCJr2geZ1PFcz2/0jMl3CSNZWttQ8LrPSJeDRqgMdBliLl1TGTjOqv1Gw829MHFAkpIzy+nuhkRbkOSC9k8tyEfZFMTWLz1k4iBQ3CuzgLu5hs0BrQU28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YjKiZ/Z6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9B5C4CED2;
-	Mon,  6 Jan 2025 16:01:16 +0000 (UTC)
+	 MIME-Version; b=GOLZhb1eWrsj07vWJ7U4BQs6xc+IE09lydvuJmfoQzpd84WsbCkow4K0s6u3gPeFVV800L1lA8iIUnh4dbTxr1FbwjtSY6Ystd3S7H8gDhd7Nshy2nVeNPt7mbLuXZf2+u/VZanAr5s39iNiOUinT8lFSrKFNXlLBI20Y0aicoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPj3buDV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CAFC4CED2;
+	Mon,  6 Jan 2025 15:57:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179277;
-	bh=lscQCtdvwwKJ3L7ngJJCfC7aZ7q7JB559+5vUAeYWcM=;
+	s=korg; t=1736179030;
+	bh=cq+4m9dGfsy4+z7xQeVrz2q527+V58LStslb3DvZ+64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YjKiZ/Z6opbF3wPiwIDQQS0yPVvk9Yg233tDJV8v1ezPigY+1x+NAd4nYnU2R7Fa1
-	 on7lrc6G1jR6EfbsDY2ApFGnts/DLLdawr6lJagq1SbHgW252WTvNZ9hcYRovuKX6v
-	 50LFv/gqE7je4FEdBjmPxdnl5ZKYVOI5e+3kDSNY=
+	b=iPj3buDV06tJvmZCn82N5yRRYHphb4QEs1ZBk7/HPZY3Mbv6zkON/EIUU78uYJ22L
+	 7ChswObXQmE85/kCd103ock5SFE6Nik5TEM13gGsZX3k1lNvIwLXXf6KMT1ZN92PQ1
+	 UyoU7JBo7YqWAXHSOpC+Rg0VaFuzZen/HL+vAyCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasily Averin <vvs@virtuozzo.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Harshvardhan Jha <harshvardhan.j.jha@oracle.com>,
+	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 53/93] skbuff: introduce skb_expand_head()
+Subject: [PATCH 5.15 141/168] net: wwan: iosm: Properly check for valid exec stage in ipc_mmio_init()
 Date: Mon,  6 Jan 2025 16:17:29 +0100
-Message-ID: <20250106151130.706132180@linuxfoundation.org>
+Message-ID: <20250106151143.761522213@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Averin <vvs@virtuozzo.com>
+From: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
 
-[ Upstream commit f1260ff15a71b8fc122b2c9abd8a7abffb6e0168 ]
+[ Upstream commit a7af435df0e04cfb4a4004136d597c42639a2ae7 ]
 
-Like skb_realloc_headroom(), new helper increases headroom of specified skb.
-Unlike skb_realloc_headroom(), it does not allocate a new skb if possible;
-copies skb->sk on new skb when as needed and frees original skb in case
-of failures.
+ipc_mmio_init() used the post-decrement operator in its loop continuing
+condition of "retries" counter being "> 0", which meant that when this
+condition caused loop exit "retries" counter reached -1.
 
-This helps to simplify ip[6]_finish_output2() and a few other similar cases.
+But the later valid exec stage failure check only tests for "retries"
+counter being exactly zero, so it didn't trigger in this case (but
+would wrongly trigger if the code reaches a valid exec stage in the
+very last loop iteration).
 
-Signed-off-by: Vasily Averin <vvs@virtuozzo.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-(cherry picked from commit f1260ff15a71b8fc122b2c9abd8a7abffb6e0168)
-Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+Fix this by using the pre-decrement operator instead, so the loop counter
+is exactly zero on valid exec stage failure.
+
+Fixes: dc0514f5d828 ("net: iosm: mmio scratchpad")
+Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+Link: https://patch.msgid.link/8b19125a825f9dcdd81c667c1e5c48ba28d505a6.1735490770.git.mail@maciej.szmigiero.name
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/skbuff.h |  1 +
- net/core/skbuff.c      | 42 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 43 insertions(+)
+ drivers/net/wwan/iosm/iosm_ipc_mmio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index 3191d0ffc6e9..4edce28fb454 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -1118,6 +1118,7 @@ static inline struct sk_buff *__pskb_copy(struct sk_buff *skb, int headroom,
- int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail, gfp_t gfp_mask);
- struct sk_buff *skb_realloc_headroom(struct sk_buff *skb,
- 				     unsigned int headroom);
-+struct sk_buff *skb_expand_head(struct sk_buff *skb, unsigned int headroom);
- struct sk_buff *skb_copy_expand(const struct sk_buff *skb, int newheadroom,
- 				int newtailroom, gfp_t priority);
- int __must_check skb_to_sgvec_nomark(struct sk_buff *skb, struct scatterlist *sg,
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 82be36c87eb6..115c7265c7d6 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -1726,6 +1726,48 @@ struct sk_buff *skb_realloc_headroom(struct sk_buff *skb, unsigned int headroom)
- }
- EXPORT_SYMBOL(skb_realloc_headroom);
+diff --git a/drivers/net/wwan/iosm/iosm_ipc_mmio.c b/drivers/net/wwan/iosm/iosm_ipc_mmio.c
+index 09f94c123531..b452ddf9ef06 100644
+--- a/drivers/net/wwan/iosm/iosm_ipc_mmio.c
++++ b/drivers/net/wwan/iosm/iosm_ipc_mmio.c
+@@ -102,7 +102,7 @@ struct iosm_mmio *ipc_mmio_init(void __iomem *mmio, struct device *dev)
+ 			break;
  
-+/**
-+ *	skb_expand_head - reallocate header of &sk_buff
-+ *	@skb: buffer to reallocate
-+ *	@headroom: needed headroom
-+ *
-+ *	Unlike skb_realloc_headroom, this one does not allocate a new skb
-+ *	if possible; copies skb->sk to new skb as needed
-+ *	and frees original skb in case of failures.
-+ *
-+ *	It expect increased headroom and generates warning otherwise.
-+ */
-+
-+struct sk_buff *skb_expand_head(struct sk_buff *skb, unsigned int headroom)
-+{
-+	int delta = headroom - skb_headroom(skb);
-+
-+	if (WARN_ONCE(delta <= 0,
-+		      "%s is expecting an increase in the headroom", __func__))
-+		return skb;
-+
-+	/* pskb_expand_head() might crash, if skb is shared */
-+	if (skb_shared(skb)) {
-+		struct sk_buff *nskb = skb_clone(skb, GFP_ATOMIC);
-+
-+		if (likely(nskb)) {
-+			if (skb->sk)
-+				skb_set_owner_w(nskb, skb->sk);
-+			consume_skb(skb);
-+		} else {
-+			kfree_skb(skb);
-+		}
-+		skb = nskb;
-+	}
-+	if (skb &&
-+	    pskb_expand_head(skb, SKB_DATA_ALIGN(delta), 0, GFP_ATOMIC)) {
-+		kfree_skb(skb);
-+		skb = NULL;
-+	}
-+	return skb;
-+}
-+EXPORT_SYMBOL(skb_expand_head);
-+
- /**
-  *	skb_copy_expand	-	copy and expand sk_buff
-  *	@skb: buffer to copy
+ 		msleep(20);
+-	} while (retries-- > 0);
++	} while (--retries > 0);
+ 
+ 	if (!retries) {
+ 		dev_err(ipc_mmio->dev, "invalid exec stage %X", stage);
 -- 
 2.39.5
 
