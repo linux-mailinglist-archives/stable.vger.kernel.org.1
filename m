@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14F7DA02CA9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:56:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F234EA02BED
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:48:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9004C1887693
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:56:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64A1B163073
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21288154C04;
-	Mon,  6 Jan 2025 15:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBA015A842;
+	Mon,  6 Jan 2025 15:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6H9uIy4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHU4/fcH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38EE81728;
-	Mon,  6 Jan 2025 15:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C626E145348;
+	Mon,  6 Jan 2025 15:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178977; cv=none; b=KUHW2sVuDtfN03CFDgD1knacSnhFCa/0vpe6Z9PByxUATGRxwPqWiV6bgQ2pnr3JiNeCdTh2K4XHpUaXo0NqRFqE5cnotJSGpAwzWMX14lVBjhpanJwZcdoYs0VqQnihDmbSGiJEBG47mRxMyh8/G9au8k/xT60CVTU6J4UrzKk=
+	t=1736178468; cv=none; b=SVh0XXFsEhXIMlKOQhRPsuL9UOAeoD+xurVDXGIcaBiNFGqvll9BqwcQPwTNkEXnzD1VpASbI+p1l4u/Nr+H+QNroAO3WCr5bv+qgK+TJdjVXpi1xNNH1HAIWeiZpXZjCI+Cd9VUiR6ZyWD3rSHRcy8d5RHdIi6DXXbxEt7L2tM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178977; c=relaxed/simple;
-	bh=e2ClKiupTS0yVbM491ZI5T9iAMe0wRDsiG8XwP6UTjw=;
+	s=arc-20240116; t=1736178468; c=relaxed/simple;
+	bh=Os7kmIzJ5Ziu9Ki4TiI7JSw4kXufDITAZ06573UVOQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mRfiBncJbfAwj+XhMc3p9rMLqci9XyoDKpmDoyrUz/a28zIQlxqRTeUgrr0KmYj8j4uaaED4WDn/O1mRXdAiBm9Ymn1keI6kErQYrJt6ZBGO0n3/TI+rNGPxNn9Kt0DYGpZFQN3P5CKS7VHc7ePKU+VjAKqVHD91XIbYZ7JzPwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6H9uIy4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC37C4CED2;
-	Mon,  6 Jan 2025 15:56:17 +0000 (UTC)
+	 MIME-Version; b=LrenFscBFluholA4y0H/eEBez4uIwyt6GzotAz8CAYgr2Muocy4vkUm/df8g13Ix5WT1B8L5X9w5zi/yIxLUxCeD9KHU2+EiLffxTEZxuByMzU2lzA0LkKPNOX1NOXJGhgqRnoaA1uX8b3b0Swy89aO3CYnr6jAdgIGsKPy1a0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHU4/fcH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C90FC4CED2;
+	Mon,  6 Jan 2025 15:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178977;
-	bh=e2ClKiupTS0yVbM491ZI5T9iAMe0wRDsiG8XwP6UTjw=;
+	s=korg; t=1736178468;
+	bh=Os7kmIzJ5Ziu9Ki4TiI7JSw4kXufDITAZ06573UVOQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L6H9uIy4recmcLNF68/7qB9CXk9Ot4Su+CRz5wr2Y9BnKpDpQgmFWzoozVBAM78fm
-	 hnUvt6jxdbn6y88qz05AdSCPeM11AuK4XuIDVSpDDGsGTrN4YY1qKWU7U7g+20sVtj
-	 pWqDFUUgUtTCL8Mv/MW0uQsKyPPukI1kxk17kW3E=
+	b=RHU4/fcHx0yyCFZ8BeHzH/iOIjpizTAxkhDat3fdjqJp6A6ltMi6eZerMkehuZvoq
+	 QGeSHrF/41bB62igzZkArMRuwjWbLNuYOXNLixqj9RjgqlbUa6lQY4qtFonnTuKvjV
+	 FjGy7+3z0pqcVu3fTXE5l16Bb9084Q3c7EtPCBHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitalii Mordan <mordan@ispras.ru>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+0aecfd34fb878546f3fd@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 137/168] eth: bcmsysport: fix call balance of priv->clk handling routines
+Subject: [PATCH 5.10 121/138] tracing: Prevent bad count for tracing_cpumask_write
 Date: Mon,  6 Jan 2025 16:17:25 +0100
-Message-ID: <20250106151143.611411852@linuxfoundation.org>
+Message-ID: <20250106151137.812882554@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit b255ef45fcc2141c1bf98456796abb956d843a27 ]
+[ Upstream commit 98feccbf32cfdde8c722bc4587aaa60ee5ac33f0 ]
 
-Check the return value of clk_prepare_enable to ensure that priv->clk has
-been successfully enabled.
+If a large count is provided, it will trigger a warning in bitmap_parse_user.
+Also check zero for it.
 
-If priv->clk was not enabled during bcm_sysport_probe, bcm_sysport_resume,
-or bcm_sysport_open, it must not be disabled in any subsequent execution
-paths.
-
-Fixes: 31bc72d97656 ("net: systemport: fetch and use clock resources")
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20241227123007.2333397-1-mordan@ispras.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 9e01c1b74c953 ("cpumask: convert kernel trace functions")
+Link: https://lore.kernel.org/20241216073238.2573704-1-lizhi.xu@windriver.com
+Reported-by: syzbot+0aecfd34fb878546f3fd@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0aecfd34fb878546f3fd
+Tested-by: syzbot+0aecfd34fb878546f3fd@syzkaller.appspotmail.com
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bcmsysport.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ kernel/trace/trace.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
-index 8962bd6349d4..fa140c5175a6 100644
---- a/drivers/net/ethernet/broadcom/bcmsysport.c
-+++ b/drivers/net/ethernet/broadcom/bcmsysport.c
-@@ -1956,7 +1956,11 @@ static int bcm_sysport_open(struct net_device *dev)
- 	unsigned int i;
- 	int ret;
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 3ecd7c700579..ca39a647f2ef 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -4910,6 +4910,9 @@ tracing_cpumask_write(struct file *filp, const char __user *ubuf,
+ 	cpumask_var_t tracing_cpumask_new;
+ 	int err;
  
--	clk_prepare_enable(priv->clk);
-+	ret = clk_prepare_enable(priv->clk);
-+	if (ret) {
-+		netdev_err(dev, "could not enable priv clock\n");
-+		return ret;
-+	}
- 
- 	/* Reset UniMAC */
- 	umac_reset(priv);
-@@ -2618,7 +2622,11 @@ static int bcm_sysport_probe(struct platform_device *pdev)
- 		goto err_deregister_notifier;
- 	}
- 
--	clk_prepare_enable(priv->clk);
-+	ret = clk_prepare_enable(priv->clk);
-+	if (ret) {
-+		dev_err(&pdev->dev, "could not enable priv clock\n");
-+		goto err_deregister_netdev;
-+	}
- 
- 	priv->rev = topctrl_readl(priv, REV_CNTL) & REV_MASK;
- 	dev_info(&pdev->dev,
-@@ -2632,6 +2640,8 @@ static int bcm_sysport_probe(struct platform_device *pdev)
- 
- 	return 0;
- 
-+err_deregister_netdev:
-+	unregister_netdev(dev);
- err_deregister_notifier:
- 	unregister_netdevice_notifier(&priv->netdev_notifier);
- err_deregister_fixed_link:
-@@ -2803,7 +2813,12 @@ static int __maybe_unused bcm_sysport_resume(struct device *d)
- 	if (!netif_running(dev))
- 		return 0;
- 
--	clk_prepare_enable(priv->clk);
-+	ret = clk_prepare_enable(priv->clk);
-+	if (ret) {
-+		netdev_err(dev, "could not enable priv clock\n");
-+		return ret;
-+	}
++	if (count == 0 || count > KMALLOC_MAX_SIZE)
++		return -EINVAL;
 +
- 	if (priv->wolopts)
- 		clk_disable_unprepare(priv->wol_clk);
+ 	if (!zalloc_cpumask_var(&tracing_cpumask_new, GFP_KERNEL))
+ 		return -ENOMEM;
  
 -- 
 2.39.5
