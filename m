@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-106870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2EB1A02906
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:19:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F25BA02B4E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:42:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9463E161FA3
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:19:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2121F18861B5
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3110313635E;
-	Mon,  6 Jan 2025 15:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 161501547D8;
+	Mon,  6 Jan 2025 15:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MRSgZRBF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRwdruXr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22B0200A3;
-	Mon,  6 Jan 2025 15:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76CF44C7C;
+	Mon,  6 Jan 2025 15:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176755; cv=none; b=K0fP4fvd6CiF2Fi/aubxojqyPqaPvf+G1Nn+w6W/1En1CzqJ1ZA3Hd7ndj9PtJDixoE0PAVf7hJs1r4v+7mMFmwe1/zT/cudBBqVao9tXcqmy7MdS3oSyUVBEw3diJacO2ISt/I+0/joGg5PVGkGO0rrrgyBuvQWprErte34Th4=
+	t=1736178120; cv=none; b=REKOUEjZJUP2E1i7V0BIABb+/HUsTZcD9af2Zmf8MdwlaNWsc4LCOLG/x7UiNX090Tsfuv1fVoHoaPaAiq7wt1u+Uy8iMnSIWoBoI5KKJ/I3Wx9uqQJaum8jYQqS2OAhoNuzMUm7UWuzX8rp498yunDEu+YPbYfI5rvNPmfhfZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176755; c=relaxed/simple;
-	bh=grYxUht7Mw7sKLOge8RdEIAAohcXmajlNFDpX0cfDMc=;
+	s=arc-20240116; t=1736178120; c=relaxed/simple;
+	bh=qCpbp3BVyNRdcUC0mTEuobaA0ke6Ete2n8QFiBHTLDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rkCQd1BwP52zDlRZQ5UjMfv2jRBQRlSrtBjhTGPdtjx2+40YpkZFgz7GxV50CsZ/ky0DLSf4CjQwB0X/3PignlyytyO1qu+tzkx1Lq7FUYZLMiuoax8Zoaf1V6ce7xcdtnM5+2rOTb3b+Cm7RHe6jA6UQqiTZUKnI3wVwPLLfKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MRSgZRBF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C7B9C4CEE1;
-	Mon,  6 Jan 2025 15:19:14 +0000 (UTC)
+	 MIME-Version; b=YFq2qc8FkBtTYHnz4dUtgKMjozq+39XR1cFbXpsXDh9DG1b1lD885Iw+nvxgIX4BYWSW8vhoNg50B2yoUg3V18ymLu3tUxWCQL8RBObshARrsiUAYV0vI0o5jrNS55BPq3DKRM/JUcLlq1ZpeL2OB9HFf5mBy9a2JCa6bj5XGIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRwdruXr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE38C4CEDF;
+	Mon,  6 Jan 2025 15:42:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176755;
-	bh=grYxUht7Mw7sKLOge8RdEIAAohcXmajlNFDpX0cfDMc=;
+	s=korg; t=1736178120;
+	bh=qCpbp3BVyNRdcUC0mTEuobaA0ke6Ete2n8QFiBHTLDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MRSgZRBF8XZWJb0AICJu7ZSYARcaO2In79j1F2ZSfkLWF1YF4JcdiH2/vTGAqoi5/
-	 2eyYKWkEBrpIGOQ50QUjupkbfY8H9iIbFcMsCjBRN04ARn4pQWR/rsF1/kmKbhF004
-	 O033qU5DgMF4Nay8DrHMHN5ohHtjoC3C9yKWg6EY=
+	b=aRwdruXr7sVAuhSC5nTrcxWknEOcyavrxtkbMfz0gw9AaVeLy2OzdfzCjmhLytW8D
+	 UqGTLjkYtrOKuGtrhdd2i0YXzhSIA1vaMcCIvt5VdVK/GtrybUhDGpaCn6N9pyPs42
+	 PyTFiXChiECbDEeoTsvHDXejdLbEEKdqbxuO2mMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Genes Lists <lists@sapience.com>,
-	Gene C <arch@sapience.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 04/81] tracing: Have process_string() also allow arrays
+	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 012/138] net/smc: check sndbuf_space again after NOSPACE flag is set in smc_poll
 Date: Mon,  6 Jan 2025 16:15:36 +0100
-Message-ID: <20250106151129.604915682@linuxfoundation.org>
+Message-ID: <20250106151133.680919007@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
 
-commit afc6717628f959941d7b33728570568b4af1c4b8 upstream.
+[ Upstream commit 679e9ddcf90dbdf98aaaa71a492454654b627bcb ]
 
-In order to catch a common bug where a TRACE_EVENT() TP_fast_assign()
-assigns an address of an allocated string to the ring buffer and then
-references it in TP_printk(), which can be executed hours later when the
-string is free, the function test_event_printk() runs on all events as
-they are registered to make sure there's no unwanted dereferencing.
+When application sending data more than sndbuf_space, there have chances
+application will sleep in epoll_wait, and will never be wakeup again. This
+is caused by a race between smc_poll and smc_cdc_tx_handler.
 
-It calls process_string() to handle cases in TP_printk() format that has
-"%s". It returns whether or not the string is safe. But it can have some
-false positives.
+application                                      tasklet
+smc_tx_sendmsg(len > sndbuf_space)   |
+epoll_wait for EPOLL_OUT,timeout=0   |
+  smc_poll                           |
+    if (!smc->conn.sndbuf_space)     |
+                                     |  smc_cdc_tx_handler
+                                     |    atomic_add sndbuf_space
+                                     |    smc_tx_sndbuf_nonfull
+                                     |      if (!test_bit SOCK_NOSPACE)
+                                     |        do not sk_write_space;
+      set_bit SOCK_NOSPACE;          |
+    return mask=0;                   |
 
-For instance, xe_bo_move() has:
+Application will sleep in epoll_wait as smc_poll returns 0. And
+smc_cdc_tx_handler will not call sk_write_space because the SOCK_NOSPACE
+has not be set. If there is no inflight cdc msg, sk_write_space will not be
+called any more, and application will sleep in epoll_wait forever.
+So check sndbuf_space again after NOSPACE flag is set to break the race.
 
- TP_printk("move_lacks_source:%s, migrate object %p [size %zu] from %s to %s device_id:%s",
-            __entry->move_lacks_source ? "yes" : "no", __entry->bo, __entry->size,
-            xe_mem_type_to_name[__entry->old_placement],
-            xe_mem_type_to_name[__entry->new_placement], __get_str(device_id))
-
-Where the "%s" references into xe_mem_type_to_name[]. This is an array of
-pointers that should be safe for the event to access. Instead of flagging
-this as a bad reference, if a reference points to an array, where the
-record field is the index, consider it safe.
-
-Link: https://lore.kernel.org/all/9dee19b6185d325d0e6fa5f7cbba81d007d99166.camel@sapience.com/
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20241231000646.324fb5f7@gandalf.local.home
-Fixes: 65a25d9f7ac02 ("tracing: Add "%s" check in test_event_printk()")
-Reported-by: Genes Lists <lists@sapience.com>
-Tested-by: Gene C <arch@sapience.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8dce2786a290 ("net/smc: smc_poll improvements")
+Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ net/smc/af_smc.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -359,6 +359,18 @@ static bool process_string(const char *f
- 	} while (s < e);
- 
- 	/*
-+	 * Check for arrays. If the argument has: foo[REC->val]
-+	 * then it is very likely that foo is an array of strings
-+	 * that are safe to use.
-+	 */
-+	r = strstr(s, "[");
-+	if (r && r < e) {
-+		r = strstr(r, "REC->");
-+		if (r && r < e)
-+			return true;
-+	}
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 664ddf5641de..3a4ae589671a 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -2110,6 +2110,13 @@ static __poll_t smc_poll(struct file *file, struct socket *sock,
+ 			} else {
+ 				sk_set_bit(SOCKWQ_ASYNC_NOSPACE, sk);
+ 				set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
 +
-+	/*
- 	 * If there's any strings in the argument consider this arg OK as it
- 	 * could be: REC->field ? "foo" : "bar" and we don't want to get into
- 	 * verifying that logic here.
++				if (sk->sk_state != SMC_INIT) {
++					/* Race breaker the same way as tcp_poll(). */
++					smp_mb__after_atomic();
++					if (atomic_read(&smc->conn.sndbuf_space))
++						mask |= EPOLLOUT | EPOLLWRNORM;
++				}
+ 			}
+ 			if (atomic_read(&smc->conn.bytes_to_rcv))
+ 				mask |= EPOLLIN | EPOLLRDNORM;
+-- 
+2.39.5
+
 
 
 
