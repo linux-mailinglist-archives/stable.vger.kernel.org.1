@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-107721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DE9BA02D42
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:03:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C00C4A02D3F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:03:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D26323A519B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:02:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78C8A3A6503
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:01:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D0186332;
-	Mon,  6 Jan 2025 16:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F028189B83;
+	Mon,  6 Jan 2025 16:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PuPKx82m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vm13tYPI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6C219B5AC;
-	Mon,  6 Jan 2025 16:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBE41D88AC;
+	Mon,  6 Jan 2025 16:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179332; cv=none; b=l80DL+moCcxtOpv320tMOe9byZHvZIjtEoFNf7X/kEUxrSbPzwCNoqAJNVjY6NnHcgqXrzeegrFO1dLRXkG2gpQ5wbXMaTXDNqQJbpaBX/NL0QozxujVIr2cyUMn8GEZ5mtsG4xNroRDtLr1EgrcUqCRmWx4JFheRY2p8z+h/ec=
+	t=1736179298; cv=none; b=Vr+g0dSLDNU+oTk/QV/sMhd9d61QiTc1vWSNGqB3R4Jnt0bKJ7eyS/ydhzd+AocHcBietXGlTRew0SYfkOzKF4SS6ZDWneN+UJISeNcdNwAIUUYzdCYH6sN/Zfj2ycG310gCvawb1jRV2R/SaxVw1pSGoa7cdrqXPBHVAig31rI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179332; c=relaxed/simple;
-	bh=YBRnbbETYGKrSs69xrOWrerPPdyG7vVTBTPKbO84Tc4=;
+	s=arc-20240116; t=1736179298; c=relaxed/simple;
+	bh=pN51KGmNtIyvCsbONzBtUko9U6pzZeunVS0NtI9LyQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pj6Et8D6MnleuYumnpsaUP0o3X+yVvAEAS7v4ThLlVBjz8xUUSO8/OoLXEd9DBmLvUB3HQ1HrFAqgBHlYsj9K+SHoIP6XiXLKCodX7cWr7rvpbRgRemVYov6PCdy5QwdnZiv9qPQzmLm1FrGUxDwEpY+Xsr5tQGDSmvcyqXDmPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PuPKx82m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B10C4CED2;
-	Mon,  6 Jan 2025 16:02:11 +0000 (UTC)
+	 MIME-Version; b=K/Jn/cHlFb3u2WbQL1O6SS1plQp5QVJtKFctL21oF4nIRK6Lp5k2Nqi1niTfn7X2GCabnqZ/2c325NzSThl2320zkGq9KWsq2j62WHo6DMPqtsIrJULByaafa4m0TrLSSEkVtV5B2kRcB7lyJG0IUGE2NxYIBLYZxAf6LQZ7QGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vm13tYPI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D1BC4CED2;
+	Mon,  6 Jan 2025 16:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179331;
-	bh=YBRnbbETYGKrSs69xrOWrerPPdyG7vVTBTPKbO84Tc4=;
+	s=korg; t=1736179297;
+	bh=pN51KGmNtIyvCsbONzBtUko9U6pzZeunVS0NtI9LyQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PuPKx82mhcV5lnkq1KSyms0v+Fb7GTGL3hsF3SKkRhSQv1pRC0r/HaMYBdhZ7ZBBO
-	 u19+vTP7hvbYoPG3wxpvNSoBgRQ+hcHJJVvhZ8wwARfN0oEy6e+a9uHro3VTf0zaN6
-	 9pk9GkBx5QrIw0mJLgt+uG38JLodCCCRRLaxrR+4=
+	b=Vm13tYPIkS3/ANbTkq/rQXXBvgmBPN92wnCuo9Ie65dKEPGsnedllTLxMjn7j7lU2
+	 ebZV3HkVawZTKJTc5OlZywIU4iDOnJoo5RZKL994Cs54DDyWb6pgFl1wS4tJ9xrQGb
+	 F1nlF0MDILhI+qihK0bRkKz1sRf8hcC9xyhFUU5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pascal Hambourg <pascal@plouf.fr.eu.org>,
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	Xin Long <lucien.xin@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 90/93] sky2: Add device ID 11ab:4373 for Marvell 88E8075
-Date: Mon,  6 Jan 2025 16:18:06 +0100
-Message-ID: <20250106151132.099143465@linuxfoundation.org>
+Subject: [PATCH 5.4 91/93] net/sctp: Prevent autoclose integer overflow in sctp_association_init()
+Date: Mon,  6 Jan 2025 16:18:07 +0100
+Message-ID: <20250106151132.136055002@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
 References: <20250106151128.686130933@linuxfoundation.org>
@@ -65,32 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pascal Hambourg <pascal@plouf.fr.eu.org>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-commit 03c8d0af2e409e15c16130b185e12b5efba0a6b9 upstream.
+commit 4e86729d1ff329815a6e8a920cb554a1d4cb5b8d upstream.
 
-A Marvell 88E8075 ethernet controller has this device ID instead of
-11ab:4370 and works fine with the sky2 driver.
+While by default max_autoclose equals to INT_MAX / HZ, one may set
+net.sctp.max_autoclose to UINT_MAX. There is code in
+sctp_association_init() that can consequently trigger overflow.
 
-Signed-off-by: Pascal Hambourg <pascal@plouf.fr.eu.org>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/10165a62-99fb-4be6-8c64-84afd6234085@plouf.fr.eu.org
+Fixes: 9f70f46bd4c7 ("sctp: properly latch and use autoclose value from sock to association")
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20241219162114.2863827-1-kniv@yandex-team.ru
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/sky2.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/sctp/associola.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/marvell/sky2.c
-+++ b/drivers/net/ethernet/marvell/sky2.c
-@@ -130,6 +130,7 @@ static const struct pci_device_id sky2_i
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x436C) }, /* 88E8072 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x436D) }, /* 88E8055 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4370) }, /* 88E8075 */
-+	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4373) }, /* 88E8075 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4380) }, /* 88E8057 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4381) }, /* 88E8059 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4382) }, /* 88E8079 */
+--- a/net/sctp/associola.c
++++ b/net/sctp/associola.c
+@@ -132,7 +132,8 @@ static struct sctp_association *sctp_ass
+ 		= 5 * asoc->rto_max;
+ 
+ 	asoc->timeouts[SCTP_EVENT_TIMEOUT_SACK] = asoc->sackdelay;
+-	asoc->timeouts[SCTP_EVENT_TIMEOUT_AUTOCLOSE] = sp->autoclose * HZ;
++	asoc->timeouts[SCTP_EVENT_TIMEOUT_AUTOCLOSE] =
++		(unsigned long)sp->autoclose * HZ;
+ 
+ 	/* Initializes the timers */
+ 	for (i = SCTP_EVENT_TIMEOUT_NONE; i < SCTP_NUM_TIMEOUT_TYPES; ++i)
 
 
 
