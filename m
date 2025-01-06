@@ -1,159 +1,157 @@
-Return-Path: <stable+bounces-107762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90E51A0315D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 21:26:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43470A03160
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 21:27:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE2D61886B7B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 20:26:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2AC61886B18
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 20:27:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B98AC8C1E;
-	Mon,  6 Jan 2025 20:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258D81DDC0F;
+	Mon,  6 Jan 2025 20:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PUorAg0v"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dswdM0Ju"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D701DD0FE;
-	Mon,  6 Jan 2025 20:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665DADDBC
+	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 20:27:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736195170; cv=none; b=d+sLsnYu+L+v9srFW0GC613Wf8E4ma2+Ah6RLdFnysCk+lctTiau57cVfsC3dafDeV1+pJUomepwwrLNumw1KvO+VVr19j87b2VUTZRD3wE5++XP0lKLyoRmCfJw+iiHnvPr1/EAU16cIhbzUjyYTRKeCLxkuL2oq41dw5Cznpc=
+	t=1736195267; cv=none; b=nKvBIPYXnYj84oP95Za1YoEAnQUGYTSoD2zvJl9bJODqK3WskgydD0s3/D7YRaMHliKBMIIA40z1bq6pvXy7UkxW3gQZ+M7Orx+MHq3sWaKWibmMiD/hpFrFxaS7mwEXYvlvTH5Mw80XImOYZJ6qJNWELS/2TGTtUUhNmGLyku4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736195170; c=relaxed/simple;
-	bh=Dmkw7h+pwZR7PNRImWJv7IGq90ezHGUewtcDGaWcLiE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Vdtxw7qblVB7DzlME+y9D460ofI8gudBRUn5OMkFfKslpgqM0T7NKmfGgTDFvZFReq8UDorggT0Glgq3Glc8g3SwfvPO9e1YkSq1VIxALixcFHHgpolwO9uPdRZYr+eEi1O2Fyos5FWrzGO/MH4HVn4W/PgIICfbx/VIy9XdXcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PUorAg0v; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ee709715d9so17182387a91.3;
-        Mon, 06 Jan 2025 12:26:08 -0800 (PST)
+	s=arc-20240116; t=1736195267; c=relaxed/simple;
+	bh=fSekIhehtZmEYM8m+UMCn4RAjCnAIb1B35lBYxB0u2I=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=N7RbA3qt26gjuaaTzJdtuNN2B1aaxF7/kxJ6xiyEvdZhhTo0T/9iYZpt+DAe2FDyFcWm68AYGIcLIZHcLWnp8ZTna9xZ+Iz154x9MsMITbH2359JBHKsJcCSm2PjqlYW1upjvQWK4/bOhnZdhbKhjocMBA7aW/DhsJe6j+Nj7I8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dswdM0Ju; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2ef728e36d5so21353484a91.3
+        for <stable@vger.kernel.org>; Mon, 06 Jan 2025 12:27:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736195168; x=1736799968; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=GrNl0YQyCQOVQbp1qVmX65QgwqOhk6aD8Sj9lELyy+4=;
-        b=PUorAg0vRu3Rgw/4s50cEpPtDZ1zcO0lobx65W/Grdi5WyCnat6xDFuNu0uedJQldq
-         z2N3EMzmfruQ3n2F7uXVTjjHTIZWE92gL+sn1yeVNNyH6A+aSyYFk9cV5P4tnFzWYTc6
-         19oAs8Bn57Lq+MAtUf5h5jycV0EVu+19OHtTpMmr9pBf1bQ/i3ji+mvpRdTsvVziAChX
-         EPFG+CE+r/gZcmfv9SfoCPvC49QelWkLQLO/+ov76y605d8+99hF0rzHRwM8EkkOb5wU
-         um1YXMbYfb/ttiqxuRUkYlDFkZ78CFEMu3papbT5dH1bgnAZqYeCsECqGC2weoJx4sHj
-         4VAQ==
+        d=google.com; s=20230601; t=1736195266; x=1736800066; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wiCvifj8dcSeBO9EgRDuEKt4b5UC2vhbCgxGSNIBg4E=;
+        b=dswdM0JuZNVC3b0sOdN1ui6lrKRnDCMFbnD2YjWM+A+ny9C9fCiVbqEPvsYUwoI0XA
+         S4ru6f7v5bxSBPaPloBaTHtHCio3BdfeHaGYzHpm5I4x7EFUE4Yzwfp14mZhENiOKpl5
+         nGvEWwFhzy8oCVTYh1narYZewxZd8v8F4rrSkLmQaU+AbvDB7yHs0F4p5hV34KADbeOU
+         UVvl25MSXxAtTtJGjVHDwclrXpqgw+jCBCEZnMdWh8+qAmkmGfSKgJCLe3tMJqHu5Q36
+         paGbvF2cMyEPsaGJ6M6TbMpJvm6wleywBZtbKSht5IOcKGzuuWyroX2wVL75fd58ThGd
+         /ssA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736195168; x=1736799968;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GrNl0YQyCQOVQbp1qVmX65QgwqOhk6aD8Sj9lELyy+4=;
-        b=n4uMYVZkqPt/5JMIrOTZzBwwPaSlrJ3vMzYp+MAqTZiAWbrV0Nz/vfD/2KOJrGx+zg
-         1bzPm1VJ8wtF+9zt/kLPSEgrIE0U4hk1z4RGJKR6+s1jraQBOunzScZniUoWEbhebCBA
-         2h5QBF+NceiPTO5VwaOMojCH0GttZVSMgGONPEzeWwHXQSNXjKQ9Ls/EHJzc6lJlb6Gc
-         f3DynecIPiyg96hdnKbADJVGFbMxwitsmV/f2MbnwEaws69Lm5spheonG41gavkqbU3t
-         pntf9M3+CGqLF0Itx4Kq5pS6lo43VyL99ed8kJGaRsWtRYv+0SZAIjt68bUNJGywluvI
-         ViRw==
-X-Forwarded-Encrypted: i=1; AJvYcCW3laDtX51pLQDAMX6e+FDSd8VF3wQX7I/a4IVvsekbmuV3dMnAZgOzn7CP/OnmVFZc1YGvEI2Q@vger.kernel.org, AJvYcCW9sFMcDDChd447CKk8iJCON8vDYo86oxxTiXcpgv+kkP8oN+LjTh4de2n9Pga/oOgNIxjElKSxcH7erBo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGNB6p98ko69nTrE7oclZl/lOzl1jmWf78eq1GYJ8Sr4/WmgvH
-	ByIzkzF64q1Gl2IulcrT3UjL4sbcU9kfaaHiGeCBQQKt2PeCJr/C
-X-Gm-Gg: ASbGncuF0nu/qb46ePB01HFRrEUlR97xBducHJ22ILem6L6+Mg/7uqvEvqamoE8q7A8
-	S5vQK880ySnzcWasltLCMxl3hwtr1JNLJ2etaQJ/yeyStKWrsLvnbfuBGj+lG/KH/qBclzs8LOO
-	OqM82+F003drmCfDY8HnCSy1wLkk+DFsjB+zt+K24qltOf7rUYbjTzWBQDDZFsQ72KyZhmW85/b
-	PAhcDnqtv2rtrJEsX77LU41TMn7PAyc3RiLLZbEXMTrsKyW9M1XHvvCCzlJKrlX+k5ccFvtrQXr
-	9pHw0hy+
-X-Google-Smtp-Source: AGHT+IERgVCR9lanqnApTNc6ho9a3G65/9nbvdrhBX4OSNPtos9CVWLl9qPXcJJuOS4O2ZOqRWtZpA==
-X-Received: by 2002:a17:90b:2e10:b0:2ee:fd53:2b03 with SMTP id 98e67ed59e1d1-2f452ec6ec7mr81836991a91.25.1736195168413;
-        Mon, 06 Jan 2025 12:26:08 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f53e1d31a0sm16269a91.1.2025.01.06.12.26.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Jan 2025 12:26:07 -0800 (PST)
-Message-ID: <95047ec5-9f40-4b49-b211-42387db6bf28@gmail.com>
-Date: Mon, 6 Jan 2025 12:26:06 -0800
+        d=1e100.net; s=20230601; t=1736195266; x=1736800066;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wiCvifj8dcSeBO9EgRDuEKt4b5UC2vhbCgxGSNIBg4E=;
+        b=sXyScqw7t1FgoaF5AVw+iscenTjpsfyY60m5KKK2hnOqJjl40azZKnKgV5ZY2sl8J1
+         pLlc50HYwWWk7NIzkGPoIWQyL5J9f0Yb4ymD2QTv4VjNSSLpLlCmU15iaSAwOo1CCjS3
+         v+JQ3JVp1ERN+sZBimQqXtmMjsbdcpGQHWeFWrn5SGRFeRdcuKg1YIw/Ynozka/hzTlp
+         gFUpouGTN79z4UJIkd4Y/T4XDzJJTqIITB74Z1eE1nqNjaCGOH0U+iV3LWBC+sPTHML2
+         9kotpf669eM6zj0RPngt0smyHLIJv2wDVaa0Cwn3SxkZrN6bn/5kkB/U217Cpx2IViL6
+         jHiA==
+X-Forwarded-Encrypted: i=1; AJvYcCWEsMBJCpNlh/FG2r7pYpsTwDdQRkkUss2z/RjNtc5s5Li2g3WsPuxv4UMgEzmBkt3frj6m63Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRtTzPTtGDTznAz5Zih3kuEVthp6Hhqep1JjoxXrKtRv9vkuED
+	MkL706Llq3kWKb8RRvXzaVZnY5s6sgpP1a6UWbxIW9KgH/CfWdhPvP21LIjs4SUQ6IF7HIK4rBg
+	XNg==
+X-Google-Smtp-Source: AGHT+IFHqTblkO6OHD8AhzygsDlYDwlbvubT/lnkJmxd2ec6upce4F2a9c5d4m1oJ88l3tpl8ctQEaZxo/I=
+X-Received: from pjbsn6.prod.google.com ([2002:a17:90b:2e86:b0:2f4:432d:250c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2649:b0:2ee:dd9b:e402
+ with SMTP id 98e67ed59e1d1-2f452e0e152mr109962634a91.12.1736195265768; Mon,
+ 06 Jan 2025 12:27:45 -0800 (PST)
+Date: Mon, 6 Jan 2025 12:27:44 -0800
+In-Reply-To: <Z3AWJjUDmfCnD99S@lappy>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/156] 6.12.9-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250106151141.738050441@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20241226033847.760293-1-gavinguo@igalia.com> <Z3AWJjUDmfCnD99S@lappy>
+Message-ID: <Z3w8wPRvjNyDXSQS@google.com>
+Subject: Re: [PATCH 6.6] KVM: x86: Make x2APIC ID 100% readonly
+From: Sean Christopherson <seanjc@google.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Gavin Guo <gavinguo@igalia.com>, stable@vger.kernel.org, mhal@rbox.co, 
+	haoyuwu254@gmail.com, pbonzini@redhat.com
+Content-Type: text/plain; charset="us-ascii"
 
-On 1/6/25 07:14, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.9 release.
-> There are 156 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Sat, Dec 28, 2024, Sasha Levin wrote:
+> On Thu, Dec 26, 2024 at 11:38:47AM +0800, Gavin Guo wrote:
+> > From: Sean Christopherson <seanjc@google.com>
+> > 
+> > [ Upstream commit 4b7c3f6d04bd53f2e5b228b6821fb8f5d1ba3071 ]
+> > 
+> > Ignore the userspace provided x2APIC ID when fixing up APIC state for
+> > KVM_SET_LAPIC, i.e. make the x2APIC fully readonly in KVM.  Commit
+> > a92e2543d6a8 ("KVM: x86: use hardware-compatible format for APIC ID
+> > register"), which added the fixup, didn't intend to allow userspace to
+> > modify the x2APIC ID.  In fact, that commit is when KVM first started
+> > treating the x2APIC ID as readonly, apparently to fix some race:
+> > 
+> > static inline u32 kvm_apic_id(struct kvm_lapic *apic)
+> > {
+> > -       return (kvm_lapic_get_reg(apic, APIC_ID) >> 24) & 0xff;
+> > +       /* To avoid a race between apic_base and following APIC_ID update when
+> > +        * switching to x2apic_mode, the x2apic mode returns initial x2apic id.
+> > +        */
+> > +       if (apic_x2apic_mode(apic))
+> > +               return apic->vcpu->vcpu_id;
+> > +
+> > +       return kvm_lapic_get_reg(apic, APIC_ID) >> 24;
+> > }
+> > 
+> > Furthermore, KVM doesn't support delivering interrupts to vCPUs with a
+> > modified x2APIC ID, but KVM *does* return the modified value on a guest
+> > RDMSR and for KVM_GET_LAPIC.  I.e. no remotely sane setup can actually
+> > work with a modified x2APIC ID.
+> > 
+> > Making the x2APIC ID fully readonly fixes a WARN in KVM's optimized map
+> > calculation, which expects the LDR to align with the x2APIC ID.
+> > 
+> >  WARNING: CPU: 2 PID: 958 at arch/x86/kvm/lapic.c:331 kvm_recalculate_apic_map+0x609/0xa00 [kvm]
+> >  CPU: 2 PID: 958 Comm: recalc_apic_map Not tainted 6.4.0-rc3-vanilla+ #35
+> >  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.2-1-1 04/01/2014
+> >  RIP: 0010:kvm_recalculate_apic_map+0x609/0xa00 [kvm]
+> >  Call Trace:
+> >   <TASK>
+> >   kvm_apic_set_state+0x1cf/0x5b0 [kvm]
+> >   kvm_arch_vcpu_ioctl+0x1806/0x2100 [kvm]
+> >   kvm_vcpu_ioctl+0x663/0x8a0 [kvm]
+> >   __x64_sys_ioctl+0xb8/0xf0
+> >   do_syscall_64+0x56/0x80
+> >   entry_SYSCALL_64_after_hwframe+0x46/0xb0
+> >  RIP: 0033:0x7fade8b9dd6f
+> > 
+> > Unfortunately, the WARN can still trigger for other CPUs than the current
+> > one by racing against KVM_SET_LAPIC, so remove it completely.
+> > 
+> > Reported-by: Michal Luczaj <mhal@rbox.co>
+> > Closes: https://lore.kernel.org/all/814baa0c-1eaa-4503-129f-059917365e80@rbox.co
+> > Reported-by: Haoyu Wu <haoyuwu254@gmail.com>
+> > Closes: https://lore.kernel.org/all/20240126161633.62529-1-haoyuwu254@gmail.com
+> > Reported-by: syzbot+545f1326f405db4e1c3e@syzkaller.appspotmail.com
+> > Closes: https://lore.kernel.org/all/000000000000c2a6b9061cbca3c3@google.com
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > Message-ID: <20240802202941.344889-2-seanjc@google.com>
+> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> > Signed-off-by: Gavin Guo <gavinguo@igalia.com>
 > 
-> Responses should be made by Wed, 08 Jan 2025 15:11:04 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.9-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
- > greg k-h
+> As this one isn't tagged for stable, the KVM maintainers should ack the
+> backport before we take it.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+What's the motivation for applying this to 6.6?  AFAIK, there's no real world use
+case that benefits from the patch, the fix is purely to plug a hole where fuzzers,
+e.g. syzkaller, can trip a WARN.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+That said, this is essentially a prerequisite for "KVM: x86: Re-split x2APIC ICR
+into ICR+ICR2 for AMD (x2AVIC)"[*], and it's relatively low risk, so I'm not
+opposed to landing it in 6.6.
 
--- 
-Florian
+[*] https://lore.kernel.org/all/2024100123-unreached-enrage-2cb1@gregkh
 
