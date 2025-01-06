@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57023A02B8D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:44:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF2C3A02C4D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0678B1663A4
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:43:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3032165673
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:52:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A249B1D7999;
-	Mon,  6 Jan 2025 15:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B6C1482F5;
+	Mon,  6 Jan 2025 15:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JcgpanaM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lUlKYNj2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D7C1607AA;
-	Mon,  6 Jan 2025 15:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724EA13B59A;
+	Mon,  6 Jan 2025 15:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178223; cv=none; b=nlyTzlxZMiwbUmtCq5jkw2PHjSM6O/PkVBhTRkQR5q4CJRKYdY5zcqXxg3GugpJ50NXPSdTNSGkKzhRYVmE7h+i/lwmdbYwr+CgaKGYDEJf0KGBUaus+8kOduGYLrRXX2eNC+qwzQmBPlFYQIrdBXRGSkUBtGk98UOfiWtgrXpA=
+	t=1736178699; cv=none; b=glX44D+1fubLntutfi3WJthPnFkqOm58cT8T7voEIvYdB+gWBxe5w/TOviBqEhjJmtBhUuGnx7gUnE1Tx9GU0uxI+uLhEoTf2wkxSRJDGSBuKqT/SVfXBV6oUxjuhtiRn6SDAJG6+mft9QQXUr0R9LzjNaRvW7C/bz4HE122gk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178223; c=relaxed/simple;
-	bh=MSsSFfW6NOLchXSAbuFRsR20lKCBpRgsZq+XdFmDMg8=;
+	s=arc-20240116; t=1736178699; c=relaxed/simple;
+	bh=2+iGkMaVIaLCWgYnmqARuA0se1xKBoedPb3VnR5ztSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kcuSSOOvF3pVS3korcyS9NpsNWs3K262jzCe97MW2xIjH0I9p98W7hv1ClGk333vGnlLUdHPdmDhGEJAhRwqHNcYq4YlTkRk7hlfO2IMnsnuRM/HaHFptk2dWINkBLpUTrFN9/AotFkBWxVUKJglEi/VhxuMCZb6tV8IENX/ceY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JcgpanaM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC652C4CED2;
-	Mon,  6 Jan 2025 15:43:42 +0000 (UTC)
+	 MIME-Version; b=BeeK9nxiTR/91TOrgaMPxhHQigsB7y/Y8iFGZ8tEiD9ZQqoMM+4k7x4pDl8gEHyaB+JES9dsrHeS+X5MbcBGRJu+CspeDLXz/AO3GPP/fh+W5YnP6AtMkKJL0eowgO+Ha+ZWfC/haD4JEBNIIKI3j354B0AzktdPgYr0EM0L+ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lUlKYNj2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E031CC4CED2;
+	Mon,  6 Jan 2025 15:51:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178223;
-	bh=MSsSFfW6NOLchXSAbuFRsR20lKCBpRgsZq+XdFmDMg8=;
+	s=korg; t=1736178699;
+	bh=2+iGkMaVIaLCWgYnmqARuA0se1xKBoedPb3VnR5ztSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JcgpanaMIHzipkF1E3yff3OUKsyNcECM+TWRfigGFC1yTsKy0vVGgNocbCZD4Dof9
-	 4v+3N1EMy4zj/GMZBuzVjzNJVekjVth+N0LY4+RdkO9XDOc2F9Awy5ZZEPQJkKVdtZ
-	 YsvPrYoXe6q51/0SAXzbi9YPXsjitFRkcrNAbYQI=
+	b=lUlKYNj2BEGmM+xKKCTIdsXPZeRsBEajLq3EkajHz4o0sxR3GHrjpD9IALkYnN7mQ
+	 wVF5elx8Hd6MYGzlvxDyDtdPeEn8s0cfiwYXShkpnWoqoqEzwxmppCHFwV1OtBG25q
+	 +71QG5k5hUYlHssAo2HEHNrX4vkjjTrdhjT6SvBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Wang <cong.wang@bytedance.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
+	NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 046/138] tcp_bpf: Charge receive socket buffer in bpf_tcp_ingress()
+Subject: [PATCH 5.15 062/168] nfsd: restore callback functionality for NFSv4.0
 Date: Mon,  6 Jan 2025 16:16:10 +0100
-Message-ID: <20250106151134.981550802@linuxfoundation.org>
+Message-ID: <20250106151140.804447110@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <cong.wang@bytedance.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 54f89b3178d5448dd4457afbb98fc1ab99090a65 ]
+[ Upstream commit 7917f01a286ce01e9c085e24468421f596ee1a0c ]
 
-When bpf_tcp_ingress() is called, the skmsg is being redirected to the
-ingress of the destination socket. Therefore, we should charge its
-receive socket buffer, instead of sending socket buffer.
+A recent patch inadvertently broke callbacks for NFSv4.0.
 
-Because sk_rmem_schedule() tests pfmemalloc of skb, we need to
-introduce a wrapper and call it for skmsg.
+In the 4.0 case we do not expect a session to be found but still need to
+call setup_callback_client() which will not try to dereference it.
 
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Signed-off-by: Cong Wang <cong.wang@bytedance.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20241210012039.1669389-2-zijianzhang@bytedance.com
+This patch moves the check for failure to find a session into the 4.1+
+branch of setup_callback_client()
+
+Fixes: 1e02c641c3a4 ("NFSD: Prevent NULL dereference in nfsd4_process_cb_update()")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sock.h | 10 ++++++++--
- net/ipv4/tcp_bpf.c |  2 +-
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ fs/nfsd/nfs4callback.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index c45958a68978..548f9aab9aa1 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1525,7 +1525,7 @@ static inline bool sk_wmem_schedule(struct sock *sk, int size)
- }
+diff --git a/fs/nfsd/nfs4callback.c b/fs/nfsd/nfs4callback.c
+index a6dc8c479a4b..d2885dd4822d 100644
+--- a/fs/nfsd/nfs4callback.c
++++ b/fs/nfsd/nfs4callback.c
+@@ -986,7 +986,7 @@ static int setup_callback_client(struct nfs4_client *clp, struct nfs4_cb_conn *c
+ 		args.authflavor = clp->cl_cred.cr_flavor;
+ 		clp->cl_cb_ident = conn->cb_ident;
+ 	} else {
+-		if (!conn->cb_xprt)
++		if (!conn->cb_xprt || !ses)
+ 			return -EINVAL;
+ 		clp->cl_cb_session = ses;
+ 		args.bc_xprt = conn->cb_xprt;
+@@ -1379,8 +1379,6 @@ static void nfsd4_process_cb_update(struct nfsd4_callback *cb)
+ 		ses = c->cn_session;
+ 	}
+ 	spin_unlock(&clp->cl_lock);
+-	if (!c)
+-		return;
  
- static inline bool
--sk_rmem_schedule(struct sock *sk, struct sk_buff *skb, int size)
-+__sk_rmem_schedule(struct sock *sk, int size, bool pfmemalloc)
- {
- 	int delta;
- 
-@@ -1533,7 +1533,13 @@ sk_rmem_schedule(struct sock *sk, struct sk_buff *skb, int size)
- 		return true;
- 	delta = size - sk->sk_forward_alloc;
- 	return delta <= 0 || __sk_mem_schedule(sk, delta, SK_MEM_RECV) ||
--		skb_pfmemalloc(skb);
-+	       pfmemalloc;
-+}
-+
-+static inline bool
-+sk_rmem_schedule(struct sock *sk, struct sk_buff *skb, int size)
-+{
-+	return __sk_rmem_schedule(sk, size, skb_pfmemalloc(skb));
- }
- 
- static inline void sk_mem_reclaim(struct sock *sk)
-diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-index 85ae2c310148..804464beb343 100644
---- a/net/ipv4/tcp_bpf.c
-+++ b/net/ipv4/tcp_bpf.c
-@@ -111,7 +111,7 @@ static int bpf_tcp_ingress(struct sock *sk, struct sk_psock *psock,
- 		sge = sk_msg_elem(msg, i);
- 		size = (apply && apply_bytes < sge->length) ?
- 			apply_bytes : sge->length;
--		if (!sk_wmem_schedule(sk, size)) {
-+		if (!__sk_rmem_schedule(sk, size, false)) {
- 			if (!copied)
- 				ret = -ENOMEM;
- 			break;
+ 	err = setup_callback_client(clp, &conn, ses);
+ 	if (err) {
 -- 
 2.39.5
 
