@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-107553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37090A02C5B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 852B8A02B00
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67119188776F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A89CB3A6257
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D8B142E7C;
-	Mon,  6 Jan 2025 15:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98E8715855C;
+	Mon,  6 Jan 2025 15:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRUPSpp+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mf0c9hpC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0092381728;
-	Mon,  6 Jan 2025 15:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBB714D28C;
+	Mon,  6 Jan 2025 15:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178818; cv=none; b=r1Ef4EL7Jf+PjedTAMunIfRvIrkLy+AmrVckAyUg1TNaw4gwMA49Knzrm3sxGH5VXBkOshf8G+bbe55YinGDmpfpbraCybpkcmludw/nIdkjVzD0da6ude6JwCFNxIQK22NsPNISV4rcyMYUPFRJWh7tltZvbI6Ae5WqTeBx1Qw=
+	t=1736177894; cv=none; b=SPgFWW5DTCbaF5Kfih+Q5EKXTL04rLJm2zpo+s2BSDjU/zvg3yGDAxajGAw9hc/NxTYegYY4zUHwevfMNQbXzJacNF+Nqq4yypr9L4uzpC9TWnKkq2Z6SLbDXP0ZHCPl3FhSWA58BPvI9MTQLAglLCOh7wXXXVtc7aBLkPnnX5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178818; c=relaxed/simple;
-	bh=7sRa/boHvfusDat9KwL4g0BpdA7BL+iDL9qbmM2i5Nc=;
+	s=arc-20240116; t=1736177894; c=relaxed/simple;
+	bh=C5JEKG5RgZH5KRrMcYtYvL5Uq2z1F6hYLqNSYk9u0A8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h5Vt4RnRR5Hne74jD9P1aACRb31GmEXtl0eo8y+NTWupQgCiUtFo5Yzrqj4MWIqx9z373bm4GxCDl0ZeOlNYgOIjHij3zp3bClbrDffxC5hsbCgWSDcfYqtIF89c1RDUDhwdh9iGGVXUvNRNLQAGjyr7HdxAWD/Q+GiUH86yQmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRUPSpp+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD20C4CED2;
-	Mon,  6 Jan 2025 15:53:37 +0000 (UTC)
+	 MIME-Version; b=HWLJVxaKIvpX4Wbwv+APfHr/bPsSGl390jEjD/e9bV4xp6XNYsVpBgLR092k+2PjpH+fgyZpGJrQAlDp3c6Zudev6qyHf2Dd32ofDOgqlO/R21mw8q3bvbaZaK2UeO0PryZmlm8N29VkusYurp7EFWjTRJF+HGuKelNr9/uJlFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mf0c9hpC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C73C4CED2;
+	Mon,  6 Jan 2025 15:38:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178817;
-	bh=7sRa/boHvfusDat9KwL4g0BpdA7BL+iDL9qbmM2i5Nc=;
+	s=korg; t=1736177894;
+	bh=C5JEKG5RgZH5KRrMcYtYvL5Uq2z1F6hYLqNSYk9u0A8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zRUPSpp+qbkCvWwli24jfxiYwipdH+m03rBTXrtDiFIlXHglhwIzxvJZ2o3JNENGK
-	 5D0/bdo0uD2j5k8RNspPfZ/xqKzD4jJP5jZXlTnLOnS2NP9Frs/Dex5E8Ykejy3tQR
-	 0huv5EFWqkOTJhc9oZqF7zOCdci1GaZp5HHHxulI=
+	b=mf0c9hpCt6Y9l9HcVlXtlwYDidD8Fj6LZne1B4RbHQoWlBe1YVL8VkfedRG/fA1qU
+	 U5Q3tWuMPUAeNjUUKoARYfe9RV8kgP0ykat/HdLp/6PBAjSnxr6nnsppmh8/RGsD9i
+	 N021ES+qc1sb9gy/15caurinXQKmN+qILuK+/63o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.15 071/168] dmaengine: mv_xor: fix child node refcount handling in early exit
+	kernel test robot <lkp@intel.com>,
+	Vineet Gupta <vgupta@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 093/156] ARC: build: disallow invalid PAE40 + 4K page config
 Date: Mon,  6 Jan 2025 16:16:19 +0100
-Message-ID: <20250106151141.147892828@linuxfoundation.org>
+Message-ID: <20250106151145.228665590@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Vineet Gupta <vgupta@kernel.org>
 
-commit 362f1bf98a3ecb5a2a4fcbdaa9718c8403beceb2 upstream.
+[ Upstream commit 8871331b1769978ecece205a430338a2581e5050 ]
 
-The for_each_child_of_node() loop requires explicit calls to
-of_node_put() to decrement the child's refcount upon early exits (break,
-goto, return).
+The config option being built was
+| CONFIG_ARC_MMU_V4=y
+| CONFIG_ARC_PAGE_SIZE_4K=y
+| CONFIG_HIGHMEM=y
+| CONFIG_ARC_HAS_PAE40=y
 
-Add the missing calls in the two early exits before the goto
-instructions.
+This was hitting a BUILD_BUG_ON() since a 4K page can't hoist 1k, 8-byte
+PTE entries (8 byte due to PAE40). BUILD_BUG_ON() is a good last ditch
+resort, but such a config needs to be disallowed explicitly in Kconfig.
 
-Cc: stable@vger.kernel.org
-Fixes: f7d12ef53ddf ("dma: mv_xor: add Device Tree binding")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20241011-dma_mv_xor_of_node_put-v1-1-3c2de819f463@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Side-note: the actual fix is single liner dependency, but while at it
+cleaned out a few things:
+ - 4K dependency on MMU v3 or v4 is always true, since 288ff7de62af09
+   ("ARC: retire MMUv1 and MMUv2 support")
+ - PAE40 dependency in on MMU ver not really ISA, although that follows
+   eventually.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202409160223.xydgucbY-lkp@intel.com/
+Signed-off-by: Vineet Gupta <vgupta@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/mv_xor.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arc/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/dma/mv_xor.c
-+++ b/drivers/dma/mv_xor.c
-@@ -1393,6 +1393,7 @@ static int mv_xor_probe(struct platform_
- 			irq = irq_of_parse_and_map(np, 0);
- 			if (!irq) {
- 				ret = -ENODEV;
-+				of_node_put(np);
- 				goto err_channel_add;
- 			}
+diff --git a/arch/arc/Kconfig b/arch/arc/Kconfig
+index 5b2488142041..69c6e71fa1e6 100644
+--- a/arch/arc/Kconfig
++++ b/arch/arc/Kconfig
+@@ -297,7 +297,6 @@ config ARC_PAGE_SIZE_16K
+ config ARC_PAGE_SIZE_4K
+ 	bool "4KB"
+ 	select HAVE_PAGE_SIZE_4KB
+-	depends on ARC_MMU_V3 || ARC_MMU_V4
  
-@@ -1401,6 +1402,7 @@ static int mv_xor_probe(struct platform_
- 			if (IS_ERR(chan)) {
- 				ret = PTR_ERR(chan);
- 				irq_dispose_mapping(irq);
-+				of_node_put(np);
- 				goto err_channel_add;
- 			}
+ endchoice
  
+@@ -474,7 +473,8 @@ config HIGHMEM
+ 
+ config ARC_HAS_PAE40
+ 	bool "Support for the 40-bit Physical Address Extension"
+-	depends on ISA_ARCV2
++	depends on MMU_V4
++	depends on !ARC_PAGE_SIZE_4K
+ 	select HIGHMEM
+ 	select PHYS_ADDR_T_64BIT
+ 	help
+-- 
+2.39.5
+
 
 
 
