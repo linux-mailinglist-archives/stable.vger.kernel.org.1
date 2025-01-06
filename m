@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-106884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 498CDA02925
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:20:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3554A02B8C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:44:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1160C1886345
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:20:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCE6C164CAD
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C686A1662EF;
-	Mon,  6 Jan 2025 15:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0671DA112;
+	Mon,  6 Jan 2025 15:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UgRvFWYv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aeZfaCZR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81948157E82;
-	Mon,  6 Jan 2025 15:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BAC7082A;
+	Mon,  6 Jan 2025 15:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176797; cv=none; b=BKQx9LjZpm8QFfVrf2Qod9crr7hZvTpf+zItLGkmBtzl2hgcQS0OP5Kr64KvsYcjfsuoYSm3SrtD6Vcuew+3eOReuhniuSuwR+6pjiEf7tPV6ssFbgQgBzxAceeTPe+dX70B95S2DpX8OeDAVtGZAaUqb++bEajA57WQIc7W/y4=
+	t=1736178214; cv=none; b=hee+UC+l3FjecW7kHg3Dx2LlkVNhxYmbm4HuZrEZbaM/bKyBGGXnZIk7y5/1+fSybMhVWaA1SJ9J8X13lfbSABPWBk+GK+rB0Bfym49xFo6KA0vdkMZmFGJSwqivTnYs7zTGfUnjBHUvRtax7NaWpSZdyoUlEKCwBs5rREq1PUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176797; c=relaxed/simple;
-	bh=2er5CSH0vC738TbF9so/uP7ynA0O3kg2sFgR4MmNVTs=;
+	s=arc-20240116; t=1736178214; c=relaxed/simple;
+	bh=+kcneY8FNo3tjJBpoVkDLh/1jURDGmu4JF2MtZZJsUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vDmaSt6ROwavIylqCZZCK0vboPUnirmBC+bLQ/VNArh68AGsywqdocQYOrxWexrezNjdPRsZQsxwJ2sfLZENwHbPHZcYivcMKa5r9vS9sYJJvLOSR9vatEneI8aDaEHrR+h71dLinlIbSeq1VKkQxdwn+PZAwLqd+nQ5EC8Jn4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UgRvFWYv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994B5C4CED6;
-	Mon,  6 Jan 2025 15:19:56 +0000 (UTC)
+	 MIME-Version; b=fTh5WVJUw7+wEBGPiDUAuk+J3k/+DSF0bzrrIMNxrxuefGL8OUbNZ4WAD3DE1JdG1RlNrheJ6jcXCqGJ3Ep/MT1kXE7aF2Pm3wf11UGXySW9On5toNlShE7saTBkQM4PT86WbU3/WjACW60V/zfWRrth434Fgh0H589/yIV3F24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aeZfaCZR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EAC3C4CED2;
+	Mon,  6 Jan 2025 15:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176797;
-	bh=2er5CSH0vC738TbF9so/uP7ynA0O3kg2sFgR4MmNVTs=;
+	s=korg; t=1736178214;
+	bh=+kcneY8FNo3tjJBpoVkDLh/1jURDGmu4JF2MtZZJsUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UgRvFWYvkvka4RVZvGHT+61sG8jrMrzntMQcscQETGycUh+Fr9p6XoC5i4n29smke
-	 s5FMJzMHlq4L1bKNjKdOyc/sSQT+wYKYHz/yO6WOA0yH8CzBbtbkqMGNq1xCXLZ7F9
-	 G/Uu7kkQiT7UqfUP/otKrDMHPOpKkpM2HkvNbr+c=
+	b=aeZfaCZR5EKK2VHcTiwiYBhU/mYkNoWB1KtgKB4Dnnb1C6bFGeNJvfPBT1jlhAM82
+	 /6rzaKuFtDVjozFlR4O06FMya+nTyDIipTELDs8aE09ANC2NjYg8xCfhsKR3y+f5D8
+	 /tQFJpJZsKOc9uBW7UDbGyQ+jojNQUCx69kz03w8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiao Liang <shaw.leon@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 35/81] net: Fix netns for ip_tunnel_init_flow()
+	Jing Xia <jing.xia@unisoc.com>,
+	Xuewen Yan <xuewen.yan@unisoc.com>,
+	Brian Geffon <bgeffon@google.com>,
+	Benoit Lize <lizeb@google.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.10 043/138] epoll: Add synchronous wakeup support for ep_poll_callback
 Date: Mon,  6 Jan 2025 16:16:07 +0100
-Message-ID: <20250106151130.763819370@linuxfoundation.org>
+Message-ID: <20250106151134.868891493@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiao Liang <shaw.leon@gmail.com>
+From: Xuewen Yan <xuewen.yan@unisoc.com>
 
-[ Upstream commit b5a7b661a073727219fedc35f5619f62418ffe72 ]
+commit 900bbaae67e980945dec74d36f8afe0de7556d5a upstream.
 
-The device denoted by tunnel->parms.link resides in the underlay net
-namespace. Therefore pass tunnel->net to ip_tunnel_init_flow().
+Now, the epoll only use wake_up() interface to wake up task.
+However, sometimes, there are epoll users which want to use
+the synchronous wakeup flag to hint the scheduler, such as
+Android binder driver.
+So add a wake_up_sync() define, and use the wake_up_sync()
+when the sync is true in ep_poll_callback().
 
-Fixes: db53cd3d88dc ("net: Handle l3mdev in ip_tunnel_init_flow")
-Signed-off-by: Xiao Liang <shaw.leon@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20241219130336.103839-1-shaw.leon@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Co-developed-by: Jing Xia <jing.xia@unisoc.com>
+Signed-off-by: Jing Xia <jing.xia@unisoc.com>
+Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
+Link: https://lore.kernel.org/r/20240426080548.8203-1-xuewen.yan@unisoc.com
+Tested-by: Brian Geffon <bgeffon@google.com>
+Reviewed-by: Brian Geffon <bgeffon@google.com>
+Reported-by: Benoit Lize <lizeb@google.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Cc: Brian Geffon <bgeffon@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c | 3 +--
- net/ipv4/ip_tunnel.c                                | 6 +++---
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ fs/eventpoll.c       |    5 ++++-
+ include/linux/wait.h |    1 +
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c
-index b3472fb94617..8883ef012747 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c
-@@ -423,8 +423,7 @@ mlxsw_sp_span_gretap4_route(const struct net_device *to_dev,
- 
- 	parms = mlxsw_sp_ipip_netdev_parms4(to_dev);
- 	ip_tunnel_init_flow(&fl4, parms.iph.protocol, *daddrp, *saddrp,
--			    0, 0, dev_net(to_dev), parms.link, tun->fwmark, 0,
--			    0);
-+			    0, 0, tun->net, parms.link, tun->fwmark, 0, 0);
- 
- 	rt = ip_route_output_key(tun->net, &fl4);
- 	if (IS_ERR(rt))
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index 4f30ccf2d321..67cabc40f1dc 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -294,7 +294,7 @@ static int ip_tunnel_bind_dev(struct net_device *dev)
- 
- 		ip_tunnel_init_flow(&fl4, iph->protocol, iph->daddr,
- 				    iph->saddr, tunnel->parms.o_key,
--				    iph->tos & INET_DSCP_MASK, dev_net(dev),
-+				    iph->tos & INET_DSCP_MASK, tunnel->net,
- 				    tunnel->parms.link, tunnel->fwmark, 0, 0);
- 		rt = ip_route_output_key(tunnel->net, &fl4);
- 
-@@ -611,7 +611,7 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -1276,7 +1276,10 @@ static int ep_poll_callback(wait_queue_e
+ 				break;
+ 			}
+ 		}
+-		wake_up(&ep->wq);
++		if (sync)
++			wake_up_sync(&ep->wq);
++		else
++			wake_up(&ep->wq);
  	}
- 	ip_tunnel_init_flow(&fl4, proto, key->u.ipv4.dst, key->u.ipv4.src,
- 			    tunnel_id_to_key32(key->tun_id),
--			    tos & INET_DSCP_MASK, dev_net(dev), 0, skb->mark,
-+			    tos & INET_DSCP_MASK, tunnel->net, 0, skb->mark,
- 			    skb_get_hash(skb), key->flow_flags);
+ 	if (waitqueue_active(&ep->poll_wait))
+ 		pwake++;
+--- a/include/linux/wait.h
++++ b/include/linux/wait.h
+@@ -214,6 +214,7 @@ void __wake_up_pollfree(struct wait_queu
+ #define wake_up_all(x)			__wake_up(x, TASK_NORMAL, 0, NULL)
+ #define wake_up_locked(x)		__wake_up_locked((x), TASK_NORMAL, 1)
+ #define wake_up_all_locked(x)		__wake_up_locked((x), TASK_NORMAL, 0)
++#define wake_up_sync(x)			__wake_up_sync(x, TASK_NORMAL)
  
- 	if (!tunnel_hlen)
-@@ -774,7 +774,7 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 
- 	ip_tunnel_init_flow(&fl4, protocol, dst, tnl_params->saddr,
- 			    tunnel->parms.o_key, tos & INET_DSCP_MASK,
--			    dev_net(dev), READ_ONCE(tunnel->parms.link),
-+			    tunnel->net, READ_ONCE(tunnel->parms.link),
- 			    tunnel->fwmark, skb_get_hash(skb), 0);
- 
- 	if (ip_tunnel_encap(skb, &tunnel->encap, &protocol, &fl4) < 0)
--- 
-2.39.5
-
+ #define wake_up_interruptible(x)	__wake_up(x, TASK_INTERRUPTIBLE, 1, NULL)
+ #define wake_up_interruptible_nr(x, nr)	__wake_up(x, TASK_INTERRUPTIBLE, nr, NULL)
 
 
 
