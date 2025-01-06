@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-107401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4974A02BAB
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:45:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F430A02C6A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:54:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BAD7188618A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:45:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E3EE188774C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091811DB34C;
-	Mon,  6 Jan 2025 15:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1346E13E02D;
+	Mon,  6 Jan 2025 15:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqHc+ho5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kiTtTAnB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93641DE3B1;
-	Mon,  6 Jan 2025 15:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C2C13BC39;
+	Mon,  6 Jan 2025 15:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178352; cv=none; b=Y5KHc1scH6nlKxt7MPTTrEnqrGLo/CWs0oplm2nj43PgqVC+819jyZPUBmUuxjd1UilkAyCDZnM4HrKR12ftHXsVYSwdz9KElQRYLrC9lnEqKmJzpiBvDDuDyUxHb3UoJl0gNU9bU4NHF9ugjpu3KL+Ko2T0idT6DEalhxTv0OQ=
+	t=1736178829; cv=none; b=nG6QdHXR607z14DAw+/2HMAVJDe1RgliK9j57NC+pEXxRJGWBFtuvLC8yuQeKYVF40HFxG+nFXznD2KKAm1DsXEEzmx7ICvuSmxxzrZpq8haFSnq3PAPN6lFb/hSWY7mUDqWfzHyp53KamOghneUubpa/cutqjqsP5Wcdn7+oJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178352; c=relaxed/simple;
-	bh=spGbcoeNoyJkWW1kzw5AYEWYt4xymtpWTfJQJVN+5pg=;
+	s=arc-20240116; t=1736178829; c=relaxed/simple;
+	bh=MXmxjrHouHGoRboskVtMa3rBryGwsE26kCLEnSW5y/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HhbFWPvkbDsZJ/G0uVIbZpT2is6Xae9jEK6QDYTQt0RBUsWkCiJRE4j28Xt43mcj1sZQT6HISA9RDvzXbpl/Jc4NYjjqxgKcpJjuEv78YwheuJrhmna4o7eef0NrvsqJQmRuOYeeJZ7ErVZmlU55aLDk3EfOTkvEw8PsP7OTV9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqHc+ho5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E6AC4CED2;
-	Mon,  6 Jan 2025 15:45:52 +0000 (UTC)
+	 MIME-Version; b=A3gJ0h/GqwAPioxflI4cyujLAFbGw/yG8IRXBaWpW/zVUucas/nG05D7O7HKI5WKJEIrXOSrEzL7DNWf73WiNEY/z1DIpG433FA6t9rTvH212WbkFguS9uLivsVyH4BID65kpCIyUWVyqheaWgzIMPGWkzIv/ya2YItB2AoRW5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kiTtTAnB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E7AC4CED2;
+	Mon,  6 Jan 2025 15:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178352;
-	bh=spGbcoeNoyJkWW1kzw5AYEWYt4xymtpWTfJQJVN+5pg=;
+	s=korg; t=1736178829;
+	bh=MXmxjrHouHGoRboskVtMa3rBryGwsE26kCLEnSW5y/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RqHc+ho5nmElAhhGT29+vtvHnWs12G6Z9OIbRLwclJ5YBBV/ueQAn55tTfFGjIwxh
-	 0VWlL6bbsIQdl1/j1R7b/20PQDYhwzwnjmlyukdgqIk/c8LlxI45b8quMcWVoepgkg
-	 +U+TOuwaVWJfBXWvx+x0YlwdeCkCC++2Rd6SPXyM=
+	b=kiTtTAnBSKuLEZZu5FJQdqOge7S5UxFRnTuI5HUWCT24fHanUrwtkKo8HDZG0VCW0
+	 uEljVdOLXcFlgeTQaUJ5JUUAkkkuo16MEikgml3lWwh/MWLm4XWws8q99bNNi6WHhW
+	 T7J22xTRGRgaM++6SsIO2MyaQFtnZr97ANYOR0K8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 058/138] tracing/kprobe: Make trace_kprobes module callback called after jump_label update
-Date: Mon,  6 Jan 2025 16:16:22 +0100
-Message-ID: <20250106151135.432295023@linuxfoundation.org>
+Subject: [PATCH 5.15 075/168] tracing/kprobe: Make trace_kprobes module callback called after jump_label update
+Date: Mon,  6 Jan 2025 16:16:23 +0100
+Message-ID: <20250106151141.299494589@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -85,10 +85,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
-index 164779c6d133..646109d389e9 100644
+index baaaf9bc05f2..3a1c54c9918b 100644
 --- a/kernel/trace/trace_kprobe.c
 +++ b/kernel/trace/trace_kprobe.c
-@@ -704,7 +704,7 @@ static int trace_kprobe_module_callback(struct notifier_block *nb,
+@@ -705,7 +705,7 @@ static int trace_kprobe_module_callback(struct notifier_block *nb,
  
  static struct notifier_block trace_kprobe_module_nb = {
  	.notifier_call = trace_kprobe_module_callback,
@@ -96,7 +96,7 @@ index 164779c6d133..646109d389e9 100644
 +	.priority = 2	/* Invoked after kprobe and jump_label module callback */
  };
  
- /* Convert certain expected symbols into '_' when generating event names */
+ struct count_symbols_struct {
 -- 
 2.39.5
 
