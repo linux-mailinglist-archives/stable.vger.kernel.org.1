@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-107093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DA59A02A1F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F76FA02AD9
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:38:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E52C87A2337
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 273B218820EF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E31B1DB37B;
-	Mon,  6 Jan 2025 15:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F06C1DE2A0;
+	Mon,  6 Jan 2025 15:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZLfHeEK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IR0qvtyv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5731DACBB;
-	Mon,  6 Jan 2025 15:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E351086332;
+	Mon,  6 Jan 2025 15:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177430; cv=none; b=ghPUNWzu8h2Iy4V4e8tZpCroAaw+JIWXpE8BZDhgsBQvnrsbWBk8rOnONtu1AkUNODkCh/9lFJ0ltBDStIirrfCPJl07gyy+wU6sNciZwhabP2eaIbP+To/aeIGalsJ/UBrlv5hV+podOezIpkhW1R97a3SjUY0LQYIf6CCotb8=
+	t=1736177850; cv=none; b=MBD80sqMpk9ynShWvE5rL6rSe5p46IqVrheNZiXBTGvcMTaYs8EygiNq/2ABBQhM2DH98tWA8460+b1Blp8GANW3yekXVxSfLbmKEQG9k6rGg2bZAopDtyRRv52mLWKO27t+io7n9ze/lDRb7mVkmer8+l/exRHFmjZjLw3ucps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177430; c=relaxed/simple;
-	bh=SQj9LxqHhvbCb1QxE0pqoEeXUDLxTTo1ltJ4TfRKrME=;
+	s=arc-20240116; t=1736177850; c=relaxed/simple;
+	bh=rQbmZ7VXEhmVil3ZdxFcrTeWNZtGXT7rllsJtCrGaGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JGjxZZPRkvfKIBBg3dKDAMbznxklIb6cixRtKepY1BAM6QyrMp0+cqnyVXqT0sv0Kvx5QISAxD/lIYIoE5ZTnvEh7nXd9e5Xsf59Qdb3jMt4pXQueu/WiDJ5jV1juabAs7hzE2CEWqxnDtchpDniBaSKpWmvzrfsWh7gzZadsSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZLfHeEK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D03DC4CED6;
-	Mon,  6 Jan 2025 15:30:29 +0000 (UTC)
+	 MIME-Version; b=MGqeWc6WMobuZfcwnA6QRAUg6Y/tj8GXEBslg8C4OCiRK79sksbSbz2/ZPBR5MeZKZuMsZJOe8AUAN6OPWQ1r4pHsN5xbdUAzsFwp+LR6E5yHOgqWVLTfkb9aBXUQEfWXWjcXdx1trbUFFhaKM/JjS0trfkcDhtkC3ySOAmAR+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IR0qvtyv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66ECFC4CED2;
+	Mon,  6 Jan 2025 15:37:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177430;
-	bh=SQj9LxqHhvbCb1QxE0pqoEeXUDLxTTo1ltJ4TfRKrME=;
+	s=korg; t=1736177849;
+	bh=rQbmZ7VXEhmVil3ZdxFcrTeWNZtGXT7rllsJtCrGaGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sZLfHeEKn6ceVY/tYxNFyOfBVcDwBq9A9MFbe6BoIZgzSwa6eS+BgAyMw+qIzkgrp
-	 YO87ICz51SyReOzQILLlWZscxMXDkwa0A72y4lUT4GdCpqvo5+abL2/4t5ro3iEEwJ
-	 m34nH6GinliNcgu50HFwnktMqYRdQdotR/Ia3/J0=
+	b=IR0qvtyvzLiDgJbaf1TicSNJ/hJcVlSADUgJb6lEHedYv0z4+rtyYktqPOz1IzIkC
+	 MSihSc7dVVLdfN3eEVfLVZfVBiD0xbAr0pZ9H4GwIhEEbHX0DFGHR01jNFAlFhfh0w
+	 tPdTUq65uGPb+Zz6lH62EEhMNB0NdrolUG56Mp+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Lior Nahmanson <liorna@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 131/222] RDMA/bnxt_re: Avoid sending the modify QP workaround for latest adapters
-Date: Mon,  6 Jan 2025 16:15:35 +0100
-Message-ID: <20250106151155.728051333@linuxfoundation.org>
+Subject: [PATCH 6.12 050/156] net/mlx5e: macsec: Maintain TX SA from encoding_sa
+Date: Mon,  6 Jan 2025 16:15:36 +0100
+Message-ID: <20250106151143.618749843@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kashyap Desai <kashyap.desai@broadcom.com>
+From: Dragos Tatulea <dtatulea@nvidia.com>
 
-[ Upstream commit 064c22408a73b9e945139b64614c534cbbefb591 ]
+[ Upstream commit 8c6254479b3d5bd788d2b5fefaa48fb194331ed0 ]
 
-The workaround to modify the UD QP from RTS to RTS is required
-only for older adapters. Issuing this for latest adapters can caus
-some unexpected behavior. Fix it
+In MACsec, it is possible to create multiple active TX SAs on a SC,
+but only one such SA can be used at a time for transmission. This SA
+is selected through the encoding_sa link parameter.
 
-Fixes: 1801d87b3598 ("RDMA/bnxt_re: Support new 5760X P7 devices")
-Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/20241204075416.478431-4-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+When there are 2 or more active TX SAs configured (encoding_sa=0):
+  ip macsec add macsec0 tx sa 0 pn 1 on key 00 <KEY1>
+  ip macsec add macsec0 tx sa 1 pn 1 on key 00 <KEY2>
+
+... the traffic should be still sent via TX SA 0 as the encoding_sa was
+not changed. However, the driver ignores the encoding_sa and overrides
+it to SA 1 by installing the flow steering id of the newly created TX SA
+into the SCI -> flow steering id hash map. The future packet tx
+descriptors will point to the incorrect flow steering rule (SA 1).
+
+This patch fixes the issue by avoiding the creation of the flow steering
+rule for an active TX SA that is not the encoding_sa. The driver side
+tx_sa object and the FW side macsec object are still created. When the
+encoding_sa link parameter is changed to another active TX SA, only the
+new flow steering rule will be created in the mlx5e_macsec_upd_txsa()
+handler.
+
+Fixes: 8ff0ac5be144 ("net/mlx5: Add MACsec offload Tx command support")
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Lior Nahmanson <liorna@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20241220081505.1286093-3-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index df5897260601..fb6f15bb9d4f 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -2710,7 +2710,8 @@ static int bnxt_re_post_send_shadow_qp(struct bnxt_re_dev *rdev,
- 		wr = wr->next;
- 	}
- 	bnxt_qplib_post_send_db(&qp->qplib_qp);
--	bnxt_ud_qp_hw_stall_workaround(qp);
-+	if (!bnxt_qplib_is_chip_gen_p5_p7(qp->rdev->chip_ctx))
-+		bnxt_ud_qp_hw_stall_workaround(qp);
- 	spin_unlock_irqrestore(&qp->sq_lock, flags);
- 	return rc;
- }
-@@ -2822,7 +2823,8 @@ int bnxt_re_post_send(struct ib_qp *ib_qp, const struct ib_send_wr *wr,
- 		wr = wr->next;
- 	}
- 	bnxt_qplib_post_send_db(&qp->qplib_qp);
--	bnxt_ud_qp_hw_stall_workaround(qp);
-+	if (!bnxt_qplib_is_chip_gen_p5_p7(qp->rdev->chip_ctx))
-+		bnxt_ud_qp_hw_stall_workaround(qp);
- 	spin_unlock_irqrestore(&qp->sq_lock, flags);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
+index cc9bcc420032..6ab02f3fc291 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
+@@ -339,9 +339,13 @@ static int mlx5e_macsec_init_sa_fs(struct macsec_context *ctx,
+ {
+ 	struct mlx5e_priv *priv = macsec_netdev_priv(ctx->netdev);
+ 	struct mlx5_macsec_fs *macsec_fs = priv->mdev->macsec_fs;
++	const struct macsec_tx_sc *tx_sc = &ctx->secy->tx_sc;
+ 	struct mlx5_macsec_rule_attrs rule_attrs;
+ 	union mlx5_macsec_rule *macsec_rule;
  
- 	return rc;
++	if (is_tx && tx_sc->encoding_sa != sa->assoc_num)
++		return 0;
++
+ 	rule_attrs.macsec_obj_id = sa->macsec_obj_id;
+ 	rule_attrs.sci = sa->sci;
+ 	rule_attrs.assoc_num = sa->assoc_num;
 -- 
 2.39.5
 
