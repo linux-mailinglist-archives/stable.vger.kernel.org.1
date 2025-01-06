@@ -1,206 +1,196 @@
-Return-Path: <stable+bounces-106837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13399A0252E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 13:21:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 939C1A02563
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 13:27:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B1623A263F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 12:21:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76692163191
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 12:27:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FA81DB362;
-	Mon,  6 Jan 2025 12:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755591DC9AD;
+	Mon,  6 Jan 2025 12:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EwMLmJMA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5a/nysC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B1D12E4A
-	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 12:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31BEE1D86E8
+	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 12:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736166082; cv=none; b=n+W4UO13jt0A48Q+cVHnOG8tF4IUqe36r7eSLcraBLZywXXWvEnsnmu0ZCIsek4Yh3tbHy7U73i5kXLDAi53yNV8MVqRSoJJ+rfYGJhLSVnd7MUTPPfk3Q1iMnIPCoeCoQvBRLGP3WeDTo5Eu7sIKfCCuuvR8O3uoRlMgIjcdFs=
+	t=1736166460; cv=none; b=u6zKJGTICbF+K12JlJJIPFUtHHAnmkDWknUuVvZSieYXqLjImSfdA+EqsZ/r+QArxlwKAiC8AHT8R2VZTUp7FlP4KxUKlaciRYeEia6osmME/chYvSSm7nYXGrpJ8EmveEIHbndc9SgYE+fQCuidcpsWlVZZ7xjkpHKGlaUuBko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736166082; c=relaxed/simple;
-	bh=SsSu1bU8yVRhTN4/R4t8TeAnvWJwycFZGahCtkC0OGU=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KYTZkq12oivRC/S9FGgU/mv0lpGtBXNHuF5MM1Btl1Pbp5A/QWme+68xMtuVcuNUT3aNkUQxnmFae2ARdRIGrhxf4lGmwgOm8somXmF7dZ5f8k88jJ/5cKcs0QM2W6jTqNxxkAlskpxQRr78Ih26MQl2ji5CEaO7d6EuGh7S/ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EwMLmJMA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7786C4CEDD;
-	Mon,  6 Jan 2025 12:21:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736166081;
-	bh=SsSu1bU8yVRhTN4/R4t8TeAnvWJwycFZGahCtkC0OGU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EwMLmJMASu69qXLn8mxRuRGiOpP60zW6NoQCkM5eOJQHNJVxLhi/duHJpq6pf8ByR
-	 lEjkzhaOUgWcudPjnmgtbEm3w+6JxjFWOBRK8CTq1EQx5SAJBNsXUmgzI5y/G+DfrX
-	 w8Y5y1K8TTalBcKQxdXHNvdQtTDVTfNAk8M48pU7SB6eUrYYZKmPsDoFkYzUE6b70j
-	 /As14FkcgHLgZy3qP8NeqfZ0EzucV8bljrj9U212qaks8aE6Tjs0sFOoHukhFnkrHc
-	 t0hXlun9X3OWeUKg3nxplz68eNO715bOj7oYfASY2xtFpWTXC4esUuInqKDKpN44bc
-	 iR9+x2PK/4y8Q==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tUm6h-009OvS-Jz;
-	Mon, 06 Jan 2025 12:21:19 +0000
-Date: Mon, 06 Jan 2025 12:21:19 +0000
-Message-ID: <867c78p1z4.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: Filter out SVE hwcaps when FEAT_SVE isn't implemented
-In-Reply-To: <Z3vGeFUBd9YSIgg_@J2N7QTR9R3>
-References: <20250103182255.1763739-1-maz@kernel.org>
-	<Z3ulKMeKQcHFErgr@J2N7QTR9R3>
-	<868qrop556.wl-maz@kernel.org>
-	<Z3vGeFUBd9YSIgg_@J2N7QTR9R3>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1736166460; c=relaxed/simple;
+	bh=dxNCBmVuB4h9h/6ZsHcn9ytZmPUD4iUxGXEZ86Uyqok=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=l+aFmSDgmjEL/BhArMXEPwialgkj1nRPpuPyJCPdYEDNazVhvtGqUveNW9IPIWbsihznvjszuUu4Q34v+c2IKHlNQEdOeDLm87xCy7tzg8wlvlXcuBJay9/2jfZTUd592rRfy4S8byULOjXyPWpzNDWGkzsFLCptK3n48R3iZxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5a/nysC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B782C4CED2;
+	Mon,  6 Jan 2025 12:27:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1736166459;
+	bh=dxNCBmVuB4h9h/6ZsHcn9ytZmPUD4iUxGXEZ86Uyqok=;
+	h=Subject:To:Cc:From:Date:From;
+	b=D5a/nysCANIKrGfYDJa41tNgpMTo8//6999ZWqpmGegKXOOLVujhrT3qWei0HcQGe
+	 ZBGD9CAONMPiwhRtxFSnLXp/niay716v/yjSwSQlU03+f2O7HF7t2oqX+Ixfs2E3UH
+	 jk3AuDoi0Q4EFOtzkfnJieNgQA+ip64Tqm3PyrjA=
+Subject: FAILED: patch "[PATCH] mptcp: fix TCP options overflow." failed to apply to 5.15-stable tree
+To: pabeni@redhat.com,edumazet@google.com,kuba@kernel.org,matttbe@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 06 Jan 2025 13:27:36 +0100
+Message-ID: <2025010636-stereo-friend-8023@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com, will@kernel.org, broonie@kernel.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Mon, 06 Jan 2025 12:03:44 +0000,
-Mark Rutland <mark.rutland@arm.com> wrote:
-> 
-> On Mon, Jan 06, 2025 at 11:12:53AM +0000, Marc Zyngier wrote:
-> > On Mon, 06 Jan 2025 09:40:56 +0000,
-> > Mark Rutland <mark.rutland@arm.com> wrote:
-> > > 
-> > > On Fri, Jan 03, 2025 at 06:22:55PM +0000, Marc Zyngier wrote:
-> > > > The hwcaps code that exposes SVE features to userspace only
-> > > > considers ID_AA64ZFR0_EL1, while this is only valid when
-> > > > ID_AA64PFR0_EL1.SVE advertises that SVE is actually supported.
-> > > > 
-> > > > The expectations are that when ID_AA64PFR0_EL1.SVE is 0, the
-> > > > ID_AA64ZFR0_EL1 register is also 0. So far, so good.
-> > > > 
-> > > > Things become a bit more interesting if the HW implements SME.
-> > > > In this case, a few ID_AA64ZFR0_EL1 fields indicate *SME*
-> > > > features. And these fields overlap with their SVE interpretations.
-> > > > But the architecture says that the SME and SVE feature sets must
-> > > > match, so we're still hunky-dory.
-> > > > 
-> > > > This goes wrong if the HW implements SME, but not SVE. In this
-> > > > case, we end-up advertising some SVE features to userspace, even
-> > > > if the HW has none. That's because we never consider whether SVE
-> > > > is actually implemented. Oh well.
-> > > 
-> > > Ugh; this is a massive pain. :(
-> > > 
-> > > Was this found by inspection, or is some real software going wrong?
-> > 
-> > Catalin can comment on that -- I understand that he found existing SW
-> > latching on SVE2 being wrongly advertised as hwcaps.
-> > 
-> > > > Fix it by restricting all SVE capabilities to ID_AA64PFR0_EL1.SVE
-> > > > being non-zero.
-> > > 
-> > > Unfortunately, I'm not sure this fix is correct+complete.
-> > > 
-> > > We expose ID_AA64PFR0_EL1 and ID_AA64ZFR0_EL1 via ID register emulation,
-> > > so any userspace software reading ID_AA64ZFR0_EL1 will encounter the
-> > > same surprise. If we hide that I'm worried we might hide some SME-only
-> > > information that isn't exposed elsewhere, and I'm not sure we can
-> > > reasonably hide ID_AA64ZFR0_EL1 emulation for SME-only (more on that
-> > > below).
-> > 
-> > I don't understand where things go wrong. EL0 SW that looks at the ID
-> > registers should perform similar checks, and we are not trying to make
-> > things better on that front (we can't). Unless you invent time travel
-> > and fix the architecture 5 years ago... :-/
-> 
-> Fair enough; if we say software consuming ID_AA64ZFR0_EL1 must check
-> ID_AA64PFR0_EL1.SVE or ID_AA64PFR1_EL1.SME first, and we leave the
-> emulation of ID_AA64ZFR0_EL1 as-is, that's fine by me.
 
-I think that's what the architecture forces on us, unfortunately.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-> 
-> > The hwcaps are effectively demultiplexing the ID registers, and they
-> > have to be exact, which is what this patch provides (SVE2 doesn't get
-> > wrongly advertised when not present).
-> 
-> > > Secondly, all our HWCAP documentation is written in the form:
-> > > 
-> > > | HWCAP2_SVEBF16
-> > > |     Functionality implied by ID_AA64ZFR0_EL1.BF16 == 0b0001.
-> > > 
-> > > ... so while the architectural behaviour is a surprise, the kernel is
-> > > (techincallyy) behaving exactly as documented prior to this patch. Maybe
-> > > we need to change that documentation?
-> > 
-> > Again, I don't see what goes wrong here. BF16 is only implemented for
-> > SVE or SME+FA64, and FA64 requires SVE2. So at least for that one, we
-> > should be good.
-> 
-> That was probably a bad example. What I was trying to get at is that the
-> HWCAPs are behavind exactly *as documented*, but that's not what we
-> actually want them to describe. For example, SVE2 is described as:
-> 
-> | Functionality implied by ID_AA64ZFR0_EL1.SVEver == 0b0001.
-> 
-> ... which is exactly what we check today, but that doesn't
-> architecturally imply FEAT_SVE2 on SME-only HW where it can apparently
-> be 0b0001 due to FEAT_SME alone.
-> 
-> So to match the code change we'd need to change that to something like:
-> 
-> | Functionality impled by ID_AA64PFR0_EL1 == 0b0001 and
-> | ID_AA64ZFR0_EL1.SVEver == 0b0001
-> 
-> ... with similar for other hwcaps.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Yeah, seems like a decent addition. I'll fold that in.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x cbb26f7d8451fe56ccac802c6db48d16240feebd
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025010636-stereo-friend-8023@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-> 
-> > > Do we have equivalent SME hwcaps for the relevant features?
-> > >
-> > > ... looking at:
-> > > 
-> > >   https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/ID-AA64ZFR0-EL1--SVE-Feature-ID-Register-0?lang=en
-> > > 
-> > > ... I see that ID_AA64ZFR0_EL1.B16B16 >= 0b0010 implies the presence of
-> > > SME BFMUL and BFSCALE instructions, but I don't see something equivalent
-> > > in ID_AA64SMFR0_EL1 per:
-> > > 
-> > >   https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/ID-AA64SMFR0-EL1--SME-Feature-ID-Register-0?lang=en
-> > > 
-> > > ... so I suspect ID_AA64ZFR0_EL1 might be the only source of truth for
-> > > this.
-> > 
-> > Indeed, and the SME HWCAPs are not doing the right thing either. Or
-> > rather, we have no way to tell userspace that BFMUL/BFSCALE are
-> > available.
-> 
-> To be clear, I'm happy to punt on adding SME-specific HWCAPs, I just
-> want to make sure we're agreed as to whether the existing HWCAPs should
-> be SVE-specific, which it sounds like we are?
+Possible dependencies:
 
-I think we're aligned here. I'll respin something shortly, once I've
-made some progress on the state of my Inbox... :-/
 
-Thanks,
 
-	M.
+thanks,
 
--- 
-Without deviation from the norm, progress is not possible.
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From cbb26f7d8451fe56ccac802c6db48d16240feebd Mon Sep 17 00:00:00 2001
+From: Paolo Abeni <pabeni@redhat.com>
+Date: Sat, 21 Dec 2024 09:51:46 +0100
+Subject: [PATCH] mptcp: fix TCP options overflow.
+
+Syzbot reported the following splat:
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 1 UID: 0 PID: 5836 Comm: sshd Not tainted 6.13.0-rc3-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/25/2024
+RIP: 0010:_compound_head include/linux/page-flags.h:242 [inline]
+RIP: 0010:put_page+0x23/0x260 include/linux/mm.h:1552
+Code: 90 90 90 90 90 90 90 55 41 57 41 56 53 49 89 fe 48 bd 00 00 00 00 00 fc ff df e8 f8 5e 12 f8 49 8d 5e 08 48 89 d8 48 c1 e8 03 <80> 3c 28 00 74 08 48 89 df e8 8f c7 78 f8 48 8b 1b 48 89 de 48 83
+RSP: 0000:ffffc90003916c90 EFLAGS: 00010202
+RAX: 0000000000000001 RBX: 0000000000000008 RCX: ffff888030458000
+RDX: 0000000000000100 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: dffffc0000000000 R08: ffffffff898ca81d R09: 1ffff110054414ac
+R10: dffffc0000000000 R11: ffffed10054414ad R12: 0000000000000007
+R13: ffff88802a20a542 R14: 0000000000000000 R15: 0000000000000000
+FS:  00007f34f496e800(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f9d6ec9ec28 CR3: 000000004d260000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ skb_page_unref include/linux/skbuff_ref.h:43 [inline]
+ __skb_frag_unref include/linux/skbuff_ref.h:56 [inline]
+ skb_release_data+0x483/0x8a0 net/core/skbuff.c:1119
+ skb_release_all net/core/skbuff.c:1190 [inline]
+ __kfree_skb+0x55/0x70 net/core/skbuff.c:1204
+ tcp_clean_rtx_queue net/ipv4/tcp_input.c:3436 [inline]
+ tcp_ack+0x2442/0x6bc0 net/ipv4/tcp_input.c:4032
+ tcp_rcv_state_process+0x8eb/0x44e0 net/ipv4/tcp_input.c:6805
+ tcp_v4_do_rcv+0x77d/0xc70 net/ipv4/tcp_ipv4.c:1939
+ tcp_v4_rcv+0x2dc0/0x37f0 net/ipv4/tcp_ipv4.c:2351
+ ip_protocol_deliver_rcu+0x22e/0x440 net/ipv4/ip_input.c:205
+ ip_local_deliver_finish+0x341/0x5f0 net/ipv4/ip_input.c:233
+ NF_HOOK+0x3a4/0x450 include/linux/netfilter.h:314
+ NF_HOOK+0x3a4/0x450 include/linux/netfilter.h:314
+ __netif_receive_skb_one_core net/core/dev.c:5672 [inline]
+ __netif_receive_skb+0x2bf/0x650 net/core/dev.c:5785
+ process_backlog+0x662/0x15b0 net/core/dev.c:6117
+ __napi_poll+0xcb/0x490 net/core/dev.c:6883
+ napi_poll net/core/dev.c:6952 [inline]
+ net_rx_action+0x89b/0x1240 net/core/dev.c:7074
+ handle_softirqs+0x2d4/0x9b0 kernel/softirq.c:561
+ __do_softirq kernel/softirq.c:595 [inline]
+ invoke_softirq kernel/softirq.c:435 [inline]
+ __irq_exit_rcu+0xf7/0x220 kernel/softirq.c:662
+ irq_exit_rcu+0x9/0x30 kernel/softirq.c:678
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1049 [inline]
+ sysvec_apic_timer_interrupt+0x57/0xc0 arch/x86/kernel/apic/apic.c:1049
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
+RIP: 0033:0x7f34f4519ad5
+Code: 85 d2 74 0d 0f 10 02 48 8d 54 24 20 0f 11 44 24 20 64 8b 04 25 18 00 00 00 85 c0 75 27 41 b8 08 00 00 00 b8 0f 01 00 00 0f 05 <48> 3d 00 f0 ff ff 76 75 48 8b 15 24 73 0d 00 f7 d8 64 89 02 48 83
+RSP: 002b:00007ffec5b32ce0 EFLAGS: 00000246
+RAX: 0000000000000001 RBX: 00000000000668a0 RCX: 00007f34f4519ad5
+RDX: 00007ffec5b32d00 RSI: 0000000000000004 RDI: 0000564f4bc6cae0
+RBP: 0000564f4bc6b5a0 R08: 0000000000000008 R09: 0000000000000000
+R10: 00007ffec5b32de8 R11: 0000000000000246 R12: 0000564f48ea8aa4
+R13: 0000000000000001 R14: 0000564f48ea93e8 R15: 00007ffec5b32d68
+ </TASK>
+
+Eric noted a probable shinfo->nr_frags corruption, which indeed
+occurs.
+
+The root cause is a buggy MPTCP option len computation in some
+circumstances: the ADD_ADDR option should be mutually exclusive
+with DSS since the blamed commit.
+
+Still, mptcp_established_options_add_addr() tries to set the
+relevant info in mptcp_out_options, if the remaining space is
+large enough even when DSS is present.
+
+Since the ADD_ADDR infos and the DSS share the same union
+fields, adding first corrupts the latter. In the worst-case
+scenario, such corruption increases the DSS binary layout,
+exceeding the computed length and possibly overwriting the
+skb shared info.
+
+Address the issue by enforcing mutual exclusion in
+mptcp_established_options_add_addr(), too.
+
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+38a095a81f30d82884c1@syzkaller.appspotmail.com
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/538
+Fixes: 1bff1e43a30e ("mptcp: optimize out option generation")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/025d9df8cde3c9a557befc47e9bc08fbbe3476e5.1734771049.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/net/mptcp/options.c b/net/mptcp/options.c
+index 1603b3702e22..a62bc874bf1e 100644
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -667,8 +667,15 @@ static bool mptcp_established_options_add_addr(struct sock *sk, struct sk_buff *
+ 		    &echo, &drop_other_suboptions))
+ 		return false;
+ 
++	/*
++	 * Later on, mptcp_write_options() will enforce mutually exclusion with
++	 * DSS, bail out if such option is set and we can't drop it.
++	 */
+ 	if (drop_other_suboptions)
+ 		remaining += opt_size;
++	else if (opts->suboptions & OPTION_MPTCP_DSS)
++		return false;
++
+ 	len = mptcp_add_addr_len(opts->addr.family, echo, !!opts->addr.port);
+ 	if (remaining < len)
+ 		return false;
+
 
