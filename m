@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-107128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60CF2A02A69
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:33:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB66A02B79
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:44:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB7927A2B2C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:32:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D787318859F2
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6621DE3AB;
-	Mon,  6 Jan 2025 15:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A4A1D7E21;
+	Mon,  6 Jan 2025 15:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uR81PGrs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LI/Syy5T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CC91CDFD5;
-	Mon,  6 Jan 2025 15:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643551547D8;
+	Mon,  6 Jan 2025 15:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177541; cv=none; b=DnWrz8Lj74td1vapEJup25LhBEWR+c4Mebk/4n60FQHiDylkbiWWslDVSdd6EaOe8ToR1KCpDFYPgqnJEu6DmW/k6DbVywPz2G4gxbV1YYaHyHR85aDPfAg/wAaINw5KllwFzvxmBH06F5l9ycxIvXJjEouBSuyJx4FzEaQng7Y=
+	t=1736178220; cv=none; b=Mjr9JP8yRdsLs2Uxy8NML4cmAS0Pco+CdfoKnHF+K2bZKDSznr1lNK1DEQGzMECalAzYpks3+jTdn11zcHp2gpl40wVzPKnjWlpqU2dcQjLATczYnngeUfU8Jue2lb9Nmv8qvt1KBFFNp5tnupXhpdmZqvWLOdxKlhr+Gbweb8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177541; c=relaxed/simple;
-	bh=TlGmFl+rQxafF7W7BJH7aflvaOdOg4o+iAo5eJlZiFs=;
+	s=arc-20240116; t=1736178220; c=relaxed/simple;
+	bh=g0MVkStH1uv2UsBvc2NrgX0S+Al5Dtim0r4PJS+2u8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KY4r7eGuvM4HfBAiaq8atvBAZr7WiwUUJNklfU9Lc+deK5z5b18+Q5LN7pkZ+o2vWCAxDVkCxwdODThJIPlMOmcUZaOWlxkLvDAPYJ+qqgETK4Rdix4lsD4hJyYjfP90gRmN04mCDDIp5R8Z19l0tO9Fjyn1G8cxFiI97/d94qM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uR81PGrs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D7CC4CED2;
-	Mon,  6 Jan 2025 15:32:18 +0000 (UTC)
+	 MIME-Version; b=UIXDHYBP2MTvjvyxhd6aI2WYghVaeWPXw7xHr9U+/orDB3wSZIspWJ+t742agxB/f2QvTesYNzYDK+ewlrK7tvuFgkdgiZczEUqM8QB9W4jt2sxENGv2QmPsu9eTbQrCRvHdBgHqYvmKsxYnYbjnd3Dxq/VvmhJv7tyLYwDZW8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LI/Syy5T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8FA7C4CED2;
+	Mon,  6 Jan 2025 15:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177539;
-	bh=TlGmFl+rQxafF7W7BJH7aflvaOdOg4o+iAo5eJlZiFs=;
+	s=korg; t=1736178220;
+	bh=g0MVkStH1uv2UsBvc2NrgX0S+Al5Dtim0r4PJS+2u8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uR81PGrsYPAQwYVhF6KwbTUFNhv+VDtHdLAixSoh12GYjNeL+NIwRJV+V6edKqmik
-	 FdtseCUCQ4j6NZelsyqGvy08b71Et/ndgwMMPA/euwmcKjO0CcoY/rJHLGZx7aSvXt
-	 eTwOd9Ms1E7icsx4sYZn4EYETeeZk41J6GarRJzg=
+	b=LI/Syy5TgpP9r6Idx+TGQhS6hFwCDrq5VV27E2cw6fk/51bqiU6al7UMFeEJTa3kj
+	 IUCoLjT8mZxseUN78tRj/CrF0kyy2ujR6X6j3BVFSKrlykWCO+n6SnpLJYoMYsJUvp
+	 aOEVycj0hTa+LlgfOt23q1q4sjLLS0SWEnCoixNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tanya Agarwal <tanyaagarwal25699@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Konstantin Khlebnikov <koct9i@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 165/222] ALSA: usb-audio: US16x08: Initialize array before use
+Subject: [PATCH 5.10 045/138] mm/vmstat: fix a W=1 clang compiler warning
 Date: Mon,  6 Jan 2025 16:16:09 +0100
-Message-ID: <20250106151157.011341250@linuxfoundation.org>
+Message-ID: <20250106151134.943999768@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tanya Agarwal <tanyaagarwal25699@gmail.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit b06a6187ef983f501e93faa56209169752d3bde3 ]
+[ Upstream commit 30c2de0a267c04046d89e678cc0067a9cfb455df ]
 
-Initialize meter_urb array before use in mixer_us16x08.c.
+Fix the following clang compiler warning that is reported if the kernel is
+built with W=1:
 
-CID 1410197: (#1 of 1): Uninitialized scalar variable (UNINIT)
-uninit_use_in_call: Using uninitialized value *meter_urb when
-calling get_meter_levels_from_urb.
+./include/linux/vmstat.h:518:36: error: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Werror,-Wenum-enum-conversion]
+  518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
+      |                               ~~~~~~~~~~~ ^ ~~~
 
-Coverity Link:
-https://scan7.scan.coverity.com/#/project-view/52849/11354?selectedIssue=1410197
-
-Fixes: d2bb390a2081 ("ALSA: usb-audio: Tascam US-16x08 DSP mixer quirk")
-Signed-off-by: Tanya Agarwal <tanyaagarwal25699@gmail.com>
-Link: https://patch.msgid.link/20241229060240.1642-1-tanyaagarwal25699@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lkml.kernel.org/r/20241212213126.1269116-1-bvanassche@acm.org
+Fixes: 9d7ea9a297e6 ("mm/vmstat: add helpers to get vmstat item names for each enum type")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Cc: Konstantin Khlebnikov <koct9i@gmail.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_us16x08.c | 2 +-
+ include/linux/vmstat.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer_us16x08.c b/sound/usb/mixer_us16x08.c
-index 6eb7d93b358d..20ac32635f1f 100644
---- a/sound/usb/mixer_us16x08.c
-+++ b/sound/usb/mixer_us16x08.c
-@@ -687,7 +687,7 @@ static int snd_us16x08_meter_get(struct snd_kcontrol *kcontrol,
- 	struct usb_mixer_elem_info *elem = kcontrol->private_data;
- 	struct snd_usb_audio *chip = elem->head.mixer->chip;
- 	struct snd_us16x08_meter_store *store = elem->private_data;
--	u8 meter_urb[64];
-+	u8 meter_urb[64] = {0};
+diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+index 322dcbfcc933..1ca120344b00 100644
+--- a/include/linux/vmstat.h
++++ b/include/linux/vmstat.h
+@@ -428,7 +428,7 @@ static inline const char *node_stat_name(enum node_stat_item item)
  
- 	switch (kcontrol->private_value) {
- 	case 0: {
+ static inline const char *lru_list_name(enum lru_list lru)
+ {
+-	return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
++	return node_stat_name(NR_LRU_BASE + (enum node_stat_item)lru) + 3; // skip "nr_"
+ }
+ 
+ static inline const char *writeback_stat_name(enum writeback_stat_item item)
 -- 
 2.39.5
 
