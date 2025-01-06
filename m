@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-107535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CBCCA02C64
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17E27A02A62
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:33:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 028891645FE
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABE5B7A27FA
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C061DBB13;
-	Mon,  6 Jan 2025 15:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6651DED6C;
+	Mon,  6 Jan 2025 15:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GnXYGHnL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UG/rA1sZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26FE13AD20;
-	Mon,  6 Jan 2025 15:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7872B1DE2CC;
+	Mon,  6 Jan 2025 15:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178765; cv=none; b=L6SFk8qTtvlEl9sgsC1mjvBL/H2l7N/XgpzixjzMHSiu0KrSBSPur5OzloLE88KiR1eqhAoEoTHOiEJz/j0NtRxhHqa1j67WC/ibnvcv+n2w6d0RRwOxoJYW5Sij3ifZgmPR55RxEOQc7h1lwI4O8xWurzv06738WWwXgeqmqpE=
+	t=1736177524; cv=none; b=j99DG7oy8gTo9MYCSAXaJGRPifK5GFYQ+TJKwtaf7z8nJazHAxI+ZRzNR+rxBxpta+hsaRjamkw9J8kioQhF+rNl3JsNkoVv0QJtqR0i6eeHtZ6pirfG2Ed5HAmdZ5jLGzR3DcWP8HkIl+XPK9PAtgIb6rdTaBAfZZK2yCfzCDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178765; c=relaxed/simple;
-	bh=xqDlUtYyrFxzP8MuulD+AbLL06Z85YOCgLj7DBHtnFM=;
+	s=arc-20240116; t=1736177524; c=relaxed/simple;
+	bh=swuvo0GJ+jCK4cRFgjdcc07a2vVGAEdZ8AjsRFzFUek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ct7jB3dor9WUUSpx6COVMmejtrF+rtgv6JhoZoNG9EpBMRkfpKDwNCG8+7A2HgDjNewUlYCE2vqibwmdBUxLCObADPckAaQW9D9Hn014Dl+NvW1G8+Y40FeeLjV3P8Ustt3Po6Pbsgqb4thcs83N7/8va5tMPkgRX54x1d1/mI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GnXYGHnL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47326C4CED2;
-	Mon,  6 Jan 2025 15:52:44 +0000 (UTC)
+	 MIME-Version; b=Ic2uXDz1Ig8bDwIVpINTaCuykQslIC7BG74UnLS3mPPMAXk72Wl9d0c+1lEup9gLPQ/Szm4SsBx5ljV1+BbOOGq7PpJa+lTdU4tXU9tD3hWAanHykCkRaIxlmE/cPGsQ8x3bcOVF1nOMHi+3TOoCSiNioNJocLTXX33gbvynaiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UG/rA1sZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825FAC4CED2;
+	Mon,  6 Jan 2025 15:32:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178764;
-	bh=xqDlUtYyrFxzP8MuulD+AbLL06Z85YOCgLj7DBHtnFM=;
+	s=korg; t=1736177521;
+	bh=swuvo0GJ+jCK4cRFgjdcc07a2vVGAEdZ8AjsRFzFUek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GnXYGHnLsXB54Lu1wgSgw1UH1fjjtbSEo8awAGXs9WVvzshczVvj7XpktqcZunXOE
-	 OxhR7rkNCQAHFCgpiQsHs7I8gpdQTX5Dy4U6az49QXhNgkNy6NnTqVv3A/lwnSdZEA
-	 0nIwOc5lzxK2cFDOFikX8EryVYtQQisc6U22f0r8=
+	b=UG/rA1sZdkZP+g3szr05fE5QqgdG81xMNpJuFFTIzi++yUvY2cVMs1GChnwzCsUJF
+	 JYG17l2FgTm3L9+FJf8adKSUdGQiWaQ3on1crTEKUDp6IgZZdPnneNmCVEPrE1Q3Ry
+	 cgTq1HHdcSyf+HTDAw3mBB3R/TrAWNu1lPBI/OIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Muchun Song <muchun.song@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Enzo Matsumiya <ematsumiya@suse.de>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 085/168] vmalloc: fix accounting with i915
+Subject: [PATCH 6.6 189/222] smb: client: destroy cfid_put_wq on module exit
 Date: Mon,  6 Jan 2025 16:16:33 +0100
-Message-ID: <20250106151141.674309190@linuxfoundation.org>
+Message-ID: <20250106151157.917980228@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,53 +62,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Enzo Matsumiya <ematsumiya@suse.de>
 
-[ Upstream commit a2e740e216f5bf49ccb83b6d490c72a340558a43 ]
+[ Upstream commit 633609c48a358134d3f8ef8241dff24841577f58 ]
 
-If the caller of vmap() specifies VM_MAP_PUT_PAGES (currently only the
-i915 driver), we will decrement nr_vmalloc_pages and MEMCG_VMALLOC in
-vfree().  These counters are incremented by vmalloc() but not by vmap() so
-this will cause an underflow.  Check the VM_MAP_PUT_PAGES flag before
-decrementing either counter.
+Fix potential problem in rmmod
 
-Link: https://lkml.kernel.org/r/20241211202538.168311-1-willy@infradead.org
-Fixes: b944afc9d64d ("mm: add a VM_MAP_PUT_PAGES flag for vmap")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Enzo Matsumiya <ematsumiya@suse.de>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/vmalloc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/client/cifsfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index cd434f0ec47f..3cb1f59d1b53 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -2621,7 +2621,8 @@ static void __vunmap(const void *addr, int deallocate_pages)
- 			__free_pages(page, page_order);
- 			cond_resched();
- 		}
--		atomic_long_sub(area->nr_pages, &nr_vmalloc_pages);
-+		if (!(area->flags & VM_MAP_PUT_PAGES))
-+			atomic_long_sub(area->nr_pages, &nr_vmalloc_pages);
- 
- 		kvfree(area->pages);
- 	}
+diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+index 6ed0f2548232..bbb0ef18d7b8 100644
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -2015,6 +2015,7 @@ exit_cifs(void)
+ 	destroy_workqueue(decrypt_wq);
+ 	destroy_workqueue(fileinfo_put_wq);
+ 	destroy_workqueue(serverclose_wq);
++	destroy_workqueue(cfid_put_wq);
+ 	destroy_workqueue(cifsiod_wq);
+ 	cifs_proc_clean();
+ }
 -- 
 2.39.5
 
