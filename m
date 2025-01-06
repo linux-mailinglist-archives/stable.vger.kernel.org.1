@@ -1,160 +1,192 @@
-Return-Path: <stable+bounces-106855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3B10A028AC
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:58:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD044A028CF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:10:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 448161885B16
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 14:58:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95DB61609CF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:10:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A2B148850;
-	Mon,  6 Jan 2025 14:58:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PCrcpDV1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594CA13BC39;
+	Mon,  6 Jan 2025 15:10:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275E6132103
-	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 14:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2814F282F5;
+	Mon,  6 Jan 2025 15:10:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736175494; cv=none; b=t/lk42mKLpDFuLgRlGQtQdC1QD45OKtGWzwD2L7H40L8UyuYrfbzrbqD3WXdvkJAT2L/0a04Bkh1Fwgwc9UEGS35nGBMGM5b1ItZvg+Wok2QcyYzqUeB6U4OLMiso1tktw+r/TFKvkTlbjSvqC+xkrVet20xdCO4xKSFIMW3KmY=
+	t=1736176243; cv=none; b=Ub9XIzJX103Pij3vFzb3tnbNlSEoZMKemyjRvhgBBfvFkxlkOq7vgmA30IxGW3MDNauVejE6/9qEhyC17+joUx3GASdO9wGtX95Al4kW9W0rc/m1CbTmFmRpJYpYlXRj2l8vCuF+hgS9yNC0SbopO8X7cNGR9FnDNI1yw0Weqo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736175494; c=relaxed/simple;
-	bh=iTH+glL8K3yAvVrgROMwFpjc482sAa3ddUjNd79KEUY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=oAPpyrQyVJGHrvxHioQK9V8wWZfJopT5jNAu90dL32oPu/052e+MwjbTrLjpZKdSQU41Xl2lJqIBgSUpH8pfZ1RqrxTjklrhoPjGX6NloJscKoSw8J1jkakk379jSOIrUu6vBkQuzy3xP2kecaT/SC0UhYiwyvbycKWmR3nz5z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PCrcpDV1; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-aa6c0d1833eso3011821166b.1
-        for <stable@vger.kernel.org>; Mon, 06 Jan 2025 06:58:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736175490; x=1736780290; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=E6sD4irUn6sza7KpMORXxjiIv2gb1G9wQAnmFA2ALjk=;
-        b=PCrcpDV1QzG77OuUpg4Z5CM6iVNDPrb3oactl0MVXHoearTlBX7HXdjPFfaZO/P4Nu
-         Y4c/5hEpW1G5fZJe0ylVn+ltnv6ZVgw6Cx462r5n0OEWSXhO2sVO0cQZQNhvf/tvwFJc
-         kUhtZLP7lBSv6wK+/ZePeLwaPZ+FSvSU4btl+XeZT/kxUt32F1ME3dGkq7Y/pWd9fJHm
-         ISvwrVo8da+FJSCrg7tqCLW1KOIeiRrL4P2kjVmpxNKyg24GqTPwHzkvXpgCbgjbvO+q
-         3Zsp408w8DVgh8iqx9313v7XAS6NEjXSsFmy1QEWUB5twEkyqmQ+RWbYBeosnNq4ooGg
-         zcCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736175490; x=1736780290;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E6sD4irUn6sza7KpMORXxjiIv2gb1G9wQAnmFA2ALjk=;
-        b=kYX55uvHx8aGZULDjbX6w3+CKeyE7qQE5eBRU1cMnWMqx9dN24Q1P+uy6RUN5HbZZB
-         Pph8DlRVHTMRFITuHC3r+PiOi8hokx3qxXxx3FqPRKt1ScYe33G21VvITtn9GWws+wAy
-         x8tskxHneeKdhgnMpwwt522h5ANXkBlnu/KaVeLhINZCnpn5Acl0ClWbDaadb3xJ19a3
-         S5gb4IhpjeXM53mcNDLxv+XtFS5bofti09vKD+WdPmdfnCQZT8ggvvMtnK9fqdxdKUPA
-         YSZLXM6awOQAWHH0KlSow3zE7klPvis9SVX2c40GxUwRVbyF1dyQScOkck9wNm0Orvq7
-         TQkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVuYYdyQu4thzMKtdpVznIWbW1/cYREcuyEE17bkucTg7lURgRDGOxB5Ko46ESJcrQUgdqGzcA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8+qc5Xy2Aa7DC4QkuKs2KrDpu5xO+zbGGT1btyQYt9SjIor3+
-	idzczrSZ0lIZ4ZetxDVjLmF66R316q56+gdwKi7Xe97A1wkX3xY9JXuKZdlJdsg=
-X-Gm-Gg: ASbGncvDxtVAH8n9Xtqb/maDIeUTdRqzX69Qo1idSFYu5xgk/4dH45y0+f0zqD3g3QB
-	UQgTeCxQoxMvGpX4W20H0zNuMgr47hTXKIWgOUxahSDRM5bOF2xhWmhBxSswqXqAdXeu7X1UbjS
-	tYLeNSu9NiapWw6kdVvkbgpQM3tXf4nkjT6Hb21rCHURtvCdCUUpg4w61J+S3oPq3Ocv/wrZoIu
-	K0JsOU8koauegBJ8fHmrT/TGXFiLzIGyOXXJ45VtkwP8U1syP/FmTjjnbINx2YVWci0oDypn+hq
-	tS119j1IaF8=
-X-Google-Smtp-Source: AGHT+IFRjFd1+Nt8YGyLxt1NzKlQHb+mqjSKJiXkaCf2qGD/U15D7dEyH+i1RGInpgWlzwlThJF29Q==
-X-Received: by 2002:a17:907:3f1f:b0:aa6:6885:e2fa with SMTP id a640c23a62f3a-aac2adc43demr5147987666b.14.1736175490453;
-        Mon, 06 Jan 2025 06:58:10 -0800 (PST)
-Received: from gpeter-l.roam.corp.google.com ([145.224.65.101])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0f06542fsm2244307766b.176.2025.01.06.06.58.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jan 2025 06:58:10 -0800 (PST)
-From: Peter Griffin <peter.griffin@linaro.org>
-Date: Mon, 06 Jan 2025 14:57:46 +0000
-Subject: [PATCH] arm64: dts: exynos: gs101: disable pinctrl_gsacore node
+	s=arc-20240116; t=1736176243; c=relaxed/simple;
+	bh=Udj/ssRl13ZueoEAC6lXfXAtfPEkpbyAk/UTlVNvwTc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GX6sClP6BUOc1I9Gs4DQDUSBN9Gj9Q93aHCZrXDQhQhPjhAXbDxGRZawLfXiLIYPglAzMf2ejLYOOvUUtn8GJTbGejY42f22eEbSoXaP7ex60RdHse7YhNdZ+Jis0JW87xJLlw2GTKuTa13hyObewJQsEqPqZh0BX6ISmcuX/MQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E951C4CEE1;
+	Mon,  6 Jan 2025 15:10:40 +0000 (UTC)
+Message-ID: <eacf3201-2884-48e3-b54d-2e52e16999be@xs4all.nl>
+Date: Mon, 6 Jan 2025 16:10:39 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250106-contrib-pg-pinctrl_gsacore_disable-v1-1-d3fc88a48aed@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAGnve2cC/x3N0QrCMAxA0V8ZeTawdhXRXxEZbZbVwGhLMkQY+
- 3eLj+fl3gOMVdjgMRyg/BGTWjrcZQB6x5IZZekGP/rgvJuQatlVEraMTQrtus3ZIlXleRGLaWO
- cwvVG9+DTuDL0UFNe5fufPF/n+QNep9VudAAAAA==
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- tudor.ambarus@linaro.org, andre.draszik@linaro.org, kernel-team@android.com, 
- willmcvicker@google.com, Peter Griffin <peter.griffin@linaro.org>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] media/mmp: Bring back registration of the device
+To: Lubomir Rintel <lrintel@redhat.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Lubomir Rintel <lkundrak@v3.sk>,
  stable@vger.kernel.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1581;
- i=peter.griffin@linaro.org; h=from:subject:message-id;
- bh=iTH+glL8K3yAvVrgROMwFpjc482sAa3ddUjNd79KEUY=;
- b=owEBbQKS/ZANAwAKAc7ouNYCNHK6AcsmYgBne++Ayfv+DgCfSMMhGTSVWQwjtT9Z5GStmctK2
- QFOzFqRLUGJAjMEAAEKAB0WIQQO/I5vVXh1DVa1SfzO6LjWAjRyugUCZ3vvgAAKCRDO6LjWAjRy
- umC6D/9x2/8qLa7E6Cz5xYryQFkBzBayGVFkwIiFZSMO1+c94kaw0HYoXUTGlZ1RDNCgYeoP1g5
- eHbZG6eP8MUDJwFo79Q6Tq3yAnhjCbGaJO0jYleXBd8+pmASLeG+hgegtGkpRcF0SYPvDvQLykN
- IRBmAN0i2Ym13U68AcvRPXXcm/DOJxrnBhe14xC7qCztd+34dsVhcBvtsaNcVY/CEFAJo/fD7/P
- PNL92kmpmJ/g4LXwiCCLBrOq7HfDA4cfAtF1SG7ltI5X0mwRniCThqYh4Emeq44TBZtQSahxc6Z
- wOP2k3P+r1y9tCMjsIt5y81bPmm+yd6ZmFqAucraNRLLuA42tIzOKiHKu06FQ8TSmkxKr1ZkhE9
- Y16fGKXFep/gAnccy1j+u7dgXkARiIZavBNEqMhKNdMlkDiSwGjpZK1Ygx9DTEPY9GUnI19OuGZ
- /XxqndN0geGf6dqUKQeHIw4keC/MX/LjXu2SIEIn7PZDq/RjAdBgGXXQR1DrUx4e2VLCOPK0MV1
- r+Wi+GarJFRFAevKM0ydYpgQdaypuRBMxbQKhQi4+KVo4CJXHhJSIj8/p9kizqMO42R1TpvnHb6
- nvu5vxbT9fGGM0jI6P7msEN+PgW8TxupxkmTUiL/mTxvUMBy35cqybgVziwhmja41u10geT+fJY
- tPCcQxdhgVc4MhQ==
-X-Developer-Key: i=peter.griffin@linaro.org; a=openpgp;
- fpr=0EFC8E6F5578750D56B549FCCEE8B8D6023472BA
+References: <20241231190434.438517-1-lkundrak@v3.sk>
+Content-Language: en-US, nl
+From: Hans Verkuil <hverkuil@xs4all.nl>
+Autocrypt: addr=hverkuil@xs4all.nl; keydata=
+ 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
+In-Reply-To: <20241231190434.438517-1-lkundrak@v3.sk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-gsacore registers are not accessible from normal world.
+Hi Lubomir,
 
-Disable this node, so that the suspend/resume callbacks
-in the pinctrl driver don't cause a Serror attempting to
-access the registers.
+On 31/12/2024 20:04, Lubomir Rintel wrote:
+> In commit 4af65141e38e ("media: marvell: cafe: Register V4L2 device
+> earlier"), a call to v4l2_device_register() was moved away from
+> mccic_register() into its caller, marvell/cafe's cafe_pci_probe().
+> This is not the only caller though -- there's also marvell/mmp.
+> 
+> Add v4l2_device_register() into mmpcam_probe() to unbreak the MMP camera
+> driver, in a fashion analogous to what's been done to the Cafe driver.
+> Same for the teardown path.
+> 
+> Fixes: 4af65141e38e ("media: marvell: cafe: Register V4L2 device earlier")
+> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 
-Fixes: ea89fdf24fd9 ("arm64: dts: exynos: google: Add initial Google gs101 SoC support")
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-To: Rob Herring <robh@kernel.org>
-To: Krzysztof Kozlowski <krzk+dt@kernel.org>
-To: Conor Dooley <conor+dt@kernel.org>
-To: Alim Akhtar <alim.akhtar@samsung.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-samsung-soc@vger.kernel.org
-Cc: devicetree@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: tudor.ambarus@linaro.org
-Cc: andre.draszik@linaro.org
-Cc: kernel-team@android.com
-Cc: willmcvicker@google.com
-Cc: stable@vger.kernel.org
----
- arch/arm64/boot/dts/exynos/google/gs101.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+Should this be your redhat email? I have a mismatch between the From email
+and the email in this Sob.
 
-diff --git a/arch/arm64/boot/dts/exynos/google/gs101.dtsi b/arch/arm64/boot/dts/exynos/google/gs101.dtsi
-index 302c5beb224a..b8f8255f840b 100644
---- a/arch/arm64/boot/dts/exynos/google/gs101.dtsi
-+++ b/arch/arm64/boot/dts/exynos/google/gs101.dtsi
-@@ -1451,6 +1451,7 @@ pinctrl_gsacore: pinctrl@17a80000 {
- 			/* TODO: update once support for this CMU exists */
- 			clocks = <0>;
- 			clock-names = "pclk";
-+			status = "disabled";
- 		};
- 
- 		cmu_top: clock-controller@1e080000 {
+I can fix it either way, but you have to tell me what you prefer.
 
----
-base-commit: ed9a4ad6e5bd3a443e81446476718abebee47e82
-change-id: 20241213-contrib-pg-pinctrl_gsacore_disable-3457c942b0fe
+Regards,
 
-Best regards,
--- 
-Peter Griffin <peter.griffin@linaro.org>
+	Hans
+
+> Cc: stable@vger.kernel.org # v6.6+
+> ---
+>  drivers/media/platform/marvell/mmp-driver.c | 21 +++++++++++++++++----
+>  1 file changed, 17 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/media/platform/marvell/mmp-driver.c b/drivers/media/platform/marvell/mmp-driver.c
+> index 3fd4fc1b9c48..d3da7ebb4a2b 100644
+> --- a/drivers/media/platform/marvell/mmp-driver.c
+> +++ b/drivers/media/platform/marvell/mmp-driver.c
+> @@ -231,13 +231,23 @@ static int mmpcam_probe(struct platform_device *pdev)
+>  
+>  	mcam_init_clk(mcam);
+>  
+> +	/*
+> +	 * Register with V4L.
+> +	 */
+> +
+> +	ret = v4l2_device_register(mcam->dev, &mcam->v4l2_dev);
+> +	if (ret)
+> +		return ret;
+> +
+>  	/*
+>  	 * Create a match of the sensor against its OF node.
+>  	 */
+>  	ep = fwnode_graph_get_next_endpoint(of_fwnode_handle(pdev->dev.of_node),
+>  					    NULL);
+> -	if (!ep)
+> -		return -ENODEV;
+> +	if (!ep) {
+> +		ret = -ENODEV;
+> +		goto out_v4l2_device_unregister;
+> +	}
+>  
+>  	v4l2_async_nf_init(&mcam->notifier, &mcam->v4l2_dev);
+>  
+> @@ -246,7 +256,7 @@ static int mmpcam_probe(struct platform_device *pdev)
+>  	fwnode_handle_put(ep);
+>  	if (IS_ERR(asd)) {
+>  		ret = PTR_ERR(asd);
+> -		goto out;
+> +		goto out_v4l2_device_unregister;
+>  	}
+>  
+>  	/*
+> @@ -254,7 +264,7 @@ static int mmpcam_probe(struct platform_device *pdev)
+>  	 */
+>  	ret = mccic_register(mcam);
+>  	if (ret)
+> -		goto out;
+> +		goto out_v4l2_device_unregister;
+>  
+>  	/*
+>  	 * Add OF clock provider.
+> @@ -283,6 +293,8 @@ static int mmpcam_probe(struct platform_device *pdev)
+>  	return 0;
+>  out:
+>  	mccic_shutdown(mcam);
+> +out_v4l2_device_unregister:
+> +	v4l2_device_unregister(&mcam->v4l2_dev);
+>  
+>  	return ret;
+>  }
+> @@ -293,6 +305,7 @@ static void mmpcam_remove(struct platform_device *pdev)
+>  	struct mcam_camera *mcam = &cam->mcam;
+>  
+>  	mccic_shutdown(mcam);
+> +	v4l2_device_unregister(&mcam->v4l2_dev);
+>  	pm_runtime_force_suspend(mcam->dev);
+>  }
+>  
 
 
