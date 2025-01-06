@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE977A02B0C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9829CA02C67
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C256165EC1
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:39:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C17EB1659E7
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734A415854A;
-	Mon,  6 Jan 2025 15:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC69D14A095;
+	Mon,  6 Jan 2025 15:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwMkkA5Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axcaLRtU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2208E155352;
-	Mon,  6 Jan 2025 15:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871B5135A63;
+	Mon,  6 Jan 2025 15:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177945; cv=none; b=u4Z12Weoa/PXvRyc9H3Ke+vXY2BTWpGRK/ffy4dpk8WZc8j83s/M4I3vMw3xNEHsvr95jbRHdV3eEfGq/nwunmu4H8u0N5LAGWiFwj5Gc0e7ESgr8GI8ZLAF6sDmE3t8FxmjKPb4Tfc3ovoalVZNB0KgDe9/ZAA0PKMzLPSgFuA=
+	t=1736178773; cv=none; b=NOTnJqPTDLLGuI2mQ38ClNDB7GPhir8smOlrigc8V4FaYZeVbLifwbkk5orevmG7Krx0iYz/GIPphmAyg7CBsAQut3BRoTNms+pVKUADpluxtywC1XXfmi6LUYSRRuYKq2Rp2eExFlDrni8+nljV/ZKlfQl2vD5KitRO295DOhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177945; c=relaxed/simple;
-	bh=8xnX6lzT+zuu5m6aJe96Cf7pkGRciPydmfpWMs3mkBc=;
+	s=arc-20240116; t=1736178773; c=relaxed/simple;
+	bh=mBdnFvSRqCzquQq0yguWfh27+GA0IooVzV1ASz1UnoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K5XU9H3ZV/XgApO2gWCVlA4pyARuhv5rZ9GrlU8/paCjr/dv7qmYHeY/HtuCavn0DzzWgM22JTZxLpJP47vpLdq5Hi4I6ZIaixjjAoNR3QmKjxQuXQx8+8KEbzmH1/ZmaPg5RoJh7EZOJoU5mHVHykQSSvO/z+smke8fC34iemE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zwMkkA5Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45FBCC4CED2;
-	Mon,  6 Jan 2025 15:39:04 +0000 (UTC)
+	 MIME-Version; b=K9T55qPB1F3CcnwsK2VO9pzGtswrjBxz86NNL2SFm7b/cmfYmB1NeOVzR2a1SlnLmCOxLS/PPRY33FVuSLvEFqbN/8jCxt0P16ywbXxNgmvIPSQVA8SWc4AvzGOtP5J795H1G3KIYfGTvu6FWKLLx10/ceqADb6tjLEBjBE8pQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axcaLRtU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FF88C4CED2;
+	Mon,  6 Jan 2025 15:52:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177944;
-	bh=8xnX6lzT+zuu5m6aJe96Cf7pkGRciPydmfpWMs3mkBc=;
+	s=korg; t=1736178773;
+	bh=mBdnFvSRqCzquQq0yguWfh27+GA0IooVzV1ASz1UnoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zwMkkA5YuuIVx6eFQ/bIDT1sDlmIzwpwIhNZq/Uf+PHWJ2cJsbFk5rGBHDCCgvJY2
-	 1u/xnF5U3aghf++5sN+1gkBCKbbppQltovx6L8XnEDtckHUAWyNGmJ80XQ6wHOjtnL
-	 KTZCiemUpGbieo0wtA/ECM4T8nl1zL4IgjYFiOq8=
+	b=axcaLRtUQnFgarC2nWCVwS2H9ebQY2DrEMuigbHURnRlo9V38hbKN8bwBXbIkLhvj
+	 uPn8/rt21Ml7yqYoiysm4NfKejwimzHD1hJrFP4fFpr/oBspG80KoKyO0xRdu3wmrl
+	 O6drtasELwlr4UUtaCDkwGavYSqX1TIvH4Y4bw5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Hou Tao <houtao1@huawei.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 109/156] kbuild: pacman-pkg: provide versioned linux-api-headers package
+Subject: [PATCH 5.15 087/168] bpf: Check validity of link->type in bpf_link_show_fdinfo()
 Date: Mon,  6 Jan 2025 16:16:35 +0100
-Message-ID: <20250106151145.833430706@linuxfoundation.org>
+Message-ID: <20250106151141.748646381@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 385443057f475e775fe1c66e77d4be9727f40973 ]
+commit 8421d4c8762bd022cb491f2f0f7019ef51b4f0a7 upstream.
 
-The Arch Linux glibc package contains a versioned dependency on
-"linux-api-headers". If the linux-api-headers package provided by
-pacman-pkg does not specify an explicit version this dependency is not
-satisfied.
-Fix the dependency by providing an explicit version.
+If a newly-added link type doesn't invoke BPF_LINK_TYPE(), accessing
+bpf_link_type_strs[link->type] may result in an out-of-bounds access.
 
-Fixes: c8578539deba ("kbuild: add script and target to generate pacman package")
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+To spot such missed invocations early in the future, checking the
+validity of link->type in bpf_link_show_fdinfo() and emitting a warning
+when such invocations are missed.
+
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241024013558.1135167-3-houtao@huaweicloud.com
+[ shung-hsi.yu: break up existing seq_printf() call since commit 68b04864ca42
+  ("bpf: Create links for BPF struct_ops maps.") is not present ]
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/package/PKGBUILD | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/syscall.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/scripts/package/PKGBUILD b/scripts/package/PKGBUILD
-index f83493838cf9..dca706617adc 100644
---- a/scripts/package/PKGBUILD
-+++ b/scripts/package/PKGBUILD
-@@ -103,7 +103,7 @@ _package-headers() {
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index d4b4a47081b5..37aa1e319165 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -2522,16 +2522,21 @@ static void bpf_link_show_fdinfo(struct seq_file *m, struct file *filp)
+ {
+ 	const struct bpf_link *link = filp->private_data;
+ 	const struct bpf_prog *prog = link->prog;
++	enum bpf_link_type type = link->type;
+ 	char prog_tag[sizeof(prog->tag) * 2 + 1] = { };
  
- _package-api-headers() {
- 	pkgdesc="Kernel headers sanitized for use in userspace"
--	provides=(linux-api-headers)
-+	provides=(linux-api-headers="${pkgver}")
- 	conflicts=(linux-api-headers)
- 
- 	_prologue
++	if (type < ARRAY_SIZE(bpf_link_type_strs) && bpf_link_type_strs[type]) {
++		seq_printf(m, "link_type:\t%s\n", bpf_link_type_strs[type]);
++	} else {
++		WARN_ONCE(1, "missing BPF_LINK_TYPE(...) for link type %u\n", type);
++		seq_printf(m, "link_type:\t<%u>\n", type);
++	}
++	seq_printf(m, "link_id:\t%u\n", link->id);
++
+ 	bin2hex(prog_tag, prog->tag, sizeof(prog->tag));
+ 	seq_printf(m,
+-		   "link_type:\t%s\n"
+-		   "link_id:\t%u\n"
+ 		   "prog_tag:\t%s\n"
+ 		   "prog_id:\t%u\n",
+-		   bpf_link_type_strs[link->type],
+-		   link->id,
+ 		   prog_tag,
+ 		   prog->aux->id);
+ 	if (link->ops->show_fdinfo)
 -- 
 2.39.5
 
