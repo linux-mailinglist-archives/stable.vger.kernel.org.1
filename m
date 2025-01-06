@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-107728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EF31A02E00
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:42:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFD91A02E03
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:43:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 773D3164023
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:42:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BF463A269F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA861DC99E;
-	Mon,  6 Jan 2025 16:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E8E1DF263;
+	Mon,  6 Jan 2025 16:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QEw9qgxj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c3P7Ppa1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A215D86354;
-	Mon,  6 Jan 2025 16:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556441DF724;
+	Mon,  6 Jan 2025 16:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736181717; cv=none; b=fAJ13r159T9jO5+kuIbP0dHvCLhU6XDsCMTreF6aQwDrwzcZxw+EN1ebrW8WcwRTUY9mCV1nuSky1eHhIG3aiN0g29xkrlZ2Km7HRU1gZXJiKCbxHAZKuhnZLSpkWQHQTQh6f3Du3xzE75Mpqbtev9SG+IEk/neGyPsO56gTwlM=
+	t=1736181720; cv=none; b=ioUHC6OHYpucJQUfNFx17o+I6FkWnA+de6JX/G4a6PA8IiA+5VRKk0x+HXT40o6jzcozz9udpYW97UXrjVRU1G+LLnFJ6Mr8Jrt4vk8ufvfrp3nOOyGtWIWcnt4wZZqKbfCg3klL7xRm40jjET4rJ8G3aSOSb9HkrtjbSBuRr2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736181717; c=relaxed/simple;
-	bh=IrRyC4vaKupjSeMIXcC2XYvj4LGYPCKIgeq7EPoSVcU=;
+	s=arc-20240116; t=1736181720; c=relaxed/simple;
+	bh=zAhW4qGEiM6YKlBRH2+uyuO431XV0Ri1PbiXYNzgoTs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UgrDCniSM+pGYfm1nOdG8jbA/0SwjgEFRCLqiE1o+nkLTPBICLemFS4kjtoJ+HqsGDAtFGibAuQDntqGzu+d7XnOg4BB24LAaQC5Hg7JL5ENv/gZczy3qJVkqctl3IlNVksOQHca7E5nkpMV9568wRQb5nv1EtlEv+cAyaabQFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QEw9qgxj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D4F1C4CEDF;
-	Mon,  6 Jan 2025 16:41:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Nc/9x7TyQWD1OdMwAWds/DMPZMUHDn8mMux6+iQIQAkDtMQly2eopQhSbLApeERPKdxYRyliP5htVpU7YTPRF7Pm1DuH8E1XQgF0XyZwVPpFNJKPC8VlyMW/L+ab6g1QrZwSJmE0jcIBxCcFcQOKmJVmNtOxDYWmDwnd7HfOpQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c3P7Ppa1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63C7C4CEDF;
+	Mon,  6 Jan 2025 16:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736181717;
-	bh=IrRyC4vaKupjSeMIXcC2XYvj4LGYPCKIgeq7EPoSVcU=;
+	s=k20201202; t=1736181720;
+	bh=zAhW4qGEiM6YKlBRH2+uyuO431XV0Ri1PbiXYNzgoTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QEw9qgxj8/vtHfFp44ozx6N74SzNixU559+ichH6dq5WrO74A4CDCdkOPwJWSwRZt
-	 M8a9PRaXh8mgat1abC1RWEwFoLs9WBqgMFz8RlAthrul97c8Vf2qFI7u94cgMaVDBZ
-	 T/hBpHiiy5olY/Wf8D1aTaOOiRjFL94ni9kQ+UHQ22GECABlEF1UbtqRj/27reItSd
-	 U215Y9j32Ui4THenhatqB4Ga/Vcdagw31ltKte8diPdpO7JTtXgSpRnTIUmbIT4Eh/
-	 pyNosAqn4JNn67GrGS54Orz6b8NuJkp0B7LEt+M6ymucBzCYFx2Duzp+UjjCk5lfhx
-	 Dn1wLYDzzQuYA==
+	b=c3P7Ppa1qmLfmLdKx/agmCeihF8Drvd1M/uuHx3lXAe0cvR1ErK0HLonPiwXRvPD6
+	 Yqbr8nBagn6FHJ7Vm3XZH/vJ/q6QFcdWvF0HYRPZTElgtxL6HoJimriScne50+0RLE
+	 9Ex4Lq/kqbxf1j3dmRcB0KQuREp6J98TZCFiuYP9flM2+a6SuGb4PcoL7mFfGThI4S
+	 hgrZEP239d2y73bs3QfyqDmtkoz7ofaNYeOc70NImfsLYSbwxLk5aEa8RfMF7+cLj9
+	 TUk2ZmOmeH65FNXeF2rTi/UzNTMft9cENJnsd9JpDszbNNEms6GPpkEzau+ffyRkBG
+	 kRc7GrAC+Xubg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Luis Chamberlain <mcgrof@kernel.org>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+Cc: Mingcong Bai <jeffbai@aosc.io>,
+	Xi Xiao <1577912515@qq.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kch@nvidia.com,
-	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 5/8] nvmet: propagate npwg topology
-Date: Mon,  6 Jan 2025 11:41:05 -0500
-Message-Id: <20250106164138.1122164-5-sashal@kernel.org>
+	hdegoede@redhat.com,
+	alexbelm48@gmail.com,
+	W_Armin@gmx.de,
+	u.kleine-koenig@baylibre.com,
+	aichao@kylinos.cn,
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 6/8] platform/x86: hp-wmi: mark 8A15 board for timed OMEN thermal profile
+Date: Mon,  6 Jan 2025 11:41:06 -0500
+Message-Id: <20250106164138.1122164-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250106164138.1122164-1-sashal@kernel.org>
 References: <20250106164138.1122164-1-sashal@kernel.org>
@@ -62,42 +66,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.8
 Content-Transfer-Encoding: 8bit
 
-From: Luis Chamberlain <mcgrof@kernel.org>
+From: Mingcong Bai <jeffbai@aosc.io>
 
-[ Upstream commit b579d6fdc3a9149bb4d2b3133cc0767130ed13e6 ]
+[ Upstream commit 032fe9b0516702599c2dd990a4703f783d5716b8 ]
 
-Ensure we propagate npwg to the target as well instead
-of assuming its the same logical blocks per physical block.
+The HP OMEN 8 (2022), corresponding to a board ID of 8A15, supports OMEN
+thermal profile and requires the timed profile quirk.
 
-This ensures devices with large IUs information properly
-propagated on the target.
+Upon adding this ID to both the omen_thermal_profile_boards and
+omen_timed_thermal_profile_boards, significant bump in performance can be
+observed. For instance, SilverBench (https://silver.urih.com/) results
+improved from ~56,000 to ~69,000, as a result of higher power draws (and
+thus core frequencies) whilst under load:
 
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Package Power:
+
+- Before the patch: ~65W (dropping to about 55W under sustained load).
+- After the patch: ~115W (dropping to about 105W under sustained load).
+
+Core Power:
+
+- Before: ~60W (ditto above).
+- After: ~108W (ditto above).
+
+Add 8A15 to omen_thermal_profile_boards and
+omen_timed_thermal_profile_boards to improve performance.
+
+Signed-off-by: Xi Xiao <1577912515@qq.com>
+Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+Link: https://lore.kernel.org/r/20241226062207.3352629-1-jeffbai@aosc.io
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/io-cmd-bdev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/hp/hp-wmi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/target/io-cmd-bdev.c b/drivers/nvme/target/io-cmd-bdev.c
-index 0bda83d0fc3e..eaf31c823cbe 100644
---- a/drivers/nvme/target/io-cmd-bdev.c
-+++ b/drivers/nvme/target/io-cmd-bdev.c
-@@ -36,7 +36,7 @@ void nvmet_bdev_set_limits(struct block_device *bdev, struct nvme_id_ns *id)
- 	 */
- 	id->nsfeat |= 1 << 4;
- 	/* NPWG = Namespace Preferred Write Granularity. 0's based */
--	id->npwg = lpp0b;
-+	id->npwg = to0based(bdev_io_min(bdev) / bdev_logical_block_size(bdev));
- 	/* NPWA = Namespace Preferred Write Alignment. 0's based */
- 	id->npwa = id->npwg;
- 	/* NPDG = Namespace Preferred Deallocate Granularity. 0's based */
+diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
+index 8c05e0dd2a21..3ba9c43d5516 100644
+--- a/drivers/platform/x86/hp/hp-wmi.c
++++ b/drivers/platform/x86/hp/hp-wmi.c
+@@ -64,7 +64,7 @@ static const char * const omen_thermal_profile_boards[] = {
+ 	"874A", "8603", "8604", "8748", "886B", "886C", "878A", "878B", "878C",
+ 	"88C8", "88CB", "8786", "8787", "8788", "88D1", "88D2", "88F4", "88FD",
+ 	"88F5", "88F6", "88F7", "88FE", "88FF", "8900", "8901", "8902", "8912",
+-	"8917", "8918", "8949", "894A", "89EB", "8BAD", "8A42"
++	"8917", "8918", "8949", "894A", "89EB", "8BAD", "8A42", "8A15"
+ };
+ 
+ /* DMI Board names of Omen laptops that are specifically set to be thermal
+@@ -80,7 +80,7 @@ static const char * const omen_thermal_profile_force_v0_boards[] = {
+  * "balanced" when reaching zero.
+  */
+ static const char * const omen_timed_thermal_profile_boards[] = {
+-	"8BAD", "8A42"
++	"8BAD", "8A42", "8A15"
+ };
+ 
+ /* DMI Board names of Victus laptops */
 -- 
 2.39.5
 
