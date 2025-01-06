@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-107151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83252A02A75
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:34:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B1BDA02B37
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBFE5188559C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:33:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 986643A518F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534607603F;
-	Mon,  6 Jan 2025 15:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F35155352;
+	Mon,  6 Jan 2025 15:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbTsLUeo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1IRa/18t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4B1155300;
-	Mon,  6 Jan 2025 15:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E914ADF71;
+	Mon,  6 Jan 2025 15:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177610; cv=none; b=ZAZFUdaui8ed3tSGV/IBdx7JzdHUn4+R8WFHS032J7VK/YNITIsps26vkphOJ318XAWo9PaFzbJnIyYiFqLuBP1QjD6o4djeUCMNTLAqapoHPY8Pa8TL7Pd5h3fDozKaZlxV34K0HXqNJlCxX63d3gJaSZp7gmUJP+debrWVUyM=
+	t=1736178028; cv=none; b=rT1jsQODZjhxr0QT1TCFtbQi5DVcQSqfHwJA7wPHaV3V+heLdMFkKJF02jqQWBfcXzZaxfepF9tPBgdol1seQka7JHQDKouES8h+9rnSRgrTuQONN+Ks/sLF8YqAlqLOGUVOh89bxUjbuLAAgK1jx8YB+nb/GhNAtjQ8HQkkKlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177610; c=relaxed/simple;
-	bh=2vrKGt1RgcsT8aPoRFqmPjb8mcfbwmNU+l10Owdqvp8=;
+	s=arc-20240116; t=1736178028; c=relaxed/simple;
+	bh=hbUjQs9WEST0neNprZLT+qjQFqkmfAQyccocnMDJxcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ECE/iNf4l+DtaPvAb5je1ZZKYI3kqYaRIC+B4doOgOMM8vYnJKUcB2+ez94yKQcwl6VVy4bQTOI7TSzYQdna/YvIZCGUMGp7R5ylS6WSI1ECvLehNiDQS1Nf8OKhthV9bhIkKIpIwLs1M+5aSm/2/im7Jjq0ELvt+ejOKDr0sEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vbTsLUeo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2785FC4CED2;
-	Mon,  6 Jan 2025 15:33:27 +0000 (UTC)
+	 MIME-Version; b=I5yY1R0+18atbptJT3Gc5Rkrq9WoQJaq+TW4zZLr3cVzaQ2I++bh+j6zWy1tRCBQPZuingcwLZHu6m8yfJl4+/k0+Xqvt54wdLm+UZVmx1QMxc166UrTd6NtY5tVbp1uzj/QvnS+IHhkSxbX+7QFzsy5qolhsDd5lswl7kOoMFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1IRa/18t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F306C4CED2;
+	Mon,  6 Jan 2025 15:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177608;
-	bh=2vrKGt1RgcsT8aPoRFqmPjb8mcfbwmNU+l10Owdqvp8=;
+	s=korg; t=1736178027;
+	bh=hbUjQs9WEST0neNprZLT+qjQFqkmfAQyccocnMDJxcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vbTsLUeoC9J85TnxcRiEo2SdzO5VENeTAAC7yaqvTz8rfCPvJIbJ+nr7xek4guPom
-	 TdQubRZpHVsGFQWZa/rC5q73YfjznH9B2Tep48ymwWurrme3NOCZPjWImF7y1r815v
-	 NanhcERNYP1QnHPyoqYxB1NB2ePzB/l2v0ZgSRMo=
+	b=1IRa/18tUzOpTjvkc2PT/2XkSWHTTUJ2GVMzeP1re/XKAzKZFtGoYHlnFv2WjaQtd
+	 2YHKkAaFAkZgQ14BtLT9xUK0BKK0sGdhaM+Og6NyOct+QR0vdmtKscx/7qrgKBrFx6
+	 VJ1YiEZ5qQknJhdC26K1NGT1K1TaS4/l/BZLXG2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 219/222] mptcp: fix recvbuffer adjust on sleeping rcvmsg
+Subject: [PATCH 6.12 137/156] net: ethernet: ti: am65-cpsw: default to round-robin for host port receive
 Date: Mon,  6 Jan 2025 16:17:03 +0100
-Message-ID: <20250106151159.054331643@linuxfoundation.org>
+Message-ID: <20250106151146.892191682@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-commit 449e6912a2522af672e99992e1201a454910864e upstream.
+commit 4a4d38ace1fb0586bffd2aab03caaa05d6011748 upstream.
 
-If the recvmsg() blocks after receiving some data - i.e. due to
-SO_RCVLOWAT - the MPTCP code will attempt multiple times to
-adjust the receive buffer size, wrongly accounting every time the
-cumulative of received data - instead of accounting only for the
-delta.
+The Host Port (i.e. CPU facing port) of CPSW receives traffic from Linux
+via TX DMA Channels which are Hardware Queues consisting of traffic
+categorized according to their priority. The Host Port is configured to
+dequeue traffic from these Hardware Queues on the basis of priority i.e.
+as long as traffic exists on a Hardware Queue of a higher priority, the
+traffic on Hardware Queues of lower priority isn't dequeued. An alternate
+operation is also supported wherein traffic can be dequeued by the Host
+Port in a Round-Robin manner.
 
-Address the issue moving mptcp_rcv_space_adjust just after the
-data reception and passing it only the just received bytes.
+Until commit under Fixes, the am65-cpsw driver enabled a single TX DMA
+Channel, due to which, unless modified by user via "ethtool", all traffic
+from Linux is transmitted on DMA Channel 0. Therefore, configuring
+the Host Port for priority based dequeuing or Round-Robin operation
+is identical since there is a single DMA Channel.
 
-This also removes an unneeded difference between the TCP and MPTCP
-RX code path implementation.
+Since commit under Fixes, all 8 TX DMA Channels are enabled by default.
+Additionally, the default "tc mapping" doesn't take into account
+the possibility of different traffic profiles which various users
+might have. This results in traffic starvation at the Host Port
+due to the priority based dequeuing which has been enabled by default
+since the inception of the driver. The traffic starvation triggers
+NETDEV WATCHDOG timeout for all TX DMA Channels that haven't been serviced
+due to the presence of traffic on the higher priority TX DMA Channels.
 
-Fixes: 581302298524 ("mptcp: error out earlier on disconnect")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241230-net-mptcp-rbuf-fixes-v1-1-8608af434ceb@kernel.org
+Fix this by defaulting to Round-Robin dequeuing at the Host Port, which
+shall ensure that traffic is dequeued from all TX DMA Channels irrespective
+of the traffic profile. This will address the NETDEV WATCHDOG timeouts.
+At the same time, users can still switch from Round-Robin to Priority
+based dequeuing at the Host Port with the help of the "p0-rx-ptype-rrobin"
+private flag of "ethtool". Users are expected to setup an appropriate
+"tc mapping" that suits their traffic profile when switching to priority
+based dequeuing at the Host Port.
+
+Fixes: be397ea3473d ("net: ethernet: am65-cpsw: Set default TX channels to maximum")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://patch.msgid.link/20241220075618.228202-1-s-vadapalli@ti.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1902,6 +1902,8 @@ do_error:
- 	goto out;
- }
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -3525,7 +3525,7 @@ static int am65_cpsw_nuss_probe(struct p
+ 	init_completion(&common->tdown_complete);
+ 	common->tx_ch_num = AM65_CPSW_DEFAULT_TX_CHNS;
+ 	common->rx_ch_num_flows = AM65_CPSW_DEFAULT_RX_CHN_FLOWS;
+-	common->pf_p0_rx_ptype_rrobin = false;
++	common->pf_p0_rx_ptype_rrobin = true;
+ 	common->default_vlan = 1;
  
-+static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied);
-+
- static int __mptcp_recvmsg_mskq(struct mptcp_sock *msk,
- 				struct msghdr *msg,
- 				size_t len, int flags,
-@@ -1955,6 +1957,7 @@ static int __mptcp_recvmsg_mskq(struct m
- 			break;
- 	}
- 
-+	mptcp_rcv_space_adjust(msk, copied);
- 	return copied;
- }
- 
-@@ -2231,7 +2234,6 @@ static int mptcp_recvmsg(struct sock *sk
- 		}
- 
- 		pr_debug("block timeout %ld\n", timeo);
--		mptcp_rcv_space_adjust(msk, copied);
- 		err = sk_wait_data(sk, &timeo, NULL);
- 		if (err < 0) {
- 			err = copied ? : err;
-@@ -2239,8 +2241,6 @@ static int mptcp_recvmsg(struct sock *sk
- 		}
- 	}
- 
--	mptcp_rcv_space_adjust(msk, copied);
--
- out_err:
- 	if (cmsg_flags && copied >= 0) {
- 		if (cmsg_flags & MPTCP_CMSG_TS)
+ 	common->ports = devm_kcalloc(dev, common->port_num,
 
 
 
