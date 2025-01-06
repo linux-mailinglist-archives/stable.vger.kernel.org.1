@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-107197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00FF3A02ABE
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE6EA02B72
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C272C3A5D77
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:35:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A6A13A46BD
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2A815958A;
-	Mon,  6 Jan 2025 15:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93EE514A617;
+	Mon,  6 Jan 2025 15:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aD2WEaqS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXmgRq8G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A08260890;
-	Mon,  6 Jan 2025 15:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500CCDF71;
+	Mon,  6 Jan 2025 15:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177745; cv=none; b=a/gNfR9R/QmcW7E5ain09sgGjO/W8dxXK+S/Gb+3viuoJu2MImFMEchJZMJpldvKXzc4YN0t/iU3ZvC+vi/SMrDXeOhGY2SIwpk0hAQujnJP3ZJgvkRpn2Xx7m3J0T8fOM8rDOjZup+OwEAN2/MLWCRcVaY71bXC0OS6AjdFryc=
+	t=1736178144; cv=none; b=FCBcurhgvbOTZQIbHKuLBA01cE+6IK3zeXinO7dE8etCpz1RFFH6XOdehgLschNxyM/ekQfMwZuz+2vpQIwdgUwqS8fWmlr3QlEfWuoMVPJSpYF3W8REoQzWabAtEGeC8nQGf/1eqA8GyplBBYI6ZnzIlhujPfEVHTwRtzyhh2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177745; c=relaxed/simple;
-	bh=oYQlr4Q13UVpOno/aY0rmk9VBL5Mqra1cyi8WtPsL5E=;
+	s=arc-20240116; t=1736178144; c=relaxed/simple;
+	bh=mGlQJ8CYOo7oUJ+vV62SdFNjcPkC3fwh79ytwRM70E8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j2Y92OWjciOlr2DXoW8WKYb0sGYtovV222VtID2Qo3ec/iY4VXMua2rg1aQfoxnnOO8V/3mkAIuTAG50vplb9twiYLd2cu8NA4aZsnSAUOnW8DpUCjkhKinNOH8Plt/2aB+bD+kKzh8m4aWeSUdO0wjq8vnlg6xcYHXL2F57Xrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aD2WEaqS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83663C4CED2;
-	Mon,  6 Jan 2025 15:35:44 +0000 (UTC)
+	 MIME-Version; b=kPRe2fw6NOcAo5VOT9WTYigcu7+qSZbGvWm1agDr7asKMJpDbRZcyiqskZk3czQQ5QuhqOg6+DtFpL4j+fQOkzRziW/T2u8c6ZI2ASuJzbG0SFI4h1KKeEDExobRCl896qzMY3KSZ/nIeYRd6rG/CeZNTSUoPOeywZRc9tsUJAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXmgRq8G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C747CC4CED2;
+	Mon,  6 Jan 2025 15:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177744;
-	bh=oYQlr4Q13UVpOno/aY0rmk9VBL5Mqra1cyi8WtPsL5E=;
+	s=korg; t=1736178144;
+	bh=mGlQJ8CYOo7oUJ+vV62SdFNjcPkC3fwh79ytwRM70E8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aD2WEaqSOVU/sy9Or4Gld2B3NuhmQr7Dil8U8ZV1heOP56W8AOEHxnR6b5VSn/NgE
-	 ll3ZoUzGSDB/Cc5oXS/xf8rrn1NQwsz+XyTwO/hxxx/5T5xtZWCLTmJsBUT/gfJzkX
-	 +atLw6/4AEYyAxPIJYSgkSn4wuT+Tt9quqknqg0c=
+	b=RXmgRq8GSJq9eTl42Z2WUteVaQa+Kixk1FbUuEtqqWyXgo/Tsago3nxcaQa+auC0A
+	 kBulPa2cxoYotmFrFUtinv7WmC1dL0kAKwhz5J2iNA0okBaHe0FqP9wESO2iwlehz8
+	 j0dsJeENZAZW7pOyL66Awwx1GYqQo6Jes7hH92Xs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	=?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 042/156] drm/xe/pf: Use correct function to check LMEM provisioning
+Subject: [PATCH 5.10 004/138] MIPS: Loongson64: DTS: Fix msi node for ls7a
 Date: Mon,  6 Jan 2025 16:15:28 +0100
-Message-ID: <20250106151143.320657737@linuxfoundation.org>
+Message-ID: <20250106151133.381851827@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit af12ba67d09ebe2b31ab997cea1a930864028562 ]
+[ Upstream commit 98a9e2ac3755a353eefea8c52e23d5b0c50f3899 ]
 
-There is a typo in function call and instead of VF LMEM we were
-looking at VF GGTT provisioning. Fix that.
+Add it to silent warning:
+arch/mips/boot/dts/loongson/ls7a-pch.dtsi:68.16-416.5: Warning (interrupt_provider): /bus@10000000/pci@1a000000: '#interrupt-cells' found, but node is not an interrupt provider
+arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts:32.31-40.4: Warning (interrupt_provider): /bus@10000000/msi-controller@2ff00000: Missing '#interrupt-cells' in interrupt provider
+arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dtb: Warning (interrupt_map): Failed prerequisite 'interrupt_provider'
 
-Fixes: 234670cea9a2 ("drm/xe/pf: Skip fair VFs provisioning if already provisioned")
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
-Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241216223253.819-1-michal.wajdeczko@intel.com
-(cherry picked from commit a8d0aa0e7fcd20c9f1992688c0f0d07a68287403)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c b/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c
-index afdb477ecf83..c9ed996b9cb0 100644
---- a/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c
-+++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c
-@@ -2038,7 +2038,7 @@ static int pf_validate_vf_config(struct xe_gt *gt, unsigned int vfid)
- 	valid_any = valid_any || (valid_ggtt && is_primary);
- 
- 	if (IS_DGFX(xe)) {
--		bool valid_lmem = pf_get_vf_config_ggtt(primary_gt, vfid);
-+		bool valid_lmem = pf_get_vf_config_lmem(primary_gt, vfid);
- 
- 		valid_any = valid_any || (valid_lmem && is_primary);
- 		valid_all = valid_all && valid_lmem;
+diff --git a/arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts b/arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts
+index c945f8565d54..fb180cb2b8e2 100644
+--- a/arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts
++++ b/arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts
+@@ -33,6 +33,7 @@
+ 		compatible = "loongson,pch-msi-1.0";
+ 		reg = <0 0x2ff00000 0 0x8>;
+ 		interrupt-controller;
++		#interrupt-cells = <1>;
+ 		msi-controller;
+ 		loongson,msi-base-vec = <64>;
+ 		loongson,msi-num-vecs = <192>;
 -- 
 2.39.5
 
