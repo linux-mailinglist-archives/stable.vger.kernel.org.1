@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3D0FA02AC3
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:37:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7037CA02B68
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA0647A2FBC
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:35:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 830771654D9
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86CA155325;
-	Mon,  6 Jan 2025 15:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939CB165F1F;
+	Mon,  6 Jan 2025 15:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IdicRB1Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjOvb8st"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7461A60890;
-	Mon,  6 Jan 2025 15:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F55744C7C;
+	Mon,  6 Jan 2025 15:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177736; cv=none; b=fgQv4AMICWolZEvOJX2krtmZEOzl9rAzfCrp09FlpmzXc2JdLVKjo+Xxvpj2amYWDffJ5GCf3r/+vQh7if4CJSOehbQMm7CqOO3XLH9cOUihWUO81QWoyIXggaHAeDjQqDKb7bEP9uP3p7ob1fiUGQkq8Jf6SizpfzJfwSmVgHg=
+	t=1736178138; cv=none; b=gymB0G7tFlAT/RWldZR7tYpXQ1q6ztPGXFUgQq5euerJMppAQZ9rhb91vfBjY+2PidfwdDfa6H2yev6rOlW8JJyAtLBwV0msxjxYtk8X3EGn12BC3kQWj1jRhqsSwaqIJ02Yxl9livDP16ELFLULiwXAPCTAeWn1J9Uz/kWWd44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177736; c=relaxed/simple;
-	bh=wq6KDaaTX3oMIIKAiTu+F/SZC14R16ctOP6jVIwnggM=;
+	s=arc-20240116; t=1736178138; c=relaxed/simple;
+	bh=QHF5/kwkg6Ckb4j17mn83uNWKFXvFpTUWc6pY98zOxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fs/IXV/hn48wj7pkQKup9p7aaa1Zj+vNWi2FLKoy8c/qfYjc+axwL5qjVDDqbBtzYTAQVYOTnZmIkEGPre65sUrVdw1i20Y0FkB62GG4v5tqWsdaORY/EOrrsBXm2V99U6rtdZT7Bvz4xmvMpK5nC4+uZ9JA4Fu7AC1vR4qX9P4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IdicRB1Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82303C4CED2;
-	Mon,  6 Jan 2025 15:35:35 +0000 (UTC)
+	 MIME-Version; b=juHZCD/cLxmktm7IaRuj5HYfgU6813dLqzc8BjSPZDPdqzFuHihGCLb3+AOJjW15c5+M8bucelXYSYTeqiz1QW37ub15zS0GzSVeIiDVk0NMGYfyiQT9zgheUsclKHtE2utc0f71WNTZEboHVBGZD438VYifbcCzAGjdMBwj86E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjOvb8st; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF3CBC4CED2;
+	Mon,  6 Jan 2025 15:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177735;
-	bh=wq6KDaaTX3oMIIKAiTu+F/SZC14R16ctOP6jVIwnggM=;
+	s=korg; t=1736178138;
+	bh=QHF5/kwkg6Ckb4j17mn83uNWKFXvFpTUWc6pY98zOxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IdicRB1QzYF+aR8klKdNGfofWo4waq3b1M52DJc1TCjrpXiCQ87R3d5VvBK2rVpex
-	 Xm1MlF7X7OXRuyHE/91l7zqFnQNX6UD9EfouoTn/cCuqvp5YwTmnuaojLY/PBXQlfl
-	 +GcTqtmpNKgUXQm5DfV8aMxy0LrWPmybaHLHAGQo=
+	b=gjOvb8stz+TLjEoQSagm9+d1bUPIw4vUinHpwwefgDJuDt/vB4XMPIQzwfgKLcrQl
+	 FDg7SfbYRZ5WK0DFSWNjNdLoRK6//s0tZTvGaeJYyygpadV7GtT9Mhmiu3ezdEJMA/
+	 LgwOzlGa6lfHCs/yKa37Gz394dAFy5CB04o+ZXgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 039/156] RDMA/hns: Fix warning storm caused by invalid input in IO path
-Date: Mon,  6 Jan 2025 16:15:25 +0100
-Message-ID: <20250106151143.209039752@linuxfoundation.org>
+Subject: [PATCH 5.10 002/138] PCI/AER: Disable AER service on suspend
+Date: Mon,  6 Jan 2025 16:15:26 +0100
+Message-ID: <20250106151133.306865601@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
 
-[ Upstream commit fa5c4ba8cdbfd2c2d6422e001311c8213283ebbf ]
+[ Upstream commit 5afc2f763edc5daae4722ee46fea4e627d01fa90 ]
 
-WARN_ON() is called in the IO path. And it could lead to a warning
-storm. Use WARN_ON_ONCE() instead of WARN_ON().
+If the link is powered off during suspend, electrical noise may cause
+errors that are logged via AER.  If the AER interrupt is enabled and shares
+an IRQ with PME, that causes a spurious wakeup during suspend.
 
-Fixes: 12542f1de179 ("RDMA/hns: Refactor process about opcode in post_send()")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20241220055249.146943-4-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Disable the AER interrupt during suspend to prevent this.  Clear error
+status before re-enabling IRQ interrupts during resume so we don't get an
+interrupt for errors that occurred during the suspend/resume process.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=209149
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216295
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218090
+Link: https://lore.kernel.org/r/20240416043225.1462548-2-kai.heng.feng@canonical.com
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+[bhelgaas: drop pci_ancestor_pr3_present() etc, commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/pcie/aer.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 6dddadb90e02..d0469d27c63c 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -468,7 +468,7 @@ static inline int set_ud_wqe(struct hns_roce_qp *qp,
- 	valid_num_sge = calc_wr_sge_num(wr, &msg_len);
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index d58b02237075..974d56644973 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -1373,6 +1373,22 @@ static int aer_probe(struct pcie_device *dev)
+ 	return 0;
+ }
  
- 	ret = set_ud_opcode(ud_sq_wqe, wr);
--	if (WARN_ON(ret))
-+	if (WARN_ON_ONCE(ret))
- 		return ret;
++static int aer_suspend(struct pcie_device *dev)
++{
++	struct aer_rpc *rpc = get_service_data(dev);
++
++	aer_disable_rootport(rpc);
++	return 0;
++}
++
++static int aer_resume(struct pcie_device *dev)
++{
++	struct aer_rpc *rpc = get_service_data(dev);
++
++	aer_enable_rootport(rpc);
++	return 0;
++}
++
+ /**
+  * aer_root_reset - reset Root Port hierarchy or RCEC
+  * @dev: pointer to Root Port or RCEC
+@@ -1431,6 +1447,8 @@ static struct pcie_port_service_driver aerdriver = {
+ 	.service	= PCIE_PORT_SERVICE_AER,
  
- 	ud_sq_wqe->msg_len = cpu_to_le32(msg_len);
-@@ -572,7 +572,7 @@ static inline int set_rc_wqe(struct hns_roce_qp *qp,
- 	rc_sq_wqe->msg_len = cpu_to_le32(msg_len);
+ 	.probe		= aer_probe,
++	.suspend	= aer_suspend,
++	.resume		= aer_resume,
+ 	.remove		= aer_remove,
+ };
  
- 	ret = set_rc_opcode(hr_dev, rc_sq_wqe, wr);
--	if (WARN_ON(ret))
-+	if (WARN_ON_ONCE(ret))
- 		return ret;
- 
- 	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_SO,
 -- 
 2.39.5
 
