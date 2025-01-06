@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-107019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC04A029BA
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:27:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD281A02A83
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:34:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D89E11621B3
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:27:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC577164E8E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EF6E18B46A;
-	Mon,  6 Jan 2025 15:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68B31A8F79;
+	Mon,  6 Jan 2025 15:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qirm2d8x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ub0BoEG6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E086E158DC5;
-	Mon,  6 Jan 2025 15:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622A0165F1F;
+	Mon,  6 Jan 2025 15:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177208; cv=none; b=Et5XLRdhCN+GwCGScYe06jxTiVRMmSEJRtwBTVBvxbzD7+Cjm/k2waAW7EYVECFYAjx2hPqI/heVg7kDVG5ruPHfdCcLGiQZ+5KOUJWuokLLdPWfz5/Rq4JSNgaenJof6ZLu7iwHD2ap7qQlelt47roe1ILzMQAtTUwRgi1hm9s=
+	t=1736177662; cv=none; b=EyfbkhR0lxihl1HhJPxwM3vNq0tKG4Ve1fGJ+UwrUeQfgAwY0VtsX91YKC60XYQgf1OWush4p2wdTWX+0R1X5YkuCFS4KeuOZ3Gyg+JsRrZR5zPzV0c/XFboF6DmM59WZUuKphf9iHchDpThF33koLpp/zwKXsnbnU0DlcmMTxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177208; c=relaxed/simple;
-	bh=s/CpvRIjJw0D7hUIvgN2WT/hAF7Y0pGBoN57BwEF5zo=;
+	s=arc-20240116; t=1736177662; c=relaxed/simple;
+	bh=Li2hBaS4z2Hki+0qjM/k4xNLfKU7eZVVFkLWIhAg59k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kMpdQEjrXSjRPs+lUgBiTkRh/Loq1suVfnsmrC+lSvxYGX/nDPjDosTz6853cHWtd6IYN3ZmLeYfAkOJC2dT8AUA5YF6iNbbbCAUBmlLdzuIdyeXX8kcALfIBh6b7NEt7Sqzy7mevHbs6VtYBEH1MD8liHdbX5pgkqOF5KCTV2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qirm2d8x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D5BC4CED2;
-	Mon,  6 Jan 2025 15:26:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lt6UlYekt1zvK9ZDOFCKLxCP8BRvEBnle7hYWKFuOxMJlYN6tbzKKvveXZMik9tvBVb6yKcqEz7LChl7US7kk2HAol5AT2biDOgPhUZB25B7zsSb8RPsE7ouXsAuHdhmb++0pBUkjWVI7WBjv6sJk1jzOYgnCR9wsf0gO15buik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ub0BoEG6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 858F6C4AF09;
+	Mon,  6 Jan 2025 15:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177207;
-	bh=s/CpvRIjJw0D7hUIvgN2WT/hAF7Y0pGBoN57BwEF5zo=;
+	s=korg; t=1736177661;
+	bh=Li2hBaS4z2Hki+0qjM/k4xNLfKU7eZVVFkLWIhAg59k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qirm2d8xyvqlN0MghZLvcC0ZVGcCrwwFnRlRilgn1WZ/yCxwHKlKOl3uKOoq/7UP8
-	 dqbHw20ZIj8WFC9oIntZ32S6VRxLh1/VSFiL1LNRUSrcid53GFFanvW82/1aoyoHIQ
-	 Lrnzbv39BoryoeHD7O52dgxNwQ2dsqAta5u7SRcg=
+	b=ub0BoEG6NHoztqgCs10qEKaLRyIdwnABKhIQg0460SYWmSGAbfm6YOGzpU7XDZM+O
+	 a1w2vTPTK8jofapDVUcGdJIDreaSktxBiSYgcLNi90iyJWHNZVKwaBldHJKQnbJHBZ
+	 o9YZGMQv9Ndh5oax69m9fjlOCI03dyBmYC85JPSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 086/222] watchdog: rzg2l_wdt: Power on the watchdog domain in the restart handler
+	Xi Xiao <1577912515@qq.com>,
+	Mingcong Bai <jeffbai@aosc.io>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.12 004/156] platform/x86: hp-wmi: mark 8A15 board for timed OMEN thermal profile
 Date: Mon,  6 Jan 2025 16:14:50 +0100
-Message-ID: <20250106151153.854791101@linuxfoundation.org>
+Message-ID: <20250106151141.907761243@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +60,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Mingcong Bai <jeffbai@aosc.io>
 
-[ Upstream commit bad201b2ac4e238c6d4b6966a220240e3861640c ]
+commit 032fe9b0516702599c2dd990a4703f783d5716b8 upstream.
 
-On RZ/G3S the watchdog can be part of a software-controlled PM domain. In
-this case, the watchdog device need to be powered on in
-struct watchdog_ops::restart API. This can be done though
-pm_runtime_resume_and_get() API if the watchdog PM domain and watchdog
-device are marked as IRQ safe. We mark the watchdog PM domain as IRQ safe
-with GENPD_FLAG_IRQ_SAFE when the watchdog PM domain is registered and the
-watchdog device though pm_runtime_irq_safe().
+The HP OMEN 8 (2022), corresponding to a board ID of 8A15, supports OMEN
+thermal profile and requires the timed profile quirk.
 
-Before commit e4cf89596c1f ("watchdog: rzg2l_wdt: Fix 'BUG: Invalid wait
-context'") pm_runtime_get_sync() was used in watchdog restart handler
-(which is similar to pm_runtime_resume_and_get() except the later one
-handles the runtime resume errors).
+Upon adding this ID to both the omen_thermal_profile_boards and
+omen_timed_thermal_profile_boards, significant bump in performance can be
+observed. For instance, SilverBench (https://silver.urih.com/) results
+improved from ~56,000 to ~69,000, as a result of higher power draws (and
+thus core frequencies) whilst under load:
 
-Commit e4cf89596c1f ("watchdog: rzg2l_wdt: Fix 'BUG: Invalid wait
-context'") dropped the pm_runtime_get_sync() and replaced it with
-clk_prepare_enable() to avoid invalid wait context due to genpd_lock()
-in genpd_runtime_resume() being called from atomic context. But
-clk_prepare_enable() doesn't fit for this either (as reported by
-Ulf Hansson) as clk_prepare() can also sleep (it just not throw invalid
-wait context warning as it is not written for this).
+Package Power:
 
-Because the watchdog device is marked now as IRQ safe (though this patch)
-the irq_safe_dev_in_sleep_domain() call from genpd_runtime_resume() returns
-1 for devices not registering an IRQ safe PM domain for watchdog (as the
-watchdog device is IRQ safe, PM domain is not and watchdog PM domain is
-always-on), this being the case for RZ/G3S with old device trees and
-the rest of the SoCs that use this driver, we can now drop also the
-clk_prepare_enable() calls in restart handler and rely on
-pm_runtime_resume_and_get().
+- Before the patch: ~65W (dropping to about 55W under sustained load).
+- After the patch: ~115W (dropping to about 105W under sustained load).
 
-Thus, drop clk_prepare_enable() and use pm_runtime_resume_and_get() in
-watchdog restart handler.
+Core Power:
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Acked-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20241015164732.4085249-5-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- Before: ~60W (ditto above).
+- After: ~108W (ditto above).
+
+Add 8A15 to omen_thermal_profile_boards and
+omen_timed_thermal_profile_boards to improve performance.
+
+Signed-off-by: Xi Xiao <1577912515@qq.com>
+Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+Link: https://lore.kernel.org/r/20241226062207.3352629-1-jeffbai@aosc.io
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/watchdog/rzg2l_wdt.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ drivers/platform/x86/hp/hp-wmi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/watchdog/rzg2l_wdt.c b/drivers/watchdog/rzg2l_wdt.c
-index d09f938415fc..525a72d8d746 100644
---- a/drivers/watchdog/rzg2l_wdt.c
-+++ b/drivers/watchdog/rzg2l_wdt.c
-@@ -12,6 +12,7 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_domain.h>
- #include <linux/pm_runtime.h>
- #include <linux/reset.h>
- #include <linux/units.h>
-@@ -166,8 +167,22 @@ static int rzg2l_wdt_restart(struct watchdog_device *wdev,
- 	struct rzg2l_wdt_priv *priv = watchdog_get_drvdata(wdev);
- 	int ret;
+--- a/drivers/platform/x86/hp/hp-wmi.c
++++ b/drivers/platform/x86/hp/hp-wmi.c
+@@ -64,7 +64,7 @@ static const char * const omen_thermal_p
+ 	"874A", "8603", "8604", "8748", "886B", "886C", "878A", "878B", "878C",
+ 	"88C8", "88CB", "8786", "8787", "8788", "88D1", "88D2", "88F4", "88FD",
+ 	"88F5", "88F6", "88F7", "88FE", "88FF", "8900", "8901", "8902", "8912",
+-	"8917", "8918", "8949", "894A", "89EB", "8BAD", "8A42"
++	"8917", "8918", "8949", "894A", "89EB", "8BAD", "8A42", "8A15"
+ };
  
--	clk_prepare_enable(priv->pclk);
--	clk_prepare_enable(priv->osc_clk);
-+	/*
-+	 * In case of RZ/G3S the watchdog device may be part of an IRQ safe power
-+	 * domain that is currently powered off. In this case we need to power
-+	 * it on before accessing registers. Along with this the clocks will be
-+	 * enabled. We don't undo the pm_runtime_resume_and_get() as the device
-+	 * need to be on for the reboot to happen.
-+	 *
-+	 * For the rest of SoCs not registering a watchdog IRQ safe power
-+	 * domain it is safe to call pm_runtime_resume_and_get() as the
-+	 * irq_safe_dev_in_sleep_domain() call in genpd_runtime_resume()
-+	 * returns non zero value and the genpd_lock() is avoided, thus, there
-+	 * will be no invalid wait context reported by lockdep.
-+	 */
-+	ret = pm_runtime_resume_and_get(wdev->parent);
-+	if (ret)
-+		return ret;
+ /* DMI Board names of Omen laptops that are specifically set to be thermal
+@@ -80,7 +80,7 @@ static const char * const omen_thermal_p
+  * "balanced" when reaching zero.
+  */
+ static const char * const omen_timed_thermal_profile_boards[] = {
+-	"8BAD", "8A42"
++	"8BAD", "8A42", "8A15"
+ };
  
- 	if (priv->devtype == WDT_RZG2L) {
- 		ret = reset_control_deassert(priv->rstc);
-@@ -275,6 +290,7 @@ static int rzg2l_wdt_probe(struct platform_device *pdev)
- 
- 	priv->devtype = (uintptr_t)of_device_get_match_data(dev);
- 
-+	pm_runtime_irq_safe(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
- 
- 	priv->wdev.info = &rzg2l_wdt_ident;
--- 
-2.39.5
-
+ /* DMI Board names of Victus laptops */
 
 
 
