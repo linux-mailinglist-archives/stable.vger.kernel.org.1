@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-107267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF48BA02B1B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:40:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3021CA0294B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:21:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA0023A57EE
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:39:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 765F518862BE
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:21:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9482155C9E;
-	Mon,  6 Jan 2025 15:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0403B49652;
+	Mon,  6 Jan 2025 15:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIEsGeMi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXJFHadJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97296153814;
-	Mon,  6 Jan 2025 15:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6840148838;
+	Mon,  6 Jan 2025 15:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177953; cv=none; b=kKeCS3cG+7V6rThUIAVJVY6hEJMiiwRgzP4PwroMqL+rkJuy2hLjHVvR6Q+k6SwNo89+RFBSD9XE66xmgUdlRzJkuPracCPJmcgqzv/LZicKhIkXAQ0V4WlHRqeAtTHNQg1i1f7eNhj/C3sDPkpDpOJg7D8lDEQlP6LleaNmh04=
+	t=1736176892; cv=none; b=tuPpp4tinc3vmRLUyqrRjWWZ9709B64R5GbKJSXE8ZqUTC+EzjpJkHiTHaK2xm/bv1iccblI6pM+TZphGXjsw4U9fTQaRPltPMsU/DZNftgIKZifjhGGTINz7PisLczkmOawKvglPriM+Y2lCLCFEaLLVrmUI2PqJDbl4kfUSVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177953; c=relaxed/simple;
-	bh=oCiOEzGw9vtRuTIT3HwnzmcuGdQy49cuN5QV0b8heJM=;
+	s=arc-20240116; t=1736176892; c=relaxed/simple;
+	bh=FwyNLneJj/CTTqiwFITxMEGkOCqf4Lt5z+rj6qALxxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d88LW+vv41SXrSZlU42utCXnUwBXubPXwSlnaEY2pmaxhF44vYvI4rVanluA/uPotSRGxF5EwSbr/8SkBB/MzQLuU4e1f1gxfsFXk74ZMlsF+1S/DGp16FnoLe+CxsnTBODWyU0AQ6KJol/sfECCdFDQuZ4vWMhDgsCyGH8/RwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qIEsGeMi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EAA8C4CED2;
-	Mon,  6 Jan 2025 15:39:12 +0000 (UTC)
+	 MIME-Version; b=Lh1MCi98OgmNGSDgGVAPEqXyXQp2nwDQTDAuA4tFqsHVL8+qRGDpRQuiCMM9EcBwCqRVeKUmPOg4vTujmgnpsDYdgJbQ/T1vl9xNuD8PJLhEvvJAhQl03vDHNWgvr8Kso6mCwZnkZr/gVHQz5M8iiiZ/u3jVlU7Yf3slYBe4jqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXJFHadJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B0CCC4CED2;
+	Mon,  6 Jan 2025 15:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177953;
-	bh=oCiOEzGw9vtRuTIT3HwnzmcuGdQy49cuN5QV0b8heJM=;
+	s=korg; t=1736176892;
+	bh=FwyNLneJj/CTTqiwFITxMEGkOCqf4Lt5z+rj6qALxxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qIEsGeMiGX5t4h2hMuun0DOdsbZ/YB18/llfMe1oyzGPk4bYnC1guO2qaF6wzJD7q
-	 oBcjhX1XxHrFZnZcII8OnOFxQCu7xLZBl6ZLYzSMr6YZSR1rbpZn4/gChQ2Sx3tpZ0
-	 J4EzwZ/f+UtQGLd4qlu4aWJY11DetozGWgi/MMIY=
+	b=PXJFHadJ/zyL18kikUXvGARlOCmmJmknYxc5/QqrCNY2uMDTRyZFm+wlnJGZ7nXlz
+	 jPkWeYdsSaUkZk4tXt1kZPuztwmgpoUnYd9vgYGYAJiQ/Fy/2iSqFVhJe3/s5Hk93E
+	 jVD1hJ0ANfiDX8ZyFLfMhJhEW7OdDcWRBiJgs0js=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Poli <invernomuto@paranoici.org>,
-	Mark Zhang <markzhang@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.12 111/156] RDMA/mlx5: Enable multiplane mode only when it is supported
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 65/81] usb: xhci: Avoid queuing redundant Stop Endpoint commands
 Date: Mon,  6 Jan 2025 16:16:37 +0100
-Message-ID: <20250106151145.908217414@linuxfoundation.org>
+Message-ID: <20250106151131.887998986@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Zhang <markzhang@nvidia.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-commit 45d339fefaa3dcd237038769e0d34584fb867390 upstream.
+[ Upstream commit 474538b8dd1cd9c666e56cfe8ef60fbb0fb513f4 ]
 
-Driver queries vport_cxt.num_plane and enables multiplane when it is
-greater then 0, but some old FWs (versions from x.40.1000 till x.42.1000),
-report vport_cxt.num_plane = 1 unexpectedly.
+Stop Endpoint command on an already stopped endpoint fails and may be
+misinterpreted as a known hardware bug by the completion handler. This
+results in an unnecessary delay with repeated retries of the command.
 
-Fix it by querying num_plane only when HCA_CAP2.multiplane bit is set.
+Avoid queuing this command when endpoint state flags indicate that it's
+stopped or halted and the command will fail. If commands are pending on
+the endpoint, their completion handlers will process cancelled TDs so
+it's done. In case of waiting for external operations like clearing TT
+buffer, the endpoint is stopped and cancelled TDs can be processed now.
 
-Fixes: 2a5db20fa532 ("RDMA/mlx5: Add support to multi-plane device and port")
-Link: https://patch.msgid.link/r/1ef901acdf564716fcf550453cf5e94f343777ec.1734610916.git.leon@kernel.org
-Cc: stable@vger.kernel.org
-Reported-by: Francesco Poli <invernomuto@paranoici.org>
-Closes: https://lore.kernel.org/all/nvs4i2v7o6vn6zhmtq4sgazy2hu5kiulukxcntdelggmznnl7h@so3oul6uwgbl/
-Signed-off-by: Mark Zhang <markzhang@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+This eliminates practically all unnecessary retries because an endpoint
+with pending URBs is maintained in Running state by the driver, unless
+aforementioned commands or other operations are pending on it. This is
+guaranteed by xhci_ring_ep_doorbell() and by the fact that it is called
+every time any of those operations completes.
+
+The only known exceptions are hardware bugs (the endpoint never starts
+at all) and Stream Protocol errors not associated with any TRB, which
+cause an endpoint reset not followed by restart. Sounds like a bug.
+
+Generally, these retries are only expected to happen when the endpoint
+fails to start for unknown/no reason, which is a worse problem itself,
+and fixing the bug eliminates the retries too.
+
+All cases were tested and found to work as expected. SET_DEQ_PENDING
+was produced by patching uvcvideo to unlink URBs in 100us intervals,
+which then runs into this case very often. EP_HALTED was produced by
+restarting 'cat /dev/ttyUSB0' on a serial dongle with broken cable.
+EP_CLEARING_TT by the same, with the dongle on an external hub.
+
+Fixes: fd9d55d190c0 ("xhci: retry Stop Endpoint on buggy NEC controllers")
+CC: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241106101459.775897-34-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/main.c |    2 +-
- include/linux/mlx5/mlx5_ifc.h     |    4 +++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-ring.c | 13 +++++++++++++
+ drivers/usb/host/xhci.c      | 19 +++++++++++++++----
+ drivers/usb/host/xhci.h      |  1 +
+ 3 files changed, 29 insertions(+), 4 deletions(-)
 
---- a/drivers/infiniband/hw/mlx5/main.c
-+++ b/drivers/infiniband/hw/mlx5/main.c
-@@ -2831,7 +2831,7 @@ static int mlx5_ib_get_plane_num(struct
- 	int err;
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index e5b2a3b551e3..2503022a3123 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1052,6 +1052,19 @@ static int xhci_invalidate_cancelled_tds(struct xhci_virt_ep *ep)
+ 	return 0;
+ }
  
- 	*num_plane = 0;
--	if (!MLX5_CAP_GEN(mdev, ib_virt))
-+	if (!MLX5_CAP_GEN(mdev, ib_virt) || !MLX5_CAP_GEN_2(mdev, multiplane))
- 		return 0;
++/*
++ * Erase queued TDs from transfer ring(s) and give back those the xHC didn't
++ * stop on. If necessary, queue commands to move the xHC off cancelled TDs it
++ * stopped on. Those will be given back later when the commands complete.
++ *
++ * Call under xhci->lock on a stopped endpoint.
++ */
++void xhci_process_cancelled_tds(struct xhci_virt_ep *ep)
++{
++	xhci_invalidate_cancelled_tds(ep);
++	xhci_giveback_invalidated_tds(ep);
++}
++
+ /*
+  * Returns the TD the endpoint ring halted on.
+  * Only call for non-running rings without streams.
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index ae14c7ade9bc..e726c5edee03 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -1903,10 +1903,21 @@ static int xhci_urb_dequeue(struct usb_hcd *hcd, struct urb *urb, int status)
+ 		}
+ 	}
  
- 	err = mlx5_query_hca_vport_context(mdev, 0, 1, 0, &vport_ctx);
---- a/include/linux/mlx5/mlx5_ifc.h
-+++ b/include/linux/mlx5/mlx5_ifc.h
-@@ -2113,7 +2113,9 @@ struct mlx5_ifc_cmd_hca_cap_2_bits {
- 	u8	   migration_in_chunks[0x1];
- 	u8	   reserved_at_d1[0x1];
- 	u8	   sf_eq_usage[0x1];
--	u8	   reserved_at_d3[0xd];
-+	u8	   reserved_at_d3[0x5];
-+	u8	   multiplane[0x1];
-+	u8	   reserved_at_d9[0x7];
+-	/* Queue a stop endpoint command, but only if this is
+-	 * the first cancellation to be handled.
+-	 */
+-	if (!(ep->ep_state & EP_STOP_CMD_PENDING)) {
++	/* These completion handlers will sort out cancelled TDs for us */
++	if (ep->ep_state & (EP_STOP_CMD_PENDING | EP_HALTED | SET_DEQ_PENDING)) {
++		xhci_dbg(xhci, "Not queuing Stop Endpoint on slot %d ep %d in state 0x%x\n",
++				urb->dev->slot_id, ep_index, ep->ep_state);
++		goto done;
++	}
++
++	/* In this case no commands are pending but the endpoint is stopped */
++	if (ep->ep_state & EP_CLEARING_TT) {
++		/* and cancelled TDs can be given back right away */
++		xhci_dbg(xhci, "Invalidating TDs instantly on slot %d ep %d in state 0x%x\n",
++				urb->dev->slot_id, ep_index, ep->ep_state);
++		xhci_process_cancelled_tds(ep);
++	} else {
++		/* Otherwise, queue a new Stop Endpoint command */
+ 		command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
+ 		if (!command) {
+ 			ret = -ENOMEM;
+diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
+index a75b8122538d..1a641f281c00 100644
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1952,6 +1952,7 @@ void xhci_ring_doorbell_for_active_rings(struct xhci_hcd *xhci,
+ void xhci_cleanup_command_queue(struct xhci_hcd *xhci);
+ void inc_deq(struct xhci_hcd *xhci, struct xhci_ring *ring);
+ unsigned int count_trbs(u64 addr, u64 len);
++void xhci_process_cancelled_tds(struct xhci_virt_ep *ep);
  
- 	u8	   cross_vhca_object_to_object_supported[0x20];
- 
+ /* xHCI roothub code */
+ void xhci_set_link_state(struct xhci_hcd *xhci, struct xhci_port *port,
+-- 
+2.39.5
+
 
 
 
