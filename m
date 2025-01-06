@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-107046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0E9A029EC
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:28:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FE08A02ABA
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1B7F161E66
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:28:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7375B7A0FB5
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20E8156886;
-	Mon,  6 Jan 2025 15:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08DFE16DEBB;
+	Mon,  6 Jan 2025 15:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rGOO4vfp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dFwow7mP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F547481AF;
-	Mon,  6 Jan 2025 15:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8506156C5E;
+	Mon,  6 Jan 2025 15:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177289; cv=none; b=PtBcLAuinF93SE5+bD4/wHoSC0N2kfgnsE635VOVygjti0t8cQgu2OZah4AlaVIqtX8IodkvBWFkNb1rBf70pVEAH+f+bvwyXZye7hxxfF2q0HtO7IEgItr+9ZTqYEF85CFhbz3szHt7F7gAzasnsyVBKawZfM91s2wQuwMhvOA=
+	t=1736177712; cv=none; b=a/BJKy6cGrCzTZ7CohS5Ow567VBJw+0CYKcSO2Wd2sVTztD67NsWMRh3KdMQAEmbAsd07BSRQKoPBgJ9yhUbh/0WDKE45bButiImvaDG1JA7MzI/q9EPggzBLvmPZqzU1TfXSV90/A/paMv5FEkNY3OWu5iQbVq58XNTzs55+L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177289; c=relaxed/simple;
-	bh=COIsfpfeCR8MsERKGYKdCZOkrBjCU5mY7Q1eHAU4PLo=;
+	s=arc-20240116; t=1736177712; c=relaxed/simple;
+	bh=bQHIWGTOf10DSctQyPd6Q5LWEOOavA+msEQd4G/kp5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EkDQ57/g99CSEZsCYlNEeEQPEjDsin71/GAk6okqxf0YidF5nIjKiX/nAyrOf6lulpfGWRHoTdDeiGUTxZmnipIuWLde1opwqEUn6PT5/nvSng8mMR/NqmOpijbLeo/gaZPFL+La7t2oeaPxZrOilo8bnP+B6EUn3twW251Sqe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rGOO4vfp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F35C4CED2;
-	Mon,  6 Jan 2025 15:28:08 +0000 (UTC)
+	 MIME-Version; b=exCF1G8ftVXfMSAVMuY9gB7iXzMwkLuet+dkfO1KNKkmHhS/iaciueltQVEX4AZl/nK5ED4uax7JIQA4QCanpTj5LpPUL9G1XD50k6+OX6aPFnXCsJ2ZlfezU93+fzRYRYa4Ac5oAZ248uc029ZUpH4/iLdzJKa0K/fQHYaGsAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dFwow7mP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F122AC4CED2;
+	Mon,  6 Jan 2025 15:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177289;
-	bh=COIsfpfeCR8MsERKGYKdCZOkrBjCU5mY7Q1eHAU4PLo=;
+	s=korg; t=1736177712;
+	bh=bQHIWGTOf10DSctQyPd6Q5LWEOOavA+msEQd4G/kp5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rGOO4vfp7E0/lnoVPcTJo2307cyiW2lRIt4AKU7zXEy05xjLX9SyFuAwXTSINB1xu
-	 acpWFYdrZEcIHSWEFzX48y8hBJVmnbSnsbNsYBgwYpPAhWnT7wLGRVi6ZUPMlzPE6t
-	 BlBPYoWrN+VctlMd6Y13Y9Cu8ZBPpiA3hhJsTD7s=
+	b=dFwow7mPgbHlCPI9nIWmfA7kYDqF+jUdiXaHJ0/E17Ru/bFwNsdgSXqVh4On3efMi
+	 2FyhUNiU7aDchk2E2nBtInNd2jV944Db+BmlvzCizaFWB+XCuMOrM6oNj7Pl/gLLMQ
+	 u6fXbOY4irW2eAW1TBRU6mtpf33/AEV7NmkjX6Hw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Damien Le Moal <Damien.LeMoal@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.6 114/222] btrfs: fix use-after-free in btrfs_encoded_read_endio()
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Stefan Ekenberg <stefan.ekenberg@axis.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 032/156] drm/bridge: adv7511_audio: Update Audio InfoFrame properly
 Date: Mon,  6 Jan 2025 16:15:18 +0100
-Message-ID: <20250106151154.911820119@linuxfoundation.org>
+Message-ID: <20250106151142.947968882@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,216 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Stefan Ekenberg <stefan.ekenberg@axis.com>
 
-commit 05b36b04d74a517d6675bf2f90829ff1ac7e28dc upstream.
+[ Upstream commit 902806baf3c1e8383c1fe3ff0b6042b8cb5c2707 ]
 
-Shinichiro reported the following use-after free that sometimes is
-happening in our CI system when running fstests' btrfs/284 on a TCMU
-runner device:
+AUDIO_UPDATE bit (Bit 5 of MAIN register 0x4A) needs to be set to 1
+while updating Audio InfoFrame information and then set to 0 when done.
+Otherwise partially updated Audio InfoFrames could be sent out. Two
+cases where this rule were not followed are fixed:
+ - In adv7511_hdmi_hw_params() make sure AUDIO_UPDATE bit is updated
+   before/after setting ADV7511_REG_AUDIO_INFOFRAME.
+ - In audio_startup() use the correct register for clearing
+   AUDIO_UPDATE bit.
 
-  BUG: KASAN: slab-use-after-free in lock_release+0x708/0x780
-  Read of size 8 at addr ffff888106a83f18 by task kworker/u80:6/219
+The problem with corrupted audio infoframes were discovered by letting
+a HDMI logic analyser check the output of ADV7535.
 
-  CPU: 8 UID: 0 PID: 219 Comm: kworker/u80:6 Not tainted 6.12.0-rc6-kts+ #15
-  Hardware name: Supermicro Super Server/X11SPi-TF, BIOS 3.3 02/21/2020
-  Workqueue: btrfs-endio btrfs_end_bio_work [btrfs]
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x6e/0xa0
-   ? lock_release+0x708/0x780
-   print_report+0x174/0x505
-   ? lock_release+0x708/0x780
-   ? __virt_addr_valid+0x224/0x410
-   ? lock_release+0x708/0x780
-   kasan_report+0xda/0x1b0
-   ? lock_release+0x708/0x780
-   ? __wake_up+0x44/0x60
-   lock_release+0x708/0x780
-   ? __pfx_lock_release+0x10/0x10
-   ? __pfx_do_raw_spin_lock+0x10/0x10
-   ? lock_is_held_type+0x9a/0x110
-   _raw_spin_unlock_irqrestore+0x1f/0x60
-   __wake_up+0x44/0x60
-   btrfs_encoded_read_endio+0x14b/0x190 [btrfs]
-   btrfs_check_read_bio+0x8d9/0x1360 [btrfs]
-   ? lock_release+0x1b0/0x780
-   ? trace_lock_acquire+0x12f/0x1a0
-   ? __pfx_btrfs_check_read_bio+0x10/0x10 [btrfs]
-   ? process_one_work+0x7e3/0x1460
-   ? lock_acquire+0x31/0xc0
-   ? process_one_work+0x7e3/0x1460
-   process_one_work+0x85c/0x1460
-   ? __pfx_process_one_work+0x10/0x10
-   ? assign_work+0x16c/0x240
-   worker_thread+0x5e6/0xfc0
-   ? __pfx_worker_thread+0x10/0x10
-   kthread+0x2c3/0x3a0
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork+0x31/0x70
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork_asm+0x1a/0x30
-   </TASK>
+Note that this patchs replaces writing REG_GC(1) with
+REG_INFOFRAME_UPDATE. Bit 5 of REG_GC(1) is positioned within field
+GC_PP[3:0] and that field doesn't control audio infoframe and is read-
+only. My conclusion therefore was that the author if this code meant to
+clear bit 5 of REG_INFOFRAME_UPDATE from the very beginning.
 
-  Allocated by task 3661:
-   kasan_save_stack+0x30/0x50
-   kasan_save_track+0x14/0x30
-   __kasan_kmalloc+0xaa/0xb0
-   btrfs_encoded_read_regular_fill_pages+0x16c/0x6d0 [btrfs]
-   send_extent_data+0xf0f/0x24a0 [btrfs]
-   process_extent+0x48a/0x1830 [btrfs]
-   changed_cb+0x178b/0x2ea0 [btrfs]
-   btrfs_ioctl_send+0x3bf9/0x5c20 [btrfs]
-   _btrfs_ioctl_send+0x117/0x330 [btrfs]
-   btrfs_ioctl+0x184a/0x60a0 [btrfs]
-   __x64_sys_ioctl+0x12e/0x1a0
-   do_syscall_64+0x95/0x180
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-  Freed by task 3661:
-   kasan_save_stack+0x30/0x50
-   kasan_save_track+0x14/0x30
-   kasan_save_free_info+0x3b/0x70
-   __kasan_slab_free+0x4f/0x70
-   kfree+0x143/0x490
-   btrfs_encoded_read_regular_fill_pages+0x531/0x6d0 [btrfs]
-   send_extent_data+0xf0f/0x24a0 [btrfs]
-   process_extent+0x48a/0x1830 [btrfs]
-   changed_cb+0x178b/0x2ea0 [btrfs]
-   btrfs_ioctl_send+0x3bf9/0x5c20 [btrfs]
-   _btrfs_ioctl_send+0x117/0x330 [btrfs]
-   btrfs_ioctl+0x184a/0x60a0 [btrfs]
-   __x64_sys_ioctl+0x12e/0x1a0
-   do_syscall_64+0x95/0x180
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-  The buggy address belongs to the object at ffff888106a83f00
-   which belongs to the cache kmalloc-rnd-07-96 of size 96
-  The buggy address is located 24 bytes inside of
-   freed 96-byte region [ffff888106a83f00, ffff888106a83f60)
-
-  The buggy address belongs to the physical page:
-  page: refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff888106a83800 pfn:0x106a83
-  flags: 0x17ffffc0000000(node=0|zone=2|lastcpupid=0x1fffff)
-  page_type: f5(slab)
-  raw: 0017ffffc0000000 ffff888100053680 ffffea0004917200 0000000000000004
-  raw: ffff888106a83800 0000000080200019 00000001f5000000 0000000000000000
-  page dumped because: kasan: bad access detected
-
-  Memory state around the buggy address:
-   ffff888106a83e00: fa fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
-   ffff888106a83e80: fa fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
-  >ffff888106a83f00: fa fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
-                              ^
-   ffff888106a83f80: fa fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
-   ffff888106a84000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  ==================================================================
-
-Further analyzing the trace and the crash dump's vmcore file shows that
-the wake_up() call in btrfs_encoded_read_endio() is calling wake_up() on
-the wait_queue that is in the private data passed to the end_io handler.
-
-Commit 4ff47df40447 ("btrfs: move priv off stack in
-btrfs_encoded_read_regular_fill_pages()") moved 'struct
-btrfs_encoded_read_private' off the stack.
-
-Before that commit one can see a corruption of the private data when
-analyzing the vmcore after a crash:
-
-*(struct btrfs_encoded_read_private *)0xffff88815626eec8 = {
-	.wait = (wait_queue_head_t){
-		.lock = (spinlock_t){
-			.rlock = (struct raw_spinlock){
-				.raw_lock = (arch_spinlock_t){
-					.val = (atomic_t){
-						.counter = (int)-2005885696,
-					},
-					.locked = (u8)0,
-					.pending = (u8)157,
-					.locked_pending = (u16)40192,
-					.tail = (u16)34928,
-				},
-				.magic = (unsigned int)536325682,
-				.owner_cpu = (unsigned int)29,
-				.owner = (void *)__SCT__tp_func_btrfs_transaction_commit+0x0 = 0x0,
-				.dep_map = (struct lockdep_map){
-					.key = (struct lock_class_key *)0xffff8881575a3b6c,
-					.class_cache = (struct lock_class *[2]){ 0xffff8882a71985c0, 0xffffea00066f5d40 },
-					.name = (const char *)0xffff88815626f100 = "",
-					.wait_type_outer = (u8)37,
-					.wait_type_inner = (u8)178,
-					.lock_type = (u8)154,
-				},
-			},
-			.__padding = (u8 [24]){ 0, 157, 112, 136, 50, 174, 247, 31, 29 },
-			.dep_map = (struct lockdep_map){
-				.key = (struct lock_class_key *)0xffff8881575a3b6c,
-				.class_cache = (struct lock_class *[2]){ 0xffff8882a71985c0, 0xffffea00066f5d40 },
-				.name = (const char *)0xffff88815626f100 = "",
-				.wait_type_outer = (u8)37,
-				.wait_type_inner = (u8)178,
-				.lock_type = (u8)154,
-			},
-		},
-		.head = (struct list_head){
-			.next = (struct list_head *)0x112cca,
-			.prev = (struct list_head *)0x47,
-		},
-	},
-	.pending = (atomic_t){
-		.counter = (int)-1491499288,
-	},
-	.status = (blk_status_t)130,
-}
-
-Here we can see several indicators of in-memory data corruption, e.g. the
-large negative atomic values of ->pending or
-->wait->lock->rlock->raw_lock->val, as well as the bogus spinlock magic
-0x1ff7ae32 (decimal 536325682 above) instead of 0xdead4ead or the bogus
-pointer values for ->wait->head.
-
-To fix this, change atomic_dec_return() to atomic_dec_and_test() to fix the
-corruption, as atomic_dec_return() is defined as two instructions on
-x86_64, whereas atomic_dec_and_test() is defined as a single atomic
-operation. This can lead to a situation where counter value is already
-decremented but the if statement in btrfs_encoded_read_endio() is not
-completely processed, i.e. the 0 test has not completed. If another thread
-continues executing btrfs_encoded_read_regular_fill_pages() the
-atomic_dec_return() there can see an already updated ->pending counter and
-continues by freeing the private data. Continuing in the endio handler the
-test for 0 succeeds and the wait_queue is woken up, resulting in a
-use-after-free.
-
-Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Suggested-by: Damien Le Moal <Damien.LeMoal@wdc.com>
-Fixes: 1881fba89bd5 ("btrfs: add BTRFS_IOC_ENCODED_READ ioctl")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-by: Biju Das <biju.das.jz@bp.renesas.com>
+Fixes: 53c515befe28 ("drm/bridge: adv7511: Add Audio support")
+Signed-off-by: Stefan Ekenberg <stefan.ekenberg@axis.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241119-adv7511-audio-info-frame-v4-1-4ae68e76c89c@axis.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/adv7511/adv7511_audio.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -9972,7 +9972,7 @@ static void btrfs_encoded_read_endio(str
- 		 */
- 		WRITE_ONCE(priv->status, bbio->bio.bi_status);
- 	}
--	if (!atomic_dec_return(&priv->pending))
-+	if (atomic_dec_and_test(&priv->pending))
- 		wake_up(&priv->wait);
- 	bio_put(&bbio->bio);
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
+index 61f4a38e7d2b..8f786592143b 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
+@@ -153,7 +153,16 @@ static int adv7511_hdmi_hw_params(struct device *dev, void *data,
+ 			   ADV7511_AUDIO_CFG3_LEN_MASK, len);
+ 	regmap_update_bits(adv7511->regmap, ADV7511_REG_I2C_FREQ_ID_CFG,
+ 			   ADV7511_I2C_FREQ_ID_CFG_RATE_MASK, rate << 4);
+-	regmap_write(adv7511->regmap, 0x73, 0x1);
++
++	/* send current Audio infoframe values while updating */
++	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
++			   BIT(5), BIT(5));
++
++	regmap_write(adv7511->regmap, ADV7511_REG_AUDIO_INFOFRAME(0), 0x1);
++
++	/* use Audio infoframe updated info */
++	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
++			   BIT(5), 0);
+ 
+ 	return 0;
  }
+@@ -184,8 +193,9 @@ static int audio_startup(struct device *dev, void *data)
+ 	regmap_update_bits(adv7511->regmap, ADV7511_REG_GC(0),
+ 				BIT(7) | BIT(6), BIT(7));
+ 	/* use Audio infoframe updated info */
+-	regmap_update_bits(adv7511->regmap, ADV7511_REG_GC(1),
++	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
+ 				BIT(5), 0);
++
+ 	/* enable SPDIF receiver */
+ 	if (adv7511->audio_source == ADV7511_AUDIO_SOURCE_SPDIF)
+ 		regmap_update_bits(adv7511->regmap, ADV7511_REG_AUDIO_CONFIG,
+-- 
+2.39.5
+
 
 
 
