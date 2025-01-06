@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-107170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E62A02AA2
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:35:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CB9EA029D1
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:28:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B57A3A629B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:34:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1CD918868E3
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:27:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD5F1D5CE5;
-	Mon,  6 Jan 2025 15:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54AC15575F;
+	Mon,  6 Jan 2025 15:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UoQsbQBI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILfaoFsO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED33E70812;
-	Mon,  6 Jan 2025 15:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72EC4158DC5;
+	Mon,  6 Jan 2025 15:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177665; cv=none; b=etrZJSgX6+/yITa4uP5jOGUlrT0Rq3C7neutu2ua3C/xIH4dUVS7v9jWXBgt1A+8Gcl095oqIzV6Jf2+drwKIYWpIoyYDjaWkAfTCxUtsFzavn/uX3TaN/UoDpyYMceVX1PhfSbyq5yYmNd0JIEQUd2ohcLSIFYEoaRYl3c8qJo=
+	t=1736177211; cv=none; b=R0NIwQE3RvXgp2PvhWk4EETTrhT0s6cWl37s+P0imwsaPpifBtmNCspE2qYVfBMn06FJWS1j7E7hj5TZGipfCsJznp2KFogr6dkl3ItPIbIPfmaTZ+ngy8M7nz0AUfaBIxdoi9eZVIj+r0mKz5LLi3nw3QPedTH8pEGH5xvmMQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177665; c=relaxed/simple;
-	bh=9iGsw4jXY7T90Dj5o2GKRnVGsolkE/O5TSFnKLzDezQ=;
+	s=arc-20240116; t=1736177211; c=relaxed/simple;
+	bh=o70mBOTK0JbdTufP6KmqctYlmYzWb7Z6goAbFbZBxKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=etx07rF0C3/A2S6FrA5tfU6UbUuALZL0zDYBj+f8m70YX+XzPHzjL69/DLxbxjmYS4DGur3bXaM29/je5FUPOMcicQjgARD65rraAuHCjCJg/gX2euIuXZw2Of8MEBVdNnV0fm+1ONn50QUuzoBtit0TzuGcpsbwMHVX3ccMswU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UoQsbQBI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B15C4CED2;
-	Mon,  6 Jan 2025 15:34:24 +0000 (UTC)
+	 MIME-Version; b=LpnavUMZbBYW3iDeIJFIXB9YEfI84wyUDVtAg84dxi5pGTp6cMM8gcvX82amQiXNdZ5Lhn7j5XFSzZCA3NZM49HGt2PxnitqFTkCZl8MLRV/05wtG9in4uXZ4rojjcKgRfTJCjd90Q0pEsbbISfHLpdmdUDOCVQ3zTrDINT+pLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILfaoFsO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB938C4CED2;
+	Mon,  6 Jan 2025 15:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177664;
-	bh=9iGsw4jXY7T90Dj5o2GKRnVGsolkE/O5TSFnKLzDezQ=;
+	s=korg; t=1736177211;
+	bh=o70mBOTK0JbdTufP6KmqctYlmYzWb7Z6goAbFbZBxKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UoQsbQBI+JBlMz4AFdxys6pEGnKdeQvNCM4CKrSi7AAFMIMwdBAy0nFYqwic5Wheu
-	 iayfBfNNExWK1jbqqOzMJQizgwGkRhgC01uRCQShXiQM9xLnzKNxsUOtbW6moXchbd
-	 3IbB/0FqOkJMIrlJHuylOCoGw/PJaqBtBgS79qLE=
+	b=ILfaoFsOjO0hvQN9tmZaj6ngloqwz5rHkIdWvHUEJkvr+xDlnvjTy8pNEpD14hu72
+	 dsvgJHyC9z6XJKuGE5lOKCbcQMmPQJKrlh5DROv/56DzaYjvWZZsRWjFgNJIGjomB0
+	 ZXPL2pGLf7lCm6VwnrjofQ9CNb7HpXOUMnEjjMNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thi=C3=A9baud=20Weksteen?= <tweek@google.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.12 005/156] selinux: ignore unknown extended permissions
+	Jan Kara <jack@suse.cz>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 087/222] udf_rename(): only access the child content on cross-directory rename
 Date: Mon,  6 Jan 2025 16:14:51 +0100
-Message-ID: <20250106151141.945344395@linuxfoundation.org>
+Message-ID: <20250106151153.892518783@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thiébaud Weksteen <tweek@google.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit 900f83cf376bdaf798b6f5dcb2eae0c822e908b6 upstream.
+[ Upstream commit 9d35cebb794bb7be93db76c3383979c7deacfef9 ]
 
-When evaluating extended permissions, ignore unknown permissions instead
-of calling BUG(). This commit ensures that future permissions can be
-added without interfering with older kernels.
+We can't really afford locking the source on same-directory rename;
+currently vfs_rename() tries to do that, but it will have to be
+changed.  The logics in udf_rename() is lazy and goes looking for
+".." in source even in same-directory case.  It's not hard to get
+rid of that, leaving that behaviour only for cross-directory case;
+that VFS can get locks safely (and will keep doing that after the
+coming changes).
 
-Cc: stable@vger.kernel.org
-Fixes: fa1aa143ac4a ("selinux: extended permissions for ioctls")
-Signed-off-by: Thiébaud Weksteen <tweek@google.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Acked-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Stable-dep-of: 6756af923e06 ("udf: Verify inode link counts before performing rename")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/selinux/ss/services.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/udf/namei.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/security/selinux/ss/services.c
-+++ b/security/selinux/ss/services.c
-@@ -955,7 +955,10 @@ void services_compute_xperms_decision(st
- 					xpermd->driver))
- 			return;
- 	} else {
--		BUG();
-+		pr_warn_once(
-+			"SELinux: unknown extended permission (%u) will be ignored\n",
-+			node->datum.u.xperms->specified);
-+		return;
- 	}
+diff --git a/fs/udf/namei.c b/fs/udf/namei.c
+index b3f57ad2b869..0461a7b1e9b4 100644
+--- a/fs/udf/namei.c
++++ b/fs/udf/namei.c
+@@ -770,7 +770,7 @@ static int udf_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 	struct inode *old_inode = d_inode(old_dentry);
+ 	struct inode *new_inode = d_inode(new_dentry);
+ 	struct udf_fileident_iter oiter, niter, diriter;
+-	bool has_diriter = false;
++	bool has_diriter = false, is_dir = false;
+ 	int retval;
+ 	struct kernel_lb_addr tloc;
  
- 	if (node->key.specified == AVTAB_XPERMS_ALLOWED) {
-@@ -992,7 +995,8 @@ void services_compute_xperms_decision(st
- 					node->datum.u.xperms->perms.p[i];
+@@ -793,6 +793,9 @@ static int udf_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 			if (!empty_dir(new_inode))
+ 				goto out_oiter;
  		}
- 	} else {
--		BUG();
-+		pr_warn_once("SELinux: unknown specified key (%u)\n",
-+			     node->key.specified);
- 	}
- }
++		is_dir = true;
++	}
++	if (is_dir && old_dir != new_dir) {
+ 		retval = udf_fiiter_find_entry(old_inode, &dotdot_name,
+ 					       &diriter);
+ 		if (retval == -ENOENT) {
+@@ -880,7 +883,9 @@ static int udf_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 					cpu_to_lelb(UDF_I(new_dir)->i_location);
+ 		udf_fiiter_write_fi(&diriter, NULL);
+ 		udf_fiiter_release(&diriter);
++	}
  
++	if (is_dir) {
+ 		inode_dec_link_count(old_dir);
+ 		if (new_inode)
+ 			inode_dec_link_count(new_inode);
+-- 
+2.39.5
+
 
 
 
