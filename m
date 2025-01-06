@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 092F7A02A35
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFD72A02B7B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:44:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2C331886BC9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB34C18864B5
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF2C01DE2BF;
-	Mon,  6 Jan 2025 15:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FDC1607AA;
+	Mon,  6 Jan 2025 15:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A75yEtmq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQMZ6AQq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD961DDC1A;
-	Mon,  6 Jan 2025 15:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF121514F6;
+	Mon,  6 Jan 2025 15:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177445; cv=none; b=Ln20SQG/myeoe9Cdf2C+Qnttjw89YD3B+E7IDEOjXoX9rf6lrxWA8bC/WKan4cXk4ccILC84FR+IAdbupOLVseWle5DuanNxoMJ1tsDbPZ6GHAHJLnWAwda2klSQuYoaRkNkKBUnI1kH1BRfzlnNHvRKYlTsyBHxH6lxg4V3TnY=
+	t=1736178226; cv=none; b=Sjh20QDSKYEAw7oHhooCcqJPAmSd8aXjDtUyHC98ZPaaRF4rin1Bj6VDmpc37yJ2m7qXqcDvjpd/z83lLkmwlR1TG1Ea95gnga68awbC9BdHJ/fVCusTCiTGMGnoSSc1PJ5MHbMMeCwTDGfqRvOod/OialNNULCTvx1xBczIBVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177445; c=relaxed/simple;
-	bh=ehePgixqOm3ho1frfV8OtpOWVPVLbaNIzzB9/AtqAkc=;
+	s=arc-20240116; t=1736178226; c=relaxed/simple;
+	bh=tDvckh5ptd/CzVXwzS4ByGFqPEWwN3eF16+K9J3HiuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XHRoy6wpheAkB0I2am66TtFTS/7Nob6CEIT6HqiOqnLKqSFSJY877z6l77g9MzjjWA3f16bg9qjQA622TBS3figDJptL/loGXDjCSlOcVkjglPd+yMyG03AzdqoWdMtHbRU3lVvMKehcCS9MnBGibP16OQagFD45BJIha/nJkFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A75yEtmq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A66CEC4CED2;
-	Mon,  6 Jan 2025 15:30:44 +0000 (UTC)
+	 MIME-Version; b=SD6KuQp1HHu+1bi1QEna9Z1Vy2U73eIOGiMH0gahhgrfYxT4uFy7Q6zRVddnIj8AfPbB6I5oKD3iojLIZisXJkTse+tk4xkXEB7Nni9M+dquaQSrosfOQcTjrNXpSXSWiwMlsAyxW655eKatjY792qWWKrl6vNzWwbXMhVtpAwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQMZ6AQq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A3EC4CED6;
+	Mon,  6 Jan 2025 15:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177445;
-	bh=ehePgixqOm3ho1frfV8OtpOWVPVLbaNIzzB9/AtqAkc=;
+	s=korg; t=1736178226;
+	bh=tDvckh5ptd/CzVXwzS4ByGFqPEWwN3eF16+K9J3HiuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A75yEtmqgIatFDtY8li7e/TkNcewQVxVtsQnd+ccNspr4SBgSw7lgvtU88BKxkOEZ
-	 aVOVjN2AgAxstFNnAaySV9hXwfnEc3woUtDvF/br1CRpjGlomKsf8yvSdIOOt2g9Mh
-	 xGCkbTOpDOjfr6lgma3J1IeDnZTpZpDMj05zCUvM=
+	b=jQMZ6AQqiQwyosbrI8cvCWpTioSGR3+tBT6i7hplhXaY41FOio1MqiTB5i8VLKiYJ
+	 Lt/jJ7B/opS648G156ZvvxnG7BLfxyTEmnx74LZrvV54FTsOQUkjKqqo6k6RvMndHL
+	 grhfW3adbhyUFpNheo7XL576wnwtaR6WMY5cpsZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Cong Wang <cong.wang@bytedance.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 167/222] net: mv643xx_eth: fix an OF node reference leak
+Subject: [PATCH 5.10 047/138] bpf: Check negative offsets in __bpf_skb_min_len()
 Date: Mon,  6 Jan 2025 16:16:11 +0100
-Message-ID: <20250106151157.085311293@linuxfoundation.org>
+Message-ID: <20250106151135.018737467@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Cong Wang <cong.wang@bytedance.com>
 
-[ Upstream commit ad5c318086e2e23b577eca33559c5ebf89bc7eb9 ]
+[ Upstream commit 9ecc4d858b92c1bb0673ad9c327298e600c55659 ]
 
-Current implementation of mv643xx_eth_shared_of_add_port() calls
-of_parse_phandle(), but does not release the refcount on error. Call
-of_node_put() in the error path and in mv643xx_eth_shared_of_remove().
+skb_network_offset() and skb_transport_offset() can be negative when
+they are called after we pull the transport header, for example, when
+we use eBPF sockmap at the point of ->sk_data_ready().
 
-This bug was found by an experimental verification tool that I am
-developing.
+__bpf_skb_min_len() uses an unsigned int to get these offsets, this
+leads to a very large number which then causes bpf_skb_change_tail()
+failed unexpectedly.
 
-Fixes: 76723bca2802 ("net: mv643xx_eth: add DT parsing support")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Link: https://patch.msgid.link/20241221081448.3313163-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by using a signed int to get these offsets and ensure the
+minimum is at least zero.
+
+Fixes: 5293efe62df8 ("bpf: add bpf_skb_change_tail helper")
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/20241213034057.246437-2-xiyou.wangcong@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mv643xx_eth.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ net/core/filter.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/mv643xx_eth.c b/drivers/net/ethernet/marvell/mv643xx_eth.c
-index 3b129a1c3381..07e5051171a4 100644
---- a/drivers/net/ethernet/marvell/mv643xx_eth.c
-+++ b/drivers/net/ethernet/marvell/mv643xx_eth.c
-@@ -2708,9 +2708,15 @@ static struct platform_device *port_platdev[3];
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 0b61575df86e..b80203274d3f 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -3710,13 +3710,22 @@ static const struct bpf_func_proto bpf_skb_adjust_room_proto = {
  
- static void mv643xx_eth_shared_of_remove(void)
+ static u32 __bpf_skb_min_len(const struct sk_buff *skb)
  {
-+	struct mv643xx_eth_platform_data *pd;
- 	int n;
+-	u32 min_len = skb_network_offset(skb);
++	int offset = skb_network_offset(skb);
++	u32 min_len = 0;
  
- 	for (n = 0; n < 3; n++) {
-+		if (!port_platdev[n])
-+			continue;
-+		pd = dev_get_platdata(&port_platdev[n]->dev);
-+		if (pd)
-+			of_node_put(pd->phy_node);
- 		platform_device_del(port_platdev[n]);
- 		port_platdev[n] = NULL;
- 	}
-@@ -2773,8 +2779,10 @@ static int mv643xx_eth_shared_of_add_port(struct platform_device *pdev,
- 	}
- 
- 	ppdev = platform_device_alloc(MV643XX_ETH_NAME, dev_num);
--	if (!ppdev)
--		return -ENOMEM;
-+	if (!ppdev) {
-+		ret = -ENOMEM;
-+		goto put_err;
+-	if (skb_transport_header_was_set(skb))
+-		min_len = skb_transport_offset(skb);
+-	if (skb->ip_summed == CHECKSUM_PARTIAL)
+-		min_len = skb_checksum_start_offset(skb) +
+-			  skb->csum_offset + sizeof(__sum16);
++	if (offset > 0)
++		min_len = offset;
++	if (skb_transport_header_was_set(skb)) {
++		offset = skb_transport_offset(skb);
++		if (offset > 0)
++			min_len = offset;
 +	}
- 	ppdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
- 	ppdev->dev.of_node = pnp;
- 
-@@ -2796,6 +2804,8 @@ static int mv643xx_eth_shared_of_add_port(struct platform_device *pdev,
- 
- port_err:
- 	platform_device_put(ppdev);
-+put_err:
-+	of_node_put(ppd.phy_node);
- 	return ret;
++	if (skb->ip_summed == CHECKSUM_PARTIAL) {
++		offset = skb_checksum_start_offset(skb) +
++			 skb->csum_offset + sizeof(__sum16);
++		if (offset > 0)
++			min_len = offset;
++	}
+ 	return min_len;
  }
  
 -- 
