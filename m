@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA25A02A6A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:33:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0543A02B24
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:40:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D15FF164E2E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:33:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFA2B188205C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953CC146D6B;
-	Mon,  6 Jan 2025 15:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275B11D9663;
+	Mon,  6 Jan 2025 15:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u7GShm8f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QcSZSJGq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5022C1527B4;
-	Mon,  6 Jan 2025 15:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53D5158525;
+	Mon,  6 Jan 2025 15:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177620; cv=none; b=TcQdGL61JU62/I4X5IlRqcewXyUvl3ZEQa9oxJXyYSZtei3JU4IWeXq1xWKny2TycboMsmDpjyZmE2tsLSeiZo7+y9z/eLZWRxZLwGfEEUGbKms3OnxA4IhptFBsL4qKoXDHy3VStb82aqNjks1JJiluuoKRNWhq/Vtqyn13zxY=
+	t=1736178036; cv=none; b=J7ENeNOaO7FJfFt6DC5yy1erpaoYG1z4pWvvTRfczd0in/OgWYza4hI8vkk92BxVso52la2w4F3jg9E53+uX1blqAurSHicjfCgcRBds1S0e7tSg5Dj4XjiIxD53ZtAoShgpterFzG83SMRrXwfnKBUh7SyYv182jcGCwofE8Lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177620; c=relaxed/simple;
-	bh=epK1NBZm0HqHwxte8IsE3ehq0gSs1p65KSary89NmnY=;
+	s=arc-20240116; t=1736178036; c=relaxed/simple;
+	bh=DWmFGKgJvUpdhirTolfVIj3LUhrjKXr4wrpUjocZQQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hL+j+gJ3XOON67/whrU22BKe/eaO5lpe9NhKvC14tB7MLphm96RMzolRV6eTLh+DvH+ky8Qy//0qTKXa9OWJTMCWDl7iIlPC/Hkg52O8D6o6ri1HcsxHeV1dgSlNjqpDBO5YpCsKf7f1jU7tmYDt/8b2Sxwm7IE7VaoTkwNhx7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u7GShm8f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF61FC4CED2;
-	Mon,  6 Jan 2025 15:33:39 +0000 (UTC)
+	 MIME-Version; b=tkP5yYa5PUjbDugnPrQsbhWPpzHlCmw+nOMCPNzaYBafjcwbkdkCv2HlAJxQKaqxkm0sioPKBhAEhHr0bM2XTftN2ke4HVNMAOTawN9ykzz5WcNVuoQFlVYchWtOvQnX6jFiPlGGpJUNmW/MSHG5W/kAbICXnuM7wAmH9Rfjmw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QcSZSJGq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5233EC4CED2;
+	Mon,  6 Jan 2025 15:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177620;
-	bh=epK1NBZm0HqHwxte8IsE3ehq0gSs1p65KSary89NmnY=;
+	s=korg; t=1736178036;
+	bh=DWmFGKgJvUpdhirTolfVIj3LUhrjKXr4wrpUjocZQQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u7GShm8fdEtTVDt8Ma2lVuRuYbE7x5QmXcAd026O0XvcTcnWfN0MAOK4ypsced88/
-	 1ffbKDqh6IfYIwClmaTmggpv9fvyEhtQTFKFkLJQW05JWPUazJVLPXNmtXbifOs+Wa
-	 Yn9yDWjgz0shc/LS1erjjCoYv/nUQ9jspgzfY4Aw=
+	b=QcSZSJGq2foMIL51jM9P++VbPsQ44mKX5w7BPOtpTElpHmIdWZb18IAQN+/SSOFiR
+	 Tuwv5MFMbRYnwMsPr9DqliSYNxJ5nOmWEx8QFDy44HeVGlqqsMrwkQ2v+938NSthb+
+	 Rl6neHb4UPrujWv4nhg9E6nPRP9WNBSPtIbKPgqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 222/222] scsi: hisi_sas: Remove redundant checks for automatic debugfs dump
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 140/156] mm: shmem: fix the update of shmem_falloc->nr_unswapped
 Date: Mon,  6 Jan 2025 16:17:06 +0100
-Message-ID: <20250106151159.166543364@linuxfoundation.org>
+Message-ID: <20250106151147.003077942@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-commit 3f030550476566b12091687c70071d05ad433e0d upstream.
+commit d77b90d2b2642655b5f60953c36ad887257e1802 upstream.
 
-In commit 63f0733d07ce ("scsi: hisi_sas: Allocate DFX memory during dump
-trigger"), the memory allocation time of the DFX is changed from device
-initialization to dump occurs, so .debugfs_itct is not a valid address and
-do not need to check.
+The 'shmem_falloc->nr_unswapped' is used to record how many writepage
+refused to swap out because fallocate() is allocating, but after shmem
+supports large folio swap out, the update of 'shmem_falloc->nr_unswapped'
+does not use the correct number of pages in the large folio, which may
+lead to fallocate() not exiting as soon as possible.
 
-The parameter hisi_sas_debugfs_enable is enough to check whether automatic
-debugfs dump is triggered, so remove redunant checks.
+Anyway, this is found through code inspection, and I am not sure whether
+it would actually cause serious issues.
 
-Fixes: 63f0733d07ce ("scsi: hisi_sas: Allocate DFX memory during dump trigger")
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
-Link: https://lore.kernel.org/r/1705904747-62186-3-git-send-email-chenxiang66@hisilicon.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lkml.kernel.org/r/f66a0119d0564c2c37c84f045835b870d1b2196f.1734593154.git.baolin.wang@linux.alibaba.com
+Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_main.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/shmem.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -1579,7 +1579,7 @@ static int hisi_sas_controller_prereset(
- 		return -EPERM;
- 	}
- 
--	if (hisi_sas_debugfs_enable && hisi_hba->debugfs_itct[0].itct)
-+	if (hisi_sas_debugfs_enable)
- 		hisi_hba->hw->debugfs_snapshot_regs(hisi_hba);
- 
- 	return 0;
-@@ -1967,7 +1967,7 @@ static bool hisi_sas_internal_abort_time
- 	struct hisi_hba *hisi_hba = dev_to_hisi_hba(device);
- 	struct hisi_sas_internal_abort_data *timeout = data;
- 
--	if (hisi_sas_debugfs_enable && hisi_hba->debugfs_itct[0].itct) {
-+	if (hisi_sas_debugfs_enable) {
- 		/*
- 		 * If timeout occurs in device gone scenario, to avoid
- 		 * circular dependency like:
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1527,7 +1527,7 @@ try_split:
+ 			    !shmem_falloc->waitq &&
+ 			    index >= shmem_falloc->start &&
+ 			    index < shmem_falloc->next)
+-				shmem_falloc->nr_unswapped++;
++				shmem_falloc->nr_unswapped += nr_pages;
+ 			else
+ 				shmem_falloc = NULL;
+ 			spin_unlock(&inode->i_lock);
 
 
 
