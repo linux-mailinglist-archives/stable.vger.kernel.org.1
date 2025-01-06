@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65865A02A77
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:34:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C98A029DC
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:28:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57299164CCF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:34:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C55E23A6B2A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A09142E7C;
-	Mon,  6 Jan 2025 15:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC221CFEB2;
+	Mon,  6 Jan 2025 15:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OSD9ALaB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hfJBI3dQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08F883A14;
-	Mon,  6 Jan 2025 15:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D352C18A6C1;
+	Mon,  6 Jan 2025 15:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177644; cv=none; b=nPuscxI7qSM5IPBu0Y/X9fnedPPcEpiMcl8ZPZIjPAw4TbxKbYFC1QpfBEPm11LENa6yUzfOPgDyWxpBDpH0zEBHeJni2SCzqdWFsmHpEpJ09aJ+rz67kNuYac2hMmuf+3oRHQHIZMbWz2ZKuqJNDLc5anFkSdw5EejbPuQ8u2c=
+	t=1736177195; cv=none; b=P68iIb9BfbWfwL6YtAzNJisi5crbfCH262Hj92DwNeJYMFTpPotPvaslk1eiN9+m1xaCW0V/TSF7QOt5/9YMJ/Wk6eMiDf3CsUE7z6v0pRRrnc+zRj9PQMhO43EjfoCfQ2doHCSd3ZbF+/FSXySmdr29aqMBgJ5ihB+3fx63N4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177644; c=relaxed/simple;
-	bh=oFIyTP2qSsvz2NQS7k0hwpzopon/4njC5Y3HgdokrB0=;
+	s=arc-20240116; t=1736177195; c=relaxed/simple;
+	bh=Ef+WQztv9TzWRAwQp5C9qhqJ6oeKkmtoa9kAXY6AKrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m/OiMGAVpqMYPzLjqkuB72Hc8f/0pGwbVTuIVwzErbJz6Cc4+4k8kmZVg2rEe6wpJuUbNk3B/J3Gyj+dNeOQYwcxURGgkmFNuJ5zJos+VP9iTLdPbewMMmJh4DVbamIxOkmdZdffCr0doTNwgO7aoH+xwAqtVhODd15vNDHBxZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OSD9ALaB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1321C4CED2;
-	Mon,  6 Jan 2025 15:34:03 +0000 (UTC)
+	 MIME-Version; b=kDlYGadxo2X5Lw7tR6ONeZ0JCeqmxtNuMAAMyi0GbAZQC6/al72D9Grth1909V9klzxIw1PUbxHJGKmwEG6mGhN6/VO5q6t45b86c4NRbZPAtIEHwCUPNVl35HscY3TH4dFRjzMDdBVqPj1s+f1+uR6zdIxMpf2LVCz3o3IGBog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hfJBI3dQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5190EC4CED2;
+	Mon,  6 Jan 2025 15:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177644;
-	bh=oFIyTP2qSsvz2NQS7k0hwpzopon/4njC5Y3HgdokrB0=;
+	s=korg; t=1736177195;
+	bh=Ef+WQztv9TzWRAwQp5C9qhqJ6oeKkmtoa9kAXY6AKrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OSD9ALaByLeFjD6cwSUWbyWTMK4FGi/UxrtnJHNwIBhYv8a3F+SCP8/5idL9E+sb6
-	 aEFqQ+0GadjSrjPAs6WeL9u0e2HSSfdroQNBUkEiUhp4A511K0H0poM4QujoEri6Bw
-	 NUUpRvVDYhNU2ruQ69/+I8nALqOqXX8L7JtUAW8Y=
+	b=hfJBI3dQ5xqMBSoH8T1lG+9M7+Oy8ogO4c8KtvQ4RoSdoKg7vJdGD9sk9QfYq/ntL
+	 mH7aaRG4J5+MuyCYTRyqWnTMy1vHGeDZ9CrIf5OOh9ubfqTDeKATzl6FTiEpRldQoF
+	 QK7EY04aM+U2xGGV7o5hlC+qwUTzmQraIxpqE93Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Vadim Pasternak <vadimp@nvidia.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Andrea della Porta <andrea.porta@suse.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 001/156] platform/x86: mlx-platform: call pci_dev_put() to balance the refcount
+Subject: [PATCH 6.6 083/222] of: address: Preserve the flags portion on 1:1 dma-ranges mapping
 Date: Mon,  6 Jan 2025 16:14:47 +0100
-Message-ID: <20250106151141.796762044@linuxfoundation.org>
+Message-ID: <20250106151153.742761279@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Andrea della Porta <andrea.porta@suse.com>
 
-[ Upstream commit 185e1b1d91e419445d3fd99c1c0376a970438acf ]
+[ Upstream commit 7f05e20b989ac33c9c0f8c2028ec0a566493548f ]
 
-mlxplat_pci_fpga_device_init() calls pci_get_device() but does not
-release the refcount on error path. Call pci_dev_put() on the error path
-and in mlxplat_pci_fpga_device_exit() to fix this.
+A missing or empty dma-ranges in a DT node implies a 1:1 mapping for dma
+translations. In this specific case, the current behaviour is to zero out
+the entire specifier so that the translation could be carried on as an
+offset from zero. This includes address specifier that has flags (e.g.
+PCI ranges).
 
-This bug was found by an experimental static analysis tool that I am
-developing.
+Once the flags portion has been zeroed, the translation chain is broken
+since the mapping functions will check the upcoming address specifier
+against mismatching flags, always failing the 1:1 mapping and its entire
+purpose of always succeeding.
 
-Fixes: 02daa222fbdd ("platform: mellanox: Add initial support for PCIe based programming logic device")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
-Link: https://lore.kernel.org/r/20241216022538.381209-1-joe@pf.is.s.u-tokyo.ac.jp
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Set to zero only the address portion while passing the flags through.
+
+Fixes: dbbdee94734b ("of/address: Merge all of the bus translation code")
+Cc: stable@vger.kernel.org
+Signed-off-by: Andrea della Porta <andrea.porta@suse.com>
+Tested-by: Herve Codina <herve.codina@bootlin.com>
+Link: https://lore.kernel.org/r/e51ae57874e58a9b349c35e2e877425ebc075d7a.1732441813.git.andrea.porta@suse.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/mlx-platform.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/of/address.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/mlx-platform.c b/drivers/platform/x86/mlx-platform.c
-index 9d70146fd742..1a09f2dfb7bc 100644
---- a/drivers/platform/x86/mlx-platform.c
-+++ b/drivers/platform/x86/mlx-platform.c
-@@ -6237,6 +6237,7 @@ mlxplat_pci_fpga_device_init(unsigned int device, const char *res_name, struct p
- fail_pci_request_regions:
- 	pci_disable_device(pci_dev);
- fail_pci_enable_device:
-+	pci_dev_put(pci_dev);
- 	return err;
- }
- 
-@@ -6247,6 +6248,7 @@ mlxplat_pci_fpga_device_exit(struct pci_dev *pci_bridge,
- 	iounmap(pci_bridge_addr);
- 	pci_release_regions(pci_bridge);
- 	pci_disable_device(pci_bridge);
-+	pci_dev_put(pci_bridge);
- }
- 
- static int
+diff --git a/drivers/of/address.c b/drivers/of/address.c
+index cdefe5a89e5d..34d880a1be0a 100644
+--- a/drivers/of/address.c
++++ b/drivers/of/address.c
+@@ -476,7 +476,8 @@ static int of_translate_one(struct device_node *parent, struct of_bus *bus,
+ 	}
+ 	if (ranges == NULL || rlen == 0) {
+ 		offset = of_read_number(addr, na);
+-		memset(addr, 0, pna * 4);
++		/* set address to zero, pass flags through */
++		memset(addr + pbus->flag_cells, 0, (pna - pbus->flag_cells) * 4);
+ 		pr_debug("empty ranges; 1:1 translation\n");
+ 		goto finish;
+ 	}
 -- 
 2.39.5
 
