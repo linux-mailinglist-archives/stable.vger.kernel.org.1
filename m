@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17E27A02A62
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:33:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96CFAA02AF7
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABE5B7A27FA
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:32:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A6EA1885EEE
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6651DED6C;
-	Mon,  6 Jan 2025 15:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443641DA631;
+	Mon,  6 Jan 2025 15:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UG/rA1sZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PL+o+wnA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7872B1DE2CC;
-	Mon,  6 Jan 2025 15:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B47200A3;
+	Mon,  6 Jan 2025 15:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177524; cv=none; b=j99DG7oy8gTo9MYCSAXaJGRPifK5GFYQ+TJKwtaf7z8nJazHAxI+ZRzNR+rxBxpta+hsaRjamkw9J8kioQhF+rNl3JsNkoVv0QJtqR0i6eeHtZ6pirfG2Ed5HAmdZ5jLGzR3DcWP8HkIl+XPK9PAtgIb6rdTaBAfZZK2yCfzCDE=
+	t=1736177939; cv=none; b=cihIGKy3H15loPDNOL03H/cWlf2gqD+Nc+5WLy8OPeTjzZAqwUHv1mYoH2adsko7RDkJ3wSU3aR8oThbZxktoMSCcU+7u4FW2/Ch73G10RwKUvc/3GXFLepPE4sstnfrC0F9+qkG/ZYAAayDCe1eza4h/hMpb3y8SqVFKDH2IkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177524; c=relaxed/simple;
-	bh=swuvo0GJ+jCK4cRFgjdcc07a2vVGAEdZ8AjsRFzFUek=;
+	s=arc-20240116; t=1736177939; c=relaxed/simple;
+	bh=mhcIcCncg9JoJA1sId5/PAIiihfVEwhwRnRE+3CYGO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ic2uXDz1Ig8bDwIVpINTaCuykQslIC7BG74UnLS3mPPMAXk72Wl9d0c+1lEup9gLPQ/Szm4SsBx5ljV1+BbOOGq7PpJa+lTdU4tXU9tD3hWAanHykCkRaIxlmE/cPGsQ8x3bcOVF1nOMHi+3TOoCSiNioNJocLTXX33gbvynaiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UG/rA1sZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825FAC4CED2;
-	Mon,  6 Jan 2025 15:32:01 +0000 (UTC)
+	 MIME-Version; b=Mj5K8Lm9yEMj9ECNdhnF+yYcw7/FIf4udXQvos1M7K8v0z6b94Ea4r9J5SNT9uGv9yZYW+Nr/QZ62sH/6VhfO360+erG9qBZCxSdx0PyfZevdRlQsqXpp/a5Cwce1Hrtdq8Hmq98CV4m06hkeD7OD+zaYsFDpcm10/DOjPc/Ss0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PL+o+wnA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 781C8C4CED2;
+	Mon,  6 Jan 2025 15:38:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177521;
-	bh=swuvo0GJ+jCK4cRFgjdcc07a2vVGAEdZ8AjsRFzFUek=;
+	s=korg; t=1736177938;
+	bh=mhcIcCncg9JoJA1sId5/PAIiihfVEwhwRnRE+3CYGO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UG/rA1sZdkZP+g3szr05fE5QqgdG81xMNpJuFFTIzi++yUvY2cVMs1GChnwzCsUJF
-	 JYG17l2FgTm3L9+FJf8adKSUdGQiWaQ3on1crTEKUDp6IgZZdPnneNmCVEPrE1Q3Ry
-	 cgTq1HHdcSyf+HTDAw3mBB3R/TrAWNu1lPBI/OIg=
+	b=PL+o+wnAsLNPoQKjspCe3xtwp+sCf38UAiQHF1DE9Wtzt9hrKfq7Bov6ibM5wG2/4
+	 LTLEGoYqx5PAKMWxFbgnts/LabkfZkA1mzWYCetS1VNbQjQnVJcrE7Kcj2Eb0lzO9r
+	 +T6iQrXmGlKHFzebyVMpAWsfPUmXaIE6+dEeLG2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	Steve French <stfrench@microsoft.com>,
+	Mostafa Saleh <smostafa@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 189/222] smb: client: destroy cfid_put_wq on module exit
+Subject: [PATCH 6.12 107/156] scripts/mksysmap: Fix escape chars $
 Date: Mon,  6 Jan 2025 16:16:33 +0100
-Message-ID: <20250106151157.917980228@linuxfoundation.org>
+Message-ID: <20250106151145.759427224@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,35 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Enzo Matsumiya <ematsumiya@suse.de>
+From: Mostafa Saleh <smostafa@google.com>
 
-[ Upstream commit 633609c48a358134d3f8ef8241dff24841577f58 ]
+[ Upstream commit 7a6c355b55c051eb37cb15d191241da3aa3d6cba ]
 
-Fix potential problem in rmmod
+Commit b18b047002b7 ("kbuild: change scripts/mksysmap into sed script")
+changed the invocation of the script, to call sed directly without
+shell.
 
-Signed-off-by: Enzo Matsumiya <ematsumiya@suse.de>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+That means, the current extra escape that was added in:
+commit ec336aa83162 ("scripts/mksysmap: Fix badly escaped '$'")
+for the shell is not correct any more, at the moment the stack traces
+for nvhe are corrupted:
+[   22.840904] kvm [190]:  [<ffff80008116dd54>] __kvm_nvhe_$x.220+0x58/0x9c
+[   22.842913] kvm [190]:  [<ffff8000811709bc>] __kvm_nvhe_$x.9+0x44/0x50
+[   22.844112] kvm [190]:  [<ffff80008116f8fc>] __kvm_nvhe___skip_pauth_save+0x4/0x4
+
+With this patch:
+[   25.793513] kvm [192]: nVHE call trace:
+[   25.794141] kvm [192]:  [<ffff80008116dd54>] __kvm_nvhe_hyp_panic+0xb0/0xf4
+[   25.796590] kvm [192]:  [<ffff8000811709bc>] __kvm_nvhe_handle_trap+0xe4/0x188
+[   25.797553] kvm [192]:  [<ffff80008116f8fc>] __kvm_nvhe___skip_pauth_save+0x4/0x4
+
+Fixes: b18b047002b7 ("kbuild: change scripts/mksysmap into sed script")
+Signed-off-by: Mostafa Saleh <smostafa@google.com>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsfs.c | 1 +
- 1 file changed, 1 insertion(+)
+ scripts/mksysmap | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
-index 6ed0f2548232..bbb0ef18d7b8 100644
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -2015,6 +2015,7 @@ exit_cifs(void)
- 	destroy_workqueue(decrypt_wq);
- 	destroy_workqueue(fileinfo_put_wq);
- 	destroy_workqueue(serverclose_wq);
-+	destroy_workqueue(cfid_put_wq);
- 	destroy_workqueue(cifsiod_wq);
- 	cifs_proc_clean();
- }
+diff --git a/scripts/mksysmap b/scripts/mksysmap
+index c12723a04655..3accbdb269ac 100755
+--- a/scripts/mksysmap
++++ b/scripts/mksysmap
+@@ -26,7 +26,7 @@
+ #  (do not forget a space before each pattern)
+ 
+ # local symbols for ARM, MIPS, etc.
+-/ \\$/d
++/ \$/d
+ 
+ # local labels, .LBB, .Ltmpxxx, .L__unnamed_xx, .LASANPC, etc.
+ / \.L/d
+@@ -39,7 +39,7 @@
+ / __pi_\.L/d
+ 
+ # arm64 local symbols in non-VHE KVM namespace
+-/ __kvm_nvhe_\\$/d
++/ __kvm_nvhe_\$/d
+ / __kvm_nvhe_\.L/d
+ 
+ # lld arm/aarch64/mips thunks
 -- 
 2.39.5
 
