@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-107083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B350A02A2B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0636A02B7E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:44:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C160F1887AF0
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15CDC3A5DC5
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D39136E09;
-	Mon,  6 Jan 2025 15:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398831607AA;
+	Mon,  6 Jan 2025 15:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6cPGFXU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EMN4NW/N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EA3469D;
-	Mon,  6 Jan 2025 15:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0F67082A;
+	Mon,  6 Jan 2025 15:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177400; cv=none; b=X6gTpgshUaLPnaMOaaBZlK66NqvnLONwCZRih4BNUJwIB20BRwLIgff8BDYeGSIOa8eEeh1nXcfJVa2NjUPap2q6jnPmre4KII8KIAOTkVOPXWUURv/5EgQO7EdveWIWJTMWJ7p8TPXWYdX9XGW15lNGPcNuvO4eIb6D0HyN4LY=
+	t=1736178180; cv=none; b=k5SW7OF+cQ0eAiZhwNMynutCJsVO8yhyMnNpwSCfJgfdWuP5fyfDPUAUZkxFYglaNK7xdMNQgGTUr06+/T4VbiHQykOVyJ53Hy609ykYWlsjwTgnwzzuG5vCIIoMmxXrdHhBvKujHXUziqetIxLocCVRm2O1zjqs9EkXuRKtu1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177400; c=relaxed/simple;
-	bh=NKglIRP38QzOXhaLwBsdBOSE9xwayG1KaiOtGYmqznQ=;
+	s=arc-20240116; t=1736178180; c=relaxed/simple;
+	bh=b8zDzWaIqxRRTvj+rZBKZPl9xZNsl7xLJ1bsr+vZvTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OfptqnUSRfrPOjVtonFJRPL0ar5tVeFB4lKsd9TCtsfQlm5lafGFhNLfRnVSoSau5M8r2y1wgGXrij4clra22K6EymY6KXZ9cKkC5zMHs9k+AISLac9F6dM7C8aL/eEUA9NS0QB54Dnw7i4RtQosN6wPai1ZTxJHs5PYCDaJvX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6cPGFXU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FA3C4CED2;
-	Mon,  6 Jan 2025 15:29:59 +0000 (UTC)
+	 MIME-Version; b=Sauzl1DczCfp/iqJy+C24yjRa16UUxl3ndViztkYwjQlMZIR/Qhpi3fDjGHop//SuDlljiMu0ZBad86tEGiaS1LIHDlpsTpw2glyyiCU4iwmRTuJLZXaEOZ6EQ+o0hCabUZFp0i7Dc48ELq4gc/6dIUkfWI48wJPuhwFo1Qlyt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EMN4NW/N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FACC4CED2;
+	Mon,  6 Jan 2025 15:42:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177400;
-	bh=NKglIRP38QzOXhaLwBsdBOSE9xwayG1KaiOtGYmqznQ=;
+	s=korg; t=1736178179;
+	bh=b8zDzWaIqxRRTvj+rZBKZPl9xZNsl7xLJ1bsr+vZvTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U6cPGFXUDiYVi8ZwVwn8nrLxUwecqdJondJ8wUqXsQRjYxOueB7Wlp5T4cF5s16Db
-	 9tdE8ChmJbiuwKmH7uO+avOkwmpWSklGuD+xHRR18V69QKXbgojQTX+7F1/WFJRVNf
-	 d0I+eHmaPUxH6mvuQLabZ3l1gGUcTItRbZaruchQ=
+	b=EMN4NW/NX0jW3LIX5Cy4pH53deVkflgjYH/wZbQgognArkMdFeys8u2FgQpERLnff
+	 JMJJDMrCc64yROjQmFGAOnqtjATDXU4VTIXaXV/LaqErsdioxGlseQaKAVl843wlc9
+	 8qEV1BDjrYlKaizid/wtfS2TmGyHPQsKc/bD0TX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 151/222] net: stmmac: restructure the error path of stmmac_probe_config_dt()
-Date: Mon,  6 Jan 2025 16:15:55 +0100
-Message-ID: <20250106151156.479711231@linuxfoundation.org>
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 5.10 032/138] sh: clk: Fix clk_enable() to return 0 on NULL clk
+Date: Mon,  6 Jan 2025 16:15:56 +0100
+Message-ID: <20250106151134.437283986@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 2b6ffcd7873b7e8a62c3e15a6f305bfc747c466b ]
+commit ff30bd6a6618e979b16977617371c0f28a95036e upstream.
 
-Current implementation of stmmac_probe_config_dt() does not release the
-OF node reference obtained by of_parse_phandle() in some error paths.
-The problem is that some error paths call stmmac_remove_config_dt() to
-clean up but others use and unwind ladder.  These two types of error
-handling have not kept in sync and have been a recurring source of bugs.
-Re-write the error handling in stmmac_probe_config_dt() to use an unwind
-ladder. Consequently, stmmac_remove_config_dt() is not needed anymore,
-thus remove it.
+On SH, devm_clk_get_optional_enabled() fails with -EINVAL if the clock
+is not found.  This happens because __devm_clk_get() assumes it can pass
+a NULL clock pointer (as returned by clk_get_optional()) to the init()
+function (clk_prepare_enable() in this case), while the SH
+implementation of clk_enable() considers that an error.
 
-This bug was found by an experimental verification tool that I am
-developing.
+Fix this by making the SH clk_enable() implementation return zero
+instead, like the Common Clock Framework does.
 
-Fixes: 4838a5405028 ("net: stmmac: Fix wrapper drivers not detecting PHY")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Link: https://patch.msgid.link/20241219024119.2017012-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Acked-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/b53e6b557b4240579933b3359dda335ff94ed5af.1675354849.git.geert+renesas@glider.be
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/stmicro/stmmac/stmmac_platform.c | 27 ++++++++++++-------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ drivers/sh/clk/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index d73b2c17cc6c..4d570efd9d4b 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -474,8 +474,10 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 		dev_warn(&pdev->dev, "snps,phy-addr property is deprecated\n");
+--- a/drivers/sh/clk/core.c
++++ b/drivers/sh/clk/core.c
+@@ -295,7 +295,7 @@ int clk_enable(struct clk *clk)
+ 	int ret;
  
- 	rc = stmmac_mdio_setup(plat, np, &pdev->dev);
--	if (rc)
--		return ERR_PTR(rc);
-+	if (rc) {
-+		ret = ERR_PTR(rc);
-+		goto error_put_phy;
-+	}
+ 	if (!clk)
+-		return -EINVAL;
++		return 0;
  
- 	of_property_read_u32(np, "tx-fifo-depth", &plat->tx_fifo_size);
- 
-@@ -564,8 +566,8 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 	dma_cfg = devm_kzalloc(&pdev->dev, sizeof(*dma_cfg),
- 			       GFP_KERNEL);
- 	if (!dma_cfg) {
--		stmmac_remove_config_dt(pdev, plat);
--		return ERR_PTR(-ENOMEM);
-+		ret = ERR_PTR(-ENOMEM);
-+		goto error_put_mdio;
- 	}
- 	plat->dma_cfg = dma_cfg;
- 
-@@ -593,8 +595,8 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 
- 	rc = stmmac_mtl_setup(pdev, plat);
- 	if (rc) {
--		stmmac_remove_config_dt(pdev, plat);
--		return ERR_PTR(rc);
-+		ret = ERR_PTR(rc);
-+		goto error_put_mdio;
- 	}
- 
- 	/* clock setup */
-@@ -646,6 +648,10 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 	clk_disable_unprepare(plat->pclk);
- error_pclk_get:
- 	clk_disable_unprepare(plat->stmmac_clk);
-+error_put_mdio:
-+	of_node_put(plat->mdio_node);
-+error_put_phy:
-+	of_node_put(plat->phy_node);
- 
- 	return ret;
- }
-@@ -654,16 +660,17 @@ static void devm_stmmac_remove_config_dt(void *data)
- {
- 	struct plat_stmmacenet_data *plat = data;
- 
--	/* Platform data argument is unused */
--	stmmac_remove_config_dt(NULL, plat);
-+	clk_disable_unprepare(plat->stmmac_clk);
-+	clk_disable_unprepare(plat->pclk);
-+	of_node_put(plat->mdio_node);
-+	of_node_put(plat->phy_node);
- }
- 
- /**
-  * devm_stmmac_probe_config_dt
-  * @pdev: platform_device structure
-  * @mac: MAC address to use
-- * Description: Devres variant of stmmac_probe_config_dt(). Does not require
-- * the user to call stmmac_remove_config_dt() at driver detach.
-+ * Description: Devres variant of stmmac_probe_config_dt().
-  */
- struct plat_stmmacenet_data *
- devm_stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
--- 
-2.39.5
-
+ 	spin_lock_irqsave(&clock_lock, flags);
+ 	ret = __clk_enable(clk);
 
 
 
