@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-106911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1041A0293D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:21:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1083DA02B98
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:45:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A1D07A039B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:21:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDBCE1653B1
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E84814900B;
-	Mon,  6 Jan 2025 15:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CCB1547D8;
+	Mon,  6 Jan 2025 15:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rf76DJpV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igpqKVWu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5E338FB9;
-	Mon,  6 Jan 2025 15:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE801514F6;
+	Mon,  6 Jan 2025 15:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176884; cv=none; b=TcYH9144mUh3c5G+SZqnML41gcFroh2903gNuHYQVIabHNSvbvclVKwrZ36DuNdDXGy3gvvIQDuhA580frwToDg3ohaPVZagMrKGiPA651py2qXEgkG34LIoa58Ym9W1gGuSyi0JWx6CcvB3pRGY6a70iKceP/dn+Hv1e6urMZk=
+	t=1736178268; cv=none; b=UUbRlpz+9D5N05pqFYaZtMBvN+I1CQmbhlcKhZMIQQ3BJDcz8TwI+UmnaHEuISMGLPE+MuKD5o0cIwrBAGbWJj0KisvCUZyLeOkqreVBdu9CJQAOUMsU+SJO5jD3ynZ3Es7jDa0qUkquL591drZP/+pRduzuESKWCcCN+pRS+zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176884; c=relaxed/simple;
-	bh=VKSZMTuVK6S2o+vcZbkW3Uv48AjHMQ9S5LO+ylQtI6c=;
+	s=arc-20240116; t=1736178268; c=relaxed/simple;
+	bh=pVLDmHBi5E4P2weCFveJOVHPMoxmjiMfUiKfl67bbKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MdWcGddU/2MbCoVjHEhXB6G9z9jAnTndKNpHj2SQDeQBR4ZGTnYfhAVAtI9eidH18pfUAch/mOFEoRNyh8ZuSyYbzIkeTsyNRtbSm0vZ+R3pIULKYKk5MjKWvE9iVqOsb05RRP7TsVajPWi1oHg4qpnPkKbQkFx9al4QcojEfwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rf76DJpV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CECC4CEE1;
-	Mon,  6 Jan 2025 15:21:22 +0000 (UTC)
+	 MIME-Version; b=Dg4T21uNy7XNkGBlfNogtLu9hcmlTBj4LopgiklpHunhhqcpVpv8QIDwiGvZetcQu6/X5bKrbBSbsa32nme2ZFjWoL6gIA0OLg2QU0mV35Yo2GnfqqTy9PfAvnvhPy8iYWJ5Q1CV3nvgGru5dylVQE7h9Ikz2rzodeWQawsAjv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igpqKVWu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D31C4CED2;
+	Mon,  6 Jan 2025 15:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176883;
-	bh=VKSZMTuVK6S2o+vcZbkW3Uv48AjHMQ9S5LO+ylQtI6c=;
+	s=korg; t=1736178268;
+	bh=pVLDmHBi5E4P2weCFveJOVHPMoxmjiMfUiKfl67bbKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rf76DJpVhRHgRN5wjwGwqSw2boS5F/RMASPTGsq6gisA2kuyDA63eItMg0HrQI/oH
-	 ewtgeaDfp1QLomGsyyPUbhsHJVDID16Gpe7dNv1gE+l7XyEZ7Ze1dYLb1plU4gzDXy
-	 n7XOwqSzFGhYjugDMLXnNRSkK/UN0S5v5g07uMc8=
+	b=igpqKVWuMyhXGO4bjkd9yS1cenOccHVdOWKOU2ETgdh3mc/x83QhpqDap4oHzbXjx
+	 ukkrtys5yiSBjLTT3h1RHG30GTB0PH6UraiBRYTUmk3+78xTWPmsgClqd8E4wMH+R0
+	 Cl/IntqXk5KAlKZEJWeozPJ2UcwvCc74cVXivbtw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prike Liang <Prike.Liang@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	bo liu <bo.liu@senarytech.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 54/81] drm/amdkfd: Correct the migration DMA map direction
+Subject: [PATCH 5.10 062/138] ALSA: hda/conexant: fix Z60MR100 startup pop issue
 Date: Mon,  6 Jan 2025 16:16:26 +0100
-Message-ID: <20250106151131.474069892@linuxfoundation.org>
+Message-ID: <20250106151135.583358797@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,161 +60,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prike Liang <Prike.Liang@amd.com>
+From: bo liu <bo.liu@senarytech.com>
 
-[ Upstream commit 5c3de6b02d38eb9386edf50490e050bb44398e40 ]
+[ Upstream commit 947c4012f8f03a8bb946beb6e5294d5e32817d67 ]
 
-The SVM DMA device map direction should be set the same as
-the DMA unmap setting, otherwise the DMA core will report
-the following warning.
+When Z60MR100 startup, speaker will output a pop. To fix this issue,
+we mute codec by init verbs in bios when system startup, and set GPIO
+to low to unmute codec in codec driver when it loaded .
 
-Before finialize this solution, there're some discussion on
-the DMA mapping type(stream-based or coherent) in this KFD
-migration case, followed by https://lore.kernel.org/all/04d4ab32
--45a1-4b88-86ee-fb0f35a0ca40@amd.com/T/.
+[ white space fixes and compile warning fix by tiwai ]
 
-As there's no dma_sync_single_for_*() in the DMA buffer accessed
-that because this migration operation should be sync properly and
-automatically. Give that there's might not be a performance problem
-in various cache sync policy of DMA sync. Therefore, in order to
-simplify the DMA direction setting alignment, let's set the DMA map
-direction as BIDIRECTIONAL.
-
-[  150.834218] WARNING: CPU: 8 PID: 1812 at kernel/dma/debug.c:1028 check_u=
-nmap+0x1cc/0x930
-[  150.834225] Modules linked in: amdgpu(OE) amdxcp drm_exec(OE) gpu_sched =
-drm_buddy(OE) drm_ttm_helper(OE) ttm(OE) drm_suballoc_helper(OE) drm_displa=
-y_helper(OE) drm_kms_helper(OE) i2c_algo_bit rpcsec_gss_krb5 auth_rpcgss nf=
-sv4 nfs lockd grace netfs xt_conntrack xt_MASQUERADE nf_conntrack_netlink x=
-frm_user xfrm_algo iptable_nat xt_addrtype iptable_filter br_netfilter nvme=
-_fabrics overlay nfnetlink_cttimeout nfnetlink openvswitch nsh nf_conncount=
- nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 libcrc32c bridge stp llc=
- sch_fq_codel intel_rapl_msr amd_atl intel_rapl_common snd_hda_codec_realte=
-k snd_hda_codec_generic snd_hda_scodec_component snd_hda_codec_hdmi snd_hda=
-_intel snd_intel_dspcfg edac_mce_amd snd_pci_acp6x snd_hda_codec snd_acp_co=
-nfig snd_hda_core snd_hwdep snd_soc_acpi kvm_amd sunrpc snd_pcm kvm binfmt_=
-misc snd_seq_midi crct10dif_pclmul snd_seq_midi_event ghash_clmulni_intel s=
-ha512_ssse3 snd_rawmidi nls_iso8859_1 sha256_ssse3 sha1_ssse3 snd_seq aesni=
-_intel snd_seq_device crypto_simd snd_timer cryptd input_leds
-[  150.834310]  wmi_bmof serio_raw k10temp rapl snd sp5100_tco ipmi_devintf=
- soundcore ccp ipmi_msghandler cm32181 industrialio mac_hid msr parport_pc =
-ppdev lp parport efi_pstore drm(OE) ip_tables x_tables pci_stub crc32_pclmu=
-l nvme ahci libahci i2c_piix4 r8169 nvme_core i2c_designware_pci realtek i2=
-c_ccgx_ucsi video wmi hid_generic cdc_ether usbnet usbhid hid r8152 mii
-[  150.834354] CPU: 8 PID: 1812 Comm: rocrtst64 Tainted: G           OE    =
-  6.10.0-custom #492
-[  150.834358] Hardware name: AMD Majolica-RN/Majolica-RN, BIOS RMJ1009A 06=
-/13/2021
-[  150.834360] RIP: 0010:check_unmap+0x1cc/0x930
-[  150.834363] Code: c0 4c 89 4d c8 e8 34 bf 86 00 4c 8b 4d c8 4c 8b 45 c0 =
-48 8b 4d b8 48 89 c6 41 57 4c 89 ea 48 c7 c7 80 49 b4 84 e8 b4 81 f3 ff <0f=
-> 0b 48 c7 c7 04 83 ac 84 e8 76 ba fc ff 41 8b 76 4c 49 8d 7e 50
-[  150.834365] RSP: 0018:ffffaac5023739e0 EFLAGS: 00010086
-[  150.834368] RAX: 0000000000000000 RBX: ffffffff8566a2e0 RCX: 00000000000=
-00027
-[  150.834370] RDX: ffff8f6a8f621688 RSI: 0000000000000001 RDI: ffff8f6a8f6=
-21680
-[  150.834372] RBP: ffffaac502373a30 R08: 00000000000000c9 R09: ffffaac5023=
-73850
-[  150.834373] R10: ffffaac502373848 R11: ffffffff84f46328 R12: ffffaac5023=
-73a40
-[  150.834375] R13: ffff8f6741045330 R14: ffff8f6741a77700 R15: ffffffff84a=
-c831b
-[  150.834377] FS:  00007faf0fc94c00(0000) GS:ffff8f6a8f600000(0000) knlGS:=
-0000000000000000
-[  150.834379] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  150.834381] CR2: 00007faf0b600020 CR3: 000000010a52e000 CR4: 00000000003=
-50ef0
-[  150.834383] Call Trace:
-[  150.834385]  <TASK>
-[  150.834387]  ? show_regs+0x6d/0x80
-[  150.834393]  ? __warn+0x8c/0x140
-[  150.834397]  ? check_unmap+0x1cc/0x930
-[  150.834400]  ? report_bug+0x193/0x1a0
-[  150.834406]  ? handle_bug+0x46/0x80
-[  150.834410]  ? exc_invalid_op+0x1d/0x80
-[  150.834413]  ? asm_exc_invalid_op+0x1f/0x30
-[  150.834420]  ? check_unmap+0x1cc/0x930
-[  150.834425]  debug_dma_unmap_page+0x86/0x90
-[  150.834431]  ? srso_return_thunk+0x5/0x5f
-[  150.834435]  ? rmap_walk+0x28/0x50
-[  150.834438]  ? srso_return_thunk+0x5/0x5f
-[  150.834441]  ? remove_migration_ptes+0x79/0x80
-[  150.834445]  ? srso_return_thunk+0x5/0x5f
-[  150.834448]  dma_unmap_page_attrs+0xfa/0x1d0
-[  150.834453]  svm_range_dma_unmap_dev+0x8a/0xf0 [amdgpu]
-[  150.834710]  svm_migrate_ram_to_vram+0x361/0x740 [amdgpu]
-[  150.834914]  svm_migrate_to_vram+0xa8/0xe0 [amdgpu]
-[  150.835111]  svm_range_set_attr+0xff2/0x1450 [amdgpu]
-[  150.835311]  svm_ioctl+0x4a/0x50 [amdgpu]
-[  150.835510]  kfd_ioctl_svm+0x54/0x90 [amdgpu]
-[  150.835701]  kfd_ioctl+0x3c2/0x530 [amdgpu]
-[  150.835888]  ? __pfx_kfd_ioctl_svm+0x10/0x10 [amdgpu]
-[  150.836075]  ? srso_return_thunk+0x5/0x5f
-[  150.836080]  ? tomoyo_file_ioctl+0x20/0x30
-[  150.836086]  __x64_sys_ioctl+0x9c/0xd0
-[  150.836091]  x64_sys_call+0x1219/0x20d0
-[  150.836095]  do_syscall_64+0x51/0x120
-[  150.836098]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[  150.836102] RIP: 0033:0x7faf0f11a94f
-[  150.836105] Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 =
-00 00 48 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <41=
-> 89 c0 3d 00 f0 ff ff 77 1f 48 8b 44 24 18 64 48 2b 04 25 28 00
-[  150.836107] RSP: 002b:00007ffeced26bc0 EFLAGS: 00000246 ORIG_RAX: 000000=
-0000000010
-[  150.836110] RAX: ffffffffffffffda RBX: 000055c683528fb0 RCX: 00007faf0f1=
-1a94f
-[  150.836112] RDX: 00007ffeced26c60 RSI: 00000000c0484b20 RDI: 00000000000=
-00003
-[  150.836114] RBP: 00007ffeced26c50 R08: 0000000000000000 R09: 00000000000=
-00001
-[  150.836115] R10: 0000000000000032 R11: 0000000000000246 R12: 000055c6835=
-28bd0
-[  150.836117] R13: 0000000000000000 R14: 0000000000000021 R15: 00000000000=
-00000
-[  150.836122]  </TASK>
-[  150.836124] ---[ end trace 0000000000000000 ]---
-
-Signed-off-by: Prike Liang <Prike.Liang@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: bo liu <bo.liu@senarytech.com>
+Link: https://patch.msgid.link/20241129014441.437205-1-bo.liu@senarytech.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_migrate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_conexant.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd=
-/amdkfd/kfd_migrate.c
-index 8a7705db0b9a..a7ed47cb5bf6 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-@@ -324,7 +324,7 @@ svm_migrate_copy_to_vram(struct amdgpu_device *adev, st=
-ruct svm_range *prange,
- 		spage =3D migrate_pfn_to_page(migrate->src[i]);
- 		if (spage && !is_zone_device_page(spage)) {
- 			src[i] =3D dma_map_page(dev, spage, 0, PAGE_SIZE,
--					      DMA_TO_DEVICE);
-+					      DMA_BIDIRECTIONAL);
- 			r =3D dma_mapping_error(dev, src[i]);
- 			if (r) {
- 				dev_err(adev->dev, "%s: fail %d dma_map_page\n",
-@@ -623,7 +623,7 @@ svm_migrate_copy_to_ram(struct amdgpu_device *adev, str=
-uct svm_range *prange,
- 			goto out_oom;
- 		}
-=20
--		dst[i] =3D dma_map_page(dev, dpage, 0, PAGE_SIZE, DMA_FROM_DEVICE);
-+		dst[i] =3D dma_map_page(dev, dpage, 0, PAGE_SIZE, DMA_BIDIRECTIONAL);
- 		r =3D dma_mapping_error(dev, dst[i]);
- 		if (r) {
- 			dev_err(adev->dev, "%s: fail %d dma_map_page\n", __func__, r);
---=20
+diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
+index 30025716164a..40853b26a1c3 100644
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -238,6 +238,7 @@ enum {
+ 	CXT_FIXUP_HP_MIC_NO_PRESENCE,
+ 	CXT_PINCFG_SWS_JS201D,
+ 	CXT_PINCFG_TOP_SPEAKER,
++	CXT_FIXUP_HP_A_U,
+ };
+ 
+ /* for hda_fixup_thinkpad_acpi() */
+@@ -705,6 +706,18 @@ static void cxt_setup_mute_led(struct hda_codec *codec,
+ 	}
+ }
+ 
++static void cxt_setup_gpio_unmute(struct hda_codec *codec,
++				  unsigned int gpio_mute_mask)
++{
++	if (gpio_mute_mask) {
++		// set gpio data to 0.
++		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_DATA, 0);
++		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_MASK, gpio_mute_mask);
++		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_DIRECTION, gpio_mute_mask);
++		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_STICKY_MASK, 0);
++	}
++}
++
+ static void cxt_fixup_mute_led_gpio(struct hda_codec *codec,
+ 				const struct hda_fixup *fix, int action)
+ {
+@@ -719,6 +732,15 @@ static void cxt_fixup_hp_zbook_mute_led(struct hda_codec *codec,
+ 		cxt_setup_mute_led(codec, 0x10, 0x20);
+ }
+ 
++static void cxt_fixup_hp_a_u(struct hda_codec *codec,
++			     const struct hda_fixup *fix, int action)
++{
++	// Init vers in BIOS mute the spk/hp by set gpio high to avoid pop noise,
++	// so need to unmute once by clearing the gpio data when runs into the system.
++	if (action == HDA_FIXUP_ACT_INIT)
++		cxt_setup_gpio_unmute(codec, 0x2);
++}
++
+ /* ThinkPad X200 & co with cxt5051 */
+ static const struct hda_pintbl cxt_pincfg_lenovo_x200[] = {
+ 	{ 0x16, 0x042140ff }, /* HP (seq# overridden) */
+@@ -943,6 +965,10 @@ static const struct hda_fixup cxt_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = cxt_fixup_sirius_top_speaker,
+ 	},
++	[CXT_FIXUP_HP_A_U] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = cxt_fixup_hp_a_u,
++	},
+ };
+ 
+ static const struct snd_pci_quirk cxt5045_fixups[] = {
+@@ -1017,6 +1043,7 @@ static const struct snd_pci_quirk cxt5066_fixups[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8457, "HP Z2 G4 mini", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x103c, 0x8458, "HP Z2 G4 mini premium", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x138d, "Asus", CXT_FIXUP_HEADPHONE_MIC_PIN),
++	SND_PCI_QUIRK(0x14f1, 0x0252, "MBX-Z60MR100", CXT_FIXUP_HP_A_U),
+ 	SND_PCI_QUIRK(0x14f1, 0x0265, "SWS JS201D", CXT_PINCFG_SWS_JS201D),
+ 	SND_PCI_QUIRK(0x152d, 0x0833, "OLPC XO-1.5", CXT_FIXUP_OLPC_XO),
+ 	SND_PCI_QUIRK(0x17aa, 0x20f2, "Lenovo T400", CXT_PINCFG_LENOVO_TP410),
+@@ -1062,6 +1089,7 @@ static const struct hda_model_fixup cxt5066_fixup_models[] = {
+ 	{ .id = CXT_PINCFG_LENOVO_NOTEBOOK, .name = "lenovo-20149" },
+ 	{ .id = CXT_PINCFG_SWS_JS201D, .name = "sws-js201d" },
+ 	{ .id = CXT_PINCFG_TOP_SPEAKER, .name = "sirius-top-speaker" },
++	{ .id = CXT_FIXUP_HP_A_U, .name = "HP-U-support" },
+ 	{}
+ };
+ 
+-- 
 2.39.5
 
 
