@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-107561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29741A02C72
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:54:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30C21A02A91
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:35:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 118FD1886DAB
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 933EF3A5001
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4DE14A60D;
-	Mon,  6 Jan 2025 15:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C6B159565;
+	Mon,  6 Jan 2025 15:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jBqguNxL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dg/IIWIs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCC313B59A;
-	Mon,  6 Jan 2025 15:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA1F200A3;
+	Mon,  6 Jan 2025 15:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178842; cv=none; b=DxQG6m1NGKF0hxYkCEkhlSiFBWH1vSfaJnK4OZwAfrOIREPNTxluJr4VWrX9grSUjdMfwDcZam/0VMOCe0EXcDaxeGqSlJpCw+ZeJcfeJSPSNI5Uabqew2Tr0RPMQGCC+OTVKLg7yJ/QzMvLQMqhYAbvR6GBf1GQq3R40CcRoUM=
+	t=1736177598; cv=none; b=KQw6J75tfPDJ8TTobVWkb4/e33I1Z/kvJur57txpEoeC0G7Iu3IAZimxVUk8Hp6zLzhVGHOM4AOvRvkLep1dInwmebQ8i/u6MKoY5hQOaKXQsWwBxtOuAxrGcQ61nAKuP/79+2o+evzTe1NnJHqck7fBMyi/etl7yCBsv0EZd78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178842; c=relaxed/simple;
-	bh=txUJ6a76/310NfDAmUNEbgA4oeKGH/aR3i93Seo9jcU=;
+	s=arc-20240116; t=1736177598; c=relaxed/simple;
+	bh=61GNXp472Va3sXLv+8qxcue5sWjSY5MMY9tif4iJnhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=raMw78wzW/JXXsBh7FWbSZ9cioLmgDmhoP8QzLGwUChVLJlNN8LTEfN2X7dhlwx+5Iwo6CwCfaDL/Nfzkdp1Aaw9bpG0YiTefLVAG/h6/RwkJ9cOGW2tzGFDB0g++ShyBdcnfyQKSQQsMcY63ZsnB0De2YLxspW+GG7NvPaDgC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jBqguNxL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DCA9C4CED2;
-	Mon,  6 Jan 2025 15:54:00 +0000 (UTC)
+	 MIME-Version; b=Dr7lTgRfp/4BhSRhChmZvs3LaTgoFrPHJAvAK7FCyGps5kOPU1//wyBEqA5bbP6JPCYp0gRTIoSJ4TdBgcblUuQbyEuYPzrqYtgo3STta6pdaWx+jiY0Xej5eFPiW0dFm/9oNGshuUsFRW56SqGyiBHyP5T7QYIBuLgOsWV5Q0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dg/IIWIs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D132C4CED2;
+	Mon,  6 Jan 2025 15:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178841;
-	bh=txUJ6a76/310NfDAmUNEbgA4oeKGH/aR3i93Seo9jcU=;
+	s=korg; t=1736177596;
+	bh=61GNXp472Va3sXLv+8qxcue5sWjSY5MMY9tif4iJnhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jBqguNxL0Y7qSwcigPwLPh85tNe/tPITiG/1Gi/Z9Jzb2HC+KITv9GjMBlvYLzF/1
-	 lxX93sv9WCUpGLyXvHsRDkEo6EKc8hYNp5sD2SS3RXTnc3jRFYKkP7desYtDI+sY/g
-	 ENvxjHzagaE1AZAgxBDpWT/rFP3CCUr2tmut+8r8=
+	b=Dg/IIWIshkoyZsN3ebtTSnfiKcly7he4afDK95FwJi9G8kCGsijM73BBBiwLE90CF
+	 pH1JAnSZnOKrFZ2vVAW0egAZJR/3r0CRscu+jiaO9BvtzjVK/XnCbbk7iNVUbbBDDT
+	 uAJpgzS0kOUal6FFPe90Czg82tcuvEcgX+pf1scg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 111/168] thunderbolt: Add support for Intel Panther Lake-M/P
+	Yafang Shao <laoar.shao@gmail.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 215/222] mm/readahead: fix large folio support in async readahead
 Date: Mon,  6 Jan 2025 16:16:59 +0100
-Message-ID: <20250106151142.648086517@linuxfoundation.org>
+Message-ID: <20250106151158.906353517@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Yafang Shao <laoar.shao@gmail.com>
 
-[ Upstream commit 8644b48714dca8bf2f42a4ff8311de8efc9bd8c3 ]
+commit 158cdce87c8c172787063998ad5dd3e2f658b963 upstream.
 
-Intel Panther Lake-M/P has the same integrated Thunderbolt/USB4
-controller as Lunar Lake. Add these PCI IDs to the driver list of
-supported devices.
+When testing large folio support with XFS on our servers, we observed that
+only a few large folios are mapped when reading large files via mmap.
+After a thorough analysis, I identified it was caused by the
+`/sys/block/*/queue/read_ahead_kb` setting.  On our test servers, this
+parameter is set to 128KB.  After I tune it to 2MB, the large folio can
+work as expected.  However, I believe the large folio behavior should not
+be dependent on the value of read_ahead_kb.  It would be more robust if
+the kernel can automatically adopt to it.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+With /sys/block/*/queue/read_ahead_kb set to 128KB and performing a
+sequential read on a 1GB file using MADV_HUGEPAGE, the differences in
+/proc/meminfo are as follows:
+
+- before this patch
+  FileHugePages:     18432 kB
+  FilePmdMapped:      4096 kB
+
+- after this patch
+  FileHugePages:   1067008 kB
+  FilePmdMapped:   1048576 kB
+
+This shows that after applying the patch, the entire 1GB file is mapped to
+huge pages.  The stable list is CCed, as without this patch, large folios
+don't function optimally in the readahead path.
+
+It's worth noting that if read_ahead_kb is set to a larger value that
+isn't aligned with huge page sizes (e.g., 4MB + 128KB), it may still fail
+to map to hugepages.
+
+Link: https://lkml.kernel.org/r/20241108141710.9721-1-laoar.shao@gmail.com
+Link: https://lkml.kernel.org/r/20241206083025.3478-1-laoar.shao@gmail.com
+Fixes: 4687fdbb805a ("mm/filemap: Support VM_HUGEPAGE for file mappings")
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Tested-by: kernel test robot <oliver.sang@intel.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/nhi.c | 8 ++++++++
- drivers/thunderbolt/nhi.h | 4 ++++
- 2 files changed, 12 insertions(+)
+ mm/readahead.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/thunderbolt/nhi.c b/drivers/thunderbolt/nhi.c
-index ed028b01f14f..1db233c44851 100644
---- a/drivers/thunderbolt/nhi.c
-+++ b/drivers/thunderbolt/nhi.c
-@@ -1451,6 +1451,14 @@ static struct pci_device_id nhi_ids[] = {
- 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_LNL_NHI1),
- 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_PTL_M_NHI0),
-+	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_PTL_M_NHI1),
-+	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_PTL_P_NHI0),
-+	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_PTL_P_NHI1),
-+	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_80G_NHI) },
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_40G_NHI) },
- 
-diff --git a/drivers/thunderbolt/nhi.h b/drivers/thunderbolt/nhi.h
-index 4b0fccf033e1..67ecee94d7b9 100644
---- a/drivers/thunderbolt/nhi.h
-+++ b/drivers/thunderbolt/nhi.h
-@@ -90,6 +90,10 @@ extern const struct tb_nhi_ops icl_nhi_ops;
- #define PCI_DEVICE_ID_INTEL_RPL_NHI1			0xa76d
- #define PCI_DEVICE_ID_INTEL_LNL_NHI0			0xa833
- #define PCI_DEVICE_ID_INTEL_LNL_NHI1			0xa834
-+#define PCI_DEVICE_ID_INTEL_PTL_M_NHI0			0xe333
-+#define PCI_DEVICE_ID_INTEL_PTL_M_NHI1			0xe334
-+#define PCI_DEVICE_ID_INTEL_PTL_P_NHI0			0xe433
-+#define PCI_DEVICE_ID_INTEL_PTL_P_NHI1			0xe434
- 
- #define PCI_CLASS_SERIAL_USB_USB4			0x0c0340
- 
--- 
-2.39.5
-
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -580,7 +580,11 @@ static void ondemand_readahead(struct re
+ 			1UL << order);
+ 	if (index == expected || index == (ra->start + ra->size)) {
+ 		ra->start += ra->size;
+-		ra->size = get_next_ra_size(ra, max_pages);
++		/*
++		 * In the case of MADV_HUGEPAGE, the actual size might exceed
++		 * the readahead window.
++		 */
++		ra->size = max(ra->size, get_next_ra_size(ra, max_pages));
+ 		ra->async_size = ra->size;
+ 		goto readit;
+ 	}
 
 
 
