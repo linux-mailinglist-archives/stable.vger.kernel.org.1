@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 499AEA02AB2
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68EFAA02A1E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5CF118809BC
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:36:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B40017A2876
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8964478F49;
-	Mon,  6 Jan 2025 15:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C3D1DCB09;
+	Mon,  6 Jan 2025 15:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EwIkzFVG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ocf8GjeL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4831EBA34;
-	Mon,  6 Jan 2025 15:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D29E1DACBE;
+	Mon,  6 Jan 2025 15:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177784; cv=none; b=rmWAn0cU4JOaRF2XHjAe/gIqnshTiefcD29aXThDa2O7AOWbrlFJrzNRUKKPmviyfHpoc2HG0qYMkcEIDXLJCdmxNDGYJycj7VosLc8LiiO3gxERJUrLGXaBv4pGIj/cdOoXKyWwhdftMAsKzYOz30MpHZpFKhaiPY5ka8jMhK8=
+	t=1736177427; cv=none; b=lJ9A0B8TIURoYu4iVPxP9PcaznRDu3HOM0esCmJPu6sz89FyYx4qqcaZmfoKSSDkeQzxQSlEM9FwfKjYlKmRkYWhdzkdpqqHjsvxjSpZ+nM5Dqiwks8CKgWyNdDvFgujcdS2rqQUu4opyDq1Mi/vI+GZoYmAQNLrQ/Doec6A8ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177784; c=relaxed/simple;
-	bh=JU56k3UKws/h4y4hefOHZZNAiGUkYvw3y4fZW5sV3Jw=;
+	s=arc-20240116; t=1736177427; c=relaxed/simple;
+	bh=PdCbs0dDKhuRwxEXpfNMgP+lSTjKnlNLAPFzy7mEC8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZAcgipON2SinzOYQpZdzW4G42eAD/M4dlcx+yy9rervcQnjXUB714PAlu0FwIVVmvGKqSacGmuzpN+5atChdPYdhSuCdG2VrjoGsRX9hLwSoCW76EX19zs7PVf6KpwTWaEkVNtvhPi5ZUlY/oX7GH1mzV7vkCYl5l1TzxDb9qb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EwIkzFVG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48EA6C4CED2;
-	Mon,  6 Jan 2025 15:36:23 +0000 (UTC)
+	 MIME-Version; b=KLpTkMvTtL6KZWCWQGxdf0OgRBqsG0RHKTij+Yf3x/FE0kXFph74+HOOERDZUb5WJlwwvLW9F3ngT/Ke2nO3itLk4iRmaeP6Nqc20N5+zjGE5cdOErzr7+cqoarcKefhafVzdhwLR1rDBazjRU7gozZftqPYRgftjHV27DTWPFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ocf8GjeL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5258C4CED2;
+	Mon,  6 Jan 2025 15:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177783;
-	bh=JU56k3UKws/h4y4hefOHZZNAiGUkYvw3y4fZW5sV3Jw=;
+	s=korg; t=1736177427;
+	bh=PdCbs0dDKhuRwxEXpfNMgP+lSTjKnlNLAPFzy7mEC8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EwIkzFVGUmIuKSKK97pQtysQcq9sBqXt4/sNEl3zV8AyyNnK/Ri4aY5UwY4gbfu8A
-	 rt3RvzGr79oT6xFydJDemurysKzLWuYf0Hz6ACHVogIf1Pl7QTTs99jY7fCtjTWjqw
-	 3wMxQ6HiJaLupcXvoVEpnzwkiE7hS23IWRrg0JIY=
+	b=ocf8GjeLjDvsfPhAzPcNtH4T87cynG2B9m3OfM35R9rE97PieWdizVOL1GlqLVKuw
+	 jqPQR+rtGqQCYgR0uBcfMI/nuC3H89xqGxYXoHubwaZzccYeRrlGLwzielVoZzPCe6
+	 LbVzcPYnAJkg1aEd8buxl/kJq0wNzyKvulTeH0Zk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 048/156] net: pse-pd: tps23881: Fix power on/off issue
+Subject: [PATCH 6.6 130/222] RDMA/bnxt_re: Avoid initializing the software queue for user queues
 Date: Mon,  6 Jan 2025 16:15:34 +0100
-Message-ID: <20250106151143.544456103@linuxfoundation.org>
+Message-ID: <20250106151155.691176546@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kory Maincent <kory.maincent@bootlin.com>
+From: Selvin Xavier <selvin.xavier@broadcom.com>
 
-[ Upstream commit 75221e96101fa93390d3db5c23e026f5e3565d9b ]
+[ Upstream commit 5effcacc8a8f3eb2a9f069d7e81a9ac793598dfb ]
 
-An issue was present in the initial driver implementation. The driver
-read the power status of all channels before toggling the bit of the
-desired one. Using the power status register as a base value introduced
-a problem, because only the bit corresponding to the concerned channel ID
-should be set in the write-only power enable register. This led to cases
-where disabling power for one channel also powered off other channels.
+Software Queues to hold the WRs needs to be created
+for only kernel queues. Avoid allocating the unnecessary
+memory for user Queues.
 
-This patch removes the power status read and ensures the value is
-limited to the bit matching the channel index of the PI.
-
-Fixes: 20e6d190ffe1 ("net: pse-pd: Add TI TPS23881 PSE controller driver")
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20241220170400.291705-1-kory.maincent@bootlin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Fixes: 159fb4ceacd7 ("RDMA/bnxt_re: introduce a function to allocate swq")
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/20241204075416.478431-3-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/pse-pd/tps23881.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 42 +++++++++++++-----------
+ 1 file changed, 23 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/pse-pd/tps23881.c b/drivers/net/pse-pd/tps23881.c
-index 5c4e88be46ee..8797ca1a8a21 100644
---- a/drivers/net/pse-pd/tps23881.c
-+++ b/drivers/net/pse-pd/tps23881.c
-@@ -64,15 +64,11 @@ static int tps23881_pi_enable(struct pse_controller_dev *pcdev, int id)
- 	if (id >= TPS23881_MAX_CHANS)
- 		return -ERANGE;
- 
--	ret = i2c_smbus_read_word_data(client, TPS23881_REG_PW_STATUS);
--	if (ret < 0)
--		return ret;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index 4098e01666d1..d38e7880cebb 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -639,13 +639,6 @@ int bnxt_qplib_create_srq(struct bnxt_qplib_res *res,
+ 	rc = bnxt_qplib_alloc_init_hwq(&srq->hwq, &hwq_attr);
+ 	if (rc)
+ 		return rc;
 -
- 	chan = priv->port[id].chan[0];
- 	if (chan < 4)
--		val = (u16)(ret | BIT(chan));
-+		val = BIT(chan);
- 	else
--		val = (u16)(ret | BIT(chan + 4));
-+		val = BIT(chan + 4);
+-	srq->swq = kcalloc(srq->hwq.max_elements, sizeof(*srq->swq),
+-			   GFP_KERNEL);
+-	if (!srq->swq) {
+-		rc = -ENOMEM;
+-		goto fail;
+-	}
+ 	srq->dbinfo.flags = 0;
+ 	bnxt_qplib_rcfw_cmd_prep((struct cmdq_base *)&req,
+ 				 CMDQ_BASE_OPCODE_CREATE_SRQ,
+@@ -674,9 +667,17 @@ int bnxt_qplib_create_srq(struct bnxt_qplib_res *res,
+ 	spin_lock_init(&srq->lock);
+ 	srq->start_idx = 0;
+ 	srq->last_idx = srq->hwq.max_elements - 1;
+-	for (idx = 0; idx < srq->hwq.max_elements; idx++)
+-		srq->swq[idx].next_idx = idx + 1;
+-	srq->swq[srq->last_idx].next_idx = -1;
++	if (!srq->hwq.is_user) {
++		srq->swq = kcalloc(srq->hwq.max_elements, sizeof(*srq->swq),
++				   GFP_KERNEL);
++		if (!srq->swq) {
++			rc = -ENOMEM;
++			goto fail;
++		}
++		for (idx = 0; idx < srq->hwq.max_elements; idx++)
++			srq->swq[idx].next_idx = idx + 1;
++		srq->swq[srq->last_idx].next_idx = -1;
++	}
  
- 	if (priv->port[id].is_4p) {
- 		chan = priv->port[id].chan[1];
-@@ -100,15 +96,11 @@ static int tps23881_pi_disable(struct pse_controller_dev *pcdev, int id)
- 	if (id >= TPS23881_MAX_CHANS)
- 		return -ERANGE;
+ 	srq->id = le32_to_cpu(resp.xid);
+ 	srq->dbinfo.hwq = &srq->hwq;
+@@ -1022,13 +1023,14 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
+ 	if (rc)
+ 		return rc;
  
--	ret = i2c_smbus_read_word_data(client, TPS23881_REG_PW_STATUS);
--	if (ret < 0)
--		return ret;
+-	rc = bnxt_qplib_alloc_init_swq(sq);
+-	if (rc)
+-		goto fail_sq;
 -
- 	chan = priv->port[id].chan[0];
- 	if (chan < 4)
--		val = (u16)(ret | BIT(chan + 4));
-+		val = BIT(chan + 4);
- 	else
--		val = (u16)(ret | BIT(chan + 8));
-+		val = BIT(chan + 8);
+-	if (psn_sz)
+-		bnxt_qplib_init_psn_ptr(qp, psn_sz);
++	if (!sq->hwq.is_user) {
++		rc = bnxt_qplib_alloc_init_swq(sq);
++		if (rc)
++			goto fail_sq;
  
- 	if (priv->port[id].is_4p) {
- 		chan = priv->port[id].chan[1];
++		if (psn_sz)
++			bnxt_qplib_init_psn_ptr(qp, psn_sz);
++	}
+ 	req.sq_size = cpu_to_le32(bnxt_qplib_set_sq_size(sq, qp->wqe_mode));
+ 	pbl = &sq->hwq.pbl[PBL_LVL_0];
+ 	req.sq_pbl = cpu_to_le64(pbl->pg_map_arr[0]);
+@@ -1054,9 +1056,11 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
+ 		rc = bnxt_qplib_alloc_init_hwq(&rq->hwq, &hwq_attr);
+ 		if (rc)
+ 			goto sq_swq;
+-		rc = bnxt_qplib_alloc_init_swq(rq);
+-		if (rc)
+-			goto fail_rq;
++		if (!rq->hwq.is_user) {
++			rc = bnxt_qplib_alloc_init_swq(rq);
++			if (rc)
++				goto fail_rq;
++		}
+ 
+ 		req.rq_size = cpu_to_le32(rq->max_wqe);
+ 		pbl = &rq->hwq.pbl[PBL_LVL_0];
 -- 
 2.39.5
 
