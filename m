@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C374EA02B85
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:44:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24474A0291A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:19:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F08D21666F5
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:43:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1CB6163B60
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96E711D934B;
-	Mon,  6 Jan 2025 15:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311B51474B9;
+	Mon,  6 Jan 2025 15:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9WXxJ8e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zd8ANuVT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9261514F6;
-	Mon,  6 Jan 2025 15:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0174126C05;
+	Mon,  6 Jan 2025 15:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178200; cv=none; b=GAIdPiAeBcliGLm1zY43vvljv6lnFzop7SaFg8QVV0+pEFDWoSooWUlLE6xy0wG0YQHdt0BNDXFjq3lZZqMBTXXHZUAuY6H34fJc3nmKX3O06Z6FLPmJXahjnWwH2Ero/VR3e62YoWwWgvyUHYU1CS39XfApAub+bhMdTFUy3uw=
+	t=1736176783; cv=none; b=Jo25P+9RMh00hIYTP1V/5zbsyfj6ctaBFABWFsq0bhIJCPjMzwQmzGgQR5ShswNpAZLnOzqxHe2oWSpLLuJ79AH6Mg+YidcvsJ+jsoYYeuk0T0Abh1YQ9F+W6S+EZVkCWXU/p2oPcFTJv3l2w/x06bBWFmwmk9id9AEX17wGmHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178200; c=relaxed/simple;
-	bh=MvDTab2X20FijBt08Rxtiekg+Gdcf391CvJmeicHS+8=;
+	s=arc-20240116; t=1736176783; c=relaxed/simple;
+	bh=EDT1iShB3RdI4amnnh9dYTEIBtzQlPH6ag6z/enN5VI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wq4ap8/85RoerKOKBVqhyXlHeiTS0NpKpnzpOBSKx8WvANcuF2BJjXOveg42qc4JL5rVIJ14loUm2P7i0Tv7KthunWkQFea6/Iui8B/8IS91GiBIIotHOR/4GigVZaiSvrA5/fe1kwLrMrw8Ow5UZ/syrKY/Ld+3Rg11nAsw4mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9WXxJ8e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF184C4CED2;
-	Mon,  6 Jan 2025 15:43:19 +0000 (UTC)
+	 MIME-Version; b=hkVd/s4po1kyDwMme2AKVSaEN4Rmd2SVpy1aHyB1C8SuMSXkdhL6etgjJGHuSuwny6C7r4oM1x+zrkmQKK1VSnG86NntIXYTuFYqe3BfzFGHhHrmpdL32FT70nd7HxAF+L6DzZyHIZmbj/lOneADB5gsA/JSQiEBuhjWotH0wEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zd8ANuVT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E3EC4CED6;
+	Mon,  6 Jan 2025 15:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178200;
-	bh=MvDTab2X20FijBt08Rxtiekg+Gdcf391CvJmeicHS+8=;
+	s=korg; t=1736176782;
+	bh=EDT1iShB3RdI4amnnh9dYTEIBtzQlPH6ag6z/enN5VI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e9WXxJ8eqMe3SmqIZYfHQV2JevAgVwS8TeiDM9AFMBoaZU6JkiLv1m7BPXSs9GbgT
-	 Tthj3Jcq6HHfNAz3tlZ+GSxISJd6sAWOp3yrIGsLZNMnSwOP2E//g4vq0XIEo8zvrl
-	 wSKulh96SpSmgrDbnpQF59HJZ6H1TL4F5I1DfH+4=
+	b=zd8ANuVTCtR4HZaGi459plKlE3iQA1xWkgUyCkQCpgfVMaBfB4Uz24KI0XXYu0pl+
+	 6gJlXyqGMktPOXZYiN15EAAlr45/p6/b/mn+GYonlq2KB54wcc9/H/ln9NP3Ukvdy3
+	 5fbfTgW3lCoFvlT74rO2YJeIrN5JUsMRFx0KHImo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+9260555647a5132edd48@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 038/138] nilfs2: prevent use of deleted inode
+	Christian Ehrig <cehrig@cloudflare.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 30/81] ipip,ip_tunnel,sit: Add FOU support for externally controlled ipip devices
 Date: Mon,  6 Jan 2025 16:16:02 +0100
-Message-ID: <20250106151134.664873767@linuxfoundation.org>
+Message-ID: <20250106151130.576363524@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +62,200 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Christian Ehrig <cehrig@cloudflare.com>
 
-commit 901ce9705fbb9f330ff1f19600e5daf9770b0175 upstream.
+[ Upstream commit ac931d4cdec3df8b6eac3bc40a6871123021f078 ]
 
-syzbot reported a WARNING in nilfs_rmdir. [1]
+Today ipip devices in collect-metadata mode don't allow for sending FOU
+or GUE encapsulated packets. This patch lifts the restriction by adding
+a struct ip_tunnel_encap to the tunnel metadata.
 
-Because the inode bitmap is corrupted, an inode with an inode number that
-should exist as a ".nilfs" file was reassigned by nilfs_mkdir for "file0",
-causing an inode duplication during execution.  And this causes an
-underflow of i_nlink in rmdir operations.
+On the egress path, the members of this struct can be set by the
+bpf_skb_set_fou_encap kfunc via a BPF tc-hook. Instead of dropping packets
+wishing to use additional UDP encapsulation, ip_md_tunnel_xmit now
+evaluates the contents of this struct and adds the corresponding FOU or
+GUE header. Furthermore, it is making sure that additional header bytes
+are taken into account for PMTU discovery.
 
-The inode is used twice by the same task to unmount and remove directories
-".nilfs" and "file0", it trigger warning in nilfs_rmdir.
+On the ingress path, an ipip device in collect-metadata mode will fill this
+struct and a BPF tc-hook can obtain the information via a call to the
+bpf_skb_get_fou_encap kfunc.
 
-Avoid to this issue, check i_nlink in nilfs_iget(), if it is 0, it means
-that this inode has been deleted, and iput is executed to reclaim it.
+The minor change to ip_tunnel_encap, which now takes a pointer to
+struct ip_tunnel_encap instead of struct ip_tunnel, allows us to control
+FOU encap type and parameters on a per packet-level.
 
-[1]
-WARNING: CPU: 1 PID: 5824 at fs/inode.c:407 drop_nlink+0xc4/0x110 fs/inode.c:407
-...
-Call Trace:
- <TASK>
- nilfs_rmdir+0x1b0/0x250 fs/nilfs2/namei.c:342
- vfs_rmdir+0x3a3/0x510 fs/namei.c:4394
- do_rmdir+0x3b5/0x580 fs/namei.c:4453
- __do_sys_rmdir fs/namei.c:4472 [inline]
- __se_sys_rmdir fs/namei.c:4470 [inline]
- __x64_sys_rmdir+0x47/0x50 fs/namei.c:4470
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Link: https://lkml.kernel.org/r/20241209065759.6781-1-konishi.ryusuke@gmail.com
-Fixes: d25006523d0b ("nilfs2: pathname operations")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+9260555647a5132edd48@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9260555647a5132edd48
-Tested-by: syzbot+9260555647a5132edd48@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christian Ehrig <cehrig@cloudflare.com>
+Link: https://lore.kernel.org/r/cfea47de655d0f870248abf725932f851b53960a.1680874078.git.cehrig@cloudflare.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Stable-dep-of: b5a7b661a073 ("net: Fix netns for ip_tunnel_init_flow()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/inode.c |    8 +++++++-
- fs/nilfs2/namei.c |    5 +++++
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ include/net/ip_tunnels.h | 28 +++++++++++++++-------------
+ net/ipv4/ip_tunnel.c     | 22 ++++++++++++++++++++--
+ net/ipv4/ipip.c          |  1 +
+ net/ipv6/sit.c           |  2 +-
+ 4 files changed, 37 insertions(+), 16 deletions(-)
 
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -618,8 +618,14 @@ struct inode *nilfs_iget(struct super_bl
- 	inode = nilfs_iget_locked(sb, root, ino);
- 	if (unlikely(!inode))
- 		return ERR_PTR(-ENOMEM);
--	if (!(inode->i_state & I_NEW))
+diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
+index f1ba369306fe..84751313b826 100644
+--- a/include/net/ip_tunnels.h
++++ b/include/net/ip_tunnels.h
+@@ -57,6 +57,13 @@ struct ip_tunnel_key {
+ 	__u8			flow_flags;
+ };
+ 
++struct ip_tunnel_encap {
++	u16			type;
++	u16			flags;
++	__be16			sport;
++	__be16			dport;
++};
 +
-+	if (!(inode->i_state & I_NEW)) {
-+		if (!inode->i_nlink) {
-+			iput(inode);
-+			return ERR_PTR(-ESTALE);
-+		}
- 		return inode;
-+	}
+ /* Flags for ip_tunnel_info mode. */
+ #define IP_TUNNEL_INFO_TX	0x01	/* represents tx tunnel parameters */
+ #define IP_TUNNEL_INFO_IPV6	0x02	/* key contains IPv6 addresses */
+@@ -66,9 +73,9 @@ struct ip_tunnel_key {
+ #define IP_TUNNEL_OPTS_MAX					\
+ 	GENMASK((sizeof_field(struct ip_tunnel_info,		\
+ 			      options_len) * BITS_PER_BYTE) - 1, 0)
+-
+ struct ip_tunnel_info {
+ 	struct ip_tunnel_key	key;
++	struct ip_tunnel_encap	encap;
+ #ifdef CONFIG_DST_CACHE
+ 	struct dst_cache	dst_cache;
+ #endif
+@@ -86,13 +93,6 @@ struct ip_tunnel_6rd_parm {
+ };
+ #endif
  
- 	err = __nilfs_read_inode(sb, root, ino, inode);
- 	if (unlikely(err)) {
---- a/fs/nilfs2/namei.c
-+++ b/fs/nilfs2/namei.c
-@@ -67,6 +67,11 @@ nilfs_lookup(struct inode *dir, struct d
- 		inode = NULL;
- 	} else {
- 		inode = nilfs_iget(dir->i_sb, NILFS_I(dir)->i_root, ino);
-+		if (inode == ERR_PTR(-ESTALE)) {
-+			nilfs_error(dir->i_sb,
-+					"deleted inode referenced: %lu", ino);
-+			return ERR_PTR(-EIO);
-+		}
+-struct ip_tunnel_encap {
+-	u16			type;
+-	u16			flags;
+-	__be16			sport;
+-	__be16			dport;
+-};
+-
+ struct ip_tunnel_prl_entry {
+ 	struct ip_tunnel_prl_entry __rcu *next;
+ 	__be32				addr;
+@@ -293,6 +293,7 @@ struct ip_tunnel *ip_tunnel_lookup(struct ip_tunnel_net *itn,
+ 				   __be32 remote, __be32 local,
+ 				   __be32 key);
+ 
++void ip_tunnel_md_udp_encap(struct sk_buff *skb, struct ip_tunnel_info *info);
+ int ip_tunnel_rcv(struct ip_tunnel *tunnel, struct sk_buff *skb,
+ 		  const struct tnl_ptk_info *tpi, struct metadata_dst *tun_dst,
+ 		  bool log_ecn_error);
+@@ -405,22 +406,23 @@ static inline int ip_encap_hlen(struct ip_tunnel_encap *e)
+ 	return hlen;
+ }
+ 
+-static inline int ip_tunnel_encap(struct sk_buff *skb, struct ip_tunnel *t,
++static inline int ip_tunnel_encap(struct sk_buff *skb,
++				  struct ip_tunnel_encap *e,
+ 				  u8 *protocol, struct flowi4 *fl4)
+ {
+ 	const struct ip_tunnel_encap_ops *ops;
+ 	int ret = -EINVAL;
+ 
+-	if (t->encap.type == TUNNEL_ENCAP_NONE)
++	if (e->type == TUNNEL_ENCAP_NONE)
+ 		return 0;
+ 
+-	if (t->encap.type >= MAX_IPTUN_ENCAP_OPS)
++	if (e->type >= MAX_IPTUN_ENCAP_OPS)
+ 		return -EINVAL;
+ 
+ 	rcu_read_lock();
+-	ops = rcu_dereference(iptun_encaps[t->encap.type]);
++	ops = rcu_dereference(iptun_encaps[e->type]);
+ 	if (likely(ops && ops->build_header))
+-		ret = ops->build_header(skb, &t->encap, protocol, fl4);
++		ret = ops->build_header(skb, e, protocol, fl4);
+ 	rcu_read_unlock();
+ 
+ 	return ret;
+diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+index 3445e576b05b..d56cfb6c3da4 100644
+--- a/net/ipv4/ip_tunnel.c
++++ b/net/ipv4/ip_tunnel.c
+@@ -359,6 +359,20 @@ static struct ip_tunnel *ip_tunnel_create(struct net *net,
+ 	return ERR_PTR(err);
+ }
+ 
++void ip_tunnel_md_udp_encap(struct sk_buff *skb, struct ip_tunnel_info *info)
++{
++	const struct iphdr *iph = ip_hdr(skb);
++	const struct udphdr *udph;
++
++	if (iph->protocol != IPPROTO_UDP)
++		return;
++
++	udph = (struct udphdr *)((__u8 *)iph + (iph->ihl << 2));
++	info->encap.sport = udph->source;
++	info->encap.dport = udph->dest;
++}
++EXPORT_SYMBOL(ip_tunnel_md_udp_encap);
++
+ int ip_tunnel_rcv(struct ip_tunnel *tunnel, struct sk_buff *skb,
+ 		  const struct tnl_ptk_info *tpi, struct metadata_dst *tun_dst,
+ 		  bool log_ecn_error)
+@@ -599,7 +613,11 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 			    tunnel_id_to_key32(key->tun_id), RT_TOS(tos),
+ 			    dev_net(dev), 0, skb->mark, skb_get_hash(skb),
+ 			    key->flow_flags);
+-	if (tunnel->encap.type != TUNNEL_ENCAP_NONE)
++
++	if (!tunnel_hlen)
++		tunnel_hlen = ip_encap_hlen(&tun_info->encap);
++
++	if (ip_tunnel_encap(skb, &tun_info->encap, &proto, &fl4) < 0)
+ 		goto tx_error;
+ 
+ 	use_cache = ip_tunnel_dst_cache_usable(skb, tun_info);
+@@ -759,7 +777,7 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 			    dev_net(dev), tunnel->parms.link,
+ 			    tunnel->fwmark, skb_get_hash(skb), 0);
+ 
+-	if (ip_tunnel_encap(skb, tunnel, &protocol, &fl4) < 0)
++	if (ip_tunnel_encap(skb, &tunnel->encap, &protocol, &fl4) < 0)
+ 		goto tx_error;
+ 
+ 	if (connected && md) {
+diff --git a/net/ipv4/ipip.c b/net/ipv4/ipip.c
+index 180f9daf5bec..1cf35c50cdf4 100644
+--- a/net/ipv4/ipip.c
++++ b/net/ipv4/ipip.c
+@@ -241,6 +241,7 @@ static int ipip_tunnel_rcv(struct sk_buff *skb, u8 ipproto)
+ 			tun_dst = ip_tun_rx_dst(skb, 0, 0, 0);
+ 			if (!tun_dst)
+ 				return 0;
++			ip_tunnel_md_udp_encap(skb, &tun_dst->u.tun_info);
+ 		}
+ 		skb_reset_mac_header(skb);
+ 
+diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
+index 3ffb6a5b1f82..cc24cefdb85c 100644
+--- a/net/ipv6/sit.c
++++ b/net/ipv6/sit.c
+@@ -1024,7 +1024,7 @@ static netdev_tx_t ipip6_tunnel_xmit(struct sk_buff *skb,
+ 		ttl = iph6->hop_limit;
+ 	tos = INET_ECN_encapsulate(tos, ipv6_get_dsfield(iph6));
+ 
+-	if (ip_tunnel_encap(skb, tunnel, &protocol, &fl4) < 0) {
++	if (ip_tunnel_encap(skb, &tunnel->encap, &protocol, &fl4) < 0) {
+ 		ip_rt_put(rt);
+ 		goto tx_error;
  	}
- 
- 	return d_splice_alias(inode, dentry);
+-- 
+2.39.5
+
 
 
 
