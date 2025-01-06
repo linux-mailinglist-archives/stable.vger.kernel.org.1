@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-107591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC025A02C8F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D74A3A02B2E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EAF81882B95
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:55:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C14963A24B9
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1056E145A03;
-	Mon,  6 Jan 2025 15:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF96F153814;
+	Mon,  6 Jan 2025 15:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RkmQAh/W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ELzA4s6+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10A9182D2;
-	Mon,  6 Jan 2025 15:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8E714D28C;
+	Mon,  6 Jan 2025 15:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178930; cv=none; b=LfeDyVvxMlUxhsKYX+mwXx5yL3BHAZSU/0qV2mqCiX2uxyDreQgd+yIv36NwiofmlC/PzaD3Vg1P8tHEUZGchCWQg/LEeMEcO4Z9cG7ZVokxb/6NGaLlE4diB2jddxBiGYGQC2L9roXLFON4cWFjx57/utZjaJHh66538KTPNT8=
+	t=1736178004; cv=none; b=GJnQc8kXdg92wTuBlBJrjbL+eYiCTQVbmZJ8QKW7mW1R5B8N6jYtFMzAC+rfnbIt7bJbulrNH3SSiMmz1zJ96quWMQbfNTZRt277ROsmsJNH5Vp53FyPTrGuCtWwtYxrFbC3p/ShlcTbrYOrteghUECCw2KQB4kMnZS2xjsdSME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178930; c=relaxed/simple;
-	bh=ti1edcRxYLmdqvJAysqNtu7jaBeTi2PEXFqhpDytblY=;
+	s=arc-20240116; t=1736178004; c=relaxed/simple;
+	bh=bIYKtXuRYyKZUCWh10qO3nap1RXSgMh2Mmzv3aBlKKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oq1OmgMHxSNQVIfbJ902h90ony50Oh4DjM1t2jb5gEvO8lZ013iu68V3fa6oqtgJAFjWRfHa0BsZWBIiBZQvHRitF0FVBbLCTcfKpyaCmtkRCHHMKZePx7Net5y6feClqHanEtyOMBpS7Kb7y28X8Z5X8HFoaBPN7zVCNKOnPZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RkmQAh/W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D12C4CED2;
-	Mon,  6 Jan 2025 15:55:29 +0000 (UTC)
+	 MIME-Version; b=BAf3sofPO0ObeW6RNk9SHdPE+7EjS/LJX8OtSplRDvkpi7yrfVICBcf/x4rP37/dlKLw8eB0GUWu1/CJCjzMF61qxJkSgwJUWGnyXYF0/198eO1a1l1amReqeeAzZ9kxq0uMifALCevjdxZaPsP9UHBHQBCCB2LH0atzTprqfE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ELzA4s6+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0302AC4CED6;
+	Mon,  6 Jan 2025 15:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178930;
-	bh=ti1edcRxYLmdqvJAysqNtu7jaBeTi2PEXFqhpDytblY=;
+	s=korg; t=1736178004;
+	bh=bIYKtXuRYyKZUCWh10qO3nap1RXSgMh2Mmzv3aBlKKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RkmQAh/Wfiu09X7c1A+rYIr0652GmCo/wGDgkXXWDRg3uWg7fGC1wRPH4RPD7upZ9
-	 YBXsgg/g3ebv0GAv9mbTvhzT4/Fye7HZRgQuD0bhr4UUxLtxy8peI8j3ixu8kHpbZm
-	 96Xx1Fq8zc+HorPszZthYikEH88YAxdlDkLuiy88=
+	b=ELzA4s6+0Qqk2uV8MOixuZ7ZZ+mN7ZnXbqAinhrpCq6acdnScizxcn1UZnm6XTl9b
+	 FxXaELxY4JtmRRvFEqylSHjaUZi2QSPTptgGbFXFEdIP+kQuij67ZuAAKasIbB4bLa
+	 gRxLD0Q0RQSj+PWxHaJlF8ztDUSj4ZwcpTjCNJe4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 108/168] thunderbolt: Add support for Intel Meteor Lake
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 130/156] net/sctp: Prevent autoclose integer overflow in sctp_association_init()
 Date: Mon,  6 Jan 2025 16:16:56 +0100
-Message-ID: <20250106151142.537160667@linuxfoundation.org>
+Message-ID: <20250106151146.629295394@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-[ Upstream commit 32249fd8c8cccd7a1ed86c3b6d9b6ae9b4a83623 ]
+commit 4e86729d1ff329815a6e8a920cb554a1d4cb5b8d upstream.
 
-Intel Meteor Lake has the same integrated Thunderbolt/USB4 controller as
-Intel Alder Lake. Add the Intel Meteor Lake PCI IDs to the driver list
-of supported devices.
+While by default max_autoclose equals to INT_MAX / HZ, one may set
+net.sctp.max_autoclose to UINT_MAX. There is code in
+sctp_association_init() that can consequently trigger overflow.
 
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Stable-dep-of: 8644b48714dc ("thunderbolt: Add support for Intel Panther Lake-M/P")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 9f70f46bd4c7 ("sctp: properly latch and use autoclose value from sock to association")
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20241219162114.2863827-1-kniv@yandex-team.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/icm.c | 3 +++
- drivers/thunderbolt/nhi.c | 6 ++++++
- drivers/thunderbolt/nhi.h | 3 +++
- 3 files changed, 12 insertions(+)
+ net/sctp/associola.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/thunderbolt/icm.c b/drivers/thunderbolt/icm.c
-index e4e92f014a8b..e6849a272f8d 100644
---- a/drivers/thunderbolt/icm.c
-+++ b/drivers/thunderbolt/icm.c
-@@ -2513,6 +2513,9 @@ struct tb *icm_probe(struct tb_nhi *nhi)
- 	case PCI_DEVICE_ID_INTEL_ADL_NHI1:
- 	case PCI_DEVICE_ID_INTEL_RPL_NHI0:
- 	case PCI_DEVICE_ID_INTEL_RPL_NHI1:
-+	case PCI_DEVICE_ID_INTEL_MTL_M_NHI0:
-+	case PCI_DEVICE_ID_INTEL_MTL_P_NHI0:
-+	case PCI_DEVICE_ID_INTEL_MTL_P_NHI1:
- 		icm->is_supported = icm_tgl_is_supported;
- 		icm->driver_ready = icm_icl_driver_ready;
- 		icm->set_uuid = icm_icl_set_uuid;
-diff --git a/drivers/thunderbolt/nhi.c b/drivers/thunderbolt/nhi.c
-index 99faa8a5e9c0..3b47eb2397a1 100644
---- a/drivers/thunderbolt/nhi.c
-+++ b/drivers/thunderbolt/nhi.c
-@@ -1441,6 +1441,12 @@ static struct pci_device_id nhi_ids[] = {
- 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_RPL_NHI1),
- 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_MTL_M_NHI0),
-+	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_MTL_P_NHI0),
-+	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_MTL_P_NHI1),
-+	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
+--- a/net/sctp/associola.c
++++ b/net/sctp/associola.c
+@@ -137,7 +137,8 @@ static struct sctp_association *sctp_ass
+ 		= 5 * asoc->rto_max;
  
- 	/* Any USB4 compliant host */
- 	{ PCI_DEVICE_CLASS(PCI_CLASS_SERIAL_USB_USB4, ~0) },
-diff --git a/drivers/thunderbolt/nhi.h b/drivers/thunderbolt/nhi.h
-index 01190d9ced16..b0718020c6f5 100644
---- a/drivers/thunderbolt/nhi.h
-+++ b/drivers/thunderbolt/nhi.h
-@@ -75,6 +75,9 @@ extern const struct tb_nhi_ops icl_nhi_ops;
- #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_DD_BRIDGE	0x15ef
- #define PCI_DEVICE_ID_INTEL_ADL_NHI0			0x463e
- #define PCI_DEVICE_ID_INTEL_ADL_NHI1			0x466d
-+#define PCI_DEVICE_ID_INTEL_MTL_M_NHI0			0x7eb2
-+#define PCI_DEVICE_ID_INTEL_MTL_P_NHI0			0x7ec2
-+#define PCI_DEVICE_ID_INTEL_MTL_P_NHI1			0x7ec3
- #define PCI_DEVICE_ID_INTEL_ICL_NHI1			0x8a0d
- #define PCI_DEVICE_ID_INTEL_ICL_NHI0			0x8a17
- #define PCI_DEVICE_ID_INTEL_TGL_NHI0			0x9a1b
--- 
-2.39.5
-
+ 	asoc->timeouts[SCTP_EVENT_TIMEOUT_SACK] = asoc->sackdelay;
+-	asoc->timeouts[SCTP_EVENT_TIMEOUT_AUTOCLOSE] = sp->autoclose * HZ;
++	asoc->timeouts[SCTP_EVENT_TIMEOUT_AUTOCLOSE] =
++		(unsigned long)sp->autoclose * HZ;
+ 
+ 	/* Initializes the timers */
+ 	for (i = SCTP_EVENT_TIMEOUT_NONE; i < SCTP_NUM_TIMEOUT_TYPES; ++i)
 
 
 
