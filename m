@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-107364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70FDAA02B91
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:45:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42BB1A02CAB
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:56:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A3AE1655F6
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:44:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C39CC3A7234
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A021607AA;
-	Mon,  6 Jan 2025 15:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECAF616D9B8;
+	Mon,  6 Jan 2025 15:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r++5/WJy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqpZrMdN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 109577082A;
-	Mon,  6 Jan 2025 15:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C1513BC39;
+	Mon,  6 Jan 2025 15:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178241; cv=none; b=tO1r9f1/6HX9TTK5kAoOdgis2/0fTpi0CWQJzm719bsPNNPShKD5KgeVGZXUN0jsq9mCzLwVuJzYjSRpCz2s4PZAq8npjjzc69CHtjrq880ZOhc63uC5BRY+6pTaNNR7JeZKsLXCFQ/WiotJGA8xBpmWK4DsVe5O5P+10PCSuHo=
+	t=1736178835; cv=none; b=rCmzyjQKuzY1T67dzo+SZYfkx//Bj4U/2PpyRau1LZnTtolcdFua5Y94ruv/rptIi0mT/Y4FDYDqAxSZBgYqhoqF7t2WUbfcWCuzHjUuu1ZyBjW9DF0n8v1E9WLXC2A1BXELn2JMX2zUctv9f96i5kmv/9i0Maa6aNptP7g34hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178241; c=relaxed/simple;
-	bh=ebnyWLlG2Uk7BmbVTEoPcdgxMjCioFKj+agkteESrbQ=;
+	s=arc-20240116; t=1736178835; c=relaxed/simple;
+	bh=cLFIzJcPaWNTsKrrXTPxFsBJZQM9/Gh10AToL68T7BQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LLW2BzRwAWBm34ZHmhcV7X8MuLdeeKSB95rXMpPEc2t6ShU5E95wf+KZIRWRwDuHS7lz7EjjwfuxpJLX9gzvtNX5YFK0Nt7O/VaW9qNdzzlN6X+dBq2+Z16oIgwXkx7n0b/tb72jF/PP0orDXdm5M3Z549/o9hD3VdqFZCvWxlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r++5/WJy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87910C4CED2;
-	Mon,  6 Jan 2025 15:44:00 +0000 (UTC)
+	 MIME-Version; b=Vn0F8CzveS+WIV9Y3xX5fgE1dh04EFbVV1cVL4kmOoLh10wVXrPW3PHNkQH/ohZMyglgSRs7jY1pydtEFwhpwHN4X3QndBEu3l6CY+rja7j7T3hT99OpaH9tZRbrbveMmCUUH8tJZ1F+R82qy7K9pFKyW85LkuNrF1QyDYMY9sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqpZrMdN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3314FC4CED6;
+	Mon,  6 Jan 2025 15:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178240;
-	bh=ebnyWLlG2Uk7BmbVTEoPcdgxMjCioFKj+agkteESrbQ=;
+	s=korg; t=1736178835;
+	bh=cLFIzJcPaWNTsKrrXTPxFsBJZQM9/Gh10AToL68T7BQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r++5/WJylNjP2XoYbguNj9nzDRu6MpLw8u5Z+JywM7oThBFw+0H6il/ubKdgv28Ts
-	 FxLNI7+cpUSBZQck4EiYr5fjHKsvDexWjQjJdP91L5pXXg5xCVDM5f7L4T9QbgQs9G
-	 hSlDJ4p6cArt2T/a+TuXyc7nRD3PuobrPvZwhwPU=
+	b=cqpZrMdNiNzcbH4xEiUwPfYPKffyhf3dJ5SBb7veiXA2gpNk6+6KEoOkq/jCTaLg9
+	 fqoZJ6CtOLT8zyAQ7dP8+T+37VT4XjZcFeQAV7KmD6JDUx71uo9DVPtYa2WVQvnCC/
+	 GA+JkQ3bDHzj3NQsRLF+KB9ntGwN+ugnugiaRNZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Johan Hovold <johan+linaro@kernel.org>,
 	Zijun Hu <quic_zijuhu@quicinc.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.10 051/138] phy: core: Fix an OF node refcount leakage in of_phy_provider_lookup()
+Subject: [PATCH 5.15 067/168] phy: core: Fix an OF node refcount leakage in of_phy_provider_lookup()
 Date: Mon,  6 Jan 2025 16:16:15 +0100
-Message-ID: <20250106151135.167939233@linuxfoundation.org>
+Message-ID: <20250106151140.992696801@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
