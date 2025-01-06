@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6F8CA02AA5
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:35:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1013EA02B4D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:42:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C6351650EA
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:35:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1574D1885F7F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:42:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B31D156886;
-	Mon,  6 Jan 2025 15:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4152A1DDC12;
+	Mon,  6 Jan 2025 15:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STTNpgdx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9hqqr+u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5880486332;
-	Mon,  6 Jan 2025 15:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1EE116D9B8;
+	Mon,  6 Jan 2025 15:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177733; cv=none; b=L7IgZ/FFM9VniJu6XGDD7rfdO1/dGBZqkrNqetos68MDokqXqzlg9pLZzPYhbLxS7UtgQvpU1byIB9NP3cD8XRqjEb29WFz2F9CfVCiAuAK6mUUkXQ3LCsYDsigLyHvns8fwzJlAQ8xVPvy9gLvdsyy0lGSURj4rEskEvO6965U=
+	t=1736178112; cv=none; b=WvmdBUS/JYLxXVzjrV9vCvfqNJzBoHSFEBsrMu83HuAAV8lSfF5EHV8qlSeNTFHkBxHXSsQhbiYEg32FsFAzi0J5Jw28+8l3rhCdGPxDO0oA9L14kHkMTJBxSXddT11ckRgAnirnNEs9CEXxLelHpBQddDSF0kMuDqiJPIOWefI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177733; c=relaxed/simple;
-	bh=C9LwLldevINXyPcPUhAtKzJucy6aVggP+TxQQ1bt9Jk=;
+	s=arc-20240116; t=1736178112; c=relaxed/simple;
+	bh=46n9B6XXb2nfPQ451zID9BJsU02x9HWZk2zB2vvgAm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pAzADFW25N3qUh1md8rq+gbQLvvI2/IcOGHzO/hZLSzHO49NvrWtJw0ScJJo9pAdTqQsQrpLOvCXi4MGpPvhe45CLkzV8+HUBmlomNfKfeoWFYRuUc0iOtngNLZli2Hcp7RqjaOSkU+Ln+hqZAcuktG5nbjjL6GYsrsgBeggrRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STTNpgdx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89553C4CED2;
-	Mon,  6 Jan 2025 15:35:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hipsljo1GwwJJwCtBM5eCRJYI7IRXDxCSXTlGx+4F1adtjJdyHX7GwQadLsuRtL3ekeUfTcbtw1VKnZgps7QJ/qRjgVFt/PSwrWbRdH24KsOCRz9JUUd1+UK4DavQ0/epLz1Ocv2vWNNjRYw0XIfuI7fLZjGhe8Ee36MaW8bS/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9hqqr+u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762B5C4CED2;
+	Mon,  6 Jan 2025 15:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177732;
-	bh=C9LwLldevINXyPcPUhAtKzJucy6aVggP+TxQQ1bt9Jk=;
+	s=korg; t=1736178111;
+	bh=46n9B6XXb2nfPQ451zID9BJsU02x9HWZk2zB2vvgAm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=STTNpgdx8vKlG+1O1R9+BvkpA2SlWzueH4vZ7gbibXOlMNYI675eNIpUK44KqqFG3
-	 tw0wUu3SsJK4ErzovZe0vidDFBL5duUtESyvzt0MMHwIsBvCIIiJ+dwetqbimO3Mh6
-	 qOvV+MK7G55gAGQrDMC2Edn8iTzm5mfrSRtmShBA=
+	b=j9hqqr+uafmom11ImJ26bgSrgG00dj9tZRGtojBOFQ1Y9n6vOsAqfcPYVrv6JyZhX
+	 3gzMYOruRc1/azrRSAHbm3lH1obcA4Me3f2dIQ0fPwjCpJAeHDrCUnal3MEG5SFcf4
+	 EQyH1Xqsltblm00y37wfK96q0vc/Roac/0cDiLqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 038/156] RDMA/hns: Fix accessing invalid dip_ctx during destroying QP
-Date: Mon,  6 Jan 2025 16:15:24 +0100
-Message-ID: <20250106151143.172219384@linuxfoundation.org>
+	Lion Ackermann <nnamrec@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Artem Metla <ametla@google.com>
+Subject: [PATCH 5.10 001/138] net: sched: fix ordering of qlen adjustment
+Date: Mon,  6 Jan 2025 16:15:25 +0100
+Message-ID: <20250106151133.268907860@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Lion Ackermann <nnamrec@gmail.com>
 
-[ Upstream commit 0572eccf239ce4bd89bd531767ec5ab20e249290 ]
+commit 5eb7de8cd58e73851cd37ff8d0666517d9926948 upstream.
 
-If it fails to modify QP to RTR, dip_ctx will not be attached. And
-during detroying QP, the invalid dip_ctx pointer will be accessed.
+Changes to sch->q.qlen around qdisc_tree_reduce_backlog() need to happen
+_before_ a call to said function because otherwise it may fail to notify
+parent qdiscs when the child is about to become empty.
 
-Fixes: faa62440a577 ("RDMA/hns: Fix different dgids mapping to the same dip_idx")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20241220055249.146943-3-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lion Ackermann <nnamrec@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: Artem Metla <ametla@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/sched/sch_cake.c  |    2 +-
+ net/sched/sch_choke.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 697b17cca02e..6dddadb90e02 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -5619,6 +5619,9 @@ static void put_dip_ctx_idx(struct hns_roce_dev *hr_dev,
- {
- 	struct hns_roce_dip *hr_dip = hr_qp->dip;
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -1541,7 +1541,6 @@ static unsigned int cake_drop(struct Qdi
+ 	b->backlogs[idx]    -= len;
+ 	b->tin_backlog      -= len;
+ 	sch->qstats.backlog -= len;
+-	qdisc_tree_reduce_backlog(sch, 1, len);
  
-+	if (!hr_dip)
-+		return;
-+
- 	xa_lock(&hr_dev->qp_table.dip_xa);
+ 	flow->dropped++;
+ 	b->tin_dropped++;
+@@ -1552,6 +1551,7 @@ static unsigned int cake_drop(struct Qdi
  
- 	hr_dip->qp_cnt--;
--- 
-2.39.5
-
+ 	__qdisc_drop(skb, to_free);
+ 	sch->q.qlen--;
++	qdisc_tree_reduce_backlog(sch, 1, len);
+ 
+ 	cake_heapify(q, 0);
+ 
+--- a/net/sched/sch_choke.c
++++ b/net/sched/sch_choke.c
+@@ -124,10 +124,10 @@ static void choke_drop_by_idx(struct Qdi
+ 	if (idx == q->tail)
+ 		choke_zap_tail_holes(q);
+ 
++	--sch->q.qlen;
+ 	qdisc_qstats_backlog_dec(sch, skb);
+ 	qdisc_tree_reduce_backlog(sch, 1, qdisc_pkt_len(skb));
+ 	qdisc_drop(skb, sch, to_free);
+-	--sch->q.qlen;
+ }
+ 
+ struct choke_skb_cb {
 
 
 
