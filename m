@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-106993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1B2CA029AE
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:26:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A55F2A02988
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:25:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFB823A518E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:25:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8BB71885C2B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A8F6155C9E;
-	Mon,  6 Jan 2025 15:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03B31CDFD5;
+	Mon,  6 Jan 2025 15:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qlvzM9gK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GeTt6AGN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1766E15855C;
-	Mon,  6 Jan 2025 15:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AD91C5F11;
+	Mon,  6 Jan 2025 15:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177131; cv=none; b=sbLxitQA9Do6dGZ4oekHWOnEjlxLJ+ODqgNFEScHXyr+Ntq/Qx9vGCRe0bl7NCHqEUQhcq9z9V+yEeFApK1p3jb2aaic2kKshWQC8AkWnII3kcTQJL1lpaBLWglxEQUcW3rqXgUNhoeTf69DUhqABDBDcIHK/w6tq1rznGHx/kY=
+	t=1736177036; cv=none; b=lHEdMpDUAt0RFLnyBThiAugGWelYze/E7QlOzcCEiQSVRiHx5TXtO/8Lz9H0mqxZEBjSiwSlfo93hTTm8uyVmiwK6ZBXNsSYyM4Q74+Z6MuRKNvypGEK31vgflm06uS0b6BpOyhYnNsESP7p5RG9PWGjOtzwzcVO5s9+aH+eZpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177131; c=relaxed/simple;
-	bh=PTIipKF99XJ2zbJsyX7jWuB/k+FL7EJJGltx+6c3v/4=;
+	s=arc-20240116; t=1736177036; c=relaxed/simple;
+	bh=w40AbZZRDIiNxP3G438UCyKHsgQZAMZ0MO5vsSxmft0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oPRtW+4EQ0okMYty7NBtxr4r1zyNHpk//09sYN7xwIUUIlpwJTZg9JP3fpa//44frxAxC+sx8mECoUc3qk86XGnanyUWaGKjr+iZHoYiUKOWNq13I1iRA7s7BmAvDQuBmRQGNHRfFacqwKsow/WChwUPX2FJLOfCp/8s+mlgz0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qlvzM9gK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952DCC4CED2;
-	Mon,  6 Jan 2025 15:25:30 +0000 (UTC)
+	 MIME-Version; b=Gr3Zua8OxmedqbjHlOhOBYm9/j2Is5+6JkMGnO8rEwj0qpjub9EP7IFqRQziy6C8RsFFOAoC05TuDgxj8YzhiGJiPOeQ7cnaSW0byo8uyVwmBBK/1VIipiBI8KBbGPbPFCeQzRId8XwMUBaOcoSPPOw3DjoH09Hx3WfM7uwfFD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GeTt6AGN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC60C4CED2;
+	Mon,  6 Jan 2025 15:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177131;
-	bh=PTIipKF99XJ2zbJsyX7jWuB/k+FL7EJJGltx+6c3v/4=;
+	s=korg; t=1736177036;
+	bh=w40AbZZRDIiNxP3G438UCyKHsgQZAMZ0MO5vsSxmft0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qlvzM9gKfBysyRQLUw0SQRQlEZGEKL1Dq6VctSrO+HynTGpITtivVGXibjp9r3FXH
-	 pPEeeuCLFqoNeLXGESKDXfPeMxYIYbKHUARDzOgC/SowTiqmK+OS1Gl/FYBpdVw+/a
-	 YN69V0g+aIKRPSoF9+FH0yjxWYA9uzal/kgA8kJ8=
+	b=GeTt6AGNpytn5s0PEfPMCxq0eLotgIIUbfoO3k6DCRdOBHbzQy/zshNhkeVi/wUrY
+	 2DXI/lwQpMSWCkEU9WEoz7NDOv3HkEA9QJopqXpyWPGYNB0OUmSDw53C6V2MwDqQAV
+	 trbwshceJe82Gw5WLc4ZPXFzuDsGpjfdShN4EaZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giuliano Lotta <giuliano.lotta@gmail.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 029/222] media: uvcvideo: Force UVC version to 1.0a for 0408:4033
-Date: Mon,  6 Jan 2025 16:13:53 +0100
-Message-ID: <20250106151151.706368293@linuxfoundation.org>
+Subject: [PATCH 6.6 030/222] wifi: mac80211: export ieee80211_purge_tx_queue() for drivers
+Date: Mon,  6 Jan 2025 16:13:54 +0100
+Message-ID: <20250106151151.743100320@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
 References: <20250106151150.585603565@linuxfoundation.org>
@@ -68,48 +66,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit c9df99302fff53b6007666136b9f43fbac7ee3d8 ]
+[ Upstream commit 53bc1b73b67836ac9867f93dee7a443986b4a94f ]
 
-The Quanta ACER HD User Facing camera reports a UVC 1.50 version, but
-implements UVC 1.0a as shown by the UVC probe control being 26 bytes
-long. Force the UVC version for that device.
+Drivers need to purge TX SKB when stopping. Using skb_queue_purge() can't
+report TX status to mac80211, causing ieee80211_free_ack_frame() warns
+"Have pending ack frames!". Export ieee80211_purge_tx_queue() for drivers
+to not have to reimplement it.
 
-Reported-by: Giuliano Lotta <giuliano.lotta@gmail.com>
-Closes: https://lore.kernel.org/linux-media/fce4f906-d69b-417d-9f13-bf69fe5c81e3@koyu.space/
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20240924-uvc-quanta-v1-1-2de023863767@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240822014255.10211-1-pkshih@realtek.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: 3e5e4a801aaf ("wifi: rtw88: use ieee80211_purge_tx_queue() to purge TX skb")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ include/net/mac80211.h     | 13 +++++++++++++
+ net/mac80211/ieee80211_i.h |  2 --
+ net/mac80211/status.c      |  1 +
+ 3 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index adf1abce5333..1b05890f99f4 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -2520,6 +2520,17 @@ static const struct usb_device_id uvc_ids[] = {
- 	  .bInterfaceProtocol	= UVC_PC_PROTOCOL_15,
- 	  .driver_info		= (kernel_ulong_t)&uvc_ctrl_power_line_limited },
- 	/* Quanta ACER HD User Facing */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x0408,
-+	  .idProduct		= 0x4033,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= UVC_PC_PROTOCOL_15,
-+	  .driver_info		= (kernel_ulong_t)&(const struct uvc_device_info){
-+		.uvc_version = 0x010a,
-+	  } },
-+	/* Quanta ACER HD User Facing */
- 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
- 				| USB_DEVICE_ID_MATCH_INT_INFO,
- 	  .idVendor		= 0x0408,
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 47ade676565d..901fe3ac139e 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -3039,6 +3039,19 @@ ieee80211_get_alt_retry_rate(const struct ieee80211_hw *hw,
+  */
+ void ieee80211_free_txskb(struct ieee80211_hw *hw, struct sk_buff *skb);
+ 
++/**
++ * ieee80211_purge_tx_queue - purge TX skb queue
++ * @hw: the hardware
++ * @skbs: the skbs
++ *
++ * Free a set of transmit skbs. Use this function when device is going to stop
++ * but some transmit skbs without TX status are still queued.
++ * This function does not take the list lock and the caller must hold the
++ * relevant locks to use it.
++ */
++void ieee80211_purge_tx_queue(struct ieee80211_hw *hw,
++			      struct sk_buff_head *skbs);
++
+ /**
+  * DOC: Hardware crypto acceleration
+  *
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index daea061d0fc1..04c876d78d3b 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -2057,8 +2057,6 @@ void __ieee80211_subif_start_xmit(struct sk_buff *skb,
+ 				  u32 info_flags,
+ 				  u32 ctrl_flags,
+ 				  u64 *cookie);
+-void ieee80211_purge_tx_queue(struct ieee80211_hw *hw,
+-			      struct sk_buff_head *skbs);
+ struct sk_buff *
+ ieee80211_build_data_template(struct ieee80211_sub_if_data *sdata,
+ 			      struct sk_buff *skb, u32 info_flags);
+diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+index 44d83da60aee..9676ed15efec 100644
+--- a/net/mac80211/status.c
++++ b/net/mac80211/status.c
+@@ -1270,3 +1270,4 @@ void ieee80211_purge_tx_queue(struct ieee80211_hw *hw,
+ 	while ((skb = __skb_dequeue(skbs)))
+ 		ieee80211_free_txskb(hw, skb);
+ }
++EXPORT_SYMBOL(ieee80211_purge_tx_queue);
 -- 
 2.39.5
 
