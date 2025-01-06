@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-107327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F94FA02B70
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8028A02915
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:19:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 262D03A75D6
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:42:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2F591885FA3
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3EB158525;
-	Mon,  6 Jan 2025 15:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED092146D6B;
+	Mon,  6 Jan 2025 15:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9Lee43a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKkt0BP1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC326146D40;
-	Mon,  6 Jan 2025 15:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A705D145335;
+	Mon,  6 Jan 2025 15:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178133; cv=none; b=sWZvK6G3p1yJ59DXYi3VU0c7s8NhyQWLQBu8AemJT9n6Non3imw+S3dIKGZ8zGbE+Rc1j7K1c1GSNvcaG2jmciU+Aa0u+ULbrE4SVgLAL8gwU1TfQh605f9ORvlk2nb4Klu/8Biz/Hc4h9RP9L0jqcCx811G19Q/aoU42miQvjw=
+	t=1736176767; cv=none; b=Z3UYGlHVH8ucvw9UrBn7EgXa547Q0y5v+v4fj6Fu88/WyWc16sj/FvczsamDqjYMzU96HzBzuMhZhIoenmD9uUyViqorh9nxh6DyzFWUg32PgZEBqBYINIb4ZpG3sTIq6OeaVfCl/xrnjKKoLtxYgy6nqk33ooAiUyCJwkRVdBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178133; c=relaxed/simple;
-	bh=AZjbOWTy4+TWmIPF7wDqQeF/Xx5fMVVZKGRasbHCs2g=;
+	s=arc-20240116; t=1736176767; c=relaxed/simple;
+	bh=SPKhKYjyQoFWZdZLEgaayk9thiKmR7iTxH8TZ8ePZAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fS4W+CEV5fHu/bVRMe7IrX1Jm0pnJLd3kCRAZX8oH07f17N9tzGzfBiccIFhpmwf+pqo7O1R6Hx33B13tnD01GfdKQ3JcYPtmr4FD2h58S5c1seOJp/zD+pYrqgwI1sxLBRYo3ufEElfH/K4LS+6qA7nAb1cTCuw0O2QgDpzmv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9Lee43a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B025C4CED2;
-	Mon,  6 Jan 2025 15:42:11 +0000 (UTC)
+	 MIME-Version; b=tHlfIJ0/YKnqgwAPexu4HI+ILlPuuM4rfo5EOJKqw1phAFSY+CsPKqxOVv9LpJHURppcHZ6RBICFG+pJ9hghxwvUlU1tx4AQHfwaFQkJbszXoyPgg5spZQDw1blo4oYd4oUFND/qYE6j5C7Yq4d8EGAXuXyxrpoxuzNsM1WyXS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKkt0BP1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 247B8C4CED2;
+	Mon,  6 Jan 2025 15:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178132;
-	bh=AZjbOWTy4+TWmIPF7wDqQeF/Xx5fMVVZKGRasbHCs2g=;
+	s=korg; t=1736176767;
+	bh=SPKhKYjyQoFWZdZLEgaayk9thiKmR7iTxH8TZ8ePZAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b9Lee43aECBWonW1ZKwLy+zDNRWF9v2HSqXzREy2ZERrdIsl1qdi1DO28pyqcZCTq
-	 1aLYlICwVwPW3Lx8ddYlK1X05feIhq4fVH25kymD4NF9hvLzZLfbY9t3Xj2WY9SAif
-	 HEXswBWujwZ+Sms1th9gIHmMUiAvVl7ruemBiRac=
+	b=AKkt0BP1AV5bbRkVVyOD4HFuQzqsozHif+r9SUOyFl1P+kHmLMOG/x2tim8FrC7Qf
+	 scTTRdiU0NF1hXLcMZvsNheCmF8uo2XpBshOVQsofHSAcACMLKcMZo2qMoDCxtMaXb
+	 T4m/p2gznXgiB3Zw6nk3p1S8UVhMO2/NTLO5vvh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ea40e4294e58b0292f74@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Joe Damato <jdamato@fastly.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 016/138] netdevsim: prevent bad user input in nsim_dev_health_break_write()
+Subject: [PATCH 6.1 08/81] xhci: retry Stop Endpoint on buggy NEC controllers
 Date: Mon,  6 Jan 2025 16:15:40 +0100
-Message-ID: <20250106151133.833077935@linuxfoundation.org>
+Message-ID: <20250106151129.753656143@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,42 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-[ Upstream commit ee76746387f6233bdfa93d7406990f923641568f ]
+[ Upstream commit fd9d55d190c0e5fefd3a9165ea361809427885a1 ]
 
-If either a zero count or a large one is provided, kernel can crash.
+Two NEC uPD720200 adapters have been observed to randomly misbehave:
+a Stop Endpoint command fails with Context Error, the Output Context
+indicates Stopped state, and the endpoint keeps running. Very often,
+Set TR Dequeue Pointer is seen to fail next with Context Error too,
+in addition to problems from unexpectedly completed cancelled work.
 
-Fixes: 82c93a87bf8b ("netdevsim: implement couple of testing devlink health reporters")
-Reported-by: syzbot+ea40e4294e58b0292f74@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/675c6862.050a0220.37aaf.00b1.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Joe Damato <jdamato@fastly.com>
-Link: https://patch.msgid.link/20241213172518.2415666-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The pathology is common on fast running isoc endpoints like uvcvideo,
+but has also been reproduced on a full-speed bulk endpoint of pl2303.
+It seems all EPs are affected, with risk proportional to their load.
+
+Reproduction involves receiving any kind of stream and closing it to
+make the device driver cancel URBs already queued in advance.
+
+Deal with it by retrying the command like in the Running state.
+
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240229141438.619372-8-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: e21ebe51af68 ("xhci: Turn NEC specific quirk for handling Stop Endpoint errors generic")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netdevsim/health.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/host/xhci-ring.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/netdevsim/health.c b/drivers/net/netdevsim/health.c
-index 04aebdf85747..c9306506b741 100644
---- a/drivers/net/netdevsim/health.c
-+++ b/drivers/net/netdevsim/health.c
-@@ -235,6 +235,8 @@ static ssize_t nsim_dev_health_break_write(struct file *file,
- 	char *break_msg;
- 	int err;
- 
-+	if (count == 0 || count > PAGE_SIZE)
-+		return -EINVAL;
- 	break_msg = memdup_user_nul(data, count);
- 	if (IS_ERR(break_msg))
- 		return PTR_ERR(break_msg);
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 975d825091cb..d193d5ad8789 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1141,6 +1141,15 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
+ 				break;
+ 			ep->ep_state &= ~EP_STOP_CMD_PENDING;
+ 			return;
++		case EP_STATE_STOPPED:
++			/*
++			 * NEC uPD720200 sometimes sets this state and fails with
++			 * Context Error while continuing to process TRBs.
++			 * Be conservative and trust EP_CTX_STATE on other chips.
++			 */
++			if (!(xhci->quirks & XHCI_NEC_HOST))
++				break;
++			fallthrough;
+ 		case EP_STATE_RUNNING:
+ 			/* Race, HW handled stop ep cmd before ep was running */
+ 			xhci_dbg(xhci, "Stop ep completion ctx error, ep is running\n");
 -- 
 2.39.5
 
