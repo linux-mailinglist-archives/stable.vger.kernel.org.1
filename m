@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-107228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D57EEA02AE2
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:38:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 490CFA02B7A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:44:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D94D67A2B7E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:37:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAB5E166500
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:43:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3FD1DD543;
-	Mon,  6 Jan 2025 15:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5351D7999;
+	Mon,  6 Jan 2025 15:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/x5dXza"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z4WCM7LB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D421791F4;
-	Mon,  6 Jan 2025 15:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD67155352;
+	Mon,  6 Jan 2025 15:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177837; cv=none; b=qmra+VTkGn1gycRk6F8e2j6V3U7bQ6nGKQ0vye3K8R9Lv15p9UFo9awFcAiODa/gEt7iMfOACJnzr6T7Lgg7YjJWZVXcPt7H09Yu8KQh2i58i+ZRnxSFc95IryX7GRzDPDwtU1SlLsxUn2PeXHLk5y+NZyACwrNUTzZKQ8cyy88=
+	t=1736178188; cv=none; b=HAIyJRSkHt/jxAgP8vb4ngfzfCMgkcUOT3aEwEJFY1qDof/2cBpUr3L/C3hTi328D39c9AeHezq3AJHyNso1rNUYKOq8x5a4d6zFolcPUgsXUGHInOfYBTO/pEhDdQSX8XTVNFiXRLeGQiq/5EkK0v+7aoHtaLxdHOumn8j1iPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177837; c=relaxed/simple;
-	bh=Ln3m1LbllgyI8CYVCi1MBIj/LYtKHZRKGC/UbwsRKg8=;
+	s=arc-20240116; t=1736178188; c=relaxed/simple;
+	bh=hxa2JZ+yvD+0/BDPn0duLDpoZ/xMAKKA+faaPrvfZBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lk3cbOxQjDXXSRFPkb0+aXE7+fI7vVigIf0DE1UP/qCWafKs5otAaUs3LqbkPR4ZEXp4bFRrrvipIRVfq2ZyfqIx0ceepZ027D48dAVQ6e8tO3Bm3fuxmQg33U9+Pd1wRAYa1VpWr1A9EeWhdNhFXSuTDsXlOW2QD0yJunOWL5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/x5dXza; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1ACC4CED2;
-	Mon,  6 Jan 2025 15:37:17 +0000 (UTC)
+	 MIME-Version; b=qwhAlAEWioC1uRehQaqXuXePQRQ+dA8e35RPoCWmpKLyQqXlXp1GgAmkCgLL4UZERcZgiZpoA2ui3IycZUXEV+kTXXGnszSoo/Fs65WoVvJS5OGqfOXyyL+tCQ5QBI53MBvVDknAxmVgOVL+8+anz93RY7YOVfGTzltOTpKPlb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z4WCM7LB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 406B6C4CED2;
+	Mon,  6 Jan 2025 15:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177837;
-	bh=Ln3m1LbllgyI8CYVCi1MBIj/LYtKHZRKGC/UbwsRKg8=;
+	s=korg; t=1736178188;
+	bh=hxa2JZ+yvD+0/BDPn0duLDpoZ/xMAKKA+faaPrvfZBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N/x5dXzatJE5ACfcZ4V/q7a87Y3lIUtZx10jXHTdomwLHY+dhnhjwqeLr2w/XkdGI
-	 JOKcQ8Vqw6zAy1c2NYrh9HROHHTFka2fNCjUWr0Zcpq/bm62bUK/SpWJ1BeWo0CrNx
-	 MfSxmWLMpQHbtLSPxS8krY0fuhl4p9SRVRFO7mNQ=
+	b=z4WCM7LBrpn5ximDTBOm/7V3Go9GXpJIjffThL0589OyKdZ6XhkMnJ4piXfqFBns8
+	 LWvlvsdUoqQpOL3iX4EQsIU56ukyN6sGnP1YeS9d+Ew/rBBRa2LVv9ZgrRSJ5WGlZC
+	 4IgX+jHCdYFiIQy+NyaDkdcqnvzQLCghoALC72z4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+47e761d22ecf745f72b9@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Florian Westphal <fw@strlen.de>,
-	Tom Herbert <tom@herbertland.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 073/156] ila: serialize calls to nf_register_net_hooks()
+	Dexuan Cui <decui@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 5.10 035/138] Drivers: hv: util: Avoid accessing a ringbuffer not initialized yet
 Date: Mon,  6 Jan 2025 16:15:59 +0100
-Message-ID: <20250106151144.482481605@linuxfoundation.org>
+Message-ID: <20250106151134.553045274@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,118 +62,174 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-[ Upstream commit 260466b576bca0081a7d4acecc8e93687aa22d0e ]
+commit 07a756a49f4b4290b49ea46e089cbe6f79ff8d26 upstream.
 
-syzbot found a race in ila_add_mapping() [1]
+If the KVP (or VSS) daemon starts before the VMBus channel's ringbuffer is
+fully initialized, we can hit the panic below:
 
-commit 031ae72825ce ("ila: call nf_unregister_net_hooks() sooner")
-attempted to fix a similar issue.
-
-Looking at the syzbot repro, we have concurrent ILA_CMD_ADD commands.
-
-Add a mutex to make sure at most one thread is calling nf_register_net_hooks().
-
-[1]
- BUG: KASAN: slab-use-after-free in rht_key_hashfn include/linux/rhashtable.h:159 [inline]
- BUG: KASAN: slab-use-after-free in __rhashtable_lookup.constprop.0+0x426/0x550 include/linux/rhashtable.h:604
-Read of size 4 at addr ffff888028f40008 by task dhcpcd/5501
-
-CPU: 1 UID: 0 PID: 5501 Comm: dhcpcd Not tainted 6.13.0-rc4-syzkaller-00054-gd6ef8b40d075 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+hv_utils: Registering HyperV Utility Driver
+hv_vmbus: registering driver hv_utils
+...
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+CPU: 44 UID: 0 PID: 2552 Comm: hv_kvp_daemon Tainted: G E 6.11.0-rc3+ #1
+RIP: 0010:hv_pkt_iter_first+0x12/0xd0
 Call Trace:
- <IRQ>
-  __dump_stack lib/dump_stack.c:94 [inline]
-  dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
-  print_address_description mm/kasan/report.c:378 [inline]
-  print_report+0xc3/0x620 mm/kasan/report.c:489
-  kasan_report+0xd9/0x110 mm/kasan/report.c:602
-  rht_key_hashfn include/linux/rhashtable.h:159 [inline]
-  __rhashtable_lookup.constprop.0+0x426/0x550 include/linux/rhashtable.h:604
-  rhashtable_lookup include/linux/rhashtable.h:646 [inline]
-  rhashtable_lookup_fast include/linux/rhashtable.h:672 [inline]
-  ila_lookup_wildcards net/ipv6/ila/ila_xlat.c:127 [inline]
-  ila_xlat_addr net/ipv6/ila/ila_xlat.c:652 [inline]
-  ila_nf_input+0x1ee/0x620 net/ipv6/ila/ila_xlat.c:185
-  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
-  nf_hook_slow+0xbb/0x200 net/netfilter/core.c:626
-  nf_hook.constprop.0+0x42e/0x750 include/linux/netfilter.h:269
-  NF_HOOK include/linux/netfilter.h:312 [inline]
-  ipv6_rcv+0xa4/0x680 net/ipv6/ip6_input.c:309
-  __netif_receive_skb_one_core+0x12e/0x1e0 net/core/dev.c:5672
-  __netif_receive_skb+0x1d/0x160 net/core/dev.c:5785
-  process_backlog+0x443/0x15f0 net/core/dev.c:6117
-  __napi_poll.constprop.0+0xb7/0x550 net/core/dev.c:6883
-  napi_poll net/core/dev.c:6952 [inline]
-  net_rx_action+0xa94/0x1010 net/core/dev.c:7074
-  handle_softirqs+0x213/0x8f0 kernel/softirq.c:561
-  __do_softirq kernel/softirq.c:595 [inline]
-  invoke_softirq kernel/softirq.c:435 [inline]
-  __irq_exit_rcu+0x109/0x170 kernel/softirq.c:662
-  irq_exit_rcu+0x9/0x30 kernel/softirq.c:678
-  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1049 [inline]
-  sysvec_apic_timer_interrupt+0xa4/0xc0 arch/x86/kernel/apic/apic.c:1049
+...
+ vmbus_recvpacket
+ hv_kvp_onchannelcallback
+ vmbus_on_event
+ tasklet_action_common
+ tasklet_action
+ handle_softirqs
+ irq_exit_rcu
+ sysvec_hyperv_stimer0
+ </IRQ>
+ <TASK>
+ asm_sysvec_hyperv_stimer0
+...
+ kvp_register_done
+ hvt_op_read
+ vfs_read
+ ksys_read
+ __x64_sys_read
 
-Fixes: 7f00feaf1076 ("ila: Add generic ILA translation facility")
-Reported-by: syzbot+47e761d22ecf745f72b9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6772c9ae.050a0220.2f3838.04c7.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Florian Westphal <fw@strlen.de>
-Cc: Tom Herbert <tom@herbertland.com>
-Link: https://patch.msgid.link/20241230162849.2795486-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This can happen because the KVP/VSS channel callback can be invoked
+even before the channel is fully opened:
+1) as soon as hv_kvp_init() -> hvutil_transport_init() creates
+/dev/vmbus/hv_kvp, the kvp daemon can open the device file immediately and
+register itself to the driver by writing a message KVP_OP_REGISTER1 to the
+file (which is handled by kvp_on_msg() ->kvp_handle_handshake()) and
+reading the file for the driver's response, which is handled by
+hvt_op_read(), which calls hvt->on_read(), i.e. kvp_register_done().
+
+2) the problem with kvp_register_done() is that it can cause the
+channel callback to be called even before the channel is fully opened,
+and when the channel callback is starting to run, util_probe()->
+vmbus_open() may have not initialized the ringbuffer yet, so the
+callback can hit the panic of NULL pointer dereference.
+
+To reproduce the panic consistently, we can add a "ssleep(10)" for KVP in
+__vmbus_open(), just before the first hv_ringbuffer_init(), and then we
+unload and reload the driver hv_utils, and run the daemon manually within
+the 10 seconds.
+
+Fix the panic by reordering the steps in util_probe() so the char dev
+entry used by the KVP or VSS daemon is not created until after
+vmbus_open() has completed. This reordering prevents the race condition
+from happening.
+
+Reported-by: Dexuan Cui <decui@microsoft.com>
+Fixes: e0fa3e5e7df6 ("Drivers: hv: utils: fix a race on userspace daemons registration")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Acked-by: Wei Liu <wei.liu@kernel.org>
+Link: https://lore.kernel.org/r/20241106154247.2271-3-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20241106154247.2271-3-mhklinux@outlook.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ila/ila_xlat.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/hv/hv_kvp.c       |    6 ++++++
+ drivers/hv/hv_snapshot.c  |    6 ++++++
+ drivers/hv/hv_util.c      |    9 +++++++++
+ drivers/hv/hyperv_vmbus.h |    2 ++
+ include/linux/hyperv.h    |    1 +
+ 5 files changed, 24 insertions(+)
 
-diff --git a/net/ipv6/ila/ila_xlat.c b/net/ipv6/ila/ila_xlat.c
-index 534a4498e280..fff09f5a796a 100644
---- a/net/ipv6/ila/ila_xlat.c
-+++ b/net/ipv6/ila/ila_xlat.c
-@@ -200,6 +200,8 @@ static const struct nf_hook_ops ila_nf_hook_ops[] = {
- 	},
- };
+--- a/drivers/hv/hv_kvp.c
++++ b/drivers/hv/hv_kvp.c
+@@ -750,6 +750,12 @@ hv_kvp_init(struct hv_util_service *srv)
+ 	 */
+ 	kvp_transaction.state = HVUTIL_DEVICE_INIT;
  
-+static DEFINE_MUTEX(ila_mutex);
++	return 0;
++}
 +
- static int ila_add_mapping(struct net *net, struct ila_xlat_params *xp)
- {
- 	struct ila_net *ilan = net_generic(net, ila_net_id);
-@@ -207,16 +209,20 @@ static int ila_add_mapping(struct net *net, struct ila_xlat_params *xp)
- 	spinlock_t *lock = ila_get_lock(ilan, xp->ip.locator_match);
- 	int err = 0, order;
++int
++hv_kvp_init_transport(void)
++{
+ 	hvt = hvutil_transport_init(kvp_devname, CN_KVP_IDX, CN_KVP_VAL,
+ 				    kvp_on_msg, kvp_on_reset);
+ 	if (!hvt)
+--- a/drivers/hv/hv_snapshot.c
++++ b/drivers/hv/hv_snapshot.c
+@@ -369,6 +369,12 @@ hv_vss_init(struct hv_util_service *srv)
+ 	 */
+ 	vss_transaction.state = HVUTIL_DEVICE_INIT;
  
--	if (!ilan->xlat.hooks_registered) {
-+	if (!READ_ONCE(ilan->xlat.hooks_registered)) {
- 		/* We defer registering net hooks in the namespace until the
- 		 * first mapping is added.
- 		 */
--		err = nf_register_net_hooks(net, ila_nf_hook_ops,
--					    ARRAY_SIZE(ila_nf_hook_ops));
-+		mutex_lock(&ila_mutex);
-+		if (!ilan->xlat.hooks_registered) {
-+			err = nf_register_net_hooks(net, ila_nf_hook_ops,
-+						ARRAY_SIZE(ila_nf_hook_ops));
-+			if (!err)
-+				WRITE_ONCE(ilan->xlat.hooks_registered, true);
++	return 0;
++}
++
++int
++hv_vss_init_transport(void)
++{
+ 	hvt = hvutil_transport_init(vss_devname, CN_VSS_IDX, CN_VSS_VAL,
+ 				    vss_on_msg, vss_on_reset);
+ 	if (!hvt) {
+--- a/drivers/hv/hv_util.c
++++ b/drivers/hv/hv_util.c
+@@ -142,6 +142,7 @@ static struct hv_util_service util_heart
+ static struct hv_util_service util_kvp = {
+ 	.util_cb = hv_kvp_onchannelcallback,
+ 	.util_init = hv_kvp_init,
++	.util_init_transport = hv_kvp_init_transport,
+ 	.util_pre_suspend = hv_kvp_pre_suspend,
+ 	.util_pre_resume = hv_kvp_pre_resume,
+ 	.util_deinit = hv_kvp_deinit,
+@@ -150,6 +151,7 @@ static struct hv_util_service util_kvp =
+ static struct hv_util_service util_vss = {
+ 	.util_cb = hv_vss_onchannelcallback,
+ 	.util_init = hv_vss_init,
++	.util_init_transport = hv_vss_init_transport,
+ 	.util_pre_suspend = hv_vss_pre_suspend,
+ 	.util_pre_resume = hv_vss_pre_resume,
+ 	.util_deinit = hv_vss_deinit,
+@@ -539,6 +541,13 @@ static int util_probe(struct hv_device *
+ 	if (ret)
+ 		goto error;
+ 
++	if (srv->util_init_transport) {
++		ret = srv->util_init_transport();
++		if (ret) {
++			vmbus_close(dev->channel);
++			goto error;
 +		}
-+		mutex_unlock(&ila_mutex);
- 		if (err)
- 			return err;
--
--		ilan->xlat.hooks_registered = true;
- 	}
++	}
+ 	return 0;
  
- 	ila = kzalloc(sizeof(*ila), GFP_KERNEL);
--- 
-2.39.5
-
+ error:
+--- a/drivers/hv/hyperv_vmbus.h
++++ b/drivers/hv/hyperv_vmbus.h
+@@ -357,12 +357,14 @@ void vmbus_on_event(unsigned long data);
+ void vmbus_on_msg_dpc(unsigned long data);
+ 
+ int hv_kvp_init(struct hv_util_service *srv);
++int hv_kvp_init_transport(void);
+ void hv_kvp_deinit(void);
+ int hv_kvp_pre_suspend(void);
+ int hv_kvp_pre_resume(void);
+ void hv_kvp_onchannelcallback(void *context);
+ 
+ int hv_vss_init(struct hv_util_service *srv);
++int hv_vss_init_transport(void);
+ void hv_vss_deinit(void);
+ int hv_vss_pre_suspend(void);
+ int hv_vss_pre_resume(void);
+--- a/include/linux/hyperv.h
++++ b/include/linux/hyperv.h
+@@ -1510,6 +1510,7 @@ struct hv_util_service {
+ 	void *channel;
+ 	void (*util_cb)(void *);
+ 	int (*util_init)(struct hv_util_service *);
++	int (*util_init_transport)(void);
+ 	void (*util_deinit)(void);
+ 	int (*util_pre_suspend)(void);
+ 	int (*util_pre_resume)(void);
 
 
 
