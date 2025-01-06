@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-107094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4CCBA02A22
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8220CA02C1E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:51:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C6057A28CA
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 097FF188667E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 591F41CDFD5;
-	Mon,  6 Jan 2025 15:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 760491DEFFC;
+	Mon,  6 Jan 2025 15:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iFulSoeZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PG0w6jC3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133791DB360;
-	Mon,  6 Jan 2025 15:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305421DE3A0;
+	Mon,  6 Jan 2025 15:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177433; cv=none; b=sJDUizwhHV03UvSjhoUZoVQ6jKBncNgCbwZz5bY/TSUNGVTZG3sOZLKZsQX2ZcRUrKS5amPcq4bNiNAC07hIsa547WTy56Ve+H4CNxoKbQ3GUQ2MXT9+0MC3pa5zAVuPKq8Gryg8cOgWHx1BtKXE3Y6GQpFYWvZ5BVfkTDzKIRs=
+	t=1736178586; cv=none; b=o0SRJEvWq6FwfNFOkL0BSfbVbpO7NlH8j1ZDf6cei1R4c5kUXAbDuemTCr5ZwCDKK+wQ/FdBfJaf4K/1wmc9TPW6lBvTBzGHue7kv3YL7V7zEoZxTS9jmtV4aZlCFd53Th9luf/fFUw57D0rYLPvRlj2oKKDglCkd1Ryv68TWxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177433; c=relaxed/simple;
-	bh=osjn4Zo1gWi9wmsI1VZ4jnqf/xm4nHeqAk3/MxAXfFs=;
+	s=arc-20240116; t=1736178586; c=relaxed/simple;
+	bh=HqPgHCIk6YWfa4h5Hp3nCUixIWyWVwr3E6Jd6GCaLM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QTXH5t020KdQrHS2oSO51M6XlSFq52ibcJxBFzLusZ6ljRBJin/mTxFKg7af15f8Mfnfriq3hSR2HafCqcUCsbrbAPwnGdJ4QH8C3m5kEsrrZ4870T8vGGaioP0bMPzgwoWSkQj1PrwFWvU3hdvr+X/bJx2aUBa7/O2fIqv2dMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iFulSoeZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D859C4CED2;
-	Mon,  6 Jan 2025 15:30:32 +0000 (UTC)
+	 MIME-Version; b=b8pCfofgFid+KOB0pG+jmTtjOg7rAVy99NI50Mggxg6J2NL0btL6d8rbBqTrdJLKtQgW1atIqrBtFSlSnsn/1+BJ9Xh/tuxKY72dldokdCw1tzIaFedi8fikTOX13VULOVk6O3D/BJy2U8kJqr/gXB8qs+AAbBl3OglvM5Ta3e0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PG0w6jC3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77E69C4CED2;
+	Mon,  6 Jan 2025 15:49:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177432;
-	bh=osjn4Zo1gWi9wmsI1VZ4jnqf/xm4nHeqAk3/MxAXfFs=;
+	s=korg; t=1736178586;
+	bh=HqPgHCIk6YWfa4h5Hp3nCUixIWyWVwr3E6Jd6GCaLM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iFulSoeZKxvU7/jHsaw6FlIy0DRTKZw0xOELDefhh7b0HrfagGFnXVNTYBfo27/IW
-	 0IAhGSjHFOwKukBZB6t/+DjkdTVEDRUHI4QrBq9FqHwvHHSOn697zVb93qbagp5sau
-	 vplq0LdEBNPAgyUe2DatUSOeXN2ZflYL/FBC1Whk=
+	b=PG0w6jC3auiZLJBDWQILvLdPcqishlr6eodHwUZ1aIFzMKY+fRjl2lOg0+dKMbrx5
+	 NHuQYSKg1DCkXTBwCGXYu9IvA8IxaVmaRtnB0IWprgWr/F4/4n4U+/cpi88ffSMeXp
+	 gsmM4p4HoyFZEIydVHtDomxt4cx9r4pb2fUmPehA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pawe=C5=82=20Anikiel?= <panikiel@google.com>,
-	Robert Beckett <bob.beckett@collabora.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 132/222] nvme-pci: 512 byte aligned dma pool segment quirk
+	Daniel Swanemar <d.swanemar@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 028/168] USB: serial: option: add TCL IK512 MBIM & ECM
 Date: Mon,  6 Jan 2025 16:15:36 +0100
-Message-ID: <20250106151155.766173712@linuxfoundation.org>
+Message-ID: <20250106151139.526588606@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,105 +59,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Beckett <bob.beckett@collabora.com>
+From: Daniel Swanemar <d.swanemar@gmail.com>
 
-[ Upstream commit ebefac5647968679f6ef5803e5d35a71997d20fa ]
+commit fdad4fb7c506bea8b419f70ff2163d99962e8ede upstream.
 
-We initially introduced a quick fix limiting the queue depth to 1 as
-experimentation showed that it fixed data corruption on 64GB steamdecks.
+Add the following TCL IK512 compositions:
 
-Further experimentation revealed corruption only happens when the last
-PRP data element aligns to the end of the page boundary. The device
-appears to treat this as a PRP chain to a new list instead of the data
-element that it actually is. This implementation is in violation of the
-spec. Encountering this errata with the Linux driver requires the host
-request a 128k transfer and coincidently be handed the last small pool
-dma buffer within a page.
+0x0530: Modem + Diag + AT + MBIM
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=10000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=1bbb ProdID=0530 Rev=05.04
+S:  Manufacturer=TCL
+S:  Product=TCL 5G USB Dongle
+S:  SerialNumber=3136b91a
+C:  #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 4 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
 
-The QD1 quirk effectly works around this because the last data PRP
-always was at a 248 byte offset from the page start, so it never
-appeared at the end of the page, but comes at the expense of throttling
-IO and wasting the remainder of the PRP page beyond 256 bytes. Also to
-note, the MDTS on these devices is small enough that the "large" prp
-pool can hold enough PRP elements to never reach the end, so that pool
-is not a problem either.
+0x0640: ECM + Modem + Diag + AT
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  4 Spd=10000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=1bbb ProdID=0640 Rev=05.04
+S:  Manufacturer=TCL
+S:  Product=TCL 5G USB Dongle
+S:  SerialNumber=3136b91a
+C:  #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
 
-Introduce a new quirk to ensure the small pool is always aligned such
-that the last PRP element can't appear a the end of the page. This comes
-at the expense of wasting 256 bytes per small pool page allocated.
-
-Link: https://lore.kernel.org/linux-nvme/20241113043151.GA20077@lst.de/T/#u
-Fixes: 83bdfcbdbe5d ("nvme-pci: qdepth 1 quirk")
-Cc: Paweł Anikiel <panikiel@google.com>
-Signed-off-by: Robert Beckett <bob.beckett@collabora.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Daniel Swanemar <d.swanemar@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/nvme.h | 5 +++++
- drivers/nvme/host/pci.c  | 9 +++++++--
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
-index bddc068d58c7..e867ac859a87 100644
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -172,6 +172,11 @@ enum nvme_quirks {
- 	 * MSI (but not MSI-X) interrupts are broken and never fire.
- 	 */
- 	NVME_QUIRK_BROKEN_MSI			= (1 << 21),
-+
-+	/*
-+	 * Align dma pool segment size to 512 bytes
-+	 */
-+	NVME_QUIRK_DMAPOOL_ALIGN_512		= (1 << 22),
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2385,6 +2385,10 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
++	  .driver_info = NCTRL(1) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0640, 0xff),			/* TCL IK512 ECM */
++	  .driver_info = NCTRL(3) },
+ 	{ } /* Terminating entry */
  };
- 
- /*
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index d525fa1229d7..52c8fd3d5c47 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2653,15 +2653,20 @@ static int nvme_disable_prepare_reset(struct nvme_dev *dev, bool shutdown)
- 
- static int nvme_setup_prp_pools(struct nvme_dev *dev)
- {
-+	size_t small_align = 256;
-+
- 	dev->prp_page_pool = dma_pool_create("prp list page", dev->dev,
- 						NVME_CTRL_PAGE_SIZE,
- 						NVME_CTRL_PAGE_SIZE, 0);
- 	if (!dev->prp_page_pool)
- 		return -ENOMEM;
- 
-+	if (dev->ctrl.quirks & NVME_QUIRK_DMAPOOL_ALIGN_512)
-+		small_align = 512;
-+
- 	/* Optimisation for I/Os between 4k and 128k */
- 	dev->prp_small_pool = dma_pool_create("prp list 256", dev->dev,
--						256, 256, 0);
-+						256, small_align, 0);
- 	if (!dev->prp_small_pool) {
- 		dma_pool_destroy(dev->prp_page_pool);
- 		return -ENOMEM;
-@@ -3403,7 +3408,7 @@ static const struct pci_device_id nvme_id_table[] = {
- 	{ PCI_VDEVICE(REDHAT, 0x0010),	/* Qemu emulated controller */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x1217, 0x8760), /* O2 Micro 64GB Steam Deck */
--		.driver_data = NVME_QUIRK_QDEPTH_ONE },
-+		.driver_data = NVME_QUIRK_DMAPOOL_ALIGN_512, },
- 	{ PCI_DEVICE(0x126f, 0x2262),	/* Silicon Motion generic */
- 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS |
- 				NVME_QUIRK_BOGUS_NID, },
--- 
-2.39.5
-
+ MODULE_DEVICE_TABLE(usb, option_ids);
 
 
 
