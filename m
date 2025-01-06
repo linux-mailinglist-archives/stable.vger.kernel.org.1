@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-107691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D8F3A02D2F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:02:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBDD8A02CAD
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:56:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A0A73A5DF7
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:00:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C3BB1887774
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948271DC046;
-	Mon,  6 Jan 2025 16:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEAD4156237;
+	Mon,  6 Jan 2025 15:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krKfnWb+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2EZzpaO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295F11DDC3C;
-	Mon,  6 Jan 2025 16:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C79B13B59A;
+	Mon,  6 Jan 2025 15:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179234; cv=none; b=Z8f+EgZI4/LR++wAMY8EpsMk8Sg5YR7lN5A9yrcTMyFQTdcQ1z4uHl3zfV7hHsnhW4+W4Z4qCyV2PuERFJo2o5r3mG+wzZ/73MjbkqVDrMa2u5cxE9CWqrfgHalZScaYCYnA7P1jN5qrxIOAAYIzskDKnW4CjeaKPe2yAUyQh+w=
+	t=1736178989; cv=none; b=aFy3r11K8NF7s2HfQ6/hDYJqCVhFdg8cSlPndZjl0yDHkUONBmlcrrEL74PdSTi0LZDCChWr/T/5g4/FPRrau19WqxpUCWXHwTDu8kYvHonOBtg71WCPJ/8vbdcMqtMemYkvPnfE1bb9EPJPS2+esw3Dt12A2P2Ol6sCLzzsv68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179234; c=relaxed/simple;
-	bh=kcNb69z0vbkFBmF2Ms05vNs2fEP/XZNbbB+BCktxxro=;
+	s=arc-20240116; t=1736178989; c=relaxed/simple;
+	bh=zJMca8GRdRbViePqEGkQ4G4R/u10WoINmJrvLhoLCyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CYM8GcqN+OEa9THE91Qagxa8ykRE1QzEsTvP6j5fYeW962D8qwCQSravxJ0QkHlebaytoRj6WKuF571cBzl3oDBaj7kEJa/q+LBBLVwSFsN7arZ6KNMfWvmHrxkbnItC6Alo8NbrXO4GT0FWqHR3fjQ9N5IjkFiph1s1ozTCF6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krKfnWb+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CCECC4CEE1;
-	Mon,  6 Jan 2025 16:00:33 +0000 (UTC)
+	 MIME-Version; b=t2tBNAfQEAXy8jkfSMu38s4d5Yjy5kDdxzJ2tJj1OGgwASRrZxkIRjnG145Tr1UnumQF71G04sxUG5VOoEeeYPINnc4hWXRQjGeABbtSfpB/zLPcKg34lyJF2jhQdf6q0bwCO2zKkUZ5jancz6+z/Gi3HYQ8x8lKtSLkVFAdtiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2EZzpaO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F37C4CED2;
+	Mon,  6 Jan 2025 15:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179233;
-	bh=kcNb69z0vbkFBmF2Ms05vNs2fEP/XZNbbB+BCktxxro=;
+	s=korg; t=1736178989;
+	bh=zJMca8GRdRbViePqEGkQ4G4R/u10WoINmJrvLhoLCyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=krKfnWb++QGFME2KGLzBiTDyU125Hlk9OuxP0aomHmDqrJpxqnG7kBHCPvyx/e6BK
-	 C8iDlLjx/PpOwmwEx5CAuyNTxyITgUYxlYOeYrG7IpcSQRE5yU4DYvq4wUOXJiYUPi
-	 vuJTEUtd6Q1iAaEPoIYYHlqZkFasa2997ygD2plk=
+	b=m2EZzpaOoW27XCweYPJPr2Y/Ez0wzEcOfjjUZwOP6NpW8UJW7TnEMh7iIUi5k7BKz
+	 PMZBAt3khiA1KJWfdMU1zuO1/pfWUa5SszQt2ce9YvOzVTTwFbtDvGZgEU2d4Y3hKc
+	 VVLRNggejOIiLdBCIeJT8ZKXYR9WHSiaCu3hxcHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bogdan Togorean <bogdan.togorean@analog.com>,
-	Andrzej Hajda <a.hajda@samsung.com>,
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 70/93] drm: bridge: adv7511: Enable SPDIF DAI
+Subject: [PATCH 5.15 158/168] usb: xhci: Avoid queuing redundant Stop Endpoint commands
 Date: Mon,  6 Jan 2025 16:17:46 +0100
-Message-ID: <20250106151131.347097888@linuxfoundation.org>
+Message-ID: <20250106151144.399904468@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bogdan Togorean <bogdan.togorean@analog.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-[ Upstream commit f7f436b99364a3904387eba613fc69853cc2f220 ]
+[ Upstream commit 474538b8dd1cd9c666e56cfe8ef60fbb0fb513f4 ]
 
-ADV7511 support I2S or SPDIF as audio input interfaces. This commit
-enable support for SPDIF.
+Stop Endpoint command on an already stopped endpoint fails and may be
+misinterpreted as a known hardware bug by the completion handler. This
+results in an unnecessary delay with repeated retries of the command.
 
-Signed-off-by: Bogdan Togorean <bogdan.togorean@analog.com>
-Reviewed-by: Andrzej Hajda <a.hajda@samsung.com>
-Signed-off-by: Andrzej Hajda <a.hajda@samsung.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20200413113513.86091-1-bogdan.togorean@analog.com
-Stable-dep-of: 902806baf3c1 ("drm/bridge: adv7511_audio: Update Audio InfoFrame properly")
+Avoid queuing this command when endpoint state flags indicate that it's
+stopped or halted and the command will fail. If commands are pending on
+the endpoint, their completion handlers will process cancelled TDs so
+it's done. In case of waiting for external operations like clearing TT
+buffer, the endpoint is stopped and cancelled TDs can be processed now.
+
+This eliminates practically all unnecessary retries because an endpoint
+with pending URBs is maintained in Running state by the driver, unless
+aforementioned commands or other operations are pending on it. This is
+guaranteed by xhci_ring_ep_doorbell() and by the fact that it is called
+every time any of those operations completes.
+
+The only known exceptions are hardware bugs (the endpoint never starts
+at all) and Stream Protocol errors not associated with any TRB, which
+cause an endpoint reset not followed by restart. Sounds like a bug.
+
+Generally, these retries are only expected to happen when the endpoint
+fails to start for unknown/no reason, which is a worse problem itself,
+and fixing the bug eliminates the retries too.
+
+All cases were tested and found to work as expected. SET_DEQ_PENDING
+was produced by patching uvcvideo to unlink URBs in 100us intervals,
+which then runs into this case very often. EP_HALTED was produced by
+restarting 'cat /dev/ttyUSB0' on a serial dongle with broken cable.
+EP_CLEARING_TT by the same, with the dongle on an external hub.
+
+Fixes: fd9d55d190c0 ("xhci: retry Stop Endpoint on buggy NEC controllers")
+CC: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241106101459.775897-34-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/adv7511/adv7511_audio.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/usb/host/xhci-ring.c | 13 +++++++++++++
+ drivers/usb/host/xhci.c      | 19 +++++++++++++++----
+ drivers/usb/host/xhci.h      |  1 +
+ 3 files changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-index d05b3033b510..f101dd2819b5 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-@@ -121,6 +121,9 @@ int adv7511_hdmi_hw_params(struct device *dev, void *data,
- 		audio_source = ADV7511_AUDIO_SOURCE_I2S;
- 		i2s_format = ADV7511_I2S_FORMAT_LEFT_J;
- 		break;
-+	case HDMI_SPDIF:
-+		audio_source = ADV7511_AUDIO_SOURCE_SPDIF;
-+		break;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -177,11 +180,21 @@ static int audio_startup(struct device *dev, void *data)
- 	/* use Audio infoframe updated info */
- 	regmap_update_bits(adv7511->regmap, ADV7511_REG_GC(1),
- 				BIT(5), 0);
-+	/* enable SPDIF receiver */
-+	if (adv7511->audio_source == ADV7511_AUDIO_SOURCE_SPDIF)
-+		regmap_update_bits(adv7511->regmap, ADV7511_REG_AUDIO_CONFIG,
-+				   BIT(7), BIT(7));
-+
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 0ff70c859f14..f2b86872aa6b 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1059,6 +1059,19 @@ static int xhci_invalidate_cancelled_tds(struct xhci_virt_ep *ep)
  	return 0;
  }
  
- static void audio_shutdown(struct device *dev, void *data)
- {
-+	struct adv7511 *adv7511 = dev_get_drvdata(dev);
++/*
++ * Erase queued TDs from transfer ring(s) and give back those the xHC didn't
++ * stop on. If necessary, queue commands to move the xHC off cancelled TDs it
++ * stopped on. Those will be given back later when the commands complete.
++ *
++ * Call under xhci->lock on a stopped endpoint.
++ */
++void xhci_process_cancelled_tds(struct xhci_virt_ep *ep)
++{
++	xhci_invalidate_cancelled_tds(ep);
++	xhci_giveback_invalidated_tds(ep);
++}
 +
-+	if (adv7511->audio_source == ADV7511_AUDIO_SOURCE_SPDIF)
-+		regmap_update_bits(adv7511->regmap, ADV7511_REG_AUDIO_CONFIG,
-+				   BIT(7), 0);
- }
+ /*
+  * Returns the TD the endpoint ring halted on.
+  * Only call for non-running rings without streams.
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index 58483d1e5d3f..c145a1ac1aba 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -1883,10 +1883,21 @@ static int xhci_urb_dequeue(struct usb_hcd *hcd, struct urb *urb, int status)
+ 		}
+ 	}
  
- static int adv7511_hdmi_i2s_get_dai_id(struct snd_soc_component *component,
-@@ -215,6 +228,7 @@ static const struct hdmi_codec_pdata codec_data = {
- 	.ops = &adv7511_codec_ops,
- 	.max_i2s_channels = 2,
- 	.i2s = 1,
-+	.spdif = 1,
- };
+-	/* Queue a stop endpoint command, but only if this is
+-	 * the first cancellation to be handled.
+-	 */
+-	if (!(ep->ep_state & EP_STOP_CMD_PENDING)) {
++	/* These completion handlers will sort out cancelled TDs for us */
++	if (ep->ep_state & (EP_STOP_CMD_PENDING | EP_HALTED | SET_DEQ_PENDING)) {
++		xhci_dbg(xhci, "Not queuing Stop Endpoint on slot %d ep %d in state 0x%x\n",
++				urb->dev->slot_id, ep_index, ep->ep_state);
++		goto done;
++	}
++
++	/* In this case no commands are pending but the endpoint is stopped */
++	if (ep->ep_state & EP_CLEARING_TT) {
++		/* and cancelled TDs can be given back right away */
++		xhci_dbg(xhci, "Invalidating TDs instantly on slot %d ep %d in state 0x%x\n",
++				urb->dev->slot_id, ep_index, ep->ep_state);
++		xhci_process_cancelled_tds(ep);
++	} else {
++		/* Otherwise, queue a new Stop Endpoint command */
+ 		command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
+ 		if (!command) {
+ 			ret = -ENOMEM;
+diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
+index 67d5ef952d6a..f76dae4ea429 100644
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1928,6 +1928,7 @@ void xhci_ring_doorbell_for_active_rings(struct xhci_hcd *xhci,
+ void xhci_cleanup_command_queue(struct xhci_hcd *xhci);
+ void inc_deq(struct xhci_hcd *xhci, struct xhci_ring *ring);
+ unsigned int count_trbs(u64 addr, u64 len);
++void xhci_process_cancelled_tds(struct xhci_virt_ep *ep);
  
- int adv7511_audio_init(struct device *dev, struct adv7511 *adv7511)
+ /* xHCI roothub code */
+ void xhci_set_link_state(struct xhci_hcd *xhci, struct xhci_port *port,
 -- 
 2.39.5
 
