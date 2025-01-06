@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-107400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6613BA02BD4
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:47:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F061AA02A57
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:33:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 235303A2F34
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:45:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D43D63A6996
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088B61DE8B4;
-	Mon,  6 Jan 2025 15:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8D61DDA2D;
+	Mon,  6 Jan 2025 15:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mLv8Gm6C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+9Y/uIW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C5A1DE4F6;
-	Mon,  6 Jan 2025 15:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D311DC9BC;
+	Mon,  6 Jan 2025 15:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178349; cv=none; b=cWCmzAqoCtxVbZm3xOAwFAz8mNfkprXXD6dQI2wDx1J8aHCpZuZWx8MRTb/uugRnEh9YSbZcjAjAfSIfKd2FrAFh2fszx/bwEgnG13+LlJd0/nwCFViUsYZHC+ZaIUd3YOEQw0UFw7iHSP1qpIJxZjyQnpMW7a1pTueqfq1E6Co=
+	t=1736177484; cv=none; b=fCTNLWcxLJ2gX5uDOf8qSpbHNLEUW1IRnVzrG8DvG3nnRz+u4JZQRcH0yvNRDPyHMb6boqnre3d10YvQG/LCXFfZJxnvnQocCnPaVHelne2SU3tBLbZq5aVMzR3BZ7e/CIUeoKBgehJX+DxpRziX3ndvBHokJ0b6oRxT7L393qI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178349; c=relaxed/simple;
-	bh=pm8oQDD98WYvvr2swv+WhkAyl9cFoj+50ZiDGE4WFxg=;
+	s=arc-20240116; t=1736177484; c=relaxed/simple;
+	bh=O0xTL3EK2Zc7uKZ9ZMY2s/S9S0cVEeXX9LW65kh4P6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=epZsm75+ciYniO9f1DnkFM14QF6VQrvTpLz5tgHsNc8akoEn5bs9b7HWEC1HkgRfDr7FC+ePZZ5Mwz6dbnRuuf3ML4XFQrJOS3c8r0hl7Gcr3Rmw37sCTFZaxnjra1xR0BuokjJv2zMb3Y3pnHE0ujDEc9lOvWuU/dDG8BWkrww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mLv8Gm6C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF2CC4CED2;
-	Mon,  6 Jan 2025 15:45:49 +0000 (UTC)
+	 MIME-Version; b=DwmX2dYEQlMPncSik7Z3Hy6kA1X4fhsUqkt4uFjpupkIP05Wt6hbS2OEoj6PZ4Up3H3vzNFfIdgi5Ijzn7Y/H262jmH21kUirC+bUMRRBjzJ/Eu+KvsIIUbFcWkAQzDzIvE4Y/2ZpvJxpsEVdEvwAXR4oQSOBXdNAp4H2rY6ROs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D+9Y/uIW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F9CC4CED2;
+	Mon,  6 Jan 2025 15:31:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178349;
-	bh=pm8oQDD98WYvvr2swv+WhkAyl9cFoj+50ZiDGE4WFxg=;
+	s=korg; t=1736177483;
+	bh=O0xTL3EK2Zc7uKZ9ZMY2s/S9S0cVEeXX9LW65kh4P6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mLv8Gm6ChDBxqxr4Ime+Nk0WoXYikeHsmqUfsZIg7GfcUSD/UhkhdqPwVqGirMw0W
-	 rxK65eD2ua3m8AeyHUwMbo8LzWWMDJXoop9j7RoY4X7MrrricJr6GhWEpM0WnBtG0M
-	 4NIFixAlRFBJ87cM12ZprsTDuJoXYH94q3PoIwUo=
+	b=D+9Y/uIWvuGGuCquLwuxyVBCJpc9BsAGzXtFbo5B42dipCPvHYOMsdZ4ni4r0VQH+
+	 EU/t/8GgNnoj3BkRQqnchbw4e5fikISyfW+2vDCthLqGvWgBpo47FwHJ5PlPo3O2Wl
+	 ogBuZvMC1zw4G++Gnik8iYy51k76QaXe03tS1I4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.10 057/138] mtd: rawnand: fix double free in atmel_pmecc_create_user()
+	Meghana Malladi <m-malladi@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 177/222] net: ti: icssg-prueth: Fix clearing of IEP_CMP_CFG registers during iep_init
 Date: Mon,  6 Jan 2025 16:16:21 +0100
-Message-ID: <20250106151135.394824530@linuxfoundation.org>
+Message-ID: <20250106151157.463511851@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Meghana Malladi <m-malladi@ti.com>
 
-commit d8e4771f99c0400a1873235704b28bb803c83d17 upstream.
+[ Upstream commit 9b115361248dc6cce182a2dc030c1c70b0a9639e ]
 
-The "user" pointer was converted from being allocated with kzalloc() to
-being allocated by devm_kzalloc().  Calling kfree(user) will lead to a
-double free.
+When ICSSG interfaces are brought down and brought up again, the
+pru cores are shut down and booted again, flushing out all the memories
+and start again in a clean state. Hence it is expected that the
+IEP_CMP_CFG register needs to be flushed during iep_init() to ensure
+that the existing residual configuration doesn't cause any unusual
+behavior. If the register is not cleared, existing IEP_CMP_CFG set for
+CMP1 will result in SYNC0_OUT signal based on the SYNC_OUT register values.
 
-Fixes: 6d734f1bfc33 ("mtd: rawnand: atmel: Fix possible memory leak")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+After bringing the interface up, calling PPS enable doesn't work as
+the driver believes PPS is already enabled, (iep->pps_enabled is not
+cleared during interface bring down) and driver will just return true
+even though there is no signal. Fix this by disabling pps and perout.
+
+Fixes: c1e0230eeaab ("net: ti: icss-iep: Add IEP driver")
+Signed-off-by: Meghana Malladi <m-malladi@ti.com>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/atmel/pmecc.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/ethernet/ti/icssg/icss_iep.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/mtd/nand/raw/atmel/pmecc.c
-+++ b/drivers/mtd/nand/raw/atmel/pmecc.c
-@@ -380,10 +380,8 @@ atmel_pmecc_create_user(struct atmel_pme
- 	user->delta = user->dmu + req->ecc.strength + 1;
+diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
+index 3025e9c18970..f06cdec14ed7 100644
+--- a/drivers/net/ethernet/ti/icssg/icss_iep.c
++++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
+@@ -290,6 +290,9 @@ static void icss_iep_enable_shadow_mode(struct icss_iep *iep)
+ 	for (cmp = IEP_MIN_CMP; cmp < IEP_MAX_CMP; cmp++) {
+ 		regmap_update_bits(iep->map, ICSS_IEP_CMP_STAT_REG,
+ 				   IEP_CMP_STATUS(cmp), IEP_CMP_STATUS(cmp));
++
++		regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
++				   IEP_CMP_CFG_CMP_EN(cmp), 0);
+ 	}
  
- 	gf_tables = atmel_pmecc_get_gf_tables(req);
--	if (IS_ERR(gf_tables)) {
--		kfree(user);
-+	if (IS_ERR(gf_tables))
- 		return ERR_CAST(gf_tables);
--	}
+ 	/* enable reset counter on CMP0 event */
+@@ -808,6 +811,11 @@ int icss_iep_exit(struct icss_iep *iep)
+ 	}
+ 	icss_iep_disable(iep);
  
- 	user->gf_tables = gf_tables;
- 
++	if (iep->pps_enabled)
++		icss_iep_pps_enable(iep, false);
++	else if (iep->perout_enabled)
++		icss_iep_perout_enable(iep, NULL, false);
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(icss_iep_exit);
+-- 
+2.39.5
+
 
 
 
