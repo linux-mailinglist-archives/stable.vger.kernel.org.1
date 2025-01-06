@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-107295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0543A02B24
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:40:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E03BA02C88
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFA2B188205C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:40:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFAD916221F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275B11D9663;
-	Mon,  6 Jan 2025 15:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B476E1CFEB2;
+	Mon,  6 Jan 2025 15:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QcSZSJGq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nPIk2GB2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53D5158525;
-	Mon,  6 Jan 2025 15:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53DA9156237;
+	Mon,  6 Jan 2025 15:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178036; cv=none; b=J7ENeNOaO7FJfFt6DC5yy1erpaoYG1z4pWvvTRfczd0in/OgWYza4hI8vkk92BxVso52la2w4F3jg9E53+uX1blqAurSHicjfCgcRBds1S0e7tSg5Dj4XjiIxD53ZtAoShgpterFzG83SMRrXwfnKBUh7SyYv182jcGCwofE8Lg=
+	t=1736178862; cv=none; b=T3+m3y80pLAJ+95HbF472RIweB9xT29ObkXN7qFwm5EE02nzmvDamlfnYZEsfRHN2aqJjTlu322fzzKKHut+gZWuCLSVL1IkYhvVTDREFP3OzMjOine7oZmaSHC3WiaEChU8/93rV0I23e9g+xTZU1hsLLYdMKSF8MDEch+VyQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178036; c=relaxed/simple;
-	bh=DWmFGKgJvUpdhirTolfVIj3LUhrjKXr4wrpUjocZQQ0=;
+	s=arc-20240116; t=1736178862; c=relaxed/simple;
+	bh=6MdLPq+1r7bBcBd5sNVF1YpSuLAwB1bn1e5Tx+//Too=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tkP5yYa5PUjbDugnPrQsbhWPpzHlCmw+nOMCPNzaYBafjcwbkdkCv2HlAJxQKaqxkm0sioPKBhAEhHr0bM2XTftN2ke4HVNMAOTawN9ykzz5WcNVuoQFlVYchWtOvQnX6jFiPlGGpJUNmW/MSHG5W/kAbICXnuM7wAmH9Rfjmw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QcSZSJGq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5233EC4CED2;
-	Mon,  6 Jan 2025 15:40:36 +0000 (UTC)
+	 MIME-Version; b=uysGr9C8MOSoEyZpYOKoJaJgZaNaeshtZGnVxjP75XxoYa3ukFASmReiipOmgfTXI79XIc0THp4697Dj4QiVgp6iPxFrSdcfSpnG08QBzbC2fAW/dNa4MbiP5TQR15+g0EGDjzHCTxE3ca3ZJhYynUinjWmSWLCoODjYa1HgDj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nPIk2GB2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDFEAC4CED2;
+	Mon,  6 Jan 2025 15:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178036;
-	bh=DWmFGKgJvUpdhirTolfVIj3LUhrjKXr4wrpUjocZQQ0=;
+	s=korg; t=1736178862;
+	bh=6MdLPq+1r7bBcBd5sNVF1YpSuLAwB1bn1e5Tx+//Too=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QcSZSJGq2foMIL51jM9P++VbPsQ44mKX5w7BPOtpTElpHmIdWZb18IAQN+/SSOFiR
-	 Tuwv5MFMbRYnwMsPr9DqliSYNxJ5nOmWEx8QFDy44HeVGlqqsMrwkQ2v+938NSthb+
-	 Rl6neHb4UPrujWv4nhg9E6nPRP9WNBSPtIbKPgqs=
+	b=nPIk2GB2oqHoiI57HL2dCvFVqkU4LPoguj7M5G8cJVp0FyThONWLjmW7mzUL+DnFV
+	 B+LtuCVYFQiBOPSJ2W83+FdRmLr0lq5c7yr+tVLnunmV7eiMindOkw7l5RtkrYGj03
+	 jGQZEUNMKiMnRXWngySojL7ApHB9XlHYEZJnLwnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 140/156] mm: shmem: fix the update of shmem_falloc->nr_unswapped
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 118/168] RDMA/bnxt_re: Add check for path mtu in modify_qp
 Date: Mon,  6 Jan 2025 16:17:06 +0100
-Message-ID: <20250106151147.003077942@linuxfoundation.org>
+Message-ID: <20250106151142.907433099@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
+From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
 
-commit d77b90d2b2642655b5f60953c36ad887257e1802 upstream.
+[ Upstream commit 798653a0ee30d3cd495099282751c0f248614ae7 ]
 
-The 'shmem_falloc->nr_unswapped' is used to record how many writepage
-refused to swap out because fallocate() is allocating, but after shmem
-supports large folio swap out, the update of 'shmem_falloc->nr_unswapped'
-does not use the correct number of pages in the large folio, which may
-lead to fallocate() not exiting as soon as possible.
+When RDMA app configures path MTU, add a check in modify_qp verb
+to make sure that it doesn't go beyond interface MTU. If this
+check fails, driver will fail the modify_qp verb.
 
-Anyway, this is found through code inspection, and I am not sure whether
-it would actually cause serious issues.
-
-Link: https://lkml.kernel.org/r/f66a0119d0564c2c37c84f045835b870d1b2196f.1734593154.git.baolin.wang@linux.alibaba.com
-Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/20241211083931.968831-3-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/shmem.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 26 +++++++++++++-----------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1527,7 +1527,7 @@ try_split:
- 			    !shmem_falloc->waitq &&
- 			    index >= shmem_falloc->start &&
- 			    index < shmem_falloc->next)
--				shmem_falloc->nr_unswapped++;
-+				shmem_falloc->nr_unswapped += nr_pages;
- 			else
- 				shmem_falloc = NULL;
- 			spin_unlock(&inode->i_lock);
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index 0ce7bdcf988e..3839e794de22 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -1935,18 +1935,20 @@ int bnxt_re_modify_qp(struct ib_qp *ib_qp, struct ib_qp_attr *qp_attr,
+ 		}
+ 	}
+ 
+-	if (qp_attr_mask & IB_QP_PATH_MTU) {
+-		qp->qplib_qp.modify_flags |=
+-				CMDQ_MODIFY_QP_MODIFY_MASK_PATH_MTU;
+-		qp->qplib_qp.path_mtu = __from_ib_mtu(qp_attr->path_mtu);
+-		qp->qplib_qp.mtu = ib_mtu_enum_to_int(qp_attr->path_mtu);
+-	} else if (qp_attr->qp_state == IB_QPS_RTR) {
+-		qp->qplib_qp.modify_flags |=
+-			CMDQ_MODIFY_QP_MODIFY_MASK_PATH_MTU;
+-		qp->qplib_qp.path_mtu =
+-			__from_ib_mtu(iboe_get_mtu(rdev->netdev->mtu));
+-		qp->qplib_qp.mtu =
+-			ib_mtu_enum_to_int(iboe_get_mtu(rdev->netdev->mtu));
++	if (qp_attr->qp_state == IB_QPS_RTR) {
++		enum ib_mtu qpmtu;
++
++		qpmtu = iboe_get_mtu(rdev->netdev->mtu);
++		if (qp_attr_mask & IB_QP_PATH_MTU) {
++			if (ib_mtu_enum_to_int(qp_attr->path_mtu) >
++			    ib_mtu_enum_to_int(qpmtu))
++				return -EINVAL;
++			qpmtu = qp_attr->path_mtu;
++		}
++
++		qp->qplib_qp.modify_flags |= CMDQ_MODIFY_QP_MODIFY_MASK_PATH_MTU;
++		qp->qplib_qp.path_mtu = __from_ib_mtu(qpmtu);
++		qp->qplib_qp.mtu = ib_mtu_enum_to_int(qpmtu);
+ 	}
+ 
+ 	if (qp_attr_mask & IB_QP_TIMEOUT) {
+-- 
+2.39.5
+
 
 
 
