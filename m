@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-107043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EDC3A02A03
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:29:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF987A02AB9
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 465283A6ECF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:28:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D435B7A3255
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86CDC1DB951;
-	Mon,  6 Jan 2025 15:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E524B15958A;
+	Mon,  6 Jan 2025 15:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQWmzEPt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjR0PdWp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FC31DB360;
-	Mon,  6 Jan 2025 15:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2750146D6B;
+	Mon,  6 Jan 2025 15:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177280; cv=none; b=On2CldzTmaOFqsf7CWPVWYS3N1DezrsEwBcIxFVgH8TTUwx1TvXTVMIEGwfP+wOG0egYhRyuc6gO6XrOSK+pwhh3Q0SUO3X79EuYnXzq2GjOX51doPN2n0FA6xV+ekvsqx8/xW7HRgSr4nUAm2WsxQkDxVmIbg7pFJ4zps+/fRA=
+	t=1736177703; cv=none; b=sLLOrRCfrnSNE+aob607N4vVachYYoZ6P7KDW6p7sauNb1+MySTr4gsMm7nfmsV/cjjsVaTOvDVSAGbf1kjJywSaNQ5CQEirOR/56XMY962mD3peAxiYTr0ddwCV1SAxhya1mgbFRvcPUfPuX5P6C+eVdXaow4DyiOGRkWlqkr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177280; c=relaxed/simple;
-	bh=1VOdgh2e9OhO3qltFKHJhUcUHjC2h3aPZjRfxxjSfEw=;
+	s=arc-20240116; t=1736177703; c=relaxed/simple;
+	bh=nn0GNFO2o8D8U/i1BvpWrFRbl6XuvPXIfhXp2X9yHmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NLjHOWs40pFPtujB2XdSUX+zxOneANqiG6XLfuWNXacQq2MMV9LtDCjKDmGINeI4ubXaspugzQoy7hzlSd/iECtF9PEJ3nt63N4pQgpyP64t1akx/C36CpvlYbW7AWj3A/PVoirzXmEyR4uX1+qQB5XIR/LmtTh9pjX9OGqzytg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQWmzEPt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64731C4CEDF;
-	Mon,  6 Jan 2025 15:27:59 +0000 (UTC)
+	 MIME-Version; b=gA5zx+8IUj38Srm8PNxwV2T8+Sm62B3v+WdOgHJNoT7QSOkZje1/pYMqs68tykrksuyIYtHUb/ELWjwZygK+SNx9sI28AXH7ve8JNTNWZ8HxttlxU5QTDAW5Ty7LBcMihPGOek3s9olwzk+RFz6Sunw4ogPEfGHYdpabomHXNDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjR0PdWp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D87CC4CED2;
+	Mon,  6 Jan 2025 15:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177279;
-	bh=1VOdgh2e9OhO3qltFKHJhUcUHjC2h3aPZjRfxxjSfEw=;
+	s=korg; t=1736177703;
+	bh=nn0GNFO2o8D8U/i1BvpWrFRbl6XuvPXIfhXp2X9yHmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQWmzEPtIjl05RPzSRBItSuwQUVoZE/KVE1BwKAEUKbZYdTBDG2AkToRFr0VNZ3B9
-	 NNdmmr2FYQhnxALFdwBiGQ9Ffvq2m3IzRzFr9G5UtUMPJUC5myGqtsDkTqYXhjrKD2
-	 5pNv3RrGrBElEX3/l61TDqxtzxf74X2Sq/Bhka2g=
+	b=kjR0PdWpXiXx1lQ7plKC6MNXs7lFYHeXtMd/I8w2aVT6WyF2SONQ1kFUonrbs+4sx
+	 mMa3sC8p1+avgJXc3ySal9Xxp6TE+3z2I2jL92qCbY83MP9r5lOctsWle2YW2b33oL
+	 mOx/f2lfDqbU7j0OuT4P9pcRMwMwY7PM35TClgCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Vadim Pasternak <vadimp@nvidia.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 111/222] platform/x86: mlx-platform: call pci_dev_put() to balance the refcount
+Subject: [PATCH 6.12 029/156] RDMA/bnxt_re: Fix MSN table size for variable wqe mode
 Date: Mon,  6 Jan 2025 16:15:15 +0100
-Message-ID: <20250106151154.797945599@linuxfoundation.org>
+Message-ID: <20250106151142.837452150@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
 
-[ Upstream commit 185e1b1d91e419445d3fd99c1c0376a970438acf ]
+[ Upstream commit bb839f3ace0fee532a0487b692cc4d868fccb7cf ]
 
-mlxplat_pci_fpga_device_init() calls pci_get_device() but does not
-release the refcount on error path. Call pci_dev_put() on the error path
-and in mlxplat_pci_fpga_device_exit() to fix this.
+For variable size wqe mode, the MSN table size should be
+half the size of the SQ depth. Fixing this to avoid wrap
+around problems in the retransmission path.
 
-This bug was found by an experimental static analysis tool that I am
-developing.
-
-Fixes: 02daa222fbdd ("platform: mellanox: Add initial support for PCIe based programming logic device")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
-Link: https://lore.kernel.org/r/20241216022538.381209-1-joe@pf.is.s.u-tokyo.ac.jp
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: de1d364c3815 ("RDMA/bnxt_re: Add support for Variable WQE in Genp7 adapters")
+Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/20241217102649.1377704-5-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/mlx-platform.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/mlx-platform.c b/drivers/platform/x86/mlx-platform.c
-index a2ffe4157df1..b8d77adc9ea1 100644
---- a/drivers/platform/x86/mlx-platform.c
-+++ b/drivers/platform/x86/mlx-platform.c
-@@ -6237,6 +6237,7 @@ mlxplat_pci_fpga_device_init(unsigned int device, const char *res_name, struct p
- fail_pci_request_regions:
- 	pci_disable_device(pci_dev);
- fail_pci_enable_device:
-+	pci_dev_put(pci_dev);
- 	return err;
- }
- 
-@@ -6247,6 +6248,7 @@ mlxplat_pci_fpga_device_exit(struct pci_dev *pci_bridge,
- 	iounmap(pci_bridge_addr);
- 	pci_release_regions(pci_bridge);
- 	pci_disable_device(pci_bridge);
-+	pci_dev_put(pci_bridge);
- }
- 
- static int
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index f5db29707449..3a34154b0d9d 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -1032,7 +1032,12 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
+ 				    : 0;
+ 	/* Update msn tbl size */
+ 	if (qp->is_host_msn_tbl && psn_sz) {
+-		hwq_attr.aux_depth = roundup_pow_of_two(bnxt_qplib_set_sq_size(sq, qp->wqe_mode));
++		if (qp->wqe_mode == BNXT_QPLIB_WQE_MODE_STATIC)
++			hwq_attr.aux_depth =
++				roundup_pow_of_two(bnxt_qplib_set_sq_size(sq, qp->wqe_mode));
++		else
++			hwq_attr.aux_depth =
++				roundup_pow_of_two(bnxt_qplib_set_sq_size(sq, qp->wqe_mode)) / 2;
+ 		qp->msn_tbl_sz = hwq_attr.aux_depth;
+ 		qp->msn = 0;
+ 	}
 -- 
 2.39.5
 
