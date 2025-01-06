@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-107394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47AC7A02BA4
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:45:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37090A02C5B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8979D188526C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:45:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67119188776F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529601DDC0F;
-	Mon,  6 Jan 2025 15:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D8B142E7C;
+	Mon,  6 Jan 2025 15:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LMwlYKJ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRUPSpp+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0213F1DE2A1;
-	Mon,  6 Jan 2025 15:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0092381728;
+	Mon,  6 Jan 2025 15:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178332; cv=none; b=ZZV7QKTSyGmQKRbFD3Lg+PKmoQbQiIbCZY0KMH5p4cYHhcrpRWJXkjtRtjZ9qiFO41R1qy9BwQuSYrv/Do1OJJ2ZKQ6HZT/yP3+mymWt3uh0PNCEAerwNNSWy3hm+OCrpysYZ595FGbWj0GH+YuabrdksODxfskmvzmc5qpIL/8=
+	t=1736178818; cv=none; b=r1Ef4EL7Jf+PjedTAMunIfRvIrkLy+AmrVckAyUg1TNaw4gwMA49Knzrm3sxGH5VXBkOshf8G+bbe55YinGDmpfpbraCybpkcmludw/nIdkjVzD0da6ude6JwCFNxIQK22NsPNISV4rcyMYUPFRJWh7tltZvbI6Ae5WqTeBx1Qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178332; c=relaxed/simple;
-	bh=8hBZbDrfU6JLcmBkIpfOOFuadFGjiIEqRdRNpauqWkQ=;
+	s=arc-20240116; t=1736178818; c=relaxed/simple;
+	bh=7sRa/boHvfusDat9KwL4g0BpdA7BL+iDL9qbmM2i5Nc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BCPrQfUeTUc9MWOoKTOcjSnPNTSIOAbgfIAIXukMOx+0nb0UPRSTSVaYZd9vWtqDubBLHoWhks0KjTxnx4226cDQqSd2oeDlPaZ9lR+67CXMuV7tlevRqW55XPdz9aP+gCjoyA4hc5QAQEbectcD2H4xURUfeGJqu/ccnUvPEeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LMwlYKJ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D4A6C4CED2;
-	Mon,  6 Jan 2025 15:45:31 +0000 (UTC)
+	 MIME-Version; b=h5Vt4RnRR5Hne74jD9P1aACRb31GmEXtl0eo8y+NTWupQgCiUtFo5Yzrqj4MWIqx9z373bm4GxCDl0ZeOlNYgOIjHij3zp3bClbrDffxC5hsbCgWSDcfYqtIF89c1RDUDhwdh9iGGVXUvNRNLQAGjyr7HdxAWD/Q+GiUH86yQmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRUPSpp+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD20C4CED2;
+	Mon,  6 Jan 2025 15:53:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178331;
-	bh=8hBZbDrfU6JLcmBkIpfOOFuadFGjiIEqRdRNpauqWkQ=;
+	s=korg; t=1736178817;
+	bh=7sRa/boHvfusDat9KwL4g0BpdA7BL+iDL9qbmM2i5Nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LMwlYKJ7dqP2CkoRhCE2uFhDp7hZzOPaLmTSYtl+tqwubDdYFMJkPi6qOgjoclA7n
-	 BF0EglXDJZX0KmM80wvkk6xS4B+R7eDiaXTCKizk4wPxK7h8gMHBuFfJSkl0BFlkDx
-	 ys34XijL1F3OQNxiIR86ibPcbwexzWh/reusLsHg=
+	b=zRUPSpp+qbkCvWwli24jfxiYwipdH+m03rBTXrtDiFIlXHglhwIzxvJZ2o3JNENGK
+	 5D0/bdo0uD2j5k8RNspPfZ/xqKzD4jJP5jZXlTnLOnS2NP9Frs/Dex5E8Ykejy3tQR
+	 0huv5EFWqkOTJhc9oZqF7zOCdci1GaZp5HHHxulI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.10 055/138] dmaengine: mv_xor: fix child node refcount handling in early exit
+Subject: [PATCH 5.15 071/168] dmaengine: mv_xor: fix child node refcount handling in early exit
 Date: Mon,  6 Jan 2025 16:16:19 +0100
-Message-ID: <20250106151135.318335573@linuxfoundation.org>
+Message-ID: <20250106151141.147892828@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
