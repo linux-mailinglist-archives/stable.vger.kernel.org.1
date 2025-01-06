@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-106891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 480AFA02933
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:21:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B362A02C6F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:54:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DBBD3A5169
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:20:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBB603A820D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9EB149C7B;
-	Mon,  6 Jan 2025 15:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3BE1DE4DA;
+	Mon,  6 Jan 2025 15:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pe0KtC2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p+1ug7wD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142CD148838;
-	Mon,  6 Jan 2025 15:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8332C2AF06;
+	Mon,  6 Jan 2025 15:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176820; cv=none; b=r5qHF8i9l5r/wRKaog/4GJo4ZKvRb+gttM6G9UyXNSB4IG38Mf14SIUE5B7U/pKwUzPYKYv+wTP2rBgKWa8wk+fFqSKganW1EV1/Z7JkXSlN8dlm9rgAb4QD+4/fRDFsRBpnTr2WPzEyci+USQ9I9tjQAkMMk5I+JOjAZw2ub3Q=
+	t=1736178711; cv=none; b=s6CgjOkOlIvPnpybiCNdyBB9nSTUAg3uGWeavlmGceWQxTJurVfh2UEj/vsaOJwUmgvPHcylXcoZeoXrp9fjWLNsktuSBrzRZUUqCIRF5ycSgD/UZOYdGKCQHf0gEBDYaLiNG1nEEHFok/OmKxK+sirVX+euN64l1Hqin8i68Xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176820; c=relaxed/simple;
-	bh=tHSx7VZIBs3znsVV2iv38cD/koCyPxisI0NuEt3YwKc=;
+	s=arc-20240116; t=1736178711; c=relaxed/simple;
+	bh=h+UMg+rWtcWwFCnaxH7wxmuK/+yoc6bUzdq4KG3r1QE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FlliBzYE0jAE1gcjOHkp2ZZXYLJfrsS/RVjn6sAx1YTWnbaZY5bpnlGv5IdCM7tJIALY1qGsNKrJoaOsLUdSXKS71qlNwGIe59K2mZ8IvuHK3CHRe5C0t4OjOFqDhifxKDIaruX/oP1mfSgvNUgjIzWhs6gfJ5S1d3PDzmF3l0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pe0KtC2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA03C4CED2;
-	Mon,  6 Jan 2025 15:20:19 +0000 (UTC)
+	 MIME-Version; b=Z+F29rwBdIN6um/jjt6QBhyLg9ApM5BW9hnDCS+3vmBl6S5Ce8D5fkj+dmLSn6C1/zuHwJDpStAuhV7y/2M+5mvu93w6nZqyRG7rRAr5ZpMkMVZwUgLFufF/Q1YsJQxaxvaZVL+L6iSu15E/mGfBjdm2zwuBdaVJ41qiJyL8aqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p+1ug7wD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADADEC4CED2;
+	Mon,  6 Jan 2025 15:51:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176820;
-	bh=tHSx7VZIBs3znsVV2iv38cD/koCyPxisI0NuEt3YwKc=;
+	s=korg; t=1736178711;
+	bh=h+UMg+rWtcWwFCnaxH7wxmuK/+yoc6bUzdq4KG3r1QE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1pe0KtC2rCElu4Ory44JwMq/sKFXImCPcG7dTvLKpuo83h9LbACtSAolBf1TbrfPh
-	 DsO5bjRR+3fRrgEXw8Z+IxDHBiHudwdjELyHDbVkyA7OVg7KtMsm9w6nJEM5oJPLE8
-	 dVreHqB+Stz9+8O3bjEf/oFkZedOreeAvb42yr8I=
+	b=p+1ug7wD4GXEPh0H7l9APSGfxsCMO3jmRqB2hsU1qP2pH86ahENS25kSwjK6Ub6Mg
+	 Bq52EEJ3dQBFT8Uz5D1B21quCCnnDl5sGlkp+6YxHcXnHv+zAvoPFLE8vANlmR28zn
+	 3kleYs8oGJgX4on9CsU2ZVatQehGHwhnR+fpd2ag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitalii Mordan <mordan@ispras.ru>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 41/81] eth: bcmsysport: fix call balance of priv->clk handling routines
+	Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.15 065/168] mtd: rawnand: arasan: Fix missing de-registration of NAND
 Date: Mon,  6 Jan 2025 16:16:13 +0100
-Message-ID: <20250106151130.988744888@linuxfoundation.org>
+Message-ID: <20250106151140.915394719@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Maciej Andrzejewski <maciej.andrzejewski@m-works.net>
 
-[ Upstream commit b255ef45fcc2141c1bf98456796abb956d843a27 ]
+commit 11e6831fd81468cf48155b9b3c11295c391da723 upstream.
 
-Check the return value of clk_prepare_enable to ensure that priv->clk has
-been successfully enabled.
+The NAND chip-selects are registered for the Arasan driver during
+initialization but are not de-registered when the driver is unloaded. As a
+result, if the driver is loaded again, the chip-selects remain registered
+and busy, making them unavailable for use.
 
-If priv->clk was not enabled during bcm_sysport_probe, bcm_sysport_resume,
-or bcm_sysport_open, it must not be disabled in any subsequent execution
-paths.
-
-Fixes: 31bc72d97656 ("net: systemport: fetch and use clock resources")
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20241227123007.2333397-1-mordan@ispras.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 197b88fecc50 ("mtd: rawnand: arasan: Add new Arasan NAND controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bcmsysport.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ drivers/mtd/nand/raw/arasan-nand-controller.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
-index 1693f6c60efc..e53ab9b5482e 100644
---- a/drivers/net/ethernet/broadcom/bcmsysport.c
-+++ b/drivers/net/ethernet/broadcom/bcmsysport.c
-@@ -1956,7 +1956,11 @@ static int bcm_sysport_open(struct net_device *dev)
- 	unsigned int i;
- 	int ret;
+--- a/drivers/mtd/nand/raw/arasan-nand-controller.c
++++ b/drivers/mtd/nand/raw/arasan-nand-controller.c
+@@ -1510,8 +1510,15 @@ disable_controller_clk:
  
--	clk_prepare_enable(priv->clk);
-+	ret = clk_prepare_enable(priv->clk);
-+	if (ret) {
-+		netdev_err(dev, "could not enable priv clock\n");
-+		return ret;
-+	}
+ static int anfc_remove(struct platform_device *pdev)
+ {
++	int i;
+ 	struct arasan_nfc *nfc = platform_get_drvdata(pdev);
  
- 	/* Reset UniMAC */
- 	umac_reset(priv);
-@@ -2614,7 +2618,11 @@ static int bcm_sysport_probe(struct platform_device *pdev)
- 		goto err_deregister_notifier;
- 	}
- 
--	clk_prepare_enable(priv->clk);
-+	ret = clk_prepare_enable(priv->clk);
-+	if (ret) {
-+		dev_err(&pdev->dev, "could not enable priv clock\n");
-+		goto err_deregister_netdev;
-+	}
- 
- 	priv->rev = topctrl_readl(priv, REV_CNTL) & REV_MASK;
- 	dev_info(&pdev->dev,
-@@ -2628,6 +2636,8 @@ static int bcm_sysport_probe(struct platform_device *pdev)
- 
- 	return 0;
- 
-+err_deregister_netdev:
-+	unregister_netdev(dev);
- err_deregister_notifier:
- 	unregister_netdevice_notifier(&priv->netdev_notifier);
- err_deregister_fixed_link:
-@@ -2799,7 +2809,12 @@ static int __maybe_unused bcm_sysport_resume(struct device *d)
- 	if (!netif_running(dev))
- 		return 0;
- 
--	clk_prepare_enable(priv->clk);
-+	ret = clk_prepare_enable(priv->clk);
-+	if (ret) {
-+		netdev_err(dev, "could not enable priv clock\n");
-+		return ret;
++	for (i = 0; i < nfc->ncs; i++) {
++		if (nfc->cs_array[i]) {
++			gpiod_put(nfc->cs_array[i]);
++		}
 +	}
 +
- 	if (priv->wolopts)
- 		clk_disable_unprepare(priv->wol_clk);
+ 	anfc_chips_cleanup(nfc);
  
--- 
-2.39.5
-
+ 	clk_disable_unprepare(nfc->bus_clk);
 
 
 
