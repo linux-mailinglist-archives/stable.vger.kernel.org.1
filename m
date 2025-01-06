@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-107631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4837A02CEF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:59:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D335BA02956
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:22:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95DA83A6AA8
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:57:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21E503A11B3
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:22:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4827939FCE;
-	Mon,  6 Jan 2025 15:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0702014900B;
+	Mon,  6 Jan 2025 15:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKAt667u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4tVDRis"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A97BA34;
-	Mon,  6 Jan 2025 15:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90488635E;
+	Mon,  6 Jan 2025 15:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179052; cv=none; b=tswIeMhNzZLciYIVzWYKUGQPu6cYPiAWuGXioE1sZfe1iNizfa7l+feH50SvWxEYwRn5V26h/Fmu1n/B44MMXxbjLVxWz4ZkZhGqEMIk7AldXwmZJfwGuNvTKbU6gzctiSeUuNVkctClmVi1BEs0FhA7L7Q28aM417sADpGFa2o=
+	t=1736176927; cv=none; b=apSndgenEtv+vIZVe0Da9RqITlZ5UaPqWsB59CC4yBJqIH1WG1GuQm/NJCSOImhlqndKgTKoY/Yxe86bPHfp+ddr9bWriJqYt69z0R2P48FPNr3uWSShaYxR/gQepsiJu840errSZ9IoRmx5s6ODNqED42T+cxQrbCysgSfgMwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179052; c=relaxed/simple;
-	bh=V1rgS+B8b+NMIVNmZwAv2K9nV4trQwrabpgKClo1SgY=;
+	s=arc-20240116; t=1736176927; c=relaxed/simple;
+	bh=Dw7a2V2ESboMgppSxVgCTaB0J/TUo6pU/zu3axZp2X4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pB3XMIRWhWPSlD9ZsJc9kWKCKjPlGa8ebyvqAS6GrO2FE/zAg5MI7XHTz6/sBB2KPD47EKVlcKvyD2wMp3dopaODUEeB4xI4Xq14NOWVltlLyMF8/xoPUi9cvj5I3RAl6bXtICW6QDXabw/y9RDKUphVhMEBLxX2bntAg1fWq2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKAt667u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA32C4CED2;
-	Mon,  6 Jan 2025 15:57:30 +0000 (UTC)
+	 MIME-Version; b=NoEjW0FCKOO/CGGVBU5preteFPBQvHEn8zfG4reQfqx9pMFJP9XEzyCEnmpqZtsO3NuIN+VPGGX9j9e94ntrZhnEhUWnkXMw9VIvZZwm2CJojlgg3WydbJDSDFBXvhwpQ7RA775Nm1+8mFknRPUJSPrA37BMt/ZGyWrzhrXWCew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4tVDRis; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E5D7C4CED2;
+	Mon,  6 Jan 2025 15:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179051;
-	bh=V1rgS+B8b+NMIVNmZwAv2K9nV4trQwrabpgKClo1SgY=;
+	s=korg; t=1736176927;
+	bh=Dw7a2V2ESboMgppSxVgCTaB0J/TUo6pU/zu3axZp2X4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IKAt667uMQoBOeLtzw2OnzkVu7RIh/WnostwvC+ZesgTudAjvlyHPyX7QDuUbxI65
-	 6hMKtqSDNpmgh8QQDeA+THyJwb/LspYLGYEd+p/dF2dhQuQkm0z1DndvHbRg20Q74B
-	 pDuFOtl5XMQBr/t0aX9EopOXdxdO79NklPhSsfco=
+	b=g4tVDRisHT3wcN6Xl7TxAze/mdsv8pNfoUsGbx39W0VGxxBFZL0V9GdfLLVdHlR3O
+	 jeiTymwQCzG58ZoQwVhz21JGB8SGzOjpox1JefTtxNexdhkk6RNEV8PjhQhJT3f/Ee
+	 SzQo6sGfQnfsSUEU81WpEK7EA+TzWsO7Sg0GEhkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 11/93] ionic: use ee->offset when returning sprom data
+	Hien Huynh <hien.huynh.px@renesas.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Adam Ford <aford173@gmail.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH 6.1 75/81] drm: adv7511: Drop dsi single lane support
 Date: Mon,  6 Jan 2025 16:16:47 +0100
-Message-ID: <20250106151129.126583523@linuxfoundation.org>
+Message-ID: <20250106151132.259875386@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit b096d62ba1323391b2db98b7704e2468cf3b1588 ]
+commit 79d67c499c3f886202a40c5cb27e747e4fa4d738 upstream.
 
-Some calls into ionic_get_module_eeprom() don't use a single
-full buffer size, but instead multiple calls with an offset.
-Teach our driver to use the offset correctly so we can
-respond appropriately to the caller.
+As per [1] and [2], ADV7535/7533 supports only 2-, 3-, or 4-lane. Drop
+unsupported 1-lane.
 
-Fixes: 4d03e00a2140 ("ionic: Add initial ethtool support")
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20241212213157.12212-4-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1] https://www.analog.com/media/en/technical-documentation/data-sheets/ADV7535.pdf
+[2] https://www.analog.com/media/en/technical-documentation/data-sheets/ADV7533.pdf
+
+Fixes: 1e4d58cd7f88 ("drm/bridge: adv7533: Create a MIPI DSI device")
+Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Adam Ford <aford173@gmail.com>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241119192040.152657-4-biju.das.jz@bp.renesas.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_ethtool.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/adv7511/adv7533.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-index c53d2271d8ab..dd4b89c90d67 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-@@ -711,8 +711,8 @@ static int ionic_get_module_eeprom(struct net_device *netdev,
- 	len = min_t(u32, sizeof(xcvr->sprom), ee->len);
+--- a/drivers/gpu/drm/bridge/adv7511/adv7533.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7533.c
+@@ -179,7 +179,7 @@ int adv7533_parse_dt(struct device_node
  
- 	do {
--		memcpy(data, xcvr->sprom, len);
--		memcpy(tbuf, xcvr->sprom, len);
-+		memcpy(data, &xcvr->sprom[ee->offset], len);
-+		memcpy(tbuf, &xcvr->sprom[ee->offset], len);
+ 	of_property_read_u32(np, "adi,dsi-lanes", &num_lanes);
  
- 		/* Let's make sure we got a consistent copy */
- 		if (!memcmp(data, tbuf, len))
--- 
-2.39.5
-
+-	if (num_lanes < 1 || num_lanes > 4)
++	if (num_lanes < 2 || num_lanes > 4)
+ 		return -EINVAL;
+ 
+ 	adv->num_dsi_lanes = num_lanes;
 
 
 
