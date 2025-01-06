@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-107421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05CD0A02BDB
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:47:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29559A02B34
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48C411614F4
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:46:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8867A188119A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3BF1DE3B8;
-	Mon,  6 Jan 2025 15:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D1016A930;
+	Mon,  6 Jan 2025 15:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bl0Y5RNw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qF93mY/V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DEC1DF240;
-	Mon,  6 Jan 2025 15:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A0F14D28C;
+	Mon,  6 Jan 2025 15:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178412; cv=none; b=cruQhjSUjVaWQsU8deckx9itE+ehrtz2QtZGfLB1HljDUxzzta6BB+vUHhxsfimYA9afdX7dQftHRSaeZxJ+tUz3bi+UDeM7Iy9YpGOAcTCYZCX18Q6J7i/iMoIZUGKPRCfgNRe1AqXkfPleMLHfhndJbTzxUrQ7JpYLdBnysVw=
+	t=1736178061; cv=none; b=Xc8k1Q+//V3NWPYWYYU0nRdysA7nl62DJEd4wrDNpeJewIGUEVkHxcwrY6MD0reA067owooTD4C2SilGsSi49gPF2SgcnxMl0uc7DiLUR3LOW5bNo77SXsRZX3yJzgfgRQM7eBUv4ggaUqKkRHiE6zJviij30FUG179Tsct81XI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178412; c=relaxed/simple;
-	bh=R01u+wuWLUHiLGn7fZIhxMqPIVbmQrJ9sgzdh36S/w0=;
+	s=arc-20240116; t=1736178061; c=relaxed/simple;
+	bh=WXq8ZSSv45DBk4S/mVfJMPJ5pn94N2rkEzADTcBhUfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KvH3m2jrouB7l4xQX5R8j+VSyDXidvzfgsaRLhKi2NGMGBDZXAxgp8WE8rXLTzy6iZZETDaOmI2Rzx0mzuOFkH1mkuNuYcTdHV1En4jMqZxOyybsb9t7RHSS6edgJYWwBadVaIxdoF9GeqsiUKxd0jziMH0mzSZ1i02wuYT80MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bl0Y5RNw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE161C4CED2;
-	Mon,  6 Jan 2025 15:46:51 +0000 (UTC)
+	 MIME-Version; b=T5kenBag06TxbPCa9pVceyPRLeruQpmHzdcygAMl0YxylCrJWiCC22RIi3Cj2n+h64G9uSq0wCvb2XgaKhsSQbM1BQ/jGjK9iHQTX8u3ipekabeveQnMoIx15sH+7Zn9G+CF+RqPOE2COUxVjvct4K61zr6tuzNaUd2dIqvSCUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qF93mY/V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35EA1C4CED2;
+	Mon,  6 Jan 2025 15:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178412;
-	bh=R01u+wuWLUHiLGn7fZIhxMqPIVbmQrJ9sgzdh36S/w0=;
+	s=korg; t=1736178060;
+	bh=WXq8ZSSv45DBk4S/mVfJMPJ5pn94N2rkEzADTcBhUfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bl0Y5RNwWvjWtqu9Gt6UaHCe6LWJ6iScar1zmWRr8aEH8d/eJRBg4WotPLfVM0r1w
-	 iMm8D+X+2bKw3IlT+9uEjGAEJLYyD5/+6qZKqr8gMxp63d9SbmxVR71Or3vEA07/e7
-	 vPS8xdQO44UdAf/rXTd7ANmyk4KvsInfWOKR5T9w=
+	b=qF93mY/VkjIga1jFGinaAF5TovGN5LFFsRMWcNGnlmit/xmz3hOvhyFaO57miepMO
+	 8w5GzKxGcDtNSeB8V7/n12A41AULQsJYEWdajDhdA+gFBKqbosIeqLlXQmbXf2CT50
+	 YEcv6lSm0F8rGkCIF2tstv2KxF1NykVrTVh/YgAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tanya Agarwal <tanyaagarwal25699@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 109/138] ALSA: usb-audio: US16x08: Initialize array before use
+	Joshua Washington <joshwash@google.com>,
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Shailend Chand <shailend@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.12 147/156] gve: guard XDP xmit NDO on existence of xdp queues
 Date: Mon,  6 Jan 2025 16:17:13 +0100
-Message-ID: <20250106151137.355629624@linuxfoundation.org>
+Message-ID: <20250106151147.264656389@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tanya Agarwal <tanyaagarwal25699@gmail.com>
+From: Joshua Washington <joshwash@google.com>
 
-[ Upstream commit b06a6187ef983f501e93faa56209169752d3bde3 ]
+commit ff7c2dea9dd1a436fc79d6273adffdcc4a7ffea3 upstream.
 
-Initialize meter_urb array before use in mixer_us16x08.c.
+In GVE, dedicated XDP queues only exist when an XDP program is installed
+and the interface is up. As such, the NDO XDP XMIT callback should
+return early if either of these conditions are false.
 
-CID 1410197: (#1 of 1): Uninitialized scalar variable (UNINIT)
-uninit_use_in_call: Using uninitialized value *meter_urb when
-calling get_meter_levels_from_urb.
+In the case of no loaded XDP program, priv->num_xdp_queues=0 which can
+cause a divide-by-zero error, and in the case of interface down,
+num_xdp_queues remains untouched to persist XDP queue count for the next
+interface up, but the TX pointer itself would be NULL.
 
-Coverity Link:
-https://scan7.scan.coverity.com/#/project-view/52849/11354?selectedIssue=1410197
+The XDP xmit callback also needs to synchronize with a device
+transitioning from open to close. This synchronization will happen via
+the GVE_PRIV_FLAGS_NAPI_ENABLED bit along with a synchronize_net() call,
+which waits for any RCU critical sections at call-time to complete.
 
-Fixes: d2bb390a2081 ("ALSA: usb-audio: Tascam US-16x08 DSP mixer quirk")
-Signed-off-by: Tanya Agarwal <tanyaagarwal25699@gmail.com>
-Link: https://patch.msgid.link/20241229060240.1642-1-tanyaagarwal25699@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 39a7f4aa3e4a ("gve: Add XDP REDIRECT support for GQI-QPL format")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joshua Washington <joshwash@google.com>
+Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Reviewed-by: Shailend Chand <shailend@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_us16x08.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/google/gve/gve_main.c |    3 +++
+ drivers/net/ethernet/google/gve/gve_tx.c   |    5 ++++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer_us16x08.c b/sound/usb/mixer_us16x08.c
-index bd63a9ce6a70..3959bbad0c4f 100644
---- a/sound/usb/mixer_us16x08.c
-+++ b/sound/usb/mixer_us16x08.c
-@@ -687,7 +687,7 @@ static int snd_us16x08_meter_get(struct snd_kcontrol *kcontrol,
- 	struct usb_mixer_elem_info *elem = kcontrol->private_data;
- 	struct snd_usb_audio *chip = elem->head.mixer->chip;
- 	struct snd_us16x08_meter_store *store = elem->private_data;
--	u8 meter_urb[64];
-+	u8 meter_urb[64] = {0};
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -1904,6 +1904,9 @@ static void gve_turndown(struct gve_priv
  
- 	switch (kcontrol->private_value) {
- 	case 0: {
--- 
-2.39.5
-
+ 	gve_clear_napi_enabled(priv);
+ 	gve_clear_report_stats(priv);
++
++	/* Make sure that all traffic is finished processing. */
++	synchronize_net();
+ }
+ 
+ static void gve_turnup(struct gve_priv *priv)
+--- a/drivers/net/ethernet/google/gve/gve_tx.c
++++ b/drivers/net/ethernet/google/gve/gve_tx.c
+@@ -837,9 +837,12 @@ int gve_xdp_xmit(struct net_device *dev,
+ 	struct gve_tx_ring *tx;
+ 	int i, err = 0, qid;
+ 
+-	if (unlikely(flags & ~XDP_XMIT_FLAGS_MASK))
++	if (unlikely(flags & ~XDP_XMIT_FLAGS_MASK) || !priv->xdp_prog)
+ 		return -EINVAL;
+ 
++	if (!gve_get_napi_enabled(priv))
++		return -ENETDOWN;
++
+ 	qid = gve_xdp_tx_queue_id(priv,
+ 				  smp_processor_id() % priv->num_xdp_queues);
+ 
 
 
 
