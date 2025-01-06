@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-107531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39DD0A02C7E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F394A0295D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:22:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A3DF3A8ED8
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:52:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4884188592C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:22:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FFCF16D9B8;
-	Mon,  6 Jan 2025 15:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76CB08634A;
+	Mon,  6 Jan 2025 15:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ljkUGGK7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RylITE8U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF2815C120;
-	Mon,  6 Jan 2025 15:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341B08635E;
+	Mon,  6 Jan 2025 15:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178752; cv=none; b=Y+k3x3da8ecncZOK8zdqI7oPgdLiM1sypIBvTFQ5fTBpWYk41K6soSnWQI0kigMyzWVAsrG+pySOxQUCutg1MfrWlN4uygQrOKQWTqB6fKZp420CBb+2Jv6R+iJWaW12ifjm2lyxl5iOF6U/Jzc8PvZlPb59HTXPgl5nU4eXwj8=
+	t=1736176951; cv=none; b=G9pxHGhYk3TPc/KNtye19hNK61gmp3S7VykaND8aP0KpTDsnI9nVSsnOg2qersY7k+j+WGm/hIGwFh8wYeBYhBnECRPME9c759RgGddnW/ZbWJoin1Tz3j6ER+LZmxdz9Ze4clyry4pTDmgVvqXsT+/i7+pyTJvX+7UjVKsxqoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178752; c=relaxed/simple;
-	bh=H6Lf9GLRmdXVuJDfZQOKlBciyd/k5bFUO2G/cJfvgtE=;
+	s=arc-20240116; t=1736176951; c=relaxed/simple;
+	bh=GYEhITHw4hhQiJtAodORj0wIRYmpirPWCbke85mlBl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JWTNJaIQ6iOJB+CG4h9FJLxrGCxxRNFGH64JmmiQz8RmBOcrYJD+RN0fWsnFEXBKZuyyrS6pmFEI7HE577TJvw6wC4d/0/XJNjN/J9WGDl0CpnKLdPt9IIJ4uY/+G1euesqHRVvTSrE/pLe3wF0jPvbzzxUyYV6xANkQVSthOSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ljkUGGK7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65496C4CED2;
-	Mon,  6 Jan 2025 15:52:32 +0000 (UTC)
+	 MIME-Version; b=DDK/pLbiCJwckLt8zkilPuJ5cNI7PI/o3TK3vwhJ/7Bey116kP157QeZXavi2/d2rUf45q51JmrgX8iUOrL5eJ18/ITYB9lya9DLJYqGaWT0dVDQJ7ubvA2BY0K9tzK8yJ4R4FWTDb0WgfMhgd1+P1k4v/T0PIvxL5wOT4Vzwq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RylITE8U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFFEFC4CED2;
+	Mon,  6 Jan 2025 15:22:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178752;
-	bh=H6Lf9GLRmdXVuJDfZQOKlBciyd/k5bFUO2G/cJfvgtE=;
+	s=korg; t=1736176951;
+	bh=GYEhITHw4hhQiJtAodORj0wIRYmpirPWCbke85mlBl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ljkUGGK7kXbMmVyJV2ai+wWQeDiGwz5MMZg5S9aWnGE4ALoCvwqrzatG5eMdFzMnw
-	 N4vSK2MtXh13s7J0cpfeGhlqJBsRw0w9WqfCZK4y3I+mvy4xFBb8mTNLzCpDRzR9EW
-	 x9Xz18vRKTzfr/vuyll4Kwnh+Lre4rt99GjBjWW8=
+	b=RylITE8Uzo9Coy0xaWznru8TDIxO9g2mro/z8AnTjL4Xx1zz9kI7xpE2Mvq4Nt+ON
+	 /07GSZlHMPAFY2bO9uvsCAwdGtw2JVWrz56rXBBDPdDpHDt1Xi6QpUCMjaXLSBeKJt
+	 q4K/8FgRHH+6Kk5/MhAzfrFVsWDyfL96zxdhZUSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pau Espin Pedrol <pespin@espeweb.net>,
-	Armin Wolf <W_Armin@gmx.de>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Adrian Ratiu <adrian.ratiu@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 081/168] platform/x86: asus-nb-wmi: Ignore unknown event 0xCF
+Subject: [PATCH 6.1 57/81] sound: usb: enable DSD output for ddHiFi TC44C
 Date: Mon,  6 Jan 2025 16:16:29 +0100
-Message-ID: <20250106151141.524344299@linuxfoundation.org>
+Message-ID: <20250106151131.588554598@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +60,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Adrian Ratiu <adrian.ratiu@collabora.com>
 
-[ Upstream commit e9fba20c29e27dc99e55e1c550573a114561bf8c ]
+[ Upstream commit c84bd6c810d1880194fea2229c7086e4b73fddc1 ]
 
-On the Asus X541UAK an unknown event 0xCF is emited when the charger
-is plugged in. This is caused by the following AML code:
+This is a UAC 2 DAC capable of raw DSD on intf 2 alt 4:
 
-    If (ACPS ())
-    {
-        ACPF = One
-        Local0 = 0x58
-        If (ATKP)
-        {
-            ^^^^ATKD.IANE (0xCF)
-        }
-    }
-    Else
-    {
-        ACPF = Zero
-        Local0 = 0x57
-    }
+Bus 007 Device 004: ID 262a:9302 SAVITECH Corp. TC44C
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.00
+  bDeviceClass          239 Miscellaneous Device
+  bDeviceSubClass         2 [unknown]
+  bDeviceProtocol         1 Interface Association
+  bMaxPacketSize0        64
+  idVendor           0x262a SAVITECH Corp.
+  idProduct          0x9302 TC44C
+  bcdDevice            0.01
+  iManufacturer           1 DDHIFI
+  iProduct                2 TC44C
+  iSerial                 6 5000000001
+.......
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        2
+      bAlternateSetting       4
+      bNumEndpoints           2
+      bInterfaceClass         1 Audio
+      bInterfaceSubClass      2 Streaming
+      bInterfaceProtocol      32
+      iInterface              0
+	AudioStreaming Interface Descriptor:
+          bLength                16
+          bDescriptorType        36
+          bDescriptorSubtype     1 (AS_GENERAL)
+          bTerminalLink          3
+          bmControls             0x00
+          bFormatType            1
+          bmFormats              0x80000000
+          bNrChannels            2
+          bmChannelConfig        0x00000000
+          iChannelNames          0
+.......
 
-    Notify (AC0, 0x80) // Status Change
-    If (ATKP)
-    {
-        ^^^^ATKD.IANE (Local0)
-    }
-
-    Sleep (0x64)
-    PNOT ()
-    Sleep (0x0A)
-    NBAT (0x80)
-
-Ignore the 0xCF event to silence the unknown event warning.
-
-Reported-by: Pau Espin Pedrol <pespin@espeweb.net>
-Closes: https://lore.kernel.org/platform-driver-x86/54d4860b-ec9c-4992-acf6-db3f90388293@espeweb.net
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241123224700.18530-1-W_Armin@gmx.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Adrian Ratiu <adrian.ratiu@collabora.com>
+Link: https://patch.msgid.link/20241209090529.16134-1-adrian.ratiu@collabora.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-nb-wmi.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/usb/quirks.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
-index 49505939352a..224c1f1c271b 100644
---- a/drivers/platform/x86/asus-nb-wmi.c
-+++ b/drivers/platform/x86/asus-nb-wmi.c
-@@ -574,6 +574,7 @@ static const struct key_entry asus_nb_wmi_keymap[] = {
- 	{ KE_KEY, 0xC4, { KEY_KBDILLUMUP } },
- 	{ KE_KEY, 0xC5, { KEY_KBDILLUMDOWN } },
- 	{ KE_IGNORE, 0xC6, },  /* Ambient Light Sensor notification */
-+	{ KE_IGNORE, 0xCF, },	/* AC mode */
- 	{ KE_KEY, 0xFA, { KEY_PROG2 } },           /* Lid flip action */
- 	{ KE_KEY, 0xBD, { KEY_PROG2 } },           /* Lid flip action on ROG xflow laptops */
- 	{ KE_END, 0},
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index 673591fbf917..6525b02af1b0 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2223,6 +2223,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_DSD_RAW),
+ 	DEVICE_FLG(0x2522, 0x0007, /* LH Labs Geek Out HD Audio 1V5 */
+ 		   QUIRK_FLAG_SET_IFACE_FIRST),
++	DEVICE_FLG(0x262a, 0x9302, /* ddHiFi TC44C */
++		   QUIRK_FLAG_DSD_RAW),
+ 	DEVICE_FLG(0x2708, 0x0002, /* Audient iD14 */
+ 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
+ 	DEVICE_FLG(0x2912, 0x30c8, /* Audioengine D1 */
 -- 
 2.39.5
 
