@@ -1,154 +1,132 @@
-Return-Path: <stable+bounces-107764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 020A3A031FC
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 22:21:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA18A03239
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 22:43:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02E8C3A00E3
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 21:20:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 985B73A073F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 21:43:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739FC1DFD84;
-	Mon,  6 Jan 2025 21:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 384AE1E04A1;
+	Mon,  6 Jan 2025 21:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QzL90aou"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="iowIDloh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-74.smtpout.orange.fr [80.12.242.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267BE15886C;
-	Mon,  6 Jan 2025 21:20:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D6F188A0D;
+	Mon,  6 Jan 2025 21:43:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736198455; cv=none; b=BWDMLxERZSBWjKfzgMgDNMKofnCOpq1mrlGNEDyTZm0gwO5eFoyyFu1DcnBNCiPEaK1v2kOfhCC3CJT1r6xST54MNaXhQWQ4qVypQjhsVPmzRvOTExDkGRTjNsB450YLytp58jLwF46vZ31hhA1p6MwV88TBTr+y5uaBM4lpVck=
+	t=1736199809; cv=none; b=msvLrCE8dvk9CVVelY6i/geUFipBrkLBu12b3j4s0N1UMjwlVrLMnft0Emok9gpszaSj8LoHOBBaiY+BO3EERqtsH6PjulEBMLLw+Rwt2QiPRy54NvjpLBg65+mObifkny6mbXsEO3CCaG6h1/EqTcgAK+cHPC51U70zyM7XmjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736198455; c=relaxed/simple;
-	bh=zDmervT9GBXH5Lv4juG3yIw7tNrPmUjt9WDwtI0ZY9o=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=uHrOVYwxzyQlkIufo4KU9tGrEqldKH5m7VlVEYD9TwvHczmxmat5TNtmM3cKJOn2EyYc4NMUoOPKp81Kt4I9cO9AgDxpY7X9fTnz9UZG5sFuH97lM56418cl6xQ13GlM0Ch8DTVxqK3MknmTdvGWoEY2nXUD/mDbxmFZaPuW7rQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QzL90aou; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BB3C4CED2;
-	Mon,  6 Jan 2025 21:20:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736198454;
-	bh=zDmervT9GBXH5Lv4juG3yIw7tNrPmUjt9WDwtI0ZY9o=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=QzL90aou1k8ioKSHfW9q482SoIQyIdOf1upsKB8h0JQFO6BYt6UhgzKyRyxLzBeqc
-	 +2QZbM+n/rWHPFB90pm8xlpZfeUiPY+OXpQDEud0fclEcLgiJqBEF6RroCY+q+cKpF
-	 4FOGntB2iwg40OE+GRMq2L6kWujmnlgrLCy/KGRNMRuz2vVVELWr5QPSdzpL173p0e
-	 62+ba2wikkD/qWXfS4oTuqhLW/dY//WqRvEcrW2d7XG45NIvKSr/NfelSZ6TXs/syd
-	 5qRp829V+EEGj4dmB7A7jD1eGDRz+Z/lgJ5dz8RaJh1mDJ2OckW46NgXvtEzXzY7vj
-	 5PXs+rSXybD4Q==
+	s=arc-20240116; t=1736199809; c=relaxed/simple;
+	bh=O0MQ2l63dfHE7WM1suoTpwLA1O7Xfa/0PKd9qMjqFEM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DJFgAgMW0xOO2YpepaPOPhHpNAvX/HJgh//+cXuCFPEiqZByuQsF9aVZo/eWvJ4sge5fqguIPQQ/1BUJeiCn5kMpKOZsPZ6FI9u3UPUWBxFIPu6yrXRRqadiMyx+c6ixhQ4K4xAeAttXldZa0NavlCYfxN0kEmcqrHvl8HV5MXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=iowIDloh; arc=none smtp.client-ip=80.12.242.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id UujktaFspoTrQUujntr9Qg; Mon, 06 Jan 2025 22:34:18 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1736199258;
+	bh=PcGDZ20MbLYfZ7EGFNqqr0gNwlImKeN5cu0DsZ7P7vk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=iowIDlohTttzH2sFgYMmwPrmnRlT+5GB954fxcD3g9XT1Jfp8T4QVPpdSDMcHy9aj
+	 7GSuWLgsK0oXxV1PJ0wExZmY0CioAJZnA+F4+yVhybbdcAWfZcRj33k7oLILj07DkY
+	 Ndd5RcHrQossS84+4RDuZ+RxNSz6dtAEWxjpLeF4H54GWg8QDUaSTaz6YqwDdNwq6a
+	 qMtjCnWJsB93DwwBNRxmVBdvpyTcjKw3kMZK5o04QmX7sq+3ES19JzdDL/aDR2se5a
+	 JjPiK+riSPP/L9m+e4wU8Bb4rFq7HnhvPeZ9WHgXN18/wU6G14LnGLLiIQXjaj73ok
+	 z/0QiDs74rKxg==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Mon, 06 Jan 2025 22:34:18 +0100
+X-ME-IP: 90.11.132.44
+Message-ID: <955f3abf-81b8-4471-82eb-b969dc5d7c9e@wanadoo.fr>
+Date: Mon, 6 Jan 2025 22:34:12 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 06 Jan 2025 23:20:49 +0200
-Message-Id: <D6VAZGXPWLUY.31RHNWW6ROQMA@kernel.org>
-Cc: <linux-integrity@vger.kernel.org>, "Peter Huewe" <peterhuewe@gmx.de>,
- "Jason Gunthorpe" <jgg@ziepe.ca>, "Colin Ian King"
- <colin.i.king@gmail.com>, "Joe Hattori" <joe@pf.is.s.u-tokyo.ac.jp>, "James
- Bottomley" <James.Bottomley@hansenpartnership.com>, "Stefan Berger"
- <stefanb@linux.ibm.com>, "Mimi Zohar" <zohar@linux.ibm.com>, "Al Viro"
- <viro@zeniv.linux.org.uk>, "Kylene Jo Hall" <kjhall@us.ibm.com>, "Reiner
- Sailer" <sailer@us.ibm.com>, "Seiji Munetoh" <munetoh@jp.ibm.com>, "Andrew
- Morton" <akpm@osdl.org>, <stable@vger.kernel.org>, "Andy Liang"
- <andy.liang@hpe.com>, "Matthew Garrett" <mjg59@srcf.ucam.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5] tpm: Map the ACPI provided event log
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Ard Biesheuvel" <ardb@kernel.org>
-X-Mailer: aerc 0.18.2
-References: <20241224040334.11533-1-jarkko@kernel.org>
- <CAMj1kXGOcqEH68-Pp4+-WMpG-2D-iN6xAHFTQvQLobO1sE3QFA@mail.gmail.com>
- <D6KW1JU6RBR0.2QL8BTX01XZNP@kernel.org>
- <CAMj1kXHTJ_=g1dnuGV2PWiNC1o=wKFOkZxEAcrMWYbUNWkxKNg@mail.gmail.com>
-In-Reply-To: <CAMj1kXHTJ_=g1dnuGV2PWiNC1o=wKFOkZxEAcrMWYbUNWkxKNg@mail.gmail.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] misc: microchip: pci1xxxx: Fix possible double free in
+ error handling path
+To: Ma Ke <make24@iscas.ac.cn>, kumaravel.thiagarajan@microchip.com,
+ arnd@arndb.de, gregkh@linuxfoundation.org
+Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250106074053.312243-1-make24@iscas.ac.cn>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20250106074053.312243-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon Jan 6, 2025 at 7:23 PM EET, Ard Biesheuvel wrote:
-> On Wed, 25 Dec 2024 at 16:31, Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> >
-> > On Tue Dec 24, 2024 at 6:05 PM EET, Ard Biesheuvel wrote:
-> > > On Tue, 24 Dec 2024 at 05:03, Jarkko Sakkinen <jarkko@kernel.org> wro=
-te:
-> > > >
-> > > > The following failure was reported:
-> > > >
-> > > > [   10.693310][    T1] tpm_tis STM0925:00: 2.0 TPM (device-id 0x3, =
-rev-id 0)
-> > > > [   10.848132][    T1] ------------[ cut here ]------------
-> > > > [   10.853559][    T1] WARNING: CPU: 59 PID: 1 at mm/page_alloc.c:4=
-727 __alloc_pages_noprof+0x2ca/0x330
-> > > > [   10.862827][    T1] Modules linked in:
-> > > > [   10.866671][    T1] CPU: 59 UID: 0 PID: 1 Comm: swapper/0 Not ta=
-inted 6.12.0-lp155.2.g52785e2-default #1 openSUSE Tumbleweed (unreleased) 5=
-88cd98293a7c9eba9013378d807364c088c9375
-> > > > [   10.882741][    T1] Hardware name: HPE ProLiant DL320 Gen12/ProL=
-iant DL320 Gen12, BIOS 1.20 10/28/2024
-> > > > [   10.892170][    T1] RIP: 0010:__alloc_pages_noprof+0x2ca/0x330
-> > > > [   10.898103][    T1] Code: 24 08 e9 4a fe ff ff e8 34 36 fa ff e9=
- 88 fe ff ff 83 fe 0a 0f 86 b3 fd ff ff 80 3d 01 e7 ce 01 00 75 09 c6 05 f8=
- e6 ce 01 01 <0f> 0b 45 31 ff e9 e5 fe ff ff f7 c2 00 00 08 00 75 42 89 d9 =
-80 e1
-> > > > [   10.917750][    T1] RSP: 0000:ffffb7cf40077980 EFLAGS: 00010246
-> > > > [   10.923777][    T1] RAX: 0000000000000000 RBX: 0000000000040cc0 =
-RCX: 0000000000000000
-> > > > [   10.931727][    T1] RDX: 0000000000000000 RSI: 000000000000000c =
-RDI: 0000000000040cc0
-> > > >
-> > > > Above shows that ACPI pointed a 16 MiB buffer for the log events be=
-cause
-> > > > RSI maps to the 'order' parameter of __alloc_pages_noprof(). Addres=
-s the
-> > > > bug by mapping the region when needed instead of copying.
-> > > >
-> > >
-> > > How can you be sure the memory contents will be preserved? Does it sa=
-y
-> > > anywhere in the TCG spec that this needs to use a memory type that is
-> > > preserved by default?
-> >
-> > TCG log calls the size as the minimum size for the log area but is not
-> > too accurate on details [1]. I don't actually know what "minimum" even
-> > means in this context as it is just a fixed size cut of the physical
-> > address space.
-> >
-> > I don't think that can ever change. It would be oddballs if some
-> > dynamic change would make ACPI tables show incorrect information
-> > on memory ranges. Do you know any pre-existing example of such
-> > behavior (not sarcasm, just interested)?
-> >
-> > Anyway considering this type of dynamics TCG spec is inaccurate.
-> >
->
-> Thanks for the context but that is not at all what I was asking.
->
-> This change assumes that the contents of the memory region described
-> by the ACPI table will be reserved in some way, and not be released to
-> the kernel for general allocation.
->
-> This is not always the case for firmware tables: EFI configuration
-> tables need to be reserved explicitly unless the memory type is
-> EfiRuntimeServicesData. For ACPI tables, the situation might be
-> different but there is at least one example (BGRT) where the memory
-> type typically used is not one that the kernel usually reserves by
-> default.
->
-> So my question is whether there is anything in the TCG platform spec
-> (or whichever spec describes this ACPI table) that guarantees that the
-> region that the TCPA or TPM2 table points to is of a type that does
-> not require an explicit reservation?
+Le 06/01/2025 à 08:40, Ma Ke a écrit :
+> When auxiliary_device_add() returns error and then calls
+> auxiliary_device_uninit(), the callback function
+> gp_auxiliary_device_release() calls kfree() to free memory. Do not
+> call kfree() again in the error handling path.
+> 
+> Fix this by skipping the redundant kfree().
+> 
+> Found by code review.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 393fc2f5948f ("misc: microchip: pci1xxxx: load auxiliary bus driver for the PIO function in the multi-function endpoint of pci1xxxx device.")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+>   drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
+> index 32af2b14ff34..fbd712938bdc 100644
+> --- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
+> +++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
+> @@ -111,6 +111,7 @@ static int gp_aux_bus_probe(struct pci_dev *pdev, const struct pci_device_id *id
+>   
+>   err_aux_dev_add_1:
+>   	auxiliary_device_uninit(&aux_bus->aux_device_wrapper[1]->aux_dev);
+> +	goto err_aux_dev_add_0;
+>   
+>   err_aux_dev_init_1:
+>   	ida_free(&gp_client_ida, aux_bus->aux_device_wrapper[1]->aux_dev.id);
+> @@ -120,6 +121,7 @@ static int gp_aux_bus_probe(struct pci_dev *pdev, const struct pci_device_id *id
+>   
+>   err_aux_dev_add_0:
+>   	auxiliary_device_uninit(&aux_bus->aux_device_wrapper[0]->aux_dev);
+> +	goto err_ret;
+>   
+>   err_aux_dev_init_0:
+>   	ida_free(&gp_client_ida, aux_bus->aux_device_wrapper[0]->aux_dev.id);
 
-I agree that we must assume that we cannot guarantee taht  since it is
-open in the spec. I think I went over the top with this.
+Hi,
 
-Let's go with the simpler devm_add_action_or_reset() fix.
+This is strange because the nearly same patch is in -next since June 
+2024 ([1])
 
-BR, Jarkko
+It is also in Linux since at least 6.10 ([2])
+
+In [1] and [2], there is also a new err_ret label, which is not part of 
+your patch.
+
+On which tree are you working?
+Is your patch compile tested?
+
+CJ
+
+
+[1]: 
+https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c?id=086c6cbcc563c81d55257f9b27e14faf1d0963d3
+
+[2]: 
+https://elixir.bootlin.com/linux/v6.10/source/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c#L116
 
