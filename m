@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-107168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 904C7A02A7A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:34:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E678A029CF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:28:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81CD3164EA1
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:34:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FEDE18865E8
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:27:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C94156237;
-	Mon,  6 Jan 2025 15:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF79E1A8F79;
+	Mon,  6 Jan 2025 15:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WblQbqks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YeBTYAg2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617B786332;
-	Mon,  6 Jan 2025 15:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BEAD17625C;
+	Mon,  6 Jan 2025 15:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177660; cv=none; b=FteYgeNi1IIN87506yp1TYYGoCtwPi0PdFEMR8Ilg7r7eHU+/VVzUS4iULPX3tvTspsAAyFwWYxje9r3YTiwhjRgPpnuCAEztwZvIM17Rx14rqtiycp983bKPaRXgo4fnZBKcRyvAL/Fz1OAaa6uamgqZ0z0Z4uc5bIFkSw8UcY=
+	t=1736177204; cv=none; b=FH13ZLemIaZ+JbWH7di4NA/U7lZaPkWM3UTy9rXM910CWaFQxHhZRrnw/VGeWw2mvNPChsiJBDOTVnpzNsP5QTAqj2oNN8SAzMzHKShKjZoLeSO4nJTnr922WyI8pJBI4kWc41HQ5yCs0GoqylxOz20iyBJX+8G1AsdU430yBRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177660; c=relaxed/simple;
-	bh=QHLuIUhX/qAnOn+yUgOvy9Mo/dwGm0li+U7d7+g8Yk0=;
+	s=arc-20240116; t=1736177204; c=relaxed/simple;
+	bh=ueYVSVnIq1fVxpwbxDHTkKlsAf2AGUy3FquMHbwlO8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RJ6eHbdFS3tthghvL+/hM+MklPjcjm6osU4MOMRYkt8vo2lzDIscawfvw/EY8PzwlMy0qktRIB9M8q9MGTPA8kHs1C0NsCJpo4vr+LL+vHIJjx4mXiPDfoxw9r0Sd2TQoTKzlxXPGrbvdGJrm54xFAyuhlAWrAk6LK8AN9KfdVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WblQbqks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84247C4CED6;
-	Mon,  6 Jan 2025 15:34:18 +0000 (UTC)
+	 MIME-Version; b=TfOElRwAYmM9s2Z17QRyW8Se10XRMa5IgD7YU0uqh9yUTlIQwbCORogSmhD/mKpV8SKLVPhXY6IR7LxcoXnw4VTqBZAtju3au/g0Bo6OOyCx6UUgRMdos2XyCCRtA76AJ75EbgJb+zPTQcKiaeixZeHQRqOIbvpguedqhLLdGj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YeBTYAg2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 052FBC4CED2;
+	Mon,  6 Jan 2025 15:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177658;
-	bh=QHLuIUhX/qAnOn+yUgOvy9Mo/dwGm0li+U7d7+g8Yk0=;
+	s=korg; t=1736177204;
+	bh=ueYVSVnIq1fVxpwbxDHTkKlsAf2AGUy3FquMHbwlO8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WblQbqksv1DCRPFXOV7eUa/MuFqOfu2WtlPA6JEA2eBHhu4252kMC35SwPk2NWiAQ
-	 cy+nyAzuKpqAGKUTaZD+z+Z5kq+66LolkFgXc7eSgjbQMC+lMjjag0EoSJ5srXR45c
-	 7Oc3lAeNAEp1X3na/fAJOnG0vtApYKGkPgGT/dP8=
+	b=YeBTYAg2S+Ngz0KcS4RWaKXjuwfMQkscHCS4Kx9WKf3J47KH3r4bTjv0vmpKJcikx
+	 fQvhkY9Bfuhe5kXX7Tuc+uFfXW/FQOed3PsaYq0IPZWV6hSTymA1HCpsEUkp7I36df
+	 3FAsZ0yvh2/5RC3MlNMURLenW/4cR0Tq9PgLF3NU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vishnu Sankar <vishnuocv@gmail.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.12 003/156] platform/x86: thinkpad-acpi: Add support for hotkey 0x1401
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 085/222] watchdog: rzg2l_wdt: Rely on the reset driver for doing proper reset
 Date: Mon,  6 Jan 2025 16:14:49 +0100
-Message-ID: <20250106151141.871053425@linuxfoundation.org>
+Message-ID: <20250106151153.816111556@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,81 +62,125 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vishnu Sankar <vishnuocv@gmail.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 7e16ae558a87ac9099b6a93a43f19b42d809fd78 upstream.
+[ Upstream commit d8997ed79ed7c7c32b2ae571e0d99a58bbfd01fe ]
 
-F8 mode key on Lenovo 2025 platforms use a different key code.
-Adding support for the new keycode 0x1401.
+The reset driver has been adapted in commit da235d2fac21
+("clk: renesas: rzg2l: Check reset monitor registers") to check the reset
+monitor bits before declaring reset asserts/de-asserts as
+successful/failure operations. With that, there is no need to keep the
+reset workaround for RZ/V2M in place in the watchdog driver.
 
-Tested on X1 Carbon Gen 13 and X1 2-in-1 Gen 10.
-
-Signed-off-by: Vishnu Sankar <vishnuocv@gmail.com>
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Link: https://lore.kernel.org/r/20241227231840.21334-1-vishnuocv@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20240531065723.1085423-8-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Stable-dep-of: bad201b2ac4e ("watchdog: rzg2l_wdt: Power on the watchdog domain in the restart handler")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/laptops/thinkpad-acpi.rst |   10 +++++++---
- drivers/platform/x86/thinkpad_acpi.c                |    4 +++-
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ drivers/watchdog/rzg2l_wdt.c | 39 ++++--------------------------------
+ 1 file changed, 4 insertions(+), 35 deletions(-)
 
---- a/Documentation/admin-guide/laptops/thinkpad-acpi.rst
-+++ b/Documentation/admin-guide/laptops/thinkpad-acpi.rst
-@@ -445,8 +445,10 @@ event	code	Key		Notes
- 0x1008	0x07	FN+F8		IBM: toggle screen expand
- 				Lenovo: configure UltraNav,
- 				or toggle screen expand.
--				On newer platforms (2024+)
--				replaced by 0x131f (see below)
-+				On 2024 platforms replaced by
-+				0x131f (see below) and on newer
-+				platforms (2025 +) keycode is
-+				replaced by 0x1401 (see below).
+diff --git a/drivers/watchdog/rzg2l_wdt.c b/drivers/watchdog/rzg2l_wdt.c
+index 7aad66da138a..d09f938415fc 100644
+--- a/drivers/watchdog/rzg2l_wdt.c
++++ b/drivers/watchdog/rzg2l_wdt.c
+@@ -8,7 +8,6 @@
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/io.h>
+-#include <linux/iopoll.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+@@ -54,35 +53,11 @@ struct rzg2l_wdt_priv {
+ 	struct reset_control *rstc;
+ 	unsigned long osc_clk_rate;
+ 	unsigned long delay;
+-	unsigned long minimum_assertion_period;
+ 	struct clk *pclk;
+ 	struct clk *osc_clk;
+ 	enum rz_wdt_type devtype;
+ };
  
- 0x1009	0x08	FN+F9		-
+-static int rzg2l_wdt_reset(struct rzg2l_wdt_priv *priv)
+-{
+-	int err, status;
+-
+-	if (priv->devtype == WDT_RZV2M) {
+-		/* WDT needs TYPE-B reset control */
+-		err = reset_control_assert(priv->rstc);
+-		if (err)
+-			return err;
+-		ndelay(priv->minimum_assertion_period);
+-		err = reset_control_deassert(priv->rstc);
+-		if (err)
+-			return err;
+-		err = read_poll_timeout(reset_control_status, status,
+-					status != 1, 0, 1000, false,
+-					priv->rstc);
+-	} else {
+-		err = reset_control_reset(priv->rstc);
+-	}
+-
+-	return err;
+-}
+-
+ static void rzg2l_wdt_wait_delay(struct rzg2l_wdt_priv *priv)
+ {
+ 	/* delay timer when change the setting register */
+@@ -189,13 +164,12 @@ static int rzg2l_wdt_restart(struct watchdog_device *wdev,
+ 			     unsigned long action, void *data)
+ {
+ 	struct rzg2l_wdt_priv *priv = watchdog_get_drvdata(wdev);
++	int ret;
  
-@@ -506,9 +508,11 @@ event	code	Key		Notes
+ 	clk_prepare_enable(priv->pclk);
+ 	clk_prepare_enable(priv->osc_clk);
  
- 0x1019	0x18	unknown
+ 	if (priv->devtype == WDT_RZG2L) {
+-		int ret;
+-
+ 		ret = reset_control_deassert(priv->rstc);
+ 		if (ret)
+ 			return ret;
+@@ -207,7 +181,9 @@ static int rzg2l_wdt_restart(struct watchdog_device *wdev,
+ 		rzg2l_wdt_write(priv, PEEN_FORCE, PEEN);
+ 	} else {
+ 		/* RZ/V2M doesn't have parity error registers */
+-		rzg2l_wdt_reset(priv);
++		ret = reset_control_reset(priv->rstc);
++		if (ret)
++			return ret;
  
--0x131f	...	FN+F8	        Platform Mode change.
-+0x131f	...	FN+F8		Platform Mode change (2024 systems).
- 				Implemented in driver.
+ 		wdev->timeout = 0;
  
-+0x1401	...	FN+F8		Platform Mode change (2025 + systems).
-+				Implemented in driver.
- ...	...	...
+@@ -299,13 +275,6 @@ static int rzg2l_wdt_probe(struct platform_device *pdev)
  
- 0x1020	0x1F	unknown
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -184,7 +184,8 @@ enum tpacpi_hkey_event_t {
- 						   */
- 	TP_HKEY_EV_AMT_TOGGLE		= 0x131a, /* Toggle AMT on/off */
- 	TP_HKEY_EV_DOUBLETAP_TOGGLE	= 0x131c, /* Toggle trackpoint doubletap on/off */
--	TP_HKEY_EV_PROFILE_TOGGLE	= 0x131f, /* Toggle platform profile */
-+	TP_HKEY_EV_PROFILE_TOGGLE	= 0x131f, /* Toggle platform profile in 2024 systems */
-+	TP_HKEY_EV_PROFILE_TOGGLE2	= 0x1401, /* Toggle platform profile in 2025 + systems */
+ 	priv->devtype = (uintptr_t)of_device_get_match_data(dev);
  
- 	/* Reasons for waking up from S3/S4 */
- 	TP_HKEY_EV_WKUP_S3_UNDOCK	= 0x2304, /* undock requested, S3 */
-@@ -11200,6 +11201,7 @@ static bool tpacpi_driver_event(const un
- 		tp_features.trackpoint_doubletap = !tp_features.trackpoint_doubletap;
- 		return true;
- 	case TP_HKEY_EV_PROFILE_TOGGLE:
-+	case TP_HKEY_EV_PROFILE_TOGGLE2:
- 		platform_profile_cycle();
- 		return true;
- 	}
+-	if (priv->devtype == WDT_RZV2M) {
+-		priv->minimum_assertion_period = RZV2M_A_NSEC +
+-			3 * F2CYCLE_NSEC(pclk_rate) + 5 *
+-			max(F2CYCLE_NSEC(priv->osc_clk_rate),
+-			    F2CYCLE_NSEC(pclk_rate));
+-	}
+-
+ 	pm_runtime_enable(&pdev->dev);
+ 
+ 	priv->wdev.info = &rzg2l_wdt_ident;
+-- 
+2.39.5
+
 
 
 
