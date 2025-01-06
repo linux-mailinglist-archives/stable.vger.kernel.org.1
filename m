@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-107560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46D50A02C71
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:54:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B88BCA02959
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:22:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C96E1887CD0
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D8E83A1D80
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E8E145A03;
-	Mon,  6 Jan 2025 15:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D2F1514F6;
+	Mon,  6 Jan 2025 15:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+IbhBgz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZ480xvL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08BA142E7C;
-	Mon,  6 Jan 2025 15:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67998634A;
+	Mon,  6 Jan 2025 15:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178840; cv=none; b=QK7tTRHH+oRN25CexRppiQcjgSc5fFOTFnZw9CCKy7JugR9w4H4lgn0LP+fPPahjIYFEjYMxNRjNEmHGi36xxH5QoCwBy2u/8yl7wFIR0U4W7IMOfRtYuN7hM8jvSpIGJ7+WNqjZ3xLlXKnePUfkRjFxxkJiigmDPplIDmTxdz4=
+	t=1736176936; cv=none; b=d7oKvjatlhYh7kDnM68L9finK37HXoDG2ZiHLPBGBX2JSbb/CJoOPO3df56TktzHQ6AJV7sYEvVUFe0LRzzJ6WIAr7k6SzA2ziPifmy+m0fuGo72qVWz9ExDZmQt0+eGk54qSgymtex0OJfaFsZ3E7jxruS3gJPQUHGxq3+IL70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178840; c=relaxed/simple;
-	bh=sNKe+WcmOp0plCTLlkgCO1FAlM0dIf7BdrANhru6jJY=;
+	s=arc-20240116; t=1736176936; c=relaxed/simple;
+	bh=1M/8KYmoWapeK3+T++xPjPtY4NWPu005eXMIkSSuTgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JqKZ+QblDyf0tD8rlTHgs6pWJCFqgvXIsJBxoNNc8HNxJoVIXsPojwvDc0RKhFo5+BIXa16ZGZfdkfRrL3qhdUOBozpLTs5T4vq6dbeWOS+r6TyNQrLUVx0CyoXhyhmER2C5GfPSWYouhOTFULeppk4dfpqGdDPeLU2inDtLpnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+IbhBgz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2198BC4CED2;
-	Mon,  6 Jan 2025 15:53:57 +0000 (UTC)
+	 MIME-Version; b=VVP9nf1z/0ZMmxBgNzhTzxWbehwAruFC4wZNOGmIPoSneqrSZTh5xFV+DHIyyLsS0gruq+7lwvJbqpa3fXJIfShOlyrAqazuGLEL2BKvIQV5iusgtBdHGXruOLdWnE9bwnjVup6vZWrg12Lx37pZsEW2HOXOzh9uz3SeCBcJC3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZ480xvL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF5AC4CEDF;
+	Mon,  6 Jan 2025 15:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178838;
-	bh=sNKe+WcmOp0plCTLlkgCO1FAlM0dIf7BdrANhru6jJY=;
+	s=korg; t=1736176936;
+	bh=1M/8KYmoWapeK3+T++xPjPtY4NWPu005eXMIkSSuTgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s+IbhBgzoQe9n0IrQpovrjqaePPr41Mb0gV1mHl5mg1EG5iJv1Q9z/SFPkMCuD7NP
-	 qICxDk9VA9m3OVCPEMTcuV9ZRfDf06n65CMjTeZVL0C9SBgFheAHBxXuXbaTMSUoWG
-	 FiFUUWFAMrQtzOi9p6Lodq2SMwqFezBzfoLXccH8=
+	b=dZ480xvLq6wHggCBDoX6aScLiYFpLbR+vHaXARwc6m+uWI7G0Ppi+tfsyVz1nHi8w
+	 EnICc3WE/+SVhIVmvUMsA1s1a9hj+i1pr5US5HdB9Y1P/8JS782ny1M5Ej+1elKf5n
+	 5YMydKpZdxBIm9IXVlsHVRzDi6RStP5Jo/Orm+XI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Erkun <yangerkun@huaweicloud.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 102/168] nfsd: cancel nfsd_shrinker_work using sync mode in nfs4_state_shutdown_net
+	Seiji Nishikawa <snishika@redhat.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 78/81] mm: vmscan: account for free pages to prevent infinite Loop in throttle_direct_reclaim()
 Date: Mon,  6 Jan 2025 16:16:50 +0100
-Message-ID: <20250106151142.314133866@linuxfoundation.org>
+Message-ID: <20250106151132.371873989@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +62,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Erkun <yangerkun@huaweicloud.com>
+From: Seiji Nishikawa <snishika@redhat.com>
 
-commit d5ff2fb2e7167e9483846e34148e60c0c016a1f6 upstream.
+commit 6aaced5abd32e2a57cd94fd64f824514d0361da8 upstream.
 
-In the normal case, when we excute `echo 0 > /proc/fs/nfsd/threads`, the
-function `nfs4_state_destroy_net` in `nfs4_state_shutdown_net` will
-release all resources related to the hashed `nfs4_client`. If the
-`nfsd_client_shrinker` is running concurrently, the `expire_client`
-function will first unhash this client and then destroy it. This can
-lead to the following warning. Additionally, numerous use-after-free
-errors may occur as well.
+The task sometimes continues looping in throttle_direct_reclaim() because
+allow_direct_reclaim(pgdat) keeps returning false.
 
-nfsd_client_shrinker         echo 0 > /proc/fs/nfsd/threads
+ #0 [ffff80002cb6f8d0] __switch_to at ffff8000080095ac
+ #1 [ffff80002cb6f900] __schedule at ffff800008abbd1c
+ #2 [ffff80002cb6f990] schedule at ffff800008abc50c
+ #3 [ffff80002cb6f9b0] throttle_direct_reclaim at ffff800008273550
+ #4 [ffff80002cb6fa20] try_to_free_pages at ffff800008277b68
+ #5 [ffff80002cb6fae0] __alloc_pages_nodemask at ffff8000082c4660
+ #6 [ffff80002cb6fc50] alloc_pages_vma at ffff8000082e4a98
+ #7 [ffff80002cb6fca0] do_anonymous_page at ffff80000829f5a8
+ #8 [ffff80002cb6fce0] __handle_mm_fault at ffff8000082a5974
+ #9 [ffff80002cb6fd90] handle_mm_fault at ffff8000082a5bd4
 
-expire_client                nfsd_shutdown_net
-  unhash_client                ...
-                               nfs4_state_shutdown_net
-                                 /* won't wait shrinker exit */
-  /*                             cancel_work(&nn->nfsd_shrinker_work)
-   * nfsd_file for this          /* won't destroy unhashed client1 */
-   * client1 still alive         nfs4_state_destroy_net
-   */
+At this point, the pgdat contains the following two zones:
 
-                               nfsd_file_cache_shutdown
-                                 /* trigger warning */
-                                 kmem_cache_destroy(nfsd_file_slab)
-                                 kmem_cache_destroy(nfsd_file_mark_slab)
-  /* release nfsd_file and mark */
-  __destroy_client
+        NODE: 4  ZONE: 0  ADDR: ffff00817fffe540  NAME: "DMA32"
+          SIZE: 20480  MIN/LOW/HIGH: 11/28/45
+          VM_STAT:
+                NR_FREE_PAGES: 359
+        NR_ZONE_INACTIVE_ANON: 18813
+          NR_ZONE_ACTIVE_ANON: 0
+        NR_ZONE_INACTIVE_FILE: 50
+          NR_ZONE_ACTIVE_FILE: 0
+          NR_ZONE_UNEVICTABLE: 0
+        NR_ZONE_WRITE_PENDING: 0
+                     NR_MLOCK: 0
+                    NR_BOUNCE: 0
+                   NR_ZSPAGES: 0
+            NR_FREE_CMA_PAGES: 0
 
-====================================================================
-BUG nfsd_file (Not tainted): Objects remaining in nfsd_file on
-__kmem_cache_shutdown()
---------------------------------------------------------------------
-CPU: 4 UID: 0 PID: 764 Comm: sh Not tainted 6.12.0-rc3+ #1
+        NODE: 4  ZONE: 1  ADDR: ffff00817fffec00  NAME: "Normal"
+          SIZE: 8454144  PRESENT: 98304  MIN/LOW/HIGH: 68/166/264
+          VM_STAT:
+                NR_FREE_PAGES: 146
+        NR_ZONE_INACTIVE_ANON: 94668
+          NR_ZONE_ACTIVE_ANON: 3
+        NR_ZONE_INACTIVE_FILE: 735
+          NR_ZONE_ACTIVE_FILE: 78
+          NR_ZONE_UNEVICTABLE: 0
+        NR_ZONE_WRITE_PENDING: 0
+                     NR_MLOCK: 0
+                    NR_BOUNCE: 0
+                   NR_ZSPAGES: 0
+            NR_FREE_CMA_PAGES: 0
 
- dump_stack_lvl+0x53/0x70
- slab_err+0xb0/0xf0
- __kmem_cache_shutdown+0x15c/0x310
- kmem_cache_destroy+0x66/0x160
- nfsd_file_cache_shutdown+0xac/0x210 [nfsd]
- nfsd_destroy_serv+0x251/0x2a0 [nfsd]
- nfsd_svc+0x125/0x1e0 [nfsd]
- write_threads+0x16a/0x2a0 [nfsd]
- nfsctl_transaction_write+0x74/0xa0 [nfsd]
- vfs_write+0x1a5/0x6d0
- ksys_write+0xc1/0x160
- do_syscall_64+0x5f/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+In allow_direct_reclaim(), while processing ZONE_DMA32, the sum of
+inactive/active file-backed pages calculated in zone_reclaimable_pages()
+based on the result of zone_page_state_snapshot() is zero.
 
-====================================================================
-BUG nfsd_file_mark (Tainted: G    B   W         ): Objects remaining
-nfsd_file_mark on __kmem_cache_shutdown()
---------------------------------------------------------------------
+Additionally, since this system lacks swap, the calculation of inactive/
+active anonymous pages is skipped.
 
- dump_stack_lvl+0x53/0x70
- slab_err+0xb0/0xf0
- __kmem_cache_shutdown+0x15c/0x310
- kmem_cache_destroy+0x66/0x160
- nfsd_file_cache_shutdown+0xc8/0x210 [nfsd]
- nfsd_destroy_serv+0x251/0x2a0 [nfsd]
- nfsd_svc+0x125/0x1e0 [nfsd]
- write_threads+0x16a/0x2a0 [nfsd]
- nfsctl_transaction_write+0x74/0xa0 [nfsd]
- vfs_write+0x1a5/0x6d0
- ksys_write+0xc1/0x160
- do_syscall_64+0x5f/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+        crash> p nr_swap_pages
+        nr_swap_pages = $1937 = {
+          counter = 0
+        }
 
-To resolve this issue, cancel `nfsd_shrinker_work` using synchronous
-mode in nfs4_state_shutdown_net.
+As a result, ZONE_DMA32 is deemed unreclaimable and skipped, moving on to
+the processing of the next zone, ZONE_NORMAL, despite ZONE_DMA32 having
+free pages significantly exceeding the high watermark.
 
-Fixes: 7c24fa225081 ("NFSD: replace delayed_work with work_struct for nfsd_client_shrinker")
-Signed-off-by: Yang Erkun <yangerkun@huaweicloud.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+The problem is that the pgdat->kswapd_failures hasn't been incremented.
+
+        crash> px ((struct pglist_data *) 0xffff00817fffe540)->kswapd_failures
+        $1935 = 0x0
+
+This is because the node deemed balanced.  The node balancing logic in
+balance_pgdat() evaluates all zones collectively.  If one or more zones
+(e.g., ZONE_DMA32) have enough free pages to meet their watermarks, the
+entire node is deemed balanced.  This causes balance_pgdat() to exit early
+before incrementing the kswapd_failures, as it considers the overall
+memory state acceptable, even though some zones (like ZONE_NORMAL) remain
+under significant pressure.
+
+
+The patch ensures that zone_reclaimable_pages() includes free pages
+(NR_FREE_PAGES) in its calculation when no other reclaimable pages are
+available (e.g., file-backed or anonymous pages).  This change prevents
+zones like ZONE_DMA32, which have sufficient free pages, from being
+mistakenly deemed unreclaimable.  By doing so, the patch ensures proper
+node balancing, avoids masking pressure on other zones like ZONE_NORMAL,
+and prevents infinite loops in throttle_direct_reclaim() caused by
+allow_direct_reclaim(pgdat) repeatedly returning false.
+
+
+The kernel hangs due to a task stuck in throttle_direct_reclaim(), caused
+by a node being incorrectly deemed balanced despite pressure in certain
+zones, such as ZONE_NORMAL.  This issue arises from
+zone_reclaimable_pages() returning 0 for zones without reclaimable file-
+backed or anonymous pages, causing zones like ZONE_DMA32 with sufficient
+free pages to be skipped.
+
+The lack of swap or reclaimable pages results in ZONE_DMA32 being ignored
+during reclaim, masking pressure in other zones.  Consequently,
+pgdat->kswapd_failures remains 0 in balance_pgdat(), preventing fallback
+mechanisms in allow_direct_reclaim() from being triggered, leading to an
+infinite loop in throttle_direct_reclaim().
+
+This patch modifies zone_reclaimable_pages() to account for free pages
+(NR_FREE_PAGES) when no other reclaimable pages exist.  This ensures zones
+with sufficient free pages are not skipped, enabling proper balancing and
+reclaim behavior.
+
+[akpm@linux-foundation.org: coding-style cleanups]
+Link: https://lkml.kernel.org/r/20241130164346.436469-1-snishika@redhat.com
+Link: https://lkml.kernel.org/r/20241130161236.433747-2-snishika@redhat.com
+Fixes: 5a1c84b404a7 ("mm: remove reclaim and compaction retry approximations")
+Signed-off-by: Seiji Nishikawa <snishika@redhat.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/vmscan.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -8211,7 +8211,7 @@ nfs4_state_shutdown_net(struct net *net)
- 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
- 
- 	unregister_shrinker(&nn->nfsd_client_shrinker);
--	cancel_work(&nn->nfsd_shrinker_work);
-+	cancel_work_sync(&nn->nfsd_shrinker_work);
- 	cancel_delayed_work_sync(&nn->laundromat_work);
- 	locks_end_grace(&nn->nfsd4_manager);
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -588,7 +588,14 @@ unsigned long zone_reclaimable_pages(str
+ 	if (can_reclaim_anon_pages(NULL, zone_to_nid(zone), NULL))
+ 		nr += zone_page_state_snapshot(zone, NR_ZONE_INACTIVE_ANON) +
+ 			zone_page_state_snapshot(zone, NR_ZONE_ACTIVE_ANON);
+-
++	/*
++	 * If there are no reclaimable file-backed or anonymous pages,
++	 * ensure zones with sufficient free pages are not skipped.
++	 * This prevents zones like DMA32 from being ignored in reclaim
++	 * scenarios where they can still help alleviate memory pressure.
++	 */
++	if (nr == 0)
++		nr = zone_page_state_snapshot(zone, NR_FREE_PAGES);
+ 	return nr;
+ }
  
 
 
