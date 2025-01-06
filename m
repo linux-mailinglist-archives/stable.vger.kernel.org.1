@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-107066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B38E4A029FB
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:29:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26535A02B50
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:42:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9515816499C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D2F11885DD8
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:42:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2B21D935C;
-	Mon,  6 Jan 2025 15:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18538634A;
+	Mon,  6 Jan 2025 15:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCI54HoA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TezrGk6M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C7515C120;
-	Mon,  6 Jan 2025 15:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB3244C7C;
+	Mon,  6 Jan 2025 15:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177350; cv=none; b=atp7Wtr+4OFgcUUE9nVWT38eFCBe38aqewO59w2LKSZUvnGqgla5YHOtuhfZ1x5siqAzAXlyBPjjfmypLWEtzH2V6IR7rxmTpADncT/euYsV2Lcyebv36DP5nD/wFa684WxLdQALEsFjVk1wdhi3oyYBv1opELkiHPhBFycg5KU=
+	t=1736178129; cv=none; b=kjfOqTtKL8a7LPrIfC/nTWo5sk7wEZKP93uXNMeUebNqOvI0SLb7YGvIN523r0jzjDRaepXqU45IrB2cCXCyVmxJTMCEhapFPM6couTlsOcx00vIs5y1Zn0cmsgWW1XEaPfRn4uMGwnKEIkdFzGx4sFOPnH0+hbKX0WH5rxCBBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177350; c=relaxed/simple;
-	bh=+9zKuKbioxLYyT02WHEprk8vZ1zskX48TPYxoqAu/6Q=;
+	s=arc-20240116; t=1736178129; c=relaxed/simple;
+	bh=+72KK3Utb6aG5nJ5YMpE5XEhMupheB1cNpKm2/UKj8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mhFuAqsZ7+pVZpP5HCPtvkifE5rdYg1KszF7ncAJpnxyp9jqIYce8vzcmm93yMfWEjhRPK3WPUXl2/QNHmxsJBIpFlvi8IadpTEtNJEkwe/IlSOc+rRi6k8XeDV8/wiUfeeJjNvyX6dnPBeHFgkigIU0huazDWRUvkGiiCkRNFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCI54HoA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4CDC4CED2;
-	Mon,  6 Jan 2025 15:29:09 +0000 (UTC)
+	 MIME-Version; b=MvsS5n83aUIdqj7oLlatZEM+FHa7eEp1hCrtovbuSJuNZUboqwcoblLWlZZGLhXxk1XtmHua882kxu+RqtmLpY6ezE+1cc5+dfye8fiUhXJR4JdjY1ETc/77EfIjSZb+8TpGmcbaYR3tMrmcE9cZROxY/UKW2+5jGsIIYHxE71c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TezrGk6M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35177C4CED2;
+	Mon,  6 Jan 2025 15:42:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177349;
-	bh=+9zKuKbioxLYyT02WHEprk8vZ1zskX48TPYxoqAu/6Q=;
+	s=korg; t=1736178129;
+	bh=+72KK3Utb6aG5nJ5YMpE5XEhMupheB1cNpKm2/UKj8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rCI54HoA/vsK30nGLgLGaQcK/+znJlCQzCocN1Y2E2Qx+eSChknJubT58UWF9J56w
-	 z2t4wWBOufNBMaDW+SUGV4gSQXU1boRv1/U4+lU9kS19lHYk2QfBgcTr1HJTIxZ5b3
-	 HZsX+yS4c5+0+namoTqDsnwAiMdrUppI3DpOTkPw=
+	b=TezrGk6McYxfkzCoHQ4FkIj0tDecyc6atIWXksy7i+bBDCb75xF8GuL5kJZCide23
+	 zSS1qKeuJZb4H+TfOjchcY0qHIUoWaofBYMG84djczWnx3JjyTf819adBSG4BirLN7
+	 +x/665kPRdQHbJgCo/YE2GYCT3DumIEjLGLI/f9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Preethi G <preethi.gurusiddalingeswaraswamy@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Hulk Robot <hulkci@huawei.com>,
+	Wei Yongjun <weiyongjun1@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 135/222] RDMA/bnxt_re: Fix reporting hw_ver in query_device
+Subject: [PATCH 5.10 015/138] netdevsim: switch to memdup_user_nul()
 Date: Mon,  6 Jan 2025 16:15:39 +0100
-Message-ID: <20250106151155.877337430@linuxfoundation.org>
+Message-ID: <20250106151133.796385887@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Wei Yongjun <weiyongjun1@huawei.com>
 
-[ Upstream commit 7179fe0074a3c962e43a9e51169304c4911989ed ]
+[ Upstream commit 20fd4f421cf4c21ab37a8bf31db50c69f1b49355 ]
 
-Driver currently populates subsystem_device id in the
-"hw_ver" field of ib_attr structure in query_device.
+Use memdup_user_nul() helper instead of open-coding to
+simplify the code.
 
-Updated to populate PCI revision ID.
-
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Reviewed-by: Preethi G <preethi.gurusiddalingeswaraswamy@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/20241211083931.968831-6-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: ee76746387f6 ("netdevsim: prevent bad user input in nsim_dev_health_break_write()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/netdevsim/health.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index 9bf00fb666d7..9e8f86f48801 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -147,7 +147,7 @@ int bnxt_re_query_device(struct ib_device *ibdev,
+diff --git a/drivers/net/netdevsim/health.c b/drivers/net/netdevsim/health.c
+index 21e2974660e7..04aebdf85747 100644
+--- a/drivers/net/netdevsim/health.c
++++ b/drivers/net/netdevsim/health.c
+@@ -235,15 +235,10 @@ static ssize_t nsim_dev_health_break_write(struct file *file,
+ 	char *break_msg;
+ 	int err;
  
- 	ib_attr->vendor_id = rdev->en_dev->pdev->vendor;
- 	ib_attr->vendor_part_id = rdev->en_dev->pdev->device;
--	ib_attr->hw_ver = rdev->en_dev->pdev->subsystem_device;
-+	ib_attr->hw_ver = rdev->en_dev->pdev->revision;
- 	ib_attr->max_qp = dev_attr->max_qp;
- 	ib_attr->max_qp_wr = dev_attr->max_qp_wqes;
- 	ib_attr->device_cap_flags =
+-	break_msg = kmalloc(count + 1, GFP_KERNEL);
+-	if (!break_msg)
+-		return -ENOMEM;
++	break_msg = memdup_user_nul(data, count);
++	if (IS_ERR(break_msg))
++		return PTR_ERR(break_msg);
+ 
+-	if (copy_from_user(break_msg, data, count)) {
+-		err = -EFAULT;
+-		goto out;
+-	}
+-	break_msg[count] = '\0';
+ 	if (break_msg[count - 1] == '\n')
+ 		break_msg[count - 1] = '\0';
+ 
 -- 
 2.39.5
 
