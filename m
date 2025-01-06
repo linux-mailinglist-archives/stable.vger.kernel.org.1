@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-107599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B531AA02C9D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74208A02BEF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:48:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C3E418867E8
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:56:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48F7D164DDF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC36414A617;
-	Mon,  6 Jan 2025 15:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C4E145348;
+	Mon,  6 Jan 2025 15:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m1Na9BPo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZqSkiBts"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979F381728;
-	Mon,  6 Jan 2025 15:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712731422DD;
+	Mon,  6 Jan 2025 15:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178957; cv=none; b=IqoIAfygIwoWGPZx/e8Awx3vbivBffcf2LTjNLHzWAjIkgaeG92LF/aRTBaJNcfx+cREvnRnXCJCkFJdAQ1ZeVgxx4zVH3M8ZL3I15eCXmYTOSWOg/wjyOB9kOvnApo+2bAdSQM+scWQ7I43+q1P5i0QUO71izFaDPD9KGx8Ikg=
+	t=1736178477; cv=none; b=cp1Db96V2NfvLEq0oIDOp8mDnGeuax7IB+Hc+zwnjuSMTJYFcJHQLCMckEG1k9rY07eytYrYqFIb3JEvqzEoMsawDk5QDwbnMS0n5zpP2ZaPyaxSpYuVRkyivsQuT1WYOIMJ7VsX9EgpdCi8vJ9ZPubsoQtdbdMmLTnHVE0+mak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178957; c=relaxed/simple;
-	bh=+oaG/P8PasBUYcAFQuKIMHA8VpJ6bj+ZE2IowJvyaTA=;
+	s=arc-20240116; t=1736178477; c=relaxed/simple;
+	bh=SlJumpOQNkFYFPdABzaP6uzn/WN6ACTV907UcBeq4JQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ACfrokGKq3GptpHzjGh2/N30OjpCnuMx3tfy+TO+540cmUQqRWkVMR2PWwYhN1XDZjTQ+Lx9yFbYTq2/TrOImrs+tcRNiSTPdqwFKKl7BMI1i332xu1gfZve21skV6+aX5niCbjNC0dnRM/pTmUOuhL44Wj2n4P94L4eH9D0HNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m1Na9BPo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 211E6C4CED2;
-	Mon,  6 Jan 2025 15:55:56 +0000 (UTC)
+	 MIME-Version; b=MtcYMFWMNB97eILAfv20DF21SEH/9eKZghD9FB5CcblwY50/mya4fce0wVeEhgFyV2FBSeuHN/6w/O3eFSvFV9Im/j7p7xs7gkUALdLdKDCiLeT3+hypjulWwqb+bipazkKOTkV62HdBQrx6zcpG9HtRfLy9ERLaWV2d8UwAa9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZqSkiBts; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE2AC4CED2;
+	Mon,  6 Jan 2025 15:47:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178957;
-	bh=+oaG/P8PasBUYcAFQuKIMHA8VpJ6bj+ZE2IowJvyaTA=;
+	s=korg; t=1736178477;
+	bh=SlJumpOQNkFYFPdABzaP6uzn/WN6ACTV907UcBeq4JQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m1Na9BPoAACoNbbFjq/NVCfmhq9p7PwIpDTfNsrckzaqE6xONqEkb+LUA99iI6Pq2
-	 xcl5GYCcI/j0TwkiOs+GHLsBYnwfpPjEJF1+lH77Ys/FtFNWHdb85H56w24BkfhxOi
-	 iDtF91POGaIy2fLnIiivFFblf/dwyv5e7eV5/Dzc=
+	b=ZqSkiBts7Uly9Gj3ZiIcOAxvEh6X4s99nUZAdHX1FX6urA+1xRbF4wR0U9Z86S6WX
+	 66h+x79Ry2Zs9H7EcIv8Tf2oeZUjsZzdrCr5J6KCi/DXDnjlEn7pcVQ2j6nzHzroea
+	 BtkW4Ou+bPOQiu/zgLmopVwZz3jHVsg34itnLBRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 148/168] btrfs: sysfs: fix direct super block member reads
+Subject: [PATCH 5.10 132/138] modpost: fix the missed iteration for the max bit in do_input()
 Date: Mon,  6 Jan 2025 16:17:36 +0100
-Message-ID: <20250106151144.026621568@linuxfoundation.org>
+Message-ID: <20250106151138.232007033@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit fca432e73db2bec0fdbfbf6d98d3ebcd5388a977 ]
+[ Upstream commit bf36b4bf1b9a7a0015610e2f038ee84ddb085de2 ]
 
-The following sysfs entries are reading super block member directly,
-which can have a different endian and cause wrong values:
+This loop should iterate over the range from 'min' to 'max' inclusively.
+The last interation is missed.
 
-- sys/fs/btrfs/<uuid>/nodesize
-- sys/fs/btrfs/<uuid>/sectorsize
-- sys/fs/btrfs/<uuid>/clone_alignment
-
-Thankfully those values (nodesize and sectorsize) are always aligned
-inside the btrfs_super_block, so it won't trigger unaligned read errors,
-just endian problems.
-
-Fix them by using the native cached members instead.
-
-Fixes: df93589a1737 ("btrfs: export more from FS_INFO to sysfs")
-CC: stable@vger.kernel.org
-Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 1d8f430c15b3 ("[PATCH] Input: add modalias support")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/sysfs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ scripts/mod/file2alias.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/sysfs.c b/fs/btrfs/sysfs.c
-index bc8d5b4c279e..6f7f7231e34a 100644
---- a/fs/btrfs/sysfs.c
-+++ b/fs/btrfs/sysfs.c
-@@ -821,7 +821,7 @@ static ssize_t btrfs_nodesize_show(struct kobject *kobj,
- {
- 	struct btrfs_fs_info *fs_info = to_fs_info(kobj);
+diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
+index 2febe2b8bedb..92b9b9e8bf10 100644
+--- a/scripts/mod/file2alias.c
++++ b/scripts/mod/file2alias.c
+@@ -719,7 +719,7 @@ static void do_input(char *alias,
  
--	return sysfs_emit(buf, "%u\n", fs_info->super_copy->nodesize);
-+	return sysfs_emit(buf, "%u\n", fs_info->nodesize);
+ 	for (i = min / BITS_PER_LONG; i < max / BITS_PER_LONG + 1; i++)
+ 		arr[i] = TO_NATIVE(arr[i]);
+-	for (i = min; i < max; i++)
++	for (i = min; i <= max; i++)
+ 		if (arr[i / BITS_PER_LONG] & (1ULL << (i%BITS_PER_LONG)))
+ 			sprintf(alias + strlen(alias), "%X,*", i);
  }
- 
- BTRFS_ATTR(, nodesize, btrfs_nodesize_show);
-@@ -831,7 +831,7 @@ static ssize_t btrfs_sectorsize_show(struct kobject *kobj,
- {
- 	struct btrfs_fs_info *fs_info = to_fs_info(kobj);
- 
--	return sysfs_emit(buf, "%u\n", fs_info->super_copy->sectorsize);
-+	return sysfs_emit(buf, "%u\n", fs_info->sectorsize);
- }
- 
- BTRFS_ATTR(, sectorsize, btrfs_sectorsize_show);
-@@ -841,7 +841,7 @@ static ssize_t btrfs_clone_alignment_show(struct kobject *kobj,
- {
- 	struct btrfs_fs_info *fs_info = to_fs_info(kobj);
- 
--	return sysfs_emit(buf, "%u\n", fs_info->super_copy->sectorsize);
-+	return sysfs_emit(buf, "%u\n", fs_info->sectorsize);
- }
- 
- BTRFS_ATTR(, clone_alignment, btrfs_clone_alignment_show);
 -- 
 2.39.5
 
