@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-107344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 970D9A02B64
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6100BA02AEA
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:38:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 142FD1885D2D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:43:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 873DA3A567A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:37:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E701DC759;
-	Mon,  6 Jan 2025 15:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4DE1DE2CE;
+	Mon,  6 Jan 2025 15:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjFC4aHY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBRJGb1+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37EC158525;
-	Mon,  6 Jan 2025 15:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E9E156C5E;
+	Mon,  6 Jan 2025 15:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178183; cv=none; b=jzyWFLR2buRFbY8gVmqbMBbtFolbFm4wydmFXTTXGcRvAb0Rzrh2TjXkbeK7Ow+qkXLg+YGCZkfz8qS456YIU7RuSylXvpqW4fXhv+SABjP8nf6t2tw1SMnVNJtDju6Fe5JRdqvzmlR2OR/VBEsg41fl625DarbvlO/qRNtUZeI=
+	t=1736177831; cv=none; b=kdBMhP6MriK2q+J3oqSOgWE/Of5YcOhXZ8BvuxlVN63NMkztbvfpX0/29qD8iEWDz8q09o15GlE7uA2r7fKzVzrvCmNplWUrWWAtZll5xjVVWdiHMg3WAWYg7klc1VYGFjdqca0uixPEjU8goneKHwyLMRni7ngWa+8yaRdKvsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178183; c=relaxed/simple;
-	bh=4F+tw9nq/IftyWvPxb3s5FGdxoRCpYiC+4icxcNLK4A=;
+	s=arc-20240116; t=1736177831; c=relaxed/simple;
+	bh=Qkhb6gEHoXT7+89FtB2vR+riXe3+ygayIZkdACubOEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aZ2z5GwYVP4/6JZ8op6jEA+6JgObR9/q/xg900ixq6joh5axw4HDKlEV4jO0RlULDMulRznPrTZyadhEQ9RQVB2NXToYd4PhqfN8fbBHiKCZ8SavhsXGb6Xjg8atZAh5iofB3OP86EQjcXtl7QnOsD2Q2QvTu3suDRiA7c16YuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NjFC4aHY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F309C4CEE4;
-	Mon,  6 Jan 2025 15:43:02 +0000 (UTC)
+	 MIME-Version; b=nHSFlotpBYa2gRpL60P3IlNEHNSVyW16owdiwA+l8BllTGTEgtpujf+u0KFklLn4E2Re+JC1w8OwM+hsafKyGCabcQR7O1tUzBFgfjnHWrAgqlMGmTGsO40HShsSulDUhn9TDGBKFpTAcobqu9//Zq35yleifzxr7UHtxT7KrWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBRJGb1+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B581C4CED2;
+	Mon,  6 Jan 2025 15:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178182;
-	bh=4F+tw9nq/IftyWvPxb3s5FGdxoRCpYiC+4icxcNLK4A=;
+	s=korg; t=1736177831;
+	bh=Qkhb6gEHoXT7+89FtB2vR+riXe3+ygayIZkdACubOEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NjFC4aHYo5IP7/aLKdfMl7d87+ZaKwbQtrpF42udtpeftiE8fAiaIOVEEzzzIWfcT
-	 flP8AbmSr5/j1RB9ArS3hZNLQwhQmDyk9aBTuZt0PrXsJE52WHHqs2r2TNXTpdU6IL
-	 6KHq1QMTFc3/jidgf76WvaW7T2WHc/8VwxiW+rII=
+	b=mBRJGb1+v8KvfX9rA43rWaotMw4Ak4ZhxFMjOvLDPCt5iZQSWLxRv4CWWje5zmltF
+	 oP7mJR2vBOqYudMR31aVoOfyQ9mjAIsdocwGInJCDP16+WRS2PYF9wWQuvB4o3r+na
+	 wlYdKP8fYr9czJYeFVlYwiIa0G0cVPIMW5KfHxKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kairui Song <kasong@tencent.com>,
-	Desheng Wu <deshengwu@tencent.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 033/138] zram: refuse to use zero sized block device as backing device
+	syzbot+8400677f3fd43f37d3bc@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Chengen Du <chengen.du@canonical.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 071/156] af_packet: fix vlan_get_tci() vs MSG_PEEK
 Date: Mon,  6 Jan 2025 16:15:57 +0100
-Message-ID: <20250106151134.474991677@linuxfoundation.org>
+Message-ID: <20250106151144.407518118@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +65,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kairui Song <kasong@tencent.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit be48c412f6ebf38849213c19547bc6d5b692b5e5 upstream.
+[ Upstream commit 77ee7a6d16b6ec07b5c3ae2b6b60a24c1afbed09 ]
 
-Patch series "zram: fix backing device setup issue", v2.
+Blamed commit forgot MSG_PEEK case, allowing a crash [1] as found
+by syzbot.
 
-This series fixes two bugs of backing device setting:
+Rework vlan_get_tci() to not touch skb at all,
+so that it can be used from many cpus on the same skb.
 
-- ZRAM should reject using a zero sized (or the uninitialized ZRAM
-  device itself) as the backing device.
-- Fix backing device leaking when removing a uninitialized ZRAM
-  device.
+Add a const qualifier to skb argument.
 
+[1]
+skbuff: skb_under_panic: text:ffffffff8a8da482 len:32 put:14 head:ffff88807a1d5800 data:ffff88807a1d5810 tail:0x14 end:0x140 dev:<NULL>
+------------[ cut here ]------------
+ kernel BUG at net/core/skbuff.c:206 !
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 0 UID: 0 PID: 5880 Comm: syz-executor172 Not tainted 6.13.0-rc3-syzkaller-00762-g9268abe611b0 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+ RIP: 0010:skb_panic net/core/skbuff.c:206 [inline]
+ RIP: 0010:skb_under_panic+0x14b/0x150 net/core/skbuff.c:216
+Code: 0b 8d 48 c7 c6 9e 6c 26 8e 48 8b 54 24 08 8b 0c 24 44 8b 44 24 04 4d 89 e9 50 41 54 41 57 41 56 e8 3a 5a 79 f7 48 83 c4 20 90 <0f> 0b 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3
+RSP: 0018:ffffc90003baf5b8 EFLAGS: 00010286
+RAX: 0000000000000087 RBX: dffffc0000000000 RCX: 8565c1eec37aa000
+RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
+RBP: ffff88802616fb50 R08: ffffffff817f0a4c R09: 1ffff92000775e50
+R10: dffffc0000000000 R11: fffff52000775e51 R12: 0000000000000140
+R13: ffff88807a1d5800 R14: ffff88807a1d5810 R15: 0000000000000014
+FS:  00007fa03261f6c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffd65753000 CR3: 0000000031720000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  skb_push+0xe5/0x100 net/core/skbuff.c:2636
+  vlan_get_tci+0x272/0x550 net/packet/af_packet.c:565
+  packet_recvmsg+0x13c9/0x1ef0 net/packet/af_packet.c:3616
+  sock_recvmsg_nosec net/socket.c:1044 [inline]
+  sock_recvmsg+0x22f/0x280 net/socket.c:1066
+  ____sys_recvmsg+0x1c6/0x480 net/socket.c:2814
+  ___sys_recvmsg net/socket.c:2856 [inline]
+  do_recvmmsg+0x426/0xab0 net/socket.c:2951
+  __sys_recvmmsg net/socket.c:3025 [inline]
+  __do_sys_recvmmsg net/socket.c:3048 [inline]
+  __se_sys_recvmmsg net/socket.c:3041 [inline]
+  __x64_sys_recvmmsg+0x199/0x250 net/socket.c:3041
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
 
-This patch (of 2):
-
-Setting a zero sized block device as backing device is pointless, and one
-can easily create a recursive loop by setting the uninitialized ZRAM
-device itself as its own backing device by (zram0 is uninitialized):
-
-    echo /dev/zram0 > /sys/block/zram0/backing_dev
-
-It's definitely a wrong config, and the module will pin itself, kernel
-should refuse doing so in the first place.
-
-By refusing to use zero sized device we avoided misuse cases including
-this one above.
-
-Link: https://lkml.kernel.org/r/20241209165717.94215-1-ryncsn@gmail.com
-Link: https://lkml.kernel.org/r/20241209165717.94215-2-ryncsn@gmail.com
-Fixes: 013bf95a83ec ("zram: add interface to specif backing device")
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Reported-by: Desheng Wu <deshengwu@tencent.com>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 79eecf631c14 ("af_packet: Handle outgoing VLAN packets without hardware offloading")
+Reported-by: syzbot+8400677f3fd43f37d3bc@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6772c485.050a0220.2f3838.04c6.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Chengen Du <chengen.du@canonical.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20241230161004.2681892-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/zram/zram_drv.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ net/packet/af_packet.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -502,6 +502,12 @@ static ssize_t backing_dev_store(struct
- 	}
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 97774bd4b6cb..ac84b1fc1a65 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -538,10 +538,8 @@ static void *packet_current_frame(struct packet_sock *po,
+ 	return packet_lookup_frame(po, rb, rb->head, status);
+ }
  
- 	nr_pages = i_size_read(inode) >> PAGE_SHIFT;
-+	/* Refuse to use zero sized device (also prevents self reference) */
-+	if (!nr_pages) {
-+		err = -EINVAL;
-+		goto out;
-+	}
-+
- 	bitmap_sz = BITS_TO_LONGS(nr_pages) * sizeof(long);
- 	bitmap = kvzalloc(bitmap_sz, GFP_KERNEL);
- 	if (!bitmap) {
+-static u16 vlan_get_tci(struct sk_buff *skb, struct net_device *dev)
++static u16 vlan_get_tci(const struct sk_buff *skb, struct net_device *dev)
+ {
+-	u8 *skb_orig_data = skb->data;
+-	int skb_orig_len = skb->len;
+ 	struct vlan_hdr vhdr, *vh;
+ 	unsigned int header_len;
+ 
+@@ -562,12 +560,8 @@ static u16 vlan_get_tci(struct sk_buff *skb, struct net_device *dev)
+ 	else
+ 		return 0;
+ 
+-	skb_push(skb, skb->data - skb_mac_header(skb));
+-	vh = skb_header_pointer(skb, header_len, sizeof(vhdr), &vhdr);
+-	if (skb_orig_data != skb->data) {
+-		skb->data = skb_orig_data;
+-		skb->len = skb_orig_len;
+-	}
++	vh = skb_header_pointer(skb, skb_mac_offset(skb) + header_len,
++				sizeof(vhdr), &vhdr);
+ 	if (unlikely(!vh))
+ 		return 0;
+ 
+-- 
+2.39.5
+
 
 
 
