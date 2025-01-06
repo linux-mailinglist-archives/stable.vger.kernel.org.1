@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-107471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08C03A02C12
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:50:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFC07A02A2C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E53E7164AE5
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:49:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4522F3A6DCB
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 139A314A617;
-	Mon,  6 Jan 2025 15:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8FA14D28C;
+	Mon,  6 Jan 2025 15:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IhBVmQp+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQOoPLvi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19CF1D7999;
-	Mon,  6 Jan 2025 15:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7AF148316;
+	Mon,  6 Jan 2025 15:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178561; cv=none; b=U3arpuziJmRTWNv5wQZNBNdG2hE3UK7wFfq2RBJo+CMPdpNQRstbNr4nu0vWsYsuuf7Rbb4NCOXZyQxqWHYNXC6DLsbJkf5rxs5YNkE6vtRVLAtBc9UA8GpUxVbiRjH7/8hf+DHqFvUzFWO/SLMN6wWkQtm/VLQJc3o4uTuQkOM=
+	t=1736177373; cv=none; b=fYMs/VjRBTIpXZtctV32nQ0kHtTJQqWS0WwwbqvHV77gA5dSLn/+5KUvbGI3a3xtjdRDno6Pw7PKn38HB8o2wqQISI589SeqGD5y2F0PHig8hRSuYnKrvD/KkvozwCWBFJaw6gg/sqJ/3Ee/OvFqCdt/uifUobb8LjIzpNLCKKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178561; c=relaxed/simple;
-	bh=PO0YhgN1DEWpkqT5RLEkrDgS0tephXKLJ+jzF47ypVE=;
+	s=arc-20240116; t=1736177373; c=relaxed/simple;
+	bh=qhqQgIEDGW6HjSl/vgG0c+xZaXjXbCmAAsyRPfppGIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TxyvYMXdpf9lgZglyOYL+kfKBeTiz4Qeis/4A01qqKH+w2z0IEfLdNbw1I0GK03uLJeY5ZwnMvDRSMdQkLYHfANj9/S/iuozgUT7UNhGQk9xRTB0/v+FPgByJK/yqiiBsUdZfSlRm4otQRgzaheHQhqSHHopSf8jH+4hApBNB5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IhBVmQp+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D60C4CED2;
-	Mon,  6 Jan 2025 15:49:20 +0000 (UTC)
+	 MIME-Version; b=VdHmjOMAoKBuJKLuTc/bhFVOwqty2EjRCyNYhbNpfMctx/1YaDKY06h6KBPuKGrSDWEd2dYry5VeSnLup4mtL5biNPeWaxbEEK8/0StIa2R+rSS4yYvXTp7FRNfv1KJnjSZuumVrANkJvZQaqjKzQYi41xP+/pP7FOTDfzWPdJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQOoPLvi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15767C4CED6;
+	Mon,  6 Jan 2025 15:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178561;
-	bh=PO0YhgN1DEWpkqT5RLEkrDgS0tephXKLJ+jzF47ypVE=;
+	s=korg; t=1736177373;
+	bh=qhqQgIEDGW6HjSl/vgG0c+xZaXjXbCmAAsyRPfppGIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IhBVmQp+9GopzThtkx6T9hGFXMV3LKxdMW/GiJUdsKIprhL9QrOqWuxA5hcDvAq1t
-	 OKf9WQP8+q2BsRtUSbaUqbCtJe8JVshhMkSil3chz1uTjPLiDYUm4jqklZowmKUibf
-	 bk1+wUb5l33UAW3C6s2RNyy9jGh+ESMcFAy5LRwo=
+	b=EQOoPLviUGpOjj6xwSnX+jDr8BSDlLiR6X7zLTU8ckulRJAADWw1pBd01L1fQlETS
+	 rUP3+cNFBWfbwvhvGo0ImKqrZi5BEx7lz+e5VZ8H77043BtOfRNwvWdlc26pIo2s9s
+	 HQ1hwp44RwCSYVORbV5A8w6HHsJuM2QVDZHD/Xf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 020/168] net: hinic: Fix cleanup in create_rxqs/txqs()
-Date: Mon,  6 Jan 2025 16:15:28 +0100
-Message-ID: <20250106151139.226130916@linuxfoundation.org>
+Subject: [PATCH 6.6 125/222] tracing: Fix trace_check_vprintf() when tp_printk is used
+Date: Mon,  6 Jan 2025 16:15:29 +0100
+Message-ID: <20250106151155.340825943@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 7203d10e93b6e6e1d19481ef7907de6a9133a467 ]
+[ Upstream commit 50a3242d84ee1625b0bfef29b95f935958dccfbe ]
 
-There is a check for NULL at the start of create_txqs() and
-create_rxqs() which tess if "nic_dev->txqs" is non-NULL.  The
-intention is that if the device is already open and the queues
-are already created then we don't create them a second time.
+When the tp_printk kernel command line is used, the trace events go
+directly to printk(). It is still checked via the trace_check_vprintf()
+function to make sure the pointers of the trace event are legit.
 
-However, the bug is that if we have an error in the create_txqs()
-then the pointer doesn't get set back to NULL.  The NULL check
-at the start of the function will say that it's already open when
-it's not and the device can't be used.
+The addition of reading buffers from previous boots required adding a
+delta between the addresses of the previous boot and the current boot so
+that the pointers in the old buffer can still be used. But this required
+adding a trace_array pointer to acquire the delta offsets.
 
-Set ->txqs back to NULL on cleanup on error.
+The tp_printk code does not provide a trace_array (tr) pointer, so when
+the offsets were examined, a NULL pointer dereference happened and the
+kernel crashed.
 
-Fixes: c3e79baf1b03 ("net-next/hinic: Add logical Txq and Rxq")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/0cc98faf-a0ed-4565-a55b-0fa2734bc205@stanley.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+If the trace_array does not exist, just default the delta offsets to zero,
+as that also means the trace event is not being read from a previous boot.
+
+Link: https://lore.kernel.org/all/Zv3z5UsG_jsO9_Tb@aschofie-mobl2.lan/
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20241003104925.4e1b1fd9@gandalf.local.home
+Fixes: 07714b4bb3f98 ("tracing: Handle old buffer mappings for event strings and functions")
+Reported-by: Alison Schofield <alison.schofield@intel.com>
+Tested-by: Alison Schofield <alison.schofield@intel.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: afd2627f727b ("tracing: Check "%s" dereference via the field and not the TP_printk format")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/huawei/hinic/hinic_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/trace/trace.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/huawei/hinic/hinic_main.c b/drivers/net/ethernet/huawei/hinic/hinic_main.c
-index 92fba9a0c371..a65b20bafcb0 100644
---- a/drivers/net/ethernet/huawei/hinic/hinic_main.c
-+++ b/drivers/net/ethernet/huawei/hinic/hinic_main.c
-@@ -172,6 +172,7 @@ static int create_txqs(struct hinic_dev *nic_dev)
- 	hinic_sq_dbgfs_uninit(nic_dev);
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 2a45efc4e417..addc1b326c79 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -3858,8 +3858,8 @@ static void test_can_verify(void)
+ void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
+ 			 va_list ap)
+ {
+-	long text_delta = iter->tr->text_delta;
+-	long data_delta = iter->tr->data_delta;
++	long text_delta = 0;
++	long data_delta = 0;
+ 	const char *p = fmt;
+ 	const char *str;
+ 	bool good;
+@@ -3871,6 +3871,17 @@ void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
+ 	if (static_branch_unlikely(&trace_no_verify))
+ 		goto print;
  
- 	devm_kfree(&netdev->dev, nic_dev->txqs);
-+	nic_dev->txqs = NULL;
- 	return err;
- }
- 
-@@ -268,6 +269,7 @@ static int create_rxqs(struct hinic_dev *nic_dev)
- 	hinic_rq_dbgfs_uninit(nic_dev);
- 
- 	devm_kfree(&netdev->dev, nic_dev->rxqs);
-+	nic_dev->rxqs = NULL;
- 	return err;
- }
- 
++	/*
++	 * When the kernel is booted with the tp_printk command line
++	 * parameter, trace events go directly through to printk().
++	 * It also is checked by this function, but it does not
++	 * have an associated trace_array (tr) for it.
++	 */
++	if (iter->tr) {
++		text_delta = iter->tr->text_delta;
++		data_delta = iter->tr->data_delta;
++	}
++
+ 	/* Don't bother checking when doing a ftrace_dump() */
+ 	if (iter->fmt == static_fmt_buf)
+ 		goto print;
 -- 
 2.39.5
 
