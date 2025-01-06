@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-106863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 110A5A028FF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:18:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA978A02ABC
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC923161C39
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:18:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96536165080
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FA98635E;
-	Mon,  6 Jan 2025 15:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F0C155325;
+	Mon,  6 Jan 2025 15:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gCqMx9YJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fm2mQ2yJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93B935973;
-	Mon,  6 Jan 2025 15:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95DC143C7E;
+	Mon,  6 Jan 2025 15:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176733; cv=none; b=Ue3dC15m49WB2+BWTBN9g5RkxN9a0cPXpMqGaFjb/SxWssX4FhUP2qbUn6WiE2Y0IQXwPSo8RzktdoDDA7vXMhJ3vGOGHQ0xPu3UA+POodKWVlQ11ejQIQxU1JML+2LMjnnYWNATom6/hxZqkAIKyoKtAS+i/zv+JuXwd/UIPIc=
+	t=1736177795; cv=none; b=X8QZ0PuvGIkod0LJr2MX6tICM55n1e7kQAptjdWgA9K9i+jYqMunpQvVgOX/zQo/b7mdQ4IClSSHtV0g4yerdvS9f32wltAvS/6pgQA6OQBbJdL2+uwKF1NcmG850BSRQC4B5amIlGci32cFhC9fmw5t0JUW84Q3bPsetCMi1lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176733; c=relaxed/simple;
-	bh=lkhtm8zEU9fmHlvELZI0iHCHIjwQ4zBkWp8hdAy/bo0=;
+	s=arc-20240116; t=1736177795; c=relaxed/simple;
+	bh=O7SDQ9Devqd4j8qamhd5OoPUcUFw4KAFe3JqlA3wvjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmtWIRpsH9o9BRbI8ecmlFdCfZf2hcaEbodPzcAXK56SZH/hIrcN6PQHG6rG1G0O2lW2mnkm0uBWmOZGCjDhxYP9/pPXxCtH9Iz93mI7KEC/Tzm8T8DpZXOrlvLxXf2nFi6qoDGcJD/v+lWWIs8r+NJrh0Kj5jMgKPyTZhM4jd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gCqMx9YJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E59C4CED2;
-	Mon,  6 Jan 2025 15:18:52 +0000 (UTC)
+	 MIME-Version; b=KN0w0t3a3KZwuUcYfmafQq+CB74KOY7eJwH4pAQmo0ElbVlYTt1Fv/pBMyfD9rpfOJzMu7tqgsL0ncDYszNcLDSKJpYZA88YElgXH5H0X7ITKNEM7a7p7SPDg3UH2XbcgNOuGfBZsoXdxRjufvMnexzsuXT5vSLi2F5niB9bDqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fm2mQ2yJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C4CC4CED6;
+	Mon,  6 Jan 2025 15:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176733;
-	bh=lkhtm8zEU9fmHlvELZI0iHCHIjwQ4zBkWp8hdAy/bo0=;
+	s=korg; t=1736177795;
+	bh=O7SDQ9Devqd4j8qamhd5OoPUcUFw4KAFe3JqlA3wvjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gCqMx9YJXLWZaMyTDypk15OmP3eNpX2uTVbKo875zHfZT/Q4JCqPfzhChHwAN3of5
-	 LZz0dMTcTjRSE3t13KViBgGBoGhqmiu4RjVLR67Z77TycqwKT2C7Rt/LMzJS/3+rBf
-	 Z6kPoMPb0ezK0pHFjeK2V0tZ+h704prvAt8ENX8s=
+	b=Fm2mQ2yJBPdJZFUM05rroS3DIb3OM6d41JTNQglxs74aTIhqYm6ZwnnyPIArgD6s6
+	 ZVR1hOQ+9vHoEnFAD+feukaTMtlQIuyw6o4OiboGO+T1MQq6T1D2OZVEJn4i/ArwvK
+	 Tvj7ij9wHFlKrZBv6FDejlNgYCq5LeyREWgROt00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Preethi G <preethi.gurusiddalingeswaraswamy@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Tanya Agarwal <tanyaagarwal25699@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 14/81] RDMA/bnxt_re: Fix reporting hw_ver in query_device
+Subject: [PATCH 6.12 060/156] ALSA: usb-audio: US16x08: Initialize array before use
 Date: Mon,  6 Jan 2025 16:15:46 +0100
-Message-ID: <20250106151129.976888702@linuxfoundation.org>
+Message-ID: <20250106151143.998161485@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Tanya Agarwal <tanyaagarwal25699@gmail.com>
 
-[ Upstream commit 7179fe0074a3c962e43a9e51169304c4911989ed ]
+[ Upstream commit b06a6187ef983f501e93faa56209169752d3bde3 ]
 
-Driver currently populates subsystem_device id in the
-"hw_ver" field of ib_attr structure in query_device.
+Initialize meter_urb array before use in mixer_us16x08.c.
 
-Updated to populate PCI revision ID.
+CID 1410197: (#1 of 1): Uninitialized scalar variable (UNINIT)
+uninit_use_in_call: Using uninitialized value *meter_urb when
+calling get_meter_levels_from_urb.
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Reviewed-by: Preethi G <preethi.gurusiddalingeswaraswamy@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/20241211083931.968831-6-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Coverity Link:
+https://scan7.scan.coverity.com/#/project-view/52849/11354?selectedIssue=1410197
+
+Fixes: d2bb390a2081 ("ALSA: usb-audio: Tascam US-16x08 DSP mixer quirk")
+Signed-off-by: Tanya Agarwal <tanyaagarwal25699@gmail.com>
+Link: https://patch.msgid.link/20241229060240.1642-1-tanyaagarwal25699@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 2 +-
+ sound/usb/mixer_us16x08.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index 01883d67a48e..94c34ba103ea 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -138,7 +138,7 @@ int bnxt_re_query_device(struct ib_device *ibdev,
+diff --git a/sound/usb/mixer_us16x08.c b/sound/usb/mixer_us16x08.c
+index 6eb7d93b358d..20ac32635f1f 100644
+--- a/sound/usb/mixer_us16x08.c
++++ b/sound/usb/mixer_us16x08.c
+@@ -687,7 +687,7 @@ static int snd_us16x08_meter_get(struct snd_kcontrol *kcontrol,
+ 	struct usb_mixer_elem_info *elem = kcontrol->private_data;
+ 	struct snd_usb_audio *chip = elem->head.mixer->chip;
+ 	struct snd_us16x08_meter_store *store = elem->private_data;
+-	u8 meter_urb[64];
++	u8 meter_urb[64] = {0};
  
- 	ib_attr->vendor_id = rdev->en_dev->pdev->vendor;
- 	ib_attr->vendor_part_id = rdev->en_dev->pdev->device;
--	ib_attr->hw_ver = rdev->en_dev->pdev->subsystem_device;
-+	ib_attr->hw_ver = rdev->en_dev->pdev->revision;
- 	ib_attr->max_qp = dev_attr->max_qp;
- 	ib_attr->max_qp_wr = dev_attr->max_qp_wqes;
- 	ib_attr->device_cap_flags =
+ 	switch (kcontrol->private_value) {
+ 	case 0: {
 -- 
 2.39.5
 
