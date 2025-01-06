@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2775A02AEF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7157CA02A4A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:32:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1EF11885F67
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C15067A2BD0
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11104158525;
-	Mon,  6 Jan 2025 15:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF3983A14;
+	Mon,  6 Jan 2025 15:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4KBdoM/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mF7ZaGgg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B10153814;
-	Mon,  6 Jan 2025 15:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9D718B46A;
+	Mon,  6 Jan 2025 15:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177924; cv=none; b=iZtfY3mtHE4xeZtgl1op9GUJ4N1WUhZw1VOpdTcEXyo/Ps8T1o0lDyz4WHoYif+lnc4NekEsMd7lcuq/qo4o7cEdsBtz59Y6LPu/r6KXXZI3DmRdPAsC22wHyncBHpNnW6uYOtavXo0DquIxJgQXy96mD3VpLz666Iu/gMliyfQ=
+	t=1736177505; cv=none; b=BT4+B2Gyqmhsg8omXhO1f+5Rv4XpHkjLrEmjXlvArzjTdEWDHR6TsG1/XSPMeskZG7QsZXxzqW2zWUlPCFgoQIlsGVafVQfgbHvZUaIo1gwWKXoJhftowJWyEUPGWvzaJUrKt7WAMoY3Y9ZrRUPzt/unLqzt1Mw+GjrfXr4nxTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177924; c=relaxed/simple;
-	bh=Bt6m1Db+fogdQkwVdFQRtPtAOHwj/1FYSMd+1ppkx1o=;
+	s=arc-20240116; t=1736177505; c=relaxed/simple;
+	bh=E7+ToMoqz4TbUfg0ddktefrg14EYBlgOP5fPORL+c1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mbxGzDt/zF+JAwPrSuveSez7peErVLTWEHocScWHb+zm3kUJcEaxTc4JjlQOGwT+eB0Hxn2kGXqtVf/flAa2XnNR+li0uoS6ldDbHJ5K25+lPaH0/BU9k7JGsBXbSZhhAZmpZxNP2Ua+A7BrNfweEh3tfFxc/236FT2xkg7Putg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4KBdoM/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9A0C4CED2;
-	Mon,  6 Jan 2025 15:38:43 +0000 (UTC)
+	 MIME-Version; b=LSC4E63zYPem+tvivzvmE2TVaqGCU64wtbp6svR+2xvj+EMRYYqWxlXJTCT/oAKs+FEUKfBI2wh1CDgrULZYR0uyyRkUi7Nj9ugxWf6EkyMXZru/H0wM6OGmjV5xHb8QLDFbXEXkQu5cPkZKD02a/Eg/exPKMQyWArie5dSm5oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mF7ZaGgg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02752C4CED2;
+	Mon,  6 Jan 2025 15:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177924;
-	bh=Bt6m1Db+fogdQkwVdFQRtPtAOHwj/1FYSMd+1ppkx1o=;
+	s=korg; t=1736177504;
+	bh=E7+ToMoqz4TbUfg0ddktefrg14EYBlgOP5fPORL+c1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o4KBdoM/pHlWoGrHsTcl++tddWvl3rVyAZVA+hCxqrZDaAqLNNb0VjiedpoGYTGTn
-	 NckquhZt+XP7YlQzZYmxxd3rQ5AFc53pRoUhelG4uitmUl9A3fvgkfwDYybbzmO4if
-	 ckflISP9LNtlrBVsBEQ1eH6Ktol7hZbJd++XymNk=
+	b=mF7ZaGggO89HNk9uU8khk6OwbrELA54usFe/ZumjupBWvzDBfMrNFFaR+81sVd55Y
+	 JYGr2GIvVaMY5dmXYR2oPe9K7phiO0w8Ke+qTq9gm3WzOTPT1mW1j4/Og0LoppYtvV
+	 4uM4H8P84giAU9N4aEEMIZk5MQRYBd2Coc/xooVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uros Bizjak <ubizjak@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
+	Adrian Ratiu <adrian.ratiu@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 102/156] irqchip/gic: Correct declaration of *percpu_base pointer in union gic_base
+Subject: [PATCH 6.6 184/222] sound: usb: enable DSD output for ddHiFi TC44C
 Date: Mon,  6 Jan 2025 16:16:28 +0100
-Message-ID: <20250106151145.569639524@linuxfoundation.org>
+Message-ID: <20250106151157.730014776@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Adrian Ratiu <adrian.ratiu@collabora.com>
 
-[ Upstream commit a1855f1b7c33642c9f7a01991fb763342a312e9b ]
+[ Upstream commit c84bd6c810d1880194fea2229c7086e4b73fddc1 ]
 
-percpu_base is used in various percpu functions that expect variable in
-__percpu address space. Correct the declaration of percpu_base to
+This is a UAC 2 DAC capable of raw DSD on intf 2 alt 4:
 
-void __iomem * __percpu *percpu_base;
+Bus 007 Device 004: ID 262a:9302 SAVITECH Corp. TC44C
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.00
+  bDeviceClass          239 Miscellaneous Device
+  bDeviceSubClass         2 [unknown]
+  bDeviceProtocol         1 Interface Association
+  bMaxPacketSize0        64
+  idVendor           0x262a SAVITECH Corp.
+  idProduct          0x9302 TC44C
+  bcdDevice            0.01
+  iManufacturer           1 DDHIFI
+  iProduct                2 TC44C
+  iSerial                 6 5000000001
+.......
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        2
+      bAlternateSetting       4
+      bNumEndpoints           2
+      bInterfaceClass         1 Audio
+      bInterfaceSubClass      2 Streaming
+      bInterfaceProtocol      32
+      iInterface              0
+	AudioStreaming Interface Descriptor:
+          bLength                16
+          bDescriptorType        36
+          bDescriptorSubtype     1 (AS_GENERAL)
+          bTerminalLink          3
+          bmControls             0x00
+          bFormatType            1
+          bmFormats              0x80000000
+          bNrChannels            2
+          bmChannelConfig        0x00000000
+          iChannelNames          0
+.......
 
-to declare the variable as __percpu pointer.
-
-The patch fixes several sparse warnings:
-
-irq-gic.c:1172:44: warning: incorrect type in assignment (different address spaces)
-irq-gic.c:1172:44:    expected void [noderef] __percpu *[noderef] __iomem *percpu_base
-irq-gic.c:1172:44:    got void [noderef] __iomem *[noderef] __percpu *
-...
-irq-gic.c:1231:43: warning: incorrect type in argument 1 (different address spaces)
-irq-gic.c:1231:43:    expected void [noderef] __percpu *__pdata
-irq-gic.c:1231:43:    got void [noderef] __percpu *[noderef] __iomem *percpu_base
-
-There were no changes in the resulting object files.
-
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/all/20241213145809.2918-2-ubizjak@gmail.com
+Signed-off-by: Adrian Ratiu <adrian.ratiu@collabora.com>
+Link: https://patch.msgid.link/20241209090529.16134-1-adrian.ratiu@collabora.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/quirks.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/irqchip/irq-gic.c b/drivers/irqchip/irq-gic.c
-index 3be7bd8cd8cd..32abc2916b40 100644
---- a/drivers/irqchip/irq-gic.c
-+++ b/drivers/irqchip/irq-gic.c
-@@ -64,7 +64,7 @@ static void gic_check_cpu_features(void)
- 
- union gic_base {
- 	void __iomem *common_base;
--	void __percpu * __iomem *percpu_base;
-+	void __iomem * __percpu *percpu_base;
- };
- 
- struct gic_chip_data {
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index 8eed8d9742fd..ec81b47c41c9 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2225,6 +2225,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_DSD_RAW),
+ 	DEVICE_FLG(0x2522, 0x0007, /* LH Labs Geek Out HD Audio 1V5 */
+ 		   QUIRK_FLAG_SET_IFACE_FIRST),
++	DEVICE_FLG(0x262a, 0x9302, /* ddHiFi TC44C */
++		   QUIRK_FLAG_DSD_RAW),
+ 	DEVICE_FLG(0x2708, 0x0002, /* Audient iD14 */
+ 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
+ 	DEVICE_FLG(0x2912, 0x30c8, /* Audioengine D1 */
 -- 
 2.39.5
 
