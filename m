@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-107588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED4E4A02CC2
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:57:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92EF3A0295B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:22:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0E2F3A8F76
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:55:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19D291885567
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B13154C04;
-	Mon,  6 Jan 2025 15:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DFC1547F2;
+	Mon,  6 Jan 2025 15:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9w8TSgZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GnprFfdy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351DC182D2;
-	Mon,  6 Jan 2025 15:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71563146D6B;
+	Mon,  6 Jan 2025 15:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178920; cv=none; b=bA4hDx3ktcEmLoTHpmtgO0K+XX23oUQQGiNGk7qhnZM3chOt2jWC1Akc6gDVYmzX/gHefqKM+nC39eO0lbb0nRRpz5ztiGsw5UwXyuYt2oXACVUMFt3kuxzJvt4abkx+GbR9BE24Wt3jlH3Pu7Ma0BLperdUIynEjKawuQIDPso=
+	t=1736176945; cv=none; b=IRuVzy8Kf84hKD9w+eZTEYc22epazbpRMYdZoPdZp+P0Ljvt67JJdFnvu4Vh+sfVmHlelJdzH3K+vvSgPCHQjYXSeEFt8EE8iSSn8rQKNHmzbL8028GuzjfEh6dDhgvLIQQOHC0zHKvLrRLPDyX5Uhb86CfR00+ILoFH3WE9Duc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178920; c=relaxed/simple;
-	bh=q+LN5V/CaskauJlHXa1mhSCfiOd3cTidjeg/IWSA2Zg=;
+	s=arc-20240116; t=1736176945; c=relaxed/simple;
+	bh=If8srUaQw4qDGJ3/OiQ59Hc01gAyBsWcxpIHK99Ir5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h3SbPya6CtT44yEPErk9tBZHbH+cIStSQ0VdlrsJp71FgiDZ7m+NGk1rK+lF1NZHRIy1mHXnMPU7jgDSKYiVQK9E3yyIBJ+cp6gst/RNa4CW9/aZLXhdcd6rASuY3Y8PRpcTxbKENYIcqeObNXpR9/AERep/4fcdjeelm++l2yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9w8TSgZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DFC0C4CED2;
-	Mon,  6 Jan 2025 15:55:19 +0000 (UTC)
+	 MIME-Version; b=Q0FPtQiIlpArq1FXDskhE+B5y5oZ2YQAOzLfoER28HkLKq4o9C5SNZojO7/MWOmcG1nH0fseezOhWDgEdQJfHcUsMnnqtUMrrp2XSB3Q2xbTjmVaSIOGU4LV1XDnDEdh3Zu56xHnEr8PPkh/G1EWxfOz1XOLQcLS0do4GN3ao5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GnprFfdy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBAC4C4CED2;
+	Mon,  6 Jan 2025 15:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178920;
-	bh=q+LN5V/CaskauJlHXa1mhSCfiOd3cTidjeg/IWSA2Zg=;
+	s=korg; t=1736176945;
+	bh=If8srUaQw4qDGJ3/OiQ59Hc01gAyBsWcxpIHK99Ir5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L9w8TSgZlgYfoqjR/HjXXO64xRbcjrrUbnRpa2eoFWUXcUebcJmW7ctW4rr95I0Pq
-	 KnSOCd6mhUt82pXcfnhisBGU6NjVBesdiKf/XHb0MeE1B2B35kiaKF1KMgnzCz+azX
-	 pm40xmy5L2qwUi/wkmMk6+5biAMc4knWcy9p4f28=
+	b=GnprFfdyVpbd/Ecj7T+l8XTlYhR1ij8/R6X35Lmas2H6G3xOur/jNm3m09ZIuGUu9
+	 S+/z6kwiNUdqUd7pToVAqqAgqVjKWyTOjuFWwgyvkGXUv+Mr/skzcQBk2on3+OSpBO
+	 eCURHAJjAM0l/HymCisv+vtZu165zX3pC63DNVXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thi=C3=A9baud=20Weksteen?= <tweek@google.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 5.15 105/168] selinux: ignore unknown extended permissions
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 81/81] mptcp: dont always assume copied data in mptcp_cleanup_rbuf()
 Date: Mon,  6 Jan 2025 16:16:53 +0100
-Message-ID: <20250106151142.426144809@linuxfoundation.org>
+Message-ID: <20250106151132.485412831@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +61,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thiébaud Weksteen <tweek@google.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 900f83cf376bdaf798b6f5dcb2eae0c822e908b6 upstream.
+commit 551844f26da2a9f76c0a698baaffa631d1178645 upstream.
 
-When evaluating extended permissions, ignore unknown permissions instead
-of calling BUG(). This commit ensures that future permissions can be
-added without interfering with older kernels.
+Under some corner cases the MPTCP protocol can end-up invoking
+mptcp_cleanup_rbuf() when no data has been copied, but such helper
+assumes the opposite condition.
 
+Explicitly drop such assumption and performs the costly call only
+when strictly needed - before releasing the msk socket lock.
+
+Fixes: fd8976790a6c ("mptcp: be careful on MPTCP-level ack.")
 Cc: stable@vger.kernel.org
-Fixes: fa1aa143ac4a ("selinux: extended permissions for ioctls")
-Signed-off-by: Thiébaud Weksteen <tweek@google.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Acked-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20241230-net-mptcp-rbuf-fixes-v1-2-8608af434ceb@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/selinux/ss/services.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/mptcp/protocol.c |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/security/selinux/ss/services.c
-+++ b/security/selinux/ss/services.c
-@@ -971,7 +971,10 @@ void services_compute_xperms_decision(st
- 					xpermd->driver))
- 			return;
- 	} else {
--		BUG();
-+		pr_warn_once(
-+			"SELinux: unknown extended permission (%u) will be ignored\n",
-+			node->datum.u.xperms->specified);
-+		return;
- 	}
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -538,13 +538,13 @@ static void mptcp_send_ack(struct mptcp_
+ 		mptcp_subflow_send_ack(mptcp_subflow_tcp_sock(subflow));
+ }
  
- 	if (node->key.specified == AVTAB_XPERMS_ALLOWED) {
-@@ -1008,7 +1011,8 @@ void services_compute_xperms_decision(st
- 					node->datum.u.xperms->perms.p[i];
- 		}
- 	} else {
--		BUG();
-+		pr_warn_once("SELinux: unknown specified key (%u)\n",
-+			     node->key.specified);
+-static void mptcp_subflow_cleanup_rbuf(struct sock *ssk)
++static void mptcp_subflow_cleanup_rbuf(struct sock *ssk, int copied)
+ {
+ 	bool slow;
+ 
+ 	slow = lock_sock_fast(ssk);
+ 	if (tcp_can_send_ack(ssk))
+-		tcp_cleanup_rbuf(ssk, 1);
++		tcp_cleanup_rbuf(ssk, copied);
+ 	unlock_sock_fast(ssk, slow);
+ }
+ 
+@@ -561,7 +561,7 @@ static bool mptcp_subflow_could_cleanup(
+ 			      (ICSK_ACK_PUSHED2 | ICSK_ACK_PUSHED)));
+ }
+ 
+-static void mptcp_cleanup_rbuf(struct mptcp_sock *msk)
++static void mptcp_cleanup_rbuf(struct mptcp_sock *msk, int copied)
+ {
+ 	int old_space = READ_ONCE(msk->old_wspace);
+ 	struct mptcp_subflow_context *subflow;
+@@ -569,14 +569,14 @@ static void mptcp_cleanup_rbuf(struct mp
+ 	int space =  __mptcp_space(sk);
+ 	bool cleanup, rx_empty;
+ 
+-	cleanup = (space > 0) && (space >= (old_space << 1));
+-	rx_empty = !__mptcp_rmem(sk);
++	cleanup = (space > 0) && (space >= (old_space << 1)) && copied;
++	rx_empty = !__mptcp_rmem(sk) && copied;
+ 
+ 	mptcp_for_each_subflow(msk, subflow) {
+ 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
+ 
+ 		if (cleanup || mptcp_subflow_could_cleanup(ssk, rx_empty))
+-			mptcp_subflow_cleanup_rbuf(ssk);
++			mptcp_subflow_cleanup_rbuf(ssk, copied);
  	}
  }
  
+@@ -2195,9 +2195,6 @@ static int mptcp_recvmsg(struct sock *sk
+ 
+ 		copied += bytes_read;
+ 
+-		/* be sure to advertise window change */
+-		mptcp_cleanup_rbuf(msk);
+-
+ 		if (skb_queue_empty(&msk->receive_queue) && __mptcp_move_skbs(msk))
+ 			continue;
+ 
+@@ -2249,6 +2246,7 @@ static int mptcp_recvmsg(struct sock *sk
+ 		}
+ 
+ 		pr_debug("block timeout %ld\n", timeo);
++		mptcp_cleanup_rbuf(msk, copied);
+ 		err = sk_wait_data(sk, &timeo, NULL);
+ 		if (err < 0) {
+ 			err = copied ? : err;
+@@ -2256,6 +2254,8 @@ static int mptcp_recvmsg(struct sock *sk
+ 		}
+ 	}
+ 
++	mptcp_cleanup_rbuf(msk, copied);
++
+ out_err:
+ 	if (cmsg_flags && copied >= 0) {
+ 		if (cmsg_flags & MPTCP_CMSG_TS)
 
 
 
