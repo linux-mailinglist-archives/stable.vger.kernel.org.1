@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-107496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B390A02C39
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:52:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFC05A02B5D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9270165D27
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:51:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 233747A0F4E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38541DDC3A;
-	Mon,  6 Jan 2025 15:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82A81D7999;
+	Mon,  6 Jan 2025 15:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPH5Rang"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oDdTdDqW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284EEBA34;
-	Mon,  6 Jan 2025 15:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BB2142E77;
+	Mon,  6 Jan 2025 15:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178644; cv=none; b=iQBqkClTAuJ0I36eS9QhzP3xK5HfLQ/CiuxVEfHn7HZzv6/sGzDtD+HcvjySa0hLfwQaBPi7hZeJDsPa8F0bUTsEbuusCO1ZVbgB770PqtVFOQEGYoFMkViRVHnlxsasXisTj+dBUi6b07zjSnBBqg2wWjuUmsGWNvR3JPeRIdY=
+	t=1736178174; cv=none; b=u6lGENjA/OfGfem/1YAyIRvRkz5fLLucNo7q8JVXpJSpBSPfyjNzg6qCnwBR58ZvNdjJKAGzf/+UwLcFOQRP5zb+sRc6CM56jZLSXAY5G070og8zs20OG4qui6x5s0pk0W3Q9Vbs2vaRdrCPCf3SeAoyusJFFD0bGBPvUfOxSmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178644; c=relaxed/simple;
-	bh=zWrTSvVs4g7yFzS2EJ+x6UtGCP6lrCMvIxltpiAVCgk=;
+	s=arc-20240116; t=1736178174; c=relaxed/simple;
+	bh=2frVFjWSbkIubBzKNYupB6dSL2ceq3SjJXSzF2FjfH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aivAwNYwFJ4UHzgS21IpR4l9Gq5cmZWylyPoO0kasoxVvgSb+tb5wO5XTPOmiIEH1uSIu1wjNibvgJi1uMNpac2NGfcKbIGNgcNcLYz7JQDccTYpd9fD8NfX/XzF2ouSOiEXm4ES8hke5xmJkGN9khFWmo5tDe/auA/aBnsZzLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPH5Rang; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37035C4CED2;
-	Mon,  6 Jan 2025 15:50:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=a4TCXbei5Vp1Oymi/oduUehbcPTYjyY1NJmU8bVSqHve7xwIev44o9RAx+fl8oHqGOcIwqG6tLyo1/qEYh36w8We2eeo/MBaaWxEoNjiJbT5IxC6c9Pf6S++h8O1GOtfkym9t0GWvSQKs/wYuof4Lf88vtRUJu2CXSbQ+kipNQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oDdTdDqW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E55C4CED2;
+	Mon,  6 Jan 2025 15:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178643;
-	bh=zWrTSvVs4g7yFzS2EJ+x6UtGCP6lrCMvIxltpiAVCgk=;
+	s=korg; t=1736178174;
+	bh=2frVFjWSbkIubBzKNYupB6dSL2ceq3SjJXSzF2FjfH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EPH5RangiPb1V6ytF66/TdHMn0nd8bC8LceagGSnlGJe/MFXNg+3FCk8xMMiCB23m
-	 mPe6jF3mK0XcTF5UgrJgcpCaaFRNS0Ucr2EGEvVO1zaOkQsGDM4YlC9gb1/zSpvFk8
-	 CrHEzrn0dWN/6VbVhNIDDbKyJ559UpeHwr2fv4+M=
+	b=oDdTdDqWnkLT7e2qVNrKlW7Kjxh395987Elh9m/BTse/ipD9RmQP/NLxQF7AYoHLv
+	 H/RLGMULUJyU6C8q+ODdpap+lBP91eLhXGQYDy36rOE7/8IozplkciCst9gfZPIuNO
+	 HeKTgLOG8MMEkLWREH88UcDEFkHz+pToNOFriBnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Al Viro <viro@ZenIV.linux.org.uk>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.15 046/168] tracing: Add missing helper functions in event pointer dereference check
+	syzbot+622bba18029bcde672e1@syzkaller.appspotmail.com,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 5.10 030/138] drm/modes: Avoid divide by zero harder in drm_mode_vrefresh()
 Date: Mon,  6 Jan 2025 16:15:54 +0100
-Message-ID: <20250106151140.202990461@linuxfoundation.org>
+Message-ID: <20250106151134.359390379@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 917110481f6bc1c96b1e54b62bb114137fbc6d17 upstream.
+commit 9398332f23fab10c5ec57c168b44e72997d6318e upstream.
 
-The process_pointer() helper function looks to see if various trace event
-macros are used. These macros are for storing data in the event. This
-makes it safe to dereference as the dereference will then point into the
-event on the ring buffer where the content of the data stays with the
-event itself.
-
-A few helper functions were missing. Those were:
-
-  __get_rel_dynamic_array()
-  __get_dynamic_array_len()
-  __get_rel_dynamic_array_len()
-  __get_rel_sockaddr()
-
-Also add a helper function find_print_string() to not need to use a middle
-man variable to test if the string exists.
+drm_mode_vrefresh() is trying to avoid divide by zero
+by checking whether htotal or vtotal are zero. But we may
+still end up with a div-by-zero of vtotal*htotal*...
 
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Al Viro <viro@ZenIV.linux.org.uk>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/20241217024720.521836792@goodmis.org
-Fixes: 5013f454a352c ("tracing: Add check of trace event print fmts for dereferencing pointers")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reported-by: syzbot+622bba18029bcde672e1@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=622bba18029bcde672e1
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241129042629.18280-2-ville.syrjala@linux.intel.com
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events.c |   21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_modes.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -257,6 +257,15 @@ static bool test_field(const char *fmt,
- 	return false;
- }
- 
-+/* Look for a string within an argument */
-+static bool find_print_string(const char *arg, const char *str, const char *end)
-+{
-+	const char *r;
-+
-+	r = strstr(arg, str);
-+	return r && r < end;
-+}
-+
- /* Return true if the argument pointer is safe */
- static bool process_pointer(const char *fmt, int len, struct trace_event_call *call)
+--- a/drivers/gpu/drm/drm_modes.c
++++ b/drivers/gpu/drm/drm_modes.c
+@@ -757,14 +757,11 @@ EXPORT_SYMBOL(drm_mode_set_name);
+  */
+ int drm_mode_vrefresh(const struct drm_display_mode *mode)
  {
-@@ -275,9 +284,17 @@ static bool process_pointer(const char *
- 		a = strchr(fmt, '&');
- 		if ((a && (a < r)) || test_field(r, call))
- 			return true;
--	} else if ((r = strstr(fmt, "__get_dynamic_array(")) && r < e) {
-+	} else if (find_print_string(fmt, "__get_dynamic_array(", e)) {
-+		return true;
-+	} else if (find_print_string(fmt, "__get_rel_dynamic_array(", e)) {
-+		return true;
-+	} else if (find_print_string(fmt, "__get_dynamic_array_len(", e)) {
-+		return true;
-+	} else if (find_print_string(fmt, "__get_rel_dynamic_array_len(", e)) {
-+		return true;
-+	} else if (find_print_string(fmt, "__get_sockaddr(", e)) {
- 		return true;
--	} else if ((r = strstr(fmt, "__get_sockaddr(")) && r < e) {
-+	} else if (find_print_string(fmt, "__get_rel_sockaddr(", e)) {
- 		return true;
- 	}
- 	return false;
+-	unsigned int num, den;
++	unsigned int num = 1, den = 1;
+ 
+ 	if (mode->htotal == 0 || mode->vtotal == 0)
+ 		return 0;
+ 
+-	num = mode->clock;
+-	den = mode->htotal * mode->vtotal;
+-
+ 	if (mode->flags & DRM_MODE_FLAG_INTERLACE)
+ 		num *= 2;
+ 	if (mode->flags & DRM_MODE_FLAG_DBLSCAN)
+@@ -772,6 +769,12 @@ int drm_mode_vrefresh(const struct drm_d
+ 	if (mode->vscan > 1)
+ 		den *= mode->vscan;
+ 
++	if (check_mul_overflow(mode->clock, num, &num))
++		return 0;
++
++	if (check_mul_overflow(mode->htotal * mode->vtotal, den, &den))
++		return 0;
++
+ 	return DIV_ROUND_CLOSEST_ULL(mul_u32_u32(num, 1000), den);
+ }
+ EXPORT_SYMBOL(drm_mode_vrefresh);
 
 
 
