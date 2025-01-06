@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-106926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A94A02957
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:22:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B28BA02C9B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D9D23A184A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:22:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 114D03A5D93
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C0E1487F4;
-	Mon,  6 Jan 2025 15:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B718B146D6B;
+	Mon,  6 Jan 2025 15:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eogNhR9+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQFtZiIU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A848634A;
-	Mon,  6 Jan 2025 15:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691061547F3;
+	Mon,  6 Jan 2025 15:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176931; cv=none; b=uEqsCruIur6WHS8byq+Ejh1vrn/A/m+KGwYs7xQXrUTFuHSCpnjM0A4NJ7ce3vPI2BNVcKRdHOMFp4lNq89WMDyQByhlT8Dwv205qfc0dKuceDojnvMt62CRr9ASH4CsawkPrFWYfVZB52iqEjES9SM/xzwHN1nAeNw99Rgit3g=
+	t=1736178815; cv=none; b=ezMMxvw+DeGTCRUcXL4cpqAqm8pMls2qJlS9FNZ74R9zPXBV3XFnYU4a4Czd+KYDEL11BJKR0JX8jWKCKV+C4MzCwES1X82xyrLMjhNdUgTQR0M8KYmjsAT2UTk/FJVyPzjLAWyHMpoOlk7fcl0md1bRhBAQAkfgFMXhoWQSXOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176931; c=relaxed/simple;
-	bh=FGLetRI16W8YGHWDmcfr0L4rx+mB9qzaQTPDS9KGnzs=;
+	s=arc-20240116; t=1736178815; c=relaxed/simple;
+	bh=YdfAGrGCbQOZlPePuLKOtrQwHtGFg/nKXnAAl9P55HY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=srOwnP/NLO8Kn9wPRngnSPDdmbXbBHrdqj77tQbBTkqA2ZRiSpP4gHN/4ee3BqBfkKBIoqf9iCawx6aS0A0dsq1SyTB+/pqnXKG4JORftDvNDprLUagH1xZYD0bIuXPhCZpdWEtjL08zmjTxcevDynrOKxMxu0J0XUV3/HVKzXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eogNhR9+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E4AC4CED2;
-	Mon,  6 Jan 2025 15:22:09 +0000 (UTC)
+	 MIME-Version; b=UzicI1o+4KiBeBb1hcGnuyThm0m+9seEoB+aI42FXE/nCp7XvxuajamdYoj0rXUiN/67BZ9JYgEv1R68B8t1Eh0sPcKWk4/9tQIbabizAMt/xh9mv7R009iCanihxk2AOISLa1Dl0pbyePbWk25ktwYL7CXVwPcn3tKWxnOqhUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQFtZiIU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83249C4CED2;
+	Mon,  6 Jan 2025 15:53:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176930;
-	bh=FGLetRI16W8YGHWDmcfr0L4rx+mB9qzaQTPDS9KGnzs=;
+	s=korg; t=1736178814;
+	bh=YdfAGrGCbQOZlPePuLKOtrQwHtGFg/nKXnAAl9P55HY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eogNhR9+7o4EmD5z1B2iVYvOfX/KXJGurspR3BmsrI5Vd5ZFFXpw9jQq4T3cYFmDI
-	 heMR/RExBFKCll0urz7cgZmxqXjJauXxgzE3kyFSCuxwLmU05m1nvDOKfY6v7KzxYf
-	 bGaBteQFz0/F8XjdS9cflXceI35p+YTpLeDtAzn8=
+	b=QQFtZiIU2S6QYKB9IpAXvwc92E9uOp/QCtwbE4Dq9J4PHqzgvp2rjk2z3EtH8d9xg
+	 08EJdvb5ZDOXU2Y8FMRIiWF62cjOm+K0PJImGQ6jfB1g8sKNsBqlWoOOI07D6zSUta
+	 b7VFRSoKG2oBbCrzdpSv8CzY1edY71WruLt1dpO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 6.1 76/81] dt-bindings: display: adi,adv7533: Drop single lane support
+	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 5.15 100/168] power: supply: gpio-charger: Fix set charge current limits
 Date: Mon,  6 Jan 2025 16:16:48 +0100
-Message-ID: <20250106151132.297244360@linuxfoundation.org>
+Message-ID: <20250106151142.238376805@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
 
-commit ee8f9ed57a397605434caeef351bafa3ec4dfdd4 upstream.
+commit afc6e39e824ad0e44b2af50a97885caec8d213d1 upstream.
 
-As per [1] and [2], ADV7535/7533 supports only 2-, 3-, or 4-lane. Drop
-unsupported 1-lane from bindings.
+Fix set charge current limits for devices which allow to set the lowest
+charge current limit to be greater zero. If requested charge current limit
+is below lowest limit, the index equals current_limit_map_size which leads
+to accessing memory beyond allocated memory.
 
-[1] https://www.analog.com/media/en/technical-documentation/data-sheets/ADV7535.pdf
-[2] https://www.analog.com/media/en/technical-documentation/data-sheets/ADV7533.pdf
-
-Fixes: 1e4d58cd7f88 ("drm/bridge: adv7533: Create a MIPI DSI device")
+Fixes: be2919d8355e ("power: supply: gpio-charger: add charge-current-limit feature")
 Cc: stable@vger.kernel.org
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241119192040.152657-3-biju.das.jz@bp.renesas.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+Link: https://lore.kernel.org/r/20241209-fix-charge-current-limit-v1-1-760d9b8f2af3@liebherr.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/display/bridge/adi,adv7533.yaml |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/gpio-charger.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/Documentation/devicetree/bindings/display/bridge/adi,adv7533.yaml
-+++ b/Documentation/devicetree/bindings/display/bridge/adi,adv7533.yaml
-@@ -87,7 +87,7 @@ properties:
-   adi,dsi-lanes:
-     description: Number of DSI data lanes connected to the DSI host.
-     $ref: /schemas/types.yaml#/definitions/uint32
--    enum: [ 1, 2, 3, 4 ]
-+    enum: [ 2, 3, 4 ]
+--- a/drivers/power/supply/gpio-charger.c
++++ b/drivers/power/supply/gpio-charger.c
+@@ -67,6 +67,14 @@ static int set_charge_current_limit(stru
+ 		if (gpio_charger->current_limit_map[i].limit_ua <= val)
+ 			break;
+ 	}
++
++	/*
++	 * If a valid charge current limit isn't found, default to smallest
++	 * current limitation for safety reasons.
++	 */
++	if (i >= gpio_charger->current_limit_map_size)
++		i = gpio_charger->current_limit_map_size - 1;
++
+ 	mapping = gpio_charger->current_limit_map[i];
  
-   ports:
-     description:
+ 	for (i = 0; i < ndescs; i++) {
 
 
 
