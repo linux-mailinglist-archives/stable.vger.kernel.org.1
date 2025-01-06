@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-107124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35794A02A49
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:32:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C8B1A02B73
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F078164EE4
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:32:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A31407A19CC
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A5C1DE89E;
-	Mon,  6 Jan 2025 15:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C551DDC08;
+	Mon,  6 Jan 2025 15:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hWhqeyvE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AS5RGZQ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184BB16DEBB;
-	Mon,  6 Jan 2025 15:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC00158525;
+	Mon,  6 Jan 2025 15:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177529; cv=none; b=VQZi99G4V/rxbAwc0fWBD+INK5g97CsjhhLkNAL2ouYeSiWbpYVod8ooAkXj8oh+1ngTO8vmm5PMFcXLNRIuTy3NkOfctkLyyZjPU+fdemiKgBzYWCGRX87cFdzIrvR6o0I6KDhpoHAawT3aMmcPeATgMvrkihFFB7umijGtBR4=
+	t=1736178210; cv=none; b=TFYQVfRDzIPMprgiB7I/Ok3mYuf3E5/wstVufadoMRQo4c6eZIdVqTw7Qz2Du+Tu+LJwz22vqMQWLnV6t2IbUNjF2qdjyQXlgyH29Ue4Y7kyWpEIddMzw8yTyi97lv2T+n4UBORdZMqRljjYAnWnevjuvP5fOeY6skr2PjPLMAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177529; c=relaxed/simple;
-	bh=DUa6QxOCtMLT0pFMz60PRkv1xvDMJ8lV13DRv6+vi+Y=;
+	s=arc-20240116; t=1736178210; c=relaxed/simple;
+	bh=WablwB7XB82Gi+bkEs/g4jbht9WrsRItcOiHFOM7WZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZPpn9whJ1ceLndhIwsOjBH19Eg8Vv/8rjCinOioUfyyVI8Vdl2EPZNaboLBj0Bd6TqAMeAPdS3IQvXaTa2OTaM19IlVib7rn37Cy8rlxQClbiyLdkX46IDReEaGmMFyvnyqfFT+t9t5TrkcxSy4JlIhludQIxljG3OYMr14J2q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hWhqeyvE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E20AC4CEDF;
-	Mon,  6 Jan 2025 15:32:07 +0000 (UTC)
+	 MIME-Version; b=mW033HA5zW1HWht//FUbYu4WlRaCiAfFT+HtsBOfigYKs5/ha9BZ3/4BP5ZDZvU/X5kj+Ri2PEfmc85PeQnVEk0yDQSYFZFTaFIWP6k64WArsHboYuepZXDTLgXjdCxGLKqekOHFEFc8iFeR4l65gL3Ae1g7i68JxSTti3cbbD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AS5RGZQ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 446FDC4CED2;
+	Mon,  6 Jan 2025 15:43:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177527;
-	bh=DUa6QxOCtMLT0pFMz60PRkv1xvDMJ8lV13DRv6+vi+Y=;
+	s=korg; t=1736178208;
+	bh=WablwB7XB82Gi+bkEs/g4jbht9WrsRItcOiHFOM7WZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hWhqeyvEZLAMbM9YbqJl00JVj8wu8BBbj7QUiza1kraCTkH8RpBozIwneeHgdfIno
-	 fRic2n9h5VuHjYDE0VbBb+8uFNMUxzzcqZvLZSZk9fa4ksorfN7iUib1FXbelCyUNn
-	 ZnHnQb7Pql/KPDk9YKzsZEn0giMwiaK8WaQEoiHg=
+	b=AS5RGZQ5EdS8cbRcRK7EBMm72fpc/V0ds7SC8Hxja+k1jTOD8MvNw/jzt117H2J/6
+	 Kgu+XePTupb1eRu1RtWwzagGi4r0gNHfADazbsyTtPNL95KzcrjzNCyISPoTI+fZLK
+	 +6NK2iWtWpncIFMUwmVOn79vp5MQK70i5iFpb8x0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 161/222] net/mlx5e: Skip restore TC rules for vport rep without loaded flag
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 5.10 041/138] of: Fix refcount leakage for OF node returned by __of_get_dma_parent()
 Date: Mon,  6 Jan 2025 16:16:05 +0100
-Message-ID: <20250106151156.856331380@linuxfoundation.org>
+Message-ID: <20250106151134.789289458@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 5a03b368562a7ff5f5f1f63b5adf8309cbdbd5be ]
+commit 5d009e024056ded20c5bb1583146b833b23bbd5a upstream.
 
-During driver unload, unregister_netdev is called after unloading
-vport rep. So, the mlx5e_rep_priv is already freed while trying to get
-rpriv->netdev, or walk rpriv->tc_ht, which results in use-after-free.
-So add the checking to make sure access the data of vport rep which is
-still loaded.
+__of_get_dma_parent() returns OF device node @args.np, but the node's
+refcount is increased twice, by both of_parse_phandle_with_args() and
+of_node_get(), so causes refcount leakage for the node.
 
-Fixes: d1569537a837 ("net/mlx5e: Modify and restore TC rules for IPSec TX rules")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20241220081505.1286093-4-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix by directly returning the node got by of_parse_phandle_with_args().
+
+Fixes: f83a6e5dea6c ("of: address: Add support for the parent DMA bus")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20241206-of_core_fix-v1-4-dc28ed56bec3@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c     | 6 +++---
- drivers/net/ethernet/mellanox/mlx5/core/eswitch.h          | 3 +++
- drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c | 3 ---
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/of/address.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
-index 13b5916b64e2..eed8fcde2613 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
-@@ -150,11 +150,11 @@ void mlx5_esw_ipsec_restore_dest_uplink(struct mlx5_core_dev *mdev)
- 	unsigned long i;
- 	int err;
+--- a/drivers/of/address.c
++++ b/drivers/of/address.c
+@@ -641,7 +641,7 @@ static struct device_node *__of_get_dma_
+ 	if (ret < 0)
+ 		return of_get_parent(np);
  
--	xa_for_each(&esw->offloads.vport_reps, i, rep) {
--		rpriv = rep->rep_data[REP_ETH].priv;
--		if (!rpriv || !rpriv->netdev)
-+	mlx5_esw_for_each_rep(esw, i, rep) {
-+		if (atomic_read(&rep->rep_data[REP_ETH].state) != REP_LOADED)
- 			continue;
+-	return of_node_get(args.np);
++	return args.np;
+ }
  
-+		rpriv = rep->rep_data[REP_ETH].priv;
- 		rhashtable_walk_enter(&rpriv->tc_ht, &iter);
- 		rhashtable_walk_start(&iter);
- 		while ((flow = rhashtable_walk_next(&iter)) != NULL) {
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-index 9b771b572593..3e58e731b569 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-@@ -713,6 +713,9 @@ void mlx5e_tc_clean_fdb_peer_flows(struct mlx5_eswitch *esw);
- 			  MLX5_CAP_GEN_2((esw->dev), ec_vf_vport_base) +\
- 			  (last) - 1)
- 
-+#define mlx5_esw_for_each_rep(esw, i, rep) \
-+	xa_for_each(&((esw)->offloads.vport_reps), i, rep)
-+
- struct mlx5_eswitch *__must_check
- mlx5_devlink_eswitch_get(struct devlink *devlink);
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-index 58529d1a98b3..7eba3a5bb97c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-@@ -52,9 +52,6 @@
- #include "lag/lag.h"
- #include "en/tc/post_meter.h"
- 
--#define mlx5_esw_for_each_rep(esw, i, rep) \
--	xa_for_each(&((esw)->offloads.vport_reps), i, rep)
--
- /* There are two match-all miss flows, one for unicast dst mac and
-  * one for multicast.
-  */
--- 
-2.39.5
-
+ static struct device_node *of_get_next_dma_parent(struct device_node *np)
 
 
 
