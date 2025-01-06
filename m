@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-107290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91D1EA02B18
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:40:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 914B9A02CAE
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:56:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F120A1882C08
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:40:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AA283A8030
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14E7156886;
-	Mon,  6 Jan 2025 15:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD491A8F79;
+	Mon,  6 Jan 2025 15:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MqBzkjn3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J8ymC84C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFBD155352;
-	Mon,  6 Jan 2025 15:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708C316D9B8;
+	Mon,  6 Jan 2025 15:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178022; cv=none; b=RZRALO93Gju/1fxRnn9UDpRsQbdN7rlHr51jEk0r6SyQYqPvmdYfl0MNZ43wJ4HcF3we8eWMDcIYddvM6aWzsP8dqs/T3xYrSutiWv/5vY9cJtduXLd9O+zeDRvWO37t9NqrBe4p84xme6x1VK3k0iMkD7zT5DM9utDAJynnBiw=
+	t=1736178850; cv=none; b=XhAaleNP6XYyfTDbPC7ZQe6+lywMiIRex4NaCg5fBZwRcmD+afsucWeo6TA3+GV/8e2lQAE/Un4Fl79hmDooITib4khvRNIthYTWw2Q35EPNSQMWNYVlnCyfdrh0L7eDFktHws0rpLF4aCkQnihtMZ0lAeKEKJBN4ZoNxF/pwIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178022; c=relaxed/simple;
-	bh=YEhG7tSAAxB+1mT6werUkckV6UtZcj/xka7JawLp+1k=;
+	s=arc-20240116; t=1736178850; c=relaxed/simple;
+	bh=EeCVExciV73jD07j7E3+Q9qeCMfhC5mmXBD/HNZ7Jds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rsyID4VWGKN5ECANtbwHAj0FTOBo/oqwfRW7EQE0BX9xdk5mPX4rKECIoY0fULMaoUE0oNmgAiJBMR77FwDJ5QLelhhifNnDFFpBuBCqIB87UAXRYGp68MsdHX5TyNIE/rHE/Hz6iDl5DAwXMKKPNDUZsNpO8Q7ES8ZIPVT1SDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MqBzkjn3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D403C4CED2;
-	Mon,  6 Jan 2025 15:40:21 +0000 (UTC)
+	 MIME-Version; b=iurCJ4C3CJ7nex9OxjcZs06+ggp9cbcTj/zXUl+wxgVX2x91tTnqv2bYW2p9O2PJvwR7wVMLdpyEPY1lgNTbG3bxxHOw9oA46WV2OKXcXv7EkPoHu21z08FZLOuKcjf1Zd7J66TUWMfAyvsUKTqqXkXOHyOOHMJmIW7XZDAjMLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J8ymC84C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA11C4CED6;
+	Mon,  6 Jan 2025 15:54:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178021;
-	bh=YEhG7tSAAxB+1mT6werUkckV6UtZcj/xka7JawLp+1k=;
+	s=korg; t=1736178850;
+	bh=EeCVExciV73jD07j7E3+Q9qeCMfhC5mmXBD/HNZ7Jds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MqBzkjn3sYKWxYSHIpqobnlPzrmybtWRQ6he2BRZm4hRTGjfLYSQ+GogEJqQjvxkQ
-	 U1xV0NjOgOcTtUR77v3BQckA1+3j+d4ohT6UFXW57tvOxLlCG2QJPUn48WBG8jf/hy
-	 8rq4xA/LilTrr1EAnDwJd1hRHv8uXUmNEfWoIMc8=
+	b=J8ymC84CeBFaRybdldjbhv3BvHHh+YPF89TG5U8CNXdAv4mQUf/5+sc6uOdXzBk4r
+	 rMgA6Rd0ABTYM/Euc7h/WJpwlGBJyyMQ/loWhCZ1qYFM344bnVk27zLX7emQ3BMzqD
+	 2xwJJxJF6BWIGfbqFK9plnmmbqphSe1gS8cZBfo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.12 135/156] wifi: iwlwifi: mvm: Fix __counted_by usage in cfg80211_wowlan_nd_*
-Date: Mon,  6 Jan 2025 16:17:01 +0100
-Message-ID: <20250106151146.817477004@linuxfoundation.org>
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 114/168] xhci: Turn NEC specific quirk for handling Stop Endpoint errors generic
+Date: Mon,  6 Jan 2025 16:17:02 +0100
+Message-ID: <20250106151142.759323794@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit cc0c53f4fac562efb3aca2bc493515e77642ae33 upstream.
+[ Upstream commit e21ebe51af688eb98fd6269240212a3c7300deea ]
 
-Both struct cfg80211_wowlan_nd_match and struct cfg80211_wowlan_nd_info
-pre-allocate space for channels and matches, but then may end up using
-fewer that the full allocation. Shrink the associated counter
-(n_channels and n_matches) after counting the results. This avoids
-compile-time (and run-time) warnings from __counted_by. (The counter
-member needs to be updated _before_ accessing the array index.)
+xHC hosts from several vendors have the same issue where endpoints start
+so slowly that a later queued 'Stop Endpoint' command may complete before
+endpoint is up and running.
 
-Seen with coming GCC 15:
+The 'Stop Endpoint' command fails with context state error as the endpoint
+still appears as  stopped.
 
-drivers/net/wireless/intel/iwlwifi/mvm/d3.c: In function 'iwl_mvm_query_set_freqs':
-drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2877:66: warning: operation on 'match->n_channels' may be undefined [-Wsequence-point]
- 2877 |                                 match->channels[match->n_channels++] =
-      |                                                 ~~~~~~~~~~~~~~~~~^~
-drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2885:66: warning: operation on 'match->n_channels' may be undefined [-Wsequence-point]
- 2885 |                                 match->channels[match->n_channels++] =
-      |                                                 ~~~~~~~~~~~~~~~~~^~
-drivers/net/wireless/intel/iwlwifi/mvm/d3.c: In function 'iwl_mvm_query_netdetect_reasons':
-drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2982:58: warning: operation on 'net_detect->n_matches' may be undefined [-Wsequence-point]
- 2982 |                 net_detect->matches[net_detect->n_matches++] = match;
-      |                                     ~~~~~~~~~~~~~~~~~~~~~^~
+See commit 42b758137601 ("usb: xhci: Limit Stop Endpoint retries") for
+details
 
-Cc: stable@vger.kernel.org
-Fixes: aa4ec06c455d ("wifi: cfg80211: use __counted_by where appropriate")
-Signed-off-by: Kees Cook <kees@kernel.org>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://patch.msgid.link/20240619211233.work.355-kees@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+CC: stable@vger.kernel.org
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241217102122.2316814-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/usb/host/xhci-ring.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -2871,6 +2871,7 @@ static void iwl_mvm_query_set_freqs(stru
- 				    int idx)
- {
- 	int i;
-+	int n_channels = 0;
- 
- 	if (fw_has_api(&mvm->fw->ucode_capa,
- 		       IWL_UCODE_TLV_API_SCAN_OFFLOAD_CHANS)) {
-@@ -2879,7 +2880,7 @@ static void iwl_mvm_query_set_freqs(stru
- 
- 		for (i = 0; i < SCAN_OFFLOAD_MATCHING_CHANNELS_LEN * 8; i++)
- 			if (matches[idx].matching_channels[i / 8] & (BIT(i % 8)))
--				match->channels[match->n_channels++] =
-+				match->channels[n_channels++] =
- 					mvm->nd_channels[i]->center_freq;
- 	} else {
- 		struct iwl_scan_offload_profile_match_v1 *matches =
-@@ -2887,9 +2888,11 @@ static void iwl_mvm_query_set_freqs(stru
- 
- 		for (i = 0; i < SCAN_OFFLOAD_MATCHING_CHANNELS_LEN_V1 * 8; i++)
- 			if (matches[idx].matching_channels[i / 8] & (BIT(i % 8)))
--				match->channels[match->n_channels++] =
-+				match->channels[n_channels++] =
- 					mvm->nd_channels[i]->center_freq;
- 	}
-+	/* We may have ended up with fewer channels than we allocated. */
-+	match->n_channels = n_channels;
- }
- 
- /**
-@@ -2970,6 +2973,8 @@ static void iwl_mvm_query_netdetect_reas
- 			     GFP_KERNEL);
- 	if (!net_detect || !n_matches)
- 		goto out_report_nd;
-+	net_detect->n_matches = n_matches;
-+	n_matches = 0;
- 
- 	for_each_set_bit(i, &matched_profiles, mvm->n_nd_match_sets) {
- 		struct cfg80211_wowlan_nd_match *match;
-@@ -2983,8 +2988,9 @@ static void iwl_mvm_query_netdetect_reas
- 				GFP_KERNEL);
- 		if (!match)
- 			goto out_report_nd;
-+		match->n_channels = n_channels;
- 
--		net_detect->matches[net_detect->n_matches++] = match;
-+		net_detect->matches[n_matches++] = match;
- 
- 		/* We inverted the order of the SSIDs in the scan
- 		 * request, so invert the index here.
-@@ -2999,6 +3005,8 @@ static void iwl_mvm_query_netdetect_reas
- 
- 		iwl_mvm_query_set_freqs(mvm, d3_data->nd_results, match, i);
- 	}
-+	/* We may have fewer matches than we allocated. */
-+	net_detect->n_matches = n_matches;
- 
- out_report_nd:
- 	wakeup.net_detect = net_detect;
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 2694d7bf48a7..0ff70c859f14 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1171,8 +1171,6 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
+ 			 * Keep retrying until the EP starts and stops again, on
+ 			 * chips where this is known to help. Wait for 100ms.
+ 			 */
+-			if (!(xhci->quirks & XHCI_NEC_HOST))
+-				break;
+ 			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
+ 				break;
+ 			fallthrough;
+-- 
+2.39.5
+
 
 
 
