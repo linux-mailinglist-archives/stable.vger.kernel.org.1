@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-107136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12793A02A72
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:34:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF194A02BA7
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:45:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75C1E7A21E8
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:33:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66A131885134
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:45:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E4E844C7C;
-	Mon,  6 Jan 2025 15:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF321DACBB;
+	Mon,  6 Jan 2025 15:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dSW2hAMu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MuQBTI4j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE38983A14;
-	Mon,  6 Jan 2025 15:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB351DE4D2;
+	Mon,  6 Jan 2025 15:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177563; cv=none; b=nZQ24INvJZf6W8LBWkPwn68Eyx4xRJK0QtQ5OF12N9b2sJjbJQICwqGxVhUDTHSHuSVqvenUJK3byU8XVXkmzRZYvYq+GzD6zbMC62FY0DvEckX4S+9tajTXN4ptBPbILnyv2yk4+VRQNRsnCrU7THBMn1Oa7zPeXDh6ugTfCak=
+	t=1736178343; cv=none; b=OI2kTg9/m0yzS5Eki3jlC/jp89LxckqAwhKTmlUD8sRjgF/gNLC0f8DRXpZtWRiBypQmbTr89eKHgheRwmHuJ3Z7d1QBULNHiEumocV0K4WX1Mo2NFU/MSEPpdFdjkjS7G5tGLUF41wYTCDNZ0PtzZ51GLG0R30MKiSVHexB6Ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177563; c=relaxed/simple;
-	bh=B5eUKf0Jw5nO2t5Zz+qxjJWo1qRvhv1k0Fmwg9SHNW0=;
+	s=arc-20240116; t=1736178343; c=relaxed/simple;
+	bh=ESPycb9pUBLp8UIzFVsuM/Uyf4F3K6AVxrrEZX0EcbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mkLba47fPc4XjtIZEJdiu7TFjIzMvmpefsdpSmArFnoFEFuvYM9sUWbbuu1r1IHG3hk3sfiO1zbsTZZQpm0RKq1kbKGa3x4S1WjGO6OIKmQpNKB+jooFkZnalbUlaidew+YIX5ZPMXTENZAlcGhzT45DMxeUDpYmDEn4vY2g3pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dSW2hAMu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E675C4CED6;
-	Mon,  6 Jan 2025 15:32:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pNaKvgzt6uq+bVOT3jJbLYSJ4gbx9jIcJ8VNqxlmt3cjVf0JtbVqwcouRJfHNnHMAsU77WqoYaLueNdJn5ERmPwf6uvXz8az5kczrlFANF8OvYRCFlIdnkP82vq41XOzaEN2A8oRGj4gmE7hEMUFvG9hKa669DEakIx4YRV4XaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MuQBTI4j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51826C4CED2;
+	Mon,  6 Jan 2025 15:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177563;
-	bh=B5eUKf0Jw5nO2t5Zz+qxjJWo1qRvhv1k0Fmwg9SHNW0=;
+	s=korg; t=1736178343;
+	bh=ESPycb9pUBLp8UIzFVsuM/Uyf4F3K6AVxrrEZX0EcbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dSW2hAMuZw4A5yp0vJ4D88pOilTbMcnA0aX1bKzoIIF9BFJ4TClmXSrX+F8YaDi4m
-	 z5tCYl4We+Xib6Tpf8kUD4sXIiQXHjlgMpSvU2Si81XZWZEoe4LU8Ki9iTowqOta+z
-	 xgdGcv+inPi7C5ICSvkHWGc1tCLhdF+dvOQ+ILwc=
+	b=MuQBTI4jr0sR6vzyF4T+cxhiapC2Ms1RCFfMK0DmKsINHQicQXCW2d9l/+pTUWtNW
+	 sYVnel4NlRN1ocIOBTwPY24qxpH+UzdiuE7xDzfebf/1aKNTqN8MtcFoO+sF/o7Sur
+	 9TcN1wWV4G0mmrCtrgJGEUeMX3w4usE/wUOJi4bc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.6 205/222] RDMA/uverbs: Prevent integer overflow issue
+	=?UTF-8?q?Thi=C3=A9baud=20Weksteen?= <tweek@google.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 5.10 085/138] selinux: ignore unknown extended permissions
 Date: Mon,  6 Jan 2025 16:16:49 +0100
-Message-ID: <20250106151158.527176116@linuxfoundation.org>
+Message-ID: <20250106151136.452477153@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,81 +59,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Thiébaud Weksteen <tweek@google.com>
 
-commit d0257e089d1bbd35c69b6c97ff73e3690ab149a9 upstream.
+commit 900f83cf376bdaf798b6f5dcb2eae0c822e908b6 upstream.
 
-In the expression "cmd.wqe_size * cmd.wr_count", both variables are u32
-values that come from the user so the multiplication can lead to integer
-wrapping.  Then we pass the result to uverbs_request_next_ptr() which also
-could potentially wrap.  The "cmd.sge_count * sizeof(struct ib_uverbs_sge)"
-multiplication can also overflow on 32bit systems although it's fine on
-64bit systems.
+When evaluating extended permissions, ignore unknown permissions instead
+of calling BUG(). This commit ensures that future permissions can be
+added without interfering with older kernels.
 
-This patch does two things.  First, I've re-arranged the condition in
-uverbs_request_next_ptr() so that the use controlled variable "len" is on
-one side of the comparison by itself without any math.  Then I've modified
-all the callers to use size_mul() for the multiplications.
-
-Fixes: 67cdb40ca444 ("[IB] uverbs: Implement more commands")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/b8765ab3-c2da-4611-aae0-ddd6ba173d23@stanley.mountain
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: fa1aa143ac4a ("selinux: extended permissions for ioctls")
+Signed-off-by: Thiébaud Weksteen <tweek@google.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Acked-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/uverbs_cmd.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ security/selinux/ss/services.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/infiniband/core/uverbs_cmd.c
-+++ b/drivers/infiniband/core/uverbs_cmd.c
-@@ -161,7 +161,7 @@ static const void __user *uverbs_request
- {
- 	const void __user *res = iter->cur;
+--- a/security/selinux/ss/services.c
++++ b/security/selinux/ss/services.c
+@@ -970,7 +970,10 @@ void services_compute_xperms_decision(st
+ 					xpermd->driver))
+ 			return;
+ 	} else {
+-		BUG();
++		pr_warn_once(
++			"SELinux: unknown extended permission (%u) will be ignored\n",
++			node->datum.u.xperms->specified);
++		return;
+ 	}
  
--	if (iter->cur + len > iter->end)
-+	if (len > iter->end - iter->cur)
- 		return (void __force __user *)ERR_PTR(-ENOSPC);
- 	iter->cur += len;
- 	return res;
-@@ -2009,11 +2009,13 @@ static int ib_uverbs_post_send(struct uv
- 	ret = uverbs_request_start(attrs, &iter, &cmd, sizeof(cmd));
- 	if (ret)
- 		return ret;
--	wqes = uverbs_request_next_ptr(&iter, cmd.wqe_size * cmd.wr_count);
-+	wqes = uverbs_request_next_ptr(&iter, size_mul(cmd.wqe_size,
-+						       cmd.wr_count));
- 	if (IS_ERR(wqes))
- 		return PTR_ERR(wqes);
--	sgls = uverbs_request_next_ptr(
--		&iter, cmd.sge_count * sizeof(struct ib_uverbs_sge));
-+	sgls = uverbs_request_next_ptr(&iter,
-+				       size_mul(cmd.sge_count,
-+						sizeof(struct ib_uverbs_sge)));
- 	if (IS_ERR(sgls))
- 		return PTR_ERR(sgls);
- 	ret = uverbs_request_finish(&iter);
-@@ -2199,11 +2201,11 @@ ib_uverbs_unmarshall_recv(struct uverbs_
- 	if (wqe_size < sizeof(struct ib_uverbs_recv_wr))
- 		return ERR_PTR(-EINVAL);
+ 	if (node->key.specified == AVTAB_XPERMS_ALLOWED) {
+@@ -1007,7 +1010,8 @@ void services_compute_xperms_decision(st
+ 					node->datum.u.xperms->perms.p[i];
+ 		}
+ 	} else {
+-		BUG();
++		pr_warn_once("SELinux: unknown specified key (%u)\n",
++			     node->key.specified);
+ 	}
+ }
  
--	wqes = uverbs_request_next_ptr(iter, wqe_size * wr_count);
-+	wqes = uverbs_request_next_ptr(iter, size_mul(wqe_size, wr_count));
- 	if (IS_ERR(wqes))
- 		return ERR_CAST(wqes);
--	sgls = uverbs_request_next_ptr(
--		iter, sge_count * sizeof(struct ib_uverbs_sge));
-+	sgls = uverbs_request_next_ptr(iter, size_mul(sge_count,
-+						      sizeof(struct ib_uverbs_sge)));
- 	if (IS_ERR(sgls))
- 		return ERR_CAST(sgls);
- 	ret = uverbs_request_finish(iter);
 
 
 
