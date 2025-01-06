@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-107568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 932DEA02C87
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92079A02A88
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:34:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2846166F31
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EFCC7A27BB
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE501D7E21;
-	Mon,  6 Jan 2025 15:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F6D15854A;
+	Mon,  6 Jan 2025 15:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQqJXAQG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tM1bKw11"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588F3146D6B;
-	Mon,  6 Jan 2025 15:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D798915665D;
+	Mon,  6 Jan 2025 15:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178859; cv=none; b=N+YqhkLX9ychEtm0LxKMwfK4Y2eYjsjNASbATmCFEiRehZN2OfSj7Um6No3K2Yp0Rv8irH8eX5rjRWfquzhcBvAlGl+LEHLe0vpHoehn+s48UiVdrErcfUm/5qL4O092iBEtxzP2WxI57vVUIZbxq7NrWO9j8J7adDW9ogkw5+8=
+	t=1736177617; cv=none; b=ih/+bHUxFzgiahJPJc8hIfSbHfqBEqcVZCowTmcYnqmC20aioDjzBBN9wwRDsekSbtVBWVHMCCXjH9qwcLB0FIRIZaSaIm6k8u1V3cNPbuE2xTaDxH3L1eVCVdidDdP0h8jDysUaecA+uGsMQDPhqNGav9iltIEwswH2hGsgA4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178859; c=relaxed/simple;
-	bh=+wAMcC86TPyN8PPdlXEqRu4NEF79PSLp7zdl5Z2/cCo=;
+	s=arc-20240116; t=1736177617; c=relaxed/simple;
+	bh=ZPqio91KfyA5ISM+3CZNw2ikOwwDt9CsMd93SQ0TyuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q7Rr3kjTrY/SMgC9JRpo47ygHGgFllrpwuE+6Zb/qTKCT5YJige5ZS4MaEsx2i5XYyvbjllXNAEoeAKD/VLwj5A3LxIGJbeqe1VJJmDmTN6PXRcEhQBdCeo47KdfsO+wV5KmgJ/+vJGzl2eKdn05Bpi+zE//v1fW3+ogRTajYOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GQqJXAQG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE4C4C4CED2;
-	Mon,  6 Jan 2025 15:54:18 +0000 (UTC)
+	 MIME-Version; b=QNdos/TVKR6ADDAUenBFDxrkF8PDynS3B9T2UWSUvglowHsat47r8zf9FW6FhsMXIZgOe2EzjPIh9CcYrvD6ROc/ln2EFm4d89Q/mvbvdvYGnbq6PzfUnbNxDJaldPzhNTTQ9K5BtqNowAjea7lEw0S68FQxMk+fwLCCA75v+3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tM1bKw11; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECAECC4CED2;
+	Mon,  6 Jan 2025 15:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178859;
-	bh=+wAMcC86TPyN8PPdlXEqRu4NEF79PSLp7zdl5Z2/cCo=;
+	s=korg; t=1736177617;
+	bh=ZPqio91KfyA5ISM+3CZNw2ikOwwDt9CsMd93SQ0TyuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GQqJXAQGrei0c2NAjV+mqbA/xh0Do/dTpeK3MUsPe4JIIOCDhVVHQSGO84PVLWqc1
-	 DZHiNaQvN1NakyvjuTRdJhiMMT3N5NPZODnojTZ2Btbqh51A9l2RY9n6tRmfeLma5r
-	 tErB+cnHr9v+Cjf5j45Fnqqq5tCSl/S7lNtxt98A=
+	b=tM1bKw11MuhsB5s/blJA3qVPEsdzcwy/S0ghnaVElHzcQusRtL0MFW7s+qwBddISI
+	 gh9N7gcAfDitJQOgRW/yp7vD3/gP93jCNOHrNwh0dArlqyROAvxaMWT2gqETItUAka
+	 7dM+REWzkSg++2DwnHdtBvUeXJadH0SoPrFVaWeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Bloch <mbloch@nvidia.com>,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 117/168] RDMA/mlx5: Enforce same type port association for multiport RoCE
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.6 221/222] RDMA/bnxt_re: Fix max SGEs for the Work Request
 Date: Mon,  6 Jan 2025 16:17:05 +0100
-Message-ID: <20250106151142.870505102@linuxfoundation.org>
+Message-ID: <20250106151159.129143990@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Kashyap Desai <kashyap.desai@broadcom.com>
 
-[ Upstream commit e05feab22fd7dabcd6d272c4e2401ec1acdfdb9b ]
+commit 79d330fbdffd8cee06d8bdf38d82cb62d8363a27 upstream.
 
-Different core device types such as PFs and VFs shouldn't be affiliated
-together since they have different capabilities, fix that by enforcing
-type check before doing the affiliation.
+Gen P7 supports up to 13 SGEs for now. WQE software structure
+can hold only 6 now. Since the max send sge is reported as
+13, the stack can give requests up to 13 SGEs. This is causing
+traffic failures and system crashes.
 
-Fixes: 32f69e4be269 ("{net, IB}/mlx5: Manage port association for multiport RoCE")
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Link: https://patch.msgid.link/88699500f690dff1c1852c1ddb71f8a1cc8b956e.1733233480.git.leonro@nvidia.com
-Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Use the define for max SGE supported for variable size. This
+will work for both static and variable WQEs.
+
+Fixes: 227f51743b61 ("RDMA/bnxt_re: Fix the max WQE size for static WQE support")
+Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/20241204075416.478431-2-kalesh-anakkur.purayil@broadcom.com
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/main.c | 6 ++++--
- include/linux/mlx5/driver.h       | 6 ++++++
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.h |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
-index aa7a44ea49fa..2236c62a1980 100644
---- a/drivers/infiniband/hw/mlx5/main.c
-+++ b/drivers/infiniband/hw/mlx5/main.c
-@@ -3284,7 +3284,8 @@ static int mlx5_ib_init_multiport_master(struct mlx5_ib_dev *dev)
- 		list_for_each_entry(mpi, &mlx5_ib_unaffiliated_port_list,
- 				    list) {
- 			if (dev->sys_image_guid == mpi->sys_image_guid &&
--			    (mlx5_core_native_port_num(mpi->mdev) - 1) == i) {
-+			    (mlx5_core_native_port_num(mpi->mdev) - 1) == i &&
-+			    mlx5_core_same_coredev_type(dev->mdev, mpi->mdev)) {
- 				bound = mlx5_ib_bind_slave_port(dev, mpi);
- 			}
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+@@ -113,7 +113,6 @@ struct bnxt_qplib_sge {
+ 	u32				size;
+ };
  
-@@ -4408,7 +4409,8 @@ static int mlx5r_mp_probe(struct auxiliary_device *adev,
- 
- 	mutex_lock(&mlx5_ib_multiport_mutex);
- 	list_for_each_entry(dev, &mlx5_ib_dev_list, ib_dev_list) {
--		if (dev->sys_image_guid == mpi->sys_image_guid)
-+		if (dev->sys_image_guid == mpi->sys_image_guid &&
-+		    mlx5_core_same_coredev_type(dev->mdev, mpi->mdev))
- 			bound = mlx5_ib_bind_slave_port(dev, mpi);
- 
- 		if (bound) {
-diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
-index 26095c0fd781..62d60a515b03 100644
---- a/include/linux/mlx5/driver.h
-+++ b/include/linux/mlx5/driver.h
-@@ -1182,6 +1182,12 @@ static inline bool mlx5_core_is_vf(const struct mlx5_core_dev *dev)
- 	return dev->coredev_type == MLX5_COREDEV_VF;
- }
- 
-+static inline bool mlx5_core_same_coredev_type(const struct mlx5_core_dev *dev1,
-+					       const struct mlx5_core_dev *dev2)
-+{
-+	return dev1->coredev_type == dev2->coredev_type;
-+}
-+
- static inline bool mlx5_core_is_ecpf(const struct mlx5_core_dev *dev)
- {
- 	return dev->caps.embedded_cpu;
--- 
-2.39.5
-
+-#define BNXT_QPLIB_QP_MAX_SGL	6
+ struct bnxt_qplib_swq {
+ 	u64				wr_id;
+ 	int				next_idx;
+@@ -153,7 +152,7 @@ struct bnxt_qplib_swqe {
+ #define BNXT_QPLIB_SWQE_FLAGS_UC_FENCE			BIT(2)
+ #define BNXT_QPLIB_SWQE_FLAGS_SOLICIT_EVENT		BIT(3)
+ #define BNXT_QPLIB_SWQE_FLAGS_INLINE			BIT(4)
+-	struct bnxt_qplib_sge		sg_list[BNXT_QPLIB_QP_MAX_SGL];
++	struct bnxt_qplib_sge		sg_list[BNXT_VAR_MAX_SGE];
+ 	int				num_sge;
+ 	/* Max inline data is 96 bytes */
+ 	u32				inline_len;
 
 
 
