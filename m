@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-106882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 201FCA02920
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:20:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C60B0A02AE5
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:38:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D842B160DBE
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:20:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9F71164843
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8541547D8;
-	Mon,  6 Jan 2025 15:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22E0514F12D;
+	Mon,  6 Jan 2025 15:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRGhZni3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S35j8syB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F39126C05;
-	Mon,  6 Jan 2025 15:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5D586332;
+	Mon,  6 Jan 2025 15:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176791; cv=none; b=LdV6SEw9T6Q7iOS1DQMPVRcbzpbO6a368whAcQm2mOkilhPnHOOJPlzXGN+NvqpDqP+vizfxOq5F9Krfb5Myb5cBjdWShpbpUDUhbCfa2W8fijBFB+6RG2rCplTJTOg/HxTu0hRb1Gp2wx17LOw00bBxS0DY9sHjP9EpHqThubo=
+	t=1736177858; cv=none; b=q8alN8xb73RrKXOqoB2We1bv+2Jih4a/8VkDJVrji8ojCCdVoO5i/NGVBf/+dDiVU6oflCHwk872E/zx/+ll+NBpEoAGbm6H6w825odHWAOiiRsw5D+ZnjBxgHTRqIXgsduLtJqjj3mT0TCA9fDnvYkoSL6I68+e8Y4meExgjiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176791; c=relaxed/simple;
-	bh=OBBl4TNM4WGdJnjzKy54W4zPkieiBmiMQwG5g30pa50=;
+	s=arc-20240116; t=1736177858; c=relaxed/simple;
+	bh=ADIYJ0lJGYQlmtgYK3syHPEIydVGwkgUlIrDaYYqUuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YlwrYAcsT7IAnEauv3iZ8d2uSMzRq4PE5tW6u/9JtemDe/P7RZGYfqzCCfxJJu0W4JEQkHZ9WA00ZjQSIQLYq4uSGzno7oC5dfOyBYLXgLoX/hZlD2k4LME4II898cYMxSvUShFoLts3C87V/Txh6P+6ADadXAwzjpVGsMJ7Yv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRGhZni3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99B0C4CED2;
-	Mon,  6 Jan 2025 15:19:50 +0000 (UTC)
+	 MIME-Version; b=kX5jstaFx041o5LU8C09/+5u/Tlo08SfAvZzosncjsO8lmtWcHhwZWqmw4cBVsWyrFoCRLbuBtur3HwGfleu4pNpOnC8sE7mr/uvMmFbkCDk2V5xFdg+SqQSV9o2OgOysfG566OehSx7kormZ34Kg5HpFyIdmBFFCi3YvsxXvgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S35j8syB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF97C4CED2;
+	Mon,  6 Jan 2025 15:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176791;
-	bh=OBBl4TNM4WGdJnjzKy54W4zPkieiBmiMQwG5g30pa50=;
+	s=korg; t=1736177858;
+	bh=ADIYJ0lJGYQlmtgYK3syHPEIydVGwkgUlIrDaYYqUuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qRGhZni3As4mK6iD9mQLYj/PfW5A9OAX70MIA9Lv9uJSFML3DkpNcDeeZT3nz6LzU
-	 4IEVDgsgfNKOAG0+ucI9F/PCLX+6l/nrJdmDEx+yY1uRQq/ndT+rWwx5m4wy9Zufry
-	 T01/QiQlW8UZI7+0L8upliuX2n10+835B+fJRD7Q=
+	b=S35j8syBLe+GDSN/U6c3uxjrbBHJbxB8n7hxbo4KxQbs7jPhf134pIJAQiAhSgDS1
+	 rB+V6V+wLvbnqKVC16DRZ2J/RSJ99gJ6AfwjWXlHvdbKSaCYgbLE3foNAlTC3e0vBu
+	 o614O/wpyBnu52L8yRWh5ToRE/07BGOG7cAvo6K8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Aditya Kumar Singh <quic_adisi@quicinc.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 33/81] ipv4: ip_tunnel: Unmask upper DSCP bits in ip_md_tunnel_xmit()
+Subject: [PATCH 6.12 079/156] wifi: cfg80211: clear link ID from bitmap during link delete after clean up
 Date: Mon,  6 Jan 2025 16:16:05 +0100
-Message-ID: <20250106151130.689270471@linuxfoundation.org>
+Message-ID: <20250106151144.707551242@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
 
-[ Upstream commit c34cfe72bb260fc49660d9e6a9ba95ba01669ae2 ]
+[ Upstream commit b5c32ff6a3a38c74facdd1fe34c0d709a55527fd ]
 
-Unmask the upper DSCP bits when initializing an IPv4 flow key via
-ip_tunnel_init_flow() before passing it to ip_route_output_key() so that
-in the future we could perform the FIB lookup according to the full DSCP
-value.
+Currently, during link deletion, the link ID is first removed from the
+valid_links bitmap before performing any clean-up operations. However, some
+functions require the link ID to remain in the valid_links bitmap. One
+such example is cfg80211_cac_event(). The flow is -
 
-Note that the 'tos' variable includes the full DS field. Either the one
-specified via the tunnel key or the one inherited from the inner packet.
+nl80211_remove_link()
+    cfg80211_remove_link()
+        ieee80211_del_intf_link()
+            ieee80211_vif_set_links()
+                ieee80211_vif_update_links()
+                    ieee80211_link_stop()
+                        cfg80211_cac_event()
 
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: b5a7b661a073 ("net: Fix netns for ip_tunnel_init_flow()")
+cfg80211_cac_event() requires link ID to be present but it is cleared
+already in cfg80211_remove_link(). Ultimately, WARN_ON() is hit.
+
+Therefore, clear the link ID from the bitmap only after completing the link
+clean-up.
+
+Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+Link: https://patch.msgid.link/20241121-mlo_dfs_fix-v2-1-92c3bf7ab551@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_tunnel.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/mac80211/cfg.c  | 8 +++++++-
+ net/wireless/util.c | 3 +--
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index d3ad2c424fe9..eb74e33ffb64 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -43,6 +43,7 @@
- #include <net/rtnetlink.h>
- #include <net/udp.h>
- #include <net/dst_metadata.h>
-+#include <net/inet_dscp.h>
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 1b1bf044378d..f11fd360b422 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -4992,10 +4992,16 @@ static void ieee80211_del_intf_link(struct wiphy *wiphy,
+ 				    unsigned int link_id)
+ {
+ 	struct ieee80211_sub_if_data *sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
++	u16 new_links = wdev->valid_links & ~BIT(link_id);
  
- #if IS_ENABLED(CONFIG_IPV6)
- #include <net/ipv6.h>
-@@ -609,9 +610,9 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 			tos = ipv6_get_dsfield((const struct ipv6hdr *)inner_iph);
+ 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
+ 
+-	ieee80211_vif_set_links(sdata, wdev->valid_links, 0);
++	/* During the link teardown process, certain functions require the
++	 * link_id to remain in the valid_links bitmap. Therefore, instead
++	 * of removing the link_id from the bitmap, pass a masked value to
++	 * simulate as if link_id does not exist anymore.
++	 */
++	ieee80211_vif_set_links(sdata, new_links, 0);
+ }
+ 
+ static int
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index f49b55724f83..18585b1416c6 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -2843,10 +2843,9 @@ void cfg80211_remove_link(struct wireless_dev *wdev, unsigned int link_id)
+ 		break;
  	}
- 	ip_tunnel_init_flow(&fl4, proto, key->u.ipv4.dst, key->u.ipv4.src,
--			    tunnel_id_to_key32(key->tun_id), RT_TOS(tos),
--			    dev_net(dev), 0, skb->mark, skb_get_hash(skb),
--			    key->flow_flags);
-+			    tunnel_id_to_key32(key->tun_id),
-+			    tos & INET_DSCP_MASK, dev_net(dev), 0, skb->mark,
-+			    skb_get_hash(skb), key->flow_flags);
  
- 	if (!tunnel_hlen)
- 		tunnel_hlen = ip_encap_hlen(&tun_info->encap);
+-	wdev->valid_links &= ~BIT(link_id);
+-
+ 	rdev_del_intf_link(rdev, wdev, link_id);
+ 
++	wdev->valid_links &= ~BIT(link_id);
+ 	eth_zero_addr(wdev->links[link_id].addr);
+ }
+ 
 -- 
 2.39.5
 
