@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05F13A02C2A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:51:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EDC3A02A03
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:29:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36D6716182E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:51:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 465283A6ECF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:28:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA5631474A0;
-	Mon,  6 Jan 2025 15:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86CDC1DB951;
+	Mon,  6 Jan 2025 15:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A9yzCAXz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQWmzEPt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7802A1CBA02;
-	Mon,  6 Jan 2025 15:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FC31DB360;
+	Mon,  6 Jan 2025 15:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178614; cv=none; b=XqNl2Dkv3PRK0SQieH5b1msrwAGxLlscRTL+FU1YxA5tmllU//iZVsJRXLmFtFkO9955SXepa01rD6EWUIoIGRJqY/V2lZbcSxLCWFtYjVOrIbZvWR0+dFWqIvxmYDP7GvlCyracypf7pQvM2suXDpBxU4APZ/MXGFpxjRpGBkM=
+	t=1736177280; cv=none; b=On2CldzTmaOFqsf7CWPVWYS3N1DezrsEwBcIxFVgH8TTUwx1TvXTVMIEGwfP+wOG0egYhRyuc6gO6XrOSK+pwhh3Q0SUO3X79EuYnXzq2GjOX51doPN2n0FA6xV+ekvsqx8/xW7HRgSr4nUAm2WsxQkDxVmIbg7pFJ4zps+/fRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178614; c=relaxed/simple;
-	bh=eKG4wY6OqdiFs0vHRD2k+1CjfFKlHQZv1PXSFg6XSW8=;
+	s=arc-20240116; t=1736177280; c=relaxed/simple;
+	bh=1VOdgh2e9OhO3qltFKHJhUcUHjC2h3aPZjRfxxjSfEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oBjHK6XQQOYCg2I1Ss3rD44hPzx2KPJExKGSb8ucXfW4QVuQX4eHCJ6aH4/iey/y84tOgLter5xrNRL/KEO9P24RBrgC+jOSQrZHyGTSfERzNOtXxSYuJV7I7frJou6IkeVE2teulKHhd200cP/DYoAwqzzCwUW0FUz+4ZZT5XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A9yzCAXz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C84EFC4CED2;
-	Mon,  6 Jan 2025 15:50:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NLjHOWs40pFPtujB2XdSUX+zxOneANqiG6XLfuWNXacQq2MMV9LtDCjKDmGINeI4ubXaspugzQoy7hzlSd/iECtF9PEJ3nt63N4pQgpyP64t1akx/C36CpvlYbW7AWj3A/PVoirzXmEyR4uX1+qQB5XIR/LmtTh9pjX9OGqzytg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQWmzEPt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64731C4CEDF;
+	Mon,  6 Jan 2025 15:27:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178614;
-	bh=eKG4wY6OqdiFs0vHRD2k+1CjfFKlHQZv1PXSFg6XSW8=;
+	s=korg; t=1736177279;
+	bh=1VOdgh2e9OhO3qltFKHJhUcUHjC2h3aPZjRfxxjSfEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A9yzCAXzxRoOworNuLkgmuBk+SHyNPvKRxVWWSNl4rIPwfzKKJ+/6P1CH9eLKVH6+
-	 AmnZUdCtggU8R4qmvi9+bnuX8I0hT1YkLhVD+px+h49zzlZrQdQ+Hy9nYWXFtJFF5z
-	 C1jBsxi23+wIeHGtucVIr9JzZ/l/x+H2LoLt2qtc=
+	b=MQWmzEPtIjl05RPzSRBItSuwQUVoZE/KVE1BwKAEUKbZYdTBDG2AkToRFr0VNZ3B9
+	 NNdmmr2FYQhnxALFdwBiGQ9Ffvq2m3IzRzFr9G5UtUMPJUC5myGqtsDkTqYXhjrKD2
+	 5pNv3RrGrBElEX3/l61TDqxtzxf74X2Sq/Bhka2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Vadim Pasternak <vadimp@nvidia.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 006/168] ASoC: Intel: sof_sdw: fix jack detection on ADL-N variant RVP
-Date: Mon,  6 Jan 2025 16:15:14 +0100
-Message-ID: <20250106151138.700065280@linuxfoundation.org>
+Subject: [PATCH 6.6 111/222] platform/x86: mlx-platform: call pci_dev_put() to balance the refcount
+Date: Mon,  6 Jan 2025 16:15:15 +0100
+Message-ID: <20250106151154.797945599@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 65c90df918205bc84f5448550cde76a54dae5f52 ]
+[ Upstream commit 185e1b1d91e419445d3fd99c1c0376a970438acf ]
 
-Experimental tests show that JD2_100K is required, otherwise the jack
-is detected always even with nothing plugged-in.
+mlxplat_pci_fpga_device_init() calls pci_get_device() but does not
+release the refcount on error path. Call pci_dev_put() on the error path
+and in mlxplat_pci_fpga_device_exit() to fix this.
 
-To avoid matching with other known quirks the SKU information is used.
+This bug was found by an experimental static analysis tool that I am
+developing.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://patch.msgid.link/20240624121119.91552-2-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 02daa222fbdd ("platform: mellanox: Add initial support for PCIe based programming logic device")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
+Link: https://lore.kernel.org/r/20241216022538.381209-1-joe@pf.is.s.u-tokyo.ac.jp
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/platform/x86/mlx-platform.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index 089b6c7994f9..cfa0c3eaffea 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -258,6 +258,15 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 					SOF_BT_OFFLOAD_SSP(2) |
- 					SOF_SSP_BT_OFFLOAD_PRESENT),
- 	},
-+	{
-+		.callback = sof_sdw_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Intel Corporation"),
-+			DMI_MATCH(DMI_PRODUCT_SKU, "0000000000070000"),
-+		},
-+		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
-+					RT711_JD2_100K),
-+	},
- 	{
- 		.callback = sof_sdw_quirk_cb,
- 		.matches = {
+diff --git a/drivers/platform/x86/mlx-platform.c b/drivers/platform/x86/mlx-platform.c
+index a2ffe4157df1..b8d77adc9ea1 100644
+--- a/drivers/platform/x86/mlx-platform.c
++++ b/drivers/platform/x86/mlx-platform.c
+@@ -6237,6 +6237,7 @@ mlxplat_pci_fpga_device_init(unsigned int device, const char *res_name, struct p
+ fail_pci_request_regions:
+ 	pci_disable_device(pci_dev);
+ fail_pci_enable_device:
++	pci_dev_put(pci_dev);
+ 	return err;
+ }
+ 
+@@ -6247,6 +6248,7 @@ mlxplat_pci_fpga_device_exit(struct pci_dev *pci_bridge,
+ 	iounmap(pci_bridge_addr);
+ 	pci_release_regions(pci_bridge);
+ 	pci_disable_device(pci_bridge);
++	pci_dev_put(pci_bridge);
+ }
+ 
+ static int
 -- 
 2.39.5
 
