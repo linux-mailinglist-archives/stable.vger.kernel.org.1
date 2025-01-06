@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-107456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB7F3A02BF9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:49:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 256AFA02D25
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:01:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77092161ED8
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:48:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F7F51885CAF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20AC21494C3;
-	Mon,  6 Jan 2025 15:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C511DED5B;
+	Mon,  6 Jan 2025 16:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzXV6zt5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5Rzcf4d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C808913B592;
-	Mon,  6 Jan 2025 15:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1AA1DE8BD;
+	Mon,  6 Jan 2025 16:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178516; cv=none; b=IJ2lwOV1V9p45+j3vE7ivRQxKQQHNoF86BX2O/pF/60gqo1tH/JXjtMO8r1RIJ0gSSET0gP5yl33lgwnJZCj++TyYA1mFRBm3TwmrCsTKdsEOtU4LtkbC0Q5Gr7a5mFC8EGy1Lk0Q+NDcibwV55BkNStxcmGzJhE6ED5PBf9jl0=
+	t=1736179288; cv=none; b=G4h0XrdlVPcEXkQ402I9kq0J35n8ghH95tnPnmUTPoYYqpVloJpA/uPJTt9FrBvdfvxYeTXID0pq12pqkRK3TcE65IVRUNyEQfu3RucZbDuqamsKJWZqrUfovTx6Yn9wns6lI0sOtQ3RLfWMQjdiVQaRNVKOKRvmkaLaN0V5Lls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178516; c=relaxed/simple;
-	bh=5Rlac0DBbJwqJO69oGUcpTjKe1C/xDwOWomFZBzSKzQ=;
+	s=arc-20240116; t=1736179288; c=relaxed/simple;
+	bh=ZHx348gsxSZXoXDn2LaNi9NcO1mflrofWBtxy/f4QaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ib1qXmQfrMC6IHYTewkqIT+AwnRA8Zuf89FEzzfVM7zZdF5xWGOn9JPhM7WnZFxvcNxAjalqolqBtpTWipHxOiICAipFFAscBQprYCLfvvQs9bKWqyNHWsD4aPK0M+oLhcUPpRTdulgwv47Hkynn3tAZkjwjP/MbVtYf1qe7VKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzXV6zt5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F99C4CED2;
-	Mon,  6 Jan 2025 15:48:36 +0000 (UTC)
+	 MIME-Version; b=oCc5L1ZIePVYT86vz5Ro8UNA5bmqpM2vnUxciOZX7LgcN4yHFIQSuIP5ma6BEmv1j0ULRxo6IG/IPwDOEclkh25XKkTYMMT7cCQt8ukDx9LKLRZmIkUNXlpZQfUufpcAKrEBbHce2tAjVoT0lpw2Kf9YjxX06y4m5Cxe0LMIB/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5Rzcf4d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9C3C4CED2;
+	Mon,  6 Jan 2025 16:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178516;
-	bh=5Rlac0DBbJwqJO69oGUcpTjKe1C/xDwOWomFZBzSKzQ=;
+	s=korg; t=1736179288;
+	bh=ZHx348gsxSZXoXDn2LaNi9NcO1mflrofWBtxy/f4QaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QzXV6zt54DGJrDMVwX3kRZYT2efYCEl0eVFmEx1GBXnoJcG+82nK68ehgmkjPhDBT
-	 d/iNEiY8mI8uHnCyRHru/0UAdAoDedVVu/j92ULE85rBbzOuf2tJl3QXqTYS6WbSLt
-	 wR7Ry9mXc/L4imqSl72HzMXzrUvUpHSEHiQqQWbM=
+	b=h5Rzcf4dBXy7rvdzLwU8CSSnP77doawEyNj7huBY3Gn5TTmRxxHEQCIWI+llN4fcG
+	 102HhEPtoPoCdt28hNdaCew2n5SgVGrT2rLelxJ2/I5RhaNmfs+iw705fI9Ae57u/d
+	 f09TaWp0pr3/xAyCnRWSelM0hfBk4jcFR+VyKTbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Vineet Gupta <vgupta@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 128/138] ARC: build: Try to guess GCC variant of cross compiler
+	Eric Dumazet <edumazet@google.com>,
+	Vasily Averin <vasily.averin@linux.dev>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+Subject: [PATCH 5.4 56/93] ipv6: fix possible UAF in ip6_finish_output2()
 Date: Mon,  6 Jan 2025 16:17:32 +0100
-Message-ID: <20250106151138.079984914@linuxfoundation.org>
+Message-ID: <20250106151130.819280334@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +63,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 824927e88456331c7a999fdf5d9d27923b619590 ]
+[ Upstream commit e891b36de161fcd96f12ff83667473e5067b9037 ]
 
-ARC GCC compiler is packaged starting from Fedora 39i and the GCC
-variant of cross compile tools has arc-linux-gnu- prefix and not
-arc-linux-. This is causing that CROSS_COMPILE variable is left unset.
+If skb_expand_head() returns NULL, skb has been freed
+and associated dst/idev could also have been freed.
 
-This change allows builds without need to supply CROSS_COMPILE argument
-if distro package is used.
+We need to hold rcu_read_lock() to make sure the dst and
+associated idev are alive.
 
-Before this change:
-$ make -j 128 ARCH=arc W=1 drivers/infiniband/hw/mlx4/
-  gcc: warning: ‘-mcpu=’ is deprecated; use ‘-mtune=’ or ‘-march=’ instead
-  gcc: error: unrecognized command-line option ‘-mmedium-calls’
-  gcc: error: unrecognized command-line option ‘-mlock’
-  gcc: error: unrecognized command-line option ‘-munaligned-access’
-
-[1] https://packages.fedoraproject.org/pkgs/cross-gcc/gcc-arc-linux-gnu/index.html
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Vineet Gupta <vgupta@kernel.org>
+Fixes: 5796015fa968 ("ipv6: allocate enough headroom in ip6_finish_output2()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Vasily Averin <vasily.averin@linux.dev>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20240820160859.3786976-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+(cherry picked from commit e891b36de161fcd96f12ff83667473e5067b9037)
+Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arc/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/ip6_output.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arc/Makefile b/arch/arc/Makefile
-index 578bdbbb0fa7..18f4b2452074 100644
---- a/arch/arc/Makefile
-+++ b/arch/arc/Makefile
-@@ -6,7 +6,7 @@
- KBUILD_DEFCONFIG := haps_hs_smp_defconfig
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index a88c3988cbbd..45622cc03e96 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -68,11 +68,15 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
  
- ifeq ($(CROSS_COMPILE),)
--CROSS_COMPILE := $(call cc-cross-prefix, arc-linux- arceb-linux-)
-+CROSS_COMPILE := $(call cc-cross-prefix, arc-linux- arceb-linux- arc-linux-gnu-)
- endif
+ 	/* Be paranoid, rather than too clever. */
+ 	if (unlikely(hh_len > skb_headroom(skb)) && dev->header_ops) {
++		/* Make sure idev stays alive */
++		rcu_read_lock();
+ 		skb = skb_expand_head(skb, hh_len);
+ 		if (!skb) {
+ 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
++			rcu_read_unlock();
+ 			return -ENOMEM;
+ 		}
++		rcu_read_unlock();
+ 	}
  
- cflags-y	+= -fno-common -pipe -fno-builtin -mmedium-calls -D__linux__
+ 	hdr = ipv6_hdr(skb);
 -- 
 2.39.5
 
