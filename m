@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F234EA02BED
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:48:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FCCFA02D0C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:00:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64A1B163073
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A780A1881A3B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBA015A842;
-	Mon,  6 Jan 2025 15:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705512CA8;
+	Mon,  6 Jan 2025 16:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHU4/fcH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F73Z4sqz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C626E145348;
-	Mon,  6 Jan 2025 15:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249821DE3A0;
+	Mon,  6 Jan 2025 16:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178468; cv=none; b=SVh0XXFsEhXIMlKOQhRPsuL9UOAeoD+xurVDXGIcaBiNFGqvll9BqwcQPwTNkEXnzD1VpASbI+p1l4u/Nr+H+QNroAO3WCr5bv+qgK+TJdjVXpi1xNNH1HAIWeiZpXZjCI+Cd9VUiR6ZyWD3rSHRcy8d5RHdIi6DXXbxEt7L2tM=
+	t=1736179222; cv=none; b=sLkPpnZHaN2+wLSF5NfMpn92/9Gl3sh67obs3lDEybKx3GtdskaUMT6SuW3YkpCZy76w1qpRIbleqzGeoJOn1q/AeWkeDGEg6VcnJiIaOsmNaLhAe9eEMFY86nnRLv4jlLab7eazwWSap37/2T8Az9dfS2AfUjDDZ8xDkrCbF50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178468; c=relaxed/simple;
-	bh=Os7kmIzJ5Ziu9Ki4TiI7JSw4kXufDITAZ06573UVOQw=;
+	s=arc-20240116; t=1736179222; c=relaxed/simple;
+	bh=sNnO9kcJIxcPsjJJORSbb96OE6tugsTzH5s7FIl6ods=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LrenFscBFluholA4y0H/eEBez4uIwyt6GzotAz8CAYgr2Muocy4vkUm/df8g13Ix5WT1B8L5X9w5zi/yIxLUxCeD9KHU2+EiLffxTEZxuByMzU2lzA0LkKPNOX1NOXJGhgqRnoaA1uX8b3b0Swy89aO3CYnr6jAdgIGsKPy1a0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHU4/fcH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C90FC4CED2;
-	Mon,  6 Jan 2025 15:47:48 +0000 (UTC)
+	 MIME-Version; b=Jfr9KbPo5bHUgAWFaOwExEJpmlZSavT1h5NvAUgevOPG54gX0shIPk9+Kcg0iduzj9J6vgPUnOzmICuqAPWJ7ii17xA9TeSfBPrMNl1jyFHJxBa5wlaOe1tizrXN2HFk60OoRmc6C4NxkdUqXxpmjUrlpY+SPRY+heIco+fQGI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F73Z4sqz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B89C4CED2;
+	Mon,  6 Jan 2025 16:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178468;
-	bh=Os7kmIzJ5Ziu9Ki4TiI7JSw4kXufDITAZ06573UVOQw=;
+	s=korg; t=1736179222;
+	bh=sNnO9kcJIxcPsjJJORSbb96OE6tugsTzH5s7FIl6ods=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RHU4/fcHx0yyCFZ8BeHzH/iOIjpizTAxkhDat3fdjqJp6A6ltMi6eZerMkehuZvoq
-	 QGeSHrF/41bB62igzZkArMRuwjWbLNuYOXNLixqj9RjgqlbUa6lQY4qtFonnTuKvjV
-	 FjGy7+3z0pqcVu3fTXE5l16Bb9084Q3c7EtPCBHw=
+	b=F73Z4sqzGkoNmUzxaCG5Y/LabiKxGUpikKiuTKh0ju9V7UZx8u25lN7XWmJumUSjI
+	 XQwj+7xU5fxm4G8HxLkxJzarNC61XU8BNy5MlWNuCLkl98uPT7H73yyzvWoS7QLD+e
+	 OvvgCQ3qiMDnytdPI1XvydeLsXoWgG9cL1MQ/nOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0aecfd34fb878546f3fd@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 121/138] tracing: Prevent bad count for tracing_cpumask_write
+Subject: [PATCH 5.4 49/93] scsi: mpt3sas: Diag-Reset when Doorbell-In-Use bit is set during driver load time
 Date: Mon,  6 Jan 2025 16:17:25 +0100
-Message-ID: <20250106151137.812882554@linuxfoundation.org>
+Message-ID: <20250106151130.553129597@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit 98feccbf32cfdde8c722bc4587aaa60ee5ac33f0 ]
+[ Upstream commit 3f5eb062e8aa335643181c480e6c590c6cedfd22 ]
 
-If a large count is provided, it will trigger a warning in bitmap_parse_user.
-Also check zero for it.
+Issue a Diag-Reset when the "Doorbell-In-Use" bit is set during the
+driver load/initialization.
 
-Cc: stable@vger.kernel.org
-Fixes: 9e01c1b74c953 ("cpumask: convert kernel trace functions")
-Link: https://lore.kernel.org/20241216073238.2573704-1-lizhi.xu@windriver.com
-Reported-by: syzbot+0aecfd34fb878546f3fd@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0aecfd34fb878546f3fd
-Tested-by: syzbot+0aecfd34fb878546f3fd@syzkaller.appspotmail.com
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20241110173341.11595-2-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/mpt3sas/mpt3sas_base.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 3ecd7c700579..ca39a647f2ef 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -4910,6 +4910,9 @@ tracing_cpumask_write(struct file *filp, const char __user *ubuf,
- 	cpumask_var_t tracing_cpumask_new;
- 	int err;
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
+index 1bc23e8ee748..69023ddceb59 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
+@@ -5695,11 +5695,12 @@ _base_handshake_req_reply_wait(struct MPT3SAS_ADAPTER *ioc, int request_bytes,
+ 	int i;
+ 	u8 failed;
+ 	__le32 *mfp;
++	int ret_val;
  
-+	if (count == 0 || count > KMALLOC_MAX_SIZE)
-+		return -EINVAL;
+ 	/* make sure doorbell is not in use */
+ 	if ((ioc->base_readl(&ioc->chip->Doorbell) & MPI2_DOORBELL_USED)) {
+ 		ioc_err(ioc, "doorbell is in use (line=%d)\n", __LINE__);
+-		return -EFAULT;
++		goto doorbell_diag_reset;
+ 	}
+ 
+ 	/* clear pending doorbell interrupts from previous state changes */
+@@ -5789,6 +5790,10 @@ _base_handshake_req_reply_wait(struct MPT3SAS_ADAPTER *ioc, int request_bytes,
+ 			    le32_to_cpu(mfp[i]));
+ 	}
+ 	return 0;
 +
- 	if (!zalloc_cpumask_var(&tracing_cpumask_new, GFP_KERNEL))
- 		return -ENOMEM;
++doorbell_diag_reset:
++	ret_val = _base_diag_reset(ioc);
++	return ret_val;
+ }
  
+ /**
 -- 
 2.39.5
 
