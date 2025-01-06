@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-107646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5AAA02CD3
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:58:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 390BDA02A74
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:34:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 567A71887CF5
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:58:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 703F6188673C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C8139FCE;
-	Mon,  6 Jan 2025 15:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E15870812;
+	Mon,  6 Jan 2025 15:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8FIHdEf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/bbw1D5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E3986332;
-	Mon,  6 Jan 2025 15:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C062DF71;
+	Mon,  6 Jan 2025 15:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179097; cv=none; b=MRaB+1bY7eHZusVDOIyUfoZVZwosMsyAaxWdMPq8L0PCe6+SpVp2KTaWum3P0SNWOhXvFbVjdYImCrmcbZZ9XaFmyOOQD9BUt6wu9YpBhOh8CCe2o8vIxBkLioC8XmVErqnUxv7Hh+XG6cGBi5AuAk0iAxQWKZZ18dPLfLeb1Sk=
+	t=1736177607; cv=none; b=aspry1JCrdOq3mwAMw7AaG4ln3cNVzp+m1s8f9+NRNzzovOoIgGrwrHjYEEHfSwdjddPFwh+CIjlQ+m820Wd3hbFkbFsjPdPzEBTAlkj1DIyxwp1m+gNW1GrgdE3htT0T02NrWREQi6wlM3Qfip70+uciYhApu0x7/aAIXBZyMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179097; c=relaxed/simple;
-	bh=5goWiEKjOpymaK/LuXNhRo46El5EYrj7INzxYnn7/kI=;
+	s=arc-20240116; t=1736177607; c=relaxed/simple;
+	bh=BTw2p5alkpAR1HeuKkyl8/cs+hMoCkQnRCS9+oaN7MU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fG//KCgUB0s7Ny7q665NXJGFM1An887o0qP45kk1mwYkr9AAJU/fnwqIUYIqeZ70vVgL4fVVgo6uoApd4KdCtHf+Qgo5ja7/BHNdP4WPWJursoYV6oul08w0zEOoMqLeUaCT71ZKR83i9Edz6TEBM8PcwmoxKtbV5UX/y71s68E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8FIHdEf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA33C4CED2;
-	Mon,  6 Jan 2025 15:58:15 +0000 (UTC)
+	 MIME-Version; b=k03LYxh7MdTRzK9vQDtdZZVML5Z/THwEzFUS/qQFPWB0k/VXIr2pNw7nIyrFIU/nkNAKgBabzdOJL3C790ejintM1lptI6cDMOUgeLvgxRyGOarYXNn+Oliazpvus+NJRoD/IMdTMPvy9rLe+wdMXIrgeFyXK7nxXQ9NUbJi9h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/bbw1D5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28560C4CED2;
+	Mon,  6 Jan 2025 15:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179096;
-	bh=5goWiEKjOpymaK/LuXNhRo46El5EYrj7INzxYnn7/kI=;
+	s=korg; t=1736177605;
+	bh=BTw2p5alkpAR1HeuKkyl8/cs+hMoCkQnRCS9+oaN7MU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d8FIHdEfMR2qgyhzo35WKnXrcDfbp/lIosS7VbC0Y710zCuau2WZfeJVq7v/3p45j
-	 iA9LYMp08rIh2IbjcA08oar2KbZxi+20zxOalV5HgnJi/4esJe7Ma3Dmfq87ebxWsi
-	 0JkD/hyTRRYw5v0vfzjADEjPNP5JEksqE7r+bgEQ=
+	b=m/bbw1D5TOpC4Vhbu8vAuR/26otox6DgmlDu4xn3UKiBbh1QtyDvDNvAGrlbSD3Xr
+	 lrP4Q26/LlJBEbxrWtnvzhQoei9ooR3466b71FfO6M6OFGKHtyf0d0TlAum/eC47Wh
+	 l0xrh5/uTrlnBPqI6mRrU7PQiF50Vqx6dgpAnLww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frankie Fisher <frankie@terrorise.me.uk>,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.4 26/93] btrfs: tree-checker: reject inline extent items with 0 ref count
+	syzbot+38a095a81f30d82884c1@syzkaller.appspotmail.com,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 218/222] mptcp: fix TCP options overflow.
 Date: Mon,  6 Jan 2025 16:17:02 +0100
-Message-ID: <20250106151129.691640811@linuxfoundation.org>
+Message-ID: <20250106151159.017779333@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +64,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit dfb92681a19e1d5172420baa242806414b3eff6f upstream.
+commit cbb26f7d8451fe56ccac802c6db48d16240feebd upstream.
 
-[BUG]
-There is a bug report in the mailing list where btrfs_run_delayed_refs()
-failed to drop the ref count for logical 25870311358464 num_bytes
-2113536.
+Syzbot reported the following splat:
 
-The involved leaf dump looks like this:
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 1 UID: 0 PID: 5836 Comm: sshd Not tainted 6.13.0-rc3-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/25/2024
+RIP: 0010:_compound_head include/linux/page-flags.h:242 [inline]
+RIP: 0010:put_page+0x23/0x260 include/linux/mm.h:1552
+Code: 90 90 90 90 90 90 90 55 41 57 41 56 53 49 89 fe 48 bd 00 00 00 00 00 fc ff df e8 f8 5e 12 f8 49 8d 5e 08 48 89 d8 48 c1 e8 03 <80> 3c 28 00 74 08 48 89 df e8 8f c7 78 f8 48 8b 1b 48 89 de 48 83
+RSP: 0000:ffffc90003916c90 EFLAGS: 00010202
+RAX: 0000000000000001 RBX: 0000000000000008 RCX: ffff888030458000
+RDX: 0000000000000100 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: dffffc0000000000 R08: ffffffff898ca81d R09: 1ffff110054414ac
+R10: dffffc0000000000 R11: ffffed10054414ad R12: 0000000000000007
+R13: ffff88802a20a542 R14: 0000000000000000 R15: 0000000000000000
+FS:  00007f34f496e800(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f9d6ec9ec28 CR3: 000000004d260000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ skb_page_unref include/linux/skbuff_ref.h:43 [inline]
+ __skb_frag_unref include/linux/skbuff_ref.h:56 [inline]
+ skb_release_data+0x483/0x8a0 net/core/skbuff.c:1119
+ skb_release_all net/core/skbuff.c:1190 [inline]
+ __kfree_skb+0x55/0x70 net/core/skbuff.c:1204
+ tcp_clean_rtx_queue net/ipv4/tcp_input.c:3436 [inline]
+ tcp_ack+0x2442/0x6bc0 net/ipv4/tcp_input.c:4032
+ tcp_rcv_state_process+0x8eb/0x44e0 net/ipv4/tcp_input.c:6805
+ tcp_v4_do_rcv+0x77d/0xc70 net/ipv4/tcp_ipv4.c:1939
+ tcp_v4_rcv+0x2dc0/0x37f0 net/ipv4/tcp_ipv4.c:2351
+ ip_protocol_deliver_rcu+0x22e/0x440 net/ipv4/ip_input.c:205
+ ip_local_deliver_finish+0x341/0x5f0 net/ipv4/ip_input.c:233
+ NF_HOOK+0x3a4/0x450 include/linux/netfilter.h:314
+ NF_HOOK+0x3a4/0x450 include/linux/netfilter.h:314
+ __netif_receive_skb_one_core net/core/dev.c:5672 [inline]
+ __netif_receive_skb+0x2bf/0x650 net/core/dev.c:5785
+ process_backlog+0x662/0x15b0 net/core/dev.c:6117
+ __napi_poll+0xcb/0x490 net/core/dev.c:6883
+ napi_poll net/core/dev.c:6952 [inline]
+ net_rx_action+0x89b/0x1240 net/core/dev.c:7074
+ handle_softirqs+0x2d4/0x9b0 kernel/softirq.c:561
+ __do_softirq kernel/softirq.c:595 [inline]
+ invoke_softirq kernel/softirq.c:435 [inline]
+ __irq_exit_rcu+0xf7/0x220 kernel/softirq.c:662
+ irq_exit_rcu+0x9/0x30 kernel/softirq.c:678
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1049 [inline]
+ sysvec_apic_timer_interrupt+0x57/0xc0 arch/x86/kernel/apic/apic.c:1049
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
+RIP: 0033:0x7f34f4519ad5
+Code: 85 d2 74 0d 0f 10 02 48 8d 54 24 20 0f 11 44 24 20 64 8b 04 25 18 00 00 00 85 c0 75 27 41 b8 08 00 00 00 b8 0f 01 00 00 0f 05 <48> 3d 00 f0 ff ff 76 75 48 8b 15 24 73 0d 00 f7 d8 64 89 02 48 83
+RSP: 002b:00007ffec5b32ce0 EFLAGS: 00000246
+RAX: 0000000000000001 RBX: 00000000000668a0 RCX: 00007f34f4519ad5
+RDX: 00007ffec5b32d00 RSI: 0000000000000004 RDI: 0000564f4bc6cae0
+RBP: 0000564f4bc6b5a0 R08: 0000000000000008 R09: 0000000000000000
+R10: 00007ffec5b32de8 R11: 0000000000000246 R12: 0000564f48ea8aa4
+R13: 0000000000000001 R14: 0000564f48ea93e8 R15: 00007ffec5b32d68
+ </TASK>
 
-  item 166 key (25870311358464 168 2113536) itemoff 10091 itemsize 50
-    extent refs 1 gen 84178 flags 1
-    ref#0: shared data backref parent 32399126528000 count 0 <<<
-    ref#1: shared data backref parent 31808973717504 count 1
+Eric noted a probable shinfo->nr_frags corruption, which indeed
+occurs.
 
-Notice the count number is 0.
+The root cause is a buggy MPTCP option len computation in some
+circumstances: the ADD_ADDR option should be mutually exclusive
+with DSS since the blamed commit.
 
-[CAUSE]
-There is no concrete evidence yet, but considering 0 -> 1 is also a
-single bit flipped, it's possible that hardware memory bitflip is
-involved, causing the on-disk extent tree to be corrupted.
+Still, mptcp_established_options_add_addr() tries to set the
+relevant info in mptcp_out_options, if the remaining space is
+large enough even when DSS is present.
 
-[FIX]
-To prevent us reading such corrupted extent item, or writing such
-damaged extent item back to disk, enhance the handling of
-BTRFS_EXTENT_DATA_REF_KEY and BTRFS_SHARED_DATA_REF_KEY keys for both
-inlined and key items, to detect such 0 ref count and reject them.
+Since the ADD_ADDR infos and the DSS share the same union
+fields, adding first corrupts the latter. In the worst-case
+scenario, such corruption increases the DSS binary layout,
+exceeding the computed length and possibly overwriting the
+skb shared info.
 
-CC: stable@vger.kernel.org # 5.4+
-Link: https://lore.kernel.org/linux-btrfs/7c69dd49-c346-4806-86e7-e6f863a66f48@app.fastmail.com/
-Reported-by: Frankie Fisher <frankie@terrorise.me.uk>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Address the issue by enforcing mutual exclusion in
+mptcp_established_options_add_addr(), too.
+
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+38a095a81f30d82884c1@syzkaller.appspotmail.com
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/538
+Fixes: 1bff1e43a30e ("mptcp: optimize out option generation")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/025d9df8cde3c9a557befc47e9bc08fbbe3476e5.1734771049.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-checker.c |   27 ++++++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ net/mptcp/options.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1197,6 +1197,11 @@ static int check_extent_item(struct exte
- 					   dref_offset, fs_info->sectorsize);
- 				return -EUCLEAN;
- 			}
-+			if (unlikely(btrfs_extent_data_ref_count(leaf, dref) == 0)) {
-+				extent_err(leaf, slot,
-+			"invalid data ref count, should have non-zero value");
-+				return -EUCLEAN;
-+			}
- 			inline_refs += btrfs_extent_data_ref_count(leaf, dref);
- 			break;
- 		/* Contains parent bytenr and ref count */
-@@ -1208,6 +1213,11 @@ static int check_extent_item(struct exte
- 					   inline_offset, fs_info->sectorsize);
- 				return -EUCLEAN;
- 			}
-+			if (unlikely(btrfs_shared_data_ref_count(leaf, sref) == 0)) {
-+				extent_err(leaf, slot,
-+			"invalid shared data ref count, should have non-zero value");
-+				return -EUCLEAN;
-+			}
- 			inline_refs += btrfs_shared_data_ref_count(leaf, sref);
- 			break;
- 		default:
-@@ -1259,8 +1269,18 @@ static int check_simple_keyed_refs(struc
- {
- 	u32 expect_item_size = 0;
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -667,8 +667,15 @@ static bool mptcp_established_options_ad
+ 		    &echo, &drop_other_suboptions))
+ 		return false;
  
--	if (key->type == BTRFS_SHARED_DATA_REF_KEY)
-+	if (key->type == BTRFS_SHARED_DATA_REF_KEY) {
-+		struct btrfs_shared_data_ref *sref;
++	/*
++	 * Later on, mptcp_write_options() will enforce mutually exclusion with
++	 * DSS, bail out if such option is set and we can't drop it.
++	 */
+ 	if (drop_other_suboptions)
+ 		remaining += opt_size;
++	else if (opts->suboptions & OPTION_MPTCP_DSS)
++		return false;
 +
-+		sref = btrfs_item_ptr(leaf, slot, struct btrfs_shared_data_ref);
-+		if (unlikely(btrfs_shared_data_ref_count(leaf, sref) == 0)) {
-+			extent_err(leaf, slot,
-+		"invalid shared data backref count, should have non-zero value");
-+			return -EUCLEAN;
-+		}
-+
- 		expect_item_size = sizeof(struct btrfs_shared_data_ref);
-+	}
- 
- 	if (btrfs_item_size_nr(leaf, slot) != expect_item_size) {
- 		generic_err(leaf, slot,
-@@ -1320,6 +1340,11 @@ static int check_extent_data_ref(struct
- 				   offset, leaf->fs_info->sectorsize);
- 			return -EUCLEAN;
- 		}
-+		if (unlikely(btrfs_extent_data_ref_count(leaf, dref) == 0)) {
-+			extent_err(leaf, slot,
-+	"invalid extent data backref count, should have non-zero value");
-+			return -EUCLEAN;
-+		}
- 	}
- 	return 0;
- }
+ 	len = mptcp_add_addr_len(opts->addr.family, echo, !!opts->addr.port);
+ 	if (remaining < len)
+ 		return false;
 
 
 
