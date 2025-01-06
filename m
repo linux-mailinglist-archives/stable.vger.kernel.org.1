@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-107516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D7C0A02C68
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:54:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C6EDA0292E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:20:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E87753A7874
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:52:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DC95164105
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8DFF1D934B;
-	Mon,  6 Jan 2025 15:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C9C1D7E21;
+	Mon,  6 Jan 2025 15:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQMs5h1x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uIym7jeF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75033145A03;
-	Mon,  6 Jan 2025 15:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4030C148838;
+	Mon,  6 Jan 2025 15:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178708; cv=none; b=UJ0lPNioaVUTwkQMVPBJwC8PRTsOKSbfr2daCZ1A4aO1Az//A9Q/+mprwtDSB8Tg3gA+q5RumA9qC0sZmiVZyZOufyc+Y+4V/DArqoTkoFHZoaRtRdNZW9/peFcWyNHRNXIlkn7m97y1a/c4/wyb4GFzHOkhmfbkoQ0GrsC3Y3o=
+	t=1736176819; cv=none; b=WzuNAnpRTAJoM3mUuLRt4cysI2RwKaoL0ET1IvJFP0UJw7jkjFMWII9p5dzdj70bOcHyvm8emSTtBdwFNXUEGGSRdhp0GQ56fKmya/xgL3HRFV3ssVDweF5ZYdCDw0sMwHsfWrzsIcXMJSIlxrUaA7Xd9GqH5VqpfsW70q8NB3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178708; c=relaxed/simple;
-	bh=Lbf4q2qVfagWCT7U61ydO8PI+KnrEoQy2plyO7jBNzc=;
+	s=arc-20240116; t=1736176819; c=relaxed/simple;
+	bh=RgBPznMvb7E/cp4m6uHBvGymS7nGZg3QE6jcPnV/lr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AuagAqsBqtaErYCDKRqmt9ufD6I9DKyAtAG/cUL4ZCau/MwtUpez87sCWd4zSgIFLvegjdEjBzgaM/nK3JK1TtTJ9HbIsgLTkFhrqLSPb+d/3UR91qxU/2V4nvbD0VYqNDB+cnHU3ppN3jk6c05r1uq1hZT5/7ZeZ3IFvcZmcsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQMs5h1x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B91C4CED2;
-	Mon,  6 Jan 2025 15:51:47 +0000 (UTC)
+	 MIME-Version; b=onmUiFCbWN7sDTEI9+Vp+LZZ8suksx9UbRgSEA5xCyEhm91MkH++OXIXlQHiEeRs+PJQrShHbwauW2p6yPN7kETvN1bMupRLi6Fn+imVGHYsJd0SEeY780eCOanI1rQTrKKvwCzBbjMnCIVtF1Iq/74Cxg9k35fLpcKBxZsiv9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uIym7jeF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823D0C4CEDF;
+	Mon,  6 Jan 2025 15:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178708;
-	bh=Lbf4q2qVfagWCT7U61ydO8PI+KnrEoQy2plyO7jBNzc=;
+	s=korg; t=1736176816;
+	bh=RgBPznMvb7E/cp4m6uHBvGymS7nGZg3QE6jcPnV/lr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aQMs5h1xq2pVpneO0SnyfYuJHL82pxerpn9OH+FC9B8e6w/+GKp85+uhBRU05g2Lz
-	 GqrcglPBNLEsN0eFw8mGtyviC2niF1uk9j9wqJmrIcC8f2kAYIlUWRofEVwNT3KfhH
-	 id72ojyh/2x5CDk9kXh82q9EV7iw/Mz95iGbc5DI=
+	b=uIym7jeFigwesi33mYHsyfB/kpGZ2JVfuuqhM1Qnwmp3ezwLZ+SsYnXGewJX3agCN
+	 PHlHw5v1YrFyH4s1awX/bzwt6HCdJ+ZsbJNoR+PKM00nOWRkS8yPkAWbbSkZKkVVbL
+	 X3fCF0UgHZRsKnj3TeMmlHaaYZVNvAU0ug79xRmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Andrzejewski <maciej.andrzejewski@m-works.net>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.15 064/168] mtd: rawnand: arasan: Fix double assertion of chip-select
+	Tanya Agarwal <tanyaagarwal25699@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 40/81] ALSA: usb-audio: US16x08: Initialize array before use
 Date: Mon,  6 Jan 2025 16:16:12 +0100
-Message-ID: <20250106151140.878027155@linuxfoundation.org>
+Message-ID: <20250106151130.951369634@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Andrzejewski <maciej.andrzejewski@m-works.net>
+From: Tanya Agarwal <tanyaagarwal25699@gmail.com>
 
-commit b086a46dae48829e11c0c02580e30d920b76743c upstream.
+[ Upstream commit b06a6187ef983f501e93faa56209169752d3bde3 ]
 
-When two chip-selects are configured in the device tree, and the second is
-a non-native GPIO, both the GPIO-based chip-select and the first native
-chip-select may be asserted simultaneously. This double assertion causes
-incorrect read and write operations.
+Initialize meter_urb array before use in mixer_us16x08.c.
 
-The issue occurs because when nfc->ncs <= 2, nfc->spare_cs is always
-initialized to 0 due to static initialization. Consequently, when the
-second chip-select (GPIO-based) is selected in anfc_assert_cs(), it is
-detected by anfc_is_gpio_cs(), and nfc->native_cs is assigned the value 0.
-This results in both the GPIO-based chip-select being asserted and the
-NAND controller register receiving 0, erroneously selecting the native
-chip-select.
+CID 1410197: (#1 of 1): Uninitialized scalar variable (UNINIT)
+uninit_use_in_call: Using uninitialized value *meter_urb when
+calling get_meter_levels_from_urb.
 
-This patch resolves the issue, as confirmed by oscilloscope testing with
-configurations involving two or more chip-selects in the device tree.
+Coverity Link:
+https://scan7.scan.coverity.com/#/project-view/52849/11354?selectedIssue=1410197
 
-Fixes: acbd3d0945f9 ("mtd: rawnand: arasan: Leverage additional GPIO CS")
-Cc: stable@vger.kernel.org
-Signed-off-by: Maciej Andrzejewski <maciej.andrzejewski@m-works.net>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d2bb390a2081 ("ALSA: usb-audio: Tascam US-16x08 DSP mixer quirk")
+Signed-off-by: Tanya Agarwal <tanyaagarwal25699@gmail.com>
+Link: https://patch.msgid.link/20241229060240.1642-1-tanyaagarwal25699@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/arasan-nand-controller.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/usb/mixer_us16x08.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mtd/nand/raw/arasan-nand-controller.c
-+++ b/drivers/mtd/nand/raw/arasan-nand-controller.c
-@@ -1425,8 +1425,8 @@ static int anfc_parse_cs(struct arasan_n
- 	 * case, the "not" chosen CS is assigned to nfc->spare_cs and selected
- 	 * whenever a GPIO CS must be asserted.
- 	 */
--	if (nfc->cs_array && nfc->ncs > 2) {
--		if (!nfc->cs_array[0] && !nfc->cs_array[1]) {
-+	if (nfc->cs_array) {
-+		if (nfc->ncs > 2 && !nfc->cs_array[0] && !nfc->cs_array[1]) {
- 			dev_err(nfc->dev,
- 				"Assign a single native CS when using GPIOs\n");
- 			return -EINVAL;
+diff --git a/sound/usb/mixer_us16x08.c b/sound/usb/mixer_us16x08.c
+index 6eb7d93b358d..20ac32635f1f 100644
+--- a/sound/usb/mixer_us16x08.c
++++ b/sound/usb/mixer_us16x08.c
+@@ -687,7 +687,7 @@ static int snd_us16x08_meter_get(struct snd_kcontrol *kcontrol,
+ 	struct usb_mixer_elem_info *elem = kcontrol->private_data;
+ 	struct snd_usb_audio *chip = elem->head.mixer->chip;
+ 	struct snd_us16x08_meter_store *store = elem->private_data;
+-	u8 meter_urb[64];
++	u8 meter_urb[64] = {0};
+ 
+ 	switch (kcontrol->private_value) {
+ 	case 0: {
+-- 
+2.39.5
+
 
 
 
