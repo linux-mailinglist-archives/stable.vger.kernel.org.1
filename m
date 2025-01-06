@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-107614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78276A02CDB
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:58:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA32BA02D18
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:00:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 932DA3A5B2D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:56:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C24EF7A29D5
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0D814A617;
-	Mon,  6 Jan 2025 15:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92573145A03;
+	Mon,  6 Jan 2025 16:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KK3FVABZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hiG3/SU2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CA91553BB;
-	Mon,  6 Jan 2025 15:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C221DDC0F;
+	Mon,  6 Jan 2025 16:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179001; cv=none; b=pexsVOguj7ClHkLX6cW08txZmfsG1EdhwTVhR7/w0cxHXRPkDsPllntg0Csxwwco16BDXnvQ/G0CB8eex5GZB3VSDH77Q9hvorzbLhsSiRj0bB9PN35iE/bjlWPgZ4ejet8BZouFkPeJbWyfxj7NBENpFNBD7Ktg4hNBUwW2xDw=
+	t=1736179246; cv=none; b=kMz01wXjv9nNkWZdtC/fYpUN4c9gN1NWnVXgYj2UmO0njp+1D8g22IfzCVneJNCvqirFkeizVU/hX9XzawXEQEvuVJkkIpKo8aUNi3htk50XpjH7jvBmAVwDKNrOTQpTQsJY5PZjPaXY7QRqX5d8zVT8+6FeJQy51U+VwstC6w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179001; c=relaxed/simple;
-	bh=MHjJt+m9Cm6SyZ0Qq2s5PJJl1mGu/krduVY8Md1SevQ=;
+	s=arc-20240116; t=1736179246; c=relaxed/simple;
+	bh=EIf4j58T22LTkPhkQPs8G5iArnaH6khw+IInm54aWP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ri7/6QZ5lwI5uJUc7Fx8deXM6ZGJmF++VDc+YQbV9VUF6M2eVWWp78loH3dUJDx8iTpkVtMtsjLup9TH7+GenEyeO15cydfdBVhaLl/NQABe2rFSOhw7iEjKfl7sROxp4NFaljCSq3mGtN0ogRTmBwdvejSkOuSQ8xOrb4ckWPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KK3FVABZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47F8C4CED2;
-	Mon,  6 Jan 2025 15:56:40 +0000 (UTC)
+	 MIME-Version; b=fS5orKR74T6ewHXLaKZv/VN4+TxNJyluDGoF1fm7hrmvPb03KzvjN6ZJjHiIFui3ZJ2tA6u/cOMdhemzapVzcCPaudWMi4QcxpVGf8sx2mBTLQyhuZSAmRwfXZsN0o03YbX5Xws6FEHi8D7EWPac9syTkRF+dRo/2lXD48XLYyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hiG3/SU2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75202C4CED6;
+	Mon,  6 Jan 2025 16:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179001;
-	bh=MHjJt+m9Cm6SyZ0Qq2s5PJJl1mGu/krduVY8Md1SevQ=;
+	s=korg; t=1736179245;
+	bh=EIf4j58T22LTkPhkQPs8G5iArnaH6khw+IInm54aWP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KK3FVABZk5/E20vSpIgZG3A3wVqxGGVcwqHpRb41b16IDVaJgV6hojh+LCOLdPYcj
-	 UioPU65hAZz6K9Yjlx7/dZ917kv0aklrOfPWDGNuNM8FiMP133PzjjbOZsc5/s3OuW
-	 xWKEx7FT38WqB7IWoghShrK5nt2182FuOe1xxF6c=
+	b=hiG3/SU2W4lzfrnxXQh8dbbknBUD8s7NrtUiHgIp2ofQOvdAuN8RHpUVqC2V9yOyO
+	 AJqVObYBsx2P9z9gJ/mD0wDR0OvXX7rkxCQgaaIJHHqjrkL38emEVaGv9zed1bONpn
+	 poLA24CRhQDVNMYXFpDivQDrEGQtVGPjAmoJ8Ojc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 5.15 162/168] RDMA/uverbs: Prevent integer overflow issue
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 74/93] netfilter: nft_set_hash: unaligned atomic read on struct nft_set_ext
 Date: Mon,  6 Jan 2025 16:17:50 +0100
-Message-ID: <20250106151144.547733735@linuxfoundation.org>
+Message-ID: <20250106151131.498482861@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit d0257e089d1bbd35c69b6c97ff73e3690ab149a9 upstream.
+[ Upstream commit 542ed8145e6f9392e3d0a86a0e9027d2ffd183e4 ]
 
-In the expression "cmd.wqe_size * cmd.wr_count", both variables are u32
-values that come from the user so the multiplication can lead to integer
-wrapping.  Then we pass the result to uverbs_request_next_ptr() which also
-could potentially wrap.  The "cmd.sge_count * sizeof(struct ib_uverbs_sge)"
-multiplication can also overflow on 32bit systems although it's fine on
-64bit systems.
+Access to genmask field in struct nft_set_ext results in unaligned
+atomic read:
 
-This patch does two things.  First, I've re-arranged the condition in
-uverbs_request_next_ptr() so that the use controlled variable "len" is on
-one side of the comparison by itself without any math.  Then I've modified
-all the callers to use size_mul() for the multiplications.
+[   72.130109] Unable to handle kernel paging request at virtual address ffff0000c2bb708c
+[   72.131036] Mem abort info:
+[   72.131213]   ESR = 0x0000000096000021
+[   72.131446]   EC = 0x25: DABT (current EL), IL = 32 bits
+[   72.132209]   SET = 0, FnV = 0
+[   72.133216]   EA = 0, S1PTW = 0
+[   72.134080]   FSC = 0x21: alignment fault
+[   72.135593] Data abort info:
+[   72.137194]   ISV = 0, ISS = 0x00000021, ISS2 = 0x00000000
+[   72.142351]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[   72.145989]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[   72.150115] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000237d27000
+[   72.154893] [ffff0000c2bb708c] pgd=0000000000000000, p4d=180000023ffff403, pud=180000023f84b403, pmd=180000023f835403,
++pte=0068000102bb7707
+[   72.163021] Internal error: Oops: 0000000096000021 [#1] SMP
+[...]
+[   72.170041] CPU: 7 UID: 0 PID: 54 Comm: kworker/7:0 Tainted: G            E      6.13.0-rc3+ #2
+[   72.170509] Tainted: [E]=UNSIGNED_MODULE
+[   72.170720] Hardware name: QEMU QEMU Virtual Machine, BIOS edk2-stable202302-for-qemu 03/01/2023
+[   72.171192] Workqueue: events_power_efficient nft_rhash_gc [nf_tables]
+[   72.171552] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[   72.171915] pc : nft_rhash_gc+0x200/0x2d8 [nf_tables]
+[   72.172166] lr : nft_rhash_gc+0x128/0x2d8 [nf_tables]
+[   72.172546] sp : ffff800081f2bce0
+[   72.172724] x29: ffff800081f2bd40 x28: ffff0000c2bb708c x27: 0000000000000038
+[   72.173078] x26: ffff0000c6780ef0 x25: ffff0000c643df00 x24: ffff0000c6778f78
+[   72.173431] x23: 000000000000001a x22: ffff0000c4b1f000 x21: ffff0000c6780f78
+[   72.173782] x20: ffff0000c2bb70dc x19: ffff0000c2bb7080 x18: 0000000000000000
+[   72.174135] x17: ffff0000c0a4e1c0 x16: 0000000000003000 x15: 0000ac26d173b978
+[   72.174485] x14: ffffffffffffffff x13: 0000000000000030 x12: ffff0000c6780ef0
+[   72.174841] x11: 0000000000000000 x10: ffff800081f2bcf8 x9 : ffff0000c3000000
+[   72.175193] x8 : 00000000000004be x7 : 0000000000000000 x6 : 0000000000000000
+[   72.175544] x5 : 0000000000000040 x4 : ffff0000c3000010 x3 : 0000000000000000
+[   72.175871] x2 : 0000000000003a98 x1 : ffff0000c2bb708c x0 : 0000000000000004
+[   72.176207] Call trace:
+[   72.176316]  nft_rhash_gc+0x200/0x2d8 [nf_tables] (P)
+[   72.176653]  process_one_work+0x178/0x3d0
+[   72.176831]  worker_thread+0x200/0x3f0
+[   72.176995]  kthread+0xe8/0xf8
+[   72.177130]  ret_from_fork+0x10/0x20
+[   72.177289] Code: 54fff984 d503201f d2800080 91003261 (f820303f)
+[   72.177557] ---[ end trace 0000000000000000 ]---
 
-Fixes: 67cdb40ca444 ("[IB] uverbs: Implement more commands")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/b8765ab3-c2da-4611-aae0-ddd6ba173d23@stanley.mountain
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Align struct nft_set_ext to word size to address this and
+documentation it.
+
+pahole reports that this increases the size of elements for rhash and
+pipapo in 8 bytes on x86_64.
+
+Fixes: 7ffc7481153b ("netfilter: nft_set_hash: skip duplicated elements pending gc run")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/uverbs_cmd.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ include/net/netfilter/nf_tables.h | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/infiniband/core/uverbs_cmd.c
-+++ b/drivers/infiniband/core/uverbs_cmd.c
-@@ -161,7 +161,7 @@ static const void __user *uverbs_request
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index c50dee30a70c..92551a765a44 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -571,15 +571,18 @@ struct nft_set_ext_tmpl {
+ /**
+  *	struct nft_set_ext - set extensions
+  *
+- *	@genmask: generation mask
++ *	@genmask: generation mask, but also flags (see NFT_SET_ELEM_DEAD_BIT)
+  *	@offset: offsets of individual extension types
+  *	@data: beginning of extension data
++ *
++ *	This structure must be aligned to word size, otherwise atomic bitops
++ *	on genmask field can cause alignment failure on some archs.
+  */
+ struct nft_set_ext {
+ 	u8	genmask;
+ 	u8	offset[NFT_SET_EXT_NUM];
+ 	char	data[];
+-};
++} __aligned(BITS_PER_LONG / 8);
+ 
+ static inline void nft_set_ext_prepare(struct nft_set_ext_tmpl *tmpl)
  {
- 	const void __user *res = iter->cur;
- 
--	if (iter->cur + len > iter->end)
-+	if (len > iter->end - iter->cur)
- 		return (void __force __user *)ERR_PTR(-ENOSPC);
- 	iter->cur += len;
- 	return res;
-@@ -2010,11 +2010,13 @@ static int ib_uverbs_post_send(struct uv
- 	ret = uverbs_request_start(attrs, &iter, &cmd, sizeof(cmd));
- 	if (ret)
- 		return ret;
--	wqes = uverbs_request_next_ptr(&iter, cmd.wqe_size * cmd.wr_count);
-+	wqes = uverbs_request_next_ptr(&iter, size_mul(cmd.wqe_size,
-+						       cmd.wr_count));
- 	if (IS_ERR(wqes))
- 		return PTR_ERR(wqes);
--	sgls = uverbs_request_next_ptr(
--		&iter, cmd.sge_count * sizeof(struct ib_uverbs_sge));
-+	sgls = uverbs_request_next_ptr(&iter,
-+				       size_mul(cmd.sge_count,
-+						sizeof(struct ib_uverbs_sge)));
- 	if (IS_ERR(sgls))
- 		return PTR_ERR(sgls);
- 	ret = uverbs_request_finish(&iter);
-@@ -2200,11 +2202,11 @@ ib_uverbs_unmarshall_recv(struct uverbs_
- 	if (wqe_size < sizeof(struct ib_uverbs_recv_wr))
- 		return ERR_PTR(-EINVAL);
- 
--	wqes = uverbs_request_next_ptr(iter, wqe_size * wr_count);
-+	wqes = uverbs_request_next_ptr(iter, size_mul(wqe_size, wr_count));
- 	if (IS_ERR(wqes))
- 		return ERR_CAST(wqes);
--	sgls = uverbs_request_next_ptr(
--		iter, sge_count * sizeof(struct ib_uverbs_sge));
-+	sgls = uverbs_request_next_ptr(iter, size_mul(sge_count,
-+						      sizeof(struct ib_uverbs_sge)));
- 	if (IS_ERR(sgls))
- 		return ERR_CAST(sgls);
- 	ret = uverbs_request_finish(iter);
+-- 
+2.39.5
+
 
 
 
