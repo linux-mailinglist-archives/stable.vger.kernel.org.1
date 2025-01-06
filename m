@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-106916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31AA7A02943
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:21:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79081A02C6B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:54:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 232C51642E1
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:21:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F83D166B36
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881BA149C7B;
-	Mon,  6 Jan 2025 15:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EF891DDC2C;
+	Mon,  6 Jan 2025 15:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zUbRbwc4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FrJiCCxL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D12146D40;
-	Mon,  6 Jan 2025 15:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6351DDC1F;
+	Mon,  6 Jan 2025 15:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176899; cv=none; b=lW+px+H57VxQwblIyikEhIahiDwyjSXq7goOGylYn2aIJh1kMzi+a9AquLqplqp+y51qhm7pfaKFiCAKppfW9rqa8/bs/EcNf4OWPrABfKHEr8l9s+Lmhpi1WOEVIPuq1vyzvRxgjEAKHSjRJENfnSGhzIwDgrIfTK2NQFySi9c=
+	t=1736178785; cv=none; b=gRD5wbk8jLZa/5bpykCY9P6oQe6p2YM49/UKCijmrpofGDKLnJl3I4uIBb0iIskfRSF+2SxdarHmeztQCq2Djw2ikBlwCVNSJOcbx2Gk5c372iq1PBik1D6oiuU5L3BDCC5Lb/m44pSz4VySb3eUI9MXx6eNp5+ioCIjaArsIlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176899; c=relaxed/simple;
-	bh=ga/veYLxd3CwwbjV9eRYE2G8jUynrWQJN8gu/kSaFOI=;
+	s=arc-20240116; t=1736178785; c=relaxed/simple;
+	bh=+lGotaIvodxhL9DnrzrlcIiXyHg6y8cbANKDzbuakFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R+wZYj9ntSwmd2E1qrP99zT1BA4SSGowPeKQQcc0CnW/YQ/0qDayqMzUE1NxVtJZgrHCHOjnJUd/2EsvQGXzJjGqbNnTJAO+XghotuSsBSKRxW9xvP64Aduk1wg8S4zFWJ9SDnQyV0HR3nVrlWZUMWiKKeDDzTnSFbVTQeLz9cA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zUbRbwc4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6926FC4CED2;
-	Mon,  6 Jan 2025 15:21:38 +0000 (UTC)
+	 MIME-Version; b=ZDhP3MRElRvYVpPl7T6FFBn4v0Cgr/yABo0vZkARwZluvZCyyYS/8bHSiVVReQJOkA7y+GbxvvnHe0MoN0SYwl/fSANOdeTpHMPIN2WO0tZWDshDjjkFnZBOuu5KigMuhj6Iw8LB+LdPl1xp3SZewmNCOOmqT38WUXBpB43BNXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FrJiCCxL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA48C4CEDF;
+	Mon,  6 Jan 2025 15:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176898;
-	bh=ga/veYLxd3CwwbjV9eRYE2G8jUynrWQJN8gu/kSaFOI=;
+	s=korg; t=1736178785;
+	bh=+lGotaIvodxhL9DnrzrlcIiXyHg6y8cbANKDzbuakFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zUbRbwc44UDhh7T6/l6SWeTeMFK4m6Bb5tq3Yt7/Hkj9MPF3hGh8BO7v6sohGdNRR
-	 VV8lpMh/fuai90m9+QhvZ0LxOxlRR/70LJDyo9TFYjRGv1l7ShSQh4K7mrcgsdpKhk
-	 Z3SBLYoLh9Ix+I0fZMPXCkSHnufFJpsHgEmAHYKc=
+	b=FrJiCCxLucbT7EzUbTmRUp6YBFYZjmo8GWmbHGe5Hag05/FttXLjLSKYe5rh5zYnD
+	 KxFvsPib2M+wkFznpWTbiv/vxH8cpEo0iUwglyFKUFVrI8Ov47SaKBMks0o6SSAeyj
+	 FWu861xuujLwmJBdKMMby7w4eQfEUIZc7O49iTnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	George Shen <george.shen@amd.com>,
+	Peterson Guo <peterson.guo@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 67/81] modpost: fix the missed iteration for the max bit in do_input()
+Subject: [PATCH 5.15 091/168] drm/amd/display: Add a left edge pixel if in YCbCr422 or YCbCr420 and odm
 Date: Mon,  6 Jan 2025 16:16:39 +0100
-Message-ID: <20250106151131.960989685@linuxfoundation.org>
+Message-ID: <20250106151141.902285619@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +66,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Peterson Guo <peterson.guo@amd.com>
 
-[ Upstream commit bf36b4bf1b9a7a0015610e2f038ee84ddb085de2 ]
+[ Upstream commit 63e7ee677c74e981257cedfdd8543510d09096ba ]
 
-This loop should iterate over the range from 'min' to 'max' inclusively.
-The last interation is missed.
+[WHY]
+On some cards when odm is used, the monitor will have 2 separate pipes
+split vertically. When compression is used on the YCbCr colour space on
+the second pipe to have correct colours, we need to read a pixel from the
+end of first pipe to accurately display colours. Hardware was programmed
+properly to account for this extra pixel but it was not calculated
+properly in software causing a split screen on some monitors.
 
-Fixes: 1d8f430c15b3 ("[PATCH] Input: add modalias support")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+[HOW]
+The fix adjusts the second pipe's viewport and timings if the pixel
+encoding is YCbCr422 or YCbCr420.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: George Shen <george.shen@amd.com>
+Signed-off-by: Peterson Guo <peterson.guo@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/mod/file2alias.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../drm/amd/display/dc/dcn20/dcn20_resource.c | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
-index e7d69c9f6341..ba09484ef910 100644
---- a/scripts/mod/file2alias.c
-+++ b/scripts/mod/file2alias.c
-@@ -741,7 +741,7 @@ static void do_input(char *alias,
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c
+index 04b370e7e732..6688c40f3c70 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c
+@@ -1899,6 +1899,7 @@ bool dcn20_split_stream_for_odm(
  
- 	for (i = min / BITS_PER_LONG; i < max / BITS_PER_LONG + 1; i++)
- 		arr[i] = TO_NATIVE(arr[i]);
--	for (i = min; i < max; i++)
-+	for (i = min; i <= max; i++)
- 		if (arr[i / BITS_PER_LONG] & (1ULL << (i%BITS_PER_LONG)))
- 			sprintf(alias + strlen(alias), "%X,*", i);
- }
+ 	if (prev_odm_pipe->plane_state) {
+ 		struct scaler_data *sd = &prev_odm_pipe->plane_res.scl_data;
++		struct output_pixel_processor *opp = next_odm_pipe->stream_res.opp;
+ 		int new_width;
+ 
+ 		/* HACTIVE halved for odm combine */
+@@ -1932,7 +1933,28 @@ bool dcn20_split_stream_for_odm(
+ 		sd->viewport_c.x += dc_fixpt_floor(dc_fixpt_mul_int(
+ 				sd->ratios.horz_c, sd->h_active - sd->recout.x));
+ 		sd->recout.x = 0;
++
++		/*
++		 * When odm is used in YcbCr422 or 420 colour space, a split screen
++		 * will be seen with the previous calculations since the extra left
++		 *  edge pixel is accounted for in fmt but not in viewport.
++		 *
++		 * Below are calculations which fix the split by fixing the calculations
++		 * if there is an extra left edge pixel.
++		 */
++		if (opp && opp->funcs->opp_get_left_edge_extra_pixel_count
++				&& opp->funcs->opp_get_left_edge_extra_pixel_count(
++					opp, next_odm_pipe->stream->timing.pixel_encoding,
++					resource_is_pipe_type(next_odm_pipe, OTG_MASTER)) == 1) {
++			sd->h_active += 1;
++			sd->recout.width += 1;
++			sd->viewport.x -= dc_fixpt_ceil(dc_fixpt_mul_int(sd->ratios.horz, 1));
++			sd->viewport_c.x -= dc_fixpt_ceil(dc_fixpt_mul_int(sd->ratios.horz, 1));
++			sd->viewport_c.width += dc_fixpt_ceil(dc_fixpt_mul_int(sd->ratios.horz, 1));
++			sd->viewport.width += dc_fixpt_ceil(dc_fixpt_mul_int(sd->ratios.horz, 1));
++		}
+ 	}
++
+ 	if (!next_odm_pipe->top_pipe)
+ 		next_odm_pipe->stream_res.opp = pool->opps[next_odm_pipe->pipe_idx];
+ 	else
+@@ -2905,6 +2927,7 @@ bool dcn20_fast_validate_bw(
+ 			ASSERT(0);
+ 		}
+ 	}
++
+ 	/* Actual dsc count per stream dsc validation*/
+ 	if (!dcn20_validate_dsc(dc, context)) {
+ 		context->bw_ctx.dml.vba.ValidationStatus[context->bw_ctx.dml.vba.soc.num_states] =
 -- 
 2.39.5
 
