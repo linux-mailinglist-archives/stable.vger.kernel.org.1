@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-107034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BCD3A029ED
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:28:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E121CA02AB0
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2590C18870C2
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:28:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6820F188169C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CDB7166F1B;
-	Mon,  6 Jan 2025 15:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 186A578F49;
+	Mon,  6 Jan 2025 15:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZspNbmz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WHfIS4hr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3042915958A;
-	Mon,  6 Jan 2025 15:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E7D44C7C;
+	Mon,  6 Jan 2025 15:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177253; cv=none; b=tgR9+dgailmypp7mIhVaEr5TT3C3biSvZQPI1UGmDh4vkCT1DkpE9xK1YVIrMACf4NzfP1/3UjNl0UDY9fBOWbS648PFZF4tnUIRlTYCocNNppHNS26wiNoUKTVnfC0P9ke22ftwrM4u0hffVZk/PHO/mwHzcifzrxt+zjK0V4w=
+	t=1736177774; cv=none; b=jfrSlNVT5daavQzURqNRKT6Nu+Yw7jTfLra544R8FGPFHqH426RIPelBcSCSEwd8ENEyyd0Z/pf7cyjm+hzk8dVPYZGRweykHBZO9aJPzQwven0pON7xY/GhOR0iU1UvcYs7GwMyQHZv68hAydlcqAfwhCU4NOia7rn8yKhl/Pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177253; c=relaxed/simple;
-	bh=2kXlZIy/etYXdNAqF0LSgec+VjRJgKoqU35pJxrL7KE=;
+	s=arc-20240116; t=1736177774; c=relaxed/simple;
+	bh=CFTjEREH966mq3+UnFnO3kZ/hRtW/O+n6sDmAZiemQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lQ0T1IRUiVaFnn9Zd4/qFQvkQ4lxUZdZeC8RA11tqDTQ9IDTjQmXCEGAUykb6bUM+qT8zntTN8e+PigYllSuUHRIfm21fBouUE6uFJVf3tctm7SruhJm9GcCNyJw6b5JDvzdoQllnEAMFhUul2TAEWvCpKxBfkuWEskVG8qVTAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZspNbmz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE5FAC4CED2;
-	Mon,  6 Jan 2025 15:27:32 +0000 (UTC)
+	 MIME-Version; b=GI7V+Z9Bs3wj7p7CRvXKhtgt9XnBhKXsfZtnxq/8ZjgbWR+6ovaY3Zt3HuJ+19eZyGs0CtqGljUBsJYwVpVbpgW794XgsUcx9lsqEkNms+4CxmC3b4/JCAQ5vKLZHK8xrcb3x0IcMzCKAc7HbCaZmHWHnsEGtOObXzIB2EUiggY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WHfIS4hr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D8BFC4CED2;
+	Mon,  6 Jan 2025 15:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177253;
-	bh=2kXlZIy/etYXdNAqF0LSgec+VjRJgKoqU35pJxrL7KE=;
+	s=korg; t=1736177774;
+	bh=CFTjEREH966mq3+UnFnO3kZ/hRtW/O+n6sDmAZiemQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pZspNbmzdSu9yPY+PlWxZW7708V4+veG7gCOm6TSVVQ+3tJ5KanxPHyWbZmsF3Jp8
-	 AzEUGd8YqEYgUr5p8s7rBbHnn9Rea+ix7iKC2uPuwzDQK3UQ+Dqd2K03buPGL/Q91M
-	 OyZUTZcM0/YOCMs2wprYwNmDsUCVPl+Tp4BGjEW0=
+	b=WHfIS4hresulGe43nT0i6bJ28UjYNVnaYXC48JrzIclcvy41GGH3tVizEWnnuMh33
+	 KkDfgx2GZiWJqfCYzjk2k3CAfd6yVlONYRiotNCDdLbKJrLI94ZFW4bBD+xRYXQ54z
+	 iflwgnUuP5+y2CtdF21u2DNIjj+Pt71MOUnb/HjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Lu <chris.lu@mediatek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 103/222] Bluetooth: btusb: mediatek: add callback function in btusb_disconnect
+Subject: [PATCH 6.12 021/156] RDMA/bnxt_re: Fix the check for 9060 condition
 Date: Mon,  6 Jan 2025 16:15:07 +0100
-Message-ID: <20250106151154.494763226@linuxfoundation.org>
+Message-ID: <20250106151142.541548609@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Lu <chris.lu@mediatek.com>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit cea1805f165cdd783dd21f26df957118cb8641b4 ]
+[ Upstream commit 38651476e46e088598354510502c383e932e2297 ]
 
-Add disconnect callback function in btusb_disconnect which is reserved
-for vendor specific usage before deregister hci in btusb_disconnect.
+The check for 9060 condition should only be made for legacy chips.
 
-Signed-off-by: Chris Lu <chris.lu@mediatek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 9152e0b722b2 ("RDMA/bnxt_re: HW workarounds for handling specific conditions")
+Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/20241211083931.968831-2-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 19d371aa8317..c80b5aa7628a 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -894,6 +894,7 @@ struct btusb_data {
- 
- 	int (*suspend)(struct hci_dev *hdev);
- 	int (*resume)(struct hci_dev *hdev);
-+	int (*disconnect)(struct hci_dev *hdev);
- 
- 	int oob_wake_irq;   /* irq for out-of-band wake-on-bt */
- 	unsigned cmd_timeout_cnt;
-@@ -4646,6 +4647,9 @@ static void btusb_disconnect(struct usb_interface *intf)
- 	if (data->diag)
- 		usb_set_intfdata(data->diag, NULL);
- 
-+	if (data->disconnect)
-+		data->disconnect(hdev);
-+
- 	hci_unregister_dev(hdev);
- 
- 	if (intf == data->intf) {
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index 5938db37220d..f5db29707449 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -2598,10 +2598,12 @@ static int bnxt_qplib_cq_process_req(struct bnxt_qplib_cq *cq,
+ 			bnxt_qplib_add_flush_qp(qp);
+ 		} else {
+ 			/* Before we complete, do WA 9060 */
+-			if (do_wa9060(qp, cq, cq_cons, sq->swq_last,
+-				      cqe_sq_cons)) {
+-				*lib_qp = qp;
+-				goto out;
++			if (!bnxt_qplib_is_chip_gen_p5_p7(qp->cctx)) {
++				if (do_wa9060(qp, cq, cq_cons, sq->swq_last,
++					      cqe_sq_cons)) {
++					*lib_qp = qp;
++					goto out;
++				}
+ 			}
+ 			if (swq->flags & SQ_SEND_FLAGS_SIGNAL_COMP) {
+ 				cqe->status = CQ_REQ_STATUS_OK;
 -- 
 2.39.5
 
