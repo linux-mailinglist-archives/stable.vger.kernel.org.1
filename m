@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-106805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6593A02323
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 11:36:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01BB1A02330
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 11:37:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6C30163624
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 10:36:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D358C1634D8
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 10:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176661D7E4E;
-	Mon,  6 Jan 2025 10:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E4219E7EB;
+	Mon,  6 Jan 2025 10:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kdtc4kZs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFWRf/an"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B882AE94
-	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 10:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6686A1D5171
+	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 10:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736159786; cv=none; b=Ufkk6Us/CGY2hGjhXESAHO8UWnMEBWOP4y76zBCHfDU/wWKmoPIiaYSd0NxjvigNTcR/r3voW3YNQluNlpV+cQU4ZszYkreJ6dK3cn+AjxlJO8yWJpzflrVzpvwawRZqs3wRmJRlixj/4sowSuBHqfCbyY9j5YD3ygNeR3qoUQw=
+	t=1736159875; cv=none; b=ITp5c3p9yjhWAZmVQSS0yJmWaWyr2xLaR8L+aCgibFsy/wfwKyw31TpDLTCKt2n8xi+lRHXTeFp0yJ5rPq47GiDpS6DriVofvoHPng/tBz7umaS1IsQbJd3gpjNjmS9+yApos47JeQfFZNL2zPbWkeJXir1whg5axxuD15AV7M0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736159786; c=relaxed/simple;
-	bh=+8DrjpdZULYtvcCjDKdRDvLa9Vst3lwV/30FTxsVj2Y=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HGTW7Jcm1NIwrTmQFNT6Q2z3aW93+vx/uMvHdOKKoljHiXYAZvns8z+pi4OEMpA3p5F4ycZHyAq11pFMfqpa7AKGEoGy/K1vFm0T7gzA/zsNzqEvAR6UydghSlHJFtz//EW9+Auwvk+wkr4vpqmZhKEr87MxH/wSfXlt59ev7vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kdtc4kZs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D02C4CED2;
-	Mon,  6 Jan 2025 10:36:25 +0000 (UTC)
+	s=arc-20240116; t=1736159875; c=relaxed/simple;
+	bh=WVep5VycK/53II3QlCOu0Jpxr8GmU34Jo1np/LshoQU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HB9WYNqro8uCDz0Hf40A55ZZzq4PnG7sApAmzvdZgow+4VWSM83o+Wdhtc64l9psNmfgZIXl6A36UikGMKb+3kwWTHR7hgXpwRK8G7QrXfNvaFAIq4KBxu/+1zjPDtF1qM2h7LDfjlHRdfxYHmzaPzJ8TDOY1Kw4OZMVzpzBeds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFWRf/an; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A037CC4CED2;
+	Mon,  6 Jan 2025 10:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736159786;
-	bh=+8DrjpdZULYtvcCjDKdRDvLa9Vst3lwV/30FTxsVj2Y=;
+	s=korg; t=1736159875;
+	bh=WVep5VycK/53II3QlCOu0Jpxr8GmU34Jo1np/LshoQU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Kdtc4kZs0n9d2b7i/XsnrySDjHV5C5xN+uEit8lnSGf23Pq3CMCGsaBKCmoC2IjkG
-	 M0qqmrhR1VSDFP3Ixz0Mh2xuVDSCjCiRMIwUP1zFoxHbjaDQbfH+AhZ8csw5lS2BfA
-	 4lGeUG9Upk+VR5rBQ/KGk6Xof782+Mu/QxgKIS94=
-Subject: FAILED: patch "[PATCH] ocfs2: fix slab-use-after-free due to dangling pointer" failed to apply to 5.4-stable tree
-To: dennis.lamerice@gmail.com,akpm@linux-foundation.org,gechangwei@live.cn,jlbec@evilplan.org,joseph.qi@linux.alibaba.com,junxiao.bi@oracle.com,mark@fasheh.com,piaojun@huawei.com,stable@vger.kernel.org
+	b=oFWRf/anyRpsn2x5ZIF+PaaeQkV5iNuG9kKX0qvr57Q18FOWKxKMW1ITkuNHOuofO
+	 +99Vm3ANyeiDJDrHN8eGLNAmYE4Hybjwo/h4Gg3hp2dAww82+KEDk4YWY6NU0aGcF3
+	 Ra53DPPP/S2yQGe/Wssl1bkaNMDtoG8b61hDB3G4=
+Subject: FAILED: patch "[PATCH] workqueue: Do not warn when cancelling WQ_MEM_RECLAIM work" failed to apply to 6.6-stable tree
+To: tvrtko.ursulin@igalia.com,alexander.deucher@amd.com,christian.koenig@amd.com,jiangshanlai@gmail.com,matthew.brost@intel.com,peterz@infradead.org,stable@vger.kernel.org,tj@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 06 Jan 2025 11:36:11 +0100
-Message-ID: <2025010611-sphinx-mayflower-3d16@gregkh>
+Date: Mon, 06 Jan 2025 11:37:52 +0100
+Message-ID: <2025010652-clad-doorframe-5d77@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5f3fd772d152229d94602bca243fbb658068a597
+git cherry-pick -x de35994ecd2dd6148ab5a6c5050a1670a04dec77
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025010611-sphinx-mayflower-3d16@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025010652-clad-doorframe-5d77@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,67 +77,118 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5f3fd772d152229d94602bca243fbb658068a597 Mon Sep 17 00:00:00 2001
-From: Dennis Lam <dennis.lamerice@gmail.com>
-Date: Tue, 17 Dec 2024 21:39:25 -0500
-Subject: [PATCH] ocfs2: fix slab-use-after-free due to dangling pointer
- dqi_priv
+From de35994ecd2dd6148ab5a6c5050a1670a04dec77 Mon Sep 17 00:00:00 2001
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Date: Thu, 19 Dec 2024 09:30:30 +0000
+Subject: [PATCH] workqueue: Do not warn when cancelling WQ_MEM_RECLAIM work
+ from !WQ_MEM_RECLAIM worker
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-When mounting ocfs2 and then remounting it as read-only, a
-slab-use-after-free occurs after the user uses a syscall to
-quota_getnextquota.  Specifically, sb_dqinfo(sb, type)->dqi_priv is the
-dangling pointer.
+After commit
+746ae46c1113 ("drm/sched: Mark scheduler work queues with WQ_MEM_RECLAIM")
+amdgpu started seeing the following warning:
 
-During the remounting process, the pointer dqi_priv is freed but is never
-set as null leaving it to be accessed.  Additionally, the read-only option
-for remounting sets the DQUOT_SUSPENDED flag instead of setting the
-DQUOT_USAGE_ENABLED flags.  Moreover, later in the process of getting the
-next quota, the function ocfs2_get_next_id is called and only checks the
-quota usage flags and not the quota suspended flags.
+ [ ] workqueue: WQ_MEM_RECLAIM sdma0:drm_sched_run_job_work [gpu_sched] is flushing !WQ_MEM_RECLAIM events:amdgpu_device_delay_enable_gfx_off [amdgpu]
+...
+ [ ] Workqueue: sdma0 drm_sched_run_job_work [gpu_sched]
+...
+ [ ] Call Trace:
+ [ ]  <TASK>
+...
+ [ ]  ? check_flush_dependency+0xf5/0x110
+...
+ [ ]  cancel_delayed_work_sync+0x6e/0x80
+ [ ]  amdgpu_gfx_off_ctrl+0xab/0x140 [amdgpu]
+ [ ]  amdgpu_ring_alloc+0x40/0x50 [amdgpu]
+ [ ]  amdgpu_ib_schedule+0xf4/0x810 [amdgpu]
+ [ ]  ? drm_sched_run_job_work+0x22c/0x430 [gpu_sched]
+ [ ]  amdgpu_job_run+0xaa/0x1f0 [amdgpu]
+ [ ]  drm_sched_run_job_work+0x257/0x430 [gpu_sched]
+ [ ]  process_one_work+0x217/0x720
+...
+ [ ]  </TASK>
 
-To fix this, I set dqi_priv to null when it is freed after remounting with
-read-only and put a check for DQUOT_SUSPENDED in ocfs2_get_next_id.
+The intent of the verifcation done in check_flush_depedency is to ensure
+forward progress during memory reclaim, by flagging cases when either a
+memory reclaim process, or a memory reclaim work item is flushed from a
+context not marked as memory reclaim safe.
 
-[akpm@linux-foundation.org: coding-style cleanups]
-Link: https://lkml.kernel.org/r/20241218023924.22821-2-dennis.lamerice@gmail.com
-Fixes: 8f9e8f5fcc05 ("ocfs2: Fix Q_GETNEXTQUOTA for filesystem without quotas")
-Signed-off-by: Dennis Lam <dennis.lamerice@gmail.com>
-Reported-by: syzbot+d173bf8a5a7faeede34c@syzkaller.appspotmail.com
-Tested-by: syzbot+d173bf8a5a7faeede34c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6731d26f.050a0220.1fb99c.014b.GAE@google.com/T/
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+This is correct when flushing, but when called from the
+cancel(_delayed)_work_sync() paths it is a false positive because work is
+either already running, or will not be running at all. Therefore
+cancelling it is safe and we can relax the warning criteria by letting the
+helper know of the calling context.
 
-diff --git a/fs/ocfs2/quota_global.c b/fs/ocfs2/quota_global.c
-index 2b0daced98eb..3404e7a30c33 100644
---- a/fs/ocfs2/quota_global.c
-+++ b/fs/ocfs2/quota_global.c
-@@ -893,7 +893,7 @@ static int ocfs2_get_next_id(struct super_block *sb, struct kqid *qid)
- 	int status = 0;
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: fca839c00a12 ("workqueue: warn if memory reclaim tries to flush !WQ_MEM_RECLAIM workqueue")
+References: 746ae46c1113 ("drm/sched: Mark scheduler work queues with WQ_MEM_RECLAIM")
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Lai Jiangshan <jiangshanlai@gmail.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian König <christian.koenig@amd.com
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v4.5+
+Signed-off-by: Tejun Heo <tj@kernel.org>
+
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index 8b07576814a5..8336218ec4b8 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -3680,23 +3680,27 @@ void workqueue_softirq_dead(unsigned int cpu)
+  * check_flush_dependency - check for flush dependency sanity
+  * @target_wq: workqueue being flushed
+  * @target_work: work item being flushed (NULL for workqueue flushes)
++ * @from_cancel: are we called from the work cancel path
+  *
+  * %current is trying to flush the whole @target_wq or @target_work on it.
+- * If @target_wq doesn't have %WQ_MEM_RECLAIM, verify that %current is not
+- * reclaiming memory or running on a workqueue which doesn't have
+- * %WQ_MEM_RECLAIM as that can break forward-progress guarantee leading to
+- * a deadlock.
++ * If this is not the cancel path (which implies work being flushed is either
++ * already running, or will not be at all), check if @target_wq doesn't have
++ * %WQ_MEM_RECLAIM and verify that %current is not reclaiming memory or running
++ * on a workqueue which doesn't have %WQ_MEM_RECLAIM as that can break forward-
++ * progress guarantee leading to a deadlock.
+  */
+ static void check_flush_dependency(struct workqueue_struct *target_wq,
+-				   struct work_struct *target_work)
++				   struct work_struct *target_work,
++				   bool from_cancel)
+ {
+-	work_func_t target_func = target_work ? target_work->func : NULL;
++	work_func_t target_func;
+ 	struct worker *worker;
  
- 	trace_ocfs2_get_next_id(from_kqid(&init_user_ns, *qid), type);
--	if (!sb_has_quota_loaded(sb, type)) {
-+	if (!sb_has_quota_active(sb, type)) {
- 		status = -ESRCH;
- 		goto out;
+-	if (target_wq->flags & WQ_MEM_RECLAIM)
++	if (from_cancel || target_wq->flags & WQ_MEM_RECLAIM)
+ 		return;
+ 
+ 	worker = current_wq_worker();
++	target_func = target_work ? target_work->func : NULL;
+ 
+ 	WARN_ONCE(current->flags & PF_MEMALLOC,
+ 		  "workqueue: PF_MEMALLOC task %d(%s) is flushing !WQ_MEM_RECLAIM %s:%ps",
+@@ -3980,7 +3984,7 @@ void __flush_workqueue(struct workqueue_struct *wq)
+ 		list_add_tail(&this_flusher.list, &wq->flusher_overflow);
  	}
-diff --git a/fs/ocfs2/quota_local.c b/fs/ocfs2/quota_local.c
-index 73d3367c533b..2956d888c131 100644
---- a/fs/ocfs2/quota_local.c
-+++ b/fs/ocfs2/quota_local.c
-@@ -867,6 +867,7 @@ static int ocfs2_local_free_info(struct super_block *sb, int type)
- 	brelse(oinfo->dqi_libh);
- 	brelse(oinfo->dqi_lqi_bh);
- 	kfree(oinfo);
-+	info->dqi_priv = NULL;
- 	return status;
- }
  
+-	check_flush_dependency(wq, NULL);
++	check_flush_dependency(wq, NULL, false);
+ 
+ 	mutex_unlock(&wq->mutex);
+ 
+@@ -4155,7 +4159,7 @@ static bool start_flush_work(struct work_struct *work, struct wq_barrier *barr,
+ 	}
+ 
+ 	wq = pwq->wq;
+-	check_flush_dependency(wq, work);
++	check_flush_dependency(wq, work, from_cancel);
+ 
+ 	insert_wq_barrier(pwq, barr, work, worker);
+ 	raw_spin_unlock_irq(&pool->lock);
 
 
