@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-107137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC790A02A64
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:33:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ED32A02BEC
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:48:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B21C61881574
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:33:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C85D16275C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5CE7156238;
-	Mon,  6 Jan 2025 15:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E3D213B592;
+	Mon,  6 Jan 2025 15:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yaYCn/t2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CUs2FnnJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D1086325;
-	Mon,  6 Jan 2025 15:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A5D38F9C;
+	Mon,  6 Jan 2025 15:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177567; cv=none; b=GiM9dL46z5/n55ALTm2kVBUtTzC++bY+uR3JYK3oMpXFJX0l5OUYRrXtLqm5aIlObH3IE4i6mm2S18fqXXZ0r2RLe3IVf+R8FVgPwO1rV6vylgg3WNMnA74T65UC5EwPROIZg70v79WdhY86vvi/zJUrbKKH+C1PDwapb+lPpsM=
+	t=1736178465; cv=none; b=LnwpLEUv3gv3fuPm0+hXGTioXZtbzOiSpwifm/zXc0wA+Y46KDhvYyj3TRspd7McwB6RULR4GyN6IDF/g1bAx+YNfSEMQN5UnV5Ui1flGgNUUkL2AFaMpanVjS4+gujZRfyBzCFzCOIcGMDkhWpKsSRB1VD20R+w6LJp/sRGrTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177567; c=relaxed/simple;
-	bh=4y57RBcFZXzTh83Ca+C/ROETB9QGFtUKj6xI/rib+ls=;
+	s=arc-20240116; t=1736178465; c=relaxed/simple;
+	bh=FP6wNnsVBP5Q+fDf/BlL/OVUjiLXfdpcPcDsFAClJK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dlrZ05YLJnmgtKbJuzdE7aO+K3pZXaJfdEuAsjWdlFO5mrvX21cwf3YYz26ON2DMglXDWn/gNuDUpWc/+wn1iP+GRTe4/H3JOiROVpS+QswKfQU0FlOGT/8gmDducuIq0DQurDdlZOF3lxQxRofOQLZL8o5edcfYfY4oE8Kr9KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yaYCn/t2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04B44C4CED2;
-	Mon,  6 Jan 2025 15:32:45 +0000 (UTC)
+	 MIME-Version; b=hJZph5KhFNn2U5fOzh/+lQ0C+7ek/bG0v2qMNkpKrh9KFsMVdr8IjRvxTDgEDRY6T3unsP3b+PMpLnGBVjy17Z8RbYUq5m7Tyn4yFdhlveGQ9l+rK6LeQV7m+Tu4tLwyFmlH1dYg8+zMS0VhshKUTsu26inkg/8OK8v/3hFvpNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUs2FnnJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B4BBC4CED2;
+	Mon,  6 Jan 2025 15:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177566;
-	bh=4y57RBcFZXzTh83Ca+C/ROETB9QGFtUKj6xI/rib+ls=;
+	s=korg; t=1736178465;
+	bh=FP6wNnsVBP5Q+fDf/BlL/OVUjiLXfdpcPcDsFAClJK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yaYCn/t200rLIq0PozzSBvv3LbyqJU1pP89DoiIaUAeIZbDoFM4g7WQpbznXXxtIw
-	 K4yIh8THraNE2ag4zssZgtsg319sR7PmwmmA6mMRoYVCxg/lGAnJGLh+HPWx9xpJzP
-	 gMfFWErJME6TpS77e7VGxFpsomcaawmXfom8RyJU=
+	b=CUs2FnnJ2sWgf83NS7eHvL8EuqT8WERu8AkFO2/t8Py1OHOm/DELDqqdyRLhOQjKM
+	 qF+lm2fYp/8Vjc8N5he98ly263LsqZSFSx8rf6IUiwqhbJtb2mfYWtvtKIZp9WQP5l
+	 s/teSenpi5q/vCr9e/PeVjowMrX+jZcMNfnqIqgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Evgenii Shatokhin <e.shatokhin@yadro.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.6 206/222] pinctrl: mcp23s08: Fix sleeping in atomic context due to regmap locking
+	Azhar Shaikh <azhar.shaikh@intel.com>,
+	Yehezkel Bernat <YehezkelShB@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 086/138] thunderbolt: Add support for Intel Alder Lake
 Date: Mon,  6 Jan 2025 16:16:50 +0100
-Message-ID: <20250106151158.564875747@linuxfoundation.org>
+Message-ID: <20250106151136.489429019@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,116 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Evgenii Shatokhin <e.shatokhin@yadro.com>
+From: Azhar Shaikh <azhar.shaikh@intel.com>
 
-commit a37eecb705f33726f1fb7cd2a67e514a15dfe693 upstream.
+[ Upstream commit 135794868ad83d0327cdd78df469e118f1fe7cc4 ]
 
-If a device uses MCP23xxx IO expander to receive IRQs, the following
-bug can happen:
+Alder Lake has the same integrated Thunderbolt/USB4 controller as
+Intel Tiger Lake. By default it is still using firmware based connection
+manager so we can use most of the Tiger Lake flows.
 
-  BUG: sleeping function called from invalid context
-    at kernel/locking/mutex.c:283
-  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, ...
-  preempt_count: 1, expected: 0
-  ...
-  Call Trace:
-  ...
-  __might_resched+0x104/0x10e
-  __might_sleep+0x3e/0x62
-  mutex_lock+0x20/0x4c
-  regmap_lock_mutex+0x10/0x18
-  regmap_update_bits_base+0x2c/0x66
-  mcp23s08_irq_set_type+0x1ae/0x1d6
-  __irq_set_trigger+0x56/0x172
-  __setup_irq+0x1e6/0x646
-  request_threaded_irq+0xb6/0x160
-  ...
+Add the Alder Lake PCI IDs to the driver list of supported devices.
 
-We observed the problem while experimenting with a touchscreen driver which
-used MCP23017 IO expander (I2C).
-
-The regmap in the pinctrl-mcp23s08 driver uses a mutex for protection from
-concurrent accesses, which is the default for regmaps without .fast_io,
-.disable_locking, etc.
-
-mcp23s08_irq_set_type() calls regmap_update_bits_base(), and the latter
-locks the mutex.
-
-However, __setup_irq() locks desc->lock spinlock before calling these
-functions. As a result, the system tries to lock the mutex whole holding
-the spinlock.
-
-It seems, the internal regmap locks are not needed in this driver at all.
-mcp->lock seems to protect the regmap from concurrent accesses already,
-except, probably, in mcp_pinconf_get/set.
-
-mcp23s08_irq_set_type() and mcp23s08_irq_mask/unmask() are called under
-chip_bus_lock(), which calls mcp23s08_irq_bus_lock(). The latter takes
-mcp->lock and enables regmap caching, so that the potentially slow I2C
-accesses are deferred until chip_bus_unlock().
-
-The accesses to the regmap from mcp23s08_probe_one() do not need additional
-locking.
-
-In all remaining places where the regmap is accessed, except
-mcp_pinconf_get/set(), the driver already takes mcp->lock.
-
-This patch adds locking in mcp_pinconf_get/set() and disables internal
-locking in the regmap config. Among other things, it fixes the sleeping
-in atomic context described above.
-
-Fixes: 8f38910ba4f6 ("pinctrl: mcp23s08: switch to regmap caching")
-Cc: stable@vger.kernel.org
-Signed-off-by: Evgenii Shatokhin <e.shatokhin@yadro.com>
-Link: https://lore.kernel.org/20241209074659.1442898-1-e.shatokhin@yadro.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Azhar Shaikh <azhar.shaikh@intel.com>
+Reviewed-by: Yehezkel Bernat <YehezkelShB@gmail.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Stable-dep-of: 8644b48714dc ("thunderbolt: Add support for Intel Panther Lake-M/P")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-mcp23s08.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/thunderbolt/icm.c | 2 ++
+ drivers/thunderbolt/nhi.c | 4 ++++
+ drivers/thunderbolt/nhi.h | 2 ++
+ 3 files changed, 8 insertions(+)
 
---- a/drivers/pinctrl/pinctrl-mcp23s08.c
-+++ b/drivers/pinctrl/pinctrl-mcp23s08.c
-@@ -86,6 +86,7 @@ const struct regmap_config mcp23x08_regm
- 	.num_reg_defaults = ARRAY_SIZE(mcp23x08_defaults),
- 	.cache_type = REGCACHE_FLAT,
- 	.max_register = MCP_OLAT,
-+	.disable_locking = true, /* mcp->lock protects the regmap */
- };
- EXPORT_SYMBOL_GPL(mcp23x08_regmap);
+diff --git a/drivers/thunderbolt/icm.c b/drivers/thunderbolt/icm.c
+index 90f1d9a53461..b038e530d6cb 100644
+--- a/drivers/thunderbolt/icm.c
++++ b/drivers/thunderbolt/icm.c
+@@ -2290,6 +2290,8 @@ struct tb *icm_probe(struct tb_nhi *nhi)
+ 	case PCI_DEVICE_ID_INTEL_TGL_NHI1:
+ 	case PCI_DEVICE_ID_INTEL_TGL_H_NHI0:
+ 	case PCI_DEVICE_ID_INTEL_TGL_H_NHI1:
++	case PCI_DEVICE_ID_INTEL_ADL_NHI0:
++	case PCI_DEVICE_ID_INTEL_ADL_NHI1:
+ 		icm->is_supported = icm_tgl_is_supported;
+ 		icm->driver_ready = icm_icl_driver_ready;
+ 		icm->set_uuid = icm_icl_set_uuid;
+diff --git a/drivers/thunderbolt/nhi.c b/drivers/thunderbolt/nhi.c
+index fd1b59397c70..1e732d2d15ad 100644
+--- a/drivers/thunderbolt/nhi.c
++++ b/drivers/thunderbolt/nhi.c
+@@ -1349,6 +1349,10 @@ static struct pci_device_id nhi_ids[] = {
+ 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_TGL_H_NHI1),
+ 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_ADL_NHI0),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_ADL_NHI1),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
  
-@@ -132,6 +133,7 @@ const struct regmap_config mcp23x17_regm
- 	.num_reg_defaults = ARRAY_SIZE(mcp23x17_defaults),
- 	.cache_type = REGCACHE_FLAT,
- 	.val_format_endian = REGMAP_ENDIAN_LITTLE,
-+	.disable_locking = true, /* mcp->lock protects the regmap */
- };
- EXPORT_SYMBOL_GPL(mcp23x17_regmap);
- 
-@@ -228,7 +230,9 @@ static int mcp_pinconf_get(struct pinctr
- 
- 	switch (param) {
- 	case PIN_CONFIG_BIAS_PULL_UP:
-+		mutex_lock(&mcp->lock);
- 		ret = mcp_read(mcp, MCP_GPPU, &data);
-+		mutex_unlock(&mcp->lock);
- 		if (ret < 0)
- 			return ret;
- 		status = (data & BIT(pin)) ? 1 : 0;
-@@ -257,7 +261,9 @@ static int mcp_pinconf_set(struct pinctr
- 
- 		switch (param) {
- 		case PIN_CONFIG_BIAS_PULL_UP:
-+			mutex_lock(&mcp->lock);
- 			ret = mcp_set_bit(mcp, MCP_GPPU, pin, arg);
-+			mutex_unlock(&mcp->lock);
- 			break;
- 		default:
- 			dev_dbg(mcp->dev, "Invalid config param %04x\n", param);
+ 	/* Any USB4 compliant host */
+ 	{ PCI_DEVICE_CLASS(PCI_CLASS_SERIAL_USB_USB4, ~0) },
+diff --git a/drivers/thunderbolt/nhi.h b/drivers/thunderbolt/nhi.h
+index 7ad6d3f0583b..5091677b3f4b 100644
+--- a/drivers/thunderbolt/nhi.h
++++ b/drivers/thunderbolt/nhi.h
+@@ -73,6 +73,8 @@ extern const struct tb_nhi_ops icl_nhi_ops;
+ #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_4C_BRIDGE	0x15ea
+ #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_4C_NHI		0x15eb
+ #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_DD_BRIDGE	0x15ef
++#define PCI_DEVICE_ID_INTEL_ADL_NHI0			0x463e
++#define PCI_DEVICE_ID_INTEL_ADL_NHI1			0x466d
+ #define PCI_DEVICE_ID_INTEL_ICL_NHI1			0x8a0d
+ #define PCI_DEVICE_ID_INTEL_ICL_NHI0			0x8a17
+ #define PCI_DEVICE_ID_INTEL_TGL_NHI0			0x9a1b
+-- 
+2.39.5
+
 
 
 
