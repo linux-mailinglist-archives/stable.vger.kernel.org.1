@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-107254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A977FA02AF5
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8466A02A3B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:32:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CFBF1648B1
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25F76164CEF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8ACD15B0E2;
-	Mon,  6 Jan 2025 15:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D3E1DE4EB;
+	Mon,  6 Jan 2025 15:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oy40Z/em"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVqjXlmV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FE0157E82;
-	Mon,  6 Jan 2025 15:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7021DDA3C;
+	Mon,  6 Jan 2025 15:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177915; cv=none; b=LWTYjwXGo+iNv3WxHMaY5zEYT/zFQ1FoP25bCvlk+iWSbwe7sH7LRZU9ufxSJOKJ7+wW915O2WF6perCaQribdI63602B47ohnVo8YwW8SHyL34kCQTIgQKvrs1gcLId+bldtAAOXh8hVU3sGZapoW5g0YzasYP9ACPi1+YIZYM=
+	t=1736177499; cv=none; b=DxiNPpMFUZ9CW0J0ZcLga7GBAGtdoMicvqGkG7bUvq6ZcQuA/iH9MpmsjE35MJEaYsSGbny0wH9NUwK9S/aSBQ7Tp8f0VauyY+3Y4VDufANMkDKVukkJSlDwEOc1zAnzQ0D5P0vWnIqEWhSFBdzlxPLuReWiabSJoEJAZM2mey4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177915; c=relaxed/simple;
-	bh=JIAFS+aRmPRdDyWe8kB+A4L0lXhNemEXMUrUxXD4lOs=;
+	s=arc-20240116; t=1736177499; c=relaxed/simple;
+	bh=icPD5Bnac31qbsbY8s/N0ZKAlYKGJC70XjT/q3dgAGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VcaC93kOaw2sVshNqRscLE4PpIahKYsOOcQPNAgxsAPeqIAJm2OdGQPclYKawcTAUtgcezXXEzbBkkHT/4MYVKGkVoW2P35hWWn284c5EGUi6rLTk5dO8MaIz8CNLQPK9/nsKIWFMeSEGWikY8RooqySmlyAHhv8dLtGD8ijjdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oy40Z/em; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF48C4CED2;
-	Mon,  6 Jan 2025 15:38:34 +0000 (UTC)
+	 MIME-Version; b=ZL1R97DReWw6hGTmMv6nmD9ufxDrckf52IFgPXuH2e1vaG3rI6S3KlpmlQpn+YbzyozmEB2Fu1CbV6qqeMhLk4qc3vDHZOXOKNg1Zs0VcZf1IsHgJxqkYdD09y/FrAcshJSYelBofo8DBkVB9Y1AnPCyoKMGByivmsuOlqn0dk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVqjXlmV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D4FFC4CED2;
+	Mon,  6 Jan 2025 15:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177915;
-	bh=JIAFS+aRmPRdDyWe8kB+A4L0lXhNemEXMUrUxXD4lOs=;
+	s=korg; t=1736177498;
+	bh=icPD5Bnac31qbsbY8s/N0ZKAlYKGJC70XjT/q3dgAGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oy40Z/emfnjKa56ztiSTvXY4WIxw5D/Aphw7g+9a51zIE4f5kMOl/NXh6lLrj2fdt
-	 if0Buoa1klbeaNtYVfmsRmKwT0Czuh5XKatkO3KuO1EnbQAoCujhp6T8SagQcDbC8X
-	 AsdMROKfORN7rbHA6ReiDiRJmp/f5PvYPnZ4M+pY=
+	b=vVqjXlmVFSmv9HbReRgyHXfja0wrMkLpxzyCvK+FMvcRGH2a0ToSA4YJkkftv8JqP
+	 bGhbIiHLmPMGctwvmL38ugEVOIlqUXb6XhY5DM0PBHje0DwGfl7p11ohDRhXBx9huQ
+	 uow7UbKNg5/eeSYNMh0E31JGh0Lr8jRQoMTJkNCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Palmas <dnlplm@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 100/156] net: usb: qmi_wwan: add Telit FE910C04 compositions
+Subject: [PATCH 6.6 182/222] ALSA: hda/ca0132: Use standard HD-audio quirk matching helpers
 Date: Mon,  6 Jan 2025 16:16:26 +0100
-Message-ID: <20250106151145.491740077@linuxfoundation.org>
+Message-ID: <20250106151157.656114753@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +61,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 3b58b53a26598209a7ad8259a5114ce71f7c3d64 ]
+[ Upstream commit 7c005292e20ac53dfa601bf2a7375fd4815511ad ]
 
-Add the following Telit FE910C04 compositions:
+CA0132 used the PCI SSID lookup helper that doesn't support the model
+string matching or quirk aliasing.
 
-0x10c0: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
-T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 13 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c0 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Replace it with the standard HD-audio quirk helpers for supporting
+those, and add the definition of the model strings for supported
+quirks, too.  There should be no visible change to the outside for the
+working system, but the driver will parse the model option and apply
+the quirk based on it from now on.
 
-0x10c4: rmnet + tty (AT) + tty (AT) + tty (diag)
-T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 14 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c4 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-0x10c8: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
-T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 17 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c8 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Link: https://patch.msgid.link/20241209151821.3688829-1-dnlplm@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20241207133754.3658-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/pci/hda/patch_ca0132.c | 37 ++++++++++++++++++++----------------
+ 1 file changed, 21 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 0c011d8f5d4d..9fe7f704a2f7 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1365,6 +1365,9 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a0, 0)}, /* Telit FN920C04 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a4, 0)}, /* Telit FN920C04 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a9, 0)}, /* Telit FN920C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c0, 0)}, /* Telit FE910C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c4, 0)}, /* Telit FE910C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c8, 0)}, /* Telit FE910C04 */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1100, 3)},	/* Telit ME910 */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1101, 3)},	/* Telit ME910 dual modem */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1200, 5)},	/* Telit LE920 */
+diff --git a/sound/pci/hda/patch_ca0132.c b/sound/pci/hda/patch_ca0132.c
+index 748a3c40966e..27e48fdbbf3a 100644
+--- a/sound/pci/hda/patch_ca0132.c
++++ b/sound/pci/hda/patch_ca0132.c
+@@ -1134,7 +1134,6 @@ struct ca0132_spec {
+ 
+ 	struct hda_codec *codec;
+ 	struct delayed_work unsol_hp_work;
+-	int quirk;
+ 
+ #ifdef ENABLE_TUNING_CONTROLS
+ 	long cur_ctl_vals[TUNING_CTLS_COUNT];
+@@ -1166,7 +1165,6 @@ struct ca0132_spec {
+  * CA0132 quirks table
+  */
+ enum {
+-	QUIRK_NONE,
+ 	QUIRK_ALIENWARE,
+ 	QUIRK_ALIENWARE_M17XR4,
+ 	QUIRK_SBZ,
+@@ -1176,10 +1174,11 @@ enum {
+ 	QUIRK_R3D,
+ 	QUIRK_AE5,
+ 	QUIRK_AE7,
++	QUIRK_NONE = HDA_FIXUP_ID_NOT_SET,
+ };
+ 
+ #ifdef CONFIG_PCI
+-#define ca0132_quirk(spec)		((spec)->quirk)
++#define ca0132_quirk(spec)		((spec)->codec->fixup_id)
+ #define ca0132_use_pci_mmio(spec)	((spec)->use_pci_mmio)
+ #define ca0132_use_alt_functions(spec)	((spec)->use_alt_functions)
+ #define ca0132_use_alt_controls(spec)	((spec)->use_alt_controls)
+@@ -1293,7 +1292,7 @@ static const struct hda_pintbl ae7_pincfgs[] = {
+ 	{}
+ };
+ 
+-static const struct snd_pci_quirk ca0132_quirks[] = {
++static const struct hda_quirk ca0132_quirks[] = {
+ 	SND_PCI_QUIRK(0x1028, 0x057b, "Alienware M17x R4", QUIRK_ALIENWARE_M17XR4),
+ 	SND_PCI_QUIRK(0x1028, 0x0685, "Alienware 15 2015", QUIRK_ALIENWARE),
+ 	SND_PCI_QUIRK(0x1028, 0x0688, "Alienware 17 2015", QUIRK_ALIENWARE),
+@@ -1316,6 +1315,19 @@ static const struct snd_pci_quirk ca0132_quirks[] = {
+ 	{}
+ };
+ 
++static const struct hda_model_fixup ca0132_quirk_models[] = {
++	{ .id = QUIRK_ALIENWARE, .name = "alienware" },
++	{ .id = QUIRK_ALIENWARE_M17XR4, .name = "alienware-m17xr4" },
++	{ .id = QUIRK_SBZ, .name = "sbz" },
++	{ .id = QUIRK_ZXR, .name = "zxr" },
++	{ .id = QUIRK_ZXR_DBPRO, .name = "zxr-dbpro" },
++	{ .id = QUIRK_R3DI, .name = "r3di" },
++	{ .id = QUIRK_R3D, .name = "r3d" },
++	{ .id = QUIRK_AE5, .name = "ae5" },
++	{ .id = QUIRK_AE7, .name = "ae7" },
++	{}
++};
++
+ /* Output selection quirk info structures. */
+ #define MAX_QUIRK_MMIO_GPIO_SET_VALS 3
+ #define MAX_QUIRK_SCP_SET_VALS 2
+@@ -9962,17 +9974,15 @@ static int ca0132_prepare_verbs(struct hda_codec *codec)
+  */
+ static void sbz_detect_quirk(struct hda_codec *codec)
+ {
+-	struct ca0132_spec *spec = codec->spec;
+-
+ 	switch (codec->core.subsystem_id) {
+ 	case 0x11020033:
+-		spec->quirk = QUIRK_ZXR;
++		codec->fixup_id = QUIRK_ZXR;
+ 		break;
+ 	case 0x1102003f:
+-		spec->quirk = QUIRK_ZXR_DBPRO;
++		codec->fixup_id = QUIRK_ZXR_DBPRO;
+ 		break;
+ 	default:
+-		spec->quirk = QUIRK_SBZ;
++		codec->fixup_id = QUIRK_SBZ;
+ 		break;
+ 	}
+ }
+@@ -9981,7 +9991,6 @@ static int patch_ca0132(struct hda_codec *codec)
+ {
+ 	struct ca0132_spec *spec;
+ 	int err;
+-	const struct snd_pci_quirk *quirk;
+ 
+ 	codec_dbg(codec, "patch_ca0132\n");
+ 
+@@ -9992,11 +10001,7 @@ static int patch_ca0132(struct hda_codec *codec)
+ 	spec->codec = codec;
+ 
+ 	/* Detect codec quirk */
+-	quirk = snd_pci_quirk_lookup(codec->bus->pci, ca0132_quirks);
+-	if (quirk)
+-		spec->quirk = quirk->value;
+-	else
+-		spec->quirk = QUIRK_NONE;
++	snd_hda_pick_fixup(codec, ca0132_quirk_models, ca0132_quirks, NULL);
+ 	if (ca0132_quirk(spec) == QUIRK_SBZ)
+ 		sbz_detect_quirk(codec);
+ 
+@@ -10073,7 +10078,7 @@ static int patch_ca0132(struct hda_codec *codec)
+ 		spec->mem_base = pci_iomap(codec->bus->pci, 2, 0xC20);
+ 		if (spec->mem_base == NULL) {
+ 			codec_warn(codec, "pci_iomap failed! Setting quirk to QUIRK_NONE.");
+-			spec->quirk = QUIRK_NONE;
++			codec->fixup_id = QUIRK_NONE;
+ 		}
+ 	}
+ #endif
 -- 
 2.39.5
 
