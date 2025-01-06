@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-107074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFC07A02A2C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A079FA02AA9
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4522F3A6DCB
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05C12188266B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8FA14D28C;
-	Mon,  6 Jan 2025 15:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB2060890;
+	Mon,  6 Jan 2025 15:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQOoPLvi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U3Ih+Qba"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7AF148316;
-	Mon,  6 Jan 2025 15:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6A015854A;
+	Mon,  6 Jan 2025 15:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177373; cv=none; b=fYMs/VjRBTIpXZtctV32nQ0kHtTJQqWS0WwwbqvHV77gA5dSLn/+5KUvbGI3a3xtjdRDno6Pw7PKn38HB8o2wqQISI589SeqGD5y2F0PHig8hRSuYnKrvD/KkvozwCWBFJaw6gg/sqJ/3Ee/OvFqCdt/uifUobb8LjIzpNLCKKU=
+	t=1736177751; cv=none; b=Jsx/9gQ3h7yomkc+LcnUeS6/5fNMS6KwkbfVymKc2BF84QM7f0VDcSTBSnymbLBlnXstm/Qyhvy0nVsa/LAlpWBI9+u3CwPLZeZcAeqfsmVP8ioziOU6I58h8MwqK2q8jQW2GAN8Mi15Lch/v22ybAsDVy4JugUQ47hv08A6h50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177373; c=relaxed/simple;
-	bh=qhqQgIEDGW6HjSl/vgG0c+xZaXjXbCmAAsyRPfppGIE=;
+	s=arc-20240116; t=1736177751; c=relaxed/simple;
+	bh=rV9MV6rbekRn7SW4k7Xu+JbgQA8zWg0zEcw7Ri3uynU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VdHmjOMAoKBuJKLuTc/bhFVOwqty2EjRCyNYhbNpfMctx/1YaDKY06h6KBPuKGrSDWEd2dYry5VeSnLup4mtL5biNPeWaxbEEK8/0StIa2R+rSS4yYvXTp7FRNfv1KJnjSZuumVrANkJvZQaqjKzQYi41xP+/pP7FOTDfzWPdJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQOoPLvi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15767C4CED6;
-	Mon,  6 Jan 2025 15:29:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pYOdFM/b4QXtqIv4goxXQH3EseA7HbscvauH/q2Tj1S9bGbi8aBjqIoLsrla0iRYUTIAmqJrl7gO58PnkFiam/PTdbUfwwBbrR0EcrjVQS+9u2Y+cMdUR3ujNKHVdvcRrcPjVmg0RbFe2rqvA9dWVZ+LXbCpkQeRQ+mRWufky2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U3Ih+Qba; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C87C4CED2;
+	Mon,  6 Jan 2025 15:35:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177373;
-	bh=qhqQgIEDGW6HjSl/vgG0c+xZaXjXbCmAAsyRPfppGIE=;
+	s=korg; t=1736177751;
+	bh=rV9MV6rbekRn7SW4k7Xu+JbgQA8zWg0zEcw7Ri3uynU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EQOoPLviUGpOjj6xwSnX+jDr8BSDlLiR6X7zLTU8ckulRJAADWw1pBd01L1fQlETS
-	 rUP3+cNFBWfbwvhvGo0ImKqrZi5BEx7lz+e5VZ8H77043BtOfRNwvWdlc26pIo2s9s
-	 HQ1hwp44RwCSYVORbV5A8w6HHsJuM2QVDZHD/Xf4=
+	b=U3Ih+QbaJu22p70UfLYl/J1ZojswwuAUjAaiWZW1/jIx8K3TNLuJSOILKFoU7rDIS
+	 FN2P4m5XChoRJC+dIHbhxfohDuinlw8NdXViPThvxgpp9S/9EU2wrhShpxb/8vZlIT
+	 XiL3XfgSMF1xYYa8guOa+mpE8bbuzI9AZkPrHc5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 125/222] tracing: Fix trace_check_vprintf() when tp_printk is used
+Subject: [PATCH 6.12 043/156] drm/xe: Fix fault on fd close after unbind
 Date: Mon,  6 Jan 2025 16:15:29 +0100
-Message-ID: <20250106151155.340825943@linuxfoundation.org>
+Message-ID: <20250106151143.359531771@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +61,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-[ Upstream commit 50a3242d84ee1625b0bfef29b95f935958dccfbe ]
+[ Upstream commit fe39b222a4139354d32ff9d46b88757f63f71d63 ]
 
-When the tp_printk kernel command line is used, the trace events go
-directly to printk(). It is still checked via the trace_check_vprintf()
-function to make sure the pointers of the trace event are legit.
+If userspace holds an fd open, unbinds the device and then closes it,
+the driver shouldn't try to access the hardware. Protect it by using
+drm_dev_enter()/drm_dev_exit(). This fixes the following page fault:
 
-The addition of reading buffers from previous boots required adding a
-delta between the addresses of the previous boot and the current boot so
-that the pointers in the old buffer can still be used. But this required
-adding a trace_array pointer to acquire the delta offsets.
+<6> [IGT] xe_wedged: exiting, ret=98
+<1> BUG: unable to handle page fault for address: ffffc901bc5e508c
+<1> #PF: supervisor read access in kernel mode
+<1> #PF: error_code(0x0000) - not-present page
+...
+<4>   xe_lrc_update_timestamp+0x1c/0xd0 [xe]
+<4>   xe_exec_queue_update_run_ticks+0x50/0xb0 [xe]
+<4>   xe_exec_queue_fini+0x16/0xb0 [xe]
+<4>   __guc_exec_queue_fini_async+0xc4/0x190 [xe]
+<4>   guc_exec_queue_fini_async+0xa0/0xe0 [xe]
+<4>   guc_exec_queue_fini+0x23/0x40 [xe]
+<4>   xe_exec_queue_destroy+0xb3/0xf0 [xe]
+<4>   xe_file_close+0xd4/0x1a0 [xe]
+<4>   drm_file_free+0x210/0x280 [drm]
+<4>   drm_close_helper.isra.0+0x6d/0x80 [drm]
+<4>   drm_release_noglobal+0x20/0x90 [drm]
 
-The tp_printk code does not provide a trace_array (tr) pointer, so when
-the offsets were examined, a NULL pointer dereference happened and the
-kernel crashed.
-
-If the trace_array does not exist, just default the delta offsets to zero,
-as that also means the trace event is not being read from a previous boot.
-
-Link: https://lore.kernel.org/all/Zv3z5UsG_jsO9_Tb@aschofie-mobl2.lan/
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20241003104925.4e1b1fd9@gandalf.local.home
-Fixes: 07714b4bb3f98 ("tracing: Handle old buffer mappings for event strings and functions")
-Reported-by: Alison Schofield <alison.schofield@intel.com>
-Tested-by: Alison Schofield <alison.schofield@intel.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: afd2627f727b ("tracing: Check "%s" dereference via the field and not the TP_printk format")
+Fixes: 514447a12190 ("drm/xe: Stop accumulating LRC timestamp on job_free")
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3421
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241218053122.2730195-1-lucas.demarchi@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit 4ca1fd418338d4d135428a0eb1e16e3b3ce17ee8)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_exec_queue.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 2a45efc4e417..addc1b326c79 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -3858,8 +3858,8 @@ static void test_can_verify(void)
- void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
- 			 va_list ap)
- {
--	long text_delta = iter->tr->text_delta;
--	long data_delta = iter->tr->data_delta;
-+	long text_delta = 0;
-+	long data_delta = 0;
- 	const char *p = fmt;
- 	const char *str;
- 	bool good;
-@@ -3871,6 +3871,17 @@ void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
- 	if (static_branch_unlikely(&trace_no_verify))
- 		goto print;
+diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
+index fd0f3b3c9101..268cd3123be9 100644
+--- a/drivers/gpu/drm/xe/xe_exec_queue.c
++++ b/drivers/gpu/drm/xe/xe_exec_queue.c
+@@ -8,6 +8,7 @@
+ #include <linux/nospec.h>
  
-+	/*
-+	 * When the kernel is booted with the tp_printk command line
-+	 * parameter, trace events go directly through to printk().
-+	 * It also is checked by this function, but it does not
-+	 * have an associated trace_array (tr) for it.
-+	 */
-+	if (iter->tr) {
-+		text_delta = iter->tr->text_delta;
-+		data_delta = iter->tr->data_delta;
-+	}
+ #include <drm/drm_device.h>
++#include <drm/drm_drv.h>
+ #include <drm/drm_file.h>
+ #include <uapi/drm/xe_drm.h>
+ 
+@@ -762,9 +763,11 @@ bool xe_exec_queue_is_idle(struct xe_exec_queue *q)
+  */
+ void xe_exec_queue_update_run_ticks(struct xe_exec_queue *q)
+ {
++	struct xe_device *xe = gt_to_xe(q->gt);
+ 	struct xe_file *xef;
+ 	struct xe_lrc *lrc;
+ 	u32 old_ts, new_ts;
++	int idx;
+ 
+ 	/*
+ 	 * Jobs that are run during driver load may use an exec_queue, but are
+@@ -774,6 +777,10 @@ void xe_exec_queue_update_run_ticks(struct xe_exec_queue *q)
+ 	if (!q->vm || !q->vm->xef)
+ 		return;
+ 
++	/* Synchronize with unbind while holding the xe file open */
++	if (!drm_dev_enter(&xe->drm, &idx))
++		return;
 +
- 	/* Don't bother checking when doing a ftrace_dump() */
- 	if (iter->fmt == static_fmt_buf)
- 		goto print;
+ 	xef = q->vm->xef;
+ 
+ 	/*
+@@ -787,6 +794,8 @@ void xe_exec_queue_update_run_ticks(struct xe_exec_queue *q)
+ 	lrc = q->lrc[0];
+ 	new_ts = xe_lrc_update_timestamp(lrc, &old_ts);
+ 	xef->run_ticks[q->class] += (new_ts - old_ts) * q->width;
++
++	drm_dev_exit(idx);
+ }
+ 
+ /**
 -- 
 2.39.5
 
