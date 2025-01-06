@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-107040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B049A029E5
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:28:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7C0A02A7D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:34:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6057F7A29DD
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:28:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7340218825DB
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:34:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781CB1598EE;
-	Mon,  6 Jan 2025 15:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0581B148316;
+	Mon,  6 Jan 2025 15:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phkQmZt9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jdYTKzr3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CA4156237;
-	Mon,  6 Jan 2025 15:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00BC78F49;
+	Mon,  6 Jan 2025 15:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177271; cv=none; b=KL7iqSeOYeKREpHHzgA1SnViPnUZATkJvhDMhsdfOlRButuztZZ27jBv379XEgTLxMyt8TIM6XUCKZogCJ1tr+01lqMDsAIeCK6m9HtJz0lZBChQl5q0ePrysK4Qm0EY37MRg05nKsW0oCtWx7Ob1v6+rpdI1ASJ/TSa5u4VEbg=
+	t=1736177647; cv=none; b=h/VRivQZLVofscWgNhoBmPULo0QmuCXeIjgBjLLc+fbVMfaQ0HXihU3CD8dHuHsRQJkl04pcWgdNHUGssCoLdqG4c+zsrz59wYWlma9HhCF8xR+CsK3iRLb0Z2iApEm/VqffF5EBaYj3O8BJcj5gZSbu5kM9pDuvDwlI//ZlYRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177271; c=relaxed/simple;
-	bh=AiKBp6GOqBO7hWjkPyqbgMkju0dQc8o9rFaQ59u9uVE=;
+	s=arc-20240116; t=1736177647; c=relaxed/simple;
+	bh=J1PnFJhvVmrxFuZkTbz07xMLUyDAMArSwzKVNe3Zz6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=naR7sjqesywMsdxnFzzdq4mWQ8g18j6/mz6rdMINksmQY2LMgro8NLaC8z7+UCQV9VA5qu+OC6nBzY7jVIB25urHekbIo4k6QdJGj2V9gfjr7KQlFDKdlEOVDTNYbx15GuHod+ywh+NZEc87ZuUVTRU8IqxWr/Pfw4JzMVVxfzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phkQmZt9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F66FC4CEE1;
-	Mon,  6 Jan 2025 15:27:50 +0000 (UTC)
+	 MIME-Version; b=TuSRDFukWyDe9SaXGDX9+gQjdBmmRA3evg5Ip8xEUf0QGQ6DiTGvoHr2UIODIvpn80qXvx5eQk2bSYs5xBN+PGfqG0ms146OTbZxM2bHrpXy/z+lqtyfo+tcgEw4K9iWjfJd1FDSvTDoRfPeZj2Uk1cpYCKTFwiDzMMblascf9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jdYTKzr3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C65E2C4CED2;
+	Mon,  6 Jan 2025 15:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177270;
-	bh=AiKBp6GOqBO7hWjkPyqbgMkju0dQc8o9rFaQ59u9uVE=;
+	s=korg; t=1736177647;
+	bh=J1PnFJhvVmrxFuZkTbz07xMLUyDAMArSwzKVNe3Zz6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=phkQmZt9JfR/uE37z56C+VZ8ZFOR3mnmENzboQvoHzs7pkdahH3+xQse3ziiiPdcY
-	 RUTsRQ+xONWTASQJ+1nOuceEHfHUiNAR7B6iKO/mThdKEqbTXH8HMF8SiwmUDtKNnU
-	 Sg8hreVy9dEwZ6aphm5bzaATE/ZGHPAP56Jq0/I8=
+	b=jdYTKzr30ftLjSqoFSLophiQ2xvB3WapO+afJA7rrgTCkQTsT8u215iJqsoDin/r8
+	 Ahb7iBZUarePDaqAEC27pW1ua1JUsHQK2q9v/yEVlINo7L9XFIqXBYg/bZrH2szPax
+	 0iUqpnU8Makgb/wWtNeKrqUjXhVOLVsDhzjIADSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 091/222] ALSA: ump: Indicate the inactive group in legacy substream names
-Date: Mon,  6 Jan 2025 16:14:55 +0100
-Message-ID: <20250106151154.041609781@linuxfoundation.org>
+Subject: [PATCH 6.12 010/156] block: lift bio_is_zone_append to bio.h
+Date: Mon,  6 Jan 2025 16:14:56 +0100
+Message-ID: <20250106151142.132842011@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit e29e504e7890b9ee438ca6370d0180d607c473f9 ]
+[ Upstream commit 0ef2b9e698dbf9ba78f67952a747f35eb7060470 ]
 
-Since the legacy rawmidi has no proper way to know the inactive group,
-indicate it in the rawmidi substream names with "[Inactive]" suffix
-when the corresponding UMP group is inactive.
+Make bio_is_zone_append globally available, because file systems need
+to use to check for a zone append bio in their end_io handlers to deal
+with the block layer emulation.
 
-Link: https://patch.msgid.link/20241129094546.32119-3-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/20241104062647.91160-4-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 6c3864e05548 ("btrfs: use bio_is_zone_append() in the completion handler")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/ump.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ block/blk.h         |  9 ---------
+ include/linux/bio.h | 17 +++++++++++++++++
+ 2 files changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/sound/core/ump.c b/sound/core/ump.c
-index 5a4a7d0b7cca..bb94f119869a 100644
---- a/sound/core/ump.c
-+++ b/sound/core/ump.c
-@@ -1245,8 +1245,9 @@ static void fill_substream_names(struct snd_ump_endpoint *ump,
- 		name = ump->groups[idx].name;
- 		if (!*name)
- 			name = ump->info.name;
--		snprintf(s->name, sizeof(s->name), "Group %d (%.16s)",
--			 idx + 1, name);
-+		snprintf(s->name, sizeof(s->name), "Group %d (%.16s)%s",
-+			 idx + 1, name,
-+			 ump->groups[idx].active ? "" : " [Inactive]");
- 	}
+diff --git a/block/blk.h b/block/blk.h
+index 88fab6a81701..1426f9c28197 100644
+--- a/block/blk.h
++++ b/block/blk.h
+@@ -469,11 +469,6 @@ static inline bool bio_zone_write_plugging(struct bio *bio)
+ {
+ 	return bio_flagged(bio, BIO_ZONE_WRITE_PLUGGING);
+ }
+-static inline bool bio_is_zone_append(struct bio *bio)
+-{
+-	return bio_op(bio) == REQ_OP_ZONE_APPEND ||
+-		bio_flagged(bio, BIO_EMULATES_ZONE_APPEND);
+-}
+ void blk_zone_write_plug_bio_merged(struct bio *bio);
+ void blk_zone_write_plug_init_request(struct request *rq);
+ static inline void blk_zone_update_request_bio(struct request *rq,
+@@ -522,10 +517,6 @@ static inline bool bio_zone_write_plugging(struct bio *bio)
+ {
+ 	return false;
+ }
+-static inline bool bio_is_zone_append(struct bio *bio)
+-{
+-	return false;
+-}
+ static inline void blk_zone_write_plug_bio_merged(struct bio *bio)
+ {
+ }
+diff --git a/include/linux/bio.h b/include/linux/bio.h
+index faceadb040f9..66b7620a1b53 100644
+--- a/include/linux/bio.h
++++ b/include/linux/bio.h
+@@ -677,6 +677,23 @@ static inline void bio_clear_polled(struct bio *bio)
+ 	bio->bi_opf &= ~REQ_POLLED;
  }
  
++/**
++ * bio_is_zone_append - is this a zone append bio?
++ * @bio:	bio to check
++ *
++ * Check if @bio is a zone append operation.  Core block layer code and end_io
++ * handlers must use this instead of an open coded REQ_OP_ZONE_APPEND check
++ * because the block layer can rewrite REQ_OP_ZONE_APPEND to REQ_OP_WRITE if
++ * it is not natively supported.
++ */
++static inline bool bio_is_zone_append(struct bio *bio)
++{
++	if (!IS_ENABLED(CONFIG_BLK_DEV_ZONED))
++		return false;
++	return bio_op(bio) == REQ_OP_ZONE_APPEND ||
++		bio_flagged(bio, BIO_EMULATES_ZONE_APPEND);
++}
++
+ struct bio *blk_next_bio(struct bio *bio, struct block_device *bdev,
+ 		unsigned int nr_pages, blk_opf_t opf, gfp_t gfp);
+ struct bio *bio_chain_and_submit(struct bio *prev, struct bio *new);
 -- 
 2.39.5
 
