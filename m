@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-107090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF28EA02A3C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:32:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11FCDA02B6D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B58223A156D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5717165F09
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A980D1DA60B;
-	Mon,  6 Jan 2025 15:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B08C14A617;
+	Mon,  6 Jan 2025 15:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OghmATdi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxB6WHh4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BECE1DB951;
-	Mon,  6 Jan 2025 15:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F807082A;
+	Mon,  6 Jan 2025 15:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177421; cv=none; b=k29jKS8rf1nJqtfQwY7xvqZxyiIdSZTQQRkE8IWzbKd2oKf/QRrYkOiEvq+FWUUHjEQugwDbwR23Mc4PfyYa23nucYunszHvSNK44tdy3P5dh+VWLnMPkwWKAIalot4STSo73dq8b0wM5EDUIX/oPlMqgt7KIqdWG0WEaP1al6I=
+	t=1736178156; cv=none; b=rKH730TWEV1RVAMfXt+iAbIXSheqPkKJyB5s+E7BXqqVzJ7rLyWgNDmlPdiZ5LPZSpl+my8ShJ3xNbu9SJNEM3cixsjEBwQS/AhR3W2ANrTuI1Bs4nrHaJNpQE0g6R2M+PN435auz3K0kO8vXcrHn+5TFeWRhSqo4aTUtvH7PjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177421; c=relaxed/simple;
-	bh=uQ5vyDMmHGhtq17mS//JMg0mgMomudLMIoyAzuNcseI=;
+	s=arc-20240116; t=1736178156; c=relaxed/simple;
+	bh=tX6NjFJ+IBsbk+BC+ZX9Mjk7W5Ac28QP7I92BwMXU58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GaZvRv0NJVDNdjjYPese+dZYypZ9YZauiHPgPFZMuWgekHVgRghtVAwvzyt36pO1h99D96N47VVu1HYurKQ4dhJ4aW1gCpEIO9drX6NdlueHaikzsMsuLiETXPBtLDx5gR4w+M1ZY3G9QrMTmV6RuJ2wBZv4E2vymzzdaRvCqkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OghmATdi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A50C4CED2;
-	Mon,  6 Jan 2025 15:30:20 +0000 (UTC)
+	 MIME-Version; b=JA0dQbfdN2SbbbYBwK4ZXVJQa7H3Megi6AsJ0MuaNgaDgYRtr6N0ic+7NvVObXj4AMNlyj0Pe3RyNYf1CubSoB6VXVpuudrbTI1PPYLKlv6nNirMCtTwH48vL7iMLWTj5WO/pwRw6FJKD+j9t5q9sCpgC533UgIynV+zQCcctJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxB6WHh4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4FB6C4CED2;
+	Mon,  6 Jan 2025 15:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177421;
-	bh=uQ5vyDMmHGhtq17mS//JMg0mgMomudLMIoyAzuNcseI=;
+	s=korg; t=1736178156;
+	bh=tX6NjFJ+IBsbk+BC+ZX9Mjk7W5Ac28QP7I92BwMXU58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OghmATdiStEbuffU0BwSYoc77CMnJ3T5oQ198smFqjxvSyhIicCcMgJTOevgUzdhh
-	 JRK/qroZ5O9tl8ff3AI/7ZIwfLVv/DQ/p0z3SgnStdfQpxd86ROEJHBUoYI412lekV
-	 E7ccqYh9/YV2EZ70nlgggfe0xSeBHssOAdlzu++U=
+	b=lxB6WHh4Se4J3aYV8FVCoM0yTv7ai/3GGYbNU4ydmVwxpTQhI4gmO61u+NplYxdke
+	 cMAMohXhgQqZsMJniL177j9o4T7nHqnGkUKEQ8AXwW0bSHkSSYqYmTl4VmQDGTO4QQ
+	 i46M2ulzyZmnBPoulIVr/FMLZb6nTaT8a4Mh/MIA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
+	Peng Hongchi <hongchi.peng@siengine.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 128/222] RDMA/bnxt_re: Remove always true dattr validity check
+Subject: [PATCH 5.10 008/138] usb: dwc2: gadget: Dont write invalid mapped sg entries into dma_desc with iommu enabled
 Date: Mon,  6 Jan 2025 16:15:32 +0100
-Message-ID: <20250106151155.606322645@linuxfoundation.org>
+Message-ID: <20250106151133.532746864@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Peng Hongchi <hongchi.peng@siengine.com>
 
-[ Upstream commit eb867d797d294a00a092b5027d08439da68940b2 ]
+[ Upstream commit 1134289b6b93d73721340b66c310fd985385e8fa ]
 
-res->dattr is always valid at this point as it was initialized
-during device addition in bnxt_re_add_device().
+When using dma_map_sg() to map the scatterlist with iommu enabled,
+the entries in the scatterlist can be mergerd into less but longer
+entries in the function __finalise_sg(). So that the number of
+valid mapped entries is actually smaller than ureq->num_reqs,and
+there are still some invalid entries in the scatterlist with
+dma_addr=0xffffffff and len=0. Writing these invalid sg entries
+into the dma_desc can cause a data transmission error.
 
-This change is fixing the following smatch error:
-drivers/infiniband/hw/bnxt_re/qplib_fp.c:1090 bnxt_qplib_create_qp()
-     error: we previously assumed 'res->dattr' could be null (see line 985)
+The function dma_map_sg() returns the number of valid map entries
+and the return value is assigned to usb_request::num_mapped_sgs in
+function usb_gadget_map_request_by_dev(). So that just write valid
+mapped entries into dma_desc according to the usb_request::num_mapped_sgs,
+and set the IOC bit if it's the last valid mapped entry.
 
-Fixes: 07f830ae4913 ("RDMA/bnxt_re: Adds MSN table capability for Gen P7 adapters")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202411222329.YTrwonWi-lkp@intel.com/
-Link: https://patch.msgid.link/be0d8836b64cba3e479fbcbca717acad04aae02e.1732626579.git.leonro@nvidia.com
-Acked-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+This patch poses no risk to no-iommu situation, cause
+ureq->num_mapped_sgs equals ureq->num_sgs while using dma_direct_map_sg()
+to map the scatterlist whith iommu disabled.
+
+Signed-off-by: Peng Hongchi <hongchi.peng@siengine.com>
+Link: https://lore.kernel.org/r/20240523100315.7226-1-hongchi.peng@siengine.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/usb/dwc2/gadget.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index 3e07500dcbcf..4098e01666d1 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -980,9 +980,7 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
- 	u32 tbl_indx;
- 	u16 nsge;
+diff --git a/drivers/usb/dwc2/gadget.c b/drivers/usb/dwc2/gadget.c
+index d8b83665581f..af8a0bb5c508 100644
+--- a/drivers/usb/dwc2/gadget.c
++++ b/drivers/usb/dwc2/gadget.c
+@@ -886,10 +886,10 @@ static void dwc2_gadget_config_nonisoc_xfer_ddma(struct dwc2_hsotg_ep *hs_ep,
+ 	}
  
--	if (res->dattr)
--		qp->is_host_msn_tbl = _is_host_msn_table(res->dattr->dev_cap_flags2);
--
-+	qp->is_host_msn_tbl = _is_host_msn_table(res->dattr->dev_cap_flags2);
- 	sq->dbinfo.flags = 0;
- 	bnxt_qplib_rcfw_cmd_prep((struct cmdq_base *)&req,
- 				 CMDQ_BASE_OPCODE_CREATE_QP,
+ 	/* DMA sg buffer */
+-	for_each_sg(ureq->sg, sg, ureq->num_sgs, i) {
++	for_each_sg(ureq->sg, sg, ureq->num_mapped_sgs, i) {
+ 		dwc2_gadget_fill_nonisoc_xfer_ddma_one(hs_ep, &desc,
+ 			sg_dma_address(sg) + sg->offset, sg_dma_len(sg),
+-			sg_is_last(sg));
++			(i == (ureq->num_mapped_sgs - 1)));
+ 		desc_count += hs_ep->desc_count;
+ 	}
+ 
 -- 
 2.39.5
 
