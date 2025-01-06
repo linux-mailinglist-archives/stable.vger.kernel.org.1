@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-107120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9DCA02A6F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:33:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57936A02BB6
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:46:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CDB73A64D8
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:32:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E7203A6B3A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:44:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471021DE8A6;
-	Mon,  6 Jan 2025 15:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BE21DBB13;
+	Mon,  6 Jan 2025 15:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8MWrV0n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrQhk0Dn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C8F15855C;
-	Mon,  6 Jan 2025 15:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9BA1DB92A;
+	Mon,  6 Jan 2025 15:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177517; cv=none; b=owgAaGARhop4iW1mUHxd2rbJau0Y0qht7HLSiW54lOKDlloqe8SZg/U35AZa+A+Zk3eGY/bIxVVLcUWR/VYtw/dy5AsyaX0yzEqaGyI0HgzgfpcFDnztdcpSN3jzMp1cfiwe1+RT/HE0q8I3U63xZAQ21da6OgLFrBWSXYOVNCc=
+	t=1736178283; cv=none; b=Z93Lug0CQlNJyw5PcAEMBwFjJHT77+hF3lBrB92gUxgBfKxEU+umwXcLyIwq6d6s332sLOh7Snquotth9jAxUmFBN2agiEhPfAUc4+CTgKUEU9RR2eK+bOfKz/KkdzkITdvJ+uWMttkQEzJMx6lajRvV+UgaTMX3r0fTxQbnjiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177517; c=relaxed/simple;
-	bh=u8UJqXWh0TRf5UT02pOFO8KQPvZz/QvWBOR4uAjpXXA=;
+	s=arc-20240116; t=1736178283; c=relaxed/simple;
+	bh=5pEu7Acu9NAktVozHjcmnHpkbp8MFtpAsBqMbLGJRiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I8Ijyi6bQEIYSDLIPNvaaBadbJxRnj0GZDjJi8aujp03QYuKmSE5WHAk+7hwFszC5H6Q9erUFsxRhgLDsb1FC+s4xACXa9lnuM5fSv74ke74PPtNFhXH8rAu9KW8fDDNhLB0IavTAoTjOlLgXJEqpJ/+oT2rxDoa4A6Cml2CC5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8MWrV0n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9989C4CED2;
-	Mon,  6 Jan 2025 15:31:55 +0000 (UTC)
+	 MIME-Version; b=kea/ZLaPbKfEYtGGkhOL+caAAumxeY0dkARuGCCzNe8/b5996byTM3HWWOAy5kURxXyh0EGFh9RR2DRfJlA9P78r081fUcl37QNpoticgCysgZZNdWdPE9cDA5VFpi512F+FuCsmoKgqcjm620+qPNbRtDSp4axnHGbkF5dBOVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrQhk0Dn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F72C4CED2;
+	Mon,  6 Jan 2025 15:44:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177516;
-	bh=u8UJqXWh0TRf5UT02pOFO8KQPvZz/QvWBOR4uAjpXXA=;
+	s=korg; t=1736178283;
+	bh=5pEu7Acu9NAktVozHjcmnHpkbp8MFtpAsBqMbLGJRiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u8MWrV0nDXBqnHHCiEqH2nxFq4ZN/s45A/mGM47NgAEIDD3pM/Lj549MJb0C4nS2m
-	 ShGkDTTX/qLn0SaGXscIHyE6vDEy8XviErL+sxD/8tsBRqT5YwpkfoNIQQBzwxoSh4
-	 uQE9DUB80TlNNGkTajeHOR5xGp4iAOlSFkn7riKw=
+	b=wrQhk0DnA2t9dnM8Q0i76BTN0G1Fwzdj3UCCcfcPIxmcspB0PR/97R457v6B9yWNr
+	 xHpQuiUfsryCG9b7NJE69CxEfAKDsNCRcEPWMbx+8qIulcZG7wFPkgp7+7YNuHU79f
+	 3qL4NH79eJAwLvoW6DzvW4+gWlevyODQfq8lFL1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hobin Woo <hobin.woo@samsung.com>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Yoonho Shin <yoonho.shin@samsung.com>,
-	Steve French <stfrench@microsoft.com>,
+	Yi Sun <yi.sun@unisoc.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	virtualization@lists.linux.dev,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 187/222] ksmbd: retry iterate_dir in smb2_query_dir
+Subject: [PATCH 5.10 067/138] virtio-blk: dont keep queue frozen during system suspend
 Date: Mon,  6 Jan 2025 16:16:31 +0100
-Message-ID: <20250106151157.843052901@linuxfoundation.org>
+Message-ID: <20250106151135.770816233@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +68,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hobin Woo <hobin.woo@samsung.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 2b904d61a97e8ba79e3bc216ba290fd7e1d85028 ]
+[ Upstream commit 7678abee0867e6b7fb89aa40f6e9f575f755fb37 ]
 
-Some file systems do not ensure that the single call of iterate_dir
-reaches the end of the directory. For example, FUSE fetches entries from
-a daemon using 4KB buffer and stops fetching if entries exceed the
-buffer. And then an actor of caller, KSMBD, is used to fill the entries
-from the buffer.
-Thus, pattern searching on FUSE, files located after the 4KB could not
-be found and STATUS_NO_SUCH_FILE was returned.
+Commit 4ce6e2db00de ("virtio-blk: Ensure no requests in virtqueues before
+deleting vqs.") replaces queue quiesce with queue freeze in virtio-blk's
+PM callbacks. And the motivation is to drain inflight IOs before suspending.
 
-Signed-off-by: Hobin Woo <hobin.woo@samsung.com>
-Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
-Reviewed-by: Namjae Jeon <linkinjeon@kernel.org>
-Tested-by: Yoonho Shin <yoonho.shin@samsung.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+block layer's queue freeze looks very handy, but it is also easy to cause
+deadlock, such as, any attempt to call into bio_queue_enter() may run into
+deadlock if the queue is frozen in current context. There are all kinds
+of ->suspend() called in suspend context, so keeping queue frozen in the
+whole suspend context isn't one good idea. And Marek reported lockdep
+warning[1] caused by virtio-blk's freeze queue in virtblk_freeze().
+
+[1] https://lore.kernel.org/linux-block/ca16370e-d646-4eee-b9cc-87277c89c43c@samsung.com/
+
+Given the motivation is to drain in-flight IOs, it can be done by calling
+freeze & unfreeze, meantime restore to previous behavior by keeping queue
+quiesced during suspend.
+
+Cc: Yi Sun <yi.sun@unisoc.com>
+Cc: Michael S. Tsirkin <mst@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: virtualization@lists.linux.dev
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+Link: https://lore.kernel.org/r/20241112125821.1475793-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 12 +++++++++++-
- fs/smb/server/vfs.h     |  1 +
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ drivers/block/virtio_blk.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index cd530b9a00ca..7216e2cc498b 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -4225,6 +4225,7 @@ static bool __query_dir(struct dir_context *ctx, const char *name, int namlen,
- 	/* dot and dotdot entries are already reserved */
- 	if (!strcmp(".", name) || !strcmp("..", name))
- 		return true;
-+	d_info->num_scan++;
- 	if (ksmbd_share_veto_filename(priv->work->tcon->share_conf, name))
- 		return true;
- 	if (!match_pattern(name, namlen, priv->search_pattern))
-@@ -4385,8 +4386,17 @@ int smb2_query_dir(struct ksmbd_work *work)
- 	query_dir_private.info_level		= req->FileInformationClass;
- 	dir_fp->readdir_data.private		= &query_dir_private;
- 	set_ctx_actor(&dir_fp->readdir_data.ctx, __query_dir);
--
-+again:
-+	d_info.num_scan = 0;
- 	rc = iterate_dir(dir_fp->filp, &dir_fp->readdir_data.ctx);
-+	/*
-+	 * num_entry can be 0 if the directory iteration stops before reaching
-+	 * the end of the directory and no file is matched with the search
-+	 * pattern.
-+	 */
-+	if (rc >= 0 && !d_info.num_entry && d_info.num_scan &&
-+	    d_info.out_buf_len > 0)
-+		goto again;
- 	/*
- 	 * req->OutputBufferLength is too small to contain even one entry.
- 	 * In this case, it immediately returns OutputBufferLength 0 to client.
-diff --git a/fs/smb/server/vfs.h b/fs/smb/server/vfs.h
-index cb76f4b5bafe..06903024a2d8 100644
---- a/fs/smb/server/vfs.h
-+++ b/fs/smb/server/vfs.h
-@@ -43,6 +43,7 @@ struct ksmbd_dir_info {
- 	char		*rptr;
- 	int		name_len;
- 	int		out_buf_len;
-+	int		num_scan;
- 	int		num_entry;
- 	int		data_count;
- 	int		last_entry_offset;
+diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+index 7eae3f373233..28ea9b511fd0 100644
+--- a/drivers/block/virtio_blk.c
++++ b/drivers/block/virtio_blk.c
+@@ -951,9 +951,12 @@ static void virtblk_remove(struct virtio_device *vdev)
+ static int virtblk_freeze(struct virtio_device *vdev)
+ {
+ 	struct virtio_blk *vblk = vdev->priv;
++	struct request_queue *q = vblk->disk->queue;
+ 
+ 	/* Ensure no requests in virtqueues before deleting vqs. */
+-	blk_mq_freeze_queue(vblk->disk->queue);
++	blk_mq_freeze_queue(q);
++	blk_mq_quiesce_queue_nowait(q);
++	blk_mq_unfreeze_queue(q);
+ 
+ 	/* Ensure we don't receive any more interrupts */
+ 	vdev->config->reset(vdev);
+@@ -977,8 +980,8 @@ static int virtblk_restore(struct virtio_device *vdev)
+ 		return ret;
+ 
+ 	virtio_device_ready(vdev);
++	blk_mq_unquiesce_queue(vblk->disk->queue);
+ 
+-	blk_mq_unfreeze_queue(vblk->disk->queue);
+ 	return 0;
+ }
+ #endif
 -- 
 2.39.5
 
