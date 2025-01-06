@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-106940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C44A4A02966
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:23:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9DAFA02974
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:23:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B49D816353D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:23:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 471561880111
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D06115A86B;
-	Mon,  6 Jan 2025 15:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A02D15665D;
+	Mon,  6 Jan 2025 15:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WdsD3SWO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohhBEwjn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA291514F6;
-	Mon,  6 Jan 2025 15:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB88146D40;
+	Mon,  6 Jan 2025 15:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176972; cv=none; b=Zr8ojwGGxElEZMdZSlaRnKGJHaaMScBgSqB8L1/i8dJPYq3jaacUvOo0zNthkj2tO4cBGeA4RKGwT7vh2UK+MXiBf9EnGASTIZ7iFa315er4unSu+OkUbFi951DaSLSC9V30Ea/QmiFbdlZ0mmadYXkjQDJVuMLeCV6ZKoe85qA=
+	t=1736177005; cv=none; b=O7ZnhF/SJYsbj4OuX7FkGOJVQcJIhCD9HJk0E3XdFKefA2ViWFw/hufeoSJ0lif12+/jz/OdMBQ4Pf26XLjUT6B6uadK2MnJT1RZPkT+JccJP/oSnp+NWL37PXKgnIznZAEuq3odNqF93GTd6HsGzLgSHBLMK7NXAspB0zQRVMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176972; c=relaxed/simple;
-	bh=e66OccoO4nNkOsSADb3bDNJOTMEhD+hZ0i1Ang4i+EI=;
+	s=arc-20240116; t=1736177005; c=relaxed/simple;
+	bh=7PCml4w9SfvHEOCxFSVcro6zKFhxsWtuqAMwauXD1W8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U0hHTfPoMh43+acX/SYYB4RMrhwdx3sB1tEWi/8pmyxpanHOfRXAltIRKigQt0Vc9vZ8MtqgWd1QHUmV31n5yhQM1cvbVMkS4GNY2P3G2zYzhmxsQabk1KW2iY9GcoXa/kMXnMu0URN33T73QS3hpw/VNWQeu7X/jHqI71jhOlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WdsD3SWO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92828C4CED6;
-	Mon,  6 Jan 2025 15:22:51 +0000 (UTC)
+	 MIME-Version; b=uRrTOjGuo51Ue7Xd/ZRpHSM5ktL65KlFN7MTEhcNhQ9l+/CBSrmmDs1sfE2Q1Qdi3KOyl6WNXkJ1sXls78Uc2CQsDVKCm/ODKUUY/7v67Dj9DMHA825UK9QxRuReQq1lEPN/0UmPIvN0oK6dqMMjH9fdWCjYgFeC8EXdRl3kS64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ohhBEwjn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5326AC4CED2;
+	Mon,  6 Jan 2025 15:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176972;
-	bh=e66OccoO4nNkOsSADb3bDNJOTMEhD+hZ0i1Ang4i+EI=;
+	s=korg; t=1736177005;
+	bh=7PCml4w9SfvHEOCxFSVcro6zKFhxsWtuqAMwauXD1W8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WdsD3SWOcgq7NuIxpmf2yjMUUNXzmZAeJxn1goGYoagFqGbKrnCaqWboLFYB9Y2Kz
-	 dlHG3x3nd1l/FFRPFg+y1mNKa5g8VmeFhoJeVSakZYxQXQB12zxegaiNE43VVKtZkB
-	 EwnP4FZZoV5jw1FaKvp9MWaQttCpLwJK8rocCxhQ=
+	b=ohhBEwjnrrCJMmaNgNgUD8UgzeBB5XzhObJxcD0j4MTDqdsgOBxXOCcr5fxvsuUdz
+	 mLg1gIJUu1+c6uBEPX6L9FtwEShj4Eq4rb1OWLZzrNaQ5nLfs8TmQujE8qjlfJjEf/
+	 yX/jXrWdbwLLTaR0zIjDQPZMdRNd+x9FlVwYk6Vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Swapnil Patel <swapnil.patel@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Agustin Gutierrez <agustin.gutierrez@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Fangzhi Zuo <Jerry.Zuo@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 001/222] drm/amd/display: Fix DSC-re-computing
-Date: Mon,  6 Jan 2025 16:13:25 +0100
-Message-ID: <20250106151150.648368871@linuxfoundation.org>
+Subject: [PATCH 6.6 002/222] drm/amd/display: Fix incorrect DSC recompute trigger
+Date: Mon,  6 Jan 2025 16:13:26 +0100
+Message-ID: <20250106151150.686057624@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
 References: <20250106151150.585603565@linuxfoundation.org>
@@ -70,72 +69,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Agustin Gutierrez <agustin.gutierrez@amd.com>
+From: Fangzhi Zuo <Jerry.Zuo@amd.com>
 
-[ Upstream commit b9b5a82c532109a09f4340ef5cabdfdbb0691a9d ]
+[ Upstream commit 4641169a8c95d9efc35d2d3c55c3948f3b375ff9 ]
 
-[Why]
-This fixes a bug introduced by commit c53655545141 ("drm/amd/display: dsc
-mst re-compute pbn for changes on hub").
-The change caused light-up issues with a second display that required
-DSC on some MST docks.
+A stream without dsc_aux should not be eliminated from
+the dsc determination. Whether it needs a dsc recompute depends on
+whether its mode has changed or not. Eliminating such a no-dsc stream
+from the dsc determination policy will end up with inconsistencies
+in the new dc_state when compared to the current dc_state,
+triggering a dsc recompute that should not have happened.
 
-[How]
-Use Virtual DPCD for DSC caps in MST case.
-
-[Limitations]
-This change only affects MST DSC devices that follow specifications
-additional changes are required to check for old MST DSC devices such as
-ones which do not check for Virtual DPCD registers.
-
-Reviewed-by: Swapnil Patel <swapnil.patel@amd.com>
-Reviewed-by: Hersen Wu <hersenxs.wu@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Agustin Gutierrez <agustin.gutierrez@amd.com>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 4641169a8c95 ("drm/amd/display: Fix incorrect DSC recompute trigger")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../display/amdgpu_dm/amdgpu_dm_mst_types.c    | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-index 9ec9792f115a..b4bbd3be35a6 100644
+index b4bbd3be35a6..385a5a75fdf8 100644
 --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
 +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -1219,10 +1219,6 @@ static bool is_dsc_need_re_compute(
- 	if (dc_link->type != dc_connection_mst_branch)
- 		return false;
- 
--	if (!(dc_link->dpcd_caps.dsc_caps.dsc_basic_caps.fields.dsc_support.DSC_SUPPORT ||
--		dc_link->dpcd_caps.dsc_caps.dsc_basic_caps.fields.dsc_support.DSC_PASSTHROUGH_SUPPORT))
--		return false;
--
- 	for (i = 0; i < MAX_PIPES; i++)
- 		stream_on_link[i] = NULL;
- 
-@@ -1240,7 +1236,19 @@ static bool is_dsc_need_re_compute(
+@@ -1236,7 +1236,7 @@ static bool is_dsc_need_re_compute(
  			continue;
  
  		aconnector = (struct amdgpu_dm_connector *) stream->dm_stream_context;
--		if (!aconnector)
-+		if (!aconnector || !aconnector->dsc_aux)
-+			continue;
-+
-+		/*
-+		 *	Check if cached virtual MST DSC caps are available and DSC is supported
-+		 *	this change takes care of newer MST DSC capable devices that report their
-+		 *	DPCD caps as per specifications in their Virtual DPCD registers.
-+
-+		 *	TODO: implement the check for older MST DSC devices that do not conform to
-+		 *	specifications.
-+		*/
-+		if (!(aconnector->dc_sink->dsc_caps.dsc_dec_caps.is_dsc_supported ||
-+			aconnector->dc_link->dpcd_caps.dsc_caps.dsc_basic_caps.fields.dsc_support.DSC_PASSTHROUGH_SUPPORT))
+-		if (!aconnector || !aconnector->dsc_aux)
++		if (!aconnector)
  			continue;
  
- 		stream_on_link[new_stream_on_link_num] = aconnector;
+ 		/*
 -- 
 2.39.5
 
