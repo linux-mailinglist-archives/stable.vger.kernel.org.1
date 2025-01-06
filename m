@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7F58A02AD7
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:38:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 970D9A02B64
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 756DF16525C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:37:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 142FD1885D2D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:43:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F330B1DDC3C;
-	Mon,  6 Jan 2025 15:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E701DC759;
+	Mon,  6 Jan 2025 15:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s8EVEETG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjFC4aHY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04531DB92A;
-	Mon,  6 Jan 2025 15:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37EC158525;
+	Mon,  6 Jan 2025 15:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177828; cv=none; b=OyYI6fOzDAV9K6mK2SRjn4ciuTquzQMngcu7qS8v6cBtUDmk8hD6v680Kjt0uSFqPbAC2vkN6pLpCYBi37qm9DUDOhCwobh8lvwaG59JdJ2axKyMN5TbXqO+jDmjn7WB0vIN/gdG5x0iR52LsimN107aik5Otlhi+0elBA4p1EY=
+	t=1736178183; cv=none; b=jzyWFLR2buRFbY8gVmqbMBbtFolbFm4wydmFXTTXGcRvAb0Rzrh2TjXkbeK7Ow+qkXLg+YGCZkfz8qS456YIU7RuSylXvpqW4fXhv+SABjP8nf6t2tw1SMnVNJtDju6Fe5JRdqvzmlR2OR/VBEsg41fl625DarbvlO/qRNtUZeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177828; c=relaxed/simple;
-	bh=F/9FkcKH0m8y23f1n4vAtVdnUem4gxvsnimA00ZhkKU=;
+	s=arc-20240116; t=1736178183; c=relaxed/simple;
+	bh=4F+tw9nq/IftyWvPxb3s5FGdxoRCpYiC+4icxcNLK4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RmMqRyjnczcb8z808T7rCurtw64ldymJNoNVa1Gl/YU42Ft5M2UQGo9jnFgRhj/SDwmOqWqLC6TVsLcE6FcnNk7nG7ByRGiIivZJ6LE3DqUc6kO2LsAj8EXhEKlMCF2+Q3rP6LGCAIO33a7W0Mg61/4s01UIPW1ezrqakVblkKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s8EVEETG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3283AC4CED2;
-	Mon,  6 Jan 2025 15:37:08 +0000 (UTC)
+	 MIME-Version; b=aZ2z5GwYVP4/6JZ8op6jEA+6JgObR9/q/xg900ixq6joh5axw4HDKlEV4jO0RlULDMulRznPrTZyadhEQ9RQVB2NXToYd4PhqfN8fbBHiKCZ8SavhsXGb6Xjg8atZAh5iofB3OP86EQjcXtl7QnOsD2Q2QvTu3suDRiA7c16YuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NjFC4aHY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F309C4CEE4;
+	Mon,  6 Jan 2025 15:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177828;
-	bh=F/9FkcKH0m8y23f1n4vAtVdnUem4gxvsnimA00ZhkKU=;
+	s=korg; t=1736178182;
+	bh=4F+tw9nq/IftyWvPxb3s5FGdxoRCpYiC+4icxcNLK4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s8EVEETGdeIg7jyYPqjJdrFS0z8fUCVxrv++Ci4P/y1xGNI29hH0bPYanRN1hL/cR
-	 iSPYqZeVmUSOg1w+aHzimQdg1KEAeJvlkWqueYo7OUl36z71ucOGw+WAVYOLv78ZFL
-	 K/jfbN2sbhEHgwPhYcO8IyZB9Igh2Ohzf8uoOBUU=
+	b=NjFC4aHYo5IP7/aLKdfMl7d87+ZaKwbQtrpF42udtpeftiE8fAiaIOVEEzzzIWfcT
+	 flP8AbmSr5/j1RB9ArS3hZNLQwhQmDyk9aBTuZt0PrXsJE52WHHqs2r2TNXTpdU6IL
+	 6KHq1QMTFc3/jidgf76WvaW7T2WHc/8VwxiW+rII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 070/156] net: wwan: iosm: Properly check for valid exec stage in ipc_mmio_init()
-Date: Mon,  6 Jan 2025 16:15:56 +0100
-Message-ID: <20250106151144.369897077@linuxfoundation.org>
+	Kairui Song <kasong@tencent.com>,
+	Desheng Wu <deshengwu@tencent.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 033/138] zram: refuse to use zero sized block device as backing device
+Date: Mon,  6 Jan 2025 16:15:57 +0100
+Message-ID: <20250106151134.474991677@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+From: Kairui Song <kasong@tencent.com>
 
-[ Upstream commit a7af435df0e04cfb4a4004136d597c42639a2ae7 ]
+commit be48c412f6ebf38849213c19547bc6d5b692b5e5 upstream.
 
-ipc_mmio_init() used the post-decrement operator in its loop continuing
-condition of "retries" counter being "> 0", which meant that when this
-condition caused loop exit "retries" counter reached -1.
+Patch series "zram: fix backing device setup issue", v2.
 
-But the later valid exec stage failure check only tests for "retries"
-counter being exactly zero, so it didn't trigger in this case (but
-would wrongly trigger if the code reaches a valid exec stage in the
-very last loop iteration).
+This series fixes two bugs of backing device setting:
 
-Fix this by using the pre-decrement operator instead, so the loop counter
-is exactly zero on valid exec stage failure.
+- ZRAM should reject using a zero sized (or the uninitialized ZRAM
+  device itself) as the backing device.
+- Fix backing device leaking when removing a uninitialized ZRAM
+  device.
 
-Fixes: dc0514f5d828 ("net: iosm: mmio scratchpad")
-Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
-Link: https://patch.msgid.link/8b19125a825f9dcdd81c667c1e5c48ba28d505a6.1735490770.git.mail@maciej.szmigiero.name
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+
+This patch (of 2):
+
+Setting a zero sized block device as backing device is pointless, and one
+can easily create a recursive loop by setting the uninitialized ZRAM
+device itself as its own backing device by (zram0 is uninitialized):
+
+    echo /dev/zram0 > /sys/block/zram0/backing_dev
+
+It's definitely a wrong config, and the module will pin itself, kernel
+should refuse doing so in the first place.
+
+By refusing to use zero sized device we avoided misuse cases including
+this one above.
+
+Link: https://lkml.kernel.org/r/20241209165717.94215-1-ryncsn@gmail.com
+Link: https://lkml.kernel.org/r/20241209165717.94215-2-ryncsn@gmail.com
+Fixes: 013bf95a83ec ("zram: add interface to specif backing device")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Reported-by: Desheng Wu <deshengwu@tencent.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wwan/iosm/iosm_ipc_mmio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/zram/zram_drv.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/wwan/iosm/iosm_ipc_mmio.c b/drivers/net/wwan/iosm/iosm_ipc_mmio.c
-index 63eb08c43c05..6764c13530b9 100644
---- a/drivers/net/wwan/iosm/iosm_ipc_mmio.c
-+++ b/drivers/net/wwan/iosm/iosm_ipc_mmio.c
-@@ -104,7 +104,7 @@ struct iosm_mmio *ipc_mmio_init(void __iomem *mmio, struct device *dev)
- 			break;
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -502,6 +502,12 @@ static ssize_t backing_dev_store(struct
+ 	}
  
- 		msleep(20);
--	} while (retries-- > 0);
-+	} while (--retries > 0);
- 
- 	if (!retries) {
- 		dev_err(ipc_mmio->dev, "invalid exec stage %X", stage);
--- 
-2.39.5
-
+ 	nr_pages = i_size_read(inode) >> PAGE_SHIFT;
++	/* Refuse to use zero sized device (also prevents self reference) */
++	if (!nr_pages) {
++		err = -EINVAL;
++		goto out;
++	}
++
+ 	bitmap_sz = BITS_TO_LONGS(nr_pages) * sizeof(long);
+ 	bitmap = kvzalloc(bitmap_sz, GFP_KERNEL);
+ 	if (!bitmap) {
 
 
 
