@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-107291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0160EA02B19
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:40:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC73A02BB9
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:46:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88BED18819C7
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:40:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2284D1886736
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FBE6156C5E;
-	Mon,  6 Jan 2025 15:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA521DE2DF;
+	Mon,  6 Jan 2025 15:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AlFcYehO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KGOXP35b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F340314D28C;
-	Mon,  6 Jan 2025 15:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E5C1DE3AA;
+	Mon,  6 Jan 2025 15:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178025; cv=none; b=sUJKnQoKCrepzBT1zfk2J6824KxrBmW5FGsm40auy4uwMQcy4cZNFS0B1d6qxzpY8LBznIfeQR+GkEwFetrZHqgUij1JCs/wKNo7cOLNKsLRn8P4LPTGBVQp4e1cjwqvEM8VG8EGcA8Kq4C4Ca3159gwJEKYzL43pdLaCd8vfJE=
+	t=1736178376; cv=none; b=rDKrJZXRFp31fx8T+/qV2NmP4K8M2vRhqu+aDNldn+en1JKjW+e0pGoSfcNEhCxQ98kuTN96Y/9cTGNxwcHfca3/Pp9wjMBJKj1IUY1h4oXoecaKqRliBDIwZmvOf7F16+ZQCKQBWLz7Ihr8XEf6qmFbKiMjZz87evqLhFU/1hE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178025; c=relaxed/simple;
-	bh=q/5hjB/TVsD+k8wawRxUufV9DZRWoHx71/fuk6U/wnc=;
+	s=arc-20240116; t=1736178376; c=relaxed/simple;
+	bh=uNFalZ4QVssxYausFBSWmeBh6Kpw/WaUvSBoXiaBFx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WcUkUZqiKAViRL8z5Sk1LKbV6fwYPql+DaHSBRKcowFeCobGAudB7snob5p+m9797BYOVKetdyRG63mqvXXnEBkQlFcfc67xv8ELMKwA/qTq/OznOBapA11PBfmWvRuoKaYeHwdJwWYPenJWWLvPx5joSLa8wVt/3LKS2vuy9TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AlFcYehO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E373C4CED2;
-	Mon,  6 Jan 2025 15:40:24 +0000 (UTC)
+	 MIME-Version; b=gDzYGppv4EbqPag0uPXQmE6mqAO5GLo6p/CcbN6YRj53hqWy8CNCU/Fv0qNwLnJUNeG2aXRmkPJgN/w5Sp8kDmSyhfm7hXCfm/ImwjW82RRgt0iK781w58Kuy8NglHq6vOkMJbRM7dzusShsaHgvf7Sg4JRdjicMDPWDNHcfcU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KGOXP35b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 261C6C4CEE4;
+	Mon,  6 Jan 2025 15:46:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178024;
-	bh=q/5hjB/TVsD+k8wawRxUufV9DZRWoHx71/fuk6U/wnc=;
+	s=korg; t=1736178376;
+	bh=uNFalZ4QVssxYausFBSWmeBh6Kpw/WaUvSBoXiaBFx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AlFcYehOjL8ZjzSjhwgLWTWZlnmjN+vtPujXSFcjl0gA9ryJs5BAoxY/M/PeNL3ZM
-	 jGAtcqkWXZNUT8AZ0i5Y2A5RrRFB5M/tZPYeYUmYxU2XnJoRcdt5h6f/zFDKscbifr
-	 4WYCPIKlv74WvrlWnNc6IlpEspLVIHZoHJjxx2LM=
+	b=KGOXP35bZZlr6a/K09puWbRNFCM2roUTk/cXiR/gb5Q9I1VY4AX3E/1l/4+9hPxJ9
+	 99c8kDff7LNGlv7b5kOkvAO78aNX+f7IhbtTcTcPy/dYB/m3VVcZV+0hAewekGxLv2
+	 zk45Td5V0HPP4EKyGLbW/psqLiCKPURNhGbbBaAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 136/156] fgraph: Add READ_ONCE() when accessing fgraph_array[]
+	Kairui Song <kasong@tencent.com>,
+	Desheng Wu <deshengwu@tencent.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 098/138] zram: fix uninitialized ZRAM not releasing backing device
 Date: Mon,  6 Jan 2025 16:17:02 +0100
-Message-ID: <20250106151146.854682139@linuxfoundation.org>
+Message-ID: <20250106151136.941319893@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Kairui Song <kasong@tencent.com>
 
-commit d65474033740ded0a4fe9a097fce72328655b41d upstream.
+[ Upstream commit 74363ec674cb172d8856de25776c8f3103f05e2f ]
 
-In __ftrace_return_to_handler(), a loop iterates over the fgraph_array[]
-elements, which are fgraph_ops. The loop checks if an element is a
-fgraph_stub to prevent using a fgraph_stub afterward.
+Setting backing device is done before ZRAM initialization.  If we set the
+backing device, then remove the ZRAM module without initializing the
+device, the backing device reference will be leaked and the device will be
+hold forever.
 
-However, if the compiler reloads fgraph_array[] after this check, it might
-race with an update to fgraph_array[] that introduces a fgraph_stub. This
-could result in the stub being processed, but the stub contains a null
-"func_hash" field, leading to a NULL pointer dereference.
+Fix this by always reset the ZRAM fully on rmmod or reset store.
 
-To ensure that the gops compared against the fgraph_stub matches the gops
-processed later, add a READ_ONCE(). A similar patch appears in commit
-63a8dfb ("function_graph: Add READ_ONCE() when accessing fgraph_array[]").
-
-Cc: stable@vger.kernel.org
-Fixes: 37238abe3cb47 ("ftrace/function_graph: Pass fgraph_ops to function graph callbacks")
-Link: https://lore.kernel.org/20241231113731.277668-1-zilin@seu.edu.cn
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20241209165717.94215-3-ryncsn@gmail.com
+Fixes: 013bf95a83ec ("zram: add interface to specif backing device")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Reported-by: Desheng Wu <deshengwu@tencent.com>
+Suggested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/fgraph.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/zram/zram_drv.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/kernel/trace/fgraph.c
-+++ b/kernel/trace/fgraph.c
-@@ -802,7 +802,7 @@ static unsigned long __ftrace_return_to_
- #endif
- 	{
- 		for_each_set_bit(i, &bitmap, sizeof(bitmap) * BITS_PER_BYTE) {
--			struct fgraph_ops *gops = fgraph_array[i];
-+			struct fgraph_ops *gops = READ_ONCE(fgraph_array[i]);
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 8e13586be8c9..05a46fbe0ea9 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1146,12 +1146,16 @@ static void zram_meta_free(struct zram *zram, u64 disksize)
+ 	size_t num_pages = disksize >> PAGE_SHIFT;
+ 	size_t index;
  
- 			if (gops == &fgraph_stub)
- 				continue;
++	if (!zram->table)
++		return;
++
+ 	/* Free all pages that are still in this zram device */
+ 	for (index = 0; index < num_pages; index++)
+ 		zram_free_page(zram, index);
+ 
+ 	zs_destroy_pool(zram->mem_pool);
+ 	vfree(zram->table);
++	zram->table = NULL;
+ }
+ 
+ static bool zram_meta_alloc(struct zram *zram, u64 disksize)
+@@ -1694,11 +1698,6 @@ static void zram_reset_device(struct zram *zram)
+ 
+ 	zram->limit_pages = 0;
+ 
+-	if (!init_done(zram)) {
+-		up_write(&zram->init_lock);
+-		return;
+-	}
+-
+ 	set_capacity_and_notify(zram->disk, 0);
+ 	part_stat_set_all(&zram->disk->part0, 0);
+ 
+-- 
+2.39.5
+
 
 
 
