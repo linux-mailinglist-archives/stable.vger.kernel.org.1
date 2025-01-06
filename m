@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84894A02CF1
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:59:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F407A02B66
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98E477A2993
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:59:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F039F3A6664
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373B213B592;
-	Mon,  6 Jan 2025 15:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99749182D2;
+	Mon,  6 Jan 2025 15:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVi5Tlic"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QISCunls"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA13E39FCE;
-	Mon,  6 Jan 2025 15:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42BC7157E82;
+	Mon,  6 Jan 2025 15:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179163; cv=none; b=FI8SKoSZAv23ojStwR04UsIpjLXlhE9Ugro0mo2T2omu+qcKd6DDikBUiPWVrlh4Q8SVWqOFxKGxuRAG7aIDugmxsT9gBU2siVPNSINOdbOoBCg6wszO47ohSoupbTEhEw9F4vbhljrkZv9JsFxetR6TVYuR32sztnt1BTmdsig=
+	t=1736178103; cv=none; b=l2/Z4652e3U9WhH6037RaUVAn0FmTV49MUy7/PMC1qcjqHKK3MGGy9Szl2GA8NQq/5JIb8ob0ypRrYTKi0CKpD88uUGdwMQMTlC9X0tq8TwXDENkgBGWiOdT/Bk/FXLITJozloC5vuZsBayYHZAa4JuqS39PkY/IMKBbXXDrL54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179163; c=relaxed/simple;
-	bh=QaIYaXSDup925lEL5+uC3pQ98hMWb7hpt3+rdSnBPlo=;
+	s=arc-20240116; t=1736178103; c=relaxed/simple;
+	bh=pbgTJ41lEZczWOhBpP853vh122i1b6LCSfKAP3NTgks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a/E5VtP45yo8/sF40j9xMwuRnjr32y4nOgFyresItkoeaWsE1WXvNNym6Ec0n7e1HtTQm2TXTZ/1YmKR1VVauwk2+voPfXGTG78DibirTzwi1ifR0NxtPAgj+qJpSqe2wZ2Z/Ny+/zpBPliDlR9ofrvhhIjd2yEY1okPJ16ZXh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVi5Tlic; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1A2C4CED6;
-	Mon,  6 Jan 2025 15:59:22 +0000 (UTC)
+	 MIME-Version; b=MtYO2M94d4Cpn/rBiBd9xKU92fUXuns3L+dyd19SJ2u+mp3r8YCyZ1CF4dArwP8k0y7KWvrFv7KQqg5jywmW9cuWvv9Xi223sydYbDFsc6oXzevi0ItAMfVW0EGwZGha3xU33exACr5kGekHCclBN0T7g4+Z2/PyPYl1mJJaY4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QISCunls; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6462C4CED2;
+	Mon,  6 Jan 2025 15:41:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179162;
-	bh=QaIYaXSDup925lEL5+uC3pQ98hMWb7hpt3+rdSnBPlo=;
+	s=korg; t=1736178103;
+	bh=pbgTJ41lEZczWOhBpP853vh122i1b6LCSfKAP3NTgks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XVi5Tlic5ZbmadjShEt6qhCDQEcW8PwWqb3y5n8Z26h2+LAt8EpPTQisfDNLBhsgL
-	 DrZQNPAEQhPDhY1DmalhgL06Fx10sUBehjzQqiBDuIrZ582sASikJgpGRNpOaDdlUw
-	 dNg2bzpEzfOkCpJSFS2xHW/HDLXuWFpy7jn9dlnk=
+	b=QISCunlsCO8gan84dkSgL/09g2OZAJkzXkJXN5pvHkHUQlndddr29izMwxxcNJ0mL
+	 UJnfRchqXvMtG2+B/eRCVWfE6OVbIj6JDsBxesd5Wdw/zYYIXt0sXNIQ1fHNW5Su48
+	 0M1pXgb+8AH1fkIH5nGxVJYmGgf99jzp/WiT0kHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 45/93] scsi: qla1280: Fix hw revision numbering for ISP1020/1040
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 155/156] mptcp: fix recvbuffer adjust on sleeping rcvmsg
 Date: Mon,  6 Jan 2025 16:17:21 +0100
-Message-ID: <20250106151130.402198872@linuxfoundation.org>
+Message-ID: <20250106151147.568443598@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Magnus Lindholm <linmag7@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit c064de86d2a3909222d5996c5047f64c7a8f791b ]
+commit 449e6912a2522af672e99992e1201a454910864e upstream.
 
-Fix the hardware revision numbering for Qlogic ISP1020/1040 boards.  HWMASK
-suggests that the revision number only needs four bits, this is consistent
-with how NetBSD does things in their ISP driver. Verified on a IPS1040B
-which is seen as rev 5 not as BIT_4.
+If the recvmsg() blocks after receiving some data - i.e. due to
+SO_RCVLOWAT - the MPTCP code will attempt multiple times to
+adjust the receive buffer size, wrongly accounting every time the
+cumulative of received data - instead of accounting only for the
+delta.
 
-Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
-Link: https://lore.kernel.org/r/20241113225636.2276-1-linmag7@gmail.com
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Address the issue moving mptcp_rcv_space_adjust just after the
+data reception and passing it only the just received bytes.
+
+This also removes an unneeded difference between the TCP and MPTCP
+RX code path implementation.
+
+Fixes: 581302298524 ("mptcp: error out earlier on disconnect")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20241230-net-mptcp-rbuf-fixes-v1-1-8608af434ceb@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla1280.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/mptcp/protocol.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/qla1280.h b/drivers/scsi/qla1280.h
-index a1a8aefc7cc3..9d4c997c3c82 100644
---- a/drivers/scsi/qla1280.h
-+++ b/drivers/scsi/qla1280.h
-@@ -117,12 +117,12 @@ struct device_reg {
- 	uint16_t id_h;		/* ID high */
- 	uint16_t cfg_0;		/* Configuration 0 */
- #define ISP_CFG0_HWMSK   0x000f	/* Hardware revision mask */
--#define ISP_CFG0_1020    BIT_0	/* ISP1020 */
--#define ISP_CFG0_1020A	 BIT_1	/* ISP1020A */
--#define ISP_CFG0_1040	 BIT_2	/* ISP1040 */
--#define ISP_CFG0_1040A	 BIT_3	/* ISP1040A */
--#define ISP_CFG0_1040B	 BIT_4	/* ISP1040B */
--#define ISP_CFG0_1040C	 BIT_5	/* ISP1040C */
-+#define ISP_CFG0_1020	 1	/* ISP1020 */
-+#define ISP_CFG0_1020A	 2	/* ISP1020A */
-+#define ISP_CFG0_1040	 3	/* ISP1040 */
-+#define ISP_CFG0_1040A	 4	/* ISP1040A */
-+#define ISP_CFG0_1040B	 5	/* ISP1040B */
-+#define ISP_CFG0_1040C	 6	/* ISP1040C */
- 	uint16_t cfg_1;		/* Configuration 1 */
- #define ISP_CFG1_F128    BIT_6  /* 128-byte FIFO threshold */
- #define ISP_CFG1_F64     BIT_4|BIT_5 /* 128-byte FIFO threshold */
--- 
-2.39.5
-
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1939,6 +1939,8 @@ do_error:
+ 	goto out;
+ }
+ 
++static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied);
++
+ static int __mptcp_recvmsg_mskq(struct mptcp_sock *msk,
+ 				struct msghdr *msg,
+ 				size_t len, int flags,
+@@ -1992,6 +1994,7 @@ static int __mptcp_recvmsg_mskq(struct m
+ 			break;
+ 	}
+ 
++	mptcp_rcv_space_adjust(msk, copied);
+ 	return copied;
+ }
+ 
+@@ -2268,7 +2271,6 @@ static int mptcp_recvmsg(struct sock *sk
+ 		}
+ 
+ 		pr_debug("block timeout %ld\n", timeo);
+-		mptcp_rcv_space_adjust(msk, copied);
+ 		err = sk_wait_data(sk, &timeo, NULL);
+ 		if (err < 0) {
+ 			err = copied ? : err;
+@@ -2276,8 +2278,6 @@ static int mptcp_recvmsg(struct sock *sk
+ 		}
+ 	}
+ 
+-	mptcp_rcv_space_adjust(msk, copied);
+-
+ out_err:
+ 	if (cmsg_flags && copied >= 0) {
+ 		if (cmsg_flags & MPTCP_CMSG_TS)
 
 
 
