@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-107638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48C6DA02CF3
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:59:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BBE5A02A8F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:34:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D1B73A344C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:57:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36A847A29DB
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E662B6088F;
-	Mon,  6 Jan 2025 15:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8345153814;
+	Mon,  6 Jan 2025 15:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFMS9D36"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNgQfLkV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A220FBA34;
-	Mon,  6 Jan 2025 15:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF4078F49;
+	Mon,  6 Jan 2025 15:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179072; cv=none; b=r80E6Mx45xTALapSQ1x0duJPf4I4AK2yrEJHw72r/CM88LS61606DLHySS6rcDas8Z+hg8AA+tYd8kNnSoiuuDhmh42Ht7gKm+7y+dQDO3Zygm9lPeKt879Df39CSQk3hQxCvKx/hnMxm86qiIsK8hFx4nwC2iSYADBcNnKGQRM=
+	t=1736177638; cv=none; b=dAvx7N8bczvtT9LNWSQFzNqIOUKlqpDQdynFB14nZjZ2c6Ri53lSXlHcUPPnGqEM0nqbIno7DvG87ZIYtjkhPhZ5duwZhSQNiWenjZJuSzBaG6m8tS69YDt3XdHFtePjlmwbIXbFQp7+qxwhQ+wFM7YgFQz18Pj7BSOZM3zp/cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179072; c=relaxed/simple;
-	bh=lQg0ozWEqk820Qo5qcY1S8BUMMy0yUYq9C3WaSXtHzY=;
+	s=arc-20240116; t=1736177638; c=relaxed/simple;
+	bh=TQM1ztHqiiMG0mT45+SbmJGlJdK/CbpcyJ/QjX98qEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vrk9kgtR9BVgUoIXk/KBLJUPJQzoV+786Rb1GIhbdTB+AD2dcvK2p6FgJIBBem8X8Pr8owKQJLbmpdPtatNtbvDooYK8e53ifPz+eFCrrCXEocc9iEL3iX9fZjo8teX/iHxbN7zG4yr2/h2pnG0uQZqGtuOGGOcJayWZn2F8M1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFMS9D36; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1021C4CED2;
-	Mon,  6 Jan 2025 15:57:51 +0000 (UTC)
+	 MIME-Version; b=E1nqwDwZJdpSWZziU4dzeks9VeG1DDRq2H+Col6G9uLryEkHxmQZ2y5pX0EPWEy1ErLWc1abgFjtQ9KxCiirEIiOVjn2nBdD1TirLM/X3bbQQrxjje0cNtueuAVYkbQRvWFURHt0mcPEXEBMt1Lieghq3awCndroWcY8Ve/+RCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNgQfLkV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3360C4CED2;
+	Mon,  6 Jan 2025 15:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179072;
-	bh=lQg0ozWEqk820Qo5qcY1S8BUMMy0yUYq9C3WaSXtHzY=;
+	s=korg; t=1736177638;
+	bh=TQM1ztHqiiMG0mT45+SbmJGlJdK/CbpcyJ/QjX98qEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OFMS9D36p9/ABFc2rXXsaLjcpg4lQILCcdIGyfP5cDQ+hQyY5gmsdNxmpzH3YdEWH
-	 jy7QBkBEJlzOgYw+z/q982ketA0O41+35ApMiCa9ECbIv96c7Fi+eJQklmuIsYfola
-	 cCoON493jZRdvptyrq5tVjzDUKxk5cJqPVJ5B/rw=
+	b=eNgQfLkVoC5rJpK+d4JapvqK1qq9fPPr0xPMrqQsTsu5ggp2GupWfBadzxy7P0CT2
+	 YC0HsTkXm4gQ4PhVvohdMfLni8jgjdFjB2dimUOIhpYC61pWewO546VeVHS9fYEkxy
+	 gvf7MwpYNUgq4ANVe3pxM8CCKBPapE1lRVTkx1is=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@outlook.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 07/93] drm/i915: Fix memory leak by correcting cache object name in error handler
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 199/222] ALSA: seq: Check UMP support for midi_version change
 Date: Mon,  6 Jan 2025 16:16:43 +0100
-Message-ID: <20250106151128.973196173@linuxfoundation.org>
+Message-ID: <20250106151158.294548157@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 9bc5e7dc694d3112bbf0fa4c46ef0fa0f114937a ]
+commit 8765429279e7d3d68d39ace5f84af2815174bb1e upstream.
 
-Replace "slab_priorities" with "slab_dependencies" in the error handler
-to avoid memory leak.
+When the kernel is built without UMP support but a user-space app
+requires the midi_version > 0, the kernel should return an error.
+Otherwise user-space assumes as if it were possible to deal,
+eventually hitting serious errors later.
 
-Fixes: 32eb6bcfdda9 ("drm/i915: Make request allocation caches global")
-Cc: <stable@vger.kernel.org> # v5.2+
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@outlook.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241127201042.29620-1-jiashengjiangcool@gmail.com
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 46397622a3fa ("ALSA: seq: Add UMP support")
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241231145358.21946-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/i915_scheduler.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/core/seq/seq_clientmgr.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_scheduler.c b/drivers/gpu/drm/i915/i915_scheduler.c
-index 0ef205fe5e29..7ef068dcc48b 100644
---- a/drivers/gpu/drm/i915/i915_scheduler.c
-+++ b/drivers/gpu/drm/i915/i915_scheduler.c
-@@ -533,6 +533,6 @@ int __init i915_global_scheduler_init(void)
- 	return 0;
+--- a/sound/core/seq/seq_clientmgr.c
++++ b/sound/core/seq/seq_clientmgr.c
+@@ -1280,10 +1280,16 @@ static int snd_seq_ioctl_set_client_info
+ 	if (client->type != client_info->type)
+ 		return -EINVAL;
  
- err_priorities:
--	kmem_cache_destroy(global.slab_priorities);
-+	kmem_cache_destroy(global.slab_dependencies);
- 	return -ENOMEM;
- }
--- 
-2.39.5
-
+-	/* check validity of midi_version field */
+-	if (client->user_pversion >= SNDRV_PROTOCOL_VERSION(1, 0, 3) &&
+-	    client_info->midi_version > SNDRV_SEQ_CLIENT_UMP_MIDI_2_0)
+-		return -EINVAL;
++	if (client->user_pversion >= SNDRV_PROTOCOL_VERSION(1, 0, 3)) {
++		/* check validity of midi_version field */
++		if (client_info->midi_version > SNDRV_SEQ_CLIENT_UMP_MIDI_2_0)
++			return -EINVAL;
++
++		/* check if UMP is supported in kernel */
++		if (!IS_ENABLED(CONFIG_SND_SEQ_UMP) &&
++		    client_info->midi_version > 0)
++			return -EINVAL;
++	}
+ 
+ 	/* fill the info fields */
+ 	if (client_info->name[0])
 
 
 
