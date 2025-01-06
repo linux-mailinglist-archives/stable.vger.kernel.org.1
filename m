@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62CA0A02A2D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5924CA02AC0
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79E203A72C9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E103918816D1
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB7A8136E09;
-	Mon,  6 Jan 2025 15:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063FC1D7E21;
+	Mon,  6 Jan 2025 15:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWFH00Fl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQiFX3Kq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9825670813;
-	Mon,  6 Jan 2025 15:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B238373451;
+	Mon,  6 Jan 2025 15:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177376; cv=none; b=r4DjCHwon58r7ksQQMX1J++VOjTIvI+Y9pb/VMIC51/0B9liesvUzbrH12yeJdSuRBGyRx/eDZFsMsXjtU9e6b+wWSObSYRYQV+8HryuUnz3RobJHBWKbXLDGgFcne/nRbgTM2aYx3fS5p4viV+NN2S0i5SktkOVyyXHVOHf18A=
+	t=1736177801; cv=none; b=r0Eg0OrvM75Gw0Ym/AgzMkdTZpodEEKN5H0KKWgyzu40VHpSKsbKLq/GU82siBqT0mT0tmBRn4QZZlU4p7UmctYSadrlfn5T9RkJXHde+oUQw96da1GXaq73J02L4acC5pzGZlwk8mBadl95M8kdKOwZXysV3G1GkoTP9zcDPnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177376; c=relaxed/simple;
-	bh=kXcsSIb3zSuclT+X5F8xlk6353LrocZ5TLMe94OEdws=;
+	s=arc-20240116; t=1736177801; c=relaxed/simple;
+	bh=zTdUG3kb7wOfWDnYx3RiyB2Tiu+Gla85rEtWF1NpGto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gk3oI++6GGnUGoIQovlG7WjsivOwB5wlkdChwdydF8aBh0PPPjJk3Xna3fNz78wSp/r2wG4hYWMD9Uvm32H9lePUkf9cAZOROFqKZDV5XfInBYHD2vzaXPMG2qKzYwd8RU7/sRdGwSka3VRVeHwPmhpWydiESegRIauMXxfeWb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWFH00Fl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFBC0C4CED2;
-	Mon,  6 Jan 2025 15:29:35 +0000 (UTC)
+	 MIME-Version; b=ZkPcjq+PKOxtF8GiZ8g947X+CBvAzfn4vAM+z2Lfdsb+kQSMe2V1xS3/IrG4/+ZljE/ORq+k7zHFGAe+uxZrMfDLRSkOVx9iBRt+oAbNa1D9MQyYrERckVxxPEGjYSr+4mV+6NcHqZkjAZS+jMVa6F1Stc6OINxPwe+OoLJH8Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQiFX3Kq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E28C4CED2;
+	Mon,  6 Jan 2025 15:36:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177376;
-	bh=kXcsSIb3zSuclT+X5F8xlk6353LrocZ5TLMe94OEdws=;
+	s=korg; t=1736177801;
+	bh=zTdUG3kb7wOfWDnYx3RiyB2Tiu+Gla85rEtWF1NpGto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PWFH00Fltn+7RFu7dTZXBkRAnY1A7qk1DwYzp0OdT1DsaZQVX7CkN/OTqieFBDsbD
-	 8PN32N4d54fq3GBKcRf3gyUR9vu3MybwdvHdMNPAWTAwUHHR8NrRV7Nzjt+jKGV6Yj
-	 d/QA1OpxM5LKYbVOHVvfiDIXxcLKFXIWIhXmHvlw=
+	b=CQiFX3KqHn1qIYGTwQaGYHwSWIiV1rnKwOuN9A+OmVnltLV4xCaX7HoaHTjlmuuDD
+	 YEdy9a/KAFWZnbr3Tnf77FO9SnvS5UKgUKRa/i55ndkwYRmjvyt/g0SzwAyForRT4u
+	 DdrN3fRED0/PfLPySSABGFiiUVp79k0cDmXRc60U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristram Ha <tristram.ha@microchip.com>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 143/222] net: dsa: microchip: Fix KSZ9477 set_ageing_time function
-Date: Mon,  6 Jan 2025 16:15:47 +0100
-Message-ID: <20250106151156.180305744@linuxfoundation.org>
+Subject: [PATCH 6.12 062/156] net: mv643xx_eth: fix an OF node reference leak
+Date: Mon,  6 Jan 2025 16:15:48 +0100
+Message-ID: <20250106151144.072228806@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,127 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristram Ha <tristram.ha@microchip.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 262bfba8ab820641c8cfbbf03b86d6c00242c078 ]
+[ Upstream commit ad5c318086e2e23b577eca33559c5ebf89bc7eb9 ]
 
-The aging count is not a simple 11-bit value but comprises a 3-bit
-multiplier and an 8-bit second count.  The code tries to use the
-original multiplier which is 4 as the second count is still 300 seconds
-by default.
+Current implementation of mv643xx_eth_shared_of_add_port() calls
+of_parse_phandle(), but does not release the refcount on error. Call
+of_node_put() in the error path and in mv643xx_eth_shared_of_remove().
 
-Fixes: 2c119d9982b1 ("net: dsa: microchip: add the support for set_ageing_time")
-Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20241218020224.70590-2-Tristram.Ha@microchip.com
+This bug was found by an experimental verification tool that I am
+developing.
+
+Fixes: 76723bca2802 ("net: mv643xx_eth: add DT parsing support")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Link: https://patch.msgid.link/20241221081448.3313163-1-joe@pf.is.s.u-tokyo.ac.jp
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/microchip/ksz9477.c     | 47 +++++++++++++++++++------
- drivers/net/dsa/microchip/ksz9477_reg.h |  4 +--
- 2 files changed, 37 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/marvell/mv643xx_eth.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz9477.c b/drivers/net/dsa/microchip/ksz9477.c
-index a7e8fcdf2576..59134d117846 100644
---- a/drivers/net/dsa/microchip/ksz9477.c
-+++ b/drivers/net/dsa/microchip/ksz9477.c
-@@ -2,7 +2,7 @@
- /*
-  * Microchip KSZ9477 switch driver main logic
-  *
-- * Copyright (C) 2017-2019 Microchip Technology Inc.
-+ * Copyright (C) 2017-2024 Microchip Technology Inc.
-  */
+diff --git a/drivers/net/ethernet/marvell/mv643xx_eth.c b/drivers/net/ethernet/marvell/mv643xx_eth.c
+index 9e80899546d9..83b9905666e2 100644
+--- a/drivers/net/ethernet/marvell/mv643xx_eth.c
++++ b/drivers/net/ethernet/marvell/mv643xx_eth.c
+@@ -2708,9 +2708,15 @@ static struct platform_device *port_platdev[3];
  
- #include <linux/kernel.h>
-@@ -916,26 +916,51 @@ void ksz9477_get_caps(struct ksz_device *dev, int port,
- int ksz9477_set_ageing_time(struct ksz_device *dev, unsigned int msecs)
+ static void mv643xx_eth_shared_of_remove(void)
  {
- 	u32 secs = msecs / 1000;
--	u8 value;
--	u8 data;
-+	u8 data, mult, value;
-+	u32 max_val;
- 	int ret;
++	struct mv643xx_eth_platform_data *pd;
+ 	int n;
  
--	value = FIELD_GET(SW_AGE_PERIOD_7_0_M, secs);
-+#define MAX_TIMER_VAL	((1 << 8) - 1)
+ 	for (n = 0; n < 3; n++) {
++		if (!port_platdev[n])
++			continue;
++		pd = dev_get_platdata(&port_platdev[n]->dev);
++		if (pd)
++			of_node_put(pd->phy_node);
+ 		platform_device_del(port_platdev[n]);
+ 		port_platdev[n] = NULL;
+ 	}
+@@ -2773,8 +2779,10 @@ static int mv643xx_eth_shared_of_add_port(struct platform_device *pdev,
+ 	}
  
--	ret = ksz_write8(dev, REG_SW_LUE_CTRL_3, value);
--	if (ret < 0)
--		return ret;
-+	/* The aging timer comprises a 3-bit multiplier and an 8-bit second
-+	 * value.  Either of them cannot be zero.  The maximum timer is then
-+	 * 7 * 255 = 1785 seconds.
-+	 */
-+	if (!secs)
-+		secs = 1;
- 
--	data = FIELD_GET(SW_AGE_PERIOD_10_8_M, secs);
-+	/* Return error if too large. */
-+	else if (secs > 7 * MAX_TIMER_VAL)
-+		return -EINVAL;
- 
- 	ret = ksz_read8(dev, REG_SW_LUE_CTRL_0, &value);
- 	if (ret < 0)
- 		return ret;
- 
--	value &= ~SW_AGE_CNT_M;
--	value |= FIELD_PREP(SW_AGE_CNT_M, data);
-+	/* Check whether there is need to update the multiplier. */
-+	mult = FIELD_GET(SW_AGE_CNT_M, value);
-+	max_val = MAX_TIMER_VAL;
-+	if (mult > 0) {
-+		/* Try to use the same multiplier already in the register as
-+		 * the hardware default uses multiplier 4 and 75 seconds for
-+		 * 300 seconds.
-+		 */
-+		max_val = DIV_ROUND_UP(secs, mult);
-+		if (max_val > MAX_TIMER_VAL || max_val * mult != secs)
-+			max_val = MAX_TIMER_VAL;
+ 	ppdev = platform_device_alloc(MV643XX_ETH_NAME, dev_num);
+-	if (!ppdev)
+-		return -ENOMEM;
++	if (!ppdev) {
++		ret = -ENOMEM;
++		goto put_err;
 +	}
-+
-+	data = DIV_ROUND_UP(secs, max_val);
-+	if (mult != data) {
-+		value &= ~SW_AGE_CNT_M;
-+		value |= FIELD_PREP(SW_AGE_CNT_M, data);
-+		ret = ksz_write8(dev, REG_SW_LUE_CTRL_0, value);
-+		if (ret < 0)
-+			return ret;
-+	}
+ 	ppdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
+ 	ppdev->dev.of_node = pnp;
  
--	return ksz_write8(dev, REG_SW_LUE_CTRL_0, value);
-+	value = DIV_ROUND_UP(secs, data);
-+	return ksz_write8(dev, REG_SW_LUE_CTRL_3, value);
+@@ -2796,6 +2804,8 @@ static int mv643xx_eth_shared_of_add_port(struct platform_device *pdev,
+ 
+ port_err:
+ 	platform_device_put(ppdev);
++put_err:
++	of_node_put(ppd.phy_node);
+ 	return ret;
  }
  
- void ksz9477_port_queue_split(struct ksz_device *dev, int port)
-diff --git a/drivers/net/dsa/microchip/ksz9477_reg.h b/drivers/net/dsa/microchip/ksz9477_reg.h
-index a2ef4b18349c..d0886ed984c5 100644
---- a/drivers/net/dsa/microchip/ksz9477_reg.h
-+++ b/drivers/net/dsa/microchip/ksz9477_reg.h
-@@ -2,7 +2,7 @@
- /*
-  * Microchip KSZ9477 register definitions
-  *
-- * Copyright (C) 2017-2018 Microchip Technology Inc.
-+ * Copyright (C) 2017-2024 Microchip Technology Inc.
-  */
- 
- #ifndef __KSZ9477_REGS_H
-@@ -190,8 +190,6 @@
- #define SW_VLAN_ENABLE			BIT(7)
- #define SW_DROP_INVALID_VID		BIT(6)
- #define SW_AGE_CNT_M			GENMASK(5, 3)
--#define SW_AGE_CNT_S			3
--#define SW_AGE_PERIOD_10_8_M		GENMASK(10, 8)
- #define SW_RESV_MCAST_ENABLE		BIT(2)
- #define SW_HASH_OPTION_M		0x03
- #define SW_HASH_OPTION_CRC		1
 -- 
 2.39.5
 
