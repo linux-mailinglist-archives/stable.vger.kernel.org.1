@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-107677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE1C0A02D01
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:00:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2947CA02C98
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7154B18820A2
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:00:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4975188606A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2324D1DD9AD;
-	Mon,  6 Jan 2025 15:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3723814A617;
+	Mon,  6 Jan 2025 15:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEmMzBQq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATbEXRuZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02CD1DD539;
-	Mon,  6 Jan 2025 15:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E781A13B59A;
+	Mon,  6 Jan 2025 15:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179192; cv=none; b=jhDjMWFl49TPhMK6e7nWjBVRCp0/MH4yLmp1itCZQu/NL5eGlRt+yTfVzL4M6dPGdP5ioMcymLoslee+tg5W1IQ7c6VqLGloqMVimsHfebE53lJmaPldiWJfKRt0H4rC7DN3DELEH7R0fMsZgcGsKxBxwbEMOb/FagxOr8owiAI=
+	t=1736178948; cv=none; b=ikT1t6w09xbKHh/33LgO7QXTkW3cD4ExlsQxAYhwtGWNKXL+dNd02K29vz7IVWQ+Y4yZ4ZPf9J6xEnV5u5QPQZyE04M1QYdw7NalrbtmhuSAInEnTu75iIf2R17Y4iiAelzsouGxQfXWMzsMY/vqBg4+N5UEMTdnGn8nTaHaWEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179192; c=relaxed/simple;
-	bh=Q4fDaftEIIVe71f3flseVxIU8FCnzWLkg5026lIk0t0=;
+	s=arc-20240116; t=1736178948; c=relaxed/simple;
+	bh=cDrnrY5ZItaFZ+Z19TLw3orhUN77RboH/VXBFfyTDM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jpFk8B8vqCsPOXhTVl6XFf66+wjOMaktt9EoJnws3tGKouHakViZJ7ZDoWh9F8oi5kQwsZq7ZIrQVHIkJec1gLbMLCfTwxA5NL78TFYim4qEM62WPA/x9gYq93+lDigmmoa0zAu0tUmJtUdwK8+UNOkaTIZE8SYHfxKE9kVbCCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEmMzBQq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6C7C4CED2;
-	Mon,  6 Jan 2025 15:59:51 +0000 (UTC)
+	 MIME-Version; b=KuiUx7PYZNAf+6UpcuEWWhXIJRzpPOawzVmTkXMbHbf/In6nyoQXGpN/W8hphT1MPFgoV9HrzSlYt31KCJ/7gXEE8sC2UwSHbiawSZDymYbOnNlTcfm+tJBKRvquDeMf7evO957ouu1ziQ3FQirFnkArU8vMYo2zUB+xbzp9+XY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATbEXRuZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 518D3C4CED2;
+	Mon,  6 Jan 2025 15:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179192;
-	bh=Q4fDaftEIIVe71f3flseVxIU8FCnzWLkg5026lIk0t0=;
+	s=korg; t=1736178947;
+	bh=cDrnrY5ZItaFZ+Z19TLw3orhUN77RboH/VXBFfyTDM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nEmMzBQqwoQC0ut6+/6IwIJQr6iGkiq8y97us2cDMpmgAO73zxxkiLTdFGDs9Y1fD
-	 gH5TP2Fh6F8rFy/UGg/r8KpmUcqw5H4hwXORw3B2Ljchscl5SIPatnqWpLmNyos+bQ
-	 UobRReY5oJQhJlvWctePl0dNU3icBpHGaCiZ5R+s=
+	b=ATbEXRuZjAYL12CWv+43R7EpoSC1T1bBz619IS2ameYybXeKCkWzfEZ+wAJJg+BV+
+	 BvdAjpltWDp9LWFwHOAksB1fnmjfe5whyJwqXYg7XLLx0HpSW2ywTlpaO45O9anSEK
+	 EZOaNs4TNMKhOyAjPSFdBpBz2m71IThbyEh9wCGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Whitchurch <vincent.whitchurch@datadoghq.com>,
-	Jiayuan Chen <mrpre@163.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Srish Srinivasan <srishwap4@gmail.com>
-Subject: [PATCH 5.4 57/93] bpf: fix recursive lock when verdict program return SK_PASS
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 145/168] btrfs: rename and export __btrfs_cow_block()
 Date: Mon,  6 Jan 2025 16:17:33 +0100
-Message-ID: <20250106151130.856253891@linuxfoundation.org>
+Message-ID: <20250106151143.913139524@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,71 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <mrpre@163.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 8ca2a1eeadf09862190b2810697702d803ceef2d upstream.
+[ Upstream commit 95f93bc4cbcac6121a5ee85cd5019ee8e7447e0b ]
 
-When the stream_verdict program returns SK_PASS, it places the received skb
-into its own receive queue, but a recursive lock eventually occurs, leading
-to an operating system deadlock. This issue has been present since v6.9.
+Rename and export __btrfs_cow_block() as btrfs_force_cow_block(). This is
+to allow to move defrag specific code out of ctree.c and into defrag.c in
+one of the next patches.
 
-'''
-sk_psock_strp_data_ready
-    write_lock_bh(&sk->sk_callback_lock)
-    strp_data_ready
-      strp_read_sock
-        read_sock -> tcp_read_sock
-          strp_recv
-            cb.rcv_msg -> sk_psock_strp_read
-              # now stream_verdict return SK_PASS without peer sock assign
-              __SK_PASS = sk_psock_map_verd(SK_PASS, NULL)
-              sk_psock_verdict_apply
-                sk_psock_skb_ingress_self
-                  sk_psock_skb_ingress_enqueue
-                    sk_psock_data_ready
-                      read_lock_bh(&sk->sk_callback_lock) <= dead lock
-
-'''
-
-This topic has been discussed before, but it has not been fixed.
-Previous discussion:
-https://lore.kernel.org/all/6684a5864ec86_403d20898@john.notmuch
-
-Fixes: 6648e613226e ("bpf, skmsg: Fix NULL pointer dereference in sk_psock_skb_ingress_enqueue")
-Reported-by: Vincent Whitchurch <vincent.whitchurch@datadoghq.com>
-Signed-off-by: Jiayuan Chen <mrpre@163.com>
-Signed-off-by: John Fastabend <john.fastabend@gmail.com>
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20241118030910.36230-2-mrpre@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[srish: Apply to stable branch linux-5.10.y]
-Signed-off-by: Srish Srinivasan <srishwap4@gmail.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 44f52bbe96df ("btrfs: fix use-after-free when COWing tree bock and tracing is enabled")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skmsg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/ctree.c | 30 +++++++++++++++---------------
+ fs/btrfs/ctree.h |  7 +++++++
+ 2 files changed, 22 insertions(+), 15 deletions(-)
 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index a606ad8e8be2..dfc2e4d6a7a0 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -904,9 +904,9 @@ static void sk_psock_strp_data_ready(struct sock *sk)
- 		if (tls_sw_has_ctx_rx(sk)) {
- 			psock->parser.saved_data_ready(sk);
- 		} else {
--			write_lock_bh(&sk->sk_callback_lock);
-+			read_lock_bh(&sk->sk_callback_lock);
- 			strp_data_ready(&psock->parser.strp);
--			write_unlock_bh(&sk->sk_callback_lock);
-+			read_unlock_bh(&sk->sk_callback_lock);
- 		}
- 	}
- 	rcu_read_unlock();
+diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
+index 345f205af619..42562c61f52e 100644
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -386,13 +386,13 @@ static noinline int update_ref_for_cow(struct btrfs_trans_handle *trans,
+  * bytes the allocator should try to find free next to the block it returns.
+  * This is just a hint and may be ignored by the allocator.
+  */
+-static noinline int __btrfs_cow_block(struct btrfs_trans_handle *trans,
+-			     struct btrfs_root *root,
+-			     struct extent_buffer *buf,
+-			     struct extent_buffer *parent, int parent_slot,
+-			     struct extent_buffer **cow_ret,
+-			     u64 search_start, u64 empty_size,
+-			     enum btrfs_lock_nesting nest)
++int btrfs_force_cow_block(struct btrfs_trans_handle *trans,
++			  struct btrfs_root *root,
++			  struct extent_buffer *buf,
++			  struct extent_buffer *parent, int parent_slot,
++			  struct extent_buffer **cow_ret,
++			  u64 search_start, u64 empty_size,
++			  enum btrfs_lock_nesting nest)
+ {
+ 	struct btrfs_fs_info *fs_info = root->fs_info;
+ 	struct btrfs_disk_key disk_key;
+@@ -541,7 +541,7 @@ static inline int should_cow_block(struct btrfs_trans_handle *trans,
+ }
+ 
+ /*
+- * cows a single block, see __btrfs_cow_block for the real work.
++ * COWs a single block, see btrfs_force_cow_block() for the real work.
+  * This version of it has extra checks so that a block isn't COWed more than
+  * once per transaction, as long as it hasn't been written yet
+  */
+@@ -594,8 +594,8 @@ noinline int btrfs_cow_block(struct btrfs_trans_handle *trans,
+ 	 * Also We don't care about the error, as it's handled internally.
+ 	 */
+ 	btrfs_qgroup_trace_subtree_after_cow(trans, root, buf);
+-	ret = __btrfs_cow_block(trans, root, buf, parent,
+-				 parent_slot, cow_ret, search_start, 0, nest);
++	ret = btrfs_force_cow_block(trans, root, buf, parent, parent_slot,
++				    cow_ret, search_start, 0, nest);
+ 
+ 	trace_btrfs_cow_block(root, buf, *cow_ret);
+ 
+@@ -746,11 +746,11 @@ int btrfs_realloc_node(struct btrfs_trans_handle *trans,
+ 			search_start = last_block;
+ 
+ 		btrfs_tree_lock(cur);
+-		err = __btrfs_cow_block(trans, root, cur, parent, i,
+-					&cur, search_start,
+-					min(16 * blocksize,
+-					    (end_slot - i) * blocksize),
+-					BTRFS_NESTING_COW);
++		err = btrfs_force_cow_block(trans, root, cur, parent, i,
++					    &cur, search_start,
++					    min(16 * blocksize,
++						(end_slot - i) * blocksize),
++					    BTRFS_NESTING_COW);
+ 		if (err) {
+ 			btrfs_tree_unlock(cur);
+ 			free_extent_buffer(cur);
+diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
+index 17ebcf19b444..61ec4ba5414d 100644
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -2885,6 +2885,13 @@ int btrfs_cow_block(struct btrfs_trans_handle *trans,
+ 		    struct extent_buffer *parent, int parent_slot,
+ 		    struct extent_buffer **cow_ret,
+ 		    enum btrfs_lock_nesting nest);
++int btrfs_force_cow_block(struct btrfs_trans_handle *trans,
++			  struct btrfs_root *root,
++			  struct extent_buffer *buf,
++			  struct extent_buffer *parent, int parent_slot,
++			  struct extent_buffer **cow_ret,
++			  u64 search_start, u64 empty_size,
++			  enum btrfs_lock_nesting nest);
+ int btrfs_copy_root(struct btrfs_trans_handle *trans,
+ 		      struct btrfs_root *root,
+ 		      struct extent_buffer *buf,
 -- 
 2.39.5
 
