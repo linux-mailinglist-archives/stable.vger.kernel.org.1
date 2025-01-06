@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3515A02C4B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:52:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F9EA02B99
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:45:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC456164970
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:52:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A553F3A7A7D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:43:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0AD1DDC2D;
-	Mon,  6 Jan 2025 15:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C032E16A930;
+	Mon,  6 Jan 2025 15:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLhkh6ZW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwWcIGLW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76C914A098;
-	Mon,  6 Jan 2025 15:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E52A7082A;
+	Mon,  6 Jan 2025 15:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178693; cv=none; b=AHKFHJgVOCh8gy381mWhCfpGMjtRHHDGqeh7ufVqdtZSF/3fRsagrSBUwhxgi58EHEJB1map3A35TtXXpLh8EGX/jG9N3+8unWJfn4b+Psq75Yi0X726ZXhM7jFMwP+Ksz2TMXon5Ou+tH2mDoN+1vtqWnPJYo/+yltB2vPO8HI=
+	t=1736178217; cv=none; b=lbHGtEs9m4FvuhUC64q5MarKZ27YjLKRzHpuCcdTmMjqmi/ilgvMHm2lfMzioNDkp2m8jlPmqWtONECb53e61gVfYj8KjWNsvomtbUJiF6jI9TDsJkZ9Oa+LpqkWW+MrPHgFqBh4n5n4fPU2iNzuM53hhrlbskAiAEoIS+EQlw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178693; c=relaxed/simple;
-	bh=7JV6KVvHWZsq9UPFN9IUvmWyClc4xgCT5EL0hJuoq7Y=;
+	s=arc-20240116; t=1736178217; c=relaxed/simple;
+	bh=BgYveQgsAF9qJdLHM3ZgMI4bQbgBFL73OZw6woPQ56A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ennsZhrnRlaXZxhtzVrbB3tg1QZ2PiY+OwWgNhxBtRgO4xa8hbh8yKWfSJCoZ4jCk/JyLQzS5I7wWOoLy8Mz+JSzszJWcIKCwJ5XalKGMFr3b4t3O6Ilhycw4Vlfbd9munOj0LDyaINK3etkRKyEDq4LuyUddFiV9L9ZYBIP6H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLhkh6ZW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0F37C4CED2;
-	Mon,  6 Jan 2025 15:51:32 +0000 (UTC)
+	 MIME-Version; b=ZQG/MLBOb9GX7O59bwXhWuqhQ6kRcXWiy1U5LYIoAuMpY/ZMkBcW1q3WXZnOm4b8xebgQgbE7SrlDBZ281AMDCYkt3chDcKblrOB2VW69VBdSs5LleVx2HO5SCcZsqIlmfa8D6a7xP4wwMQ5Fa0nCflJdTlEFtCKB0KjWotxj6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwWcIGLW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B349C4CED2;
+	Mon,  6 Jan 2025 15:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178693;
-	bh=7JV6KVvHWZsq9UPFN9IUvmWyClc4xgCT5EL0hJuoq7Y=;
+	s=korg; t=1736178217;
+	bh=BgYveQgsAF9qJdLHM3ZgMI4bQbgBFL73OZw6woPQ56A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eLhkh6ZWCuUnEmS4MZcZEBOIcQ+ZRw4ErkeDXwPtAPVpI5PFGXeUyenOrMOgiG+om
-	 9RDmFMeqnA2pksbcDQULe+MRvvmPK4LNBfy9cUT0uwZajcS+QVhOxuUeII5BEtkYBz
-	 BUcHGhvbBFPeeVzWFTPxOniA0YpOIkaUoGcc76aI=
+	b=OwWcIGLWgk79uuMwgJW7luTrJNpnjBVrUBO1KgvUx1AcW1+lXVEFABwna1LnUhj+C
+	 hCy+FmPEg+d0S4R5WW904w9FB+BIrqM3nX4HsGXRel4FizP0kmdP9a8Zr3gYcoz0s7
+	 odVSvDIu8wbMzoyADPQhvSC2TQkS8DvtXUY//JjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
+	syzbot+c88fc0ebe0d5935c70da@syzkaller.appspotmail.com,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 060/168] tcp_bpf: Add sk_rmem_alloc related logic for tcp_bpf ingress redirection
+Subject: [PATCH 5.10 044/138] media: dvb-frontends: dib3000mb: fix uninit-value in dib3000_write_reg
 Date: Mon,  6 Jan 2025 16:16:08 +0100
-Message-ID: <20250106151140.729393044@linuxfoundation.org>
+Message-ID: <20250106151134.906713044@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit d888b7af7c149c115dd6ac772cc11c375da3e17c ]
+[ Upstream commit 2dd59fe0e19e1ab955259978082b62e5751924c7 ]
 
-When we do sk_psock_verdict_apply->sk_psock_skb_ingress, an sk_msg will
-be created out of the skb, and the rmem accounting of the sk_msg will be
-handled by the skb.
+Syzbot reports [1] an uninitialized value issue found by KMSAN in
+dib3000_read_reg().
 
-For skmsgs in __SK_REDIRECT case of tcp_bpf_send_verdict, when redirecting
-to the ingress of a socket, although we sk_rmem_schedule and add sk_msg to
-the ingress_msg of sk_redir, we do not update sk_rmem_alloc. As a result,
-except for the global memory limit, the rmem of sk_redir is nearly
-unlimited. Thus, add sk_rmem_alloc related logic to limit the recv buffer.
+Local u8 rb[2] is used in i2c_transfer() as a read buffer; in case
+that call fails, the buffer may end up with some undefined values.
 
-Since the function sk_msg_recvmsg and __sk_psock_purge_ingress_msg are
-used in these two paths. We use "msg->skb" to test whether the sk_msg is
-skb backed up. If it's not, we shall do the memory accounting explicitly.
+Since no elaborate error handling is expected in dib3000_write_reg(),
+simply zero out rb buffer to mitigate the problem.
 
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20241210012039.1669389-3-zijianzhang@bytedance.com
+[1] Syzkaller report
+dvb-usb: bulk message failed: -22 (6/0)
+=====================================================
+BUG: KMSAN: uninit-value in dib3000mb_attach+0x2d8/0x3c0 drivers/media/dvb-frontends/dib3000mb.c:758
+ dib3000mb_attach+0x2d8/0x3c0 drivers/media/dvb-frontends/dib3000mb.c:758
+ dibusb_dib3000mb_frontend_attach+0x155/0x2f0 drivers/media/usb/dvb-usb/dibusb-mb.c:31
+ dvb_usb_adapter_frontend_init+0xed/0x9a0 drivers/media/usb/dvb-usb/dvb-usb-dvb.c:290
+ dvb_usb_adapter_init drivers/media/usb/dvb-usb/dvb-usb-init.c:90 [inline]
+ dvb_usb_init drivers/media/usb/dvb-usb/dvb-usb-init.c:186 [inline]
+ dvb_usb_device_init+0x25a8/0x3760 drivers/media/usb/dvb-usb/dvb-usb-init.c:310
+ dibusb_probe+0x46/0x250 drivers/media/usb/dvb-usb/dibusb-mb.c:110
+...
+Local variable rb created at:
+ dib3000_read_reg+0x86/0x4e0 drivers/media/dvb-frontends/dib3000mb.c:54
+ dib3000mb_attach+0x123/0x3c0 drivers/media/dvb-frontends/dib3000mb.c:758
+...
+
+Fixes: 74340b0a8bc6 ("V4L/DVB (4457): Remove dib3000-common-module")
+Reported-by: syzbot+c88fc0ebe0d5935c70da@syzkaller.appspotmail.com
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://lore.kernel.org/r/20240517155800.9881-1-n.zhandarovich@fintech.ru
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/skmsg.h | 11 ++++++++---
- net/core/skmsg.c      |  6 +++++-
- net/ipv4/tcp_bpf.c    |  4 +++-
- 3 files changed, 16 insertions(+), 5 deletions(-)
+ drivers/media/dvb-frontends/dib3000mb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
-index 422b391d931f..5d3e4d4d9438 100644
---- a/include/linux/skmsg.h
-+++ b/include/linux/skmsg.h
-@@ -313,17 +313,22 @@ static inline void sock_drop(struct sock *sk, struct sk_buff *skb)
- 	kfree_skb(skb);
- }
- 
--static inline void sk_psock_queue_msg(struct sk_psock *psock,
-+static inline bool sk_psock_queue_msg(struct sk_psock *psock,
- 				      struct sk_msg *msg)
+diff --git a/drivers/media/dvb-frontends/dib3000mb.c b/drivers/media/dvb-frontends/dib3000mb.c
+index c598b2a63325..7c452ddd9e40 100644
+--- a/drivers/media/dvb-frontends/dib3000mb.c
++++ b/drivers/media/dvb-frontends/dib3000mb.c
+@@ -51,7 +51,7 @@ MODULE_PARM_DESC(debug, "set debugging level (1=info,2=xfer,4=setfe,8=getfe (|-a
+ static int dib3000_read_reg(struct dib3000_state *state, u16 reg)
  {
-+	bool ret;
-+
- 	spin_lock_bh(&psock->ingress_lock);
--	if (sk_psock_test_state(psock, SK_PSOCK_TX_ENABLED))
-+	if (sk_psock_test_state(psock, SK_PSOCK_TX_ENABLED)) {
- 		list_add_tail(&msg->list, &psock->ingress_msg);
--	else {
-+		ret = true;
-+	} else {
- 		sk_msg_free(psock->sk, msg);
- 		kfree(msg);
-+		ret = false;
- 	}
- 	spin_unlock_bh(&psock->ingress_lock);
-+	return ret;
- }
- 
- static inline struct sk_msg *sk_psock_dequeue_msg(struct sk_psock *psock)
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index f8563d4da0b1..a5947aa55983 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -445,8 +445,10 @@ int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
- 			if (likely(!peek)) {
- 				sge->offset += copy;
- 				sge->length -= copy;
--				if (!msg_rx->skb)
-+				if (!msg_rx->skb) {
- 					sk_mem_uncharge(sk, copy);
-+					atomic_sub(copy, &sk->sk_rmem_alloc);
-+				}
- 				msg_rx->sg.size -= copy;
- 
- 				if (!sge->length) {
-@@ -761,6 +763,8 @@ static void __sk_psock_purge_ingress_msg(struct sk_psock *psock)
- 
- 	list_for_each_entry_safe(msg, tmp, &psock->ingress_msg, list) {
- 		list_del(&msg->list);
-+		if (!msg->skb)
-+			atomic_sub(msg->sg.size, &psock->sk->sk_rmem_alloc);
- 		sk_msg_free(psock->sk, msg);
- 		kfree(msg);
- 	}
-diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-index dc1291827381..9e24542251b1 100644
---- a/net/ipv4/tcp_bpf.c
-+++ b/net/ipv4/tcp_bpf.c
-@@ -38,6 +38,7 @@ static int bpf_tcp_ingress(struct sock *sk, struct sk_psock *psock,
- 		}
- 
- 		sk_mem_charge(sk, size);
-+		atomic_add(size, &sk->sk_rmem_alloc);
- 		sk_msg_xfer(tmp, msg, i, size);
- 		copied += size;
- 		if (sge->length)
-@@ -56,7 +57,8 @@ static int bpf_tcp_ingress(struct sock *sk, struct sk_psock *psock,
- 
- 	if (!ret) {
- 		msg->sg.start = i;
--		sk_psock_queue_msg(psock, tmp);
-+		if (!sk_psock_queue_msg(psock, tmp))
-+			atomic_sub(copied, &sk->sk_rmem_alloc);
- 		sk_psock_data_ready(sk, psock);
- 	} else {
- 		sk_msg_free(sk, tmp);
+ 	u8 wb[] = { ((reg >> 8) | 0x80) & 0xff, reg & 0xff };
+-	u8 rb[2];
++	u8 rb[2] = {};
+ 	struct i2c_msg msg[] = {
+ 		{ .addr = state->config.demod_address, .flags = 0,        .buf = wb, .len = 2 },
+ 		{ .addr = state->config.demod_address, .flags = I2C_M_RD, .buf = rb, .len = 2 },
 -- 
 2.39.5
 
