@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FE08A02ABA
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2819AA02BF7
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:48:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7375B7A0FB5
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:35:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ECEA1885A40
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08DFE16DEBB;
-	Mon,  6 Jan 2025 15:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00216136E37;
+	Mon,  6 Jan 2025 15:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dFwow7mP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zua8DBF3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8506156C5E;
-	Mon,  6 Jan 2025 15:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA85D6088F;
+	Mon,  6 Jan 2025 15:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177712; cv=none; b=a/BJKy6cGrCzTZ7CohS5Ow567VBJw+0CYKcSO2Wd2sVTztD67NsWMRh3KdMQAEmbAsd07BSRQKoPBgJ9yhUbh/0WDKE45bButiImvaDG1JA7MzI/q9EPggzBLvmPZqzU1TfXSV90/A/paMv5FEkNY3OWu5iQbVq58XNTzs55+L0=
+	t=1736178531; cv=none; b=RTW/CifxjThn6z7/IUbLmaqI/fNSUgoLiox4/NL/lhXb87ZpQbLt5+yi23yHwYUbSZCn+SiuX3v1IAmcEGE6kh1uBzBoYjzcFwh/kgj2wwGjTP8SVtvQHQCK18DWnhCE/sX8fY+lAsH+D57wmCfBa66LFi8Mlh4KkcKHTb3dlmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177712; c=relaxed/simple;
-	bh=bQHIWGTOf10DSctQyPd6Q5LWEOOavA+msEQd4G/kp5c=;
+	s=arc-20240116; t=1736178531; c=relaxed/simple;
+	bh=n+FHlN0IMS75guDQCM7ZZgcvrBS39JI6nq9gthr2bJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=exCF1G8ftVXfMSAVMuY9gB7iXzMwkLuet+dkfO1KNKkmHhS/iaciueltQVEX4AZl/nK5ED4uax7JIQA4QCanpTj5LpPUL9G1XD50k6+OX6aPFnXCsJ2ZlfezU93+fzRYRYa4Ac5oAZ248uc029ZUpH4/iLdzJKa0K/fQHYaGsAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dFwow7mP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F122AC4CED2;
-	Mon,  6 Jan 2025 15:35:11 +0000 (UTC)
+	 MIME-Version; b=n7IsW7Ngv/OTNgyzwLJzlOHXOYRjrdYHCD0TnW/La9hTPnzWB8zlo2h1Zo9im9z/ZacaU88lbvK71w+btxzdswppKwVfZNuCnEQebnmtCUuHOOvrOxscXSkAHdejxpfhRc1EJ081YqTkaEo9GOhOjAlTjRy1EoNGzmCEw2rSiMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zua8DBF3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A55C4CED2;
+	Mon,  6 Jan 2025 15:48:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177712;
-	bh=bQHIWGTOf10DSctQyPd6Q5LWEOOavA+msEQd4G/kp5c=;
+	s=korg; t=1736178531;
+	bh=n+FHlN0IMS75guDQCM7ZZgcvrBS39JI6nq9gthr2bJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dFwow7mPgbHlCPI9nIWmfA7kYDqF+jUdiXaHJ0/E17Ru/bFwNsdgSXqVh4On3efMi
-	 2FyhUNiU7aDchk2E2nBtInNd2jV944Db+BmlvzCizaFWB+XCuMOrM6oNj7Pl/gLLMQ
-	 u6fXbOY4irW2eAW1TBRU6mtpf33/AEV7NmkjX6Hw=
+	b=Zua8DBF3D7h/lTalwt8qxtcDXjFJAWzCGDuWr+JVlWjKyZ6MjA1f0sgcBKTW4MUKd
+	 K3TpQnVkPhbzDEnjgV0YNIF9q5cX51dfQvaJ7i86u3fbNRY8zAwTpGsAqTuDos9+xA
+	 DtfPIBnuqMVF0KyVX1/jJVWpxOYaLUaX1JTurv+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Stefan Ekenberg <stefan.ekenberg@axis.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Vladimir Riabchun <ferr.lambarginio@gmail.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 032/156] drm/bridge: adv7511_audio: Update Audio InfoFrame properly
-Date: Mon,  6 Jan 2025 16:15:18 +0100
-Message-ID: <20250106151142.947968882@linuxfoundation.org>
+Subject: [PATCH 5.15 011/168] i2c: pnx: Fix timeout in wait functions
+Date: Mon,  6 Jan 2025 16:15:19 +0100
+Message-ID: <20250106151138.889110855@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Ekenberg <stefan.ekenberg@axis.com>
+From: Vladimir Riabchun <ferr.lambarginio@gmail.com>
 
-[ Upstream commit 902806baf3c1e8383c1fe3ff0b6042b8cb5c2707 ]
+[ Upstream commit 7363f2d4c18557c99c536b70489187bb4e05c412 ]
 
-AUDIO_UPDATE bit (Bit 5 of MAIN register 0x4A) needs to be set to 1
-while updating Audio InfoFrame information and then set to 0 when done.
-Otherwise partially updated Audio InfoFrames could be sent out. Two
-cases where this rule were not followed are fixed:
- - In adv7511_hdmi_hw_params() make sure AUDIO_UPDATE bit is updated
-   before/after setting ADV7511_REG_AUDIO_INFOFRAME.
- - In audio_startup() use the correct register for clearing
-   AUDIO_UPDATE bit.
+Since commit f63b94be6942 ("i2c: pnx: Fix potential deadlock warning
+from del_timer_sync() call in isr") jiffies are stored in
+i2c_pnx_algo_data.timeout, but wait_timeout and wait_reset are still
+using it as milliseconds. Convert jiffies back to milliseconds to wait
+for the expected amount of time.
 
-The problem with corrupted audio infoframes were discovered by letting
-a HDMI logic analyser check the output of ADV7535.
-
-Note that this patchs replaces writing REG_GC(1) with
-REG_INFOFRAME_UPDATE. Bit 5 of REG_GC(1) is positioned within field
-GC_PP[3:0] and that field doesn't control audio infoframe and is read-
-only. My conclusion therefore was that the author if this code meant to
-clear bit 5 of REG_INFOFRAME_UPDATE from the very beginning.
-
-Tested-by: Biju Das <biju.das.jz@bp.renesas.com>
-Fixes: 53c515befe28 ("drm/bridge: adv7511: Add Audio support")
-Signed-off-by: Stefan Ekenberg <stefan.ekenberg@axis.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241119-adv7511-audio-info-frame-v4-1-4ae68e76c89c@axis.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: f63b94be6942 ("i2c: pnx: Fix potential deadlock warning from del_timer_sync() call in isr")
+Signed-off-by: Vladimir Riabchun <ferr.lambarginio@gmail.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/adv7511/adv7511_audio.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-pnx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-index 61f4a38e7d2b..8f786592143b 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-@@ -153,7 +153,16 @@ static int adv7511_hdmi_hw_params(struct device *dev, void *data,
- 			   ADV7511_AUDIO_CFG3_LEN_MASK, len);
- 	regmap_update_bits(adv7511->regmap, ADV7511_REG_I2C_FREQ_ID_CFG,
- 			   ADV7511_I2C_FREQ_ID_CFG_RATE_MASK, rate << 4);
--	regmap_write(adv7511->regmap, 0x73, 0x1);
-+
-+	/* send current Audio infoframe values while updating */
-+	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
-+			   BIT(5), BIT(5));
-+
-+	regmap_write(adv7511->regmap, ADV7511_REG_AUDIO_INFOFRAME(0), 0x1);
-+
-+	/* use Audio infoframe updated info */
-+	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
-+			   BIT(5), 0);
+diff --git a/drivers/i2c/busses/i2c-pnx.c b/drivers/i2c/busses/i2c-pnx.c
+index d2c09b0fdf52..ab87bef50402 100644
+--- a/drivers/i2c/busses/i2c-pnx.c
++++ b/drivers/i2c/busses/i2c-pnx.c
+@@ -95,7 +95,7 @@ enum {
  
- 	return 0;
- }
-@@ -184,8 +193,9 @@ static int audio_startup(struct device *dev, void *data)
- 	regmap_update_bits(adv7511->regmap, ADV7511_REG_GC(0),
- 				BIT(7) | BIT(6), BIT(7));
- 	/* use Audio infoframe updated info */
--	regmap_update_bits(adv7511->regmap, ADV7511_REG_GC(1),
-+	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
- 				BIT(5), 0);
-+
- 	/* enable SPDIF receiver */
- 	if (adv7511->audio_source == ADV7511_AUDIO_SOURCE_SPDIF)
- 		regmap_update_bits(adv7511->regmap, ADV7511_REG_AUDIO_CONFIG,
+ static inline int wait_timeout(struct i2c_pnx_algo_data *data)
+ {
+-	long timeout = data->timeout;
++	long timeout = jiffies_to_msecs(data->timeout);
+ 	while (timeout > 0 &&
+ 			(ioread32(I2C_REG_STS(data)) & mstatus_active)) {
+ 		mdelay(1);
+@@ -106,7 +106,7 @@ static inline int wait_timeout(struct i2c_pnx_algo_data *data)
+ 
+ static inline int wait_reset(struct i2c_pnx_algo_data *data)
+ {
+-	long timeout = data->timeout;
++	long timeout = jiffies_to_msecs(data->timeout);
+ 	while (timeout > 0 &&
+ 			(ioread32(I2C_REG_CTL(data)) & mcntrl_reset)) {
+ 		mdelay(1);
 -- 
 2.39.5
 
