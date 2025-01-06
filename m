@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-107303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29559A02B34
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9896EA02CEA
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:59:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8867A188119A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:41:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 448FA7A2C79
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D1016A930;
-	Mon,  6 Jan 2025 15:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E81411514F6;
+	Mon,  6 Jan 2025 15:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qF93mY/V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="db30Gj8d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A0F14D28C;
-	Mon,  6 Jan 2025 15:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D91282F5;
+	Mon,  6 Jan 2025 15:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178061; cv=none; b=Xc8k1Q+//V3NWPYWYYU0nRdysA7nl62DJEd4wrDNpeJewIGUEVkHxcwrY6MD0reA067owooTD4C2SilGsSi49gPF2SgcnxMl0uc7DiLUR3LOW5bNo77SXsRZX3yJzgfgRQM7eBUv4ggaUqKkRHiE6zJviij30FUG179Tsct81XI=
+	t=1736179134; cv=none; b=PurEsvK6e/c//rzgDYsU/mk9G0ZpUETYwnLNQ9lPMYXsQfPwMoQcdVQO2XOdwObs4mI2qe0Tlo0P5ECLGY8vHtAVUtCj3VfP7dt/NHwZdCTqLHT8T94fOz60JYCxGiozGro7sojIYsDACyEYanXZ/IbF6Wq4rA4rgkjrkSpsn5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178061; c=relaxed/simple;
-	bh=WXq8ZSSv45DBk4S/mVfJMPJ5pn94N2rkEzADTcBhUfQ=;
+	s=arc-20240116; t=1736179134; c=relaxed/simple;
+	bh=grKq3Jf4TYnbvXe4O/xOOPmmfQfKFIPxSU3IJVAj3N0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T5kenBag06TxbPCa9pVceyPRLeruQpmHzdcygAMl0YxylCrJWiCC22RIi3Cj2n+h64G9uSq0wCvb2XgaKhsSQbM1BQ/jGjK9iHQTX8u3ipekabeveQnMoIx15sH+7Zn9G+CF+RqPOE2COUxVjvct4K61zr6tuzNaUd2dIqvSCUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qF93mY/V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35EA1C4CED2;
-	Mon,  6 Jan 2025 15:41:00 +0000 (UTC)
+	 MIME-Version; b=VybCjIX4l3hU6OvxWKMtu66Iy+5HkFbzIJ/FTC8oyRF4JC3bpLvDJBaZgiHNKSHKxeyLj6IIDSnPTXwDhkUuAUZtdBS0QTNDmD45h89ap/73ZaIel7Vb0rI8/Ae8tv6Q1rGN5IZtXaYhTTFIurqLYaFFUiiPJjJkishQAkQ1xAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=db30Gj8d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE11BC4CEDF;
+	Mon,  6 Jan 2025 15:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178060;
-	bh=WXq8ZSSv45DBk4S/mVfJMPJ5pn94N2rkEzADTcBhUfQ=;
+	s=korg; t=1736179134;
+	bh=grKq3Jf4TYnbvXe4O/xOOPmmfQfKFIPxSU3IJVAj3N0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qF93mY/VkjIga1jFGinaAF5TovGN5LFFsRMWcNGnlmit/xmz3hOvhyFaO57miepMO
-	 8w5GzKxGcDtNSeB8V7/n12A41AULQsJYEWdajDhdA+gFBKqbosIeqLlXQmbXf2CT50
-	 YEcv6lSm0F8rGkCIF2tstv2KxF1NykVrTVh/YgAA=
+	b=db30Gj8dCTKxSPONpYmUuc1w3e6MepZoowkitnjaf0rChINE+oyQbeWeimHdHj1bL
+	 ZVfxmbFis8eXMpyQU0+oCuLR/l+Rrawo3MGz0jvu9Iee4HEo6pwScuOJ6rvCvy67uX
+	 t+gVwN1zUR27jyD/aM3mpP4dGGr8DEIPOiDUUFGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Washington <joshwash@google.com>,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Shailend Chand <shailend@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.12 147/156] gve: guard XDP xmit NDO on existence of xdp queues
+	Johan Hovold <johan+linaro@kernel.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.4 37/93] phy: core: Fix an OF node refcount leakage in _of_phy_get()
 Date: Mon,  6 Jan 2025 16:17:13 +0100
-Message-ID: <20250106151147.264656389@linuxfoundation.org>
+Message-ID: <20250106151130.103137061@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Washington <joshwash@google.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit ff7c2dea9dd1a436fc79d6273adffdcc4a7ffea3 upstream.
+commit 5ebdc6be16c2000e37fcb8b4072d442d268ad492 upstream.
 
-In GVE, dedicated XDP queues only exist when an XDP program is installed
-and the interface is up. As such, the NDO XDP XMIT callback should
-return early if either of these conditions are false.
+_of_phy_get() will directly return when suffers of_device_is_compatible()
+error, but it forgets to decrease refcount of OF node @args.np before error
+return, the refcount was increased by previous of_parse_phandle_with_args()
+so causes the OF node's refcount leakage.
 
-In the case of no loaded XDP program, priv->num_xdp_queues=0 which can
-cause a divide-by-zero error, and in the case of interface down,
-num_xdp_queues remains untouched to persist XDP queue count for the next
-interface up, but the TX pointer itself would be NULL.
+Fix by decreasing the refcount via of_node_put() before the error return.
 
-The XDP xmit callback also needs to synchronize with a device
-transitioning from open to close. This synchronization will happen via
-the GVE_PRIV_FLAGS_NAPI_ENABLED bit along with a synchronize_net() call,
-which waits for any RCU critical sections at call-time to complete.
-
-Fixes: 39a7f4aa3e4a ("gve: Add XDP REDIRECT support for GQI-QPL format")
+Fixes: b7563e2796f8 ("phy: work around 'phys' references to usb-nop-xceiv devices")
 Cc: stable@vger.kernel.org
-Signed-off-by: Joshua Washington <joshwash@google.com>
-Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Reviewed-by: Shailend Chand <shailend@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-4-40ae28f5015a@quicinc.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/google/gve/gve_main.c |    3 +++
- drivers/net/ethernet/google/gve/gve_tx.c   |    5 ++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ drivers/phy/phy-core.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -1904,6 +1904,9 @@ static void gve_turndown(struct gve_priv
+--- a/drivers/phy/phy-core.c
++++ b/drivers/phy/phy-core.c
+@@ -507,8 +507,10 @@ static struct phy *_of_phy_get(struct de
+ 		return ERR_PTR(-ENODEV);
  
- 	gve_clear_napi_enabled(priv);
- 	gve_clear_report_stats(priv);
-+
-+	/* Make sure that all traffic is finished processing. */
-+	synchronize_net();
- }
+ 	/* This phy type handled by the usb-phy subsystem for now */
+-	if (of_device_is_compatible(args.np, "usb-nop-xceiv"))
+-		return ERR_PTR(-ENODEV);
++	if (of_device_is_compatible(args.np, "usb-nop-xceiv")) {
++		phy = ERR_PTR(-ENODEV);
++		goto out_put_node;
++	}
  
- static void gve_turnup(struct gve_priv *priv)
---- a/drivers/net/ethernet/google/gve/gve_tx.c
-+++ b/drivers/net/ethernet/google/gve/gve_tx.c
-@@ -837,9 +837,12 @@ int gve_xdp_xmit(struct net_device *dev,
- 	struct gve_tx_ring *tx;
- 	int i, err = 0, qid;
+ 	mutex_lock(&phy_provider_mutex);
+ 	phy_provider = of_phy_provider_lookup(args.np);
+@@ -530,6 +532,7 @@ out_put_module:
  
--	if (unlikely(flags & ~XDP_XMIT_FLAGS_MASK))
-+	if (unlikely(flags & ~XDP_XMIT_FLAGS_MASK) || !priv->xdp_prog)
- 		return -EINVAL;
+ out_unlock:
+ 	mutex_unlock(&phy_provider_mutex);
++out_put_node:
+ 	of_node_put(args.np);
  
-+	if (!gve_get_napi_enabled(priv))
-+		return -ENETDOWN;
-+
- 	qid = gve_xdp_tx_queue_id(priv,
- 				  smp_processor_id() % priv->num_xdp_queues);
- 
+ 	return phy;
 
 
 
