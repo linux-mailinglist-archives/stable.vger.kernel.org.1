@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBDD8A02CAD
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:56:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8C4FA02D31
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:02:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C3BB1887774
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:56:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 646CE3A1F8F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEAD4156237;
-	Mon,  6 Jan 2025 15:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B13B1DC759;
+	Mon,  6 Jan 2025 16:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2EZzpaO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zI9PJBx+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C79B13B59A;
-	Mon,  6 Jan 2025 15:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046B81DACBB;
+	Mon,  6 Jan 2025 16:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178989; cv=none; b=aFy3r11K8NF7s2HfQ6/hDYJqCVhFdg8cSlPndZjl0yDHkUONBmlcrrEL74PdSTi0LZDCChWr/T/5g4/FPRrau19WqxpUCWXHwTDu8kYvHonOBtg71WCPJ/8vbdcMqtMemYkvPnfE1bb9EPJPS2+esw3Dt12A2P2Ol6sCLzzsv68=
+	t=1736179237; cv=none; b=IOuHQS+l11tOqWhF6rbjq13kf/+FRiqLIjmSwxc7ybCwg+EYYC+6TaORC4oDilYpxMSSJT7zqJhyePzcVs7HuLyDFHEvOWlgweIl6dixwplyTYqHvc0nMPNk1fye8YAw/hsgrvkfF5eaEaunxo10fg7prYgO+SvWIMR9xPzWHJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178989; c=relaxed/simple;
-	bh=zJMca8GRdRbViePqEGkQ4G4R/u10WoINmJrvLhoLCyE=;
+	s=arc-20240116; t=1736179237; c=relaxed/simple;
+	bh=piRadL81f02npEo/sLs6rBYKiy2p5ZvwQGOmE5crvrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t2tBNAfQEAXy8jkfSMu38s4d5Yjy5kDdxzJ2tJj1OGgwASRrZxkIRjnG145Tr1UnumQF71G04sxUG5VOoEeeYPINnc4hWXRQjGeABbtSfpB/zLPcKg34lyJF2jhQdf6q0bwCO2zKkUZ5jancz6+z/Gi3HYQ8x8lKtSLkVFAdtiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2EZzpaO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F37C4CED2;
-	Mon,  6 Jan 2025 15:56:28 +0000 (UTC)
+	 MIME-Version; b=X7UDjn527SH3fG02Wb+Gtejwg0TxyOGjjCcDARcGeSGmXqzXika6FjALcv0ba8/YB+k9D9jWZjvcYQjYSMHZiQAVIOErBN3lZ9oGSEZeoa2f2AC+60A+3Q1Is3ns5hibI/5HZRIgmnWOOwt4Ix/n+T8DAGMZ6fNQl/2jFwUgdgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zI9PJBx+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 840DDC4CED6;
+	Mon,  6 Jan 2025 16:00:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178989;
-	bh=zJMca8GRdRbViePqEGkQ4G4R/u10WoINmJrvLhoLCyE=;
+	s=korg; t=1736179236;
+	bh=piRadL81f02npEo/sLs6rBYKiy2p5ZvwQGOmE5crvrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m2EZzpaOoW27XCweYPJPr2Y/Ez0wzEcOfjjUZwOP6NpW8UJW7TnEMh7iIUi5k7BKz
-	 PMZBAt3khiA1KJWfdMU1zuO1/pfWUa5SszQt2ce9YvOzVTTwFbtDvGZgEU2d4Y3hKc
-	 VVLRNggejOIiLdBCIeJT8ZKXYR9WHSiaCu3hxcHw=
+	b=zI9PJBx+0KwSzRa1sShp6l4UVMVCoi0bKxBMmcUIh9vf+9e2FJ6kfsftmdxFlOBLc
+	 heHun3iKlfTX3xcdIR72yRv/0wFWpGgAR2UseaGbYJhFnytzGdaRHEsRaZSBvr9gLb
+	 gRhtYO6sZ0ku/HUc7piCvsZVOGdnNnGIIIZQztBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Stefan Ekenberg <stefan.ekenberg@axis.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 158/168] usb: xhci: Avoid queuing redundant Stop Endpoint commands
-Date: Mon,  6 Jan 2025 16:17:46 +0100
-Message-ID: <20250106151144.399904468@linuxfoundation.org>
+Subject: [PATCH 5.4 71/93] drm/bridge: adv7511_audio: Update Audio InfoFrame properly
+Date: Mon,  6 Jan 2025 16:17:47 +0100
+Message-ID: <20250106151131.384120424@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,123 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Stefan Ekenberg <stefan.ekenberg@axis.com>
 
-[ Upstream commit 474538b8dd1cd9c666e56cfe8ef60fbb0fb513f4 ]
+[ Upstream commit 902806baf3c1e8383c1fe3ff0b6042b8cb5c2707 ]
 
-Stop Endpoint command on an already stopped endpoint fails and may be
-misinterpreted as a known hardware bug by the completion handler. This
-results in an unnecessary delay with repeated retries of the command.
+AUDIO_UPDATE bit (Bit 5 of MAIN register 0x4A) needs to be set to 1
+while updating Audio InfoFrame information and then set to 0 when done.
+Otherwise partially updated Audio InfoFrames could be sent out. Two
+cases where this rule were not followed are fixed:
+ - In adv7511_hdmi_hw_params() make sure AUDIO_UPDATE bit is updated
+   before/after setting ADV7511_REG_AUDIO_INFOFRAME.
+ - In audio_startup() use the correct register for clearing
+   AUDIO_UPDATE bit.
 
-Avoid queuing this command when endpoint state flags indicate that it's
-stopped or halted and the command will fail. If commands are pending on
-the endpoint, their completion handlers will process cancelled TDs so
-it's done. In case of waiting for external operations like clearing TT
-buffer, the endpoint is stopped and cancelled TDs can be processed now.
+The problem with corrupted audio infoframes were discovered by letting
+a HDMI logic analyser check the output of ADV7535.
 
-This eliminates practically all unnecessary retries because an endpoint
-with pending URBs is maintained in Running state by the driver, unless
-aforementioned commands or other operations are pending on it. This is
-guaranteed by xhci_ring_ep_doorbell() and by the fact that it is called
-every time any of those operations completes.
+Note that this patchs replaces writing REG_GC(1) with
+REG_INFOFRAME_UPDATE. Bit 5 of REG_GC(1) is positioned within field
+GC_PP[3:0] and that field doesn't control audio infoframe and is read-
+only. My conclusion therefore was that the author if this code meant to
+clear bit 5 of REG_INFOFRAME_UPDATE from the very beginning.
 
-The only known exceptions are hardware bugs (the endpoint never starts
-at all) and Stream Protocol errors not associated with any TRB, which
-cause an endpoint reset not followed by restart. Sounds like a bug.
-
-Generally, these retries are only expected to happen when the endpoint
-fails to start for unknown/no reason, which is a worse problem itself,
-and fixing the bug eliminates the retries too.
-
-All cases were tested and found to work as expected. SET_DEQ_PENDING
-was produced by patching uvcvideo to unlink URBs in 100us intervals,
-which then runs into this case very often. EP_HALTED was produced by
-restarting 'cat /dev/ttyUSB0' on a serial dongle with broken cable.
-EP_CLEARING_TT by the same, with the dongle on an external hub.
-
-Fixes: fd9d55d190c0 ("xhci: retry Stop Endpoint on buggy NEC controllers")
-CC: stable@vger.kernel.org
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20241106101459.775897-34-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-by: Biju Das <biju.das.jz@bp.renesas.com>
+Fixes: 53c515befe28 ("drm/bridge: adv7511: Add Audio support")
+Signed-off-by: Stefan Ekenberg <stefan.ekenberg@axis.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241119-adv7511-audio-info-frame-v4-1-4ae68e76c89c@axis.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 13 +++++++++++++
- drivers/usb/host/xhci.c      | 19 +++++++++++++++----
- drivers/usb/host/xhci.h      |  1 +
- 3 files changed, 29 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/bridge/adv7511/adv7511_audio.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 0ff70c859f14..f2b86872aa6b 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1059,6 +1059,19 @@ static int xhci_invalidate_cancelled_tds(struct xhci_virt_ep *ep)
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
+index f101dd2819b5..0a1ac11e2e4f 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
+@@ -147,7 +147,16 @@ int adv7511_hdmi_hw_params(struct device *dev, void *data,
+ 			   ADV7511_AUDIO_CFG3_LEN_MASK, len);
+ 	regmap_update_bits(adv7511->regmap, ADV7511_REG_I2C_FREQ_ID_CFG,
+ 			   ADV7511_I2C_FREQ_ID_CFG_RATE_MASK, rate << 4);
+-	regmap_write(adv7511->regmap, 0x73, 0x1);
++
++	/* send current Audio infoframe values while updating */
++	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
++			   BIT(5), BIT(5));
++
++	regmap_write(adv7511->regmap, ADV7511_REG_AUDIO_INFOFRAME(0), 0x1);
++
++	/* use Audio infoframe updated info */
++	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
++			   BIT(5), 0);
+ 
  	return 0;
  }
- 
-+/*
-+ * Erase queued TDs from transfer ring(s) and give back those the xHC didn't
-+ * stop on. If necessary, queue commands to move the xHC off cancelled TDs it
-+ * stopped on. Those will be given back later when the commands complete.
-+ *
-+ * Call under xhci->lock on a stopped endpoint.
-+ */
-+void xhci_process_cancelled_tds(struct xhci_virt_ep *ep)
-+{
-+	xhci_invalidate_cancelled_tds(ep);
-+	xhci_giveback_invalidated_tds(ep);
-+}
+@@ -178,8 +187,9 @@ static int audio_startup(struct device *dev, void *data)
+ 	regmap_update_bits(adv7511->regmap, ADV7511_REG_GC(0),
+ 				BIT(7) | BIT(6), BIT(7));
+ 	/* use Audio infoframe updated info */
+-	regmap_update_bits(adv7511->regmap, ADV7511_REG_GC(1),
++	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
+ 				BIT(5), 0);
 +
- /*
-  * Returns the TD the endpoint ring halted on.
-  * Only call for non-running rings without streams.
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index 58483d1e5d3f..c145a1ac1aba 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -1883,10 +1883,21 @@ static int xhci_urb_dequeue(struct usb_hcd *hcd, struct urb *urb, int status)
- 		}
- 	}
- 
--	/* Queue a stop endpoint command, but only if this is
--	 * the first cancellation to be handled.
--	 */
--	if (!(ep->ep_state & EP_STOP_CMD_PENDING)) {
-+	/* These completion handlers will sort out cancelled TDs for us */
-+	if (ep->ep_state & (EP_STOP_CMD_PENDING | EP_HALTED | SET_DEQ_PENDING)) {
-+		xhci_dbg(xhci, "Not queuing Stop Endpoint on slot %d ep %d in state 0x%x\n",
-+				urb->dev->slot_id, ep_index, ep->ep_state);
-+		goto done;
-+	}
-+
-+	/* In this case no commands are pending but the endpoint is stopped */
-+	if (ep->ep_state & EP_CLEARING_TT) {
-+		/* and cancelled TDs can be given back right away */
-+		xhci_dbg(xhci, "Invalidating TDs instantly on slot %d ep %d in state 0x%x\n",
-+				urb->dev->slot_id, ep_index, ep->ep_state);
-+		xhci_process_cancelled_tds(ep);
-+	} else {
-+		/* Otherwise, queue a new Stop Endpoint command */
- 		command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
- 		if (!command) {
- 			ret = -ENOMEM;
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 67d5ef952d6a..f76dae4ea429 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1928,6 +1928,7 @@ void xhci_ring_doorbell_for_active_rings(struct xhci_hcd *xhci,
- void xhci_cleanup_command_queue(struct xhci_hcd *xhci);
- void inc_deq(struct xhci_hcd *xhci, struct xhci_ring *ring);
- unsigned int count_trbs(u64 addr, u64 len);
-+void xhci_process_cancelled_tds(struct xhci_virt_ep *ep);
- 
- /* xHCI roothub code */
- void xhci_set_link_state(struct xhci_hcd *xhci, struct xhci_port *port,
+ 	/* enable SPDIF receiver */
+ 	if (adv7511->audio_source == ADV7511_AUDIO_SOURCE_SPDIF)
+ 		regmap_update_bits(adv7511->regmap, ADV7511_REG_AUDIO_CONFIG,
 -- 
 2.39.5
 
