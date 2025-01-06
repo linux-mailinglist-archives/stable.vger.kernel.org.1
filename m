@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-107676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EDBEA02D23
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:01:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBDDAA02C95
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C40243A762E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:59:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FB39188503E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:55:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DEB01917E9;
-	Mon,  6 Jan 2025 15:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD04158525;
+	Mon,  6 Jan 2025 15:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrOlx61e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tMevjLAe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64FB13B59A;
-	Mon,  6 Jan 2025 15:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A9486332;
+	Mon,  6 Jan 2025 15:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179190; cv=none; b=qZ6bc4fQzTUJ8cNnsAsQlaJX1PrKIIfJqomaqVqFnq16NOolMRZi7kncNS8lfEQHESaU3ZQyLb6l++5ogeBVrjc1nSrv2pjxj03TgGqQ0GclIJPPBUlshE3Qa6iyW7Ijl7IGYXrUksErgKSxXxlilw6T99L58F92Dp+SL2j3/NQ=
+	t=1736178944; cv=none; b=MlnyF2st1Naw01AjIVrpaugJxOOKVr7Td4+iRmHdLCEzAPYK4+eW7xfTKrKKhJ82rpVcH5XjiFWROhSyXYWsAjPjPzoupo4SD/phNz/oL/PE6+4orJOhxasIel4JCtr+npr4uORYw841qrCFOPx7q+5M2TiBPGCI2Ul1X4FpIc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179190; c=relaxed/simple;
-	bh=OXSOMhCqQ4pI/Yi7scKcr53bAyVdMgKVMNe9lJ7Vd3E=;
+	s=arc-20240116; t=1736178944; c=relaxed/simple;
+	bh=AdheQTcObE4pZ3iLyvzZADAxm+ChAPcsATZ8iLdT36o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K0ry8sSHeA0/+RmPzRp03mSCIMpacakdG9xw1ZHw0cGD+R0vuyGEjMCjwBNnIuCHq/0rY+5FR8ZIQOIxiqsRGuKRwIvyp/RU32v3Cr9JrSvjqPiZoAmeqbyScn1Elb6Hf34XQnbZm+zA8bZPmnyxweXhLDBNFNDnkxRzR5/Tla4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KrOlx61e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D59AC4CEE6;
-	Mon,  6 Jan 2025 15:59:48 +0000 (UTC)
+	 MIME-Version; b=FKybKz2q5lsM8DRkUzl3ZEKHLKxNbG2S/tq+6kz2zfxWJyVZqjQatAMb7Cs9XvPea9AK1wO+le4Psrg55aUTYSZjmT7ruL35Bgs3GEzI8tgG7MkP2mkwV0Ordnk8x5BpX7TTk4anma8akkRqIQGZ3GpuqJOnxt+x109oqSRVpPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tMevjLAe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B740C4CED2;
+	Mon,  6 Jan 2025 15:55:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179189;
-	bh=OXSOMhCqQ4pI/Yi7scKcr53bAyVdMgKVMNe9lJ7Vd3E=;
+	s=korg; t=1736178944;
+	bh=AdheQTcObE4pZ3iLyvzZADAxm+ChAPcsATZ8iLdT36o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KrOlx61ew6LWqceHv3mi7GH+xkqnAGHF04hSAzYG87B3LSdCtBhaEVp3sWlQecONb
-	 WQRbBd4UpZbg7u/e3g2MNIUw8QTVpaTAeZuTxYn8r60sMhDdV5lqAeEtuxceAIo3iM
-	 1AKC1XOZdr5Ie/G0LnipgbYRpex4v8vHY8zauoLQ=
+	b=tMevjLAe9JEVVDCtXw/4cajOvirBPtSHSBfhE68h++9S6hHdP3FqhVm7mkXMHQ9bW
+	 xUrOvufYnoZ7zSqC5ViRtIsmUg5/SxnRR2hdDxO5oJsI3rPs9p7v1I0GxoLWvay0pp
+	 lwTI3xlLOYFkNLt3t/ehS7kqVHxDb5iwFGtXu7Dc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pau Espin Pedrol <pespin@espeweb.net>,
-	Armin Wolf <W_Armin@gmx.de>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Tanya Agarwal <tanyaagarwal25699@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 48/93] platform/x86: asus-nb-wmi: Ignore unknown event 0xCF
+Subject: [PATCH 5.15 136/168] ALSA: usb-audio: US16x08: Initialize array before use
 Date: Mon,  6 Jan 2025 16:17:24 +0100
-Message-ID: <20250106151130.515530955@linuxfoundation.org>
+Message-ID: <20250106151143.574984792@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Tanya Agarwal <tanyaagarwal25699@gmail.com>
 
-[ Upstream commit e9fba20c29e27dc99e55e1c550573a114561bf8c ]
+[ Upstream commit b06a6187ef983f501e93faa56209169752d3bde3 ]
 
-On the Asus X541UAK an unknown event 0xCF is emited when the charger
-is plugged in. This is caused by the following AML code:
+Initialize meter_urb array before use in mixer_us16x08.c.
 
-    If (ACPS ())
-    {
-        ACPF = One
-        Local0 = 0x58
-        If (ATKP)
-        {
-            ^^^^ATKD.IANE (0xCF)
-        }
-    }
-    Else
-    {
-        ACPF = Zero
-        Local0 = 0x57
-    }
+CID 1410197: (#1 of 1): Uninitialized scalar variable (UNINIT)
+uninit_use_in_call: Using uninitialized value *meter_urb when
+calling get_meter_levels_from_urb.
 
-    Notify (AC0, 0x80) // Status Change
-    If (ATKP)
-    {
-        ^^^^ATKD.IANE (Local0)
-    }
+Coverity Link:
+https://scan7.scan.coverity.com/#/project-view/52849/11354?selectedIssue=1410197
 
-    Sleep (0x64)
-    PNOT ()
-    Sleep (0x0A)
-    NBAT (0x80)
-
-Ignore the 0xCF event to silence the unknown event warning.
-
-Reported-by: Pau Espin Pedrol <pespin@espeweb.net>
-Closes: https://lore.kernel.org/platform-driver-x86/54d4860b-ec9c-4992-acf6-db3f90388293@espeweb.net
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241123224700.18530-1-W_Armin@gmx.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: d2bb390a2081 ("ALSA: usb-audio: Tascam US-16x08 DSP mixer quirk")
+Signed-off-by: Tanya Agarwal <tanyaagarwal25699@gmail.com>
+Link: https://patch.msgid.link/20241229060240.1642-1-tanyaagarwal25699@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-nb-wmi.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/usb/mixer_us16x08.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
-index 78d357de2f04..18d963916b7f 100644
---- a/drivers/platform/x86/asus-nb-wmi.c
-+++ b/drivers/platform/x86/asus-nb-wmi.c
-@@ -585,6 +585,7 @@ static const struct key_entry asus_nb_wmi_keymap[] = {
- 	{ KE_KEY, 0xC4, { KEY_KBDILLUMUP } },
- 	{ KE_KEY, 0xC5, { KEY_KBDILLUMDOWN } },
- 	{ KE_IGNORE, 0xC6, },  /* Ambient Light Sensor notification */
-+	{ KE_IGNORE, 0xCF, },	/* AC mode */
- 	{ KE_KEY, 0xFA, { KEY_PROG2 } },           /* Lid flip action */
- 	{ KE_END, 0},
- };
+diff --git a/sound/usb/mixer_us16x08.c b/sound/usb/mixer_us16x08.c
+index b7b6f3834ed5..2f6fa722442f 100644
+--- a/sound/usb/mixer_us16x08.c
++++ b/sound/usb/mixer_us16x08.c
+@@ -687,7 +687,7 @@ static int snd_us16x08_meter_get(struct snd_kcontrol *kcontrol,
+ 	struct usb_mixer_elem_info *elem = kcontrol->private_data;
+ 	struct snd_usb_audio *chip = elem->head.mixer->chip;
+ 	struct snd_us16x08_meter_store *store = elem->private_data;
+-	u8 meter_urb[64];
++	u8 meter_urb[64] = {0};
+ 
+ 	switch (kcontrol->private_value) {
+ 	case 0: {
 -- 
 2.39.5
 
