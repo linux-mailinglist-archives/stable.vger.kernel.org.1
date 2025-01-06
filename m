@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-107286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E084A02B32
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E66C0A02C9F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:56:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD5093A10C2
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:40:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC65B164039
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A202814D28C;
-	Mon,  6 Jan 2025 15:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F0A145A03;
+	Mon,  6 Jan 2025 15:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qh9ugpO/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NiACMWMu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6C0157E82;
-	Mon,  6 Jan 2025 15:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E8281728;
+	Mon,  6 Jan 2025 15:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178010; cv=none; b=L6vC4MTFye1L2PDpr5xt72DwDRDWZwG6fQC9j2SwvsDZQPknmJSO5iFEs1MS8PO0viipGgobkJuZqh6hD+Nzwyc7UuVpM9k4ABRk9PVluMjCrC3MNnxtVzc79N2D6UDkbAqGqtoW/Cp1ph3A79lOIx9BV5okgub2/AoDK1O9suo=
+	t=1736178938; cv=none; b=ptWXRAJsTbazL4QK2j6MGbGGZ4cgnm+Dmv5nfGVWVdl6wkHE3NcDoOwvD+/ADvfnIWVwd8YeTjWgm/5M3DXdRAi2ybe0D8m/5rJ5IAFeggMRM6wXvQiEK/3Tbk1g27WniIYrQjy1K6GWxaiRS1R+b1fKS4WVim8zvyEduxyiMbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178010; c=relaxed/simple;
-	bh=SwTW9BYDPMSacZtJVTNCWmJhT4mHBqUZjeAm/nfqiCM=;
+	s=arc-20240116; t=1736178938; c=relaxed/simple;
+	bh=kD1qptJ70lq2fMYj23fVK04ZJKJmTSfHm0DkXqgEZPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sl2li5d31avJLs6RCtZhsi2lp6IXPEnM/zho3rfDHVN5iVyiRwbci0nw2KZVoMwF+P8yD6d+1JgouLGgNB+ZGEee43j7SWfz+up1T6UYn6RRiZm3KcWVqcQbdE6N4MP/r5VMuGoavwIECbCOf/eghns8dQBuq2f4eKgSwxGOQ4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qh9ugpO/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC46AC4CED2;
-	Mon,  6 Jan 2025 15:40:09 +0000 (UTC)
+	 MIME-Version; b=ugToW3UmV7VH8Or1CzNOfFqKhEcJ+9Zcn6zvV3s48gNJuFZgOLtKyr0gY215rDuil3xprdTRGH1Jzw0FcGy44c64aBJrhRpbvuxUhRfRSSvYhPpAIuFinqvjYXeQZTsgBAmBdjafyrnoR5SxXh/RWBNqNDlvL0QX5xlmIJvr/po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NiACMWMu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48533C4CED2;
+	Mon,  6 Jan 2025 15:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178010;
-	bh=SwTW9BYDPMSacZtJVTNCWmJhT4mHBqUZjeAm/nfqiCM=;
+	s=korg; t=1736178937;
+	bh=kD1qptJ70lq2fMYj23fVK04ZJKJmTSfHm0DkXqgEZPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qh9ugpO/j3XmCgiqo6FLV8z3Dxfze8ziFCvCd49qJpHDAd0GECX1fu8xzBReQBUOY
-	 ZwCxyEa0TqPzoP7Fikw3wtGMz6vnTOsp5++pU6sOYbVIF8J9LaEHWXpI4h05CJsQ8w
-	 5/XzwRmMEa5fSzi7eFhcnR50Jv7wDJf6kUkUY5sw=
+	b=NiACMWMuFcaAly5UfSfWcswQ2Ejv71IwS0C92+D33XzB8hb4P8SDOac3P8kkD7EwR
+	 jnusYe9hsadK1hoK7kbCiNBbdFSivMcG1r6qwEITgu20oAISM+XGenWdB0/gYv7VTq
+	 wlG6yN/wTfTdbJTF6Ji1vYSH/ozk9IU8kRk2QZS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hien Huynh <hien.huynh.px@renesas.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Adam Ford <aford173@gmail.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 6.12 132/156] drm: adv7511: Drop dsi single lane support
+	Pengfei Xu <pengfei.xu@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 110/168] thunderbolt: Add support for Intel Lunar Lake
 Date: Mon,  6 Jan 2025 16:16:58 +0100
-Message-ID: <20250106151146.704017162@linuxfoundation.org>
+Message-ID: <20250106151142.611431989@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-commit 79d67c499c3f886202a40c5cb27e747e4fa4d738 upstream.
+[ Upstream commit 2cd3da4e37453019e21a486d9de3144f46b4fdf7 ]
 
-As per [1] and [2], ADV7535/7533 supports only 2-, 3-, or 4-lane. Drop
-unsupported 1-lane.
+Intel Lunar Lake has similar integrated Thunderbolt/USB4 controller as
+Intel Meteor Lake with some small differences in the host router (it has
+3 DP IN adapters for instance). Add the Intel Lunar Lake PCI IDs to the
+driver list of supported devices.
 
-[1] https://www.analog.com/media/en/technical-documentation/data-sheets/ADV7535.pdf
-[2] https://www.analog.com/media/en/technical-documentation/data-sheets/ADV7533.pdf
-
-Fixes: 1e4d58cd7f88 ("drm/bridge: adv7533: Create a MIPI DSI device")
-Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Adam Ford <aford173@gmail.com>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241119192040.152657-4-biju.das.jz@bp.renesas.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-by: Pengfei Xu <pengfei.xu@intel.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Stable-dep-of: 8644b48714dc ("thunderbolt: Add support for Intel Panther Lake-M/P")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/adv7511/adv7533.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thunderbolt/nhi.c | 4 ++++
+ drivers/thunderbolt/nhi.h | 2 ++
+ 2 files changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/bridge/adv7511/adv7533.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7533.c
-@@ -172,7 +172,7 @@ int adv7533_parse_dt(struct device_node
+diff --git a/drivers/thunderbolt/nhi.c b/drivers/thunderbolt/nhi.c
+index 1350223088d8..ed028b01f14f 100644
+--- a/drivers/thunderbolt/nhi.c
++++ b/drivers/thunderbolt/nhi.c
+@@ -1447,6 +1447,10 @@ static struct pci_device_id nhi_ids[] = {
+ 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_MTL_P_NHI1),
+ 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_LNL_NHI0),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_LNL_NHI1),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_80G_NHI) },
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_40G_NHI) },
  
- 	of_property_read_u32(np, "adi,dsi-lanes", &num_lanes);
+diff --git a/drivers/thunderbolt/nhi.h b/drivers/thunderbolt/nhi.h
+index c15a0c46c9cf..4b0fccf033e1 100644
+--- a/drivers/thunderbolt/nhi.h
++++ b/drivers/thunderbolt/nhi.h
+@@ -88,6 +88,8 @@ extern const struct tb_nhi_ops icl_nhi_ops;
+ #define PCI_DEVICE_ID_INTEL_TGL_H_NHI1			0x9a21
+ #define PCI_DEVICE_ID_INTEL_RPL_NHI0			0xa73e
+ #define PCI_DEVICE_ID_INTEL_RPL_NHI1			0xa76d
++#define PCI_DEVICE_ID_INTEL_LNL_NHI0			0xa833
++#define PCI_DEVICE_ID_INTEL_LNL_NHI1			0xa834
  
--	if (num_lanes < 1 || num_lanes > 4)
-+	if (num_lanes < 2 || num_lanes > 4)
- 		return -EINVAL;
+ #define PCI_CLASS_SERIAL_USB_USB4			0x0c0340
  
- 	adv->num_dsi_lanes = num_lanes;
+-- 
+2.39.5
+
 
 
 
