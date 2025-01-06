@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-107017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E3FDA029DF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:28:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0C31A029C7
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:27:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A29A3A49F9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:27:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 666537A2225
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE9918A6C1;
-	Mon,  6 Jan 2025 15:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B391581F2;
+	Mon,  6 Jan 2025 15:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziUk0mTe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RZUcZw46"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E848634A;
-	Mon,  6 Jan 2025 15:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3721547E3;
+	Mon,  6 Jan 2025 15:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177201; cv=none; b=QS2KDM5spoltWwyF6mwLIm1VGWxgYDAaDNu4AWyggsGg7iVmL8/Gk5nOffzUArqhmLc05htq1gJnNP4T0xlC9K1gJyhW2i197875DaPkhN2afs0BfoDxGLPE3EhlLly0xlyke4a6KmKiXzoL0oH9d1aiP/qBZ4tRccCk8lzeybA=
+	t=1736177217; cv=none; b=LAGLuSq8HXZyKkj8KARl/8v8U+154gWcSh5jjloFvpYR9CM/NAxFxvo54OMlUc2HfJcAi6J7Fqc2ifXamndqZy0ctONRpRkDktZm5AD/uJet8DtyFDgiqVi7vjWdxvjAmiWmluoLASIKhvTNw4u79pOb92jIp/O5jTHNI5QwOws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177201; c=relaxed/simple;
-	bh=vuvApCEQdDBLYAXLyyobLk2MjfqOXSu2VvDt+oHCZts=;
+	s=arc-20240116; t=1736177217; c=relaxed/simple;
+	bh=cFMS4YsS9VFrUrqF/IHS2eJ30lcVoapEY/BNVImc104=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PwaYny21yLndSMm/e0B5u1ErvVDPcBnB0woYYkgIETy42/hnI/Y535cRctQSoVkHAOH3rgGqesKv+vL1pU27qcVaVpritJqhPmtzo5Lx1XwtCoK4e7mx3rdC1qerlqn5+BuXtdNtYQuHfqCVJSiplDIxSy5GHXRXGHlIFkHD+4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziUk0mTe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 276F2C4CED2;
-	Mon,  6 Jan 2025 15:26:40 +0000 (UTC)
+	 MIME-Version; b=gCnMBVJCOAkjcMZLelQD/kYueVb1/RapOHvof2SI8+8d9VnDi2HbQ3iV6A03s1GrOWq8rkZqpwDzXn3Cshwyo+DSz/Y09l8KB3+ZG80FzdW0lgdflYSLafCRIAzbbwgL48pk4r3V2/1xK43Mf2d6y/i7g4x81Bylrf+dijcx25g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RZUcZw46; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06078C4CED2;
+	Mon,  6 Jan 2025 15:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177201;
-	bh=vuvApCEQdDBLYAXLyyobLk2MjfqOXSu2VvDt+oHCZts=;
+	s=korg; t=1736177217;
+	bh=cFMS4YsS9VFrUrqF/IHS2eJ30lcVoapEY/BNVImc104=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ziUk0mTeUR1i9XIBF5s01Vx1ad6z9MPV7u6fUHG66ecReCO9XU9182i4kVU8U/ns8
-	 p0A8hQk12Qjp83LFvEiXk4BVxb+5PGWgzaiDxNN7K4v+IvK+l+T3tJgQ0Pnerwzzt7
-	 X5vN8tb04rw65INj8uwjub8dNsf6+qKfjqUSsilc=
+	b=RZUcZw465Hk0vALSlCf5F/hOeRg0+WmD5j9SARo0NkyIN+gjEXQUx/KhyZ4mf53ui
+	 R8c7ZSXVEMrHLw1LjWLlBOSa5u8fG8fnniobF9TrNigTePKMUlnZpsPG5TPOfE6Yns
+	 /mTIZNuIZgtUIGT/fJdLe0VlygodiDzoLfZpTySo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomer Maimon <tmaimon77@gmail.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
 	Peter Chen <peter.chen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 058/222] usb: chipidea: add CI_HDRC_FORCE_VBUS_ACTIVE_ALWAYS flag
-Date: Mon,  6 Jan 2025 16:14:22 +0100
-Message-ID: <20250106151152.803355437@linuxfoundation.org>
+Subject: [PATCH 6.6 059/222] usb: chipidea: add CI_HDRC_HAS_SHORT_PKT_LIMIT flag
+Date: Mon,  6 Jan 2025 16:14:23 +0100
+Message-ID: <20250106151152.840899080@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
 References: <20250106151150.585603565@linuxfoundation.org>
@@ -66,51 +66,85 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tomer Maimon <tmaimon77@gmail.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 2978cc1f285390c1bd4d9bfc665747adc6e4b19c ]
+[ Upstream commit ec841b8d73cff37f8960e209017efe1eb2fb21f2 ]
 
-Adding CI_HDRC_FORCE_VBUS_ACTIVE_ALWAYS flag to modify the vbus_active
-parameter to active in case the ChipIdea USB IP role is device-only and
-there is no otgsc register.
+Currently, the imx deivice controller has below limitations:
 
-Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
+1. can't generate short packet interrupt if IOC not set in dTD. So if one
+   request span more than one dTDs and only the last dTD set IOC, the usb
+   request will pending there if no more data comes.
+2. the controller can't accurately deliver data to differtent usb requests
+   in some cases due to short packet. For example: one usb request span 3
+   dTDs, then if the controller received a short packet the next packet
+   will go to 2nd dTD of current request rather than the first dTD of next
+   request.
+3. can't build a bus packet use multiple dTDs. For example: controller
+   needs to send one packet of 512 bytes use dTD1 (200 bytes) + dTD2
+   (312 bytes), actually the host side will see 200 bytes short packet.
+
+Based on these limits, add CI_HDRC_HAS_SHORT_PKT_LIMIT flag and use it on
+imx platforms.
+
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20231017195903.1665260-2-tmaimon77@gmail.com
+Link: https://lore.kernel.org/r/20240923081203.2851768-1-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: ec841b8d73cf ("usb: chipidea: add CI_HDRC_HAS_SHORT_PKT_LIMIT flag")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/otg.c   | 5 ++++-
- include/linux/usb/chipidea.h | 1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/usb/chipidea/ci.h          | 1 +
+ drivers/usb/chipidea/ci_hdrc_imx.c | 1 +
+ drivers/usb/chipidea/core.c        | 2 ++
+ include/linux/usb/chipidea.h       | 1 +
+ 4 files changed, 5 insertions(+)
 
-diff --git a/drivers/usb/chipidea/otg.c b/drivers/usb/chipidea/otg.c
-index f5490f2a5b6b..647e98f4e351 100644
---- a/drivers/usb/chipidea/otg.c
-+++ b/drivers/usb/chipidea/otg.c
-@@ -130,8 +130,11 @@ enum ci_role ci_otg_role(struct ci_hdrc *ci)
+diff --git a/drivers/usb/chipidea/ci.h b/drivers/usb/chipidea/ci.h
+index 2a38e1eb6546..e4b003d060c2 100644
+--- a/drivers/usb/chipidea/ci.h
++++ b/drivers/usb/chipidea/ci.h
+@@ -260,6 +260,7 @@ struct ci_hdrc {
+ 	bool				b_sess_valid_event;
+ 	bool				imx28_write_fix;
+ 	bool				has_portsc_pec_bug;
++	bool				has_short_pkt_limit;
+ 	bool				supports_runtime_pm;
+ 	bool				in_lpm;
+ 	bool				wakeup_int;
+diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
+index e28bb2f2612d..477af457c1a1 100644
+--- a/drivers/usb/chipidea/ci_hdrc_imx.c
++++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+@@ -334,6 +334,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ 	struct ci_hdrc_platform_data pdata = {
+ 		.name		= dev_name(&pdev->dev),
+ 		.capoffset	= DEF_CAPOFFSET,
++		.flags		= CI_HDRC_HAS_SHORT_PKT_LIMIT,
+ 		.notify_event	= ci_hdrc_imx_notify_event,
+ 	};
+ 	int ret;
+diff --git a/drivers/usb/chipidea/core.c b/drivers/usb/chipidea/core.c
+index ca71df4f32e4..c161a4ee5290 100644
+--- a/drivers/usb/chipidea/core.c
++++ b/drivers/usb/chipidea/core.c
+@@ -1076,6 +1076,8 @@ static int ci_hdrc_probe(struct platform_device *pdev)
+ 		CI_HDRC_SUPPORTS_RUNTIME_PM);
+ 	ci->has_portsc_pec_bug = !!(ci->platdata->flags &
+ 		CI_HDRC_HAS_PORTSC_PEC_MISSED);
++	ci->has_short_pkt_limit = !!(ci->platdata->flags &
++		CI_HDRC_HAS_SHORT_PKT_LIMIT);
+ 	platform_set_drvdata(pdev, ci);
  
- void ci_handle_vbus_change(struct ci_hdrc *ci)
- {
--	if (!ci->is_otg)
-+	if (!ci->is_otg) {
-+		if (ci->platdata->flags & CI_HDRC_FORCE_VBUS_ACTIVE_ALWAYS)
-+			usb_gadget_vbus_connect(&ci->gadget);
- 		return;
-+	}
- 
- 	if (hw_read_otgsc(ci, OTGSC_BSV) && !ci->vbus_active)
- 		usb_gadget_vbus_connect(&ci->gadget);
+ 	ret = hw_device_init(ci, base);
 diff --git a/include/linux/usb/chipidea.h b/include/linux/usb/chipidea.h
-index 0b4f2d5faa08..5a7f96684ea2 100644
+index 5a7f96684ea2..ebdfef124b2b 100644
 --- a/include/linux/usb/chipidea.h
 +++ b/include/linux/usb/chipidea.h
-@@ -64,6 +64,7 @@ struct ci_hdrc_platform_data {
- #define CI_HDRC_PMQOS			BIT(15)
+@@ -65,6 +65,7 @@ struct ci_hdrc_platform_data {
  #define CI_HDRC_PHY_VBUS_CONTROL	BIT(16)
  #define CI_HDRC_HAS_PORTSC_PEC_MISSED	BIT(17)
-+#define CI_HDRC_FORCE_VBUS_ACTIVE_ALWAYS	BIT(18)
+ #define CI_HDRC_FORCE_VBUS_ACTIVE_ALWAYS	BIT(18)
++#define	CI_HDRC_HAS_SHORT_PKT_LIMIT	BIT(19)
  	enum usb_dr_mode	dr_mode;
  #define CI_HDRC_CONTROLLER_RESET_EVENT		0
  #define CI_HDRC_CONTROLLER_STOPPED_EVENT	1
