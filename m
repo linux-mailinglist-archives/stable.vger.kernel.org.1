@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-107084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFEAAA02A39
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F58A02AD7
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:38:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00F283A4E97
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 756DF16525C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BD283A14;
-	Mon,  6 Jan 2025 15:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F330B1DDC3C;
+	Mon,  6 Jan 2025 15:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDUlAm2U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s8EVEETG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC0115854A;
-	Mon,  6 Jan 2025 15:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04531DB92A;
+	Mon,  6 Jan 2025 15:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177403; cv=none; b=gl/pKx9p9fpCjSX0P2VMikDif4hNrGvpHUrg7fG3COcDxKekuNvyth91NrD4PbOn8XqvTbJA2c9ZBFArdoNV0+qX8d+BPAYQdg/Wt8SkTVyGgXDoK4d/J/0V78T1VQYLXA8nr7UGnwPtkmV9ACCa2eB8XxF+/73DGnPZ891eCFw=
+	t=1736177828; cv=none; b=OyYI6fOzDAV9K6mK2SRjn4ciuTquzQMngcu7qS8v6cBtUDmk8hD6v680Kjt0uSFqPbAC2vkN6pLpCYBi37qm9DUDOhCwobh8lvwaG59JdJ2axKyMN5TbXqO+jDmjn7WB0vIN/gdG5x0iR52LsimN107aik5Otlhi+0elBA4p1EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177403; c=relaxed/simple;
-	bh=arX0aoCT9PN/c7B0VomNDIwFlkd8h4gqpFu3OKHt9oE=;
+	s=arc-20240116; t=1736177828; c=relaxed/simple;
+	bh=F/9FkcKH0m8y23f1n4vAtVdnUem4gxvsnimA00ZhkKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X43cGn/vTgR0nEwbiqOnzjbeQjr/cOcHxyW3oBZX7UmdaAjcj9ix6bTVU66edS/vKaPSBcCF8ZeJAu9T8edQv7e1n4SjupnecuPe8p/LzFhsCqRxq9bQO4cNg7z7JjolgG2U3Sneq78PwpZyArHwyjPJhDR5nYhXOcSoi+lGC7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDUlAm2U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9714EC4CED2;
-	Mon,  6 Jan 2025 15:30:02 +0000 (UTC)
+	 MIME-Version; b=RmMqRyjnczcb8z808T7rCurtw64ldymJNoNVa1Gl/YU42Ft5M2UQGo9jnFgRhj/SDwmOqWqLC6TVsLcE6FcnNk7nG7ByRGiIivZJ6LE3DqUc6kO2LsAj8EXhEKlMCF2+Q3rP6LGCAIO33a7W0Mg61/4s01UIPW1ezrqakVblkKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s8EVEETG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3283AC4CED2;
+	Mon,  6 Jan 2025 15:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177403;
-	bh=arX0aoCT9PN/c7B0VomNDIwFlkd8h4gqpFu3OKHt9oE=;
+	s=korg; t=1736177828;
+	bh=F/9FkcKH0m8y23f1n4vAtVdnUem4gxvsnimA00ZhkKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NDUlAm2UWhp8dCAMmhlBONBMOFtmjtB7S3ug4GDNKR6OmevORjhdj3xk9bN3f770G
-	 7HfN6kHyy4UwJzK/aJB7sX+N8RuexVeA6iT8WcKsHu5eCPMeYqMbSWLpANAHyP/39x
-	 IuS97GKxnEqYlASjbCalcn3QN42lRAtII8cyJlBY=
+	b=s8EVEETGdeIg7jyYPqjJdrFS0z8fUCVxrv++Ci4P/y1xGNI29hH0bPYanRN1hL/cR
+	 iSPYqZeVmUSOg1w+aHzimQdg1KEAeJvlkWqueYo7OUl36z71ucOGw+WAVYOLv78ZFL
+	 K/jfbN2sbhEHgwPhYcO8IyZB9Igh2Ohzf8uoOBUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Liang <wangliang74@huawei.com>,
+	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 152/222] net: fix memory leak in tcp_conn_request()
+Subject: [PATCH 6.12 070/156] net: wwan: iosm: Properly check for valid exec stage in ipc_mmio_init()
 Date: Mon,  6 Jan 2025 16:15:56 +0100
-Message-ID: <20250106151156.517393724@linuxfoundation.org>
+Message-ID: <20250106151144.369897077@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
 
-[ Upstream commit 4f4aa4aa28142d53f8b06585c478476cfe325cfc ]
+[ Upstream commit a7af435df0e04cfb4a4004136d597c42639a2ae7 ]
 
-If inet_csk_reqsk_queue_hash_add() return false, tcp_conn_request() will
-return without free the dst memory, which allocated in af_ops->route_req.
+ipc_mmio_init() used the post-decrement operator in its loop continuing
+condition of "retries" counter being "> 0", which meant that when this
+condition caused loop exit "retries" counter reached -1.
 
-Here is the kmemleak stack:
+But the later valid exec stage failure check only tests for "retries"
+counter being exactly zero, so it didn't trigger in this case (but
+would wrongly trigger if the code reaches a valid exec stage in the
+very last loop iteration).
 
-unreferenced object 0xffff8881198631c0 (size 240):
-  comm "softirq", pid 0, jiffies 4299266571 (age 1802.392s)
-  hex dump (first 32 bytes):
-    00 10 9b 03 81 88 ff ff 80 98 da bc ff ff ff ff  ................
-    81 55 18 bb ff ff ff ff 00 00 00 00 00 00 00 00  .U..............
-  backtrace:
-    [<ffffffffb93e8d4c>] kmem_cache_alloc+0x60c/0xa80
-    [<ffffffffba11b4c5>] dst_alloc+0x55/0x250
-    [<ffffffffba227bf6>] rt_dst_alloc+0x46/0x1d0
-    [<ffffffffba23050a>] __mkroute_output+0x29a/0xa50
-    [<ffffffffba23456b>] ip_route_output_key_hash+0x10b/0x240
-    [<ffffffffba2346bd>] ip_route_output_flow+0x1d/0x90
-    [<ffffffffba254855>] inet_csk_route_req+0x2c5/0x500
-    [<ffffffffba26b331>] tcp_conn_request+0x691/0x12c0
-    [<ffffffffba27bd08>] tcp_rcv_state_process+0x3c8/0x11b0
-    [<ffffffffba2965c6>] tcp_v4_do_rcv+0x156/0x3b0
-    [<ffffffffba299c98>] tcp_v4_rcv+0x1cf8/0x1d80
-    [<ffffffffba239656>] ip_protocol_deliver_rcu+0xf6/0x360
-    [<ffffffffba2399a6>] ip_local_deliver_finish+0xe6/0x1e0
-    [<ffffffffba239b8e>] ip_local_deliver+0xee/0x360
-    [<ffffffffba239ead>] ip_rcv+0xad/0x2f0
-    [<ffffffffba110943>] __netif_receive_skb_one_core+0x123/0x140
+Fix this by using the pre-decrement operator instead, so the loop counter
+is exactly zero on valid exec stage failure.
 
-Call dst_release() to free the dst memory when
-inet_csk_reqsk_queue_hash_add() return false in tcp_conn_request().
-
-Fixes: ff46e3b44219 ("Fix race for duplicate reqsk on identical SYN")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Link: https://patch.msgid.link/20241219072859.3783576-1-wangliang74@huawei.com
+Fixes: dc0514f5d828 ("net: iosm: mmio scratchpad")
+Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+Link: https://patch.msgid.link/8b19125a825f9dcdd81c667c1e5c48ba28d505a6.1735490770.git.mail@maciej.szmigiero.name
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wwan/iosm/iosm_ipc_mmio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index fb053942dba2..f6a213bae5cc 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -7192,6 +7192,7 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
- 			if (unlikely(!inet_csk_reqsk_queue_hash_add(sk, req,
- 								    req->timeout))) {
- 				reqsk_free(req);
-+				dst_release(dst);
- 				return 0;
- 			}
+diff --git a/drivers/net/wwan/iosm/iosm_ipc_mmio.c b/drivers/net/wwan/iosm/iosm_ipc_mmio.c
+index 63eb08c43c05..6764c13530b9 100644
+--- a/drivers/net/wwan/iosm/iosm_ipc_mmio.c
++++ b/drivers/net/wwan/iosm/iosm_ipc_mmio.c
+@@ -104,7 +104,7 @@ struct iosm_mmio *ipc_mmio_init(void __iomem *mmio, struct device *dev)
+ 			break;
  
+ 		msleep(20);
+-	} while (retries-- > 0);
++	} while (--retries > 0);
+ 
+ 	if (!retries) {
+ 		dev_err(ipc_mmio->dev, "invalid exec stage %X", stage);
 -- 
 2.39.5
 
