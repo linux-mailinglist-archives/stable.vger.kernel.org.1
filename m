@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-107504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB8C1A02C42
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:52:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A18B9A02AD6
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:38:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5889E161B28
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:51:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 338FB1881CF8
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163441DE2A0;
-	Mon,  6 Jan 2025 15:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124BD1C5F11;
+	Mon,  6 Jan 2025 15:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OV7CmJJ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7j9ruW+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8744BA34;
-	Mon,  6 Jan 2025 15:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B1678F49;
+	Mon,  6 Jan 2025 15:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178671; cv=none; b=VEQxIjST2jZAkz2wF1jL/q5aQ0oX4JZLOoVAtDE78g6e7ZUtlGoCMQqquvOVo1XUWvR3XDnsyztRC2gnW/zYAK+LN+QEPryJ01wLKissu6Zg/lPvwSVt8lG9e9fQvlT8vkk3jGF3SjAw1aTgEbTMk9ec6MuQ3htLwatSmhZef5U=
+	t=1736177846; cv=none; b=VaJ2AVxiXbhKldEsd7LzoBC6sCD/bddsKlwRHLv6Hsq0uV68jGHlN18RJOwrXfahYoMA/BPrSLbHJj3sEXoU/NukhXrfoZ4bhMed/OTYc1c/06dg59uADF66iInPMBAZ34fGcOHQirxQuasGRHGJnuNPEqirlV54jmY+/0YMEiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178671; c=relaxed/simple;
-	bh=IF1daYkMHD46tgN319dkOetFhdjePRqR4AVhiSunFfk=;
+	s=arc-20240116; t=1736177846; c=relaxed/simple;
+	bh=3cmcdDMq+GySF4sHexG8P8qpmb9u/OUwY67hlWki5cE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ehSCM50eMGIa0wWrayOPE/zODqIzRLLf33kO/+VP9u4dAHfZrDGNmz27yY2XOwyf+NJUQPkBEoMMZC0qIq+TDelPzh6U1SDV2IMU4xnLkd0J328ileOf9obqZWMKBC5ygnSILFqwZ4ghIrlXPwlN+PHNbq6/0YEwt9rgPCJexBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OV7CmJJ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE31C4CEE4;
-	Mon,  6 Jan 2025 15:51:10 +0000 (UTC)
+	 MIME-Version; b=aSRQ+6zZe++4UeXJZSegXOGFSf/PQCV1+cANEE1fF37FOOeGm4hmRg4qoG/SFcifWYEfFY9RCkrHomN60diBTdq86zvxHCb3ADuqCPwYcQWqjvzIdE4P+x5KPMNSFDXIs4uXUxgcnMcmdt8RCSOeGBxVdgZzBpa1TVHv7mzb/pU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7j9ruW+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47C1DC4CEDF;
+	Mon,  6 Jan 2025 15:37:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178671;
-	bh=IF1daYkMHD46tgN319dkOetFhdjePRqR4AVhiSunFfk=;
+	s=korg; t=1736177846;
+	bh=3cmcdDMq+GySF4sHexG8P8qpmb9u/OUwY67hlWki5cE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OV7CmJJ3relehHEUdNJDzoYqaFBkRuGpPjHVWyUa1YXTWj5pjwXHMDLxnMsT8c+Et
-	 iwhx+eH5z2eSaS3zxGnc+6LPhKhcItsqLNiDIWNxUuSwsS5EjW872zRUgtOuDcDcmM
-	 Z2OgbycWSFYf+jM8Mg1BLHhvAoUbvjPu9Qg32t7w=
+	b=x7j9ruW+An6wQ75LHP6UyNDUEzorlnWs7VnZ4v6PR6F76Ky49osJksFYSV7FoXSi3
+	 xNhp1hBDR6OudSYWExNpW8touTwC3CEx3Iw5cV3iQXNTDZxUFCaXLiTfP65ZgE+aAn
+	 bYUaLJNHJveFUJrP2HFGtHKLnpia+1jSNA2XvIAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 5.15 053/168] of: Fix refcount leakage for OF node returned by __of_get_dma_parent()
-Date: Mon,  6 Jan 2025 16:16:01 +0100
-Message-ID: <20250106151140.466117558@linuxfoundation.org>
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 076/156] btrfs: allow swap activation to be interruptible
+Date: Mon,  6 Jan 2025 16:16:02 +0100
+Message-ID: <20250106151144.595319521@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 5d009e024056ded20c5bb1583146b833b23bbd5a upstream.
+[ Upstream commit 9a45022a0efadd99bcc58f7f1cc2b6fb3b808c40 ]
 
-__of_get_dma_parent() returns OF device node @args.np, but the node's
-refcount is increased twice, by both of_parse_phandle_with_args() and
-of_node_get(), so causes refcount leakage for the node.
+During swap activation we iterate over the extents of a file, then do
+several checks for each extent, some of which may take some significant
+time such as checking if an extent is shared. Since a file can have
+many thousands of extents, this can be a very slow operation and it's
+currently not interruptible. I had a bug during development of a previous
+patch that resulted in an infinite loop when iterating the extents, so
+a core was busy looping and I couldn't cancel the operation, which is very
+annoying and requires a reboot. So make the loop interruptible by checking
+for fatal signals at the end of each iteration and stopping immediately if
+there is one.
 
-Fix by directly returning the node got by of_parse_phandle_with_args().
-
-Fixes: f83a6e5dea6c ("of: address: Add support for the parent DMA bus")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20241206-of_core_fix-v1-4-dc28ed56bec3@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/address.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/inode.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/of/address.c
-+++ b/drivers/of/address.c
-@@ -594,7 +594,7 @@ static struct device_node *__of_get_dma_
- 	if (ret < 0)
- 		return of_get_parent(np);
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 4b3e256e0d0b..b5cfb85af937 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -10056,6 +10056,11 @@ static int btrfs_swap_activate(struct swap_info_struct *sis, struct file *file,
+ 			bsi.block_start = physical_block_start;
+ 			bsi.block_len = len;
+ 		}
++
++		if (fatal_signal_pending(current)) {
++			ret = -EINTR;
++			goto out;
++		}
+ 	}
  
--	return of_node_get(args.np);
-+	return args.np;
- }
- 
- static struct device_node *of_get_next_dma_parent(struct device_node *np)
+ 	if (bsi.block_len)
+-- 
+2.39.5
+
 
 
 
