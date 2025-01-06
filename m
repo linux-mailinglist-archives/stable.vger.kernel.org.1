@@ -1,83 +1,106 @@
-Return-Path: <stable+bounces-107757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B696A030CE
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 20:40:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B38DBA030D1
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 20:41:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D59DB3A3414
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 19:40:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C485A7A14FA
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 19:41:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6A014A095;
-	Mon,  6 Jan 2025 19:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C68114B94B;
+	Mon,  6 Jan 2025 19:41:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fdfVpMCP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C18BA34;
-	Mon,  6 Jan 2025 19:40:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8017FBA34
+	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 19:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736192402; cv=none; b=su0aZVMC1ehEi5AwbfLQkH6TO7jD5OBxBeR1u9GCDl7n1Ez0PMooYK9DTbdXiOPqfR3ExgY9l5odT7Tx3Q+ok7ebKbhJfin9baSPHybEV6SnjBP/1LK+OFHJkG3ut3humF///HeAWgn0Ew+OvWdBB8GgQ2JGetCt9QpCZeA7T+Q=
+	t=1736192511; cv=none; b=XWWg6wwfY0Awm4uPx1+II/fTtpqkUA/nF2UogPf2VKa6Jg6UzTqcTg3t8t9goJnLvokldYQ9xc1ODjGH6GigrBGZLUfmgKuVAdLh70NEJPvTnOXyDENvLvE9n5rnvJ/gDUaLA0ejglDsF5BY1GpgzhllasvRMWkjDmqxltqfLHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736192402; c=relaxed/simple;
-	bh=0tJu/wUpm3Odc0y/zeqCNZw0V3O+hTweQ90dTSbXhGU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VHROpThqlxHa+evmRbFmbB9PED9HmpvV3/1RbgJD9ZXuDWyMAw6MTTrbz/CuZyei+1rgB5EH7uaSd/Wb7DT584uIgKTRg8/ort7uGN167EOVTjhfFkJ+74947FF9vLoxDV9a843egAIQP0Nawxx8N5Eu+7qdwKCoMUkzHAovBnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC4EC4CED2;
-	Mon,  6 Jan 2025 19:40:00 +0000 (UTC)
-Date: Mon, 6 Jan 2025 14:41:26 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Genes Lists <lists@sapience.com>
-Cc: Andrea Amorosi <andrea.amorosi76@gmail.com>,
- dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, lucas.demarchi@intel.com,
- regressions@lists.linux.dev, stable@vger.kernel.org,
- thomas.hellstrom@linux.intel.com
-Subject: Re: [REGRESSION][BISECTED] Re: 6.12.7 stable new error: event
- xe_bo_move has unsafe dereference of argument 4
-Message-ID: <20250106144126.20d7f599@gandalf.local.home>
-In-Reply-To: <d5ef54d76188ec51d9e053fd097dc3f5bb6e6519.camel@sapience.com>
-References: <9dee19b6185d325d0e6fa5f7cbba81d007d99166.camel@sapience.com>
-	<73129e45-cf51-4e8d-95e8-49bc39ebc246@gmail.com>
-	<d5ef54d76188ec51d9e053fd097dc3f5bb6e6519.camel@sapience.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1736192511; c=relaxed/simple;
+	bh=twWyptULTcLkSehsQFD+iTHl4e4LK1hECGZumDPToNk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Nn9lFB70rD9LpNW+OpPZ7HZNnGIH2dwuSFwwe7DutCKE1D0q4R71tQIuqk9cKrTqLDwd0JWkLzuRTXnj6A9SLNhY2VTbrA2JsEcbpgIxDBn0MLZg9lkAVaaAr0T8pGqxhVhLHF10638o1JxyfBvzTx1ckjUlfTSuvuAKhCaJK/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fdfVpMCP; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2f45526dea0so2945349a91.1
+        for <stable@vger.kernel.org>; Mon, 06 Jan 2025 11:41:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736192510; x=1736797310; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KJOqsTsaOkpL/4SJIvdzBqE2nkiOG9fRpxVp/sO3wZ0=;
+        b=fdfVpMCPVAmUfm6Jh26BxyrEK0ihjgt/fm2QR/TfH84wvAtvFbtAy2KJxw1UIR0jck
+         ZhJ2p2MuxhZ7J6JQ3sKC9Cg3fhi3DWEpWwFSvLZcKjn27oG1T021RJgv2UOjJgnSxjj1
+         KrKD7sFRyVon+8gHQeIuiTP5ghKddQlaGJ0tVkOeDajnIh/TAC3w6FBds8ULPsjpnKdZ
+         IX8eQURSa3nAqTazDQ5WSH7lHjxyScNDeDefy51sE1yPYi1jcz/5LPQh5zXrQTtgnqOF
+         lTJy7hzFXLufkcjhS64Ev4JcAL6SpdkSbaPQ2GvrOcHIvG1OUwZRDTpKCYh8WkOWxria
+         CfgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736192510; x=1736797310;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KJOqsTsaOkpL/4SJIvdzBqE2nkiOG9fRpxVp/sO3wZ0=;
+        b=KrgwEkWM6qkbFqBcyeNgur0Y23p5dF3FE5vtbQ/4YGn4CUosElodYlJGFXpDF6LrNe
+         P6VXF42cssfTdbjQcw8LrpvdxuCpmRMPIYTOjoylOM7i63rCKW5xG2Fqd8kTi6niM38A
+         SD9QPn9RWCCktR+YGAuzYVBClzEuTu8oM0Thzttsq+mIV7RIb4y06lzfTGHWMiDcgSCt
+         xy2+oupR1F3pQL4n4WQFrmGMXOUSu1KUKEHmBduzJGGq8lXC1DeCvXHrUfMGsze7Z0PZ
+         hhSSt8Z3aQjn/OAz/Ht6AVvymmkwEDTBcnBXAZsN0cOoAO+vC9X5yzEcA9av30fTsi1z
+         TTjw==
+X-Gm-Message-State: AOJu0YyL1qG6ZbwY56cDPBYdOTnb8/dLF2X5OICcmvAdcYCb8f+/1SFg
+	wOWCZQ6l518jusGVPAEFfsuwwNe4NCYLe2ONOan6Zx0Nzq0g/vwvZOup7vL173REfCzUL1v7lhz
+	7xKmm0rE2EJiyFD1qKeyxjfRXb4o=
+X-Gm-Gg: ASbGncv4Wvq9IAtQ2MMV2ApqvgycQQg7R1c5CirywjgFQn3ney1MoiBi8eseazvExAz
+	XimoOwdVbCmJcP0E7mAaT4fWzLbhVgZ/5gWcIxg==
+X-Google-Smtp-Source: AGHT+IGIQ/c46z7ABVvNz3micMxqEy1D7Lszu9Qr3NMZCuaGtumRtZHM2Kq2ESOGWiyNvTBLi83wSLWjsCy7QvuNZIk=
+X-Received: by 2002:a17:90a:c884:b0:2ee:b665:12ce with SMTP id
+ 98e67ed59e1d1-2f452debc21mr33898293a91.1.1736192509816; Mon, 06 Jan 2025
+ 11:41:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20250106151150.585603565@linuxfoundation.org> <20250106151151.253706204@linuxfoundation.org>
+In-Reply-To: <20250106151151.253706204@linuxfoundation.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 6 Jan 2025 20:41:37 +0100
+X-Gm-Features: AbW1kvamIE7sQQgCjP_D-FznednX6MxT3LGEgKrgqq48FMAOJ5ht2LIxceZ0ZKo
+Message-ID: <CANiq72mdUv29ufH2iUc=PD3Lhqi9EJOc28yrsZRWbP2p2in42A@mail.gmail.com>
+Subject: Re: [PATCH 6.6 017/222] rust: allow `clippy::needless_lifetimes`
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Sasha Levin <sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, 04 Jan 2025 15:09:10 -0500
-Genes Lists <lists@sapience.com> wrote:
+On Mon, Jan 6, 2025 at 4:23=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> 6.6-stable review patch.  If anyone has any objections, please let me kno=
+w.
 
-> On Sat, 2025-01-04 at 18:43 +0100, Andrea Amorosi wrote:
-> > Hi to all,
-> > 
-> > I've just updated my archlinux to |6.12.8-arch1-1 and I still get the
-> > same issue:|
-> > 
-> >   
-> Right - 6.12.8 (and Arch build of same) does not have Steve Rostedt's
-> patch.
-> The patch is in mainline and I believe it will be in 6.12.9.
+This should not be needed (because in 6.6.y the Rust version is
+pinned, unlike in 6.12.y), so both Rust-related commits can be
+dropped, but they should not hurt either (built-tested).
 
-For completeness, the patch in question is this:
+See https://lore.kernel.org/stable/CANiq72k9A-adJy8uzog_NdrrfLh6+EgHY0kqPcA=
+5Y45Hod+OkQ@mail.gmail.com/
 
-  https://lore.kernel.org/20241231000646.324fb5f7@gandalf.local.home
+Thanks!
 
--- Steve
-
-
-> 
-> Since the warning logged is a false positive it is benign.
-> 
-> 
-
+Cheers,
+Miguel
 
