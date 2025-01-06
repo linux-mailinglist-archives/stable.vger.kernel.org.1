@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FFF3A02A67
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:33:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76B22A02B97
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:45:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11BE7164E43
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:33:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDC591881212
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:45:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514BE156238;
-	Mon,  6 Jan 2025 15:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4671D7E21;
+	Mon,  6 Jan 2025 15:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wBfYuoBd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EcIXDNwj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E16156237;
-	Mon,  6 Jan 2025 15:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E5F1DDA2E;
+	Mon,  6 Jan 2025 15:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177612; cv=none; b=bVnG2Zgjf6ujbFrCQts4ZCcKIixpvlj2ZxjpQ01dgvP6Xa9lWKluluUGDdLy7eWoKbTW8mW0MjENgsWRJdNA6jgS0VgU7jlBtJbuiC91uyQ2MYSYGiT+7VMjr9eDYDHKhmeaDLWE4nGWkuBxTtU41t5Voz8Qxez5ZRtJS74zzq8=
+	t=1736178304; cv=none; b=PKPK8vUrvCBScvuy1x7v4vnVSxrF5N/W9gu3HAaYA8Y72YkmVnkS3uY14vTV51YM0JzkTGTRSBot34UfcLLLa5D28GE+aVYEUuy8VK6OT1NoSy6okZwun4fp5WZ2Eilgl7RFJlK+QvEA9GlnaSxRVAwGh8W/wZn89EghxiHWvFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177612; c=relaxed/simple;
-	bh=m7cJmWotvT2TyXlYtMG2t/rPDmHJ4z7pppkz+c5eoCY=;
+	s=arc-20240116; t=1736178304; c=relaxed/simple;
+	bh=FnCt3aD5DFsQUuGLGdKSLn5LwaDMc9MjWB9hHwzdyc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j/hMI2pMamZBCjemTxc/fUBCLifQ1eGhwnlQxRw+5MlQBpRwWYkTC0V/eYLFwpKogDu0DRM6QW4uHqLdN7FOmlnqKFIUXl2Hn+1YKRG5ruhC/2F3+sAQGrEgHU+EERFVqg99nKvnTw+naIIZ+zXHkmvr0SqdgaF0o8h5dacL64Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wBfYuoBd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18EB0C4CED2;
-	Mon,  6 Jan 2025 15:33:30 +0000 (UTC)
+	 MIME-Version; b=sV4cgndUz5DUW4Q6Ka2sMdsPmNlyReVize3SGzYmgy6clFZIfVPGGhl+3ldL/vxsu8fYkrTEltPJtjC0V05/hIfbsZJiA7dB9u91rs12GROaWWYcoOR9chCzajwlo8F/qfl9aISNNRJosM8XEUjcV/S+/jMRXO28H5vuPfK5tQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EcIXDNwj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E15C4CED2;
+	Mon,  6 Jan 2025 15:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177611;
-	bh=m7cJmWotvT2TyXlYtMG2t/rPDmHJ4z7pppkz+c5eoCY=;
+	s=korg; t=1736178303;
+	bh=FnCt3aD5DFsQUuGLGdKSLn5LwaDMc9MjWB9hHwzdyc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wBfYuoBdqRbsZUXftDM4NMmAOXw1PRcYIABDEWc4KOQN/ZnbBIxkbFS+l+Ah4Dmwc
-	 8nCrS77APVIgHHDp8thz5Pz82LRIBSfoa4Smz4XV0Og9qsOsI0m7kXEX4qrkEhBMx2
-	 D0lVHjglUAjqOj+DJQjlo3OJrLl/ST0jGVLS0jvw=
+	b=EcIXDNwj6Qvu+7lTds99pPjKIcw2Scp2vfLZrZEnuS2qth/wcKFWVhhzsjzOmPY7/
+	 7GNDZaz9O9kdyj/O9KBYvM1EV2Sy9WCyazNdXb0FOJ2lmqQzXnFz9Ik6ZY96OmI9kU
+	 urZlyBLuWD3ySoJ2b0rlQdB3xiCccRCYMrKws0mA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Vineet Gupta <vgupta@kernel.org>,
+	Hou Tao <houtao1@huawei.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 193/222] ARC: build: Try to guess GCC variant of cross compiler
+Subject: [PATCH 5.10 073/138] bpf: Check validity of link->type in bpf_link_show_fdinfo()
 Date: Mon,  6 Jan 2025 16:16:37 +0100
-Message-ID: <20250106151158.068227658@linuxfoundation.org>
+Message-ID: <20250106151135.998158145@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 824927e88456331c7a999fdf5d9d27923b619590 ]
+commit 8421d4c8762bd022cb491f2f0f7019ef51b4f0a7 upstream.
 
-ARC GCC compiler is packaged starting from Fedora 39i and the GCC
-variant of cross compile tools has arc-linux-gnu- prefix and not
-arc-linux-. This is causing that CROSS_COMPILE variable is left unset.
+If a newly-added link type doesn't invoke BPF_LINK_TYPE(), accessing
+bpf_link_type_strs[link->type] may result in an out-of-bounds access.
 
-This change allows builds without need to supply CROSS_COMPILE argument
-if distro package is used.
+To spot such missed invocations early in the future, checking the
+validity of link->type in bpf_link_show_fdinfo() and emitting a warning
+when such invocations are missed.
 
-Before this change:
-$ make -j 128 ARCH=arc W=1 drivers/infiniband/hw/mlx4/
-  gcc: warning: ‘-mcpu=’ is deprecated; use ‘-mtune=’ or ‘-march=’ instead
-  gcc: error: unrecognized command-line option ‘-mmedium-calls’
-  gcc: error: unrecognized command-line option ‘-mlock’
-  gcc: error: unrecognized command-line option ‘-munaligned-access’
-
-[1] https://packages.fedoraproject.org/pkgs/cross-gcc/gcc-arc-linux-gnu/index.html
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Vineet Gupta <vgupta@kernel.org>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241024013558.1135167-3-houtao@huaweicloud.com
+[ shung-hsi.yu: break up existing seq_printf() call since commit 68b04864ca42
+  ("bpf: Create links for BPF struct_ops maps.") is not present ]
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arc/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/syscall.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arc/Makefile b/arch/arc/Makefile
-index 2390dd042e36..fb98478ed1ab 100644
---- a/arch/arc/Makefile
-+++ b/arch/arc/Makefile
-@@ -6,7 +6,7 @@
- KBUILD_DEFCONFIG := haps_hs_smp_defconfig
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index fbe7f8e2b022..b5d9bba73834 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -2427,16 +2427,21 @@ static void bpf_link_show_fdinfo(struct seq_file *m, struct file *filp)
+ {
+ 	const struct bpf_link *link = filp->private_data;
+ 	const struct bpf_prog *prog = link->prog;
++	enum bpf_link_type type = link->type;
+ 	char prog_tag[sizeof(prog->tag) * 2 + 1] = { };
  
- ifeq ($(CROSS_COMPILE),)
--CROSS_COMPILE := $(call cc-cross-prefix, arc-linux- arceb-linux-)
-+CROSS_COMPILE := $(call cc-cross-prefix, arc-linux- arceb-linux- arc-linux-gnu-)
- endif
- 
- cflags-y	+= -fno-common -pipe -fno-builtin -mmedium-calls -D__linux__
++	if (type < ARRAY_SIZE(bpf_link_type_strs) && bpf_link_type_strs[type]) {
++		seq_printf(m, "link_type:\t%s\n", bpf_link_type_strs[type]);
++	} else {
++		WARN_ONCE(1, "missing BPF_LINK_TYPE(...) for link type %u\n", type);
++		seq_printf(m, "link_type:\t<%u>\n", type);
++	}
++	seq_printf(m, "link_id:\t%u\n", link->id);
++
+ 	bin2hex(prog_tag, prog->tag, sizeof(prog->tag));
+ 	seq_printf(m,
+-		   "link_type:\t%s\n"
+-		   "link_id:\t%u\n"
+ 		   "prog_tag:\t%s\n"
+ 		   "prog_id:\t%u\n",
+-		   bpf_link_type_strs[link->type],
+-		   link->id,
+ 		   prog_tag,
+ 		   prog->aux->id);
+ 	if (link->ops->show_fdinfo)
 -- 
 2.39.5
 
