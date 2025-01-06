@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-107477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C1B2A02C2D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:51:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 329CAA02904
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:19:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 895E33A1D77
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:50:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 241C116232D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:19:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F791DB92A;
-	Mon,  6 Jan 2025 15:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE8113635E;
+	Mon,  6 Jan 2025 15:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMaPePsy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0EryIRYO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9669F1DED57;
-	Mon,  6 Jan 2025 15:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C357081C;
+	Mon,  6 Jan 2025 15:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178579; cv=none; b=EiM6nSG1+ZzcdOgOVq3Re7SBSpqryKujGE+xT1LMnO3CPajrBKugqzHMmZzYT78Y081cqUtzeIzAsofdt8P0xT8Yp1/2auM99paSWPGnVoc4EsbNkkaaDt93k+JMXoDuXEEwNBAOezNUp2RDjAVtg9us0SlxSvytZn83EKhFMK4=
+	t=1736176750; cv=none; b=W/2s/VfUu7OGVTYJT+Ziifi2WkGKuqFC1c75v4LGMcuWQeYGa27cjkEOuMwzq1POQiSN5OzaRWPhtRmOeb3gQBIniM2b5TJQ2JCbtygMj9WnLFZJS5o4xZ0hCTXxfB6sLbVuwbbPHHrFZapokDUVeXcvyH04OFZhPPB4v2DmprQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178579; c=relaxed/simple;
-	bh=MV8t8FWpLPU8UzzWWIqW1THBHpe4etqf9q5hpRVNqyE=;
+	s=arc-20240116; t=1736176750; c=relaxed/simple;
+	bh=0zMKgYVJjDbBKzL3Xs4FsRXzxPtcH7QJE8djsVTax+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mb8R6zBwPg0ZZ79ju+qyz0MnsNzMxdDKIUpzV1NnRcKNXWUa1STzwhIS2DshfJlvUKlfkSQj1i7YKIKt1uxwlBTTgP1MSxYzicXvr22P1yeQflROrxi1J7TOXKkwZBZYJKdSASrjIXtEHGmzLC5Pf8we6A2we2NgLfAd3n0TJMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMaPePsy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C651C4CED2;
-	Mon,  6 Jan 2025 15:49:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VSuDDEwkjduvfa/Yjl+R6YlBaCA5UdGAbr/Oi/AULYD5bgxUXmerBwc94pjEnG8ilV2PuMqtZJsB8COowFnzYgyW9l6X+R5vKoXUrm9FsFiwzxmTXcMBoRnVULgorEptPMfELM2j96pBWte9POg4JyDpKE7L5SEpaJOhrqNvVWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0EryIRYO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AF1C4CED2;
+	Mon,  6 Jan 2025 15:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178579;
-	bh=MV8t8FWpLPU8UzzWWIqW1THBHpe4etqf9q5hpRVNqyE=;
+	s=korg; t=1736176749;
+	bh=0zMKgYVJjDbBKzL3Xs4FsRXzxPtcH7QJE8djsVTax+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NMaPePsy3xc/yo45aVQa04VG77wobST+HjAHgK5kVeosd1jTyio0DBjUdTe3P2DDB
-	 IOrxSCEWKkss8NfQlhjEd2j74WJfTcWhndRrmILkU9dxST5oLJVZkbzc/FmCfbDP2w
-	 PmmvU2Qd95/zYJjvzceQB+LvFWw7v/bv+qWQ/+pA=
+	b=0EryIRYOlI7tt5MftFMurZgHLF865ahv8YqNtSCocXVJFE2xljXnsfyAB9dQqr2QD
+	 U3fwkayFxm1UKWNxUVVpflT6Dg62OubpDnvjdR4csMbEWCF7ZWZW1klg/4wdlAnKXW
+	 WrTFZLOv7P0nWEa1JfoXXzsjT2aczipZpLqyHM4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 5.15 026/168] i2c: riic: Always round-up when calculating bus period
+	=?UTF-8?q?Thi=C3=A9baud=20Weksteen?= <tweek@google.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.1 02/81] selinux: ignore unknown extended permissions
 Date: Mon,  6 Jan 2025 16:15:34 +0100
-Message-ID: <20250106151139.450755986@linuxfoundation.org>
+Message-ID: <20250106151129.529385090@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +59,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Thiébaud Weksteen <tweek@google.com>
 
-commit de6b43798d9043a7c749a0428dbb02d5fff156e5 upstream.
+commit 900f83cf376bdaf798b6f5dcb2eae0c822e908b6 upstream.
 
-Currently, the RIIC driver may run the I2C bus faster than requested,
-which may cause subtle failures.  E.g. Biju reported a measured bus
-speed of 450 kHz instead of the expected maximum of 400 kHz on RZ/G2L.
+When evaluating extended permissions, ignore unknown permissions instead
+of calling BUG(). This commit ensures that future permissions can be
+added without interfering with older kernels.
 
-The initial calculation of the bus period uses DIV_ROUND_UP(), to make
-sure the actual bus speed never becomes faster than the requested bus
-speed.  However, the subsequent division-by-two steps do not use
-round-up, which may lead to a too-small period, hence a too-fast and
-possible out-of-spec bus speed.  E.g. on RZ/Five, requesting a bus speed
-of 100 resp. 400 kHz will yield too-fast target bus speeds of 100806
-resp. 403226 Hz instead of 97656 resp. 390625 Hz.
-
-Fix this by using DIV_ROUND_UP() in the subsequent divisions, too.
-
-Tested on RZ/A1H, RZ/A2M, and RZ/Five.
-
-Fixes: d982d66514192cdb ("i2c: riic: remove clock and frequency restrictions")
-Reported-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: <stable@vger.kernel.org> # v4.15+
-Link: https://lore.kernel.org/r/c59aea77998dfea1b4456c4b33b55ab216fcbf5e.1732284746.git.geert+renesas@glider.be
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: fa1aa143ac4a ("selinux: extended permissions for ioctls")
+Signed-off-by: Thiébaud Weksteen <tweek@google.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Acked-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-riic.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/selinux/ss/services.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/i2c/busses/i2c-riic.c
-+++ b/drivers/i2c/busses/i2c-riic.c
-@@ -330,7 +330,7 @@ static int riic_init_hw(struct riic_dev
- 		if (brl <= (0x1F + 3))
- 			break;
- 
--		total_ticks /= 2;
-+		total_ticks = DIV_ROUND_UP(total_ticks, 2);
- 		rate /= 2;
+--- a/security/selinux/ss/services.c
++++ b/security/selinux/ss/services.c
+@@ -969,7 +969,10 @@ void services_compute_xperms_decision(st
+ 					xpermd->driver))
+ 			return;
+ 	} else {
+-		BUG();
++		pr_warn_once(
++			"SELinux: unknown extended permission (%u) will be ignored\n",
++			node->datum.u.xperms->specified);
++		return;
  	}
+ 
+ 	if (node->key.specified == AVTAB_XPERMS_ALLOWED) {
+@@ -1006,7 +1009,8 @@ void services_compute_xperms_decision(st
+ 					node->datum.u.xperms->perms.p[i];
+ 		}
+ 	} else {
+-		BUG();
++		pr_warn_once("SELinux: unknown specified key (%u)\n",
++			     node->key.specified);
+ 	}
+ }
  
 
 
