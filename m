@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-107233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A56D8A02ADA
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:38:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54614A02A4D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:32:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C858188205C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E05F8188628A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:32:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A9715855C;
-	Mon,  6 Jan 2025 15:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B49156886;
+	Mon,  6 Jan 2025 15:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pcGDx7uy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7bcusvr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4608155352;
-	Mon,  6 Jan 2025 15:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87A01DE4CE;
+	Mon,  6 Jan 2025 15:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177853; cv=none; b=kEQ0Q/qkrxNxFAez3ZicYJSGz5zqtjLyNX1rk9bj9V/YO7vmRKsAmOYKbTKPQr6XeqEgfa2n1EeZjhOM1VNmwTYsK1h0zN3kI7QOLRO8E6T7jtzgr53tyr9zwBGlgWf5ZCDvntkG7WwSJcfkyqugGVt9ShGLrsU8tjFXbW2QNRg=
+	t=1736177510; cv=none; b=qGf8oit75RtXbUF70sCau0Ercgpj73As7BdlBlSR9562mcrlTWuvvllttanl9gUuN6pJbU29dV6nsCMxqbbxju9qiYUdw6uWOeB0X+CDOmBwrNkRtban3eOvc6HHEkiCUsi74xMwY909yz9bFtea7W3zWcktdRCX5DBuTeT0EPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177853; c=relaxed/simple;
-	bh=dyRFPv79fwQs5GNFLl+0OdWB9B/GDm1r5ZyHQMKpMzQ=;
+	s=arc-20240116; t=1736177510; c=relaxed/simple;
+	bh=MgWgEq4N/mAxX16aLzmL35SK7niGilt96yhFTPKNXfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bdAf/BI8EmcTBNyDEzcfbW0xSJ/ZF/V0cRNQJ2HdQzyulAYLYus8JZIzYaTmNeLLHJftyiMsHWrQywIvnh26DXx1dN4q8EmzkfyGF4o6waYPrFRmEiAuLmXM10fygN54dNf+D5e/UP+/exreDKibfNho/N81HFBlReyD3CUhTfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pcGDx7uy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66CB0C4CED2;
-	Mon,  6 Jan 2025 15:37:32 +0000 (UTC)
+	 MIME-Version; b=KTQPUeOZf1dKCC99fTbuvq59myRLDUq7v6lZdROTRcGlwlU8Huha+2T80uSBl7SUaNXIdgEl28QN2Qx9+qHigjwEuTBw5wSC511Ho+FPQYqLY1WQs/3qbcv5z8r1jvoHLrzLoAGNYNsx37XMEcuCbo2kA31mdLjfwXw/ii00SrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7bcusvr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D09AAC4CED6;
+	Mon,  6 Jan 2025 15:31:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177852;
-	bh=dyRFPv79fwQs5GNFLl+0OdWB9B/GDm1r5ZyHQMKpMzQ=;
+	s=korg; t=1736177510;
+	bh=MgWgEq4N/mAxX16aLzmL35SK7niGilt96yhFTPKNXfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pcGDx7uyBbKbxlJTLcvCXN5Did/fvg6gizyLkWlpvKI+yLjhaAzKw9+kTmV4Z9E4J
-	 ZiLjC43U4jNx8VWqrfKXlIZkameAfmnIihjCxZemNd6JHFbcnf1chqPuenYJ/MvhRV
-	 U/GW3+zj+b91O4qPreFSNso7MvC61FBWlR3AAaNc=
+	b=i7bcusvrbAzt1YHARMGA6MTxuzf2xxKIxIYtzGI+GrQ5NRFgILktXaBFY8rAOQAOa
+	 pNKLsgcVJRjW0BLth4Ch6JSa7lzsxZKHEa0LblvETzhjP2QA/Muu+yyO+8q/siT0E7
+	 UjoaV1qVi25TXo0uNcAh1Dp4oqxUXjQPce8yZVyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kan Liang <kan.liang@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Yevgeny Kliteynik <kliteyn@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 077/156] perf/x86/intel: Add Arrow Lake U support
+Subject: [PATCH 6.6 159/222] net/mlx5: DR, select MSIX vector 0 for completion queue creation
 Date: Mon,  6 Jan 2025 16:16:03 +0100
-Message-ID: <20250106151144.632646266@linuxfoundation.org>
+Message-ID: <20250106151156.780539220@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-[ Upstream commit 4e54ed496343702837ddca5f5af720161c6a5407 ]
+[ Upstream commit 050a4c011b0dfeb91664a5d7bd3647ff38db08ce ]
 
->From PMU's perspective, the new Arrow Lake U is the same as the
-Meteor Lake.
+When creating a software steering completion queue (CQ), an arbitrary
+MSIX vector n is selected. This results in the CQ sharing the same
+Ethernet traffic channel n associated with the chosen vector. However,
+the value of n is often unpredictable, which can introduce complications
+for interrupt monitoring and verification tools.
 
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20241121180526.2364759-1-kan.liang@linux.intel.com
+Moreover, SW steering uses polling rather than event-driven interrupts.
+Therefore, there is no need to select any MSIX vector other than the
+existing vector 0 for CQ creation.
+
+In light of these factors, and to enhance predictability, we modify the
+code to consistently select MSIX vector 0 for CQ creation.
+
+Fixes: 297cccebdc5a ("net/mlx5: DR, Expose an internal API to issue RDMA operations")
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Reviewed-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20241220081505.1286093-2-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/mellanox/mlx5/core/steering/dr_send.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 28b4312f2563..f558be868a50 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -7067,6 +7067,7 @@ __init int intel_pmu_init(void)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_send.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_send.c
+index 6fa06ba2d346..f57c84e5128b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_send.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_send.c
+@@ -1067,7 +1067,6 @@ static struct mlx5dr_cq *dr_create_cq(struct mlx5_core_dev *mdev,
+ 	int inlen, err, eqn;
+ 	void *cqc, *in;
+ 	__be64 *pas;
+-	int vector;
+ 	u32 i;
  
- 	case INTEL_METEORLAKE:
- 	case INTEL_METEORLAKE_L:
-+	case INTEL_ARROWLAKE_U:
- 		intel_pmu_init_hybrid(hybrid_big_small);
+ 	cq = kzalloc(sizeof(*cq), GFP_KERNEL);
+@@ -1096,8 +1095,7 @@ static struct mlx5dr_cq *dr_create_cq(struct mlx5_core_dev *mdev,
+ 	if (!in)
+ 		goto err_cqwq;
  
- 		x86_pmu.pebs_latency_data = cmt_latency_data;
+-	vector = raw_smp_processor_id() % mlx5_comp_vectors_max(mdev);
+-	err = mlx5_comp_eqn_get(mdev, vector, &eqn);
++	err = mlx5_comp_eqn_get(mdev, 0, &eqn);
+ 	if (err) {
+ 		kvfree(in);
+ 		goto err_cqwq;
 -- 
 2.39.5
 
