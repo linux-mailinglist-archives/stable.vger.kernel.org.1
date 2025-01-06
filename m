@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-107060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76794A02A01
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:29:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8005A02AA8
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD5C57A21DD
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15DC01651F8
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E3686347;
-	Mon,  6 Jan 2025 15:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0CC717625C;
+	Mon,  6 Jan 2025 15:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FeZXEl4t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zajl3G5I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5621582D98;
-	Mon,  6 Jan 2025 15:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5870B165F1F;
+	Mon,  6 Jan 2025 15:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177332; cv=none; b=h4cLz+vEvXTkF3iOZjcrZc8DY3EWcHkCNhX2QeDgTmvDA/fuhW8T417qsqcEdWpHaHp27gZS0rMVYCih6a76Aao0Qmw5Q6XZibKZsNwnD35qi2tUr64TJf1BpGVV76+q8PHKjsd9LcGzd+WT1vdrvLDaYxITkKbPk3j4SeV5uT4=
+	t=1736177748; cv=none; b=EyorG5pOe1k8vd0QjEL4U+8RGfk/t4E1YFMutfRyw+ndOoId/RchDvrhC4MqDoCcv7FX2BxuoeOINl3GMBa3tDfEYUyoaW3EDwyAcy7KPQnWZ1LDxlPhnWSNqNjieXnNyYCUyHEzWuqiX7KTp96LofzRP3TEAJbgMNEVbN0QlZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177332; c=relaxed/simple;
-	bh=zu2Y6cMTVkjrBvh7s36DCD4TXXiSD+/ttA23ZVoaCok=;
+	s=arc-20240116; t=1736177748; c=relaxed/simple;
+	bh=BCkBJwT5HxQehAA85/iMf0/72qXyh3d82LasBsKO7QI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XZ/p54keWHHHlwVnbKuvi4OrUfzcepQl03quwczz4TqXy1OsZrknth82oAe3XPHpa2hN1v509mR4MzJBi//A+CsG/zew8Xb57/n6EltB3k31y/V4JXoSklKpU0TlRleJ6nlDCc26j+Vn6TDVmwQyXzFMsR9pqG1GVi4kFMzjjd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FeZXEl4t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0089C4CED2;
-	Mon,  6 Jan 2025 15:28:51 +0000 (UTC)
+	 MIME-Version; b=goCIZ+/gFt4qeaLEA9RRKB3svrsoZFFFYvVlDkkaI/wReeKfPdEXBQ0RQkcZK8+gVpz8GBESZ+up60/FdsRr3x+EFnqey/2ZnrYZsUJfp/d1FduzpnJLKsO0p3Ei63QdbJ9JuGbrwcK59UOO8+lAnht6FXIkz4xGleK9IVZ9TJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zajl3G5I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84251C4CED2;
+	Mon,  6 Jan 2025 15:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177332;
-	bh=zu2Y6cMTVkjrBvh7s36DCD4TXXiSD+/ttA23ZVoaCok=;
+	s=korg; t=1736177748;
+	bh=BCkBJwT5HxQehAA85/iMf0/72qXyh3d82LasBsKO7QI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FeZXEl4tdItpTQKA12jcI2l2/sk0xTyrqnn8C//YLjA2EHLrHNl3U42u2oWL1EM6M
-	 cSFd9JtkXVTx215Atpqz9zMWvRM78u1TOKRFYtqMvG4uQrVrDqwC81r3teXgv4qIXQ
-	 V1W1shLFhd6AASHbXzkCzAUVdTIc+fhAoMdM7V1U=
+	b=zajl3G5ItS9L64SITeZELEjz3FFQdp/yNDEmHgTxTiM2/Nvd1c8t89gPpRalB/uI5
+	 euUSvdVfBjftyhhMm9JqzL+l8W2Mt5tUFzZJefM+y5KBYjMJoT5X6RLz9PDey3Hbtc
+	 7NzuYCWp/d6taE1lbt1vC/yKWohsOUWRKckr4pj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Xin Li <xin3.li@intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Shan Kang <shan.kang@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	"H. Peter Anvin (Intel)" <hpa@zytor.com>
-Subject: [PATCH 6.6 097/222] x86/ptrace: Cleanup the definition of the pt_regs structure
-Date: Mon,  6 Jan 2025 16:15:01 +0100
-Message-ID: <20250106151154.268669635@linuxfoundation.org>
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 016/156] RDMA/bnxt_re: Avoid initializing the software queue for user queues
+Date: Mon,  6 Jan 2025 16:15:02 +0100
+Message-ID: <20250106151142.355221876@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,146 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Li <xin3.li@intel.com>
+From: Selvin Xavier <selvin.xavier@broadcom.com>
 
-[ Upstream commit ee63291aa8287cb7ded767d340155fe8681fc075 ]
+[ Upstream commit 5effcacc8a8f3eb2a9f069d7e81a9ac793598dfb ]
 
-struct pt_regs is hard to read because the member or section related
-comments are not aligned with the members.
+Software Queues to hold the WRs needs to be created
+for only kernel queues. Avoid allocating the unnecessary
+memory for user Queues.
 
-The 'cs' and 'ss' members of pt_regs are type of 'unsigned long' while
-in reality they are only 16-bit wide. This works so far as the
-remaining space is unused, but FRED will use the remaining bits for
-other purposes.
-
-To prepare for FRED:
-
-  - Cleanup the formatting
-  - Convert 'cs' and 'ss' to u16 and embed them into an union
-    with a u64
-  - Fixup the related printk() format strings
-
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Originally-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Signed-off-by: Xin Li <xin3.li@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Shan Kang <shan.kang@intel.com>
-Link: https://lore.kernel.org/r/20231205105030.8698-14-xin3.li@intel.com
-Stable-dep-of: dc81e556f2a0 ("x86/fred: Clear WFE in missing-ENDBRANCH #CPs")
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Fixes: 159fb4ceacd7 ("RDMA/bnxt_re: introduce a function to allocate swq")
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/20241204075416.478431-3-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/entry/vsyscall/vsyscall_64.c |  2 +-
- arch/x86/include/asm/ptrace.h         | 48 +++++++++++++++++++--------
- arch/x86/kernel/process_64.c          |  2 +-
- 3 files changed, 37 insertions(+), 15 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 42 +++++++++++++-----------
+ 1 file changed, 23 insertions(+), 19 deletions(-)
 
-diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
-index 1245000a8792..2fb7d53cf333 100644
---- a/arch/x86/entry/vsyscall/vsyscall_64.c
-+++ b/arch/x86/entry/vsyscall/vsyscall_64.c
-@@ -76,7 +76,7 @@ static void warn_bad_vsyscall(const char *level, struct pt_regs *regs,
- 	if (!show_unhandled_signals)
- 		return;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index be374d8ed430..5938db37220d 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -658,13 +658,6 @@ int bnxt_qplib_create_srq(struct bnxt_qplib_res *res,
+ 	rc = bnxt_qplib_alloc_init_hwq(&srq->hwq, &hwq_attr);
+ 	if (rc)
+ 		return rc;
+-
+-	srq->swq = kcalloc(srq->hwq.max_elements, sizeof(*srq->swq),
+-			   GFP_KERNEL);
+-	if (!srq->swq) {
+-		rc = -ENOMEM;
+-		goto fail;
+-	}
+ 	srq->dbinfo.flags = 0;
+ 	bnxt_qplib_rcfw_cmd_prep((struct cmdq_base *)&req,
+ 				 CMDQ_BASE_OPCODE_CREATE_SRQ,
+@@ -693,9 +686,17 @@ int bnxt_qplib_create_srq(struct bnxt_qplib_res *res,
+ 	spin_lock_init(&srq->lock);
+ 	srq->start_idx = 0;
+ 	srq->last_idx = srq->hwq.max_elements - 1;
+-	for (idx = 0; idx < srq->hwq.max_elements; idx++)
+-		srq->swq[idx].next_idx = idx + 1;
+-	srq->swq[srq->last_idx].next_idx = -1;
++	if (!srq->hwq.is_user) {
++		srq->swq = kcalloc(srq->hwq.max_elements, sizeof(*srq->swq),
++				   GFP_KERNEL);
++		if (!srq->swq) {
++			rc = -ENOMEM;
++			goto fail;
++		}
++		for (idx = 0; idx < srq->hwq.max_elements; idx++)
++			srq->swq[idx].next_idx = idx + 1;
++		srq->swq[srq->last_idx].next_idx = -1;
++	}
  
--	printk_ratelimited("%s%s[%d] %s ip:%lx cs:%lx sp:%lx ax:%lx si:%lx di:%lx\n",
-+	printk_ratelimited("%s%s[%d] %s ip:%lx cs:%x sp:%lx ax:%lx si:%lx di:%lx\n",
- 			   level, current->comm, task_pid_nr(current),
- 			   message, regs->ip, regs->cs,
- 			   regs->sp, regs->ax, regs->si, regs->di);
-diff --git a/arch/x86/include/asm/ptrace.h b/arch/x86/include/asm/ptrace.h
-index f4db78b09c8f..b268cd2a2d01 100644
---- a/arch/x86/include/asm/ptrace.h
-+++ b/arch/x86/include/asm/ptrace.h
-@@ -57,17 +57,19 @@ struct pt_regs {
- #else /* __i386__ */
+ 	srq->id = le32_to_cpu(resp.xid);
+ 	srq->dbinfo.hwq = &srq->hwq;
+@@ -1041,13 +1042,14 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
+ 	if (rc)
+ 		return rc;
  
- struct pt_regs {
--/*
-- * C ABI says these regs are callee-preserved. They aren't saved on kernel entry
-- * unless syscall needs a complete, fully filled "struct pt_regs".
-- */
-+	/*
-+	 * C ABI says these regs are callee-preserved. They aren't saved on
-+	 * kernel entry unless syscall needs a complete, fully filled
-+	 * "struct pt_regs".
-+	 */
- 	unsigned long r15;
- 	unsigned long r14;
- 	unsigned long r13;
- 	unsigned long r12;
- 	unsigned long bp;
- 	unsigned long bx;
--/* These regs are callee-clobbered. Always saved on kernel entry. */
-+
-+	/* These regs are callee-clobbered. Always saved on kernel entry. */
- 	unsigned long r11;
- 	unsigned long r10;
- 	unsigned long r9;
-@@ -77,18 +79,38 @@ struct pt_regs {
- 	unsigned long dx;
- 	unsigned long si;
- 	unsigned long di;
--/*
-- * On syscall entry, this is syscall#. On CPU exception, this is error code.
-- * On hw interrupt, it's IRQ number:
-- */
-+
-+	/*
-+	 * orig_ax is used on entry for:
-+	 * - the syscall number (syscall, sysenter, int80)
-+	 * - error_code stored by the CPU on traps and exceptions
-+	 * - the interrupt number for device interrupts
-+	 */
- 	unsigned long orig_ax;
--/* Return frame for iretq */
-+
-+	/* The IRETQ return frame starts here */
- 	unsigned long ip;
--	unsigned long cs;
-+
-+	union {
-+		/* The full 64-bit data slot containing CS */
-+		u64		csx;
-+		/* CS selector */
-+		u16		cs;
-+	};
-+
- 	unsigned long flags;
- 	unsigned long sp;
--	unsigned long ss;
--/* top of stack page */
-+
-+	union {
-+		/* The full 64-bit data slot containing SS */
-+		u64		ssx;
-+		/* SS selector */
-+		u16		ss;
-+	};
-+
-+	/*
-+	 * Top of stack on IDT systems.
-+	 */
- };
+-	rc = bnxt_qplib_alloc_init_swq(sq);
+-	if (rc)
+-		goto fail_sq;
+-
+-	if (psn_sz)
+-		bnxt_qplib_init_psn_ptr(qp, psn_sz);
++	if (!sq->hwq.is_user) {
++		rc = bnxt_qplib_alloc_init_swq(sq);
++		if (rc)
++			goto fail_sq;
  
- #endif /* !__i386__ */
-diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index d595ef7c1de0..dd19a4db741a 100644
---- a/arch/x86/kernel/process_64.c
-+++ b/arch/x86/kernel/process_64.c
-@@ -117,7 +117,7 @@ void __show_regs(struct pt_regs *regs, enum show_regs_mode mode,
++		if (psn_sz)
++			bnxt_qplib_init_psn_ptr(qp, psn_sz);
++	}
+ 	req.sq_size = cpu_to_le32(bnxt_qplib_set_sq_size(sq, qp->wqe_mode));
+ 	pbl = &sq->hwq.pbl[PBL_LVL_0];
+ 	req.sq_pbl = cpu_to_le64(pbl->pg_map_arr[0]);
+@@ -1073,9 +1075,11 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
+ 		rc = bnxt_qplib_alloc_init_hwq(&rq->hwq, &hwq_attr);
+ 		if (rc)
+ 			goto sq_swq;
+-		rc = bnxt_qplib_alloc_init_swq(rq);
+-		if (rc)
+-			goto fail_rq;
++		if (!rq->hwq.is_user) {
++			rc = bnxt_qplib_alloc_init_swq(rq);
++			if (rc)
++				goto fail_rq;
++		}
  
- 	printk("%sFS:  %016lx(%04x) GS:%016lx(%04x) knlGS:%016lx\n",
- 	       log_lvl, fs, fsindex, gs, gsindex, shadowgs);
--	printk("%sCS:  %04lx DS: %04x ES: %04x CR0: %016lx\n",
-+	printk("%sCS:  %04x DS: %04x ES: %04x CR0: %016lx\n",
- 		log_lvl, regs->cs, ds, es, cr0);
- 	printk("%sCR2: %016lx CR3: %016lx CR4: %016lx\n",
- 		log_lvl, cr2, cr3, cr4);
+ 		req.rq_size = cpu_to_le32(rq->max_wqe);
+ 		pbl = &rq->hwq.pbl[PBL_LVL_0];
 -- 
 2.39.5
 
