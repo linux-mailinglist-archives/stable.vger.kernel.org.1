@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-106907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F18E1A02946
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:21:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5638DA02C3E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:52:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE3573A2308
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:21:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1166216559E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE9D78F49;
-	Mon,  6 Jan 2025 15:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93391DE8AB;
+	Mon,  6 Jan 2025 15:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zb8DoPHR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vi4qUTax"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECF61487F4;
-	Mon,  6 Jan 2025 15:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D7F149C7B;
+	Mon,  6 Jan 2025 15:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176870; cv=none; b=F+Ziuidl+hmDnvLOWeTTbqZfI2tZDXMkrb/dKOTAeIX4Z/s45ARr6/kBXKxJnX6OBTBLnMcjVk8ElfqbI5s9j0sO5jWzuhz7Xt094EYV6QxGfPpYD9TVekyn15VXiFF6GoR9tGN2qIJkHM/5gMOHr69F9Y2gwbV9VOAKYhwG/e4=
+	t=1736178657; cv=none; b=HJ2mxxPZKJP7ddbzG4cos11Nba/WtiPH81Kq91Li15BMXYG/5E/inEtz8RAKbhuBn9vwYnxtvXZAhnMH0HTGeh1goJU0YW/JnUPamjJkLWEgLViR2aEL5UxJsN0CvhQq1GQf7+aG+LYHu5IeHBHgJmDs7BnfqTz8WXbh2GydvNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176870; c=relaxed/simple;
-	bh=EY39v9bDx1+4qNStfO7XeaQxWnfVOWqrQfTW7v7Xltw=;
+	s=arc-20240116; t=1736178657; c=relaxed/simple;
+	bh=Scrcg/ETeZQbUGi6GfNcu9HR9bH7wkhwwbJl6bN/sfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KWEeIL9w7kFsvrAw6RoG3ltKuJhjKa4YQN9tbRR5N1b50hX30wQRoSXn/MV56uF+MMuVr1NSlgT+OILo3YZ8p7YzkDPGhkgO7QmC6JD7GPNU/oTcGMUDoCQnTN6/zBY5naxRwyz274+DFdR+PD2YmBciJfrugxVvh+r0Vi4trVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zb8DoPHR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13CE4C4CED2;
-	Mon,  6 Jan 2025 15:21:09 +0000 (UTC)
+	 MIME-Version; b=a/TbuaHFUkoWr5zmyFrntAmMRXe5cdkX8PDTfg0cwvg1qKXUeBBJluGD1dj30PwPwfFzk3WKLm9fUchiFfghgotz+tFH631jHjQrdgT1twK/DPvsg8bYwu5HADYPqBsVCyArPJyuhl6GtrnsmoHu6LNpScX/ieC0cWIDmTibiGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vi4qUTax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD63C4CEDF;
+	Mon,  6 Jan 2025 15:50:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176870;
-	bh=EY39v9bDx1+4qNStfO7XeaQxWnfVOWqrQfTW7v7Xltw=;
+	s=korg; t=1736178657;
+	bh=Scrcg/ETeZQbUGi6GfNcu9HR9bH7wkhwwbJl6bN/sfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zb8DoPHRoXNRFFLvQM/7TW4XyOJKcNt58MEAfi/DV+lpxBE8+hIaYvADR4r4tnLal
-	 FG4Tx3ALa2c4zSsDADgIZdRgceVISI4Xak2ghv7MYHSmepg1i+AE5vrQ5nhtrdWrcV
-	 ArLoCydxb/sSVDSLXKWme9uz0ihLIKgxt9roni8Y=
+	b=Vi4qUTax4GbtdldvajPuGzaRRTd1N+wWSoYdj+GLezKYkUXQEWqq+De6uC/I4N83V
+	 sVLY/APJ6MeuBNbyqoz/AZAxEpsKAwE/Ldsol77rDXhPmzeUshE+tDMY9snX+tH7cd
+	 krLAwTA4PsmSK7YkK77gYha1XIYBt61S17roVxNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 26/81] net: stmmac: platform: provide devm_stmmac_probe_config_dt()
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+9260555647a5132edd48@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 050/168] nilfs2: prevent use of deleted inode
 Date: Mon,  6 Jan 2025 16:15:58 +0100
-Message-ID: <20250106151130.426193634@linuxfoundation.org>
+Message-ID: <20250106151140.353620979@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit d74065427374da6659a2d7fad4ec55c8926d43c4 ]
+commit 901ce9705fbb9f330ff1f19600e5daf9770b0175 upstream.
 
-Provide a devres variant of stmmac_probe_config_dt() that allows users to
-skip calling stmmac_remove_config_dt() at driver detach.
+syzbot reported a WARNING in nilfs_rmdir. [1]
 
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://lore.kernel.org/r/20230623100417.93592-9-brgl@bgdev.pl
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 2b6ffcd7873b ("net: stmmac: restructure the error path of stmmac_probe_config_dt()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Because the inode bitmap is corrupted, an inode with an inode number that
+should exist as a ".nilfs" file was reassigned by nilfs_mkdir for "file0",
+causing an inode duplication during execution.  And this causes an
+underflow of i_nlink in rmdir operations.
+
+The inode is used twice by the same task to unmount and remove directories
+".nilfs" and "file0", it trigger warning in nilfs_rmdir.
+
+Avoid to this issue, check i_nlink in nilfs_iget(), if it is 0, it means
+that this inode has been deleted, and iput is executed to reclaim it.
+
+[1]
+WARNING: CPU: 1 PID: 5824 at fs/inode.c:407 drop_nlink+0xc4/0x110 fs/inode.c:407
+...
+Call Trace:
+ <TASK>
+ nilfs_rmdir+0x1b0/0x250 fs/nilfs2/namei.c:342
+ vfs_rmdir+0x3a3/0x510 fs/namei.c:4394
+ do_rmdir+0x3b5/0x580 fs/namei.c:4453
+ __do_sys_rmdir fs/namei.c:4472 [inline]
+ __se_sys_rmdir fs/namei.c:4470 [inline]
+ __x64_sys_rmdir+0x47/0x50 fs/namei.c:4470
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Link: https://lkml.kernel.org/r/20241209065759.6781-1-konishi.ryusuke@gmail.com
+Fixes: d25006523d0b ("nilfs2: pathname operations")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+9260555647a5132edd48@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9260555647a5132edd48
+Tested-by: syzbot+9260555647a5132edd48@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/stmicro/stmmac/stmmac_platform.c | 41 +++++++++++++++++++
- .../ethernet/stmicro/stmmac/stmmac_platform.h |  2 +
- 2 files changed, 43 insertions(+)
+ fs/nilfs2/inode.c |    8 +++++++-
+ fs/nilfs2/namei.c |    5 +++++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index 0046a4ee6e64..5b4517b0ca08 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -8,6 +8,7 @@
-   Author: Giuseppe Cavallaro <peppe.cavallaro@st.com>
- *******************************************************************************/
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -618,8 +618,14 @@ struct inode *nilfs_iget(struct super_bl
+ 	inode = nilfs_iget_locked(sb, root, ino);
+ 	if (unlikely(!inode))
+ 		return ERR_PTR(-ENOMEM);
+-	if (!(inode->i_state & I_NEW))
++
++	if (!(inode->i_state & I_NEW)) {
++		if (!inode->i_nlink) {
++			iput(inode);
++			return ERR_PTR(-ESTALE);
++		}
+ 		return inode;
++	}
  
-+#include <linux/device.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/module.h>
-@@ -628,6 +629,39 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 	return ret;
- }
+ 	err = __nilfs_read_inode(sb, root, ino, inode);
+ 	if (unlikely(err)) {
+--- a/fs/nilfs2/namei.c
++++ b/fs/nilfs2/namei.c
+@@ -67,6 +67,11 @@ nilfs_lookup(struct inode *dir, struct d
+ 		inode = NULL;
+ 	} else {
+ 		inode = nilfs_iget(dir->i_sb, NILFS_I(dir)->i_root, ino);
++		if (inode == ERR_PTR(-ESTALE)) {
++			nilfs_error(dir->i_sb,
++					"deleted inode referenced: %lu", ino);
++			return ERR_PTR(-EIO);
++		}
+ 	}
  
-+static void devm_stmmac_remove_config_dt(void *data)
-+{
-+	struct plat_stmmacenet_data *plat = data;
-+
-+	/* Platform data argument is unused */
-+	stmmac_remove_config_dt(NULL, plat);
-+}
-+
-+/**
-+ * devm_stmmac_probe_config_dt
-+ * @pdev: platform_device structure
-+ * @mac: MAC address to use
-+ * Description: Devres variant of stmmac_probe_config_dt(). Does not require
-+ * the user to call stmmac_remove_config_dt() at driver detach.
-+ */
-+struct plat_stmmacenet_data *
-+devm_stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
-+{
-+	struct plat_stmmacenet_data *plat;
-+	int ret;
-+
-+	plat = stmmac_probe_config_dt(pdev, mac);
-+	if (IS_ERR(plat))
-+		return plat;
-+
-+	ret = devm_add_action_or_reset(&pdev->dev,
-+				       devm_stmmac_remove_config_dt, plat);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	return plat;
-+}
-+
- /**
-  * stmmac_remove_config_dt - undo the effects of stmmac_probe_config_dt()
-  * @pdev: platform_device structure
-@@ -650,12 +684,19 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 	return ERR_PTR(-EINVAL);
- }
- 
-+struct plat_stmmacenet_data *
-+devm_stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
-+{
-+	return ERR_PTR(-EINVAL);
-+}
-+
- void stmmac_remove_config_dt(struct platform_device *pdev,
- 			     struct plat_stmmacenet_data *plat)
- {
- }
- #endif /* CONFIG_OF */
- EXPORT_SYMBOL_GPL(stmmac_probe_config_dt);
-+EXPORT_SYMBOL_GPL(devm_stmmac_probe_config_dt);
- EXPORT_SYMBOL_GPL(stmmac_remove_config_dt);
- 
- int stmmac_get_platform_resources(struct platform_device *pdev,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
-index 3fff3f59d73d..2102c6d41464 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
-@@ -13,6 +13,8 @@
- 
- struct plat_stmmacenet_data *
- stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac);
-+struct plat_stmmacenet_data *
-+devm_stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac);
- void stmmac_remove_config_dt(struct platform_device *pdev,
- 			     struct plat_stmmacenet_data *plat);
- 
--- 
-2.39.5
-
+ 	return d_splice_alias(inode, dentry);
 
 
 
