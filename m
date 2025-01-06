@@ -1,149 +1,103 @@
-Return-Path: <stable+bounces-106814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04EE9A02339
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 11:39:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA131A023D1
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 12:04:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9613163670
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 10:39:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EAC1163828
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 11:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 791F91D7E45;
-	Mon,  6 Jan 2025 10:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 782A41DC9BE;
+	Mon,  6 Jan 2025 11:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NExl+j3f"
+	dkim=pass (2048-bit key) header.d=mess.org header.i=@mess.org header.b="ZDBxQKNq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gofer.mess.org (gofer.mess.org [88.97.38.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397DCB676
-	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 10:39:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485A61DB37B;
+	Mon,  6 Jan 2025 11:04:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=88.97.38.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736159962; cv=none; b=FGj8D/ycsUBQyOs0MSS/M8lKuqx6bICMKW8tzGtpUxmBF+h9vqWKtGbR3B8YJkkeMO+nKbqKps2lAVRKkO/w3huuUKYrr1ub543VsbEpGfH9Sqjbn7cvSM0K11AU0N/W1kOzvlZoq1+lzP9GyD+96cDqyuECDj7S43oVpJWfsU4=
+	t=1736161485; cv=none; b=mzs5H9CF2TgBHFix/CQuZQag+irBXsm3TmVaORhiM7b8hdg1MgUM/bi0ZM0jT9as7M3zueN+DWlo1qJgSAA25bAzaezrpgtEWfypRmg7YnO4YGmBmkdnz8oNpfz2Oq3JLg1HtrvpD9HrsUJ36PgXq1kAsOHSubpVDt743x9TiAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736159962; c=relaxed/simple;
-	bh=IQNkr7kKrqCaGQYh/FA1htr2skyMo15RQ9zQJVhJsjU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UTmXv1uNWDkZKTPdzOEEt3Ok+vQslcaZtAzA7qvifKbpnv16mzyiaHF6tgNxr+c9yYnoEYmAMxwYmL/cweWA1xp3G4vxgDPrpK3EvJMq2WMEPiD1fED5w3NpXING0ij91hHd23Cwkdckk+xwjML39xXDfBln6nMKc6NJtkOSToo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NExl+j3f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6775C4CED2;
-	Mon,  6 Jan 2025 10:39:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736159962;
-	bh=IQNkr7kKrqCaGQYh/FA1htr2skyMo15RQ9zQJVhJsjU=;
-	h=Subject:To:Cc:From:Date:From;
-	b=NExl+j3frdJMGNIt5CbrD4u5lf8cbOCpj0RDXw9CPbeN3dsHLjsqpnaAs5KOUxHcs
-	 LMp47eQ3he3G/LavyDOHoUkzxHKqx6LDu8rAaYW2HwPmfQRstCe+H7g2gIkjn3vmQh
-	 4NN9foWCMOG9MhTi9aYuRnDlm7ndAlVUUIr8AA2k=
-Subject: FAILED: patch "[PATCH] drm: adv7511: Fix use-after-free in adv7533_attach_dsi()" failed to apply to 5.10-stable tree
-To: biju.das.jz@bp.renesas.com,dmitry.baryshkov@linaro.org,laurent.pinchart+renesas@ideasonboard.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 06 Jan 2025 11:39:06 +0100
-Message-ID: <2025010606-rifling-dreamily-f58e@gregkh>
+	s=arc-20240116; t=1736161485; c=relaxed/simple;
+	bh=267DDSQ5NuLN4Q41BfeZlM2g9PXuZD1KJm9DIAIAa5s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sqi2RfmKnsKLU8FrnW0iCOzZ2N1KkcjktUrGIo46E9233vpYvpqnUbfFWZLJxoKKL4jYZHo7kSQzTijXjFipiSLZvULBF+Xc3xus0JfYXQ1BH28275iWx/px3GzlwbXJuzs2J9l3Yoz1K+yUjpHyJYuVCJ6X3+MYjDbEAj9oX6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mess.org; spf=pass smtp.mailfrom=mess.org; dkim=pass (2048-bit key) header.d=mess.org header.i=@mess.org header.b=ZDBxQKNq; arc=none smtp.client-ip=88.97.38.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mess.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mess.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mess.org; s=2020;
+	t=1736160973; bh=267DDSQ5NuLN4Q41BfeZlM2g9PXuZD1KJm9DIAIAa5s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZDBxQKNqoD7016XwzkP1jYxuEKBsCkWg9nkx3IWuptub4OsALc56hLzcIQoakMiDf
+	 X7cUTf/qg80fpIyPZ2X5Pj6jHS9TU/XXwO8TD8Ph3wvmDk0YCHAmNCB62lsi0uHPtu
+	 fhywXJg1gG61A3lRFcIe60XRM41rJLwk5XHTgwzhhVvIpiHaHYGMklECvLh8Po22jX
+	 zf0CLzxJhS+KVAqf/y1QpJMpBxOHc7QoS2kZZ8kfjDujg8hU2pod6ZCUEU51xI1mK5
+	 oSCOFmdUj0E9iMW2Vjr1OABKgziL5Opw4J2V2cM/iPc5XitnuXi5Bx6imhl+SGQ9Ib
+	 wpbql7KIBa0Xg==
+Received: by gofer.mess.org (Postfix, from userid 1000)
+	id 865D91002BF; Mon,  6 Jan 2025 10:56:13 +0000 (GMT)
+Date: Mon, 6 Jan 2025 10:56:13 +0000
+From: Sean Young <sean@mess.org>
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: mchehab@kernel.org, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] media: lirc: Fix error handling in lirc_register()
+Message-ID: <Z3u2zVQyammNo_o3@gofer.mess.org>
+References: <20250105100101.275309-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250105100101.275309-1-make24@iscas.ac.cn>
+
+Hi,
+
+On Sun, Jan 05, 2025 at 06:01:01PM +0800, Ma Ke wrote:
+> When cdev_device_add() failed, calling put_device() to explicitly
+> release dev->lirc_dev. Otherwise, it could cause the fault of the
+> reference count.
+> 
+> Found by code review.
+
+Interesting find, thanks for finding and reporting.
+
+So I think the idea is right, but there is a problem. lirc_release_device()
+will do a put_device() on the rcdev, but no corresponding get_device() is
+done in this code path.
 
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Sean
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 81adbd3ff21c1182e06aa02c6be0bfd9ea02d8e8
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025010606-rifling-dreamily-f58e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 81adbd3ff21c1182e06aa02c6be0bfd9ea02d8e8 Mon Sep 17 00:00:00 2001
-From: Biju Das <biju.das.jz@bp.renesas.com>
-Date: Tue, 19 Nov 2024 19:20:29 +0000
-Subject: [PATCH] drm: adv7511: Fix use-after-free in adv7533_attach_dsi()
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-The host_node pointer was assigned and freed in adv7533_parse_dt(), and
-later, adv7533_attach_dsi() uses the same. Fix this use-after-free issue
-by dropping of_node_put() in adv7533_parse_dt() and calling of_node_put()
-in error path of probe() and also in the remove().
-
-Fixes: 1e4d58cd7f88 ("drm/bridge: adv7533: Create a MIPI DSI device")
-Cc: stable@vger.kernel.org
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241119192040.152657-2-biju.das.jz@bp.renesas.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-index eb5919b38263..a13b3d8ab6ac 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-@@ -1241,8 +1241,10 @@ static int adv7511_probe(struct i2c_client *i2c)
- 		return ret;
- 
- 	ret = adv7511_init_regulators(adv7511);
--	if (ret)
--		return dev_err_probe(dev, ret, "failed to init regulators\n");
-+	if (ret) {
-+		dev_err_probe(dev, ret, "failed to init regulators\n");
-+		goto err_of_node_put;
-+	}
- 
- 	/*
- 	 * The power down GPIO is optional. If present, toggle it from active to
-@@ -1363,6 +1365,8 @@ static int adv7511_probe(struct i2c_client *i2c)
- 	i2c_unregister_device(adv7511->i2c_edid);
- uninit_regulators:
- 	adv7511_uninit_regulators(adv7511);
-+err_of_node_put:
-+	of_node_put(adv7511->host_node);
- 
- 	return ret;
- }
-@@ -1371,6 +1375,8 @@ static void adv7511_remove(struct i2c_client *i2c)
- {
- 	struct adv7511 *adv7511 = i2c_get_clientdata(i2c);
- 
-+	of_node_put(adv7511->host_node);
-+
- 	adv7511_uninit_regulators(adv7511);
- 
- 	drm_bridge_remove(&adv7511->bridge);
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7533.c b/drivers/gpu/drm/bridge/adv7511/adv7533.c
-index 4481489aaf5e..5f195e91b3e6 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7533.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7533.c
-@@ -181,8 +181,6 @@ int adv7533_parse_dt(struct device_node *np, struct adv7511 *adv)
- 	if (!adv->host_node)
- 		return -ENODEV;
- 
--	of_node_put(adv->host_node);
--
- 	adv->use_timing_gen = !of_property_read_bool(np,
- 						"adi,disable-timing-generator");
- 
-
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: a6ddd4fecbb0 ("media: lirc: remove last remnants of lirc kapi")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+>  drivers/media/rc/lirc_dev.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/media/rc/lirc_dev.c b/drivers/media/rc/lirc_dev.c
+> index a2257dc2f25d..ed839e15fa16 100644
+> --- a/drivers/media/rc/lirc_dev.c
+> +++ b/drivers/media/rc/lirc_dev.c
+> @@ -765,6 +765,7 @@ int lirc_register(struct rc_dev *dev)
+>  	return 0;
+>  
+>  out_ida:
+> +	put_device(&dev->lirc_dev);
+>  	ida_free(&lirc_ida, minor);
+>  	return err;
+>  }
+> -- 
+> 2.25.1
 
