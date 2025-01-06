@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-107692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8C4FA02D31
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:02:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06EFAA02CAF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:56:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 646CE3A1F8F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:00:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DC587A21EA
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B13B1DC759;
-	Mon,  6 Jan 2025 16:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6F014A617;
+	Mon,  6 Jan 2025 15:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zI9PJBx+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvDVsr9b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046B81DACBB;
-	Mon,  6 Jan 2025 16:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8942186332;
+	Mon,  6 Jan 2025 15:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179237; cv=none; b=IOuHQS+l11tOqWhF6rbjq13kf/+FRiqLIjmSwxc7ybCwg+EYYC+6TaORC4oDilYpxMSSJT7zqJhyePzcVs7HuLyDFHEvOWlgweIl6dixwplyTYqHvc0nMPNk1fye8YAw/hsgrvkfF5eaEaunxo10fg7prYgO+SvWIMR9xPzWHJg=
+	t=1736178992; cv=none; b=jmcFoKoqTuE/moJzEAzX2MAo1zOHrmHhU/Y4yWhETFVvgQuyiY8+QHhkczbWNi5i30XgT3DiLKsl9rfnNPKLym8KDZuaj9onehFnxBKdjQzh2NUVKAATKeVsbhSGubvQrvHnuG1hNnvVyxsCsL6NVyPi0tTQoDPRzWXhbg+SmdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179237; c=relaxed/simple;
-	bh=piRadL81f02npEo/sLs6rBYKiy2p5ZvwQGOmE5crvrA=;
+	s=arc-20240116; t=1736178992; c=relaxed/simple;
+	bh=V9f0zbSmswK12sNXLvuM43kKBuj6R7JYlPqbiJy85O0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X7UDjn527SH3fG02Wb+Gtejwg0TxyOGjjCcDARcGeSGmXqzXika6FjALcv0ba8/YB+k9D9jWZjvcYQjYSMHZiQAVIOErBN3lZ9oGSEZeoa2f2AC+60A+3Q1Is3ns5hibI/5HZRIgmnWOOwt4Ix/n+T8DAGMZ6fNQl/2jFwUgdgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zI9PJBx+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 840DDC4CED6;
-	Mon,  6 Jan 2025 16:00:36 +0000 (UTC)
+	 MIME-Version; b=N/DfuwpUHMt0eOb0UjriAVpTdXjP+APIwVZRwABGy1TGAHL6LP20VPLcUd7iK6wp7KotMtmXNWbjKF48FYkYOfEhF2gzJqxbZ1m8kRUmV5fmbR2L50Bx6rUTOv7uPeI4MhlqZXKjj6Opw5nEOd/zVfsgZVbpilC7138P5Z3S9VY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvDVsr9b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3A9C4CED2;
+	Mon,  6 Jan 2025 15:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179236;
-	bh=piRadL81f02npEo/sLs6rBYKiy2p5ZvwQGOmE5crvrA=;
+	s=korg; t=1736178992;
+	bh=V9f0zbSmswK12sNXLvuM43kKBuj6R7JYlPqbiJy85O0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zI9PJBx+0KwSzRa1sShp6l4UVMVCoi0bKxBMmcUIh9vf+9e2FJ6kfsftmdxFlOBLc
-	 heHun3iKlfTX3xcdIR72yRv/0wFWpGgAR2UseaGbYJhFnytzGdaRHEsRaZSBvr9gLb
-	 gRhtYO6sZ0ku/HUc7piCvsZVOGdnNnGIIIZQztBg=
+	b=ZvDVsr9bQEefuqZT9jCHIbPY2bGDhRyKqUvBhwFjD9+bpFmATg9O4bAYFctzikL4Z
+	 7/Tw1Wk9Eo1GoxDjqpk+RJbn7uQNmWLE/SkhfsrnyQmy03wFym7cqwIwEQhv4WxyN8
+	 zeI0IGwK7JoMHhMozBPtb6e4PBZ4atw7T2Y1x/H8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Stefan Ekenberg <stefan.ekenberg@axis.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 71/93] drm/bridge: adv7511_audio: Update Audio InfoFrame properly
+Subject: [PATCH 5.15 159/168] modpost: fix input MODULE_DEVICE_TABLE() built for 64-bit on 32-bit host
 Date: Mon,  6 Jan 2025 16:17:47 +0100
-Message-ID: <20250106151131.384120424@linuxfoundation.org>
+Message-ID: <20250106151144.436251029@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +61,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Ekenberg <stefan.ekenberg@axis.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 902806baf3c1e8383c1fe3ff0b6042b8cb5c2707 ]
+[ Upstream commit 77dc55a978e69625f9718460012e5ef0172dc4de ]
 
-AUDIO_UPDATE bit (Bit 5 of MAIN register 0x4A) needs to be set to 1
-while updating Audio InfoFrame information and then set to 0 when done.
-Otherwise partially updated Audio InfoFrames could be sent out. Two
-cases where this rule were not followed are fixed:
- - In adv7511_hdmi_hw_params() make sure AUDIO_UPDATE bit is updated
-   before/after setting ADV7511_REG_AUDIO_INFOFRAME.
- - In audio_startup() use the correct register for clearing
-   AUDIO_UPDATE bit.
+When building a 64-bit kernel on a 32-bit build host, incorrect
+input MODULE_ALIAS() entries may be generated.
 
-The problem with corrupted audio infoframes were discovered by letting
-a HDMI logic analyser check the output of ADV7535.
+For example, when compiling a 64-bit kernel with CONFIG_INPUT_MOUSEDEV=m
+on a 64-bit build machine, you will get the correct output:
 
-Note that this patchs replaces writing REG_GC(1) with
-REG_INFOFRAME_UPDATE. Bit 5 of REG_GC(1) is positioned within field
-GC_PP[3:0] and that field doesn't control audio infoframe and is read-
-only. My conclusion therefore was that the author if this code meant to
-clear bit 5 of REG_INFOFRAME_UPDATE from the very beginning.
+  $ grep MODULE_ALIAS drivers/input/mousedev.mod.c
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*2,*k*110,*r*0,*1,*a*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*2,*k*r*8,*a*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*3,*k*14A,*r*a*0,*1,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*3,*k*145,*r*a*0,*1,*18,*1C,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*3,*k*110,*r*a*0,*1,*m*l*s*f*w*");
 
-Tested-by: Biju Das <biju.das.jz@bp.renesas.com>
-Fixes: 53c515befe28 ("drm/bridge: adv7511: Add Audio support")
-Signed-off-by: Stefan Ekenberg <stefan.ekenberg@axis.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241119-adv7511-audio-info-frame-v4-1-4ae68e76c89c@axis.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+However, building the same kernel on a 32-bit machine results in
+incorrect output:
+
+  $ grep MODULE_ALIAS drivers/input/mousedev.mod.c
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*2,*k*110,*130,*r*0,*1,*a*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*2,*k*r*8,*a*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*3,*k*14A,*16A,*r*a*0,*1,*20,*21,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*3,*k*145,*165,*r*a*0,*1,*18,*1C,*20,*21,*38,*3C,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*3,*k*110,*130,*r*a*0,*1,*20,*21,*m*l*s*f*w*");
+
+A similar issue occurs with CONFIG_INPUT_JOYDEV=m. On a 64-bit build
+machine, the output is:
+
+  $ grep MODULE_ALIAS drivers/input/joydev.mod.c
+  MODULE_ALIAS("input:b*v*p*e*-e*3,*k*r*a*0,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*3,*k*r*a*2,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*3,*k*r*a*8,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*3,*k*r*a*6,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*k*120,*r*a*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*k*130,*r*a*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*k*2C0,*r*a*m*l*s*f*w*");
+
+However, on a 32-bit machine, the output is incorrect:
+
+  $ grep MODULE_ALIAS drivers/input/joydev.mod.c
+  MODULE_ALIAS("input:b*v*p*e*-e*3,*k*r*a*0,*20,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*3,*k*r*a*2,*22,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*3,*k*r*a*8,*28,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*3,*k*r*a*6,*26,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*k*11F,*13F,*r*a*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*k*11F,*13F,*r*a*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*k*2C0,*2E0,*r*a*m*l*s*f*w*");
+
+When building a 64-bit kernel, BITS_PER_LONG is defined as 64. However,
+on a 32-bit build machine, the constant 1L is a signed 32-bit value.
+Left-shifting it beyond 32 bits causes wraparound, and shifting by 31
+or 63 bits makes it a negative value.
+
+The fix in commit e0e92632715f ("[PATCH] PATCH: 1 line 2.6.18 bugfix:
+modpost-64bit-fix.patch") is incorrect; it only addresses cases where
+a 64-bit kernel is built on a 64-bit build machine, overlooking cases
+on a 32-bit build machine.
+
+Using 1ULL ensures a 64-bit width on both 32-bit and 64-bit machines,
+avoiding the wraparound issue.
+
+Fixes: e0e92632715f ("[PATCH] PATCH: 1 line 2.6.18 bugfix: modpost-64bit-fix.patch")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Stable-dep-of: bf36b4bf1b9a ("modpost: fix the missed iteration for the max bit in do_input()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/adv7511/adv7511_audio.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ scripts/mod/file2alias.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-index f101dd2819b5..0a1ac11e2e4f 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-@@ -147,7 +147,16 @@ int adv7511_hdmi_hw_params(struct device *dev, void *data,
- 			   ADV7511_AUDIO_CFG3_LEN_MASK, len);
- 	regmap_update_bits(adv7511->regmap, ADV7511_REG_I2C_FREQ_ID_CFG,
- 			   ADV7511_I2C_FREQ_ID_CFG_RATE_MASK, rate << 4);
--	regmap_write(adv7511->regmap, 0x73, 0x1);
-+
-+	/* send current Audio infoframe values while updating */
-+	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
-+			   BIT(5), BIT(5));
-+
-+	regmap_write(adv7511->regmap, ADV7511_REG_AUDIO_INFOFRAME(0), 0x1);
-+
-+	/* use Audio infoframe updated info */
-+	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
-+			   BIT(5), 0);
- 
- 	return 0;
+diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
+index d911485646c5..68a6b029397a 100644
+--- a/scripts/mod/file2alias.c
++++ b/scripts/mod/file2alias.c
+@@ -733,7 +733,7 @@ static void do_input(char *alias,
+ 	for (i = min / BITS_PER_LONG; i < max / BITS_PER_LONG + 1; i++)
+ 		arr[i] = TO_NATIVE(arr[i]);
+ 	for (i = min; i < max; i++)
+-		if (arr[i / BITS_PER_LONG] & (1L << (i%BITS_PER_LONG)))
++		if (arr[i / BITS_PER_LONG] & (1ULL << (i%BITS_PER_LONG)))
+ 			sprintf(alias + strlen(alias), "%X,*", i);
  }
-@@ -178,8 +187,9 @@ static int audio_startup(struct device *dev, void *data)
- 	regmap_update_bits(adv7511->regmap, ADV7511_REG_GC(0),
- 				BIT(7) | BIT(6), BIT(7));
- 	/* use Audio infoframe updated info */
--	regmap_update_bits(adv7511->regmap, ADV7511_REG_GC(1),
-+	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
- 				BIT(5), 0);
-+
- 	/* enable SPDIF receiver */
- 	if (adv7511->audio_source == ADV7511_AUDIO_SOURCE_SPDIF)
- 		regmap_update_bits(adv7511->regmap, ADV7511_REG_AUDIO_CONFIG,
+ 
 -- 
 2.39.5
 
