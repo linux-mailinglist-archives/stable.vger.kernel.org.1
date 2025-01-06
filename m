@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74DECA02AFF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 092F7A02A35
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A33FB18822F0
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:39:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2C331886BC9
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373CD14F12D;
-	Mon,  6 Jan 2025 15:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF2C01DE2BF;
+	Mon,  6 Jan 2025 15:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zEw8vDKj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A75yEtmq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9627DF71;
-	Mon,  6 Jan 2025 15:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD961DDC1A;
+	Mon,  6 Jan 2025 15:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177967; cv=none; b=YakwHAxzxkj+ms5RVdsDbF1uBg0QjLe6mFetmfXMuu+VzmqA+nt2cKhKsK0JUHCX6/fpIQTEDjWz1WMuQpSzC0yLPviCaE8d3WYBF1Ubpio9trUxnRFd9ZETvxeWf9aUlRvbe0Abe/uQKKUqDoVApg1IUx8sAnnZ/dun2BNoHHU=
+	t=1736177445; cv=none; b=Ln20SQG/myeoe9Cdf2C+Qnttjw89YD3B+E7IDEOjXoX9rf6lrxWA8bC/WKan4cXk4ccILC84FR+IAdbupOLVseWle5DuanNxoMJ1tsDbPZ6GHAHJLnWAwda2klSQuYoaRkNkKBUnI1kH1BRfzlnNHvRKYlTsyBHxH6lxg4V3TnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177967; c=relaxed/simple;
-	bh=GU3HtvhEsZxhVFqPrIKsIQuNLKVykNK00SKmCfYGbPU=;
+	s=arc-20240116; t=1736177445; c=relaxed/simple;
+	bh=ehePgixqOm3ho1frfV8OtpOWVPVLbaNIzzB9/AtqAkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GsYBnedtqe/ukZNyAi47aXs10pidj9iCvh+MzNtQgdHRvIU9XaK6q54oO38FV32Eeq/aE2BTIJVsfvxdKA/ZUIcDwyquQGf52Ohr16XGZbNkeroS49qKQq4pBJJWM0IdHueI7Yg2sigBAAZVgsS4LrqidI8xUMtg6mqRTIvM5jQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zEw8vDKj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A1FC4CED2;
-	Mon,  6 Jan 2025 15:39:24 +0000 (UTC)
+	 MIME-Version; b=XHRoy6wpheAkB0I2am66TtFTS/7Nob6CEIT6HqiOqnLKqSFSJY877z6l77g9MzjjWA3f16bg9qjQA622TBS3figDJptL/loGXDjCSlOcVkjglPd+yMyG03AzdqoWdMtHbRU3lVvMKehcCS9MnBGibP16OQagFD45BJIha/nJkFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A75yEtmq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A66CEC4CED2;
+	Mon,  6 Jan 2025 15:30:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177965;
-	bh=GU3HtvhEsZxhVFqPrIKsIQuNLKVykNK00SKmCfYGbPU=;
+	s=korg; t=1736177445;
+	bh=ehePgixqOm3ho1frfV8OtpOWVPVLbaNIzzB9/AtqAkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zEw8vDKjhQ5evP1eUAu5k9LkXZTHvfT/UBUlLBTberAlERKtGoKDgttJ6TBbySdMr
-	 zIbwZ2jx0yXQJRKgr3Yvp+MOh0klK1SDubZIp9UriyZViKrojZj89uBQvGmLotET52
-	 OiX1YbWTZjlEIW0bdyhlTEbF/JhMvVTVI9P7Lug4=
+	b=A75yEtmqgIatFDtY8li7e/TkNcewQVxVtsQnd+ccNspr4SBgSw7lgvtU88BKxkOEZ
+	 aVOVjN2AgAxstFNnAaySV9hXwfnEc3woUtDvF/br1CRpjGlomKsf8yvSdIOOt2g9Mh
+	 xGCkbTOpDOjfr6lgma3J1IeDnZTpZpDMj05zCUvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.g.garry@oracle.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/156] btrfs: handle bio_split() errors
+Subject: [PATCH 6.6 167/222] net: mv643xx_eth: fix an OF node reference leak
 Date: Mon,  6 Jan 2025 16:16:11 +0100
-Message-ID: <20250106151144.934043780@linuxfoundation.org>
+Message-ID: <20250106151157.085311293@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit c7c97ceff98cc459bf5e358e5cbd06fcb651d501 ]
+[ Upstream commit ad5c318086e2e23b577eca33559c5ebf89bc7eb9 ]
 
-Commit e546fe1da9bd ("block: Rework bio_split() return value") changed
-bio_split() so that it can return errors.
+Current implementation of mv643xx_eth_shared_of_add_port() calls
+of_parse_phandle(), but does not release the refcount on error. Call
+of_node_put() in the error path and in mv643xx_eth_shared_of_remove().
 
-Add error handling for it in btrfs_split_bio() and ultimately
-btrfs_submit_chunk(). As the bio is not submitted, the bio counter must
-be decremented to pair btrfs_bio_counter_inc_blocked().
+This bug was found by an experimental verification tool that I am
+developing.
 
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 76723bca2802 ("net: mv643xx_eth: add DT parsing support")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Link: https://patch.msgid.link/20241221081448.3313163-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/bio.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/mv643xx_eth.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/bio.c b/fs/btrfs/bio.c
-index 31f96c2d8691..5fd0b39d8c70 100644
---- a/fs/btrfs/bio.c
-+++ b/fs/btrfs/bio.c
-@@ -81,6 +81,9 @@ static struct btrfs_bio *btrfs_split_bio(struct btrfs_fs_info *fs_info,
+diff --git a/drivers/net/ethernet/marvell/mv643xx_eth.c b/drivers/net/ethernet/marvell/mv643xx_eth.c
+index 3b129a1c3381..07e5051171a4 100644
+--- a/drivers/net/ethernet/marvell/mv643xx_eth.c
++++ b/drivers/net/ethernet/marvell/mv643xx_eth.c
+@@ -2708,9 +2708,15 @@ static struct platform_device *port_platdev[3];
  
- 	bio = bio_split(&orig_bbio->bio, map_length >> SECTOR_SHIFT, GFP_NOFS,
- 			&btrfs_clone_bioset);
-+	if (IS_ERR(bio))
-+		return ERR_CAST(bio);
-+
- 	bbio = btrfs_bio(bio);
- 	btrfs_bio_init(bbio, fs_info, NULL, orig_bbio);
- 	bbio->inode = orig_bbio->inode;
-@@ -684,7 +687,8 @@ static bool btrfs_submit_chunk(struct btrfs_bio *bbio, int mirror_num)
- 				&bioc, &smap, &mirror_num);
- 	if (error) {
- 		ret = errno_to_blk_status(error);
--		goto fail;
-+		btrfs_bio_counter_dec(fs_info);
-+		goto end_bbio;
+ static void mv643xx_eth_shared_of_remove(void)
+ {
++	struct mv643xx_eth_platform_data *pd;
+ 	int n;
+ 
+ 	for (n = 0; n < 3; n++) {
++		if (!port_platdev[n])
++			continue;
++		pd = dev_get_platdata(&port_platdev[n]->dev);
++		if (pd)
++			of_node_put(pd->phy_node);
+ 		platform_device_del(port_platdev[n]);
+ 		port_platdev[n] = NULL;
+ 	}
+@@ -2773,8 +2779,10 @@ static int mv643xx_eth_shared_of_add_port(struct platform_device *pdev,
  	}
  
- 	map_length = min(map_length, length);
-@@ -692,7 +696,15 @@ static bool btrfs_submit_chunk(struct btrfs_bio *bbio, int mirror_num)
- 		map_length = btrfs_append_map_length(bbio, map_length);
+ 	ppdev = platform_device_alloc(MV643XX_ETH_NAME, dev_num);
+-	if (!ppdev)
+-		return -ENOMEM;
++	if (!ppdev) {
++		ret = -ENOMEM;
++		goto put_err;
++	}
+ 	ppdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
+ 	ppdev->dev.of_node = pnp;
  
- 	if (map_length < length) {
--		bbio = btrfs_split_bio(fs_info, bbio, map_length);
-+		struct btrfs_bio *split;
-+
-+		split = btrfs_split_bio(fs_info, bbio, map_length);
-+		if (IS_ERR(split)) {
-+			ret = errno_to_blk_status(PTR_ERR(split));
-+			btrfs_bio_counter_dec(fs_info);
-+			goto end_bbio;
-+		}
-+		bbio = split;
- 		bio = &bbio->bio;
- 	}
+@@ -2796,6 +2804,8 @@ static int mv643xx_eth_shared_of_add_port(struct platform_device *pdev,
  
-@@ -766,6 +778,7 @@ static bool btrfs_submit_chunk(struct btrfs_bio *bbio, int mirror_num)
+ port_err:
+ 	platform_device_put(ppdev);
++put_err:
++	of_node_put(ppd.phy_node);
+ 	return ret;
+ }
  
- 		btrfs_bio_end_io(remaining, ret);
- 	}
-+end_bbio:
- 	btrfs_bio_end_io(bbio, ret);
- 	/* Do not submit another chunk */
- 	return true;
 -- 
 2.39.5
 
