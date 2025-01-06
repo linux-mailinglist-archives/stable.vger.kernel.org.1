@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD385A02B80
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:44:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57DDFA02900
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:18:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB83C1886D99
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:44:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE54E3A165B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:18:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A374165F1F;
-	Mon,  6 Jan 2025 15:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF3D136326;
+	Mon,  6 Jan 2025 15:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0PBhOwTm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTfrr+dp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA50F14A617;
-	Mon,  6 Jan 2025 15:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA582200A3;
+	Mon,  6 Jan 2025 15:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178247; cv=none; b=aNrgMaHAhopVy2I5aMtvxM0HxhpM/sCkBMImWyWPu+OMvHHqXyTgO/HMpR9gkEDbUgfSdHHG/xFTNgH8A/nq1W/TvICAR4JPcwoSYbJMZxixe149zxpvhf8E6yuRZkYK6HHbyiHfWzjqzxTByrXSYRbwuLFX+Zoo9Ge2VHPkBbQ=
+	t=1736176736; cv=none; b=XZ389tuzyDNUmcvdBTBN9R/1G4fgVTwR2hAiCD//HiR+osoa8zJGEfmaugXy2LBSsD/sVVtiMLRSx6Gz07Der0kM775pxXlH7YUZY/RMToRmYK1uknUES3Pc9PVHw9rJNqWD/vbsoHkXtV4HyP9ZPBQW2C7khbt9oN/vTIONMWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178247; c=relaxed/simple;
-	bh=nyhTCd4Fp7rUA9bSDFIzRR+lULjPJGq9TIjRhJ2XLrY=;
+	s=arc-20240116; t=1736176736; c=relaxed/simple;
+	bh=KMB7eiBdrQZ3boKYheS36xNdvroJSrY5HY2IJBXQx98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jxjWdONlu/LlQO9/c+8QO639FIHYvMmfOM1T3Rl+EqB8YqLzik8nZhHvyE+T1KL9gpG3NXmvvKU9uTR/FhJn2WgN8R4nO9qBDWo3yLt0e9BXuSSULg14d9NMSArgXwbGZ0Zac6wNzV/dzvLzOdYd0Ckt9kWnMq1EC5H77Un0v+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0PBhOwTm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7363BC4CED2;
-	Mon,  6 Jan 2025 15:44:06 +0000 (UTC)
+	 MIME-Version; b=Tc4VABj65UBD7U+Gu+z/0TuotDI8C9lVpbdkMuhYTfnx0TtfHW0LqHiONLy1ebKiVQN5DijFClDsajM2nkmYUcfk4qBaxNc2L9m0CNjHCZeE9Lugk85KDbwG1YWVrDtpn/mGqtXYqZ9cw+hXISH7olb4fWqUg2xNSYxO82tiJlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTfrr+dp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D7BC4CED2;
+	Mon,  6 Jan 2025 15:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178246;
-	bh=nyhTCd4Fp7rUA9bSDFIzRR+lULjPJGq9TIjRhJ2XLrY=;
+	s=korg; t=1736176736;
+	bh=KMB7eiBdrQZ3boKYheS36xNdvroJSrY5HY2IJBXQx98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0PBhOwTmAKHDNf8D6a5baHih42alMe/16aM0yL8nQ30BhyZ5Yaq11deOdLpnKeMJP
-	 vd1Bbv1oSU1W0lxW+WL41rL8i0bRucoM3bPFsx9TcaQJ0DGK5o8Zw+xnXgwcS27ynV
-	 Gc/Ew/F9BbhDjlrXnWW1v6TIGXBAJmF0mnxh+VG8=
+	b=QTfrr+dpKgsHOQbbVSaH3UIlfwzdLuiSljyPfzUjmPr8qKItBOCQTYOdQj/H+/bPo
+	 RaDnNygZmBp+rIVRjnmhkBK4wdS+u9RUT274zGYXIEzl1mPgJ5xm0lw4zRE2rAHbaM
+	 McO8ruzEiFDTJZYMWK0U6edObWQa+fUZDIZi9ltk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 5.10 023/138] i2c: riic: Always round-up when calculating bus period
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 15/81] RDMA/bnxt_re: Fix max_qp_wrs reported
 Date: Mon,  6 Jan 2025 16:15:47 +0100
-Message-ID: <20250106151134.097311095@linuxfoundation.org>
+Message-ID: <20250106151130.013637071@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Selvin Xavier <selvin.xavier@broadcom.com>
 
-commit de6b43798d9043a7c749a0428dbb02d5fff156e5 upstream.
+[ Upstream commit 40be32303ec829ea12f9883e499bfd3fe9e52baf ]
 
-Currently, the RIIC driver may run the I2C bus faster than requested,
-which may cause subtle failures.  E.g. Biju reported a measured bus
-speed of 450 kHz instead of the expected maximum of 400 kHz on RZ/G2L.
+While creating qps, driver adds one extra entry to the sq size
+passed by the ULPs in order to avoid queue full condition.
+When ULPs creates QPs with max_qp_wr reported, driver creates
+QP with 1 more than the max_wqes supported by HW. Create QP fails
+in this case. To avoid this error, reduce 1 entry in max_qp_wqes
+and report it to the stack.
 
-The initial calculation of the bus period uses DIV_ROUND_UP(), to make
-sure the actual bus speed never becomes faster than the requested bus
-speed.  However, the subsequent division-by-two steps do not use
-round-up, which may lead to a too-small period, hence a too-fast and
-possible out-of-spec bus speed.  E.g. on RZ/Five, requesting a bus speed
-of 100 resp. 400 kHz will yield too-fast target bus speeds of 100806
-resp. 403226 Hz instead of 97656 resp. 390625 Hz.
-
-Fix this by using DIV_ROUND_UP() in the subsequent divisions, too.
-
-Tested on RZ/A1H, RZ/A2M, and RZ/Five.
-
-Fixes: d982d66514192cdb ("i2c: riic: remove clock and frequency restrictions")
-Reported-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: <stable@vger.kernel.org> # v4.15+
-Link: https://lore.kernel.org/r/c59aea77998dfea1b4456c4b33b55ab216fcbf5e.1732284746.git.geert+renesas@glider.be
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/20241217102649.1377704-2-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-riic.c |    2 +-
+ drivers/infiniband/hw/bnxt_re/qplib_sp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/i2c/busses/i2c-riic.c
-+++ b/drivers/i2c/busses/i2c-riic.c
-@@ -323,7 +323,7 @@ static int riic_init_hw(struct riic_dev
- 		if (brl <= (0x1F + 3))
- 			break;
- 
--		total_ticks /= 2;
-+		total_ticks = DIV_ROUND_UP(total_ticks, 2);
- 		rate /= 2;
- 	}
- 
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+index bae7d8926143..f59e8755f611 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+@@ -124,7 +124,7 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
+ 	attr->max_qp_init_rd_atom =
+ 		sb->max_qp_init_rd_atom > BNXT_QPLIB_MAX_OUT_RD_ATOM ?
+ 		BNXT_QPLIB_MAX_OUT_RD_ATOM : sb->max_qp_init_rd_atom;
+-	attr->max_qp_wqes = le16_to_cpu(sb->max_qp_wr);
++	attr->max_qp_wqes = le16_to_cpu(sb->max_qp_wr) - 1;
+ 	/*
+ 	 * 128 WQEs needs to be reserved for the HW (8916). Prevent
+ 	 * reporting the max number
+-- 
+2.39.5
+
 
 
 
