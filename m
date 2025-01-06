@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-106917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC95DA02951
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:22:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D38EA02C6D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:54:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 575B93A14AD
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:21:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B705E16719B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2851E149C7B;
-	Mon,  6 Jan 2025 15:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FCEC1DC759;
+	Mon,  6 Jan 2025 15:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7BGPQc5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIyCgiIY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A2749652;
-	Mon,  6 Jan 2025 15:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5217F1448F2;
+	Mon,  6 Jan 2025 15:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176901; cv=none; b=fn7bulhWxWKawQy1F81BecRRVqo0qBNTLXgnkhpPCfH+nWPnVrsuCoM6IJGIvB+8iUPzkoTcG3GnwFhRh9EbeE5pu7bLDrhywU2OJiKk0UwDgfW4yhuEGT8K+oI6LZYkmwaKPSfmQzCnIa5SZt7bYDMVlZX5kESE5+6LPYSwIeU=
+	t=1736178788; cv=none; b=VMPm1aMUNNbkcSQLy3dRcW13ntU/frZExsebYcm6x4ICdEscJfm2uc68l8Kaz/RY0DePAVqdIb2pzDs2EyjtKNOUfczru1Pn6DICbS423jditKKfgcjfzNR3NrGz97jjC2ervz2M32vh3jgNfTJZSwaMuHpIHUStDVOElUV73dI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176901; c=relaxed/simple;
-	bh=fzgahdhZiOhLr5d+7ne+ZZx4f/7LMu9b+O2OUwYiFVg=;
+	s=arc-20240116; t=1736178788; c=relaxed/simple;
+	bh=tWsBoTZlXZcOOUTlUjMcvyCV3hXLUGalKsvxDCmkyrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cw78mvQv+WGctpRfbCI2D7Waog1ILtITTzJlFiNJMc3liUcJTebUwbmv+KYcyZ8T4ihXmGfuYIvk1zCTs0cmuRnHWsXLoz+CleSSjMhVdPiPuz2ll3UdgbWLqbn9fa29ffrXAqq9SL/rlbsiFab/uPiSjq1fZp5v8VGpNMNqf6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7BGPQc5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E100C4CEE2;
-	Mon,  6 Jan 2025 15:21:41 +0000 (UTC)
+	 MIME-Version; b=PhMwZ0R/vIq0rv27KJSDRyUkTKPAM/KYtnv1HZJzwH11DghVXf56GdumYhht6+N9tsajl8gzV8tXFDVn5LfWOVwlpY63GA3vq1K5KMN90Gq1fdHQy0NTEPT+nVm5ZNrpdvj1d+q3plNSbzdgWl+db1iDZkuMUWCX0fN+SgZWBgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YIyCgiIY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE218C4CED2;
+	Mon,  6 Jan 2025 15:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176901;
-	bh=fzgahdhZiOhLr5d+7ne+ZZx4f/7LMu9b+O2OUwYiFVg=;
+	s=korg; t=1736178788;
+	bh=tWsBoTZlXZcOOUTlUjMcvyCV3hXLUGalKsvxDCmkyrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b7BGPQc5DO47NgfauWnKkDOebHnvhU5jHX87uV2xDEgJH0dZlk+XeKZ9xTDw73IMF
-	 FmsWQ9gxxdrvz1x2RYcN/XB5o3z1fxPCnYWZUIHlEgf8KEVIbyjmzbWoYlOzhSAI9y
-	 9VGi29IrBs+sdn2RF5lV4SlyLY1HrlICwjUPzjqo=
+	b=YIyCgiIY7cHI7MFkb9LtU8MRlLtvqQGfRfm2+l1dRuDWzPgBWCHRSsGoL1rjx/Z23
+	 cd6ihRS+qtHHGDBAcI43MjrO47iuyYyWs/OpH9Ojokxs45ueZt4wwFG/mHw2M9GJay
+	 hyRDNUvP+T224I/r0hlH12df0zIyS1gaR76JMMKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux@frame.work,
-	"Dustin L. Howett" <dustin@howett.net>,
-	Daniel Schaefer <dhs@frame.work>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 68/81] ALSA hda/realtek: Add quirk for Framework F111:000C
+	Yunfeng Ye <yeyunfeng@huawei.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 092/168] arm64: mm: Rename asid2idx() to ctxid2asid()
 Date: Mon,  6 Jan 2025 16:16:40 +0100
-Message-ID: <20250106151131.998741497@linuxfoundation.org>
+Message-ID: <20250106151141.939942150@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Schaefer <dhs@frame.work>
+From: Yunfeng Ye <yeyunfeng@huawei.com>
 
-commit 7b509910b3ad6d7aacead24c8744de10daf8715d upstream.
+[ Upstream commit a3a5b763410c7bceacf41a52071134d9dc26202a ]
 
-Similar to commit eb91c456f371
-("ALSA: hda/realtek: Add Framework Laptop 13 (Intel Core Ultra) to quirks")
-and previous quirks for Framework systems with
-Realtek codecs.
+The commit 0c8ea531b774 ("arm64: mm: Allocate ASIDs in pairs") introduce
+the asid2idx and idx2asid macro, but these macros are not really useful
+after the commit f88f42f853a8 ("arm64: context: Free up kernel ASIDs if
+KPTI is not in use").
 
-000C is a new platform that will also have an ALC285 codec and needs the
-same quirk.
+The code "(asid & ~ASID_MASK)" can be instead by a macro, which is the
+same code with asid2idx(). So rename it to ctxid2asid() for a better
+understanding.
 
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: linux@frame.work
-Cc: Dustin L. Howett <dustin@howett.net>
-Signed-off-by: Daniel Schaefer <dhs@frame.work>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241231045958.14545-1-dhs@frame.work
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Also we add asid2ctxid() macro, the contextid can be generated based on
+the asid and generation through this macro.
+
+Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
+Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Link: https://lore.kernel.org/r/c31516eb-6d15-94e0-421c-305fc010ea79@huawei.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Stable-dep-of: c0900d15d31c ("arm64: Ensure bits ASID[15:8] are masked out when the kernel uses 8-bit ASIDs")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/mm/context.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10255,6 +10255,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0xf111, 0x0001, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0xf111, 0x0006, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0xf111, 0x0009, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0xf111, 0x000c, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
+diff --git a/arch/arm64/mm/context.c b/arch/arm64/mm/context.c
+index cd72576ae2b7..bbc2708fe928 100644
+--- a/arch/arm64/mm/context.c
++++ b/arch/arm64/mm/context.c
+@@ -35,8 +35,8 @@ static unsigned long *pinned_asid_map;
+ #define ASID_FIRST_VERSION	(1UL << asid_bits)
  
- #if 0
- 	/* Below is a quirk table taken from the old code.
+ #define NUM_USER_ASIDS		ASID_FIRST_VERSION
+-#define asid2idx(asid)		((asid) & ~ASID_MASK)
+-#define idx2asid(idx)		asid2idx(idx)
++#define ctxid2asid(asid)	((asid) & ~ASID_MASK)
++#define asid2ctxid(asid, genid)	((asid) | (genid))
+ 
+ /* Get the ASIDBits supported by the current CPU */
+ static u32 get_cpu_asid_bits(void)
+@@ -120,7 +120,7 @@ static void flush_context(void)
+ 		 */
+ 		if (asid == 0)
+ 			asid = per_cpu(reserved_asids, i);
+-		__set_bit(asid2idx(asid), asid_map);
++		__set_bit(ctxid2asid(asid), asid_map);
+ 		per_cpu(reserved_asids, i) = asid;
+ 	}
+ 
+@@ -162,7 +162,7 @@ static u64 new_context(struct mm_struct *mm)
+ 	u64 generation = atomic64_read(&asid_generation);
+ 
+ 	if (asid != 0) {
+-		u64 newasid = generation | (asid & ~ASID_MASK);
++		u64 newasid = asid2ctxid(ctxid2asid(asid), generation);
+ 
+ 		/*
+ 		 * If our current ASID was active during a rollover, we
+@@ -183,7 +183,7 @@ static u64 new_context(struct mm_struct *mm)
+ 		 * We had a valid ASID in a previous life, so try to re-use
+ 		 * it if possible.
+ 		 */
+-		if (!__test_and_set_bit(asid2idx(asid), asid_map))
++		if (!__test_and_set_bit(ctxid2asid(asid), asid_map))
+ 			return newasid;
+ 	}
+ 
+@@ -209,7 +209,7 @@ static u64 new_context(struct mm_struct *mm)
+ set_asid:
+ 	__set_bit(asid, asid_map);
+ 	cur_idx = asid;
+-	return idx2asid(asid) | generation;
++	return asid2ctxid(asid, generation);
+ }
+ 
+ void check_and_switch_context(struct mm_struct *mm)
+@@ -300,13 +300,13 @@ unsigned long arm64_mm_context_get(struct mm_struct *mm)
+ 	}
+ 
+ 	nr_pinned_asids++;
+-	__set_bit(asid2idx(asid), pinned_asid_map);
++	__set_bit(ctxid2asid(asid), pinned_asid_map);
+ 	refcount_set(&mm->context.pinned, 1);
+ 
+ out_unlock:
+ 	raw_spin_unlock_irqrestore(&cpu_asid_lock, flags);
+ 
+-	asid &= ~ASID_MASK;
++	asid = ctxid2asid(asid);
+ 
+ 	/* Set the equivalent of USER_ASID_BIT */
+ 	if (asid && arm64_kernel_unmapped_at_el0())
+@@ -327,7 +327,7 @@ void arm64_mm_context_put(struct mm_struct *mm)
+ 	raw_spin_lock_irqsave(&cpu_asid_lock, flags);
+ 
+ 	if (refcount_dec_and_test(&mm->context.pinned)) {
+-		__clear_bit(asid2idx(asid), pinned_asid_map);
++		__clear_bit(ctxid2asid(asid), pinned_asid_map);
+ 		nr_pinned_asids--;
+ 	}
+ 
+-- 
+2.39.5
+
 
 
 
