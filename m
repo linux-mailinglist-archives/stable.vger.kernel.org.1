@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F4CEA02CB8
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:57:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EAC7A02BDD
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:47:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CE083A262A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91C16162048
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D37C4DF71;
-	Mon,  6 Jan 2025 15:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0E21DDC3C;
+	Mon,  6 Jan 2025 15:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZY4J4iyK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZrEYYxpW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4368634A;
-	Mon,  6 Jan 2025 15:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCAE1DEFDA;
+	Mon,  6 Jan 2025 15:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178889; cv=none; b=E4VB7EjtmE840Y6lqtpQygONAmG24TmwfMnhUAAZTd8Ad8pDT7SrOxUCsMBtkpdrRWhi5uX8H1HBsc5Rlis5aiWvCNjy7jZmZgLcB9S2dQuqq0QayW/i6uF3uIlgErJVCMx11pONmg/72BjTV4Mh4moSjdw9IFnYbQ4ld3/UZug=
+	t=1736178418; cv=none; b=JdTvAUqTIUciYKd8vi9HCvKSZy2YWYVihD9dA1GxXrLAuhtvdlenpPIW7Q7QcKs6QyWg4QLJIgRj4+GQak1VZC6Tp3Ov5/KtIITWGnt437cERWcVFpIcSXPo270o+iVLBNI5us7kCw6YivxCqooV8W7QRJJvCjuLGFbuGELcl9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178889; c=relaxed/simple;
-	bh=yPe+RieL9Kf+KopC6Xhg6AB/+FOrusmsKayOLvwlxsY=;
+	s=arc-20240116; t=1736178418; c=relaxed/simple;
+	bh=yAGYYyZCxdvAU4I9SGs9j5EK7LGots+tMmwrE6ZTqlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i1KOcJWCso/2nqCID68YXovvPWPynIYUuwxN1HyozvXgD0fM4tc2m6iJAMxNiRisJpKWgij28r9+wDYDiCeKEXYinKd2nbY+o/2mUKeS4mBzr0SefuA+Oi3LNNQ1BTa3nfmxqsB8xFVSMQack1Je2/S4M4gX7Qx3ra9sykTVBdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZY4J4iyK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFECEC4AF0B;
-	Mon,  6 Jan 2025 15:54:48 +0000 (UTC)
+	 MIME-Version; b=YTTh3DA7GTII7VK+YFftgd/dcHEthC9CkfDVZjmK+uild+pzMfQa7eCDXrWpzSUtgsNZSyrAbOrziiXZllhw/+uwQd4RZAqqd2Cp1OydVw4GwTeQwoKtuxKJdX2KR3xCeBnwr750C6d/vzA/gkkTGpKiapcfQJCO/EvFWvyziR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZrEYYxpW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C55EBC4CED2;
+	Mon,  6 Jan 2025 15:46:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178889;
-	bh=yPe+RieL9Kf+KopC6Xhg6AB/+FOrusmsKayOLvwlxsY=;
+	s=korg; t=1736178418;
+	bh=yAGYYyZCxdvAU4I9SGs9j5EK7LGots+tMmwrE6ZTqlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZY4J4iyKbTgrAfDhE35a1ZZgk1+X76KA0rwPVrexvlpvLtNSvtpKcES9Qi+w/OxRs
-	 qyD7xvwlZKXhxCnEEfxKkETuOuXR4eK75RkR3xSWeOMqlVU7j5f3GOOtSXKsz1hWHU
-	 650A7GRD8BEGxI2ar0p+KyVSBb/2Kbovvwj4Yhs4=
+	b=ZrEYYxpWwcnNKB3r+M1XwIpNFHPnUVs+p583K0vZo/PZPTpMPbS/VMZGnXTIiSeID
+	 V+2qG4Q0mKL9BmLstV1jrtkjYONLJgLciQxsOxCYMZkNYGGZl7N8RoAxIr5kQcxwR0
+	 S/3GXzONl/9VxihhJ2+g/DM6yxfIPuI8c9A/7S38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Li Zhijian <lizhijian@fujitsu.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 126/168] RDMA/hns: Fix warning storm caused by invalid input in IO path
-Date: Mon,  6 Jan 2025 16:17:14 +0100
-Message-ID: <20250106151143.203864636@linuxfoundation.org>
+Subject: [PATCH 5.10 111/138] RDMA/rtrs: Ensure ib_sge list is accessible
+Date: Mon,  6 Jan 2025 16:17:15 +0100
+Message-ID: <20250106151137.430529782@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-[ Upstream commit fa5c4ba8cdbfd2c2d6422e001311c8213283ebbf ]
+[ Upstream commit fb514b31395946022f13a08e06a435f53cf9e8b3 ]
 
-WARN_ON() is called in the IO path. And it could lead to a warning
-storm. Use WARN_ON_ONCE() instead of WARN_ON().
+Move the declaration of the 'ib_sge list' variable outside the
+'always_invalidate' block to ensure it remains accessible for use
+throughout the function.
 
-Fixes: 12542f1de179 ("RDMA/hns: Refactor process about opcode in post_send()")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20241220055249.146943-4-huangjunxian6@hisilicon.com
+Previously, 'ib_sge list' was declared within the 'always_invalidate'
+block, limiting its accessibility, then caused a
+'BUG: kernel NULL pointer dereference'[1].
+ ? __die_body.cold+0x19/0x27
+ ? page_fault_oops+0x15a/0x2d0
+ ? search_module_extables+0x19/0x60
+ ? search_bpf_extables+0x5f/0x80
+ ? exc_page_fault+0x7e/0x180
+ ? asm_exc_page_fault+0x26/0x30
+ ? memcpy_orig+0xd5/0x140
+ rxe_mr_copy+0x1c3/0x200 [rdma_rxe]
+ ? rxe_pool_get_index+0x4b/0x80 [rdma_rxe]
+ copy_data+0xa5/0x230 [rdma_rxe]
+ rxe_requester+0xd9b/0xf70 [rdma_rxe]
+ ? finish_task_switch.isra.0+0x99/0x2e0
+ rxe_sender+0x13/0x40 [rdma_rxe]
+ do_task+0x68/0x1e0 [rdma_rxe]
+ process_one_work+0x177/0x330
+ worker_thread+0x252/0x390
+ ? __pfx_worker_thread+0x10/0x10
+
+This change ensures the variable is available for subsequent operations
+that require it.
+
+[1] https://lore.kernel.org/linux-rdma/6a1f3e8f-deb0-49f9-bc69-a9b03ecfcda7@fujitsu.com/
+
+Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Link: https://patch.msgid.link/20241231013416.1290920-1-lizhijian@fujitsu.com
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/ulp/rtrs/rtrs-srv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 6fdd563c9b9e..aa0e5076f02a 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -459,7 +459,7 @@ static inline int set_ud_wqe(struct hns_roce_qp *qp,
- 	valid_num_sge = calc_wr_sge_num(wr, &msg_len);
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+index b152a742cd3c..2b315974f478 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+@@ -381,6 +381,7 @@ static int send_io_resp_imm(struct rtrs_srv_con *con, struct rtrs_srv_op *id,
+ 	struct rtrs_srv_mr *srv_mr;
+ 	bool need_inval = false;
+ 	enum ib_send_flags flags;
++	struct ib_sge list;
+ 	u32 imm;
+ 	int err;
  
- 	ret = set_ud_opcode(ud_sq_wqe, wr);
--	if (WARN_ON(ret))
-+	if (WARN_ON_ONCE(ret))
- 		return ret;
+@@ -431,7 +432,6 @@ static int send_io_resp_imm(struct rtrs_srv_con *con, struct rtrs_srv_op *id,
+ 	imm = rtrs_to_io_rsp_imm(id->msg_id, errno, need_inval);
+ 	imm_wr.wr.next = NULL;
+ 	if (always_invalidate) {
+-		struct ib_sge list;
+ 		struct rtrs_msg_rkey_rsp *msg;
  
- 	ud_sq_wqe->msg_len = cpu_to_le32(msg_len);
-@@ -563,7 +563,7 @@ static inline int set_rc_wqe(struct hns_roce_qp *qp,
- 	rc_sq_wqe->msg_len = cpu_to_le32(msg_len);
- 
- 	ret = set_rc_opcode(hr_dev, rc_sq_wqe, wr);
--	if (WARN_ON(ret))
-+	if (WARN_ON_ONCE(ret))
- 		return ret;
- 
- 	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_SO,
+ 		srv_mr = &sess->mrs[id->msg_id];
 -- 
 2.39.5
 
