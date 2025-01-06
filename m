@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89A9EA02A07
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:30:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE9EFA02ACF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:37:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D1701648C3
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D83EF16504A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB9415C120;
-	Mon,  6 Jan 2025 15:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6B31DC9BC;
+	Mon,  6 Jan 2025 15:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCohaYGY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LsVph+ZZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7700D13775E;
-	Mon,  6 Jan 2025 15:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23AD1C5F11;
+	Mon,  6 Jan 2025 15:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177388; cv=none; b=YmjMo/7CU5k2kS1s+M5b7HHQrq/eiBWLvpS4NCCA2Qewkbel7c29wBNVqYPjRkKttWTeqeVwiaTulK6aIWCuG8tcf9jUfGIO13mha5+oiwtiS72VJN5QPbDXp8ZpGkfAbwLuP3+aJ8N4by7o9O1OQE/DO0ihnnDV3MYIi/QdTS8=
+	t=1736177813; cv=none; b=mKTOsWR2flRJgB/osKmG267ClYl85JwM3g77Ug2N+Dn3PaBdeNJc8RDBgHkUB0tc0F/Z53X2UWdOa+tv0jH0DTppg8bq0Ov6UMkc94ocjSqtAbpB2DKjldQRPLcmJl/mHLRkl8Rv6Nbyxmi6HXgYADsq2mxnhSboqozixBAYbas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177388; c=relaxed/simple;
-	bh=SBb33Z7NRUIMsKTrwddNDhGufuJ+hycsGpExCBO6Dos=;
+	s=arc-20240116; t=1736177813; c=relaxed/simple;
+	bh=9/YiY4bRoz0X5a2Pkyz9XnKCYxd9KP8tdWPRcwMFyK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oGiO8dDnHS6XmAHh5MxGSUa8lbDlDsynPPH/MupXeYyzSHotNXDxI6fqmQjLiz1bkY6NqXWqz18zOumd7VnFVIxIsBb6zBOGrT44wkCNqAnFNs6aVvpyDZQH321Y8rkp/E8MKe9KjHyZVJAtOeF5ESqKSYGU9iJ8NntN4wSgOC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCohaYGY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5767C4CED2;
-	Mon,  6 Jan 2025 15:29:47 +0000 (UTC)
+	 MIME-Version; b=LoO75qY1na2DDBs6XHd+2l6UZzhp8u+XAtHEA7HtCiXyDskRCwV/LGcv0DsmdUZGlvPGC5YAPtHl2hjoF4wqiKO7v9H+LAYca/4Ky7WCQZ7jvqsrnkmSBgPeScZcrc0TS5wq6wuJI+P0UWchbi9+Jr5s1+wr611jdaI5xt+uYho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LsVph+ZZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F7EC4CED2;
+	Mon,  6 Jan 2025 15:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177388;
-	bh=SBb33Z7NRUIMsKTrwddNDhGufuJ+hycsGpExCBO6Dos=;
+	s=korg; t=1736177813;
+	bh=9/YiY4bRoz0X5a2Pkyz9XnKCYxd9KP8tdWPRcwMFyK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kCohaYGYBML9HWvYmjUZyApVd8+p6b5DW3I3GMFU3gLGFBHq4PdUmtcAe2Wruhtyh
-	 0RaktrB6CCXqclMtEF59xLQ8wfePU0vciNWjtDqeRV056x9VXWEvDCHiw4laf9Vh/B
-	 CbN+YCLKiSYsBySB1Ew63hG7YhzxRRWYQXHE3Ep4=
+	b=LsVph+ZZWRpD3p6MXMPs1Ds03kTJijwI2+6zZCU8t31/PdVl3zuYwkiWLgkGT9RFh
+	 28KvmyjJdHxcPmYdMvszEbaKVmUpT1DNEtm66m+gMkmjJLprcEgEXohRze7Tfvsj9W
+	 sVgSdqjXg1qftn4do35bsHIivA1MM/wZEP3dq/Qs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wenglianfa <wenglianfa@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	syzbot+068ff190354d2f74892f@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 147/222] RDMA/hns: Fix mapping error of zero-hop WQE buffer
-Date: Mon,  6 Jan 2025 16:15:51 +0100
-Message-ID: <20250106151156.331043961@linuxfoundation.org>
+Subject: [PATCH 6.12 066/156] io_uring/net: always initialize kmsg->msg.msg_inq upfront
+Date: Mon,  6 Jan 2025 16:15:52 +0100
+Message-ID: <20250106151144.221368004@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,179 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wenglianfa <wenglianfa@huawei.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 8673a6c2d9e483dfeeef83a1f06f59e05636f4d1 ]
+[ Upstream commit c6e60a0a68b7e6b3c7e33863a16e8e88ba9eee6f ]
 
-Due to HW limitation, the three region of WQE buffer must be mapped
-and set to HW in a fixed order: SQ buffer, SGE buffer, and RQ buffer.
+syzbot reports that ->msg_inq may get used uinitialized from the
+following path:
 
-Currently when one region is zero-hop while the other two are not,
-the zero-hop region will not be mapped. This violate the limitation
-above and leads to address error.
+BUG: KMSAN: uninit-value in io_recv_buf_select io_uring/net.c:1094 [inline]
+BUG: KMSAN: uninit-value in io_recv+0x930/0x1f90 io_uring/net.c:1158
+ io_recv_buf_select io_uring/net.c:1094 [inline]
+ io_recv+0x930/0x1f90 io_uring/net.c:1158
+ io_issue_sqe+0x420/0x2130 io_uring/io_uring.c:1740
+ io_queue_sqe io_uring/io_uring.c:1950 [inline]
+ io_req_task_submit+0xfa/0x1d0 io_uring/io_uring.c:1374
+ io_handle_tw_list+0x55f/0x5c0 io_uring/io_uring.c:1057
+ tctx_task_work_run+0x109/0x3e0 io_uring/io_uring.c:1121
+ tctx_task_work+0x6d/0xc0 io_uring/io_uring.c:1139
+ task_work_run+0x268/0x310 kernel/task_work.c:239
+ io_run_task_work+0x43a/0x4a0 io_uring/io_uring.h:343
+ io_cqring_wait io_uring/io_uring.c:2527 [inline]
+ __do_sys_io_uring_enter io_uring/io_uring.c:3439 [inline]
+ __se_sys_io_uring_enter+0x204f/0x4ce0 io_uring/io_uring.c:3330
+ __x64_sys_io_uring_enter+0x11f/0x1a0 io_uring/io_uring.c:3330
+ x64_sys_call+0xce5/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:427
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fixes: 38389eaa4db1 ("RDMA/hns: Add mtr support for mixed multihop addressing")
-Signed-off-by: wenglianfa <wenglianfa@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20241220055249.146943-2-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+and it is correct, as it's never initialized upfront. Hence the first
+submission can end up using it uninitialized, if the recv wasn't
+successful and the networking stack didn't honor ->msg_get_inq being set
+and filling in the output value of ->msg_inq as requested.
+
+Set it to 0 upfront when it's allocated, just to silence this KMSAN
+warning. There's no side effect of using it uninitialized, it'll just
+potentially cause the next receive to use a recv value hint that's not
+accurate.
+
+Fixes: c6f32c7d9e09 ("io_uring/net: get rid of ->prep_async() for receive side")
+Reported-by: syzbot+068ff190354d2f74892f@syzkaller.appspotmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hem.c | 43 ++++++++++++++++--------
- drivers/infiniband/hw/hns/hns_roce_mr.c  |  5 ---
- 2 files changed, 29 insertions(+), 19 deletions(-)
+ io_uring/net.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.c b/drivers/infiniband/hw/hns/hns_roce_hem.c
-index d3fabf64e390..51ab6041ca91 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hem.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hem.c
-@@ -986,6 +986,7 @@ struct hns_roce_hem_item {
- 	size_t count; /* max ba numbers */
- 	int start; /* start buf offset in this hem */
- 	int end; /* end buf offset in this hem */
-+	bool exist_bt;
- };
- 
- /* All HEM items are linked in a tree structure */
-@@ -1014,6 +1015,7 @@ hem_list_alloc_item(struct hns_roce_dev *hr_dev, int start, int end, int count,
- 		}
- 	}
- 
-+	hem->exist_bt = exist_bt;
- 	hem->count = count;
- 	hem->start = start;
- 	hem->end = end;
-@@ -1024,22 +1026,22 @@ hem_list_alloc_item(struct hns_roce_dev *hr_dev, int start, int end, int count,
- }
- 
- static void hem_list_free_item(struct hns_roce_dev *hr_dev,
--			       struct hns_roce_hem_item *hem, bool exist_bt)
-+			       struct hns_roce_hem_item *hem)
- {
--	if (exist_bt)
-+	if (hem->exist_bt)
- 		dma_free_coherent(hr_dev->dev, hem->count * BA_BYTE_LEN,
- 				  hem->addr, hem->dma_addr);
- 	kfree(hem);
- }
- 
- static void hem_list_free_all(struct hns_roce_dev *hr_dev,
--			      struct list_head *head, bool exist_bt)
-+			      struct list_head *head)
- {
- 	struct hns_roce_hem_item *hem, *temp_hem;
- 
- 	list_for_each_entry_safe(hem, temp_hem, head, list) {
- 		list_del(&hem->list);
--		hem_list_free_item(hr_dev, hem, exist_bt);
-+		hem_list_free_item(hr_dev, hem);
- 	}
- }
- 
-@@ -1139,6 +1141,10 @@ int hns_roce_hem_list_calc_root_ba(const struct hns_roce_buf_region *regions,
- 
- 	for (i = 0; i < region_cnt; i++) {
- 		r = (struct hns_roce_buf_region *)&regions[i];
-+		/* when r->hopnum = 0, the region should not occupy root_ba. */
-+		if (!r->hopnum)
-+			continue;
-+
- 		if (r->hopnum > 1) {
- 			step = hem_list_calc_ba_range(r->hopnum, 1, unit);
- 			if (step > 0)
-@@ -1232,7 +1238,7 @@ static int hem_list_alloc_mid_bt(struct hns_roce_dev *hr_dev,
- 
- err_exit:
- 	for (level = 1; level < hopnum; level++)
--		hem_list_free_all(hr_dev, &temp_list[level], true);
-+		hem_list_free_all(hr_dev, &temp_list[level]);
- 
- 	return ret;
- }
-@@ -1273,16 +1279,26 @@ static int alloc_fake_root_bt(struct hns_roce_dev *hr_dev, void *cpu_base,
- {
- 	struct hns_roce_hem_item *hem;
- 
-+	/* This is on the has_mtt branch, if r->hopnum
-+	 * is 0, there is no root_ba to reuse for the
-+	 * region's fake hem, so a dma_alloc request is
-+	 * necessary here.
-+	 */
- 	hem = hem_list_alloc_item(hr_dev, r->offset, r->offset + r->count - 1,
--				  r->count, false);
-+				  r->count, !r->hopnum);
- 	if (!hem)
- 		return -ENOMEM;
- 
--	hem_list_assign_bt(hem, cpu_base, phy_base);
-+	/* The root_ba can be reused only when r->hopnum > 0. */
-+	if (r->hopnum)
-+		hem_list_assign_bt(hem, cpu_base, phy_base);
- 	list_add(&hem->list, branch_head);
- 	list_add(&hem->sibling, leaf_head);
- 
--	return r->count;
-+	/* If r->hopnum == 0, 0 is returned,
-+	 * so that the root_bt entry is not occupied.
-+	 */
-+	return r->hopnum ? r->count : 0;
- }
- 
- static int setup_middle_bt(struct hns_roce_dev *hr_dev, void *cpu_base,
-@@ -1326,7 +1342,7 @@ setup_root_hem(struct hns_roce_dev *hr_dev, struct hns_roce_hem_list *hem_list,
- 		return -ENOMEM;
- 
- 	total = 0;
--	for (i = 0; i < region_cnt && total < max_ba_num; i++) {
-+	for (i = 0; i < region_cnt && total <= max_ba_num; i++) {
- 		r = &regions[i];
- 		if (!r->count)
- 			continue;
-@@ -1392,9 +1408,9 @@ static int hem_list_alloc_root_bt(struct hns_roce_dev *hr_dev,
- 			     region_cnt);
- 	if (ret) {
- 		for (i = 0; i < region_cnt; i++)
--			hem_list_free_all(hr_dev, &head.branch[i], false);
-+			hem_list_free_all(hr_dev, &head.branch[i]);
- 
--		hem_list_free_all(hr_dev, &head.root, true);
-+		hem_list_free_all(hr_dev, &head.root);
- 	}
- 
- 	return ret;
-@@ -1457,10 +1473,9 @@ void hns_roce_hem_list_release(struct hns_roce_dev *hr_dev,
- 
- 	for (i = 0; i < HNS_ROCE_MAX_BT_REGION; i++)
- 		for (j = 0; j < HNS_ROCE_MAX_BT_LEVEL; j++)
--			hem_list_free_all(hr_dev, &hem_list->mid_bt[i][j],
--					  j != 0);
-+			hem_list_free_all(hr_dev, &hem_list->mid_bt[i][j]);
- 
--	hem_list_free_all(hr_dev, &hem_list->root_bt, true);
-+	hem_list_free_all(hr_dev, &hem_list->root_bt);
- 	INIT_LIST_HEAD(&hem_list->btm_bt);
- 	hem_list->root_ba = 0;
- }
-diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
-index acdcd5c9f42f..408ef2a96149 100644
---- a/drivers/infiniband/hw/hns/hns_roce_mr.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
-@@ -767,11 +767,6 @@ int hns_roce_mtr_map(struct hns_roce_dev *hr_dev, struct hns_roce_mtr *mtr,
- 	for (i = 0, mapped_cnt = 0; i < mtr->hem_cfg.region_count &&
- 	     mapped_cnt < page_cnt; i++) {
- 		r = &mtr->hem_cfg.region[i];
--		/* if hopnum is 0, no need to map pages in this region */
--		if (!r->hopnum) {
--			mapped_cnt += r->count;
--			continue;
--		}
- 
- 		if (r->offset + r->count > page_cnt) {
- 			ret = -EINVAL;
+diff --git a/io_uring/net.c b/io_uring/net.c
+index 18507658a921..7f549be9abd1 100644
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -748,6 +748,7 @@ static int io_recvmsg_prep_setup(struct io_kiocb *req)
+ 	if (req->opcode == IORING_OP_RECV) {
+ 		kmsg->msg.msg_name = NULL;
+ 		kmsg->msg.msg_namelen = 0;
++		kmsg->msg.msg_inq = 0;
+ 		kmsg->msg.msg_control = NULL;
+ 		kmsg->msg.msg_get_inq = 1;
+ 		kmsg->msg.msg_controllen = 0;
 -- 
 2.39.5
 
