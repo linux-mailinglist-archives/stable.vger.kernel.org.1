@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-107051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39250A02A0A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:30:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54CA1A02A12
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:30:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34C6C1885094
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:28:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAC4C3A5F31
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:28:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A731161321;
-	Mon,  6 Jan 2025 15:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E60B2166F1B;
+	Mon,  6 Jan 2025 15:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wuEFcLlE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mu2F94XJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81C0155C9E;
-	Mon,  6 Jan 2025 15:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8315318A6C1;
+	Mon,  6 Jan 2025 15:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177305; cv=none; b=YOE0ca1qKCfGPWR9o7mMn9UnN0Lo3vBQ0XyW77KKqabnsnHOB605IzYp9VH+H2W7slJsFh2tAYrBRqOJjvgpXCiZA1ORyOq/Y+GcKmgklYV3rT/Oqj9v54a19aG7fWm4Lyv1fjsxoQHLl0PLKKniFBNnBT/U5BeL5iavk2/UKEc=
+	t=1736177320; cv=none; b=MMRgK+aPBnpBhKjmXMUoNaNi/dJiXufv0LUnG7YjXzGHbCE4ATSDhlcmRxE4Vme97B7f9oDy3NXBrGJFsbhGXk1gtKLyeZNZEnpNyyPOc1h/1g61maL8bNVrDAzxSTFSro6aeG6SRFuydB5sFMjxpOJXR83wyQsRpuF01L6tYj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177305; c=relaxed/simple;
-	bh=IdUNx+wF/xpgB8/cIj1HK2/I/7o9cjUxmvXSsB+wBGo=;
+	s=arc-20240116; t=1736177320; c=relaxed/simple;
+	bh=glKbAY8kJrQdbHT9uJyH+vhDRwB2yqgC9VzvBcMKo58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SwoWobqAqvHHiOfXbLhqLQK1VfCO2nDjz4hKTkwvU/LPaSJ1gLMdFnQthnFIcafDMmNyPZY1HnRfnkvqKb0DOpnadc4oho4h10yyWz8g8Z+9hcmeQvi3c068aTw/0xqB3APc9+t128bAk9z7aYpJkgTT7hzePc3LyQ8Jw+T9ZI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wuEFcLlE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46215C4CED2;
-	Mon,  6 Jan 2025 15:28:25 +0000 (UTC)
+	 MIME-Version; b=drBDng5dJ1JnFpQWKTLyDyJStWlUrxrQvdsos9ESZFWsDmw7wsT3HRSLdUZyYDrsNkL5OE4ETmM0L/Sm5B1JX2Go84f5ZMx5gRmMdx4I3U7Fi1j/wwKVUs3iKjxbWActi2qg6dJkw9+19XLEKC3j1X71RqDanG51NCQkDnUUKbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mu2F94XJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D72C4CED2;
+	Mon,  6 Jan 2025 15:28:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177305;
-	bh=IdUNx+wF/xpgB8/cIj1HK2/I/7o9cjUxmvXSsB+wBGo=;
+	s=korg; t=1736177320;
+	bh=glKbAY8kJrQdbHT9uJyH+vhDRwB2yqgC9VzvBcMKo58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wuEFcLlEIMQt9dPVMBtA80jPPBnQYVBCXerdBDaFegGEbLo1I8AYj+Dp7IJewM/Xn
-	 0jj6WfeWoEODA2tg9wjB/JQ3VuZfafV42lQoaHc1EioIpzCFpnXzukjPlcuGvQzx9w
-	 U4GLQSRQHdca+OsKiop1uwoNdvHC7WhGSJYNiIkw=
+	b=Mu2F94XJ6DDHlslpQ5wHv4QgSMTKtWnBck/KZTbUV11nsBxGhZe4l5D0A6GF/O1/E
+	 LnYx4idRvulrI+3FbH58W7D7vMVD9VowiMsd38FEo/9CT/deGKqeXvBZMaJd0ByeIY
+	 nnKaKL4+8J1upLMCK6f2mVr3tLep/0QRyk39xcS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Guixin Liu <kanie@linux.alibaba.com>,
+	Lee Duncan <lduncan@suse.com>,
+	Martin Wilck <mwilck@suse.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/222] ALSA: ump: Update legacy substream names upon FB info update
-Date: Mon,  6 Jan 2025 16:14:56 +0100
-Message-ID: <20250106151154.079002394@linuxfoundation.org>
+Subject: [PATCH 6.6 093/222] scsi: mpi3mr: Use ida to manage mrioc ID
+Date: Mon,  6 Jan 2025 16:14:57 +0100
+Message-ID: <20250106151154.117096194@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
 References: <20250106151150.585603565@linuxfoundation.org>
@@ -65,85 +68,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Guixin Liu <kanie@linux.alibaba.com>
 
-[ Upstream commit edad3f9519fcacb926d0e3f3217aecaf628a593f ]
+[ Upstream commit 29b75184f721b16c51ef6e67eec0e40ed88381c7 ]
 
-The legacy rawmidi substreams should be updated when UMP FB Info or
-UMP FB Name are received, too.
+To ensure that the same ID is not obtained during concurrent execution of
+the probe, an ida is used to manage the mrioc's ID.
 
-Link: https://patch.msgid.link/20241129094546.32119-4-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20231229040331.52518-1-kanie@linux.alibaba.com
+Reviewed-by: Lee Duncan <lduncan@suse.com>
+Reviewed-by: Martin Wilck <mwilck@suse.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 0d32014f1e3e ("scsi: mpi3mr: Start controller indexing from 0")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/ump.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr_os.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/sound/core/ump.c b/sound/core/ump.c
-index bb94f119869a..4aec90dac07e 100644
---- a/sound/core/ump.c
-+++ b/sound/core/ump.c
-@@ -37,6 +37,7 @@ static int process_legacy_output(struct snd_ump_endpoint *ump,
- 				 u32 *buffer, int count);
- static void process_legacy_input(struct snd_ump_endpoint *ump, const u32 *src,
- 				 int words);
-+static void update_legacy_names(struct snd_ump_endpoint *ump);
- #else
- static inline int process_legacy_output(struct snd_ump_endpoint *ump,
- 					u32 *buffer, int count)
-@@ -47,6 +48,9 @@ static inline void process_legacy_input(struct snd_ump_endpoint *ump,
- 					const u32 *src, int words)
- {
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
+index 7f3261923469..3f86f1d0a9be 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -8,11 +8,12 @@
+  */
+ 
+ #include "mpi3mr.h"
++#include <linux/idr.h>
+ 
+ /* global driver scop variables */
+ LIST_HEAD(mrioc_list);
+ DEFINE_SPINLOCK(mrioc_list_lock);
+-static int mrioc_ids;
++static DEFINE_IDA(mrioc_ida);
+ static int warn_non_secure_ctlr;
+ atomic64_t event_counter;
+ 
+@@ -5065,7 +5066,10 @@ mpi3mr_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	}
+ 
+ 	mrioc = shost_priv(shost);
+-	mrioc->id = mrioc_ids++;
++	retval = ida_alloc_range(&mrioc_ida, 1, U8_MAX, GFP_KERNEL);
++	if (retval < 0)
++		goto id_alloc_failed;
++	mrioc->id = (u8)retval;
+ 	sprintf(mrioc->driver_name, "%s", MPI3MR_DRIVER_NAME);
+ 	sprintf(mrioc->name, "%s%d", mrioc->driver_name, mrioc->id);
+ 	INIT_LIST_HEAD(&mrioc->list);
+@@ -5215,9 +5219,11 @@ mpi3mr_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ resource_alloc_failed:
+ 	destroy_workqueue(mrioc->fwevt_worker_thread);
+ fwevtthread_failed:
++	ida_free(&mrioc_ida, mrioc->id);
+ 	spin_lock(&mrioc_list_lock);
+ 	list_del(&mrioc->list);
+ 	spin_unlock(&mrioc_list_lock);
++id_alloc_failed:
+ 	scsi_host_put(shost);
+ shost_failed:
+ 	return retval;
+@@ -5303,6 +5309,7 @@ static void mpi3mr_remove(struct pci_dev *pdev)
+ 		mrioc->sas_hba.num_phys = 0;
+ 	}
+ 
++	ida_free(&mrioc_ida, mrioc->id);
+ 	spin_lock(&mrioc_list_lock);
+ 	list_del(&mrioc->list);
+ 	spin_unlock(&mrioc_list_lock);
+@@ -5518,6 +5525,7 @@ static void __exit mpi3mr_exit(void)
+ 			   &driver_attr_event_counter);
+ 	pci_unregister_driver(&mpi3mr_pci_driver);
+ 	sas_release_transport(mpi3mr_transport_template);
++	ida_destroy(&mrioc_ida);
  }
-+static inline void update_legacy_names(struct snd_ump_endpoint *ump)
-+{
-+}
- #endif
  
- static const struct snd_rawmidi_global_ops snd_ump_rawmidi_ops = {
-@@ -850,6 +854,7 @@ static int ump_handle_fb_info_msg(struct snd_ump_endpoint *ump,
- 		fill_fb_info(ump, &fb->info, buf);
- 		if (ump->parsed) {
- 			snd_ump_update_group_attrs(ump);
-+			update_legacy_names(ump);
- 			seq_notify_fb_change(ump, fb);
- 		}
- 	}
-@@ -882,6 +887,7 @@ static int ump_handle_fb_name_msg(struct snd_ump_endpoint *ump,
- 	/* notify the FB name update to sequencer, too */
- 	if (ret > 0 && ump->parsed) {
- 		snd_ump_update_group_attrs(ump);
-+		update_legacy_names(ump);
- 		seq_notify_fb_change(ump, fb);
- 	}
- 	return ret;
-@@ -1251,6 +1257,14 @@ static void fill_substream_names(struct snd_ump_endpoint *ump,
- 	}
- }
- 
-+static void update_legacy_names(struct snd_ump_endpoint *ump)
-+{
-+	struct snd_rawmidi *rmidi = ump->legacy_rmidi;
-+
-+	fill_substream_names(ump, rmidi, SNDRV_RAWMIDI_STREAM_INPUT);
-+	fill_substream_names(ump, rmidi, SNDRV_RAWMIDI_STREAM_OUTPUT);
-+}
-+
- int snd_ump_attach_legacy_rawmidi(struct snd_ump_endpoint *ump,
- 				  char *id, int device)
- {
-@@ -1287,10 +1301,7 @@ int snd_ump_attach_legacy_rawmidi(struct snd_ump_endpoint *ump,
- 	rmidi->ops = &snd_ump_legacy_ops;
- 	rmidi->private_data = ump;
- 	ump->legacy_rmidi = rmidi;
--	if (input)
--		fill_substream_names(ump, rmidi, SNDRV_RAWMIDI_STREAM_INPUT);
--	if (output)
--		fill_substream_names(ump, rmidi, SNDRV_RAWMIDI_STREAM_OUTPUT);
-+	update_legacy_names(ump);
- 
- 	ump_dbg(ump, "Created a legacy rawmidi #%d (%s)\n", device, id);
- 	return 0;
+ module_init(mpi3mr_init);
 -- 
 2.39.5
 
