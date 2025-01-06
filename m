@@ -1,145 +1,158 @@
-Return-Path: <stable+bounces-107754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E770EA03073
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 20:21:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 722BEA03047
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 20:12:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70BDC3A175A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 19:21:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B31223A4E9C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 19:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21341DF99C;
-	Mon,  6 Jan 2025 19:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601581DF724;
+	Mon,  6 Jan 2025 19:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b="EvFfMhRK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T9Dv9fYj"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A684D8DA;
-	Mon,  6 Jan 2025 19:21:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C901DF74B;
+	Mon,  6 Jan 2025 19:11:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736191267; cv=none; b=sQp2msD8f9b8cf0GsOzcf0jl+5WUcijFPb2Qb7Egzkoah8v9WTO8xQRpUr8AiwJunL5zj+dSNpsTYRW516sG1WGkC6ZJCCU3dFvwwnbkrRt+xmbGkzqrKU+SnMoNy679NuF0+Vo+7OuUuDkhNSgKVHbpr4nP1UXbzhL9ax0a9/I=
+	t=1736190717; cv=none; b=qYcN90JKPvctEyA6VcBmysk+4D43Jt5oeVz6orbCq4GVTMjQEDTTdeOYpuBcPPmHCjgL15cnC3oblaY2EzQAecQxEPdUK6BABV0rs9q157cESfarAgMnqiF/YGXwAxf7rBGnxHIGITEcMDcwd/UA14B4lXAemh0/3aEPFkxF0fU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736191267; c=relaxed/simple;
-	bh=4ySUSAJ0vB6Fw+bFb5+oI1l044QaOGC+UqVjSNduFgw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=kSbZAEuAIhYvxmWUh7Rikn/krKm0HFSNx9SRL9+PPxnOJ5h9S/CaVWTuZrgbj15lA2i0SD4OqFsu9UlEghqbEQhfM7GBbQvw9t/B5VrHCEdcrsPVJy+6XdBeyv4XLOOHTYXnmvRAmj4ATNBAq1YwEntv9MRYBXkB+b8BSPf3dZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev; spf=pass smtp.mailfrom=oltmanns.dev; dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b=EvFfMhRK; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oltmanns.dev
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4YRkKy25yPz9sTm;
-	Mon,  6 Jan 2025 20:11:02 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oltmanns.dev;
-	s=MBO0001; t=1736190662;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NRmWwyUBRYp+VaPBjk2Ubbo32d54ltoCUzwiU82RV3g=;
-	b=EvFfMhRKeTxgExEJ1eMmKhIE919wSuoQI99WzFqXxrwL39ZsmdzIoKQ4un8DHG+Gexea61
-	NWSS0fYr2vxjJOxQEW8f5JDQdSp1E3xDFFiWNnIAV9xAUYzeIzKbJVxIQ0fjk2DiVJb/Lk
-	tTx8E6GAiJOByTUW6w6lSQQQ7qfJ75j2iiyomBN7FdOL1iRqmmFUz4bSOJcONWR4JtdTsy
-	JR9r+KJjs6mTV7xtTRVggGIMUn8lfVtKMea/X0HeL23D/aLNN2Nj7XaBw3FxzxFQ4t5GUb
-	ONqrX+FcCZzVyWsU0tv+hDcG4fuXANu+rysNT8BRS3I3sII31foPc8vc5XIBhg==
-From: Frank Oltmanns <frank@oltmanns.dev>
-To: Stephan Gerhold <stephan.gerhold@linaro.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>,  Dmitry Baryshkov
- <dmitry.baryshkov@linaro.org>,  Bjorn Andersson <andersson@kernel.org>,
-  Konrad Dybcio <konradybcio@kernel.org>,  Chris Lew
- <quic_clew@quicinc.com>,  Abel Vesa <abel.vesa@linaro.org>,
-  linux-arm-msm@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  regressions@lists.linux.dev,  stable@vger.kernel.org
-Subject: Re: [PATCH] soc: qcom: mark pd-mapper as broken
-In-Reply-To: <Zwj3jDhc9fRoCCn6@linaro.org> (Stephan Gerhold's message of "Fri,
-	11 Oct 2024 12:01:48 +0200")
-References: <20241010074246.15725-1-johan+linaro@kernel.org>
-	<Zwj3jDhc9fRoCCn6@linaro.org>
-Date: Mon, 06 Jan 2025 20:10:52 +0100
-Message-ID: <87wmf7ahc3.fsf@oltmanns.dev>
+	s=arc-20240116; t=1736190717; c=relaxed/simple;
+	bh=4bnJouhl3Fn0czsmNLrIkLHZYVAywAD0MWE1RgDLs8Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DA+wrtJHs12Oz3TbasQtzfWc6JD8dQu0Nmd7x1TrRsKPdzmM6VXOXFtaZChcvgj28eRsn2Vlom/UGfSs5WU2VoSkzb/TW3OyJ3dshM3pZ1YKzJLhX0bsbOgu8Uv7iKWQ78cUc+YeVUXb4Q8h/3S3PqlsOUP/q0sY/AmMNuweLw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T9Dv9fYj; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2ef6c56032eso15783254a91.2;
+        Mon, 06 Jan 2025 11:11:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736190715; x=1736795515; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=xNcgslAq8coyl/n5XKt4DbJIGhPR1eHHxRf8/YdlWTc=;
+        b=T9Dv9fYjKDD/L6995w1UJ9ldXL9d8smwWfnp2ktQ8h+JWtLlxC3qaPPSKSDMcereMV
+         neT9hM+k7HTAsTGsv8xNBAftw2CfUfdlbBCDiuR8fpyNhYOR6gn+YjOlRd61VynQx99b
+         XvMQKw06WDr5Py4m2iKTtMeTI3gn34Xk9Mzf7MSW7dWQiBcZig+OfFxe2NgUZanHn49+
+         Rte5ZibRT7YdYCr72C6Y0SdvU9CTY9yHZ/MPAzRxVt75KKdCpiJc8JUMwqhbuTt9I+wj
+         3xqMovUO1sI3ijcMF5X64gicDGnv9B92kSD/BYWajvidWp3aXLsnVV3KoTS7odHBegTP
+         xIMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736190715; x=1736795515;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xNcgslAq8coyl/n5XKt4DbJIGhPR1eHHxRf8/YdlWTc=;
+        b=PWfs1iP0BiOipLi1u1d5KrplaHHq3H593ZZ9zWBBV1lmrBf34XB0eBahHrbHAUr2kZ
+         ZftNfnesKYQJpsv5sfaeuLbMFo+uaDZKKQFVNZdHpGy9+RUVlAZnmHtt2jMpEYXr/25Q
+         fhNaK7EbScYmrQ/f+fQTja8T34mEOYpZevtEaJxrZmfWs61bjNf6VeedtA7ln5MUWqQx
+         kpMiZW5lUyesk6hQYjoQbP/HSI7oZPiZnvjLLCECy45+5KT50jfkwkkcMIbORZd/gziM
+         gDnG/ST1lIufOjGkghkQI32vzdlspXrwjw21+T3uWeGCHBFMWbggu5QsfAAZDN6LRUAI
+         zcnw==
+X-Forwarded-Encrypted: i=1; AJvYcCVXdy3X1ZZ1yr6vRBlNlRyIxhHAsa4ZxE6Qri2grGjEUKn/oRAGJd4KkfuXROraHp/vKfJTOpgGC4dZzvU=@vger.kernel.org, AJvYcCX2MOL7a7ilD0pbcQKSI6onkbLSBiskArZ01qWOc8gUzT6cx8+Tr4hqvhU8sgRnJb3I5w/HloXP@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyw42ReLbFgyncbbawTWuZWRsWgfPHCGLYYQOyo5WPPXwLdiArO
+	dwxg0jNzyqGEAEw/7umXz/h6x9hTeVtZNCW8APwo1E6QG/JZAVFU
+X-Gm-Gg: ASbGncvfwRvP5dUpmolKAxbR5Wb8MSMggJX3mQbp7onnLUmWrOU2rpYDeJ5s3LvicB0
+	YCjxUbYRmbo+NBPb945R2YMkXu7N84Jztwa9IfXadVl+/ent/wAB9C1H0tIFWNqdIempIbjwmIZ
+	nasffoNNFNbTQ04nhXzydkyCUYWwHW3+OJjvGkWehxEh2ZBJNAey0h65FvQY1VwCCZ4iPksoRuG
+	bXK+U1CuHKDz6EY65ZxAKUvIzu6w8s8EuTCDeE3nwVGW0Vf/S0e+rX6kGYpGiJwFDTiytiQxbzg
+	epe1tCbb
+X-Google-Smtp-Source: AGHT+IEzqwc+8Il5TgTrh//Qdxy8eQvafKJ2eP1eNCBEq/izr7NWT0Mjur4MXNgl4trbVix4/JRW+w==
+X-Received: by 2002:a17:90a:e18c:b0:2ee:e317:69ab with SMTP id 98e67ed59e1d1-2f452d33b98mr104243667a91.0.1736190714616;
+        Mon, 06 Jan 2025 11:11:54 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f2ed52cf9esm39711568a91.8.2025.01.06.11.11.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Jan 2025 11:11:54 -0800 (PST)
+Message-ID: <88330edc-db2e-4bc0-a21d-172636b7b10f@gmail.com>
+Date: Mon, 6 Jan 2025 11:11:52 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 4YRkKy25yPz9sTm
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 000/138] 5.10.233-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250106151133.209718681@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 2024-10-11 at 12:01:48 +0200, Stephan Gerhold <stephan.gerhold@linaro.org> wrote:
-> On Thu, Oct 10, 2024 at 09:42:46AM +0200, Johan Hovold wrote:
->> When using the in-kernel pd-mapper on x1e80100, client drivers often
->> fail to communicate with the firmware during boot, which specifically
->> breaks battery and USB-C altmode notifications. This has been observed
->> to happen on almost every second boot (41%) but likely depends on probe
->> order:
->>
->>     pmic_glink_altmode.pmic_glink_altmode pmic_glink.altmode.0: failed to send altmode request: 0x10 (-125)
->>     pmic_glink_altmode.pmic_glink_altmode pmic_glink.altmode.0: failed to request altmode notifications: -125
->>
->>     ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: failed to send UCSI read request: -125
->>
->>     qcom_battmgr.pmic_glink_power_supply pmic_glink.power-supply.0: failed to request power notifications
->>
->> In the same setup audio also fails to probe albeit much more rarely:
->>
->>     PDR: avs/audio get domain list txn wait failed: -110
->>     PDR: service lookup for avs/audio failed: -110
->>
->> Chris Lew has provided an analysis and is working on a fix for the
->> ECANCELED (125) errors, but it is not yet clear whether this will also
->> address the audio regression.
->>
->> Even if this was first observed on x1e80100 there is currently no reason
->> to believe that these issues are specific to that platform.
->>
->> Disable the in-kernel pd-mapper for now, and make sure to backport this
->> to stable to prevent users and distros from migrating away from the
->> user-space service.
->>
->> Fixes: 1ebcde047c54 ("soc: qcom: add pd-mapper implementation")
->> Cc: stable@vger.kernel.org	# 6.11
->> Link: https://lore.kernel.org/lkml/Zqet8iInnDhnxkT9@hovoldconsulting.com/
->> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
->> ---
->>
->> It's now been over two months since I reported this regression, and even
->> if we seem to be making some progress on at least some of these issues I
->> think we need disable the pd-mapper temporarily until the fixes are in
->> place (e.g. to prevent distros from dropping the user-space service).
->>
->
-> This is just a random thought, but I wonder if we could insert a delay
-> somewhere as temporary workaround to make the in-kernel pd-mapper more
-> reliable. I just tried replicating the userspace pd-mapper timing on
-> X1E80100 CRD by:
->
->  1. Disabling auto-loading of qcom_pd_mapper
->     (modprobe.blacklist=qcom_pd_mapper)
->  2. Adding a systemd service that does nothing except running
->     "modprobe qcom_pd_mapper" at the same point in time where the
->     userspace pd-mapper would usually be started.
+On 1/6/25 07:15, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.233 release.
+> There are 138 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 08 Jan 2025 15:11:04 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.233-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Thank you so much for this idea. I'm currently using this workaround on
-my sdm845 device (where the in-kernel pd-mapper is breaking the
-out-of-tree call audio functionality).
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Is there any work going on on making the timing of the in-kernel
-pd-mapper more reliable?
-
-Cheers,
-  Frank
-
-> This seems to work quite well for me, I haven't seen any of the
-> mentioned errors anymore in a couple of boot tests. Clearly, there is no
-> actual bug in the in-kernel pd-mapper, only worse timing.
->
-> Thanks,
-> Stephan
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
