@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 294B6A02C48
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:52:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D54CA02964
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:22:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D1331887419
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:52:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 297FD1880518
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B54149C42;
-	Mon,  6 Jan 2025 15:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5241157A72;
+	Mon,  6 Jan 2025 15:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqy89hCW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IoRviTvM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DA713C3D6;
-	Mon,  6 Jan 2025 15:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A3815252D;
+	Mon,  6 Jan 2025 15:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178741; cv=none; b=oLXkRUrv0AU5h6fiynjeahXvBl7eIbZNoc2Nbh2zdbs2cmPU6HDgk2+SacdqcZj6rsIWk/yZIeo0OwuMvMbmGXvq7chuLqm+noIG9IfXfdKo6oLFlD7cSRfp7jqd7avvlprXZLWITbjRG/2FP1SydRMa5238l6LetTJ3dasxmE0=
+	t=1736176969; cv=none; b=Nhy/PmQJRe4o6t5pzuVcZRDgQhPr1nJx+QU1C3g3aTq6QRygMulXrTe+wN3MbhAxhGnZT3ZSJ2xPRqkyMRGF8TpVJbIFgZ8VG88fZhNvp5uYu2xgTJ/jLv0xzcHlrBk051naP7lmFphRPhBqFKdjDOGkmFjZwWbqc41D0MkrbTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178741; c=relaxed/simple;
-	bh=qZLGSRe9wyVtEmggJj9vagISHmW7WIRBJftppN/uVY4=;
+	s=arc-20240116; t=1736176969; c=relaxed/simple;
+	bh=qtSrLp1F8KK7tYPSvqRnVcO1MRz0UufTN2me+1TuQjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DkznlbCi8A9Hj4epyLUr0LnXnZk/jnnR9v0970MFTuQziQj9XCjioH3G9sLJoad8Laux/POMt3XHzji8MKRAQdgf9UxW0+8S8U+caVhDYbiYk1OBSYpPl2x6XKnuLgPxXIgm4X1GStM9FId4BCDC/a1W7gQAXzbntyq6QlBzpTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqy89hCW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D12C4CED2;
-	Mon,  6 Jan 2025 15:52:20 +0000 (UTC)
+	 MIME-Version; b=bebuIcnQ5cZgCpJ/jjuM5r4A1zx7/AtbcAx4OB7hq0UsaGeWgooK+qV3rtytXyp/L3wkzeIPIYjZmvDk+wtHOYrwGP0iu6i6cAXlCJVnPZOuSvIbpkeRiwPAFxJS9HuymzckzrLNpIzLWYFR5LLAKvghXbcGPWVzeO7/mlEbU+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IoRviTvM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73039C4CED2;
+	Mon,  6 Jan 2025 15:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178740;
-	bh=qZLGSRe9wyVtEmggJj9vagISHmW7WIRBJftppN/uVY4=;
+	s=korg; t=1736176968;
+	bh=qtSrLp1F8KK7tYPSvqRnVcO1MRz0UufTN2me+1TuQjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eqy89hCW9qvigPnKBneRDGGZmUI0GkfqCEMtx47ObwP1NKpVGOrBF5I6qeccJRscx
-	 gT+a3KpgXl0/vi5MW2I6nJSEdvv7sgU2QF+DeL74FqLNX8XxQI89o07PyGUU/hXixV
-	 j2OWUpAdiO1MVOjzVwW4HDbKw1DEo2wzsqsWI1i4=
+	b=IoRviTvMERji5K2r1Iw2JYdTUGt2RceKrV2gHjEogDw+pvw1/tPan21wPrnoTP8ME
+	 ldFnkwqE4f0Gr4ZzzdcTB4mRXtjuuwiSZCS2AFAY54/mgevD1FwgABM0fBdPqXTu+P
+	 XX7X/vzdgJ7F0cfvO/EZE9k08YqH3Ll7Wd6hFZ1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 077/168] scsi: qla1280: Fix hw revision numbering for ISP1020/1040
+Subject: [PATCH 6.1 53/81] wifi: mac80211: wake the queues in case of failure in resume
 Date: Mon,  6 Jan 2025 16:16:25 +0100
-Message-ID: <20250106151141.374071538@linuxfoundation.org>
+Message-ID: <20250106151131.436457960@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Magnus Lindholm <linmag7@gmail.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit c064de86d2a3909222d5996c5047f64c7a8f791b ]
+[ Upstream commit 220bf000530f9b1114fa2a1022a871c7ce8a0b38 ]
 
-Fix the hardware revision numbering for Qlogic ISP1020/1040 boards.  HWMASK
-suggests that the revision number only needs four bits, this is consistent
-with how NetBSD does things in their ISP driver. Verified on a IPS1040B
-which is seen as rev 5 not as BIT_4.
+In case we fail to resume, we'll WARN with
+"Hardware became unavailable during restart." and we'll wait until user
+space does something. It'll typically bring the interface down and up to
+recover. This won't work though because the queues are still stopped on
+IEEE80211_QUEUE_STOP_REASON_SUSPEND reason.
+Make sure we clear that reason so that we give a chance to the recovery
+to succeed.
 
-Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
-Link: https://lore.kernel.org/r/20241113225636.2276-1-linmag7@gmail.com
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219447
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20241119173108.cd628f560f97.I76a15fdb92de450e5329940125f3c58916be3942@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla1280.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/mac80211/util.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/scsi/qla1280.h b/drivers/scsi/qla1280.h
-index e7820b5bca38..c0a9251b2bed 100644
---- a/drivers/scsi/qla1280.h
-+++ b/drivers/scsi/qla1280.h
-@@ -117,12 +117,12 @@ struct device_reg {
- 	uint16_t id_h;		/* ID high */
- 	uint16_t cfg_0;		/* Configuration 0 */
- #define ISP_CFG0_HWMSK   0x000f	/* Hardware revision mask */
--#define ISP_CFG0_1020    BIT_0	/* ISP1020 */
--#define ISP_CFG0_1020A	 BIT_1	/* ISP1020A */
--#define ISP_CFG0_1040	 BIT_2	/* ISP1040 */
--#define ISP_CFG0_1040A	 BIT_3	/* ISP1040A */
--#define ISP_CFG0_1040B	 BIT_4	/* ISP1040B */
--#define ISP_CFG0_1040C	 BIT_5	/* ISP1040C */
-+#define ISP_CFG0_1020	 1	/* ISP1020 */
-+#define ISP_CFG0_1020A	 2	/* ISP1020A */
-+#define ISP_CFG0_1040	 3	/* ISP1040 */
-+#define ISP_CFG0_1040A	 4	/* ISP1040A */
-+#define ISP_CFG0_1040B	 5	/* ISP1040B */
-+#define ISP_CFG0_1040C	 6	/* ISP1040C */
- 	uint16_t cfg_1;		/* Configuration 1 */
- #define ISP_CFG1_F128    BIT_6  /* 128-byte FIFO threshold */
- #define ISP_CFG1_F64     BIT_4|BIT_5 /* 128-byte FIFO threshold */
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 738f1f139a90..e8326e09d1b3 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -2436,6 +2436,9 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+ 			WARN(1, "Hardware became unavailable upon resume. This could be a software issue prior to suspend or a hardware issue.\n");
+ 		else
+ 			WARN(1, "Hardware became unavailable during restart.\n");
++		ieee80211_wake_queues_by_reason(hw, IEEE80211_MAX_QUEUE_MAP,
++						IEEE80211_QUEUE_STOP_REASON_SUSPEND,
++						false);
+ 		ieee80211_handle_reconfig_failure(local);
+ 		return res;
+ 	}
 -- 
 2.39.5
 
