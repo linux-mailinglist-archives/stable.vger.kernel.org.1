@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-107562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C73EA02C7F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A339A02A73
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:34:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59BC21669A4
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC08D188518E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB7514A617;
-	Mon,  6 Jan 2025 15:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5384338FB9;
+	Mon,  6 Jan 2025 15:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qwoke+Om"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AjBkAiIg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB4B142E7C;
-	Mon,  6 Jan 2025 15:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF9DDF71;
+	Mon,  6 Jan 2025 15:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178844; cv=none; b=bt81e+eoYNeifLxIlKshRj4kPH9cz4UwwR2sxYMZy2WkbbJfbzHcV+T8rqQkrqEGI1AB0a5WqLE4vW1HUAZHl7+EWar0Hpi23uhQd22Mp2Wlhgt40ZWTFKgkvn1qMOuiJVVTbJ9x9UINpn610/nYcQIyd0ben/ETq0cPa3LIngg=
+	t=1736177602; cv=none; b=JHTdaZCH/zacM/l1KawACTKZ723nKV2AUP4W/wrd7TvDmL/I/u2/QS4zV6IxtCZHIqc7IeecAZO1mGa+qodCH/SMtyMgX5e22HswLtHi7cyes6kuM9UolGqz2RJf3VHZfNS1yICBd8hO/yAtTV8/YJ55rgFUdDeSLzu2pViWP3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178844; c=relaxed/simple;
-	bh=pKvXM3PySC8eKSukmqHTVrtIjc3x3nkk/mUoHA1QWt8=;
+	s=arc-20240116; t=1736177602; c=relaxed/simple;
+	bh=wh345wGM4pduADgb7FuQLLBjatFSSCMUd04GKEtoBjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m1pw1oBDLidknwsOSPVvwE5GkfC8n8G+Kxyo11gSoLiHqB5MDJF5olFm/q5Z75dfN3h+qlZPjsYtF24yEhzHyxnQnx3ClUnG5QFDpdPDo5dBqs1mtSU1MQTFuN6FBo7QGPrs+kvexdAr1pMuMzdhiRb7O3I8wuKZ78XMig/tTKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qwoke+Om; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE4F4C4CED2;
-	Mon,  6 Jan 2025 15:54:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qui2RrKpS2HqK7/oKDHCl4gJInPCYOaR59XDYvtq2TlWryWuKJSdA8VAdQqWzwYd2z30P7iM20ZBZ4BNBlo2gMQihajA2fz3L1b2vuzLByYCIFWzUoI2rUcPU7nNXr7GjGorTfv6Z2hOT9YkBdMuHv5GhOMrZJIT+XIWNqv64JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AjBkAiIg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012CAC4CED2;
+	Mon,  6 Jan 2025 15:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178844;
-	bh=pKvXM3PySC8eKSukmqHTVrtIjc3x3nkk/mUoHA1QWt8=;
+	s=korg; t=1736177599;
+	bh=wh345wGM4pduADgb7FuQLLBjatFSSCMUd04GKEtoBjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qwoke+OmxbH1MRFP2Blw2/EjR7SL0TvblvWzca6i+V+zHKaPoh/R42aer8yyPiC8r
-	 0UaCQB4udgggyt/OQlkkUSB6tf4soNNefqawL+zt+6O56Zs/GsVyKx/40T1Es4todb
-	 KU5fYIgq22dgkub9hQ7tus0TLjQ7AbC7Kwz+P7Ak=
+	b=AjBkAiIgB1yKiXN9wiHBtkCrL3BAmbSyka6oSmQJRSjBZsbNbASsOIO95TR5pPSsU
+	 DTlSpziluQg0yntPsrqzg7TvuM5wYu7dMu0xZnX3/ZZZrODnfW17FyNgO1NM91T+m4
+	 ew6/nY1vtCCeigNtTM2h1e+Gtv0tysNqymLgbxcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 112/168] xhci: retry Stop Endpoint on buggy NEC controllers
+	Alessandro Carminati <acarmina@redhat.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <clement.leger@bootlin.com>,
+	Eric Chanudet <echanude@redhat.com>,
+	Gabriele Paoloni <gpaoloni@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 216/222] mm/kmemleak: fix sleeping function called from invalid context at print message
 Date: Mon,  6 Jan 2025 16:17:00 +0100
-Message-ID: <20250106151142.685184232@linuxfoundation.org>
+Message-ID: <20250106151158.943911130@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +67,118 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Alessandro Carminati <acarmina@redhat.com>
 
-[ Upstream commit fd9d55d190c0e5fefd3a9165ea361809427885a1 ]
+commit cddc76b165161a02ff14c4d84d0f5266d9d32b9e upstream.
 
-Two NEC uPD720200 adapters have been observed to randomly misbehave:
-a Stop Endpoint command fails with Context Error, the Output Context
-indicates Stopped state, and the endpoint keeps running. Very often,
-Set TR Dequeue Pointer is seen to fail next with Context Error too,
-in addition to problems from unexpectedly completed cancelled work.
+Address a bug in the kernel that triggers a "sleeping function called from
+invalid context" warning when /sys/kernel/debug/kmemleak is printed under
+specific conditions:
+- CONFIG_PREEMPT_RT=y
+- Set SELinux as the LSM for the system
+- Set kptr_restrict to 1
+- kmemleak buffer contains at least one item
 
-The pathology is common on fast running isoc endpoints like uvcvideo,
-but has also been reproduced on a full-speed bulk endpoint of pl2303.
-It seems all EPs are affected, with risk proportional to their load.
+BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 136, name: cat
+preempt_count: 1, expected: 0
+RCU nest depth: 2, expected: 2
+6 locks held by cat/136:
+ #0: ffff32e64bcbf950 (&p->lock){+.+.}-{3:3}, at: seq_read_iter+0xb8/0xe30
+ #1: ffffafe6aaa9dea0 (scan_mutex){+.+.}-{3:3}, at: kmemleak_seq_start+0x34/0x128
+ #3: ffff32e6546b1cd0 (&object->lock){....}-{2:2}, at: kmemleak_seq_show+0x3c/0x1e0
+ #4: ffffafe6aa8d8560 (rcu_read_lock){....}-{1:2}, at: has_ns_capability_noaudit+0x8/0x1b0
+ #5: ffffafe6aabbc0f8 (notif_lock){+.+.}-{2:2}, at: avc_compute_av+0xc4/0x3d0
+irq event stamp: 136660
+hardirqs last  enabled at (136659): [<ffffafe6a80fd7a0>] _raw_spin_unlock_irqrestore+0xa8/0xd8
+hardirqs last disabled at (136660): [<ffffafe6a80fd85c>] _raw_spin_lock_irqsave+0x8c/0xb0
+softirqs last  enabled at (0): [<ffffafe6a5d50b28>] copy_process+0x11d8/0x3df8
+softirqs last disabled at (0): [<0000000000000000>] 0x0
+Preemption disabled at:
+[<ffffafe6a6598a4c>] kmemleak_seq_show+0x3c/0x1e0
+CPU: 1 UID: 0 PID: 136 Comm: cat Tainted: G            E      6.11.0-rt7+ #34
+Tainted: [E]=UNSIGNED_MODULE
+Hardware name: linux,dummy-virt (DT)
+Call trace:
+ dump_backtrace+0xa0/0x128
+ show_stack+0x1c/0x30
+ dump_stack_lvl+0xe8/0x198
+ dump_stack+0x18/0x20
+ rt_spin_lock+0x8c/0x1a8
+ avc_perm_nonode+0xa0/0x150
+ cred_has_capability.isra.0+0x118/0x218
+ selinux_capable+0x50/0x80
+ security_capable+0x7c/0xd0
+ has_ns_capability_noaudit+0x94/0x1b0
+ has_capability_noaudit+0x20/0x30
+ restricted_pointer+0x21c/0x4b0
+ pointer+0x298/0x760
+ vsnprintf+0x330/0xf70
+ seq_printf+0x178/0x218
+ print_unreferenced+0x1a4/0x2d0
+ kmemleak_seq_show+0xd0/0x1e0
+ seq_read_iter+0x354/0xe30
+ seq_read+0x250/0x378
+ full_proxy_read+0xd8/0x148
+ vfs_read+0x190/0x918
+ ksys_read+0xf0/0x1e0
+ __arm64_sys_read+0x70/0xa8
+ invoke_syscall.constprop.0+0xd4/0x1d8
+ el0_svc+0x50/0x158
+ el0t_64_sync+0x17c/0x180
 
-Reproduction involves receiving any kind of stream and closing it to
-make the device driver cancel URBs already queued in advance.
+%pS and %pK, in the same back trace line, are redundant, and %pS can void
+%pK service in certain contexts.
 
-Deal with it by retrying the command like in the Running state.
+%pS alone already provides the necessary information, and if it cannot
+resolve the symbol, it falls back to printing the raw address voiding
+the original intent behind the %pK.
 
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240229141438.619372-8-mathias.nyman@linux.intel.com
+Additionally, %pK requires a privilege check CAP_SYSLOG enforced through
+the LSM, which can trigger a "sleeping function called from invalid
+context" warning under RT_PREEMPT kernels when the check occurs in an
+atomic context. This issue may also affect other LSMs.
+
+This change avoids the unnecessary privilege check and resolves the
+sleeping function warning without any loss of information.
+
+Link: https://lkml.kernel.org/r/20241217142032.55793-1-acarmina@redhat.com
+Fixes: 3a6f33d86baa ("mm/kmemleak: use %pK to display kernel pointers in backtrace")
+Signed-off-by: Alessandro Carminati <acarmina@redhat.com>
+Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Clément Léger <clement.leger@bootlin.com>
+Cc: Alessandro Carminati <acarmina@redhat.com>
+Cc: Eric Chanudet <echanude@redhat.com>
+Cc: Gabriele Paoloni <gpaoloni@redhat.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: e21ebe51af68 ("xhci: Turn NEC specific quirk for handling Stop Endpoint errors generic")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ mm/kmemleak.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 5e880f0bdd8a..29faa2d5c766 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1148,6 +1148,15 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
- 				break;
- 			xhci_stop_watchdog_timer_in_irq(xhci, ep);
- 			return;
-+		case EP_STATE_STOPPED:
-+			/*
-+			 * NEC uPD720200 sometimes sets this state and fails with
-+			 * Context Error while continuing to process TRBs.
-+			 * Be conservative and trust EP_CTX_STATE on other chips.
-+			 */
-+			if (!(xhci->quirks & XHCI_NEC_HOST))
-+				break;
-+			fallthrough;
- 		case EP_STATE_RUNNING:
- 			/* Race, HW handled stop ep cmd before ep was running */
- 			xhci_dbg(xhci, "Stop ep completion ctx error, ep is running\n");
--- 
-2.39.5
-
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -368,7 +368,7 @@ static void print_unreferenced(struct se
+ 
+ 	for (i = 0; i < nr_entries; i++) {
+ 		void *ptr = (void *)entries[i];
+-		warn_or_seq_printf(seq, "    [<%pK>] %pS\n", ptr, ptr);
++		warn_or_seq_printf(seq, "    %pS\n", ptr);
+ 	}
+ }
+ 
 
 
 
