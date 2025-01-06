@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-107492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07A17A02C33
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:52:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2332CA02AFD
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F49E161C56
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:51:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CFEC3A1A96
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871031DE4CE;
-	Mon,  6 Jan 2025 15:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2601FBA34;
+	Mon,  6 Jan 2025 15:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0fLycAO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjC8lrlB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D6816A930;
-	Mon,  6 Jan 2025 15:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23F260890;
+	Mon,  6 Jan 2025 15:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178631; cv=none; b=lzBKkPUdDQX0coHnOId13JG0dRO7Bb7Lpkh/s49RKAGR0QK44BUmwGdE1b0JaYvokpyTAmI2mE4nP0tjhzddoDrh7RBHHxYwsFiv3CAQZyhVnX6FeEx5irB4MF9EhieIZtNj3gKovNiJX8ZAHwGFP5I076VUCTw33mxNetDRgV4=
+	t=1736177879; cv=none; b=KO/FZulGf+OmNcsN+EitYfqqCPVHpZEibMVFLQTRiDinhys5cWVmnFve6QSzws8GH5ljIKHYLZ7eb6Kgi0NGFZy+8JQRciAAjgFWy/KQHr/022hP5Dba6N/Tbpp3BZXLvkPTMvihe/2ZbRDT++gHFZcHMTX/Ozso5z3vLpXm2k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178631; c=relaxed/simple;
-	bh=d2n4IAHoQQWPZPNxrKsge0KSGpTaLKd4CZbFpL+SAkU=;
+	s=arc-20240116; t=1736177879; c=relaxed/simple;
+	bh=1tyv8IA88LVRHITAFtvGZJdEUU4VxlsZpIL9W/caElU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NrJ/qnt82gcNN3/7QMS6V5eB6KuBPVFgWmMsGYRWx8GkXnFzGOMIg98ggoqgK8yTpuEfBlYc4ZX+Ab0dkbSDcOErGGkhnxX0kwk5phH7I2L5zQrKpQ4eIxPm4w04ip77EqnAz5hQaMNnDSlyoYhfgmfRaj3uJCFgIbfnb/39hCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0fLycAO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B676AC4CED2;
-	Mon,  6 Jan 2025 15:50:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EllbNHRDeFn2DXH+5CToKMZSW7JoAWhqpNvMTnOw9kg2A4Pc7RPYENwPdXtUJxBkYuMfeHM+Lo0/NaZh8Bchwv5S5MEGplcicE+4nVZ37f9TriEwSwqEUcEtjTLACPKEZhImhFKA9GuX+EXDyCXKJeXxchAfgsRywYBi9flyk9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjC8lrlB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A338C4CED2;
+	Mon,  6 Jan 2025 15:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178631;
-	bh=d2n4IAHoQQWPZPNxrKsge0KSGpTaLKd4CZbFpL+SAkU=;
+	s=korg; t=1736177879;
+	bh=1tyv8IA88LVRHITAFtvGZJdEUU4VxlsZpIL9W/caElU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l0fLycAOWyiCXQHeJ31jasyIhia1PDVJX1uLzbmmiEbzNhmXHIyYWqWzjVu+qXXa3
-	 4Yy6tUvzhCkvp/qi9JOt+cdQ4PsbNpnEOt0/gBlwKRlUU7bpGa3Qxe9azMpkT/SrNN
-	 hUt8ua169GcyCHkuPcUGj2/D2Vopm0cjVX7WI9l8=
+	b=qjC8lrlBVn/crHdHqEQIEBUztMNGuVckrHLTZrBgr1Dxd++aX6nMXuzwL/aDZ0LFE
+	 oRD4QN2GYDybPScVrOIPQXLsc7jCYTmlyZbHG/Kj/FU6l4xU1ul0StAeoIEH42bKNu
+	 lhx58sQgZBpmxchSR8/i/TSi+7RndwcpDDH3Ekrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Su Hui <suhui@nfschina.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 034/168] hwmon: (tmp513) Dont use "proxy" headers
+Subject: [PATCH 6.12 056/156] workqueue: add printf attribute to __alloc_workqueue()
 Date: Mon,  6 Jan 2025 16:15:42 +0100
-Message-ID: <20250106151139.751420846@linuxfoundation.org>
+Message-ID: <20250106151143.843802232@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 5d9ad4e0fa7cc27199fdb94beb6ec5f655ba9489 ]
+[ Upstream commit d57212f281fda9056412cd6cca983d9d2eb89f53 ]
 
-The driver uses math.h and not util_macros.h.
+Fix a compiler warning with W=1:
+kernel/workqueue.c: error:
+function ‘__alloc_workqueue’ might be a candidate for ‘gnu_printf’
+format attribute[-Werror=suggest-attribute=format]
+ 5657 |  name_len = vsnprintf(wq->name, sizeof(wq->name), fmt, args);
+      |  ^~~~~~~~
 
-All the same for the kernel.h, replace it with what the driver is using.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20231128180654.395692-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Stable-dep-of: 74d7e038fd07 ("hwmon: (tmp513) Fix interpretation of values of Shunt Voltage and Limit Registers")
+Fixes: 9b59a85a84dc ("workqueue: Don't call va_start / va_end twice")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/tmp513.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ kernel/workqueue.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
-index b9a93ee9c236..fe3f1113b64e 100644
---- a/drivers/hwmon/tmp513.c
-+++ b/drivers/hwmon/tmp513.c
-@@ -19,15 +19,19 @@
-  * the Free Software Foundation; version 2 of the License.
-  */
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index 9949ffad8df0..25bdd9af7eb6 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -5627,6 +5627,7 @@ static void wq_adjust_max_active(struct workqueue_struct *wq)
+ 	} while (activated);
+ }
  
-+#include <linux/bitops.h>
-+#include <linux/bug.h>
-+#include <linux/device.h>
- #include <linux/err.h>
- #include <linux/hwmon.h>
- #include <linux/i2c.h>
- #include <linux/init.h>
--#include <linux/kernel.h>
-+#include <linux/math.h>
- #include <linux/module.h>
-+#include <linux/property.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
--#include <linux/util_macros.h>
-+#include <linux/types.h>
- 
- // Common register definition
- #define TMP51X_SHUNT_CONFIG		0x00
++__printf(1, 0)
+ static struct workqueue_struct *__alloc_workqueue(const char *fmt,
+ 						  unsigned int flags,
+ 						  int max_active, va_list args)
 -- 
 2.39.5
 
