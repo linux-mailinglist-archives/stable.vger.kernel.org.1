@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-107696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17404A02D16
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:00:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59604A02CB2
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:56:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08C26166777
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:00:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D516F1887AD3
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:56:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D6A166F1B;
-	Mon,  6 Jan 2025 16:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6505213B59A;
+	Mon,  6 Jan 2025 15:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opnsMEpF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/8vsLgC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578AB1DC046;
-	Mon,  6 Jan 2025 16:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BC586332;
+	Mon,  6 Jan 2025 15:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179249; cv=none; b=GykSu1zm8YF3FbUzQKdWN2xKRgTlae0mfJi7JlLeINRDm1wyfGTqPncwQKIoql0sBiU85W4fK6jm+YH9PoVC+DR1EaVol+DQts5oH7Pv4eOOMYb9jalkEuOb7jS+jtg3qNQGUYo7YbU6u8SqVAAw9n1qW0/Jw5zHhAelBmhJFWU=
+	t=1736179007; cv=none; b=Esy3XmSJbvEtLR1UYRp//sGnpXIXNjcqWnkMZUcPlJ8okQJ0YzCMgC2WSHq+mJNz5JIDyJLVpjk08a4Bgk/1RdYbWnAA8ErueVg+jFHsBlpwkpwbErhu8FDOJKQNLSPMLw2pszl5IDLLYIetdTN3e2eushqgX1CUQfEpBhCN8pA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179249; c=relaxed/simple;
-	bh=I2dZvzn9LjfaETG873FoE5S4ba+BI/aQox+IszPQNFo=;
+	s=arc-20240116; t=1736179007; c=relaxed/simple;
+	bh=2sknJLy5kzibUkY8/O4+HuicBGVoQkOIfaQ+qNicZbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hjkVCAwwb5Pv27yba83eSRFSWJcnwY2ePJb2vTw6TW7HUH5pkP3MZij+5H23MjNEhq4a4nouIqLdEMHIyF6mY1sN8NRkYLPA44wFiSPXx29vbodEMcl4wLTocqRaOqzafJOPq9ubdcafXPIxX3cIfvF2+7fuMwNybIps06khexg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opnsMEpF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962ADC4CED2;
-	Mon,  6 Jan 2025 16:00:48 +0000 (UTC)
+	 MIME-Version; b=QXOxwQmFnuGXM0dJdEL2R9Nd2OPlnyfwHv6jz8eRyuJ9IUVnsBYJRjGeZEJvq6BpulKgzcUPUllBXfYKA1kYiuksvZlHZWo79wK8r05xpEdRZvpKzblO/l7W6H6b1XIz8s2BMIaFusMlsM7D3iqujzgUJRToBdNUKVFFOx5tpzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/8vsLgC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F7EC4CED2;
+	Mon,  6 Jan 2025 15:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179249;
-	bh=I2dZvzn9LjfaETG873FoE5S4ba+BI/aQox+IszPQNFo=;
+	s=korg; t=1736179007;
+	bh=2sknJLy5kzibUkY8/O4+HuicBGVoQkOIfaQ+qNicZbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=opnsMEpF0Ql3XSK5ovWbDvYAjqVP3UqYMfXYgSkfnXynqWLPzMLt9cdcjuXXDlVsX
-	 6a3+VOsNbxPTsvmfB/Xy5azzgQMEsdtuGWkxCjy/sS4Ylz0wz5XKi5KRnstVJCvjSv
-	 bNPz1tD9/gM1p2NZcYHhdJEvkB9/wSpD//C4f4+E=
+	b=M/8vsLgCDTvbwkZDuLq7OZ0M3eo2ZwrKSMejsBFzgBxj4Tvu8Vyx4oIe6GyqKQFbG
+	 IdHKijaT6pH1kBHjMMb4MPK9UaVismCnSRBFsqZc+jOXHjhAeIP32pJjnUHCWEvrRx
+	 lMU5zmLxfHVkmGbjO6Trhs9OZkmkrxgX8/OVEd3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonio Pastor <antonio.pastor@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 75/93] net: llc: reset skb->transport_header
-Date: Mon,  6 Jan 2025 16:17:51 +0100
-Message-ID: <20250106151131.537192076@linuxfoundation.org>
+	Pascal Hambourg <pascal@plouf.fr.eu.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 164/168] sky2: Add device ID 11ab:4373 for Marvell 88E8075
+Date: Mon,  6 Jan 2025 16:17:52 +0100
+Message-ID: <20250106151144.622370973@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antonio Pastor <antonio.pastor@gmail.com>
+From: Pascal Hambourg <pascal@plouf.fr.eu.org>
 
-[ Upstream commit a024e377efed31ecfb39210bed562932321345b3 ]
+commit 03c8d0af2e409e15c16130b185e12b5efba0a6b9 upstream.
 
-802.2+LLC+SNAP frames received by napi_complete_done with GRO and DSA
-have skb->transport_header set two bytes short, or pointing 2 bytes
-before network_header & skb->data. As snap_rcv expects transport_header
-to point to SNAP header (OID:PID) after LLC processing advances offset
-over LLC header (llc_rcv & llc_fixup_skb), code doesn't find a match
-and packet is dropped.
+A Marvell 88E8075 ethernet controller has this device ID instead of
+11ab:4370 and works fine with the sky2 driver.
 
-Between napi_complete_done and snap_rcv, transport_header is not used
-until __netif_receive_skb_core, where originally it was being reset.
-Commit fda55eca5a33 ("net: introduce skb_transport_header_was_set()")
-only does so if not set, on the assumption the value was set correctly
-by GRO (and also on assumption that "network stacks usually reset the
-transport header anyway"). Afterwards it is moved forward by
-llc_fixup_skb.
-
-Locally generated traffic shows up at __netif_receive_skb_core with no
-transport_header set and is processed without issue. On a setup with
-GRO but no DSA, transport_header and network_header are both set to
-point to skb->data which is also correct.
-
-As issue is LLC specific, to avoid impacting non-LLC traffic, and to
-follow up on original assumption made on previous code change,
-llc_fixup_skb to reset the offset after skb pull. llc_fixup_skb
-assumes the LLC header is at skb->data, and by definition SNAP header
-immediately follows.
-
-Fixes: fda55eca5a33 ("net: introduce skb_transport_header_was_set()")
-Signed-off-by: Antonio Pastor <antonio.pastor@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241225010723.2830290-1-antonio.pastor@gmail.com
+Signed-off-by: Pascal Hambourg <pascal@plouf.fr.eu.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/10165a62-99fb-4be6-8c64-84afd6234085@plouf.fr.eu.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/llc/llc_input.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/sky2.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/llc/llc_input.c b/net/llc/llc_input.c
-index f4fb309185ce..4229c349651d 100644
---- a/net/llc/llc_input.c
-+++ b/net/llc/llc_input.c
-@@ -124,8 +124,8 @@ static inline int llc_fixup_skb(struct sk_buff *skb)
- 	if (unlikely(!pskb_may_pull(skb, llc_len)))
- 		return 0;
- 
--	skb->transport_header += llc_len;
- 	skb_pull(skb, llc_len);
-+	skb_reset_transport_header(skb);
- 	if (skb->protocol == htons(ETH_P_802_2)) {
- 		__be16 pdulen;
- 		s32 data_size;
--- 
-2.39.5
-
+--- a/drivers/net/ethernet/marvell/sky2.c
++++ b/drivers/net/ethernet/marvell/sky2.c
+@@ -130,6 +130,7 @@ static const struct pci_device_id sky2_i
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x436C) }, /* 88E8072 */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x436D) }, /* 88E8055 */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4370) }, /* 88E8075 */
++	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4373) }, /* 88E8075 */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4380) }, /* 88E8057 */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4381) }, /* 88E8059 */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4382) }, /* 88E8079 */
 
 
 
