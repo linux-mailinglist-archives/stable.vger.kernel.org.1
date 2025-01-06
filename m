@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-107463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F876A02C0E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:50:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42FBBA029F8
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:29:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 367823A6FC8
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:49:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19A017A2840
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B98E145348;
-	Mon,  6 Jan 2025 15:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD95146D40;
+	Mon,  6 Jan 2025 15:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOZbt/Pn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkuIMv9t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A144BA34;
-	Mon,  6 Jan 2025 15:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A87224CC;
+	Mon,  6 Jan 2025 15:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178538; cv=none; b=iqIT3UaqN0qPK/2NWbo93rnORQNeAD+4MCd4S5LVsPidKxgXQpmLpkVFT3jMhsHcuQANfbBb675X5Ioxcv18BxU/KJKeVURzDkMPbnd8TL04+BSS5+odHC+soGj8p9u84SC6vBekVVz7qENjpTL8f2JqgEvJsGsM1VyZ1w8Jgb4=
+	t=1736177298; cv=none; b=Y07oRercXUC4oJ2S0cB5243G3UijvPY/TJvoCU5jewJa5/lYhpZzUU5v299LWr5imZ93z5YRPjQShzoCH+fdbP4gYTy7uzzpo9GHN3IO+vUtZ0J1KUhb/Lh8RfFPRgE1PDVezNwQk5MoSgpjqOdGerzTLRmU+e0QAEehoMgRt2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178538; c=relaxed/simple;
-	bh=EzdwveI87GTWJKGCbqohGYHyCAmXouW8PHhDPBEVXCM=;
+	s=arc-20240116; t=1736177298; c=relaxed/simple;
+	bh=5NOX3zsgHaea+EVWhoLlpRMxL9Mi8X03H3klm2K/7Co=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P6H9IVmhsuf3diGjdODCWXqlvNQeS9VAIH73SQmFEr4g7VhKABZcmDQZIAw++OEUT1OO09wxmF0APnFQO2ousZRl4imcz/FQOccMF/09vsdDkOEqoj057iKOfybBvJbWbX7YjFM8ejtH912uWisWC5/+4UNqBzqz13cg2OkaX24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOZbt/Pn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B2DC4CEDF;
-	Mon,  6 Jan 2025 15:48:57 +0000 (UTC)
+	 MIME-Version; b=hrSpDj1fGmw4oxY4vAbcgQ7stuEGqbi4MClG+/KBkVHnYwtDRxqJLW+kwLPmQNFZLPNOAx0UqPGD4xzT7Cz/Ah9Uy8p1yvn1mSbz9nfA4LLwg/XMlM0rSunKg1SXL8GkV/PDd1L+MdkJvUPLriVOgrz520OsWNzVhSmvd31ZTiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkuIMv9t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E413C4CED2;
+	Mon,  6 Jan 2025 15:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178537;
-	bh=EzdwveI87GTWJKGCbqohGYHyCAmXouW8PHhDPBEVXCM=;
+	s=korg; t=1736177297;
+	bh=5NOX3zsgHaea+EVWhoLlpRMxL9Mi8X03H3klm2K/7Co=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MOZbt/PnT8GoZVr5lf9WxxGogvWTISO6/fH2aK+f47vHu3xYffqq2VuMCZZp6QLQr
-	 lxMwvXMhRckBCBsnIRM6B6IPjBljAq+5CvOxUtlwJ42JN+uwNweNQ3JC11w9y3TFgA
-	 7IA4EyF2Eeshx4xcxPVPfpWvT0bP1Fwbuy2m1nZQ=
+	b=zkuIMv9tIxpH6wDR0j28PxysyvEIKnTcwBl9flZy/yL8yoRrVVEWYO/DiVcEGHyth
+	 5Ba461s0Z0+JPyyFcHAanfbkdlSuH5G9oat2HndW2pxHVvaSvIgCf7AJv1g88JEeJB
+	 grOYXA8ET6drOOrDRJhuBgYMmGaO8399iEs0SsXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Xiubo Li <xiubli@redhat.com>,
+	Patrick Donnelly <pdonnell@redhat.com>,
+	Milind Changire <mchangir@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 013/168] net/smc: check sndbuf_space again after NOSPACE flag is set in smc_poll
+Subject: [PATCH 6.6 117/222] libceph: add doutc and *_client debug macros support
 Date: Mon,  6 Jan 2025 16:15:21 +0100
-Message-ID: <20250106151138.963825753@linuxfoundation.org>
+Message-ID: <20250106151155.026866681@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +64,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-[ Upstream commit 679e9ddcf90dbdf98aaaa71a492454654b627bcb ]
+[ Upstream commit 5c5f0d2b5f92c47baf82b9b211e27edd7d195158 ]
 
-When application sending data more than sndbuf_space, there have chances
-application will sleep in epoll_wait, and will never be wakeup again. This
-is caused by a race between smc_poll and smc_cdc_tx_handler.
+This will help print the fsid and client's global_id in debug logs,
+and also print the function names.
 
-application                                      tasklet
-smc_tx_sendmsg(len > sndbuf_space)   |
-epoll_wait for EPOLL_OUT,timeout=0   |
-  smc_poll                           |
-    if (!smc->conn.sndbuf_space)     |
-                                     |  smc_cdc_tx_handler
-                                     |    atomic_add sndbuf_space
-                                     |    smc_tx_sndbuf_nonfull
-                                     |      if (!test_bit SOCK_NOSPACE)
-                                     |        do not sk_write_space;
-      set_bit SOCK_NOSPACE;          |
-    return mask=0;                   |
+[ idryomov: %lld -> %llu, leading space for doutc(), don't include
+  __func__ in pr_*() variants ]
 
-Application will sleep in epoll_wait as smc_poll returns 0. And
-smc_cdc_tx_handler will not call sk_write_space because the SOCK_NOSPACE
-has not be set. If there is no inflight cdc msg, sk_write_space will not be
-called any more, and application will sleep in epoll_wait forever.
-So check sndbuf_space again after NOSPACE flag is set to break the race.
-
-Fixes: 8dce2786a290 ("net/smc: smc_poll improvements")
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://tracker.ceph.com/issues/61590
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Patrick Donnelly <pdonnell@redhat.com>
+Reviewed-by: Milind Changire <mchangir@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Stable-dep-of: 550f7ca98ee0 ("ceph: give up on paths longer than PATH_MAX")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/af_smc.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/linux/ceph/ceph_debug.h | 38 +++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 4019f2dc9dee..fb299dbc0c26 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -2355,6 +2355,13 @@ static __poll_t smc_poll(struct file *file, struct socket *sock,
- 			} else {
- 				sk_set_bit(SOCKWQ_ASYNC_NOSPACE, sk);
- 				set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
+diff --git a/include/linux/ceph/ceph_debug.h b/include/linux/ceph/ceph_debug.h
+index d5a5da838caf..11a92a946016 100644
+--- a/include/linux/ceph/ceph_debug.h
++++ b/include/linux/ceph/ceph_debug.h
+@@ -19,12 +19,25 @@
+ 	pr_debug("%.*s %12.12s:%-4d : " fmt,				\
+ 		 8 - (int)sizeof(KBUILD_MODNAME), "    ",		\
+ 		 kbasename(__FILE__), __LINE__, ##__VA_ARGS__)
++#  define doutc(client, fmt, ...)					\
++	pr_debug("%.*s %12.12s:%-4d : [%pU %llu] " fmt,			\
++		 8 - (int)sizeof(KBUILD_MODNAME), "    ",		\
++		 kbasename(__FILE__), __LINE__,				\
++		 &client->fsid, client->monc.auth->global_id,		\
++		 ##__VA_ARGS__)
+ # else
+ /* faux printk call just to see any compiler warnings. */
+ #  define dout(fmt, ...)	do {				\
+ 		if (0)						\
+ 			printk(KERN_DEBUG fmt, ##__VA_ARGS__);	\
+ 	} while (0)
++#  define doutc(client, fmt, ...)	do {			\
++		if (0)						\
++			printk(KERN_DEBUG "[%pU %llu] " fmt,	\
++			&client->fsid,				\
++			client->monc.auth->global_id,		\
++			##__VA_ARGS__);				\
++		} while (0)
+ # endif
+ 
+ #else
+@@ -33,7 +46,32 @@
+  * or, just wrap pr_debug
+  */
+ # define dout(fmt, ...)	pr_debug(" " fmt, ##__VA_ARGS__)
++# define doutc(client, fmt, ...)					\
++	pr_debug(" [%pU %llu] %s: " fmt, &client->fsid,			\
++		 client->monc.auth->global_id, __func__, ##__VA_ARGS__)
+ 
+ #endif
+ 
++#define pr_notice_client(client, fmt, ...)				\
++	pr_notice("[%pU %llu]: " fmt, &client->fsid,			\
++		  client->monc.auth->global_id, ##__VA_ARGS__)
++#define pr_info_client(client, fmt, ...)				\
++	pr_info("[%pU %llu]: " fmt, &client->fsid,			\
++		client->monc.auth->global_id, ##__VA_ARGS__)
++#define pr_warn_client(client, fmt, ...)				\
++	pr_warn("[%pU %llu]: " fmt, &client->fsid,			\
++		client->monc.auth->global_id, ##__VA_ARGS__)
++#define pr_warn_once_client(client, fmt, ...)				\
++	pr_warn_once("[%pU %llu]: " fmt, &client->fsid,			\
++		     client->monc.auth->global_id, ##__VA_ARGS__)
++#define pr_err_client(client, fmt, ...)					\
++	pr_err("[%pU %llu]: " fmt, &client->fsid,			\
++	       client->monc.auth->global_id, ##__VA_ARGS__)
++#define pr_warn_ratelimited_client(client, fmt, ...)			\
++	pr_warn_ratelimited("[%pU %llu]: " fmt, &client->fsid,		\
++			    client->monc.auth->global_id, ##__VA_ARGS__)
++#define pr_err_ratelimited_client(client, fmt, ...)			\
++	pr_err_ratelimited("[%pU %llu]: " fmt, &client->fsid,		\
++			   client->monc.auth->global_id, ##__VA_ARGS__)
 +
-+				if (sk->sk_state != SMC_INIT) {
-+					/* Race breaker the same way as tcp_poll(). */
-+					smp_mb__after_atomic();
-+					if (atomic_read(&smc->conn.sndbuf_space))
-+						mask |= EPOLLOUT | EPOLLWRNORM;
-+				}
- 			}
- 			if (atomic_read(&smc->conn.bytes_to_rcv))
- 				mask |= EPOLLIN | EPOLLRDNORM;
+ #endif
 -- 
 2.39.5
 
