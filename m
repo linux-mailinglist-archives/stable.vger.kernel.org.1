@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-107180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B1AA02A98
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:35:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9065A029EF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:28:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DE76164E98
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:35:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 151431887655
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:28:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD08156237;
-	Mon,  6 Jan 2025 15:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ADA5156886;
+	Mon,  6 Jan 2025 15:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MaHQF5T8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IurKX7ro"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2947D7405A;
-	Mon,  6 Jan 2025 15:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177C914900B;
+	Mon,  6 Jan 2025 15:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177695; cv=none; b=sUTVZyhzihUh5ve7Ng7I9X/3+XJNCfxKzqfD+Ry4C5vDcEXUkKMb9R8IBeqv2VQTn4IdkPype1M4Y6znsiI1rNSCK3Gkg/x1Vs1HrrmP/BW6Gh25LLvrQ70E5MkYt+Vcr3LJK1o9JnxboaA0Bonx76I0TtDapZ3LqOwnJIAP9g8=
+	t=1736177268; cv=none; b=cluNGMZNhHKzCfwIdzyUf7nFC9bNT9q8tInnF0rXgSTi+dnJoWXMdeS3TbWsBKmfDhnUAHafjwFSULWbrEYHmO5OfH/vfgrjG527Sz89Qn3vrZwvOGizWx3tKfF6xqNMuo+G9qeXoOcmaQ+6YYjxVSv95kCD1l+hBMG7RFqZ26o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177695; c=relaxed/simple;
-	bh=wirJ0Yfn/mNh2YDsghPQRLfp04MR3U9JDAxlVXQ+u3M=;
+	s=arc-20240116; t=1736177268; c=relaxed/simple;
+	bh=TwJfmjS6GwGcJ6OqF71vugSi5xtQpRMQECyLfMP8nOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RBswUxcEVqWC6C8vWR/D7xTNxfIdG91mKiBaucL94+5uCRH1u5GiLhnagGLhN5TwEjNWF3aNZEw3x+A35PDbr8MVXOT1K6hqp4taiP6/BnSnVHL00MiLGODLCQd+Esginy+yAoVHZxoBhbQ+fBOo0uYFQhbYy8oy+1nUQIOdLdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MaHQF5T8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47755C4CED2;
-	Mon,  6 Jan 2025 15:34:54 +0000 (UTC)
+	 MIME-Version; b=ldwZHoMjXe71i0u0xbM+xe5YZQJ8SyHbYZLcp5cr68bMz2xXLYrYZfzrNYUuKJ25JrSWQ5J+eSACvfaNj6x4/OMVlrRlR1YkV+EOOhRKbg8bMWHAHNJQnxWpiDUQK4D1toQRxIdUDeCy0+E9/mgWRmVnwKRr7yQQpkK7cvieizA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IurKX7ro; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B70C4CED6;
+	Mon,  6 Jan 2025 15:27:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177694;
-	bh=wirJ0Yfn/mNh2YDsghPQRLfp04MR3U9JDAxlVXQ+u3M=;
+	s=korg; t=1736177268;
+	bh=TwJfmjS6GwGcJ6OqF71vugSi5xtQpRMQECyLfMP8nOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MaHQF5T8OP/eYD8AD/N3MMIPmCNyNVSjgYa5RQMJYGHT4+Gjao6HgBbHofnB6MBKC
-	 YpUJncnGJBIYs47Wrpfj9JWHhFfrn2U7OXrZACDJpJUnCCMeIxQb6ztA1//NuOgQLL
-	 m+LUpFqXKS+0k1aytEFnxKMRjISRR6VcxNOEsqbw=
+	b=IurKX7ro+Hcm9RhCiNuseJs8hGLlVP1ywmJUnyUPea+R5HeSb1iTVmSFTZEaBXRCu
+	 nfng13ZA5lr2BoLnLQbVSmhpwJc7SkeLnfHEqIfIRgQ52YVzlwFULEQbVTmElyHeH2
+	 hk1emr7+nh2aV4QnJKzeQqpWW/p7jJFAVfkFOflI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 026/156] RDMA/bnxt_re: Fix max_qp_wrs reported
+Subject: [PATCH 6.6 108/222] usb: typec: ucsi: glink: fix off-by-one in connector_status
 Date: Mon,  6 Jan 2025 16:15:12 +0100
-Message-ID: <20250106151142.726389331@linuxfoundation.org>
+Message-ID: <20250106151154.685210461@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvin Xavier <selvin.xavier@broadcom.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 40be32303ec829ea12f9883e499bfd3fe9e52baf ]
+[ Upstream commit 4a22918810980897393fa1776ea3877e4baf8cca ]
 
-While creating qps, driver adds one extra entry to the sq size
-passed by the ULPs in order to avoid queue full condition.
-When ULPs creates QPs with max_qp_wr reported, driver creates
-QP with 1 more than the max_wqes supported by HW. Create QP fails
-in this case. To avoid this error, reduce 1 entry in max_qp_wqes
-and report it to the stack.
+UCSI connector's indices start from 1 up to 3, PMIC_GLINK_MAX_PORTS.
+Correct the condition in the pmic_glink_ucsi_connector_status()
+callback, fixing Type-C orientation reporting for the third USB-C
+connector.
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/20241217102649.1377704-2-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 76716fd5bf09 ("usb: typec: ucsi: glink: move GPIO reading into connector_status callback")
+Cc: stable@vger.kernel.org
+Reported-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241109-ucsi-glue-fixes-v2-1-8b21ff4f9fbe@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_sp.c | 2 +-
+ drivers/usb/typec/ucsi/ucsi_glink.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-index e29fbbdab9fd..63706d6d121c 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-@@ -129,7 +129,7 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
- 	attr->max_qp_init_rd_atom =
- 		sb->max_qp_init_rd_atom > BNXT_QPLIB_MAX_OUT_RD_ATOM ?
- 		BNXT_QPLIB_MAX_OUT_RD_ATOM : sb->max_qp_init_rd_atom;
--	attr->max_qp_wqes = le16_to_cpu(sb->max_qp_wr);
-+	attr->max_qp_wqes = le16_to_cpu(sb->max_qp_wr) - 1;
- 	/*
- 	 * 128 WQEs needs to be reserved for the HW (8916). Prevent
- 	 * reporting the max number
+diff --git a/drivers/usb/typec/ucsi/ucsi_glink.c b/drivers/usb/typec/ucsi/ucsi_glink.c
+index f0b4d0a4bb19..82a1081d44f1 100644
+--- a/drivers/usb/typec/ucsi/ucsi_glink.c
++++ b/drivers/usb/typec/ucsi/ucsi_glink.c
+@@ -202,7 +202,7 @@ static void pmic_glink_ucsi_connector_status(struct ucsi_connector *con)
+ 	struct pmic_glink_ucsi *ucsi = ucsi_get_drvdata(con->ucsi);
+ 	int orientation;
+ 
+-	if (con->num >= PMIC_GLINK_MAX_PORTS ||
++	if (con->num > PMIC_GLINK_MAX_PORTS ||
+ 	    !ucsi->port_orientation[con->num - 1])
+ 		return;
+ 
 -- 
 2.39.5
 
