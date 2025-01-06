@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-107505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D32BA02C5C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A56D8A02ADA
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:38:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 611D93A615C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:51:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C858188205C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF7D1DE3BB;
-	Mon,  6 Jan 2025 15:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A9715855C;
+	Mon,  6 Jan 2025 15:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="paybwzKS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pcGDx7uy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558261DED5B;
-	Mon,  6 Jan 2025 15:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4608155352;
+	Mon,  6 Jan 2025 15:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178675; cv=none; b=DMgZ8D39l3qKVU35xZd9mmfdHDaA8MK1+pI/l6i8N9+4g8ubM2NvWsTR89EbAybth7qXDmBB09ptrvVpwRjHQJXPseQzmCSFJTAhlXTcHG53b3mcpcRZkWGXRePjKJjjZVSydfpIIdMyttG4CEdjGh4jgf7lUtVE9df7KeYarms=
+	t=1736177853; cv=none; b=kEQ0Q/qkrxNxFAez3ZicYJSGz5zqtjLyNX1rk9bj9V/YO7vmRKsAmOYKbTKPQr6XeqEgfa2n1EeZjhOM1VNmwTYsK1h0zN3kI7QOLRO8E6T7jtzgr53tyr9zwBGlgWf5ZCDvntkG7WwSJcfkyqugGVt9ShGLrsU8tjFXbW2QNRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178675; c=relaxed/simple;
-	bh=9rdJNO4wsFtvrVF/mvZkfRQk04uN1aC9m0wmGD4qjgM=;
+	s=arc-20240116; t=1736177853; c=relaxed/simple;
+	bh=dyRFPv79fwQs5GNFLl+0OdWB9B/GDm1r5ZyHQMKpMzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bVJfhwI3y8W5j1ndKcaFBWl9iOLMWFXr4xjj4sO2cGy7prf4wZ+OgNwMAKXVozXF69t5oh+yyxC1n1MtrkcMOIQMvQ7PUDwxcEV26nqb29BtzXov+IjilawPyHcG2dCC2ick1DXrEC8614fd2UQB8ntVwWW4I9c2V4OyuF96Tj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=paybwzKS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBEF4C4CED6;
-	Mon,  6 Jan 2025 15:51:14 +0000 (UTC)
+	 MIME-Version; b=bdAf/BI8EmcTBNyDEzcfbW0xSJ/ZF/V0cRNQJ2HdQzyulAYLYus8JZIzYaTmNeLLHJftyiMsHWrQywIvnh26DXx1dN4q8EmzkfyGF4o6waYPrFRmEiAuLmXM10fygN54dNf+D5e/UP+/exreDKibfNho/N81HFBlReyD3CUhTfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pcGDx7uy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66CB0C4CED2;
+	Mon,  6 Jan 2025 15:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178675;
-	bh=9rdJNO4wsFtvrVF/mvZkfRQk04uN1aC9m0wmGD4qjgM=;
+	s=korg; t=1736177852;
+	bh=dyRFPv79fwQs5GNFLl+0OdWB9B/GDm1r5ZyHQMKpMzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=paybwzKS1S9gSqWfB3zCOJPA82sd2RtBOE8+o+8CuwhQWQxxA9y509Gu9fXohhetF
-	 3Zr3eX6ijvb+iN088wkTqBziuubXIpwSWNdDvlp3w/kJ+rMR8I7q5xrvJqxs4cA5zQ
-	 66EMBgu8GsPxiKMlS9X2YuFyHCL7zWWgr0+UPfpo=
+	b=pcGDx7uyBbKbxlJTLcvCXN5Did/fvg6gizyLkWlpvKI+yLjhaAzKw9+kTmV4Z9E4J
+	 ZiLjC43U4jNx8VWqrfKXlIZkameAfmnIihjCxZemNd6JHFbcnf1chqPuenYJ/MvhRV
+	 U/GW3+zj+b91O4qPreFSNso7MvC61FBWlR3AAaNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Alex Markuze <amarkuze@redhat.com>
-Subject: [PATCH 5.15 054/168] ceph: validate snapdirname option length when mounting
-Date: Mon,  6 Jan 2025 16:16:02 +0100
-Message-ID: <20250106151140.503755990@linuxfoundation.org>
+	Kan Liang <kan.liang@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 077/156] perf/x86/intel: Add Arrow Lake U support
+Date: Mon,  6 Jan 2025 16:16:03 +0100
+Message-ID: <20250106151144.632646266@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-commit 12eb22a5a609421b380c3c6ca887474fb2089b2c upstream.
+[ Upstream commit 4e54ed496343702837ddca5f5af720161c6a5407 ]
 
-It becomes a path component, so it shouldn't exceed NAME_MAX
-characters.  This was hardened in commit c152737be22b ("ceph: Use
-strscpy() instead of strcpy() in __get_snap_name()"), but no actual
-check was put in place.
+>From PMU's perspective, the new Arrow Lake U is the same as the
+Meteor Lake.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Alex Markuze <amarkuze@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20241121180526.2364759-1-kan.liang@linux.intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/super.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/events/intel/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ceph/super.c
-+++ b/fs/ceph/super.c
-@@ -301,6 +301,8 @@ static int ceph_parse_mount_param(struct
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 28b4312f2563..f558be868a50 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -7067,6 +7067,7 @@ __init int intel_pmu_init(void)
  
- 	switch (token) {
- 	case Opt_snapdirname:
-+		if (strlen(param->string) > NAME_MAX)
-+			return invalfc(fc, "snapdirname too long");
- 		kfree(fsopt->snapdir_name);
- 		fsopt->snapdir_name = param->string;
- 		param->string = NULL;
+ 	case INTEL_METEORLAKE:
+ 	case INTEL_METEORLAKE_L:
++	case INTEL_ARROWLAKE_U:
+ 		intel_pmu_init_hybrid(hybrid_big_small);
+ 
+ 		x86_pmu.pebs_latency_data = cmt_latency_data;
+-- 
+2.39.5
+
 
 
 
