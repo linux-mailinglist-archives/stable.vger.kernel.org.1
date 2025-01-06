@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-107409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AC73A02BB9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:46:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0CCFA02CD4
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:58:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2284D1886736
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:46:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C18FB165B60
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:58:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA521DE2DF;
-	Mon,  6 Jan 2025 15:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4D716DEBB;
+	Mon,  6 Jan 2025 15:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KGOXP35b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sv8OLmjh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E5C1DE3AA;
-	Mon,  6 Jan 2025 15:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397FFBA34;
+	Mon,  6 Jan 2025 15:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178376; cv=none; b=rDKrJZXRFp31fx8T+/qV2NmP4K8M2vRhqu+aDNldn+en1JKjW+e0pGoSfcNEhCxQ98kuTN96Y/9cTGNxwcHfca3/Pp9wjMBJKj1IUY1h4oXoecaKqRliBDIwZmvOf7F16+ZQCKQBWLz7Ihr8XEf6qmFbKiMjZz87evqLhFU/1hE=
+	t=1736179099; cv=none; b=SOP3hqVnts8g953I8xGvwjH1S8moBTppChCddQ+BE8n9ylWT+N7CFl0vwpa67AGXEJdZyrweIY4GyXu8GgC1bm6MfMHTp5RDcw/b13ZFI7ZaSqRinZRJYDn1qZ3YzYFJ0Dw3ZEqyhJ/8ldAhB6y58WWVRwVnwrCMMkcfqPx1qB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178376; c=relaxed/simple;
-	bh=uNFalZ4QVssxYausFBSWmeBh6Kpw/WaUvSBoXiaBFx8=;
+	s=arc-20240116; t=1736179099; c=relaxed/simple;
+	bh=qDl9ms0F4w2tKOzOraDqnEJ7qwuqQnLfJIvKZeKOdLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gDzYGppv4EbqPag0uPXQmE6mqAO5GLo6p/CcbN6YRj53hqWy8CNCU/Fv0qNwLnJUNeG2aXRmkPJgN/w5Sp8kDmSyhfm7hXCfm/ImwjW82RRgt0iK781w58Kuy8NglHq6vOkMJbRM7dzusShsaHgvf7Sg4JRdjicMDPWDNHcfcU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KGOXP35b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 261C6C4CEE4;
-	Mon,  6 Jan 2025 15:46:15 +0000 (UTC)
+	 MIME-Version; b=LNTcEgKM31FXsncsNIDXzDVH4SRgjO5M5hHpNx5OV7crT+kU5mhkN8jzm3ZSzCGpsTpt+zLwAhVMtiJz9B3LqwSGQ2k4Rlf5D2C65T4WMEKRLm6U+oFh0g5jiHf92g/Pmco9uoezG+cUz08awaqGzFsy+WHQuBoRM4Wx3UAq3v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sv8OLmjh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4AA9C4CED2;
+	Mon,  6 Jan 2025 15:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178376;
-	bh=uNFalZ4QVssxYausFBSWmeBh6Kpw/WaUvSBoXiaBFx8=;
+	s=korg; t=1736179099;
+	bh=qDl9ms0F4w2tKOzOraDqnEJ7qwuqQnLfJIvKZeKOdLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KGOXP35bZZlr6a/K09puWbRNFCM2roUTk/cXiR/gb5Q9I1VY4AX3E/1l/4+9hPxJ9
-	 99c8kDff7LNGlv7b5kOkvAO78aNX+f7IhbtTcTcPy/dYB/m3VVcZV+0hAewekGxLv2
-	 zk45Td5V0HPP4EKyGLbW/psqLiCKPURNhGbbBaAM=
+	b=sv8OLmjhUVhLVp3GDaPgXoFsTOul5I/FFuF346dw2ihGzHcd4lborBV80pNkH1PAV
+	 0GxmKKM2bqYxhp62sLsZzpbxlqmzXN1d1pWe42EykfdYPDL+RQhIaRr+K7pjFJAMdM
+	 Kew9byxrZCDJhRIJpTKFD5/J8dhuCOs2T8Nw1Wwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kairui Song <kasong@tencent.com>,
-	Desheng Wu <deshengwu@tencent.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 098/138] zram: fix uninitialized ZRAM not releasing backing device
-Date: Mon,  6 Jan 2025 16:17:02 +0100
-Message-ID: <20250106151136.941319893@linuxfoundation.org>
+	Trond Myklebust <trond.myklebust@hammerspace.com>
+Subject: [PATCH 5.4 27/93] NFS/pnfs: Fix a live lock between recalled layouts and layoutget
+Date: Mon,  6 Jan 2025 16:17:03 +0100
+Message-ID: <20250106151129.730529105@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kairui Song <kasong@tencent.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 74363ec674cb172d8856de25776c8f3103f05e2f ]
+commit 62e2a47ceab8f3f7d2e3f0e03fdd1c5e0059fd8b upstream.
 
-Setting backing device is done before ZRAM initialization.  If we set the
-backing device, then remove the ZRAM module without initializing the
-device, the backing device reference will be leaked and the device will be
-hold forever.
+When the server is recalling a layout, we should ignore the count of
+outstanding layoutget calls, since the server is expected to return
+either NFS4ERR_RECALLCONFLICT or NFS4ERR_RETURNCONFLICT for as long as
+the recall is outstanding.
+Currently, we may end up livelocking, causing the layout to eventually
+be forcibly revoked.
 
-Fix this by always reset the ZRAM fully on rmmod or reset store.
-
-Link: https://lkml.kernel.org/r/20241209165717.94215-3-ryncsn@gmail.com
-Fixes: 013bf95a83ec ("zram: add interface to specif backing device")
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Reported-by: Desheng Wu <deshengwu@tencent.com>
-Suggested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bf0291dd2267 ("pNFS: Ensure LAYOUTGET and LAYOUTRETURN are properly serialised")
+Cc: stable@vger.kernel.org
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/zram/zram_drv.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ fs/nfs/pnfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 8e13586be8c9..05a46fbe0ea9 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1146,12 +1146,16 @@ static void zram_meta_free(struct zram *zram, u64 disksize)
- 	size_t num_pages = disksize >> PAGE_SHIFT;
- 	size_t index;
- 
-+	if (!zram->table)
-+		return;
-+
- 	/* Free all pages that are still in this zram device */
- 	for (index = 0; index < num_pages; index++)
- 		zram_free_page(zram, index);
- 
- 	zs_destroy_pool(zram->mem_pool);
- 	vfree(zram->table);
-+	zram->table = NULL;
- }
- 
- static bool zram_meta_alloc(struct zram *zram, u64 disksize)
-@@ -1694,11 +1698,6 @@ static void zram_reset_device(struct zram *zram)
- 
- 	zram->limit_pages = 0;
- 
--	if (!init_done(zram)) {
--		up_write(&zram->init_lock);
--		return;
--	}
--
- 	set_capacity_and_notify(zram->disk, 0);
- 	part_stat_set_all(&zram->disk->part0, 0);
- 
--- 
-2.39.5
-
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -1165,7 +1165,7 @@ pnfs_prepare_layoutreturn(struct pnfs_la
+ 		enum pnfs_iomode *iomode)
+ {
+ 	/* Serialise LAYOUTGET/LAYOUTRETURN */
+-	if (atomic_read(&lo->plh_outstanding) != 0)
++	if (atomic_read(&lo->plh_outstanding) != 0 && lo->plh_return_seq == 0)
+ 		return false;
+ 	if (test_and_set_bit(NFS_LAYOUT_RETURN_LOCK, &lo->plh_flags))
+ 		return false;
 
 
 
