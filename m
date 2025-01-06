@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-107437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD383A02BFC
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:49:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E084A02B32
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED9BF3A812C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD5093A10C2
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:40:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 928FE1DC99E;
-	Mon,  6 Jan 2025 15:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A202814D28C;
+	Mon,  6 Jan 2025 15:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0T1KXwq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qh9ugpO/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4411422DD;
-	Mon,  6 Jan 2025 15:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6C0157E82;
+	Mon,  6 Jan 2025 15:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178460; cv=none; b=hPn7QlO40DAW2VFrrz4TeSMe3zkaKMVZAbrkzpYtl/4XHByz5Ad0a4pPsaSngnmQNu/eG3CxXT4T+MYZFPko0WxWaqbiKkbw6bWhnMtRQKzAmILMQaDkAhia9hfqIl65nyKNiYbrW2eEWl/YzQReuV8P7gL0qPNMmbJOU5n8m8U=
+	t=1736178010; cv=none; b=L6vC4MTFye1L2PDpr5xt72DwDRDWZwG6fQC9j2SwvsDZQPknmJSO5iFEs1MS8PO0viipGgobkJuZqh6hD+Nzwyc7UuVpM9k4ABRk9PVluMjCrC3MNnxtVzc79N2D6UDkbAqGqtoW/Cp1ph3A79lOIx9BV5okgub2/AoDK1O9suo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178460; c=relaxed/simple;
-	bh=nrlP7m5FLc71ZfOjw3W2CIdW7bxB/4iA3Rn9UiSngO8=;
+	s=arc-20240116; t=1736178010; c=relaxed/simple;
+	bh=SwTW9BYDPMSacZtJVTNCWmJhT4mHBqUZjeAm/nfqiCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ph3Cn4NSXq9I7mqLGoTKG4ycP2HlmirIvX4xToBbwaufMTw1LSvlfjzrbluLloJQBlBxGHlfzAR5YZl+TgLx5QGdD2hQiu11WlS/73DYGQWYTZkNZxaMsf7k7JDFzVH5qCMo/5ufulcp1gTorB8E3l8hXk4kO/UAYpx4/fkDxwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0T1KXwq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC37C4CED2;
-	Mon,  6 Jan 2025 15:47:39 +0000 (UTC)
+	 MIME-Version; b=sl2li5d31avJLs6RCtZhsi2lp6IXPEnM/zho3rfDHVN5iVyiRwbci0nw2KZVoMwF+P8yD6d+1JgouLGgNB+ZGEee43j7SWfz+up1T6UYn6RRiZm3KcWVqcQbdE6N4MP/r5VMuGoavwIECbCOf/eghns8dQBuq2f4eKgSwxGOQ4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qh9ugpO/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC46AC4CED2;
+	Mon,  6 Jan 2025 15:40:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178459;
-	bh=nrlP7m5FLc71ZfOjw3W2CIdW7bxB/4iA3Rn9UiSngO8=;
+	s=korg; t=1736178010;
+	bh=SwTW9BYDPMSacZtJVTNCWmJhT4mHBqUZjeAm/nfqiCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f0T1KXwqmdIhwBzccTUVYZYnSs62J6SUzC0ZpFAI0Zmw4WZpYuqe+tXqPd0iFsYOe
-	 m2LWKlv/4UYwQ5hYd/+6ausldppjNyvTbwElmXPL74BKTFALc4j8W/QKYpneYqOjQD
-	 J1tdlf+CvQ9epU6bWTC6DaiJLd8hzP0Fv2zWoI4A=
+	b=Qh9ugpO/j3XmCgiqo6FLV8z3Dxfze8ziFCvCd49qJpHDAd0GECX1fu8xzBReQBUOY
+	 ZwCxyEa0TqPzoP7Fikw3wtGMz6vnTOsp5++pU6sOYbVIF8J9LaEHWXpI4h05CJsQ8w
+	 5/XzwRmMEa5fSzi7eFhcnR50Jv7wDJf6kUkUY5sw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 094/138] sd: update the bdev size in sd_revalidate_disk
+	Hien Huynh <hien.huynh.px@renesas.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Adam Ford <aford173@gmail.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH 6.12 132/156] drm: adv7511: Drop dsi single lane support
 Date: Mon,  6 Jan 2025 16:16:58 +0100
-Message-ID: <20250106151136.791084823@linuxfoundation.org>
+Message-ID: <20250106151146.704017162@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit b200e38c493b2a5acff4f86d40a3e45d546c664c ]
+commit 79d67c499c3f886202a40c5cb27e747e4fa4d738 upstream.
 
-This avoids the extra call to revalidate_disk_size in sd_rescan and
-is otherwise a no-op because the size did not change, or we are in
-the probe path.
+As per [1] and [2], ADV7535/7533 supports only 2-, 3-, or 4-lane. Drop
+unsupported 1-lane.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Acked-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 74363ec674cb ("zram: fix uninitialized ZRAM not releasing backing device")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1] https://www.analog.com/media/en/technical-documentation/data-sheets/ADV7535.pdf
+[2] https://www.analog.com/media/en/technical-documentation/data-sheets/ADV7533.pdf
+
+Fixes: 1e4d58cd7f88 ("drm/bridge: adv7533: Create a MIPI DSI device")
+Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Adam Ford <aford173@gmail.com>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241119192040.152657-4-biju.das.jz@bp.renesas.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sd.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/bridge/adv7511/adv7533.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-index 2f2ca2878876..355d38cab862 100644
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -1767,10 +1767,8 @@ static int sd_sync_cache(struct scsi_disk *sdkp, struct scsi_sense_hdr *sshdr)
- static void sd_rescan(struct device *dev)
- {
- 	struct scsi_disk *sdkp = dev_get_drvdata(dev);
--	int ret;
+--- a/drivers/gpu/drm/bridge/adv7511/adv7533.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7533.c
+@@ -172,7 +172,7 @@ int adv7533_parse_dt(struct device_node
  
--	ret = sd_revalidate_disk(sdkp->disk);
--	revalidate_disk_size(sdkp->disk, ret == 0);
-+	sd_revalidate_disk(sdkp->disk);
- }
+ 	of_property_read_u32(np, "adi,dsi-lanes", &num_lanes);
  
- static int sd_ioctl(struct block_device *bdev, fmode_t mode,
-@@ -3295,7 +3293,7 @@ static int sd_revalidate_disk(struct gendisk *disk)
- 	sdkp->first_scan = 0;
+-	if (num_lanes < 1 || num_lanes > 4)
++	if (num_lanes < 2 || num_lanes > 4)
+ 		return -EINVAL;
  
- 	set_capacity_revalidate_and_notify(disk,
--		logical_to_sectors(sdp, sdkp->capacity), false);
-+		logical_to_sectors(sdp, sdkp->capacity), true);
- 	sd_config_write_same(sdkp);
- 	kfree(buffer);
- 
-@@ -3305,7 +3303,7 @@ static int sd_revalidate_disk(struct gendisk *disk)
- 	 * capacity to 0.
- 	 */
- 	if (sd_zbc_revalidate_zones(sdkp))
--		set_capacity_revalidate_and_notify(disk, 0, false);
-+		set_capacity_revalidate_and_notify(disk, 0, true);
- 
-  out:
- 	return 0;
--- 
-2.39.5
-
+ 	adv->num_dsi_lanes = num_lanes;
 
 
 
