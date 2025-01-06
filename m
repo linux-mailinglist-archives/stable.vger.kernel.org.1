@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-106902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DFBCA0293F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:21:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4EBAA02A43
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:32:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E05C718864C9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:21:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 076667A2100
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56EE815C120;
-	Mon,  6 Jan 2025 15:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE4F1DC9BE;
+	Mon,  6 Jan 2025 15:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlcFuKsw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SkVDAYHs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105A378F49;
-	Mon,  6 Jan 2025 15:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9F81DE3D6;
+	Mon,  6 Jan 2025 15:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176855; cv=none; b=pYwZnmcGyWf1ecv//U+K9u0/ajFlL876vPeoX29Mxn+Nqj8ErU1xIUe4sgqsSBb/Vl9RUfjfzONhSGh+RCKnFFGnYLEVGD5WS43P0xqSvNnWxa/g6LJARR8Ih+QYMC34zEgWM1jyozugBCZX2tTIiCHw4wDOj4cEUKd1QyApFKc=
+	t=1736177490; cv=none; b=tBp/CiqUwkwmJqXHt+pmaaah500/6mkKMXStkQMIeDKo4dDSukNrzIzttxHWW4sb29EIcQmel5xJd4a3js9tlHdDsmR/mmlobZLgUL5icpXijB3tpFoiu2jcbBzj6io9FQ/Hq5pHiF4u4xNfTFAhflj87CNOCYCQKtuaFyway+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176855; c=relaxed/simple;
-	bh=xD/bRRp1N+B2Za8iMprsLnljw+34XAEgtmPiCJV2Ee8=;
+	s=arc-20240116; t=1736177490; c=relaxed/simple;
+	bh=natD1cTvlP0duKYsYcHB36aGjA/HrqaXWfMZzAabW+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c1UrNLFWEhMjQOTHedOC1GJc3xHhTC/kXZBVQ5vKWUSS1IWVavj/L1p4AyR7YuCNS5jrQ2+8f4ZTVAsDxEThA2Sd51zohH55TJHX8a3GyFvBl84deB2A8msiWlV0OQGa/wts/+VAPxlfbIA8Q00n+4ia4dQxAtasaEtxjH9PrhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlcFuKsw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10BFAC4CED2;
-	Mon,  6 Jan 2025 15:20:53 +0000 (UTC)
+	 MIME-Version; b=DTfg0uwyNy8Uk0HJW2voA2EWCGY7kAseAPTomRCZxFMNBu+rr5yvBYiTCpYYF/AKMGgmgCy+91WMjTPbeAw5u/saIo0CCiNckxjU6NKGETYETaZmOOJeMdCKmfOROFv8uuZ76JAD22N9vW8Zu8VaNSUuv2o+DLw2aTGeQom4EgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkVDAYHs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31DB6C4CED2;
+	Mon,  6 Jan 2025 15:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176854;
-	bh=xD/bRRp1N+B2Za8iMprsLnljw+34XAEgtmPiCJV2Ee8=;
+	s=korg; t=1736177489;
+	bh=natD1cTvlP0duKYsYcHB36aGjA/HrqaXWfMZzAabW+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jlcFuKsweJjdPiDl4oetQie4R//7l6GpM+rr0YO+PrRiE02pZ8qwAMJDYxqGKM2Cg
-	 TN4L7dLiipvhK0B29KE6aFB3EzycROEkrkk069PgrgxDB/RLDImxBxQ9uJCzp/T/R7
-	 gcbTIT9lELopyXYgLXy7BE4HZEF6mXgZMdplS1Lo=
+	b=SkVDAYHsSqWB7mYfANWES1r+IXa6e0PRSAegV0+6Y25go4MYvYVCGA3VtTvkWPyxh
+	 uC5JPGVvRyLvztNZoy27VTVvn7cB28knQQZXyRKz9qKIM/WBddjkigxGwq6sLVlqI8
+	 W4FruVxH5Jx5qSmbFdLZ/O8Mlx8rTPt0HygG5PO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 51/81] btrfs: rename and export __btrfs_cow_block()
+Subject: [PATCH 6.6 179/222] wifi: mac80211: wake the queues in case of failure in resume
 Date: Mon,  6 Jan 2025 16:16:23 +0100
-Message-ID: <20250106151131.359847294@linuxfoundation.org>
+Message-ID: <20250106151157.543384355@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit 95f93bc4cbcac6121a5ee85cd5019ee8e7447e0b ]
+[ Upstream commit 220bf000530f9b1114fa2a1022a871c7ce8a0b38 ]
 
-Rename and export __btrfs_cow_block() as btrfs_force_cow_block(). This is
-to allow to move defrag specific code out of ctree.c and into defrag.c in
-one of the next patches.
+In case we fail to resume, we'll WARN with
+"Hardware became unavailable during restart." and we'll wait until user
+space does something. It'll typically bring the interface down and up to
+recover. This won't work though because the queues are still stopped on
+IEEE80211_QUEUE_STOP_REASON_SUSPEND reason.
+Make sure we clear that reason so that we give a chance to the recovery
+to succeed.
 
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 44f52bbe96df ("btrfs: fix use-after-free when COWing tree bock and tracing is enabled")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219447
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20241119173108.cd628f560f97.I76a15fdb92de450e5329940125f3c58916be3942@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ctree.c | 30 +++++++++++++++---------------
- fs/btrfs/ctree.h |  7 +++++++
- 2 files changed, 22 insertions(+), 15 deletions(-)
+ net/mac80211/util.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index 347934eb5198..a02b41106257 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -404,13 +404,13 @@ static noinline int update_ref_for_cow(struct btrfs_trans_handle *trans,
-  * bytes the allocator should try to find free next to the block it returns.
-  * This is just a hint and may be ignored by the allocator.
-  */
--static noinline int __btrfs_cow_block(struct btrfs_trans_handle *trans,
--			     struct btrfs_root *root,
--			     struct extent_buffer *buf,
--			     struct extent_buffer *parent, int parent_slot,
--			     struct extent_buffer **cow_ret,
--			     u64 search_start, u64 empty_size,
--			     enum btrfs_lock_nesting nest)
-+int btrfs_force_cow_block(struct btrfs_trans_handle *trans,
-+			  struct btrfs_root *root,
-+			  struct extent_buffer *buf,
-+			  struct extent_buffer *parent, int parent_slot,
-+			  struct extent_buffer **cow_ret,
-+			  u64 search_start, u64 empty_size,
-+			  enum btrfs_lock_nesting nest)
- {
- 	struct btrfs_fs_info *fs_info = root->fs_info;
- 	struct btrfs_disk_key disk_key;
-@@ -559,7 +559,7 @@ static inline int should_cow_block(struct btrfs_trans_handle *trans,
- }
- 
- /*
-- * cows a single block, see __btrfs_cow_block for the real work.
-+ * COWs a single block, see btrfs_force_cow_block() for the real work.
-  * This version of it has extra checks so that a block isn't COWed more than
-  * once per transaction, as long as it hasn't been written yet
-  */
-@@ -612,8 +612,8 @@ noinline int btrfs_cow_block(struct btrfs_trans_handle *trans,
- 	 * Also We don't care about the error, as it's handled internally.
- 	 */
- 	btrfs_qgroup_trace_subtree_after_cow(trans, root, buf);
--	ret = __btrfs_cow_block(trans, root, buf, parent,
--				 parent_slot, cow_ret, search_start, 0, nest);
-+	ret = btrfs_force_cow_block(trans, root, buf, parent, parent_slot,
-+				    cow_ret, search_start, 0, nest);
- 
- 	trace_btrfs_cow_block(root, buf, *cow_ret);
- 
-@@ -764,11 +764,11 @@ int btrfs_realloc_node(struct btrfs_trans_handle *trans,
- 			search_start = last_block;
- 
- 		btrfs_tree_lock(cur);
--		err = __btrfs_cow_block(trans, root, cur, parent, i,
--					&cur, search_start,
--					min(16 * blocksize,
--					    (end_slot - i) * blocksize),
--					BTRFS_NESTING_COW);
-+		err = btrfs_force_cow_block(trans, root, cur, parent, i,
-+					    &cur, search_start,
-+					    min(16 * blocksize,
-+						(end_slot - i) * blocksize),
-+					    BTRFS_NESTING_COW);
- 		if (err) {
- 			btrfs_tree_unlock(cur);
- 			free_extent_buffer(cur);
-diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
-index cab023927b43..da8986e0c422 100644
---- a/fs/btrfs/ctree.h
-+++ b/fs/btrfs/ctree.h
-@@ -3032,6 +3032,13 @@ int btrfs_cow_block(struct btrfs_trans_handle *trans,
- 		    struct extent_buffer *parent, int parent_slot,
- 		    struct extent_buffer **cow_ret,
- 		    enum btrfs_lock_nesting nest);
-+int btrfs_force_cow_block(struct btrfs_trans_handle *trans,
-+			  struct btrfs_root *root,
-+			  struct extent_buffer *buf,
-+			  struct extent_buffer *parent, int parent_slot,
-+			  struct extent_buffer **cow_ret,
-+			  u64 search_start, u64 empty_size,
-+			  enum btrfs_lock_nesting nest);
- int btrfs_copy_root(struct btrfs_trans_handle *trans,
- 		      struct btrfs_root *root,
- 		      struct extent_buffer *buf,
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index cc3c46a82077..154b41af4157 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -2586,6 +2586,9 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+ 			WARN(1, "Hardware became unavailable upon resume. This could be a software issue prior to suspend or a hardware issue.\n");
+ 		else
+ 			WARN(1, "Hardware became unavailable during restart.\n");
++		ieee80211_wake_queues_by_reason(hw, IEEE80211_MAX_QUEUE_MAP,
++						IEEE80211_QUEUE_STOP_REASON_SUSPEND,
++						false);
+ 		ieee80211_handle_reconfig_failure(local);
+ 		return res;
+ 	}
 -- 
 2.39.5
 
