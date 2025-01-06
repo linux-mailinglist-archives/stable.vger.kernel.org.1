@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-107049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42FBBA029F8
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:29:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A62A02AA4
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:35:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19A017A2840
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:28:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04E9D18824A0
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:35:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD95146D40;
-	Mon,  6 Jan 2025 15:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE0444C7C;
+	Mon,  6 Jan 2025 15:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkuIMv9t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f08YjKOF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A87224CC;
-	Mon,  6 Jan 2025 15:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B6415B0E2;
+	Mon,  6 Jan 2025 15:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177298; cv=none; b=Y07oRercXUC4oJ2S0cB5243G3UijvPY/TJvoCU5jewJa5/lYhpZzUU5v299LWr5imZ93z5YRPjQShzoCH+fdbP4gYTy7uzzpo9GHN3IO+vUtZ0J1KUhb/Lh8RfFPRgE1PDVezNwQk5MoSgpjqOdGerzTLRmU+e0QAEehoMgRt2M=
+	t=1736177724; cv=none; b=eABucb0/yz+KVMW8/74yK+/8jTCsm5mxMzH2IzKOZxv1+l48g0rV87BXsnIE/gtnAhRLBOu3R2fskPioXTupnvLQujJDrBk/lpFhYvN56RxR7jMyAahc2xXNQipiFbQwjzeN8tdXcHc3jwXT0VkWic1sZz+fkh2QKOyAEuqpmwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177298; c=relaxed/simple;
-	bh=5NOX3zsgHaea+EVWhoLlpRMxL9Mi8X03H3klm2K/7Co=;
+	s=arc-20240116; t=1736177724; c=relaxed/simple;
+	bh=7fkv+Vylyg59/eqiInbyo+QhWhkxO5NogJ+9nErqk5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hrSpDj1fGmw4oxY4vAbcgQ7stuEGqbi4MClG+/KBkVHnYwtDRxqJLW+kwLPmQNFZLPNOAx0UqPGD4xzT7Cz/Ah9Uy8p1yvn1mSbz9nfA4LLwg/XMlM0rSunKg1SXL8GkV/PDd1L+MdkJvUPLriVOgrz520OsWNzVhSmvd31ZTiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkuIMv9t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E413C4CED2;
-	Mon,  6 Jan 2025 15:28:17 +0000 (UTC)
+	 MIME-Version; b=nqgD90zrfXAief5b03OZLGRFuWMdMWX5097ARssqihQxEJ33505UDO3de0nQLxG+i88I532O7up1u4lt1f0KzeSaaoRA8G0FBNhwfGdNgOml2PcqN62c4kVu4eCciKk2m5AMDOIPSO7ab3O+ES24NDgMOWTy/QNIaMNlRJ3dW0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f08YjKOF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAFA0C4CED2;
+	Mon,  6 Jan 2025 15:35:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177297;
-	bh=5NOX3zsgHaea+EVWhoLlpRMxL9Mi8X03H3klm2K/7Co=;
+	s=korg; t=1736177724;
+	bh=7fkv+Vylyg59/eqiInbyo+QhWhkxO5NogJ+9nErqk5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zkuIMv9tIxpH6wDR0j28PxysyvEIKnTcwBl9flZy/yL8yoRrVVEWYO/DiVcEGHyth
-	 5Ba461s0Z0+JPyyFcHAanfbkdlSuH5G9oat2HndW2pxHVvaSvIgCf7AJv1g88JEeJB
-	 grOYXA8ET6drOOrDRJhuBgYMmGaO8399iEs0SsXA=
+	b=f08YjKOFGtVdCkRqeE4ml2GMPau9RbdjBiB83ixs/5SyFyicX1/MHrYr8jtPVMhLM
+	 oelOeioNRU+OPZe7a4DmVHk6gfQO1T75MxHD4aoMNW8BZXiD4KMt4BgvFSSNkiyysU
+	 MOVbRlGQ0neSvj23/c7eKa6Nc3tUMK4OZKlHYna8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiubo Li <xiubli@redhat.com>,
-	Patrick Donnelly <pdonnell@redhat.com>,
-	Milind Changire <mchangir@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 117/222] libceph: add doutc and *_client debug macros support
+Subject: [PATCH 6.12 035/156] selftests: net: local_termination: require mausezahn
 Date: Mon,  6 Jan 2025 16:15:21 +0100
-Message-ID: <20250106151155.026866681@linuxfoundation.org>
+Message-ID: <20250106151143.060197062@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiubo Li <xiubli@redhat.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 5c5f0d2b5f92c47baf82b9b211e27edd7d195158 ]
+[ Upstream commit 246068b86b1c36e4590388ab8f278e21f1997dc1 ]
 
-This will help print the fsid and client's global_id in debug logs,
-and also print the function names.
+Since the blamed commit, we require mausezahn because send_raw() uses it.
+Remove the "REQUIRE_MZ=no" line, which overwrites the default of requiring it.
 
-[ idryomov: %lld -> %llu, leading space for doutc(), don't include
-  __func__ in pr_*() variants ]
-
-Link: https://tracker.ceph.com/issues/61590
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-by: Patrick Donnelly <pdonnell@redhat.com>
-Reviewed-by: Milind Changire <mchangir@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Stable-dep-of: 550f7ca98ee0 ("ceph: give up on paths longer than PATH_MAX")
+Fixes: 237979504264 ("selftests: net: local_termination: add PTP frames to the mix")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20241219155410.1856868-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ceph/ceph_debug.h | 38 +++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ tools/testing/selftests/net/forwarding/local_termination.sh | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/linux/ceph/ceph_debug.h b/include/linux/ceph/ceph_debug.h
-index d5a5da838caf..11a92a946016 100644
---- a/include/linux/ceph/ceph_debug.h
-+++ b/include/linux/ceph/ceph_debug.h
-@@ -19,12 +19,25 @@
- 	pr_debug("%.*s %12.12s:%-4d : " fmt,				\
- 		 8 - (int)sizeof(KBUILD_MODNAME), "    ",		\
- 		 kbasename(__FILE__), __LINE__, ##__VA_ARGS__)
-+#  define doutc(client, fmt, ...)					\
-+	pr_debug("%.*s %12.12s:%-4d : [%pU %llu] " fmt,			\
-+		 8 - (int)sizeof(KBUILD_MODNAME), "    ",		\
-+		 kbasename(__FILE__), __LINE__,				\
-+		 &client->fsid, client->monc.auth->global_id,		\
-+		 ##__VA_ARGS__)
- # else
- /* faux printk call just to see any compiler warnings. */
- #  define dout(fmt, ...)	do {				\
- 		if (0)						\
- 			printk(KERN_DEBUG fmt, ##__VA_ARGS__);	\
- 	} while (0)
-+#  define doutc(client, fmt, ...)	do {			\
-+		if (0)						\
-+			printk(KERN_DEBUG "[%pU %llu] " fmt,	\
-+			&client->fsid,				\
-+			client->monc.auth->global_id,		\
-+			##__VA_ARGS__);				\
-+		} while (0)
- # endif
+diff --git a/tools/testing/selftests/net/forwarding/local_termination.sh b/tools/testing/selftests/net/forwarding/local_termination.sh
+index c35548767756..ecd34f364125 100755
+--- a/tools/testing/selftests/net/forwarding/local_termination.sh
++++ b/tools/testing/selftests/net/forwarding/local_termination.sh
+@@ -7,7 +7,6 @@ ALL_TESTS="standalone vlan_unaware_bridge vlan_aware_bridge test_vlan \
+ NUM_NETIFS=2
+ PING_COUNT=1
+ REQUIRE_MTOOLS=yes
+-REQUIRE_MZ=no
  
- #else
-@@ -33,7 +46,32 @@
-  * or, just wrap pr_debug
-  */
- # define dout(fmt, ...)	pr_debug(" " fmt, ##__VA_ARGS__)
-+# define doutc(client, fmt, ...)					\
-+	pr_debug(" [%pU %llu] %s: " fmt, &client->fsid,			\
-+		 client->monc.auth->global_id, __func__, ##__VA_ARGS__)
+ source lib.sh
  
- #endif
- 
-+#define pr_notice_client(client, fmt, ...)				\
-+	pr_notice("[%pU %llu]: " fmt, &client->fsid,			\
-+		  client->monc.auth->global_id, ##__VA_ARGS__)
-+#define pr_info_client(client, fmt, ...)				\
-+	pr_info("[%pU %llu]: " fmt, &client->fsid,			\
-+		client->monc.auth->global_id, ##__VA_ARGS__)
-+#define pr_warn_client(client, fmt, ...)				\
-+	pr_warn("[%pU %llu]: " fmt, &client->fsid,			\
-+		client->monc.auth->global_id, ##__VA_ARGS__)
-+#define pr_warn_once_client(client, fmt, ...)				\
-+	pr_warn_once("[%pU %llu]: " fmt, &client->fsid,			\
-+		     client->monc.auth->global_id, ##__VA_ARGS__)
-+#define pr_err_client(client, fmt, ...)					\
-+	pr_err("[%pU %llu]: " fmt, &client->fsid,			\
-+	       client->monc.auth->global_id, ##__VA_ARGS__)
-+#define pr_warn_ratelimited_client(client, fmt, ...)			\
-+	pr_warn_ratelimited("[%pU %llu]: " fmt, &client->fsid,		\
-+			    client->monc.auth->global_id, ##__VA_ARGS__)
-+#define pr_err_ratelimited_client(client, fmt, ...)			\
-+	pr_err_ratelimited("[%pU %llu]: " fmt, &client->fsid,		\
-+			   client->monc.auth->global_id, ##__VA_ARGS__)
-+
- #endif
 -- 
 2.39.5
 
