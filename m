@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-106921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D041FA0294F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:22:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40942A02BCB
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:47:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DD571885C96
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:22:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B0AA3A1FBF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EFEC155325;
-	Mon,  6 Jan 2025 15:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B28A1DE8B5;
+	Mon,  6 Jan 2025 15:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCpPN9Bg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Cjz8AJ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03FDC8634A;
-	Mon,  6 Jan 2025 15:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EB91DE88E;
+	Mon,  6 Jan 2025 15:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176916; cv=none; b=sP5/iho23Cd3m6wKDXFiUeTgmLCo1EZwpOn5DMSQAbec4VdZqIMxuYlanwFpd+BVM564Eedhaf9l/SLEuiPlRiaTGLD8Th0eEBNvVPjN6JEY2Vz/kSTtbJ1jPAvZLHPALsNKMfn9favge/6Xg87MT474PDKDGqywzwasKDcrB5Y=
+	t=1736178326; cv=none; b=NjXWSeR6P+wp/NYDQ7Gy29S5eLG/j64kJEwSTxp0+Wsa9oQvnciw5PjmCuiInuBSde1n5VU/2JTiOSg3v+qUEvIgcSJOMMEYix8gT/bbklOUvdzpsRVdQ+cvTRm5XDsq11AMKBr+GoGLiD+EbTA2ap+NV0L2mu7rLTwi/xnLl5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176916; c=relaxed/simple;
-	bh=8fehz824+xGYlxos7B40LCwLaqvh5XaYIDiygizt8Fs=;
+	s=arc-20240116; t=1736178326; c=relaxed/simple;
+	bh=J7DAnisxSEkDtxSpw3YDi8ionWxiU+1crQubXvqflsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ju9U7l/1E7Gyisn0X26Q56QavLE7QZtAPVgVEgG5N6R6T1ZgpPw1dPHt2R8DsTIE5s54JgttL6ZXlPQlDvWhZhHM1e+5bDRg24f81vYXlPKpBtgZzYPzms1X+clIS5Z1AODqqsjzjBrz0rpC3OuSD7lZP61HBimWsrZTR92D4rU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCpPN9Bg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82E7C4CED2;
-	Mon,  6 Jan 2025 15:21:54 +0000 (UTC)
+	 MIME-Version; b=LMCgZ9mFZvcKyn6F2WomHf/VPxuvqU+Cmj5KDUGrAU8AyRQ/9Ewhmta07jWee0o9rQbir2xIvzQg7SL5TbxVn+87Ma13WnDqNDa7RdLtuFIicOjXvh+6t3KJIB0S1C2gWAGmvipP0LVMQctBngJ4X4e9iBDI9ZejTfIvq1WWqEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Cjz8AJ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E66C4CEE1;
+	Mon,  6 Jan 2025 15:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176915;
-	bh=8fehz824+xGYlxos7B40LCwLaqvh5XaYIDiygizt8Fs=;
+	s=korg; t=1736178326;
+	bh=J7DAnisxSEkDtxSpw3YDi8ionWxiU+1crQubXvqflsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VCpPN9BgXlHfzVstBV9mwlDwOwYZ3cdN0JpWYuy9JKZuStwH+H1/6BZhFF/wiKa4n
-	 iKFwE3VNdp80sq3Ri6sGZKdzu0t9+feZdA1b0bVlic5oFU35fymry0lkXHgD42PBz2
-	 ACo0X4PwIs+CHZ816xgdFz623nA71Pttg42Fc/u0=
+	b=2Cjz8AJ8CZY/sl0ozMYjxMsW3wdsrsymZb0/iSKxr1SCcnNXAi3ootvh6zuPbkexo
+	 nNL37rDrMEC6L4vjVjz4YJE4YPzrN/HR/OiVE/7jtdIVmjfa8lTjJVTG4Ev8ggbtUF
+	 XG7CoswEZrx+/ZxgA7GMBYVBppT+J7rLF0mIKv2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Evgenii Shatokhin <e.shatokhin@yadro.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.1 72/81] pinctrl: mcp23s08: Fix sleeping in atomic context due to regmap locking
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.10 080/138] btrfs: avoid monopolizing a core when activating a swap file
 Date: Mon,  6 Jan 2025 16:16:44 +0100
-Message-ID: <20250106151132.147516696@linuxfoundation.org>
+Message-ID: <20250106151136.259565585@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,116 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Evgenii Shatokhin <e.shatokhin@yadro.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit a37eecb705f33726f1fb7cd2a67e514a15dfe693 upstream.
+commit 2c8507c63f5498d4ee4af404a8e44ceae4345056 upstream.
 
-If a device uses MCP23xxx IO expander to receive IRQs, the following
-bug can happen:
+During swap activation we iterate over the extents of a file and we can
+have many thousands of them, so we can end up in a busy loop monopolizing
+a core. Avoid this by doing a voluntary reschedule after processing each
+extent.
 
-  BUG: sleeping function called from invalid context
-    at kernel/locking/mutex.c:283
-  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, ...
-  preempt_count: 1, expected: 0
-  ...
-  Call Trace:
-  ...
-  __might_resched+0x104/0x10e
-  __might_sleep+0x3e/0x62
-  mutex_lock+0x20/0x4c
-  regmap_lock_mutex+0x10/0x18
-  regmap_update_bits_base+0x2c/0x66
-  mcp23s08_irq_set_type+0x1ae/0x1d6
-  __irq_set_trigger+0x56/0x172
-  __setup_irq+0x1e6/0x646
-  request_threaded_irq+0xb6/0x160
-  ...
-
-We observed the problem while experimenting with a touchscreen driver which
-used MCP23017 IO expander (I2C).
-
-The regmap in the pinctrl-mcp23s08 driver uses a mutex for protection from
-concurrent accesses, which is the default for regmaps without .fast_io,
-.disable_locking, etc.
-
-mcp23s08_irq_set_type() calls regmap_update_bits_base(), and the latter
-locks the mutex.
-
-However, __setup_irq() locks desc->lock spinlock before calling these
-functions. As a result, the system tries to lock the mutex whole holding
-the spinlock.
-
-It seems, the internal regmap locks are not needed in this driver at all.
-mcp->lock seems to protect the regmap from concurrent accesses already,
-except, probably, in mcp_pinconf_get/set.
-
-mcp23s08_irq_set_type() and mcp23s08_irq_mask/unmask() are called under
-chip_bus_lock(), which calls mcp23s08_irq_bus_lock(). The latter takes
-mcp->lock and enables regmap caching, so that the potentially slow I2C
-accesses are deferred until chip_bus_unlock().
-
-The accesses to the regmap from mcp23s08_probe_one() do not need additional
-locking.
-
-In all remaining places where the regmap is accessed, except
-mcp_pinconf_get/set(), the driver already takes mcp->lock.
-
-This patch adds locking in mcp_pinconf_get/set() and disables internal
-locking in the regmap config. Among other things, it fixes the sleeping
-in atomic context described above.
-
-Fixes: 8f38910ba4f6 ("pinctrl: mcp23s08: switch to regmap caching")
-Cc: stable@vger.kernel.org
-Signed-off-by: Evgenii Shatokhin <e.shatokhin@yadro.com>
-Link: https://lore.kernel.org/20241209074659.1442898-1-e.shatokhin@yadro.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-mcp23s08.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/btrfs/inode.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/pinctrl/pinctrl-mcp23s08.c
-+++ b/drivers/pinctrl/pinctrl-mcp23s08.c
-@@ -85,6 +85,7 @@ const struct regmap_config mcp23x08_regm
- 	.num_reg_defaults = ARRAY_SIZE(mcp23x08_defaults),
- 	.cache_type = REGCACHE_FLAT,
- 	.max_register = MCP_OLAT,
-+	.disable_locking = true, /* mcp->lock protects the regmap */
- };
- EXPORT_SYMBOL_GPL(mcp23x08_regmap);
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -7128,6 +7128,8 @@ noinline int can_nocow_extent(struct ino
+ 			ret = -EAGAIN;
+ 			goto out;
+ 		}
++
++		cond_resched();
+ 	}
  
-@@ -131,6 +132,7 @@ const struct regmap_config mcp23x17_regm
- 	.num_reg_defaults = ARRAY_SIZE(mcp23x17_defaults),
- 	.cache_type = REGCACHE_FLAT,
- 	.val_format_endian = REGMAP_ENDIAN_LITTLE,
-+	.disable_locking = true, /* mcp->lock protects the regmap */
- };
- EXPORT_SYMBOL_GPL(mcp23x17_regmap);
- 
-@@ -228,7 +230,9 @@ static int mcp_pinconf_get(struct pinctr
- 
- 	switch (param) {
- 	case PIN_CONFIG_BIAS_PULL_UP:
-+		mutex_lock(&mcp->lock);
- 		ret = mcp_read(mcp, MCP_GPPU, &data);
-+		mutex_unlock(&mcp->lock);
- 		if (ret < 0)
- 			return ret;
- 		status = (data & BIT(pin)) ? 1 : 0;
-@@ -257,7 +261,9 @@ static int mcp_pinconf_set(struct pinctr
- 
- 		switch (param) {
- 		case PIN_CONFIG_BIAS_PULL_UP:
-+			mutex_lock(&mcp->lock);
- 			ret = mcp_set_bit(mcp, MCP_GPPU, pin, arg);
-+			mutex_unlock(&mcp->lock);
- 			break;
- 		default:
- 			dev_dbg(mcp->dev, "Invalid config param %04x\n", param);
+ 	btrfs_release_path(path);
 
 
 
