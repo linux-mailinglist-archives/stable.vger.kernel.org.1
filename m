@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-106873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB2BA02914
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:19:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12024A02C47
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:52:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D15371885E4C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:19:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C6683A593E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396FE15666B;
-	Mon,  6 Jan 2025 15:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE1161DE3B8;
+	Mon,  6 Jan 2025 15:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6mde+CH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mruE5W5M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA862156238;
-	Mon,  6 Jan 2025 15:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4301DDC2C;
+	Mon,  6 Jan 2025 15:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176765; cv=none; b=auRsW+fNbA/TN+QBn3q1BQ73s5tnvm2wBBgK2rg0FShTd9cOrM+1pZ3Swfr6MaSe8zvDN7yKqarglkud1NxHU2lxWvyUD7UeRklfREWlcAXFpn0fXc4stXbA7F4qb27T7U74zFIlnFZX4KSvWZPYNCOdMf+ASBdvRMpNvltXU/4=
+	t=1736178600; cv=none; b=gYVdqyFC3BIx+3vSVRfRAMXOIwrEhJB7+BmvpOrQD+eGy38wulObuWJ0AsMxBM5R3tRo/SauTqfIgV7O/6KW80LVsxiU+qnrfYPN035dBWpLMlkby4y+zNMVH5+GMVPhNMX5L9WB14jD7GUkxNxdVUv/QhLwRVABU9LVQGlLV2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176765; c=relaxed/simple;
-	bh=3nVGG/MO0zyQNLMoiXTsb5YxJMoLrQza/Y0JRyx3Wic=;
+	s=arc-20240116; t=1736178600; c=relaxed/simple;
+	bh=YeLaupNe5plO5RRNzCYpczgneCYoi1o/ma8JOdrrkyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZASUMzofi8E6cb78SS1v4jg5t7cA2RHbXS0mKN5Ppa4MCnG/bROxhWNTO2+OOO7AaHnERVNzwGIIp2UUy+rfR7nlg1dsFRAMQdu4j9lj7a+mkGLF2VO+NhkMYJ/eFjPmVqGTnwp7TewPS+7/kpic1/0MIJflInM0KMLMm2Wev+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6mde+CH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C972C4CEE2;
-	Mon,  6 Jan 2025 15:19:23 +0000 (UTC)
+	 MIME-Version; b=dvvZ83T3FY5Yp05vsJVZRdajHH1Iub5cqPmuUHoZGW0LAXubrfhTAcF33SEFseDZ89FhQW5qsnd+bH14XtlsrKseHA/VWDKEfnIxzrP2xxsdlsOdtiYLpHB6tL/+ywKMN7qUZdTAOID6QvvhmXE1vIVHBflrN5u5EyD9XhqxxkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mruE5W5M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A03C4CEDF;
+	Mon,  6 Jan 2025 15:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176764;
-	bh=3nVGG/MO0zyQNLMoiXTsb5YxJMoLrQza/Y0JRyx3Wic=;
+	s=korg; t=1736178600;
+	bh=YeLaupNe5plO5RRNzCYpczgneCYoi1o/ma8JOdrrkyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F6mde+CH/fJzIRIG2Jaq71xHhGE4584oMVNDlRUb8YJrkpBWGtscFCtIyNud8pGrU
-	 aLYvc3Zf7mr+onL08zgk5pbVygW/0a5rBVrmAw2u/2h8bRuZvEspzIxfLNJcWMuZXe
-	 fN6tc5hh6K+bKy4PLB+8zhSvuhBRCtMTSrMnx9cU=
+	b=mruE5W5MqKKyas6U56f6WoN88feCsT8XOeZMHFBy5FtCSt5yBnI+lljqDFbc32oNt
+	 BURhlHm6h8l0nRxSXbptgPGxDRsEh4vw19fxARFtnJ6uAQE3WTNqlT0emrHRsWAKZ3
+	 r4Cz7JocLQ+5bfJ+9M74Wer0J4VzqPKmno69FzuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Hughes <hughsient@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 07/81] thunderbolt: Dont display nvm_version unless upgrade supported
+	Jack Wu <wojackbb@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 031/168] USB: serial: option: add MediaTek T7XX compositions
 Date: Mon,  6 Jan 2025 16:15:39 +0100
-Message-ID: <20250106151129.715244516@linuxfoundation.org>
+Message-ID: <20250106151139.639051975@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +61,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Jack Wu <wojackbb@gmail.com>
 
-[ Upstream commit e34f1717ef0632fcec5cb827e5e0e9f223d70c9b ]
+commit f07dfa6a1b65034a5c3ba3a555950d972f252757 upstream.
 
-The read will never succeed if NVM wasn't initialized due to an unknown
-format.
+Add the MediaTek T7XX compositions:
 
-Add a new callback for visibility to only show when supported.
+T:  Bus=03 Lev=01 Prnt=01 Port=05 Cnt=01 Dev#= 74 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0e8d ProdID=7129 Rev= 0.01
+S:  Manufacturer=MediaTek Inc.
+S:  Product=USB DATA CARD
+S:  SerialNumber=004402459035402
+C:* #Ifs=10 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
+-------------------------------
+| If Number | Function        |
+-------------------------------
+| 2         | USB AP Log Port |
+-------------------------------
+| 3         | USB AP GNSS Port|
+-------------------------------
+| 4         | USB AP META Port|
+-------------------------------
+| 5         | ADB port        |
+-------------------------------
+| 6         | USB MD AT Port  |
+------------------------------
+| 7         | USB MD META Port|
+-------------------------------
+| 8         | USB NTZ Port    |
+-------------------------------
+| 9         | USB Debug port  |
+-------------------------------
+
+Signed-off-by: Jack Wu <wojackbb@gmail.com>
 Cc: stable@vger.kernel.org
-Fixes: aef9c693e7e5 ("thunderbolt: Move vendor specific NVM handling into nvm.c")
-Reported-by: Richard Hughes <hughsient@gmail.com>
-Closes: https://github.com/fwupd/fwupd/issues/8200
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/retimer.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/thunderbolt/retimer.c b/drivers/thunderbolt/retimer.c
-index edbd92435b41..5bd5c22a5085 100644
---- a/drivers/thunderbolt/retimer.c
-+++ b/drivers/thunderbolt/retimer.c
-@@ -98,6 +98,7 @@ static int tb_retimer_nvm_add(struct tb_retimer *rt)
- 
- err_nvm:
- 	dev_dbg(&rt->dev, "NVM upgrade disabled\n");
-+	rt->no_nvm_upgrade = true;
- 	if (!IS_ERR(nvm))
- 		tb_nvm_free(nvm);
- 
-@@ -177,8 +178,6 @@ static ssize_t nvm_authenticate_show(struct device *dev,
- 
- 	if (!rt->nvm)
- 		ret = -EAGAIN;
--	else if (rt->no_nvm_upgrade)
--		ret = -EOPNOTSUPP;
- 	else
- 		ret = sysfs_emit(buf, "%#x\n", rt->auth_status);
- 
-@@ -304,6 +303,19 @@ static ssize_t vendor_show(struct device *dev, struct device_attribute *attr,
- }
- static DEVICE_ATTR_RO(vendor);
- 
-+static umode_t retimer_is_visible(struct kobject *kobj, struct attribute *attr,
-+				  int n)
-+{
-+	struct device *dev = kobj_to_dev(kobj);
-+	struct tb_retimer *rt = tb_to_retimer(dev);
-+
-+	if (attr == &dev_attr_nvm_authenticate.attr ||
-+	    attr == &dev_attr_nvm_version.attr)
-+		return rt->no_nvm_upgrade ? 0 : attr->mode;
-+
-+	return attr->mode;
-+}
-+
- static struct attribute *retimer_attrs[] = {
- 	&dev_attr_device.attr,
- 	&dev_attr_nvm_authenticate.attr,
-@@ -313,6 +325,7 @@ static struct attribute *retimer_attrs[] = {
- };
- 
- static const struct attribute_group retimer_group = {
-+	.is_visible = retimer_is_visible,
- 	.attrs = retimer_attrs,
- };
- 
--- 
-2.39.5
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2249,6 +2249,8 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(2) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, 0x7127, 0xff, 0x00, 0x00),
+ 	  .driver_info = NCTRL(2) | NCTRL(3) | NCTRL(4) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, 0x7129, 0xff, 0x00, 0x00),        /* MediaTek T7XX  */
++	  .driver_info = NCTRL(2) | NCTRL(3) | NCTRL(4) },
+ 	{ USB_DEVICE(CELLIENT_VENDOR_ID, CELLIENT_PRODUCT_MEN200) },
+ 	{ USB_DEVICE(CELLIENT_VENDOR_ID, CELLIENT_PRODUCT_MPL200),
+ 	  .driver_info = RSVD(1) | RSVD(4) },
 
 
 
