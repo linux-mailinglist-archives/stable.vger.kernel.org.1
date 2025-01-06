@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-107664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 718EFA02CF6
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:59:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A23F2A02BE7
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:48:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 859F8188244F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:59:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF7973A1D20
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:46:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D09313B592;
-	Mon,  6 Jan 2025 15:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62581DE3A8;
+	Mon,  6 Jan 2025 15:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qQZPpVNV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdzB+Nno"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD12BA34;
-	Mon,  6 Jan 2025 15:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760411DED5E;
+	Mon,  6 Jan 2025 15:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179154; cv=none; b=GNmDNkzFyGnflUJIf/d4HlqRDxDzz51iHXiMcnuFFXVzCIjmgx0VQAuYvB/npEMOVXCn+yHOZ9x+glSAIaSPI5s+tMu4otkrnHNBTmx1iELfKIDLZ9Kifcol1A1VN0taJmIpgPYyNGQcvRC8tkakz9nonjD36MCcYOZ2DTJubZE=
+	t=1736178400; cv=none; b=iCpgn99FE2OsMR54SplHUZfVfBpP2oBgknN2eCX5UFvEhzWoMnTnQz8d1Xd92WM8733lx2c1K1CewfPOO46iQKSb4/xwWow8nHGsdxkoEmYqV9UNhklaZDpWXjEmHCozXPTIvlop6jYf2CWdZHSOk7ljIciRTW8FU8yDH3ObrTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179154; c=relaxed/simple;
-	bh=A+4yphVHcP1nphcRRrISWtnh8u8sj7SPv2K0dAy3lww=;
+	s=arc-20240116; t=1736178400; c=relaxed/simple;
+	bh=ZcD4V3EpBu3nzPaEisMeASMvtbxDeMbWwnfFQ6AZuFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cwsklx0iZusNTMh3Vfpn2nzzqBSqbcmp/Bo5G2jd2qqIL4bshHoYxrrwtFcEyV+VzzbleJ5vnqzyKXJfkfIdT3261ERn9j8FphkXQHqOonmWqRkmSTuwr0mm+8Vkk49G8pUsBYGrMY5QN73mZ5K0ahppgDbhF4X9C6qpchb8B2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qQZPpVNV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6323EC4CED2;
-	Mon,  6 Jan 2025 15:59:13 +0000 (UTC)
+	 MIME-Version; b=NkcWP37lqH0EE8nmR4FuLgPgEcWv/RfLmcboXfowOOXK0jHc0FYoBasSnUqgqlEGyGk3RKyY0z8O5ks7knHUpCQESE3jjc4S6U3yoezA0V6wpCnWor1s4NwyjMhwN4WLTt31BnmAiHvuOGjm0jF+HG2Ej6PdSTY9FkpyiLJ7Zdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdzB+Nno; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED217C4CED2;
+	Mon,  6 Jan 2025 15:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179153;
-	bh=A+4yphVHcP1nphcRRrISWtnh8u8sj7SPv2K0dAy3lww=;
+	s=korg; t=1736178400;
+	bh=ZcD4V3EpBu3nzPaEisMeASMvtbxDeMbWwnfFQ6AZuFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qQZPpVNVlx0Wb9jCksODVq1c79bdPuoUrmtqMeU42hPoZsSu8EHKnCNqpgye2K8oW
-	 bnsxACYkcu/dOXunqKW2JxdHuMap6DovkaJhFuUiYS96uyV7k3nxHjTSjElDqd2crW
-	 2xwyhnCAKVCWGJJTmimdKCp/oLlntYdmuksZ0LGw=
+	b=LdzB+Nnoe3au9xzcK2RQ43JT6HS8GdXJBVKamx5tue38+XCaPbsnjxREr863vH+7d
+	 O9mg8pbmMqBQ1V3HP+HZFRQDjzUMBp+gax8qlVca/44g3NiqMIvcVwOvwxteAVeSIR
+	 td7X4xmXDv9+Ht29g0RO5vsrccTXDbDJ3sk1LoZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 16/93] chelsio/chtls: prevent potential integer overflow on 32bit
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 088/138] thunderbolt: Add support for Intel Meteor Lake
 Date: Mon,  6 Jan 2025 16:16:52 +0100
-Message-ID: <20250106151129.315396369@linuxfoundation.org>
+Message-ID: <20250106151136.565685828@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-commit fbbd84af6ba70334335bdeba3ae536cf751c14c6 upstream.
+[ Upstream commit 32249fd8c8cccd7a1ed86c3b6d9b6ae9b4a83623 ]
 
-The "gl->tot_len" variable is controlled by the user.  It comes from
-process_responses().  On 32bit systems, the "gl->tot_len +
-sizeof(struct cpl_pass_accept_req) + sizeof(struct rss_header)" addition
-could have an integer wrapping bug.  Use size_add() to prevent this.
+Intel Meteor Lake has the same integrated Thunderbolt/USB4 controller as
+Intel Alder Lake. Add the Intel Meteor Lake PCI IDs to the driver list
+of supported devices.
 
-Fixes: a08943947873 ("crypto: chtls - Register chtls with net tls")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/c6bfb23c-2db2-4e1b-b8ab-ba3925c82ef5@stanley.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Stable-dep-of: 8644b48714dc ("thunderbolt: Add support for Intel Panther Lake-M/P")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/chelsio/chtls/chtls_main.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/thunderbolt/icm.c | 3 +++
+ drivers/thunderbolt/nhi.c | 6 ++++++
+ drivers/thunderbolt/nhi.h | 3 +++
+ 3 files changed, 12 insertions(+)
 
---- a/drivers/crypto/chelsio/chtls/chtls_main.c
-+++ b/drivers/crypto/chelsio/chtls/chtls_main.c
-@@ -339,8 +339,9 @@ static struct sk_buff *copy_gl_to_skb_pk
- 	 * driver. Once driver synthesizes cpl_pass_accpet_req the skb will go
- 	 * through the regular cpl_pass_accept_req processing in TOM.
- 	 */
--	skb = alloc_skb(gl->tot_len + sizeof(struct cpl_pass_accept_req)
--			- pktshift, GFP_ATOMIC);
-+	skb = alloc_skb(size_add(gl->tot_len,
-+				 sizeof(struct cpl_pass_accept_req)) -
-+			pktshift, GFP_ATOMIC);
- 	if (unlikely(!skb))
- 		return NULL;
- 	__skb_put(skb, gl->tot_len + sizeof(struct cpl_pass_accept_req)
+diff --git a/drivers/thunderbolt/icm.c b/drivers/thunderbolt/icm.c
+index eab5199ccc5b..51e3ac78c022 100644
+--- a/drivers/thunderbolt/icm.c
++++ b/drivers/thunderbolt/icm.c
+@@ -2294,6 +2294,9 @@ struct tb *icm_probe(struct tb_nhi *nhi)
+ 	case PCI_DEVICE_ID_INTEL_ADL_NHI1:
+ 	case PCI_DEVICE_ID_INTEL_RPL_NHI0:
+ 	case PCI_DEVICE_ID_INTEL_RPL_NHI1:
++	case PCI_DEVICE_ID_INTEL_MTL_M_NHI0:
++	case PCI_DEVICE_ID_INTEL_MTL_P_NHI0:
++	case PCI_DEVICE_ID_INTEL_MTL_P_NHI1:
+ 		icm->is_supported = icm_tgl_is_supported;
+ 		icm->driver_ready = icm_icl_driver_ready;
+ 		icm->set_uuid = icm_icl_set_uuid;
+diff --git a/drivers/thunderbolt/nhi.c b/drivers/thunderbolt/nhi.c
+index d41ff5e0f9ca..ea2fff90d162 100644
+--- a/drivers/thunderbolt/nhi.c
++++ b/drivers/thunderbolt/nhi.c
+@@ -1357,6 +1357,12 @@ static struct pci_device_id nhi_ids[] = {
+ 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_RPL_NHI1),
+ 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_MTL_M_NHI0),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_MTL_P_NHI0),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_MTL_P_NHI1),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
+ 
+ 	/* Any USB4 compliant host */
+ 	{ PCI_DEVICE_CLASS(PCI_CLASS_SERIAL_USB_USB4, ~0) },
+diff --git a/drivers/thunderbolt/nhi.h b/drivers/thunderbolt/nhi.h
+index 01190d9ced16..b0718020c6f5 100644
+--- a/drivers/thunderbolt/nhi.h
++++ b/drivers/thunderbolt/nhi.h
+@@ -75,6 +75,9 @@ extern const struct tb_nhi_ops icl_nhi_ops;
+ #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_DD_BRIDGE	0x15ef
+ #define PCI_DEVICE_ID_INTEL_ADL_NHI0			0x463e
+ #define PCI_DEVICE_ID_INTEL_ADL_NHI1			0x466d
++#define PCI_DEVICE_ID_INTEL_MTL_M_NHI0			0x7eb2
++#define PCI_DEVICE_ID_INTEL_MTL_P_NHI0			0x7ec2
++#define PCI_DEVICE_ID_INTEL_MTL_P_NHI1			0x7ec3
+ #define PCI_DEVICE_ID_INTEL_ICL_NHI1			0x8a0d
+ #define PCI_DEVICE_ID_INTEL_ICL_NHI0			0x8a17
+ #define PCI_DEVICE_ID_INTEL_TGL_NHI0			0x9a1b
+-- 
+2.39.5
+
 
 
 
