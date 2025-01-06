@@ -1,274 +1,176 @@
-Return-Path: <stable+bounces-106830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D3CEA023F9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 12:07:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DADE9A02405
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 12:13:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9964018819DA
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 11:07:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 676D13A46B8
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 11:12:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 204C11DC9B8;
-	Mon,  6 Jan 2025 11:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18CA01DB95E;
+	Mon,  6 Jan 2025 11:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PjLR2vy1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CulvJm0v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E031DC9B3
-	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 11:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DD52CA8
+	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 11:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736161656; cv=none; b=A3Q9iwCLx5o8i4DcNfEITbUVFKfH6Tbk9k+6J+LAQiQC3Da7TsUOLb5ISVZe8AOtDL9KcFp5CF5/5t9QA8fGW7afkxA7WlpyOiWcv32ZpMmZHX5sK21TFjewwfls75aQCzzZOk9mGgumNFsJSepSTFCzkRQuaVFiK9yk1fIHgnM=
+	t=1736161976; cv=none; b=RJXFPrF2CH3hc5qDzdp0eEEdoGgecGM72Sdj+nTztB/WPafBtbc4Hk3u4ZSvhTwmg4QiJ6kqqrX06Vy3djJNdXi9g/B9mbIptA2ga4Zm1g/vsAo4HrOEpFBYiPkfhFIUsM6RkYdYp6Z4FboOOLM2WTpFs547eF9AematdSY7Lu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736161656; c=relaxed/simple;
-	bh=mI/R48TinVECz5WS2MqEft6McM1HQNsvoPhcbnWcx/w=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=b0eanoU/5MWiB10JWHz95oV3jfbS8jOR+a0RNfWTOGJ0MM4RXDYlYdi5FGgiGE0kQTXHqpb7nHDYkkJALZDlOehQpRnQua702jqEgWDFFwnU2JonLbqsrVphyloECMA1AMGrqZJhpVL5SN8YAchZ9eIVFriJXPLh8a0zimXal4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PjLR2vy1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6F9C4CED2;
-	Mon,  6 Jan 2025 11:07:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736161656;
-	bh=mI/R48TinVECz5WS2MqEft6McM1HQNsvoPhcbnWcx/w=;
-	h=Subject:To:Cc:From:Date:From;
-	b=PjLR2vy11VyrnYnCQlCtzYorPtl95YPls4XlpvHvWI5M708I0b9RhGf0GPx7yefU8
-	 R/SNJ/rmW2UY5P7yJRI+fIjNm4CeAWYayoBbSAbOM8fK3REf5dNq1nZYqlZCM+Zc9n
-	 6qda7/hQrqkv8b3Jj3wu4QKjJv5mDHc/wBRLKXFU=
-Subject: FAILED: patch "[PATCH] mm: hugetlb: independent PMD page table shared count" failed to apply to 5.4-stable tree
-To: liushixin2@huawei.com,akpm@linux-foundation.org,jane.chu@oracle.com,kenneth.w.chen@intel.com,muchun.song@linux.dev,stable@vger.kernel.org,sunnanyong@huawei.com,wangkefeng.wang@huawei.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 06 Jan 2025 12:07:25 +0100
-Message-ID: <2025010625-stopped-snowflake-603f@gregkh>
+	s=arc-20240116; t=1736161976; c=relaxed/simple;
+	bh=f//ePYewEo6KUIJT7r9xdenXGO7+0Zhd9RhZAsOww8w=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hsBujp9Ydodf/PKGJt0cPi5AMb5tst1SK5/gyqyB4xLyKb19l29NY0naLjwfhlVO2MJk9QghD18wvYVqF5CWVSCkdh3zyY5N9Yo8EBn16XOBYiJLQuRgqBeKC4Chh3NsNGl0MNap6UOk/1r3Bh+tkRVUkK4ssfl2Qf1EkrQEI98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CulvJm0v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36CD7C4CED2;
+	Mon,  6 Jan 2025 11:12:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736161976;
+	bh=f//ePYewEo6KUIJT7r9xdenXGO7+0Zhd9RhZAsOww8w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=CulvJm0vRpKKcfnb/CxBgrC4q0kDVl6jLj+GAF/84BRZXQZ2QwohPAUlLMNefjafu
+	 IA2ZiRpnvUJINBu3L8Vd/S4VvlfldlN0oKoSt5AxE5MU/GR2piE7ga1ywAuxx7a6M4
+	 oIsH06+7hhMx/MZFnWFJ65jynnWpT6tyQftHKDukOhs0YwKS+e1AvRHS+fOJjHmVMq
+	 TsMHy7dHIh/4stY1BR+KFiEZ+TTXM46Rush0MLuZByGNMd2nI1vvRCRNZ9S6+N/UST
+	 PsFaJvlMZSBb162EI+wqy5W16/wjbouYktui9oFGpzb/VViCTguMTxy75uWUnPKtbg
+	 nHCHPglS4WvyA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tUl2T-009NlL-Ta;
+	Mon, 06 Jan 2025 11:12:54 +0000
+Date: Mon, 06 Jan 2025 11:12:53 +0000
+Message-ID: <868qrop556.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] arm64: Filter out SVE hwcaps when FEAT_SVE isn't implemented
+In-Reply-To: <Z3ulKMeKQcHFErgr@J2N7QTR9R3>
+References: <20250103182255.1763739-1-maz@kernel.org>
+	<Z3ulKMeKQcHFErgr@J2N7QTR9R3>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com, will@kernel.org, broonie@kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
+On Mon, 06 Jan 2025 09:40:56 +0000,
+Mark Rutland <mark.rutland@arm.com> wrote:
+> 
+> On Fri, Jan 03, 2025 at 06:22:55PM +0000, Marc Zyngier wrote:
+> > The hwcaps code that exposes SVE features to userspace only
+> > considers ID_AA64ZFR0_EL1, while this is only valid when
+> > ID_AA64PFR0_EL1.SVE advertises that SVE is actually supported.
+> > 
+> > The expectations are that when ID_AA64PFR0_EL1.SVE is 0, the
+> > ID_AA64ZFR0_EL1 register is also 0. So far, so good.
+> > 
+> > Things become a bit more interesting if the HW implements SME.
+> > In this case, a few ID_AA64ZFR0_EL1 fields indicate *SME*
+> > features. And these fields overlap with their SVE interpretations.
+> > But the architecture says that the SME and SVE feature sets must
+> > match, so we're still hunky-dory.
+> > 
+> > This goes wrong if the HW implements SME, but not SVE. In this
+> > case, we end-up advertising some SVE features to userspace, even
+> > if the HW has none. That's because we never consider whether SVE
+> > is actually implemented. Oh well.
+> 
+> Ugh; this is a massive pain. :(
+> 
+> Was this found by inspection, or is some real software going wrong?
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Catalin can comment on that -- I understand that he found existing SW
+latching on SVE2 being wrongly advertised as hwcaps.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+> > Fix it by restricting all SVE capabilities to ID_AA64PFR0_EL1.SVE
+> > being non-zero.
+> 
+> Unfortunately, I'm not sure this fix is correct+complete.
+> 
+> We expose ID_AA64PFR0_EL1 and ID_AA64ZFR0_EL1 via ID register emulation,
+> so any userspace software reading ID_AA64ZFR0_EL1 will encounter the
+> same surprise. If we hide that I'm worried we might hide some SME-only
+> information that isn't exposed elsewhere, and I'm not sure we can
+> reasonably hide ID_AA64ZFR0_EL1 emulation for SME-only (more on that
+> below).
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 59d9094df3d79443937add8700b2ef1a866b1081
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025010625-stopped-snowflake-603f@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+I don't understand where things go wrong. EL0 SW that looks at the ID
+registers should perform similar checks, and we are not trying to make
+things better on that front (we can't). Unless you invent time travel
+and fix the architecture 5 years ago... :-/
 
-Possible dependencies:
+The hwcaps are effectively demultiplexing the ID registers, and they
+have to be exact, which is what this patch provides (SVE2 doesn't get
+wrongly advertised when not present).
 
+> Secondly, all our HWCAP documentation is written in the form:
+> 
+> | HWCAP2_SVEBF16
+> |     Functionality implied by ID_AA64ZFR0_EL1.BF16 == 0b0001.
+> 
+> ... so while the architectural behaviour is a surprise, the kernel is
+> (techincallyy) behaving exactly as documented prior to this patch. Maybe
+> we need to change that documentation?
 
+Again, I don't see what goes wrong here. BF16 is only implemented for
+SVE or SME+FA64, and FA64 requires SVE2. So at least for that one, we
+should be good.
 
-thanks,
+>
+> Do we have equivalent SME hwcaps for the relevant features?
+>
+> ... looking at:
+> 
+>   https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/ID-AA64ZFR0-EL1--SVE-Feature-ID-Register-0?lang=en
+> 
+> ... I see that ID_AA64ZFR0_EL1.B16B16 >= 0b0010 implies the presence of
+> SME BFMUL and BFSCALE instructions, but I don't see something equivalent
+> in ID_AA64SMFR0_EL1 per:
+> 
+>   https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/ID-AA64SMFR0-EL1--SME-Feature-ID-Register-0?lang=en
+> 
+> ... so I suspect ID_AA64ZFR0_EL1 might be the only source of truth for
+> this.
 
-greg k-h
+Indeed, and the SME HWCAPs are not doing the right thing either. Or
+rather, we have no way to tell userspace that BFMUL/BFSCALE are
+available.
 
------------------- original commit in Linus's tree ------------------
+> It is bizarre that ID_AA64SMFR0_EL1 doesn't follow the same format, and
+> ID_AA64SMFR0_EL1.B16B16 is a single-bit field that cannot encode the
+> same values as ID_AA64ZFR0_EL1.B16B16 (which is a 4-bit field).
 
-From 59d9094df3d79443937add8700b2ef1a866b1081 Mon Sep 17 00:00:00 2001
-From: Liu Shixin <liushixin2@huawei.com>
-Date: Mon, 16 Dec 2024 15:11:47 +0800
-Subject: [PATCH] mm: hugetlb: independent PMD page table shared count
+*everything* about SME is bizarre.
 
-The folio refcount may be increased unexpectly through try_get_folio() by
-caller such as split_huge_pages.  In huge_pmd_unshare(), we use refcount
-to check whether a pmd page table is shared.  The check is incorrect if
-the refcount is increased by the above caller, and this can cause the page
-table leaked:
+> Even if we change Linux here, someone will need to chase up with the
+> architects to ensure this isn't made worse in future.
 
- BUG: Bad page state in process sh  pfn:109324
- page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x66 pfn:0x109324
- flags: 0x17ffff800000000(node=0|zone=2|lastcpupid=0xfffff)
- page_type: f2(table)
- raw: 017ffff800000000 0000000000000000 0000000000000000 0000000000000000
- raw: 0000000000000066 0000000000000000 00000000f2000000 0000000000000000
- page dumped because: nonzero mapcount
- ...
- CPU: 31 UID: 0 PID: 7515 Comm: sh Kdump: loaded Tainted: G    B              6.13.0-rc2master+ #7
- Tainted: [B]=BAD_PAGE
- Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
- Call trace:
-  show_stack+0x20/0x38 (C)
-  dump_stack_lvl+0x80/0xf8
-  dump_stack+0x18/0x28
-  bad_page+0x8c/0x130
-  free_page_is_bad_report+0xa4/0xb0
-  free_unref_page+0x3cc/0x620
-  __folio_put+0xf4/0x158
-  split_huge_pages_all+0x1e0/0x3e8
-  split_huge_pages_write+0x25c/0x2d8
-  full_proxy_write+0x64/0xd8
-  vfs_write+0xcc/0x280
-  ksys_write+0x70/0x110
-  __arm64_sys_write+0x24/0x38
-  invoke_syscall+0x50/0x120
-  el0_svc_common.constprop.0+0xc8/0xf0
-  do_el0_svc+0x24/0x38
-  el0_svc+0x34/0x128
-  el0t_64_sync_handler+0xc8/0xd0
-  el0t_64_sync+0x190/0x198
+Good luck!
 
-The issue may be triggered by damon, offline_page, page_idle, etc, which
-will increase the refcount of page table.
+	M.
 
-1. The page table itself will be discarded after reporting the
-   "nonzero mapcount".
-
-2. The HugeTLB page mapped by the page table miss freeing since we
-   treat the page table as shared and a shared page table will not be
-   unmapped.
-
-Fix it by introducing independent PMD page table shared count.  As
-described by comment, pt_index/pt_mm/pt_frag_refcount are used for s390
-gmap, x86 pgds and powerpc, pt_share_count is used for x86/arm64/riscv
-pmds, so we can reuse the field as pt_share_count.
-
-Link: https://lkml.kernel.org/r/20241216071147.3984217-1-liushixin2@huawei.com
-Fixes: 39dde65c9940 ("[PATCH] shared page table for hugetlb page")
-Signed-off-by: Liu Shixin <liushixin2@huawei.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Ken Chen <kenneth.w.chen@intel.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Nanyong Sun <sunnanyong@huawei.com>
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index fb397918c43d..b1c3db9cf355 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3125,6 +3125,7 @@ static inline bool pagetable_pmd_ctor(struct ptdesc *ptdesc)
- 	if (!pmd_ptlock_init(ptdesc))
- 		return false;
- 	__folio_set_pgtable(folio);
-+	ptdesc_pmd_pts_init(ptdesc);
- 	lruvec_stat_add_folio(folio, NR_PAGETABLE);
- 	return true;
- }
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 7361a8f3ab68..332cee285662 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -445,6 +445,7 @@ FOLIO_MATCH(compound_head, _head_2a);
-  * @pt_index:         Used for s390 gmap.
-  * @pt_mm:            Used for x86 pgds.
-  * @pt_frag_refcount: For fragmented page table tracking. Powerpc only.
-+ * @pt_share_count:   Used for HugeTLB PMD page table share count.
-  * @_pt_pad_2:        Padding to ensure proper alignment.
-  * @ptl:              Lock for the page table.
-  * @__page_type:      Same as page->page_type. Unused for page tables.
-@@ -471,6 +472,9 @@ struct ptdesc {
- 		pgoff_t pt_index;
- 		struct mm_struct *pt_mm;
- 		atomic_t pt_frag_refcount;
-+#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
-+		atomic_t pt_share_count;
-+#endif
- 	};
- 
- 	union {
-@@ -516,6 +520,32 @@ static_assert(sizeof(struct ptdesc) <= sizeof(struct page));
- 	const struct page *:		(const struct ptdesc *)(p),	\
- 	struct page *:			(struct ptdesc *)(p)))
- 
-+#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
-+static inline void ptdesc_pmd_pts_init(struct ptdesc *ptdesc)
-+{
-+	atomic_set(&ptdesc->pt_share_count, 0);
-+}
-+
-+static inline void ptdesc_pmd_pts_inc(struct ptdesc *ptdesc)
-+{
-+	atomic_inc(&ptdesc->pt_share_count);
-+}
-+
-+static inline void ptdesc_pmd_pts_dec(struct ptdesc *ptdesc)
-+{
-+	atomic_dec(&ptdesc->pt_share_count);
-+}
-+
-+static inline int ptdesc_pmd_pts_count(struct ptdesc *ptdesc)
-+{
-+	return atomic_read(&ptdesc->pt_share_count);
-+}
-+#else
-+static inline void ptdesc_pmd_pts_init(struct ptdesc *ptdesc)
-+{
-+}
-+#endif
-+
- /*
-  * Used for sizing the vmemmap region on some architectures
-  */
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index cec4b121193f..c498874a7170 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -7211,7 +7211,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- 			spte = hugetlb_walk(svma, saddr,
- 					    vma_mmu_pagesize(svma));
- 			if (spte) {
--				get_page(virt_to_page(spte));
-+				ptdesc_pmd_pts_inc(virt_to_ptdesc(spte));
- 				break;
- 			}
- 		}
-@@ -7226,7 +7226,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- 				(pmd_t *)((unsigned long)spte & PAGE_MASK));
- 		mm_inc_nr_pmds(mm);
- 	} else {
--		put_page(virt_to_page(spte));
-+		ptdesc_pmd_pts_dec(virt_to_ptdesc(spte));
- 	}
- 	spin_unlock(&mm->page_table_lock);
- out:
-@@ -7238,10 +7238,6 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- /*
-  * unmap huge page backed by shared pte.
-  *
-- * Hugetlb pte page is ref counted at the time of mapping.  If pte is shared
-- * indicated by page_count > 1, unmap is achieved by clearing pud and
-- * decrementing the ref count. If count == 1, the pte page is not shared.
-- *
-  * Called with page table lock held.
-  *
-  * returns: 1 successfully unmapped a shared pte page
-@@ -7250,18 +7246,20 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- int huge_pmd_unshare(struct mm_struct *mm, struct vm_area_struct *vma,
- 					unsigned long addr, pte_t *ptep)
- {
-+	unsigned long sz = huge_page_size(hstate_vma(vma));
- 	pgd_t *pgd = pgd_offset(mm, addr);
- 	p4d_t *p4d = p4d_offset(pgd, addr);
- 	pud_t *pud = pud_offset(p4d, addr);
- 
- 	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
- 	hugetlb_vma_assert_locked(vma);
--	BUG_ON(page_count(virt_to_page(ptep)) == 0);
--	if (page_count(virt_to_page(ptep)) == 1)
-+	if (sz != PMD_SIZE)
-+		return 0;
-+	if (!ptdesc_pmd_pts_count(virt_to_ptdesc(ptep)))
- 		return 0;
- 
- 	pud_clear(pud);
--	put_page(virt_to_page(ptep));
-+	ptdesc_pmd_pts_dec(virt_to_ptdesc(ptep));
- 	mm_dec_nr_pmds(mm);
- 	return 1;
- }
-
+-- 
+Without deviation from the norm, progress is not possible.
 
