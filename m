@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-107289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8083A02B25
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:40:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC3AA02BB4
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:46:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D61D4163AF1
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:40:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 101BB161CCF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:45:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78644155300;
-	Mon,  6 Jan 2025 15:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD701DE89C;
+	Mon,  6 Jan 2025 15:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGDuxoT0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCTLrAl5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35EA38634A;
-	Mon,  6 Jan 2025 15:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529601DE88E;
+	Mon,  6 Jan 2025 15:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178019; cv=none; b=sTMs9B7H+krLR4l25QFPKCwiNJ5c08XaDpLU4MYj9bOuj2tVceVPSji8aMaLCtBmlwp9biu5KLnMnTrPeVmVN2HONh0Hu5Xtov+4CDz0dj9LnzTx9XIcCOtKkNbglCEEPPEKlMX++P0E4KNrJEhhV4kRdSlIo/7A23XhnKjXsGY=
+	t=1736178323; cv=none; b=FdrL41guiYM7gGQR6Ctn3S9uMrlFtOP+bNb0l+BDm5HGd58uouQsUvnumGxT5icDkPAMNJMPnCY9DbasP3D6Ol5ztZmJEc+8lA3omsy7LwtcY79Vyf/MTR18gAwtp+HR+E+zYr0qccfIL8ARWvyxnfPqoz2hX7cCgHBeKCvxI7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178019; c=relaxed/simple;
-	bh=DClIQo+eFk7yeNUrxXP6R04+liYAJzAT5sepG3dgI2o=;
+	s=arc-20240116; t=1736178323; c=relaxed/simple;
+	bh=R723dTy1PDk1/IDXgdIzIlxpzS8RjLsxI7H1/5KNiP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FZVwqClF7bSPJK4BxpJNE1T7joO4QQztbGlV4d7S1xdpRWudrJ8q8vPZPV2w8O0N9UfbJhv2Y+i0x1XZS6W/iVLI8f98uS04tsxInbZZ5F2WFpkqz7SjRcTvz7qfBesoOEDZA1N7VzoAhluppraZIaWCHF64yWoFeOxSwp0qv+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGDuxoT0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB14C4CED2;
-	Mon,  6 Jan 2025 15:40:18 +0000 (UTC)
+	 MIME-Version; b=Snv42lPFwJqlIvugHISf9o45cqvj2WlKLDDCuEvCDUtF5efa/YrZP1TZuzU7Q4TcA0FW1DmD0fRYnu0Pj7ZEEpgT+jq/UorN8linnVAaMqNwDIcMDGJhXoJrAu81EYutcbyFThut7tKSrB8ZKO/D9tx822VUPzrPp/629U3JuD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCTLrAl5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A81C4CED2;
+	Mon,  6 Jan 2025 15:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178019;
-	bh=DClIQo+eFk7yeNUrxXP6R04+liYAJzAT5sepG3dgI2o=;
+	s=korg; t=1736178323;
+	bh=R723dTy1PDk1/IDXgdIzIlxpzS8RjLsxI7H1/5KNiP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VGDuxoT0ozpoxA7JPzjpndhZu6pSYAC5AtahITMNEfvFRKk5jCj2fL+BldnmtJ91w
-	 ty5Zox9QOnSfA9Q5exczdZGfhHujYOou+qgAguRHG0V132nXyBahmsiXamaPEbnUWO
-	 ZkSmZoT2wr/OEvXYUHuViPmsyTNrqOgsMvrdRUoQ=
+	b=tCTLrAl5c+Obz9EaIJU7Ofs2MK6c5MoM7XWhHOLL+QUsVFw/emoFgKJRFZPqcA6Ot
+	 CRZWrhkjCTLjAy/yCkZ+wH+HxIsotZMfTaVhu28W5XiRgwuA16tZye/Gbh55x/k2/2
+	 zmCL3CAMKL1fi/pzU+Zpw1/GNKVeB8QcFi06mzFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux@frame.work,
-	"Dustin L. Howett" <dustin@howett.net>,
-	Daniel Schaefer <dhs@frame.work>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 117/156] ALSA hda/realtek: Add quirk for Framework F111:000C
+	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 5.10 079/138] power: supply: gpio-charger: Fix set charge current limits
 Date: Mon,  6 Jan 2025 16:16:43 +0100
-Message-ID: <20250106151146.135016830@linuxfoundation.org>
+Message-ID: <20250106151136.222283160@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Schaefer <dhs@frame.work>
+From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
 
-commit 7b509910b3ad6d7aacead24c8744de10daf8715d upstream.
+commit afc6e39e824ad0e44b2af50a97885caec8d213d1 upstream.
 
-Similar to commit eb91c456f371
-("ALSA: hda/realtek: Add Framework Laptop 13 (Intel Core Ultra) to quirks")
-and previous quirks for Framework systems with
-Realtek codecs.
+Fix set charge current limits for devices which allow to set the lowest
+charge current limit to be greater zero. If requested charge current limit
+is below lowest limit, the index equals current_limit_map_size which leads
+to accessing memory beyond allocated memory.
 
-000C is a new platform that will also have an ALC285 codec and needs the
-same quirk.
-
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: linux@frame.work
-Cc: Dustin L. Howett <dustin@howett.net>
-Signed-off-by: Daniel Schaefer <dhs@frame.work>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241231045958.14545-1-dhs@frame.work
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: be2919d8355e ("power: supply: gpio-charger: add charge-current-limit feature")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+Link: https://lore.kernel.org/r/20241209-fix-charge-current-limit-v1-1-760d9b8f2af3@liebherr.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/power/supply/gpio-charger.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10993,6 +10993,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0xf111, 0x0001, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0xf111, 0x0006, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0xf111, 0x0009, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0xf111, 0x000c, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
+--- a/drivers/power/supply/gpio-charger.c
++++ b/drivers/power/supply/gpio-charger.c
+@@ -67,6 +67,14 @@ static int set_charge_current_limit(stru
+ 		if (gpio_charger->current_limit_map[i].limit_ua <= val)
+ 			break;
+ 	}
++
++	/*
++	 * If a valid charge current limit isn't found, default to smallest
++	 * current limitation for safety reasons.
++	 */
++	if (i >= gpio_charger->current_limit_map_size)
++		i = gpio_charger->current_limit_map_size - 1;
++
+ 	mapping = gpio_charger->current_limit_map[i];
  
- #if 0
- 	/* Below is a quirk table taken from the old code.
+ 	for (i = 0; i < ndescs; i++) {
 
 
 
