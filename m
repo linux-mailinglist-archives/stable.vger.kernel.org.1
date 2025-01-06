@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-107187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BCABA02A9D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:35:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76794A02A01
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:29:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A32F165049
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:35:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD5C57A21DD
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CE601D5CE5;
-	Mon,  6 Jan 2025 15:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E3686347;
+	Mon,  6 Jan 2025 15:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6GYdU91"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FeZXEl4t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B9518B46A;
-	Mon,  6 Jan 2025 15:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5621582D98;
+	Mon,  6 Jan 2025 15:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177715; cv=none; b=EdZhFhfoyVG+JfeBsWKS2Qw73LqeiuOZYVTIVNzSmapG8lgocCOQvCC/IhbkMzYedu2Fvdkni2JocSkFvL9R3pgCUFT8MBu/4Twb8a4ZzAfQPi+jLBqjy4skZA4FupbwNumRcmCZU6JEsqc3Rd/IRBB4auMmTfb8jxIwlPOlXkE=
+	t=1736177332; cv=none; b=h4cLz+vEvXTkF3iOZjcrZc8DY3EWcHkCNhX2QeDgTmvDA/fuhW8T417qsqcEdWpHaHp27gZS0rMVYCih6a76Aao0Qmw5Q6XZibKZsNwnD35qi2tUr64TJf1BpGVV76+q8PHKjsd9LcGzd+WT1vdrvLDaYxITkKbPk3j4SeV5uT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177715; c=relaxed/simple;
-	bh=oIWvipO4yqxBocHLCrOHzRW5vvIpeR/xgqrqJW9LwO0=;
+	s=arc-20240116; t=1736177332; c=relaxed/simple;
+	bh=zu2Y6cMTVkjrBvh7s36DCD4TXXiSD+/ttA23ZVoaCok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HlfjgFP6s8WHyJNiymuC7WD9HXCGnk9YXsEQc06W427U4VU+upMhCPeRB0OV/UJJf2M71UYjIKGg4NY+wbw8jkKc/E5A9k071/x2PKvTeQcNJwx6GpFkyPFS9QOWi1GF4eUAnhWEYGGdDrkbXO7SK5TYy8ONzWr6+oT48C1isdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6GYdU91; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6FCBC4CED2;
-	Mon,  6 Jan 2025 15:35:14 +0000 (UTC)
+	 MIME-Version; b=XZ/p54keWHHHlwVnbKuvi4OrUfzcepQl03quwczz4TqXy1OsZrknth82oAe3XPHpa2hN1v509mR4MzJBi//A+CsG/zew8Xb57/n6EltB3k31y/V4JXoSklKpU0TlRleJ6nlDCc26j+Vn6TDVmwQyXzFMsR9pqG1GVi4kFMzjjd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FeZXEl4t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0089C4CED2;
+	Mon,  6 Jan 2025 15:28:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177715;
-	bh=oIWvipO4yqxBocHLCrOHzRW5vvIpeR/xgqrqJW9LwO0=;
+	s=korg; t=1736177332;
+	bh=zu2Y6cMTVkjrBvh7s36DCD4TXXiSD+/ttA23ZVoaCok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X6GYdU91p5gSN8kdjdksJ4VVskOOjCVxImDljAAFE8+ZspoCkwa/SFd1hEJTCTd08
-	 b+kQgiiMlR665pCS4Vl0ra62/Ibt1txTRPTL7pbGw3E2nlyZfLW9549Wkt+Hj35IVm
-	 hkDsclS+baDEWZlA9PFFchRBoWSbv3xC2NweI8B4=
+	b=FeZXEl4tdItpTQKA12jcI2l2/sk0xTyrqnn8C//YLjA2EHLrHNl3U42u2oWL1EM6M
+	 cSFd9JtkXVTx215Atpqz9zMWvRM78u1TOKRFYtqMvG4uQrVrDqwC81r3teXgv4qIXQ
+	 V1W1shLFhd6AASHbXzkCzAUVdTIc+fhAoMdM7V1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 015/156] RDMA/bnxt_re: Fix max SGEs for the Work Request
+	Thomas Gleixner <tglx@linutronix.de>,
+	Xin Li <xin3.li@intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Shan Kang <shan.kang@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	"H. Peter Anvin (Intel)" <hpa@zytor.com>
+Subject: [PATCH 6.6 097/222] x86/ptrace: Cleanup the definition of the pt_regs structure
 Date: Mon,  6 Jan 2025 16:15:01 +0100
-Message-ID: <20250106151142.317719843@linuxfoundation.org>
+Message-ID: <20250106151154.268669635@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +65,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kashyap Desai <kashyap.desai@broadcom.com>
+From: Xin Li <xin3.li@intel.com>
 
-[ Upstream commit 79d330fbdffd8cee06d8bdf38d82cb62d8363a27 ]
+[ Upstream commit ee63291aa8287cb7ded767d340155fe8681fc075 ]
 
-Gen P7 supports up to 13 SGEs for now. WQE software structure
-can hold only 6 now. Since the max send sge is reported as
-13, the stack can give requests up to 13 SGEs. This is causing
-traffic failures and system crashes.
+struct pt_regs is hard to read because the member or section related
+comments are not aligned with the members.
 
-Use the define for max SGE supported for variable size. This
-will work for both static and variable WQEs.
+The 'cs' and 'ss' members of pt_regs are type of 'unsigned long' while
+in reality they are only 16-bit wide. This works so far as the
+remaining space is unused, but FRED will use the remaining bits for
+other purposes.
 
-Fixes: 227f51743b61 ("RDMA/bnxt_re: Fix the max WQE size for static WQE support")
-Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/20241204075416.478431-2-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+To prepare for FRED:
+
+  - Cleanup the formatting
+  - Convert 'cs' and 'ss' to u16 and embed them into an union
+    with a u64
+  - Fixup the related printk() format strings
+
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Originally-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Signed-off-by: Xin Li <xin3.li@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Shan Kang <shan.kang@intel.com>
+Link: https://lore.kernel.org/r/20231205105030.8698-14-xin3.li@intel.com
+Stable-dep-of: dc81e556f2a0 ("x86/fred: Clear WFE in missing-ENDBRANCH #CPs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/entry/vsyscall/vsyscall_64.c |  2 +-
+ arch/x86/include/asm/ptrace.h         | 48 +++++++++++++++++++--------
+ arch/x86/kernel/process_64.c          |  2 +-
+ 3 files changed, 37 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-index f55958e5fddb..d8c71c024613 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-@@ -114,7 +114,6 @@ struct bnxt_qplib_sge {
- 	u32				size;
+diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
+index 1245000a8792..2fb7d53cf333 100644
+--- a/arch/x86/entry/vsyscall/vsyscall_64.c
++++ b/arch/x86/entry/vsyscall/vsyscall_64.c
+@@ -76,7 +76,7 @@ static void warn_bad_vsyscall(const char *level, struct pt_regs *regs,
+ 	if (!show_unhandled_signals)
+ 		return;
+ 
+-	printk_ratelimited("%s%s[%d] %s ip:%lx cs:%lx sp:%lx ax:%lx si:%lx di:%lx\n",
++	printk_ratelimited("%s%s[%d] %s ip:%lx cs:%x sp:%lx ax:%lx si:%lx di:%lx\n",
+ 			   level, current->comm, task_pid_nr(current),
+ 			   message, regs->ip, regs->cs,
+ 			   regs->sp, regs->ax, regs->si, regs->di);
+diff --git a/arch/x86/include/asm/ptrace.h b/arch/x86/include/asm/ptrace.h
+index f4db78b09c8f..b268cd2a2d01 100644
+--- a/arch/x86/include/asm/ptrace.h
++++ b/arch/x86/include/asm/ptrace.h
+@@ -57,17 +57,19 @@ struct pt_regs {
+ #else /* __i386__ */
+ 
+ struct pt_regs {
+-/*
+- * C ABI says these regs are callee-preserved. They aren't saved on kernel entry
+- * unless syscall needs a complete, fully filled "struct pt_regs".
+- */
++	/*
++	 * C ABI says these regs are callee-preserved. They aren't saved on
++	 * kernel entry unless syscall needs a complete, fully filled
++	 * "struct pt_regs".
++	 */
+ 	unsigned long r15;
+ 	unsigned long r14;
+ 	unsigned long r13;
+ 	unsigned long r12;
+ 	unsigned long bp;
+ 	unsigned long bx;
+-/* These regs are callee-clobbered. Always saved on kernel entry. */
++
++	/* These regs are callee-clobbered. Always saved on kernel entry. */
+ 	unsigned long r11;
+ 	unsigned long r10;
+ 	unsigned long r9;
+@@ -77,18 +79,38 @@ struct pt_regs {
+ 	unsigned long dx;
+ 	unsigned long si;
+ 	unsigned long di;
+-/*
+- * On syscall entry, this is syscall#. On CPU exception, this is error code.
+- * On hw interrupt, it's IRQ number:
+- */
++
++	/*
++	 * orig_ax is used on entry for:
++	 * - the syscall number (syscall, sysenter, int80)
++	 * - error_code stored by the CPU on traps and exceptions
++	 * - the interrupt number for device interrupts
++	 */
+ 	unsigned long orig_ax;
+-/* Return frame for iretq */
++
++	/* The IRETQ return frame starts here */
+ 	unsigned long ip;
+-	unsigned long cs;
++
++	union {
++		/* The full 64-bit data slot containing CS */
++		u64		csx;
++		/* CS selector */
++		u16		cs;
++	};
++
+ 	unsigned long flags;
+ 	unsigned long sp;
+-	unsigned long ss;
+-/* top of stack page */
++
++	union {
++		/* The full 64-bit data slot containing SS */
++		u64		ssx;
++		/* SS selector */
++		u16		ss;
++	};
++
++	/*
++	 * Top of stack on IDT systems.
++	 */
  };
  
--#define BNXT_QPLIB_QP_MAX_SGL	6
- struct bnxt_qplib_swq {
- 	u64				wr_id;
- 	int				next_idx;
-@@ -154,7 +153,7 @@ struct bnxt_qplib_swqe {
- #define BNXT_QPLIB_SWQE_FLAGS_UC_FENCE			BIT(2)
- #define BNXT_QPLIB_SWQE_FLAGS_SOLICIT_EVENT		BIT(3)
- #define BNXT_QPLIB_SWQE_FLAGS_INLINE			BIT(4)
--	struct bnxt_qplib_sge		sg_list[BNXT_QPLIB_QP_MAX_SGL];
-+	struct bnxt_qplib_sge		sg_list[BNXT_VAR_MAX_SGE];
- 	int				num_sge;
- 	/* Max inline data is 96 bytes */
- 	u32				inline_len;
+ #endif /* !__i386__ */
+diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
+index d595ef7c1de0..dd19a4db741a 100644
+--- a/arch/x86/kernel/process_64.c
++++ b/arch/x86/kernel/process_64.c
+@@ -117,7 +117,7 @@ void __show_regs(struct pt_regs *regs, enum show_regs_mode mode,
+ 
+ 	printk("%sFS:  %016lx(%04x) GS:%016lx(%04x) knlGS:%016lx\n",
+ 	       log_lvl, fs, fsindex, gs, gsindex, shadowgs);
+-	printk("%sCS:  %04lx DS: %04x ES: %04x CR0: %016lx\n",
++	printk("%sCS:  %04x DS: %04x ES: %04x CR0: %016lx\n",
+ 		log_lvl, regs->cs, ds, es, cr0);
+ 	printk("%sCR2: %016lx CR3: %016lx CR4: %016lx\n",
+ 		log_lvl, cr2, cr3, cr4);
 -- 
 2.39.5
 
