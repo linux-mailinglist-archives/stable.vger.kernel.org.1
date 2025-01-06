@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E1AA02A2A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57023A02B8D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:44:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9847E7A29FF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0678B1663A4
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489B81DD874;
-	Mon,  6 Jan 2025 15:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A249B1D7999;
+	Mon,  6 Jan 2025 15:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p8bQZfms"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JcgpanaM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3FD8149C7B;
-	Mon,  6 Jan 2025 15:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D7C1607AA;
+	Mon,  6 Jan 2025 15:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177442; cv=none; b=ASE1c3hWHmWBfR/ji4CdnYH8bqoSE8SL/4bJrnN/qMAhqMQfv3rk6xUD+Scd6cUblV9ydwnKrzYYNN4qhUIfxiLCyKZTIuO5IJIcz5LPnhoTdHNcvrCNQBxaTXSK1I88Le/iphsonsb7PhYOCCsAED8KDSLB0Ou/V6MfnFI7NWE=
+	t=1736178223; cv=none; b=nlyTzlxZMiwbUmtCq5jkw2PHjSM6O/PkVBhTRkQR5q4CJRKYdY5zcqXxg3GugpJ50NXPSdTNSGkKzhRYVmE7h+i/lwmdbYwr+CgaKGYDEJf0KGBUaus+8kOduGYLrRXX2eNC+qwzQmBPlFYQIrdBXRGSkUBtGk98UOfiWtgrXpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177442; c=relaxed/simple;
-	bh=YuXpynjOIJv3hSylJ/EtmRtbltllW16xEjAJWcuNQrM=;
+	s=arc-20240116; t=1736178223; c=relaxed/simple;
+	bh=MSsSFfW6NOLchXSAbuFRsR20lKCBpRgsZq+XdFmDMg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P5B5Ohj3D1isE3etGsS1k0q9l1DYfqa4nX6AV9G7gieCcaYfgCjLQLoOTTuy9EPUzuAa0yTiI7P9RrDlCCTGqSM5Ew1JhZsL8dYzzH8GI7tRZhQVpsOEzrNAytg14V0zChHH7ck+rM4v/MB4aRT0/RMxnzkfohPXisI0HFyUiWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p8bQZfms; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C84C4CED2;
-	Mon,  6 Jan 2025 15:30:41 +0000 (UTC)
+	 MIME-Version; b=kcuSSOOvF3pVS3korcyS9NpsNWs3K262jzCe97MW2xIjH0I9p98W7hv1ClGk333vGnlLUdHPdmDhGEJAhRwqHNcYq4YlTkRk7hlfO2IMnsnuRM/HaHFptk2dWINkBLpUTrFN9/AotFkBWxVUKJglEi/VhxuMCZb6tV8IENX/ceY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JcgpanaM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC652C4CED2;
+	Mon,  6 Jan 2025 15:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177441;
-	bh=YuXpynjOIJv3hSylJ/EtmRtbltllW16xEjAJWcuNQrM=;
+	s=korg; t=1736178223;
+	bh=MSsSFfW6NOLchXSAbuFRsR20lKCBpRgsZq+XdFmDMg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p8bQZfmswX3eW33mNWdh4MSi8lZbmdiFC9+sFX2uq2ySgvTD/sUs4pmYBzFJQghkM
-	 BkohcGjo1TfutLOIgo9lDJ06w0xYlQfShzn5JLnitiQUBcExGEtsX9G/bFr+cGvmVJ
-	 joprGsYLAYwn0ScWpE8LekiTw2Q5UNmTKPztt6X8=
+	b=JcgpanaMIHzipkF1E3yff3OUKsyNcECM+TWRfigGFC1yTsKy0vVGgNocbCZD4Dof9
+	 4v+3N1EMy4zj/GMZBuzVjzNJVekjVth+N0LY4+RdkO9XDOc2F9Awy5ZZEPQJkKVdtZ
+	 YsvPrYoXe6q51/0SAXzbi9YPXsjitFRkcrNAbYQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitalii Mordan <mordan@ispras.ru>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Cong Wang <cong.wang@bytedance.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 166/222] eth: bcmsysport: fix call balance of priv->clk handling routines
+Subject: [PATCH 5.10 046/138] tcp_bpf: Charge receive socket buffer in bpf_tcp_ingress()
 Date: Mon,  6 Jan 2025 16:16:10 +0100
-Message-ID: <20250106151157.048415436@linuxfoundation.org>
+Message-ID: <20250106151134.981550802@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Cong Wang <cong.wang@bytedance.com>
 
-[ Upstream commit b255ef45fcc2141c1bf98456796abb956d843a27 ]
+[ Upstream commit 54f89b3178d5448dd4457afbb98fc1ab99090a65 ]
 
-Check the return value of clk_prepare_enable to ensure that priv->clk has
-been successfully enabled.
+When bpf_tcp_ingress() is called, the skmsg is being redirected to the
+ingress of the destination socket. Therefore, we should charge its
+receive socket buffer, instead of sending socket buffer.
 
-If priv->clk was not enabled during bcm_sysport_probe, bcm_sysport_resume,
-or bcm_sysport_open, it must not be disabled in any subsequent execution
-paths.
+Because sk_rmem_schedule() tests pfmemalloc of skb, we need to
+introduce a wrapper and call it for skmsg.
 
-Fixes: 31bc72d97656 ("net: systemport: fetch and use clock resources")
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20241227123007.2333397-1-mordan@ispras.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/20241210012039.1669389-2-zijianzhang@bytedance.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bcmsysport.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ include/net/sock.h | 10 ++++++++--
+ net/ipv4/tcp_bpf.c |  2 +-
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
-index 49e890a7e04a..23cc2d85994e 100644
---- a/drivers/net/ethernet/broadcom/bcmsysport.c
-+++ b/drivers/net/ethernet/broadcom/bcmsysport.c
-@@ -1967,7 +1967,11 @@ static int bcm_sysport_open(struct net_device *dev)
- 	unsigned int i;
- 	int ret;
+diff --git a/include/net/sock.h b/include/net/sock.h
+index c45958a68978..548f9aab9aa1 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1525,7 +1525,7 @@ static inline bool sk_wmem_schedule(struct sock *sk, int size)
+ }
  
--	clk_prepare_enable(priv->clk);
-+	ret = clk_prepare_enable(priv->clk);
-+	if (ret) {
-+		netdev_err(dev, "could not enable priv clock\n");
-+		return ret;
-+	}
+ static inline bool
+-sk_rmem_schedule(struct sock *sk, struct sk_buff *skb, int size)
++__sk_rmem_schedule(struct sock *sk, int size, bool pfmemalloc)
+ {
+ 	int delta;
  
- 	/* Reset UniMAC */
- 	umac_reset(priv);
-@@ -2625,7 +2629,11 @@ static int bcm_sysport_probe(struct platform_device *pdev)
- 		goto err_deregister_notifier;
- 	}
- 
--	clk_prepare_enable(priv->clk);
-+	ret = clk_prepare_enable(priv->clk);
-+	if (ret) {
-+		dev_err(&pdev->dev, "could not enable priv clock\n");
-+		goto err_deregister_netdev;
-+	}
- 
- 	priv->rev = topctrl_readl(priv, REV_CNTL) & REV_MASK;
- 	dev_info(&pdev->dev,
-@@ -2639,6 +2647,8 @@ static int bcm_sysport_probe(struct platform_device *pdev)
- 
- 	return 0;
- 
-+err_deregister_netdev:
-+	unregister_netdev(dev);
- err_deregister_notifier:
- 	unregister_netdevice_notifier(&priv->netdev_notifier);
- err_deregister_fixed_link:
-@@ -2810,7 +2820,12 @@ static int __maybe_unused bcm_sysport_resume(struct device *d)
- 	if (!netif_running(dev))
- 		return 0;
- 
--	clk_prepare_enable(priv->clk);
-+	ret = clk_prepare_enable(priv->clk);
-+	if (ret) {
-+		netdev_err(dev, "could not enable priv clock\n");
-+		return ret;
-+	}
+@@ -1533,7 +1533,13 @@ sk_rmem_schedule(struct sock *sk, struct sk_buff *skb, int size)
+ 		return true;
+ 	delta = size - sk->sk_forward_alloc;
+ 	return delta <= 0 || __sk_mem_schedule(sk, delta, SK_MEM_RECV) ||
+-		skb_pfmemalloc(skb);
++	       pfmemalloc;
++}
 +
- 	if (priv->wolopts)
- 		clk_disable_unprepare(priv->wol_clk);
++static inline bool
++sk_rmem_schedule(struct sock *sk, struct sk_buff *skb, int size)
++{
++	return __sk_rmem_schedule(sk, size, skb_pfmemalloc(skb));
+ }
  
+ static inline void sk_mem_reclaim(struct sock *sk)
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index 85ae2c310148..804464beb343 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -111,7 +111,7 @@ static int bpf_tcp_ingress(struct sock *sk, struct sk_psock *psock,
+ 		sge = sk_msg_elem(msg, i);
+ 		size = (apply && apply_bytes < sge->length) ?
+ 			apply_bytes : sge->length;
+-		if (!sk_wmem_schedule(sk, size)) {
++		if (!__sk_rmem_schedule(sk, size, false)) {
+ 			if (!copied)
+ 				ret = -ENOMEM;
+ 			break;
 -- 
 2.39.5
 
