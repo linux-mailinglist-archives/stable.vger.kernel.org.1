@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-107595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBDDAA02C95
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F7DA02CA9
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:56:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FB39188503E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:55:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9004C1887693
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:56:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD04158525;
-	Mon,  6 Jan 2025 15:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21288154C04;
+	Mon,  6 Jan 2025 15:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tMevjLAe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6H9uIy4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A9486332;
-	Mon,  6 Jan 2025 15:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38EE81728;
+	Mon,  6 Jan 2025 15:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178944; cv=none; b=MlnyF2st1Naw01AjIVrpaugJxOOKVr7Td4+iRmHdLCEzAPYK4+eW7xfTKrKKhJ82rpVcH5XjiFWROhSyXYWsAjPjPzoupo4SD/phNz/oL/PE6+4orJOhxasIel4JCtr+npr4uORYw841qrCFOPx7q+5M2TiBPGCI2Ul1X4FpIc0=
+	t=1736178977; cv=none; b=KUHW2sVuDtfN03CFDgD1knacSnhFCa/0vpe6Z9PByxUATGRxwPqWiV6bgQ2pnr3JiNeCdTh2K4XHpUaXo0NqRFqE5cnotJSGpAwzWMX14lVBjhpanJwZcdoYs0VqQnihDmbSGiJEBG47mRxMyh8/G9au8k/xT60CVTU6J4UrzKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178944; c=relaxed/simple;
-	bh=AdheQTcObE4pZ3iLyvzZADAxm+ChAPcsATZ8iLdT36o=;
+	s=arc-20240116; t=1736178977; c=relaxed/simple;
+	bh=e2ClKiupTS0yVbM491ZI5T9iAMe0wRDsiG8XwP6UTjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FKybKz2q5lsM8DRkUzl3ZEKHLKxNbG2S/tq+6kz2zfxWJyVZqjQatAMb7Cs9XvPea9AK1wO+le4Psrg55aUTYSZjmT7ruL35Bgs3GEzI8tgG7MkP2mkwV0Ordnk8x5BpX7TTk4anma8akkRqIQGZ3GpuqJOnxt+x109oqSRVpPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tMevjLAe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B740C4CED2;
-	Mon,  6 Jan 2025 15:55:43 +0000 (UTC)
+	 MIME-Version; b=mRfiBncJbfAwj+XhMc3p9rMLqci9XyoDKpmDoyrUz/a28zIQlxqRTeUgrr0KmYj8j4uaaED4WDn/O1mRXdAiBm9Ymn1keI6kErQYrJt6ZBGO0n3/TI+rNGPxNn9Kt0DYGpZFQN3P5CKS7VHc7ePKU+VjAKqVHD91XIbYZ7JzPwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6H9uIy4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC37C4CED2;
+	Mon,  6 Jan 2025 15:56:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178944;
-	bh=AdheQTcObE4pZ3iLyvzZADAxm+ChAPcsATZ8iLdT36o=;
+	s=korg; t=1736178977;
+	bh=e2ClKiupTS0yVbM491ZI5T9iAMe0wRDsiG8XwP6UTjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tMevjLAe9JEVVDCtXw/4cajOvirBPtSHSBfhE68h++9S6hHdP3FqhVm7mkXMHQ9bW
-	 xUrOvufYnoZ7zSqC5ViRtIsmUg5/SxnRR2hdDxO5oJsI3rPs9p7v1I0GxoLWvay0pp
-	 lwTI3xlLOYFkNLt3t/ehS7kqVHxDb5iwFGtXu7Dc=
+	b=L6H9uIy4recmcLNF68/7qB9CXk9Ot4Su+CRz5wr2Y9BnKpDpQgmFWzoozVBAM78fm
+	 hnUvt6jxdbn6y88qz05AdSCPeM11AuK4XuIDVSpDDGsGTrN4YY1qKWU7U7g+20sVtj
+	 pWqDFUUgUtTCL8Mv/MW0uQsKyPPukI1kxk17kW3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tanya Agarwal <tanyaagarwal25699@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Vitalii Mordan <mordan@ispras.ru>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 136/168] ALSA: usb-audio: US16x08: Initialize array before use
-Date: Mon,  6 Jan 2025 16:17:24 +0100
-Message-ID: <20250106151143.574984792@linuxfoundation.org>
+Subject: [PATCH 5.15 137/168] eth: bcmsysport: fix call balance of priv->clk handling routines
+Date: Mon,  6 Jan 2025 16:17:25 +0100
+Message-ID: <20250106151143.611411852@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
 References: <20250106151138.451846855@linuxfoundation.org>
@@ -66,41 +67,80 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tanya Agarwal <tanyaagarwal25699@gmail.com>
+From: Vitalii Mordan <mordan@ispras.ru>
 
-[ Upstream commit b06a6187ef983f501e93faa56209169752d3bde3 ]
+[ Upstream commit b255ef45fcc2141c1bf98456796abb956d843a27 ]
 
-Initialize meter_urb array before use in mixer_us16x08.c.
+Check the return value of clk_prepare_enable to ensure that priv->clk has
+been successfully enabled.
 
-CID 1410197: (#1 of 1): Uninitialized scalar variable (UNINIT)
-uninit_use_in_call: Using uninitialized value *meter_urb when
-calling get_meter_levels_from_urb.
+If priv->clk was not enabled during bcm_sysport_probe, bcm_sysport_resume,
+or bcm_sysport_open, it must not be disabled in any subsequent execution
+paths.
 
-Coverity Link:
-https://scan7.scan.coverity.com/#/project-view/52849/11354?selectedIssue=1410197
-
-Fixes: d2bb390a2081 ("ALSA: usb-audio: Tascam US-16x08 DSP mixer quirk")
-Signed-off-by: Tanya Agarwal <tanyaagarwal25699@gmail.com>
-Link: https://patch.msgid.link/20241229060240.1642-1-tanyaagarwal25699@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 31bc72d97656 ("net: systemport: fetch and use clock resources")
+Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20241227123007.2333397-1-mordan@ispras.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_us16x08.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bcmsysport.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/sound/usb/mixer_us16x08.c b/sound/usb/mixer_us16x08.c
-index b7b6f3834ed5..2f6fa722442f 100644
---- a/sound/usb/mixer_us16x08.c
-+++ b/sound/usb/mixer_us16x08.c
-@@ -687,7 +687,7 @@ static int snd_us16x08_meter_get(struct snd_kcontrol *kcontrol,
- 	struct usb_mixer_elem_info *elem = kcontrol->private_data;
- 	struct snd_usb_audio *chip = elem->head.mixer->chip;
- 	struct snd_us16x08_meter_store *store = elem->private_data;
--	u8 meter_urb[64];
-+	u8 meter_urb[64] = {0};
+diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
+index 8962bd6349d4..fa140c5175a6 100644
+--- a/drivers/net/ethernet/broadcom/bcmsysport.c
++++ b/drivers/net/ethernet/broadcom/bcmsysport.c
+@@ -1956,7 +1956,11 @@ static int bcm_sysport_open(struct net_device *dev)
+ 	unsigned int i;
+ 	int ret;
  
- 	switch (kcontrol->private_value) {
- 	case 0: {
+-	clk_prepare_enable(priv->clk);
++	ret = clk_prepare_enable(priv->clk);
++	if (ret) {
++		netdev_err(dev, "could not enable priv clock\n");
++		return ret;
++	}
+ 
+ 	/* Reset UniMAC */
+ 	umac_reset(priv);
+@@ -2618,7 +2622,11 @@ static int bcm_sysport_probe(struct platform_device *pdev)
+ 		goto err_deregister_notifier;
+ 	}
+ 
+-	clk_prepare_enable(priv->clk);
++	ret = clk_prepare_enable(priv->clk);
++	if (ret) {
++		dev_err(&pdev->dev, "could not enable priv clock\n");
++		goto err_deregister_netdev;
++	}
+ 
+ 	priv->rev = topctrl_readl(priv, REV_CNTL) & REV_MASK;
+ 	dev_info(&pdev->dev,
+@@ -2632,6 +2640,8 @@ static int bcm_sysport_probe(struct platform_device *pdev)
+ 
+ 	return 0;
+ 
++err_deregister_netdev:
++	unregister_netdev(dev);
+ err_deregister_notifier:
+ 	unregister_netdevice_notifier(&priv->netdev_notifier);
+ err_deregister_fixed_link:
+@@ -2803,7 +2813,12 @@ static int __maybe_unused bcm_sysport_resume(struct device *d)
+ 	if (!netif_running(dev))
+ 		return 0;
+ 
+-	clk_prepare_enable(priv->clk);
++	ret = clk_prepare_enable(priv->clk);
++	if (ret) {
++		netdev_err(dev, "could not enable priv clock\n");
++		return ret;
++	}
++
+ 	if (priv->wolopts)
+ 		clk_disable_unprepare(priv->wol_clk);
+ 
 -- 
 2.39.5
 
