@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-107580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C370AA02CB9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:57:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91700A02CE8
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:59:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B94A3A5770
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82C1C165F5E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:59:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37F615C120;
-	Mon,  6 Jan 2025 15:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F036088F;
+	Mon,  6 Jan 2025 15:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUcwyrIe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtXLkKHu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94469182D2;
-	Mon,  6 Jan 2025 15:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EADEBA34;
+	Mon,  6 Jan 2025 15:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178895; cv=none; b=liuUjiTWKha72VjZ3ivgyo4sCo0s+V+N9wgbwl/xW3uoRk2WrsMuqyQgM+XIPK58DwKMGrG5ppk7l8K28yEFFFYId+X6+yXne4UP+msH7A7bmD6mZEe2KFdLfUEkYBlKETjxBJMDAUgC24wwQbI9ilUN+i6yR66N3OB5+e0RNGE=
+	t=1736179145; cv=none; b=NK/ZvPDNXgY5LYF3524peJQ6dxK3DCUv7z+DZGxGftJHLwbKEGYrTD2W/IbPxetMpJAXwc7jUkuDRI/S4K7l4e16LA2kD2uTk9SHh3SfCZp3TKaqj4OhO5wUHt05UsTJ7EPKVXup6pYTkHGRuVr2B7TUBoY0U7R/E3BsRh+v2+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178895; c=relaxed/simple;
-	bh=hc/03YJ9/6Imt9vpfrvp6EbWHzm+bO0uHWnmwi2ZlII=;
+	s=arc-20240116; t=1736179145; c=relaxed/simple;
+	bh=nhjJfQn/SrkmfFcxVC0cj6nuc+uAancxaTuijZOqj7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MCPgf4nkozY8E9imL9p8J3PRuWaC6iIarIRHGctVeZZmOl7XoldHlsvyiy/BEwDQd33kaPnPyk4CIOj+ZqPuQpLEL0oaSbDSrjnc6aEznQxbO+sOi4aKeP15/2cCdGPqtv6SaJ3wgUnM8+aAU0DzVO0eOc0K8LZCZAGg7g63CH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUcwyrIe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FB5C4CED6;
-	Mon,  6 Jan 2025 15:54:54 +0000 (UTC)
+	 MIME-Version; b=vGfeXkZbl8T9EiI9/jr8hZfQ8gwaDwyAgaegWK61TXtpblo5KA6DdwABcTATFqt85lbF+QKK7UEeZib6IM1+USQGq7WmGpb6497yKhGmZY7RqyU2FyGcvGS6v0wLJB1Ei+pUdXgEGTvVa+s0NdAm78x+17WxjEO8C0F1/KNqzyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtXLkKHu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6824DC4CED2;
+	Mon,  6 Jan 2025 15:59:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178895;
-	bh=hc/03YJ9/6Imt9vpfrvp6EbWHzm+bO0uHWnmwi2ZlII=;
+	s=korg; t=1736179145;
+	bh=nhjJfQn/SrkmfFcxVC0cj6nuc+uAancxaTuijZOqj7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IUcwyrIee3VdEqZCAVx4dJGovPfGblZL6bdG2hetCdrK0buujC/70ElJBLkiEYlSr
-	 kW1u5a2W5PzMg00P9zIMIU2bkgAH4PaBK1PME6zA3W+ZAb1wFflnaeKvJUsrmK0a7Y
-	 jugUML8HHP4juEoL+qd+XD9Ll2kibH56TfDZGbPk=
+	b=HtXLkKHuHgfoOWReFngN8W8VqNTip5EMQL2l1Z4LITSiaQoAzRR21NUMBSvn8GWSE
+	 hyHHAq2yArsBgaxekUt9M7lKAGPkO0ZyMpc16pxO5dztthzotxCVHyj78FaZ9TdEiA
+	 i7uwubja1Gvn7rNXR8KihzTpHWilJfo/axhJxZkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 128/168] net: stmmac: platform: provide devm_stmmac_probe_config_dt()
+	Johan Hovold <johan+linaro@kernel.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.4 40/93] phy: core: Fix that API devm_phy_destroy() fails to destroy the phy
 Date: Mon,  6 Jan 2025 16:17:16 +0100
-Message-ID: <20250106151143.277025484@linuxfoundation.org>
+Message-ID: <20250106151130.214737636@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit d74065427374da6659a2d7fad4ec55c8926d43c4 ]
+commit 4dc48c88fcf82b89fdebd83a906aaa64f40fb8a9 upstream.
 
-Provide a devres variant of stmmac_probe_config_dt() that allows users to
-skip calling stmmac_remove_config_dt() at driver detach.
+For devm_phy_destroy(), its comment says it needs to invoke phy_destroy()
+to destroy the phy, but it will not actually invoke the function since
+devres_destroy() does not call devm_phy_consume(), and the missing
+phy_destroy() call will cause that the phy fails to be destroyed.
 
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://lore.kernel.org/r/20230623100417.93592-9-brgl@bgdev.pl
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 2b6ffcd7873b ("net: stmmac: restructure the error path of stmmac_probe_config_dt()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fortunately, the faulty API has not been used by current kernel tree.
+Fix by using devres_release() instead of devres_destroy() within the API.
+
+Fixes: ff764963479a ("drivers: phy: add generic PHY framework")
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-3-40ae28f5015a@quicinc.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/stmicro/stmmac/stmmac_platform.c | 41 +++++++++++++++++++
- .../ethernet/stmicro/stmmac/stmmac_platform.h |  2 +
- 2 files changed, 43 insertions(+)
+ drivers/phy/phy-core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index e12df9d99089..196fb1ddbec0 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -8,6 +8,7 @@
-   Author: Giuseppe Cavallaro <peppe.cavallaro@st.com>
- *******************************************************************************/
- 
-+#include <linux/device.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/module.h>
-@@ -627,6 +628,39 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 	return ret;
- }
- 
-+static void devm_stmmac_remove_config_dt(void *data)
-+{
-+	struct plat_stmmacenet_data *plat = data;
-+
-+	/* Platform data argument is unused */
-+	stmmac_remove_config_dt(NULL, plat);
-+}
-+
-+/**
-+ * devm_stmmac_probe_config_dt
-+ * @pdev: platform_device structure
-+ * @mac: MAC address to use
-+ * Description: Devres variant of stmmac_probe_config_dt(). Does not require
-+ * the user to call stmmac_remove_config_dt() at driver detach.
-+ */
-+struct plat_stmmacenet_data *
-+devm_stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
-+{
-+	struct plat_stmmacenet_data *plat;
-+	int ret;
-+
-+	plat = stmmac_probe_config_dt(pdev, mac);
-+	if (IS_ERR(plat))
-+		return plat;
-+
-+	ret = devm_add_action_or_reset(&pdev->dev,
-+				       devm_stmmac_remove_config_dt, plat);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	return plat;
-+}
-+
- /**
-  * stmmac_remove_config_dt - undo the effects of stmmac_probe_config_dt()
-  * @pdev: platform_device structure
-@@ -649,12 +683,19 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 	return ERR_PTR(-EINVAL);
- }
- 
-+struct plat_stmmacenet_data *
-+devm_stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
-+{
-+	return ERR_PTR(-EINVAL);
-+}
-+
- void stmmac_remove_config_dt(struct platform_device *pdev,
- 			     struct plat_stmmacenet_data *plat)
+--- a/drivers/phy/phy-core.c
++++ b/drivers/phy/phy-core.c
+@@ -958,7 +958,7 @@ void devm_phy_destroy(struct device *dev
  {
+ 	int r;
+ 
+-	r = devres_destroy(dev, devm_phy_consume, devm_phy_match, phy);
++	r = devres_release(dev, devm_phy_consume, devm_phy_match, phy);
+ 	dev_WARN_ONCE(dev, r, "couldn't find PHY resource\n");
  }
- #endif /* CONFIG_OF */
- EXPORT_SYMBOL_GPL(stmmac_probe_config_dt);
-+EXPORT_SYMBOL_GPL(devm_stmmac_probe_config_dt);
- EXPORT_SYMBOL_GPL(stmmac_remove_config_dt);
- 
- int stmmac_get_platform_resources(struct platform_device *pdev,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
-index 3fff3f59d73d..2102c6d41464 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
-@@ -13,6 +13,8 @@
- 
- struct plat_stmmacenet_data *
- stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac);
-+struct plat_stmmacenet_data *
-+devm_stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac);
- void stmmac_remove_config_dt(struct platform_device *pdev,
- 			     struct plat_stmmacenet_data *plat);
- 
--- 
-2.39.5
-
+ EXPORT_SYMBOL_GPL(devm_phy_destroy);
 
 
 
