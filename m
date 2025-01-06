@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-107410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28977A02BB8
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:46:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 229DCA02C78
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:54:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFDE818866BB
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:46:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 612161887CCB
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2411DED59;
-	Mon,  6 Jan 2025 15:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5AB17625C;
+	Mon,  6 Jan 2025 15:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5VS13Qn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W5QkkwpA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3C01DDA2E;
-	Mon,  6 Jan 2025 15:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4D91DC9BE;
+	Mon,  6 Jan 2025 15:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178379; cv=none; b=FdV5DamcWkkoPauVktvgYJxtsSx8thjcQ60rqNNNMtUg6vvNQ7afd5j9NolxP68nhh6OpotGewdC+uNOtsHY8Xyd0rCpDHHSam+t+rn+DJhi7xmPMDEPKDb1fa+9wZgW37s8td6CeGNnTp9zSj+T+HQGWpIQ3teWTftb5+BCUcE=
+	t=1736178854; cv=none; b=naDlixr7f+eEOARcqB7oPkYB5g5vxHCeAeQhMhZ5ASXhgs7L8CKKhLU4T2/T2H33ei9qn88GRrQon1FEfLCNd2m1PKkRCtfFT5C5tQ1UAYOfqM9G058NQyzokGhoC1ut5fiDF2S3ImVTFhONcLleBgRnA5gqGBV4RPbPpx2/LSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178379; c=relaxed/simple;
-	bh=v6vV8t3+5Ljm8YKn6GsqJdDCBLd1PPIfSKjhtXibaBo=;
+	s=arc-20240116; t=1736178854; c=relaxed/simple;
+	bh=qcMNruf8EjI8KyKVsrAx5gBp9ikvLPLD1jSnL5+CI3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dj2Et6YYWzuSYCHxWCIqhwfAmABd7u25ElF1BQj3Rvsq+3gJf4svRcwP70KXJW/O/OiNAy/zRX3mJC3qOib6ap8lU4B0yeB0eSzkN/1O3eEXFodXEpVMcxGQjRppmbJ12R6Fx3YGn2QcAEE56ojqTKRrZZmLd6onkbCHiqsbcQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5VS13Qn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 211AAC4CEE2;
-	Mon,  6 Jan 2025 15:46:18 +0000 (UTC)
+	 MIME-Version; b=hzLKSF7vuy/FVKO7xdz7RaWZKwvbZDUGDqIYNRWt7JDdpyj0eY9n9w5VPWqHQtAZgckhgzA6NIVI6ZtZaTOcjAFX+bNZn1V5al5we8F3iLUA8TCjlajOg0Tv0OvP0qzh8go90MIQIdhGf3L1PNC1kL8WpeckYABRNs3NecnLw2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W5QkkwpA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B8FC4CED2;
+	Mon,  6 Jan 2025 15:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178379;
-	bh=v6vV8t3+5Ljm8YKn6GsqJdDCBLd1PPIfSKjhtXibaBo=;
+	s=korg; t=1736178853;
+	bh=qcMNruf8EjI8KyKVsrAx5gBp9ikvLPLD1jSnL5+CI3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z5VS13QnjZa8KOevhYh+wIzBQl6o/1ZsBtEy/RJ72cfRvemxkAP0BBzjE5GJOTVXM
-	 5H8SrjuzdGsAHBPsobyLD9XEy97HFWZZ7DTIh5AZHVbEm6uMKEGwg++TAgVmnOXTMN
-	 WlqdbXGUHozGloX6nFWy51oOsDLD1Tx+rRcJrpcU=
+	b=W5QkkwpA/+uAXQZET4e/VgDI3mf77lcd6UPmOiiVomscIc5JxBO2I1aM1YmDuzbpC
+	 w7Hsth5MHk7O9SIR94o5JSj17kpFcZ0pios/oHE+FWVIN91t7BevoQFP1LBF+1ZFng
+	 0SgXrZVM7VJmE5QVqJ90eZobclpo7nZ0ktSpEVVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parav Pandit <parav@nvidia.com>,
-	Bodong Wang <bodong@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Nitin Gupta <ngupta@vflare.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 099/138] net/mlx5: Make API mlx5_core_is_ecpf accept const pointer
+Subject: [PATCH 5.15 115/168] drivers/block/zram/zram_drv.c: do not keep dangling zcomp pointer after zram reset
 Date: Mon,  6 Jan 2025 16:17:03 +0100
-Message-ID: <20250106151136.980890753@linuxfoundation.org>
+Message-ID: <20250106151142.796038222@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parav Pandit <parav@nvidia.com>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-[ Upstream commit 3b1e58aa832ed537289be6a51a2015309688a90c ]
+[ Upstream commit 6d2453c3dbc5f70eafc1c866289a90a1fc57ce18 ]
 
-Subsequent patch implements helper API which has mlx5_core_dev
-as const pointer, make its caller API too const *.
+We do all reset operations under write lock, so we don't need to save
+->disksize and ->comp to stack variables.  Another thing is that ->comp is
+freed during zram reset, but comp pointer is not NULL-ed, so zram keeps
+the freed pointer value.
 
-Signed-off-by: Parav Pandit <parav@nvidia.com>
-Reviewed-by: Bodong Wang <bodong@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Stable-dep-of: e05feab22fd7 ("RDMA/mlx5: Enforce same type port association for multiport RoCE")
+Link: https://lkml.kernel.org/r/20220824035100.971816-1-senozhatsky@chromium.org
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Nitin Gupta <ngupta@vflare.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 74363ec674cb ("zram: fix uninitialized ZRAM not releasing backing device")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mlx5/driver.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/zram/zram_drv.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
-index 2cd89af4dbf6..30d7716675b4 100644
---- a/include/linux/mlx5/driver.h
-+++ b/include/linux/mlx5/driver.h
-@@ -1142,7 +1142,7 @@ static inline bool mlx5_core_is_vf(const struct mlx5_core_dev *dev)
- 	return dev->coredev_type == MLX5_COREDEV_VF;
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index a9f71b27d235..9eed579d02f0 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1695,9 +1695,6 @@ static int zram_rw_page(struct block_device *bdev, sector_t sector,
+ 
+ static void zram_reset_device(struct zram *zram)
+ {
+-	struct zcomp *comp;
+-	u64 disksize;
+-
+ 	down_write(&zram->init_lock);
+ 
+ 	zram->limit_pages = 0;
+@@ -1707,18 +1704,16 @@ static void zram_reset_device(struct zram *zram)
+ 		return;
+ 	}
+ 
+-	comp = zram->comp;
+-	disksize = zram->disksize;
+-	zram->disksize = 0;
+-
+ 	set_capacity_and_notify(zram->disk, 0);
+ 	part_stat_set_all(zram->disk->part0, 0);
+ 
+ 	up_write(&zram->init_lock);
+ 	/* I/O operation under all of CPU are done so let's free */
+-	zram_meta_free(zram, disksize);
++	zram_meta_free(zram, zram->disksize);
++	zram->disksize = 0;
+ 	memset(&zram->stats, 0, sizeof(zram->stats));
+-	zcomp_destroy(comp);
++	zcomp_destroy(zram->comp);
++	zram->comp = NULL;
+ 	reset_bdev(zram);
  }
  
--static inline bool mlx5_core_is_ecpf(struct mlx5_core_dev *dev)
-+static inline bool mlx5_core_is_ecpf(const struct mlx5_core_dev *dev)
- {
- 	return dev->caps.embedded_cpu;
- }
 -- 
 2.39.5
 
