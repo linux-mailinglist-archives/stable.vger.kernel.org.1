@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-107281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E72EA02B1F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:40:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADE09A02CF5
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:59:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7FD0160D3E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:40:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F83116626B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9B91DA631;
-	Mon,  6 Jan 2025 15:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173F06088F;
+	Mon,  6 Jan 2025 15:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdVt5h5F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCsGJ3NZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8535A1D7999;
-	Mon,  6 Jan 2025 15:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EF4BA34;
+	Mon,  6 Jan 2025 15:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177995; cv=none; b=SLgU+JVIuhwz5gLfe64obC988E2WNGi+3lmVOGRg6M4NOeLgrjKLW9N69JwBnosdvNGfsJ/5pSM8U+MCiLh9sf+i7jcaLvnToMlgVvBs3Vd+DMlq/jeJEUUaPmwMrYnNquTYgxAdNfiP+bncob7b/Lst5wLh2NkzK5otBJ5DclQ=
+	t=1736179168; cv=none; b=ieA7y6J7tvBvJxpHo/VMrGniZP7tYjredjE1MUjAirvns+hNm0dUp07GkDfQCQy9yme7CsZZax011YeI3gFFIs+MpYwplG5YwixD8rKQq4f2gAESwg6Ot/PlxxWF0oqqy34OEgcZedRktfHdQppHrMbK9DZQBmNE2JFNOhfm3hA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177995; c=relaxed/simple;
-	bh=nacIqDDi6HiY/OLCk7RocdlWF13ITGVQsad6yYqkcMQ=;
+	s=arc-20240116; t=1736179168; c=relaxed/simple;
+	bh=iG92TIq1oQ/PE/C/no2FQqi12TAaci2IisAw6HDp+XQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YP8Emzr/xaLNqiDpn7fKDKxEf6v1wy44vMN/O6m5qM86/hYMwI4L4vvxEzPQBkAUn8H3LDmExHQL38pX8IhEaoQqYAusEsS7EYUvTkpjnrfJj5MlINtFMbesyKuFuo8avfigA4VGHQRZKzVP8oOstd9k7KLWCJFk0mVsXNK8PYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdVt5h5F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7AEC4CEE1;
-	Mon,  6 Jan 2025 15:39:54 +0000 (UTC)
+	 MIME-Version; b=QAflDqc5ilfFfI4afrB3ZasJyVRqrUeN/v8BNP34ZCVzkco0aQfu56+Gn+CAl6vDlmsONjM2/g7MzNUGpFlt7Ka7wXqBDnS0Cuk5UAaYnZgtVODqrA9aE4kV6L99odsOYmouxmXcotBCWV94JoPfcPV8GZjV4kBhKMTD40mO3xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCsGJ3NZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4615DC4CED2;
+	Mon,  6 Jan 2025 15:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177995;
-	bh=nacIqDDi6HiY/OLCk7RocdlWF13ITGVQsad6yYqkcMQ=;
+	s=korg; t=1736179168;
+	bh=iG92TIq1oQ/PE/C/no2FQqi12TAaci2IisAw6HDp+XQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xdVt5h5F5h88WbyAxSDDwwl3ykmo3c15fqWC3cjd+xnJ4taBWoIpkuKyj/U0fAMjY
-	 tiuqh1HENsT1Rfbxu/G3thMktN3FD9tnHtJY4YHbUZTd885HgsRXdUk2/xXelXXL7p
-	 lrVSL5jMVORZDZSQ6uh3yDjdJ3uO+mKztXxoQelw=
+	b=lCsGJ3NZ4zF+V6MC7Hd2AJbgTFXOKtP09gLCDSsg2qqX31Mx/oKkeg07AplREGNGF
+	 olGZ47k9CK+1FdU4blup2J6plKdwAIBV6ND0fpK5M0lokuxL60/smsAKQY0p9wUiWk
+	 7NBPvqaMcUfKRcayPXRuIezbTXz8j3v7r/OFLFGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Tejun Heo <tj@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: [PATCH 6.12 127/156] workqueue: Do not warn when cancelling WQ_MEM_RECLAIM work from !WQ_MEM_RECLAIM worker
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 5.4 17/93] i2c: riic: Always round-up when calculating bus period
 Date: Mon,  6 Jan 2025 16:16:53 +0100
-Message-ID: <20250106151146.515719182@linuxfoundation.org>
+Message-ID: <20250106151129.352696973@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,123 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit de35994ecd2dd6148ab5a6c5050a1670a04dec77 upstream.
+commit de6b43798d9043a7c749a0428dbb02d5fff156e5 upstream.
 
-After commit
-746ae46c1113 ("drm/sched: Mark scheduler work queues with WQ_MEM_RECLAIM")
-amdgpu started seeing the following warning:
+Currently, the RIIC driver may run the I2C bus faster than requested,
+which may cause subtle failures.  E.g. Biju reported a measured bus
+speed of 450 kHz instead of the expected maximum of 400 kHz on RZ/G2L.
 
- [ ] workqueue: WQ_MEM_RECLAIM sdma0:drm_sched_run_job_work [gpu_sched] is flushing !WQ_MEM_RECLAIM events:amdgpu_device_delay_enable_gfx_off [amdgpu]
-...
- [ ] Workqueue: sdma0 drm_sched_run_job_work [gpu_sched]
-...
- [ ] Call Trace:
- [ ]  <TASK>
-...
- [ ]  ? check_flush_dependency+0xf5/0x110
-...
- [ ]  cancel_delayed_work_sync+0x6e/0x80
- [ ]  amdgpu_gfx_off_ctrl+0xab/0x140 [amdgpu]
- [ ]  amdgpu_ring_alloc+0x40/0x50 [amdgpu]
- [ ]  amdgpu_ib_schedule+0xf4/0x810 [amdgpu]
- [ ]  ? drm_sched_run_job_work+0x22c/0x430 [gpu_sched]
- [ ]  amdgpu_job_run+0xaa/0x1f0 [amdgpu]
- [ ]  drm_sched_run_job_work+0x257/0x430 [gpu_sched]
- [ ]  process_one_work+0x217/0x720
-...
- [ ]  </TASK>
+The initial calculation of the bus period uses DIV_ROUND_UP(), to make
+sure the actual bus speed never becomes faster than the requested bus
+speed.  However, the subsequent division-by-two steps do not use
+round-up, which may lead to a too-small period, hence a too-fast and
+possible out-of-spec bus speed.  E.g. on RZ/Five, requesting a bus speed
+of 100 resp. 400 kHz will yield too-fast target bus speeds of 100806
+resp. 403226 Hz instead of 97656 resp. 390625 Hz.
 
-The intent of the verifcation done in check_flush_depedency is to ensure
-forward progress during memory reclaim, by flagging cases when either a
-memory reclaim process, or a memory reclaim work item is flushed from a
-context not marked as memory reclaim safe.
+Fix this by using DIV_ROUND_UP() in the subsequent divisions, too.
 
-This is correct when flushing, but when called from the
-cancel(_delayed)_work_sync() paths it is a false positive because work is
-either already running, or will not be running at all. Therefore
-cancelling it is safe and we can relax the warning criteria by letting the
-helper know of the calling context.
+Tested on RZ/A1H, RZ/A2M, and RZ/Five.
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Fixes: fca839c00a12 ("workqueue: warn if memory reclaim tries to flush !WQ_MEM_RECLAIM workqueue")
-References: 746ae46c1113 ("drm/sched: Mark scheduler work queues with WQ_MEM_RECLAIM")
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian König <christian.koenig@amd.com
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v4.5+
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: d982d66514192cdb ("i2c: riic: remove clock and frequency restrictions")
+Reported-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: <stable@vger.kernel.org> # v4.15+
+Link: https://lore.kernel.org/r/c59aea77998dfea1b4456c4b33b55ab216fcbf5e.1732284746.git.geert+renesas@glider.be
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/workqueue.c |   22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ drivers/i2c/busses/i2c-riic.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -3680,23 +3680,27 @@ void workqueue_softirq_dead(unsigned int
-  * check_flush_dependency - check for flush dependency sanity
-  * @target_wq: workqueue being flushed
-  * @target_work: work item being flushed (NULL for workqueue flushes)
-+ * @from_cancel: are we called from the work cancel path
-  *
-  * %current is trying to flush the whole @target_wq or @target_work on it.
-- * If @target_wq doesn't have %WQ_MEM_RECLAIM, verify that %current is not
-- * reclaiming memory or running on a workqueue which doesn't have
-- * %WQ_MEM_RECLAIM as that can break forward-progress guarantee leading to
-- * a deadlock.
-+ * If this is not the cancel path (which implies work being flushed is either
-+ * already running, or will not be at all), check if @target_wq doesn't have
-+ * %WQ_MEM_RECLAIM and verify that %current is not reclaiming memory or running
-+ * on a workqueue which doesn't have %WQ_MEM_RECLAIM as that can break forward-
-+ * progress guarantee leading to a deadlock.
-  */
- static void check_flush_dependency(struct workqueue_struct *target_wq,
--				   struct work_struct *target_work)
-+				   struct work_struct *target_work,
-+				   bool from_cancel)
- {
--	work_func_t target_func = target_work ? target_work->func : NULL;
-+	work_func_t target_func;
- 	struct worker *worker;
+--- a/drivers/i2c/busses/i2c-riic.c
++++ b/drivers/i2c/busses/i2c-riic.c
+@@ -323,7 +323,7 @@ static int riic_init_hw(struct riic_dev
+ 		if (brl <= (0x1F + 3))
+ 			break;
  
--	if (target_wq->flags & WQ_MEM_RECLAIM)
-+	if (from_cancel || target_wq->flags & WQ_MEM_RECLAIM)
- 		return;
- 
- 	worker = current_wq_worker();
-+	target_func = target_work ? target_work->func : NULL;
- 
- 	WARN_ONCE(current->flags & PF_MEMALLOC,
- 		  "workqueue: PF_MEMALLOC task %d(%s) is flushing !WQ_MEM_RECLAIM %s:%ps",
-@@ -3966,7 +3970,7 @@ void __flush_workqueue(struct workqueue_
- 		list_add_tail(&this_flusher.list, &wq->flusher_overflow);
+-		total_ticks /= 2;
++		total_ticks = DIV_ROUND_UP(total_ticks, 2);
+ 		rate /= 2;
  	}
  
--	check_flush_dependency(wq, NULL);
-+	check_flush_dependency(wq, NULL, false);
- 
- 	mutex_unlock(&wq->mutex);
- 
-@@ -4141,7 +4145,7 @@ static bool start_flush_work(struct work
- 	}
- 
- 	wq = pwq->wq;
--	check_flush_dependency(wq, work);
-+	check_flush_dependency(wq, work, from_cancel);
- 
- 	insert_wq_barrier(pwq, barr, work, worker);
- 	raw_spin_unlock_irq(&pool->lock);
 
 
 
