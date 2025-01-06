@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-107581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE418A02CBD
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:57:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3577FA02BDF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:47:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80E0A3A8CAD
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:55:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BBBB16479E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA4281728;
-	Mon,  6 Jan 2025 15:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6607F1DDA3D;
+	Mon,  6 Jan 2025 15:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gLCzmjxM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+9XMi4/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F0F1DA60B;
-	Mon,  6 Jan 2025 15:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BFB1DE3B8;
+	Mon,  6 Jan 2025 15:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178898; cv=none; b=fQCUhHITjQVnVvE6XGlAJxEMFVrma2Xb4+r1u+ruAaK0GkGAYFK6PRVqA0vhdyC7hNcfRaWR7wkApE5Tqreuqp3EM1yghpGMnGmbPCMkRTb7QfdNB4Rr5lw3+78DMSd2O12uG3jjCY+zxdXzvi3NwwpfOLXKcRegjChOFsqrAkw=
+	t=1736178424; cv=none; b=n8qNvsZ/tICsVmoqrz98yXjrXU3R/L2939YnaHroKYok1Jr/3umrnwrBd5ZfCmP1dEmI6cx8KYOFLP/KWcg6TKKVFUjgJ3V/lD+PuaWNtBapjVGk9syRrX+Deziwj2plxzxq0vFb70dIakWzKxIGphLURDzWbCfnuhSudVjDoKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178898; c=relaxed/simple;
-	bh=Bl/gVxjesZ4Ed4uzL4HLXE9ECxbv1T5GCGPRMx4n35E=;
+	s=arc-20240116; t=1736178424; c=relaxed/simple;
+	bh=+YzaeLsfoE2AfsvMs7hICv6FJDPgZVBbKS4jrrI09lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TC/IwfJzx5C4ksuKnEApGevOdedMmDLGtzElNKLLwSsJ5tIZKC1IEqlmh3rvQsexB4+WYrcUO8ynHcfDOQVVMqgZhhV8fwNYEGYKrzKC/++40SsX/216OhGJK3dgKheYl/DaswzEAAWMw97gnM7xde9wCnQ2WWsbQFpchwAXPdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gLCzmjxM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C5FC4CED2;
-	Mon,  6 Jan 2025 15:54:57 +0000 (UTC)
+	 MIME-Version; b=deEj4U9fthxdZN0+8zTmvmtTEkiRpuGJ5S15FJkOZBt8Z8O2Vx8QspW9CoWQnkP6HgHveSsrycwdt4K+SPBQzwFZ8CvIa4/UZmEQsR+5qHTKhZCBrCFoMOArYU8bo64mzQ0umAzk/IERgr/y1kNLZnI6SWbAlL0pCGfomuknB1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+9XMi4/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B656C4CED2;
+	Mon,  6 Jan 2025 15:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178898;
-	bh=Bl/gVxjesZ4Ed4uzL4HLXE9ECxbv1T5GCGPRMx4n35E=;
+	s=korg; t=1736178423;
+	bh=+YzaeLsfoE2AfsvMs7hICv6FJDPgZVBbKS4jrrI09lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gLCzmjxMtrusOKqzjFz7Y+SswarnlT2PrRDa5ri0QadSaRyiTe1syj0nAA/wElAlR
-	 SBUi+HEwQEBSPiOjgW9YHE3OjWMy7BRqQzLW+6Hk4gPbSpUmlUwrm72qqjAr4cPh0o
-	 nD7U3xZc+dfKvftHxVfni1CX344CcqyUka1t7T18=
+	b=f+9XMi4/ZLOjx+gSABehrWcICwtH+iYQCkeDIT92rgj9Pz7y1Bia6d0AIGk2Q8y9z
+	 mAI84yH5Ws884tu2N/6K25roLm1C4qSRGhdWf/u9H7tPhC4WIWOohz9/UwdAzugzTq
+	 T6AXTipgXz0kL1FpJ0np60IzdwvMnQFWZwMMnqjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Andrew Halaney <ahalaney@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	syzbot+74f70bb1cb968bf09e4f@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Chengen Du <chengen.du@canonical.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 129/168] net: stmmac: dont create a MDIO bus if unnecessary
+Subject: [PATCH 5.10 113/138] af_packet: fix vlan_get_protocol_dgram() vs MSG_PEEK
 Date: Mon,  6 Jan 2025 16:17:17 +0100
-Message-ID: <20250106151143.314171090@linuxfoundation.org>
+Message-ID: <20250106151137.506865559@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,250 +65,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Halaney <ahalaney@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit f3c2caacee824ce4a331cdafb0b8dc8e987f105e ]
+[ Upstream commit f91a5b8089389eb408501af2762f168c3aaa7b79 ]
 
-Currently a MDIO bus is created if the devicetree description is either:
+Blamed commit forgot MSG_PEEK case, allowing a crash [1] as found
+by syzbot.
 
-    1. Not fixed-link
-    2. fixed-link but contains a MDIO bus as well
+Rework vlan_get_protocol_dgram() to not touch skb at all,
+so that it can be used from many cpus on the same skb.
 
-The "1" case above isn't always accurate. If there's a phy-handle,
-it could be referencing a phy on another MDIO controller's bus[1]. In
-this case, where the MDIO bus is not described at all, currently
-stmmac will make a MDIO bus and scan its address space to discover
-phys (of which there are none). This process takes time scanning a bus
-that is known to be empty, delaying time to complete probe.
+Add a const qualifier to skb argument.
 
-There are also a lot of upstream devicetrees[2] that expect a MDIO bus
-to be created, scanned for phys, and the first one found connected
-to the MAC. This case can be inferred from the platform description by
-not having a phy-handle && not being fixed-link. This hits case "1" in
-the current driver's logic, and must be handled in any logic change here
-since it is a valid legacy dt-binding.
+[1]
+skbuff: skb_under_panic: text:ffffffff8a8ccd05 len:29 put:14 head:ffff88807fc8e400 data:ffff88807fc8e3f4 tail:0x11 end:0x140 dev:<NULL>
+------------[ cut here ]------------
+ kernel BUG at net/core/skbuff.c:206 !
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 1 UID: 0 PID: 5892 Comm: syz-executor883 Not tainted 6.13.0-rc4-syzkaller-00054-gd6ef8b40d075 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+ RIP: 0010:skb_panic net/core/skbuff.c:206 [inline]
+ RIP: 0010:skb_under_panic+0x14b/0x150 net/core/skbuff.c:216
+Code: 0b 8d 48 c7 c6 86 d5 25 8e 48 8b 54 24 08 8b 0c 24 44 8b 44 24 04 4d 89 e9 50 41 54 41 57 41 56 e8 5a 69 79 f7 48 83 c4 20 90 <0f> 0b 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3
+RSP: 0018:ffffc900038d7638 EFLAGS: 00010282
+RAX: 0000000000000087 RBX: dffffc0000000000 RCX: 609ffd18ea660600
+RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
+RBP: ffff88802483c8d0 R08: ffffffff817f0a8c R09: 1ffff9200071ae60
+R10: dffffc0000000000 R11: fffff5200071ae61 R12: 0000000000000140
+R13: ffff88807fc8e400 R14: ffff88807fc8e3f4 R15: 0000000000000011
+FS:  00007fbac5e006c0(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fbac5e00d58 CR3: 000000001238e000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  skb_push+0xe5/0x100 net/core/skbuff.c:2636
+  vlan_get_protocol_dgram+0x165/0x290 net/packet/af_packet.c:585
+  packet_recvmsg+0x948/0x1ef0 net/packet/af_packet.c:3552
+  sock_recvmsg_nosec net/socket.c:1033 [inline]
+  sock_recvmsg+0x22f/0x280 net/socket.c:1055
+  ____sys_recvmsg+0x1c6/0x480 net/socket.c:2803
+  ___sys_recvmsg net/socket.c:2845 [inline]
+  do_recvmmsg+0x426/0xab0 net/socket.c:2940
+  __sys_recvmmsg net/socket.c:3014 [inline]
+  __do_sys_recvmmsg net/socket.c:3037 [inline]
+  __se_sys_recvmmsg net/socket.c:3030 [inline]
+  __x64_sys_recvmmsg+0x199/0x250 net/socket.c:3030
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Let's improve the logic to create a MDIO bus if either:
-
-    - Devicetree contains a MDIO bus
-    - !fixed-link && !phy-handle (legacy handling)
-
-This way the case where no MDIO bus should be made is handled, as well
-as retaining backwards compatibility with the valid cases.
-
-Below devicetree snippets can be found that explain some of
-the cases above more concretely.
-
-Here's[0] a devicetree example where the MAC is both fixed-link and
-driving a switch on MDIO (case "2" above). This needs a MDIO bus to
-be created:
-
-    &fec1 {
-            phy-mode = "rmii";
-
-            fixed-link {
-                    speed = <100>;
-                    full-duplex;
-            };
-
-            mdio1: mdio {
-                    switch0: switch0@0 {
-                            compatible = "marvell,mv88e6190";
-                            pinctrl-0 = <&pinctrl_gpio_switch0>;
-                    };
-            };
-    };
-
-Here's[1] an example where there is no MDIO bus or fixed-link for
-the ethernet1 MAC, so no MDIO bus should be created since ethernet0
-is the MDIO master for ethernet1's phy:
-
-    &ethernet0 {
-            phy-mode = "sgmii";
-            phy-handle = <&sgmii_phy0>;
-
-            mdio {
-                    compatible = "snps,dwmac-mdio";
-                    sgmii_phy0: phy@8 {
-                            compatible = "ethernet-phy-id0141.0dd4";
-                            reg = <0x8>;
-                            device_type = "ethernet-phy";
-                    };
-
-                    sgmii_phy1: phy@a {
-                            compatible = "ethernet-phy-id0141.0dd4";
-                            reg = <0xa>;
-                            device_type = "ethernet-phy";
-                    };
-            };
-    };
-
-    &ethernet1 {
-            phy-mode = "sgmii";
-            phy-handle = <&sgmii_phy1>;
-    };
-
-Finally there's descriptions like this[2] which don't describe the
-MDIO bus but expect it to be created and the whole address space
-scanned for a phy since there's no phy-handle or fixed-link described:
-
-    &gmac {
-            phy-supply = <&vcc_lan>;
-            phy-mode = "rmii";
-            snps,reset-gpio = <&gpio3 RK_PB4 GPIO_ACTIVE_HIGH>;
-            snps,reset-active-low;
-            snps,reset-delays-us = <0 10000 1000000>;
-    };
-
-[0] https://elixir.bootlin.com/linux/v6.5-rc5/source/arch/arm/boot/dts/nxp/vf/vf610-zii-ssmb-dtu.dts
-[1] https://elixir.bootlin.com/linux/v6.6-rc5/source/arch/arm64/boot/dts/qcom/sa8775p-ride.dts
-[2] https://elixir.bootlin.com/linux/v6.6-rc5/source/arch/arm64/boot/dts/rockchip/rk3368-r88.dts#L164
-
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Co-developed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 2b6ffcd7873b ("net: stmmac: restructure the error path of stmmac_probe_config_dt()")
+Fixes: 79eecf631c14 ("af_packet: Handle outgoing VLAN packets without hardware offloading")
+Reported-by: syzbot+74f70bb1cb968bf09e4f@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6772c485.050a0220.2f3838.04c5.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Chengen Du <chengen.du@canonical.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20241230161004.2681892-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/stmicro/stmmac/stmmac_platform.c | 91 +++++++++++--------
- 1 file changed, 54 insertions(+), 37 deletions(-)
+ include/linux/if_vlan.h | 16 +++++++++++++---
+ net/packet/af_packet.c  | 16 ++++------------
+ 2 files changed, 17 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index 196fb1ddbec0..7f816f0cf9a5 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -294,62 +294,80 @@ static int stmmac_mtl_setup(struct platform_device *pdev,
+diff --git a/include/linux/if_vlan.h b/include/linux/if_vlan.h
+index ce6714bec65f..64cfe7cd292c 100644
+--- a/include/linux/if_vlan.h
++++ b/include/linux/if_vlan.h
+@@ -582,13 +582,16 @@ static inline int vlan_get_tag(const struct sk_buff *skb, u16 *vlan_tci)
+  * vlan_get_protocol - get protocol EtherType.
+  * @skb: skbuff to query
+  * @type: first vlan protocol
++ * @mac_offset: MAC offset
+  * @depth: buffer to store length of eth and vlan tags in bytes
+  *
+  * Returns the EtherType of the packet, regardless of whether it is
+  * vlan encapsulated (normal or hardware accelerated) or not.
+  */
+-static inline __be16 __vlan_get_protocol(const struct sk_buff *skb, __be16 type,
+-					 int *depth)
++static inline __be16 __vlan_get_protocol_offset(const struct sk_buff *skb,
++						__be16 type,
++						int mac_offset,
++						int *depth)
+ {
+ 	unsigned int vlan_depth = skb->mac_len, parse_depth = VLAN_MAX_DEPTH;
+ 
+@@ -607,7 +610,8 @@ static inline __be16 __vlan_get_protocol(const struct sk_buff *skb, __be16 type,
+ 		do {
+ 			struct vlan_hdr vhdr, *vh;
+ 
+-			vh = skb_header_pointer(skb, vlan_depth, sizeof(vhdr), &vhdr);
++			vh = skb_header_pointer(skb, mac_offset + vlan_depth,
++						sizeof(vhdr), &vhdr);
+ 			if (unlikely(!vh || !--parse_depth))
+ 				return 0;
+ 
+@@ -622,6 +626,12 @@ static inline __be16 __vlan_get_protocol(const struct sk_buff *skb, __be16 type,
+ 	return type;
  }
  
- /**
-- * stmmac_dt_phy - parse device-tree driver parameters to allocate PHY resources
-- * @plat: driver data platform structure
-- * @np: device tree node
-- * @dev: device pointer
-- * Description:
-- * The mdio bus will be allocated in case of a phy transceiver is on board;
-- * it will be NULL if the fixed-link is configured.
-- * If there is the "snps,dwmac-mdio" sub-node the mdio will be allocated
-- * in any case (for DSA, mdio must be registered even if fixed-link).
-- * The table below sums the supported configurations:
-- *	-------------------------------
-- *	snps,phy-addr	|     Y
-- *	-------------------------------
-- *	phy-handle	|     Y
-- *	-------------------------------
-- *	fixed-link	|     N
-- *	-------------------------------
-- *	snps,dwmac-mdio	|
-- *	  even if	|     Y
-- *	fixed-link	|
-- *	-------------------------------
-+ * stmmac_of_get_mdio() - Gets the MDIO bus from the devicetree.
-+ * @np: devicetree node
-  *
-- * It returns 0 in case of success otherwise -ENODEV.
-+ * The MDIO bus will be searched for in the following ways:
-+ * 1. The compatible is "snps,dwc-qos-ethernet-4.10" && a "mdio" named
-+ *    child node exists
-+ * 2. A child node with the "snps,dwmac-mdio" compatible is present
-+ *
-+ * Return: The MDIO node if present otherwise NULL
-  */
--static int stmmac_dt_phy(struct plat_stmmacenet_data *plat,
--			 struct device_node *np, struct device *dev)
-+static struct device_node *stmmac_of_get_mdio(struct device_node *np)
- {
--	bool mdio = !of_phy_is_fixed_link(np);
- 	static const struct of_device_id need_mdio_ids[] = {
- 		{ .compatible = "snps,dwc-qos-ethernet-4.10" },
- 		{},
- 	};
-+	struct device_node *mdio_node = NULL;
- 
- 	if (of_match_node(need_mdio_ids, np)) {
--		plat->mdio_node = of_get_child_by_name(np, "mdio");
-+		mdio_node = of_get_child_by_name(np, "mdio");
- 	} else {
- 		/**
- 		 * If snps,dwmac-mdio is passed from DT, always register
- 		 * the MDIO
- 		 */
--		for_each_child_of_node(np, plat->mdio_node) {
--			if (of_device_is_compatible(plat->mdio_node,
-+		for_each_child_of_node(np, mdio_node) {
-+			if (of_device_is_compatible(mdio_node,
- 						    "snps,dwmac-mdio"))
- 				break;
- 		}
- 	}
- 
--	if (plat->mdio_node) {
-+	return mdio_node;
++static inline __be16 __vlan_get_protocol(const struct sk_buff *skb, __be16 type,
++					 int *depth)
++{
++	return __vlan_get_protocol_offset(skb, type, 0, depth);
 +}
 +
-+/**
-+ * stmmac_mdio_setup() - Populate platform related MDIO structures.
-+ * @plat: driver data platform structure
-+ * @np: devicetree node
-+ * @dev: device pointer
-+ *
-+ * This searches for MDIO information from the devicetree.
-+ * If an MDIO node is found, it's assigned to plat->mdio_node and
-+ * plat->mdio_bus_data is allocated.
-+ * If no connection can be determined, just plat->mdio_bus_data is allocated
-+ * to indicate a bus should be created and scanned for a phy.
-+ * If it's determined there's no MDIO bus needed, both are left NULL.
-+ *
-+ * This expects that plat->phy_node has already been searched for.
-+ *
-+ * Return: 0 on success, errno otherwise.
-+ */
-+static int stmmac_mdio_setup(struct plat_stmmacenet_data *plat,
-+			     struct device_node *np, struct device *dev)
-+{
-+	bool legacy_mdio;
-+
-+	plat->mdio_node = stmmac_of_get_mdio(np);
-+	if (plat->mdio_node)
- 		dev_dbg(dev, "Found MDIO subnode\n");
--		mdio = true;
+ /**
+  * vlan_get_protocol - get protocol EtherType.
+  * @skb: skbuff to query
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 49baa5924d74..2f69cf5270db 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -533,21 +533,13 @@ static u16 vlan_get_tci(const struct sk_buff *skb, struct net_device *dev)
+ 	return ntohs(vh->h_vlan_TCI);
+ }
+ 
+-static __be16 vlan_get_protocol_dgram(struct sk_buff *skb)
++static __be16 vlan_get_protocol_dgram(const struct sk_buff *skb)
+ {
+ 	__be16 proto = skb->protocol;
+ 
+-	if (unlikely(eth_type_vlan(proto))) {
+-		u8 *skb_orig_data = skb->data;
+-		int skb_orig_len = skb->len;
+-
+-		skb_push(skb, skb->data - skb_mac_header(skb));
+-		proto = __vlan_get_protocol(skb, proto, NULL);
+-		if (skb_orig_data != skb->data) {
+-			skb->data = skb_orig_data;
+-			skb->len = skb_orig_len;
+-		}
 -	}
++	if (unlikely(eth_type_vlan(proto)))
++		proto = __vlan_get_protocol_offset(skb, proto,
++						   skb_mac_offset(skb), NULL);
  
--	if (mdio) {
--		plat->mdio_bus_data =
--			devm_kzalloc(dev, sizeof(struct stmmac_mdio_bus_data),
--				     GFP_KERNEL);
-+	/* Legacy devicetrees allowed for no MDIO bus description and expect
-+	 * the bus to be scanned for devices. If there's no phy or fixed-link
-+	 * described assume this is the case since there must be something
-+	 * connected to the MAC.
-+	 */
-+	legacy_mdio = !of_phy_is_fixed_link(np) && !plat->phy_node;
-+	if (legacy_mdio)
-+		dev_info(dev, "Deprecated MDIO bus assumption used\n");
-+
-+	if (plat->mdio_node || legacy_mdio) {
-+		plat->mdio_bus_data = devm_kzalloc(dev,
-+						   sizeof(*plat->mdio_bus_data),
-+						   GFP_KERNEL);
- 		if (!plat->mdio_bus_data)
- 			return -ENOMEM;
- 
-@@ -453,8 +471,7 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 	if (of_property_read_u32(np, "snps,phy-addr", &plat->phy_addr) == 0)
- 		dev_warn(&pdev->dev, "snps,phy-addr property is deprecated\n");
- 
--	/* To Configure PHY by using all device-tree supported properties */
--	rc = stmmac_dt_phy(plat, np, &pdev->dev);
-+	rc = stmmac_mdio_setup(plat, np, &pdev->dev);
- 	if (rc)
- 		return ERR_PTR(rc);
- 
+ 	return proto;
+ }
 -- 
 2.39.5
 
