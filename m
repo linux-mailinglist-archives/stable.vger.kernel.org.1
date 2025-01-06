@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED32A02BEC
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:48:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46D50A02C71
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:54:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C85D16275C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C96E1887CD0
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E3D213B592;
-	Mon,  6 Jan 2025 15:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E8E145A03;
+	Mon,  6 Jan 2025 15:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CUs2FnnJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+IbhBgz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A5D38F9C;
-	Mon,  6 Jan 2025 15:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08BA142E7C;
+	Mon,  6 Jan 2025 15:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178465; cv=none; b=LnwpLEUv3gv3fuPm0+hXGTioXZtbzOiSpwifm/zXc0wA+Y46KDhvYyj3TRspd7McwB6RULR4GyN6IDF/g1bAx+YNfSEMQN5UnV5Ui1flGgNUUkL2AFaMpanVjS4+gujZRfyBzCFzCOIcGMDkhWpKsSRB1VD20R+w6LJp/sRGrTg=
+	t=1736178840; cv=none; b=QK7tTRHH+oRN25CexRppiQcjgSc5fFOTFnZw9CCKy7JugR9w4H4lgn0LP+fPPahjIYFEjYMxNRjNEmHGi36xxH5QoCwBy2u/8yl7wFIR0U4W7IMOfRtYuN7hM8jvSpIGJ7+WNqjZ3xLlXKnePUfkRjFxxkJiigmDPplIDmTxdz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178465; c=relaxed/simple;
-	bh=FP6wNnsVBP5Q+fDf/BlL/OVUjiLXfdpcPcDsFAClJK4=;
+	s=arc-20240116; t=1736178840; c=relaxed/simple;
+	bh=sNKe+WcmOp0plCTLlkgCO1FAlM0dIf7BdrANhru6jJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hJZph5KhFNn2U5fOzh/+lQ0C+7ek/bG0v2qMNkpKrh9KFsMVdr8IjRvxTDgEDRY6T3unsP3b+PMpLnGBVjy17Z8RbYUq5m7Tyn4yFdhlveGQ9l+rK6LeQV7m+Tu4tLwyFmlH1dYg8+zMS0VhshKUTsu26inkg/8OK8v/3hFvpNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUs2FnnJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B4BBC4CED2;
-	Mon,  6 Jan 2025 15:47:45 +0000 (UTC)
+	 MIME-Version; b=JqKZ+QblDyf0tD8rlTHgs6pWJCFqgvXIsJBxoNNc8HNxJoVIXsPojwvDc0RKhFo5+BIXa16ZGZfdkfRrL3qhdUOBozpLTs5T4vq6dbeWOS+r6TyNQrLUVx0CyoXhyhmER2C5GfPSWYouhOTFULeppk4dfpqGdDPeLU2inDtLpnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+IbhBgz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2198BC4CED2;
+	Mon,  6 Jan 2025 15:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178465;
-	bh=FP6wNnsVBP5Q+fDf/BlL/OVUjiLXfdpcPcDsFAClJK4=;
+	s=korg; t=1736178838;
+	bh=sNKe+WcmOp0plCTLlkgCO1FAlM0dIf7BdrANhru6jJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CUs2FnnJ2sWgf83NS7eHvL8EuqT8WERu8AkFO2/t8Py1OHOm/DELDqqdyRLhOQjKM
-	 qF+lm2fYp/8Vjc8N5he98ly263LsqZSFSx8rf6IUiwqhbJtb2mfYWtvtKIZp9WQP5l
-	 s/teSenpi5q/vCr9e/PeVjowMrX+jZcMNfnqIqgs=
+	b=s+IbhBgzoQe9n0IrQpovrjqaePPr41Mb0gV1mHl5mg1EG5iJv1Q9z/SFPkMCuD7NP
+	 qICxDk9VA9m3OVCPEMTcuV9ZRfDf06n65CMjTeZVL0C9SBgFheAHBxXuXbaTMSUoWG
+	 FiFUUWFAMrQtzOi9p6Lodq2SMwqFezBzfoLXccH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Azhar Shaikh <azhar.shaikh@intel.com>,
-	Yehezkel Bernat <YehezkelShB@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 086/138] thunderbolt: Add support for Intel Alder Lake
+	Yang Erkun <yangerkun@huaweicloud.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 102/168] nfsd: cancel nfsd_shrinker_work using sync mode in nfs4_state_shutdown_net
 Date: Mon,  6 Jan 2025 16:16:50 +0100
-Message-ID: <20250106151136.489429019@linuxfoundation.org>
+Message-ID: <20250106151142.314133866@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Azhar Shaikh <azhar.shaikh@intel.com>
+From: Yang Erkun <yangerkun@huaweicloud.com>
 
-[ Upstream commit 135794868ad83d0327cdd78df469e118f1fe7cc4 ]
+commit d5ff2fb2e7167e9483846e34148e60c0c016a1f6 upstream.
 
-Alder Lake has the same integrated Thunderbolt/USB4 controller as
-Intel Tiger Lake. By default it is still using firmware based connection
-manager so we can use most of the Tiger Lake flows.
+In the normal case, when we excute `echo 0 > /proc/fs/nfsd/threads`, the
+function `nfs4_state_destroy_net` in `nfs4_state_shutdown_net` will
+release all resources related to the hashed `nfs4_client`. If the
+`nfsd_client_shrinker` is running concurrently, the `expire_client`
+function will first unhash this client and then destroy it. This can
+lead to the following warning. Additionally, numerous use-after-free
+errors may occur as well.
 
-Add the Alder Lake PCI IDs to the driver list of supported devices.
+nfsd_client_shrinker         echo 0 > /proc/fs/nfsd/threads
 
-Signed-off-by: Azhar Shaikh <azhar.shaikh@intel.com>
-Reviewed-by: Yehezkel Bernat <YehezkelShB@gmail.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Stable-dep-of: 8644b48714dc ("thunderbolt: Add support for Intel Panther Lake-M/P")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+expire_client                nfsd_shutdown_net
+  unhash_client                ...
+                               nfs4_state_shutdown_net
+                                 /* won't wait shrinker exit */
+  /*                             cancel_work(&nn->nfsd_shrinker_work)
+   * nfsd_file for this          /* won't destroy unhashed client1 */
+   * client1 still alive         nfs4_state_destroy_net
+   */
+
+                               nfsd_file_cache_shutdown
+                                 /* trigger warning */
+                                 kmem_cache_destroy(nfsd_file_slab)
+                                 kmem_cache_destroy(nfsd_file_mark_slab)
+  /* release nfsd_file and mark */
+  __destroy_client
+
+====================================================================
+BUG nfsd_file (Not tainted): Objects remaining in nfsd_file on
+__kmem_cache_shutdown()
+--------------------------------------------------------------------
+CPU: 4 UID: 0 PID: 764 Comm: sh Not tainted 6.12.0-rc3+ #1
+
+ dump_stack_lvl+0x53/0x70
+ slab_err+0xb0/0xf0
+ __kmem_cache_shutdown+0x15c/0x310
+ kmem_cache_destroy+0x66/0x160
+ nfsd_file_cache_shutdown+0xac/0x210 [nfsd]
+ nfsd_destroy_serv+0x251/0x2a0 [nfsd]
+ nfsd_svc+0x125/0x1e0 [nfsd]
+ write_threads+0x16a/0x2a0 [nfsd]
+ nfsctl_transaction_write+0x74/0xa0 [nfsd]
+ vfs_write+0x1a5/0x6d0
+ ksys_write+0xc1/0x160
+ do_syscall_64+0x5f/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+====================================================================
+BUG nfsd_file_mark (Tainted: G    B   W         ): Objects remaining
+nfsd_file_mark on __kmem_cache_shutdown()
+--------------------------------------------------------------------
+
+ dump_stack_lvl+0x53/0x70
+ slab_err+0xb0/0xf0
+ __kmem_cache_shutdown+0x15c/0x310
+ kmem_cache_destroy+0x66/0x160
+ nfsd_file_cache_shutdown+0xc8/0x210 [nfsd]
+ nfsd_destroy_serv+0x251/0x2a0 [nfsd]
+ nfsd_svc+0x125/0x1e0 [nfsd]
+ write_threads+0x16a/0x2a0 [nfsd]
+ nfsctl_transaction_write+0x74/0xa0 [nfsd]
+ vfs_write+0x1a5/0x6d0
+ ksys_write+0xc1/0x160
+ do_syscall_64+0x5f/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+To resolve this issue, cancel `nfsd_shrinker_work` using synchronous
+mode in nfs4_state_shutdown_net.
+
+Fixes: 7c24fa225081 ("NFSD: replace delayed_work with work_struct for nfsd_client_shrinker")
+Signed-off-by: Yang Erkun <yangerkun@huaweicloud.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/icm.c | 2 ++
- drivers/thunderbolt/nhi.c | 4 ++++
- drivers/thunderbolt/nhi.h | 2 ++
- 3 files changed, 8 insertions(+)
+ fs/nfsd/nfs4state.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/thunderbolt/icm.c b/drivers/thunderbolt/icm.c
-index 90f1d9a53461..b038e530d6cb 100644
---- a/drivers/thunderbolt/icm.c
-+++ b/drivers/thunderbolt/icm.c
-@@ -2290,6 +2290,8 @@ struct tb *icm_probe(struct tb_nhi *nhi)
- 	case PCI_DEVICE_ID_INTEL_TGL_NHI1:
- 	case PCI_DEVICE_ID_INTEL_TGL_H_NHI0:
- 	case PCI_DEVICE_ID_INTEL_TGL_H_NHI1:
-+	case PCI_DEVICE_ID_INTEL_ADL_NHI0:
-+	case PCI_DEVICE_ID_INTEL_ADL_NHI1:
- 		icm->is_supported = icm_tgl_is_supported;
- 		icm->driver_ready = icm_icl_driver_ready;
- 		icm->set_uuid = icm_icl_set_uuid;
-diff --git a/drivers/thunderbolt/nhi.c b/drivers/thunderbolt/nhi.c
-index fd1b59397c70..1e732d2d15ad 100644
---- a/drivers/thunderbolt/nhi.c
-+++ b/drivers/thunderbolt/nhi.c
-@@ -1349,6 +1349,10 @@ static struct pci_device_id nhi_ids[] = {
- 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_TGL_H_NHI1),
- 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_ADL_NHI0),
-+	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_ADL_NHI1),
-+	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -8211,7 +8211,7 @@ nfs4_state_shutdown_net(struct net *net)
+ 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
  
- 	/* Any USB4 compliant host */
- 	{ PCI_DEVICE_CLASS(PCI_CLASS_SERIAL_USB_USB4, ~0) },
-diff --git a/drivers/thunderbolt/nhi.h b/drivers/thunderbolt/nhi.h
-index 7ad6d3f0583b..5091677b3f4b 100644
---- a/drivers/thunderbolt/nhi.h
-+++ b/drivers/thunderbolt/nhi.h
-@@ -73,6 +73,8 @@ extern const struct tb_nhi_ops icl_nhi_ops;
- #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_4C_BRIDGE	0x15ea
- #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_4C_NHI		0x15eb
- #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_DD_BRIDGE	0x15ef
-+#define PCI_DEVICE_ID_INTEL_ADL_NHI0			0x463e
-+#define PCI_DEVICE_ID_INTEL_ADL_NHI1			0x466d
- #define PCI_DEVICE_ID_INTEL_ICL_NHI1			0x8a0d
- #define PCI_DEVICE_ID_INTEL_ICL_NHI0			0x8a17
- #define PCI_DEVICE_ID_INTEL_TGL_NHI0			0x9a1b
--- 
-2.39.5
-
+ 	unregister_shrinker(&nn->nfsd_client_shrinker);
+-	cancel_work(&nn->nfsd_shrinker_work);
++	cancel_work_sync(&nn->nfsd_shrinker_work);
+ 	cancel_delayed_work_sync(&nn->laundromat_work);
+ 	locks_end_grace(&nn->nfsd4_manager);
+ 
 
 
 
