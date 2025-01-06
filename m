@@ -1,176 +1,161 @@
-Return-Path: <stable+bounces-106839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 591AAA02567
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 13:28:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BFF3A025F0
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 13:49:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A9CC163156
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 12:28:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23A7A1644D1
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 12:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99A41DDC01;
-	Mon,  6 Jan 2025 12:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFD31DF247;
+	Mon,  6 Jan 2025 12:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+xDpBJS"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bnxxEAY1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834551DB943
-	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 12:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FBAF1DE8B3
+	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 12:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736166489; cv=none; b=phAWTheWEq7Q6qfrFYQBlralCwhkjhA3PMjVpce7q0Ny589aMJp8mnMLSrv4a/U59HqSa8lT3DT9yFPqIrlLUt7rmVJmsKRyuihGrCnaD8HX5e9X1xPwM6jBukp2ALgu1tFgQBlBAU7fsFREER7Wsl6AcUJTRby1LkbpAtJXX90=
+	t=1736167663; cv=none; b=i6ncmk5y8hCBfYZxL+t+i6zbbby99jIJvzmqF8BNbAl6OcsLHLt2H3dlxRR8O5amArFJzDPkdEmEh7o+J5sT0KBVzWCikqO9yur+Ek6w2gqUdS3QWXrarKAw0sYaMap0+Bbvh3lKweSdLXD/GnVnwuu0+vjljELWKQh+jPotxfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736166489; c=relaxed/simple;
-	bh=Hg7pNksc5jSRyMlVeCipIvBsX+DthGejh34GvgrQoh4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TGm4fmsaVZ4/o2HW0GquTQDumJ9/PG99iPZOxT0Ct2R19NBP9arq8te1iL5o9wqT6aGBeQiFl7jXu5gYwA/2XPCMlnWrTG8t/y/IlQKtPeLF7ZCEO8pW75NoH0noVc5S8m6tooX0PPUcbS086XGXcRN/peFhv41vhCT0u+yqY5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+xDpBJS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7887BC4CEDD;
-	Mon,  6 Jan 2025 12:28:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736166489;
-	bh=Hg7pNksc5jSRyMlVeCipIvBsX+DthGejh34GvgrQoh4=;
-	h=Subject:To:Cc:From:Date:From;
-	b=t+xDpBJSzUz/g4DpV5zaKpjJT8BnAwSYjHP0AOBisbiTVszVy0IGnQgARtrfOynY0
-	 kL/Qc1pB1OMfvIGMLrpZ/Iif6XV9CPTsHQCQaAv0N/kcz4bQAyPATHmWTm0XQtjytY
-	 J9WdHALmCvLVf5KkSmnnyssf9CgsZkEJ1Z5MN6E4=
-Subject: FAILED: patch "[PATCH] mptcp: don't always assume copied data in" failed to apply to 5.15-stable tree
-To: pabeni@redhat.com,kuba@kernel.org,martineau@kernel.org,matttbe@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 06 Jan 2025 13:28:05 +0100
-Message-ID: <2025010605-obscurity-buckshot-fc5f@gregkh>
+	s=arc-20240116; t=1736167663; c=relaxed/simple;
+	bh=cKNc9KoYETCeTPuJLTqCyQX106fXhXFr33sir8gG/24=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=tqOccCZSS1O4N7PdkRbPWPuFMfP5t+XUDvUwxKyWKVFfWk+DSWDIgE7O7/3nrF3ZZp65bjAuzRzLZhoc+9DrGwsinQ+u+niY2h/sfdsXuIZ0Dq/Huoc17KjeQuZYIgcycwMES1Trluu4XMy0afMIKAvW8GsjpnmBV1vdWOq+pMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bnxxEAY1; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736167659;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Dkb+rY3M+7dZ1Zo79DORBPQFm2iH+/jBnX4+iKG/QsU=;
+	b=bnxxEAY1VBhCsclVXQP+SRqaOlQi8wIr1IihPT5kaOwIUHWjxOc1nhRy3gLFdsss6XZSll
+	mVaJ3D3HhfrZXdky7ShPtKLKrEUdtZFxesdJ3JnXpDGPHMViXzgYtXqOdTF6rf57n8il7K
+	2s42NucbuvjqJoLAThbDRBwJxFG1im4=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-341-z2jMMqmjM7-aVegpkdq1ow-1; Mon, 06 Jan 2025 07:47:38 -0500
+X-MC-Unique: z2jMMqmjM7-aVegpkdq1ow-1
+X-Mimecast-MFC-AGG-ID: z2jMMqmjM7-aVegpkdq1ow
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-aa634496f58so781922666b.2
+        for <stable@vger.kernel.org>; Mon, 06 Jan 2025 04:47:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736167657; x=1736772457;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Dkb+rY3M+7dZ1Zo79DORBPQFm2iH+/jBnX4+iKG/QsU=;
+        b=EV6bfUDwRmmESR7bThoJO0+vhrS0HXhnVroUsktrXjQYruKXAsBf3uJE2nK/yQObUe
+         0PNWHQ9aXwaspYyTA8IxGaPEGsV2PPVQPg1LOq6wn5X0LRdddg8jWKbGWrAeXyIF8fWr
+         Tsj20qvGYKMptoRRJ9h04SPkqLtikuCNppMGkwkCo8R35vMcgpIUwCwfiESrtQmdBDEU
+         jtslMK+v8wLpVyTlSXo3GfOhZ84dkufZK/BUu5MJul0HDJ2aurcY2SVD3GJLFXUThDb5
+         8vFkfjRRSca1VcqZWFb3X0YRV+l3fksIWJeYh3bHwv6p6ZmxyYpSo/6mZDk4yvXCnvQA
+         g74g==
+X-Forwarded-Encrypted: i=1; AJvYcCXIf1A1Ujzu1NubTQaHpXUJgmNLdlR+k+ZlzwDq1+1Z/RHvyAAhDtiu+W4FjDS0qReTzbTwfI0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8cxwj/GsrfZUajCmct/t75mGJ9efKn57lzZFADEzpFzZ7yIzL
+	TTEo/Tj4VrvC3ukwvgyAAtjJGTOouESReNwgl+sfNtzupo5f3NbLTUMJDr18tb9uAnHXODGJSxx
+	ODBQpT8CWUbc7zaUS72RbzFG/CAAZzD/8oPuDuVHfTkx743nsGlhy3043KfOMDw==
+X-Gm-Gg: ASbGncuEGHmele85KnbfS8b3E0+mvcjwdYige7KzYbeIwYdxXpWHJUE5RBvmAPCh9jv
+	YKPdXC3gyTphKp7/VIi+KgDmjHHsQgNp8roUXPwLdAGANZUnXBWEN9dNAbX3CKIM+2FLEpprE8Z
+	j2HYQjpNk4gtl+bO+N3FGxUMvsPWAZIEykDHtSlwXtozHgP9WYGdcgOZjpPyuue74jyFdVZg65L
+	d6WjoT2g/d5WkgfZhWqgw2oyamGWdi3jYfuNLl20pXcLkZZNc8VBXFAaO5B518=
+X-Received: by 2002:a17:907:3f9e:b0:aa6:7f99:81aa with SMTP id a640c23a62f3a-aac2d446f68mr4754742366b.6.1736167657216;
+        Mon, 06 Jan 2025 04:47:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE2ZtMJkNlBqhQHyaJJvhOgi94/VowQ89yDD5sfDE7wLG6cS+OJlemHSlP0Pxsa12YGeTk1xw==
+X-Received: by 2002:a17:907:3f9e:b0:aa6:7f99:81aa with SMTP id a640c23a62f3a-aac2d446f68mr4754741066b.6.1736167656855;
+        Mon, 06 Jan 2025 04:47:36 -0800 (PST)
+Received: from [192.168.245.203] ([109.37.140.14])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0e830af1sm2241780866b.14.2025.01.06.04.47.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Jan 2025 04:47:36 -0800 (PST)
+Message-ID: <f46c5c52-b49a-433b-81cb-ae1e5d5d3ed7@redhat.com>
+Date: Mon, 6 Jan 2025 13:47:35 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI: resource: Add Asus Vivobook X1504VAP to
+ irq1_level_low_skip_override[]
+To: Gustavo Azor <gazo11@mail.com>, bugzilla-daemon@kernel.org,
+ jwrdegoede@fedoraproject.org, linux-acpi@vger.kernel.org,
+ stable@vger.kernel.org, rafael@kernel.org
+References: <trinity-13f8fb07-bab6-4449-acb7-77c6d708cc37-1735365047718@3c-app-mailcom-lxa14>
+Content-Language: en-US
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <trinity-13f8fb07-bab6-4449-acb7-77c6d708cc37-1735365047718@3c-app-mailcom-lxa14>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+Hi Gustavo,
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Most of us have taken 2 weeks off around Christmas + New year.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Normal kernel patch review processes should be starting up again now,
+so some patience please and then this patch should be merged soon.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 551844f26da2a9f76c0a698baaffa631d1178645
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025010605-obscurity-buckshot-fc5f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+Regards,
 
-Possible dependencies:
+Hans
 
 
 
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 551844f26da2a9f76c0a698baaffa631d1178645 Mon Sep 17 00:00:00 2001
-From: Paolo Abeni <pabeni@redhat.com>
-Date: Mon, 30 Dec 2024 19:12:31 +0100
-Subject: [PATCH] mptcp: don't always assume copied data in
- mptcp_cleanup_rbuf()
-
-Under some corner cases the MPTCP protocol can end-up invoking
-mptcp_cleanup_rbuf() when no data has been copied, but such helper
-assumes the opposite condition.
-
-Explicitly drop such assumption and performs the costly call only
-when strictly needed - before releasing the msk socket lock.
-
-Fixes: fd8976790a6c ("mptcp: be careful on MPTCP-level ack.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241230-net-mptcp-rbuf-fixes-v1-2-8608af434ceb@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 27afdb7e2071..5307fff9d995 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -528,13 +528,13 @@ static void mptcp_send_ack(struct mptcp_sock *msk)
- 		mptcp_subflow_send_ack(mptcp_subflow_tcp_sock(subflow));
- }
- 
--static void mptcp_subflow_cleanup_rbuf(struct sock *ssk)
-+static void mptcp_subflow_cleanup_rbuf(struct sock *ssk, int copied)
- {
- 	bool slow;
- 
- 	slow = lock_sock_fast(ssk);
- 	if (tcp_can_send_ack(ssk))
--		tcp_cleanup_rbuf(ssk, 1);
-+		tcp_cleanup_rbuf(ssk, copied);
- 	unlock_sock_fast(ssk, slow);
- }
- 
-@@ -551,7 +551,7 @@ static bool mptcp_subflow_could_cleanup(const struct sock *ssk, bool rx_empty)
- 			      (ICSK_ACK_PUSHED2 | ICSK_ACK_PUSHED)));
- }
- 
--static void mptcp_cleanup_rbuf(struct mptcp_sock *msk)
-+static void mptcp_cleanup_rbuf(struct mptcp_sock *msk, int copied)
- {
- 	int old_space = READ_ONCE(msk->old_wspace);
- 	struct mptcp_subflow_context *subflow;
-@@ -559,14 +559,14 @@ static void mptcp_cleanup_rbuf(struct mptcp_sock *msk)
- 	int space =  __mptcp_space(sk);
- 	bool cleanup, rx_empty;
- 
--	cleanup = (space > 0) && (space >= (old_space << 1));
--	rx_empty = !__mptcp_rmem(sk);
-+	cleanup = (space > 0) && (space >= (old_space << 1)) && copied;
-+	rx_empty = !__mptcp_rmem(sk) && copied;
- 
- 	mptcp_for_each_subflow(msk, subflow) {
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
- 
- 		if (cleanup || mptcp_subflow_could_cleanup(ssk, rx_empty))
--			mptcp_subflow_cleanup_rbuf(ssk);
-+			mptcp_subflow_cleanup_rbuf(ssk, copied);
- 	}
- }
- 
-@@ -2220,9 +2220,6 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 
- 		copied += bytes_read;
- 
--		/* be sure to advertise window change */
--		mptcp_cleanup_rbuf(msk);
--
- 		if (skb_queue_empty(&msk->receive_queue) && __mptcp_move_skbs(msk))
- 			continue;
- 
-@@ -2271,6 +2268,7 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 		}
- 
- 		pr_debug("block timeout %ld\n", timeo);
-+		mptcp_cleanup_rbuf(msk, copied);
- 		err = sk_wait_data(sk, &timeo, NULL);
- 		if (err < 0) {
- 			err = copied ? : err;
-@@ -2278,6 +2276,8 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 		}
- 	}
- 
-+	mptcp_cleanup_rbuf(msk, copied);
-+
- out_err:
- 	if (cmsg_flags && copied >= 0) {
- 		if (cmsg_flags & MPTCP_CMSG_TS)
+On 28-Dec-24 6:50 AM, Gustavo Azor wrote:
+> 
+> 
+>  
+> 
+> Estimated people:
+> Seems to me, I browse drivers/acpi/resources.c: the patch was not included in kernel versions stable 6.12.7 or long term 6.6.68.
+> I hope will be include in mainline 6.13.-rc5 to inform if work in the ASUS Vivobook 15 X1504VAP_X1504VA keyboard.
+> I have not idea how work with git diff or compiling kernels to try the patch, and need to try in installed kernel.
+> Thanks.Regards.
+> 
+> Sent: Friday, December 20, 2024 at 8:23 PM
+> From: bugzilla-daemon@kernel.org
+> To: gazo11@mail.com
+> Subject: [Bug 219224] Laptop Internal Keyboard not working on ASUS VivoBook E1404GA on ubuntu 24.04.
+> https://bugzilla.kernel.org/show_bug.cgi?id=219224
+> 
+> --- Comment #11 from Hans de Goede (jwrdegoede@fedoraproject.org) ---
+> (In reply to gazo11 from comment #10)
+>> Hello I have the same problem for dmidecode:
+>>
+>>
+>> System Information
+>> Manufacturer: ASUSTeK COMPUTER INC.
+>> Product Name: ASUS Vivobook 15 X1504VAP_X1504VA
+>> Version: 1.0
+>> Serial Number: S1N0CV02L86302G
+>> UUID: cdc508f0-d3f1-f743-bce4-5eb9d4c06fda
+>> Wake-up Type: Power Switch
+>> SKU Number:
+>> Family: ASUS Vivobook 15
+>>
+>> Its possible to get this model listed in future kernels? Thanks!
+> 
+> Thank you for reporting this, I've submitted a patch to add this to the
+> irq1_level_low_skip_override[] list:
+> 
+> https://lore.kernel.org/linux-acpi/20241220181352.25974-1-hdegoede@redhat.com/[https://lore.kernel.org/linux-acpi/20241220181352.25974-1-hdegoede@redhat.com/]
+> 
+> --
+> You may reply to this email to add a comment.
+> 
+> You are receiving this mail because:
+> You are on the CC list for the bug.
+> 
 
 
