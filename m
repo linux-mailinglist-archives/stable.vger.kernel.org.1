@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-107498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0649DA02C3B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:52:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D228A02945
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:21:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E36701658BA
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:51:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F0C43A19E9
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C6B1DE4C7;
-	Mon,  6 Jan 2025 15:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A609B13775E;
+	Mon,  6 Jan 2025 15:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qVIBLgIa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qU1XB9oN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54851607AA;
-	Mon,  6 Jan 2025 15:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC9682D98;
+	Mon,  6 Jan 2025 15:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178650; cv=none; b=GHH7v5OZ/dgDWpBKW7E5Gy8Bg12EG9Hn7UafHL5DjFR9fWuGvNW03hDXvulWsddr+JuN3Q+KmnG/TZyvQvsCpLHttLSQjSpVFfsbEVVE5nHtPR+fD98FzJ8mRA4rsbXFzZOON5YliUCxl6hXyeTJBsLrJOSFHhJ470gQMRbTFHA=
+	t=1736176864; cv=none; b=c/MAzt2JJ1effTpHiRsiOkB25Pg1TbFaYKJpkS9PrxjXNlJxQHawslDxvJ5SCoYMzjL8kSc7Y/yPzhkwAJQnffv1X/J2l/UbXwqbfd+6eAGgjwOFZk5VrniKXEJZGCfPB5oj32RRokitrZBuC8ojxOrMqdH4hiGx7ShWYJ4cfYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178650; c=relaxed/simple;
-	bh=O4hKSF9UrrlxwQt6m3ecEvhUpz9Ab+pCbcSMi+2h5zE=;
+	s=arc-20240116; t=1736176864; c=relaxed/simple;
+	bh=rKhGRD6T+8/cO0VtLwzlSsjMz9S2ve4YJRvZ9l1vPu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Umb0RAY5784mBOZydrMb8PINnL6E4A2oObrQospITJiInvEK5aRtCROD/VHRo79+Ec6Zdoa5B+6+rZhz+NwcKojV9jW+xaLJezv9Knk25brwczjrfwCETiZ+wvObAXmSr6gQ44dkbmVhLHS+TqSuDutHZ4vW1AryARe/3ratTXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qVIBLgIa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E42C4CED2;
-	Mon,  6 Jan 2025 15:50:49 +0000 (UTC)
+	 MIME-Version; b=TsE2Z6hJqelIA0OCKALYQLrcD/Oa1bMUNoyjK/DVuQ/caB1e7Z5R2N/FvL6wmo29+kutgh0Qncyj1m8QcPnWzaxINqMsP4Uo75DzQH4nVtlbiHTumkXbEAac5ZPS96zOMAsTYshG7OCqwuaWxoqfjc0Ls54YWaQ2S/vCCvPoACY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qU1XB9oN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C741AC4CED2;
+	Mon,  6 Jan 2025 15:21:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178650;
-	bh=O4hKSF9UrrlxwQt6m3ecEvhUpz9Ab+pCbcSMi+2h5zE=;
+	s=korg; t=1736176864;
+	bh=rKhGRD6T+8/cO0VtLwzlSsjMz9S2ve4YJRvZ9l1vPu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qVIBLgIajRBTb/uo9Jj3Bo/SNK8gECpeEcqz1GCwv+8mk5P+ZBfyjtGbF26ZarD1E
-	 PKr1nXDLnd1WlG4r9AHEMFwQawVWdeJ58EQlcrVmMfBFzzowSRI8lPpsbl8Ezr7O5j
-	 64EoEg4gMBuQ/9B0dSYDPnVEQ6w71iLqaQyk9J5Q=
+	b=qU1XB9oN4UtJX/lawny9UjALj/5yO2fuPnKKu91/Ebz+s2KjUHEDwDWSfOYIfeeBC
+	 CTSETXbhv3B0VhS9CoPAKcS8e4aOGAyR+btCNv44BnaufLXshAM7mfeazVAW44LmXk
+	 CSEiO1RHjZSj+ZdP2vq8QkuH9Bu7JNE5JVP51oOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>
-Subject: [PATCH 5.15 048/168] NFS/pnfs: Fix a live lock between recalled layouts and layoutget
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 24/81] RDMA/hns: Fix warning storm caused by invalid input in IO path
 Date: Mon,  6 Jan 2025 16:15:56 +0100
-Message-ID: <20250106151140.279118870@linuxfoundation.org>
+Message-ID: <20250106151130.349924896@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-commit 62e2a47ceab8f3f7d2e3f0e03fdd1c5e0059fd8b upstream.
+[ Upstream commit fa5c4ba8cdbfd2c2d6422e001311c8213283ebbf ]
 
-When the server is recalling a layout, we should ignore the count of
-outstanding layoutget calls, since the server is expected to return
-either NFS4ERR_RECALLCONFLICT or NFS4ERR_RETURNCONFLICT for as long as
-the recall is outstanding.
-Currently, we may end up livelocking, causing the layout to eventually
-be forcibly revoked.
+WARN_ON() is called in the IO path. And it could lead to a warning
+storm. Use WARN_ON_ONCE() instead of WARN_ON().
 
-Fixes: bf0291dd2267 ("pNFS: Ensure LAYOUTGET and LAYOUTRETURN are properly serialised")
-Cc: stable@vger.kernel.org
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 12542f1de179 ("RDMA/hns: Refactor process about opcode in post_send()")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20241220055249.146943-4-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/pnfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -1193,7 +1193,7 @@ pnfs_prepare_layoutreturn(struct pnfs_la
- 		enum pnfs_iomode *iomode)
- {
- 	/* Serialise LAYOUTGET/LAYOUTRETURN */
--	if (atomic_read(&lo->plh_outstanding) != 0)
-+	if (atomic_read(&lo->plh_outstanding) != 0 && lo->plh_return_seq == 0)
- 		return false;
- 	if (test_and_set_bit(NFS_LAYOUT_RETURN_LOCK, &lo->plh_flags))
- 		return false;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 60628ef1c46e..23667cfbf8e7 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -471,7 +471,7 @@ static inline int set_ud_wqe(struct hns_roce_qp *qp,
+ 	valid_num_sge = calc_wr_sge_num(wr, &msg_len);
+ 
+ 	ret = set_ud_opcode(ud_sq_wqe, wr);
+-	if (WARN_ON(ret))
++	if (WARN_ON_ONCE(ret))
+ 		return ret;
+ 
+ 	ud_sq_wqe->msg_len = cpu_to_le32(msg_len);
+@@ -575,7 +575,7 @@ static inline int set_rc_wqe(struct hns_roce_qp *qp,
+ 	rc_sq_wqe->msg_len = cpu_to_le32(msg_len);
+ 
+ 	ret = set_rc_opcode(hr_dev, rc_sq_wqe, wr);
+-	if (WARN_ON(ret))
++	if (WARN_ON_ONCE(ret))
+ 		return ret;
+ 
+ 	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_SO,
+-- 
+2.39.5
+
 
 
 
