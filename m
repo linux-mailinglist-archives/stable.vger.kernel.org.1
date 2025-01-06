@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-107636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E760A02CC9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:57:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F6A2A0294D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:21:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D71AE188797B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:57:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5C221886031
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:21:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CEBC6088F;
-	Mon,  6 Jan 2025 15:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97165148838;
+	Mon,  6 Jan 2025 15:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZU5U0eg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubLoky/d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A637BA34;
-	Mon,  6 Jan 2025 15:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5326049652;
+	Mon,  6 Jan 2025 15:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179067; cv=none; b=RNypZjDAtUoh5ADm8SSSCz/5Re28GCeV1S8HZMtn2YRWdnXRDVv/SjdrS2ZjXHmxtwp9rE+kZFuQUnXdKjb6sqcE5J7rSRob86BimmxuwZKngBb2oEoInxbrtd239jew8LaovRe4etwqLGgn6cMw5o0274FhxMQC9lIVl42ichs=
+	t=1736176905; cv=none; b=eYIzM15IEruY89eFPPf6C+L3VT8bojvgX1JBUwAE2wkdPEgEweLXvDAkzsrCVPLp//ei84cNWgloHgohXxUJSrBSXTDfWnp+jTnh5ZMrLDf8++gV/dl0LklLame7U1Fp18p7NUAVsRtV2FTAgP4X1zu356WuMqHkMVG55XFlH1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179067; c=relaxed/simple;
-	bh=NJUiw28XaD6hTyZy3IZ5/dPwAom1fNV2G631I8fEVls=;
+	s=arc-20240116; t=1736176905; c=relaxed/simple;
+	bh=grSTh48NVO20ZKkbK3hWZFEbDmgyI30nw84X7Ab6QAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uYet8ha+HNM4pFIdsS7lWO9nwGTH9i1n1fMw0qkRPZj8SU7Oj/icE0EpDBJSEH8UF9eIvPZkUYI/8d1JxBZ6Aj/W+MqJx5Dga/aL+TSAkScjkSK+ldJCn56mBqTI25DR2mYFOQtVdlKBbUlHLe9KA7encvPvybhbhPDtlr5zunE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZU5U0eg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E55FCC4CED2;
-	Mon,  6 Jan 2025 15:57:45 +0000 (UTC)
+	 MIME-Version; b=awt63tFtPYygPT1JudbTOcRmFzSQW0Gscp6y5YGtRVHf21ndDRSkpDiTb1dv/pGYqMgEUImstGa8drfdTFbFq9gE/g7uV1xGNFkRVVoRpc/2hknBCxYrCty2efCf5X5qTP9AxFBY0hVX25pWgBi5VgnL/GKGOdLWEU4AlgLnDBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubLoky/d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77689C4CED2;
+	Mon,  6 Jan 2025 15:21:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179066;
-	bh=NJUiw28XaD6hTyZy3IZ5/dPwAom1fNV2G631I8fEVls=;
+	s=korg; t=1736176904;
+	bh=grSTh48NVO20ZKkbK3hWZFEbDmgyI30nw84X7Ab6QAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CZU5U0egcvLMMQ0NEaeWpPcj3ZYNDueNK6eE5xBMXusrIQR+JMcbtfWxjCqxyG0se
-	 Gc9cogl7/jpnEnIDD4sSelEZ3QThb5RzXHPfWj2wEhCe3SxOU6/rOhaaEq92utYUU6
-	 y79iKbDNUM88UkKxrig9j7cEPTPfqpdr7mOZQBWo=
+	b=ubLoky/dBEbm4f3PZDjzLtrWSx9ZLw8lxLzgmZf1uncE3Np8B13GvXFPz+9flTh20
+	 d3zsAKJ1zXMpx4t/sZOSCC7Fus9Bnfhvkod8leutYu+0dvXYxG1akRAgQgwKSqrKkw
+	 c7C1N7aNLxb2vaciLjIHc5w4hpiLdZBHPn4yD8ec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ajit Khaparde <ajit.khaparde@broadcom.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Andy Gospodarek <gospo@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 05/93] PCI: Add ACS quirk for Broadcom BCM5760X NIC
+	Kun Hu <huk23@m.fudan.edu.cn>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 69/81] ALSA: seq: oss: Fix races at processing SysEx messages
 Date: Mon,  6 Jan 2025 16:16:41 +0100
-Message-ID: <20250106151128.897135824@linuxfoundation.org>
+Message-ID: <20250106151132.035686733@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +59,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ajit Khaparde <ajit.khaparde@broadcom.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 524e057b2d66b61f9b63b6db30467ab7b0bb4796 ]
+commit 0179488ca992d79908b8e26b9213f1554fc5bacc upstream.
 
-The Broadcom BCM5760X NIC may be a multi-function device.
+OSS sequencer handles the SysEx messages split in 6 bytes packets, and
+ALSA sequencer OSS layer tries to combine those.  It stores the data
+in the internal buffer and this access is racy as of now, which may
+lead to the out-of-bounds access.
 
-While it does not advertise an ACS capability, peer-to-peer transactions
-are not possible between the individual functions. So it is ok to treat
-them as fully isolated.
+As a temporary band-aid fix, introduce a mutex for serializing the
+process of the SysEx message packets.
 
-Add an ACS quirk for this device so the functions can be in independent
-IOMMU groups and attached individually to userspace applications using
-VFIO.
-
-[kwilczynski: commit log]
-Link: https://lore.kernel.org/linux-pci/20240510204228.73435-1-ajit.khaparde@broadcom.com
-Signed-off-by: Ajit Khaparde <ajit.khaparde@broadcom.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Andy Gospodarek <gospo@broadcom.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Kun Hu <huk23@m.fudan.edu.cn>
+Closes: https://lore.kernel.org/2B7E93E4-B13A-4AE4-8E87-306A8EE9BBB7@m.fudan.edu.cn
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241230110543.32454-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/core/seq/oss/seq_oss_synth.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 6a2d64d050c0..080d5077c645 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -4997,6 +4997,10 @@ static const struct pci_dev_acs_enabled {
- 	{ PCI_VENDOR_ID_BROADCOM, 0x1750, pci_quirk_mf_endpoint_acs },
- 	{ PCI_VENDOR_ID_BROADCOM, 0x1751, pci_quirk_mf_endpoint_acs },
- 	{ PCI_VENDOR_ID_BROADCOM, 0x1752, pci_quirk_mf_endpoint_acs },
-+	{ PCI_VENDOR_ID_BROADCOM, 0x1760, pci_quirk_mf_endpoint_acs },
-+	{ PCI_VENDOR_ID_BROADCOM, 0x1761, pci_quirk_mf_endpoint_acs },
-+	{ PCI_VENDOR_ID_BROADCOM, 0x1762, pci_quirk_mf_endpoint_acs },
-+	{ PCI_VENDOR_ID_BROADCOM, 0x1763, pci_quirk_mf_endpoint_acs },
- 	{ PCI_VENDOR_ID_BROADCOM, 0xD714, pci_quirk_brcm_acs },
- 	/* Amazon Annapurna Labs */
- 	{ PCI_VENDOR_ID_AMAZON_ANNAPURNA_LABS, 0x0031, pci_quirk_al_acs },
--- 
-2.39.5
-
+--- a/sound/core/seq/oss/seq_oss_synth.c
++++ b/sound/core/seq/oss/seq_oss_synth.c
+@@ -66,6 +66,7 @@ static struct seq_oss_synth midi_synth_d
+ };
+ 
+ static DEFINE_SPINLOCK(register_lock);
++static DEFINE_MUTEX(sysex_mutex);
+ 
+ /*
+  * prototypes
+@@ -497,6 +498,7 @@ snd_seq_oss_synth_sysex(struct seq_oss_d
+ 	if (!info)
+ 		return -ENXIO;
+ 
++	guard(mutex)(&sysex_mutex);
+ 	sysex = info->sysex;
+ 	if (sysex == NULL) {
+ 		sysex = kzalloc(sizeof(*sysex), GFP_KERNEL);
 
 
 
