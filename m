@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-106885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A35FBA02926
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:20:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00643A02A5B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:33:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8137D3A4DDF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:20:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 386831885EE4
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A87FE1547E3;
-	Mon,  6 Jan 2025 15:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B251DED59;
+	Mon,  6 Jan 2025 15:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iwhmGfbo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="isOccKeJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E63154426;
-	Mon,  6 Jan 2025 15:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7581DDC1B;
+	Mon,  6 Jan 2025 15:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176800; cv=none; b=rphIWGr2pgkWgBJzO9Cl0peYXSFx9o/xdNKaBcW7hB9b7hPf+Gg5YsV3UOXKjJMnV6gPQG0mkphtO8TYLNnpIQ3BGOye6KMPfsCbm9wltcM5TZ69oxdeK1i08ecd1Ot/9XcROxCEhbh7R7CY0SLmvKRYY6M6qAQwdosqdbHBGcE=
+	t=1736177537; cv=none; b=caBQ1rgA4NEB/pfLOpHIexgRKU+/dAINULdLwh/ig+++5zsa0Ec2/9ic+/GaL5zKtJ5/BC3HV8FJkJ6saToEk517LgJdjc6eVEtYk/TxB3WNtN64nJAni/DRibUPFuhLzE/PyPuWB/H5ElSwGo7eyTkdSHPzok+GF16Dn0FvOqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176800; c=relaxed/simple;
-	bh=8gE0V9lwFldYNzEfsdE9Hl45n3suPtMZEygjOO5qKwY=;
+	s=arc-20240116; t=1736177537; c=relaxed/simple;
+	bh=DGbBPUf4R0htiSZydyVT9TW5aEHogxSYYjFnGvkL/bs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ricTRmpHdEiBuKBZF5YeTbFSOF7r83EE7F2a+yCFTmwJJBCy3ou7mvj7cFe+5cjJZzaPyhuhmn97OSkDDEJ1SU8nEmSSXYlFablZR5GR7Ui5aUSUNNVb36N6WnspwX1ABJhLvpKC69esIph9mq41GyB2Su/mYC82mNcIWxmWBBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwhmGfbo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89670C4CED6;
-	Mon,  6 Jan 2025 15:19:59 +0000 (UTC)
+	 MIME-Version; b=dAFv7f3h6upNBIttHIUs1ubsbMXC0a71sKIbeC20c4hxiBJVsnXNgiyCtroVGQ5P5mPGCpEoDYT+5ubVQknjUxiv7Fv/I7UmIKx7EXuaAhlQ9+wGW/NqS7uwzxb5PL4DpFYCIdgiiwET5YLfhCEP35TIUmmXS2ybWXoMX/XMbMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=isOccKeJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C15AC4CEDF;
+	Mon,  6 Jan 2025 15:32:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176799;
-	bh=8gE0V9lwFldYNzEfsdE9Hl45n3suPtMZEygjOO5qKwY=;
+	s=korg; t=1736177536;
+	bh=DGbBPUf4R0htiSZydyVT9TW5aEHogxSYYjFnGvkL/bs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iwhmGfbobIZLMkg8SmyA/q44rvwfpy3f05TX3rF5nkPKGun4fiiXXJnKQ4/wLCOjG
-	 c2TK/B8qvV9+bfRgZ1J5Rp9PxJYg60RiBo34IoJYO3F2HjuYSBcybjLiWKXqfeXfby
-	 0WK4zZn1Oyi0bUixI/dAwWxC+prdz4MM8rKCurZA=
+	b=isOccKeJFLrZ5AJLPLK1ecJypRd5rYLw5PlG/XfUyAqiHcoDefbo45QZ/UbWM65O7
+	 s08QyYtqvxNrQE1Jpm+1FVTUQSlHkOAkZ8hZPqyXUnHLc4rTbegoYmtYnS06+wlA5R
+	 //p7z2vZUMFsuFlo812TBoCfs0501X29ucITuWbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Marushkin <hfggklm@gmail.com>,
-	Ilya Shchipletsov <rabbelkin@mail.ru>,
+	Antonio Pastor <antonio.pastor@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 36/81] netrom: check buffer length before accessing it
+Subject: [PATCH 6.6 164/222] net: llc: reset skb->transport_header
 Date: Mon,  6 Jan 2025 16:16:08 +0100
-Message-ID: <20250106151130.801386353@linuxfoundation.org>
+Message-ID: <20250106151156.973498259@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Shchipletsov <rabbelkin@mail.ru>
+From: Antonio Pastor <antonio.pastor@gmail.com>
 
-[ Upstream commit a4fd163aed2edd967a244499754dec991d8b4c7d ]
+[ Upstream commit a024e377efed31ecfb39210bed562932321345b3 ]
 
-Syzkaller reports an uninit value read from ax25cmp when sending raw message
-through ieee802154 implementation.
+802.2+LLC+SNAP frames received by napi_complete_done with GRO and DSA
+have skb->transport_header set two bytes short, or pointing 2 bytes
+before network_header & skb->data. As snap_rcv expects transport_header
+to point to SNAP header (OID:PID) after LLC processing advances offset
+over LLC header (llc_rcv & llc_fixup_skb), code doesn't find a match
+and packet is dropped.
 
-=====================================================
-BUG: KMSAN: uninit-value in ax25cmp+0x3a5/0x460 net/ax25/ax25_addr.c:119
- ax25cmp+0x3a5/0x460 net/ax25/ax25_addr.c:119
- nr_dev_get+0x20e/0x450 net/netrom/nr_route.c:601
- nr_route_frame+0x1a2/0xfc0 net/netrom/nr_route.c:774
- nr_xmit+0x5a/0x1c0 net/netrom/nr_dev.c:144
- __netdev_start_xmit include/linux/netdevice.h:4940 [inline]
- netdev_start_xmit include/linux/netdevice.h:4954 [inline]
- xmit_one net/core/dev.c:3548 [inline]
- dev_hard_start_xmit+0x247/0xa10 net/core/dev.c:3564
- __dev_queue_xmit+0x33b8/0x5130 net/core/dev.c:4349
- dev_queue_xmit include/linux/netdevice.h:3134 [inline]
- raw_sendmsg+0x654/0xc10 net/ieee802154/socket.c:299
- ieee802154_sock_sendmsg+0x91/0xc0 net/ieee802154/socket.c:96
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg net/socket.c:745 [inline]
- ____sys_sendmsg+0x9c2/0xd60 net/socket.c:2584
- ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2638
- __sys_sendmsg net/socket.c:2667 [inline]
- __do_sys_sendmsg net/socket.c:2676 [inline]
- __se_sys_sendmsg net/socket.c:2674 [inline]
- __x64_sys_sendmsg+0x307/0x490 net/socket.c:2674
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
+Between napi_complete_done and snap_rcv, transport_header is not used
+until __netif_receive_skb_core, where originally it was being reset.
+Commit fda55eca5a33 ("net: introduce skb_transport_header_was_set()")
+only does so if not set, on the assumption the value was set correctly
+by GRO (and also on assumption that "network stacks usually reset the
+transport header anyway"). Afterwards it is moved forward by
+llc_fixup_skb.
 
-Uninit was created at:
- slab_post_alloc_hook+0x129/0xa70 mm/slab.h:768
- slab_alloc_node mm/slub.c:3478 [inline]
- kmem_cache_alloc_node+0x5e9/0xb10 mm/slub.c:3523
- kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:560
- __alloc_skb+0x318/0x740 net/core/skbuff.c:651
- alloc_skb include/linux/skbuff.h:1286 [inline]
- alloc_skb_with_frags+0xc8/0xbd0 net/core/skbuff.c:6334
- sock_alloc_send_pskb+0xa80/0xbf0 net/core/sock.c:2780
- sock_alloc_send_skb include/net/sock.h:1884 [inline]
- raw_sendmsg+0x36d/0xc10 net/ieee802154/socket.c:282
- ieee802154_sock_sendmsg+0x91/0xc0 net/ieee802154/socket.c:96
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg net/socket.c:745 [inline]
- ____sys_sendmsg+0x9c2/0xd60 net/socket.c:2584
- ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2638
- __sys_sendmsg net/socket.c:2667 [inline]
- __do_sys_sendmsg net/socket.c:2676 [inline]
- __se_sys_sendmsg net/socket.c:2674 [inline]
- __x64_sys_sendmsg+0x307/0x490 net/socket.c:2674
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
+Locally generated traffic shows up at __netif_receive_skb_core with no
+transport_header set and is processed without issue. On a setup with
+GRO but no DSA, transport_header and network_header are both set to
+point to skb->data which is also correct.
 
-CPU: 0 PID: 5037 Comm: syz-executor166 Not tainted 6.7.0-rc7-syzkaller-00003-gfbafc3e621c3 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
-=====================================================
+As issue is LLC specific, to avoid impacting non-LLC traffic, and to
+follow up on original assumption made on previous code change,
+llc_fixup_skb to reset the offset after skb pull. llc_fixup_skb
+assumes the LLC header is at skb->data, and by definition SNAP header
+immediately follows.
 
-This issue occurs because the skb buffer is too small, and it's actual
-allocation is aligned. This hides an actual issue, which is that nr_route_frame
-does not validate the buffer size before using it.
-
-Fix this issue by checking skb->len before accessing any fields in skb->data.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Co-developed-by: Nikita Marushkin <hfggklm@gmail.com>
-Signed-off-by: Nikita Marushkin <hfggklm@gmail.com>
-Signed-off-by: Ilya Shchipletsov <rabbelkin@mail.ru>
-Link: https://patch.msgid.link/20241219082308.3942-1-rabbelkin@mail.ru
+Fixes: fda55eca5a33 ("net: introduce skb_transport_header_was_set()")
+Signed-off-by: Antonio Pastor <antonio.pastor@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241225010723.2830290-1-antonio.pastor@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netrom/nr_route.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/llc/llc_input.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netrom/nr_route.c b/net/netrom/nr_route.c
-index bd2b17b219ae..0b270893ee14 100644
---- a/net/netrom/nr_route.c
-+++ b/net/netrom/nr_route.c
-@@ -754,6 +754,12 @@ int nr_route_frame(struct sk_buff *skb, ax25_cb *ax25)
- 	int ret;
- 	struct sk_buff *skbn;
+diff --git a/net/llc/llc_input.c b/net/llc/llc_input.c
+index 51bccfb00a9c..61b0159b2fbe 100644
+--- a/net/llc/llc_input.c
++++ b/net/llc/llc_input.c
+@@ -124,8 +124,8 @@ static inline int llc_fixup_skb(struct sk_buff *skb)
+ 	if (unlikely(!pskb_may_pull(skb, llc_len)))
+ 		return 0;
  
-+	/*
-+	 * Reject malformed packets early. Check that it contains at least 2
-+	 * addresses and 1 byte more for Time-To-Live
-+	 */
-+	if (skb->len < 2 * sizeof(ax25_address) + 1)
-+		return 0;
- 
- 	nr_src  = (ax25_address *)(skb->data + 0);
- 	nr_dest = (ax25_address *)(skb->data + 7);
+-	skb->transport_header += llc_len;
+ 	skb_pull(skb, llc_len);
++	skb_reset_transport_header(skb);
+ 	if (skb->protocol == htons(ETH_P_802_2)) {
+ 		__be16 pdulen;
+ 		s32 data_size;
 -- 
 2.39.5
 
