@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-107123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03674A02A4B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:32:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3D0CA02BE2
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:48:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C057164BB9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:32:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADD751657C1
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A23D71DED73;
-	Mon,  6 Jan 2025 15:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14DDA1547F3;
+	Mon,  6 Jan 2025 15:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9oMSBDv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tadC6nYz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12738155389;
-	Mon,  6 Jan 2025 15:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F3F14D28C;
+	Mon,  6 Jan 2025 15:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177528; cv=none; b=HPBYKnJiGjAyNc2vQ46az9nhsNx/k+y8NIp0gqcSGCkJWGfVyK2rTbhIT6bXDc3pvgUE1BANQg0lBCo/hOVsBumCwIdn9p13Wx9fpVXOzxqv8Cvb+gRjWnjspgBUlbtuH/rwiNUoUFwFgY5XEwGjMzBA9R343y+NDXOdmHHLG1M=
+	t=1736177855; cv=none; b=tkkNIpSLJs5xW9dxc3LfVnYbUQmb+74e9cXD6tHXMwT27PXYFSM6x0JXYIFuFFuOtw1DbYst12M34GKO5hQ3hkChPwogcEaXfVsu4xXxVW0oUgF4P27J2IramGCkOvT6C3oyUaXaCosypzSvXl6UXSlIz45xkGme/i5i+0BO+6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177528; c=relaxed/simple;
-	bh=GfvMgxDZdqEabQCnGEQBSUYIbrLA3OwS32YELzmLD9A=;
+	s=arc-20240116; t=1736177855; c=relaxed/simple;
+	bh=NduwiU+HTjT+562tv+3l7pRMRdfkq1KoMvQnhiPxLjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=brZ+cauZyPxW6Y7g3Gk99GYwLJdezRjz+eKcMjP2S6IQXRuuGSh9aivEDeGQxR/RDXhH0XiWOjE+cD0RjSebtpEi3xDAV4f2EgveGpxLneCCaGikUwpFQPwiS8fBCL8TxAVBGw/aw2aY88C0E9NrQwu/ApDbhmyJcuvLAziS3SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9oMSBDv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7668AC4CED6;
-	Mon,  6 Jan 2025 15:32:04 +0000 (UTC)
+	 MIME-Version; b=dSxWGczc58wQvU6Yh83sx68wH2/MCoxgZUqJZgFNjtJyXcQogreoG12PHuF3EwWnCHm05KoQGicPuHFTcxqzht5pH8Wgpku1x4+YmZPlIntbnMBDOWg/NDo2gjFWykaa0Vsxy+S9XNFYUAYdj+HL9I8GMLhluJY0VMnMbZGUXgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tadC6nYz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50AA5C4CED2;
+	Mon,  6 Jan 2025 15:37:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177524;
-	bh=GfvMgxDZdqEabQCnGEQBSUYIbrLA3OwS32YELzmLD9A=;
+	s=korg; t=1736177855;
+	bh=NduwiU+HTjT+562tv+3l7pRMRdfkq1KoMvQnhiPxLjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j9oMSBDvF0fHDxvpmCCl6VxI83bWIX02oCC73PzAEkepBZdKLvTYdQT+mP0P7axlO
-	 jEoM+BdNIVfne+8wHDx8IfPIblbsJu0loHT8wJ8lQ7+xSZFGg14HtJcOBSvIVoZYXO
-	 bUsX+7NUEyywqLT9ElQ6RIra/nulrpQB4WdDXy3U=
+	b=tadC6nYzhLjZ/q924hC+DQHkLiP/zjBGoNz4E5axRuCj2qdtyPIePBNygkA50W+IN
+	 T5lolahTc3Fo8LOXiaXXIIUKle6+AINnf/bPA3HM61wFlkcKukvudFpv8dvRz+onas
+	 hLZJsV6mqH8ttDCYwUDleQBTJaoOomoF6rLoa1Qg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Lior Nahmanson <liorna@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Issam Hamdi <ih@simonwunderlich.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 160/222] net/mlx5e: macsec: Maintain TX SA from encoding_sa
+Subject: [PATCH 6.12 078/156] wifi: mac80211: fix mbss changed flags corruption on 32 bit systems
 Date: Mon,  6 Jan 2025 16:16:04 +0100
-Message-ID: <20250106151156.817864274@linuxfoundation.org>
+Message-ID: <20250106151144.669855630@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
+From: Issam Hamdi <ih@simonwunderlich.de>
 
-[ Upstream commit 8c6254479b3d5bd788d2b5fefaa48fb194331ed0 ]
+[ Upstream commit 49dba1ded8dd5a6a12748631403240b2ab245c34 ]
 
-In MACsec, it is possible to create multiple active TX SAs on a SC,
-but only one such SA can be used at a time for transmission. This SA
-is selected through the encoding_sa link parameter.
+On 32-bit systems, the size of an unsigned long is 4 bytes,
+while a u64 is 8 bytes. Therefore, when using
+or_each_set_bit(bit, &bits, sizeof(changed) * BITS_PER_BYTE),
+the code is incorrectly searching for a bit in a 32-bit
+variable that is expected to be 64 bits in size,
+leading to incorrect bit finding.
 
-When there are 2 or more active TX SAs configured (encoding_sa=0):
-  ip macsec add macsec0 tx sa 0 pn 1 on key 00 <KEY1>
-  ip macsec add macsec0 tx sa 1 pn 1 on key 00 <KEY2>
+Solution: Ensure that the size of the bits variable is correctly
+adjusted for each architecture.
 
-... the traffic should be still sent via TX SA 0 as the encoding_sa was
-not changed. However, the driver ignores the encoding_sa and overrides
-it to SA 1 by installing the flow steering id of the newly created TX SA
-into the SCI -> flow steering id hash map. The future packet tx
-descriptors will point to the incorrect flow steering rule (SA 1).
+ Call Trace:
+  ? show_regs+0x54/0x58
+  ? __warn+0x6b/0xd4
+  ? ieee80211_link_info_change_notify+0xcc/0xd4 [mac80211]
+  ? report_bug+0x113/0x150
+  ? exc_overflow+0x30/0x30
+  ? handle_bug+0x27/0x44
+  ? exc_invalid_op+0x18/0x50
+  ? handle_exception+0xf6/0xf6
+  ? exc_overflow+0x30/0x30
+  ? ieee80211_link_info_change_notify+0xcc/0xd4 [mac80211]
+  ? exc_overflow+0x30/0x30
+  ? ieee80211_link_info_change_notify+0xcc/0xd4 [mac80211]
+  ? ieee80211_mesh_work+0xff/0x260 [mac80211]
+  ? cfg80211_wiphy_work+0x72/0x98 [cfg80211]
+  ? process_one_work+0xf1/0x1fc
+  ? worker_thread+0x2c0/0x3b4
+  ? kthread+0xc7/0xf0
+  ? mod_delayed_work_on+0x4c/0x4c
+  ? kthread_complete_and_exit+0x14/0x14
+  ? ret_from_fork+0x24/0x38
+  ? kthread_complete_and_exit+0x14/0x14
+  ? ret_from_fork_asm+0xf/0x14
+  ? entry_INT80_32+0xf0/0xf0
 
-This patch fixes the issue by avoiding the creation of the flow steering
-rule for an active TX SA that is not the encoding_sa. The driver side
-tx_sa object and the FW side macsec object are still created. When the
-encoding_sa link parameter is changed to another active TX SA, only the
-new flow steering rule will be created in the mlx5e_macsec_upd_txsa()
-handler.
-
-Fixes: 8ff0ac5be144 ("net/mlx5: Add MACsec offload Tx command support")
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Lior Nahmanson <liorna@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20241220081505.1286093-3-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Issam Hamdi <ih@simonwunderlich.de>
+Link: https://patch.msgid.link/20241125162920.2711462-1-ih@simonwunderlich.de
+[restore no-op path for no changes]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/mac80211/mesh.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-index cc9bcc420032..6ab02f3fc291 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-@@ -339,9 +339,13 @@ static int mlx5e_macsec_init_sa_fs(struct macsec_context *ctx,
+diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
+index 640239f4425b..50eb1d8cd43d 100644
+--- a/net/mac80211/mesh.c
++++ b/net/mac80211/mesh.c
+@@ -1157,14 +1157,14 @@ void ieee80211_mbss_info_change_notify(struct ieee80211_sub_if_data *sdata,
+ 				       u64 changed)
  {
- 	struct mlx5e_priv *priv = macsec_netdev_priv(ctx->netdev);
- 	struct mlx5_macsec_fs *macsec_fs = priv->mdev->macsec_fs;
-+	const struct macsec_tx_sc *tx_sc = &ctx->secy->tx_sc;
- 	struct mlx5_macsec_rule_attrs rule_attrs;
- 	union mlx5_macsec_rule *macsec_rule;
+ 	struct ieee80211_if_mesh *ifmsh = &sdata->u.mesh;
+-	unsigned long bits = changed;
++	unsigned long bits[] = { BITMAP_FROM_U64(changed) };
+ 	u32 bit;
  
-+	if (is_tx && tx_sc->encoding_sa != sa->assoc_num)
-+		return 0;
-+
- 	rule_attrs.macsec_obj_id = sa->macsec_obj_id;
- 	rule_attrs.sci = sa->sci;
- 	rule_attrs.assoc_num = sa->assoc_num;
+-	if (!bits)
++	if (!changed)
+ 		return;
+ 
+ 	/* if we race with running work, worst case this work becomes a noop */
+-	for_each_set_bit(bit, &bits, sizeof(changed) * BITS_PER_BYTE)
++	for_each_set_bit(bit, bits, sizeof(changed) * BITS_PER_BYTE)
+ 		set_bit(bit, ifmsh->mbss_changed);
+ 	set_bit(MESH_WORK_MBSS_CHANGED, &ifmsh->wrkq_flags);
+ 	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
 -- 
 2.39.5
 
