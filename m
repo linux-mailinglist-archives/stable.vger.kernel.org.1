@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-107407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39B8EA02BDE
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:47:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89742A02CD1
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:58:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39AAD3A274C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:46:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 113B01887C3F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2279C1DED51;
-	Mon,  6 Jan 2025 15:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72BE414F9F3;
+	Mon,  6 Jan 2025 15:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0VT2Kmh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZ5wv2mB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BEA1DD0FE;
-	Mon,  6 Jan 2025 15:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD67BA34;
+	Mon,  6 Jan 2025 15:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178370; cv=none; b=Ej+rzOA5kuJG6CNTOjh4ry9EQH45d5thgU5SRgjk52Jo8BnYxVytntlP9rGOYnZwmM9G/pZJTcXjeAO89QF+yfziKPyFuaqitQ5guQxmtwlbcMnENy3fdlTFLBYRD9Baaw6GSBuOIGzM3awHuAA1fbw64ypg0N9zruemW8l+oxY=
+	t=1736179090; cv=none; b=Fqd/SP7lSHqjDqGmRR2HxVi2M3wwgl38z9HkTFmSDi3ygblyhiDs45d9xBr7+Wkuuma7RP82M//vi6lzt77DvUWjY8MKGzZw9+3YDhC3+G4nBvZvheLho69FE4kRfSGhsbmdlW0C+D1sSC2DAMFcTyNtM9LyzaeccAI4roOk2I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178370; c=relaxed/simple;
-	bh=QTN0+I+IzBnqc4D39qJ7pl5k3BZ+9EMpsnjxb6A0j3g=;
+	s=arc-20240116; t=1736179090; c=relaxed/simple;
+	bh=EAmOiryuQPwW7jQ4lsRlLWScH7rvh49fNTAgmwYRodg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmQ9mHvY6aeJ2f8O4Ox76Ibk4hzVakRNgH4c2pb/VO15VyRydesUd4S2Ez98v/liinfCdkUzTJHJdCif2hDphzQ1wRAIojfLrllTcsQswGDM44j7o8GVblCgDRCtdrOqyj4phGsEe51p6eKfNrG1ME/YuAqZtV5wNgZfAotf1Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0VT2Kmh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED43C4CED2;
-	Mon,  6 Jan 2025 15:46:10 +0000 (UTC)
+	 MIME-Version; b=WHFX3drJwcCUKvnhGnne/8CzAwQrZ6BfTb2DUOGZzZ96Zpu5uVeQU189A5HYdKzeJqkCqs1d2GWLs/vExEdTYx7I8q2s0qdk+J4jUuU0u0njfR9/zkH5s4D8Ri+5YBhlOdszf6znYUpNT3o9t/Y1w+zyNBosNn1DcwtWgesWqrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZ5wv2mB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A62C2C4CED2;
+	Mon,  6 Jan 2025 15:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178370;
-	bh=QTN0+I+IzBnqc4D39qJ7pl5k3BZ+9EMpsnjxb6A0j3g=;
+	s=korg; t=1736179090;
+	bh=EAmOiryuQPwW7jQ4lsRlLWScH7rvh49fNTAgmwYRodg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c0VT2KmhopI2b3kQF8/oSw9mjh4ydTaiKNr1fKTQ9NI1efqRW2dh7LgKFwHR2OK2g
-	 X4K73MeDlhIIJ8WayAMI69OzX/vTOlxd2Ody5mZ1XLOt6IXFodF5bUWjfWEcYunTyt
-	 O8S0tpO0kKskZr2bo0GZz3yFncgC8sqZr43xDCXs=
+	b=bZ5wv2mBXHzE0XEV8Ho2k4eZmBMMNkPF91NkD0r+o0116ZreOXa0YjC4S3qrk+z9r
+	 3t2Ru8ivZNsV4oxO3BmXf9G5boGd85UgPduBqzqbr3N9UNpxBEa0oNIOuVawHRPckk
+	 Z/lftolwVhXhvyqwl1cBzqqDWcvyTu15QM3Z6zhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 096/138] zram: use set_capacity_and_notify
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 5.4 24/93] sh: clk: Fix clk_enable() to return 0 on NULL clk
 Date: Mon,  6 Jan 2025 16:17:00 +0100
-Message-ID: <20250106151136.866168719@linuxfoundation.org>
+Message-ID: <20250106151129.616674515@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 6e017a3931d7722260e3656a6fc9b02de5fb3c5d ]
+commit ff30bd6a6618e979b16977617371c0f28a95036e upstream.
 
-Use set_capacity_and_notify to set the size of both the disk and block
-device.  This also gets the uevent notifications for the resize for free.
+On SH, devm_clk_get_optional_enabled() fails with -EINVAL if the clock
+is not found.  This happens because __devm_clk_get() assumes it can pass
+a NULL clock pointer (as returned by clk_get_optional()) to the init()
+function (clk_prepare_enable() in this case), while the SH
+implementation of clk_enable() considers that an error.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 74363ec674cb ("zram: fix uninitialized ZRAM not releasing backing device")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by making the SH clk_enable() implementation return zero
+instead, like the Common Clock Framework does.
+
+Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Acked-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/b53e6b557b4240579933b3359dda335ff94ed5af.1675354849.git.geert+renesas@glider.be
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/zram/zram_drv.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/sh/clk/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 16db4fae5145..8f38e5a1a63f 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1706,7 +1706,7 @@ static void zram_reset_device(struct zram *zram)
- 	disksize = zram->disksize;
- 	zram->disksize = 0;
+--- a/drivers/sh/clk/core.c
++++ b/drivers/sh/clk/core.c
+@@ -295,7 +295,7 @@ int clk_enable(struct clk *clk)
+ 	int ret;
  
--	set_capacity(zram->disk, 0);
-+	set_capacity_and_notify(zram->disk, 0);
- 	part_stat_set_all(&zram->disk->part0, 0);
+ 	if (!clk)
+-		return -EINVAL;
++		return 0;
  
- 	up_write(&zram->init_lock);
-@@ -1752,9 +1752,7 @@ static ssize_t disksize_store(struct device *dev,
- 
- 	zram->comp = comp;
- 	zram->disksize = disksize;
--	set_capacity(zram->disk, zram->disksize >> SECTOR_SHIFT);
--
--	revalidate_disk_size(zram->disk, true);
-+	set_capacity_and_notify(zram->disk, zram->disksize >> SECTOR_SHIFT);
- 	up_write(&zram->init_lock);
- 
- 	return len;
-@@ -1801,7 +1799,6 @@ static ssize_t reset_store(struct device *dev,
- 	/* Make sure all the pending I/O are finished */
- 	fsync_bdev(bdev);
- 	zram_reset_device(zram);
--	revalidate_disk_size(zram->disk, true);
- 	bdput(bdev);
- 
- 	mutex_lock(&bdev->bd_mutex);
--- 
-2.39.5
-
+ 	spin_lock_irqsave(&clock_lock, flags);
+ 	ret = __clk_enable(clk);
 
 
 
