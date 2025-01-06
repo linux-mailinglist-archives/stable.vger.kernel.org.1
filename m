@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-107424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE32A02BE1
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:47:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C370AA02CB9
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:57:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AFD6164A67
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B94A3A5770
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073831DDC1B;
-	Mon,  6 Jan 2025 15:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37F615C120;
+	Mon,  6 Jan 2025 15:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1M6iiR9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUcwyrIe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0811DEFE9;
-	Mon,  6 Jan 2025 15:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94469182D2;
+	Mon,  6 Jan 2025 15:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178422; cv=none; b=BVcs3vwDzmxeL395W7uBrEMfpPYezcCAd2A49ML8mvUOaRHsoSPpCeiF2C6FYGrm7vBWT33DmF/asdzyTE1UB5YsAmZbK12K/KPh+Pnxr2nw1X63TKmHqTR1AKBrfSvR5YhdQtQtvF/Ay4v+maYKl3D+/+J4ioregZlBTWlpq1E=
+	t=1736178895; cv=none; b=liuUjiTWKha72VjZ3ivgyo4sCo0s+V+N9wgbwl/xW3uoRk2WrsMuqyQgM+XIPK58DwKMGrG5ppk7l8K28yEFFFYId+X6+yXne4UP+msH7A7bmD6mZEe2KFdLfUEkYBlKETjxBJMDAUgC24wwQbI9ilUN+i6yR66N3OB5+e0RNGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178422; c=relaxed/simple;
-	bh=cEpw7gfDV55CP4zT0/GBcXTzlkDwWnJNBz1ZzdMENmM=;
+	s=arc-20240116; t=1736178895; c=relaxed/simple;
+	bh=hc/03YJ9/6Imt9vpfrvp6EbWHzm+bO0uHWnmwi2ZlII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nNiDZ/hf3ClLCdxqtS7Na/eFfNLvj639V5PRoFWC6rPlKRbBKYbSppI8MjU3xyzZ/FCJYni346ediChycvMmQa+swKvx3UTTpm+C63L0gkwPtgxL0AUWlbhUfw+Kpd3FjvZaZanYlT3Fm6lUWMQwEeS9SykfSPTczP89htI2kRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1M6iiR9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1214C4CED2;
-	Mon,  6 Jan 2025 15:47:00 +0000 (UTC)
+	 MIME-Version; b=MCPgf4nkozY8E9imL9p8J3PRuWaC6iIarIRHGctVeZZmOl7XoldHlsvyiy/BEwDQd33kaPnPyk4CIOj+ZqPuQpLEL0oaSbDSrjnc6aEznQxbO+sOi4aKeP15/2cCdGPqtv6SaJ3wgUnM8+aAU0DzVO0eOc0K8LZCZAGg7g63CH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUcwyrIe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FB5C4CED6;
+	Mon,  6 Jan 2025 15:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178421;
-	bh=cEpw7gfDV55CP4zT0/GBcXTzlkDwWnJNBz1ZzdMENmM=;
+	s=korg; t=1736178895;
+	bh=hc/03YJ9/6Imt9vpfrvp6EbWHzm+bO0uHWnmwi2ZlII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P1M6iiR9fHmUtC8YJptdmHcyAsrNXr3Y9khO8FxKhUPITEvLMB97Jp17cyhUR7/in
-	 u9Vi9wAJVSxaTK5u2qPShuhUXLlHciuid+b4c39lZ3xKZiS3F8ppNjrLxE+ev46yBE
-	 Ci1hy3yUMaHUQ++koKd3pPxW3ZH8+paDVBlxhoCI=
+	b=IUcwyrIee3VdEqZCAVx4dJGovPfGblZL6bdG2hetCdrK0buujC/70ElJBLkiEYlSr
+	 kW1u5a2W5PzMg00P9zIMIU2bkgAH4PaBK1PME6zA3W+ZAb1wFflnaeKvJUsrmK0a7Y
+	 jugUML8HHP4juEoL+qd+XD9Ll2kibH56TfDZGbPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8400677f3fd43f37d3bc@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Chengen Du <chengen.du@canonical.com>,
-	Willem de Bruijn <willemb@google.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 112/138] af_packet: fix vlan_get_tci() vs MSG_PEEK
+Subject: [PATCH 5.15 128/168] net: stmmac: platform: provide devm_stmmac_probe_config_dt()
 Date: Mon,  6 Jan 2025 16:17:16 +0100
-Message-ID: <20250106151137.468976639@linuxfoundation.org>
+Message-ID: <20250106151143.277025484@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,103 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 77ee7a6d16b6ec07b5c3ae2b6b60a24c1afbed09 ]
+[ Upstream commit d74065427374da6659a2d7fad4ec55c8926d43c4 ]
 
-Blamed commit forgot MSG_PEEK case, allowing a crash [1] as found
-by syzbot.
+Provide a devres variant of stmmac_probe_config_dt() that allows users to
+skip calling stmmac_remove_config_dt() at driver detach.
 
-Rework vlan_get_tci() to not touch skb at all,
-so that it can be used from many cpus on the same skb.
-
-Add a const qualifier to skb argument.
-
-[1]
-skbuff: skb_under_panic: text:ffffffff8a8da482 len:32 put:14 head:ffff88807a1d5800 data:ffff88807a1d5810 tail:0x14 end:0x140 dev:<NULL>
-------------[ cut here ]------------
- kernel BUG at net/core/skbuff.c:206 !
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 0 UID: 0 PID: 5880 Comm: syz-executor172 Not tainted 6.13.0-rc3-syzkaller-00762-g9268abe611b0 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
- RIP: 0010:skb_panic net/core/skbuff.c:206 [inline]
- RIP: 0010:skb_under_panic+0x14b/0x150 net/core/skbuff.c:216
-Code: 0b 8d 48 c7 c6 9e 6c 26 8e 48 8b 54 24 08 8b 0c 24 44 8b 44 24 04 4d 89 e9 50 41 54 41 57 41 56 e8 3a 5a 79 f7 48 83 c4 20 90 <0f> 0b 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3
-RSP: 0018:ffffc90003baf5b8 EFLAGS: 00010286
-RAX: 0000000000000087 RBX: dffffc0000000000 RCX: 8565c1eec37aa000
-RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
-RBP: ffff88802616fb50 R08: ffffffff817f0a4c R09: 1ffff92000775e50
-R10: dffffc0000000000 R11: fffff52000775e51 R12: 0000000000000140
-R13: ffff88807a1d5800 R14: ffff88807a1d5810 R15: 0000000000000014
-FS:  00007fa03261f6c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffd65753000 CR3: 0000000031720000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  skb_push+0xe5/0x100 net/core/skbuff.c:2636
-  vlan_get_tci+0x272/0x550 net/packet/af_packet.c:565
-  packet_recvmsg+0x13c9/0x1ef0 net/packet/af_packet.c:3616
-  sock_recvmsg_nosec net/socket.c:1044 [inline]
-  sock_recvmsg+0x22f/0x280 net/socket.c:1066
-  ____sys_recvmsg+0x1c6/0x480 net/socket.c:2814
-  ___sys_recvmsg net/socket.c:2856 [inline]
-  do_recvmmsg+0x426/0xab0 net/socket.c:2951
-  __sys_recvmmsg net/socket.c:3025 [inline]
-  __do_sys_recvmmsg net/socket.c:3048 [inline]
-  __se_sys_recvmmsg net/socket.c:3041 [inline]
-  __x64_sys_recvmmsg+0x199/0x250 net/socket.c:3041
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-
-Fixes: 79eecf631c14 ("af_packet: Handle outgoing VLAN packets without hardware offloading")
-Reported-by: syzbot+8400677f3fd43f37d3bc@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6772c485.050a0220.2f3838.04c6.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Chengen Du <chengen.du@canonical.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20241230161004.2681892-1-edumazet@google.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lore.kernel.org/r/20230623100417.93592-9-brgl@bgdev.pl
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 2b6ffcd7873b ("net: stmmac: restructure the error path of stmmac_probe_config_dt()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ .../ethernet/stmicro/stmmac/stmmac_platform.c | 41 +++++++++++++++++++
+ .../ethernet/stmicro/stmmac/stmmac_platform.h |  2 +
+ 2 files changed, 43 insertions(+)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 01a191c8194b..49baa5924d74 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -503,10 +503,8 @@ static void *packet_current_frame(struct packet_sock *po,
- 	return packet_lookup_frame(po, rb, rb->head, status);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index e12df9d99089..196fb1ddbec0 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -8,6 +8,7 @@
+   Author: Giuseppe Cavallaro <peppe.cavallaro@st.com>
+ *******************************************************************************/
+ 
++#include <linux/device.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/module.h>
+@@ -627,6 +628,39 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+ 	return ret;
  }
  
--static u16 vlan_get_tci(struct sk_buff *skb, struct net_device *dev)
-+static u16 vlan_get_tci(const struct sk_buff *skb, struct net_device *dev)
++static void devm_stmmac_remove_config_dt(void *data)
++{
++	struct plat_stmmacenet_data *plat = data;
++
++	/* Platform data argument is unused */
++	stmmac_remove_config_dt(NULL, plat);
++}
++
++/**
++ * devm_stmmac_probe_config_dt
++ * @pdev: platform_device structure
++ * @mac: MAC address to use
++ * Description: Devres variant of stmmac_probe_config_dt(). Does not require
++ * the user to call stmmac_remove_config_dt() at driver detach.
++ */
++struct plat_stmmacenet_data *
++devm_stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
++{
++	struct plat_stmmacenet_data *plat;
++	int ret;
++
++	plat = stmmac_probe_config_dt(pdev, mac);
++	if (IS_ERR(plat))
++		return plat;
++
++	ret = devm_add_action_or_reset(&pdev->dev,
++				       devm_stmmac_remove_config_dt, plat);
++	if (ret)
++		return ERR_PTR(ret);
++
++	return plat;
++}
++
+ /**
+  * stmmac_remove_config_dt - undo the effects of stmmac_probe_config_dt()
+  * @pdev: platform_device structure
+@@ -649,12 +683,19 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+ 	return ERR_PTR(-EINVAL);
+ }
+ 
++struct plat_stmmacenet_data *
++devm_stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
++{
++	return ERR_PTR(-EINVAL);
++}
++
+ void stmmac_remove_config_dt(struct platform_device *pdev,
+ 			     struct plat_stmmacenet_data *plat)
  {
--	u8 *skb_orig_data = skb->data;
--	int skb_orig_len = skb->len;
- 	struct vlan_hdr vhdr, *vh;
- 	unsigned int header_len;
+ }
+ #endif /* CONFIG_OF */
+ EXPORT_SYMBOL_GPL(stmmac_probe_config_dt);
++EXPORT_SYMBOL_GPL(devm_stmmac_probe_config_dt);
+ EXPORT_SYMBOL_GPL(stmmac_remove_config_dt);
  
-@@ -527,12 +525,8 @@ static u16 vlan_get_tci(struct sk_buff *skb, struct net_device *dev)
- 	else
- 		return 0;
+ int stmmac_get_platform_resources(struct platform_device *pdev,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
+index 3fff3f59d73d..2102c6d41464 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
+@@ -13,6 +13,8 @@
  
--	skb_push(skb, skb->data - skb_mac_header(skb));
--	vh = skb_header_pointer(skb, header_len, sizeof(vhdr), &vhdr);
--	if (skb_orig_data != skb->data) {
--		skb->data = skb_orig_data;
--		skb->len = skb_orig_len;
--	}
-+	vh = skb_header_pointer(skb, skb_mac_offset(skb) + header_len,
-+				sizeof(vhdr), &vhdr);
- 	if (unlikely(!vh))
- 		return 0;
+ struct plat_stmmacenet_data *
+ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac);
++struct plat_stmmacenet_data *
++devm_stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac);
+ void stmmac_remove_config_dt(struct platform_device *pdev,
+ 			     struct plat_stmmacenet_data *plat);
  
 -- 
 2.39.5
