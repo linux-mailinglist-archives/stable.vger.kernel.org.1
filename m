@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-107530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9193A02C7D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1801DA02BAE
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:46:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C8D43A8E7B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:52:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6121D3A5F57
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:44:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D738634A;
-	Mon,  6 Jan 2025 15:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C511DBB13;
+	Mon,  6 Jan 2025 15:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x0At68a5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3YoCSW6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C03914A098;
-	Mon,  6 Jan 2025 15:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F3B14A617;
+	Mon,  6 Jan 2025 15:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178750; cv=none; b=OAxocI01+MAme45LYJmU40BhpDYeP4hrY6cn5JXegqo5fDd162Kcci6jJfO0oeaIMYInSb51uWk7ijHlBnnQkgu68mnMOrHp/IxN6yS/ykreNQQASjFMDFIOhcCN06K5zmAeUoArlw3/lYqO5GgyjtLsTggYDUqrsVpTCkzd5oU=
+	t=1736178277; cv=none; b=PfHxuVj4qZ3dEpoxvf8XYrpnTR6ron7qB9gWHfKkgZMz62IULR4AIE95Peyt3eRiaeG3581LXoe/IX7A0GfdCUTPqgPlrKKtE08o7oi5NsNPEjVoI3hrIyaBEL340PvYNu0nVzX1kLSwl3UtHhwBKm0L8K50CY1WyI/KCHNVwEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178750; c=relaxed/simple;
-	bh=SE8L8v6lbyVQyRJW+E8UwvDUJoZliry8OSQ/R904uaQ=;
+	s=arc-20240116; t=1736178277; c=relaxed/simple;
+	bh=WJ9HQzIZABhFuiV0mb2jNMfBMyZ3BvNYjaWmt/7bJ0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P547NigZv5Rm3UTRPkTpyEyyj6tgP5WuHfQSoH00KqXtzIWcMB00AZ6UGGGQ8rxEyMKFmy0Vrt4sljTd4cf1DTGSgB9XoSv6zeOKAZ8qIp8j4t23vDgWyvmwQrDKCWRgnpuqnrCuvlHqbgnm6KKUlAeE1jgjt7IAdw2ffb3tBt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x0At68a5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89425C4CED2;
-	Mon,  6 Jan 2025 15:52:29 +0000 (UTC)
+	 MIME-Version; b=cw6E5fgL+WlFdGEnFrpwNGLzuTDrg+C+HFIfvkuSRFmRFW8P9VrVUwB0Tn3z8ZpH8W5TwA2xlCEHz/IZ2bCgM8mqM6lObhLk438JOjE10MtRaZ5bGfjw8rgiGYpnE26AGpYhBp5oP7R6YPn/xsjJNqtnlBZXmIT7bwsnHWBSB6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3YoCSW6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B9BC4CEDF;
+	Mon,  6 Jan 2025 15:44:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178749;
-	bh=SE8L8v6lbyVQyRJW+E8UwvDUJoZliry8OSQ/R904uaQ=;
+	s=korg; t=1736178277;
+	bh=WJ9HQzIZABhFuiV0mb2jNMfBMyZ3BvNYjaWmt/7bJ0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x0At68a5Txx7W0eDdfcFJ+rq1U2xsqtBfYsk8JS0/HfMfVZDgEMFNHNpvvNfjrgcT
-	 gaZXjSQeBtbzVn2yxXU+dwW9za645H73jCi3iqHpdDjfYmgqo1dEz5Yt/3W/fF7aLL
-	 qYxC869UPpuOn5/RyCj2oKqoAQta+DPWmbK20Gec=
+	b=v3YoCSW6zH3YTBJEjLmcH1xAIdPr+fy64uF6n8DHM1EaQTridqthwNM/6WM8YZsSa
+	 C8NBOFbTUORG0ViU+B/1MAgb0hBhOHlmMbXWHH1qLs5ADWpIcw8GBZBu20427WREti
+	 rtIruwJ/Y+JiX+MbnJgWIhtroHCJQqAvZ7MQnJ3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 080/168] regmap: Use correct format specifier for logging range errors
-Date: Mon,  6 Jan 2025 16:16:28 +0100
-Message-ID: <20250106151141.486861096@linuxfoundation.org>
+Subject: [PATCH 5.10 065/138] scsi: mpt3sas: Diag-Reset when Doorbell-In-Use bit is set during driver load time
+Date: Mon,  6 Jan 2025 16:16:29 +0100
+Message-ID: <20250106151135.695148411@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit 3f1aa0c533d9dd8a835caf9a6824449c463ee7e2 ]
+[ Upstream commit 3f5eb062e8aa335643181c480e6c590c6cedfd22 ]
 
-The register addresses are unsigned ints so we should use %u not %d to
-log them.
+Issue a Diag-Reset when the "Doorbell-In-Use" bit is set during the
+driver load/initialization.
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20241127-regmap-test-high-addr-v1-1-74a48a9e0dc5@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20241110173341.11595-2-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/mpt3sas/mpt3sas_base.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index faa4f7ad45a7..00437ed9d5e0 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -1153,13 +1153,13 @@ struct regmap *__regmap_init(struct device *dev,
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
+index 53528711dac1..768635de93da 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
+@@ -6008,11 +6008,12 @@ _base_handshake_req_reply_wait(struct MPT3SAS_ADAPTER *ioc, int request_bytes,
+ 	int i;
+ 	u8 failed;
+ 	__le32 *mfp;
++	int ret_val;
  
- 		/* Sanity check */
- 		if (range_cfg->range_max < range_cfg->range_min) {
--			dev_err(map->dev, "Invalid range %d: %d < %d\n", i,
-+			dev_err(map->dev, "Invalid range %d: %u < %u\n", i,
- 				range_cfg->range_max, range_cfg->range_min);
- 			goto err_range;
- 		}
+ 	/* make sure doorbell is not in use */
+ 	if ((ioc->base_readl_ext_retry(&ioc->chip->Doorbell) & MPI2_DOORBELL_USED)) {
+ 		ioc_err(ioc, "doorbell is in use (line=%d)\n", __LINE__);
+-		return -EFAULT;
++		goto doorbell_diag_reset;
+ 	}
  
- 		if (range_cfg->range_max > map->max_register) {
--			dev_err(map->dev, "Invalid range %d: %d > %d\n", i,
-+			dev_err(map->dev, "Invalid range %d: %u > %u\n", i,
- 				range_cfg->range_max, map->max_register);
- 			goto err_range;
- 		}
+ 	/* clear pending doorbell interrupts from previous state changes */
+@@ -6102,6 +6103,10 @@ _base_handshake_req_reply_wait(struct MPT3SAS_ADAPTER *ioc, int request_bytes,
+ 			    le32_to_cpu(mfp[i]));
+ 	}
+ 	return 0;
++
++doorbell_diag_reset:
++	ret_val = _base_diag_reset(ioc);
++	return ret_val;
+ }
+ 
+ /**
 -- 
 2.39.5
 
