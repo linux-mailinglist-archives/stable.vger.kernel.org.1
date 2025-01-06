@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-107276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F031A02B14
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:40:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1D7AA02A20
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F727165790
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:39:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA5AB164A54
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0267DF71;
-	Mon,  6 Jan 2025 15:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40CA3188A0D;
+	Mon,  6 Jan 2025 15:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtlL9gRK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pFRzDTkz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D6F14D28C;
-	Mon,  6 Jan 2025 15:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD765132103;
+	Mon,  6 Jan 2025 15:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177980; cv=none; b=Jmk06sf8Ug9kYyLQka+At585PpZeRBwp//TRbD0yhLORieAvUyJkT+5F99wQ8TmoC7iLyKlbG8vQtMHt/d1K5LMeu0kj4Lbm3ehVovm/0fcZ2M2n6jdj2doQh6WbbP2H+UuWOxCB+RYyWtO9EOyj0TRsZPBYDN4G+DX/Z6jJ8jI=
+	t=1736177463; cv=none; b=IzHn9Orn3pY5CuR6tDbyZqXbbMswBFKKhNHGVHDXnTu9ks2dAJ3vjXDx27msvosZXtpIc/hD95fuQuxCvLFYxzkrhp760uxUw96GnulyESBDvxLM7c9S7POhKgM+MTu1bP0L6OCg1vKDW1ojWsQiugbneVIhWR5e1JaXUQ6fDt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177980; c=relaxed/simple;
-	bh=83YCLa6WFLIBBtc9q6EjTGq6iZKbPbP0lvFMZLiRMOg=;
+	s=arc-20240116; t=1736177463; c=relaxed/simple;
+	bh=2BRKYkkouC5IsuCrjRugHU5vAgZLNoK6yXxkOW4DIWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bsqfP5SQG9RuxkaAABZerBQ+w6JwWhf+rlWf9HxdfL+CC3ZQLhFF2UYiRy8+/B2qa/Uf8Ko7Aadh3m1Sdfte4rIpxey4iz7EGEiU1VwBQKGNoIP45SxGAIstazLiXda1oAJA4HmMqwhC709vj7ydZ1rMVD1EChXweGuYKgyVtpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtlL9gRK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080D2C4CED2;
-	Mon,  6 Jan 2025 15:39:39 +0000 (UTC)
+	 MIME-Version; b=kRazT8A5oB76RrgIX5jbALqZ9B6OAc/0OtEWqSEmLXMAHdBfM+5DjV4ztEtH6jjzE9jiAc2NWguMcqrY2kyVq7IBVQLeC8HkpRAIcb93wzsfPaGZv1WzZX/lLlOHstW/U0G4yhEP4kC0E9kPpA2D9hLL6IZ7rYgyX9ZMdORqL34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pFRzDTkz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C0AC4CED2;
+	Mon,  6 Jan 2025 15:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177980;
-	bh=83YCLa6WFLIBBtc9q6EjTGq6iZKbPbP0lvFMZLiRMOg=;
+	s=korg; t=1736177462;
+	bh=2BRKYkkouC5IsuCrjRugHU5vAgZLNoK6yXxkOW4DIWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VtlL9gRKhV629M5xjE+rwcejGAz5MrvVMNG4z8wv9+o9YxSt0s3rx7qYcvLYnqr6T
-	 KUpjkei/kA8h9TA/iKDXpS6PgSxEt1xRTh9YkjfftXjEbdKB2IIu7JpNKMObIidjCB
-	 fV5JmVgtyL6vzb9/4uRnjWG/NZrOoydh08vAVaus=
+	b=pFRzDTkzEDy+pUyItPIi54yxxx3rI/OR0VCtNMFNsJZbeA8DEsEHS/L9zpaKsOmo8
+	 OuIy9RSiKA7lF5a0Mhwo0roDU6c2VFRwmW26haMv6sdxLLfsHLCRsqJw5pdUzoI79S
+	 6+x/0jz2478cKXMXogqkh0H9uKJnNMYpZp2t1Nrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.com>,
-	Adrian Ratiu <adrian.ratiu@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	syzbot+b3e02953598f447d4d2a@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Martin KaFai Lau <kafai@fb.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 090/156] sound: usb: format: dont warn that raw DSD is unsupported
+Subject: [PATCH 6.6 172/222] net: restrict SO_REUSEPORT to inet sockets
 Date: Mon,  6 Jan 2025 16:16:16 +0100
-Message-ID: <20250106151145.118282637@linuxfoundation.org>
+Message-ID: <20250106151157.274611606@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +65,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Ratiu <adrian.ratiu@collabora.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b50a3e98442b8d72f061617c7f7a71f7dba19484 ]
+[ Upstream commit 5b0af621c3f6ef9261cf6067812f2fd9943acb4b ]
 
-UAC 2 & 3 DAC's set bit 31 of the format to signal support for a
-RAW_DATA type, typically used for DSD playback.
+After blamed commit, crypto sockets could accidentally be destroyed
+from RCU call back, as spotted by zyzbot [1].
 
-This is correctly tested by (format & UAC*_FORMAT_TYPE_I_RAW_DATA),
-fp->dsd_raw = true; and call snd_usb_interface_dsd_format_quirks(),
-however a confusing and unnecessary message gets printed because
-the bit is not properly tested in the last "unsupported" if test:
-if (format & ~0x3F) { ... }
+Trying to acquire a mutex in RCU callback is not allowed.
 
-For example the output:
+Restrict SO_REUSEPORT socket option to inet sockets.
 
-usb 7-1: new high-speed USB device number 5 using xhci_hcd
-usb 7-1: New USB device found, idVendor=262a, idProduct=9302, bcdDevice=0.01
-usb 7-1: New USB device strings: Mfr=1, Product=2, SerialNumber=6
-usb 7-1: Product: TC44C
-usb 7-1: Manufacturer: TC44C
-usb 7-1: SerialNumber: 5000000001
-hid-generic 0003:262A:9302.001E: No inputs registered, leaving
-hid-generic 0003:262A:9302.001E: hidraw6: USB HID v1.00 Device [DDHIFI TC44C] on usb-0000:08:00.3-1/input0
-usb 7-1: 2:4 : unsupported format bits 0x100000000
+v1 of this patch supported TCP, UDP and SCTP sockets,
+but fcnal-test.sh test needed RAW and ICMP support.
 
-This last "unsupported format" is actually wrong: we know the
-format is a RAW_DATA which we assume is DSD, so there is no need
-to print the confusing message.
+[1]
+BUG: sleeping function called from invalid context at kernel/locking/mutex.c:562
+in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 24, name: ksoftirqd/1
+preempt_count: 100, expected: 0
+RCU nest depth: 0, expected: 0
+1 lock held by ksoftirqd/1/24:
+  #0: ffffffff8e937ba0 (rcu_callback){....}-{0:0}, at: rcu_lock_acquire include/linux/rcupdate.h:337 [inline]
+  #0: ffffffff8e937ba0 (rcu_callback){....}-{0:0}, at: rcu_do_batch kernel/rcu/tree.c:2561 [inline]
+  #0: ffffffff8e937ba0 (rcu_callback){....}-{0:0}, at: rcu_core+0xa37/0x17a0 kernel/rcu/tree.c:2823
+Preemption disabled at:
+ [<ffffffff8161c8c8>] softirq_handle_begin kernel/softirq.c:402 [inline]
+ [<ffffffff8161c8c8>] handle_softirqs+0x128/0x9b0 kernel/softirq.c:537
+CPU: 1 UID: 0 PID: 24 Comm: ksoftirqd/1 Not tainted 6.13.0-rc3-syzkaller-00174-ga024e377efed #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Call Trace:
+ <TASK>
+  __dump_stack lib/dump_stack.c:94 [inline]
+  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+  __might_resched+0x5d4/0x780 kernel/sched/core.c:8758
+  __mutex_lock_common kernel/locking/mutex.c:562 [inline]
+  __mutex_lock+0x131/0xee0 kernel/locking/mutex.c:735
+  crypto_put_default_null_skcipher+0x18/0x70 crypto/crypto_null.c:179
+  aead_release+0x3d/0x50 crypto/algif_aead.c:489
+  alg_do_release crypto/af_alg.c:118 [inline]
+  alg_sock_destruct+0x86/0xc0 crypto/af_alg.c:502
+  __sk_destruct+0x58/0x5f0 net/core/sock.c:2260
+  rcu_do_batch kernel/rcu/tree.c:2567 [inline]
+  rcu_core+0xaaa/0x17a0 kernel/rcu/tree.c:2823
+  handle_softirqs+0x2d4/0x9b0 kernel/softirq.c:561
+  run_ksoftirqd+0xca/0x130 kernel/softirq.c:950
+  smpboot_thread_fn+0x544/0xa30 kernel/smpboot.c:164
+  kthread+0x2f0/0x390 kernel/kthread.c:389
+  ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
 
-This we unset bit 31 of the format after recognizing it, to avoid
-the message.
-
-Suggested-by: Takashi Iwai <tiwai@suse.com>
-Signed-off-by: Adrian Ratiu <adrian.ratiu@collabora.com>
-Link: https://patch.msgid.link/20241209090529.16134-2-adrian.ratiu@collabora.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 8c7138b33e5c ("net: Unpublish sk from sk_reuseport_cb before call_rcu")
+Reported-by: syzbot+b3e02953598f447d4d2a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6772f2f4.050a0220.2f3838.04cb.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Martin KaFai Lau <kafai@fb.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20241231160527.3994168-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/format.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/core/sock.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/usb/format.c b/sound/usb/format.c
-index 0cbf1d4fbe6e..6049d957694c 100644
---- a/sound/usb/format.c
-+++ b/sound/usb/format.c
-@@ -60,6 +60,8 @@ static u64 parse_audio_format_i_type(struct snd_usb_audio *chip,
- 			pcm_formats |= SNDRV_PCM_FMTBIT_SPECIAL;
- 			/* flag potentially raw DSD capable altsettings */
- 			fp->dsd_raw = true;
-+			/* clear special format bit to avoid "unsupported format" msg below */
-+			format &= ~UAC2_FORMAT_TYPE_I_RAW_DATA;
- 		}
- 
- 		format <<= 1;
-@@ -71,8 +73,11 @@ static u64 parse_audio_format_i_type(struct snd_usb_audio *chip,
- 		sample_width = as->bBitResolution;
- 		sample_bytes = as->bSubslotSize;
- 
--		if (format & UAC3_FORMAT_TYPE_I_RAW_DATA)
-+		if (format & UAC3_FORMAT_TYPE_I_RAW_DATA) {
- 			pcm_formats |= SNDRV_PCM_FMTBIT_SPECIAL;
-+			/* clear special format bit to avoid "unsupported format" msg below */
-+			format &= ~UAC3_FORMAT_TYPE_I_RAW_DATA;
-+		}
- 
- 		format <<= 1;
+diff --git a/net/core/sock.c b/net/core/sock.c
+index bc2a4e38dcea..84ba3f67bca9 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -1133,7 +1133,10 @@ int sk_setsockopt(struct sock *sk, int level, int optname,
+ 		sk->sk_reuse = (valbool ? SK_CAN_REUSE : SK_NO_REUSE);
  		break;
+ 	case SO_REUSEPORT:
+-		sk->sk_reuseport = valbool;
++		if (valbool && !sk_is_inet(sk))
++			ret = -EOPNOTSUPP;
++		else
++			sk->sk_reuseport = valbool;
+ 		break;
+ 	case SO_TYPE:
+ 	case SO_PROTOCOL:
 -- 
 2.39.5
 
