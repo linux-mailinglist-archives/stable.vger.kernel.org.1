@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-107708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 256AFA02D25
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:01:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58340A02BF0
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:48:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F7F51885CAF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:01:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B46E7A12CF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C511DED5B;
-	Mon,  6 Jan 2025 16:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1592A13B592;
+	Mon,  6 Jan 2025 15:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5Rzcf4d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7N6Pb3y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1AA1DE8BD;
-	Mon,  6 Jan 2025 16:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DE642040;
+	Mon,  6 Jan 2025 15:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179288; cv=none; b=G4h0XrdlVPcEXkQ402I9kq0J35n8ghH95tnPnmUTPoYYqpVloJpA/uPJTt9FrBvdfvxYeTXID0pq12pqkRK3TcE65IVRUNyEQfu3RucZbDuqamsKJWZqrUfovTx6Yn9wns6lI0sOtQ3RLfWMQjdiVQaRNVKOKRvmkaLaN0V5Lls=
+	t=1736178519; cv=none; b=KF+6QacsvCmUcHk8oNOHiK5y7u/RPf+SgP6G1Laq4gcgGPBgVyaNn88mAFzmK9Y5FuuoXtWDPce767Eo1+tABoteBF5WL3JKdR5WTh1UaS8jg7cwm2WAf62tI5j3C8rmwjc92d6gaGA4vvMt8FOeU2BQUYnthG9SwUcHx2pcPfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179288; c=relaxed/simple;
-	bh=ZHx348gsxSZXoXDn2LaNi9NcO1mflrofWBtxy/f4QaU=;
+	s=arc-20240116; t=1736178519; c=relaxed/simple;
+	bh=5VLFm6F8j4JojQa1uUjp6KK4oYg9U3CuNy6v2KlEEmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oCc5L1ZIePVYT86vz5Ro8UNA5bmqpM2vnUxciOZX7LgcN4yHFIQSuIP5ma6BEmv1j0ULRxo6IG/IPwDOEclkh25XKkTYMMT7cCQt8ukDx9LKLRZmIkUNXlpZQfUufpcAKrEBbHce2tAjVoT0lpw2Kf9YjxX06y4m5Cxe0LMIB/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5Rzcf4d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9C3C4CED2;
-	Mon,  6 Jan 2025 16:01:27 +0000 (UTC)
+	 MIME-Version; b=uD5/9qtT7Has+wQqk7B1hsV7g8DAcUTQP6oEqD1fkolBT41cOkJEasjes7VWCEKfpd9d5uZIDnqgUpQO4Ro3fe9neaPK5CYxYQn7YcEZmFxQKULuBdh3+FmmyTXh+UGWeyBa0tyGtzlYHVvLRmkPYm3ECWm1i0eiUkJ0MhPmJCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7N6Pb3y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1E1C4CED2;
+	Mon,  6 Jan 2025 15:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179288;
-	bh=ZHx348gsxSZXoXDn2LaNi9NcO1mflrofWBtxy/f4QaU=;
+	s=korg; t=1736178519;
+	bh=5VLFm6F8j4JojQa1uUjp6KK4oYg9U3CuNy6v2KlEEmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h5Rzcf4dBXy7rvdzLwU8CSSnP77doawEyNj7huBY3Gn5TTmRxxHEQCIWI+llN4fcG
-	 102HhEPtoPoCdt28hNdaCew2n5SgVGrT2rLelxJ2/I5RhaNmfs+iw705fI9Ae57u/d
-	 f09TaWp0pr3/xAyCnRWSelM0hfBk4jcFR+VyKTbw=
+	b=E7N6Pb3yuUVAyL+yjhVGlTc13BF3hTFqf0EhVAwHRyRJB51IsRxEXUT5UqMlevSv6
+	 TBV2HEewFal1a3M38wwuCEJEPkpUJy8JMAfKW1cAKwKF1YIlgdnAh6wOGLZ5Bt0a8k
+	 4PNDXk7mnIZBdyABaLkXZIUNZDiga7KaDMqZ+E2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Vasily Averin <vasily.averin@linux.dev>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
-Subject: [PATCH 5.4 56/93] ipv6: fix possible UAF in ip6_finish_output2()
-Date: Mon,  6 Jan 2025 16:17:32 +0100
-Message-ID: <20250106151130.819280334@linuxfoundation.org>
+	Filipe Manana <fdmanana@suse.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 129/138] btrfs: locking: remove the recursion handling code
+Date: Mon,  6 Jan 2025 16:17:33 +0100
+Message-ID: <20250106151138.117477287@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +63,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit e891b36de161fcd96f12ff83667473e5067b9037 ]
+[ Upstream commit 4048daedb910f83f080c6bb03c78af794aebdff5 ]
 
-If skb_expand_head() returns NULL, skb has been freed
-and associated dst/idev could also have been freed.
+Now that we're no longer using recursion, rip out all of the supporting
+code.  Follow up patches will clean up the callers of these functions.
 
-We need to hold rcu_read_lock() to make sure the dst and
-associated idev are alive.
+The extent_buffer::lock_owner is still retained as it allows safety
+checks in btrfs_init_new_buffer for the case that the free space cache
+is corrupted and we try to allocate a block that we are currently using
+and have locked in the path.
 
-Fixes: 5796015fa968 ("ipv6: allocate enough headroom in ip6_finish_output2()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Vasily Averin <vasily.averin@linux.dev>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20240820160859.3786976-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-(cherry picked from commit e891b36de161fcd96f12ff83667473e5067b9037)
-Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 97e86631bccd ("btrfs: don't set lock_owner when locking extent buffer for reading")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_output.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/btrfs/locking.c | 68 +++-------------------------------------------
+ 1 file changed, 4 insertions(+), 64 deletions(-)
 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index a88c3988cbbd..45622cc03e96 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -68,11 +68,15 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
+diff --git a/fs/btrfs/locking.c b/fs/btrfs/locking.c
+index 5260660b655a..1e36a66fcefa 100644
+--- a/fs/btrfs/locking.c
++++ b/fs/btrfs/locking.c
+@@ -25,43 +25,18 @@
+  * - reader/reader sharing
+  * - try-lock semantics for readers and writers
+  *
+- * Additionally we need one level nesting recursion, see below. The rwsem
+- * implementation does opportunistic spinning which reduces number of times the
+- * locking task needs to sleep.
+- *
+- *
+- * Lock recursion
+- * --------------
+- *
+- * A write operation on a tree might indirectly start a look up on the same
+- * tree.  This can happen when btrfs_cow_block locks the tree and needs to
+- * lookup free extents.
+- *
+- * btrfs_cow_block
+- *   ..
+- *   alloc_tree_block_no_bg_flush
+- *     btrfs_alloc_tree_block
+- *       btrfs_reserve_extent
+- *         ..
+- *         load_free_space_cache
+- *           ..
+- *           btrfs_lookup_file_extent
+- *             btrfs_search_slot
+- *
++ * The rwsem implementation does opportunistic spinning which reduces number of
++ * times the locking task needs to sleep.
+  */
  
- 	/* Be paranoid, rather than too clever. */
- 	if (unlikely(hh_len > skb_headroom(skb)) && dev->header_ops) {
-+		/* Make sure idev stays alive */
-+		rcu_read_lock();
- 		skb = skb_expand_head(skb, hh_len);
- 		if (!skb) {
- 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
-+			rcu_read_unlock();
- 			return -ENOMEM;
- 		}
-+		rcu_read_unlock();
- 	}
+ /*
+  * __btrfs_tree_read_lock - lock extent buffer for read
+  * @eb:		the eb to be locked
+  * @nest:	the nesting level to be used for lockdep
+- * @recurse:	if this lock is able to be recursed
++ * @recurse:	unused
+  *
+  * This takes the read lock on the extent buffer, using the specified nesting
+  * level for lockdep purposes.
+- *
+- * If you specify recurse = true, then we will allow this to be taken if we
+- * currently own the lock already.  This should only be used in specific
+- * usecases, and the subsequent unlock will not change the state of the lock.
+  */
+ void __btrfs_tree_read_lock(struct extent_buffer *eb, enum btrfs_lock_nesting nest,
+ 			    bool recurse)
+@@ -71,31 +46,7 @@ void __btrfs_tree_read_lock(struct extent_buffer *eb, enum btrfs_lock_nesting ne
+ 	if (trace_btrfs_tree_read_lock_enabled())
+ 		start_ns = ktime_get_ns();
  
- 	hdr = ipv6_hdr(skb);
+-	if (unlikely(recurse)) {
+-		/* First see if we can grab the lock outright */
+-		if (down_read_trylock(&eb->lock))
+-			goto out;
+-
+-		/*
+-		 * Ok still doesn't necessarily mean we are already holding the
+-		 * lock, check the owner.
+-		 */
+-		if (eb->lock_owner != current->pid) {
+-			down_read_nested(&eb->lock, nest);
+-			goto out;
+-		}
+-
+-		/*
+-		 * Ok we have actually recursed, but we should only be recursing
+-		 * once, so blow up if we're already recursed, otherwise set
+-		 * ->lock_recursed and carry on.
+-		 */
+-		BUG_ON(eb->lock_recursed);
+-		eb->lock_recursed = true;
+-		goto out;
+-	}
+ 	down_read_nested(&eb->lock, nest);
+-out:
+ 	eb->lock_owner = current->pid;
+ 	trace_btrfs_tree_read_lock(eb, start_ns);
+ }
+@@ -136,22 +87,11 @@ int btrfs_try_tree_write_lock(struct extent_buffer *eb)
+ }
+ 
+ /*
+- * Release read lock.  If the read lock was recursed then the lock stays in the
+- * original state that it was before it was recursively locked.
++ * Release read lock.
+  */
+ void btrfs_tree_read_unlock(struct extent_buffer *eb)
+ {
+ 	trace_btrfs_tree_read_unlock(eb);
+-	/*
+-	 * if we're nested, we have the write lock.  No new locking
+-	 * is needed as long as we are the lock owner.
+-	 * The write unlock will do a barrier for us, and the lock_recursed
+-	 * field only matters to the lock owner.
+-	 */
+-	if (eb->lock_recursed && current->pid == eb->lock_owner) {
+-		eb->lock_recursed = false;
+-		return;
+-	}
+ 	eb->lock_owner = 0;
+ 	up_read(&eb->lock);
+ }
 -- 
 2.39.5
 
