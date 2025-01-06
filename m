@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-107448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 858B0A02BF3
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:48:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FBD5A02D0A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:00:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DACB164B09
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:48:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBF0D1882E33
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C575B14F9F3;
-	Mon,  6 Jan 2025 15:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 701611DDC36;
+	Mon,  6 Jan 2025 16:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uL7oFDW0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C+X0Cm6Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82191145348;
-	Mon,  6 Jan 2025 15:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2858B1DDC1B;
+	Mon,  6 Jan 2025 16:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178492; cv=none; b=LquCd3m+6476vTyBkviSO2zXmBr47/V3E/RjCHLgJv59yaKvhrH5wMXHvGYDI64jmvHqW560G9tMe2VBPGarigBSZZc89zui24GU/SS75CZL32r5nbnadRT060ffBHgAOS0kBtBEW7eqTJzqWlHVztABlnOk/5nT8gGMDt5bloo=
+	t=1736179216; cv=none; b=PUP7ld10+88icpAom8vmzVQzPaXdozsJzTClCA4hf7JUdDfnljOH1xdjIneEd8LF75UAw4SyzSllmGr7fsjmbUQycmO7BpxiNRZ+QqIuP8gph1PChqfiQ3Bb6o1sHJHG5nC3QM+58Ju6b1hTvBMgCvJCen1T16bKDnHyFhQfACI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178492; c=relaxed/simple;
-	bh=xyRvInQ87d5NHrlJIwIvnZI/grFnHtIQT+c2Mb5hb5g=;
+	s=arc-20240116; t=1736179216; c=relaxed/simple;
+	bh=zvz9BycAWzmLfovKy3Fo2BLx9Fch1hcrlbgHD9eLSIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CX69CXmCqVFlL4s7fupPGcTIeGNHWxiS7yq3O53onpSTAv2FgRvUTzY+q5+zmBp+SxNrq8M8najoPsq4AchX4oa8YD7TMQ9FrH97eLvNOwZ2jGbI+eE3g6PH+L/avr0HZMTtQLIm2Igh8nuf2/qOPpblbEufA8Oq0SUNcw3m17I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uL7oFDW0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01708C4CED2;
-	Mon,  6 Jan 2025 15:48:11 +0000 (UTC)
+	 MIME-Version; b=MCoSeGxOPPuc2/94xb/8Rot8yisPmcxkcXpfa5BDCelFKn7wUrhxxCdIs7gvkxJ85wxGCJDaios1E/VL9pjnQ2ppCD4+3jLOVVSFQN2b6Xzysm9giaBoTGCC978cYlkI5MX1kQqp19jurQoDye0ICGwYBvp7IFiDgNyklQ64ExI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C+X0Cm6Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CAFC4CED2;
+	Mon,  6 Jan 2025 16:00:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178492;
-	bh=xyRvInQ87d5NHrlJIwIvnZI/grFnHtIQT+c2Mb5hb5g=;
+	s=korg; t=1736179216;
+	bh=zvz9BycAWzmLfovKy3Fo2BLx9Fch1hcrlbgHD9eLSIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uL7oFDW0gTKajAEpaqeJtFQcIGLEN+EIdV49ZaOOG97iR85o2a0c6GQbReq+rg2Vs
-	 UNsUaUVKysapL1JnxEVmkjS3V0f6z0V7mSVUlKsRUY0fr2otb7Yd6TNYCwBua21mrF
-	 Iydnq0H064Elwp9exOAPy9B8OtOxS5kT7RSbJeyc=
+	b=C+X0Cm6Qa2p5IspkNOPzatro+wcsmC+aqyoXTFaKsSnKGY0iRst0i0YZyvmz/q1+w
+	 aci0cGsTid0O4yyOmgjvCdLg9eZJ/gOcEGqlN2qMQs17AqF2ENauPFHRfgj/lMpyD5
+	 WWTTYIYtexk3wkycnzeXKh9K5QOYQVtDwpQcToJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hien Huynh <hien.huynh.px@renesas.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Adam Ford <aford173@gmail.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 5.10 137/138] drm: adv7511: Drop dsi single lane support
+	Parav Pandit <parav@nvidia.com>,
+	Bodong Wang <bodong@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 65/93] net/mlx5: Make API mlx5_core_is_ecpf accept const pointer
 Date: Mon,  6 Jan 2025 16:17:41 +0100
-Message-ID: <20250106151138.419308139@linuxfoundation.org>
+Message-ID: <20250106151131.158552880@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Parav Pandit <parav@nvidia.com>
 
-commit 79d67c499c3f886202a40c5cb27e747e4fa4d738 upstream.
+[ Upstream commit 3b1e58aa832ed537289be6a51a2015309688a90c ]
 
-As per [1] and [2], ADV7535/7533 supports only 2-, 3-, or 4-lane. Drop
-unsupported 1-lane.
+Subsequent patch implements helper API which has mlx5_core_dev
+as const pointer, make its caller API too const *.
 
-[1] https://www.analog.com/media/en/technical-documentation/data-sheets/ADV7535.pdf
-[2] https://www.analog.com/media/en/technical-documentation/data-sheets/ADV7533.pdf
-
-Fixes: 1e4d58cd7f88 ("drm/bridge: adv7533: Create a MIPI DSI device")
-Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Adam Ford <aford173@gmail.com>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241119192040.152657-4-biju.das.jz@bp.renesas.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Parav Pandit <parav@nvidia.com>
+Reviewed-by: Bodong Wang <bodong@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Stable-dep-of: e05feab22fd7 ("RDMA/mlx5: Enforce same type port association for multiport RoCE")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/adv7511/adv7533.c |    2 +-
+ include/linux/mlx5/driver.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/bridge/adv7511/adv7533.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7533.c
-@@ -191,7 +191,7 @@ int adv7533_parse_dt(struct device_node
+diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
+index 9744d9a2d71e..882197037654 100644
+--- a/include/linux/mlx5/driver.h
++++ b/include/linux/mlx5/driver.h
+@@ -1137,7 +1137,7 @@ static inline bool mlx5_core_is_vf(const struct mlx5_core_dev *dev)
+ 	return dev->coredev_type == MLX5_COREDEV_VF;
+ }
  
- 	of_property_read_u32(np, "adi,dsi-lanes", &num_lanes);
- 
--	if (num_lanes < 1 || num_lanes > 4)
-+	if (num_lanes < 2 || num_lanes > 4)
- 		return -EINVAL;
- 
- 	adv->num_dsi_lanes = num_lanes;
+-static inline bool mlx5_core_is_ecpf(struct mlx5_core_dev *dev)
++static inline bool mlx5_core_is_ecpf(const struct mlx5_core_dev *dev)
+ {
+ 	return dev->caps.embedded_cpu;
+ }
+-- 
+2.39.5
+
 
 
 
