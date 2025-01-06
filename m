@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-106792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F34A021DF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 10:30:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B4DEA021BE
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 10:26:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9834A161C62
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 09:30:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B3F11639F0
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 09:26:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627891D9337;
-	Mon,  6 Jan 2025 09:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F2E1D90C5;
+	Mon,  6 Jan 2025 09:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="RrNO/dgP"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="pw8eAlgV"
 X-Original-To: stable@vger.kernel.org
-Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
+Received: from out203-205-221-231.mail.qq.com (out203-205-221-231.mail.qq.com [203.205.221.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E0C1D9324;
-	Mon,  6 Jan 2025 09:29:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D978B1D7E4C;
+	Mon,  6 Jan 2025 09:26:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736155784; cv=none; b=OEgSxTlwbwBadeJEnYAbL6sxYPp8BldcEiiivmVB18KuH+TNI6gisMHd1y1CMjswuqbKig/SauU8QvGIIRrGmzpcaPC2m3so7DfrST3epZHLfWxeylOvAj1lmo2LAk0pYHejpTgfsooJsT8spN2ikw7hGOJdBO/UBsilZn7wtzk=
+	t=1736155606; cv=none; b=tkRJMoMsgQUfNKaoE/fjxwYENjdqay6AhhKQNDKOukhYHM6YkmVWlWLDEoMN8URqUbXeZiAlsYz+Ye+Kyas8uWR3jNBKgLIq1A7bP9b8RxVyXAxIFaxTqrWl8L3A+W4w95kwzvh0s712+0wU1uxlLvI0osUIIOqtnhE5609uIuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736155784; c=relaxed/simple;
-	bh=rru6PLmrgyfj1x9vmlK7bt52bJgxOGXtSo7CS+zIpFw=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=usa+JQpKvC4DfyrcDZAFNhMoDEWasGg//Rhtg7h4OaXdglkRrzmwbWhalUreqCA2hhLXa9w1ddZRAbwhL7I31zhJA3JjYauvEG5zJgxt8Ab8k/2HqPkDx48juXJ1+Wi+r013CUzB/y/OCedF/DEhQVL3gTrAdQUVqBGaRYGKFTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=RrNO/dgP; arc=none smtp.client-ip=162.62.58.211
+	s=arc-20240116; t=1736155606; c=relaxed/simple;
+	bh=BXRd+tQvO/Ro4RNGymliswSRym2+KsntVA8cipQI4HU=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=lUVT7Az9XFen/zt55g3FqFJ1B/Sh551YOILCq42+g/5HrArYb9W+MCSxS/jNnfRYMEWff3X7TQXSBKF6mCV6+gs3v8t93TFT5LopRyp5/z0sJMFWRoxu76S7B8vd1N4scLnSBkAmvIueS2qk14erxnTlG772myRr4MJ2J7RwBQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=pw8eAlgV; arc=none smtp.client-ip=203.205.221.231
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1736155468; bh=dnX7ibADsVzqp+F5wDH5DMd0+ecoDGczfnfcWBLU/oo=;
+	t=1736155598; bh=8sCIGxuaWy6T9YXV5e3s9X3b7PEsSlpDK/wRLpKU03g=;
 	h=From:To:Cc:Subject:Date;
-	b=RrNO/dgPz2Ht7uPJBJi9qeZkiUGSI4FLkN6OkXEtzAIzIfAIcvqUj6/BR5Tvu0a01
-	 aEhhLAXzdNC8SeYfLwr+tOZcUS8FFjPs2N4rAF7JS63zwZKf4votYDoDW01z4PqqcA
-	 oz2a2HRIXmfIEJBFwaHgwnf+gKKB7VvWZhc5hRtQ=
+	b=pw8eAlgVfkdsS2Suf3wA56Whw3woy1FPCV7U0YdOdZKOdbWaCr54eIAZ7KT1Fw90W
+	 nVElyGqnk0pjPO+rT16Ixtyhf5piOdzx+qDRiZjj8ss4+KzjlqPTlmLcRKB1NiIMS9
+	 uIxDywc2sCZBEsmzepOWeDw3QrnsHouq5y9+T4ZA=
 Received: from localhost.localdomain ([101.227.46.164])
-	by newxmesmtplogicsvrszb16-1.qq.com (NewEsmtp) with SMTP
-	id 61A070E8; Mon, 06 Jan 2025 17:24:26 +0800
-X-QQ-mid: xmsmtpt1736155466tddbugve5
-Message-ID: <tencent_521DBA5B61506A63077CEC4EE730C53BCD09@qq.com>
-X-QQ-XMAILINFO: MllZffuBkEb5Ljyv7yHduB5LNU/Cx8FlR7TfEJIh/3qF28sND14RK6VJw2Cnb1
-	 Q+4YGl1+MM9hHzuLT2WanaIp1GTXCzlibwRURMr2/tPX5ojDUKbAXlMiFmsOCC5lABRocNXSvldN
-	 MhKwMRgcqvZUk5L3FZBu+UqdLWu8mnrTegJtPEY8KMohkUxXYOT6d/DWZQ+g8RYKjIxkqCEVweEt
-	 kWzOGd7NN7/4d6OumexiicjVhi3NvlTDsZk6Z1PcIIKrho7D53JxEhbBZqKNFwkJLTNnBb5jHZ6a
-	 uNkHFctZ8u9RlgOHDudwJSAQ+yKiA2MVpYSE8cA1DOe3LzJJGuP8I/YY2C8u2YWcmasoxhYM+KZA
-	 V+4c2DW8RJ2zHzZX30bhXNOzwpOQt3fRPq9DSgJv5aaVXmaiI2D/DiJ/0WAk+ihgl6YgUrDW03rY
-	 3Kk38S3SOic2TtlEmzk/Hq2GaWNujPbCAnmTcnb6JLV834jDmy3ltPtjQeq5l43YI+nFMaBGvxRp
-	 aUG4bv9wBIShpB3jA1JCSk5rLPMUtyCWoChAgzM7rJqdqxENFzO2KQEFawiK+CDQA5HCg58oGZlJ
-	 pakpFH0vDAf4Dky8Rg/L402iyw3mxHLgrVyxTVe3EEjNYom6tHXeZ6seKwQZ6oM9cBZXsmpxAxQI
-	 YI/jxHMENuY+5PXu+9YqvYFpS8Hl/mccH9qvTiWl39JBwv0FPEbT4mJzwfPXwuytXUr0K6RT96wV
-	 2xd8zq8At+CT6bMrOyy3MB7nWx00tY+U4rLkgveVuE26eyFQskD9H/B9BmfCFOvQB/SkxsNN4Fkd
-	 vf7asgE3tsFZ7cicYZU3D3QS7YylepbjuCTbGpWgWe4khvhR9r7t1frZWXT0YnKs6OsL/1rMtBvc
-	 Y8RQeFjwlHUXaZpOukBa2d7QM8eEHkxRbMxv96VopflqebepFfY8UwmCFuDD/KBqT58obo0MJv5R
-	 01ObPyPOHhFKCNldsKm7GOkPhtXfaDXcG55k5vAHIBXN3JShhT75+SwBGanCYTLe9EOWNQ8CVGE+
-	 pZMAq08Ub+XWdgXJ0Z/OdX5lSESBidrZdE1W841z9+KbSYrmS7wA5IgaQV1Nc=
-X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+	by newxmesmtplogicsvrszgpua5-1.qq.com (NewEsmtp) with SMTP
+	id 6A426423; Mon, 06 Jan 2025 17:26:36 +0800
+X-QQ-mid: xmsmtpt1736155596t7v67da6z
+Message-ID: <tencent_160A5B6C838FD9A915A67E67914350EB1806@qq.com>
+X-QQ-XMAILINFO: NvgtgL4Jzwx/1jbRVoHTsBCgipl0HoD1tLFyw5ahOZLU2ho0d3TCfbdiNcdlRG
+	 ov5tYxMxkR0/4nVjsTdo2If7SdUiF3S4SD5NER4GdjY4vfqGKF7qCjLA9KThbZ+esT/NJysS8naw
+	 3UpH2mBphegwaD9urtcYINCtW+U+PNcE6uwVmvHlW6QKkt32Yq/oHy1bioqNjiuJ7eOHyN4DcVl/
+	 tJbgYdGb+fwwrf+fupeXpRZbRFMfFddZEtGZ/KlsPO5di7+UkNL9kEhO90lIOQg1Lhbs/AWo2tTL
+	 h81BGzusLhJHHD5uuEBvWAvhW4T5Qf3aqTXeQ+FoND+zT1X2FUPCL9EOseQj8SiBC7ptqHqlw9HM
+	 eXP17KZ+cRZ7EajqcH7eOdpamB/DI+qH0+eVF8Ql+u8VpSd1zUFXvGkeazJyl3MWig49CaiMq0il
+	 Br/S/S0UQCgMYTOgfJ8q/7euTmS9lA/uHrSpqx8LTYHkhsKgQ1ogFlUi+qQ+1zFv/IDJOtZ+BsIm
+	 5DaA3FvJOTwuIdByGa43/Qt9PC9aYoJIB4uLTLQmxx0W4Wxyn82ZohOgwWFvwPm6iwKcZpzFI6fN
+	 5C96cJ9ztCBzHtMAn+wWI0oqExjytzkDcmwNwlTawu4tGeuKZwCan9iJL2oOMr3oZK3C1+5gRvE8
+	 K1/gmKufxPx4cacZzovl1rhm2QjglxRVu7RlQLJBsbMPZXbunaYylziF0ihLMOE76ibb8w0wxF5K
+	 WZ0DEZUoC9WFmFFeBIebLwddSCEdjAKIivJbrTuILYyle1Tw4EXIMzVw0INU5S5dASR8oJQrpKNN
+	 4LkcbWFyrN8IWlrNBcp4AdoPXZewfzUG1MqxleKoZKxB6VJgIKa5eMNpmHI955JJENmsP8ANTiMQ
+	 Mm47Yrt3wM8qn7DhHIdM9I9tiN1nFMX7/6ulEA7HShwDLwzrlQf6FkM+TbCRD5EeqiXasTQ1f4oM
+	 DblitnyRxpdcKdWBuQDlSuMr/wjpcx
+X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
 From: wujing <realwujing@qq.com>
 To: gregkh@linuxfoundation.org,
 	sasha.levin@linux.microsoft.com
@@ -64,11 +63,12 @@ Cc: mingo@redhat.com,
 	peterz@infradead.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
+	wujing <realwujing@gmail.com>,
 	wujing <realwujing@qq.com>,
 	QiLiang Yuan <yuanql9@chinatelecom.cn>
-Subject: [PATCH] sched/fair: Fix ksmd and kthreadd running on isolated CPU0 on arm64 systems
-Date: Mon,  6 Jan 2025 17:24:21 +0800
-X-OQ-MSGID: <20250106092421.111988-1-realwujing@qq.com>
+Subject: [PATCH] sched/fair: Correct CPU selection from isolated domain
+Date: Mon,  6 Jan 2025 17:26:34 +0800
+X-OQ-MSGID: <20250106092634.113262-1-realwujing@qq.com>
 X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -78,57 +78,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This bug can be reproduced on Kunpeng arm64 and Phytium arm physical machines,
-as well as in virtual machine environments, based on the linux-4.19.y stable
-branch:
-1. Check the number of CPUs on the system:
-   nproc --all
-   96
+From: wujing <realwujing@gmail.com>
 
-2. Add the parameter isolcpus=0-85 to the grub configuration,
-update grub, and reboot.
+We encountered an issue where the kernel thread `ksmd` runs on the PMD
+dedicated isolated core, leading to high latency in OVS packets.
 
-3. Check the ksmd process:
+Upon analysis, we discovered that this is caused by the current
+select_idle_smt() function not taking the sched_domain mask into account.
 
-   ps aux | grep -i ksmd
-   root      502  0.0  0.0      0     0 ?        S    10:00   0:00 [ksmd]
-
-   ps -o pid,psr,comm -p 502
-   PID PSR COMMAND
-   502   0 ksmd
-
-4. Check the kthreadd process:
-
-   ps aux | grep -i kthreadd
-   root        2  0.0  0.0      0     0 ?        S    10:00   0:00 [kthreadd]
-
-   ps -o pid,psr,comm -p 2
-   PID PSR COMMAND
-     2   0 kthreadd
-
-From the output above, it can be seen that both ksmd and kthreadd are still
-running on CPU0, which is unreasonable since CPU0 has been isolated.
+Kernel version: linux-4.19.y
 
 Cc: stable@vger.kernel.org # 4.19.x
 Signed-off-by: wujing <realwujing@qq.com>
 Signed-off-by: QiLiang Yuan <yuanql9@chinatelecom.cn>
 ---
- kernel/sched/fair.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/fair.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 0950cabfc1d0..454021ff70a1 100644
+index 09f82c84474b..0950cabfc1d0 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -6211,7 +6211,7 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
+@@ -6171,7 +6171,8 @@ static int select_idle_smt(struct task_struct *p, struct sched_domain *sd, int t
+ 		return -1;
  
- 	this_sd = rcu_dereference(*this_cpu_ptr(&sd_llc));
- 	if (!this_sd)
--		return -1;
-+		return housekeeping_any_cpu(HK_FLAG_DOMAIN);
- 
- 	/*
- 	 * Due to large variance we need a large fuzz factor; hackbench in
+ 	for_each_cpu(cpu, cpu_smt_mask(target)) {
+-		if (!cpumask_test_cpu(cpu, &p->cpus_allowed))
++		if (!cpumask_test_cpu(cpu, &p->cpus_allowed) ||
++			!cpumask_test_cpu(cpu, sched_domain_span(sd)))
+ 			continue;
+ 		if (available_idle_cpu(cpu))
+ 			return cpu;
 -- 
 2.39.5
 
