@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-107378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57936A02BB6
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:46:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1957EA0295F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:22:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E7203A6B3A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:44:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09FFF163694
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BE21DBB13;
-	Mon,  6 Jan 2025 15:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9276148838;
+	Mon,  6 Jan 2025 15:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrQhk0Dn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKnjUf2m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9BA1DB92A;
-	Mon,  6 Jan 2025 15:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68853146D6B;
+	Mon,  6 Jan 2025 15:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178283; cv=none; b=Z93Lug0CQlNJyw5PcAEMBwFjJHT77+hF3lBrB92gUxgBfKxEU+umwXcLyIwq6d6s332sLOh7Snquotth9jAxUmFBN2agiEhPfAUc4+CTgKUEU9RR2eK+bOfKz/KkdzkITdvJ+uWMttkQEzJMx6lajRvV+UgaTMX3r0fTxQbnjiQ=
+	t=1736176957; cv=none; b=dtiJScDUCsTyB4lUTNQAzXvYUoToMpdq8BRjm9ZnH7N8GUFATsjNoijzTPsWU9sW0YcYVI68g+Lpgsf80E6bkt5p6+FKbGFWirYWzhjzFl+BigWPxN/hCFnUtc03gvJsfVEk8gtulOlZXamTMg2lQFqsSR7uGiC3L3xdbMMmLxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178283; c=relaxed/simple;
-	bh=5pEu7Acu9NAktVozHjcmnHpkbp8MFtpAsBqMbLGJRiM=;
+	s=arc-20240116; t=1736176957; c=relaxed/simple;
+	bh=RFjsFZ/YtpsOVNz/mai2c2brkR9rC7IoeTLEUcUwafg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kea/ZLaPbKfEYtGGkhOL+caAAumxeY0dkARuGCCzNe8/b5996byTM3HWWOAy5kURxXyh0EGFh9RR2DRfJlA9P78r081fUcl37QNpoticgCysgZZNdWdPE9cDA5VFpi512F+FuCsmoKgqcjm620+qPNbRtDSp4axnHGbkF5dBOVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrQhk0Dn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F72C4CED2;
-	Mon,  6 Jan 2025 15:44:42 +0000 (UTC)
+	 MIME-Version; b=B2WTKmy4HfQ61fcqHnbB25P29f5VxgCvH+jNW88G7K0/mN2SLxfMFxloC5kIocRbw6BNVxq7einxa/MKNc9Rog5DUet7yCrxC5MmBFJiursb7xAnN8cK51JIHd0gygPlB5529elYQK7rpUJaOtNApbjKEQY0FP8rdRNMAXXIh1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKnjUf2m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D163C4CED2;
+	Mon,  6 Jan 2025 15:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178283;
-	bh=5pEu7Acu9NAktVozHjcmnHpkbp8MFtpAsBqMbLGJRiM=;
+	s=korg; t=1736176957;
+	bh=RFjsFZ/YtpsOVNz/mai2c2brkR9rC7IoeTLEUcUwafg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wrQhk0DnA2t9dnM8Q0i76BTN0G1Fwzdj3UCCcfcPIxmcspB0PR/97R457v6B9yWNr
-	 xHpQuiUfsryCG9b7NJE69CxEfAKDsNCRcEPWMbx+8qIulcZG7wFPkgp7+7YNuHU79f
-	 3qL4NH79eJAwLvoW6DzvW4+gWlevyODQfq8lFL1U=
+	b=PKnjUf2mCqrHlq2nTczQeU6TxqnsQr7eN2liKiYxhZ6hb2u7khnZb84egACNYkOwC
+	 zc4E72U0NExGmGM9YNuIO+h8v5GmUfYIEn0Zj66GczIwUd5KJ21gFqErc8OF4OAOLu
+	 IfjRokzCODjV+I3rp4PZLg5945iDqu+w2OpegZ0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Sun <yi.sun@unisoc.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	virtualization@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Anton Protopopov <aspsk@isovalent.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 067/138] virtio-blk: dont keep queue frozen during system suspend
+Subject: [PATCH 6.1 59/81] bpf: fix potential error return
 Date: Mon,  6 Jan 2025 16:16:31 +0100
-Message-ID: <20250106151135.770816233@linuxfoundation.org>
+Message-ID: <20250106151131.663057837@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,74 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Anton Protopopov <aspsk@isovalent.com>
 
-[ Upstream commit 7678abee0867e6b7fb89aa40f6e9f575f755fb37 ]
+[ Upstream commit c4441ca86afe4814039ee1b32c39d833c1a16bbc ]
 
-Commit 4ce6e2db00de ("virtio-blk: Ensure no requests in virtqueues before
-deleting vqs.") replaces queue quiesce with queue freeze in virtio-blk's
-PM callbacks. And the motivation is to drain inflight IOs before suspending.
+The bpf_remove_insns() function returns WARN_ON_ONCE(error), where
+error is a result of bpf_adj_branches(), and thus should be always 0
+However, if for any reason it is not 0, then it will be converted to
+boolean by WARN_ON_ONCE and returned to user space as 1, not an actual
+error value. Fix this by returning the original err after the WARN check.
 
-block layer's queue freeze looks very handy, but it is also easy to cause
-deadlock, such as, any attempt to call into bio_queue_enter() may run into
-deadlock if the queue is frozen in current context. There are all kinds
-of ->suspend() called in suspend context, so keeping queue frozen in the
-whole suspend context isn't one good idea. And Marek reported lockdep
-warning[1] caused by virtio-blk's freeze queue in virtblk_freeze().
-
-[1] https://lore.kernel.org/linux-block/ca16370e-d646-4eee-b9cc-87277c89c43c@samsung.com/
-
-Given the motivation is to drain in-flight IOs, it can be done by calling
-freeze & unfreeze, meantime restore to previous behavior by keeping queue
-quiesced during suspend.
-
-Cc: Yi Sun <yi.sun@unisoc.com>
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: virtualization@lists.linux.dev
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
-Link: https://lore.kernel.org/r/20241112125821.1475793-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Anton Protopopov <aspsk@isovalent.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20241210114245.836164-1-aspsk@isovalent.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/virtio_blk.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ kernel/bpf/core.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
-index 7eae3f373233..28ea9b511fd0 100644
---- a/drivers/block/virtio_blk.c
-+++ b/drivers/block/virtio_blk.c
-@@ -951,9 +951,12 @@ static void virtblk_remove(struct virtio_device *vdev)
- static int virtblk_freeze(struct virtio_device *vdev)
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index 0ea0d50a7c16..83b416af4da1 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -523,6 +523,8 @@ struct bpf_prog *bpf_patch_insn_single(struct bpf_prog *prog, u32 off,
+ 
+ int bpf_remove_insns(struct bpf_prog *prog, u32 off, u32 cnt)
  {
- 	struct virtio_blk *vblk = vdev->priv;
-+	struct request_queue *q = vblk->disk->queue;
++	int err;
++
+ 	/* Branch offsets can't overflow when program is shrinking, no need
+ 	 * to call bpf_adj_branches(..., true) here
+ 	 */
+@@ -530,7 +532,9 @@ int bpf_remove_insns(struct bpf_prog *prog, u32 off, u32 cnt)
+ 		sizeof(struct bpf_insn) * (prog->len - off - cnt));
+ 	prog->len -= cnt;
  
- 	/* Ensure no requests in virtqueues before deleting vqs. */
--	blk_mq_freeze_queue(vblk->disk->queue);
-+	blk_mq_freeze_queue(q);
-+	blk_mq_quiesce_queue_nowait(q);
-+	blk_mq_unfreeze_queue(q);
- 
- 	/* Ensure we don't receive any more interrupts */
- 	vdev->config->reset(vdev);
-@@ -977,8 +980,8 @@ static int virtblk_restore(struct virtio_device *vdev)
- 		return ret;
- 
- 	virtio_device_ready(vdev);
-+	blk_mq_unquiesce_queue(vblk->disk->queue);
- 
--	blk_mq_unfreeze_queue(vblk->disk->queue);
- 	return 0;
+-	return WARN_ON_ONCE(bpf_adj_branches(prog, off, off + cnt, off, false));
++	err = bpf_adj_branches(prog, off, off + cnt, off, false);
++	WARN_ON_ONCE(err);
++	return err;
  }
- #endif
+ 
+ static void bpf_prog_kallsyms_del_subprogs(struct bpf_prog *fp)
 -- 
 2.39.5
 
