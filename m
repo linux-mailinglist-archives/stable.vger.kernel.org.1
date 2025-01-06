@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-107475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B30A02C1A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:50:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF28EA02A3C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:32:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89DBA16516F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:50:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B58223A156D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2559E1DDA3B;
-	Mon,  6 Jan 2025 15:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A980D1DA60B;
+	Mon,  6 Jan 2025 15:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZGvEoEk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OghmATdi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD4B1DE2CE;
-	Mon,  6 Jan 2025 15:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BECE1DB951;
+	Mon,  6 Jan 2025 15:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178573; cv=none; b=ZTJzV/2K3ebyUGt9qCnpwBf/SXMeXuefNA4P4uqEgAtHiGwuH0OeeHx1JIRZiA4fSI2HquGfNl0s5+8b4Tb1FO8TsuafOHH2WijibkI0/YE3j0hpU4ybBzy2BXlnJ4a+NcZuWKlB4/rZ0h4NaQ9neDKpJMbRd9ccXYOQvlyNpvE=
+	t=1736177421; cv=none; b=k29jKS8rf1nJqtfQwY7xvqZxyiIdSZTQQRkE8IWzbKd2oKf/QRrYkOiEvq+FWUUHjEQugwDbwR23Mc4PfyYa23nucYunszHvSNK44tdy3P5dh+VWLnMPkwWKAIalot4STSo73dq8b0wM5EDUIX/oPlMqgt7KIqdWG0WEaP1al6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178573; c=relaxed/simple;
-	bh=tDAx+TGwYDLfbvVgW+DgyNw0H4qr1+eDvXuvzA11G0Y=;
+	s=arc-20240116; t=1736177421; c=relaxed/simple;
+	bh=uQ5vyDMmHGhtq17mS//JMg0mgMomudLMIoyAzuNcseI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YonEQGNIMZpvTWiDHJAnGCAmTrIa0Wc9TYEsEQe6SgwLnk4DPHG9jb3UHcgdUErNyqaz1YK3bUioNij/UBnq7g97U2uqi4cRaQAe1jRlIkwjG+hy6xPm7qc4/f1M47oLa4BDjP1FmBRdDTjSm4JSVi2M7QeWPXbk/AsN33cXRrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZGvEoEk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04332C4CEDF;
-	Mon,  6 Jan 2025 15:49:32 +0000 (UTC)
+	 MIME-Version; b=GaZvRv0NJVDNdjjYPese+dZYypZ9YZauiHPgPFZMuWgekHVgRghtVAwvzyt36pO1h99D96N47VVu1HYurKQ4dhJ4aW1gCpEIO9drX6NdlueHaikzsMsuLiETXPBtLDx5gR4w+M1ZY3G9QrMTmV6RuJ2wBZv4E2vymzzdaRvCqkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OghmATdi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A50C4CED2;
+	Mon,  6 Jan 2025 15:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178573;
-	bh=tDAx+TGwYDLfbvVgW+DgyNw0H4qr1+eDvXuvzA11G0Y=;
+	s=korg; t=1736177421;
+	bh=uQ5vyDMmHGhtq17mS//JMg0mgMomudLMIoyAzuNcseI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IZGvEoEk+PopR0ygnTkOfmuajuzxWzBuC3MsEp74FGNw5qbv9hBLubM9hnjkukR6z
-	 GXtZ5gQm80kj25LHCuDjcesG3VXrwj45BJ/NuNjR7CQkxFlcmACPCiagMhqtdnVcf0
-	 sm+FKUgxkJVlnUFFQw+5GFNmsddBc4ZMCE0RukjA=
+	b=OghmATdiStEbuffU0BwSYoc77CMnJ3T5oQ198smFqjxvSyhIicCcMgJTOevgUzdhh
+	 JRK/qroZ5O9tl8ff3AI/7ZIwfLVv/DQ/p0z3SgnStdfQpxd86ROEJHBUoYI412lekV
+	 E7ccqYh9/YV2EZ70nlgggfe0xSeBHssOAdlzu++U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prathamesh Shete <pshete@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 024/168] mmc: sdhci-tegra: Remove SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC quirk
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 128/222] RDMA/bnxt_re: Remove always true dattr validity check
 Date: Mon,  6 Jan 2025 16:15:32 +0100
-Message-ID: <20250106151139.376473205@linuxfoundation.org>
+Message-ID: <20250106151155.606322645@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prathamesh Shete <pshete@nvidia.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-commit a56335c85b592cb2833db0a71f7112b7d9f0d56b upstream.
+[ Upstream commit eb867d797d294a00a092b5027d08439da68940b2 ]
 
-Value 0 in ADMA length descriptor is interpreted as 65536 on new Tegra
-chips, remove SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC quirk to make sure max
-ADMA2 length is 65536.
+res->dattr is always valid at this point as it was initialized
+during device addition in bnxt_re_add_device().
 
-Fixes: 4346b7c7941d ("mmc: tegra: Add Tegra186 support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Prathamesh Shete <pshete@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Message-ID: <20241209101009.22710-1-pshete@nvidia.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This change is fixing the following smatch error:
+drivers/infiniband/hw/bnxt_re/qplib_fp.c:1090 bnxt_qplib_create_qp()
+     error: we previously assumed 'res->dattr' could be null (see line 985)
+
+Fixes: 07f830ae4913 ("RDMA/bnxt_re: Adds MSN table capability for Gen P7 adapters")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202411222329.YTrwonWi-lkp@intel.com/
+Link: https://patch.msgid.link/be0d8836b64cba3e479fbcbca717acad04aae02e.1732626579.git.leonro@nvidia.com
+Acked-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-tegra.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/mmc/host/sdhci-tegra.c
-+++ b/drivers/mmc/host/sdhci-tegra.c
-@@ -1382,7 +1382,6 @@ static const struct sdhci_pltfm_data sdh
- 		  SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK |
- 		  SDHCI_QUIRK_SINGLE_POWER_WRITE |
- 		  SDHCI_QUIRK_NO_HISPD_BIT |
--		  SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC |
- 		  SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
- 	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
- 		   SDHCI_QUIRK2_BROKEN_HS200 |
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index 3e07500dcbcf..4098e01666d1 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -980,9 +980,7 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
+ 	u32 tbl_indx;
+ 	u16 nsge;
+ 
+-	if (res->dattr)
+-		qp->is_host_msn_tbl = _is_host_msn_table(res->dattr->dev_cap_flags2);
+-
++	qp->is_host_msn_tbl = _is_host_msn_table(res->dattr->dev_cap_flags2);
+ 	sq->dbinfo.flags = 0;
+ 	bnxt_qplib_rcfw_cmd_prep((struct cmdq_base *)&req,
+ 				 CMDQ_BASE_OPCODE_CREATE_QP,
+-- 
+2.39.5
+
 
 
 
