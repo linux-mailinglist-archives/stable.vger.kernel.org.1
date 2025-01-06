@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-107377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3032A02BB5
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:46:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA9DCA02A6F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:33:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D7073A6842
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:44:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CDB73A64D8
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B021DDC12;
-	Mon,  6 Jan 2025 15:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471021DE8A6;
+	Mon,  6 Jan 2025 15:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtM6ACqo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8MWrV0n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BD11DDC08;
-	Mon,  6 Jan 2025 15:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C8F15855C;
+	Mon,  6 Jan 2025 15:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178280; cv=none; b=tp8ocMY75ngycELx1gN+h0kcigp8kyN2gxweWqM6R3vr1XX0yqbhG7GbGk20LNiCmRfThy+QrWupunH1Eq6rObwaDdYpspByNV7qv5n9LAcklnb2Z7bctebdZWCAX+aG+WeOrjumnLwungMkXodxexjj9uYP+2heylBpMp04fF4=
+	t=1736177517; cv=none; b=owgAaGARhop4iW1mUHxd2rbJau0Y0qht7HLSiW54lOKDlloqe8SZg/U35AZa+A+Zk3eGY/bIxVVLcUWR/VYtw/dy5AsyaX0yzEqaGyI0HgzgfpcFDnztdcpSN3jzMp1cfiwe1+RT/HE0q8I3U63xZAQ21da6OgLFrBWSXYOVNCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178280; c=relaxed/simple;
-	bh=wHHt7PeFC6TRrmirSe0KOfH1bLWONDg9BLerTNrhs6Y=;
+	s=arc-20240116; t=1736177517; c=relaxed/simple;
+	bh=u8UJqXWh0TRf5UT02pOFO8KQPvZz/QvWBOR4uAjpXXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C5XsXF6wYjASsVG0DlK8Fiyn9wlLBdWsoYuvKKR/m8elYs5YO2+aPltnvitqAeAU8prva38yeIkIEZw3cV3pstud9BI6KK+y7MiVIjKDy3eLt/DC4YbUGbdkDrDlyNwB3lZQpnwM+mtAdsZqkLpXWn98ellq2BWJeFwQdmbuFHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtM6ACqo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A803C4CEDF;
-	Mon,  6 Jan 2025 15:44:39 +0000 (UTC)
+	 MIME-Version; b=I8Ijyi6bQEIYSDLIPNvaaBadbJxRnj0GZDjJi8aujp03QYuKmSE5WHAk+7hwFszC5H6Q9erUFsxRhgLDsb1FC+s4xACXa9lnuM5fSv74ke74PPtNFhXH8rAu9KW8fDDNhLB0IavTAoTjOlLgXJEqpJ/+oT2rxDoa4A6Cml2CC5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8MWrV0n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9989C4CED2;
+	Mon,  6 Jan 2025 15:31:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178279;
-	bh=wHHt7PeFC6TRrmirSe0KOfH1bLWONDg9BLerTNrhs6Y=;
+	s=korg; t=1736177516;
+	bh=u8UJqXWh0TRf5UT02pOFO8KQPvZz/QvWBOR4uAjpXXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qtM6ACqoSFMMXZpulPt/qNx2mHSF6A7YTmmJR7wWTSmcLcERAvRkrz8eRxLytwi7f
-	 hEfBC/P1TzFBb+YUvBKCuaZ6gJqTCvfVcKaF2YWZ90nHlF3W+Vws7xaqmaNSbsiY7d
-	 tbDeU9si4KD21QU1Es52Arsji2uncr+1XGOdMPRY=
+	b=u8MWrV0nDXBqnHHCiEqH2nxFq4ZN/s45A/mGM47NgAEIDD3pM/Lj549MJb0C4nS2m
+	 ShGkDTTX/qLn0SaGXscIHyE6vDEy8XviErL+sxD/8tsBRqT5YwpkfoNIQQBzwxoSh4
+	 uQE9DUB80TlNNGkTajeHOR5xGp4iAOlSFkn7riKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Cathy Avery <cavery@redhat.com>,
-	"Ewan D. Milne" <emilne@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Hobin Woo <hobin.woo@samsung.com>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Yoonho Shin <yoonho.shin@samsung.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 066/138] scsi: storvsc: Do not flag MAINTENANCE_IN return of SRB_STATUS_DATA_OVERRUN as an error
-Date: Mon,  6 Jan 2025 16:16:30 +0100
-Message-ID: <20250106151135.733059211@linuxfoundation.org>
+Subject: [PATCH 6.6 187/222] ksmbd: retry iterate_dir in smb2_query_dir
+Date: Mon,  6 Jan 2025 16:16:31 +0100
+Message-ID: <20250106151157.843052901@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +65,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cathy Avery <cavery@redhat.com>
+From: Hobin Woo <hobin.woo@samsung.com>
 
-[ Upstream commit b1aee7f034615b6824d2c70ddb37ef9fc23493b7 ]
+[ Upstream commit 2b904d61a97e8ba79e3bc216ba290fd7e1d85028 ]
 
-This partially reverts commit 812fe6420a6e ("scsi: storvsc: Handle
-additional SRB status values").
+Some file systems do not ensure that the single call of iterate_dir
+reaches the end of the directory. For example, FUSE fetches entries from
+a daemon using 4KB buffer and stops fetching if entries exceed the
+buffer. And then an actor of caller, KSMBD, is used to fill the entries
+from the buffer.
+Thus, pattern searching on FUSE, files located after the 4KB could not
+be found and STATUS_NO_SUCH_FILE was returned.
 
-HyperV does not support MAINTENANCE_IN resulting in FC passthrough
-returning the SRB_STATUS_DATA_OVERRUN value. Now that
-SRB_STATUS_DATA_OVERRUN is treated as an error, multipath ALUA paths go
-into a faulty state as multipath ALUA submits RTPG commands via
-MAINTENANCE_IN.
-
-[    3.215560] hv_storvsc 1d69d403-9692-4460-89f9-a8cbcc0f94f3:
-tag#230 cmd 0xa3 status: scsi 0x0 srb 0x12 hv 0xc0000001
-[    3.215572] scsi 1:0:0:32: alua: rtpg failed, result 458752
-
-Make MAINTENANCE_IN return success to avoid the error path as is
-currently done with INQUIRY and MODE_SENSE.
-
-Suggested-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Cathy Avery <cavery@redhat.com>
-Link: https://lore.kernel.org/r/20241127181324.3318443-1-cavery@redhat.com
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Ewan D. Milne <emilne@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Hobin Woo <hobin.woo@samsung.com>
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Reviewed-by: Namjae Jeon <linkinjeon@kernel.org>
+Tested-by: Yoonho Shin <yoonho.shin@samsung.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/storvsc_drv.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c | 12 +++++++++++-
+ fs/smb/server/vfs.h     |  1 +
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/storvsc_drv.c b/drivers/scsi/storvsc_drv.c
-index 37ad5f525647..7dc916ce0c3c 100644
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -155,6 +155,8 @@ static int sense_buffer_size = PRE_WIN8_STORVSC_SENSE_BUFFER_SIZE;
- */
- static int vmstor_proto_version;
- 
-+static bool hv_dev_is_fc(struct hv_device *hv_dev);
-+
- #define STORVSC_LOGGING_NONE	0
- #define STORVSC_LOGGING_ERROR	1
- #define STORVSC_LOGGING_WARN	2
-@@ -1153,6 +1155,7 @@ static void storvsc_on_io_completion(struct storvsc_device *stor_device,
- 	 * not correctly handle:
- 	 * INQUIRY command with page code parameter set to 0x80
- 	 * MODE_SENSE command with cmd[2] == 0x1c
-+	 * MAINTENANCE_IN is not supported by HyperV FC passthrough
- 	 *
- 	 * Setup srb and scsi status so this won't be fatal.
- 	 * We do this so we can distinguish truly fatal failues
-@@ -1160,7 +1163,9 @@ static void storvsc_on_io_completion(struct storvsc_device *stor_device,
- 	 */
- 
- 	if ((stor_pkt->vm_srb.cdb[0] == INQUIRY) ||
--	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE)) {
-+	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE) ||
-+	   (stor_pkt->vm_srb.cdb[0] == MAINTENANCE_IN &&
-+	   hv_dev_is_fc(device))) {
- 		vstor_packet->vm_srb.scsi_status = 0;
- 		vstor_packet->vm_srb.srb_status = SRB_STATUS_SUCCESS;
- 	}
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index cd530b9a00ca..7216e2cc498b 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -4225,6 +4225,7 @@ static bool __query_dir(struct dir_context *ctx, const char *name, int namlen,
+ 	/* dot and dotdot entries are already reserved */
+ 	if (!strcmp(".", name) || !strcmp("..", name))
+ 		return true;
++	d_info->num_scan++;
+ 	if (ksmbd_share_veto_filename(priv->work->tcon->share_conf, name))
+ 		return true;
+ 	if (!match_pattern(name, namlen, priv->search_pattern))
+@@ -4385,8 +4386,17 @@ int smb2_query_dir(struct ksmbd_work *work)
+ 	query_dir_private.info_level		= req->FileInformationClass;
+ 	dir_fp->readdir_data.private		= &query_dir_private;
+ 	set_ctx_actor(&dir_fp->readdir_data.ctx, __query_dir);
+-
++again:
++	d_info.num_scan = 0;
+ 	rc = iterate_dir(dir_fp->filp, &dir_fp->readdir_data.ctx);
++	/*
++	 * num_entry can be 0 if the directory iteration stops before reaching
++	 * the end of the directory and no file is matched with the search
++	 * pattern.
++	 */
++	if (rc >= 0 && !d_info.num_entry && d_info.num_scan &&
++	    d_info.out_buf_len > 0)
++		goto again;
+ 	/*
+ 	 * req->OutputBufferLength is too small to contain even one entry.
+ 	 * In this case, it immediately returns OutputBufferLength 0 to client.
+diff --git a/fs/smb/server/vfs.h b/fs/smb/server/vfs.h
+index cb76f4b5bafe..06903024a2d8 100644
+--- a/fs/smb/server/vfs.h
++++ b/fs/smb/server/vfs.h
+@@ -43,6 +43,7 @@ struct ksmbd_dir_info {
+ 	char		*rptr;
+ 	int		name_len;
+ 	int		out_buf_len;
++	int		num_scan;
+ 	int		num_entry;
+ 	int		data_count;
+ 	int		last_entry_offset;
 -- 
 2.39.5
 
