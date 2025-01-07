@@ -1,141 +1,105 @@
-Return-Path: <stable+bounces-107871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E62EA045AF
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 17:13:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B462BA045BB
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 17:15:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 764BF163546
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 16:13:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACE4C164652
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 16:15:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 496EF1F3D52;
-	Tue,  7 Jan 2025 16:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB4E1F470A;
+	Tue,  7 Jan 2025 16:15:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ftY7yf4P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4EC1F3D43;
-	Tue,  7 Jan 2025 16:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F303F12B93;
+	Tue,  7 Jan 2025 16:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736266405; cv=none; b=ZR8kJLOwDSaerif4HysONcTkmK5a/TTXVhcV5W4Dvlmd/fSu9iGnMJFpBkiB1QN/sn8fB8YfkkhOgEAplyFLGYfrSFE6Z1ku7U56Il1pH5HtzjKzSu7xVE+/O6dpJujSXmefRM2u7kPb0juLId5j8W2bbncjXx8tgaMoDoqoyW0=
+	t=1736266518; cv=none; b=U82A/tO2iJ+3YW9IYFRBHmAgBrjm0+BHI5Kgg+J3QebkpCDyBhTg6C5kfRZPAOVOVnxfMGZdI9KdCM1UwWsI3V6rYuawfVj1i7w5WCXx8oEySm4bPq32LTGLu99xkiMCNCe/hU/2rC1XgBhcC6qe1VsxEDEF+hLnzPcSce/0m28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736266405; c=relaxed/simple;
-	bh=n7ayQdfsJwptn30pRC4jp91zbfN+mXLjDFUwsuzxGbk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aBvru5/DwngxNPCI7JXrIiNmOxykuCPjAqwgPXzLJW2TnVUyWHjfe2EqmQADrxDrLk81oHhhpNeHPiWzMkszRKkBKJJy1/5xXbCbCxW9QfGLFoxZMLoQUqoNCWbqvM8E3XNPSiiTfpZjKP+7CJd42mRKv54wzcXT892qERBCtY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85190C4CEDD;
-	Tue,  7 Jan 2025 16:13:23 +0000 (UTC)
-Date: Tue, 7 Jan 2025 11:14:51 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Koichiro Den <koichiro.den@canonical.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
- patches@lists.linux.dev, mhiramat@kernel.org, mark.rutland@arm.com,
- mathieu.desnoyers@efficios.com, Zheng Yejian <zhengyejian1@huawei.com>,
- Hagar Hemdan <hagarhem@amazon.com>
-Subject: Re: [PATCH 5.4 50/66] ftrace: Fix possible use-after-free issue in
- ftrace_location()
-Message-ID: <20250107111451.70c905d0@gandalf.local.home>
-In-Reply-To: <74gjhwxupvozwop7ndhrh7t5qeckomt7yqvkkbm5j2tlx6dkfk@rgv7sijvry2k>
-References: <20241115063722.834793938@linuxfoundation.org>
-	<20241115063724.648039829@linuxfoundation.org>
-	<74gjhwxupvozwop7ndhrh7t5qeckomt7yqvkkbm5j2tlx6dkfk@rgv7sijvry2k>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1736266518; c=relaxed/simple;
+	bh=XRDy10K+AyF9yTEhr8OnnrrKoUNY7s1U01ZzDm3fB2E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qKr3jfFD0MeqsRvt5B1R5G/hhCdLb/ehGi9c8Mzj41i1Ubfc42ToE5+er/yXwImQImGbK1wq9D8/33HpTiekCxYBtSRQ+aVL9FU8AePRPsHxonBe8e6pWV/FZ+RGwN1vCU+7iN1BKKKVjidT45AOaJ15baEUv6MDpibhh++nSG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ftY7yf4P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A0F5C4CED6;
+	Tue,  7 Jan 2025 16:15:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736266517;
+	bh=XRDy10K+AyF9yTEhr8OnnrrKoUNY7s1U01ZzDm3fB2E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ftY7yf4PRN5KOIaLmKPtadqrBRROmBldL1iOSwlqgyu6+jb054bYX2m70B6AU+cjj
+	 PBoKNebh/cttAMSSyMxj3BZkGxbYNqc1FZFwki/lR0GPnqxY1HMHbtZIUh2s9yr3g5
+	 nzNpHLI9HJ+C+8vRtF6mHqqMPKIY2A3TYjcVloa1JQGwwk8PFnLwujARvExL8amwA2
+	 MwU+glt4uxTEdtyAwBWQqAF+xGYKTk1nulZKD2bO1ovcHhH8diYHfh9OEZmZ05u30u
+	 Q4nP+6Cn31HuEqvlBCh7lGDMZRblR0FpcVVsc+YX+3OU6gqCsCua5ru4jXvV7BL+rR
+	 0udURGXfu+8QQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1tVCEe-000000000dm-0CIQ;
+	Tue, 07 Jan 2025 17:15:16 +0100
+Date: Tue, 7 Jan 2025 17:15:16 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Abel Vesa <abel.vesa@linaro.org>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] clk: qcom: gcc-x1e80100: Do not turn off usb_2
+ controller GDSC
+Message-ID: <Z31TFHg6SzY6LvUv@hovoldconsulting.com>
+References: <20250107-x1e80100-clk-gcc-fix-usb2-gdsc-pwrsts-v1-1-e15d1a5e7d80@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250107-x1e80100-clk-gcc-fix-usb2-gdsc-pwrsts-v1-1-e15d1a5e7d80@linaro.org>
 
-On Tue, 7 Jan 2025 17:51:36 +0900
-Koichiro Den <koichiro.den@canonical.com> wrote:
-
-> I observed that since this backport, on linux-5.4.y x86-64, a simple 'echo
-> function > current_tracer' without any filter can easily result in double
-> fault (int3) and system becomes unresponsible. linux-5.4.y x86 code has not
-> yet been converted to use text_poke(), so IIUC the issue appears to be that
-> the old ftrace_int3_handler()->ftrace_location() path now includes
-> rcu_read_lock() with this backport patch, which has mcount location inside,
-> that leads to the double fault.
-
-Yep, I can easily reproduce this. Hmm, this should have been caught by
-running the ftrace selftests. I guess nobody is doing that on stable releases :-/
-
+On Tue, Jan 07, 2025 at 05:55:23PM +0200, Abel Vesa wrote:
+> Allowing the usb_2 controller GDSC to be turned off during system suspend
+> renders the controller unable to resume.
 > 
-> I verified on an x86-64 qemu env that applying the following 11 additional
-> backports resolves the issue. The main purpose is to backport #7. All the
-> commits can be cleanly applied to the latest linux-5.4.y (v5.4.288).
+> So use PWRSTS_RET_ON instead in order to make sure this the GDSC doesn't
+> go down.
 > 
->   #11. fd3dc56253ac ftrace/x86: Add back ftrace_expected for ftrace bug reports
->   #10. ac6c1b2ca77e ftrace/x86: Add back ftrace_expected assignment
->    #9. 59566b0b622e x86/ftrace: Have ftrace trampolines turn read-only at the end of system boot up
->    #8. 38ebd8d11924 x86/ftrace: Mark ftrace_modify_code_direct() __ref
->    #7. 768ae4406a5c x86/ftrace: Use text_poke()
->    #6. 63f62addb88e x86/alternatives: Add and use text_gen_insn() helper
->    #5. 18cbc8bed0c7 x86/alternatives, jump_label: Provide better text_poke() batching interface
->    #4. 8f4a4160c618 x86/alternatives: Update int3_emulate_push() comment
->    #3. 72ebb5ff806f x86/alternative: Update text_poke_bp() kernel-doc comment
->    #2. 3a1255396b5a x86/alternatives: add missing insn.h include
->    #1. c3d6324f841b x86/alternatives: Teach text_poke_bp() to emulate instructions
+> Fixes: 161b7c401f4b ("clk: qcom: Add Global Clock controller (GCC) driver for X1E80100")
+> Cc: stable@vger.kernel.org      # 6.8
+> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+> ---
+>  drivers/clk/qcom/gcc-x1e80100.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
->   Note: #8-11 are follow-up fixes for #7
->         #2-3 are follow-up fixes for #1
+> diff --git a/drivers/clk/qcom/gcc-x1e80100.c b/drivers/clk/qcom/gcc-x1e80100.c
+> index 8ea25aa25dff043ab4a81fee78b6173139f871b6..7288af845434d824eb91489ab97be25d665cad3a 100644
+> --- a/drivers/clk/qcom/gcc-x1e80100.c
+> +++ b/drivers/clk/qcom/gcc-x1e80100.c
+> @@ -6083,7 +6083,7 @@ static struct gdsc gcc_usb20_prim_gdsc = {
+>  	.pd = {
+>  		.name = "gcc_usb20_prim_gdsc",
+>  	},
+> -	.pwrsts = PWRSTS_OFF_ON,
+> +	.pwrsts = PWRSTS_RET_ON,
+>  	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+>  };
 
-That's a lot to backport. Perhaps there's a simpler solution?
+This does the trick and matches what we do for the other controllers:
 
-> 
-> According to [1], no regressions were observed on x86_64, which included
-> running kselftest-ftrace. So I'm a bit confused.
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
 
-Yeah, that's a big failure!
-
-Maybe they only tested a min config with no ftrace enabled?
-
-> 
-> Could someone take a look and shed light on this? (ftrace on linux-5.4.y x86)
-
-I would like to know too!
-
-> 
-> Thanks.
-> 
-> [1] https://lore.kernel.org/stable/CA+G9fYtdzDCDP_RxjPKS5wvQH=NsjT+bDRbukFqoX6cN+EHa7Q@mail.gmail.com/
-
-Anyway, this appears to fix it (for 5.4 and earlier):
-
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index 380032a27f98..2eb1a8ec5755 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -1554,7 +1554,7 @@ unsigned long ftrace_location_range(unsigned long start, unsigned long end)
- 	struct dyn_ftrace key;
- 	unsigned long ip = 0;
- 
--	rcu_read_lock();
-+	preempt_disable_notrace();
- 	key.ip = start;
- 	key.flags = end;	/* overload flags, as it is unsigned long */
- 
-@@ -1572,7 +1572,7 @@ unsigned long ftrace_location_range(unsigned long start, unsigned long end)
- 			break;
- 		}
- 	}
--	rcu_read_unlock();
-+	preempt_enable_notrace();
- 	return ip;
- }
- 
-
-If someone would like to apply that, feel free. As preempt_disable() will
-give RCU protection as well.
-
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-
--- Steve
+Johan
 
