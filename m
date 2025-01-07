@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-107884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F035DA048FC
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 19:11:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C946A048FE
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 19:11:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E70D1162650
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 18:11:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 094781885B99
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 18:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 874FA1F37D5;
-	Tue,  7 Jan 2025 18:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4B81F4282;
+	Tue,  7 Jan 2025 18:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MmedMuqu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vOLAc18a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430B918BBBB
-	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 18:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ADEA1E47DB
+	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 18:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736273427; cv=none; b=qWP9THD5ScXUqsYkOKQPwHUYfX4Guqk/0e9FqKVO8vR3d7UjzYy1eBWgFfwoaDF8eU3anbEffyyPP2BAGDUWoJt7Q5f5HYB5MR6FSLxvh4i1r8fBixKrppEXH2IX4WxvtlGM+6getlV+a+lIAjCBxGJxHSyjLzsxXNQuDymXSR4=
+	t=1736273429; cv=none; b=hFh7L2QLZ9NdlM4nYbeV+Az14lzZU59DIfJknZ+zesEWDyOi6ZsccNB/R6v+wXCS3nS1YpUmPT2pXvblMXQ1QJJ5f25EQTdzPF8KVHWpjXPNS7U/tRFgVJGRbDGYyXCyw9hsFEwo8a+6yep6udkPMnyGd3Qo//GQXyJmt3XRg7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736273427; c=relaxed/simple;
-	bh=zOld9jP1i+Z4BZqa9he7zeaJ/gEucv2bP3au7vmugGE=;
+	s=arc-20240116; t=1736273429; c=relaxed/simple;
+	bh=9Z5u+Jc1C4BykbyxeDt8mr6YTGR8U2xKT572mbBQ4Cs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lKMTyScxkwt7nQU29hdClpVSYy3YVizEwdBnf23VfsJm++QEwN/yw9mxla5Itx8TTFEyUVx5EyUoOSf5NcyrsyYUtPDtkOr3JU4mEetzsFzBDYh3VFvYfvkS06kSQCEEleXVzFyf0BP/7EjlKYPLHvRHW2ckyhJPlF/KWXcs1qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MmedMuqu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 385E6C4CEDE;
-	Tue,  7 Jan 2025 18:10:26 +0000 (UTC)
+	 MIME-Version; b=Rv7/ISMzvxQ/zIw2jzClBzp+x0Z4OjQtoGs1RJxG6LnCyr7iDqfokxZa6MVBf9fbwvYSP1bEqgKoEEpJIWO/or/Jh3HocyFsWNw53QllOqtcjFG3AU1YW8iy0Zb5lDCdVHnRqJuIOBjBQp3sVxbm0sou3E17j6GccV6W65p5UOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vOLAc18a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5EAC4CEDE;
+	Tue,  7 Jan 2025 18:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736273426;
-	bh=zOld9jP1i+Z4BZqa9he7zeaJ/gEucv2bP3au7vmugGE=;
+	s=k20201202; t=1736273429;
+	bh=9Z5u+Jc1C4BykbyxeDt8mr6YTGR8U2xKT572mbBQ4Cs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MmedMuqukCU7JX5yCL/wR/pVhQAEMrUhM4d7Lno2fUeEN4rNAhxfZdEs7lXcfSUG8
-	 oJ02g/8du7/XaJD8xEYro6rdcQ1NQO4WT0Gg9I4rc0gJLWl2XLwxL55BnGj0E4C7iY
-	 O9Wi/PCY9x1aE5ZdVceMMAxX8ahY13XDVEcgogankx2dbbuJy5yig0rF1dnnHJB1Lq
-	 BDtNteJ1AIVKTzdP3Vji/yJFo3oloFwwapXgWMsrXKCDtMoQf1vi3tamQbIqy48Zo6
-	 1i/vxCQa61jlMmkTthUmCT5yjhjGuI2rlfRky++uj5uUq55bjWlw0kwXBiOCEKTEoq
-	 vqxaYOixhAzdQ==
+	b=vOLAc18asFpQfQZonmXH9lt1du3qRjkBa6p32Dd45SE97KlX59UeoJjNcngPxqY+t
+	 bliaz6dzZI0tA+oicoRUWxoVLIJd7YRH4GXaZ1Ir+jXipkrquDMdcD+8ihBeQnVl5u
+	 Q1afNenVoZE8QQY5h4Y9/ByNQtPYUqr/1EWpQr+6jVJtZx2VdXrojZ9L9eHiHh+1aa
+	 gNg0BgF4AXk4EzinuQFSRqLDZBxN/hBju/bmycDEOXOhMrf756EbmATDIwhB+MH4s8
+	 dc2t4Edv9xwPLhDBfI01SreUpE210E4yycrlfNgzNuZoCrscm5gP+pIyKNA6SrDAo5
+	 beYHIrsZqyGMQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Kuan-Wei Chiu <visitorckw@gmail.com>,
+Cc: Alva Lan <alvalan9@foxmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] scripts/sorttable: fix orc_sort_cmp() to maintain symmetry and transitivity
-Date: Tue,  7 Jan 2025 13:10:24 -0500
-Message-Id: <20250107081951-5ffddac33b0d6e1e@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y] sched/task_stack: fix object_is_on_stack() for KASAN tagged pointers
+Date: Tue,  7 Jan 2025 13:10:27 -0500
+Message-Id: <20250107082621-1dfa33807b7ac2e6@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250106175731.3308310-1-visitorckw@gmail.com>
+In-Reply-To:  <tencent_8132C47A03471C66AC0181B6AD46F9634705@qq.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,72 +63,50 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Found matching upstream commit: 0210d251162f4033350a94a43f95b1c39ec84a90
+The upstream commit SHA1 provided is correct: fd7b4f9f46d46acbc7af3a439bb0d869efdc5c58
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Alva Lan<alvalan9@foxmail.com>
+Commit author: Qun-Wei Lin<qun-wei.lin@mediatek.com>
 
 
 Status in newer kernel trees:
-6.12.y | Not found
-6.6.y | Not found
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 2d2b19ed4169)
 6.1.y | Not found
-5.15.y | Not found
-5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  0210d251162f ! 1:  e4b874815eaf scripts/sorttable: fix orc_sort_cmp() to maintain symmetry and transitivity
-    @@ Commit message
+1:  fd7b4f9f46d4 ! 1:  357cff9feca0 sched/task_stack: fix object_is_on_stack() for KASAN tagged pointers
+    @@ Metadata
+      ## Commit message ##
+         sched/task_stack: fix object_is_on_stack() for KASAN tagged pointers
      
-         The orc_sort_cmp() function, used with qsort(), previously violated the
-         symmetry and transitivity rules required by the C standard.  Specifically,
-    -    when both entries are ORC_TYPE_UNDEFINED, it could result in both a < b
-    +    when both entries are ORC_REG_UNDEFINED, it could result in both a < b
-         and b < a, which breaks the required symmetry and transitivity.  This can
-         lead to undefined behavior and incorrect sorting results, potentially
-         causing memory corruption in glibc implementations [1].
+    +    [ Upstream commit fd7b4f9f46d46acbc7af3a439bb0d869efdc5c58 ]
+    +
+         When CONFIG_KASAN_SW_TAGS and CONFIG_KASAN_STACK are enabled, the
+         object_is_on_stack() function may produce incorrect results due to the
+         presence of tags in the obj pointer, while the stack pointer does not have
     @@ Commit message
-         Transitivity: If x < y and y < z, then x < z.
-     
-         Fix the comparison logic to return 0 when both entries are
-    -    ORC_TYPE_UNDEFINED, ensuring compliance with qsort() requirements.
-    +    ORC_REG_UNDEFINED, ensuring compliance with qsort() requirements.
-     
-         Link: https://www.qualys.com/2024/01/30/qsort.txt [1]
-         Link: https://lkml.kernel.org/r/20241226140332.2670689-1-visitorckw@gmail.com
-    @@ Commit message
-         Cc: Steven Rostedt <rostedt@goodmis.org>
+         Cc: Shakeel Butt <shakeel.butt@linux.dev>
          Cc: <stable@vger.kernel.org>
          Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-    +    (cherry picked from commit 0210d251162f4033350a94a43f95b1c39ec84a90)
-    +    Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+    +    Signed-off-by: Alva Lan <alvalan9@foxmail.com>
      
-      ## scripts/sorttable.h ##
-     @@ scripts/sorttable.h: static inline unsigned long orc_ip(const int *ip)
-    @@ scripts/sorttable.h: static inline unsigned long orc_ip(const int *ip)
-      	const int *b = g_orc_ip_table + *(int *)_b;
-      	unsigned long a_val = orc_ip(a);
-     @@ scripts/sorttable.h: static int orc_sort_cmp(const void *_a, const void *_b)
-    + 	 * These terminator entries exist to handle any gaps created by
-      	 * whitelisted .o files which didn't get objtool generation.
-      	 */
-    - 	orc_a = g_orc_table + (a - g_orc_ip_table);
-    +-	orc_a = g_orc_table + (a - g_orc_ip_table);
-    +-	return orc_a->sp_reg == ORC_REG_UNDEFINED && !orc_a->end ? -1 : 1;
-    ++ 	orc_a = g_orc_table + (a - g_orc_ip_table);
-     +	orc_b = g_orc_table + (b - g_orc_ip_table);
-    -+	if (orc_a->type == ORC_TYPE_UNDEFINED && orc_b->type == ORC_TYPE_UNDEFINED)
-    ++	if (orc_a->sp_reg == ORC_REG_UNDEFINED && !orc_a->end &&
-    ++	    orc_b->sp_reg == ORC_REG_UNDEFINED && !orc_b->end)
-     +		return 0;
-    - 	return orc_a->type == ORC_TYPE_UNDEFINED ? -1 : 1;
-    ++ 	return orc_a->sp_reg == ORC_REG_UNDEFINED && !orc_a->end ? -1 : 1;
-      }
+      ## include/linux/sched/task_stack.h ##
+     @@
+    + 
+      #include <linux/sched.h>
+      #include <linux/magic.h>
+    - #include <linux/refcount.h>
+     +#include <linux/kasan.h>
       
-    + static void *sort_orctable(void *arg)
+      #ifdef CONFIG_THREAD_INFO_IN_TASK
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
