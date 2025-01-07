@@ -1,142 +1,110 @@
-Return-Path: <stable+bounces-107861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07038A043F5
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 16:15:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F721A04462
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 16:29:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8BA53A51C4
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 15:15:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A593F1668E9
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 15:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7CB1F3D2D;
-	Tue,  7 Jan 2025 15:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BF581F5405;
+	Tue,  7 Jan 2025 15:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="a9oDTS+H";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MlKdOtsV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VArcrndb"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6541F2C51;
-	Tue,  7 Jan 2025 15:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66DB1F4E5B;
+	Tue,  7 Jan 2025 15:27:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736262901; cv=none; b=dAZYu0LAVLyvS1G7PuY0WI1ehOdr8aSjBxEXAP2Bs9+qgEvMAcFs23U1yAihSvO6nLqiT/vOBfNFxu3YJMQ7YTs7Ffp4OmvRXtePTfbDRuDAVwcTeasa6v8SrLFTaGDugIolnMCl4K5uNoVb0RvYCI+2e71xyWPRVN1CiKkBcD4=
+	t=1736263656; cv=none; b=Efuu/1GmUKC/PZi+JDUH7dd0LODhBKqrCbq4An3z/9QfFwLJ9i7hFoAugSBl61SYSbWB7dfSP1+KUraaDHdW5hNrNqWExb2CP37UpXJaNea+3KXiJiFcNJFNMUzkCGNOTFwIfuG9rYkNARKnSh+dUZEtJVh+H3X46AonmQW+ZMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736262901; c=relaxed/simple;
-	bh=JV1EmwhzZN8rbAZfsKr/X1cMrrhDBFJbY8LiCwcvoc8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cPeZlUyMNNtHFLzAUujNZa78wfCrz8vushfj+eqY4ANQeZ0VjEZKDiNc+0c9WoG3WfCc3XCWl/HCCkMRJKXK9jjGdgFESokjdJuTrRmZ60dISAe2pC0+nLO27a0UQg+UxUfYecGPcLFqO6aapgqtXAP7aGRaV36h1YsS2XIyUas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=a9oDTS+H; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MlKdOtsV; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1736262895;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xr/B0xvK7sGkfKbzNUSoXapb4RwCqM0VBcWsRspXohE=;
-	b=a9oDTS+H17gco4eQ8kGhsCqsv9PlMnDDDlrs5LYGf2TxvF6Hc5SBP64YFNV0nppAvZUusn
-	M/G7DF0KH/LcmAEI1xWxZL+QNzgVlBsgjstoBDXG+O5kcLjbzcxJ73XRFUfad5bU/BSlXo
-	A7Y1TLhJxAJJJUB1Cu+ZmF8o4HPSLIsSPIGcqtN8vDA3eYzeCZSbOkqrbjlbcq4O2qsS/n
-	7bsoJ93HjH1DQiw0HcpeuRycJzpZhiOC/HLEyk8byYgd9q0UkBKXyK2nM17peGau2Mh0ah
-	0BAgqvWbeo6MZ37fDRAIoWa1XTY/LDxATu4Oigy2pzOK7TSbTD+y5AJX8XyKGw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1736262895;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xr/B0xvK7sGkfKbzNUSoXapb4RwCqM0VBcWsRspXohE=;
-	b=MlKdOtsVGTXjDdT5TITCXHSRGRiOVe9EHCVyyPc/IRYFURbCmmQ3GfZsh8mk9woFCpH0+G
-	JprG5Ns6Ac7MHGDQ==
-Date: Tue, 07 Jan 2025 16:14:46 +0100
-Subject: [PATCH 2/3] selftests/mm: virtual_address_range: Avoid reading
- VVAR mappings
+	s=arc-20240116; t=1736263656; c=relaxed/simple;
+	bh=ScqUhtJE+0fBFNr0lmCLLMRPqcgRjvXG+/C8hOZCSCM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qs2XPca8KPXerFotEPj670pOz/ULwb/dAn+tUT2tBq/gVMhwPtzdhqDqDnI2UiUJr6RXvE8RXguTDlMvsMX+qqrglJTq3z6Uw0Jazqf84UJ+3xGBH1OEMckrJyfxANEG3g/xk8awuSmMAi8Npe9ncAsqTKX2kxxHvxzLjTKZCNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VArcrndb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE1D6C4CED6;
+	Tue,  7 Jan 2025 15:27:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1736263655;
+	bh=ScqUhtJE+0fBFNr0lmCLLMRPqcgRjvXG+/C8hOZCSCM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VArcrndb/RNzEstEyq3ObLhOlcFwRJ+GWZdLrZaYSaJKvnD6agKZr09DdKaIqg6Od
+	 zqD8HkEJm8XWGuhL3EWrWZL1pKJkYRJdOVWawMu5YSjl0rqPk8o5J8kCtLOLe0gl3r
+	 8oMoU2ambRz3uDQ068UtYNxO++wpVYWNXdEiUqpo=
+Date: Tue, 7 Jan 2025 16:27:32 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Sean Rhodes <sean@starlabs.systems>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH 1/3] Revert "staging: remove rts5139 driver code"
+Message-ID: <2025010718-tamale-eraser-4c49@gregkh>
+References: <20241119121912.12383-1-sean@starlabs.systems>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250107-virtual_address_range-tests-v1-2-3834a2fb47fe@linutronix.de>
-References: <20250107-virtual_address_range-tests-v1-0-3834a2fb47fe@linutronix.de>
-In-Reply-To: <20250107-virtual_address_range-tests-v1-0-3834a2fb47fe@linutronix.de>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Shuah Khan <shuah@kernel.org>, Dev Jain <dev.jain@arm.com>, 
- Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
- stable@vger.kernel.org, kernel test robot <oliver.sang@intel.com>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1736262892; l=2470;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=JV1EmwhzZN8rbAZfsKr/X1cMrrhDBFJbY8LiCwcvoc8=;
- b=UWmnjc1iTVSO0yiJVv6/4RPN2Sb/xWnNUD78AugJktpFzXZZymMS0+1ZQxMl27beVnu+e+YDZ
- 8Nc8ASPkmPSCTTatBfxeZhgcl4WR/ohvWgXLmHZ4bc0wTeHWOo89/b8
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241119121912.12383-1-sean@starlabs.systems>
 
-The virtual_address_range selftest reads from the start of each mapping
-listed in /proc/self/maps.
-However not all mappings are valid to be arbitrarily accessed.
-For example the vvar data used for virtual clocks on x86 can only be
-accessed if 1) the kernel configuration enables virtual clocks and 2)
-the hypervisor provided the data for it, which can only determined by
-the VDSO code itself.
-Since commit e93d2521b27f ("x86/vdso: Split virtual clock pages into dedicated mapping")
-the virtual clock data was split out into its own mapping, triggering
-faulting accesses by virtual_address_range.
+On Tue, Nov 19, 2024 at 12:19:10PM +0000, Sean Rhodes wrote:
+> This reverts commit 00d8521dcd236d1b8f664f54a0309e96bfdcb4f9.
+> 
+> The staging driver that was removed, `rts5139`, worked well with multiple
+> Realtek card readers and provided more comprehensive functionality than
+> `rtsx_usb`. It supported features like interrupts, SSC, speed modes,
+> suspend, secure erase, TRIM, and more. Additionally, its error recovery
+> mechanisms were superior.
+> 
+> Notable issues with the `rtsx_usb` driver include delayed S3 entry until
+> `mmc_rescan` was frozen and data corruption on SDR104 cards. Over 100 bugs
+> related to the `rtsx_usb` driver are reported on Bugzilla, with additional
+> reports downstream. As a result, several forks of `rts5139` exist on
+> GitHub and other repositories, which users rely on to mitigate these
+> problems.
+> 
+> Reintroducing `rts5139` addresses these deficiencies until the current
+> `rtsx_usb` driver achieves feature parity and stability.
+> 
+> Fixes: 00d8521dcd23 ("staging: remove rts5139 driver code")
+> Cc: stable@vger.kernel.org
 
-Skip the various vvar mappings in virtual_address_range to avoid errors.
+Sorry, but this isn't a stable patch, it's "add a whole new driver".
 
-Fixes: e93d2521b27f ("x86/vdso: Split virtual clock pages into dedicated mapping")
-Fixes: 010409649885 ("selftests/mm: confirm VA exhaustion without reliance on correctness of mmap()")
-Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202412271148.2656e485-lkp@intel.com
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
----
- tools/testing/selftests/mm/virtual_address_range.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+Also, who is now going to take over maintaining this driver?  There's
+still a lot of things left on the TODO list:
 
-diff --git a/tools/testing/selftests/mm/virtual_address_range.c b/tools/testing/selftests/mm/virtual_address_range.c
-index d7bf8094d8bcd4bc96e2db4dc3fcb41968def859..484f82c7b7c871f82a7d9ec6d6c649f2ab1eb0cd 100644
---- a/tools/testing/selftests/mm/virtual_address_range.c
-+++ b/tools/testing/selftests/mm/virtual_address_range.c
-@@ -116,10 +116,11 @@ static int validate_complete_va_space(void)
- 
- 	prev_end_addr = 0;
- 	while (fgets(line, sizeof(line), file)) {
-+		int path_offset = 0;
- 		unsigned long hop;
- 
--		if (sscanf(line, "%lx-%lx %s[rwxp-]",
--			   &start_addr, &end_addr, prot) != 3)
-+		if (sscanf(line, "%lx-%lx %4s %*s %*s %*s %n",
-+			   &start_addr, &end_addr, prot, &path_offset) != 3)
- 			ksft_exit_fail_msg("cannot parse /proc/self/maps\n");
- 
- 		/* end of userspace mappings; ignore vsyscall mapping */
-@@ -135,6 +136,10 @@ static int validate_complete_va_space(void)
- 		if (prot[0] != 'r')
- 			continue;
- 
-+		/* Only the VDSO can know if a VVAR mapping is really readable */
-+		if (path_offset && !strncmp(line + path_offset, "[vvar", 5))
-+			continue;
-+
- 		/*
- 		 * Confirm whether MAP_CHUNK_SIZE chunk can be found or not.
- 		 * If write succeeds, no need to check MAP_CHUNK_SIZE - 1
+> --- /dev/null
+> +++ b/drivers/staging/rts5139/TODO
+> @@ -0,0 +1,9 @@
+> +TODO:
+> +- support more USB card reader of Realtek family
+> +- use kernel coding style
+> +- checkpatch.pl fixes
+> +- stop having thousands of lines of code duplicated with staging/rts_pstor
+> +- This driver contains an entire SD/MMC stack -- it should use the stack in
+> +  drivers/mmc instead, as a host driver e.g. drivers/mmc/host/realtek-usb.c;
+> +  see drivers/mmc/host/ushc.c as an example.
+> +- This driver presents cards as SCSI devices, but they should be MMC devices.
 
--- 
-2.47.1
+The biggest issue is the whole mmc stack being in here.  When is that
+work going to happen?  Why not just add the missing features to the
+existing misc/ drivers instead?
 
+I'll be glad to add this back, but I need someone to take ownership of
+it in order to fix this and get it out of staging.  Please feel free to
+resend this series with that information.
+
+thanks,
+
+greg k-h
 
