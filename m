@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-107791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86B53A035AA
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 04:04:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AC24A035C4
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 04:15:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F84C188346F
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 03:04:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97BB01884EAE
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 03:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4AB58632B;
-	Tue,  7 Jan 2025 03:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB665185939;
+	Tue,  7 Jan 2025 03:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XHF1KbK3"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="cGEY4usn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600D0259C;
-	Tue,  7 Jan 2025 03:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9783B155335;
+	Tue,  7 Jan 2025 03:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736219087; cv=none; b=ZXxFdxttB1Sf+lundE5FGKXjtFQUvISS6BnEqVOeOLcZXVIyknAUyfuoYVvNlkR4qm0LUFhcJ2eXPggafJiSx9SL0ROxc5bGF2jXKoKLgZDr7/f5Xx4dHjPGvU9W2PUD1c9a6jQTVQN2jQt4A1qN1hSkvcUz0RKfTVLZt5HUMb4=
+	t=1736219691; cv=none; b=gJAKgGPjMeEsGuKVRvzTFVcmgrevOOt+eSE8mSXcH9k7q/j7KOjPU/XpqPIqv+gWvA8uhrHWDtJRcoge2bNKsfnvWef8G28zq2LgegneWwsk6PmMQhOf39ddRsH22VVF0aW5NXcICODODvoQnQO/AWpIQ8tmIgUg8O0g5UdT8h4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736219087; c=relaxed/simple;
-	bh=pQ+aZMJfs0tLFC+8bz6GwbvVM52+W74yyIUaxiAl8ek=;
-	h=Date:To:From:Subject:Message-Id; b=CVwwG0RriuhT/JGqcMTwR/emHvESG4Th9HUgCavzuLbIdGAYUtkn0ceB92DXsf/uJyOXqn2sjG4rQf0Ei/LTOh5MZJLwnAxohYTfhWLAa4V+fIfne0/BCfpBA1CHUU5dk7CWU0Z4F0pdAYJO15zY50TrTtzVQjDR/aAAgALUFlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XHF1KbK3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C701FC4CED2;
-	Tue,  7 Jan 2025 03:04:46 +0000 (UTC)
+	s=arc-20240116; t=1736219691; c=relaxed/simple;
+	bh=RO98V8POhNu7VyMppJsNJ+N6fP9eJhec/SH8B+lJkbg=;
+	h=Date:To:From:Subject:Message-Id; b=cVCWd4XK+4hRZoAuN8Nkg7Alky+CjxDRQBCPdETdkU65OC/XYwV3aXhhdlt5XvsKkp8fg1QvRhT+86SeiDOKcq2p3jEn9gQJOl1F50YqJ2i9nX9QrNdBz9orqwCJsPAr7dbz7E6ZqQ52lYDY/09+I7rg9sdIsbETgF+L5xH5E1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=cGEY4usn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B76BC4CED2;
+	Tue,  7 Jan 2025 03:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1736219086;
-	bh=pQ+aZMJfs0tLFC+8bz6GwbvVM52+W74yyIUaxiAl8ek=;
+	s=korg; t=1736219691;
+	bh=RO98V8POhNu7VyMppJsNJ+N6fP9eJhec/SH8B+lJkbg=;
 	h=Date:To:From:Subject:From;
-	b=XHF1KbK3/TbA2pTbdjgS1Fz/zX8yhIQ5Xr7rHd8zy4DZ0ssmj+A8nVPfsfpjUBJSk
-	 TcGHqpfTmKBMFbMXHvg/ydc3uglrq73c7a00F8g2TnRCcsE/74XuuNpQExl3rXsVJg
-	 4PK1VevxoiYQIUqRN/rFRz+j4wlW8lKwtA4dSl7o=
-Date: Mon, 06 Jan 2025 19:04:46 -0800
-To: mm-commits@vger.kernel.org,zzqq0103.hey@gmail.com,stable@vger.kernel.org,lihongbo22@huawei.com,brauner@kernel.org,songmuchun@bytedance.com,akpm@linux-foundation.org
+	b=cGEY4usnHdqHEbXu8njdiTDwRNehI7DojxiQIcz3y6DmTIkrcXpS6KHLj5mqoKyEx
+	 ee6VGcOY1SqMeeFiDNYhbZWijkpvsPdJBiVDCqpGCNMowxdBR6RX73mLW8kgctBNDd
+	 ae5STv1n/fDdB4U25dufLDwGAxcXHfR4MHz4bpgs=
+Date: Mon, 06 Jan 2025 19:14:50 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,oleg@redhat.com,kees@kernel.org,john.ogness@linutronix.de,ebiederm@xmission.com,dylanbhatch@google.com,namcao@linutronix.de,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + hugetlb-fix-null-pointer-dereference-in-trace_hugetlbfs_alloc_inode.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250107030446.C701FC4CED2@smtp.kernel.org>
+Subject: [merged] fs-proc-do_task_stat-fix-esp-not-readable-during-coredump.patch removed from -mm tree
+Message-Id: <20250107031451.1B76BC4CED2@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,69 +49,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
-The patch titled
-     Subject: hugetlb: fix NULL pointer dereference in trace_hugetlbfs_alloc_inode
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     hugetlb-fix-null-pointer-dereference-in-trace_hugetlbfs_alloc_inode.patch
+The quilt patch titled
+     Subject: fs/proc: do_task_stat: fix ESP not readable during coredump
+has been removed from the -mm tree.  Its filename was
+     fs-proc-do_task_stat-fix-esp-not-readable-during-coredump.patch
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/hugetlb-fix-null-pointer-dereference-in-trace_hugetlbfs_alloc_inode.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+This patch was dropped because it was merged into mainline or a subsystem tree
 
 ------------------------------------------------------
-From: Muchun Song <songmuchun@bytedance.com>
-Subject: hugetlb: fix NULL pointer dereference in trace_hugetlbfs_alloc_inode
-Date: Mon, 6 Jan 2025 11:31:17 +0800
+From: Nam Cao <namcao@linutronix.de>
+Subject: fs/proc: do_task_stat: fix ESP not readable during coredump
+Date: Thu, 2 Jan 2025 09:22:56 +0100
 
-hugetlb_file_setup() will pass a NULL @dir to hugetlbfs_get_inode(), so we
-will access a NULL pointer for @dir.  Fix it and set __entry->dr to 0 if
-@dir is NULL.  Because ->i_ino cannot be 0 (see get_next_ino()), there is
-no confusing if user sees a 0 inode number.
+The field "eip" (instruction pointer) and "esp" (stack pointer) of a task
+can be read from /proc/PID/stat.  These fields can be interesting for
+coredump.
 
-Link: https://lkml.kernel.org/r/20250106033118.4640-1-songmuchun@bytedance.com
-Fixes: 318580ad7f28 ("hugetlbfs: support tracepoint")
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Reported-by: Cheung Wall <zzqq0103.hey@gmail.com>
-Closes: https://lore.kernel.org/linux-mm/02858D60-43C1-4863-A84F-3C76A8AF1F15@linux.dev/T/#
-Reviewed-by: Hongbo Li <lihongbo22@huawei.com>
-Cc: cheung wall <zzqq0103.hey@gmail.com>
-Cc: Christian Brauner <brauner@kernel.org>
+However, these fields were disabled by commit 0a1eb2d474ed ("fs/proc: Stop
+reporting eip and esp in /proc/PID/stat"), because it is generally unsafe
+to do so.  But it is safe for a coredumping process, and therefore
+exceptions were made:
+
+  - for a coredumping thread by commit fd7d56270b52 ("fs/proc: Report
+    eip/esp in /prod/PID/stat for coredumping").
+
+  - for all other threads in a coredumping process by commit cb8f381f1613
+    ("fs/proc/array.c: allow reporting eip/esp for all coredumping
+    threads").
+
+The above two commits check the PF_DUMPCORE flag to determine a coredump
+thread and the PF_EXITING flag for the other threads.
+
+Unfortunately, commit 92307383082d ("coredump: Don't perform any cleanups
+before dumping core") moved coredump to happen earlier and before
+PF_EXITING is set.  Thus, checking PF_EXITING is no longer the correct way
+to determine threads in a coredumping process.
+
+Instead of PF_EXITING, use PF_POSTCOREDUMP to determine the other threads.
+
+Checking of PF_EXITING was added for coredumping, so it probably can now
+be removed.  But it doesn't hurt to keep.
+
+Link: https://lkml.kernel.org/r/d89af63d478d6c64cc46a01420b46fd6eb147d6f.1735805772.git.namcao@linutronix.de
+Fixes: 92307383082d ("coredump:  Don't perform any cleanups before dumping core")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Acked-by: Kees Cook <kees@kernel.org>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: Dylan Hatch <dylanbhatch@google.com>
+Cc: John Ogness <john.ogness@linutronix.de>
+Cc: Shuah Khan <shuah@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/trace/events/hugetlbfs.h |    2 +-
+ fs/proc/array.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/trace/events/hugetlbfs.h~hugetlb-fix-null-pointer-dereference-in-trace_hugetlbfs_alloc_inode
-+++ a/include/trace/events/hugetlbfs.h
-@@ -23,7 +23,7 @@ TRACE_EVENT(hugetlbfs_alloc_inode,
- 	TP_fast_assign(
- 		__entry->dev		= inode->i_sb->s_dev;
- 		__entry->ino		= inode->i_ino;
--		__entry->dir		= dir->i_ino;
-+		__entry->dir		= dir ? dir->i_ino : 0;
- 		__entry->mode		= mode;
- 	),
- 
+--- a/fs/proc/array.c~fs-proc-do_task_stat-fix-esp-not-readable-during-coredump
++++ a/fs/proc/array.c
+@@ -500,7 +500,7 @@ static int do_task_stat(struct seq_file
+ 		 * a program is not able to use ptrace(2) in that case. It is
+ 		 * safe because the task has stopped executing permanently.
+ 		 */
+-		if (permitted && (task->flags & (PF_EXITING|PF_DUMPCORE))) {
++		if (permitted && (task->flags & (PF_EXITING|PF_DUMPCORE|PF_POSTCOREDUMP))) {
+ 			if (try_get_task_stack(task)) {
+ 				eip = KSTK_EIP(task);
+ 				esp = KSTK_ESP(task);
 _
 
-Patches currently in -mm which might be from songmuchun@bytedance.com are
+Patches currently in -mm which might be from namcao@linutronix.de are
 
-hugetlb-fix-null-pointer-dereference-in-trace_hugetlbfs_alloc_inode.patch
 
 
