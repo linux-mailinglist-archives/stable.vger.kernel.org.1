@@ -1,123 +1,102 @@
-Return-Path: <stable+bounces-107785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B8A5A03497
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 02:40:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D235AA034AE
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 02:52:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F384163C2A
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 01:40:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C2453A4E0F
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 01:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B704B2AEF1;
-	Tue,  7 Jan 2025 01:40:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="CqT2qCz0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A10056F30C;
+	Tue,  7 Jan 2025 01:52:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60AD94C97;
-	Tue,  7 Jan 2025 01:40:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D795680;
+	Tue,  7 Jan 2025 01:51:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736214007; cv=none; b=gjIT0xz22qZaVuYmoBF2SnVN6rFfISqSr8ZSKJtzEIzQeA7hGKdaVzrIss5Btzfqwx/0YJj3gzqO1nvmkX/sHN0vdSnOkbo2PjeBQq818F2Dn9IOLWdwWDh1ab2ERpD2So2HZUfOO5cSISXvtqfHxWyl033FhplyV8eJx8A5Vzs=
+	t=1736214723; cv=none; b=XTPX51wLoI2jLmgL8IUlMBiURJjMu6DNEVkzIj2RpEaZ6SUTNcg+7rm/pXHXDKpzwCE+q2KqCuQEdwD0FA74+iV5xcwcIbZ4amKWe3g+RR1FmAao1TS0H4ZxxITAzG2Fbwci9BjBVvNy9oLwA+lAYq/KHNP8J/J7CM+AlQCMlrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736214007; c=relaxed/simple;
-	bh=OF+J7g0eFvi55KwHOIgcuXCNICVmb1rqH16nwsgqHRo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Xmx4pvLEkU40j+kYkQqfH6bidzpSw5seFMiS9NO62ZHfFLgPSgNrv/Xp6puA3bQxJi1PKrMookbtoq7b9782fypWdRyRlFqPkcqscz1PMkjxNgh2kQUEqyMiQt0+VU/+OnnScL8mlYuqrEomJ8vLY8B+JCal8CmQUADVulWl/Bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=CqT2qCz0; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5d3e6274015so26624249a12.0;
-        Mon, 06 Jan 2025 17:40:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1736214003; x=1736818803; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/9YvSvr9lvlL1SrVAn2MD16XQSwHxJWkO99vjoXy7W4=;
-        b=CqT2qCz07ISuw608DaIBLgsMn7Bs8MpdZ6IKZ2rPEuzRpbn8L1bZkdRswaOr2BpFtF
-         EcUb5jHMYbKcHIVIzvGyhqUsNI8awzKgqw1OGvgeJQ2y/7I/kT5ZatPtp6OpQY2HKAq2
-         sLQI89VENzppRYImKvQeNpoD3gIPUoiqc868m668wxbR7OikYhtMD55EdhnNYaIID3DY
-         VWhUV8XwKyP0a6lxCYsZjlsLXYCBxtpvl/jFikEBHiXeFuNvdsUKUgQWueS4OGbSh/rB
-         q912cwyxy7mOUjzb6d1jhY3RPpFN+mfPadxzhAKLMSqRo2qsqG7psEVudt+1XW/xtKLl
-         QsJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736214003; x=1736818803;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/9YvSvr9lvlL1SrVAn2MD16XQSwHxJWkO99vjoXy7W4=;
-        b=itCfdAmjo6hKS152kFhmcoTxqOmsfWE5qNl5PiuEuzZdsnbAhC/y27Znymvhi+SbMR
-         +lLv+8ak6bhaTvaHi22tEU91hJfwYfdhpUnpiWPhUnPzWBxVdXl1aKheXKpTMu5Iyu6V
-         yoN5NUTilWN4Pa22kGYhkJ0S/1JnrvuhwKvSDlbfKIWbXsn5LVqNP8MUvxwR2RbTl2ex
-         SJwI7nAcR8lOoC/PJ7gFxvjqUa7QC3wqjJ9LXz3vcnB9HUSh5ZV4qI5kY+osebxes+uL
-         WMko39oJBcX9M07StlG+2gP+e4yb7cL1hvgeAQm8Dxt/G61i2cZy551jgvGRJYsHefnE
-         qynw==
-X-Forwarded-Encrypted: i=1; AJvYcCVcw7/+soAits57w1mXBxndcd66TfHewJgaGab6h9k7d/5n73MXysGqpFjnDxGSZhmV5E4UgEwB@vger.kernel.org, AJvYcCWQPD3yyvvJWE0Xl1SR3AMgdn+ttgjgShWEHwO/lIfClwl41fQEmkBCMIvPUXaTkX2IYAfSUYEnHbuuyNc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpUPT4EnVOg9r1UkQb5PaJSpl4N2nnH7WlpbE0pdG7BB8S9PWO
-	nr+jgSlbaYiTWgbcy0kCEM1c+9CfNolkSux1z2r8h9umnrt7vlM=
-X-Gm-Gg: ASbGncs4pMDteA94YryjWer71x8WHfaXDFtRYy4OZqo2JfXRRd3yPKS5pz30Zl26/Y7
-	G929Yb7vAWRcrSOkUItSYew1Rs5NpmvRBZnryw2ebKk2NvS5qB1yhcOAwuUqnZVSlGbVAT8E0Rn
-	sSndY4cN8CLNf4fgdbfB3C3480nJCVHY5j4TT/DIhxsi2HuA/VhstCssHPssALPHvP1+hUIanW/
-	Yhv17p0Qeq0DlqotY4Ipl6R8xNZDbeNh4VqFZx7JqBg8uM2aI4QtQIuNqCFL83VW7/8zNB3R33F
-	FuZYSE0SFnFdBVJtEukOuuflzNuI2yhx
-X-Google-Smtp-Source: AGHT+IFbafhfUykgIwrlGa0j1wLPfIKEiPAMneKWEdjawIrQPwGm191CuoAuWlTu+ZSrL5VsJzb0PQ==
-X-Received: by 2002:a17:907:2cc2:b0:aa6:a501:9b3b with SMTP id a640c23a62f3a-aac2b28ee13mr4447377266b.19.1736214002473;
-        Mon, 06 Jan 2025 17:40:02 -0800 (PST)
-Received: from [192.168.1.3] (p5b2b4110.dip0.t-ipconnect.de. [91.43.65.16])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0e89598csm2305748466b.56.2025.01.06.17.39.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Jan 2025 17:40:00 -0800 (PST)
-Message-ID: <25e03704-e05c-46c8-be75-de4b784e4d31@googlemail.com>
-Date: Tue, 7 Jan 2025 02:39:59 +0100
+	s=arc-20240116; t=1736214723; c=relaxed/simple;
+	bh=quvhAzT80nG4AD8ThJEqAEvGV4/DMVoxI6LmdY9YVe0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=BIkUMepclYNbzJPwl7u2IpxSwicliXFjmDgLvDeiUo+zQgrVWW8iU1qZLg8fRjIUqpVxbm6sMWtWFeBq/VPIpvzBsSJETogitXUEct2Kaa2y46dvgO/BEammNAnaMKTyNidb4UXUOtuIOPRAhPKxs68z7Jw2T1FyTFp7SwmEGN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-01 (Coremail) with SMTP id qwCowACnrNCviHxnsKHfBQ--.20039S2;
+	Tue, 07 Jan 2025 09:51:52 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: sean@mess.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	make24@iscas.ac.cn,
+	mchehab@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] media: lirc: Fix error handling in lirc_register()
+Date: Tue,  7 Jan 2025 09:51:43 +0800
+Message-Id: <20250107015143.655306-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <Z3u2zVQyammNo_o3@gofer.mess.org>
+References: <Z3u2zVQyammNo_o3@gofer.mess.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.12 000/156] 6.12.9-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250106151141.738050441@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowACnrNCviHxnsKHfBQ--.20039S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Jr4Dtr45KF43AryfZw43ZFb_yoW3KFX_CF
+	4093srWw4xJwn3ta9Ikr45JFZI9r4DKry7X348JFWxu34rXFZ8Zw4DJrn0gry3ur1jkrn0
+	gFy0qr45t3sa9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb3AFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
+	6F4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
+	4UJVWxJr1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG
+	64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r
+	1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAq
+	YI8I648v4I1lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
+	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
+	zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
+	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
+	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
+	nIWIevJa73UjIFyTuYvjfUejgxUUUUU
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Am 06.01.2025 um 16:14 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.12.9 release.
-> There are 156 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Sean Young<sean@mess.org> wrote:
+> Hi,
+> 
+> On Sun, Jan 05, 2025 at 06:01:01PM +0800, Ma Ke wrote:
+> > When cdev_device_add() failed, calling put_device() to explicitly
+> > release dev->lirc_dev. Otherwise, it could cause the fault of the
+> > reference count.
+> > 
+> > Found by code review.
+> 
+> Interesting find, thanks for finding and reporting.
+> 
+> So I think the idea is right, but there is a problem. lirc_release_device()
+> will do a put_device() on the rcdev, but no corresponding get_device() is
+> done in this code path.
+> 
+> 
+> Sean
+Thank you for your reply and suggestions. Following your instructions,
+I took a close look at the code. Perhaps you meant to suggest removing
+the put_device() call from lirc_release_device(), effectively making 
+lirc_release_device() an empty function? 
+Looking forward to your reply.
+--
+Regards,
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+Ma Ke
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
-
-
-Beste Grüße,
-Peter Schneider
-
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
-
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
