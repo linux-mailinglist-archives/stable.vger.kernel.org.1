@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-107825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D936A03C9E
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 11:39:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9A69A03CA7
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 11:39:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05AEE3A1F56
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 10:39:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A26B1884F92
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 10:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0C11E47A4;
-	Tue,  7 Jan 2025 10:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB831E570E;
+	Tue,  7 Jan 2025 10:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mess.org header.i=@mess.org header.b="UcmPnSMQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jpfIcCH3"
 X-Original-To: stable@vger.kernel.org
-Received: from gofer.mess.org (gofer.mess.org [88.97.38.141])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6431DE4F1;
-	Tue,  7 Jan 2025 10:39:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=88.97.38.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E8D1E573B;
+	Tue,  7 Jan 2025 10:39:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736246344; cv=none; b=l9pKkn3SzlIUDFODREPVyQS3aTTy3zXCOJBjwJzhxbSbK3OACjU58YN6h57a3o4CCdxHcFH79rAhpEo6+EwtmuqQ7QAB8dhQjmVclvDWy2N47m3ADVqNojkXDCaxJ2cex6kU+QqWC9URKZz3ItXveU4EU9FbEGC3DXZcD8VWkDY=
+	t=1736246376; cv=none; b=kRuMtqbHKiFMaQ7KZzbeW7atgJgDuP+zBO5SQh951gKzT9pWozxqFFH4/V8EEyXFe+iwUPxUpdZmN3V4Dx8F+UZj886y8E6kFfHc4+bcwqh2yOfrwwSsIGx+iJeuV1exUFmk27r5XykA/jGK3c1hT3TkqV5PKZszDccZyQtUjhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736246344; c=relaxed/simple;
-	bh=+idnI7ORUQPTBfdeA3MSGyFmW9zVZcE5vYifktjkSPA=;
+	s=arc-20240116; t=1736246376; c=relaxed/simple;
+	bh=0UtoztvkGqO74lDBXkcUkB7JSpBiKVH6jVMstbnte4U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oEfteor8yn7MdVM9FFJ5zsnSGcp8wguBZBFYhkdVOFo30Y/9FgMTjm5U4HH/N1GA7tgD9Ee85A20OnjeozAWt6Ga3srvc+n7i4qzkVrfvCZB2oRnbuKRjaluoz4FETSVMqfhdqa+ADNxAgMdCfoTToLVb4DAWP1Y6Z0FAFwhM3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mess.org; spf=pass smtp.mailfrom=mess.org; dkim=pass (2048-bit key) header.d=mess.org header.i=@mess.org header.b=UcmPnSMQ; arc=none smtp.client-ip=88.97.38.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mess.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mess.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mess.org; s=2020;
-	t=1736246339; bh=+idnI7ORUQPTBfdeA3MSGyFmW9zVZcE5vYifktjkSPA=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=cR+7DKwXlucjBeh3fmPHiHtWSH3qTUAOc5idyDrWs6CoLhP3rZdFCYsC1ekPpp9HnE2nHvJ3PVuhNwt1gJgO155zZoNcQejK9TyuOjOMzP5Tt9LikO82e/RiQ+2iG5hVvwjvCcYb/ikL6l25K8sIjozbCGm3CB9c7oAFdsTk3jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jpfIcCH3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D14C4CEDD;
+	Tue,  7 Jan 2025 10:39:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1736246375;
+	bh=0UtoztvkGqO74lDBXkcUkB7JSpBiKVH6jVMstbnte4U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UcmPnSMQfuy3DSMuGZ3OVgJ/B+lc81iGCJhHum3EtRnM9HVEVJ/LFyqBCTglBKjF3
-	 s/3TAobzEkpk8uORuzVJxBJdOJyBn58srqYBxSM36IB9YNuI0mx9s/Np20BjV8nYlP
-	 muconSJmjwSsLXT53/Um8Pyw7gRI/Zz3TOa/LnOSpfzVZK0RIVb+WVw/h6aU8RA+mQ
-	 xi6r6InhthId7fyAp66c0k6fqR59bKVdVkCzmv485XC13SdFPMZHPiBC7qDwftOEHK
-	 vILnHuxonLcNh6Dh/UMThPzHT86KXoyn5HEdOWZa1lyxRRdBHbgriwRNAUPzEXtBUz
-	 y0UBXSZb357FQ==
-Received: by gofer.mess.org (Postfix, from userid 1000)
-	id 164C91002BF; Tue,  7 Jan 2025 10:38:59 +0000 (GMT)
-Date: Tue, 7 Jan 2025 10:38:59 +0000
-From: Sean Young <sean@mess.org>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	mchehab@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] media: lirc: Fix error handling in lirc_register()
-Message-ID: <Z30EQ2BabFjYOj81@gofer.mess.org>
-References: <Z3u2zVQyammNo_o3@gofer.mess.org>
- <20250107015143.655306-1-make24@iscas.ac.cn>
+	b=jpfIcCH3Bneqgna3SeS1sg8rBPN+RnK2xfhtZVD7bhbefvy5699TzibpSqQQ8ez3B
+	 UGVQsMKzdCVnGT+JRIr/GI3p62BKNIId7S8WyuhHmMZ+rv5AkElrYYgcGhqEEPsKLG
+	 NvEJ5+Rtw9PP4NauzUPZAsl0XzZSuI9NjsQQP0Wk=
+Date: Tue, 7 Jan 2025 11:39:32 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: patches@lists.linux.dev,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH 6.6 027/222] cleanup: Adjust scoped_guard() macros to
+ avoid potential warning
+Message-ID: <2025010725-cartoon-semantic-da14@gregkh>
+References: <20250106151150.585603565@linuxfoundation.org>
+ <20250106151151.629422119@linuxfoundation.org>
+ <35ac0170-8979-4047-9b11-cd2c9ffea014@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,36 +59,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250107015143.655306-1-make24@iscas.ac.cn>
+In-Reply-To: <35ac0170-8979-4047-9b11-cd2c9ffea014@intel.com>
 
-On Tue, Jan 07, 2025 at 09:51:43AM +0800, Ma Ke wrote:
-> Sean Young<sean@mess.org> wrote:
-> > Hi,
+On Tue, Jan 07, 2025 at 11:01:23AM +0100, Przemek Kitszel wrote:
+> On 1/6/25 16:13, Greg Kroah-Hartman wrote:
+> > 6.6-stable review patch.  If anyone has any objections, please let me know.
 > > 
-> > On Sun, Jan 05, 2025 at 06:01:01PM +0800, Ma Ke wrote:
-> > > When cdev_device_add() failed, calling put_device() to explicitly
-> > > release dev->lirc_dev. Otherwise, it could cause the fault of the
-> > > reference count.
-> > > 
-> > > Found by code review.
+> > ------------------
 > > 
-> > Interesting find, thanks for finding and reporting.
+> > From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 > > 
-> > So I think the idea is right, but there is a problem. lirc_release_device()
-> > will do a put_device() on the rcdev, but no corresponding get_device() is
-> > done in this code path.
+> > [ Upstream commit fcc22ac5baf06dd17193de44b60dbceea6461983 ]
 > > 
+> > Change scoped_guard() and scoped_cond_guard() macros to make reasoning
+> > about them easier for static analysis tools (smatch, compiler
+> > diagnostics), especially to enable them to tell if the given usage of
+> > scoped_guard() is with a conditional lock class (interruptible-locks,
+> > try-locks) or not (like simple mutex_lock()).
 > > 
-> > Sean
-> Thank you for your reply and suggestions. Following your instructions,
-> I took a close look at the code. Perhaps you meant to suggest removing
-> the put_device() call from lirc_release_device(), effectively making 
-> lirc_release_device() an empty function? 
+> 
+> please also consider cherry pick of the commit 9a884bdb6e95 ("iio:
+> magnetometer: fix if () scoped_guard() formatting") when picking
+> the one in the subject
 
-That would introduce a memory leak and presumably the rc device would never
-be cleaned up, so no I don't think that would work.
+Did you try to apply that commit to the 6.6.y tree?  If you have it
+working, please send us the correct backport because as-is, it does not
+apply at all.
 
-I'm not sure what the right solution is yet.
+thanks,
 
-Sean
+greg k-h
 
