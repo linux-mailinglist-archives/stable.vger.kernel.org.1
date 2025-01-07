@@ -1,86 +1,36 @@
-Return-Path: <stable+bounces-107832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8A67A03E80
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 13:04:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 207C9A03ED7
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 13:12:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E1FE161206
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 12:04:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19FB53A16E7
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 12:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D5A71E9B3A;
-	Tue,  7 Jan 2025 12:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="evjvBk6Y"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E201E3DE7;
+	Tue,  7 Jan 2025 12:12:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE4C1E1C02
-	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 12:04:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F18A1E1A2D;
+	Tue,  7 Jan 2025 12:11:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736251455; cv=none; b=BaXXfcIt4IKRyY0sgT4xndubFQlIxqa0LmEOe0ss/agAoAW7I8VLS9A+cwUTIDGQR3oGUsdkjAMhbKg8jYZSlv0wwGOMpmyTFFgS1nBXXBuJHe/482ZADChUWmPg6ChN9Jth3Q1QL1MAdCRclCg0d1ior4+tjZIfqZAgFfoKux0=
+	t=1736251919; cv=none; b=iID24gLzEwf7GV+UukOwtX7gxHk6spfle/wL2P0kzVrYv/5NUvfabUCQ/I/2owwzfYL206WXerd+JxcqrFIyABxnO0rl4vZ8Khh2Zq8HizYe1HFRq1r5PVAvlLkwE2qKflg5+FpQJldz74NrfUNwe+SymwaGWCuLatXOFho7lV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736251455; c=relaxed/simple;
-	bh=FJ2nluP0U1DNjzdsDupwT81e9JypfHhfzlKI5y49qRU=;
+	s=arc-20240116; t=1736251919; c=relaxed/simple;
+	bh=MW7zEmZrqkTamkCB0eLjS+omnIKYOMfReyb5ndSfoqU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s9MmXHM72P7cwC4L7OqfQMgPuixTL6YUjXw+EEsUDingChBRudP+Y2ZrDIA59oJihAJMPdyLdpN4WU4pBR1Mj1C9i3SP1VCrSPvC3sM+uhMpjYrzO0qyf47FqB1BXjy4pNmTwVxCK7HTpIH/DtxG8dcj3koJtYp++HZPedaJ+Ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=evjvBk6Y; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736251449;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3dzBLLOp8eNpGsd6cUumXxsmOdst/gq9nNd6WoidZRM=;
-	b=evjvBk6YXNFamXVrHmsUD+Af494Sqbhib6I/9+rQtzNlnR0nDEqjaU67fuNqz4MPPPG41r
-	N9btq18cRKLyNzL1v97kWKLcyAgEi7gvTVUVNXdynrfiak+LTdu0c0tXTmI5rGWn96/LCF
-	X0V8RG5ptFQYb1i7hbUzMC+r1yalkqM=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-209-1YccymaTPlS2mC___ihyYw-1; Tue, 07 Jan 2025 07:04:08 -0500
-X-MC-Unique: 1YccymaTPlS2mC___ihyYw-1
-X-Mimecast-MFC-AGG-ID: 1YccymaTPlS2mC___ihyYw
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3862be3bfc9so8644462f8f.3
-        for <stable@vger.kernel.org>; Tue, 07 Jan 2025 04:04:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736251447; x=1736856247;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3dzBLLOp8eNpGsd6cUumXxsmOdst/gq9nNd6WoidZRM=;
-        b=rBmyNWN+C3DOQKzG8w2YD2vqgujqNcsQJA86LjUSYD+KjtpMaAgs3euD1dqtfZexzP
-         80ll2lENlJINw/TmjgZusX8nNUMVMmAzF18RZxkd0BvhDKrnNQxm8720any63fzW/8zu
-         DVurpOKekCyiDgySydJ07UucCwvoLXa9QLUyujIgfBqb78u6CBoIFudKP+Banx1obGyb
-         hXWx9qHrHtoQHmSKXHHTgLmYO4X3c7xLc8y9aWH6gf+ZBlPJcBv9Mj3xbqFNirzD9nfc
-         TEnGSoujCsFcA3LJRW2ys8BX/krD/qJhk9JnW8SJ7IRCgQqjHAp0YQ4VZlSDbbI2Y3W4
-         jOAg==
-X-Forwarded-Encrypted: i=1; AJvYcCUhZunP1Qh2a4tyLdSM2tgmBbO0aDaEzN3Gy448forg8cJ/vMIIplhZF4j0vi8sjF2lr/58VWY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxwb2B7YRKJ05tkFEqR73trPLyS4caQ7zQnmwbSHzyWd41ysPAZ
-	NQu2oqbMf2LMN5T6Fw+YDnHesllBdqXGi1fUAUMcqf7zEePjcRMxAP8tLmhEyGlGpXiXvcymCgB
-	Ikc4cKhRrtwo0puki/xYoxuR1UgWQFVuMhApdMjZ4jbx9rv9tcBdRKA==
-X-Gm-Gg: ASbGncsqGlBnS8JZeDqOsHI20YdKvCjE7fazdBmgDyc7IH7pQKnoasTZVXYv9EBldIB
-	KFz2qdb2tZCjqjgkK5ctiHr22+QJwAwOFqC6v+o4rpmU/HQF/8kZsU4+GN/FMAg2mcs9XAoEjLR
-	Re48d5KZ4kbn5fQfm5tV2K6k89xH/hCPac5lCO9UzCS3nNMHk1XxNajS+VXC6YHC+DzAGnKAyOL
-	Z6mVkP8+QuBU3AYtpj0pRicjg8QJ8A9XgSlfGLCorbBVX8Zxfgjy+mG4VQLdu/bUPYsMHDOTdsH
-	GbK6nH8z
-X-Received: by 2002:a5d:5f56:0:b0:386:1cd3:8a00 with SMTP id ffacd0b85a97d-38a223f5b41mr59871349f8f.40.1736251445745;
-        Tue, 07 Jan 2025 04:04:05 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFWfb9Vm3Vt9Qk+wKzvMGFSZQzXSCS52o6qWqfR8nKRXCO5SfQ0ddtzkhw83y3pCZhrNPA7iw==
-X-Received: by 2002:a5d:5f56:0:b0:386:1cd3:8a00 with SMTP id ffacd0b85a97d-38a223f5b41mr59871192f8f.40.1736251443868;
-        Tue, 07 Jan 2025 04:04:03 -0800 (PST)
-Received: from [192.168.88.253] (146-241-2-244.dyn.eolo.it. [146.241.2.244])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c89e278sm50877687f8f.75.2025.01.07.04.04.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Jan 2025 04:04:03 -0800 (PST)
-Message-ID: <c6547053-7de2-42a2-b8f7-6837e9ab85ca@redhat.com>
-Date: Tue, 7 Jan 2025 13:04:02 +0100
+	 In-Reply-To:Content-Type; b=WkbuW9CGrENlqLpCx4bbHCPZJQr2+/1+YUGmVl+4yYEWAkwF+WjCnwq2Gb0qKC3o4VzVi80S5Qf4oBgJuJR4PYKT5o1tnPVqnmILD8jR4x5X+4lA6XxPZxiw1/9EHoPR5xaBNeMmoJfatq6WqfmoHLYe1wqPP7OzYwD70XYRDJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD35CC4CED6;
+	Tue,  7 Jan 2025 12:11:57 +0000 (UTC)
+Message-ID: <a62d30fb-4a97-4edc-a0de-dbe442449818@xs4all.nl>
+Date: Tue, 7 Jan 2025 13:11:56 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,45 +38,170 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] ptp: limit number of virtual clocks per physical
- clock
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
- Richard Cochran <richardcochran@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Yangbo Lu <yangbo.lu@nxp.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, cheung wall <zzqq0103.hey@gmail.com>,
+Subject: Re: [PATCH] media/mmp: Bring back registration of the device
+To: Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Lubomir Rintel <lrintel@redhat.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Lubomir Rintel <lkundrak@v3.sk>,
  stable@vger.kernel.org
-References: <20250103-ptp-max_vclocks-v1-1-2406b8eade97@weissschuh.net>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250103-ptp-max_vclocks-v1-1-2406b8eade97@weissschuh.net>
+References: <20241231190434.438517-1-lkundrak@v3.sk>
+ <Z30QWA-LfZHwVbmm@kekkonen.localdomain>
+Content-Language: en-US, nl
+From: Hans Verkuil <hverkuil@xs4all.nl>
+Autocrypt: addr=hverkuil@xs4all.nl; keydata=
+ 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
+In-Reply-To: <Z30QWA-LfZHwVbmm@kekkonen.localdomain>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 1/3/25 2:40 PM, Thomas Weißschuh wrote:
-> The sysfs interface can be used to trigger arbitrarily large memory
-> allocations. This can induce pressure on the VM layer to satisfy the
-> request only to fail anyways.
+On 07/01/2025 12:30, Sakari Ailus wrote:
+> Hi Lubomir,
 > 
-> Reported-by: cheung wall <zzqq0103.hey@gmail.com>
-> Closes: https://lore.kernel.org/lkml/20250103091906.GD1977892@ZenIV/
-> Fixes: 73f37068d540 ("ptp: support ptp physical/virtual clocks conversion")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-> ---
-> The limit is completely made up, let me know if there is something
-> better.
+> Thanks for the patch.
+> 
+> On Tue, Dec 31, 2024 at 08:04:34PM +0100, Lubomir Rintel wrote:
+>> In commit 4af65141e38e ("media: marvell: cafe: Register V4L2 device
+>> earlier"), a call to v4l2_device_register() was moved away from
+>> mccic_register() into its caller, marvell/cafe's cafe_pci_probe().
+>> This is not the only caller though -- there's also marvell/mmp.
+>>
+>> Add v4l2_device_register() into mmpcam_probe() to unbreak the MMP camera
+>> driver, in a fashion analogous to what's been done to the Cafe driver.
+>> Same for the teardown path.
+>>
+>> Fixes: 4af65141e38e ("media: marvell: cafe: Register V4L2 device earlier")
+>> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+>> Cc: stable@vger.kernel.org # v6.6+
+>> ---
+>>  drivers/media/platform/marvell/mmp-driver.c | 21 +++++++++++++++++----
+>>  1 file changed, 17 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/media/platform/marvell/mmp-driver.c b/drivers/media/platform/marvell/mmp-driver.c
+>> index 3fd4fc1b9c48..d3da7ebb4a2b 100644
+>> --- a/drivers/media/platform/marvell/mmp-driver.c
+>> +++ b/drivers/media/platform/marvell/mmp-driver.c
+>> @@ -231,13 +231,23 @@ static int mmpcam_probe(struct platform_device *pdev)
+>>  
+>>  	mcam_init_clk(mcam);
+>>  
+>> +	/*
+>> +	 * Register with V4L.
+>> +	 */
+>> +
+>> +	ret = v4l2_device_register(mcam->dev, &mcam->v4l2_dev);
+> 
+> I'd do this just before initialising the notifier (as in the patch in
+> Fixes: tag): registering the V4L2 device requires probably severe memory
+> pressure while it's entirely plausible there's no endpoint for the device.
 
-I'm also unsure if such constant value is reasonable for all the
-use-cases. Any additional feedback more than welcome.
+Actually, v4l2_device_register does very little. No memory allocation is involved.
 
-In any case, I guess it would make sense to update
-Documentation/ABI/testing/sysfs-ptp accordingly.
+I was planning to take this patch as-is.
 
-Thanks,
+Regards,
 
-Paolo
+	Hans
+
+> 
+>> +	if (ret)
+>> +		return ret;
+>> +
+>>  	/*
+>>  	 * Create a match of the sensor against its OF node.
+>>  	 */
+>>  	ep = fwnode_graph_get_next_endpoint(of_fwnode_handle(pdev->dev.of_node),
+>>  					    NULL);
+>> -	if (!ep)
+>> -		return -ENODEV;
+>> +	if (!ep) {
+>> +		ret = -ENODEV;
+>> +		goto out_v4l2_device_unregister;
+>> +	}
+>>  
+>>  	v4l2_async_nf_init(&mcam->notifier, &mcam->v4l2_dev);
+>>  
+>> @@ -246,7 +256,7 @@ static int mmpcam_probe(struct platform_device *pdev)
+>>  	fwnode_handle_put(ep);
+>>  	if (IS_ERR(asd)) {
+>>  		ret = PTR_ERR(asd);
+>> -		goto out;
+>> +		goto out_v4l2_device_unregister;
+>>  	}
+>>  
+>>  	/*
+>> @@ -254,7 +264,7 @@ static int mmpcam_probe(struct platform_device *pdev)
+>>  	 */
+>>  	ret = mccic_register(mcam);
+>>  	if (ret)
+>> -		goto out;
+>> +		goto out_v4l2_device_unregister;
+>>  
+>>  	/*
+>>  	 * Add OF clock provider.
+>> @@ -283,6 +293,8 @@ static int mmpcam_probe(struct platform_device *pdev)
+>>  	return 0;
+>>  out:
+> 
+> For clarity, it'd be best to rename the out label to something more
+> specific, i.e. out_mccic_shutdown. Either way,
+> 
+> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> 
+>>  	mccic_shutdown(mcam);
+>> +out_v4l2_device_unregister:
+>> +	v4l2_device_unregister(&mcam->v4l2_dev);
+>>  
+>>  	return ret;
+>>  }
+>> @@ -293,6 +305,7 @@ static void mmpcam_remove(struct platform_device *pdev)
+>>  	struct mcam_camera *mcam = &cam->mcam;
+>>  
+>>  	mccic_shutdown(mcam);
+>> +	v4l2_device_unregister(&mcam->v4l2_dev);
+>>  	pm_runtime_force_suspend(mcam->dev);
+>>  }
+>>  
+> 
 
 
