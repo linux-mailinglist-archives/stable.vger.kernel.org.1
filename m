@@ -1,283 +1,215 @@
-Return-Path: <stable+bounces-107900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D6F6A04B25
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 21:40:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 558F2A04B34
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 21:48:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C80A63A47C8
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 20:40:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EC063A0397
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 20:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B111F7554;
-	Tue,  7 Jan 2025 20:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C321DDC1F;
+	Tue,  7 Jan 2025 20:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GZ3RpU9P"
+	dkim=pass (2048-bit key) header.d=kvanals.org header.i=@kvanals.org header.b="a/9+TMFB";
+	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="tZ8uv6Y7"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from a8-88.smtp-out.amazonses.com (a8-88.smtp-out.amazonses.com [54.240.8.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5BB1F6666
-	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 20:40:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AF41DBB13
+	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 20:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.8.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736282413; cv=none; b=owmosmvFHDwRW1h3R6UBvje602sifNjAevFx543t+UW++Ck1oIit3p+u6Q/Zb/ymHXnQai8Kjg+L7ImzI03iYYPxCcA3cmJOTTDW4e0eFrZ2+5GBTfdzLGqOR04RxFD1Nzg/s5eIMBP5sCT2TgPHFOQHrp8yX3qWqqoSyY+tVnE=
+	t=1736282933; cv=none; b=jYzztSbZhP+AWCPU3hJm2grJI1SCPlDugpmEw4IEE75+s4NQmWkAM5XoTyd8QojDnrwZI3OWbB6bhrfCewNWlsFzLRX4fozTmy7a3KFa1UMyTC4xzfQWBxADcWvk0eoDGrDZc8QhchYqt2BfmR+zWPNeLw9l/DWFQnx79i34i0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736282413; c=relaxed/simple;
-	bh=OrlV9telHLmipLDh600rO1pzIX30pRvc2kgciEpZ1Vg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XxBT1sEBQhLofhiB9YFKCH/DxuiiNQtbt2gc8aDFiMTdJvlKrqmaJZiLz+xEfIoQ6+mGDYYtcJRPQ27ijkgIty3xDZ2hJy2E68pCeJ8ywZ/uLcBr8HuztAx77g79KzUlmaBvmB8i0LyK07Fp0l88EetyKWZOa7sYnXqE7Nb85s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GZ3RpU9P; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736282410;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7lk3UnwL4Id+x/YZ2BCdCNZ6wF+YE+g3ghMfVfHdxsk=;
-	b=GZ3RpU9PAB6nxQjaZ99FixZiwrQgr0hfHWCNj5jx2ALhrKa/7/cAxLJATrbJpWGve8ZMgr
-	J2vucyhnspGOoikLXO5Sf/+mX4F3SicMxVSt/NZrQ7PqHi5axLtJhZ1RlUuGT6nXg8Q45y
-	toHtKPwC1dd8rtAUlaAwdcxnVnmyI5I=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-294-xJyy0Km2Nmu8a_LOIMec2A-1; Tue, 07 Jan 2025 15:40:09 -0500
-X-MC-Unique: xJyy0Km2Nmu8a_LOIMec2A-1
-X-Mimecast-MFC-AGG-ID: xJyy0Km2Nmu8a_LOIMec2A
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-6d8edb40083so3482386d6.0
-        for <stable@vger.kernel.org>; Tue, 07 Jan 2025 12:40:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736282408; x=1736887208;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7lk3UnwL4Id+x/YZ2BCdCNZ6wF+YE+g3ghMfVfHdxsk=;
-        b=JeGb2BUjXybtvsaokV99Td+AOPQrz7E94/u2Ely8tSUdxdWyjtOCQg5Y/zsH3Q4ZNv
-         rG2cEgEal+83JPyjqAOTuUn7hrY9o1w498iPWxaN25Il9H9+LmwZ87dtvJsjdBG5FLX6
-         OGekJGAjydCOUKiY8fdM2kGYfYVxq0jSdw5Eh2k5ef3nvqKZ1rni/p6Fx3lEKlySZLvS
-         +gEsslCXK4UpigWBFVt0HnTbbdpAsmRlzRhOLbs2X/3PAp6ZC5LLujuuR5yRqE4RSd+f
-         6jokwbp5yhDW4cb/Zmje9gmtw33aHFGD5pt8dSWSwsE8BhHnF+QsHf2mzh8H1NiMxLVV
-         ONCg==
-X-Forwarded-Encrypted: i=1; AJvYcCVzMcySPtzmfle6ke3oQ4hdb6oi4z0BKKK9RfWf1mQ48ww4lzbTdzGTv+JVphzSKSRK1bQT0z4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVyCHfpwfRCZlS65mSc4yfp0K5pXWt8A6lZkGA2WlaWwd9kh17
-	8gn10g9/Ui3A4SNUZhIHGQuA99MpoXjzHt6/xFCIO1sLC+rKtzSyFCx7CUU6+aArp6aD1HBg3vO
-	4+metlaI41o+82jxCSpxPmSM+iiW7Asuen/Audw5nyquYFj75mufX2A==
-X-Gm-Gg: ASbGncsXjXHIx0ShnZxKBorqe3sBhtF41Sxr2uvd7uTQSlsv0hSoLyOCiFsd3ONwZkW
-	woipbLYLtQLvwSQ5/KUofBpVFyRjXKmOo3HFR28cxPeh5QdyxBiOyQulLRr27X6Mb52bO6rI4Oy
-	t5o+/Nk0Jss9ZBrwVNbSFxkoKdkWq1orp8UQRLdRbPxXmolRwUq8Y6uNR4aVTUKN6AODBRQDT6W
-	zeePhR7BLLuNhGjkTrD24qkExi8D26W5GApzh/dm4wEYBGDwWh0eQ8utaNMcZVs+lC8qb69r4ZK
-	yzQnxW4RsL1vvJngDsjdZlwBDb/p9IeA
-X-Received: by 2002:ad4:5dc5:0:b0:6d8:b660:f6aa with SMTP id 6a1803df08f44-6df9adfb518mr7494726d6.14.1736282407070;
-        Tue, 07 Jan 2025 12:40:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE4opU0e+dfjClXuwDmR9cg3uGQm3YY2brmnjieEI+XeJr35YfbdedExB7KgsOyuQE8PaeuGA==
-X-Received: by 2002:ad4:5dc5:0:b0:6d8:b660:f6aa with SMTP id 6a1803df08f44-6df9adfb518mr7494476d6.14.1736282406765;
-        Tue, 07 Jan 2025 12:40:06 -0800 (PST)
-Received: from x1n.redhat.com (pool-99-254-114-190.cpe.net.cable.rogers.com. [99.254.114.190])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6dd181373f6sm184478306d6.62.2025.01.07.12.40.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2025 12:40:06 -0800 (PST)
-From: Peter Xu <peterx@redhat.com>
-To: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
-	Rik van Riel <riel@surriel.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	peterx@redhat.com,
-	Oscar Salvador <osalvador@suse.de>,
-	linux-stable <stable@vger.kernel.org>
-Subject: [PATCH v2 1/7] mm/hugetlb: Fix avoid_reserve to allow taking folio from subpool
-Date: Tue,  7 Jan 2025 15:39:56 -0500
-Message-ID: <20250107204002.2683356-2-peterx@redhat.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20250107204002.2683356-1-peterx@redhat.com>
-References: <20250107204002.2683356-1-peterx@redhat.com>
+	s=arc-20240116; t=1736282933; c=relaxed/simple;
+	bh=+UjC+uU6dWv8OHv3O4ZvMalLzN5oyF3ppQVisOmkufA=;
+	h=From:Content-Type:Mime-Version:Subject:Message-ID:Date:Cc:To; b=gOQjjg/Y02T9/XE0yPqZdLDeNfIMn5dt1S3oMkg19djASZ5NkVqHf1Vxjp0pXVDV04H1cm8y/U4mXqN4tK2Ik/QdjzixWHY2MysW4a+64AWXUu7nvpIrB1ohkvkDiRcByGyk/DD5hdxqEwBmEd1fymKKNTqQO7uhKmQOl+Hyj60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kvanals.org; spf=pass smtp.mailfrom=amazonses.com; dkim=pass (2048-bit key) header.d=kvanals.org header.i=@kvanals.org header.b=a/9+TMFB; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=tZ8uv6Y7; arc=none smtp.client-ip=54.240.8.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kvanals.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazonses.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=dbnse6tb2bgtv6t3hhj6fd6thaqrrmwh; d=kvanals.org; t=1736282929;
+	h=From:Content-Type:Content-Transfer-Encoding:Mime-Version:Subject:Message-Id:Date:Cc:To;
+	bh=+UjC+uU6dWv8OHv3O4ZvMalLzN5oyF3ppQVisOmkufA=;
+	b=a/9+TMFBu0Uxt2paxHuLXWfQV+Xp+h+pm4r4tHSG2gPupewj6eQFYTo1Qf+6fnMx
+	hx9pgzGX7gmUzz28qBjjQS6uhQM6QqOmHX7bpNWE311YwCBU2sxgCfGp+Zx3HjnJiQH
+	Hh/XNTXpswFiaBp+U7969eAhmt2Gz5fxjtKAQgEFG4jGc34++lbhU+aKOGbkQriLbkh
+	4E7SRUtT3oJe1fPGeiXjEIjFHzS7ByyziDVbZhhAJjIIfGNtI4pDZpWLY4vPWWSMVdi
+	TXMMXig6JKzN/aPsajuoVDEjj8JFwN5HF8xePTl11E2JcNCWV+i2Po3xHUhT0g2NVID
+	pdGJaJnBgw==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=ug7nbtf4gccmlpwj322ax3p6ow6yfsug; d=amazonses.com; t=1736282929;
+	h=From:Content-Type:Content-Transfer-Encoding:Mime-Version:Subject:Message-Id:Date:Cc:To:Feedback-ID;
+	bh=+UjC+uU6dWv8OHv3O4ZvMalLzN5oyF3ppQVisOmkufA=;
+	b=tZ8uv6Y765mClJyjqvfTvp2I2oD9FXGx2FoH+JBhR7RLoJPT/bMni1B1o27PsR8j
+	3G7SvhvYHUKEX5FsO+GgJhpWZCUyzzg5A7jVlVlQSwyusafUr5iOSgk3KSGgjVxNDoh
+	vPj9mMcHihLO9KFNJgEWFv1/iv8yR4Hw5XTYfIQY=
+From: Kenneth Van Alstyne <kvanals@kvanals.org>
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
+Subject: zram: Regression in at least linux-6.1.y tree
+Message-ID: <010001944286f97d-fe02c461-e7af-4644-9155-a96995709804-000000@email.amazonses.com>
+Date: Tue, 7 Jan 2025 20:48:49 +0000
+Cc: regressions@lists.linux.dev, senozhatsky@chromium.org, 
+	minchan@kernel.org, ngupta@vflare.org
+To: stable@vger.kernel.org
+X-Mailer: Apple Mail (2.3826.300.87.4.3)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (olympus.kvanals.org [IPv6:2600:1f18:42d5:300:0:0:0:ffff]); Tue, 07 Jan 2025 20:48:49 +0000 (UTC)
+Feedback-ID: ::1.us-east-1.5jHMwTu/Jzmoolk7Ak3w+RKcSxXCCShHRX8XGxXgrSs=:AmazonSES
+X-SES-Outgoing: 2025.01.07-54.240.8.88
 
-Since commit 04f2cbe35699 ("hugetlb: guarantee that COW faults for a
-process that called mmap(MAP_PRIVATE) on hugetlbfs will succeed"),
-avoid_reserve was introduced for a special case of CoW on hugetlb private
-mappings, and only if the owner VMA is trying to allocate yet another
-hugetlb folio that is not reserved within the private vma reserved map.
+Greetings and apologies if this isn't the proper process for reporting =
+an issue in a LTS kernel per =
+https://www.kernel.org/doc/html/latest/admin-guide/reporting-issues.html. =
+ Happy to follow another process if more appropriate.
 
-Later on, in commit d85f69b0b533 ("mm/hugetlb: alloc_huge_page handle areas
-hole punched by fallocate"), alloc_huge_page() enforced to not consume any
-global reservation as long as avoid_reserve=true.  This operation doesn't
-look correct, because even if it will enforce the allocation to not use
-global reservation at all, it will still try to take one reservation from
-the spool (if the subpool existed).  Then since the spool reserved pages
-take from global reservation, it'll also take one reservation globally.
+Kernel 6.1.122 introduced a regression via commit =
+ac3b5366b9b7c9d97b606532ceab43d2329a22f3 (backport of upstream commit =
+74363ec674cb172d8856de25776c8f3103f05e2f) in =
+drivers/block/zram/zram_drv.c where attempting to set the size of =
+/dev/zram0 after loading the zram kernel module results in a kernel NULL =
+pointer dereference.
 
-Logically it can cause global reservation to go wrong.
+That patch removed the following block from zram_reset_device():
+	-	if (!init_done(zram)) {
+	-		up_write(&zram->init_lock);
+	-		return;
+	-	}
 
-I wrote a reproducer below, trigger this special path, and every run of
-such program will cause global reservation count to increment by one, until
-it hits the number of free pages:
+However, without that, zram_reset_device subsequently calls =
+zcomp_destroy on a device that has not been initialized, leading to the =
+OOPS.  Adding that block back does resolve the issue.  In addition, the =
+latest mainline kernel does not appear to exhibit these symptoms, but =
+zram_drv.c seems to have been changed fairly substantially since kernel =
+6.1.
 
-  #define _GNU_SOURCE             /* See feature_test_macros(7) */
-  #include <stdio.h>
-  #include <fcntl.h>
-  #include <errno.h>
-  #include <unistd.h>
-  #include <stdlib.h>
-  #include <sys/mman.h>
+Steps to reproduce:
 
-  #define  MSIZE  (2UL << 20)
+	modprobe zram
+	zramctl /dev/zram0 --algorithm zstd --size 83886080k
 
-  int main(int argc, char *argv[])
-  {
-      const char *path;
-      int *buf;
-      int fd, ret;
-      pid_t child;
+Kernel log:
 
-      if (argc < 2) {
-          printf("usage: %s <hugetlb_file>\n", argv[0]);
-          return -1;
-      }
+[  184.410082] BUG: kernel NULL pointer dereference, address: =
+0000000000000000
+[  184.416305] #PF: supervisor read access in kernel mode
+[  184.418201] #PF: error_code(0x0000) - not-present page
+[  184.418201] PGD 170d0b067 P4D 170d0b067 PUD 1718af067 PMD 0=20
+[  184.418201] Oops: 0000 [#1] PREEMPT SMP NOPTI
+[  184.418201] CPU: 2 PID: 3584 Comm: zramctl Tainted: G           O  K  =
+  6.1.122 #1
+[  184.418201] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), =
+BIOS rel-1.11.1-0-g0551a4be2c-prebuilt.qemu-project.org 04/01/2014
+[  184.418201] RIP: 0010:zcomp_cpu_dead+0x7/0x30 [zram]
+[  184.418201] Code: c7 d8 56 a9 c0 e8 63 f3 92 ed b8 f4 ff ff ff 5b e9 =
+fe 10 d7 ed 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 0f 1f 44 00 00 89 =
+ff <48> 8b 46 f0 48 03 04 fd c0 47 e7 ae 48 89 c7 48 8d 70 08 e8 11 fd
+[  184.418201] RSP: 0018:ffffaf9400a5fd28 EFLAGS: 00010246
+[  184.418201] RAX: ffffffffc0a912d0 RBX: ffff89adefa1b2e0 RCX: =
+0000000000000010
+[  184.418201] RDX: 0000000000000000 RSI: 0000000000000010 RDI: =
+0000000000000000
+[  184.418201] RBP: 0000000000000000 R08: 0000000000000000 R09: =
+0000000000000001
+[  184.418201] R10: 000000000000000a R11: f000000000000000 R12: =
+0000000000000aa0
+[  184.418201] R13: 0000000000000000 R14: 0000000000000010 R15: =
+ffff89aac0cb2e20
+[  184.418201] FS:  00007fa6d240d740(0000) GS:ffff89adefa80000(0000) =
+knlGS:0000000000000000
+[  184.418201] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  184.418201] CR2: 0000000000000000 CR3: 0000000171fd4000 CR4: =
+00000000003506e0
+[  184.418201] Call Trace:
+[  184.418201]  <TASK>
+[  184.418201]  ? __die_body+0x1a/0x60
+[  184.418201]  ? page_fault_oops+0xae/0x260
+[  184.418201]  ? exc_page_fault+0x67/0x140
+[  184.418201]  ? asm_exc_page_fault+0x22/0x30
+[  184.418201]  ? zcomp_cpu_up_prepare+0x90/0x90 [zram]
+[  184.418201]  ? zcomp_cpu_dead+0x7/0x30 [zram]
+[  184.418201]  ? zcomp_cpu_up_prepare+0x90/0x90 [zram]
+[  184.418201]  cpuhp_invoke_callback+0xb4/0x4c0
+[  184.418201]  ? zcomp_cpu_up_prepare+0x90/0x90 [zram]
+[  184.418201]  cpuhp_issue_call+0xeb/0x140
+[  184.418201]  __cpuhp_state_remove_instance+0xdb/0x1a0
+[  184.418201]  zcomp_destroy+0x1c/0x30 [zram]
+[  184.418201]  zram_reset_device+0xf3/0x120 [zram]
+[  184.418201]  reset_store+0x9d/0x100 [zram]
+[  184.418201]  kernfs_fop_write_iter+0x11e/0x1b0
+[  184.418201]  vfs_write+0x2ae/0x3c0
+[  184.418201]  ksys_write+0x5c/0xe0
+[  184.418201]  do_syscall_64+0x32/0x80
+[  184.552119] python3 (3612) used greatest stack depth: 11736 bytes =
+left
+[  184.418201]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+[  184.418201] RIP: 0033:0x7fa6d2506d00
+[  184.418201] Code: 40 00 48 8b 15 29 91 0d 00 f7 d8 64 89 02 48 c7 c0 =
+ff ff ff ff eb af 0f 1f 00 80 3d e1 18 0e 00 00 74 17 b8 01 00 00 00 0f =
+05 <48> 3d 00 f0 ff ff 77 58 c3 0f 1f 80 00 00 00 00 41 54 49 89 d4 55
+[  184.418201] RSP: 002b:00007ffec8315ec8 EFLAGS: 00000202 ORIG_RAX: =
+0000000000000001
+[  184.418201] RAX: ffffffffffffffda RBX: 0000000000000001 RCX: =
+00007fa6d2506d00
+[  184.418201] RDX: 0000000000000001 RSI: 00007ffec8315ee0 RDI: =
+0000000000000003
+[  184.418201] RBP: 0000000000000001 R08: 0000000000000000 R09: =
+0000000000000001
+[  184.418201] R10: 0000000000000004 R11: 0000000000000202 R12: =
+00007fa6d240d6c0
+[  184.418201] R13: 00007ffec8315ee0 R14: 0000000000000003 R15: =
+00007ffec8315ed0
+[  184.418201]  </TASK>
+[  184.418201] Modules linked in: zram zsmalloc bcache crc64 =
+ip6table_filter ip6_tables iptable_filter xt_conntrack iptable_mangle =
+xt_connmark nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_tables =
+x_tables vfat fat btrfs blake2b_generic xor raid6_pq libcrc32c =
+dm_multipath dm_mod bridge stp llc bonding nfs lockd grace sunrpc =
+fscache torch(O) ipmi_devintf ipmi_msghandler sr_mod kvm_amd mousedev =
+cdrom virtio_blk kvm ata_generic pata_acpi irqbypass crc32c_intel =
+aesni_intel ata_piix crypto_simd virtio_pci virtio_pci_legacy_dev =
+psmouse virtio_pci_modern_dev i6300esb e1000 libata cryptd i2c_piix4 =
+evdev procmemro(OK) noptrace(OK)
+[  184.418201] CR2: 0000000000000000
+[  184.418201] ---[ end trace 0000000000000000 ]---
+[  184.418201] RIP: 0010:zcomp_cpu_dead+0x7/0x30 [zram]
+[  184.418201] Code: c7 d8 56 a9 c0 e8 63 f3 92 ed b8 f4 ff ff ff 5b e9 =
+fe 10 d7 ed 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 0f 1f 44 00 00 89 =
+ff <48> 8b 46 f0 48 03 04 fd c0 47 e7 ae 48 89 c7 48 8d 70 08 e8 11 fd
+[  184.418201] RSP: 0018:ffffaf9400a5fd28 EFLAGS: 00010246
+[  184.418201] RAX: ffffffffc0a912d0 RBX: ffff89adefa1b2e0 RCX: =
+0000000000000010
+[  184.418201] RDX: 0000000000000000 RSI: 0000000000000010 RDI: =
+0000000000000000
+[  184.418201] RBP: 0000000000000000 R08: 0000000000000000 R09: =
+0000000000000001
+[  184.418201] R10: 000000000000000a R11: f000000000000000 R12: =
+0000000000000aa0
+[  184.418201] R13: 0000000000000000 R14: 0000000000000010 R15: =
+ffff89aac0cb2e20
+[  184.418201] FS:  00007fa6d240d740(0000) GS:ffff89adefa80000(0000) =
+knlGS:0000000000000000
+[  184.418201] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  184.418201] CR2: 0000000000000000 CR3: 0000000171fd4000 CR4: =
+00000000003506e0
+[  184.418201] Kernel panic - not syncing: Fatal exception
+[  184.418201] Kernel Offset: 0x2c800000 from 0xffffffff81000000 =
+(relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+[  184.418201] Rebooting in 120 seconds..
 
-      path = argv[1];
+Thanks,
 
-      fd = open(path, O_RDWR | O_CREAT, 0666);
-      if (fd < 0) {
-          perror("open failed");
-          return -1;
-      }
-
-      ret = fallocate(fd, 0, 0, MSIZE);
-      if (ret != 0) {
-          perror("fallocate");
-          return -1;
-      }
-
-      buf = mmap(NULL, MSIZE, PROT_READ|PROT_WRITE,
-                 MAP_PRIVATE, fd, 0);
-
-      if (buf == MAP_FAILED) {
-          perror("mmap() failed");
-          return -1;
-      }
-
-      /* Allocate a page */
-      *buf = 1;
-
-      child = fork();
-      if (child == 0) {
-          /* child doesn't need to do anything */
-          exit(0);
-      }
-
-      /* Trigger CoW from owner */
-      *buf = 2;
-
-      munmap(buf, MSIZE);
-      close(fd);
-      unlink(path);
-
-      return 0;
-  }
-
-It can only reproduce with a sub-mount when there're reserved pages on the
-spool, like:
-
-  # sysctl vm.nr_hugepages=128
-  # mkdir ./hugetlb-pool
-  # mount -t hugetlbfs -o min_size=8M,pagesize=2M none ./hugetlb-pool
-
-Then run the reproducer on the mountpoint:
-
-  # ./reproducer ./hugetlb-pool/test
-
-Fix it by taking the reservation from spool if available.  In general,
-avoid_reserve is IMHO more about "avoid vma resv map", not spool's.
-
-I copied stable, however I have no intention for backporting if it's not a
-clean cherry-pick, because private hugetlb mapping, and then fork() on top
-is too rare to hit.
-
-Cc: linux-stable <stable@vger.kernel.org>
-Fixes: d85f69b0b533 ("mm/hugetlb: alloc_huge_page handle areas hole punched by fallocate")
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>
-Tested-by: Ackerley Tng <ackerleytng@google.com>
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- mm/hugetlb.c | 22 +++-------------------
- 1 file changed, 3 insertions(+), 19 deletions(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 354eec6f7e84..2bf971f77553 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1394,8 +1394,7 @@ static unsigned long available_huge_pages(struct hstate *h)
- 
- static struct folio *dequeue_hugetlb_folio_vma(struct hstate *h,
- 				struct vm_area_struct *vma,
--				unsigned long address, int avoid_reserve,
--				long chg)
-+				unsigned long address, long chg)
- {
- 	struct folio *folio = NULL;
- 	struct mempolicy *mpol;
-@@ -1411,10 +1410,6 @@ static struct folio *dequeue_hugetlb_folio_vma(struct hstate *h,
- 	if (!vma_has_reserves(vma, chg) && !available_huge_pages(h))
- 		goto err;
- 
--	/* If reserves cannot be used, ensure enough pages are in the pool */
--	if (avoid_reserve && !available_huge_pages(h))
--		goto err;
--
- 	gfp_mask = htlb_alloc_mask(h);
- 	nid = huge_node(vma, address, gfp_mask, &mpol, &nodemask);
- 
-@@ -1430,7 +1425,7 @@ static struct folio *dequeue_hugetlb_folio_vma(struct hstate *h,
- 		folio = dequeue_hugetlb_folio_nodemask(h, gfp_mask,
- 							nid, nodemask);
- 
--	if (folio && !avoid_reserve && vma_has_reserves(vma, chg)) {
-+	if (folio && vma_has_reserves(vma, chg)) {
- 		folio_set_hugetlb_restore_reserve(folio);
- 		h->resv_huge_pages--;
- 	}
-@@ -3047,17 +3042,6 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 		gbl_chg = hugepage_subpool_get_pages(spool, 1);
- 		if (gbl_chg < 0)
- 			goto out_end_reservation;
--
--		/*
--		 * Even though there was no reservation in the region/reserve
--		 * map, there could be reservations associated with the
--		 * subpool that can be used.  This would be indicated if the
--		 * return value of hugepage_subpool_get_pages() is zero.
--		 * However, if avoid_reserve is specified we still avoid even
--		 * the subpool reservations.
--		 */
--		if (avoid_reserve)
--			gbl_chg = 1;
- 	}
- 
- 	/* If this allocation is not consuming a reservation, charge it now.
-@@ -3080,7 +3064,7 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 	 * from the global free pool (global change).  gbl_chg == 0 indicates
- 	 * a reservation exists for the allocation.
- 	 */
--	folio = dequeue_hugetlb_folio_vma(h, vma, addr, avoid_reserve, gbl_chg);
-+	folio = dequeue_hugetlb_folio_vma(h, vma, addr, gbl_chg);
- 	if (!folio) {
- 		spin_unlock_irq(&hugetlb_lock);
- 		folio = alloc_buddy_hugetlb_folio_with_mpol(h, vma, addr);
--- 
-2.47.0
-
+--
+Kenneth Van Alstyne, Jr.
 
