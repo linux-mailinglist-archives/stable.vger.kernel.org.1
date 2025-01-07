@@ -1,98 +1,105 @@
-Return-Path: <stable+bounces-107864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA334A0447B
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 16:30:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8469A04503
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 16:44:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F08E51884FF2
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 15:30:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C83283A133A
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 15:44:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8DD1F2C50;
-	Tue,  7 Jan 2025 15:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A7B1F3D5B;
+	Tue,  7 Jan 2025 15:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ctAylwUS"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N4udjKS0"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2055.outbound.protection.outlook.com [40.107.100.55])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B34B86330
-	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 15:29:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736263797; cv=fail; b=QsWgI11potnEqutwgiZdjZfwi2D23fEK40z9ccuqLelMr45iuEAYlY0RVbmIvF049SbUbMU3ig+bfIylEA1x3k/H+212AR6l/1MiXEHPQCgIEeKoToqTRl/6tiPKvQ48Vx+mV7jc3nel9OHolDWCb9C6pru+TF/zLGTb+olvnG4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736263797; c=relaxed/simple;
-	bh=ZaPtSYLT2sslTamXlvg+QDhSZjEUbWiR2qy4Kbp5dTk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UR/oug0yWqyvYKFv+9OVTPzpkqQDeCuE4Sm3kBPpoAcChlqxuURIJ+rRlcptY3m/yZ8Ke+cqGTL8Qc8NTNlkdRvrlDw1jcgLLU8mn+DKik1GCYwNKlswXo5qEw189WcwPrc8vwwQ4bf6J7fSU7BOKSXByUofVuAWF3vJCJZqF80=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ctAylwUS; arc=fail smtp.client-ip=40.107.100.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pRYJHFjFG+U5REWdhLZHWKYc3AVOUNsxgom5kCTaxHI7zxIXb5Qz53QgEofr6+yQMm2x/krE8H2TljoH2alSzyF+/hZ+rO88cR4MZJYF1uQDCL8ojkWJuLtFeC+ZOFxjsDZtfvEvPPcND3CYYDqQEmiU2QZiwNXGSMwg9etWfT9HhjP6dEGsDetB77iDSIUWy15a9hU32D0pDi6bZ61dAB+pwQavfrYhEIcV16Gi1mV2hHlm8cqV5PGssHYoRssyKP7/Ptm0J/pW6HCjr1fLo234ZE46IpeatDea5NkIXO+G/MG1AoXN+5YqA9y2tyHJww3gZgyfRw56QReQve7BaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=894d8/YoTnXiixowWdBgTCWKogn+VIkkmyi+ItxsVzI=;
- b=BfGYuEFP+kKMWJd4iTZvda2OU8dN+7Ua0Ir/eld7NOpoIVrVnF4X/0xp0gSpdaX8zfcvpEfIFSESZL4ivDagfe5GYAFXDJn0sKDdI9wgMiqbdMCbXDUQhzbqS4lc6nR4LRdSY7oUQmP7rn1fFjw1KnPAHSChov4o74fDxroUIO/1+C/BOxTtUneIN4BcQ1QlyG5vevXSQUFW5NM/nLB+4ew56PR+NQMFEE6vx18SGyFg/3V5Gal9jE0GqGztaTy82skQEGvZt702ybYEXzafPWUBe2YVtbsjl4063/+Y2FxAV9wg8PjiCoixCDEc0dSBPHIqa04icjXQF8OAaOdIcA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=894d8/YoTnXiixowWdBgTCWKogn+VIkkmyi+ItxsVzI=;
- b=ctAylwUSFHwqj0nONkFgz9k5NFoyTOyC6CI7mmb6zp8njxRtnpC506HJRfynegX7b+rcDv7wHplwbwHfoSH/Vbake/I789wCqq8THIpaeRsdlcz84+ur93eKH6UrROyUjuD/2JrHo8y0lnmP9aOwUTLG9RAsj+8qf0CtxNZFXUE=
-Received: from MN0P220CA0023.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:52e::27)
- by PH8PR12MB6961.namprd12.prod.outlook.com (2603:10b6:510:1bc::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.17; Tue, 7 Jan
- 2025 15:29:46 +0000
-Received: from BN2PEPF000044A7.namprd04.prod.outlook.com
- (2603:10b6:208:52e:cafe::8) by MN0P220CA0023.outlook.office365.com
- (2603:10b6:208:52e::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8314.18 via Frontend Transport; Tue,
- 7 Jan 2025 15:29:46 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- BN2PEPF000044A7.mail.protection.outlook.com (10.167.243.101) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8335.7 via Frontend Transport; Tue, 7 Jan 2025 15:29:45 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 7 Jan
- 2025 09:29:45 -0600
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB06.amd.com
- (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 7 Jan
- 2025 09:29:44 -0600
-Received: from tom-r5.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Tue, 7 Jan 2025 09:29:36 -0600
-From: Tom Chung <chiahsuan.chung@amd.com>
-To: <amd-gfx@lists.freedesktop.org>
-CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>, Aurabindo Pillai
-	<aurabindo.pillai@amd.com>, Roman Li <roman.li@amd.com>, Wayne Lin
-	<wayne.lin@amd.com>, Tom Chung <chiahsuan.chung@amd.com>, Fangzhi Zuo
-	<jerry.zuo@amd.com>, Zaeem Mohamed <zaeem.mohamed@amd.com>, Solomon Chiu
-	<solomon.chiu@amd.com>, Daniel Wheeler <daniel.wheeler@amd.com>, Wayne Lin
-	<Wayne.Lin@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, "Alex
- Deucher" <alexander.deucher@amd.com>, <stable@vger.kernel.org>
-Subject: [PATCH 08/24] drm/amd/display: Reduce accessing remote DPCD overhead
-Date: Tue, 7 Jan 2025 23:28:39 +0800
-Message-ID: <20250107152855.2953302-9-chiahsuan.chung@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250107152855.2953302-1-chiahsuan.chung@amd.com>
-References: <20250107152855.2953302-1-chiahsuan.chung@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2E41F37AB
+	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 15:43:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736264637; cv=none; b=E8RDWvP2uiPMiwReN59aF6fSrieDppzS6/a2fWZCJRJBvpV9X94xvcBqjg59I1j66FOGC298ZZ2YOT7MjBmPrxNbMIqGXIO8LYS4yDdtn4h7dAbmpHDg8RPw4gVH3LIteJa6Zp09kapKmP1+DPkVlvVHxPwbdnS6jvBGtFt9LSk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736264637; c=relaxed/simple;
+	bh=kff/5MuiUSshICdL0Pz3Kwaact1TDCjVUg2HjOr3gSg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=klGjWUPxEnyhv2qcCXcnR6hoUhCxNsiALTgEjwv1OLxCRZAYC1lbY5xgwkjjZY0Y8tDKRlsqrN0n8hvUgtYT0Ai7O+4//px97TJHV+fxSy6lOnik+34/mTLN9S6gVoEvKUFJK8a1goYfocHXIF1SH20oAftlRa7h2UEWtRELuNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N4udjKS0; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736264633;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=be/xDpPjneQ7+z88xrOgXMm6ql8CC9vSv4tySFvSNk8=;
+	b=N4udjKS0AjQdA/wTSL3Ltv2Zqt24ZQN27aEcnbHauGnjRzp8kfghqGJEWhg3v4COHUQ1GY
+	fT6xUamRVF7kIzcvfGuhaxJ7mXNjkJttkBR1DoIz6uwAJ59QG6wMd3Xke9AVPS+mvwIeat
+	+rVLQELcQxpokl+p7kxJwu3GP3mpOAA=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-245-dhKMVOxCNGiKNfMeq9uFEg-1; Tue, 07 Jan 2025 10:43:52 -0500
+X-MC-Unique: dhKMVOxCNGiKNfMeq9uFEg-1
+X-Mimecast-MFC-AGG-ID: dhKMVOxCNGiKNfMeq9uFEg
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-38a684a096eso1709414f8f.2
+        for <stable@vger.kernel.org>; Tue, 07 Jan 2025 07:43:51 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736264629; x=1736869429;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=be/xDpPjneQ7+z88xrOgXMm6ql8CC9vSv4tySFvSNk8=;
+        b=Ej2zGD7K9Dt9N+HrnFCHWcRzyDgRDqz6u40KFfBb733m+vuOyf3st0nhrI3bWGTcWy
+         0ieCfGQtg339sf6Nbh9ogmJo/QIfcPaxfDEfREj2iiwzwmQ6OVgbFeBPpcEncneONCYU
+         Rlu1qzkIYGoJh9cxwS8ZRP/wkLyaVrK+5Y//OrMvuVlmaWXvyV+V6PJ/FH3K3GmbB616
+         URusEWsg9eIruC9ClQYGxHuuadUMxcxe4OaOJFKKvXKtrqBfAvxDmNYExpaByztN3lOq
+         da+utgqTftd4G7LzjIfGbIuHo8M3Ojcbz2o6kBi8Dd400Px6KMORTPRiev8+Ruam3CY8
+         XwxA==
+X-Forwarded-Encrypted: i=1; AJvYcCWkU7euUF5df2alETlsIxR+zIsSk//xiuKJQnbw80smpeXguMWxaYekMv11sdImlwRGMJwr2cM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3JoxsA3sbwSOmWLggCe3Yq8So8jfOeXn+76bVDWQX3i2G2T8u
+	3PFkI1GltY1aB4CEGvIa1+TDR73VGsYJ7B93BeovZWDUO/DOzz+6h5kmXihx3JgkMBiKv/iPjXn
+	G2OlaoK/NdIUzv7dUQ/ObXwt0HRi7uYxN5j2g7alUZupERIVx+dYq3A==
+X-Gm-Gg: ASbGncv8bzB1R5gLslE7ZYKnd6s4zn5NRh/oyBiMlkgafOnxUTeL4pK+/kLhp8x+S/m
+	SwzdnOK2zBgb+7G0iOGr4+9Aq1EpYHxGPiZ+IDpSTB99VwDlmjrFH6VweHEdcvjXxnu81FUOp8w
+	h3mXm+3Yd3BymozDaDeTH+ssyrUnwJyDYfX94diN50GtOetfHdtcjoUzYLKM1ih/Wn4/3h8goEJ
+	nGZ7SBqVa43e6ll8O3vMO/FErqnuMtwkq47Rhe0x5evWzqQVb7o+9bOZCQ/7yqH1zYNH/pv5L5b
+	LavCDxhve9eoEmuLnQc0cG0CMGBypwl/53J0wQ5Erg==
+X-Received: by 2002:a05:6000:1f88:b0:386:4034:f9a0 with SMTP id ffacd0b85a97d-38a22408cbemr49437405f8f.52.1736264629539;
+        Tue, 07 Jan 2025 07:43:49 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IECHU3QXEd9DSMtt+gL3jnHOKISExr8ZSLHane3TsnWNkBR9T163eXOTOHhVFPDdEe315KvNw==
+X-Received: by 2002:a05:6000:1f88:b0:386:4034:f9a0 with SMTP id ffacd0b85a97d-38a22408cbemr49437388f8f.52.1736264629175;
+        Tue, 07 Jan 2025 07:43:49 -0800 (PST)
+Received: from localhost (p200300cbc719170056dc6a88b509d3f3.dip0.t-ipconnect.de. [2003:cb:c719:1700:56dc:6a88:b509:d3f3])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-38a1c828d39sm52310207f8f.9.2025.01.07.07.43.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Jan 2025 07:43:48 -0800 (PST)
+From: David Hildenbrand <david@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	David Hildenbrand <david@redhat.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Huth <thuth@redhat.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v1 1/4] KVM: s390: vsie: fix some corner-cases when grabbing vsie pages
+Date: Tue,  7 Jan 2025 16:43:41 +0100
+Message-ID: <20250107154344.1003072-2-david@redhat.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250107154344.1003072-1-david@redhat.com>
+References: <20250107154344.1003072-1-david@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,165 +107,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000044A7:EE_|PH8PR12MB6961:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3d54107f-8ecd-44c0-e9f7-08dd2f301dab
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?2jB7i0i/c+8aRu8N7hjw040ysW2hBDWWFp9KhWmEXovxU95dhTT2godWfkWo?=
- =?us-ascii?Q?Qd1noQ5r2QwEYEv6IboZg6knTHAD0AQ9FDmM+37Dic5JOAce1tFtlL7pe4Uu?=
- =?us-ascii?Q?x306iG4V+2xK2unpUbYFkYM/mZWZBvsgb2ukYl03SWoUySW9kHUnT3CfEqtI?=
- =?us-ascii?Q?N3IImvgAmeeNvG+riYi/ppv42ED8I6bxksXtw1Oh/gExLYAV1n7vXJCFFKFV?=
- =?us-ascii?Q?8qlOzVjLlgPY7okuSJpEq8szRQFH6vKxmf/J6d5AGYgQP9U6ZiksBoukkFNI?=
- =?us-ascii?Q?2kxT7foJdtpivK8urCQ/CEJUPhPuUIYJVusqCeWhx9HnBeu6qQeFJzTuKEc6?=
- =?us-ascii?Q?4PdTs6KNIP0Zk7+uCKfXlwQ4IsyN7InNu3RRgSLi27j2/KKtgPHtwuLW1KGc?=
- =?us-ascii?Q?5HrsJ//JPg0r1+cGLABfs4coAaG4y0BqDYdrVeJQWbNe9vSzoYKi42vs/5CO?=
- =?us-ascii?Q?Vw4dli80I7Dlo1bH9zcMvyV+cnh/6DzSp1/eIyK2fKTS/iSLP1lxdd/dNCJO?=
- =?us-ascii?Q?yYfjrKwQKo7+/c3aUD5LgoO0GBLCrQCPlX57qVqJX7tPbGpvHj2Y4ryH4Uwp?=
- =?us-ascii?Q?bYZvOniO64O7ynzsOjI+vNfgm0JilSnzzaHa0RAJhGYgd4m3GNqEVdG+H5In?=
- =?us-ascii?Q?cwwvCpSRkAENeh9XN71squjCqly8c3d8smwz4zP0CZTvm7LdjaEBpMlHcdyq?=
- =?us-ascii?Q?784c0Xvo/kW52e5s/TMajpkvZzshMxZrq0XBGLH0uy+tdfw3nN5oB4Z516j1?=
- =?us-ascii?Q?7rgXleWnLBB6Q9jsHVj9maIwCeBxzxX8CZMTEayWOjFKCqs6golV48Kkw0By?=
- =?us-ascii?Q?jtVZma7jINv/ejDTgZ2pPfutbze915E9+6j8BRTcs/eN/VFDYN6VWlCY91qM?=
- =?us-ascii?Q?SZaGwOfDT1BqhX70hSs1rjFR/Ryj2/hgTWr2IKglBB7ItJ0Ukl0zH0bmJZHM?=
- =?us-ascii?Q?FmmNqxz/EwmTpQV17284vZMjL/0NZ4QtjnkCFVbzSBhLMA3hVQRC3ZLJArXW?=
- =?us-ascii?Q?yHWNB1PpCYWSuwChFokgMRYhU0N+yz8xtrbAMdgnRWs2m/aetVZ7/KGzoEaO?=
- =?us-ascii?Q?oEOvZxIXCyuu6BdicTYPnxwDEeSGG+ID0V45O1EIZyisOmInbLvM9Sacwph6?=
- =?us-ascii?Q?WoWQAZzHMKFZbIq4JgJxu7dE6HbCVWczCcZvh1/shX1P0bO2LiKvXECeI92L?=
- =?us-ascii?Q?2ZQJCSHff70QldXH65xDhf38e71Ochf54EzbP3tNSLggdytUItxCUb61HmWR?=
- =?us-ascii?Q?5unJ1s4l9GgEkuO/DGjvp7wI04iE7mw+C2byz1Z1g/rhKMcBO712oK4T0bzA?=
- =?us-ascii?Q?yYSiEVhvzhF/r9PxShCLURNnEjcV3Czki6gpP4mGOwCMfkSC9MYrb5Cgp2CK?=
- =?us-ascii?Q?JPyu/uDXXgvzVW51NMpJgCaE9hsZY55OxAtlHvAf8uL5zCQRE7RyU+Kmfn84?=
- =?us-ascii?Q?btNvnFBHxVI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2025 15:29:45.8595
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3d54107f-8ecd-44c0-e9f7-08dd2f301dab
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF000044A7.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6961
 
-From: Wayne Lin <Wayne.Lin@amd.com>
+We try to reuse the same vsie page when re-executing the vsie with a
+given SCB address. The result is that we use the same shadow SCB --
+residing in the vsie page -- and can avoid flushing the TLB when
+re-running the vsie on a CPU.
 
-[Why]
-Observed frame rate get dropped by tool like glxgear. Even though the
-output to monitor is 60Hz, the rendered frame rate drops to 30Hz lower.
+So, when we allocate a fresh vsie page, or when we reuse a vsie page for
+a different SCB address -- reusing the shadow SCB in different context --
+we set ihcpu=0xffff to trigger the flush.
 
-It's due to code path in some cases will trigger
-dm_dp_mst_is_port_support_mode() to read out remote Link status to
-assess the available bandwidth for dsc maniplation. Overhead of keep
-reading remote DPCD is considerable.
+However, after we looked up the SCB address in the radix tree, but before
+we grabbed the vsie page by raising the refcount to 2, someone could reuse
+the vsie page for a different SCB address, adjusting page->index and the
+radix tree. In that case, we would be reusing the vsie page with a
+wrong page->index.
 
-[How]
-Store the remote link BW in mst_local_bw and use end-to-end full_pbn
-as an indicator to decide whether update the remote link bw or not.
+Another corner case is that we might set the SCB address for a vsie
+page, but fail the insertion into the radix tree. Whoever would reuse
+that page would remove the corresponding radix tree entry -- which might
+now be a valid entry pointing at another page, resulting in the wrong
+vsie page getting removed from the radix tree.
 
-Whenever we need the info to assess the BW, visit the stored one first.
+Let's handle such races better, by validating that the SCB address of a
+vsie page didn't change after we grabbed it (not reuse for a different
+SCB; the alternative would be performing another tree lookup), and by
+setting the SCB address to invalid until the insertion in the tree
+succeeded (SCB addresses are aligned to 512, so ULONG_MAX is invalid).
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3720
-Fixes: fa57924c76d9 ("drm/amd/display: Refactor function dm_dp_mst_is_port_support_mode()")
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
+These scenarios are rare, the effects a bit unclear, and these issues were
+only found by code inspection. Let's CC stable to be safe.
+
+Fixes: a3508fbe9dc6 ("KVM: s390: vsie: initial support for nested virtualization")
 Cc: stable@vger.kernel.org
-Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h |  2 ++
- .../display/amdgpu_dm/amdgpu_dm_mst_types.c   | 34 ++++++++++++++-----
- 2 files changed, 27 insertions(+), 9 deletions(-)
+ arch/s390/kvm/vsie.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-index e46e1365fe91..e7963158a147 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-@@ -697,6 +697,8 @@ struct amdgpu_dm_connector {
- 	struct drm_dp_mst_port *mst_output_port;
- 	struct amdgpu_dm_connector *mst_root;
- 	struct drm_dp_aux *dsc_aux;
-+	uint32_t mst_local_bw;
-+	uint16_t vc_full_pbn;
- 	struct mutex handle_mst_msg_ready;
- 
- 	/* TODO see if we can merge with ddc_bus or make a dm_connector */
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-index a504aa1243e9..e096fb562122 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -155,6 +155,17 @@ amdgpu_dm_mst_connector_late_register(struct drm_connector *connector)
- 	return 0;
- }
- 
-+
-+static inline void
-+amdgpu_dm_mst_reset_mst_connector_setting(struct amdgpu_dm_connector *aconnector)
-+{
-+	aconnector->drm_edid = NULL;
-+	aconnector->dsc_aux = NULL;
-+	aconnector->mst_output_port->passthrough_aux = NULL;
-+	aconnector->mst_local_bw = 0;
-+	aconnector->vc_full_pbn = 0;
-+}
-+
- static void
- amdgpu_dm_mst_connector_early_unregister(struct drm_connector *connector)
- {
-@@ -182,9 +193,7 @@ amdgpu_dm_mst_connector_early_unregister(struct drm_connector *connector)
- 
- 		dc_sink_release(dc_sink);
- 		aconnector->dc_sink = NULL;
--		aconnector->drm_edid = NULL;
--		aconnector->dsc_aux = NULL;
--		port->passthrough_aux = NULL;
-+		amdgpu_dm_mst_reset_mst_connector_setting(aconnector);
+diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
+index 150b9387860ad..0fb527b33734c 100644
+--- a/arch/s390/kvm/vsie.c
++++ b/arch/s390/kvm/vsie.c
+@@ -1362,8 +1362,14 @@ static struct vsie_page *get_vsie_page(struct kvm *kvm, unsigned long addr)
+ 	page = radix_tree_lookup(&kvm->arch.vsie.addr_to_page, addr >> 9);
+ 	rcu_read_unlock();
+ 	if (page) {
+-		if (page_ref_inc_return(page) == 2)
+-			return page_to_virt(page);
++		if (page_ref_inc_return(page) == 2) {
++			if (page->index == addr)
++				return page_to_virt(page);
++			/*
++			 * We raced with someone reusing + putting this vsie
++			 * page before we grabbed it.
++			 */
++		}
+ 		page_ref_dec(page);
  	}
  
- 	aconnector->mst_status = MST_STATUS_DEFAULT;
-@@ -504,9 +513,7 @@ dm_dp_mst_detect(struct drm_connector *connector,
- 
- 		dc_sink_release(aconnector->dc_sink);
- 		aconnector->dc_sink = NULL;
--		aconnector->drm_edid = NULL;
--		aconnector->dsc_aux = NULL;
--		port->passthrough_aux = NULL;
-+		amdgpu_dm_mst_reset_mst_connector_setting(aconnector);
- 
- 		amdgpu_dm_set_mst_status(&aconnector->mst_status,
- 			MST_REMOTE_EDID | MST_ALLOCATE_NEW_PAYLOAD | MST_CLEAR_ALLOCATED_PAYLOAD,
-@@ -1819,9 +1826,18 @@ enum dc_status dm_dp_mst_is_port_support_mode(
- 			struct drm_dp_mst_port *immediate_upstream_port = NULL;
- 			uint32_t end_link_bw = 0;
- 
--			/*Get last DP link BW capability*/
--			if (dp_get_link_current_set_bw(&aconnector->mst_output_port->aux, &end_link_bw)) {
--				if (stream_kbps > end_link_bw) {
-+			/*Get last DP link BW capability. Mode shall be supported by Legacy peer*/
-+			if (aconnector->mst_output_port->pdt != DP_PEER_DEVICE_DP_LEGACY_CONV &&
-+				aconnector->mst_output_port->pdt != DP_PEER_DEVICE_NONE) {
-+				if (aconnector->vc_full_pbn != aconnector->mst_output_port->full_pbn) {
-+					dp_get_link_current_set_bw(&aconnector->mst_output_port->aux, &end_link_bw);
-+					aconnector->vc_full_pbn = aconnector->mst_output_port->full_pbn;
-+					aconnector->mst_local_bw = end_link_bw;
-+				} else {
-+					end_link_bw = aconnector->mst_local_bw;
-+				}
+@@ -1393,15 +1399,20 @@ static struct vsie_page *get_vsie_page(struct kvm *kvm, unsigned long addr)
+ 			kvm->arch.vsie.next++;
+ 			kvm->arch.vsie.next %= nr_vcpus;
+ 		}
+-		radix_tree_delete(&kvm->arch.vsie.addr_to_page, page->index >> 9);
++		if (page->index != ULONG_MAX)
++			radix_tree_delete(&kvm->arch.vsie.addr_to_page,
++					  page->index >> 9);
+ 	}
+-	page->index = addr;
+-	/* double use of the same address */
++	/* Mark it as invalid until it resides in the tree. */
++	page->index = ULONG_MAX;
 +
-+				if (end_link_bw > 0 && stream_kbps > end_link_bw) {
- 					DRM_DEBUG_DRIVER("MST_DSC dsc decode at last link."
- 							 "Mode required bw can't fit into last link\n");
- 					return DC_FAIL_BANDWIDTH_VALIDATE;
++	/* Double use of the same address or allocation failure. */
+ 	if (radix_tree_insert(&kvm->arch.vsie.addr_to_page, addr >> 9, page)) {
+ 		page_ref_dec(page);
+ 		mutex_unlock(&kvm->arch.vsie.mutex);
+ 		return NULL;
+ 	}
++	page->index = addr;
+ 	mutex_unlock(&kvm->arch.vsie.mutex);
+ 
+ 	vsie_page = page_to_virt(page);
+@@ -1496,7 +1507,9 @@ void kvm_s390_vsie_destroy(struct kvm *kvm)
+ 		vsie_page = page_to_virt(page);
+ 		release_gmap_shadow(vsie_page);
+ 		/* free the radix tree entry */
+-		radix_tree_delete(&kvm->arch.vsie.addr_to_page, page->index >> 9);
++		if (page->index != ULONG_MAX)
++			radix_tree_delete(&kvm->arch.vsie.addr_to_page,
++					  page->index >> 9);
+ 		__free_page(page);
+ 	}
+ 	kvm->arch.vsie.page_count = 0;
 -- 
-2.34.1
+2.47.1
 
 
