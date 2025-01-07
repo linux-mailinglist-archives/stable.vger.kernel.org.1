@@ -1,201 +1,150 @@
-Return-Path: <stable+bounces-107869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0772A04530
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 16:52:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2573CA0453F
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 16:55:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B7B71887B4E
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 15:52:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80D351887AA0
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 15:55:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F131F0E2A;
-	Tue,  7 Jan 2025 15:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B5BC1EE003;
+	Tue,  7 Jan 2025 15:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DIFu+Qud"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Knxa0b8P"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF961EE7BB
-	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 15:52:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B391F1928
+	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 15:55:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736265162; cv=none; b=kZn95TMa56o+utwfcQCzZbRmnZ7bhZBEENYJ/ZlvfeIvvEDI2dup8mLy1Umbyd3KOXb4TvwnkU3KUW6V3CDiOrPKHyHsHq5Gd2icpzqUfzw+Uc8z0DLYWcriohw8I+SRQdgTzzbVeHsTQt5UDupajHHDU2+D3AV0pT4dq2eCJOc=
+	t=1736265341; cv=none; b=IJDAEjxuIra7ImZ6+6je3GCJESCw++ftBbloMGZm6V0lHJpgxsAfdUzF6IKBMsfs4eT9/pDUsLQGSBUtm3cn15tkjKdKU3FoNWGeZV+l+juTXfyfABhj40Qfy829ZveQxMT1lTPEHHsGquGLoOChRvuOvC7KvdAIKBtVdPE8ISU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736265162; c=relaxed/simple;
-	bh=Y3K6VnkTj0agsEpHyH49R+8Yy718tcYTrz5OV5nifrg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NkOTO1lN3ErpMTkRQGPYNpHqK4rjewobYaseOWTQOlXp1Nl/4AAhrdZBhf+bUfsqFbfq0EeHJn2VUn6ckPyQ1chgzR5mP2K9+hsMqI6XuTYnqUu+h723EwzRouIReAKpyCnty1rCsgW4oYt0iFOU7Zc3ose9+WxnIz1uK9uKx3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DIFu+Qud; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2ee46851b5eso18769546a91.1
-        for <stable@vger.kernel.org>; Tue, 07 Jan 2025 07:52:38 -0800 (PST)
+	s=arc-20240116; t=1736265341; c=relaxed/simple;
+	bh=PjDOhgrKG6iaPq/ljTnv08K3Tt3+ljS/3Zo3ZnBspMM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qsA51yDiGwN+awHbGdFNUvxSNp/a8u1IARmY3tV+H4fBjKrm18grgx7wOnLsK7/NPz3wgqGLdBCxEiRCSVh45rNZEMUy4VzR/mJE8xffcL/VNWNguq7vWaR6W+9BLESiUAWAPtAuuCdLDh2hAXiUCOjbS0Zmcp+kVXxLR926tJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Knxa0b8P; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-436345cc17bso113895025e9.0
+        for <stable@vger.kernel.org>; Tue, 07 Jan 2025 07:55:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736265158; x=1736869958; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5akAFf1ZPesAMt6W0eaVJbcjKXPbLry7I/lEXkZAboA=;
-        b=DIFu+Qud2IoKpTGnM53QzSLR8LAg+V6CThWAbhKVEm+OLL/3bOCGQa0NlGIYZH+r/1
-         cJTYOjzK0sioUR2Uq2iYaI9hOrzmzTjsUJEmrQazh3pjeFoIZRYU1pYUlB61RK7mqzT1
-         kC2dWOJdhh5QLsIbBns8IVRPulm3rOylsvpQjbZLKMX4+DMOzQWJPrVe43mTu5JQCE3A
-         LoVghHZ8n6h0PKlKo2aDQSZD8WrUA0vNVopvodoAgeymKQyEadj96/PUEQ59g4K9l4wf
-         8Y+FpZfshRXLny46mrwZR1PPBjzyBC1Qm20v1qx9nRjfiUV7yRMyO35sVUCOauQIEFtB
-         Pe1g==
+        d=linaro.org; s=google; t=1736265335; x=1736870135; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yNy7DNnFZXplDv0Zlm/11c4dslj5j2UjTcsCw2RR9TY=;
+        b=Knxa0b8Pg3qTWJxOrPK6i+++yQv4m2B847M1xGKv1EreBeFIDdq94KPnEC7gVeaxCF
+         J+Gd/P94etPzTB2e4NIODv/rYUgmWW9xbv5ZXrWdV+gJ1PvqewuZbIStSLHJCigsWJd2
+         1ObzhH8yMnpMXjI0LzQFUwmVYz/GTSrzMCMryTHnvdTVOGeozVjkJI5W2Bw/bubk5xRN
+         RYOw2O+OGsVnRLLGJ08+yZMT406kQI1qpFyIs8LKH0AFg7YqkTwtTnlmWUPscrAtx7po
+         4ZxzsdIC2ioIYu/F122uWp0uB/RxCTomwYCibMs6RMikYSz/MOLAnuUMeXSwyt2Ehm39
+         pCEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736265158; x=1736869958;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5akAFf1ZPesAMt6W0eaVJbcjKXPbLry7I/lEXkZAboA=;
-        b=DmhVYpYDhgkrzTVi5X9ywfTkAEjvicgNxjF0FVKMPSGKufxDdb1rW03pmbHcZECNgx
-         0katxYJJv9oVEKJkl1DTdtKU2bKTvMZj7J5/jYr8BkjMBf7A25qB7N587bi6bdSIjjvO
-         eBfQjYD8/JZUF/gX5xTEDa1svNa/TaRxOiHEoFqcgaus5uuimqMtqYYPH1Cg1J4IAiQv
-         qX1SPXsIF8inc/Qbru+puPqLuZSg52OQwZl9txNyYXXh/BBlTsA+PypNsx/OC/o3xMDW
-         i28bL71chXVHL3HvpAPQSdoVXqGRPudNEvDEBovS7rxplQ7EQkAa2k2AcSCBfPqm0zuR
-         jP8g==
-X-Gm-Message-State: AOJu0Yy60z5PM6OTr/otrzCooR/gSyA3qtaPivm5wbn91yD9eLW7D9eb
-	FKkXwrykb5TLq93uY3m5NDStdMIosZ2QrC4IHqsivISYnsNcNIu+fDLckVBHs/CYj89SS37T5dQ
-	NI7n9nIyCp1925Ei16YPJyzMUP+LlpPEe
-X-Gm-Gg: ASbGncvM3dk7zxIzo5ugpLREJUCYIyauSkRtWhVKMbfYdNmSVpM4KUmArVK4o/IeKnF
-	PKxO5+rJVKfq3pqx5TpCu1XeMw9Y2WJwU1Q1x+A==
-X-Google-Smtp-Source: AGHT+IH1MJiukfAycq+hK/y+HEGZQSzQHUwwsUw+2RmnbE5MF9cXH6e29VZImIdEQGJyw1Y4KMMtUvA/kp6Z7oPQwDk=
-X-Received: by 2002:a17:90b:37c3:b0:2ee:8008:b583 with SMTP id
- 98e67ed59e1d1-2f452e2fe28mr96830234a91.16.1736265158427; Tue, 07 Jan 2025
- 07:52:38 -0800 (PST)
+        d=1e100.net; s=20230601; t=1736265335; x=1736870135;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yNy7DNnFZXplDv0Zlm/11c4dslj5j2UjTcsCw2RR9TY=;
+        b=cFKS5FCnOhHfi2Pjveea5B8/3vWhB7WzQiCsbcTPo6WC3Ed8p60a86QOqM8mVtdz18
+         IqlePz3j5J9kpOvwrjrL+szpY8OOw2FAdyIH4V6j3sQsUWzUPyVa7kqbqi0JOQFZXg8u
+         voBT64/DGKKHWQ5hL5XQaAYlXZAlXczb5xz6HINN4I1v6YJGQ9QN97kZnpD5gQnW2UiO
+         nkRupvRMH4wSqlrqHm0LiJyppCdKctrWo6rJWi9JkWJrRTEqhneJamjkm9C7thO/7IMW
+         8SO6Tu/uFxgQwusqBWrRV6Fb/IDHNbRSuDfPLaFS+Si52ZHbuzUuQlREHYrdhCOz+kbh
+         LdXw==
+X-Forwarded-Encrypted: i=1; AJvYcCX6HlKfTSXhsT3JZxRQvsj6X99tjdxhc5jqa9cglUjiiMW5HGq7N9C57eg+JqUgd5WBcRmU5dU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTSFcFXGOl6pbLtc/FZLkiUyHWhpoOO7qq74uhiBp450EyKzaw
+	taXTFZl2QrOVIWaSHijgq0L6RLRwLRUHcFx/lm5hPKQdxcpt74KiiEBsAHLE7/4=
+X-Gm-Gg: ASbGnctxAMcZxP/KrG5/xgJUj6VdoWl6hg7SOi8agpfwxDMAZnZFN4bMmsGWw9e3j0h
+	wjRQQoYACpgjY4c2kygAgoUETJRZv/Pib6O6jLke8bRKw8dNcUX1wXw+C4QTftDnkCPL2cJj4DA
+	t/J8AsYzOLItJTfUcjRPevnt4IG+HMKFPP0Vv37RGINShHOg0s/2vLv1qP/xNq55RNeZBn6OoNs
+	alclKyk8C5Pqzdb3weGf6svH+bmYL8HA00wW0YpRe09YCEJeduH8ZJr
+X-Google-Smtp-Source: AGHT+IHnLFH8otYdkrgR9N1j4TKNMFcyzqclQ03/greEidtqVylxjesTpEGHQLuz/X7sm6+/XeGXLA==
+X-Received: by 2002:a05:6000:704:b0:385:e3b8:f331 with SMTP id ffacd0b85a97d-38a221f9c89mr55461325f8f.14.1736265335438;
+        Tue, 07 Jan 2025 07:55:35 -0800 (PST)
+Received: from [127.0.1.1] ([86.121.162.10])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c89e2d2sm51494493f8f.71.2025.01.07.07.55.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jan 2025 07:55:34 -0800 (PST)
+From: Abel Vesa <abel.vesa@linaro.org>
+Date: Tue, 07 Jan 2025 17:55:23 +0200
+Subject: [PATCH] clk: qcom: gcc-x1e80100: Do not turn off usb_2 controller
+ GDSC
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250106151150.585603565@linuxfoundation.org> <20250106151155.069105214@linuxfoundation.org>
- <CAOi1vP9_s3oW8XP6bytvKm3JocPO0-odkv9LQFuuEU==JBgfaw@mail.gmail.com> <2025010737-fancy-blurb-f510@gregkh>
-In-Reply-To: <2025010737-fancy-blurb-f510@gregkh>
-From: Ilya Dryomov <idryomov@gmail.com>
-Date: Tue, 7 Jan 2025 16:52:26 +0100
-Message-ID: <CAOi1vP-aoU4mSvVm8OsLozka3=-S_LqroU9VAgZY-ptdrGZ+GA@mail.gmail.com>
-Subject: Re: [PATCH 6.6 118/222] ceph: print cluster fsid and client global_id
- in all debug logs
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	Xiubo Li <xiubli@redhat.com>, Patrick Donnelly <pdonnell@redhat.com>, 
-	Milind Changire <mchangir@redhat.com>, Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250107-x1e80100-clk-gcc-fix-usb2-gdsc-pwrsts-v1-1-e15d1a5e7d80@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAGtOfWcC/x2N0QqDMAxFf0XyvEBbmJb9ivhQ01jDhpNmOkH89
+ 4W9nQOHe09QrsIKj+aEyruovBcTf2uA5rQURsnmEFy4O+86PDxHA4f0emIhwkkO3HQMWLISrt+
+ qH8UUOXHbRupyANtaK1v3/+mH6/oBUlijA3cAAAA=
+X-Change-ID: 20250107-x1e80100-clk-gcc-fix-usb2-gdsc-pwrsts-a8eae668c7d2
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>
+Cc: Konrad Dybcio <konradybcio@kernel.org>, Johan Hovold <johan@kernel.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+ linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Abel Vesa <abel.vesa@linaro.org>
+X-Mailer: b4 0.15-dev-dedf8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1153; i=abel.vesa@linaro.org;
+ h=from:subject:message-id; bh=PjDOhgrKG6iaPq/ljTnv08K3Tt3+ljS/3Zo3ZnBspMM=;
+ b=owEBbQKS/ZANAwAKARtfRMkAlRVWAcsmYgBnfU5ymyn11JB07fkANMbhPM38aGpncyv9oOB91
+ stB0cdhSA+JAjMEAAEKAB0WIQRO8+4RTnqPKsqn0bgbX0TJAJUVVgUCZ31OcgAKCRAbX0TJAJUV
+ VnyqD/9WzdCOsLTMWvb+LFmv25a9ALOMGDvZkh5rrlXFGboztP1f1Uz6Gb5y7CyOpQkv3YVCoBb
+ 6P831yjfAYyiqWoYQ2ncNmzlDRknbS/yhtT1Sw3x6hPjmDnl4g1MRruxO8LaE+XMjc6rvlMjKhg
+ aQ99kjMdd6S2KMs1VJBbnmPxrwMJTIx+BwLsNTNis/s38J5kknmL+t5tWN7nHlliUNTCT05dR6U
+ AnP2aN/bvcYpv8aX1Go7WOxnqZkq1DOGvJ/K2Xz4+YkJcfsFRYp2XATsjFiztGjnkMymfOnCth/
+ SeRtcf2MV00Fb1JbCPK5+j0ZamPHnQHsZSWUPH+yGZwc1VmPNNp5jV1xekYVw8EoUTtKzHFEoFX
+ 7bsz/GUa1+PO+h6kvvnllw+Iu8anGgv+xtG+lUd9lXomvgF8fwAd/QsplAdySNy+Nwvg+UsNzga
+ abYjGykt3dyJQvuNiab0fmwrN93eyu8qOp0xAS5l9StLismFMZSV6PNH9kpD4COC6jGOZCYdg9f
+ 6aAZa8GFv5a2gbq+qP6TmWYDopmPSdtBqd8p3ZbLBJ9JffBLXsjfGAJOnVzPf3dyQ4n6DoH6REa
+ nDdu/28NUzM1VIVqfqTAb5sZFxlgKgKmxMX1X1r/8bUpCNbBcMywPCTY41wGaB2jHNPeVXacaCn
+ fEfkia/qopJr/rA==
+X-Developer-Key: i=abel.vesa@linaro.org; a=openpgp;
+ fpr=6AFF162D57F4223A8770EF5AF7BF214136F41FAE
 
-On Tue, Jan 7, 2025 at 2:05=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Tue, Jan 07, 2025 at 01:21:12PM +0100, Ilya Dryomov wrote:
-> > On Mon, Jan 6, 2025 at 4:28=E2=80=AFPM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > 6.6-stable review patch.  If anyone has any objections, please let me=
- know.
-> > >
-> > > ------------------
-> > >
-> > > From: Xiubo Li <xiubli@redhat.com>
-> > >
-> > > [ Upstream commit 38d46409c4639a1d659ebfa70e27a8bed6b8ee1d ]
-> > >
-> > > Multiple CephFS mounts on a host is increasingly common so
-> > > disambiguating messages like this is necessary and will make it easie=
-r
-> > > to debug issues.
-> > >
-> > > At the same this will improve the debug logs to make them easier to
-> > > troubleshooting issues, such as print the ino# instead only printing
-> > > the memory addresses of the corresponding inodes and print the dentry
-> > > names instead of the corresponding memory addresses for the dentry,et=
-c.
-> > >
-> > > Link: https://tracker.ceph.com/issues/61590
-> > > Signed-off-by: Xiubo Li <xiubli@redhat.com>
-> > > Reviewed-by: Patrick Donnelly <pdonnell@redhat.com>
-> > > Reviewed-by: Milind Changire <mchangir@redhat.com>
-> > > Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-> > > Stable-dep-of: 550f7ca98ee0 ("ceph: give up on paths longer than PATH=
-_MAX")
-> > > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > > ---
-> > >  fs/ceph/acl.c        |   6 +-
-> > >  fs/ceph/addr.c       | 279 +++++++++--------
-> > >  fs/ceph/caps.c       | 710 +++++++++++++++++++++++++----------------=
---
-> > >  fs/ceph/crypto.c     |  39 ++-
-> > >  fs/ceph/debugfs.c    |   6 +-
-> > >  fs/ceph/dir.c        | 218 +++++++------
-> > >  fs/ceph/export.c     |  39 +--
-> > >  fs/ceph/file.c       | 245 ++++++++-------
-> > >  fs/ceph/inode.c      | 485 ++++++++++++++++-------------
-> > >  fs/ceph/ioctl.c      |  13 +-
-> > >  fs/ceph/locks.c      |  57 ++--
-> > >  fs/ceph/mds_client.c | 558 +++++++++++++++++++---------------
-> > >  fs/ceph/mdsmap.c     |  24 +-
-> > >  fs/ceph/metric.c     |   5 +-
-> > >  fs/ceph/quota.c      |  29 +-
-> > >  fs/ceph/snap.c       | 174 ++++++-----
-> > >  fs/ceph/super.c      |  70 +++--
-> > >  fs/ceph/super.h      |   6 +
-> > >  fs/ceph/xattr.c      |  96 +++---
-> > >  19 files changed, 1747 insertions(+), 1312 deletions(-)
-> >
-> > Hi Greg,
-> >
-> > This is a huge patch, albeit mostly mechanical.  Commit 550f7ca98ee0
-> > ("ceph: give up on paths longer than PATH_MAX") for which this patch is
-> > a dependency just removes the affected log message, so it could be
-> > backported with a trivial conflict resolution instead of taking in
-> > 5c5f0d2b5f92 ("libceph: add doutc and *_client debug macros support")
-> > and 38d46409c463 ("ceph: print cluster fsid and client global_id in all
-> > debug logs") to arrange for a "clean" backport.
-> >
->
-> Great, can you send such a backport?
+Allowing the usb_2 controller GDSC to be turned off during system suspend
+renders the controller unable to resume.
 
-Sure, you should have one for 5.10-6.1 and a separate one for 6.6 in
-your inbox now.
+So use PWRSTS_RET_ON instead in order to make sure this the GDSC doesn't
+go down.
 
->
-> > Were these cherry picks done in an automated fashion by a tool that
-> > tries to identify and pull prerequisite patches based on "git blame"
-> > output?
->
-> Yes.
->
-> > The result appears to go against the rules laid out in
-> > Documentation/process/stable-kernel-rules.rst (particularly the limit
-> > on the number of lines), so I wanted to clarify the expected workflow
-> > of the stable team in this area.  Are "clean" backports considered to
-> > justify additional prerequisite patches of this size even when the
-> > conflict resolution is "take ours" or otherwise trivial?
->
-> Yes.  Keeping the tree in sync is almost always preferred over "one-off"
-> changes that have to be hand-provided, when the maintainer is not
-> involved to ensure that we don't break anything.  But if you want to
+Fixes: 161b7c401f4b ("clk: qcom: Add Global Clock controller (GCC) driver for X1E80100")
+Cc: stable@vger.kernel.org      # 6.8
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+---
+ drivers/clk/qcom/gcc-x1e80100.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-In this case this lead to pulling in
+diff --git a/drivers/clk/qcom/gcc-x1e80100.c b/drivers/clk/qcom/gcc-x1e80100.c
+index 8ea25aa25dff043ab4a81fee78b6173139f871b6..7288af845434d824eb91489ab97be25d665cad3a 100644
+--- a/drivers/clk/qcom/gcc-x1e80100.c
++++ b/drivers/clk/qcom/gcc-x1e80100.c
+@@ -6083,7 +6083,7 @@ static struct gdsc gcc_usb20_prim_gdsc = {
+ 	.pd = {
+ 		.name = "gcc_usb20_prim_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
+ 
 
-  1 file changed, 38 insertions(+)
+---
+base-commit: 7b4b9bf203da94fbeac75ed3116c84aa03e74578
+change-id: 20250107-x1e80100-clk-gcc-fix-usb2-gdsc-pwrsts-a8eae668c7d2
 
-and
+Best regards,
+-- 
+Abel Vesa <abel.vesa@linaro.org>
 
-  19 files changed, 1747 insertions(+), 1312 deletions(-)
-
-patches as dependencies to satisfy the backport of
-
-  1 file changed, 4 insertions(+), 5 deletions(-)
-
-patch.  Is this OK given that stable-kernel-rules.rst still has "It
-cannot be bigger than 100 lines, with context." as one of the rules for
-what kind of patches are accepted?
-
-Thanks,
-
-                Ilya
 
