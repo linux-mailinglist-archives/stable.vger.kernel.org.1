@@ -1,126 +1,149 @@
-Return-Path: <stable+bounces-107878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6A11A0484D
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 18:30:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A84C5A04884
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 18:42:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEF61166E69
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 17:30:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F22B188711C
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 17:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 214F21F12F7;
-	Tue,  7 Jan 2025 17:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFA61F2C48;
+	Tue,  7 Jan 2025 17:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="MepFbkWt"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="Wa2LcvFk"
 X-Original-To: stable@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-23.smtpout.orange.fr [80.12.242.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB841F3D4C;
-	Tue,  7 Jan 2025 17:29:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E04518D65E;
+	Tue,  7 Jan 2025 17:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736270987; cv=none; b=rNVWE3tVIU+yOp/NbDpe/beRpjo8mZI2tWZzDTUfCKpGCvXGeMyvh9ivukhOe5qxeSNV8qu7j6VadT9+rNGE7tuNMp/T5umydZNFJ+y5045xnKmBKuz5h38a7MbBXid+3771l7aTLvm3v7S4izm2sB25mHy70cjHirk88y7XT+Y=
+	t=1736271747; cv=none; b=eVROB82N+oGIk/Gk9vhxwmvpR7U8/dLFTcFQ8ZEeB2iEk4OKpJ3Kc/JqGwIPwafN3LGT76IJMlDsTDf5DxITxsAwBeWeN87v97E3xMzaOx+O4+DyORH9yeZfInPqXGQRlrTRu8zz8ZoHeNBY7oQ6Ou8VcTj9/IuPD7CCrKen1Cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736270987; c=relaxed/simple;
-	bh=d+qVIXHGzIEV2L4U96lrzLS9JbOH8KM8aPigs1iRU40=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tSAPDMs/r8RlMOuYP+J01ikt2Mh4JEAh0Wnfy5LmLNfpPuG8JoaZJmAb045yke4D/hM8SZXXS8wCH/Nknny5EV45DR6GDLdJLhFJVWoztyEzhd5FviIUGQotCOpdOZ7UeLNm2ogznFzLZHRNH43FRl8eE4IA53MuFOtTwOVV+Vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=MepFbkWt; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=EVYVEipvd5H4q20DXz8KjWI0d541jihGaq7GP8u3Bkc=; b=MepFbkWtfGkzFWwnw8iMfC8KPN
-	jN4aHEUkXdwNwBa1HCM4LwbMqfcHPoMdU/TiIbG/kFQ41YJho1cZyrnwXmVd7b8JNa1GjRZBDJd1s
-	fEZgkP2BNzTdiOIjZdaA03/y0Owmdy1LD+Ml1OUUPVQ6U8n61nekWpGwcmE/y8jwjX76PR3lV5Yzu
-	sklqoWT2Z/wTVkkHC7vhTg+9wqpeMkhJy6WVAat9GtSW/hcq5Kxv8VBWf2P3MFfvx0zwShqT2heyj
-	aU24jRDLJk5t2p3GqyjM6epAYk8vzLg3cS4Amywo+b8eZr5Q5UEHNA0D8vOnC0KlPY4OD4NDftTuO
-	WH9OBnww==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:57138)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1tVDOa-0007w3-05;
-	Tue, 07 Jan 2025 17:29:36 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tVDOX-0005TI-2a;
-	Tue, 07 Jan 2025 17:29:33 +0000
-Date: Tue, 7 Jan 2025 17:29:33 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: elder@kernel.org, sumit.garg@linaro.org, gregkh@linuxfoundation.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] [ARM] fix reference leak in locomo_init_one_child()
-Message-ID: <Z31kfQiLA6pddH_a@shell.armlinux.org.uk>
-References: <20250107020714.662708-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1736271747; c=relaxed/simple;
+	bh=0XgZhUmiCS0fmIOafxfxj2Ab5jvA0AybJm5ALAaJGNI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tAz6RjLkQloFBottPU0bshpqykj87j2lmiKJvg4rFU5qmIfaNvyGWeI3i4AyMI88H6xRHnDAvcUKX1eZg/VbznZ5BeU7dWxF+sgm949Y0uMqrY0JqWuPuDR2cN2weUjDHVVV+eQZJ7NfDKKKl9uy1+U337G51jyNhOrkP+mEgMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=Wa2LcvFk; arc=none smtp.client-ip=80.12.242.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id VDakt9eeD9jqYVDantwbfO; Tue, 07 Jan 2025 18:42:16 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1736271736;
+	bh=5mIYnytl3HKY6pkNTkFA+FKdHNM0CI77bpwBm5GEG+M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=Wa2LcvFkSITfkszCtVXzwTjsIQqZPbt8iSjbKZumW8oOLCTn1N9xvsXn+JnK2Q1OI
+	 P2M1okG3bn0y645Zr2T9kcWszZI5yN5A5e48XysYiMSz4EQeUaD2lxOWAkJlX5G5Yo
+	 WpTTOfqdMZpv2D7d6Cv2U2/rQDQQiS8zZdx/AkWkkXbnO1hpWIeHYPSFbGJptJMEzy
+	 GZd/Mird+lMNIPiuxA4BccwBN492tnpFGDII8dqgs6thgTmSLvszt6UHqDOgUWLLf6
+	 fIgKntnO5Db0aKSH1fu2HD7TzPf++bGOVBVLdHdTQydFOmrfYQ6UnhRsx4Anzx5DRA
+	 aPgZJV9/51kzg==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Tue, 07 Jan 2025 18:42:16 +0100
+X-ME-IP: 90.11.132.44
+Message-ID: <81b7066b-f769-4897-aa8e-8a1391894877@wanadoo.fr>
+Date: Tue, 7 Jan 2025 18:42:09 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250107020714.662708-1-make24@iscas.ac.cn>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] misc: microchip: pci1xxxx: Fix possible double free in
+ error handling path
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: arnd@arndb.de, gregkh@linuxfoundation.org,
+ kumaravel.thiagarajan@microchip.com, linux-gpio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <955f3abf-81b8-4471-82eb-b969dc5d7c9e@wanadoo.fr>
+ <20250107011917.642951-1-make24@iscas.ac.cn>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20250107011917.642951-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 07, 2025 at 10:07:14AM +0800, Ma Ke wrote:
-> Once device_register() failed, we should call put_device() to
-> decrement reference count for cleanup. Or it could cause memory leak.
+Le 07/01/2025 à 02:19, Ma Ke a écrit :
+> Christophe JAILLET<christophe.jaillet@wanadoo.fr> wrote:
+>> Ma Ke <make24@iscas.ac.cn> writes:
+>>> When auxiliary_device_add() returns error and then calls
+>>> auxiliary_device_uninit(), the callback function
+>>> gp_auxiliary_device_release() calls kfree() to free memory. Do not
+>>> call kfree() again in the error handling path.
+>>>
+>>> Fix this by skipping the redundant kfree().
+>>>
+>>> Found by code review.
+>>>
+>>> Cc: stable@vger.kernel.org
+>>> Fixes: 393fc2f5948f ("misc: microchip: pci1xxxx: load auxiliary bus driver for the PIO function in the multi-function endpoint of pci1xxxx device.")
+>>> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+>>> ---
+>>>    drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c | 2 ++
+>>>    1 file changed, 2 insertions(+)
+>>>
+>>> diff --git a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
+>>> index 32af2b14ff34..fbd712938bdc 100644
+>>> --- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
+>>> +++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
+>>> @@ -111,6 +111,7 @@ static int gp_aux_bus_probe(struct pci_dev *pdev, const struct pci_device_id *id
+>>>    
+>>>    err_aux_dev_add_1:
+>>>    	auxiliary_device_uninit(&aux_bus->aux_device_wrapper[1]->aux_dev);
+>>> +	goto err_aux_dev_add_0;
+>>>    
+>>>    err_aux_dev_init_1:
+>>>    	ida_free(&gp_client_ida, aux_bus->aux_device_wrapper[1]->aux_dev.id);
+>>> @@ -120,6 +121,7 @@ static int gp_aux_bus_probe(struct pci_dev *pdev, const struct pci_device_id *id
+>>>    
+>>>    err_aux_dev_add_0:
+>>>    	auxiliary_device_uninit(&aux_bus->aux_device_wrapper[0]->aux_dev);
+>>> +	goto err_ret;
+>>>    
+>>>    err_aux_dev_init_0:
+>>>    	ida_free(&gp_client_ida, aux_bus->aux_device_wrapper[0]->aux_dev.id);
+>>
+>> Hi,
+>>
+>> This is strange because the nearly same patch is in -next since June
+>> 2024 ([1])
+>>
+>> It is also in Linux since at least 6.10 ([2])
+>>
+>> In [1] and [2], there is also a new err_ret label, which is not part of
+>> your patch.
+>>
+>> On which tree are you working?
+>> Is your patch compile tested?
+>>
+>> CJ
 > 
-> device_register() includes device_add(). As comment of device_add()
-> says, 'if device_add() succeeds, you should call device_del() when you
-> want to get rid of it. If device_add() has not succeeded, use only
-> put_device() to drop the reference count'.
-> 
-> Found by code review.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
-> Changes in v3:
-> - modified the patch as suggestions;
-> Changes in v2:
-> - modified the patch as suggestions.
-> ---
->  arch/arm/common/locomo.c | 15 ++++++---------
->  1 file changed, 6 insertions(+), 9 deletions(-)
-> 
-> diff --git a/arch/arm/common/locomo.c b/arch/arm/common/locomo.c
-> index cb6ef449b987..9e275b2105c2 100644
-> --- a/arch/arm/common/locomo.c
-> +++ b/arch/arm/common/locomo.c
-> @@ -220,13 +220,11 @@ static int
->  locomo_init_one_child(struct locomo *lchip, struct locomo_dev_info *info)
->  {
->  	struct locomo_dev *dev;
-> -	int ret;
-> +	int ret = 0;
+> Thank you for your response. I discovered the aforementioned bug in
+> Linux kernel v6.4.16 (the latest v6.4). It appears that the fix was
+> not completed in the latest version of v6.4. I have also checked the
+> link you mentioned and saw that the issue has been fixed in v6.10. I
+> realize that I omitted the final jump patch in the patch v1 submitted,
+> and I will perfect it in patch v2. Thank you for your suggestion.
 
-The code around "ret" becomes:
+v6.4 is not supported any more, so an updated patch would never be applied.
+See active branches on https://www.kernel.org/.
 
-	int ret = 0;
+Anyway, when don't working on a recent tree, you should tell it, because 
+no one can guess that your patch is related to something old.
 
-...
+ > I realize that I omitted the final jump
 
-        ret = device_register(&dev->dev);
+So I guess, that you not compile tested your patch.
+You should never do that, event when the change looks trivial.
 
-Nothing between these two statements references "ret", and the present
-goto is eliminated in your patch.
+CJ
 
-So, why do we need to initialise ret to zero where it is declared?
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
