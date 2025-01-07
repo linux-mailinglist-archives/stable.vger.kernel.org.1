@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-107867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B73EA04522
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 16:48:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC602A04524
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 16:50:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33B3916165B
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 15:48:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FE0F3A197F
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 15:50:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162F01EE003;
-	Tue,  7 Jan 2025 15:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885FC33993;
+	Tue,  7 Jan 2025 15:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HSH7W7D1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OPaofSPQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB5B1EE00F
-	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 15:48:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE932594AB
+	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 15:50:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736264920; cv=none; b=Mp+P6NOtf3+KKrkHMWHgCpRXvEgvqLo/mZho0GjIQWUYbweK/BqA6Dhtr8QE2N8voMmvOFrgeoiwjeA5lIdyKjwBf+nhGLheFjSZb07psZk3XhbxD5s+7N/fjtFqZn0fuyvVfMrtTH3BKXUshpyD5AIt2J+PP9WA2lSOpdhtfDI=
+	t=1736265033; cv=none; b=auHpDfJ9ScEdz8gEejj0yEh7gl9s2Rh8qrCvoSWaF9dL/H0Be/kU8icaq2Abmnagc/BbcBqJI00tGhtazXdiyQzGuMycxUqSg3chvdxu/zBejw+WTC8EyWkK7PRWfZ3ZX7mS+wcHcozk2+jZ+Qv8ETgP6Q4G0BEsTfayTs+jiZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736264920; c=relaxed/simple;
-	bh=zHSxnQvEb8UZztbuDFW1UWtGRXNHr4k7c68bvF9k58Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OdAPUP97Yk/72NvEYQF8hWyunRYc4fn8YX+kTzonOpYzx7a9g1Q+DTUKFVA1uUQWlyGoC2Q0Gbkm/MrHuchdT6aGD/+2Ek45+7lHxxRDMtgYP+tdOnjs6BJWyHIOmfAoeQmTPHBdjjilgOG2cM8IccS1Fb0G3cTSDyuaBoDFfX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HSH7W7D1; arc=none smtp.client-ip=209.85.221.52
+	s=arc-20240116; t=1736265033; c=relaxed/simple;
+	bh=80YpzQVau2iHsJbM/3HxC55tVhLcSIdIG9IUCjqWvis=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dO92+1IlXsI4UfPM74H0GC/mAoc+I4i2cT9sihMuvWT8G1YWnLDUAQgJD1+4OqRMXoMg13/BYT6X8mTg4NZYI+JBRuneSl+sbhbt6cdBH81dZbXXCt3zP2KgSYXvMuZc0hF+nA4q+6wP3dDaou0/YZ1/NDu0lH63hQVdY3arDCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OPaofSPQ; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-38637614567so7194630f8f.3
-        for <stable@vger.kernel.org>; Tue, 07 Jan 2025 07:48:35 -0800 (PST)
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3863494591bso8082132f8f.1
+        for <stable@vger.kernel.org>; Tue, 07 Jan 2025 07:50:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736264914; x=1736869714; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736265028; x=1736869828; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZTv0piVgUC+YB8cY6nEGnXIfNYGA4ovWnbmblZRjSGs=;
-        b=HSH7W7D1+Z4c/6MjimOrfxw3SestdHAVNhcmJYGNTyT9Gj2VfPPZPEl3evb6iUeSRi
-         EnoZy9wZdSWd3VJ6OwJ8I1GxJIu8TVDDjUMG+wzX2/M0Hkf+7eXz3ySaZ1dqx8g0K1De
-         pKDGh2Z+z6YP/0dZJQrV1dUH4HWW64zPaGeOZZrLnN4xCtpP9y9mkCop1VeLnJhTNoFE
-         xBovSeL+gcobmKeGHfFJ267YWxEStVbsS8vnh7uTHrcAcC9XjpwoMSWFTbTmYGU2bq9n
-         AF1E9PuWB4Bg1yX7GIqkS9H8aSFqibGHJHv9uQ0b7NOuiKxVXbSJIDNHNbAFVdhUunNR
-         0dGw==
+        bh=lHe0KygA/Lbfz7umC4cWgOiunml0PiO3u5JU8TrYweU=;
+        b=OPaofSPQGDYNy6i9g+tl2ovAVDdJOtbV1YfDRODO/CX3yCRCsxVxqC5jXooNCL+BDW
+         q89Yp3bLCKWAwFYoEI8YzvPt+ORYOzk++E4sSvmA3vosL0Woe4QcHgT2tiCwcCsJjObq
+         nbI4YqUzyZpCmkbj7yunkC/C1qPs48mPNclyGhDQMOOZmhuIrOjujGblLOruilL32eMq
+         qhXUeMa4ZiuyjxnFW7588ATySy/pX6RmAf5c78gS8F8jHu1rEXWngUJN6kVrigT12MTp
+         zjGfqhk9xNGz6oKK5Ga9d/2mDSV5mxZriHvyB87IPzXll8bAWCo5NSbBFHN9s/J9Pgi7
+         KXeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736264914; x=1736869714;
+        d=1e100.net; s=20230601; t=1736265028; x=1736869828;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ZTv0piVgUC+YB8cY6nEGnXIfNYGA4ovWnbmblZRjSGs=;
-        b=jDjQ6ZDLg0bKDqVXjFReq/rng/lqGqMAYYMz7V3sN4dNsnLiAZCCmYP0BohUHEr0aW
-         kIH5O8K4s9vTm83Uj9zlVrdJlvyU4glUhvdE3qGc+/MHk87Wf+eRalTjEvjSdhdRwJC7
-         vIxP6fvvWldkGltUxOgNgWk2LdjmvKBu+OQetADIQ1VhNtKpb1YaUJBDE+hv+hBrV2AM
-         JlVHbHtd71nOOYhO7XgCE8xkMvP0+VCMeVlFEU6hf5Jio80yvrjlupxNH21tGBN7v78V
-         K4C+8OZw8xEoriN9fNiItz2VZiA+7DHXvKgyixQAMHpvA3OPlfo3sM7xNukFdw7HZw5l
-         3cLA==
-X-Gm-Message-State: AOJu0YyyWmVnRppY1069rv/HzxAv3KZTnOEJxLmXUzB39DLtrE3ZsXFc
-	8YaTEvcN96zj/1b6UhYqr6wymnst4pnBJYrdWnL8YRJAkCC+TtoG65t9hg==
-X-Gm-Gg: ASbGncsJdjGFwFUFCUeFKSEt5MyZAuLy2JeJY7K9rMVeDfHGTr7UO+z7yj4FRqQtjNg
-	CLIBL0Rhonn/pJ5dDT/pVTt/1h72NDo9zAXeQckAyRDvaNe2deHdEDPFBcymH3IWcbWGSdGTGe6
-	RZBycZky4qgtBx5uXyDyxEyXuQknSdycWpQBOKhfx1tH5Sg0AmeclN7gljxIS+MKBcHr0pRsbL4
-	CP6ohzwk3hhJlAyYJ5uGBbFra921pvsdZ5o/JhdNSWLwRFcG8l5LCdUFPbg6hPmJIfg07X/P7Qc
-	oY678No0qfCZdDBL2c0bQDIo
-X-Google-Smtp-Source: AGHT+IFStaQ60Gj72ivc1xpL3DMDwxxZNPlR4BqR07cDPPFkt2xmzdnCYiM8rZqRpvi5D2KBWVLcHQ==
-X-Received: by 2002:a5d:5f51:0:b0:385:fa2e:a33e with SMTP id ffacd0b85a97d-38a223fd369mr49518115f8f.43.1736264914273;
-        Tue, 07 Jan 2025 07:48:34 -0800 (PST)
+        bh=lHe0KygA/Lbfz7umC4cWgOiunml0PiO3u5JU8TrYweU=;
+        b=uj2w5ge3TZ6HklGSlVXxS2/fHjf2C+2akPTAAl5yMxD563k4+Wq3F2DY18PuUMTe50
+         atKLsohXRgRnpv5CewT1jbMJrMDhb0rWl7ho3BCsliBp70EDtIlVmah8bT/kQ6faCmYz
+         egTtD7rRxkH1MjnYLYNwMzZKft027mhJSfZYnfpS1HeqoxEQBM6xC92qE5YWfRnikhJf
+         RaGDuC1+5CrB6KvG2VnDEVgEBkjOsdZ7ST86/pMr1Oju7zADfaWFvDh+w5kw3vmMF2fP
+         TmJ5okCJAJKx3HyYEbZO1awn6Kr13Z/DGfAevL0tDxc28vK1uQeyfpS970wLRep/ijlx
+         iLyg==
+X-Gm-Message-State: AOJu0Yx5zlt8wS/WucvFdn4icgIxYft2/vt166ti6CE+hzkz+g7166SD
+	4XMTqun91BODXi4J1WnjSMmboh8zlPkC1EScfcsUCaKjiltfqRv97DQ1Dg==
+X-Gm-Gg: ASbGnct+pPHAcc6M2JkODfCeDPK9CZ7AvpQe5cs0ANEvzIDGGR1+AE6s5L7pSUdCZ5J
+	6vsKo/grIUB+nEdeeUps2vvrGvDViBVLm8lop9BcAOAiw06Rfgqscvd220LcPt0JB8ruuqxtsDu
+	hHPOv72nbfZ0VL+pLPNUj23R23jXVWr5u3KC+z7a/3HGb+pmtrmXGZkiI3XtBzEBMiG7jT9csYM
+	WSK5QfH+x25Yj7ky6xfOff/1/RrllR/KsgzyxAz6jXjaaAqtBn5w9CbAOv2sCYF+TSxfeFIn5cd
+	tTLS/30T7ubD2wBGU+Fh2SZX
+X-Google-Smtp-Source: AGHT+IHswZ5PunMRRmfg6wntLNnqMGbJQjQG8Ygalpb3cyfEetK8aX7XGb99yhCFW+NnRNXjziZKDQ==
+X-Received: by 2002:a05:6000:1785:b0:386:930:fad4 with SMTP id ffacd0b85a97d-38a221fab43mr53564815f8f.19.1736265027739;
+        Tue, 07 Jan 2025 07:50:27 -0800 (PST)
 Received: from localhost.localdomain (ip-94-112-167-15.bb.vodafone.cz. [94.112.167.15])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c8287adsm50005522f8f.16.2025.01.07.07.48.32
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c832e8asm50015640f8f.37.2025.01.07.07.50.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2025 07:48:33 -0800 (PST)
+        Tue, 07 Jan 2025 07:50:27 -0800 (PST)
 From: Ilya Dryomov <idryomov@gmail.com>
 To: stable@vger.kernel.org
 Cc: patches@lists.linux.dev,
@@ -77,9 +77,9 @@ Cc: patches@lists.linux.dev,
 	Patrick Donnelly <pdonnell@redhat.com>,
 	Milind Changire <mchangir@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10-6.1] ceph: give up on paths longer than PATH_MAX
-Date: Tue,  7 Jan 2025 16:48:16 +0100
-Message-ID: <20250107154818.2658618-1-idryomov@gmail.com>
+Subject: [PATCH 6.6] ceph: give up on paths longer than PATH_MAX
+Date: Tue,  7 Jan 2025 16:50:08 +0100
+Message-ID: <20250107155010.2658845-1-idryomov@gmail.com>
 X-Mailer: git-send-email 2.46.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -109,16 +109,16 @@ Reported-by: Dario Weißer <dario@cure53.de>
 Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 Reviewed-by: Alex Markuze <amarkuze@redhat.com>
 Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-[idryomov@gmail.com: backport to 6.1: pr_warn() is still in use]
+[idryomov@gmail.com: backport to 6.6: pr_warn() is still in use]
 ---
  fs/ceph/mds_client.c | 9 ++++-----
  1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/fs/ceph/mds_client.c b/fs/ceph/mds_client.c
-index da9fcf48ab6c..741ca7d10032 100644
+index 11289ce8a8cc..dfa1b3c82b53 100644
 --- a/fs/ceph/mds_client.c
 +++ b/fs/ceph/mds_client.c
-@@ -2447,12 +2447,11 @@ char *ceph_mdsc_build_path(struct dentry *dentry, int *plen, u64 *pbase,
+@@ -2713,12 +2713,11 @@ char *ceph_mdsc_build_path(struct ceph_mds_client *mdsc, struct dentry *dentry,
  
  	if (pos < 0) {
  		/*
@@ -128,8 +128,8 @@ index da9fcf48ab6c..741ca7d10032 100644
 +		 * cannot ever succeed.  Creating paths that long is
 +		 * possible with Ceph, but Linux cannot use them.
  		 */
--		pr_warn("build_path did not end path lookup where "
--			"expected, pos is %d\n", pos);
+-		pr_warn("build_path did not end path lookup where expected (pos = %d)\n",
+-			pos);
 -		goto retry;
 +		return ERR_PTR(-ENAMETOOLONG);
  	}
