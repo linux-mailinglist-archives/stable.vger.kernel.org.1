@@ -1,132 +1,127 @@
-Return-Path: <stable+bounces-107777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6D60A033E5
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 01:22:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E457A03403
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 01:28:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6075D3A05E9
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 00:22:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B1BC16290C
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 00:28:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88EB16136;
-	Tue,  7 Jan 2025 00:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8D5219EB;
+	Tue,  7 Jan 2025 00:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o5azS/hn"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="ZMIxgIvI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E18B7494;
-	Tue,  7 Jan 2025 00:22:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77437208AD;
+	Tue,  7 Jan 2025 00:28:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736209325; cv=none; b=hoNdgtjghBWc6KsSAitUNVuw2gsmxZcne1pXa3mKS8ENArLEKjj/QVrmwAYGvkkxEtAlGe4xe282gl4Em4RyJGC/b9M8J4YEk2n089Fonw1/Fue2GmgK4fcHN1/DZWcZj+T1sWD/OFanYrZwTzANfgv05jQ9t2cXrFIO7asQ6nw=
+	t=1736209687; cv=none; b=uc4czPzsZXDerBpiOBG5dlcguZ6dl+j9pcOijYvYOb/uCEPMnVfd1iyuILbJD6byy85so3NgC+Ij3RFDLnxOavJ1hODe0oKi1mmpbmk4DhJg7PgdFKgScoUltMzEKFe2RykXTzklZQCzZH4q/NhEDxgF3/LwqaRYJAGvm05ZA+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736209325; c=relaxed/simple;
-	bh=vNLeIITazBfKV+5Hkah/tvx2KR7IIZs4ktCjugx5Rj4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mfC1KZ6Y7lK0Gmas9xp4WhkBOnIWTXLDPryM2Mm9txC/mFhOWojWgms563XRhCIuELtpgC1vdYn1t4w5lMSibrx2aMg5gI/s/RmdERaSsm16m1Lax3MzKPHve7frhbDuTyY+gxl90fIuZ06d1pfEoqzBXlk65gItf3vCuESdCg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o5azS/hn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AAA7C4CED2;
-	Tue,  7 Jan 2025 00:22:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736209323;
-	bh=vNLeIITazBfKV+5Hkah/tvx2KR7IIZs4ktCjugx5Rj4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o5azS/hn6tIJ8wPz3n4cXx1gp5DvX6CAe3ogGzndwGtbh2DTdqmI5pMwfFAQhBbx5
-	 7gwBCLfhBtkXr7GwMd9f+SYhg2W0BhsIPlVfRsMgTiHtOSbjtHU3Asqbww3ojrFYmV
-	 f0kRTPmcrRU3fy3CP6QLxjZgNnI1jWeUqdsqc+4bnteTZ9hIhKSK6IQgwappyWtrms
-	 RS25c1Vhx3dH1aznv/6bh8pMHdOydoSyEP1/ilAe3IZOoPMq2V4U3868JHNH+4VGy2
-	 WlaAXoi09FETdI0K8bLdr/HFe/CS7vYGpLn5eUK1B+jzPRczKjWEGL+/9ZNmH1xPie
-	 +1hvr7+vsn2qQ==
-From: SeongJae Park <sj@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	damon@lists.linux.dev
-Subject: Re: [PATCH 6.1 00/81] 6.1.124-rc1 review
-Date: Mon,  6 Jan 2025 16:22:00 -0800
-Message-Id: <20250107002200.3714-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: 
+	s=arc-20240116; t=1736209687; c=relaxed/simple;
+	bh=jaaGEsVdd7XcrNCceHIfBm3LivSUEjcJegAwk1I9X9A=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=DyFllqVpXWF0JEXZQaiWOuKIY9dMoAPgJJNAjvk2x5MZMSl+S6zYdhtfvyfNlq3/O3kqJ7UqBQOf8y+6akxA6bSQCMP6fc+k2Bof1HVQRZT1SIsBMy2Uy9CS/xkBPfbKGK+l3c9cKwOU1UYQNAenvymIDuz9Z7TiKIFkHVw9dKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=ZMIxgIvI; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5070RhstE3037375, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1736209663; bh=jaaGEsVdd7XcrNCceHIfBm3LivSUEjcJegAwk1I9X9A=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=ZMIxgIvId0mEV+BN1WpZJx5lSR83lSyinAoG1Bbte1KVp2jSaRTjgpyD508qpf32l
+	 FzKcjl6es9V5Yl5sjfYPPkTUpvFJIKeYXTLNKXJu54knjjDkLyCFo0ZftFMXm/reKA
+	 iT+xwHZbcIklH+jonRNhp2O87NAq7XHV/ch3iQhAE3ssbs4RfKCQyuqVJtD58QJEys
+	 3CgE6i5KVEBC0XoLN//S58pcBCwkfFYsRQs+dNMFXPXDT6QvV5hXc+bp+ZmE93qlqB
+	 I1fLtTgNOPhnr81rNSoUXXgZase434HgQ3srOhZikaGtVrHv78jUg/7Vj/o72yVYQS
+	 fy8RhyV1bcweg==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5070RhstE3037375
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 7 Jan 2025 08:27:43 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 7 Jan 2025 08:27:44 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 7 Jan 2025 08:27:43 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Tue, 7 Jan 2025 08:27:43 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Fiona Klute <fiona.klute@gmx.de>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>
+CC: Vasily Khoruzhick <anarsoul@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Ondrej Jirman <megi@xff.cz>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] wifi: rtw88: sdio: Fix disconnection after beacon loss
+Thread-Topic: [PATCH] wifi: rtw88: sdio: Fix disconnection after beacon loss
+Thread-Index: AQHbYEKP0T2UCkJG7UaT2nZInqDC5rMKdLZw
+Date: Tue, 7 Jan 2025 00:27:43 +0000
+Message-ID: <4f1064c7b97b47de88b17c647e4a41c3@realtek.com>
+References: <20250106135434.35936-1-fiona.klute@gmx.de>
+In-Reply-To: <20250106135434.35936-1-fiona.klute@gmx.de>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Hello,
+Fiona Klute <fiona.klute@gmx.de> wrote:
+> This is the equivalent of 28818b4d871bc93cc4f5c7c7d7c526a6a096c09c
 
-On Mon, 6 Jan 2025 16:15:32 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+Normally use 12 digits as pattern like:=20
 
-> This is the start of the stable review cycle for the 6.1.124 release.
-> There are 81 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 08 Jan 2025 15:11:04 +0000.
-> Anything received after that time might be too late.
+Commit 28818b4d871b ("wifi: rtw88: usb: Fix disconnection after beacon loss=
+")
 
-This rc kernel passes DAMON functionality test[1] on my test machine.
-Attaching the test results summary below.  Please note that I retrieved the
-kernel from linux-stable-rc tree[2].
+I can spin this during merging.=20
 
-Tested-by: SeongJae Park <sj@kernel.org>
+> "wifi: rtw88: usb: Fix disconnection after beacon loss" for SDIO
+> chips. Tested on Pinephone (RTL8723CS), random disconnections became
+> rare, instead of a frequent nuisance.
+>=20
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
 
-[1] https://github.com/damonitor/damon-tests/tree/next/corr
-[2] 88f2306b7d74 ("Linux 6.1.124-rc1")
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Thanks,
-SJ
+> ---
+>  drivers/net/wireless/realtek/rtw88/sdio.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>=20
+> diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wire=
+less/realtek/rtw88/sdio.c
+> index 799230eb5f1..e024061bdbf 100644
+> --- a/drivers/net/wireless/realtek/rtw88/sdio.c
+> +++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+> @@ -1192,6 +1192,8 @@ static void rtw_sdio_indicate_tx_status(struct rtw_=
+dev *rtwdev,
+>         struct ieee80211_tx_info *info =3D IEEE80211_SKB_CB(skb);
+>         struct ieee80211_hw *hw =3D rtwdev->hw;
+>=20
+> +       skb_pull(skb, rtwdev->chip->tx_pkt_desc_sz);
+> +
+>         /* enqueue to wait for tx report */
+>         if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) {
+>                 rtw_tx_report_enqueue(rtwdev, skb, tx_data->sn);
+> --
+> 2.47.1
 
-[...]
-
----
-
-ok 1 selftests: damon: debugfs_attrs.sh
-ok 2 selftests: damon: debugfs_schemes.sh
-ok 3 selftests: damon: debugfs_target_ids.sh
-ok 4 selftests: damon: debugfs_empty_targets.sh
-ok 5 selftests: damon: debugfs_huge_count_read_write.sh
-ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
-ok 7 selftests: damon: sysfs.sh
-ok 1 selftests: damon-tests: kunit.sh
-ok 2 selftests: damon-tests: huge_count_read_write.sh
-ok 3 selftests: damon-tests: buffer_overflow.sh
-ok 4 selftests: damon-tests: rm_contexts.sh
-ok 5 selftests: damon-tests: record_null_deref.sh
-ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
-ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
-ok 8 selftests: damon-tests: damo_tests.sh
-ok 9 selftests: damon-tests: masim-record.sh
-ok 10 selftests: damon-tests: build_i386.sh
-ok 11 selftests: damon-tests: build_arm64.sh # SKIP
-ok 12 selftests: damon-tests: build_m68k.sh # SKIP
-ok 13 selftests: damon-tests: build_i386_idle_flag.sh
-ok 14 selftests: damon-tests: build_i386_highpte.sh
-ok 15 selftests: damon-tests: build_nomemcg.sh
- [33m
- [92mPASS [39m
 
