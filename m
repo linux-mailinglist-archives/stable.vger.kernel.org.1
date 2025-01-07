@@ -1,213 +1,186 @@
-Return-Path: <stable+bounces-107828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D96A03D66
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 12:15:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11829A03DBA
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 12:30:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D33B1884805
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 11:15:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C74F3A47C8
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 11:30:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0CEB1E9B32;
-	Tue,  7 Jan 2025 11:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CEA91E885A;
+	Tue,  7 Jan 2025 11:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J5NP1A2F"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iEICpyMI"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4017B1E377E
-	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 11:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934DD1D6DB7;
+	Tue,  7 Jan 2025 11:30:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736248509; cv=none; b=O7hMEi2NUtfcjBqUZPQFb4C61R41wuUPkuFD0cCHodc7Bo16TqV5EZqgs+5JqAaAdY7IHS+ru5GRNg/SStsDgrGID3/Okr5CG7RQqKurgJFUW9X7skH+k/ZDoOJJSJuTsOGtksntbnx7cvlrX2Q/UIKNLkdJdVrnjR5sl7SHw7s=
+	t=1736249440; cv=none; b=sZbIOAsXnE/BqqyFg5rJcyKojiGMEwSph0ziaLdecE6jgDU2njQcELnLc6pTeebw9P356mxgKoSiotvpuU2XptGnI4AhTcCXQ/Diydd6dNYJdwYByLpk50/wDCOOAvQxNxvCiJzqCdYmQqhdCoG6o67BkEvqcYYecQDd53VKuJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736248509; c=relaxed/simple;
-	bh=KgIY1FKTRLzpFPckl123BoGuHK517RwR0PXKjce5B8w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mrVyZYWl+I0QgFiKHADjk3RYRB+N6vqfSlQX8GNTpBGki8Rlpf4GPDLin4WrekMNmAwwSC8IU3KgLxi02ohHkeL/m1He/4tdlARrdm8goffnq77JqOB1VUFoikjhpU5H8GmFMOLgjWNiZxSHEDXZpXDwD7reI2+/6IP30zvPm5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J5NP1A2F; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736248501;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uUaJjpsVXRoORRkXE0LhWYFr2HvlCV5BeKiI5SY7cGE=;
-	b=J5NP1A2FXqg6yG9bdrwaCtb04LDtnDQBEyATWVTys1Jjid+ZSEgy5FGWaky6kRhAOXHNtb
-	cHj72BkrAmbaaqJa5uHbFsaNl0cZjYcBHel21IOqVsdqhoD+HapQYxyAKnVx2+vkkQa18f
-	+cqrLp9/gabWZu8g3rkdmsgr3NI/nFI=
-Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
- [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-15-1rT6pCE_M0WRlQ4Wez06-g-1; Tue, 07 Jan 2025 06:14:59 -0500
-X-MC-Unique: 1rT6pCE_M0WRlQ4Wez06-g-1
-X-Mimecast-MFC-AGG-ID: 1rT6pCE_M0WRlQ4Wez06-g
-Received: by mail-yb1-f198.google.com with SMTP id 3f1490d57ef6-e549e7072fbso5906280276.2
-        for <stable@vger.kernel.org>; Tue, 07 Jan 2025 03:14:59 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736248499; x=1736853299;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uUaJjpsVXRoORRkXE0LhWYFr2HvlCV5BeKiI5SY7cGE=;
-        b=a1NUIrlrqKmQp79UHK+bhHBsTA9Y6BCOjTE0LeQMWiFYvmxUv6w7Xyd7gar5yeDRo/
-         WbkEnZ1T2cwMgwQH87DJ0pIdxHJ5yJ4ow5kFEv+MeCS8rp6vqxe+wW5vjjLl8imLK/cx
-         WXF5kr9a8nzGz/LL0CnELq5E4fk5JOIizHNA7+KkXQhlvtkSN/AsvPPtajKs72wgvfbi
-         m57livBaxzNia72v8eAbbn5vNii9JgXXTW/gWCzOFLPcIDNkcCQMivDuANIN9IQGG4Bx
-         hSgPf/FWGn9Y/af1h7WrChGkpRrYAn5nXcy610EihvlVtcg3aJaoUaqT9UWOj5JEQqzu
-         +SBg==
-X-Forwarded-Encrypted: i=1; AJvYcCVsVxvSRrKfZvJqucbdRUbrl+Q0UOGNm03Ub1iHXLFTKrXn7JigdCLe+EPvVhUZg6jpC7h+6ag=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwiHwkPpf7REVje+QHstg44JmTxJVC/abi8dB6PbTq8H5W1izbu
-	m1mZ2TSGDTPUciDrGRdOC/teegqXpL/KJqAl1rIHOGFrf95mMnc++eTnG73Glw1rw9JvqwUFN3w
-	xHDaFFBZylISasIXP0MXwcRyqnyQd1noI0yMP/H7elqIA+0nQ0OGoi97Grt2h39UtZWsycKgiz/
-	xV1O+pxjTpSpB98PJbcFO1ZGseJn2n
-X-Gm-Gg: ASbGncsF2tESDoe4fY22lAvOefB8ipFFgJVPHVjXck1lHjAiSzrvHZl42CT5htpsCdz
-	+lYwWIvGb0uuJnYsrb4n4CUVnJnjBIJIm3qfnkQ==
-X-Received: by 2002:a05:6902:108d:b0:e30:e39b:9d72 with SMTP id 3f1490d57ef6-e538c256ae8mr46408485276.16.1736248498818;
-        Tue, 07 Jan 2025 03:14:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG0ys7pp3PYltb89+odK6t+kYDNIkFvej+sUkqUbFdO92SoUUTkU5SmXGH5z1d+W38E0UsqvFKyZQCcN0GlvkE=
-X-Received: by 2002:a05:6902:108d:b0:e30:e39b:9d72 with SMTP id
- 3f1490d57ef6-e538c256ae8mr46408473276.16.1736248498529; Tue, 07 Jan 2025
- 03:14:58 -0800 (PST)
+	s=arc-20240116; t=1736249440; c=relaxed/simple;
+	bh=CdbvG3PjFiYfbRw2sozVjDI+GvEC+EM3meT1WQS8s0Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MM9kcS+vNioR2hVNv29ZrrH1QFZnaptTLiXnM3vCFgYPxd2MxRj6MlC7xTgRwKG5MVorTdqtjcHzA7SdHH2ivIJFZsdMfRAhoc72xyce/wWj4g2313oyj79X91hnktB5rPBq4JVtQ1bIhs32uXE36dG46IEH0POysaKc5ZyDT5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iEICpyMI; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736249437; x=1767785437;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=CdbvG3PjFiYfbRw2sozVjDI+GvEC+EM3meT1WQS8s0Q=;
+  b=iEICpyMIX1rDjxrCqaa7Zyi4J0SoHm+FCMoSbe93Rv558APHVgSFbfdb
+   iXUiQiT0eM9TOnWRTk3RYpTzE+pYM/HozVdLAGGLzrRglPvQOLEPBCidF
+   2kK8AHEjdQ+78ihKDS9vcqC4o5TLr+zpyFjiTmf4bwjv0lISrnQftx5k5
+   x5UtDwCn4iCxGhaXVfOx+JdImrw9oaisE+IAg2vc+4YvWfuNfMg1tMscp
+   UcUkKlfrEict5YhmdehdxngXfWUSowoRaqkElta+JPS4m2PuEsg9j6Z8c
+   4Q3aQLN3X06T4wX41zA2TrLXr7Lq1HU88yNYxPmAvNPK9U74s6fh39JhN
+   Q==;
+X-CSE-ConnectionGUID: GDpZkVDCTZKxK/+iWI7fgQ==
+X-CSE-MsgGUID: YiOj1X3ERNmtGAxeSN47/A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11307"; a="39251882"
+X-IronPort-AV: E=Sophos;i="6.12,295,1728975600"; 
+   d="scan'208";a="39251882"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2025 03:30:37 -0800
+X-CSE-ConnectionGUID: 0L/k/aoyTlyLj6KXaAh1ig==
+X-CSE-MsgGUID: g7vDkVzEQi+1gA0lOCB5zQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="107825700"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2025 03:30:35 -0800
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 4D47411F8DF;
+	Tue,  7 Jan 2025 13:30:32 +0200 (EET)
+Date: Tue, 7 Jan 2025 11:30:32 +0000
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Lubomir Rintel <lrintel@redhat.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Lubomir Rintel <lkundrak@v3.sk>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] media/mmp: Bring back registration of the device
+Message-ID: <Z30QWA-LfZHwVbmm@kekkonen.localdomain>
+References: <20241231190434.438517-1-lkundrak@v3.sk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241231190434.438517-1-lkundrak@v3.sk> <eacf3201-2884-48e3-b54d-2e52e16999be@xs4all.nl>
-In-Reply-To: <eacf3201-2884-48e3-b54d-2e52e16999be@xs4all.nl>
-From: Lubomir Rintel <lrintel@redhat.com>
-Date: Tue, 7 Jan 2025 12:14:47 +0100
-Message-ID: <CACQFvQE6P0zdxcOCz4YoTyp2eJKfezRgy9i6GYLLH6=U_PWFTw@mail.gmail.com>
-Subject: Re: [PATCH] media/mmp: Bring back registration of the device
-To: Hans Verkuil <hverkuil@xs4all.nl>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Lubomir Rintel <lkundrak@v3.sk>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241231190434.438517-1-lkundrak@v3.sk>
 
-On Mon, Jan 6, 2025 at 4:19=E2=80=AFPM Hans Verkuil <hverkuil@xs4all.nl> wr=
-ote:
->
-> Hi Lubomir,
->
-> On 31/12/2024 20:04, Lubomir Rintel wrote:
-> > In commit 4af65141e38e ("media: marvell: cafe: Register V4L2 device
-> > earlier"), a call to v4l2_device_register() was moved away from
-> > mccic_register() into its caller, marvell/cafe's cafe_pci_probe().
-> > This is not the only caller though -- there's also marvell/mmp.
-> >
-> > Add v4l2_device_register() into mmpcam_probe() to unbreak the MMP camer=
-a
-> > driver, in a fashion analogous to what's been done to the Cafe driver.
-> > Same for the teardown path.
-> >
-> > Fixes: 4af65141e38e ("media: marvell: cafe: Register V4L2 device earlie=
-r")
-> > Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
->
-> Should this be your redhat email? I have a mismatch between the From emai=
-l
-> and the email in this Sob.
->
-> I can fix it either way, but you have to tell me what you prefer.
+Hi Lubomir,
 
-The @v3.sk address please.
+Thanks for the patch.
 
-Apologies for the mess, seems like I forgot how to use e-mail.
+On Tue, Dec 31, 2024 at 08:04:34PM +0100, Lubomir Rintel wrote:
+> In commit 4af65141e38e ("media: marvell: cafe: Register V4L2 device
+> earlier"), a call to v4l2_device_register() was moved away from
+> mccic_register() into its caller, marvell/cafe's cafe_pci_probe().
+> This is not the only caller though -- there's also marvell/mmp.
+> 
+> Add v4l2_device_register() into mmpcam_probe() to unbreak the MMP camera
+> driver, in a fashion analogous to what's been done to the Cafe driver.
+> Same for the teardown path.
+> 
+> Fixes: 4af65141e38e ("media: marvell: cafe: Register V4L2 device earlier")
+> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+> Cc: stable@vger.kernel.org # v6.6+
+> ---
+>  drivers/media/platform/marvell/mmp-driver.c | 21 +++++++++++++++++----
+>  1 file changed, 17 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/media/platform/marvell/mmp-driver.c b/drivers/media/platform/marvell/mmp-driver.c
+> index 3fd4fc1b9c48..d3da7ebb4a2b 100644
+> --- a/drivers/media/platform/marvell/mmp-driver.c
+> +++ b/drivers/media/platform/marvell/mmp-driver.c
+> @@ -231,13 +231,23 @@ static int mmpcam_probe(struct platform_device *pdev)
+>  
+>  	mcam_init_clk(mcam);
+>  
+> +	/*
+> +	 * Register with V4L.
+> +	 */
+> +
+> +	ret = v4l2_device_register(mcam->dev, &mcam->v4l2_dev);
 
-Thank you
-Lubo
+I'd do this just before initialising the notifier (as in the patch in
+Fixes: tag): registering the V4L2 device requires probably severe memory
+pressure while it's entirely plausible there's no endpoint for the device.
 
->
-> Regards,
->
->         Hans
->
-> > Cc: stable@vger.kernel.org # v6.6+
-> > ---
-> >  drivers/media/platform/marvell/mmp-driver.c | 21 +++++++++++++++++----
-> >  1 file changed, 17 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/media/platform/marvell/mmp-driver.c b/drivers/medi=
-a/platform/marvell/mmp-driver.c
-> > index 3fd4fc1b9c48..d3da7ebb4a2b 100644
-> > --- a/drivers/media/platform/marvell/mmp-driver.c
-> > +++ b/drivers/media/platform/marvell/mmp-driver.c
-> > @@ -231,13 +231,23 @@ static int mmpcam_probe(struct platform_device *p=
-dev)
-> >
-> >       mcam_init_clk(mcam);
-> >
-> > +     /*
-> > +      * Register with V4L.
-> > +      */
-> > +
-> > +     ret =3D v4l2_device_register(mcam->dev, &mcam->v4l2_dev);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> >       /*
-> >        * Create a match of the sensor against its OF node.
-> >        */
-> >       ep =3D fwnode_graph_get_next_endpoint(of_fwnode_handle(pdev->dev.=
-of_node),
-> >                                           NULL);
-> > -     if (!ep)
-> > -             return -ENODEV;
-> > +     if (!ep) {
-> > +             ret =3D -ENODEV;
-> > +             goto out_v4l2_device_unregister;
-> > +     }
-> >
-> >       v4l2_async_nf_init(&mcam->notifier, &mcam->v4l2_dev);
-> >
-> > @@ -246,7 +256,7 @@ static int mmpcam_probe(struct platform_device *pde=
-v)
-> >       fwnode_handle_put(ep);
-> >       if (IS_ERR(asd)) {
-> >               ret =3D PTR_ERR(asd);
-> > -             goto out;
-> > +             goto out_v4l2_device_unregister;
-> >       }
-> >
-> >       /*
-> > @@ -254,7 +264,7 @@ static int mmpcam_probe(struct platform_device *pde=
-v)
-> >        */
-> >       ret =3D mccic_register(mcam);
-> >       if (ret)
-> > -             goto out;
-> > +             goto out_v4l2_device_unregister;
-> >
-> >       /*
-> >        * Add OF clock provider.
-> > @@ -283,6 +293,8 @@ static int mmpcam_probe(struct platform_device *pde=
-v)
-> >       return 0;
-> >  out:
-> >       mccic_shutdown(mcam);
-> > +out_v4l2_device_unregister:
-> > +     v4l2_device_unregister(&mcam->v4l2_dev);
-> >
-> >       return ret;
-> >  }
-> > @@ -293,6 +305,7 @@ static void mmpcam_remove(struct platform_device *p=
-dev)
-> >       struct mcam_camera *mcam =3D &cam->mcam;
-> >
-> >       mccic_shutdown(mcam);
-> > +     v4l2_device_unregister(&mcam->v4l2_dev);
-> >       pm_runtime_force_suspend(mcam->dev);
-> >  }
-> >
->
+> +	if (ret)
+> +		return ret;
+> +
+>  	/*
+>  	 * Create a match of the sensor against its OF node.
+>  	 */
+>  	ep = fwnode_graph_get_next_endpoint(of_fwnode_handle(pdev->dev.of_node),
+>  					    NULL);
+> -	if (!ep)
+> -		return -ENODEV;
+> +	if (!ep) {
+> +		ret = -ENODEV;
+> +		goto out_v4l2_device_unregister;
+> +	}
+>  
+>  	v4l2_async_nf_init(&mcam->notifier, &mcam->v4l2_dev);
+>  
+> @@ -246,7 +256,7 @@ static int mmpcam_probe(struct platform_device *pdev)
+>  	fwnode_handle_put(ep);
+>  	if (IS_ERR(asd)) {
+>  		ret = PTR_ERR(asd);
+> -		goto out;
+> +		goto out_v4l2_device_unregister;
+>  	}
+>  
+>  	/*
+> @@ -254,7 +264,7 @@ static int mmpcam_probe(struct platform_device *pdev)
+>  	 */
+>  	ret = mccic_register(mcam);
+>  	if (ret)
+> -		goto out;
+> +		goto out_v4l2_device_unregister;
+>  
+>  	/*
+>  	 * Add OF clock provider.
+> @@ -283,6 +293,8 @@ static int mmpcam_probe(struct platform_device *pdev)
+>  	return 0;
+>  out:
 
+For clarity, it'd be best to rename the out label to something more
+specific, i.e. out_mccic_shutdown. Either way,
+
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+
+>  	mccic_shutdown(mcam);
+> +out_v4l2_device_unregister:
+> +	v4l2_device_unregister(&mcam->v4l2_dev);
+>  
+>  	return ret;
+>  }
+> @@ -293,6 +305,7 @@ static void mmpcam_remove(struct platform_device *pdev)
+>  	struct mcam_camera *mcam = &cam->mcam;
+>  
+>  	mccic_shutdown(mcam);
+> +	v4l2_device_unregister(&mcam->v4l2_dev);
+>  	pm_runtime_force_suspend(mcam->dev);
+>  }
+>  
+
+-- 
+Regards,
+
+Sakari Ailus
 
