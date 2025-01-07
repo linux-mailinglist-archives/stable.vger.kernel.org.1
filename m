@@ -1,133 +1,157 @@
-Return-Path: <stable+bounces-107789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8701AA0351F
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 03:28:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C13A8A0356A
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 03:46:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1670518864D4
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 02:28:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C80B18871B0
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 02:46:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF907158524;
-	Tue,  7 Jan 2025 02:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71CB61553BC;
+	Tue,  7 Jan 2025 02:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="bXQcuwL9"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="eHcTXFh8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4C6156C40;
-	Tue,  7 Jan 2025 02:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBDB14B95A
+	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 02:46:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736216883; cv=none; b=cf6zC3hZpj9p4ytZR5LWy3P2jjvkT5tSNC2qOUifGNHKD7kVm1EUhVa+VRbaN9h6NbknNrmcxbCbf/B2kv2al/k7pyVb8/LeKtlQb+zrI1h5IOVRzIhxUtxiV4SfaLIgdFlUJTVsWuuydqpL7PEyigmSq3FSX5svDvFS+FrF/gY=
+	t=1736218011; cv=none; b=PRmVEXOR+oZgyaBwVcDTx8+j/PVRpX5UG++8V6bSi6lCpRQRneSeVlW62LgPRd6OrTiQ47VeoZKm+BANkBMxnBN4NzCAPpxRSgP930i6vD9lbNxaMCF/S3rB3ihm8txkCTy9o4g9T3DWEvtjDfwEaJN6dKFfc1alm+s4tQbfSAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736216883; c=relaxed/simple;
-	bh=t5wBGF+XMuBmDVXwbAdb40RjcZfC0/TJhgXtSMbdfUg=;
-	h=Date:To:From:Subject:Message-Id; b=aY95drYcdbhGf2EQrAmTFomo7nM7XcHAiD2HQlSt/QMTUQGIZ7wTBF3+qzqcFmc9A5hIz3yeWPJ/oII/qGQxiHZdpYp4bizl5Yx+LN671LbVy6lUSPEyEZIOk4iX6I4EYOoahp8YML7vAJx0/DZSpbi2f0CP2Q19YTjbVf04px0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=bXQcuwL9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C61C4CEDD;
-	Tue,  7 Jan 2025 02:28:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1736216883;
-	bh=t5wBGF+XMuBmDVXwbAdb40RjcZfC0/TJhgXtSMbdfUg=;
-	h=Date:To:From:Subject:From;
-	b=bXQcuwL9BrmtrqHc35HJZxIQokpKv89Il/oXBvXk9Ei1/p+J2k+M7xZOZmQen5J/i
-	 xQX0iOBt/8yLnPGP/oI2v9oulkBzG6pTH+wRTb6j7HIjR7SMwo3ctHOLkCKTIAzleE
-	 /pQ1cR03t6iIoIvu12o/+g/KmIzfO7Nvjm0P/mR0=
-Date: Mon, 06 Jan 2025 18:28:02 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,koichiro.den@canonical.com,greg@kroah.com,bp@alien8.de,bigeasy@linutronix.de,agordeev@linux.ibm.com,akpm@linux-foundation.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + revert-vmstat-disable-vmstat_work-on-vmstat_cpu_down_prep.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250107022802.E7C61C4CEDD@smtp.kernel.org>
+	s=arc-20240116; t=1736218011; c=relaxed/simple;
+	bh=e307X2A5M2l0pbJ6+KzrFKwYZJPrkb0u9bLH0ykj7Ms=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CzpeIvpWsLUIVTizKO86n1Q1WPrpThfa+1Ov1Pqo1USVGo6py77U8+idcypEQYQqX3hU6uFnu1jT+IqVZs2ZFI122Z90fLzs+5dZT6oHv8XrCksJ6la+0RCoZpAX11Sa8s5je0fk1TxWUd70Ilwt+u0mxuzBUv+YgV73aNx6VvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=eHcTXFh8; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 4F48E14C1E1;
+	Tue,  7 Jan 2025 03:40:47 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1736217649;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0IEOW76cDyxbtCdSxV9V+cKeUnyii/PZpUPPWjx212g=;
+	b=eHcTXFh8Msm+77HChV9Ix2Z3OVrmy7H8jPYx2fVE+KY9YGA1qpMQrsFA9+mkLF8SnFk2m+
+	Gv7g7yaqH5N7zv70667LjpHORbbvp3/psAKX/iE6m2jZVkDdcOH9DCqo6hg1kdB/dNHEuL
+	kRcfGW6CrnB0s+Rp9xwVSzv14a/f4HqXO4pdB17YOwVf4ZXRc23fk0LwH3Rud9vj/f5cvo
+	3rO6XSqDDyhQkXM8bIKFFflwgZxBG3jaZNoXg2imqE/IlcJ9lHk26e5G98Vo7YyatEHEuL
+	HmvZ5trFpVjoyMt2Z0FIY7dlNCj4xwFaMy5Qf5qQyNBmPETZBj6p8w8ZjtOzFA==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 67cabf3a;
+	Tue, 7 Jan 2025 02:40:45 +0000 (UTC)
+Date: Tue, 7 Jan 2025 11:40:30 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Kairui Song <kasong@tencent.com>,
+	Desheng Wu <deshengwu@tencent.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10 098/138] zram: fix uninitialized ZRAM not releasing
+ backing device
+Message-ID: <Z3yUHnBIiz9q_jgf@codewreck.org>
+References: <20250106151133.209718681@linuxfoundation.org>
+ <20250106151136.941319893@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250106151136.941319893@linuxfoundation.org>
+
+Greg Kroah-Hartman wrote on Mon, Jan 06, 2025 at 04:17:02PM +0100:
+> 5.10-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Kairui Song <kasong@tencent.com>
+> 
+> [ Upstream commit 74363ec674cb172d8856de25776c8f3103f05e2f ]
+> 
+> Setting backing device is done before ZRAM initialization.  If we set the
+> backing device, then remove the ZRAM module without initializing the
+> device, the backing device reference will be leaked and the device will be
+> hold forever.
+> 
+> Fix this by always reset the ZRAM fully on rmmod or reset store.
 
 
-The patch titled
-     Subject: revert "vmstat: disable vmstat_work on vmstat_cpu_down_prep()"
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     revert-vmstat-disable-vmstat_work-on-vmstat_cpu_down_prep.patch
+This causes a null pointer deref when reseting an uninitialized device:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/revert-vmstat-disable-vmstat_work-on-vmstat_cpu_down_prep.patch
+armadillo:/sys/block/zram0# echo 1 > reset
+[   28.054565] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+[   28.063377] Mem abort info:
+[   28.066182]   ESR = 0x96000004
+[   28.069241]   EC = 0x25: DABT (current EL), IL = 32 bits
+[   28.074557]   SET = 0, FnV = 0
+[   28.077612]   EA = 0, S1PTW = 0
+[   28.080755] Data abort info:
+[   28.083633]   ISV = 0, ISS = 0x00000004
+[   28.087473]   CM = 0, WnR = 0
+[   28.090445] user pgtable: 4k pages, 48-bit VAs, pgdp=00000000464f9000
+[   28.096888] [0000000000000000] pgd=0000000000000000, p4d=0000000000000000
+[   28.103700] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+[   28.109965] Modules linked in: moal(E) cfg80211(E) mlan(E)
+[   28.115458] CPU: 3 PID: 1900 Comm: sh Tainted: G            E     5.10.233-rc1-gbbdff754b92c #1
+[   28.124153] Hardware name: Atmark-Techno Armadillo-IoT Gateway G4 Board (DT)
+[   28.131201] pstate: a0000005 (NzCv daif -PAN -UAO -TCO BTYPE=--)
+[   28.137211] pc : zcomp_cpu_dead+0x20/0x70
+[   28.141220] lr : cpuhp_invoke_callback+0xd4/0x204
+[   28.145920] sp : ffff800011a1bb10
+[   28.149231] x29: ffff800011a1bb10 x28: ffff000006562580 
+[   28.154542] x27: 0000000000000000 x26: ffff80001148aab8 
+[   28.159855] x25: ffff800010716210 x24: 0000000000000000 
+[   28.165169] x23: ffff80001149cb70 x22: 0000000000000000 
+[   28.170480] x21: 0000000000000010 x20: ffff80002e856000 
+[   28.175791] x19: ffff80001149d790 x18: 0000000000000000 
+[   28.181102] x17: 0000000000000000 x16: 0000000000000000 
+[   28.186413] x15: 0000ffff9aa2f5b0 x14: 0000000000000000 
+[   28.191726] x13: ffff800011a1bc96 x12: ffff800011a1bc70 
+[   28.197036] x11: 0fffffffffffffff x10: 000000000000000a 
+[   28.202349] x9 : 0000000000000000 x8 : ffff000002a102b8 
+[   28.207660] x7 : 0000000000000000 x6 : 0000000000000040 
+[   28.212973] x5 : ffff00003fb4f6f0 x4 : 0000000000000000 
+[   28.218285] x3 : 0000000000000010 x2 : ffff80001148aab8 
+[   28.223596] x1 : 0000000000000010 x0 : 0000000000000000 
+[   28.228907] Call trace:
+[   28.231353]  zcomp_cpu_dead+0x20/0x70
+[   28.235013]  cpuhp_invoke_callback+0xd4/0x204
+[   28.239370]  cpuhp_issue_call+0x168/0x1b4
+[   28.243378]  __cpuhp_state_remove_instance+0x144/0x1f0
+[   28.248513]  zcomp_destroy+0x24/0x44
+[   28.252086]  zram_reset_device+0xfc/0x11c
+[   28.256093]  reset_store+0xa4/0x130
+[   28.259581]  dev_attr_store+0x18/0x30
+[   28.263244]  sysfs_kf_write+0x44/0x54
+[   28.266903]  kernfs_fop_write_iter+0x134/0x1c4
+[   28.271346]  new_sync_write+0xfc/0x1b0
+[   28.275093]  vfs_write+0x240/0x2b0
+[   28.278492]  ksys_write+0x74/0x110
+[   28.281891]  __arm64_sys_write+0x1c/0x30
+[   28.285815]  el0_svc_common.constprop.0+0x78/0x1c0
+[   28.290603]  do_el0_svc+0x1c/0x30
+[   28.293916]  el0_svc+0x10/0x20
+[   28.296968]  el0_sync_handler+0x108/0x114
+[   28.300975]  el0_sync+0x180/0x1c0
+[   28.304290] Code: 912ae042 a90153f3 f90013f5 f8605854 (f85f0033) 
+[   28.310382] ---[ end trace e91dc675f5f4a195 ]---
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+I'll look a bit more into it today and reply to this mail with anything
+I've found.
+(didn't test on master or anything else either)
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: revert "vmstat: disable vmstat_work on vmstat_cpu_down_prep()"
-Date: Mon Jan  6 06:24:12 PM PST 2025
-
-Revert adcfb264c3ed ("vmstat: disable vmstat_work on
-vmstat_cpu_down_prep()") due to "workqueue: work disable count
-underflowed" WARNings.
-
-Fixes: adcfb264c3ed ("vmstat: disable vmstat_work on vmstat_cpu_down_prep()") 
-Reported-by: Borislav Petkov <bp@alien8.de>
-Reported-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Greg KH <greg@kroah.com>
-Cc: Koichiro Den <koichiro.den@canonical.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/vmstat.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
---- a/mm/vmstat.c~revert-vmstat-disable-vmstat_work-on-vmstat_cpu_down_prep
-+++ a/mm/vmstat.c
-@@ -2148,14 +2148,13 @@ static int vmstat_cpu_online(unsigned in
- 	if (!node_state(cpu_to_node(cpu), N_CPU)) {
- 		node_set_state(cpu_to_node(cpu), N_CPU);
- 	}
--	enable_delayed_work(&per_cpu(vmstat_work, cpu));
- 
- 	return 0;
- }
- 
- static int vmstat_cpu_down_prep(unsigned int cpu)
- {
--	disable_delayed_work_sync(&per_cpu(vmstat_work, cpu));
-+	cancel_delayed_work_sync(&per_cpu(vmstat_work, cpu));
- 	return 0;
- }
- 
-_
-
-Patches currently in -mm which might be from akpm@linux-foundation.org are
-
-revert-vmstat-disable-vmstat_work-on-vmstat_cpu_down_prep.patch
-mm-swap_cgroup-allocate-swap_cgroup-map-using-vcalloc-fix.patch
-mm-page_alloc-add-some-detailed-comments-in-can_steal_fallback-fix.patch
-mm-introduce-mmap_lock_speculate_try_beginretry-fix.patch
-mm-damon-tests-vaddr-kunith-reduce-stack-consumption.patch
-mm-damon-tests-vaddr-kunith-reduce-stack-consumption-fix.patch
-mm-remove-an-avoidable-load-of-page-refcount-in-page_ref_add_unless-fix.patch
-mm-fix-outdated-incorrect-code-comments-for-handle_mm_fault-fix.patch
-mm-huge_memoryc-rename-shadowed-local.patch
-replace-free-hugepage-folios-after-migration-fix.patch
-xarray-port-tests-to-kunit-fix.patch
-checkpatch-check-return-of-git_commit_info-fix.patch
-fault-inject-use-prandom-where-cryptographically-secure-randomness-is-not-needed-fix.patch
-
+-- 
+Dominique
 
