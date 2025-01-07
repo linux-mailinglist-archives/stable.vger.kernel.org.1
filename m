@@ -1,130 +1,98 @@
-Return-Path: <stable+bounces-107837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1143A03F17
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 13:28:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C556A03F38
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 13:33:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E63E1648D5
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 12:28:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34277164CF3
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 12:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D906E1E9B39;
-	Tue,  7 Jan 2025 12:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93799259492;
+	Tue,  7 Jan 2025 12:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="abvcRWwj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BOUDrmA3"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F811E5734;
-	Tue,  7 Jan 2025 12:28:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9D7259486;
+	Tue,  7 Jan 2025 12:33:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736252933; cv=none; b=qQp67Up/8noMqd3HO37K/WQROTSPXU6dHR8mArO25CAm00+ma7MvZzT7kiFQoZE0kup8e8lsHmOSBqub4p/v5IIlSvOw6RMeF/HmKeLbjtdCHZVtfRkS6YmBIKBOL8/Vr3ePbYoNDHVlSpAkFtQycfk31q6bjk3dOnFfUhjApGI=
+	t=1736253192; cv=none; b=LvgGaDy/UFzIoi8opfSMYWOJJE5GKbYYXvl9aAQ3W4DjbxEBsXm1JYBZUxP3Ml4sgG7vGtD+FqbajlP9XnibYDV3o7D3A6kjVnQeAXkpPST2ymzx6tQeO5yWgcO+9QizbnnY2JuyqfbuD+VlzMLnimQMMX+CX9iZm4PRB2OMgCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736252933; c=relaxed/simple;
-	bh=QojtHw8LGUnm3rpVHZvfd9J5sm2jpmcnC6VJnQLY43w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lkqVocoswXgbasoyl6oAg36JvTKjyFv/Q9ndvDN7EBPFlfHhqC5sPoUX9FSPupCie+kwM87pGg2DmJLZchCWz0gA2Tq4bMwsl0zz+eEfQbwASSNp8wPasbvlGR9RntDeDsopbkhBinywXPOOeArXvmQtu3Hj+w/B82yViBsyAUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=abvcRWwj; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736252932; x=1767788932;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=QojtHw8LGUnm3rpVHZvfd9J5sm2jpmcnC6VJnQLY43w=;
-  b=abvcRWwjHh+G0LyVkdHTvAIXNW1hUnMIXwP6wQtDV/EZrxXjDz/xdgbm
-   ZEC8S9CzXKufRZcNsOh8cR4M4PB7om9QkOr2zs+AvibNF2uMALdiwa9/G
-   aZTSZyE9hY2ACVlnVEo9dd8W2CAGab2TG1dHuj078jGhFF/XvuQs+keqw
-   rKF1x9lMkSqCUMtW8pN494khLt/KtNZWvHkdxg42wdsUhfPE86Sxs4yin
-   jpcEhFdMdyxJdPze7/zS48rwdOlR5DHrWfP0iyxwhbxoZus5ycPIDHHQ0
-   VDyLRYi7VcBvLCZXyhMKMWMZt/J+3oQQmkmBPKTiTDb6D/YFqvbS0WlY1
-   g==;
-X-CSE-ConnectionGUID: AUOkPpy4RcemIcr3hvn7rw==
-X-CSE-MsgGUID: s89j8rEST6iAxrM0nW547w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="61812285"
-X-IronPort-AV: E=Sophos;i="6.12,295,1728975600"; 
-   d="scan'208";a="61812285"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2025 04:28:52 -0800
-X-CSE-ConnectionGUID: hhglC8DaS+C5uTVkKsSkPg==
-X-CSE-MsgGUID: /GyccoMoS+Sl2SiIElHSBw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,295,1728975600"; 
-   d="scan'208";a="102941846"
-Received: from unknown (HELO [10.237.72.199]) ([10.237.72.199])
-  by fmviesa008.fm.intel.com with ESMTP; 07 Jan 2025 04:28:50 -0800
-Message-ID: <3bd0e058-1aeb-4fc9-8b76-f0475eebbfe4@linux.intel.com>
-Date: Tue, 7 Jan 2025 14:29:35 +0200
+	s=arc-20240116; t=1736253192; c=relaxed/simple;
+	bh=6FO9kExDpBOYBEJaTJaUwPffIcyvBBNYYZzQ4BiJKDU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SZHY5gKU80IspCazWN1MvKQ/tXlifxvZ4qKES92IGaqUVam6lnnnS1+RHgCiKpvqWAnYok+i7jhYxaPD5kD/wWl/IyxCtWAd1ZV+z8Ilsfwbe+PE8puWd8MkwFbcRlRtoLz5ZJHyNSbtxX5z2/hbAwsmqfXOkHbzCi29jaHE4Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BOUDrmA3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77AA8C4CED6;
+	Tue,  7 Jan 2025 12:33:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736253191;
+	bh=6FO9kExDpBOYBEJaTJaUwPffIcyvBBNYYZzQ4BiJKDU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BOUDrmA3/pNFbJrFcb3nWlU+jr5V0NnaXjpVACZzyk8OC1zAzedY92BKI9tsPO2Sn
+	 r9/o4ceSBp3zp8P1dVdliXX0xKhokkSPMbaOkHECOCuU2l7YIhefvemWLzG778o4lG
+	 XQyRr3HTHpcvAlN2vf/oMaklAOlr2dThMi53gbxkmysn/GQvu85isU1z37lnJ1Fgh/
+	 01Y9yhtzxYxeV6Y7PKNDkyppwltEgA6w/ZiNitNJHeZYZI7YE+b9Z/qVrzkTPnrlYi
+	 qzA/iBwSpseUrHswJmJOzF3JYKe4Jzf+1yKM/4QvfO1MJfoxV2A4iH9w5LCWQfGthU
+	 cZD/NMitKRwxQ==
+Date: Tue, 7 Jan 2025 12:33:04 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com
+Subject: Re: [PATCH 6.6 000/222] 6.6.70-rc1 review
+Message-ID: <f71dc7f7-e9bf-4925-9150-b1194a6d1e01@sirena.org.uk>
+References: <20250106151150.585603565@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] usb: xhci port capability storage change broke
- fastboot android bootloader utility
-To: Forest <forestix@nom.one>
-Cc: linux-usb@vger.kernel.org, regressions@lists.linux.dev,
- stable@vger.kernel.org
-References: <hk8umj9lv4l4qguftdq1luqtdrpa1gks5l@sonic.net>
- <2c35ff52-78aa-4fa1-a61c-f53d1af4284d@linux.intel.com>
- <0l5mnj5hcmh2ev7818b3m0m7pokk73jfur@sonic.net>
-Content-Language: en-US
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-In-Reply-To: <0l5mnj5hcmh2ev7818b3m0m7pokk73jfur@sonic.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="poWt/wq+bsDp4krz"
+Content-Disposition: inline
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+X-Cookie: PIZZA!!
 
-On 6.1.2025 1.42, Forest wrote:
-> On Thu, 2 Jan 2025 16:13:34 +0200, Mathias Nyman wrote:
-> 
->> It's not clear to me why this patch would cause regression.
->>
->> Could you enable xhci and usb core dynamic debug before connecting the
->> device, and then share dmesg after the issue is triggered.
->>
->> dmesg of a working case would also be good to have for comparison.
-> 
-> I booted kernel 9b780c845fb6 (the last good one), logged in to my desktop,
-> waited a couple of minutes to let things settle, and then ran 'fastboot
-> getvar kernel' twice with the android device in bootloader mode.
-> Here's the dmesg output:
 
-Thanks for the logs.
-  
-Looks like we enable USB2 Link Power Management (LPM) in the failing case
-> 
-> [  226.002756] xhci_hcd 0000:0c:00.0: enable port 3 USB2 hardware LPM
-> [  226.002765] xhci_hcd 0000:0c:00.0: Set up evaluate context for LPM MEL change.
+--poWt/wq+bsDp4krz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Does disabling USB2 hardware LPM for the device make it work again?
+On Mon, Jan 06, 2025 at 04:13:24PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.70 release.
+> There are 222 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Adding USB_QUIRK_NO_LPM quirk "k" for your device vid:pid should do it.
-i.e. add "usbcore.quirks=0fce:0dde:k" parameter to your kernel cmdline.
+Tested-by: Mark Brown <broonie@kernel.org>
 
-Or alternatively disable usb2 lpm  during runtime via sysfs
-(after enumeration, assuming device is "1-3" as in the log):
-# echo 0 > /sys/bus/usb/devices/1-3/power/usb2_hardware_lpm
+--poWt/wq+bsDp4krz
+Content-Type: application/pgp-signature; name="signature.asc"
 
-If those work then we need to figure out if we incorrectly try to enable
-USB2 hardware LPM, or if device just can't handle LPM even if it claims
-to be LPM capable.
+-----BEGIN PGP SIGNATURE-----
 
-Host hardware LPM capability can be checked from xhci reg-ext-protocol
-fields from debugfs.
-cat /sys/kernel/debug/usb/xhci/0000:0c:00.0/reg-ext-protocol:*
-(please print content of _all_ reg_ext_protocol* files, LPM capability is
-bit 19 of EXTCAP_PORTINFO)
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmd9Hv8ACgkQJNaLcl1U
+h9Df/gf9Fe4s/kVlQ7L54bCYWM/nXuAJNjGDBDln1dQRMhujFfAFISAbZsoqxwXy
+Iu648LNa9Jy4s5XOy0K7XobnEyP/m4K8Byf81sRYU6t5OTwpl29Ea0K/vEshEQ6a
+wqW/CwjBPkYIEUfFWcwsUt91WW51dEvz83Fr+34gYSNEkhfk+ntQEiCnYcIMFKy7
+VEwkVgcTQSkOSm29n3zq+j0DmJF7v8vd9xHrQgKljC6tN5nwonUWZe5QmO2T8/pH
+ZSLEr3Xp9oHAfoNb/RbTA/aF3x8Uu0Qztxq2/Uy+5Oqu6EDn8w7KFZLRxPpq99TA
+CQJ98EO05mOcE0HyHrq0obwKryP/wA==
+=gJnE
+-----END PGP SIGNATURE-----
 
-Device USB2 LPM capability can be checked from the devices BOS descriptor,
-visible (as sudo/root) with lsusb -v -d 0fce:0dde
-
-Thanks
-Mathias
+--poWt/wq+bsDp4krz--
 
