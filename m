@@ -1,271 +1,225 @@
-Return-Path: <stable+bounces-107793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC3DDA03704
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 05:29:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFBDDA0375D
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 06:31:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 601323A053D
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 04:28:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5B55162223
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 05:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE94B3F9FB;
-	Tue,  7 Jan 2025 04:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2259F1DE3D9;
+	Tue,  7 Jan 2025 05:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="lmATPYBP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CLF3IJFG"
 X-Original-To: stable@vger.kernel.org
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F364ECC
-	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 04:28:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736224136; cv=none; b=hVHaTgPDkGJZQoNb4NP11/T39F7n0AmOg8P2iQaJ6+ZV6VRkMIWopWr6L18gGuw1XZgFVayIxb7gs/jDDT0SMDq66ep8sf1XSrTniNs68WczqUclTVgNLb6QzhGO/epeQpbpSc9rKVSlVIAelqWpqigKtlPjNaGrbaXSoSu7y+g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736224136; c=relaxed/simple;
-	bh=RjVyohkVhiny/GUZSgnTvR9eoIbbwiqgn3dGDkv03Qs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iWEYh/vJVvQlWEYXiw/6Q5EtCBNwLXldegp6xykVSqoTWPCGn0GAgC8D8drBd5B4O/IPzveHNfVG6S5yZ3SE3/vCeV7222C+K+aKkFlCKlMMEvGEAsDnCSgbjX8yRCmahi2WcVOYAdGh5gkBgAUs4cKU4V4Olhf4plc0ZwT3MtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=lmATPYBP; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id CA8BB14C1E1;
-	Tue,  7 Jan 2025 05:28:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1736224131;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X3WMOTo+IoF3n0gzjkw/T1s85IGr+PB+4o6Rd5v9X70=;
-	b=lmATPYBPRF0SKrmo3VDFgy/0L28B/2TMEgQo0Gjw5abZaCGrTPVcfuji9W3wyh+YKNhPoW
-	wbr2dkRis9h2U4bN4Axmi4aNe1VQMNH0B8zBLi4uML+Pci4OQZt0x2X2hli/8BCYXeMuOY
-	KYBs37c/Dq7qvYGheQaQWQQ9O8rHBOvM1cz/MfFQd1Ngf6YxIFn+qr62pMrxip5uWGFTZ3
-	rlTLxL1yRqCiIczltRZacXwqxiJrkVD8bNu0cR9TarC4v1RiiD0AM2L2e9BwkxuQdn15ZK
-	1BbRpEWURCgH1TdpGIditke4Oa5Zc64aQVJZroaqPVzTJJQ9pOME0ALwlpxgNQ==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 11f130a8;
-	Tue, 7 Jan 2025 04:28:47 +0000 (UTC)
-Date: Tue, 7 Jan 2025 13:28:32 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Kairui Song <kasong@tencent.com>,
-	Desheng Wu <deshengwu@tencent.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10 098/138] zram: fix uninitialized ZRAM not releasing
- backing device
-Message-ID: <Z3ytcILx4S1v_ueJ@codewreck.org>
-References: <20250106151133.209718681@linuxfoundation.org>
- <20250106151136.941319893@linuxfoundation.org>
- <Z3yUHnBIiz9q_jgf@codewreck.org>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F010199EB2;
+	Tue,  7 Jan 2025 05:31:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736227881; cv=fail; b=IP9mgvh5UPeUGYxDXIl7blXSJXHvGdLhA7+qq3ITEyeHLLyDsqabkwiR4nFpFqS0d56GWwe0CZ6MrFdR+Cs5BAVZBuAOuYR3Isk45IuW0uXsK7Db3xMV575dqy2U+i9DxWthMX9UwMqmP0PtNV49QfLO9mR0UV6UcjpblXJFAdo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736227881; c=relaxed/simple;
+	bh=+dRfovbsQXTF7w3ovrWiJxQYNRNibhQ3xvonI3nrSbA=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Ro69LHTUILeL1nPoeC+OuUiQcBw8vCyaifva5rnV3xTLR1vRV4Iml6YWzyoUaW5anV2tF+YnmgivehN1qDDo17fJXsmj6JHF56AtdtqIdTwimS8Vg6mZraP9S4TFgXpFiDSW7NNeP4SKpHQXDJux80XY4e+EkdsNoeRus0mYh0s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CLF3IJFG; arc=fail smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736227878; x=1767763878;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=+dRfovbsQXTF7w3ovrWiJxQYNRNibhQ3xvonI3nrSbA=;
+  b=CLF3IJFGUQv9OP8/WaLcLHgNxZ5ahdJk+x+s4ovQljS8a5AidDrZHcCv
+   mD6JXgaxa6CBF7J7BmOaAulWmTZRu3lDKBwlhErt+NSMbNTmRffCKITkr
+   En4EZpJ5ryzataqI9rRuV+dv5+Xa2JShcvLYTKekjYdH3dxhCt87CS488
+   0D4KiKIPAB9rDDPLF+v9GeqifUW4BWnuIrYZkWMjTuL17zs0SyYF9AW2M
+   ayj4GiJRSU6d/DgBFc2cenzFy2Prd1MzNAYRdu1uNpL9snil28PZo+RzS
+   0a5UgQvoTClRStvT9as7SDBak7aBS8vR+u95n6r0X1274jWYwvnyk+sKu
+   w==;
+X-CSE-ConnectionGUID: PCUAFaDnRf6TR+wAsIVH4g==
+X-CSE-MsgGUID: N7utlL7BSNu8ddUUvWosFg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11307"; a="35692644"
+X-IronPort-AV: E=Sophos;i="6.12,294,1728975600"; 
+   d="scan'208";a="35692644"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2025 21:31:16 -0800
+X-CSE-ConnectionGUID: ODRTfoDoQpmp6GFyHD4yyg==
+X-CSE-MsgGUID: bVwiUbpeRB2dYO62pskzLA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,294,1728975600"; 
+   d="scan'208";a="133516307"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 06 Jan 2025 21:31:16 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Mon, 6 Jan 2025 21:31:15 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Mon, 6 Jan 2025 21:31:15 -0800
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.174)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Mon, 6 Jan 2025 21:31:14 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cVxARsW/R6ByOYiab5Kh8OMa8eIxv6f7R0R2vup9+1jU6pKXgp19qWPv1yZhTiTR75qPzlNachLPIW/Hn3/AVe5of2oU7zFE9o0YtajhJw5gbqMDr3iP725x1lVtK7aEfXbw7rpYKvu/66D5doO8IhuUMTOq7jH6gO9RjzZgVZE5kC3PvCxoSw1iy0WOPjyd/ecIEmFxc4LmTCK/Y2SQS7CvUBcXltvUEZT5W3ZEz6A60RzYDv0qlzeWL9vglRusaFBUEziZopWQ+PTeo+GwU63wpclIaHXUjWXVK5wwfQeT2HonMfft0uHBx1sekkeDlOM61EJShKNhwfwHDX7ZOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NdIxp0n4vwiA/9GCDOmV4ui8N68W5VMyy3dJBJn88ek=;
+ b=RJUOnAsiiEcEe18En2hSEGzOIgN3Lp2e0FtTtGwXFOLgZ2jRE4e5C+HGp0rJbK3h3US8QUBRddr2w4v+p/28BwnbX0Q+gmk7biXR05cIeqZlErOxI8rwSS//SvzWmhNWp6WyvTRjwfL8XCH08NuLPXnG9ZQ4NOyL5SAk6HOhG4U2tc+ofnT0zzV5OMf4q3KxNVqTGhWdZo4d3VSC+uCEtzwaWur7IJneZlbGIiqAYn5gz4dN+6RQyJZKIlogJCbXmIPGtlMaACz8DnmypFxyKsWyUD8mZ+ZCy+gXBcNQp2kfTOaPKAsd2kwSGW7+6cEbGmgfhb2mAinHm13p+0QPxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH0PR11MB4886.namprd11.prod.outlook.com (2603:10b6:510:33::22)
+ by MW3PR11MB4746.namprd11.prod.outlook.com (2603:10b6:303:5f::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.17; Tue, 7 Jan
+ 2025 05:30:53 +0000
+Received: from PH0PR11MB4886.namprd11.prod.outlook.com
+ ([fe80::9251:427c:2735:9fd3]) by PH0PR11MB4886.namprd11.prod.outlook.com
+ ([fe80::9251:427c:2735:9fd3%5]) with mapi id 15.20.8314.018; Tue, 7 Jan 2025
+ 05:30:53 +0000
+Message-ID: <ea9b90d6-127c-46e1-8978-f984f77c57fc@intel.com>
+Date: Mon, 6 Jan 2025 21:30:50 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] netdev: prevent accessing NAPI instances from another
+ namespace
+To: Jakub Kicinski <kuba@kernel.org>, <davem@davemloft.net>
+CC: <netdev@vger.kernel.org>, <edumazet@google.com>, <pabeni@redhat.com>,
+	<stable@vger.kernel.org>, <jdamato@fastly.com>, <almasrymina@google.com>,
+	<amritha.nambiar@intel.com>
+References: <20250106180137.1861472-1-kuba@kernel.org>
+Content-Language: en-US
+From: "Samudrala, Sridhar" <sridhar.samudrala@intel.com>
+In-Reply-To: <20250106180137.1861472-1-kuba@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR13CA0081.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c4::26) To PH0PR11MB4886.namprd11.prod.outlook.com
+ (2603:10b6:510:33::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Z3yUHnBIiz9q_jgf@codewreck.org>
-
-Dominique Martinet wrote on Tue, Jan 07, 2025 at 11:40:30AM +0900:
-> I'll look a bit more into it today and reply to this mail with anything
-> I've found.
-> (didn't test on master or anything else either)
-
-So:
-- master has no problem
-- 5.10.233-rc1, 5.15.176-rc1, 6.1.124-rc1 have the same issue
-- 6.6.70-rc1 is also fine
-- My previous mail lacked stacktrace decoding, here's a new backtrace
-with proper decoding on 6.1.124-rc1, produced by virtme-ng +
-decode_stacktrace.sh (end of the mail)
-vng -e 'dmesg -C; echo 1 | sudo tee /sys/class/block/zram0/reset || dmesg'
-- looking at said backtrace, a likely difference would be the
-multi-stream rework, in particular commit 7ac07a26dea7 ("zram:
-preparation for multi-zcomp support") that changed how freeing works.
-... and cherry-picking it on 6.1 does fix the issue.
-Unfortunately it doesn't cherry-pick cleanly to 5.15 and 5.10, so for
-these two I'm not sure if it's better to just drop this "zram: fix
-uninitialized ZRAM not releasing backing device" commit, or if we should
-try harder to backport prerequisites (e55e1b483156 ("block: move from
-strlcpy with unused retval to strscpy") is an obvious one that is not
-too hard to pick even if not clean, but that wasn't enough and I didn't
-try further).
-
-I've at least checked that dropping this patch is enough, and will not
-do anything else on this for now.
-
-
-
-
-(nothing aside of the symbolized backtrace below)
------------------
-
-[    2.184091] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[    2.184094] #PF: supervisor read access in kernel mode
-[    2.184096] #PF: error_code(0x0000) - not-present page
-[    2.184098] PGD 0 P4D 0
-[    2.184101] Oops: 0000 [#1] PREEMPT SMP NOPTI
-[    2.184104] CPU: 2 PID: 650 Comm: tee Not tainted 6.1.124-rc1+ #5
-[    2.184107] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-[    2.184109] RIP: 0010:zcomp_cpu_dead (drivers/block/zram/zcomp.c:171) 
-[ 2.184115] Code: ff 31 c0 48 c7 c7 c8 4c 9b a1 48 89 43 08 48 89 03 e8 ac d1 2c 00 ba f4 ff ff ff eb bb 0f 1f 44 00 00 0f 1f 44 00 00 89 ff 53 <48> 8b 5e f0 48 03 1c fd 20 ea 9e a1 48 8b 7b 08 48 85 ff 74 11 48
-All code
-========
-   0:	ff 31                	push   (%rcx)
-   2:	c0 48 c7 c7          	rorb   $0xc7,-0x39(%rax)
-   6:	c8 4c 9b a1          	enter  $0x9b4c,$0xa1
-   a:	48 89 43 08          	mov    %rax,0x8(%rbx)
-   e:	48 89 03             	mov    %rax,(%rbx)
-  11:	e8 ac d1 2c 00       	call   0x2cd1c2
-  16:	ba f4 ff ff ff       	mov    $0xfffffff4,%edx
-  1b:	eb bb                	jmp    0xffffffffffffffd8
-  1d:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
-  22:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
-  27:	89 ff                	mov    %edi,%edi
-  29:	53                   	push   %rbx
-  2a:*	48 8b 5e f0          	mov    -0x10(%rsi),%rbx		<-- trapping instruction
-  2e:	48 03 1c fd 20 ea 9e 	add    -0x5e6115e0(,%rdi,8),%rbx
-  35:	a1 
-  36:	48 8b 7b 08          	mov    0x8(%rbx),%rdi
-  3a:	48 85 ff             	test   %rdi,%rdi
-  3d:	74 11                	je     0x50
-  3f:	48                   	rex.W
-
-Code starting with the faulting instruction
-===========================================
-   0:	48 8b 5e f0          	mov    -0x10(%rsi),%rbx
-   4:	48 03 1c fd 20 ea 9e 	add    -0x5e6115e0(,%rdi,8),%rbx
-   b:	a1 
-   c:	48 8b 7b 08          	mov    0x8(%rbx),%rdi
-  10:	48 85 ff             	test   %rdi,%rdi
-  13:	74 11                	je     0x26
-  15:	48                   	rex.W
-[    2.184117] RSP: 0018:ffffb556409ffd20 EFLAGS: 00010246
-[    2.184120] RAX: ffffffffa0e09620 RBX: 0000000000000000 RCX: ffffffffa1c604c0
-[    2.184122] RDX: 0000000000000000 RSI: 0000000000000010 RDI: 0000000000000000
-[    2.184124] RBP: 0000000000000044 R08: 0000000000000000 R09: 000000000000000a
-[    2.184125] R10: ffff9e20fe61b360 R11: 0fffffffffffffff R12: 0000000000000010
-[    2.184127] R13: ffff9e20fe61b360 R14: ffffffffa0e09620 R15: 0000000000000000
-[    2.184130] FS:  00007f4ffda3c740(0000) GS:ffff9e20fe680000(0000) knlGS:0000000000000000
-[    2.184134] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    2.184136] CR2: 0000000000000000 CR3: 0000000005362000 CR4: 0000000000750ee0
-[    2.184138] PKRU: 55555554
-[    2.184139] Call Trace:
-[    2.184141]  <TASK>
-[    2.184144] ? __die_body.cold (arch/x86/kernel/dumpstack.c:478 arch/x86/kernel/dumpstack.c:465 arch/x86/kernel/dumpstack.c:420) 
-[    2.184149] ? page_fault_oops (arch/x86/mm/fault.c:727) 
-[    2.184153] ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:131) 
-[    2.184158] ? kernfs_iop_setattr (fs/kernfs/inode.c:137) 
-[    2.184163] ? exc_page_fault (arch/x86/include/asm/irqflags.h:40 arch/x86/include/asm/irqflags.h:75 arch/x86/mm/fault.c:1439 arch/x86/mm/fault.c:1487) 
-[    2.184168] ? asm_exc_page_fault (arch/x86/include/asm/idtentry.h:608) 
-[    2.184172] ? zcomp_cpu_up_prepare (drivers/block/zram/zcomp.c:167) 
-[    2.184176] ? zcomp_cpu_up_prepare (drivers/block/zram/zcomp.c:167) 
-[    2.184179] ? zcomp_cpu_dead (drivers/block/zram/zcomp.c:171) 
-[    2.184182] cpuhp_invoke_callback (kernel/cpu.c:202) 
-[    2.184187] cpuhp_issue_call (kernel/cpu.c:2016) 
-[    2.184190] __cpuhp_state_remove_instance (kernel/cpu.c:2224) 
-[    2.184193] zcomp_destroy (drivers/block/zram/zcomp.c:197) 
-[    2.184196] zram_reset_device (drivers/block/zram/zram_drv.c:1737) 
-[    2.184199] reset_store (drivers/pci/pci-sysfs.c:1387) 
-[    2.184204] kernfs_fop_write_iter (fs/kernfs/file.c:338) 
-[    2.184208] vfs_write (include/linux/fs.h:2265 fs/read_write.c:491 fs/read_write.c:584) 
-[    2.184214] ksys_write (fs/read_write.c:637) 
-[    2.184217] do_syscall_64 (arch/x86/entry/common.c:51 arch/x86/entry/common.c:81) 
-[    2.184220] entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121) 
-[    2.184224] RIP: 0033:0x7f4ffdb372c0
-[ 2.184227] Code: 40 00 48 8b 15 41 9b 0d 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 00 80 3d 21 23 0e 00 00 74 17 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 58 c3 0f 1f 80 00 00 00 00 48 83 ec 28 48 89
-All code
-========
-   0:	40 00 48 8b          	rex add %cl,-0x75(%rax)
-   4:	15 41 9b 0d 00       	adc    $0xd9b41,%eax
-   9:	f7 d8                	neg    %eax
-   b:	64 89 02             	mov    %eax,%fs:(%rdx)
-   e:	48 c7 c0 ff ff ff ff 	mov    $0xffffffffffffffff,%rax
-  15:	eb b7                	jmp    0xffffffffffffffce
-  17:	0f 1f 00             	nopl   (%rax)
-  1a:	80 3d 21 23 0e 00 00 	cmpb   $0x0,0xe2321(%rip)        # 0xe2342
-  21:	74 17                	je     0x3a
-  23:	b8 01 00 00 00       	mov    $0x1,%eax
-  28:	0f 05                	syscall
-  2a:*	48 3d 00 f0 ff ff    	cmp    $0xfffffffffffff000,%rax		<-- trapping instruction
-  30:	77 58                	ja     0x8a
-  32:	c3                   	ret
-  33:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
-  3a:	48 83 ec 28          	sub    $0x28,%rsp
-  3e:	48                   	rex.W
-  3f:	89                   	.byte 0x89
-
-Code starting with the faulting instruction
-===========================================
-   0:	48 3d 00 f0 ff ff    	cmp    $0xfffffffffffff000,%rax
-   6:	77 58                	ja     0x60
-   8:	c3                   	ret
-   9:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
-  10:	48 83 ec 28          	sub    $0x28,%rsp
-  14:	48                   	rex.W
-  15:	89                   	.byte 0x89
-[    2.184229] RSP: 002b:00007ffd10d35a78 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
-[    2.184232] RAX: ffffffffffffffda RBX: 0000000000000002 RCX: 00007f4ffdb372c0
-[    2.184233] RDX: 0000000000000002 RSI: 00007ffd10d35b90 RDI: 0000000000000003
-[    2.184235] RBP: 00007ffd10d35b90 R08: 0000000000000004 R09: 0000000000000001
-[    2.184236] R10: 00007f4ffda53f18 R11: 0000000000000202 R12: 0000000000000002
-[    2.184238] R13: 0000559c792ae310 R14: 0000000000000002 R15: 00007f4ffdc0d9e0
-[    2.184243]  </TASK>
-[    2.184244] Modules linked in:
-[    2.184247] CR2: 0000000000000000
-[    2.184248] ---[ end trace 0000000000000000 ]---
-[    2.184250] RIP: 0010:zcomp_cpu_dead (drivers/block/zram/zcomp.c:171) 
-[ 2.184253] Code: ff 31 c0 48 c7 c7 c8 4c 9b a1 48 89 43 08 48 89 03 e8 ac d1 2c 00 ba f4 ff ff ff eb bb 0f 1f 44 00 00 0f 1f 44 00 00 89 ff 53 <48> 8b 5e f0 48 03 1c fd 20 ea 9e a1 48 8b 7b 08 48 85 ff 74 11 48
-All code
-========
-   0:	ff 31                	push   (%rcx)
-   2:	c0 48 c7 c7          	rorb   $0xc7,-0x39(%rax)
-   6:	c8 4c 9b a1          	enter  $0x9b4c,$0xa1
-   a:	48 89 43 08          	mov    %rax,0x8(%rbx)
-   e:	48 89 03             	mov    %rax,(%rbx)
-  11:	e8 ac d1 2c 00       	call   0x2cd1c2
-  16:	ba f4 ff ff ff       	mov    $0xfffffff4,%edx
-  1b:	eb bb                	jmp    0xffffffffffffffd8
-  1d:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
-  22:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
-  27:	89 ff                	mov    %edi,%edi
-  29:	53                   	push   %rbx
-  2a:*	48 8b 5e f0          	mov    -0x10(%rsi),%rbx		<-- trapping instruction
-  2e:	48 03 1c fd 20 ea 9e 	add    -0x5e6115e0(,%rdi,8),%rbx
-  35:	a1 
-  36:	48 8b 7b 08          	mov    0x8(%rbx),%rdi
-  3a:	48 85 ff             	test   %rdi,%rdi
-  3d:	74 11                	je     0x50
-  3f:	48                   	rex.W
-
-Code starting with the faulting instruction
-===========================================
-   0:	48 8b 5e f0          	mov    -0x10(%rsi),%rbx
-   4:	48 03 1c fd 20 ea 9e 	add    -0x5e6115e0(,%rdi,8),%rbx
-   b:	a1 
-   c:	48 8b 7b 08          	mov    0x8(%rbx),%rdi
-  10:	48 85 ff             	test   %rdi,%rdi
-  13:	74 11                	je     0x26
-  15:	48                   	rex.W
-[    2.184254] RSP: 0018:ffffb556409ffd20 EFLAGS: 00010246
-[    2.184256] RAX: ffffffffa0e09620 RBX: 0000000000000000 RCX: ffffffffa1c604c0
-[    2.184258] RDX: 0000000000000000 RSI: 0000000000000010 RDI: 0000000000000000
-[    2.184259] RBP: 0000000000000044 R08: 0000000000000000 R09: 000000000000000a
-[    2.184261] R10: ffff9e20fe61b360 R11: 0fffffffffffffff R12: 0000000000000010
-[    2.184262] R13: ffff9e20fe61b360 R14: ffffffffa0e09620 R15: 0000000000000000
-[    2.184266] FS:  00007f4ffda3c740(0000) GS:ffff9e20fe680000(0000) knlGS:0000000000000000
-[    2.184269] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    2.184271] CR2: 0000000000000000 CR3: 0000000005362000 CR4: 0000000000750ee0
-[    2.184273] PKRU: 55555554
-[    2.184274] note: tee[650] exited with irqs disabled
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR11MB4886:EE_|MW3PR11MB4746:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3d442561-f1f7-4dd6-cacc-08dd2edc7411
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?OTQ5ZVRmcnBzMVpHL2s5Wi9sMDArSVBOQ2x4Y3Q0VnhSQ0s0Rkg0Rlg1QUVr?=
+ =?utf-8?B?UFdTeWwvV3Fmblp2KzZXbkpqR2NHaE5QZys4eFVjSEVsUm9ralg5cW00MTE3?=
+ =?utf-8?B?N01CdzcwQUExTzJWWHNTZjVyenc0K3BGMFF1Rm9HTFVKWTEvUUcxUE1PdU84?=
+ =?utf-8?B?dlM0aXVxVEhxMkMxcnpSM0hLTUV1S2V0NURzOGVhelJ1ZndjcHZsdGl4Y0dw?=
+ =?utf-8?B?NjdnSk5QWXdibEhZNFRlUHljeldxNElRY1l3Y0JTWWc3bXV2ODJIZ2MvRGZM?=
+ =?utf-8?B?OVhEMURId0piQ3lLUVV6MW03b1hOeXNxZkJtem5JbnNONnlNUEVqUTFiT0Vv?=
+ =?utf-8?B?Um9NNUw5Qk1OZGlsSTlMM0tHb3dQVWwvTitQYjhGZXk3WWUrMXpxLy85MUpw?=
+ =?utf-8?B?OWxhV2ZReHZzZG4yS3hMdUlVbnBLMFIvd0hjdWlWRGE4V1ZsbFgyd2VLbEZO?=
+ =?utf-8?B?MVZ4bnhqdjkxa1h2RHI1M2MvSDV3TmlUT29ORHJSeDlKU29NemhjWUNuV2g4?=
+ =?utf-8?B?SE5HcU8zcUhnY1B5Q1BZQlU3NzlYakZaUklLOER5RGhleW1RU1UxYU5uRGI1?=
+ =?utf-8?B?S1VRWEdzaUxSZjJ5b1hTekREbWNDaXBhUUdMcFVmaitwVTNVVTdLclZHNmJN?=
+ =?utf-8?B?SWEyY09SYUIwV2x2bGZldG1jYWpTbXRuK1RPLytNTjFRbm5tQm9ZbUdQeWY5?=
+ =?utf-8?B?aEpLejJHUFRFWGVrL3dXemMvSUJlRkdnbFJOTW40UnJoUm1ndVpLNDBDR1pD?=
+ =?utf-8?B?anVadXpmZEowNXBIcHZINldVb2VMNTFhTFhRamUyOWR2OStSV2hhTVcxZ3RZ?=
+ =?utf-8?B?MW0zV3BabEpuaUIwNWp0cVE0aUZQc0x4MEoxM212YlEvVi9WMUUxNCtJMWZt?=
+ =?utf-8?B?b1dFN0VGQ1dOeXNjZDg5V3dodlRxaC9PYzh2RUVVMmRqa0JyMjdBZDc1Nllq?=
+ =?utf-8?B?R2JUdStZT0RrTDB5OWtQRGdkOS9jaFozZVE3NXJQTVE3WktreEZMekJ5ZzB5?=
+ =?utf-8?B?N1ZTSHA5ZVpmdTlYdFVuSnpZY0ZubzdQNjc0c3dGQ3RQQWNEaGtYeHl3NlZo?=
+ =?utf-8?B?R1ZjZzNhQUVUZW1hR2pEN0VuelpTQTlvWFVSZC9yTFdmaVFReWYxWjJqem9B?=
+ =?utf-8?B?UVd5eUVid2dhNEkzazU3SGoybjFIaXUrZjQxajhVbys5WFE1SVNUWmtDaktu?=
+ =?utf-8?B?am1hMTc5enlDQkZSOWtmKzhaTTk0R05WTWwzYXJCQ1hlZFVCcGEvU3YxekZj?=
+ =?utf-8?B?RE9JaUE4ZzgvNXFkVjlPdXBieVBoamhNVml0QTcvblgwcGN5dkxxVER6WXl1?=
+ =?utf-8?B?bFhtTzNIWlJSMUxqTWdScEoyV01zUFQ2cCs2NDhIT3o3SnRzWDZ1Tno1alR0?=
+ =?utf-8?B?RVZISitUem4xUjZqUWY1MWxrTTVCMmRQRzBjS1l1SUVVZUxCNnphZHhNcHdw?=
+ =?utf-8?B?WWVNK3dzSDZHL3lXNllWRWxEV2lqZGRZY2JVOS9FMmdVOVc1YlZ6L0ZqRDZi?=
+ =?utf-8?B?TTZVZWw0OU5tNENhVDZmOVVxVDE0eGhTdmJGcTNsOVdwVjBEYkNWY0p6SUdG?=
+ =?utf-8?B?ekFESlV0TjBNS3ErTnFYNjE3Nk9WWkkwVk1yUHNWUW14dmNoODFLbVVON3Zq?=
+ =?utf-8?B?R1hUM3BhZVRDQnA0Qi9FZjhCQkprNEhPWStUOW4wVVJNYVZUNi8ydWdyYThq?=
+ =?utf-8?B?a3hCWjNXYk1ScXNIV0NtSjd0Zy9IMElPQkJ4WjRwVHA4Myt6eUtyQkJTMUha?=
+ =?utf-8?B?SGVxUmFlMGV0aHFHbndxYWVuclc0SmxGM0FWRTBkUnIyNkdqRXpKQzY5MTFL?=
+ =?utf-8?B?KzE1dDFRamFCQURBZy9PWXdMenA4ci9HYTVkT09CMFo0SXBpRmxXYytzMVpI?=
+ =?utf-8?Q?deQxMtxZoKoA0?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB4886.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WXNBVGdmcDQxN1BkV3E2UjBpYktJNmp4aUJtRGV0ZDhkdXFyUTR0bDRPWkFj?=
+ =?utf-8?B?b0UwNlBrcmU3anlIY09UaE5KWUQvRUJTV2dOSkQ5ZzdrNGt6eU1KaFNCb3JI?=
+ =?utf-8?B?TStGY3RseHJlaythbCtuYnhlRS96V05vK2FVcVdxN0xZMEVnYkZyS3ZwQzYw?=
+ =?utf-8?B?djkwbUZCM095VVdrY05pUTRzY290VTNnSEs3MWNFa1MwQmVoVlF3SWdBL2Rk?=
+ =?utf-8?B?ZU5QL0hKWi9TUzNSK1FhbUhiYnhkV05iTFV2ZUFZVUVtcGdaMmFtTjg2Rm9I?=
+ =?utf-8?B?a2RHenROUlcyeU1LOXJVL2FZN3l5M1MxUVhLbS9TRXF2dDRuYi9Kd2ZrVEdP?=
+ =?utf-8?B?aWlwL2twYkZMSVU2M2NYTDlqelVBUGVxU294Ri9UM1ArcXIxcko5KzlRaHBW?=
+ =?utf-8?B?TXZxcVY1eG45WU56QU5tM0s0Nno2dkxLR1o1ZkhVbFlCTTRobXNKT3pDR2U3?=
+ =?utf-8?B?NFAra2pQTmY0bllselVsdndlN2JNaGVIUUxwODVrRWl4MzBsSkRiQnYxUXdo?=
+ =?utf-8?B?RG5id2UzVTZKWHZxU0pPRDZ1WHN6eEZOMXpvcUZSZklwSzRqL2ZhWEpFaTR1?=
+ =?utf-8?B?eU9za2JkVFIvYVZmTlZSTkhHeXNCa2oyQXZnckhXSkpqekx0Y0F4eTVyN2hz?=
+ =?utf-8?B?RGdLRjZJQTlPOG5ZS3JXQ21rbkNvOHJKQmkxSk1xUWNad3FzcDA3MlpDZ0tn?=
+ =?utf-8?B?WU5UcElHYnJ6cmU1V3BTbnp1R0VvbGVUUCsvcXJqOXdub0xvR3hyMDArK1Ax?=
+ =?utf-8?B?VjZ4TVJxTiswTGhVQnU2UTM4bVRwb3RrNXVvdEhzMVYvOUpQY3NHckkxVTNE?=
+ =?utf-8?B?OE5kQ25jUUh4Wjd3L1MwQVpqNHBLNjJFQ3h0WGhtcjI4bTFibjk2OWpjT3Vx?=
+ =?utf-8?B?cVFVNm84U08wTURsOTcvbk84UHBnSUljeHlNNW5nMzlHNDRmSitsb3NGNVp0?=
+ =?utf-8?B?bVhFdm93bWJ3Q2U1aXlxMExPQzgzbHorZFhSNzBhVTRRZlNrQVRXV2FqVE1x?=
+ =?utf-8?B?Q2FNallXQUNBcXVjUHNhd2RzaWs2QmQ5UU1SbW95NUZaOVdJQnNmeVVNVUlr?=
+ =?utf-8?B?bDVJRXg3dzdpVUs5OFVHQ1dYOVpjNGFHaHpXeWR1RjZSaERaSHlZVGdXY3pN?=
+ =?utf-8?B?bzVEVHlCV2dQcFZiM3Z4YlVyV3ZmOWRGNlN2Nm5tZVE1NU9VanM4c2dxVVlU?=
+ =?utf-8?B?eWdzdDNsUHlNaXNLMmRjRllSTVlheEFJUTlVek9yazlYOEtRRllKQnRlMndG?=
+ =?utf-8?B?cW43TXRmN2NBQzB0MWtOMTNtOTFPSXZqN3B5VHZ0SC90R1ZQSGZPczl2SkR1?=
+ =?utf-8?B?KzY2WGdpVnM0SmkvSnNNMmdSOUN0aG5aTldUSU9XTVJTcGgxM25QMVFWYTMy?=
+ =?utf-8?B?bGhnOUxKWFlzSlVlVytlUzR3cHB1eVp3Z1l4dmhZZnFUS1NNUHVuUkF6S29C?=
+ =?utf-8?B?YzhMQ2lsTVF1YnVxaCtEM29VV3cvUGdJNHZuWEFhTUMxc0p5UVppSjRKb2pi?=
+ =?utf-8?B?UEc3bXV0QktsRHR2VjZBNGZqZDB1K2F0OHhjcThZdXVnbmxpWGg3NGZIcDE1?=
+ =?utf-8?B?MGUzNnBYcm56VGQ3Qm10UDRnaEQ1QTBzL29wRThVY2wvS0YyaW5Hc2VFaFlW?=
+ =?utf-8?B?c0R5MmpzSXlMdnAzZlBxUXU5LzllWVQxaUtlSVllWXV4UlRiSWdHSWNXbk9x?=
+ =?utf-8?B?MnEySGQva05Qamg5Z2V6a2QraVhnbGIwZ05JM0liL3JONVJtS1NPdVNCaVBN?=
+ =?utf-8?B?dmIwQlVNWS9UQUx0VzNsWFM3R3NhWFF5MFFaK3hRRG1NaGFrOGlOWjZvUnRR?=
+ =?utf-8?B?SE1JNWRMQmgwRUVQTHJtdjQ4dTdDVlRVaVpTRm45bjBHQ0VUaE4rNzFVZ29Q?=
+ =?utf-8?B?V3d3QzU0ZnNIdDI5NjFPTm1VQk5aVVJUOHpPWU1aTzY5UVpMS1NXKzdQblpP?=
+ =?utf-8?B?WlVMSjg1QkRnMW42Y2I0TXRuK1huZ2toV3Q0Sm1vNDVjaVcxdnpxY1NrdXZW?=
+ =?utf-8?B?N1pEZUEzWXVSQkpXVkZwRFFrbzF3TWFNeWJCZEp0OGkxTEp6azZWTXNCU2d1?=
+ =?utf-8?B?TVJjai95QVBrZ3N0cm81djBBelF6bUNyZVpjcjI5NERyRlVBZ1pGcHlBcnN1?=
+ =?utf-8?B?T0hhVGZMYmdUMStVaDYrSlY2R0xtaHVwdUNLa3h3aS9Ca2hQR3lTNFRHRy9z?=
+ =?utf-8?B?a2c9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3d442561-f1f7-4dd6-cacc-08dd2edc7411
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB4886.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2025 05:30:53.6690
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CFsvUHCYU5YkE7eNHY1sixRphEbvAVHCJ4JP7PAkZ+SpR5iPZ6oXF6FNa7Obpu6Q8QgPkqxBsxwtujvdFvnpaxgrEeD9fDUuiZqhav/DS8g=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4746
+X-OriginatorOrg: intel.com
 
 
-Thanks,
--- 
-Dominique
+
+On 1/6/2025 10:01 AM, Jakub Kicinski wrote:
+> The NAPI IDs were not fully exposed to user space prior to the netlink
+> API, so they were never namespaced. The netlink API must ensure that
+> at the very least NAPI instance belongs to the same netns as the owner
+> of the genl sock.
+> 
+> napi_by_id() can become static now, but it needs to move because of
+> dev_get_by_napi_id().
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 1287c1ae0fc2 ("netdev-genl: Support setting per-NAPI config values")
+> Fixes: 27f91aaf49b3 ("netdev-genl: Add netlink framework functions for napi")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
 
