@@ -1,159 +1,193 @@
-Return-Path: <stable+bounces-107852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F2B9A0407D
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 14:11:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C9FA04089
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 14:12:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A74AA7A26CB
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 13:11:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8551A1885C99
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 13:12:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AEA11F12F3;
-	Tue,  7 Jan 2025 13:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A3ED1EBA04;
+	Tue,  7 Jan 2025 13:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZzKjXZdM"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Hq/irzVo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C661F12E5;
-	Tue,  7 Jan 2025 13:10:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839811EE02F;
+	Tue,  7 Jan 2025 13:12:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736255441; cv=none; b=LooD+OLncWHkO7OwoE0OUety89IAqWxPQmSxJcfKloBe0eRhg0aUvmV41Bn/HEP8RMXEE5141ToGglHjBUJghy643HyZ3fXYDPOWqI24ZKoMGavKFi12i6mkrOK5FmDiz8WprmTEzbUjpiVvRbm+eabdUFyS+GQkKfkvvTVp6Ao=
+	t=1736255545; cv=none; b=h3NrW/kKjzR3nxNLC/4t6OXsUg9vmv1oOeeMhz+jybvEK3H3GumbTQkkCvjGvQjw6a+v0aqcyK70ryvBpiLzIeKuSvfkvtebYMPbAc8aNaFyT38fZVhPoiI7DHnWp9NL2I/wuExXxH+EGEK+BenUxWuP/gIylL/pVxbM5U5WbZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736255441; c=relaxed/simple;
-	bh=ADthGajJ7+jWaB9VjhYsjhEH3MBHyp118HkFuCCVAs0=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=DST0rEWcaGZAefgxgTqqg5yA4F8u86vvAurXOvZWITGStcg6Y3UgvlwVaqK8uKENwo4+JYfpxoFmPKrsl66+cajDoqvHjPh8dieP96uepy/GOFh80NR+S9TcHoWfqd1IcLsbB1AAJeltu1d9FTKlnpdySXJakIj+SqLl7yASyqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZzKjXZdM; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4678cd314b6so147812191cf.3;
-        Tue, 07 Jan 2025 05:10:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736255437; x=1736860237; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LyZlC18SS7DOxCTGKSOqaGQPIN80T4lc/PP/O9Mt8pw=;
-        b=ZzKjXZdMDn3NYApjE9/+BWEMkPsHqXTyOMr8NS9D5El5tiVYke8vlaCgxSrLcjzVHE
-         FiyhLiVCoUoIV7Qgbj8Tcez2qwZ4LisF/TCiAtn4A5AYgpwnSiutGo8AfC8ldd6VB7nG
-         Vz8GOwRyQlW9u/zYO9HaRDxSvIhwJSgw8wRgIvx6jYCLRU3Dx39W0tu4H6fc79tbqytK
-         FXJhicxe51SNPCVXGV3P5EaV0vt3ILEwp71+doD+qcvS55Eka5fqA/73PM5lRG+cH23l
-         R8OHClicumd1NQeW1ALUAMfHOqoA+Sl4kac71l+uNhcohHBQnAcwCXAJehc6AX9OAHlX
-         t1Sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736255437; x=1736860237;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=LyZlC18SS7DOxCTGKSOqaGQPIN80T4lc/PP/O9Mt8pw=;
-        b=MR8A8tFBd8iG86OxHuRK6jAwxpjLfy6RTXl3FSJlR83NHLx5mjZt0e5yh8KHCATAV8
-         MU2ZqPfs3BQCp6Kx4YanI8Sw9/BgP8AhZexS6l3LdFEYg7tbXZR5japqo7IX6vMYTLNc
-         btsakxJAz+uTdoYCG9CvyOf6WBcTtdOvaMGvq1H5otYhohVbWL5oP0ngf89PB9hiK4zY
-         FrgJKaJDXBVGDHwAICx2NmMEvvC3BnJc3r5xF2J8AtYpoHuyA26ofAjhewYCODIxJDBH
-         ssXDi2tAOh1kTVH7tyOuD72Q/NKWHu5oQ2jJVUAksHReVYRQZmmGQq3s28K6paLobweD
-         sfHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWp0g+kX/y13u1of24RzyLbsGpp1u4iDZO+EaOzIhtdv6o2uyqasDpPA1XlN7gpfcNWhfEmw64=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyj7E/8n51TMCFph4t5ShhplKNA9CrayTXtBlddLbHcHFP1hOCH
-	cNJciTqKywu1bzl1QiRLAI5OmnyxSH2YZufQIzw5h5b7mTP/oAVj
-X-Gm-Gg: ASbGncsrQCqjFh+I3CY/Ny6AzI6+V1LdqginFrrSwo53cDP+DPjJ21NfvXTHZ49c9e1
-	yKIJVqkxJFvbLFBsgiYomMlLI+aZPKDk+e1VRkCtvYKlUsb8OILDiL+34UyUzmqJiwQxe9sCBJt
-	AyXxJTyoLXKiqioqQ65hKSMN6Mz1t3UnheDlEt8Gs2ex7bMjtaCOc/G77Tkxb+ICsYz0mLXOXhD
-	iZ5EjPA4nJLRw7iXiamdGd9DWmP5htBLr7BaAUxIEcyFf/lgfOm9NUdnO4s7xiY/m6PJMmm5uYk
-	4STd/iOFvS/BBWPr1Lacyd1z6sfl
-X-Google-Smtp-Source: AGHT+IEPyxAUWSUdJdMbMamDFe9RlQY5ctTqXp9Ht4VmNKlzKeTLFX43ShuxBih720QX6qsqu3TfPg==
-X-Received: by 2002:ac8:7d52:0:b0:467:5ea8:83e7 with SMTP id d75a77b69052e-46a4a8add7emr768053081cf.9.1736255436838;
-        Tue, 07 Jan 2025 05:10:36 -0800 (PST)
-Received: from localhost (15.60.86.34.bc.googleusercontent.com. [34.86.60.15])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46a3e64d9c1sm186324551cf.2.2025.01.07.05.10.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2025 05:10:36 -0800 (PST)
-Date: Tue, 07 Jan 2025 08:10:36 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>, 
- davem@davemloft.net
-Cc: netdev@vger.kernel.org, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- Jakub Kicinski <kuba@kernel.org>, 
- stable@vger.kernel.org, 
- jdamato@fastly.com, 
- almasrymina@google.com, 
- amritha.nambiar@intel.com, 
- sridhar.samudrala@intel.com
-Message-ID: <677d27cc5d9b_25382b294fd@willemb.c.googlers.com.notmuch>
-In-Reply-To: <20250106180137.1861472-1-kuba@kernel.org>
-References: <20250106180137.1861472-1-kuba@kernel.org>
-Subject: Re: [PATCH net] netdev: prevent accessing NAPI instances from another
- namespace
+	s=arc-20240116; t=1736255545; c=relaxed/simple;
+	bh=/yaQvBxN92WBph6vXqky+w7V6dYWSvkNwdgX/ZOAW9M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lij6ftkiqkG+aXSpA2q/S+7SE+CGvYNW4L6qE/WTJoNQZlam86pCmwWOU+JuASyAWn53vNGbH3Qls//02HgBjg2Ta9l7lzcUbW59gaaL1vRBh+vULErQy8G5ZKEJeC6F9K6S4tJlIbl4EVazZLWq4vTjfvZQ/WmwcohYstaHa8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Hq/irzVo; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1736255537;
+	bh=/yaQvBxN92WBph6vXqky+w7V6dYWSvkNwdgX/ZOAW9M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Hq/irzVoEOQUNndEXpvhYpZJZ+dRSDryELIilqoMSAyskCJ+Z+RZvXikChS/Wc5t1
+	 te++ypatMZc9BExcx6+IIb6w7ZYmhBUfhJal+FI0eBi3asIj4yYi1C/MeGQBWtRUh8
+	 lgERLUBkqex86n/ywFni0doKfpGvGjXKy0BbxNglOU+XCuvu5+oREGMsKoSs8X+Hbt
+	 ZQ0fFTRLKofTI67/KUTiSXw1RpI1egfMqLm9emXD1qn/hJqi0xuvilCLW3PPzUx0l1
+	 /FWNBzkWxYQ8DBA2CCxPeNDSNglC7kigB9zrMQ9Bpl/hCI8ickvr1vcPyzwmpzTX/L
+	 A5K2uNGV74vwA==
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 28EA517E1574;
+	Tue,  7 Jan 2025 14:12:17 +0100 (CET)
+Message-ID: <eda10efe-a301-45d3-9bf6-088275db7af5@collabora.com>
+Date: Tue, 7 Jan 2025 14:12:16 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] nvmem: mtk-efuse: Enable GPU speed bin post-processing
+ for MT8188
+To: Chen-Yu Tsai <wenst@chromium.org>
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ stable@vger.kernel.org
+References: <20241223100648.2166754-1-wenst@chromium.org>
+ <481a6eec-c428-45cd-98a6-5a91f3ceb187@collabora.com>
+ <CAGXv+5Fj5s9FUyaxmEkGimxjEcS6OEfm4_5Zso+YocSi+Vt4pg@mail.gmail.com>
+ <bbc6aa2a-fe48-4e06-b070-fd66dbd00e15@collabora.com>
+ <CAGXv+5FoOM=ZUCWigdCaPbc4FCBtLVX2xnUJnVnVsBH=7yoZ=Q@mail.gmail.com>
+ <efb88dd0-3b66-49fe-b279-e66c4574cf9d@collabora.com>
+ <CAGXv+5HWcYrCzWJD4e=WP1WVNfqG5Y2_z+_oetWZq2ZKjXP75g@mail.gmail.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Content-Language: en-US
+In-Reply-To: <CAGXv+5HWcYrCzWJD4e=WP1WVNfqG5Y2_z+_oetWZq2ZKjXP75g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Jakub Kicinski wrote:
-> The NAPI IDs were not fully exposed to user space prior to the netlink
-> API, so they were never namespaced. The netlink API must ensure that
-> at the very least NAPI instance belongs to the same netns as the owner
-> of the genl sock.
+Il 23/12/24 17:15, Chen-Yu Tsai ha scritto:
+> On Tue, Dec 24, 2024 at 12:08 AM AngeloGioacchino Del Regno
+> <angelogioacchino.delregno@collabora.com> wrote:
+>>
+>> Il 23/12/24 16:57, Chen-Yu Tsai ha scritto:
+>>> On Mon, Dec 23, 2024 at 7:43 PM AngeloGioacchino Del Regno
+>>> <angelogioacchino.delregno@collabora.com> wrote:
+>>>>
+>>>> Il 23/12/24 12:24, Chen-Yu Tsai ha scritto:
+>>>>> On Mon, Dec 23, 2024 at 7:11 PM AngeloGioacchino Del Regno
+>>>>> <angelogioacchino.delregno@collabora.com> wrote:
+>>>>>>
+>>>>>> Il 23/12/24 11:06, Chen-Yu Tsai ha scritto:
+>>>>>>> Like the MT8186, the MT8188 stores GPU speed binning data in its efuse.
+>>>>>>> The data needs post-processing into a format that the OPP framework can
+>>>>>>> use.
+>>>>>>>
+>>>>>>> Add a compatible match for MT8188 efuse with post-processing enabled.
+>>>>>>>
+>>>>>>
+>>>>>> Let's just change the MT8188 compatible list to
+>>>>>>
+>>>>>> compatible = "mediatek,mt8188-efuse", "mediatek,mt8186-efuse";
+>>>>>
+>>>>> That would be "mediatek,mt8188-efuse", "mediatek,mt8186-efuse", "mediatek,efuse"
+>>>>> then?
+>>>>>
+>>>>
+>>>> No, we're dropping the generic "mediatek,efuse".
+>>>
+>>> That means we also drop it for MT8186?
+>>>
+>>> Thinking about it more, I think it's stretching things a bit. The hardware
+>>> is clearly backwards compatible, or we wouldn't even be reading values
+>>> out correctly. The only difference now with MT8186 and MT8188 is that
+>>> they have a speed-bin field with a value that we want passed to the OPP
+>>> framework, and the interpretation of that value is not really part of
+>>> the efuse's hardware. We chose to do the conversion in the efuse driver,
+>>> but we could also have done it in the GPU driver.
+>>>
+>>> What I'm saying is that we should not need to change the compatible strings
+>>> to make this work.
+>>>
+>>
+>> No we don't forcefully have to drop it from MT8186, and doing so would be kind
+>> of hard and actually producing unnecessary breakages with (very) old kernels.
+>>
+>> Just add a `deprecated: true` to the binding that wants `mediatek,efuse` and
+>> start with MT8188, where 8188 is in enum and 8186 is const.
+>>
+>> We can do MT8188 because that'll still work even with old kernels (since MT8186
+>> is there since before MT8188 was introduced), and it's something to enable a new
+>> feature.
+>> This means that there's not going to be any breakage with new DT and old kernel.
+>>
+>> I want the mediatek,efuse binding to be like the majority of the others across
+>> the kernel, so, no generic compatible.
 > 
-> napi_by_id() can become static now, but it needs to move because of
-> dev_get_by_napi_id().
+> In that case shouldn't the fallback be the oldest SoC in the list?
+> Maybe MT8173, which is currently marked as deprecated, so we undeprecate it?
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 1287c1ae0fc2 ("netdev-genl: Support setting per-NAPI config values")
-> Fixes: 27f91aaf49b3 ("netdev-genl: Add netlink framework functions for napi")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> Splitting this into fix per-version is a bit tricky, because we need
-> to replace the napi_by_id() helper with a better one. I'll send the
-> stable versions manually.
+> Certainly not the MT8186.
 > 
-> CC: jdamato@fastly.com
-> CC: almasrymina@google.com
-> CC: amritha.nambiar@intel.com
-> CC: sridhar.samudrala@intel.com
-> ---
->  net/core/dev.c         | 43 +++++++++++++++++++++++++++++-------------
->  net/core/dev.h         |  3 ++-
->  net/core/netdev-genl.c |  6 ++----
->  3 files changed, 34 insertions(+), 18 deletions(-)
-> 
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index 7c63d97b13c1..e001df4cb486 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -753,6 +753,36 @@ int dev_fill_forward_path(const struct net_device *dev, const u8 *daddr,
->  }
->  EXPORT_SYMBOL_GPL(dev_fill_forward_path);
->  
-> +/* must be called under rcu_read_lock(), as we dont take a reference */
-> +static struct napi_struct *napi_by_id(unsigned int napi_id)
-> +{
-> +	unsigned int hash = napi_id % HASH_SIZE(napi_hash);
-> +	struct napi_struct *napi;
-> +
-> +	hlist_for_each_entry_rcu(napi, &napi_hash[hash], napi_hash_node)
-> +		if (napi->napi_id == napi_id)
-> +			return napi;
-> +
-> +	return NULL;
-> +}
-> +
-> +/* must be called under rcu_read_lock(), as we dont take a reference */
 
-Instead of function comments, invariant checks in code?
+MT8173 doesn't have the post processing enabled.... if you can test that the code
+actually works for MT8173 as well, giving meaningful results, then we can just use
+the MT8173 compatible :-)
 
-Like in dev_get_by_napi_id:
 
-        WARN_ON_ONCE(!rcu_read_lock_held());
+>> Cheers,
+>> Angelo
+>>
+>>>
+>>> ChenYu
+>>>
+>>>> Cheers!
+>>>>
+>>>>> Fine by me. :D
+>>>>>
+>>>>> ChenYu
+>>>>>
+>>>>>> instead :-)
+>>>>>>
+>>>>>> Cheers,
+>>>>>> Angelo
+>>>>>>
+>>>>>>> Cc: <stable@vger.kernel.org>
+>>>>>>> Fixes: ff1df1886f43 ("dt-bindings: nvmem: mediatek: efuse: Add support for MT8188")
+>>>>>>> Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+>>>>>>> ---
+>>>>>>>
+>>>>>>> I'm not exactly sure about pointing to the dt bindings commit for the
+>>>>>>> fixes tag.
+>>>>>>> ---
+>>>>>>>      drivers/nvmem/mtk-efuse.c | 1 +
+>>>>>>>      1 file changed, 1 insertion(+)
+>>>>>>>
+>>>>>>> diff --git a/drivers/nvmem/mtk-efuse.c b/drivers/nvmem/mtk-efuse.c
+>>>>>>> index af953e1d9230..e8409e1e7fac 100644
+>>>>>>> --- a/drivers/nvmem/mtk-efuse.c
+>>>>>>> +++ b/drivers/nvmem/mtk-efuse.c
+>>>>>>> @@ -112,6 +112,7 @@ static const struct mtk_efuse_pdata mtk_efuse_pdata = {
+>>>>>>>      static const struct of_device_id mtk_efuse_of_match[] = {
+>>>>>>>          { .compatible = "mediatek,mt8173-efuse", .data = &mtk_efuse_pdata },
+>>>>>>>          { .compatible = "mediatek,mt8186-efuse", .data = &mtk_mt8186_efuse_pdata },
+>>>>>>> +     { .compatible = "mediatek,mt8188-efuse", .data = &mtk_mt8186_efuse_pdata },
+>>>>>>>          { .compatible = "mediatek,efuse", .data = &mtk_efuse_pdata },
+>>>>>>>          {/* sentinel */},
+>>>>>>>      };
+>>>>>>
+>>>>
+
+
 
