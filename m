@@ -1,112 +1,184 @@
-Return-Path: <stable+bounces-107891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9655BA04A0B
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 20:21:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A74B3A04A13
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 20:22:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECE113A62F4
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 19:21:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79E173A61F0
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 19:22:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BBF91F2C48;
-	Tue,  7 Jan 2025 19:21:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="is/TlKHc"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E151F63C4;
+	Tue,  7 Jan 2025 19:22:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDEB2C187;
-	Tue,  7 Jan 2025 19:21:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F261F5429;
+	Tue,  7 Jan 2025 19:22:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736277710; cv=none; b=Y3jsgiZSlsMGTdxCgNjmjtWoDmws8gYIL0ia5LrN3bb3HCsJrRXzaljIfvIA/ZLnSlsYATjRV6UI2JEZA0CP3AMtP9feClgsQxlt4OozI/LfH/kDzRZPxgbvu05o6+w+bGrcR4r3+osPbTm2NaSjKtblTGzeQJ7Z0391ggUxjdg=
+	t=1736277762; cv=none; b=MQPy0K9YYqsN/LmNRjy2a2g129LlAu54sgjIaZRU24fKF1ETYhNv1JGTvnx7Jx5KZ8unrTkeIADZ9/3beRFEmkUx2hX/smb1fhPsMQ+A3bGwqpSIUA6xkn3wf7apTlvjBm6dcMMkJYNQSGyQvT1ItSKKgDkOKh480JB7VX07i+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736277710; c=relaxed/simple;
-	bh=GZ+QK4W7m00pfsGrM/XH/gNWBMYeZTIE5O8xFsp0/rs=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=hR60f+bHh0jgiZk04cHbT9qy0iowaMy0fl5YJoPKPqCoQNYu2O+nmI2MKym7QGiWJPiHdTO26W8z9mVUtYtBdy6rffHSXyy8YNsZRwwtzFksHbIWOlWv86YlonQBrYwgjgjjV462eFdlYCn74OF1Iu8T2YzEfXC5PNwPHsApj+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=is/TlKHc; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1736277762; c=relaxed/simple;
+	bh=gL/t+r0JIMW4w8N3SvMLnrUMeQGUADDiQP1iRl12scs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GSdpblEYqp9Jry3HW78wogdgbQEtIy6LwNYx1lHd7IE8v0Vd2ge1PhjtGBz2eQJ31oCOZ6agosoEv9CSePYpuuWlyvq2gqOw0KwmjV71gAwApBBgCPNClwI/fXbuJzmqtpCS2ORpzlfk7KQWk6KWQQDQ0qMHGTPLdGachNVV7J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2875DC4CED6;
+	Tue,  7 Jan 2025 19:22:38 +0000 (UTC)
+Date: Tue, 7 Jan 2025 19:22:35 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+Cc: anshuman.khandual@arm.com, will@kernel.org, ardb@kernel.org,
+	ryan.roberts@arm.com, mark.rutland@arm.com, joey.gouly@arm.com,
+	dave.hansen@linux.intel.com, akpm@linux-foundation.org,
+	chenfeiyang@loongson.cn, chenhuacai@kernel.org, linux-mm@kvack.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	quic_tingweiz@quicinc.com, stable@vger.kernel.org
+Subject: Re: [PATCH v4] arm64: mm: Populate vmemmap/linear at the page level
+ for hotplugged sections
+Message-ID: <Z31--x4unDHRU5Zo@arm.com>
+References: <20250107074252.1062127-1-quic_zhenhuah@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1736277697;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ruu+MdlbmeQTHnEcd698GTDKPwfbm70xeflDbIRt+SU=;
-	b=is/TlKHcoWBGgFdpZjGSrc2/NgTLgQJ7+qFD5yLDlkPCN9eqfTQspu6mofVjlUl0C3yXwJ
-	HYt5aCrqZzvkrUvuQ/+xVgJanRsbeQ4t4GTftMQf/UGbF9st6q9FhtEf1G2qK7AmlEdzoO
-	4XUIVgmjhq2cS8gxAL5tzYn4G/c3EqYqQkMGg8yBBOYPQOouG4b2z8OYS6rqZQ3oCFTp2K
-	IaJVvIWypwWzaZYylG4r8LCKSCThFSuPMRuNLJ8AyL5LjYVUR8DTEeYWGj2NGbnHoaun4d
-	mNM+eVmdYO8o6q/F8tthn7a1SSuuT3EC5eoCmKCsQnAsVRg/lHFF6U5joD2xLg==
-Date: Tue, 07 Jan 2025 20:21:34 +0100
-From: Dragan Simic <dsimic@manjaro.org>
-To: trondmy@kernel.org, anna@kernel.org
-Cc: linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Diederik de Haas <didi.debian@cknow.org>
-Subject: Re: [PATCH] nfs: Make NFS_FSCACHE select NETFS_SUPPORT instead of
- depending on it
-In-Reply-To: <4faf55b5022a9e363e3cad791144064636ed0eba.1735326877.git.dsimic@manjaro.org>
-References: <4faf55b5022a9e363e3cad791144064636ed0eba.1735326877.git.dsimic@manjaro.org>
-Message-ID: <ba8defca2f731d588a94e5e7013c1c19@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250107074252.1062127-1-quic_zhenhuah@quicinc.com>
 
-Hello,
+On Tue, Jan 07, 2025 at 03:42:52PM +0800, Zhenhua Huang wrote:
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index e2739b69e11b..5e0f514de870 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -42,9 +42,11 @@
+>  #include <asm/pgalloc.h>
+>  #include <asm/kfence.h>
+>  
+> -#define NO_BLOCK_MAPPINGS	BIT(0)
+> -#define NO_CONT_MAPPINGS	BIT(1)
+> -#define NO_EXEC_MAPPINGS	BIT(2)	/* assumes FEAT_HPDS is not used */
+> +#define NO_PMD_BLOCK_MAPPINGS	BIT(0)
+> +#define NO_PUD_BLOCK_MAPPINGS	BIT(1)  /* Hotplug case: do not want block mapping for PUD */
+> +#define NO_BLOCK_MAPPINGS (NO_PMD_BLOCK_MAPPINGS | NO_PUD_BLOCK_MAPPINGS)
 
-On 2024-12-27 20:17, Dragan Simic wrote:
-> Having the NFS_FSCACHE option depend on the NETFS_SUPPORT options makes
-> selecting NFS_FSCACHE impossible unless another option that 
-> additionally
-> selects NETFS_SUPPORT is already selected.
-> 
-> As a result, for example, being able to reach and select the 
-> NFS_FSCACHE
-> option requires the CEPH_FS or CIFS option to be selected beforehand, 
-> which
-> obviously doesn't make much sense.
-> 
-> Let's correct this by making the NFS_FSCACHE option actually select the
-> NETFS_SUPPORT option, instead of depending on it.
-> 
-> Fixes: 915cd30cdea8 ("netfs, fscache: Combine fscache with netfs")
-> Cc: stable@vger.kernel.org
-> Reported-by: Diederik de Haas <didi.debian@cknow.org>
-> Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+Nit: please use a tab instead of space before (NO_PMD_...)
 
-Just checking, any thoughts about this patch?
+> +#define NO_CONT_MAPPINGS	BIT(2)
+> +#define NO_EXEC_MAPPINGS	BIT(3)	/* assumes FEAT_HPDS is not used */
+>  
+>  u64 kimage_voffset __ro_after_init;
+>  EXPORT_SYMBOL(kimage_voffset);
+> @@ -254,7 +256,7 @@ static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+>  
+>  		/* try section mapping first */
+>  		if (((addr | next | phys) & ~PMD_MASK) == 0 &&
+> -		    (flags & NO_BLOCK_MAPPINGS) == 0) {
+> +		    (flags & NO_PMD_BLOCK_MAPPINGS) == 0) {
+>  			pmd_set_huge(pmdp, phys, prot);
+>  
+>  			/*
+> @@ -356,10 +358,11 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+>  
+>  		/*
+>  		 * For 4K granule only, attempt to put down a 1GB block
+> +		 * Hotplug case: do not attempt 1GB block
+>  		 */
 
-> ---
->  fs/nfs/Kconfig | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/nfs/Kconfig b/fs/nfs/Kconfig
-> index 0eb20012792f..d3f76101ad4b 100644
-> --- a/fs/nfs/Kconfig
-> +++ b/fs/nfs/Kconfig
-> @@ -170,7 +170,8 @@ config ROOT_NFS
-> 
->  config NFS_FSCACHE
->  	bool "Provide NFS client caching support"
-> -	depends on NFS_FS=m && NETFS_SUPPORT || NFS_FS=y && NETFS_SUPPORT=y
-> +	depends on NFS_FS
-> +	select NETFS_SUPPORT
->  	select FSCACHE
->  	help
->  	  Say Y here if you want NFS data to be cached locally on disc 
-> through
+I don't think we need this comment added here. The hotplug case is a
+decision of the caller, so better to have the comment there.
+
+>  		if (pud_sect_supported() &&
+>  		   ((addr | next | phys) & ~PUD_MASK) == 0 &&
+> -		    (flags & NO_BLOCK_MAPPINGS) == 0) {
+> +		   (flags & NO_PUD_BLOCK_MAPPINGS) == 0) {
+>  			pud_set_huge(pudp, phys, prot);
+
+Nit: something wrong with the alignment here. I think the unmodified
+line after the 'if' one above was misaligned before your patch.
+
+>  
+>  			/*
+> @@ -1175,9 +1178,21 @@ int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
+>  int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
+>  		struct vmem_altmap *altmap)
+>  {
+> +	unsigned long start_pfn;
+> +	struct mem_section *ms;
+> +
+>  	WARN_ON((start < VMEMMAP_START) || (end > VMEMMAP_END));
+>  
+> -	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES))
+> +	start_pfn = page_to_pfn((struct page *)start);
+> +	ms = __pfn_to_section(start_pfn);
+
+Hmm, it would have been better if the core code provided the start pfn
+as it does for vmemmap_populate_compound_pages() but I'm fine with
+deducting it from 'start'.
+
+> +	/*
+> +	 * Hotplugged section does not support hugepages as
+> +	 * PMD_SIZE (hence PUD_SIZE) section mapping covers
+> +	 * struct page range that exceeds a SUBSECTION_SIZE
+> +	 * i.e 2MB - for all available base page sizes.
+> +	 */
+> +	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES) || !early_section(ms))
+>  		return vmemmap_populate_basepages(start, end, node, altmap);
+>  	else
+>  		return vmemmap_populate_hugepages(start, end, node, altmap);
+> @@ -1339,9 +1354,25 @@ int arch_add_memory(int nid, u64 start, u64 size,
+>  		    struct mhp_params *params)
+>  {
+>  	int ret, flags = NO_EXEC_MAPPINGS;
+> +	unsigned long start_pfn = page_to_pfn((struct page *)start);
+> +	struct mem_section *ms = __pfn_to_section(start_pfn);
+
+This looks wrong. 'start' here is a physical address, you want
+PFN_DOWN() instead.
+
+>  
+>  	VM_BUG_ON(!mhp_range_allowed(start, size, true));
+>  
+> +	/* should not be invoked by early section */
+> +	WARN_ON(early_section(ms));
+> +
+> +	/*
+> +	 * 4K base page's PMD_SIZE matches SUBSECTION_SIZE i.e 2MB. Hence
+> +	 * PMD section mapping can be allowed, but only for 4K base pages.
+> +	 * Where as PMD_SIZE (hence PUD_SIZE) for other page sizes exceed
+> +	 * SUBSECTION_SIZE.
+> +	 */
+> +	if (IS_ENABLED(CONFIG_ARM64_4K_PAGES))
+> +		flags |= NO_PUD_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
+
+In theory we can allow contiguous PTE mappings but not PMD. You could
+probably do the same as a NO_BLOCK_MAPPINGS and split it into multiple
+components - NO_PTE_CONT_MAPPINGS and so on.
+
+> +	else
+> +		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
+
+Similarly with 16K/64K pages we can allow contiguous PTEs as they all go
+up to 2MB blocks.
+
+I think we should write the flags setup in a more readable way than
+trying to do mental maths on the possible combinations, something like:
+
+	flags = NO_PUD_BLOCK_MAPPINGS | NO_PMD_CONT_MAPPINGS;
+	if (SUBSECTION_SHIFT < PMD_SHIFT)
+		flags |= NO_PMD_BLOCK_MAPPINGS;
+	if (SUBSECTION_SHIFT < CONT_PTE_SHIFT)
+		flags |= NO_PTE_CONT_MAPPINGS;
+
+This way we don't care about the page size and should cover any changes
+to SUBSECTION_SHIFT making it smaller than 2MB.
+
+-- 
+Catalin
 
