@@ -1,86 +1,141 @@
-Return-Path: <stable+bounces-107866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 451BAA0451E
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 16:48:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B73EA04522
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 16:48:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3EFE18877E6
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 15:48:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33B3916165B
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 15:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F6B51F37A2;
-	Tue,  7 Jan 2025 15:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162F01EE003;
+	Tue,  7 Jan 2025 15:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="aM/1tUnR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HSH7W7D1"
 X-Original-To: stable@vger.kernel.org
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA89A1F2385
-	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 15:48:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB5B1EE00F
+	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 15:48:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736264901; cv=none; b=qmjoM5qTtSVWZPMGSO7zYeD6Kv0dk1jcIF0yb6KKviuZFqbgwlfaAppSyT97C3g2A/fGEhy3odnoadBjyH7uYoDeMUqUWR7ef/a1eK7yaoR6vdPtbuM55SZDaygbg1q/v2n9pijgBMdf3g4NvmUtS9NGg1vG/jY62DJInEhGxNw=
+	t=1736264920; cv=none; b=Mp+P6NOtf3+KKrkHMWHgCpRXvEgvqLo/mZho0GjIQWUYbweK/BqA6Dhtr8QE2N8voMmvOFrgeoiwjeA5lIdyKjwBf+nhGLheFjSZb07psZk3XhbxD5s+7N/fjtFqZn0fuyvVfMrtTH3BKXUshpyD5AIt2J+PP9WA2lSOpdhtfDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736264901; c=relaxed/simple;
-	bh=arw4+eIVMSjyHfkBpsvPWs5ofGbKcylUPm+oR9cKgDA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=opDqKQ+b6A1wwjObogfL+g4hLvVodmPJhmnD6iDSAi4RF5WjYR1SDt5q6vF+5+Vr+kkBEFJctY1OgFTkONKAqNQ5jPkA5sKVZw8c83FA4QcBaL3s9CH0zUpGX12j2Ys02h3Ei8FkCQZGi/whjQZ7CNYI854Pkiru1CqYz0rAbjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=aM/1tUnR; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Received: from cwcc.thunk.org (pool-173-48-117-112.bstnma.fios.verizon.net [173.48.117.112])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 507FlQQE014374
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 7 Jan 2025 10:47:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1736264851; bh=pTkPnRIivp/J3hHqJubO2HwG8q7UId1odX55pklegn0=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=aM/1tUnRmEKja7cvfzjDVcZVAUPNWac7IAXZoCFBm67NaqORVqD67R3dgnIin4qo+
-	 A3FRcsOR+AGS8V10kLbz9IB1bhbeRjfXLJKc0WJBPY2bSweukS1mRKBpXWNeKz5ksg
-	 uIQ0bGMUVRiGAPcVvzeC+l3Ofsk7Y7dEp0Onatq4Yxf5zyHpk2ZKHOEu/u2E4Mtd7v
-	 RV8Dj/jDJsUfIPZO3E7Sb3qZhqABjSrctjfLe6kaQFtmW3sCTiKHsSLps0BL91rPPy
-	 burmFCOxD0NJRHrLJOGe37pxcekkP5V5Y7VSjoWp1xuZaydqIiL+MOAm7T+81AQaKt
-	 NqSuW7Zz2FBXg==
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
-	id E798F15C0108; Tue, 07 Jan 2025 10:47:25 -0500 (EST)
-Date: Tue, 7 Jan 2025 10:47:25 -0500
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.12 000/156] 6.12.9-rc1 review
-Message-ID: <20250107154725.GA1419052@mit.edu>
-References: <20250106151141.738050441@linuxfoundation.org>
+	s=arc-20240116; t=1736264920; c=relaxed/simple;
+	bh=zHSxnQvEb8UZztbuDFW1UWtGRXNHr4k7c68bvF9k58Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OdAPUP97Yk/72NvEYQF8hWyunRYc4fn8YX+kTzonOpYzx7a9g1Q+DTUKFVA1uUQWlyGoC2Q0Gbkm/MrHuchdT6aGD/+2Ek45+7lHxxRDMtgYP+tdOnjs6BJWyHIOmfAoeQmTPHBdjjilgOG2cM8IccS1Fb0G3cTSDyuaBoDFfX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HSH7W7D1; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-38637614567so7194630f8f.3
+        for <stable@vger.kernel.org>; Tue, 07 Jan 2025 07:48:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736264914; x=1736869714; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZTv0piVgUC+YB8cY6nEGnXIfNYGA4ovWnbmblZRjSGs=;
+        b=HSH7W7D1+Z4c/6MjimOrfxw3SestdHAVNhcmJYGNTyT9Gj2VfPPZPEl3evb6iUeSRi
+         EnoZy9wZdSWd3VJ6OwJ8I1GxJIu8TVDDjUMG+wzX2/M0Hkf+7eXz3ySaZ1dqx8g0K1De
+         pKDGh2Z+z6YP/0dZJQrV1dUH4HWW64zPaGeOZZrLnN4xCtpP9y9mkCop1VeLnJhTNoFE
+         xBovSeL+gcobmKeGHfFJ267YWxEStVbsS8vnh7uTHrcAcC9XjpwoMSWFTbTmYGU2bq9n
+         AF1E9PuWB4Bg1yX7GIqkS9H8aSFqibGHJHv9uQ0b7NOuiKxVXbSJIDNHNbAFVdhUunNR
+         0dGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736264914; x=1736869714;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZTv0piVgUC+YB8cY6nEGnXIfNYGA4ovWnbmblZRjSGs=;
+        b=jDjQ6ZDLg0bKDqVXjFReq/rng/lqGqMAYYMz7V3sN4dNsnLiAZCCmYP0BohUHEr0aW
+         kIH5O8K4s9vTm83Uj9zlVrdJlvyU4glUhvdE3qGc+/MHk87Wf+eRalTjEvjSdhdRwJC7
+         vIxP6fvvWldkGltUxOgNgWk2LdjmvKBu+OQetADIQ1VhNtKpb1YaUJBDE+hv+hBrV2AM
+         JlVHbHtd71nOOYhO7XgCE8xkMvP0+VCMeVlFEU6hf5Jio80yvrjlupxNH21tGBN7v78V
+         K4C+8OZw8xEoriN9fNiItz2VZiA+7DHXvKgyixQAMHpvA3OPlfo3sM7xNukFdw7HZw5l
+         3cLA==
+X-Gm-Message-State: AOJu0YyyWmVnRppY1069rv/HzxAv3KZTnOEJxLmXUzB39DLtrE3ZsXFc
+	8YaTEvcN96zj/1b6UhYqr6wymnst4pnBJYrdWnL8YRJAkCC+TtoG65t9hg==
+X-Gm-Gg: ASbGncsJdjGFwFUFCUeFKSEt5MyZAuLy2JeJY7K9rMVeDfHGTr7UO+z7yj4FRqQtjNg
+	CLIBL0Rhonn/pJ5dDT/pVTt/1h72NDo9zAXeQckAyRDvaNe2deHdEDPFBcymH3IWcbWGSdGTGe6
+	RZBycZky4qgtBx5uXyDyxEyXuQknSdycWpQBOKhfx1tH5Sg0AmeclN7gljxIS+MKBcHr0pRsbL4
+	CP6ohzwk3hhJlAyYJ5uGBbFra921pvsdZ5o/JhdNSWLwRFcG8l5LCdUFPbg6hPmJIfg07X/P7Qc
+	oY678No0qfCZdDBL2c0bQDIo
+X-Google-Smtp-Source: AGHT+IFStaQ60Gj72ivc1xpL3DMDwxxZNPlR4BqR07cDPPFkt2xmzdnCYiM8rZqRpvi5D2KBWVLcHQ==
+X-Received: by 2002:a5d:5f51:0:b0:385:fa2e:a33e with SMTP id ffacd0b85a97d-38a223fd369mr49518115f8f.43.1736264914273;
+        Tue, 07 Jan 2025 07:48:34 -0800 (PST)
+Received: from localhost.localdomain (ip-94-112-167-15.bb.vodafone.cz. [94.112.167.15])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c8287adsm50005522f8f.16.2025.01.07.07.48.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jan 2025 07:48:33 -0800 (PST)
+From: Ilya Dryomov <idryomov@gmail.com>
+To: stable@vger.kernel.org
+Cc: patches@lists.linux.dev,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Xiubo Li <xiubli@redhat.com>,
+	Patrick Donnelly <pdonnell@redhat.com>,
+	Milind Changire <mchangir@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10-6.1] ceph: give up on paths longer than PATH_MAX
+Date: Tue,  7 Jan 2025 16:48:16 +0100
+Message-ID: <20250107154818.2658618-1-idryomov@gmail.com>
+X-Mailer: git-send-email 2.46.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 06, 2025 at 04:14:46PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.9 release.
-> There are 156 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+From: Max Kellermann <max.kellermann@ionos.com>
 
-No problems noted for ext4 with 6.12.9-rc1.  I don't speak officially
-for xfs, but I didn't notice any new problems there either.
+commit 550f7ca98ee028a606aa75705a7e77b1bd11720f upstream.
 
-Cheers,
+If the full path to be built by ceph_mdsc_build_path() happens to be
+longer than PATH_MAX, then this function will enter an endless (retry)
+loop, effectively blocking the whole task.  Most of the machine
+becomes unusable, making this a very simple and effective DoS
+vulnerability.
 
-					- Ted
+I cannot imagine why this retry was ever implemented, but it seems
+rather useless and harmful to me.  Let's remove it and fail with
+ENAMETOOLONG instead.
+
+Cc: stable@vger.kernel.org
+Reported-by: Dario Weißer <dario@cure53.de>
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Reviewed-by: Alex Markuze <amarkuze@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+[idryomov@gmail.com: backport to 6.1: pr_warn() is still in use]
+---
+ fs/ceph/mds_client.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/fs/ceph/mds_client.c b/fs/ceph/mds_client.c
+index da9fcf48ab6c..741ca7d10032 100644
+--- a/fs/ceph/mds_client.c
++++ b/fs/ceph/mds_client.c
+@@ -2447,12 +2447,11 @@ char *ceph_mdsc_build_path(struct dentry *dentry, int *plen, u64 *pbase,
+ 
+ 	if (pos < 0) {
+ 		/*
+-		 * A rename didn't occur, but somehow we didn't end up where
+-		 * we thought we would. Throw a warning and try again.
++		 * The path is longer than PATH_MAX and this function
++		 * cannot ever succeed.  Creating paths that long is
++		 * possible with Ceph, but Linux cannot use them.
+ 		 */
+-		pr_warn("build_path did not end path lookup where "
+-			"expected, pos is %d\n", pos);
+-		goto retry;
++		return ERR_PTR(-ENAMETOOLONG);
+ 	}
+ 
+ 	*pbase = base;
+-- 
+2.46.1
+
 
