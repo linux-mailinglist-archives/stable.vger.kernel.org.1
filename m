@@ -1,222 +1,140 @@
-Return-Path: <stable+bounces-107912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF7AFA04CA3
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 23:47:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C883EA04CE6
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 00:01:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BC5D3A12A0
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 22:47:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F31A3188768D
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 23:01:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836381D5170;
-	Tue,  7 Jan 2025 22:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620DD1E3786;
+	Tue,  7 Jan 2025 23:01:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g0XStQxs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B235119D093;
-	Tue,  7 Jan 2025 22:47:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092A71A0B08;
+	Tue,  7 Jan 2025 23:01:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736290050; cv=none; b=CIQs3m8hsmj5S+jiXt1Zba8R03vf5IekUvI3Ygsfw8ig07vizUebqYtKa12IUDBhUMXZaAkIv5TYPDnDU8NhhO0kLu5oDGfVEI7I+Kew8Rgek0OxpDTmGMk4Eg0tXZ3xYMxHIVOtit1d/rgjNiAep19QeLnI0UUz6ew08oib4Ko=
+	t=1736290873; cv=none; b=Kxc9/FQNrtIN6lI0ucUTQ2tbvjv2GrFW4WuE7OD5APkCKjiuy6F59xdlpzMxt/tL9gP3JUb+5oM/mW3GZHtJ2vYA9uPm5IkdoCbeqKeleIw3to0X8Df/x8Ot1TDAti+c+MzLU43Ve/tprRizgX53s6dycdlcmRXyuPodtgaHDxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736290050; c=relaxed/simple;
-	bh=GblGydoFn0DWzO6v9Ui1AxPFAQkDzDp2SsyUVbYxXeg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ji39q77APJwGUSb/ma8Xh9TuxrHup970IT1L8MbDGghMSQsJVCeNyZ4A/L6Qy085la64WtOcHMIl5HdORBBVIq533rg0zo9O/xxKqTnASgUumtIPgPI5l+xs8akOBVaPuO3Dexzrr1KgClOqAeC5H84e5RbGMQbrVT8YvlONh8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-4afe7429d37so4154438137.2;
-        Tue, 07 Jan 2025 14:47:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736290047; x=1736894847;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3ooH0vaWtWOqcdYrhPxvWhO/7+B2PYs9eRg1ein9EOg=;
-        b=wE5XHC2nAPLefPrWQqiSuwAwDWz0i8sGwP4W4WoBxY6rEbE0landh3jAu1JyW1s/9Z
-         /WiXoo+zkX60X3FK/CWNuMZsvAfBimVF3jZ8B/HH64oHRBuEBG2TVJcRcodIaOLzubDu
-         IfCltve1WlzueuboXh/efJXm4+umSGHGue7BhIc9EL4HU/4gyS+2VHl6i//RoJYzttIX
-         EjSz89UPH08m6HEkLmSKLTpKYktYrMemnVnLt7wkyDqdRNaGh1hZub4P9ppqwHENgo22
-         NmV2f/gmPYblVuWhjmssMvrRhiT74ziiymhPpUZQVoufuSk0AAfz0qfQrl+IUZdgcOv3
-         3rGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW1Vk+w4wRP/ipiSGbgWFwIKj4B9GqTBi3wPKGGpQ9i1xy3mEX6mqTLpcnf+3mcb48FZafAa+lvbtO4DSQ=@vger.kernel.org, AJvYcCWg33gq3Us1OMxOSqkUTsfr6X6eausraIvVctXQ5l5Qik8e6djD3Z+y89G9hgZVpN0tNYAJA3WC@vger.kernel.org
-X-Gm-Message-State: AOJu0YwedmJs3zUBuW4PcfXYkLazYajk1kGHyjsvwQP+GLhD11VLbV5m
-	6ayq0nMPVPU5aEh++cgx6Np36VdgeucuEaqP80g2I113G9OxUfMlYGpgYlgBaHbYfeA5NBbGUMG
-	AHNEBh/XcOluTVXt60aMow74jAtg=
-X-Gm-Gg: ASbGncto4iZNxOKrdT+wUinVIfAMlKV3BHR22ZiHsEGrac/B4ba4ESy3HXKYOdet6YP
-	J3oYlh/b3zZXg1v2Ea7fm7m4i3+DDoky6joO0TSnE0W2MMF0PQ8dPTqWw1f+DdCtn2M7RrJs=
-X-Google-Smtp-Source: AGHT+IGClFR4QNV/SEyGwTl8SkMBRo73dL+R/tN3+uEMnzHbAXKgypPI2N7hkTUZLt54KwIYmhzhTqwArZWIeu6wSVQ=
-X-Received: by 2002:a05:6102:2922:b0:4b2:9eeb:518f with SMTP id
- ada2fe7eead31-4b3d0f99b14mr750480137.10.1736290047553; Tue, 07 Jan 2025
- 14:47:27 -0800 (PST)
+	s=arc-20240116; t=1736290873; c=relaxed/simple;
+	bh=4/74AoE0KevQY71fa48SjfyBNjcL4errS2YyxZ5ajuQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=oLcBJw5Sy80ZS0T+uW8cYOZZMicutiLOHi7UyfCVHTQ1/Y2/kgb0DejRzfyjB3EPxoZTM63H/Auyq3MgOubU1Fx8lV2anguuQM0Ni5ToEXEJ1kAvtV7elsDA0LC0DJzzWsS6Pe1R5nmBg+VPTGXKcwv8sdqf02vRYNLfcxaefl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g0XStQxs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB61BC4CED6;
+	Tue,  7 Jan 2025 23:01:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736290872;
+	bh=4/74AoE0KevQY71fa48SjfyBNjcL4errS2YyxZ5ajuQ=;
+	h=From:Subject:Date:To:Cc:From;
+	b=g0XStQxsQUhFJHIe0Y7DbunDOLYpVvdB7P9VqbCxxJ4liGlJZJE5dkf7Ougnm4RGI
+	 ep6cjl/vaOthEFMx3RoXsciQEa8KZtrxe8LT+spILQfH/Swnit8nfpdMDKTMjx3ISw
+	 yolgzSITIFxRm5aF2OyrjCJ55RbTHl38e8qX22V0F79gddlFMak8o2me3CCjBYkVIg
+	 tLvzE1ejxd42IfQrBXm5y1vS9L2AwWKELj/NBfSKUQjFvnR+WMFtKzrsi61MuqbHFi
+	 7N69wlQB97gckLt8BVy4nvEIuWT+VjJpdIeNUj0ohM059N9YjzhWnCLLG2hIRA3mKT
+	 EFHHeCDVk67/w==
+From: Mark Brown <broonie@kernel.org>
+Subject: [PATCH v5 0/5] arm64: Support 2024 dpISA extensions
+Date: Tue, 07 Jan 2025 22:59:40 +0000
+Message-Id: <20250107-arm64-2024-dpisa-v5-0-7578da51fc3d@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250107222236.2715883-1-yosryahmed@google.com> <20250107222236.2715883-2-yosryahmed@google.com>
-In-Reply-To: <20250107222236.2715883-2-yosryahmed@google.com>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 8 Jan 2025 11:47:16 +1300
-X-Gm-Features: AbW1kvZP6vuj9CYsgczXGnDcHIyoKmrMcAatROq88dIGiGXVOb2cj04nfYozpzc
-Message-ID: <CAGsJ_4xN9=5cksaGPqh_6jyH-EJkw-DH1zwx81Kotqh85BJ+ZQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] mm: zswap: disable migration while using per-CPU acomp_ctx
-To: Yosry Ahmed <yosryahmed@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Vitaly Wool <vitalywool@gmail.com>, Sam Sun <samsun1006219@gmail.com>, 
-	Kanchana P Sridhar <kanchana.p.sridhar@intel.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANyxfWcC/23OwQrCMAyA4VeRnq0kaddWT76HeMhsp0XdpJWhy
+ N7dTgQVd/wD+ZKHyCHFkMVq9hAp9DHHri1RzWdid+B2H2T0pQUBaQRwktPZaDmm9JeYWTpYIlj
+ NttFOlLVLCk28vcjNtvQh5muX7q8LPY7TN0YTWI8SJCvnwdXlGrv1MaQ2nBZd2otR6+lLUDAhU
+ BFqYwAZK09c/QnqIxCoCUGNP5iddTUy09L+CfpLQJwQdBGg8RqUs8Y39CMMw/AEEHjXCXcBAAA
+ =
+X-Change-ID: 20241008-arm64-2024-dpisa-8091074a7f48
+To: Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+ Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-doc@vger.kernel.org, kvmarm@lists.linux.dev, 
+ linux-kselftest@vger.kernel.org, Mark Brown <broonie@kernel.org>, 
+ Mark Rutland <mark.rutland@arm.com>, stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-1b0d6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2470; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=4/74AoE0KevQY71fa48SjfyBNjcL4errS2YyxZ5ajuQ=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBnfbIw6kZpk6FmQX8Lcp16zn2VhkK18HvMB9LAKEdz
+ eikIoK6JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZ32yMAAKCRAk1otyXVSH0HVSB/
+ 9eqUSUIQRfN14xSJQCK2j5joDXhTo8ICd8i/TOuFWQjroSc4fvBWhxpPuIubgie6MmjclU0OdXweic
+ CdKYqINBJpMaaCr6UU/3V2ouhN+nJp2Z5ju+2IXc0ocyXgZHYemtqGb2fSIct9G73RIG7hl0iGEl0+
+ buHtdVxVgjTOLQSAirhf93+M0f3auRTMBcYHKI/5ngMDE5WjRiXNNp+XtFrr7+5rZAlB7kQIzfuMgf
+ IFH91K6VvotQrd2pc0EXSb/sF/9GNC1ugxkLQiF6NYVY/yrUOXdlcwuJvl7c6VSCHRvwGSCYB1OP42
+ Coz+ZZdiFPOOJhXaEWN9zuItopz7ci
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Wed, Jan 8, 2025 at 11:22=E2=80=AFAM Yosry Ahmed <yosryahmed@google.com>=
- wrote:
->
-> In zswap_compress() and zswap_decompress(), the per-CPU acomp_ctx of the
-> current CPU at the beginning of the operation is retrieved and used
-> throughout.  However, since neither preemption nor migration are disabled=
-,
-> it is possible that the operation continues on a different CPU.
->
-> If the original CPU is hotunplugged while the acomp_ctx is still in use,
-> we run into a UAF bug as the resources attached to the acomp_ctx are free=
-d
-> during hotunplug in zswap_cpu_comp_dead().
->
-> The problem was introduced in commit 1ec3b5fe6eec ("mm/zswap: move to use
-> crypto_acomp API for hardware acceleration") when the switch to the
-> crypto_acomp API was made.  Prior to that, the per-CPU crypto_comp was
-> retrieved using get_cpu_ptr() which disables preemption and makes sure th=
-e
-> CPU cannot go away from under us.  Preemption cannot be disabled with the
-> crypto_acomp API as a sleepable context is needed.
->
-> Commit 8ba2f844f050 ("mm/zswap: change per-cpu mutex and buffer to
-> per-acomp_ctx") increased the UAF surface area by making the per-CPU
-> buffers dynamic, adding yet another resource that can be freed from under
-> zswap compression/decompression by CPU hotunplug.
->
-> This cannot be fixed by holding cpus_read_lock(), as it is possible for
-> code already holding the lock to fall into reclaim and enter zswap
-> (causing a deadlock). It also cannot be fixed by wrapping the usage of
-> acomp_ctx in an SRCU critical section and using synchronize_srcu() in
-> zswap_cpu_comp_dead(), because synchronize_srcu() is not allowed in
-> CPU-hotplug notifiers (see
-> Documentation/RCU/Design/Requirements/Requirements.rst).
->
-> This can be fixed by refcounting the acomp_ctx, but it involves
-> complexity in handling the race between the refcount dropping to zero in
-> zswap_[de]compress() and the refcount being re-initialized when the CPU
-> is onlined.
->
-> Keep things simple for now and just disable migration while using the
-> per-CPU acomp_ctx to block CPU hotunplug until the usage is over.
->
-> Fixes: 1ec3b5fe6eec ("mm/zswap: move to use crypto_acomp API for hardware=
- acceleration")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
-> Reported-by: Johannes Weiner <hannes@cmpxchg.org>
-> Closes: https://lore.kernel.org/lkml/20241113213007.GB1564047@cmpxchg.org=
-/
-> Reported-by: Sam Sun <samsun1006219@gmail.com>
-> Closes: https://lore.kernel.org/lkml/CAEkJfYMtSdM5HceNsXUDf5haghD5+o2e7Qv=
-4OcuruL4tPg6OaQ@mail.gmail.com/
-> ---
->  mm/zswap.c | 19 ++++++++++++++++---
->  1 file changed, 16 insertions(+), 3 deletions(-)
->
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index f6316b66fb236..ecd86153e8a32 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -880,6 +880,18 @@ static int zswap_cpu_comp_dead(unsigned int cpu, str=
-uct hlist_node *node)
->         return 0;
->  }
->
-> +/* Remain on the CPU while using its acomp_ctx to stop it from going off=
-line */
-> +static struct crypto_acomp_ctx *acomp_ctx_get_cpu(struct crypto_acomp_ct=
-x __percpu *acomp_ctx)
-> +{
-> +       migrate_disable();
+The 2024 architecture release includes a number of data processing
+extensions, mostly SVE and SME additions with a few others.  These are
+all very straightforward extensions which add instructions but no
+architectural state so only need hwcaps and exposing of the ID registers
+to KVM guests and userspace.
 
-I'm not entirely sure, but I feel it is quite unsafe. Allowing sleep
-during migrate_disable() and
-migrate_enable() would require the entire scheduler, runqueue,
-waitqueue, and CPU
-hotplug mechanisms to be aware that a task is pinned to a specific CPU.
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+Changes in v5:
+- Rebase onto arm64/for-next/cpufeature, which incorporates most of the
+  sysreg updates from earlier versions.
+- Remove SF8MM8 and SF8MM4 register defintitions which were removed from
+  the ISA in the 2024-12 XML release, along with their associated hwcaps.
+- Incorporate Marc's fix for SVE hwcaps on SME only systems and update
+  the hwcaps for the newly added features to follow the same pattern.
+- Link to v4: https://lore.kernel.org/r/20241211-arm64-2024-dpisa-v4-0-0fd403876df2@kernel.org
 
-If there is no sleep during this period, it seems to be only a
-runqueue issue=E2=80=94CPU hotplug can
-wait for the task to be unpinned while it is always in runqueue.
-However, if sleep is involved,
-the situation becomes significantly more complex.
+Changes in v4:
+- Fix encodings for ID_AA64ISAR3_EL1.
+- Link to v3: https://lore.kernel.org/r/20241203-arm64-2024-dpisa-v3-0-a6c78b1aa297@kernel.org
 
-If static data doesn't consume much memory, it could be the simplest soluti=
-on.
+Changes in v3:
+- Commit log update for the hwcap test.
+- Link to v2: https://lore.kernel.org/r/20241030-arm64-2024-dpisa-v2-0-b6601a15d2a5@kernel.org
 
-> +       return raw_cpu_ptr(acomp_ctx);
-> +}
-> +
-> +static void acomp_ctx_put_cpu(void)
-> +{
-> +       migrate_enable();
-> +}
-> +
->  static bool zswap_compress(struct page *page, struct zswap_entry *entry,
->                            struct zswap_pool *pool)
->  {
-> @@ -893,8 +905,7 @@ static bool zswap_compress(struct page *page, struct =
-zswap_entry *entry,
->         gfp_t gfp;
->         u8 *dst;
->
-> -       acomp_ctx =3D raw_cpu_ptr(pool->acomp_ctx);
-> -
-> +       acomp_ctx =3D acomp_ctx_get_cpu(pool->acomp_ctx);
->         mutex_lock(&acomp_ctx->mutex);
->
->         dst =3D acomp_ctx->buffer;
-> @@ -950,6 +961,7 @@ static bool zswap_compress(struct page *page, struct =
-zswap_entry *entry,
->                 zswap_reject_alloc_fail++;
->
->         mutex_unlock(&acomp_ctx->mutex);
-> +       acomp_ctx_put_cpu();
->         return comp_ret =3D=3D 0 && alloc_ret =3D=3D 0;
->  }
->
-> @@ -960,7 +972,7 @@ static void zswap_decompress(struct zswap_entry *entr=
-y, struct folio *folio)
->         struct crypto_acomp_ctx *acomp_ctx;
->         u8 *src;
->
-> -       acomp_ctx =3D raw_cpu_ptr(entry->pool->acomp_ctx);
-> +       acomp_ctx =3D acomp_ctx_get_cpu(entry->pool->acomp_ctx);
->         mutex_lock(&acomp_ctx->mutex);
->
->         src =3D zpool_map_handle(zpool, entry->handle, ZPOOL_MM_RO);
-> @@ -990,6 +1002,7 @@ static void zswap_decompress(struct zswap_entry *ent=
-ry, struct folio *folio)
->
->         if (src !=3D acomp_ctx->buffer)
->                 zpool_unmap_handle(zpool, entry->handle);
-> +       acomp_ctx_put_cpu();
->  }
->
->  /*********************************
-> --
-> 2.47.1.613.gc27f4b7a9f-goog
->
+Changes in v2:
+- Filter KVM guest visible bitfields in ID_AA64ISAR3_EL1 to only those
+  we make writeable.
+- Link to v1: https://lore.kernel.org/r/20241028-arm64-2024-dpisa-v1-0-a38d08b008a8@kernel.org
 
-Thanks
-barry
+---
+Marc Zyngier (1):
+      arm64: Filter out SVE hwcaps when FEAT_SVE isn't implemented
+
+Mark Brown (4):
+      arm64/sysreg: Update ID_AA64SMFR0_EL1 to DDI0601 2024-12
+      arm64/hwcap: Describe 2024 dpISA extensions to userspace
+      KVM: arm64: Allow control of dpISA extensions in ID_AA64ISAR3_EL1
+      kselftest/arm64: Add 2024 dpISA extensions to hwcap test
+
+ Documentation/arch/arm64/elf_hwcaps.rst   |  89 +++++++++--
+ arch/arm64/include/asm/hwcap.h            |  15 ++
+ arch/arm64/include/uapi/asm/hwcap.h       |  15 ++
+ arch/arm64/kernel/cpufeature.c            |  71 +++++++--
+ arch/arm64/kernel/cpuinfo.c               |  15 ++
+ arch/arm64/kvm/sys_regs.c                 |   6 +-
+ arch/arm64/tools/sysreg                   |  26 +++-
+ tools/testing/selftests/arm64/abi/hwcap.c | 235 +++++++++++++++++++++++++++++-
+ 8 files changed, 441 insertions(+), 31 deletions(-)
+---
+base-commit: d66e21d59ed0e043e68ef8c6541c1e9f1a962614
+change-id: 20241008-arm64-2024-dpisa-8091074a7f48
+
+Best regards,
+-- 
+Mark Brown <broonie@kernel.org>
+
 
