@@ -1,93 +1,78 @@
-Return-Path: <stable+bounces-107873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3140A045DE
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 17:19:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CC02A04682
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 17:36:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D5B83A1602
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 16:19:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85E243A18A3
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 16:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB90E1F2C25;
-	Tue,  7 Jan 2025 16:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C93E1E47C8;
+	Tue,  7 Jan 2025 16:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YFfCLCpY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pEMTeyK+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5E21E7668;
-	Tue,  7 Jan 2025 16:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587EC17B50A;
+	Tue,  7 Jan 2025 16:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736266748; cv=none; b=TICBMCeY/CDWHvMQDkRAjGG54otJ2u24reC8uN6IadsINt7grtk7L9rRPa8qYYYPWefzABoYfLcppU7sNBusN9p7KICDkLANf7Nsxw8JCzqxiJKczN7h3evg2VODxAzbIapYLRsj8Xhz5KeUYK9vOGvGwAuCnD9XrZ6/QVqGsik=
+	t=1736267771; cv=none; b=O/Ddye2F3nd2G15Qghqgla+sQAI/GgJdWu0K7W928cZOKQGVzfycFBOIfdHWkaWwHQvV+0LFDy+vu13IPFxudXM1dSXIs4hUHOM+xaA+p0PKE0pX2AFvu8UIiV1dyt+JMkcCyqLOyKt+L1ylaIGaLXSvL01CrLY/q00POk47pOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736266748; c=relaxed/simple;
-	bh=gft34UBMEUSvS3bRuHDms8MxryrbWIHPY1TZqqoJMeM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MsLLZ5kOO2JCJQ6pGRzUOiHFGvX4KcATvz+rxyjWIDR2IA2rZAY//HnixPFCFw+t1oTyBai1YgK3BnJc1HWHXttmEBmSqRQI9klt679X7cXadAq17WZn53oRrtEXszprtJEkNQoz0pUMMfT1xjvcg8LGlGB68q9x44+Jh+/bIKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YFfCLCpY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 013F3C4CED6;
-	Tue,  7 Jan 2025 16:19:08 +0000 (UTC)
+	s=arc-20240116; t=1736267771; c=relaxed/simple;
+	bh=vzUy837LTyBXWf89XS3TbwkCCyKms+5Y1Lql1pXQSKg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=a0DzPBMt6037FZSPdlMz4q3Uo1etyoCnKSHP+fEzH2m8fTKe6ah5+78WDS8M0S4uTpfd6illODp6HhtuOwIhDMFSSm0qQBsM+OrDoiw/22q9wYxAL//Pdwy9IIVQPHaiEA6B/Yh5Qe7BLLFq4ASLqVmDdvHYZqRMml8DEjtAUKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pEMTeyK+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A43C4CED6;
+	Tue,  7 Jan 2025 16:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736266748;
-	bh=gft34UBMEUSvS3bRuHDms8MxryrbWIHPY1TZqqoJMeM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YFfCLCpYFs6Hc2QvSEJH4Xnfgt1zHkl/GG4G6uRRvwSqIhw4IhESgvkrJO/riIojJ
-	 PLBI+g4ZKf/J98R/mYDwqYCTRYmLD/Qb9axl1rzBfjfJl0q6bDVH7roTKs8rj+gUAC
-	 4VHJ5tBkvAbQ9PWZgqeBQw+291CLEJg2AIlnWCoeY4mj7rLooq7Bx8PmPxV9Rmkvpv
-	 KWaIFrFMn8Ew84i0qmopYuhmTG87RJPEH4BfqD2gT4JlK0cjYyIHsSIXSGaaQL3DD0
-	 ewTyXClo+bnWMZJdEd8iCI3iWL7wFZ06eSz6Y5xcn30NAdtOGopf4fRcQH5c+rPa5B
-	 SG9qezq2vqUPQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1tVCIM-000000000n0-2Xok;
-	Tue, 07 Jan 2025 17:19:06 +0100
-Date: Tue, 7 Jan 2025 17:19:06 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Abel Vesa <abel.vesa@linaro.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Rajendra Nayak <quic_rjendra@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: qcom: x1e80100: Fix usb_2 controller
- interrupts
-Message-ID: <Z31T-pBnEDEc2l7K@hovoldconsulting.com>
-References: <20250107-x1e80100-fix-usb2-controller-irqs-v1-1-4689aa9852a7@linaro.org>
+	s=k20201202; t=1736267770;
+	bh=vzUy837LTyBXWf89XS3TbwkCCyKms+5Y1Lql1pXQSKg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=pEMTeyK+4/4l4RjvrmYXzKeX2NGzmnOhakTbV6zBZK4zIn1RJqtQHYYoLuJ4lFhHO
+	 FO5REhS48U4ekxqsjsHMH7MUVm8PSFLjg5JRolhaQczXwf8MV7YGBEk+YYe4FzoNJV
+	 N9o7e+a9YFCSPtMoCKQJpBBqph5zQNCwN07R2Xw6T7jIBU85GhEg6BxY+U4ePdRBzV
+	 PJv1ev1Gv2OJOOFCRsdGb6fb+mCS81A+lEMX6GYqDVHKzsZ8hT7HGDujzxH3eOS2vw
+	 zwG4TlVunT9Tl26UEBTSLX80JNpa0W5PyzfLuw0HhlHvts5LAWIU6tmRKPiG2FZdt5
+	 cW7MtWcc5NCoA==
+Date: Tue, 7 Jan 2025 08:36:09 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, stable@vger.kernel.org, jdamato@fastly.com,
+ almasrymina@google.com, amritha.nambiar@intel.com,
+ sridhar.samudrala@intel.com
+Subject: Re: [PATCH net] netdev: prevent accessing NAPI instances from
+ another namespace
+Message-ID: <20250107083609.55ddf0d6@kernel.org>
+In-Reply-To: <677d27cc5d9b_25382b294fd@willemb.c.googlers.com.notmuch>
+References: <20250106180137.1861472-1-kuba@kernel.org>
+	<677d27cc5d9b_25382b294fd@willemb.c.googlers.com.notmuch>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250107-x1e80100-fix-usb2-controller-irqs-v1-1-4689aa9852a7@linaro.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jan 07, 2025 at 03:15:16PM +0200, Abel Vesa wrote:
-> Back when the CRD support was brought up, the usb_2 controller didn't
-> have anything connected to it in order to test it properly, so it was
-> never enabled.
+On Tue, 07 Jan 2025 08:10:36 -0500 Willem de Bruijn wrote:
+> > +/* must be called under rcu_read_lock(), as we dont take a reference */  
 > 
-> On the Lenovo ThinkPad T14s, the usb_2 controller has the fingerprint
-> controller connected to it. So enabling it, proved that the interrupts
-> lines were wrong from the start.
+> Instead of function comments, invariant checks in code?
 > 
-> Fix both the pwr_event and the DWC ctrl_irq lines, according to
-> documentation.
+> Like in dev_get_by_napi_id:
 > 
-> Fixes: 4af46b7bd66f ("arm64: dts: qcom: x1e80100: Add USB nodes")
-> Cc: stable@vger.kernel.org	# 6.9
-> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+>         WARN_ON_ONCE(!rcu_read_lock_held());
 
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Can I do it as a follow up? Adding the warning to napi_by_id()
+reveals that napi_hash_add() currently walks the list without
+holding the RCU lock :)
 
