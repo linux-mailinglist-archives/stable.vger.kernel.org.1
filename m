@@ -1,186 +1,135 @@
-Return-Path: <stable+bounces-107829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11829A03DBA
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 12:30:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2080A03DF8
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 12:38:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C74F3A47C8
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 11:30:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAC431617F7
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 11:38:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CEA91E885A;
-	Tue,  7 Jan 2025 11:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A941E1E3DE8;
+	Tue,  7 Jan 2025 11:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iEICpyMI"
+	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="OAwIoCUl"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934DD1D6DB7;
-	Tue,  7 Jan 2025 11:30:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75ED18A6C1
+	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 11:36:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736249440; cv=none; b=sZbIOAsXnE/BqqyFg5rJcyKojiGMEwSph0ziaLdecE6jgDU2njQcELnLc6pTeebw9P356mxgKoSiotvpuU2XptGnI4AhTcCXQ/Diydd6dNYJdwYByLpk50/wDCOOAvQxNxvCiJzqCdYmQqhdCoG6o67BkEvqcYYecQDd53VKuJk=
+	t=1736249807; cv=none; b=lkwvH5BToqdMoGYfScD9T0SuiMe81IS91j9ab/cVREO7brOT3eHSzaz8ko3hrQcKgaTy+CxmEoTsMZh2kWu4nCPanF/sHvi1II+KWFOIYt9apynDsavTxxtzmOLoZiUUGyd55WZWBD6cwaeJ0q74JwzhI3oZcGxUSx6Dryjr/0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736249440; c=relaxed/simple;
-	bh=CdbvG3PjFiYfbRw2sozVjDI+GvEC+EM3meT1WQS8s0Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MM9kcS+vNioR2hVNv29ZrrH1QFZnaptTLiXnM3vCFgYPxd2MxRj6MlC7xTgRwKG5MVorTdqtjcHzA7SdHH2ivIJFZsdMfRAhoc72xyce/wWj4g2313oyj79X91hnktB5rPBq4JVtQ1bIhs32uXE36dG46IEH0POysaKc5ZyDT5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iEICpyMI; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736249437; x=1767785437;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=CdbvG3PjFiYfbRw2sozVjDI+GvEC+EM3meT1WQS8s0Q=;
-  b=iEICpyMIX1rDjxrCqaa7Zyi4J0SoHm+FCMoSbe93Rv558APHVgSFbfdb
-   iXUiQiT0eM9TOnWRTk3RYpTzE+pYM/HozVdLAGGLzrRglPvQOLEPBCidF
-   2kK8AHEjdQ+78ihKDS9vcqC4o5TLr+zpyFjiTmf4bwjv0lISrnQftx5k5
-   x5UtDwCn4iCxGhaXVfOx+JdImrw9oaisE+IAg2vc+4YvWfuNfMg1tMscp
-   UcUkKlfrEict5YhmdehdxngXfWUSowoRaqkElta+JPS4m2PuEsg9j6Z8c
-   4Q3aQLN3X06T4wX41zA2TrLXr7Lq1HU88yNYxPmAvNPK9U74s6fh39JhN
-   Q==;
-X-CSE-ConnectionGUID: GDpZkVDCTZKxK/+iWI7fgQ==
-X-CSE-MsgGUID: YiOj1X3ERNmtGAxeSN47/A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11307"; a="39251882"
-X-IronPort-AV: E=Sophos;i="6.12,295,1728975600"; 
-   d="scan'208";a="39251882"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2025 03:30:37 -0800
-X-CSE-ConnectionGUID: 0L/k/aoyTlyLj6KXaAh1ig==
-X-CSE-MsgGUID: g7vDkVzEQi+1gA0lOCB5zQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="107825700"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2025 03:30:35 -0800
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 4D47411F8DF;
-	Tue,  7 Jan 2025 13:30:32 +0200 (EET)
-Date: Tue, 7 Jan 2025 11:30:32 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Lubomir Rintel <lrintel@redhat.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Lubomir Rintel <lkundrak@v3.sk>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] media/mmp: Bring back registration of the device
-Message-ID: <Z30QWA-LfZHwVbmm@kekkonen.localdomain>
-References: <20241231190434.438517-1-lkundrak@v3.sk>
+	s=arc-20240116; t=1736249807; c=relaxed/simple;
+	bh=Y9BesMiV9uMCy3y/CTJ8dLA38nejyMoFaiNgq7Tq74A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nY7PJ8qst6KG2vUb/YQc1I0zhI1K7IBXRTZE47r7tAz+8UKzhyCdJTMJm+dqQUg53D0M3Zw/9NoF/XvtNYQYcBXVaZsFy0tDrE6KM1aOS8LY3eQfho4dlAl+YdNWXaeG91TGWCMT3FuXMvZtsScL0YKcCdTQxjDuzDSxFl4UQ98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=OAwIoCUl; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2ef89dbd8eeso16666537a91.0
+        for <stable@vger.kernel.org>; Tue, 07 Jan 2025 03:36:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1736249801; x=1736854601; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HezLHe4o9o/F1dzK4dU9Wz6o3ClQ7CI2rKrB29RoRCA=;
+        b=OAwIoCUlAt6ohk7ziQSrKP7R7aKR1hW07UKH7MccqOfdFq5wGRisXKpfFsYuPwJp7a
+         gWVYyM3SXdye3G0FHMcIXhLiE6ZjGeKfPD1EoquclvmfV7fBSGC/KLKM+VRu8RKTCUrY
+         8MXhQtm9iN07vv+Ke1JY5++QYSLcX7Gmn/lWg6lnVWVkg6MitJ6uNF1QPo+XT/x+Kn/8
+         QaxOzzkF6+efiB1JI/69NUD982/eBA/zlBLhMslg9lpycuDKcu062pfBnxSkVVvpqFec
+         d7FjiVnftIzNhDcZE3q+Kspi1jDC0r7wX9bydIQ1ZWfkReBR7Wd+FYPLtC8GOj8f586x
+         gT4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736249801; x=1736854601;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HezLHe4o9o/F1dzK4dU9Wz6o3ClQ7CI2rKrB29RoRCA=;
+        b=ckymTKPRNtsitqbWe409Hjchdr/J0xN9Mx4Y1jhpaFBL6UEaEY8RadcIBYBeXKDX0p
+         YN+XM6LK1lhzstZNeND7xbdfqg9ctuWuyU0IUOnt783ZbE56vznd/xsysAva2MD0uMs2
+         SB69ouZtcpMoJOkG/ZzKBlIDLvXo26vhds32uNd2sZEb/r2CHXj40gjOUEfyIYsaeQfC
+         R47fLh2Ms7yFLBxucRLC4yMAm3s4/HE1+SSnYKbxjr1/mAwvh2yXrRWTWHZO4tvKFZ7X
+         ufRl7lBFJt/uOywng9i6ZGyzB2PmXfOEUXgD35kEcH86Wnm+3j+2zJux2a77P0pn1iq2
+         IDvA==
+X-Gm-Message-State: AOJu0YwbD8+WVYWU9wIpyF3ADQgdf6ty1iYhR0vDx/yq65vlpKHUufXH
+	ydNy8tyhVr+0zFsWV+BeSEtomRey5Hm3FWViPSqjRZ2DFQhQwnLEh947IsXZm3SzMcojUWTvYBk
+	YTqJ2IixpHPSh8HXaix1KuVwauAJuqdhpSnDLOQ==
+X-Gm-Gg: ASbGncvWlRSlVAcjPaDDJNrHWBPJoXUu/qsUZEjOvFK9Y9x9rhTQtWrayyO9jqwCHlm
+	4c1SP0Iwes0HujQoHIK4soYnK2w0Zbl+B+n6+
+X-Google-Smtp-Source: AGHT+IEpYwKsbS+mCPDKNQglIw0fFMHrX0/2J4U1AUgg44SrAqTO7vSYUXvw4K7xW0AF8enbL06mVLQWtquxJUldXJM=
+X-Received: by 2002:a17:90a:d88d:b0:2ee:863e:9ffc with SMTP id
+ 98e67ed59e1d1-2f452e4ace5mr80833760a91.21.1736249801195; Tue, 07 Jan 2025
+ 03:36:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241231190434.438517-1-lkundrak@v3.sk>
+References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Tue, 7 Jan 2025 20:36:30 +0900
+Message-ID: <CAKL4bV730JK+vXvpd0jqWfEPtN-tZAfud3F62ONvp48J9Bqxjw@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/156] 6.12.9-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Lubomir,
+Hi Greg
 
-Thanks for the patch.
+On Tue, Jan 7, 2025 at 12:34=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.9 release.
+> There are 156 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 08 Jan 2025 15:11:04 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.12.9-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-On Tue, Dec 31, 2024 at 08:04:34PM +0100, Lubomir Rintel wrote:
-> In commit 4af65141e38e ("media: marvell: cafe: Register V4L2 device
-> earlier"), a call to v4l2_device_register() was moved away from
-> mccic_register() into its caller, marvell/cafe's cafe_pci_probe().
-> This is not the only caller though -- there's also marvell/mmp.
-> 
-> Add v4l2_device_register() into mmpcam_probe() to unbreak the MMP camera
-> driver, in a fashion analogous to what's been done to the Cafe driver.
-> Same for the teardown path.
-> 
-> Fixes: 4af65141e38e ("media: marvell: cafe: Register V4L2 device earlier")
-> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-> Cc: stable@vger.kernel.org # v6.6+
-> ---
->  drivers/media/platform/marvell/mmp-driver.c | 21 +++++++++++++++++----
->  1 file changed, 17 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/media/platform/marvell/mmp-driver.c b/drivers/media/platform/marvell/mmp-driver.c
-> index 3fd4fc1b9c48..d3da7ebb4a2b 100644
-> --- a/drivers/media/platform/marvell/mmp-driver.c
-> +++ b/drivers/media/platform/marvell/mmp-driver.c
-> @@ -231,13 +231,23 @@ static int mmpcam_probe(struct platform_device *pdev)
->  
->  	mcam_init_clk(mcam);
->  
-> +	/*
-> +	 * Register with V4L.
-> +	 */
-> +
-> +	ret = v4l2_device_register(mcam->dev, &mcam->v4l2_dev);
+6.12.9-rc1 tested.
 
-I'd do this just before initialising the notifier (as in the patch in
-Fixes: tag): registering the V4L2 device requires probably severe memory
-pressure while it's entirely plausible there's no endpoint for the device.
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-> +	if (ret)
-> +		return ret;
-> +
->  	/*
->  	 * Create a match of the sensor against its OF node.
->  	 */
->  	ep = fwnode_graph_get_next_endpoint(of_fwnode_handle(pdev->dev.of_node),
->  					    NULL);
-> -	if (!ep)
-> -		return -ENODEV;
-> +	if (!ep) {
-> +		ret = -ENODEV;
-> +		goto out_v4l2_device_unregister;
-> +	}
->  
->  	v4l2_async_nf_init(&mcam->notifier, &mcam->v4l2_dev);
->  
-> @@ -246,7 +256,7 @@ static int mmpcam_probe(struct platform_device *pdev)
->  	fwnode_handle_put(ep);
->  	if (IS_ERR(asd)) {
->  		ret = PTR_ERR(asd);
-> -		goto out;
-> +		goto out_v4l2_device_unregister;
->  	}
->  
->  	/*
-> @@ -254,7 +264,7 @@ static int mmpcam_probe(struct platform_device *pdev)
->  	 */
->  	ret = mccic_register(mcam);
->  	if (ret)
-> -		goto out;
-> +		goto out_v4l2_device_unregister;
->  
->  	/*
->  	 * Add OF clock provider.
-> @@ -283,6 +293,8 @@ static int mmpcam_probe(struct platform_device *pdev)
->  	return 0;
->  out:
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
-For clarity, it'd be best to rename the out label to something more
-specific, i.e. out_mccic_shutdown. Either way,
+[    0.000000] Linux version 6.12.9-rc1rv
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.2.1 20240910, GNU ld (GNU
+Binutils) 2.43.0) #1 SMP PREEMPT_DYNAMIC Tue Jan  7 19:51:46 JST 2025
 
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Thanks
 
->  	mccic_shutdown(mcam);
-> +out_v4l2_device_unregister:
-> +	v4l2_device_unregister(&mcam->v4l2_dev);
->  
->  	return ret;
->  }
-> @@ -293,6 +305,7 @@ static void mmpcam_remove(struct platform_device *pdev)
->  	struct mcam_camera *mcam = &cam->mcam;
->  
->  	mccic_shutdown(mcam);
-> +	v4l2_device_unregister(&mcam->v4l2_dev);
->  	pm_runtime_force_suspend(mcam->dev);
->  }
->  
-
--- 
-Regards,
-
-Sakari Ailus
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
