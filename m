@@ -1,207 +1,114 @@
-Return-Path: <stable+bounces-107886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF499A04905
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 19:14:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B44A0491C
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 19:21:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D94527A258F
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 18:14:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56BE47A15FF
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 18:21:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5F43197A7A;
-	Tue,  7 Jan 2025 18:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781501E22E9;
+	Tue,  7 Jan 2025 18:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SA8P4zH/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T5KKuXBD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C0518D626
-	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 18:14:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3168A45027;
+	Tue,  7 Jan 2025 18:21:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736273665; cv=none; b=YGl+1h51dNQ34hg/1jPU0Hz9xliie890OvP11clgPRd2a69ah+XsfVtUJ1pWXuWOvbCwwY97ditpA9zpI0K05NXhu4wMUyrNVAcCPs+p5i9etUYrNTImRy8ton2NDuTWw/71IQZVsyXmAfF5oNMb67BtG/jWnpfI00NlLaOc5I0=
+	t=1736274075; cv=none; b=R0JibSKfQVtKQ3BkNUgxY2ueyyzw7vud8B0BeFfCXMWCb2kfA8fJh3mAzfyXe02C0BpM/5Hg7mJyQnGoCn5s2EYGwlvqVQ7ZRW68K6bVzHlwRMF7HAg8VixHyRFUH6gwNzXcI/1uulyJMpKjLJ4FjFv9R6t82n4c43IJo4a6zT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736273665; c=relaxed/simple;
-	bh=TZY0V5cBFipnp4J4gL6OBL46uim1mm12So+5jZb/py0=;
+	s=arc-20240116; t=1736274075; c=relaxed/simple;
+	bh=laRPj4HM/p0XhfiaoGl7l+z9dop6OKtrUT+Mkuc4Qyk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fMmiACi5T6xgyCJJrlnfZIHjWEk2vcgD1d2iVkTjgxjapvR6JIVcJ+EoVwS6HjLGMq2IojoSm/GeeFPlflUaegRnRSEiBD2b3+ZfZ0COmjpUZf26gRkj88XcFeapKeVVSrnr/IRe/YDpH5mG4DuW4LySgiDCWgYsfJItlhK68Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SA8P4zH/; arc=none smtp.client-ip=209.85.219.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6dcc42b5e30so91866826d6.1
-        for <stable@vger.kernel.org>; Tue, 07 Jan 2025 10:14:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736273661; x=1736878461; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oG61dw26vvXoPcjn2vS9jiBka5lWOF0xVLwsEZhkvY4=;
-        b=SA8P4zH/pLaix3r6bl/yAEuyxpgjf0ESss1t9ii8NJHKlpw143m4qzk6GW6lYRWIvI
-         L54oivTDZnSl2wg0P8cQlLwXdTd8IVTp1Ou72L/IEluatLiXnzmPAakfaptn0x+3pfup
-         tZRJyv6X1YznXWir2SF5nrmTguSEntM9iBiabNAPVupNaOGtWT1Dsi51PUKglGE4EdiL
-         BRR1CEThJpkcP25gnfETFkFh+Y5w0b2eFQkagw6orXla6ILpwXlgg9c3gzBz5hphaa5+
-         8K4Q5c1onzE/wx1JOwoHS/mLKX1yCEcdIIgVQCuHFIsgM6zZKjx467HlKvMWvK3TBWcK
-         CC5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736273661; x=1736878461;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oG61dw26vvXoPcjn2vS9jiBka5lWOF0xVLwsEZhkvY4=;
-        b=DBIz1Nyu3/8Dph+TqYnAqGmw4RifQgbTADZaQX2ODHdOXKOHiwC7DABl4BF+3CB7fe
-         +Nw6WqQq/o/X8VpJJJdKIMycpCdAWg0z6MeH+EQ5HAT8kfQhpSaliv0oOxZfWl85dY9P
-         Nknr0QhofHzAoa8VHJC5ql5+M8mct1MdnolEmTzbs982htdAwOhXjgz45gR7bZVSyTt3
-         BS6CCqFXOk67bNi0JR5IuVqVQ3XrBk9KfJksRTAp7/aZshcHFzS/H1xTq2vfoCp7s45d
-         4k2fkzUokTXYiZl2dqdW3lj0QOCn+E3hkl6DQQsDJ4Q0fbdOV/XFvBb/G3M5cfmxWxtr
-         3MYg==
-X-Forwarded-Encrypted: i=1; AJvYcCXuVEi1T29iWbUmPJ/7qh75SYzttOpCgvXUJUr72DT+bj3CWSJgyZ2X/O2khCVm/U9sfna5t0o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyj+3+e1HeLFvPAUQhZzmROPZRoUKRVgsvbNlVDehHGRKams7UT
-	yu1Ej7G7AH7bMWQwuRzWpME4u3ZEVOWnWO0vFoBT82KH5SKXz0BZX8DYzcPORIdW58x84JAiW3E
-	AnIb/5qYVP/NAYqJjKU9IHysyBZkhsOSV9i18
-X-Gm-Gg: ASbGncuyZNQjwFS9MC4ywORISm0xZDYfDzZnhwJ/pnImf8/IcCQ91a6DoVBbfN67VB0
-	Fql2lewFpDxtwJB8yaIhesBEMbiJiwr4NSTYlgrIbO+CbuvfoHtgV0rXHISQ42BbJo0k=
-X-Google-Smtp-Source: AGHT+IFV+lxuKL2KP92p5pI89yhB4KNGKqG5ib6N9eKaNVmY+2f0dzgmRVshSSL1WDV/rFTjSFFI7ui/PF6lHR2evOQ=
-X-Received: by 2002:ad4:5bc3:0:b0:6d8:e5f4:b969 with SMTP id
- 6a1803df08f44-6df9b1f4300mr607216d6.10.1736273661036; Tue, 07 Jan 2025
- 10:14:21 -0800 (PST)
+	 To:Cc:Content-Type; b=sNA53VO/je7+YSmCPUp+O8NTAe5PRziAebv8bJcYgfNj3Y5pHYyYFENvUQ3HreyCB02rtjs1xbOKI08Vl/usHm1w9VsECUlvq9T8J5MVSIZmR6HkAKmelw6pPmMSHjQvXIV7fN49IudErSOwNnlSPUi3YbxTfVOlNin5auBivX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T5KKuXBD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D29D2C4CEDE;
+	Tue,  7 Jan 2025 18:21:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736274074;
+	bh=laRPj4HM/p0XhfiaoGl7l+z9dop6OKtrUT+Mkuc4Qyk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=T5KKuXBDXX4Een3RezVbaCtGR/dddmAN0v4uCYxt9SLPHaAiOdKmXdg1ey8Nwew6y
+	 CszrZbc1an+tuLmHfZZkBfdWymdMzv/phRNzDyXIwNAwDdybZOuceWKO2j3C4je2Uf
+	 rhz5QNlrYR1Dwhgz4WK2iAefisPnOQfwGNyAFLudF1s4E4yBzEqB+gLRB5iVU9BsoV
+	 mudBvcwuMwY2/9+GusA7+DKUg023FAuq50oowuOu1TylrbBVKE2hyPwUUijcFR4Fxn
+	 71a7M1ipSGgEbiveQT/1GqxOharIoVk9+GBPcZtf6WywGul5sx9FrjGEK2DHMTlbBH
+	 wOGg7i9reIJWQ==
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3ee29277d44so6454061b6e.1;
+        Tue, 07 Jan 2025 10:21:14 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUcjbgdCDRJ1UW7jekKs8sQOO48Eag+4QZkIyp5jcGyCI/nadjwOBOOd/jXAoztsHvzd5hWZQBf/hWU@vger.kernel.org, AJvYcCXM9ZTTFzJN+JEexA1l991ZmsnrqiV1/EMp+QVRU+pAYHE7MGNd4pFsW8vz6KTNtXf6t5OmVRkU@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLxJoAJjvRP3KtU91lHfNas5Js3TyCPg+4c9ixYeIn1Me+Edd8
+	uQaMoHMRjdt7iNvwvVa3l+l9vtNiEp4Dmsx/kNAJrd48Lmqq6dHsYgR1w6rhEYvoMOSSPCC0lme
+	9+USpphXwdlbz8xjO/PhvYNCgcLg=
+X-Google-Smtp-Source: AGHT+IGegoU5jW7VJIa0VqomoZoGNcruRV8F3AJH9FLGJYQImu8OcfHGmU8N7M4MF05/3Vo2UTl7FzUEFuupNn5Jf88=
+X-Received: by 2002:a05:6808:f16:b0:3eb:3b6e:a74b with SMTP id
+ 5614622812f47-3ef2ec43249mr27575b6e.17.1736274074164; Tue, 07 Jan 2025
+ 10:21:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250107074724.1756696-1-yosryahmed@google.com>
- <20250107074724.1756696-2-yosryahmed@google.com> <20250107180345.GD37530@cmpxchg.org>
-In-Reply-To: <20250107180345.GD37530@cmpxchg.org>
-From: Yosry Ahmed <yosryahmed@google.com>
-Date: Tue, 7 Jan 2025 10:13:44 -0800
-X-Gm-Features: AbW1kvbDEG3OoD4yS1bJmqQIUzrjE3LTEH-Qw1MG0uO_F4UgZIN2Nh1JLId1D4I
-Message-ID: <CAJD7tkYNvyVh2ETdbHrmtJRzKwVX3pPvite+cy0aS6cwJe5ePw@mail.gmail.com>
-Subject: Re: [PATCH RESEND 2/2] mm: zswap: use SRCU to synchronize with CPU hotunplug
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Vitaly Wool <vitalywool@gmail.com>, 
-	Barry Song <baohua@kernel.org>, Sam Sun <samsun1006219@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20241220181352.25974-1-hdegoede@redhat.com>
+In-Reply-To: <20241220181352.25974-1-hdegoede@redhat.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 7 Jan 2025 19:21:03 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hJTOfdGEEW6VH239ZNso=gt5uZscWGx3iYsdSfWFan4w@mail.gmail.com>
+X-Gm-Features: AbW1kvbQF2nvgysBuJ8o_B8nExsK1O6bSqtxPsJHztZQ5NK0IdDzg8KVXdnEoMc
+Message-ID: <CAJZ5v0hJTOfdGEEW6VH239ZNso=gt5uZscWGx3iYsdSfWFan4w@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: resource: Add Asus Vivobook X1504VAP to irq1_level_low_skip_override[]
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 7, 2025 at 10:03=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.org=
-> wrote:
+On Fri, Dec 20, 2024 at 7:14=E2=80=AFPM Hans de Goede <hdegoede@redhat.com>=
+ wrote:
 >
-> On Tue, Jan 07, 2025 at 07:47:24AM +0000, Yosry Ahmed wrote:
-> > In zswap_compress() and zswap_decompress(), the per-CPU acomp_ctx of th=
-e
-> > current CPU at the beginning of the operation is retrieved and used
-> > throughout.  However, since neither preemption nor migration are disabl=
-ed,
-> > it is possible that the operation continues on a different CPU.
-> >
-> > If the original CPU is hotunplugged while the acomp_ctx is still in use=
-,
-> > we run into a UAF bug as the resources attached to the acomp_ctx are fr=
-eed
-> > during hotunplug in zswap_cpu_comp_dead().
-> >
-> > The problem was introduced in commit 1ec3b5fe6eec ("mm/zswap: move to u=
-se
-> > crypto_acomp API for hardware acceleration") when the switch to the
-> > crypto_acomp API was made.  Prior to that, the per-CPU crypto_comp was
-> > retrieved using get_cpu_ptr() which disables preemption and makes sure =
-the
-> > CPU cannot go away from under us.  Preemption cannot be disabled with t=
-he
-> > crypto_acomp API as a sleepable context is needed.
-> >
-> > Commit 8ba2f844f050 ("mm/zswap: change per-cpu mutex and buffer to
-> > per-acomp_ctx") increased the UAF surface area by making the per-CPU
-> > buffers dynamic, adding yet another resource that can be freed from und=
-er
-> > zswap compression/decompression by CPU hotunplug.
-> >
-> > There are a few ways to fix this:
-> > (a) Add a refcount for acomp_ctx.
-> > (b) Disable migration while using the per-CPU acomp_ctx.
-> > (c) Use SRCU to wait for other CPUs using the acomp_ctx of the CPU bein=
-g
-> > hotunplugged. Normal RCU cannot be used as a sleepable context is
-> > required.
-> >
-> > Implement (c) since it's simpler than (a), and (b) involves using
-> > migrate_disable() which is apparently undesired (see huge comment in
-> > include/linux/preempt.h).
-> >
-> > Fixes: 1ec3b5fe6eec ("mm/zswap: move to use crypto_acomp API for hardwa=
-re acceleration")
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
-> > Reported-by: Johannes Weiner <hannes@cmpxchg.org>
-> > Closes: https://lore.kernel.org/lkml/20241113213007.GB1564047@cmpxchg.o=
-rg/
-> > Reported-by: Sam Sun <samsun1006219@gmail.com>
-> > Closes: https://lore.kernel.org/lkml/CAEkJfYMtSdM5HceNsXUDf5haghD5+o2e7=
-Qv4OcuruL4tPg6OaQ@mail.gmail.com/
-> > ---
-> >  mm/zswap.c | 31 ++++++++++++++++++++++++++++---
-> >  1 file changed, 28 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/mm/zswap.c b/mm/zswap.c
-> > index f6316b66fb236..add1406d693b8 100644
-> > --- a/mm/zswap.c
-> > +++ b/mm/zswap.c
-> > @@ -864,12 +864,22 @@ static int zswap_cpu_comp_prepare(unsigned int cp=
-u, struct hlist_node *node)
-> >       return ret;
-> >  }
-> >
-> > +DEFINE_STATIC_SRCU(acomp_srcu);
-> > +
-> >  static int zswap_cpu_comp_dead(unsigned int cpu, struct hlist_node *no=
-de)
-> >  {
-> >       struct zswap_pool *pool =3D hlist_entry(node, struct zswap_pool, =
-node);
-> >       struct crypto_acomp_ctx *acomp_ctx =3D per_cpu_ptr(pool->acomp_ct=
-x, cpu);
-> >
-> >       if (!IS_ERR_OR_NULL(acomp_ctx)) {
-> > +             /*
-> > +              * Even though the acomp_ctx should not be currently in u=
-se on
-> > +              * @cpu, it may still be used by compress/decompress oper=
-ations
-> > +              * that started on @cpu and migrated to a different CPU. =
-Wait
-> > +              * for such usages to complete, any news usages would be =
-a bug.
-> > +              */
-> > +             synchronize_srcu(&acomp_srcu);
+> Like the Vivobook X1704VAP the X1504VAP has its keyboard IRQ (1) describe=
+d
+> as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh which
+> breaks the keyboard.
 >
-> The docs suggest you can't solve it like that :(
+> Add the X1504VAP to the irq1_level_low_skip_override[] quirk table to fix
+> this.
 >
-> Documentation/RCU/Design/Requirements/Requirements.rst:
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219224
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/acpi/resource.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 >
->   Also unlike other RCU flavors, synchronize_srcu() may **not** be
->   invoked from CPU-hotplug notifiers, due to the fact that SRCU grace
->   periods make use of timers and the possibility of timers being
->   temporarily =E2=80=9Cstranded=E2=80=9D on the outgoing CPU. This strand=
-ing of timers
->   means that timers posted to the outgoing CPU will not fire until
->   late in the CPU-hotplug process. The problem is that if a notifier
->   is waiting on an SRCU grace period, that grace period is waiting on
->   a timer, and that timer is stranded on the outgoing CPU, then the
->   notifier will never be awakened, in other words, deadlock has
->   occurred. This same situation of course also prohibits
->   srcu_barrier() from being invoked from CPU-hotplug notifiers.
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index 821867de43be..ab4c0e0b6b8e 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -440,6 +440,13 @@ static const struct dmi_system_id irq1_level_low_ski=
+p_override[] =3D {
+>                         DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
+>                 },
+>         },
+> +       {
+> +               /* Asus Vivobook X1504VAP */
+> +               .matches =3D {
+> +                       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."=
+),
+> +                       DMI_MATCH(DMI_BOARD_NAME, "X1504VAP"),
+> +               },
+> +       },
+>         {
+>                 /* Asus Vivobook X1704VAP */
+>                 .matches =3D {
+> --
 
-Thanks for checking, I completely missed this. I guess it only works
-with SRCU if we use call_srcu(), but then we need to copy the pointers
-to a new struct to avoid racing with the CPU getting onlined again.
-Otherwise we can just bite the bullet and add a refcount, or use
-migrate_disable() despite that being undesirable.
-
-Do you have a favorite? :)
+Applied as 6.13-rc material, thanks!
 
