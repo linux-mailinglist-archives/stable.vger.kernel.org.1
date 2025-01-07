@@ -1,130 +1,165 @@
-Return-Path: <stable+bounces-107799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A552A0385C
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 08:05:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 807B4A03865
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 08:07:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C3AE18864A2
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 07:05:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA760188670E
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 07:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7558C18BBA8;
-	Tue,  7 Jan 2025 07:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F101DFE0A;
+	Tue,  7 Jan 2025 07:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="P7jnvmn/"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="Ghk3cMah"
 X-Original-To: stable@vger.kernel.org
-Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
+Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57541145348
-	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 07:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106D41DD873
+	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 07:07:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.252
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736233536; cv=none; b=GIR8YVtJgW+Lgp5i3mm4R7E5zSNGw+dZf5zpPrLmOom5/xu16hrvOcTrVMZYbKGgf3rnex/ashZMM/LKPsMZbmvV9XZxbqMi6jQr4mpOS31Q8kB2G8UEQwvdYAmoR9UFJL1xubaDOIs/zkqPBb/YJEO36vAVyIEZhd61ld2A0oQ=
+	t=1736233639; cv=none; b=IqUvTnbL1zF0RYmgqKRUmsVee5lj4fIAuuXCTeCgGqlP6pNYq+RcYq+zm7oygQRbIcJr612EH2Xv3axZrA5no12bEjJNqJ+w5B17whhumcipOHj5e5FkheGGp57CxCRHJUssTedQDOiIFltOfKRnpT5GYGjPqpoTZsRcIZcXNEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736233536; c=relaxed/simple;
-	bh=CqLMM20rLouKfhzzIGBdW9dbvIYXeyrwAoPSzn14uJM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M/XICo7M05vKlm8ybYYkTnnxIZ0Ez3fS+YgyIFKa+OKl3lOddQcSWlW+O5m2/wkItwU7bR8To6V5gw4pExerkLBtJVfL7IkMpBa3RE/9Z1hCLufuM7pbHIQYs/b2fUg7Q1P6CYWF4k6eDI+FzA8iwWRRMNtN/+PimdrVGSehwYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=P7jnvmn/; arc=none smtp.client-ip=35.89.44.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6004a.ext.cloudfilter.net ([10.0.30.197])
-	by cmsmtp with ESMTPS
-	id Uw84tCrbw09RnV3d6tp66o; Tue, 07 Jan 2025 07:03:56 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id V3d5tScTI1nbEV3d5taE6D; Tue, 07 Jan 2025 07:03:56 +0000
-X-Authority-Analysis: v=2.4 cv=EO7N0EZC c=1 sm=1 tr=0 ts=677cd1dc
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=VdSt8ZQiCzkA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Uk4BWU77kqCWID9BT9MYYGsNLeY+4Zym2edfkpXliIM=; b=P7jnvmn/t9zM9Ia7QlKjVtQ8lD
-	6/W+dNF5yqSM3EifSPsTmuOhqCwNbmrFuIUMpbuMikSZfY2Jq5/AuCXYjijlAoHY3bk1D3jxac1o1
-	VyONdYGr7NbXcp6abgVQKZ+Cf5v3pAL5XhUhJbFmDAQbyYOlTUdtBCeyik3q880qiyr7GqXVRrPJX
-	4twFBAFT/HH/b3CGUWBr5ayd6X2/bkM6IWy063j3IVnms9ZzR0Mwbs9MYyVIYJ0mVbo6+9GbTL7iz
-	XphjZE9GP03rRpg4VY+9g8TIq/1Sqovsy3fDX9VEyg3cNvXK5D/2Lo17P3du9Tis6MGmy5T6+F1UH
-	gmu4Gp1A==;
-Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:53344 helo=[10.0.1.115])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1tV3d4-002hdG-1i;
-	Tue, 07 Jan 2025 00:03:54 -0700
-Message-ID: <8f15c7a1-f175-4d4b-ae32-f0e01914c91e@w6rz.net>
-Date: Mon, 6 Jan 2025 23:03:51 -0800
+	s=arc-20240116; t=1736233639; c=relaxed/simple;
+	bh=bVFF6ep/AIYozu3OLrkyJA16tKR24TBq2lVnSmcFyFY=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=YYlIme7q78NjCK9RcMetV/s7geQwWLmJa8RDQwZL5xBGX7K8fCnqEcrNS7zv/ymNPwL1rtREcvIHvyyCU/xGt60gUDuMY3wKJPVfI8N7u0WpJ1u5md7/rGqhmR9OJsIXhDSeys0pPbicJL6dSsVcR6XRd/o6Z3oh99ss/BR5p4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=Ghk3cMah; arc=none smtp.client-ip=162.62.57.252
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1736233630;
+	bh=2EC2rjonQO3RMSGAzKHzIp0B5MRmFy2W3I1TfsIOGZQ=;
+	h=From:To:Cc:Subject:Date;
+	b=Ghk3cMah45EdCfa2iqLFfwBmLJhWThInfumFr6QxEyl17Sk2wZbcSYEBSR7wfHhuP
+	 wf569e5IqQT4Vydu0YxLfj/IkZrVNGnfA3rSr2UIXQQ/E26NuuMIZx74xNRPLUzH7H
+	 gqw2as/pbiVtWHn16bKRW6nx2b5Z+qfvieKzIs9w=
+Received: from pek-blan-cn-l1.corp.ad.wrs.com ([120.244.194.133])
+	by newxmesmtplogicsvrsza29-0.qq.com (NewEsmtp) with SMTP
+	id 1B88D2BB; Tue, 07 Jan 2025 15:06:56 +0800
+X-QQ-mid: xmsmtpt1736233616t8sxbc343
+Message-ID: <tencent_8132C47A03471C66AC0181B6AD46F9634705@qq.com>
+X-QQ-XMAILINFO: NQR8mRxMnur9Wu40iUsqWyaexMBK3N7Tn6ZUylfZbnK4QecgXiU1PyV2Q9OLkx
+	 9qYqi502j0Gncihq4EGbmwdhhfYrNlC56FghXOeph9UHL7x8gu+AjL3+iaaslF8yV2lAkXO/DgME
+	 caE7ztaJkCY5NkHAr4juMOcrecNO/yIr5CZs9mAq8NnnwhvniGjwD89H4VM1AA1fU7woD1HJa3Ap
+	 P3xacBBPwBXeCPIscKPAA2NuXkDKVh9rKOOwQjp9LhCH4zVmowM4vw8evm5GTqzF/3t8KXZElojE
+	 mD9LghKkkgmPEfY+IvFYk3BJsWMJPy4IpJUnOimbfgbxFxCcEo68HUg3uuB4sXzNsiP11on6cDrR
+	 5YAAWPUcka68Sgx1KsuIIZgHpj4f+PpBX6oyF6f7AVxv1LUMWRHY3OLT2KbQ3WKyVmYD22rYlp4F
+	 FqocdAgoy9xFD6mv5h6AGt+G6yDulCtQ+Pmc09le3mG5E1rW/gMePqrvebDOomsvdhcvH3Lazw24
+	 TjHZD9QqJ3TFbjULrTH+eodFvxcs5ENMHFRFFVivpbJQE+PlBz0l9uM7Y7bhBPUsDb+x20WE19sw
+	 9NSs0WJZmEuiZfjAaYLFcv4GRsn+B5UH1/Wz6dK5C4YEOn3xK6h/rWLO636Bt6EjMY54YS6oYlWu
+	 29+2ywyFDzUjCLhidzCy/n+Zg8ROfbQ1skUi5D0Iu+RlZCQkwnxX4i/RZ4vr1zAgv3ArOm/BNcsD
+	 y1NFlu+gjsaEPCTM95xdx8M2hLgGTyCAZJbimLXg0RJj9F2NjX9Z5pmfXnPwJVuzuZnxDiQ0olqF
+	 j6wRxcKSsIUFakWNTi5arjIQ+KFfVVDh6cxoZtqeRyShnxbd/Yds/svOIH+OHJn8xCofIM2ZOUuo
+	 Y2V+EK07vR6FOzNBs/zS20/xwspsdwEuqaCFm2MRvcUNTiGKT0sUC6Ms6ohkPbnmzVimqX7HjbGF
+	 hugxnPeYSETcRrO5oKYg==
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+From: Alva Lan <alvalan9@foxmail.com>
+To: stable@vger.kernel.org,
+	qun-wei.lin@mediatek.com
+Cc: akpm@linux-foundation.org
+Subject: [PATCH 6.1.y] sched/task_stack: fix object_is_on_stack() for KASAN tagged pointers
+Date: Tue,  7 Jan 2025 15:06:56 +0800
+X-OQ-MSGID: <20250107070656.2135-1-alvalan9@foxmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 000/222] 6.6.70-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250106151150.585603565@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.223.253.157
-X-Source-L: No
-X-Exim-ID: 1tV3d4-002hdG-1i
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.115]) [73.223.253.157]:53344
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 18
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfFaFAu9TFjFTLA0ejoga34oAQ4PWLEWusiKj8YVg8Dppl5PAt3+1LWKq2Md2LDxeq5m4fXyB221iP5FYixfheONo/ryUtyTxRFBb2v06aiqE7dXLriHp
- lZAFsuu2iVnZeOcpmvrMzP6fA8+M/o/j3wR3GcBTM1Q/eI/zMbSsQ/8QhC14CyPH7Eq8UMpB9h4NRw==
+Content-Transfer-Encoding: 8bit
 
-On 1/6/25 07:13, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.70 release.
-> There are 222 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 08 Jan 2025 15:11:04 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.70-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+From: Qun-Wei Lin <qun-wei.lin@mediatek.com>
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+[ Upstream commit fd7b4f9f46d46acbc7af3a439bb0d869efdc5c58 ]
 
-Tested-by: Ron Economos <re@w6rz.net>
+When CONFIG_KASAN_SW_TAGS and CONFIG_KASAN_STACK are enabled, the
+object_is_on_stack() function may produce incorrect results due to the
+presence of tags in the obj pointer, while the stack pointer does not have
+tags.  This discrepancy can lead to incorrect stack object detection and
+subsequently trigger warnings if CONFIG_DEBUG_OBJECTS is also enabled.
+
+Example of the warning:
+
+ODEBUG: object 3eff800082ea7bb0 is NOT on stack ffff800082ea0000, but annotated.
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 1 at lib/debugobjects.c:557 __debug_object_init+0x330/0x364
+Modules linked in:
+CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-rc5 #4
+Hardware name: linux,dummy-virt (DT)
+pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __debug_object_init+0x330/0x364
+lr : __debug_object_init+0x330/0x364
+sp : ffff800082ea7b40
+x29: ffff800082ea7b40 x28: 98ff0000c0164518 x27: 98ff0000c0164534
+x26: ffff800082d93ec8 x25: 0000000000000001 x24: 1cff0000c00172a0
+x23: 0000000000000000 x22: ffff800082d93ed0 x21: ffff800081a24418
+x20: 3eff800082ea7bb0 x19: efff800000000000 x18: 0000000000000000
+x17: 00000000000000ff x16: 0000000000000047 x15: 206b63617473206e
+x14: 0000000000000018 x13: ffff800082ea7780 x12: 0ffff800082ea78e
+x11: 0ffff800082ea790 x10: 0ffff800082ea79d x9 : 34d77febe173e800
+x8 : 34d77febe173e800 x7 : 0000000000000001 x6 : 0000000000000001
+x5 : feff800082ea74b8 x4 : ffff800082870a90 x3 : ffff80008018d3c4
+x2 : 0000000000000001 x1 : ffff800082858810 x0 : 0000000000000050
+Call trace:
+ __debug_object_init+0x330/0x364
+ debug_object_init_on_stack+0x30/0x3c
+ schedule_hrtimeout_range_clock+0xac/0x26c
+ schedule_hrtimeout+0x1c/0x30
+ wait_task_inactive+0x1d4/0x25c
+ kthread_bind_mask+0x28/0x98
+ init_rescuer+0x1e8/0x280
+ workqueue_init+0x1a0/0x3cc
+ kernel_init_freeable+0x118/0x200
+ kernel_init+0x28/0x1f0
+ ret_from_fork+0x10/0x20
+---[ end trace 0000000000000000 ]---
+ODEBUG: object 3eff800082ea7bb0 is NOT on stack ffff800082ea0000, but annotated.
+------------[ cut here ]------------
+
+Link: https://lkml.kernel.org/r/20241113042544.19095-1-qun-wei.lin@mediatek.com
+Signed-off-by: Qun-Wei Lin <qun-wei.lin@mediatek.com>
+Cc: Andrew Yang <andrew.yang@mediatek.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Casper Li <casper.li@mediatek.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Chinwen Chang <chinwen.chang@mediatek.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+---
+ include/linux/sched/task_stack.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/include/linux/sched/task_stack.h b/include/linux/sched/task_stack.h
+index f158b025c175..d2117e1c8fa5 100644
+--- a/include/linux/sched/task_stack.h
++++ b/include/linux/sched/task_stack.h
+@@ -8,6 +8,7 @@
+ 
+ #include <linux/sched.h>
+ #include <linux/magic.h>
++#include <linux/kasan.h>
+ 
+ #ifdef CONFIG_THREAD_INFO_IN_TASK
+ 
+@@ -88,6 +89,7 @@ static inline int object_is_on_stack(const void *obj)
+ {
+ 	void *stack = task_stack_page(current);
+ 
++	obj = kasan_reset_tag(obj);
+ 	return (obj >= stack) && (obj < (stack + THREAD_SIZE));
+ }
+ 
+-- 
+2.39.4
 
 
