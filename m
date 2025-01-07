@@ -1,149 +1,183 @@
-Return-Path: <stable+bounces-107879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84C5A04884
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 18:42:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A05B2A048DB
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 19:03:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F22B188711C
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 17:42:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 084F33A1E48
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 18:03:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFA61F2C48;
-	Tue,  7 Jan 2025 17:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C4917B50A;
+	Tue,  7 Jan 2025 18:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="Wa2LcvFk"
+	dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b="Pa81vCG2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-23.smtpout.orange.fr [80.12.242.23])
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E04518D65E;
-	Tue,  7 Jan 2025 17:42:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1948F18EAB
+	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 18:03:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736271747; cv=none; b=eVROB82N+oGIk/Gk9vhxwmvpR7U8/dLFTcFQ8ZEeB2iEk4OKpJ3Kc/JqGwIPwafN3LGT76IJMlDsTDf5DxITxsAwBeWeN87v97E3xMzaOx+O4+DyORH9yeZfInPqXGQRlrTRu8zz8ZoHeNBY7oQ6Ou8VcTj9/IuPD7CCrKen1Cg=
+	t=1736273035; cv=none; b=TPusFpgn+ODqKqbuKbfDZJWUMisleiE+YI/PMGS+9Oa9IbIqk77Vb4s5ehuFwVsQFCE9yVyanfuO6lh9lx1SLmwkLuNJEWHkuGq+9d+oSNQcYfwYxRi6ipEWiaVd/mRKJQ+LIF3Xcei7jGGgksStGa8/QfFDF6Pa8Hu0SWsAKMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736271747; c=relaxed/simple;
-	bh=0XgZhUmiCS0fmIOafxfxj2Ab5jvA0AybJm5ALAaJGNI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tAz6RjLkQloFBottPU0bshpqykj87j2lmiKJvg4rFU5qmIfaNvyGWeI3i4AyMI88H6xRHnDAvcUKX1eZg/VbznZ5BeU7dWxF+sgm949Y0uMqrY0JqWuPuDR2cN2weUjDHVVV+eQZJ7NfDKKKl9uy1+U337G51jyNhOrkP+mEgMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=Wa2LcvFk; arc=none smtp.client-ip=80.12.242.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id VDakt9eeD9jqYVDantwbfO; Tue, 07 Jan 2025 18:42:16 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1736271736;
-	bh=5mIYnytl3HKY6pkNTkFA+FKdHNM0CI77bpwBm5GEG+M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=Wa2LcvFkSITfkszCtVXzwTjsIQqZPbt8iSjbKZumW8oOLCTn1N9xvsXn+JnK2Q1OI
-	 P2M1okG3bn0y645Zr2T9kcWszZI5yN5A5e48XysYiMSz4EQeUaD2lxOWAkJlX5G5Yo
-	 WpTTOfqdMZpv2D7d6Cv2U2/rQDQQiS8zZdx/AkWkkXbnO1hpWIeHYPSFbGJptJMEzy
-	 GZd/Mird+lMNIPiuxA4BccwBN492tnpFGDII8dqgs6thgTmSLvszt6UHqDOgUWLLf6
-	 fIgKntnO5Db0aKSH1fu2HD7TzPf++bGOVBVLdHdTQydFOmrfYQ6UnhRsx4Anzx5DRA
-	 aPgZJV9/51kzg==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Tue, 07 Jan 2025 18:42:16 +0100
-X-ME-IP: 90.11.132.44
-Message-ID: <81b7066b-f769-4897-aa8e-8a1391894877@wanadoo.fr>
-Date: Tue, 7 Jan 2025 18:42:09 +0100
+	s=arc-20240116; t=1736273035; c=relaxed/simple;
+	bh=n209vyrwfof/czNWqUi5+WoI4HjQmf7GymybCUDGKpU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sgeU2z4NkFGKmsNQUI0dVWEeDUo7fhl1nd+cWAcrYk5WluaMLR20v4FIXuenroCurrVZXkpfxCWbnGhb4rXaOFRWPMLWDoXvp5uPK++8tWN75aVj5juKkKHYEEaPNLNTVkMjhluBZQbPfU6uGYOsT1iSMauHk5vYVQ5MCEa+IsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org; spf=pass smtp.mailfrom=cmpxchg.org; dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b=Pa81vCG2; arc=none smtp.client-ip=209.85.219.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmpxchg.org
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6d896be3992so94252056d6.1
+        for <stable@vger.kernel.org>; Tue, 07 Jan 2025 10:03:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1736273031; x=1736877831; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=LrVAuQ1nuUS81n75WNC20SAbQtETSilLabjNMZGXh/0=;
+        b=Pa81vCG2xrAwgR2oZMpzMxcph3Io2n0ETeGf7/Rhh7PCXccQdAgsGNRU5LkCh/LI8d
+         p+nCOBpVnNXCQyAoUp2+buYadcTgI2B8JCVTlc3SbH5dmg8PMyu8KDBErYMekJs3jRtB
+         Hz8BrEdOJq9LW7QtdkVH9UtQvB/3Oi5NV/GOOpwMwfkh8aTCIoDHrcVLC+NJgCxZdMfh
+         Xi1CXHi7ULbflR+zLS6VTbn6Ltlr5V/7p8SFE0BtQcHEguSmLiEdjT7EtlprsF2OTEVP
+         WPHpYhCIAnzsmHUEOIA7j2Z+/tlx52CTJIud57nBp+NI84TRxTjm4n9nDF5DK+vXLUBO
+         O0Sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736273031; x=1736877831;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LrVAuQ1nuUS81n75WNC20SAbQtETSilLabjNMZGXh/0=;
+        b=oMyRKYhlk8yKBm6Q8FBPgUXfPVvipeEiagkGZgS1kSicUxBThgqmwz1aoXzdQR+u6H
+         9ad1txL+QcIaq5XZbpXz5B0+LUHfwoVDoyQyKmSkrhp2feUfDYlQybfNBziXIaCfKCRR
+         bPD1ssL9b1YYoX3qow0MSQffmpA5zOIuNJA/f6RDSVXxRcvzQwwN/CWbJhwJij8V8Nq0
+         CE33Btf8tIBOiIgJIFFYD4D+425OagTdAyhmrUalKSEp3GCebMqP1hvrP4KV4p7IKfwo
+         DpvM5TnyDMGqdL+Gj2XCTThiaBq0K6Rn+faW6AXqQfB219HOOHZx3OHAn/QBeYNsUpKb
+         SomA==
+X-Forwarded-Encrypted: i=1; AJvYcCVJBfdRBh4g+D3KcTGr1pOm4RXabYeo9N5ME6bC1FGMZt/QrD8m5NEo1/ZILJRHmfj8aKFzIU0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YydUupShQHL2Iv4IP33/uewoEI0iK2AGtqNVkUSeLuVj77TTzyf
+	aIn/BcJtT6N/4/8echu/ZT2w9462LR9QB+qJ71wFAywR861nZvmEt0zlM4MXwqs=
+X-Gm-Gg: ASbGncvlB546nbd4hKqP5vIcz86GkZM71GQtcHuzfhhyHu9lXfE1Szapt3sLOwQDxPF
+	iEOaEwIam6AzGJYOStWC4zVhuLqNkonELXTrisW4ocVcBURRqh9+VEvskIzT92n3TftTibX/+BT
+	ybBUAsUUejONb6Tn0iW0WBTCHEzT2n+TWE/nRcdfrpaYkkcP2Be3mFnsB6SwjD1eboRcd13ttpg
+	cKMZeJF0y3eTTaiKfZ8mlVPujhwBWhY3zl9odaW2qg9SLv2ZD7hLkI=
+X-Google-Smtp-Source: AGHT+IFl6p5h/awCPmTzw3RMPwNk4yXHopfv2hrojOPvo9EJXutNSG9yLbx8hfMAHYDNC/0n4jjd6A==
+X-Received: by 2002:a05:6214:48f:b0:6cb:e648:863e with SMTP id 6a1803df08f44-6dd233a6f14mr1042589666d6.43.1736273030789;
+        Tue, 07 Jan 2025 10:03:50 -0800 (PST)
+Received: from localhost ([2603:7000:c01:2716:da5e:d3ff:fee7:26e7])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6dd181d5adbsm182844296d6.115.2025.01.07.10.03.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jan 2025 10:03:49 -0800 (PST)
+Date: Tue, 7 Jan 2025 13:03:45 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Yosry Ahmed <yosryahmed@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Vitaly Wool <vitalywool@gmail.com>, Barry Song <baohua@kernel.org>,
+	Sam Sun <samsun1006219@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH RESEND 2/2] mm: zswap: use SRCU to synchronize with CPU
+ hotunplug
+Message-ID: <20250107180345.GD37530@cmpxchg.org>
+References: <20250107074724.1756696-1-yosryahmed@google.com>
+ <20250107074724.1756696-2-yosryahmed@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] misc: microchip: pci1xxxx: Fix possible double free in
- error handling path
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: arnd@arndb.de, gregkh@linuxfoundation.org,
- kumaravel.thiagarajan@microchip.com, linux-gpio@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <955f3abf-81b8-4471-82eb-b969dc5d7c9e@wanadoo.fr>
- <20250107011917.642951-1-make24@iscas.ac.cn>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20250107011917.642951-1-make24@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250107074724.1756696-2-yosryahmed@google.com>
 
-Le 07/01/2025 à 02:19, Ma Ke a écrit :
-> Christophe JAILLET<christophe.jaillet@wanadoo.fr> wrote:
->> Ma Ke <make24@iscas.ac.cn> writes:
->>> When auxiliary_device_add() returns error and then calls
->>> auxiliary_device_uninit(), the callback function
->>> gp_auxiliary_device_release() calls kfree() to free memory. Do not
->>> call kfree() again in the error handling path.
->>>
->>> Fix this by skipping the redundant kfree().
->>>
->>> Found by code review.
->>>
->>> Cc: stable@vger.kernel.org
->>> Fixes: 393fc2f5948f ("misc: microchip: pci1xxxx: load auxiliary bus driver for the PIO function in the multi-function endpoint of pci1xxxx device.")
->>> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
->>> ---
->>>    drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c | 2 ++
->>>    1 file changed, 2 insertions(+)
->>>
->>> diff --git a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
->>> index 32af2b14ff34..fbd712938bdc 100644
->>> --- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
->>> +++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
->>> @@ -111,6 +111,7 @@ static int gp_aux_bus_probe(struct pci_dev *pdev, const struct pci_device_id *id
->>>    
->>>    err_aux_dev_add_1:
->>>    	auxiliary_device_uninit(&aux_bus->aux_device_wrapper[1]->aux_dev);
->>> +	goto err_aux_dev_add_0;
->>>    
->>>    err_aux_dev_init_1:
->>>    	ida_free(&gp_client_ida, aux_bus->aux_device_wrapper[1]->aux_dev.id);
->>> @@ -120,6 +121,7 @@ static int gp_aux_bus_probe(struct pci_dev *pdev, const struct pci_device_id *id
->>>    
->>>    err_aux_dev_add_0:
->>>    	auxiliary_device_uninit(&aux_bus->aux_device_wrapper[0]->aux_dev);
->>> +	goto err_ret;
->>>    
->>>    err_aux_dev_init_0:
->>>    	ida_free(&gp_client_ida, aux_bus->aux_device_wrapper[0]->aux_dev.id);
->>
->> Hi,
->>
->> This is strange because the nearly same patch is in -next since June
->> 2024 ([1])
->>
->> It is also in Linux since at least 6.10 ([2])
->>
->> In [1] and [2], there is also a new err_ret label, which is not part of
->> your patch.
->>
->> On which tree are you working?
->> Is your patch compile tested?
->>
->> CJ
+On Tue, Jan 07, 2025 at 07:47:24AM +0000, Yosry Ahmed wrote:
+> In zswap_compress() and zswap_decompress(), the per-CPU acomp_ctx of the
+> current CPU at the beginning of the operation is retrieved and used
+> throughout.  However, since neither preemption nor migration are disabled,
+> it is possible that the operation continues on a different CPU.
 > 
-> Thank you for your response. I discovered the aforementioned bug in
-> Linux kernel v6.4.16 (the latest v6.4). It appears that the fix was
-> not completed in the latest version of v6.4. I have also checked the
-> link you mentioned and saw that the issue has been fixed in v6.10. I
-> realize that I omitted the final jump patch in the patch v1 submitted,
-> and I will perfect it in patch v2. Thank you for your suggestion.
+> If the original CPU is hotunplugged while the acomp_ctx is still in use,
+> we run into a UAF bug as the resources attached to the acomp_ctx are freed
+> during hotunplug in zswap_cpu_comp_dead().
+> 
+> The problem was introduced in commit 1ec3b5fe6eec ("mm/zswap: move to use
+> crypto_acomp API for hardware acceleration") when the switch to the
+> crypto_acomp API was made.  Prior to that, the per-CPU crypto_comp was
+> retrieved using get_cpu_ptr() which disables preemption and makes sure the
+> CPU cannot go away from under us.  Preemption cannot be disabled with the
+> crypto_acomp API as a sleepable context is needed.
+> 
+> Commit 8ba2f844f050 ("mm/zswap: change per-cpu mutex and buffer to
+> per-acomp_ctx") increased the UAF surface area by making the per-CPU
+> buffers dynamic, adding yet another resource that can be freed from under
+> zswap compression/decompression by CPU hotunplug.
+> 
+> There are a few ways to fix this:
+> (a) Add a refcount for acomp_ctx.
+> (b) Disable migration while using the per-CPU acomp_ctx.
+> (c) Use SRCU to wait for other CPUs using the acomp_ctx of the CPU being
+> hotunplugged. Normal RCU cannot be used as a sleepable context is
+> required.
+> 
+> Implement (c) since it's simpler than (a), and (b) involves using
+> migrate_disable() which is apparently undesired (see huge comment in
+> include/linux/preempt.h).
+> 
+> Fixes: 1ec3b5fe6eec ("mm/zswap: move to use crypto_acomp API for hardware acceleration")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
+> Reported-by: Johannes Weiner <hannes@cmpxchg.org>
+> Closes: https://lore.kernel.org/lkml/20241113213007.GB1564047@cmpxchg.org/
+> Reported-by: Sam Sun <samsun1006219@gmail.com>
+> Closes: https://lore.kernel.org/lkml/CAEkJfYMtSdM5HceNsXUDf5haghD5+o2e7Qv4OcuruL4tPg6OaQ@mail.gmail.com/
+> ---
+>  mm/zswap.c | 31 ++++++++++++++++++++++++++++---
+>  1 file changed, 28 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index f6316b66fb236..add1406d693b8 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -864,12 +864,22 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+>  	return ret;
+>  }
+>  
+> +DEFINE_STATIC_SRCU(acomp_srcu);
+> +
+>  static int zswap_cpu_comp_dead(unsigned int cpu, struct hlist_node *node)
+>  {
+>  	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
+>  	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
+>  
+>  	if (!IS_ERR_OR_NULL(acomp_ctx)) {
+> +		/*
+> +		 * Even though the acomp_ctx should not be currently in use on
+> +		 * @cpu, it may still be used by compress/decompress operations
+> +		 * that started on @cpu and migrated to a different CPU. Wait
+> +		 * for such usages to complete, any news usages would be a bug.
+> +		 */
+> +		synchronize_srcu(&acomp_srcu);
 
-v6.4 is not supported any more, so an updated patch would never be applied.
-See active branches on https://www.kernel.org/.
+The docs suggest you can't solve it like that :(
 
-Anyway, when don't working on a recent tree, you should tell it, because 
-no one can guess that your patch is related to something old.
+Documentation/RCU/Design/Requirements/Requirements.rst:
 
- > I realize that I omitted the final jump
-
-So I guess, that you not compile tested your patch.
-You should never do that, event when the change looks trivial.
-
-CJ
+  Also unlike other RCU flavors, synchronize_srcu() may **not** be
+  invoked from CPU-hotplug notifiers, due to the fact that SRCU grace
+  periods make use of timers and the possibility of timers being
+  temporarily “stranded” on the outgoing CPU. This stranding of timers
+  means that timers posted to the outgoing CPU will not fire until
+  late in the CPU-hotplug process. The problem is that if a notifier
+  is waiting on an SRCU grace period, that grace period is waiting on
+  a timer, and that timer is stranded on the outgoing CPU, then the
+  notifier will never be awakened, in other words, deadlock has
+  occurred. This same situation of course also prohibits
+  srcu_barrier() from being invoked from CPU-hotplug notifiers.
 
 
