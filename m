@@ -1,82 +1,82 @@
-Return-Path: <stable+bounces-107863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6020EA04479
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 16:30:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA334A0447B
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 16:30:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80C481883354
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 15:29:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F08E51884FF2
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 15:30:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B241DFE00;
-	Tue,  7 Jan 2025 15:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8DD1F2C50;
+	Tue,  7 Jan 2025 15:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="IvEiJLt3"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ctAylwUS"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2064.outbound.protection.outlook.com [40.107.96.64])
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2055.outbound.protection.outlook.com [40.107.100.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E09195FEC
-	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 15:29:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B34B86330
+	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 15:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.55
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736263783; cv=fail; b=CBRdzFqj66KzkNXs1lpMy5ZODaYBvaNT9Y8sij/1ZFheIHMFNBGoG4xJnqdHOy7k0McowZaFNOaZbt9rJ1agUWR6urv/NkcK72HaQYym502otcP1xe4K8R7f/LG+Vss6HMLrQfZXOCRQJqkR/8j9fR9D/K8Hju61PxVMrxWPCDw=
+	t=1736263797; cv=fail; b=QsWgI11potnEqutwgiZdjZfwi2D23fEK40z9ccuqLelMr45iuEAYlY0RVbmIvF049SbUbMU3ig+bfIylEA1x3k/H+212AR6l/1MiXEHPQCgIEeKoToqTRl/6tiPKvQ48Vx+mV7jc3nel9OHolDWCb9C6pru+TF/zLGTb+olvnG4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736263783; c=relaxed/simple;
-	bh=pcFDd+NlQ0Fh3N5/EIJc7e0DUMse0QTCqsu8hanxT4U=;
+	s=arc-20240116; t=1736263797; c=relaxed/simple;
+	bh=ZaPtSYLT2sslTamXlvg+QDhSZjEUbWiR2qy4Kbp5dTk=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IsUuW032hM9CDSRZBtCwc0W67tvPhEsYr92HZ5+ZZBL1y/l1n+zpXFzYsqWnj48F5r6SyMVdJLaWYhwzivzcefsnFNndVSGG6cv2IdbuSvtyFXw0IxDvlJKJVG9Qh9vAXRgHptFlq4VV3goK/mQSp2Op0kZvqcO481y6MPkoF3M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=IvEiJLt3; arc=fail smtp.client-ip=40.107.96.64
+	 MIME-Version:Content-Type; b=UR/oug0yWqyvYKFv+9OVTPzpkqQDeCuE4Sm3kBPpoAcChlqxuURIJ+rRlcptY3m/yZ8Ke+cqGTL8Qc8NTNlkdRvrlDw1jcgLLU8mn+DKik1GCYwNKlswXo5qEw189WcwPrc8vwwQ4bf6J7fSU7BOKSXByUofVuAWF3vJCJZqF80=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ctAylwUS; arc=fail smtp.client-ip=40.107.100.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I4ail60gZ/OKbVBuvYe/ZMPodPOYtjLVoH7j3MyJd+raaq47ZnoYwMt9lmW7NKqiBhTA+ejTFC4AWz6ULVALn1TsKfZJ7G+vRunc3m8ZKK1yyjuIjZ4EPZOC3sBA2RHP0uUAZ+2AhGsNk0JE7GlWN3lv1lulk6zJO/B1gePlyGj3kOlYWfrn4Q+ZtMYfihO8xUJxQQPwI3GxmVzOfMCorcz68KbV5D4DHZQ8bafGL+xQy6wL/9yY/EUBtLYea95NF+j8W4NTHYyi5Cvl+G/pJS39MHPkqbQ0aF2ylhREXce1GpJFVeLesQp+CxgcjwR0yBydyLULcfuJpJW1Q2u88g==
+ b=pRYJHFjFG+U5REWdhLZHWKYc3AVOUNsxgom5kCTaxHI7zxIXb5Qz53QgEofr6+yQMm2x/krE8H2TljoH2alSzyF+/hZ+rO88cR4MZJYF1uQDCL8ojkWJuLtFeC+ZOFxjsDZtfvEvPPcND3CYYDqQEmiU2QZiwNXGSMwg9etWfT9HhjP6dEGsDetB77iDSIUWy15a9hU32D0pDi6bZ61dAB+pwQavfrYhEIcV16Gi1mV2hHlm8cqV5PGssHYoRssyKP7/Ptm0J/pW6HCjr1fLo234ZE46IpeatDea5NkIXO+G/MG1AoXN+5YqA9y2tyHJww3gZgyfRw56QReQve7BaQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YyK4kMBpzQTB5/B2G+7v2/OoT0lC1B4pIZCcRtMUQyM=;
- b=YQqS13LqvPTRlBR7aheyiNp5dVqcAbmSH/+6eEZlSC/xzbl8rQnQL+k/DTIHOT0ZN3NwW+G35eIkPrr8UZefK+HfUU1yZVFV0fzgMOEFypALKSzFzqDdeH1QfeIBrz0q6QVJa8uu/kFjGEQnD8SHfrpiHsqLQRpEzVFPa3XnwAL5gwK+AxgpoGq8arfK9Me5yEP+8Y8QuqwyTCZfn03T7gEnhXmrsGj3ZGeznAr1PyGPz8UDYQsrzLJ93v7dPMVRMw/dhn/iElbheZdktO8qa+hJ6XhcnwqayBWFPcW4OzV/FZUlARyHcBs2zDYjOqZ64IjmlbB0vXbou6n+z1RHSA==
+ bh=894d8/YoTnXiixowWdBgTCWKogn+VIkkmyi+ItxsVzI=;
+ b=BfGYuEFP+kKMWJd4iTZvda2OU8dN+7Ua0Ir/eld7NOpoIVrVnF4X/0xp0gSpdaX8zfcvpEfIFSESZL4ivDagfe5GYAFXDJn0sKDdI9wgMiqbdMCbXDUQhzbqS4lc6nR4LRdSY7oUQmP7rn1fFjw1KnPAHSChov4o74fDxroUIO/1+C/BOxTtUneIN4BcQ1QlyG5vevXSQUFW5NM/nLB+4ew56PR+NQMFEE6vx18SGyFg/3V5Gal9jE0GqGztaTy82skQEGvZt702ybYEXzafPWUBe2YVtbsjl4063/+Y2FxAV9wg8PjiCoixCDEc0dSBPHIqa04icjXQF8OAaOdIcA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YyK4kMBpzQTB5/B2G+7v2/OoT0lC1B4pIZCcRtMUQyM=;
- b=IvEiJLt30hMeCXVBkKnvfO1IbHG6Pf5g5aWeZ/6LBTI6rRjsNdxULgTOwbE4HQlkcfPzQzWI3ybfRZGgrpNr4AsfgevudpoFUcEcCu9Mqf+V5x9iWZg3g+ROk/6nF80e4RCQuK93qnLFZCaqN8qJGJQmcfoeUq6AAw5KlYOYolQ=
-Received: from SA1P222CA0072.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:2c1::28)
- by DS0PR12MB7925.namprd12.prod.outlook.com (2603:10b6:8:14b::20) with
+ bh=894d8/YoTnXiixowWdBgTCWKogn+VIkkmyi+ItxsVzI=;
+ b=ctAylwUSFHwqj0nONkFgz9k5NFoyTOyC6CI7mmb6zp8njxRtnpC506HJRfynegX7b+rcDv7wHplwbwHfoSH/Vbake/I789wCqq8THIpaeRsdlcz84+ur93eKH6UrROyUjuD/2JrHo8y0lnmP9aOwUTLG9RAsj+8qf0CtxNZFXUE=
+Received: from MN0P220CA0023.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:52e::27)
+ by PH8PR12MB6961.namprd12.prod.outlook.com (2603:10b6:510:1bc::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.10; Tue, 7 Jan
- 2025 15:29:37 +0000
-Received: from SN1PEPF0002529D.namprd05.prod.outlook.com
- (2603:10b6:806:2c1:cafe::5f) by SA1P222CA0072.outlook.office365.com
- (2603:10b6:806:2c1::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.17; Tue, 7 Jan
+ 2025 15:29:46 +0000
+Received: from BN2PEPF000044A7.namprd04.prod.outlook.com
+ (2603:10b6:208:52e:cafe::8) by MN0P220CA0023.outlook.office365.com
+ (2603:10b6:208:52e::27) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.8314.18 via Frontend Transport; Tue,
- 7 Jan 2025 15:29:37 +0000
+ 7 Jan 2025 15:29:46 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SN1PEPF0002529D.mail.protection.outlook.com (10.167.242.4) with Microsoft
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ BN2PEPF000044A7.mail.protection.outlook.com (10.167.243.101) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8335.7 via Frontend Transport; Tue, 7 Jan 2025 15:29:36 +0000
-Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.8335.7 via Frontend Transport; Tue, 7 Jan 2025 15:29:45 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 7 Jan
- 2025 09:29:36 -0600
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB05.amd.com
- (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ 2025 09:29:45 -0600
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 7 Jan
- 2025 09:29:35 -0600
+ 2025 09:29:44 -0600
 Received: from tom-r5.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Tue, 7 Jan 2025 09:29:26 -0600
+ Transport; Tue, 7 Jan 2025 09:29:36 -0600
 From: Tom Chung <chiahsuan.chung@amd.com>
 To: <amd-gfx@lists.freedesktop.org>
 CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
@@ -87,9 +87,9 @@ CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
 	<solomon.chiu@amd.com>, Daniel Wheeler <daniel.wheeler@amd.com>, Wayne Lin
 	<Wayne.Lin@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, "Alex
  Deucher" <alexander.deucher@amd.com>, <stable@vger.kernel.org>
-Subject: [PATCH 07/24] drm/amd/display: Validate mdoe under MST LCT=1 case as well
-Date: Tue, 7 Jan 2025 23:28:38 +0800
-Message-ID: <20250107152855.2953302-8-chiahsuan.chung@amd.com>
+Subject: [PATCH 08/24] drm/amd/display: Reduce accessing remote DPCD overhead
+Date: Tue, 7 Jan 2025 23:28:39 +0800
+Message-ID: <20250107152855.2953302-9-chiahsuan.chung@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250107152855.2953302-1-chiahsuan.chung@amd.com>
 References: <20250107152855.2953302-1-chiahsuan.chung@amd.com>
@@ -101,68 +101,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Received-SPF: None (SATLEXMB05.amd.com: chiahsuan.chung@amd.com does not
- designate permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002529D:EE_|DS0PR12MB7925:EE_
-X-MS-Office365-Filtering-Correlation-Id: 080511bc-3c98-4599-17f6-08dd2f301820
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A7:EE_|PH8PR12MB6961:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3d54107f-8ecd-44c0-e9f7-08dd2f301dab
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014;
+	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700013;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?IAykNjtzP9P0yvm3ubAHist04bXTVuWdwd7S9uK3WlKrxkw84Uzlirbf0kjo?=
- =?us-ascii?Q?QYXV2hv2aS7VBQ/mJzrYiDJRH+r4zeMl0UzIY7tizVx/C4YSi+WnoXztxsFO?=
- =?us-ascii?Q?uCOrq4ko2T0ryx6Epw5q+KebKQbCCdtqqMdOAIlhpA9wF8KcjgZ4GMNdkLhP?=
- =?us-ascii?Q?8GKItHpG02j08UvEZNBQMHUyXoiFBswu25gNIZC42i5N28ajcwA9sWKtjJBy?=
- =?us-ascii?Q?VaPtz8bEQoqvuiPmebMHKLZWtWhVyzNec+AprR4GP7PtH+hS/4oBWnMwBk4B?=
- =?us-ascii?Q?ugXsZGKXOP4PYwpNcXvKaj0v1x+ueAj6qtyVKAImoVodKGPdnsMXAs7zpnCY?=
- =?us-ascii?Q?cqFsC8ggBWtu9v0fPZs0fNejB5g4PzE+GmdrRbrSokyZFMoEtAQtZ7NUlVAa?=
- =?us-ascii?Q?YRC4hB6OZjewP96YRIdWZn3xzNQ6LlwVYrnvY92onZlTCNeTZVnhsW0FRMUC?=
- =?us-ascii?Q?NX1V+puqvjucwQYzs40ZebWvJw6C0uux3+Ig4xIBOROPvaZP7QJmLDAE8/WV?=
- =?us-ascii?Q?qEOAfIZgcvIyIZbRAiykL6IPPSIeGrbEHBStvR/xBVSpRKDXuDTeoTSGCt1T?=
- =?us-ascii?Q?Y9DYn4z1epxGxSQh8XlOm/hloWFpTqM8ORh3wgwba70ea2MtILXrBbqL/9nf?=
- =?us-ascii?Q?xz6nfBApbftC/+6xNAODrIsWc2K0aBeXsLT+wvT5fMxxFebdnQt5Y+DDzkaP?=
- =?us-ascii?Q?SAITo3dJwy9HeY5DzQZ5MkfP4Y9/ZUUg1aJBK9q0s9+6YP2tRpp+9HOzkIKk?=
- =?us-ascii?Q?by++6KKits8r/6VodIZceu/FDPYmTJl0oM1B9ws7y/mGdoaBlQf8s/xH+w7R?=
- =?us-ascii?Q?yi3XqHf1ylhQwp9AZN/m9OzthNfm+Y1K9L1NbavRA+8Xnxa3nKWlF2Xskozy?=
- =?us-ascii?Q?x6dqXgcE0suSdlS9oejDIvp3SF/1583v1B3La6pES8qfK0eq+fDSnNAOra+u?=
- =?us-ascii?Q?gafTvlepHqS9IpWr5yXfT0I+x4+0URvZP2JHE1ic+dd+e60AjSoZpVpXmTmD?=
- =?us-ascii?Q?sGB7XkVJwe/CE93O/CcsJEKjVAgNIVGRRFrqd4AiSihwLNwKpZYWofXRq0h9?=
- =?us-ascii?Q?Ft606mGm3DLTwvNzqnfC4DH8T/B/buhQagtFrG2TWwGHAKED5tD2Elir8JsW?=
- =?us-ascii?Q?UXQtQoIHnB0WqR8WlIlvGZjCzXVNg4xSzD7wMDz5j6dT8mlT+wEGqYLul4kW?=
- =?us-ascii?Q?37qdExJrVuoqrUvSxk4o9vnKO1MerlBlna3Gqee22+oW8c/zjhUxxOsEbcPY?=
- =?us-ascii?Q?u/10Wo2r1IQSnoAW+ia4d5dQZUY4w4PGc1uztX56Iz2t+USV+gn/zdFRmDh5?=
- =?us-ascii?Q?yNcmAVkY6zIt3uCACUa3lMAXk772W2Zn4oYiPVpUXAHIyHXP8w0ej5JgNn7g?=
- =?us-ascii?Q?k/EbVOtpPkYImHYueiF3tDNFSHSz+xyAZty0PYrPDqt1H2l2HBx5eUiPtsJR?=
- =?us-ascii?Q?VqtXUf1VToQ=3D?=
+	=?us-ascii?Q?2jB7i0i/c+8aRu8N7hjw040ysW2hBDWWFp9KhWmEXovxU95dhTT2godWfkWo?=
+ =?us-ascii?Q?Qd1noQ5r2QwEYEv6IboZg6knTHAD0AQ9FDmM+37Dic5JOAce1tFtlL7pe4Uu?=
+ =?us-ascii?Q?x306iG4V+2xK2unpUbYFkYM/mZWZBvsgb2ukYl03SWoUySW9kHUnT3CfEqtI?=
+ =?us-ascii?Q?N3IImvgAmeeNvG+riYi/ppv42ED8I6bxksXtw1Oh/gExLYAV1n7vXJCFFKFV?=
+ =?us-ascii?Q?8qlOzVjLlgPY7okuSJpEq8szRQFH6vKxmf/J6d5AGYgQP9U6ZiksBoukkFNI?=
+ =?us-ascii?Q?2kxT7foJdtpivK8urCQ/CEJUPhPuUIYJVusqCeWhx9HnBeu6qQeFJzTuKEc6?=
+ =?us-ascii?Q?4PdTs6KNIP0Zk7+uCKfXlwQ4IsyN7InNu3RRgSLi27j2/KKtgPHtwuLW1KGc?=
+ =?us-ascii?Q?5HrsJ//JPg0r1+cGLABfs4coAaG4y0BqDYdrVeJQWbNe9vSzoYKi42vs/5CO?=
+ =?us-ascii?Q?Vw4dli80I7Dlo1bH9zcMvyV+cnh/6DzSp1/eIyK2fKTS/iSLP1lxdd/dNCJO?=
+ =?us-ascii?Q?yYfjrKwQKo7+/c3aUD5LgoO0GBLCrQCPlX57qVqJX7tPbGpvHj2Y4ryH4Uwp?=
+ =?us-ascii?Q?bYZvOniO64O7ynzsOjI+vNfgm0JilSnzzaHa0RAJhGYgd4m3GNqEVdG+H5In?=
+ =?us-ascii?Q?cwwvCpSRkAENeh9XN71squjCqly8c3d8smwz4zP0CZTvm7LdjaEBpMlHcdyq?=
+ =?us-ascii?Q?784c0Xvo/kW52e5s/TMajpkvZzshMxZrq0XBGLH0uy+tdfw3nN5oB4Z516j1?=
+ =?us-ascii?Q?7rgXleWnLBB6Q9jsHVj9maIwCeBxzxX8CZMTEayWOjFKCqs6golV48Kkw0By?=
+ =?us-ascii?Q?jtVZma7jINv/ejDTgZ2pPfutbze915E9+6j8BRTcs/eN/VFDYN6VWlCY91qM?=
+ =?us-ascii?Q?SZaGwOfDT1BqhX70hSs1rjFR/Ryj2/hgTWr2IKglBB7ItJ0Ukl0zH0bmJZHM?=
+ =?us-ascii?Q?FmmNqxz/EwmTpQV17284vZMjL/0NZ4QtjnkCFVbzSBhLMA3hVQRC3ZLJArXW?=
+ =?us-ascii?Q?yHWNB1PpCYWSuwChFokgMRYhU0N+yz8xtrbAMdgnRWs2m/aetVZ7/KGzoEaO?=
+ =?us-ascii?Q?oEOvZxIXCyuu6BdicTYPnxwDEeSGG+ID0V45O1EIZyisOmInbLvM9Sacwph6?=
+ =?us-ascii?Q?WoWQAZzHMKFZbIq4JgJxu7dE6HbCVWczCcZvh1/shX1P0bO2LiKvXECeI92L?=
+ =?us-ascii?Q?2ZQJCSHff70QldXH65xDhf38e71Ochf54EzbP3tNSLggdytUItxCUb61HmWR?=
+ =?us-ascii?Q?5unJ1s4l9GgEkuO/DGjvp7wI04iE7mw+C2byz1Z1g/rhKMcBO712oK4T0bzA?=
+ =?us-ascii?Q?yYSiEVhvzhF/r9PxShCLURNnEjcV3Czki6gpP4mGOwCMfkSC9MYrb5Cgp2CK?=
+ =?us-ascii?Q?JPyu/uDXXgvzVW51NMpJgCaE9hsZY55OxAtlHvAf8uL5zCQRE7RyU+Kmfn84?=
+ =?us-ascii?Q?btNvnFBHxVI=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2025 15:29:36.5389
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2025 15:29:45.8595
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 080511bc-3c98-4599-17f6-08dd2f301820
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3d54107f-8ecd-44c0-e9f7-08dd2f301dab
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF0002529D.namprd05.prod.outlook.com
+	BN2PEPF000044A7.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7925
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6961
 
 From: Wayne Lin <Wayne.Lin@amd.com>
 
-[Why & How]
-Currently in dm_dp_mst_is_port_support_mode(), when valdidating mode
-under dsc decoding at the last DP link config, we only validate the
-case when there is an UFP. However, if the MSTB LCT=1, there is no
-UFP.
+[Why]
+Observed frame rate get dropped by tool like glxgear. Even though the
+output to monitor is 60Hz, the rendered frame rate drops to 30Hz lower.
 
-Under this case, use root_link_bw_in_kbps as the available bw to
-compare.
+It's due to code path in some cases will trigger
+dm_dp_mst_is_port_support_mode() to read out remote Link status to
+assess the available bandwidth for dsc maniplation. Overhead of keep
+reading remote DPCD is considerable.
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3720
+[How]
+Store the remote link BW in mst_local_bw and use end-to-end full_pbn
+as an indicator to decide whether update the remote link bw or not.
+
+Whenever we need the info to assess the BW, visit the stored one first.
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3720
 Fixes: fa57924c76d9 ("drm/amd/display: Refactor function dm_dp_mst_is_port_support_mode()")
 Cc: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
@@ -171,34 +175,89 @@ Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
 Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
 Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
 ---
- .../amd/display/amdgpu_dm/amdgpu_dm_mst_types.c    | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h |  2 ++
+ .../display/amdgpu_dm/amdgpu_dm_mst_types.c   | 34 ++++++++++++++-----
+ 2 files changed, 27 insertions(+), 9 deletions(-)
 
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+index e46e1365fe91..e7963158a147 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+@@ -697,6 +697,8 @@ struct amdgpu_dm_connector {
+ 	struct drm_dp_mst_port *mst_output_port;
+ 	struct amdgpu_dm_connector *mst_root;
+ 	struct drm_dp_aux *dsc_aux;
++	uint32_t mst_local_bw;
++	uint16_t vc_full_pbn;
+ 	struct mutex handle_mst_msg_ready;
+ 
+ 	/* TODO see if we can merge with ddc_bus or make a dm_connector */
 diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-index ca864f71ae66..a504aa1243e9 100644
+index a504aa1243e9..e096fb562122 100644
 --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
 +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -1835,11 +1835,15 @@ enum dc_status dm_dp_mst_is_port_support_mode(
- 			if (immediate_upstream_port) {
- 				virtual_channel_bw_in_kbps = kbps_from_pbn(immediate_upstream_port->full_pbn);
- 				virtual_channel_bw_in_kbps = min(root_link_bw_in_kbps, virtual_channel_bw_in_kbps);
--				if (bw_range.min_kbps > virtual_channel_bw_in_kbps) {
--					DRM_DEBUG_DRIVER("MST_DSC dsc decode at last link."
--							 "Max dsc compression can't fit into MST available bw\n");
--					return DC_FAIL_BANDWIDTH_VALIDATE;
--				}
-+			} else {
-+				/* For topology LCT 1 case - only one mstb*/
-+				virtual_channel_bw_in_kbps = root_link_bw_in_kbps;
-+			}
-+
-+			if (bw_range.min_kbps > virtual_channel_bw_in_kbps) {
-+				DRM_DEBUG_DRIVER("MST_DSC dsc decode at last link."
-+						 "Max dsc compression can't fit into MST available bw\n");
-+				return DC_FAIL_BANDWIDTH_VALIDATE;
- 			}
- 		}
+@@ -155,6 +155,17 @@ amdgpu_dm_mst_connector_late_register(struct drm_connector *connector)
+ 	return 0;
+ }
  
++
++static inline void
++amdgpu_dm_mst_reset_mst_connector_setting(struct amdgpu_dm_connector *aconnector)
++{
++	aconnector->drm_edid = NULL;
++	aconnector->dsc_aux = NULL;
++	aconnector->mst_output_port->passthrough_aux = NULL;
++	aconnector->mst_local_bw = 0;
++	aconnector->vc_full_pbn = 0;
++}
++
+ static void
+ amdgpu_dm_mst_connector_early_unregister(struct drm_connector *connector)
+ {
+@@ -182,9 +193,7 @@ amdgpu_dm_mst_connector_early_unregister(struct drm_connector *connector)
+ 
+ 		dc_sink_release(dc_sink);
+ 		aconnector->dc_sink = NULL;
+-		aconnector->drm_edid = NULL;
+-		aconnector->dsc_aux = NULL;
+-		port->passthrough_aux = NULL;
++		amdgpu_dm_mst_reset_mst_connector_setting(aconnector);
+ 	}
+ 
+ 	aconnector->mst_status = MST_STATUS_DEFAULT;
+@@ -504,9 +513,7 @@ dm_dp_mst_detect(struct drm_connector *connector,
+ 
+ 		dc_sink_release(aconnector->dc_sink);
+ 		aconnector->dc_sink = NULL;
+-		aconnector->drm_edid = NULL;
+-		aconnector->dsc_aux = NULL;
+-		port->passthrough_aux = NULL;
++		amdgpu_dm_mst_reset_mst_connector_setting(aconnector);
+ 
+ 		amdgpu_dm_set_mst_status(&aconnector->mst_status,
+ 			MST_REMOTE_EDID | MST_ALLOCATE_NEW_PAYLOAD | MST_CLEAR_ALLOCATED_PAYLOAD,
+@@ -1819,9 +1826,18 @@ enum dc_status dm_dp_mst_is_port_support_mode(
+ 			struct drm_dp_mst_port *immediate_upstream_port = NULL;
+ 			uint32_t end_link_bw = 0;
+ 
+-			/*Get last DP link BW capability*/
+-			if (dp_get_link_current_set_bw(&aconnector->mst_output_port->aux, &end_link_bw)) {
+-				if (stream_kbps > end_link_bw) {
++			/*Get last DP link BW capability. Mode shall be supported by Legacy peer*/
++			if (aconnector->mst_output_port->pdt != DP_PEER_DEVICE_DP_LEGACY_CONV &&
++				aconnector->mst_output_port->pdt != DP_PEER_DEVICE_NONE) {
++				if (aconnector->vc_full_pbn != aconnector->mst_output_port->full_pbn) {
++					dp_get_link_current_set_bw(&aconnector->mst_output_port->aux, &end_link_bw);
++					aconnector->vc_full_pbn = aconnector->mst_output_port->full_pbn;
++					aconnector->mst_local_bw = end_link_bw;
++				} else {
++					end_link_bw = aconnector->mst_local_bw;
++				}
++
++				if (end_link_bw > 0 && stream_kbps > end_link_bw) {
+ 					DRM_DEBUG_DRIVER("MST_DSC dsc decode at last link."
+ 							 "Mode required bw can't fit into last link\n");
+ 					return DC_FAIL_BANDWIDTH_VALIDATE;
 -- 
 2.34.1
 
