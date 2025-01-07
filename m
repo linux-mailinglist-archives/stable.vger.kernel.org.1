@@ -1,102 +1,144 @@
-Return-Path: <stable+bounces-107806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE1B4A038E6
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 08:38:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49953A038E9
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 08:39:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12EC91885D08
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 07:39:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9097188652F
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 07:39:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0909F1E0090;
-	Tue,  7 Jan 2025 07:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6581DF964;
+	Tue,  7 Jan 2025 07:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="K7iamkj3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bR4X1ExU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E1B156F3F
-	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 07:38:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B525D1DF74B;
+	Tue,  7 Jan 2025 07:39:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736235526; cv=none; b=Qypuso+eFQO2VO1HpL4xzwk31uA1Z6OmwjyR1Xv/KharMfboq64rXewSLU6hoqQBaj3VsnxAMhfN5sTYGEbhJjADt9GLPaAwyTdvJDq5MjwlEUBzdctwclzn5gJN36jp3sWOweyIvM2t8vubpIwN5IR2XwlEZA2qg6fWyNm4FKc=
+	t=1736235559; cv=none; b=cZVhwUcRW76qmIv5DSid0HaFNng1JE01FLQmgznSP9jYZkPSo98L8zUimoCs6JzJmmR5VsklLlLXlt0e387FnMMwFwLwWcHJ6/fLQW/WxWo/EtGYhSu0gwXU1+AIFXTbVtk0FttuqekWLv2wHn9Vd/UXYvdl+IomW17UPo4btE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736235526; c=relaxed/simple;
-	bh=eVJmQfqk+wa5AZU0IhCkNx/9MfMPryn71yEHOV3FSII=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Aj8ye94nFB23GfldxNdhWhOpJBGMoc02FjuW58z34DFCBdC5vMXnhclMVOaoWdAUVHGaB5hGhTxTn2K58xbcEI0WfjveepW5NiGVYlwDJ39SCEfYrjhIBKFoB3G0VTknRKWg/Y1Tu6c88IYKf+0gIjwv96JcyahUCNtxQofwuUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=K7iamkj3; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2163dc5155fso218062175ad.0
-        for <stable@vger.kernel.org>; Mon, 06 Jan 2025 23:38:42 -0800 (PST)
+	s=arc-20240116; t=1736235559; c=relaxed/simple;
+	bh=LU0WbVQz2CxbGW2N1O6kmuaX5dfkZ0N6PZp0D5MggIg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dNkkfeU8xLi7pfJlgzwElJQairvQecJH3Vsf3jwyqxi7pquQmdxEB2VtN9Vh6DMltC7xYnHnc1j93o/iKgaWVMmMVSkQ/gFZskNvFeIPRwHqfPvlD4MrCo80/yVFxaRImZo6zUt5Rb2cZyH34u6ISsT/MctYeDvWUUfbbBaVDv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bR4X1ExU; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2efded08c79so17509149a91.0;
+        Mon, 06 Jan 2025 23:39:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1736235522; x=1736840322; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=c6TpyBIBHhRqCq2NSRZgwqe9hlCBkCrXXo96kF987tg=;
-        b=K7iamkj3gTXDw0vIgQVPISht3cQa2rah3gmhdGA9ZPZohcNgMyCQ5xu8U+EuNwMWVn
-         fpLvRRXifggqtG1Bat2LoIR2yhnwj8wxQwdWZ1FVCzBrCeU06AMFDcGZQ3idL9uEXi1C
-         HNgigDZfT2eqbzg3XDHysb4ftyfzKTvATAesM=
+        d=gmail.com; s=20230601; t=1736235556; x=1736840356; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ULQq5TWZfMw9s6DzRDdbgNJ1Nc4fQXG8u2j3H7zO1uA=;
+        b=bR4X1ExUg8/H1KO/BRyf04nIjkUE7kzrOJQJ1fTmWq8EULhO9qx4lbgLjo5UAYVqln
+         6yQA1xmPRf1YDtBUmHlOMzxlEyxxGZhHzxejyWUfq4mxqOl0oepwNGZTkwPlDOs4zJ7s
+         nnhIRU68/Vz4YQbHl0keN0lii0T1hcQC9H5aJwmbCI/gRw0k6Ft/BoxXIHm6bnK7PGi5
+         RkPLDEfc7SSrwGbJ8aI0wUHoT3dI8dhs7BzmkI7NJfyAtLDVyC1LUgRffk6cKOnJWTLr
+         MJZlfoajL2hkJBARDHtLwv7Q9lNNMgsbzN5UcDvy3Y9Wn5qR7eyYuo7XCQwcLoHgmX5C
+         UaZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736235522; x=1736840322;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c6TpyBIBHhRqCq2NSRZgwqe9hlCBkCrXXo96kF987tg=;
-        b=Ee69ryqmNYYUTBFrcqC1HrpbiNC9DhSpQQOAgXI0OUyw7RFPsv7ISVGb6Tt+0b6dcp
-         /qu41ee//EYnJCwSO2vroVsw3WQvcHLVoUQxdwoY9x0oPATPrdRn+lxWxIkHsQIc5bU1
-         bXtWyMqjYum4cRg1XFQ9vp6zfNk10FL650hw4L4FonIKJQR6yf6R8apinTxz59ao5izZ
-         ej/md0KItqizC4A4Ptz3u9CGgdQQyWzgk9/n+F/7CJ6yoK9CPXNubP/IFEUpTFGXbFCW
-         PFsklRqDtpG4om63EItIawM2QPWqSWI+1d3iAl03hUAn0stVJJbfOOh1Gd+OH0K19NM5
-         XtVw==
-X-Forwarded-Encrypted: i=1; AJvYcCXCQtew0wsEPbSrNjr4EqB/3l7+XxWAvzv7f76d+OwDwQwFCBXsXgR/CgEpLsogVUn35HbRzkk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFtIg4yNUZRmn0D4j+We1inty0NcgOuNTdSThuN2YJgcxOKHvK
-	BpKM4QJF/qp/9gquWXIAFLaMymtybjiFQTAzwpNDelURSGmErNut4b2qTw74ew==
-X-Gm-Gg: ASbGncsEyBl3ldfjvPih2IYO98lCWojltXMBCr2DZYrkaqwjFBq90D83xibYCK5a9qZ
-	viJFodD1Ar8Vc4QZWqn+xcC0QGkaq72n9UWFLjMr5mVskzS8kVOMEvjTK2NcH8T02KX6Hx+dkmT
-	NNTfDk4b4FGRbwhBPosoIPlerr3yGVNC2NAEz8e9QqW334mJT9mpIF4yH1iTwxFz9ZA0iGIELBu
-	l3v3DZcz0J9sepLM0viGqADRGiRTbsj/4KDTEkG84+EhS1qQPZXCkAQV3P4
-X-Google-Smtp-Source: AGHT+IFP9fBz3XVX9qDbkVrQfLxKKg2cGiqLB8JwvWr59yDGayoZBFKqHGqMHDY/d4+jdwiBBRO7JQ==
-X-Received: by 2002:a05:6a21:33aa:b0:1e5:a0d8:5a33 with SMTP id adf61e73a8af0-1e5e048adb9mr95188628637.18.1736235521892;
-        Mon, 06 Jan 2025 23:38:41 -0800 (PST)
-Received: from google.com ([2401:fa00:8f:203:c142:c1e8:32c2:942a])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad81582asm32720364b3a.9.2025.01.06.23.38.39
+        d=1e100.net; s=20230601; t=1736235556; x=1736840356;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ULQq5TWZfMw9s6DzRDdbgNJ1Nc4fQXG8u2j3H7zO1uA=;
+        b=haEBxWw+mdBTObNo25/lV9dsjewIVBQ0z8qKTxTucbWVAJwIyy3rcNwQCtZQKRJUU5
+         ULA6zukbeJ120LmlVWlpLxuk94XuEB4M7GoYMjpbbdp+y/hf/JJAkO2FOWw7PCM1+ROg
+         yU23stsP/grB9lWQ/5aGiNOlZzOMuEAE8R6vgxT5SyLoo+NNX/p4OoTLBxiA8V8pyvuT
+         tenYdr10tluJhYo4Ycf6ZTP7Ls2Tlb51VmQJAWtCjsd99Wb25TWYdZH2+F2NVn4T2a5B
+         MOrLNI295gEek7WqCTPTHCmVrySH45/cr74xiFMtl1zI/ZrXl2GmTmD/q5oea3QQHEhA
+         CvWA==
+X-Forwarded-Encrypted: i=1; AJvYcCVGgwSMwyE4zV3Pm+r6O9t+uNktfmuqpYZCEm6+a5oASP2lHp8iwOwJoL6RkawpVHLHEwnXsyBUS8tS4lc2CDc/lQ==@vger.kernel.org, AJvYcCX0OGQMLxc0IqBMlfHSkNRQX6xUdJL4p/7BGaLLdKxmK/0H+LMrKhBQVhGZIlVFvOunD+e9Y7cYBuUr/s8=@vger.kernel.org, AJvYcCXvYyAhRDLY8GlXwgvN4Vt1FKLyccUeiiMeNk9xKczE5y7Bgk67Nn8Y0j2C0s2wbYboMfQg4JVo@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQmWRRUluIsPqCHUEYsq7+bXst6HbO7gHt1sb7iepCNDgQ9Swu
+	WQbOe7F5adxixxn6lh3kDJfI1tgLOm+d6ZhgN0/OrjciTsSlTfKY
+X-Gm-Gg: ASbGncuB9+WbKZ6+rsCnv4RrEqvce5YOeZ9E1kmzA/Hkx+RjdvCnl327nP6pN7cUzwG
+	dd1fUEUQrGNNtSfT4I2qzgrCng5lO1xTLKKUzAhulNuS5v8SpmuJ9OA0mLP3h1mghXqotEtqWcD
+	ddMlsVSmXL7BIvkUD3sURup9zOzFJHC9qCXj9/cg3OxGD7OCGFfYy6fbJqL6KOxUU9h6k6uOAcD
+	5jE2iN9RLTYmufFa6umjZ6tjVSWf/zGOoWhTQqaQkRdZeO2wiyq57BK+3ogfoR/sNsMF4zpFiDC
+	TVPuRpP/FkQ=
+X-Google-Smtp-Source: AGHT+IHRRlr/ytX/dJtmDLFtZebds7kTac0LXYNbmkv5WnAOVIgEot/OfejrsJVkZJbjXbpkJfdWSA==
+X-Received: by 2002:a05:6a00:4ac5:b0:725:b12e:604c with SMTP id d2e1a72fcca58-72abdd3c467mr84333969b3a.4.1736235555927;
+        Mon, 06 Jan 2025 23:39:15 -0800 (PST)
+Received: from visitorckw-System-Product-Name.. ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad8fb851sm32782387b3a.132.2025.01.06.23.39.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jan 2025 23:38:41 -0800 (PST)
-Date: Tue, 7 Jan 2025 16:38:36 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
-	Kairui Song <kasong@tencent.com>
-Cc: linux-mm@kvack.org, Minchan Kim <minchan@kernel.org>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+        Mon, 06 Jan 2025 23:39:15 -0800 (PST)
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: peterz@infradead.org,
+	mingo@redhat.com,
+	acme@kernel.org,
+	namhyung@kernel.org
+Cc: mark.rutland@arm.com,
+	alexander.shishkin@linux.intel.com,
+	jolsa@kernel.org,
+	irogers@google.com,
+	adrian.hunter@intel.com,
+	kan.liang@linux.intel.com,
+	Ching-Chun Huang <jserv@ccns.ncku.edu.tw>,
+	Chun-Ying Huang <chuang@cs.nycu.edu.tw>,
+	linux-perf-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] zram: fix potential UAF of zram table
-Message-ID: <sbdzv6z5sixmj7fr3jmjwxqce3tbbzvshbb7qgumio4jdahn24@jvvadmtindgs>
-References: <20250107065446.86928-1-ryncsn@gmail.com>
+Subject: [PATCH v2] perf bench: Fix undefined behavior in cmpworker()
+Date: Tue,  7 Jan 2025 15:39:06 +0800
+Message-Id: <20250107073906.3323640-1-visitorckw@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250107065446.86928-1-ryncsn@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On (25/01/07 14:54), Kairui Song wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> If zram_meta_alloc failed early, it frees allocated zram->table without
-> setting it NULL. Which will potentially cause zram_meta_free to access
-> the table if user reset an failed and uninitialized device.
-> 
-> Fixes: 74363ec674cb ("zram: fix uninitialized ZRAM not releasing backing device")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+The comparison function cmpworker() violates the C standard's
+requirements for qsort() comparison functions, which mandate symmetry
+and transitivity:
 
-Reviewed-by:  Sergey Senozhatsky <senozhatsky@chromium.org>
+Symmetry: If x < y, then y > x.
+Transitivity: If x < y and y < z, then x < z.
+
+In its current implementation, cmpworker() incorrectly returns 0 when
+w1->tid < w2->tid, which breaks both symmetry and transitivity. This
+violation causes undefined behavior, potentially leading to issues such
+as memory corruption in glibc [1].
+
+Fix the issue by returning -1 when w1->tid < w2->tid, ensuring
+compliance with the C standard and preventing undefined behavior.
+
+Link: https://www.qualys.com/2024/01/30/qsort.txt [1]
+Fixes: 121dd9ea0116 ("perf bench: Add epoll parallel epoll_wait benchmark")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+---
+Changes in v2:
+- Rewrite commit message
+
+ tools/perf/bench/epoll-wait.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/perf/bench/epoll-wait.c b/tools/perf/bench/epoll-wait.c
+index ef5c4257844d..4868d610e9bf 100644
+--- a/tools/perf/bench/epoll-wait.c
++++ b/tools/perf/bench/epoll-wait.c
+@@ -420,7 +420,7 @@ static int cmpworker(const void *p1, const void *p2)
+ 
+ 	struct worker *w1 = (struct worker *) p1;
+ 	struct worker *w2 = (struct worker *) p2;
+-	return w1->tid > w2->tid;
++	return w1->tid > w2->tid ? 1 : -1;
+ }
+ 
+ int bench_epoll_wait(int argc, const char **argv)
+-- 
+2.34.1
+
 
