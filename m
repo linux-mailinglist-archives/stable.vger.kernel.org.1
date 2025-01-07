@@ -1,72 +1,58 @@
-Return-Path: <stable+bounces-107921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8128A04D7E
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 00:26:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E3B5A04D7C
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 00:26:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3041418866F6
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 23:26:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C51953A381E
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 23:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4961F2372;
-	Tue,  7 Jan 2025 23:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4s90mV/4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E5F1E570B;
+	Tue,  7 Jan 2025 23:26:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF621E47CD
-	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 23:26:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69135192598;
+	Tue,  7 Jan 2025 23:26:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736292394; cv=none; b=V9OTIJ1uomX200qF9g1tmm5ukYevMf/eu/PxIX8Z2sPLMFwUlofeNL04/0zRu77WrlreTKdpoUGk5zFOOjPTiseM2SBT30UgZSiNatqbzoWChwXrBkoITUEuLJlFVpEinhG6C3+qGhCWX85oN/OK/sHpnbFd/tGoUx6fq5BmP4g=
+	t=1736292393; cv=none; b=B3mjNJoS/C8SxtDbgMn/2136RKBvNfNzXlBTF6KU4eW35E0XqmFDkFFBTZh6d0EmEteDHw60qo4j+S94CVJdZ0vNXPXQfEJC6e7PsRQAgvCtQxVP8t/uE5GgsTy4D1CWtt3X8adiJ2WP7WmaSoNeVAzjj/DH1lM92tT5y4LtsIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736292394; c=relaxed/simple;
-	bh=lXCdCKyCbye6RmRymQL/gIDay9/V+/wyFqYx4AIMfr0=;
+	s=arc-20240116; t=1736292393; c=relaxed/simple;
+	bh=SMSR8myDSbTwG+Rg/LKuWmu+q9AVawS3rCMpJJPeMJQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XEjd8NcSACbGCwEeNY/RNHrZFve3RHxtz5GmLOoXmfcNAUGld8cE2rcc2kiozrVdY7Pu8q2tS0u3jn5Zhicl/k77SDPExXZEeqdJjEkAJPQD3PLIkynlKJNJQhvgmcvjVjb4L/lDxhpNyRXl/gNYquKOEnFlAQs+Sj9eGBsgWlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4s90mV/4; arc=none smtp.client-ip=209.85.219.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6d89a727a19so2904496d6.0
-        for <stable@vger.kernel.org>; Tue, 07 Jan 2025 15:26:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736292391; x=1736897191; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8hGrSqrmdpX4tyBMP+VqZLOR834ah3UzKPlD5+TusBg=;
-        b=4s90mV/4TbI5kP1I4aaVwO4qvTjoFEziSNSUtH9R6JVDzx3UvKfsxenBDqd8rYuWR4
-         hmgAVClZgMG05s7IPRaJ8YL4gUfdZYQZ940LNhxqyj54qDVRGo4jMu+RrsFIoz9CHUVH
-         doxlibB55dLCJuX3a8WQEV5kxg6Yx1C+89KtSN3fxkHp/ieLedWrF7by4W2TWYuNpWvH
-         l0rr/n0Mv9HwQVGbR2Ly0hTukNLw7dz4DO2fADl5VTweabiTDe7U331n+nLsscCR1h6E
-         OxrCd/q3RLfywXjdqudkROeOb0c2DbA/tlYqvK8W9SQvEV67ENkRgDEz+leI/IBmkE05
-         1MVQ==
+	 To:Cc:Content-Type; b=J5bOrZZJLWrPrhXiIC+Q+IumIUUtA75Kw9BF3+IYykawBmIh78iqb+xNYR/SYirqf4CdA6yjnH+Bq5LBWsagcZNNCFQyhjGrNFSiOa4bdrPULu8vl+aJixibAhbhCSKVyUgf4pcDpMTqdUXi7C2aklqNuht9+KvxA/l7wq8oikw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-4aff04f17c7so206251137.0;
+        Tue, 07 Jan 2025 15:26:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736292391; x=1736897191;
+        d=1e100.net; s=20230601; t=1736292390; x=1736897190;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8hGrSqrmdpX4tyBMP+VqZLOR834ah3UzKPlD5+TusBg=;
-        b=tOP7ev+klHnMasMZom3acLVXVKn4EdKp76l4zKz909Nz5xNrFwWatPFfWZ8cb6kY0r
-         1BLtqnkG2Vb9UnBJh/gkYyK206B9bjtjLSd/1vvnq2A8/XzspasJh21kVg38mJzr0z0U
-         /szumIMs9UaOEjE/K4l2MBDfg1Pq6xednyvs5G4HQ0YQHeqBTtYkqN1F7U2d7N/X8ZuK
-         hjiQV8xV5FwQnIIp4VFu7oItLMCl6uHK3kWCdPy6AzyPnOPX7wclCcEYBxN6iYEZFk9e
-         Cm8ErvmeypkywW9BVHEv54TobY61bqrA0iwQmdYEnvoQBck9Z5iR4wFCOeG4IMwRFcgG
-         jw9g==
-X-Forwarded-Encrypted: i=1; AJvYcCWEO9cEO6AIS88I50XwUS2wasZ90fbMe0my9s+u6f7tGwFnhjfZhbDRjPY07aA7HHteOBN6xyc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrznkkMDTnV9NiAPgOGctd3L3k1cIRBtneg7w5Y7xd3oKxDw7E
-	4Xn3iVfUsYTX+Uz2AOJ9cuyQqnpfAoevIE9LRKUVbQKrRvbs7o7Pb474aZouumQ4UKC00KXrJQs
-	Pn1BC0Mbc/FGP4aO4JEtLXR509XT8qlReRlLt
-X-Gm-Gg: ASbGncsZgSLIO/0uHMsVeDgxUu9HoaaB6g+AM4lHqKf/qW1D2rQAXBspDtBZbuq1zBh
-	6dwUp/vOhyl8qjW/OmOSQPO+uD1BWzxwmGHUxsBRwS8UAIwRbhI8FJ3CPDBplS+uceeuU
-X-Google-Smtp-Source: AGHT+IGeo4buhf3gUhtYgSoQ5NrDJaoAHdwhJtgc4THHGbI2Xo7Th1vgKNT5hAoKBC0XC89QB4ds+0P/GLNv1cPW9NM=
-X-Received: by 2002:ad4:5969:0:b0:6d9:162a:27a2 with SMTP id
- 6a1803df08f44-6df8e89a962mr73887636d6.21.1736292391235; Tue, 07 Jan 2025
- 15:26:31 -0800 (PST)
+        bh=fTD+Bq3GZL1MxaBmfdHPIPo5L73mR014hM+07a3/nK0=;
+        b=qpoc2NPnTky5+686zCMGwKgKO4TsOc85rRIxsPT8XIw5+VPuAfJJIgYpE7eviuxW/m
+         etlnY00taAnzW5T4qprIYPpae8KJqLzYPuQmPAWr9tll602vWrGhd/vJ9D1YITe/MofE
+         rI6JCT6xpLAwz/zISLtaM4QLS4nV6grQTUNiPYWFI3jcvErXDoDA57SzkKRK12R7yc9F
+         IS3ly9x4uvwMfh3pDpJC8wm2K/4a/1tUHWrCyoOPZSUpYy07vRcc3mrUp2R1BBqN+fKC
+         pWP2ZCAFTNdpSuzso2faMtY64hFG5UO9OwrRHn3R/e7fCx7lV87Z3ygGrvfNAPOnFYgp
+         V2Yw==
+X-Forwarded-Encrypted: i=1; AJvYcCUZ6BOovKN1qLDDVPRcU0bID/XhDIHjSdR5mOJahF/LcEesBwS0D7zgvUKuu7IHupvfF6E15c6Lf/+fQ2I=@vger.kernel.org, AJvYcCXAKI9cSFcJzhdZkbreafHcuw60VS+FIrv5/3u55Z74caguQjrWw3EmoehrJXpKiGwatK1Bn7jy@vger.kernel.org
+X-Gm-Message-State: AOJu0YySD+8vHZXJogMI04oEHe3OJf1pA7uCgvpgoBYUYFQUPEuZoXNN
+	XDis50z9H8NS6XdPck8gBMbm8YH12mCJCCOaTckzK+tMEG3soygtsXtVAccztmY9B1p0c61nDKm
+	WRCDTkZJAcCNbMKCw+QWw3V2bn/k=
+X-Gm-Gg: ASbGncsHJSrIe+7eWyg5tXzpJOgUCyyajUI9xlQF07rp/7oShMAxs3qaHwnilQiI9oe
+	hLTEK8w4AtQlFGutSkWXxKGNC2agF2BK2nJdOoZIoIxCkuyfpfBpt0sK+CWhX+lX/dsMjEM8=
+X-Google-Smtp-Source: AGHT+IEaO4P+lfOXcwWKAGlMUPWE2nYgb7AHRUM5xHT6kKgWYGgYWQRC0h6RgnxpXsDDKr4gfX4uYJy0P+c1KyPDY0s=
+X-Received: by 2002:a67:ce16:0:b0:4b1:f903:98d3 with SMTP id
+ ada2fe7eead31-4b3c1e8395emr3138224137.7.1736292390220; Tue, 07 Jan 2025
+ 15:26:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,12 +62,12 @@ MIME-Version: 1.0
 References: <20250107222236.2715883-1-yosryahmed@google.com>
  <20250107222236.2715883-2-yosryahmed@google.com> <CAGsJ_4xN9=5cksaGPqh_6jyH-EJkw-DH1zwx81Kotqh85BJ+ZQ@mail.gmail.com>
 In-Reply-To: <CAGsJ_4xN9=5cksaGPqh_6jyH-EJkw-DH1zwx81Kotqh85BJ+ZQ@mail.gmail.com>
-From: Yosry Ahmed <yosryahmed@google.com>
-Date: Tue, 7 Jan 2025 15:25:54 -0800
-X-Gm-Features: AbW1kvZgg6_6Cmw-lUETFjN7suc5PDdh2Ki8tuiK3wxZF9aqlELvcIfv6Q9XBqA
-Message-ID: <CAJD7tkbnYaZFYw0ieor81e--e6qJVgb3045x86c0EKV546TyWw@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 8 Jan 2025 12:26:19 +1300
+X-Gm-Features: AbW1kvajFZJVoNT-AJnBwcg3e84jtNCCXGQtsdHJS74CdUWcsjCqGgheefRSmAA
+Message-ID: <CAGsJ_4yb03yo6So-8wZwcy2fa-tURRrgJ+P-XhDL-RHgg1DvVA@mail.gmail.com>
 Subject: Re: [PATCH v2 2/2] mm: zswap: disable migration while using per-CPU acomp_ctx
-To: Barry Song <baohua@kernel.org>
+To: Yosry Ahmed <yosryahmed@google.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
 	Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
 	Vitaly Wool <vitalywool@gmail.com>, Sam Sun <samsun1006219@gmail.com>, 
@@ -90,8 +76,8 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.o
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 7, 2025 at 2:47=E2=80=AFPM Barry Song <baohua@kernel.org> wrote=
-:
+On Wed, Jan 8, 2025 at 11:47=E2=80=AFAM Barry Song <baohua@kernel.org> wrot=
+e:
 >
 > On Wed, Jan 8, 2025 at 11:22=E2=80=AFAM Yosry Ahmed <yosryahmed@google.co=
 m> wrote:
@@ -177,24 +163,118 @@ ctx __percpu *acomp_ctx)
 > migrate_enable() would require the entire scheduler, runqueue,
 > waitqueue, and CPU
 > hotplug mechanisms to be aware that a task is pinned to a specific CPU.
-
-My understanding is that sleeping is already allowed when migration is
-disabled (unlike preemption). See delete_all_elements() in
-kernel/bpf/hashtab.c for example, or __bpf_prog_enter_sleepable() in
-kernel/bpf/trampoline.c. I am not sure exactly what you mean.
-
 >
 > If there is no sleep during this period, it seems to be only a
 > runqueue issue=E2=80=94CPU hotplug can
 > wait for the task to be unpinned while it is always in runqueue.
 > However, if sleep is involved,
 > the situation becomes significantly more complex.
+
+After double-checking the scheduler's code, it seems fine. When a task is
+scheduled out, __schedule() will set its allowable cpu by:
+
+migrate_disable_switch(rq, prev);
+
+static void migrate_disable_switch(struct rq *rq, struct task_struct *p)
+{
+        struct affinity_context ac =3D {
+                .new_mask  =3D cpumask_of(rq->cpu),
+                .flags     =3D SCA_MIGRATE_DISABLE,
+        };
+
+        if (likely(!p->migration_disabled))
+                return;
+
+        if (p->cpus_ptr !=3D &p->cpus_mask)
+                return;
+
+        /*
+         * Violates locking rules! see comment in __do_set_cpus_allowed().
+         */
+        __do_set_cpus_allowed(p, &ac);
+}
+
+while woken-up, the previous cpu will be selected:
+
+/*
+ * The caller (fork, wakeup) owns p->pi_lock, ->cpus_ptr is stable.
+ */
+static inline
+int select_task_rq(struct task_struct *p, int cpu, int wake_flags)
+{
+
+        lockdep_assert_held(&p->pi_lock);
+
+        if (p->nr_cpus_allowed > 1 && !is_migration_disabled(p))
+                cpu =3D p->sched_class->select_task_rq(p, cpu, wake_flags);
+        else
+                cpu =3D cpumask_any(p->cpus_ptr);
+         ...
+}
+
+Anyway, not an expert :-)  Hopefully, other experts can provide their
+input to confirm whether sleeping during migrate_disable() is all good.
+
 >
 > If static data doesn't consume much memory, it could be the simplest solu=
 tion.
+>
+> > +       return raw_cpu_ptr(acomp_ctx);
+> > +}
+> > +
+> > +static void acomp_ctx_put_cpu(void)
+> > +{
+> > +       migrate_enable();
+> > +}
+> > +
+> >  static bool zswap_compress(struct page *page, struct zswap_entry *entr=
+y,
+> >                            struct zswap_pool *pool)
+> >  {
+> > @@ -893,8 +905,7 @@ static bool zswap_compress(struct page *page, struc=
+t zswap_entry *entry,
+> >         gfp_t gfp;
+> >         u8 *dst;
+> >
+> > -       acomp_ctx =3D raw_cpu_ptr(pool->acomp_ctx);
+> > -
+> > +       acomp_ctx =3D acomp_ctx_get_cpu(pool->acomp_ctx);
+> >         mutex_lock(&acomp_ctx->mutex);
+> >
+> >         dst =3D acomp_ctx->buffer;
+> > @@ -950,6 +961,7 @@ static bool zswap_compress(struct page *page, struc=
+t zswap_entry *entry,
+> >                 zswap_reject_alloc_fail++;
+> >
+> >         mutex_unlock(&acomp_ctx->mutex);
+> > +       acomp_ctx_put_cpu();
+> >         return comp_ret =3D=3D 0 && alloc_ret =3D=3D 0;
+> >  }
+> >
+> > @@ -960,7 +972,7 @@ static void zswap_decompress(struct zswap_entry *en=
+try, struct folio *folio)
+> >         struct crypto_acomp_ctx *acomp_ctx;
+> >         u8 *src;
+> >
+> > -       acomp_ctx =3D raw_cpu_ptr(entry->pool->acomp_ctx);
+> > +       acomp_ctx =3D acomp_ctx_get_cpu(entry->pool->acomp_ctx);
+> >         mutex_lock(&acomp_ctx->mutex);
+> >
+> >         src =3D zpool_map_handle(zpool, entry->handle, ZPOOL_MM_RO);
+> > @@ -990,6 +1002,7 @@ static void zswap_decompress(struct zswap_entry *e=
+ntry, struct folio *folio)
+> >
+> >         if (src !=3D acomp_ctx->buffer)
+> >                 zpool_unmap_handle(zpool, entry->handle);
+> > +       acomp_ctx_put_cpu();
+> >  }
+> >
+> >  /*********************************
+> > --
+> > 2.47.1.613.gc27f4b7a9f-goog
+> >
+>
 
-Do you mean allocating the buffers and requests for all possible CPUs
-instead of allocating them dynamically in CPU hotplug notifiers? I am
-not sure how much more memory this would be. Seems like it depends on
-CONFIG options and the firmware.
+Thanks
+Barry
 
