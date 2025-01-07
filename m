@@ -1,280 +1,141 @@
-Return-Path: <stable+bounces-107914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C3DFA04CEE
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 00:01:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8288A04D45
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 00:15:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1009C3A5A7B
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 23:01:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED7703A1A8F
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 23:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29731E5019;
-	Tue,  7 Jan 2025 23:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01DA1E5711;
+	Tue,  7 Jan 2025 23:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lEjfAI7a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aq3YE9pJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E7818628F;
-	Tue,  7 Jan 2025 23:01:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829741E0DE6
+	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 23:14:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736290878; cv=none; b=bkCgfGhqslpqFKOF/yVAst2GIzYc4UOykuM+5Y2q3ZgwyNuApYUScPSpfkzH4tvHgqqsUlA21yy1R36aP7xG5wvSpmJR+V7JJfsUAzCDOxHdVlU0IfV/56tZvIInjPXLxnMnd/yQjfSbPW0D/94A4SGhkn3XfMI20OAwFfJNyxs=
+	t=1736291700; cv=none; b=sL9dqlWuCza3kWBBlmq+klY8/d+AfCYmqDUiZl2gXh7MELRBUhnDBIRMb/wB7Zto9n88gvCf4aDjZljtOrt5vuVh804oEz6r7Od4ew8crM6mJqs478I5pVc/gCn0qhkRcB+zB7KCNHTV15rGECDcyRqrEUQjubZiWI+10kpqfbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736290878; c=relaxed/simple;
-	bh=/PE/f+ZWSAV9lOu0Pr6XxoJi6baQXDZRz3cOotgwqps=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FC2xaU4DUiDJqqm1V5IUTaNmDIFisFIN7681gbyM9hLwHdj4OGqtQIG/yUeEQPYedSAsSLgBhEQ0ZtHE8SK6LZ5gnIBwyHZQb12FcKjgtIoL6uVAe8vSAROwZeuuUKKU1s/T9iA1IticYp1rkUp8BWyX/xi92viGrTg1jQDba3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lEjfAI7a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07640C4CEE2;
-	Tue,  7 Jan 2025 23:01:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736290876;
-	bh=/PE/f+ZWSAV9lOu0Pr6XxoJi6baQXDZRz3cOotgwqps=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=lEjfAI7aY8mIp3lUtQUQN9YWk03AC3kp2B9bnjbBXBYFuq9ZxlHCM9798ftMf7CQ1
-	 HQT86Ihnx+++jeFLbOKrcy0Lax/HV2nEuJyTysstI3oLekY8+CRNxCvLkY8/RClJyu
-	 Hj146YU4ujrKqE8hOLtBDSh2KfMM/oyd4EHt3hfWlzMfcv+yr4gidEVFDEie7JEtXF
-	 VFxQQXOdTfH7t8OkmkBNxObIdAamqwohrmWcYM1N1/RJQog6+rfXrNqyfklPwQit7e
-	 AFkYxRP1Nfk7tPoaeSabckYPqw5uv0FE72FpQH8JQC/bHnvGZGGSvwZq2zBj7GbUxE
-	 gpUEm/CZZwkkw==
-From: Mark Brown <broonie@kernel.org>
-Date: Tue, 07 Jan 2025 22:59:41 +0000
-Subject: [PATCH v5 1/5] arm64: Filter out SVE hwcaps when FEAT_SVE isn't
- implemented
+	s=arc-20240116; t=1736291700; c=relaxed/simple;
+	bh=BjKKH0vGpUbV7AWq3U1V5wNomw+T3c1zTcany7gp9zY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OUrez3FwIryJOAD6NHgYY2b9pQA8ggEJQQqz/p7VekKjABzrXIFHHy5UFTGX/R2QRDk75aYYpJKos+xjbCf58LEQ8toP9VQaUwKPUWHMOhgLnSnpkhfUeR9op6hjkYMOXu13juy19DYTF39JxyTZEtiCAWSGjTxxQh/kCJfVQ9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aq3YE9pJ; arc=none smtp.client-ip=209.85.166.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-844e1020253so626231039f.3
+        for <stable@vger.kernel.org>; Tue, 07 Jan 2025 15:14:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1736291696; x=1736896496; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OMG2k29doqK4b4RNK2OGfEYP4wm7KC5LacWfwMa88uE=;
+        b=Aq3YE9pJ3Csamf8uxurYWRJceJFdByLZ50NAX+ItRvtY3G1OdkoA0P7lfLsGPWYCF4
+         ljLuuI70/fTZDwcTbI0WdUeAIfepp5h0EbEmNRmP658b1a4+F40DaalViVYapZPX/Ecn
+         xY0IYDmw/qsGE1R5EtJ6rp52nLSS8hbOxusl4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736291696; x=1736896496;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OMG2k29doqK4b4RNK2OGfEYP4wm7KC5LacWfwMa88uE=;
+        b=IOC+uIJG2kYl1G4CbzikxL0rw8olZ0m2r8HEiHut8We01YfWGDzREvd13MU4rpQkzt
+         LNcohWS5HplNZHFIR4G96apWJ5BdTnDAP7LqEgFsERM15EQ/zty7ggLSoFKWlcaQd79q
+         7uD0dWSLTO0o2B0pYs1Em8E/gK0Un2wF+6OKLVgu6QhDooxYF41T8qo3O0Fy2H3Lxw49
+         GZP7i9FQAK4sQyJm7iq+DeOhzJRgCLmkE7tCxJwUGKf49pKvq6sFAF5D0SpVDdZPVtjz
+         CkVed8k/nBHj0oj1eT5XySnOyNdq6ApN3sZkWu1fNyZTCOO3NknMOCurixxGsGZFCwJ4
+         fWgw==
+X-Forwarded-Encrypted: i=1; AJvYcCU/ZY+eObZODP4p5S5RWoG6uY4r+ledxM7rilxcP2nt9btBGZznMcqBh11u4bcH2O63pzHKIAE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFnXUgxJ6+hxEua2mLHDe8qGQlsFsAhs0yqnV/VyMUcTZeyImA
+	vQnRlPRS9Sz4gmsl3yKPcbvyw/E4rGnLzdTWMw4XbMqILsS8O3yuWH/JlUl4OhM=
+X-Gm-Gg: ASbGncujyWHWLCpWdgslnNozkbabgREkCLqIpKunsviXJY8ukQgQoXy5tKsW8FSY5qX
+	ZJFqffnQfEYFa+Oy3pW/oN7w0eVbYqijzu3C5IvxxS4hifbaErUXU/cAGhQR8iP7wsACl8HWP5K
+	R/cbHe+AupFN8fSLuEGsgyiXVWZNK9du/fT8VWd8jzqBta1TAOhU3BKeTcMX/k64rpc04ZXdMbR
+	iRWhrX2OEuYxa1lHk3b/bNe6bgNG0FCfz4PCx72nCamKG4MjbA8xO7M96qUEvxEJHw2
+X-Google-Smtp-Source: AGHT+IEhdYFsphyMJwmUVBiBfw2T+7bke7tQB4guyZXOZBr/m0Kf//ky5qWxoeZ80D1Scq5qTY9MWw==
+X-Received: by 2002:a05:6602:4c08:b0:835:4931:b110 with SMTP id ca18e2360f4ac-84ce0081db3mr91795839f.5.1736291696579;
+        Tue, 07 Jan 2025 15:14:56 -0800 (PST)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4e68c19990fsm10229964173.80.2025.01.07.15.14.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Jan 2025 15:14:56 -0800 (PST)
+Message-ID: <c59a9bf2-efe5-473f-a8c1-c93276df7fc8@linuxfoundation.org>
+Date: Tue, 7 Jan 2025 16:14:55 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250107-arm64-2024-dpisa-v5-1-7578da51fc3d@kernel.org>
-References: <20250107-arm64-2024-dpisa-v5-0-7578da51fc3d@kernel.org>
-In-Reply-To: <20250107-arm64-2024-dpisa-v5-0-7578da51fc3d@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
- Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
- Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
- Shuah Khan <shuah@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org, kvmarm@lists.linux.dev, 
- linux-kselftest@vger.kernel.org, Mark Brown <broonie@kernel.org>, 
- Mark Rutland <mark.rutland@arm.com>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-1b0d6
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9139; i=broonie@kernel.org;
- h=from:subject:message-id; bh=KPLPweZz2OWzlgIW3ef3HQ9oYQnthPVdhzQN55FV6YY=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBnfbIxcBmi4yGfpIU5bpaTLz4Fo2GePztaqWvOdA49
- M1Ut1aSJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZ32yMQAKCRAk1otyXVSH0BwWB/
- wJLLkEk6r9y1461fGEcnLtqZ7COxhAD3U4rD3TyTBquaNCSzPaVvfylkmjDXO4G8wT9GuEkNOEB3pA
- I6HTaHBRD+gwREtzP6s/3G2vTxqi6qEM3yb5OLksv+8ptCy57Vxf+QlenrNe+iusZPpvveQ0Gp16GQ
- G5wMHJVJHzfqq/Ynq2EqxbZ+p2n6OiZq195Lt6k5qDEDb42+BJcaHLkREkh1lDHWqQ79AWDDRUCPC5
- YlTJ06DzplX4s4/KoaoqZyPW5NCfRtnHJKObUuniLZe+PYkQHtRCHHA/1TfjtkfSatYMZjuHfHwEnc
- oXLjc2YMTcKxCe3iu9ErFjTax5x7Vl
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 000/156] 6.12.9-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
+ <5c3ac106-f18e-4237-83ff-52398839f635@linuxfoundation.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <5c3ac106-f18e-4237-83ff-52398839f635@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-From: Marc Zyngier <maz@kernel.org>
+On 1/6/25 16:18, Shuah Khan wrote:
+> On 1/6/25 08:14, Greg Kroah-Hartman wrote:
+>> This is the start of the stable review cycle for the 6.12.9 release.
+>> There are 156 patches in this series, all will be posted as a response
+>> to this one.  If anyone has any issues with these being applied, please
+>> let me know.
+>>
+>> Responses should be made by Wed, 08 Jan 2025 15:11:04 +0000.
+>> Anything received after that time might be too late.
+>>
+>> The whole patch series can be found in one patch at:
+>>     https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.9-rc1.gz
+>> or in the git tree and branch at:
+>>     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+>> and the diffstat can be found below.
+>>
+>> thanks,
+>>
+>> greg k-h
+>>
+> 
+> Compile failed during modpost stage:
+> 
+>    MODPOST Module.symvers
+> ERROR: modpost: "i915_gem_object_set_to_cpu_domain" [drivers/gpu/drm/i915/kvmgt.ko] undefined!
+> ERROR: modpost: "intel_ring_begin" [drivers/gpu/drm/i915/kvmgt.ko] undefined!
+> ERROR: modpost: "shmem_unpin_map" [drivers/gpu/drm/i915/kvmgt.ko] undefined!
+> ERROR: modpost: "intel_gvt_set_ops" [drivers/gpu/drm/i915/kvmgt.ko] undefined!
+> ERROR: modpost: "intel_gvt_clear_ops" [drivers/gpu/drm/i915/kvmgt.ko] undefined!
+> ERROR: modpost: "i915_gem_object_alloc" [drivers/gpu/drm/i915/kvmgt.ko] undefined!
+> ERROR: modpost: "intel_runtime_pm_get" [drivers/gpu/drm/i915/kvmgt.ko] undefined!
+> ERROR: modpost: "i915_gem_object_create_shmem" [drivers/gpu/drm/i915/kvmgt.ko] undefined!
+> ERROR: modpost: "i915_gem_object_pin_map" [drivers/gpu/drm/i915/kvmgt.ko] undefined!
+> ERROR: modpost: "__px_dma" [drivers/gpu/drm/i915/kvmgt.ko] undefined!
+> 
 
-The hwcaps code that exposes SVE features to userspace only
-considers ID_AA64ZFR0_EL1, while this is only valid when
-ID_AA64PFR0_EL1.SVE advertises that SVE is actually supported.
+You can ignore this.
+Compiled and booted on my test system. No dmesg regressions.
 
-The expectations are that when ID_AA64PFR0_EL1.SVE is 0, the
-ID_AA64ZFR0_EL1 register is also 0. So far, so good.
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-Things become a bit more interesting if the HW implements SME.
-In this case, a few ID_AA64ZFR0_EL1 fields indicate *SME*
-features. And these fields overlap with their SVE interpretations.
-But the architecture says that the SME and SVE feature sets must
-match, so we're still hunky-dory.
-
-This goes wrong if the HW implements SME, but not SVE. In this
-case, we end-up advertising some SVE features to userspace, even
-if the HW has none. That's because we never consider whether SVE
-is actually implemented. Oh well.
-
-Fix it by restricting all SVE capabilities to ID_AA64PFR0_EL1.SVE
-being non-zero. The HWCAPS documentation is amended to reflect the
-actually checks performed by the kernel.
-
-Fixes: 06a916feca2b ("arm64: Expose SVE2 features for userspace")
-Reported-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: stable@vger.kernel.org
----
- Documentation/arch/arm64/elf_hwcaps.rst | 39 +++++++++++++++++++++-----------
- arch/arm64/kernel/cpufeature.c          | 40 ++++++++++++++++++++++-----------
- 2 files changed, 53 insertions(+), 26 deletions(-)
-
-diff --git a/Documentation/arch/arm64/elf_hwcaps.rst b/Documentation/arch/arm64/elf_hwcaps.rst
-index 2ff922a406ad83d0dff8104a6e362ac6b02d0e1f..1a31723e79fd24894df5223588b9e1255943875e 100644
---- a/Documentation/arch/arm64/elf_hwcaps.rst
-+++ b/Documentation/arch/arm64/elf_hwcaps.rst
-@@ -178,22 +178,28 @@ HWCAP2_DCPODP
-     Functionality implied by ID_AA64ISAR1_EL1.DPB == 0b0010.
- 
- HWCAP2_SVE2
--    Functionality implied by ID_AA64ZFR0_EL1.SVEver == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.SVEver == 0b0001.
- 
- HWCAP2_SVEAES
--    Functionality implied by ID_AA64ZFR0_EL1.AES == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.AES == 0b0001.
- 
- HWCAP2_SVEPMULL
--    Functionality implied by ID_AA64ZFR0_EL1.AES == 0b0010.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.AES == 0b0010.
- 
- HWCAP2_SVEBITPERM
--    Functionality implied by ID_AA64ZFR0_EL1.BitPerm == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.BitPerm == 0b0001.
- 
- HWCAP2_SVESHA3
--    Functionality implied by ID_AA64ZFR0_EL1.SHA3 == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.SHA3 == 0b0001.
- 
- HWCAP2_SVESM4
--    Functionality implied by ID_AA64ZFR0_EL1.SM4 == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.SM4 == 0b0001.
- 
- HWCAP2_FLAGM2
-     Functionality implied by ID_AA64ISAR0_EL1.TS == 0b0010.
-@@ -202,16 +208,20 @@ HWCAP2_FRINT
-     Functionality implied by ID_AA64ISAR1_EL1.FRINTTS == 0b0001.
- 
- HWCAP2_SVEI8MM
--    Functionality implied by ID_AA64ZFR0_EL1.I8MM == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.I8MM == 0b0001.
- 
- HWCAP2_SVEF32MM
--    Functionality implied by ID_AA64ZFR0_EL1.F32MM == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.F32MM == 0b0001.
- 
- HWCAP2_SVEF64MM
--    Functionality implied by ID_AA64ZFR0_EL1.F64MM == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.F64MM == 0b0001.
- 
- HWCAP2_SVEBF16
--    Functionality implied by ID_AA64ZFR0_EL1.BF16 == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.BF16 == 0b0001.
- 
- HWCAP2_I8MM
-     Functionality implied by ID_AA64ISAR1_EL1.I8MM == 0b0001.
-@@ -277,7 +287,8 @@ HWCAP2_EBF16
-     Functionality implied by ID_AA64ISAR1_EL1.BF16 == 0b0010.
- 
- HWCAP2_SVE_EBF16
--    Functionality implied by ID_AA64ZFR0_EL1.BF16 == 0b0010.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.BF16 == 0b0010.
- 
- HWCAP2_CSSC
-     Functionality implied by ID_AA64ISAR2_EL1.CSSC == 0b0001.
-@@ -286,7 +297,8 @@ HWCAP2_RPRFM
-     Functionality implied by ID_AA64ISAR2_EL1.RPRFM == 0b0001.
- 
- HWCAP2_SVE2P1
--    Functionality implied by ID_AA64ZFR0_EL1.SVEver == 0b0010.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.SVEver == 0b0010.
- 
- HWCAP2_SME2
-     Functionality implied by ID_AA64SMFR0_EL1.SMEver == 0b0001.
-@@ -313,7 +325,8 @@ HWCAP2_HBC
-     Functionality implied by ID_AA64ISAR2_EL1.BC == 0b0001.
- 
- HWCAP2_SVE_B16B16
--    Functionality implied by ID_AA64ZFR0_EL1.B16B16 == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.B16B16 == 0b0001.
- 
- HWCAP2_LRCPC3
-     Functionality implied by ID_AA64ISAR1_EL1.LRCPC == 0b0011.
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index 13de0c7af053122379c922ee7e69a3dd41af850e..f088f0f5a118284cd711da029f8cb6958ec32551 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -3021,6 +3021,13 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
- 		.matches = match,						\
- 	}
- 
-+#define HWCAP_CAP_MATCH_ID(match, reg, field, min_value, cap_type, cap)		\
-+	{									\
-+		__HWCAP_CAP(#cap, cap_type, cap)				\
-+		HWCAP_CPUID_MATCH(reg, field, min_value) 			\
-+		.matches = match,						\
-+	}
-+
- #ifdef CONFIG_ARM64_PTR_AUTH
- static const struct arm64_cpu_capabilities ptr_auth_hwcap_addr_matches[] = {
- 	{
-@@ -3049,6 +3056,13 @@ static const struct arm64_cpu_capabilities ptr_auth_hwcap_gen_matches[] = {
- };
- #endif
- 
-+#ifdef CONFIG_ARM64_SVE
-+static bool has_sve_feature(const struct arm64_cpu_capabilities *cap, int scope)
-+{
-+	return system_supports_sve() && has_user_cpuid_feature(cap, scope);
-+}
-+#endif
-+
- static const struct arm64_cpu_capabilities arm64_elf_hwcaps[] = {
- 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, PMULL, CAP_HWCAP, KERNEL_HWCAP_PMULL),
- 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, AES, CAP_HWCAP, KERNEL_HWCAP_AES),
-@@ -3091,19 +3105,19 @@ static const struct arm64_cpu_capabilities arm64_elf_hwcaps[] = {
- 	HWCAP_CAP(ID_AA64MMFR2_EL1, AT, IMP, CAP_HWCAP, KERNEL_HWCAP_USCAT),
- #ifdef CONFIG_ARM64_SVE
- 	HWCAP_CAP(ID_AA64PFR0_EL1, SVE, IMP, CAP_HWCAP, KERNEL_HWCAP_SVE),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, SVEver, SVE2p1, CAP_HWCAP, KERNEL_HWCAP_SVE2P1),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, SVEver, SVE2, CAP_HWCAP, KERNEL_HWCAP_SVE2),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, AES, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEAES),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, AES, PMULL128, CAP_HWCAP, KERNEL_HWCAP_SVEPMULL),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, BitPerm, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBITPERM),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, B16B16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVE_B16B16),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, BF16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBF16),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, BF16, EBF16, CAP_HWCAP, KERNEL_HWCAP_SVE_EBF16),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, SHA3, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESHA3),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, SM4, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESM4),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, I8MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEI8MM),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, F32MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF32MM),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, F64MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF64MM),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SVEver, SVE2p1, CAP_HWCAP, KERNEL_HWCAP_SVE2P1),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SVEver, SVE2, CAP_HWCAP, KERNEL_HWCAP_SVE2),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, AES, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEAES),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, AES, PMULL128, CAP_HWCAP, KERNEL_HWCAP_SVEPMULL),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BitPerm, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBITPERM),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, B16B16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVE_B16B16),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BF16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBF16),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BF16, EBF16, CAP_HWCAP, KERNEL_HWCAP_SVE_EBF16),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SHA3, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESHA3),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SM4, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESM4),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, I8MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEI8MM),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, F32MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF32MM),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, F64MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF64MM),
- #endif
- #ifdef CONFIG_ARM64_GCS
- 	HWCAP_CAP(ID_AA64PFR1_EL1, GCS, IMP, CAP_HWCAP, KERNEL_HWCAP_GCS),
-
--- 
-2.39.5
+thanks,
+-- Shuah
 
 
