@@ -1,123 +1,130 @@
-Return-Path: <stable+bounces-107797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81D46A03837
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 07:55:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B60A03840
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 07:56:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68097164B3B
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 06:55:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F45518860F4
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 06:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0841DE8A0;
-	Tue,  7 Jan 2025 06:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20EC1DE895;
+	Tue,  7 Jan 2025 06:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b2pAddSg"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="Dqw978Lx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C725819D8BE;
-	Tue,  7 Jan 2025 06:54:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2CE18641
+	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 06:56:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736232899; cv=none; b=Hx0Y1jxZnnH84jjdCHTr8Qa0RJtGB0hFndEFdgPvt0Zdd7TOQoUkpCa8W/mPQlHVQq1qEp1wmynM/VdzXYkQkkxCBgFKJIiVVHIHES8l2opkRiMt+Z3aOBdfrvkpaUAL7xbyJbgaXzEJlkOW5S0wQaTrnYYbyrskGkOJp6vvGEE=
+	t=1736233011; cv=none; b=rvwJNc2A3vaijrYLBWS1tfVtKDpKAI6m9mFujAmrLaixMJSj68W7CEPSi1o84jgHo7I+HG/HTGmJ7GqSlv22YZua8bT2GpTVWNJlQlaSc5gVHDI40i7Vitt1MQWfMqQlfif34LA+rROtViAbtdQVhS9+8DVRUBLLKtNZtnERQn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736232899; c=relaxed/simple;
-	bh=VwWIytBiyKODF8sDk0339JhmPQQShvizgIsXKmZ6Tz0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CPWRzjkxqpHK2M24jYA4LNdKuDqS1oOoq7yPdoHyQxs32sAgk9g2GSQA+h6BgXW9hBjBdLF3fcfj1fj+GVboOLd+vohp5rokEhQx28dyxbhNPPH7pWuIfCcIYe8GBnJLDa1kcSNm6T7BfbmY6UowWbfS3nLaibcw9FXy5az3H1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b2pAddSg; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2161eb95317so227262305ad.1;
-        Mon, 06 Jan 2025 22:54:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736232896; x=1736837696; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UAGMcbItJcgVx1BJcJubscurgM31sK9kE3pcE4njB+Y=;
-        b=b2pAddSgN002l1Mq1gP+XbTObxJD+eMLS1hpno2ca2a3P6bKNY7BpI6tC3nBfO1QlD
-         nNlV7aT/w92LgBIZC60+iG7wKM1rwBIF6nakMqK5ip+eBW5LLFWlVlq7gwGpNIOAGa+e
-         dDgkRPi6PSm4i2TYvaX3pMgReenGKPMWjK0DP9KhMuxfmSusfMOpJkXD2oMEYFnAmy27
-         4XIl21Zxiz+0SXC3io3KtprfZKgj87Qy1Kxu5HRg4FtNA4aUL2JQmAdMtLdl7qPNTQFs
-         Y0ibmv6wuGawig2JbMkjJ+wZSRMWktNrbUcfJOEEItBmC8Br/tNgHOC7T3i7Oxnw0VmX
-         xncg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736232896; x=1736837696;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UAGMcbItJcgVx1BJcJubscurgM31sK9kE3pcE4njB+Y=;
-        b=pVbyjpZHqVcUYyG5fu8VgM2x21PN8APzCKz5LtoGoTH3D1PSHfjTkLTcNwMJI7jp+L
-         BswGIUEjJd9WCsMZkAAy5JpiqqK4Vg3geoeSqIUu1zW+IcEwACFDAyKqVw//fMaSuJ9v
-         DTq4mXyKvO0Ng8tIiyY4ahp5s8Oy8VrAieH/u3LvmrvE/6fmH2iv2DWSI70Kqj73xEDF
-         m0NIZ7CJWEw9IPspO1dvwLxXfqpAC8hm5nvIPwr0kIONzgIwPC5ZZXLsOMcWEvRrkRcI
-         56JTvXyslqboQ8yAuLzDLCDc8OjOrbdAOU2OM5/MqZRaucHoBXUGr3g95667k0NtwDqz
-         UZDw==
-X-Forwarded-Encrypted: i=1; AJvYcCWElDI+tFAftsJr/+I91dg0GhtEaOGOFCiu6VZbKOAmAXTCMucnbb9y9L+Pg1NWJMY3oX9m4PR/40ZRm6kW@vger.kernel.org, AJvYcCWkl2pRXJpoSitN/+r+8ohSguXLh0fCNbehddNFIYKyoQi4f7O9+knMCLXmhqe5fyXOvEwtHgQd9KDgkA==@vger.kernel.org, AJvYcCX2HPTYrz5ouNNoEqO3+yOjBRSuLPIcn9vzNlatPsObcyz1EOmemK/pcKlTlCZAXMTCv+rGoC75@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhjRQR9Ee1AhuY91VqQOOxTOX70K7kFDaJEVQcHnvvf3TfKYX6
-	3cxqr9m6jMUhH1HFJo26z2Tm0B6+EahYijF6DjksZYcY30Pod5II
-X-Gm-Gg: ASbGncsUaVTubYYjwtrr9aT+y1vh9mpr191r6ZWmztqGiiiM3rI18syWcn21sIUQvTW
-	AOvXtslGSBcUUtvknib3ha7LeEYuHDjS88naREiNf+DX1NA6WnLON2qAHdtGP8Eqke6fKlUGX7e
-	psCx8BduSekNw0/w9M8htpi3PlSW6CjtCJ3m0IxB1paTBCVC0imxY4YVc2aCCEs1j2Fc9WZajo2
-	kjtTqX2B2p0dlfmP6dJZ/HhT0bCmfWurNlyHbjTlHsoyj+EeSn3YpyDT6S9I739F546w8Oqvyn4
-	mbEC7WyBjic=
-X-Google-Smtp-Source: AGHT+IH/rokoDHhdWH70D8pzZfQjuA3uS056hYXnmvp8qqmn4tHgv2fW5pCbgpVbtlqmIXl+0w3e8w==
-X-Received: by 2002:aa7:8895:0:b0:71e:2a0:b0b8 with SMTP id d2e1a72fcca58-72abdd3c48emr83145233b3a.1.1736232896082;
-        Mon, 06 Jan 2025 22:54:56 -0800 (PST)
-Received: from KASONG-MC4.tencent.com ([43.132.141.20])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad90b338sm32692136b3a.174.2025.01.06.22.54.53
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 06 Jan 2025 22:54:55 -0800 (PST)
-From: Kairui Song <ryncsn@gmail.com>
-To: linux-mm@kvack.org
-Cc: Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kairui Song <kasong@tencent.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] zram: fix potential UAF of zram table
-Date: Tue,  7 Jan 2025 14:54:46 +0800
-Message-ID: <20250107065446.86928-1-ryncsn@gmail.com>
-X-Mailer: git-send-email 2.47.1
-Reply-To: Kairui Song <kasong@tencent.com>
+	s=arc-20240116; t=1736233011; c=relaxed/simple;
+	bh=i0Ff2s9LMWtpzvyhnnSSI4aGUU0Tx5Wthlsfj0Zew/Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Tp0WoM8cFp7le/JCkurJJbWB7kS/UPwu0zYNa3ywI0IEiWVF9V3MSGyXGRlP74o7oemopnvHio8XvWYTLCdHaxCw5K+0DDJZjxosFofijlzLL+P/HBkH2fGEqbMpYk5HD4qN3qpxsQ+ze2dUCzJcSss/hGNxZE9B8gmQ03azS/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=Dqw978Lx; arc=none smtp.client-ip=44.202.169.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6010a.ext.cloudfilter.net ([10.0.30.248])
+	by cmsmtp with ESMTPS
+	id Ulb5tcUUgjMK7V3WAtJzE9; Tue, 07 Jan 2025 06:56:46 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id V3W9tGTGShs2qV3WAt7Tkg; Tue, 07 Jan 2025 06:56:46 +0000
+X-Authority-Analysis: v=2.4 cv=NeDg1XD4 c=1 sm=1 tr=0 ts=677cd02e
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=VdSt8ZQiCzkA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=EaQfPr9QHXkIQesc3ShGIyErbz0DQliOfilva1ccqyM=; b=Dqw978Lxaw9qTmlCLYbzGjLvk0
+	jvz5hwb+VfaKgC+Sw7Xy+FR2NapEqmoXq7o5Auv1xckuhWo/w3o1qdE4hVZeLAwGxESuz9Vy8DPd9
+	BVBxm+Xkwt89RipdKYJ14uMl3IDEGEpAJpSx9FV6EBvNiocHyWYiRFdKYCBpITSOzjOUnpagfLVt3
+	AGN2tZF76cS1GXXwPRUS0h62jwZZLKB6OOGJx7oJOKdKusiNrCjc/RXJjITtF6kh13UbgfAZBAL/x
+	Ki3cLxO8Qk9tQ7axp5X2c99YBRs32t4LBtSzAhO0Iipc+MNZtKq4yCM02Br4DL3bN1Ye88F0R9847
+	hpsgloBw==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:48566 helo=[10.0.1.115])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1tV3W8-002fAA-1u;
+	Mon, 06 Jan 2025 23:56:44 -0700
+Message-ID: <65bb39aa-4b39-4adb-9fb7-49323634214c@w6rz.net>
+Date: Mon, 6 Jan 2025 22:56:42 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 000/156] 6.12.9-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250106151141.738050441@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1tV3W8-002fAA-1u
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.115]) [73.223.253.157]:48566
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 37
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfD6UbWEPm7oobUYiweHaO7w32Yr8YWZUHZbZR3CiC6V43joqrqDZ73PTmnY7JUba1igH/KPhKFKWw+tS4xUNjVLG3daWwNboWMVS9sRU4IP5qHAOZ4qY
+ pHuAqvtwlgPcsdu1soRKE0nufzm8hoPtUeWGrrZbayU1Qt0sl4iuZqeDAi2iTIPmHFcc0y/Ydpf6Pg==
 
-From: Kairui Song <kasong@tencent.com>
+On 1/6/25 07:14, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.9 release.
+> There are 156 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 08 Jan 2025 15:11:04 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.9-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-If zram_meta_alloc failed early, it frees allocated zram->table without
-setting it NULL. Which will potentially cause zram_meta_free to access
-the table if user reset an failed and uninitialized device.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Fixes: 74363ec674cb ("zram: fix uninitialized ZRAM not releasing backing device")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Kairui Song <kasong@tencent.com>
----
- drivers/block/zram/zram_drv.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 5b8e4f4171ab..70ecaee25c20 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1465,6 +1465,7 @@ static bool zram_meta_alloc(struct zram *zram, u64 disksize)
- 	zram->mem_pool = zs_create_pool(zram->disk->disk_name);
- 	if (!zram->mem_pool) {
- 		vfree(zram->table);
-+		zram->table = NULL;
- 		return false;
- 	}
- 
--- 
-2.47.1
+Tested-by: Ron Economos <re@w6rz.net>
 
 
