@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-107883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55E2FA048FD
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 19:11:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F035DA048FC
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 19:11:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BFBB7A240F
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 18:11:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E70D1162650
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 18:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846C618C900;
-	Tue,  7 Jan 2025 18:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 874FA1F37D5;
+	Tue,  7 Jan 2025 18:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z6fbPTTx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MmedMuqu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442901F3D47
-	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 18:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430B918BBBB
+	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 18:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736273424; cv=none; b=rUzqwk5953GrNx6pGo+cgooNaNC0wwKGpsZ80f/trA9S9RbWWpVHS7gk/dgblTaQeiE6KozfjTEXdoiv1L8PjJmNzmkY4ueMLF5sIuOu1JIXnfVeEoG6tXSxPDI2ZKJjQ7WaUWlpZIjQ/uUZTDC85BNSMyzYzpjFIs3F3m641f8=
+	t=1736273427; cv=none; b=qWP9THD5ScXUqsYkOKQPwHUYfX4Guqk/0e9FqKVO8vR3d7UjzYy1eBWgFfwoaDF8eU3anbEffyyPP2BAGDUWoJt7Q5f5HYB5MR6FSLxvh4i1r8fBixKrppEXH2IX4WxvtlGM+6getlV+a+lIAjCBxGJxHSyjLzsxXNQuDymXSR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736273424; c=relaxed/simple;
-	bh=gbpt6aYxkcuOGhGuOC0bxE6G6UgaVP5KyojNrVRKlaU=;
+	s=arc-20240116; t=1736273427; c=relaxed/simple;
+	bh=zOld9jP1i+Z4BZqa9he7zeaJ/gEucv2bP3au7vmugGE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Qh5nkP6pm2kgWp2ykeaPQJ13p8x0Et7ahsfA/X7HueNvhNjR6R9+GkhRVyfPfSqdvCtSd/604Q9jT4lhwBzK9BCjPnJd8A5iIF4a0DWuW88T2ZsfXUThGfsuvw1HNKiPRyWI2WsE7OzoN5Eiag5l/SvnxEX60Px2y0P2uLQdUnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z6fbPTTx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE589C4CEE0;
-	Tue,  7 Jan 2025 18:10:22 +0000 (UTC)
+	 MIME-Version; b=lKMTyScxkwt7nQU29hdClpVSYy3YVizEwdBnf23VfsJm++QEwN/yw9mxla5Itx8TTFEyUVx5EyUoOSf5NcyrsyYUtPDtkOr3JU4mEetzsFzBDYh3VFvYfvkS06kSQCEEleXVzFyf0BP/7EjlKYPLHvRHW2ckyhJPlF/KWXcs1qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MmedMuqu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 385E6C4CEDE;
+	Tue,  7 Jan 2025 18:10:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736273423;
-	bh=gbpt6aYxkcuOGhGuOC0bxE6G6UgaVP5KyojNrVRKlaU=;
+	s=k20201202; t=1736273426;
+	bh=zOld9jP1i+Z4BZqa9he7zeaJ/gEucv2bP3au7vmugGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z6fbPTTxrfTpuhY4gh5/VVOIkuIp4vtAnlwsI1TSCFfP72UiTW1xVGJVhXVR1iYfh
-	 V2b87BFWYdxxqFT/5Jf+CzUvsh/HuTJfwHDX0PvIXcmTXLTsgLDjgVFCdHjNdkTdqZ
-	 O8QGSLNonkWyVQRc/r4VvJvapmHR4HD33oIqqxGfdlvC94hi3BJoMA6I5vo0P+pbAe
-	 q56UwusNkJqjCm/Gyh4oksrq5Rb2BhU6Zos+Hw552vJUmD1nHJk8zUKJgVaZaq42Rl
-	 aUqlpvOZEk+pyGuwrM6vYf2ZzDu4TxrPKAePk4Y/VC21ST6FE2klghF+yqa2pOV/7Y
-	 ezTODgXizryFw==
+	b=MmedMuqukCU7JX5yCL/wR/pVhQAEMrUhM4d7Lno2fUeEN4rNAhxfZdEs7lXcfSUG8
+	 oJ02g/8du7/XaJD8xEYro6rdcQ1NQO4WT0Gg9I4rc0gJLWl2XLwxL55BnGj0E4C7iY
+	 O9Wi/PCY9x1aE5ZdVceMMAxX8ahY13XDVEcgogankx2dbbuJy5yig0rF1dnnHJB1Lq
+	 BDtNteJ1AIVKTzdP3Vji/yJFo3oloFwwapXgWMsrXKCDtMoQf1vi3tamQbIqy48Zo6
+	 1i/vxCQa61jlMmkTthUmCT5yjhjGuI2rlfRky++uj5uUq55bjWlw0kwXBiOCEKTEoq
+	 vqxaYOixhAzdQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Kuan-Wei Chiu <visitorckw@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y] scripts/sorttable: fix orc_sort_cmp() to maintain symmetry and transitivity
-Date: Tue,  7 Jan 2025 13:10:21 -0500
-Message-Id: <20250107080235-0c18d4f88de18259@stable.kernel.org>
+Subject: Re: [PATCH 5.10.y] scripts/sorttable: fix orc_sort_cmp() to maintain symmetry and transitivity
+Date: Tue,  7 Jan 2025 13:10:24 -0500
+Message-Id: <20250107081951-5ffddac33b0d6e1e@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250106174459.3206507-1-visitorckw@gmail.com>
+In-Reply-To:  <20250106175731.3308310-1-visitorckw@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,10 +70,12 @@ Status in newer kernel trees:
 6.12.y | Not found
 6.6.y | Not found
 6.1.y | Not found
+5.15.y | Not found
+5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  0210d251162f ! 1:  0298599f30c2 scripts/sorttable: fix orc_sort_cmp() to maintain symmetry and transitivity
+1:  0210d251162f ! 1:  e4b874815eaf scripts/sorttable: fix orc_sort_cmp() to maintain symmetry and transitivity
     @@ Commit message
      
          The orc_sort_cmp() function, used with qsort(), previously violated the
@@ -101,23 +103,32 @@ Note: The patch differs from the upstream commit:
      
       ## scripts/sorttable.h ##
      @@ scripts/sorttable.h: static inline unsigned long orc_ip(const int *ip)
-    @@ scripts/sorttable.h: static int orc_sort_cmp(const void *_a, const void *_b)
+    @@ scripts/sorttable.h: static inline unsigned long orc_ip(const int *ip)
+      	const int *b = g_orc_ip_table + *(int *)_b;
+      	unsigned long a_val = orc_ip(a);
+     @@ scripts/sorttable.h: static int orc_sort_cmp(const void *_a, const void *_b)
+    + 	 * These terminator entries exist to handle any gaps created by
+      	 * whitelisted .o files which didn't get objtool generation.
       	 */
-      	orc_a = g_orc_table + (a - g_orc_ip_table);
+    - 	orc_a = g_orc_table + (a - g_orc_ip_table);
+    +-	orc_a = g_orc_table + (a - g_orc_ip_table);
+    +-	return orc_a->sp_reg == ORC_REG_UNDEFINED && !orc_a->end ? -1 : 1;
+    ++ 	orc_a = g_orc_table + (a - g_orc_ip_table);
      +	orc_b = g_orc_table + (b - g_orc_ip_table);
     -+	if (orc_a->type == ORC_TYPE_UNDEFINED && orc_b->type == ORC_TYPE_UNDEFINED)
     ++	if (orc_a->sp_reg == ORC_REG_UNDEFINED && !orc_a->end &&
     ++	    orc_b->sp_reg == ORC_REG_UNDEFINED && !orc_b->end)
      +		return 0;
     - 	return orc_a->type == ORC_TYPE_UNDEFINED ? -1 : 1;
-    + 	return orc_a->sp_reg == ORC_REG_UNDEFINED && !orc_a->end ? -1 : 1;
+    ++ 	return orc_a->sp_reg == ORC_REG_UNDEFINED && !orc_a->end ? -1 : 1;
       }
       
+    + static void *sort_orctable(void *arg)
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-5.10.y       |  Success    |  Success   |
 
