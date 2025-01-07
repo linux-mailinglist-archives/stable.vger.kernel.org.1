@@ -1,122 +1,123 @@
-Return-Path: <stable+bounces-107784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6F03A03481
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 02:26:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B8A5A03497
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 02:40:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80A711885731
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 01:26:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F384163C2A
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 01:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33F43BBC9;
-	Tue,  7 Jan 2025 01:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B704B2AEF1;
+	Tue,  7 Jan 2025 01:40:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="CqT2qCz0"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE2218641;
-	Tue,  7 Jan 2025 01:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60AD94C97;
+	Tue,  7 Jan 2025 01:40:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736213192; cv=none; b=d/0ihyDmoHpWtNBe2TduB1OOMWnIbWaejziVS5YWKOZ51prCgixbKQ8DVykLh/J2jO7JsJebGejj2uISrWJDKRrQoay6i1ubv6fo3anqAu7yhIwP9kDfwyWNahU6CnmbDowVRvnVg7CYWaDvtfXsWCJEqLPqAe1AILbtDj1z33I=
+	t=1736214007; cv=none; b=gjIT0xz22qZaVuYmoBF2SnVN6rFfISqSr8ZSKJtzEIzQeA7hGKdaVzrIss5Btzfqwx/0YJj3gzqO1nvmkX/sHN0vdSnOkbo2PjeBQq818F2Dn9IOLWdwWDh1ab2ERpD2So2HZUfOO5cSISXvtqfHxWyl033FhplyV8eJx8A5Vzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736213192; c=relaxed/simple;
-	bh=O5GuwLNuBmNK+ii9vKvjPOmc8Fqv8knVgE1r1JSl750=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=I6iWRw/vvTQJfc2tNqXB90wW0LAYJQpTGaMcsfnBEe6HtAJ17R3FlE6xInGKmJzyxF1gLxHqyrUfPIbTEJsSG7mI3QiInjKSF+ODFqKLesgJo5EgxuK81RJh4PegnHGWO1SvaiyaYSUZ5jgCIjVfgNPwQ+hzfSEiXOV53Q7pM0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-01 (Coremail) with SMTP id qwCowAD3_la1gnxnyq3eBQ--.45780S2;
-	Tue, 07 Jan 2025 09:26:21 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: kumaravel.thiagarajan@microchip.com,
-	arnd@arndb.de,
-	gregkh@linuxfoundation.org
-Cc: linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] misc: microchip: pci1xxxx: Fix possible double free in error handling path
-Date: Tue,  7 Jan 2025 09:26:11 +0800
-Message-Id: <20250107012611.645565-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1736214007; c=relaxed/simple;
+	bh=OF+J7g0eFvi55KwHOIgcuXCNICVmb1rqH16nwsgqHRo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Xmx4pvLEkU40j+kYkQqfH6bidzpSw5seFMiS9NO62ZHfFLgPSgNrv/Xp6puA3bQxJi1PKrMookbtoq7b9782fypWdRyRlFqPkcqscz1PMkjxNgh2kQUEqyMiQt0+VU/+OnnScL8mlYuqrEomJ8vLY8B+JCal8CmQUADVulWl/Bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=CqT2qCz0; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5d3e6274015so26624249a12.0;
+        Mon, 06 Jan 2025 17:40:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1736214003; x=1736818803; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/9YvSvr9lvlL1SrVAn2MD16XQSwHxJWkO99vjoXy7W4=;
+        b=CqT2qCz07ISuw608DaIBLgsMn7Bs8MpdZ6IKZ2rPEuzRpbn8L1bZkdRswaOr2BpFtF
+         EcUb5jHMYbKcHIVIzvGyhqUsNI8awzKgqw1OGvgeJQ2y/7I/kT5ZatPtp6OpQY2HKAq2
+         sLQI89VENzppRYImKvQeNpoD3gIPUoiqc868m668wxbR7OikYhtMD55EdhnNYaIID3DY
+         VWhUV8XwKyP0a6lxCYsZjlsLXYCBxtpvl/jFikEBHiXeFuNvdsUKUgQWueS4OGbSh/rB
+         q912cwyxy7mOUjzb6d1jhY3RPpFN+mfPadxzhAKLMSqRo2qsqG7psEVudt+1XW/xtKLl
+         QsJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736214003; x=1736818803;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/9YvSvr9lvlL1SrVAn2MD16XQSwHxJWkO99vjoXy7W4=;
+        b=itCfdAmjo6hKS152kFhmcoTxqOmsfWE5qNl5PiuEuzZdsnbAhC/y27Znymvhi+SbMR
+         +lLv+8ak6bhaTvaHi22tEU91hJfwYfdhpUnpiWPhUnPzWBxVdXl1aKheXKpTMu5Iyu6V
+         yoN5NUTilWN4Pa22kGYhkJ0S/1JnrvuhwKvSDlbfKIWbXsn5LVqNP8MUvxwR2RbTl2ex
+         SJwI7nAcR8lOoC/PJ7gFxvjqUa7QC3wqjJ9LXz3vcnB9HUSh5ZV4qI5kY+osebxes+uL
+         WMko39oJBcX9M07StlG+2gP+e4yb7cL1hvgeAQm8Dxt/G61i2cZy551jgvGRJYsHefnE
+         qynw==
+X-Forwarded-Encrypted: i=1; AJvYcCVcw7/+soAits57w1mXBxndcd66TfHewJgaGab6h9k7d/5n73MXysGqpFjnDxGSZhmV5E4UgEwB@vger.kernel.org, AJvYcCWQPD3yyvvJWE0Xl1SR3AMgdn+ttgjgShWEHwO/lIfClwl41fQEmkBCMIvPUXaTkX2IYAfSUYEnHbuuyNc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpUPT4EnVOg9r1UkQb5PaJSpl4N2nnH7WlpbE0pdG7BB8S9PWO
+	nr+jgSlbaYiTWgbcy0kCEM1c+9CfNolkSux1z2r8h9umnrt7vlM=
+X-Gm-Gg: ASbGncs4pMDteA94YryjWer71x8WHfaXDFtRYy4OZqo2JfXRRd3yPKS5pz30Zl26/Y7
+	G929Yb7vAWRcrSOkUItSYew1Rs5NpmvRBZnryw2ebKk2NvS5qB1yhcOAwuUqnZVSlGbVAT8E0Rn
+	sSndY4cN8CLNf4fgdbfB3C3480nJCVHY5j4TT/DIhxsi2HuA/VhstCssHPssALPHvP1+hUIanW/
+	Yhv17p0Qeq0DlqotY4Ipl6R8xNZDbeNh4VqFZx7JqBg8uM2aI4QtQIuNqCFL83VW7/8zNB3R33F
+	FuZYSE0SFnFdBVJtEukOuuflzNuI2yhx
+X-Google-Smtp-Source: AGHT+IFbafhfUykgIwrlGa0j1wLPfIKEiPAMneKWEdjawIrQPwGm191CuoAuWlTu+ZSrL5VsJzb0PQ==
+X-Received: by 2002:a17:907:2cc2:b0:aa6:a501:9b3b with SMTP id a640c23a62f3a-aac2b28ee13mr4447377266b.19.1736214002473;
+        Mon, 06 Jan 2025 17:40:02 -0800 (PST)
+Received: from [192.168.1.3] (p5b2b4110.dip0.t-ipconnect.de. [91.43.65.16])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0e89598csm2305748466b.56.2025.01.06.17.39.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Jan 2025 17:40:00 -0800 (PST)
+Message-ID: <25e03704-e05c-46c8-be75-de4b784e4d31@googlemail.com>
+Date: Tue, 7 Jan 2025 02:39:59 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.12 000/156] 6.12.9-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250106151141.738050441@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAD3_la1gnxnyq3eBQ--.45780S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Kr48ZryUGry8tF4xWF15Jwb_yoW8Cryfpa
-	9xta47XrW8t39xKr48Za4jyF1Skw40ka45WrW2kw1a9asxAFyayFW09r9F9w1DWrWUt3WS
-	yF17KrWUGa1DZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9j14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
-	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7MxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
-	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-	17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
-	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
-	C2KfnxnUUI43ZEXa7VUbE1v3UUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-When auxiliary_device_add() returns error and then calls
-auxiliary_device_uninit(), the callback function
-gp_auxiliary_device_release() calls kfree() to free memory. Do not
-call kfree() again in the error handling path.
+Am 06.01.2025 um 16:14 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.12.9 release.
+> There are 156 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Fix this by skipping the redundant kfree().
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-Found by code review.
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-Cc: stable@vger.kernel.org
-Fixes: 393fc2f5948f ("misc: microchip: pci1xxxx: load auxiliary bus driver for the PIO function in the multi-function endpoint of pci1xxxx device.")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
-Changes in v2:
-- modified the patch omitted.
----
- drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c | 3 +++
- 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
-index 32af2b14ff34..de75d89ef53e 100644
---- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
-+++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
-@@ -111,6 +111,7 @@ static int gp_aux_bus_probe(struct pci_dev *pdev, const struct pci_device_id *id
- 
- err_aux_dev_add_1:
- 	auxiliary_device_uninit(&aux_bus->aux_device_wrapper[1]->aux_dev);
-+	goto err_aux_dev_add_0;
- 
- err_aux_dev_init_1:
- 	ida_free(&gp_client_ida, aux_bus->aux_device_wrapper[1]->aux_dev.id);
-@@ -120,6 +121,7 @@ static int gp_aux_bus_probe(struct pci_dev *pdev, const struct pci_device_id *id
- 
- err_aux_dev_add_0:
- 	auxiliary_device_uninit(&aux_bus->aux_device_wrapper[0]->aux_dev);
-+	goto err_ret;
- 
- err_aux_dev_init_0:
- 	ida_free(&gp_client_ida, aux_bus->aux_device_wrapper[0]->aux_dev.id);
-@@ -127,6 +129,7 @@ static int gp_aux_bus_probe(struct pci_dev *pdev, const struct pci_device_id *id
- err_ida_alloc_0:
- 	kfree(aux_bus->aux_device_wrapper[0]);
- 
-+err_ret:
- 	return retval;
- }
- 
+Beste Grüße,
+Peter Schneider
+
 -- 
-2.25.1
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
