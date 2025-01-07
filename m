@@ -1,184 +1,142 @@
-Return-Path: <stable+bounces-107892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A74B3A04A13
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 20:22:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95025A04AA7
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 21:08:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79E173A61F0
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 19:22:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C0A97A1E64
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 20:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E151F63C4;
-	Tue,  7 Jan 2025 19:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB3A71F755B;
+	Tue,  7 Jan 2025 20:08:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ROePip+n"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F261F5429;
-	Tue,  7 Jan 2025 19:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE261F7085
+	for <stable@vger.kernel.org>; Tue,  7 Jan 2025 20:08:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736277762; cv=none; b=MQPy0K9YYqsN/LmNRjy2a2g129LlAu54sgjIaZRU24fKF1ETYhNv1JGTvnx7Jx5KZ8unrTkeIADZ9/3beRFEmkUx2hX/smb1fhPsMQ+A3bGwqpSIUA6xkn3wf7apTlvjBm6dcMMkJYNQSGyQvT1ItSKKgDkOKh480JB7VX07i+c=
+	t=1736280493; cv=none; b=abfxmAplB79FJwZjaEc5z0pHTJKjicGRcNkmKcAtH0ma6+wLOXcMgJ3YpqevhTZWm67WK3Uz8F94W9JR3LdanAa0WzgMtZAYoTH9XDksDXGAdyg0CNkOTkC9OR0OJ1KS1tiRkcxDEJcZ5hdqFFEbOcY22GkmxquvjoqWb3GO8fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736277762; c=relaxed/simple;
-	bh=gL/t+r0JIMW4w8N3SvMLnrUMeQGUADDiQP1iRl12scs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GSdpblEYqp9Jry3HW78wogdgbQEtIy6LwNYx1lHd7IE8v0Vd2ge1PhjtGBz2eQJ31oCOZ6agosoEv9CSePYpuuWlyvq2gqOw0KwmjV71gAwApBBgCPNClwI/fXbuJzmqtpCS2ORpzlfk7KQWk6KWQQDQ0qMHGTPLdGachNVV7J0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2875DC4CED6;
-	Tue,  7 Jan 2025 19:22:38 +0000 (UTC)
-Date: Tue, 7 Jan 2025 19:22:35 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-Cc: anshuman.khandual@arm.com, will@kernel.org, ardb@kernel.org,
-	ryan.roberts@arm.com, mark.rutland@arm.com, joey.gouly@arm.com,
-	dave.hansen@linux.intel.com, akpm@linux-foundation.org,
-	chenfeiyang@loongson.cn, chenhuacai@kernel.org, linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	quic_tingweiz@quicinc.com, stable@vger.kernel.org
-Subject: Re: [PATCH v4] arm64: mm: Populate vmemmap/linear at the page level
- for hotplugged sections
-Message-ID: <Z31--x4unDHRU5Zo@arm.com>
-References: <20250107074252.1062127-1-quic_zhenhuah@quicinc.com>
+	s=arc-20240116; t=1736280493; c=relaxed/simple;
+	bh=4/CkRjq9kcUokUjRmbo9S34/t4UeumZJsbesld2STWQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VOejfC1p15nxjx6ICJ+lVH65mQiMLyXhOJvtLBiS8TZLleriXDt3CAevBo1lZ6k0blypX+DnNdXLzizNQD6W04TiIyWYqXjomWERiwWJc0cI8eJpIXgOuO8IHGJ+eKvregmuIrzARxWZCdjErySsxkarMq5yki7IHc+e6ITPXcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ROePip+n; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-216728b1836so215819055ad.0
+        for <stable@vger.kernel.org>; Tue, 07 Jan 2025 12:08:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1736280490; x=1736885290; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0KrxwWdw54K0Yj+RKR+q5UWCVF10MxJgob7ZMKnFuvw=;
+        b=ROePip+nHNwLAIrpFg+8tCzs0mL0XCNKxdWTETBa5ccyD7IC50fw45pgflCDLr4oME
+         IwUbRt3pUa/4FcO43ZfuqO7RJ4/+mJQP9EM0Afy2WPPBQ9oBuF+6eV+fkPtH2UrQFNmU
+         0en5z+fIWWEAP4RSqaMqWD0catzTAQyc8rxnc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736280490; x=1736885290;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0KrxwWdw54K0Yj+RKR+q5UWCVF10MxJgob7ZMKnFuvw=;
+        b=thoT8oN51BMDQ0W7zMqOclmQKiLA941meBji92/2RLeUnyF4sH+KsQ2TvbLcU+ofoP
+         XMsDwELnqnYyyB9E2VkHbXBw53z2eDk08TcNDVj+NJMJTMuSD5bWLaP7bCxhcVfDsXjP
+         QtbB4z0U351ayQwISqnHcjWQ5flLkLQRVuE02DcdDGA5wKp5mcCKVe8nDGZMMjGX+Kk8
+         8awHUH1S9+xPaLpBzBpOJ6PwRc7jaxgvWxWOX0KPmuxZOSU+a7cC4UPRm2hT/0SSmPYR
+         dghHBNOjYhI7YE+JEuAcskXk0G0MjQ9wOyqfaLoD1Hc21k65hIt6SCf9Yd/PEIB0k2RA
+         UJdg==
+X-Forwarded-Encrypted: i=1; AJvYcCWHDsGkk5dLAxQAxIrhu/cG+LazRuPWpYpPMJ/ryU1iHuHQ2KVB9ncgPHOyfybOn/1/0R6cOGA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/cCDRuqyWALcy+u0ZNxN+SZYpqgG/GkMIVw3qoL7XO4tsVbpd
+	GkLSPTp7oiBojiEGaT+4viN5G8vu14PsQtMhAJdvjWFda46sLdLfPVz0NaywqA==
+X-Gm-Gg: ASbGncvqlgW0ZGefmkaUvJcyIPidKZZo9VF2qos+DwXJhKQ9R1Z1hOQET2e5KTqCm9J
+	q5YPn9ftXpHnRagEoaxAkWGe76BjuFSqEg/lVGLY+oe1/SuCjyewY3BJ0RQYrzFo9pz7Ul0YgHr
+	F4fgc4cJn6Wqp7poKAtlB4WJq8IuQ5IhClEbyToPgIVHIkebkrqG1l/Qw3qJiiZBZ+dGvmu29lV
+	aKolwmiENE+7MAP0dBRpfyL7t6bs1VCwJ8AQzKk64cshs0NtGMg9HOakZFvsxT7axqK0SapTqJm
+X-Google-Smtp-Source: AGHT+IGlYlv+o4b4M4lfyay2yfIQhWPrIig5AxGmXyZ7/rDfeJh96vHrE9iSzFs341VZqJN1Vu/LmA==
+X-Received: by 2002:a17:902:d48b:b0:216:2bd7:1c2f with SMTP id d9443c01a7336-21a83f5510emr4528055ad.18.1736280489913;
+        Tue, 07 Jan 2025 12:08:09 -0800 (PST)
+Received: from dianders.sjc.corp.google.com ([2620:15c:9d:2:2961:4bbc:5703:5820])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc962d47sm314263425ad.55.2025.01.07.12.08.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jan 2025 12:08:09 -0800 (PST)
+From: Douglas Anderson <dianders@chromium.org>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>
+Cc: Roxana Bradescu <roxabee@google.com>,
+	Julius Werner <jwerner@chromium.org>,
+	bjorn.andersson@oss.qualcomm.com,
+	Trilok Soni <quic_tsoni@quicinc.com>,
+	linux-arm-msm@vger.kernel.org,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Scott Bauer <sbauer@quicinc.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	stable@vger.kernel.org,
+	James Morse <james.morse@arm.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 1/5] arm64: errata: Add QCOM_KRYO_4XX_GOLD to the spectre_bhb_k24_list
+Date: Tue,  7 Jan 2025 12:05:58 -0800
+Message-ID: <20250107120555.v4.1.Ie4ef54abe02e7eb0eee50f830575719bf23bda48@changeid>
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
+In-Reply-To: <20250107200715.422172-1-dianders@chromium.org>
+References: <20250107200715.422172-1-dianders@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250107074252.1062127-1-quic_zhenhuah@quicinc.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 07, 2025 at 03:42:52PM +0800, Zhenhua Huang wrote:
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index e2739b69e11b..5e0f514de870 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -42,9 +42,11 @@
->  #include <asm/pgalloc.h>
->  #include <asm/kfence.h>
->  
-> -#define NO_BLOCK_MAPPINGS	BIT(0)
-> -#define NO_CONT_MAPPINGS	BIT(1)
-> -#define NO_EXEC_MAPPINGS	BIT(2)	/* assumes FEAT_HPDS is not used */
-> +#define NO_PMD_BLOCK_MAPPINGS	BIT(0)
-> +#define NO_PUD_BLOCK_MAPPINGS	BIT(1)  /* Hotplug case: do not want block mapping for PUD */
-> +#define NO_BLOCK_MAPPINGS (NO_PMD_BLOCK_MAPPINGS | NO_PUD_BLOCK_MAPPINGS)
+Qualcomm Kryo 400-series Gold cores have a derivative of an ARM Cortex
+A76 in them. Since A76 needs Spectre mitigation via looping then the
+Kyro 400-series Gold cores also need Spectre mitigation via looping.
 
-Nit: please use a tab instead of space before (NO_PMD_...)
+Qualcomm has confirmed that the proper "k" value for Kryo 400-series
+Gold cores is 24.
 
-> +#define NO_CONT_MAPPINGS	BIT(2)
-> +#define NO_EXEC_MAPPINGS	BIT(3)	/* assumes FEAT_HPDS is not used */
->  
->  u64 kimage_voffset __ro_after_init;
->  EXPORT_SYMBOL(kimage_voffset);
-> @@ -254,7 +256,7 @@ static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
->  
->  		/* try section mapping first */
->  		if (((addr | next | phys) & ~PMD_MASK) == 0 &&
-> -		    (flags & NO_BLOCK_MAPPINGS) == 0) {
-> +		    (flags & NO_PMD_BLOCK_MAPPINGS) == 0) {
->  			pmd_set_huge(pmdp, phys, prot);
->  
->  			/*
-> @@ -356,10 +358,11 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
->  
->  		/*
->  		 * For 4K granule only, attempt to put down a 1GB block
-> +		 * Hotplug case: do not attempt 1GB block
->  		 */
+Fixes: 558c303c9734 ("arm64: Mitigate spectre style branch history side channels")
+Cc: stable@vger.kernel.org
+Cc: Scott Bauer <sbauer@quicinc.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+---
 
-I don't think we need this comment added here. The hotplug case is a
-decision of the caller, so better to have the comment there.
+Changes in v4:
+- Re-added QCOM_KRYO_4XX_GOLD k24 patch after Qualcomm confirmed.
 
->  		if (pud_sect_supported() &&
->  		   ((addr | next | phys) & ~PUD_MASK) == 0 &&
-> -		    (flags & NO_BLOCK_MAPPINGS) == 0) {
-> +		   (flags & NO_PUD_BLOCK_MAPPINGS) == 0) {
->  			pud_set_huge(pudp, phys, prot);
+Changes in v3:
+- Removed QCOM_KRYO_4XX_GOLD k24 patch.
 
-Nit: something wrong with the alignment here. I think the unmodified
-line after the 'if' one above was misaligned before your patch.
+Changes in v2:
+- Slight change to wording and notes of KRYO_4XX_GOLD patch
 
->  
->  			/*
-> @@ -1175,9 +1178,21 @@ int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
->  int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
->  		struct vmem_altmap *altmap)
->  {
-> +	unsigned long start_pfn;
-> +	struct mem_section *ms;
-> +
->  	WARN_ON((start < VMEMMAP_START) || (end > VMEMMAP_END));
->  
-> -	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES))
-> +	start_pfn = page_to_pfn((struct page *)start);
-> +	ms = __pfn_to_section(start_pfn);
+ arch/arm64/kernel/proton-pack.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Hmm, it would have been better if the core code provided the start pfn
-as it does for vmemmap_populate_compound_pages() but I'm fine with
-deducting it from 'start'.
-
-> +	/*
-> +	 * Hotplugged section does not support hugepages as
-> +	 * PMD_SIZE (hence PUD_SIZE) section mapping covers
-> +	 * struct page range that exceeds a SUBSECTION_SIZE
-> +	 * i.e 2MB - for all available base page sizes.
-> +	 */
-> +	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES) || !early_section(ms))
->  		return vmemmap_populate_basepages(start, end, node, altmap);
->  	else
->  		return vmemmap_populate_hugepages(start, end, node, altmap);
-> @@ -1339,9 +1354,25 @@ int arch_add_memory(int nid, u64 start, u64 size,
->  		    struct mhp_params *params)
->  {
->  	int ret, flags = NO_EXEC_MAPPINGS;
-> +	unsigned long start_pfn = page_to_pfn((struct page *)start);
-> +	struct mem_section *ms = __pfn_to_section(start_pfn);
-
-This looks wrong. 'start' here is a physical address, you want
-PFN_DOWN() instead.
-
->  
->  	VM_BUG_ON(!mhp_range_allowed(start, size, true));
->  
-> +	/* should not be invoked by early section */
-> +	WARN_ON(early_section(ms));
-> +
-> +	/*
-> +	 * 4K base page's PMD_SIZE matches SUBSECTION_SIZE i.e 2MB. Hence
-> +	 * PMD section mapping can be allowed, but only for 4K base pages.
-> +	 * Where as PMD_SIZE (hence PUD_SIZE) for other page sizes exceed
-> +	 * SUBSECTION_SIZE.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_ARM64_4K_PAGES))
-> +		flags |= NO_PUD_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
-
-In theory we can allow contiguous PTE mappings but not PMD. You could
-probably do the same as a NO_BLOCK_MAPPINGS and split it into multiple
-components - NO_PTE_CONT_MAPPINGS and so on.
-
-> +	else
-> +		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
-
-Similarly with 16K/64K pages we can allow contiguous PTEs as they all go
-up to 2MB blocks.
-
-I think we should write the flags setup in a more readable way than
-trying to do mental maths on the possible combinations, something like:
-
-	flags = NO_PUD_BLOCK_MAPPINGS | NO_PMD_CONT_MAPPINGS;
-	if (SUBSECTION_SHIFT < PMD_SHIFT)
-		flags |= NO_PMD_BLOCK_MAPPINGS;
-	if (SUBSECTION_SHIFT < CONT_PTE_SHIFT)
-		flags |= NO_PTE_CONT_MAPPINGS;
-
-This way we don't care about the page size and should cover any changes
-to SUBSECTION_SHIFT making it smaller than 2MB.
-
+diff --git a/arch/arm64/kernel/proton-pack.c b/arch/arm64/kernel/proton-pack.c
+index da53722f95d4..e149efadff20 100644
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -866,6 +866,7 @@ u8 spectre_bhb_loop_affected(int scope)
+ 			MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
+ 			MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
+ 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
++			MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
+ 			{},
+ 		};
+ 		static const struct midr_range spectre_bhb_k11_list[] = {
 -- 
-Catalin
+2.47.1.613.gc27f4b7a9f-goog
+
 
