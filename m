@@ -1,235 +1,244 @@
-Return-Path: <stable+bounces-107924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B979A04DF4
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 00:57:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80FDBA04DF8
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 01:00:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12BDC1887F0B
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 23:57:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE2493A5B9F
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 00:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D4F1F63F4;
-	Tue,  7 Jan 2025 23:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18D471747;
+	Wed,  8 Jan 2025 00:00:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="pOiaaRq4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2068.outbound.protection.outlook.com [40.107.94.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655FF1F63E7;
-	Tue,  7 Jan 2025 23:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736294218; cv=none; b=gQbfkh6w/Lod+suTMlbM5Uoh2T1qDkfywz/ulLWAh84qSJ3XjyslOfD0QTbs0la0kfYPhjx3eCQ577cqg11SsDzSIzozKLf+S0arlUaudxeocgRy147Ap1AhqglyTchICoTtMrzSMpMn7Z2LsZJDnguK7f39Qk0wVvOrh7HihBo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736294218; c=relaxed/simple;
-	bh=6PmUO4qLkTp0n6U4wmFSj77Bij/HLw++L56gi1BS9LU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qC1e/PUoSp2J7RXIRe+8z1NkOm1FgGHnw9AP6a7MDGR8YvDs7pvyE9PiFUlhtnkH0b6HSFSUKyC05KCYzdlqL6nZwvcM1rAu33KXXsRX1VjOws1kFXTxsiadmsbGhdIUcYsQmqjdP0bRDBo5BHBZW58Or4evcvdalQg886i0XvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-4afe70b41a8so5026008137.3;
-        Tue, 07 Jan 2025 15:56:56 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736294215; x=1736899015;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Q1cb1DUV4xv7Tq0nP/l08DLYi+sRYWSG7hM3AytBxfw=;
-        b=nBhs6Ey1JU0gobVV1lsdJsYQzbyC8gKCB6xlur1H3A3u5BzMMJEk+PTxFHW4kh5L6z
-         uxLfegK5y1pWF3m2XkK3Tut3gtR+s0A0JHTh7TfVCJ8i7oQUvYXla9RboDR5rg0eamfN
-         /RV34APphp1LHBJS1hXJwgmczT+km7BQ+mvMxMIjTIgpYulPDWjaCYMQ1Xc8pkEnvH4W
-         AzxU6KiLlmjX5iVnaF3fIruwCv8xDSB/+iW9htYKAUq3sdThnxnY7lRliOEd8S7TLgNq
-         N29UnuxU9qh5/I6KC+ZfqHVYUGXUV6RypDYzmaQlHxNrNFLSvnh37J67Gy4qthWmAuNv
-         ipHw==
-X-Forwarded-Encrypted: i=1; AJvYcCUUiWPIn/1vZlUfxQeEUMD7YfX0DVJOavXMJx/bQHPEj8EXeb71+uSpxcG83qlYcVbpywR0zSNky9RPvdc=@vger.kernel.org, AJvYcCWGt2ypPJTbMjP6oEwsNg1Mt8Pew9kdEeCa0kKRgS9ppfd9epv//H2FaD+P1VfVZ1esbdfl67w7@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyZXDd8ivjc2oHDHog25rsFTelt9sFtv2xrgSllXMUNH+xa9c3
-	vuLjzIL2M7QAIDEzxL2gUMuCljXv59AwMH2E8gaPaGDFKWP4X37mWg8mfVJf5bYI0m9iXdFYvjK
-	LHpgZ98c33th8h6gGfukCXM29MRk=
-X-Gm-Gg: ASbGncumWiy/ivVlA9XQcWdvmHkSdsVR4Sr+cN1+FzqEXEwHAuPWQe7P7w0tDKrmAEK
-	CWmK8Yhn6I4Ug0/EBU6j7tRwHVCeZLOI4j6I5p1RSiKN8RBkRTvg5vO9JNNEFFbXbh6nzAeg=
-X-Google-Smtp-Source: AGHT+IFQF4rbOj57MKazphxT7zM4SmJ1w77ypufJOhWONq7MIAsLAJ+YyYuwY9/mzsLS9j2UZBSZZrr2gtNsmvm+M+8=
-X-Received: by 2002:a05:6102:4b12:b0:4af:f044:9381 with SMTP id
- ada2fe7eead31-4b3d0eb9426mr925956137.27.1736294215244; Tue, 07 Jan 2025
- 15:56:55 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B612B38DE3
+	for <stable@vger.kernel.org>; Wed,  8 Jan 2025 00:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736294444; cv=fail; b=FDWAaEuvF1IU8+6eZgpEdM6xRrayiVJ0CEcAZFRtLLqepS88uv1e9P/If8n7nPKsQkLRKHA0wZ7T8fENdmUUMFYSAKlh6Nzyb3S1C+TrJYiaXIgO7DWpcktMbSo0SALw6yym3/V0DImsL30Fjl/at1oGOM2bc554D3TJ2iAv9bA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736294444; c=relaxed/simple;
+	bh=N05mk5ALOIbbuj552LI9oR6Ko0Q7WyKSxBvt9qUP9/s=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=tXNXR/Nmqt4igS1HHTz12O3IN+rqcFftLYwvXUpX1FbcYTv2Z/GlCNZiL6UDRKa23CsAia4KcXbrckfVj1H0clFmr26zilj34W3RLJMiVK8e5ZSjAYDl0hC1F37jT+K78FU84/C3UC/zxnoyuKjni04SFoxND3GEGSmoe+WEn8M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=pOiaaRq4; arc=fail smtp.client-ip=40.107.94.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Aty/gkZ//lxIzq0oit6a6QmOm5JJFutBpl9ypsO3OpqdSp51yd/mU4PXlU9KWeS4L8POYC+8JUW5RJoLfqjCwB6dBMQ8OV83cH107idZ5Anzdreth7p04SvVucKeXBRzbO6WaIL5XLylaNdyilw4hxcbbDFvctIf6zn9/78J2HlrmawEC+PWrOMqs2r3sEFdwrO3aCtQjyf9HyKevmlZvg2XdPL2MzrCupyf/6eEAe5udUQKlrTW1W/uauCuXOk4J8DcAc1cIhkhRFCGS1zftllNfCQ0pZ4pGPIizgvWXdu4x1t44HzhkH1b+Rn+1oM2Kj5IYjwbcGjwPKE11IUsfw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=g3MoRiqIpO4MNTXg3kif0MyKkDAsns4MDL+8Jf0rW0A=;
+ b=SAmFclO0UfTMvT9LZtB7WWC4jOD7Cz7KWbxNu9qR1gvNIkb4RanAv1qvK2EA5WSNKfuwHOqZhf0/buBVrEsOf6wuEkJtqNp/6Dq8WDxgY8ShWmUo/9CWFozyUDjPudMNPkkKtrKNq0pQwXevSqKXIzmCv4/ppG3lrjBLaHm2tsEPmSaRyBe1OgjiuesBFOng5+ld3x3a3ixQRmvE6bArUI8ykSSU8lE/lxjIdGZwhz7KhWF//cUF+kHtP838jCjl5h2NhjE5iJ1VRleJ0FXVgNcjOx1F5sMn8YiRpPXGcHMra4jT9syYGcC2idF+PTollVW5WBUdAYZACBTrlCrKpw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=g3MoRiqIpO4MNTXg3kif0MyKkDAsns4MDL+8Jf0rW0A=;
+ b=pOiaaRq4YiTsK8Hw1kSPHjRJ87oPrTfKNtioe33EI35ZswIHsZUatZbF8bUMWNepLQz2JdyCTPBBd85uHbhmGwI9quNoN3RbQIK4s+o3F3ve/AIrWSf0ShZFDoOpQVCxusxDZIlNAFj/QRjtl7D8bhfc2d8zAFbsNGj8473u7t8=
+Received: from BL1PR12MB5144.namprd12.prod.outlook.com (2603:10b6:208:316::6)
+ by MW4PR12MB7015.namprd12.prod.outlook.com (2603:10b6:303:218::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.18; Wed, 8 Jan
+ 2025 00:00:40 +0000
+Received: from BL1PR12MB5144.namprd12.prod.outlook.com
+ ([fe80::491a:cce3:e531:3c42]) by BL1PR12MB5144.namprd12.prod.outlook.com
+ ([fe80::491a:cce3:e531:3c42%3]) with mapi id 15.20.8335.010; Wed, 8 Jan 2025
+ 00:00:40 +0000
+From: "Deucher, Alexander" <Alexander.Deucher@amd.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+CC: "patches@lists.linux.dev" <patches@lists.linux.dev>, Shixiong Ou
+	<oushixiong@kylinos.cn>, Sasha Levin <sashal@kernel.org>
+Subject: RE: [PATCH 6.6 014/222] drm/radeon: Delay Connector detecting when
+ HPD singals is unstable
+Thread-Topic: [PATCH 6.6 014/222] drm/radeon: Delay Connector detecting when
+ HPD singals is unstable
+Thread-Index: AQHbYE7leQRj7eOuEUSY/1icDnMXsrML/1Gw
+Date: Wed, 8 Jan 2025 00:00:40 +0000
+Message-ID:
+ <BL1PR12MB51447A9FC852D0E8DDCD6C4DF7122@BL1PR12MB5144.namprd12.prod.outlook.com>
+References: <20250106151150.585603565@linuxfoundation.org>
+ <20250106151151.141567133@linuxfoundation.org>
+In-Reply-To: <20250106151151.141567133@linuxfoundation.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ActionId=b993606a-bdc8-4e12-a35f-09e612f68898;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ContentBits=0;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Enabled=true;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Method=Privileged;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Name=Open
+ Source;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SetDate=2025-01-07T23:58:00Z;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL1PR12MB5144:EE_|MW4PR12MB7015:EE_
+x-ms-office365-filtering-correlation-id: bffa2db7-1081-4cb1-36ae-08dd2f777d16
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?AteAJ/6FqqN6aG/4QNp/wYW+oxHoOJLAT+JBdECqRS17IMkh3v2oA4kXbs+a?=
+ =?us-ascii?Q?Zwo7vYUY2ATdneXD7S31VLge7DGbThUXEvYKx/GxLP+LWzxjvk81ORjechfK?=
+ =?us-ascii?Q?QgenUnsWwGoHDCySKyVTra9Db//NASoakFQJiuwM0+u8QL5QK4Ed5VGyFKs8?=
+ =?us-ascii?Q?dJ0ZnoNf8Iha1mxIzpJrVbxTw1XGfWOs6/JwmI5N8/B4Gub5BWKP3LXss5nR?=
+ =?us-ascii?Q?i5EzRwz1poSBccWOAT3krr+QQpnppiWVU4NsaGJiVs0b32sUQCrXBZ9yJGmD?=
+ =?us-ascii?Q?J4Wc6u6SdtLwCAWAO3Sp07spfFfOeEl5cWRuQiA3PjZCMWDFFLRzoG01Pptd?=
+ =?us-ascii?Q?KSu3vQ4kR9+TzMR+4LX4e2y2/ov42ZHuORXFUqyxSNA528p3c5EnUdOJD9Na?=
+ =?us-ascii?Q?cwgfy8ArIJBEEwAwaL3XYHYNgdVFzCv9d3ioluCntPiVep9mXr3TQWdjLDCp?=
+ =?us-ascii?Q?HIDlmh87qHDlOCTCoQ7V1hIQaC+9FRDI9xEKG6rVJrMVBpbfhS3QfbeYPfEL?=
+ =?us-ascii?Q?fKOio6hurtZtwFXsLMCaSvc5YmyXAVMd765Fs58MumnwLck2BNC+HwdIfbpT?=
+ =?us-ascii?Q?8rGa32gfMbHAe/6Wx6Fjl1n1hpYNEKohcELU3bu42geOvFhSvZKEEhHSQTzR?=
+ =?us-ascii?Q?1NQypJoaulE7osnnTtGUC86vAeg0mrnlmNW1qWbjnRA7dKqStIpt7aO9gOc5?=
+ =?us-ascii?Q?Bb08xbKwVyhMUXaXlJfzHXqUjuTv+/85acNXyAi1icrXwViGxaJhW4O/A7ww?=
+ =?us-ascii?Q?j+5EVLQx6XUwkFMEKr7GvjdjyDg9b9kbkuzAYJi+3LuBH6ph+PFRtjmEKl1N?=
+ =?us-ascii?Q?0IZT4VuFKTPm7DTNxaCoByRtNY6DvBg26UUZD5addo48zT3iJbWli8jkGWn3?=
+ =?us-ascii?Q?L+6CabZToa8K1+t6NaXYRGJr4a3C0tccrwMiYvkQcSUHfy5x5SVxSur9pG01?=
+ =?us-ascii?Q?zPxVlnoOC7JoYxPO941xyZ57F+PlKpuOKBlR91SgFXaOPENxKiyfoe8cgTvr?=
+ =?us-ascii?Q?+nIVJveXml1sdZ5ga4ke/fz4qQ9ZVAYdzEK3MtpbuPM12Cn6eXaOciHZq8uk?=
+ =?us-ascii?Q?utQpM3A51IwwFTIo9RL8assDMdQC5J3W/X6HhRznan0jfyq6jl4LeuNswnGa?=
+ =?us-ascii?Q?7F6ODy9wvF1Iy0DbKNqJke80RspXMBz0G1ydAUw/yMsQctqCBMLosVU2Z922?=
+ =?us-ascii?Q?6z5dro2KxgZ76QJbz2rTVPoXiaPZwe2Xj+LsIxCv4LkA4KkgdH3QtsaWzJ9J?=
+ =?us-ascii?Q?9by9+dx0T+8V6wR+FbHo23jnjslWnplkaGmmDCM3OpAhaUwa5TZRx6v33LA0?=
+ =?us-ascii?Q?NVpPW6hu+W6LxwS1Cr5NQm03B0pSmXRJQ6/EymUPrwt68MhVhvIOXetZ72Mc?=
+ =?us-ascii?Q?aXeH2cZYb4iJBMkcCFC2/K3RXrZnXbrhvDoMG2oy8sQjg1sy5he6hoSWNA+B?=
+ =?us-ascii?Q?wHDKkc66sZHThk6GcqFx1xY8uhZsRjqU?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5144.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?YGHTP3npWlIQAmGEE197sAliEsYzs3oarIph2BDJ7QIt0I2HSUvgzOsv4vz2?=
+ =?us-ascii?Q?89TmSMqgjEYq612gWFgFwYVLSkeNpV40kMVTCatHlmUftbKz0ExHxPggqqav?=
+ =?us-ascii?Q?hRBiKnB6i4TkAieya00nS94Y21647kX/1X/bcDN4TIy2A2Pe1OfbSr/X81qi?=
+ =?us-ascii?Q?/QEtewvcuCsxrKP0CzV+2Xe4oz+X08pItipFXPrpt6XeERphxOfL9lYK2f5s?=
+ =?us-ascii?Q?+dQJTYmJ5YMv/b+gbMZBlsGIkyhMia9P6TvyWlAaNMec9Ckp4QOKpcngNwwC?=
+ =?us-ascii?Q?iXh77gpBGW2V6Ahark6Zx9/aK5E7FB6xOKCsuzZA6PQkGXW//118PYOYZAHP?=
+ =?us-ascii?Q?1MjgGqmbiTr+g80ALHiWLzVHn/j9ZQEweal5S6u5d09bw/PgcuAEyGSBX6R1?=
+ =?us-ascii?Q?okkdiCgBhv5+2GYlb/QotiOMBy8Mesyhygth+TCePijfwtVBS9WYaDlqhnbL?=
+ =?us-ascii?Q?NGh27m9OcddMjgrZrz6MFexXpFkej476RZfOFC2B7KyfC8MBqNgVdkeILd9q?=
+ =?us-ascii?Q?KoDleek5CY+JfxHLhI5GRP48VlVOqBMBslIomy0AME8ZMl/Lb4+6mt9SdgXg?=
+ =?us-ascii?Q?BJuRoEKZoujaL7TIEe1/RiGlZOTng6QnxFSkRRHHRhW+Qviu2qG1okBFYLrE?=
+ =?us-ascii?Q?o5n1n52IYk67ZKYDYkmW/DU+zi6wF+07yP5jurhOiamwN0e8qJ+27Ghfh3uM?=
+ =?us-ascii?Q?naB+bCMIkKYRm7hEp1htxBnars5j286XJyaaXppvRsB6tbuIVPOVIUlHG3H/?=
+ =?us-ascii?Q?927UpEGjSVn/AnjMztD7KNDrAaHSYWerOSKM4nAZkWS5Pc8iXq0lWalkLYtK?=
+ =?us-ascii?Q?39X5weV7oMrY18pGksfk45jk3gDobOjpIJEotHUfBqmbq9KJ7wSkcVnuzAJb?=
+ =?us-ascii?Q?nWO5d+MkYBXKm0WU7XOI2lnQPiRXsPrijFBDbNrz4DwKj5m/oMdPgaa8jYX8?=
+ =?us-ascii?Q?FDXIN6V2YK+juFiWPi2hEsgu0yd9B3qWP4Tw2wb/uL/Fhct/Q93g89RRyWy9?=
+ =?us-ascii?Q?Z8WHViPczyS6W8LwhcXU53dXrtZSixTIYYKsrCprMC6/Q2/MLRAaRnxY0W1X?=
+ =?us-ascii?Q?tzRhZMNDP5Zt7GdOCxfqy2JQj+JlzrKnIjxtz2bdMNH5CSXKtzXoqntFFCIy?=
+ =?us-ascii?Q?y0hKEUrbn3piBEucFs5Z1Di4AnHF25vzxeN8IgdYNKHv56NPDJ+GFxGg7VnS?=
+ =?us-ascii?Q?+tzh9rsyGTaR3m3STuh62f5OwKXQ2dBIZ8eUdx9pu0TsRt+SiGIjOPgvvt4w?=
+ =?us-ascii?Q?3I+Ityqp1ZyEYzzv034wxpB0fkBjt0KZXRTWpg5NOMXeUN2SUgyRGE8ok1Db?=
+ =?us-ascii?Q?gcLTO/+Ag4MIMFObN0xuENb8CqAH6Auq3HPFa+Wa5ImmGm333lu1OGeJAFH5?=
+ =?us-ascii?Q?B7rPg7+SoJcRl8kRgBvtclXrwT7jjxlOB1ciOI3UY/hMNahcw06UoOF6aDpm?=
+ =?us-ascii?Q?rB/VhzFyON1F3txO6HoVSIozHJ7a4N6JUzG1dbLl2EaBvmdQ1nkHFCMorvwy?=
+ =?us-ascii?Q?7Why/6mXuVzQeVdKIUKjRtWTxHGbfkBDwCvROYnLDDXgZzJwZsrZmyh6Ki9q?=
+ =?us-ascii?Q?rkVuiCKSNie7VrHPKCM=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250107222236.2715883-1-yosryahmed@google.com>
- <20250107222236.2715883-2-yosryahmed@google.com> <CAGsJ_4xN9=5cksaGPqh_6jyH-EJkw-DH1zwx81Kotqh85BJ+ZQ@mail.gmail.com>
- <CAJD7tkbnYaZFYw0ieor81e--e6qJVgb3045x86c0EKV546TyWw@mail.gmail.com> <CAGsJ_4wajczqt7P=1m7dmt3dk3uz+g6CnnsUOYidjWjL5CeLEw@mail.gmail.com>
-In-Reply-To: <CAGsJ_4wajczqt7P=1m7dmt3dk3uz+g6CnnsUOYidjWjL5CeLEw@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 8 Jan 2025 12:56:44 +1300
-X-Gm-Features: AbW1kvZuTDLWSyxXcLXp8bF7iKv37kirT_Z5D8NSVJ1__fCGZXi3JDZjpui5amo
-Message-ID: <CAGsJ_4wC-wgtamCwSgMXwUG_xCsxzLZPajjoFfR8pVhCB_CQKA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] mm: zswap: disable migration while using per-CPU acomp_ctx
-To: Yosry Ahmed <yosryahmed@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Vitaly Wool <vitalywool@gmail.com>, Sam Sun <samsun1006219@gmail.com>, 
-	Kanchana P Sridhar <kanchana.p.sridhar@intel.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5144.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bffa2db7-1081-4cb1-36ae-08dd2f777d16
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Jan 2025 00:00:40.2255
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: RaPNXDFaCzIXUiaeTbUV4V/58EvUKy2z6VMtnsFCcmb8zZ8sDKSHUt0Crev893PoQdRMkypb0WjhR4b8ENtvKw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7015
 
-On Wed, Jan 8, 2025 at 12:38=E2=80=AFPM Barry Song <baohua@kernel.org> wrot=
-e:
->
-> On Wed, Jan 8, 2025 at 12:26=E2=80=AFPM Yosry Ahmed <yosryahmed@google.co=
-m> wrote:
-> >
-> > On Tue, Jan 7, 2025 at 2:47=E2=80=AFPM Barry Song <baohua@kernel.org> w=
-rote:
-> > >
-> > > On Wed, Jan 8, 2025 at 11:22=E2=80=AFAM Yosry Ahmed <yosryahmed@googl=
-e.com> wrote:
-> > > >
-> > > > In zswap_compress() and zswap_decompress(), the per-CPU acomp_ctx o=
-f the
-> > > > current CPU at the beginning of the operation is retrieved and used
-> > > > throughout.  However, since neither preemption nor migration are di=
-sabled,
-> > > > it is possible that the operation continues on a different CPU.
-> > > >
-> > > > If the original CPU is hotunplugged while the acomp_ctx is still in=
- use,
-> > > > we run into a UAF bug as the resources attached to the acomp_ctx ar=
-e freed
-> > > > during hotunplug in zswap_cpu_comp_dead().
-> > > >
-> > > > The problem was introduced in commit 1ec3b5fe6eec ("mm/zswap: move =
-to use
-> > > > crypto_acomp API for hardware acceleration") when the switch to the
-> > > > crypto_acomp API was made.  Prior to that, the per-CPU crypto_comp =
-was
-> > > > retrieved using get_cpu_ptr() which disables preemption and makes s=
-ure the
-> > > > CPU cannot go away from under us.  Preemption cannot be disabled wi=
-th the
-> > > > crypto_acomp API as a sleepable context is needed.
-> > > >
-> > > > Commit 8ba2f844f050 ("mm/zswap: change per-cpu mutex and buffer to
-> > > > per-acomp_ctx") increased the UAF surface area by making the per-CP=
-U
-> > > > buffers dynamic, adding yet another resource that can be freed from=
- under
-> > > > zswap compression/decompression by CPU hotunplug.
-> > > >
-> > > > This cannot be fixed by holding cpus_read_lock(), as it is possible=
- for
-> > > > code already holding the lock to fall into reclaim and enter zswap
-> > > > (causing a deadlock). It also cannot be fixed by wrapping the usage=
- of
-> > > > acomp_ctx in an SRCU critical section and using synchronize_srcu() =
-in
-> > > > zswap_cpu_comp_dead(), because synchronize_srcu() is not allowed in
-> > > > CPU-hotplug notifiers (see
-> > > > Documentation/RCU/Design/Requirements/Requirements.rst).
-> > > >
-> > > > This can be fixed by refcounting the acomp_ctx, but it involves
-> > > > complexity in handling the race between the refcount dropping to ze=
-ro in
-> > > > zswap_[de]compress() and the refcount being re-initialized when the=
- CPU
-> > > > is onlined.
-> > > >
-> > > > Keep things simple for now and just disable migration while using t=
-he
-> > > > per-CPU acomp_ctx to block CPU hotunplug until the usage is over.
-> > > >
-> > > > Fixes: 1ec3b5fe6eec ("mm/zswap: move to use crypto_acomp API for ha=
-rdware acceleration")
-> > > > Cc: <stable@vger.kernel.org>
-> > > > Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
-> > > > Reported-by: Johannes Weiner <hannes@cmpxchg.org>
-> > > > Closes: https://lore.kernel.org/lkml/20241113213007.GB1564047@cmpxc=
-hg.org/
-> > > > Reported-by: Sam Sun <samsun1006219@gmail.com>
-> > > > Closes: https://lore.kernel.org/lkml/CAEkJfYMtSdM5HceNsXUDf5haghD5+=
-o2e7Qv4OcuruL4tPg6OaQ@mail.gmail.com/
-> > > > ---
-> > > >  mm/zswap.c | 19 ++++++++++++++++---
-> > > >  1 file changed, 16 insertions(+), 3 deletions(-)
-> > > >
-> > > > diff --git a/mm/zswap.c b/mm/zswap.c
-> > > > index f6316b66fb236..ecd86153e8a32 100644
-> > > > --- a/mm/zswap.c
-> > > > +++ b/mm/zswap.c
-> > > > @@ -880,6 +880,18 @@ static int zswap_cpu_comp_dead(unsigned int cp=
-u, struct hlist_node *node)
-> > > >         return 0;
-> > > >  }
-> > > >
-> > > > +/* Remain on the CPU while using its acomp_ctx to stop it from goi=
-ng offline */
-> > > > +static struct crypto_acomp_ctx *acomp_ctx_get_cpu(struct crypto_ac=
-omp_ctx __percpu *acomp_ctx)
-> > > > +{
-> > > > +       migrate_disable();
-> > >
-> > > I'm not entirely sure, but I feel it is quite unsafe. Allowing sleep
-> > > during migrate_disable() and
-> > > migrate_enable() would require the entire scheduler, runqueue,
-> > > waitqueue, and CPU
-> > > hotplug mechanisms to be aware that a task is pinned to a specific CP=
-U.
-> >
-> > My understanding is that sleeping is already allowed when migration is
-> > disabled (unlike preemption). See delete_all_elements() in
-> > kernel/bpf/hashtab.c for example, or __bpf_prog_enter_sleepable() in
-> > kernel/bpf/trampoline.c. I am not sure exactly what you mean.
->
-> Initially, I had some doubts about whether the scheduler handled this cor=
-rectly,
-> but after reviewing the scheduler code again, it seems fine. While a task=
- is
-> dequeued, its cpus_ptr is updated. When the task is woken up, it uses its
-> cpus_ptr instead of selecting a suitable CPU (e.g., idle or wake-affine C=
-PUs).
-> Only after migrate_enable() restores this_rq()->nr_pinned to zero can CPU
-> hotplug take down the CPU.
->
-> Therefore, I sent another email to correct myself:
-> https://lore.kernel.org/linux-mm/CAGsJ_4yb03yo6So-8wZwcy2fa-tURRrgJ+P-XhD=
-L-RHgg1DvVA@mail.gmail.com/
->
-> >
-> > >
-> > > If there is no sleep during this period, it seems to be only a
-> > > runqueue issue=E2=80=94CPU hotplug can
-> > > wait for the task to be unpinned while it is always in runqueue.
-> > > However, if sleep is involved,
-> > > the situation becomes significantly more complex.
-> > >
-> > > If static data doesn't consume much memory, it could be the simplest =
-solution.
-> >
-> > Do you mean allocating the buffers and requests for all possible CPUs
-> > instead of allocating them dynamically in CPU hotplug notifiers? I am
-> > not sure how much more memory this would be. Seems like it depends on
-> > CONFIG options and the firmware.
->
-> Correct, the firmware/devicetree will help identify all possible CPUs. Ev=
-en
-> if CONFIG is large, only those possible CPUs will be allocated memory.
-> However, if migrate_disable() and migrate_enable() work as expected,
-> we don't need to consider this option.
+[Public]
 
-By the way, there could be a slight performance regression if the previous
-CPU is occupied with other tasks, as we would have to wait for preemption.
-However, when migrate_disable() is not in effect, the woken-up task can
-quickly select a neighboring idle CPU and continue execution.
+> -----Original Message-----
+> From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Sent: Monday, January 6, 2025 10:14 AM
+> To: stable@vger.kernel.org
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>; patches@lists.linux.=
+dev;
+> Shixiong Ou <oushixiong@kylinos.cn>; Deucher, Alexander
+> <Alexander.Deucher@amd.com>; Sasha Levin <sashal@kernel.org>
+> Subject: [PATCH 6.6 014/222] drm/radeon: Delay Connector detecting when H=
+PD
+> singals is unstable
+>
+> 6.6-stable review patch.  If anyone has any objections, please let me kno=
+w.
+>
+> ------------------
+>
+> From: Shixiong Ou <oushixiong@kylinos.cn>
+>
+> [ Upstream commit 949658cb9b69ab9d22a42a662b2fdc7085689ed8 ]
+>
+> In some causes, HPD signals will jitter when plugging in or unplugging HD=
+MI.
+>
+> Rescheduling the hotplug work for a second when EDID may still be readabl=
+e but
+> HDP is disconnected, and fixes this issue.
+>
+> Signed-off-by: Shixiong Ou <oushixiong@kylinos.cn>
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> Stable-dep-of: 979bfe291b5b ("Revert "drm/radeon: Delay Connector detecti=
+ng
+> when HPD singals is unstable"")
 
-When the entire system is not busy, there might be no difference. However, =
-when
-the system is packed with tasks, it could make a difference. Hopefully, the
-regression is small enough to be negligible :-)
+Please drop both of these patches.  There is no need to pull back a patch j=
+ust so that you can apply the revert.
 
-Thanks
-Barry
+Thanks,
+
+Alex
+
+
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/gpu/drm/radeon/radeon_connectors.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+>
+> diff --git a/drivers/gpu/drm/radeon/radeon_connectors.c
+> b/drivers/gpu/drm/radeon/radeon_connectors.c
+> index b84b58926106..cf0114ca59a4 100644
+> --- a/drivers/gpu/drm/radeon/radeon_connectors.c
+> +++ b/drivers/gpu/drm/radeon/radeon_connectors.c
+> @@ -1267,6 +1267,16 @@ radeon_dvi_detect(struct drm_connector *connector,
+> bool force)
+>                       goto exit;
+>               }
+>       }
+> +
+> +     if (dret && radeon_connector->hpd.hpd !=3D RADEON_HPD_NONE &&
+> +         !radeon_hpd_sense(rdev, radeon_connector->hpd.hpd) &&
+> +         connector->connector_type =3D=3D DRM_MODE_CONNECTOR_HDMIA) {
+> +             DRM_DEBUG_KMS("EDID is readable when HPD
+> disconnected\n");
+> +             schedule_delayed_work(&rdev->hotplug_work,
+> msecs_to_jiffies(1000));
+> +             ret =3D connector_status_disconnected;
+> +             goto exit;
+> +     }
+> +
+>       if (dret) {
+>               radeon_connector->detected_by_load =3D false;
+>               radeon_connector_free_edid(connector);
+> --
+> 2.39.5
+>
+>
+
 
