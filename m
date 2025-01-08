@@ -1,148 +1,183 @@
-Return-Path: <stable+bounces-107975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66A67A054F9
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 09:06:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06279A05528
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 09:20:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C8CA3A26A9
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 08:06:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B01A7A24CC
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 08:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0501E32DA;
-	Wed,  8 Jan 2025 08:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347501DF73A;
+	Wed,  8 Jan 2025 08:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ln3Ko/U9";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HsNNeh3R"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="m8XGhXjN"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935981AA781;
-	Wed,  8 Jan 2025 08:05:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03BC1A2544;
+	Wed,  8 Jan 2025 08:20:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736323553; cv=none; b=RSm4MNFYgwBRnbeaVgx1AE+FXZW58NrE1u7kH2ruHDaP87qf1vQKucm7IVU3BuJ0g7Bjnaay0wtfLkrRIsDLs0C4fnRb9hRTg6+Zrlnhrz9k7KBgSSEnWTC+aHo1EiDZj2/vbSQwi8O0z5icGs4jsXwIxBEfODWnMtaThGzP+2A=
+	t=1736324435; cv=none; b=IDn5aKXc4WnulwXNONMYTZXwIyrOaOy+V+xqCBlXB73UmjIRjZmB2Q0oazmglWCgSNk0a5MLVzM0LV7HAPCzfk3BbH03IoKdXT7EKio2FvD9t3eLFp/mAo5izcoOMjJZy09u4WIokk5oJkd1jq0UgMDqsQY6ZBVFx7RAW9fcVKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736323553; c=relaxed/simple;
-	bh=SyvnMFw9tENgnWpRfx0m3z6LwOVKNZyoCL+rq6ghP8k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OOGMZeL3Te/7n3tUwykJFFhL1+aj0iFGM/wZsTt08LIiKdT9bxHboijyK3m3zICkQxv9EfM7gkuyJfJMw/1TJS7l4Lfs2o8nw1Anvkau7k8zycEdYAiNi7G8e9fR+Zv8fPLvHwNIMVLnho5LlXv89GQ7+qnnV9khgOf6ww2pC4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ln3Ko/U9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HsNNeh3R; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 8 Jan 2025 09:05:48 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1736323549;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qJmg0rlYDsu9eOC/BK9/42GtYToiXcNh3fOPiQsHx28=;
-	b=ln3Ko/U9q5IFu3FTm0+YzBkPfHxxpock+ZTNMzitMYQtFkBRw2JpSECshDnLIfF/rN00Op
-	fSQBOOJ3EYl3Sdwxi0WOWxF5hepkHR6hgNjrPm4g7c+LHI5pHJwxRV+caev0kBNQYZkxhA
-	y3GWzSBW4DxJ03ywD1mAJN0H05Wc/JmEh0/62pa40wWCDBFb7l+4w9volysE35CZbpwb7S
-	IUGlYW3zmXUMhjAC8mSliphBfcTtVkObUjv9J/bqeX44dAtILZMR+F6abM+WN65eI1iPk0
-	3D4lRGPUmrzx0V+E/VogYIy7WY4zfei3T5DVaWy3xx5LrhFmVkbNQeL7mF9Vow==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1736323549;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qJmg0rlYDsu9eOC/BK9/42GtYToiXcNh3fOPiQsHx28=;
-	b=HsNNeh3RFpXd9rSUKsJHzCMMKUHXeFrMxlbNDm6s6+G9tA68kvlcLaXQnjcObvgWD/s1Be
-	10Eqm24ER82AgcBA==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Dev Jain <dev.jain@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Ryan Roberts <ryan.roberts@arm.com>, David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH 1/3] selftests/mm: virtual_address_range: Fix error when
- CommitLimit < 1GiB
-Message-ID: <20250108083855-840c688b-003f-423b-8327-2a10a2b27d58@linutronix.de>
-References: <20250107-virtual_address_range-tests-v1-0-3834a2fb47fe@linutronix.de>
- <20250107-virtual_address_range-tests-v1-1-3834a2fb47fe@linutronix.de>
- <5811cf74-d333-4653-ab64-0e981eda7745@arm.com>
+	s=arc-20240116; t=1736324435; c=relaxed/simple;
+	bh=t0rlTcxwkCQXCIG+vCg8JeAk85T7C4C5dBs9Ng6HwXQ=;
+	h=Date:To:From:Subject:Message-Id; b=E2yA9aWPf2hvbaTz6OUTxuzopcSlDgrb2EB9KxzLs9VZRxKzihfAxQFqxh3lEbWpM8E2K82kifSm/ywg36f9bX2UvTQQqxts9h0uxADYhe9ui94xmi0PY1znYngBu4kAb+GmhPqwsJxnZobHGRdH+OdoHxdH4S9MQEUZQe7beBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=m8XGhXjN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 366E7C4CEE1;
+	Wed,  8 Jan 2025 08:20:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1736324434;
+	bh=t0rlTcxwkCQXCIG+vCg8JeAk85T7C4C5dBs9Ng6HwXQ=;
+	h=Date:To:From:Subject:From;
+	b=m8XGhXjNu7ta+3Qb9aO2gbl+5LdF7RxWkgE12YoECej6MwED/+SZR+FnE43T/dW0F
+	 tN/HVa6/1qbGFh++LVsxoPnH9i0QibmoqimrbGPhNCcssJx2P+Se40a5ZoQdLbVi+9
+	 B5asdm5o/nW/jo/tRTJEBl8EeY/C7FZgNCGqYgZ8=
+Date: Wed, 08 Jan 2025 00:20:33 -0800
+To: mm-commits@vger.kernel.org,vitalywool@gmail.com,syzkaller@googlegroups.com,stable@vger.kernel.org,samsun1006219@gmail.com,nphamcs@gmail.com,kanchana.p.sridhar@intel.com,hannes@cmpxchg.org,chengming.zhou@linux.dev,baohua@kernel.org,yosryahmed@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [withdrawn] mm-zswap-disable-migration-while-using-per-cpu-acomp_ctx.patch removed from -mm tree
+Message-Id: <20250108082034.366E7C4CEE1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5811cf74-d333-4653-ab64-0e981eda7745@arm.com>
 
-On Wed, Jan 08, 2025 at 11:46:19AM +0530, Dev Jain wrote:
-> 
-> On 07/01/25 8:44 pm, Thomas Weiﬂschuh wrote:
-> > If not enough physical memory is available the kernel may fail mmap();
-> > see __vm_enough_memory() and vm_commit_limit().
-> > In that case the logic in validate_complete_va_space() does not make
-> > sense and will even incorrectly fail.
-> > Instead skip the test if no mmap() succeeded.
-> > 
-> > Fixes: 010409649885 ("selftests/mm: confirm VA exhaustion without reliance on correctness of mmap()")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> > 
-> > ---
-> > The logic in __vm_enough_memory() seems weird.
-> > It describes itself as "Check that a process has enough memory to
-> > allocate a new virtual mapping", however it never checks the current
-> > memory usage of the process.
-> > So it only disallows large mappings. But many small mappings taking the
-> > same amount of memory are allowed; and then even automatically merged
-> > into one big mapping.
-> > ---
-> >   tools/testing/selftests/mm/virtual_address_range.c | 6 ++++++
-> >   1 file changed, 6 insertions(+)
-> > 
-> > diff --git a/tools/testing/selftests/mm/virtual_address_range.c b/tools/testing/selftests/mm/virtual_address_range.c
-> > index 2a2b69e91950a37999f606847c9c8328d79890c2..d7bf8094d8bcd4bc96e2db4dc3fcb41968def859 100644
-> > --- a/tools/testing/selftests/mm/virtual_address_range.c
-> > +++ b/tools/testing/selftests/mm/virtual_address_range.c
-> > @@ -178,6 +178,12 @@ int main(int argc, char *argv[])
-> >   		validate_addr(ptr[i], 0);
-> >   	}
-> >   	lchunks = i;
-> > +
-> > +	if (!lchunks) {
-> > +		ksft_test_result_skip("Not enough memory for a single chunk\n");
-> > +		ksft_finished();
-> > +	}
-> > +
-> >   	hptr = (char **) calloc(NR_CHUNKS_HIGH, sizeof(char *));
-> >   	if (hptr == NULL) {
-> >   		ksft_test_result_skip("Memory constraint not fulfilled\n");
-> > 
-> 
-> I do not  know about __vm_enough_memory(), but I am going by your description:
-> You say that the kernel may fail mmap() when enough physical memory is not
-> there, but it may happen that we have already done 100 mmap()'s, and then
-> the kernel fails mmap(), so if (!lchunks) won't be able to handle this case.
-> Basically, lchunks == 0 is not a complete indicator of kernel failing mmap().
 
-__vm_enough_memory() only checks the size of each single mmap() on its
-own. It does not actually check the current memory or address space
-usage of the process.
-This seems a bit weird, as indicated in my after-the-fold explanation.
+The quilt patch titled
+     Subject: mm: zswap: disable migration while using per-CPU acomp_ctx
+has been removed from the -mm tree.  Its filename was
+     mm-zswap-disable-migration-while-using-per-cpu-acomp_ctx.patch
 
-> The basic assumption of the test is that any process should be able to exhaust
-> its virtual address space, and running the test under memory pressure and the
-> kernel violating this behaviour defeats the point of the test I think?
+This patch was dropped because it was withdrawn
 
-The assumption is correct, as soon as one mapping succeeds the others
-will also succeed, until the actual address space is exhausted.
+------------------------------------------------------
+From: Yosry Ahmed <yosryahmed@google.com>
+Subject: mm: zswap: disable migration while using per-CPU acomp_ctx
+Date: Tue, 7 Jan 2025 22:22:35 +0000
 
-Looking at it again, __vm_enough_memory() is only called for writable
-mappings, so it would be possible to use only readable mappings in the
-test. The test will still fail with OOM, as the many PTEs need more than
-1GiB of physical memory anyways, but at least that produces a usable
-error message.
-However I'm not sure if this would violate other test assumptions.
+In zswap_compress() and zswap_decompress(), the per-CPU acomp_ctx of the
+current CPU at the beginning of the operation is retrieved and used
+throughout.  However, since neither preemption nor migration are disabled,
+it is possible that the operation continues on a different CPU.
+
+If the original CPU is hotunplugged while the acomp_ctx is still in use,
+we run into a UAF bug as the resources attached to the acomp_ctx are freed
+during hotunplug in zswap_cpu_comp_dead().
+
+The problem was introduced in commit 1ec3b5fe6eec ("mm/zswap: move to use
+crypto_acomp API for hardware acceleration") when the switch to the
+crypto_acomp API was made.  Prior to that, the per-CPU crypto_comp was
+retrieved using get_cpu_ptr() which disables preemption and makes sure the
+CPU cannot go away from under us.  Preemption cannot be disabled with the
+crypto_acomp API as a sleepable context is needed.
+
+Commit 8ba2f844f050 ("mm/zswap: change per-cpu mutex and buffer to
+per-acomp_ctx") increased the UAF surface area by making the per-CPU
+buffers dynamic, adding yet another resource that can be freed from under
+zswap compression/decompression by CPU hotunplug.
+
+This cannot be fixed by holding cpus_read_lock(), as it is possible for
+code already holding the lock to fall into reclaim and enter zswap
+(causing a deadlock).  It also cannot be fixed by wrapping the usage of
+acomp_ctx in an SRCU critical section and using synchronize_srcu() in
+zswap_cpu_comp_dead(), because synchronize_srcu() is not allowed in
+CPU-hotplug notifiers (see
+Documentation/RCU/Design/Requirements/Requirements.rst).
+
+This can be fixed by refcounting the acomp_ctx, but it involves complexity
+in handling the race between the refcount dropping to zero in
+zswap_[de]compress() and the refcount being re-initialized when the CPU is
+onlined.
+
+Keep things simple for now and just disable migration while using the
+per-CPU acomp_ctx to block CPU hotunplug until the usage is over.
+
+Link: https://lkml.kernel.org/r/20250107222236.2715883-2-yosryahmed@google.com
+Fixes: 1ec3b5fe6eec ("mm/zswap: move to use crypto_acomp API for hardware acceleration")
+Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
+Reported-by: Johannes Weiner <hannes@cmpxchg.org>
+Closes: https://lore.kernel.org/lkml/20241113213007.GB1564047@cmpxchg.org/
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Closes: https://lore.kernel.org/lkml/CAEkJfYMtSdM5HceNsXUDf5haghD5+o2e7Qv4OcuruL4tPg6OaQ@mail.gmail.com/
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: syzbot <syzkaller@googlegroups.com>
+Cc: Vitaly Wool <vitalywool@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/zswap.c |   19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
+
+--- a/mm/zswap.c~mm-zswap-disable-migration-while-using-per-cpu-acomp_ctx
++++ a/mm/zswap.c
+@@ -880,6 +880,18 @@ static int zswap_cpu_comp_dead(unsigned
+ 	return 0;
+ }
+ 
++/* Remain on the CPU while using its acomp_ctx to stop it from going offline */
++static struct crypto_acomp_ctx *acomp_ctx_get_cpu(struct crypto_acomp_ctx __percpu *acomp_ctx)
++{
++	migrate_disable();
++	return raw_cpu_ptr(acomp_ctx);
++}
++
++static void acomp_ctx_put_cpu(void)
++{
++	migrate_enable();
++}
++
+ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+ 			   struct zswap_pool *pool)
+ {
+@@ -893,8 +905,7 @@ static bool zswap_compress(struct page *
+ 	gfp_t gfp;
+ 	u8 *dst;
+ 
+-	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
+-
++	acomp_ctx = acomp_ctx_get_cpu(pool->acomp_ctx);
+ 	mutex_lock(&acomp_ctx->mutex);
+ 
+ 	dst = acomp_ctx->buffer;
+@@ -950,6 +961,7 @@ unlock:
+ 		zswap_reject_alloc_fail++;
+ 
+ 	mutex_unlock(&acomp_ctx->mutex);
++	acomp_ctx_put_cpu();
+ 	return comp_ret == 0 && alloc_ret == 0;
+ }
+ 
+@@ -960,7 +972,7 @@ static void zswap_decompress(struct zswa
+ 	struct crypto_acomp_ctx *acomp_ctx;
+ 	u8 *src;
+ 
+-	acomp_ctx = raw_cpu_ptr(entry->pool->acomp_ctx);
++	acomp_ctx = acomp_ctx_get_cpu(entry->pool->acomp_ctx);
+ 	mutex_lock(&acomp_ctx->mutex);
+ 
+ 	src = zpool_map_handle(zpool, entry->handle, ZPOOL_MM_RO);
+@@ -990,6 +1002,7 @@ static void zswap_decompress(struct zswa
+ 
+ 	if (src != acomp_ctx->buffer)
+ 		zpool_unmap_handle(zpool, entry->handle);
++	acomp_ctx_put_cpu();
+ }
+ 
+ /*********************************
+_
+
+Patches currently in -mm which might be from yosryahmed@google.com are
+
+revert-mm-zswap-fix-race-between-compression-and-cpu-hotunplug.patch
+
 
