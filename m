@@ -1,162 +1,184 @@
-Return-Path: <stable+bounces-107962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30295A0526C
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 05:56:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC19FA05278
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 06:01:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 228F5167BD2
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 04:56:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E03321619BC
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 05:01:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5B019FA93;
-	Wed,  8 Jan 2025 04:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 878DC13B797;
+	Wed,  8 Jan 2025 05:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="YWfD3syZ"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hVqksTQT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E2179FE;
-	Wed,  8 Jan 2025 04:56:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E42F10E4
+	for <stable@vger.kernel.org>; Wed,  8 Jan 2025 05:01:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736312194; cv=none; b=Zm5OjXxX7D7LL57VYz5Wsztf7TJXm77g+TX+9e2A/mokaSNE+Dppmix6PdNbOkeZW2jzzopIw9cVkH5e2jMni5XcEeBY386ps3cDGw1e7IJbNChi4RmG/XSMCnPxGDq7Yueg8VuKiyfADyeaoNiPFc2zFPhMWG6e3W3Zn2RlegM=
+	t=1736312463; cv=none; b=YUmUkS0eiXJI4VAOtQBlSBvqCztq11RhgOOMIA8RvTl0puSFIJJWO3EJ+QQu4VIOijOkdeiayv6/5LzgvYWZ2X4CGCR5DMTJ5S+MbEI1riFGcP4wDmWdeM/+j3fEhA4eYWF8X8xZ7aIpJTvHsju0Q7jYe32DqIBQeXFp+1nVa5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736312194; c=relaxed/simple;
-	bh=EJEQeDR8sZhwrFU5EAN0BuvYUQBwoEmgfNPtmkukAq4=;
-	h=Date:To:From:Subject:Message-Id; b=MkVZWd8JTyAT9FEWZDSKx8+kclpvzxeP6jrqmZIkDrL8BiFaV3rMGeXWfaW0omg8b92N0rVJ7pM1qnWby09Z/PwIB/+E1hayAXV7QfN3s05k5QJZJr5xJHgKYF+tcmlJS4AJqskWKNwLuAnsk/9xNPICV9bPQ9nck1YtM+LNb0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=YWfD3syZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F8E3C4CED0;
-	Wed,  8 Jan 2025 04:56:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1736312194;
-	bh=EJEQeDR8sZhwrFU5EAN0BuvYUQBwoEmgfNPtmkukAq4=;
-	h=Date:To:From:Subject:From;
-	b=YWfD3syZz6u5G2i4JoW9lkf/0O6ldRq4yql2tNeYshLQKSHYsk1/3qcBIHnxKy2Na
-	 ZxbBUVC6KvhNPKl8ZYvrc2/szPNmrB84jlJGS5YaMD6cDylm1yK4gZzyNINQV65O6D
-	 AKMIlVV9ZwEVD7G6/5KAoctBfeXDf5Tjii0vLKjk=
-Date: Tue, 07 Jan 2025 20:56:33 -0800
-To: mm-commits@vger.kernel.org,yuzhao@google.com,usamaarif642@gmail.com,stable@vger.kernel.org,david@redhat.com,ryan.roberts@arm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + selftests-mm-set-allocated-memory-to-non-zero-content-in-cow-test.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250108045634.7F8E3C4CED0@smtp.kernel.org>
+	s=arc-20240116; t=1736312463; c=relaxed/simple;
+	bh=0sAZ1cfHKuo9bVZGgP4ELfVOwJXyF7rVU9kKGA43QGQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BlO2ZnsM319B6qrFiXe2b5sDHN/f6H98JMj2FD1Yyb/nDoZkhNPGbJFOdFkIXpuuMi+0Uf6G51eYLTanJU8ZrfIbbnX18brRZwZlgojRmprBqww5Dys9aZERqK4wkQQgth4+KKnTeQHp8v3mhQWfuTPkXNi/1PrldGL+FZP4vH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hVqksTQT; arc=none smtp.client-ip=91.218.175.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <857acdc4-c4b7-44ea-a67d-2df83ca245ed@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1736312443;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yFj1VXynprGXG6/ML3EG7dB5MksGwHIqxnVihq/iLvo=;
+	b=hVqksTQT3AsE39BS5OnW9/CYbNPt6qWDh5JgS9OPpmtlLBkG0FNnSkssMNsCGWeDLz+JIF
+	QczpuhzKlEivMit7xj4lDVwGxwsaL+qIRJ9W/VBOo6RPYuq/2en6RYRb28yqXKICkTZU4t
+	/EExKhkWqwb1jbxv3Aphv6kPv6NvpPw=
+Date: Wed, 8 Jan 2025 13:00:24 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Subject: Re: [PATCH v2 2/2] mm: zswap: disable migration while using per-CPU
+ acomp_ctx
+To: Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosryahmed@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Vitaly Wool
+ <vitalywool@gmail.com>, Barry Song <baohua@kernel.org>,
+ Sam Sun <samsun1006219@gmail.com>, "linux-mm@kvack.org"
+ <linux-mm@kvack.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+References: <20250107222236.2715883-1-yosryahmed@google.com>
+ <20250107222236.2715883-2-yosryahmed@google.com>
+ <DM8PR11MB567100328F56886B9F179271C9122@DM8PR11MB5671.namprd11.prod.outlook.com>
+ <CAJD7tkYqv9oA4V_Ga8KZ_uV1kUnaRYBzHwwd72iEQPO2PKnSiw@mail.gmail.com>
+ <SJ0PR11MB5678847E829448EF36A3961FC9122@SJ0PR11MB5678.namprd11.prod.outlook.com>
+ <CAJD7tkYV_pFGCwpzMD_WiBd+46oVHu946M_ARA8tP79zqkJsDA@mail.gmail.com>
+ <CAJD7tkYpNNsbTZZqFoRh-FkXDgxONZEUPKk1YQv7-TFMWWQRzQ@mail.gmail.com>
+ <CAKEwX=OHcZB8Uy5zj8Dhq-ieiwpJFcqRXN_7=mbM1FD_h_uOOA@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Chengming Zhou <chengming.zhou@linux.dev>
+In-Reply-To: <CAKEwX=OHcZB8Uy5zj8Dhq-ieiwpJFcqRXN_7=mbM1FD_h_uOOA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
+On 2025/1/8 12:46, Nhat Pham wrote:
+> On Wed, Jan 8, 2025 at 9:34 AM Yosry Ahmed <yosryahmed@google.com> wrote:
+>>
+>>
+>> Actually, using the mutex to protect against CPU hotunplug is not too
+>> complicated. The following diff is one way to do it (lightly tested).
+>> Johannes, Nhat, any preferences between this patch (disabling
+>> migration) and the following diff?
+> 
+> I mean if this works, this over migration diasbling any day? :)
+> 
+>>
+>> diff --git a/mm/zswap.c b/mm/zswap.c
+>> index f6316b66fb236..4d6817c679a54 100644
+>> --- a/mm/zswap.c
+>> +++ b/mm/zswap.c
+>> @@ -869,17 +869,40 @@ static int zswap_cpu_comp_dead(unsigned int cpu,
+>> struct hlist_node *node)
+>>          struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
+>>          struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
+>>
+>> +       mutex_lock(&acomp_ctx->mutex);
+>>          if (!IS_ERR_OR_NULL(acomp_ctx)) {
+>>                  if (!IS_ERR_OR_NULL(acomp_ctx->req))
+>>                          acomp_request_free(acomp_ctx->req);
+>> +               acomp_ctx->req = NULL;
+>>                  if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
+>>                          crypto_free_acomp(acomp_ctx->acomp);
+>>                  kfree(acomp_ctx->buffer);
+>>          }
+>> +       mutex_unlock(&acomp_ctx->mutex);
+>>
+>>          return 0;
+>>   }
+>>
+>> +static struct crypto_acomp_ctx *acomp_ctx_get_cpu_locked(
+>> +               struct crypto_acomp_ctx __percpu *acomp_ctx)
+>> +{
+>> +       struct crypto_acomp_ctx *ctx;
+>> +
+>> +       for (;;) {
+>> +               ctx = raw_cpu_ptr(acomp_ctx);
+>> +               mutex_lock(&ctx->mutex);
+> 
+> I'm a bit confused. IIUC, ctx is per-cpu right? What's protecting this
+> cpu-local data (including the mutex) from being invalidated under us
+> while we're sleeping and waiting for the mutex?
 
-The patch titled
-     Subject: selftests/mm: set allocated memory to non-zero content in cow test
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     selftests-mm-set-allocated-memory-to-non-zero-content-in-cow-test.patch
+Yeah, it's not safe, we can only use this_cpu_ptr(), which will disable
+preempt (so cpu offline can't kick in), and get refcount of ctx. Since
+we can't mutex_lock in the preempt disabled section.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-set-allocated-memory-to-non-zero-content-in-cow-test.patch
+Thanks.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Ryan Roberts <ryan.roberts@arm.com>
-Subject: selftests/mm: set allocated memory to non-zero content in cow test
-Date: Tue, 7 Jan 2025 14:25:53 +0000
-
-After commit b1f202060afe ("mm: remap unused subpages to shared zeropage
-when splitting isolated thp"), cow test cases involving swapping out THPs
-via madvise(MADV_PAGEOUT) started to be skipped due to the subsequent
-check via pagemap determining that the memory was not actually swapped
-out.  Logs similar to this were emitted:
-
-   ...
-
-   # [RUN] Basic COW after fork() ... with swapped-out, PTE-mapped THP (16 kB)
-   ok 2 # SKIP MADV_PAGEOUT did not work, is swap enabled?
-   # [RUN] Basic COW after fork() ... with single PTE of swapped-out THP (16 kB)
-   ok 3 # SKIP MADV_PAGEOUT did not work, is swap enabled?
-   # [RUN] Basic COW after fork() ... with swapped-out, PTE-mapped THP (32 kB)
-   ok 4 # SKIP MADV_PAGEOUT did not work, is swap enabled?
-
-   ...
-
-The commit in question introduces the behaviour of scanning THPs and if
-their content is predominantly zero, it splits them and replaces the pages
-which are wholly zero with the zero page.  These cow test cases were
-getting caught up in this.
-
-So let's avoid that by filling the contents of all allocated memory with
-a non-zero value. With this in place, the tests are passing again.
-
-Link: https://lkml.kernel.org/r/20250107142555.1870101-1-ryan.roberts@arm.com
-Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Usama Arif <usamaarif642@gmail.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- tools/testing/selftests/mm/cow.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
---- a/tools/testing/selftests/mm/cow.c~selftests-mm-set-allocated-memory-to-non-zero-content-in-cow-test
-+++ a/tools/testing/selftests/mm/cow.c
-@@ -758,7 +758,7 @@ static void do_run_with_base_page(test_f
- 	}
- 
- 	/* Populate a base page. */
--	memset(mem, 0, pagesize);
-+	memset(mem, 1, pagesize);
- 
- 	if (swapout) {
- 		madvise(mem, pagesize, MADV_PAGEOUT);
-@@ -824,12 +824,12 @@ static void do_run_with_thp(test_fn fn,
- 	 * Try to populate a THP. Touch the first sub-page and test if
- 	 * we get the last sub-page populated automatically.
- 	 */
--	mem[0] = 0;
-+	mem[0] = 1;
- 	if (!pagemap_is_populated(pagemap_fd, mem + thpsize - pagesize)) {
- 		ksft_test_result_skip("Did not get a THP populated\n");
- 		goto munmap;
- 	}
--	memset(mem, 0, thpsize);
-+	memset(mem, 1, thpsize);
- 
- 	size = thpsize;
- 	switch (thp_run) {
-@@ -1012,7 +1012,7 @@ static void run_with_hugetlb(test_fn fn,
- 	}
- 
- 	/* Populate an huge page. */
--	memset(mem, 0, hugetlbsize);
-+	memset(mem, 1, hugetlbsize);
- 
- 	/*
- 	 * We need a total of two hugetlb pages to handle COW/unsharing
-_
-
-Patches currently in -mm which might be from ryan.roberts@arm.com are
-
-mm-clear-uffd-wp-pte-pmd-state-on-mremap.patch
-selftests-mm-set-allocated-memory-to-non-zero-content-in-cow-test.patch
-selftests-mm-add-fork-cow-guard-page-test-fix.patch
-selftests-mm-introduce-uffd-wp-mremap-regression-test.patch
-
+> 
+> If it is somehow protected, then yeah this seems quite elegant :)
+> 
+>> +               if (likely(ctx->req))
+>> +                       return ctx;
+>> +               /* Raced with zswap_cpu_comp_dead() on CPU hotunplug */
+>> +               mutex_unlock(&ctx->mutex);
+>> +       }
+>> +}
+>> +
+>> +static void acomp_ctx_put_unlock(struct crypto_acomp_ctx *ctx)
+>> +{
+>> +       mutex_unlock(&ctx->mutex);
+>> +}
+>> +
+>>   static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+>>                             struct zswap_pool *pool)
+>>   {
+>> @@ -893,10 +916,7 @@ static bool zswap_compress(struct page *page,
+>> struct zswap_entry *entry,
+>>          gfp_t gfp;
+>>          u8 *dst;
+>>
+>> -       acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
+>> -
+>> -       mutex_lock(&acomp_ctx->mutex);
+>> -
+>> +       acomp_ctx = acomp_ctx_get_cpu_locked(pool->acomp_ctx);
+>>          dst = acomp_ctx->buffer;
+>>          sg_init_table(&input, 1);
+>>          sg_set_page(&input, page, PAGE_SIZE, 0);
+>> @@ -949,7 +969,7 @@ static bool zswap_compress(struct page *page,
+>> struct zswap_entry *entry,
+>>          else if (alloc_ret)
+>>                  zswap_reject_alloc_fail++;
+>>
+>> -       mutex_unlock(&acomp_ctx->mutex);
+>> +       acomp_ctx_put_unlock(acomp_ctx);
+>>          return comp_ret == 0 && alloc_ret == 0;
+>>   }
+>>
+>> @@ -960,9 +980,7 @@ static void zswap_decompress(struct zswap_entry
+>> *entry, struct folio *folio)
+>>          struct crypto_acomp_ctx *acomp_ctx;
+>>          u8 *src;
+>>
+>> -       acomp_ctx = raw_cpu_ptr(entry->pool->acomp_ctx);
+>> -       mutex_lock(&acomp_ctx->mutex);
+>> -
+>> +       acomp_ctx = acomp_ctx_get_cpu_locked(entry->pool->acomp_ctx);
+>>          src = zpool_map_handle(zpool, entry->handle, ZPOOL_MM_RO);
+>>          /*
 
