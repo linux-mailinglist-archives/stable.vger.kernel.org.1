@@ -1,194 +1,321 @@
-Return-Path: <stable+bounces-108037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F14BFA066E1
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 22:09:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EEDAA06751
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 22:39:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC9F01608A5
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 21:09:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5106F3A628D
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 21:38:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B976204F7D;
-	Wed,  8 Jan 2025 21:05:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dMzt+vbc"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD9B7203717;
+	Wed,  8 Jan 2025 21:38:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2805D2040B2
-	for <stable@vger.kernel.org>; Wed,  8 Jan 2025 21:05:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FCD202C4A;
+	Wed,  8 Jan 2025 21:38:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736370327; cv=none; b=pr3PrBq6yOxJm/KnCXEoykrLE/aIEkbh3Z0fhjk5V3YrfnfIgDb/q5fkoT7tYblkSbo8JeWBzGuSY8x1fdkCoJ75/vp3qpswLQotJeuTbWe3VE9aPMSlMDo6f2ZC8DkJBhMkno+rTZ8SKbjTdsk+/S5e9oTsrINoqh3Dwh8Lp18=
+	t=1736372334; cv=none; b=F0cRc5uCXB4fAMQ7JVXZyP8PGglGCxCX8NWuxE91YhawGIlkcBQmXWgczLuw30WZuKIgsrMVvt1Gh4Bm9js/ZBkftnl7Dzag7CynJ6AQqamP0kfAdVtweLuj3U7M7vMSg4lBd4MDr0IzKD/OnP+tdjvInMfZkDdT4ATF1oPOMFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736370327; c=relaxed/simple;
-	bh=Raz49Fo5VAnvx4zpgTkW/duUtGOhYIN/NmVC51vMOOA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X3E56Lkul32s4Bjha9larNw7xO6SbJ6Ie3kE+IekrENtMQoDgq59PetUtb02KRP1sdWJlQhTQVht5vxFqrH8mnCQYyJmXDXI2U+nA14Rci4B2EVJ3ASp86WyuCEVxsJwd79iczbSEsxAurp326N9SVJtrwZ/zsdS4y/OkZ+ZSkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dMzt+vbc; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736370325;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=h4I0PNtnOUgDMotr1i41d8Tf931XThjDVkaFxQw2VQg=;
-	b=dMzt+vbcL8uZ+1OQu2jD2m8MGhz9tsXl5vsCHntquaV2xOJB9NGvAKLp5ZwXIdiyaKUXLW
-	Z9iWgLrBZ6kQhHGBpSM4/whiaXFoY0eCKbjM6AVzYxMdVNQTf501A0Ek47LwADhxUldfeV
-	kGmiynxxM9IOqLNClQwSBT/on7Q67JY=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-572-OjQDI9ryNFCgGRhqvuxVAQ-1; Wed, 08 Jan 2025 16:05:23 -0500
-X-MC-Unique: OjQDI9ryNFCgGRhqvuxVAQ-1
-X-Mimecast-MFC-AGG-ID: OjQDI9ryNFCgGRhqvuxVAQ
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43624b08181so978795e9.0
-        for <stable@vger.kernel.org>; Wed, 08 Jan 2025 13:05:23 -0800 (PST)
+	s=arc-20240116; t=1736372334; c=relaxed/simple;
+	bh=lOL+gZbcVFhYImbFEEadqMlOrUtbr+oUsMdmbhlMZ6s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b5TSkhYrAkdt0nED1PWla085gwqTQfrINuCEU5HhSxWCVn7rJj4yJdi4AuW+zg4g7wrxcOvtDPwbBcXVwTBRa4p3q2f3XA1IiZZw4ccdO1rk86PZCJrDQYaIa7dJIYK4wjgfNXANZN/Pwj/ds6VqrR+tHTwZVtvW05G9x/kwLLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-51c4bc9cd19so130710e0c.3;
+        Wed, 08 Jan 2025 13:38:52 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736370322; x=1736975122;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=h4I0PNtnOUgDMotr1i41d8Tf931XThjDVkaFxQw2VQg=;
-        b=mCdHc4BIsMBZjEGMWmkf0oBpCN5DARyl9JGx/tmaHY3spmHKIue9A0od8KkMPUVthf
-         kQbDlwHzf8EsfrdYJ9kiMEYH7iFrSoN/W6fZc7MYsfsKcjhotTQrE1qHNu+b+EbgcKlV
-         rJ9SG47TjCB3fjAuTH1zubzG++F0TTHqsSKqXw9A8CPqJeXO30H6QcX22zzwxuN4iYoH
-         fRDSGTjFzlo65TZ8V0WE6YKSf8QKAbtdOxToNeEs0i3m5p9MmNgoMk6/p6+g9qaQPBxG
-         /kVRAX7CYViUe6vI87xAvr0OfYG8ILrC3PSww7p0coLRSSweRVtoaWQ514kTDQely9p3
-         CUnw==
-X-Forwarded-Encrypted: i=1; AJvYcCW4tHyjuJGgVakdccIteS+jRKbYk862gocFzMpf+ZamKJ2Ich4G8B/VUa5KpVRAPPSbatn4tcU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZoGWjb7QZ58QbPQwC6aTgDAhe5V8U0PITnd9b4ukpXXhyfTX/
-	ddu1507JJ0/qlolXiQ9aQ6cf0nM7e/JnDG+Ncw6qfidtEJhhOnt9GVzXkzLkuDlEukLQH4L0f4A
-	z6LbHsq/SNdnt31qE4ox4e3AETBC10qH/BrDbdYsk2yBpiVOpJlBASw==
-X-Gm-Gg: ASbGnctFxpitBgIZslEvB3AcC4Gd2VPXXFaoFZy9qcFItI6TjUdF2Sa8lCxR7CW5e0W
-	iBEdk3Nxgpbm309TF58UwvyDo1yqNVuEckAljm7pJJirqtht4dzB3ZXaL9z+sHa4B7TLzuvwvOy
-	vw1vX7AM58IGeRB/YY8+XR/46iQKMQNsWtXKperpkLk5UYt15grzyb3roNpjoQyvMc4gcCe7Xdh
-	AH03LewL8JN2ijZ4YvNRVFGENjvyINNBVd/KXOB2+E9o6Hs6h9V6tbv9bVM1t+6/wKPSWh/LDWR
-	dHot1z+S1lCvOpVj7qLPRwuvi7QmJhV8CPVRXIgZ83Nv+MoSwWc63a/rBhe4FNFv6ym8BmwN3F8
-	TwOydaQ==
-X-Received: by 2002:a7b:c5cb:0:b0:434:ffb2:f9cf with SMTP id 5b1f17b1804b1-436e883c091mr6735395e9.14.1736370322144;
-        Wed, 08 Jan 2025 13:05:22 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHIwp3X0Bhq73aFRylg0Uw3bZY3PG5lXDQl2uIJujsYoN115Ss6zK5awOBbJ1u9Ueagl93VQw==
-X-Received: by 2002:a7b:c5cb:0:b0:434:ffb2:f9cf with SMTP id 5b1f17b1804b1-436e883c091mr6735225e9.14.1736370321854;
-        Wed, 08 Jan 2025 13:05:21 -0800 (PST)
-Received: from ?IPV6:2003:cb:c70d:3a00:d73c:6a8:ca9f:1df7? (p200300cbc70d3a00d73c06a8ca9f1df7.dip0.t-ipconnect.de. [2003:cb:c70d:3a00:d73c:6a8:ca9f:1df7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e2e1eb34sm32630455e9.35.2025.01.08.13.05.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Jan 2025 13:05:20 -0800 (PST)
-Message-ID: <fc1241a6-6760-4f73-840d-4f3a538644aa@redhat.com>
-Date: Wed, 8 Jan 2025 22:05:18 +0100
+        d=1e100.net; s=20230601; t=1736372332; x=1736977132;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3s0qVu/VqiCoKV6ZaSrjNbeV/DPOv/JZxoR4oPPdw1c=;
+        b=bXLNK0XhOnvy8EIu6yx2izTrBiE3VEtIldyigRyMk9QC21BBZBuDZx1hDj5kNYDIme
+         BKKmIKznNteSsY19sKakZ2cJ+y09wdsa7tTt0R/ny+0iIo1RWpCIHIyy+p1urTQYtdH+
+         SKqdbV9gtv7b5DxIEj+kCEu2uJdVYq+mlkX941TKI6wGpeo8G65io+fQJfZG7B2wPW6T
+         B0g5M1CI5fKARTINstRxFUJMuEsEwggfsFexBd16ehSs0pPOy8YDjbQYJ/tg6QWo8Fi2
+         0lD4IF115THNlJ7zG/owdN9Om4rCEt489kx3kKEU4oj+4jTEr5ZlsLfJ3iaTFJANso1P
+         Zl+A==
+X-Forwarded-Encrypted: i=1; AJvYcCVehO29h5a87Irw2VNW1pO2+0zg5yHDouYHflz0XmKOb/JYyD5ZZWexAAUnrlLbSnhL/XyeAoRsILyb0M0=@vger.kernel.org, AJvYcCXqG7IGk7GqT++tEYdlUUqAq5AFTNjqE1hg5bw9EDUIjWrIaC+UCbIIjRPpuv3qWz80uCrN1CF/@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKfGjmHVH0LPkj5uXsESM8I6qQxJGD5z7eSd8ltxYPkwh7XNU/
+	wueYF3f5kTL+JSQsLBmVXV1wrfmelDx1ZZh3+OgGQw+sgwxTftfUsJw5tTrbl+kqxtEYGjnKLVx
+	odqUa2iPNVP0Ku1vLOlVB2uYfcMI=
+X-Gm-Gg: ASbGncuiOpDTBUGR5kfa6WT8m/IO9Gh9qlVAjeklmITSWJCX9DUIqT7DA/USt41S6w0
+	barG+eCrdnxU8/j44AaxcE4hm2OuEbTDEoaBaYIUk0QvDMRxCfl+qCRo5mYRycccbh9Hc/6Hp
+X-Google-Smtp-Source: AGHT+IEKXuweN+FxZk3E2jSDi14xQY//UX97egwLOz0Pcdn4d06tNUmeiyRBB/h+7mXAkoTl2Or4WLRmUbP5AINKOXs=
+X-Received: by 2002:a05:6122:3bd6:b0:50d:6a43:d525 with SMTP id
+ 71dfb90a1353d-51c6c22ea8fmr3712039e0c.1.1736372331678; Wed, 08 Jan 2025
+ 13:38:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] replace free hugepage folios after migration
-To: Ge Yang <yangge1116@126.com>, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- 21cnbao@gmail.com, baolin.wang@linux.alibaba.com, muchun.song@linux.dev,
- liuzixing@hygon.cn
-References: <1734503588-16254-1-git-send-email-yangge1116@126.com>
- <0ca35fe5-9799-4518-9fb1-701c88501a8d@redhat.com>
- <d6d92a36-4ed7-4ae8-8b74-48f79a502a36@126.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <d6d92a36-4ed7-4ae8-8b74-48f79a502a36@126.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250108161529.3193825-1-yosryahmed@google.com> <SJ0PR11MB56781DA3F7B94E44753FAB51C9122@SJ0PR11MB5678.namprd11.prod.outlook.com>
+In-Reply-To: <SJ0PR11MB56781DA3F7B94E44753FAB51C9122@SJ0PR11MB5678.namprd11.prod.outlook.com>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 9 Jan 2025 10:38:40 +1300
+X-Gm-Features: AbW1kvarJ64wHxrb7SK34eR15amEr79qITZ5h0D5l4xRysF8EGjxmolC7_JBV0g
+Message-ID: <CAGsJ_4x=ZNJwj4R6Z3c5-rPs-D5xzTnv039=8VQxo7OdyxavMg@mail.gmail.com>
+Subject: Re: [PATCH] mm: zswap: properly synchronize freeing resources during
+ CPU hotunplug
+To: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+Cc: Yosry Ahmed <yosryahmed@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Vitaly Wool <vitalywool@gmail.com>, 
+	Sam Sun <samsun1006219@gmail.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Sorry for the late reply, holidays ...
+On Thu, Jan 9, 2025 at 9:23=E2=80=AFAM Sridhar, Kanchana P
+<kanchana.p.sridhar@intel.com> wrote:
+>
+>
+> > -----Original Message-----
+> > From: Yosry Ahmed <yosryahmed@google.com>
+> > Sent: Wednesday, January 8, 2025 8:15 AM
+> > To: Andrew Morton <akpm@linux-foundation.org>
+> > Cc: Johannes Weiner <hannes@cmpxchg.org>; Nhat Pham
+> > <nphamcs@gmail.com>; Chengming Zhou <chengming.zhou@linux.dev>;
+> > Vitaly Wool <vitalywool@gmail.com>; Barry Song <baohua@kernel.org>; Sam
+> > Sun <samsun1006219@gmail.com>; Sridhar, Kanchana P
+> > <kanchana.p.sridhar@intel.com>; linux-mm@kvack.org; linux-
+> > kernel@vger.kernel.org; Yosry Ahmed <yosryahmed@google.com>;
+> > stable@vger.kernel.org
+> > Subject: [PATCH] mm: zswap: properly synchronize freeing resources duri=
+ng
+> > CPU hotunplug
+> >
+> > In zswap_compress() and zswap_decompress(), the per-CPU acomp_ctx of
+> > the
+> > current CPU at the beginning of the operation is retrieved and used
+> > throughout.  However, since neither preemption nor migration are
+> > disabled, it is possible that the operation continues on a different
+> > CPU.
+> >
+> > If the original CPU is hotunplugged while the acomp_ctx is still in use=
+,
+> > we run into a UAF bug as some of the resources attached to the acomp_ct=
+x
+> > are freed during hotunplug in zswap_cpu_comp_dead().
+> >
+> > The problem was introduced in commit 1ec3b5fe6eec ("mm/zswap: move to
+> > use crypto_acomp API for hardware acceleration") when the switch to the
+> > crypto_acomp API was made.  Prior to that, the per-CPU crypto_comp was
+> > retrieved using get_cpu_ptr() which disables preemption and makes sure
+> > the CPU cannot go away from under us.  Preemption cannot be disabled
+> > with the crypto_acomp API as a sleepable context is needed.
+> >
+> > During CPU hotunplug, hold the acomp_ctx.mutex before freeing any
+> > resources, and set acomp_ctx.req to NULL when it is freed. In the
+> > compress/decompress paths, after acquiring the acomp_ctx.mutex make sur=
+e
+> > that acomp_ctx.req is not NULL (i.e. acomp_ctx resources were not freed
+> > by CPU hotunplug). Otherwise, retry with the acomp_ctx from the new CPU=
+.
+> >
+> > This adds proper synchronization to ensure that the acomp_ctx resources
+> > are not freed from under compress/decompress paths.
+> >
+> > Note that the per-CPU acomp_ctx itself (including the mutex) is not
+> > freed during CPU hotunplug, only acomp_ctx.req, acomp_ctx.buffer, and
+> > acomp_ctx.acomp. So it is safe to acquire the acomp_ctx.mutex of a CPU
+> > after it is hotunplugged.
+>
+> Only other fail-proofing I can think of is to initialize the mutex right =
+after
+> the per-cpu acomp_ctx is allocated in zswap_pool_create() and de-couple
+> it from the cpu onlining. This further clarifies the intent for this mute=
+x
+> to be used at the same lifetime scope as the acomp_ctx itself, independen=
+t
+> of cpu hotplug/hotunplug.
 
->> Did you ever try allocating a larger range with a single
->> alloc_contig_range() call, that possibly has to migrate multiple hugetlb
->> folios in one go (and maybe just allocates one of the just-freed hugetlb
->> folios as migration target)?
->>
-> 
-> I have tried using a single alloc_contig_range() call to allocate a
-> larger contiguous range, and it works properly. This is because during
-> the period between __alloc_contig_migrate_range() and
-> isolate_freepages_range(), no one allocates a hugetlb folio from the
-> free hugetlb pool.
+Good catch! That step should have been executed immediately after
+calling alloc_percpu(). Initially, the mutex was dynamically
+allocated and initialized in zswap_cpu_comp_prepare(). Later, it
+was moved to the context and allocated statically. It would be
+better to relocate the mutex_init() accordingly.
 
-Did you trigger the following as well?
+>
+> Thanks,
+> Kanchana
+>
+> >
+> > Previously a fix was attempted by holding cpus_read_lock() [1]. This
+> > would have caused a potential deadlock as it is possible for code
+> > already holding the lock to fall into reclaim and enter zswap (causing =
+a
+> > deadlock). A fix was also attempted using SRCU for synchronization, but
+> > Johannes pointed out that synchronize_srcu() cannot be used in CPU
+> > hotplug notifiers [2].
+> >
+> > Alternative fixes that were considered/attempted and could have worked:
+> > - Refcounting the per-CPU acomp_ctx. This involves complexity in
+> >   handling the race between the refcount dropping to zero in
+> >   zswap_[de]compress() and the refcount being re-initialized when the
+> >   CPU is onlined.
+> > - Disabling migration before getting the per-CPU acomp_ctx [3], but
+> >   that's discouraged and is a much bigger hammer than needed, and could
+> >   result in subtle performance issues.
+> >
+> > [1]https://lkml.kernel.org/20241219212437.2714151-1-
+> > yosryahmed@google.com/
+> > [2]https://lkml.kernel.org/20250107074724.1756696-2-
+> > yosryahmed@google.com/
+> > [3]https://lkml.kernel.org/20250107222236.2715883-2-
+> > yosryahmed@google.com/
+> >
+> > Fixes: 1ec3b5fe6eec ("mm/zswap: move to use crypto_acomp API for
+> > hardware acceleration")
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
+> > Reported-by: Johannes Weiner <hannes@cmpxchg.org>
+> > Closes:
+> > https://lore.kernel.org/lkml/20241113213007.GB1564047@cmpxchg.org/
+> > Reported-by: Sam Sun <samsun1006219@gmail.com>
+> > Closes:
+> > https://lore.kernel.org/lkml/CAEkJfYMtSdM5HceNsXUDf5haghD5+o2e7Qv4O
+> > curuL4tPg6OaQ@mail.gmail.com/
+> > ---
+> >
+> > This applies on top of the latest mm-hotfixes-unstable on top of 'Rever=
+t
+> > "mm: zswap: fix race between [de]compression and CPU hotunplug"' and
+> > after 'mm: zswap: disable migration while using per-CPU acomp_ctx' was
+> > dropped.
+> >
+> > ---
+> >  mm/zswap.c | 42 +++++++++++++++++++++++++++++++++---------
+> >  1 file changed, 33 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/mm/zswap.c b/mm/zswap.c
+> > index f6316b66fb236..4e3148050e093 100644
+> > --- a/mm/zswap.c
+> > +++ b/mm/zswap.c
+> > @@ -869,17 +869,46 @@ static int zswap_cpu_comp_dead(unsigned int cpu,
+> > struct hlist_node *node)
+> >       struct zswap_pool *pool =3D hlist_entry(node, struct zswap_pool,
+> > node);
+> >       struct crypto_acomp_ctx *acomp_ctx =3D per_cpu_ptr(pool-
+> > >acomp_ctx, cpu);
+> >
+> > +     mutex_lock(&acomp_ctx->mutex);
+> >       if (!IS_ERR_OR_NULL(acomp_ctx)) {
+> >               if (!IS_ERR_OR_NULL(acomp_ctx->req))
+> >                       acomp_request_free(acomp_ctx->req);
+> > +             acomp_ctx->req =3D NULL;
+> >               if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
+> >                       crypto_free_acomp(acomp_ctx->acomp);
+> >               kfree(acomp_ctx->buffer);
+> >       }
+> > +     mutex_unlock(&acomp_ctx->mutex);
+> >
+> >       return 0;
+> >  }
+> >
+> > +static struct crypto_acomp_ctx *acomp_ctx_get_cpu_lock(
+> > +             struct crypto_acomp_ctx __percpu *acomp_ctx)
+> > +{
+> > +     struct crypto_acomp_ctx *ctx;
+> > +
+> > +     for (;;) {
+> > +             ctx =3D raw_cpu_ptr(acomp_ctx);
+> > +             mutex_lock(&ctx->mutex);
+> > +             if (likely(ctx->req))
+> > +                     return ctx;
+> > +             /*
+> > +              * It is possible that we were migrated to a different CP=
+U
+> > after
+> > +              * getting the per-CPU ctx but before the mutex was
+> > acquired. If
+> > +              * the old CPU got offlined, zswap_cpu_comp_dead() could
+> > have
+> > +              * already freed ctx->req (among other things) and set it=
+ to
+> > +              * NULL. Just try again on the new CPU that we ended up o=
+n.
+> > +              */
+> > +             mutex_unlock(&ctx->mutex);
+> > +     }
+> > +}
+> > +
+> > +static void acomp_ctx_put_unlock(struct crypto_acomp_ctx *ctx)
+> > +{
+> > +     mutex_unlock(&ctx->mutex);
+> > +}
+> > +
+> >  static bool zswap_compress(struct page *page, struct zswap_entry *entr=
+y,
+> >                          struct zswap_pool *pool)
+> >  {
+> > @@ -893,10 +922,7 @@ static bool zswap_compress(struct page *page,
+> > struct zswap_entry *entry,
+> >       gfp_t gfp;
+> >       u8 *dst;
+> >
+> > -     acomp_ctx =3D raw_cpu_ptr(pool->acomp_ctx);
+> > -
+> > -     mutex_lock(&acomp_ctx->mutex);
+> > -
+> > +     acomp_ctx =3D acomp_ctx_get_cpu_lock(pool->acomp_ctx);
+> >       dst =3D acomp_ctx->buffer;
+> >       sg_init_table(&input, 1);
+> >       sg_set_page(&input, page, PAGE_SIZE, 0);
+> > @@ -949,7 +975,7 @@ static bool zswap_compress(struct page *page, struc=
+t
+> > zswap_entry *entry,
+> >       else if (alloc_ret)
+> >               zswap_reject_alloc_fail++;
+> >
+> > -     mutex_unlock(&acomp_ctx->mutex);
+> > +     acomp_ctx_put_unlock(acomp_ctx);
+> >       return comp_ret =3D=3D 0 && alloc_ret =3D=3D 0;
+> >  }
+> >
+> > @@ -960,9 +986,7 @@ static void zswap_decompress(struct zswap_entry
+> > *entry, struct folio *folio)
+> >       struct crypto_acomp_ctx *acomp_ctx;
+> >       u8 *src;
+> >
+> > -     acomp_ctx =3D raw_cpu_ptr(entry->pool->acomp_ctx);
+> > -     mutex_lock(&acomp_ctx->mutex);
+> > -
+> > +     acomp_ctx =3D acomp_ctx_get_cpu_lock(entry->pool->acomp_ctx);
+> >       src =3D zpool_map_handle(zpool, entry->handle, ZPOOL_MM_RO);
+> >       /*
+> >        * If zpool_map_handle is atomic, we cannot reliably utilize its
+> > mapped buffer
+> > @@ -986,10 +1010,10 @@ static void zswap_decompress(struct
+> > zswap_entry *entry, struct folio *folio)
+> >       acomp_request_set_params(acomp_ctx->req, &input, &output,
+> > entry->length, PAGE_SIZE);
+> >       BUG_ON(crypto_wait_req(crypto_acomp_decompress(acomp_ctx-
+> > >req), &acomp_ctx->wait));
+> >       BUG_ON(acomp_ctx->req->dlen !=3D PAGE_SIZE);
+> > -     mutex_unlock(&acomp_ctx->mutex);
+> >
+> >       if (src !=3D acomp_ctx->buffer)
+> >               zpool_unmap_handle(zpool, entry->handle);
+> > +     acomp_ctx_put_unlock(acomp_ctx);
+> >  }
+> >
+> >  /*********************************
+> > --
+> > 2.47.1.613.gc27f4b7a9f-goog
+>
 
-alloc_contig_range() that covers multiple in-use hugetlb pages, like
-
-[ huge 0 ] [ huge 1 ] [ huge 2 ] [ huge 3 ]
-
-I assume the following happens:
-
-To migrate huge 0, we have to allocate a fresh page from the buddy. 
-After migration, we return now-free huge 0 to the pool.
-
-To migrate huge 1, we can just grab now-free huge 0 from the pool, and 
-not allocate a fresh one from the buddy.
-
-At least that's my impression when reading 
-alloc_migration_target()->alloc_hugetlb_folio_nodemask().
-
-Or is for some reason available_huge_pages()==false and we always end up 
-in alloc_migrate_hugetlb_folio()->alloc_fresh_hugetlb_folio()?
-
-Sorry for the stupid questions, the code is complicated, and I cannot 
-see how this would work.
-
--- 
-Cheers,
-
-David / dhildenb
-
+Thanks
+Barry
 
