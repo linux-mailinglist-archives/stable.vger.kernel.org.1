@@ -1,189 +1,116 @@
-Return-Path: <stable+bounces-108021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 943ABA061BF
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 17:24:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECDF9A061CC
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 17:26:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCEBE3A148C
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 16:23:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C12471886C07
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 16:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F2911FECAD;
-	Wed,  8 Jan 2025 16:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69201FF5EF;
+	Wed,  8 Jan 2025 16:26:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tDn1HA3z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0052915350B;
-	Wed,  8 Jan 2025 16:23:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100AB1FECB3
+	for <stable@vger.kernel.org>; Wed,  8 Jan 2025 16:26:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736353438; cv=none; b=mtiwYPHZKDJenJaGeFQMGIsUj61cZHniYoe4HNN9BBJpmZAblcKW4SK1mpNtcxPTlwHkaHnANywYbUOStwa3toRk0wPwcSEWTCN/H1/pF3TIHHALqopJXIa1GerPpTFuFqgPZMpFgHLFtc2mRhk+RTtcl3jlzNaUWoscJZw/H+Y=
+	t=1736353568; cv=none; b=Dq0jvxz4mS1n+qWfPHw5SQyPurgQY9Qo5/isumqZr/Dud5m42ptoOHtnd4+ZkVP5ONJmbVju3acCXs9N/BIBSKIw+lif1adyRi4lvCTAfrs+CJDwRb8ndyWwoLnSXfRDRJ6vqtmMpMIGQYwfKF83fRUNjOuTVRbMBXY1jq8/9TU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736353438; c=relaxed/simple;
-	bh=6CJG+MljdJ4odyTsRX1HY7g1SI8IaFyVX5WxqVxooCM=;
+	s=arc-20240116; t=1736353568; c=relaxed/simple;
+	bh=Vrpja7gLp8wClJr7WGS7vASHEC8+FJW4qOfjHyBB1O0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DUGe//0HuTMBFdY4mV7pWsUqGxHUOEt9DiBuulOAkkzOkg5vhNlaPQsbkcL7sEalv+dO2l2yzaYad1rj7DXFrPLAemy61OxQgh72V/scdFFSYV+aZjGn5IG/SeRXTLmBU7S8PC0fhXUD7OG24hOu292tEdqaJjcbLlFX05yVO5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-85bafa89d73so2709907241.2;
-        Wed, 08 Jan 2025 08:23:55 -0800 (PST)
+	 To:Cc:Content-Type; b=dvTOUcksP1LFPvj6igDRbeiTywl+F7psE/rNnN1uOJ6CpS3Wi6rfNrU3zjp7qdAGhQjfBik1SbdymEt1f7hcQgf787/ORasSkEZ3QoN3jhxiSnVbpf/RoTZnt6uKnu7nosiO/9WTIl058/LGiKlUDYAZL/QFEvgULl2Xr7SSBmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tDn1HA3z; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5d3e6274015so29918125a12.0
+        for <stable@vger.kernel.org>; Wed, 08 Jan 2025 08:26:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1736353565; x=1736958365; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Vrpja7gLp8wClJr7WGS7vASHEC8+FJW4qOfjHyBB1O0=;
+        b=tDn1HA3zNZRjj9WMo8acx1ez8tIfQvTIbLvJjF70xmYxxxwwOOvvl5YYDDDgO5sxLv
+         eRTAZFiDVw9Cz4kHPaYIKFE76TaK5iEqPGWXJKRSEwgEdRATaLzdKWsmMt+z+04sgSW0
+         2aRfWEni+MTBDtzEJH6uSg2stfecoJMGNsC9ffCYDRKl3/1/GaMyfUHT8z8ACMarzMfA
+         B8RMJjlQxkES1CCLGjGO2pFHnHHt7lhO5oDIVzZRIireZ1RbxfzV3pjsITidX5TTx3nV
+         WRrDhjlKMbIiuDj6pobx0+w0oB25FTVXzZ1CUhPMv/v+Zz5ieH19kFfnWHaIA86oL/Kg
+         04XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736353434; x=1736958234;
+        d=1e100.net; s=20230601; t=1736353565; x=1736958365;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=CWaN/8ptyC2cYFUazZR9DiU44cT/Ebl32OM7k/AY7UI=;
-        b=YAp2KUn60xUP5ZAzMOQKeRQkNS8YG3Lwistz+yvab4MWvICoHlVYc1amGDiye22jxc
-         KLYGbDLCR6p+QzvQZC1dScR1oHk2vhxu1IF2BC3XpLMwB2vDUaRfepcAZtTO6UXM/Xy9
-         pID2uPxyVAuFxlE3LPSc+3T5inofPmKU4wLp0GQeb6JCtCv4RrA35bjy+7eBuG71kBud
-         YuvLJkpfTkdcSY18f0EMFKOgM57w4glKXwfOYXTirMDWsvWlHf7qYqqI3609RFe4hb3q
-         lyMSStCM62D8APJ0jixxQEbvp+mFAIYlJN5n+cRZeAtK7CzG1R9NoeOkPROqtbBw9lOu
-         Bmmw==
-X-Forwarded-Encrypted: i=1; AJvYcCUlOlqI8oIVJ8T82MgYbEanolx5LBIfIzHImNOARtCKdqm9fCHGNG60gDUpQLwVzlv6wgh2Lr0jid/5bw==@vger.kernel.org, AJvYcCWSJKxIe/5PPQG4hXidVVukR5/W0nh+Tt2PjxjUN3TRg2ia1EKP/Ogoqf0p3kjlfXH9V/T1tdWI8SwpMt1e@vger.kernel.org, AJvYcCX6DzM+4cQetaXJRPQpPGBEmeCKHLHAqE6vpUpji1zdLd2bAQPb8UZLFhWz8JbejMreqp2NQVME@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9B2yeusvlSqgugCpqi23z27a4vY81N7rkGiLuWU/vUS1Ysn9F
-	inzuzo+yVw40ZN9w6US+11Qt48qnG1QkTPGLAh6gyxBPYc787oWiDEc79aL0
-X-Gm-Gg: ASbGnctFHdpviGwF1M8kVxbH85fYc3Sa8zHMJsSMcZpcdAvSvJLjd9rnOjKoFzeWfCt
-	KAWn/CQBq2lAwHRHY+7sGYkvPkB69z8p9qzZgPx0GVg2Hs1c7j4EdrJao/y10Y9Z4AJ4BuL2Zw2
-	KaE8Alelop5C0a/bkTrYphzilt3nGyo78Ti7Bs+/m8TFyj8mlEsaN7TGXhQfWJ3OYD6WiZzOcN5
-	snpB7K6QaI6qATEiub5pfKh8lPCM6QropVo0xWspzRaliMj3PcdGBunKMF7LA0N1cpbgWUkTUzF
-	a6EE3jc7vBq5svoWx94=
-X-Google-Smtp-Source: AGHT+IEy48mJ4pMCjbpKOgZWV7I89kka6CYye04//JHMwhB0svU5BEFnzu9iNCwuTJEF6j9kWroDFg==
-X-Received: by 2002:a05:6122:2a04:b0:518:778b:70a1 with SMTP id 71dfb90a1353d-51c6c50f8e0mr2018297e0c.7.1736353434101;
-        Wed, 08 Jan 2025 08:23:54 -0800 (PST)
-Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com. [209.85.217.48])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-51b68cd97bcsm5025471e0c.33.2025.01.08.08.23.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Jan 2025 08:23:53 -0800 (PST)
-Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-4afdd15db60so3576137.1;
-        Wed, 08 Jan 2025 08:23:53 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUkqA98eGIN4PW0aljbe7O4u3pbxCJQCV023YyaL/iTlmP0XMtuXllUrqhHjgDRCeKmlCap9O52@vger.kernel.org, AJvYcCV9M8etpoCWl6xaD1XgSDEcHnABeBDsUhUe47BcVliDbuXC3+dZw9ldcLV35MROlY8BIwDSGiBkZrekUA==@vger.kernel.org, AJvYcCXd4iYthQRTsrTOjPpRypIhjzugzkUNvjYN2JKjv/OtVv4KeEgMChAfMDgh4Yf9Q6txaSiVCg6UMPOL2tiY@vger.kernel.org
-X-Received: by 2002:a05:6102:26d4:b0:4b2:5d63:ff72 with SMTP id
- ada2fe7eead31-4b3d0fc1ca8mr2837377137.13.1736353432987; Wed, 08 Jan 2025
- 08:23:52 -0800 (PST)
+        bh=Vrpja7gLp8wClJr7WGS7vASHEC8+FJW4qOfjHyBB1O0=;
+        b=t7lqxl+Gx6Z+DBOgzwqEHS+Ja9sYBXE3uLQ2FZuVsgn7FsAgnUu01y1hURRXfpsW3R
+         qUioG/irTiznPNV5zq1YBpZmVPTEVutx6Mla421Q/2XvOIVgY5O9XyNWzImkOPBXVUzK
+         ShhMNv0t+wM1UjlOkvOqEHov3VqD0YA/fbR6Pft3a0nVwVqWM6xXTWrft+ohl518YcaL
+         X8h4JuvutVoNPlgw8Bpi70BOu/LOZ3m33nTi1YoVOEb/5aPSXqnaGoNdIfjb/K+VyHH9
+         qdKYG0MG/vqJ+0GibXNLCb6xjs75R3+ytniN6+rd03s9bmpX7Lq/KUE9uQ9AaL8VH6yp
+         lsYw==
+X-Forwarded-Encrypted: i=1; AJvYcCXfIS99eKIPtKRbl1g8/tbprawg6WLWoGMRnudnyrNUU0aXCuSi5rSGPYeqUw72Vmi6WT+2568=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDXvpQoND7Dyl2OiAAA1WoylkV7DgG5OoH8G6qsSJ6VZ3qtJH8
+	y+lYOpYxKSCtaLKNsP2EMHG2eyg+y8OgFWkoNxpY+7dsxZCzmQDblL0X96Gj4UvmiEZZIOox5UA
+	d8TB5pbyV+NTzpBDH7dwaX/8lXRh5KjHmAPA7
+X-Gm-Gg: ASbGncuV8vp8eX1Lt8FdVTFjB3jjzcIIW95Kq1OYBK5mSvBhe/hZxqdeTRL7/LAgf9/
+	cNfxrPQL33dpL1q6+7VnGdtsrPTCCzjYTzAySBao=
+X-Google-Smtp-Source: AGHT+IGeGF4vh8DxTEjN7tESfGNU41x6ofqkC+fyq/M8TSO5+w5+umwB8ua4y8BitM97QdgJt25Wf0pnzPSZGjKvuUs=
+X-Received: by 2002:a05:6402:280e:b0:5d3:e9fd:9a15 with SMTP id
+ 4fb4d7f45d1cf-5d972e6f473mr3265028a12.32.1736353565288; Wed, 08 Jan 2025
+ 08:26:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250107095912.130530-1-tzimmermann@suse.de>
-In-Reply-To: <20250107095912.130530-1-tzimmermann@suse.de>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 8 Jan 2025 17:23:41 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXKNq2PAef0tF_AJv7zgmXQpPgYs5Rwokjo=1M+2n2EBQ@mail.gmail.com>
-X-Gm-Features: AbW1kvZp0cV5Of05CmFxR0NTT0IyghMVuM7nBAA7tF5qwUX0JfhnOOwbtasx9h8
-Message-ID: <CAMuHMdXKNq2PAef0tF_AJv7zgmXQpPgYs5Rwokjo=1M+2n2EBQ@mail.gmail.com>
-Subject: Re: [PATCH] m68k: Fix VGA I/O defines
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org, 
-	kernel test robot <lkp@intel.com>, linux-fbdev@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, Helge Deller <deller@gmx.de>, stable@vger.kernel.org
+References: <20250108-net-sysctl-current-nsproxy-v1-0-5df34b2083e8@kernel.org> <20250108-net-sysctl-current-nsproxy-v1-1-5df34b2083e8@kernel.org>
+In-Reply-To: <20250108-net-sysctl-current-nsproxy-v1-1-5df34b2083e8@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 8 Jan 2025 17:25:54 +0100
+X-Gm-Features: AbW1kvaWCFc1GR9QJN1q6qk-A8PrW0sTYcPB5wSHtxPxsBwUlmaJfdU5wH_8KII
+Message-ID: <CANn89iLPDTRYEGO0C=gtbHnM=OUPhfdK3RoLzzWMOMLEgmT0Tw@mail.gmail.com>
+Subject: Re: [PATCH net 1/9] mptcp: sysctl: avail sched: remove write access
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
+	Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Gregory Detal <gregory.detal@gmail.com>, 
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, 
+	Vlad Yasevich <vyasevich@gmail.com>, Neil Horman <nhorman@tuxdriver.com>, 
+	wangweidong <wangweidong1@huawei.com>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Vlad Yasevich <vyasevic@redhat.com>, Allison Henderson <allison.henderson@oracle.com>, 
+	Sowmini Varadhan <sowmini.varadhan@oracle.com>, Al Viro <viro@zeniv.linux.org.uk>, 
+	Joel Granados <joel.granados@kernel.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-sctp@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Thomas,
-
-On Tue, Jan 7, 2025 at 10:59=E2=80=AFAM Thomas Zimmermann <tzimmermann@suse=
-.de> wrote:
-> Including m86k's <asm/raw_io.h> in vga.h on nommu platforms results
-> in conflicting defines with io_no.h for various I/O macros from the
-> __raw_read and __raw_write families. An example error is
+On Wed, Jan 8, 2025 at 4:35=E2=80=AFPM Matthieu Baerts (NGI0)
+<matttbe@kernel.org> wrote:
 >
->    In file included from arch/m68k/include/asm/vga.h:12,
->                  from include/video/vga.h:22,
->                  from include/linux/vgaarb.h:34,
->                  from drivers/video/aperture.c:12:
-> >> arch/m68k/include/asm/raw_io.h:39: warning: "__raw_readb" redefined
->       39 | #define __raw_readb in_8
->          |
->    In file included from arch/m68k/include/asm/io.h:6,
->                     from include/linux/io.h:13,
->                     from include/linux/irq.h:20,
->                     from include/asm-generic/hardirq.h:17,
->                     from ./arch/m68k/include/generated/asm/hardirq.h:1,
->                     from include/linux/hardirq.h:11,
->                     from include/linux/interrupt.h:11,
->                     from include/linux/trace_recursion.h:5,
->                     from include/linux/ftrace.h:10,
->                     from include/linux/kprobes.h:28,
->                     from include/linux/kgdb.h:19,
->                     from include/linux/fb.h:6,
->                     from drivers/video/aperture.c:5:
->    arch/m68k/include/asm/io_no.h:16: note: this is the location of the pr=
-evious definition
->       16 | #define __raw_readb(addr) \
->          |
+> 'net.mptcp.available_schedulers' sysctl knob is there to list available
+> schedulers, not to modify this list.
 >
-> Include <asm/io.h>, which avoid raw_io.h on nommu platforms. Also change
-> the defined values of some of the read/write symbols in vga.h to
-> __raw_read/__raw_write as the raw_in/raw_out symbols are not generally
-> available.
+> There are then no reasons to give write access to it.
 >
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202501071629.DNEswlm8-lkp@i=
-ntel.com/
-> Fixes: 5c3f968712ce ("m68k/video: Create <asm/vga.h>")
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: linux-fbdev@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: <stable@vger.kernel.org> # v3.5+
-
-Thanks for your patch!
-
-> --- a/arch/m68k/include/asm/vga.h
-> +++ b/arch/m68k/include/asm/vga.h
-> @@ -9,7 +9,7 @@
->   */
->  #ifndef CONFIG_PCI
+> Nothing would have been written anyway, but no errors would have been
+> returned, which is unexpected.
 >
-> -#include <asm/raw_io.h>
-> +#include <asm/io.h>
+> Fixes: 73c900aa3660 ("mptcp: add net.mptcp.available_schedulers")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Mat Martineau <martineau@kernel.org>
+> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-It definitely makes sense to include <asm/io.h> instead of
-<asm/raw_io.h> in this file.
-
->  #include <asm/kmap.h>
->
->  /*
-> @@ -29,9 +29,9 @@
->  #define inw_p(port)            0
->  #define outb_p(port, val)      do { } while (0)
->  #define outw(port, val)                do { } while (0)
-> -#define readb                  raw_inb
-> -#define writeb                 raw_outb
-> -#define writew                 raw_outw
-> +#define readb                  __raw_readb
-> +#define writeb                 __raw_writeb
-> +#define writew                 __raw_writew
-
-OK
-
->
->  #endif /* CONFIG_PCI */
->  #endif /* _ASM_M68K_VGA_H */
-
-I gave it a try on various configs, and inspected the impact
-(none, except for killing the warnings), so
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-i.e. will queue in the m68k tree for v6.14.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+Reviewed-by: Eric Dumazet <edumazet@google.com>
 
