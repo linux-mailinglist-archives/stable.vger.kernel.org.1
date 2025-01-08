@@ -1,252 +1,169 @@
-Return-Path: <stable+bounces-107926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FC70A04DFC
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 01:02:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C84A04E04
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 01:05:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BC821626EC
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 00:02:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 648F63A1457
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 00:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ACC31C32;
-	Wed,  8 Jan 2025 00:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CF910E4;
+	Wed,  8 Jan 2025 00:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="PflE802c"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qbSx2NGq";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bUA7T3ac"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2040.outbound.protection.outlook.com [40.107.237.40])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1856F4A08;
-	Wed,  8 Jan 2025 00:02:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736294532; cv=fail; b=SPJE/1iWfUKAbGCDlB+47A0GGRxvRhRK2+B7wR7n0sSYKKMAF8XruKBmSw6ik77lmtZkPuttp2shYHgoKccnVpaxOOHkEHX0bnipAXH6r/3y5WcrepxBJTYjud1+Z5IatAgf8NoKB3Bv6ZtzxymyRfjs04b1106GYG7jlQQKNVw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736294532; c=relaxed/simple;
-	bh=yeqmrhIVp0THJQZe8Rs0ZLpiHIfGNSbua+rgtFtdRqo=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=cd4xvzozvElzPhzOJwfYJmdEo1ibm5G7dY33qHpllkcrji4t2CuvecrNPC4S6RrBOlU6CeaZEF2OeNjkzd1w8GYRPUbBWsMsSEcCq4FfxQGfxvn7HTn8M7U9p3RNvDlisifKJEpMNh9OB3c4lcOOoMp6TiIcCzldU9krplU3lbA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=PflE802c; arc=fail smtp.client-ip=40.107.237.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hZtdwsOCdV9dByeUyALnJUSJrylKqk/FjL/ealeYW4u+oIHueEqM5+8eNqW+JaaVgnYUOaebch1jJxT+64Q0hRn2ighqkrtoenM1gcD+7SWjaJA/Xm+ca8hzpGMWK1mZybcjuZm9PWpYa8aTm4yzB8xVshCcbmbt7TDZRGGOmp9Rex4O6jh9xdl9McOyLTO32XwgIKsIum7QK379T42AET+t2r+vpU3IIBZ4ZCbedVnXVQCL0Xz7z5JqcczzVFGwRuS9aSsvA9EO9LL8QwVujRHSrsB6g6wtqNZtP+JC35pxFRGyoTuXnpS/IbzUg5gfEn5cxA1IYEuGMRV2xlTMDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HOfKnXCViGaiQWT3ZxdV35afFbb/m3ft/+ad4YgtB8Q=;
- b=ny7fXrnKa1SG0saNWo+gzZRwIygG03Ood6uyx25E4PKccDug4vwYOlomDNO7gUelGkYeEE5PMBzrUjvwGFkgwK/omzfJbWpJxP8rLQ8ycmFInTmW5TnA8tRiiLzP5eG7NICzmV+gGRg5qH85bOa0cS7u+ZMTTqVuJZX39072+NiklBQ23bczG/eQgrKlVtuMCPda12Z2CXgJbmSH5ncp1GX35OUX2Cz84g7H8peZYmTc+FhLPblc7+esKHO2fB4lNSC4+kf9uiyAJJR6FUdc7vtauMaOm1v7z6eRZvAy4wxh6s+hMhYdKLTKjF5s8n0KYyZCPtB56cO0pfWS9w/wTQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HOfKnXCViGaiQWT3ZxdV35afFbb/m3ft/+ad4YgtB8Q=;
- b=PflE802czi3ez/JbNUR6UgcSOqF1eDEnY8vH3KNqTbYphGT7DODnGv+E1qkBfs+9dpr8tMgM4o7Qgmg6RWYf0b3hzJCkfyHB6rXeDdkgaL+5mSEnMGIbT1APOlZUZsgnoliR7f66Ke8q04ITnaIKn3MOxDhvuHfv31zsWlOm/jE=
-Received: from BL1PR12MB5144.namprd12.prod.outlook.com (2603:10b6:208:316::6)
- by MW4PR12MB7015.namprd12.prod.outlook.com (2603:10b6:303:218::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.18; Wed, 8 Jan
- 2025 00:02:04 +0000
-Received: from BL1PR12MB5144.namprd12.prod.outlook.com
- ([fe80::491a:cce3:e531:3c42]) by BL1PR12MB5144.namprd12.prod.outlook.com
- ([fe80::491a:cce3:e531:3c42%3]) with mapi id 15.20.8335.010; Wed, 8 Jan 2025
- 00:02:03 +0000
-From: "Deucher, Alexander" <Alexander.Deucher@amd.com>
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"stable-commits@vger.kernel.org" <stable-commits@vger.kernel.org>,
-	"oushixiong@kylinos.cn" <oushixiong@kylinos.cn>
-CC: "Koenig, Christian" <Christian.Koenig@amd.com>, "Pan, Xinhui"
-	<Xinhui.Pan@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter
-	<simona@ffwll.ch>
-Subject: RE: Patch "drm/radeon: Delay Connector detecting when HPD singals is
- unstable" has been added to the 6.6-stable tree
-Thread-Topic: Patch "drm/radeon: Delay Connector detecting when HPD singals is
- unstable" has been added to the 6.6-stable tree
-Thread-Index: AQHbXXhWNGAsQLNmlk+RljZozxDQrLMMBehw
-Date: Wed, 8 Jan 2025 00:02:03 +0000
-Message-ID:
- <BL1PR12MB5144226AD0D6697DBF25ED56F7122@BL1PR12MB5144.namprd12.prod.outlook.com>
-References: <20250103004210.471570-1-sashal@kernel.org>
-In-Reply-To: <20250103004210.471570-1-sashal@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ActionId=860eb3e7-39d3-4fd9-b97a-4645a28af9c9;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ContentBits=0;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Enabled=true;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Method=Privileged;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Name=Open
- Source;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SetDate=2025-01-08T00:01:18Z;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL1PR12MB5144:EE_|MW4PR12MB7015:EE_
-x-ms-office365-filtering-correlation-id: b590942d-8626-4327-f350-08dd2f77aee0
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?dCSN8GnL6iyxM7HvVVlu9X4VbgtPRrNyIjOISyWRoqaozr3yur+tTVpBMoNa?=
- =?us-ascii?Q?1TPQTScrgwJNCSuxrcKfiLxZUjBHOU8Jrh1jyUxvbeKrutiNQQZVhSZbHZcW?=
- =?us-ascii?Q?4WBflEZ9OkjnrbCtD3t5fw3PQ8bF5gSKOmHDpW8OVUJvBRRVnCG4NiNUhJ9G?=
- =?us-ascii?Q?6TAJLO9AF5i8nrc1AC04RWv0Xckn18OHIpKtV6w9EmNWvOGRShR2MmkSofBm?=
- =?us-ascii?Q?vfhLpwEJKPv6Rrv07qwe6GqTWbT5hOBN93WiCFs7dlM1J/yS0jiMFPq0zyb2?=
- =?us-ascii?Q?zcYxGyzVhpKEFMc9k/HC5KYLLR82S/WaXT4jxzNvZw0Opl34+CHn+/iEmUeK?=
- =?us-ascii?Q?YPwg00xY8IytPIOTaeRskcLnWB2T82ytkEvCXjRuqsqDScrVqg9ODkE8KY2R?=
- =?us-ascii?Q?DFVzdrwZgTcIU5Dn6EA/go4BEsPH6NtZ/fhbw4AUFXBwXnI/8eXo0wLgafGK?=
- =?us-ascii?Q?vvwuzkDuCo7f4ED89NNrGppw03gOhKKtH3H/gLaNd4PycVNTWrE9eETcDjf8?=
- =?us-ascii?Q?09Vh6zxDjIF3ncXXMYzALr9IXw0NTEU/l9+kklii5yZmLUurXFtmmbLq7n4Q?=
- =?us-ascii?Q?CV+H93sgVx0nXS2Q0x7SCsPkNC3y/rzCn4rBmQUbKX6j8p8P1PXKlLrQViJW?=
- =?us-ascii?Q?7okpI/30hl7ugO6qQ2TfVRh3WpqHbUK8K2UFCcutSYq9XEMRttYUcJvJpnYi?=
- =?us-ascii?Q?UbCL1qeq/msLU7DuZt9AB3aQhHlmxHJFaV7z11zOExbqmQ4UsWQLVDpq3SfS?=
- =?us-ascii?Q?WmGibIL8W2yTPMpBOV7VvoO35M3QsLXNX0q/4X355E/64CgrGSsn6TGNhEuG?=
- =?us-ascii?Q?Cm9bej1XJIKnwrwadkZhODuOSgTjL6Q0qrZUx65gUhYTvkkqvhdk7lgy5kJc?=
- =?us-ascii?Q?kOabwfU1Gl3gsqVn6bevUSHK4shJI9kmC06dMFP8uoPTPQJsxRuiaYDS25QJ?=
- =?us-ascii?Q?ZpiKBp9fcqRh1UWn3AQB6Ha16Jvb5Ek1XqYFS2tQS4KOtZaX8h+iltqgJd2I?=
- =?us-ascii?Q?xBLo+HpTWd1TmySscb+AqNQO1dUQ1m1ssLJzFJxX7PUi5Vc2ZJoD4sCASHn5?=
- =?us-ascii?Q?IbW3+30jOSR02TF40XbwxnJeIBJwhxFwVA2K6BG9NAWbgTcqnYxnja0C4bbE?=
- =?us-ascii?Q?8DYsR0J5vSRDR6ewUsq/0s18y1szv6DN938IuPYP5V7ioo/tB5PoqnRNd5iN?=
- =?us-ascii?Q?0GA77kL+c57CsUBwu5gU8VEMCwJzyX9Xl6jGJyhU/E4uINtbvy6y/pMH4DZI?=
- =?us-ascii?Q?Sxu/72ykxGpL0Y5L2ZDNf7W3q7YDs4ERHZ8NN66tgvgVH1YtHjdiwaIM6Wl2?=
- =?us-ascii?Q?IKIIMGBO6nu44Bkn+fWSz2mAolci9vEz/Kkvy+1F3hXqoDpo65baRIwXP4LS?=
- =?us-ascii?Q?oKzTiFm/XZG3WeChpnjm2Z2YbE4isRqG0KDMDIOKSDHaf+HLEw=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5144.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?LUOLLfbA/ZxpxRYsa7WuyDyUCVi0XXkkw6Ce6TpQjfL2IpUEruhvklvFbxra?=
- =?us-ascii?Q?WGZHTS5fi8COGrb/AVErqjw5SuSJCsi+VsedXRshzcVwJQ8HnvFzMCcy2KIw?=
- =?us-ascii?Q?D7ER8GS2F8/iaa2BtrazwaxrfGcG0AibbcCdeOv0Yb4YR9Mc7bP8S3ssu8xu?=
- =?us-ascii?Q?2PHOXUAd2+T6nTI/RljrnYhq78HR/VA2AzCdObkHhMK+/81V1SSZSpERl0aQ?=
- =?us-ascii?Q?96rijoP712D666k3toeUcbE60IKYVNBC7/eehScUL038MNoRoXBmFGXj1m1m?=
- =?us-ascii?Q?VkPqWR6esmtP/dmCuAN+FDG4k/0EUjpyye/IBVElUoFc/0Im0WtNjTHOY5uH?=
- =?us-ascii?Q?3sjhvmP64jQ6o3JgKQcvTUBjBkbes9UNyg2Oh2KBlMgegK4sSEYJxDLxEYDU?=
- =?us-ascii?Q?Tgkcv8sIq/t7lw0WR8zSYWGgl2A7XaoZKnJ6PZ67t9GeTraE5vTdnUpfgKKE?=
- =?us-ascii?Q?/JQKdOFTabTuCEk/lvSLFaehzTxV5CQF1ZoN6E9WUS2W+2gHXoQh7LTsosOk?=
- =?us-ascii?Q?FRR3uyLKDVd/nws1BgHmgAWIYHEDbiBl5DR5Ox2EjeZ6HIQmxg/1fPDkKfSd?=
- =?us-ascii?Q?OvlEk3f35ztYWTHp5HGGF4WpaSVwPPlsQoghP0/dNLxZ1r0V6Psly0QUe4bW?=
- =?us-ascii?Q?HuUJDUmL68zHjvOO9YUE3tzK6Io5CfrN7o5FMsTMGpGvQtrNxu0BZWK3SQk2?=
- =?us-ascii?Q?KIMy7OhAbr8BLCfziFw5dkqKtqWRBlvqNB/XGRmkHMKxBcD31DqeaXQnM5HE?=
- =?us-ascii?Q?Xnv56wKIxpwii6lRBLToIqAopwRe4sxYW/eCtLcR1lgBsC3cil4CfY7JIyzg?=
- =?us-ascii?Q?51Am5ebITnbNFqKAE0rx56aw+w9afF6EKvCuHqUbAP3tXzV9Oj8HhwnGAz3c?=
- =?us-ascii?Q?uaklahJlsreoFfdc06w9RqIkwpZKnMpVJdy/gQAdh5kgWRyXnffkSGiNs7A2?=
- =?us-ascii?Q?Mq1F4TTeUvPS3TXWdDhhIU0uldAWSXqHepFoiVwLqXPqMWZf6duDlsw7AYEp?=
- =?us-ascii?Q?gfqrTv8d2MIvXd6VmjmXwe/riXyiUF4cwAPCjdtNyHRgr/jcy2mjY7qx9Szg?=
- =?us-ascii?Q?pIPOVifRL9gwg0Z/pCOcAFbaCaxsA0hMpax0RnW7mi/wF1Hw4Yz29wrF1/aV?=
- =?us-ascii?Q?3yF9htmTbOrtZ0pXGeTYdPmbFCGViHQeOmK3NDCRfEdVlLozE22yMQA/cq6l?=
- =?us-ascii?Q?HskpTdp2K+6CZ4FGiEvqceEAPfnangFtfk8Da0g1L2h4iYh59sdWq8uzN9Tw?=
- =?us-ascii?Q?HYlMKuksp7ozqSnxB+pdFFAqjsf9W2CRCSIv9QBPpIMcbOuQhi5N73x3/HYZ?=
- =?us-ascii?Q?qXgmemnOx/F02PtqurUMC5RgXZ8FUdSBYk1Z6RIvLIcYIvhEArM309/MKxg3?=
- =?us-ascii?Q?f/PD2R7Et3SjIJmy6csQBzVhi/iFuVeevMbvANoBcu2mngbK3PRWVh2S903o?=
- =?us-ascii?Q?yoGw+yljLW3VkKcALHKfLEv+b2r1F2/kkiTQQmHen/z8kFF6XF0Gi+D6J2ak?=
- =?us-ascii?Q?nblG61EWcXkI1GeYDDg0rM9oxo0KYCT/X5h9OnwPhlIO+y45F6UlgI/LtrkL?=
- =?us-ascii?Q?h2kj5Gzo7+QJiZKqtgY=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C137F17E;
+	Wed,  8 Jan 2025 00:05:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736294734; cv=none; b=keS7UXikUoWVvf82V+noOR0JuVDBl10LGot2+yERmfY1LFi7dOooNpPzqbDbwZehGF6/msAlAWoMhRDsAYc5Cvs/akAkTxBertJ5j/ufAwRxARrrjdFwdGnHgqlHmCoxWDoS5t6EemGXONItUNnJrw7/F7E0DQf6oSPQCc2Gvck=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736294734; c=relaxed/simple;
+	bh=4dofVtsukLso3PdJkEFSjpjBl4NdP/AWrYIgk76Ch7g=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=ZJKbciWOH5GScYAVc6BYY2Xofb8oQ7m3tNnrcdyBwHLOVTx1xQEQjE/k/wmEWjTyOAz1z2AVPSA9CgLIMYYLl3l3M4nYp2ryg9GuJuKFxVX/OhEUHds0we0qjNR2x5hwscFhzTFrro3eCbE0d5zaCfgW7gsGR+pXQTfeNiGvw80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qbSx2NGq; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bUA7T3ac; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 08 Jan 2025 00:05:22 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1736294728;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=lepeWKlg0N79qRCOIS0hq19yjSdSJwUmvdm5UDYQ/hM=;
+	b=qbSx2NGqYsyqf0DXdbX+DZfpR6FHuU+Di4UP4b8o5ZgrbqEJY6V5sgtn39iXhdCAM/Xdb0
+	0kdbPIbVooW7na5fgnhDD5FOhw2iOZeYjItcYoa7nOhfP/Fxq3Ha2SY87fkADxfQvVHfxY
+	4/nac6rOMUiVuaCsLZS2D7ftlBJPZMzovelXCEFbWOXdBOY2+7BkEx/drBt2VEVNJx/rvr
+	Y50X9Jy6OB/6YII0cbkkdueWvBcUOLfRS3/8djrBwFu7owD5vj5IpbaDmmmgNKqegFXuqX
+	D5QXj/BUpHlCm/fMTR864jeINAoCvJrsOWFEABeoe7dQko7rW2zhAgL50+OHmg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1736294728;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=lepeWKlg0N79qRCOIS0hq19yjSdSJwUmvdm5UDYQ/hM=;
+	b=bUA7T3acghEiy6WxEK15mP8B7i7vpaMeWPW74CHrdkE4ol4dioSC/67Aq7KHExq+ejc7Gy
+	95pYhUR11FsGeJCg==
+From: "tip-bot2 for Rick Edgecombe" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/fpu: Ensure shadow stack is active before
+ "getting" registers
+Cc: Christina Schimpe <christina.schimpe@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5144.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b590942d-8626-4327-f350-08dd2f77aee0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Jan 2025 00:02:03.7640
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Ib/GolAEEaUuJTazAhzHiXr5hdWmeaaXdj2eudCdpAQ2KbsdeJAeLHLyUOcfjt+3qPFnmlqqGGobCM+O/ehYZQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7015
+Message-ID: <173629472307.399.5774149825311450322.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-[Public]
+The following commit has been merged into the x86/urgent branch of tip:
 
-> -----Original Message-----
-> From: Sasha Levin <sashal@kernel.org>
-> Sent: Thursday, January 2, 2025 7:42 PM
-> To: stable-commits@vger.kernel.org; oushixiong@kylinos.cn
-> Cc: Deucher, Alexander <Alexander.Deucher@amd.com>; Koenig, Christian
-> <Christian.Koenig@amd.com>; Pan, Xinhui <Xinhui.Pan@amd.com>; David Airli=
-e
-> <airlied@gmail.com>; Simona Vetter <simona@ffwll.ch>
-> Subject: Patch "drm/radeon: Delay Connector detecting when HPD singals is
-> unstable" has been added to the 6.6-stable tree
->
-> This is a note to let you know that I've just added the patch titled
->
->     drm/radeon: Delay Connector detecting when HPD singals is unstable
->
-> to the 6.6-stable tree which can be found at:
->     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
-it;a=3Dsummary
->
-> The filename of the patch is:
->      drm-radeon-delay-connector-detecting-when-hpd-singal.patch
-> and it can be found in the queue-6.6 subdirectory.
->
-> If you, or anyone else, feels it should not be added to the stable tree, =
-please let
-> <stable@vger.kernel.org> know about it.
->
->
->
-> commit 20430c3e75a06c4736598de02404f768653d953a
-> Author: Shixiong Ou <oushixiong@kylinos.cn>
-> Date:   Thu May 9 16:57:58 2024 +0800
->
->     drm/radeon: Delay Connector detecting when HPD singals is unstable
->
->     [ Upstream commit 949658cb9b69ab9d22a42a662b2fdc7085689ed8 ]
->
->     In some causes, HPD signals will jitter when plugging in
->     or unplugging HDMI.
->
->     Rescheduling the hotplug work for a second when EDID may still be
->     readable but HDP is disconnected, and fixes this issue.
->
->     Signed-off-by: Shixiong Ou <oushixiong@kylinos.cn>
->     Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
->     Stable-dep-of: 979bfe291b5b ("Revert "drm/radeon: Delay Connector det=
-ecting
-> when HPD singals is unstable"")
+Commit-ID:     a9d9c33132d49329ada647e4514d210d15e31d81
+Gitweb:        https://git.kernel.org/tip/a9d9c33132d49329ada647e4514d210d15e31d81
+Author:        Rick Edgecombe <rick.p.edgecombe@intel.com>
+AuthorDate:    Tue, 07 Jan 2025 15:30:56 -08:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Tue, 07 Jan 2025 15:55:51 -08:00
 
+x86/fpu: Ensure shadow stack is active before "getting" registers
 
-Please drop both of these patches.  There is no need to pull back a patch j=
-ust so that you can apply the revert.
+The x86 shadow stack support has its own set of registers. Those registers
+are XSAVE-managed, but they are "supervisor state components" which means
+that userspace can not touch them with XSAVE/XRSTOR.  It also means that
+they are not accessible from the existing ptrace ABI for XSAVE state.
+Thus, there is a new ptrace get/set interface for it.
 
-Thanks,
+The regset code that ptrace uses provides an ->active() handler in
+addition to the get/set ones. For shadow stack this ->active() handler
+verifies that shadow stack is enabled via the ARCH_SHSTK_SHSTK bit in the
+thread struct. The ->active() handler is checked from some call sites of
+the regset get/set handlers, but not the ptrace ones. This was not
+understood when shadow stack support was put in place.
 
-Alex
+As a result, both the set/get handlers can be called with
+XFEATURE_CET_USER in its init state, which would cause get_xsave_addr() to
+return NULL and trigger a WARN_ON(). The ssp_set() handler luckily has an
+ssp_active() check to avoid surprising the kernel with shadow stack
+behavior when the kernel is not ready for it (ARCH_SHSTK_SHSTK==0). That
+check just happened to avoid the warning.
 
+But the ->get() side wasn't so lucky. It can be called with shadow stacks
+disabled, triggering the warning in practice, as reported by Christina
+Schimpe:
 
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
->
-> diff --git a/drivers/gpu/drm/radeon/radeon_connectors.c
-> b/drivers/gpu/drm/radeon/radeon_connectors.c
-> index b84b58926106..cf0114ca59a4 100644
-> --- a/drivers/gpu/drm/radeon/radeon_connectors.c
-> +++ b/drivers/gpu/drm/radeon/radeon_connectors.c
-> @@ -1267,6 +1267,16 @@ radeon_dvi_detect(struct drm_connector *connector,
-> bool force)
->                       goto exit;
->               }
->       }
-> +
-> +     if (dret && radeon_connector->hpd.hpd !=3D RADEON_HPD_NONE &&
-> +         !radeon_hpd_sense(rdev, radeon_connector->hpd.hpd) &&
-> +         connector->connector_type =3D=3D DRM_MODE_CONNECTOR_HDMIA) {
-> +             DRM_DEBUG_KMS("EDID is readable when HPD
-> disconnected\n");
-> +             schedule_delayed_work(&rdev->hotplug_work,
-> msecs_to_jiffies(1000));
-> +             ret =3D connector_status_disconnected;
-> +             goto exit;
-> +     }
-> +
->       if (dret) {
->               radeon_connector->detected_by_load =3D false;
->               radeon_connector_free_edid(connector);
+WARNING: CPU: 5 PID: 1773 at arch/x86/kernel/fpu/regset.c:198 ssp_get+0x89/0xa0
+[...]
+Call Trace:
+<TASK>
+? show_regs+0x6e/0x80
+? ssp_get+0x89/0xa0
+? __warn+0x91/0x150
+? ssp_get+0x89/0xa0
+? report_bug+0x19d/0x1b0
+? handle_bug+0x46/0x80
+? exc_invalid_op+0x1d/0x80
+? asm_exc_invalid_op+0x1f/0x30
+? __pfx_ssp_get+0x10/0x10
+? ssp_get+0x89/0xa0
+? ssp_get+0x52/0xa0
+__regset_get+0xad/0xf0
+copy_regset_to_user+0x52/0xc0
+ptrace_regset+0x119/0x140
+ptrace_request+0x13c/0x850
+? wait_task_inactive+0x142/0x1d0
+? do_syscall_64+0x6d/0x90
+arch_ptrace+0x102/0x300
+[...]
+
+Ensure that shadow stacks are active in a thread before looking them up
+in the XSAVE buffer. Since ARCH_SHSTK_SHSTK and user_ssp[SHSTK_EN] are
+set at the same time, the active check ensures that there will be
+something to find in the XSAVE buffer.
+
+[ dhansen: changelog/subject tweaks ]
+
+Fixes: 2fab02b25ae7 ("x86: Add PTRACE interface for shadow stack")
+Reported-by: Christina Schimpe <christina.schimpe@intel.com>
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Tested-by: Christina Schimpe <christina.schimpe@intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250107233056.235536-1-rick.p.edgecombe%40intel.com
+---
+ arch/x86/kernel/fpu/regset.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/fpu/regset.c b/arch/x86/kernel/fpu/regset.c
+index 6bc1eb2..887b0b8 100644
+--- a/arch/x86/kernel/fpu/regset.c
++++ b/arch/x86/kernel/fpu/regset.c
+@@ -190,7 +190,8 @@ int ssp_get(struct task_struct *target, const struct user_regset *regset,
+ 	struct fpu *fpu = &target->thread.fpu;
+ 	struct cet_user_state *cetregs;
+ 
+-	if (!cpu_feature_enabled(X86_FEATURE_USER_SHSTK))
++	if (!cpu_feature_enabled(X86_FEATURE_USER_SHSTK) ||
++	    !ssp_active(target, regset))
+ 		return -ENODEV;
+ 
+ 	sync_fpstate(fpu);
 
