@@ -1,200 +1,148 @@
-Return-Path: <stable+bounces-107974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2D8DA054DD
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 08:57:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66A67A054F9
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 09:06:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 981471631E9
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 07:57:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C8CA3A26A9
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 08:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318231ACEAF;
-	Wed,  8 Jan 2025 07:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0501E32DA;
+	Wed,  8 Jan 2025 08:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xp3d7JkC"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ln3Ko/U9";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HsNNeh3R"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F8B1A83F9;
-	Wed,  8 Jan 2025 07:57:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935981AA781;
+	Wed,  8 Jan 2025 08:05:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736323027; cv=none; b=DJpOQZJrEuecQoG9qJ8/C3zdQGFDl9RBxghjuSU4YYfYMGg+/4kQq6E9pTgVcwINOPnPzrxkqyaCOPyXdf9HGFvM80KF5A6+UIHdFuGmsUAyHPeucP7wLCgbb/JDgBCcMnQpI9X35xIUCT5uvcGS/FUpP7kEWLDJDVJRGHq+XlY=
+	t=1736323553; cv=none; b=RSm4MNFYgwBRnbeaVgx1AE+FXZW58NrE1u7kH2ruHDaP87qf1vQKucm7IVU3BuJ0g7Bjnaay0wtfLkrRIsDLs0C4fnRb9hRTg6+Zrlnhrz9k7KBgSSEnWTC+aHo1EiDZj2/vbSQwi8O0z5icGs4jsXwIxBEfODWnMtaThGzP+2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736323027; c=relaxed/simple;
-	bh=gxOj/DoYoxlI1ScXJOrYyHXTcN+QUEIU0FYHoLGjBQg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fCaWdUhCGV0kFkL/VfPJWhCDTQzFdelk2hG9T7T+/oWf3zq90DSYl0jz7x3LJBzUtVt65q9eCPBazjAo6AtdljXUmfZD21lOA5uokrhccJnkmLIA9zCrrzvn+7TZUNW3yQH2vd0VDaeTeynbQ2vStsknrsnekOZH4386vqylTz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xp3d7JkC; arc=none smtp.client-ip=209.85.221.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-51889930cb1so4888277e0c.0;
-        Tue, 07 Jan 2025 23:57:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736323024; x=1736927824; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6/nHnofGguTdw1vKNltVZXYt+IFuV4avQDVGGoRKljI=;
-        b=Xp3d7JkCvTNheUxMhxEA/lfURPwWWn15QfmVgejD7XbJqTT+YXNFB6DvIhcWer10cS
-         zdpsxFxX5Dbs8T0YH5KeLRlsxzLtsToXE7YIWwJYXEptqYDseeklTTb5660BQQcyCIJ2
-         nitb+PmijYPfSoKUZ1rWH+QJHBQl1q5vsCpArykRaEp3jO7pFvPWpSdyVEw75DLEeqrn
-         Hw3np8nQsGrz+YucirD4kyI4W3ADMY0m9/BDRdvYezUkauwhUuLjP/8lbPAIhO6bw6YI
-         uQRsj6ACbXYwYzMKzq7xxATdmY1cW8vA2vif3E9ne7yzvASotmgnp21R5FSamONDoOfX
-         jkYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736323024; x=1736927824;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6/nHnofGguTdw1vKNltVZXYt+IFuV4avQDVGGoRKljI=;
-        b=VNfbe5fxYwQrUUFTX5qljg1AsjqfxpIu+i8Pqa/Utq0YNlr/ZbdlWkeIj26E00l4jU
-         WwdOUbqWVk5/JNTzkjGMr5gh5iqmulqwGC4zL239Rjkpnss7P1sBXxtaR2ugzW+zAlDW
-         CyMDix2s1v+/mZSHHMsPzeoBPXrvIqHqohZL8Ihk1rEqGNyqkPEyhqXWkfRia3KEgXy7
-         601wjyHlaG12fAz7fWGK3o8a6dQXMDDmycIR0QSe4cQndnXDAZoRXuw3UGCA2sJG3M3g
-         6fGnvKAbHvcMnUo7/tUtJKPF7jKXgFcUDoXNjrPbhW9mLOalUDLy9Z1zrcJLWwjB6bEM
-         MH7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW7arlCYh1UWSL3Kz0CwbwEvPzQkLD3tAEImzwqo/VLnn9f5yk6MsegKVtE4RgrysQrNexHWbcPb5K6q3c=@vger.kernel.org, AJvYcCWowPYCMzoVLs3bWs9fcTD5c6brH6ovE5a9vVmiR/PgR4Gg6m5h/oHcd+vtK1koxrnB6OH06yso@vger.kernel.org
-X-Gm-Message-State: AOJu0YyX4CTdXP4BcrjWrQRJYccta0VGCQWp9tfq+50V7K1BRI53Kpjv
-	DXDSdm+7VCZdXb4bpqd9+kMIG7jv7Jt6VnXZsUOlPm5L892Y9SUJfQcRjve18I05t30uxRoYnHX
-	YAfv0ozWGl4P3TrGf0+5NHJToDBU=
-X-Gm-Gg: ASbGncvEg9Ldblm9HKID9bExSaWzVoRzCzXJbC3R+pkwW7un7a3u0FgZdfwa4JcBam/
-	MxtdV7I/+HkhDUHcNHOcKTIHAHz0ZbXfWFILa3xkaMAl1MC09y00q0yLvmo2GWtCUJ7F0L/4=
-X-Google-Smtp-Source: AGHT+IGZ4rOtpqULk68Q3nCTHxwHuIitpr1OfmuohtzOigKXbQHtcmvCd8bnLU+jwku/h+ElLq2/bLl4t6D7H+zvLmU=
-X-Received: by 2002:a05:6122:65a9:b0:518:859e:87ae with SMTP id
- 71dfb90a1353d-51c6c52475cmr981935e0c.7.1736323024103; Tue, 07 Jan 2025
- 23:57:04 -0800 (PST)
+	s=arc-20240116; t=1736323553; c=relaxed/simple;
+	bh=SyvnMFw9tENgnWpRfx0m3z6LwOVKNZyoCL+rq6ghP8k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OOGMZeL3Te/7n3tUwykJFFhL1+aj0iFGM/wZsTt08LIiKdT9bxHboijyK3m3zICkQxv9EfM7gkuyJfJMw/1TJS7l4Lfs2o8nw1Anvkau7k8zycEdYAiNi7G8e9fR+Zv8fPLvHwNIMVLnho5LlXv89GQ7+qnnV9khgOf6ww2pC4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ln3Ko/U9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HsNNeh3R; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 8 Jan 2025 09:05:48 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1736323549;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qJmg0rlYDsu9eOC/BK9/42GtYToiXcNh3fOPiQsHx28=;
+	b=ln3Ko/U9q5IFu3FTm0+YzBkPfHxxpock+ZTNMzitMYQtFkBRw2JpSECshDnLIfF/rN00Op
+	fSQBOOJ3EYl3Sdwxi0WOWxF5hepkHR6hgNjrPm4g7c+LHI5pHJwxRV+caev0kBNQYZkxhA
+	y3GWzSBW4DxJ03ywD1mAJN0H05Wc/JmEh0/62pa40wWCDBFb7l+4w9volysE35CZbpwb7S
+	IUGlYW3zmXUMhjAC8mSliphBfcTtVkObUjv9J/bqeX44dAtILZMR+F6abM+WN65eI1iPk0
+	3D4lRGPUmrzx0V+E/VogYIy7WY4zfei3T5DVaWy3xx5LrhFmVkbNQeL7mF9Vow==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1736323549;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qJmg0rlYDsu9eOC/BK9/42GtYToiXcNh3fOPiQsHx28=;
+	b=HsNNeh3RFpXd9rSUKsJHzCMMKUHXeFrMxlbNDm6s6+G9tA68kvlcLaXQnjcObvgWD/s1Be
+	10Eqm24ER82AgcBA==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Dev Jain <dev.jain@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Ryan Roberts <ryan.roberts@arm.com>, David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH 1/3] selftests/mm: virtual_address_range: Fix error when
+ CommitLimit < 1GiB
+Message-ID: <20250108083855-840c688b-003f-423b-8327-2a10a2b27d58@linutronix.de>
+References: <20250107-virtual_address_range-tests-v1-0-3834a2fb47fe@linutronix.de>
+ <20250107-virtual_address_range-tests-v1-1-3834a2fb47fe@linutronix.de>
+ <5811cf74-d333-4653-ab64-0e981eda7745@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250107222236.2715883-1-yosryahmed@google.com>
- <20250107222236.2715883-2-yosryahmed@google.com> <DM8PR11MB567100328F56886B9F179271C9122@DM8PR11MB5671.namprd11.prod.outlook.com>
- <CAJD7tkYqv9oA4V_Ga8KZ_uV1kUnaRYBzHwwd72iEQPO2PKnSiw@mail.gmail.com>
- <SJ0PR11MB5678847E829448EF36A3961FC9122@SJ0PR11MB5678.namprd11.prod.outlook.com>
- <CAJD7tkYV_pFGCwpzMD_WiBd+46oVHu946M_ARA8tP79zqkJsDA@mail.gmail.com>
- <CAJD7tkYpNNsbTZZqFoRh-FkXDgxONZEUPKk1YQv7-TFMWWQRzQ@mail.gmail.com>
- <CAKEwX=OHcZB8Uy5zj8Dhq-ieiwpJFcqRXN_7=mbM1FD_h_uOOA@mail.gmail.com>
- <857acdc4-c4b7-44ea-a67d-2df83ca245ed@linux.dev> <CAJD7tkZ+UeXXvFc+M9JssooW_0rW-GVgUMo3GVcSMCxQhndZuA@mail.gmail.com>
- <CAJD7tkbb1W_de-8nFfNif8LrkDsw6VnZyPowAt67xBpV5mL3sg@mail.gmail.com>
-In-Reply-To: <CAJD7tkbb1W_de-8nFfNif8LrkDsw6VnZyPowAt67xBpV5mL3sg@mail.gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Wed, 8 Jan 2025 20:56:53 +1300
-X-Gm-Features: AbW1kvYw-nDepavtTjSsXdMYyty0f6u5kWTpv8EjrnwJ3-Z4CLaYVGPblrfy7tw
-Message-ID: <CAGsJ_4y=kP1yhnpDmpTgs-6Dj1OEHJYOOuHo7ia3TjNq+JRYSw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] mm: zswap: disable migration while using per-CPU acomp_ctx
-To: Yosry Ahmed <yosryahmed@google.com>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vitaly Wool <vitalywool@gmail.com>, Sam Sun <samsun1006219@gmail.com>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, 
-	"Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5811cf74-d333-4653-ab64-0e981eda7745@arm.com>
 
-On Wed, Jan 8, 2025 at 6:56=E2=80=AFPM Yosry Ahmed <yosryahmed@google.com> =
-wrote:
->
-> On Tue, Jan 7, 2025 at 9:34=E2=80=AFPM Yosry Ahmed <yosryahmed@google.com=
-> wrote:
-> >
-> > On Tue, Jan 7, 2025 at 9:00=E2=80=AFPM Chengming Zhou <chengming.zhou@l=
-inux.dev> wrote:
-> > >
-> > > On 2025/1/8 12:46, Nhat Pham wrote:
-> > > > On Wed, Jan 8, 2025 at 9:34=E2=80=AFAM Yosry Ahmed <yosryahmed@goog=
-le.com> wrote:
-> > > >>
-> > > >>
-> > > >> Actually, using the mutex to protect against CPU hotunplug is not =
-too
-> > > >> complicated. The following diff is one way to do it (lightly teste=
-d).
-> > > >> Johannes, Nhat, any preferences between this patch (disabling
-> > > >> migration) and the following diff?
-> > > >
-> > > > I mean if this works, this over migration diasbling any day? :)
-> > > >
-> > > >>
-> > > >> diff --git a/mm/zswap.c b/mm/zswap.c
-> > > >> index f6316b66fb236..4d6817c679a54 100644
-> > > >> --- a/mm/zswap.c
-> > > >> +++ b/mm/zswap.c
-> > > >> @@ -869,17 +869,40 @@ static int zswap_cpu_comp_dead(unsigned int =
-cpu,
-> > > >> struct hlist_node *node)
-> > > >>          struct zswap_pool *pool =3D hlist_entry(node, struct zswa=
-p_pool, node);
-> > > >>          struct crypto_acomp_ctx *acomp_ctx =3D per_cpu_ptr(pool->=
-acomp_ctx, cpu);
-> > > >>
-> > > >> +       mutex_lock(&acomp_ctx->mutex);
-> > > >>          if (!IS_ERR_OR_NULL(acomp_ctx)) {
-> > > >>                  if (!IS_ERR_OR_NULL(acomp_ctx->req))
-> > > >>                          acomp_request_free(acomp_ctx->req);
-> > > >> +               acomp_ctx->req =3D NULL;
-> > > >>                  if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
-> > > >>                          crypto_free_acomp(acomp_ctx->acomp);
-> > > >>                  kfree(acomp_ctx->buffer);
-> > > >>          }
-> > > >> +       mutex_unlock(&acomp_ctx->mutex);
-> > > >>
-> > > >>          return 0;
-> > > >>   }
-> > > >>
-> > > >> +static struct crypto_acomp_ctx *acomp_ctx_get_cpu_locked(
-> > > >> +               struct crypto_acomp_ctx __percpu *acomp_ctx)
-> > > >> +{
-> > > >> +       struct crypto_acomp_ctx *ctx;
-> > > >> +
-> > > >> +       for (;;) {
-> > > >> +               ctx =3D raw_cpu_ptr(acomp_ctx);
-> > > >> +               mutex_lock(&ctx->mutex);
-> > > >
-> > > > I'm a bit confused. IIUC, ctx is per-cpu right? What's protecting t=
-his
-> > > > cpu-local data (including the mutex) from being invalidated under u=
-s
-> > > > while we're sleeping and waiting for the mutex?
-> >
-> > Please correct me if I am wrong, but my understanding is that memory
-> > allocated with alloc_percpu() is allocated for each *possible* CPU,
-> > and does not go away when CPUs are offlined. We allocate the per-CPU
-> > crypto_acomp_ctx structs with alloc_percpu() (including the mutex), so
-> > they should not go away with CPU offlining.
-> >
-> > OTOH, we allocate the crypto_acomp_ctx.acompx, crypto_acomp_ctx.req,
-> > and crypto_acomp_ctx.buffer only for online CPUs through the CPU
-> > hotplug notifiers (i.e. zswap_cpu_comp_prepare() and
-> > zswap_cpu_comp_dead()). These are the resources that can go away with
-> > CPU offlining, and what we need to protect about.
->
-> ..and now that I explain all of this I am wondering if the complexity
-> is warranted in the first place. It goes back all the way to the first
-> zswap commit, so I can't tell the justification for it.
+On Wed, Jan 08, 2025 at 11:46:19AM +0530, Dev Jain wrote:
+> 
+> On 07/01/25 8:44 pm, Thomas Weiﬂschuh wrote:
+> > If not enough physical memory is available the kernel may fail mmap();
+> > see __vm_enough_memory() and vm_commit_limit().
+> > In that case the logic in validate_complete_va_space() does not make
+> > sense and will even incorrectly fail.
+> > Instead skip the test if no mmap() succeeded.
+> > 
+> > Fixes: 010409649885 ("selftests/mm: confirm VA exhaustion without reliance on correctness of mmap()")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> > 
+> > ---
+> > The logic in __vm_enough_memory() seems weird.
+> > It describes itself as "Check that a process has enough memory to
+> > allocate a new virtual mapping", however it never checks the current
+> > memory usage of the process.
+> > So it only disallows large mappings. But many small mappings taking the
+> > same amount of memory are allowed; and then even automatically merged
+> > into one big mapping.
+> > ---
+> >   tools/testing/selftests/mm/virtual_address_range.c | 6 ++++++
+> >   1 file changed, 6 insertions(+)
+> > 
+> > diff --git a/tools/testing/selftests/mm/virtual_address_range.c b/tools/testing/selftests/mm/virtual_address_range.c
+> > index 2a2b69e91950a37999f606847c9c8328d79890c2..d7bf8094d8bcd4bc96e2db4dc3fcb41968def859 100644
+> > --- a/tools/testing/selftests/mm/virtual_address_range.c
+> > +++ b/tools/testing/selftests/mm/virtual_address_range.c
+> > @@ -178,6 +178,12 @@ int main(int argc, char *argv[])
+> >   		validate_addr(ptr[i], 0);
+> >   	}
+> >   	lchunks = i;
+> > +
+> > +	if (!lchunks) {
+> > +		ksft_test_result_skip("Not enough memory for a single chunk\n");
+> > +		ksft_finished();
+> > +	}
+> > +
+> >   	hptr = (char **) calloc(NR_CHUNKS_HIGH, sizeof(char *));
+> >   	if (hptr == NULL) {
+> >   		ksft_test_result_skip("Memory constraint not fulfilled\n");
+> > 
+> 
+> I do not  know about __vm_enough_memory(), but I am going by your description:
+> You say that the kernel may fail mmap() when enough physical memory is not
+> there, but it may happen that we have already done 100 mmap()'s, and then
+> the kernel fails mmap(), so if (!lchunks) won't be able to handle this case.
+> Basically, lchunks == 0 is not a complete indicator of kernel failing mmap().
 
-Personally, I would vote for the added complexity, as it avoids the
-potential negative side effects of reverting the scheduler's optimization
-for selecting a suitable CPU for a woken-up task and I have been looking
-for an approach to resolve it by cpuhotplug lock (obviously quite hacky
-and more complex than using this mutex)
+__vm_enough_memory() only checks the size of each single mmap() on its
+own. It does not actually check the current memory or address space
+usage of the process.
+This seems a bit weird, as indicated in my after-the-fold explanation.
 
-for (;;)  in acomp_ctx_get_cpu_locked() is a bit tricky but correct and
-really interesting, maybe it needs some comments.
+> The basic assumption of the test is that any process should be able to exhaust
+> its virtual address space, and running the test under memory pressure and the
+> kernel violating this behaviour defeats the point of the test I think?
 
->
-> I am not sure if they are setups that have significantly different
-> numbers of online and possible CPUs. Maybe we should just bite the
-> bullet and just allocate everything with alloc_percpu() and rip out
-> the hotplug callbacks completely.
+The assumption is correct, as soon as one mapping succeeds the others
+will also succeed, until the actual address space is exhausted.
 
-Thanks
-Barry
+Looking at it again, __vm_enough_memory() is only called for writable
+mappings, so it would be possible to use only readable mappings in the
+test. The test will still fail with OOM, as the many PTEs need more than
+1GiB of physical memory anyways, but at least that produces a usable
+error message.
+However I'm not sure if this would violate other test assumptions.
 
