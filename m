@@ -1,238 +1,128 @@
-Return-Path: <stable+bounces-108025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FE78A06270
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 17:46:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7F5A06343
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 18:24:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40ADA1640A9
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 16:46:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 914637A1AC2
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 17:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3E61FE461;
-	Wed,  8 Jan 2025 16:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4213B200106;
+	Wed,  8 Jan 2025 17:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dEysFDu7"
+	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="UfOOqQEU"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2CA1FA851
-	for <stable@vger.kernel.org>; Wed,  8 Jan 2025 16:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7DB1F239D
+	for <stable@vger.kernel.org>; Wed,  8 Jan 2025 17:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736354806; cv=none; b=NH95ctuahSz5ZfvSqC0q6hDSR3rj49sHizgtnnjivXrQBGW5TuDSRsspaRSb2zE609B9tQDAmhTkYRvejeihD9m4XtNoE3ARcjjyswx6l0delgK2RAuEGlmidkP/xi3Xc83fXoI3H3Zd5Z95KeFvneXuOEpzgRe+vOF5b78Z3p4=
+	t=1736357056; cv=none; b=WwKpQYoUueEzsnnTB8ytGZDygt5mO+tukYmxwhKc+B0bCyOHkmcVeHMVUrASOsTVXcm718mbMbyY6VSm0uPHfEgYBNKV+w58k49Hxtr/SrqzBf3UdK0FXkuCj34MNskClys6BSU7rT3kvInI5fMkPgBGTdr7Wx9YSG9OkKBAnKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736354806; c=relaxed/simple;
-	bh=JFoDSdwu3BehlopDiE9xC/Q9nO3n3/dM1BuWJ5+blpk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AmY0IQb6CgfHyQ9pRYN1WPIpl0ts3vDfcIx5WiS8na4FnhZbSvYf1WqZJdpxf/ZLzG/Yru90kJPS0QBhseG3yziTy6hy4ZIhiM3hEeTuxD+bGbhl9BuXFOc86wMqL52wedfWWR2C+syVa9HzIkuHLpWqoYQ1TMx6C/1iLEilA/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dEysFDu7; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736354803;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=eLtBzk/sgQfs/lhGSB40P8RaGY6wajWRxsFpEvAFEME=;
-	b=dEysFDu7suiwhoIthKhCFTXOubgW/IqLmu4uPuh0DZs3cgcjUniM2gnlc0d4gJOKUz0i2B
-	RF29jSG3xAT2Safe/pxDFKeH9SmsuvOcrs9VBG4TpJhCsSKLL+cjLKC47cWmpl6OBlahzO
-	TgFZU4JEmlg4kCunlC0HfNMsRH0Ea5w=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-681-OUTjUMEuO7SBO2hIQApmyA-1; Wed, 08 Jan 2025 11:46:42 -0500
-X-MC-Unique: OUTjUMEuO7SBO2hIQApmyA-1
-X-Mimecast-MFC-AGG-ID: OUTjUMEuO7SBO2hIQApmyA
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-38a35a65575so8237892f8f.1
-        for <stable@vger.kernel.org>; Wed, 08 Jan 2025 08:46:41 -0800 (PST)
+	s=arc-20240116; t=1736357056; c=relaxed/simple;
+	bh=Hky0O+HooNHTwNG55Ps4LhGb1RK5fKkOSgaeUS7w7D4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bC8N1Yhjm90nBmUz1XL300ptv9j/ta+im+Lo8p6/XASFbdCIuGtANbakJpm0tzPzBqJwTy9Q7sxx6cdU1o4Je7xrsEIgaAlamMN1rVyJAv74aHViUh8ZbRemIk1Mn9sn68+c/LXDF+GkGkwJarLgMyZuk5/ecYrPk1aTzDQcvg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=UfOOqQEU; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-219f8263ae0so204415275ad.0
+        for <stable@vger.kernel.org>; Wed, 08 Jan 2025 09:24:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fastly.com; s=google; t=1736357054; x=1736961854; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ONCg2OSf3VH3eMW5fDuexZj0M7g/dt03y2eyy26nduI=;
+        b=UfOOqQEUnngRCPGSL1QXiz3gAhBID9aYXUr2/5Ap/L+8HiYfPyg0/JjcNMb80kS2ED
+         OsXFNs/BiJYqI1368IvakesfsuTCCkbzMaUQ+/SsPgkbnYKNsvfkU1t2HHoaS5tAqTo+
+         WsOYORJR+O4FZa+4Xr7lSDRgQG1R4FQvVXhqU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736354800; x=1736959600;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=eLtBzk/sgQfs/lhGSB40P8RaGY6wajWRxsFpEvAFEME=;
-        b=m8mKSMeoYA31wU2v4e27IbIF8BQgXG8prR2Bvc69XXJ553gQeZVPf/1BGPTdNAQtgj
-         ILRMhmPPqxXW/MGDrRuI68KqqyqRQvKXZqfEoGd1cno47h1t/rOPJ+EKhQZqI7rqCpXW
-         kga6FirM1n0wHqUwxzG5wlwGQIJzw+ACwmeC/F9gM/XnM8YX599utlv6LwH1G0BxlkVf
-         1oXp6Pqx780PzFx3pYxdUIkfJQ9OPZDamfRIxSYBC7bix3zSdRxwMJbYhVaTZY2DZgvl
-         nOJCk5fCy42IMrQNLWM/6jeV6+VCUHdue06IbZPodQydgiQdDxdUBHh8V7THU3sZEqHL
-         llGA==
-X-Forwarded-Encrypted: i=1; AJvYcCVSEaNPDpRfmviMVD3dU7H7d+XWWRb7ppCnmdRg/BjkOZ7GSgjCYo6oPJ5aDMmnJ71BpDmsELo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzW2f163pYAFq7eKuT13yCxjBK+dDc7IrsB0oKTp1oxGKo02tft
-	VcUdp6ynVvDRa6djYjT+uG8ZSJ44ofpMqL0Zt6u9BIEQNtZzbXQAG6TJFAonk/V804ztsWgSjEc
-	vrSy5YJuadCFkKcFYZSiKBK9KEQyifIyg0696+Q+7S3CpXmTFumcpxA==
-X-Gm-Gg: ASbGnctNC7BiIz/TCzd/VfHwq8VKLbjGTeBkGRp4NBkr0y0Is6K6E1ZlwjiNH4OUKzO
-	GhTGWnVwy2IQt9/s2jw2wIFdbIn0IYB4SxyjubZDOM+RNNesTq1uQvSi4wJN4pJ5AZNk5mSfpxS
-	O6pgko65lMVyZp09jWcLS2V1C6geRboU/hcDBeYhIYqzci81wSAB7B5cteYv+dGXldzWUwLGU7r
-	Eo3G6K2xsLLnc1x4HLXrzKtdgMW98jAJT3yE8ecjoP+spylayp5OnM3wgjQFZCs9+Ex6UXMLF1F
-	5NxU+WnwApxb6cfHttVXJfqwnODwkufW3YoFuwD8BiGFhT91JP7CzzHz0jdJ1rYzROI8/lF26IO
-	3LHcSRg==
-X-Received: by 2002:adf:a312:0:b0:38a:88f8:aacc with SMTP id ffacd0b85a97d-38a88f8acf1mr2115601f8f.56.1736354800564;
-        Wed, 08 Jan 2025 08:46:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFxWHNxKUTicaDbJ8h2ZEv2XhiA24TGALc6sYrIuKwdB/BhEUpVvB2iic7z7xiM5gTtnXIffA==
-X-Received: by 2002:adf:a312:0:b0:38a:88f8:aacc with SMTP id ffacd0b85a97d-38a88f8acf1mr2115572f8f.56.1736354800085;
-        Wed, 08 Jan 2025 08:46:40 -0800 (PST)
-Received: from ?IPV6:2003:cb:c70d:3a00:d73c:6a8:ca9f:1df7? (p200300cbc70d3a00d73c06a8ca9f1df7.dip0.t-ipconnect.de. [2003:cb:c70d:3a00:d73c:6a8:ca9f:1df7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e2da79c0sm26729805e9.6.2025.01.08.08.46.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Jan 2025 08:46:39 -0800 (PST)
-Message-ID: <618798d5-71b2-43d6-8f5c-78d911c5dd43@redhat.com>
-Date: Wed, 8 Jan 2025 17:46:37 +0100
+        d=1e100.net; s=20230601; t=1736357054; x=1736961854;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ONCg2OSf3VH3eMW5fDuexZj0M7g/dt03y2eyy26nduI=;
+        b=iHGTWli1CYwhn2VPVVVHod7ZAnASArkU0PxezDy+uPRNwqmNL+2uokVuBcrBPR2Wrx
+         Mnff2D5QBUvm+wQX0qEDCRVZjlvC+qmncx6tpyQh+jmdDm2ltyjHFJ8cDvAg8aJddKnh
+         IamUlWcRKI9AM+rStZPbyzI/ZaU728Zu7FOoJu220OCf41q/JvtEBZWIkcq0eYeMoZWN
+         YPVUP3tS6XxpUAlsolunuQD4f8anqEhyLAp8/VIRHZzPzIcirqhcntl4wPKV6Vq/i3xn
+         hx2chlKEX0XNPqEbvBUkB5EUKlAAmCN6RK+PP66b0Gtx9kY3jD0TobbVZNME9LLdFcby
+         P29w==
+X-Forwarded-Encrypted: i=1; AJvYcCVZqkCybGTL/WiYgSkyJ8yGXvKSzgr4vYMRRrGa/tLVfBBNxsjzvPfk0myJmUH1z5bFjiIBF08=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFwYM6z4y4tMLnrugr9tU8OQ23yH0ZTu0Qgql4vxpD7x6O0EjL
+	JVVEr+FZptC9kNdHFQs+I3XWr+SQEmFOrdQxSUJGHxY/4WWh/LU02cRhnzVwvkg=
+X-Gm-Gg: ASbGnctS2TMouN158GQDP+VpknpOFvqL4VU5DUG8/8tFSDNkTW1U/Dc3NRO+M88Z+QV
+	02AcGD1cXUbIuX89faK1IiHu3P5Eb31U3M/g8w+NibumtZGlxYN2hdnEVXNdWk7CkMguqZxWUe+
+	cHcAWMksJaDaDFsY4h2IMefLpMbB9JKH7wcgTtOGFeFsQBy/NoO1IVwWfb8oTqyrSqiqpkzIM+J
+	MNWRt6xI+pf0i3MlMDS2BqM03E3dPcmZKjBmBHUaGAo9vbH1i9cdMLZ9obPTWPVG4LpTWouIHRS
+	ETDrLpgq0ltN1gw/aFl5gaQ=
+X-Google-Smtp-Source: AGHT+IFCU8nJXsp5a/nfECEtTqResZUxZXH3i0XAaYZEqyChLxSRwnXdmtEOu0lPXK5raQdTHTv/SA==
+X-Received: by 2002:a17:902:d511:b0:206:9a3f:15e5 with SMTP id d9443c01a7336-21a83f69cd4mr56438315ad.32.1736357053731;
+        Wed, 08 Jan 2025 09:24:13 -0800 (PST)
+Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc9f5195sm327911915ad.194.2025.01.08.09.24.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jan 2025 09:24:13 -0800 (PST)
+Date: Wed, 8 Jan 2025 09:24:10 -0800
+From: Joe Damato <jdamato@fastly.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	pabeni@redhat.com, stable@vger.kernel.org, almasrymina@google.com,
+	amritha.nambiar@intel.com, sridhar.samudrala@intel.com
+Subject: Re: [PATCH net] netdev: prevent accessing NAPI instances from
+ another namespace
+Message-ID: <Z360uoTfHrl5VwSB@LQ3V64L9R2>
+Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
+	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+	stable@vger.kernel.org, almasrymina@google.com,
+	amritha.nambiar@intel.com, sridhar.samudrala@intel.com
+References: <20250106180137.1861472-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] selftests/mm: virtual_address_range: Fix error when
- CommitLimit < 1GiB
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Dev Jain <dev.jain@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
- Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Ryan Roberts <ryan.roberts@arm.com>
-References: <20250107-virtual_address_range-tests-v1-0-3834a2fb47fe@linutronix.de>
- <20250107-virtual_address_range-tests-v1-1-3834a2fb47fe@linutronix.de>
- <5811cf74-d333-4653-ab64-0e981eda7745@arm.com>
- <20250108083855-840c688b-003f-423b-8327-2a10a2b27d58@linutronix.de>
- <05edee1e-04f1-4f19-816f-db03c182a201@redhat.com>
- <20250108165052-c03470bd-6ff7-44c9-87b9-9145456bdea8@linutronix.de>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20250108165052-c03470bd-6ff7-44c9-87b9-9145456bdea8@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250106180137.1861472-1-kuba@kernel.org>
 
-On 08.01.25 17:13, Thomas Weißschuh wrote:
-> On Wed, Jan 08, 2025 at 02:36:57PM +0100, David Hildenbrand wrote:
->> On 08.01.25 09:05, Thomas Weißschuh wrote:
->>> On Wed, Jan 08, 2025 at 11:46:19AM +0530, Dev Jain wrote:
->>>>
->>>> On 07/01/25 8:44 pm, Thomas Weißschuh wrote:
->>>>> If not enough physical memory is available the kernel may fail mmap();
->>>>> see __vm_enough_memory() and vm_commit_limit().
->>>>> In that case the logic in validate_complete_va_space() does not make
->>>>> sense and will even incorrectly fail.
->>>>> Instead skip the test if no mmap() succeeded.
->>>>>
->>>>> Fixes: 010409649885 ("selftests/mm: confirm VA exhaustion without reliance on correctness of mmap()")
->>>>> Cc: stable@vger.kernel.org
->>
->> CC stable on tests is ... odd.
+On Mon, Jan 06, 2025 at 10:01:36AM -0800, Jakub Kicinski wrote:
+> The NAPI IDs were not fully exposed to user space prior to the netlink
+> API, so they were never namespaced. The netlink API must ensure that
+> at the very least NAPI instance belongs to the same netns as the owner
+> of the genl sock.
 > 
-> I thought it was fairly common, but it isn't.
-> Will drop it.
-
-As it's not really a "kernel BUG", it's rather uncommon.
-
->>
->> Note that with MAP_NORESRVE, most setups we care about will allow mapping as
->> much as you want, but on access OOM will fire.
+> napi_by_id() can become static now, but it needs to move because of
+> dev_get_by_napi_id().
 > 
-> Thanks for the hint.
+> Cc: stable@vger.kernel.org
+> Fixes: 1287c1ae0fc2 ("netdev-genl: Support setting per-NAPI config values")
+> Fixes: 27f91aaf49b3 ("netdev-genl: Add netlink framework functions for napi")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> Splitting this into fix per-version is a bit tricky, because we need
+> to replace the napi_by_id() helper with a better one. I'll send the
+> stable versions manually.
 > 
->> So one could require that /proc/sys/vm/overcommit_memory is setup properly
->> and use MAP_NORESRVE.
-> 
-> Isn't the check for lchunks == 0 essentially exactly this?
+> CC: jdamato@fastly.com
+> CC: almasrymina@google.com
+> CC: amritha.nambiar@intel.com
+> CC: sridhar.samudrala@intel.com
+> ---
+>  net/core/dev.c         | 43 +++++++++++++++++++++++++++++-------------
+>  net/core/dev.h         |  3 ++-
+>  net/core/netdev-genl.c |  6 ++----
+>  3 files changed, 34 insertions(+), 18 deletions(-)
 
-I assume paired with MAP_NORESERVE?
+Thanks.
 
-Maybe, but it could be better to have something that says "if 
-overcommit_memory is not setup properly I will SKIP this test", but 
-otherwise I expect this to work and will FAIL if it doesn't".
-
-Or would you expect to run into lchunks == 0 even if overcommit_memory 
-is setup properly and MAP_NORESERVE is used? (very very low memory that 
-we cannot even create all the VMAs?)
-
-> 
->> Reading from anonymous memory will populate the shared zeropage. To mitigate
->> OOM from "too many page tables", one could simply unmap the pieces as they
->> are verified (or MAP_FIXED over them, to free page tables).
-> 
-> The code has to figure out if a verified region was created by mmap(),
-> otherwise an munmap() could crash the process.
-> As the entries from /proc/self/maps may have been merged and (I assume)
-
-Yes, and partial unmap (in chunk granularity?) would split them again.
-
-> the ordering of mappings is not guaranteed, some bespoke logic to establish
-> the link will be needed.
-
-
-My thinking was that you simply process one /proc/self/maps entry in 
-some chunks. After processing a chunk, you munmap() it.
-
-So you would process + munmap in chunks.
-
-> 
-> Is it fine to rely on CONFIG_ANON_VMA_NAME?
-> That would make it much easier to implement.
-
-Can you elaborate how you would do it?
-
-> 
-> Using MAP_NORESERVE and eager munmap()s, the testcase works nicely even
-> in very low physical memory conditions.
-
-Cool.
-
--- 
-Cheers,
-
-David / dhildenb
-
+Reviewed-by: Joe Damato <jdamato@fastly.com>
 
