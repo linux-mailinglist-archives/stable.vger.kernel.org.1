@@ -1,51 +1,68 @@
-Return-Path: <stable+bounces-107995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10F44A05D0A
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 14:41:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 746C5A05E01
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 15:06:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BA9A1889BF0
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 13:41:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 207AC1882EC9
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 14:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5781FC7CD;
-	Wed,  8 Jan 2025 13:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84CA7199FA4;
+	Wed,  8 Jan 2025 14:06:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c9oY2mKn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F571FC114;
-	Wed,  8 Jan 2025 13:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A4E335BA;
+	Wed,  8 Jan 2025 14:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736343668; cv=none; b=Qbe8tQmWfrl47uqqTjhXQY5KMUt6lpdWxHtuyU7HUAJL4XKbj06uJTSKSHjYfLXJIA6xs8D7qleEpLrvaZGS6ryJWij9cawUTs6BA5GIIKRnTR8VmgwUG5uwtZE3dSborq+jzqsQnhtYN9RX5BU/2FCxOgN3bQMNEjGi0nOIdZ4=
+	t=1736345195; cv=none; b=uHoN8mWYJ+dQYlXrA2Y4x1Xrg3bn9E/z2KdAMG+Xn1LjosgACdtn18Qt5vGrUFnQMxoS/+9ym/tAGoMsUBhXJQcTWtYFqd45V5ed7ijU+6BojG/Q/ILUfqk4e5NkjkKT4WqmJFno46lFDLCb/WOyZqGhY5jmvb2ahHR7ksUkptM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736343668; c=relaxed/simple;
-	bh=53OPs+5laER7KgU/z027K5Vs2KkN85+R9eJRu71IJmk=;
+	s=arc-20240116; t=1736345195; c=relaxed/simple;
+	bh=/bSSok/L1u3GkPDCyoTVot0lx7NpmTj6KZbxWz+MHEc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FNSiWyLBEWzfwspqk9P/F3M1fEgKmZMX/h8jlFLSY3jj1maHUA3zkx+ev28QULudt3cfLa+oXjaiOlJtX9LhZlgGAw+PbbmS+Ajk6zikz6oJz44bRKqxJfENHL7TtSmWUin2y+VIKBonlXLDEKCv4yEgXwtyGkCsa+zeqUSPFps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ACABC4CEDD;
-	Wed,  8 Jan 2025 13:41:04 +0000 (UTC)
-Date: Wed, 8 Jan 2025 13:41:02 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Shuah Khan <shuah@kernel.org>, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org,
-	Mark Rutland <mark.rutland@arm.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v5 1/5] arm64: Filter out SVE hwcaps when FEAT_SVE isn't
- implemented
-Message-ID: <Z36Abq8mrhnl3cg2@arm.com>
-References: <20250107-arm64-2024-dpisa-v5-0-7578da51fc3d@kernel.org>
- <20250107-arm64-2024-dpisa-v5-1-7578da51fc3d@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=onjHeTi8paGgDCp8ZTYimZ/wQYWPEVW21Dz+lT5vjSGhWj9FxJd3CEl4YZ2RlUND2ejV89n6KUb8HkgdihoSIXOmMcIKBNAZvYhvE9DDidViRVQiN1JBd9/TdwccPWyD2QcJFHeJ0R+VODUk2gYsvpXNh91uCdSkiE5FBlOyUB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c9oY2mKn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB53C4CED3;
+	Wed,  8 Jan 2025 14:06:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736345194;
+	bh=/bSSok/L1u3GkPDCyoTVot0lx7NpmTj6KZbxWz+MHEc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=c9oY2mKnZ0yyu4trMUOd36WJ1SbzDYXqfD7T5LRGRmVPUO8lSVyVYDUuDotMGWv3S
+	 +lpkickgIpAuVk8xp/TRxCq/rD29INGpkmo2KZPdSgvUkZAAzcvvxlQeobd8LSO9w1
+	 4cIV/FLJ6J0of0wBW1+BNmI2kzVLdwZ11pe0LfKfkEy7Un1gQQ98blaxkSX3Sykvu9
+	 lvhOmltrYs29nzv9uEM1KT7zkJo1Tr/8W1IO58KBI40bjGEbuP1F9WZaDoGugpPJHI
+	 XwLJYkUUfSe7v9Y7dChWPzb1EcbIHFYWYqUPULce58nkcQkyq7OLpVojBMPGCnBRQm
+	 oava1y/+/HfwQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1tVWhe-000000005Ia-2oyd;
+	Wed, 08 Jan 2025 15:06:34 +0100
+Date: Wed, 8 Jan 2025 15:06:34 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Frank Oltmanns <frank@oltmanns.dev>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Chris Lew <quic_clew@quicinc.com>
+Cc: Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Abel Vesa <abel.vesa@linaro.org>, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] soc: qcom: mark pd-mapper as broken
+Message-ID: <Z36Gag6XhOrsIXqK@hovoldconsulting.com>
+References: <20241010074246.15725-1-johan+linaro@kernel.org>
+ <Zwj3jDhc9fRoCCn6@linaro.org>
+ <87wmf7ahc3.fsf@oltmanns.dev>
+ <Z3z7sHn6yrUvsc6Y@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,40 +71,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250107-arm64-2024-dpisa-v5-1-7578da51fc3d@kernel.org>
+In-Reply-To: <Z3z7sHn6yrUvsc6Y@hovoldconsulting.com>
 
-On Tue, Jan 07, 2025 at 10:59:41PM +0000, Mark Brown wrote:
-> From: Marc Zyngier <maz@kernel.org>
-> 
-> The hwcaps code that exposes SVE features to userspace only
-> considers ID_AA64ZFR0_EL1, while this is only valid when
-> ID_AA64PFR0_EL1.SVE advertises that SVE is actually supported.
-> 
-> The expectations are that when ID_AA64PFR0_EL1.SVE is 0, the
-> ID_AA64ZFR0_EL1 register is also 0. So far, so good.
-> 
-> Things become a bit more interesting if the HW implements SME.
-> In this case, a few ID_AA64ZFR0_EL1 fields indicate *SME*
-> features. And these fields overlap with their SVE interpretations.
-> But the architecture says that the SME and SVE feature sets must
-> match, so we're still hunky-dory.
-> 
-> This goes wrong if the HW implements SME, but not SVE. In this
-> case, we end-up advertising some SVE features to userspace, even
-> if the HW has none. That's because we never consider whether SVE
-> is actually implemented. Oh well.
-> 
-> Fix it by restricting all SVE capabilities to ID_AA64PFR0_EL1.SVE
-> being non-zero. The HWCAPS documentation is amended to reflect the
-> actually checks performed by the kernel.
-> 
-> Fixes: 06a916feca2b ("arm64: Expose SVE2 features for userspace")
-> Reported-by: Catalin Marinas <catalin.marinas@arm.com>
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: stable@vger.kernel.org
+On Tue, Jan 07, 2025 at 11:02:24AM +0100, Johan Hovold wrote:
+> On Mon, Jan 06, 2025 at 08:10:52PM +0100, Frank Oltmanns wrote:
 
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> > Thank you so much for this idea. I'm currently using this workaround on
+> > my sdm845 device (where the in-kernel pd-mapper is breaking the
+> > out-of-tree call audio functionality).
+> 
+> Thanks for letting us know that the audio issue affects sdm845 as well
+> (I don't seem to hit it on sc8280xp and the X13s).
+
+And today I also hit this on the sc8280xp CRD reference design, so as
+expected, there is nothing SoC specific about the audio service
+regression either:
+
+[   11.235564] PDR: avs/audio get domain list txn wait failed: -110
+[   11.241976] PDR: service lookup for avs/audio failed: -110
+
+even if it may be masked by random changes in timing.
+
+These means it affects also machines like the X13s which already have
+audio enabled.
+
+> > Is there any work going on on making the timing of the in-kernel
+> > pd-mapper more reliable?
+> 
+> The ECANCELLED regression has now been fixed, but the audio issue
+> remains to be addressed (I think Bjorn has done some preliminary
+> investigation).
+
+Hopefully Bjorn or Chris have some plan on how to address the audio
+regression.
+
+Johan
 
