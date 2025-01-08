@@ -1,102 +1,131 @@
-Return-Path: <stable+bounces-107943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 875E7A05182
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 04:19:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E38FA05194
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 04:31:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8104B167E70
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 03:19:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 698D5166A6D
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 03:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E395198E6F;
-	Wed,  8 Jan 2025 03:19:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gnhf8NZ4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4241802AB;
+	Wed,  8 Jan 2025 03:31:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4B13FBB3
-	for <stable@vger.kernel.org>; Wed,  8 Jan 2025 03:19:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4071D126BF1;
+	Wed,  8 Jan 2025 03:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736306373; cv=none; b=IX/o3bmKRqxuX/09bCtkdC4l+FYEPVD/OVdaqXz8nB8alETf6wN3cG8A6xaYXotSc5gv7dO0AX71CLjioEKuNV9r8zGT3r1krHKu3xLruXUaQvcsKiztwDTM5kKzhyM5PS0wVqV6nlYPpQ3xgq4c0Ow+eP/XXtsqy1niEoPAt3o=
+	t=1736307071; cv=none; b=J3g5S1wCxJcbFqeBxvQzfCM8gIJ2ykU/UWLsE/tPI6qCRCVQbqMzYWU5nA7WlOKyHmmkvSo7aKeDzpgCge1qiEb1T8nC2B0uxS48d6EwIJ6VorBw/GVN80g2WeLEJy4cg3lO9mhWCcxV2yQf7gUg5vBKi9wkdZmNKLUh2kqgwRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736306373; c=relaxed/simple;
-	bh=+LtLm1C3QjIEIABRBxsfOY9E00O0JDLEHj337gy34fc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=HdXCWuHiUOGPfxzOcdwgI+Jwl327bPtU+H704IaVqr6s27rIftMdu5i27URia2xgKQ4nuLyNbqWaq8pjUkjXTt0ng6+zkPwkdHRjrCEFtYflcywWgVBGJ8VXfcyCG5o0h42odPEkQxIkR3JBwfZGrm0Pk2xnpY2QMbVGwNVNhhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gnhf8NZ4; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736306370; x=1767842370;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=+LtLm1C3QjIEIABRBxsfOY9E00O0JDLEHj337gy34fc=;
-  b=gnhf8NZ42dCvyzRw0SS5ZcIz8Tcwt3/aZX3knjGtcYHNGLf5/TSq7IfP
-   xCfu5JcfgrGAy4duCgBGzmY6FoVNB+Ji1UHuIy8tfLhJhC1qSYTNR4W1q
-   oDhRo0f4swCmuc9Z6XAf3mQnGw02Yt1NmBY1quSWwzPH5nN89gTAPI/51
-   UqPq12hva3eER6gpowkxk/ta8IlHdeJwiSCd9pE0Uqf2ihyctYA7kGQ07
-   2gTYKqmgkZDc6zMeKHzW2yd7aNmsw2K+fGtPaY66EuXIyNwIDda5b/K6T
-   6ukNby3VmEbd2jLhn3DJvMr1uuLJmJWxLdq9LqM+RQkEqiyQQ3JqM0qJR
-   Q==;
-X-CSE-ConnectionGUID: ZfXWb+b1SbCEKktUvBbBQA==
-X-CSE-MsgGUID: YNx6JDK3S3a0YMIOyz+Hvg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="47182296"
-X-IronPort-AV: E=Sophos;i="6.12,297,1728975600"; 
-   d="scan'208";a="47182296"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2025 19:19:30 -0800
-X-CSE-ConnectionGUID: mrNEG6oNQ/m6ZyUpyTvZNw==
-X-CSE-MsgGUID: wVpKeTT8THm53+84EOkklw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="103803726"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 07 Jan 2025 19:19:29 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tVMbO-000FYd-1w;
-	Wed, 08 Jan 2025 03:19:26 +0000
-Date: Wed, 8 Jan 2025 11:18:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: Koichiro Den <koichiro.den@canonical.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 5.4] ftrace: use preempt_enable/disable notrace macros to
- avoid double fault
-Message-ID: <Z33uhjZDUe392GVL@42adc3c43980>
+	s=arc-20240116; t=1736307071; c=relaxed/simple;
+	bh=Slt5YreFJ5NjaYW1q4SCuzhSLnQzKo1W0RebbW0I04A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=s9l/EtlqQsI9KiFRBhd+zJadfJzWB6VF26EJ0lY+yayIdniDqI4vzwKLd9LYLfzg6LYwIP5FxjN5sheOTabGKt/l+qRytdl/+ucuC++nXawS9y73wbRtwdPzRBFOt8YUVhrHD1iecWqJync0cvF7AvmY33Aotjt1iaectjoVLjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-03 (Coremail) with SMTP id rQCowAA3Pg5q8X1nE7woBg--.52365S2;
+	Wed, 08 Jan 2025 11:30:57 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: linux@armlinux.org.uk,
+	sumit.garg@linaro.org,
+	make24@iscas.ac.cn,
+	gregkh@linuxfoundation.org,
+	elder@kernel.org
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v4] [ARM] fix reference leak in locomo_init_one_child()
+Date: Wed,  8 Jan 2025 11:30:49 +0800
+Message-Id: <20250108033049.1206055-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250108031736.3318120-1-koichiro.den@canonical.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAA3Pg5q8X1nE7woBg--.52365S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7WryrKw13Ar48KrWUCrykXwb_yoW8Xw4kpa
+	srCas8trWUWr1kWrW0vFn7ZFyUGay0kw4rurW8Cw18Krn0grWSqa40ga4Sk34UJrWkAFnY
+	vrWxJw48G3WDCaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26F
+	4UJVW0owAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
+	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr
+	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
+	x2IErcIFxwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
+	VFxhVjvjDU0xZFpf9x0JUvg4fUUUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Hi,
+Once device_register() failed, we should call put_device() to
+decrement reference count for cleanup. Or it could cause memory leak.
 
-Thanks for your patch.
+device_register() includes device_add(). As comment of device_add()
+says, 'if device_add() succeeds, you should call device_del() when you
+want to get rid of it. If device_add() has not succeeded, use only
+put_device() to drop the reference count'.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Found by code review.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
+Cc: stable@vger.kernel.org
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+Changes in v4:
+- deleted the redundant initialization;
+Changes in v3:
+- modified the patch as suggestions;
+Changes in v2:
+- modified the patch as suggestions.
+---
+ arch/arm/common/locomo.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-Rule: The upstream commit ID must be specified with a separate line above the commit text.
-Subject: [PATCH 5.4] ftrace: use preempt_enable/disable notrace macros to avoid double fault
-Link: https://lore.kernel.org/stable/20250108031736.3318120-1-koichiro.den%40canonical.com
-
-Please ignore this mail if the patch is not relevant for upstream.
-
+diff --git a/arch/arm/common/locomo.c b/arch/arm/common/locomo.c
+index cb6ef449b987..45106066a17f 100644
+--- a/arch/arm/common/locomo.c
++++ b/arch/arm/common/locomo.c
+@@ -223,10 +223,8 @@ locomo_init_one_child(struct locomo *lchip, struct locomo_dev_info *info)
+ 	int ret;
+ 
+ 	dev = kzalloc(sizeof(struct locomo_dev), GFP_KERNEL);
+-	if (!dev) {
+-		ret = -ENOMEM;
+-		goto out;
+-	}
++	if (!dev)
++		return -ENOMEM;
+ 
+ 	/*
+ 	 * If the parent device has a DMA mask associated with it,
+@@ -254,10 +252,9 @@ locomo_init_one_child(struct locomo *lchip, struct locomo_dev_info *info)
+ 			NO_IRQ : lchip->irq_base + info->irq[0];
+ 
+ 	ret = device_register(&dev->dev);
+-	if (ret) {
+- out:
+-		kfree(dev);
+-	}
++	if (ret)
++		put_device(&dev->dev);
++
+ 	return ret;
+ }
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.25.1
 
 
