@@ -1,175 +1,114 @@
-Return-Path: <stable+bounces-107969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3145AA05306
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 07:01:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49696A05313
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 07:16:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A8353A3665
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 06:01:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A94D1626F8
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 06:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1ECA153836;
-	Wed,  8 Jan 2025 06:01:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="WL5blAvy"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB7401A23B7;
+	Wed,  8 Jan 2025 06:16:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B64F2E40E
-	for <stable@vger.kernel.org>; Wed,  8 Jan 2025 06:01:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B38D1A0BFB;
+	Wed,  8 Jan 2025 06:16:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736316065; cv=none; b=SMrEK1DuJIjmapu65Dd/BNVSzKrbMHG23xmxqNJSW40Rle9EZonVY+RGVizhdN/7oCorPgztqIJYWWwKO+ISt7RwSY32mMOww2Eqs6ykE71wtmA78PXyBzcQwuceO/M3Eftsgw4Rtoq9urc+R1hGue+LE7Zap0kJFAx3AwnVEKk=
+	t=1736316989; cv=none; b=B0qF9i3Qos+TKrzOCUrFtSkaKkICoB7p+vKaDPo6mtrXFBi0T4W8OAJffeEmCPC2p4uyop676E7MtsqZfOUt66yHlyBfn/UaSxeukWjOk/VWOwqB2By14Fzwoyoc2aDNYidmFHqFpkbBZ+GqZvzSdA8wp2yiecZAeEDuUIZGZ/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736316065; c=relaxed/simple;
-	bh=rtR2YHwE7AV6xVlSWkJyb8bR60yi1JXO4YlbdoYiI8k=;
+	s=arc-20240116; t=1736316989; c=relaxed/simple;
+	bh=E4cj80yT/7TJ3pTJJyDumkOo2HKtryvSG00oPGG4abM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n6DkS9BaTIhPlZK2unNR9eomcTr27dgDHEN3t+XVl1oLzaVJjauYuhAae8aPqUTBtI69TeSIe5ozl11jWi8fkahG1ez/nXZKlBu9+vXM2KyHk7p8F2y1qrSbAz6284T2HRVxHlTghqZPLJ7gA9dlYGHcS4HLnB6uyLqwPcux4JE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=WL5blAvy; arc=none smtp.client-ip=95.215.58.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <038d3db8-a56c-469e-804a-c258731f3362@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1736316058;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Tz/X7zQuq6YwE0g7vrq1zjJ6XRCK9g30OEfwcIt8haI=;
-	b=WL5blAvyMkK3Ncv/kDGTuLen+GVccgkpnWvRlS2J3GtcVnsb5/F3OkbgVFX7ZmwllHpTqs
-	gUvOYBFhXKECV2a/tJO7DPr3+5h+qzE9XMJZe06uAYQOevXVCuIyVSUxvu5sCAd5yArMeL
-	4q15F5uW9NmibvfywVibuejVQ9kQ3Qk=
-Date: Wed, 8 Jan 2025 14:00:40 +0800
+	 In-Reply-To:Content-Type; b=ieueI6DE7utGA9oQEscU52JJiWQkM7k1MDYVSdx4FLOxtMugDAHzhTqiIxnHHn6POaDOSU8Go4dYQCHIlujRKu/LvEu0SozotYPzlsK2qYcnrQieysAE6AAeiS7ao0F6b7/wgduJXfIAWezmAyyoaNfNw0eY5jVacnpdS65vSZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2068213D5;
+	Tue,  7 Jan 2025 22:16:54 -0800 (PST)
+Received: from [10.162.43.18] (K4MQJ0H1H2.blr.arm.com [10.162.43.18])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8CCFC3F66E;
+	Tue,  7 Jan 2025 22:16:22 -0800 (PST)
+Message-ID: <5811cf74-d333-4653-ab64-0e981eda7745@arm.com>
+Date: Wed, 8 Jan 2025 11:46:19 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 2/2] mm: zswap: disable migration while using per-CPU
- acomp_ctx
-To: Yosry Ahmed <yosryahmed@google.com>, Nhat Pham <nphamcs@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
- Andrew Morton <akpm@linux-foundation.org>, Vitaly Wool
- <vitalywool@gmail.com>, Barry Song <baohua@kernel.org>,
- Sam Sun <samsun1006219@gmail.com>, "linux-mm@kvack.org"
- <linux-mm@kvack.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
-References: <20250107222236.2715883-1-yosryahmed@google.com>
- <20250107222236.2715883-2-yosryahmed@google.com>
- <DM8PR11MB567100328F56886B9F179271C9122@DM8PR11MB5671.namprd11.prod.outlook.com>
- <CAJD7tkYqv9oA4V_Ga8KZ_uV1kUnaRYBzHwwd72iEQPO2PKnSiw@mail.gmail.com>
- <SJ0PR11MB5678847E829448EF36A3961FC9122@SJ0PR11MB5678.namprd11.prod.outlook.com>
- <CAJD7tkYV_pFGCwpzMD_WiBd+46oVHu946M_ARA8tP79zqkJsDA@mail.gmail.com>
- <CAJD7tkYpNNsbTZZqFoRh-FkXDgxONZEUPKk1YQv7-TFMWWQRzQ@mail.gmail.com>
- <CAKEwX=OHcZB8Uy5zj8Dhq-ieiwpJFcqRXN_7=mbM1FD_h_uOOA@mail.gmail.com>
- <857acdc4-c4b7-44ea-a67d-2df83ca245ed@linux.dev>
- <CAJD7tkZ+UeXXvFc+M9JssooW_0rW-GVgUMo3GVcSMCxQhndZuA@mail.gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Chengming Zhou <chengming.zhou@linux.dev>
-In-Reply-To: <CAJD7tkZ+UeXXvFc+M9JssooW_0rW-GVgUMo3GVcSMCxQhndZuA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] selftests/mm: virtual_address_range: Fix error when
+ CommitLimit < 1GiB
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Ryan Roberts <ryan.roberts@arm.com>, David Hildenbrand <david@redhat.com>
+References: <20250107-virtual_address_range-tests-v1-0-3834a2fb47fe@linutronix.de>
+ <20250107-virtual_address_range-tests-v1-1-3834a2fb47fe@linutronix.de>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20250107-virtual_address_range-tests-v1-1-3834a2fb47fe@linutronix.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-On 2025/1/8 13:34, Yosry Ahmed wrote:
-> On Tue, Jan 7, 2025 at 9:00 PM Chengming Zhou <chengming.zhou@linux.dev> wrote:
->>
->> On 2025/1/8 12:46, Nhat Pham wrote:
->>> On Wed, Jan 8, 2025 at 9:34 AM Yosry Ahmed <yosryahmed@google.com> wrote:
->>>>
->>>>
->>>> Actually, using the mutex to protect against CPU hotunplug is not too
->>>> complicated. The following diff is one way to do it (lightly tested).
->>>> Johannes, Nhat, any preferences between this patch (disabling
->>>> migration) and the following diff?
->>>
->>> I mean if this works, this over migration diasbling any day? :)
->>>
->>>>
->>>> diff --git a/mm/zswap.c b/mm/zswap.c
->>>> index f6316b66fb236..4d6817c679a54 100644
->>>> --- a/mm/zswap.c
->>>> +++ b/mm/zswap.c
->>>> @@ -869,17 +869,40 @@ static int zswap_cpu_comp_dead(unsigned int cpu,
->>>> struct hlist_node *node)
->>>>           struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
->>>>           struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
->>>>
->>>> +       mutex_lock(&acomp_ctx->mutex);
->>>>           if (!IS_ERR_OR_NULL(acomp_ctx)) {
->>>>                   if (!IS_ERR_OR_NULL(acomp_ctx->req))
->>>>                           acomp_request_free(acomp_ctx->req);
->>>> +               acomp_ctx->req = NULL;
->>>>                   if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
->>>>                           crypto_free_acomp(acomp_ctx->acomp);
->>>>                   kfree(acomp_ctx->buffer);
->>>>           }
->>>> +       mutex_unlock(&acomp_ctx->mutex);
->>>>
->>>>           return 0;
->>>>    }
->>>>
->>>> +static struct crypto_acomp_ctx *acomp_ctx_get_cpu_locked(
->>>> +               struct crypto_acomp_ctx __percpu *acomp_ctx)
->>>> +{
->>>> +       struct crypto_acomp_ctx *ctx;
->>>> +
->>>> +       for (;;) {
->>>> +               ctx = raw_cpu_ptr(acomp_ctx);
->>>> +               mutex_lock(&ctx->mutex);
->>>
->>> I'm a bit confused. IIUC, ctx is per-cpu right? What's protecting this
->>> cpu-local data (including the mutex) from being invalidated under us
->>> while we're sleeping and waiting for the mutex?
-> 
-> Please correct me if I am wrong, but my understanding is that memory
-> allocated with alloc_percpu() is allocated for each *possible* CPU,
-> and does not go away when CPUs are offlined. We allocate the per-CPU
-> crypto_acomp_ctx structs with alloc_percpu() (including the mutex), so
-> they should not go away with CPU offlining.
 
-Ah, right! I missed that only buffer and req is dynamically allocated
-by the cpu online callback.
+On 07/01/25 8:44 pm, Thomas Weißschuh wrote:
+> If not enough physical memory is available the kernel may fail mmap();
+> see __vm_enough_memory() and vm_commit_limit().
+> In that case the logic in validate_complete_va_space() does not make
+> sense and will even incorrectly fail.
+> Instead skip the test if no mmap() succeeded.
+>
+> Fixes: 010409649885 ("selftests/mm: confirm VA exhaustion without reliance on correctness of mmap()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+>
+> ---
+> The logic in __vm_enough_memory() seems weird.
+> It describes itself as "Check that a process has enough memory to
+> allocate a new virtual mapping", however it never checks the current
+> memory usage of the process.
+> So it only disallows large mappings. But many small mappings taking the
+> same amount of memory are allowed; and then even automatically merged
+> into one big mapping.
+> ---
+>   tools/testing/selftests/mm/virtual_address_range.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
+>
+> diff --git a/tools/testing/selftests/mm/virtual_address_range.c b/tools/testing/selftests/mm/virtual_address_range.c
+> index 2a2b69e91950a37999f606847c9c8328d79890c2..d7bf8094d8bcd4bc96e2db4dc3fcb41968def859 100644
+> --- a/tools/testing/selftests/mm/virtual_address_range.c
+> +++ b/tools/testing/selftests/mm/virtual_address_range.c
+> @@ -178,6 +178,12 @@ int main(int argc, char *argv[])
+>   		validate_addr(ptr[i], 0);
+>   	}
+>   	lchunks = i;
+> +
+> +	if (!lchunks) {
+> +		ksft_test_result_skip("Not enough memory for a single chunk\n");
+> +		ksft_finished();
+> +	}
+> +
+>   	hptr = (char **) calloc(NR_CHUNKS_HIGH, sizeof(char *));
+>   	if (hptr == NULL) {
+>   		ksft_test_result_skip("Memory constraint not fulfilled\n");
+>
 
-Then your fix is safe to me, thanks for your explanation!
+I do not  know about __vm_enough_memory(), but I am going by your description:
+You say that the kernel may fail mmap() when enough physical memory is not
+there, but it may happen that we have already done 100 mmap()'s, and then
+the kernel fails mmap(), so if (!lchunks) won't be able to handle this case.
+Basically, lchunks == 0 is not a complete indicator of kernel failing mmap().
 
-> 
-> OTOH, we allocate the crypto_acomp_ctx.acompx, crypto_acomp_ctx.req,
-> and crypto_acomp_ctx.buffer only for online CPUs through the CPU
-> hotplug notifiers (i.e. zswap_cpu_comp_prepare() and
-> zswap_cpu_comp_dead()). These are the resources that can go away with
-> CPU offlining, and what we need to protect about.
-> 
-> The approach I am taking here is to hold the per-CPU mutex in the CPU
-> offlining code while we free these resources, and set
-> crypto_acomp_ctx.req to NULL. In acomp_ctx_get_cpu_locked(), we hold
-> the mutex of the current CPU, and check if crypto_acomp_ctx.req is
-> NULL.
-> 
-> If it is NULL, then the CPU is offlined between raw_cpu_ptr() and
-> acquiring the mutex, and we retry on the new CPU that we end up on. If
-> it is not NULL, then we are guaranteed that the resources will not be
-> freed by CPU offlining until acomp_ctx_put_unlock() is called and the
-> mutex is unlocked.
-> 
->>
->> Yeah, it's not safe, we can only use this_cpu_ptr(), which will disable
->> preempt (so cpu offline can't kick in), and get refcount of ctx. Since
->> we can't mutex_lock in the preempt disabled section.
-> 
-> My understanding is that the purpose of this_cpu_ptr() disabling
-> preemption is to prevent multiple CPUs accessing per-CPU data of a
-> single CPU concurrently. In the zswap case, we don't really need that
-> because we use the mutex to protect against it (and we cannot disable
-> preemption anyway).
+The basic assumption of the test is that any process should be able to exhaust
+its virtual address space, and running the test under memory pressure and the
+kernel violating this behaviour defeats the point of the test I think?
 
-Yes, your fix is correct, preemption disable is not needed in this case.
-
-Thanks.
 
