@@ -1,132 +1,189 @@
-Return-Path: <stable+bounces-108020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19A46A0619B
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 17:20:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 943ABA061BF
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 17:24:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EBDC188964A
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 16:20:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCEBE3A148C
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 16:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258C51FF1C3;
-	Wed,  8 Jan 2025 16:18:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OGA7Pty5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F2911FECAD;
+	Wed,  8 Jan 2025 16:23:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692141FF1A7
-	for <stable@vger.kernel.org>; Wed,  8 Jan 2025 16:18:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0052915350B;
+	Wed,  8 Jan 2025 16:23:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736353113; cv=none; b=iJVCDSTclD8NaztnI0Y00UMpdl5uX+aL8AhykL+2NDumveHNdd05UZCyWf+rhHRhfp1x5HdERFatRtmGZ4T1taGr+XdERTW6NnyGGwmGawGwkBTg3QCH4mu88syprPu7fziKkLFi+yUiQntMpRAxYY12k7/VOZy4OqSpYjsr8/E=
+	t=1736353438; cv=none; b=mtiwYPHZKDJenJaGeFQMGIsUj61cZHniYoe4HNN9BBJpmZAblcKW4SK1mpNtcxPTlwHkaHnANywYbUOStwa3toRk0wPwcSEWTCN/H1/pF3TIHHALqopJXIa1GerPpTFuFqgPZMpFgHLFtc2mRhk+RTtcl3jlzNaUWoscJZw/H+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736353113; c=relaxed/simple;
-	bh=l8nciXZdCXWkMHkwYtKNlWzhpUvPgx0ToMN/za6GYRE=;
+	s=arc-20240116; t=1736353438; c=relaxed/simple;
+	bh=6CJG+MljdJ4odyTsRX1HY7g1SI8IaFyVX5WxqVxooCM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u/VVyRUJGscbo2cFyr9M10vFJcjZNu2+uMqRyBpcRuHLpxuhEmO+RM+fgHI+Mw0HwYD0RAcrOYi7cBzAQCeDruhpLA/ZENnLmXjJVr+FCzL74SC6Qxi9Z0yBcdPjlY8rl6bv3WLL/61G5yazmzIj7FkDFM4T06U1GuOTXaHSelY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OGA7Pty5; arc=none smtp.client-ip=209.85.219.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6d8f65ef5abso142562576d6.3
-        for <stable@vger.kernel.org>; Wed, 08 Jan 2025 08:18:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736353111; x=1736957911; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l8nciXZdCXWkMHkwYtKNlWzhpUvPgx0ToMN/za6GYRE=;
-        b=OGA7Pty5qk5KbjQ1YpkFmdVxLtwSeoH5PPtD9LA7HWCdlF4ncNWp4c37nBfSyeEyiD
-         DzXSPoQRXLbLhdWoHpK5xwz1+L4NM6J8LlQ8qdlNQe5AERFVZDXw/AFNlRxj4DYrMCXL
-         l6Le20YySOsbR+wGZgU59b0OkbzjGpG4ELPvCTIgwabR7vUprlBc4cBfCeQly4BS4qXY
-         YtdYKa5Ds+idLlo84mO4HHj0sOLfHjnuMY1tFIGExZ9dPeyHAY9bwTIo04IHhw8DA16E
-         uKyR0QkxGQaotqgP+i6JtXhCITEeevSQaJNGwV7AGQ5RjW5/lWYJ4Qqy1fZFmhSqzN5S
-         u/2w==
+	 To:Cc:Content-Type; b=DUGe//0HuTMBFdY4mV7pWsUqGxHUOEt9DiBuulOAkkzOkg5vhNlaPQsbkcL7sEalv+dO2l2yzaYad1rj7DXFrPLAemy61OxQgh72V/scdFFSYV+aZjGn5IG/SeRXTLmBU7S8PC0fhXUD7OG24hOu292tEdqaJjcbLlFX05yVO5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-85bafa89d73so2709907241.2;
+        Wed, 08 Jan 2025 08:23:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736353111; x=1736957911;
+        d=1e100.net; s=20230601; t=1736353434; x=1736958234;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=l8nciXZdCXWkMHkwYtKNlWzhpUvPgx0ToMN/za6GYRE=;
-        b=ZWyvUfiH6aAV1iGOIHulopa5HYcp8jBmC5KSbgP5He06l7HjANn8/qluayR5B9VzpX
-         evf/1qkkXLxqen8Tq6VwCrkeUhEdiwhLgTRP7p+FRUje1HUFbX3oeTtD8UpnmcTZlowl
-         VyCgMLwZEZZfvPenKGWJXAYRSpzhDjelbM+1K8GfKwbk0zrsuoU7MIKpB2ZBE9r71x+4
-         MEw99qlw/hfFiXi+TbWPEXWzzGVCDm9TDLrQmPz/wmBnzPRSDVdtbMnoFpfjnI/GMRBc
-         gbjNTsr8UssikvEKa6tDImkJy5CmXQod5PgHSE5K5eJ8k+vOBQHEfnBgOpwtzbsl/Rra
-         oSMw==
-X-Forwarded-Encrypted: i=1; AJvYcCXD26dPTMc7Yf+oW+BpNd/Gu//BIdbM1/5sC8wSLKy/09UbaMdeeO9d0XdkmGy586QYgms86Vw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2A/W+X1FKyc5ugdIXN21r++QamSAiAxUv7z5N4h8/gG1TtbSR
-	cOI18auhAF08ABxIrQwkOCUx2KPngiA5l4kyP5aMiKdy8W6wUUJMpB964fvKHUy8uqVCyuR9IlJ
-	Dpy/gjVdtSJXiVZDjQkYhhidePQOHkpKQxn37
-X-Gm-Gg: ASbGncu9mdUwcr2f1JmtIMk6QuFQqJYTgcFuFB9/3+fpNXLp/cej8T+ne+tnXpE12JZ
-	cmYzvvLJTO79TtQzxnkTG74BNDX/A0fObkKM=
-X-Google-Smtp-Source: AGHT+IG6TTmlND8nxCYVI9A3hNW0ShEnYrGsKYvA2J0EtQ0zHWAy66bALQi35JzUxDBvIbCjB1whsbOxtnNoUgNtoKU=
-X-Received: by 2002:a05:6214:458e:b0:6d8:8b9d:1502 with SMTP id
- 6a1803df08f44-6df9b2ddacamr55646176d6.30.1736353111271; Wed, 08 Jan 2025
- 08:18:31 -0800 (PST)
+        bh=CWaN/8ptyC2cYFUazZR9DiU44cT/Ebl32OM7k/AY7UI=;
+        b=YAp2KUn60xUP5ZAzMOQKeRQkNS8YG3Lwistz+yvab4MWvICoHlVYc1amGDiye22jxc
+         KLYGbDLCR6p+QzvQZC1dScR1oHk2vhxu1IF2BC3XpLMwB2vDUaRfepcAZtTO6UXM/Xy9
+         pID2uPxyVAuFxlE3LPSc+3T5inofPmKU4wLp0GQeb6JCtCv4RrA35bjy+7eBuG71kBud
+         YuvLJkpfTkdcSY18f0EMFKOgM57w4glKXwfOYXTirMDWsvWlHf7qYqqI3609RFe4hb3q
+         lyMSStCM62D8APJ0jixxQEbvp+mFAIYlJN5n+cRZeAtK7CzG1R9NoeOkPROqtbBw9lOu
+         Bmmw==
+X-Forwarded-Encrypted: i=1; AJvYcCUlOlqI8oIVJ8T82MgYbEanolx5LBIfIzHImNOARtCKdqm9fCHGNG60gDUpQLwVzlv6wgh2Lr0jid/5bw==@vger.kernel.org, AJvYcCWSJKxIe/5PPQG4hXidVVukR5/W0nh+Tt2PjxjUN3TRg2ia1EKP/Ogoqf0p3kjlfXH9V/T1tdWI8SwpMt1e@vger.kernel.org, AJvYcCX6DzM+4cQetaXJRPQpPGBEmeCKHLHAqE6vpUpji1zdLd2bAQPb8UZLFhWz8JbejMreqp2NQVME@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9B2yeusvlSqgugCpqi23z27a4vY81N7rkGiLuWU/vUS1Ysn9F
+	inzuzo+yVw40ZN9w6US+11Qt48qnG1QkTPGLAh6gyxBPYc787oWiDEc79aL0
+X-Gm-Gg: ASbGnctFHdpviGwF1M8kVxbH85fYc3Sa8zHMJsSMcZpcdAvSvJLjd9rnOjKoFzeWfCt
+	KAWn/CQBq2lAwHRHY+7sGYkvPkB69z8p9qzZgPx0GVg2Hs1c7j4EdrJao/y10Y9Z4AJ4BuL2Zw2
+	KaE8Alelop5C0a/bkTrYphzilt3nGyo78Ti7Bs+/m8TFyj8mlEsaN7TGXhQfWJ3OYD6WiZzOcN5
+	snpB7K6QaI6qATEiub5pfKh8lPCM6QropVo0xWspzRaliMj3PcdGBunKMF7LA0N1cpbgWUkTUzF
+	a6EE3jc7vBq5svoWx94=
+X-Google-Smtp-Source: AGHT+IEy48mJ4pMCjbpKOgZWV7I89kka6CYye04//JHMwhB0svU5BEFnzu9iNCwuTJEF6j9kWroDFg==
+X-Received: by 2002:a05:6122:2a04:b0:518:778b:70a1 with SMTP id 71dfb90a1353d-51c6c50f8e0mr2018297e0c.7.1736353434101;
+        Wed, 08 Jan 2025 08:23:54 -0800 (PST)
+Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com. [209.85.217.48])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-51b68cd97bcsm5025471e0c.33.2025.01.08.08.23.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Jan 2025 08:23:53 -0800 (PST)
+Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-4afdd15db60so3576137.1;
+        Wed, 08 Jan 2025 08:23:53 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUkqA98eGIN4PW0aljbe7O4u3pbxCJQCV023YyaL/iTlmP0XMtuXllUrqhHjgDRCeKmlCap9O52@vger.kernel.org, AJvYcCV9M8etpoCWl6xaD1XgSDEcHnABeBDsUhUe47BcVliDbuXC3+dZw9ldcLV35MROlY8BIwDSGiBkZrekUA==@vger.kernel.org, AJvYcCXd4iYthQRTsrTOjPpRypIhjzugzkUNvjYN2JKjv/OtVv4KeEgMChAfMDgh4Yf9Q6txaSiVCg6UMPOL2tiY@vger.kernel.org
+X-Received: by 2002:a05:6102:26d4:b0:4b2:5d63:ff72 with SMTP id
+ ada2fe7eead31-4b3d0fc1ca8mr2837377137.13.1736353432987; Wed, 08 Jan 2025
+ 08:23:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250107222236.2715883-1-yosryahmed@google.com>
- <20250107222236.2715883-2-yosryahmed@google.com> <DM8PR11MB567100328F56886B9F179271C9122@DM8PR11MB5671.namprd11.prod.outlook.com>
- <CAJD7tkYqv9oA4V_Ga8KZ_uV1kUnaRYBzHwwd72iEQPO2PKnSiw@mail.gmail.com>
- <SJ0PR11MB5678847E829448EF36A3961FC9122@SJ0PR11MB5678.namprd11.prod.outlook.com>
- <CAJD7tkYV_pFGCwpzMD_WiBd+46oVHu946M_ARA8tP79zqkJsDA@mail.gmail.com>
- <CAJD7tkYpNNsbTZZqFoRh-FkXDgxONZEUPKk1YQv7-TFMWWQRzQ@mail.gmail.com>
- <CAKEwX=OHcZB8Uy5zj8Dhq-ieiwpJFcqRXN_7=mbM1FD_h_uOOA@mail.gmail.com>
- <857acdc4-c4b7-44ea-a67d-2df83ca245ed@linux.dev> <CAJD7tkZ+UeXXvFc+M9JssooW_0rW-GVgUMo3GVcSMCxQhndZuA@mail.gmail.com>
- <CAJD7tkbb1W_de-8nFfNif8LrkDsw6VnZyPowAt67xBpV5mL3sg@mail.gmail.com>
- <CAGsJ_4y=kP1yhnpDmpTgs-6Dj1OEHJYOOuHo7ia3TjNq+JRYSw@mail.gmail.com>
- <CAJD7tkadoYEvCPx6wARTBDseWmroym=H8L60MPgbF5JJX+9OSg@mail.gmail.com> <CAKEwX=MWotmH2YOC-Sdb5Krzt43ogCy8kqJnCLDRm7Db=evDOg@mail.gmail.com>
-In-Reply-To: <CAKEwX=MWotmH2YOC-Sdb5Krzt43ogCy8kqJnCLDRm7Db=evDOg@mail.gmail.com>
-From: Yosry Ahmed <yosryahmed@google.com>
-Date: Wed, 8 Jan 2025 08:17:54 -0800
-X-Gm-Features: AbW1kvYYIyqw2HhqcgWYVlUmfH9U2gZ9ZkW-Er8K65RxoPEAMwfExHefA843shc
-Message-ID: <CAJD7tkaiGYSRXkG8eYRTkm_BBkPSHi2VAVzTsTHNgHydAzPZNQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] mm: zswap: disable migration while using per-CPU acomp_ctx
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Barry Song <21cnbao@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vitaly Wool <vitalywool@gmail.com>, Sam Sun <samsun1006219@gmail.com>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, 
-	"Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+References: <20250107095912.130530-1-tzimmermann@suse.de>
+In-Reply-To: <20250107095912.130530-1-tzimmermann@suse.de>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 8 Jan 2025 17:23:41 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdXKNq2PAef0tF_AJv7zgmXQpPgYs5Rwokjo=1M+2n2EBQ@mail.gmail.com>
+X-Gm-Features: AbW1kvZp0cV5Of05CmFxR0NTT0IyghMVuM7nBAA7tF5qwUX0JfhnOOwbtasx9h8
+Message-ID: <CAMuHMdXKNq2PAef0tF_AJv7zgmXQpPgYs5Rwokjo=1M+2n2EBQ@mail.gmail.com>
+Subject: Re: [PATCH] m68k: Fix VGA I/O defines
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org, 
+	kernel test robot <lkp@intel.com>, linux-fbdev@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, Helge Deller <deller@gmx.de>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 8, 2025 at 7:50=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote:
->
-> On Wed, Jan 8, 2025 at 10:36=E2=80=AFPM Yosry Ahmed <yosryahmed@google.co=
-m> wrote:
-> >
-> >
-> > Oh, I was not talking about my proposed diff, but the existing logic
-> > that allocates the requests and buffers in the hotplug callbacks
-> > instead of just using alloc_percpu() to allocate them once for each
-> > possible CPU. I was wondering if there are actual setups where this
-> > matters and a significant amount of memory is being saved. Otherwise
-> > we should simplify things and just rip out the hotplug callbacks.
->
-> My vote is for ripping the hotplug callbacks (eventually) :) In
-> addition to the discrepancy in the number of possible and online CPUs,
-> we also need a relatively smaller memory size for the discrepancy to
-> matter, no? Systems with hundreds of CPUs (hopefully) should have
-> hundreds of GBs worth of memory available (if not more).
->
-> Anyhow, we can just go with the diff you sent for now (and for past
-> kernels). Seems simple enough, and wouldn't get in the way of the
-> eventual hotplug logic removal (if you decide to pursue it).
+Hi Thomas,
 
-Yeah I sent that out just now:
-https://lore.kernel.org/lkml/20250108161529.3193825-1-yosryahmed@google.com=
-/
+On Tue, Jan 7, 2025 at 10:59=E2=80=AFAM Thomas Zimmermann <tzimmermann@suse=
+.de> wrote:
+> Including m86k's <asm/raw_io.h> in vga.h on nommu platforms results
+> in conflicting defines with io_no.h for various I/O macros from the
+> __raw_read and __raw_write families. An example error is
+>
+>    In file included from arch/m68k/include/asm/vga.h:12,
+>                  from include/video/vga.h:22,
+>                  from include/linux/vgaarb.h:34,
+>                  from drivers/video/aperture.c:12:
+> >> arch/m68k/include/asm/raw_io.h:39: warning: "__raw_readb" redefined
+>       39 | #define __raw_readb in_8
+>          |
+>    In file included from arch/m68k/include/asm/io.h:6,
+>                     from include/linux/io.h:13,
+>                     from include/linux/irq.h:20,
+>                     from include/asm-generic/hardirq.h:17,
+>                     from ./arch/m68k/include/generated/asm/hardirq.h:1,
+>                     from include/linux/hardirq.h:11,
+>                     from include/linux/interrupt.h:11,
+>                     from include/linux/trace_recursion.h:5,
+>                     from include/linux/ftrace.h:10,
+>                     from include/linux/kprobes.h:28,
+>                     from include/linux/kgdb.h:19,
+>                     from include/linux/fb.h:6,
+>                     from drivers/video/aperture.c:5:
+>    arch/m68k/include/asm/io_no.h:16: note: this is the location of the pr=
+evious definition
+>       16 | #define __raw_readb(addr) \
+>          |
+>
+> Include <asm/io.h>, which avoid raw_io.h on nommu platforms. Also change
+> the defined values of some of the read/write symbols in vga.h to
+> __raw_read/__raw_write as the raw_in/raw_out symbols are not generally
+> available.
+>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202501071629.DNEswlm8-lkp@i=
+ntel.com/
+> Fixes: 5c3f968712ce ("m68k/video: Create <asm/vga.h>")
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> Cc: linux-fbdev@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: <stable@vger.kernel.org> # v3.5+
 
-I will look into sending an RFC to rip out the hotplug callbacks later.
+Thanks for your patch!
+
+> --- a/arch/m68k/include/asm/vga.h
+> +++ b/arch/m68k/include/asm/vga.h
+> @@ -9,7 +9,7 @@
+>   */
+>  #ifndef CONFIG_PCI
+>
+> -#include <asm/raw_io.h>
+> +#include <asm/io.h>
+
+It definitely makes sense to include <asm/io.h> instead of
+<asm/raw_io.h> in this file.
+
+>  #include <asm/kmap.h>
+>
+>  /*
+> @@ -29,9 +29,9 @@
+>  #define inw_p(port)            0
+>  #define outb_p(port, val)      do { } while (0)
+>  #define outw(port, val)                do { } while (0)
+> -#define readb                  raw_inb
+> -#define writeb                 raw_outb
+> -#define writew                 raw_outw
+> +#define readb                  __raw_readb
+> +#define writeb                 __raw_writeb
+> +#define writew                 __raw_writew
+
+OK
+
+>
+>  #endif /* CONFIG_PCI */
+>  #endif /* _ASM_M68K_VGA_H */
+
+I gave it a try on various configs, and inspected the impact
+(none, except for killing the warnings), so
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+i.e. will queue in the m68k tree for v6.14.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
