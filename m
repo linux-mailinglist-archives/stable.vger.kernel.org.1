@@ -1,132 +1,152 @@
-Return-Path: <stable+bounces-108003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01F54A05FE8
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 16:19:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92728A0602D
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 16:35:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E605216653B
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 15:19:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90FA2166B56
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 15:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003421FCFDB;
-	Wed,  8 Jan 2025 15:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C364B199385;
+	Wed,  8 Jan 2025 15:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="w1nswO97"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n82hfD1k"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323F11FCFF0
-	for <stable@vger.kernel.org>; Wed,  8 Jan 2025 15:19:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67ED8259497;
+	Wed,  8 Jan 2025 15:35:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736349585; cv=none; b=jLdnXBLJMz9TwU1OfhZ7ChFJUKAd0FncpZQPNNRIzyIjFN6hGrayalJmRPgKRib+CcoBKMv8UZZoTsvwZYp9Lrh/mLkeuO0LSp6ps9t8gJcv5sWy/Cr/UXQ0kTUbAbSOJw/H3d+2+CPqzwTOvR639IWpA/Y5hMU1ayTLhl4Yqnk=
+	t=1736350505; cv=none; b=PIVRoBb7s3iXPNbY1+E/Dc4c3saYdVLQ7XrwspTIxwRZ+GPiak76aysNNzbW0K8pqUfm801vx3w4NciWpsHJ4RkQsV9jjQYAF2yuX8dmXsH6vsVWWjTCtnMADGjt6jTfwlQYyPG6wr9N0lzZOp4UO6DX7TQb4r+073/r9OrG1n4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736349585; c=relaxed/simple;
-	bh=S8+xIJyK33ZHzGHOInxNuQ7XoyymzN8JimDgUHl2LMQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uv6uP658Ue5xI++g7BbOjEOqKQD3Oa2SGIO2cKjoeISoI02ghXE5Q1MrwzSZepbCRHE+FrWuo0TmPla1B3FRJLCaTeVWuzMOszEI7jM7eDKubqNsNLlQZzzR9dB4pdOlR8+SCnn50cRtqNmaoKyMDSkrpnB39zSV/hQDSDhkRPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=w1nswO97; arc=none smtp.client-ip=209.85.160.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-29ff5c75c21so507829fac.0
-        for <stable@vger.kernel.org>; Wed, 08 Jan 2025 07:19:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736349583; x=1736954383; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=6Zs0x6zXwLhMKy2YimFx22u5+ybSyZ3K5Ks5ZMiPS6U=;
-        b=w1nswO97nSovzBwOLaHKx4SpsJYjHKGgtOmETPKgjB70I93z7aFcPmlzw4fZ7RVCB5
-         RmiUcjIhdE07Z5Y85oQzjoD9mWGBzjKNpxwEbG8l5qh1fpUfoSHMmtIWK8G3TNRkL/X7
-         T5Kghw2O9vIDWOyAiH3KqwoIxRiZ72bWCDRYrWGFBY683VdUiw6kwYPSnFfn6dZ8mb6x
-         Zy7vLQd2djt6rpmm20/GHUAra8Pstu2CNO1AxMr1aaa4CKCeWKnxCLN8nebS9O48uf7l
-         Or3lDESEI6Mn9rsJsNYXb2/YIG/QhkSXSVcUcjykJ05gqvLb7rx3v4jrZ61q2aEw9DYW
-         UXFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736349583; x=1736954383;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6Zs0x6zXwLhMKy2YimFx22u5+ybSyZ3K5Ks5ZMiPS6U=;
-        b=rkuVvpK48jCwplBl++30G1V3v9ouQzmQCQwFL7uDVyTQaJBhgWqq0QZsg/VV4CjMRk
-         T1W6rxJLeol+x+QCh6xdNqOnkQzl4NbKrhbRjyaGRQu7+tRgEDuuVJEMe2BISFkB7U8Y
-         jDK+DkofZfdmxcU1cP18FeNF/gxQ4Jp3xMnw+fil4XsxSWrLvHMQCAT9NJo8OTcwQ6YQ
-         exzhVU29wG713dofsS9FvZXmACVU+eNO8WeRb1ZLhBUXXiJrdrznGnj2CD4KyTTI9gCg
-         O48QKAg8nvN+ieF9klDkBRj3e/cjFEUoNt3XcM3IIrY44sjpLbFgFPhPOhSpSOpiUSPG
-         2l1w==
-X-Forwarded-Encrypted: i=1; AJvYcCWaY7zGrBaOjekUxFtGbrc+/iEFGtkh1WM1aJW+0AiTPgp0zEPbdiX7T0bAEh7c2RSGHjmLESc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywkplsfrd/LILndEPSvktb6frMcJPIwZWZHwEKSHwrDrG6QUjeJ
-	/z12kaylKPzY/dF+Y9Nl4oiE16fPQFHCmgtKnBNPtL4YdDlLKukEWIbaV6hZFWwautt1FtKiP/y
-	7Zr97Wg7jy1ZTU9Nk21kY+z0PqnhkjU5O0UZ3AA==
-X-Gm-Gg: ASbGncvDECVZuyfiie3LvnsiWq4Vjq9tq6UMOTcCS8lcvv392ew6lLTISyoyS9F914s
-	54zTFGHrrkmUv6ZVlhrKWJtzn3nOXBx0EWEowMjg911iKp3FEAGpd/1JYX7+83CqencVy
-X-Google-Smtp-Source: AGHT+IFdcASMuSPx7wnPTSOxzCIvnK5AZhtUpSDpvfTmQ7F1nQUlpr4kCBfb2r1WlGxp8XqNukwAN1+7QxEq5LVuoOg=
-X-Received: by 2002:a05:6870:ff45:b0:29e:7629:1466 with SMTP id
- 586e51a60fabf-2a9eaa986e7mr3988370fac.7.1736349583243; Wed, 08 Jan 2025
- 07:19:43 -0800 (PST)
+	s=arc-20240116; t=1736350505; c=relaxed/simple;
+	bh=ub7Pv69Wzx184pwG+PnlP1zLVQpPZk26HKdPbd+/poo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=tZneJu3yn0LF3KMowTwJ3IJxCnxGzdPOSfdhKqV5Eat1grblOPMmuqeSZ7i2vGte3GFTjsM/Pz7meQNMO84ROqa78c42h63yBLXFy9W4/dWS5nuRaqSvH9IFTzbJ2VRSKOc/aRgiTYJR0522f08cveBP2RqnKs1MwsNbgDmWl1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n82hfD1k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B44C4CEE0;
+	Wed,  8 Jan 2025 15:34:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736350505;
+	bh=ub7Pv69Wzx184pwG+PnlP1zLVQpPZk26HKdPbd+/poo=;
+	h=From:Subject:Date:To:Cc:From;
+	b=n82hfD1ko/ARf5EBbYNRhNgONRIlsrvYTuTDRtRl/AToYL0Kv1vRru/OdjBHQNx7k
+	 YSZqkOQGn4YkE8gW7YGD4YsRODb8n9DhH58/cR+SUN24CE5Adk44waZVxdowg+ygW4
+	 ANSPxox1DQZDZJfxsvxh0FlvbCdC0u2NFYKA6Lufw7lWolycFUNnkObaLfCG4qvE9B
+	 tSekK6B0HNkfudqj0s9Lj8VLisrTr+iuL96CMDkEMAdRH2EblqgmlLrq7lqoFfkcnc
+	 zG0TsOwffj0yXeHlv/UXvB9dCzErwd0JDFbXQeol1fqi+tedJlIbMhpK0fPT7r7pDw
+	 eoW27EJv7uwyQ==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 0/9] net: sysctl: avoid using current->nsproxy
+Date: Wed, 08 Jan 2025 16:34:28 +0100
+Message-Id: <20250108-net-sysctl-current-nsproxy-v1-0-5df34b2083e8@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250108-mhi_recovery_fix-v1-0-a0a00a17da46@linaro.org> <20250108-mhi_recovery_fix-v1-2-a0a00a17da46@linaro.org>
-In-Reply-To: <20250108-mhi_recovery_fix-v1-2-a0a00a17da46@linaro.org>
-From: Loic Poulain <loic.poulain@linaro.org>
-Date: Wed, 8 Jan 2025 16:19:06 +0100
-X-Gm-Features: AbW1kvZa6gRkeZ9H-nvbe12ihHDmXyCS470lzORAghiZyMgYmyhYw4TS9_LQmVE
-Message-ID: <CAMZdPi9KiLczjETLwJG_9krn_z=Og0uZhYuajPeZYoBHanxMiw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] bus: mhi: host: pci_generic: Recover the device
- synchronously from mhi_pci_runtime_resume()
-To: manivannan.sadhasivam@linaro.org
-Cc: mhi@lists.linux.dev, Johan Hovold <johan@kernel.org>, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAASbfmcC/x3MQQqEMAxA0atI1gbayowyVxEXpcYxIFGSKop49
+ ymzfIv/bzBSJoNPdYPSwcarFPi6gjRH+RLyWAzBhZfzrkOhjHZZygumXZUko9im63nhuw2Rgo9
+ d20xQBpvSxOd/3kPpYHieH+MMVjBxAAAA
+X-Change-ID: 20250108-net-sysctl-current-nsproxy-672ae21a873f
+To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Gregory Detal <gregory.detal@gmail.com>, 
+ Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
+ Xin Long <lucien.xin@gmail.com>, Vlad Yasevich <vyasevich@gmail.com>, 
+ Neil Horman <nhorman@tuxdriver.com>, wangweidong <wangweidong1@huawei.com>, 
+ Daniel Borkmann <daniel@iogearbox.net>, Vlad Yasevich <vyasevic@redhat.com>, 
+ Allison Henderson <allison.henderson@oracle.com>, 
+ Sowmini Varadhan <sowmini.varadhan@oracle.com>, 
+ Al Viro <viro@zeniv.linux.org.uk>
+Cc: Joel Granados <joel.granados@kernel.org>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-sctp@vger.kernel.org, 
+ linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org, 
+ syzbot+e364f774c6f57f2c86d1@syzkaller.appspotmail.com
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2710; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=ub7Pv69Wzx184pwG+PnlP1zLVQpPZk26HKdPbd+/poo=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnfpsiv0PQzgjS5i+apDYO3W7kw5of+oL8PulAp
+ 3VWanJVof+JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ36bIgAKCRD2t4JPQmmg
+ cwtZEAC8lZ3J3v35LQZmG6EEU3E/LdaNGB/G2xRDIL9v/HPFzySs20kfSKwxWBEUDEH+4pOWfv8
+ 0Uh3nvFrVp6nUMRvzVADcH4BzvGsS5LqyrDBOS1Ut+rB7lKfbHGFf3aEd/PzrfZ+a67OQnpmXqR
+ AYxCStjejy3u7n72awngmI6ueTbSYovY13EOe3I5P3KlPyeGLhAxea6w4TDF6YwdPmhITWk0SUF
+ ygjAOq1xMSbUfGeXxRQBdnRBc3RSRTwcJ9nQWcM7sQef+Pei0RRi/tz1DSRCSXKn82OsDfryAVm
+ uBgY8e+b2ciUoZ8xongH/cF7XOV/4TjpG329a5cdhlgj597mVjtTW52NfrP7PfzEICp3Vsh+K2S
+ qgck+8ubL5TO0qU+7lTvK0v4OLgWsU61sEiH+rYmxmINiQO9i3+aqzwAwvUylDPTm71xz02SgK2
+ Edo7zGixArSfpeZUfUh6WXDLoeihBpQHsRiTuFYGWs7zUl95Rf+6JD0jP2U/EGwcDuRxY6jg8FX
+ 7Q7rhl02qYC1yMI64hV/r9K7sqswDPsyp/6awgtO8/YpckmBzujRkX8SfFTrHmQe6BAvnNjsGGg
+ Rpv0aRCuW8DPShFxoEq1X0UnCRXcQ9k1jD1xG/hfLBz92WZfJeMXlNZ6r+6jtOwo04k5Hwp2Oz4
+ WsMkyGA8h0nhIGw==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-On Wed, 8 Jan 2025 at 14:39, Manivannan Sadhasivam via B4 Relay
-<devnull+manivannan.sadhasivam.linaro.org@kernel.org> wrote:
->
-> From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
->
-> Currently, in mhi_pci_runtime_resume(), if the resume fails, recovery_work
-> is started asynchronously and success is returned. But this doesn't align
-> with what PM core expects as documented in
-> Documentation/power/runtime_pm.rst:
->
-> "Once the subsystem-level resume callback (or the driver resume callback,
-> if invoked directly) has completed successfully, the PM core regards the
-> device as fully operational, which means that the device _must_ be able to
-> complete I/O operations as needed.  The runtime PM status of the device is
-> then 'active'."
->
-> So the PM core ends up marking the runtime PM status of the device as
-> 'active', even though the device is not able to handle the I/O operations.
-> This same condition more or less applies to system resume as well.
->
-> So to avoid this ambiguity, try to recover the device synchronously from
-> mhi_pci_runtime_resume() and return the actual error code in the case of
-> recovery failure.
->
-> For doing so, move the recovery code to __mhi_pci_recovery_work() helper
-> and call that from both mhi_pci_recovery_work() and
-> mhi_pci_runtime_resume(). Former still ignores the return value, while the
-> latter passes it to PM core.
->
-> Cc: stable@vger.kernel.org # 5.13
-> Reported-by: Johan Hovold <johan@kernel.org>
-> Closes: https://lore.kernel.org/mhi/Z2PbEPYpqFfrLSJi@hovoldconsulting.com
-> Fixes: d3800c1dce24 ("bus: mhi: pci_generic: Add support for runtime PM")
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+As pointed out by Al Viro and Eric Dumazet in [1], using the 'net'
+structure via 'current' is not recommended for different reasons:
 
-Note that it will noticeably impact the user experience on system-wide
-resume (mhi_pci_resume), because MHI devices usually take a while (a
-few seconds) to cold boot and reach a ready state (or time out in the
-worst case). So we may have people complaining about delayed resume
-regression on their laptop even if they are not using the MHI
-device/modem function. Are we ok with that?
+- Inconsistency: getting info from the reader's/writer's netns vs only
+  from the opener's netns as it is usually done. This could cause
+  unexpected issues when other operations are done on the wrong netns.
 
-Regards,
-Loic
+- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
+  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
+  syzbot [1] using acct(2).
+
+The 'net' or 'pernet' structure can be obtained from the table->data
+using container_of().
+
+Note that table->data could also be used directly in more places, but
+that would increase the size of this fix to replace all accesses via
+'net'. Probably best to avoid that for fixes.
+
+Patches 2-9 remove access of net via current->nsproxy in sysfs handlers
+in MPTCP, SCTP and RDS. There are multiple patches doing almost the same
+thing, but the reason is to ease the backports.
+
+Patch 1 is not directly linked to this, but it is a small fix for MPTCP
+available_schedulers sysctl knob to explicitly mark it as read-only.
+
+Please note that this series does not address Al's comment [2]. In SCTP,
+some sysctl knobs set other sysfs-exposed variables for the min/max: two
+processes could then write two linked values at the same time, resulting
+in new values being outside the new boundaries. It would be great if
+SCTP developers can look at this problem.
+
+Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
+Link: https://lore.kernel.org/netdev/20250105211158.GL1977892@ZenIV/ [2]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+Matthieu Baerts (NGI0) (9):
+      mptcp: sysctl: avail sched: remove write access
+      mptcp: sysctl: sched: avoid using current->nsproxy
+      mptcp: sysctl: blackhole timeout: avoid using current->nsproxy
+      sctp: sysctl: cookie_hmac_alg: avoid using current->nsproxy
+      sctp: sysctl: rto_min/max: avoid using current->nsproxy
+      sctp: sysctl: auth_enable: avoid using current->nsproxy
+      sctp: sysctl: udp_port: avoid using current->nsproxy
+      sctp: sysctl: plpmtud_probe_interval: avoid using current->nsproxy
+      rds: sysctl: rds_tcp_{rcv,snd}buf: avoid using current->nsproxy
+
+ net/mptcp/ctrl.c  | 17 +++++++++--------
+ net/rds/tcp.c     | 39 ++++++++++++++++++++++++++++++++-------
+ net/sctp/sysctl.c | 14 ++++++++------
+ 3 files changed, 49 insertions(+), 21 deletions(-)
+---
+base-commit: db78475ba0d3c66d430f7ded2388cc041078a542
+change-id: 20250108-net-sysctl-current-nsproxy-672ae21a873f
+
+Best regards,
+-- 
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
 
