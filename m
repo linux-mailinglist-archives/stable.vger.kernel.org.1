@@ -1,173 +1,125 @@
-Return-Path: <stable+bounces-108042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B37AEA06907
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 23:57:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE513A069B4
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 00:56:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05C2F3A1D93
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 22:57:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 574B73A49E8
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 23:56:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A10FD2040A3;
-	Wed,  8 Jan 2025 22:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E3D204C3D;
+	Wed,  8 Jan 2025 23:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XB8W616J"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mOaMCNMm"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0211F0E35
-	for <stable@vger.kernel.org>; Wed,  8 Jan 2025 22:57:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D156A19EEBF;
+	Wed,  8 Jan 2025 23:56:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736377068; cv=none; b=piYcrwNNzKkw7GNFmfkWHnwBjX09r7RD33lqMs8HOk/6NG4ipWnO8+2w/4+K6Xle4IpH1uu+qb38IbO/vkNfuc8tvHwMJzkIkgpVw77FrpOcHhSLly7zFIrY+ht2tdaWRhtkHMPYL9Soc2N7+yevnOuP7ERSHJQEI0fxdIN2pYU=
+	t=1736380562; cv=none; b=WNgHjZVYMOgLPLjWkcVpkXt6Aup+RvQKhVYnPJC81xb62bDlgU8APR3mYI9JAmwxZIJGncCFw+oFuEG6DFbFGKgjrKoA9irDk7HrklgBiFkkh99m+z3mt3ISo0ssRe9S0E1y45Gdl6mfd9okQG/CTWSAi9/mTG9tnRaA9yGKIoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736377068; c=relaxed/simple;
-	bh=qwcSuymj34f1GNonsGKLyHpsC0uAWjAPPqOf7b7rQ+0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jynFv9+7LLEJiaoUlQbkqAIuyrDogUvmtOGQErb6fwqBtbxX+ykb1zVXeFWpaG06WHridokXUKz5T+FfyumXBeAvxQVrBffceSLmgZKVzHQsX+QggCPp8c9kbaOkehnIy81U2T1xWhzGsMkfTEzGPT/N2hGgB04Nhyz/aeBQa4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XB8W616J; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736377067; x=1767913067;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=qwcSuymj34f1GNonsGKLyHpsC0uAWjAPPqOf7b7rQ+0=;
-  b=XB8W616JW8IaTw/HCpd0GPLgxCiGz4sfjvCCxBoxZa3TmAsBYuFyY+I4
-   7isouKyjh0/KOZzjf+VbDVk70FWWNk2HTbw5N1QDymjg0oHgUhNXcptVR
-   uAWKuTfJU4Nsijn3KEi85UEtybiMUA8cps9NYSJwl8la1YW2eKLVVTezn
-   SMgtWbhNPvAhuSmC95X8o+wNJrLZIrVJowNpfJWPfmjHL6BY/Yt3qv1vt
-   WX6CvZwvMWhyGovrRnXl7EjJxTdOfFy6jPTsqYzbZVR8sC1NGtsVCZW6v
-   Z6/5J6cXFTd6TRPyKK60dh6a6sA3W+FZREeq4i16/7JK/shwdTCJC+wGn
-   w==;
-X-CSE-ConnectionGUID: FtXWrwdCQY6E3R9ZCwnjgg==
-X-CSE-MsgGUID: 8Lpak8R2SqWVYlle0WC6ZA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="36506213"
-X-IronPort-AV: E=Sophos;i="6.12,299,1728975600"; 
-   d="scan'208";a="36506213"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2025 14:57:46 -0800
-X-CSE-ConnectionGUID: yyMc2+YNSbuHhs9QGoNGuA==
-X-CSE-MsgGUID: vVSpWuGHRd2+MxmvtpTwrg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,299,1728975600"; 
-   d="scan'208";a="103301993"
-Received: from ldmartin-desk2.corp.intel.com (HELO ldmartin-desk2) ([10.125.111.59])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2025 14:57:46 -0800
-Date: Wed, 8 Jan 2025 16:57:40 -0600
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Cc: intel-xe@lists.freedesktop.org, matthew.brost@intel.com, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] drm/xe/client: Better correlate exec_queue and GT
- timestamps
-Message-ID: <yucnyvz3vdhvxlpuxsd2c5jyzqpbdcpxoxhw2lbvfvjpndr7nb@7tiqvwmaxg2t>
-References: <20241212173432.1244440-1-lucas.demarchi@intel.com>
- <Z3xcy2Z3CuwkR9L1@orsosgc001>
+	s=arc-20240116; t=1736380562; c=relaxed/simple;
+	bh=n7afv02qo6u96L9j3FA8Sql6Koxsq/HF9WBO1Eb1EEE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tEtx8iU7I4PiF0vuOrQMO/poB/NHdW54YR4tBT5fyWa2LvSK8IXzDbdVDha1HxUN/fa9qriPWz15VHixOyxEyfmIrcjPzKzmwv6kbptZMaQCiEqTlMiY3hWbAY0IylVBmowM2w+vv54Pd9ZSK/0vCtIEo/BK9GS8WVH3hWqJC6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mOaMCNMm; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 508HN8uM016072;
+	Wed, 8 Jan 2025 23:55:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-type:date:from:message-id:mime-version:subject:to; s=
+	qcppdkim1; bh=fsTFgKBXT0ESfb+2y174dP1Hdu/HPOCLZf/c+ERCUYQ=; b=mO
+	aMCNMmwGH9r5qeAq0ivmdR3M/5SBCefGTNjwHMi2mHd+8bZ0CYL+x0rFyUsJtdPa
+	um+pTWSjbf6MbJ+Kajo8oFJ1p250dssdJMjQBK/MyhW4itngBJzvl97XBR9rbB27
+	9iR5sYYsnZL4I4qBfq6k+QR9oWyRq+F5dBOt2cAbIfAQu/ZiUbJo6A9GIBtxkDuu
+	TqG/SBhDby3kD+rn50SjXnBPalOmz3I2OXa/UEGGJ+2PAlLlNNfT04r67c7BXSRA
+	m55pJ8xKMvx9+3XlHCEDaABg9DwIiY13smlE9n6ji3V6mm9Y4rZfWPB7dF1My7lB
+	D2kKD64yE6MKE5fElHYA==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 441wq50tqt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Jan 2025 23:55:23 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 508NtMnZ012997
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 8 Jan 2025 23:55:22 GMT
+Received: from stor-berry.qualcomm.com (10.80.80.8) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 8 Jan 2025 15:55:22 -0800
+From: "Bao D. Nguyen" <quic_nguyenb@quicinc.com>
+To: <quic_cang@quicinc.com>, <bvanassche@acm.org>, <avri.altman@wdc.com>,
+        <peter.wang@mediatek.com>, <manivannan.sadhasivam@linaro.org>,
+        <martin.petersen@oracle.com>
+CC: <linux-scsi@vger.kernel.org>, <stable@vger.kernel.org>,
+        "Bao D. Nguyen"
+	<quic_nguyenb@quicinc.com>,
+        Bean Huo <beanhuo@micron.com>, Daejun Park
+	<daejun7.park@samsung.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        open list
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH v1 1/1] scsi: ufs: core: Fix the HIGH/LOW_TEMP Bit Definitions
+Date: Wed, 8 Jan 2025 15:55:09 -0800
+Message-ID: <5df3cb168d367719ae5c378029a90f6337d00e79.1736380252.git.quic_nguyenb@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <Z3xcy2Z3CuwkR9L1@orsosgc001>
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: DpzO4G3lh-2-OApubJg4Hf9YhwOBQP4z
+X-Proofpoint-ORIG-GUID: DpzO4G3lh-2-OApubJg4Hf9YhwOBQP4z
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
+ suspectscore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 malwarescore=0 mlxlogscore=768 adultscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501080196
 
-On Mon, Jan 06, 2025 at 02:44:27PM -0800, Umesh Nerlige Ramappa wrote:
->On Thu, Dec 12, 2024 at 09:34:32AM -0800, Lucas De Marchi wrote:
->>This partially reverts commit fe4f5d4b6616 ("drm/xe: Clean up VM / exec
->>queue file lock usage."). While it's desired to have the mutex to
->>protect only the reference to the exec queue, getting and dropping each
->>mutex and then later getting the GPU timestamp, doesn't produce a
->>correct result: it introduces multiple opportunities for the task to be
->>scheduled out and thus wrecking havoc the deltas reported to userspace.
->>
->>Also, to better correlate the timestamp from the exec queues with the
->>GPU, disable preemption so they can be updated without allowing the task
->>to be scheduled out. We leave interrupts enabled as that shouldn't be
->>enough disturbance for the deltas to matter to userspace.
->
->Assuming
->
->- timestamp from exec queues = xe_exec_queue_update_run_ticks()
->- GPU timestamp = xe_hw_engine_read_timestamp()
->
->shouldn't you also move the xe_hw_engine_read_timestamp() within the 
->preempt_disable/preempt_enable section?
+According to the UFS Device Specification, the bUFSFeaturesSupport
+defines the support for TOO_HIGH_TEMPERATURE as bit[4] and the
+TOO_LOW_TEMPERATURE as bit[5]. Correct the code to match with
+the UFS device specification definition.
 
-this is what I thought I had done, but it seems I messed up.
+Fixes: e88e2d322 ("scsi: ufs: core: Probe for temperature notification support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
+---
+ include/ufs/ufs.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
->
->Something like this ..
->
->	preempt_disable();
->
->	xa_for_each(&xef->exec_queue.xa, i, q)
->		xe_exec_queue_update_run_ticks(q);
->
->	gpu_timestamp = xe_hw_engine_read_timestamp(hwe);
+diff --git a/include/ufs/ufs.h b/include/ufs/ufs.h
+index e594abe..f0c6111 100644
+--- a/include/ufs/ufs.h
++++ b/include/ufs/ufs.h
+@@ -386,8 +386,8 @@ enum {
+ 
+ /* Possible values for dExtendedUFSFeaturesSupport */
+ enum {
+-	UFS_DEV_LOW_TEMP_NOTIF		= BIT(4),
+-	UFS_DEV_HIGH_TEMP_NOTIF		= BIT(5),
++	UFS_DEV_HIGH_TEMP_NOTIF		= BIT(4),
++	UFS_DEV_LOW_TEMP_NOTIF		= BIT(5),
+ 	UFS_DEV_EXT_TEMP_NOTIF		= BIT(6),
+ 	UFS_DEV_HPB_SUPPORT		= BIT(7),
+ 	UFS_DEV_WRITE_BOOSTER_SUP	= BIT(8),
+-- 
+2.7.4
 
-I'd move the gpu_timestamp to be done before the exec queue, so we don't
-call it with the exec queue mutex still taken. AFAIR this is what I was
-doing in the test machine, but sent the wrong version of the patch. Let
-me double check locally here and resend.
-
-thanks
-Lucas De Marchi
-
->
->	preempt_enable();
->
->Thanks,
->Umesh
->
->>
->>Test scenario:
->>
->>	* IGT'S `xe_drm_fdinfo --r --r utilization-single-full-load`
->>	* Platform: LNL, where CI occasionally reports failures
->>	* `stress -c $(nproc)` running in parallel to disturb the
->>	  system
->>
->>This brings a first failure from "after ~150 executions" to "never
->>occurs after 1000 attempts".
->>
->>Cc: stable@vger.kernel.org # v6.11+
->>Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3512
->>Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
->>---
->>drivers/gpu/drm/xe/xe_drm_client.c | 9 +++------
->>1 file changed, 3 insertions(+), 6 deletions(-)
->>
->>diff --git a/drivers/gpu/drm/xe/xe_drm_client.c b/drivers/gpu/drm/xe/xe_drm_client.c
->>index 298a587da7f17..e307b4d6bab5a 100644
->>--- a/drivers/gpu/drm/xe/xe_drm_client.c
->>+++ b/drivers/gpu/drm/xe/xe_drm_client.c
->>@@ -338,15 +338,12 @@ static void show_run_ticks(struct drm_printer *p, struct drm_file *file)
->>
->>	/* Accumulate all the exec queues from this client */
->>	mutex_lock(&xef->exec_queue.lock);
->>-	xa_for_each(&xef->exec_queue.xa, i, q) {
->>-		xe_exec_queue_get(q);
->>-		mutex_unlock(&xef->exec_queue.lock);
->>+	preempt_disable();
->>
->>+	xa_for_each(&xef->exec_queue.xa, i, q)
->>		xe_exec_queue_update_run_ticks(q);
->>
->>-		mutex_lock(&xef->exec_queue.lock);
->>-		xe_exec_queue_put(q);
->>-	}
->>+	preempt_enable();
->>	mutex_unlock(&xef->exec_queue.lock);
->>
->>	gpu_timestamp = xe_hw_engine_read_timestamp(hwe);
->>-- 
->>2.47.0
->>
 
