@@ -1,153 +1,187 @@
-Return-Path: <stable+bounces-108017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D59CA06103
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 17:02:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85E3EA06137
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 17:13:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B3DC1887B1F
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 16:02:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76CCB161CA4
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 16:13:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB6B1FC7C2;
-	Wed,  8 Jan 2025 16:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556A81FECA7;
+	Wed,  8 Jan 2025 16:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="I++6xX9b"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cKmNiFZx";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xg4RyoyE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA21717E900
-	for <stable@vger.kernel.org>; Wed,  8 Jan 2025 16:02:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2835415B99E;
+	Wed,  8 Jan 2025 16:13:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736352142; cv=none; b=slfjf7TrnH8Rj5s1KWZuuX/wHWKD52l/FqLkq7qs+xJ/9OlKUCEYuLZSeKAigdVRKk/Umm7EZkz6WDx9tiwRz6L+c/b0R+n+piSrtRV4Red/VgyHPN9/LzqZ1TysVkCJn0VW/rUZONjFN+kuQ6w4b7AxDgZN1EZrh2ij6SN07EI=
+	t=1736352789; cv=none; b=ZJKP9rz+MRvAOXNTr/kVSYgag8+/vhkgtIEwovFGEh6XqAqa64Ww3ZiM9d3cowrzd632tjsCslWCFD8cUASrQASy8ISYDQZr5wygpEj334Z7tWaJxxif8QzGN0ONaDJtyPx/FWrz24p9I10jbogs4rgwDPyXmtNINdmkehDdAEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736352142; c=relaxed/simple;
-	bh=q2pod2nUbwMJD0bdVvi2G9EzGICOQ3Pcv9WM6ocnZY8=;
+	s=arc-20240116; t=1736352789; c=relaxed/simple;
+	bh=xBKCDuI+140nJUGXVfSBc36vW+LQIvVMQ6CjKPaB4hg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YgiIlwJr6bppqp1puF3BEiUrzbixwuri4A2lSPfvy3QoGJi1PQ/5oJI9WSuCh65Gz0aQ2NxpNfgrddRiEBcJuQ30pm3tWO7UBJ+mWkCds4GV6WPu+rp/1sld87SMPMLWjajMpREl7K+cRhLOTu5B/1hkCjk/Gli+FspMJvaD/eM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=I++6xX9b; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-21644aca3a0so81667365ad.3
-        for <stable@vger.kernel.org>; Wed, 08 Jan 2025 08:02:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736352140; x=1736956940; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=gDnmmr+BPzeGSONCgPZRDtmO65LxOmvvSiVUiu5r1WI=;
-        b=I++6xX9b8Y6I8yvtjQp3yw5PiNR/inwXfxk/igpwBv0lZpW3sgfdr5NDe5ZFwMMlA9
-         CDxsIKTVla18Xsfb5Q2Cq6Axo8ixdNeYtQparZ5W09B48NsRXjvNfkadu8iIeO23O9FD
-         A4oy9fsOF3KPSuU/C03WGqMOtBAKDosx2G0E6LE5MrUWxgV3iEcU8gOFcyQ6Q7XgJInm
-         73Gbd+JIyQCWPGqstZ58nv8dh7MHrGidBZd0Cig5xlnPvQ9RSOBOuU5BRQFgy1Yo3Up5
-         IXiqJvSce7sV967fdT0cBHOiyb86EOq5zmuZyOmvSYOA16dpBfycCyiqe/b3RkvCHtbn
-         roFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736352140; x=1736956940;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gDnmmr+BPzeGSONCgPZRDtmO65LxOmvvSiVUiu5r1WI=;
-        b=VhzDnGjDJRtz4HQXDcLtmkklK8Y7dHaHdhQxL4QN4LglT3FkPGWs44uyENP5aNX/cM
-         51JDTlUBPu40hr9mplRyJRGJ9/KYUBr1Aq2u8a8nJRQiLxjgRhNHymiGJZp+13+d9y88
-         MmMgXD+5C07JjY/FeWkRuMWlNvaEzGvb1WjWKF/RHbYjehK4uCm9dkn+9sYx300DfLCE
-         VCds/I/b8CtYLtDWEZ7aTJQ27tYTOYUMtOPbIY3Zd44Bns8SP0u7GmtbwVAcTtHVyDK3
-         4gUaXFFAREX31LE/U48OXm9ybbYv4zrVitEIqSiex27wltl8aVeDvYk3rz1uwpZzTHbE
-         W9PA==
-X-Forwarded-Encrypted: i=1; AJvYcCWrqyYIv4N94+dnJITrgq7c5zQ9vKpyU713KeuNghqn96n3sjDMlyDIOFYspV459YNHUSX5K60=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw85Lt1sm+JHjZy9ziSb1GiSxHCciYateZIOs/0uUb4lK4o+MIE
-	ZUSqBlPw1sW92YthsIratspPHzkVPkn+nwqo7nBHf2AqsiCWt1i78AYHihgE5vzIP5NggDZqiuc
-	=
-X-Gm-Gg: ASbGncuaU55Y7r42WvflLrBKDzP0P7FhnX+ag0b4U7SBx05genZZ5ZZm6Ox9iSLihlG
-	kRtL7uP0etH6HI1G0bHAPhOqFJ3ilJedUzPXgvs3bBUDaVyV/GLVga6uQRxGtBNMAx37vHyaxBK
-	aCVUVHuoTksg8LLkZ+VFiSPFSSwpPuYifL3CZsyjeu1/NK0Kap6WvOeyR4wDm5Ma7GZ7nAUb+pQ
-	LinB32cdxjWL6Z2Fsq2NveWP4ZestTJBvz2bNkjVfAovQMyq8gL1aVV+RJfGfJFYmvg
-X-Google-Smtp-Source: AGHT+IGnIOJxVu4wkWjov5XG3BAJjb4T++JDP8RJTAnpDKLkqISVD6wPeoA7et1loROcLPRxCQ2RcA==
-X-Received: by 2002:a17:902:c941:b0:215:7fad:49ab with SMTP id d9443c01a7336-21a83f46a12mr51005925ad.10.1736352138709;
-        Wed, 08 Jan 2025 08:02:18 -0800 (PST)
-Received: from thinkpad ([117.213.97.234])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc970cbbsm329441405ad.103.2025.01.08.08.02.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jan 2025 08:02:18 -0800 (PST)
-Date: Wed, 8 Jan 2025 21:32:11 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Loic Poulain <loic.poulain@linaro.org>
-Cc: mhi@lists.linux.dev, Johan Hovold <johan@kernel.org>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] bus: mhi: host: pci_generic: Recover the device
- synchronously from mhi_pci_runtime_resume()
-Message-ID: <20250108160211.6dok3zcn2qaoj3lp@thinkpad>
-References: <20250108-mhi_recovery_fix-v1-0-a0a00a17da46@linaro.org>
- <20250108-mhi_recovery_fix-v1-2-a0a00a17da46@linaro.org>
- <CAMZdPi9KiLczjETLwJG_9krn_z=Og0uZhYuajPeZYoBHanxMiw@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Th++kZdODFlDxIyQPJzbSrpNonTYQPFuN8xL32bRDr85/yZVczpQUpAHSj5KpKeqWmgT0c11ACrF1RqGFbXn7pFcoCNdP9ZnwI2i68xXW5uJ+ntLAd7i+IUUBJq0FWZuCrvlatdBb8NsZiVC+CxX3m5sR+E3Wu7v8ed+G3zhgVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cKmNiFZx; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xg4RyoyE; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 8 Jan 2025 17:13:03 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1736352784;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+TfJv4U+XL2AidFaYcUodlJeSgOx+Syd2bkvgydZpIQ=;
+	b=cKmNiFZxXEPf828GRbpTMvWxRu8rmNnxjsAyAhwwuoDic7uhOs02d17Mfq7/qAVf4ppp0N
+	bIbSE4qHJBBblG9f0kg/bqakTOOEAuTizlybxhfJ5o7nF/Y9JUUubcYJGyGsNe8kJiXqFJ
+	DFk4/JUO8BfIWYnq3od7KIo3kU/XQ25QncB6c3gMQEnh4q9afnQNZgdQx9D/Obb0hZ6GWr
+	6evGXNd8Rr7PCjtigiGpKRyAMwIXUhAnRTeuMoOfM0ZzEm5IMJHfN1SYOfy5rGXHnUCB+3
+	NH60Ez9y2ZU/VcfE/ovs7LuloUOU05hugnn++p3Eb3Td7k2p5FZDoGvdIZ5HwQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1736352784;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+TfJv4U+XL2AidFaYcUodlJeSgOx+Syd2bkvgydZpIQ=;
+	b=xg4RyoyE1ySv7XvCN4jkAFNHPNyOnjA+iNYDSnYFu3sTsrhD0eo11RoEhtxFn5k5pOCTOJ
+	rbNuqCqw1cTmQsCw==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: David Hildenbrand <david@redhat.com>
+Cc: Dev Jain <dev.jain@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Ryan Roberts <ryan.roberts@arm.com>
+Subject: Re: [PATCH 1/3] selftests/mm: virtual_address_range: Fix error when
+ CommitLimit < 1GiB
+Message-ID: <20250108165052-c03470bd-6ff7-44c9-87b9-9145456bdea8@linutronix.de>
+References: <20250107-virtual_address_range-tests-v1-0-3834a2fb47fe@linutronix.de>
+ <20250107-virtual_address_range-tests-v1-1-3834a2fb47fe@linutronix.de>
+ <5811cf74-d333-4653-ab64-0e981eda7745@arm.com>
+ <20250108083855-840c688b-003f-423b-8327-2a10a2b27d58@linutronix.de>
+ <05edee1e-04f1-4f19-816f-db03c182a201@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMZdPi9KiLczjETLwJG_9krn_z=Og0uZhYuajPeZYoBHanxMiw@mail.gmail.com>
+In-Reply-To: <05edee1e-04f1-4f19-816f-db03c182a201@redhat.com>
 
-On Wed, Jan 08, 2025 at 04:19:06PM +0100, Loic Poulain wrote:
-> On Wed, 8 Jan 2025 at 14:39, Manivannan Sadhasivam via B4 Relay
-> <devnull+manivannan.sadhasivam.linaro.org@kernel.org> wrote:
-> >
-> > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> >
-> > Currently, in mhi_pci_runtime_resume(), if the resume fails, recovery_work
-> > is started asynchronously and success is returned. But this doesn't align
-> > with what PM core expects as documented in
-> > Documentation/power/runtime_pm.rst:
-> >
-> > "Once the subsystem-level resume callback (or the driver resume callback,
-> > if invoked directly) has completed successfully, the PM core regards the
-> > device as fully operational, which means that the device _must_ be able to
-> > complete I/O operations as needed.  The runtime PM status of the device is
-> > then 'active'."
-> >
-> > So the PM core ends up marking the runtime PM status of the device as
-> > 'active', even though the device is not able to handle the I/O operations.
-> > This same condition more or less applies to system resume as well.
-> >
-> > So to avoid this ambiguity, try to recover the device synchronously from
-> > mhi_pci_runtime_resume() and return the actual error code in the case of
-> > recovery failure.
-> >
-> > For doing so, move the recovery code to __mhi_pci_recovery_work() helper
-> > and call that from both mhi_pci_recovery_work() and
-> > mhi_pci_runtime_resume(). Former still ignores the return value, while the
-> > latter passes it to PM core.
-> >
-> > Cc: stable@vger.kernel.org # 5.13
-> > Reported-by: Johan Hovold <johan@kernel.org>
-> > Closes: https://lore.kernel.org/mhi/Z2PbEPYpqFfrLSJi@hovoldconsulting.com
-> > Fixes: d3800c1dce24 ("bus: mhi: pci_generic: Add support for runtime PM")
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+On Wed, Jan 08, 2025 at 02:36:57PM +0100, David Hildenbrand wrote:
+> On 08.01.25 09:05, Thomas Wei�schuh wrote:
+> > On Wed, Jan 08, 2025 at 11:46:19AM +0530, Dev Jain wrote:
+> > > 
+> > > On 07/01/25 8:44 pm, Thomas Wei�schuh wrote:
+> > > > If not enough physical memory is available the kernel may fail mmap();
+> > > > see __vm_enough_memory() and vm_commit_limit().
+> > > > In that case the logic in validate_complete_va_space() does not make
+> > > > sense and will even incorrectly fail.
+> > > > Instead skip the test if no mmap() succeeded.
+> > > > 
+> > > > Fixes: 010409649885 ("selftests/mm: confirm VA exhaustion without reliance on correctness of mmap()")
+> > > > Cc: stable@vger.kernel.org
 > 
-> Note that it will noticeably impact the user experience on system-wide
-> resume (mhi_pci_resume), because MHI devices usually take a while (a
-> few seconds) to cold boot and reach a ready state (or time out in the
-> worst case). So we may have people complaining about delayed resume
-> regression on their laptop even if they are not using the MHI
-> device/modem function. Are we ok with that?
+> CC stable on tests is ... odd.
+
+I thought it was fairly common, but it isn't.
+Will drop it.
+
+> > > > Signed-off-by: Thomas Wei�schuh <thomas.weissschuh@linutronix.de>
+> > > > 
+> > > > ---
+> > > > The logic in __vm_enough_memory() seems weird.
+> > > > It describes itself as "Check that a process has enough memory to
+> > > > allocate a new virtual mapping", however it never checks the current
+> > > > memory usage of the process.
+> > > > So it only disallows large mappings. But many small mappings taking the
+> > > > same amount of memory are allowed; and then even automatically merged
+> > > > into one big mapping.
+> > > > ---
+> > > >    tools/testing/selftests/mm/virtual_address_range.c | 6 ++++++
+> > > >    1 file changed, 6 insertions(+)
+> > > > 
+> > > > diff --git a/tools/testing/selftests/mm/virtual_address_range.c b/tools/testing/selftests/mm/virtual_address_range.c
+> > > > index 2a2b69e91950a37999f606847c9c8328d79890c2..d7bf8094d8bcd4bc96e2db4dc3fcb41968def859 100644
+> > > > --- a/tools/testing/selftests/mm/virtual_address_range.c
+> > > > +++ b/tools/testing/selftests/mm/virtual_address_range.c
+> > > > @@ -178,6 +178,12 @@ int main(int argc, char *argv[])
+> > > >    		validate_addr(ptr[i], 0);
+> > > >    	}
+> > > >    	lchunks = i;
+> > > > +
+> > > > +	if (!lchunks) {
+> > > > +		ksft_test_result_skip("Not enough memory for a single chunk\n");
+> > > > +		ksft_finished();
+> > > > +	}
+> > > > +
+> > > >    	hptr = (char **) calloc(NR_CHUNKS_HIGH, sizeof(char *));
+> > > >    	if (hptr == NULL) {
+> > > >    		ksft_test_result_skip("Memory constraint not fulfilled\n");
+> > > > 
+> > > 
+> > > I do not  know about __vm_enough_memory(), but I am going by your description:
+> > > You say that the kernel may fail mmap() when enough physical memory is not
+> > > there, but it may happen that we have already done 100 mmap()'s, and then
+> > > the kernel fails mmap(), so if (!lchunks) won't be able to handle this case.
+> > > Basically, lchunks == 0 is not a complete indicator of kernel failing mmap().
+> > 
+> > __vm_enough_memory() only checks the size of each single mmap() on its
+> > own. It does not actually check the current memory or address space
+> > usage of the process.
+> > This seems a bit weird, as indicated in my after-the-fold explanation.
+> > 
+> > > The basic assumption of the test is that any process should be able to exhaust
+> > > its virtual address space, and running the test under memory pressure and the
+> > > kernel violating this behaviour defeats the point of the test I think?
+> > 
+> > The assumption is correct, as soon as one mapping succeeds the others
+> > will also succeed, until the actual address space is exhausted.
+> > 
+> > Looking at it again, __vm_enough_memory() is only called for writable
+> > mappings, so it would be possible to use only readable mappings in the
+> > test. The test will still fail with OOM, as the many PTEs need more than
+> > 1GiB of physical memory anyways, but at least that produces a usable
+> > error message.
+> > However I'm not sure if this would violate other test assumptions.
+> > 
 > 
+> Note that with MAP_NORESRVE, most setups we care about will allow mapping as
+> much as you want, but on access OOM will fire.
 
-Are you saying that the modem will enter D3Cold all the time during system
-suspend? I think you are referring to x86 host machines here.
+Thanks for the hint.
 
-If that is the case, we should not be using mhi_pci_runtime_*() calls in
-mhi_pci_suspend/resume(). Rather the MHI stack should be powered down during
-suspend and powered ON during resume.
+> So one could require that /proc/sys/vm/overcommit_memory is setup properly
+> and use MAP_NORESRVE.
 
-- Mani
+Isn't the check for lchunks == 0 essentially exactly this?
 
--- 
-மணிவண்ணன் சதாசிவம்
+> Reading from anonymous memory will populate the shared zeropage. To mitigate
+> OOM from "too many page tables", one could simply unmap the pieces as they
+> are verified (or MAP_FIXED over them, to free page tables).
+
+The code has to figure out if a verified region was created by mmap(),
+otherwise an munmap() could crash the process.
+As the entries from /proc/self/maps may have been merged and (I assume)
+the ordering of mappings is not guaranteed, some bespoke logic to establish
+the link will be needed.
+
+Is it fine to rely on CONFIG_ANON_VMA_NAME?
+That would make it much easier to implement.
+
+Using MAP_NORESERVE and eager munmap()s, the testcase works nicely even
+in very low physical memory conditions.
+
+Thomas
 
