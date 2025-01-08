@@ -1,187 +1,93 @@
-Return-Path: <stable+bounces-107994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C90E7A05CFE
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 14:39:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10F44A05D0A
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 14:41:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A0E33A472D
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 13:39:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BA9A1889BF0
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 13:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5671FC7E8;
-	Wed,  8 Jan 2025 13:39:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DZVHkHDR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5781FC7CD;
+	Wed,  8 Jan 2025 13:41:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1FA31FC105;
-	Wed,  8 Jan 2025 13:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F571FC114;
+	Wed,  8 Jan 2025 13:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736343572; cv=none; b=ICgB+ElZvXK3EQXfge69zWnig1qfl5VBI8Ba6k05kLcWONzeI8xDkNkZaDbvYVypHrkHGhEXhoBDza+biCV5x352+Uad4pn65nxNbhwl5ESWZdbMTpRwkMc2O+eENiNhLrDRwU4CZbjB+sUHTUyueH6sfDAoS7pa1bImsNESENE=
+	t=1736343668; cv=none; b=Qbe8tQmWfrl47uqqTjhXQY5KMUt6lpdWxHtuyU7HUAJL4XKbj06uJTSKSHjYfLXJIA6xs8D7qleEpLrvaZGS6ryJWij9cawUTs6BA5GIIKRnTR8VmgwUG5uwtZE3dSborq+jzqsQnhtYN9RX5BU/2FCxOgN3bQMNEjGi0nOIdZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736343572; c=relaxed/simple;
-	bh=FouJgExThB5JcMNTBT8U6TM7eQ3QWkBZ7ZTZZXTD0WE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ItZ+QJRBwCFlFqW4S+g2UtZb+OVaZ8y3fsmKH4I9+RKUPqN+0IjUvcZjKaNKpOXc0LhVtVa7LEJalNi2lZ/6SYKrWvMcXHg57oH3bpKkLNkc/bmnpxCAC/83HEm7vzNBo2SgdVLfQsZmSqS6/gE48QXkQxtX0zAS++dpvbxBI3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DZVHkHDR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A6E00C4CEE4;
-	Wed,  8 Jan 2025 13:39:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736343571;
-	bh=FouJgExThB5JcMNTBT8U6TM7eQ3QWkBZ7ZTZZXTD0WE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=DZVHkHDR7I40t4HKWTCzKx9aKOtluLIbngGzW9IdMf6XcZXn5AQjIgmyvaIVdC2In
-	 wv3jWZCVPfssW8cdcFgXbQo8Os8S9cqnZCMPSz3BRMTJ/tx2kXPaM2MfRv/v2DZwY3
-	 lHSF5KXB7EuSfW4pp2lo7RUs/QOVy87iubhX32iALnYfbGgYafddXY8PYkYUpd9JQ5
-	 BtdlofjGbvKpf/qgAPiIN4/spD/D7glDaR0sC38keT9v8eeh/2f6evFO7zUo0skiTj
-	 xxiJX82LRAywCRIqn1deHLUKvikwKvKfEdrw8mMbuApfiP8uPUYfcN6FI4pTAzlfUm
-	 oMIIkWsidxfww==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9208EE7719B;
-	Wed,  8 Jan 2025 13:39:31 +0000 (UTC)
-From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.linaro.org@kernel.org>
-Date: Wed, 08 Jan 2025 19:09:28 +0530
-Subject: [PATCH 2/2] bus: mhi: host: pci_generic: Recover the device
- synchronously from mhi_pci_runtime_resume()
+	s=arc-20240116; t=1736343668; c=relaxed/simple;
+	bh=53OPs+5laER7KgU/z027K5Vs2KkN85+R9eJRu71IJmk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FNSiWyLBEWzfwspqk9P/F3M1fEgKmZMX/h8jlFLSY3jj1maHUA3zkx+ev28QULudt3cfLa+oXjaiOlJtX9LhZlgGAw+PbbmS+Ajk6zikz6oJz44bRKqxJfENHL7TtSmWUin2y+VIKBonlXLDEKCv4yEgXwtyGkCsa+zeqUSPFps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ACABC4CEDD;
+	Wed,  8 Jan 2025 13:41:04 +0000 (UTC)
+Date: Wed, 8 Jan 2025 13:41:02 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Shuah Khan <shuah@kernel.org>, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org,
+	Mark Rutland <mark.rutland@arm.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v5 1/5] arm64: Filter out SVE hwcaps when FEAT_SVE isn't
+ implemented
+Message-ID: <Z36Abq8mrhnl3cg2@arm.com>
+References: <20250107-arm64-2024-dpisa-v5-0-7578da51fc3d@kernel.org>
+ <20250107-arm64-2024-dpisa-v5-1-7578da51fc3d@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250108-mhi_recovery_fix-v1-2-a0a00a17da46@linaro.org>
-References: <20250108-mhi_recovery_fix-v1-0-a0a00a17da46@linaro.org>
-In-Reply-To: <20250108-mhi_recovery_fix-v1-0-a0a00a17da46@linaro.org>
-To: mhi@lists.linux.dev, Loic Poulain <loic.poulain@linaro.org>
-Cc: Johan Hovold <johan@kernel.org>, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3728;
- i=manivannan.sadhasivam@linaro.org; h=from:subject:message-id;
- bh=PbUVuYWUfqmustC2WiHHQap1G0eBPYmJC2LfYKutaU8=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBnfoAR34yGYQF9ycq3TNgC1rXfy1K3VN1q2TEbX
- bZuU9qbRAuJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCZ36AEQAKCRBVnxHm/pHO
- 9dAqB/49P68aL4DjPjADl5s3uTq/Fv4ZvUlOBpNpEAB3hxBsN5sU9I4NLNghM7SWTeWw7zQVb5s
- iz2A2ROGdhVQZj5E7awq6zDUIR+xMsm4TCet1Z/jsrbs6wcX7GDOFCptJq/wNzJHyEW4EnvuXmt
- 9SW8Lc9aM+bDif5e3yn5jTal4/Q7tQh7/MjK3mYT1Bif09i9+H9jImoK0n0H6/fyWLvIPfMIpHO
- kmIf9OXb8+d9R7+q28oDVQxCCFHUBAo/ARtQDN8w1j5eMff9TdpB1fOQ7CvXXj4AwGC7uY528XL
- V0OtkzTkawrMyxuqfeXM4KTp4fhfhNbKJh53fWyEan0Y1epI
-X-Developer-Key: i=manivannan.sadhasivam@linaro.org; a=openpgp;
- fpr=C668AEC3C3188E4C611465E7488550E901166008
-X-Endpoint-Received: by B4 Relay for
- manivannan.sadhasivam@linaro.org/default with auth_id=185
-X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reply-To: manivannan.sadhasivam@linaro.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250107-arm64-2024-dpisa-v5-1-7578da51fc3d@kernel.org>
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+On Tue, Jan 07, 2025 at 10:59:41PM +0000, Mark Brown wrote:
+> From: Marc Zyngier <maz@kernel.org>
+> 
+> The hwcaps code that exposes SVE features to userspace only
+> considers ID_AA64ZFR0_EL1, while this is only valid when
+> ID_AA64PFR0_EL1.SVE advertises that SVE is actually supported.
+> 
+> The expectations are that when ID_AA64PFR0_EL1.SVE is 0, the
+> ID_AA64ZFR0_EL1 register is also 0. So far, so good.
+> 
+> Things become a bit more interesting if the HW implements SME.
+> In this case, a few ID_AA64ZFR0_EL1 fields indicate *SME*
+> features. And these fields overlap with their SVE interpretations.
+> But the architecture says that the SME and SVE feature sets must
+> match, so we're still hunky-dory.
+> 
+> This goes wrong if the HW implements SME, but not SVE. In this
+> case, we end-up advertising some SVE features to userspace, even
+> if the HW has none. That's because we never consider whether SVE
+> is actually implemented. Oh well.
+> 
+> Fix it by restricting all SVE capabilities to ID_AA64PFR0_EL1.SVE
+> being non-zero. The HWCAPS documentation is amended to reflect the
+> actually checks performed by the kernel.
+> 
+> Fixes: 06a916feca2b ("arm64: Expose SVE2 features for userspace")
+> Reported-by: Catalin Marinas <catalin.marinas@arm.com>
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: stable@vger.kernel.org
 
-Currently, in mhi_pci_runtime_resume(), if the resume fails, recovery_work
-is started asynchronously and success is returned. But this doesn't align
-with what PM core expects as documented in
-Documentation/power/runtime_pm.rst:
-
-"Once the subsystem-level resume callback (or the driver resume callback,
-if invoked directly) has completed successfully, the PM core regards the
-device as fully operational, which means that the device _must_ be able to
-complete I/O operations as needed.  The runtime PM status of the device is
-then 'active'."
-
-So the PM core ends up marking the runtime PM status of the device as
-'active', even though the device is not able to handle the I/O operations.
-This same condition more or less applies to system resume as well.
-
-So to avoid this ambiguity, try to recover the device synchronously from
-mhi_pci_runtime_resume() and return the actual error code in the case of
-recovery failure.
-
-For doing so, move the recovery code to __mhi_pci_recovery_work() helper
-and call that from both mhi_pci_recovery_work() and
-mhi_pci_runtime_resume(). Former still ignores the return value, while the
-latter passes it to PM core.
-
-Cc: stable@vger.kernel.org # 5.13
-Reported-by: Johan Hovold <johan@kernel.org>
-Closes: https://lore.kernel.org/mhi/Z2PbEPYpqFfrLSJi@hovoldconsulting.com
-Fixes: d3800c1dce24 ("bus: mhi: pci_generic: Add support for runtime PM")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
----
- drivers/bus/mhi/host/pci_generic.c | 29 +++++++++++++++++------------
- 1 file changed, 17 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/bus/mhi/host/pci_generic.c b/drivers/bus/mhi/host/pci_generic.c
-index e92df380c785..f6de407e077e 100644
---- a/drivers/bus/mhi/host/pci_generic.c
-+++ b/drivers/bus/mhi/host/pci_generic.c
-@@ -997,10 +997,8 @@ static void mhi_pci_runtime_put(struct mhi_controller *mhi_cntrl)
- 	pm_runtime_put(mhi_cntrl->cntrl_dev);
- }
- 
--static void mhi_pci_recovery_work(struct work_struct *work)
-+static int __mhi_pci_recovery_work(struct mhi_pci_device *mhi_pdev)
- {
--	struct mhi_pci_device *mhi_pdev = container_of(work, struct mhi_pci_device,
--						       recovery_work);
- 	struct mhi_controller *mhi_cntrl = &mhi_pdev->mhi_cntrl;
- 	struct pci_dev *pdev = to_pci_dev(mhi_cntrl->cntrl_dev);
- 	int err;
-@@ -1035,13 +1033,25 @@ static void mhi_pci_recovery_work(struct work_struct *work)
- 
- 	set_bit(MHI_PCI_DEV_STARTED, &mhi_pdev->status);
- 	mod_timer(&mhi_pdev->health_check_timer, jiffies + HEALTH_CHECK_PERIOD);
--	return;
-+
-+	return 0;
- 
- err_unprepare:
- 	mhi_unprepare_after_power_down(mhi_cntrl);
- err_try_reset:
--	if (pci_try_reset_function(pdev))
-+	err = pci_try_reset_function(pdev);
-+	if (err)
- 		dev_err(&pdev->dev, "Recovery failed\n");
-+
-+	return err;
-+}
-+
-+static void mhi_pci_recovery_work(struct work_struct *work)
-+{
-+	struct mhi_pci_device *mhi_pdev = container_of(work, struct mhi_pci_device,
-+						       recovery_work);
-+
-+	__mhi_pci_recovery_work(mhi_pdev);
- }
- 
- static void health_check(struct timer_list *t)
-@@ -1400,15 +1410,10 @@ static int __maybe_unused mhi_pci_runtime_resume(struct device *dev)
- 	return 0;
- 
- err_recovery:
--	/* Do not fail to not mess up our PCI device state, the device likely
--	 * lost power (d3cold) and we simply need to reset it from the recovery
--	 * procedure, trigger the recovery asynchronously to prevent system
--	 * suspend exit delaying.
--	 */
--	queue_work(system_long_wq, &mhi_pdev->recovery_work);
-+	err = __mhi_pci_recovery_work(mhi_pdev);
- 	pm_runtime_mark_last_busy(dev);
- 
--	return 0;
-+	return err;
- }
- 
- static int  __maybe_unused mhi_pci_suspend(struct device *dev)
-
--- 
-2.25.1
-
-
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 
