@@ -1,368 +1,200 @@
-Return-Path: <stable+bounces-107973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD930A05471
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 08:24:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2D8DA054DD
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 08:57:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9F9516111D
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 07:24:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 981471631E9
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 07:57:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1761AA781;
-	Wed,  8 Jan 2025 07:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318231ACEAF;
+	Wed,  8 Jan 2025 07:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vaCa1bQx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xp3d7JkC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA571A9B48
-	for <stable@vger.kernel.org>; Wed,  8 Jan 2025 07:24:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F8B1A83F9;
+	Wed,  8 Jan 2025 07:57:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736321092; cv=none; b=utikQhxybHqxTtGKK2eZHxvP+a1rTJ5aRMFxC76KH1qUW0jdFgI+TsZEnnxamZRMj6GTJdP3FClUls3s6nwZXETFzDmDEX3TiocR3GqLf2HrqSIyotac/jQ31k4PJOh9XyW8XUTblHoAH152JKOyz9ybxuriHalKx4dyUSphkN4=
+	t=1736323027; cv=none; b=DJpOQZJrEuecQoG9qJ8/C3zdQGFDl9RBxghjuSU4YYfYMGg+/4kQq6E9pTgVcwINOPnPzrxkqyaCOPyXdf9HGFvM80KF5A6+UIHdFuGmsUAyHPeucP7wLCgbb/JDgBCcMnQpI9X35xIUCT5uvcGS/FUpP7kEWLDJDVJRGHq+XlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736321092; c=relaxed/simple;
-	bh=5IxOoQwSeKTITQNXdS3qTIZxQMEogKVdqGG9KJOqjoE=;
+	s=arc-20240116; t=1736323027; c=relaxed/simple;
+	bh=gxOj/DoYoxlI1ScXJOrYyHXTcN+QUEIU0FYHoLGjBQg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sv8yiguE2rkBF7qnFUUq5EfV1X3jWB7/Sl2pVCqQ5sC9aKViZ0xsCORQ9I5rtPFUwYDcEKOZVTxd3FWL/G0XpHNhsSAhLmeRAA43So+Y3d/wyMlwCysHKnPyYrIOj/JM4lDPtZWaTuYMz+749lcWPNVZzGAZyjYfh3sK5ZzYevA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vaCa1bQx; arc=none smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-46783d44db0so156707651cf.1
-        for <stable@vger.kernel.org>; Tue, 07 Jan 2025 23:24:49 -0800 (PST)
+	 To:Cc:Content-Type; b=fCaWdUhCGV0kFkL/VfPJWhCDTQzFdelk2hG9T7T+/oWf3zq90DSYl0jz7x3LJBzUtVt65q9eCPBazjAo6AtdljXUmfZD21lOA5uokrhccJnkmLIA9zCrrzvn+7TZUNW3yQH2vd0VDaeTeynbQ2vStsknrsnekOZH4386vqylTz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xp3d7JkC; arc=none smtp.client-ip=209.85.221.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-51889930cb1so4888277e0c.0;
+        Tue, 07 Jan 2025 23:57:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736321089; x=1736925889; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736323024; x=1736927824; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tqD3D2BkaGsmkbaQubkoWHw4O3cqAh/QClIK+1l8nzM=;
-        b=vaCa1bQxS7E7+VWkzQnu5QXnCpzzM1G9toyjRaLGKQEaP+Gq2PZcmWtdyYWAbyJeIW
-         MuwRzpEZR9VJZp5OQgzK0qQscd7z3lFnSthWxaMBcmNt0+2I9SxBlFHyHdSxqaIHQv8T
-         KXX0EpGEUPshea+iFI9u/Jk++W5qzlY5wYGI3H1qvFJxWbzlqi91GpE6YlcKvGRXjNx8
-         matNI4tRqJJ3a5qTyIqWVMxkgAZhZMYid/OjzvNBQB/aztq2pDf2HbJ8uHM+p3TIONuA
-         pH+YgqbOmID9zNx2yKZFWjXBmh0sLfyANotPAOyH4I2ioeoiBFfKy4wGPJdM4W2Uw/97
-         ppuA==
+        bh=6/nHnofGguTdw1vKNltVZXYt+IFuV4avQDVGGoRKljI=;
+        b=Xp3d7JkCvTNheUxMhxEA/lfURPwWWn15QfmVgejD7XbJqTT+YXNFB6DvIhcWer10cS
+         zdpsxFxX5Dbs8T0YH5KeLRlsxzLtsToXE7YIWwJYXEptqYDseeklTTb5660BQQcyCIJ2
+         nitb+PmijYPfSoKUZ1rWH+QJHBQl1q5vsCpArykRaEp3jO7pFvPWpSdyVEw75DLEeqrn
+         Hw3np8nQsGrz+YucirD4kyI4W3ADMY0m9/BDRdvYezUkauwhUuLjP/8lbPAIhO6bw6YI
+         uQRsj6ACbXYwYzMKzq7xxATdmY1cW8vA2vif3E9ne7yzvASotmgnp21R5FSamONDoOfX
+         jkYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736321089; x=1736925889;
+        d=1e100.net; s=20230601; t=1736323024; x=1736927824;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tqD3D2BkaGsmkbaQubkoWHw4O3cqAh/QClIK+1l8nzM=;
-        b=UXl5szxJDm7mHh/7VUlfi7CwPrHc5zxvovDqUhxJGqRRpha9iJ8zjbTTE5OaGhcY6/
-         aQkULfB/niq/mKufbG81uk01EpCi+q1tK/RHZcK2e+q3DV6jK6f5Ag2wIwUpW6OBqVQq
-         wXQOUuAse8hC5eRy3hXgqJiNaxtEg8yrdxCpbPIXgvKPV4l+syWn1m1Uhrg+hmfW5zit
-         mz7rAXcPEzBeQ4IWAWGh3q/JOzXH2YcakQsotTQDLfqlFtKdTtov2gPzdePdUeBs/8Tp
-         c59GKcyYOHt71Z1RDN4WbggKHRG3u5UTAioXmiE+pEWFXYuklcijTr4uSJ65B2jgIggW
-         w5dg==
-X-Forwarded-Encrypted: i=1; AJvYcCXnGvYfC1PUTUV8qZjQbORBdef2nm1ZW0EB059C3RbMInlKrYPwS3zaFHNuzRm+bS8od8hwUY0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz17aTEaqeIF53fHpay1U4iIi2G00SKsnhU6zKXyDYMq0kqQbJc
-	oyg8yGwLKOyLsoGhfn+CKIJmUgAFrEhY0jwrkoME6hSxqhGLu04mrN7dTjIfz96lKKgRI1cDXKv
-	tEI4tQwZr9MZg+dVYDU4ZJ0wGrfnJ3pYKSd6KpN6PS3/UYExNrrOS
-X-Gm-Gg: ASbGnctAQioB3rVY2fxoe3NuSkgFQj6VlE4HdB6InNiqcteIeUVGsfTrdfuKBetkIep
-	uAX+9yRf95QFEph0Uv5yofp83ApyAm0myvJc=
-X-Google-Smtp-Source: AGHT+IFD1KWSlrqLaE+gVjFH9vuie41Y4x3Bgx9nfPQVgnHndKmDnr1GTcHyKTXTrA0LsMyo4jRz0lXs9gxJj6Tgx4o=
-X-Received: by 2002:a05:6214:daf:b0:6d8:b3a7:75af with SMTP id
- 6a1803df08f44-6df9b2d8dd6mr26152236d6.46.1736321088941; Tue, 07 Jan 2025
- 23:24:48 -0800 (PST)
+        bh=6/nHnofGguTdw1vKNltVZXYt+IFuV4avQDVGGoRKljI=;
+        b=VNfbe5fxYwQrUUFTX5qljg1AsjqfxpIu+i8Pqa/Utq0YNlr/ZbdlWkeIj26E00l4jU
+         WwdOUbqWVk5/JNTzkjGMr5gh5iqmulqwGC4zL239Rjkpnss7P1sBXxtaR2ugzW+zAlDW
+         CyMDix2s1v+/mZSHHMsPzeoBPXrvIqHqohZL8Ihk1rEqGNyqkPEyhqXWkfRia3KEgXy7
+         601wjyHlaG12fAz7fWGK3o8a6dQXMDDmycIR0QSe4cQndnXDAZoRXuw3UGCA2sJG3M3g
+         6fGnvKAbHvcMnUo7/tUtJKPF7jKXgFcUDoXNjrPbhW9mLOalUDLy9Z1zrcJLWwjB6bEM
+         MH7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW7arlCYh1UWSL3Kz0CwbwEvPzQkLD3tAEImzwqo/VLnn9f5yk6MsegKVtE4RgrysQrNexHWbcPb5K6q3c=@vger.kernel.org, AJvYcCWowPYCMzoVLs3bWs9fcTD5c6brH6ovE5a9vVmiR/PgR4Gg6m5h/oHcd+vtK1koxrnB6OH06yso@vger.kernel.org
+X-Gm-Message-State: AOJu0YyX4CTdXP4BcrjWrQRJYccta0VGCQWp9tfq+50V7K1BRI53Kpjv
+	DXDSdm+7VCZdXb4bpqd9+kMIG7jv7Jt6VnXZsUOlPm5L892Y9SUJfQcRjve18I05t30uxRoYnHX
+	YAfv0ozWGl4P3TrGf0+5NHJToDBU=
+X-Gm-Gg: ASbGncvEg9Ldblm9HKID9bExSaWzVoRzCzXJbC3R+pkwW7un7a3u0FgZdfwa4JcBam/
+	MxtdV7I/+HkhDUHcNHOcKTIHAHz0ZbXfWFILa3xkaMAl1MC09y00q0yLvmo2GWtCUJ7F0L/4=
+X-Google-Smtp-Source: AGHT+IGZ4rOtpqULk68Q3nCTHxwHuIitpr1OfmuohtzOigKXbQHtcmvCd8bnLU+jwku/h+ElLq2/bLl4t6D7H+zvLmU=
+X-Received: by 2002:a05:6122:65a9:b0:518:859e:87ae with SMTP id
+ 71dfb90a1353d-51c6c52475cmr981935e0c.7.1736323024103; Tue, 07 Jan 2025
+ 23:57:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250107074724.1756696-1-yosryahmed@google.com>
- <20250107074724.1756696-2-yosryahmed@google.com> <20250107180345.GD37530@cmpxchg.org>
- <CAJD7tkYNvyVh2ETdbHrmtJRzKwVX3pPvite+cy0aS6cwJe5ePw@mail.gmail.com>
- <CAJD7tkYhO7DAQTrmb1A2H_FsaExoa1fp+C8vQw0MmzkmM+KyUA@mail.gmail.com>
- <CAKEwX=M_wTnd9yWf4yzjjgPEsjMFW-TAr_m_29YK4-tDE0UMpA@mail.gmail.com>
- <CAJD7tkZffK+05e8fLnUWFA0+2AsJKf9xjEKFoX4mgyFxqd5rSQ@mail.gmail.com> <20250107224225.ca41ec2f0340b6b768f44a6a@linux-foundation.org>
-In-Reply-To: <20250107224225.ca41ec2f0340b6b768f44a6a@linux-foundation.org>
-From: Yosry Ahmed <yosryahmed@google.com>
-Date: Tue, 7 Jan 2025 23:24:12 -0800
-X-Gm-Features: AbW1kvZ_lyoJRdFO0iZF3jcIgxnxWRXD8WgPZDEF8--ksKwm0V_ZBG_y8dUr-nI
-Message-ID: <CAJD7tkZCpqXnS1hi_0tJO1uw_F_aQ0O6bVw28D4jgFe3_QaGdA@mail.gmail.com>
-Subject: Re: [PATCH RESEND 2/2] mm: zswap: use SRCU to synchronize with CPU hotunplug
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Vitaly Wool <vitalywool@gmail.com>, 
-	Barry Song <baohua@kernel.org>, Sam Sun <samsun1006219@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250107222236.2715883-1-yosryahmed@google.com>
+ <20250107222236.2715883-2-yosryahmed@google.com> <DM8PR11MB567100328F56886B9F179271C9122@DM8PR11MB5671.namprd11.prod.outlook.com>
+ <CAJD7tkYqv9oA4V_Ga8KZ_uV1kUnaRYBzHwwd72iEQPO2PKnSiw@mail.gmail.com>
+ <SJ0PR11MB5678847E829448EF36A3961FC9122@SJ0PR11MB5678.namprd11.prod.outlook.com>
+ <CAJD7tkYV_pFGCwpzMD_WiBd+46oVHu946M_ARA8tP79zqkJsDA@mail.gmail.com>
+ <CAJD7tkYpNNsbTZZqFoRh-FkXDgxONZEUPKk1YQv7-TFMWWQRzQ@mail.gmail.com>
+ <CAKEwX=OHcZB8Uy5zj8Dhq-ieiwpJFcqRXN_7=mbM1FD_h_uOOA@mail.gmail.com>
+ <857acdc4-c4b7-44ea-a67d-2df83ca245ed@linux.dev> <CAJD7tkZ+UeXXvFc+M9JssooW_0rW-GVgUMo3GVcSMCxQhndZuA@mail.gmail.com>
+ <CAJD7tkbb1W_de-8nFfNif8LrkDsw6VnZyPowAt67xBpV5mL3sg@mail.gmail.com>
+In-Reply-To: <CAJD7tkbb1W_de-8nFfNif8LrkDsw6VnZyPowAt67xBpV5mL3sg@mail.gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Wed, 8 Jan 2025 20:56:53 +1300
+X-Gm-Features: AbW1kvYw-nDepavtTjSsXdMYyty0f6u5kWTpv8EjrnwJ3-Z4CLaYVGPblrfy7tw
+Message-ID: <CAGsJ_4y=kP1yhnpDmpTgs-6Dj1OEHJYOOuHo7ia3TjNq+JRYSw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] mm: zswap: disable migration while using per-CPU acomp_ctx
+To: Yosry Ahmed <yosryahmed@google.com>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vitaly Wool <vitalywool@gmail.com>, Sam Sun <samsun1006219@gmail.com>, 
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, 
+	"Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 7, 2025 at 10:42=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
+On Wed, Jan 8, 2025 at 6:56=E2=80=AFPM Yosry Ahmed <yosryahmed@google.com> =
+wrote:
 >
+> On Tue, Jan 7, 2025 at 9:34=E2=80=AFPM Yosry Ahmed <yosryahmed@google.com=
+> wrote:
 > >
-> > Andrew, could you please pick up patch 1 (the revert) while we figure
-> > out the alternative fix? It's important that it lands in v6.13 to
-> > avoid the possibility of deadlock. Figuring out an alternative fix is
-> > less important.
+> > On Tue, Jan 7, 2025 at 9:00=E2=80=AFPM Chengming Zhou <chengming.zhou@l=
+inux.dev> wrote:
+> > >
+> > > On 2025/1/8 12:46, Nhat Pham wrote:
+> > > > On Wed, Jan 8, 2025 at 9:34=E2=80=AFAM Yosry Ahmed <yosryahmed@goog=
+le.com> wrote:
+> > > >>
+> > > >>
+> > > >> Actually, using the mutex to protect against CPU hotunplug is not =
+too
+> > > >> complicated. The following diff is one way to do it (lightly teste=
+d).
+> > > >> Johannes, Nhat, any preferences between this patch (disabling
+> > > >> migration) and the following diff?
+> > > >
+> > > > I mean if this works, this over migration diasbling any day? :)
+> > > >
+> > > >>
+> > > >> diff --git a/mm/zswap.c b/mm/zswap.c
+> > > >> index f6316b66fb236..4d6817c679a54 100644
+> > > >> --- a/mm/zswap.c
+> > > >> +++ b/mm/zswap.c
+> > > >> @@ -869,17 +869,40 @@ static int zswap_cpu_comp_dead(unsigned int =
+cpu,
+> > > >> struct hlist_node *node)
+> > > >>          struct zswap_pool *pool =3D hlist_entry(node, struct zswa=
+p_pool, node);
+> > > >>          struct crypto_acomp_ctx *acomp_ctx =3D per_cpu_ptr(pool->=
+acomp_ctx, cpu);
+> > > >>
+> > > >> +       mutex_lock(&acomp_ctx->mutex);
+> > > >>          if (!IS_ERR_OR_NULL(acomp_ctx)) {
+> > > >>                  if (!IS_ERR_OR_NULL(acomp_ctx->req))
+> > > >>                          acomp_request_free(acomp_ctx->req);
+> > > >> +               acomp_ctx->req =3D NULL;
+> > > >>                  if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
+> > > >>                          crypto_free_acomp(acomp_ctx->acomp);
+> > > >>                  kfree(acomp_ctx->buffer);
+> > > >>          }
+> > > >> +       mutex_unlock(&acomp_ctx->mutex);
+> > > >>
+> > > >>          return 0;
+> > > >>   }
+> > > >>
+> > > >> +static struct crypto_acomp_ctx *acomp_ctx_get_cpu_locked(
+> > > >> +               struct crypto_acomp_ctx __percpu *acomp_ctx)
+> > > >> +{
+> > > >> +       struct crypto_acomp_ctx *ctx;
+> > > >> +
+> > > >> +       for (;;) {
+> > > >> +               ctx =3D raw_cpu_ptr(acomp_ctx);
+> > > >> +               mutex_lock(&ctx->mutex);
+> > > >
+> > > > I'm a bit confused. IIUC, ctx is per-cpu right? What's protecting t=
+his
+> > > > cpu-local data (including the mutex) from being invalidated under u=
+s
+> > > > while we're sleeping and waiting for the mutex?
+> >
+> > Please correct me if I am wrong, but my understanding is that memory
+> > allocated with alloc_percpu() is allocated for each *possible* CPU,
+> > and does not go away when CPUs are offlined. We allocate the per-CPU
+> > crypto_acomp_ctx structs with alloc_percpu() (including the mutex), so
+> > they should not go away with CPU offlining.
+> >
+> > OTOH, we allocate the crypto_acomp_ctx.acompx, crypto_acomp_ctx.req,
+> > and crypto_acomp_ctx.buffer only for online CPUs through the CPU
+> > hotplug notifiers (i.e. zswap_cpu_comp_prepare() and
+> > zswap_cpu_comp_dead()). These are the resources that can go away with
+> > CPU offlining, and what we need to protect about.
 >
-> I have the below patch in mm-hotfixes-unstable.
+> ..and now that I explain all of this I am wondering if the complexity
+> is warranted in the first place. It goes back all the way to the first
+> zswap commit, so I can't tell the justification for it.
 
-Please only keep that patch, "Revert "mm: zswap: fix race between
-[de]compression and CPU hotunplug", in mm-hotfixes-unstable.
+Personally, I would vote for the added complexity, as it avoids the
+potential negative side effects of reverting the scheduler's optimization
+for selecting a suitable CPU for a woken-up task and I have been looking
+for an approach to resolve it by cpuhotplug lock (obviously quite hacky
+and more complex than using this mutex)
+
+for (;;)  in acomp_ctx_get_cpu_locked() is a bit tricky but correct and
+really interesting, maybe it needs some comments.
 
 >
-> I also have
-> https://lkml.kernel.org/r/20250107222236.2715883-2-yosryahmed@google.com
-> in mm-hotfixes-unstable.  Don't know what to do with it.
+> I am not sure if they are setups that have significantly different
+> numbers of online and possible CPUs. Maybe we should just bite the
+> bullet and just allocate everything with alloc_percpu() and rip out
+> the hotplug callbacks completely.
 
-Please drop this one.
-
->
-> I have no patch "mm: zswap: use SRCU to synchronize with CPU hotunplug"
-> in mm-unstable.
-
-, and keep that one dropped.
-
-I will send another patch this week on top of mm-hotfixes-unstable,
-but that should be separate. The revert should land in v6.13
-regardless.
-
-Thanks!
-
->
->
->
-> From: Yosry Ahmed <yosryahmed@google.com>
-> Subject: Revert "mm: zswap: fix race between [de]compression and CPU hotu=
-nplug"
-> Date: Tue, 7 Jan 2025 22:22:34 +0000
->
-> This reverts commit eaebeb93922ca6ab0dd92027b73d0112701706ef.
->
-> Commit eaebeb93922c ("mm: zswap: fix race between [de]compression and CPU
-> hotunplug") used the CPU hotplug lock in zswap compress/decompress
-> operations to protect against a race with CPU hotunplug making some
-> per-CPU resources go away.
->
-> However, zswap compress/decompress can be reached through reclaim while
-> the lock is held, resulting in a potential deadlock as reported by syzbot=
-:
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-> WARNING: possible circular locking dependency detected
-> 6.13.0-rc6-syzkaller-00006-g5428dc1906dd #0 Not tainted
-> ------------------------------------------------------
-> kswapd0/89 is trying to acquire lock:
->  ffffffff8e7d2ed0 (cpu_hotplug_lock){++++}-{0:0}, at: acomp_ctx_get_cpu m=
-m/zswap.c:886 [inline]
->  ffffffff8e7d2ed0 (cpu_hotplug_lock){++++}-{0:0}, at: zswap_compress mm/z=
-swap.c:908 [inline]
->  ffffffff8e7d2ed0 (cpu_hotplug_lock){++++}-{0:0}, at: zswap_store_page mm=
-/zswap.c:1439 [inline]
->  ffffffff8e7d2ed0 (cpu_hotplug_lock){++++}-{0:0}, at: zswap_store+0xa74/0=
-x1ba0 mm/zswap.c:1546
->
-> but task is already holding lock:
->  ffffffff8ea355a0 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat mm/vmscan.c=
-:6871 [inline]
->  ffffffff8ea355a0 (fs_reclaim){+.+.}-{0:0}, at: kswapd+0xb58/0x2f30 mm/vm=
-scan.c:7253
->
-> which lock already depends on the new lock.
->
-> the existing dependency chain (in reverse order) is:
->
-> -> #1 (fs_reclaim){+.+.}-{0:0}:
->         lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5849
->         __fs_reclaim_acquire mm/page_alloc.c:3853 [inline]
->         fs_reclaim_acquire+0x88/0x130 mm/page_alloc.c:3867
->         might_alloc include/linux/sched/mm.h:318 [inline]
->         slab_pre_alloc_hook mm/slub.c:4070 [inline]
->         slab_alloc_node mm/slub.c:4148 [inline]
->         __kmalloc_cache_node_noprof+0x40/0x3a0 mm/slub.c:4337
->         kmalloc_node_noprof include/linux/slab.h:924 [inline]
->         alloc_worker kernel/workqueue.c:2638 [inline]
->         create_worker+0x11b/0x720 kernel/workqueue.c:2781
->         workqueue_prepare_cpu+0xe3/0x170 kernel/workqueue.c:6628
->         cpuhp_invoke_callback+0x48d/0x830 kernel/cpu.c:194
->         __cpuhp_invoke_callback_range kernel/cpu.c:965 [inline]
->         cpuhp_invoke_callback_range kernel/cpu.c:989 [inline]
->         cpuhp_up_callbacks kernel/cpu.c:1020 [inline]
->         _cpu_up+0x2b3/0x580 kernel/cpu.c:1690
->         cpu_up+0x184/0x230 kernel/cpu.c:1722
->         cpuhp_bringup_mask+0xdf/0x260 kernel/cpu.c:1788
->         cpuhp_bringup_cpus_parallel+0xf9/0x160 kernel/cpu.c:1878
->         bringup_nonboot_cpus+0x2b/0x50 kernel/cpu.c:1892
->         smp_init+0x34/0x150 kernel/smp.c:1009
->         kernel_init_freeable+0x417/0x5d0 init/main.c:1569
->         kernel_init+0x1d/0x2b0 init/main.c:1466
->         ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
->         ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
->
-> -> #0 (cpu_hotplug_lock){++++}-{0:0}:
->         check_prev_add kernel/locking/lockdep.c:3161 [inline]
->         check_prevs_add kernel/locking/lockdep.c:3280 [inline]
->         validate_chain+0x18ef/0x5920 kernel/locking/lockdep.c:3904
->         __lock_acquire+0x1397/0x2100 kernel/locking/lockdep.c:5226
->         lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5849
->         percpu_down_read include/linux/percpu-rwsem.h:51 [inline]
->         cpus_read_lock+0x42/0x150 kernel/cpu.c:490
->         acomp_ctx_get_cpu mm/zswap.c:886 [inline]
->         zswap_compress mm/zswap.c:908 [inline]
->         zswap_store_page mm/zswap.c:1439 [inline]
->         zswap_store+0xa74/0x1ba0 mm/zswap.c:1546
->         swap_writepage+0x647/0xce0 mm/page_io.c:279
->         shmem_writepage+0x1248/0x1610 mm/shmem.c:1579
->         pageout mm/vmscan.c:696 [inline]
->         shrink_folio_list+0x35ee/0x57e0 mm/vmscan.c:1374
->         shrink_inactive_list mm/vmscan.c:1967 [inline]
->         shrink_list mm/vmscan.c:2205 [inline]
->         shrink_lruvec+0x16db/0x2f30 mm/vmscan.c:5734
->         mem_cgroup_shrink_node+0x385/0x8e0 mm/vmscan.c:6575
->         mem_cgroup_soft_reclaim mm/memcontrol-v1.c:312 [inline]
->         memcg1_soft_limit_reclaim+0x346/0x810 mm/memcontrol-v1.c:362
->         balance_pgdat mm/vmscan.c:6975 [inline]
->         kswapd+0x17b3/0x2f30 mm/vmscan.c:7253
->         kthread+0x2f0/0x390 kernel/kthread.c:389
->         ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
->         ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
->
-> other info that might help us debug this:
->
->  Possible unsafe locking scenario:
->
->        CPU0                    CPU1
->        ----                    ----
->   lock(fs_reclaim);
->                                lock(cpu_hotplug_lock);
->                                lock(fs_reclaim);
->   rlock(cpu_hotplug_lock);
->
->  *** DEADLOCK ***
->
-> 1 lock held by kswapd0/89:
->   #0: ffffffff8ea355a0 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat mm/vms=
-can.c:6871 [inline]
->   #0: ffffffff8ea355a0 (fs_reclaim){+.+.}-{0:0}, at: kswapd+0xb58/0x2f30 =
-mm/vmscan.c:7253
->
-> stack backtrace:
-> CPU: 0 UID: 0 PID: 89 Comm: kswapd0 Not tainted 6.13.0-rc6-syzkaller-0000=
-6-g5428dc1906dd #0
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS G=
-oogle 09/13/2024
-> Call Trace:
->  <TASK>
->   __dump_stack lib/dump_stack.c:94 [inline]
->   dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
->   print_circular_bug+0x13a/0x1b0 kernel/locking/lockdep.c:2074
->   check_noncircular+0x36a/0x4a0 kernel/locking/lockdep.c:2206
->   check_prev_add kernel/locking/lockdep.c:3161 [inline]
->   check_prevs_add kernel/locking/lockdep.c:3280 [inline]
->   validate_chain+0x18ef/0x5920 kernel/locking/lockdep.c:3904
->   __lock_acquire+0x1397/0x2100 kernel/locking/lockdep.c:5226
->   lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5849
->   percpu_down_read include/linux/percpu-rwsem.h:51 [inline]
->   cpus_read_lock+0x42/0x150 kernel/cpu.c:490
->   acomp_ctx_get_cpu mm/zswap.c:886 [inline]
->   zswap_compress mm/zswap.c:908 [inline]
->   zswap_store_page mm/zswap.c:1439 [inline]
->   zswap_store+0xa74/0x1ba0 mm/zswap.c:1546
->   swap_writepage+0x647/0xce0 mm/page_io.c:279
->   shmem_writepage+0x1248/0x1610 mm/shmem.c:1579
->   pageout mm/vmscan.c:696 [inline]
->   shrink_folio_list+0x35ee/0x57e0 mm/vmscan.c:1374
->   shrink_inactive_list mm/vmscan.c:1967 [inline]
->   shrink_list mm/vmscan.c:2205 [inline]
->   shrink_lruvec+0x16db/0x2f30 mm/vmscan.c:5734
->   mem_cgroup_shrink_node+0x385/0x8e0 mm/vmscan.c:6575
->   mem_cgroup_soft_reclaim mm/memcontrol-v1.c:312 [inline]
->   memcg1_soft_limit_reclaim+0x346/0x810 mm/memcontrol-v1.c:362
->   balance_pgdat mm/vmscan.c:6975 [inline]
->   kswapd+0x17b3/0x2f30 mm/vmscan.c:7253
->   kthread+0x2f0/0x390 kernel/kthread.c:389
->   ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
->   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
->  </TASK>
->
-> Revert the change. A different fix for the race with CPU hotunplug will
-> follow.
->
-> Link: https://lkml.kernel.org/r/20250107222236.2715883-1-yosryahmed@googl=
-e.com
-> Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
-> Reported-by: syzbot <syzkaller@googlegroups.com>
-> Cc: Barry Song <baohua@kernel.org>
-> Cc: Chengming Zhou <chengming.zhou@linux.dev>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
-> Cc: Nhat Pham <nphamcs@gmail.com>
-> Cc: Sam Sun <samsun1006219@gmail.com>
-> Cc: Vitaly Wool <vitalywool@gmail.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
->
->  mm/zswap.c |   19 +++----------------
->  1 file changed, 3 insertions(+), 16 deletions(-)
->
-> --- a/mm/zswap.c~revert-mm-zswap-fix-race-between-compression-and-cpu-hot=
-unplug
-> +++ a/mm/zswap.c
-> @@ -880,18 +880,6 @@ static int zswap_cpu_comp_dead(unsigned
->         return 0;
->  }
->
-> -/* Prevent CPU hotplug from freeing up the per-CPU acomp_ctx resources *=
-/
-> -static struct crypto_acomp_ctx *acomp_ctx_get_cpu(struct crypto_acomp_ct=
-x __percpu *acomp_ctx)
-> -{
-> -       cpus_read_lock();
-> -       return raw_cpu_ptr(acomp_ctx);
-> -}
-> -
-> -static void acomp_ctx_put_cpu(void)
-> -{
-> -       cpus_read_unlock();
-> -}
-> -
->  static bool zswap_compress(struct page *page, struct zswap_entry *entry,
->                            struct zswap_pool *pool)
->  {
-> @@ -905,7 +893,8 @@ static bool zswap_compress(struct page *
->         gfp_t gfp;
->         u8 *dst;
->
-> -       acomp_ctx =3D acomp_ctx_get_cpu(pool->acomp_ctx);
-> +       acomp_ctx =3D raw_cpu_ptr(pool->acomp_ctx);
-> +
->         mutex_lock(&acomp_ctx->mutex);
->
->         dst =3D acomp_ctx->buffer;
-> @@ -961,7 +950,6 @@ unlock:
->                 zswap_reject_alloc_fail++;
->
->         mutex_unlock(&acomp_ctx->mutex);
-> -       acomp_ctx_put_cpu();
->         return comp_ret =3D=3D 0 && alloc_ret =3D=3D 0;
->  }
->
-> @@ -972,7 +960,7 @@ static void zswap_decompress(struct zswa
->         struct crypto_acomp_ctx *acomp_ctx;
->         u8 *src;
->
-> -       acomp_ctx =3D acomp_ctx_get_cpu(entry->pool->acomp_ctx);
-> +       acomp_ctx =3D raw_cpu_ptr(entry->pool->acomp_ctx);
->         mutex_lock(&acomp_ctx->mutex);
->
->         src =3D zpool_map_handle(zpool, entry->handle, ZPOOL_MM_RO);
-> @@ -1002,7 +990,6 @@ static void zswap_decompress(struct zswa
->
->         if (src !=3D acomp_ctx->buffer)
->                 zpool_unmap_handle(zpool, entry->handle);
-> -       acomp_ctx_put_cpu();
->  }
->
->  /*********************************
-> _
->
+Thanks
+Barry
 
