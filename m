@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-107957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A49A4A05227
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 05:40:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C25BAA05249
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 05:46:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 480A51889734
-	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 04:40:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0B9E167659
+	for <lists+stable@lfdr.de>; Wed,  8 Jan 2025 04:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6ABB19F47E;
-	Wed,  8 Jan 2025 04:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29AD19F422;
+	Wed,  8 Jan 2025 04:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="M/gUHxKE"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="dawBJifl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F242594B3;
-	Wed,  8 Jan 2025 04:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E2A2594A1;
+	Wed,  8 Jan 2025 04:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736311207; cv=none; b=EIbw0SW3WySwpZBCdY/39EE16fzS7s9iI1B9cMPJTHK+KdL4eENNNEYdNWO9QXJwmeKHpw4wu0m5ZNAMMTuDyTxrPQbbgyuLx0EUS3SQ57reRz7xLOyp5cfLSfk99I6Gg3S/GWoelNDXO2RddNBgS/oRKoLPQ79Q64dO3dKmuUY=
+	t=1736311565; cv=none; b=j68ZNkNPn2egxngihyTjcyTOGs26CrUbTaSUPpl1Rf/g+NCwf8C0Nhu4WD6FhSVy2UrDT0TBF3RYyEDXoxCxkRrNrsvVxsgEt2lfPyZh4Q2i4iHugRwH4J/8PrNk5dgnv8kPmQ1Uuw5PD2v4Qk9G1o+vPV+RPcH42WEtDZhAPto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736311207; c=relaxed/simple;
-	bh=u9zHp+Wp6GYH38QTg6h3Jpfap6SRiDKYatMY/bg8K3w=;
-	h=Date:To:From:Subject:Message-Id; b=W8UEhAEnTs7VVEmasllJ7amRv8jDrNPcz3/bCYI8hWNsMaj55NAwc3zrugqJvUmtWBq9sHHg+b4aptx+1lkMyhNqFKSgLauOR7Bjp+pHFNyvpspQEht0ATppnphUlu9WBfYJLjcMIXXF2kcGRM1PPYlU8brHlemD6OcAe+b0zW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=M/gUHxKE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE71C4CED0;
-	Wed,  8 Jan 2025 04:40:06 +0000 (UTC)
+	s=arc-20240116; t=1736311565; c=relaxed/simple;
+	bh=dAjutVqC4+k4LHLSlBLy5XTonjRzXK0v+R3bc0s/pdU=;
+	h=Date:To:From:Subject:Message-Id; b=Xdy7Aioj1078yOfftY0sjVzeoupi979Y0S1Ajblrha1jq0Cct+WMEq5Whu83GUAMP9ASHNP/eqgkhqtkv9t2/2+JBFRrq07u+6vzOhp4VD60wKFeVgN4W1cdTN1EYONqAqrnFqZ7L2kY5alkxv0CbdAzcWl0xchk8Buv9uZEO/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=dawBJifl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C36DC4CED0;
+	Wed,  8 Jan 2025 04:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1736311206;
-	bh=u9zHp+Wp6GYH38QTg6h3Jpfap6SRiDKYatMY/bg8K3w=;
+	s=korg; t=1736311565;
+	bh=dAjutVqC4+k4LHLSlBLy5XTonjRzXK0v+R3bc0s/pdU=;
 	h=Date:To:From:Subject:From;
-	b=M/gUHxKET0aCgFQb7y2qdkusI5l+8rR0/HsdIhYGp1C8WcNgK1xvcz7xaKIF2GIbk
-	 DEuzQivL8VTSvFAqEWMBLDoQdi+iVhrhwNFPEtXhQyIR5nmjMgymmLN3I0XxjRni6v
-	 CxuWZFsOzsu6ENffdkgb7KqNk7dHnSPMcHE+8pSs=
-Date: Tue, 07 Jan 2025 20:40:06 -0800
-To: mm-commits@vger.kernel.org,tglx@linutronix.de,stable@vger.kernel.org,shuah@kernel.org,oliver.sang@intel.com,dev.jain@arm.com,thomas.weissschuh@linutronix.de,akpm@linux-foundation.org
+	b=dawBJifljSMV+FjJpksJLCJiVnloTnJedXiiJtZgZ4yVpsOKzSUFzQl5Sn2AZM47I
+	 b5hfyWFqbStz9okTycsyUFhqn8diGRSC9guzskCjrnLNz2uHRkyntvY5okCnshVl67
+	 ygIEhD9HtgzjrwuXuX4loJegw5uOORNBAQC0shz4=
+Date: Tue, 07 Jan 2025 20:46:04 -0800
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,shuah@kernel.org,peterx@redhat.com,muchun.song@linux.dev,miko.lenczewski@arm.com,mark.rutland@arm.com,lorenzo.stoakes@oracle.com,Liam.Howlett@Oracle.com,jannh@google.com,david@redhat.com,ryan.roberts@arm.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + selftests-mm-virtual_address_range-avoid-reading-vvar-mappings.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250108044006.CCE71C4CED0@smtp.kernel.org>
+Subject: + mm-clear-uffd-wp-pte-pmd-state-on-mremap.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250108044605.0C36DC4CED0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: selftests/mm: virtual_address_range: avoid reading VVAR mappings
+     Subject: mm: clear uffd-wp PTE/PMD state on mremap()
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     selftests-mm-virtual_address_range-avoid-reading-vvar-mappings.patch
+     mm-clear-uffd-wp-pte-pmd-state-on-mremap.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-virtual_address_range-avoid-reading-vvar-mappings.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-clear-uffd-wp-pte-pmd-state-on-mremap.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,73 +73,201 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Subject: selftests/mm: virtual_address_range: avoid reading VVAR mappings
-Date: Tue, 07 Jan 2025 16:14:46 +0100
+From: Ryan Roberts <ryan.roberts@arm.com>
+Subject: mm: clear uffd-wp PTE/PMD state on mremap()
+Date: Tue, 7 Jan 2025 14:47:52 +0000
 
-The virtual_address_range selftest reads from the start of each mapping
-listed in /proc/self/maps.
+When mremap()ing a memory region previously registered with userfaultfd as
+write-protected but without UFFD_FEATURE_EVENT_REMAP, an inconsistency in
+flag clearing leads to a mismatch between the vma flags (which have
+uffd-wp cleared) and the pte/pmd flags (which do not have uffd-wp
+cleared).  This mismatch causes a subsequent mprotect(PROT_WRITE) to
+trigger a warning in page_table_check_pte_flags() due to setting the pte
+to writable while uffd-wp is still set.
 
-However not all mappings are valid to be arbitrarily accessed.  For
-example the vvar data used for virtual clocks on x86 can only be accessed
-if 1) the kernel configuration enables virtual clocks and 2) the
-hypervisor provided the data for it, which can only determined by the VDSO
-code itself.
+Fix this by always explicitly clearing the uffd-wp pte/pmd flags on any
+such mremap() so that the values are consistent with the existing clearing
+of VM_UFFD_WP.  Be careful to clear the logical flag regardless of its
+physical form; a PTE bit, a swap PTE bit, or a PTE marker.  Cover PTE,
+huge PMD and hugetlb paths.
 
-Since commit e93d2521b27f ("x86/vdso: Split virtual clock pages into
-dedicated mapping") the virtual clock data was split out into its own
-mapping, triggering faulting accesses by virtual_address_range.
-
-Skip the various vvar mappings in virtual_address_range to avoid errors.
-
-Link: https://lkml.kernel.org/r/20250107-virtual_address_range-tests-v1-2-3834a2fb47fe@linutronix.de
-Fixes: e93d2521b27f ("x86/vdso: Split virtual clock pages into dedicated mapping")
-Fixes: 010409649885 ("selftests/mm: confirm VA exhaustion without reliance on correctness of mmap()")
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202412271148.2656e485-lkp@intel.com
-Cc: Dev Jain <dev.jain@arm.com>
+Link: https://lkml.kernel.org/r/20250107144755.1871363-2-ryan.roberts@arm.com
+Co-developed-by: Mikołaj Lenczewski <miko.lenczewski@arm.com>
+Signed-off-by: Mikołaj Lenczewski <miko.lenczewski@arm.com>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Closes: https://lore.kernel.org/linux-mm/810b44a8-d2ae-4107-b665-5a42eae2d948@arm.com/
+Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Peter Xu <peterx@redhat.com>
 Cc: Shuah Khan <shuah@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- tools/testing/selftests/mm/virtual_address_range.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ include/linux/userfaultfd_k.h |   12 ++++++++++++
+ mm/huge_memory.c              |   12 ++++++++++++
+ mm/hugetlb.c                  |   14 +++++++++++++-
+ mm/mremap.c                   |   32 +++++++++++++++++++++++++++++++-
+ 4 files changed, 68 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/mm/virtual_address_range.c~selftests-mm-virtual_address_range-avoid-reading-vvar-mappings
-+++ a/tools/testing/selftests/mm/virtual_address_range.c
-@@ -116,10 +116,11 @@ static int validate_complete_va_space(vo
+--- a/include/linux/userfaultfd_k.h~mm-clear-uffd-wp-pte-pmd-state-on-mremap
++++ a/include/linux/userfaultfd_k.h
+@@ -247,6 +247,13 @@ static inline bool vma_can_userfault(str
+ 	    vma_is_shmem(vma);
+ }
  
- 	prev_end_addr = 0;
- 	while (fgets(line, sizeof(line), file)) {
-+		int path_offset = 0;
- 		unsigned long hop;
- 
--		if (sscanf(line, "%lx-%lx %s[rwxp-]",
--			   &start_addr, &end_addr, prot) != 3)
-+		if (sscanf(line, "%lx-%lx %4s %*s %*s %*s %n",
-+			   &start_addr, &end_addr, prot, &path_offset) != 3)
- 			ksft_exit_fail_msg("cannot parse /proc/self/maps\n");
- 
- 		/* end of userspace mappings; ignore vsyscall mapping */
-@@ -135,6 +136,10 @@ static int validate_complete_va_space(vo
- 		if (prot[0] != 'r')
- 			continue;
- 
-+		/* Only the VDSO can know if a VVAR mapping is really readable */
-+		if (path_offset && !strncmp(line + path_offset, "[vvar", 5))
-+			continue;
++static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
++{
++	struct userfaultfd_ctx *uffd_ctx = vma->vm_userfaultfd_ctx.ctx;
 +
- 		/*
- 		 * Confirm whether MAP_CHUNK_SIZE chunk can be found or not.
- 		 * If write succeeds, no need to check MAP_CHUNK_SIZE - 1
++	return uffd_ctx && (uffd_ctx->features & UFFD_FEATURE_EVENT_REMAP) == 0;
++}
++
+ extern int dup_userfaultfd(struct vm_area_struct *, struct list_head *);
+ extern void dup_userfaultfd_complete(struct list_head *);
+ void dup_userfaultfd_fail(struct list_head *);
+@@ -401,6 +408,11 @@ static inline bool userfaultfd_wp_async(
+ {
+ 	return false;
+ }
++
++static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
++{
++	return false;
++}
+ 
+ #endif /* CONFIG_USERFAULTFD */
+ 
+--- a/mm/huge_memory.c~mm-clear-uffd-wp-pte-pmd-state-on-mremap
++++ a/mm/huge_memory.c
+@@ -2206,6 +2206,16 @@ static pmd_t move_soft_dirty_pmd(pmd_t p
+ 	return pmd;
+ }
+ 
++static pmd_t clear_uffd_wp_pmd(pmd_t pmd)
++{
++	if (pmd_present(pmd))
++		pmd = pmd_clear_uffd_wp(pmd);
++	else if (is_swap_pmd(pmd))
++		pmd = pmd_swp_clear_uffd_wp(pmd);
++
++	return pmd;
++}
++
+ bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+ 		  unsigned long new_addr, pmd_t *old_pmd, pmd_t *new_pmd)
+ {
+@@ -2244,6 +2254,8 @@ bool move_huge_pmd(struct vm_area_struct
+ 			pgtable_trans_huge_deposit(mm, new_pmd, pgtable);
+ 		}
+ 		pmd = move_soft_dirty_pmd(pmd);
++		if (vma_has_uffd_without_event_remap(vma))
++			pmd = clear_uffd_wp_pmd(pmd);
+ 		set_pmd_at(mm, new_addr, new_pmd, pmd);
+ 		if (force_flush)
+ 			flush_pmd_tlb_range(vma, old_addr, old_addr + PMD_SIZE);
+--- a/mm/hugetlb.c~mm-clear-uffd-wp-pte-pmd-state-on-mremap
++++ a/mm/hugetlb.c
+@@ -5402,6 +5402,7 @@ static void move_huge_pte(struct vm_area
+ 			  unsigned long new_addr, pte_t *src_pte, pte_t *dst_pte,
+ 			  unsigned long sz)
+ {
++	bool need_clear_uffd_wp = vma_has_uffd_without_event_remap(vma);
+ 	struct hstate *h = hstate_vma(vma);
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	spinlock_t *src_ptl, *dst_ptl;
+@@ -5418,7 +5419,18 @@ static void move_huge_pte(struct vm_area
+ 		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+ 
+ 	pte = huge_ptep_get_and_clear(mm, old_addr, src_pte);
+-	set_huge_pte_at(mm, new_addr, dst_pte, pte, sz);
++
++	if (need_clear_uffd_wp && pte_marker_uffd_wp(pte))
++		huge_pte_clear(mm, new_addr, dst_pte, sz);
++	else {
++		if (need_clear_uffd_wp) {
++			if (pte_present(pte))
++				pte = huge_pte_clear_uffd_wp(pte);
++			else if (is_swap_pte(pte))
++				pte = pte_swp_clear_uffd_wp(pte);
++		}
++		set_huge_pte_at(mm, new_addr, dst_pte, pte, sz);
++	}
+ 
+ 	if (src_ptl != dst_ptl)
+ 		spin_unlock(src_ptl);
+--- a/mm/mremap.c~mm-clear-uffd-wp-pte-pmd-state-on-mremap
++++ a/mm/mremap.c
+@@ -138,6 +138,7 @@ static int move_ptes(struct vm_area_stru
+ 		struct vm_area_struct *new_vma, pmd_t *new_pmd,
+ 		unsigned long new_addr, bool need_rmap_locks)
+ {
++	bool need_clear_uffd_wp = vma_has_uffd_without_event_remap(vma);
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	pte_t *old_pte, *new_pte, pte;
+ 	pmd_t dummy_pmdval;
+@@ -216,7 +217,18 @@ static int move_ptes(struct vm_area_stru
+ 			force_flush = true;
+ 		pte = move_pte(pte, old_addr, new_addr);
+ 		pte = move_soft_dirty_pte(pte);
+-		set_pte_at(mm, new_addr, new_pte, pte);
++
++		if (need_clear_uffd_wp && pte_marker_uffd_wp(pte))
++			pte_clear(mm, new_addr, new_pte);
++		else {
++			if (need_clear_uffd_wp) {
++				if (pte_present(pte))
++					pte = pte_clear_uffd_wp(pte);
++				else if (is_swap_pte(pte))
++					pte = pte_swp_clear_uffd_wp(pte);
++			}
++			set_pte_at(mm, new_addr, new_pte, pte);
++		}
+ 	}
+ 
+ 	arch_leave_lazy_mmu_mode();
+@@ -278,6 +290,15 @@ static bool move_normal_pmd(struct vm_ar
+ 	if (WARN_ON_ONCE(!pmd_none(*new_pmd)))
+ 		return false;
+ 
++	/* If this pmd belongs to a uffd vma with remap events disabled, we need
++	 * to ensure that the uffd-wp state is cleared from all pgtables. This
++	 * means recursing into lower page tables in move_page_tables(), and we
++	 * can reuse the existing code if we simply treat the entry as "not
++	 * moved".
++	 */
++	if (vma_has_uffd_without_event_remap(vma))
++		return false;
++
+ 	/*
+ 	 * We don't have to worry about the ordering of src and dst
+ 	 * ptlocks because exclusive mmap_lock prevents deadlock.
+@@ -333,6 +354,15 @@ static bool move_normal_pud(struct vm_ar
+ 	if (WARN_ON_ONCE(!pud_none(*new_pud)))
+ 		return false;
+ 
++	/* If this pud belongs to a uffd vma with remap events disabled, we need
++	 * to ensure that the uffd-wp state is cleared from all pgtables. This
++	 * means recursing into lower page tables in move_page_tables(), and we
++	 * can reuse the existing code if we simply treat the entry as "not
++	 * moved".
++	 */
++	if (vma_has_uffd_without_event_remap(vma))
++		return false;
++
+ 	/*
+ 	 * We don't have to worry about the ordering of src and dst
+ 	 * ptlocks because exclusive mmap_lock prevents deadlock.
 _
 
-Patches currently in -mm which might be from thomas.weissschuh@linutronix.de are
+Patches currently in -mm which might be from ryan.roberts@arm.com are
 
-selftests-mm-virtual_address_range-fix-error-when-commitlimit-1gib.patch
-selftests-mm-virtual_address_range-avoid-reading-vvar-mappings.patch
+mm-clear-uffd-wp-pte-pmd-state-on-mremap.patch
 
 
