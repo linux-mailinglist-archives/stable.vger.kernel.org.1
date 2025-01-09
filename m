@@ -1,212 +1,90 @@
-Return-Path: <stable+bounces-108108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C80B5A07675
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 14:06:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C1AA076DF
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 14:14:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7628168424
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 13:06:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91547188B637
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 13:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19512218851;
-	Thu,  9 Jan 2025 13:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE0B218AAD;
+	Thu,  9 Jan 2025 13:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KfY5tvCR"
+	dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b="VZgq4P8M"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CFF2185A0
-	for <stable@vger.kernel.org>; Thu,  9 Jan 2025 13:05:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED019218593
+	for <stable@vger.kernel.org>; Thu,  9 Jan 2025 13:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736427951; cv=none; b=axVc2gI8eSuemV8/rxyFpzzGEpLt92qHZ2LXKf36s1qlrdD0tc37Z+3TC8Vrh0ph7tbN1BHRtuIGOwBZXKedLweoGDv3NV6FpXE1Ai8e+DNcqPDnbh91ot+Q3hvitpNi2PSVmigoqCtTR43kTUVBGnRFppHQJYjdT/T7OE+JR1E=
+	t=1736428438; cv=none; b=oTNoDdHgSggC6qvvjZlX9EZ5dnyQFOPupb0b72DibMagQxkfpoCxGwOP5JlVZivSmCGi34D/eqBnmRxUxUUhatEwTpTLzGK6UVLtOhkC4jNkQ6tlPq9YTC6CxPxiNJ03YRcsuuuYmyGfsOI/tchexkddNl5nY1ZbUGQnkz+AHmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736427951; c=relaxed/simple;
-	bh=curNqgXUQNuUhOshq+8hDCnkqHQaxA4k+pwE9uSUrko=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f+zP31oISARMnD7qdLVEFwc19+DXYIblCBf6Vazqd/UU/2JV89+K89vnS3bL93nNN4ylaBzvPcumHFlVeH9LMf2U8TWCTzRNWrzAhA2Ze1P5Sd68T8rLRzrh/+26Gy0rEz4hkDOnDjMXqY4ze14kjeoly1574qE7ClJyZbVjePA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KfY5tvCR; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736427949;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=RYyOisobOV+2GEps8qgootwJ53om8dGMQtS6YtO5WZ4=;
-	b=KfY5tvCR/GFX+l9fMrraIVeHJTYT61/umzOygJnj6oGfOKLtOcpSMbgZ9ET/VKpfWc4XSl
-	HMHunQoMwT54pF5iKISYrUEpPewW2of0ZTLnkJPqLUNQvAIyz/rmpAXxO6H86EhbvPHm8K
-	gKUUX67M3agCJc5bJU+7i8yUoYSro/Q=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-650-7VDIAQyuNl2fc9TuR0wntA-1; Thu, 09 Jan 2025 08:05:47 -0500
-X-MC-Unique: 7VDIAQyuNl2fc9TuR0wntA-1
-X-Mimecast-MFC-AGG-ID: 7VDIAQyuNl2fc9TuR0wntA
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-436219070b4so4574785e9.1
-        for <stable@vger.kernel.org>; Thu, 09 Jan 2025 05:05:47 -0800 (PST)
+	s=arc-20240116; t=1736428438; c=relaxed/simple;
+	bh=TwqBlKCo/5ENazwKpYfsYMgEwFOcQaBDDaRLL6b7F0Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JhulrUwCEPpbNJFchp2BTfJ+BvkGB3JxQud3D9GAoP1Y0uuXMgB4lHJRPM2e3Sexxvel5j6/zt9JALmWeuwvG1CSlI96PHu2nJqDkX02lxKZ2aVaswz1acuiqFOn8v4ONWqQMjDSery3dQ8qEG7fGc1iTJKYTiBxzYZStzmZc8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu; spf=pass smtp.mailfrom=szeredi.hu; dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b=VZgq4P8M; arc=none smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szeredi.hu
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-46b1d40abbdso5519021cf.2
+        for <stable@vger.kernel.org>; Thu, 09 Jan 2025 05:13:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google; t=1736428436; x=1737033236; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=TwqBlKCo/5ENazwKpYfsYMgEwFOcQaBDDaRLL6b7F0Y=;
+        b=VZgq4P8MzzCxCeL4uDMp4vnX5xbYFma5IQHgNdf2FJkHIxzJ8xIm2uIeSMLB4PWMfY
+         uhkouWeV2ZKEoOTDKG5dkosJIe1wZBBTit3fTuTCROfG1bWQJuucu8dBTluU34PqdHad
+         t8zXwi+XF4bOljc3v5otAc1pBORXchCox8+ws=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736427946; x=1737032746;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=RYyOisobOV+2GEps8qgootwJ53om8dGMQtS6YtO5WZ4=;
-        b=ELhx6TS9tEHfLti9SWrosK6XuDggoLYqtzcXWyoPkYiOLC+kLfF2SLyC6SvNQJr+1h
-         Q3If6dK73o0rtOZL/f+qW00TwWXtImLVtgG5yvRkbymobc9k8Cjj+Ojae61RF68+Ohjt
-         DynfRoEG2By0Btu1ZoFMyMyJr+wXSPlDegNFwJATI8ZO2RG52A5yDJDc5QH4YxeQKsho
-         jHMKfNsdXJFYniZjhxS/2WBtfhBFvC3BHhVWV+cRQCWsD2RP3/e/P9JOnAwZ9twuB/Lw
-         PeEWa31Jc0PZXXPV7hXfSpEGSPSuwvI5Bc6ooLQNg4+BSv+In+De2oF33R/2GlPKI2E6
-         uYFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU2WZTJKCegz0Qdy7P7H5TpTz90u9P5bjEVtlP+92dzJdIjDsMANeh1eu4kIQ8qBBZnSg64icg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRBey7JZfMorK+oLxZkLEL0SUgwmxMWRxtG6QIyvRsutRu27GH
-	4cspC1w8pUfcTqC1utnnbBtHs7Nz84inITtS4jVfkM5NPBAaFjYmgohfAeYFB03a9wRIO/cPm9w
-	cTsI4C5+uQVSs/Cq5jQZj2ee12gJenBgxonJ5BtrexXGEWvxedd2sLA==
-X-Gm-Gg: ASbGncsOkITfq9hANReaodR2DJjHXm11Y+HYMfHPC5mTu4cpcPAv1XMwu/f3CRkUyhV
-	+KQCBXmWyrQsvzM6xjHpdIxlJemFt8icT13M/zlfM50XIMClT0ncU1rLgMYnnD0TwUCA5SYHYDf
-	kzySx59LXMoGRos4zY0ttG0Yidf6OQh4TDAYxdFKm8FP1NpeBjC5w7A2Qd3Pw6ul1/xebzCqxfP
-	xL6Nts+pe/YFoMvm1uoxXj2iw3k/zlA5fupFCAmCjVNqq7s1FfoyHwIhRL1W1kbZrsVhS13fzau
-	Cn4kNmQpN46M19u+idikhNlxAPQ9PxwieQWmrjOSHUHmKn1hD2GWD0cSP6/X7LaynTL3q8MuABJ
-	RdZppyw==
-X-Received: by 2002:a05:6000:470d:b0:382:4b52:ffcc with SMTP id ffacd0b85a97d-38a870826d9mr6315574f8f.0.1736427946664;
-        Thu, 09 Jan 2025 05:05:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHB3N96DhcA/zslHvED8A7bOQqnlFm6h5Y9J/8+74AahoNWEqj+ZFqcvUPpuqbx2wL5BfhP0w==
-X-Received: by 2002:a05:6000:470d:b0:382:4b52:ffcc with SMTP id ffacd0b85a97d-38a870826d9mr6315514f8f.0.1736427946306;
-        Thu, 09 Jan 2025 05:05:46 -0800 (PST)
-Received: from ?IPV6:2003:cb:c72e:800:d383:9661:5934:2cfa? (p200300cbc72e0800d383966159342cfa.dip0.t-ipconnect.de. [2003:cb:c72e:800:d383:9661:5934:2cfa])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e2e92794sm54178075e9.37.2025.01.09.05.05.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Jan 2025 05:05:45 -0800 (PST)
-Message-ID: <4e52d67c-e968-4cf6-9c9b-88646f0d3a23@redhat.com>
-Date: Thu, 9 Jan 2025 14:05:43 +0100
+        d=1e100.net; s=20230601; t=1736428436; x=1737033236;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TwqBlKCo/5ENazwKpYfsYMgEwFOcQaBDDaRLL6b7F0Y=;
+        b=JZzCL/i/DnDuon8oAdWOm/omP/BpjifEON42+5lIL1Wp946mZrhshucSK6XhcJ64Fr
+         REV82yud10/DyMLq704IVYN9lza8SNS2DbWnYsW/VM+/3QZUir9u/1r/sHum6GC3v2Le
+         BnUW7qVwyzAeOaqqwT7W1XODcVKq8LBKZTURJ4g6zqjcXXauERaxGwsuvqrNQEt1ICMj
+         by/F50DyJ6lKfLZ1vTwtmcT/USdB/pTeK/VXQCaaInk1W2SmIJkB6R8Z6+9FHukSm47X
+         tgneRmdocbgGCABXHRxu6kA5RtuZTWoNwCCh3cSVbFzT3WyPCYY5uruVTn88hkTTfOFH
+         fz+A==
+X-Forwarded-Encrypted: i=1; AJvYcCVGFhYZOHW7kPFvoD14eddFOWAwswUxLIDTw0a0gFLwYIuMToFdtXAMGiQWq4lhFB/ifYq51lg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKGEXMfM8mZBtrkrJny+g9VJQmomQvxi1b35dYnJoMHzlyiPR3
+	e8JctEGIkf1V9lJpDAt+/1J8FZxSYpOfNmmtfIJz64yhpMqvuu7v8IAMK5ouCBeYKQ6aMwj33d8
+	7QwEFPRX9HM4cW6R3V1PIIas7YrWkGOzw427pCQ==
+X-Gm-Gg: ASbGnctIrIZsOx0iiZam1bu0Asa+HLzOJ/mb7uCCDKio632PyvZuISSnDXm+IRIZBHR
+	GNuXqk+wTlPgnwfO5QxImj5M4jTjX/kSxOp7F3dU=
+X-Google-Smtp-Source: AGHT+IFG9GJ09B4FJOZ+YFICJgZdpqOWtmk2iKM62UmCr1P+AGqCNFgZVmbiuXdIM4c1ctKzMWFGlhfolaoLVp2CoEQ=
+X-Received: by 2002:ac8:5a48:0:b0:467:5712:a69a with SMTP id
+ d75a77b69052e-46c7102fcb6mr96531341cf.29.1736428436036; Thu, 09 Jan 2025
+ 05:13:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] selftests/mm: virtual_address_range: Fix error when
- CommitLimit < 1GiB
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Dev Jain <dev.jain@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
- Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Ryan Roberts <ryan.roberts@arm.com>
-References: <20250107-virtual_address_range-tests-v1-0-3834a2fb47fe@linutronix.de>
- <20250107-virtual_address_range-tests-v1-1-3834a2fb47fe@linutronix.de>
- <5811cf74-d333-4653-ab64-0e981eda7745@arm.com>
- <20250108083855-840c688b-003f-423b-8327-2a10a2b27d58@linutronix.de>
- <05edee1e-04f1-4f19-816f-db03c182a201@redhat.com>
- <20250108165052-c03470bd-6ff7-44c9-87b9-9145456bdea8@linutronix.de>
- <618798d5-71b2-43d6-8f5c-78d911c5dd43@redhat.com>
- <20250109083527-e3c77b5f-14f5-467b-9cee-f71c75b2d654@linutronix.de>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20250109083527-e3c77b5f-14f5-467b-9cee-f71c75b2d654@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <0000000000003d5bc30617238b6d@google.com> <677ee31c.050a0220.25a300.01a2.GAE@google.com>
+ <CAJfpeguhqz7dGeEc7H_xT6aCXR6e5ZPsTwWwe-oxamLaNkW6=g@mail.gmail.com>
+In-Reply-To: <CAJfpeguhqz7dGeEc7H_xT6aCXR6e5ZPsTwWwe-oxamLaNkW6=g@mail.gmail.com>
+From: Miklos Szeredi <miklos@szeredi.hu>
+Date: Thu, 9 Jan 2025 14:13:45 +0100
+X-Gm-Features: AbW1kvavAsEfIUw5DyroXkQiIKTKKS9TDRTAdAT2RB5wVAD6b1Ef2WcW4M0Jvo4
+Message-ID: <CAJfpegsJt0+oE1OJxEb9kPXA+rouTb4nU6QTA49=SmaZp+dksQ@mail.gmail.com>
+Subject: Re: [syzbot] [overlayfs?] BUG: unable to handle kernel NULL pointer
+ dereference in __lookup_slow (3)
+To: syzbot <syzbot+94891a5155abdf6821b7@syzkaller.appspotmail.com>
+Cc: aivazian.tigran@gmail.com, amir73il@gmail.com, andrew.kanner@gmail.com, 
+	kovalev@altlinux.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-unionfs@vger.kernel.org, 
+	stable@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
- >
-> That is clear. The issue would be to figure which chunks are valid to
-> unmap. If something critical like the executable file is unmapped,
-> the process crashes. But see below.
-
-Ah, now I see what you mean. Yes, also the stack etc. will be 
-problematic. So IIUC, you want to limit the munmap optimization only to 
-the manually mmap()ed parts.
-
-> 
->>> Is it fine to rely on CONFIG_ANON_VMA_NAME?
->>> That would make it much easier to implement.
->>
->> Can you elaborate how you would do it?
-> 
-> First set the VMA name after mmap():
-> 
-> for (i = 0; i < NR_CHUNKS_LOW; i++) {
-> 	ptr[i] = mmap(NULL, MAP_CHUNK_SIZE, PROT_READ | PROT_WRITE,
-> 		     MAP_NORESERVE | MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> 
-> 	if (ptr[i] == MAP_FAILED) {
-> 		if (validate_lower_address_hint())
-> 			ksft_exit_fail_msg("mmap unexpectedly succeeded with hint\n");
-> 		break;
-> 	}
-> 
-> 	validate_addr(ptr[i], 0);
-> 	if (prctl(PR_SET_VMA, PR_SET_VMA_ANON_NAME, ptr[i], MAP_CHUNK_SIZE, "virtual_address_range"))
-> 		ksft_exit_fail_msg("prctl(PR_SET_VMA_ANON_NAME) failed: %s\n", strerror(errno));
-
-Likely this would prevent merging of VMAs.
-
-With a 1 GiB chunk size, and NR_CHUNKS_LOW == 128TiB, you'd already 
-require 128k VMAs. The default limit is frequently 64k.
-
-We could just scan the ptr / hptr array to see if this is a manual mmap 
-area or not. If this takes too long, one could sort the arrays by 
-address and perform a binary search.
-
-Not the most efficient way of doing it, but maybe good enough for this test?
-
-Alternatively, store the pointer in a xarray-like tree instead of two 
-arrays. Requires a bit more memory ... and we'd have to find a simple 
-implementation we could just reuse in this test. So maybe there is a 
-simpler way to get it done.
-
--- 
-Cheers,
-
-David / dhildenb
-
+#syz dup: BUG: unable to handle kernel NULL pointer dereference in
+lookup_one_unlocked
 
