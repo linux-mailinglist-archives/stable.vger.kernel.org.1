@@ -1,101 +1,115 @@
-Return-Path: <stable+bounces-108137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52FD8A07E2A
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 17:56:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22BD6A07E3A
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 18:00:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D23716738E
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 16:56:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C19003A770C
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 17:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C0E18C933;
-	Thu,  9 Jan 2025 16:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02504189BAC;
+	Thu,  9 Jan 2025 17:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="2ljEwoeD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JE6Xm4jQ"
 X-Original-To: stable@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2588918732B;
-	Thu,  9 Jan 2025 16:55:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C17273F9;
+	Thu,  9 Jan 2025 17:00:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736441739; cv=none; b=YG1abgMjLKyihjSSDiy8ABsbeXv33th4L8bJzZjspisxxCmTLBHI3IdHwtc3R92soFmh4JYJL7W9GA7zO3iCvqIM4jD1MykXzR34AbGcGzzAQcK+0vtwLlxzIJ81dLeF45DJ/EBNGqzWYBwQa8DcOiDVYNaHr0doJZ4WDjpqfec=
+	t=1736442027; cv=none; b=KX6/JqE5IoXQPNTHPflq2T/yxownLHpouZw8YQoBqX2YBiF/tCCDIdVvjNiYHbXvtnFsewym2wjK3CB3a/PejuhMtSzQGWiEUUh/Hs2/ovZVtOGeZ4uqZ393UFGPSp+eG3+DSefhtKQXVJMfYBpVsq6XM68eVvoPStroryWAjMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736441739; c=relaxed/simple;
-	bh=SHxGHbh8BaNUt5C8a9BczwXGI+m12aIy6i7S+FOo3F4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PVC82D4rsQjkgk08rEXWL7TIQIUe03OS9Wum1MP3fEvsfan7hODLkmcjeQVFEYQJkugvoIspXrxHYZlGR4CUEz9wNq7WTSxc9ATbNYCyEs2jrTVFV6fR8y+TVPHX9Zr04ihRnJt8fAqbrxs/s5VcyxPiAflRF6VK+LxN2o2+fG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=2ljEwoeD; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=AEiKFjkzgKWigijgMZ+BYkH9wSj7Ws/rYW5aY2RQxSw=; b=2ljEwoeDxNVWPLF+XZ8grBMuGb
-	9eH8SI7UJKrKfbVC4315nZWMV0MgWyIixymPkH3BOmLdAS4LtaV7JWoNPM4S+wi7Ly7ZtTnsVF0aN
-	Oc/XaDofnwoFYm7ytgKOwOm6vtgXEa4RtvMTlCC/ATZWgy3o6QMzfs11F8lBoglPccHMlaYPgxFaH
-	5ZhHRL9SfIl2BJxgDAkhwaNft1/VagNohieqevar/WU1LxCDtW9r08otorj0b8UDjC/4GuTAXWkYS
-	9N1I9vSB8jsNiNvyaWx/fpbB52zyI00uYagjNpsjrJClo6BKh4n/IqP0KgARL1VfbvU/MUswfEQfO
-	qW7nM8Fg==;
-Received: from i5e860d05.versanet.de ([94.134.13.5] helo=localhost.localdomain)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1tVvoi-0003hx-Eh; Thu, 09 Jan 2025 17:55:32 +0100
-From: Heiko Stuebner <heiko@sntech.de>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Klaus Goger <klaus.goger@theobroma-systems.com>,
-	Jakob Unterwurzacher <jakobunt@gmail.com>
-Cc: Heiko Stuebner <heiko@sntech.de>,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
-Subject: Re: [PATCH v4] arm64: dts: rockchip: increase gmac rx_delay on rk3399-puma
-Date: Thu,  9 Jan 2025 17:55:18 +0100
-Message-ID: <173644170629.2899934.9406584209909558440.b4-ty@sntech.de>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241213-puma_rx_delay-v4-1-8e8e11cc6ed7@cherry.de>
-References: <20241213-puma_rx_delay-v4-1-8e8e11cc6ed7@cherry.de>
+	s=arc-20240116; t=1736442027; c=relaxed/simple;
+	bh=6634pWrQTlGcDLuTISOrV8M6pjKmd4U2P6WyzGzAO3s=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Ze0Qipqvb7sJJDKFZP/0UP8TUSiDlZmLQAiviwbMekKfnH4UppqjJUMyBo+mgGCV6dpzXFcqIuxnT1nGvntZRklCElE+w1IotecuOFwCsJVNs3Va1fdob2RgrabKC7yENghzK06t8i8jOO58RZn+dDhIltcTSt3T9gIdYa37w1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JE6Xm4jQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17558C4CED2;
+	Thu,  9 Jan 2025 17:00:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736442027;
+	bh=6634pWrQTlGcDLuTISOrV8M6pjKmd4U2P6WyzGzAO3s=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=JE6Xm4jQ6mEZi9FORUN2gyXIXB65b7G0CYX7nJVDbttIb5NGG7z/BXt0cYjUEYeLj
+	 oC61tbkL086I408rPggj+00McFDrRh6u78SgIAErW29sEA8TpoV26qPezD+aDh1Ibr
+	 MsOOucmTu/dPHzb2sLJJQAAQkLLNAAAtT2BE/i5TZnqMoPata8SovE8Aic6YHBGSiZ
+	 Z/AEEp5cL8YG3Vy5tA49WxL9egHPvRoIBnBi4eVykRAYqH4mNTL5ki1JahhOnEpZLx
+	 BqV53oREO3yLsD46pgMNbDRojtyagmslvptpmODgbcLnJmiTPAIiEXicy0VcddIMYL
+	 cWH3DgMcZSCgA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB79D380A97E;
+	Thu,  9 Jan 2025 17:00:49 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/9] net: sysctl: avoid using current->nsproxy
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173644204876.1449021.3388211513784045754.git-patchwork-notify@kernel.org>
+Date: Thu, 09 Jan 2025 17:00:48 +0000
+References: <20250108-net-sysctl-current-nsproxy-v1-0-5df34b2083e8@kernel.org>
+In-Reply-To: <20250108-net-sysctl-current-nsproxy-v1-0-5df34b2083e8@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, gregory.detal@gmail.com, marcelo.leitner@gmail.com,
+ lucien.xin@gmail.com, vyasevich@gmail.com, nhorman@tuxdriver.com,
+ wangweidong1@huawei.com, daniel@iogearbox.net, vyasevic@redhat.com,
+ allison.henderson@oracle.com, sowmini.varadhan@oracle.com,
+ viro@zeniv.linux.org.uk, joel.granados@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-sctp@vger.kernel.org,
+ linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com, stable@vger.kernel.org,
+ syzbot+e364f774c6f57f2c86d1@syzkaller.appspotmail.com
 
+Hello:
 
-On Fri, 13 Dec 2024 10:54:58 +0100, Jakob Unterwurzacher wrote:
-> During mass manufacturing, we noticed the mmc_rx_crc_error counter,
-> as reported by "ethtool -S eth0 | grep mmc_rx_crc_error", to increase
-> above zero during nuttcp speedtests. Most of the time, this did not
-> affect the achieved speed, but it prompted this investigation.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 08 Jan 2025 16:34:28 +0100 you wrote:
+> As pointed out by Al Viro and Eric Dumazet in [1], using the 'net'
+> structure via 'current' is not recommended for different reasons:
 > 
-> Cycling through the rx_delay range on six boards (see table below) of
-> various ages shows that there is a large good region from 0x12 to 0x35
-> where we see zero crc errors on all tested boards.
+> - Inconsistency: getting info from the reader's/writer's netns vs only
+>   from the opener's netns as it is usually done. This could cause
+>   unexpected issues when other operations are done on the wrong netns.
 > 
 > [...]
 
-Applied, thanks!
+Here is the summary with links:
+  - [net,1/9] mptcp: sysctl: avail sched: remove write access
+    https://git.kernel.org/netdev/net/c/771ec78dc8b4
+  - [net,2/9] mptcp: sysctl: sched: avoid using current->nsproxy
+    https://git.kernel.org/netdev/net/c/d38e26e36206
+  - [net,3/9] mptcp: sysctl: blackhole timeout: avoid using current->nsproxy
+    https://git.kernel.org/netdev/net/c/92cf7a51bdae
+  - [net,4/9] sctp: sysctl: cookie_hmac_alg: avoid using current->nsproxy
+    https://git.kernel.org/netdev/net/c/ea62dd138391
+  - [net,5/9] sctp: sysctl: rto_min/max: avoid using current->nsproxy
+    https://git.kernel.org/netdev/net/c/9fc17b76fc70
+  - [net,6/9] sctp: sysctl: auth_enable: avoid using current->nsproxy
+    https://git.kernel.org/netdev/net/c/15649fd5415e
+  - [net,7/9] sctp: sysctl: udp_port: avoid using current->nsproxy
+    https://git.kernel.org/netdev/net/c/c10377bbc197
+  - [net,8/9] sctp: sysctl: plpmtud_probe_interval: avoid using current->nsproxy
+    https://git.kernel.org/netdev/net/c/6259d2484d0c
+  - [net,9/9] rds: sysctl: rds_tcp_{rcv,snd}buf: avoid using current->nsproxy
+    https://git.kernel.org/netdev/net/c/7f5611cbc487
 
-[1/1] arm64: dts: rockchip: increase gmac rx_delay on rk3399-puma
-      commit: 9d241b06802c6c2176ae7aa4f9f17f8a577ed337
-
-Best regards,
+You are awesome, thank you!
 -- 
-Heiko Stuebner <heiko@sntech.de>
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
