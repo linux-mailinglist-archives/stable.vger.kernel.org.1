@@ -1,198 +1,134 @@
-Return-Path: <stable+bounces-108117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DF94A077D3
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 14:40:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9D8EA077DF
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 14:41:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A6073A79B3
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 13:38:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 793121693B6
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 13:41:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3182219A91;
-	Thu,  9 Jan 2025 13:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 585A62206A4;
+	Thu,  9 Jan 2025 13:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jw+g0SSq"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YqGkmfWy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B204E217725;
-	Thu,  9 Jan 2025 13:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D1421E0BF
+	for <stable@vger.kernel.org>; Thu,  9 Jan 2025 13:38:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736429841; cv=none; b=hVRdYRdhqjD1N/2z6wLDw8bqtEjRbBrp6es6a+qTD9InSvkqtp7qZ0WL3D9d/C/DyOHmUo0/ybqyimXmvbccsy5IzGiCRfW9vlephhHdFN6hUS2NGftNtWmPSe9DG02Kc6nsIV3TFYsbccXONYW9PzUkqSODm6Xw5jbKiQrHINI=
+	t=1736429908; cv=none; b=IETia7SK1uHijy4kp3Sf2ZSYNoVenu5zF6bAOiuN99DnmcStNgUAT9MqDCjp3EmgJEMPnnDeC4jTR744kmYha3egmGNaPCzO2INErjl5LKVMZsLL3j7SLAGMknAcz8uwGJD23DebviPNO++71xU8jni0PnLUzGVHUbaukP0z3uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736429841; c=relaxed/simple;
-	bh=3xlV+7JgOATwhp6cpCOiMLwZBp4Kt5lRkkMwtfILMD8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qgp/lcm0syb9zFYY/4PJHaYmjkmG+9siDGXHvp0hN2Ej4sDhxsgsGpMS0KkusNti2yzVbxEuq5DHF0jXOSwxhrYD+IQRXAZhTyRfUJGKdDvC2qMpSzwhgaeiGxtSSQjZZrNo1EnZ5kl5SB4EkhwJtI1vJmvlKQZY4reYWjD3E+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jw+g0SSq; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-436637e8c8dso10582965e9.1;
-        Thu, 09 Jan 2025 05:37:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736429836; x=1737034636; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SmH93BYvyCnSPbMq0jHZyuUQVQaG/vWQ+Adhu1NOeU8=;
-        b=jw+g0SSq72Tp+hI6SCzCAXK6DPkuSkbyVpcMtm7GsH0re1tUlPz9SkufKDIucHoP7Y
-         TpJlR0qs9NfGybzelQf2Rl2O6vkUAKEbYgDUxenDzDiOEE5nfkwOz4dAjjK+tG/BFmoF
-         bppUlV5ndymh3WgeDDf75H2092M3BKNlpSjmd9FYrgvKYQtyXVlZU+KKRDeEdQPXDIon
-         1YYNe3vsaODushzMabgrJNjh32KpiNdYw8H30MrtWo4eAknxiAMp4cL8JwtD78dd0N63
-         ajLIFr1r4+TcxsCuzYfmD+GPVWvk1kRlpVmubcALbrlWSMC479xolYQ8ubbig3Nttloc
-         LGzw==
+	s=arc-20240116; t=1736429908; c=relaxed/simple;
+	bh=gHVqbeeLDW26xdNiUZY5UzwMkP98DCAKakRVGGlY3Dg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Bk/SyjUR0esRuuBYdtccBopjhnyhKjn550ljBvvO18Lz5ZBkc9q/bh3oj/wfcxn7iE8CZuU52CWZCU7b4WDG96dgYio3rsWF3Vs35Ti6Mzl1y1+VFKSwsvphPDmzyPLT3yVeZvpf8cj+BtddHdtoG1Aku2r/M5xl4BMjTfTQd5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YqGkmfWy; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736429905;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+qIG/0LvnjXMgyU8eqBX8hgYV7UmJPw6Xa2UEwpxHJA=;
+	b=YqGkmfWyEjjY77HA0vyTth1nUFN7C+3p0TP6pni2mbjmzQzWkCOEOtuS6ch3rFRJUnmvJZ
+	TP2s+6j68+qVWWDwZQQnViMHPtRUIvXqNfINzq8KF0LIsblGIUT5jmNeRNajkGc97+16bw
+	pF+kcTICC5E/UQHUWdPcxFr51mKz8KY=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-539-jFCsoYeWPdWVid1mDf17tw-1; Thu, 09 Jan 2025 08:38:24 -0500
+X-MC-Unique: jFCsoYeWPdWVid1mDf17tw-1
+X-Mimecast-MFC-AGG-ID: jFCsoYeWPdWVid1mDf17tw
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-aa69c41994dso70060866b.0
+        for <stable@vger.kernel.org>; Thu, 09 Jan 2025 05:38:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736429836; x=1737034636;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SmH93BYvyCnSPbMq0jHZyuUQVQaG/vWQ+Adhu1NOeU8=;
-        b=UpNIE4Ic3butYO7XoR2ydRBIi2x6EydBijcvy32myzrC930drmRbHDDqQaMDUoZlQ9
-         +x3AAypSsF3gapX1oJSKWqb64FPALPot/8xh5s6goZ7soA9ATvVCs3yX6QBy3VEGiHqE
-         kAeJPDFuuXU9fsIWyeucDKA7ZX2nvMQlazXYsC6JFHxVxlfoB3tUOiEqQeHgIc7SR9IE
-         Xw6tWpfg88FpxnXrWwITMQ2t19qh1MXzW5201kQEDY7dlKClBTwauAx1hrZBEpsz4qSm
-         lb/elBDxUYBJrpiKvqNBHt9/QDr98y8YbTkr+2XadcfS8rOZfzrgwwjE0mxG7/10HwWf
-         IxUg==
-X-Forwarded-Encrypted: i=1; AJvYcCX4kfbuP2bTWga6Tfi1axdyxm5n84rR7UL2kGIOlGZhOIY9INbiML25EGSL/MuJhLV1VXE4/OiBmDg8gyI=@vger.kernel.org, AJvYcCXZq3Fi1DHiuRd+K1uoG4p1QsQ4jG/lwi4SESSppElYJmYcTUb/uw+z40GcyK+H3ZnMxQsCvMkoyxTL7Ag=@vger.kernel.org, AJvYcCXdKU7c8guJD9d02KvSbZx/BGjy4UycDQkNj3tXf1gbNX7dgnhowkSZu/LRaIb3/QDDCrIFx2Yp@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0pIikeZlAIBu2GzqvR8Bub7qPKich2fOfP/+ZsIuO0gQlVSsJ
-	fdf74DOXr7Yj/Ic0fm4dU1PYQ3pIHkNeusCPHLfEMyPLWDW897YA
-X-Gm-Gg: ASbGncuNhZvqxHCX+Y48NQq8CyRvj9LdpSO5HOPXZnAYxHASVWVD9NIAqtWOdzJYv+a
-	FzdkGKpwJAMkCrG3MXrtKZPGtfpO3bQ5FtTuuy1YVjgcWp2oPqRKBTppZkPniG1D3BRhjDpqsUm
-	JDzy1uQIHlr3gqNdhTlE+BOQJ7yns0na1c9xgMhuoCJIFNalgJHcrGA7RzS54nDYARQdZ4WDqEm
-	DQbOtBDWj0mxqxxI39knyVoCoL+eyg2tXczjiEpMWCQKBeyn98j2yFF+D5jO9jdoEwm3MvYb0Ky
-	ZHq5+eH73oyj3h4ldJ90KT7bkLJ8y4U2rBJ0/xY65oM=
-X-Google-Smtp-Source: AGHT+IGYP3yVvKkIjcpct+SNeD5GTm0cuYtD6iVaq7ZsZOZmk4hrtnLgZBoUgCLCbuu72ZfrfVYC3A==
-X-Received: by 2002:a05:600c:3149:b0:434:f297:8e78 with SMTP id 5b1f17b1804b1-436e267fbe1mr60471065e9.7.1736429835836;
-        Thu, 09 Jan 2025 05:37:15 -0800 (PST)
-Received: from orome (p200300e41f281900f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f28:1900:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e2da66d9sm56299485e9.1.2025.01.09.05.37.14
+        d=1e100.net; s=20230601; t=1736429903; x=1737034703;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+qIG/0LvnjXMgyU8eqBX8hgYV7UmJPw6Xa2UEwpxHJA=;
+        b=MROAgxO7Dz0RsA64kiDVnFK4Q8unFVYJiYdaPXtqm77Ipyp0UN2nVhZFz0tg9hIKdU
+         r6zUgitDsVREVcjRlh2sVVhpnYg6BaW0/v46VIvErIBWX8CEuM+tOfgFIFDCKfqBjZeC
+         4IbZVe/6NwJDPjHS9rNT5Hwlq1GKuZTjq5HV5JijR5IEXmChQWZhffbV8pDNyF15dDwO
+         mQi3Fk2uaz665LzLJz8h8Jsve561GIXNZ25cS5M0i/WR8IGc2hK+XcE/ePnTygWXOkSX
+         NJuBaa7z4SBCOKwgze/UCpTh9yLLN6IoYYaYskbnPhE6/peyDL8nt1Sg0MbE0ISvtoSJ
+         UZGg==
+X-Forwarded-Encrypted: i=1; AJvYcCWC1KcQN6cDgivJiaECFOcM+EoxrR0RPuGCRNq43/KmoNv/JI5CD6k5/ow2lle131nVkk+d3Oo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGrG1JjeCJDrkUEvBy1vl+40nbX2QbG4feqmc5yu8ttoh0UoFa
+	N03LHKikEuTe93rFP8ZzP4zbZ/exjFdM+KzcF5sSDhJcDHvNLEEd8Z6m1WBBXHp3gVSrO1xxIIn
+	ACSLLHdo30jYf2fOHLTS3j+4jFQVMtz629yQMMIMOmJUiWGUjoaJy3w==
+X-Gm-Gg: ASbGnctBy+Al0v8u7K/p4DdF1FrcqFiYh/r0DstO/f88bugMVfNrZ8CoQBGI1jcE1Dn
+	hBBYUH1n/W52eQclw30Pu/iNxgBcRUJn8fIQSCwS2TMPws1IIfod2jJ2NP9DWjqXg6r8UqnTb45
+	CG3fi7g93uFPueXN2vh41JNdZytLOasujZhpoEa87ua06qoV2RxmkUHG40X001q00N6pr3oyLqA
+	AisRJGqVzs6ieUgPXDYZzH0LYcMKXXs/7a/Rc1kdmGauLW6pWZT8SG6BcB8
+X-Received: by 2002:a05:6402:3549:b0:5d0:e73c:b7f0 with SMTP id 4fb4d7f45d1cf-5d972e70945mr15040478a12.28.1736429902593;
+        Thu, 09 Jan 2025 05:38:22 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHsGUykWSOpesU6tHxPGZnO3JxPfRRnO6klBd/fYEFfPEHAwQWWT0oVTu7t2r5Sxoacsy+c3Q==
+X-Received: by 2002:a05:6402:3549:b0:5d0:e73c:b7f0 with SMTP id 4fb4d7f45d1cf-5d972e70945mr15040371a12.28.1736429901823;
+        Thu, 09 Jan 2025 05:38:21 -0800 (PST)
+Received: from [192.168.10.47] ([151.62.105.73])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d99008c366sm624477a12.17.2025.01.09.05.38.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jan 2025 05:37:14 -0800 (PST)
-Date: Thu, 9 Jan 2025 14:37:12 +0100
-From: Thierry Reding <thierry.reding@gmail.com>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: jckuo@nvidia.com, vkoul@kernel.org, kishon@kernel.org, 
-	jonathanh@nvidia.com, linux-phy@lists.infradead.org, linux-tegra@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] phy: Fix error handling in tegra_xusb_port_init
-Message-ID: <p4rkf6bfo76njky6ovyk2w5rgqugjrubnc7npfkj5vvpivufs5@6b4yzxoapbeq>
-References: <20250107085129.812835-1-make24@iscas.ac.cn>
+        Thu, 09 Jan 2025 05:38:21 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: oliver.upton@linux.dev,
+	Will Deacon <will@kernel.org>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	seanjc@google.com,
+	linuxppc-dev@lists.ozlabs.org,
+	regressions@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH 1/5] KVM: e500: retry if no memslot is found
+Date: Thu,  9 Jan 2025 14:38:13 +0100
+Message-ID: <20250109133817.314401-2-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250109133817.314401-1-pbonzini@redhat.com>
+References: <20250109133817.314401-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="asmlsgho3wx3j5tl"
-Content-Disposition: inline
-In-Reply-To: <20250107085129.812835-1-make24@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
 
+Avoid a NULL pointer dereference if the memslot table changes between the
+exit and the call to kvmppc_e500_shadow_map().
 
---asmlsgho3wx3j5tl
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] phy: Fix error handling in tegra_xusb_port_init
-MIME-Version: 1.0
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/powerpc/kvm/e500_mmu_host.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-On Tue, Jan 07, 2025 at 04:51:29PM +0800, Ma Ke wrote:
-> The reference count of the device incremented in device_initialize()=20
-> is not decremented properly when device_add() fails. Change=20
-> device_unregister() to a put_device() call before returning from the=20
-> function to decrement reference count for cleanup. Or it could cause=20
-> memory leak.
->=20
-> As comment of device_add() says, 'if device_add() succeeds, you should
-> call device_del() when you want to get rid of it. If device_add() has
-> not succeeded, use only put_device() to drop the reference count'.
->=20
-> Found by code review.
+diff --git a/arch/powerpc/kvm/e500_mmu_host.c b/arch/powerpc/kvm/e500_mmu_host.c
+index e5a145b578a4..732335444d68 100644
+--- a/arch/powerpc/kvm/e500_mmu_host.c
++++ b/arch/powerpc/kvm/e500_mmu_host.c
+@@ -349,6 +349,11 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
+ 	 * pointer through from the first lookup.
+ 	 */
+ 	slot = gfn_to_memslot(vcpu_e500->vcpu.kvm, gfn);
++	if (!slot) {
++		ret = -EAGAIN;
++		goto out;
++	}
++
+ 	hva = gfn_to_hva_memslot(slot, gfn);
+ 
+ 	if (tlbsel == 1) {
+-- 
+2.47.1
 
-While the patch looks correct, the commit message seems confusing to me.
-
-device_unregister() will also call put_device() after first calling
-device_del(). So the reference count /is/ properly balanced.
-
-Instead, the kerneldoc comment for device_add() says this:
-
- * NOTE: _Never_ directly free @dev after calling this function, even
- * if it returned an error! Always use put_device() to give up your
- * reference instead.
- *
- * Rule of thumb is: if device_add() succeeds, you should call
- * device_del() when you want to get rid of it. If device_add() has
- * *not* succeeded, use *only* put_device() to drop the reference
- * count.
-
-So the real reason that this patch is correct is because
-device_unregister() should only be called after device_add() succeeded
-because device_del() undoes what device_add() does if successful. In
-this case we only need to undo what device_initialize() does, and that
-is what put_device() will do.
-
-Thierry
-
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 53d2a715c240 ("phy: Add Tegra XUSB pad controller support")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->  drivers/phy/tegra/xusb.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
-> index 79d4814d758d..c89df95aa6ca 100644
-> --- a/drivers/phy/tegra/xusb.c
-> +++ b/drivers/phy/tegra/xusb.c
-> @@ -548,16 +548,16 @@ static int tegra_xusb_port_init(struct tegra_xusb_p=
-ort *port,
-> =20
->  	err =3D dev_set_name(&port->dev, "%s-%u", name, index);
->  	if (err < 0)
-> -		goto unregister;
-> +		goto put_device;
-> =20
->  	err =3D device_add(&port->dev);
->  	if (err < 0)
-> -		goto unregister;
-> +		goto put_device;
-> =20
->  	return 0;
-> =20
-> -unregister:
-> -	device_unregister(&port->dev);
-> +put_device:
-> +	put_device(&port->dev);
->  	return err;
->  }
-> =20
-> --=20
-> 2.25.1
->=20
-
---asmlsgho3wx3j5tl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIyBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmd/0QYACgkQ3SOs138+
-s6EgOg/4rgyOGMZjMtdunsxWV1SjVj7jfWgylsyvw43B3u571vaaaBSceklwKPoo
-H0ZfAQb3iVuGMmFLtMGm7YBHwdtT0rafA8D/m5H48HyxaIIFTduTkOphl2nLtCta
-Co/oT49iVsJAEg+EQU7zUN7rcsGj5W1fJPCHs9yYk6jog87Lk4GKzVRFmVEc6hOw
-yK8x9B+MTrioN6LEO11wjeVkef6pBJ5z35/Q3E6Fs/9+dcER3ljSXPIO6Q7sPm5Z
-SCxzkPIcBtBO3N7UpND7i0gFt9VgNZySjIA/mdAKiWnu6Z7lUsnGmbnoX9BlyqTt
-L1NmWYJ1kZGsuEYEXAXfsNZFosFfatGo/pfjMk9OGjyWeOSqoo/2ZcpF9fuEg08s
-hIqX2v9lEP45RiLwWZxUOLW90nXs53D7QQ3ZOTDD6OfFzvJez0+BonuZMrA7JU3O
-QZU1RtlWPKknYivDFPhJS6JMdhy2X5+QCgwoLLtw5VJP3lrsTjJ507ZxQOEEB5UL
-z+qlLEWGZvmscX0v1654+nxs6fYtvjfm3ZvlGzYhrq6Tpx/dLQHvvMZSY/RTkDCR
-TEl+gwcegL6LRN42ty5K8768mh/+TcXUBHdvAdjA2ITyzmxR6BPIUhgW1ZmExXJB
-y5/6L0OSJOIQwgyDY7p0WmlO3Xau8+zP2TKjzkcMPhZG04PeFQ==
-=pD0j
------END PGP SIGNATURE-----
-
---asmlsgho3wx3j5tl--
 
