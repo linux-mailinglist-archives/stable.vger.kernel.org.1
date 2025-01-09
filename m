@@ -1,83 +1,140 @@
-Return-Path: <stable+bounces-108127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43AA2A07BA9
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 16:20:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DBC9A07C49
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 16:46:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4266D3AAEC6
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 15:20:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 337DD16986C
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 15:46:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C7E221D90;
-	Thu,  9 Jan 2025 15:17:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="M5gwJrmt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D98D21E08B;
+	Thu,  9 Jan 2025 15:45:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01F321CA16;
-	Thu,  9 Jan 2025 15:17:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D293121D5BC;
+	Thu,  9 Jan 2025 15:45:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.188.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736435868; cv=none; b=ZPMXw9FfwgYE/sXx7ToWcvlylG/Sx+drADFZJHUaXH4XSJjDZ7oqexr6PIL0c8V4MNWlhTEJjzNIwn9wYZCP00nYbrLw4/S4O3rupweJYekJyPEr6JC+BeV6GFUWCI8kWdwQNrwowx0tiHnz0hAYmVMj0FKWWZQhDe0LRRPTSbk=
+	t=1736437549; cv=none; b=SgXJTPyRzPgj7ZyNZYmTb/PQqZ6J0wbyidXrJJoYwtDHzN4EaLk18ueDNQqanmbKHgOKT6a69mwx8fQmpotlvVYwuMieU+ikc373HolzeROLuuOywimQkSIcRTxNxtGBp8WU9l3Bxm7BV5durq7KxI7A7hPWQs7oCg50B/tHEw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736435868; c=relaxed/simple;
-	bh=JVRK4yMiDSt58v3XRHkpcXVcju2t3CuXdpZ0oWJ0eOk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lZJXRLol9dJkD2fyrcM45q/tgOyo8ChMp6yVO8OaiILAv9ck6uFn5yetTGu7CW3NtTxUxjflPuMEvTrc5AbiH/3GYGO/keQAbIcpxJdkOokSVCEChP481tda8GNDSX6uwG4T2pnURuY8l9JU5VaQfsx3SAEZvTrlxBOmLX1kF2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=M5gwJrmt; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from localhost (unknown [10.10.165.14])
-	by mail.ispras.ru (Postfix) with ESMTPSA id BC8F540762DE;
-	Thu,  9 Jan 2025 15:17:42 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru BC8F540762DE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1736435862;
-	bh=LLEFEZIMd49aFAdWsz+uvSWKvIDl4N9oi5MT+LJKDVI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M5gwJrmtsEpD2ESXkGqOmE+Znk8KC3MnjVhmlAmQoWWt0adVfproeNHvgGjpgHhNG
-	 CDK6tJOmV3d84N3JkrqcmEWbeiDUBZk6V/ID1qyowSkw/o7+TvMyq32mMBpdX/6XFU
-	 D0r725Ed5HrCrIxnEb0GjgHVLpE2IJTehhbBfKAQ=
-Date: Thu, 9 Jan 2025 18:17:42 +0300
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Jakub Kicinski <kuba@kernel.org>, 
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: Johan Hedberg <johan.hedberg@gmail.com>, 
-	Marcel Holtmann <marcel@holtmann.org>, Ignat Korchagin <ignat@cloudflare.com>, 
-	Kuniyuki Iwashima <kuniyu@amazon.com>, Eric Dumazet <edumazet@google.com>, 
-	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, 
-	netdev@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] Bluetooth: L2CAP: handle NULL sock pointer in
- l2cap_sock_alloc
-Message-ID: <2vj35et6apg2agzztklousifnzt4h2ne6vyjcvb6gxvvpamymu@liqydbn3jb57>
-References: <20241217211959.279881-1-pchelkin@ispras.ru>
- <20250109-fbd0cb9fa9036bc76ea9b003-pchelkin@ispras.ru>
- <20250109071102.23a5205d@kernel.org>
+	s=arc-20240116; t=1736437549; c=relaxed/simple;
+	bh=ZlWK7zn88OfemaCt/b3tJb7fn13TllXdYU9TyOKrRxM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QPzOPVdslR74Ed8pzq1O93SI0FT+Z3IPehlPhPJlmd4xfV3yNyPzytGhB8I6zh+wMk6JcbWYsHIdca7Eutj4eEaNUXBuUzjvBgZ0/Q2nl9p1EgOOBoALSPOLz0rD8m/gKvQpW2kEIEtRpHoBWTQ1h0IR+9aC8zpZCD2PeS0pnfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; arc=none smtp.client-ip=217.70.188.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH -stable,5.10 1/1] netfilter: nft_dynset: honor stateful expressions in set definition
+Date: Thu,  9 Jan 2025 16:45:38 +0100
+Message-Id: <20250109154538.43720-1-pablo@netfilter.org>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250109071102.23a5205d@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Thu, 09. Jan 07:11, Jakub Kicinski wrote:
-> On Thu, 9 Jan 2025 10:47:12 +0300 Fedor Pchelkin wrote:
-> > Urgh.. a bit confused about which tree the patch should go to - net or
-> > bluetooth.
-> > 
-> > I've now noticed the Fixes commit went directly via net-next as part of a
-> > series (despite "Bluetooth: L2CAP:" patches usually go through bluetooth
-> > tree first). So what about this patch?
-> 
-> 7c4f78cdb8e7 went directly to net-next because it was a larger series touching
-> multiple sub-subsystems:
+commit fca05d4d61e65fa573a3768f9019a42143c03349 upstream.
 
-Okay. So I'd expect Luiz to pick up the current patch then, thanks!
+If the set definition contains stateful expressions, allocate them for
+the newly added entries from the packet path.
+
+[ This backport includes nft_set_elem_expr_clone() which has been
+  taken from 8cfd9b0f8515 ("netfilter: nftables: generalize set
+  expressions support") and skip redundant expressions when set
+  already provides it per ce5379963b28 ("netfilter: nft_dynset: dump
+  expressions when set definition contains no expressions") ]
+
+Fixes: 65038428b2c6 ("netfilter: nf_tables: allow to specify stateful expression in set definition")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+---
+ include/net/netfilter/nf_tables.h |  2 ++
+ net/netfilter/nf_tables_api.c     | 23 +++++++++++++++++++++++
+ net/netfilter/nft_dynset.c        |  7 ++++++-
+ 3 files changed, 31 insertions(+), 1 deletion(-)
+
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index 484f9cdf2dd0..0f1103c43cb8 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -731,6 +731,8 @@ void *nft_set_elem_init(const struct nft_set *set,
+ 			const struct nft_set_ext_tmpl *tmpl,
+ 			const u32 *key, const u32 *key_end, const u32 *data,
+ 			u64 timeout, u64 expiration, gfp_t gfp);
++int nft_set_elem_expr_clone(const struct nft_ctx *ctx, struct nft_set *set,
++			    struct nft_expr **pexpr);
+ void nft_set_elem_destroy(const struct nft_set *set, void *elem,
+ 			  bool destroy_expr);
+ void nf_tables_set_elem_destroy(const struct nft_ctx *ctx,
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 2bd1c7e7edc3..28ea2ed3f337 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -5548,6 +5548,29 @@ static int nft_set_elem_expr_setup(struct nft_ctx *ctx,
+ 	return 0;
+ }
+ 
++int nft_set_elem_expr_clone(const struct nft_ctx *ctx, struct nft_set *set,
++			    struct nft_expr **pexpr)
++{
++	struct nft_expr *expr;
++	int err;
++
++	expr = kzalloc(set->expr->ops->size, GFP_KERNEL);
++	if (!expr)
++		goto err_expr;
++
++	err = nft_expr_clone(expr, set->expr, GFP_KERNEL);
++	if (err < 0) {
++		kfree(expr);
++		goto err_expr;
++	}
++	*pexpr = expr;
++
++	return 0;
++
++err_expr:
++	return -ENOMEM;
++}
++
+ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 			    const struct nlattr *attr, u32 nlmsg_flags)
+ {
+diff --git a/net/netfilter/nft_dynset.c b/net/netfilter/nft_dynset.c
+index 9461293182e8..fc81bda6cc6b 100644
+--- a/net/netfilter/nft_dynset.c
++++ b/net/netfilter/nft_dynset.c
+@@ -192,6 +192,10 @@ static int nft_dynset_init(const struct nft_ctx *ctx,
+ 			err = -EOPNOTSUPP;
+ 			goto err_expr_free;
+ 		}
++	} else if (set->expr) {
++		err = nft_set_elem_expr_clone(ctx, set, &priv->expr);
++		if (err < 0)
++			return err;
+ 	}
+ 
+ 	nft_set_ext_prepare(&priv->tmpl);
+@@ -272,7 +276,8 @@ static int nft_dynset_dump(struct sk_buff *skb, const struct nft_expr *expr)
+ 			 nf_jiffies64_to_msecs(priv->timeout),
+ 			 NFTA_DYNSET_PAD))
+ 		goto nla_put_failure;
+-	if (priv->expr && nft_expr_dump(skb, NFTA_DYNSET_EXPR, priv->expr))
++	if (!priv->set->expr && priv->expr &&
++	    nft_expr_dump(skb, NFTA_DYNSET_EXPR, priv->expr))
+ 		goto nla_put_failure;
+ 	if (nla_put_be32(skb, NFTA_DYNSET_FLAGS, htonl(flags)))
+ 		goto nla_put_failure;
+-- 
+2.30.2
+
 
