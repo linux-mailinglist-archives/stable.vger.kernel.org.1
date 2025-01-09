@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-108079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5975A07435
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 12:08:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E41CBA07441
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 12:10:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 325EC167F91
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 11:08:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B114F188A78D
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 11:10:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E9181714D7;
-	Thu,  9 Jan 2025 11:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEADC216E01;
+	Thu,  9 Jan 2025 11:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ePr+06WS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJBGjWmN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049B3204C3C;
-	Thu,  9 Jan 2025 11:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D38A2165E3;
+	Thu,  9 Jan 2025 11:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736420893; cv=none; b=gOU8ADwMCMizZDd/+IIIBUau07sAwyJ/XCZmZ525EhDlXmTEHZyOdvUSoOyCSbkBx/hlH1ClfI8T0NCHHWxeXep790fadg0O7tuqaAiol1qAC6rGaC8hr5H0fcJ1C33ndh5cjeqq9jTuz+/tD42cfvsABMjO/lTWeDwCB9SqNeo=
+	t=1736421022; cv=none; b=l/71HGyrxwMqbaTpO/gIG3DGdPZSQ6huk0MMaVPkeygim4ML6FHo/2s4iLEmgMRdh6B+TA7T+i5OVgI0DVUc5Aw8a8duEm4y0Tdaf+mN8NmCLye5INZb39iW2CjhwBYF2SqF36zsaOpm0yI4xyR5dXp/HPsNWXcShHbhkEMv9sA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736420893; c=relaxed/simple;
-	bh=OajkFyR8OD1INXvtuqQRJQ/9A6aanoq5KYOKqZrlPQ0=;
+	s=arc-20240116; t=1736421022; c=relaxed/simple;
+	bh=saPJfGL5HcZGuAmHxJK4KJXlcjFEiRqX297G5X1zF+4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f++UqtS8HpIEG0+9+ZB9vQSWO5l+jxPusJwx5Mmoanpf1mFwn5WsXEHbZCWowPWcoHNgWmCXG1V5R3u5rEYR14k4AGwGbBOEhbXOKAm2XKJdVKyUonzH5cghjlcgof+YutfTC3y9GgDTMaHaVLsNMP4BMiPNlFFZxb0GkyJJ1fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePr+06WS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03513C4CED2;
-	Thu,  9 Jan 2025 11:08:12 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=aTzb0JHMoZY7vX5z6GK6jOTdFKXVYMs4QpeVjFtBv+UH3CiCnWc7wOpk56T9eCPf4mOpyGDZxBpQfigOt9eLZY51hCtj+wPFhZitXdjHFg3agjvMGfDAoca6C6BuUFQbYnnW7dfg1+mYfZTBQ3+2yqTv+eW7nvumCkC0R45B4xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJBGjWmN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7C7C4CEDF;
+	Thu,  9 Jan 2025 11:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736420892;
-	bh=OajkFyR8OD1INXvtuqQRJQ/9A6aanoq5KYOKqZrlPQ0=;
+	s=korg; t=1736421022;
+	bh=saPJfGL5HcZGuAmHxJK4KJXlcjFEiRqX297G5X1zF+4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ePr+06WS8bIttYarDHrcbpLE0nvAcBkfC/C2/1IOZ/LGs3TuCLTVObhB8BQLuaj+P
-	 q0ZPwzgLN3rfJMd/hS3cpsdAwIS/y1rSZLGHp1k6cIPAXYdNO8mU14ZY1eRbwkt1DO
-	 IwMfuqcYdjJcm8SIDkt9Xt+xLuj5I+Yumt8Z8whY=
-Date: Thu, 9 Jan 2025 12:08:09 +0100
+	b=RJBGjWmNb76Lhi2pJB1shjGv26NDHdPxH2ywlln/VNf1aOVgibN/z7fmp0JL+O4YG
+	 tIYsDTiWVoHlnbG8NJYeoEAEQKDvnesPJbuUq5LGc0ptfHIQzMso1pmAatDAtaSHIT
+	 R2I4Ij4PigRBwa11wq27TaY0qFUKGIwVDmn/OFaY=
+Date: Thu, 9 Jan 2025 12:10:18 +0100
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Shuah Khan <skhan@linuxfoundation.org>
+To: Ron Economos <re@w6rz.net>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
 	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
@@ -49,22 +49,22 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
 	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
 Subject: Re: [PATCH 5.15 000/168] 5.15.176-rc1 review
-Message-ID: <2025010924-snooper-penalty-c7e9@gregkh>
+Message-ID: <2025010910-hypocrite-handler-1f1b@gregkh>
 References: <20250106151138.451846855@linuxfoundation.org>
- <d0e2b7d8-cde9-48f7-a931-ba204deb3a47@linuxfoundation.org>
+ <fc58a412-b154-4286-9097-4f3c5d7d97aa@w6rz.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <d0e2b7d8-cde9-48f7-a931-ba204deb3a47@linuxfoundation.org>
+In-Reply-To: <fc58a412-b154-4286-9097-4f3c5d7d97aa@w6rz.net>
 
-On Mon, Jan 06, 2025 at 04:05:30PM -0700, Shuah Khan wrote:
-> On 1/6/25 08:15, Greg Kroah-Hartman wrote:
+On Mon, Jan 06, 2025 at 10:32:32PM -0800, Ron Economos wrote:
+> On 1/6/25 07:15, Greg Kroah-Hartman wrote:
 > > This is the start of the stable review cycle for the 5.15.176 release.
 > > There are 168 patches in this series, all will be posted as a response
 > > to this one.  If anyone has any issues with these being applied, please
@@ -82,42 +82,34 @@ On Mon, Jan 06, 2025 at 04:05:30PM -0700, Shuah Khan wrote:
 > > thanks,
 > > 
 > > greg k-h
-> > 
 > 
-> Build failed on my test system with this commit:
+> On RISC-V, the build fails with:
 > 
-> 	999976126ca826e40fd85007a1b325d83e102164
+> In file included from mm/kfence/core.c:33:
+> ./arch/riscv/include/asm/kfence.h: In function 'kfence_protect_page':
+> ./arch/riscv/include/asm/kfence.h:59:9: error: implicit declaration of
+> function 'local_flush_tlb_kernel_range'; did you mean
+> 'flush_tlb_kernel_range'? [-Werror=implicit-function-declaration]
+>    59 |         local_flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+>       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>       |         flush_tlb_kernel_range
+> In file included from mm/kfence/report.c:20:
+> ./arch/riscv/include/asm/kfence.h: In function 'kfence_protect_page':
+> ./arch/riscv/include/asm/kfence.h:59:9: error: implicit declaration of
+> function 'local_flush_tlb_kernel_range'; did you mean
+> 'flush_tlb_kernel_range'? [-Werror=implicit-function-declaration]
+>    59 |         local_flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+>       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>       |         flush_tlb_kernel_range
 > 
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?h=linux-5.15.y&id=999976126ca826e40fd85007a1b325d83e102164
+> This is caused by commit d28e50e231ce20a9b9cad9edce139ac775421ce5 riscv: Fix
+> IPIs usage in kfence_protect_page().
 > 
-> Worked when I removed this commit.
-> 
-> Errors:
->  CC [M]  drivers/gpu/drm/amd/amdgpu/../display/dc/dcn20/dcn20_resource.o
-> drivers/gpu/drm/amd/amdgpu/../display/dc/dcn20/dcn20_resource.c: In function â€˜dcn20_split_stream_for_odmâ€™:
-> drivers/gpu/drm/amd/amdgpu/../display/dc/dcn20/dcn20_resource.c:1945:40: error: â€˜const struct opp_funcsâ€™ has no member named â€˜opp_get_left_edge_extra_pixel_countâ€™; did you mean â€˜opp_program_left_edge_extra_pixelâ€™?
->  1945 |                 if (opp && opp->funcs->opp_get_left_edge_extra_pixel_count
->       |                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->       |                                        opp_program_left_edge_extra_pixel
-> drivers/gpu/drm/amd/amdgpu/../display/dc/dcn20/dcn20_resource.c:1946:48: error: â€˜const struct opp_funcsâ€™ has no member named â€˜opp_get_left_edge_extra_pixel_countâ€™; did you mean â€˜opp_program_left_edge_extra_pixelâ€™?
->  1946 |                                 && opp->funcs->opp_get_left_edge_extra_pixel_count(
->       |                                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->       |                                                opp_program_left_edge_extra_pixel
-> drivers/gpu/drm/amd/amdgpu/../display/dc/dcn20/dcn20_resource.c:1948:41: error: implicit declaration of function â€˜resource_is_pipe_typeâ€™; did you mean â€˜resource_list_first_typeâ€™? [-Werror=implicit-function-declaration]
->  1948 |                                         resource_is_pipe_type(next_odm_pipe, OTG_MASTER)) == 1) {
->       |                                         ^~~~~~~~~~~~~~~~~~~~~
->       |                                         resource_list_first_type
-> drivers/gpu/drm/amd/amdgpu/../display/dc/dcn20/dcn20_resource.c:1948:78: error: â€˜OTG_MASTERâ€™ undeclared (first use in this function); did you mean â€˜IFF_MASTERâ€™?
->  1948 |                                         resource_is_pipe_type(next_odm_pipe, OTG_MASTER)) == 1) {
->       |                                                                              ^~~~~~~~~~
->       |
+> The function local_flush_tlb_kernel_range() doesn't exist for RISC-V in
+> 5.15.x and doesn't appear until much later in 6.8-rc1. So probably best to
+> drop this patch.
 
-This took me a while to figure out, turns out that it's only built if
-KCOV_INSTRUMENT_ALL is disabled as it looks like this code is really
-sensitive to compiler issues.  None of my test builds caught it at all,
-thanks!
-
-I'll go drop the offending commit now.
+Thanks, now dropped.
 
 greg k-h
 
