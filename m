@@ -1,48 +1,58 @@
-Return-Path: <stable+bounces-108120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D841A07849
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 14:57:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4036EA078B0
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 15:11:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F338916739F
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 13:57:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44874168ECD
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 14:11:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C66219A76;
-	Thu,  9 Jan 2025 13:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA4F21A94D;
+	Thu,  9 Jan 2025 14:10:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b="FrR07kGa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [195.16.41.108])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3585218AA8;
-	Thu,  9 Jan 2025 13:57:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.16.41.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736431055; cv=none; b=Erc8ebiY24ZqpU9wJbTJSK24mWK0PxMzILujJZtgLPxqAH1/LX9aYjvV7q7IHO5yIKX2xNc1Zb9XTS+k2IOpan3uoH8zUTzQDwZxAQU+bpkzEVQ22xcFGN8z4pDKbwBkUO+pxMiwTjGomPTVvBQO3U1Gwc8Uyq486brO4j9Vpxs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736431055; c=relaxed/simple;
-	bh=HAUYd8pPujz+OlTfEwxAXmywyIPMxeAgRfO0VfUlgh4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=khq0KrAk6jDu7naP5e/CMtcFzzB3YCjLhuBgIRX6rEFCqGe7SOg/EeAdLB2aRrAXDxQdJ5KPSSabjTRoUgRpObz1xtUxBYXj/8CbWQ0gUNajlIubLrSVdhpJUz8iP+O1KfoMnTfQDyFcPWonxH00M4zAE3inZf5XHIUynrY6rR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; arc=none smtp.client-ip=195.16.41.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
-Received: from gca-msk-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw02.astralinux.ru (Postfix) with ESMTP id 106F31F9F9;
-	Thu,  9 Jan 2025 16:57:26 +0300 (MSK)
-Received: from new-mail.astralinux.ru (gca-yc-ruca-srv-mail05.astralinux.ru [10.177.185.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
-	Thu,  9 Jan 2025 16:57:24 +0300 (MSK)
-Received: from [10.198.51.250] (unknown [10.198.51.250])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4YTRDd5vYBz1c0sD;
-	Thu,  9 Jan 2025 16:57:21 +0300 (MSK)
-Message-ID: <a90660d8-1f1b-4497-a470-03ae00272ee7@astralinux.ru>
-Date: Thu, 9 Jan 2025 16:57:20 +0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629FB219E9E;
+	Thu,  9 Jan 2025 14:10:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736431821; cv=pass; b=NZ+wWvdmR427mYPQcCu2ymjxjd8Yhh8Bk06MM1mfisNriXAXId21mR1zN5QRQ22byjsWxb1teycq5bz4DZAO7zCkRgQ30gKpeivk3NLY+A+PzfF5u7iVkOMeqR664uylCVc945QLTYpf4cjLEYENcu2+WMxOsHG6wRh6YNDhBbw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736431821; c=relaxed/simple;
+	bh=acjQerkQibBHTFA4QQMXmF7ibyvAIEoUWYXccj1qaHY=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=nf4hOFb+y7JPIFpO8fF146QxxdhrIWfpVlJMct0pc9iunwLRNKB6B1AJ7OiK5F8QxuQHCj35gJNu/9O0bwRCZ3yzFRuMeKBeVp9bXBYVAbICcKbVj1eilHWpv24BUSXfUAd6LAOTxu0XAf0OyHF3owCxfu9HvZecArHC5F+yfYA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b=FrR07kGa; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1736431786; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=PM75ZmFEEO4Yeo+/P3u9SxiPnUApbPNDggVfg9M+h1j/tarwFiYq33RuAzFQqirIwnOjMGv1i7XSgo8Hb2j65OWVNdnW/Mqdr9ewXpbOWk5TkgCDFG4aJCMv7G9DgODyXc0SClRO1mvub2AfjY0RGIom9epgwvBjMVUxBNBQIB8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1736431786; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=tllXFJTyR7aPHimHv9T7n76NBECY0HFA4HIYtsdjg7U=; 
+	b=fGsnwb399/qZ8SPNzkfmUT6ZSVy/ltRdi4ZXCcJuGAfls/3jwQaeqKovwNVCJJV0AW4CvqQxDSv7KpRBst6D41J76se9B5nSdqLE52A7HpBPMoQNvat9nBk1QfXZS/UxS+hgxPBmHFCLwlWm+aGXrxsAbpBOui+uz7ViNcAfaxI=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=Usama.Anjum@collabora.com;
+	dmarc=pass header.from=<Usama.Anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1736431786;
+	s=zohomail; d=collabora.com; i=Usama.Anjum@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=tllXFJTyR7aPHimHv9T7n76NBECY0HFA4HIYtsdjg7U=;
+	b=FrR07kGatPnGsHJWHiOEVXjF0fRLXneOjsddwtIN22UBo806pWLpGNvKZ9VC6TYa
+	PSFR00kER4eAMTrzAnUTlAXvjX1ROu421FS1C3cAkszg2WleZ2Co3d2uuKE8k/RhS9I
+	Bg32dZ9pdz1rAI+Zx3Jp5CTvk9VQ/UgnDwb2Q+Tw=
+Received: by mx.zohomail.com with SMTPS id 173643178389180.72051857969893;
+	Thu, 9 Jan 2025 06:09:43 -0800 (PST)
+Message-ID: <d42e3022-d0a7-4e69-afdd-cf6911f82943@collabora.com>
+Date: Thu, 9 Jan 2025 19:10:00 +0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,72 +60,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] clk: qcom: clk-rpmh: add explicit casting in
- clk_rpmh_bcm_recalc_rate
-Content-Language: ru
-To: Fedor Pchelkin <pchelkin@ispras.ru>
-Cc: Bjorn Andersson <andersson@kernel.org>, lvc-project@linuxtesting.org,
- Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
- Michael Turquette <mturquette@baylibre.com>,
- David Dai <daidavid1@codeaurora.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, linux-clk@vger.kernel.org
-References: <20250109105211.29340-1-abelova@astralinux.ru>
- <qd6shnygj7mzyeq6h7z5gbhxvpzm4omtcl2usui7jeywow7spf@ggq6w7xcbvik>
-From: Anastasia Belova <abelova@astralinux.ru>
-In-Reply-To: <qd6shnygj7mzyeq6h7z5gbhxvpzm4omtcl2usui7jeywow7spf@ggq6w7xcbvik>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-KSMG-AntiPhishing: NotDetected, bases: 2025/01/09 12:26:00
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: abelova@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 49 0.3.49 28b3b64a43732373258a371bd1554adb2caa23cb, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, new-mail.astralinux.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;lore.kernel.org:7.1.1;astralinux.ru:7.1.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 190234 [Jan 09 2025]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.7
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2025/01/09 12:21:00 #26963033
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2025/01/09 12:26:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 1
+Cc: Usama.Anjum@collabora.com, stable@vger.kernel.org,
+ patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 5.4 00/93] 5.4.289-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
+ <9382652c-939d-4368-a4b2-93798ba0da19@collabora.com>
+ <2025010900-camping-giggle-fbe2@gregkh>
+Content-Language: en-US
+From: Muhammad Usama Anjum <Usama.Anjum@collabora.com>
+In-Reply-To: <2025010900-camping-giggle-fbe2@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-Right, I'm sorry to bother you
-
-
-On 1/9/25 3:31 PM, Fedor Pchelkin wrote:
-> On Thu, 09. Jan 13:52, Anastasia Belova wrote:
->> The result of multiplication of aggr_state and unit fields (rate
->> value) may not fit u32 type. Add explicit casting to a larger
->> type to prevent overflow.
+On 1/9/25 3:12 PM, Greg Kroah-Hartman wrote:
+> On Wed, Jan 08, 2025 at 06:00:40PM +0500, Muhammad Usama Anjum wrote:
+>> On 1/6/25 8:16 PM, Greg Kroah-Hartman wrote:
+>>> This is the start of the stable review cycle for the 5.4.289 release.
+>>> There are 93 patches in this series, all will be posted as a response
+>>> to this one.  If anyone has any issues with these being applied, please
+>>> let me know.
+>>>
+>>> Responses should be made by Wed, 08 Jan 2025 15:11:04 +0000.
+>>> Anything received after that time might be too late.
+>>>
+>>> The whole patch series can be found in one patch at:
+>>> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.289-rc1.gz
+>>> or in the git tree and branch at:
+>>> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+>>> and the diffstat can be found below.
+>>>
+>>> thanks,
+>>>
+>>> greg k-h
+>>>
+>>> -------------
+>> OVERVIEW
 >>
->> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->>
->> Fixes: 04053f4d23a4 ("clk: qcom: clk-rpmh: Add IPA clock support")
->> Cc: stable@vger.kernel.org # v5.4+
->> Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
->> ---
-> Already applied here [1], no?
+>>         Builds: 34 passed, 4 failed
+> 
+> Are these new failures?  Or old ones?  Knowing this would help out a
+> lot, thanks.
+> 
+> greg k-h
+> 
+
+Looking at build errors in 5.4.288 [1], 
+> BUILDS
 >
-> [1]: https://lore.kernel.org/lkml/173525273254.1449028.13893672295374918386.b4-ty@kernel.org/
+>    Failures
+>      -arm64 (defconfig)
+>      Build detail: https://kcidb.kernelci.org/d/build/build?orgId=1&var-id=broonie:0578e8d64d90f030b54a4ced241ec0b7f53a7c57-arm64-defconfig
+>      CI system: broonie
+Let's ignore this as logs aren't present. 
+
 >
->>   drivers/clk/qcom/clk-rpmh.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/clk/qcom/clk-rpmh.c b/drivers/clk/qcom/clk-rpmh.c
->> index eefc322ce367..e6c33010cfbf 100644
->> --- a/drivers/clk/qcom/clk-rpmh.c
->> +++ b/drivers/clk/qcom/clk-rpmh.c
->> @@ -329,7 +329,7 @@ static unsigned long clk_rpmh_bcm_recalc_rate(struct clk_hw *hw,
->>   {
->>   	struct clk_rpmh *c = to_clk_rpmh(hw);
->>   
->> -	return c->aggr_state * c->unit;
->> +	return (unsigned long)c->aggr_state * c->unit;
->>   }
->>   
->>   static const struct clk_ops clk_rpmh_bcm_ops = {
->> -- 
->> 2.43.0
+>      -arm64 (cros://chromeos-5.4/arm64/chromiumos-qualcomm.flavour.config)
+>      Build detail: https://kcidb.kernelci.org/d/build/build?orgId=1&var-id=maestro:677c0e55423acf18d2736a33
+>      Build error: make: *** [arch/arm64/Makefile:170: vdso_prepare] Error 2
+>      -arm64 (defconfig)
+>      Build detail: https://kcidb.kernelci.org/d/build/build?orgId=1&var-id=maestro:677c0e9e423acf18d2736b66
+>      Build error: ./arch/arm64/include/asm/memory.h:85:50: error: ‘KASAN_SHADOW_SCALE_SHIFT’ undeclared (first use in this function)
+These were also present in 5.4.288. They aren't new.
+
+>
+>      -i386 (i386_defconfig+allmodconfig)
+>      Build detail: https://kcidb.kernelci.org/d/build/build?orgId=1&var-id=maestro:677c0ea8423acf18d2736b8c
+>      Build error: arch/x86/events/amd/../perf_event.h:838:21: error: invalid output size for constraint '=q'
+>      CI system: maestro
+This one is the new.
+
+[1] https://kcidb.kernelci.org/d/revision/revision?orgId=1&var-git_commit_hash=e0646975af89e712bf6de20c2d372f7bec2d5f94&var-patchset_hash=&from=now-100y&to=now&timezone=browser&var-datasource=edquppk2ghfcwc&var-origin=$__all&var-build_architecture=$__all&var-build_config_name=$__all&var-test_path=boot
+
+-- 
+BR,
+Muhammad Usama Anjum
 
