@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-108053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C62A06C7B
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 04:45:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 456C2A06D44
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 05:48:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A654918874EE
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 03:45:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35090163C50
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 04:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 511DD154C0B;
-	Thu,  9 Jan 2025 03:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A47214200;
+	Thu,  9 Jan 2025 04:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b="LQ58jHJg"
+	dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b="V+GcQAli"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3105715A848;
-	Thu,  9 Jan 2025 03:45:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225001AAC9;
+	Thu,  9 Jan 2025 04:47:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736394318; cv=none; b=NEcvLKEeLpifdLkPsktHkZ8jBB5xJbkXnpkpEZEdxTOVmF/FzlbxnGMgnCfnEU0yBej8CXHxGFrRfWlguZ6WORqG4SlX1Ppo6IshN9WF03x55HK0xEGdJTrG7gQOc7ghXLcZvyPIkuln5LuTxDtkjoQ8qvuKfGoe5mIZ50Z6D4Y=
+	t=1736398074; cv=none; b=nVZ/4gRijdxPcQq5dVDuuYtktrCQMpCp9MRXYUwHb1VHD7cRSFLgSErn1lsJtY7MJIr8MzE12EAvviHik7hYOqhBYIM5no7ohQIocpQC6MPwqMrSPiJWr6h15gHSFPC0eCMcKkgY/xUrsWclgQkxY/WIdGAqN8WRsNPD7JMtczM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736394318; c=relaxed/simple;
-	bh=y8DGOB4LM2ZR6Z/yaPdemZTIeq3ttIsHR6F/flatJvA=;
+	s=arc-20240116; t=1736398074; c=relaxed/simple;
+	bh=sjT0hgA2ZW3U8X0I+i+k/SCW6jKnGdcZnJr+h9G98HE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lAmAHRYvKh2GsFlwHvng6IIo2YAGl87e60zYoi8QwNAt5og4oL8Bte8H64Ht9GeFyerp+WkhDbQxZPhoh97IOjuOF/wPPX5NODJ21SDR9LCHxy7xaVVKpGdef4rPEqZtuLsf4vKL4i2agobPIExFDbqGhtpScX4CJQSDyC9s+0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com; spf=pass smtp.mailfrom=gmx.com; dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b=LQ58jHJg; arc=none smtp.client-ip=212.227.17.22
+	 In-Reply-To:Content-Type; b=qbQwXVap7iAjCg1Zo/kjSX2QIDxOl9laRMP4Na04WOop0gTkwpWdzZIK0eehSuskaPKulj3Uw0CrwY1krEnMHcISEwhtt4S8mDgQLNUvjeHA5RV/hgd8JEHGbz62datYbi8nXYGDeoYWvoU9plmO0BtiMz7bmB/qz4nocerrEMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com; spf=pass smtp.mailfrom=gmx.com; dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b=V+GcQAli; arc=none smtp.client-ip=212.227.17.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
-	s=s31663417; t=1736394309; x=1736999109; i=quwenruo.btrfs@gmx.com;
-	bh=OQEDOZZuxdXebSwGZ+PCSqu9/qulW1yF7vf/tpLyAWE=;
+	s=s31663417; t=1736398069; x=1737002869; i=quwenruo.btrfs@gmx.com;
+	bh=sjT0hgA2ZW3U8X0I+i+k/SCW6jKnGdcZnJr+h9G98HE=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=LQ58jHJgCpXgxPjC9lyxjPnTqimc/qbgidVZhvtEwMGKNHGargkB5IWmR3sTovgT
-	 O++1CP4+Tua6yw7tvuRTaTcpC4M2i/fqijVMFEepUmno1hJf34CM5J/U6fpd0+ewS
-	 TrBB5M6HNgED8LReD2WHIz4lvHl0O3WcCeCSfDgyatDGyr8OQ7lCmOOqwX4xX3ZXC
-	 CL61aPLhE7sNXEsdjVuM9itPkJlA+m7CQOy5OQ/qjFaaa5M/B3/QzbmCL4ll1pWdc
-	 qKZgjiOTd2c249UwUPeiVgVsdboP1wmMmETvDHt9gVTM7nusM/z+/t/BV1tNeOHP4
-	 ZFIsrzEKeFUHeIy7Kw==
+	b=V+GcQAlijjrA7+Zrgg74ceKUuZnxSk0bg3PuoHsF33oMjOte4rR+ZDwjLMPwaSzi
+	 LO9CSG+MILtpB8gR9reh8A/u4nx6S5GFrKfRm82ji65gAco4cQrG+FjBZe43Ol2dG
+	 ZvQ9uuRyqlhXwHxLNSfrZfoDifThGiNLdsHXcwydiV18EpU/8UGdoV2V9BiesRCgV
+	 oehSqACQhvjuFs/p23yCScTgjNMFBXWG84+td6Nk45oXYErXYdiP6M1TDuiv5DDgY
+	 FciJtmX6ns+TBq9McnAm73kJujvrM1qWGThEBFqk+VLa2hkPPCjprHhb9gv9xf3KB
+	 P7RRPIpQYKfsm/CMiA==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [172.16.0.191] ([159.196.52.54]) by mail.gmx.net (mrgmx104
- [212.227.17.174]) with ESMTPSA (Nemesis) id 1MdvmY-1u3PbX1Ft0-00o9YD; Thu, 09
- Jan 2025 04:45:09 +0100
-Message-ID: <deea65a5-8870-4c33-9446-7d531b4b8451@gmx.com>
-Date: Thu, 9 Jan 2025 14:15:06 +1030
+ [212.227.17.174]) with ESMTPSA (Nemesis) id 1Msq24-1tlDwa1wWe-016EIE; Thu, 09
+ Jan 2025 05:47:49 +0100
+Message-ID: <99431c75-5419-42d4-bb83-f3938941f7a7@gmx.com>
+Date: Thu, 9 Jan 2025 15:17:45 +1030
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,13 +58,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/9] btrfs: fix double accounting race when
- extent_writepage_io() failed
+Subject: Re: [PATCH v2 1/9] btrfs: fix double accounting race when
+ btrfs_run_delalloc_range() failed
 To: Boris Burkov <boris@bur.io>, Qu Wenruo <wqu@suse.com>
 Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
 References: <cover.1733983488.git.wqu@suse.com>
- <51e0c5f464256c4a59a872077d560cb56b7509a2.1733983488.git.wqu@suse.com>
- <20250108222458.GB1456944@zen.localdomain>
+ <cc3ceda915ac4832fe8e706f3cb0fd2f5971efcc.1733983488.git.wqu@suse.com>
+ <20250108215233.GA1456944@zen.localdomain>
+ <ecd829a1-395c-406c-aaa5-4d5f75fb08bf@gmx.com>
 Content-Language: en-US
 From: Qu Wenruo <quwenruo.btrfs@gmx.com>
 Autocrypt: addr=quwenruo.btrfs@gmx.com; keydata=
@@ -91,230 +92,493 @@ Autocrypt: addr=quwenruo.btrfs@gmx.com; keydata=
  Vmi36kmq8o5c0f97QVjMryHlmSlEZ2Wwc1kURAe4lsRG2dNeAd4CAqmTw0cMIrR6R/Dpt3ma
  +8oGXJOmwWuDFKNV4G2XLKcghqrtcRf2zAGNogg3KulCykHHripG3kPKsb7fYVcSQtlt5R6v
  HZStaZBzw4PcDiaAF3pPDBd+0fIKS6BlpeNRSFG94RYrt84Qw77JWDOAZsyNfEIEE0J6LSR/
-In-Reply-To: <20250108222458.GB1456944@zen.localdomain>
+In-Reply-To: <ecd829a1-395c-406c-aaa5-4d5f75fb08bf@gmx.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:iDksX7qNpJkVImqjvzIxtOt4ImKJ66qZbz7HyW+4PctlDKOAKot
- N4u7oa6tonc6vuK/AMjT7hLOdkbNIIYWWFR76pZJaO+snQk6zq2kS7OMzr4iS+B73sUz1qI
- Q0tdGTqiWY117S90OZ3gHuhbFDsOJWYCO6MNEOhDdTlQATitLAL5KrIDjtugIscQGw0pDY8
- IyMkzUA27Ej5HPr4VVl/A==
+X-Provags-ID: V03:K1:h04gZsod9plIyDpO2emP1AQ6mBlVQBz0ZlN+0FUVpVCwKA4jyPI
+ eN23fZDTBfxWPh+fTKIPoDO7YKExTzdOrN6a7QjzrsRQb9sFkx21G6idTm0AZR7neOILT56
+ +WGC7pnP2q/3vbvdtn+OzSeyERj291hQh2+GagagYVK/8lYEWBpmNd5+NxYoD6w4RXebWx7
+ Plvv0f1oM/h7CrOlXm97Q==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:YPIrflijl00=;w3d7aN2vfgFvZHdV0S+zpJmjDHk
- LEYJ5Zg1auLuz3GdKUolwJn81LPuztgfIcS2I+LmK47PZr05QbhYPVcsq3ExOI5NZmUXuj82T
- zM2AyoyRGmbIO9bXl8kdJAIdYqd1Pg72H8x9CnV3XhjTFb/nytO/zJz8ACmr1O+3IENiYhAfd
- cGreAewx9Bz/RzVbySWK2nvlad90hg/gnJV4p/t99UhE24RXYDedj3o6hetvpAPd5uNP+EbXu
- jiVWl4C7cOU4yNPhHR83GWDdWyVEdozLi6yURP2WwzGjgay+/xKnN/ameu1xRN2+DQzp0QPKr
- wtLU+b00ydusK6Org1mwDgznZ7qfluP7OitlHjFGmfCTye2ggYx/ym0c7+oerkd/IfblS6cKt
- dcxw8YWe+udRoOfxVfLiiIkZuqgM/VPlFyLnyQOT7YnW/plNmeLuvxgX/wvybl69QAFtRHyqZ
- 1ngCb2WOOGvSEOzFRHRMzsxYQsuXkXz3tcsTTvf40mGm2LARhs7jUz+f75JcrzJSXyapefrdP
- pEEgfbc/DUCwD84i+K3ZKAEJHzsIWjiLdAvvUjURj7rezXgcn07PdeWFU3fgN10GMmF530bEi
- tHQmD4B5mXbrkmsqjyg9cI/ObLm2YWzBxIvefbTef1taskCvR5B8UhSmvp4/v5fCvny7M4QTB
- GaAqRWKtjPyagZgZ2nMcHcXyWJxi+6C2KuQ0ZgOmd/ugqLEXXAxyQsAA9znRauAnUsKd0cFN4
- k/sVg07MWw2BlEfNo6Flj2D5P469pG4pz8PPjD7J/EXgSLj75yEuRHMMP5uiP1G1qgw5AayH6
- wfu3yuq3ok5veXtc7wu8Lp/12DmxQjLsnowulXcErLlQi8hIqCMENz6PcMF4YIylP+KPqLFpX
- E0ZiOfdP926epQ2kh1fDv8jvSSvDv51kUQi8LTMgmDoegVO5r1wZAWAYzOIiOteRS7sKM6Qjo
- kbw2vRIzLeXKATt6CQ93qal2e4TSFZ41pZqqx0g0zQRzYAAy7GMVmGpzUjxP1kuHZu/YE+mb8
- Nk+ihYeUP5D02C9ss1BZVTfvIY0kyis1aAjUYD/qGOxj2ccvNrD168RqQ5q4MjFw6phChzaGd
- Nk9IqL+j7A3CybqJesofdaoiaAMcH+
+UI-OutboundReport: notjunk:1;M01:P0:GDVXIb0ZNzk=;aPHMH2Qt4bqvusrDV1ZvA9UGWMM
+ TXs5QuqyGIBaRSY4bRgqK58CpcYHvptTslXeSOlHG9PpVeXmImqGWzIG3CNCYtmleMRa07P9b
+ vEy80N0lMaViulJOcjjusvp+W98HoAa+GCToA2uTX0jMuk8qcx2ynbLsM//tn5YCH0OsEIdwd
+ xPdTeXZShOeXKvYCyALE282YOccQVuHj0ChRDj6fZ/Fez+s59B4xmY15S54osY1ZfH9IF+g74
+ zpalz2s1jVSlvuxQugJU8rfOFy+yDAQDQIqXhD8MbBDZnFmFhfCgIUcBlrTD0uD5jTtMbbB+X
+ A7ZzgG2PCKKrJTpaIo7BRAxcn01HWdnhDSiltdtiv1ANnTd5akoM3upk/zb50GKcU9GoYHdFV
+ nbjrT7H03MkNIlJbU6GdZtGt3Qp7oGiQVamlyOlxnOwcb8NNG85M/0DA233Rof1uHdLlRIT4F
+ LdZ85zMZP/xr++qmUBMAFmxMWgb+Te+dzPT74jNzb8Z9KMbQaa9EJM8DmiVxqcR57vm1rcW2g
+ 6UndM2EDkBvQnJtKjdKhiD5vHSDqOWw/RTbLqGQj2SNFv3uCdARXcewsuGS/zXUv0+uXjbf8P
+ O+X/PT9LEahAfHpmPu1tjJ13OMEu6P87FzhvRPYueAPWMIsNhhdIO/IJVMv04nz7g/46mlQYU
+ H9uAA1lcACwGwER2Q+x39eGQiPeCKSlmd67Rwcoh8FV3dMzLWIKLVmk3T5XlE3D+DRWJxZTnq
+ obDORczfIu8TE+67pG2qwSdn5U5TkX9pP0ey9dMH6Q4YAY7Go5my5XqeIIUmJ5CCVw1bi/orN
+ hlh+QfaZO2Crcdf0Z+r0XyA27uqWz9G356e2lZZQMZHtxn2oz1WGj/f1DP3vb9b/SfeXt++Rb
+ HX14HApEtFaN5maLNvXJidwzE54a4ssKsl+KPp72hDI7aJp2WxKZMmVcgsmRY+hAyf3OrK3Hs
+ rV6UirRgknAQ16d27Qq7x7FFotYfLHuvT9tqw4euLmtpygKa7rnesSb8AnI0y9FY5rZ48xbxe
+ dw3f+mXDYpy8fg1p1aS6FHjp7+qXpGBtEPi4TXvoSlfYqk7BqeUl2ro0s0rCBXs2NnLfWyQRl
+ Je+T7r4+HBJP65gOOtEJrgZjI8xyQE
 
 
 
-=E5=9C=A8 2025/1/9 08:54, Boris Burkov =E5=86=99=E9=81=93:
-> On Thu, Dec 12, 2024 at 04:43:56PM +1030, Qu Wenruo wrote:
->> [BUG]
->> If submit_one_sector() failed inside extent_writepage_io() for sector
->> size < page size cases (e.g. 4K sector size and 64K page size), then
->> we can hit double ordered extent accounting error.
->>
->> This should be very rare, as submit_one_sector() only fails when we
->> failed to grab the extent map, and such extent map should exist inside
->> the memory and have been pinned.
->>
->> [CAUSE]
->> For example we have the following folio layout:
->>
->>      0  4K          32K    48K   60K 64K
->>      |//|           |//////|     |///|
->>
->> Where |///| is the dirty range we need to writeback. The 3 different
->> dirty ranges are submitted for regular COW.
->>
->> Now we hit the following sequence:
->>
->> - submit_one_sector() returned 0 for [0, 4K)
->>
->> - submit_one_sector() returned 0 for [32K, 48K)
->>
->> - submit_one_sector() returned error for [60K, 64K)
->>
->> - btrfs_mark_ordered_io_finished() called for the whole folio
->>    This will mark the following ranges as finished:
->>    * [0, 4K)
->>    * [32K, 48K)
->>      Both ranges have their IO already submitted, this cleanup will
->>      lead to double accounting.
->>
->>    * [60K, 64K)
->>      That's the correct cleanup.
->>
->> The only good news is, this error is only theoretical, as the target
->> extent map is always pinned, thus we should directly grab it from
->> memory, other than reading it from the disk.
->>
->> [FIX]
->> Instead of calling btrfs_mark_ordered_io_finished() for the whole folio
->> range, which can touch ranges we should not touch, instead
->> move the error handling inside extent_writepage_io().
->>
->> So that we can cleanup exact sectors that are ought to be submitted but
->> failed.
->>
->> This provide much more accurate cleanup, avoiding the double accounting=
+=E5=9C=A8 2025/1/9 13:15, Qu Wenruo =E5=86=99=E9=81=93:
+>
+>
+> =E5=9C=A8 2025/1/9 08:22, Boris Burkov =E5=86=99=E9=81=93:
+>> On Thu, Dec 12, 2024 at 04:43:55PM +1030, Qu Wenruo wrote:
+>>> [BUG]
+>>> When running btrfs with block size (4K) smaller than page size (64K,
+>>> aarch64), there is a very high chance to crash the kernel at
+>>> generic/750, with the following messages:
+>>> (before the call traces, there are 3 extra debug messages added)
+>>>
+>>> =C2=A0 BTRFS warning (device dm-3): read-write for sector size 4096 wi=
+th
+>>> page size 65536 is experimental
+>>> =C2=A0 BTRFS info (device dm-3): checking UUID tree
+>>> =C2=A0 hrtimer: interrupt took 5451385 ns
+>>> =C2=A0 BTRFS error (device dm-3): cow_file_range failed, root=3D4957
+>>> inode=3D257 start=3D1605632 len=3D69632: -28
+>>> =C2=A0 BTRFS error (device dm-3): run_delalloc_nocow failed, root=3D49=
+57
+>>> inode=3D257 start=3D1605632 len=3D69632: -28
+>>> =C2=A0 BTRFS error (device dm-3): failed to run delalloc range, root=
+=3D4957
+>>> ino=3D257 folio=3D1572864 submit_bitmap=3D8-15 start=3D1605632 len=3D6=
+9632: -28
+>>> =C2=A0 ------------[ cut here ]------------
+>>> =C2=A0 WARNING: CPU: 2 PID: 3020984 at ordered-data.c:360
+>>> can_finish_ordered_extent+0x370/0x3b8 [btrfs]
+>>> =C2=A0 CPU: 2 UID: 0 PID: 3020984 Comm: kworker/u24:1 Tainted: G
+>>> OE=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 6.13.0-rc1-custom+ #89
+>>> =C2=A0 Tainted: [O]=3DOOT_MODULE, [E]=3DUNSIGNED_MODULE
+>>> =C2=A0 Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
+>>> =C2=A0 Workqueue: events_unbound btrfs_async_reclaim_data_space [btrfs=
+]
+>>> =C2=A0 pc : can_finish_ordered_extent+0x370/0x3b8 [btrfs]
+>>> =C2=A0 lr : can_finish_ordered_extent+0x1ec/0x3b8 [btrfs]
+>>> =C2=A0 Call trace:
+>>> =C2=A0=C2=A0 can_finish_ordered_extent+0x370/0x3b8 [btrfs] (P)
+>>> =C2=A0=C2=A0 can_finish_ordered_extent+0x1ec/0x3b8 [btrfs] (L)
+>>> =C2=A0=C2=A0 btrfs_mark_ordered_io_finished+0x130/0x2b8 [btrfs]
+>>> =C2=A0=C2=A0 extent_writepage+0x10c/0x3b8 [btrfs]
+>>> =C2=A0=C2=A0 extent_write_cache_pages+0x21c/0x4e8 [btrfs]
+>>> =C2=A0=C2=A0 btrfs_writepages+0x94/0x160 [btrfs]
+>>> =C2=A0=C2=A0 do_writepages+0x74/0x190
+>>> =C2=A0=C2=A0 filemap_fdatawrite_wbc+0x74/0xa0
+>>> =C2=A0=C2=A0 start_delalloc_inodes+0x17c/0x3b0 [btrfs]
+>>> =C2=A0=C2=A0 btrfs_start_delalloc_roots+0x17c/0x288 [btrfs]
+>>> =C2=A0=C2=A0 shrink_delalloc+0x11c/0x280 [btrfs]
+>>> =C2=A0=C2=A0 flush_space+0x288/0x328 [btrfs]
+>>> =C2=A0=C2=A0 btrfs_async_reclaim_data_space+0x180/0x228 [btrfs]
+>>> =C2=A0=C2=A0 process_one_work+0x228/0x680
+>>> =C2=A0=C2=A0 worker_thread+0x1bc/0x360
+>>> =C2=A0=C2=A0 kthread+0x100/0x118
+>>> =C2=A0=C2=A0 ret_from_fork+0x10/0x20
+>>> =C2=A0 ---[ end trace 0000000000000000 ]---
+>>> =C2=A0 BTRFS critical (device dm-3): bad ordered extent accounting,
+>>> root=3D4957 ino=3D257 OE offset=3D1605632 OE len=3D16384 to_dec=3D1638=
+4 left=3D0
+>>> =C2=A0 BTRFS critical (device dm-3): bad ordered extent accounting,
+>>> root=3D4957 ino=3D257 OE offset=3D1622016 OE len=3D12288 to_dec=3D1228=
+8 left=3D0
+>>> =C2=A0 Unable to handle kernel NULL pointer dereference at virtual add=
+ress
+>>> 0000000000000008
+>>> =C2=A0 BTRFS critical (device dm-3): bad ordered extent accounting,
+>>> root=3D4957 ino=3D257 OE offset=3D1634304 OE len=3D8192 to_dec=3D4096 =
+left=3D0
+>>> =C2=A0 CPU: 1 UID: 0 PID: 3286940 Comm: kworker/u24:3 Tainted: G=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 W
+>>> OE=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 6.13.0-rc1-custom+ #89
+>>> =C2=A0 Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
+>>> =C2=A0 Workqueue:=C2=A0 btrfs_work_helper [btrfs] (btrfs-endio-write)
+>>> =C2=A0 pstate: 404000c5 (nZcv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=3D-=
+-)
+>>> =C2=A0 pc : process_one_work+0x110/0x680
+>>> =C2=A0 lr : worker_thread+0x1bc/0x360
+>>> =C2=A0 Call trace:
+>>> =C2=A0=C2=A0 process_one_work+0x110/0x680 (P)
+>>> =C2=A0=C2=A0 worker_thread+0x1bc/0x360 (L)
+>>> =C2=A0=C2=A0 worker_thread+0x1bc/0x360
+>>> =C2=A0=C2=A0 kthread+0x100/0x118
+>>> =C2=A0=C2=A0 ret_from_fork+0x10/0x20
+>>> =C2=A0 Code: f84086a1 f9000fe1 53041c21 b9003361 (f9400661)
+>>> =C2=A0 ---[ end trace 0000000000000000 ]---
+>>> =C2=A0 Kernel panic - not syncing: Oops: Fatal exception
+>>> =C2=A0 SMP: stopping secondary CPUs
+>>> =C2=A0 SMP: failed to stop secondary CPUs 2-3
+>>> =C2=A0 Dumping ftrace buffer:
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 (ftrace buffer empty)
+>>> =C2=A0 Kernel Offset: 0x275bb9540000 from 0xffff800080000000
+>>> =C2=A0 PHYS_OFFSET: 0xffff8fbba0000000
+>>> =C2=A0 CPU features: 0x100,00000070,00801250,8201720b
+>>>
+>>> [CAUSE]
+>>> The above warning is triggered immediately after the delalloc range
+>>> failure, this happens in the following sequence:
+>>>
+>>> - Range [1568K, 1636K) is dirty
+>>>
+>>> =C2=A0=C2=A0=C2=A0 1536K=C2=A0 1568K=C2=A0=C2=A0=C2=A0=C2=A0 1600K=C2=
+=A0=C2=A0=C2=A0 1636K=C2=A0 1664K
+>>> =C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |/////////|////////=
+|=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+>>>
+>>> =C2=A0=C2=A0 Where 1536K, 1600K and 1664K are page boundaries (64K pag=
+e size)
+>>>
+>>> - Enter extent_writepage() for page 1536K
+>>>
+>>> - Enter run_delalloc_nocow() with locked page 1536K and range
+>>> =C2=A0=C2=A0 [1568K, 1636K)
+>>> =C2=A0=C2=A0 This is due to the inode has preallocated extents.
+>>>
+>>> - Enter cow_file_range() with locked page 1536K and range
+>>> =C2=A0=C2=A0 [1568K, 1636K)
+>>>
+>>> - btrfs_reserve_extent() only reserved two extents
+>>> =C2=A0=C2=A0 The main loop of cow_file_range() only reserved two data =
+extents,
+>>>
+>>> =C2=A0=C2=A0 Now we have:
+>>>
+>>> =C2=A0=C2=A0=C2=A0 1536K=C2=A0 1568K=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 1600K=C2=A0=C2=A0=C2=A0 1636K=C2=A0 1664K
+>>> =C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |<-->|<--->|/|/////=
+//|=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 1584K=C2=A0 1596K
+>>> =C2=A0=C2=A0 Range [1568K, 1596K) has ordered extent reserved.
+>>>
+>>> - btrfs_reserve_extent() failed inside cow_file_range() for file offse=
+t
+>>> =C2=A0=C2=A0 1596K
+>>> =C2=A0=C2=A0 This is already a bug in our space reservation code, but =
+for now
+>>> let's
+>>> =C2=A0=C2=A0 focus on the error handling path.
+>>>
+>>> =C2=A0=C2=A0 Now cow_file_range() returned -ENOSPC.
+>>>
+>>> - btrfs_run_delalloc_range() do error cleanup <<< ROOT CAUSE
+>>> =C2=A0=C2=A0 Call btrfs_cleanup_ordered_extents() with locked folio 15=
+36K and
+>>> range
+>>> =C2=A0=C2=A0 [1568K, 1636K)
+>>>
+>>> =C2=A0=C2=A0 Function btrfs_cleanup_ordered_extents() normally needs t=
+o skip the
+>>> =C2=A0=C2=A0 ranges inside the folio, as it will normally be cleaned u=
+p by
+>>> =C2=A0=C2=A0 extent_writepage().
+>>>
+>>> =C2=A0=C2=A0 Such split error handling is already problematic in the f=
+irst place.
+>>>
+>>> =C2=A0=C2=A0 What's worse is the folio range skipping itself, which is=
+ not taking
+>>> =C2=A0=C2=A0 subpage cases into consideration at all, it will only ski=
+p the range
+>>> =C2=A0=C2=A0 if the page start >=3D the range start.
+>>> =C2=A0=C2=A0 In our case, the page start < the range start, since for =
+subpage
+>>> cases
+>>> =C2=A0=C2=A0 we can have delalloc ranges inside the folio but not cove=
+ring the
+>>> =C2=A0=C2=A0 folio.
+>>>
+>>> =C2=A0=C2=A0 So it doesn't skip the page range at all.
+>>> =C2=A0=C2=A0 This means all the ordered extents, both [1568K, 1584K) a=
+nd
+>>> =C2=A0=C2=A0 [1584K, 1596K) will be marked as IOERR.
+>>>
+>>> =C2=A0=C2=A0 And those two ordered extents have no more pending ios, i=
+t is marked
+>>> =C2=A0=C2=A0 finished, and *QUEUED* to be deleted from the io tree.
+>>>
+>>> - extent_writepage() do error cleanup
+>>> =C2=A0=C2=A0 Call btrfs_mark_ordered_io_finished() for the range [1536=
+K, 1600K).
+>>>
+>>> =C2=A0=C2=A0 Although ranges [1568K, 1584K) and [1584K, 1596K) are fin=
+ished, the
+>>> =C2=A0=C2=A0 deletion from io tree is async, it may or may not happen =
+at this
+>>> =C2=A0=C2=A0 timing.
+>>>
+>>> =C2=A0=C2=A0 If the ranges are not yet removed, we will do double clea=
+ning on
+>>> those
+>>> =C2=A0=C2=A0 ranges, triggers the above ordered extent warnings.
+>>>
+>>> In theory there are other bugs, like the cleanup in extent_writepage()
+>>> can cause double accounting on ranges that are submitted async
+>>> (compression for example).
+>>>
+>>> But that's much harder to trigger because normally we do not mix regul=
+ar
+>>> and compression delalloc ranges.
+>>>
+>>> [FIX]
+>>> The folio range split is already buggy and not subpage compatible, it'=
+s
+>>> introduced a long time ago where subpage support is not even considere=
+d.
+>>>
+>>> So instead of splitting the ordered extents cleanup into the folio ran=
+ge
+>>> and out of folio range, do all the cleanup inside writepage_delalloc()=
 .
+>>>
+>>> - Pass @NULL as locked_folio for btrfs_cleanup_ordered_extents() in
+>>> =C2=A0=C2=A0 btrfs_run_delalloc_range()
+>>>
+>>> - Skip the btrfs_cleanup_ordered_extents() if writepage_delalloc()
+>>> =C2=A0=C2=A0 failed
+>>>
+>>> =C2=A0=C2=A0 So all ordered extents are only cleaned up by
+>>> =C2=A0=C2=A0 btrfs_run_delalloc_range().
+>>>
+>>> - Handle the ranges that already have ordered extents allocated
+>>> =C2=A0=C2=A0 If part of the folio already has ordered extent allocated=
+, and
+>>> =C2=A0=C2=A0 btrfs_run_delalloc_range() failed, we also need to cleanu=
+p that
+>>> range.
+>>>
+>>> Now we have a concentrated error handling for ordered extents during
+>>> btrfs_run_delalloc_range().
+>>
+>> Great investigation and writeup, thanks!
 >
-> Analysis and fix both make sense to me. However, this one feels a lot
-> more fragile than the other one.
->
-> It relies on submit_one_sector being the only error path in
-> extent_writepage_io. Any future error in the loop would have to create a
-> shared "per sector" error handling goto in the loop I guess?
->
-> Not a hard "no", in the sense that I think the code is correct for now
-> (aside from my submit_one_bio question) but curious if we can give this
-> some more principled structure.
->
-> Thanks,
-> Boris
+> Thanks a lot of the review!
 >
 >>
->> Cc: stable@vger.kernel.org # 5.15+
->> Signed-off-by: Qu Wenruo <wqu@suse.com>
->> ---
->>   fs/btrfs/extent_io.c | 32 +++++++++++++++++++-------------
->>   1 file changed, 19 insertions(+), 13 deletions(-)
+>> The explanation and fix both make sense to me. I traced the change in
+>> error handling and I see how we are avoiding double ending the
+>> ordered_extent. So with that said, feel free to add:
+>> Reviewed-by: Boris Burkov <boris@bur.io>
 >>
->> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
->> index 417c710c55ca..b6a4f1765b4c 100644
->> --- a/fs/btrfs/extent_io.c
->> +++ b/fs/btrfs/extent_io.c
->> @@ -1418,6 +1418,7 @@ static noinline_for_stack int extent_writepage_io=
-(struct btrfs_inode *inode,
->>   	struct btrfs_fs_info *fs_info =3D inode->root->fs_info;
->>   	unsigned long range_bitmap =3D 0;
->>   	bool submitted_io =3D false;
->> +	bool error =3D false;
->>   	const u64 folio_start =3D folio_pos(folio);
->>   	u64 cur;
->>   	int bit;
->> @@ -1460,11 +1461,21 @@ static noinline_for_stack int extent_writepage_=
-io(struct btrfs_inode *inode,
->>   			break;
->>   		}
->>   		ret =3D submit_one_sector(inode, folio, cur, bio_ctrl, i_size);
->> -		if (ret < 0)
->> -			goto out;
->> +		if (unlikely(ret < 0)) {
->> +			submit_one_bio(bio_ctrl);
+>> However, I would like to request one thing, if I may.
+>> While this is all still relatively fresh in your mind, could you please
+>> document the intended behavior of the various functions (at least the
+>> ones you modify/reason about) with regards to:
+>> - cleanup state of the various objects involved like ordered_extents
+>> =C2=A0=C2=A0 and subpages (e.g., writepage_delalloc cleans up ordered e=
+xtents, so
+>> =C2=A0=C2=A0 callers should not, etc.)
 >
-> This submit_one_bio is confusing to me. submit_one_sector failed and the
-> subsequent comment says "there is no bio submitted" yet right here we
-> call submit_one_bio.
+> The subpage one should not be considered as something special, it's
+> really just some kind of enhanced page flags for subpage cases.
 >
-> What is the meaning of it?
+> Thus I'll not explicitly mention the subpage bitmap, but directly
+> mention the involved flags (in this particular case, folio Ordered and
+> Locked flags).
 >
->> +			/*
->> +			 * Failed to grab the extent map which should be very rare.
->> +			 * Since there is no bio submitted to finish the ordered
->> +			 * extent, we have to manually finish this sector.
->> +			 */
->> +			btrfs_mark_ordered_io_finished(inode, folio, cur,
->> +					fs_info->sectorsize, false);
->> +			error =3D true;
->> +			continue;
->> +		}
->>   		submitted_io =3D true;
->>   	}
->> -out:
->> +
->>   	/*
->>   	 * If we didn't submitted any sector (>=3D i_size), folio dirty get
->>   	 * cleared but PAGECACHE_TAG_DIRTY is not cleared (only cleared
->> @@ -1472,8 +1483,11 @@ static noinline_for_stack int extent_writepage_i=
-o(struct btrfs_inode *inode,
->>   	 *
->>   	 * Here we set writeback and clear for the range. If the full folio
->>   	 * is no longer dirty then we clear the PAGECACHE_TAG_DIRTY tag.
->> +	 *
->> +	 * If we hit any error, the corresponding sector will still be dirty
->> +	 * thus no need to clear PAGECACHE_TAG_DIRTY.
->>   	 */
+>> - return values (e.g., when precisely does btrfs_run_delalloc_range
+>> =C2=A0=C2=A0 return >=3D 0 ?)
 >
-> submitted_io is only used for this bit of logic, so you could consider
-> changing this logic by keeping a single variable for whether or not we
-> should go into this logic (naming it seems kind of annoying) and then
-> setting it in both the error and submitted_io paths. I think that
-> reduces headache in thinking about boolean logic, slightly.
+> My bad, I should update the comment in commit d034cdb4cc8a ("btrfs: lock
+> subpage ranges in one go for writepage_delalloc()").
+>
+> Still better fix it here before too late.
+>
+>> - anything else you think would be helpful for reasoning about these
+>> =C2=A0=C2=A0 functions in an abstract way while you are at it.
+>>
+>> That request is obviously optional for landing these fixes, but I reall=
+y
+>> think it would help if we went through the bother every time we
+>> deciphered one of these undocumented paths. A restatement of your best
+>> understanding of the behavior now will really pay off for the next
+>> person reading this code :)
 
-Unfortunately I can not find a good alternative to this double boolean
-usages.
+And since we're here, just a quick note for the patch 4/5, that although
+those two patches are fixing error handling, they are still mostly
+backport oriented fixes (although I'm 100% sure it will cause conflicts).
 
-I can go a single boolean, but it will be called something like
-@no_error_nor_submission.
+They still are doing cross-layer error handling. E.g. the ordered
+extents cleanup are not inside cow_file_range(), but done by
+btrfs_run_delalloc_range().
 
-Which is the not only the worst naming, but also a hell of boolean
-operations for a single bool.
-
-So I'm afraid the @error and @submitted_io will still be better for this
-case.
-
-The other comments will be addressed properly.
+I'm going to properly fix all those cross-layer error handling in the
+next series soon.
 
 Thanks,
 Qu
+>>
+>> Thanks,
+>> Boris
+>>
+>>>
+>>> Cc: stable@vger.kernel.org # 5.15+
+>>> Fixes: d1051d6ebf8e ("btrfs: Fix error handling in
+>>> btrfs_cleanup_ordered_extents")
+>>> Signed-off-by: Qu Wenruo <wqu@suse.com>
+>>> ---
+>>> =C2=A0 fs/btrfs/extent_io.c | 37 ++++++++++++++++++++++++++++++++-----
+>>> =C2=A0 fs/btrfs/inode.c=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
+>>> =C2=A0 2 files changed, 33 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+>>> index 9725ff7f274d..417c710c55ca 100644
+>>> --- a/fs/btrfs/extent_io.c
+>>> +++ b/fs/btrfs/extent_io.c
+>>> @@ -1167,6 +1167,12 @@ static noinline_for_stack int
+>>> writepage_delalloc(struct btrfs_inode *inode,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * last delalloc end.
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64 last_delalloc_end =3D 0;
+>>> +=C2=A0=C2=A0=C2=A0 /*
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0 * Save the last successfully ran delalloc ra=
+nge end (exclusive).
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0 * This is for error handling to avoid ranges=
+ with ordered
+>>> extent created
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0 * but no IO will be submitted due to error.
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0 */
+>>
+>> nit: last_finished what? I feel this name or comment could use some
+>> extra work.
 >
->> -	if (!submitted_io) {
->> +	if (!submitted_io && !error) {
->>   		btrfs_folio_set_writeback(fs_info, folio, start, len);
->>   		btrfs_folio_clear_writeback(fs_info, folio, start, len);
->>   	}
->> @@ -1493,7 +1507,6 @@ static int extent_writepage(struct folio *folio, =
-struct btrfs_bio_ctrl *bio_ctrl
->>   {
->>   	struct inode *inode =3D folio->mapping->host;
->>   	struct btrfs_fs_info *fs_info =3D inode_to_fs_info(inode);
->> -	const u64 page_start =3D folio_pos(folio);
->>   	int ret;
->>   	size_t pg_offset;
->>   	loff_t i_size =3D i_size_read(inode);
->> @@ -1536,10 +1549,6 @@ static int extent_writepage(struct folio *folio,=
- struct btrfs_bio_ctrl *bio_ctrl
+> I can enhance it to @last_finished_delalloc_end and update the comment.
+>
+> Thanks,
+> Qu
+>
 >>
->>   	bio_ctrl->wbc->nr_to_write--;
+>>> +=C2=A0=C2=A0=C2=A0 u64 last_finished =3D page_start;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64 delalloc_start =3D page_start;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64 delalloc_end =3D page_end;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64 delalloc_to_write =3D 0;
+>>> @@ -1235,11 +1241,19 @@ static noinline_for_stack int
+>>> writepage_delalloc(struct btrfs_inode *inode,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 found_len =3D last_delalloc_end + 1 - found_start;
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (ret >=3D 0)=
+ {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 * Some delalloc range may be created by previous folios.
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 * Thus we still need to clean those range up during error
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 * handling.
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 */
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 la=
+st_finished =3D found_start;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 /* No errors hit so far, run the current delalloc
+>>> range. */
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 ret =3D btrfs_run_delalloc_range(inode, folio,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 found_start,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 found_start + found_le=
+n - 1,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 wbc);
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if=
+ (ret >=3D 0)
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 last_finished =3D found_start + found_len;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 } else {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 /*
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 * We've hit an error during previous delalloc range,
+>>> @@ -1274,8 +1288,21 @@ static noinline_for_stack int
+>>> writepage_delalloc(struct btrfs_inode *inode,
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 delalloc_start =
+=3D found_start + found_len;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>> -=C2=A0=C2=A0=C2=A0 if (ret < 0)
+>>> +=C2=A0=C2=A0=C2=A0 /*
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0 * It's possible we have some ordered extents=
+ created before we hit
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0 * an error, cleanup non-async successfully c=
+reated delalloc
+>>> ranges.
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0 */
+>>> +=C2=A0=C2=A0=C2=A0 if (unlikely(ret < 0)) {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int bitmap_size =
+=3D min(
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (l=
+ast_finished - page_start) >> fs_info->sectorsize_bits,
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fs=
+_info->sectors_per_page);
+>>> +
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for_each_set_bit(bit, &bio=
+_ctrl->submit_bitmap, bitmap_size)
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bt=
+rfs_mark_ordered_io_finished(inode, folio,
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 page_start + (bit << fs_info->sectorsize_bits),
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 fs_info->sectorsize, false);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return ret;
+>>> +=C2=A0=C2=A0=C2=A0 }
+>>> =C2=A0 out:
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (last_delalloc_end)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 delalloc_end =
+=3D last_delalloc_end;
+>>> @@ -1509,13 +1536,13 @@ static int extent_writepage(struct folio
+>>> *folio, struct btrfs_bio_ctrl *bio_ctrl
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bio_ctrl->wbc->nr_to_write--;
+>>>
+>>> -done:
+>>> -=C2=A0=C2=A0=C2=A0 if (ret) {
+>>> +=C2=A0=C2=A0=C2=A0 if (ret)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 btrfs_mark_orde=
+red_io_finished(BTRFS_I(inode), folio,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 page_start, PAGE_SIZE, !ret);
+>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mapping_set_error(folio->m=
+apping, ret);
+>>> -=C2=A0=C2=A0=C2=A0 }
+>>>
+>>> +done:
+>>> +=C2=A0=C2=A0=C2=A0 if (ret < 0)
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mapping_set_error(folio->m=
+apping, ret);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Only unlock ranges that are sub=
+mitted. As there can be some
+>>> async
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * submitted ranges inside the fol=
+io.
+>>> diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+>>> index c4997200dbb2..d41bb47d59fb 100644
+>>> --- a/fs/btrfs/inode.c
+>>> +++ b/fs/btrfs/inode.c
+>>> @@ -2305,7 +2305,7 @@ int btrfs_run_delalloc_range(struct btrfs_inode
+>>> *inode, struct folio *locked_fol
+>>>
+>>> =C2=A0 out:
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (ret < 0)
+>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 btrfs_cleanup_ordered_exte=
+nts(inode, locked_folio, start,
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 btrfs_cleanup_ordered_exte=
+nts(inode, NULL, start,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 end - start + 1);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return ret;
+>>> =C2=A0 }
+>>> --
+>>> 2.47.1
+>>>
 >>
->> -	if (ret)
->> -		btrfs_mark_ordered_io_finished(BTRFS_I(inode), folio,
->> -					       page_start, PAGE_SIZE, !ret);
->> -
->>   done:
->>   	if (ret < 0)
->>   		mapping_set_error(folio->mapping, ret);
->> @@ -2319,11 +2328,8 @@ void extent_write_locked_range(struct inode *ino=
-de, const struct folio *locked_f
->>   		if (ret =3D=3D 1)
->>   			goto next_page;
->>
->> -		if (ret) {
->> -			btrfs_mark_ordered_io_finished(BTRFS_I(inode), folio,
->> -						       cur, cur_len, !ret);
->> +		if (ret)
->>   			mapping_set_error(mapping, ret);
->> -		}
->>   		btrfs_folio_end_lock(fs_info, folio, cur, cur_len);
->>   		if (ret < 0)
->>   			found_error =3D true;
->> --
->> 2.47.1
->>
+>
 >
 
 
