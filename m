@@ -1,169 +1,202 @@
-Return-Path: <stable+bounces-108058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A426A06DAE
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 06:40:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA947A06E33
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 07:22:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6EB2E7A3018
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 05:40:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A2881889BB7
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 06:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 279192144CB;
-	Thu,  9 Jan 2025 05:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325F021421B;
+	Thu,  9 Jan 2025 06:22:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LPAl08ZR"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4666B143888;
-	Thu,  9 Jan 2025 05:40:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EE019BBA;
+	Thu,  9 Jan 2025 06:22:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736401236; cv=none; b=sVTGVt6cYROvgSTQUqc95LEkpVcCsT+8s3tMdFrhz1q9lKkaPfvk6f4EBV5C1wsFqfW/DipVKQ+GcVKiLevDqnqJyn57FMg10AZ2VkKOu0Kx9+0RZFYrCmk8X8XiP/fz08heJ2jhD82l9Bjizo5TTlcWiTrpu1gaV8InfT7jTQY=
+	t=1736403761; cv=none; b=Yqgs3FuDyA8P5tgvZFfWJ+bm+X3hdSWNdiw2gDdwot1wI+T18P4nz3N0oK0e0r2FEMZqAgzUNvBJOpflFKKj1GxcOibP0ZYvl+XpQOE5yI5o9DYjEIM8uixaUi5KJSLpNcJEYhP4zRLeKKYhqpickp9MQdZQB+llekI1VfPgWJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736401236; c=relaxed/simple;
-	bh=qcj88o7NG239bX/ANM3Sp+hpRKTRHuFx55BeBZtzW40=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fO8o3SMjvlydocn1B9iozJTKLvcDbCPKEmi7NmytimLxrmSSr4g781apDy8ufRvzHZ2ydNsyjgpddfp4lhQcs7mIM5Wp7sB5nN8LQ6Yy3SEBuw4WDP9ax3s/JGN2W8I1mg6OjSA+/KgxrhIfB7+NS+sdhg8lh0BE54eEGO6aJUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DF9B213D5;
-	Wed,  8 Jan 2025 21:41:01 -0800 (PST)
-Received: from [10.162.43.52] (K4MQJ0H1H2.blr.arm.com [10.162.43.52])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B80363F59E;
-	Wed,  8 Jan 2025 21:40:30 -0800 (PST)
-Message-ID: <7b653f96-537c-4c6b-9776-399ebaf352ff@arm.com>
-Date: Thu, 9 Jan 2025 11:10:27 +0530
+	s=arc-20240116; t=1736403761; c=relaxed/simple;
+	bh=FkMzPFhEGjnNHwRYNzAGpJ/UO3cHyHY9vqO84TqClvw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G19BRZw0gATuTyqzWC8IEFtRnHdDkpjwIGePbTl1HSo14UDOrkpjt2sE4gj3IcGUmyLlfHMbdDQgVh2YnCsi5khWmcz/G8D9RjzfmsRE0unbrKGTEXsBkLVIeQQnGe5CO2I/534XO5yUkeW1ODsGoQemiWw2F6CPbL+UhE6UUX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LPAl08ZR; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736403759; x=1767939759;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FkMzPFhEGjnNHwRYNzAGpJ/UO3cHyHY9vqO84TqClvw=;
+  b=LPAl08ZRSUhlFnCGSQwtbTSEBsQ+ioNni0wxlInC31GySbMWYl4LYxpr
+   S9LPM/kYrQji3hSZO2S2ni46E6YtJYyukmIbXkD8YVfx4khnjVoj+3Flk
+   Qvt4NC3dn/UZIblZnK0jCTZgakq0qiJeHaFYHZKGPh287qYS8qsX6jfY4
+   EB6eSYfc0KhmhrkzA3ZGGieIV/hDqyHOOw40HdkpFvwBuD4Rqb+l4/oA3
+   mrh3sx2ovNfVNtCdQUEN5Br7WSkGOfW2RvxrSuQPv72GZCkps2UgVcZN8
+   c+23TBSVqBSlzNRUmvyMo0+ESS7o6OWfyFVVnMzYmp19gW/O0jnvDx206
+   A==;
+X-CSE-ConnectionGUID: qtvSMBPbTB+Unr3XmVGkcw==
+X-CSE-MsgGUID: QikCUrNxQZOr/DWJZRpxAg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="54068356"
+X-IronPort-AV: E=Sophos;i="6.12,300,1728975600"; 
+   d="scan'208";a="54068356"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2025 22:22:38 -0800
+X-CSE-ConnectionGUID: 20rmiwpXQuCqdFvG70VR+A==
+X-CSE-MsgGUID: QCCNxdfVRI6qVPsCRGqHZg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,300,1728975600"; 
+   d="scan'208";a="103120382"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2025 22:22:34 -0800
+Date: Thu, 9 Jan 2025 07:19:17 +0100
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: Shradha Gupta <shradhagupta@linux.microsoft.com>
+Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Long Li <longli@microsoft.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Shradha Gupta <shradhagupta@microsoft.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net] net: mana: Cleanup "mana" debugfs dir after cleanup
+ of all children
+Message-ID: <Z39qZWlXtjNnrcMt@mev-dev.igk.intel.com>
+References: <1736398991-764-1-git-send-email-shradhagupta@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] selftests/mm: virtual_address_range: Fix error when
- CommitLimit < 1GiB
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- David Hildenbrand <david@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Ryan Roberts <ryan.roberts@arm.com>
-References: <20250107-virtual_address_range-tests-v1-0-3834a2fb47fe@linutronix.de>
- <20250107-virtual_address_range-tests-v1-1-3834a2fb47fe@linutronix.de>
- <5811cf74-d333-4653-ab64-0e981eda7745@arm.com>
- <20250108083855-840c688b-003f-423b-8327-2a10a2b27d58@linutronix.de>
- <05edee1e-04f1-4f19-816f-db03c182a201@redhat.com>
- <20250108165052-c03470bd-6ff7-44c9-87b9-9145456bdea8@linutronix.de>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20250108165052-c03470bd-6ff7-44c9-87b9-9145456bdea8@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1736398991-764-1-git-send-email-shradhagupta@linux.microsoft.com>
 
+On Wed, Jan 08, 2025 at 09:03:11PM -0800, Shradha Gupta wrote:
+> In mana_driver_exit(), mana_debugfs_root gets cleanup before any of it's
+> children (which happens later in the pci_unregister_driver()).
+> Due to this, when mana driver is configured as a module and rmmod is
+> invoked, following stack gets printed along with failure in rmmod command.
+> 
+> [ 2399.317651] BUG: kernel NULL pointer dereference, address: 0000000000000098
+> [ 2399.318657] #PF: supervisor write access in kernel mode
+> [ 2399.319057] #PF: error_code(0x0002) - not-present page
+> [ 2399.319528] PGD 10eb68067 P4D 0
+> [ 2399.319914] Oops: Oops: 0002 [#1] SMP NOPTI
+> [ 2399.320308] CPU: 72 UID: 0 PID: 5815 Comm: rmmod Not tainted 6.13.0-rc5+ #89
+> [ 2399.320986] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 09/28/2024
+> [ 2399.321892] RIP: 0010:down_write+0x1a/0x50
+> [ 2399.322303] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 55 48 89 e5 41 54 49 89 fc e8 9d cd ff ff 31 c0 ba 01 00 00 00 <f0> 49 0f b1 14 24 75 17 65 48 8b 05 f6 84 dd 5f 49 89 44 24 08 4c
+> [ 2399.323669] RSP: 0018:ff53859d6c663a70 EFLAGS: 00010246
+> [ 2399.324061] RAX: 0000000000000000 RBX: ff1d4eb505060180 RCX: ffffff8100000000
+> [ 2399.324620] RDX: 0000000000000001 RSI: 0000000000000064 RDI: 0000000000000098
+> [ 2399.325167] RBP: ff53859d6c663a78 R08: 00000000000009c4 R09: ff1d4eb4fac90000
+> [ 2399.325681] R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000098
+> [ 2399.326185] R13: ff1d4e42e1a4a0c8 R14: ff1d4eb538ce0000 R15: 0000000000000098
+> [ 2399.326755] FS:  00007fe729570000(0000) GS:ff1d4eb2b7200000(0000) knlGS:0000000000000000
+> [ 2399.327269] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [ 2399.327690] CR2: 0000000000000098 CR3: 00000001c0584005 CR4: 0000000000373ef0
+> [ 2399.328166] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> [ 2399.328623] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
+> [ 2399.329055] Call Trace:
+> [ 2399.329243]  <TASK>
+> [ 2399.329379]  ? show_regs+0x69/0x80
+> [ 2399.329602]  ? __die+0x25/0x70
+> [ 2399.329856]  ? page_fault_oops+0x271/0x550
+> [ 2399.330088]  ? psi_group_change+0x217/0x470
+> [ 2399.330341]  ? do_user_addr_fault+0x455/0x7b0
+> [ 2399.330667]  ? finish_task_switch.isra.0+0x91/0x2f0
+> [ 2399.331004]  ? exc_page_fault+0x73/0x160
+> [ 2399.331275]  ? asm_exc_page_fault+0x27/0x30
+> [ 2399.343324]  ? down_write+0x1a/0x50
+> [ 2399.343631]  simple_recursive_removal+0x4d/0x2c0
+> [ 2399.343977]  ? __pfx_remove_one+0x10/0x10
+> [ 2399.344251]  debugfs_remove+0x45/0x70
+> [ 2399.344511]  mana_destroy_rxq+0x44/0x400 [mana]
+> [ 2399.344845]  mana_destroy_vport+0x54/0x1c0 [mana]
+> [ 2399.345229]  mana_detach+0x2f1/0x4e0 [mana]
+> [ 2399.345466]  ? ida_free+0x150/0x160
+> [ 2399.345718]  ? __cond_resched+0x1a/0x50
+> [ 2399.345987]  mana_remove+0xf4/0x1a0 [mana]
+> [ 2399.346243]  mana_gd_remove+0x25/0x80 [mana]
+> [ 2399.346605]  pci_device_remove+0x41/0xb0
+> [ 2399.346878]  device_remove+0x46/0x70
+> [ 2399.347150]  device_release_driver_internal+0x1e3/0x250
+> [ 2399.347831]  ? klist_remove+0x81/0xe0
+> [ 2399.348377]  driver_detach+0x4b/0xa0
+> [ 2399.348906]  bus_remove_driver+0x83/0x100
+> [ 2399.349435]  driver_unregister+0x31/0x60
+> [ 2399.349919]  pci_unregister_driver+0x40/0x90
+> [ 2399.350492]  mana_driver_exit+0x1c/0xb50 [mana]
+> [ 2399.351102]  __do_sys_delete_module.constprop.0+0x184/0x320
+> [ 2399.351664]  ? __fput+0x1a9/0x2d0
+> [ 2399.352200]  __x64_sys_delete_module+0x12/0x20
+> [ 2399.352760]  x64_sys_call+0x1e66/0x2140
+> [ 2399.353316]  do_syscall_64+0x79/0x150
+> [ 2399.353813]  ? syscall_exit_to_user_mode+0x49/0x230
+> [ 2399.354346]  ? do_syscall_64+0x85/0x150
+> [ 2399.354816]  ? irqentry_exit+0x1d/0x30
+> [ 2399.355287]  ? exc_page_fault+0x7f/0x160
+> [ 2399.355756]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [ 2399.356302] RIP: 0033:0x7fe728d26aeb
+> [ 2399.356776] Code: 73 01 c3 48 8b 0d 45 33 0f 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 b0 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 15 33 0f 00 f7 d8 64 89 01 48
+> [ 2399.358372] RSP: 002b:00007ffff954d6f8 EFLAGS: 00000206 ORIG_RAX: 00000000000000b0
+> [ 2399.359066] RAX: ffffffffffffffda RBX: 00005609156cc760 RCX: 00007fe728d26aeb
+> [ 2399.359779] RDX: 000000000000000a RSI: 0000000000000800 RDI: 00005609156cc7c8
+> [ 2399.360535] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+> [ 2399.361261] R10: 00007fe728dbeac0 R11: 0000000000000206 R12: 00007ffff954d950
+> [ 2399.361952] R13: 00005609156cc2a0 R14: 00007ffff954ee5f R15: 00005609156cc760
+> [ 2399.362688]  </TASK>
+> 
+> Fixes: 6607c17c6c5e ("net: mana: Enable debugfs files for MANA device")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+> ---
+>  drivers/net/ethernet/microsoft/mana/gdma_main.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> index 2dc0c6ad54be..be95336ce089 100644
+> --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> @@ -1656,9 +1656,9 @@ static int __init mana_driver_init(void)
+>  
+>  static void __exit mana_driver_exit(void)
+>  {
+> -	debugfs_remove(mana_debugfs_root);
+> -
+>  	pci_unregister_driver(&mana_driver);
+> +
+> +	debugfs_remove(mana_debugfs_root);
 
-On 08/01/25 9:43 pm, Thomas Weißschuh wrote:
-> On Wed, Jan 08, 2025 at 02:36:57PM +0100, David Hildenbrand wrote:
->> On 08.01.25 09:05, Thomas Weißschuh wrote:
->>> On Wed, Jan 08, 2025 at 11:46:19AM +0530, Dev Jain wrote:
->>>> On 07/01/25 8:44 pm, Thomas Weißschuh wrote:
->>>>> If not enough physical memory is available the kernel may fail mmap();
->>>>> see __vm_enough_memory() and vm_commit_limit().
->>>>> In that case the logic in validate_complete_va_space() does not make
->>>>> sense and will even incorrectly fail.
->>>>> Instead skip the test if no mmap() succeeded.
->>>>>
->>>>> Fixes: 010409649885 ("selftests/mm: confirm VA exhaustion without reliance on correctness of mmap()")
->>>>> Cc: stable@vger.kernel.org
->> CC stable on tests is ... odd.
-> I thought it was fairly common, but it isn't.
-> Will drop it.
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-Oh, well...
-https://lore.kernel.org/all/20240521074358.675031-4-dev.jain@arm.com/
-I have done that before :) although the change I was making was fixing a
-fundamental flaw in the test and your change is fixing the test for a
-specific case (memory pressure), so I tend to concur with David.
+Thanks
 
->
->>>>> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
->>>>>
->>>>> ---
->>>>> The logic in __vm_enough_memory() seems weird.
->>>>> It describes itself as "Check that a process has enough memory to
->>>>> allocate a new virtual mapping", however it never checks the current
->>>>> memory usage of the process.
->>>>> So it only disallows large mappings. But many small mappings taking the
->>>>> same amount of memory are allowed; and then even automatically merged
->>>>> into one big mapping.
->>>>> ---
->>>>>     tools/testing/selftests/mm/virtual_address_range.c | 6 ++++++
->>>>>     1 file changed, 6 insertions(+)
->>>>>
->>>>> diff --git a/tools/testing/selftests/mm/virtual_address_range.c b/tools/testing/selftests/mm/virtual_address_range.c
->>>>> index 2a2b69e91950a37999f606847c9c8328d79890c2..d7bf8094d8bcd4bc96e2db4dc3fcb41968def859 100644
->>>>> --- a/tools/testing/selftests/mm/virtual_address_range.c
->>>>> +++ b/tools/testing/selftests/mm/virtual_address_range.c
->>>>> @@ -178,6 +178,12 @@ int main(int argc, char *argv[])
->>>>>     		validate_addr(ptr[i], 0);
->>>>>     	}
->>>>>     	lchunks = i;
->>>>> +
->>>>> +	if (!lchunks) {
->>>>> +		ksft_test_result_skip("Not enough memory for a single chunk\n");
->>>>> +		ksft_finished();
->>>>> +	}
->>>>> +
->>>>>     	hptr = (char **) calloc(NR_CHUNKS_HIGH, sizeof(char *));
->>>>>     	if (hptr == NULL) {
->>>>>     		ksft_test_result_skip("Memory constraint not fulfilled\n");
->>>>>
->>>> I do not  know about __vm_enough_memory(), but I am going by your description:
->>>> You say that the kernel may fail mmap() when enough physical memory is not
->>>> there, but it may happen that we have already done 100 mmap()'s, and then
->>>> the kernel fails mmap(), so if (!lchunks) won't be able to handle this case.
->>>> Basically, lchunks == 0 is not a complete indicator of kernel failing mmap().
->>> __vm_enough_memory() only checks the size of each single mmap() on its
->>> own. It does not actually check the current memory or address space
->>> usage of the process.
->>> This seems a bit weird, as indicated in my after-the-fold explanation.
->>>
->>>> The basic assumption of the test is that any process should be able to exhaust
->>>> its virtual address space, and running the test under memory pressure and the
->>>> kernel violating this behaviour defeats the point of the test I think?
->>> The assumption is correct, as soon as one mapping succeeds the others
->>> will also succeed, until the actual address space is exhausted.
->>>
->>> Looking at it again, __vm_enough_memory() is only called for writable
->>> mappings, so it would be possible to use only readable mappings in the
->>> test. The test will still fail with OOM, as the many PTEs need more than
->>> 1GiB of physical memory anyways, but at least that produces a usable
->>> error message.
->>> However I'm not sure if this would violate other test assumptions.
->>>
->> Note that with MAP_NORESRVE, most setups we care about will allow mapping as
->> much as you want, but on access OOM will fire.
-> Thanks for the hint.
->
->> So one could require that /proc/sys/vm/overcommit_memory is setup properly
->> and use MAP_NORESRVE.
-> Isn't the check for lchunks == 0 essentially exactly this?
->
->> Reading from anonymous memory will populate the shared zeropage. To mitigate
->> OOM from "too many page tables", one could simply unmap the pieces as they
->> are verified (or MAP_FIXED over them, to free page tables).
-> The code has to figure out if a verified region was created by mmap(),
-> otherwise an munmap() could crash the process.
-> As the entries from /proc/self/maps may have been merged and (I assume)
-> the ordering of mappings is not guaranteed, some bespoke logic to establish
-> the link will be needed.
->
-> Is it fine to rely on CONFIG_ANON_VMA_NAME?
-> That would make it much easier to implement.
->
-> Using MAP_NORESERVE and eager munmap()s, the testcase works nicely even
-> in very low physical memory conditions.
->
-> Thomas
+>  }
+>  
+>  module_init(mana_driver_init);
+> -- 
+> 2.34.1
+> 
 
