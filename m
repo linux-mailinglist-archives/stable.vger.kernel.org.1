@@ -1,176 +1,220 @@
-Return-Path: <stable+bounces-108056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9BDEA06D5F
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 06:03:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29EE7A06D7B
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 06:20:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62A51188A432
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 05:03:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64FA93A3FCC
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 05:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0137321423C;
-	Thu,  9 Jan 2025 05:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 435391FE468;
+	Thu,  9 Jan 2025 05:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="HyB3JTly"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K6TamWFK"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB3F213E82;
-	Thu,  9 Jan 2025 05:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB12BA2D
+	for <stable@vger.kernel.org>; Thu,  9 Jan 2025 05:19:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736398994; cv=none; b=X+gIGreZWf+M4RX5TEX4ltjFZoh1XSxF698BcLFIKmEYqfUD+tHTU8IGV1qrdeOecRTrR7ICPXIgHUVpG2j3FSS0L4W/YcfdKPM7nJhY71wcGzQ3X0G/qAL/FPbGChCR56oBdDsCIOYajnYyziFC3yscBZMttOaItmYG2O4ThN0=
+	t=1736400001; cv=none; b=Ovizq2rAFzIb2X5TlaxzN5/2PC9N0le8ZNRtOJrKMq2arKZTPsnuO0fB14VDxEQlvKlz7fYCjB1MpIZG5OKNesQpN+LGhHduBfmq+T3owSk0O4U+y9hHIoBySrCd1qyA/xem0txY/SJDWqikFgBuaHPJN2E29/aBFkdjtL/87+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736398994; c=relaxed/simple;
-	bh=t/LVu74ekY0iyNSzvaShqWfDLL4VyqyYUjfj/+uAn18=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=RfIcxt/EQIc0hMn6VS9ApPmrKKp59JZb0KUIv8rZyPEZKh/XwllrIZF01nR4FmPuFL+CZIREfXMbIALYMkrkKfpqQWr7c2gAGJM5UZHVR5rHxgquB7tsL5UipONekFDBgo8R8waZbnwLwRz7x8M5DH1e6px+u339FwRSzhZ6W2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=HyB3JTly; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1134)
-	id 86C96203E3B0; Wed,  8 Jan 2025 21:03:12 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 86C96203E3B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1736398992;
-	bh=JzfmUmej9eapENoaTvzItdBuDA0HXSzRcytDGiLgkUw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=HyB3JTlyeTl8IFx/xzaWnJOaBP4bTFOl+ipt7e+dWomnRhlWVcrqMcE8J9uoE6rAa
-	 HD7p6pTMYyBsHFpU2xmkxNo0rqePPWzFY7CBW945shPbmaIwWa6ahos7oAOjcfXrB2
-	 xfqjXDd4qIr1U3hJ5MK7gyKQcXgP+dZ2Y2ACoQSI=
-From: Shradha Gupta <shradhagupta@linux.microsoft.com>
-To: linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Long Li <longli@microsoft.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Shradha Gupta <shradhagupta@microsoft.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: mana: Cleanup "mana" debugfs dir after cleanup of all children
-Date: Wed,  8 Jan 2025 21:03:11 -0800
-Message-Id: <1736398991-764-1-git-send-email-shradhagupta@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
+	s=arc-20240116; t=1736400001; c=relaxed/simple;
+	bh=nZWNMiqEO5uyXvZif4210iU+zlVcNCsXPA9QYCufdU0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=blG0xwK9hqaCrqYsSS8UakbSKMji2I+Zc1PUSRiP6JLV1SvWr8QonoM7Al4224GKsNOcHpSQxZ0EjMDGabVAt4tq/NGDIamtMwJEF3FvuAcxHdvtWITzfw9MJCPjahLxk9x+U/dIC5YAGHnk+FupsX2Iz0pyo0X3nC6x1tT6F00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K6TamWFK; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736399999; x=1767935999;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=nZWNMiqEO5uyXvZif4210iU+zlVcNCsXPA9QYCufdU0=;
+  b=K6TamWFKDZD+9VhNI6oAU2duJWSiK3Te229fFdkK8jyfMB44OczhGmEd
+   FFNddY8qDYO9gYkga/fy35YWQbB65qwsZJN4QEt0JpIt1YOWikKxo+yga
+   iL2q67L1NbdMtMAt5XPYayBzbX4lj8I6YuoZAXaJgUHwFYszIzPpLHUEL
+   l+4tJsBZmSbBoQ4JESTVni9ziF1ND6bztPUxqTKascKCv7EaGiPrh/UJS
+   2a+/v0lF16Wb0YmVnZ+rCOrLl3OxnIS3tjK+aNw3NnVP1MRplgsv1qX62
+   FVMhT3LihSQ9n09GDsii1is+ChuztGDlFsLz7z80BzNHJ5Q9F38mSbI1K
+   Q==;
+X-CSE-ConnectionGUID: JokYLi/cRl6qcwhMCceQsg==
+X-CSE-MsgGUID: rzDRl6IsRqOKoyceD8337A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="47220152"
+X-IronPort-AV: E=Sophos;i="6.12,300,1728975600"; 
+   d="scan'208";a="47220152"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2025 21:19:58 -0800
+X-CSE-ConnectionGUID: rpbB2moGSqKuYTgKHX9x1g==
+X-CSE-MsgGUID: KL1OkryuRLm5Af9BVEehUw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,300,1728975600"; 
+   d="scan'208";a="134139554"
+Received: from ldmartin-desk2.corp.intel.com (HELO ldmartin-desk2) ([10.125.111.77])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2025 21:19:57 -0800
+Date: Wed, 8 Jan 2025 23:19:52 -0600
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>, 
+	intel-xe@lists.freedesktop.org, stable@vger.kernel.org
+Subject: Re: [PATCH] drm/xe/client: Better correlate exec_queue and GT
+ timestamps
+Message-ID: <ngkbkvqre4d4hvaiwtqcm7oz76b3wcbuzq3ueoazjd7ff3luym@lrjlwmac2mf7>
+References: <20241212173432.1244440-1-lucas.demarchi@intel.com>
+ <Z2SGzHYsJ+CRoF9p@orsosgc001>
+ <wdcrw3du2ssykmsrda3mvwjhreengeovwasikmixdiowqsfnwj@lsputsgtmha4>
+ <Z2YMiTq5P81dmjVH@orsosgc001>
+ <7bvt3larl4sobadx57a255cvu7i5lkjpt2tdxa4baa324v6va6@ijl7gzqjh7qo>
+ <jamrxboal2ppniepfxpq5uzksd2v35ypymo7irt56oewcan5vh@zxmofyra5ruz>
+ <Z39Vo5FEZsapkQaA@lstrano-desk.jf.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z39Vo5FEZsapkQaA@lstrano-desk.jf.intel.com>
 
-In mana_driver_exit(), mana_debugfs_root gets cleanup before any of it's
-children (which happens later in the pci_unregister_driver()).
-Due to this, when mana driver is configured as a module and rmmod is
-invoked, following stack gets printed along with failure in rmmod command.
+On Wed, Jan 08, 2025 at 08:50:43PM -0800, Matthew Brost wrote:
+>On Sat, Jan 04, 2025 at 01:19:59AM -0600, Lucas De Marchi wrote:
+>> On Fri, Dec 20, 2024 at 06:42:09PM -0600, Lucas De Marchi wrote:
+>> > On Fri, Dec 20, 2024 at 04:32:09PM -0800, Umesh Nerlige Ramappa wrote:
+>> > > On Fri, Dec 20, 2024 at 12:32:16PM -0600, Lucas De Marchi wrote:
+>> > > > On Thu, Dec 19, 2024 at 12:49:16PM -0800, Umesh Nerlige Ramappa wrote:
+>> > > > > On Thu, Dec 12, 2024 at 09:34:32AM -0800, Lucas De Marchi wrote:
+>> > > > > > This partially reverts commit fe4f5d4b6616 ("drm/xe: Clean up VM / exec
+>> > > > > > queue file lock usage."). While it's desired to have the mutex to
+>> > > > > > protect only the reference to the exec queue, getting and dropping each
+>> > > > > > mutex and then later getting the GPU timestamp, doesn't produce a
+>> > > > > > correct result: it introduces multiple opportunities for the task to be
+>> > > > > > scheduled out and thus wrecking havoc the deltas reported to userspace.
+>> > > > > >
+>> > > > > > Also, to better correlate the timestamp from the exec queues with the
+>> > > > > > GPU, disable preemption so they can be updated without allowing the task
+>> > > > > > to be scheduled out. We leave interrupts enabled as that shouldn't be
+>> > > > > > enough disturbance for the deltas to matter to userspace.
+>> > > > >
+>> > > > > Like I said in the past, this is not trivial to solve and I
+>> > > > > would hate to add anything in the KMD to do so.
+>> > > >
+>> > > > I think the best we can do in the kernel side is to try to guarantee the
+>> > > > correlated counters are sampled together... And that is already very
+>> > > > good per my tests. Also, it'd not only be good from a testing
+>> > > > perspective, but for any userspace trying to make sense of the 2
+>> > > > counters.
+>> > > >
+>> > > > Note that this is not much different from how e.g. perf samples group
+>> > > > events:
+>> > > >
+>> > > > 	The unit of scheduling in perf is not an individual event, but rather an
+>> > > > 	event group, which may contain one or more events (potentially on
+>> > > > 	different PMUs). The notion of an event group is useful for ensuring
+>> > > > 	that a set of mathematically related events are all simultaneously
+>> > > > 	measured for the same period of time. For example, the number of L1
+>> > > > 	cache misses should not be larger than the number of L2 cache accesses.
+>> > > > 	Otherwise, it may happen that the events get multiplexed and their
+>> > > > 	measurements would no longer be comparable, making the analysis more
+>> > > > 	difficult.
+>> > > >
+>> > > > See __perf_event_read() that will call pmu->read() on all sibling events
+>> > > > while disabling preemption:
+>> > > >
+>> > > > 	perf_event_read()
+>> > > > 	{
+>> > > > 		...
+>> > > > 		preempt_disable();
+>> > > > 		event_cpu = __perf_event_read_cpu(event, event_cpu);
+>> > > > 		...
+>> > > > 		(void)smp_call_function_single(event_cpu, __perf_event_read, &data, 1);
+>> > > > 		preempt_enable();
+>> > > > 		...
+>> > > > 	}
+>> > > >
+>> > > > so... at least there's prior art for that... for the same reason that
+>> > > > userspace should see the values sampled together.
+>> > >
+>> > > Well, I have used the preempt_disable/enable when fixing some
+>> > > selftest (i915), but was not happy that there were still some rare
+>> > > failures. If reducing error rates is the intention, then it's fine.
+>> > > In my mind, the issue still exists and once in a while we would end
+>> > > up assessing such a failure. Maybe, in addition, fixing up the IGTs
+>> > > like you suggest below is a worthwhile option.
+>
+>IMO, we should strive to avoid using low-level calls like
+>preempt_disable and preempt_enable, as they lead to unmaintainable
+>nonsense, as seen in the i915.
+>
+>Sure, in Umesh's example, this is pretty clear and not an unreasonable
+>usage. However, I’m more concerned that this sets a precedent in Xe that
+>doing this is acceptable.
 
-[ 2399.317651] BUG: kernel NULL pointer dereference, address: 0000000000000098
-[ 2399.318657] #PF: supervisor write access in kernel mode
-[ 2399.319057] #PF: error_code(0x0002) - not-present page
-[ 2399.319528] PGD 10eb68067 P4D 0
-[ 2399.319914] Oops: Oops: 0002 [#1] SMP NOPTI
-[ 2399.320308] CPU: 72 UID: 0 PID: 5815 Comm: rmmod Not tainted 6.13.0-rc5+ #89
-[ 2399.320986] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 09/28/2024
-[ 2399.321892] RIP: 0010:down_write+0x1a/0x50
-[ 2399.322303] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 55 48 89 e5 41 54 49 89 fc e8 9d cd ff ff 31 c0 ba 01 00 00 00 <f0> 49 0f b1 14 24 75 17 65 48 8b 05 f6 84 dd 5f 49 89 44 24 08 4c
-[ 2399.323669] RSP: 0018:ff53859d6c663a70 EFLAGS: 00010246
-[ 2399.324061] RAX: 0000000000000000 RBX: ff1d4eb505060180 RCX: ffffff8100000000
-[ 2399.324620] RDX: 0000000000000001 RSI: 0000000000000064 RDI: 0000000000000098
-[ 2399.325167] RBP: ff53859d6c663a78 R08: 00000000000009c4 R09: ff1d4eb4fac90000
-[ 2399.325681] R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000098
-[ 2399.326185] R13: ff1d4e42e1a4a0c8 R14: ff1d4eb538ce0000 R15: 0000000000000098
-[ 2399.326755] FS:  00007fe729570000(0000) GS:ff1d4eb2b7200000(0000) knlGS:0000000000000000
-[ 2399.327269] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 2399.327690] CR2: 0000000000000098 CR3: 00000001c0584005 CR4: 0000000000373ef0
-[ 2399.328166] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[ 2399.328623] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
-[ 2399.329055] Call Trace:
-[ 2399.329243]  <TASK>
-[ 2399.329379]  ? show_regs+0x69/0x80
-[ 2399.329602]  ? __die+0x25/0x70
-[ 2399.329856]  ? page_fault_oops+0x271/0x550
-[ 2399.330088]  ? psi_group_change+0x217/0x470
-[ 2399.330341]  ? do_user_addr_fault+0x455/0x7b0
-[ 2399.330667]  ? finish_task_switch.isra.0+0x91/0x2f0
-[ 2399.331004]  ? exc_page_fault+0x73/0x160
-[ 2399.331275]  ? asm_exc_page_fault+0x27/0x30
-[ 2399.343324]  ? down_write+0x1a/0x50
-[ 2399.343631]  simple_recursive_removal+0x4d/0x2c0
-[ 2399.343977]  ? __pfx_remove_one+0x10/0x10
-[ 2399.344251]  debugfs_remove+0x45/0x70
-[ 2399.344511]  mana_destroy_rxq+0x44/0x400 [mana]
-[ 2399.344845]  mana_destroy_vport+0x54/0x1c0 [mana]
-[ 2399.345229]  mana_detach+0x2f1/0x4e0 [mana]
-[ 2399.345466]  ? ida_free+0x150/0x160
-[ 2399.345718]  ? __cond_resched+0x1a/0x50
-[ 2399.345987]  mana_remove+0xf4/0x1a0 [mana]
-[ 2399.346243]  mana_gd_remove+0x25/0x80 [mana]
-[ 2399.346605]  pci_device_remove+0x41/0xb0
-[ 2399.346878]  device_remove+0x46/0x70
-[ 2399.347150]  device_release_driver_internal+0x1e3/0x250
-[ 2399.347831]  ? klist_remove+0x81/0xe0
-[ 2399.348377]  driver_detach+0x4b/0xa0
-[ 2399.348906]  bus_remove_driver+0x83/0x100
-[ 2399.349435]  driver_unregister+0x31/0x60
-[ 2399.349919]  pci_unregister_driver+0x40/0x90
-[ 2399.350492]  mana_driver_exit+0x1c/0xb50 [mana]
-[ 2399.351102]  __do_sys_delete_module.constprop.0+0x184/0x320
-[ 2399.351664]  ? __fput+0x1a9/0x2d0
-[ 2399.352200]  __x64_sys_delete_module+0x12/0x20
-[ 2399.352760]  x64_sys_call+0x1e66/0x2140
-[ 2399.353316]  do_syscall_64+0x79/0x150
-[ 2399.353813]  ? syscall_exit_to_user_mode+0x49/0x230
-[ 2399.354346]  ? do_syscall_64+0x85/0x150
-[ 2399.354816]  ? irqentry_exit+0x1d/0x30
-[ 2399.355287]  ? exc_page_fault+0x7f/0x160
-[ 2399.355756]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[ 2399.356302] RIP: 0033:0x7fe728d26aeb
-[ 2399.356776] Code: 73 01 c3 48 8b 0d 45 33 0f 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 b0 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 15 33 0f 00 f7 d8 64 89 01 48
-[ 2399.358372] RSP: 002b:00007ffff954d6f8 EFLAGS: 00000206 ORIG_RAX: 00000000000000b0
-[ 2399.359066] RAX: ffffffffffffffda RBX: 00005609156cc760 RCX: 00007fe728d26aeb
-[ 2399.359779] RDX: 000000000000000a RSI: 0000000000000800 RDI: 00005609156cc7c8
-[ 2399.360535] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-[ 2399.361261] R10: 00007fe728dbeac0 R11: 0000000000000206 R12: 00007ffff954d950
-[ 2399.361952] R13: 00005609156cc2a0 R14: 00007ffff954ee5f R15: 00005609156cc760
-[ 2399.362688]  </TASK>
+each such usage needs to be carefully reviewed, but there are cases
+in which it's useful and we shouldn't ban it. In my early reply on
+wdcrw3du2ssykmsrda3mvwjhreengeovwasikmixdiowqsfnwj@lsputsgtmha4  I even
+showed how the same construct is used by perf when reading counters
+that should be sampled together.
 
-Fixes: 6607c17c6c5e ("net: mana: Enable debugfs files for MANA device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
----
- drivers/net/ethernet/microsoft/mana/gdma_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I will post a new version, but I will delay in a week or so merging it.
+That's because I want to check the result of the other patch series that
+changes the test in igt and afaics should give all green results all the
+time: https://patchwork.freedesktop.org/series/143204/
 
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index 2dc0c6ad54be..be95336ce089 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -1656,9 +1656,9 @@ static int __init mana_driver_init(void)
- 
- static void __exit mana_driver_exit(void)
- {
--	debugfs_remove(mana_debugfs_root);
--
- 	pci_unregister_driver(&mana_driver);
-+
-+	debugfs_remove(mana_debugfs_root);
- }
- 
- module_init(mana_driver_init);
--- 
-2.34.1
+Lucas De Marchi
 
+>
+>Not a blocker, just expressing concerns.
+>
+>Matt
+>
+>> >
+>> > for me this fix is not targeted at tests, even if it improves them a
+>> > lot. It's more for consistent userspace behavior.
+>> >
+>> > >
+>> > > >
+>> > > > >
+>> > > > > For IGT, why not just take 4 samples for the measurement
+>> > > > > (separate out the 2 counters)
+>> > > > >
+>> > > > > 1. get gt timestamp in the first sample
+>> > > > > 2. get run ticks in the second sample
+>> > > > > 3. get run ticks in the third sample
+>> > > > > 4. get gt timestamp in the fourth sample
+>> > > > >
+>> > > > > Rely on 1 and 4 for gt timestamp delta and on 2 and 3 for
+>> > > > > run ticks delta.
+>> > > >
+>> > > > this won't fix it for the general case: you get rid of the > 100% case,
+>> > > > you make the < 100% much worse.
+>> > >
+>> > > yeah, that's quite possible.
+>> > >
+>> > > >
+>> > > > For a testing perspective I think the non-flaky solution is to stop
+>> > > > calculating percentages and rather check that the execution timestamp
+>> > > > recorded by the GPU very closely matches (minus gpu scheduling delays)
+>> > > > the one we got via fdinfo once the fence signals and we wait for the job
+>> > > > completion.
+>> > >
+>> > > Agree, we should change how we validate the counters in IGT.
+>> >
+>> > I have a wip patch to cleanup and submit to igt. I will submit it soon.
+>>
+>> Just submitted that as the last patch in the series:
+>> https://lore.kernel.org/igt-dev/20250104071548.737612-8-lucas.demarchi@intel.com/T/#u
+>>
+>> but I'd also like to apply this one in the kernel and still looking for
+>> a review.
+>>
+>> thanks
+>> Lucas De Marchi
 
