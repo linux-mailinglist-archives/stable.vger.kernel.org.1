@@ -1,77 +1,100 @@
-Return-Path: <stable+bounces-108093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B658A07554
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 13:10:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6040DA075C6
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 13:31:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0656188B144
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 12:10:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AA2F188760D
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 12:31:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C0A21767C;
-	Thu,  9 Jan 2025 12:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6986216E20;
+	Thu,  9 Jan 2025 12:31:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="s+406ge8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E86F216E24;
-	Thu,  9 Jan 2025 12:10:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531BC17D2;
+	Thu,  9 Jan 2025 12:31:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736424622; cv=none; b=fhdQc+K3NibGXx6etZHsOl7WBjSAEB4pCbl1xFS66L4UTrirFkKk5pDtw3bYbfI7Ibf8TTPJgAVT3mdwYsZti+rmeSyfgRSSU/HaKn7xOzTnkG3Iz+BhVFvHz2m0t4mioiY3USIEo/RbftvszdwIZJqE2J6WChaYEoCk6bMl3Rs=
+	t=1736425899; cv=none; b=kH0YPC6jduF+YSDlwMENb8xUinnI5UAMEjCvWqVa6c9RyWl3wMKQPpcZ0AWmXwh41CMLo1JRZbLfghCbm3BikQblSN5ASj6fAdnN6SkF1vnhfa9CCZRQUsa7HRptgfZ1fz8VMTo4XuvwBw4bPqM8l4XywfsQzxey1oIbk4GvJ2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736424622; c=relaxed/simple;
-	bh=ZFbomuY4Dm8Bgu++fDM4zU3sIGkQmsyEL71TrhLzgco=;
+	s=arc-20240116; t=1736425899; c=relaxed/simple;
+	bh=rMuMS314XNGWQFiBiA/QKvOELH6i9cSo5uahuA3ShC0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uxkGUP+v2qMBy/Kx3lKBxIUVGVvHcEwLIdM5H8ZVPjwfVnsTrbt5RAX+cnV8nM3aAoa0/MmDcWVZD1bH7LELFhQG5NSv5Cd29qsITH1Ha/8afcQT2+YsH5YG1A/Ur1fDKuHz6po6oNK2qnrJBC59FQW8/BCSfgN5b+SjudQEPJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E6E6C4CED2;
-	Thu,  9 Jan 2025 12:10:19 +0000 (UTC)
-Date: Thu, 9 Jan 2025 12:10:17 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>, will@kernel.org,
-	ardb@kernel.org, ryan.roberts@arm.com, mark.rutland@arm.com,
-	joey.gouly@arm.com, dave.hansen@linux.intel.com,
-	akpm@linux-foundation.org, chenfeiyang@loongson.cn,
-	chenhuacai@kernel.org, linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	quic_tingweiz@quicinc.com, stable@vger.kernel.org
-Subject: Re: [PATCH v4] arm64: mm: Populate vmemmap/linear at the page level
- for hotplugged sections
-Message-ID: <Z3-8qdluDbrDntRJ@arm.com>
-References: <20250107074252.1062127-1-quic_zhenhuah@quicinc.com>
- <Z31--x4unDHRU5Zo@arm.com>
- <fbb134e0-cfeb-4c6e-98b4-d945f95383db@arm.com>
- <169f8006-ff33-48ca-a680-37fe1cf0efe8@quicinc.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=eVIhce9qDqmchdRy/kcgRDZ+JaLCXARTadUv5UUD7wrVdP4uDp3H4vthxpqDif40sI0caWdLULkDw519QH7f/L6xSUEyccwTNCi/vM3A/445Am/+DSNVD1lJqKLN1q+P9KG5nLVbc4CpKlDp62leIaaN+uAEJNxYvsRuE01mNjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=s+406ge8; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from localhost (unknown [10.10.165.14])
+	by mail.ispras.ru (Postfix) with ESMTPSA id EF3D1518E772;
+	Thu,  9 Jan 2025 12:31:34 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru EF3D1518E772
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1736425895;
+	bh=FyNPIbZfssEGNxAGRt1nSlLDfMlVqQxGXkpQqjVV4MY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s+406ge8zRVBIuV86X3dYSt7194MJUzoyG6k5f83KGR5uXwzixxk2p7mXtXmammXY
+	 BL3YHJ9vIyULwUPzDv5u3aA0aLGlZDRUb17xec8GATPr0L6asR1XC0M51ZDTfUA1o+
+	 0EECLJhzWyoafnAwsoSTyKjoUxiYVqmahc64m+lY=
+Date: Thu, 9 Jan 2025 15:31:34 +0300
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Anastasia Belova <abelova@astralinux.ru>
+Cc: Bjorn Andersson <andersson@kernel.org>, lvc-project@linuxtesting.org, 
+	Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org, 
+	Michael Turquette <mturquette@baylibre.com>, David Dai <daidavid1@codeaurora.org>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, linux-clk@vger.kernel.org
+Subject: Re: [PATCH] clk: qcom: clk-rpmh: add explicit casting in
+ clk_rpmh_bcm_recalc_rate
+Message-ID: <qd6shnygj7mzyeq6h7z5gbhxvpzm4omtcl2usui7jeywow7spf@ggq6w7xcbvik>
+References: <20250109105211.29340-1-abelova@astralinux.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <169f8006-ff33-48ca-a680-37fe1cf0efe8@quicinc.com>
+In-Reply-To: <20250109105211.29340-1-abelova@astralinux.ru>
 
-On Thu, Jan 09, 2025 at 03:04:48PM +0800, Zhenhua Huang wrote:
-> On 2025/1/8 18:11, Anshuman Khandual wrote:
-> > Just wondering why not start with PUD level itself ? Although SUBSECTION_SHIFT
-> > might never reach the PUD level but this will help keep the flags calculations
-> > bit simple and ready for all future changes.
-> > 
+On Thu, 09. Jan 13:52, Anastasia Belova wrote:
+> The result of multiplication of aggr_state and unit fields (rate
+> value) may not fit u32 type. Add explicit casting to a larger
+> type to prevent overflow.
 > 
-> I suppose that it's because these are significantly larger than 2M, whereas
-> Catalin assumed SUBSECTION_SIZE would not increase?
-> His comment:
-> "should cover any changes to SUBSECTION_SHIFT making it *smaller* than 2MB.
-> "
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> 
+> Fixes: 04053f4d23a4 ("clk: qcom: clk-rpmh: Add IPA clock support")
+> Cc: stable@vger.kernel.org # v5.4+
+> Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
+> ---
 
-Yeah, I was thinking of having fewer code lines. Otherwise the compiler
-would likely optimise them anyway to a single assignment.
+Already applied here [1], no?
 
--- 
-Catalin
+[1]: https://lore.kernel.org/lkml/173525273254.1449028.13893672295374918386.b4-ty@kernel.org/
+
+>  drivers/clk/qcom/clk-rpmh.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/clk/qcom/clk-rpmh.c b/drivers/clk/qcom/clk-rpmh.c
+> index eefc322ce367..e6c33010cfbf 100644
+> --- a/drivers/clk/qcom/clk-rpmh.c
+> +++ b/drivers/clk/qcom/clk-rpmh.c
+> @@ -329,7 +329,7 @@ static unsigned long clk_rpmh_bcm_recalc_rate(struct clk_hw *hw,
+>  {
+>  	struct clk_rpmh *c = to_clk_rpmh(hw);
+>  
+> -	return c->aggr_state * c->unit;
+> +	return (unsigned long)c->aggr_state * c->unit;
+>  }
+>  
+>  static const struct clk_ops clk_rpmh_bcm_ops = {
+> -- 
+> 2.43.0
 
