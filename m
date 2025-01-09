@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-108141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BEE0A07E49
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 18:03:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B8D6A07E35
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 18:00:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51BDE7A2A74
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 17:03:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AB44168F76
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 17:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9BED1850B5;
-	Thu,  9 Jan 2025 17:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFFA0189915;
+	Thu,  9 Jan 2025 17:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="kV7xB6JJ"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="GafJDr1M"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.smtp-ext.broadcom.com (saphodev.broadcom.com [192.19.144.205])
+Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B5E18732E;
-	Thu,  9 Jan 2025 17:03:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C0518C00B;
+	Thu,  9 Jan 2025 17:00:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736442218; cv=none; b=b/wxlrthCpaKsNgpohB3dW0nQ/Wa92/2yl7dtKMwW0e3n4Q0yeOEXdH1WsKUSDsjGRcyDgUT61iKz3yYgWBWz88SOAmnZRalkWGKn7Wp5+AUA3xo2UcYbQkGTmYCRtRaJyL4HhlEbTmWecoqjp/Tdv1AgDKU1DsCym6fHtzXJJc=
+	t=1736442019; cv=none; b=olC9LPlp85NjyZJT0cW4Zykkbf58qTjtHZErEhyk7+YVjrdMDDYxjWF0bcrRsPE3L5dg94LKbvVfUnXxLVMw5W+Q3lUu/gsvxi4jJyydr+5H1rVT3maGcfIOxp0dKX01u2IadmX+q+I0OMrBCgsYwSsN/egNmBgqMhqf7oyIM2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736442218; c=relaxed/simple;
-	bh=SUejWQaCCQ6UOnlEIF8Y+gc/yElELSYPKQtYJBlFtf4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hzwUyPYchO3xlgwGGRSzKJ69kCFGW5Pc7+u6vTYcxpSGWsCeFwEuuLKlBbzhagFE5Ur7GGr7l/G6uW+VQPsGSjPF24mBxGeTA7Ackcr113x/zPNgEJtG4+3PP+iERcR8QT8J6dSzd7k+YQJKErJ+YxoSHOMpcUmGFOFdqvBVzNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=kV7xB6JJ; arc=none smtp.client-ip=192.19.144.205
+	s=arc-20240116; t=1736442019; c=relaxed/simple;
+	bh=gDEC6eC+hE/3rES1P+/GSapucTV+adxfwsIx2MfNOTE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jA+6RlZKKePg7W/GwAZ1fL5TGj0MsXskudLhOiqiouFXC+0lZ2Swbkx5g4TKRF+DU8DkETuPkIz0gpfp4eG3gRnjQVii+ipPRQB4wCCqnIuFg+BWQKvstMqBSgcMdryhkOELH0Gh/ynIS7mbXEq3c4l8fhzYULxORALTFix1YDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=GafJDr1M; arc=none smtp.client-ip=192.19.144.207
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Received: from mail-lvn-it-01.lvn.broadcom.net (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id CE6ACC0000E8;
-	Thu,  9 Jan 2025 08:54:22 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com CE6ACC0000E8
+	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id A74E0C003ACE;
+	Thu,  9 Jan 2025 08:54:23 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com A74E0C003ACE
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1736441662;
-	bh=SUejWQaCCQ6UOnlEIF8Y+gc/yElELSYPKQtYJBlFtf4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=kV7xB6JJuMPSScCf/QhQbMLjsitXPYL4hv+kABwyIm1cbIjg6l+/kb1Vd092YWPb8
-	 Vu+vKfwY8tJ3QhT8fb20fa/174LzSo4n2E8OaYlJYXBOg7gX+BRfolIyu+RnbqNDcp
-	 5yqNNviGmgn9Xoq8WBKv7s81grk41SYj0QZypt/s=
+	s=dkimrelay; t=1736441663;
+	bh=gDEC6eC+hE/3rES1P+/GSapucTV+adxfwsIx2MfNOTE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=GafJDr1M7LLL8Re1WOBG//t/CK5O5LXkj23wghl1l1b2R3G0f2PhuavAuM1HotAKR
+	 nEgGHP2iSD8mzeWz7oP7acYTGpe3VPk3voOV6b/h3DgwjQbZ+JvXYu+bJmEuAVazrj
+	 ud2oKTCWavkpWEmmikeDeoyTHRAWFohBeAmh1Xuc=
 Received: from fainelli-desktop.igp.broadcom.net (fainelli-desktop.dhcp.broadcom.net [10.67.48.245])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail-lvn-it-01.lvn.broadcom.net (Postfix) with ESMTPSA id 63D2418041CAC6;
-	Thu,  9 Jan 2025 08:54:22 -0800 (PST)
+	by mail-lvn-it-01.lvn.broadcom.net (Postfix) with ESMTPSA id 3F51018041CAC6;
+	Thu,  9 Jan 2025 08:54:23 -0800 (PST)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: stable@vger.kernel.org
 Cc: Ard Biesheuvel <ardb@kernel.org>,
@@ -57,16 +58,18 @@ Cc: Ard Biesheuvel <ardb@kernel.org>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Baruch Siach <baruch@tkos.co.il>,
 	Petr Tesarik <ptesarik@suse.com>,
+	Mark Rutland <mark.rutland@arm.com>,
 	Joey Gouly <joey.gouly@arm.com>,
 	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Baoquan He <bhe@redhat.com>,
 	Yang Shi <yang@os.amperecomputing.com>,
 	linux-arm-kernel@lists.infradead.org (moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)),
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH stable 5.4] arm64: mm: account for hotplug memory when randomizing the linear region
-Date: Thu,  9 Jan 2025 08:54:16 -0800
-Message-ID: <20250109165419.1623683-1-florian.fainelli@broadcom.com>
+Subject: [PATCH] arm64: mm: account for hotplug memory when randomizing the linear region
+Date: Thu,  9 Jan 2025 08:54:17 -0800
+Message-ID: <20250109165419.1623683-2-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250109165419.1623683-1-florian.fainelli@broadcom.com>
+References: <20250109165419.1623683-1-florian.fainelli@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -108,10 +111,10 @@ Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
  1 file changed, 8 insertions(+), 5 deletions(-)
 
 diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-index cbcac03c0e0d..a6034645d6f7 100644
+index 80cc79760e8e..09c219aa9d78 100644
 --- a/arch/arm64/mm/init.c
 +++ b/arch/arm64/mm/init.c
-@@ -392,15 +392,18 @@ void __init arm64_memblock_init(void)
+@@ -401,15 +401,18 @@ void __init arm64_memblock_init(void)
  
  	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE)) {
  		extern u16 memstart_offset_seed;
