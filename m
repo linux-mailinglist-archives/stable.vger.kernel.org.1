@@ -1,355 +1,366 @@
-Return-Path: <stable+bounces-108152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFD29A08153
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 21:21:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5583FA0816C
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 21:35:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEF6A168C1C
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 20:21:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 378FC167CB3
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 20:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655541F75B3;
-	Thu,  9 Jan 2025 20:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4315D1F75B3;
+	Thu,  9 Jan 2025 20:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="etxOsUWw"
+	dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b="QRFTbNAM"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43CB1FE475
-	for <stable@vger.kernel.org>; Thu,  9 Jan 2025 20:21:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736454071; cv=fail; b=h3XqB1VOefxaa2eVV5gNQHWwUWdS2SWtactyfAVadfkk5NBed+Uxoq/KYdhrLSbR7WjiVfPTOh4BCZvKQun2heUfGP8iVM6fOOFAh1vtgCwDGr8JxQEY3LNIcJMjTNaBNTbn3FDfQ8XAMEZcWcaQKIwZeqg6Rj+fy2Bty2Uv6cU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736454071; c=relaxed/simple;
-	bh=NUqAXOYbDgVnIpC0jrSq6mdCUEIcygaruxEff6ZrdEo=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=J2PDDkSWa07x3Po7tNILrpCBUib8L+aOHTVC8yMOfwwxVKxAQ1jBSqWwZAhncjmU2P+bISD6bSs3VFHq1jR0RuwaY7our4Bwr44KO0Rg+/cUW/eNjQ4+1CpV1WMvLatkhG2IONZoj7wONJUZszQZaJU4jVdDmt80LMgAv23TAKo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=etxOsUWw; arc=fail smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736454069; x=1767990069;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=NUqAXOYbDgVnIpC0jrSq6mdCUEIcygaruxEff6ZrdEo=;
-  b=etxOsUWw6C8a81kYI+KTdXjUNNBYXdWN7vNXlBi/z8k7maYMIORAiWrb
-   oTR/y4kv9L1dqywlWFUiRYm085ZpskWJKB0Jvv9bbP3ZnZ0sfLBPqxDck
-   npq6sQPnwz5vHYl7O9UHkbuy/7/axiPJbIGdualhGfW/ID8vBdM/svfS1
-   OeKpSNql17MBpWQSP2Gd1G88aLaPrM8AehZ6zgwZ9CmSKpOHPc27hgy3i
-   SUZyhJknkQhO6pWZzBKgsAA7IyLDtbCLZWmaIPpyXkFqeLuyOxirv9DTb
-   ZSOCSiFe+3OH9DeoE1A9zm9EAiejXQoC7VknBNjhgvhXs61z7zKy9FFJ1
-   g==;
-X-CSE-ConnectionGUID: vHfTEmY7Q/GuudJbI7gneA==
-X-CSE-MsgGUID: kHO0nlyyQB+N8dPQa1wx/Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11310"; a="54152508"
-X-IronPort-AV: E=Sophos;i="6.12,302,1728975600"; 
-   d="scan'208";a="54152508"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2025 12:21:09 -0800
-X-CSE-ConnectionGUID: TIo0ehIfTOiASSZI0T+tVQ==
-X-CSE-MsgGUID: TCHtPPKAQua7NSfPRbwwmQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,302,1728975600"; 
-   d="scan'208";a="103708246"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 09 Jan 2025 12:21:08 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Thu, 9 Jan 2025 12:21:07 -0800
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Thu, 9 Jan 2025 12:21:07 -0800
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.46) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Thu, 9 Jan 2025 12:21:07 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ldy5XPQOzZClRQL0b72lRLI0n+g+p2TDEJe42pW+BTuoX3vnCuLouqk2Uz7s3nrgSosVTw59ObN4LwP/au4szs+W9jblw55qbE2RCdSpcoJWKFSz/VDXxGQXHjO+7LMYB8YKDGj4EenhYAm+MKKzk07pr4yBBoF+4MIdx9bDONg5d5w0hoHAq/JC+eA1oHtGUGDGcdOLEmJN4lGTnwzhCVMSbp7GMuHe+MvZb8dlydU6PGtxaFvglvc+QiwdUL64WJL5fYd2YlqxW1jZQblt/49EStE4soHoFXNAYAc07Et7+5yPnwOcIQDQbnk/P4ES16EFkonERIgMGvMc6WrOcA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oXw5V0qecDeXHeYI6zwQXFoZyidEE+mifQD9JVc1gw8=;
- b=V34XmBKlJ2jp4iMCocFGCXzXXoedeHH55bNXJ5Cvq5JB3KMnYKf58j0oCuVY445OMVszkDXjoy1npnR2yXb2duH1soRflVg/WWO8cGjNFONl+BixklAyyb20t5ACU5QfcS3MTur+ElvWDFyMqK/rOo+5gtRiqX6Vf47eLaZJxzumZjB0i/8tT+gbzynHLD8mnnZg7OnhnrUYBbL6aAQy9z4vm+ZFIouw7v7LkIDZga86u+Hw1hmB435qzmA1YKIrOwfpGJhPVUmVjavOqg/srXb/pyYFJIhaQ1Kx0EKUpvjVIz/zgBkkM/EB3kv31py0hqIrJmP9aSBX0g8YRW8h0A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by SA1PR11MB5780.namprd11.prod.outlook.com (2603:10b6:806:233::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.12; Thu, 9 Jan
- 2025 20:21:04 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332%4]) with mapi id 15.20.8335.010; Thu, 9 Jan 2025
- 20:21:04 +0000
-Date: Thu, 9 Jan 2025 12:21:54 -0800
-From: Matthew Brost <matthew.brost@intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-CC: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-	<intel-xe@lists.freedesktop.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH] drm/xe/client: Better correlate exec_queue and GT
- timestamps
-Message-ID: <Z4Av4n2wHAoOHMk0@lstrano-desk.jf.intel.com>
-References: <20241212173432.1244440-1-lucas.demarchi@intel.com>
- <Z2SGzHYsJ+CRoF9p@orsosgc001>
- <wdcrw3du2ssykmsrda3mvwjhreengeovwasikmixdiowqsfnwj@lsputsgtmha4>
- <Z2YMiTq5P81dmjVH@orsosgc001>
- <7bvt3larl4sobadx57a255cvu7i5lkjpt2tdxa4baa324v6va6@ijl7gzqjh7qo>
- <jamrxboal2ppniepfxpq5uzksd2v35ypymo7irt56oewcan5vh@zxmofyra5ruz>
- <Z39Vo5FEZsapkQaA@lstrano-desk.jf.intel.com>
- <ngkbkvqre4d4hvaiwtqcm7oz76b3wcbuzq3ueoazjd7ff3luym@lrjlwmac2mf7>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ngkbkvqre4d4hvaiwtqcm7oz76b3wcbuzq3ueoazjd7ff3luym@lrjlwmac2mf7>
-X-ClientProxiedBy: MW4PR03CA0084.namprd03.prod.outlook.com
- (2603:10b6:303:b6::29) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697E1B677;
+	Thu,  9 Jan 2025 20:34:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736454901; cv=none; b=pRVObZ634L6d7UsTV5t0WLtB1dh1TjgZoMSbnlV81++LAcVJwSWi8lyUCOIFFaSnx0dOByet8LqeQAqBKsrOG/v7FFXyrT73OACzMhkFBoDyIG+X1/CAngs+MjKg+hE77NoqW8LGwJ1eq1PrtHKuO9IEO5i78xyQKxjgin0a2cw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736454901; c=relaxed/simple;
+	bh=fpX9ilX8ud4NwJ5Rd7zd+pUtWeUCO4Is5o8WnOVDF5g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kuV1Tj7H8nc2kdfgouyGoVIlqv4/EmTQiAWH3S8zamPB7oMUV+0ErtKgt8B9Ae9hfK6I4/enPgj5SQu0CqwaP9O8M1I4lmvb8jBiyOhy/xeSUEG3cgpIlowaKw1ehCD8YGmm/un09vF+vtouRVjrKeJFeX8KFlpEZxqUgMNKkRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com; spf=pass smtp.mailfrom=gmx.com; dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b=QRFTbNAM; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
+	s=s31663417; t=1736454893; x=1737059693; i=quwenruo.btrfs@gmx.com;
+	bh=l9Aku3xD+vCDV23tHPGgibSS+82F2JYrssNvL6RYP3Q=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=QRFTbNAM5kFj9q23hB4EyqKEZaTNmE9lb+QP3hNv+mQjMJ6Wr0rJ8CWISionhiGb
+	 jQMfVdIiGjk7XtqBc/Xs/dvJ90coXg3VTld3fsUQWgGDUS+X4lFcfhoe8Y5R3u1ux
+	 EtxrsYdp8tfxg+bKZqnk41u431QDBKPQTRn3Cd9gqxVjx7hqhdHCwU1yfL1fyEYgt
+	 ANt/uV+0nLdnNF8iybZB3ooBIFimy1ku7tXl6BkuL2jRPa7kglSIAlnZSs09L2WSI
+	 V3gzGrUzhSNo5hWrwjsH153cedNRAva2yx97jCxv1AkiYKCQXqsJ9NYnVeY+3R1Z4
+	 LBrSyWKBACdKuP5Oaw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [172.16.0.191] ([159.196.52.54]) by mail.gmx.net (mrgmx104
+ [212.227.17.174]) with ESMTPSA (Nemesis) id 1MY6Cb-1u4OGH3CMH-00LKvL; Thu, 09
+ Jan 2025 21:34:53 +0100
+Message-ID: <5914c71d-26da-49d0-a6df-3909d52450d8@gmx.com>
+Date: Fri, 10 Jan 2025 07:04:49 +1030
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|SA1PR11MB5780:EE_
-X-MS-Office365-Filtering-Correlation-Id: 91451834-2007-4678-3673-08dd30eb245d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?a3pQYzhidm9sNCtBMHdRcU1NSDBneWRqOUNiVlVlV0NQdkl6RGxkdmNBajEr?=
- =?utf-8?B?U2p4aHV6bE5BNEN6WUNWaVpsUEZOcndIQnExc3pXbnpCY1VGYUF0TWtsMTZm?=
- =?utf-8?B?eGdVVDNML0NKQTQwRG9jTy9oRTVWdWp5V1JVNC9DdThPZEl5WGlxRmxFRjM2?=
- =?utf-8?B?NWhSTE12bFBpdld5cnNrTWlLd3BHZ2pJbU9FV3RMUVYvVnhyVStFZThyZXR2?=
- =?utf-8?B?ZGtObmdPTHJrSXhZZ0RjUHpqZWNmZmJLWVBkQzFvbDhncTZ5R2lCTUlOeG9l?=
- =?utf-8?B?eGdDMEFONzZUY3pzUFFmKzNZa29EOEdheEYxL0VDeCttWmovQUtXUHBxZHZV?=
- =?utf-8?B?dTZEZDdoU2lDWjBxZkZ6elFqMHNEVFVqb1dRK2RBbEJjSmZjd3lEZVJzSGJz?=
- =?utf-8?B?R21hcEFhV2NXcGNSUnE4c1JlM3BSUUF5emsxdUxLcUNrbUl1aWhVMEovdkJx?=
- =?utf-8?B?dEFqOENhNEhVaThXNmlWN2tYSzgwbHdZUnlTRmRPSkZVdnBvYmIvcE50Wlg1?=
- =?utf-8?B?bm5PQVRKNWcyQUQrQjYzQUphV1RQbW1NT3hxRXpIMVhEQk9XU1JzUXVOU3lP?=
- =?utf-8?B?cWE0RURvLy9kU0x3MUZuT05XTkIyMXN0bmtDVXVXc1gwbWF6RGZIMGpKbUlM?=
- =?utf-8?B?Rk4xc3drZlUvSnEybkpqRjI0NGNCYXNrUlpvdWptWmpLOU9YZTJ0blUwMmda?=
- =?utf-8?B?L2tDam5QOEpoYllyS25iSUNZMTJrZGs4akdFRlluNWI2REh6eU1QTDhiQVh1?=
- =?utf-8?B?bE9CWVQrcWF1TjZZLzUxR3RlQXJpeTJXWVZ0M040V2FZRXd4eDNEclBxTXBG?=
- =?utf-8?B?Y3lFdnhValI5UHoyMGdVZG5rYnZST1VqbUpyR0xmUit4V1dtNnppcDJOaEox?=
- =?utf-8?B?VlBnazJMc0x0MFJWWXZnVENLQ0twVlgzWGhnRzJ5MlNPb3I0d2FsV1FDVHE2?=
- =?utf-8?B?eXBLeVJkVU41RVd6WndkMXRvdWM1NGpJVkN5K0g0Uk5RK1pyQk9wM3M3cWdj?=
- =?utf-8?B?VHNHWE8yQ0ZNQjFhcnhEd0VKQTkrY09VUytEZFZXUEZjaTdJaVdhajA2dWZH?=
- =?utf-8?B?TWpkOXdPUjE1bzJURkRyV1pBUTh3MEhyMkZFWGU0YXB3UGh0U1hadlI4alNm?=
- =?utf-8?B?bUJPRGtISzBHOVQ1UURoYmNnem5sUW9Sei96VG8wSUNicko5N1ErMDh3RHNC?=
- =?utf-8?B?MGZGZ1IyZlJ2UmpmbmRkcEZPc1krcXpjNjQ1Q0JpOEJydm1oNFVzbjFiZ0FF?=
- =?utf-8?B?elIyNnhzcVNXUnl3VnoxNG51WDRiRW9JdzMxVHdleG5adHY1S25KWUgyUlg4?=
- =?utf-8?B?NFhJOHBBWlh4Vjk1d3NrZGxKd1FRSDNzQmNTM2JHODJzZ3RFcVZqM1gwNHFD?=
- =?utf-8?B?emlqOTRsZnRqSXM0VjNQc0N0VGRkdFNxSVpBZUh6RHcyWkZ1YTFnVVpYRXNm?=
- =?utf-8?B?Q3VpNGxjUzBPbDZ6aXN6THpRVzRXOU44QWhCbU51ZjhmOEVKdGd5ZkNSSGxH?=
- =?utf-8?B?ZjRVVlY1d3FGR0gwZEFrK0FwNHp5OFZMWnhMT3FxNXU1NDVCd3Y4M1BoTDl1?=
- =?utf-8?B?QlNtMkJlN0ZZeXVrcEpyT01vWDhIbmJKclI2VWl5K1lJTThZbWp5d2toaytt?=
- =?utf-8?B?aVdpbDYrTGkya0o4b3ZrK3BKRnppY1Y5Q3B2ZHVjOGw1VXNEZXhUQnIva1gw?=
- =?utf-8?B?SkZKL3llWUZNWUlSbWhWM2U5a2tKOEJSOGRra25TSDNMaVg5TEJmellET0ZH?=
- =?utf-8?B?Z2p6REVMemFOMTJKTFhHalR5cndCMklBck1rODhOZDQ5bDMwaVFkd1BUV08r?=
- =?utf-8?B?SEFPRUpZY1NhdGFJUkZGUT09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QnhqZnFZWHdRcmFIaERmUUo0bzBPd2JUejRJY2RkVnh2QU50QzFOSGdBQ29s?=
- =?utf-8?B?ZWZKWW1BbVdaVDR1TERIS0RxMktMN0tpeVhoU09wTTVycXdvNjRTbkZwNkNZ?=
- =?utf-8?B?bngva2xkQVR1MUp1cDIrcFZuR3U3MGlNcHBsNWRPbHp1NlRzS1RyWDhaeklk?=
- =?utf-8?B?WVRPdkx5QXJLbzJRZ3Q2cVFVaWZDMDkyQkVETmhwaWRqYWE2SWFnNW5qV3Mv?=
- =?utf-8?B?YTFicjErOHlpZVNXSzJoYk5EZGtCS04xTTd3TDdlNmcyeTRWcEV1YmdBcGlE?=
- =?utf-8?B?VmlVQi8vSEdneDU1UXZlR0FmbzRaUEk5bnNMdk45b2VMNjVpQlQ4R3QzR0p6?=
- =?utf-8?B?bktub3pyaUswbDhJTmJKRG5aTUFtMlorWHVGYWF2K0FIQmZvNDlpSk12TFZk?=
- =?utf-8?B?MzlSNnlOaTNXZkpjL1I2TmRvTGlwNjEyblpQVDFxSFVsNk9wUTFpWU5CZHlu?=
- =?utf-8?B?MElXYTFjM3dPdWljMktueVduVlpDaU10OTZubm1DZ1FkV0F5Ky96dTVSRG81?=
- =?utf-8?B?TzRSSmZ1TkRMWlZhVzlDRkEzT0FqYmdQeEVML2VlUk9hS2I4M0xldlpmL0RL?=
- =?utf-8?B?aUJBK2x6eVgxNlh6c1NxZVczK0VkTEN0ZEIvb3pMN3phY0Y4bit6ajFZRko1?=
- =?utf-8?B?UVh1ZFVsMGxSTzg1ZERHamY1UTExNy9TaUNjakUvTE83QXFyQnFTa0FTNmJk?=
- =?utf-8?B?L2VkRWtyelVObXhNQ0NZYVRxNXpUZ21rMHNCaUkzeDRjekxJYnN5ZEV4eUVH?=
- =?utf-8?B?MC95WlJGUXZnbjhTaDgyeURGd0FZU3dIRzdGUS9xNmdGOVFMTmZ0T0p3VzNU?=
- =?utf-8?B?K0VvVTFZS1ZpK2RDRXNrekY3NlppdEZtU0JGa1VjNWJsT01IZ3dJa2ZUMitp?=
- =?utf-8?B?b1gzSHZwVGU0MUtXRTFsVnQ3RUVzZyswVm1KUFVOaGs4T1VsaWxjTHR4LzRM?=
- =?utf-8?B?MGFtSkNVY1hHYkZxUE15R3hES1NhM01Lc3NNUjNWc1hCMDBXbDA4Vi9wcVZh?=
- =?utf-8?B?ZWl6SWQyOFF3STBKbDVLbHFZNGtQdmQ3dk5OUHNOZmc2TnJPVGptcysycHpC?=
- =?utf-8?B?WVB6TzdyOVVrZWQ5UXVubklFQW9nSHkrTTVjaHpCM3ZMVHJ5OUdtNDREc3Fv?=
- =?utf-8?B?T1RJTVQ0S3hlZTJsVkFnUWZKRTA5VWtHTnNnYi84ejhiTGxBNFl0OWlXczFt?=
- =?utf-8?B?clNhUUZyaXBMVlNadTd2TlhiQ003WG5BYnB4dlRwVHFNRFl6cWIxL2o4bWsy?=
- =?utf-8?B?VFZITE9TWWtINUIycjlOeW1nZk5BUlUxUlVrbUpBS0NHbDhwRFhSUE9CV0sy?=
- =?utf-8?B?MFZCOVBwdm9UUS9TOE5NOUZvTkVhMDdUKzZqZ09mU0M4YlE3MHBnR1ZiQVdC?=
- =?utf-8?B?VzlMekxVTXBGTGtid2pEbE56Zjg1dnp0ZEFGTlZ1dUlnRHpqWXFVTEI3bCtV?=
- =?utf-8?B?M0Njb0VQVHVITUtFeUJucXFvVGlVVlQ4QzlDa2RjRFBIWmdMRkVDOGFndDZS?=
- =?utf-8?B?d0p2ZkFMWjBnNnBvc1RDY2RPTzRUdXUwUXRwUGNUd1NyeUlkQzUrQmRmdExM?=
- =?utf-8?B?cnpRb1llQWNyMVF5T3NBS2xCTWZLN0FmWkpvOE8wVTQxQTlXKzhEVXM2Rllx?=
- =?utf-8?B?VFYwVEY1c01aclk4ZEZrSStMcmpWTVp2VkMzVURQamJaSlA0cENmV2R6eGM3?=
- =?utf-8?B?TEEwZi84Qy9PTHo3TDZPT2FlSTF3c3dESVVHdDNhN3FsM1kxUTFaM3daOElI?=
- =?utf-8?B?KzhTVUFXSFN3REh4K3Nqanh1eTNMbnFyZnJZcmhCOEtFbXkveklCTFFYME1w?=
- =?utf-8?B?N3h2SEFoajFOazA2eWxUMStjMTFveGdMVEtIMDVqWHo5SWZDOVY2RVZ1aUR1?=
- =?utf-8?B?em5DaTJCN3dCTUdNalFlQjZ0c092aFlLT0ZIQ1dleTlaVEtZOHFPc3d1MFlG?=
- =?utf-8?B?RVBuNFNsSFQ4SnhNYW5jbmRXTkVjMWNEUkFBZ2hXUUt3Y0IrUlRBOUEvdkV4?=
- =?utf-8?B?bVVaenlod3cyeFVDb3JnbFdXYVNLNEtQQlNGTUl3WGwvYkRoK3hjL0RNK1dk?=
- =?utf-8?B?NDB2SjdOcFVZK2ZPRURWQmhFT1RxK0Jab0E3clJGSmsxWVQ1VFFkQ2tpZ3RF?=
- =?utf-8?B?eStSODNQZk41NitmUFVaeTVGdHAyVTRRUUZxQ1MxZEhzaEg3OGlVYkJSTkpw?=
- =?utf-8?B?NUE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 91451834-2007-4678-3673-08dd30eb245d
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2025 20:21:04.3124
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QZhByj/NUGnud7jM3CKxzuYJso234MIGPUYoazD/1BiIzCvEAsYI7YkVJKfjAMxPPFBjE1TXu/qdsL2eh0SlfA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB5780
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/9] btrfs: fix double accounting race when
+ extent_writepage_io() failed
+To: Boris Burkov <boris@bur.io>
+Cc: Qu Wenruo <wqu@suse.com>, linux-btrfs@vger.kernel.org,
+ stable@vger.kernel.org
+References: <cover.1733983488.git.wqu@suse.com>
+ <51e0c5f464256c4a59a872077d560cb56b7509a2.1733983488.git.wqu@suse.com>
+ <20250108222458.GB1456944@zen.localdomain>
+ <deea65a5-8870-4c33-9446-7d531b4b8451@gmx.com>
+ <20250109180624.GA1932498@zen.localdomain>
+Content-Language: en-US
+From: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Autocrypt: addr=quwenruo.btrfs@gmx.com; keydata=
+ xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
+ 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
+ 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
+ 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
+ gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
+ AAHNIlF1IFdlbnJ1byA8cXV3ZW5ydW8uYnRyZnNAZ214LmNvbT7CwJQEEwEIAD4CGwMFCwkI
+ BwIGFQgJCgsCBBYCAwECHgECF4AWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1YAUJEP5a
+ sQAKCRDCPZHzoSX+qF+mB/9gXu9C3BV0omDZBDWevJHxpWpOwQ8DxZEbk9b9LcrQlWdhFhyn
+ xi+l5lRziV9ZGyYXp7N35a9t7GQJndMCFUWYoEa+1NCuxDs6bslfrCaGEGG/+wd6oIPb85xo
+ naxnQ+SQtYLUFbU77WkUPaaIU8hH2BAfn9ZSDX9lIxheQE8ZYGGmo4wYpnN7/hSXALD7+oun
+ tZljjGNT1o+/B8WVZtw/YZuCuHgZeaFdhcV2jsz7+iGb+LsqzHuznrXqbyUQgQT9kn8ZYFNW
+ 7tf+LNxXuwedzRag4fxtR+5GVvJ41Oh/eygp8VqiMAtnFYaSlb9sjia1Mh+m+OBFeuXjgGlG
+ VvQFzsBNBFnVga8BCACqU+th4Esy/c8BnvliFAjAfpzhI1wH76FD1MJPmAhA3DnX5JDORcga
+ CbPEwhLj1xlwTgpeT+QfDmGJ5B5BlrrQFZVE1fChEjiJvyiSAO4yQPkrPVYTI7Xj34FnscPj
+ /IrRUUka68MlHxPtFnAHr25VIuOS41lmYKYNwPNLRz9Ik6DmeTG3WJO2BQRNvXA0pXrJH1fN
+ GSsRb+pKEKHKtL1803x71zQxCwLh+zLP1iXHVM5j8gX9zqupigQR/Cel2XPS44zWcDW8r7B0
+ q1eW4Jrv0x19p4P923voqn+joIAostyNTUjCeSrUdKth9jcdlam9X2DziA/DHDFfS5eq4fEv
+ ABEBAAHCwHwEGAEIACYCGwwWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1gQUJEP5a0gAK
+ CRDCPZHzoSX+qHGpB/kB8A7M7KGL5qzat+jBRoLwB0Y3Zax0QWuANVdZM3eJDlKJKJ4HKzjo
+ B2Pcn4JXL2apSan2uJftaMbNQbwotvabLXkE7cPpnppnBq7iovmBw++/d8zQjLQLWInQ5kNq
+ Vmi36kmq8o5c0f97QVjMryHlmSlEZ2Wwc1kURAe4lsRG2dNeAd4CAqmTw0cMIrR6R/Dpt3ma
+ +8oGXJOmwWuDFKNV4G2XLKcghqrtcRf2zAGNogg3KulCykHHripG3kPKsb7fYVcSQtlt5R6v
+ HZStaZBzw4PcDiaAF3pPDBd+0fIKS6BlpeNRSFG94RYrt84Qw77JWDOAZsyNfEIEE0J6LSR/
+In-Reply-To: <20250109180624.GA1932498@zen.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:GXryWXQPb/zSV/21ownULsKHHc8varNtUJ95ZKhwORwf2iU5+tw
+ 8OwhFPYyxYWx2+/96br6Lpn+H6H+t0ZrODBTwDX04OMoq85iAybuYfpM7BIp9tVBSNeHL4W
+ aSox8/YkYNS/84DQcv8bUkv5GDVRgT7Qsyy2DHpzCWemnYp6YWM6NWIISS66TfiwTTtZluR
+ Z+q9lwAmd6irNHTGiOAQg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:lghlKbPAy6I=;KNf/pqVCkUZT19jqf1Vx85w5lOE
+ JzCPyJ5BP11+nFpv+exWqnm0FpLeSEapC+NN8xW6c0olyKkJH8G5Fk3ENwag7PcMhLweFd7X3
+ K0A4A9/Pg3Hpzxth1UoFJDQb5n/HGxDONDRl4Pk1bd80aLO44U3unDtrf91iCzmX3Yd9ePccm
+ FdPYo21LNfkHpTXxvyR6aEUs0Zu+FWRu7GH8QkrSJYCrmzljjBg43MIoFWTUraqsxw5qfGBaQ
+ z+N/6ojNA4cFDKrUlF08RVBw6x+NjFeGwrJStmCU7mjJ2tZzQrKTr4i/jLU1JPZOBKz9kSEnx
+ PDPBx0dTGKZqTn6r5kRZ0TUGFhCRhksxq3GZ+u5yJ/C5vWvMtyNvhz9H5yPlxeUW9Zj28HZuK
+ JCJXGa2qZJXzRTCJZnakV59bzVL5fIRhIg5GptopxInuOvrJqCQjNsWC9an9NYd2xVfFQLboJ
+ I4v9kh1CqDlAhNFKCpdUwpIxc95VqkdI9rGhKrrC07IVIlAHVzSDgVsxMgWAZkgPONh8AmS8H
+ lEUd4c+DL/Hzcje6m6+HSvG1zFTcAGRWxpZhKbYIzIa80Sl3+h5LsggcW+Iu8xbdJ+wItsEy6
+ pD5WAs4ERKor2BY+536yEGEI/1CO94uoVuWQCkXLGL4ydgAcwPoDy08x8PlBWbmQxrIHMLKYY
+ LJCT63k6FqWT93JeO9QBJWK8OmQkAq9Xlx/ibZzGHpTJ33NMP1+ObEevohL91LlC+N3zi5g4B
+ o2/TuV9kNS8j2NtDAPw8noF0XrIs1tndtVHTkmzuJTmMj/NpKPpdQDUToPapzHw863aGb0LBR
+ +XIzKDe48kpvOBivE9VZhKUPQpmc6gKx84RnzWqqdf2b2HIQYTOrinMrPim1yQlcpQqt0gCyV
+ WnjDmQynQLlwTwCVeKidGbegPeKJq781l2Ml0zJLAiG0/1QckG8KOgt8ZKkG/gRlBcj5hjx4/
+ Y7Gy4dCVxIb1tIrR1DWiqKEwU90yLMieCVdTpKKx8POs6WZVAsOwTRm5S/i2llk9s6P1fRnFs
+ 2+qcZrd7nKYcpg4Vo9jro76PnPrUef6u7S8GuHK2pb46+6EcCnh9w1j90sNcEiqBSGx3i59P6
+ ev8zrhR8chuHsc1e0XijdSPbnzFkvy
 
-On Wed, Jan 08, 2025 at 11:19:52PM -0600, Lucas De Marchi wrote:
-> On Wed, Jan 08, 2025 at 08:50:43PM -0800, Matthew Brost wrote:
-> > On Sat, Jan 04, 2025 at 01:19:59AM -0600, Lucas De Marchi wrote:
-> > > On Fri, Dec 20, 2024 at 06:42:09PM -0600, Lucas De Marchi wrote:
-> > > > On Fri, Dec 20, 2024 at 04:32:09PM -0800, Umesh Nerlige Ramappa wrote:
-> > > > > On Fri, Dec 20, 2024 at 12:32:16PM -0600, Lucas De Marchi wrote:
-> > > > > > On Thu, Dec 19, 2024 at 12:49:16PM -0800, Umesh Nerlige Ramappa wrote:
-> > > > > > > On Thu, Dec 12, 2024 at 09:34:32AM -0800, Lucas De Marchi wrote:
-> > > > > > > > This partially reverts commit fe4f5d4b6616 ("drm/xe: Clean up VM / exec
-> > > > > > > > queue file lock usage."). While it's desired to have the mutex to
-> > > > > > > > protect only the reference to the exec queue, getting and dropping each
-> > > > > > > > mutex and then later getting the GPU timestamp, doesn't produce a
-> > > > > > > > correct result: it introduces multiple opportunities for the task to be
-> > > > > > > > scheduled out and thus wrecking havoc the deltas reported to userspace.
-> > > > > > > >
-> > > > > > > > Also, to better correlate the timestamp from the exec queues with the
-> > > > > > > > GPU, disable preemption so they can be updated without allowing the task
-> > > > > > > > to be scheduled out. We leave interrupts enabled as that shouldn't be
-> > > > > > > > enough disturbance for the deltas to matter to userspace.
-> > > > > > >
-> > > > > > > Like I said in the past, this is not trivial to solve and I
-> > > > > > > would hate to add anything in the KMD to do so.
-> > > > > >
-> > > > > > I think the best we can do in the kernel side is to try to guarantee the
-> > > > > > correlated counters are sampled together... And that is already very
-> > > > > > good per my tests. Also, it'd not only be good from a testing
-> > > > > > perspective, but for any userspace trying to make sense of the 2
-> > > > > > counters.
-> > > > > >
-> > > > > > Note that this is not much different from how e.g. perf samples group
-> > > > > > events:
-> > > > > >
-> > > > > > 	The unit of scheduling in perf is not an individual event, but rather an
-> > > > > > 	event group, which may contain one or more events (potentially on
-> > > > > > 	different PMUs). The notion of an event group is useful for ensuring
-> > > > > > 	that a set of mathematically related events are all simultaneously
-> > > > > > 	measured for the same period of time. For example, the number of L1
-> > > > > > 	cache misses should not be larger than the number of L2 cache accesses.
-> > > > > > 	Otherwise, it may happen that the events get multiplexed and their
-> > > > > > 	measurements would no longer be comparable, making the analysis more
-> > > > > > 	difficult.
-> > > > > >
-> > > > > > See __perf_event_read() that will call pmu->read() on all sibling events
-> > > > > > while disabling preemption:
-> > > > > >
-> > > > > > 	perf_event_read()
-> > > > > > 	{
-> > > > > > 		...
-> > > > > > 		preempt_disable();
-> > > > > > 		event_cpu = __perf_event_read_cpu(event, event_cpu);
-> > > > > > 		...
-> > > > > > 		(void)smp_call_function_single(event_cpu, __perf_event_read, &data, 1);
-> > > > > > 		preempt_enable();
-> > > > > > 		...
-> > > > > > 	}
-> > > > > >
-> > > > > > so... at least there's prior art for that... for the same reason that
-> > > > > > userspace should see the values sampled together.
-> > > > >
-> > > > > Well, I have used the preempt_disable/enable when fixing some
-> > > > > selftest (i915), but was not happy that there were still some rare
-> > > > > failures. If reducing error rates is the intention, then it's fine.
-> > > > > In my mind, the issue still exists and once in a while we would end
-> > > > > up assessing such a failure. Maybe, in addition, fixing up the IGTs
-> > > > > like you suggest below is a worthwhile option.
-> > 
-> > IMO, we should strive to avoid using low-level calls like
-> > preempt_disable and preempt_enable, as they lead to unmaintainable
-> > nonsense, as seen in the i915.
-> > 
-> > Sure, in Umesh's example, this is pretty clear and not an unreasonable
-> > usage. However, I’m more concerned that this sets a precedent in Xe that
-> > doing this is acceptable.
-> 
-> each such usage needs to be carefully reviewed, but there are cases
 
-+1 to carefully reviewing each usage. That goes for any low-level kernel
-calls which typically shouldn't be used by drivers.
 
-> in which it's useful and we shouldn't ban it. In my early reply on
-> wdcrw3du2ssykmsrda3mvwjhreengeovwasikmixdiowqsfnwj@lsputsgtmha4  I even
-> showed how the same construct is used by perf when reading counters
-> that should be sampled together.
+=E5=9C=A8 2025/1/10 04:36, Boris Burkov =E5=86=99=E9=81=93:
+> On Thu, Jan 09, 2025 at 02:15:06PM +1030, Qu Wenruo wrote:
+>>
+>>
+>> =E5=9C=A8 2025/1/9 08:54, Boris Burkov =E5=86=99=E9=81=93:
+>>> On Thu, Dec 12, 2024 at 04:43:56PM +1030, Qu Wenruo wrote:
+>>>> [BUG]
+>>>> If submit_one_sector() failed inside extent_writepage_io() for sector
+>>>> size < page size cases (e.g. 4K sector size and 64K page size), then
+>>>> we can hit double ordered extent accounting error.
+>>>>
+>>>> This should be very rare, as submit_one_sector() only fails when we
+>>>> failed to grab the extent map, and such extent map should exist insid=
+e
+>>>> the memory and have been pinned.
+>>>>
+>>>> [CAUSE]
+>>>> For example we have the following folio layout:
+>>>>
+>>>>       0  4K          32K    48K   60K 64K
+>>>>       |//|           |//////|     |///|
+>>>>
+>>>> Where |///| is the dirty range we need to writeback. The 3 different
+>>>> dirty ranges are submitted for regular COW.
+>>>>
+>>>> Now we hit the following sequence:
+>>>>
+>>>> - submit_one_sector() returned 0 for [0, 4K)
+>>>>
+>>>> - submit_one_sector() returned 0 for [32K, 48K)
+>>>>
+>>>> - submit_one_sector() returned error for [60K, 64K)
+>>>>
+>>>> - btrfs_mark_ordered_io_finished() called for the whole folio
+>>>>     This will mark the following ranges as finished:
+>>>>     * [0, 4K)
+>>>>     * [32K, 48K)
+>>>>       Both ranges have their IO already submitted, this cleanup will
+>>>>       lead to double accounting.
+>>>>
+>>>>     * [60K, 64K)
+>>>>       That's the correct cleanup.
+>>>>
+>>>> The only good news is, this error is only theoretical, as the target
+>>>> extent map is always pinned, thus we should directly grab it from
+>>>> memory, other than reading it from the disk.
+>>>>
+>>>> [FIX]
+>>>> Instead of calling btrfs_mark_ordered_io_finished() for the whole fol=
+io
+>>>> range, which can touch ranges we should not touch, instead
+>>>> move the error handling inside extent_writepage_io().
+>>>>
+>>>> So that we can cleanup exact sectors that are ought to be submitted b=
+ut
+>>>> failed.
+>>>>
+>>>> This provide much more accurate cleanup, avoiding the double accounti=
+ng.
+>>>
+>>> Analysis and fix both make sense to me. However, this one feels a lot
+>>> more fragile than the other one.
+>>>
+>>> It relies on submit_one_sector being the only error path in
+>>> extent_writepage_io. Any future error in the loop would have to create=
+ a
+>>> shared "per sector" error handling goto in the loop I guess?
+>>>
+>>> Not a hard "no", in the sense that I think the code is correct for now
+>>> (aside from my submit_one_bio question) but curious if we can give thi=
+s
+>>> some more principled structure.
+>>>
+>>> Thanks,
+>>> Boris
+>>>
+>>>>
+>>>> Cc: stable@vger.kernel.org # 5.15+
+>>>> Signed-off-by: Qu Wenruo <wqu@suse.com>
+>>>> ---
+>>>>    fs/btrfs/extent_io.c | 32 +++++++++++++++++++-------------
+>>>>    1 file changed, 19 insertions(+), 13 deletions(-)
+>>>>
+>>>> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+>>>> index 417c710c55ca..b6a4f1765b4c 100644
+>>>> --- a/fs/btrfs/extent_io.c
+>>>> +++ b/fs/btrfs/extent_io.c
+>>>> @@ -1418,6 +1418,7 @@ static noinline_for_stack int extent_writepage_=
+io(struct btrfs_inode *inode,
+>>>>    	struct btrfs_fs_info *fs_info =3D inode->root->fs_info;
+>>>>    	unsigned long range_bitmap =3D 0;
+>>>>    	bool submitted_io =3D false;
+>>>> +	bool error =3D false;
+>>>>    	const u64 folio_start =3D folio_pos(folio);
+>>>>    	u64 cur;
+>>>>    	int bit;
+>>>> @@ -1460,11 +1461,21 @@ static noinline_for_stack int extent_writepag=
+e_io(struct btrfs_inode *inode,
+>>>>    			break;
+>>>>    		}
+>>>>    		ret =3D submit_one_sector(inode, folio, cur, bio_ctrl, i_size);
+>>>> -		if (ret < 0)
+>>>> -			goto out;
+>>>> +		if (unlikely(ret < 0)) {
+>>>> +			submit_one_bio(bio_ctrl);
+>>>
+>>> This submit_one_bio is confusing to me. submit_one_sector failed and t=
+he
+>>> subsequent comment says "there is no bio submitted" yet right here we
+>>> call submit_one_bio.
+>>>
+>>> What is the meaning of it?
+>>>
+>>>> +			/*
+>>>> +			 * Failed to grab the extent map which should be very rare.
+>>>> +			 * Since there is no bio submitted to finish the ordered
+>>>> +			 * extent, we have to manually finish this sector.
+>>>> +			 */
+>>>> +			btrfs_mark_ordered_io_finished(inode, folio, cur,
+>>>> +					fs_info->sectorsize, false);
+>>>> +			error =3D true;
+>>>> +			continue;
+>>>> +		}
+>>>>    		submitted_io =3D true;
+>>>>    	}
+>>>> -out:
+>>>> +
+>>>>    	/*
+>>>>    	 * If we didn't submitted any sector (>=3D i_size), folio dirty g=
+et
+>>>>    	 * cleared but PAGECACHE_TAG_DIRTY is not cleared (only cleared
+>>>> @@ -1472,8 +1483,11 @@ static noinline_for_stack int extent_writepage=
+_io(struct btrfs_inode *inode,
+>>>>    	 *
+>>>>    	 * Here we set writeback and clear for the range. If the full fol=
+io
+>>>>    	 * is no longer dirty then we clear the PAGECACHE_TAG_DIRTY tag.
+>>>> +	 *
+>>>> +	 * If we hit any error, the corresponding sector will still be dirt=
+y
+>>>> +	 * thus no need to clear PAGECACHE_TAG_DIRTY.
+>>>>    	 */
+>>>
+>>> submitted_io is only used for this bit of logic, so you could consider
+>>> changing this logic by keeping a single variable for whether or not we
+>>> should go into this logic (naming it seems kind of annoying) and then
+>>> setting it in both the error and submitted_io paths. I think that
+>>> reduces headache in thinking about boolean logic, slightly.
+>>
+>> Unfortunately I can not find a good alternative to this double boolean
+>> usages.
+>>
+>> I can go a single boolean, but it will be called something like
+>> @no_error_nor_submission.
+>>
+>> Which is the not only the worst naming, but also a hell of boolean
+>> operations for a single bool.
+>
+> I think you could do something like:
+>
+> needs_reset_writeback =3D false;
 
-Yea, this usage looks fine. AMD seems to do something similar to
-programming / reading HW registers which are tightly coupled.
+Unfortunately, that will not work if setting it to false.
 
-Matt
+We have to set it default to true, and only set it to false in the error
+or submission path.
 
-> 
-> I will post a new version, but I will delay in a week or so merging it.
-> That's because I want to check the result of the other patch series that
-> changes the test in igt and afaics should give all green results all the
-> time: https://patchwork.freedesktop.org/series/143204/
-> 
-> Lucas De Marchi
-> 
-> > 
-> > Not a blocker, just expressing concerns.
-> > 
-> > Matt
-> > 
-> > > >
-> > > > for me this fix is not targeted at tests, even if it improves them a
-> > > > lot. It's more for consistent userspace behavior.
-> > > >
-> > > > >
-> > > > > >
-> > > > > > >
-> > > > > > > For IGT, why not just take 4 samples for the measurement
-> > > > > > > (separate out the 2 counters)
-> > > > > > >
-> > > > > > > 1. get gt timestamp in the first sample
-> > > > > > > 2. get run ticks in the second sample
-> > > > > > > 3. get run ticks in the third sample
-> > > > > > > 4. get gt timestamp in the fourth sample
-> > > > > > >
-> > > > > > > Rely on 1 and 4 for gt timestamp delta and on 2 and 3 for
-> > > > > > > run ticks delta.
-> > > > > >
-> > > > > > this won't fix it for the general case: you get rid of the > 100% case,
-> > > > > > you make the < 100% much worse.
-> > > > >
-> > > > > yeah, that's quite possible.
-> > > > >
-> > > > > >
-> > > > > > For a testing perspective I think the non-flaky solution is to stop
-> > > > > > calculating percentages and rather check that the execution timestamp
-> > > > > > recorded by the GPU very closely matches (minus gpu scheduling delays)
-> > > > > > the one we got via fdinfo once the fence signals and we wait for the job
-> > > > > > completion.
-> > > > >
-> > > > > Agree, we should change how we validate the counters in IGT.
-> > > >
-> > > > I have a wip patch to cleanup and submit to igt. I will submit it soon.
-> > > 
-> > > Just submitted that as the last patch in the series:
-> > > https://lore.kernel.org/igt-dev/20250104071548.737612-8-lucas.demarchi@intel.com/T/#u
-> > > 
-> > > but I'd also like to apply this one in the kernel and still looking for
-> > > a review.
-> > > 
-> > > thanks
-> > > Lucas De Marchi
+This also means, we need to explain why we need to set the bool to false
+in both paths (aka, duplicated comments)
+
+> then set it to true in either case, whether you submit an io or hit an
+> error.
+>
+> It's your call, though, I won't be upset if you leave it as is.
+
+I'm afraid I'll leave it as is for now.
+
+And hope in the future we can remove the @error bool by removing the the
+extent map related error path at least.
+
+Thanks,
+Qu
+
+>
+>>
+>> So I'm afraid the @error and @submitted_io will still be better for thi=
+s
+>> case.
+>>
+>> The other comments will be addressed properly.
+>>
+>> Thanks,
+>> Qu
+>>>
+>>>> -	if (!submitted_io) {
+>>>> +	if (!submitted_io && !error) {
+>>>>    		btrfs_folio_set_writeback(fs_info, folio, start, len);
+>>>>    		btrfs_folio_clear_writeback(fs_info, folio, start, len);
+>>>>    	}
+>>>> @@ -1493,7 +1507,6 @@ static int extent_writepage(struct folio *folio=
+, struct btrfs_bio_ctrl *bio_ctrl
+>>>>    {
+>>>>    	struct inode *inode =3D folio->mapping->host;
+>>>>    	struct btrfs_fs_info *fs_info =3D inode_to_fs_info(inode);
+>>>> -	const u64 page_start =3D folio_pos(folio);
+>>>>    	int ret;
+>>>>    	size_t pg_offset;
+>>>>    	loff_t i_size =3D i_size_read(inode);
+>>>> @@ -1536,10 +1549,6 @@ static int extent_writepage(struct folio *foli=
+o, struct btrfs_bio_ctrl *bio_ctrl
+>>>>
+>>>>    	bio_ctrl->wbc->nr_to_write--;
+>>>>
+>>>> -	if (ret)
+>>>> -		btrfs_mark_ordered_io_finished(BTRFS_I(inode), folio,
+>>>> -					       page_start, PAGE_SIZE, !ret);
+>>>> -
+>>>>    done:
+>>>>    	if (ret < 0)
+>>>>    		mapping_set_error(folio->mapping, ret);
+>>>> @@ -2319,11 +2328,8 @@ void extent_write_locked_range(struct inode *i=
+node, const struct folio *locked_f
+>>>>    		if (ret =3D=3D 1)
+>>>>    			goto next_page;
+>>>>
+>>>> -		if (ret) {
+>>>> -			btrfs_mark_ordered_io_finished(BTRFS_I(inode), folio,
+>>>> -						       cur, cur_len, !ret);
+>>>> +		if (ret)
+>>>>    			mapping_set_error(mapping, ret);
+>>>> -		}
+>>>>    		btrfs_folio_end_lock(fs_info, folio, cur, cur_len);
+>>>>    		if (ret < 0)
+>>>>    			found_error =3D true;
+>>>> --
+>>>> 2.47.1
+>>>>
+>>>
+>>
+>
+
 
