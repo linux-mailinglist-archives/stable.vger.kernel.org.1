@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-108133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 332BCA07D36
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 17:17:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63D06A07D3D
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 17:18:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFC131881C35
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 16:17:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 557FE7A10E1
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 16:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C03E223717;
-	Thu,  9 Jan 2025 16:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FF2224AE1;
+	Thu,  9 Jan 2025 16:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iELjAewS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QAvCBxtp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3555B223708;
-	Thu,  9 Jan 2025 16:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D25221D9F;
+	Thu,  9 Jan 2025 16:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736439393; cv=none; b=NLmw9zxAlsNHl83MCKxieCbi8Dy/0lUPWO8maeE75MqOPlXKyrFsr1eOKYbI1BfBhiMnIbEWCM1mDcA3PNuYwH6LRlCJJ8NMFPN9pnd1BygS4WeT2Ld0nbLP72hqchZ7EvIXpbqaPLF7QIJyF/8eyE69o/d9krDKAmcVrLvkhZU=
+	t=1736439398; cv=none; b=B8p2Sp7s1jeAJGznJZMJgD/xIDKKCP5LmJwACLbWHOMWOunFs9S/WsfENPpWUFHgBinMgNTVD0paw/UdHJqgHaHdcfF4Uh6FAkFob5i82/82+Butl3Wyc/QaDf+k1swfeOf0ScD8VKG1jsSsUfaSP3twsxKv2scA9ccuMRZgCh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736439393; c=relaxed/simple;
-	bh=N0K2fUUZiT5S8AtXybWvlF4A8ZPgxRZ683066WaK6DE=;
+	s=arc-20240116; t=1736439398; c=relaxed/simple;
+	bh=IWttuhlwlQnX1EnSOFdjIOs03ZVqS9WprcVW6tKzbqc=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=nXLevTs8PeiemRBl+BVgG48bKUrQtQycBto5Lu6Pnvmw+IEAaSyQ+34dwEdleLJMLCce0Uxla8IHPGpgaWC6h5jK2A7fZrWLAZZinZB6yyW76AtUUW4mAPvaua3L+u27SFZu56nsvSep67JQ5MQdKFt77fumtW9nEEW+BClNP2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iELjAewS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEC82C4CED3;
-	Thu,  9 Jan 2025 16:16:32 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=bpbrpk2w1LR1+9xdw6zD4Lnxgc3/LAOaH6jv4isOiUYmJa0/bmy6qU9L+ZU3C+urW+mLWuKj60UjX0SMedx81p41mGIy5LUoKbt9zYBAAbKOAvl3EGS0tLXwCwUsmd3AIS2b+LDiP6xuyN8KB4HCnrqHZK4q3Ww190o/RJaz+Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QAvCBxtp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BB3C4CED2;
+	Thu,  9 Jan 2025 16:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736439392;
-	bh=N0K2fUUZiT5S8AtXybWvlF4A8ZPgxRZ683066WaK6DE=;
+	s=k20201202; t=1736439398;
+	bh=IWttuhlwlQnX1EnSOFdjIOs03ZVqS9WprcVW6tKzbqc=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=iELjAewSOPbolsIKurxjQ7zRsA+N2qPHi7gSaBeLyJJiQvWkh0I9MHKd3j4WVqo/s
-	 JS+Ly0+ZxsWgmFU/ag79zzCdF6Dbg8HC3QCtIXQ/ljm9B/Vs19ZJ/eO1XhNHDJ5TCa
-	 GlVIhhyp3q3S33wpZ6Z6pvjNbPGd1h9WwfdJfL6g+l0CrQGFl2cfZRcGd+hf4QUBwg
-	 TFF1hGy9ZGhe4aROuuG4I2voPOa2Erj5hB8aora04Yjwv11khkD3TeIN4HsopniXJJ
-	 BRP9iSoj9vYkyJwrRNgfwJkf6M/zUEjRzzt77upUFKGm/CO/jQSNBy644zTQn/gwhK
-	 hkSxRD7kEpwiQ==
+	b=QAvCBxtpMEmCV8rfm31Hjt9C8Jv5CA0NcO3Fl7h9SMjoyokYwtwTp0R0yGYYQbfx3
+	 Nrb2Iv0MNZm3prceGAO4+BzqaI1Kh10aJqM2XbTA+grAcoWEcmlos9X3Y9B9Ne22VE
+	 j0UHhxsemVz7AXJtU4KxX7hFEuYsxxkn1QINhmy2JB4TBGlPtOexugIaLB87MjKdUT
+	 qlra4KvQP5Azy20UfM1wZ9I9kK7DOhBnsozsL66ntYk2q9pOXPJWUaA8k/ZuhsrpSD
+	 Mnb210XYWdqd85xETumxiWC83aLB7+2fjZML1h9D36NVIbFPJ8tRcUns86OCL2gf8f
+	 rs7DTXYSLSCww==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADC6D380A97D;
-	Thu,  9 Jan 2025 16:16:55 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33B95380A97D;
+	Thu,  9 Jan 2025 16:17:01 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -52,38 +52,44 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] riscv: kprobes: Fix incorrect address calculation
-From: patchwork-bot+linux-riscv@kernel.org
+Subject: Re: [PATCH] Bluetooth: L2CAP: handle NULL sock pointer in
+ l2cap_sock_alloc
+From: patchwork-bot+bluetooth@kernel.org
 Message-Id: 
- <173643941449.1375203.9833257781109413385.git-patchwork-notify@kernel.org>
-Date: Thu, 09 Jan 2025 16:16:54 +0000
-References: <20241119111056.2554419-1-namcao@linutronix.de>
-In-Reply-To: <20241119111056.2554419-1-namcao@linutronix.de>
-To: Nam Cao <namcao@linutronix.de>
-Cc: linux-riscv@lists.infradead.org, paul.walmsley@sifive.com,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, samuel.holland@sifive.com,
- bjorn@rivosinc.com, linux-kernel@vger.kernel.org, john.ogness@linutronix.de,
- stable@vger.kernel.org
+ <173643941974.1375203.8976214892409778601.git-patchwork-notify@kernel.org>
+Date: Thu, 09 Jan 2025 16:16:59 +0000
+References: <20241217211959.279881-1-pchelkin@ispras.ru>
+In-Reply-To: <20241217211959.279881-1-pchelkin@ispras.ru>
+To: Fedor Pchelkin <pchelkin@ispras.ru>
+Cc: luiz.dentz@gmail.com, kuba@kernel.org, johan.hedberg@gmail.com,
+ marcel@holtmann.org, ignat@cloudflare.com, kuniyu@amazon.com,
+ edumazet@google.com, linux-bluetooth@vger.kernel.org,
+ linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
+ netdev@vger.kernel.org, stable@vger.kernel.org
 
 Hello:
 
-This patch was applied to riscv/linux.git (fixes)
-by Palmer Dabbelt <palmer@rivosinc.com>:
+This patch was applied to bluetooth/bluetooth-next.git (master)
+by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
 
-On Tue, 19 Nov 2024 12:10:56 +0100 you wrote:
-> p->ainsn.api.insn is a pointer to u32, therefore arithmetic operations are
-> multiplied by four. This is clearly undesirable for this case.
+On Wed, 18 Dec 2024 00:19:59 +0300 you wrote:
+> A NULL sock pointer is passed into l2cap_sock_alloc() when it is called
+> from l2cap_sock_new_connection_cb() and the error handling paths should
+> also be aware of it.
 > 
-> Cast it to (void *) first before any calculation.
-> 
-> Below is a sample before/after. The dumped memory is two kprobe slots, the
-> first slot has
+> Seemingly a more elegant solution would be to swap bt_sock_alloc() and
+> l2cap_chan_create() calls since they are not interdependent to that moment
+> but then l2cap_chan_create() adds the soon to be deallocated and still
+> dummy-initialized channel to the global list accessible by many L2CAP
+> paths. The channel would be removed from the list in short period of time
+> but be a bit more straight-forward here and just check for NULL instead of
+> changing the order of function calls.
 > 
 > [...]
 
 Here is the summary with links:
-  - riscv: kprobes: Fix incorrect address calculation
-    https://git.kernel.org/riscv/c/13134cc94914
+  - Bluetooth: L2CAP: handle NULL sock pointer in l2cap_sock_alloc
+    https://git.kernel.org/bluetooth/bluetooth-next/c/a5d2ee08adc1
 
 You are awesome, thank you!
 -- 
