@@ -1,220 +1,169 @@
-Return-Path: <stable+bounces-108057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29EE7A06D7B
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 06:20:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A426A06DAE
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 06:40:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64FA93A3FCC
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 05:20:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6EB2E7A3018
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 05:40:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 435391FE468;
-	Thu,  9 Jan 2025 05:20:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K6TamWFK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 279192144CB;
+	Thu,  9 Jan 2025 05:40:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB12BA2D
-	for <stable@vger.kernel.org>; Thu,  9 Jan 2025 05:19:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4666B143888;
+	Thu,  9 Jan 2025 05:40:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736400001; cv=none; b=Ovizq2rAFzIb2X5TlaxzN5/2PC9N0le8ZNRtOJrKMq2arKZTPsnuO0fB14VDxEQlvKlz7fYCjB1MpIZG5OKNesQpN+LGhHduBfmq+T3owSk0O4U+y9hHIoBySrCd1qyA/xem0txY/SJDWqikFgBuaHPJN2E29/aBFkdjtL/87+k=
+	t=1736401236; cv=none; b=sVTGVt6cYROvgSTQUqc95LEkpVcCsT+8s3tMdFrhz1q9lKkaPfvk6f4EBV5C1wsFqfW/DipVKQ+GcVKiLevDqnqJyn57FMg10AZ2VkKOu0Kx9+0RZFYrCmk8X8XiP/fz08heJ2jhD82l9Bjizo5TTlcWiTrpu1gaV8InfT7jTQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736400001; c=relaxed/simple;
-	bh=nZWNMiqEO5uyXvZif4210iU+zlVcNCsXPA9QYCufdU0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=blG0xwK9hqaCrqYsSS8UakbSKMji2I+Zc1PUSRiP6JLV1SvWr8QonoM7Al4224GKsNOcHpSQxZ0EjMDGabVAt4tq/NGDIamtMwJEF3FvuAcxHdvtWITzfw9MJCPjahLxk9x+U/dIC5YAGHnk+FupsX2Iz0pyo0X3nC6x1tT6F00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K6TamWFK; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736399999; x=1767935999;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=nZWNMiqEO5uyXvZif4210iU+zlVcNCsXPA9QYCufdU0=;
-  b=K6TamWFKDZD+9VhNI6oAU2duJWSiK3Te229fFdkK8jyfMB44OczhGmEd
-   FFNddY8qDYO9gYkga/fy35YWQbB65qwsZJN4QEt0JpIt1YOWikKxo+yga
-   iL2q67L1NbdMtMAt5XPYayBzbX4lj8I6YuoZAXaJgUHwFYszIzPpLHUEL
-   l+4tJsBZmSbBoQ4JESTVni9ziF1ND6bztPUxqTKascKCv7EaGiPrh/UJS
-   2a+/v0lF16Wb0YmVnZ+rCOrLl3OxnIS3tjK+aNw3NnVP1MRplgsv1qX62
-   FVMhT3LihSQ9n09GDsii1is+ChuztGDlFsLz7z80BzNHJ5Q9F38mSbI1K
-   Q==;
-X-CSE-ConnectionGUID: JokYLi/cRl6qcwhMCceQsg==
-X-CSE-MsgGUID: rzDRl6IsRqOKoyceD8337A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="47220152"
-X-IronPort-AV: E=Sophos;i="6.12,300,1728975600"; 
-   d="scan'208";a="47220152"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2025 21:19:58 -0800
-X-CSE-ConnectionGUID: rpbB2moGSqKuYTgKHX9x1g==
-X-CSE-MsgGUID: KL1OkryuRLm5Af9BVEehUw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,300,1728975600"; 
-   d="scan'208";a="134139554"
-Received: from ldmartin-desk2.corp.intel.com (HELO ldmartin-desk2) ([10.125.111.77])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2025 21:19:57 -0800
-Date: Wed, 8 Jan 2025 23:19:52 -0600
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>, 
-	intel-xe@lists.freedesktop.org, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/xe/client: Better correlate exec_queue and GT
- timestamps
-Message-ID: <ngkbkvqre4d4hvaiwtqcm7oz76b3wcbuzq3ueoazjd7ff3luym@lrjlwmac2mf7>
-References: <20241212173432.1244440-1-lucas.demarchi@intel.com>
- <Z2SGzHYsJ+CRoF9p@orsosgc001>
- <wdcrw3du2ssykmsrda3mvwjhreengeovwasikmixdiowqsfnwj@lsputsgtmha4>
- <Z2YMiTq5P81dmjVH@orsosgc001>
- <7bvt3larl4sobadx57a255cvu7i5lkjpt2tdxa4baa324v6va6@ijl7gzqjh7qo>
- <jamrxboal2ppniepfxpq5uzksd2v35ypymo7irt56oewcan5vh@zxmofyra5ruz>
- <Z39Vo5FEZsapkQaA@lstrano-desk.jf.intel.com>
+	s=arc-20240116; t=1736401236; c=relaxed/simple;
+	bh=qcj88o7NG239bX/ANM3Sp+hpRKTRHuFx55BeBZtzW40=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fO8o3SMjvlydocn1B9iozJTKLvcDbCPKEmi7NmytimLxrmSSr4g781apDy8ufRvzHZ2ydNsyjgpddfp4lhQcs7mIM5Wp7sB5nN8LQ6Yy3SEBuw4WDP9ax3s/JGN2W8I1mg6OjSA+/KgxrhIfB7+NS+sdhg8lh0BE54eEGO6aJUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DF9B213D5;
+	Wed,  8 Jan 2025 21:41:01 -0800 (PST)
+Received: from [10.162.43.52] (K4MQJ0H1H2.blr.arm.com [10.162.43.52])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B80363F59E;
+	Wed,  8 Jan 2025 21:40:30 -0800 (PST)
+Message-ID: <7b653f96-537c-4c6b-9776-399ebaf352ff@arm.com>
+Date: Thu, 9 Jan 2025 11:10:27 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] selftests/mm: virtual_address_range: Fix error when
+ CommitLimit < 1GiB
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ David Hildenbrand <david@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Ryan Roberts <ryan.roberts@arm.com>
+References: <20250107-virtual_address_range-tests-v1-0-3834a2fb47fe@linutronix.de>
+ <20250107-virtual_address_range-tests-v1-1-3834a2fb47fe@linutronix.de>
+ <5811cf74-d333-4653-ab64-0e981eda7745@arm.com>
+ <20250108083855-840c688b-003f-423b-8327-2a10a2b27d58@linutronix.de>
+ <05edee1e-04f1-4f19-816f-db03c182a201@redhat.com>
+ <20250108165052-c03470bd-6ff7-44c9-87b9-9145456bdea8@linutronix.de>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20250108165052-c03470bd-6ff7-44c9-87b9-9145456bdea8@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z39Vo5FEZsapkQaA@lstrano-desk.jf.intel.com>
 
-On Wed, Jan 08, 2025 at 08:50:43PM -0800, Matthew Brost wrote:
->On Sat, Jan 04, 2025 at 01:19:59AM -0600, Lucas De Marchi wrote:
->> On Fri, Dec 20, 2024 at 06:42:09PM -0600, Lucas De Marchi wrote:
->> > On Fri, Dec 20, 2024 at 04:32:09PM -0800, Umesh Nerlige Ramappa wrote:
->> > > On Fri, Dec 20, 2024 at 12:32:16PM -0600, Lucas De Marchi wrote:
->> > > > On Thu, Dec 19, 2024 at 12:49:16PM -0800, Umesh Nerlige Ramappa wrote:
->> > > > > On Thu, Dec 12, 2024 at 09:34:32AM -0800, Lucas De Marchi wrote:
->> > > > > > This partially reverts commit fe4f5d4b6616 ("drm/xe: Clean up VM / exec
->> > > > > > queue file lock usage."). While it's desired to have the mutex to
->> > > > > > protect only the reference to the exec queue, getting and dropping each
->> > > > > > mutex and then later getting the GPU timestamp, doesn't produce a
->> > > > > > correct result: it introduces multiple opportunities for the task to be
->> > > > > > scheduled out and thus wrecking havoc the deltas reported to userspace.
->> > > > > >
->> > > > > > Also, to better correlate the timestamp from the exec queues with the
->> > > > > > GPU, disable preemption so they can be updated without allowing the task
->> > > > > > to be scheduled out. We leave interrupts enabled as that shouldn't be
->> > > > > > enough disturbance for the deltas to matter to userspace.
->> > > > >
->> > > > > Like I said in the past, this is not trivial to solve and I
->> > > > > would hate to add anything in the KMD to do so.
->> > > >
->> > > > I think the best we can do in the kernel side is to try to guarantee the
->> > > > correlated counters are sampled together... And that is already very
->> > > > good per my tests. Also, it'd not only be good from a testing
->> > > > perspective, but for any userspace trying to make sense of the 2
->> > > > counters.
->> > > >
->> > > > Note that this is not much different from how e.g. perf samples group
->> > > > events:
->> > > >
->> > > > 	The unit of scheduling in perf is not an individual event, but rather an
->> > > > 	event group, which may contain one or more events (potentially on
->> > > > 	different PMUs). The notion of an event group is useful for ensuring
->> > > > 	that a set of mathematically related events are all simultaneously
->> > > > 	measured for the same period of time. For example, the number of L1
->> > > > 	cache misses should not be larger than the number of L2 cache accesses.
->> > > > 	Otherwise, it may happen that the events get multiplexed and their
->> > > > 	measurements would no longer be comparable, making the analysis more
->> > > > 	difficult.
->> > > >
->> > > > See __perf_event_read() that will call pmu->read() on all sibling events
->> > > > while disabling preemption:
->> > > >
->> > > > 	perf_event_read()
->> > > > 	{
->> > > > 		...
->> > > > 		preempt_disable();
->> > > > 		event_cpu = __perf_event_read_cpu(event, event_cpu);
->> > > > 		...
->> > > > 		(void)smp_call_function_single(event_cpu, __perf_event_read, &data, 1);
->> > > > 		preempt_enable();
->> > > > 		...
->> > > > 	}
->> > > >
->> > > > so... at least there's prior art for that... for the same reason that
->> > > > userspace should see the values sampled together.
->> > >
->> > > Well, I have used the preempt_disable/enable when fixing some
->> > > selftest (i915), but was not happy that there were still some rare
->> > > failures. If reducing error rates is the intention, then it's fine.
->> > > In my mind, the issue still exists and once in a while we would end
->> > > up assessing such a failure. Maybe, in addition, fixing up the IGTs
->> > > like you suggest below is a worthwhile option.
->
->IMO, we should strive to avoid using low-level calls like
->preempt_disable and preempt_enable, as they lead to unmaintainable
->nonsense, as seen in the i915.
->
->Sure, in Umesh's example, this is pretty clear and not an unreasonable
->usage. However, I’m more concerned that this sets a precedent in Xe that
->doing this is acceptable.
 
-each such usage needs to be carefully reviewed, but there are cases
-in which it's useful and we shouldn't ban it. In my early reply on
-wdcrw3du2ssykmsrda3mvwjhreengeovwasikmixdiowqsfnwj@lsputsgtmha4  I even
-showed how the same construct is used by perf when reading counters
-that should be sampled together.
+On 08/01/25 9:43 pm, Thomas Weißschuh wrote:
+> On Wed, Jan 08, 2025 at 02:36:57PM +0100, David Hildenbrand wrote:
+>> On 08.01.25 09:05, Thomas Weißschuh wrote:
+>>> On Wed, Jan 08, 2025 at 11:46:19AM +0530, Dev Jain wrote:
+>>>> On 07/01/25 8:44 pm, Thomas Weißschuh wrote:
+>>>>> If not enough physical memory is available the kernel may fail mmap();
+>>>>> see __vm_enough_memory() and vm_commit_limit().
+>>>>> In that case the logic in validate_complete_va_space() does not make
+>>>>> sense and will even incorrectly fail.
+>>>>> Instead skip the test if no mmap() succeeded.
+>>>>>
+>>>>> Fixes: 010409649885 ("selftests/mm: confirm VA exhaustion without reliance on correctness of mmap()")
+>>>>> Cc: stable@vger.kernel.org
+>> CC stable on tests is ... odd.
+> I thought it was fairly common, but it isn't.
+> Will drop it.
 
-I will post a new version, but I will delay in a week or so merging it.
-That's because I want to check the result of the other patch series that
-changes the test in igt and afaics should give all green results all the
-time: https://patchwork.freedesktop.org/series/143204/
-
-Lucas De Marchi
+Oh, well...
+https://lore.kernel.org/all/20240521074358.675031-4-dev.jain@arm.com/
+I have done that before :) although the change I was making was fixing a
+fundamental flaw in the test and your change is fixing the test for a
+specific case (memory pressure), so I tend to concur with David.
 
 >
->Not a blocker, just expressing concerns.
+>>>>> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+>>>>>
+>>>>> ---
+>>>>> The logic in __vm_enough_memory() seems weird.
+>>>>> It describes itself as "Check that a process has enough memory to
+>>>>> allocate a new virtual mapping", however it never checks the current
+>>>>> memory usage of the process.
+>>>>> So it only disallows large mappings. But many small mappings taking the
+>>>>> same amount of memory are allowed; and then even automatically merged
+>>>>> into one big mapping.
+>>>>> ---
+>>>>>     tools/testing/selftests/mm/virtual_address_range.c | 6 ++++++
+>>>>>     1 file changed, 6 insertions(+)
+>>>>>
+>>>>> diff --git a/tools/testing/selftests/mm/virtual_address_range.c b/tools/testing/selftests/mm/virtual_address_range.c
+>>>>> index 2a2b69e91950a37999f606847c9c8328d79890c2..d7bf8094d8bcd4bc96e2db4dc3fcb41968def859 100644
+>>>>> --- a/tools/testing/selftests/mm/virtual_address_range.c
+>>>>> +++ b/tools/testing/selftests/mm/virtual_address_range.c
+>>>>> @@ -178,6 +178,12 @@ int main(int argc, char *argv[])
+>>>>>     		validate_addr(ptr[i], 0);
+>>>>>     	}
+>>>>>     	lchunks = i;
+>>>>> +
+>>>>> +	if (!lchunks) {
+>>>>> +		ksft_test_result_skip("Not enough memory for a single chunk\n");
+>>>>> +		ksft_finished();
+>>>>> +	}
+>>>>> +
+>>>>>     	hptr = (char **) calloc(NR_CHUNKS_HIGH, sizeof(char *));
+>>>>>     	if (hptr == NULL) {
+>>>>>     		ksft_test_result_skip("Memory constraint not fulfilled\n");
+>>>>>
+>>>> I do not  know about __vm_enough_memory(), but I am going by your description:
+>>>> You say that the kernel may fail mmap() when enough physical memory is not
+>>>> there, but it may happen that we have already done 100 mmap()'s, and then
+>>>> the kernel fails mmap(), so if (!lchunks) won't be able to handle this case.
+>>>> Basically, lchunks == 0 is not a complete indicator of kernel failing mmap().
+>>> __vm_enough_memory() only checks the size of each single mmap() on its
+>>> own. It does not actually check the current memory or address space
+>>> usage of the process.
+>>> This seems a bit weird, as indicated in my after-the-fold explanation.
+>>>
+>>>> The basic assumption of the test is that any process should be able to exhaust
+>>>> its virtual address space, and running the test under memory pressure and the
+>>>> kernel violating this behaviour defeats the point of the test I think?
+>>> The assumption is correct, as soon as one mapping succeeds the others
+>>> will also succeed, until the actual address space is exhausted.
+>>>
+>>> Looking at it again, __vm_enough_memory() is only called for writable
+>>> mappings, so it would be possible to use only readable mappings in the
+>>> test. The test will still fail with OOM, as the many PTEs need more than
+>>> 1GiB of physical memory anyways, but at least that produces a usable
+>>> error message.
+>>> However I'm not sure if this would violate other test assumptions.
+>>>
+>> Note that with MAP_NORESRVE, most setups we care about will allow mapping as
+>> much as you want, but on access OOM will fire.
+> Thanks for the hint.
 >
->Matt
+>> So one could require that /proc/sys/vm/overcommit_memory is setup properly
+>> and use MAP_NORESRVE.
+> Isn't the check for lchunks == 0 essentially exactly this?
 >
->> >
->> > for me this fix is not targeted at tests, even if it improves them a
->> > lot. It's more for consistent userspace behavior.
->> >
->> > >
->> > > >
->> > > > >
->> > > > > For IGT, why not just take 4 samples for the measurement
->> > > > > (separate out the 2 counters)
->> > > > >
->> > > > > 1. get gt timestamp in the first sample
->> > > > > 2. get run ticks in the second sample
->> > > > > 3. get run ticks in the third sample
->> > > > > 4. get gt timestamp in the fourth sample
->> > > > >
->> > > > > Rely on 1 and 4 for gt timestamp delta and on 2 and 3 for
->> > > > > run ticks delta.
->> > > >
->> > > > this won't fix it for the general case: you get rid of the > 100% case,
->> > > > you make the < 100% much worse.
->> > >
->> > > yeah, that's quite possible.
->> > >
->> > > >
->> > > > For a testing perspective I think the non-flaky solution is to stop
->> > > > calculating percentages and rather check that the execution timestamp
->> > > > recorded by the GPU very closely matches (minus gpu scheduling delays)
->> > > > the one we got via fdinfo once the fence signals and we wait for the job
->> > > > completion.
->> > >
->> > > Agree, we should change how we validate the counters in IGT.
->> >
->> > I have a wip patch to cleanup and submit to igt. I will submit it soon.
->>
->> Just submitted that as the last patch in the series:
->> https://lore.kernel.org/igt-dev/20250104071548.737612-8-lucas.demarchi@intel.com/T/#u
->>
->> but I'd also like to apply this one in the kernel and still looking for
->> a review.
->>
->> thanks
->> Lucas De Marchi
+>> Reading from anonymous memory will populate the shared zeropage. To mitigate
+>> OOM from "too many page tables", one could simply unmap the pieces as they
+>> are verified (or MAP_FIXED over them, to free page tables).
+> The code has to figure out if a verified region was created by mmap(),
+> otherwise an munmap() could crash the process.
+> As the entries from /proc/self/maps may have been merged and (I assume)
+> the ordering of mappings is not guaranteed, some bespoke logic to establish
+> the link will be needed.
+>
+> Is it fine to rely on CONFIG_ANON_VMA_NAME?
+> That would make it much easier to implement.
+>
+> Using MAP_NORESERVE and eager munmap()s, the testcase works nicely even
+> in very low physical memory conditions.
+>
+> Thomas
 
