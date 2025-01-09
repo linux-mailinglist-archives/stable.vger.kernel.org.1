@@ -1,432 +1,314 @@
-Return-Path: <stable+bounces-108143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8437BA07EEE
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 18:39:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7822A07F75
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 19:06:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3270C188D506
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 17:39:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B77E97A3483
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 18:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A087E1991CB;
-	Thu,  9 Jan 2025 17:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BBD118BC0F;
+	Thu,  9 Jan 2025 18:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="Nm90aTZr"
+	dkim=pass (2048-bit key) header.d=bur.io header.i=@bur.io header.b="oZCjvyzo";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="WsoDe/JO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B85196C7B
-	for <stable@vger.kernel.org>; Thu,  9 Jan 2025 17:39:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0AB018787A;
+	Thu,  9 Jan 2025 18:05:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736444362; cv=none; b=LKy1aD9M58heriXD4qR5kyEz6AC7r8G0odtqkEvJcTdQCKixwCrfl+LQvljwvR8V4amEKhJJtNOhIU+PGYkDJA0SWBJvukw6rMmsiAGh65QZPzCaSLnC/H+9Eajtvd2oE1Os8um8tKNtW9PRe3Eeti96RFxxTELuVV8P4TH1T+I=
+	t=1736445957; cv=none; b=XO7UESCItRQikYwmOlPrRosWCu0jDJiyQBp91z+LLVWoORrvoGX9O7GULTM6uYMfBmEZiq7lj/RootXnQaPfOt3e2K/9vfTFHRish2Nm5kSoRLKC9uBvpixN8j+7pJQH5icSxy8jqJXzQBt3V5u7XH+iaMFcxV3ycnUz3KPLucg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736444362; c=relaxed/simple;
-	bh=xJjyh93dyPuWvDsaUjVKUaYKqhqst1aun04qSKmXw8M=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=lTOEj8/VP0mq7VORcL2ktKaf+SwddxabzHf3e4Db/nImaWNY2UHzQgY9CKLC/utusQpUAN07M1iQz4iZd1ylb44PywnfpFQvAMBbQUftAWPnPemY4MWvxW73M3Rr+gZGyz6fxISZzpyF+KkBG9qH2tXtNKaby2oEiOOnWOL72Sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=Nm90aTZr; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4361fe642ddso13347985e9.2
-        for <stable@vger.kernel.org>; Thu, 09 Jan 2025 09:39:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1736444357; x=1737049157; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1YXG0PxguO/d8CRBw8VtJ++ZPzeprgh70tilaSvwFG4=;
-        b=Nm90aTZrNlmdH9YMuNbDxzYexoRH5cVVmtfbmE8x1Q0ECW7/DMPZFJvURzkpE8UoCe
-         qpyfQYvqtLoh0EznyZxrKn8yQXtA60aXjjTvmjokE/98QLUeMh30bivrU9B/AfI3IpEs
-         hrgFNIeFs80qKv84XqIEXCFeJVL/CmqqK+xNwmKZpJepYS2dXb8HS6VS4MuhmY16Z9Wq
-         yBZ3yIeFyGAcbWyqmFaJEk292PY0yRQTuqHQ8ybz/jvDU3II4rPGHskKR1K5qfAAeaiO
-         u3nfkRpTZjl+OouQu2K6Q7PYQOVFzM0+Og5ktx4IwNIxnd7XYF1nuV7iv8TORry5sNa9
-         25lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736444357; x=1737049157;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1YXG0PxguO/d8CRBw8VtJ++ZPzeprgh70tilaSvwFG4=;
-        b=AHySr2SGbp0Bd474L2D1sKqbd6Qir2fXyOx08+wA/itxh+Fdvy86oLBYcMvCb6alWo
-         LkVk7C6aqd1XA/4swSInzNRxIDb5CoFV9d2+7wN4FL4XlMagmN+IrrkaFAMk+vtbhbsH
-         wpA4AnUPdaVtnGPDNAewvjIYB8b1EopSD2Ce48hJsXJ+OPj1CgGYXZNiRdBkfZFt3ClX
-         99FeIGKE9HE+1aVBDZiyuv7GabZ35vVPUrU9FdhIpR98OMNIfQ9Rdlxb8GNA93qW4mWn
-         sL37+cNWzWBN6VBbowqkLbePkioHYNy9RavlLPCj3+Umqbj/krg8AiLsS+J5vfVxSb4d
-         56Mw==
-X-Gm-Message-State: AOJu0Yx6RGcVynGrl1aYdjYEnc5dl2RJ3bXziBkt0ZSh1jqyHatpy11/
-	z++R0fm6eFhbXRikRXRD3jzYtjBI6OvXnSoQALQbcgJVFk2NcPeZ8oLbtWRnB8U=
-X-Gm-Gg: ASbGncuMTp3CrNFPyFjBKJtOx6CtEa92bjCYyBrbF30Yq6RVOlUg8imLEMDmQcr1Nhg
-	fJMjsmIYIq6SDXs3Axft5tlHg2gY33yVLlwZxNBBZmhdtCgp6m2DiRIaEAYCskhEwWsQL7m9MmV
-	7BwfAJkuaAtTZzwtMRUlwAdESfHw4XCd8CV2hTbDyuloFhf+V+lBairRLgUSGRoN3/bTv/t99/N
-	HEMeP45iH9lUJh+c0luYh7XSX1PjUpiwB+Bepw8QtSBnRT5OXSAfvhaBy3eCTz3
-X-Google-Smtp-Source: AGHT+IEUUeOq3YKkx8QUwzwHMooo6QncbeHbK4FND7g5C/+74EvhnXFx5YPQ/ESX1ZV7NbQMWneebg==
-X-Received: by 2002:a05:600c:3149:b0:434:f297:8e78 with SMTP id 5b1f17b1804b1-436e267fbe1mr70418645e9.7.1736444357500;
-        Thu, 09 Jan 2025 09:39:17 -0800 (PST)
-Received: from smtpclient.apple ([104.28.154.115])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e2e92f60sm61210315e9.40.2025.01.09.09.39.15
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 09 Jan 2025 09:39:16 -0800 (PST)
-Content-Type: text/plain;
-	charset=us-ascii
+	s=arc-20240116; t=1736445957; c=relaxed/simple;
+	bh=ByhjISKepdce2A/sy1lzmh/brAH0DC4UESOCwje0Zoc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZR3jxoFkEVGyAYlq7nC7+bDRVH/t1OXFEXxziby3DbJefOyc/18gdc02LsaTbCrCN4e55BHmKIA2hfG5Qp5rfXeQk++wKrlz6miWPb237OEXUMHNHy1zStOtK26s3kQHFy5UqqjvXpnGj/Bo/iw6qDuOajsmrDTuNgU/sjBTRtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bur.io; spf=pass smtp.mailfrom=bur.io; dkim=pass (2048-bit key) header.d=bur.io header.i=@bur.io header.b=oZCjvyzo; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=WsoDe/JO; arc=none smtp.client-ip=202.12.124.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bur.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bur.io
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id C124B254012C;
+	Thu,  9 Jan 2025 13:05:53 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Thu, 09 Jan 2025 13:05:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bur.io; h=cc:cc
+	:content-transfer-encoding:content-type:content-type:date:date
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1736445953;
+	 x=1736532353; bh=Ad0gQtnGTFWpHuVDZchoARKLTa0nVhdE9DU4+Nw0jLI=; b=
+	oZCjvyzoCgDYlGZ7cl3ymXX34Ljw8I8JVvQgGR+2bHzdtCEFxIXZfnJWlKW9KpZO
+	/SUjWdhM/x3t0YuS0TEuMEyuGzJxaI0REG33SXUPgzcGeqKTLcVm0eFwRsfLy7JS
+	cIC1ztOQyfjNWyf/ng/4PXsbNoCx2KzTCzD1uC7AJcwZq/X0cK3kL69tJjrQ4DOU
+	BCQWneE58m6D3RddpUeV3jYVFYYUgWJEbfo+TF91SjvCJvEkAobmt216kt+K7HG6
+	muMhMr/184FcMvyO0Knkkf14iWbeX+fkU4dREPFvVM1RzR/LeB50AV+pOnkWaPdh
+	fQ8vDwqlVMSeLGMn4ePYZw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1736445953; x=
+	1736532353; bh=Ad0gQtnGTFWpHuVDZchoARKLTa0nVhdE9DU4+Nw0jLI=; b=W
+	soDe/JO2DE26/B00qxZAx4vPiRpu0WOo8Bt+WUa5yCR+Ju4tMHqtOJQfGka1sWT1
+	/GpsOKlQBZvTQ7XRRuMthQvnMAFPpLoHUVww1h3VW9TRyDn02hLgoj+1qy+RCmXy
+	uS//+D0TaAhS6mji3w/n7xuapx2gUA9xEV17rC4w7M3H1XUzx1n3Lct13RlGpwso
+	V2Qq6nSb+LkkHcSTCxKm+idNFzZZFmfr98X8c+LvCkAMVKGhP5PMEuyN+kmUdOPJ
+	03ue7cjyWX4W8Ah6jsmK/N7FcuW3H/EcFtwHDbsT4oZjdiStAJ4uOWKbBS55rTCz
+	FWKoT0ibGQ3MSRVw//0Aw==
+X-ME-Sender: <xms:ARCAZx30bDZAYwIGJbEB6-8BIGYtEAv-ozGPd4Fp5K0SLOxUNsVjkw>
+    <xme:ARCAZ4EaaIii18z9ZrIt4TZsDu2sGwlDs97WrN38pSdiKXMudxGwawYYlYAFxEHN0
+    C_eYDIzOGkmF449hws>
+X-ME-Received: <xmr:ARCAZx6Hb-AkiYj6CBhkOKs_A3Hq81HxdBSNvyXmKu7NQX-QFvniFqJdQevxXjKoS_JL1sBHrn_wSmUTrPTro4L6LJ4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudegiedguddthecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddt
+    jeenucfhrhhomhepuehorhhishcuuehurhhkohhvuceosghorhhishessghurhdrihhoqe
+    enucggtffrrghtthgvrhhnpedulefhtdfhteduvdethfeftdeitdethedvtdekvdeltddv
+    veegtdeuuddtiedtieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
+    hlfhhrohhmpegsohhrihhssegsuhhrrdhiohdpnhgspghrtghpthhtohepgedpmhhouggv
+    pehsmhhtphhouhhtpdhrtghpthhtohepqhhufigvnhhruhhordgsthhrfhhssehgmhigrd
+    gtohhmpdhrtghpthhtohepfihquhesshhushgvrdgtohhmpdhrtghpthhtoheplhhinhhu
+    gidqsghtrhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsg
+    hlvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:ARCAZ-3nbJuqkSjHvSF7iJJ2cy00fQ__Cxh-ewglqv3W959xAn6LVw>
+    <xmx:ARCAZ0FyfZbrTBUpvijFvJonfwyc9LMpJMXuPDVfjZd0xXCVLQIGcg>
+    <xmx:ARCAZ_-n4vpWvpfrtbl9Fy1dZQtfboTISsiPMjimAhdUWzVNaX3aSA>
+    <xmx:ARCAZxkzIumdD-rYBt92hHO7vNmn88rlp-ATkvSMleqSSRuS2524-Q>
+    <xmx:ARCAZwiss4kM1JFtW64rIkOZa-R2SdjkXjgvAkiLGi7kuJZVMV6vHxo8>
+Feedback-ID: i083147f8:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 9 Jan 2025 13:05:52 -0500 (EST)
+Date: Thu, 9 Jan 2025 10:06:24 -0800
+From: Boris Burkov <boris@bur.io>
+To: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Cc: Qu Wenruo <wqu@suse.com>, linux-btrfs@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/9] btrfs: fix double accounting race when
+ extent_writepage_io() failed
+Message-ID: <20250109180624.GA1932498@zen.localdomain>
+References: <cover.1733983488.git.wqu@suse.com>
+ <51e0c5f464256c4a59a872077d560cb56b7509a2.1733983488.git.wqu@suse.com>
+ <20250108222458.GB1456944@zen.localdomain>
+ <deea65a5-8870-4c33-9446-7d531b4b8451@gmx.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
-Subject: Re: [PATCH 6.6 079/222] x86, crash: wrap crash dumping code into
- crash related ifdefs
-From: Ignat Korchagin <ignat@cloudflare.com>
-In-Reply-To: <20250106151153.592449889@linuxfoundation.org>
-Date: Thu, 9 Jan 2025 17:39:04 +0000
-Cc: stable@vger.kernel.org,
- patches@lists.linux.dev,
- Al Viro <viro@zeniv.linux.org.uk>,
- "Eric W. Biederman" <ebiederm@xmission.com>,
- Hari Bathini <hbathini@linux.ibm.com>,
- Pingfan Liu <piliu@redhat.com>,
- Klara Modin <klarasmodin@gmail.com>,
- Michael Kelley <mhklinux@outlook.com>,
- Nathan Chancellor <nathan@kernel.org>,
- Stephen Rothwell <sfr@canb.auug.org.au>,
- Yang Li <yang.lee@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Sasha Levin <sashal@kernel.org>,
- kernel-team@cloudflare.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <3DB3A6D3-0D3A-4682-B4FA-407B2D3263B2@cloudflare.com>
-References: <20250106151150.585603565@linuxfoundation.org>
- <20250106151153.592449889@linuxfoundation.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Baoquan He <bhe@redhat.com>
-X-Mailer: Apple Mail (2.3826.300.87.4.3)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <deea65a5-8870-4c33-9446-7d531b4b8451@gmx.com>
 
-Hi,
+On Thu, Jan 09, 2025 at 02:15:06PM +1030, Qu Wenruo wrote:
+> 
+> 
+> 在 2025/1/9 08:54, Boris Burkov 写道:
+> > On Thu, Dec 12, 2024 at 04:43:56PM +1030, Qu Wenruo wrote:
+> > > [BUG]
+> > > If submit_one_sector() failed inside extent_writepage_io() for sector
+> > > size < page size cases (e.g. 4K sector size and 64K page size), then
+> > > we can hit double ordered extent accounting error.
+> > > 
+> > > This should be very rare, as submit_one_sector() only fails when we
+> > > failed to grab the extent map, and such extent map should exist inside
+> > > the memory and have been pinned.
+> > > 
+> > > [CAUSE]
+> > > For example we have the following folio layout:
+> > > 
+> > >      0  4K          32K    48K   60K 64K
+> > >      |//|           |//////|     |///|
+> > > 
+> > > Where |///| is the dirty range we need to writeback. The 3 different
+> > > dirty ranges are submitted for regular COW.
+> > > 
+> > > Now we hit the following sequence:
+> > > 
+> > > - submit_one_sector() returned 0 for [0, 4K)
+> > > 
+> > > - submit_one_sector() returned 0 for [32K, 48K)
+> > > 
+> > > - submit_one_sector() returned error for [60K, 64K)
+> > > 
+> > > - btrfs_mark_ordered_io_finished() called for the whole folio
+> > >    This will mark the following ranges as finished:
+> > >    * [0, 4K)
+> > >    * [32K, 48K)
+> > >      Both ranges have their IO already submitted, this cleanup will
+> > >      lead to double accounting.
+> > > 
+> > >    * [60K, 64K)
+> > >      That's the correct cleanup.
+> > > 
+> > > The only good news is, this error is only theoretical, as the target
+> > > extent map is always pinned, thus we should directly grab it from
+> > > memory, other than reading it from the disk.
+> > > 
+> > > [FIX]
+> > > Instead of calling btrfs_mark_ordered_io_finished() for the whole folio
+> > > range, which can touch ranges we should not touch, instead
+> > > move the error handling inside extent_writepage_io().
+> > > 
+> > > So that we can cleanup exact sectors that are ought to be submitted but
+> > > failed.
+> > > 
+> > > This provide much more accurate cleanup, avoiding the double accounting.
+> > 
+> > Analysis and fix both make sense to me. However, this one feels a lot
+> > more fragile than the other one.
+> > 
+> > It relies on submit_one_sector being the only error path in
+> > extent_writepage_io. Any future error in the loop would have to create a
+> > shared "per sector" error handling goto in the loop I guess?
+> > 
+> > Not a hard "no", in the sense that I think the code is correct for now
+> > (aside from my submit_one_bio question) but curious if we can give this
+> > some more principled structure.
+> > 
+> > Thanks,
+> > Boris
+> > 
+> > > 
+> > > Cc: stable@vger.kernel.org # 5.15+
+> > > Signed-off-by: Qu Wenruo <wqu@suse.com>
+> > > ---
+> > >   fs/btrfs/extent_io.c | 32 +++++++++++++++++++-------------
+> > >   1 file changed, 19 insertions(+), 13 deletions(-)
+> > > 
+> > > diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+> > > index 417c710c55ca..b6a4f1765b4c 100644
+> > > --- a/fs/btrfs/extent_io.c
+> > > +++ b/fs/btrfs/extent_io.c
+> > > @@ -1418,6 +1418,7 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
+> > >   	struct btrfs_fs_info *fs_info = inode->root->fs_info;
+> > >   	unsigned long range_bitmap = 0;
+> > >   	bool submitted_io = false;
+> > > +	bool error = false;
+> > >   	const u64 folio_start = folio_pos(folio);
+> > >   	u64 cur;
+> > >   	int bit;
+> > > @@ -1460,11 +1461,21 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
+> > >   			break;
+> > >   		}
+> > >   		ret = submit_one_sector(inode, folio, cur, bio_ctrl, i_size);
+> > > -		if (ret < 0)
+> > > -			goto out;
+> > > +		if (unlikely(ret < 0)) {
+> > > +			submit_one_bio(bio_ctrl);
+> > 
+> > This submit_one_bio is confusing to me. submit_one_sector failed and the
+> > subsequent comment says "there is no bio submitted" yet right here we
+> > call submit_one_bio.
+> > 
+> > What is the meaning of it?
+> > 
+> > > +			/*
+> > > +			 * Failed to grab the extent map which should be very rare.
+> > > +			 * Since there is no bio submitted to finish the ordered
+> > > +			 * extent, we have to manually finish this sector.
+> > > +			 */
+> > > +			btrfs_mark_ordered_io_finished(inode, folio, cur,
+> > > +					fs_info->sectorsize, false);
+> > > +			error = true;
+> > > +			continue;
+> > > +		}
+> > >   		submitted_io = true;
+> > >   	}
+> > > -out:
+> > > +
+> > >   	/*
+> > >   	 * If we didn't submitted any sector (>= i_size), folio dirty get
+> > >   	 * cleared but PAGECACHE_TAG_DIRTY is not cleared (only cleared
+> > > @@ -1472,8 +1483,11 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
+> > >   	 *
+> > >   	 * Here we set writeback and clear for the range. If the full folio
+> > >   	 * is no longer dirty then we clear the PAGECACHE_TAG_DIRTY tag.
+> > > +	 *
+> > > +	 * If we hit any error, the corresponding sector will still be dirty
+> > > +	 * thus no need to clear PAGECACHE_TAG_DIRTY.
+> > >   	 */
+> > 
+> > submitted_io is only used for this bit of logic, so you could consider
+> > changing this logic by keeping a single variable for whether or not we
+> > should go into this logic (naming it seems kind of annoying) and then
+> > setting it in both the error and submitted_io paths. I think that
+> > reduces headache in thinking about boolean logic, slightly.
+> 
+> Unfortunately I can not find a good alternative to this double boolean
+> usages.
+> 
+> I can go a single boolean, but it will be called something like
+> @no_error_nor_submission.
+> 
+> Which is the not only the worst naming, but also a hell of boolean
+> operations for a single bool.
 
-> On 6 Jan 2025, at 15:14, Greg Kroah-Hartman =
-<gregkh@linuxfoundation.org> wrote:
->=20
-> 6.6-stable review patch.  If anyone has any objections, please let me =
-know.
+I think you could do something like:
 
-I think this back port breaks 6.6 build (namely vmlinux.o link stage):
-  LD [M]  net/netfilter/xt_nat.ko
-  LD [M]  net/netfilter/xt_addrtype.ko
-  LD [M]  net/ipv4/netfilter/iptable_nat.ko
-  UPD     include/generated/utsversion.h
-  CC      init/version-timestamp.o
-  LD      .tmp_vmlinux.kallsyms1
-ld: vmlinux.o: in function `__crash_kexec':
-(.text+0x15a93a): undefined reference to `machine_crash_shutdown'
-ld: vmlinux.o: in function `__do_sys_kexec_file_load':
-kexec_file.c:(.text+0x15cef1): undefined reference to =
-`arch_kexec_protect_crashkres'
-ld: kexec_file.c:(.text+0x15cf28): undefined reference to =
-`arch_kexec_unprotect_crashkres'
-make[2]: *** [scripts/Makefile.vmlinux:37: vmlinux] Error 1
-make[1]: *** [/home/ignat/git/test/mainline/linux-6.6.70/Makefile:1164: =
-vmlinux] Error 2
-make: *** [Makefile:234: __sub-make] Error 2
+needs_reset_writeback = false;
+then set it to true in either case, whether you submit an io or hit an
+error.
 
-The KEXEC config setup, which triggers above:
+It's your call, though, I won't be upset if you leave it as is.
 
-# Kexec and crash features
-#
-CONFIG_CRASH_CORE=3Dy
-CONFIG_KEXEC_CORE=3Dy
-# CONFIG_KEXEC is not set
-CONFIG_KEXEC_FILE=3Dy
-# CONFIG_KEXEC_SIG is not set
-# CONFIG_CRASH_DUMP is not set
-# end of Kexec and crash features
-# end of General setup
-
->=20
-> ------------------
->=20
-> From: Baoquan He <bhe@redhat.com>
->=20
-> [ Upstream commit a4eeb2176d89fdf2785851521577b94b31690a60 ]
->=20
-> Now crash codes under kernel/ folder has been split out from kexec
-> code, crash dumping can be separated from kexec reboot in config
-> items on x86 with some adjustments.
->=20
-> Here, also change some ifdefs or IS_ENABLED() check to more =
-appropriate
-> ones, e,g
-> - #ifdef CONFIG_KEXEC_CORE -> #ifdef CONFIG_CRASH_DUMP
-> - (!IS_ENABLED(CONFIG_KEXEC_CORE)) - > =
-(!IS_ENABLED(CONFIG_CRASH_RESERVE))
->=20
-> [bhe@redhat.com: don't nest CONFIG_CRASH_DUMP ifdef inside =
-CONFIG_KEXEC_CODE ifdef scope]
->  Link: =
-https://lore.kernel.org/all/SN6PR02MB4157931105FA68D72E3D3DB8D47B2@SN6PR02=
-MB4157.namprd02.prod.outlook.com/T/#u
-> Link: https://lkml.kernel.org/r/20240124051254.67105-7-bhe@redhat.com
-> Signed-off-by: Baoquan He <bhe@redhat.com>
-> Cc: Al Viro <viro@zeniv.linux.org.uk>
-> Cc: Eric W. Biederman <ebiederm@xmission.com>
-> Cc: Hari Bathini <hbathini@linux.ibm.com>
-> Cc: Pingfan Liu <piliu@redhat.com>
-> Cc: Klara Modin <klarasmodin@gmail.com>
-> Cc: Michael Kelley <mhklinux@outlook.com>
-> Cc: Nathan Chancellor <nathan@kernel.org>
-> Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-> Cc: Yang Li <yang.lee@linux.alibaba.com>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> Stable-dep-of: bcc80dec91ee ("x86/hyperv: Fix hv tsc page based =
-sched_clock for hibernation")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
-> arch/x86/kernel/Makefile           |  4 ++--
-> arch/x86/kernel/cpu/mshyperv.c     | 10 ++++++++--
-> arch/x86/kernel/kexec-bzimage64.c  |  4 ++++
-> arch/x86/kernel/kvm.c              |  4 ++--
-> arch/x86/kernel/machine_kexec_64.c |  3 +++
-> arch/x86/kernel/reboot.c           |  4 ++--
-> arch/x86/kernel/setup.c            |  2 +-
-> arch/x86/kernel/smp.c              |  2 +-
-> arch/x86/xen/enlighten_hvm.c       |  4 ++++
-> arch/x86/xen/mmu_pv.c              |  2 +-
-> 10 files changed, 28 insertions(+), 11 deletions(-)
->=20
-> diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-> index 3269a0e23d3a..15fc9fc3dcf0 100644
-> --- a/arch/x86/kernel/Makefile
-> +++ b/arch/x86/kernel/Makefile
-> @@ -99,9 +99,9 @@ obj-$(CONFIG_TRACING) +=3D trace.o
-> obj-$(CONFIG_RETHOOK) +=3D rethook.o
-> obj-$(CONFIG_CRASH_CORE) +=3D crash_core_$(BITS).o
-> obj-$(CONFIG_KEXEC_CORE) +=3D machine_kexec_$(BITS).o
-> -obj-$(CONFIG_KEXEC_CORE) +=3D relocate_kernel_$(BITS).o crash.o
-> +obj-$(CONFIG_KEXEC_CORE) +=3D relocate_kernel_$(BITS).o
-> obj-$(CONFIG_KEXEC_FILE) +=3D kexec-bzimage64.o
-> -obj-$(CONFIG_CRASH_DUMP) +=3D crash_dump_$(BITS).o
-> +obj-$(CONFIG_CRASH_DUMP) +=3D crash_dump_$(BITS).o crash.o
-> obj-y +=3D kprobes/
-> obj-$(CONFIG_MODULES) +=3D module.o
-> obj-$(CONFIG_X86_32) +=3D doublefault_32.o
-> diff --git a/arch/x86/kernel/cpu/mshyperv.c =
-b/arch/x86/kernel/cpu/mshyperv.c
-> index bcb2d640a0cd..93e1cb4f7ff1 100644
-> --- a/arch/x86/kernel/cpu/mshyperv.c
-> +++ b/arch/x86/kernel/cpu/mshyperv.c
-> @@ -209,7 +209,9 @@ static void hv_machine_shutdown(void)
-> if (kexec_in_progress)
-> hyperv_cleanup();
-> }
-> +#endif /* CONFIG_KEXEC_CORE */
->=20
-> +#ifdef CONFIG_CRASH_DUMP
-> static void hv_machine_crash_shutdown(struct pt_regs *regs)
-> {
-> if (hv_crash_handler)
-> @@ -221,7 +223,7 @@ static void hv_machine_crash_shutdown(struct =
-pt_regs *regs)
-> /* Disable the hypercall page when there is only 1 active CPU. */
-> hyperv_cleanup();
-> }
-> -#endif /* CONFIG_KEXEC_CORE */
-> +#endif /* CONFIG_CRASH_DUMP */
-> #endif /* CONFIG_HYPERV */
->=20
-> static uint32_t  __init ms_hyperv_platform(void)
-> @@ -493,9 +495,13 @@ static void __init ms_hyperv_init_platform(void)
-> no_timer_check =3D 1;
-> #endif
->=20
-> -#if IS_ENABLED(CONFIG_HYPERV) && defined(CONFIG_KEXEC_CORE)
-> +#if IS_ENABLED(CONFIG_HYPERV)
-> +#if defined(CONFIG_KEXEC_CORE)
-> machine_ops.shutdown =3D hv_machine_shutdown;
-> +#endif
-> +#if defined(CONFIG_CRASH_DUMP)
-> machine_ops.crash_shutdown =3D hv_machine_crash_shutdown;
-> +#endif
-> #endif
-> if (ms_hyperv.features & HV_ACCESS_TSC_INVARIANT) {
-> /*
-> diff --git a/arch/x86/kernel/kexec-bzimage64.c =
-b/arch/x86/kernel/kexec-bzimage64.c
-> index a61c12c01270..0de509c02d18 100644
-> --- a/arch/x86/kernel/kexec-bzimage64.c
-> +++ b/arch/x86/kernel/kexec-bzimage64.c
-> @@ -263,11 +263,13 @@ setup_boot_parameters(struct kimage *image, =
-struct boot_params *params,
-> memset(&params->hd0_info, 0, sizeof(params->hd0_info));
-> memset(&params->hd1_info, 0, sizeof(params->hd1_info));
->=20
-> +#ifdef CONFIG_CRASH_DUMP
-> if (image->type =3D=3D KEXEC_TYPE_CRASH) {
-> ret =3D crash_setup_memmap_entries(image, params);
-> if (ret)
-> return ret;
-> } else
-> +#endif
-> setup_e820_entries(params);
->=20
-> nr_e820_entries =3D params->e820_entries;
-> @@ -428,12 +430,14 @@ static void *bzImage64_load(struct kimage =
-*image, char *kernel,
-> return ERR_PTR(-EINVAL);
-> }
->=20
-> +#ifdef CONFIG_CRASH_DUMP
-> /* Allocate and load backup region */
-> if (image->type =3D=3D KEXEC_TYPE_CRASH) {
-> ret =3D crash_load_segments(image);
-> if (ret)
-> return ERR_PTR(ret);
-> }
-> +#endif
->=20
-> /*
-> * Load purgatory. For 64bit entry point, purgatory  code can be
-> diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-> index b8ab9ee5896c..38d88c8b56ec 100644
-> --- a/arch/x86/kernel/kvm.c
-> +++ b/arch/x86/kernel/kvm.c
-> @@ -769,7 +769,7 @@ static struct notifier_block kvm_pv_reboot_nb =3D =
-{
->  * won't be valid. In cases like kexec, in which you install a new =
-kernel, this
->  * means a random memory location will be kept being written.
->  */
-> -#ifdef CONFIG_KEXEC_CORE
-> +#ifdef CONFIG_CRASH_DUMP
-> static void kvm_crash_shutdown(struct pt_regs *regs)
-> {
-> kvm_guest_cpu_offline(true);
-> @@ -852,7 +852,7 @@ static void __init kvm_guest_init(void)
-> kvm_guest_cpu_init();
-> #endif
->=20
-> -#ifdef CONFIG_KEXEC_CORE
-> +#ifdef CONFIG_CRASH_DUMP
-> machine_ops.crash_shutdown =3D kvm_crash_shutdown;
-> #endif
->=20
-> diff --git a/arch/x86/kernel/machine_kexec_64.c =
-b/arch/x86/kernel/machine_kexec_64.c
-> index 2fa12d1dc676..aaeac2deb85d 100644
-> --- a/arch/x86/kernel/machine_kexec_64.c
-> +++ b/arch/x86/kernel/machine_kexec_64.c
-> @@ -545,6 +545,8 @@ int arch_kimage_file_post_load_cleanup(struct =
-kimage *image)
-> }
-> #endif /* CONFIG_KEXEC_FILE */
->=20
-> +#ifdef CONFIG_CRASH_DUMP
-> +
-> static int
-> kexec_mark_range(unsigned long start, unsigned long end, bool protect)
-> {
-> @@ -589,6 +591,7 @@ void arch_kexec_unprotect_crashkres(void)
-> {
-> kexec_mark_crashkres(false);
-> }
-> +#endif
->=20
-> /*
->  * During a traditional boot under SME, SME will encrypt the kernel,
-> diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-> index 830425e6d38e..f3130f762784 100644
-> --- a/arch/x86/kernel/reboot.c
-> +++ b/arch/x86/kernel/reboot.c
-> @@ -796,7 +796,7 @@ struct machine_ops machine_ops __ro_after_init =3D =
-{
-> .emergency_restart =3D native_machine_emergency_restart,
-> .restart =3D native_machine_restart,
-> .halt =3D native_machine_halt,
-> -#ifdef CONFIG_KEXEC_CORE
-> +#ifdef CONFIG_CRASH_DUMP
-> .crash_shutdown =3D native_machine_crash_shutdown,
-> #endif
-> };
-> @@ -826,7 +826,7 @@ void machine_halt(void)
-> machine_ops.halt();
-> }
->=20
-> -#ifdef CONFIG_KEXEC_CORE
-> +#ifdef CONFIG_CRASH_DUMP
-> void machine_crash_shutdown(struct pt_regs *regs)
-> {
-> machine_ops.crash_shutdown(regs);
-> diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-> index eb129277dcdd..8bcecabd475b 100644
-> --- a/arch/x86/kernel/setup.c
-> +++ b/arch/x86/kernel/setup.c
-> @@ -547,7 +547,7 @@ static void __init reserve_crashkernel(void)
-> bool high =3D false;
-> int ret;
->=20
-> - if (!IS_ENABLED(CONFIG_KEXEC_CORE))
-> + if (!IS_ENABLED(CONFIG_CRASH_RESERVE))
-> return;
->=20
-> total_mem =3D memblock_phys_mem_size();
-> diff --git a/arch/x86/kernel/smp.c b/arch/x86/kernel/smp.c
-> index 96a771f9f930..52c3823b7211 100644
-> --- a/arch/x86/kernel/smp.c
-> +++ b/arch/x86/kernel/smp.c
-> @@ -282,7 +282,7 @@ struct smp_ops smp_ops =3D {
-> .smp_cpus_done =3D native_smp_cpus_done,
->=20
-> .stop_other_cpus =3D native_stop_other_cpus,
-> -#if defined(CONFIG_KEXEC_CORE)
-> +#if defined(CONFIG_CRASH_DUMP)
-> .crash_stop_other_cpus =3D kdump_nmi_shootdown_cpus,
-> #endif
-> .smp_send_reschedule =3D native_smp_send_reschedule,
-> diff --git a/arch/x86/xen/enlighten_hvm.c =
-b/arch/x86/xen/enlighten_hvm.c
-> index 70be57e8f51c..ade22feee7ae 100644
-> --- a/arch/x86/xen/enlighten_hvm.c
-> +++ b/arch/x86/xen/enlighten_hvm.c
-> @@ -141,7 +141,9 @@ static void xen_hvm_shutdown(void)
-> if (kexec_in_progress)
-> xen_reboot(SHUTDOWN_soft_reset);
-> }
-> +#endif
->=20
-> +#ifdef CONFIG_CRASH_DUMP
-> static void xen_hvm_crash_shutdown(struct pt_regs *regs)
-> {
-> native_machine_crash_shutdown(regs);
-> @@ -229,6 +231,8 @@ static void __init xen_hvm_guest_init(void)
->=20
-> #ifdef CONFIG_KEXEC_CORE
-> machine_ops.shutdown =3D xen_hvm_shutdown;
-> +#endif
-> +#ifdef CONFIG_CRASH_DUMP
-> machine_ops.crash_shutdown =3D xen_hvm_crash_shutdown;
-> #endif
-> }
-> diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
-> index 6b201e64d8ab..bfd57d07f4b5 100644
-> --- a/arch/x86/xen/mmu_pv.c
-> +++ b/arch/x86/xen/mmu_pv.c
-> @@ -2517,7 +2517,7 @@ int xen_remap_pfn(struct vm_area_struct *vma, =
-unsigned long addr,
-> }
-> EXPORT_SYMBOL_GPL(xen_remap_pfn);
->=20
-> -#ifdef CONFIG_KEXEC_CORE
-> +#ifdef CONFIG_VMCORE_INFO
-> phys_addr_t paddr_vmcoreinfo_note(void)
-> {
-> if (xen_pv_domain())
-> --=20
-> 2.39.5
->=20
->=20
->=20
->=20
-
+> 
+> So I'm afraid the @error and @submitted_io will still be better for this
+> case.
+> 
+> The other comments will be addressed properly.
+> 
+> Thanks,
+> Qu
+> > 
+> > > -	if (!submitted_io) {
+> > > +	if (!submitted_io && !error) {
+> > >   		btrfs_folio_set_writeback(fs_info, folio, start, len);
+> > >   		btrfs_folio_clear_writeback(fs_info, folio, start, len);
+> > >   	}
+> > > @@ -1493,7 +1507,6 @@ static int extent_writepage(struct folio *folio, struct btrfs_bio_ctrl *bio_ctrl
+> > >   {
+> > >   	struct inode *inode = folio->mapping->host;
+> > >   	struct btrfs_fs_info *fs_info = inode_to_fs_info(inode);
+> > > -	const u64 page_start = folio_pos(folio);
+> > >   	int ret;
+> > >   	size_t pg_offset;
+> > >   	loff_t i_size = i_size_read(inode);
+> > > @@ -1536,10 +1549,6 @@ static int extent_writepage(struct folio *folio, struct btrfs_bio_ctrl *bio_ctrl
+> > > 
+> > >   	bio_ctrl->wbc->nr_to_write--;
+> > > 
+> > > -	if (ret)
+> > > -		btrfs_mark_ordered_io_finished(BTRFS_I(inode), folio,
+> > > -					       page_start, PAGE_SIZE, !ret);
+> > > -
+> > >   done:
+> > >   	if (ret < 0)
+> > >   		mapping_set_error(folio->mapping, ret);
+> > > @@ -2319,11 +2328,8 @@ void extent_write_locked_range(struct inode *inode, const struct folio *locked_f
+> > >   		if (ret == 1)
+> > >   			goto next_page;
+> > > 
+> > > -		if (ret) {
+> > > -			btrfs_mark_ordered_io_finished(BTRFS_I(inode), folio,
+> > > -						       cur, cur_len, !ret);
+> > > +		if (ret)
+> > >   			mapping_set_error(mapping, ret);
+> > > -		}
+> > >   		btrfs_folio_end_lock(fs_info, folio, cur, cur_len);
+> > >   		if (ret < 0)
+> > >   			found_error = true;
+> > > --
+> > > 2.47.1
+> > > 
+> > 
+> 
 
