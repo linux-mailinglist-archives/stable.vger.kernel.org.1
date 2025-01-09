@@ -1,142 +1,320 @@
-Return-Path: <stable+bounces-108052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33A6EA06BD9
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 04:07:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C62A06C7B
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 04:45:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 761EF3A6A03
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 03:06:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A654918874EE
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 03:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A6113AD1C;
-	Thu,  9 Jan 2025 03:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 511DD154C0B;
+	Thu,  9 Jan 2025 03:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FYy9DMMz"
+	dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b="LQ58jHJg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AFFDDDC;
-	Thu,  9 Jan 2025 03:06:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3105715A848;
+	Thu,  9 Jan 2025 03:45:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736392019; cv=none; b=nHM4iCSa+G5U6fNHDwph1r3GjLzKjxoCoof9wiv3rouwkHHZjVZ1DA/HYsB3r/DC7Po3tdy4cQj3k3jRDEDnsJZYe3Totbl9ay83P3RP6q7CS1hVIjDH/+GJt/nrs3Ui2QLjhTizlNyuBV9XIx5V0PdmK5W7eHuV8oO8rSw7yO4=
+	t=1736394318; cv=none; b=NEcvLKEeLpifdLkPsktHkZ8jBB5xJbkXnpkpEZEdxTOVmF/FzlbxnGMgnCfnEU0yBej8CXHxGFrRfWlguZ6WORqG4SlX1Ppo6IshN9WF03x55HK0xEGdJTrG7gQOc7ghXLcZvyPIkuln5LuTxDtkjoQ8qvuKfGoe5mIZ50Z6D4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736392019; c=relaxed/simple;
-	bh=j0oUpGZRketH66aLGlOqEratqE7lE81u3b79GqES3KA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NOTZRI/VVEHQVrr6PYWnx5ZAJrx3Moy3GGQfqauYuAmxguLRGvGBkiLzURZEG+pA/qScy0wfJ6Yhs77eiKbE5zoJUoDU4kBNb4/TJ/SvkVfStZleiJi1O7uE72hS2bqPwQVBGu4N00tfgQYItXflmkjfHip5vYZ6tcUZUHvm8AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FYy9DMMz; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5d3f65844deso591320a12.0;
-        Wed, 08 Jan 2025 19:06:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736392016; x=1736996816; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xcvguVZbOYQiUlHNff8pHH80HFCIQo3zkHLK6WxRevg=;
-        b=FYy9DMMzXtlfLdXsDKRiMRlBhUqAWjdpasalQlZb+iQTFqE1/XKaHAC0w7vPoxY5EC
-         0qO+KaXhlkMvjCmMJKE81ms8VipkawEbQ2PKJK0+htIxP4MNqxyEprQe2hE6mA+QwL5a
-         h/fsEXJBjZhO/NoaIagPe5pitcwlZUU0HNI627lwl6dbvMiBsSULUlgisS3WseUNQsei
-         6Yihp7pWvhrbOotRZllXfQJs1j9nvF0wbrBoliklRCaCnf9j0BB566YceK745dTmPlSk
-         fAa3ok4mG8nfT2F73Q5IJfjsAMb/GtK8+hQKC9v/SJnN9DtZ4GLDCQ7dZcUvu9zA/DF0
-         /mfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736392016; x=1736996816;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xcvguVZbOYQiUlHNff8pHH80HFCIQo3zkHLK6WxRevg=;
-        b=sCQVEmfvzV2kdJtEuzK4IZGkAkJhF4So5TQBNv+mnlp4rvXNC8iN+51wqmAlCE1o4G
-         NDLDdYqkeSyNtI17GjCh2eegSsKq+KZ3P7LDIL6ffS6p9TNZQLfULRM1ZuTV05Jtfzku
-         eqGFKTBk7oFc9eByZVWcizV6fsZuby+G4T/YA+3v9v0nUIKNW3F5OOWQa4GZ5pFbgxge
-         RBEmQPRbK7/XGyzfzfLEv1SrHPnMp84a2cYPlsq5JsmX63/hPemNlt9GgvjlO7D5+j52
-         ffi0bv87LDyl3KpnOsl5YFzv0UoPqrakmBrgn7H8uaDIj+194AvW6UocwkQKATRaIYPO
-         4PtA==
-X-Forwarded-Encrypted: i=1; AJvYcCU9z81rsn4HmVays93Hvv+bF8Ykxez0gEAoHxAEWr9NXqhOcfU6vZZPt3NPVEEq4jbr5lOd1iHm@vger.kernel.org, AJvYcCUklQH+vhGtPfCFalf7yIZltyWA3jqdVIUNutUJAeh+MIn5hBrZ9yAYb4CWmpK7q861nIAzUEBzQp8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDI8km+8CsM2tYh/8TZTNuYrwHanf0nHWTXJRvEUKvqW7krwmJ
-	sdVsS6RmtMkAD/dd6DNxunc0i8niWjbutdbZKLS2O++/8HGgDtf8VO4uYGUcQ1FLn3P0Ch2XM8f
-	KrjsnOZVfWAGWLMzLpOxrzv9Q2YI=
-X-Gm-Gg: ASbGncuJMhIuyYyVZoyT1DdzhgeQmHqn2ksesY5PABFKk7DYlKgncWiHQyIO7T0DnJo
-	m83YAhx60R+ZFfves/dfS0j9VsyP1lTja8/4=
-X-Google-Smtp-Source: AGHT+IGfqqtzl5vrGSo7HJcvcyDWUl65drgIH6Vv3pEl7FUmKO18JawV8JUiNayrLTBBFixjVFqVA3LHLEdBoEk5SxU=
-X-Received: by 2002:a05:6402:13c6:b0:5d2:7270:6124 with SMTP id
- 4fb4d7f45d1cf-5d972e484a3mr4167328a12.23.1736392016040; Wed, 08 Jan 2025
- 19:06:56 -0800 (PST)
+	s=arc-20240116; t=1736394318; c=relaxed/simple;
+	bh=y8DGOB4LM2ZR6Z/yaPdemZTIeq3ttIsHR6F/flatJvA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lAmAHRYvKh2GsFlwHvng6IIo2YAGl87e60zYoi8QwNAt5og4oL8Bte8H64Ht9GeFyerp+WkhDbQxZPhoh97IOjuOF/wPPX5NODJ21SDR9LCHxy7xaVVKpGdef4rPEqZtuLsf4vKL4i2agobPIExFDbqGhtpScX4CJQSDyC9s+0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com; spf=pass smtp.mailfrom=gmx.com; dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b=LQ58jHJg; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
+	s=s31663417; t=1736394309; x=1736999109; i=quwenruo.btrfs@gmx.com;
+	bh=OQEDOZZuxdXebSwGZ+PCSqu9/qulW1yF7vf/tpLyAWE=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=LQ58jHJgCpXgxPjC9lyxjPnTqimc/qbgidVZhvtEwMGKNHGargkB5IWmR3sTovgT
+	 O++1CP4+Tua6yw7tvuRTaTcpC4M2i/fqijVMFEepUmno1hJf34CM5J/U6fpd0+ewS
+	 TrBB5M6HNgED8LReD2WHIz4lvHl0O3WcCeCSfDgyatDGyr8OQ7lCmOOqwX4xX3ZXC
+	 CL61aPLhE7sNXEsdjVuM9itPkJlA+m7CQOy5OQ/qjFaaa5M/B3/QzbmCL4ll1pWdc
+	 qKZgjiOTd2c249UwUPeiVgVsdboP1wmMmETvDHt9gVTM7nusM/z+/t/BV1tNeOHP4
+	 ZFIsrzEKeFUHeIy7Kw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [172.16.0.191] ([159.196.52.54]) by mail.gmx.net (mrgmx104
+ [212.227.17.174]) with ESMTPSA (Nemesis) id 1MdvmY-1u3PbX1Ft0-00o9YD; Thu, 09
+ Jan 2025 04:45:09 +0100
+Message-ID: <deea65a5-8870-4c33-9446-7d531b4b8451@gmx.com>
+Date: Thu, 9 Jan 2025 14:15:06 +1030
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241225060600.3094154-1-zhoubinbin@loongson.cn>
- <526d7ad1f0b299145ab676900f81ba1a.sboyd@kernel.org> <CAMpQs4+i11DVGhdinMrE41HkC8hhD11P0BLeOaK5yW8QXUMX-Q@mail.gmail.com>
- <0757e78b02165aca65465d4e96eb6e92.sboyd@kernel.org>
-In-Reply-To: <0757e78b02165aca65465d4e96eb6e92.sboyd@kernel.org>
-From: Binbin Zhou <zhoubb.aaron@gmail.com>
-Date: Thu, 9 Jan 2025 11:06:43 +0800
-X-Gm-Features: AbW1kvb-fi80aY0XoQiHcrnDQm4aLOeDclKMtkIp68GA6Jq64FhC6QCWI27RyFE
-Message-ID: <CAMpQs4+pcqCUxXyg64_bzdi=3K-kb4mvKG7vM-yqcaoWO=TiLA@mail.gmail.com>
-Subject: Re: [PATCH] clk: clk-loongson2: Fix the number count of clk provider
-To: Stephen Boyd <sboyd@kernel.org>
-Cc: Binbin Zhou <zhoubinbin@loongson.cn>, Huacai Chen <chenhuacai@loongson.cn>, 
-	Michael Turquette <mturquette@baylibre.com>, Yinbo Zhu <zhuyinbo@loongson.cn>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, linux-clk@vger.kernel.org, 
-	Xuerui Wang <kernel@xen0n.name>, loongarch@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/9] btrfs: fix double accounting race when
+ extent_writepage_io() failed
+To: Boris Burkov <boris@bur.io>, Qu Wenruo <wqu@suse.com>
+Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
+References: <cover.1733983488.git.wqu@suse.com>
+ <51e0c5f464256c4a59a872077d560cb56b7509a2.1733983488.git.wqu@suse.com>
+ <20250108222458.GB1456944@zen.localdomain>
+Content-Language: en-US
+From: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Autocrypt: addr=quwenruo.btrfs@gmx.com; keydata=
+ xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
+ 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
+ 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
+ 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
+ gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
+ AAHNIlF1IFdlbnJ1byA8cXV3ZW5ydW8uYnRyZnNAZ214LmNvbT7CwJQEEwEIAD4CGwMFCwkI
+ BwIGFQgJCgsCBBYCAwECHgECF4AWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1YAUJEP5a
+ sQAKCRDCPZHzoSX+qF+mB/9gXu9C3BV0omDZBDWevJHxpWpOwQ8DxZEbk9b9LcrQlWdhFhyn
+ xi+l5lRziV9ZGyYXp7N35a9t7GQJndMCFUWYoEa+1NCuxDs6bslfrCaGEGG/+wd6oIPb85xo
+ naxnQ+SQtYLUFbU77WkUPaaIU8hH2BAfn9ZSDX9lIxheQE8ZYGGmo4wYpnN7/hSXALD7+oun
+ tZljjGNT1o+/B8WVZtw/YZuCuHgZeaFdhcV2jsz7+iGb+LsqzHuznrXqbyUQgQT9kn8ZYFNW
+ 7tf+LNxXuwedzRag4fxtR+5GVvJ41Oh/eygp8VqiMAtnFYaSlb9sjia1Mh+m+OBFeuXjgGlG
+ VvQFzsBNBFnVga8BCACqU+th4Esy/c8BnvliFAjAfpzhI1wH76FD1MJPmAhA3DnX5JDORcga
+ CbPEwhLj1xlwTgpeT+QfDmGJ5B5BlrrQFZVE1fChEjiJvyiSAO4yQPkrPVYTI7Xj34FnscPj
+ /IrRUUka68MlHxPtFnAHr25VIuOS41lmYKYNwPNLRz9Ik6DmeTG3WJO2BQRNvXA0pXrJH1fN
+ GSsRb+pKEKHKtL1803x71zQxCwLh+zLP1iXHVM5j8gX9zqupigQR/Cel2XPS44zWcDW8r7B0
+ q1eW4Jrv0x19p4P923voqn+joIAostyNTUjCeSrUdKth9jcdlam9X2DziA/DHDFfS5eq4fEv
+ ABEBAAHCwHwEGAEIACYCGwwWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1gQUJEP5a0gAK
+ CRDCPZHzoSX+qHGpB/kB8A7M7KGL5qzat+jBRoLwB0Y3Zax0QWuANVdZM3eJDlKJKJ4HKzjo
+ B2Pcn4JXL2apSan2uJftaMbNQbwotvabLXkE7cPpnppnBq7iovmBw++/d8zQjLQLWInQ5kNq
+ Vmi36kmq8o5c0f97QVjMryHlmSlEZ2Wwc1kURAe4lsRG2dNeAd4CAqmTw0cMIrR6R/Dpt3ma
+ +8oGXJOmwWuDFKNV4G2XLKcghqrtcRf2zAGNogg3KulCykHHripG3kPKsb7fYVcSQtlt5R6v
+ HZStaZBzw4PcDiaAF3pPDBd+0fIKS6BlpeNRSFG94RYrt84Qw77JWDOAZsyNfEIEE0J6LSR/
+In-Reply-To: <20250108222458.GB1456944@zen.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:iDksX7qNpJkVImqjvzIxtOt4ImKJ66qZbz7HyW+4PctlDKOAKot
+ N4u7oa6tonc6vuK/AMjT7hLOdkbNIIYWWFR76pZJaO+snQk6zq2kS7OMzr4iS+B73sUz1qI
+ Q0tdGTqiWY117S90OZ3gHuhbFDsOJWYCO6MNEOhDdTlQATitLAL5KrIDjtugIscQGw0pDY8
+ IyMkzUA27Ej5HPr4VVl/A==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:YPIrflijl00=;w3d7aN2vfgFvZHdV0S+zpJmjDHk
+ LEYJ5Zg1auLuz3GdKUolwJn81LPuztgfIcS2I+LmK47PZr05QbhYPVcsq3ExOI5NZmUXuj82T
+ zM2AyoyRGmbIO9bXl8kdJAIdYqd1Pg72H8x9CnV3XhjTFb/nytO/zJz8ACmr1O+3IENiYhAfd
+ cGreAewx9Bz/RzVbySWK2nvlad90hg/gnJV4p/t99UhE24RXYDedj3o6hetvpAPd5uNP+EbXu
+ jiVWl4C7cOU4yNPhHR83GWDdWyVEdozLi6yURP2WwzGjgay+/xKnN/ameu1xRN2+DQzp0QPKr
+ wtLU+b00ydusK6Org1mwDgznZ7qfluP7OitlHjFGmfCTye2ggYx/ym0c7+oerkd/IfblS6cKt
+ dcxw8YWe+udRoOfxVfLiiIkZuqgM/VPlFyLnyQOT7YnW/plNmeLuvxgX/wvybl69QAFtRHyqZ
+ 1ngCb2WOOGvSEOzFRHRMzsxYQsuXkXz3tcsTTvf40mGm2LARhs7jUz+f75JcrzJSXyapefrdP
+ pEEgfbc/DUCwD84i+K3ZKAEJHzsIWjiLdAvvUjURj7rezXgcn07PdeWFU3fgN10GMmF530bEi
+ tHQmD4B5mXbrkmsqjyg9cI/ObLm2YWzBxIvefbTef1taskCvR5B8UhSmvp4/v5fCvny7M4QTB
+ GaAqRWKtjPyagZgZ2nMcHcXyWJxi+6C2KuQ0ZgOmd/ugqLEXXAxyQsAA9znRauAnUsKd0cFN4
+ k/sVg07MWw2BlEfNo6Flj2D5P469pG4pz8PPjD7J/EXgSLj75yEuRHMMP5uiP1G1qgw5AayH6
+ wfu3yuq3ok5veXtc7wu8Lp/12DmxQjLsnowulXcErLlQi8hIqCMENz6PcMF4YIylP+KPqLFpX
+ E0ZiOfdP926epQ2kh1fDv8jvSSvDv51kUQi8LTMgmDoegVO5r1wZAWAYzOIiOteRS7sKM6Qjo
+ kbw2vRIzLeXKATt6CQ93qal2e4TSFZ41pZqqx0g0zQRzYAAy7GMVmGpzUjxP1kuHZu/YE+mb8
+ Nk+ihYeUP5D02C9ss1BZVTfvIY0kyis1aAjUYD/qGOxj2ccvNrD168RqQ5q4MjFw6phChzaGd
+ Nk9IqL+j7A3CybqJesofdaoiaAMcH+
 
-Hi Stephen:
 
-Thanks for your comments.
 
-On Thu, Jan 9, 2025 at 3:20=E2=80=AFAM Stephen Boyd <sboyd@kernel.org> wrot=
-e:
+=E5=9C=A8 2025/1/9 08:54, Boris Burkov =E5=86=99=E9=81=93:
+> On Thu, Dec 12, 2024 at 04:43:56PM +1030, Qu Wenruo wrote:
+>> [BUG]
+>> If submit_one_sector() failed inside extent_writepage_io() for sector
+>> size < page size cases (e.g. 4K sector size and 64K page size), then
+>> we can hit double ordered extent accounting error.
+>>
+>> This should be very rare, as submit_one_sector() only fails when we
+>> failed to grab the extent map, and such extent map should exist inside
+>> the memory and have been pinned.
+>>
+>> [CAUSE]
+>> For example we have the following folio layout:
+>>
+>>      0  4K          32K    48K   60K 64K
+>>      |//|           |//////|     |///|
+>>
+>> Where |///| is the dirty range we need to writeback. The 3 different
+>> dirty ranges are submitted for regular COW.
+>>
+>> Now we hit the following sequence:
+>>
+>> - submit_one_sector() returned 0 for [0, 4K)
+>>
+>> - submit_one_sector() returned 0 for [32K, 48K)
+>>
+>> - submit_one_sector() returned error for [60K, 64K)
+>>
+>> - btrfs_mark_ordered_io_finished() called for the whole folio
+>>    This will mark the following ranges as finished:
+>>    * [0, 4K)
+>>    * [32K, 48K)
+>>      Both ranges have their IO already submitted, this cleanup will
+>>      lead to double accounting.
+>>
+>>    * [60K, 64K)
+>>      That's the correct cleanup.
+>>
+>> The only good news is, this error is only theoretical, as the target
+>> extent map is always pinned, thus we should directly grab it from
+>> memory, other than reading it from the disk.
+>>
+>> [FIX]
+>> Instead of calling btrfs_mark_ordered_io_finished() for the whole folio
+>> range, which can touch ranges we should not touch, instead
+>> move the error handling inside extent_writepage_io().
+>>
+>> So that we can cleanup exact sectors that are ought to be submitted but
+>> failed.
+>>
+>> This provide much more accurate cleanup, avoiding the double accounting=
+.
 >
-> Quoting Binbin Zhou (2025-01-07 17:41:43)
-> > On Wed, Jan 8, 2025 at 5:25=E2=80=AFAM Stephen Boyd <sboyd@kernel.org> =
-wrote:
-> > > Quoting Binbin Zhou (2024-12-24 22:05:59)
-> > > > diff --git a/drivers/clk/clk-loongson2.c b/drivers/clk/clk-loongson=
-2.c
-> > > > index 6bf51d5a49a1..b1b2038acd0b 100644
-> > > > --- a/drivers/clk/clk-loongson2.c
-> > > > +++ b/drivers/clk/clk-loongson2.c
-> > > > @@ -294,7 +294,7 @@ static int loongson2_clk_probe(struct platform_=
-device *pdev)
-> > > >                 return -EINVAL;
-> > > >
-> > > >         for (p =3D data; p->name; p++)
-> > > > -               clks_num++;
-> > > > +               clks_num =3D max(clks_num, p->id + 1);
-> > >
-> > > NULL is a valid clk. Either fill the onecell data with -ENOENT error
-> > > pointers, or stop using it and implement a custom version of
-> > > of_clk_hw_onecell_get() that doesn't allow invalid clks to be request=
-ed
-> > > from this provider.
-> >
-> > Emm...
-> > Just in case, how about setting all items to ERR_PTR(-ENOENT) before
-> > assigning them.
-> > This is shown below:
-> >
-> >                while (--clk_num >=3D 0)
-> >                          clp->clk_data.hws[clk_num] =3D ERR_PTR(-ENOENT=
-);
+> Analysis and fix both make sense to me. However, this one feels a lot
+> more fragile than the other one.
 >
-> Or something like:
+> It relies on submit_one_sector being the only error path in
+> extent_writepage_io. Any future error in the loop would have to create a
+> shared "per sector" error handling goto in the loop I guess?
 >
->         memset_p(&clk->clk_data.hws, ERR_PTR(-ENOENT), clk_num);
+> Not a hard "no", in the sense that I think the code is correct for now
+> (aside from my submit_one_bio question) but curious if we can give this
+> some more principled structure.
+>
+> Thanks,
+> Boris
+>
+>>
+>> Cc: stable@vger.kernel.org # 5.15+
+>> Signed-off-by: Qu Wenruo <wqu@suse.com>
+>> ---
+>>   fs/btrfs/extent_io.c | 32 +++++++++++++++++++-------------
+>>   1 file changed, 19 insertions(+), 13 deletions(-)
+>>
+>> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+>> index 417c710c55ca..b6a4f1765b4c 100644
+>> --- a/fs/btrfs/extent_io.c
+>> +++ b/fs/btrfs/extent_io.c
+>> @@ -1418,6 +1418,7 @@ static noinline_for_stack int extent_writepage_io=
+(struct btrfs_inode *inode,
+>>   	struct btrfs_fs_info *fs_info =3D inode->root->fs_info;
+>>   	unsigned long range_bitmap =3D 0;
+>>   	bool submitted_io =3D false;
+>> +	bool error =3D false;
+>>   	const u64 folio_start =3D folio_pos(folio);
+>>   	u64 cur;
+>>   	int bit;
+>> @@ -1460,11 +1461,21 @@ static noinline_for_stack int extent_writepage_=
+io(struct btrfs_inode *inode,
+>>   			break;
+>>   		}
+>>   		ret =3D submit_one_sector(inode, folio, cur, bio_ctrl, i_size);
+>> -		if (ret < 0)
+>> -			goto out;
+>> +		if (unlikely(ret < 0)) {
+>> +			submit_one_bio(bio_ctrl);
+>
+> This submit_one_bio is confusing to me. submit_one_sector failed and the
+> subsequent comment says "there is no bio submitted" yet right here we
+> call submit_one_bio.
+>
+> What is the meaning of it?
+>
+>> +			/*
+>> +			 * Failed to grab the extent map which should be very rare.
+>> +			 * Since there is no bio submitted to finish the ordered
+>> +			 * extent, we have to manually finish this sector.
+>> +			 */
+>> +			btrfs_mark_ordered_io_finished(inode, folio, cur,
+>> +					fs_info->sectorsize, false);
+>> +			error =3D true;
+>> +			continue;
+>> +		}
+>>   		submitted_io =3D true;
+>>   	}
+>> -out:
+>> +
+>>   	/*
+>>   	 * If we didn't submitted any sector (>=3D i_size), folio dirty get
+>>   	 * cleared but PAGECACHE_TAG_DIRTY is not cleared (only cleared
+>> @@ -1472,8 +1483,11 @@ static noinline_for_stack int extent_writepage_i=
+o(struct btrfs_inode *inode,
+>>   	 *
+>>   	 * Here we set writeback and clear for the range. If the full folio
+>>   	 * is no longer dirty then we clear the PAGECACHE_TAG_DIRTY tag.
+>> +	 *
+>> +	 * If we hit any error, the corresponding sector will still be dirty
+>> +	 * thus no need to clear PAGECACHE_TAG_DIRTY.
+>>   	 */
+>
+> submitted_io is only used for this bit of logic, so you could consider
+> changing this logic by keeping a single variable for whether or not we
+> should go into this logic (naming it seems kind of annoying) and then
+> setting it in both the error and submitted_io paths. I think that
+> reduces headache in thinking about boolean logic, slightly.
 
-Indeed, it looks better and cleaner.
-I'll update in V2 soon.
+Unfortunately I can not find a good alternative to this double boolean
+usages.
 
---
-Thanks.
-Binbin
+I can go a single boolean, but it will be called something like
+@no_error_nor_submission.
+
+Which is the not only the worst naming, but also a hell of boolean
+operations for a single bool.
+
+So I'm afraid the @error and @submitted_io will still be better for this
+case.
+
+The other comments will be addressed properly.
+
+Thanks,
+Qu
+>
+>> -	if (!submitted_io) {
+>> +	if (!submitted_io && !error) {
+>>   		btrfs_folio_set_writeback(fs_info, folio, start, len);
+>>   		btrfs_folio_clear_writeback(fs_info, folio, start, len);
+>>   	}
+>> @@ -1493,7 +1507,6 @@ static int extent_writepage(struct folio *folio, =
+struct btrfs_bio_ctrl *bio_ctrl
+>>   {
+>>   	struct inode *inode =3D folio->mapping->host;
+>>   	struct btrfs_fs_info *fs_info =3D inode_to_fs_info(inode);
+>> -	const u64 page_start =3D folio_pos(folio);
+>>   	int ret;
+>>   	size_t pg_offset;
+>>   	loff_t i_size =3D i_size_read(inode);
+>> @@ -1536,10 +1549,6 @@ static int extent_writepage(struct folio *folio,=
+ struct btrfs_bio_ctrl *bio_ctrl
+>>
+>>   	bio_ctrl->wbc->nr_to_write--;
+>>
+>> -	if (ret)
+>> -		btrfs_mark_ordered_io_finished(BTRFS_I(inode), folio,
+>> -					       page_start, PAGE_SIZE, !ret);
+>> -
+>>   done:
+>>   	if (ret < 0)
+>>   		mapping_set_error(folio->mapping, ret);
+>> @@ -2319,11 +2328,8 @@ void extent_write_locked_range(struct inode *ino=
+de, const struct folio *locked_f
+>>   		if (ret =3D=3D 1)
+>>   			goto next_page;
+>>
+>> -		if (ret) {
+>> -			btrfs_mark_ordered_io_finished(BTRFS_I(inode), folio,
+>> -						       cur, cur_len, !ret);
+>> +		if (ret)
+>>   			mapping_set_error(mapping, ret);
+>> -		}
+>>   		btrfs_folio_end_lock(fs_info, folio, cur, cur_len);
+>>   		if (ret < 0)
+>>   			found_error =3D true;
+>> --
+>> 2.47.1
+>>
+>
+
 
