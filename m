@@ -1,153 +1,366 @@
-Return-Path: <stable+bounces-108155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B5BDA081CD
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 21:54:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CBD2A0835D
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 00:20:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B3981888BA6
-	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 20:54:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B53733A8140
+	for <lists+stable@lfdr.de>; Thu,  9 Jan 2025 23:20:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF6A202F87;
-	Thu,  9 Jan 2025 20:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F079A205E24;
+	Thu,  9 Jan 2025 23:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mOF4sgs2"
+	dkim=pass (2048-bit key) header.d=bur.io header.i=@bur.io header.b="igXManb1";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gSDdIMUO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA291FE475
-	for <stable@vger.kernel.org>; Thu,  9 Jan 2025 20:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF8E1FCFF7;
+	Thu,  9 Jan 2025 23:20:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736455898; cv=none; b=Fbby/NjVTWjsVDBCEFHlm1LEYm4beWZlllHtRuFsE54hBw19MLyDwrPkIuU/+f853+iHnXgxgG1jhwCeMmzQ4c8Jz6cbaaoAhctBwMzt5kjAJOH+lfn26OlKxa/k94yHwTfiKCuH7C2+WP+9YJOlY6yGdteB6hZR5xZ6LW6Da2U=
+	t=1736464813; cv=none; b=E1pFAslsEIEwwAjMtmkYIk7hhvmKoGkQB9p9S1XXZ182JH3EAF+CTX7Sr3+O0VJJCwtvuD8yh8ndGR+L5kG+W92Qi9n/ltE1lDShda+j3x6F80QuiukTTkQyaTXP6YmmgXDtCQKufOTWJVFjYsafZdrNDfVZydeEWWSTZ/+UOkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736455898; c=relaxed/simple;
-	bh=/TsRdN+g/t5WPSJQXnaL9WV9wg//3dakf9wDwajrJgs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YoBw5PDaCuXwOvJdhHBnx7k8mm36D5WW2Eznowa+XNEwVyXx4okkseXGU3FIg5a23eRnYXH5N5RciROBwpArGjjOFQE/iVPKPatf7EBVCr+hOBmNIhOcbpUNbcrMy0fGW4XQXaCwP3TXvuYAK1Syd4n+XMS2uI43e0lU9Dq8bwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mOF4sgs2; arc=none smtp.client-ip=209.85.161.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-5f6b65c89c4so300200eaf.2
-        for <stable@vger.kernel.org>; Thu, 09 Jan 2025 12:51:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736455894; x=1737060694; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Mebvm12Efix/HOfbzCEke0YYM9SXOWLxp0bQs2kiNYc=;
-        b=mOF4sgs2AuJfIlbM8hsfBJ5Yqkk1J0h4Ip1yjwXpqzTnEnL9lcz6i51+hBQlEUNjG5
-         gzpfhkcuWZcOZGEGdEoJ8ZVXDEbbo+oJ5Q/086J7QkBaaE7QoDgy2OZN6A7JcsuRHa4j
-         dq54djhCkfLRmoBHCkHfDfL2R3c6FD4TOjwqxucKyLhMd2RXnucCXbVVZHNOt2+3asnn
-         sqIu1x90LhRTTUjkaWiMfmH3EBoyc7RVgmRJlA934gEMceKOBH49iO22kPlzTYzz0fFM
-         bxy3hDC4xEukxzkEGO6vf8uF8p0AjxFVW4JQXI2sQ58bk33iFkEg2BMY3Il/VlG+17tp
-         o/hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736455894; x=1737060694;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Mebvm12Efix/HOfbzCEke0YYM9SXOWLxp0bQs2kiNYc=;
-        b=YOnK3sj6Jqmbac/FBNj6apDMkk3yONnqG0Lsu9PY9LozPR6Voa47wzJUBWfHI1SE4p
-         gqvUHHaYl88ngQbgySj3+A3KuWWvInAANcSs6/vWa+bW//1Wehm8d3DRR1/iVXg+BHv4
-         Ta+vjKBnoYsSRufojZUxtIGW127lpaNQKlJU/pvWOyEMAFJlP9/OUNnKSbJfjHcpr/u1
-         BiwkXI2xkvh9dcghIe52raAy1VwOFhCyTucRTP1QVHNLXgmtQmBy5OocJvpORqbKioMk
-         b/pSUDk+z2uIUrF/okMvtUHY0IeDQEp0zvMI9nvIYR8UmCQ8790F2uQrrr1UPdGBX1qt
-         Oipw==
-X-Forwarded-Encrypted: i=1; AJvYcCVhG+Lvu7aOIyyTwATOzUc188nMBKQ+d3kGdS7i8p33o1nzLBvDOU3oHFkj4RkC569STyGB/bE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywbk0TlNwR6x93O350c2MIE+ix25idV5SGtmIruPw+0NbBhn9r0
-	ULuxXLuRsZorQz82d9qfbq1UFZFPRMuL2r+7EogiU75OL4h9vpV7ZK/zuMsKIA8tlz7b6AKLH8a
-	HiMsEpqyYp17jLyLwEJzu5A9QgBkAS6L6+aYeng==
-X-Gm-Gg: ASbGncvdlP/oUvAwk4QRU3Dh3+wgpl5HCKcvRyNL4FPxUT1Y85JcI+xH343JPwpXfWg
-	E7PD8zmdjkNQXr27IesRiicbFk32cLB7wNjxVNg==
-X-Google-Smtp-Source: AGHT+IGw0KIVg/dvzz7d9PF80SBHOTL5uvW2Zpk7HWjQlYX/tsf3aX9InA3qQG3yCXLbshZwbBGvXAfuWrNEWOn1Gs0=
-X-Received: by 2002:a05:6820:1798:b0:5f3:4175:1d7f with SMTP id
- 006d021491bc7-5f73096717dmr4383494eaf.8.1736455893957; Thu, 09 Jan 2025
- 12:51:33 -0800 (PST)
+	s=arc-20240116; t=1736464813; c=relaxed/simple;
+	bh=eMgrKYbxwOQDyDb2QE8MowyjffTT2nmXiYLJt6iltqs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J5CFip0H4a/plmRpDmUUnZBx5CTFKqLD1As3Ud1zKmZyUhVFqXSgkHvS+KaFoBmFLmPl6Vi5+D4EOd7nJLaxZj4PHs8v0xaHQWZyNj7Wh/nic80WjsOcSdkOAzsrsfw1JK7pBhXyM11KoQHAH1ruGLQwdvfw/KN+ci73a+Y2KPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bur.io; spf=pass smtp.mailfrom=bur.io; dkim=pass (2048-bit key) header.d=bur.io header.i=@bur.io header.b=igXManb1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gSDdIMUO; arc=none smtp.client-ip=202.12.124.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bur.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bur.io
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfout.stl.internal (Postfix) with ESMTP id 699441140120;
+	Thu,  9 Jan 2025 18:20:09 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Thu, 09 Jan 2025 18:20:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bur.io; h=cc:cc
+	:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1736464809; x=1736551209; bh=aIfKdg5h4F
+	3v6BQRqiM4gMDOvEdrKRego3UZMiH502s=; b=igXManb1h3aD683ulHnI5BCUT2
+	xzhPAsiGbBryrRRpQ84c5IoZ+DAv1kX5zCBmePKin8+U7NFWFltPnueJULInn6Tg
+	wEg3kviGzCYETAlqcFw+cY2yrNpsg3lX887q/ohBvps/+kjd/b+zP6z/VjleTCk5
+	aZPg7NSw8urrGGohUUPTWefo+vnESX5JsLnMAB2xLcmBQ8eYgXDpYg2p+B2Cj/b5
+	t2PLQdvn1hUaRrkavHYPz1n7VCab3ECmTkH/Ce5ygjmdxnUO9slEgSeZiNMqN1+w
+	Rz6haSKkwLuHK+upzh1PHT2N7vZCxjlaLYt722MCapiaGhAwMe6odKjrNP5A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1736464809; x=1736551209; bh=aIfKdg5h4F3v6BQRqiM4gMDOvEdrKRego3U
+	ZMiH502s=; b=gSDdIMUOH2YRjY1LDaP/CzlR5CQEi/wkoNMJgh6A1Pva2IRDai2
+	ZeO8WdEP3Ef/u9A1+bXZgzD6k46GuoHkhEP9f7KzywkRfEeD1b18ZrsVxqDw1ZVi
+	9u5u1978q5A0G6iN1dYpXD4coRL7JaO/nhgXJ8OpbQa3mTZoI+0ECf1Vjh4Bhxso
+	5bLi/9EIJkJhlhf0BCv+EVXkJTfu5r6kvJIBpU5HfIbgVLS8MWYViLM3S32Lh07x
+	tkPgNLAHq9FMyLQ5gtF4XECxGZJZbu8X+wx45hjsry6GYQuYGso/Ii+9rk6W4zrL
+	gCcmacpuMvYjmWixnpk+FiLuSZD64FpNaMg==
+X-ME-Sender: <xms:qVmAZyc1aTFieelvQt2htAufeP_0QH5EmEdrrNGjrsTWh4VnXNO2Xw>
+    <xme:qVmAZ8PHdqniu100YHV-F78i9o5zijzPZ_RpaMJVHM3MfoNQxo_dtqPgtunYglarA
+    UJXg7jkLJoC03WAbvk>
+X-ME-Received: <xmr:qVmAZziYMBhJjcNdUI7isV-kNfuqWODxH9G_MG4Ru1Kk54Z_ju_9utj54hj-Oib6qvO8CYR0srrTtiIBVo8nLcXUjM4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudegjedgtdeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehorhhishcuuehurhhkohhvuceosghorhhishessghurhdrihhoqeenuc
+    ggtffrrghtthgvrhhnpeekvdekffejleelhfevhedvjeduhfejtdfhvdevieeiiedugfeu
+    gfdtjefgfeeljeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfh
+    hrohhmpegsohhrihhssegsuhhrrdhiohdpnhgspghrtghpthhtohepfedpmhhouggvpehs
+    mhhtphhouhhtpdhrtghpthhtohepfihquhesshhushgvrdgtohhmpdhrtghpthhtoheplh
+    hinhhugidqsghtrhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehs
+    thgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:qVmAZ_-L9h2LHyTA7UUuWwoPmlW_PxMMrXDRkdSCG5q9Uypk-MGoaA>
+    <xmx:qVmAZ-t5GLHxEi-VE1AoVRBCbGd1LBJiOlBNTU3MrdKHPqa3fq2p8Q>
+    <xmx:qVmAZ2GnfxROmJfnsCldlwAs8x3-N-NXaIyiftoyNRxJddx9f6di7w>
+    <xmx:qVmAZ9P7xEgNgwXxQM9kzYuaNQ7tq0a-r2vdm6N0RWrnLBMUEJde0g>
+    <xmx:qVmAZyI4F0OnvTBKyr8dPO7CVgT4FWPjN1xzo5sytcXJaCL0LJSGjb1V>
+Feedback-ID: i083147f8:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 9 Jan 2025 18:20:08 -0500 (EST)
+Date: Thu, 9 Jan 2025 15:20:40 -0800
+From: Boris Burkov <boris@bur.io>
+To: Qu Wenruo <wqu@suse.com>
+Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 4/9] btrfs: do proper folio cleanup when
+ cow_file_range() failed
+Message-ID: <20250109232040.GA2153241@zen.localdomain>
+References: <cover.1733983488.git.wqu@suse.com>
+ <9f8aec2df9dfc39155d3b6f4448528675b97a955.1733983488.git.wqu@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250108-mhi_recovery_fix-v1-0-a0a00a17da46@linaro.org>
- <20250108-mhi_recovery_fix-v1-2-a0a00a17da46@linaro.org> <CAMZdPi9KiLczjETLwJG_9krn_z=Og0uZhYuajPeZYoBHanxMiw@mail.gmail.com>
- <20250108160211.6dok3zcn2qaoj3lp@thinkpad>
-In-Reply-To: <20250108160211.6dok3zcn2qaoj3lp@thinkpad>
-From: Loic Poulain <loic.poulain@linaro.org>
-Date: Thu, 9 Jan 2025 21:50:55 +0100
-X-Gm-Features: AbW1kvaYy2ijj3_SpahQvOJx-c_o9llvwrvJ3pguay-O4M-tUnMoDS8jvItsP7k
-Message-ID: <CAMZdPi_OPXGkrT_4iyLF-698TPUgHu=Y5M-wVRq=kx6RWH4bVw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] bus: mhi: host: pci_generic: Recover the device
- synchronously from mhi_pci_runtime_resume()
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: mhi@lists.linux.dev, Johan Hovold <johan@kernel.org>, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9f8aec2df9dfc39155d3b6f4448528675b97a955.1733983488.git.wqu@suse.com>
 
-On Wed, 8 Jan 2025 at 17:02, Manivannan Sadhasivam
-<manivannan.sadhasivam@linaro.org> wrote:
->
-> On Wed, Jan 08, 2025 at 04:19:06PM +0100, Loic Poulain wrote:
-> > On Wed, 8 Jan 2025 at 14:39, Manivannan Sadhasivam via B4 Relay
-> > <devnull+manivannan.sadhasivam.linaro.org@kernel.org> wrote:
-> > >
-> > > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > >
-> > > Currently, in mhi_pci_runtime_resume(), if the resume fails, recovery_work
-> > > is started asynchronously and success is returned. But this doesn't align
-> > > with what PM core expects as documented in
-> > > Documentation/power/runtime_pm.rst:
-> > >
-> > > "Once the subsystem-level resume callback (or the driver resume callback,
-> > > if invoked directly) has completed successfully, the PM core regards the
-> > > device as fully operational, which means that the device _must_ be able to
-> > > complete I/O operations as needed.  The runtime PM status of the device is
-> > > then 'active'."
-> > >
-> > > So the PM core ends up marking the runtime PM status of the device as
-> > > 'active', even though the device is not able to handle the I/O operations.
-> > > This same condition more or less applies to system resume as well.
-> > >
-> > > So to avoid this ambiguity, try to recover the device synchronously from
-> > > mhi_pci_runtime_resume() and return the actual error code in the case of
-> > > recovery failure.
-> > >
-> > > For doing so, move the recovery code to __mhi_pci_recovery_work() helper
-> > > and call that from both mhi_pci_recovery_work() and
-> > > mhi_pci_runtime_resume(). Former still ignores the return value, while the
-> > > latter passes it to PM core.
-> > >
-> > > Cc: stable@vger.kernel.org # 5.13
-> > > Reported-by: Johan Hovold <johan@kernel.org>
-> > > Closes: https://lore.kernel.org/mhi/Z2PbEPYpqFfrLSJi@hovoldconsulting.com
-> > > Fixes: d3800c1dce24 ("bus: mhi: pci_generic: Add support for runtime PM")
-> > > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> >
-> > Note that it will noticeably impact the user experience on system-wide
-> > resume (mhi_pci_resume), because MHI devices usually take a while (a
-> > few seconds) to cold boot and reach a ready state (or time out in the
-> > worst case). So we may have people complaining about delayed resume
-> > regression on their laptop even if they are not using the MHI
-> > device/modem function. Are we ok with that?
-> >
->
-> Are you saying that the modem will enter D3Cold all the time during system
-> suspend? I think you are referring to x86 host machines here.
+On Thu, Dec 12, 2024 at 04:43:58PM +1030, Qu Wenruo wrote:
+> [BUG]
+> When testing with COW fixup marked as BUG_ON() (this is involved with the
+> new pin_user_pages*() change, which should not result new out-of-band
+> dirty pages), I hit a crash triggered by the BUG_ON() from hitting COW
+> fixup path.
+> 
+> This BUG_ON() happens just after a failed btrfs_run_delalloc_range():
+> 
+>  BTRFS error (device dm-2): failed to run delalloc range, root 348 ino 405 folio 65536 submit_bitmap 6-15 start 90112 len 106496: -28
+>  ------------[ cut here ]------------
+>  kernel BUG at fs/btrfs/extent_io.c:1444!
+>  Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
+>  CPU: 0 UID: 0 PID: 434621 Comm: kworker/u24:8 Tainted: G           OE      6.12.0-rc7-custom+ #86
+>  Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
+>  Workqueue: events_unbound btrfs_async_reclaim_data_space [btrfs]
+>  pc : extent_writepage_io+0x2d4/0x308 [btrfs]
+>  lr : extent_writepage_io+0x2d4/0x308 [btrfs]
+>  Call trace:
+>   extent_writepage_io+0x2d4/0x308 [btrfs]
+>   extent_writepage+0x218/0x330 [btrfs]
+>   extent_write_cache_pages+0x1d4/0x4b0 [btrfs]
+>   btrfs_writepages+0x94/0x150 [btrfs]
+>   do_writepages+0x74/0x190
+>   filemap_fdatawrite_wbc+0x88/0xc8
+>   start_delalloc_inodes+0x180/0x3b0 [btrfs]
+>   btrfs_start_delalloc_roots+0x174/0x280 [btrfs]
+>   shrink_delalloc+0x114/0x280 [btrfs]
+>   flush_space+0x250/0x2f8 [btrfs]
+>   btrfs_async_reclaim_data_space+0x180/0x228 [btrfs]
+>   process_one_work+0x164/0x408
+>   worker_thread+0x25c/0x388
+>   kthread+0x100/0x118
+>   ret_from_fork+0x10/0x20
+>  Code: aa1403e1 9402f3ef aa1403e0 9402f36f (d4210000)
+>  ---[ end trace 0000000000000000 ]---
+> 
+> [CAUSE]
+> That failure is mostly from cow_file_range(), where we can hit -ENOSPC.
+> 
+> Although the -ENOSPC is already a bug related to our space reservation
+> code, let's just focus on the error handling.
+> 
+> For example, we have the following dirty range [0, 64K) of an inode,
+> with 4K sector size and 4K page size:
+> 
+>    0        16K        32K       48K       64K
+>    |///////////////////////////////////////|
+>    |#######################################|
+> 
+> Where |///| means page are still dirty, and |###| means the extent io
+> tree has EXTENT_DELALLOC flag.
+> 
+> - Enter extent_writepage() for page 0
+> 
+> - Enter btrfs_run_delalloc_range() for range [0, 64K)
+> 
+> - Enter cow_file_range() for range [0, 64K)
+> 
+> - Function btrfs_reserve_extent() only reserved one 16K extent
+>   So we created extent map and ordered extent for range [0, 16K)
+> 
+>    0        16K        32K       48K       64K
+>    |////////|//////////////////////////////|
+>    |<- OE ->|##############################|
+> 
+>    And range [0, 16K) has its delalloc flag cleared.
+>    But since we haven't yet submit any bio, involved 4 pages are still
+>    dirty.
+> 
+> - Function btrfs_reserve_extent() return with -ENOSPC
+>   Now we have to run error cleanup, which will clear all
+>   EXTENT_DELALLOC* flags and clear the dirty flags for the remaining
+>   ranges:
+> 
+>    0        16K        32K       48K       64K
+>    |////////|                              |
+>    |        |                              |
+> 
+>   Note that range [0, 16K) still has their pages dirty.
+> 
+> - Some time later, writeback are triggered again for the range [0, 16K)
+>   since the page range still have dirty flags.
+> 
+> - btrfs_run_delalloc_range() will do nothing because there is no
+>   EXTENT_DELALLOC flag.
+> 
+> - extent_writepage_io() find page 0 has no ordered flag
+>   Which falls into the COW fixup path, triggering the BUG_ON().
+> 
+> Unfortunately this error handling bug dates back to the introduction of btrfs.
+> Thankfully with the abuse of cow fixup, at least it won't crash the
+> kernel.
+> 
+> [FIX]
+> Instead of immediately unlock the extent and folios, we keep the extent
+> and folios locked until either erroring out or the whole delalloc range
+> finished.
+> 
+> When the whole delalloc range finished without error, we just unlock the
+> whole range with PAGE_SET_ORDERED (and PAGE_UNLOCK for !keep_locked
+> cases), with EXTENT_DELALLOC and EXTENT_LOCKED cleared.
+> And those involved folios will be properly submitted, with their dirty
+> flags cleared during submission.
+> 
+> For the error path, it will be a little more complex:
+> 
+> - The range with ordered extent allocated (range (1))
+>   We only clear the EXTENT_DELALLOC and EXTENT_LOCKED, as the remaining
+>   flags are cleaned up by
+>   btrfs_mark_ordered_io_finished()->btrfs_finish_one_ordered().
+> 
+>   For folios we finish the IO (clear dirty, start writeback and
+>   immediately finish the writeback) and unlock the folios.
+> 
+> - The range with reserved extent but no ordered extent (range(2))
+> - The range we never touched (range(3))
+>   For both range (2) and range(3) the behavior is not changed.
+> 
+> Now even if cow_file_range() failed halfway with some successfully
+> reserved extents/ordered extents, we will keep all folios clean, so
+> there will be no future writeback triggered on them.
 
-It depends on the host and its firmware implementation, but yes I
-observed that x86_64 based laptops are powering off the mPCIe slot
-while suspended.
+2 qs, to make sure I understand:
 
-> If that is the case, we should not be using mhi_pci_runtime_*() calls in
-> mhi_pci_suspend/resume(). Rather the MHI stack should be powered down during
-> suspend and powered ON during resume.
+This changes the happy path, in that IO can't start on the allocated
+ordered extents until the whole range is done allocating and unlocked or
+errors. But it shouldn't be a big deal unless we have this race a lot?
 
-Yes, but what about the hosts keeping power in suspend state? we can
-not really know that programmatically AFAIK.
+What is the new behavior in your test case? The whole range correctly is
+not dirty, no IO happens, and the mapping has an error set on it? Have
+you managed to demonstrate something to that effect more explicitly than
+not hitting the BUG_ON in your new code?
 
-Regards,
-Loic
+However, assuming I understood correctly, LGTM.
+Reviewed-by: Boris Burkov <boris@bur.io>
+
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Qu Wenruo <wqu@suse.com>
+> ---
+>  fs/btrfs/inode.c | 65 ++++++++++++++++++++++++------------------------
+>  1 file changed, 32 insertions(+), 33 deletions(-)
+> 
+> diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+> index 5ba8d044757b..19c88b7d0363 100644
+> --- a/fs/btrfs/inode.c
+> +++ b/fs/btrfs/inode.c
+> @@ -1364,6 +1364,17 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
+>  
+>  	alloc_hint = btrfs_get_extent_allocation_hint(inode, start, num_bytes);
+>  
+> +	/*
+> +	 * We're not doing compressed IO, don't unlock the first page
+> +	 * (which the caller expects to stay locked), don't clear any
+> +	 * dirty bits and don't set any writeback bits
+> +	 *
+> +	 * Do set the Ordered (Private2) bit so we know this page was
+> +	 * properly setup for writepage.
+> +	 */
+> +	page_ops = (keep_locked ? 0 : PAGE_UNLOCK);
+> +	page_ops |= PAGE_SET_ORDERED;
+> +
+>  	/*
+>  	 * Relocation relies on the relocated extents to have exactly the same
+>  	 * size as the original extents. Normally writeback for relocation data
+> @@ -1423,6 +1434,10 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
+>  		file_extent.offset = 0;
+>  		file_extent.compression = BTRFS_COMPRESS_NONE;
+>  
+> +		/*
+> +		 * Locked range will be released either during error clean up or
+> +		 * after the whole range is finished.
+> +		 */
+>  		lock_extent(&inode->io_tree, start, start + cur_alloc_size - 1,
+>  			    &cached);
+>  
+> @@ -1468,21 +1483,6 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
+>  
+>  		btrfs_dec_block_group_reservations(fs_info, ins.objectid);
+>  
+> -		/*
+> -		 * We're not doing compressed IO, don't unlock the first page
+> -		 * (which the caller expects to stay locked), don't clear any
+> -		 * dirty bits and don't set any writeback bits
+> -		 *
+> -		 * Do set the Ordered flag so we know this page was
+> -		 * properly setup for writepage.
+> -		 */
+> -		page_ops = (keep_locked ? 0 : PAGE_UNLOCK);
+> -		page_ops |= PAGE_SET_ORDERED;
+> -
+> -		extent_clear_unlock_delalloc(inode, start, start + cur_alloc_size - 1,
+> -					     locked_folio, &cached,
+> -					     EXTENT_LOCKED | EXTENT_DELALLOC,
+> -					     page_ops);
+>  		if (num_bytes < cur_alloc_size)
+>  			num_bytes = 0;
+>  		else
+> @@ -1499,6 +1499,9 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
+>  		if (ret)
+>  			goto out_unlock;
+>  	}
+> +	extent_clear_unlock_delalloc(inode, orig_start, end, locked_folio, &cached,
+> +				     EXTENT_LOCKED | EXTENT_DELALLOC,
+> +				     page_ops);
+>  done:
+>  	if (done_offset)
+>  		*done_offset = end;
+> @@ -1519,35 +1522,31 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
+>  	 * We process each region below.
+>  	 */
+>  
+> -	clear_bits = EXTENT_LOCKED | EXTENT_DELALLOC | EXTENT_DELALLOC_NEW |
+> -		EXTENT_DEFRAG | EXTENT_CLEAR_META_RESV;
+> -	page_ops = PAGE_UNLOCK | PAGE_START_WRITEBACK | PAGE_END_WRITEBACK;
+> -
+>  	/*
+>  	 * For the range (1). We have already instantiated the ordered extents
+>  	 * for this region. They are cleaned up by
+>  	 * btrfs_cleanup_ordered_extents() in e.g,
+> -	 * btrfs_run_delalloc_range(). EXTENT_LOCKED | EXTENT_DELALLOC are
+> -	 * already cleared in the above loop. And, EXTENT_DELALLOC_NEW |
+> -	 * EXTENT_DEFRAG | EXTENT_CLEAR_META_RESV are handled by the cleanup
+> -	 * function.
+> +	 * btrfs_run_delalloc_range().
+> +	 * EXTENT_DELALLOC_NEW | EXTENT_DEFRAG | EXTENT_CLEAR_META_RESV
+> +	 * are also handled by the cleanup function.
+>  	 *
+> -	 * However, in case of @keep_locked, we still need to unlock the pages
+> -	 * (except @locked_folio) to ensure all the pages are unlocked.
+> +	 * So here we only clear EXTENT_LOCKED and EXTENT_DELALLOC flag,
+> +	 * and finish the writeback of the involved folios, which will be
+> +	 * never submitted.
+>  	 */
+> -	if (keep_locked && orig_start < start) {
+> +	if (orig_start < start) {
+> +		clear_bits = EXTENT_LOCKED | EXTENT_DELALLOC;
+> +		page_ops = PAGE_UNLOCK | PAGE_START_WRITEBACK | PAGE_END_WRITEBACK;
+> +
+>  		if (!locked_folio)
+>  			mapping_set_error(inode->vfs_inode.i_mapping, ret);
+>  		extent_clear_unlock_delalloc(inode, orig_start, start - 1,
+> -					     locked_folio, NULL, 0, page_ops);
+> +					     locked_folio, NULL, clear_bits, page_ops);
+>  	}
+>  
+> -	/*
+> -	 * At this point we're unlocked, we want to make sure we're only
+> -	 * clearing these flags under the extent lock, so lock the rest of the
+> -	 * range and clear everything up.
+> -	 */
+> -	lock_extent(&inode->io_tree, start, end, NULL);
+> +	clear_bits = EXTENT_LOCKED | EXTENT_DELALLOC | EXTENT_DELALLOC_NEW |
+> +		EXTENT_DEFRAG | EXTENT_CLEAR_META_RESV;
+> +	page_ops = PAGE_UNLOCK | PAGE_START_WRITEBACK | PAGE_END_WRITEBACK;
+>  
+>  	/*
+>  	 * For the range (2). If we reserved an extent for our delalloc range
+> -- 
+> 2.47.1
+> 
 
