@@ -1,176 +1,135 @@
-Return-Path: <stable+bounces-108179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8891A08CE7
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 10:51:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6D7CA08D29
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 10:58:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59786188833A
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 09:50:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7DFC165BC1
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 09:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2395620B1F7;
-	Fri, 10 Jan 2025 09:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D955209F26;
+	Fri, 10 Jan 2025 09:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B5TG5MzY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pH+4dp4Z"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A7E209F26
-	for <stable@vger.kernel.org>; Fri, 10 Jan 2025 09:49:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58BB1FA15C;
+	Fri, 10 Jan 2025 09:58:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736502554; cv=none; b=nl4KkYjvA4h4jI0Do0E6KrwCaARsU67vNK2oz0bppZYySL1rB8Re89pwJenWHTHbSQxyATCueUvzldECIQ1Gy5dRl3CUfOmMaULJkc5TsTplu9y9VwswgjJU9b2yyfptCiu6Sc0vG0tp7Cay+l+KABgAPfu0QzWHwthoPoIlvWU=
+	t=1736503105; cv=none; b=qr/gWSE68laGKBH1MOCApZ6lxANIA5Kyj09EY5D+ak3+Y/hAd2ppHnv/8nm7ZqdjzWR2SYGkLUoJ/9loWTMA3X2hC76NovS6EbZh5fi8JIYR/cb2TfdFCe3mAsf6G7DAJV9T+sV6iamf08yrqDtA0v2HT46BDZpZqCk8cT+QRWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736502554; c=relaxed/simple;
-	bh=qhsRGNUqK6OAKrKR2V1iKiCXi3FqvXqzYw8GoxWzqw4=;
+	s=arc-20240116; t=1736503105; c=relaxed/simple;
+	bh=xnEfmZGz01BZzJvC0nqz04XwGZCZpGqNiOM1y/AVQ3A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZiuhdXkIvSM7URLBiLr7zvWvxRdSo3ihBhOeVpHS7mEAuUflgBmKEchVmOCscqFe7ZvUqIgNQAxZb8Kt9FM3jpvs1LsqKYdbLdeshKSE7vuDMjcy/M1Hk4UmNUChNZ8Vv5UzMuev5Kuis5yMcxAQRpW07/c7npYVyMOzZUn1ktA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B5TG5MzY; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736502550;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aZr4uP1kpXqvKBmngNwvVhMpySxrRZICu1BEXbGGI18=;
-	b=B5TG5MzYjawtiRug+VISUYgaiodKP5t+JySCekzCKzgiSrAt+ch4fbV2omaw4kYZwV64A1
-	HiHhnZyW9yx6uYNu9AE/TDNVuLF/6jbiVJV80h7mcsinPGpXHrJ21aV92yIAx/TEep81VD
-	0xBF4aAIOo2yBjKbX//FLF+bS8HUuoI=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-141-ea2wK7bNOWebdl6w87p_Vw-1; Fri, 10 Jan 2025 04:49:09 -0500
-X-MC-Unique: ea2wK7bNOWebdl6w87p_Vw-1
-X-Mimecast-MFC-AGG-ID: ea2wK7bNOWebdl6w87p_Vw
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-5d3f3d6a922so2168309a12.1
-        for <stable@vger.kernel.org>; Fri, 10 Jan 2025 01:49:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736502548; x=1737107348;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aZr4uP1kpXqvKBmngNwvVhMpySxrRZICu1BEXbGGI18=;
-        b=omx28UIvx5qB4cyHwE14E11tQrb5+z16l/HuG3HflFpPRDtsHq4losmJVDylEDz7hz
-         F8hFk9F0qfycmGEv7UVwLfNFaiSRcYCVpFlDo9Tw7iAWx6cldz8eBuW0rMGjrxsO++mD
-         lh/aERwkQE7rqcwOuYn9QYpet5OVq6sDqQWnSByXd4id4A/9OkYRiYXoHc1i9t1o0HHv
-         P97tW9nmCg2zanFzf9lgZOn3+vurybpXotkh9n5NmCZaL8hoBJ/C6e1n7p7Z8dK4Z0lP
-         ky/QZF/mDw+cN/RqzySoNMHXURMgaloQ1K/7SV0NQshnNoBg4lcku6S/qBBopmTm7c0o
-         voJA==
-X-Forwarded-Encrypted: i=1; AJvYcCUVhNT2CmFSarfuMMVKRU7YZo8l4VgonMNW0dwTRGvnsx7Y7tVYOBcaEoYhiowo4UKVL939Cg8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtYXS7xK3w5aoP07Hf8x2H2NTM+GjhHwhR5ItwE0OvthmrKpGm
-	h4Osx2/i6C8GLTmZa6IN/TZG7oQuHAb7DJQPYTDd5YGkAYLydEZjdcwI+1Kpcu2arRQVvpBWNWw
-	RhEeMkq4EJ/KT43eD79rz6skBBTSUnzmA4L3XmYmQsV6wFlG36r69Eg==
-X-Gm-Gg: ASbGncsZDw8v/VRrHbAiAmi2kl1ywrmE31MvWiOk7GcSjSZvOW1C+V3YEilaGvMPU3W
-	xVz5ZZ5yEm04LFmjBaZzna6T7V8Inxo/bhSkaglw9cxvHqS5lPu9SISHVlcQL8QtpSIQQLfsTFA
-	dmnpDUXBj8E+nnvtsds2+pIYuEZDqrINyr+OmSTsSm7V8tc5dbaAEGbV15dcuMYezEvYGcr65Tw
-	Vp524ofS56AaG34qDYEkwkNSgd0iFFYVSRiobXGweFh6r1o7oQNrx4rptg/
-X-Received: by 2002:a05:6402:321a:b0:5d3:cff5:634f with SMTP id 4fb4d7f45d1cf-5d972e4ee26mr9809168a12.24.1736502548039;
-        Fri, 10 Jan 2025 01:49:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE7NcV6qvOmi3pOuIGf31hIeLvRpTDpjsTfMUkfqpvbiE2Dvo13pJInSk8Nx0om0nJMaf5Oqg==
-X-Received: by 2002:a05:6402:321a:b0:5d3:cff5:634f with SMTP id 4fb4d7f45d1cf-5d972e4ee26mr9809135a12.24.1736502547530;
-        Fri, 10 Jan 2025 01:49:07 -0800 (PST)
-Received: from leonardi-redhat ([176.206.32.19])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d99008c29fsm1446933a12.9.2025.01.10.01.49.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jan 2025 01:49:06 -0800 (PST)
-Date: Fri, 10 Jan 2025 10:49:02 +0100
-From: Luigi Leonardi <leonardi@redhat.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, Wongi Lee <qwerty@theori.io>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Eric Dumazet <edumazet@google.com>, kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Hyunwoo Kim <v4bel@theori.io>, Jakub Kicinski <kuba@kernel.org>, 
-	Michal Luczaj <mhal@rbox.co>, virtualization@lists.linux.dev, 
-	Bobby Eshleman <bobby.eshleman@bytedance.com>, stable@vger.kernel.org
-Subject: Re: [PATCH net v2 5/5] vsock: prevent null-ptr-deref in
- vsock_*[has_data|has_space]
-Message-ID: <7ve3d5nuqddbdxbocmexobolzdf4qzsmro7kknnwkuqetznkfk@lispccbzv3lg>
-References: <20250110083511.30419-1-sgarzare@redhat.com>
- <20250110083511.30419-6-sgarzare@redhat.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=o0afg68W4yMNfK9bnVoIac6pkDqOzgYozv2l0UGpL9c0GMPwvWSVnFZgtiyGhQH6V5He/OPDOGXAxpsMpy3FG5JvLXz7k+uFCsjuj9iBwRmEE1LxuIqzSs1JOp9E456vRIU/w/MLFlENLlqPKy7NS/JMYh9EkR2HHIFD9IvqwLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pH+4dp4Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B4DC4CED6;
+	Fri, 10 Jan 2025 09:58:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1736503104;
+	bh=xnEfmZGz01BZzJvC0nqz04XwGZCZpGqNiOM1y/AVQ3A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pH+4dp4Zx4NbJ9VEq8kArf7NR4KLiPNCYHBV0muIgsymR2Elt7iGKPLVPTk1EAcZE
+	 zmIX5ATAcTYb/eKObW0xWM+Tu3GLpFfE4UlHVDm4UuyKQRS8mtvc+yayXB/Dt74j/O
+	 ddkgaaOrVQuFzwKdXC8WC1bBcFc4wmengUYSZ2n8=
+Date: Fri, 10 Jan 2025 10:58:15 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Ignat Korchagin <ignat@cloudflare.com>
+Cc: Baoquan He <bhe@redhat.com>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Al Viro <viro@zeniv.linux.org.uk>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Pingfan Liu <piliu@redhat.com>, Klara Modin <klarasmodin@gmail.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Yang Li <yang.lee@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>, kernel-team@cloudflare.com
+Subject: Re: [PATCH 6.6 079/222] x86, crash: wrap crash dumping code into
+ crash related ifdefs
+Message-ID: <2025011043-tiny-debit-4507@gregkh>
+References: <20250106151150.585603565@linuxfoundation.org>
+ <20250106151153.592449889@linuxfoundation.org>
+ <3DB3A6D3-0D3A-4682-B4FA-407B2D3263B2@cloudflare.com>
+ <2025010953-squeak-garlic-08de@gregkh>
+ <CALrw=nHC27RRxG7aPzzGNaknaHiDzXKSL7o+MLCY=kjNFzWX3g@mail.gmail.com>
+ <CALrw=nG+_KyvPiKBnZOVin4XL4fbwiKWj6=o2x0rMELQBpP9iQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250110083511.30419-6-sgarzare@redhat.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALrw=nG+_KyvPiKBnZOVin4XL4fbwiKWj6=o2x0rMELQBpP9iQ@mail.gmail.com>
 
-On Fri, Jan 10, 2025 at 09:35:11AM +0100, Stefano Garzarella wrote:
->Recent reports have shown how we sometimes call vsock_*_has_data()
->when a vsock socket has been de-assigned from a transport (see attached
->links), but we shouldn't.
->
->Previous commits should have solved the real problems, but we may have
->more in the future, so to avoid null-ptr-deref, we can return 0
->(no space, no data available) but with a warning.
->
->This way the code should continue to run in a nearly consistent state
->and have a warning that allows us to debug future problems.
->
->Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
->Cc: stable@vger.kernel.org
->Link: https://lore.kernel.org/netdev/Z2K%2FI4nlHdfMRTZC@v4bel-B760M-AORUS-ELITE-AX/
->Link: https://lore.kernel.org/netdev/5ca20d4c-1017-49c2-9516-f6f75fd331e9@rbox.co/
->Link: https://lore.kernel.org/netdev/677f84a8.050a0220.25a300.01b3.GAE@google.com/
->Co-developed-by: Hyunwoo Kim <v4bel@theori.io>
->Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
->Co-developed-by: Wongi Lee <qwerty@theori.io>
->Signed-off-by: Wongi Lee <qwerty@theori.io>
->Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
->---
-> net/vmw_vsock/af_vsock.c | 9 +++++++++
-> 1 file changed, 9 insertions(+)
->
->diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->index 74d35a871644..fa9d1b49599b 100644
->--- a/net/vmw_vsock/af_vsock.c
->+++ b/net/vmw_vsock/af_vsock.c
->@@ -879,6 +879,9 @@ EXPORT_SYMBOL_GPL(vsock_create_connected);
->
-> s64 vsock_stream_has_data(struct vsock_sock *vsk)
-> {
->+	if (WARN_ON(!vsk->transport))
->+		return 0;
->+
-> 	return vsk->transport->stream_has_data(vsk);
-> }
-> EXPORT_SYMBOL_GPL(vsock_stream_has_data);
->@@ -887,6 +890,9 @@ s64 vsock_connectible_has_data(struct vsock_sock *vsk)
-> {
-> 	struct sock *sk = sk_vsock(vsk);
->
->+	if (WARN_ON(!vsk->transport))
->+		return 0;
->+
-> 	if (sk->sk_type == SOCK_SEQPACKET)
-> 		return vsk->transport->seqpacket_has_data(vsk);
-> 	else
->@@ -896,6 +902,9 @@ EXPORT_SYMBOL_GPL(vsock_connectible_has_data);
->
-> s64 vsock_stream_has_space(struct vsock_sock *vsk)
-> {
->+	if (WARN_ON(!vsk->transport))
->+		return 0;
->+
-> 	return vsk->transport->stream_has_space(vsk);
-> }
-> EXPORT_SYMBOL_GPL(vsock_stream_has_space);
->-- 
->2.47.1
->
+On Thu, Jan 09, 2025 at 08:44:43PM +0000, Ignat Korchagin wrote:
+> On Thu, Jan 9, 2025 at 6:08 PM Ignat Korchagin <ignat@cloudflare.com> wrote:
+> >
+> > On Thu, Jan 9, 2025 at 6:07 PM Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > On Thu, Jan 09, 2025 at 05:39:04PM +0000, Ignat Korchagin wrote:
+> > > > Hi,
+> > > >
+> > > > > On 6 Jan 2025, at 15:14, Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> > > > >
+> > > > > 6.6-stable review patch.  If anyone has any objections, please let me know.
+> > > >
+> > > > I think this back port breaks 6.6 build (namely vmlinux.o link stage):
+> > > >   LD [M]  net/netfilter/xt_nat.ko
+> > > >   LD [M]  net/netfilter/xt_addrtype.ko
+> > > >   LD [M]  net/ipv4/netfilter/iptable_nat.ko
+> > > >   UPD     include/generated/utsversion.h
+> > > >   CC      init/version-timestamp.o
+> > > >   LD      .tmp_vmlinux.kallsyms1
+> > > > ld: vmlinux.o: in function `__crash_kexec':
+> > > > (.text+0x15a93a): undefined reference to `machine_crash_shutdown'
+> > > > ld: vmlinux.o: in function `__do_sys_kexec_file_load':
+> > > > kexec_file.c:(.text+0x15cef1): undefined reference to `arch_kexec_protect_crashkres'
+> > > > ld: kexec_file.c:(.text+0x15cf28): undefined reference to `arch_kexec_unprotect_crashkres'
+> > > > make[2]: *** [scripts/Makefile.vmlinux:37: vmlinux] Error 1
+> > > > make[1]: *** [/home/ignat/git/test/mainline/linux-6.6.70/Makefile:1164: vmlinux] Error 2
+> > > > make: *** [Makefile:234: __sub-make] Error 2
+> > > >
+> > > > The KEXEC config setup, which triggers above:
+> > > >
+> > > > # Kexec and crash features
+> > > > #
+> > > > CONFIG_CRASH_CORE=y
+> > > > CONFIG_KEXEC_CORE=y
+> > > > # CONFIG_KEXEC is not set
+> > > > CONFIG_KEXEC_FILE=y
+> > > > # CONFIG_KEXEC_SIG is not set
+> > > > # CONFIG_CRASH_DUMP is not set
+> > > > # end of Kexec and crash features
+> > > > # end of General setup
+> > >
+> > > Odd, why has no one see this on mainline?  Are we missing a change
+> > > somewhere or should this just be reverted for now?
+> >
+> > I actually tested the mainline with this config and it works, so I
+> > think we're missing a change
+> >
+> > Ignat
+> 
+> >From the looks of it it is missing 02aff8480533 ("crash: split crash
+> dumping code out from kexec_core.c")
 
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Ok, I can duplicate this here now, but wow, backporting that commit is
+not going to work.  Let me see if I can just revert a few things
+instead...
 
-Thanks!
-Luigi
+thanks for the .config section, that helped out a lot!
 
+greg k-h
 
