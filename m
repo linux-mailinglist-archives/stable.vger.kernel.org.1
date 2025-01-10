@@ -1,159 +1,141 @@
-Return-Path: <stable+bounces-108220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5CABA09903
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 19:01:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FA55A09911
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 19:09:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88DDE188B5B4
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 18:01:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CCF8162276
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 18:09:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38B9212B0D;
-	Fri, 10 Jan 2025 18:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5070F2139B6;
+	Fri, 10 Jan 2025 18:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="EkrqWOkN";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="lnTPEnx0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U+mOXcJf"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DDD224D7;
-	Fri, 10 Jan 2025 18:01:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5692066E0;
+	Fri, 10 Jan 2025 18:09:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736532086; cv=none; b=Jy2/SuRH3LDsik4p64O8VmSFAskwkE3CjuQpFp4OgcubKqSUDmtIsMLsdU6lb1n4C885LNobWEXhOaUrcj0Q2NPijh53VFB1DVI3C38VG4x4TF0vqX3vy5u2Ot3b26s+OM3YTPUnYnTLB6EpeOhTLtNuxB6bAg/whwQYUMMAOC4=
+	t=1736532578; cv=none; b=DlRoMxmNg8vu8raCTnrSwoKXpVX5U0/DcfXuEbHg+Hz+yNHLHSooyPn366p9rB4EQy0VlgqwYP3UlaFOQX+gVqU1LRAUdyXn0Snk8bIWWsZ2fkPJV3iVMVk+qsZf1CIBTCx4plcZBUyARzI0z4PrZ0Ke1N1gEniFOg+pugB7Dco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736532086; c=relaxed/simple;
-	bh=O57R9mirbuUO5wVAF4LfDqbIONsq2MWMpUtCISZxgcQ=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=nFfoDfRyVWM59J/TegcM3qTq0gxhInTK1FWr1R3LnYYG6WByZVjSFh3bHYFrkJKSBKFTJP7uo0exlfly41LERqAPRxmXbrWsZFD99EQ0qAXok8q5cSteEb5lR1w6IBRGj42SM2+xxgHQYLI6ZNblxKHB9yNqfnwGr8HNzQL5Pac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=EkrqWOkN; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=lnTPEnx0; arc=none smtp.client-ip=103.168.172.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 6848211400D7;
-	Fri, 10 Jan 2025 13:01:23 -0500 (EST)
-Received: from phl-imap-12 ([10.202.2.86])
-  by phl-compute-09.internal (MEProxy); Fri, 10 Jan 2025 13:01:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1736532083;
-	 x=1736618483; bh=yen/mjiGBKQk9WGCqCrEDEXsWoRARsSFozzPh57oQTY=; b=
-	EkrqWOkNIo0IOoGGUZiUhGm7roWQAEmhKjgHA7HWOoLw05URjFp5cbuPcTQme0of
-	LdvuW+uIoRhWCJWGUrVl0EejrcwVCE+0uLw2juQinIxUZbe9rU5sOsJuOEr0Wr0V
-	OOQw6HvIwz29zDjJU42Yf2KhWy4V7IwvIbdKnwErjaX82bUrxAxPywD2ljDzwTmJ
-	Hok9eAq3Y7hHKZiBnnOGw+TlfT1/KDdTtdY8Fmu7AXPEypAUZ/vJVD/G2AW2dcxm
-	iRdotCOvmg+XtQlRqQcioiyE4M53AHuElJJoO9jMrH6mu/qzic9gu5ief7+UGQS5
-	x4AHTlJhnEN7Y+nwHcEFuw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1736532083; x=
-	1736618483; bh=yen/mjiGBKQk9WGCqCrEDEXsWoRARsSFozzPh57oQTY=; b=l
-	nTPEnx0hlE2+L5EzFlRGn2sD4iPV4/rWCW9IMTQRaNPzwj1qmUJBY2Xkj2VRMK4v
-	bWq05mKmP4s5HXs6cZrt12niefTYJ5rkcZP4aa/NlgyOo7rZ2O3Vq0WA8f91j2Tf
-	Cqj7ZZONt5YYNpViWjNghJXlMB4LQ5tDcpGaLel20PxxzH1lVMzqJVG5WxXuIZ22
-	9qnDKlcerkE+eBo4/ki/edARfQI4qqyuP6KG0ZRQkg2ghi8F5oCSkON418l+KObQ
-	QN6GGs4rMCUgQl0xz8+P37mKnnwbg7aHLdOioocHLQJDv9qsOA5qqMF1I9WKpmBP
-	TDpjF3NkPioNyUmn3BjuQ==
-X-ME-Sender: <xms:cmCBZ2M5PHmJqf94aZ9oApIm8ZUiwSjI_9R_MFfpFq3sej1br-iNRQ>
-    <xme:cmCBZ099bcOdDUb33SxxMu8GedAmuSmYvKVl5dMYT71ozLxA5TLaqT1FDNl41RY9L
-    FtJQV2G3y3MIMeQO-8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudegkedguddtjecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthhqredtredt
-    jeenucfhrhhomhepfdflihgrgihunhcujggrnhhgfdcuoehjihgrgihunhdrhigrnhhgse
-    hflhihghhorghtrdgtohhmqeenucggtffrrghtthgvrhhnpeejheefuddvtdfggfdvffek
-    teehhfelgfdvvedvkeeuffefkeehheegvefhveetjeenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghho
-    rghtrdgtohhmpdhnsggprhgtphhtthhopeelpdhmohguvgepshhmthhpohhuthdprhgtph
-    htthhopehtshgsohhgvghnugesrghlphhhrgdrfhhrrghnkhgvnhdruggvpdhrtghpthht
-    ohepjhgvfhhfsggrihesrghoshgtrdhiohdprhgtphhtthhopehkvgighigsihhstghuih
-    htsegrohhstgdrihhopdhrtghpthhtohepuhifuhesihgtvghnohifhidrmhgvpdhrtghp
-    thhtoheptghhvghnhhhurggtrghisehkvghrnhgvlhdrohhrghdprhgtphhtthhopeihrg
-    hnghhtihgviihhuheslhhoohhnghhsohhnrdgtnhdprhgtphhtthhopehlihhnuhigqdhk
-    vghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqd
-    hmihhpshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvges
-    vhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:cmCBZ9SsZ5KJPwtH4px0oWT95baoTgMdfdzkYz3DPKrMJtSgOe1vzg>
-    <xmx:cmCBZ2t6vuuMD7jqVPdmuvdDbn7t7B-HITml3YMsjCU1v4waeNX4eg>
-    <xmx:cmCBZ-cF_mIQZroTcJHa-LhoZP8-BnITQnIKhn3skJyv9fy7qxppyQ>
-    <xmx:cmCBZ62pUKPX3kOw3omLcWhLOGbxB9tZCyZXhpvleoxOrVQ4XMFnUg>
-    <xmx:c2CBZ1xyawMIT9mRuiVZJsErqSfryRgPEYr5QKFewIJuNFC6GdDZdpDw>
-Feedback-ID: ifd894703:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 7059C1C20066; Fri, 10 Jan 2025 13:01:22 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1736532578; c=relaxed/simple;
+	bh=2qrCny5MXQVC/tja24BZ38+47C2Xvk6WFzAEVDRmf8c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mTH/HK6ABKWyP7gTUcf3QwqSMVVHEPfJBVC3ncrSbjmWJwkS4bUkV6xr5ofFuHRgCXNDR0BcKv/m7yO8eW12Dh5zIwl1nRS3itDdHcUtbRKOJjugB6GW/OSCY2rpeJxJ+CaoCe61IDLjjQvoGMXy+x6ntcjkZB8sLiJQ+4ebrBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U+mOXcJf; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736532575; x=1768068575;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=2qrCny5MXQVC/tja24BZ38+47C2Xvk6WFzAEVDRmf8c=;
+  b=U+mOXcJfz/CgA8bE2ZJMXnlmwKzobs+t+5jFtJmwPq1W7sjmn1ugbKQg
+   k+LY9Mvyf2YYVe0mEFGGSfMscPaGDfc68JyKaYqXD9TKG1KjirONzA/o5
+   o6EFWT7fp6NevJTUfRJ6u6o613X5gAPMVCj6P5v42osw3O2bZtYcBQBCp
+   KVTr7oCQK3ayzkoGLBtq4+tycO4Vs4Vu7Remmdw58OSlS73cWqTFL2s6b
+   Qsl+TxqE75VI6o9NM2jAytB9TFjaAwlQo99KqNpr7OAshCSvHX1gPyyVX
+   I+86Pu1ev15K8vOrpmRbwNH7MuPhz4WHTxQMILtVTfFqmGa7b/fCOUC/S
+   w==;
+X-CSE-ConnectionGUID: H4Sa73kJTuSV9SiSSHkHmg==
+X-CSE-MsgGUID: lo8YSei9QbCShaXL0EqtcQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11311"; a="48249685"
+X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; 
+   d="scan'208";a="48249685"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2025 10:09:35 -0800
+X-CSE-ConnectionGUID: saazU/KFSZSskiz2095HBA==
+X-CSE-MsgGUID: 0fPdwkL4TKClf/mkbjxI0w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; 
+   d="scan'208";a="103852898"
+Received: from bjrankin-mobl3.amr.corp.intel.com (HELO [10.124.222.149]) ([10.124.222.149])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2025 10:09:35 -0800
+Message-ID: <296bc51f-0668-4ef8-869b-8089ea6e9766@intel.com>
+Date: Fri, 10 Jan 2025 10:09:35 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 10 Jan 2025 18:01:02 +0000
-From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
-To: "Kexy Biscuit" <kexybiscuit@aosc.io>,
- "Huacai Chen" <chenhuacai@kernel.org>,
- "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
- "Tiezhu Yang" <yangtiezhu@loongson.cn>
-Cc: "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- linux-kernel@vger.kernel.org, "Mingcong Bai" <jeffbai@aosc.io>,
- "Icenowy Zheng" <uwu@icenowy.me>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-Message-Id: <0a9d5494-f220-4883-95e2-112223f14c23@app.fastmail.com>
-In-Reply-To: 
- <20250111-loongson64-boardinfo-no-size-v1-0-e9f26fcd069e@aosc.io>
-References: <20250111-loongson64-boardinfo-no-size-v1-0-e9f26fcd069e@aosc.io>
-Subject: Re: [PATCH 0/2] MIPS: Loongson64: Remove ROM Size in LEFI boardinfo
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] x86/fred: Fix the FRED RSP0 MSR out of sync with
+ its per-CPU cache
+To: "Xin Li (Intel)" <xin@zytor.com>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ andrew.cooper3@citrix.com
+References: <20250110174639.1250829-1-xin@zytor.com>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20250110174639.1250829-1-xin@zytor.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 1/10/25 09:46, Xin Li (Intel) wrote:
+...> Fix the bug through resynchronizing the FRED RSP0 MSR with its
+> per-CPU cache in cpu_init_fred_exceptions().
+> 
+> Fixes: fe85ee391966 ("x86/entry: Set FRED RSP0 on return to userspace instead of context switch")
+> Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+> Cc: stable@vger.kernel.org
 
+Thanks for the update:
 
-=E5=9C=A82025=E5=B9=B41=E6=9C=8810=E6=97=A5=E4=B8=80=E6=9C=88 =E4=B8=8B=E5=
-=8D=885:22=EF=BC=8CKexy Biscuit=E5=86=99=E9=81=93=EF=BC=9A
-> In "MIPS: Loongson64: Add /sys/firmware/lefi/boardinfo", "ROM Size" was
-> added under section "BIOS Info". However, that is incorrect per Append=
-ix
-> A.7 in Q/LS 0013-2014 (=E9=BE=99=E8=8A=AFCPU=E5=BC=80=E5=8F=91=E7=B3=BB=
-=E7=BB=9F=E5=9B=BA=E4=BB=B6=E4=B8=8E=E5=86=85=E6=A0=B8=E6=8E=A5=E5=8F=A3=
-=E8=A7=84=E8=8C=83 V2.2,
-> lit. Loongson DevSys Firmware Kernel Interface Specification V2.2),
-> which defines the size to be the size of this interface itself.
->
-> Removing "ROM Size" from boardinfo, and also adding comments to the
-> struct interface_info to clarify meanings of its members.
->
-> Signed-off-by: Kexy Biscuit <kexybiscuit@aosc.io>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 
-For the series:
-
-Acked-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-
-Good catch, thanks!
-
-> ---
-> Kexy Biscuit (2):
->       MIPS: Loongson64: remove ROM Size unit in boardinfo
->       MIPS: Loongson: Add comments for interface_info
->
->  arch/mips/include/asm/mach-loongson64/boot_param.h | 8 ++++----
->  arch/mips/loongson64/boardinfo.c                   | 2 --
->  2 files changed, 4 insertions(+), 6 deletions(-)
-> ---
-> base-commit: 2144da25584eb10b84252230319b5783f6a83041
-> change-id: 20250111-loongson64-boardinfo-no-size-a25dd2a03a8b
->
-> Best regards,
-> --=20
-> Kexy Biscuit <kexybiscuit@aosc.io>
-
---=20
-- Jiaxun
+I'll probably do a wee bit of testing today and apply to the urgent pile
+early next week.
 
