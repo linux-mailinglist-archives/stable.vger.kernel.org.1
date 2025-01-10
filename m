@@ -1,121 +1,159 @@
-Return-Path: <stable+bounces-108219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35249A098EB
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 18:52:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5CABA09903
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 19:01:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CACA188D925
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 17:52:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88DDE188B5B4
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 18:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD81213E69;
-	Fri, 10 Jan 2025 17:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38B9212B0D;
+	Fri, 10 Jan 2025 18:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mgXP7qbV"
+	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="EkrqWOkN";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="lnTPEnx0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6524218C928;
-	Fri, 10 Jan 2025 17:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DDD224D7;
+	Fri, 10 Jan 2025 18:01:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736531569; cv=none; b=DvZKKhGJfmdk5lPUQNskJtYxMFVkwHHIu2Xers1bVqUwTHspFLpAIrEv3qD4SqgkFw5etwjP+/knI07EWaGwX60XquM3YUXL0TYDXVBaSwOLO5KuOlGyjgFlHOPwO2OHaZdaxToijjpIWNMSlBKDIn7J8ZQMHBVCLobuG7ewqMs=
+	t=1736532086; cv=none; b=Jy2/SuRH3LDsik4p64O8VmSFAskwkE3CjuQpFp4OgcubKqSUDmtIsMLsdU6lb1n4C885LNobWEXhOaUrcj0Q2NPijh53VFB1DVI3C38VG4x4TF0vqX3vy5u2Ot3b26s+OM3YTPUnYnTLB6EpeOhTLtNuxB6bAg/whwQYUMMAOC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736531569; c=relaxed/simple;
-	bh=Rz8w0lstIuLH6/IzR1zFLkdQ25LALXlY/OCCYOFTzx4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TKI+hmHNY5dSo2lIthc073WSQOIiz1bvJzSA3Z/ie61HfIHTD2Tx1d2rLYn7EYfVDgw0qfpFr03IugbRhNMR7tMdUPyA2Z6auXf5PuhZK9jCI/a3sSlXlLJ7gLnrBz4d0W9ovUjGsUeBsfFTduAkvW9Glb7DicAksVHyx5Tw9d0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mgXP7qbV; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-385ddcfc97bso2029167f8f.1;
-        Fri, 10 Jan 2025 09:52:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736531566; x=1737136366; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YTpWI3SOQ7n29zKKV3dVg4dmzAu0cuaqiEf1YVn/pVg=;
-        b=mgXP7qbVHFQZVKQwBsK5rw+r+KkQfbIxD8oVy1bnVKB39mJLufczLs+l1Ucq2bVzGg
-         8TqT38yZIaUkyhmAGAEQICT83peYpM8jWfo7SZpO8N+HoadLcnYhqtZvs/rximnuzqUi
-         t6XlGzG8iPro3TXiIn6tL9MJqZDP7oDsajeiCLgNHdE8PxLMyg/fOTBcd79fmNveDQNo
-         //lr0PBzOWrTCjPXdFWOYEzQPQeIf4KKbYhy4ffTcrtWlQH03jp318PKgJdsGldx8/HV
-         bVi7UfYByMjMjgqYbb7OybwjusrvDjCqzgq0cLsAnIxGmn+wGtgjvi9VHI8X6ibhiY4J
-         aJ3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736531566; x=1737136366;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YTpWI3SOQ7n29zKKV3dVg4dmzAu0cuaqiEf1YVn/pVg=;
-        b=KQklS9kbNXccaM07xf7PsvMAXV+olLqvUz09/xZ818Om3KJo+3DwVhkqqAI78SR+TZ
-         JHkNrwHvXI5YHNjUnM6XIl77lnr7KdQPNBJdNe2oNpI/zmOl0yMgpuzmVurbyhxj3g1D
-         JMxf1FpgYKZ/QrMVhFIWzAuuCPOVQmSm01WJxbhhOEUcl59ROcMdUmw6kzCle2aLecux
-         sK3nygJEVdfd+HfoHXtHtCVd5qEECVvF2ySYD27YCRwMd3rineppInVWsc+lCzme1tkJ
-         +1m0tqFYv+ulHdyZto/E8Ifd9x+RBIl9wBoyUJolgmDSBwRpu62+kbGm9N9EGGdtvhyj
-         GQFA==
-X-Forwarded-Encrypted: i=1; AJvYcCWsHfnp9WC7yA8ntgQ/PHn9cNCfXi97he57/cPI4zAHIgUECU1n8RyzPK134dXrijo0xTsKFUSVFY89zTQ=@vger.kernel.org, AJvYcCX0s8JVQf7VH+Q7IwWq+a0iBLQnySMY4Y1Yc9RN7Ny/bbN3EgAaQLmVXAZh1HkBGPQKjlmQlk+bZZe/@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywlmm4i0kffmiXb8lEs7S5702O4BdRQ95NRZogBtvkPbwymwUWz
-	4JAANYvwctgb7Fld5W6/Jv3rPi+Cq4Rjt5t+50Zg6ncaOYpbuxiK
-X-Gm-Gg: ASbGncs5wl+Cy3koT8QorgDLGif0/S7mANWEDPoTv8E2dQvsZG8exy4MUZQ0q7HFgA0
-	l/XaYek9VkoSZKNVeBUTV8TY0CtWGH3qWXCZB7X0vJaIYqxtjWn1BUYk5/W0zjLnRmFH648FX6P
-	zYwY6xEDFdUaM0mFV6imh0x69lXa9JSw5BuQwCUrXo/2XlaQ3U9IO2Lm0290R3N599tr81tOepK
-	rgzGkNjDochTplYt2QCQHE6kTibCFoIAql+YSQZ6FhuQY0AMGcOQ+So5NqrDq2UuLUul2qrnPUw
-	Fmq0cPHEmoVbH6GwZ5iDFYFQtJ+QuFw6s4rlrYf5NCMy1jZk
-X-Google-Smtp-Source: AGHT+IGY0hL/kvEy5xckuzoaCDclezlPGQEHX3vYYyMOnpQzgRIiPi8Q1zLZq5txiSrFCBXPSobGBg==
-X-Received: by 2002:adf:8b8d:0:b0:38a:5df9:f86a with SMTP id ffacd0b85a97d-38a872eb1demr9052197f8f.26.1736531565367;
-        Fri, 10 Jan 2025 09:52:45 -0800 (PST)
-Received: from localhost (p200300e41f281900f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f28:1900:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e9dd1de9sm58915395e9.15.2025.01.10.09.52.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jan 2025 09:52:44 -0800 (PST)
-From: Thierry Reding <thierry.reding@gmail.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	devicetree@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
-	Brad Griffis <bgriffis@nvidia.com>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: tegra: Fix Tegra234 PCIe interrupt-map
-Date: Fri, 10 Jan 2025 18:52:40 +0100
-Message-ID: <173653154336.3488930.500938674526829720.b4-ty@nvidia.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241213235602.452303-1-bgriffis@nvidia.com>
-References: <20241213235602.452303-1-bgriffis@nvidia.com>
+	s=arc-20240116; t=1736532086; c=relaxed/simple;
+	bh=O57R9mirbuUO5wVAF4LfDqbIONsq2MWMpUtCISZxgcQ=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=nFfoDfRyVWM59J/TegcM3qTq0gxhInTK1FWr1R3LnYYG6WByZVjSFh3bHYFrkJKSBKFTJP7uo0exlfly41LERqAPRxmXbrWsZFD99EQ0qAXok8q5cSteEb5lR1w6IBRGj42SM2+xxgHQYLI6ZNblxKHB9yNqfnwGr8HNzQL5Pac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=EkrqWOkN; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=lnTPEnx0; arc=none smtp.client-ip=103.168.172.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 6848211400D7;
+	Fri, 10 Jan 2025 13:01:23 -0500 (EST)
+Received: from phl-imap-12 ([10.202.2.86])
+  by phl-compute-09.internal (MEProxy); Fri, 10 Jan 2025 13:01:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1736532083;
+	 x=1736618483; bh=yen/mjiGBKQk9WGCqCrEDEXsWoRARsSFozzPh57oQTY=; b=
+	EkrqWOkNIo0IOoGGUZiUhGm7roWQAEmhKjgHA7HWOoLw05URjFp5cbuPcTQme0of
+	LdvuW+uIoRhWCJWGUrVl0EejrcwVCE+0uLw2juQinIxUZbe9rU5sOsJuOEr0Wr0V
+	OOQw6HvIwz29zDjJU42Yf2KhWy4V7IwvIbdKnwErjaX82bUrxAxPywD2ljDzwTmJ
+	Hok9eAq3Y7hHKZiBnnOGw+TlfT1/KDdTtdY8Fmu7AXPEypAUZ/vJVD/G2AW2dcxm
+	iRdotCOvmg+XtQlRqQcioiyE4M53AHuElJJoO9jMrH6mu/qzic9gu5ief7+UGQS5
+	x4AHTlJhnEN7Y+nwHcEFuw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1736532083; x=
+	1736618483; bh=yen/mjiGBKQk9WGCqCrEDEXsWoRARsSFozzPh57oQTY=; b=l
+	nTPEnx0hlE2+L5EzFlRGn2sD4iPV4/rWCW9IMTQRaNPzwj1qmUJBY2Xkj2VRMK4v
+	bWq05mKmP4s5HXs6cZrt12niefTYJ5rkcZP4aa/NlgyOo7rZ2O3Vq0WA8f91j2Tf
+	Cqj7ZZONt5YYNpViWjNghJXlMB4LQ5tDcpGaLel20PxxzH1lVMzqJVG5WxXuIZ22
+	9qnDKlcerkE+eBo4/ki/edARfQI4qqyuP6KG0ZRQkg2ghi8F5oCSkON418l+KObQ
+	QN6GGs4rMCUgQl0xz8+P37mKnnwbg7aHLdOioocHLQJDv9qsOA5qqMF1I9WKpmBP
+	TDpjF3NkPioNyUmn3BjuQ==
+X-ME-Sender: <xms:cmCBZ2M5PHmJqf94aZ9oApIm8ZUiwSjI_9R_MFfpFq3sej1br-iNRQ>
+    <xme:cmCBZ099bcOdDUb33SxxMu8GedAmuSmYvKVl5dMYT71ozLxA5TLaqT1FDNl41RY9L
+    FtJQV2G3y3MIMeQO-8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudegkedguddtjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthhqredtredt
+    jeenucfhrhhomhepfdflihgrgihunhcujggrnhhgfdcuoehjihgrgihunhdrhigrnhhgse
+    hflhihghhorghtrdgtohhmqeenucggtffrrghtthgvrhhnpeejheefuddvtdfggfdvffek
+    teehhfelgfdvvedvkeeuffefkeehheegvefhveetjeenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghho
+    rghtrdgtohhmpdhnsggprhgtphhtthhopeelpdhmohguvgepshhmthhpohhuthdprhgtph
+    htthhopehtshgsohhgvghnugesrghlphhhrgdrfhhrrghnkhgvnhdruggvpdhrtghpthht
+    ohepjhgvfhhfsggrihesrghoshgtrdhiohdprhgtphhtthhopehkvgighigsihhstghuih
+    htsegrohhstgdrihhopdhrtghpthhtohepuhifuhesihgtvghnohifhidrmhgvpdhrtghp
+    thhtoheptghhvghnhhhurggtrghisehkvghrnhgvlhdrohhrghdprhgtphhtthhopeihrg
+    hnghhtihgviihhuheslhhoohhnghhsohhnrdgtnhdprhgtphhtthhopehlihhnuhigqdhk
+    vghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqd
+    hmihhpshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvges
+    vhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:cmCBZ9SsZ5KJPwtH4px0oWT95baoTgMdfdzkYz3DPKrMJtSgOe1vzg>
+    <xmx:cmCBZ2t6vuuMD7jqVPdmuvdDbn7t7B-HITml3YMsjCU1v4waeNX4eg>
+    <xmx:cmCBZ-cF_mIQZroTcJHa-LhoZP8-BnITQnIKhn3skJyv9fy7qxppyQ>
+    <xmx:cmCBZ62pUKPX3kOw3omLcWhLOGbxB9tZCyZXhpvleoxOrVQ4XMFnUg>
+    <xmx:c2CBZ1xyawMIT9mRuiVZJsErqSfryRgPEYr5QKFewIJuNFC6GdDZdpDw>
+Feedback-ID: ifd894703:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 7059C1C20066; Fri, 10 Jan 2025 13:01:22 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Date: Fri, 10 Jan 2025 18:01:02 +0000
+From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
+To: "Kexy Biscuit" <kexybiscuit@aosc.io>,
+ "Huacai Chen" <chenhuacai@kernel.org>,
+ "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+ "Tiezhu Yang" <yangtiezhu@loongson.cn>
+Cc: "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ linux-kernel@vger.kernel.org, "Mingcong Bai" <jeffbai@aosc.io>,
+ "Icenowy Zheng" <uwu@icenowy.me>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+Message-Id: <0a9d5494-f220-4883-95e2-112223f14c23@app.fastmail.com>
+In-Reply-To: 
+ <20250111-loongson64-boardinfo-no-size-v1-0-e9f26fcd069e@aosc.io>
+References: <20250111-loongson64-boardinfo-no-size-v1-0-e9f26fcd069e@aosc.io>
+Subject: Re: [PATCH 0/2] MIPS: Loongson64: Remove ROM Size in LEFI boardinfo
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Thierry Reding <treding@nvidia.com>
 
 
-On Fri, 13 Dec 2024 23:56:02 +0000, Brad Griffis wrote:
-> For interrupt-map entries, the DTS specification requires
-> that #address-cells is defined for both the child node and the
-> interrupt parent.  For the PCIe interrupt-map entries, the parent
-> node ("gic") has not specified #address-cells. The existing layout
-> of the PCIe interrupt-map entries indicates that it assumes
-> that #address-cells is zero for this node.
-> 
-> [...]
+=E5=9C=A82025=E5=B9=B41=E6=9C=8810=E6=97=A5=E4=B8=80=E6=9C=88 =E4=B8=8B=E5=
+=8D=885:22=EF=BC=8CKexy Biscuit=E5=86=99=E9=81=93=EF=BC=9A
+> In "MIPS: Loongson64: Add /sys/firmware/lefi/boardinfo", "ROM Size" was
+> added under section "BIOS Info". However, that is incorrect per Append=
+ix
+> A.7 in Q/LS 0013-2014 (=E9=BE=99=E8=8A=AFCPU=E5=BC=80=E5=8F=91=E7=B3=BB=
+=E7=BB=9F=E5=9B=BA=E4=BB=B6=E4=B8=8E=E5=86=85=E6=A0=B8=E6=8E=A5=E5=8F=A3=
+=E8=A7=84=E8=8C=83 V2.2,
+> lit. Loongson DevSys Firmware Kernel Interface Specification V2.2),
+> which defines the size to be the size of this interface itself.
+>
+> Removing "ROM Size" from boardinfo, and also adding comments to the
+> struct interface_info to clarify meanings of its members.
+>
+> Signed-off-by: Kexy Biscuit <kexybiscuit@aosc.io>
 
-Applied, thanks!
+For the series:
 
-[1/1] arm64: tegra: Fix Tegra234 PCIe interrupt-map
-      (no commit info)
+Acked-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-Best regards,
--- 
-Thierry Reding <treding@nvidia.com>
+Good catch, thanks!
+
+> ---
+> Kexy Biscuit (2):
+>       MIPS: Loongson64: remove ROM Size unit in boardinfo
+>       MIPS: Loongson: Add comments for interface_info
+>
+>  arch/mips/include/asm/mach-loongson64/boot_param.h | 8 ++++----
+>  arch/mips/loongson64/boardinfo.c                   | 2 --
+>  2 files changed, 4 insertions(+), 6 deletions(-)
+> ---
+> base-commit: 2144da25584eb10b84252230319b5783f6a83041
+> change-id: 20250111-loongson64-boardinfo-no-size-a25dd2a03a8b
+>
+> Best regards,
+> --=20
+> Kexy Biscuit <kexybiscuit@aosc.io>
+
+--=20
+- Jiaxun
 
