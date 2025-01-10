@@ -1,186 +1,175 @@
-Return-Path: <stable+bounces-108229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A82A09B87
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 20:05:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8C1A09BBE
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 20:19:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7F0F7A3380
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 19:05:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BDF31697F4
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 19:19:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5552236E0;
-	Fri, 10 Jan 2025 19:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC7922144BA;
+	Fri, 10 Jan 2025 19:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ho6oUBmQ"
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="cQfewTsR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF5C2144BA
-	for <stable@vger.kernel.org>; Fri, 10 Jan 2025 19:00:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B802324B248
+	for <stable@vger.kernel.org>; Fri, 10 Jan 2025 19:19:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736535634; cv=none; b=GrEAxhc0VT2aXxZfcJrFx6pPzydhSNKq7HSUYt5S9rSe6pR5J59sFAZUuzHFjVsWeqwGCkDqCqs+I8+mEkT8j3mpfg7m8Q1KSiUOn0MUBx4upEjA3bEEeJ2ox0UKQTyo0A3NROxfRIZxHY+Y2wX6MDnHkndxQSmC0o0vc4SymVI=
+	t=1736536793; cv=none; b=hY/TkRBC8TtMBZ0CgA4zZ5e/PiFP9Hak7H7rgd6pHzU0y4R+jLsPuFlbqPm7T+KTWUMdubp2dSV+y8b4aFSjqMLN9h6rLo6SXe39hOo0qoKFtinnqqCyRINzYwPze6hL2o10l9l2ZsBdi3+IhOAMGZtObWcKHdY2hIiZbTitkLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736535634; c=relaxed/simple;
-	bh=6Au0Ozm6N5d57b/PR5dTyRZOgC8Z6B28G8m6+acGRg4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E++4yH6D36kLLmifePa/o78Pmdk9t2hTQZbffxGofi/8wASR1wTvB1AIwHFIMhwDVORakvWiKFF0tGh2cAoDtVehvIA6jAaWeCXz0sKB7JRNl0NQL1cwcRlta5PjNnHx6S1sYg+hCHr52S2zVuWxBkIXq922BxHdklP31JreomY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ho6oUBmQ; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5d0c939ab78so877a12.0
-        for <stable@vger.kernel.org>; Fri, 10 Jan 2025 11:00:32 -0800 (PST)
+	s=arc-20240116; t=1736536793; c=relaxed/simple;
+	bh=IWtOdyNlzPCoQDmjGceXDZfyR2Z68NZKetnYn028dbo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WPFl8IXu8QJVnakF9ZoWZqlSl9OmtOcvP4va69eufpP0rZ9bR1cefLW+44oRaS+8QVMGekN6ma7AZ5k3xJgfwL+OnUQpif/CFg6Xc95U1uGjtCjH2XjTs0FOQaLar2yAIAQBzvF2xO0MlGJAIbOarjzcGi73B0xThunl2LlGSvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=cQfewTsR; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-436a03197b2so17771645e9.2
+        for <stable@vger.kernel.org>; Fri, 10 Jan 2025 11:19:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736535631; x=1737140431; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uFssL5Eg7HFqhUYjNlx6I1dZGICzmvI+AYnPPZIVuNw=;
-        b=Ho6oUBmQjfEOOwb/sEr3S4qdf9sIkt0SbTfMvQcv4gc1rpxK0S9O3so43pI3ZpoSUs
-         HGxhrkX2HEs/gA0LF6uq1sWNtR3rQDuzAMXvz/0cau0Mi/l/jF27bvF+Ga0Gp9JyT5ct
-         2L6fOYELh8iwF2dSQHBRCzlpB5EwEJWqfg6WSZe5of2LL6u00JT2YOOZeFHrp/afujxa
-         OnqOVJaOANVY+ey8p3q/PqPrfBSnwXD+SDgYdPN3NuVDgY9UmBINLDifkA+p5hiTH860
-         5xXQsPIo3CXHIJVNBhYDYVVdY2XFYnEYj/s41QIS/GeXcLD0l42ZRkbqsO2yHjxgq/bt
-         V/QA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736535631; x=1737140431;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=ffwll.ch; s=google; t=1736536790; x=1737141590; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=uFssL5Eg7HFqhUYjNlx6I1dZGICzmvI+AYnPPZIVuNw=;
-        b=C4fOKMX5EKya0pqCSsWtH6azfQZ+ZwlKg9NPw/lcLRX1vhwhstVtT7fKnNRb839fkS
-         e7G3QPSi/nGUJdMSmH3tES6dKqiIqMqKhqjhYHBad31LPIQd758GzFGry4KQfu+rgusn
-         O7SErI4I2q0dnmvuPMqrSjJOyEQBgfiuZjf9jXJfXeMj7wE/yYjAoajbp8RYN6C08FR9
-         asmpIRdhZLxkhNdE3yBAH/6pSnTIn+ie1S9yi7OB8V0IHv+Z/tfycwMo/z+EB0uS0uMN
-         eDszYK6kFW3fTpcvxYB3Oc/NF9vLYs2/hBdQNIcCEtIgPZ6OV42TIghF71579v+ivb5L
-         U1yg==
-X-Forwarded-Encrypted: i=1; AJvYcCW15P/TT28PY9Y1s6o+/W4UU+kT/8fD6gIprZtiiW/JPoMSdxnqlRPMG+ruxjb07mHw+0GVM3g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLFROVX+RxeUMKWlEv/42yV1U3pTkZMP2WaWfQNMqWVAW6c+cJ
-	0ZdxLj2mMN3ZbVwNIfQe0paDcZ6zrAnx08TQWbHzl8SKPjx6cjasXYkSy9QnbQosUDGhT+u65i/
-	nIkw5laKObxIMWZbf9eru/RFeQv4bADGUmJ+8
-X-Gm-Gg: ASbGncuMyulvkt2Km0/Mg/0fnw7dTT2uJmzApNOJnUrFUll76Fv0wIDLgwMx4UsPS+R
-	02qLnPfqJ+GQ+0NSUCaDnTCK77dWjHsX/Z3XqLWJjoZlfojRDoNXE8RFwA9/aEFIfVRix+QKv
-X-Google-Smtp-Source: AGHT+IHSWR/fLldKuhFK4nM6Z9UZ1cOBbz/G2YKf+HVMwPAfqpp8yxek2i0bKSnj9xyXsrAoMv9jT7CozNmY70WUNsg=
-X-Received: by 2002:a05:6402:1045:b0:5d9:693e:346 with SMTP id
- 4fb4d7f45d1cf-5d99fbd7470mr123173a12.4.1736535630936; Fri, 10 Jan 2025
- 11:00:30 -0800 (PST)
+        bh=J80hwrHQqzeoTkDC+Lfua1rPRYfFeh84D/XME2XqQ0g=;
+        b=cQfewTsR9RFFpJ5oFBeweHQwSJWqgyqXh11BCQan23WaM6uH9fHjaMJeAbHAsZK8uO
+         y1If8Dx966v4xY///714XaKzuNuofP1DGbXyLffDBL6MVTnOtNOmsxBn33etYe/l20AI
+         3Q37YMl/8Mguha56wv3r90hin7ysuZIGMMei4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736536790; x=1737141590;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=J80hwrHQqzeoTkDC+Lfua1rPRYfFeh84D/XME2XqQ0g=;
+        b=bnri5WvxuCMW5gUodICs3SFaYH7j4n+mQEfGyG///X+zoLF3jEQwIk9XW9Hi4EbpX7
+         TR3EewBkelIz/U2ReAFK5T+UeBLFEQEcb5Xhg7x7xQsryY0bCOOT6OT1xy3ZSOKKZy3y
+         mEJNY43cDIkawSBQG4hcQufmdl/7QUdMTtbTfQ8FsWmud1AsxYzbAGZMKdhSbskLQlpq
+         TTaZChvTYGQuLgTarfNCv4qJZr0BS6rVyG2VWr9eDSDz0gVNAkRk1R4px++TYYKEEmrj
+         8CXlYMMwNIqp0NHCzWDgAimk8KjTz8ZVRxydmP3qSbU8VB4DQaQiQIVuVbjxYneTC2sl
+         LXgw==
+X-Forwarded-Encrypted: i=1; AJvYcCXm2a2QqJGz02GiSdn3BSXBFSHup8B3yduynj7ROjSMIHWcO4EvKPjcI9yAXg7n/3/Q15Ibhek=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5MCadvyOTKHkQnAVJ/h1jbvDoyY4dFcIn/XauI5kGTWRl3z9o
+	d8abTJ6/HoBgRjTQas/F35vQb71EsBQ7Bd8bBq8OjxYqo5pa7z5it0HEbh5lwbw=
+X-Gm-Gg: ASbGncs1AyVwWQO203hxxwDA45kDQCz4b9ON3B7xIZp9FbB2/HqD8w2BxgzRKZEo07H
+	uwmjapWxpsBaDhakSkk1IvHm1sPPh3IOzQ67BpvsumyHsaVlq7gFpzWCw6RSQRraXMXiecBkcBJ
+	v/RoJ1o/HOLBEZnZRnHDsAOLS30h+ddIb7e8N2jTHfoLhtJ5FTGbiTxb7/fBCX0qUOhOeRZPARz
+	ii8bzN9XCOPvUnxofw60DdDJAiGwNsOmrI2runSIOHOqqbM7OCPSzVKq5L9LHo5hIQa
+X-Google-Smtp-Source: AGHT+IHbD9hx5MizCz9A5ppQUUAZ2G7xGpUfk4GcyU7iEMldA5WVYOdJ209mUwDG82HgKY3UKSxngQ==
+X-Received: by 2002:a05:600c:1c85:b0:434:a1d3:a331 with SMTP id 5b1f17b1804b1-436e26f01c1mr99108515e9.22.1736536790079;
+        Fri, 10 Jan 2025 11:19:50 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e9dc8802sm60338755e9.10.2025.01.10.11.19.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jan 2025 11:19:49 -0800 (PST)
+Date: Fri, 10 Jan 2025 20:19:47 +0100
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Vitaliy Shevtsov <v.shevtsov@maxima.ru>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	syzbot+9a8f87865d5e2e8ef57f@syzkaller.appspotmail.com,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Michel =?iso-8859-1?Q?D=E4nzer?= <michel.daenzer@amd.com>,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org, stable@vger.kernel.org
+Subject: Re: [PATCH] drm/vblank: fix misuse of drm_WARN in
+ drm_wait_one_vblank()
+Message-ID: <Z4Fy04u7RjaZIsqI@phenom.ffwll.local>
+Mail-Followup-To: Vitaliy Shevtsov <v.shevtsov@maxima.ru>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	syzbot+9a8f87865d5e2e8ef57f@syzkaller.appspotmail.com,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Michel =?iso-8859-1?Q?D=E4nzer?= <michel.daenzer@amd.com>,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org, stable@vger.kernel.org
+References: <20250110164914.15013-1-v.shevtsov@maxima.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240205074650.200304-1-quic_kriskura@quicinc.com> <ME0P300MB05534EDF5293054B53061567A61C2@ME0P300MB0553.AUSP300.PROD.OUTLOOK.COM>
-In-Reply-To: <ME0P300MB05534EDF5293054B53061567A61C2@ME0P300MB0553.AUSP300.PROD.OUTLOOK.COM>
-From: =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>
-Date: Fri, 10 Jan 2025 11:00:19 -0800
-X-Gm-Features: AbW1kvY1g459ZajTF-rK_C7M7pE-C-FOcoJ1XnQW3-zhuHIftgHB_3pA-qmjWNY
-Message-ID: <CANP3RGc_SBROWVA2GMaN41mzCU28wGtQzT5qmSKcYsYDY03G5g@mail.gmail.com>
-Subject: Re: [PATCH v3] usb: gadget: ncm: Avoid dropping datagrams of properly
- parsed NTBs
-To: Junzhong Pan <panjunzhong@outlook.com>
-Cc: quic_kriskura@quicinc.com, gregkh@linuxfoundation.org, 
-	hgajjar@de.adit-jv.com, linux-kernel@vger.kernel.org, 
-	linux-usb@vger.kernel.org, quic_jackp@quicinc.com, quic_ppratap@quicinc.com, 
-	quic_wcheng@quicinc.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250110164914.15013-1-v.shevtsov@maxima.ru>
+X-Operating-System: Linux phenom 6.12.3-amd64 
 
-On Thu, Jan 9, 2025 at 11:37=E2=80=AFPM Junzhong Pan <panjunzhong@outlook.c=
-om> wrote:
->
-> Hi everyone,
->
-> I recently switch to f_ncm with Windows 10 since rndis 's safety issue.
-> (the Windows 10 driver version is 10.0.19041.1 2009/4/21)
->
-> It seems Windows 10 ncm driver won't send ZLP to let udc properly
-> separate the skbs.
->
-> On Mon, 5 Feb 2024 13:16:50 +0530 Krishna Kurapati wrote:
-> > According to Windows driver, no ZLP is needed if wBlockLength is
-> non-zero,
-> > because the non-zero wBlockLength has already told the function side th=
-e
-> > size of transfer to be expected. However, there are in-market NCM devic=
-es
-> > that rely on ZLP as long as the wBlockLength is multiple of
-> wMaxPacketSize.
-> > To deal with such devices, it pads an extra 0 at end so the transfer
-> is no
-> > longer multiple of wMaxPacketSize.
->
-> I do the iperf3 testing cause gadget constantly report similar error afte=
-r
-> a litle modification to get more concrete info:
->
-> [  174] configfs-gadget.0: to process=3D512, so go to find second NTH
-> from: 15872
-> [  174] FIND NEXT NTH HEAD:000000006c26a12c: 6e 63 6d 68 10 00 86 16 b0
-> 3b 00 00 48 3b 00 00 00 00 52 34 fc 5f 90 fd ca 40 c1 f4 f4 6e 08 00
-> [  174] configfs-gadget.0: Wrong NDP SIGN of this ndp index: 15176, skb
-> len: 16384, ureq_len: 16384, this wSeq: 5766
-> [  174] NDP HEAD:00000000298f3cab: 2b 12 48 8f 12 ce 3c c8 d7 39 c0 0d
-> 15 cf 86 14 17 4a 91 85 db df ad 87 f0 35 0d 76 ad 4d 4d 74
-> [  174] NTH of this NDP HEAD:00000000af9fbfc9: 6e 63 6d 68 10 00 85 16
-> 00 3e 00 00 90 3d 00 00 00 00 52 34 fc 5f 90 fd ca 40 c1 f4 f4 6e 08 00
-> [  174] configfs-gadget.0: Wrong NTH SIGN, skblen 14768, last wSequence:
-> 5766, last dgram_num: 11, ureqlen: 16384
-> [  174] HEAD:00000000b1a72bfc: 3f 98 a6 8e 17 f8 bb 29 07 b8 da 13 7f 20
-> 80 8e 77 ca 32 07 ac 71 b8 8d 84 03 d7 1b 96 9b c4 fa
->
->
-> Lecroy shows the wSequence=3D5765 have 10 Datagram consisting a 31*512
-> bytes=3D15872 bytes OUT Transfer but have no ZLP:
->
-> OUT Transfer wSequence=3D5765
->         NTH32 Datagrams: 1514B * 8 + 580B NDP32
->         Transfer length: 512B * 31
->         NO ZLP
-> OUT Transfer wSequence=3D5766
->         NTH32 Datagrams: 1514B * 8 NDP32
->         Transfer length: 512B * 29  + 432
->
-> This lead to a result that the first givebacked 16K skb correponding to
-> a usb_request contains two NTH but not complete:
->
-> USB Request 1 SKB 16384B
->         (NTH32) (Datagrams) (NDP32) | (NTH32) (Datagrams piece of wSequen=
-ce=3D5766)
-> USB Request 2 SKB 14768B
->         (Datagrams piece of wSequence=3D5766) (NDP32)
->
->  From the context, it seems the first report of Wrong NDP SIGN is caused
-> by out-of-bound accessing, the second report of Wrong NTH SIGN is caused
-> by a wrong beginning of NTB parsing.
->
-> Do you have any idea how can this be fixed so that the ncm compatibility
-> is better for windows users.
->
-> Best Regards,
-> Pan
+On Fri, Jan 10, 2025 at 04:49:13PM +0000, Vitaliy Shevtsov wrote:
+> drm_wait_one_vblank() uses drm_WARN() to check for a time-dependent
+> condition. Since syzkaller runs the kernel with the panic_on_warn set, this
+> causes the entire kernel to panic with a "vblank wait timed out on crtc %i"
+> message.
+> 
+> In this case it does not mean that there is something wrong with the kernel
+> but is caused by time delays in vblanks handling that the fuzzer introduces
+> as a side effect when fail_alloc_pages, failslab, fail_usercopy faults are
+> injected with maximum verbosity. With lower verbosity this issue disappears.
 
-Could you clarify which Linux Kernel you're testing against?
-Either X.Y.Z version or some git kernel sha1 (not including your debug
-code of course).
+Hm, unless a drivers vblank handling code is extremely fun, there should
+be absolutely no memory allocations or user copies in there at all. Hence
+I think you're papering over a real bug here. The vblank itself should be
+purely a free-wheeling hrtimer, if those stop we have serious kernel bug
+at our hands.
 
-Could you provide some pcap of the actual usb frames?
-Or perhaps describe better the problem, because I'm not quite
-following from your email.
-(I'm not sure if the problem is what windows is sending, or how Linux
-is parsing it)
+Which wouldn't be a big surprise, because we've fixed a _lot_ of bugs in
+vkms' vblank and page flip code, it's surprisingly tricky.
 
-I *think* what you're saying is that wSequence=3D5765 & 5766 are being
-treated as a single ncm message due to their being a multiple of 512
-in the former, not followed by a ZLP?  I thought that was precisely
-when microsoft ncm added an extra zero byte...
+Iow, what kind of memory allocation is holding up vkms vblanks?
 
-What's at the end of 5755?  Padding? No padding?
-Is there an NTH32 header in 5766?  Should there be?
+Cheers, Sima
 
---
-Maciej =C5=BBenczykowski, Kernel Networking Developer @ Google
+> drm_WARN() was introduced here by e8450f51a4b3 ("drm/irq: Implement a
+> generic vblank_wait function") and it is intended to indicate a failure with
+> vblank irqs handling by the underlying driver. The issue is raised during
+> testing of the vkms driver, but it may be potentially reproduced with other
+> drivers.
+> 
+> Fix this by using drm_warn() instead which does not cause the kernel to
+> panic with panic_on_warn set, but still provides a way to tell users about
+> this unexpected condition.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+> 
+> Fixes: e8450f51a4b3 ("drm/irq: Implement a generic vblank_wait function")
+> Cc: stable@vger.kernel.org
+> Reported-by: syzbot+9a8f87865d5e2e8ef57f@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=9a8f87865d5e2e8ef57f
+> Signed-off-by: Vitaliy Shevtsov <v.shevtsov@maxima.ru>
+> ---
+>  drivers/gpu/drm/drm_vblank.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vblank.c
+> index 94e45ed6869d..fa09ff5b1d48 100644
+> --- a/drivers/gpu/drm/drm_vblank.c
+> +++ b/drivers/gpu/drm/drm_vblank.c
+> @@ -1304,7 +1304,8 @@ void drm_wait_one_vblank(struct drm_device *dev, unsigned int pipe)
+>  				 last != drm_vblank_count(dev, pipe),
+>  				 msecs_to_jiffies(100));
+>  
+> -	drm_WARN(dev, ret == 0, "vblank wait timed out on crtc %i\n", pipe);
+> +	if (!ret)
+> +		drm_warn(dev, "vblank wait timed out on crtc %i\n", pipe);
+>  
+>  	drm_vblank_put(dev, pipe);
+>  }
+> -- 
+> 2.47.1
+> 
+
+-- 
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
 
