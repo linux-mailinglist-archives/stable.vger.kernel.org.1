@@ -1,120 +1,121 @@
-Return-Path: <stable+bounces-108218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31F14A098D6
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 18:47:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35249A098EB
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 18:52:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18B3B3A901A
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 17:47:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CACA188D925
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 17:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F0B211A06;
-	Fri, 10 Jan 2025 17:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD81213E69;
+	Fri, 10 Jan 2025 17:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="bOObtiLH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mgXP7qbV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013BE19ABCE;
-	Fri, 10 Jan 2025 17:47:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6524218C928;
+	Fri, 10 Jan 2025 17:52:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736531252; cv=none; b=EG03fhV1I/7syuK30t/taBiZ+lh/ZEQ4GGaFpsj415syJ7V6AHOXGg04ugniHD3ljT+3Mp/9IDrqGqIFi5o7kHPKkwxhmSa5qByBC5YBddrt2SgBjKxVPipG40zOWj0Wtaf6ZDiuymTZTSNEhrLCUla8omOsMDum0rj1axRz9PY=
+	t=1736531569; cv=none; b=DvZKKhGJfmdk5lPUQNskJtYxMFVkwHHIu2Xers1bVqUwTHspFLpAIrEv3qD4SqgkFw5etwjP+/knI07EWaGwX60XquM3YUXL0TYDXVBaSwOLO5KuOlGyjgFlHOPwO2OHaZdaxToijjpIWNMSlBKDIn7J8ZQMHBVCLobuG7ewqMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736531252; c=relaxed/simple;
-	bh=LjAbepbJVzDrU+WVTFonPKqM6HTceeVXq8kjeEJaIxY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MMzf8vMVcmLBECBqF/1c/3dMvFk52syykpmwNEEUPEjHncsS+oeT1QzycMKCmIzgz91NuNpFcrLeuq9pMR0cZccmBeflny0YetyoYYVWEez5xxlSLTp/xC+SZushYLJZdqOjCD5EZA8EjmG45OtpkpW+A1loPvTl4l+QBfswHoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=bOObtiLH; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 50AHkdKd1250845
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Fri, 10 Jan 2025 09:46:43 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 50AHkdKd1250845
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2024121701; t=1736531204;
-	bh=Jevol05xzykbJGcy4k2i9hf8jt+kjRPWaG1xxof37lU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=bOObtiLH1uD0gMeXIqryhwXRk/zICyq2i2kl8mA0WEIAzPHDmJQH4AM8zJqRwUbkc
-	 iQ4sirg+F4NFYSEsdoLQ/9Mj2+dHQ+3/nt8fA2h5KC30+eOIAmeVDmEBXWVu7JbXMW
-	 Lv2H3At7xUFGql5OqmZ9YLUq9P2P6AXlKZMHWGcgP5QQwptGEgWg4NpJUiT2d7QJQF
-	 3Ukh2xQP2nIOsU6nWzqXXRSVSQ9kP/nkkuK3ajcpmWQa5CkCiDwfRqB6O8t6FzrDij
-	 jdYbK1tPHNbf5vsjWOPkvnCkl10EScGSpMNslyUIpeH/f2hxsW5AgZGXvvsXpxoSF1
-	 HANBmhFkonGPQ==
-From: "Xin Li (Intel)" <xin@zytor.com>
-To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        andrew.cooper3@citrix.com
-Subject: [PATCH v2 1/1] x86/fred: Fix the FRED RSP0 MSR out of sync with its per-CPU cache
-Date: Fri, 10 Jan 2025 09:46:39 -0800
-Message-ID: <20250110174639.1250829-1-xin@zytor.com>
+	s=arc-20240116; t=1736531569; c=relaxed/simple;
+	bh=Rz8w0lstIuLH6/IzR1zFLkdQ25LALXlY/OCCYOFTzx4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TKI+hmHNY5dSo2lIthc073WSQOIiz1bvJzSA3Z/ie61HfIHTD2Tx1d2rLYn7EYfVDgw0qfpFr03IugbRhNMR7tMdUPyA2Z6auXf5PuhZK9jCI/a3sSlXlLJ7gLnrBz4d0W9ovUjGsUeBsfFTduAkvW9Glb7DicAksVHyx5Tw9d0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mgXP7qbV; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-385ddcfc97bso2029167f8f.1;
+        Fri, 10 Jan 2025 09:52:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736531566; x=1737136366; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YTpWI3SOQ7n29zKKV3dVg4dmzAu0cuaqiEf1YVn/pVg=;
+        b=mgXP7qbVHFQZVKQwBsK5rw+r+KkQfbIxD8oVy1bnVKB39mJLufczLs+l1Ucq2bVzGg
+         8TqT38yZIaUkyhmAGAEQICT83peYpM8jWfo7SZpO8N+HoadLcnYhqtZvs/rximnuzqUi
+         t6XlGzG8iPro3TXiIn6tL9MJqZDP7oDsajeiCLgNHdE8PxLMyg/fOTBcd79fmNveDQNo
+         //lr0PBzOWrTCjPXdFWOYEzQPQeIf4KKbYhy4ffTcrtWlQH03jp318PKgJdsGldx8/HV
+         bVi7UfYByMjMjgqYbb7OybwjusrvDjCqzgq0cLsAnIxGmn+wGtgjvi9VHI8X6ibhiY4J
+         aJ3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736531566; x=1737136366;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YTpWI3SOQ7n29zKKV3dVg4dmzAu0cuaqiEf1YVn/pVg=;
+        b=KQklS9kbNXccaM07xf7PsvMAXV+olLqvUz09/xZ818Om3KJo+3DwVhkqqAI78SR+TZ
+         JHkNrwHvXI5YHNjUnM6XIl77lnr7KdQPNBJdNe2oNpI/zmOl0yMgpuzmVurbyhxj3g1D
+         JMxf1FpgYKZ/QrMVhFIWzAuuCPOVQmSm01WJxbhhOEUcl59ROcMdUmw6kzCle2aLecux
+         sK3nygJEVdfd+HfoHXtHtCVd5qEECVvF2ySYD27YCRwMd3rineppInVWsc+lCzme1tkJ
+         +1m0tqFYv+ulHdyZto/E8Ifd9x+RBIl9wBoyUJolgmDSBwRpu62+kbGm9N9EGGdtvhyj
+         GQFA==
+X-Forwarded-Encrypted: i=1; AJvYcCWsHfnp9WC7yA8ntgQ/PHn9cNCfXi97he57/cPI4zAHIgUECU1n8RyzPK134dXrijo0xTsKFUSVFY89zTQ=@vger.kernel.org, AJvYcCX0s8JVQf7VH+Q7IwWq+a0iBLQnySMY4Y1Yc9RN7Ny/bbN3EgAaQLmVXAZh1HkBGPQKjlmQlk+bZZe/@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywlmm4i0kffmiXb8lEs7S5702O4BdRQ95NRZogBtvkPbwymwUWz
+	4JAANYvwctgb7Fld5W6/Jv3rPi+Cq4Rjt5t+50Zg6ncaOYpbuxiK
+X-Gm-Gg: ASbGncs5wl+Cy3koT8QorgDLGif0/S7mANWEDPoTv8E2dQvsZG8exy4MUZQ0q7HFgA0
+	l/XaYek9VkoSZKNVeBUTV8TY0CtWGH3qWXCZB7X0vJaIYqxtjWn1BUYk5/W0zjLnRmFH648FX6P
+	zYwY6xEDFdUaM0mFV6imh0x69lXa9JSw5BuQwCUrXo/2XlaQ3U9IO2Lm0290R3N599tr81tOepK
+	rgzGkNjDochTplYt2QCQHE6kTibCFoIAql+YSQZ6FhuQY0AMGcOQ+So5NqrDq2UuLUul2qrnPUw
+	Fmq0cPHEmoVbH6GwZ5iDFYFQtJ+QuFw6s4rlrYf5NCMy1jZk
+X-Google-Smtp-Source: AGHT+IGY0hL/kvEy5xckuzoaCDclezlPGQEHX3vYYyMOnpQzgRIiPi8Q1zLZq5txiSrFCBXPSobGBg==
+X-Received: by 2002:adf:8b8d:0:b0:38a:5df9:f86a with SMTP id ffacd0b85a97d-38a872eb1demr9052197f8f.26.1736531565367;
+        Fri, 10 Jan 2025 09:52:45 -0800 (PST)
+Received: from localhost (p200300e41f281900f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f28:1900:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e9dd1de9sm58915395e9.15.2025.01.10.09.52.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jan 2025 09:52:44 -0800 (PST)
+From: Thierry Reding <thierry.reding@gmail.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	devicetree@vger.kernel.org,
+	linux-tegra@vger.kernel.org,
+	Brad Griffis <bgriffis@nvidia.com>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH v2] arm64: tegra: Fix Tegra234 PCIe interrupt-map
+Date: Fri, 10 Jan 2025 18:52:40 +0100
+Message-ID: <173653154336.3488930.500938674526829720.b4-ty@nvidia.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241213235602.452303-1-bgriffis@nvidia.com>
+References: <20241213235602.452303-1-bgriffis@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-The FRED RSP0 MSR is only used for delivering events when running
-userspace.  Linux leverages this property to reduce expensive MSR
-writes and optimize context switches.  The kernel only writes the
-MSR when about to run userspace *and* when the MSR has actually
-changed since the last time userspace ran.
+From: Thierry Reding <treding@nvidia.com>
 
-This optimization is implemented by maintaining a per-CPU cache of
-FRED RSP0 and then checking that against the value for the top of
-current task stack before running userspace.
 
-However cpu_init_fred_exceptions() writes the MSR without updating
-the per-CPU cache.  This means that the kernel might return to
-userspace with MSR_IA32_FRED_RSP0==0 when it needed to point to the
-top of current task stack.  This would induce a double fault (#DF),
-which is bad.
+On Fri, 13 Dec 2024 23:56:02 +0000, Brad Griffis wrote:
+> For interrupt-map entries, the DTS specification requires
+> that #address-cells is defined for both the child node and the
+> interrupt parent.  For the PCIe interrupt-map entries, the parent
+> node ("gic") has not specified #address-cells. The existing layout
+> of the PCIe interrupt-map entries indicates that it assumes
+> that #address-cells is zero for this node.
+> 
+> [...]
 
-A context switch after cpu_init_fred_exceptions() can paper over
-the issue since it updates the cached value.  That evidently
-happens most of the time explaining how this bug got through.
+Applied, thanks!
 
-Fix the bug through resynchronizing the FRED RSP0 MSR with its
-per-CPU cache in cpu_init_fred_exceptions().
+[1/1] arm64: tegra: Fix Tegra234 PCIe interrupt-map
+      (no commit info)
 
-Fixes: fe85ee391966 ("x86/entry: Set FRED RSP0 on return to userspace instead of context switch")
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Cc: stable@vger.kernel.org
----
- arch/x86/kernel/fred.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/fred.c b/arch/x86/kernel/fred.c
-index 8d32c3f48abc..5e2cd1004980 100644
---- a/arch/x86/kernel/fred.c
-+++ b/arch/x86/kernel/fred.c
-@@ -50,7 +50,13 @@ void cpu_init_fred_exceptions(void)
- 	       FRED_CONFIG_ENTRYPOINT(asm_fred_entrypoint_user));
- 
- 	wrmsrl(MSR_IA32_FRED_STKLVLS, 0);
--	wrmsrl(MSR_IA32_FRED_RSP0, 0);
-+
-+	/*
-+	 * Ater a CPU offline/online cycle, the FRED RSP0 MSR should be
-+	 * resynchronized with its per-CPU cache.
-+	 */
-+	wrmsrl(MSR_IA32_FRED_RSP0, __this_cpu_read(fred_rsp0));
-+
- 	wrmsrl(MSR_IA32_FRED_RSP1, 0);
- 	wrmsrl(MSR_IA32_FRED_RSP2, 0);
- 	wrmsrl(MSR_IA32_FRED_RSP3, 0);
-
-base-commit: 59011effc84d7b167f4b6542bd05c7aff1b7574a
+Best regards,
 -- 
-2.47.1
-
+Thierry Reding <treding@nvidia.com>
 
