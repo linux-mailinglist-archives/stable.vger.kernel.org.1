@@ -1,173 +1,156 @@
-Return-Path: <stable+bounces-108201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CB57A0935B
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 15:21:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B78AEA094E1
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 16:19:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 177A51667C5
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 14:21:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4AE73A6AA5
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 15:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5825920FA99;
-	Fri, 10 Jan 2025 14:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99FF211466;
+	Fri, 10 Jan 2025 15:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4OD9GaIK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W14AQlqF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4195720FA88
-	for <stable@vger.kernel.org>; Fri, 10 Jan 2025 14:21:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29FB210F7A;
+	Fri, 10 Jan 2025 15:19:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736518889; cv=none; b=kjbwF+TRWvn0OHhb6MrxRupHkKDOpBbznSUfHYXgYX6LmgjwM4cORlegAnRRSUztGriTk8rhjx0BPG7LF/9EKNfFb5uppREMbMZBix7xlyTsw0y/i4xmgN1tGWdFkqfdTZYNAhr0rypiIaXDxTJZ/HiJYTJWEP4S3CqtJubgJug=
+	t=1736522346; cv=none; b=YMwP6TNUGsMOwoKcvQPZrgApSBaUVFVeWrxzrTBy+aMvL6CA/vj1DlLGha4U7geCWCym2/YMOGf0XyIt8K/bE7V4/Qd5mNOGmCjQf7g0JqcJg7bEzAWG8op0NnUaSJu8sGTsDeeyQwHYrAALzc4NnhLk6tPi+M6mP5iGOK+tJUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736518889; c=relaxed/simple;
-	bh=eZLl37fOSbYQYDLGS5Y/QLTa91exobFept6c4ErWMTE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=u+R/1b4/h1aF3Cw/SbeKNw4rjreADlZi4kKXsmbvevDefrqy0eYt8pcCHHYhckeX9AaK5NNnix7TDpQNh+6BcOwVMLkmsObMQrBx4sN7agSL8BKKr5LvH9KIWZkybFqAg07kv0lmUqrXiMEdqui7VY93vu34J765b9dXDJil9s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--gnoack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4OD9GaIK; arc=none smtp.client-ip=209.85.208.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--gnoack.bounces.google.com
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-5d40c0c728aso1688963a12.2
-        for <stable@vger.kernel.org>; Fri, 10 Jan 2025 06:21:27 -0800 (PST)
+	s=arc-20240116; t=1736522346; c=relaxed/simple;
+	bh=GdxQAAhkvYNc45ogZEOTdokhwj27OmZxfHC7bNT6WS4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Lt84ipP5xY+6tU5+GjNRrLdNoV1PdVUP8MLqTdGVUF5057c8EgsP3eQB8jwgTg/7MVmsf9r5kUUtXiPIuxgBF50lD3WI/c1tJO0puzclSf3v1xWjO4FTg067ZU55Zd1R7jZvnQSWfLQhBGqd7lV0tfSejuR7KK6oEwwa+ZpcwP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W14AQlqF; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43623f0c574so16516995e9.2;
+        Fri, 10 Jan 2025 07:19:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736518885; x=1737123685; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9umdn33M+pmVRz+NuzpgduvU4xJDCFruejcIKVHUmT0=;
-        b=4OD9GaIKd+6iSucTKlTyfl17+CPR4JKN3DmLRP3AUTAfRoepDmROEZmKNwVQPsf59F
-         jGwpFAhYuqMW+JJrB+8aStyGvse22OMIJZ/5FIcwYDKdqvEca+OKsD44dSI1JaGmnGUF
-         vur9y9vV2z7ZBAtts+cIXE8mEDeh0N/wZoTUprpFIQm/9g0OI69Wg7faXUjPa+6nZXT/
-         fl59+8GCwxuN7uR4MBmD4wZWXtiUO56DL+WBtX83cLfx8z9OEv72GZ7dzb+9lVnCGpT6
-         dkKZcc7/w4H437GPd5GIJpRnIzbL9DKm6psGEU4O1HJa8F/eobaGxs0WQSrPcY/Orni4
-         4SBw==
+        d=gmail.com; s=20230601; t=1736522343; x=1737127143; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=e5aEpMmoZZCQQPaRUNn2M/cjTXlmafGJ+ljwOWiSLUI=;
+        b=W14AQlqF+3O9P4HZT06GxD2w9nRuLl+03Uqxw7fUQDZeUwKY0/psJeZyEVaGUA9+b1
+         IjH1fWOL+UHwatF0gPvD1HJhktHU3ozWcrQ95Q8Kb9pTi3lAJJoqLenvkDg7lhu/l7mG
+         6u/c2uplmVi6GVl/jdTKu4zg6GB6OlPBqhm0RTK3tm2eQs1lFPYwkj9z6D8+zlWGeHj2
+         Gg5xvBID3cpnSJrFglWM7oOZB94e+sXYabsuh8g9pfVqnGsutp5J/IQHtd3yHp/bPPkw
+         nPsw7Q26gLfMU58GaFNU2pAFBMSvHpl2c4Aal/wL3CNHJLBRRcxHjbYoI/HYyMs+Vg1O
+         x3Xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736518885; x=1737123685;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=9umdn33M+pmVRz+NuzpgduvU4xJDCFruejcIKVHUmT0=;
-        b=Dkta4VDstxAwIO8GToUunXE46mRujt9mqeOkIP1W/biga3qayhkPxatGcVtrr2HA7B
-         fco7p7lgE4p5mhCASPQqECpnQXe+pdw55ASOlb/tPpymdyGSrDLMPvGlTi1DSCitGjrE
-         KuhyZTo1iEvd1SkrVVF4l/blgU78JjBGIHbNTI9GrAX2vsHsOgQn9/jgFKUNvgpVSoFS
-         TWkgcA1yTEkUd0AruM+ABUSNFUIkEjdaM9junKe/fptD6L+CJnNlHxG4YnTJe3LLxPJU
-         LksJZMdM8MZDOqir+pvhDMBPD7fC925QrketuTA1P5sJjAC2qWDD88LuB2v4hVCSJuQA
-         6LUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXTFohrmoAY/Apk0Wl/uPiNhrILYzRjibJl46bMfyrAUpxIlNm5OlC4nr1DnJfN7mOpm0vwFkk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfMXJRZwtxxRDWnas0vGyNrnlJnSegy7+ZFiMFVnJHvsUici0R
-	Y5kzW66P4iDdasRonF+HhNQdORQuhsEh4Ya5vV1AVb/iI/ShFLPdGRs73uCZ70eKfoaPmddT++S
-	+0g==
-X-Google-Smtp-Source: AGHT+IHRHNispYW5vs1jXOBSVq75OKtYcFcYRuAEh4jZLhpJkXnr4emt/EvlkNg20gd/mcSFGW2ts8m0Ozk=
-X-Received: from edqg23.prod.google.com ([2002:aa7:c597:0:b0:5d9:1530:45a7])
- (user=gnoack job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:278f:b0:5d0:ed92:cdf6
- with SMTP id 4fb4d7f45d1cf-5d972e1c66bmr22388062a12.19.1736518885687; Fri, 10
- Jan 2025 06:21:25 -0800 (PST)
-Date: Fri, 10 Jan 2025 14:21:22 +0000
-In-Reply-To: <Z2ahOy7XaflrfCMw@google.com>
+        d=1e100.net; s=20230601; t=1736522343; x=1737127143;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=e5aEpMmoZZCQQPaRUNn2M/cjTXlmafGJ+ljwOWiSLUI=;
+        b=rMkiPDbHaJGZRgqa8W+vitqbxsuxXYmpc672gaQWDZTZGbxBY9M+RP24YDLNjV1zMy
+         /jRYKCEHn/1PNJpZBNaf69XDK643pTBYbITZPJnY3Puljisi5HvHMrMvDZMhAwGR3uW1
+         GsXU+STTz2zcsc39c9JSLD9K6N3WiRa5lftpXH+oEVrXLThzlgwPwT/k5ua5PoAyk5s2
+         Ha2lShza6U13HvpdwF0wdH28byM6DKF0w6OnZce1eLC0UaqIougGJyBhqyXIEKoK+rMO
+         vOU4+bIG75Cpwi8Fh65jGC2KfYWTBeajLuxrPM2vpmmsuTU1+B5X9jkxin1x/b3vR8/9
+         E9yQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWVKVOHWaEyWTGERWUwksmvUEWbHoD+xOjv4lHjYePJ/Dy4TAUjACUrjpV6Bp/ycw9Net3HudYH0VHdOXY=@vger.kernel.org, AJvYcCX5+KZ7jq8EGPy6tWM41yfxcp8a72dQ+2uJj5ravZJ9HFN5shb5+c1HBzS9iB177xEQdUaFz4Vh@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgSauNUqytED1XsXHEuKuR38yUumk2wYWwE/Ont2AT43wypnME
+	cKbnuEOgp7Gidpi2v0xcoY8dgUYePdGFrTbvaufCADEffa0iGtwj
+X-Gm-Gg: ASbGnctUjvpuq26U992mvMeEd4unQ/dTAUrDTuIcHAx7JoFijHy4L2y28hI1Q+/EsHA
+	vdrfTxa+YrbuVxLCw1d2vhkJHJRr3lzefgSQx4hxxAlzLh4mNhBgFeyd22rCw5dT5qgtnnCGtUP
+	HIRaqWKIqZorhpDINLEZDwAzPDtEnjBjplUExgstOEGtxaOpa4s0G/ZdWCDnmoIP31CJWyoN1pK
+	Ueelcot6CKcq0IqaMD5KiFmUKaXz0xjOXA0dy7WzVZJU+4FpGms3y9+8uPUQh3j8HgIWDem
+X-Google-Smtp-Source: AGHT+IECfAJ2WoCuNj7wvzCw79nESfWsenN47zMVWMkB4VRz8D5aWBaZsf1e+N3uhc6SbLU9mvw4vw==
+X-Received: by 2002:a05:600c:1e17:b0:434:9d62:aa23 with SMTP id 5b1f17b1804b1-436e26dda97mr99240525e9.20.1736522343081;
+        Fri, 10 Jan 2025 07:19:03 -0800 (PST)
+Received: from eichest-laptop.toradex.int ([2a02:168:af72:0:d0fc:3598:a372:ece6])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e9e6249csm54511425e9.38.2025.01.10.07.19.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jan 2025 07:19:02 -0800 (PST)
+From: Stefan Eichenberger <eichest@gmail.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	max.krummenacher@toradex.com,
+	francesco.dolcini@toradex.com
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v1] ARM: dts: imx6qdl-apalis: Fix poweroff on Apalis iMX6
+Date: Fri, 10 Jan 2025 16:18:29 +0100
+Message-ID: <20250110151846.214234-1-eichest@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <Z2ahOy7XaflrfCMw@google.com>
-X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
-Message-ID: <20250110142122.1013222-1-gnoack@google.com>
-Subject: [PATCH v2] tty: Permit some TIOCL_SETSEL modes without CAP_SYS_ADMIN
-From: "=?UTF-8?q?G=C3=BCnther=20Noack?=" <gnoack@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jann Horn <jannh@google.com>, "=?UTF-8?q?Hanno=20B=C3=B6ck?=" <hanno@hboeck.de>, Jiri Slaby <jirislaby@kernel.org>, 
-	linux-hardening@vger.kernel.org, regressions@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, 
-	"=?UTF-8?q?G=C3=BCnther=20Noack?=" <gnoack@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-With this, processes without CAP_SYS_ADMIN are able to use TIOCLINUX with
-subcode TIOCL_SETSEL, in the selection modes TIOCL_SETPOINTER,
-TIOCL_SELCLEAR and TIOCL_SELMOUSEREPORT.
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-TIOCL_SETSEL was previously changed to require CAP_SYS_ADMIN, as this IOCTL
-let callers change the selection buffer and could be used to simulate
-keypresses.  These three TIOCL_SETSEL selection modes, however, are safe to
-use, as they do not modify the selection buffer.
+The current solution for powering off the Apalis iMX6 is not functioning
+as intended. To resolve this, it is necessary to power off the
+vgen2_reg, which will also set the POWER_ENABLE_MOCI signal to a low
+state. This ensures the carrier board is properly informed to initiate
+its power-off sequence.
 
-This fixes a mouse support regression that affected Emacs (invisible mouse
-cursor).
+The new solution uses the regulator-poweroff driver, which will power
+off the regulator during a system shutdown.
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/ee3ec63269b43b34e1c90dd8c9743bf8@finder.org
-Fixes: 8d1b43f6a6df ("tty: Restrict access to TIOCLINUX' copy-and-paste sub=
-commands")
-Signed-off-by: G=C3=BCnther Noack <gnoack@google.com>
+CC: stable@vger.kernel.org
+Fixes: 4eb56e26f92e ("ARM: dts: imx6q-apalis: Command pmic to standby for poweroff")
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 ---
-Changes in V2:
+ arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
- * Removed comment in vt.c (per Greg's suggestion)
-
- * CC'd stable@
-
- * I *kept* the CAP_SYS_ADMIN check *after* copy_from_user(),
-   with the reasoning that:
-
-   1. I do not see a good alternative to reorder the code here.
-      We need the data from copy_from_user() in order to know whether
-      the CAP_SYS_ADMIN check even needs to be performed.
-   2. A previous get_user() from an adjacent memory region already worked
-      (making this a very unlikely failure)
-
-I would still appreciate a more formal Tested-by from Hanno (hint, hint) :)
-
----
- drivers/tty/vt/selection.c | 14 ++++++++++++++
- drivers/tty/vt/vt.c        |  2 --
- 2 files changed, 14 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/tty/vt/selection.c b/drivers/tty/vt/selection.c
-index 564341f1a74f..0bd6544e30a6 100644
---- a/drivers/tty/vt/selection.c
-+++ b/drivers/tty/vt/selection.c
-@@ -192,6 +192,20 @@ int set_selection_user(const struct tiocl_selection __=
-user *sel,
- 	if (copy_from_user(&v, sel, sizeof(*sel)))
- 		return -EFAULT;
-=20
-+	/*
-+	 * TIOCL_SELCLEAR, TIOCL_SELPOINTER and TIOCL_SELMOUSEREPORT are OK to
-+	 * use without CAP_SYS_ADMIN as they do not modify the selection.
-+	 */
-+	switch (v.sel_mode) {
-+	case TIOCL_SELCLEAR:
-+	case TIOCL_SELPOINTER:
-+	case TIOCL_SELMOUSEREPORT:
-+		break;
-+	default:
-+		if (!capable(CAP_SYS_ADMIN))
-+			return -EPERM;
-+	}
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
+index 1c72da417011..614b65821995 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
+@@ -108,6 +108,11 @@ lvds_panel_in: endpoint {
+ 		};
+ 	};
+ 
++	poweroff {
++		compatible = "regulator-poweroff";
++		cpu-supply = <&vgen2_reg>;
++	};
 +
- 	return set_selection_kernel(&v, tty);
- }
-=20
-diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
-index 96842ce817af..be5564ed8c01 100644
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -3345,8 +3345,6 @@ int tioclinux(struct tty_struct *tty, unsigned long a=
-rg)
-=20
- 	switch (type) {
- 	case TIOCL_SETSEL:
--		if (!capable(CAP_SYS_ADMIN))
--			return -EPERM;
- 		return set_selection_user(param, tty);
- 	case TIOCL_PASTESEL:
- 		if (!capable(CAP_SYS_ADMIN))
---=20
-2.47.1.613.gc27f4b7a9f-goog
+ 	reg_module_3v3: regulator-module-3v3 {
+ 		compatible = "regulator-fixed";
+ 		regulator-always-on;
+@@ -236,10 +241,6 @@ &can2 {
+ 	status = "disabled";
+ };
+ 
+-&clks {
+-	fsl,pmic-stby-poweroff;
+-};
+-
+ /* Apalis SPI1 */
+ &ecspi1 {
+ 	cs-gpios = <&gpio5 25 GPIO_ACTIVE_LOW>;
+@@ -527,7 +528,6 @@ &i2c2 {
+ 
+ 	pmic: pmic@8 {
+ 		compatible = "fsl,pfuze100";
+-		fsl,pmic-stby-poweroff;
+ 		reg = <0x08>;
+ 
+ 		regulators {
+-- 
+2.45.2
 
 
