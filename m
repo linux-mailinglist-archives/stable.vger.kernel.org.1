@@ -1,208 +1,173 @@
-Return-Path: <stable+bounces-108200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B84C1A09313
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 15:14:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CB57A0935B
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 15:21:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C2E01883ABC
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 14:13:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 177A51667C5
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 14:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25DD20FAAE;
-	Fri, 10 Jan 2025 14:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5825920FA99;
+	Fri, 10 Jan 2025 14:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GV8XkraW"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4OD9GaIK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBE6207A15;
-	Fri, 10 Jan 2025 14:13:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4195720FA88
+	for <stable@vger.kernel.org>; Fri, 10 Jan 2025 14:21:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736518423; cv=none; b=g4GAqiY4KYt2ykEQJ4wTCrT6ipLyp5UTvMNkvv6mxrRyZiQXxXrEdt+JlOPBJ+kQsJceY0nK+GPkFY4boMcldj7qdf4AHXYWiUFqWvpSmG4+P7tQ0Mw79MReDMOS7bGvCTClrNrw1BoI2HDWm+R9B6LI9ecc4VCeF0bkW7gyI+Q=
+	t=1736518889; cv=none; b=kjbwF+TRWvn0OHhb6MrxRupHkKDOpBbznSUfHYXgYX6LmgjwM4cORlegAnRRSUztGriTk8rhjx0BPG7LF/9EKNfFb5uppREMbMZBix7xlyTsw0y/i4xmgN1tGWdFkqfdTZYNAhr0rypiIaXDxTJZ/HiJYTJWEP4S3CqtJubgJug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736518423; c=relaxed/simple;
-	bh=cFP3bHfydKoOvJDX4q6qcRv+WfA9oo+5sIiUfxPlzr0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=okogJLwbhldres14ojlVGjH9QCxT9SBk9qvyMj9M+y6qqkuw81+7Yg4lVW6fYuTu6ksgP0WkuymZZfIQOHKBHw7dvSblDSn1NlHLeJR/ZKRrPOzUIUZTH9h7ELN2JbJN3yecTK/NKX1gjudtv24XKWQpCbyE1rlRtEODqCdZyiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GV8XkraW; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7b6e5ee6ac7so161303985a.0;
-        Fri, 10 Jan 2025 06:13:41 -0800 (PST)
+	s=arc-20240116; t=1736518889; c=relaxed/simple;
+	bh=eZLl37fOSbYQYDLGS5Y/QLTa91exobFept6c4ErWMTE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=u+R/1b4/h1aF3Cw/SbeKNw4rjreADlZi4kKXsmbvevDefrqy0eYt8pcCHHYhckeX9AaK5NNnix7TDpQNh+6BcOwVMLkmsObMQrBx4sN7agSL8BKKr5LvH9KIWZkybFqAg07kv0lmUqrXiMEdqui7VY93vu34J765b9dXDJil9s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--gnoack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4OD9GaIK; arc=none smtp.client-ip=209.85.208.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--gnoack.bounces.google.com
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-5d40c0c728aso1688963a12.2
+        for <stable@vger.kernel.org>; Fri, 10 Jan 2025 06:21:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736518421; x=1737123221; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g3xGxxcjkV1GQqHW+T0bZftfuqunVR2tHc64hAbzPOU=;
-        b=GV8XkraW7eQJ67ECAJYRHAvX6Kb/HL1AQyseKrCA5GuNbRxLIiVnh5u+i2wXspIx5P
-         U23YxA4EvhCx1KT99RKUpWFH/g6wjGTdn56rokjVLeA2Nc8oWwjO0ZngOjlIHdg+VSmv
-         JaF5iiAbb0af8p5J5PDMe8EZbVfjSs1hJt3TiD/wbVLVHg1BdmF6xEJjdJK/zsg1tLlU
-         nBn0UsrsjhyDXR68yPEdf+FKYr4PmPNyD0v+CJERuCDfZyrPc8bWJkze+Skynx83zb1f
-         +vpqkHpALsTEJOklbPR+cJ7Z60mz5n7nQe0CC43/hVDXH5oUZP7to0vKyRa4z0CnjEmT
-         5EAA==
+        d=google.com; s=20230601; t=1736518885; x=1737123685; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9umdn33M+pmVRz+NuzpgduvU4xJDCFruejcIKVHUmT0=;
+        b=4OD9GaIKd+6iSucTKlTyfl17+CPR4JKN3DmLRP3AUTAfRoepDmROEZmKNwVQPsf59F
+         jGwpFAhYuqMW+JJrB+8aStyGvse22OMIJZ/5FIcwYDKdqvEca+OKsD44dSI1JaGmnGUF
+         vur9y9vV2z7ZBAtts+cIXE8mEDeh0N/wZoTUprpFIQm/9g0OI69Wg7faXUjPa+6nZXT/
+         fl59+8GCwxuN7uR4MBmD4wZWXtiUO56DL+WBtX83cLfx8z9OEv72GZ7dzb+9lVnCGpT6
+         dkKZcc7/w4H437GPd5GIJpRnIzbL9DKm6psGEU4O1HJa8F/eobaGxs0WQSrPcY/Orni4
+         4SBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736518421; x=1737123221;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=g3xGxxcjkV1GQqHW+T0bZftfuqunVR2tHc64hAbzPOU=;
-        b=v0HRGA/gabJOUVtVvgPIOMqvL1W0b5uEAclSTWjWHWjYU2PkBaoDXw3nc4KWHwCDyu
-         EqQCnYihqJpiZfM6sk9sQEyYAIE1QG2OC2hPxNMFd1XlzLx5tihnk1ijVxkDBvE6NgcJ
-         dXT3n9K3sZYpGQl/CLj8xjiYTmCO8TXsjBE78a38/ad5ngznqmDXiJUDExzv64SlVBjf
-         N9Mb4frf1ba5enKRGNiaq+CbWnPUNbV8xMuXK6LHy9jf2imyVDW4g3pXmZeVfqywJPV3
-         XlD7lOsV0IMkEIrBazdYmyOFI3itPoXM/mG9ocwyRhpT413YJ5/HkFuj/CvUbKMZn6HL
-         e9jw==
-X-Forwarded-Encrypted: i=1; AJvYcCUAfXjglFvimCGbm8VZNNfGCzRmJtgTKZ4Z8nlMl4Fkq4mIcjNgbDZ0tKJreZRFQFMxB+RxxdeR0lQ5NdFU@vger.kernel.org, AJvYcCVBn3UOIEDMwBnlkch/Cg3lk6znaz3v/isfNWkppQno5BXOfzlzfzz8HcjGRBlu/rBLBkEssd5C@vger.kernel.org, AJvYcCWE0N6df2Z0/pajGB9VwTPfpVgj7iP0g23n2KAtUE8JIdkDb3Pk/sI24Q//DUZAhbC3eAkNDSjdYVuTGQ==@vger.kernel.org, AJvYcCXWeuVIrU/VPSMdt+x/Bt+uGa1Hm8TbccurcJsbwpA3ZkZMQt/NZrl4guFAdOd4IbMZyovPV3iZAC346/RcFI8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yymln0cE88xojbA6oBlxntkz7fOEwF/um1hDB70gTg6VEnh2L9M
-	h5QrHTCTrR24tDKKoE1hrYjrBXMBpVTB0FAAIaoFEZ4aE0zaMOvB
-X-Gm-Gg: ASbGncs04rRX+zhQHuJrI+sMWWzKB7FtUocOfh3bPc7BneIuzFh6v/6+WzA2MunAf6E
-	nq0q/hTBfqjCm16s7LLD2LJGqWN2duhFsRRJ2oC5TWq+PNWgeClhTaJVh+qHtNp0pi70klFYEsj
-	8FlZIlvBxiFOeN1qpuqX5fw1tLhjLx4s2ILU0Eui2xZqX4moxWFwHuFAZ0LSSzTn8gJhBhZRyYe
-	/0hlPShkZGdDJW5wIymfJkE2aDJxkiBZSRhvErp2qkzKImEKE3uBLDUU9vbW8NrBermBrVqm/pc
-	hADju4q33YDmNYp6Wn2rqGWfsu+Ibgoz9Q/ekmUDqsdn2sg=
-X-Google-Smtp-Source: AGHT+IH/AJg7VLbxKgbG7Pi1UJDN7P0zRvx3nd32SpuhQVy2b3XtRSRC0CSWf3XE+/PwJfIXOKH9Xg==
-X-Received: by 2002:a05:620a:4142:b0:7b7:106a:19b7 with SMTP id af79cd13be357-7bcd970d4b8mr1646495685a.18.1736518420710;
-        Fri, 10 Jan 2025 06:13:40 -0800 (PST)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7bce350e155sm174951085a.97.2025.01.10.06.13.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jan 2025 06:13:39 -0800 (PST)
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id E0BA9120007B;
-	Fri, 10 Jan 2025 09:13:38 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Fri, 10 Jan 2025 09:13:38 -0500
-X-ME-Sender: <xms:EiuBZw2XQQGXKzRHxWCP5ZF9TIiw4_yfFbzF5PpcvD904wijbN3RBg>
-    <xme:EiuBZ7EalUTYjQmmBEOk6I15iNHW0owqLn69HToj8kifbz6htdxAAbLGTSqwMPwwT
-    TuVcZeFTFOEiKO-YA>
-X-ME-Received: <xmr:EiuBZ467AzrqEeHIO2ZyLK6bVyTR8C9LNMM1IUbTxbcbbeaKGEvmmoZXecc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudegkedgieduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
-    gtohhmqeenucggtffrrghtthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedvteeh
-    uddujedvkedtkeefgedvvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuve
-    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdo
-    mhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejke
-    ehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgr
-    mhgvpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
-    eplhgvvhihmhhithgthhgvlhhltdesghhmrghilhdrtghomhdprhgtphhtthhopehojhgv
-    uggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmh
-    grihhlrdgtohhmpdhrtghpthhtohepfigvughsohhnrghfsehgmhgrihhlrdgtohhmpdhr
-    tghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnh
-    efpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsggvnhhnohdrlhho
-    shhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprghlihgtvghrhihhlhesghhooh
-    hglhgvrdgtohhmpdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuh
-X-ME-Proxy: <xmx:EiuBZ53b410hiT_tH4zrdIbdQ3KT21JRawsgjLL3lwYM8rfXq6D0SQ>
-    <xmx:EiuBZzFUU4il_pl5RCBYIR6nNcPSBzD5S_TNk3jt3TQlUEvs08_Tew>
-    <xmx:EiuBZy97MYXYWQYsFzwiWOFYBkB4XT7HzpaPXRvdv5RIZ-nvaMIFkw>
-    <xmx:EiuBZ4k-r-7GEXVxvXRJ0LWav4iFtDaRUQmwoSaQFY9BgmTO8VPZRg>
-    <xmx:EiuBZzGDyY8n9cek9T8To5f1RW1QUS8t03fiDW9L9Esmpmd24aazS_-F>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 10 Jan 2025 09:13:38 -0500 (EST)
-Date: Fri, 10 Jan 2025 06:12:34 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Mitchell Levy <levymitchell0@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] rust: lockdep: Fix soundness issue affecting
- LockClassKeys
-Message-ID: <Z4Eq0qoZaIt7j9zW@boqun-archlinux>
-References: <20241219-rust-lockdep-v2-0-f65308fbc5ca@gmail.com>
+        d=1e100.net; s=20230601; t=1736518885; x=1737123685;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=9umdn33M+pmVRz+NuzpgduvU4xJDCFruejcIKVHUmT0=;
+        b=Dkta4VDstxAwIO8GToUunXE46mRujt9mqeOkIP1W/biga3qayhkPxatGcVtrr2HA7B
+         fco7p7lgE4p5mhCASPQqECpnQXe+pdw55ASOlb/tPpymdyGSrDLMPvGlTi1DSCitGjrE
+         KuhyZTo1iEvd1SkrVVF4l/blgU78JjBGIHbNTI9GrAX2vsHsOgQn9/jgFKUNvgpVSoFS
+         TWkgcA1yTEkUd0AruM+ABUSNFUIkEjdaM9junKe/fptD6L+CJnNlHxG4YnTJe3LLxPJU
+         LksJZMdM8MZDOqir+pvhDMBPD7fC925QrketuTA1P5sJjAC2qWDD88LuB2v4hVCSJuQA
+         6LUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXTFohrmoAY/Apk0Wl/uPiNhrILYzRjibJl46bMfyrAUpxIlNm5OlC4nr1DnJfN7mOpm0vwFkk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfMXJRZwtxxRDWnas0vGyNrnlJnSegy7+ZFiMFVnJHvsUici0R
+	Y5kzW66P4iDdasRonF+HhNQdORQuhsEh4Ya5vV1AVb/iI/ShFLPdGRs73uCZ70eKfoaPmddT++S
+	+0g==
+X-Google-Smtp-Source: AGHT+IHRHNispYW5vs1jXOBSVq75OKtYcFcYRuAEh4jZLhpJkXnr4emt/EvlkNg20gd/mcSFGW2ts8m0Ozk=
+X-Received: from edqg23.prod.google.com ([2002:aa7:c597:0:b0:5d9:1530:45a7])
+ (user=gnoack job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:278f:b0:5d0:ed92:cdf6
+ with SMTP id 4fb4d7f45d1cf-5d972e1c66bmr22388062a12.19.1736518885687; Fri, 10
+ Jan 2025 06:21:25 -0800 (PST)
+Date: Fri, 10 Jan 2025 14:21:22 +0000
+In-Reply-To: <Z2ahOy7XaflrfCMw@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241219-rust-lockdep-v2-0-f65308fbc5ca@gmail.com>
+Mime-Version: 1.0
+References: <Z2ahOy7XaflrfCMw@google.com>
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
+Message-ID: <20250110142122.1013222-1-gnoack@google.com>
+Subject: [PATCH v2] tty: Permit some TIOCL_SETSEL modes without CAP_SYS_ADMIN
+From: "=?UTF-8?q?G=C3=BCnther=20Noack?=" <gnoack@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jann Horn <jannh@google.com>, "=?UTF-8?q?Hanno=20B=C3=B6ck?=" <hanno@hboeck.de>, Jiri Slaby <jirislaby@kernel.org>, 
+	linux-hardening@vger.kernel.org, regressions@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, 
+	"=?UTF-8?q?G=C3=BCnther=20Noack?=" <gnoack@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 19, 2024 at 12:58:54PM -0800, Mitchell Levy wrote:
-> This series is aimed at fixing a soundness issue with how dynamically
-> allocated LockClassKeys are handled. Currently, LockClassKeys can be
-> used without being Pin'd, which can break lockdep since it relies on
-> address stability. Similarly, these keys are not automatically
-> (de)registered with lockdep.
-> 
-> At the suggestion of Alice Ryhl, this series includes a patch for
-> -stable kernels that disables dynamically allocated keys. This prevents
-> backported patches from using the unsound implementation.
-> 
-> Currently, this series requires that all dynamically allocated
-> LockClassKeys have a lifetime of 'static (i.e., they must be leaked
-> after allocation). This is because Lock does not currently keep a
-> reference to the LockClassKey, instead passing it to C via FFI. This
-> causes a problem because the rust compiler would allow creating a
-> 'static Lock with a 'a LockClassKey (with 'a < 'static) while C would
-> expect the LockClassKey to live as long as the lock. This problem
-> represents an avenue for future work.
-> 
+With this, processes without CAP_SYS_ADMIN are able to use TIOCLINUX with
+subcode TIOCL_SETSEL, in the selection modes TIOCL_SETPOINTER,
+TIOCL_SELCLEAR and TIOCL_SELMOUSEREPORT.
 
-Thanks for doing this! I found some clippy warnings with the current
-version, but overall it looks good to me. That said, appreciate it if
-patch #2 gets more reviews on the interface changes, thanks!
+TIOCL_SETSEL was previously changed to require CAP_SYS_ADMIN, as this IOCTL
+let callers change the selection buffer and could be used to simulate
+keypresses.  These three TIOCL_SETSEL selection modes, however, are safe to
+use, as they do not modify the selection buffer.
 
-Regards,
-Boqun
+This fixes a mouse support regression that affected Emacs (invisible mouse
+cursor).
 
-> ---
-> Changes from RFC:
-> - Split into two commits so that dynamically allocated LockClassKeys are
-> removed from stable kernels. (Thanks Alice Ryhl)
-> - Extract calls to C lockdep functions into helpers so things build
-> properly when LOCKDEP=n. (Thanks Benno Lossin)
-> - Remove extraneous `get_ref()` calls. (Thanks Benno Lossin)
-> - Provide better documentation for `new_dynamic()`. (Thanks Benno
-> Lossin)
-> - Ran rustfmt to fix formatting and some extraneous changes. (Thanks
-> Alice Ryhl and Benno Lossin)
-> - Link to RFC: https://lore.kernel.org/r/20240905-rust-lockdep-v1-1-d2c9c21aa8b2@gmail.com
-> 
-> ---
-> Changes in v2:
-> - Dropped formatting change that's already fixed upstream (Thanks Dirk
->   Behme).
-> - Moved safety comment to the right point in the patch series (Thanks
->   Dirk Behme and Boqun Feng).
-> - Added an example of dynamic LockClassKey usage (Thanks Boqun Feng).
-> - Link to v1: https://lore.kernel.org/r/20241004-rust-lockdep-v1-0-e9a5c45721fc@gmail.com
-> 
-> ---
-> Mitchell Levy (2):
->       rust: lockdep: Remove support for dynamically allocated LockClassKeys
->       rust: lockdep: Use Pin for all LockClassKey usages
-> 
->  rust/helpers/helpers.c          |  1 +
->  rust/helpers/sync.c             | 13 +++++++++
->  rust/kernel/sync.rs             | 63 ++++++++++++++++++++++++++++++++++-------
->  rust/kernel/sync/condvar.rs     |  5 ++--
->  rust/kernel/sync/lock.rs        |  9 ++----
->  rust/kernel/sync/lock/global.rs |  5 ++--
->  rust/kernel/sync/poll.rs        |  2 +-
->  rust/kernel/workqueue.rs        |  3 +-
->  8 files changed, 78 insertions(+), 23 deletions(-)
-> ---
-> base-commit: 0c5928deada15a8d075516e6e0d9ee19011bb000
-> change-id: 20240905-rust-lockdep-d3e30521c8ba
-> 
-> Best regards,
-> -- 
-> Mitchell Levy <levymitchell0@gmail.com>
-> 
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/ee3ec63269b43b34e1c90dd8c9743bf8@finder.org
+Fixes: 8d1b43f6a6df ("tty: Restrict access to TIOCLINUX' copy-and-paste sub=
+commands")
+Signed-off-by: G=C3=BCnther Noack <gnoack@google.com>
+---
+Changes in V2:
+
+ * Removed comment in vt.c (per Greg's suggestion)
+
+ * CC'd stable@
+
+ * I *kept* the CAP_SYS_ADMIN check *after* copy_from_user(),
+   with the reasoning that:
+
+   1. I do not see a good alternative to reorder the code here.
+      We need the data from copy_from_user() in order to know whether
+      the CAP_SYS_ADMIN check even needs to be performed.
+   2. A previous get_user() from an adjacent memory region already worked
+      (making this a very unlikely failure)
+
+I would still appreciate a more formal Tested-by from Hanno (hint, hint) :)
+
+---
+ drivers/tty/vt/selection.c | 14 ++++++++++++++
+ drivers/tty/vt/vt.c        |  2 --
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/tty/vt/selection.c b/drivers/tty/vt/selection.c
+index 564341f1a74f..0bd6544e30a6 100644
+--- a/drivers/tty/vt/selection.c
++++ b/drivers/tty/vt/selection.c
+@@ -192,6 +192,20 @@ int set_selection_user(const struct tiocl_selection __=
+user *sel,
+ 	if (copy_from_user(&v, sel, sizeof(*sel)))
+ 		return -EFAULT;
+=20
++	/*
++	 * TIOCL_SELCLEAR, TIOCL_SELPOINTER and TIOCL_SELMOUSEREPORT are OK to
++	 * use without CAP_SYS_ADMIN as they do not modify the selection.
++	 */
++	switch (v.sel_mode) {
++	case TIOCL_SELCLEAR:
++	case TIOCL_SELPOINTER:
++	case TIOCL_SELMOUSEREPORT:
++		break;
++	default:
++		if (!capable(CAP_SYS_ADMIN))
++			return -EPERM;
++	}
++
+ 	return set_selection_kernel(&v, tty);
+ }
+=20
+diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
+index 96842ce817af..be5564ed8c01 100644
+--- a/drivers/tty/vt/vt.c
++++ b/drivers/tty/vt/vt.c
+@@ -3345,8 +3345,6 @@ int tioclinux(struct tty_struct *tty, unsigned long a=
+rg)
+=20
+ 	switch (type) {
+ 	case TIOCL_SETSEL:
+-		if (!capable(CAP_SYS_ADMIN))
+-			return -EPERM;
+ 		return set_selection_user(param, tty);
+ 	case TIOCL_PASTESEL:
+ 		if (!capable(CAP_SYS_ADMIN))
+--=20
+2.47.1.613.gc27f4b7a9f-goog
+
 
