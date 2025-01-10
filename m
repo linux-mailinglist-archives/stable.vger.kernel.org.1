@@ -1,150 +1,182 @@
-Return-Path: <stable+bounces-108206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ADF0A095ED
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 16:39:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39B2EA096D4
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 17:11:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 314763A9CBE
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 15:39:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3130C166C4D
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 16:11:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B9A21149C;
-	Fri, 10 Jan 2025 15:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277ED212D70;
+	Fri, 10 Jan 2025 16:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ru+35QVc"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="e5TQGeIp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B832320E6E5
-	for <stable@vger.kernel.org>; Fri, 10 Jan 2025 15:38:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A13212D6C
+	for <stable@vger.kernel.org>; Fri, 10 Jan 2025 16:11:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736523541; cv=none; b=Xi951vyhPAv1DvqsxJdZockEHMl73X05acHcZo//3BMVH8u/auZPHVNbA9/IJW8Rix8KYUYvE0Jhs2KiRMFZyJndgNx5rVW+ZSy1RUerxBGtZvQBfdpxLNiZNzi7CxvQOlgfXKyYFcF8plUTXqvUVNi9xPJCaYlIHdTIWAisjsk=
+	t=1736525473; cv=none; b=J0hiaXhR/8C3Ss/ll+QEtsw90aFfTpfoxNloMT5Z+b3r6H6xT1sSyQa+gJyTzh6svm7qrSRvYLXjMG2rYs8VulTg6R3sjlel0ZEoTBMw2N+kGEIH+rD6Ys3xniQlJgb4cDaiUoI0QpYTZQxmdNMT8CPImJ2oXXPGeUY6eNDrCqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736523541; c=relaxed/simple;
-	bh=dguGAvjO1k2ksf6Wi1QR1v12mrQeonkG+zVOUsOlMT0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kGtOQs5UuwQmJ/zBTK/CgvoiionYjGhu18vespM+OjGAGwWhecwQI+XeKGbEiwd3h1NMGQivvggruMBXxzYwKROo5DI9bdzNUxlqa+eaPA1nVPTrepSao/dcQyQGQuSAIRMB8DPyj1gWiSGRYP6wsz7js9cxZdNoO+xyalfK5Cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ru+35QVc; arc=none smtp.client-ip=209.85.160.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-29fcbf3d709so757257fac.2
-        for <stable@vger.kernel.org>; Fri, 10 Jan 2025 07:38:59 -0800 (PST)
+	s=arc-20240116; t=1736525473; c=relaxed/simple;
+	bh=MljjxHxoX8GaHS+84Uy1/WpDs2AAXeW0sPr4j69SroE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cRXaUxlgFzd4zcuyTTeEdkyPzFIJIpX2ZbDMxAzfdJUrHetOXsYQKwV1alOPq2KljZVOVF6hi7xaV4kDFuXQ89V7jBJ3itFTL8UVRo2baaR3tBNXOawGShfqiEDhXp36DgI0tziR5da+miowy1c/zgIzfaF1t8KbQzrkuI+sc1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=e5TQGeIp; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-aab6fa3e20eso400416866b.2
+        for <stable@vger.kernel.org>; Fri, 10 Jan 2025 08:11:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736523539; x=1737128339; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X/EZ0rj+IZqLFNk3BBR2b6wuYkByDNp1Zv35hpXQEpI=;
-        b=ru+35QVcgeHn685ERYeUNs5oq89fzViC2/ZAAFF2ZzxTEigyzMS6n3l/ZegN3FB86p
-         QY9ZnnnBtmJcA9iQ9Lz7NOLJORfCdx5hoKz0/wEXOejm+g6792Zq3wCbxRwpgAcf3hvs
-         +fqJTdDNtqwIMFLANGYy5X//bH6tZwxK9QER02V4DNTdQgr82B/8HIaRlcDUNNQ6Zxpx
-         RpaI0FayluBpOvGE//gPhEWLoIbyB+7nxe8CKKcZ7iCTfLs785SdkiRRRSFtJ3tF+3Ll
-         FTWhH/UDDOE8Bw6OIsSeAecai3X6frHuw1+d2xCXQYJ1QCemkZQlPRt2SX9NZo4IIHXK
-         r+Xw==
+        d=linaro.org; s=google; t=1736525469; x=1737130269; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sO6+i0NXUmRSFkB9Yu3Q8N5mmOo8V2pYge16oXXAEWU=;
+        b=e5TQGeIpjfbm0P23SOJtQKZpWMAomCS8WGRGnvwk7Msj1HAQnsXm7/WyYzjCdP1lfv
+         FZM0TX+e3vWYOzeLStaFIkpHpG67dPydcXKL+RMwmdrBYWUyrf0oUofkBmKsPoYVJJNy
+         j25M0zm2xhD3rxUe29c1geILUADFm2W+BIsBR2IwOMk+ntgTsviGm4tlD8yRPqidbMTP
+         AAk0hZ2pZPi3pNU6yxlcG6DbgTwmGU7w1GDtlZEZdlOaA+8CYS0yqEIOXI2+sqqJ0lxN
+         R98+b5DkjMO8tcQ4kM0985O6PHB2gLFIzow5H2bK55lkLJvIKFr5xdxoKfhoXzXFTUlW
+         J3Kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736523539; x=1737128339;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=X/EZ0rj+IZqLFNk3BBR2b6wuYkByDNp1Zv35hpXQEpI=;
-        b=Zi3rb3aYOSe6Zept3ExXjZfudEYO30n4odbTZ3bw16gOZS95QKqLAkRMSnpx+QnQKX
-         v0u9k5Cb76bbeXX7u9WCzqJ9JrshgbDCmIXNdLZ50dK2mEWtoRGiGEbfNfievS0M7tgv
-         jomzKG19Tbti8rzcIe8F4myj4MwMRE9XB4u9eWw1KnyQjZxTMzVTIVXko/vK7pHpDiF5
-         jm9EzY7O5y9a9USVi8IAtgYdzA5XdW9tmvuMG9iayCk25wQR5M6xMI72ArtcapeOrHFX
-         eMS0qgBaszbiFA0HUmH0Z6oXXaeeGBQ4ulU/b+D1AuNyr1DKl6xVcZ8XUiZhzUb0OsQu
-         JZug==
-X-Forwarded-Encrypted: i=1; AJvYcCWA0qjJ60K2VIf0epWg2viiBnBJWXIEMm/jvpB51GvlYfnngLlYc4e4lwQ9sFKeqzhgsqxHetY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEcm5TaxX+bimSPq80fQiuXAQdmDdgtEPSoYeiINsXg3IP0WVe
-	d79LR0devJL6HrLJ+kR+aldL8GVna9JfpYgBwFGZFG9Lm3jF9N01gKDXo3MUn975F0LsyfwIAtB
-	+IG7IEFXONJ+fP6X64MBJPO4GNTWy2WldGNAW
-X-Gm-Gg: ASbGnctvLjE1z5Z2YwOU+HnhYSf2noRDcpDgu+6nEyxp/4zvrkpfbJFmnlB/GQSZheW
-	Zg1xpYepgWKNPB1UBU6a1sKnK5GFeN/l5oAC6MbrbAxJH3RcqEP6GtejklxaMg7V/2WsQ9w==
-X-Google-Smtp-Source: AGHT+IFW6NEU0HhZ7+KVsm6xKbbPBrtAz8729VXGQZ6HRAHS4LQggtFiUsIOin45YkuQ59WhaZMjFdW3q/MlLIpSXVA=
-X-Received: by 2002:a05:6871:d307:b0:29e:75ff:4d0c with SMTP id
- 586e51a60fabf-2aa066493f2mr6175890fac.4.1736523538623; Fri, 10 Jan 2025
- 07:38:58 -0800 (PST)
+        d=1e100.net; s=20230601; t=1736525469; x=1737130269;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sO6+i0NXUmRSFkB9Yu3Q8N5mmOo8V2pYge16oXXAEWU=;
+        b=UWpjSaubKSHkKtVat4W9Kcj4hnRBJ5i4vM1oeIy/YaP4+dj3iM67cgYbQhTdWjVWKt
+         0+qOP7OS+yi+NZE8xc4JqslsTKIPPZe4CukPDsXig3nA4nJg1mhSAQc1BOlNXdyU+Ite
+         wTz5ryHbJqdYAN1h40DSAiKGinE4fedQ/THCoXNlnagVwmhlV0Yl0LW6y0oAWaV4ZoF6
+         LMY1HB3LY8YhEcakwREEYAAZcsrl78A4nd3eejI8ug/QlLXNKpXBozk2uytxQPe6xMwY
+         RmIgyJRWbAIaZ44B9XtYS4rwZTqGde4PB/KkCm44vpR8E2gYFml32uYVGNDg0wQ4Gh4i
+         45XA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQMzKXaXD5JZY1gdIV3+H4NM1kFrSWhOdXHzjIATIvI9gZv/jzJfxjyVuJwDs/WlIvxgdxwZ4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzW7quHzW+vJNVTLcVcugyBZaSS2GKIk5uB8jGWyOOxWsIOii7T
+	ZEw2GPJvsp/YDvsNC9iTy74FSCzUEhKd94FZLgrBNHHqTFGmFg9/llf4PX5BO+A=
+X-Gm-Gg: ASbGncveAP0QBbe+CrTOP8rW5Gu/5MLykCKLA5ezuuOS0EA9t0Za++w04uj6hmC54w2
+	w1rDOZuha1egsXUBtXM2vrW48Tv14bzP6pYCSjDbzy0fLcsPni6tPOm2QoYpicdIExiem5KDTzd
+	iWrYERKXuC4Tlbx4+9OdwUJmNc260GbUEDEltLCq0Tn1Hocg3BDW+4/ZXrFjI8SeNnc1CZUSdtR
+	76MB8Eud8jZeiWZWC3hS447OCxtZg7pZ/gyN1nifp5Tubt3Gps4tqDExsXjzva5dFJWiEeFcBGQ
+	oh8HG4D+uecQLRnOECdrmz+p7dgEeM/tVtfmbb4=
+X-Google-Smtp-Source: AGHT+IGR8Mr43qQ2KZkd4hExeY9sbgGkPznFRQnq8uVi39PAySYYj5afLQ5wWGDPffFXfSQg4AVVKQ==
+X-Received: by 2002:a17:907:cbc9:b0:ab2:b6e2:fcc9 with SMTP id a640c23a62f3a-ab2b6e2ff66mr983077066b.45.1736525469279;
+        Fri, 10 Jan 2025 08:11:09 -0800 (PST)
+Received: from ?IPV6:2a02:8109:888d:ff00:ca7f:54ff:fe52:4519? ([2a02:8109:888d:ff00:ca7f:54ff:fe52:4519])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c9060e27sm183198066b.13.2025.01.10.08.11.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Jan 2025 08:11:08 -0800 (PST)
+Message-ID: <0ef372a6-705b-4080-9089-0ad12913de88@linaro.org>
+Date: Fri, 10 Jan 2025 17:11:07 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250105135245.7493-1-joswang1221@gmail.com> <Z3z92o0XlaqXLwrb@kuha.fi.intel.com>
-In-Reply-To: <Z3z92o0XlaqXLwrb@kuha.fi.intel.com>
-From: Badhri Jagan Sridharan <badhri@google.com>
-Date: Fri, 10 Jan 2025 07:38:22 -0800
-X-Gm-Features: AbW1kvYgs1JdPShDrkbOkv9xVK82I3DMUSiJmqqz0XOcf5NodvGpPJans-vFzOs
-Message-ID: <CAPTae5+exinnRhvU1DePuEwq6HNUPBvb1WjPH1i7PtUHq_VGOg@mail.gmail.com>
-Subject: Re: [PATCH 1/1] usb: typec: tcpm: set SRC_SEND_CAPABILITIES timeout
- to PD_T_SENDER_RESPONSE
-To: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc: joswang <joswang1221@gmail.com>, dmitry.baryshkov@linaro.org, 
-	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Jos Wang <joswang@lenovo.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Jan 7, 2025 at 2:11=E2=80=AFAM Heikki Krogerus
-<heikki.krogerus@linux.intel.com> wrote:
->
-> +Badhri
->
-> On Sun, Jan 05, 2025 at 09:52:45PM +0800, joswang wrote:
-> > From: Jos Wang <joswang@lenovo.com>
-> >
-> > As PD2.0 spec ("8.3.3.2.3 PE_SRC_Send_Capabilities state"), after the
-> > Source receives the GoodCRC Message from the Sink in response to the
-> > Source_Capabilities message, it should start the SenderResponseTimer,
-> > after the timer times out, the state machine transitions to the
-> > HARD_RESET state.
-> >
-> > Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Jos Wang <joswang@lenovo.com>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-> > ---
-> >  drivers/usb/typec/tcpm/tcpm.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcp=
-m.c
-> > index 460dbde9fe22..57fae1118ac9 100644
-> > --- a/drivers/usb/typec/tcpm/tcpm.c
-> > +++ b/drivers/usb/typec/tcpm/tcpm.c
-> > @@ -4821,7 +4821,7 @@ static void run_state_machine(struct tcpm_port *p=
-ort)
-> >                       port->caps_count =3D 0;
-> >                       port->pd_capable =3D true;
-> >                       tcpm_set_state_cond(port, SRC_SEND_CAPABILITIES_T=
-IMEOUT,
-> > -                                         PD_T_SEND_SOURCE_CAP);
-> > +                                         PD_T_SENDER_RESPONSE);
-
-This aligns with what the spec says as Jos Wang has already mentioned.
-However, itdoes reduce the time within which the sink has to reply back wit=
-h the
-request message. So if there are non-compliant sinks, which we don't
-know of yet, we would know now and we can later see how we can handle
-the interoperability.
-
-Regards,
-Badhri
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC] soc: qcom: pmic_glink: Fix device access from worker
+ during suspend
+Content-Language: en-US
+To: Abel Vesa <abel.vesa@linaro.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Johan Hovold <johan@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250110-soc-qcom-pmic-glink-fix-device-access-on-worker-while-suspended-v1-1-e32fd6bf322e@linaro.org>
+From: Caleb Connolly <caleb.connolly@linaro.org>
+In-Reply-To: <20250110-soc-qcom-pmic-glink-fix-device-access-on-worker-while-suspended-v1-1-e32fd6bf322e@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
 
-> >               }
-> >               break;
-> >       case SRC_SEND_CAPABILITIES_TIMEOUT:
->
-> This looks okay to me, but let's get comments from Badhri, just in
-> case.
->
-> thanks,
->
-> --
-> heikki
+On 10/01/2025 16:29, Abel Vesa wrote:
+> The pmic_glink_altmode_worker() currently gets scheduled on the system_wq.
+> When the system is suspended (s2idle), the fact that the worker can be
+> scheduled to run while devices are still suspended provesto be a problem
+> when a Type-C retimer, switch or mux that is controlled over a bus like
+> I2C, because the I2C controller is suspended.
+> 
+> This has been proven to be the case on the X Elite boards where such
+> retimers (ParadeTech PS8830) are used in order to handle Type-C
+> orientation and altmode configuration. The following warning is thrown:
+> 
+> [   35.134876] i2c i2c-4: Transfer while suspended
+> [   35.143865] WARNING: CPU: 0 PID: 99 at drivers/i2c/i2c-core.h:56 __i2c_transfer+0xb4/0x57c [i2c_core]
+> [   35.352879] Workqueue: events pmic_glink_altmode_worker [pmic_glink_altmode]
+> [   35.360179] pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+> [   35.455242] Call trace:
+> [   35.457826]  __i2c_transfer+0xb4/0x57c [i2c_core] (P)
+> [   35.463086]  i2c_transfer+0x98/0xf0 [i2c_core]
+> [   35.467713]  i2c_transfer_buffer_flags+0x54/0x88 [i2c_core]
+> [   35.473502]  regmap_i2c_write+0x20/0x48 [regmap_i2c]
+> [   35.478659]  _regmap_raw_write_impl+0x780/0x944
+> [   35.483401]  _regmap_bus_raw_write+0x60/0x7c
+> [   35.487848]  _regmap_write+0x134/0x184
+> [   35.491773]  regmap_write+0x54/0x78
+> [   35.495418]  ps883x_set+0x58/0xec [ps883x]
+> [   35.499688]  ps883x_sw_set+0x60/0x84 [ps883x]
+> [   35.504223]  typec_switch_set+0x48/0x74 [typec]
+> [   35.508952]  pmic_glink_altmode_worker+0x44/0x1fc [pmic_glink_altmode]
+> [   35.515712]  process_scheduled_works+0x1a0/0x2d0
+> [   35.520525]  worker_thread+0x2a8/0x3c8
+> [   35.524449]  kthread+0xfc/0x184
+> [   35.527749]  ret_from_fork+0x10/0x20
+> 
+> The solution here is to schedule the altmode worker on the system_freezable_wq
+> instead of the system_wq. This will result in the altmode worker not being
+> scheduled to run until the devices are resumed first, which will give the
+> controllers like I2C a chance to resume before the transfer is requested.
+
+Nice job figuring this out, it was definitely a confusing one :D
+> 
+> Fixes: 080b4e24852b ("soc: qcom: pmic_glink: Introduce altmode support")
+> Cc: stable@vger.kernel.org    # 6.3
+> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+
+Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
+> ---
+>  drivers/soc/qcom/pmic_glink_altmode.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/soc/qcom/pmic_glink_altmode.c b/drivers/soc/qcom/pmic_glink_altmode.c
+> index bd06ce16180411059e9efb14d9aeccda27744280..bde129aa7d90a39becaa720376c0539bcaa492fb 100644
+> --- a/drivers/soc/qcom/pmic_glink_altmode.c
+> +++ b/drivers/soc/qcom/pmic_glink_altmode.c
+> @@ -295,7 +295,7 @@ static void pmic_glink_altmode_sc8180xp_notify(struct pmic_glink_altmode *altmod
+>  	alt_port->mode = mode;
+>  	alt_port->hpd_state = hpd_state;
+>  	alt_port->hpd_irq = hpd_irq;
+> -	schedule_work(&alt_port->work);
+> +	queue_work(system_freezable_wq, &alt_port->work);
+>  }
+>  
+>  #define SC8280XP_DPAM_MASK	0x3f
+> @@ -338,7 +338,7 @@ static void pmic_glink_altmode_sc8280xp_notify(struct pmic_glink_altmode *altmod
+>  	alt_port->mode = mode;
+>  	alt_port->hpd_state = hpd_state;
+>  	alt_port->hpd_irq = hpd_irq;
+> -	schedule_work(&alt_port->work);
+> +	queue_work(system_freezable_wq, &alt_port->work);
+>  }
+>  
+>  static void pmic_glink_altmode_callback(const void *data, size_t len, void *priv)
+> 
+> ---
+> base-commit: 2b88851f583d3c4e40bcd40cfe1965241ec229dd
+> change-id: 20250110-soc-qcom-pmic-glink-fix-device-access-on-worker-while-suspended-af54c5e43ed6
+> 
+> Best regards,
+
+-- 
+// Caleb (they/them)
+
 
