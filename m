@@ -1,126 +1,102 @@
-Return-Path: <stable+bounces-108223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF31A0992D
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 19:17:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E1BFA09970
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 19:31:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B86F8188C506
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 18:17:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 820F33A066A
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 18:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9AA6213E8D;
-	Fri, 10 Jan 2025 18:16:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="jUEAykmJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C5220767B;
+	Fri, 10 Jan 2025 18:30:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B589A213E69;
-	Fri, 10 Jan 2025 18:16:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C000121420C;
+	Fri, 10 Jan 2025 18:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736533011; cv=none; b=oiGJt35R1uyixuAcOSqHYTv+d/xTaGhSJXyKQwF9cZRxUFXd2o7DlMOjYqPLuwBOCRF2MBrx7EVDOx8LexcUhYATREX2LA4XAzardPgS1YXzB3kVLZsnKduMvlMrguD/o+vHovfvxxvVM+7j61pEN00qBgwlKOOJJ5St7PMsQ2M=
+	t=1736533853; cv=none; b=gdYwGRcGd5ZdcSnOTEa6rtEWZSLNy6kkZGyLro7aQiAG8Mwo3am/nmRU2cQMQqtAbu+Eg1+SnF3YC5ujmxa2gJ0D2hkSaEjssvinfTh327IiJFPLW0ci/xMmtSsQBFEtMkdxKyWvIQnPyi9GCLmufP4obDznfmjv/gq8NJYmSQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736533011; c=relaxed/simple;
-	bh=jc3nBorwB/824pJqjmXCJR+c05DsRhUrtM/v7PxwtgE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dcDV1LxWOCZZtKv1BPyGWvfKXTNmGCiqFNPXDAOspoXZKc9zDORgSYtkWGDr/DMNMTl2Sa5UNxsXrO5AqQtQgmy+SUAzmgB075NYNvTEU9HCtSqhNwpWHJOZPaHf4g3/4R2Dx8/KBef6iNwxJCmzqyPBT7J0KHxNqdCkgsuOB1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=jUEAykmJ; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [192.168.7.202] ([71.202.166.45])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 50AIGJ8g1258442
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Fri, 10 Jan 2025 10:16:20 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 50AIGJ8g1258442
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2024121701; t=1736532980;
-	bh=vVz9sDDaKWmvAxTgzXElbomT0vKUsov+Ipi6qfPGsXw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jUEAykmJ1Mv4bNcbsL36T7rHImL+28NJx1r61t2VaDEhVBhiKIrL+/Pi6+qvj+amL
-	 3DA9v3nY3L4j1dTiqC7m6++M2y9DdNspn/3evJzDinevtmryL5cyjmB4XWI8aSBZyy
-	 Mpa7pajG0Aax+ktyaGWBeMdBtFFbrVY+AzPNQ2TWtEzGAlfug1oeVeRtaB5yxthnfm
-	 NjTwPtgMQdCk/Kkhl2srSxb5J0S2Bp41JbJGWxqA0uc/wygXbIf/23Hrc3fBtXesSc
-	 Cr/osRKAvt5/wmZpomSQMT26CzXOgVWdFuXDbvt6jshd8yJ394Ts+PO9lU/6RToOIY
-	 rPb0OoW2k/Asg==
-Message-ID: <59157380-3675-42e1-9b26-34c0dbe0148c@zytor.com>
-Date: Fri, 10 Jan 2025 10:16:19 -0800
+	s=arc-20240116; t=1736533853; c=relaxed/simple;
+	bh=eEFxMl4mDu4wcI4ulehibmPMv1+PIEYYk/7+gzyWdho=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=R2X8ItF0ywk45tfGiTmTHezg5cRcnkL6Yh6dst45u9BxHSCUKemnW9uIH73DyFCoAkp2pVONPIL5dEmUTkDqg9zBlz8pvc3C3Ah8lU6Two6RXFkFalE0oADgBtQiyzFAZ9pjLeH0RcHkPuXvwSY5ASX7RrpuKBJaF5nPX6k773k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
+	by air.basealt.ru (Postfix) with ESMTPSA id 7AC4A2339E;
+	Fri, 10 Jan 2025 21:30:40 +0300 (MSK)
+From: Vasiliy Kovalev <kovalev@altlinux.org>
+To: stable@vger.kernel.org
+Cc: Bob Peterson <rpeterso@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	Juntong Deng <juntong.deng@outlook.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Clayton Casciato <majortomtosourcecontrol@gmail.com>,
+	lvc-project@linuxtesting.org,
+	kovalev@altlinux.org
+Subject: [PATCH 5.15] gfs2: Fix slab-use-after-free in gfs2_qd_dealloc
+Date: Fri, 10 Jan 2025 21:30:39 +0300
+Message-Id: <20250110183039.104994-1-kovalev@altlinux.org>
+X-Mailer: git-send-email 2.33.8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] x86/fred: Fix the FRED RSP0 MSR out of sync with
- its per-CPU cache
-To: Dave Hansen <dave.hansen@intel.com>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        andrew.cooper3@citrix.com
-References: <20250110174639.1250829-1-xin@zytor.com>
- <296bc51f-0668-4ef8-869b-8089ea6e9766@intel.com>
-Content-Language: en-US
-From: Xin Li <xin@zytor.com>
-Autocrypt: addr=xin@zytor.com; keydata=
- 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
- l75w1xInsg==
-In-Reply-To: <296bc51f-0668-4ef8-869b-8089ea6e9766@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 1/10/2025 10:09 AM, Dave Hansen wrote:
-> On 1/10/25 09:46, Xin Li (Intel) wrote:
-> ...> Fix the bug through resynchronizing the FRED RSP0 MSR with its
->> per-CPU cache in cpu_init_fred_exceptions().
->>
->> Fixes: fe85ee391966 ("x86/entry: Set FRED RSP0 on return to userspace instead of context switch")
->> Signed-off-by: Xin Li (Intel) <xin@zytor.com>
->> Cc: stable@vger.kernel.org
-> 
-> Thanks for the update:
-> 
-> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-> 
-> I'll probably do a wee bit of testing today and apply to the urgent pile
-> early next week.
-> 
+From: Juntong Deng <juntong.deng@outlook.com>
 
-Sure, thanks a lot!
+commit bdcb8aa434c6d36b5c215d02a9ef07551be25a37 upstream.
+
+In gfs2_put_super(), whether withdrawn or not, the quota should
+be cleaned up by gfs2_quota_cleanup().
+
+Otherwise, struct gfs2_sbd will be freed before gfs2_qd_dealloc (rcu
+callback) has run for all gfs2_quota_data objects, resulting in
+use-after-free.
+
+Also, gfs2_destroy_threads() and gfs2_quota_cleanup() is already called
+by gfs2_make_fs_ro(), so in gfs2_put_super(), after calling
+gfs2_make_fs_ro(), there is no need to call them again.
+
+Reported-by: syzbot+29c47e9e51895928698c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=29c47e9e51895928698c
+Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Clayton Casciato <majortomtosourcecontrol@gmail.com>
+(cherry picked from commit 7ad4e0a4f61c57c3ca291ee010a9d677d0199fba)
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+---
+Backport to fix CVE-2023-52760
+Link: https://www.cve.org/CVERecord/?id=CVE-2023-52760
+---
+ fs/gfs2/super.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 268651ac9fc848..98158559893f48 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -590,6 +590,8 @@ static void gfs2_put_super(struct super_block *sb)
+ 
+ 	if (!sb_rdonly(sb)) {
+ 		gfs2_make_fs_ro(sdp);
++	} else {
++		gfs2_quota_cleanup(sdp);
+ 	}
+ 	WARN_ON(gfs2_withdrawing(sdp));
+ 
+-- 
+2.33.8
+
 
