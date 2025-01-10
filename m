@@ -1,98 +1,112 @@
-Return-Path: <stable+bounces-108171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6465A08958
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 08:45:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A80DA08A5E
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 09:36:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A65A4169739
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 07:45:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A675188499E
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 08:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35A9207DFB;
-	Fri, 10 Jan 2025 07:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D1D209F54;
+	Fri, 10 Jan 2025 08:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gk/AO+Ss"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f4CSYJHR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1736B158DC4;
-	Fri, 10 Jan 2025 07:45:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439FC209F23
+	for <stable@vger.kernel.org>; Fri, 10 Jan 2025 08:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736495112; cv=none; b=ontXrEI4/FiSjuuvwjH8IOEyYNGN+QcYIBNaPdbkgEvLq6zR3oVf2yrLD7QBIpwOPQR4DICd4cnw0HvA6UfEGtAfhV7ZF0vIVuwvphc6U3dxgqgtsgtRISE+LzCCPxTgT4JHbidhtIuZsLZeonvj/Z6tVxYJNCGzttGKYLXQ+6g=
+	t=1736498127; cv=none; b=T62wOwVM93cVtEi8StYj3Q5O3aADt8n1d01O9J6q6CTP+S5s7FMudTXL0S5t0gIAqKMW2PW4PrzW8+7wOqh2inuB8+x8Fk9SmbuVmztJaHUph32PV55eHqt1BFYwYdqbCAXwAdYc7g/EP1iidPi50B3geD5WLkaYpyHKgpOkY14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736495112; c=relaxed/simple;
-	bh=SsP5At8DOf+gfsirjwp5BlLwu4+7+9lix3OdB0Ds/Zw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=u0bYUtYSyfQI1bTOX+Xkx6oaL39eKk+KuKfsTVVv+OluFswnwHwFNyrPqvONHt2LXAUp+JFO39JLzyIyP9vxwrZBBD0K2M8DvH5Ft1HbFNHa9tuXWCXQ/Txd4+GsDAV2Rh9VAOyePsmMDK7YWQZ+8j5GFY2vpvIBHWr1IHCiGYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gk/AO+Ss; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43623f0c574so13090395e9.2;
-        Thu, 09 Jan 2025 23:45:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736495107; x=1737099907; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ATDsjAK0uKMKhFaAu8bbQjJc2CPGx/RtQGrifkWV5pE=;
-        b=gk/AO+SsXPHdruZYSKSKU+qChqA9B2rHBoJFNsXxY17xsdJl6AeYsJK3N2l3vk7S1J
-         9S1gwfOplYbPa2dkGej18wVajr6ZdxX0WAWcNhQ6QrlSPwnRo+th/GC5ODpuHIYz1sQq
-         BprXaWbXE6nlU/tnCH+pskyo1djuw27BKI9Q6zEIzmn2bgd4nXy/8E4ZXQsOxa+P4htr
-         EOfSHBuhd7P/G/0Eyqa+cYn0G3XV6SSavzFSMZUjuqI85yRQcmwLEXSfhD8HfwdFj+pf
-         L/OwI+8jlSgTuWmCNwLqBqHqz5unW3e2ncZrUcJWUUw8k/0/Ffs0Mobs5g7wjNoxEXxp
-         OZ2g==
+	s=arc-20240116; t=1736498127; c=relaxed/simple;
+	bh=gg9zwP3NuIW09DU6vGz9JHfMW8EBO0Kk4gY/BezPQf4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uDwChe9ztjTbSDnZDj8UHML2vm0WsOY5G9sbz1S3USc5y6lTciOeo2WOiY2hXYxs57FD8oasKiL7ueA04Hc8Px1Iq7An7zVrM5dDlaYh/ojmmhT3KwOr2NYgKfDSRpbfzQ3+TeO28/hbj8eJUZC6JegClXnjvDAT28u3dpxh4qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f4CSYJHR; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736498124;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9NbnJJOfD3lLHAPtW6xOg0cYnPxIPSN5ji63JO1T6TM=;
+	b=f4CSYJHRpBP/Hb3JTzGF46s1rILYt43oHVpRyAp2UL6y7ZAlfZZJFzwhJV+Q4hVm/F7xdm
+	hh9uwOHkO8owKGnx8tOauYOsLZvPCDyk0mqzpSjqO2FlkQFX3Bw28wRPXnhFx7sEWiUvHf
+	+6QDQimY/yuoz+4qFle3y7YlZV+X484=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-615-8LrfiiNEPIOVVWfYUP2MvA-1; Fri, 10 Jan 2025 03:35:23 -0500
+X-MC-Unique: 8LrfiiNEPIOVVWfYUP2MvA-1
+X-Mimecast-MFC-AGG-ID: 8LrfiiNEPIOVVWfYUP2MvA
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-385d7611ad3so1005107f8f.2
+        for <stable@vger.kernel.org>; Fri, 10 Jan 2025 00:35:22 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736495107; x=1737099907;
+        d=1e100.net; s=20230601; t=1736498122; x=1737102922;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ATDsjAK0uKMKhFaAu8bbQjJc2CPGx/RtQGrifkWV5pE=;
-        b=sIjzAiVBOAKXpYBC2s/U3u4EqTEFl23xft48xbu4oiiHWKDYb8r0LOPB70pAt5Xs8h
-         nnD37MhAf55jb+rBOZNGzdj/t8B3DxavjhaPU052eR6SeYDEtJ5JxqhYSr98uTAQe9hX
-         rgTNn93/JpeaQo4pmCcBqi2NfMtPHHlB437QtnNnGoHZpadmEq9q9u4RD5Gtz7h2xrvZ
-         JyAz4zlWauGMFbANsCikSNkk9gK20lcglDeP5a2mCBt1rQd6MQIm6GFfAuDCe7M5ZY9z
-         aADz5bac1lG/z4z/USSE4sZYb0BUkiuaRJpoloJGPBdR3K9phdGMei0HWyI/VEO+Cifz
-         BeUw==
-X-Forwarded-Encrypted: i=1; AJvYcCU46LdVok6oOHPcqQvGL6LKi/QdLPLTWpx8M9w4EfErpXIXzX5F43dO1gD13ymeyqbo8vCk0rFzqwnx73E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEbPnm4HrPXSfyFHlk0MFVyNK3f/euJCutuXpzvft+d0tmmTb1
-	wyWhj//DJPC118lwOZbh74xsjVu9fyJSt/DF4Y0gs7DcWd2VHKcE
-X-Gm-Gg: ASbGncsxzer9t2bLEFIGnBwst6EROIA7T0KNy75kX0NqRnScGAJPVpLRdsDLtn3EX5Y
-	ROJe40iRcWtLAs599ZPVGh72/A1LHGGDTm5EE7zSfSMJKZTl0UsogDnqec4GZkSgu5ZjXK+c9nn
-	hmrm/fFY28Ft1HU0YMb5lIhP8Q4T8oeBqUbb4LesbCwqiv+MAG9Np7r8V56UU2f4a3XSRK0QQDw
-	jdrzHzFCIZoAK3ghxuUbota0kFfDOiX2uAfUC9pENGFetMFps5bzZuHa+cQ8w==
-X-Google-Smtp-Source: AGHT+IGb+vzb8Pe/v6kmaLVgm8KOUcAV6AU7z/JagMZlqc8SrieF7wsh7dlW2Vj7FxtpiiwFRDJhZQ==
-X-Received: by 2002:a05:600c:3c85:b0:434:a802:e99a with SMTP id 5b1f17b1804b1-436e267821emr85597015e9.4.1736495106968;
-        Thu, 09 Jan 2025 23:45:06 -0800 (PST)
-Received: from toolbox.. ([87.200.95.144])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e2e8a326sm78547995e9.35.2025.01.09.23.45.04
+        bh=9NbnJJOfD3lLHAPtW6xOg0cYnPxIPSN5ji63JO1T6TM=;
+        b=OQV0nKUSxfzGT/dMdnMBZaFmyq09Jln2kDyz1zlosiwoO39bygQvjO8tJWu7xazuQE
+         zaWODVEW7kAmnDFcazvbP1/z6PfkXdLhjHUi1IN+IbyES8U++t21B1oQYJHHDuNXigXL
+         oeMQ8M6oHTjOSSNHZzGfMR+uu4QT0dKdqNWLhv1gqnSNqk3Y+QvlBJkk4yiwiSAm3B4L
+         5el0FugE0Ygqutvy+ltp0k8WXWfP0XDZnjuxYzsL6h0gbFJ61J5X8uUiTI6VwFlGWnq1
+         1S8envqRMrVEqk29RtCjh97jJyf2KkovSUtTUiW9HAhSqG4uFbGJb6Kt/LZYdsjZ5YZL
+         /Fjw==
+X-Forwarded-Encrypted: i=1; AJvYcCWXNHPTcwWmGCsih5BJdW2o906VRyaB5E+Fd6Lc/TCByXeVi+x4bOCkKfU8IhQUVpGAG5RFVaI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpC/QSGOTgWaT5cY5XXNS1Avgz8LlMtybL5VK4AJUzqCvXkN2c
+	0eFtziQNY6otRUiOJzoJImFDFRK6pmGyJHQ6Spg69P9bsiPCciwfqwkxAmODmxxL8ymVaRSVSS8
+	FBXL3LZ4BwvftevrcPriCU7UZiZtmlS30M7bXE6mlaVyBe/aP2lkEFg==
+X-Gm-Gg: ASbGncsutg4nM93BYv+EksV6a/urBgpEytdLvk0m1lSKvh6ERkjCj+DmNL9FWagyEfk
+	BS8cojOTAmh5gp5LgaVj7sLQHaU1woXukWGuyM7hyTD6/6r+MncUGNWOM/AGov+wvcYPQs4EOW1
+	LPRMwnlGNsstHcewf5gB3rfFUFVZBJ1N60FUO+bXrn4vtLgJF+ctRkyfVKbH1R/hXeAXvA18USe
+	z4imGJ9qs+7NckC5aJ3TElQEEHJNf2QJ5nJK/6j48KbTEo=
+X-Received: by 2002:a5d:64ce:0:b0:385:f6de:6266 with SMTP id ffacd0b85a97d-38a872eacdemr7037329f8f.24.1736498121735;
+        Fri, 10 Jan 2025 00:35:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHaMGGKjwRAwVyhTKqw23Ww9p2dwBHr6VnXJ4BcQwGregbXhxMe1Q9lXOo3WbQYlPlIlcZAdg==
+X-Received: by 2002:a5d:64ce:0:b0:385:f6de:6266 with SMTP id ffacd0b85a97d-38a872eacdemr7037271f8f.24.1736498121118;
+        Fri, 10 Jan 2025 00:35:21 -0800 (PST)
+Received: from step1.. ([5.77.78.183])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e38c76esm3843166f8f.47.2025.01.10.00.35.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jan 2025 23:45:06 -0800 (PST)
-From: Christian Hewitt <christianshewitt@gmail.com>
-To: Neil Armstrong <neil.armstrong@linaro.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-amlogic@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 1/2] Revert "drm/meson: vclk: fix calculation of 59.94 fractional rates"
-Date: Fri, 10 Jan 2025 07:44:57 +0000
-Message-Id: <20250110074458.3624094-2-christianshewitt@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250110074458.3624094-1-christianshewitt@gmail.com>
-References: <20250110074458.3624094-1-christianshewitt@gmail.com>
+        Fri, 10 Jan 2025 00:35:20 -0800 (PST)
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Luigi Leonardi <leonardi@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Wongi Lee <qwerty@theori.io>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	kvm@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Hyunwoo Kim <v4bel@theori.io>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Michal Luczaj <mhal@rbox.co>,
+	virtualization@lists.linux.dev,
+	Bobby Eshleman <bobby.eshleman@bytedance.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2 1/5] vsock/virtio: discard packets if the transport changes
+Date: Fri, 10 Jan 2025 09:35:07 +0100
+Message-ID: <20250110083511.30419-2-sgarzare@redhat.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250110083511.30419-1-sgarzare@redhat.com>
+References: <20250110083511.30419-1-sgarzare@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -101,49 +115,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This reverts commit bfbc68e4d8695497f858a45a142665e22a512ea3.
+If the socket has been de-assigned or assigned to another transport,
+we must discard any packets received because they are not expected
+and would cause issues when we access vsk->transport.
 
-The patch does permit the offending YUV420 @ 59.94 phy_freq and
-vclk_freq mode to match in calculations. It also results in all
-fractional rates being unavailable for use. This was unintended
-and requires the patch to be reverted.
+A possible scenario is described by Hyunwoo Kim in the attached link,
+where after a first connect() interrupted by a signal, and a second
+connect() failed, we can find `vsk->transport` at NULL, leading to a
+NULL pointer dereference.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
+Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
+Cc: stable@vger.kernel.org
+Reported-by: Hyunwoo Kim <v4bel@theori.io>
+Reported-by: Wongi Lee <qwerty@theori.io>
+Closes: https://lore.kernel.org/netdev/Z2LvdTTQR7dBmPb5@v4bel-B760M-AORUS-ELITE-AX/
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
- drivers/gpu/drm/meson/meson_vclk.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/vmw_vsock/virtio_transport_common.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/meson/meson_vclk.c b/drivers/gpu/drm/meson/meson_vclk.c
-index 2a942dc6a6dc..2a82119eb58e 100644
---- a/drivers/gpu/drm/meson/meson_vclk.c
-+++ b/drivers/gpu/drm/meson/meson_vclk.c
-@@ -790,13 +790,13 @@ meson_vclk_vic_supported_freq(struct meson_drm *priv, unsigned int phy_freq,
- 				 FREQ_1000_1001(params[i].pixel_freq));
- 		DRM_DEBUG_DRIVER("i = %d phy_freq = %d alt = %d\n",
- 				 i, params[i].phy_freq,
--				 FREQ_1000_1001(params[i].phy_freq/1000)*1000);
-+				 FREQ_1000_1001(params[i].phy_freq/10)*10);
- 		/* Match strict frequency */
- 		if (phy_freq == params[i].phy_freq &&
- 		    vclk_freq == params[i].vclk_freq)
- 			return MODE_OK;
- 		/* Match 1000/1001 variant */
--		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/1000)*1000) &&
-+		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/10)*10) &&
- 		    vclk_freq == FREQ_1000_1001(params[i].vclk_freq))
- 			return MODE_OK;
- 	}
-@@ -1070,7 +1070,7 @@ void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 9acc13ab3f82..51a494b69be8 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1628,8 +1628,11 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
  
- 	for (freq = 0 ; params[freq].pixel_freq ; ++freq) {
- 		if ((phy_freq == params[freq].phy_freq ||
--		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/1000)*1000) &&
-+		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/10)*10) &&
- 		    (vclk_freq == params[freq].vclk_freq ||
- 		     vclk_freq == FREQ_1000_1001(params[freq].vclk_freq))) {
- 			if (vclk_freq != params[freq].vclk_freq)
+ 	lock_sock(sk);
+ 
+-	/* Check if sk has been closed before lock_sock */
+-	if (sock_flag(sk, SOCK_DONE)) {
++	/* Check if sk has been closed or assigned to another transport before
++	 * lock_sock (note: listener sockets are not assigned to any transport)
++	 */
++	if (sock_flag(sk, SOCK_DONE) ||
++	    (sk->sk_state != TCP_LISTEN && vsk->transport != &t->transport)) {
+ 		(void)virtio_transport_reset_no_sock(t, skb);
+ 		release_sock(sk);
+ 		sock_put(sk);
 -- 
-2.34.1
+2.47.1
 
 
