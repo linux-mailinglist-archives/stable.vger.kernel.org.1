@@ -1,87 +1,87 @@
-Return-Path: <stable+bounces-108199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAE8FA092D7
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 15:03:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B84C1A09313
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 15:14:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECB5C3AAC83
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 14:02:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C2E01883ABC
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 14:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0AB320E701;
-	Fri, 10 Jan 2025 14:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25DD20FAAE;
+	Fri, 10 Jan 2025 14:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mk+/wfiX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GV8XkraW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E673420C00C;
-	Fri, 10 Jan 2025 14:02:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBE6207A15;
+	Fri, 10 Jan 2025 14:13:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736517752; cv=none; b=o+JZCidbB1e3rWlpI4C5AJwQ+mfGuc0GzHG/+yVCQPCycw7g4ybISp9qer9OBx7MQAw8R0iZ4d5m6VrWjGE9VGy+7cjCw1sG4ZOVtTIpV4nXqgYXC9u9rUCscaz+XgFS1EGTJBJjv0zBfAGq4uX9RZtqpzztN8pxBG5HB1Kmfew=
+	t=1736518423; cv=none; b=g4GAqiY4KYt2ykEQJ4wTCrT6ipLyp5UTvMNkvv6mxrRyZiQXxXrEdt+JlOPBJ+kQsJceY0nK+GPkFY4boMcldj7qdf4AHXYWiUFqWvpSmG4+P7tQ0Mw79MReDMOS7bGvCTClrNrw1BoI2HDWm+R9B6LI9ecc4VCeF0bkW7gyI+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736517752; c=relaxed/simple;
-	bh=Cxst0aa6ReMgh66Nd/eWKjoASmGfmLGj8yDlxl+xQTk=;
+	s=arc-20240116; t=1736518423; c=relaxed/simple;
+	bh=cFP3bHfydKoOvJDX4q6qcRv+WfA9oo+5sIiUfxPlzr0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AIp05kpxcQk55ynqASN5wX2Td8zTYOaPwSkdyCkro4yJpvYHqw84Bw6VMdnV8yOK/guFRWwO/VgBYgnKMQcpT5uCOtUxE5CrlEXIheiewmlfL2AtlhOEHzDIqWQslGaItpbAsKx8/Blr7unkvtvwG2L1X03Jy7PiXJ5Q7n4fhic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mk+/wfiX; arc=none smtp.client-ip=209.85.222.182
+	 Content-Type:Content-Disposition:In-Reply-To; b=okogJLwbhldres14ojlVGjH9QCxT9SBk9qvyMj9M+y6qqkuw81+7Yg4lVW6fYuTu6ksgP0WkuymZZfIQOHKBHw7dvSblDSn1NlHLeJR/ZKRrPOzUIUZTH9h7ELN2JbJN3yecTK/NKX1gjudtv24XKWQpCbyE1rlRtEODqCdZyiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GV8XkraW; arc=none smtp.client-ip=209.85.222.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7b6e5c74cb7so144496185a.2;
-        Fri, 10 Jan 2025 06:02:30 -0800 (PST)
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7b6e5ee6ac7so161303985a.0;
+        Fri, 10 Jan 2025 06:13:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736517750; x=1737122550; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736518421; x=1737123221; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=s5JHAi+bkLaJ3IR5TG8T45pfb/4tOZVpznIqDyIgJGQ=;
-        b=Mk+/wfiXo6ui67rj/ukeDgaePGJRpj0z4oLcmL+fVIBn568CCDTyNRPg7JrmSPcauJ
-         s9c5VZkq6y3YrRB7lIJr38uthl0PghYaV+Ekflvnad0OIJowCtb6mo+QrMdy6AZ4SnfN
-         Xp1i0v4Dt1KBoXNPo9vp6U134ggYLhTATWBXJsp4IOsLzwQxhIT/3JALjiqFy6O50+VR
-         GBS4sr3eNgp2Krj3ODq3oRM+rGYpguvUyUYalJ86N5w5yNLgFZHHcCyIckEVGw0NyfIq
-         F1yjjZoz7GNL2e4hcHbO4AoJ8NxZ9vJEDihwvLym2Fl4supx2UrnuwL8SX4d4gQDcMAG
-         4R4w==
+        bh=g3xGxxcjkV1GQqHW+T0bZftfuqunVR2tHc64hAbzPOU=;
+        b=GV8XkraW7eQJ67ECAJYRHAvX6Kb/HL1AQyseKrCA5GuNbRxLIiVnh5u+i2wXspIx5P
+         U23YxA4EvhCx1KT99RKUpWFH/g6wjGTdn56rokjVLeA2Nc8oWwjO0ZngOjlIHdg+VSmv
+         JaF5iiAbb0af8p5J5PDMe8EZbVfjSs1hJt3TiD/wbVLVHg1BdmF6xEJjdJK/zsg1tLlU
+         nBn0UsrsjhyDXR68yPEdf+FKYr4PmPNyD0v+CJERuCDfZyrPc8bWJkze+Skynx83zb1f
+         +vpqkHpALsTEJOklbPR+cJ7Z60mz5n7nQe0CC43/hVDXH5oUZP7to0vKyRa4z0CnjEmT
+         5EAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736517750; x=1737122550;
+        d=1e100.net; s=20230601; t=1736518421; x=1737123221;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=s5JHAi+bkLaJ3IR5TG8T45pfb/4tOZVpznIqDyIgJGQ=;
-        b=WuetF7uJm6evVvKmzUebchCeuEeAA11GiMYFu/pp8HE+Xg48KjcxKUnJZm0Hu06lwn
-         G6VvdOlR7AV5gMooAbtoxCxCtdlvxhyHHNyff8838a7exH3ScXgJmcDamFNN3Spst21n
-         gQ8d+SaYRDQKBqS8oA1hPmnxXFPASXFCMHgfMi2cV41wZLJVGqViiloYEwMM3spJWtGU
-         UxctOv0ccVW7bx8wt645kF/JdjRTYzGRorbmZVFJZpEjgtSIBXVSW4HjxNs/XT6uKejk
-         MwDf46IXNN3CbpeRQ1FYozpMqoh4HO6OUMaVc2RUS+jpnJgz2PD1Jcf4lg6vn8JYYk11
-         9V0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUH/+SjTzX8B1YZiLGXuNgD3iJKElxVRL/iK+1E9umsNk3TiPM50X66jzEZqFM0iCehvj3kv8P8Yzm0URMD6Cc=@vger.kernel.org, AJvYcCUTpN0Qz+RpK/NJ/YnuXWKfCAgtGZAhoSr0Pnd1cOXuagdeUxHHgcUOH8rCSK4v+gQKnj4tCJCc@vger.kernel.org, AJvYcCVvHHHeyiWid/B5DfR3bRf886EqMz+pYWCvOGRlVZRu5jIdIvGCCE2KEv9isdj1Z2QeFSUEy9JfrvdgUA==@vger.kernel.org, AJvYcCWj404eqfuZGZ/AExU8caW0aqRho+UHPyhGRNp82Ejz0N3oneF7cX1cSC4+cpUu77FHHzBaEgpa5odb6GPx@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5tpyIxLFzBLhNAdpFcnxJONe78tXx/sDk0bjbJ8x0uOY5dC/7
-	KKXujbCI13YYBT4Kq7xgDq6tl46SO34iuFm+UPiqEReL8/NRCQTe
-X-Gm-Gg: ASbGnct2l3kEb3xwiEzqgcEJk23qT2qS0+8suweeeyh0Zr3kL52YhaaQCBLPnJMyKdV
-	Htmn9/VImt/I9L9/blawu5HI17r8xGw1vD5tw1ZcurbQXfb519TCaJ7u/MO0Rb8cXF+ea2g3oxr
-	5+AiOhjToOPDvoUYUHZvx666+MvOVYS/N9QNLQBhP4bjD9p1JztIwXqzDs5/+Yp0A3nOsTp5KWj
-	l+XIuIFrlcumhJAK7nQASja3aXGgov/Yv142NikgbFPHru2nXHpMZ9tNA5qT7sjdI8TUzCitiL5
-	528r+emu2QQ9VNxdoyznMuVtVu/LUR53N/bP/UZJD9I/AAg=
-X-Google-Smtp-Source: AGHT+IHtIs/faPVHAGcCbc7Ihzq9UGpfgPp9GARTDz++pFx/lKHO5GMuFyobtVxZ/+1lwvXo9VCfAg==
-X-Received: by 2002:a05:620a:4614:b0:7b6:dfcf:3352 with SMTP id af79cd13be357-7bcd97b1c89mr1480177085a.38.1736517749557;
-        Fri, 10 Jan 2025 06:02:29 -0800 (PST)
+        bh=g3xGxxcjkV1GQqHW+T0bZftfuqunVR2tHc64hAbzPOU=;
+        b=v0HRGA/gabJOUVtVvgPIOMqvL1W0b5uEAclSTWjWHWjYU2PkBaoDXw3nc4KWHwCDyu
+         EqQCnYihqJpiZfM6sk9sQEyYAIE1QG2OC2hPxNMFd1XlzLx5tihnk1ijVxkDBvE6NgcJ
+         dXT3n9K3sZYpGQl/CLj8xjiYTmCO8TXsjBE78a38/ad5ngznqmDXiJUDExzv64SlVBjf
+         N9Mb4frf1ba5enKRGNiaq+CbWnPUNbV8xMuXK6LHy9jf2imyVDW4g3pXmZeVfqywJPV3
+         XlD7lOsV0IMkEIrBazdYmyOFI3itPoXM/mG9ocwyRhpT413YJ5/HkFuj/CvUbKMZn6HL
+         e9jw==
+X-Forwarded-Encrypted: i=1; AJvYcCUAfXjglFvimCGbm8VZNNfGCzRmJtgTKZ4Z8nlMl4Fkq4mIcjNgbDZ0tKJreZRFQFMxB+RxxdeR0lQ5NdFU@vger.kernel.org, AJvYcCVBn3UOIEDMwBnlkch/Cg3lk6znaz3v/isfNWkppQno5BXOfzlzfzz8HcjGRBlu/rBLBkEssd5C@vger.kernel.org, AJvYcCWE0N6df2Z0/pajGB9VwTPfpVgj7iP0g23n2KAtUE8JIdkDb3Pk/sI24Q//DUZAhbC3eAkNDSjdYVuTGQ==@vger.kernel.org, AJvYcCXWeuVIrU/VPSMdt+x/Bt+uGa1Hm8TbccurcJsbwpA3ZkZMQt/NZrl4guFAdOd4IbMZyovPV3iZAC346/RcFI8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yymln0cE88xojbA6oBlxntkz7fOEwF/um1hDB70gTg6VEnh2L9M
+	h5QrHTCTrR24tDKKoE1hrYjrBXMBpVTB0FAAIaoFEZ4aE0zaMOvB
+X-Gm-Gg: ASbGncs04rRX+zhQHuJrI+sMWWzKB7FtUocOfh3bPc7BneIuzFh6v/6+WzA2MunAf6E
+	nq0q/hTBfqjCm16s7LLD2LJGqWN2duhFsRRJ2oC5TWq+PNWgeClhTaJVh+qHtNp0pi70klFYEsj
+	8FlZIlvBxiFOeN1qpuqX5fw1tLhjLx4s2ILU0Eui2xZqX4moxWFwHuFAZ0LSSzTn8gJhBhZRyYe
+	/0hlPShkZGdDJW5wIymfJkE2aDJxkiBZSRhvErp2qkzKImEKE3uBLDUU9vbW8NrBermBrVqm/pc
+	hADju4q33YDmNYp6Wn2rqGWfsu+Ibgoz9Q/ekmUDqsdn2sg=
+X-Google-Smtp-Source: AGHT+IH/AJg7VLbxKgbG7Pi1UJDN7P0zRvx3nd32SpuhQVy2b3XtRSRC0CSWf3XE+/PwJfIXOKH9Xg==
+X-Received: by 2002:a05:620a:4142:b0:7b7:106a:19b7 with SMTP id af79cd13be357-7bcd970d4b8mr1646495685a.18.1736518420710;
+        Fri, 10 Jan 2025 06:13:40 -0800 (PST)
 Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7bce3515fbasm173147885a.102.2025.01.10.06.02.28
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7bce350e155sm174951085a.97.2025.01.10.06.13.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jan 2025 06:02:29 -0800 (PST)
+        Fri, 10 Jan 2025 06:13:39 -0800 (PST)
 Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 858D71200070;
-	Fri, 10 Jan 2025 09:02:28 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Fri, 10 Jan 2025 09:02:28 -0500
-X-ME-Sender: <xms:dCiBZyCGtyoKpZpbF_uN92uOeDPpp0pvRSQdY0YgQr2uhI1h1ewyKA>
-    <xme:dCiBZ8j3GsAdogGh7NCCdgfIOIMcU_8NNMqmngm3Rflb1EyUWoAlNBQ_rY3haaERN
-    hOde-9VZUA-VwABQw>
-X-ME-Received: <xmr:dCiBZ1mI2dmAtL2YhlBd-s_z_UvBXTonJ8pTv1z4zFPjhsYZCqpI_cLdHCY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudegkedgheelucetufdoteggodetrfdotf
+	by mailfauth.phl.internal (Postfix) with ESMTP id E0BA9120007B;
+	Fri, 10 Jan 2025 09:13:38 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Fri, 10 Jan 2025 09:13:38 -0500
+X-ME-Sender: <xms:EiuBZw2XQQGXKzRHxWCP5ZF9TIiw4_yfFbzF5PpcvD904wijbN3RBg>
+    <xme:EiuBZ7EalUTYjQmmBEOk6I15iNHW0owqLn69HToj8kifbz6htdxAAbLGTSqwMPwwT
+    TuVcZeFTFOEiKO-YA>
+X-ME-Received: <xmr:EiuBZ467AzrqEeHIO2ZyLK6bVyTR8C9LNMM1IUbTxbcbbeaKGEvmmoZXecc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudegkedgieduucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
     rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
     htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
@@ -99,15 +99,15 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudegkedgheelucetufdoteggod
     efpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsggvnhhnohdrlhho
     shhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprghlihgtvghrhihhlhesghhooh
     hglhgvrdgtohhmpdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuh
-X-ME-Proxy: <xmx:dCiBZwxwDleOoHiUK--cnv-a1H-mcgiinlho6pnyHRMsABJ41PNrjQ>
-    <xmx:dCiBZ3RBJPmOibEzHAcyKO6_hmCIetOGXi7UWkrY3uWP-7VNTmRWhg>
-    <xmx:dCiBZ7ayFBcIsN73gIGLnSvzVy6ZxdJtMbD5GKBncsHkHXH1OHRXsA>
-    <xmx:dCiBZwQtxXIqL834oWlawgtnJhD5cMZof1NVuhGVL8aoGtIDCU5VTQ>
-    <xmx:dCiBZ5CPxgQGIUImQKx1pWkSMB1hwgTg7FsxuvOURWK_T6fkAxq0vrKn>
+X-ME-Proxy: <xmx:EiuBZ53b410hiT_tH4zrdIbdQ3KT21JRawsgjLL3lwYM8rfXq6D0SQ>
+    <xmx:EiuBZzFUU4il_pl5RCBYIR6nNcPSBzD5S_TNk3jt3TQlUEvs08_Tew>
+    <xmx:EiuBZy97MYXYWQYsFzwiWOFYBkB4XT7HzpaPXRvdv5RIZ-nvaMIFkw>
+    <xmx:EiuBZ4k-r-7GEXVxvXRJ0LWav4iFtDaRUQmwoSaQFY9BgmTO8VPZRg>
+    <xmx:EiuBZzGDyY8n9cek9T8To5f1RW1QUS8t03fiDW9L9Esmpmd24aazS_-F>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 10 Jan 2025 09:02:27 -0500 (EST)
-Date: Fri, 10 Jan 2025 06:01:24 -0800
+ 10 Jan 2025 09:13:38 -0500 (EST)
+Date: Fri, 10 Jan 2025 06:12:34 -0800
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Mitchell Levy <levymitchell0@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
@@ -119,11 +119,10 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] rust: lockdep: Remove support for dynamically
- allocated LockClassKeys
-Message-ID: <Z4EoNF8XLrGdTh4N@boqun-archlinux>
+Subject: Re: [PATCH v2 0/2] rust: lockdep: Fix soundness issue affecting
+ LockClassKeys
+Message-ID: <Z4Eq0qoZaIt7j9zW@boqun-archlinux>
 References: <20241219-rust-lockdep-v2-0-f65308fbc5ca@gmail.com>
- <20241219-rust-lockdep-v2-1-f65308fbc5ca@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -132,67 +131,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241219-rust-lockdep-v2-1-f65308fbc5ca@gmail.com>
+In-Reply-To: <20241219-rust-lockdep-v2-0-f65308fbc5ca@gmail.com>
 
-On Thu, Dec 19, 2024 at 12:58:55PM -0800, Mitchell Levy wrote:
-> Currently, dynamically allocated LockCLassKeys can be used from the Rust
-> side without having them registered. This is a soundness issue, so
-> remove them.
+On Thu, Dec 19, 2024 at 12:58:54PM -0800, Mitchell Levy wrote:
+> This series is aimed at fixing a soundness issue with how dynamically
+> allocated LockClassKeys are handled. Currently, LockClassKeys can be
+> used without being Pin'd, which can break lockdep since it relies on
+> address stability. Similarly, these keys are not automatically
+> (de)registered with lockdep.
 > 
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Link: https://lore.kernel.org/rust-for-linux/20240815074519.2684107-3-nmi@metaspace.dk/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
-> ---
->  rust/kernel/sync.rs | 16 ++++------------
->  1 file changed, 4 insertions(+), 12 deletions(-)
+> At the suggestion of Alice Ryhl, this series includes a patch for
+> -stable kernels that disables dynamically allocated keys. This prevents
+> backported patches from using the unsound implementation.
 > 
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index 1eab7ebf25fd..ae16bfd98de2 100644
-> --- a/rust/kernel/sync.rs
-> +++ b/rust/kernel/sync.rs
-> @@ -29,28 +29,20 @@
->  unsafe impl Sync for LockClassKey {}
->  
->  impl LockClassKey {
-> -    /// Creates a new lock class key.
-> -    pub const fn new() -> Self {
-> -        Self(Opaque::uninit())
-> -    }
-> -
->      pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
->          self.0.get()
->      }
->  }
->  
-> -impl Default for LockClassKey {
-> -    fn default() -> Self {
-> -        Self::new()
-> -    }
-> -}
-> -
->  /// Defines a new static lock class and returns a pointer to it.
->  #[doc(hidden)]
->  #[macro_export]
->  macro_rules! static_lock_class {
->      () => {{
-> -        static CLASS: $crate::sync::LockClassKey = $crate::sync::LockClassKey::new();
-> +        // SAFETY: lockdep expects uninitialized memory when it's handed a statically allocated
-> +        // lock_class_key
-> +        static CLASS: $crate::sync::LockClassKey =
+> Currently, this series requires that all dynamically allocated
+> LockClassKeys have a lifetime of 'static (i.e., they must be leaked
+> after allocation). This is because Lock does not currently keep a
+> reference to the LockClassKey, instead passing it to C via FFI. This
+> causes a problem because the rust compiler would allow creating a
+> 'static Lock with a 'a LockClassKey (with 'a < 'static) while C would
+> expect the LockClassKey to live as long as the lock. This problem
+> represents an avenue for future work.
+> 
 
-About the clippy warning reported by 0day, I think you could resolve
-that by moving the above safety comment here.
+Thanks for doing this! I found some clippy warnings with the current
+version, but overall it looks good to me. That said, appreciate it if
+patch #2 gets more reviews on the interface changes, thanks!
 
 Regards,
 Boqun
 
-> +            unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
->          &CLASS
->      }};
->  }
+> ---
+> Changes from RFC:
+> - Split into two commits so that dynamically allocated LockClassKeys are
+> removed from stable kernels. (Thanks Alice Ryhl)
+> - Extract calls to C lockdep functions into helpers so things build
+> properly when LOCKDEP=n. (Thanks Benno Lossin)
+> - Remove extraneous `get_ref()` calls. (Thanks Benno Lossin)
+> - Provide better documentation for `new_dynamic()`. (Thanks Benno
+> Lossin)
+> - Ran rustfmt to fix formatting and some extraneous changes. (Thanks
+> Alice Ryhl and Benno Lossin)
+> - Link to RFC: https://lore.kernel.org/r/20240905-rust-lockdep-v1-1-d2c9c21aa8b2@gmail.com
 > 
+> ---
+> Changes in v2:
+> - Dropped formatting change that's already fixed upstream (Thanks Dirk
+>   Behme).
+> - Moved safety comment to the right point in the patch series (Thanks
+>   Dirk Behme and Boqun Feng).
+> - Added an example of dynamic LockClassKey usage (Thanks Boqun Feng).
+> - Link to v1: https://lore.kernel.org/r/20241004-rust-lockdep-v1-0-e9a5c45721fc@gmail.com
+> 
+> ---
+> Mitchell Levy (2):
+>       rust: lockdep: Remove support for dynamically allocated LockClassKeys
+>       rust: lockdep: Use Pin for all LockClassKey usages
+> 
+>  rust/helpers/helpers.c          |  1 +
+>  rust/helpers/sync.c             | 13 +++++++++
+>  rust/kernel/sync.rs             | 63 ++++++++++++++++++++++++++++++++++-------
+>  rust/kernel/sync/condvar.rs     |  5 ++--
+>  rust/kernel/sync/lock.rs        |  9 ++----
+>  rust/kernel/sync/lock/global.rs |  5 ++--
+>  rust/kernel/sync/poll.rs        |  2 +-
+>  rust/kernel/workqueue.rs        |  3 +-
+>  8 files changed, 78 insertions(+), 23 deletions(-)
+> ---
+> base-commit: 0c5928deada15a8d075516e6e0d9ee19011bb000
+> change-id: 20240905-rust-lockdep-d3e30521c8ba
+> 
+> Best regards,
 > -- 
-> 2.34.1
+> Mitchell Levy <levymitchell0@gmail.com>
 > 
 
