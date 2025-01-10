@@ -1,100 +1,91 @@
-Return-Path: <stable+bounces-108212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5854A098AE
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 18:38:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CBF5A098B9
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 18:39:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6A503A2C61
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 17:38:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0F667A05B4
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 17:39:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9FC214232;
-	Fri, 10 Jan 2025 17:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B0A21420D;
+	Fri, 10 Jan 2025 17:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uyPnzk7w"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fl3rR/Hj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1345B212B17;
-	Fri, 10 Jan 2025 17:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE652135A5
+	for <stable@vger.kernel.org>; Fri, 10 Jan 2025 17:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736530710; cv=none; b=PMVY51L9tpePgSstiuBYFgI3cERcuULrqLj1VgAVAsYJH5+KaIGSEa1jcPMDWmbwrC9kcvlhnBki/XHdrTl5P+5lWDYqJMEJ/H02v6fOsxsrc2MGMIHYJGPZt2Vn6KYV+FI6BWW4AYcPl5UpLJjvlj5fAEA6WXpyeoA+w92/kaM=
+	t=1736530750; cv=none; b=EjFy1sFwDZFFas6/tKxSSRzNE7bBskV9vTRFS9D73jpnAW9FFlkmPPzpJjShHzNc0ltbSB1lWXvsDCvo/6/8PaQ/XlcGJtY191t4INfUd06fMsrRS/0UvzMbLfKqB5GFX4XuqjWcAetcBqkhGiMdaT/NWVAsA8IyMavv9VjvRLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736530710; c=relaxed/simple;
-	bh=Sh83PnEWnHDXBwVSqxmjLspOETkOihQ+AZ7/lgmMC2s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jg88mkL484smPi/GOPojD6YPxvngSg3raUi9cU7UNF1+kk11cwzJe+auXXOt5XiZBiPHNqW/8Oxqz/1IwO/b8L+cq1LnAa7ciGuunj6CVOoi4Hcur0VCVpKURz5CzoH2r7LUnV/VuLh0ovtTjhJXZ1EODJM1JAkh/21KGuRRRww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uyPnzk7w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74C7CC4CED6;
-	Fri, 10 Jan 2025 17:38:29 +0000 (UTC)
+	s=arc-20240116; t=1736530750; c=relaxed/simple;
+	bh=JK4Zm+AWL/21tqEB85X9lts/596zKnFZr77pxnExQZE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=FQ5lS7ixhqmjnQXxISf0R0K7qsfqYeMfuEOE4IaZX1OwZq4rK47N4HNp0NFnYqF3e64Ub1zFhAecp+lMe9tQQXd6vVevLl8h2hvsoBquEckUSNnlv7VjrzPaP5sJwJeBhgG43YJ0oWGxcaXjN0PI/QZru+Kwe/B3OH84iGuPxpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fl3rR/Hj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B0FC4CEE1;
+	Fri, 10 Jan 2025 17:39:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736530709;
-	bh=Sh83PnEWnHDXBwVSqxmjLspOETkOihQ+AZ7/lgmMC2s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uyPnzk7w4AicheOsXux1iyMjkYXV5FIm5Wm2KaCthQ/p3mATVgtykZ8opf0G7Sdna
-	 PUaQOZ1dMPInjPS2P6KVDu8HatoT+njo77pZpUtN+8CdEpQTIJ/1ZY6odaoXjbQtNT
-	 dpDCpcKCZJ4EgIMxZGsMxKMDVN8f0EFbnjMHKqrk3PUtqZxknCNCw3Vu49FlRal0YJ
-	 os5KHe3jKYeHuThvBgSIE1Rr76ooEHiWmDXQUSjyA9SpZhk5DJxHq3l7JrGpXpiFUl
-	 0y5t6cMRNFr5q8thgm+LbsYFS/jOv4DgAkcQLdjWaKWXCkjP5pa4BiAyZkTWgRcvbV
-	 R1imBOKzuGf9g==
-Date: Fri, 10 Jan 2025 11:38:28 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Maxime Ripard <mripard@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-	Oreoluwa Babatunde <quic_obabatun@quicinc.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Zijun Hu <quic_zijuhu@quicinc.com>, linux-kernel@vger.kernel.org,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andreas Herrmann <andreas.herrmann@calxeda.com>,
-	stable@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 01/14] of: Correct child specifier used as input of
- the 2nd nexus node
-Message-ID: <173653070694.3215354.8498734202934097478.robh@kernel.org>
-References: <20250109-of_core_fix-v4-0-db8a72415b8c@quicinc.com>
- <20250109-of_core_fix-v4-1-db8a72415b8c@quicinc.com>
+	s=k20201202; t=1736530749;
+	bh=JK4Zm+AWL/21tqEB85X9lts/596zKnFZr77pxnExQZE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Fl3rR/HjY4PtUglhR/g13OSDgx8xFHrKcuJxepODbh4+g/sMjGc8FEIiL/+r5x6/E
+	 76w2rcE6u3i3eVtQzV8EMjJoBWqExepv+BTAzHwWwhw5uLTNx9hYzUY2U48FSugBk2
+	 XPNa/qcRBwlBX4/P5JmSa6IXJmsiRbmk6n7NLRk/zJ7HEbGZ3i4lYLw6NghTRWCDaE
+	 2edFfBx2uZoF+5nV00CSXgJ+L8vOdzlQXfVas7dLpZ56BsgFt5HAN+BpwK/QZVM3Bn
+	 1hK4IW+nLZx9w1H8ExCaumWl00oZ+Tcfb10yuupy32g/g5qP+t4KWzs1WwHJWicnfY
+	 JWzZMayw9nJGw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH] arm64: mm: account for hotplug memory when randomizing the linear region
+Date: Fri, 10 Jan 2025 12:39:07 -0500
+Message-Id: <20250110101726-09ad4c3161b0a090@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250109165419.1623683-2-florian.fainelli@broadcom.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250109-of_core_fix-v4-1-db8a72415b8c@quicinc.com>
+Content-Transfer-Encoding: 8bit
+
+[ Sasha's backport helper bot ]
+
+Hi,
+
+The upstream commit SHA1 provided is correct: 97d6786e0669daa5c2f2d07a057f574e849dfd3e
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Florian Fainelli<florian.fainelli@broadcom.com>
+Commit author: Ard Biesheuvel<ardb@kernel.org>
 
 
-On Thu, 09 Jan 2025 21:26:52 +0800, Zijun Hu wrote:
-> From: Zijun Hu <quic_zijuhu@quicinc.com>
-> 
-> API of_parse_phandle_with_args_map() will use wrong input for nexus node
-> Nexus_2 as shown below:
-> 
->     Node_1		Nexus_1                              Nexus_2
-> &Nexus_1,arg_1 -> arg_1,&Nexus_2,arg_2' -> &Nexus_2,arg_2 -> arg_2,...
-> 		  map-pass-thru=<...>
-> 
-> Nexus_1's output arg_2 should be used as input of Nexus_2, but the API
-> wrongly uses arg_2' instead which != arg_2 due to Nexus_1's map-pass-thru.
-> 
-> Fix by always making @match_array point to @initial_match_array into
-> which to store nexus output.
-> 
-> Fixes: bd6f2fd5a1d5 ("of: Support parsing phandle argument lists through a nexus node")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-> ---
->  drivers/of/base.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
+Status in newer kernel trees:
+6.12.y | Present (exact SHA1)
 
-Applied, thanks!
+Note: The patch differs from the upstream commit:
+---
+Failed to apply patch cleanly, falling back to interdiff...
+---
 
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.12.y       |  Failed     |  N/A       |
+| stable/linux-6.6.y        |  Failed     |  N/A       |
+| stable/linux-6.1.y        |  Failed     |  N/A       |
+| stable/linux-5.15.y       |  Failed     |  N/A       |
+| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-5.4.y        |  Success    |  Success   |
 
