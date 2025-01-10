@@ -1,146 +1,126 @@
-Return-Path: <stable+bounces-108160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE7BA0842D
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 01:51:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F90A08543
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 03:18:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DF9F1888733
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 00:51:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A49C166CC5
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 02:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E7D28DA1;
-	Fri, 10 Jan 2025 00:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ZIoaJB+8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 309CE1A23B0;
+	Fri, 10 Jan 2025 02:18:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463841C683;
-	Fri, 10 Jan 2025 00:51:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8243C2C6;
+	Fri, 10 Jan 2025 02:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736470290; cv=none; b=DrOplfcuu6vGRTzaJietJK9YQi2zYewLe0UOAGBUR20hewFaToOaN9fQE0t9PPR2KBUAwu4Hgn6wtwPYJfDfBGFOTJD/EljQjlyHJ2Jd8T0CZa+rXX+MrQEGdKLXqxirZK/IbO23metSB8seZnXCxiQdy2OQge1ZkloUGb/VXkQ=
+	t=1736475528; cv=none; b=A2UA6+l1otyQGftX3mKigiyUgCPWcYK7VkeJKk6ffZC9Z65mZm2QeevB0OBUj16Tfuzi4/1no2pmdtjtH34PpyAZ0BG2KnNLV7pO5o+FXZc4BbAzoZA8BUq5iotII7zG47CBLQSYvhPbGo9+17+/Vnb3L1NM4HeWvDRvpO7u6XE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736470290; c=relaxed/simple;
-	bh=5WDyKzA9a1kFVJ2d4N6Loo/bX4Lg8NURQ4VuI4zRmFo=;
-	h=Date:To:From:Subject:Message-Id; b=D9dmVxmjPUoshcfyAc5yefLgLjwgFPAtqTdRI6wApN20ca5KQ1M3gaFjZ/I5uxHV6XSQNfaWaMhWZ3MsPj/41UwtxynAQl8u0P+bGHINH7uc2H8Ey10EE19d0kL8J+MF1SRHxo49ZfWNDIiunVNjkoav0ffJHG4Mtp51DxYvgcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ZIoaJB+8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB181C4CED2;
-	Fri, 10 Jan 2025 00:51:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1736470289;
-	bh=5WDyKzA9a1kFVJ2d4N6Loo/bX4Lg8NURQ4VuI4zRmFo=;
-	h=Date:To:From:Subject:From;
-	b=ZIoaJB+8k2xTuVyVYBay288R9uXbCrxNcJysnNtNQxHWxC0O5Hkg2gKLHFDvCJX3k
-	 wBwg4T2LvDx6KbshyAQ1bf60WquIsKfdo4VIn75l6SdyqhyQWfBL/MZSwMMen0MbLL
-	 8CpHa01EzXXVXJxO9QBd4UrcnOKM8GXMkPdVmOcs=
-Date: Thu, 09 Jan 2025 16:51:29 -0800
-To: mm-commits@vger.kernel.org,yuzhao@google.com,weixugc@google.com,stable@vger.kernel.org,shakeel.butt@linux.dev,roman.gushchin@linux.dev,ritesh.list@gmail.com,rientjes@google.com,muchun.song@linux.dev,mhocko@kernel.org,kaiyang2@cs.cmu.edu,hannes@cmpxchg.org,aneesh.kumar@kernel.org,donettom@linux.ibm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-vmscan-pgdemote-vmstat-is-not-getting-updated-when-mglru-is-enabled.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250110005129.AB181C4CED2@smtp.kernel.org>
+	s=arc-20240116; t=1736475528; c=relaxed/simple;
+	bh=sS6epZ/Q0dmr2tgVut1X+sY8gavr366YXLTOVDwcdzM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JiLIkW4qIQh9po9nCgQzX7W5CwObV0FwlWq2ut8imVv2jAQJ4hS29nYGfLnPn6Yps52A3smq4SP5mEbqXfS7HayEOMXNf5CmaxVsAZKt1qJW+V6ABUb2WUhCRCZHxd/9SpSz1GNP99vdv+ADkhA48nLMibSo46f2Rmpaxk5Y/aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-01 (Coremail) with SMTP id qwCowACHj29og4Bnh8d+Bg--.14190S2;
+	Fri, 10 Jan 2025 10:18:29 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: jckuo@nvidia.com,
+	vkoul@kernel.org,
+	kishon@kernel.org,
+	thierry.reding@gmail.com,
+	jonathanh@nvidia.com
+Cc: linux-phy@lists.infradead.org,
+	linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] phy: Fix error handling in tegra_xusb_port_init
+Date: Fri, 10 Jan 2025 10:18:14 +0800
+Message-Id: <20250110021814.1349011-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowACHj29og4Bnh8d+Bg--.14190S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Aw4DKFWkAF15tFW3Aw4fKrg_yoW8XFyDpa
+	1DGas8Kr9YgrWkKF4jvF409Fy5GF42k3yrur1rJ34akrn3W348tas8trWxXa4UArZ7uF4U
+	ArnxJa4kJFyUC3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBa14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
+	4UJVWxJr1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG
+	64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r
+	1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAq
+	YI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82
+	IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC2
+	0s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMI
+	IF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF
+	0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87
+	Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUQvtAUUUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
+If device_add() fails, do not use device_unregister() for error
+handling. device_unregister() consists two functions: device_del() and
+put_device(). device_unregister() should only be called after
+device_add() succeeded because device_del() undoes what device_add()
+does if successful. Change device_unregister() to put_device() call
+before returning from the function.
 
-The patch titled
-     Subject: mm: vmscan : pgdemote vmstat is not getting updated when MGLRU is enabled.
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-vmscan-pgdemote-vmstat-is-not-getting-updated-when-mglru-is-enabled.patch
+As comment of device_add() says, 'if device_add() succeeds, you should
+call device_del() when you want to get rid of it. If device_add() has
+not succeeded, use only put_device() to drop the reference count'.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vmscan-pgdemote-vmstat-is-not-getting-updated-when-mglru-is-enabled.patch
+Found by code review.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Donet Tom <donettom@linux.ibm.com>
-Subject: mm: vmscan : pgdemote vmstat is not getting updated when MGLRU is enabled.
-Date: Thu, 9 Jan 2025 00:05:39 -0600
-
-When MGLRU is enabled, the pgdemote_kswapd, pgdemote_direct, and
-pgdemote_khugepaged stats in vmstat are not being updated.
-
-Commit f77f0c751478 ("mm,memcg: provide per-cgroup counters for NUMA
-balancing operations") moved the pgdemote vmstat update from
-demote_folio_list() to shrink_inactive_list(), which is in the normal LRU
-path.  As a result, the pgdemote stats are updated correctly for the
-normal LRU but not for MGLRU.
-
-To address this, we have added the pgdemote stat update in the
-evict_folios() function, which is in the MGLRU path.  With this patch, the
-pgdemote stats will now be updated correctly when MGLRU is enabled.
-
-Without this patch vmstat output when MGLRU is enabled
-======================================================
-pgdemote_kswapd 0
-pgdemote_direct 0
-pgdemote_khugepaged 0
-
-With this patch vmstat output when MGLRU is enabled
-===================================================
-pgdemote_kswapd 43234
-pgdemote_direct 4691
-pgdemote_khugepaged 0
-
-Link: https://lkml.kernel.org/r/20250109060540.451261-1-donettom@linux.ibm.com
-Fixes: f77f0c751478 ("mm,memcg: provide per-cgroup counters for NUMA balancing operations")
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Acked-by: Yu Zhao <yuzhao@google.com>
-Cc: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kaiyang Zhao <kaiyang2@cs.cmu.edu>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Wei Xu <weixugc@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 53d2a715c240 ("phy: Add Tegra XUSB pad controller support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
+Changes in v2:
+- modified the bug description as suggestions.
+---
+ drivers/phy/tegra/xusb.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
- mm/vmscan.c |    3 +++
- 1 file changed, 3 insertions(+)
-
---- a/mm/vmscan.c~mm-vmscan-pgdemote-vmstat-is-not-getting-updated-when-mglru-is-enabled
-+++ a/mm/vmscan.c
-@@ -4646,6 +4646,9 @@ retry:
- 		reset_batch_size(walk);
- 	}
+diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
+index 79d4814d758d..c89df95aa6ca 100644
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -548,16 +548,16 @@ static int tegra_xusb_port_init(struct tegra_xusb_port *port,
  
-+	__mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(),
-+					stat.nr_demoted);
-+
- 	item = PGSTEAL_KSWAPD + reclaimer_offset();
- 	if (!cgroup_reclaim(sc))
- 		__count_vm_events(item, reclaimed);
-_
-
-Patches currently in -mm which might be from donettom@linux.ibm.com are
-
-mm-vmscan-pgdemote-vmstat-is-not-getting-updated-when-mglru-is-enabled.patch
-mm-migrate-removed-unused-argument-vma-from-migrate_misplaced_folio.patch
-selftests-mm-added-new-test-cases-to-the-migration-test.patch
+ 	err = dev_set_name(&port->dev, "%s-%u", name, index);
+ 	if (err < 0)
+-		goto unregister;
++		goto put_device;
+ 
+ 	err = device_add(&port->dev);
+ 	if (err < 0)
+-		goto unregister;
++		goto put_device;
+ 
+ 	return 0;
+ 
+-unregister:
+-	device_unregister(&port->dev);
++put_device:
++	put_device(&port->dev);
+ 	return err;
+ }
+ 
+-- 
+2.25.1
 
 
