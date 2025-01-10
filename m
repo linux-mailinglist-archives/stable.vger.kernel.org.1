@@ -1,111 +1,135 @@
-Return-Path: <stable+bounces-108234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 162CBA09CFB
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 22:18:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64D46A09D4D
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 22:38:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA3A87A073F
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 21:17:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7ED763AA896
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 21:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E111A2165F4;
-	Fri, 10 Jan 2025 21:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1182116E6;
+	Fri, 10 Jan 2025 21:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="dLaAD4WJ"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Wva81Aww"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from out-175.mta0.migadu.com (out-175.mta0.migadu.com [91.218.175.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D94204098;
-	Fri, 10 Jan 2025 21:17:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBCF18C03A
+	for <stable@vger.kernel.org>; Fri, 10 Jan 2025 21:38:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736543860; cv=none; b=Ijld0vlLKVaan/ll4B/3ustuAfTSu54zr68cRa93v9chVpw3swT23k517/8CUDhj/cO5k1QiHxpXNPoYvNTBzHqJQK6a0ZgoeyiQTL8UUgC7omrEL4xTLVmWVr+OgCiaF8zrIjXBa0SaqTUCOoIDrfz4RO/EuQ1DZX2rm+9R+po=
+	t=1736545119; cv=none; b=FhP/PUI8m6xVG/3wEkPmh+WPwk93VsRoxq55EnUu9prJOG7MG5z5KkZ+dPY8Sk/eCjXMWk2bW8HejQSuKIUVk7jUW/qOQ12UHsGggSISTQgRXr27wQeebKTYz8J1CQdnXnrjV2moewF4RZzx5Q2yafRnSnjbshuvZCBfznLCuy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736543860; c=relaxed/simple;
-	bh=lf9+mcV6JbV1iptvUb3hMXGmcACe4sHQYUmure01PjA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EkDss+zYfueD9x4kTm4oaRUEGn+fd1yk30yVHihwahYsQEfwzOJmz5e17xzqtxLJ1rb+SSLQKsnDL+yuKbq2kTqD2nJyQkNKWDLwqA6LxEUUB+aMIZIw0fpWrD/nhzEFJWSCJM2NfFIQRzVSnlHyfbK0KSvn1RXy1A7ITaIURlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=dLaAD4WJ; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50ALBwgi022287;
-	Fri, 10 Jan 2025 21:17:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2023-11-20; bh=eP848ZOFxSgl5pDt0ENZdkCL5izjjGR5jke3ZwY/cmE=; b=
-	dLaAD4WJcdwmJczhjMt+wbsna16JMWEtzVzhtqf5Kw2oFnMQ0lqRiU/HBLWwdLG+
-	Eu3ZVyEk7K6rtqnE0Y0LJWVscLl833byGPslJC0Gsf7bsg27Nk79hB1edfHESmgG
-	D4ZpXHeOm/3byW8x8YKLhgbayd/7IfUkcMXvBgUhyxOoNMyAKVA0GleR2U1M9b2b
-	q8H/jpz4FRIDGhWlcIjSjytdy0rkJYNfAxLuKfJRh+8sFu23M4i7IP9TViFpqGAS
-	Yc/iMugfqrAY25vZZeWX1vEL/v065wSC2PSqQtHxZrOkAkIBF4mjlHDlhi0ky2ZH
-	PPRNszsKKBi9cv86DhPgIQ==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43xudcc0ss-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Jan 2025 21:17:29 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 50AKUL5b027457;
-	Fri, 10 Jan 2025 21:17:28 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 43xued5r4x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Jan 2025 21:17:28 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 50ALHQ1q034137;
-	Fri, 10 Jan 2025 21:17:27 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 43xued5r3k-2;
-	Fri, 10 Jan 2025 21:17:27 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: linux-scsi@vger.kernel.org, Eric Biggers <ebiggers@kernel.org>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-arm-msm@vger.kernel.org,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Gaurav Kashyap <quic_gaurkash@quicinc.com>, stable@vger.kernel.org,
-        Abel Vesa <abel.vesa@linaro.org>
-Subject: Re: [PATCH] ufs: qcom: fix crypto key eviction
-Date: Fri, 10 Jan 2025 16:16:44 -0500
-Message-ID: <173654330175.638636.9812514803908918382.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241210030839.1118805-1-ebiggers@kernel.org>
-References: <20241210030839.1118805-1-ebiggers@kernel.org>
+	s=arc-20240116; t=1736545119; c=relaxed/simple;
+	bh=uN8OvW217jnJrGT746idFk71yViCEnErL4OQOhqSQZE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DYX2Jjgq+g5Wd/8Kf7/TWiaA/CEDRjmxd4SpHZdm3D5lv8p4s605tyM2DTp7NBmamLXmZwBlLC4gxYHrOU4GFMEG1nbHlPLwRek0Lq3n9JI1YCGT/uQ1urCuLTzyt6I3QSmbXx/3ZmZNF/+ggE7NngpJyxatO56KE4uahkstjyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Wva81Aww; arc=none smtp.client-ip=91.218.175.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1736545109;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=iC3k1SZlNlarqOZELintr0r8/tkyMFglXXS2+edHzKk=;
+	b=Wva81Awwv8ENbIE/bgyPENEqbHTNL7iwNmGOtP50PP3xoef58qXCG690ciwFORmKWOkdrA
+	FNQQVJ3dEzFR5l/R2SluGnP4Br//1R/g2BpGUpQFhiM0+NiikXAjGI5g6lNrvm9Vedt/b/
+	wGU6ue67daWJX2W5IWpOviA0bntRhrY=
+From: Sean Anderson <sean.anderson@linux.dev>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	linux-serial@vger.kernel.org
+Cc: Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
+	linux-arm-kernel@lists.infradead.org,
+	John Ogness <john.ogness@linutronix.de>,
+	linux-kernel@vger.kernel.org,
+	Michal Simek <michal.simek@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH] tty: xilinx_uartps: split sysrq handling
+Date: Fri, 10 Jan 2025 16:38:22 -0500
+Message-Id: <20250110213822.2107462-1-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-10_09,2025-01-10_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 adultscore=0
- malwarescore=0 phishscore=0 bulkscore=0 mlxlogscore=863 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2411120000
- definitions=main-2501100164
-X-Proofpoint-ORIG-GUID: e7F8E0kCmHLMdKdObNfSTUJlYOha8QYD
-X-Proofpoint-GUID: e7F8E0kCmHLMdKdObNfSTUJlYOha8QYD
+X-Migadu-Flow: FLOW_OUT
 
-On Mon, 09 Dec 2024 19:08:39 -0800, Eric Biggers wrote:
+lockdep detects the following circular locking dependency:
 
-> Commit 56541c7c4468 ("scsi: ufs: ufs-qcom: Switch to the new ICE API")
-> introduced an incorrect check of the algorithm ID into the key eviction
-> path, and thus qcom_ice_evict_key() is no longer ever called.  Fix it.
-> 
-> 
+CPU 0                      CPU 1
+========================== ============================
+cdns_uart_isr()            printk()
+  uart_port_lock(port)       console_lock()
+			     cdns_uart_console_write()
+                               if (!port->sysrq)
+                                 uart_port_lock(port)
+  uart_handle_break()
+    port->sysrq = ...
+  uart_handle_sysrq_char()
+    printk()
+      console_lock()
 
-Applied to 6.14/scsi-queue, thanks!
+The fixed commit attempts to avoid this situation by only taking the
+port lock in cdns_uart_console_write if port->sysrq unset. However, if
+(as shown above) cdns_uart_console_write runs before port->sysrq is set,
+then it will try to take the port lock anyway. This may result in a
+deadlock.
 
-[1/1] ufs: qcom: fix crypto key eviction
-      https://git.kernel.org/mkp/scsi/c/7a0905caf566
+Fix this by splitting sysrq handling into two parts. We use the prepare
+helper under the port lock and defer handling until we release the lock.
 
+Fixes: 74ea66d4ca06 ("tty: xuartps: Improve sysrq handling")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Cc: <stable@vger.kernel.org> # c980248179d: serial: xilinx_uartps: Use port lock wrappers
+---
+
+ drivers/tty/serial/xilinx_uartps.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/tty/serial/xilinx_uartps.c b/drivers/tty/serial/xilinx_uartps.c
+index beb151be4d32..92ec51870d1d 100644
+--- a/drivers/tty/serial/xilinx_uartps.c
++++ b/drivers/tty/serial/xilinx_uartps.c
+@@ -287,7 +287,7 @@ static void cdns_uart_handle_rx(void *dev_id, unsigned int isrstatus)
+ 				continue;
+ 		}
+ 
+-		if (uart_handle_sysrq_char(port, data))
++		if (uart_prepare_sysrq_char(port, data))
+ 			continue;
+ 
+ 		if (is_rxbs_support) {
+@@ -495,7 +495,7 @@ static irqreturn_t cdns_uart_isr(int irq, void *dev_id)
+ 	    !(readl(port->membase + CDNS_UART_CR) & CDNS_UART_CR_RX_DIS))
+ 		cdns_uart_handle_rx(dev_id, isrstatus);
+ 
+-	uart_port_unlock(port);
++	uart_unlock_and_check_sysrq(port);
+ 	return IRQ_HANDLED;
+ }
+ 
+@@ -1380,9 +1380,7 @@ static void cdns_uart_console_write(struct console *co, const char *s,
+ 	unsigned int imr, ctrl;
+ 	int locked = 1;
+ 
+-	if (port->sysrq)
+-		locked = 0;
+-	else if (oops_in_progress)
++	if (oops_in_progress)
+ 		locked = uart_port_trylock_irqsave(port, &flags);
+ 	else
+ 		uart_port_lock_irqsave(port, &flags);
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+2.35.1.1320.gc452695387.dirty
+
 
