@@ -1,143 +1,119 @@
-Return-Path: <stable+bounces-108188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624DCA08FDA
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 12:58:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C46F6A0927F
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 14:50:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F40577A4D7B
-	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 11:57:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB7793A9A88
+	for <lists+stable@lfdr.de>; Fri, 10 Jan 2025 13:50:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC7A20C465;
-	Fri, 10 Jan 2025 11:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2AE320E331;
+	Fri, 10 Jan 2025 13:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=maxima.ru header.i=@maxima.ru header.b="TIFqLRkp"
+	dkim=pass (1024-bit key) header.d=alpinelinux.org header.i=@alpinelinux.org header.b="fG5ICY40"
 X-Original-To: stable@vger.kernel.org
-Received: from ksmg01.maxima.ru (ksmg01.maxima.ru [81.200.124.38])
+Received: from gbr-app-1.alpinelinux.org (gbr-app-1.alpinelinux.org [213.219.36.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7471820B80D;
-	Fri, 10 Jan 2025 11:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.200.124.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FD620DD71
+	for <stable@vger.kernel.org>; Fri, 10 Jan 2025 13:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.219.36.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736510264; cv=none; b=oXQhIyNdBmnsRk0j0HNkfe7zPLgZjp5no7NT6PH/s93bbiA5ghGtD0r1xsaKUXPcrXfF1GJ2PMgphAm9TirLc4a41QsZqgvDAPORl0KqpytUok7yT8rfjZ8GKcPE4ExuSjAF+k7elkZe2ivSVhDld8GCom1uUN5QyK56m2KvJIw=
+	t=1736517009; cv=none; b=eRYpn9jpBZckFVillQkaRVjTne/rfRWTmYtPxjp5ofaRIkKAdJBR2vWCJml1u6noWrgfUmFmujwg+/oiSkfHyEO6PNZ1t1mTOUNoUUZmwXMoWzR2kkv8pp5Rn4Ee74oGNoiA72YHyZMpE7b8GY4tsUbTsb0Yeo8ORjoseKnGWkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736510264; c=relaxed/simple;
-	bh=o2ulzVqrH1XuZcMCVJE2/uT2kOcFUVvbcO7zGEgCJ0Y=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=U/4G0H0yWm5M3ShJjLFlDa2PxSsmLx6+QRgWyf9OZ9Ct1/byAxouLAXOYGri63Sz++pRBu9z+ZBb0Ai+fH9SjgdcHjMfL29rpW/FiPXnfTAgAhEoKxujPzlwfdNT3lSeuTRxR6q0/BEE5Ho6b1uoo2B3Cz2ROFtuEzx9QNN4j3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maxima.ru; spf=pass smtp.mailfrom=mt-integration.ru; dkim=pass (2048-bit key) header.d=maxima.ru header.i=@maxima.ru header.b=TIFqLRkp; arc=none smtp.client-ip=81.200.124.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maxima.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mt-integration.ru
-Received: from ksmg01.maxima.ru (localhost [127.0.0.1])
-	by ksmg01.maxima.ru (Postfix) with ESMTP id 35065C000C;
-	Fri, 10 Jan 2025 14:50:17 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ksmg01.maxima.ru 35065C000C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maxima.ru; s=sl;
-	t=1736509817; bh=CuOfY3qbIPC792aUU8ynaQ3dOV35Ia7fD7QZCJinD84=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=TIFqLRkpYRpANo3uo4IzidwkuQt1UGGhqwo/KHMDOirGGsdEAY5WyGIMUa5IQizu3
-	 s16XOzUU2rUmiThyG3R8nlZ88jPgrN4gJ8ZIyrFkhcmKz90e/aP9ljxink1vwzolY2
-	 kogUjqp3Hj+qUpBgIne4ZSx/G1Oevdubq5DadanUFvR87JWWTu6MN4dSxE9roMdzaL
-	 isdVrpKpVS3VBmwv9pUfnYdsXejSdK3OjFTh/chxUHQQ26R5/FGcXSVDBOIFEamny7
-	 0SJOxSlcDKUyAeEBqQQLf41ybY9G9QLdxFYwfWFMyyoLhGA+Eh0UsHNtAjS+uQbAOI
-	 A/J1DXxk/SAPw==
-Received: from ksmg01.maxima.ru (autodiscover.maxima.ru [81.200.124.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "*.maxima.ru", Issuer "GlobalSign GCC R3 DV TLS CA 2020" (verified OK))
-	by ksmg01.maxima.ru (Postfix) with ESMTPS;
-	Fri, 10 Jan 2025 14:50:17 +0300 (MSK)
-Received: from localhost.maximatelecom.ru (217.116.54.35) by
- mmail-p-exch01.mt.ru (81.200.124.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.1544.4; Fri, 10 Jan 2025 14:50:15 +0300
-From: Vitaliy Shevtsov <v.shevtsov@maxima.ru>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-CC: Vitaliy Shevtsov <v.shevtsov@maxima.ru>,
-	<syzbot+9a8f87865d5e2e8ef57f@syzkaller.appspotmail.com>, Maxime Ripard
-	<mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
-	<airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Matt Roper
-	<matthew.d.roper@intel.com>, =?UTF-8?q?Michel=20D=C3=A4nzer?=
-	<michel.daenzer@amd.com>, <dri-devel@lists.freedesktop.org>,
-	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>,
-	<stable@vger.kernel.org>
-Subject: [PATCH] drm/vblank: fix misuse of drm_WARN in drm_wait_one_vblank()
-Date: Fri, 10 Jan 2025 16:49:13 +0000
-Message-ID: <20250110164914.15013-1-v.shevtsov@maxima.ru>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1736517009; c=relaxed/simple;
+	bh=YJ755cDs+D875wWnarRFX9kBWozuIJhH2j3k/5Ovgz0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=EKxeqKNp7RRngEf0TJaCFXS0BQJWqlVyF6xnNhg+k9Asa/52XiI1XN44Rg3w2IVHtiNdEXCZXvKMFBaYPfJp6BeDsbtMFAgps2/5JfOAqw8QoGaIKs7SWho154OmihMRrV3INy8dyFesLIEhQm9B1+4iQe0zTtwfe3eX6/2YT64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpinelinux.org; spf=pass smtp.mailfrom=alpinelinux.org; dkim=pass (1024-bit key) header.d=alpinelinux.org header.i=@alpinelinux.org header.b=fG5ICY40; arc=none smtp.client-ip=213.219.36.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpinelinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alpinelinux.org
+Received: from ncopa-desktop (unknown [IPv6:2001:4646:fb05:0:ad82:2c09:779f:8848])
+	(Authenticated sender: ncopa@alpinelinux.org)
+	by gbr-app-1.alpinelinux.org (Postfix) with ESMTPSA id C49D22266EA;
+	Fri, 10 Jan 2025 13:40:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alpinelinux.org;
+	s=smtp; t=1736516408;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=7VT1CASTILdcekWmkvd1KQ0cV341wJHTu62CXzb1NpA=;
+	b=fG5ICY40w4dIFz1Lrw2nwl+h8WDpTRMxQNeEUMEyg2fAQ5JQ+0unGVNCZ/GukfssWVqwZ7
+	Uvuj1DGDEni6jZsTwSzdNJ3Qdh5oDzR04oTvpr8hoG7l2JKUhhnv7iv5LvoEf9Zy7mrOFv
+	sfELz0IQnaW/fpOKm4iUjiWrHbB44v8=
+Date: Fri, 10 Jan 2025 14:40:04 +0100
+From: Natanael Copa <ncopa@alpinelinux.org>
+To: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev
+Subject: regression in 6.6.70:  kexec_core.c:1075:(.text+0x1bffd0):
+ undefined reference to `machine_crash_shutdown'
+Message-ID: <20250110144004.1fca120a@ncopa-desktop>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-alpine-linux-musl)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: mt-exch-01.mt.ru (91.220.120.210) To mmail-p-exch01.mt.ru
- (81.200.124.61)
-X-KSMG-AntiPhishing: NotDetected, bases: 2025/01/10 09:46:00
-X-KSMG-AntiSpam-Auth: dmarc=none header.from=maxima.ru;spf=none smtp.mailfrom=mt-integration.ru;dkim=none
-X-KSMG-AntiSpam-Envelope-From: v.shevtsov@mt-integration.ru
-X-KSMG-AntiSpam-Info: LuaCore: 49 0.3.49 28b3b64a43732373258a371bd1554adb2caa23cb, {rep_avail}, {Tracking_smtp_not_equal_from}, {Tracking_one_url, url3}, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;maxima.ru:7.1.1;81.200.124.61:7.1.2;127.0.0.199:7.1.2;mt-integration.ru:7.1.1;ksmg01.maxima.ru:7.1.1;syzkaller.appspot.com:5.0.1,7.1.1, {Tracking_smtp_domain_mismatch}, {Tracking_smtp_domain_2level_mismatch}, FromAlignment: n, ApMailHostAddress: 81.200.124.61
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 190253 [Jan 10 2025]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.7
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/01/10 08:29:00 #26967733
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2025/01/10 09:46:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 7
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-drm_wait_one_vblank() uses drm_WARN() to check for a time-dependent
-condition. Since syzkaller runs the kernel with the panic_on_warn set, this
-causes the entire kernel to panic with a "vblank wait timed out on crtc %i"
-message.
+Hi!
 
-In this case it does not mean that there is something wrong with the kernel
-but is caused by time delays in vblanks handling that the fuzzer introduces
-as a side effect when fail_alloc_pages, failslab, fail_usercopy faults are
-injected with maximum verbosity. With lower verbosity this issue disappears.
+When updating the Alpine Linux kernel to 6.6.70 I bumped into a new compile error:
 
-drm_WARN() was introduced here by e8450f51a4b3 ("drm/irq: Implement a
-generic vblank_wait function") and it is intended to indicate a failure with
-vblank irqs handling by the underlying driver. The issue is raised during
-testing of the vkms driver, but it may be potentially reproduced with other
-drivers.
+  LD      .tmp_vmlinux.kallsyms1
+ld: vmlinux.o: in function `__crash_kexec':
+/home/ncopa/aports/main/linux-lts/src/linux-6.6/kernel/kexec_core.c:1075:(.text+0x1bffd0): undefined reference to `machine_crash_shutdown'
+ld: vmlinux.o: in function `do_kexec_load':
+/home/ncopa/aports/main/linux-lts/src/linux-6.6/kernel/kexec.c:166:(.text+0x1c1b4e): undefined reference to `arch_kexec_protect_crashkres'
+ld: /home/ncopa/aports/main/linux-lts/src/linux-6.6/kernel/kexec.c:105:(.text+0x1c1b94): undefined reference to `arch_kexec_unprotect_crashkres'
+make[2]: *** [/home/ncopa/aports/main/linux-lts/src/linux-6.6/scripts/Makefile.vmlinux:37: vmlinux] Error 1
+make[1]: *** [/home/ncopa/aports/main/linux-lts/src/linux-6.6/Makefile:1164: vmlinux] Error 2
+make: ***
+[/home/ncopa/aports/main/linux-lts/src/linux-6.6/Makefile:234:
+__sub-make] Error 2
 
-Fix this by using drm_warn() instead which does not cause the kernel to
-panic with panic_on_warn set, but still provides a way to tell users about
-this unexpected condition.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+$ grep -E '(CRASH_CORE|_KEXEC)' .config
+CONFIG_CRASH_CORE=y
+CONFIG_KEXEC_CORE=y
+CONFIG_KEXEC=y
+# CONFIG_KEXEC_FILE is not set
+# CONFIG_KEXEC_JUMP is not set
+CONFIG_ARCH_SUPPORTS_KEXEC=y
+CONFIG_ARCH_SUPPORTS_KEXEC_FILE=y
+CONFIG_ARCH_SUPPORTS_KEXEC_PURGATORY=y
+CONFIG_ARCH_SUPPORTS_KEXEC_SIG=y
+CONFIG_ARCH_SUPPORTS_KEXEC_SIG_FORCE=y
+CONFIG_ARCH_SUPPORTS_KEXEC_BZIMAGE_VERIFY_SIG=y
+CONFIG_ARCH_SUPPORTS_KEXEC_JUMP=y
 
-Fixes: e8450f51a4b3 ("drm/irq: Implement a generic vblank_wait function")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+9a8f87865d5e2e8ef57f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9a8f87865d5e2e8ef57f
-Signed-off-by: Vitaliy Shevtsov <v.shevtsov@maxima.ru>
----
- drivers/gpu/drm/drm_vblank.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vblank.c
-index 94e45ed6869d..fa09ff5b1d48 100644
---- a/drivers/gpu/drm/drm_vblank.c
-+++ b/drivers/gpu/drm/drm_vblank.c
-@@ -1304,7 +1304,8 @@ void drm_wait_one_vblank(struct drm_device *dev, unsigned int pipe)
- 				 last != drm_vblank_count(dev, pipe),
- 				 msecs_to_jiffies(100));
- 
--	drm_WARN(dev, ret == 0, "vblank wait timed out on crtc %i\n", pipe);
-+	if (!ret)
-+		drm_warn(dev, "vblank wait timed out on crtc %i\n", pipe);
- 
- 	drm_vblank_put(dev, pipe);
- }
--- 
-2.47.1
+Looking at the git history I notice this commit:
 
+> From e5b1574a8ca28c40cf53eda43f6c3b016ed41e27 Mon Sep 17 00:00:00 2001
+> From: Baoquan He <bhe@redhat.com>
+> Date: Wed, 24 Jan 2024 13:12:46 +0800
+> Subject: x86, crash: wrap crash dumping code into crash related ifdefs
+>
+> [ Upstream commit a4eeb2176d89fdf2785851521577b94b31690a60 ]
+>
+> Now crash codes under kernel/ folder has been split out from kexec
+> code, crash dumping can be separated from kexec reboot in config
+> items on x86 with some adjustments.
+
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-6.6.y&id=e5b1574a8ca28c40cf53eda43f6c3b016ed41e27
+
+So a wild guess is that the commit(s) that splits out crash codes under
+kernel/ directory from kexec code also needs to be backported to
+linux-6.6.y?
+
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-6.12.y&id=02aff8480533817a29e820729360866441d7403d
+
+Thanks!
+
+-nc
 
