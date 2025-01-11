@@ -1,80 +1,80 @@
-Return-Path: <stable+bounces-108263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6B33A0A332
-	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 12:02:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 301C1A0A335
+	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 12:02:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FD99164B93
-	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 11:02:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AE9016B82B
+	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 11:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94B7191F92;
-	Sat, 11 Jan 2025 11:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B2019342F;
+	Sat, 11 Jan 2025 11:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="js41VSjC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FVpzVPar"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601FD24B249;
-	Sat, 11 Jan 2025 11:02:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF80192D68;
+	Sat, 11 Jan 2025 11:02:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736593351; cv=none; b=f2kvYyCIz1nML5qHFwLBkp1p2EHPizX6O0j70CwNlf2XwGYT8k3f5M5Kxw+q4EXl5hHXo/p00+JkDY6MKFAb6U5vHf8d2QuApu5StWINds6Xnr3VU7IfQewweSyFhIN+aGMHr1Z7lJUOGJhwpTfMgsXmUlLrYjOrnD/PCxiiaRs=
+	t=1736593355; cv=none; b=bKjbT+FT06zH4Xj/i9rB43h713VPtEiTizoVsH5N9c+rd3mFkYx79XMEc1XYXxIZTNz9I9rqfYCLGD6rLFdGiECLd5hzf/EbU3RJx4ByVs3pG4NB713neEyM3L5YGY7CQz+2Kuw/YsvScTfv31nQXPpMFo61p/LllVNlAVDBOSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736593351; c=relaxed/simple;
-	bh=2vKcGERmM+rnMEyk9sBu1E9qFIj+oblBDImz1PKw8AM=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=iKLCXBsoiZqGY6gFAHwPMFv3qvEsO9ecbi3/3hfD7xqQr2+D2VUTiyBze9YtmlX0BcXpFWYtuyyf/Ge2UDB9+1DETrz51nR2rMo4GqAsliZolwJvkGk6wfFt7bR1ZZdexvW07EhH8NtErFpoFTf2BATRWYHBjHzf4kKVmXrJMoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=js41VSjC; arc=none smtp.client-ip=209.85.214.177
+	s=arc-20240116; t=1736593355; c=relaxed/simple;
+	bh=Y6KhVL19YV85Fry25EY0/X1r2wmsqcdo/rcDS2pSbuQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=HlOuXfNTvGlarKily/Xdh3v6LVA6aNbmXyviP9dgyH4iQaov7TPyYU2LFN+AootUcCnh8WeqrF/sA/BHhqm/Bdg+0zzLRgvhC6XFdUEn+t6RhGZnYhnQrlEWAaaKasgnOVo81K3BorJvqNCSOnScmiPYz3qkgVj50n2ba6MRl+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FVpzVPar; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-21661be2c2dso46686475ad.1;
-        Sat, 11 Jan 2025 03:02:30 -0800 (PST)
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-21631789fcdso51208745ad.1;
+        Sat, 11 Jan 2025 03:02:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736593350; x=1737198150; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZrVCV9b6zJgZJNvFo9Xxuzg1AHjgJdoB3vUsspLLPR4=;
-        b=js41VSjC6go+AT+a4ox+o3FRTQ9z7DaHVMbNlvgFeB4aeLEJTMhyCtjU5+i+YJselI
-         PZrUpWfv7iTYPtV6gtTKXSGnGZ1nbNxp2JGv5//QTboLeQnxf9KYqQ5wVPro/dwkc/mv
-         Y01xbmyhA5Ypl+jak60lsODz1XP35FhteP4PBIJR2PEz3EEzPBckaHESO3+jzCsyvDqR
-         UKrnha07YKmnyV6IglulCgmNNSmVh63Qd5XFauQcpt4TONoI3JLCLBN+051Fg3wVyadJ
-         ElghATKdRAE/BjQOwiw79uVKXTk3xVfeIlCA899rz8YzYJgrWnylZXfxJdc70HIsi0Li
-         VoNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736593350; x=1737198150;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1736593353; x=1737198153; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ZrVCV9b6zJgZJNvFo9Xxuzg1AHjgJdoB3vUsspLLPR4=;
-        b=DehnnPBaVrErGwMdk5wC5/HQzKHpVASIIc2+hzW6GHCk7SqQEGJycSD1Jk20y48v+F
-         XrARzhbbSF7S3ImciCNhttO2nuZ+Wok3LY/bk91taLfXCbFBI/PUEQcbJ990rsLyFg/+
-         cJlZKqIlvuWokJ4dT1LsL3Q1cInISuTlAhAPd/dhaq3GTH13oskTEvDQFG6YZ6l2IlKt
-         Y9/rOJOb5u+G5vjVPjL24nbwNa28eCDmnO/5xPmW3elD70fFR0dwbtI/IM4gLAVmneZQ
-         7w8K2cqQJC5u6utA5cS8RSiluCE1jiGJOSqSKo0p81RrL95PwogwlJ8KSNE9GoPMEdWu
-         y9WQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUEXNuHOFukl+2ttVceHXEclLhw01tMj7TUsODEY5Qbsm034H1uoNocmgXk/HPiMJN0Du9+NZMdNmImvjI=@vger.kernel.org, AJvYcCXxTXAm6bxRi1dPg1liLntMYLHZVXt8SZlReqVeoS6ZaU406HlCUBn9m+o51v4wqlU90ku4Bru9@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWobgj3j3kF2cpOGvF+hp8XfawSzMqnZy49KJ2Q5OB+ngphxVL
-	895ZdqvBt1Ss25ITD64gyfFZik6ja/iHOJxJzvV63l0ErcqpDMkZ
-X-Gm-Gg: ASbGncsrTCjsMZwgfHHGQ2EQq/h6VkRWIaxL3gwxdvILhpPRlVKU61vK/Y66zJ+9E5O
-	EbgCfIOSTXHxabQpCcoWYSL0wdFimB4tO4A9yzkT1oceUVan4bUYgTUtup0p00ew89dL09/6qRh
-	Dn/9CBVddVmUmf4FxoSJIk78RFa/fxHTSMpDj6EgDJgesu6m9iU7CFGf2mkshLQF+PLx8MAriSV
-	Hm2vbQ9pj7KjV6LMOasHOt41k6bPonD0VZ5LXwDrvp2QCasMk+r4411PsHWRRk5unFbNm/w0v+K
-	2E9+n3alyRG4qFKeUpl/qXRoQPyLOku22w==
-X-Google-Smtp-Source: AGHT+IFKBMm49fx66Z6VI2zKjfj0BJley+mXuBPcnuROVQPn1S6GbppUHHXckWO2qTQTp2kQtrmuAA==
-X-Received: by 2002:a05:6a20:c887:b0:1db:ff9c:6f3a with SMTP id adf61e73a8af0-1e88d320c3fmr20881804637.42.1736593349654;
-        Sat, 11 Jan 2025 03:02:29 -0800 (PST)
+        bh=jVpCT3rcttjqBCAryOiu/i2BhEIjXBBLZY4oPFbVZO8=;
+        b=FVpzVParttcJbaUjPPnUdWR0MyuMExDhfPDbyAdU5BeAefJbvIClK8CzEzHSrTv+2T
+         idwDVAS//vr5LO0CzVK++Svyrrk5Y3GaKUQcJNE+4qqXgTkD7JmU4AgGUbbN5Ghaql7k
+         is29GfZT6YaQXyRVX6w7hHNV76YcCh+ZBXNEjrpZYLGfiVu5vZReLeAs48F/ARpEvlw2
+         1w/tg1qyblC95R0Lvzl5bsOuLclqNTEF3EmmsYhpco+gka2ZVt376qPjp+9y3eKLwgki
+         CWCUioBc8a38qsAWGAQKYd0v1frt6Z7lj3Lhi9U4csv9/sNnlVtKPe40pzyJpp1rC+v+
+         v4zQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736593353; x=1737198153;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jVpCT3rcttjqBCAryOiu/i2BhEIjXBBLZY4oPFbVZO8=;
+        b=d5aucKX3QhIAmohhyQHWZm/RxqZU46Y9j4KFsfHJuedSA0NbM/4sbgFQZcyNPhihgr
+         obxnOjPdU0W03/iB4plIznhHsmRpYj4t33OEbHjr29CRhJCXcOi/JmnOQgB8hhdSwEeW
+         Hx4RnfKUwIRZx7o87a6POl9TByCs8QtTDbsN5FswkcjM404r+cmLRbyXwb6mYzq3yzOl
+         WtMsu3dLL6yuxb8yTk74FORIcpHnIF7XMQ58YZvOkyvWE/Mu5eA+FbaZ6hneMQT4ZyjP
+         zT45PHhVRUnDqSzi73jGV5QwTqn7Owp2rDFeRq/HHQVTrfYIgMaM2KWaP/LgDAbV8Kc6
+         RRRg==
+X-Forwarded-Encrypted: i=1; AJvYcCUY7tNott+usAc+SGagL5kXpiHseW9GvAzfBpwlneE5Fht+iOrvaLFlz5CTZYYIow3dH5hkj+lGQoMlFFE=@vger.kernel.org, AJvYcCXhZHWht0lxKy0rc+flGWPcPjhGR9NZfUjglj3WTNOoaUWRg6rzsGtqvHavhtydNCWy0CBHO2zR@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEY69LzvK70EAzU5m+9wI0dkxJqgrRY2rgHuUE8wc5ZGPaQ7N5
+	bTXqKchK87l1iERS30Nvgy9dYLPJLQyI4WOB2pxv2TwEoQbil+YA
+X-Gm-Gg: ASbGncspC/eO43RLkKzJtAGduDxpkJK1mr2N6akoT6duhJb1/dmY/iHyaWj+SL0+26c
+	uxE6WCy7leng7f3VTwhjjdEwdOi7itZrUa8XC3TCuWXU/kgsPrmUVwXtssCpDvedoMxsGLyoIiv
+	h5kwOPw0oY2HnY4oiGawXR3GEFGqKVfuUspJFX+3YlG1qA6trgm2NmAtD+GodBwfSuZERQBGmBm
+	1CuMZ1xWV1h/3cWoSVfkxNqZLUXgnxO6KWPSgqJYb1tS8bVh4CXFThqnoMZ2AtH4EUR+KO9v86N
+	TaTGGS39vj+Zru4YbepD0YbP5PeGPzRGnA==
+X-Google-Smtp-Source: AGHT+IEcD9OT11Ou4Y2pyiA193+J6lV+T/yvDgGlAPaw+09HcDol3efs3vXKL3WRKfcOw4uW2c6xPQ==
+X-Received: by 2002:a05:6a00:170a:b0:725:4915:c0f with SMTP id d2e1a72fcca58-72d32506c6fmr13542406b3a.11.1736593352792;
+        Sat, 11 Jan 2025 03:02:32 -0800 (PST)
 Received: from localhost.localdomain (61-220-246-151.hinet-ip.hinet.net. [61.220.246.151])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72d40680e5csm2953826b3a.143.2025.01.11.03.02.26
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72d40680e5csm2953826b3a.143.2025.01.11.03.02.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Jan 2025 03:02:29 -0800 (PST)
+        Sat, 11 Jan 2025 03:02:32 -0800 (PST)
 From: Potin Lai <potin.lai.pt@gmail.com>
-Subject: [PATCH v2 0/2] net/ncsi: fix oem gma command handling and state
- race issue
-Date: Sat, 11 Jan 2025 18:59:42 +0800
-Message-Id: <20250111-fix-ncsi-mac-v2-0-838e0a1a233a@gmail.com>
+Date: Sat, 11 Jan 2025 18:59:43 +0800
+Subject: [PATCH v2 1/2] net/ncsi: fix locking in Get MAC Address handling
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,9 +83,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAB5PgmcC/x2MQQqAIBAAvxJ7bsFVu/SV6GC61h6yUIhA/HvSc
- RhmKhTOwgXmoULmR4pcqYMeB/CHSzujhM6glZ4UEWGUF5MvgqfzSGw3E6I1FAl6cmfu/t8ta2s
- fRo7fz14AAAA=
+Message-Id: <20250111-fix-ncsi-mac-v2-1-838e0a1a233a@gmail.com>
+References: <20250111-fix-ncsi-mac-v2-0-838e0a1a233a@gmail.com>
+In-Reply-To: <20250111-fix-ncsi-mac-v2-0-838e0a1a233a@gmail.com>
 To: Samuel Mendoza-Jonas <sam@mendozajonas.com>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -93,44 +93,142 @@ To: Samuel Mendoza-Jonas <sam@mendozajonas.com>,
  Paul Fertser <fercerpav@gmail.com>, Patrick Williams <patrick@stwcx.xyz>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Cosmo Chou <cosmo.chou@quantatw.com>, Potin Lai <potin.lai@quantatw.com>, 
- Potin Lai <potin.lai.pt@gmail.com>, stable@vger.kernel.org, 
- Cosmo Chou <chou.cosmo@gmail.com>
+ Potin Lai <potin.lai.pt@gmail.com>, stable@vger.kernel.org
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1736593346; l=928;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1736593346; l=4642;
  i=potin.lai.pt@gmail.com; s=20240724; h=from:subject:message-id;
- bh=2vKcGERmM+rnMEyk9sBu1E9qFIj+oblBDImz1PKw8AM=;
- b=DemqqyhpEEArEjPiFwz6DuVOhulHspPlM0hURdDotYTMQmXqIjJ7EztPWCoILxOfffiBtGlI9
- FcgEGD1YDLgCk2c1oEZK/j0agvbbJzKYGPqTtIvPPttxz/w2A4EXDu7
+ bh=cFqw/9YqoODz1OY0OrdpTECRIy/akueGHaQLjcYInTk=;
+ b=VSDFIlISZcdXBGHiAP9eXB9tASxrJb4HYzysgZyjMOYOvD/dQj0ifvZdaKEItbTs0xSGGsaBi
+ Qz5mtsiVyKxB2zZQnZUWAioOyyAo+lMYVaH2bVbgQWvqzZh6ySPdVF8
 X-Developer-Key: i=potin.lai.pt@gmail.com; a=ed25519;
  pk=6Z4H4V4fJwLteH/WzIXSsx6TkuY5FOcBBP+4OflJ5gM=
 
-We are seeing kernel panic when enabling two NCSI interfaces at same
-time. It looks like mutex lock is being used in softirq caused the
-issue.
+From: Paul Fertser <fercerpav@gmail.com>
 
-This patch series try to fix oem gma command handling issue by adding a
-new state, also fix a potential state handling issue. 
+Obtaining RTNL lock in a response handler is not allowed since it runs
+in an atomic softirq context. Postpone setting the MAC address by adding
+a dedicated step to the configuration FSM.
 
-v1: https://lore.kernel.org/all/20250109145054.30925-1-fercerpav@gmail.com/
-
-Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
+Fixes: 790071347a0a ("net/ncsi: change from ndo_set_mac_address to dev_set_mac_address")
+Cc: stable@vger.kernel.org
+Cc: Potin Lai <potin.lai@quantatw.com>
+Link: https://lore.kernel.org/20241129-potin-revert-ncsi-set-mac-addr-v1-1-94ea2cb596af@gmail.com
+Signed-off-by: Paul Fertser <fercerpav@gmail.com>
 ---
-Cosmo Chou (1):
-      net/ncsi: fix state race during channel probe completion
-
-Paul Fertser (1):
-      net/ncsi: fix locking in Get MAC Address handling
-
  net/ncsi/internal.h    |  2 ++
- net/ncsi/ncsi-manage.c | 21 ++++++++++++++++++---
+ net/ncsi/ncsi-manage.c | 16 ++++++++++++++--
  net/ncsi/ncsi-rsp.c    | 19 ++++++-------------
- 3 files changed, 26 insertions(+), 16 deletions(-)
----
-base-commit: fc033cf25e612e840e545f8d5ad2edd6ba613ed5
-change-id: 20250111-fix-ncsi-mac-1e4b3df431f1
+ 3 files changed, 22 insertions(+), 15 deletions(-)
 
-Best regards,
+diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
+index ef0f8f73826f..4e0842df5234 100644
+--- a/net/ncsi/internal.h
++++ b/net/ncsi/internal.h
+@@ -289,6 +289,7 @@ enum {
+ 	ncsi_dev_state_config_sp	= 0x0301,
+ 	ncsi_dev_state_config_cis,
+ 	ncsi_dev_state_config_oem_gma,
++	ncsi_dev_state_config_apply_mac,
+ 	ncsi_dev_state_config_clear_vids,
+ 	ncsi_dev_state_config_svf,
+ 	ncsi_dev_state_config_ev,
+@@ -322,6 +323,7 @@ struct ncsi_dev_priv {
+ #define NCSI_DEV_RESHUFFLE	4
+ #define NCSI_DEV_RESET		8            /* Reset state of NC          */
+ 	unsigned int        gma_flag;        /* OEM GMA flag               */
++	struct sockaddr     pending_mac;     /* MAC address received from GMA */
+ 	spinlock_t          lock;            /* Protect the NCSI device    */
+ 	unsigned int        package_probe_id;/* Current ID during probe    */
+ 	unsigned int        package_num;     /* Number of packages         */
+diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+index 5cf55bde366d..bf276eaf9330 100644
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -1038,7 +1038,7 @@ static void ncsi_configure_channel(struct ncsi_dev_priv *ndp)
+ 			  : ncsi_dev_state_config_clear_vids;
+ 		break;
+ 	case ncsi_dev_state_config_oem_gma:
+-		nd->state = ncsi_dev_state_config_clear_vids;
++		nd->state = ncsi_dev_state_config_apply_mac;
+ 
+ 		nca.package = np->id;
+ 		nca.channel = nc->id;
+@@ -1050,10 +1050,22 @@ static void ncsi_configure_channel(struct ncsi_dev_priv *ndp)
+ 			nca.type = NCSI_PKT_CMD_OEM;
+ 			ret = ncsi_gma_handler(&nca, nc->version.mf_id);
+ 		}
+-		if (ret < 0)
++		if (ret < 0) {
++			nd->state = ncsi_dev_state_config_clear_vids;
+ 			schedule_work(&ndp->work);
++		}
+ 
+ 		break;
++	case ncsi_dev_state_config_apply_mac:
++		rtnl_lock();
++		ret = dev_set_mac_address(dev, &ndp->pending_mac, NULL);
++		rtnl_unlock();
++		if (ret < 0)
++			netdev_warn(dev, "NCSI: 'Writing MAC address to device failed\n");
++
++		nd->state = ncsi_dev_state_config_clear_vids;
++
++		fallthrough;
+ 	case ncsi_dev_state_config_clear_vids:
+ 	case ncsi_dev_state_config_svf:
+ 	case ncsi_dev_state_config_ev:
+diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
+index e28be33bdf2c..14bd66909ca4 100644
+--- a/net/ncsi/ncsi-rsp.c
++++ b/net/ncsi/ncsi-rsp.c
+@@ -628,16 +628,14 @@ static int ncsi_rsp_handler_snfc(struct ncsi_request *nr)
+ static int ncsi_rsp_handler_oem_gma(struct ncsi_request *nr, int mfr_id)
+ {
+ 	struct ncsi_dev_priv *ndp = nr->ndp;
++	struct sockaddr *saddr = &ndp->pending_mac;
+ 	struct net_device *ndev = ndp->ndev.dev;
+ 	struct ncsi_rsp_oem_pkt *rsp;
+-	struct sockaddr saddr;
+ 	u32 mac_addr_off = 0;
+-	int ret = 0;
+ 
+ 	/* Get the response header */
+ 	rsp = (struct ncsi_rsp_oem_pkt *)skb_network_header(nr->rsp);
+ 
+-	saddr.sa_family = ndev->type;
+ 	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
+ 	if (mfr_id == NCSI_OEM_MFR_BCM_ID)
+ 		mac_addr_off = BCM_MAC_ADDR_OFFSET;
+@@ -646,22 +644,17 @@ static int ncsi_rsp_handler_oem_gma(struct ncsi_request *nr, int mfr_id)
+ 	else if (mfr_id == NCSI_OEM_MFR_INTEL_ID)
+ 		mac_addr_off = INTEL_MAC_ADDR_OFFSET;
+ 
+-	memcpy(saddr.sa_data, &rsp->data[mac_addr_off], ETH_ALEN);
++	saddr->sa_family = ndev->type;
++	memcpy(saddr->sa_data, &rsp->data[mac_addr_off], ETH_ALEN);
+ 	if (mfr_id == NCSI_OEM_MFR_BCM_ID || mfr_id == NCSI_OEM_MFR_INTEL_ID)
+-		eth_addr_inc((u8 *)saddr.sa_data);
+-	if (!is_valid_ether_addr((const u8 *)saddr.sa_data))
++		eth_addr_inc((u8 *)saddr->sa_data);
++	if (!is_valid_ether_addr((const u8 *)saddr->sa_data))
+ 		return -ENXIO;
+ 
+ 	/* Set the flag for GMA command which should only be called once */
+ 	ndp->gma_flag = 1;
+ 
+-	rtnl_lock();
+-	ret = dev_set_mac_address(ndev, &saddr, NULL);
+-	rtnl_unlock();
+-	if (ret < 0)
+-		netdev_warn(ndev, "NCSI: 'Writing mac address to device failed\n");
+-
+-	return ret;
++	return 0;
+ }
+ 
+ /* Response handler for Mellanox card */
+
 -- 
-Potin Lai <potin.lai.pt@gmail.com>
+2.31.1
 
 
