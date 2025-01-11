@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-108281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1BB9A0A4B9
-	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 17:19:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B08BA0A4BA
+	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 17:19:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2134169EF1
-	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 16:19:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49EA23A117B
+	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 16:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CEDB14EC7E;
-	Sat, 11 Jan 2025 16:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868C5194C94;
+	Sat, 11 Jan 2025 16:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2Ol9wbm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="acEQevUG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE5D14BF8F
-	for <stable@vger.kernel.org>; Sat, 11 Jan 2025 16:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F47192589
+	for <stable@vger.kernel.org>; Sat, 11 Jan 2025 16:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736612370; cv=none; b=brQ7W9VK6EDj7l8F3qi0z410LX7YdqlXlYI134xh29fOG1e57KAXqlg5W5B8ENNRa5TGbQD9gdYuQZrN5phjj3obQKkMfJl5veQ4BFe2twngak0U2TmGMsOReRaQb0fsBYyCiHbDoAkHvKDugF9UKNK8TH+tzbkwHY8+5RSzeTs=
+	t=1736612384; cv=none; b=T5kRZMWSDRcISqXnzm1e/VtVCtj5HIJXD28Kj2ZdToTLAtTmXWIt9C5rqigSv2PqAtj+3lMBIXV2sFkxm6nL1bDuc9Q2gTIbZ53ZYuYYrt9MXAlhjSc+vQFb/SapcijzfC9VyoN1eLuKFr3VZ3t1Xa6CBOyFrl5Rn6GwDK/X3a0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736612370; c=relaxed/simple;
-	bh=ZfH4pVZaQBVaeJQslbDtSx83L4Nr90yY1nQRV9Sakd0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uhUaOjI0Mgnn+Chzi74dWuuhP78r0PQ+76TSo+IpEcL0CuB6LcQ/HIRPGU11SqxePE5H+FGfwuhoF6vA99zOrtKJeazOHbMReUTVCOnRW4M/AsXBcjVv1mv8q/6IwKl4I6iqhcPSKEE2KGuhnZJhTyrodhhFiQ1sDmYvYqfnq0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2Ol9wbm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40C3C4CED2;
-	Sat, 11 Jan 2025 16:19:28 +0000 (UTC)
+	s=arc-20240116; t=1736612384; c=relaxed/simple;
+	bh=BjutPIRLKa14cNmSrArwmIzAZriNflhcBeP/dzc60mc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IQvQEE/1MriYFr9iPv0J2ED0w7OeKR1u+CYEraxfhRoiF/Jx2hZQ6vIVAP3RUxwwtvlJgYcFAgpLHhvpCl4b1eKh1FWwCTNyn0bqAAcO1J64Z3Zn75ExufSCpZe4Uk4xFmgGb/D4wu8dIAePKwquDE6der6LO7GRIU+tn1uuPuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=acEQevUG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B0B5C4CED2;
+	Sat, 11 Jan 2025 16:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736612369;
-	bh=ZfH4pVZaQBVaeJQslbDtSx83L4Nr90yY1nQRV9Sakd0=;
+	s=korg; t=1736612384;
+	bh=BjutPIRLKa14cNmSrArwmIzAZriNflhcBeP/dzc60mc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=C2Ol9wbmFEVYlGvi7qrZGw1sTYPcVWeBFOxy3tFcgpcH1Lv2nEelMcnFBxMnCK0mF
-	 DyntqRqtthSEYQoIutg953jI8JFoMbGwyab2vqJCpgK0HWe+xXUIO9tj1OFWVf/4tK
-	 EUYKn7dA7P1vq81kqJAz2+bQyEepyU+Xl4osu0i0=
-Subject: FAILED: patch "[PATCH] fs: relax assertions on failure to encode file handles" failed to apply to 5.4-stable tree
-To: amir73il@gmail.com,brauner@kernel.org,dima@arista.com
+	b=acEQevUGGIdJDBgNJIVyEUDVrP2JdbzIV71k04WE2KByYeNQN309cUgz0fHCcQd6g
+	 YrYgJexFbBzgldNZEQjuv7ozFH3OxGoWWw+c3mK2MVsOvMo0z1WKghNrBuY/YaL47j
+	 vetY5ZcjDxn1pyRrH2aFqxZ8TTcDx8+6lCUBaPFM=
+Subject: FAILED: patch "[PATCH] dm-verity FEC: Fix RS FEC repair for roots unaligned to block" failed to apply to 6.6-stable tree
+To: gmazyland@gmail.com,mpatocka@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 11 Jan 2025 17:19:16 +0100
-Message-ID: <2025011115-carmaker-staleness-c55f@gregkh>
+Date: Sat, 11 Jan 2025 17:19:40 +0100
+Message-ID: <2025011140-scope-tasting-d3ad@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 974e3fe0ac61de85015bbe5a4990cf4127b304b2
+git cherry-pick -x 6df90c02bae468a3a6110bafbc659884d0c4966c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025011115-carmaker-staleness-c55f@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025011140-scope-tasting-d3ad@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,80 +77,160 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 974e3fe0ac61de85015bbe5a4990cf4127b304b2 Mon Sep 17 00:00:00 2001
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Thu, 19 Dec 2024 12:53:01 +0100
-Subject: [PATCH] fs: relax assertions on failure to encode file handles
+From 6df90c02bae468a3a6110bafbc659884d0c4966c Mon Sep 17 00:00:00 2001
+From: Milan Broz <gmazyland@gmail.com>
+Date: Wed, 18 Dec 2024 13:56:58 +0100
+Subject: [PATCH] dm-verity FEC: Fix RS FEC repair for roots unaligned to block
+ size (take 2)
 
-Encoding file handles is usually performed by a filesystem >encode_fh()
-method that may fail for various reasons.
+This patch fixes an issue that was fixed in the commit
+  df7b59ba9245 ("dm verity: fix FEC for RS roots unaligned to block size")
+but later broken again in the commit
+  8ca7cab82bda ("dm verity fec: fix misaligned RS roots IO")
 
-The legacy users of exportfs_encode_fh(), namely, nfsd and
-name_to_handle_at(2) syscall are ready to cope with the possibility
-of failure to encode a file handle.
+If the Reed-Solomon roots setting spans multiple blocks, the code does not
+use proper parity bytes and randomly fails to repair even trivial errors.
 
-There are a few other users of exportfs_encode_{fh,fid}() that
-currently have a WARN_ON() assertion when ->encode_fh() fails.
-Relax those assertions because they are wrong.
+This bug cannot happen if the sector size is multiple of RS roots
+setting (Android case with roots 2).
 
-The second linked bug report states commit 16aac5ad1fa9 ("ovl: support
-encoding non-decodable file handles") in v6.6 as the regressing commit,
-but this is not accurate.
+The previous solution was to find a dm-bufio block size that is multiple
+of the device sector size and roots size. Unfortunately, the optimization
+in commit 8ca7cab82bda ("dm verity fec: fix misaligned RS roots IO")
+is incorrect and uses data block size for some roots (for example, it uses
+4096 block size for roots = 20).
 
-The aforementioned commit only increases the chances of the assertion
-and allows triggering the assertion with the reproducer using overlayfs,
-inotify and drop_caches.
+This patch uses a different approach:
 
-Triggering this assertion was always possible with other filesystems and
-other reasons of ->encode_fh() failures and more particularly, it was
-also possible with the exact same reproducer using overlayfs that is
-mounted with options index=on,nfs_export=on also on kernels < v6.6.
-Therefore, I am not listing the aforementioned commit as a Fixes commit.
+ - It always uses a configured data block size for dm-bufio to avoid
+ possible misaligned IOs.
 
-Backport hint: this patch will have a trivial conflict applying to
-v6.6.y, and other trivial conflicts applying to stable kernels < v6.6.
+ - and it caches the processed parity bytes, so it can join it
+ if it spans two blocks.
 
-Reported-by: syzbot+ec07f6f5ce62b858579f@syzkaller.appspotmail.com
-Tested-by: syzbot+ec07f6f5ce62b858579f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-unionfs/671fd40c.050a0220.4735a.024f.GAE@google.com/
-Reported-by: Dmitry Safonov <dima@arista.com>
-Closes: https://lore.kernel.org/linux-fsdevel/CAGrbwDTLt6drB9eaUagnQVgdPBmhLfqqxAf3F+Juqy_o6oP8uw@mail.gmail.com/
+As the RS calculation is called only if an error is detected and
+the process is computationally intensive, copying a few more bytes
+should not introduce performance issues.
+
+The issue was reported to cryptsetup with trivial reproducer
+  https://gitlab.com/cryptsetup/cryptsetup/-/issues/923
+
+Reproducer (with roots=20):
+
+ # create verity device with RS FEC
+ dd if=/dev/urandom of=data.img bs=4096 count=8 status=none
+ veritysetup format data.img hash.img --fec-device=fec.img --fec-roots=20 | \
+ awk '/^Root hash/{ print $3 }' >roothash
+
+ # create an erasure that should always be repairable with this roots setting
+ dd if=/dev/zero of=data.img conv=notrunc bs=1 count=4 seek=4 status=none
+
+ # try to read it through dm-verity
+ veritysetup open data.img test hash.img --fec-device=fec.img --fec-roots=20 $(cat roothash)
+ dd if=/dev/mapper/test of=/dev/null bs=4096 status=noxfer
+
+ Even now the log says it cannot repair it:
+   : verity-fec: 7:1: FEC 0: failed to correct: -74
+   : device-mapper: verity: 7:1: data block 0 is corrupted
+   ...
+
+With this fix, errors are properly repaired.
+   : verity-fec: 7:1: FEC 0: corrected 4 errors
+
+Signed-off-by: Milan Broz <gmazyland@gmail.com>
+Fixes: 8ca7cab82bda ("dm verity fec: fix misaligned RS roots IO")
 Cc: stable@vger.kernel.org
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Link: https://lore.kernel.org/r/20241219115301.465396-1-amir73il@gmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 
-diff --git a/fs/notify/fdinfo.c b/fs/notify/fdinfo.c
-index dec553034027..e933f9c65d90 100644
---- a/fs/notify/fdinfo.c
-+++ b/fs/notify/fdinfo.c
-@@ -47,10 +47,8 @@ static void show_mark_fhandle(struct seq_file *m, struct inode *inode)
- 	size = f->handle_bytes >> 2;
+diff --git a/drivers/md/dm-verity-fec.c b/drivers/md/dm-verity-fec.c
+index 62b1a44b8dd2..6bd9848518d4 100644
+--- a/drivers/md/dm-verity-fec.c
++++ b/drivers/md/dm-verity-fec.c
+@@ -60,15 +60,19 @@ static int fec_decode_rs8(struct dm_verity *v, struct dm_verity_fec_io *fio,
+  * to the data block. Caller is responsible for releasing buf.
+  */
+ static u8 *fec_read_parity(struct dm_verity *v, u64 rsb, int index,
+-			   unsigned int *offset, struct dm_buffer **buf,
+-			   unsigned short ioprio)
++			   unsigned int *offset, unsigned int par_buf_offset,
++			   struct dm_buffer **buf, unsigned short ioprio)
+ {
+ 	u64 position, block, rem;
+ 	u8 *res;
  
- 	ret = exportfs_encode_fid(inode, (struct fid *)f->f_handle, &size);
--	if ((ret == FILEID_INVALID) || (ret < 0)) {
--		WARN_ONCE(1, "Can't encode file handler for inotify: %d\n", ret);
-+	if ((ret == FILEID_INVALID) || (ret < 0))
- 		return;
--	}
++	/* We have already part of parity bytes read, skip to the next block */
++	if (par_buf_offset)
++		index++;
++
+ 	position = (index + rsb) * v->fec->roots;
+ 	block = div64_u64_rem(position, v->fec->io_size, &rem);
+-	*offset = (unsigned int)rem;
++	*offset = par_buf_offset ? 0 : (unsigned int)rem;
  
- 	f->handle_type = ret;
- 	f->handle_bytes = size * sizeof(u32);
-diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
-index 3601ddfeddc2..56eee9f23ea9 100644
---- a/fs/overlayfs/copy_up.c
-+++ b/fs/overlayfs/copy_up.c
-@@ -442,9 +442,8 @@ struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry *real,
- 	buflen = (dwords << 2);
+ 	res = dm_bufio_read_with_ioprio(v->fec->bufio, block, buf, ioprio);
+ 	if (IS_ERR(res)) {
+@@ -128,11 +132,12 @@ static int fec_decode_bufs(struct dm_verity *v, struct dm_verity_io *io,
+ {
+ 	int r, corrected = 0, res;
+ 	struct dm_buffer *buf;
+-	unsigned int n, i, offset;
+-	u8 *par, *block;
++	unsigned int n, i, offset, par_buf_offset = 0;
++	u8 *par, *block, par_buf[DM_VERITY_FEC_RSM - DM_VERITY_FEC_MIN_RSN];
+ 	struct bio *bio = dm_bio_from_per_bio_data(io, v->ti->per_io_data_size);
  
- 	err = -EIO;
--	if (WARN_ON(fh_type < 0) ||
--	    WARN_ON(buflen > MAX_HANDLE_SZ) ||
--	    WARN_ON(fh_type == FILEID_INVALID))
-+	if (fh_type < 0 || fh_type == FILEID_INVALID ||
-+	    WARN_ON(buflen > MAX_HANDLE_SZ))
- 		goto out_err;
+-	par = fec_read_parity(v, rsb, block_offset, &offset, &buf, bio_prio(bio));
++	par = fec_read_parity(v, rsb, block_offset, &offset,
++			      par_buf_offset, &buf, bio_prio(bio));
+ 	if (IS_ERR(par))
+ 		return PTR_ERR(par);
  
- 	fh->fb.version = OVL_FH_VERSION;
+@@ -142,7 +147,8 @@ static int fec_decode_bufs(struct dm_verity *v, struct dm_verity_io *io,
+ 	 */
+ 	fec_for_each_buffer_rs_block(fio, n, i) {
+ 		block = fec_buffer_rs_block(v, fio, n, i);
+-		res = fec_decode_rs8(v, fio, block, &par[offset], neras);
++		memcpy(&par_buf[par_buf_offset], &par[offset], v->fec->roots - par_buf_offset);
++		res = fec_decode_rs8(v, fio, block, par_buf, neras);
+ 		if (res < 0) {
+ 			r = res;
+ 			goto error;
+@@ -155,12 +161,21 @@ static int fec_decode_bufs(struct dm_verity *v, struct dm_verity_io *io,
+ 		if (block_offset >= 1 << v->data_dev_block_bits)
+ 			goto done;
+ 
+-		/* read the next block when we run out of parity bytes */
+-		offset += v->fec->roots;
++		/* Read the next block when we run out of parity bytes */
++		offset += (v->fec->roots - par_buf_offset);
++		/* Check if parity bytes are split between blocks */
++		if (offset < v->fec->io_size && (offset + v->fec->roots) > v->fec->io_size) {
++			par_buf_offset = v->fec->io_size - offset;
++			memcpy(par_buf, &par[offset], par_buf_offset);
++			offset += par_buf_offset;
++		} else
++			par_buf_offset = 0;
++
+ 		if (offset >= v->fec->io_size) {
+ 			dm_bufio_release(buf);
+ 
+-			par = fec_read_parity(v, rsb, block_offset, &offset, &buf, bio_prio(bio));
++			par = fec_read_parity(v, rsb, block_offset, &offset,
++					      par_buf_offset, &buf, bio_prio(bio));
+ 			if (IS_ERR(par))
+ 				return PTR_ERR(par);
+ 		}
+@@ -724,10 +739,7 @@ int verity_fec_ctr(struct dm_verity *v)
+ 		return -E2BIG;
+ 	}
+ 
+-	if ((f->roots << SECTOR_SHIFT) & ((1 << v->data_dev_block_bits) - 1))
+-		f->io_size = 1 << v->data_dev_block_bits;
+-	else
+-		f->io_size = v->fec->roots << SECTOR_SHIFT;
++	f->io_size = 1 << v->data_dev_block_bits;
+ 
+ 	f->bufio = dm_bufio_client_create(f->dev->bdev,
+ 					  f->io_size,
 
 
