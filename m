@@ -1,178 +1,160 @@
-Return-Path: <stable+bounces-108274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8CD5A0A464
-	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 16:35:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 871D2A0A4B2
+	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 17:18:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71A7F7A4055
-	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 15:35:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C5591687FE
+	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 16:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5381AF0C0;
-	Sat, 11 Jan 2025 15:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D5414EC7E;
+	Sat, 11 Jan 2025 16:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rPcslEvg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NXq+RopM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FB218FDBA;
-	Sat, 11 Jan 2025 15:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6E21474DA
+	for <stable@vger.kernel.org>; Sat, 11 Jan 2025 16:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736609714; cv=none; b=pqstog4g/jUvmPXgpixk+dVcXoavJc0BfTQqYJtlO+4ggebDxdbDV+SY9bS7pFkn575ZoI53EBqfrU21Iv62w6iUsmt6BqtLU8WWAfi55WF5mdWh8yDpTAlqBOv44hDf7qH0/vjctOPStToRmRIBEwgdKz9NLv3xYeHuXrx41Mk=
+	t=1736612309; cv=none; b=hV+nLVu9E+T2Wdv5Or/WOHYnYpx82BfAvIHQAXo2DiRCK6Ap7i96geUdcf104VX3Zp7Z7w4e3bC18HlW7Vgla9dyUXrAhUcoo54Egofb3PPY6P6GIvectMQNuRvfeWmJKEndH7QyfwG82+SjK18EAaY7pCnnvXRr/qxRO/QNCRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736609714; c=relaxed/simple;
-	bh=DkYnECulvi7qQtGWYQuoQyyVrOEXO3B5RNTc9nE2whg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H+GhkYUwxSfJDo9LLKn2phoy15VU9J5vrIsi8vIOXRGRFdEzEwLnkw6Ywo2B+UiaFG7z0vyAEQ+AIb06t5JuG6Q+UaUv6cq7Axde9P4nu6rao0pbx0BDfAZg49bm8VXH6XaGoSqRZtLoZCcH+jJ3SmvIPX/8XgNEQHUsRZQKRwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rPcslEvg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADDE0C4CED2;
-	Sat, 11 Jan 2025 15:35:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736609714;
-	bh=DkYnECulvi7qQtGWYQuoQyyVrOEXO3B5RNTc9nE2whg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rPcslEvgLvba+RvIm6rQ7oIKgHxKqHZ4PzpfH9FSLyM8tNI0yi8c+tO39b51BIbBr
-	 rLKaj4TeAOF9bZyMGapuYGwKAJWQVon8FARH3xwMH0mhxMCZcUQ5TaTMIpA0zpem7L
-	 NUEJavFf0Nm52jQggYb1/c/yU4eiX2ayORZ4kV7840GiMEwDB0lqwgZYkiorjrdcUg
-	 sR3nyuFAHR8xipipP8g4XPyyVRzyCcsk6FWkqDfFS0CCaMrjybZH+bDc8ALL1H6usd
-	 Rs9F2qRf5t4tYX8kaiWZUjiNg6/pq4LKGAddBhKOXafBkQCPlmt7DEi9DrW/oRr/iX
-	 Dci4X1DVn8r5g==
-Message-ID: <8aef8331-662d-49ee-a918-8a4a5000d9ec@kernel.org>
-Date: Sat, 11 Jan 2025 16:35:09 +0100
+	s=arc-20240116; t=1736612309; c=relaxed/simple;
+	bh=a2gNpp/HrPRFiajc8ucgo/UZ87nMXTNiazrR72LZiu4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gLDZjqQ6A7b/s2TK/lji3Sd1MjZ6fWWXsFDzOtEeliXrdwiwRCCXcFBS1M2+1JNOG9ATEolDEvJ1hb3lMO9hTd3Ou0IwtT7YgIDDGxOqmMJUSBI//0aPb3Gx3t1XZUSiPzrfoKpUCOKhBVKP0OLgPwm6gX5WbAcr0Ro7/jo9n1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NXq+RopM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D261C4CED2;
+	Sat, 11 Jan 2025 16:18:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1736612306;
+	bh=a2gNpp/HrPRFiajc8ucgo/UZ87nMXTNiazrR72LZiu4=;
+	h=Subject:To:Cc:From:Date:From;
+	b=NXq+RopMOpv3glQ1ezK225gOanoqXCGhIWSCHnrCcV0PIMZztkvZ54pFgBLNnXCZt
+	 iRypL4hCM9+BE2ZAAUHxF+jmWuZXGVVpPU96eZHZ8Vm0HA+rFDuA3YyY9XXqHiUaKs
+	 yjlrDzRsYcgteWt0NiKXaU4rxM9T5HvguxMBHhcQ=
+Subject: FAILED: patch "[PATCH] scsi: ufs: qcom: Power down the controller/device during" failed to apply to 6.12-stable tree
+To: manivannan.sadhasivam@linaro.org,amit.pundir@linaro.org,bvanassche@acm.org,martin.petersen@oracle.com,neil.armstrong@linaro.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sat, 11 Jan 2025 17:18:23 +0100
+Message-ID: <2025011123-parameter-envy-591e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC] soc: qcom: pmic_glink: Fix device access from worker
- during suspend
-To: Abel Vesa <abel.vesa@linaro.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: Caleb Connolly <caleb.connolly@linaro.org>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Johan Hovold <johan@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250110-soc-qcom-pmic-glink-fix-device-access-on-worker-while-suspended-v1-1-e32fd6bf322e@linaro.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250110-soc-qcom-pmic-glink-fix-device-access-on-worker-while-suspended-v1-1-e32fd6bf322e@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On 10/01/2025 16:29, Abel Vesa wrote:
-> The pmic_glink_altmode_worker() currently gets scheduled on the system_wq.
-> When the system is suspended (s2idle), the fact that the worker can be
-> scheduled to run while devices are still suspended provesto be a problem
-> when a Type-C retimer, switch or mux that is controlled over a bus like
-> I2C, because the I2C controller is suspended.
-> 
-> This has been proven to be the case on the X Elite boards where such
-> retimers (ParadeTech PS8830) are used in order to handle Type-C
-> orientation and altmode configuration. The following warning is thrown:
-> 
-> [   35.134876] i2c i2c-4: Transfer while suspended
-> [   35.143865] WARNING: CPU: 0 PID: 99 at drivers/i2c/i2c-core.h:56 __i2c_transfer+0xb4/0x57c [i2c_core]
-> [   35.352879] Workqueue: events pmic_glink_altmode_worker [pmic_glink_altmode]
-> [   35.360179] pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-> [   35.455242] Call trace:
-> [   35.457826]  __i2c_transfer+0xb4/0x57c [i2c_core] (P)
-> [   35.463086]  i2c_transfer+0x98/0xf0 [i2c_core]
-> [   35.467713]  i2c_transfer_buffer_flags+0x54/0x88 [i2c_core]
-> [   35.473502]  regmap_i2c_write+0x20/0x48 [regmap_i2c]
-> [   35.478659]  _regmap_raw_write_impl+0x780/0x944
-> [   35.483401]  _regmap_bus_raw_write+0x60/0x7c
-> [   35.487848]  _regmap_write+0x134/0x184
-> [   35.491773]  regmap_write+0x54/0x78
-> [   35.495418]  ps883x_set+0x58/0xec [ps883x]
-> [   35.499688]  ps883x_sw_set+0x60/0x84 [ps883x]
-> [   35.504223]  typec_switch_set+0x48/0x74 [typec]
-> [   35.508952]  pmic_glink_altmode_worker+0x44/0x1fc [pmic_glink_altmode]
-> [   35.515712]  process_scheduled_works+0x1a0/0x2d0
-> [   35.520525]  worker_thread+0x2a8/0x3c8
-> [   35.524449]  kthread+0xfc/0x184
-> [   35.527749]  ret_from_fork+0x10/0x20
-> 
-> The solution here is to schedule the altmode worker on the system_freezable_wq
-> instead of the system_wq. This will result in the altmode worker not being
-> scheduled to run until the devices are resumed first, which will give the
-> controllers like I2C a chance to resume before the transfer is requested.
-> 
-> Fixes: 080b4e24852b ("soc: qcom: pmic_glink: Introduce altmode support")
-> Cc: stable@vger.kernel.org    # 6.3
-> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 
-This is an incomplete fix, I think. You fix one case but several other
-possibilities are still there:
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-1. Maybe the driver just lacks proper suspend/resume handling?
-I assume all this happens during system suspend, so what certainty you
-have that your second work - pmic_glink_altmode_pdr_notify() - is not
-executed as well?
+To reproduce the conflict and resubmit, you may use the following commands:
 
-2. Follow up: all other drivers and all other future use cases will be
-affected as well. Basically what this patch is admitting is that driver
-can be executed anytime, even during suspend, so each call of
-pmic_glink_send() has to be audited. Now and in the future, because what
-stops some developer of adding one more path calling pmic_glink_send(),
-which also turns out to be executed during suspend?
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 3b2f56860b05bf0cea86af786fd9b7faa8fe3ef3
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025011123-parameter-envy-591e@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-3. So qcom_battmgr.c is buggy as well?
+Possible dependencies:
 
-4. ucsi_glink.c? I don't see handling suspend, either...
 
-Maybe the entire problem is how pmic glink was designed: not as proper
-bus driver which handles both child-parent relationship and system suspend.
-Best regards,
-Krzysztof
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 3b2f56860b05bf0cea86af786fd9b7faa8fe3ef3 Mon Sep 17 00:00:00 2001
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Date: Thu, 19 Dec 2024 22:20:44 +0530
+Subject: [PATCH] scsi: ufs: qcom: Power down the controller/device during
+ system suspend for SM8550/SM8650 SoCs
+
+SM8550 and SM8650 SoCs doesn't support UFS PHY retention. So once these SoCs
+reaches the low power state (CX power collapse) during system suspend, all
+the PHY hardware state gets lost. This leads to the UFS resume failure:
+
+  ufshcd-qcom 1d84000.ufs: ufshcd_uic_hibern8_exit: hibern8 exit failed. ret = 5
+  ufshcd-qcom 1d84000.ufs: __ufshcd_wl_resume: hibern8 exit failed 5
+  ufs_device_wlun 0:0:0:49488: ufshcd_wl_resume failed: 5
+  ufs_device_wlun 0:0:0:49488: PM: dpm_run_callback(): scsi_bus_resume+0x0/0x84 returns 5
+  ufs_device_wlun 0:0:0:49488: PM: failed to resume async: error 5
+
+With the default system suspend level of UFS_PM_LVL_3, the power domain for
+UFS PHY needs to be kept always ON to retain the state. But this would
+prevent these SoCs from reaching the CX power collapse state, leading to
+poor power saving during system suspend.
+
+So to fix this issue without affecting the power saving, set
+'ufs_qcom_drvdata::no_phy_retention' to true which sets 'hba->spm_lvl' to
+UFS_PM_LVL_5 to allow both the controller and device (in turn the PHY) to be
+powered down during system suspend for these SoCs by default.
+
+Cc: stable@vger.kernel.org # 6.3
+Fixes: 35cf1aaab169 ("arm64: dts: qcom: sm8550: Add UFS host controller and phy nodes")
+Fixes: 10e024671295 ("arm64: dts: qcom: sm8650: add interconnect dependent device nodes")
+Reported-by: Neil Armstrong <neil.armstrong@linaro.org>
+Tested-by: Amit Pundir <amit.pundir@linaro.org> # on SM8550-HDK
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20241219-ufs-qcom-suspend-fix-v3-4-63c4b95a70b9@linaro.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+
+diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
+index 7042322d55e9..91e94fe990b4 100644
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -1069,6 +1069,7 @@ static int ufs_qcom_init(struct ufs_hba *hba)
+ 	struct device *dev = hba->dev;
+ 	struct ufs_qcom_host *host;
+ 	struct ufs_clk_info *clki;
++	const struct ufs_qcom_drvdata *drvdata = of_device_get_match_data(hba->dev);
+ 
+ 	host = devm_kzalloc(dev, sizeof(*host), GFP_KERNEL);
+ 	if (!host)
+@@ -1148,6 +1149,9 @@ static int ufs_qcom_init(struct ufs_hba *hba)
+ 		dev_warn(dev, "%s: failed to configure the testbus %d\n",
+ 				__func__, err);
+ 
++	if (drvdata && drvdata->no_phy_retention)
++		hba->spm_lvl = UFS_PM_LVL_5;
++
+ 	return 0;
+ 
+ out_variant_clear:
+@@ -1867,6 +1871,7 @@ static void ufs_qcom_remove(struct platform_device *pdev)
+ 
+ static const struct ufs_qcom_drvdata ufs_qcom_sm8550_drvdata = {
+ 	.quirks = UFSHCD_QUIRK_BROKEN_LSDBS_CAP,
++	.no_phy_retention = true,
+ };
+ 
+ static const struct of_device_id ufs_qcom_of_match[] __maybe_unused = {
+diff --git a/drivers/ufs/host/ufs-qcom.h b/drivers/ufs/host/ufs-qcom.h
+index 15f6dad8b27f..919f53682beb 100644
+--- a/drivers/ufs/host/ufs-qcom.h
++++ b/drivers/ufs/host/ufs-qcom.h
+@@ -219,6 +219,7 @@ struct ufs_qcom_host {
+ 
+ struct ufs_qcom_drvdata {
+ 	enum ufshcd_quirks quirks;
++	bool no_phy_retention;
+ };
+ 
+ static inline u32
 
 
