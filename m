@@ -1,46 +1,73 @@
-Return-Path: <stable+bounces-108266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B36AA0A38A
-	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 13:18:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73346A0A394
+	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 13:24:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5DE87A43A0
-	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 12:18:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 760CF166AF4
+	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 12:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12C60196DB1;
-	Sat, 11 Jan 2025 12:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C22517E473;
+	Sat, 11 Jan 2025 12:24:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MZ28IM5l"
 X-Original-To: stable@vger.kernel.org
-Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EECA613BC0C;
-	Sat, 11 Jan 2025 12:18:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.175.24.41
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D472BA4A
+	for <stable@vger.kernel.org>; Sat, 11 Jan 2025 12:23:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736597920; cv=none; b=gxh6p1/cjeQxzNihr2YjFtrNGriTdWRxEOW3Q6M6TCqlAxfTSdw+3j0jTajyjbXk7FUN8vN+KAaQgs0dZLflNfBrwyYl8mHKQ+bSeC0VNMIa2AgnizddZdcVMvfV8lVCgrVgTxor1BT4BGwM13zSZ6e4Ww4x+/iOYlogruytYDQ=
+	t=1736598240; cv=none; b=qu44Yl/iD9+qZucLIe1InoYYByYqxiRbPPa4VkaBwlQgdZGeoX/JGNfqAUlF2KnCkHgiAVWaoXCHVUX4eLa7s3F83dfNjthUU5ny5vO4xbD36p5T0MSiBE+MMDFxFKhwl9S/sav9NnVuo8jTWmrbX4UmVRuzwj4N2lFUCqZ/Jmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736597920; c=relaxed/simple;
-	bh=ek4H6zRZpOfFJBTcCsQxktyEeVXezOIY1lmHjJrH2Vs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sKlyIcLQ3dNTqc0zrze/Qp8DC1Pb6BwSPc5oF6dbuu0q3h0dw5aBr1E985I4ZL+zzcYMTJDfh3Hp9Li2Zp0IZb+dIFVGRbOcjzqLV5T23tTRQNwV0nYk9pDWFa/EERtfvmRKMscmJk32p7D96KTph58ION/I4iNPOOnCguNKVTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de; spf=pass smtp.mailfrom=alpha.franken.de; arc=none smtp.client-ip=193.175.24.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alpha.franken.de
-Received: from uucp by elvis.franken.de with local-rmail (Exim 3.36 #1)
-	id 1tWaRL-0006NU-00; Sat, 11 Jan 2025 13:18:07 +0100
-Received: by alpha.franken.de (Postfix, from userid 1000)
-	id 6D80FC06E5; Sat, 11 Jan 2025 13:02:55 +0100 (CET)
-Date: Sat, 11 Jan 2025 13:02:55 +0100
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: Xi Ruoyao <xry111@xry111.site>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Icenowy Zheng <icenowy@aosc.io>
-Subject: Re: [PATCH] Revert "MIPS: csrc-r4k: Select HAVE_UNSTABLE_SCHED_CLOCK
- if SMP && 64BIT"
-Message-ID: <Z4Jd7+VqnS5jLvm0@alpha.franken.de>
-References: <20241223092041.257941-1-xry111@xry111.site>
+	s=arc-20240116; t=1736598240; c=relaxed/simple;
+	bh=wKJLpIAWhCXSUdQ0OYeiUjAIl0krU3mZZwO/KrMbPBA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=OdrW8MA2FxFWANL8X/6Wn//EQGOPswuXZ4n8jtXxOk1IwA3Tmg2nQ2Am8L7LhvRqp0Jy4J6jHTF+HIaYCadPKRnBF/HcY0SwJPnechw3VQvFzJDR5xT8NHxD2gO9rtDgfdWJQpdzOrs2b7cAZZi9+8u0RaMjbACV7vC7BIN7N1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MZ28IM5l; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736598237; x=1768134237;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=wKJLpIAWhCXSUdQ0OYeiUjAIl0krU3mZZwO/KrMbPBA=;
+  b=MZ28IM5l2yBK5Bem3oRFkHTzm8YdEjMhec0WxL/ABjj4PrKj+J4+wvJz
+   w+HBd4Iry9L/70bVUF911NqvBlVVmnLNcmbsJOG1qMkYwQW3EOluxbfOA
+   yzDy3tzlZTOtvjEem2AJVr3vS86K0HZkD+Fu+g8twKy6APcFdgkaXmGr7
+   3jN0L5wQ5IJ1JLf+SS4g4mymbpdUBJ3wd0kA6q0WyqCZ9jXtuOJqmNg0W
+   XBH0ZAyTer/6Kv7wziQWccJOGrvcqUq/VhEOqqsCPkLCTfMghHDcB1WQx
+   HeVchSz7SyXVNcCSRa0izWJQiIPqTECXmwTDJGrv3jiQDAPi8/WTihs33
+   g==;
+X-CSE-ConnectionGUID: LXjRaYC/SQ2YvZMWqek0Kg==
+X-CSE-MsgGUID: w0WaGp34S+qM2NvKamW3yg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11312"; a="36772693"
+X-IronPort-AV: E=Sophos;i="6.12,307,1728975600"; 
+   d="scan'208";a="36772693"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2025 04:23:57 -0800
+X-CSE-ConnectionGUID: 1MNJ/dxLS7arNXhBg7KVeA==
+X-CSE-MsgGUID: 0En3GR22RleGxjyvtSK7bg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="109094741"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 11 Jan 2025 04:23:57 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tWaWv-000Kcj-34;
+	Sat, 11 Jan 2025 12:23:53 +0000
+Date: Sat, 11 Jan 2025 20:23:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: 1534428646@qq.com
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] arm64: kprobe: fix an error in single stepping support
+Message-ID: <Z4JipgziMl1v_5lO@244b91683e12>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,56 +76,24 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241223092041.257941-1-xry111@xry111.site>
+In-Reply-To: <tencent_4B60C577479F735A75E6459B9AEAB3F54A05@qq.com>
 
-On Mon, Dec 23, 2024 at 05:20:41PM +0800, Xi Ruoyao wrote:
-> This reverts commit 426fa8e4fe7bb914b5977cbce453a9926bf5b2e6.
-> 
-> The commit has caused two issues on Loongson 3A4000:
-> 
-> 1. The timestamp in dmesg become erratic, like:
-> 
->     [3.736957] amdgpu 0000:04:00.0: ... ...
->     [3.748895] [drm] Initialized amdgpu ... ...
->     [18446744073.381141] amdgpu 0000:04:00:0: ... ...
->     [1.613326] igb 0000:03:00.0 enp3s0: ... ...
-> 
-> 2. More seriously, some workloads (for example, the test
->    stdlib/test-cxa_atexit2 in the Glibc test suite) triggers an RCU
->    stall and hang the system with a high probably (4 hangs out of 5
->    tests).
-> 
-> Revert this commit to use jiffie on Loongson MIPS systems and fix these
-> issues for now.  The root cause may need more investigation.
-> 
-> Cc: stable@vger.kernel.org # 6.11+
-> Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> Cc: Icenowy Zheng <icenowy@aosc.io>
-> Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-> ---
->  arch/mips/Kconfig | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 467b10f4361a..5078ebf071ec 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -1084,7 +1084,6 @@ config CSRC_IOASIC
->  
->  config CSRC_R4K
->  	select CLOCKSOURCE_WATCHDOG if CPU_FREQ
-> -	select HAVE_UNSTABLE_SCHED_CLOCK if SMP && 64BIT
->  	bool
->  
->  config CSRC_SB1250
-> -- 
-> 2.47.1
+Hi,
 
-applied to mips-next.
+Thanks for your patch.
 
-Thomas.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] arm64: kprobe: fix an error in single stepping support
+Link: https://lore.kernel.org/stable/tencent_4B60C577479F735A75E6459B9AEAB3F54A05%40qq.com
 
 -- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
+
 
