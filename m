@@ -1,99 +1,147 @@
-Return-Path: <stable+bounces-108269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73346A0A394
-	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 13:24:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86662A0A41B
+	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 15:20:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 760CF166AF4
-	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 12:24:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3A5B188AA56
+	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 14:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C22517E473;
-	Sat, 11 Jan 2025 12:24:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MZ28IM5l"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551181AC456;
+	Sat, 11 Jan 2025 14:20:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D472BA4A
-	for <stable@vger.kernel.org>; Sat, 11 Jan 2025 12:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C4C29D0E;
+	Sat, 11 Jan 2025 14:20:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.175.24.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736598240; cv=none; b=qu44Yl/iD9+qZucLIe1InoYYByYqxiRbPPa4VkaBwlQgdZGeoX/JGNfqAUlF2KnCkHgiAVWaoXCHVUX4eLa7s3F83dfNjthUU5ny5vO4xbD36p5T0MSiBE+MMDFxFKhwl9S/sav9NnVuo8jTWmrbX4UmVRuzwj4N2lFUCqZ/Jmk=
+	t=1736605216; cv=none; b=UpCZUrAVw6+OO4FSxH4xC/zLTEZAcnRJqgoeHvwU3b/Ocg+AYciZBBuhZJOoGA8TggEizMFexhBBFgygNxxw1x3CCg9Wx4BqTTevt7JuBBIs9mCoTP3ZK6XF3GBEtUp79PX/qPPjYow0PfjD58mSBzGwLTivfJ2lkeXTyJwlWHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736598240; c=relaxed/simple;
-	bh=wKJLpIAWhCXSUdQ0OYeiUjAIl0krU3mZZwO/KrMbPBA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=OdrW8MA2FxFWANL8X/6Wn//EQGOPswuXZ4n8jtXxOk1IwA3Tmg2nQ2Am8L7LhvRqp0Jy4J6jHTF+HIaYCadPKRnBF/HcY0SwJPnechw3VQvFzJDR5xT8NHxD2gO9rtDgfdWJQpdzOrs2b7cAZZi9+8u0RaMjbACV7vC7BIN7N1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MZ28IM5l; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736598237; x=1768134237;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=wKJLpIAWhCXSUdQ0OYeiUjAIl0krU3mZZwO/KrMbPBA=;
-  b=MZ28IM5l2yBK5Bem3oRFkHTzm8YdEjMhec0WxL/ABjj4PrKj+J4+wvJz
-   w+HBd4Iry9L/70bVUF911NqvBlVVmnLNcmbsJOG1qMkYwQW3EOluxbfOA
-   yzDy3tzlZTOtvjEem2AJVr3vS86K0HZkD+Fu+g8twKy6APcFdgkaXmGr7
-   3jN0L5wQ5IJ1JLf+SS4g4mymbpdUBJ3wd0kA6q0WyqCZ9jXtuOJqmNg0W
-   XBH0ZAyTer/6Kv7wziQWccJOGrvcqUq/VhEOqqsCPkLCTfMghHDcB1WQx
-   HeVchSz7SyXVNcCSRa0izWJQiIPqTECXmwTDJGrv3jiQDAPi8/WTihs33
-   g==;
-X-CSE-ConnectionGUID: LXjRaYC/SQ2YvZMWqek0Kg==
-X-CSE-MsgGUID: w0WaGp34S+qM2NvKamW3yg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11312"; a="36772693"
-X-IronPort-AV: E=Sophos;i="6.12,307,1728975600"; 
-   d="scan'208";a="36772693"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2025 04:23:57 -0800
-X-CSE-ConnectionGUID: 1MNJ/dxLS7arNXhBg7KVeA==
-X-CSE-MsgGUID: 0En3GR22RleGxjyvtSK7bg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="109094741"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 11 Jan 2025 04:23:57 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tWaWv-000Kcj-34;
-	Sat, 11 Jan 2025 12:23:53 +0000
-Date: Sat, 11 Jan 2025 20:23:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: 1534428646@qq.com
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] arm64: kprobe: fix an error in single stepping support
-Message-ID: <Z4JipgziMl1v_5lO@244b91683e12>
+	s=arc-20240116; t=1736605216; c=relaxed/simple;
+	bh=xDn/s38PFdttbcUthOXq3YbothiXXATHIAepu25Xy3s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m6X2S7wZNwVEcAm7MQZhqGV5b0lx8PzkFAPNr0x/X3ROf5vqEyasIu+uLg2zy3w66ADOB33HK1+dJx/cJGhJlp5JlzJ0x+hGjY8LsriCsiLrechvTw2UYwDTYBbVnEOkQolzJVHKUm/YIazX0sWlUEvLEqpFTqt09q6j7dLb3d8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de; spf=pass smtp.mailfrom=alpha.franken.de; arc=none smtp.client-ip=193.175.24.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alpha.franken.de
+Received: from uucp by elvis.franken.de with local-rmail (Exim 3.36 #1)
+	id 1tWcLH-00075W-00; Sat, 11 Jan 2025 15:19:59 +0100
+Received: by alpha.franken.de (Postfix, from userid 1000)
+	id 98F25C010B; Sat, 11 Jan 2025 14:16:40 +0100 (CET)
+Date: Sat, 11 Jan 2025 14:16:40 +0100
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: Mateusz =?utf-8?Q?Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
+Cc: linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Dengcheng Zhu <dzhu@wavecomp.com>,
+	Ming Wang <wangming01@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>
+Subject: Re: [PATCH] mips/math-emu: fix emulation of the prefx instruction
+Message-ID: <Z4JvONDiaYkQLAv/@alpha.franken.de>
+References: <20250105211806.421305-1-mat.jonczyk@o2.pl>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <tencent_4B60C577479F735A75E6459B9AEAB3F54A05@qq.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250105211806.421305-1-mat.jonczyk@o2.pl>
 
-Hi,
+On Sun, Jan 05, 2025 at 10:18:06PM +0100, Mateusz Jończyk wrote:
+> Currently, installation of Debian 12.8 for mipsel fails on machines
+> without an FPU [1]. This is caused by the fact that zstd (which is used
+> for initramfs compression) executes the prefx instruction, which is not
+> emulated properly by the kernel.
+> 
+> The prefx (Prefetch Indexed) instruction fetches data from memory into
+> the cache without any side effects. Though functionally unrelated, it
+> requires an FPU [2].
+> 
+> Bytecode format of this instruction ends on "001111" binary:
+> 
+> 	(prefx instruction format) & 0x0000003f = 0x0000000f
+> 
+> The code in fpux_emu() runs like so:
+> 
+> 	#define MIPSInst(x) x
+> 	#define MIPSInst_FMA_FFMT(x) (MIPSInst(x) & 0x00000007)
+> 	#define MIPSInst_FUNC(x) (MIPSInst(x) & 0x0000003f)
+> 	enum cop1x_func { ..., pfetch_op = 0x0f, ... };
+> 
+> 	...
+> 
+> 	switch (MIPSInst_FMA_FFMT(ir)) {
+> 	...
+> 
+> 	case 0x3:
+> 		if (MIPSInst_FUNC(ir) != pfetch_op)
+> 			return SIGILL;
+> 
+> 		/* ignore prefx operation */
+> 		break;
+> 
+> 	default:
+> 		return SIGILL;
+> 	}
+> 
+> That snippet above contains a logic error and the
+> 	if (MIPSInst_FUNC(ir) != pfetch_op)
+> comparison always fires.
+> 
+> When MIPSInst_FUNC(ir) is equal to pfetch_op, ir must end on 001111
+> binary. In this case, MIPSInst_FMA_FFMT(ir) must be equal to 0x7, which
+> does not match that case label.
+> 
+> This causes emulation failure for the prefx instruction. Fix it.
+> 
+> This has been broken by
+> commit 919af8b96c89 ("MIPS: Make definitions of MIPSInst_FMA_{FUNC,FMTM} consistent with MIPS64 manual")
+> which modified the MIPSInst_FMA_FFMT macro without updating the users.
+> 
+> Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+> Cc: stable@vger.kernel.org # after 3 weeks
+> Cc: Dengcheng Zhu <dzhu@wavecomp.com>
+> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> Cc: Ming Wang <wangming01@loongson.cn>
+> Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
+> Fixes: 919af8b96c89 ("MIPS: Make definitions of MIPSInst_FMA_{FUNC,FMTM} consistent with MIPS64 manual")
+> 
+> [1] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1091858
+> [2] MIPS Architecture For Programmers Volume II-A: The MIPS32 Instruction Set
+> 
+> ---
+> 
+> Tested in QEMU for mipsel and mips64el.
+> ---
+>  arch/mips/math-emu/cp1emu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
+> index 265bc57819df..c89e70df43d8 100644
+> --- a/arch/mips/math-emu/cp1emu.c
+> +++ b/arch/mips/math-emu/cp1emu.c
+> @@ -1660,7 +1660,7 @@ static int fpux_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
+>  		break;
+>  	}
+>  
+> -	case 0x3:
+> +	case 0x7:
+>  		if (MIPSInst_FUNC(ir) != pfetch_op)
+>  			return SIGILL;
+>  
+> -- 
+> 2.25.1
 
-Thanks for your patch.
+applied to mips-next.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] arm64: kprobe: fix an error in single stepping support
-Link: https://lore.kernel.org/stable/tencent_4B60C577479F735A75E6459B9AEAB3F54A05%40qq.com
+Thomas.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]
 
