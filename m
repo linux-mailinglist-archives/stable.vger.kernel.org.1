@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-108276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45272A0A4B3
-	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 17:18:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31147A0A4B5
+	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 17:19:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 481973A05C3
-	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 16:18:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37DB81692C6
+	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 16:19:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D46190059;
-	Sat, 11 Jan 2025 16:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E326014EC7E;
+	Sat, 11 Jan 2025 16:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VrqxUO2s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F3uUMs8z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BC71474DA
-	for <stable@vger.kernel.org>; Sat, 11 Jan 2025 16:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10E61474DA
+	for <stable@vger.kernel.org>; Sat, 11 Jan 2025 16:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736612316; cv=none; b=hYgNhyx47pPMz+2QaZ3yqxVc9/V3/dKIUk9CwCBaDxJ84y3BOKdxjU/w+8j1ob9dxcplm2bQl18vSVEnh97+rWTwCrZ6uYiZWPMwRSW4w46lPAvDnlA7YwzKlr5vBHGuJwUf03z9CAkPwGubZNUrOaXD/y3l39xJj6K5SI6PkRk=
+	t=1736612355; cv=none; b=nu6uuInRwbbJb0I87lfvZvPwUxVFo+VtBx//bSRzO3mnXG83HHn1l2FpO+bJmEGFg1bzCW/HmFdn80eMAX1xgMcTeBnYFwsEkNErR4t+U09oV2dcq9IGw9uYoqp7lvuYhuW1vvqHTWg801LRzkpkDabM6cHc+FMjvUwkxzvltaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736612316; c=relaxed/simple;
-	bh=U/ruJAjnJAsL2YZVv6nABF+1Ml1DtMgAxcRwnZL3KCo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PQ4KudnTpkwK1AvpnF95GmnYCnAbL33E1z4bxOdZw7Sy3j1XqNojf9DxVmQHRt+BybiFVcXIvvtMFFcR5qyPOH3S/CoY5Iq8KAKdSHMNuHD4RQrfsBz8fhW4t4HOKsGj5zM9pnxp9vLnOqtpS2wfmjHRSenAUx801TypiC9LMIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VrqxUO2s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05305C4CED2;
-	Sat, 11 Jan 2025 16:18:34 +0000 (UTC)
+	s=arc-20240116; t=1736612355; c=relaxed/simple;
+	bh=teSC6V7zyvGc6sgkna++4sLhtH7UxJzO+TAZxs87+vo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KSBpxQnwTh3aepM/+W39K/AUNnJbMm78DXk8hqJtG55Yki+D6rsxjCmibG/I0zrSnjxX70ANZECLxqjIFYGHKmOp6yQ9o20TGnmj38e1fWcmVYIvTUcRdySBWnCHgNmjfvQVOVwGvQVS8blnITFQF3sfK0+236RbLknFl9rzLys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F3uUMs8z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FD4C4CED2;
+	Sat, 11 Jan 2025 16:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736612315;
-	bh=U/ruJAjnJAsL2YZVv6nABF+1Ml1DtMgAxcRwnZL3KCo=;
+	s=korg; t=1736612355;
+	bh=teSC6V7zyvGc6sgkna++4sLhtH7UxJzO+TAZxs87+vo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=VrqxUO2sG7CuU7M2RvXLztvgEqwSseaPoOonKPihXN/osjMEEdGkLTICdFGOYApy0
-	 XuhkTjwseFpce4JcJtOg0aau0e540nZKn1ofNIwLrz2+FwAld4GjhOMC0P3zHIcnC6
-	 5q0FkuDQqceNoPI7MTjeXGieMXoK9NGC0nonePzw=
-Subject: FAILED: patch "[PATCH] scsi: ufs: qcom: Power down the controller/device during" failed to apply to 6.6-stable tree
-To: manivannan.sadhasivam@linaro.org,amit.pundir@linaro.org,bvanassche@acm.org,martin.petersen@oracle.com,neil.armstrong@linaro.org
+	b=F3uUMs8zqdEnT6CVfhL6sQMxFRTbubMcFLxfPJvFqkEHIBiAyc4MYmytGjEY3No+D
+	 dfmggw24oB/aT0AwKL7r4KFcQiP6jGElkyBcZsEFO+do4hoc9LUhCWKuvjbQ1eXIY0
+	 BKSLw+oXmvAHr8WkqSHoIJkyLUwZj7IPHuUG3BxQ=
+Subject: FAILED: patch "[PATCH] fs: relax assertions on failure to encode file handles" failed to apply to 6.6-stable tree
+To: amir73il@gmail.com,brauner@kernel.org,dima@arista.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 11 Jan 2025 17:18:24 +0100
-Message-ID: <2025011124-swoosh-staple-7fae@gregkh>
+Date: Sat, 11 Jan 2025 17:19:12 +0100
+Message-ID: <2025011111-freehand-oblivion-a4c5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 3b2f56860b05bf0cea86af786fd9b7faa8fe3ef3
+git cherry-pick -x 974e3fe0ac61de85015bbe5a4990cf4127b304b2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025011124-swoosh-staple-7fae@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025011111-freehand-oblivion-a4c5@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,84 +77,80 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3b2f56860b05bf0cea86af786fd9b7faa8fe3ef3 Mon Sep 17 00:00:00 2001
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Date: Thu, 19 Dec 2024 22:20:44 +0530
-Subject: [PATCH] scsi: ufs: qcom: Power down the controller/device during
- system suspend for SM8550/SM8650 SoCs
+From 974e3fe0ac61de85015bbe5a4990cf4127b304b2 Mon Sep 17 00:00:00 2001
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Thu, 19 Dec 2024 12:53:01 +0100
+Subject: [PATCH] fs: relax assertions on failure to encode file handles
 
-SM8550 and SM8650 SoCs doesn't support UFS PHY retention. So once these SoCs
-reaches the low power state (CX power collapse) during system suspend, all
-the PHY hardware state gets lost. This leads to the UFS resume failure:
+Encoding file handles is usually performed by a filesystem >encode_fh()
+method that may fail for various reasons.
 
-  ufshcd-qcom 1d84000.ufs: ufshcd_uic_hibern8_exit: hibern8 exit failed. ret = 5
-  ufshcd-qcom 1d84000.ufs: __ufshcd_wl_resume: hibern8 exit failed 5
-  ufs_device_wlun 0:0:0:49488: ufshcd_wl_resume failed: 5
-  ufs_device_wlun 0:0:0:49488: PM: dpm_run_callback(): scsi_bus_resume+0x0/0x84 returns 5
-  ufs_device_wlun 0:0:0:49488: PM: failed to resume async: error 5
+The legacy users of exportfs_encode_fh(), namely, nfsd and
+name_to_handle_at(2) syscall are ready to cope with the possibility
+of failure to encode a file handle.
 
-With the default system suspend level of UFS_PM_LVL_3, the power domain for
-UFS PHY needs to be kept always ON to retain the state. But this would
-prevent these SoCs from reaching the CX power collapse state, leading to
-poor power saving during system suspend.
+There are a few other users of exportfs_encode_{fh,fid}() that
+currently have a WARN_ON() assertion when ->encode_fh() fails.
+Relax those assertions because they are wrong.
 
-So to fix this issue without affecting the power saving, set
-'ufs_qcom_drvdata::no_phy_retention' to true which sets 'hba->spm_lvl' to
-UFS_PM_LVL_5 to allow both the controller and device (in turn the PHY) to be
-powered down during system suspend for these SoCs by default.
+The second linked bug report states commit 16aac5ad1fa9 ("ovl: support
+encoding non-decodable file handles") in v6.6 as the regressing commit,
+but this is not accurate.
 
-Cc: stable@vger.kernel.org # 6.3
-Fixes: 35cf1aaab169 ("arm64: dts: qcom: sm8550: Add UFS host controller and phy nodes")
-Fixes: 10e024671295 ("arm64: dts: qcom: sm8650: add interconnect dependent device nodes")
-Reported-by: Neil Armstrong <neil.armstrong@linaro.org>
-Tested-by: Amit Pundir <amit.pundir@linaro.org> # on SM8550-HDK
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20241219-ufs-qcom-suspend-fix-v3-4-63c4b95a70b9@linaro.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+The aforementioned commit only increases the chances of the assertion
+and allows triggering the assertion with the reproducer using overlayfs,
+inotify and drop_caches.
 
-diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
-index 7042322d55e9..91e94fe990b4 100644
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -1069,6 +1069,7 @@ static int ufs_qcom_init(struct ufs_hba *hba)
- 	struct device *dev = hba->dev;
- 	struct ufs_qcom_host *host;
- 	struct ufs_clk_info *clki;
-+	const struct ufs_qcom_drvdata *drvdata = of_device_get_match_data(hba->dev);
+Triggering this assertion was always possible with other filesystems and
+other reasons of ->encode_fh() failures and more particularly, it was
+also possible with the exact same reproducer using overlayfs that is
+mounted with options index=on,nfs_export=on also on kernels < v6.6.
+Therefore, I am not listing the aforementioned commit as a Fixes commit.
+
+Backport hint: this patch will have a trivial conflict applying to
+v6.6.y, and other trivial conflicts applying to stable kernels < v6.6.
+
+Reported-by: syzbot+ec07f6f5ce62b858579f@syzkaller.appspotmail.com
+Tested-by: syzbot+ec07f6f5ce62b858579f@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-unionfs/671fd40c.050a0220.4735a.024f.GAE@google.com/
+Reported-by: Dmitry Safonov <dima@arista.com>
+Closes: https://lore.kernel.org/linux-fsdevel/CAGrbwDTLt6drB9eaUagnQVgdPBmhLfqqxAf3F+Juqy_o6oP8uw@mail.gmail.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Link: https://lore.kernel.org/r/20241219115301.465396-1-amir73il@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+
+diff --git a/fs/notify/fdinfo.c b/fs/notify/fdinfo.c
+index dec553034027..e933f9c65d90 100644
+--- a/fs/notify/fdinfo.c
++++ b/fs/notify/fdinfo.c
+@@ -47,10 +47,8 @@ static void show_mark_fhandle(struct seq_file *m, struct inode *inode)
+ 	size = f->handle_bytes >> 2;
  
- 	host = devm_kzalloc(dev, sizeof(*host), GFP_KERNEL);
- 	if (!host)
-@@ -1148,6 +1149,9 @@ static int ufs_qcom_init(struct ufs_hba *hba)
- 		dev_warn(dev, "%s: failed to configure the testbus %d\n",
- 				__func__, err);
+ 	ret = exportfs_encode_fid(inode, (struct fid *)f->f_handle, &size);
+-	if ((ret == FILEID_INVALID) || (ret < 0)) {
+-		WARN_ONCE(1, "Can't encode file handler for inotify: %d\n", ret);
++	if ((ret == FILEID_INVALID) || (ret < 0))
+ 		return;
+-	}
  
-+	if (drvdata && drvdata->no_phy_retention)
-+		hba->spm_lvl = UFS_PM_LVL_5;
-+
- 	return 0;
+ 	f->handle_type = ret;
+ 	f->handle_bytes = size * sizeof(u32);
+diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+index 3601ddfeddc2..56eee9f23ea9 100644
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -442,9 +442,8 @@ struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry *real,
+ 	buflen = (dwords << 2);
  
- out_variant_clear:
-@@ -1867,6 +1871,7 @@ static void ufs_qcom_remove(struct platform_device *pdev)
+ 	err = -EIO;
+-	if (WARN_ON(fh_type < 0) ||
+-	    WARN_ON(buflen > MAX_HANDLE_SZ) ||
+-	    WARN_ON(fh_type == FILEID_INVALID))
++	if (fh_type < 0 || fh_type == FILEID_INVALID ||
++	    WARN_ON(buflen > MAX_HANDLE_SZ))
+ 		goto out_err;
  
- static const struct ufs_qcom_drvdata ufs_qcom_sm8550_drvdata = {
- 	.quirks = UFSHCD_QUIRK_BROKEN_LSDBS_CAP,
-+	.no_phy_retention = true,
- };
- 
- static const struct of_device_id ufs_qcom_of_match[] __maybe_unused = {
-diff --git a/drivers/ufs/host/ufs-qcom.h b/drivers/ufs/host/ufs-qcom.h
-index 15f6dad8b27f..919f53682beb 100644
---- a/drivers/ufs/host/ufs-qcom.h
-+++ b/drivers/ufs/host/ufs-qcom.h
-@@ -219,6 +219,7 @@ struct ufs_qcom_host {
- 
- struct ufs_qcom_drvdata {
- 	enum ufshcd_quirks quirks;
-+	bool no_phy_retention;
- };
- 
- static inline u32
+ 	fh->fb.version = OVL_FH_VERSION;
 
 
