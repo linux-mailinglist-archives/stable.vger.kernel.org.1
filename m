@@ -1,89 +1,171 @@
-Return-Path: <stable+bounces-108256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54632A0A1F3
-	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 09:11:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11CE4A0A29B
+	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 11:10:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37737188E62A
-	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 08:11:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 997D93A8F6E
+	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 10:10:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03FB317B506;
-	Sat, 11 Jan 2025 08:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F09618BB8E;
+	Sat, 11 Jan 2025 10:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="n/VjPBu6";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="U0RLWQen"
+	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="Z+gkIE1H";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Wsj5qPnT"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1E1155316;
-	Sat, 11 Jan 2025 08:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE20156F54;
+	Sat, 11 Jan 2025 10:10:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736583053; cv=none; b=hZCeKdbEFz/y8Rh1nRZ2Cg9tudK3P/BZaeiAJLISDDCQnI5X4iI9Fgg2/ckp/JfOczsPnRWp7kS4DcL8NsK13klj63FnMxPxsMjZOOHvHvDG4nHZubuMq42PwEkCaboUUnwr6p8hOpTcjdJC6g1v7j+ME7N6YsRdIVGzne7+7c4=
+	t=1736590218; cv=none; b=oSmENs8emgS8vFbbFxvyGleIOAUL2VDdN/F5bLEOv4+sR9yl2JpBXgAIxzHl+UDKqvLavP+G1HKF8aG9JEvfxZP/PYCx5Z+yStwABQ7nhlAAcqKvtwKFFADRN69AkWJqycj/rHwALy3thsW4FkzsSjkgA5cegvaby7csuEiEY6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736583053; c=relaxed/simple;
-	bh=IeQj/164SGrmH9lzgL8p5lsNgKqMm7GxQlCG6lh3BS4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=QynySB2FVOiIB/E9JD4qxcHokHoOpR3vOHu1jDJtTveEVihibyfAAQcLiXJLkhiyzcRTWwgp+3IXiWu+e+eAV1roe/InUigUJQmtMhaT2yuRRpOy6gP9mAVmf3fjHSYmfF53OnMrCFm+9gxArhKiqhCOYnxrkf4YrultjsD2T6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=n/VjPBu6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=U0RLWQen; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: John Ogness <john.ogness@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1736583049;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IeQj/164SGrmH9lzgL8p5lsNgKqMm7GxQlCG6lh3BS4=;
-	b=n/VjPBu6RVxY/jd7/8ahukh+XhN8jl0TOU60fQm0lvgPHNpL5UGHyPLCU4qiDpVuz/P/fM
-	Baq+YHYooJezQqzqekMCLlKMDROe+sbMilyNnTxxRQaZT1GlIgmmFOssoQKMCxCgPeHpdu
-	C2TRtQU+y06mrOz5qDqZFIakhhG8EK6oniyYfefyQ0Qj6ibsdOBPmw0o736XKaWL83RMUG
-	MMwg4rR7lsDvJ6EI0tIRjarpIGlnEZct3TDYkfCnEKtNiJxJu0ae1kOpHaD5Bwb/ZlRo4x
-	zX5UlKMToWVyF+B/iGJphUlhJm6CItkUEGU2CD4aRwBKTLDFYZYOU2fBcpdItA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1736583049;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IeQj/164SGrmH9lzgL8p5lsNgKqMm7GxQlCG6lh3BS4=;
-	b=U0RLWQenj5Pis/8c/yvegsbHfJFijpGnoXgqcP3V+STKLFb6zDGjAw6m+UkuSPoY2qE5Qj
-	/wyWXytrTVwfqOBA==
-To: Sean Anderson <sean.anderson@linux.dev>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>,
- linux-serial@vger.kernel.org
-Cc: Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Michal
- Simek <michal.simek@amd.com>, Thomas Gleixner <tglx@linutronix.de>, Sean
- Anderson <sean.anderson@linux.dev>, stable@vger.kernel.org
-Subject: Re: [PATCH] tty: xilinx_uartps: split sysrq handling
-In-Reply-To: <20250110213822.2107462-1-sean.anderson@linux.dev>
-References: <20250110213822.2107462-1-sean.anderson@linux.dev>
-Date: Sat, 11 Jan 2025 09:16:49 +0106
-Message-ID: <841px9u5x2.fsf@jogness.linutronix.de>
+	s=arc-20240116; t=1736590218; c=relaxed/simple;
+	bh=+pePf+vX2sOiCsqc53oErDobopFjS3fed6qpiuZppOU=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=jl/THN9wyeDq9Wb66WEHawwjE20bE76849Sb1pDtDcVigIvycetjVC9EGXnFh7YWx2v6M+QKwbp/G6eWjOYUBXOqtxLxreRCxT0mXi52UIbh74GH/uM5yIgep/BYbV9kob8PFe/VIS8bhcWakmbo1ubIratMuS3JNjPiUwxUQMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=Z+gkIE1H; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Wsj5qPnT; arc=none smtp.client-ip=103.168.172.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfout.phl.internal (Postfix) with ESMTP id 1A0091380143;
+	Sat, 11 Jan 2025 05:10:15 -0500 (EST)
+Received: from phl-imap-12 ([10.202.2.86])
+  by phl-compute-09.internal (MEProxy); Sat, 11 Jan 2025 05:10:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1736590215;
+	 x=1736676615; bh=7HBp2SadmpOAT3FBbLsoTTEospLUqzeWu04/XaaaIhA=; b=
+	Z+gkIE1HT6cmRLSeLASmMkUkePV2U9LJ3xF9wN6Vg2v1S0RlLwGT+I9LCZJW7cHv
+	wJ+W5nn8buTd4B/2GjditvSSR/VBc1O7lnTabZmS8A50xmZes6m7VWq7LZANC8r1
+	1Il031haWA9psYA1E6kqTQs0AmNiVRQUkL2t4dFjK0hOkkikRZo1+zWrzm0ado0y
+	436OnPTnzwg4pp1gvQ3tCmbs7bbnwQ6P5fi0zaB9gxFPR76DwPnh27B1EzZhSRnL
+	X47V53gm0e7HaBiN7ErM0ROdrr1ZKFZLlyHTordxhAel06HexXj+V594K387SQpZ
+	VIPRRFejEz2PS0ColBCQwQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1736590215; x=
+	1736676615; bh=7HBp2SadmpOAT3FBbLsoTTEospLUqzeWu04/XaaaIhA=; b=W
+	sj5qPnT2po1/J7IEJdHW7TwvwqFJBVIcdaioUXfmHg3Bn1QT+S69Pj8XUsNCVFiD
+	B3frfZnuABQsaN5RE0ODK2c6LGfi0AiAAYc0m/8298mQyOKjezggEb5lp8+Z2PZ/
+	vJVuEl1l31oVxo7e45Uovfd39LDqsBCpCZ0hYBFIlsjzE5eymL6JRO/i9CeUyEVF
+	Ur6/MloxE7HZasqugsb55wPUhmTlI7YnzJiPJx2HI+q7H9m3V9N5YAPYHYOxErET
+	NyppVfMgDPlcVx7IZcfRN8vtifvE1lJn+PyWsZXEWAugb+k7OgLpWq5VzwK11bm+
+	suV8GRIu1gpdYmRi9k8lQ==
+X-ME-Sender: <xms:hkOCZ1ABH1d1rzemBgubB0NzQgD9CBVavoUau2KtdUrTwsfKnTBf-Q>
+    <xme:hkOCZziLF9EmABuaaMlReI0txHnmkYCNinbZKxRHCJF7LTJqYkyGW8cbPGvYgG5My
+    Z5HHhUVC8TgZN6DQpg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudehtddgudduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
+    necuhfhrohhmpedflfhirgiguhhnucgjrghnghdfuceojhhirgiguhhnrdihrghnghesfh
+    hlhihgohgrthdrtghomheqnecuggftrfgrthhtvghrnhepjeehfeduvddtgffgvdffkeet
+    hefhlefgvdevvdekuefffeekheehgeevhfevteejnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgr
+    thdrtghomhdpnhgspghrtghpthhtohepiedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
+    htohepthhssghoghgvnhgusegrlhhphhgrrdhfrhgrnhhkvghnrdguvgdprhgtphhtthho
+    pehitggvnhhofiihsegrohhstgdrihhopdhrtghpthhtoheplhhinhhugidqkhgvrhhnvg
+    hlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhiphhs
+    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrh
+    drkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepgihrhiduudduseigrhihudduuddrshhi
+    thgv
+X-ME-Proxy: <xmx:hkOCZwnvGg1_1qMNVbhFSF1ZETFYY00PQYlwxiqHwMPJD5GjHB4bJg>
+    <xmx:hkOCZ_xIaTZSLbWSXtlVZPmEgW7HnYfof0XsieLCUYPAE_XYUwfOrg>
+    <xmx:hkOCZ6Q_-s6ZZxf9mPvztr5o03kZn7aNrvWBY-9i6jH8Hh9_G2rq0g>
+    <xmx:hkOCZyYN0VnF2yIMaGqN_zzx6MyhFxgh1wUTwdfbfxK54OvoaC3jVg>
+    <xmx:h0OCZ5Faj6AtsYFINV63ALUBj9k7MksLrc92j60s7CoUyi_90qBwC1i8>
+Feedback-ID: ifd894703:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 5FB651C20066; Sat, 11 Jan 2025 05:10:14 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Date: Sat, 11 Jan 2025 10:09:55 +0000
+From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
+To: "Xi Ruoyao" <xry111@xry111.site>,
+ "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>
+Cc: "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ linux-kernel@vger.kernel.org,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "Icenowy Zheng" <icenowy@aosc.io>
+Message-Id: <ea1fc568-91b7-4781-b870-ae90675214e3@app.fastmail.com>
+In-Reply-To: <20241223092041.257941-1-xry111@xry111.site>
+References: <20241223092041.257941-1-xry111@xry111.site>
+Subject: Re: [PATCH] Revert "MIPS: csrc-r4k: Select HAVE_UNSTABLE_SCHED_CLOCK if SMP &&
+ 64BIT"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 2025-01-10, Sean Anderson <sean.anderson@linux.dev> wrote:
-> Fix this by splitting sysrq handling into two parts. We use the prepare
-> helper under the port lock and defer handling until we release the lock.
 
-Note that this fix is only necessary because this console driver is
-using the legacy console API. For the NBCON API it is allowed to call
-printk() while holding the port lock.
 
-But since code already exists to allow deferring the sysrq execution
-until the port lock is not held, this patch is probably a good idea
-anyway because it can reduce port lock contention. AFAIK there are no
-sysrq actions that require port lock synchronization.
+=E5=9C=A82024=E5=B9=B412=E6=9C=8823=E6=97=A5=E5=8D=81=E4=BA=8C=E6=9C=88 =
+=E4=B8=8A=E5=8D=889:20=EF=BC=8CXi Ruoyao=E5=86=99=E9=81=93=EF=BC=9A
+> This reverts commit 426fa8e4fe7bb914b5977cbce453a9926bf5b2e6.
+>
+> The commit has caused two issues on Loongson 3A4000:
+>
+> 1. The timestamp in dmesg become erratic, like:
+>
+>     [3.736957] amdgpu 0000:04:00.0: ... ...
+>     [3.748895] [drm] Initialized amdgpu ... ...
+>     [18446744073.381141] amdgpu 0000:04:00:0: ... ...
+>     [1.613326] igb 0000:03:00.0 enp3s0: ... ...
+>
+> 2. More seriously, some workloads (for example, the test
+>    stdlib/test-cxa_atexit2 in the Glibc test suite) triggers an RCU
+>    stall and hang the system with a high probably (4 hangs out of 5
+>    tests).
+>
+> Revert this commit to use jiffie on Loongson MIPS systems and fix these
+> issues for now.  The root cause may need more investigation.
+>
+> Cc: stable@vger.kernel.org # 6.11+
+> Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> Cc: Icenowy Zheng <icenowy@aosc.io>
 
-Acked-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+
+It's indeed problematic in some scenarios.
+
+Let's revert for now.
+
+Thanks
+- Jiaxun
+
+> Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+> ---
+>  arch/mips/Kconfig | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 467b10f4361a..5078ebf071ec 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -1084,7 +1084,6 @@ config CSRC_IOASIC
+>=20
+>  config CSRC_R4K
+>  	select CLOCKSOURCE_WATCHDOG if CPU_FREQ
+> -	select HAVE_UNSTABLE_SCHED_CLOCK if SMP && 64BIT
+>  	bool
+>=20
+>  config CSRC_SB1250
+> --=20
+> 2.47.1
+
+--=20
+- Jiaxun
 
