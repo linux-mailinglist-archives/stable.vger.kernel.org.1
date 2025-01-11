@@ -1,167 +1,148 @@
-Return-Path: <stable+bounces-108254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7887A0A046
-	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 03:20:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25BB2A0A1D5
+	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 08:24:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A6F016B091
-	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 02:20:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B040E7A42B3
+	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 07:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8E542A8F;
-	Sat, 11 Jan 2025 02:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997D815DBB3;
+	Sat, 11 Jan 2025 07:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AurIVOLp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ni6sDhlU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E405A17BA9;
-	Sat, 11 Jan 2025 02:20:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF126FBF;
+	Sat, 11 Jan 2025 07:24:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736562014; cv=none; b=gOy55Hf1bc6wfIFmO36O0PN2vh/iA6VPAARPT1y4gSPzJPrCm3L+zsnASAtxQBn9wlg4TMNQV+M4B4zLhb9yFkF7s50uNjk+VzY3pTj/0WRxOoXT2qeMNDwwT7FJlFLJdKR7DfGupvKbu6ZPPcndChg3jme3eaGq2s/QEm2jZVE=
+	t=1736580253; cv=none; b=ezvccxbNptXnLMD53vgEHEEBX6A3FHLzYEJ+4b9zO1B0o41/zlcZI2UvxZNN6VAIN7cFwkrt5dea0YllQd09IB23QLKZD7gMDxSMyF6NTByqk23bfbZP1mmJ5dreYkORNQ7Jqgj0pqckav2PibuZfJZyyNUlEhQlyvNMSOVpv4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736562014; c=relaxed/simple;
-	bh=/YzOyCCjnowMGeeKkVtKlwiR7xf5IHuLvAHARdpgdcg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=OimlcCaOmynaYf866/saReFnThjGk1m+6O6gxkgXtnR0UmAFVyKYqLc/CaYrDvxgQqM1R9w3N5htlBZZAVO8pfBGifRsytDp1Jp31iCBGL0d/1KjwrjmUcmxvLDetBYz8Lvt7EtqiG+i/xlCRWukvEsfvOtKbXUo2pFYy0ZyE0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AurIVOLp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC75C4CED6;
-	Sat, 11 Jan 2025 02:20:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736562013;
-	bh=/YzOyCCjnowMGeeKkVtKlwiR7xf5IHuLvAHARdpgdcg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=AurIVOLpRjBMPRSw4dPuJImZGIvB9TxTmCdchOPN+Vh/Xi5hckoMVFhk+7bb1cG+I
-	 fIQ01nEOjPn8h4UiQNlqTGNh/yIk57uxIb5yWh0E+WLLSvXwR6sUnppll+fz0W5nm9
-	 xizUTg7X+22513JVo9/VzOCghvYTZ0c6lzsZWxJK5IZhM2UAv082awydrvWZl/Lscu
-	 /DLltlzoN52mHIwYu4CIjl2zYfcbrB+dq8a1yrirrd8rym9Qgj66v9zyPb5WW1I0S2
-	 N0kWFduuhrViBX79mgdNqpfXhtP8PRsfzdikdFJ/MtDCSFK3nA1cyr03a7rnxGMRFI
-	 oirK/7yDXQApg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADE33380AA57;
-	Sat, 11 Jan 2025 02:20:36 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1736580253; c=relaxed/simple;
+	bh=4eDODf6YVlMxxHhe8LGOO9x1o9/F2MO9Vs0a9pn6VBc=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=T46KN5u7f9AeH+pUksGHtwaKptGQTZywxKzYJN1D54rF7rG/e+YvCvbuHx3bf2OYAYtYa78ht2wsO2IGZxm8R4wphp7jU+TN/7z1dExVZXzQ9IDo0Q99F08a+Q+FvMCZhISG/p/Z0ijKb2ppOxvjuNXn9xwmJeNNIUud5KXhaPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ni6sDhlU; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2ee989553c1so4532625a91.3;
+        Fri, 10 Jan 2025 23:24:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736580250; x=1737185050; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=NH2/R/mmwYipmvjxTmPJfojr+0VZHua5pp0k9YchVg4=;
+        b=ni6sDhlUqzb6WCs/izaUVnVlJtcxZGyShhaMISxoemFfFMLrgiUKiYGn2e+J9fhzes
+         u//O88POs/hyhBVXWTuSY61OlFd6dwZm5vS80Y2mjfcIgzR1Gn6lp0E7oxbR20J0fUuz
+         7C7ZzVlYFjjBju9uNLSz16LRrGneySCWlxCZo1PHFK+L+3D20erZQlGG1p8gEsDn/Khd
+         gYUR+qwMk2Mju3Xm4gHQoHrdSjaH06yEETwvnaPdn1418Hm4KPnDupiypppqncr5EnVH
+         aBcRC0/vAkXxRl+HOEGXL8OBTw7R92CrDA3ZNRLtVMQJG9Tps1017ngwQcPBKk/wwacV
+         fMFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736580250; x=1737185050;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NH2/R/mmwYipmvjxTmPJfojr+0VZHua5pp0k9YchVg4=;
+        b=UVGHNmFCeKO0cNU6EjRe6SNOwOieKIUIp8fBDR5pGV+PacfH+67r5Tmu0XBlE2LwXS
+         3gPHNfcviSjAGa5hHvgiQxaKGDAwdAfSda/Orq1z0VgaV9U1uMcY67QWsqd24I9scGdF
+         4/4m2r/Bk29UypIZV4Ljwm53VuyEXtNBXzqD7q17i3xwQ6C/1OCfADDAReLTdxuu1Prv
+         Ei0qw70Z3C32imIrOJ5x0IPPfmDBBRJ2DSWmmwSnNX637+HYqrcsotqA8l756N8UuKyi
+         lNit0aogrQcp0yImu/gqKCML/hlpwPSBvpdvVkqmK963pItkZ7jaxkRFdbugLemPjYud
+         jhug==
+X-Forwarded-Encrypted: i=1; AJvYcCUOtFXlzxbOOr0PjyyDs8Ub6dnT7jOK6cscqKFe3XG0s8OXvwK+Gll1wxgSmGigmjtFszqSxpsK@vger.kernel.org, AJvYcCUVDQoml9UHf626Nt44vZ3BWK4aBgBfd5yS9en6UH9Yj4Wsjfj6nd/mB+Wi1zu8AQQ9+rza@vger.kernel.org, AJvYcCUzBXerfN3mDBhwGLSUjNgsk1dOkapdbWTKS3Xs4uJci5D4XF0KQ/Bv7wVYBNMm8FtDXSh7NwgL@vger.kernel.org, AJvYcCXzvDxDJGs3u0FVPd5HpoS3tGWXv3tCz9zaKqqMwrrkM9dQt4Idf8EGNtjoYSWSWfn05Gvu0vtghCJwpwyS@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz78KAmWq3GWHonYCK/jQArQ+Vf6mxJ9KPDEQL7Jp1NbfEijxr8
+	hXWLwNPBvakjSx2c6EEO74Fveo1CKuwiQQUlXfYfyx5illH2/V2DmDWlkCGAD/s=
+X-Gm-Gg: ASbGncs32uVflWZ4t22HccaR6fhldvt1R6vS8zKONmNRUzgpKadLmKY4EV3H3+OLgQK
+	OikP4xLnts60Co6vIBzz2rQmDE2fjmtZSl2KkDxsvlX3p+iVcSzQDf0mi90CGhVOW5LLdzxOd96
+	dzyEO0mJQcAK6gPrtA7NQNZaZaIWSV8g3a0X3ixZTLVkSyffYJTHHVATdmDHy+maAc6MGaWHw6q
+	sMqbthuyejrxwD7ast/N7ZjVFFMJ5AIi/kuFKbMy94aU5LOLw==
+X-Google-Smtp-Source: AGHT+IEgeQ0GUy0bLna4m1uiMu79PJdAeK7ijLAotzT9V4CjzfxBB6JltsCSAZHszPCb+4sri3ib1w==
+X-Received: by 2002:a05:6a00:340c:b0:72a:9ddf:55ab with SMTP id d2e1a72fcca58-72d21f3ececmr18299223b3a.10.1736580250208;
+        Fri, 10 Jan 2025 23:24:10 -0800 (PST)
+Received: from dw-tp ([49.205.218.89])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72d40658c56sm2637590b3a.93.2025.01.10.23.24.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jan 2025 23:24:09 -0800 (PST)
+From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+To: Amit Machhiwal <amachhiw@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, Shivaprasad G Bhat <sbhat@linux.ibm.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] KVM: PPC: Enable CAP_SPAPR_TCE_VFIO on pSeries KVM guests
+In-Reply-To: <20250109132053.158436-1-amachhiw@linux.ibm.com>
+Date: Sat, 11 Jan 2025 11:49:49 +0530
+Message-ID: <87r059vpmi.fsf@gmail.com>
+References: <20250109132053.158436-1-amachhiw@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: mana: Cleanup "mana" debugfs dir after cleanup of
- all children
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173656203552.2269660.2980906900507865213.git-patchwork-notify@kernel.org>
-Date: Sat, 11 Jan 2025 02:20:35 +0000
-References: <1736398991-764-1-git-send-email-shradhagupta@linux.microsoft.com>
-In-Reply-To: <1736398991-764-1-git-send-email-shradhagupta@linux.microsoft.com>
-To: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kys@microsoft.com, haiyangz@microsoft.com,
- wei.liu@kernel.org, decui@microsoft.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- longli@microsoft.com, kotaranov@microsoft.com,
- schakrabarti@linux.microsoft.com, yury.norov@gmail.com,
- michal.swiatkowski@linux.intel.com, kalesh-anakkur.purayil@broadcom.com,
- mlevitsk@redhat.com, peterz@infradead.org, shradhagupta@microsoft.com,
- stable@vger.kernel.org
 
-Hello:
+Amit Machhiwal <amachhiw@linux.ibm.com> writes:
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+> Currently, on book3s-hv, the capability KVM_CAP_SPAPR_TCE_VFIO is only
+> available for KVM Guests running on PowerNV and not for the KVM guests
+> running on pSeries hypervisors. 
 
-On Wed,  8 Jan 2025 21:03:11 -0800 you wrote:
-> In mana_driver_exit(), mana_debugfs_root gets cleanup before any of it's
-> children (which happens later in the pci_unregister_driver()).
-> Due to this, when mana driver is configured as a module and rmmod is
-> invoked, following stack gets printed along with failure in rmmod command.
-> 
-> [ 2399.317651] BUG: kernel NULL pointer dereference, address: 0000000000000098
-> [ 2399.318657] #PF: supervisor write access in kernel mode
-> [ 2399.319057] #PF: error_code(0x0002) - not-present page
-> [ 2399.319528] PGD 10eb68067 P4D 0
-> [ 2399.319914] Oops: Oops: 0002 [#1] SMP NOPTI
-> [ 2399.320308] CPU: 72 UID: 0 PID: 5815 Comm: rmmod Not tainted 6.13.0-rc5+ #89
-> [ 2399.320986] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 09/28/2024
-> [ 2399.321892] RIP: 0010:down_write+0x1a/0x50
-> [ 2399.322303] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 55 48 89 e5 41 54 49 89 fc e8 9d cd ff ff 31 c0 ba 01 00 00 00 <f0> 49 0f b1 14 24 75 17 65 48 8b 05 f6 84 dd 5f 49 89 44 24 08 4c
-> [ 2399.323669] RSP: 0018:ff53859d6c663a70 EFLAGS: 00010246
-> [ 2399.324061] RAX: 0000000000000000 RBX: ff1d4eb505060180 RCX: ffffff8100000000
-> [ 2399.324620] RDX: 0000000000000001 RSI: 0000000000000064 RDI: 0000000000000098
-> [ 2399.325167] RBP: ff53859d6c663a78 R08: 00000000000009c4 R09: ff1d4eb4fac90000
-> [ 2399.325681] R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000098
-> [ 2399.326185] R13: ff1d4e42e1a4a0c8 R14: ff1d4eb538ce0000 R15: 0000000000000098
-> [ 2399.326755] FS:  00007fe729570000(0000) GS:ff1d4eb2b7200000(0000) knlGS:0000000000000000
-> [ 2399.327269] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [ 2399.327690] CR2: 0000000000000098 CR3: 00000001c0584005 CR4: 0000000000373ef0
-> [ 2399.328166] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> [ 2399.328623] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
-> [ 2399.329055] Call Trace:
-> [ 2399.329243]  <TASK>
-> [ 2399.329379]  ? show_regs+0x69/0x80
-> [ 2399.329602]  ? __die+0x25/0x70
-> [ 2399.329856]  ? page_fault_oops+0x271/0x550
-> [ 2399.330088]  ? psi_group_change+0x217/0x470
-> [ 2399.330341]  ? do_user_addr_fault+0x455/0x7b0
-> [ 2399.330667]  ? finish_task_switch.isra.0+0x91/0x2f0
-> [ 2399.331004]  ? exc_page_fault+0x73/0x160
-> [ 2399.331275]  ? asm_exc_page_fault+0x27/0x30
-> [ 2399.343324]  ? down_write+0x1a/0x50
-> [ 2399.343631]  simple_recursive_removal+0x4d/0x2c0
-> [ 2399.343977]  ? __pfx_remove_one+0x10/0x10
-> [ 2399.344251]  debugfs_remove+0x45/0x70
-> [ 2399.344511]  mana_destroy_rxq+0x44/0x400 [mana]
-> [ 2399.344845]  mana_destroy_vport+0x54/0x1c0 [mana]
-> [ 2399.345229]  mana_detach+0x2f1/0x4e0 [mana]
-> [ 2399.345466]  ? ida_free+0x150/0x160
-> [ 2399.345718]  ? __cond_resched+0x1a/0x50
-> [ 2399.345987]  mana_remove+0xf4/0x1a0 [mana]
-> [ 2399.346243]  mana_gd_remove+0x25/0x80 [mana]
-> [ 2399.346605]  pci_device_remove+0x41/0xb0
-> [ 2399.346878]  device_remove+0x46/0x70
-> [ 2399.347150]  device_release_driver_internal+0x1e3/0x250
-> [ 2399.347831]  ? klist_remove+0x81/0xe0
-> [ 2399.348377]  driver_detach+0x4b/0xa0
-> [ 2399.348906]  bus_remove_driver+0x83/0x100
-> [ 2399.349435]  driver_unregister+0x31/0x60
-> [ 2399.349919]  pci_unregister_driver+0x40/0x90
-> [ 2399.350492]  mana_driver_exit+0x1c/0xb50 [mana]
-> [ 2399.351102]  __do_sys_delete_module.constprop.0+0x184/0x320
-> [ 2399.351664]  ? __fput+0x1a9/0x2d0
-> [ 2399.352200]  __x64_sys_delete_module+0x12/0x20
-> [ 2399.352760]  x64_sys_call+0x1e66/0x2140
-> [ 2399.353316]  do_syscall_64+0x79/0x150
-> [ 2399.353813]  ? syscall_exit_to_user_mode+0x49/0x230
-> [ 2399.354346]  ? do_syscall_64+0x85/0x150
-> [ 2399.354816]  ? irqentry_exit+0x1d/0x30
-> [ 2399.355287]  ? exc_page_fault+0x7f/0x160
-> [ 2399.355756]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> [ 2399.356302] RIP: 0033:0x7fe728d26aeb
-> [ 2399.356776] Code: 73 01 c3 48 8b 0d 45 33 0f 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 b0 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 15 33 0f 00 f7 d8 64 89 01 48
-> [ 2399.358372] RSP: 002b:00007ffff954d6f8 EFLAGS: 00000206 ORIG_RAX: 00000000000000b0
-> [ 2399.359066] RAX: ffffffffffffffda RBX: 00005609156cc760 RCX: 00007fe728d26aeb
-> [ 2399.359779] RDX: 000000000000000a RSI: 0000000000000800 RDI: 00005609156cc7c8
-> [ 2399.360535] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-> [ 2399.361261] R10: 00007fe728dbeac0 R11: 0000000000000206 R12: 00007ffff954d950
-> [ 2399.361952] R13: 00005609156cc2a0 R14: 00007ffff954ee5f R15: 00005609156cc760
-> [ 2399.362688]  </TASK>
-> 
-> [...]
+IIUC it was said here [1] that this capability is not available on
+pSeries, hence it got removed. Could you please give a background on
+why this can be enabled now for pSeries? Was there any additional
+support added for this? 
+[1]:
+https://lore.kernel.org/linuxppc-dev/20181214052910.23639-2-sjitindarsingh@gmail.com/
 
-Here is the summary with links:
-  - [net] net: mana: Cleanup "mana" debugfs dir after cleanup of all children
-    https://git.kernel.org/netdev/net/c/eaeea5028fa8
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+... Ohh thinking back a little, are you saying that after the patch...
+f431a8cde7f1 ("powerpc/iommu: Reimplement the iommu_table_group_ops for pSeries")
+ ...we can bring back this capability for kvm guest running on pseries
+as well. Because all underlying issues in using VFIO on pseries were
+fixed. Is this understanding correct? 
 
 
+> This prevents a pSeries hypervisor from
+> leveraging the in-kernel acceleration for H_PUT_TCE_INDIRECT and
+> H_STUFF_TCE hcalls that results in slow startup times for large memory
+> guests.
+
+By any chance could you share the startup time improvements for above?
+IIUC, other than the boot up time, we should also see the performance
+improvements while using VFIO device in nested pSeries kvm guest too right?
+
+>
+> Fix this by enabling the CAP_SPAPR_TCE_VFIO on the pSeries hosts for the
+> nested PAPR guests.
+>
+> Fixes: f431a8cde7f1 ("powerpc/iommu: Reimplement the iommu_table_group_ops for pSeries")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> ---
+>  arch/powerpc/kvm/powerpc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+> index ce1d91eed231..9c479c7381e4 100644
+> --- a/arch/powerpc/kvm/powerpc.c
+> +++ b/arch/powerpc/kvm/powerpc.c
+> @@ -554,7 +554,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+>  		r = 1;
+>  		break;
+>  	case KVM_CAP_SPAPR_TCE_VFIO:
+> -		r = !!cpu_has_feature(CPU_FTR_HVMODE);
+> +		r = !!cpu_has_feature(CPU_FTR_HVMODE) || is_kvmppc_hv_enabled(kvm);
+>  		break;
+
+In above you said - "Fix this by enabling the CAP_SPAPR_TCE_VFIO on the pSeries hosts for the nested PAPR guests."
+So why can't this simply be r = 1? Or maybe you meant only for HV KVM module is it?
+
+-ritesh
+
+>  	case KVM_CAP_PPC_RTAS:
+>  	case KVM_CAP_PPC_FIXUP_HCALL:
+>
+> base-commit: eea6e4b4dfb8859446177c32961c96726d0117be
+> -- 
+> 2.47.1
 
