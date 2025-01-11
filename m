@@ -1,108 +1,129 @@
-Return-Path: <stable+bounces-108268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46565A0A392
-	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 13:21:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12301A0A33E
+	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 12:13:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CC7F3AA6DB
-	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 12:21:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51C997A3CC1
+	for <lists+stable@lfdr.de>; Sat, 11 Jan 2025 11:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02081632F3;
-	Sat, 11 Jan 2025 12:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B4811922F2;
+	Sat, 11 Jan 2025 11:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="UIk3sgLB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ctgYIKWO"
 X-Original-To: stable@vger.kernel.org
-Received: from out162-62-58-69.mail.qq.com (out162-62-58-69.mail.qq.com [162.62.58.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5891324B256;
-	Sat, 11 Jan 2025 12:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678361537D4;
+	Sat, 11 Jan 2025 11:13:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736598077; cv=none; b=A4U6LTD5opv0ZG2wyzxtUripUnOhhbPqtX+McUmiYaDjZhd4Y+lg+AcQf4N7N9OmwQ2fy0utd5GqeHTKcmgvzuzXxIRVUChuO78GUwSFlBvtlhsHgpLOE7oJdwlu4dFQu/DradxR9I7ocwMF5zerU382k0aZHBOGIN5N4lAG848=
+	t=1736593985; cv=none; b=YIFelonX6aXJ5Bq5D0MauOg5wF6a3yyI2L0/0hg25mXmikE7jSdzsz/mlhNSvsRJWnMmvnNxI9FDesOt5ZaWYp9xo9/JaPr3IxQ3jfEeJWGEDDjbzu8QsPGivmu+6l5g7nM7y83KXAWSEcwkt+YojTytj9MEifZB2jDPvvcUoyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736598077; c=relaxed/simple;
-	bh=16uvyolSRo286m8yQNvXbhZmHPl2EyM2u2hDRkbNMYw=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=VCEjWroA7s60M6Kgpqo8a+Jyt5ycv7G1gUVoYd5ZyK5wLmdM8y0oRD+b9dj9yHTeuRUSR5O7pzX+SsK/vCRzoTtwl3aPcC4b2ssGiTgPbWCBR2WZmXCerykmhqCaoVXNy3jDupBOM/zThD1jVdwp1pciYnffhrix3zxug00nDn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=UIk3sgLB; arc=none smtp.client-ip=162.62.58.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1736598067; bh=rjIk5IWPX/sFgqupdD4dSWcOuD6lN7+QBI/rBP5fj18=;
-	h=From:To:Cc:Subject:Date;
-	b=UIk3sgLBgDHTzb0ByMHjl7qXH0T2/7HNIMjfAAwGcIwhud+ogX5XjDdYGgbQyKzgD
-	 Q5hYMOrVhNKhspKLrI3rkAbUFXCSfJKpFKnwMgwzbK7elsr0wX1dum0kVoW7YJeekJ
-	 0q16l49/66YfjCu8bJ1M9DSAKlCIYFsElxipUlz8=
-Received: from u22.. ([208.115.96.45])
-	by newxmesmtplogicsvrszb21-0.qq.com (NewEsmtp) with SMTP
-	id E24AD6B7; Sat, 11 Jan 2025 17:56:36 +0800
-X-QQ-mid: xmsmtpt1736589396tszkecd4g
-Message-ID: <tencent_4B60C577479F735A75E6459B9AEAB3F54A05@qq.com>
-X-QQ-XMAILINFO: NmxDRtNfo6mLCtlJ3NUEaLEv/0UxDoISsTe+ak3zBbPJ4DaE9J0Bm5Sg35AlKD
-	 xVEZndEBtZP7yjTu40DZ2oUisibTHpHr0mPtReka6BXItsdxGNZaDPulzeNrL14cBuM0eKXSeidU
-	 V8NgmPhuJxhPjLNwX2lR3mtbBSSHsVVIGhzsHtkNUYTdXoK9t/ySxGrzHCOcwvyETY221kbeNj9s
-	 PgoxUQHGkczthhqIiuQvJT4s/jghKb1WVRBDjkjxVYSZUl+TGONl9nyVbgG7+iTejWy5Q0QN9wBS
-	 eMoA405b9zTJLiGBYqi/OUJEjGMuq3xBDXU1PA3e/n4gCBci0qS4qIWL04aWAhioXnMcycw5SgYm
-	 nmv74Wa+agBgIDobFq+C+Imunn8z/5m5voXLdZF8oGK/LUkGf+REam0C12PogLO2GwbXO/c9Fuz4
-	 MspoA2dZbRNa8uqQKpuBxEZn5LG2DkSSCebUeby9/UDKHNBogelDYM9Yc82N/CAZR2iM4uZOehw8
-	 euo86vPTdNs9u3Sji123Vc12K+6pWdLx+9snYJbo/u1PV/NFLlb04peJtdBRdzPIKVPVqXIAU/7+
-	 CJ18duhpMjrkR7WebAd0FEjJ4dxNSa/qB01HnJpTk13va4OCsePnOcj3WjVgwedrU6ZqGak640Qi
-	 oMpCv2TYow0Pj43EHmHt+79ceuFCKlBUhJCeL7pRJKC9Jv5wdtovwJVVbtQcLZ2e8SCHrs2cOkVE
-	 ZUIdGSfaFKYk6HFiYovSMibCfFbPFqXJSAkXAJvj3iXHGDx7j+EzI1zHwflXb4D5aiuVRIPQ9ob3
-	 dD9IrzbKY5rdgDJo/LxB3R18ZesZ2zcjp4sju6xC+nkMWj5ec3r9rURHGPUC1RrBHzh6qhcAe+8j
-	 rEGOG1g29it7go1dcemiAuMbWPWyWdV2NpsGsROty6kRCBi9K61+UPhZ3OB9vOW2f4HdD4GtmnL7
-	 ZhHtN/QvYYTy1yXSMEqE8e5HcJfUyIsuLn8DuV3Z4T53JzKgTsLq+/RidJqyyz2ube5dgH3KQH0x
-	 mieEzFHVIr4UBgdzvUw7+/JdJiJZsa3sAiNQceyl1CkMoZPGa+1DJm2dtEA0k=
-X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
-From: 1534428646@qq.com
-To: catalin.marinas@arm.com,
-	will@kernel.org
-Cc: mark.rutland@arm.com,
-	kristina.martsenko@arm.com,
-	liaochang1@huawei.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	"Yiren.Xie" <1534428646@qq.com>
-Subject: [PATCH] arm64: kprobe: fix an error in single stepping support
-Date: Sat, 11 Jan 2025 17:56:32 +0800
-X-OQ-MSGID: <20250111095632.738024-1-1534428646@qq.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1736593985; c=relaxed/simple;
+	bh=LwnCOp04jxe7ud0+oZDujjSPho7IfoB8cf0lLGGfifQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pCFevsWNqCToNsmqffa+1Bzr75LQFwepsRYnh2IanSrtNvSp2VDjf/H3z9hG1R4bLXH1N/bW+pw+U++PoIGG6jHAxyCYX0hyqyurJld9S5UieB3tCmXWTxmSqRlYhVPigzmTAexET1Hoq/Cn3pidgTkXJ1JgiRhEcnTyasZTQKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ctgYIKWO; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ab2aea81cd8so408508166b.2;
+        Sat, 11 Jan 2025 03:13:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736593982; x=1737198782; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LwnCOp04jxe7ud0+oZDujjSPho7IfoB8cf0lLGGfifQ=;
+        b=ctgYIKWOYNo5p76vyIYROB0zndC5oeYfYImjJp4DUyr0qZqNf8djEzV3Xy7Lwqj96E
+         6LudhSzQk6wGmjbwrnAmuNQS3EWjo5zDdbF9X2fBIkG1s+R5HF8NC1sEgGgwldFBvJ7s
+         qzydD1cpMeJ9f3Cfaflra+2ALJcVtCfOgKPb8rLqf3MmEWFSBOOJbJEhImsh0nnpRowD
+         jyoRHoXsslt/EJcGaPElLivLXrzroMtkQRpOqKkWjU2PNcR0IhOt5reTAA5zib7TbYJi
+         rge36z7ZP09x7WITtS1E52QHjd4zDHZ9RQliZ6o820h4USvvPNW1FPUKcev3jvKfLel3
+         djiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736593982; x=1737198782;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LwnCOp04jxe7ud0+oZDujjSPho7IfoB8cf0lLGGfifQ=;
+        b=jBC5CGZzE6QnGTMyze1wUd1wyPGSxdyQFhKyIQE2SbmveGKQyKQEu9rPFYK5d3Kokz
+         dkhasXP8cs3GYx55eJhOKnhqRaD1XmpB0bUqoLJt+7XHWeJTfLBpSN8CVS0m/Z1YIOZ3
+         WqYODPz4bxT/UlSeRp7vktgrdtAHmnEBHBwtApOpxy4kr9lhLYZraSj0SL5fzLv5ZI41
+         itidFgIZCveyaWnNmRN+jR9oFDZMLOUMEmrw3OekScvfp7QTWDJXMJ3I/9JGZiZlpp8m
+         6oWd1+0SEZfvLhps+nM0qqauL4r1ZsN8VyNchISAwrxPlJ0YI9RhZnWn+vAPtFnSRcY4
+         kchQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUoRY84ZZ5nFjrF5oGwK+ehOJIIH0vr/qkfc/T3TeoX4bvBsDxrGRR46CAnyFKGpxThG92u1y3tYzx2Xd8=@vger.kernel.org, AJvYcCX7OlUqSrzf0R7etS1ZqOOFeKJZiRmE4Fynp7mr/w3UJ8lzf5dJj8Z01iZH12KUh/+yJ6mWmXLk@vger.kernel.org, AJvYcCXbaKUg670iN/yTBPWrCxUlhVR5+lhwSYaCYJLHzgwjqml+UmrU5Nh1IBojn6fAduRoeBhfDxdA@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgZGayh4yILya5FvDAspUIr28yg8jaKXi4HXjgLgKmMdsrEcLo
+	9OiRx8GwxHCB1EL4i9H0N4ItrXiQuKry5bQ17a6i+XA4BdgtOPi9eVJOteTxExXZ6eje7b69NzW
+	TE1gGOH0FJKiTT6mlQKJsUnJ1ys4PGSBj
+X-Gm-Gg: ASbGnctdXdm/EI0EoJHAzJpp6TCMXXPgkX90Tm7Dhqyq7psXNCPPONDc8Mbgpv7TzwX
+	U5l0YuRBsd0ZkHVCIWbXVG7WZVeCeOXetZn0Y/W8=
+X-Google-Smtp-Source: AGHT+IF6282MgM1DgwU5iUlWE7vIfL1E+Kry4JlQWVoR+RuoeWnDE/apz2b7KOC+1HpNjRDQujaBIN+72zs8crWyISI=
+X-Received: by 2002:a17:907:7f1e:b0:aa6:7091:1e91 with SMTP id
+ a640c23a62f3a-ab2ab66cf8cmr1310652266b.11.1736593981455; Sat, 11 Jan 2025
+ 03:13:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250108192346.2646627-1-kuba@kernel.org> <20250109145054.30925-1-fercerpav@gmail.com>
+ <20250109083311.20f5f802@kernel.org> <TYSPR04MB7868EA6003981521C1B2FDAB8E1C2@TYSPR04MB7868.apcprd04.prod.outlook.com>
+ <20250110181841.61a5bb33@kernel.org>
+In-Reply-To: <20250110181841.61a5bb33@kernel.org>
+From: Potin Lai <potin.lai.pt@gmail.com>
+Date: Sat, 11 Jan 2025 19:12:51 +0800
+X-Gm-Features: AbW1kvb7vYlwuMrCJ4LNPpD4i2XnHdUS01P_Rf6z3H8hOvlMHGCbJq3Pu-BhAhY
+Message-ID: <CAGfYmwVECrisZMhWAddmnczcLqFfNZ2boNAD5=p2HHuOhLy75w@mail.gmail.com>
+Subject: =?UTF-8?B?UmU6IOWbnuimhjogW0V4dGVybmFsXSBSZTogW1BBVENIXSBuZXQvbmNzaTogZml4IGxvYw==?=
+	=?UTF-8?B?a2luZyBpbiBHZXQgTUFDIEFkZHJlc3MgaGFuZGxpbmc=?=
+To: Jakub Kicinski <kuba@kernel.org>, Paul Fertser <fercerpav@gmail.com>
+Cc: =?UTF-8?B?UG90aW4gTGFpICjos7Tmn4/lu7cp?= <Potin.Lai@quantatw.com>, 
+	Samuel Mendoza-Jonas <sam@mendozajonas.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Ivan Mikhaylov <fr0st61te@gmail.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, 
+	=?UTF-8?B?Q29zbW8gQ2hvdSAoIOWRqOalt+WfuSk=?= <Cosmo.Chou@quantatw.com>, 
+	"patrick@stwcx.xyz" <patrick@stwcx.xyz>, Cosmo Chou <chou.cosmo@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: "Yiren.Xie" <1534428646@qq.com>
+On Sat, Jan 11, 2025 at 10:18=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
+rote:
+>
+> On Fri, 10 Jan 2025 06:02:04 +0000 Potin Lai (=E8=B3=B4=E6=9F=8F=E5=BB=B7=
+) wrote:
+> > > Neat!
+> > > Potin, please give this a test ASAP.
+> >
+> > Thanks for the new patch.
+> > I am currently tied up with other tasks, but I=E2=80=99ll make sure to =
+test
+> > it as soon as possible and share the results with you.
+>
+> Understood, would you be able to test it by January 13th?
+> Depending on how long we need to wait we may be better off
+> applying the patch already or waiting with committing..
 
-It is obvious a conflict between the code and the comment.
-And verified that with this modification it can read the DAIF status.
+Hi Jakub & Paul,
 
-Signed-off-by: Yiren.Xie <1534428646@qq.com>
----
- arch/arm64/kernel/probes/decode-insn.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I had a test yesterday, the patch is working and the kernel panic does
+not happen any more, but we notice sometimes the config_apply_mac
+state runs before the gma command is handled.
 
-diff --git a/arch/arm64/kernel/probes/decode-insn.c b/arch/arm64/kernel/probes/decode-insn.c
-index 6438bf62e753..22383eb1c22c 100644
---- a/arch/arm64/kernel/probes/decode-insn.c
-+++ b/arch/arm64/kernel/probes/decode-insn.c
-@@ -40,7 +40,7 @@ static bool __kprobes aarch64_insn_is_steppable(u32 insn)
- 		 */
- 		if (aarch64_insn_is_mrs(insn))
- 			return aarch64_insn_extract_system_reg(insn)
--			     != AARCH64_INSN_SPCLREG_DAIF;
-+			     == AARCH64_INSN_SPCLREG_DAIF;
- 
- 		/*
- 		 * The HINT instruction is steppable only if it is in whitelist
--- 
-2.34.1
+Cosmo helped me to find a potential state handling issue, and I
+submitted the v2 version.
+Please kindly have a look at v2 version with the link below.
+v2: https://lore.kernel.org/all/20250111-fix-ncsi-mac-v2-0-838e0a1a233a@gma=
+il.com/
 
+Best Regards,
+Potin
 
