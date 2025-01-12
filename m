@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-108316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB14DA0A7F1
-	for <lists+stable@lfdr.de>; Sun, 12 Jan 2025 10:17:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B58E0A0A801
+	for <lists+stable@lfdr.de>; Sun, 12 Jan 2025 10:37:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE1DA188843B
-	for <lists+stable@lfdr.de>; Sun, 12 Jan 2025 09:17:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC03D1615C5
+	for <lists+stable@lfdr.de>; Sun, 12 Jan 2025 09:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31504188917;
-	Sun, 12 Jan 2025 09:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9141898F2;
+	Sun, 12 Jan 2025 09:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YWrCy4oe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPwYtovU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C49256D
-	for <stable@vger.kernel.org>; Sun, 12 Jan 2025 09:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D36325763
+	for <stable@vger.kernel.org>; Sun, 12 Jan 2025 09:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736673420; cv=none; b=BYV6Uj6yebPLPKMicvJCmAESpx0v0yx7wpK+FiT3IGmXRB33LyjO/IYYuGMy3u5uN8Dx5DwAjiozYZrWenP9pzUeZSG55ieKGbZA07SirnScm6+PiPNLHroskRsVBVM2zTfMmMBkijdH9gKa8j0w8BuHrvBWL04BTbz8SXBVQ14=
+	t=1736674619; cv=none; b=m3DOFP/1RgqRyAODvi5ooNOWO5N5x4zRBB+r7c3pEZEe1IyQp9RQgkUMpWSTsVEZ7PjsGa1I0LUFjeXUrseNTTmbmEL4LTbBA+925WOmpl2H9oQcKodX1L6pr8qlHLF0NKrvb6cELDdGKix1RiOyWxW1YV1VrS9vPadyQjYAhtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736673420; c=relaxed/simple;
-	bh=g4JfB85ZkCK7vnw/krWMg7E1387dEgu//AQ73Q35QEk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ighq92t1aaS0Dmetdj/JFg6vUxp4bcXJh3inNF9Ll98u7LPbU2zFQxxSf98teouoAXOKDijgY5XdYgguWezPF2U9nvAZm0ayFz36qsDL6j4p/BzVH6qApofc1axj7UoiBG6xQCZ2g0Gcwvxz60QB2AyvH1vhCfAUtVnbC6Jjm6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YWrCy4oe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1424BC4CEDF;
-	Sun, 12 Jan 2025 09:16:58 +0000 (UTC)
+	s=arc-20240116; t=1736674619; c=relaxed/simple;
+	bh=E1yxeWsYooN7cy0+BDaC3YC3q7RtxTCqVLImmBedUPQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SZEtel7ROOTmG7fB05fOvRpc77uC95MWB3EMtrh1udNoM7GrOODxR8yEwyvwr0WC+/44jlaq9DKebUcgraD709sHW16/pMaGeITCyyNL8XWgncHgn02aNyYxGnxiYjLA75ZPB8bSEQ3SUKQ+KCA9+y/M5L5SyuXnpwEEBh0USl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPwYtovU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8AA9C4CEDF;
+	Sun, 12 Jan 2025 09:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736673419;
-	bh=g4JfB85ZkCK7vnw/krWMg7E1387dEgu//AQ73Q35QEk=;
+	s=korg; t=1736674619;
+	bh=E1yxeWsYooN7cy0+BDaC3YC3q7RtxTCqVLImmBedUPQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=YWrCy4oevs4IaD1rOHlVSHqeBe69iETjns6DjjjJd+FryZ8dpZibwUO4d2UwrTRB6
-	 g4Ty4Kiksl+HTYEDtqkyko+TzXtN3sV4kt+sU1+B+GUA6uVym/oVssM3loIxEErJKC
-	 PVeB3uQkIRfYqseIWkAKwt9wjvfR1zqo3uVhCfEM=
-Subject: FAILED: patch "[PATCH] io_uring/eventfd: ensure io_eventfd_signal() defers another" failed to apply to 6.1-stable tree
-To: axboe@kernel.dk,jannh@google.com,lizetao1@huawei.com,ptsm@linux.microsoft.com
+	b=hPwYtovU4NANIylcYpN7wIO1P4TENvTCbhBHY0nkIBgWwabhVQbVEtvuMo9EeN8aO
+	 ZAitKcSFMDqVkX2EigPPN3OD9NC6RZkeBxQsft1lc40HR8oxNJc16OOqaQ/v+nOpoY
+	 s2vLOBKrp7sVL9oeNRQf+/GoB60BkNKUxehrXOCs=
+Subject: FAILED: patch "[PATCH] io_uring: don't touch sqd->thread off tw add" failed to apply to 6.12-stable tree
+To: asml.silence@gmail.com,axboe@kernel.dk,lizetao1@huawei.com,minhquangbui99@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 12 Jan 2025 10:16:46 +0100
-Message-ID: <2025011246-appealing-angler-4f22@gregkh>
+Date: Sun, 12 Jan 2025 10:36:56 +0100
+Message-ID: <2025011256-extinct-expanse-d059@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x c9a40292a44e78f71258b8522655bffaf5753bdb
+git cherry-pick -x bd2703b42decebdcddf76e277ba76b4c4a142d73
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025011246-appealing-angler-4f22@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025011256-extinct-expanse-d059@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,60 +77,44 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c9a40292a44e78f71258b8522655bffaf5753bdb Mon Sep 17 00:00:00 2001
-From: Jens Axboe <axboe@kernel.dk>
-Date: Wed, 8 Jan 2025 10:28:05 -0700
-Subject: [PATCH] io_uring/eventfd: ensure io_eventfd_signal() defers another
- RCU period
+From bd2703b42decebdcddf76e277ba76b4c4a142d73 Mon Sep 17 00:00:00 2001
+From: Pavel Begunkov <asml.silence@gmail.com>
+Date: Fri, 10 Jan 2025 20:36:45 +0000
+Subject: [PATCH] io_uring: don't touch sqd->thread off tw add
 
-io_eventfd_do_signal() is invoked from an RCU callback, but when
-dropping the reference to the io_ev_fd, it calls io_eventfd_free()
-directly if the refcount drops to zero. This isn't correct, as any
-potential freeing of the io_ev_fd should be deferred another RCU grace
-period.
+With IORING_SETUP_SQPOLL all requests are created by the SQPOLL task,
+which means that req->task should always match sqd->thread. Since
+accesses to sqd->thread should be separately protected, use req->task
+in io_req_normal_work_add() instead.
 
-Just call io_eventfd_put() rather than open-code the dec-and-test and
-free, which will correctly defer it another RCU grace period.
+Note, in the eyes of io_req_normal_work_add(), the SQPOLL task struct
+is always pinned and alive, and sqd->thread can either be the task or
+NULL. It's only problematic if the compiler decides to reload the value
+after the null check, which is not so likely.
 
-Fixes: 21a091b970cd ("io_uring: signal registered eventfd to process deferred task work")
-Reported-by: Jann Horn <jannh@google.com>
 Cc: stable@vger.kernel.org
-Tested-by: Li Zetao <lizetao1@huawei.com>
-Reviewed-by: Li Zetao<lizetao1@huawei.com>
-Reviewed-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+Cc: Bui Quang Minh <minhquangbui99@gmail.com>
+Reported-by: lizetao <lizetao1@huawei.com>
+Fixes: 78f9b61bd8e54 ("io_uring: wake SQPOLL task when task_work is added to an empty queue")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/1cbbe72cf32c45a8fee96026463024cd8564a7d7.1736541357.git.asml.silence@gmail.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 
-diff --git a/io_uring/eventfd.c b/io_uring/eventfd.c
-index fab936d31ba8..100d5da94cb9 100644
---- a/io_uring/eventfd.c
-+++ b/io_uring/eventfd.c
-@@ -33,20 +33,18 @@ static void io_eventfd_free(struct rcu_head *rcu)
- 	kfree(ev_fd);
- }
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index d3403c8216db..5eb119002099 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1226,10 +1226,7 @@ static void io_req_normal_work_add(struct io_kiocb *req)
  
-+static void io_eventfd_put(struct io_ev_fd *ev_fd)
-+{
-+	if (refcount_dec_and_test(&ev_fd->refs))
-+		call_rcu(&ev_fd->rcu, io_eventfd_free);
-+}
-+
- static void io_eventfd_do_signal(struct rcu_head *rcu)
- {
- 	struct io_ev_fd *ev_fd = container_of(rcu, struct io_ev_fd, rcu);
- 
- 	eventfd_signal_mask(ev_fd->cq_ev_fd, EPOLL_URING_WAKE);
+ 	/* SQPOLL doesn't need the task_work added, it'll run it itself */
+ 	if (ctx->flags & IORING_SETUP_SQPOLL) {
+-		struct io_sq_data *sqd = ctx->sq_data;
 -
--	if (refcount_dec_and_test(&ev_fd->refs))
--		io_eventfd_free(rcu);
--}
--
--static void io_eventfd_put(struct io_ev_fd *ev_fd)
--{
--	if (refcount_dec_and_test(&ev_fd->refs))
--		call_rcu(&ev_fd->rcu, io_eventfd_free);
-+	io_eventfd_put(ev_fd);
- }
+-		if (sqd->thread)
+-			__set_notify_signal(sqd->thread);
++		__set_notify_signal(tctx->task);
+ 		return;
+ 	}
  
- static void io_eventfd_release(struct io_ev_fd *ev_fd, bool put_ref)
 
 
