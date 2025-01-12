@@ -1,166 +1,168 @@
-Return-Path: <stable+bounces-108339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2916DA0AA3F
-	for <lists+stable@lfdr.de>; Sun, 12 Jan 2025 15:55:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D82C1A0AB0C
+	for <lists+stable@lfdr.de>; Sun, 12 Jan 2025 17:50:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B28827A35CE
-	for <lists+stable@lfdr.de>; Sun, 12 Jan 2025 14:55:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFA9D1886B60
+	for <lists+stable@lfdr.de>; Sun, 12 Jan 2025 16:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A061B87DF;
-	Sun, 12 Jan 2025 14:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB621BD9D2;
+	Sun, 12 Jan 2025 16:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="sRib3u/v"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eUuMqpF8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DFF91B3948
-	for <stable@vger.kernel.org>; Sun, 12 Jan 2025 14:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8152D157469
+	for <stable@vger.kernel.org>; Sun, 12 Jan 2025 16:50:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736693731; cv=none; b=WLLnb3UM2W/+H9UpDChNef9IelkW7EdSo2X6gAAwmIic8vLffvhNq8qKOIvRIUgV5j7xJpp13VwvJKmy5YYCW87WAv/K22hl7Un8860so27aGng81loqekuRrd0W3WFTKBY4/U4iuGVevbO+HqvE2vEVZMTCq1ITuhfBQcAbviY=
+	t=1736700644; cv=none; b=puiC+eOQQ1J5bj0wS8anAnSK7BgVmE6ResH2WYTCPSVNhNSswbpuKcq0evvxNYVJ/+nsyMgW57BwEoItuiRwKEFxK37obR/gV7E54N5jL862eVsCm8T2KrcfGRh9DPcm8P9bpV/NaM+A2iMzQX5uKkC+ckSzldeCUwtobbhX8iM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736693731; c=relaxed/simple;
-	bh=wfHCAQZPTAC2s/EcSeV6bFPQnqHSz5C/aSKSVEP8cQw=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=PX6j4siL5d87bVj48yyZpP6RG8AY/I/bgPJ8kZjCwyT6x+nh8bHGHNRjF0itVCGiP3FKmwZG3k1W0b8t0C0s/GZUvTbdWQBRQhy2JaGvGfU8rkOEbojcufPUS/jQxqAm001fgdKD9bIJHT5dR2xCMjOcvdU/YGJQvO+wAMv8jLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=sRib3u/v; arc=none smtp.client-ip=209.85.166.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-il1-f169.google.com with SMTP id e9e14a558f8ab-3ce46520a29so21821475ab.1
-        for <stable@vger.kernel.org>; Sun, 12 Jan 2025 06:55:29 -0800 (PST)
+	s=arc-20240116; t=1736700644; c=relaxed/simple;
+	bh=STvtkXTGScRKDfoJ1sZKhWwhO4x4Ppifa2A0qPDM6V0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qmOOeSwGfzDTp8dMKRlx+HoZnZpD7PK5yzMVLO//5XGUSeMNwEfx7ew7/3LYYdSes29Cn2uiFecgLZRp6gAPQOOjdB2eZfIw5E1fHqkCMKCDvC0EIlV4NOvIsulhMG7HPQ1D0cyUCE2zReZjzYi4Ln7BLQwRgEwtP2TdIqYrIQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eUuMqpF8; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-aae81f4fdc4so703274366b.0
+        for <stable@vger.kernel.org>; Sun, 12 Jan 2025 08:50:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1736693728; x=1737298528; darn=vger.kernel.org;
-        h=in-reply-to:from:content-language:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G4fpuqAkLEOiFYreYOKeMcvJzuwRogY8kut/I4DlD5o=;
-        b=sRib3u/vV0osc0xcFCk//Rk1LLlgy2tK7bR59z5P9epbZsV05rWmGc6p5jUQFg6I2n
-         gIzUQAN8AxG89mKGY0Pr6HL0tKzaZhC+s23R5aZaPEQzVQbMFt77Xj4aWDuLmyjMPPa4
-         FfRI0oumQgovty9Ls5c1yxp2OWxM9bp5uG9+J3J53RUcr79l3TddOJWdTaWD6vE3tmPS
-         cNdHbSHqa2JNg9k9W8mH9Up/auk7mTY6XCFNEq/SULYmaceVwAhP4yPpO3Bvcjwm/j+Y
-         qknvxkfq/HS4cYXrKnutvnZ+8GxGfLAV8WszxYvJG2JBlc3pXKgiXu0g9H/49PS/1FJ5
-         3v8A==
+        d=gmail.com; s=20230601; t=1736700641; x=1737305441; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EH85sSFD0I8RKRLO5GXpyJOdD/Hu7Ugk+HsNoMJDA/c=;
+        b=eUuMqpF8ZtjTDMekCMv8BI+QsybH/MQYhBRGsAn9fuWnYN90F2pq0TMhtf1Os0PF8C
+         gqr6EpDqRT3ZxQxYIqQtS/xpnbz05KI6TWx0lau00ZkoFBdF5XLFzrIrMUmyyJW+VFhw
+         uIM0ZNoqi+Ngms3LYYG6HjKc/By2TZoedgIiOyBnanqkrQWgFwE8/+CXCxumGhXwAPeh
+         qOAQHb6EZ6Z7z5Z4XvL5aF81Zo72Hj1ASZtH+v8RlyG3RW3XBSPcBkDp9Sor94D1I8fh
+         SSWeR+7WHlorv3oDH0CW0NLYz3pAvN4R+N1U2EQ4AjR5mNDe9HHng0eyQeNCHzlMf5N2
+         e3Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736693728; x=1737298528;
-        h=in-reply-to:from:content-language:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=G4fpuqAkLEOiFYreYOKeMcvJzuwRogY8kut/I4DlD5o=;
-        b=bZWbfzAnqE3ZPLe+zJmogrRdXuKVhoZgN8OMEWLX2cfWUX3BecKwelXV7BR44F1uF8
-         JQmeEiu6vBnmzYgEWJ5lQaex5xspqsb9PZBW2cjOdvbGyMVg1oWap90csqdQvvD9VyOU
-         m9wMn/IK1rSMo/ioFrE+W+zwKe+5OvaVYes7nFOX+ZsOPSwSaWcwbUZulOY44HxjfCNa
-         bTB2OmJQPgx+HuAibfaHK77dW/8z7Uthy6mc4GAiYBRBJnRo+RB7PQaGC5oteEFnKrVS
-         0BClGQh41DHB/cx0ONX9G0ZwbFw5786HDAZrm0hAOpf0IZfREXHq82Nm+TRVopuQhUCC
-         NLOw==
-X-Gm-Message-State: AOJu0YzpV5hzLz5rKfxMjG+bl6suG4CzauIJVgTtgj6P4B47I7JT9fzQ
-	Sn7omnRY+8gASQ/K8HGxURrNEoClMiUnuiPoKomLzzeNMe6SZTGf+aYNqXjP6RoI9aRlYU7magB
-	f
-X-Gm-Gg: ASbGnctmolbXShpxgnr3hFT85VE2FJG7B07oGQdKpSaAS89DVI51fYolBm9t4P615WZ
-	hSwzv447CbJ7R/drYE2Yhl0TMIUpOrHKgRfbf/NxkOT235aN9Mv0X/+8s9xZ9PsFYBdeKJlRfpr
-	aLfh1bnCvvQXy1Od1RvDs90xB1ujpGx32KmffMy7bZUV0+EkeW5ztRB6LimmgnyXWgcKsDoI9v2
-	6AR+YxEoO9ADnItk8MkDAPeHTXKeGTNRUww5jr5HWjrn+lJOL2bgQ==
-X-Google-Smtp-Source: AGHT+IGWMQkEiRol/YBDCVpnnUSvNM3AtSdMMHXZD3qnxQgvtFJuwUvrbSkwwTp+H2MJVIaIVRXgaw==
-X-Received: by 2002:a05:6e02:3d01:b0:3a7:d84c:f2b0 with SMTP id e9e14a558f8ab-3ce3a87d5d7mr159556555ab.8.1736693728503;
-        Sun, 12 Jan 2025 06:55:28 -0800 (PST)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4ea1b71782dsm2157364173.105.2025.01.12.06.55.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 12 Jan 2025 06:55:27 -0800 (PST)
-Content-Type: multipart/mixed; boundary="------------0DtWDkYy5v9D6OzykGHCRKLF"
-Message-ID: <aa85959b-2890-42c9-beb8-0e0109494d90@kernel.dk>
-Date: Sun, 12 Jan 2025 07:55:26 -0700
+        d=1e100.net; s=20230601; t=1736700641; x=1737305441;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EH85sSFD0I8RKRLO5GXpyJOdD/Hu7Ugk+HsNoMJDA/c=;
+        b=a5u584SmMokpfn+hn12qhmqsrwql3Mv9Kp3ehesad2Deoec5UcYPXsVgrhqrT+pNZq
+         ZkKkwJ4cQ2rUo+Ht7uR03ozVdyGe/bbP0/qBxhklIYd8TkjbAw2CC9esP4XgUpmMSuIg
+         xRwPMkc0oFIyUhQPnBLzBr/J3soa+ydmxb0e1uIgZTboun4g5vCGE0F0wM0uCZgEQIQN
+         8QLt12hQHmnxiBWBu7IwnJQKSj614x4Mt6oWWF2vFcMSv7a/SKWKcUksEfB5UfYMQrgd
+         3ZENr2P1D/1By/Ie+9H4aUVGlCY5kk8jGhMcjNDxKeTLfi8GuA6z1FaTF4+w0kfN5fJp
+         vb0g==
+X-Forwarded-Encrypted: i=1; AJvYcCVCQslbae4qrXCz8NPqrtorjxsDdW+pxblO17ZtgLUbRz2tosyHIaG0LEZtN98TJ3WgoyLmj9E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxu26/MNQg3+4dtZ1nIQU/nrO+VMWPSeKnf6dV9ijupLiC2t+tU
+	ZikmgrXq213PBC9B9UpO0j8ju8K5P2BlUqKQqWOK0ErRD4jvfOzi
+X-Gm-Gg: ASbGncuhWYbygXRi9A6S524MYA+5BQtEC8XYLPYa5rlBgc35amu6zIx2cWLdxqwXOGb
+	nykTD7OvALkFTblo0JmIzUbrwdsH/MAPVVZPw2Qz+hKwj0mwpbjDiaok0/ZujsfPRkkDsvYpw8m
+	VrbFGMLwO0Twiy0SvZdDnuVRAiKljt1n0LorxqzzZMmh4pFpt1ofa4wNb3jF7SY/FzJdZGaxyGz
+	uIRz7uM/euzd1/M60ODoYlB1y+revaKFgjl/v2fu/rS3fSKyayBDmuAYqld69hWLefm1VgkBV6e
+	+BUKYqH89Zqi89Yb
+X-Google-Smtp-Source: AGHT+IHuk6/ppT4TFtPfQBDCYDnfaFnjLJAXVAtkKCh3Doo+KQYjYQ582bYrlgJ5+zQgd6D+Yj0acQ==
+X-Received: by 2002:a17:907:96a7:b0:aa6:2c18:aaa2 with SMTP id a640c23a62f3a-ab2ab73e7dbmr1538812666b.27.1736700640508;
+        Sun, 12 Jan 2025 08:50:40 -0800 (PST)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c9562551sm389940466b.123.2025.01.12.08.50.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Jan 2025 08:50:39 -0800 (PST)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 2A531BE2EE7; Sun, 12 Jan 2025 17:50:39 +0100 (CET)
+Date: Sun, 12 Jan 2025 17:50:39 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: "Deucher, Alexander" <Alexander.Deucher@amd.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"sashal@kernel.org" <sashal@kernel.org>
+Subject: Re: [PATCH] drm/amdgpu: fix backport of commit 73dae652dcac
+Message-ID: <Z4Py3_xhFkoJ9ivC@eldamar.lan>
+References: <20241227073700.3102801-1-alexander.deucher@amd.com>
+ <2024122742-chili-unvarying-2e32@gregkh>
+ <BL1PR12MB5144159BC2B99D673908BB88F7142@BL1PR12MB5144.namprd12.prod.outlook.com>
+ <2025010334-deniable-hurled-4f0c@gregkh>
+ <BL1PR12MB51449ADCFBF2314431F8BCFDF7132@BL1PR12MB5144.namprd12.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] io_uring/eventfd: ensure
- io_eventfd_signal() defers another" failed to apply to 6.1-stable tree
-To: gregkh@linuxfoundation.org, jannh@google.com, lizetao1@huawei.com,
- ptsm@linux.microsoft.com
-Cc: stable@vger.kernel.org
-References: <2025011246-appealing-angler-4f22@gregkh>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <2025011246-appealing-angler-4f22@gregkh>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BL1PR12MB51449ADCFBF2314431F8BCFDF7132@BL1PR12MB5144.namprd12.prod.outlook.com>
 
-This is a multi-part message in MIME format.
---------------0DtWDkYy5v9D6OzykGHCRKLF
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Hi,
 
-On 1/12/25 2:16 AM, gregkh@linuxfoundation.org wrote:
+On Thu, Jan 09, 2025 at 06:21:19PM +0000, Deucher, Alexander wrote:
+> [AMD Official Use Only - AMD Internal Distribution Only]
 > 
-> The patch below does not apply to the 6.1-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+> > -----Original Message-----
+> > From: Greg KH <gregkh@linuxfoundation.org>
+> > Sent: Friday, January 3, 2025 9:41 AM
+> > To: Deucher, Alexander <Alexander.Deucher@amd.com>
+> > Cc: stable@vger.kernel.org; sashal@kernel.org
+> > Subject: Re: [PATCH] drm/amdgpu: fix backport of commit 73dae652dcac
+> >
+> > On Thu, Jan 02, 2025 at 06:08:38PM +0000, Deucher, Alexander wrote:
+> > > [Public]
+> > >
+> > > > -----Original Message-----
+> > > > From: Greg KH <gregkh@linuxfoundation.org>
+> > > > Sent: Friday, December 27, 2024 2:50 AM
+> > > > To: Deucher, Alexander <Alexander.Deucher@amd.com>
+> > > > Cc: stable@vger.kernel.org; sashal@kernel.org
+> > > > Subject: Re: [PATCH] drm/amdgpu: fix backport of commit 73dae652dcac
+> > > >
+> > > > On Fri, Dec 27, 2024 at 02:37:00AM -0500, Alex Deucher wrote:
+> > > > > Commit 73dae652dcac ("drm/amdgpu: rework resume handling for
+> > > > > display
+> > > > > (v2)") missed a small code change when it was backported resulting
+> > > > > in an automatic backlight control breakage.  Fix the backport.
+> > > > >
+> > > > > Note that this patch is not in Linus' tree as it is not required
+> > > > > there; the bug was introduced in the backport.
+> > > > >
+> > > > > Fixes: 99a02eab8251 ("drm/amdgpu: rework resume handling for
+> > > > > display
+> > > > > (v2)")
+> > > > > Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3853
+> > > > > Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> > > > > Cc: stable@vger.kernel.org # 6.11.x
+> > > >
+> > > > So the 6.12.y backport is ok?  What exact trees is this fix for?
+> > >
+> > > Everything older than 6.13 needs this fix.  The code changed between 6.12 and
+> > 6.13 which required a backport of the patch for 6.12 and older kernels.  All kernels
+> > older than 6.13 need this fix.  The original backported patch targeted 6.11 and newer
+> > stable kernels.  6.11 is EOL so probably just 6.12 unless someone pulled the patch
+> > back to some older kernel as well.
+> >
+> > The commit has been backported to the following kernels:
+> >       5.15.174 6.1.120 6.6.66 6.12.5
+> > so can you also send proper fixes for 5.15.y, 6.1.y and 6.6.y as well?
 > 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x c9a40292a44e78f71258b8522655bffaf5753bdb
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025011246-appealing-angler-4f22@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+> Ok.  The patch is only needed for 6.11 and newer which is why I
+> specified 6.11 on the original and the fixup.  Kernels older than
+> 6.11 didn't support DCN 4.0.1 so it's not applicable.  Can we revert
+> the original patch (73dae652dcac ("drm/amdgpu: rework resume
+> handling for display")) from 5.15, 6.1, and 6.6?
 
-And here's the 6.1 version.
+That 73dae652dcac ("drm/amdgpu: rework resume handling for display")
+as applied as well to the 6.1.y series and needs to be reverted again,
+can this be the reason for the regression report in Debian as
+https://bugs.debian.org/1092869 ? (caused after updating 6.1.119 to
+6.1.123).
 
--- 
-Jens Axboe
+(I have asked the reporter for more information, once I have this
+information I can provide a proper report back).
 
---------------0DtWDkYy5v9D6OzykGHCRKLF
-Content-Type: text/x-patch; charset=UTF-8;
- name="0001-io_uring-eventfd-ensure-io_eventfd_signal-defers-ano.patch"
-Content-Disposition: attachment;
- filename*0="0001-io_uring-eventfd-ensure-io_eventfd_signal-defers-ano.pa";
- filename*1="tch"
-Content-Transfer-Encoding: base64
-
-RnJvbSBhODEyYTY1MzE1OTVkN2UwNDEyYzRmMDVlZGU2MDMyZjA0Yzg2ZWY3IE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
-dGU6IFdlZCwgOCBKYW4gMjAyNSAxMToxNjoxMyAtMDcwMApTdWJqZWN0OiBbUEFUQ0hdIGlv
-X3VyaW5nL2V2ZW50ZmQ6IGVuc3VyZSBpb19ldmVudGZkX3NpZ25hbCgpIGRlZmVycyBhbm90
-aGVyCiBSQ1UgcGVyaW9kCgpDb21taXQgYzlhNDAyOTJhNDRlNzhmNzEyNThiODUyMjY1NWJm
-ZmFmNTc1M2JkYiB1cHN0cmVhbS4KCmlvX2V2ZW50ZmRfZG9fc2lnbmFsKCkgaXMgaW52b2tl
-ZCBmcm9tIGFuIFJDVSBjYWxsYmFjaywgYnV0IHdoZW4KZHJvcHBpbmcgdGhlIHJlZmVyZW5j
-ZSB0byB0aGUgaW9fZXZfZmQsIGl0IGNhbGxzIGlvX2V2ZW50ZmRfZnJlZSgpCmRpcmVjdGx5
-IGlmIHRoZSByZWZjb3VudCBkcm9wcyB0byB6ZXJvLiBUaGlzIGlzbid0IGNvcnJlY3QsIGFz
-IGFueQpwb3RlbnRpYWwgZnJlZWluZyBvZiB0aGUgaW9fZXZfZmQgc2hvdWxkIGJlIGRlZmVy
-cmVkIGFub3RoZXIgUkNVIGdyYWNlCnBlcmlvZC4KCkp1c3QgY2FsbCBpb19ldmVudGZkX3B1
-dCgpIHJhdGhlciB0aGFuIG9wZW4tY29kZSB0aGUgZGVjLWFuZC10ZXN0IGFuZApmcmVlLCB3
-aGljaCB3aWxsIGNvcnJlY3RseSBkZWZlciBpdCBhbm90aGVyIFJDVSBncmFjZSBwZXJpb2Qu
-CgpGaXhlczogMjFhMDkxYjk3MGNkICgiaW9fdXJpbmc6IHNpZ25hbCByZWdpc3RlcmVkIGV2
-ZW50ZmQgdG8gcHJvY2VzcyBkZWZlcnJlZCB0YXNrIHdvcmsiKQpSZXBvcnRlZC1ieTogSmFu
-biBIb3JuIDxqYW5uaEBnb29nbGUuY29tPgpDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZwpT
-aWduZWQtb2ZmLWJ5OiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+Ci0tLQogaW9fdXJp
-bmcvaW9fdXJpbmcuYyB8IDEzICsrKysrKysrKy0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA5IGlu
-c2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvaW9fdXJpbmcvaW9f
-dXJpbmcuYyBiL2lvX3VyaW5nL2lvX3VyaW5nLmMKaW5kZXggOWI1OGJhNDYxNmQ0Li40ODA3
-NTJmYzNlYjYgMTAwNjQ0Ci0tLSBhL2lvX3VyaW5nL2lvX3VyaW5nLmMKKysrIGIvaW9fdXJp
-bmcvaW9fdXJpbmcuYwpAQCAtNDc5LDYgKzQ3OSwxMyBAQCBzdGF0aWMgX19jb2xkIHZvaWQg
-aW9fcXVldWVfZGVmZXJyZWQoc3RydWN0IGlvX3JpbmdfY3R4ICpjdHgpCiAJfQogfQogCitz
-dGF0aWMgdm9pZCBpb19ldmVudGZkX2ZyZWUoc3RydWN0IHJjdV9oZWFkICpyY3UpCit7CisJ
-c3RydWN0IGlvX2V2X2ZkICpldl9mZCA9IGNvbnRhaW5lcl9vZihyY3UsIHN0cnVjdCBpb19l
-dl9mZCwgcmN1KTsKKworCWV2ZW50ZmRfY3R4X3B1dChldl9mZC0+Y3FfZXZfZmQpOworCWtm
-cmVlKGV2X2ZkKTsKK30KIAogc3RhdGljIHZvaWQgaW9fZXZlbnRmZF9vcHMoc3RydWN0IHJj
-dV9oZWFkICpyY3UpCiB7CkBAIC00OTIsMTAgKzQ5OSw4IEBAIHN0YXRpYyB2b2lkIGlvX2V2
-ZW50ZmRfb3BzKHN0cnVjdCByY3VfaGVhZCAqcmN1KQogCSAqIG9yZGVyaW5nIGluIGEgcmFj
-ZSBidXQgaWYgcmVmZXJlbmNlcyBhcmUgMCB3ZSBrbm93IHdlIGhhdmUgdG8gZnJlZQogCSAq
-IGl0IHJlZ2FyZGxlc3MuCiAJICovCi0JaWYgKGF0b21pY19kZWNfYW5kX3Rlc3QoJmV2X2Zk
-LT5yZWZzKSkgewotCQlldmVudGZkX2N0eF9wdXQoZXZfZmQtPmNxX2V2X2ZkKTsKLQkJa2Zy
-ZWUoZXZfZmQpOwotCX0KKwlpZiAoYXRvbWljX2RlY19hbmRfdGVzdCgmZXZfZmQtPnJlZnMp
-KQorCQljYWxsX3JjdSgmZXZfZmQtPnJjdSwgaW9fZXZlbnRmZF9mcmVlKTsKIH0KIAogc3Rh
-dGljIHZvaWQgaW9fZXZlbnRmZF9zaWduYWwoc3RydWN0IGlvX3JpbmdfY3R4ICpjdHgpCi0t
-IAoyLjQ3LjEKCg==
-
---------------0DtWDkYy5v9D6OzykGHCRKLF--
+Regards,
+Salvatore
 
