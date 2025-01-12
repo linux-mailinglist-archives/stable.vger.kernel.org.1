@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-108302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E7FA0A6B3
-	for <lists+stable@lfdr.de>; Sun, 12 Jan 2025 01:01:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2466A0A6B4
+	for <lists+stable@lfdr.de>; Sun, 12 Jan 2025 01:01:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BDCB168932
-	for <lists+stable@lfdr.de>; Sun, 12 Jan 2025 00:01:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABE3A1689F2
+	for <lists+stable@lfdr.de>; Sun, 12 Jan 2025 00:01:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BAD6A41;
-	Sun, 12 Jan 2025 00:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34C628E8;
+	Sun, 12 Jan 2025 00:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CBJv4aO2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RZDP7KCn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460654431
-	for <stable@vger.kernel.org>; Sun, 12 Jan 2025 00:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712F3610B
+	for <stable@vger.kernel.org>; Sun, 12 Jan 2025 00:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736640089; cv=none; b=m5UwFZcq5UnhSb5+FxOxLTVge0AWWPR4MP44m+WvSiQ6m61nBjR9zqXACPra7c2BsXz19jfMnFuaHtvfzdohAcoeur2FUT45Mf4GYHNh/NgOTCFb3FjtB1R2V32fA3kzmT0mXC6PMQKnYJOc8qia1UfbEuSuTtLqhcAOsGhFlUQ=
+	t=1736640092; cv=none; b=k0ZS5VrgKVHANo9vWdDCALQhdOHn+y2KAazaszVXrMBRgZNm7rulpg6+lbUVecsttVmJvEuM9EaBfuwyKidi0A+qy77ZgRGyXy5J+IO0fATRjAXFoIzYhcUlrYGckMZiwuidD8zAy1+Ao7SputnrS71bpZ+PCOQP+0hj88/Ac/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736640089; c=relaxed/simple;
-	bh=8ZcZSzArI1XEg8rG2xoU+Z7IY1/Dt9+21sniwBstlSQ=;
+	s=arc-20240116; t=1736640092; c=relaxed/simple;
+	bh=RzPsLl7tkpnztHo38z9LFz0mbTITR6o9Eboa+XlRJNQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Kwo6vGoUzTScWIj/SJ5YCrwTXkxUgq8XCltScPCN/wB0FdCgCwM+q6oGbS4o7Kk/dRH65hMhJMWtMURqkxIz82xfaVgboKF3q8H1mru6egleNRlMRT5FPsKg+/pdHELtMqlbQX+30CJ9PdQjWL43xGOrakfFvtr5K46k3KKL/lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBJv4aO2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA73C4CED2;
-	Sun, 12 Jan 2025 00:01:28 +0000 (UTC)
+	 MIME-Version; b=mbsjodRiQsYuPgY7aVXkYGuaBIVqHU3QBeCKX8khtNylxRdqgFAuxA2QUi9eo3ZAUbjhmBiEIetdEtfBrdVdhtR1fV0/vGGphI+DM0gbbLESvLZ9Zd3i1vlXujkQtRghGkp6Q3KYiRWO08+mqiff9WfkiGlBI04xgVbEIWUn0bM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RZDP7KCn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756BAC4CED2;
+	Sun, 12 Jan 2025 00:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736640088;
-	bh=8ZcZSzArI1XEg8rG2xoU+Z7IY1/Dt9+21sniwBstlSQ=;
+	s=k20201202; t=1736640091;
+	bh=RzPsLl7tkpnztHo38z9LFz0mbTITR6o9Eboa+XlRJNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CBJv4aO2aEUJi8l4R105dG0aPEXQ4qXRj9Y6EbLMvApYvY2dqvkR7qZItMIcIxzgG
-	 4a3ttCvGCnMZOL0tkgZ/uKM1kH9UlwrVDp18nWpfKJvj4hVhSnvAU6+e0NDiTNFlTg
-	 N3eUbHZ/Q/Q8E6zt4RyxwyjNYh9nnlG1Cyc5H5ugTeoS+FbjNweBUruoBKZgaQwBGa
-	 eUcrBfhP7dohykdF+W2AmTCX8VNQ6Rlen2Ts3bSah++2V1ly4N8cN2wYstr0XP9G5b
-	 eOqF+EykOVtq6EbM0+c+XvfWzLLCHe1dfNZLCcnoWVKu052xdieAGq+dSF7u7NfDqX
-	 o4j/trWMFpk4w==
+	b=RZDP7KCnoUzsr/9l8vBzVZk4joH3EycSfADSzdTTnZL/vj7wpKVLnO/NJsRdMxMQv
+	 tIdgCLYqwC4OLZpWkTYxji5tXsln7epbmqKuItkE3qHq8IoiVqTYcHaLhkiS33fbS0
+	 D+agd+WLOfrEHr5h9XzDOjoiPWu8uhkVyfFV3EBkXjqxNq+VHQF7Y9padgr75qyo/j
+	 DCkm20kFizIgy7ok0QgaWtshE3MZ2qe5Mhgs9t5J6W6JSPw7OAAqEqEWUjlubPpArm
+	 +Pq29egeZKxRMR0+8FS8qUOjnsEvq1K/vcJSOUAVbBalRu628YeKUCDBOLwnOrzzKZ
+	 w0QsVScNaLJXw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Milan Broz <gmazyland@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y] dm-verity FEC: Fix RS FEC repair for roots unaligned to block size (take 2)
-Date: Sat, 11 Jan 2025 19:01:26 -0500
-Message-Id: <20250111182528-f23ff245ec71178c@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y] dm-verity FEC: Fix RS FEC repair for roots unaligned to block size (take 2)
+Date: Sat, 11 Jan 2025 19:01:29 -0500
+Message-Id: <20250111183417-38a97a75275ca59a@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250111224554.368020-1-gmazyland@gmail.com>
+In-Reply-To:  <20250111224833.368181-1-gmazyland@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,10 +69,11 @@ Found matching upstream commit: 6df90c02bae468a3a6110bafbc659884d0c4966c
 Status in newer kernel trees:
 6.12.y | Present (different SHA1: 16c9c0afd88d)
 6.6.y | Not found
+6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  6df90c02bae4 ! 1:  c91919dd6e7e dm-verity FEC: Fix RS FEC repair for roots unaligned to block size (take 2)
+1:  6df90c02bae4 ! 1:  256dffb95a93 dm-verity FEC: Fix RS FEC repair for roots unaligned to block size (take 2)
     @@ Commit message
          Fixes: 8ca7cab82bda ("dm verity fec: fix misaligned RS roots IO")
          Cc: stable@vger.kernel.org
@@ -152,5 +153,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
