@@ -1,103 +1,97 @@
-Return-Path: <stable+bounces-108394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44381A0B45F
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 11:19:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B8FBA0B464
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 11:19:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CC1F1620DB
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 10:19:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A8483A2218
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 10:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF64B21ADB5;
-	Mon, 13 Jan 2025 10:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA31621ADB2;
+	Mon, 13 Jan 2025 10:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="iNSZItZ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXukRBjn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528EC1FDA69;
-	Mon, 13 Jan 2025 10:19:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B47521ADAA;
+	Mon, 13 Jan 2025 10:19:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736763565; cv=none; b=Gb0ZmffZb/t96il8rB5lx1Ljw73ZbOldq4ph3RmEXBUjSEAAxePDCkYOakzEbWzDVup2OXUH80VWVGp6Kwey/wtzQSbv2Y2o0d1CBOF2DjcoyheLW2oa9o3L3CXFcMvUuFMzOfytFbKHb9JIBmrS/TaQisgXKKAhU+EyTiybYVM=
+	t=1736763571; cv=none; b=bpQ17GhlddxjyPJXB4PkPqtzu4hkbgAUzl3acmxDFDGe5bu9Ndj0Bc3Y/Fm8G5xQOmB/gQYd/ZfDhnO9HO2aoIkuE5B1Jg/xdwUNEIMzgZYFn9kqIGbh4drXt8eeMsURg9tAi/Btqj1TZVlCrEabSZzCDqcvimZG0m5PcnYxKgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736763565; c=relaxed/simple;
-	bh=Atf8vMRZ9EIMzjhuE4SCf4QiTTMAuk7esCjrBpXl310=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eBvLKYxDHITEZJ0pAhl+t37SNuC1Cu6VwoQ9he55WSalmpWBE3wqzF1jyMhyUed0AbOB48zXmYpMpgKXVI7/KcLoPP+i8nZRXwG8+U70qTTw1UExMfYl+vadbXxnzKuUkjurMpDiak4jyhcrP/Cc9Ms/80REX11lYwxzGXW7jlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=iNSZItZ8; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from ldvnode.intra.ispras.ru (unknown [10.10.2.153])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 5E91E40769AC;
-	Mon, 13 Jan 2025 10:19:21 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 5E91E40769AC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1736763561;
-	bh=AtvRmghQBumH5Uo/aCVKY22UwzEZ3zBckU0U0TF6LD0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=iNSZItZ8utqaElptShFKvDnVQ74DEjt1cPA8qB5Z3tY3Ux+1kWIZn5Lfi27CRHxTt
-	 sE+39s4qOHlnu6wqo5PGfcdwud/xznIeXfgrQ1SVZU/WCm0v7S9EDZmiGRtjFHTUZt
-	 OODC28/pmUTSFjfvCwQ9Rd5mwxCm2kuAb7MECiAA=
-From: Vitalii Mordan <mordan@ispras.ru>
-To: Jacopo Mondi <jacopo@jmondi.org>
-Cc: Vitalii Mordan <mordan@ispras.ru>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Kuninori Morimoto <morimoto.kuninori@renesas.com>,
-	Guennadi Liakhovetski <g.liakhovetski@gmx.de>,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	Vadim Mutilin <mutilin@ispras.ru>,
-	stable@vger.kernel.org
-Subject: [PATCH] media: mt9t112: fix error handling in mt9t112_camera_probe
-Date: Mon, 13 Jan 2025 13:19:14 +0300
-Message-Id: <20250113101914.2441210-1-mordan@ispras.ru>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1736763571; c=relaxed/simple;
+	bh=t+WuP34zBZKnJMn7RSGmUlRkwlLe6tJCkZEnKRjHjY8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GvN/UaTbBhxWSWvG44+MlEBGBbxBJk7aAYm0zu/CfZgGEXLP8Z+0jshvOFlTsQW7T87r/VwMZ4I0h4dx8TpChcj6Vuifn6Qw3g19+1Y5cCLHw1aGHIJR2q4ccB34QnDNRwWlJgSlyRnLeI74FjLq9OPjQXJHGSS+XwgmCvHJY34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXukRBjn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FE4C4CED6;
+	Mon, 13 Jan 2025 10:19:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1736763571;
+	bh=t+WuP34zBZKnJMn7RSGmUlRkwlLe6tJCkZEnKRjHjY8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MXukRBjns7ns7CWpIRSVKEF6UYD5eqND99zqLpVss02CsnRb4tXgc+1b1Mhu5zY2g
+	 pMsdwUmCMtvFO0Pen/nD4HSVUDnctRIrQqJaUWbHQ3W3rtBLywo8gbs88v2PUOAZ60
+	 R4ykVGEVfuqTE+CWn9q5Y+kF73fpMrzQOOONGaDk=
+Date: Mon, 13 Jan 2025 11:19:28 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Arulpandiyan Vadivel <arulpandiyan.vadivel@siemens.com>
+Cc: linux-security-module@vger.kernel.org, linux-modules@vger.kernel.org,
+	stable@vger.kernel.org, cedric.hombourger@siemens.com,
+	srikanth.krishnakar@siemens.com
+Subject: Re: [PATCH] loadpin: remove MODULE_COMPRESS_NONE as it is no longer
+ supported
+Message-ID: <2025011322-climatic-rotting-5b03@gregkh>
+References: <20250113093115.72619-1-arulpandiyan.vadivel@siemens.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250113093115.72619-1-arulpandiyan.vadivel@siemens.com>
 
-The macro mt9t112_reg_read returns from mt9t112_camera_probe() in case of
-an error. However, a call to the shutdown function mt9t112_s_power() is
-required at this point. Failure to execute the shutdown function will
-result in the priv->clk not being properly disabled.
+On Mon, Jan 13, 2025 at 03:01:15PM +0530, Arulpandiyan Vadivel wrote:
+> Commit c7ff693fa2094ba0a9d0a20feb4ab1658eff9c33 ("module: Split
+> modules_install compression and in-kernel decompression") removed the
+> MODULE_COMPRESS_NONE, but left it loadpin's Kconfig, and removing it
+> 
+> Signed-off-by: Arulpandiyan Vadivel <arulpandiyan.vadivel@siemens.com>
+> ---
+>  security/loadpin/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/security/loadpin/Kconfig b/security/loadpin/Kconfig
+> index 848f8b4a60190..94348e2831db9 100644
+> --- a/security/loadpin/Kconfig
+> +++ b/security/loadpin/Kconfig
+> @@ -16,7 +16,7 @@ config SECURITY_LOADPIN_ENFORCE
+>  	depends on SECURITY_LOADPIN
+>  	# Module compression breaks LoadPin unless modules are decompressed in
+>  	# the kernel.
+> -	depends on !MODULES || (MODULE_COMPRESS_NONE || MODULE_DECOMPRESS)
+> +	depends on !MODULES || MODULE_DECOMPRESS
+>  	help
+>  	  If selected, LoadPin will enforce pinning at boot. If not
+>  	  selected, it can be enabled at boot with the kernel parameter
+> -- 
+> 2.39.5
+> 
+> 
 
-Found by Linux Verification Center (linuxtesting.org) with Klever.
+<formletter>
 
-Fixes: 858424b998ae ("V4L/DVB (13670): soc-camera: Add mt9t112 camera driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
----
- drivers/media/i2c/mt9t112.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
 
-diff --git a/drivers/media/i2c/mt9t112.c b/drivers/media/i2c/mt9t112.c
-index 878dff9b7577..82e2c42f4c7b 100644
---- a/drivers/media/i2c/mt9t112.c
-+++ b/drivers/media/i2c/mt9t112.c
-@@ -1034,7 +1034,11 @@ static int mt9t112_camera_probe(struct i2c_client *client)
- 		return ret;
- 
- 	/* Check and show chip ID. */
--	mt9t112_reg_read(chipid, client, 0x0000);
-+	chipid = __mt9t112_reg_read(client, 0x0000);
-+	if (chipid < 0) {
-+		ret = chipid;
-+		goto done;
-+	}
- 
- 	switch (chipid) {
- 	case 0x2680:
--- 
-2.25.1
-
+</formletter>
 
