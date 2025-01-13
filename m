@@ -1,154 +1,118 @@
-Return-Path: <stable+bounces-108392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94DCBA0B441
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 11:13:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03CE7A0B457
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 11:18:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A483F1888953
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 10:13:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25291161658
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 10:18:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3469821ADA5;
-	Mon, 13 Jan 2025 10:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9F521ADB2;
+	Mon, 13 Jan 2025 10:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="ja5p8TTx"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="Q9H2CGzi"
 X-Original-To: stable@vger.kernel.org
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BE8235C07;
-	Mon, 13 Jan 2025 10:13:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E922235C14;
+	Mon, 13 Jan 2025 10:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736763208; cv=none; b=GS+qstBP/T2w2GuwF25eVQuXmLyGGj5IqI5p1SjrxJ/hRTvQoPOm+wSOzDiam+CPOzrzEvae8brlq32OoWgWeXYbKMbmr9GniP4H4hAa+p/NNmF1VAreOz9j88qlohGsxmIaX1fc2IwesznwHakFSDSbxM0VwDkgj1fhafFoXXI=
+	t=1736763492; cv=none; b=k92RLBbDEPTxNypqfRnIj3pllDopzjjJE91A/eZlBWChsV4ZmDOEeffFw//lROwDUQB8bQelTsDySI1HwuUe0cYA1xjVitosYrwuSuWgmSDCkQNWqezU3rSGF/giB2OfJb0okvG6afaFk7kuJZLxrh6EE/KePbm5MREGY8oEm7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736763208; c=relaxed/simple;
-	bh=AbEypxldcB557r7ML3RWblxFpClAAQjKh+mk6I/n4hI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wlg15qLr+UOUOqCIm8CG13U/8Jaag9WN5yqCIk4WbpxkgYt3hcwXnd0nH88mya5YJ0rwPZkkJPRjv6hMZb1NHj0mVfX+aZWm+MoKjjECR+tzlO++Cmc3CSSeQUejxJYG9B4Dzr9DtCMdkFMo+XHlzaLzB3t/qvQ0Uo23/9dYYqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=ja5p8TTx; arc=none smtp.client-ip=185.226.149.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1tXHRa-00DhCO-Tc; Mon, 13 Jan 2025 11:13:14 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
-	bh=XmtGPnPvH6It0GR990T2qwUAKTVPIjKO4lymK4SpZf0=; b=ja5p8TTx11VmfSU8AkwM9xXOmC
-	R0HlPnuhaO1aaA7LAjGwUBgO0aROIcDCW4554r3UreeZMe+JNAeN6PwYZdoPIeZ/a9Ltr0v6pqZk1
-	pfgzT/3Cx6JtLcVuSP1PyMhcWVrhxendX5WNGukCBli1xObGZmO3AYDtBF4RaWeQH0hyrsaoDmXM5
-	ctWBMBsU6CeUXHU/QRGCyegPn52elUhgWOvbCK3wwso/sAASLSTVO/V6u2dsF0xAxNy4nqza65VKJ
-	o6G7pBxsDYS7UQt2L858VXvhHpMHcEgoILEFvv0/wl/CqRDS2y5sJxMQgal2aQkRXYRIjmhDq40nM
-	mI39Dq5Q==;
-Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1tXHRZ-00030N-L5; Mon, 13 Jan 2025 11:13:13 +0100
-Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1tXHRG-00DToB-7D; Mon, 13 Jan 2025 11:12:54 +0100
-Message-ID: <cccb1a4f-5495-4db1-801e-eca211b757c3@rbox.co>
-Date: Mon, 13 Jan 2025 11:12:52 +0100
+	s=arc-20240116; t=1736763492; c=relaxed/simple;
+	bh=iaFHLtgKkr5eLw+guyEk91BCvn615X23qDyv53l9Lj8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gac7RUWjOcbCTfQSqr9nTQpP1yYF9LWJMgPQIccS9lBVbfR9NcmyYd7DwLH2zEJa5Yj6t7IWcTcXwEH8YTcBEDgnsm4+ianezttFV09urjS2LPM5vn65WR4Wmot+NCteu8vQmRt7rM+J68Fk3X62Y08tyX2BaQ0aZD6NaYYE9y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=Q9H2CGzi; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from ldvnode.intra.ispras.ru (unknown [10.10.2.153])
+	by mail.ispras.ru (Postfix) with ESMTPSA id E8ED540769AC;
+	Mon, 13 Jan 2025 10:17:58 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru E8ED540769AC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1736763479;
+	bh=U51A4gH9eY3j+Jj5Eqv3cP9otx60XstkbxWOCnsHWQ4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Q9H2CGziJz5TECuRr9bdRo6MY5vyXwHbTbspeGZ3z8S2iCSCvRj4uXxGKsvDG50vt
+	 l2xclqR5i61eReXU24sHivwJrgGuOvaDfBqMAWYBZFNZQqYxnKF09l7rP8CLY2VGiv
+	 qLzfLHq5okYp4nLCW3EYgURNXAOVntOwJE9TIeNo=
+From: Vitalii Mordan <mordan@ispras.ru>
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Vitalii Mordan <mordan@ispras.ru>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Benoit Parrot <bparrot@ti.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Alexey Khoroshilov <khoroshilov@ispras.ru>,
+	Vadim Mutilin <mutilin@ispras.ru>,
+	stable@vger.kernel.org
+Subject: [PATCH] media: cdns-csi2rx: fix call balance for csi2rx->p_clk handling routines
+Date: Mon, 13 Jan 2025 13:17:49 +0300
+Message-Id: <20250113101749.2440878-1-mordan@ispras.ru>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 1/5] vsock/virtio: discard packets if the transport
- changes
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
- Luigi Leonardi <leonardi@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, Wongi Lee <qwerty@theori.io>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Eric Dumazet <edumazet@google.com>,
- kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Simon Horman <horms@kernel.org>, Hyunwoo Kim <v4bel@theori.io>,
- Jakub Kicinski <kuba@kernel.org>, virtualization@lists.linux.dev,
- Bobby Eshleman <bobby.eshleman@bytedance.com>, stable@vger.kernel.org
-References: <20250110083511.30419-1-sgarzare@redhat.com>
- <20250110083511.30419-2-sgarzare@redhat.com>
- <1aa83abf-6baa-4cf1-a108-66b677bcfd93@rbox.co>
- <nedvcylhjxrkmkvgugsku2lpdjgjpo5exoke4o6clxcxh64s3i@jkjnvngazr5v>
- <CAGxU2F7BoMNi-z=SHsmCV5+99=CxHo4dxFeJnJ5=q9X=CM3QMA@mail.gmail.com>
-Content-Language: pl-PL, en-GB
-From: Michal Luczaj <mhal@rbox.co>
-In-Reply-To: <CAGxU2F7BoMNi-z=SHsmCV5+99=CxHo4dxFeJnJ5=q9X=CM3QMA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 1/13/25 10:07, Stefano Garzarella wrote:
-> On Mon, 13 Jan 2025 at 09:57, Stefano Garzarella <sgarzare@redhat.com> wrote:
->> On Sun, Jan 12, 2025 at 11:42:30PM +0100, Michal Luczaj wrote:
-> 
-> [...]
-> 
->>>
->>> So, if I get this right:
->>> 1. vsock_create() (refcnt=1) calls vsock_insert_unbound() (refcnt=2)
->>> 2. transport->release() calls vsock_remove_bound() without checking if sk
->>>   was bound and moved to bound list (refcnt=1)
->>> 3. vsock_bind() assumes sk is in unbound list and before
->>>   __vsock_insert_bound(vsock_bound_sockets()) calls
->>>   __vsock_remove_bound() which does:
->>>      list_del_init(&vsk->bound_table); // nop
->>>      sock_put(&vsk->sk);               // refcnt=0
->>>
->>> The following fixes things for me. I'm just not certain that's the only
->>> place where transport destruction may lead to an unbound socket being
->>> removed from the unbound list.
->>>
->>> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->>> index 7f7de6d88096..0fe807c8c052 100644
->>> --- a/net/vmw_vsock/virtio_transport_common.c
->>> +++ b/net/vmw_vsock/virtio_transport_common.c
->>> @@ -1303,7 +1303,8 @@ void virtio_transport_release(struct vsock_sock *vsk)
->>>
->>>       if (remove_sock) {
->>>               sock_set_flag(sk, SOCK_DONE);
->>> -              virtio_transport_remove_sock(vsk);
->>> +              if (vsock_addr_bound(&vsk->local_addr))
->>> +                      virtio_transport_remove_sock(vsk);
->>
->> I don't get this fix, virtio_transport_remove_sock() calls
->>    vsock_remove_sock()
->>      vsock_remove_bound()
->>        if (__vsock_in_bound_table(vsk))
->>            __vsock_remove_bound(vsk);
->>
->>
->> So, should already avoid this issue, no?
-> 
-> I got it wrong, I see now what are you trying to do, but I don't think
-> we should skip virtio_transport_remove_sock() entirely, it also purge
-> the rx_queue.
+If the clock csi2rx->p_clk was not enabled in csi2rx_stop(), it should not
+be disabled in any path.
 
-Isn't rx_queue empty-by-definition in case of !__vsock_in_bound_table(vsk)?
+Conversely, if it was enabled in csi2rx_stop(), it must be disabled in all
+error paths to ensure proper cleanup.
 
->> Can the problem be in vsock_bind() ?
+Found by Linux Verification Center (linuxtesting.org) with Klever.
 
-Well, I wouldn't say so.
+Fixes: 1fc3b37f34f6 ("media: v4l: cadence: Add Cadence MIPI-CSI2 RX driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+---
+ drivers/media/platform/cadence/cdns-csi2rx.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
->> Is this issue pre-existing or introduced by this series?
-> 
-> I think this is pre-existing, can you confirm?
-
-Yup, I agree, pre-existing.
-
-> In that case, I'd not stop this series, and fix it in another patch/series.
-
-Yeah, sure thing.
-
-Thanks,
-Michal
+diff --git a/drivers/media/platform/cadence/cdns-csi2rx.c b/drivers/media/platform/cadence/cdns-csi2rx.c
+index 4d64df829e75..e7e8decf9a02 100644
+--- a/drivers/media/platform/cadence/cdns-csi2rx.c
++++ b/drivers/media/platform/cadence/cdns-csi2rx.c
+@@ -322,11 +322,14 @@ static int csi2rx_start(struct csi2rx_priv *csi2rx)
+ 
+ static void csi2rx_stop(struct csi2rx_priv *csi2rx)
+ {
++	int ret, ret_clk;
+ 	unsigned int i;
+ 	u32 val;
+-	int ret;
+ 
+-	clk_prepare_enable(csi2rx->p_clk);
++	ret_clk = clk_prepare_enable(csi2rx->p_clk);
++	if (ret_clk)
++		dev_warn(csi2rx->dev,
++			 "Couldn't prepare and enable P clock\n");
+ 	reset_control_assert(csi2rx->sys_rst);
+ 	clk_disable_unprepare(csi2rx->sys_clk);
+ 
+@@ -348,7 +351,8 @@ static void csi2rx_stop(struct csi2rx_priv *csi2rx)
+ 	}
+ 
+ 	reset_control_assert(csi2rx->p_rst);
+-	clk_disable_unprepare(csi2rx->p_clk);
++	if (!ret_clk)
++		clk_disable_unprepare(csi2rx->p_clk);
+ 
+ 	if (v4l2_subdev_call(csi2rx->source_subdev, video, s_stream, false))
+ 		dev_warn(csi2rx->dev, "Couldn't disable our subdev\n");
+-- 
+2.25.1
 
 
