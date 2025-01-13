@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-108475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E0A9A0BFF5
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:36:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0CEBA0BFF9
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:36:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACDC97A2D77
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:36:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41E007A30BA
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A87F01CEE8D;
-	Mon, 13 Jan 2025 18:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3521D14E2;
+	Mon, 13 Jan 2025 18:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d9imxn5O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i2lnj6Pw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624371CEACD;
-	Mon, 13 Jan 2025 18:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6E31CF5EE;
+	Mon, 13 Jan 2025 18:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793282; cv=none; b=QkvcB8H018N+/++jpe2FwQlG0fhe/jmmyssVzEqm5zq6sT8fp+mP7F0IbCA2lzR1Fa+s2khIAeWVqgxLnkYOnzJt8SnLYXhxL6cIeLmsis5P/12kp7JYGK06H0W1zn07H/XH2+yirQvu/whKS7t+0GTs98Zjk1umsm+rOQOCOds=
+	t=1736793284; cv=none; b=PjtjmIteCfiqZMGKn2PkpcuhKCdaB0TQWmNe97P/9aRzwkSrSWY0hYeBey11+Tx/bZueiQAZfGplWOIJI3fDPkKg+C0L+jbmRCnXJr23w476VnikJ4T7wtnKglceaHe1WQXCrxW/QxjRHuob+3V9zFuH44VXO2y3xYqHZxx7/+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793282; c=relaxed/simple;
-	bh=VjE3G0TqKaM4vPHhhvCg5TjYTjlJr9vUxzyyIOUBKc4=;
+	s=arc-20240116; t=1736793284; c=relaxed/simple;
+	bh=ma1f0ZEWo2M41Ot4ZwjiyYJf7GdNuqfbTmHT6Gn1vRs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=o+eidsYAWDEsPAfN2qLE3Mlr+mwb/5WndlHO0EqbQREcIkYwqA3GKNlhTya0cvQfJUk5Ukt5uT8c6BIvH4Ko4xorHwntkPacVKqSAlODwiDE0jNpYB8S86xS5iOuSvh5N7MqDfMBahQGbojsGvR6wUi320+0g5+xNoP9VomMpz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d9imxn5O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB612C4CEE7;
-	Mon, 13 Jan 2025 18:34:40 +0000 (UTC)
+	 MIME-Version; b=eoBzvqv7Lif8je+m7IWRNyDBkhNbmrNqu2c+ZDmDRp//WLvDnLHTV/RO5CXI02kIkf0ZU48qPb6m4QQ/dAbIaTPdUxOXrpnV31vtcug8Y7QjL+nP4SFd1/Eekd21tvnWgd5vVGaW2n9u/TlciUq+Wfuxk5d5A2nwAhfVSaX4Tr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i2lnj6Pw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 698B7C4CED6;
+	Mon, 13 Jan 2025 18:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736793281;
-	bh=VjE3G0TqKaM4vPHhhvCg5TjYTjlJr9vUxzyyIOUBKc4=;
+	s=k20201202; t=1736793283;
+	bh=ma1f0ZEWo2M41Ot4ZwjiyYJf7GdNuqfbTmHT6Gn1vRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d9imxn5O7i5dc1xGGyzFG2jWeEM5Nf87csewHfeiRM91et99r5bICZXSRgA6HecxI
-	 6qMKiuAYDrns72CeAbb7r4dOTBLlBv0CX475oLVnfofa/tsqma4BLX9WdHb5Du6qyb
-	 XuZtcpGNghfnZt4/9ZSR6BVNnAW1bnbL1AvNq/ce/hzwMPS17lSjMbVMFTCRuDBoaQ
-	 BoUoetX8dTPSJWvn1vrsuV1wTzFcy/j9bzxcO+xvP2G2oBT0XPRaG/DL31+0DRqKsl
-	 gw4r+0pteQAJfv+en+iWG58xENz+k1BrImJlXHlPPdZzHUtZqs1VrPI+xC5HE6f/pD
-	 ueb1tf89ugS2A==
+	b=i2lnj6Pw5ZXJUZv2rx5hIlXL43KX4qDW9XdJsEu6s4cYmq0JAerPOsKMgGFpM2IVw
+	 4ZokhoG5iE1DEj1UbWAYBQ/Ox7e0i5+SZCeo638vJJkypCw0JiK9XNX8Esa7jAtocB
+	 j0QHDw/0eOXFTHiFDRI6VWKs0gMGAXaeutYgsWzFYgDngZSLyViCHIoBNTh8r95ozr
+	 mmrH6AnG6cytVWLvCic43hx9PXGPUNQ6Kj580F/VKuxTyddnCCh6rWQEWW36WxGGP/
+	 0miMqExK66veveJ0yF/sYl279oYJOy/CM3Deia05Sh3UPdEG64CQD7ei0uvqsYrbpI
+	 mZjAnt4hpzrjw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: David Howells <dhowells@redhat.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	linux-nfs@vger.kernel.org,
+	Shyam Prasad N <nspmangalore@gmail.com>,
+	Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
 	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	ojeda@kernel.org,
-	maennich@google.com
-Subject: [PATCH AUTOSEL 6.12 06/20] kheaders: Ignore silly-rename files
-Date: Mon, 13 Jan 2025 13:34:11 -0500
-Message-Id: <20250113183425.1783715-6-sashal@kernel.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 07/20] netfs: Fix non-contiguous donation between completed reads
+Date: Mon, 13 Jan 2025 13:34:12 -0500
+Message-Id: <20250113183425.1783715-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250113183425.1783715-1-sashal@kernel.org>
 References: <20250113183425.1783715-1-sashal@kernel.org>
@@ -72,56 +73,78 @@ Content-Transfer-Encoding: 8bit
 
 From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 973b710b8821c3401ad7a25360c89e94b26884ac ]
+[ Upstream commit c8b90d40d5bba8e6fba457b8a7c10d3c0d467e37 ]
 
-Tell tar to ignore silly-rename files (".__afs*" and ".nfs*") when building
-the header archive.  These occur when a file that is open is unlinked
-locally, but hasn't yet been closed.  Such files are visible to the user
-via the getdents() syscall and so programs may want to do things with them.
+When a read subrequest finishes, if it doesn't have sufficient coverage to
+complete the folio(s) covering either side of it, it will donate the excess
+coverage to the adjacent subrequests on either side, offloading
+responsibility for unlocking the folio(s) covered to them.
 
-During the kernel build, such files may be made during the processing of
-header files and the cleanup may get deferred by fput() which may result in
-tar seeing these files when it reads the directory, but they may have
-disappeared by the time it tries to open them, causing tar to fail with an
-error.  Further, we don't want to include them in the tarball if they still
-exist.
+Now, preference is given to donating down to a lower file offset over
+donating up because that check is done first - but there's no check that
+the lower subreq is actually contiguous, and so we can end up donating
+incorrectly.
 
-With CONFIG_HEADERS_INSTALL=y, something like the following may be seen:
+The scenario seen[1] is that an 8MiB readahead request spanning four 2MiB
+folios is split into eight 1MiB subreqs (numbered 1 through 8).  These
+terminate in the order 1,6,2,5,3,7,4,8.  What happens is:
 
-   find: './kernel/.tmp_cpio_dir/include/dt-bindings/reset/.__afs2080': No such file or directory
-   tar: ./include/linux/greybus/.__afs3C95: File removed before we read it
+	- 1 donates to 2
+	- 6 donates to 5
+	- 2 completes, unlocking the first folio (with 1).
+	- 5 completes, unlocking the third folio (with 6).
+	- 3 donates to 4
+	- 7 donates to 4 incorrectly
+	- 4 completes, unlocking the second folio (with 3), but can't use
+	  the excess from 7.
+	- 8 donates to 4, also incorrectly.
 
-The find warning doesn't seem to cause a problem.
+Fix this by preventing downward donation if the subreqs are not contiguous
+(in the example above, 7 donates to 4 across the gap left by 5 and 6).
 
-Fix this by telling tar when called from in gen_kheaders.sh to exclude such
-files.  This only affects afs and nfs; cifs uses the Windows Hidden
-attribute to prevent the file from being seen.
-
+Reported-by: Shyam Prasad N <nspmangalore@gmail.com>
+Closes: https://lore.kernel.org/r/CANT5p=qBwjBm-D8soFVVtswGEfmMtQXVW83=TNfUtvyHeFQZBA@mail.gmail.com/
 Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20241213135013.2964079-2-dhowells@redhat.com
-cc: Masahiro Yamada <masahiroy@kernel.org>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-cc: linux-nfs@vger.kernel.org
-cc: linux-kernel@vger.kernel.org
+Link: https://lore.kernel.org/r/526707.1733224486@warthog.procyon.org.uk/ [1]
+Link: https://lore.kernel.org/r/20241213135013.2964079-3-dhowells@redhat.com
+cc: Steve French <sfrench@samba.org>
+cc: Paulo Alcantara <pc@manguebit.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/gen_kheaders.sh | 1 +
- 1 file changed, 1 insertion(+)
+ fs/netfs/read_collect.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/gen_kheaders.sh b/kernel/gen_kheaders.sh
-index 383fd43ac612..7e1340da5aca 100755
---- a/kernel/gen_kheaders.sh
-+++ b/kernel/gen_kheaders.sh
-@@ -89,6 +89,7 @@ find $cpio_dir -type f -print0 |
+diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
+index 3cbb289535a8..b415e3972336 100644
+--- a/fs/netfs/read_collect.c
++++ b/fs/netfs/read_collect.c
+@@ -247,16 +247,17 @@ static bool netfs_consume_read_data(struct netfs_io_subrequest *subreq, bool was
  
- # Create archive and try to normalize metadata for reproducibility.
- tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
-+    --exclude=".__afs*" --exclude=".nfs*" \
-     --owner=0 --group=0 --sort=name --numeric-owner --mode=u=rw,go=r,a+X \
-     -I $XZ -cf $tarfile -C $cpio_dir/ . > /dev/null
- 
+ 	/* Deal with the trickiest case: that this subreq is in the middle of a
+ 	 * folio, not touching either edge, but finishes first.  In such a
+-	 * case, we donate to the previous subreq, if there is one, so that the
+-	 * donation is only handled when that completes - and remove this
+-	 * subreq from the list.
++	 * case, we donate to the previous subreq, if there is one and if it is
++	 * contiguous, so that the donation is only handled when that completes
++	 * - and remove this subreq from the list.
+ 	 *
+ 	 * If the previous subreq finished first, we will have acquired their
+ 	 * donation and should be able to unlock folios and/or donate nextwards.
+ 	 */
+ 	if (!subreq->consumed &&
+ 	    !prev_donated &&
+-	    !list_is_first(&subreq->rreq_link, &rreq->subrequests)) {
++	    !list_is_first(&subreq->rreq_link, &rreq->subrequests) &&
++	    subreq->start == prev->start + prev->len) {
+ 		prev = list_prev_entry(subreq, rreq_link);
+ 		WRITE_ONCE(prev->next_donated, prev->next_donated + subreq->len);
+ 		subreq->start += subreq->len;
 -- 
 2.39.5
 
