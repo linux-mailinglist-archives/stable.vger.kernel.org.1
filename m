@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-108513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D92AA0C071
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:45:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F62A0C074
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:45:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7070818819A9
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:45:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 463B67A4B2A
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2A9215059;
-	Mon, 13 Jan 2025 18:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE3C219A78;
+	Mon, 13 Jan 2025 18:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ai8U5LSD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cDkggtC6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B2D214A93;
-	Mon, 13 Jan 2025 18:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A2D2135D6;
+	Mon, 13 Jan 2025 18:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793374; cv=none; b=OPFGQDTE07tQZ1TBGFNLLnvqtuRtJSJ45I+Bh2YvabZKPw6B+A2KvLqbpVS+9skbEnG0ucd6VJrePKs28DjyWgM7kabwj/3EPjZOmEZve5BO4KJqhLca4KY4ujPdG+6h7uKkCgg9cQWcvw0k0fQa8u1c7RN8bbuX/bXGm8UfZB8=
+	t=1736793375; cv=none; b=RlcuLoxwop1RunsjhsNJKOv4uInbbDv0lPdhwdaXUqEl4WzbVjidrFSvuGLsCG6M/MXNMgfX9FI5Lu5V8tjupH0/OVpekgncDS+7GbuNQsQlelPT7L3HePLRXiB4dSk7H9iNkpDZt8m8ujvv3QxqOxT904/OkCrUDv4dBtXsu40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793374; c=relaxed/simple;
-	bh=3b48l85dvIUMxPN97cnDejNJMgKXH/p1dqq279eatcU=;
+	s=arc-20240116; t=1736793375; c=relaxed/simple;
+	bh=iqF5Y0hzfDuFpyrJty+HD/GCtVD034ZcIEYI4gBz1Vk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=j0Y5eISP95Q3kZYIVT1qTmaIhLJF2vNtpA6bOqrQ26tw69CBfAPcnQ9H+HC+9KMLgCzqWeKWvd3IaaJYfRtMvQOeeDbkHajjjNnVxhL2kROJ8t9kTp0ab7ocOBz01dmGTxrfAUd/M2mD+VFGaKnl2OOaxW1iUlfeVZ7X2U30A6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ai8U5LSD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C05C4CED6;
-	Mon, 13 Jan 2025 18:36:12 +0000 (UTC)
+	 MIME-Version; b=dh8xeeW1UBRdv0MxjuE0EqxkFoeHgGFJ6BqzsvgTMJ+3Se2CEEljuJ5p8RDxGwZt4Z1LtyMv+RgY35N0g37iSUgP4KfiFrnddDiu/0WRp2n4nlw9X7Upkf6M+oa/UZY+UpAiOLHFpy6L7fg1LkSP6N+T5UYLwkN/sabMhHG/5+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cDkggtC6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0DD8C4CED6;
+	Mon, 13 Jan 2025 18:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736793374;
-	bh=3b48l85dvIUMxPN97cnDejNJMgKXH/p1dqq279eatcU=;
+	s=k20201202; t=1736793375;
+	bh=iqF5Y0hzfDuFpyrJty+HD/GCtVD034ZcIEYI4gBz1Vk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ai8U5LSDSUNV8443s7Hl3bphm5wzSqnbNIFfdglBx5BYF9CkY/+4Rs8HkG2mpuHty
-	 O+GWiUB2nU/i4Kd3olp3J8qC1Hw8QIiarkcfmIfeMUNtdEgOnoupcdXHXAmPYKiiLE
-	 WcgFi5l9aQdlXydyC5rUphNYuaALdrWmeLuyZIMrN7m954lcHQDOT1pV7JvX4/MeI/
-	 s4EeM5m9ctRV7PEufjTWlsDi8sYS3sPeZiDZEs+KIO7y1/owW/6YdJ6v2WPKgD/xft
-	 eOODTc3aHmnINyAyxd9kpDbYwrXlp5d8Kn6DsqGyCHuG29+6lQ2rFXhBmiE8rHIh7t
-	 7lXxuwM4ZBaFQ==
+	b=cDkggtC6Z9XqfLsStEPbVuldBvPquZ7jnCHoobxW/VgIBikY9V1XmXcP6ElgQovYg
+	 7UNQS2Q3MxPqlIFiCiAWT+D3/TlxUljIWAdHcWYK/H0503josB2bGLllGO4hjP6DJE
+	 zRuhBFr+u3qUgQ6Kuawwjg5RIYkpc77Vwj6pLrK0t3JDWQWGlcwVUF41tAv0V1T4tL
+	 pqj/aDAIkcd/N0lyVvSIc8csPpMxn8nNWaefla2YCjvUiCZIZL+o0iMe021Ok10gzb
+	 Smupq/8yTfWjCGXZ1O650piB3rYDObzl0DztsIFuU/qUj5Z1lC8khCcWuMS7fJkN0N
+	 XZ3STFOJr5Baw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	linux-nfs@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	ojeda@kernel.org,
-	maennich@google.com
-Subject: [PATCH AUTOSEL 5.15 4/6] kheaders: Ignore silly-rename files
-Date: Mon, 13 Jan 2025 13:35:58 -0500
-Message-Id: <20250113183601.1784402-4-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 5/6] ACPI: resource: acpi_dev_irq_override(): Check DMI match last
+Date: Mon, 13 Jan 2025 13:35:59 -0500
+Message-Id: <20250113183601.1784402-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250113183601.1784402-1-sashal@kernel.org>
 References: <20250113183601.1784402-1-sashal@kernel.org>
@@ -70,57 +67,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.176
 Content-Transfer-Encoding: 8bit
 
-From: David Howells <dhowells@redhat.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 973b710b8821c3401ad7a25360c89e94b26884ac ]
+[ Upstream commit cd4a7b2e6a2437a5502910c08128ea3bad55a80b ]
 
-Tell tar to ignore silly-rename files (".__afs*" and ".nfs*") when building
-the header archive.  These occur when a file that is open is unlinked
-locally, but hasn't yet been closed.  Such files are visible to the user
-via the getdents() syscall and so programs may want to do things with them.
+acpi_dev_irq_override() gets called approx. 30 times during boot (15 legacy
+IRQs * 2 override_table entries). Of these 30 calls at max 1 will match
+the non DMI checks done by acpi_dev_irq_override(). The dmi_check_system()
+check is by far the most expensive check done by acpi_dev_irq_override(),
+make this call the last check done by acpi_dev_irq_override() so that it
+will be called at max 1 time instead of 30 times.
 
-During the kernel build, such files may be made during the processing of
-header files and the cleanup may get deferred by fput() which may result in
-tar seeing these files when it reads the directory, but they may have
-disappeared by the time it tries to open them, causing tar to fail with an
-error.  Further, we don't want to include them in the tarball if they still
-exist.
-
-With CONFIG_HEADERS_INSTALL=y, something like the following may be seen:
-
-   find: './kernel/.tmp_cpio_dir/include/dt-bindings/reset/.__afs2080': No such file or directory
-   tar: ./include/linux/greybus/.__afs3C95: File removed before we read it
-
-The find warning doesn't seem to cause a problem.
-
-Fix this by telling tar when called from in gen_kheaders.sh to exclude such
-files.  This only affects afs and nfs; cifs uses the Windows Hidden
-attribute to prevent the file from being seen.
-
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20241213135013.2964079-2-dhowells@redhat.com
-cc: Masahiro Yamada <masahiroy@kernel.org>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-cc: linux-nfs@vger.kernel.org
-cc: linux-kernel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/20241228165253.42584-1-hdegoede@redhat.com
+[ rjw: Subject edit ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/gen_kheaders.sh | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/resource.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/gen_kheaders.sh b/kernel/gen_kheaders.sh
-index c618e37ccea9..1b2b61ca8065 100755
---- a/kernel/gen_kheaders.sh
-+++ b/kernel/gen_kheaders.sh
-@@ -82,6 +82,7 @@ find $cpio_dir -type f -print0 |
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 0433ab8ced0d..9bae5c473cf0 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -648,11 +648,11 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
+ 	for (i = 0; i < ARRAY_SIZE(override_table); i++) {
+ 		const struct irq_override_cmp *entry = &override_table[i];
  
- # Create archive and try to normalize metadata for reproducibility.
- tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
-+    --exclude=".__afs*" --exclude=".nfs*" \
-     --owner=0 --group=0 --sort=name --numeric-owner --mode=u=rw,go=r,a+X \
-     -I $XZ -cf $tarfile -C $cpio_dir/ . > /dev/null
+-		if (dmi_check_system(entry->system) &&
+-		    entry->irq == gsi &&
++		if (entry->irq == gsi &&
+ 		    entry->triggering == triggering &&
+ 		    entry->polarity == polarity &&
+-		    entry->shareable == shareable)
++		    entry->shareable == shareable &&
++		    dmi_check_system(entry->system))
+ 			return entry->override;
+ 	}
  
 -- 
 2.39.5
