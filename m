@@ -1,113 +1,187 @@
-Return-Path: <stable+bounces-108552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76964A0C57B
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 00:17:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F98A0C58D
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 00:20:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DD3A1886C40
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 23:17:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2DF43A4C33
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 23:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809851F9F70;
-	Mon, 13 Jan 2025 23:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125B11F8F04;
+	Mon, 13 Jan 2025 23:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HegG9hO1"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mrWZoI7L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37CBF1F9ECE;
-	Mon, 13 Jan 2025 23:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7F716EC19;
+	Mon, 13 Jan 2025 23:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736810181; cv=none; b=V9gs5EzBmyW8h5TEUSwxxYgvO8D1ODX5umEQbCcz2t9erUqKc5YG0oTyJcbKvB8jPYeQcO2KbyScORqT9TQXtC252urchFC+O0Qr+EYh4ZtO1ZzzsROw3FlPXxyF7JVWCVOmlWTQKfxlyQRICM0igGiTFqdNdlooQs1wPh9HV3c=
+	t=1736810406; cv=none; b=FLgsWP6hh+coC6oexDp6sn66v78CC37gLrleLhepmw6k2MiwhgTaCS8OJaCExAJtGpm2EJjEKgcCUgR7vxhcuhXfWMQE4Ic5dN9gldqm3KQ9vrp+xFeXH7sKlWn4OpAS+kBkvl1Epb9aYhalZKFSLrzvdmjtVkDT/ueap8hVK5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736810181; c=relaxed/simple;
-	bh=dDUcFVAojLU/9heIWIOGhgjjlgFXUYHJ762B3sZtUm4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WO8h2k8nMUeh9qBTyHAB3WwyAaPWK3eyR+W0I79tvZfYgtt6MOSlw+Immr2Kxe06hySKDGz/GuJKECCTFvXn7dkksXmvAkUL3LHpPsz19O5cIDYaOcR6xKkY8A3sDikPe+ytmtHeiOUHvH8eN4tN+MY0Vpeg2OpPkSPpvRoD5mA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HegG9hO1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A34C4CED6;
-	Mon, 13 Jan 2025 23:16:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736810180;
-	bh=dDUcFVAojLU/9heIWIOGhgjjlgFXUYHJ762B3sZtUm4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HegG9hO11Mi+Q78pqexEdq/3Xi/tNcdQ7rjYu06lA8Tk4QPXdja8Yu/r6CG+97S3V
-	 vkTP2aoMPg4/4KQys8NGeI/mz7+YnDV8resLsv4HgYrUP7WhaLifajJmBpXa3F9Buk
-	 AkteYXJm6t2J1O10+FQ4DxJKE9HN5I1qrW6BVOPpmcrKZ4jzI3zRkZJoHxS4quF0mi
-	 CFfOOpuWzIWPislBFVc+lAdwuTgzOU2aJCi66W0EzbIz1+fLCS6pYoY6dGkTkRZrvk
-	 TMw2jvI/KOpahvUwcgeFJZ2VXNmcbSEZ822qfuvpW2H0O0f6bz9OpwcVKJg7JWk4ib
-	 YCOiDzlSMTk5g==
-Date: Mon, 13 Jan 2025 17:16:19 -0600
-From: Rob Herring <robh@kernel.org>
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Saravana Kannan <saravanak@google.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Marc Zyngier <maz@kernel.org>,
-	Andreas Herrmann <andreas.herrmann@calxeda.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Oreoluwa Babatunde <quic_obabatun@quicinc.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v4 11/14] of: reserved-memory: Warn for missing static
- reserved memory regions
-Message-ID: <20250113231619.GA1983895-robh@kernel.org>
-References: <20250109-of_core_fix-v4-0-db8a72415b8c@quicinc.com>
- <20250109-of_core_fix-v4-11-db8a72415b8c@quicinc.com>
+	s=arc-20240116; t=1736810406; c=relaxed/simple;
+	bh=09NPkdSE13fgHDvnIwFiLs1pv90mgp7kVS82OBB4dwA=;
+	h=Date:To:From:Subject:Message-Id; b=lsW/gIIZuPTz+BHAUJcCxVzdW2iqIOfCT/drC8iBoiIT67dM8GYxdExR1WSNR3T1wdYrQnSvxFsyH7HO5OkYuWWLLhMrHeKgfF+D5j9CfjW7RAj5/NBQLNfIef46mdGEYWprjsVy3sllRrRx8koTFSEv0f3C8d7JsVxJrku0JVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mrWZoI7L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DABAC4CEE2;
+	Mon, 13 Jan 2025 23:20:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1736810406;
+	bh=09NPkdSE13fgHDvnIwFiLs1pv90mgp7kVS82OBB4dwA=;
+	h=Date:To:From:Subject:From;
+	b=mrWZoI7L/ShvCIvpRA6JcoXOIN00Qh/BNl+xJlKbGtUO9By1j4UZnPCl3MuvyX7u7
+	 PCRWfcwEaO4QxFyFwvuGuLcwWNAUgzYusUypYbratFDQb/nV3Z6fxEew4J8PVSvWU+
+	 DlloWc9TMpDEwqngo8gqUqcqtaEr3jj0e3gt1UDg=
+Date: Mon, 13 Jan 2025 15:20:05 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,nphamcs@gmail.com,hannes@cmpxchg.org,chengming.zhou@linux.dev,yosryahmed@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-zswap-move-allocations-during-cpu-init-outside-the-lock.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250113232006.3DABAC4CEE2@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250109-of_core_fix-v4-11-db8a72415b8c@quicinc.com>
 
-On Thu, Jan 09, 2025 at 09:27:02PM +0800, Zijun Hu wrote:
-> From: Zijun Hu <quic_zijuhu@quicinc.com>
-> 
-> For child node of /reserved-memory, its property 'reg' may contain
-> multiple regions, but fdt_scan_reserved_mem_reg_nodes() only takes
-> into account the first region, and miss remaining regions.
-> 
-> Give warning message when missing remaining regions.
 
-Can't we just fix it to support more than 1 entry?
+The patch titled
+     Subject: mm: zswap: move allocations during CPU init outside the lock
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-zswap-move-allocations-during-cpu-init-outside-the-lock.patch
 
-> 
-> Fixes: 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved memory regions are processed")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-> ---
->  drivers/of/of_reserved_mem.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
-> index 03a8f03ed1da165d6d7bf907d931857260888225..e2da88d7706ab3c208386e29f31350178e67cd14 100644
-> --- a/drivers/of/of_reserved_mem.c
-> +++ b/drivers/of/of_reserved_mem.c
-> @@ -263,6 +263,11 @@ void __init fdt_scan_reserved_mem_reg_nodes(void)
->  			       uname);
->  			continue;
->  		}
-> +
-> +		if (len > t_len)
-> +			pr_warn("%s() ignores %d regions in node '%s'\n",
-> +				__func__, len / t_len - 1, uname);
-> +
->  		base = dt_mem_next_cell(dt_root_addr_cells, &prop);
->  		size = dt_mem_next_cell(dt_root_size_cells, &prop);
->  
-> 
-> -- 
-> 2.34.1
-> 
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-zswap-move-allocations-during-cpu-init-outside-the-lock.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Yosry Ahmed <yosryahmed@google.com>
+Subject: mm: zswap: move allocations during CPU init outside the lock
+Date: Mon, 13 Jan 2025 21:44:58 +0000
+
+In zswap_cpu_comp_prepare(), allocations are made and assigned to various
+members of acomp_ctx under acomp_ctx->mutex.  However, allocations may
+recurse into zswap through reclaim, trying to acquire the same mutex and
+deadlocking.
+
+Move the allocations before the mutex critical section.  Only the
+initialization of acomp_ctx needs to be done with the mutex held.
+
+Link: https://lkml.kernel.org/r/20250113214458.2123410-1-yosryahmed@google.com
+Fixes: 12dcb0ef5406 ("mm: zswap: properly synchronize freeing resources during CPU hotunplug")
+Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/zswap.c |   42 ++++++++++++++++++++++++------------------
+ 1 file changed, 24 insertions(+), 18 deletions(-)
+
+--- a/mm/zswap.c~mm-zswap-move-allocations-during-cpu-init-outside-the-lock
++++ a/mm/zswap.c
+@@ -820,15 +820,15 @@ static int zswap_cpu_comp_prepare(unsign
+ {
+ 	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
+ 	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
+-	struct crypto_acomp *acomp;
+-	struct acomp_req *req;
++	struct crypto_acomp *acomp = NULL;
++	struct acomp_req *req = NULL;
++	u8 *buffer = NULL;
+ 	int ret;
+ 
+-	mutex_lock(&acomp_ctx->mutex);
+-	acomp_ctx->buffer = kmalloc_node(PAGE_SIZE * 2, GFP_KERNEL, cpu_to_node(cpu));
+-	if (!acomp_ctx->buffer) {
++	buffer = kmalloc_node(PAGE_SIZE * 2, GFP_KERNEL, cpu_to_node(cpu));
++	if (!buffer) {
+ 		ret = -ENOMEM;
+-		goto buffer_fail;
++		goto fail;
+ 	}
+ 
+ 	acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
+@@ -836,21 +836,25 @@ static int zswap_cpu_comp_prepare(unsign
+ 		pr_err("could not alloc crypto acomp %s : %ld\n",
+ 				pool->tfm_name, PTR_ERR(acomp));
+ 		ret = PTR_ERR(acomp);
+-		goto acomp_fail;
++		goto fail;
+ 	}
+-	acomp_ctx->acomp = acomp;
+-	acomp_ctx->is_sleepable = acomp_is_async(acomp);
+ 
+-	req = acomp_request_alloc(acomp_ctx->acomp);
++	req = acomp_request_alloc(acomp);
+ 	if (!req) {
+ 		pr_err("could not alloc crypto acomp_request %s\n",
+ 		       pool->tfm_name);
+ 		ret = -ENOMEM;
+-		goto req_fail;
++		goto fail;
+ 	}
+-	acomp_ctx->req = req;
+ 
++	/*
++	 * Only hold the mutex after completing allocations, otherwise we may
++	 * recurse into zswap through reclaim and attempt to hold the mutex
++	 * again resulting in a deadlock.
++	 */
++	mutex_lock(&acomp_ctx->mutex);
+ 	crypto_init_wait(&acomp_ctx->wait);
++
+ 	/*
+ 	 * if the backend of acomp is async zip, crypto_req_done() will wakeup
+ 	 * crypto_wait_req(); if the backend of acomp is scomp, the callback
+@@ -859,15 +863,17 @@ static int zswap_cpu_comp_prepare(unsign
+ 	acomp_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
+ 				   crypto_req_done, &acomp_ctx->wait);
+ 
++	acomp_ctx->buffer = buffer;
++	acomp_ctx->acomp = acomp;
++	acomp_ctx->is_sleepable = acomp_is_async(acomp);
++	acomp_ctx->req = req;
+ 	mutex_unlock(&acomp_ctx->mutex);
+ 	return 0;
+ 
+-req_fail:
+-	crypto_free_acomp(acomp_ctx->acomp);
+-acomp_fail:
+-	kfree(acomp_ctx->buffer);
+-buffer_fail:
+-	mutex_unlock(&acomp_ctx->mutex);
++fail:
++	if (acomp)
++		crypto_free_acomp(acomp);
++	kfree(buffer);
+ 	return ret;
+ }
+ 
+_
+
+Patches currently in -mm which might be from yosryahmed@google.com are
+
+mm-zswap-move-allocations-during-cpu-init-outside-the-lock.patch
+
 
