@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-108486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D4EA0C016
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:38:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82A3CA0C019
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:39:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D2D316A420
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:38:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5C15162FC4
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:39:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B1BE1F9F69;
-	Mon, 13 Jan 2025 18:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B2A1FA15A;
+	Mon, 13 Jan 2025 18:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ew6Und3C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nb8w4+YE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C401F9F5B;
-	Mon, 13 Jan 2025 18:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C151FA14B;
+	Mon, 13 Jan 2025 18:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793306; cv=none; b=lQXIaGifiy3qKOjbCxS2me5vBCanLmw8gvE6c2/VcgHUSkrhOP02wzft1YWri5AuRc9Qe6Fs2TRaAqPP3E7+NslwXgBRhOiTxe+gcVJeihrNySFXygPcPbZ1IB2LFb5W06CupxeiUuGPtn+OEIzTuojg5Y2pczjPEQ4AzQxGv3Q=
+	t=1736793307; cv=none; b=HEkLbnxNUejkmntW9VBjILgRIxWRabCya0Ay/nuK1e2pT9xrmBFzJdD4IX0trSIX8IFANS8uxYvanYWjDEfsPpXm8iY6K0UjoUvsy1FCVptqBst8gDswJV+LozpZGe0nvMHUX1qPe9AQtVdBcT2HNX4bfFgngIV+6MRUCooDoik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793306; c=relaxed/simple;
-	bh=oCs/GBdCg29DHR59+pTCj8OWhkpbOT7d3Ht7oLrBVHA=;
+	s=arc-20240116; t=1736793307; c=relaxed/simple;
+	bh=Ysprb739drFzTtogLb4Hu958yP+s7LORgliv06VIJlM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dfCIT/mdXQY2AHcgi8W6ZhudkWeYm7gy3TSsH7EgZjQ8sqK1xIjrUpV0HU2ccEUvglaMdvDMruh7ffLD8aongPTNu8ONW6/Xb7vSNVE27jNhsXMYzhMzx8hq24bHqkrKJ2LgZ6frp+UGYorZgcPnnOrR3duHx0iImBp4DH/Mj6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ew6Und3C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1B55C4CEE5;
-	Mon, 13 Jan 2025 18:35:04 +0000 (UTC)
+	 MIME-Version; b=C4S2HthaTaONW4eQGf798RmeQ/f9yzxlUDiZn/zrO731O108pM4llznF1a5XQoQcDLzzewuIx64KdbCFSe8SFN08CA5eey8M/3gQVxaxMFCA09ELQfzGCQBTDOLBaCNxJCvcShzg82bBXEmA7pssHE5zra4fKwLSyMd0ab2mWLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nb8w4+YE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38317C4CEE2;
+	Mon, 13 Jan 2025 18:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736793305;
-	bh=oCs/GBdCg29DHR59+pTCj8OWhkpbOT7d3Ht7oLrBVHA=;
+	s=k20201202; t=1736793307;
+	bh=Ysprb739drFzTtogLb4Hu958yP+s7LORgliv06VIJlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ew6Und3CPK/982QseOTJJxhwDif40BoHugrOrCF48GZ04x9ga8zsLwuC+uYzV0PLf
-	 wAfwlkoh/UgHnkxcZst8Xy7dbV9JMDfltw4bFiVvj9dvKPXP9mC//UaMsQZhWsEaOS
-	 9SCRaLgp0e7oShrXT3o8UxCn4GAbISD7W49Xfd8zFXVS4EoKW8lSx5GAJX4eHSadje
-	 OuvjOQBQMmzUds+pMt3GfPzjJX8tkXbUxlGFSZyEaST7lNPI3vX2WxQ7GDFHd8elw/
-	 zFN1V8/pDZFWbKzal9meDe8de+8ufiTMcEbkkPM3p/POUrmpKEoKr4JZnmSU+MAu3b
-	 L7rjobn5W73mg==
+	b=nb8w4+YEUJ2zLJvGt8s63F7wdhafrfaNwbOZOcBcKDnlyELsmJuuG/d55VRSiBhbO
+	 1Tjg+qCj325X22pqTEECJUWQ+MYJEVAAeSiQFri1aLUoMMhM6wf4zTQl82AlF/hbk/
+	 WkBRsL340D7auTXKWR0y/rF44/S3erZOx+JC7FT1PBxP3yBoDyw+WixlnadxBEn+20
+	 X7JQRLu0SBxhb8BsshDwulBGsQOee7XjmwPs9Hduk76tDznA4XoCGSpaX+mZfjCN8p
+	 bpLX5Be6RWJ2W/hITwfdyH1RMaI2cdrqCQOu53f3TfrU4s1OrqRGBicB7lW0IXSoMh
+	 fwysefMvCqPhQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Henry Huang <henry.hj@antgroup.com>,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>,
+Cc: Marco Nelissen <marco.nelissen@gmail.com>,
+	"Darrick J . Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org
-Subject: [PATCH AUTOSEL 6.12 17/20] sched_ext: keep running prev when prev->scx.slice != 0
-Date: Mon, 13 Jan 2025 13:34:22 -0500
-Message-Id: <20250113183425.1783715-17-sashal@kernel.org>
+	linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 18/20] iomap: avoid avoid truncating 64-bit offset to 32 bits
+Date: Mon, 13 Jan 2025 13:34:23 -0500
+Message-Id: <20250113183425.1783715-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250113183425.1783715-1-sashal@kernel.org>
 References: <20250113183425.1783715-1-sashal@kernel.org>
@@ -69,68 +68,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.9
 Content-Transfer-Encoding: 8bit
 
-From: Henry Huang <henry.hj@antgroup.com>
+From: Marco Nelissen <marco.nelissen@gmail.com>
 
-[ Upstream commit 30dd3b13f9de612ef7328ccffcf1a07d0d40ab51 ]
+[ Upstream commit c13094b894de289514d84b8db56d1f2931a0bade ]
 
-When %SCX_OPS_ENQ_LAST is set and prev->scx.slice != 0,
-@prev will be dispacthed into the local DSQ in put_prev_task_scx().
-However, pick_task_scx() is executed before put_prev_task_scx(),
-so it will not pick @prev.
-Set %SCX_RQ_BAL_KEEP in balance_one() to ensure that pick_task_scx()
-can pick @prev.
+on 32-bit kernels, iomap_write_delalloc_scan() was inadvertently using a
+32-bit position due to folio_next_index() returning an unsigned long.
+This could lead to an infinite loop when writing to an xfs filesystem.
 
-Signed-off-by: Henry Huang <henry.hj@antgroup.com>
-Acked-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Marco Nelissen <marco.nelissen@gmail.com>
+Link: https://lore.kernel.org/r/20250109041253.2494374-1-marco.nelissen@gmail.com
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/ext.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ fs/iomap/buffered-io.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index 40f915f893e2..7e217761854b 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -2630,6 +2630,7 @@ static int balance_one(struct rq *rq, struct task_struct *prev)
- {
- 	struct scx_dsp_ctx *dspc = this_cpu_ptr(scx_dsp_ctx);
- 	bool prev_on_scx = prev->sched_class == &ext_sched_class;
-+	bool prev_on_rq = prev->scx.flags & SCX_TASK_QUEUED;
- 	int nr_loops = SCX_DSP_MAX_LOOPS;
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 3ffd9937dd51..49da74539fb3 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1138,7 +1138,7 @@ static void iomap_write_delalloc_scan(struct inode *inode,
+ 				start_byte, end_byte, iomap, punch);
  
- 	lockdep_assert_rq_held(rq);
-@@ -2662,8 +2663,7 @@ static int balance_one(struct rq *rq, struct task_struct *prev)
- 		 * See scx_ops_disable_workfn() for the explanation on the
- 		 * bypassing test.
- 		 */
--		if ((prev->scx.flags & SCX_TASK_QUEUED) &&
--		    prev->scx.slice && !scx_rq_bypassing(rq)) {
-+		if (prev_on_rq && prev->scx.slice && !scx_rq_bypassing(rq)) {
- 			rq->scx.flags |= SCX_RQ_BAL_KEEP;
- 			goto has_tasks;
- 		}
-@@ -2696,6 +2696,10 @@ static int balance_one(struct rq *rq, struct task_struct *prev)
- 
- 		flush_dispatch_buf(rq);
- 
-+		if (prev_on_rq && prev->scx.slice) {
-+			rq->scx.flags |= SCX_RQ_BAL_KEEP;
-+			goto has_tasks;
-+		}
- 		if (rq->scx.local_dsq.nr)
- 			goto has_tasks;
- 		if (consume_global_dsq(rq))
-@@ -2721,8 +2725,7 @@ static int balance_one(struct rq *rq, struct task_struct *prev)
- 	 * Didn't find another task to run. Keep running @prev unless
- 	 * %SCX_OPS_ENQ_LAST is in effect.
- 	 */
--	if ((prev->scx.flags & SCX_TASK_QUEUED) &&
--	    (!static_branch_unlikely(&scx_ops_enq_last) ||
-+	if (prev_on_rq && (!static_branch_unlikely(&scx_ops_enq_last) ||
- 	     scx_rq_bypassing(rq))) {
- 		rq->scx.flags |= SCX_RQ_BAL_KEEP;
- 		goto has_tasks;
+ 		/* move offset to start of next folio in range */
+-		start_byte = folio_next_index(folio) << PAGE_SHIFT;
++		start_byte = folio_pos(folio) + folio_size(folio);
+ 		folio_unlock(folio);
+ 		folio_put(folio);
+ 	}
 -- 
 2.39.5
 
