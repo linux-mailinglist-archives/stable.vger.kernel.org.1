@@ -1,149 +1,154 @@
-Return-Path: <stable+bounces-108391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1138A0B3DC
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 11:00:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94DCBA0B441
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 11:13:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D987116357B
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 10:00:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A483F1888953
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 10:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C6021ADAA;
-	Mon, 13 Jan 2025 10:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3469821ADA5;
+	Mon, 13 Jan 2025 10:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6b3yJfF"
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="ja5p8TTx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7662D204590
-	for <stable@vger.kernel.org>; Mon, 13 Jan 2025 10:00:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BE8235C07;
+	Mon, 13 Jan 2025 10:13:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736762401; cv=none; b=TurTuVqN9Zy7BUKi907q2l+WmkjqMS5wbkK3FY5wzVm+iBW2xZ7yOYWYXnUFvwcJEGkCkwlSZyBUM//eEKWL8L+V007qVSNMZ4Vkw4c1gSN+31pr7TLDK3rxzKiCCOl4GSQQQCeXxD5qH+tHCMbxMQvALiS6D4PvWDtlXbugFWU=
+	t=1736763208; cv=none; b=GS+qstBP/T2w2GuwF25eVQuXmLyGGj5IqI5p1SjrxJ/hRTvQoPOm+wSOzDiam+CPOzrzEvae8brlq32OoWgWeXYbKMbmr9GniP4H4hAa+p/NNmF1VAreOz9j88qlohGsxmIaX1fc2IwesznwHakFSDSbxM0VwDkgj1fhafFoXXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736762401; c=relaxed/simple;
-	bh=bXJNxzr1DhnQN4l9IkqTcZOCAoqfvgtq4Rf180OcsRA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=D2+Q06Kri+/hmWt6d7m4yagIFCLjjaeJXqM1IstU2hAe1XlWuNZGW64q84QIylCcgKRRVcjssLr7+vUMzjFtck5fFIgmYiVJQ0FXjcKCzJ4Tyeil++AwrY+28RHhp3W1eloEkJKOmTVKKP7zs/HfBfvmMzF7cfn7+jMwh+nQVww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6b3yJfF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8052C4CEE3;
-	Mon, 13 Jan 2025 10:00:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736762401;
-	bh=bXJNxzr1DhnQN4l9IkqTcZOCAoqfvgtq4Rf180OcsRA=;
-	h=Subject:To:Cc:From:Date:From;
-	b=o6b3yJfFB8sXH87CQIM6t8UMBriyqD2Ks0cwnd1+pfU3HqGMVvKV1Trck8nVc7gCv
-	 VCdjtguGNZ/zxeM6UnCqJfuL176TaZA3P7wxGUwPjfgh6oMfg2Ob8jTSxNVmbdcyFW
-	 VHmwA8YjCSn5uX2ZqRQOacV8HiGf2EVJUqMQZjfI=
-Subject: FAILED: patch "[PATCH] iio: imu: inv_icm42600: fix spi burst write not supported" failed to apply to 6.12-stable tree
-To: jean-baptiste.maneyrol@tdk.com,Jonathan.Cameron@huawei.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Jan 2025 10:59:57 +0100
-Message-ID: <2025011357-immersion-detonate-d4eb@gregkh>
+	s=arc-20240116; t=1736763208; c=relaxed/simple;
+	bh=AbEypxldcB557r7ML3RWblxFpClAAQjKh+mk6I/n4hI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Wlg15qLr+UOUOqCIm8CG13U/8Jaag9WN5yqCIk4WbpxkgYt3hcwXnd0nH88mya5YJ0rwPZkkJPRjv6hMZb1NHj0mVfX+aZWm+MoKjjECR+tzlO++Cmc3CSSeQUejxJYG9B4Dzr9DtCMdkFMo+XHlzaLzB3t/qvQ0Uo23/9dYYqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=ja5p8TTx; arc=none smtp.client-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1tXHRa-00DhCO-Tc; Mon, 13 Jan 2025 11:13:14 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
+	bh=XmtGPnPvH6It0GR990T2qwUAKTVPIjKO4lymK4SpZf0=; b=ja5p8TTx11VmfSU8AkwM9xXOmC
+	R0HlPnuhaO1aaA7LAjGwUBgO0aROIcDCW4554r3UreeZMe+JNAeN6PwYZdoPIeZ/a9Ltr0v6pqZk1
+	pfgzT/3Cx6JtLcVuSP1PyMhcWVrhxendX5WNGukCBli1xObGZmO3AYDtBF4RaWeQH0hyrsaoDmXM5
+	ctWBMBsU6CeUXHU/QRGCyegPn52elUhgWOvbCK3wwso/sAASLSTVO/V6u2dsF0xAxNy4nqza65VKJ
+	o6G7pBxsDYS7UQt2L858VXvhHpMHcEgoILEFvv0/wl/CqRDS2y5sJxMQgal2aQkRXYRIjmhDq40nM
+	mI39Dq5Q==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1tXHRZ-00030N-L5; Mon, 13 Jan 2025 11:13:13 +0100
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1tXHRG-00DToB-7D; Mon, 13 Jan 2025 11:12:54 +0100
+Message-ID: <cccb1a4f-5495-4db1-801e-eca211b757c3@rbox.co>
+Date: Mon, 13 Jan 2025 11:12:52 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 1/5] vsock/virtio: discard packets if the transport
+ changes
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Luigi Leonardi <leonardi@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, Wongi Lee <qwerty@theori.io>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Eric Dumazet <edumazet@google.com>,
+ kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Simon Horman <horms@kernel.org>, Hyunwoo Kim <v4bel@theori.io>,
+ Jakub Kicinski <kuba@kernel.org>, virtualization@lists.linux.dev,
+ Bobby Eshleman <bobby.eshleman@bytedance.com>, stable@vger.kernel.org
+References: <20250110083511.30419-1-sgarzare@redhat.com>
+ <20250110083511.30419-2-sgarzare@redhat.com>
+ <1aa83abf-6baa-4cf1-a108-66b677bcfd93@rbox.co>
+ <nedvcylhjxrkmkvgugsku2lpdjgjpo5exoke4o6clxcxh64s3i@jkjnvngazr5v>
+ <CAGxU2F7BoMNi-z=SHsmCV5+99=CxHo4dxFeJnJ5=q9X=CM3QMA@mail.gmail.com>
+Content-Language: pl-PL, en-GB
+From: Michal Luczaj <mhal@rbox.co>
+In-Reply-To: <CAGxU2F7BoMNi-z=SHsmCV5+99=CxHo4dxFeJnJ5=q9X=CM3QMA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 1/13/25 10:07, Stefano Garzarella wrote:
+> On Mon, 13 Jan 2025 at 09:57, Stefano Garzarella <sgarzare@redhat.com> wrote:
+>> On Sun, Jan 12, 2025 at 11:42:30PM +0100, Michal Luczaj wrote:
+> 
+> [...]
+> 
+>>>
+>>> So, if I get this right:
+>>> 1. vsock_create() (refcnt=1) calls vsock_insert_unbound() (refcnt=2)
+>>> 2. transport->release() calls vsock_remove_bound() without checking if sk
+>>>   was bound and moved to bound list (refcnt=1)
+>>> 3. vsock_bind() assumes sk is in unbound list and before
+>>>   __vsock_insert_bound(vsock_bound_sockets()) calls
+>>>   __vsock_remove_bound() which does:
+>>>      list_del_init(&vsk->bound_table); // nop
+>>>      sock_put(&vsk->sk);               // refcnt=0
+>>>
+>>> The following fixes things for me. I'm just not certain that's the only
+>>> place where transport destruction may lead to an unbound socket being
+>>> removed from the unbound list.
+>>>
+>>> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>>> index 7f7de6d88096..0fe807c8c052 100644
+>>> --- a/net/vmw_vsock/virtio_transport_common.c
+>>> +++ b/net/vmw_vsock/virtio_transport_common.c
+>>> @@ -1303,7 +1303,8 @@ void virtio_transport_release(struct vsock_sock *vsk)
+>>>
+>>>       if (remove_sock) {
+>>>               sock_set_flag(sk, SOCK_DONE);
+>>> -              virtio_transport_remove_sock(vsk);
+>>> +              if (vsock_addr_bound(&vsk->local_addr))
+>>> +                      virtio_transport_remove_sock(vsk);
+>>
+>> I don't get this fix, virtio_transport_remove_sock() calls
+>>    vsock_remove_sock()
+>>      vsock_remove_bound()
+>>        if (__vsock_in_bound_table(vsk))
+>>            __vsock_remove_bound(vsk);
+>>
+>>
+>> So, should already avoid this issue, no?
+> 
+> I got it wrong, I see now what are you trying to do, but I don't think
+> we should skip virtio_transport_remove_sock() entirely, it also purge
+> the rx_queue.
 
-The patch below does not apply to the 6.12-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Isn't rx_queue empty-by-definition in case of !__vsock_in_bound_table(vsk)?
 
-To reproduce the conflict and resubmit, you may use the following commands:
+>> Can the problem be in vsock_bind() ?
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-git checkout FETCH_HEAD
-git cherry-pick -x c0f866de4ce447bca3191b9cefac60c4b36a7922
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025011357-immersion-detonate-d4eb@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+Well, I wouldn't say so.
 
-Possible dependencies:
+>> Is this issue pre-existing or introduced by this series?
+> 
+> I think this is pre-existing, can you confirm?
 
+Yup, I agree, pre-existing.
 
+> In that case, I'd not stop this series, and fix it in another patch/series.
 
-thanks,
+Yeah, sure thing.
 
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From c0f866de4ce447bca3191b9cefac60c4b36a7922 Mon Sep 17 00:00:00 2001
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Date: Tue, 12 Nov 2024 10:30:10 +0100
-Subject: [PATCH] iio: imu: inv_icm42600: fix spi burst write not supported
-
-Burst write with SPI is not working for all icm42600 chips. It was
-only used for setting user offsets with regmap_bulk_write.
-
-Add specific SPI regmap config for using only single write with SPI.
-
-Fixes: 9f9ff91b775b ("iio: imu: inv_icm42600: add SPI driver for inv_icm42600 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Link: https://patch.msgid.link/20241112-inv-icm42600-fix-spi-burst-write-not-supported-v2-1-97690dc03607@tdk.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-index 3a07e43e4cf1..18787a43477b 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-@@ -403,6 +403,7 @@ struct inv_icm42600_sensor_state {
- typedef int (*inv_icm42600_bus_setup)(struct inv_icm42600_state *);
- 
- extern const struct regmap_config inv_icm42600_regmap_config;
-+extern const struct regmap_config inv_icm42600_spi_regmap_config;
- extern const struct dev_pm_ops inv_icm42600_pm_ops;
- 
- const struct iio_mount_matrix *
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-index 561d245c1d64..e43538e536f0 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -87,6 +87,21 @@ const struct regmap_config inv_icm42600_regmap_config = {
- };
- EXPORT_SYMBOL_NS_GPL(inv_icm42600_regmap_config, "IIO_ICM42600");
- 
-+/* define specific regmap for SPI not supporting burst write */
-+const struct regmap_config inv_icm42600_spi_regmap_config = {
-+	.name = "inv_icm42600",
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.max_register = 0x4FFF,
-+	.ranges = inv_icm42600_regmap_ranges,
-+	.num_ranges = ARRAY_SIZE(inv_icm42600_regmap_ranges),
-+	.volatile_table = inv_icm42600_regmap_volatile_accesses,
-+	.rd_noinc_table = inv_icm42600_regmap_rd_noinc_accesses,
-+	.cache_type = REGCACHE_RBTREE,
-+	.use_single_write = true,
-+};
-+EXPORT_SYMBOL_NS_GPL(inv_icm42600_spi_regmap_config, "IIO_ICM42600");
-+
- struct inv_icm42600_hw {
- 	uint8_t whoami;
- 	const char *name;
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-index c55d8e672183..2bd2c4c8e50c 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-@@ -59,7 +59,8 @@ static int inv_icm42600_probe(struct spi_device *spi)
- 		return -EINVAL;
- 	chip = (uintptr_t)match;
- 
--	regmap = devm_regmap_init_spi(spi, &inv_icm42600_regmap_config);
-+	/* use SPI specific regmap */
-+	regmap = devm_regmap_init_spi(spi, &inv_icm42600_spi_regmap_config);
- 	if (IS_ERR(regmap))
- 		return PTR_ERR(regmap);
- 
+Thanks,
+Michal
 
 
