@@ -1,126 +1,168 @@
-Return-Path: <stable+bounces-108469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0541A0BFD8
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:33:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE02A0BFE5
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:34:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6188F7A1A43
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:33:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14F677A03C5
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BBA81C07C9;
-	Mon, 13 Jan 2025 18:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E90B1C4604;
+	Mon, 13 Jan 2025 18:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QoHiOcBl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SkFBd4/V"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AE224025F;
-	Mon, 13 Jan 2025 18:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF901C2457;
+	Mon, 13 Jan 2025 18:34:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793185; cv=none; b=O6feuMbLCAD6BMgxT0jRp1DcRFksajydwaEAf49DmxLhIxMTpC0Nil61eP613Kdp0xI7eCJzMpswmPNGEcvTQcPAiiXx/nYBDdDhPR/5iPXaLcKCsvVuWJkof8p7pOmGrmhQ55A3wX2+3XVQarbrMfrDS6aGWdyVTjNeATcWwtU=
+	t=1736793272; cv=none; b=Ru+5f2hC7bERH4n5nTUW/R9cTZ/8TcQBzoiQUxLhbSKHw55+2iryM0vFAVwb/Ol5urTXmUvPGuSBCgzbARYAm/Dnk2ijpDE2AEkLop6F/HRCk8bd0/LMzoK7KyrEHmg2dnXb7GlB2jGceASOgADCFnbyiKDcIrN1nGjNzfwZ+uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793185; c=relaxed/simple;
-	bh=21fLidw53ojjN6zpuTtPCwTEbbqcmGogU6ieugMHJNQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bY19/kHjvFFm2SNFkI17ao9ApCvp+oK1xv4H8j6UBggQroz3e9DSOiuReowcYRtReLwmPd6nElYJnJ4HVzIu9y90E1XQPQAQxYmkCLWAtqjOm0QuecXqqMubjfXCJxtWi3P/O1aNzXMJBjGdv4Ad5zaQKunMywj7flbxS/K5hKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QoHiOcBl; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50DCsb8j001497;
-	Mon, 13 Jan 2025 18:32:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-type:date:from:message-id:mime-version:subject:to; s=
-	qcppdkim1; bh=Y5YOAJ/JeD4pnofa3cuaSRIqBLD/9xsyiZ9wVPVgYwg=; b=Qo
-	HiOcBl+baX2rZk2toQ8eL6fz3YhY9+DDJslqUgFZZ6hADlD2JG5iZF7T6c6E6YiQ
-	R5Oi4/HsPW6SHawfZyNelm2U6TwUreTB5gcfUAI4+7FRJ56xuyXR3JnGiPV7GhlX
-	RR1s6rsVYMZua8p17JP698rmGcymP/lO+sKkMmS9DfdKhahAv3na4sHjMG5qopxS
-	kzq7tHC7afQuCgfbXiap/eUq49vDbHtLD6U+JetkR8EPZN9XpcRbMl6VDEHuBO8a
-	UgP8DRlRYPweYF0j1f+fXTJwG56Qk9KEl9Dj2/54rQhznt93jKxSh7umd8kUJdgL
-	kympfQLqUO4x5l8u9wRg==
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44538jgt6n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Jan 2025 18:32:33 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50DIWWAK020112
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Jan 2025 18:32:32 GMT
-Received: from stor-berry.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Mon, 13 Jan 2025 10:32:32 -0800
-From: "Bao D. Nguyen" <quic_nguyenb@quicinc.com>
-To: <quic_cang@quicinc.com>, <bvanassche@acm.org>, <avri.altman@wdc.com>,
-        <peter.wang@mediatek.com>, <manivannan.sadhasivam@linaro.org>,
-        <martin.petersen@oracle.com>
-CC: <linux-scsi@vger.kernel.org>, <stable@vger.kernel.org>,
-        "Bao D. Nguyen"
-	<quic_nguyenb@quicinc.com>,
-        Bean Huo <beanhuo@micron.com>, Daejun Park
-	<daejun7.park@samsung.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        open list
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 1/1] scsi: ufs: core: Fix the HIGH/LOW_TEMP Bit Definitions
-Date: Mon, 13 Jan 2025 10:32:07 -0800
-Message-ID: <69992b3e3e3434a5c7643be5a64de48be892ca46.1736793068.git.quic_nguyenb@quicinc.com>
-X-Mailer: git-send-email 2.7.4
+	s=arc-20240116; t=1736793272; c=relaxed/simple;
+	bh=kQRZmjgXyx0pLE1ZhNfiAV93WPz/Kxd2lUA0pD7TF9k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=i1sOqQXCrkiOWstSGdxWEzkOENJP6FA4AHxQudmaWUUFYxvGw1m5xkURXwrdqcLjePMBos6JNvHhPbI77RGeHhP8qdEtY3xm5pSBQAz1DVbbWoID7mXbVWbVozhargQnQvFJREIAjigd2UQuYj2uEtDWlz3ZbCC7IWCcJW95NLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SkFBd4/V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D66C4CED6;
+	Mon, 13 Jan 2025 18:34:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736793271;
+	bh=kQRZmjgXyx0pLE1ZhNfiAV93WPz/Kxd2lUA0pD7TF9k=;
+	h=From:To:Cc:Subject:Date:From;
+	b=SkFBd4/V6rPJNCWNIluT4QflNNNEyZnKpRcRdpdeoBejnv9bw446kCBmhEtNsGAeH
+	 +6GYjjVMPCdH5nG4TpQbm87M4Q1yivMPQR3Gm6VeYwSp2l4xrEVfV3Q5pvpdEWQEfb
+	 N/WqUpvFt6zXuvQb3VQ3IuJM5Wy83AupxeRz0d1ukCX53ZsHC7Jn2fA6tGEs2pwFEY
+	 n1zus4U9upyTcLmhHN5XEHOATXfXysgAjs+bUDLeyzsjxkcjzq8HOAzcagGJuiz0qr
+	 cbUL+GzDb7j4cWdOVGbr7cg8zOcLkz8wtHZG00AOkFzywKLRTp/GiWuhwmCmWTvgAL
+	 TzFQ9kXFYDpQA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Lizhi Xu <lizhi.xu@windriver.com>,
+	syzbot+985f827280dc3a6e7e92@syzkaller.appspotmail.com,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Sasha Levin <sashal@kernel.org>,
+	alex.aring@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 01/20] mac802154: check local interfaces before deleting sdata list
+Date: Mon, 13 Jan 2025 13:34:06 -0500
+Message-Id: <20250113183425.1783715-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: fSY7ZQTqWuieRlJapXuf7L5w-XQYfCs7
-X-Proofpoint-GUID: fSY7ZQTqWuieRlJapXuf7L5w-XQYfCs7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- mlxlogscore=687 clxscore=1015 adultscore=0 malwarescore=0
- priorityscore=1501 mlxscore=0 phishscore=0 spamscore=0 impostorscore=0
- suspectscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501130149
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.12.9
+Content-Transfer-Encoding: 8bit
 
-According to the UFS Device Specification, the dExtendedUFSFeaturesSupport
-defines the support for TOO_HIGH_TEMPERATURE as bit[4] and the
-TOO_LOW_TEMPERATURE as bit[5]. Correct the code to match with
-the UFS device specification definition.
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-Fixes: e88e2d322 ("scsi: ufs: core: Probe for temperature notification support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
-Reviewed-by: Avri Altman <Avri.Altman@wdc.com>
+[ Upstream commit eb09fbeb48709fe66c0d708aed81e910a577a30a ]
+
+syzkaller reported a corrupted list in ieee802154_if_remove. [1]
+
+Remove an IEEE 802.15.4 network interface after unregister an IEEE 802.15.4
+hardware device from the system.
+
+CPU0					CPU1
+====					====
+genl_family_rcv_msg_doit		ieee802154_unregister_hw
+ieee802154_del_iface			ieee802154_remove_interfaces
+rdev_del_virtual_intf_deprecated	list_del(&sdata->list)
+ieee802154_if_remove
+list_del_rcu
+
+The net device has been unregistered, since the rcu grace period,
+unregistration must be run before ieee802154_if_remove.
+
+To avoid this issue, add a check for local->interfaces before deleting
+sdata list.
+
+[1]
+kernel BUG at lib/list_debug.c:58!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 0 UID: 0 PID: 6277 Comm: syz-executor157 Not tainted 6.12.0-rc6-syzkaller-00005-g557329bcecc2 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+RIP: 0010:__list_del_entry_valid_or_report+0xf4/0x140 lib/list_debug.c:56
+Code: e8 a1 7e 00 07 90 0f 0b 48 c7 c7 e0 37 60 8c 4c 89 fe e8 8f 7e 00 07 90 0f 0b 48 c7 c7 40 38 60 8c 4c 89 fe e8 7d 7e 00 07 90 <0f> 0b 48 c7 c7 a0 38 60 8c 4c 89 fe e8 6b 7e 00 07 90 0f 0b 48 c7
+RSP: 0018:ffffc9000490f3d0 EFLAGS: 00010246
+RAX: 000000000000004e RBX: dead000000000122 RCX: d211eee56bb28d00
+RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
+RBP: ffff88805b278dd8 R08: ffffffff8174a12c R09: 1ffffffff2852f0d
+R10: dffffc0000000000 R11: fffffbfff2852f0e R12: dffffc0000000000
+R13: dffffc0000000000 R14: dead000000000100 R15: ffff88805b278cc0
+FS:  0000555572f94380(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000056262e4a3000 CR3: 0000000078496000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ __list_del_entry_valid include/linux/list.h:124 [inline]
+ __list_del_entry include/linux/list.h:215 [inline]
+ list_del_rcu include/linux/rculist.h:157 [inline]
+ ieee802154_if_remove+0x86/0x1e0 net/mac802154/iface.c:687
+ rdev_del_virtual_intf_deprecated net/ieee802154/rdev-ops.h:24 [inline]
+ ieee802154_del_iface+0x2c0/0x5c0 net/ieee802154/nl-phy.c:323
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
+ genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+ genl_rcv_msg+0xb14/0xec0 net/netlink/genetlink.c:1210
+ netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2551
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+ netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
+ netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1357
+ netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1901
+ sock_sendmsg_nosec net/socket.c:729 [inline]
+ __sock_sendmsg+0x221/0x270 net/socket.c:744
+ ____sys_sendmsg+0x52a/0x7e0 net/socket.c:2607
+ ___sys_sendmsg net/socket.c:2661 [inline]
+ __sys_sendmsg+0x292/0x380 net/socket.c:2690
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Reported-and-tested-by: syzbot+985f827280dc3a6e7e92@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=985f827280dc3a6e7e92
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/20241113095129.1457225-1-lizhi.xu@windriver.com
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/ufs/ufs.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mac802154/iface.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/ufs/ufs.h b/include/ufs/ufs.h
-index e594abe..f0c6111 100644
---- a/include/ufs/ufs.h
-+++ b/include/ufs/ufs.h
-@@ -386,8 +386,8 @@ enum {
+diff --git a/net/mac802154/iface.c b/net/mac802154/iface.c
+index c0e2da5072be..9e4631fade90 100644
+--- a/net/mac802154/iface.c
++++ b/net/mac802154/iface.c
+@@ -684,6 +684,10 @@ void ieee802154_if_remove(struct ieee802154_sub_if_data *sdata)
+ 	ASSERT_RTNL();
  
- /* Possible values for dExtendedUFSFeaturesSupport */
- enum {
--	UFS_DEV_LOW_TEMP_NOTIF		= BIT(4),
--	UFS_DEV_HIGH_TEMP_NOTIF		= BIT(5),
-+	UFS_DEV_HIGH_TEMP_NOTIF		= BIT(4),
-+	UFS_DEV_LOW_TEMP_NOTIF		= BIT(5),
- 	UFS_DEV_EXT_TEMP_NOTIF		= BIT(6),
- 	UFS_DEV_HPB_SUPPORT		= BIT(7),
- 	UFS_DEV_WRITE_BOOSTER_SUP	= BIT(8),
+ 	mutex_lock(&sdata->local->iflist_mtx);
++	if (list_empty(&sdata->local->interfaces)) {
++		mutex_unlock(&sdata->local->iflist_mtx);
++		return;
++	}
+ 	list_del_rcu(&sdata->list);
+ 	mutex_unlock(&sdata->local->iflist_mtx);
+ 
 -- 
-2.7.4
+2.39.5
 
 
