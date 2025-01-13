@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-108480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9797A0C003
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:37:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD824A0C008
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:37:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9857D163269
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:37:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE8DE166A77
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C111E491B;
-	Mon, 13 Jan 2025 18:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4032C1F8EFB;
+	Mon, 13 Jan 2025 18:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PXcqc4bq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FWWppquD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECBC1DAC90;
-	Mon, 13 Jan 2025 18:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75211F8918;
+	Mon, 13 Jan 2025 18:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793291; cv=none; b=Zu83WMNmwmAWPnL/TIf8GBkb0p25PM578cPtZhmB+LNKdoGiZtyngW7byf+9MClsDrZRzeykl4vTX0qfA1gB5M0hiJjO/iGkEz6ZwuKbjKyP6tuqqa6SMNLH13M0ghNr2+TVFLrQ+lU3GnMbgGIcqUNfg+FBeKkVDGt2RW9V+Fc=
+	t=1736793294; cv=none; b=WDJ6P5MGFCsdF61X733YT4LOZ7h8Wlm2vYF6ehQhbgtk3EPAC3ue/Jp7miiKy2N5/+QqtvIHI9sf3arh/VremMTwySfFDis3Uw+iofQ9MMX6QJMjTn9qkbaTPlmXCVvFukHYkO/4qK5VBeFcr56at3kc2GEdRrnr9LSlempUXrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793291; c=relaxed/simple;
-	bh=KNnOWt6ECsfWle5FiIRB34PUo2GPi7cdSOaQq3vhKew=;
+	s=arc-20240116; t=1736793294; c=relaxed/simple;
+	bh=XAv+jz/bkNvYNMhL/vqbGq2zVw2DJExlfEMn82bOwbU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=k+BCXgpfiY/keL8QzOMmZ2F/U8gYg7CKvz7eTVhLD7BmA4annLacBfoiMW8oWPXuly+KCNb7hZIYQ/6nngCg8eqVvZ4etvoIp45Bs+KmkuaLbzCYm21ntszvSmeQ9su228Q0m1H1bYIFmi+N0At6AlwNAOLpTwcBc+sVPF7z514=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PXcqc4bq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A3DC4CEE2;
-	Mon, 13 Jan 2025 18:34:50 +0000 (UTC)
+	 MIME-Version; b=bzbFQecHR+ScA1LmkTiwfvC7bgpY7fDUu8G7+aa84kOl156w8Z3lRHDSCJnWvUxD19sUXiVcqsfsEmg5iuH/yXcLkAgXOik6Qs2fcswQ9UUaAIcxC45HrbNJhU4TWK0BftxMlAwd5xE9b10fV/efG6E56k1PqUHAVL712JrClls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FWWppquD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E11AC4CED6;
+	Mon, 13 Jan 2025 18:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736793291;
-	bh=KNnOWt6ECsfWle5FiIRB34PUo2GPi7cdSOaQq3vhKew=;
+	s=k20201202; t=1736793293;
+	bh=XAv+jz/bkNvYNMhL/vqbGq2zVw2DJExlfEMn82bOwbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PXcqc4bqJs489wHPQ4YYpU4/stwxVznXjS7hkVWuAVAlXMvLXPobXvZu1RRnwvyL2
-	 /I3LRQjyHErg6w3pC3blfmd2N4VHLmyKWY2fPHCerwetOfSnUfwXFH1VMCHVa6zqXB
-	 QF1QQyyUa/KY6dVXa57G6xEcwcOVeK6cGdfqpeu1ba9zjlTpL6T/q2zEySF1s9W3o0
-	 dZzDFecavCBD6VN/DlNPlyhoYaO6MZ6rdx18QcOatRJPmktCMq2jC2rh9JqrDPLJrV
-	 CgORjP2wLEXK2AT281s5nBittXlp640EPeEOcTHwDiz4C40nWBfzKcuI+VfE6lZjeD
-	 kzw0rZBUHCohw==
+	b=FWWppquDDGc6ZxsNit/6BzBxgtU/KTpu9LZWlZAfbyZ3Zna3R2rEawk0Wa1gWt/ep
+	 1kppom9/SxuPUxeooDiXMwLV6EDEdrmqoD4Yt70LYxBiNaQBTdPqYO1zmv0TgFxxKK
+	 aCc909BgGPyOGJK3EwJG7Xgwl0AJVr79LXq9jQDJTLzhYqCAFlaqMpXU0L114oD3VS
+	 MFpiahNGzenY+34qvho4hMUcKablfFW+G5yBni5mRQIhCQDGCAQiNTZZq+I0kxgopo
+	 ufyWdXnPXEJnsJ4oTgOF3cQeMftfMyTBJrKdUC66fg1tnCmbxDHpZI5PQYbLPK04Py
+	 6w/9ci2G0wl5w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Koichiro Den <koichiro.den@canonical.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linus.walleij@linaro.org,
-	brgl@bgdev.pl,
-	linux-gpio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 11/20] gpio: sim: lock up configfs that an instantiated device depends on
-Date: Mon, 13 Jan 2025 13:34:16 -0500
-Message-Id: <20250113183425.1783715-11-sashal@kernel.org>
+	jhs@mojatatu.com,
+	xiyou.wangcong@gmail.com,
+	jiri@resnulli.us,
+	shuah@kernel.org,
+	horms@kernel.org,
+	karansanghvi98@gmail.com,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 12/20] selftests: tc-testing: reduce rshift value
+Date: Mon, 13 Jan 2025 13:34:17 -0500
+Message-Id: <20250113183425.1783715-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250113183425.1783715-1-sashal@kernel.org>
 References: <20250113183425.1783715-1-sashal@kernel.org>
@@ -67,92 +72,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.9
 Content-Transfer-Encoding: 8bit
 
-From: Koichiro Den <koichiro.den@canonical.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 8bd76b3d3f3af7ac2898b6a27ad90c444fec418f ]
+[ Upstream commit e95274dfe86490ec2a5633035c24b2de6722841f ]
 
-Once a sim device is instantiated and actively used, allowing rmdir for
-its configfs serves no purpose and can be confusing. Effectively,
-arbitrary users start depending on its existence.
+After previous change rshift >= 32 is no longer allowed.
+Modify the test to use 31, the test doesn't seem to send
+any traffic so the exact value shouldn't matter.
 
-Make the subsystem itself depend on the configfs entry for a sim device
-while it is in active use.
-
-Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
-Link: https://lore.kernel.org/r/20250103141829.430662-5-koichiro.den@canonical.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250103182458.1213486-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-sim.c | 48 +++++++++++++++++++++++++++++++++++------
- 1 file changed, 41 insertions(+), 7 deletions(-)
+ tools/testing/selftests/tc-testing/tc-tests/filters/flow.json | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpio/gpio-sim.c b/drivers/gpio/gpio-sim.c
-index dcca1d7f173e..deedacdeb239 100644
---- a/drivers/gpio/gpio-sim.c
-+++ b/drivers/gpio/gpio-sim.c
-@@ -1030,6 +1030,30 @@ static void gpio_sim_device_deactivate(struct gpio_sim_device *dev)
- 	dev->pdev = NULL;
- }
- 
-+static void
-+gpio_sim_device_lockup_configfs(struct gpio_sim_device *dev, bool lock)
-+{
-+	struct configfs_subsystem *subsys = dev->group.cg_subsys;
-+	struct gpio_sim_bank *bank;
-+	struct gpio_sim_line *line;
-+
-+	/*
-+	 * The device only needs to depend on leaf line entries. This is
-+	 * sufficient to lock up all the configfs entries that the
-+	 * instantiated, alive device depends on.
-+	 */
-+	list_for_each_entry(bank, &dev->bank_list, siblings) {
-+		list_for_each_entry(line, &bank->line_list, siblings) {
-+			if (lock)
-+				WARN_ON(configfs_depend_item_unlocked(
-+						subsys, &line->group.cg_item));
-+			else
-+				configfs_undepend_item_unlocked(
-+						&line->group.cg_item);
-+		}
-+	}
-+}
-+
- static ssize_t
- gpio_sim_device_config_live_store(struct config_item *item,
- 				  const char *page, size_t count)
-@@ -1042,14 +1066,24 @@ gpio_sim_device_config_live_store(struct config_item *item,
- 	if (ret)
- 		return ret;
- 
--	guard(mutex)(&dev->lock);
-+	if (live)
-+		gpio_sim_device_lockup_configfs(dev, true);
- 
--	if (live == gpio_sim_device_is_live(dev))
--		ret = -EPERM;
--	else if (live)
--		ret = gpio_sim_device_activate(dev);
--	else
--		gpio_sim_device_deactivate(dev);
-+	scoped_guard(mutex, &dev->lock) {
-+		if (live == gpio_sim_device_is_live(dev))
-+			ret = -EPERM;
-+		else if (live)
-+			ret = gpio_sim_device_activate(dev);
-+		else
-+			gpio_sim_device_deactivate(dev);
-+	}
-+
-+	/*
-+	 * Undepend is required only if device disablement (live == 0)
-+	 * succeeds or if device enablement (live == 1) fails.
-+	 */
-+	if (live == !!ret)
-+		gpio_sim_device_lockup_configfs(dev, false);
- 
- 	return ret ?: count;
- }
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/filters/flow.json b/tools/testing/selftests/tc-testing/tc-tests/filters/flow.json
+index 58189327f644..383fbda07245 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/filters/flow.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/filters/flow.json
+@@ -78,10 +78,10 @@
+         "setup": [
+             "$TC qdisc add dev $DEV1 ingress"
+         ],
+-        "cmdUnderTest": "$TC filter add dev $DEV1 parent ffff: handle 1 prio 1 protocol ip flow map key dst rshift 0xff",
++        "cmdUnderTest": "$TC filter add dev $DEV1 parent ffff: handle 1 prio 1 protocol ip flow map key dst rshift 0x1f",
+         "expExitCode": "0",
+         "verifyCmd": "$TC filter get dev $DEV1 parent ffff: handle 1 protocol ip prio 1 flow",
+-        "matchPattern": "filter parent ffff: protocol ip pref 1 flow chain [0-9]+ handle 0x1 map keys dst rshift 255 baseclass",
++        "matchPattern": "filter parent ffff: protocol ip pref 1 flow chain [0-9]+ handle 0x1 map keys dst rshift 31 baseclass",
+         "matchCount": "1",
+         "teardown": [
+             "$TC qdisc del dev $DEV1 ingress"
 -- 
 2.39.5
 
