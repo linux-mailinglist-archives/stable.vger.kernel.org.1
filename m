@@ -1,189 +1,94 @@
-Return-Path: <stable+bounces-108526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F160A0C0A9
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:49:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69DF5A0C0BA
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:51:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BABB77A2A3D
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:49:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 810301883C3A
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26881CBA18;
-	Mon, 13 Jan 2025 18:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A70918CC1D;
+	Mon, 13 Jan 2025 18:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="neUR/tsv";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JLM9iGl8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fmufhQOl"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25231CB9F0;
-	Mon, 13 Jan 2025 18:42:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9F01B87C6;
+	Mon, 13 Jan 2025 18:50:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793725; cv=none; b=lu6rw7FdP5Hk22dF2TuWF+tRWOB9Hu+N8nUIXSEZeR/xFlw6haGgepM7b+flwyGqbwyTMbg+JQ2W83elVR3KQMMg/Sy1ZixIFMJnVIkjU6FN/DUBOpSI43nlo2p2r1T8xiDiTgq/PxD2CH7WLJlh/izuvkkFQ9bipiHQngj7Qss=
+	t=1736794242; cv=none; b=mYg/pDTjdxBa+em2kz0ARROS7hS6YP/RotR4eIG1gParPtyo1FnGqauzkuc2MxaWoiXGbPjH6Or6Vr+LGOao2TzQJ+bvDFBkJSaR5A61b0+VpcQE9SE1cEXN3/JVM7C5Hr75REe+Js4FSJ8+w+7NY92Y/TUso2kZUSlnP8vdFoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793725; c=relaxed/simple;
-	bh=EOuiL0QikfTdWBcat1c1sejRHGNfuETY7FUdZbLCbZA=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=dSZJiaGdqZiUB1+pYzS8nAiSVtQ7BQIgLZBPRRh4dVpIsitYrHVpDuJPJ1/V36xSt0IDPtgoiuLfi1bZwMNTedAM8nkJDP611/O1cEdh3OtQeN6Qm7j30L+/ylarWv2T7f3lHxP682Qu3R611q2RmX62ZNxCIF0TOEKJI+jmvrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=neUR/tsv; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JLM9iGl8; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 13 Jan 2025 18:42:01 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1736793722;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n3VrjzKgEvJQLkCu9Mrne4JjBpOKpN06McNWW81axPs=;
-	b=neUR/tsvalbKcFI3DqzeLKa6el756x7q4smVkq/u9IF5uDNL/wBpeeo1Wcf2vEpkVynmKr
-	nzRhmxw/drW5AT5VqoAiDC0SSJtwbC7SuiMjvaNoIQijOystKbGke+aAzE2voVfmeJBbs6
-	dtodXd6h3n0iGXDqm6wr1AiQzD7bs5yyF7lLoDjMttLvzvuQ5tIA9cL00mG7cRjXEAyaau
-	T87n2UwjaM2VRncdcRuDYQTKVS6Hk0R2Sz++rkofoVw+FyPB69PU9vTB9OBClabpPI7RSh
-	FHYI6K7zNQz8eejBmEDy0i6Mxf5usBb0st2UjrbrbnyrjFEFveedSzG2EBkaGA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1736793722;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n3VrjzKgEvJQLkCu9Mrne4JjBpOKpN06McNWW81axPs=;
-	b=JLM9iGl8MlZcvi827gtq8xahQz616xaXAJaB2DQDBqQY76NwFXbM7XIX4mJ21GBCqWDLas
-	ywyTqxSm/Ng/xqCQ==
-From: "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/urgent] memremap: Pass down MEMREMAP_* flags to arch_memremap_wb()
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
-	#@tip-bot2.tec.linutronix.de, 6.11+@tip-bot2.tec.linutronix.de,
-	x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250113131459.2008123-2-kirill.shutemov@linux.intel.com>
-References: <20250113131459.2008123-2-kirill.shutemov@linux.intel.com>
+	s=arc-20240116; t=1736794242; c=relaxed/simple;
+	bh=LrAZrlPGdxOhIfDptSprsMHoShMe70Xq8DW+GAgdJUQ=;
+	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
+	 Subject:From:Cc:To:Date; b=rq+9bXyFSTFS9LyKUwPqouKcw2ZtOLn9L3yiT0IyQXWm3T/H6KnD2/IL9M3/BKSG+MLG2VP5Vw/Zh+wnZdrUP0lpbB3uQJqAU5jZFNTT1MFT5cwgieuYYwy+wOleZmJ1Dj68RA47FE76821LCr6W8pTKCwSTF+iVj8iFukJMLdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fmufhQOl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 900F1C4CED6;
+	Mon, 13 Jan 2025 18:50:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736794240;
+	bh=LrAZrlPGdxOhIfDptSprsMHoShMe70Xq8DW+GAgdJUQ=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=fmufhQOlz06hj3nwkWxe90yISJL1GHNmILa8Cuivr14oDoxVCyJOIRztZ/SRB6Xyg
+	 JphpTha5/V/myo4bxpLCR9aKeoHbiFic1EsCL/s5QH14N8gZh02If1aUHILNy0JYIA
+	 vjrEdqkLOhfiV9QUexRUld7uNzdGglPK0TDU5fQ74qLmYESTQK36J1p9htgvcF/ZP2
+	 wIOvGrmYidc4fNM3KR0UPvVlTETjMK/qvew6FK8O85HUwnYy172bZeptzNtp1u2PSy
+	 c7Q9yS4h6pfZGAjLVK0sUBz352Rh5vDj4C3jtVYXy3lVP6Rwymn6wcLn9NMH3BVAwu
+	 BwwKvQsj/ZZ6A==
+Message-ID: <ba25dfc40e9ae91205d61c838e368490.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173679372142.399.1486852534229781359.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250109113004.2473331-1-zhoubinbin@loongson.cn>
+References: <20250109113004.2473331-1-zhoubinbin@loongson.cn>
+Subject: Re: [PATCH v2] clk: clk-loongson2: Fix the number count of clk provider
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: Huacai Chen <chenhuacai@kernel.org>, linux-clk@vger.kernel.org, Xuerui Wang <kernel@xen0n.name>, loongarch@lists.linux.dev, Binbin Zhou <zhoubinbin@loongson.cn>, stable@vger.kernel.org, Gustavo A . R . Silva <gustavoars@kernel.org>
+To: Binbin Zhou <zhoubb.aaron@gmail.com>, Binbin Zhou <zhoubinbin@loongson.cn>, Huacai Chen <chenhuacai@loongson.cn>, Michael Turquette <mturquette@baylibre.com>, Yinbo Zhu <zhuyinbo@loongson.cn>
+Date: Mon, 13 Jan 2025 10:50:38 -0800
+User-Agent: alot/0.12.dev1+gaa8c22fdeedb
 
-The following commit has been merged into the x86/urgent branch of tip:
+Quoting Binbin Zhou (2025-01-09 03:30:04)
+> diff --git a/drivers/clk/clk-loongson2.c b/drivers/clk/clk-loongson2.c
+> index 6bf51d5a49a1..9c240a2308f5 100644
+> --- a/drivers/clk/clk-loongson2.c
+> +++ b/drivers/clk/clk-loongson2.c
+> @@ -294,7 +294,7 @@ static int loongson2_clk_probe(struct platform_device=
+ *pdev)
+>                 return -EINVAL;
+> =20
+>         for (p =3D data; p->name; p++)
+> -               clks_num++;
+> +               clks_num =3D max(clks_num, p->id + 1);
+> =20
+>         clp =3D devm_kzalloc(dev, struct_size(clp, clk_data.hws, clks_num=
+),
+>                            GFP_KERNEL);
+> @@ -309,6 +309,9 @@ static int loongson2_clk_probe(struct platform_device=
+ *pdev)
+>         clp->clk_data.num =3D clks_num;
+>         clp->dev =3D dev;
+> =20
+> +       /* Avoid returning NULL for unused id */
+> +       memset_p((void **)&clp->clk_data.hws, ERR_PTR(-ENOENT), clks_num);
 
-Commit-ID:     3663155bfb47855685ae5f0488117dcbe503eeac
-Gitweb:        https://git.kernel.org/tip/3663155bfb47855685ae5f0488117dcbe503eeac
-Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-AuthorDate:    Mon, 13 Jan 2025 15:14:58 +02:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 13 Jan 2025 15:15:13 +01:00
+This looks wrong. It's already an array of pointers, i.e. the type is
+'struct clk_hw *[]' or 'struct clk_hw **' so we shouldn't need to take
+the address of it. Should it be
 
-memremap: Pass down MEMREMAP_* flags to arch_memremap_wb()
+	memset_p((void **)clkp->clk_data.hws, ERR_PTR(-ENOENT), clks_num);
 
-The x86 version of arch_memremap_wb() needs the flags to decide if the mapping
-has be encrypted or decrypted.
-
-Pass down the flag to arch_memremap_wb(). All current implementations
-ignore the argument.
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org # 6.11+
-Link: https://lore.kernel.org/r/20250113131459.2008123-2-kirill.shutemov@linux.intel.com
----
- arch/arm/include/asm/io.h   | 2 +-
- arch/arm/mm/ioremap.c       | 2 +-
- arch/arm/mm/nommu.c         | 2 +-
- arch/riscv/include/asm/io.h | 2 +-
- kernel/iomem.c              | 5 +++--
- 5 files changed, 7 insertions(+), 6 deletions(-)
-
-diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
-index 1815748..bae5edf 100644
---- a/arch/arm/include/asm/io.h
-+++ b/arch/arm/include/asm/io.h
-@@ -381,7 +381,7 @@ void __iomem *ioremap_wc(resource_size_t res_cookie, size_t size);
- void iounmap(volatile void __iomem *io_addr);
- #define iounmap iounmap
- 
--void *arch_memremap_wb(phys_addr_t phys_addr, size_t size);
-+void *arch_memremap_wb(phys_addr_t phys_addr, size_t size, unsigned long flags);
- #define arch_memremap_wb arch_memremap_wb
- 
- /*
-diff --git a/arch/arm/mm/ioremap.c b/arch/arm/mm/ioremap.c
-index 89f1c97..748698e 100644
---- a/arch/arm/mm/ioremap.c
-+++ b/arch/arm/mm/ioremap.c
-@@ -436,7 +436,7 @@ void __arm_iomem_set_ro(void __iomem *ptr, size_t size)
- 	set_memory_ro((unsigned long)ptr, PAGE_ALIGN(size) / PAGE_SIZE);
- }
- 
--void *arch_memremap_wb(phys_addr_t phys_addr, size_t size)
-+void *arch_memremap_wb(phys_addr_t phys_addr, size_t size, unsigned long flags)
- {
- 	return (__force void *)arch_ioremap_caller(phys_addr, size,
- 						   MT_MEMORY_RW,
-diff --git a/arch/arm/mm/nommu.c b/arch/arm/mm/nommu.c
-index c415f38..279641f 100644
---- a/arch/arm/mm/nommu.c
-+++ b/arch/arm/mm/nommu.c
-@@ -251,7 +251,7 @@ void __iomem *pci_remap_cfgspace(resource_size_t res_cookie, size_t size)
- EXPORT_SYMBOL_GPL(pci_remap_cfgspace);
- #endif
- 
--void *arch_memremap_wb(phys_addr_t phys_addr, size_t size)
-+void *arch_memremap_wb(phys_addr_t phys_addr, size_t size, unsigned long flags)
- {
- 	return (void *)phys_addr;
- }
-diff --git a/arch/riscv/include/asm/io.h b/arch/riscv/include/asm/io.h
-index 1c5c641..0257f4a 100644
---- a/arch/riscv/include/asm/io.h
-+++ b/arch/riscv/include/asm/io.h
-@@ -136,7 +136,7 @@ __io_writes_outs(outs, u64, q, __io_pbr(), __io_paw())
- #include <asm-generic/io.h>
- 
- #ifdef CONFIG_MMU
--#define arch_memremap_wb(addr, size)	\
-+#define arch_memremap_wb(addr, size, flags)	\
- 	((__force void *)ioremap_prot((addr), (size), _PAGE_KERNEL))
- #endif
- 
-diff --git a/kernel/iomem.c b/kernel/iomem.c
-index dc21207..75e61c1 100644
---- a/kernel/iomem.c
-+++ b/kernel/iomem.c
-@@ -6,7 +6,8 @@
- #include <linux/ioremap.h>
- 
- #ifndef arch_memremap_wb
--static void *arch_memremap_wb(resource_size_t offset, unsigned long size)
-+static void *arch_memremap_wb(resource_size_t offset, unsigned long size,
-+			      unsigned long flags)
- {
- #ifdef ioremap_cache
- 	return (__force void *)ioremap_cache(offset, size);
-@@ -91,7 +92,7 @@ void *memremap(resource_size_t offset, size_t size, unsigned long flags)
- 		if (is_ram == REGION_INTERSECTS)
- 			addr = try_ram_remap(offset, size, flags);
- 		if (!addr)
--			addr = arch_memremap_wb(offset, size);
-+			addr = arch_memremap_wb(offset, size, flags);
- 	}
- 
- 	/*
+? It's unfortunate that we have to cast here, but I guess this is the
+best way we can indicate that the type should be an array of pointers.
 
