@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-108537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1064A0C531
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 00:09:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 363F1A0C535
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 00:09:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDA27165A6F
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 23:09:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A91861886148
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 23:09:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83EAA1F9F5F;
-	Mon, 13 Jan 2025 23:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6602A1FA15D;
+	Mon, 13 Jan 2025 23:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZYoJU6r5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jH9NIKrh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2C01FA15D
-	for <stable@vger.kernel.org>; Mon, 13 Jan 2025 23:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBF11F9F50
+	for <stable@vger.kernel.org>; Mon, 13 Jan 2025 23:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736809739; cv=none; b=bLdlD+Mh1q2IUEKkqKC16WznOgPkSjRkG9cV0c7GUsJMxq16ZBVOP4kNzMKGktrHpNTZ7lpeIkkcuWUrmXTzesDsJP8bR2moV5ceqcBi+33zcQGva8rf/2pBjB33uWpPHeBQNycwFyjnHElEENxbgQzkhDrPIQV6P0B2sFJvGao=
+	t=1736809741; cv=none; b=Iy1ZeOcj84HXAUdVvfl7QC72moS4BoT+Iosme1/I71YAU3yn9AnrIHZ8X6/HN8UP1i9YLCq9d+xJPpUDqiUQSxqA3B67rCnqFJd1RGT0Yh1DzOZ5QNRNpjxDOQ1pks+43IstbwS0ENpBseaQaZn+AN49mcPRW/IzK2gUB0MG1DE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736809739; c=relaxed/simple;
-	bh=tShjpp39Ve+NxUDA/CSe2L1CLO+UEMz9mbcN7D/xmqQ=;
+	s=arc-20240116; t=1736809741; c=relaxed/simple;
+	bh=5NsW0Qze5uL8M04ft4IwPBHk19aZ0ctccCl4uGlKdzo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jFI0odJNZhZpV7ujUIv5QJlGsrAs/0v70JxR3qgSCvexBLE4EDGgbada6G2p79XG6CYwHYI7JEU5nATZsKTg/cwtPjhRvqT8qVhWCCJMVjZAxWvG8jH+x9iTAfy6eBjp23XcDjFWt26vnbJ99cS4XJxvX0PrnJwT2K6P5Tf4rH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZYoJU6r5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B39C4CED6;
-	Mon, 13 Jan 2025 23:08:58 +0000 (UTC)
+	 MIME-Version; b=e3kQFU+lPhLgGawvUfJ5KDdXzeA77JIP7t58JXzd8P3KuOna7daZb9ec4ztK9WPA0RscNObI9UwPOd4cURGZcWtklQaJJEWN7nOKNSD5BI8+6R6IMJKEg0GD/H4A5et2j12KSKOlenAesK7Q4KZ6WbcuM/IodBqfhdlGaqJmIww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jH9NIKrh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BBCC4CED6;
+	Mon, 13 Jan 2025 23:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736809738;
-	bh=tShjpp39Ve+NxUDA/CSe2L1CLO+UEMz9mbcN7D/xmqQ=;
+	s=k20201202; t=1736809740;
+	bh=5NsW0Qze5uL8M04ft4IwPBHk19aZ0ctccCl4uGlKdzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZYoJU6r57xP0W3le0MUU5ZJOs0OqRTH7hmgCj55Y2rkh90IxywBs2r8aedf/xWrro
-	 MGtc0bzcjB6F8l0MFIqrs/XV2k/JSkAkg/4D0emMhEeJilXDd7qyn1d3bB/ul1u5eM
-	 pp+SVI1nOP77YWkMfY1VgCwkbFbLt4UHScNpSGRVPIlCZ8afbkiOFVqpdAFYsvwqhi
-	 6r8qeJp6vy6TxC8o7c/s+v5UKju7YF+w+n92uTjz5N8LCqybJ5+AqY+T6snbUoDFzD
-	 bZSZ0s21hPCUgNTVXD6zB5Mw6XRL+Kr1uiem7ms7Ykby2KemEZ9QKsrsfGTENBAjcP
-	 ySnWR/WGeiOew==
+	b=jH9NIKrhHpaM2heM+CnmEc3ZdiWgR5aFYqEVq0uSjY2Q0pt83YDlOLgmakwy+IRf9
+	 ha68YT02onzaq2fdDDiY9xDl1mqZw32Ic1roqVPA0kWiyNpMzGmPLkmRnuIKUj+iXE
+	 d6zlPleHNJ4oysy4uk3Tqo1b7pPjzJEQ7WfWWCoNAVAHY+007OfuUxG+ncikEGywKi
+	 V/1hQHAmgVL732NC3sm36SpglkuVKU+tcnxd6dagfGhYwAHoaQch4TPCmi55bGGhLf
+	 XAvMnv4IKu7ye06g8zwlRXqJSnztJLayU+qv5ZFGmkd1o/t+G5UUv3UOpEC9K0vSMU
+	 C36H07pvUR0Wg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: alvalan9@foxmail.com,
+Cc: inv.git-commit@tdk.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y] scsi: sg: Fix slab-use-after-free read in sg_release()
-Date: Mon, 13 Jan 2025 18:08:56 -0500
-Message-Id: <20250113154914-d677dbd3643494e5@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y v2] iio: imu: inv_icm42600: fix spi burst write not supported
+Date: Mon, 13 Jan 2025 18:08:58 -0500
+Message-Id: <20250113160218-5fada1e1b69a8ede@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <tencent_F25BABE1B0C2A434C8D316D5147CD849FE0A@qq.com>
+In-Reply-To:  <20250113134351.378484-1-inv.git-commit@tdk.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,45 +63,58 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: f10593ad9bc36921f623361c9e3dd96bd52d85ee
+Found matching upstream commit: c0f866de4ce447bca3191b9cefac60c4b36a7922
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: alvalan9@foxmail.com
-Commit author: Suraj Sonawane<surajsonawane0215@gmail.com>
+WARNING: Author mismatch between patch and found commit:
+Backport author: inv.git-commit@tdk.com
+Commit author: Jean-Baptiste Maneyrol<jean-baptiste.maneyrol@tdk.com>
 
 
 Status in newer kernel trees:
-6.12.y | Present (different SHA1: 1f5e2f1ca587)
-6.6.y | Present (different SHA1: 59b30afa5786)
+6.12.y | Not found
+6.6.y | Not found
 6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  f10593ad9bc3 ! 1:  7c77aeeb186d scsi: sg: Fix slab-use-after-free read in sg_release()
-    @@ Metadata
-      ## Commit message ##
-         scsi: sg: Fix slab-use-after-free read in sg_release()
-     
-    +    commit f10593ad9bc36921f623361c9e3dd96bd52d85ee upstream.
-    +
-         Fix a use-after-free bug in sg_release(), detected by syzbot with KASAN:
-     
-         BUG: KASAN: slab-use-after-free in lock_release+0x151/0xa30
+1:  c0f866de4ce4 ! 1:  a497cfdda85c iio: imu: inv_icm42600: fix spi burst write not supported
     @@ Commit message
-         Link: https://lore.kernel.org/r/20241120125944.88095-1-surajsonawane0215@gmail.com
-         Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-         Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-    +    Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+         Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+         Link: https://patch.msgid.link/20241112-inv-icm42600-fix-spi-burst-write-not-supported-v2-1-97690dc03607@tdk.com
+         Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+    +    (cherry picked from commit c0f866de4ce447bca3191b9cefac60c4b36a7922)
      
-      ## drivers/scsi/sg.c ##
-     @@ drivers/scsi/sg.c: sg_release(struct inode *inode, struct file *filp)
-    - 	SCSI_LOG_TIMEOUT(3, sg_printk(KERN_INFO, sdp, "sg_release\n"));
+      ## drivers/iio/imu/inv_icm42600/inv_icm42600.h ##
+    -@@ drivers/iio/imu/inv_icm42600/inv_icm42600.h: struct inv_icm42600_sensor_state {
+    +@@ drivers/iio/imu/inv_icm42600/inv_icm42600.h: struct inv_icm42600_state {
+      typedef int (*inv_icm42600_bus_setup)(struct inv_icm42600_state *);
       
-      	mutex_lock(&sdp->open_rel_lock);
-    + 	scsi_autopm_put_device(sdp->device);
-     -	kref_put(&sfp->f_ref, sg_remove_sfp);
-      	sdp->open_cnt--;
+      extern const struct regmap_config inv_icm42600_regmap_config;
+    @@ drivers/iio/imu/inv_icm42600/inv_icm42600.h: struct inv_icm42600_sensor_state {
+      ## drivers/iio/imu/inv_icm42600/inv_icm42600_core.c ##
+     @@ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c: const struct regmap_config inv_icm42600_regmap_config = {
+      };
+    - EXPORT_SYMBOL_NS_GPL(inv_icm42600_regmap_config, "IIO_ICM42600");
+    + EXPORT_SYMBOL_GPL(inv_icm42600_regmap_config);
       
+     +/* define specific regmap for SPI not supporting burst write */
+     +const struct regmap_config inv_icm42600_spi_regmap_config = {
+    -+	.name = "inv_icm42600",
+     +	.reg_bits = 8,
+     +	.val_bits = 8,
+     +	.max_register = 0x4FFF,
+     +	.ranges = inv_icm42600_regmap_ranges,
+     +	.num_ranges = ARRAY_SIZE(inv_icm42600_regmap_ranges),
+    -+	.volatile_table = inv_icm42600_regmap_volatile_accesses,
+    -+	.rd_noinc_table = inv_icm42600_regmap_rd_noinc_accesses,
+    -+	.cache_type = REGCACHE_RBTREE,
+     +	.use_single_write = true,
+     +};
+    -+EXPORT_SYMBOL_NS_GPL(inv_icm42600_spi_regmap_config, "IIO_ICM42600");
+    ++EXPORT_SYMBOL_GPL(inv_icm42600_spi_regmap_config);
+     +
+      struct inv_icm42600_hw {
+      	uint8_t whoami;
 ---
 
 Results of testing on various branches:
