@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-108514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F62A0C074
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:45:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F187FA0C076
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:45:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 463B67A4B2A
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:45:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 716C8163612
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:45:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE3C219A78;
-	Mon, 13 Jan 2025 18:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4825F21E0A6;
+	Mon, 13 Jan 2025 18:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cDkggtC6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CjHQprCl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A2D2135D6;
-	Mon, 13 Jan 2025 18:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0602C21D5A4;
+	Mon, 13 Jan 2025 18:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793375; cv=none; b=RlcuLoxwop1RunsjhsNJKOv4uInbbDv0lPdhwdaXUqEl4WzbVjidrFSvuGLsCG6M/MXNMgfX9FI5Lu5V8tjupH0/OVpekgncDS+7GbuNQsQlelPT7L3HePLRXiB4dSk7H9iNkpDZt8m8ujvv3QxqOxT904/OkCrUDv4dBtXsu40=
+	t=1736793379; cv=none; b=LNRV7BPDTsg69wyDMMyZ0WD5oUEGCaDLcRTURgMmWizyafhr94abC1oauC9Bj7HDNLjDs9DTq/mNrPZTmGG+B9pX+DGR/IozU7iKyJW5F8K9pzDUpAk4j2fnmXqTbS5zpolSHQBjwx4W6dhMNumxvrhIpJUcAEjU7f27ukaVYJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793375; c=relaxed/simple;
-	bh=iqF5Y0hzfDuFpyrJty+HD/GCtVD034ZcIEYI4gBz1Vk=;
+	s=arc-20240116; t=1736793379; c=relaxed/simple;
+	bh=HbtvBeIcZy2P32mTLCcMuGA1L+t+DPjp5Ry6smyZ6KQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dh8xeeW1UBRdv0MxjuE0EqxkFoeHgGFJ6BqzsvgTMJ+3Se2CEEljuJ5p8RDxGwZt4Z1LtyMv+RgY35N0g37iSUgP4KfiFrnddDiu/0WRp2n4nlw9X7Upkf6M+oa/UZY+UpAiOLHFpy6L7fg1LkSP6N+T5UYLwkN/sabMhHG/5+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cDkggtC6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0DD8C4CED6;
-	Mon, 13 Jan 2025 18:36:14 +0000 (UTC)
+	 MIME-Version; b=oY3B6ReqZwc8b9tps0/Vbsi/CQBe3b6DMQStK73eyrLFGkrCr7qeuNEAaV8sXmM0SFCixJp5/i4f1B5DyIInDGX/7kXffyTTQZQxBmcuQBHDIwqfk30+PnQTrP3pM6lr6k5cLHYShK+NClpkFP9gpgLq3SKGaP1Qt7NGUZWKPoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CjHQprCl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2FC0C4CED6;
+	Mon, 13 Jan 2025 18:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736793375;
-	bh=iqF5Y0hzfDuFpyrJty+HD/GCtVD034ZcIEYI4gBz1Vk=;
+	s=k20201202; t=1736793378;
+	bh=HbtvBeIcZy2P32mTLCcMuGA1L+t+DPjp5Ry6smyZ6KQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cDkggtC6Z9XqfLsStEPbVuldBvPquZ7jnCHoobxW/VgIBikY9V1XmXcP6ElgQovYg
-	 7UNQS2Q3MxPqlIFiCiAWT+D3/TlxUljIWAdHcWYK/H0503josB2bGLllGO4hjP6DJE
-	 zRuhBFr+u3qUgQ6Kuawwjg5RIYkpc77Vwj6pLrK0t3JDWQWGlcwVUF41tAv0V1T4tL
-	 pqj/aDAIkcd/N0lyVvSIc8csPpMxn8nNWaefla2YCjvUiCZIZL+o0iMe021Ok10gzb
-	 Smupq/8yTfWjCGXZ1O650piB3rYDObzl0DztsIFuU/qUj5Z1lC8khCcWuMS7fJkN0N
-	 XZ3STFOJr5Baw==
+	b=CjHQprClDk3P2QobjgP0cQnm7/JcfkmyEw2KG3R1DspEADOtLHqPhBiMOvhBqJm2G
+	 nT16WhRBgai2WTAbEjkcm8hW2NrLMbdjxIF9XvkdSFwFfFtVzxzpQnl7LRGDmTssWp
+	 QY58XttXPQu3D2RXZSJr5uhEbiWaA0HPCUXL8jmXPNu1giiG9lB3swepM5GpI1D00U
+	 G5QOpOucQdCwgW6ICQT4Jm+FLCPx4E5qXwOo4tI+F4uqgFhQ08Ek7lJcxU/RKFlKBv
+	 GlwHygxTwxBg5z6dTStessgho4/jQdKawP31ILtKVwCPykxkqa0MF6jffCmCKdbvmN
+	 GZPWv1yAKkl7g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 5/6] ACPI: resource: acpi_dev_irq_override(): Check DMI match last
-Date: Mon, 13 Jan 2025 13:35:59 -0500
-Message-Id: <20250113183601.1784402-5-sashal@kernel.org>
+	ak@linux.intel.com,
+	jack@suse.cz,
+	kees@kernel.org,
+	arnd@arndb.de
+Subject: [PATCH AUTOSEL 5.15 6/6] poll_wait: add mb() to fix theoretical race between waitqueue_active() and .poll()
+Date: Mon, 13 Jan 2025 13:36:00 -0500
+Message-Id: <20250113183601.1784402-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250113183601.1784402-1-sashal@kernel.org>
 References: <20250113183601.1784402-1-sashal@kernel.org>
@@ -67,46 +68,64 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.176
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit cd4a7b2e6a2437a5502910c08128ea3bad55a80b ]
+[ Upstream commit cacd9ae4bf801ff4125d8961bb9a3ba955e51680 ]
 
-acpi_dev_irq_override() gets called approx. 30 times during boot (15 legacy
-IRQs * 2 override_table entries). Of these 30 calls at max 1 will match
-the non DMI checks done by acpi_dev_irq_override(). The dmi_check_system()
-check is by far the most expensive check done by acpi_dev_irq_override(),
-make this call the last check done by acpi_dev_irq_override() so that it
-will be called at max 1 time instead of 30 times.
+As the comment above waitqueue_active() explains, it can only be used
+if both waker and waiter have mb()'s that pair with each other. However
+__pollwait() is broken in this respect.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20241228165253.42584-1-hdegoede@redhat.com
-[ rjw: Subject edit ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+This is not pipe-specific, but let's look at pipe_poll() for example:
+
+	poll_wait(...); // -> __pollwait() -> add_wait_queue()
+
+	LOAD(pipe->head);
+	LOAD(pipe->head);
+
+In theory these LOAD()'s can leak into the critical section inside
+add_wait_queue() and can happen before list_add(entry, wq_head), in this
+case pipe_poll() can race with wakeup_pipe_readers/writers which do
+
+	smp_mb();
+	if (waitqueue_active(wq_head))
+		wake_up_interruptible(wq_head);
+
+There are more __pollwait()-like functions (grep init_poll_funcptr), and
+it seems that at least ep_ptable_queue_proc() has the same problem, so the
+patch adds smp_mb() into poll_wait().
+
+Link: https://lore.kernel.org/all/20250102163320.GA17691@redhat.com/
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20250107162717.GA18922@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/linux/poll.h | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 0433ab8ced0d..9bae5c473cf0 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -648,11 +648,11 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
- 	for (i = 0; i < ARRAY_SIZE(override_table); i++) {
- 		const struct irq_override_cmp *entry = &override_table[i];
+diff --git a/include/linux/poll.h b/include/linux/poll.h
+index 7e0fdcf905d2..a4af5e14dffe 100644
+--- a/include/linux/poll.h
++++ b/include/linux/poll.h
+@@ -43,8 +43,16 @@ typedef struct poll_table_struct {
  
--		if (dmi_check_system(entry->system) &&
--		    entry->irq == gsi &&
-+		if (entry->irq == gsi &&
- 		    entry->triggering == triggering &&
- 		    entry->polarity == polarity &&
--		    entry->shareable == shareable)
-+		    entry->shareable == shareable &&
-+		    dmi_check_system(entry->system))
- 			return entry->override;
- 	}
+ static inline void poll_wait(struct file * filp, wait_queue_head_t * wait_address, poll_table *p)
+ {
+-	if (p && p->_qproc && wait_address)
++	if (p && p->_qproc && wait_address) {
+ 		p->_qproc(filp, wait_address, p);
++		/*
++		 * This memory barrier is paired in the wq_has_sleeper().
++		 * See the comment above prepare_to_wait(), we need to
++		 * ensure that subsequent tests in this thread can't be
++		 * reordered with __add_wait_queue() in _qproc() paths.
++		 */
++		smp_mb();
++	}
+ }
  
+ /*
 -- 
 2.39.5
 
