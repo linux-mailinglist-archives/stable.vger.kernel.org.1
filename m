@@ -1,159 +1,132 @@
-Return-Path: <stable+bounces-108380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20639A0B260
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 10:07:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE21A0B2A8
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 10:24:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5F6D3A594B
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 09:07:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 606071885CE6
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 09:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE47233D93;
-	Mon, 13 Jan 2025 09:07:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RW/FiS7J"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1837323A56B;
+	Mon, 13 Jan 2025 09:24:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94875234978
-	for <stable@vger.kernel.org>; Mon, 13 Jan 2025 09:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158DD22F19;
+	Mon, 13 Jan 2025 09:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736759266; cv=none; b=tvyGe0y7ptCUuSrOJCIAr/+rkV4afGBiaUvGzCkIpe/uaiuzWT5JzrL+ZlDm6Heb71cqnhnck9ebyhkR/wk3+4QyxeUZyT3pvZq1vL5KX3hGVTXf8koI12OaW25Hzvr1HsDGYlE/47AIABNNSWrv/cNsWT8BwLh849gvytv+cXo=
+	t=1736760265; cv=none; b=fi4omSOKVU5+4JaCwq4liMa5bOCRZ2rIk1KmcS0OoZXiANIg7o03s1b3V7lUGRHfdM1D9sO3cBUQNw5nH3yqnlyJmIDNk41mkIa9+PmkisqLkqM4dkw73uVymxib2f+hcC3VZQ/MJKN2H3UncyvLVL5XXVto5/w+hDGIHAmgvNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736759266; c=relaxed/simple;
-	bh=6yDyyW0a6Ly6O8248teCrbgEXbOE+SVqdnWMzK9oNwQ=;
+	s=arc-20240116; t=1736760265; c=relaxed/simple;
+	bh=84bvFb6cD3GLpZUptbdmF7YOn8xMF2nDELR6ofKX8hM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HjW8RW6kftK0GeAne6qrpF8Wpagu7wsbDVMdAoHLpzgw/4Z1GYWo0odLwlKSqmAgtIOkxz/aPGqPYGfhyxwPO24UoTJkFxdv3dJ+cwL/tUh7NhmMr8g1DlP/9RTqN3CtDCsFk4uzF3m2jJdGCtkdTgsv0nQF+cFwGkMMlCIud+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RW/FiS7J; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736759263;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DoCA3mgR5luSoFMglhHAYVKxgoy3EGwdMDnuXoKHBSs=;
-	b=RW/FiS7JhOnfjz9issLDEwrlrPppiFOHZzCkLS/ndVcNAHn88PbQZa8UhD8TCJOacLSpW4
-	0BhTATgGw93u/JZXTcmfybTnJUqkWyTXG4e9PSQUuvglUtax0fk+jNBRr6jSaT8QXBkPIs
-	tUbQBEpOCy8mHbAh0LBhroYJmazB3kg=
-Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
- [209.85.219.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-624-3wmk4NxhNmmUTF54MZ5dog-1; Mon, 13 Jan 2025 04:07:42 -0500
-X-MC-Unique: 3wmk4NxhNmmUTF54MZ5dog-1
-X-Mimecast-MFC-AGG-ID: 3wmk4NxhNmmUTF54MZ5dog
-Received: by mail-yb1-f200.google.com with SMTP id 3f1490d57ef6-e572cd106f7so5384977276.3
-        for <stable@vger.kernel.org>; Mon, 13 Jan 2025 01:07:42 -0800 (PST)
+	 To:Cc:Content-Type; b=W5lvfCUYdJ7Ksk9x2jkHDIFZcLsW15Ado5NQvDIrvsGasisjDA+8DE1hkE1wI1v5LSnpL2ULP7JihPHMSEuFZds2XlJ/U4YKciW55eV+JkWX6y2wPcOL5lku8mf+vNk0ahR6D8yacYCHfsA5DH3+5YLLGorjLj339uDHT+Lkhro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-85bc5d0509bso952445241.1;
+        Mon, 13 Jan 2025 01:24:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736759262; x=1737364062;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DoCA3mgR5luSoFMglhHAYVKxgoy3EGwdMDnuXoKHBSs=;
-        b=UhDXhbLy/zWZPiyi2wyVLC97jHNWQMUpaSxKCH4K47Xi0zi9IzQoeXJXuezF8p+ZHA
-         mxhW4eAzpakRCgkqYcPNKvWpV1HIK5g3QRa6HkuUHBdrUge3TPdY9kt9xLnStn7iU0L2
-         Jj1DTo5eGt2QrXjxrZcThVqpu8lAcrjj20PR6CKOHlej9eLpzWVVHpQEBRjVXmN6OiYu
-         9K2HQxrfo+7meqQ7E67VZ6foAsBCTiHqFMv3TqA+a1xD+df5dLECIYrvEJ0potoIDpDq
-         NVyWSXYO8skRRGFXF14fXQDF2KjvggRxI1fLIH+oP29MZN2doeXGh3VDTsnWIumkeBjs
-         CREA==
-X-Forwarded-Encrypted: i=1; AJvYcCXY3HqC1HSO6ujfYifqjxuaCjTvQrQZ8EtsMeFuM9d+1DuXfqKDPRf2k/bw5iZoCotv1lguyBI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxE4pRGIbRTY0JhEmr4DSdySgclmX5YoZUTfcBQrochaTJXTQiN
-	8EIldXw+haHXIwsAlgd0C29O88Rs6g4iwAoU3YK6z8rGx9DIaYQYA5lzHFq/UfB1JV2xK7y0eIP
-	GpLFu+Uj6E1zU88B2OhZHNXJLlHpyJLVq5o9FVPq4U5qIESKKt7dFmr9JoSYA8iI1UQzDI/RSnB
-	qJchRpa9QTWuJQtKlpHb8XyIEbKbYo
-X-Gm-Gg: ASbGncsyQf92XBIWa1oaWgnc53CTRR22DVWOpiHBZC63xxUEVUI6MHC/iBN7mMH2FWO
-	7SsKD6ptlZmseJ9RoG3rh84t8tlNtlHDMMSkEKQ==
-X-Received: by 2002:a25:2104:0:b0:e47:f4e3:87e3 with SMTP id 3f1490d57ef6-e54edf25ca4mr10705873276.11.1736759261777;
-        Mon, 13 Jan 2025 01:07:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH+CmZ1v9e/WbMUz4yhx1sfIQirqoiE0T/w4GOD49eFf+cvd2Qrlw+zoWAPzA/qokVRzziYFs0iIh6kdpyEqho=
-X-Received: by 2002:a25:2104:0:b0:e47:f4e3:87e3 with SMTP id
- 3f1490d57ef6-e54edf25ca4mr10705852276.11.1736759261303; Mon, 13 Jan 2025
- 01:07:41 -0800 (PST)
+        d=1e100.net; s=20230601; t=1736760262; x=1737365062;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kYZ4TIeu11XIguoy+lnYJTPraqx664zEMCZSQ2GxQKc=;
+        b=VsWzwbqPI2GB6K3AIEvaCWjLoIqSt4d8484GTZAyp/gLDHMPrFY1oaz4C3iPTDuce/
+         KKk27v/5cmokVJf1BuuMsu7/PM5ZYw3bZj6VFdYbIfGMsFQC0UQF8tiwNoXsMM+ugvyq
+         18xUB+Jd1WmQxdvy7bPyjmF3nS2iaR354VRxIAngjym06WKIwT6sgdSiG83/T0gC6iRN
+         qGnxlOuzdG+c/48gAo+otfU+0SqFybO/F6D/EC2h3kaBtkgNxN23FBx+HgVOIjkhRioh
+         Dk2GOJss0RIekep0Vn7FXSuaX44jq5NE8mV3OjnYmPZ0V20r9255jc4Rfjsbf2v8l5fd
+         X/EQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVc0B/Romia4+O5NxTdVSUp89q5QAdB3H8gz0YchgckHo9tjJo9M8tdXKmPt+dQlUq3WWLhwQ3mVcE65KGQ@vger.kernel.org, AJvYcCX5FBSzLdygQ5pvEFuxKKczVO7j00ufg1Y83VJD0OTsTha2kXiHk98MOa2rbxNkro5TbvkPEFE7XEh002xHXkwceCU=@vger.kernel.org, AJvYcCXjR0lTildetcPq6kK43xzXd8SX5T5vTTCvU7EvUdJd2XES0ftCm5Zd3EJfgRXuahbphyYSrTu7xY/T@vger.kernel.org, AJvYcCXmImnHQKyB9j+wzY/8Qmq6UFj4sRmwjpILxUSfp9+2mbhroGdZlkuH0okJuUFfO5rzj9zbpsMC@vger.kernel.org
+X-Gm-Message-State: AOJu0YwY/GNS3/GIScMT5X/WHhTADkcGtb7RRFekBiLrGzKVD4KkvH+C
+	i8JUQ59vhYTma+cdmL/vqLSqmWSbKhEc45LMuPLKk8ODS/nvUGIF5ZFCC2ZI
+X-Gm-Gg: ASbGncvudrGyp9fkjjlQMDCnVahGh6/qQhce1ORSLh5Cznf4EswX205TFhJ+8rflr4X
+	niJioXa9g/nnb9vZCr4S5dgH0/7jyLjtgxMLWAvi8LobkOu1kjmH1J2KjCIIHm6hp7EXWDAFWm5
+	pqbURvIXOs+T8CvX5YLUHdS8SAXFllceGr2TzUkCvf+g7ddGsnFCCbjHc3XeDoSqRreC20GGHpv
+	0iKt2c3HL43C/7gV1CC/A4D6jlSJ+5DsOleVfMZ21uCzvk+8Fm9balFBVfYk4DHsb26jz2sxpqO
+	hKORUPaRCaUa/4byS0c=
+X-Google-Smtp-Source: AGHT+IGYVy5ZX0kEmJ99FdTEiEGnhnakzJvC/hNJ82OXQhJgDuvBZcJMpl6cOu05qaiv0uWM9BT2Wg==
+X-Received: by 2002:a05:6102:509f:b0:4b2:bc6b:c845 with SMTP id ada2fe7eead31-4b3d0d763b1mr15360629137.6.1736760262196;
+        Mon, 13 Jan 2025 01:24:22 -0800 (PST)
+Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com. [209.85.217.52])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-8623134c6f8sm4646377241.4.2025.01.13.01.24.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Jan 2025 01:24:22 -0800 (PST)
+Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-4afde39e360so1360359137.0;
+        Mon, 13 Jan 2025 01:24:22 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUUvhsk1lWs07ojEJuiHoCthDx5xox1wD2BKALmHU3sxO2AviCOgloEfpn5UfVG3gOUU6RPXMKP@vger.kernel.org, AJvYcCWhFW8nLq/OC/8LyuWfecGGEujgc6Pe50IssrswpgPpSkVhro6OY2AE+W+D1wwHa9IjUaYJomy5lUqW@vger.kernel.org, AJvYcCWy6ld4sahUFa4VJ76/VbGhbWVD0FIrESsd6+Rzbl+lC8S6pkg5A3zLOU+aRPSqLefgb44tu2R8SB8nVW/N@vger.kernel.org, AJvYcCXokAZMoyjxWrBwOsxrY3nND8W0dm7PpPJo/4od9+SM3uvDHQ4tUBMHNb1gXsFQ0rUpp48zMZvdGQoHNV+YxIlD42k=@vger.kernel.org
+X-Received: by 2002:a05:6102:8017:b0:4b4:3a28:6491 with SMTP id
+ ada2fe7eead31-4b43a286656mr17964850137.25.1736760261906; Mon, 13 Jan 2025
+ 01:24:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250110083511.30419-1-sgarzare@redhat.com> <20250110083511.30419-2-sgarzare@redhat.com>
- <1aa83abf-6baa-4cf1-a108-66b677bcfd93@rbox.co> <nedvcylhjxrkmkvgugsku2lpdjgjpo5exoke4o6clxcxh64s3i@jkjnvngazr5v>
-In-Reply-To: <nedvcylhjxrkmkvgugsku2lpdjgjpo5exoke4o6clxcxh64s3i@jkjnvngazr5v>
-From: Stefano Garzarella <sgarzare@redhat.com>
-Date: Mon, 13 Jan 2025 10:07:30 +0100
-X-Gm-Features: AbW1kvaVe4-Ehu2H7XpdFvk6JHj69SbGoUvKX4WzH9KRTtiYmUqWFms2gAxG3cY
-Message-ID: <CAGxU2F7BoMNi-z=SHsmCV5+99=CxHo4dxFeJnJ5=q9X=CM3QMA@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/5] vsock/virtio: discard packets if the transport changes
-To: Michal Luczaj <mhal@rbox.co>
-Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, bpf@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Luigi Leonardi <leonardi@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, Wongi Lee <qwerty@theori.io>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Eric Dumazet <edumazet@google.com>, kvm@vger.kernel.org, 
-	Paolo Abeni <pabeni@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, Simon Horman <horms@kernel.org>, Hyunwoo Kim <v4bel@theori.io>, 
-	Jakub Kicinski <kuba@kernel.org>, virtualization@lists.linux.dev, 
-	Bobby Eshleman <bobby.eshleman@bytedance.com>, stable@vger.kernel.org
+References: <20250110221045.594596-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+In-Reply-To: <20250110221045.594596-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 13 Jan 2025 10:24:10 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdUGbxJGCZB8U2CJ5cj6QBx2GqXt-Pp6czWNaq=45bOw8w@mail.gmail.com>
+X-Gm-Features: AbW1kvZg6d7Xxpj2ymrdwlth7H82qDIqd7wLoyU9raVAPvQzpgvyCJe9tRi-BY0
+Message-ID: <CAMuHMdUGbxJGCZB8U2CJ5cj6QBx2GqXt-Pp6czWNaq=45bOw8w@mail.gmail.com>
+Subject: Re: [PATCH v2] pinctrl: renesas: rzg2l: Update PFC_MASK to align with
+ RZ/V2H requirements
+To: Prabhakar <prabhakar.csengg@gmail.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, linux-renesas-soc@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Biju Das <biju.das.jz@bp.renesas.com>, 
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 13 Jan 2025 at 09:57, Stefano Garzarella <sgarzare@redhat.com> wrote:
-> On Sun, Jan 12, 2025 at 11:42:30PM +0100, Michal Luczaj wrote:
-
-[...]
-
-> >
-> >So, if I get this right:
-> >1. vsock_create() (refcnt=1) calls vsock_insert_unbound() (refcnt=2)
-> >2. transport->release() calls vsock_remove_bound() without checking if sk
-> >   was bound and moved to bound list (refcnt=1)
-> >3. vsock_bind() assumes sk is in unbound list and before
-> >   __vsock_insert_bound(vsock_bound_sockets()) calls
-> >   __vsock_remove_bound() which does:
-> >      list_del_init(&vsk->bound_table); // nop
-> >      sock_put(&vsk->sk);               // refcnt=0
-> >
-> >The following fixes things for me. I'm just not certain that's the only
-> >place where transport destruction may lead to an unbound socket being
-> >removed from the unbound list.
-> >
-> >diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> >index 7f7de6d88096..0fe807c8c052 100644
-> >--- a/net/vmw_vsock/virtio_transport_common.c
-> >+++ b/net/vmw_vsock/virtio_transport_common.c
-> >@@ -1303,7 +1303,8 @@ void virtio_transport_release(struct vsock_sock *vsk)
-> >
-> >       if (remove_sock) {
-> >               sock_set_flag(sk, SOCK_DONE);
-> >-              virtio_transport_remove_sock(vsk);
-> >+              if (vsock_addr_bound(&vsk->local_addr))
-> >+                      virtio_transport_remove_sock(vsk);
+On Fri, Jan 10, 2025 at 11:10=E2=80=AFPM Prabhakar <prabhakar.csengg@gmail.=
+com> wrote:
+> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 >
-> I don't get this fix, virtio_transport_remove_sock() calls
->    vsock_remove_sock()
->      vsock_remove_bound()
->        if (__vsock_in_bound_table(vsk))
->            __vsock_remove_bound(vsk);
+> The PFC_MASK value for the PFC_mx register was previously hardcoded as
+> `0x07`, which is correct for SoCs in the RZ/G2L family but insufficient
+> for RZ/V2H and RZ/G3E, where the mask value should be `0x0f`. This
+> discrepancy caused incorrect PFC register configurations on RZ/V2H and
+> RZ/G3E SoCs.
 >
+> On the RZ/G2L, the PFC_mx bitfields are also 4 bits wide, with bit 4
+> marked as reserved. The reserved bits are documented to read as zero and
+> be ignored when written. Updating the PFC_MASK definition from `0x07` to
+> `0x0f` ensures compatibility with both SoC families while maintaining
+> correct behavior on RZ/G2L.
 >
-> So, should already avoid this issue, no?
+> Fixes: 9bd95ac86e70 ("pinctrl: renesas: rzg2l: Add support for RZ/V2H SoC=
+")
+> Cc: stable@vger.kernel.org
+> Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
+> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> ---
+> v1->v2
+> - Dropped SoC specific configuration
 
-I got it wrong, I see now what are you trying to do, but I don't think
-we should skip virtio_transport_remove_sock() entirely, it also purge
-the rx_queue.
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+i.e. will queue in renesas-pinctrl for v6.14, as it is a fix.
 
->
-> Can the problem be in vsock_bind() ?
->
-> Is this issue pre-existing or introduced by this series?
+Gr{oetje,eeting}s,
 
-I think this is pre-existing, can you confirm?
+                        Geert
 
-In that case, I'd not stop this series, and fix it in another patch/series.
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
 
-Thanks,
-Stefano
-
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
