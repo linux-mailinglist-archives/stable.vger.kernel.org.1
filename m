@@ -1,97 +1,117 @@
-Return-Path: <stable+bounces-108395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B8FBA0B464
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 11:19:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47424A0B471
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 11:22:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A8483A2218
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 10:19:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F49B164BDC
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 10:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA31621ADB2;
-	Mon, 13 Jan 2025 10:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD8C1FDA65;
+	Mon, 13 Jan 2025 10:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXukRBjn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9+xSZsc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B47521ADAA;
-	Mon, 13 Jan 2025 10:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D458235C12
+	for <stable@vger.kernel.org>; Mon, 13 Jan 2025 10:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736763571; cv=none; b=bpQ17GhlddxjyPJXB4PkPqtzu4hkbgAUzl3acmxDFDGe5bu9Ndj0Bc3Y/Fm8G5xQOmB/gQYd/ZfDhnO9HO2aoIkuE5B1Jg/xdwUNEIMzgZYFn9kqIGbh4drXt8eeMsURg9tAi/Btqj1TZVlCrEabSZzCDqcvimZG0m5PcnYxKgw=
+	t=1736763770; cv=none; b=GD9SaP1JOdPD+SScuK8siJT/6Oa7dzuJZACvhlua1sDprJftiwnMNn72T9AfWgUWCaLRyH2H49KomGZ9p9cDQxp3mxZbwT2Eo30AO+RuG7ogwLXgPZnl0KDIw5V8eAs7zuYq27Piuqe50ZhbwQDigLHGFoFY/olnHCWBg0SEZ9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736763571; c=relaxed/simple;
-	bh=t+WuP34zBZKnJMn7RSGmUlRkwlLe6tJCkZEnKRjHjY8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GvN/UaTbBhxWSWvG44+MlEBGBbxBJk7aAYm0zu/CfZgGEXLP8Z+0jshvOFlTsQW7T87r/VwMZ4I0h4dx8TpChcj6Vuifn6Qw3g19+1Y5cCLHw1aGHIJR2q4ccB34QnDNRwWlJgSlyRnLeI74FjLq9OPjQXJHGSS+XwgmCvHJY34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXukRBjn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FE4C4CED6;
-	Mon, 13 Jan 2025 10:19:30 +0000 (UTC)
+	s=arc-20240116; t=1736763770; c=relaxed/simple;
+	bh=nsPhKM1VPNmSdKGVAMnibGtHzt+jeJ/97cPzm7qpnv8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rqKBK2tHfpA9Oy+gcorPl5pKnAuObZaqgPresDXBh1ZIoCVoTr2GK0Az1Mpg0NE5W96Sk5GISjQxfsDCzDPkcv8Kfo0h8O3uSKNTcfEFAEbAkCBVfI40oPFfzuo32+oh/D4wn+sy++RFEPHKRqioIVPa9WvnpCUCXB3+NqOBUws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9+xSZsc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DAB9C4CED6;
+	Mon, 13 Jan 2025 10:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736763571;
-	bh=t+WuP34zBZKnJMn7RSGmUlRkwlLe6tJCkZEnKRjHjY8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MXukRBjns7ns7CWpIRSVKEF6UYD5eqND99zqLpVss02CsnRb4tXgc+1b1Mhu5zY2g
-	 pMsdwUmCMtvFO0Pen/nD4HSVUDnctRIrQqJaUWbHQ3W3rtBLywo8gbs88v2PUOAZ60
-	 R4ykVGEVfuqTE+CWn9q5Y+kF73fpMrzQOOONGaDk=
-Date: Mon, 13 Jan 2025 11:19:28 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Arulpandiyan Vadivel <arulpandiyan.vadivel@siemens.com>
-Cc: linux-security-module@vger.kernel.org, linux-modules@vger.kernel.org,
-	stable@vger.kernel.org, cedric.hombourger@siemens.com,
-	srikanth.krishnakar@siemens.com
-Subject: Re: [PATCH] loadpin: remove MODULE_COMPRESS_NONE as it is no longer
- supported
-Message-ID: <2025011322-climatic-rotting-5b03@gregkh>
-References: <20250113093115.72619-1-arulpandiyan.vadivel@siemens.com>
+	s=korg; t=1736763769;
+	bh=nsPhKM1VPNmSdKGVAMnibGtHzt+jeJ/97cPzm7qpnv8=;
+	h=Subject:To:Cc:From:Date:From;
+	b=p9+xSZscYFNrkb38acyCw+zfaMHxprI4zMLRNrQxoJJzorAt42uPU61cI902GJCgU
+	 LhhMBHoj6qfZdqVvBwuObEU9eAg6UusDR5T1TzBspDsqQt1tkmdi0sVzhA83dTA0x0
+	 +1PZd8rAQhDNCKpvUKFOiall1R+j8eEx0DGCpvNM=
+Subject: FAILED: patch "[PATCH] KVM: e500: always restore irqs" failed to apply to 6.12-stable tree
+To: pbonzini@redhat.com,seanjc@google.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 13 Jan 2025 11:22:46 +0100
+Message-ID: <2025011346-pesticide-silenced-822e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250113093115.72619-1-arulpandiyan.vadivel@siemens.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 13, 2025 at 03:01:15PM +0530, Arulpandiyan Vadivel wrote:
-> Commit c7ff693fa2094ba0a9d0a20feb4ab1658eff9c33 ("module: Split
-> modules_install compression and in-kernel decompression") removed the
-> MODULE_COMPRESS_NONE, but left it loadpin's Kconfig, and removing it
-> 
-> Signed-off-by: Arulpandiyan Vadivel <arulpandiyan.vadivel@siemens.com>
-> ---
->  security/loadpin/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/security/loadpin/Kconfig b/security/loadpin/Kconfig
-> index 848f8b4a60190..94348e2831db9 100644
-> --- a/security/loadpin/Kconfig
-> +++ b/security/loadpin/Kconfig
-> @@ -16,7 +16,7 @@ config SECURITY_LOADPIN_ENFORCE
->  	depends on SECURITY_LOADPIN
->  	# Module compression breaks LoadPin unless modules are decompressed in
->  	# the kernel.
-> -	depends on !MODULES || (MODULE_COMPRESS_NONE || MODULE_DECOMPRESS)
-> +	depends on !MODULES || MODULE_DECOMPRESS
->  	help
->  	  If selected, LoadPin will enforce pinning at boot. If not
->  	  selected, it can be enabled at boot with the kernel parameter
-> -- 
-> 2.39.5
-> 
-> 
 
-<formletter>
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-</formletter>
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 87ecfdbc699cc95fac73291b52650283ddcf929d
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025011346-pesticide-silenced-822e@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 87ecfdbc699cc95fac73291b52650283ddcf929d Mon Sep 17 00:00:00 2001
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Sun, 12 Jan 2025 10:34:44 +0100
+Subject: [PATCH] KVM: e500: always restore irqs
+
+If find_linux_pte fails, IRQs will not be restored.  This is unlikely
+to happen in practice since it would have been reported as hanging
+hosts, but it should of course be fixed anyway.
+
+Cc: stable@vger.kernel.org
+Reported-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+diff --git a/arch/powerpc/kvm/e500_mmu_host.c b/arch/powerpc/kvm/e500_mmu_host.c
+index e5a145b578a4..6824e8139801 100644
+--- a/arch/powerpc/kvm/e500_mmu_host.c
++++ b/arch/powerpc/kvm/e500_mmu_host.c
+@@ -479,7 +479,6 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
+ 		if (pte_present(pte)) {
+ 			wimg = (pte_val(pte) >> PTE_WIMGE_SHIFT) &
+ 				MAS2_WIMGE_MASK;
+-			local_irq_restore(flags);
+ 		} else {
+ 			local_irq_restore(flags);
+ 			pr_err_ratelimited("%s: pte not present: gfn %lx,pfn %lx\n",
+@@ -488,8 +487,9 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
+ 			goto out;
+ 		}
+ 	}
+-	writable = kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
++	local_irq_restore(flags);
+ 
++	writable = kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
+ 	kvmppc_e500_setup_stlbe(&vcpu_e500->vcpu, gtlbe, tsize,
+ 				ref, gvaddr, stlbe);
+ 
+
 
