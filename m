@@ -1,136 +1,283 @@
-Return-Path: <stable+bounces-108370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83BF4A0B06E
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 09:00:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3C2A0B07A
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 09:05:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C12A6166440
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 08:00:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2671A3A6C93
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 08:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA83233127;
-	Mon, 13 Jan 2025 08:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BEF231CB9;
+	Mon, 13 Jan 2025 08:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XKa2qrvT";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mwWri7Ln"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KFK1/6Wb"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637483C1F
-	for <stable@vger.kernel.org>; Mon, 13 Jan 2025 08:00:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629AF3C1F
+	for <stable@vger.kernel.org>; Mon, 13 Jan 2025 08:05:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736755209; cv=none; b=Riujc/PYo1SZ5E/BTKBMbezCUOn5+5S9sRARC/qdZL2DhbkzTCwP00kUArdV+h49f9Pr62/qBHDbSFYTZQ6p2uAW4Ft4drKzWx1c5KvUXO6uL8cwAOza7gcqrApZViir28vnrLRQOos76V/D5C6ly6wkexaezemwckJz7VazvgU=
+	t=1736755516; cv=none; b=MOEZZhooOwQhp5+YCFA5vhSSgl+eO+UMU3zigEbyrjS4NFTIGC2diSHlOQIKpO6n1bH4yi4baDbORVuLt8OXruEGjCeSN5nxg6SW4irVB/DSy5DDUULM1Bez8hFU5fgH7d6IOpQbXGWmuekdJkVfNVNyYiVl6ECg76t/XcE5ECM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736755209; c=relaxed/simple;
-	bh=3vOUx3V7yCxjPN7WEDz0RIXRr3fkHwLxBhlt1P3EWDI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qY9/IqLiI0sSDT+9XVVqcHhA2MDvaVN5SWDXxP5rc2jmjK0ihiLYEGToeqUT8vC31E/IXETSrVYKf6slPEM0Z/Pn3VRopa+JLnKT67bn+TezfEExGaflP7UVJMGhjK5Tgut9OJ8NuzlO0kH4Uh7CW8n2tLQSaFvSmBQ3yyurWc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XKa2qrvT; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mwWri7Ln; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1736755204;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7+SU//DJALOeLgp+94B9R+pSYVYbx1XFXFGYVNbXy/M=;
-	b=XKa2qrvTb+/M5XaAZqtovsJHqGSk/f1Wb1R1v9JyjHrK4B0hYTaoYmALbcRsT/vG5Z7v+Y
-	dUyK1PD+wErX0x3dEt76au0Twn1qE8/osUmXlYMwEqpBGn4U4RGPSRx3RvmWXEXwlpiR/E
-	d0uumGAyLDpFpPQMoV/exgnycA4mf2agASmdlm/F+kkWDiLJ35c3JM11FAdPge20XV0YLu
-	nKvC9NMOtIBJqLS81hC7/V/mtKXW9/KJvjUaGNRHJn81BKpcAeceRCsTCUbKQM2OhIb1Gm
-	Ar+HcZu6ohczc/OeP/l5PUPLoW8m3tAd3KrwW7CG4khSx67A4j8/JNtwu4wdfw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1736755204;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7+SU//DJALOeLgp+94B9R+pSYVYbx1XFXFGYVNbXy/M=;
-	b=mwWri7LnKLZeSz03sVWY436UvAHVRtPeULceoWEBePKZj+XE7/c9HxxHzCd7gS4QyyHl6q
-	SgupyzfmE0ObAeCA==
-To: stable@vger.kernel.org
-Cc: Nam Cao <namcao@linutronix.de>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.6.y] riscv: kprobes: Fix incorrect address calculation
-Date: Mon, 13 Jan 2025 08:59:55 +0100
-Message-Id: <20250113075955.675949-1-namcao@linutronix.de>
-In-Reply-To: <2025011231-bakery-sterling-1f23@gregkh>
-References: <2025011231-bakery-sterling-1f23@gregkh>
+	s=arc-20240116; t=1736755516; c=relaxed/simple;
+	bh=IG9qnpEX18jqQFrJ8ttaXS4hbkhp8Uq/zev/rEp0ZWc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QMUnledzNpcIdO2W1u1KX6QOQQDigxWVlynQJX9YRZQPqJgo/z5xv6cvgP8VpR481OaelONflDsPW4TA+Dt066+o5oKisKbkbS3ee5+IOgTyZ24BxWHC+WwjoVFBv7W8L9/NhxU1q3DdLiCMN2iW9PHH6aFdYSmQt+NQZose0mM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KFK1/6Wb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E044C4CED6;
+	Mon, 13 Jan 2025 08:05:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1736755514;
+	bh=IG9qnpEX18jqQFrJ8ttaXS4hbkhp8Uq/zev/rEp0ZWc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KFK1/6WbbUWbgE1SsMxqSVABYUgj3WinXfDulvO91ugPBNzeNIK1uuxHclpum1ExZ
+	 b2S6yC4JGabA2pCe8lUHKB+m97+fqaERkdf2Kgg/ETlTxhdPIrYaOkGNmSGsFbHp8S
+	 iCWpoxV6itjCawk3Xf2SIhSMzbsAGZHQze79FPok=
+Date: Mon, 13 Jan 2025 09:05:10 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Dave Airlie <airlied@gmail.com>
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+	stable@vger.kernel.org, ashutosh.dixit@intel.com,
+	dri-devel@lists.freedesktop.org
+Subject: Re: AAARRRGGGHHH!!!! (was Re: [PATCH 6.12.y] xe/oa: Fix query mode
+ of operation for OAR/OAC)
+Message-ID: <2025011352-fox-wrangle-4d3f@gregkh>
+References: <2025010650-tuesday-motivate-5cbb@gregkh>
+ <20250110205341.199539-1-umesh.nerlige.ramappa@intel.com>
+ <2025011215-agreeing-bonfire-97ae@gregkh>
+ <CAPM=9txn1x5A7xt+9YQ+nvLaQ3ycekC1Oj4J2PUpWCJwyQEL9w@mail.gmail.com>
+ <CAPM=9twogjmTCc=UHBYkPPkrdHfm0PJ9VDoOg+X2jWZbdjVBww@mail.gmail.com>
+ <2025011247-spoilage-hamster-28b2@gregkh>
+ <CAPM=9tx1cFzhaZNz=gQOmP9Q0KEK5fMKZYSc-P0xA_f2sxoZ9w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPM=9tx1cFzhaZNz=gQOmP9Q0KEK5fMKZYSc-P0xA_f2sxoZ9w@mail.gmail.com>
 
-commit 13134cc949148e1dfa540a0fe5dc73569bc62155 upstream.
+On Mon, Jan 13, 2025 at 10:44:41AM +1000, Dave Airlie wrote:
+> On Mon, 13 Jan 2025 at 07:09, Greg KH <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Mon, Jan 13, 2025 at 06:01:51AM +1000, Dave Airlie wrote:
+> > > On Mon, 13 Jan 2025 at 05:51, Dave Airlie <airlied@gmail.com> wrote:
+> > > >
+> > > > On Sun, 12 Jan 2025 at 22:19, Greg KH <gregkh@linuxfoundation.org> wrote:
+> > > > >
+> > > > > On Fri, Jan 10, 2025 at 12:53:41PM -0800, Umesh Nerlige Ramappa wrote:
+> > > > > > commit 55039832f98c7e05f1cf9e0d8c12b2490abd0f16 upstream
+> > > > >
+> > > > > <snip>
+> > > > >
+> > > > > > Fixes: 8135f1c09dd2 ("drm/xe/oa: Don't reset OAC_CONTEXT_ENABLE on OA stream close")
+> > > > > > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> > > > > > Reviewed-by: Matthew Brost <matthew.brost@intel.com> # commit 1
+> > > > > > Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > > > > > Cc: stable@vger.kernel.org # 6.12+
+> > > > > > Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> > > > > > Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > > > > > Link: https://patchwork.freedesktop.org/patch/msgid/20241220171919.571528-2-umesh.nerlige.ramappa@intel.com
+> > > > > > (cherry picked from commit 55039832f98c7e05f1cf9e0d8c12b2490abd0f16)
+> > > > > > Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> > > > > > (cherry picked from commit f0ed39830e6064d62f9c5393505677a26569bb56)
+> > > > >
+> > > > > Oh I see what you all did here.
+> > > > >
+> > > > > I give up.  You all need to stop it with the duplicated git commit ids
+> > > > > all over the place.  It's a major pain and hassle all the time and is
+> > > > > something that NO OTHER subsystem does.
+> > > > >
+> > > > > Yes, I know that DRM is special and unique and running at a zillion
+> > > > > times faster with more maintainers than any other subsystem and really,
+> > > > > it's bigger than the rest of the kernel combined, but hey, we ALL are a
+> > > > > common project here.  If each different subsystem decided to have their
+> > > > > own crazy workflows like this, we'd be in a world of hurt.  Right now
+> > > > > it's just you all that is causing this world of hurt, no one else, so
+> > > > > I'll complain to you.
+> > > >
+> > > > All subsystems that grow to having large teams (more than 2-4 people)
+> > > > working on a single driver will eventually hit the scaling problem,
+> > > > just be glad we find things first so everyone else knows how to deal
+> > > > with it later.
+> > > >
+> > > > >
+> > > > > We have commits that end up looking like they go back in time that are
+> > > > > backported to stable releases BEFORE they end up in Linus's tree and
+> > > > > future releases.  This causes major havoc and I get complaints from
+> > > > > external people when they see this as obviously, it makes no sense at
+> > > > > all.
+> > > >
+> > > > None of what you are saying makes any sense here. Explain how patches
+> > > > are backported to stable releases before they end up in Linus's tree
+> > > > to me like I'm 5, because there should be no possible workflow where
+> > > > that can happen, stable pulls from patches in Linus' tree, not from my
+> > > > tree or drm-next or anywhere else. Now it might appear that way
+> > > > because tooling isn't prepared or people don't know what they are
+> > > > looking at, but I still don't see the actual problem.
+> > > >
+> > > > >
+> > > > > And it easily breaks tools that tries to track where backports went and
+> > > > > if they are needed elsewhere, which ends up missing things because of
+> > > > > this crazy workflow.  So in the end, it's really only hurting YOUR
+> > > > > subsystem because of this.
+> > > >
+> > > > Fix the tools.
+> > > >
+> > > > >
+> > > > > And yes, there is a simple way to fix this, DO NOT TAG COMMITS THAT ARE
+> > > > > DUPLICATES AS FOR STABLE.  Don't know why you all don't do that, would
+> > > > > save a world of hurt.
+> > > >
+> > > > How do you recommend we do that, edit the immutable git history to
+> > > > remove the stable
+> > > > tag from the original commit?
+> > > >
+> > > > >
+> > > > > I'm tired of it, please, just stop.  I am _this_ close to just ignoring
+> > > > > ALL DRM patches for stable trees...
+> > > >
+> > > > If you have to do, go do it. The thing is the workflow is there for a
+> > > > reason, once you have a large enough team, having every single team
+> > > > member intimately aware of the rc schedule to decide where they need
+> > > > to land patches doesn't scale. If you can't land patches to a central
+> > > > -next tree and then pick those patches out to a -fixes tree after a
+> > > > maintainer realises they need to be backported to stable. Now I
+> > > > suppose we could just ban stable tags on the next tree and only put
+> > > > them on the cherry-picks but then how does it deal with the case where
+> > > > something needs to be fixes in -next but not really urgent enough for
+> > > > -fixes immediately. Would that be good enough, no stable tags in -next
+> > > > trees, like we could make the tooling block it? But it seems like
+> > > > overkill, to avoid fixing some shitty scripts someone is probably
+> > > > selling as a security application.
+> > >
+> > > If you were to ignore stable tags on drm, could we then write a tool
+> > > that creates a new for-stable tree that just strips out all the
+> > > fixes/backports/commits and recreates it based on Linus commits to
+> > > you, or would future duplicate commits then break tools?
+> >
+> > That would be great, just pick which commit id to reference (i.e. the
+> > one that shows up in Linus's tree first.)
+> >
+> > But then, be careful with the "Fixes:" tags as well, those need to line
+> > up and match the correct ones.
+> >
+> > We create a "web" when we backport commits, and mark things for "Fixes:"
+> > When we get those ids wrong because you all have duplicate commits for
+> > the same thing, everything breaks.
+> >
+> > > I just don't get what the ABI the tools expect is, and why everyone is
+> > > writing bespoke tools and getting it wrong, then blaming us for not
+> > > conforming. Fix the tools or write new ones when you realise the
+> > > situation is more complex than your initial ideas.
+> >
+> > All I want to see and care about is:
+> >
+> >  - for a stable commit, the id that the commit is in Linus's tree.
+> >  - for a Fixes: tag, the id that matches the commit in Linus's tree AND
+> >    the commit that got backported to stable trees.
+> >
+> > That's it, that's the whole "ABI".  The issue is that you all, for any
+> > number of commits, have 2 unique ids for any single commit and how are
+> > we supposed to figure that mess out...
+> 
+> Pretty sure we've explained how a few times now, not sure we can do much more.
 
-p->ainsn.api.insn is a pointer to u32, therefore arithmetic operations are
-multiplied by four. This is clearly undesirable for this case.
+And the same for me.
 
-Cast it to (void *) first before any calculation.
+> If you see a commit with a cherry-pick link in it and don't have any
+> sight on that commit in Linus's tree, ignore the cherry-pick link in
+> it, assume it's a future placeholder for that commit id. You could if
+> you wanted to store that info somewhere, but there shouldn't be a
+> need.
 
-Below is a sample before/after. The dumped memory is two kprobe slots, the
-first slot has
+Ok, this is "fine", I can live with it.  BUT that's not the real issue
+(and your own developers get confused by this, again, look at the
+original email that started this all, they used an invalid git id to
+send to us thinking that was the correct id to use.)
 
-  - c.addiw a0, 0x1c (0x7125)
-  - ebreak           (0x00100073)
+The problem is when it comes to Reverts and Fixes.  Both of those now
+get out of sync because the DRM developers don't know which commit id to
+pick, and so they choose a random one.  And of course, now 50% of the
+time they are wrong.
 
-and the second slot has:
+> When the initial commit enters during the next merge window, you look
+> for that subject or commit id in the stable tree already, if it
+> exists, dump the latest Linus patch on the floor, it's already in
+> stable your job is done.
 
-  - c.addiw a0, -4   (0x7135)
-  - ebreak           (0x00100073)
+This takes an extra step from any other subsystem, which is why DRM
+patches are the LAST to get merged into stable releases after the big
+-rc1 flood as it takes me a manual step for each and every commit.  It's
+a pain and I curse it but hey, if I have to live with it I can.
 
-Before this patch:
+But again, that's not what I am complaining about here.  Again, it's the
+mismatch of Fixes and Revert ids being used.
 
-(gdb) x/16xh 0xff20000000135000
-0xff20000000135000:	0x7125	0x0000	0x0000	0x0000	0x7135	0x0010	0x0000	0x0000
-0xff20000000135010:	0x0073	0x0010	0x0000	0x0000	0x0000	0x0000	0x0000	0x0000
+> When future tools are analysing things, they will see the patch from
+> the merge window, the cherry-picked patches in the fixes tree, and
+> stable will reference the fixes, and the fixes patch will reference
+> the merge window one?
 
-After this patch:
+Yes, they sometimes are wrong.  How am I supposed to know that if I see
+a DRM Fixes or Revert id, I need to walk the whole tree and search again
+for the ids in the changelog to see if they match or not.
 
-(gdb) x/16xh 0xff20000000125000
-0xff20000000125000:	0x7125	0x0073	0x0010	0x0000	0x7135	0x0073	0x0010	0x0000
-0xff20000000125010:	0x0000	0x0000	0x0000	0x0000	0x0000	0x0000	0x0000	0x0000
+That is the problem.
 
-Fixes: b1756750a397 ("riscv: kprobes: Use patch_text_nosync() for insn slot=
-s")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Cc: stable@vger.kernel.org
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20241119111056.2554419-1-namcao@linutronix.=
-de
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-[rebase to v6.6]
-Signed-off-by: Nam Cao <namcao@linutronix.de>
----
- arch/riscv/kernel/probes/kprobes.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> I'm just not seeing what I'm missing here, fixes tags should work
+> fine,
 
-diff --git a/arch/riscv/kernel/probes/kprobes.c b/arch/riscv/kernel/probes/=
-kprobes.c
-index fecbbcf40ac3..4fbc70e823f0 100644
---- a/arch/riscv/kernel/probes/kprobes.c
-+++ b/arch/riscv/kernel/probes/kprobes.c
-@@ -29,7 +29,7 @@ static void __kprobes arch_prepare_ss_slot(struct kprobe =
-*p)
- 	p->ainsn.api.restore =3D (unsigned long)p->addr + offset;
-=20
- 	patch_text_nosync(p->ainsn.api.insn, &p->opcode, 1);
--	patch_text_nosync(p->ainsn.api.insn + offset, &insn, 1);
-+	patch_text_nosync((void *)p->ainsn.api.insn + offset, &insn, 1);
- }
-=20
- static void __kprobes arch_prepare_simulate(struct kprobe *p)
---=20
-2.39.5
+They do not when you refer to the "wrong" commit id (i.e. the commit
+that ended up in -rc1, NOT the previous real release that came through
+the "fixes" branch you have.)
 
+> but I think when we cherry-pick patches from -next that fix
+> other patches from -next maybe the fixes lines should be reworked to
+> reference the previous Linus tree timeline not the future one. not
+> 100% sure this happens? Sima might know more.
+
+Please fix this up, if you all can.  That is the issue here.  And again,
+same for reverts.
+
+I think between the two, this is causing many fixes and reverts to go
+unresolved in the stable trees.
+
+> Now previously I think we'd be requested to remove the cherry-picks
+> from the -fixes commits as they were referencing things not in Linus'
+> tree, we said it was a bad idea, I think we did it anyways, we got
+> shouted at, we put it back, we get shouted that we are referencing
+> commits that aren't in Linus tree. Either the link is useful
+> information and we just assume cherry-picks of something we can't see
+> are a future placeholder and ignore it until it shows up in our
+> timeline.
+
+I still think it's lunacy to have a "cherry pick" commit refer to a
+commit that is NOT IN THE TREE YET and shows up in history as "IN THE
+FUTURE".  But hey, that's just me.
+
+Why do you have these markings at all?  Who are they helping?  Me?
+Someone else?
+
+> I think we could ask to not merge things into -next with stable cc'ed
+> but I think that will result in a loss of valuable fixes esp for
+> backporters.
+
+Again, it's the Fixes and Reverts id referencing that is all messed up
+here.  That needs to be resolved.  If it takes you all the effort to
+make up a special "stable tree only" branch/series/whatever, I'm all for
+it, but as it is now, what you all are doing is NOT working for me at
+all.
+
+thanks,
+
+greg k-h
 
