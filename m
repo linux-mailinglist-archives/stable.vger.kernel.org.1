@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-108509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB219A0C062
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:44:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 974BBA0C065
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:44:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 084AA16A78A
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:44:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 689033A1816
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FC6213257;
-	Mon, 13 Jan 2025 18:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B3C1FDA73;
+	Mon, 13 Jan 2025 18:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ex7SuAyt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xu8AU63i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E911B213245;
-	Mon, 13 Jan 2025 18:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E3D1C54AA;
+	Mon, 13 Jan 2025 18:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793361; cv=none; b=ETiGfQi5+OP2m1RuCP4gGjCuGZdXU5yJJTw3tBzg8ZapBXugF2FYI02Jy3ttrHDCnl5k5a0+he63FRihbFRfslRmkt240gNlXf2iOeXED2s/y33Z+nyMWuPwMQKih8OO7gzI80FkFifkbNyl9ImmMZGEOA/3s85R/S5QjL2oDrs=
+	t=1736793368; cv=none; b=B1WiQudZQ8ejw4dysTuT/+cj1qS5jgU67mCXiJVO00ScmWK0IBM5xXMpwSCJy1QrbZiBZ9QiDEvLD4oBKtLFhsPeolmyzJOT9uiaLlMAA7V92GsTpO0cORrSeLzi22goptE2IXPt5GNUI3rX/OUf30bV3tk2Ola9lIAigo3nwbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793361; c=relaxed/simple;
-	bh=n0Pf6qpGoYAXXTCIUxq4k5sAvt6d3JS46oA5bUdbivA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KX5AReH/HNTI8Bu3ZAtPgM34oIF1ZzF2FOUYyC+kFUViHZVCjKSNYC6WmME3OKXccwQ7CgkC9CUZxCBzM65J4Mw5JrmIvZbwcjKxYyvkcUs5Ev5jKPO9PJ1WjKYgzZa20yaf7MYDMM0A6W8Jb88hXLgET93S51+IvjujmB4N+dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ex7SuAyt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC56C4CEE1;
-	Mon, 13 Jan 2025 18:35:59 +0000 (UTC)
+	s=arc-20240116; t=1736793368; c=relaxed/simple;
+	bh=KbJVlbsgxjJMVGOe66q0daSbNCI98hltcAoq7x18yE8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=G9HutHaFWkiHZj4inMvv/VXtn4liA4tl1IuOZeEwt342em0bBnGEGEKipCL4anF4SC2ZbxYHIkjS/HyPbTYPjL6WaNZcJUEuBLOPhJD6BnAAGG2+w+so7RfS/dN1V7N5LEH2IBa9+jOpDdhBhub4QfxwQp2JQFOLDITucji7+KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xu8AU63i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F221C4CED6;
+	Mon, 13 Jan 2025 18:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736793360;
-	bh=n0Pf6qpGoYAXXTCIUxq4k5sAvt6d3JS46oA5bUdbivA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ex7SuAytyuBdp1Lg84jGqZ00SCUHg0VG6WefvNVqCjaS4a93lYnmjXZy/xjR0IesG
-	 lklkJfdUNlHLiWVrY+e4XdC+8RbeBmSNZ7t1LoNDuD8ru9llKPRm4bDumhElULN4wl
-	 4M4cEZau1DYljkaJiInFiOXNDALht8Blj+ERHfH/HLtny+WvbEJX6MypUjuz+I/w6G
-	 kbcEFZhHNPHVPD5UQeW4kQZ+ALcE8Iy8NjryCRKcY79/ZiI7L//qaWVqf7iwBz5Vj/
-	 HbHWmzTqVgLoCDiLgM58Txgg4VzJh5aiBhOQnLgwSBp/wVq169FxJlqiOMYs/kh+gV
-	 N16Q+hGnx51zw==
+	s=k20201202; t=1736793368;
+	bh=KbJVlbsgxjJMVGOe66q0daSbNCI98hltcAoq7x18yE8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Xu8AU63iU2lOOKVL2Hge/qxSSnlPW40ne8C9InPF6fjNRhD5f+zRMrQsR81dSpn++
+	 P3WakI1lOtgai/orQDb9zDr+6NbgkgHehqGVowaVsutcfQlEYbzeVdVUymM3PGZFDo
+	 e2wcHhQewpyDaiXNSRjtoQ9ycIIjTU7ZFbeZRLbg+BGe3nq9PvS8jzEr5TsTsltNt7
+	 +oYD4hD92NsM4NzaOm0Fi//J2lVtotHtXtH35gPirD5v7LvdUdFXboScF9xUnsAcco
+	 p9z2Z0GR71XFMnb0RFPVXJ374FjIKrh2RROr8mbx94v7/3rgKCCYnwVABfYWjgjkhM
+	 OEYnLzY/VJ6Lg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Oleg Nesterov <oleg@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Lizhi Xu <lizhi.xu@windriver.com>,
+	syzbot+985f827280dc3a6e7e92@syzkaller.appspotmail.com,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
 	Sasha Levin <sashal@kernel.org>,
-	arnd@arndb.de,
-	ak@linux.intel.com,
-	kees@kernel.org
-Subject: [PATCH AUTOSEL 6.1 10/10] poll_wait: add mb() to fix theoretical race between waitqueue_active() and .poll()
-Date: Mon, 13 Jan 2025 13:35:36 -0500
-Message-Id: <20250113183537.1784136-10-sashal@kernel.org>
+	alex.aring@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 1/6] mac802154: check local interfaces before deleting sdata list
+Date: Mon, 13 Jan 2025 13:35:55 -0500
+Message-Id: <20250113183601.1784402-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250113183537.1784136-1-sashal@kernel.org>
-References: <20250113183537.1784136-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,67 +67,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.124
+X-stable-base: Linux 5.15.176
 Content-Transfer-Encoding: 8bit
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit cacd9ae4bf801ff4125d8961bb9a3ba955e51680 ]
+[ Upstream commit eb09fbeb48709fe66c0d708aed81e910a577a30a ]
 
-As the comment above waitqueue_active() explains, it can only be used
-if both waker and waiter have mb()'s that pair with each other. However
-__pollwait() is broken in this respect.
+syzkaller reported a corrupted list in ieee802154_if_remove. [1]
 
-This is not pipe-specific, but let's look at pipe_poll() for example:
+Remove an IEEE 802.15.4 network interface after unregister an IEEE 802.15.4
+hardware device from the system.
 
-	poll_wait(...); // -> __pollwait() -> add_wait_queue()
+CPU0					CPU1
+====					====
+genl_family_rcv_msg_doit		ieee802154_unregister_hw
+ieee802154_del_iface			ieee802154_remove_interfaces
+rdev_del_virtual_intf_deprecated	list_del(&sdata->list)
+ieee802154_if_remove
+list_del_rcu
 
-	LOAD(pipe->head);
-	LOAD(pipe->head);
+The net device has been unregistered, since the rcu grace period,
+unregistration must be run before ieee802154_if_remove.
 
-In theory these LOAD()'s can leak into the critical section inside
-add_wait_queue() and can happen before list_add(entry, wq_head), in this
-case pipe_poll() can race with wakeup_pipe_readers/writers which do
+To avoid this issue, add a check for local->interfaces before deleting
+sdata list.
 
-	smp_mb();
-	if (waitqueue_active(wq_head))
-		wake_up_interruptible(wq_head);
+[1]
+kernel BUG at lib/list_debug.c:58!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 0 UID: 0 PID: 6277 Comm: syz-executor157 Not tainted 6.12.0-rc6-syzkaller-00005-g557329bcecc2 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+RIP: 0010:__list_del_entry_valid_or_report+0xf4/0x140 lib/list_debug.c:56
+Code: e8 a1 7e 00 07 90 0f 0b 48 c7 c7 e0 37 60 8c 4c 89 fe e8 8f 7e 00 07 90 0f 0b 48 c7 c7 40 38 60 8c 4c 89 fe e8 7d 7e 00 07 90 <0f> 0b 48 c7 c7 a0 38 60 8c 4c 89 fe e8 6b 7e 00 07 90 0f 0b 48 c7
+RSP: 0018:ffffc9000490f3d0 EFLAGS: 00010246
+RAX: 000000000000004e RBX: dead000000000122 RCX: d211eee56bb28d00
+RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
+RBP: ffff88805b278dd8 R08: ffffffff8174a12c R09: 1ffffffff2852f0d
+R10: dffffc0000000000 R11: fffffbfff2852f0e R12: dffffc0000000000
+R13: dffffc0000000000 R14: dead000000000100 R15: ffff88805b278cc0
+FS:  0000555572f94380(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000056262e4a3000 CR3: 0000000078496000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ __list_del_entry_valid include/linux/list.h:124 [inline]
+ __list_del_entry include/linux/list.h:215 [inline]
+ list_del_rcu include/linux/rculist.h:157 [inline]
+ ieee802154_if_remove+0x86/0x1e0 net/mac802154/iface.c:687
+ rdev_del_virtual_intf_deprecated net/ieee802154/rdev-ops.h:24 [inline]
+ ieee802154_del_iface+0x2c0/0x5c0 net/ieee802154/nl-phy.c:323
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
+ genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+ genl_rcv_msg+0xb14/0xec0 net/netlink/genetlink.c:1210
+ netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2551
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+ netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
+ netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1357
+ netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1901
+ sock_sendmsg_nosec net/socket.c:729 [inline]
+ __sock_sendmsg+0x221/0x270 net/socket.c:744
+ ____sys_sendmsg+0x52a/0x7e0 net/socket.c:2607
+ ___sys_sendmsg net/socket.c:2661 [inline]
+ __sys_sendmsg+0x292/0x380 net/socket.c:2690
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-There are more __pollwait()-like functions (grep init_poll_funcptr), and
-it seems that at least ep_ptable_queue_proc() has the same problem, so the
-patch adds smp_mb() into poll_wait().
-
-Link: https://lore.kernel.org/all/20250102163320.GA17691@redhat.com/
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20250107162717.GA18922@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reported-and-tested-by: syzbot+985f827280dc3a6e7e92@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=985f827280dc3a6e7e92
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/20241113095129.1457225-1-lizhi.xu@windriver.com
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/poll.h | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ net/mac802154/iface.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/linux/poll.h b/include/linux/poll.h
-index d1ea4f3714a8..fc641b50f129 100644
---- a/include/linux/poll.h
-+++ b/include/linux/poll.h
-@@ -41,8 +41,16 @@ typedef struct poll_table_struct {
+diff --git a/net/mac802154/iface.c b/net/mac802154/iface.c
+index 3e510664fc89..ecc084e2e5dd 100644
+--- a/net/mac802154/iface.c
++++ b/net/mac802154/iface.c
+@@ -688,6 +688,10 @@ void ieee802154_if_remove(struct ieee802154_sub_if_data *sdata)
+ 	ASSERT_RTNL();
  
- static inline void poll_wait(struct file * filp, wait_queue_head_t * wait_address, poll_table *p)
- {
--	if (p && p->_qproc && wait_address)
-+	if (p && p->_qproc && wait_address) {
- 		p->_qproc(filp, wait_address, p);
-+		/*
-+		 * This memory barrier is paired in the wq_has_sleeper().
-+		 * See the comment above prepare_to_wait(), we need to
-+		 * ensure that subsequent tests in this thread can't be
-+		 * reordered with __add_wait_queue() in _qproc() paths.
-+		 */
-+		smp_mb();
+ 	mutex_lock(&sdata->local->iflist_mtx);
++	if (list_empty(&sdata->local->interfaces)) {
++		mutex_unlock(&sdata->local->iflist_mtx);
++		return;
 +	}
- }
+ 	list_del_rcu(&sdata->list);
+ 	mutex_unlock(&sdata->local->iflist_mtx);
  
- /*
 -- 
 2.39.5
 
