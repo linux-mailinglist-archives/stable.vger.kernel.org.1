@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-108359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60EFAA0ADB1
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 04:04:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC30A0ADB2
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 04:04:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45BFC1886563
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 03:04:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A72C16524C
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 03:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF1A13DBA0;
-	Mon, 13 Jan 2025 03:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD7113AD26;
+	Mon, 13 Jan 2025 03:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="oGzznF93"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="xGfvVQby"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490F44315A;
-	Mon, 13 Jan 2025 03:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCAF74315A;
+	Mon, 13 Jan 2025 03:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736737457; cv=none; b=l1PCSIJV4zwX81qjJ614/EIyzsru7VdNL9ZsB3a+Gk1bm2f4mVfScDNaGy/WiLBI+/91+lhjK1+QxyES1Yd7jyW1O3YSi2DY6cAD7MI8V9gF+3g7NBpJD4OJimKzZ9GObzMaXxgmE3a96qzM1xJeqmgM/E6j6nlCZafPdv+cduQ=
+	t=1736737461; cv=none; b=UnGk3QSqqzEtfNNJxpWPxkMoE8DWhnW/kt1dii1JuMCxDuHbKD1yTxy9uMiVwXiamK/cPGaGFcf3dWgOxT2Rknb+FYKldz2N5Z2PgTvHNQb3HhJpimXjjMiqG4gxF9h79/Zhvi2QOG11C6aanHhj9+p/8Y3K6jFjd8xKmr90nTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736737457; c=relaxed/simple;
-	bh=tmzR19mvKpNt8tDh/ZQHYIyXj1CnCUGk0K6P64NQBso=;
-	h=Date:To:From:Subject:Message-Id; b=avnV1f0DoBtcY8Qo6jkOTEkxk89jBrClF4ehGj0AXS+G7c6trxgQucxXeaRRv7UcLUhSPQWNhgjhhdLvjsF+KrCTbZUBapGuKoBAdp5agufys0Su5sKIZ+IQlxEmUVImqYTjh5m5wziXCgnXhz1tfszRISxcVOYH00cNiqMd4tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=oGzznF93; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F7EFC4CEE3;
-	Mon, 13 Jan 2025 03:04:17 +0000 (UTC)
+	s=arc-20240116; t=1736737461; c=relaxed/simple;
+	bh=BxgjWLLSUQ6CkegO2uMIUnYsy8luOBPmVhLRU7YcL+c=;
+	h=Date:To:From:Subject:Message-Id; b=Zx4AeCbXPVYJ9KI4jP9RRjmDKpsUOTwI1yvy6bNMic2oCBSSMyok1SmcYTsMG7eVk+iQNj6ygYQNnscFuWyUgLDWf/GaNBlC+rR4msaBMIjk3yTw20V267ADLMpGZNfHrEZhenvmcRtXW5oGICWzvf0rim6bbmy9CF4aGrkO5ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=xGfvVQby; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1E4DC4CEDF;
+	Mon, 13 Jan 2025 03:04:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1736737457;
-	bh=tmzR19mvKpNt8tDh/ZQHYIyXj1CnCUGk0K6P64NQBso=;
+	s=korg; t=1736737460;
+	bh=BxgjWLLSUQ6CkegO2uMIUnYsy8luOBPmVhLRU7YcL+c=;
 	h=Date:To:From:Subject:From;
-	b=oGzznF93EUvQGGbyDbAjLmeBdanBe73iQ+wEnv/Pk2UCmn53xQ+BKPnGATmmfWxQH
-	 mVI4AJG3HOdqzKI9lkkDpZW57+GiGXa5svvd6DokdvUeIN74d/Ol+dippHsTqs8qQB
-	 PKH2Co+6EjPxvt6vuOXojsB0O0z5Zw8DlkNtsVsk=
-Date: Sun, 12 Jan 2025 19:04:16 -0800
-To: mm-commits@vger.kernel.org,vitalywool@gmail.com,stable@vger.kernel.org,samsun1006219@gmail.com,nphamcs@gmail.com,kanchana.p.sridhar@intel.com,hannes@cmpxchg.org,chengming.zhou@linux.dev,baohua@kernel.org,yosryahmed@google.com,akpm@linux-foundation.org
+	b=xGfvVQbycVLJWjJKFMsXersQGAkNs/2LQ6CSVVXHmW13IjCW3n8wJLu3Iy1Of3vYy
+	 N013uCKawNHZwfHJAQIkScZccLqntWfoIlNj2jpfRuFIhzzYtT7kT/cLePeuwhwpvg
+	 ec4ZSOMY1cIgH3QipIEFUF3p+oXASoYh7bIzd3ww=
+Date: Sun, 12 Jan 2025 19:04:20 -0800
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,shuah@kernel.org,peterx@redhat.com,muchun.song@linux.dev,miko.lenczewski@arm.com,mark.rutland@arm.com,lorenzo.stoakes@oracle.com,Liam.Howlett@Oracle.com,jannh@google.com,david@redhat.com,ryan.roberts@arm.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-zswap-properly-synchronize-freeing-resources-during-cpu-hotunplug.patch removed from -mm tree
-Message-Id: <20250113030417.1F7EFC4CEE3@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-clear-uffd-wp-pte-pmd-state-on-mremap.patch removed from -mm tree
+Message-Id: <20250113030420.B1E4DC4CEDF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,236 +50,210 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm: zswap: properly synchronize freeing resources during CPU hotunplug
+     Subject: mm: clear uffd-wp PTE/PMD state on mremap()
 has been removed from the -mm tree.  Its filename was
-     mm-zswap-properly-synchronize-freeing-resources-during-cpu-hotunplug.patch
+     mm-clear-uffd-wp-pte-pmd-state-on-mremap.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Yosry Ahmed <yosryahmed@google.com>
-Subject: mm: zswap: properly synchronize freeing resources during CPU hotunplug
-Date: Wed, 8 Jan 2025 22:24:41 +0000
+From: Ryan Roberts <ryan.roberts@arm.com>
+Subject: mm: clear uffd-wp PTE/PMD state on mremap()
+Date: Tue, 7 Jan 2025 14:47:52 +0000
 
-In zswap_compress() and zswap_decompress(), the per-CPU acomp_ctx of the
-current CPU at the beginning of the operation is retrieved and used
-throughout.  However, since neither preemption nor migration are disabled,
-it is possible that the operation continues on a different CPU.
+When mremap()ing a memory region previously registered with userfaultfd as
+write-protected but without UFFD_FEATURE_EVENT_REMAP, an inconsistency in
+flag clearing leads to a mismatch between the vma flags (which have
+uffd-wp cleared) and the pte/pmd flags (which do not have uffd-wp
+cleared).  This mismatch causes a subsequent mprotect(PROT_WRITE) to
+trigger a warning in page_table_check_pte_flags() due to setting the pte
+to writable while uffd-wp is still set.
 
-If the original CPU is hotunplugged while the acomp_ctx is still in use,
-we run into a UAF bug as some of the resources attached to the acomp_ctx
-are freed during hotunplug in zswap_cpu_comp_dead() (i.e. 
-acomp_ctx.buffer, acomp_ctx.req, or acomp_ctx.acomp).
+Fix this by always explicitly clearing the uffd-wp pte/pmd flags on any
+such mremap() so that the values are consistent with the existing clearing
+of VM_UFFD_WP.  Be careful to clear the logical flag regardless of its
+physical form; a PTE bit, a swap PTE bit, or a PTE marker.  Cover PTE,
+huge PMD and hugetlb paths.
 
-The problem was introduced in commit 1ec3b5fe6eec ("mm/zswap: move to use
-crypto_acomp API for hardware acceleration") when the switch to the
-crypto_acomp API was made.  Prior to that, the per-CPU crypto_comp was
-retrieved using get_cpu_ptr() which disables preemption and makes sure the
-CPU cannot go away from under us.  Preemption cannot be disabled with the
-crypto_acomp API as a sleepable context is needed.
-
-Use the acomp_ctx.mutex to synchronize CPU hotplug callbacks allocating
-and freeing resources with compression/decompression paths.  Make sure
-that acomp_ctx.req is NULL when the resources are freed.  In the
-compression/decompression paths, check if acomp_ctx.req is NULL after
-acquiring the mutex (meaning the CPU was offlined) and retry on the new
-CPU.
-
-The initialization of acomp_ctx.mutex is moved from the CPU hotplug
-callback to the pool initialization where it belongs (where the mutex is
-allocated).  In addition to adding clarity, this makes sure that CPU
-hotplug cannot reinitialize a mutex that is already locked by
-compression/decompression.
-
-Previously a fix was attempted by holding cpus_read_lock() [1].  This
-would have caused a potential deadlock as it is possible for code already
-holding the lock to fall into reclaim and enter zswap (causing a
-deadlock).  A fix was also attempted using SRCU for synchronization, but
-Johannes pointed out that synchronize_srcu() cannot be used in CPU hotplug
-notifiers [2].
-
-Alternative fixes that were considered/attempted and could have worked:
-- Refcounting the per-CPU acomp_ctx. This involves complexity in
-  handling the race between the refcount dropping to zero in
-  zswap_[de]compress() and the refcount being re-initialized when the
-  CPU is onlined.
-- Disabling migration before getting the per-CPU acomp_ctx [3], but
-  that's discouraged and is a much bigger hammer than needed, and could
-  result in subtle performance issues.
-
-[1]https://lkml.kernel.org/20241219212437.2714151-1-yosryahmed@google.com/
-[2]https://lkml.kernel.org/20250107074724.1756696-2-yosryahmed@google.com/
-[3]https://lkml.kernel.org/20250107222236.2715883-2-yosryahmed@google.com/
-
-[yosryahmed@google.com: remove comment]
-  Link: https://lkml.kernel.org/r/CAJD7tkaxS1wjn+swugt8QCvQ-rVF5RZnjxwPGX17k8x9zSManA@mail.gmail.com
-Link: https://lkml.kernel.org/r/20250108222441.3622031-1-yosryahmed@google.com
-Fixes: 1ec3b5fe6eec ("mm/zswap: move to use crypto_acomp API for hardware acceleration")
-Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
-Reported-by: Johannes Weiner <hannes@cmpxchg.org>
-Closes: https://lore.kernel.org/lkml/20241113213007.GB1564047@cmpxchg.org/
-Reported-by: Sam Sun <samsun1006219@gmail.com>
-Closes: https://lore.kernel.org/lkml/CAEkJfYMtSdM5HceNsXUDf5haghD5+o2e7Qv4OcuruL4tPg6OaQ@mail.gmail.com/
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: Vitaly Wool <vitalywool@gmail.com>
+Link: https://lkml.kernel.org/r/20250107144755.1871363-2-ryan.roberts@arm.com
+Co-developed-by: Mikołaj Lenczewski <miko.lenczewski@arm.com>
+Signed-off-by: Mikołaj Lenczewski <miko.lenczewski@arm.com>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Closes: https://lore.kernel.org/linux-mm/810b44a8-d2ae-4107-b665-5a42eae2d948@arm.com/
+Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/zswap.c |   58 ++++++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 44 insertions(+), 14 deletions(-)
+ include/linux/userfaultfd_k.h |   12 ++++++++++++
+ mm/huge_memory.c              |   12 ++++++++++++
+ mm/hugetlb.c                  |   14 +++++++++++++-
+ mm/mremap.c                   |   32 +++++++++++++++++++++++++++++++-
+ 4 files changed, 68 insertions(+), 2 deletions(-)
 
---- a/mm/zswap.c~mm-zswap-properly-synchronize-freeing-resources-during-cpu-hotunplug
-+++ a/mm/zswap.c
-@@ -251,7 +251,7 @@ static struct zswap_pool *zswap_pool_cre
- 	struct zswap_pool *pool;
- 	char name[38]; /* 'zswap' + 32 char (max) num + \0 */
- 	gfp_t gfp = __GFP_NORETRY | __GFP_NOWARN | __GFP_KSWAPD_RECLAIM;
--	int ret;
-+	int ret, cpu;
- 
- 	if (!zswap_has_pool) {
- 		/* if either are unset, pool initialization failed, and we
-@@ -285,6 +285,9 @@ static struct zswap_pool *zswap_pool_cre
- 		goto error;
- 	}
- 
-+	for_each_possible_cpu(cpu)
-+		mutex_init(&per_cpu_ptr(pool->acomp_ctx, cpu)->mutex);
-+
- 	ret = cpuhp_state_add_instance(CPUHP_MM_ZSWP_POOL_PREPARE,
- 				       &pool->node);
- 	if (ret)
-@@ -821,11 +824,12 @@ static int zswap_cpu_comp_prepare(unsign
- 	struct acomp_req *req;
- 	int ret;
- 
--	mutex_init(&acomp_ctx->mutex);
--
-+	mutex_lock(&acomp_ctx->mutex);
- 	acomp_ctx->buffer = kmalloc_node(PAGE_SIZE * 2, GFP_KERNEL, cpu_to_node(cpu));
--	if (!acomp_ctx->buffer)
--		return -ENOMEM;
-+	if (!acomp_ctx->buffer) {
-+		ret = -ENOMEM;
-+		goto buffer_fail;
-+	}
- 
- 	acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
- 	if (IS_ERR(acomp)) {
-@@ -855,12 +859,15 @@ static int zswap_cpu_comp_prepare(unsign
- 	acomp_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
- 				   crypto_req_done, &acomp_ctx->wait);
- 
-+	mutex_unlock(&acomp_ctx->mutex);
- 	return 0;
- 
- req_fail:
- 	crypto_free_acomp(acomp_ctx->acomp);
- acomp_fail:
- 	kfree(acomp_ctx->buffer);
-+buffer_fail:
-+	mutex_unlock(&acomp_ctx->mutex);
- 	return ret;
+--- a/include/linux/userfaultfd_k.h~mm-clear-uffd-wp-pte-pmd-state-on-mremap
++++ a/include/linux/userfaultfd_k.h
+@@ -247,6 +247,13 @@ static inline bool vma_can_userfault(str
+ 	    vma_is_shmem(vma);
  }
  
-@@ -869,17 +876,45 @@ static int zswap_cpu_comp_dead(unsigned
- 	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
- 	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
- 
-+	mutex_lock(&acomp_ctx->mutex);
- 	if (!IS_ERR_OR_NULL(acomp_ctx)) {
- 		if (!IS_ERR_OR_NULL(acomp_ctx->req))
- 			acomp_request_free(acomp_ctx->req);
-+		acomp_ctx->req = NULL;
- 		if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
- 			crypto_free_acomp(acomp_ctx->acomp);
- 		kfree(acomp_ctx->buffer);
- 	}
-+	mutex_unlock(&acomp_ctx->mutex);
- 
- 	return 0;
- }
- 
-+static struct crypto_acomp_ctx *acomp_ctx_get_cpu_lock(struct zswap_pool *pool)
++static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
 +{
-+	struct crypto_acomp_ctx *acomp_ctx;
++	struct userfaultfd_ctx *uffd_ctx = vma->vm_userfaultfd_ctx.ctx;
 +
-+	for (;;) {
-+		acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
-+		mutex_lock(&acomp_ctx->mutex);
-+		if (likely(acomp_ctx->req))
-+			return acomp_ctx;
-+		/*
-+		 * It is possible that we were migrated to a different CPU after
-+		 * getting the per-CPU ctx but before the mutex was acquired. If
-+		 * the old CPU got offlined, zswap_cpu_comp_dead() could have
-+		 * already freed ctx->req (among other things) and set it to
-+		 * NULL. Just try again on the new CPU that we ended up on.
-+		 */
-+		mutex_unlock(&acomp_ctx->mutex);
-+	}
++	return uffd_ctx && (uffd_ctx->features & UFFD_FEATURE_EVENT_REMAP) == 0;
 +}
 +
-+static void acomp_ctx_put_unlock(struct crypto_acomp_ctx *acomp_ctx)
-+{
-+	mutex_unlock(&acomp_ctx->mutex);
-+}
-+
- static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 			   struct zswap_pool *pool)
+ extern int dup_userfaultfd(struct vm_area_struct *, struct list_head *);
+ extern void dup_userfaultfd_complete(struct list_head *);
+ void dup_userfaultfd_fail(struct list_head *);
+@@ -401,6 +408,11 @@ static inline bool userfaultfd_wp_async(
  {
-@@ -893,10 +928,7 @@ static bool zswap_compress(struct page *
- 	gfp_t gfp;
- 	u8 *dst;
+ 	return false;
+ }
++
++static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
++{
++	return false;
++}
  
--	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
--
--	mutex_lock(&acomp_ctx->mutex);
--
-+	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
- 	dst = acomp_ctx->buffer;
- 	sg_init_table(&input, 1);
- 	sg_set_page(&input, page, PAGE_SIZE, 0);
-@@ -949,7 +981,7 @@ unlock:
- 	else if (alloc_ret)
- 		zswap_reject_alloc_fail++;
+ #endif /* CONFIG_USERFAULTFD */
  
--	mutex_unlock(&acomp_ctx->mutex);
-+	acomp_ctx_put_unlock(acomp_ctx);
- 	return comp_ret == 0 && alloc_ret == 0;
+--- a/mm/huge_memory.c~mm-clear-uffd-wp-pte-pmd-state-on-mremap
++++ a/mm/huge_memory.c
+@@ -2206,6 +2206,16 @@ static pmd_t move_soft_dirty_pmd(pmd_t p
+ 	return pmd;
  }
  
-@@ -960,9 +992,7 @@ static void zswap_decompress(struct zswa
- 	struct crypto_acomp_ctx *acomp_ctx;
- 	u8 *src;
++static pmd_t clear_uffd_wp_pmd(pmd_t pmd)
++{
++	if (pmd_present(pmd))
++		pmd = pmd_clear_uffd_wp(pmd);
++	else if (is_swap_pmd(pmd))
++		pmd = pmd_swp_clear_uffd_wp(pmd);
++
++	return pmd;
++}
++
+ bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+ 		  unsigned long new_addr, pmd_t *old_pmd, pmd_t *new_pmd)
+ {
+@@ -2244,6 +2254,8 @@ bool move_huge_pmd(struct vm_area_struct
+ 			pgtable_trans_huge_deposit(mm, new_pmd, pgtable);
+ 		}
+ 		pmd = move_soft_dirty_pmd(pmd);
++		if (vma_has_uffd_without_event_remap(vma))
++			pmd = clear_uffd_wp_pmd(pmd);
+ 		set_pmd_at(mm, new_addr, new_pmd, pmd);
+ 		if (force_flush)
+ 			flush_pmd_tlb_range(vma, old_addr, old_addr + PMD_SIZE);
+--- a/mm/hugetlb.c~mm-clear-uffd-wp-pte-pmd-state-on-mremap
++++ a/mm/hugetlb.c
+@@ -5402,6 +5402,7 @@ static void move_huge_pte(struct vm_area
+ 			  unsigned long new_addr, pte_t *src_pte, pte_t *dst_pte,
+ 			  unsigned long sz)
+ {
++	bool need_clear_uffd_wp = vma_has_uffd_without_event_remap(vma);
+ 	struct hstate *h = hstate_vma(vma);
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	spinlock_t *src_ptl, *dst_ptl;
+@@ -5418,7 +5419,18 @@ static void move_huge_pte(struct vm_area
+ 		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
  
--	acomp_ctx = raw_cpu_ptr(entry->pool->acomp_ctx);
--	mutex_lock(&acomp_ctx->mutex);
--
-+	acomp_ctx = acomp_ctx_get_cpu_lock(entry->pool);
- 	src = zpool_map_handle(zpool, entry->handle, ZPOOL_MM_RO);
+ 	pte = huge_ptep_get_and_clear(mm, old_addr, src_pte);
+-	set_huge_pte_at(mm, new_addr, dst_pte, pte, sz);
++
++	if (need_clear_uffd_wp && pte_marker_uffd_wp(pte))
++		huge_pte_clear(mm, new_addr, dst_pte, sz);
++	else {
++		if (need_clear_uffd_wp) {
++			if (pte_present(pte))
++				pte = huge_pte_clear_uffd_wp(pte);
++			else if (is_swap_pte(pte))
++				pte = pte_swp_clear_uffd_wp(pte);
++		}
++		set_huge_pte_at(mm, new_addr, dst_pte, pte, sz);
++	}
+ 
+ 	if (src_ptl != dst_ptl)
+ 		spin_unlock(src_ptl);
+--- a/mm/mremap.c~mm-clear-uffd-wp-pte-pmd-state-on-mremap
++++ a/mm/mremap.c
+@@ -138,6 +138,7 @@ static int move_ptes(struct vm_area_stru
+ 		struct vm_area_struct *new_vma, pmd_t *new_pmd,
+ 		unsigned long new_addr, bool need_rmap_locks)
+ {
++	bool need_clear_uffd_wp = vma_has_uffd_without_event_remap(vma);
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	pte_t *old_pte, *new_pte, pte;
+ 	pmd_t dummy_pmdval;
+@@ -216,7 +217,18 @@ static int move_ptes(struct vm_area_stru
+ 			force_flush = true;
+ 		pte = move_pte(pte, old_addr, new_addr);
+ 		pte = move_soft_dirty_pte(pte);
+-		set_pte_at(mm, new_addr, new_pte, pte);
++
++		if (need_clear_uffd_wp && pte_marker_uffd_wp(pte))
++			pte_clear(mm, new_addr, new_pte);
++		else {
++			if (need_clear_uffd_wp) {
++				if (pte_present(pte))
++					pte = pte_clear_uffd_wp(pte);
++				else if (is_swap_pte(pte))
++					pte = pte_swp_clear_uffd_wp(pte);
++			}
++			set_pte_at(mm, new_addr, new_pte, pte);
++		}
+ 	}
+ 
+ 	arch_leave_lazy_mmu_mode();
+@@ -278,6 +290,15 @@ static bool move_normal_pmd(struct vm_ar
+ 	if (WARN_ON_ONCE(!pmd_none(*new_pmd)))
+ 		return false;
+ 
++	/* If this pmd belongs to a uffd vma with remap events disabled, we need
++	 * to ensure that the uffd-wp state is cleared from all pgtables. This
++	 * means recursing into lower page tables in move_page_tables(), and we
++	 * can reuse the existing code if we simply treat the entry as "not
++	 * moved".
++	 */
++	if (vma_has_uffd_without_event_remap(vma))
++		return false;
++
  	/*
- 	 * If zpool_map_handle is atomic, we cannot reliably utilize its mapped buffer
-@@ -986,10 +1016,10 @@ static void zswap_decompress(struct zswa
- 	acomp_request_set_params(acomp_ctx->req, &input, &output, entry->length, PAGE_SIZE);
- 	BUG_ON(crypto_wait_req(crypto_acomp_decompress(acomp_ctx->req), &acomp_ctx->wait));
- 	BUG_ON(acomp_ctx->req->dlen != PAGE_SIZE);
--	mutex_unlock(&acomp_ctx->mutex);
+ 	 * We don't have to worry about the ordering of src and dst
+ 	 * ptlocks because exclusive mmap_lock prevents deadlock.
+@@ -333,6 +354,15 @@ static bool move_normal_pud(struct vm_ar
+ 	if (WARN_ON_ONCE(!pud_none(*new_pud)))
+ 		return false;
  
- 	if (src != acomp_ctx->buffer)
- 		zpool_unmap_handle(zpool, entry->handle);
-+	acomp_ctx_put_unlock(acomp_ctx);
- }
- 
- /*********************************
++	/* If this pud belongs to a uffd vma with remap events disabled, we need
++	 * to ensure that the uffd-wp state is cleared from all pgtables. This
++	 * means recursing into lower page tables in move_page_tables(), and we
++	 * can reuse the existing code if we simply treat the entry as "not
++	 * moved".
++	 */
++	if (vma_has_uffd_without_event_remap(vma))
++		return false;
++
+ 	/*
+ 	 * We don't have to worry about the ordering of src and dst
+ 	 * ptlocks because exclusive mmap_lock prevents deadlock.
 _
 
-Patches currently in -mm which might be from yosryahmed@google.com are
+Patches currently in -mm which might be from ryan.roberts@arm.com are
 
+selftests-mm-add-fork-cow-guard-page-test-fix.patch
+selftests-mm-introduce-uffd-wp-mremap-regression-test.patch
 
 
