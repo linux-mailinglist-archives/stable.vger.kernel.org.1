@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-108482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85353A0C00B
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:37:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58547A0C00F
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:38:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 266A4165D1A
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:37:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E57157A21FB
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:38:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863241F9432;
-	Mon, 13 Jan 2025 18:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F131F9A93;
+	Mon, 13 Jan 2025 18:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pqi3lzMa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lquJr4E1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0931F9419;
-	Mon, 13 Jan 2025 18:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B69C1C5F0A;
+	Mon, 13 Jan 2025 18:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793295; cv=none; b=FqZJIj9WkR0MQD7yahmTg4dVxV3Fev3qL3w0frSIzmV/9x5Farvcx3FlgVkbAtcwjD1gRkw1ir8d5W/RUcJrYkn1GQ6CMj69do+grbCR+/Y8+9Shxv7LMYMiGC4ZuedAi/pZ/ZzVckJE8CxBs2BuLm2cGFMFZbAIbmtsd/7MRcc=
+	t=1736793302; cv=none; b=WasxnzkQFeSdrNprqz8BSW+u/EU2zV17PEKqljJLF9PqdHuKns8mRJH7lqIuc3jRz1Zwxt1s2yF9BdWfWp06DtD5EboTy2gZWuZPcbBhyEBG8uLwjHh/Swg2RsCpeart+wY+l0e0ZoIcEfTgZBG0a/tpXvsBg0fBlsQwRfZumJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793295; c=relaxed/simple;
-	bh=Dx1KjkjC93S3IzzIaESQaq/jXmZCVzpwk035galG8Yk=;
+	s=arc-20240116; t=1736793302; c=relaxed/simple;
+	bh=O3oD0inCuTEDOQvSP/BTMZROshvZ1iBHYYSPEzj/n+Y=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iKg1d0j2KSoz3vvqaiupWiPe27N6Yax3IEycl/IpaCgNikbzO55vJGqhicN1Q+aYxmL5xbmqZTxa+sPh1p8oIPcY48ZTT1GleLlVXwr9tsLoekwIX2Vo9TktlpvYlmrq77fVMAJRbvj95WPvlUuJHAWUbvyof82OIjuWgwmzWww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pqi3lzMa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 213BEC4CEE2;
-	Mon, 13 Jan 2025 18:34:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cFJjSBe7tR1SAIh2fvL8LZxtKaRjiRFiOahI3JU+/R63ihDSc8NlwdYwHv5P5MUy+sGxnoFOdKOATvNDuB25x8KxYkoZ5NVZWZvpuitYcbtDKY8eDR0/V9THpFGPuuCujTm+ZIvPfoeVC893gzNKHOffbWaFaRK/iuu1HqOksKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lquJr4E1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A26CC4CED6;
+	Mon, 13 Jan 2025 18:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736793294;
-	bh=Dx1KjkjC93S3IzzIaESQaq/jXmZCVzpwk035galG8Yk=;
+	s=k20201202; t=1736793301;
+	bh=O3oD0inCuTEDOQvSP/BTMZROshvZ1iBHYYSPEzj/n+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pqi3lzMat10AFvEPNRzog0KNmizv1HXp1FYjFQd9yVKdG3WzCwJ1ZEiPZ5B7kW0a1
-	 xCMpsF8tuGHmlDZDGKU78iMDfKMgLcgIMl85O3mNF+M8qL2rbWZd6NH/Ff9oB6goOC
-	 XN1StKg7dNqgw8qw/7uwOlpgE8g0VLptWkp7Ef0iotM3SNf9T3mInmE5epqM81OkH4
-	 8egLjZI+nL0oVyf4li42zSD0kjkNm8jzsMIktTnxYD/eSychmBXcloH5E5Nb/Cp5KP
-	 aqWgNxtfdPrnF629/2FWILUVPeG2JUq+2T1a869u62YanNxSrSc7TjFs26yRrxcFv0
-	 Dfi64KlN6c0Wg==
+	b=lquJr4E13z5FlNAPJxN7eRQU3mUzQ/TjrAzdfFfPufxzxev45FZFma+EM7ZBod7ao
+	 Zq4J2/ji6++pdQEICepqlfh4KwHEhPpzGux8K/uPnunXjhnxXKWQxreclJ/ON9Tm6U
+	 Z2Aag9TFtxamHb5dUNp8I2cXUe6W561HebtGlFIzhyzlosqJsSpf1Fuim4e+uygt2m
+	 kKZ4ZuX+06UUALf0vQTVVX4b0XcPnh8zq6rHa98rYlgoa7FXF28aI1uuj8Avzh/QZg
+	 jCdaxaqzqxDrprv/a5qlNjfuuMP+fQEkQotQONSGHxtdXVjmtLttRvO/EEqGgZr6CW
+	 FMVsoum6O2zBg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Amir Goldstein <amir73il@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	miklos@szeredi.hu,
-	linux-unionfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 13/20] ovl: pass realinode to ovl_encode_real_fh() instead of realdentry
-Date: Mon, 13 Jan 2025 13:34:18 -0500
-Message-Id: <20250113183425.1783715-13-sashal@kernel.org>
+	hdegoede@redhat.com,
+	tero.kristo@linux.intel.com,
+	andriy.shevchenko@linux.intel.com,
+	gregkh@linuxfoundation.org,
+	peterz@infradead.org,
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 14/20] platform/x86/intel: power-domains: Add Clearwater Forest support
+Date: Mon, 13 Jan 2025 13:34:19 -0500
+Message-Id: <20250113183425.1783715-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250113183425.1783715-1-sashal@kernel.org>
 References: <20250113183425.1783715-1-sashal@kernel.org>
@@ -61,134 +65,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.9
 Content-Transfer-Encoding: 8bit
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 07aeefae7ff44d80524375253980b1bdee2396b0 ]
+[ Upstream commit bee9a0838fd223823e5a6d85c055ab1691dc738e ]
 
-We want to be able to encode an fid from an inode with no alias.
+Add Clearwater Forest support (INTEL_ATOM_DARKMONT_X) to tpmi_cpu_ids
+to support domaid id mappings.
 
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Link: https://lore.kernel.org/r/20250105162404.357058-2-amir73il@gmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://lore.kernel.org/r/20250103155255.1488139-1-srinivas.pandruvada@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/copy_up.c   | 11 ++++++-----
- fs/overlayfs/export.c    |  5 +++--
- fs/overlayfs/namei.c     |  4 ++--
- fs/overlayfs/overlayfs.h |  2 +-
- 4 files changed, 12 insertions(+), 10 deletions(-)
+ drivers/platform/x86/intel/tpmi_power_domains.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
-index 2ed6ad641a20..a11a9d756a7b 100644
---- a/fs/overlayfs/copy_up.c
-+++ b/fs/overlayfs/copy_up.c
-@@ -416,13 +416,13 @@ int ovl_set_attr(struct ovl_fs *ofs, struct dentry *upperdentry,
- 	return err;
- }
- 
--struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry *real,
-+struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct inode *realinode,
- 				  bool is_upper)
- {
- 	struct ovl_fh *fh;
- 	int fh_type, dwords;
- 	int buflen = MAX_HANDLE_SZ;
--	uuid_t *uuid = &real->d_sb->s_uuid;
-+	uuid_t *uuid = &realinode->i_sb->s_uuid;
- 	int err;
- 
- 	/* Make sure the real fid stays 32bit aligned */
-@@ -439,7 +439,8 @@ struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry *real,
- 	 * the price or reconnecting the dentry.
- 	 */
- 	dwords = buflen >> 2;
--	fh_type = exportfs_encode_fh(real, (void *)fh->fb.fid, &dwords, 0);
-+	fh_type = exportfs_encode_inode_fh(realinode, (void *)fh->fb.fid,
-+					   &dwords, NULL, 0);
- 	buflen = (dwords << 2);
- 
- 	err = -EIO;
-@@ -481,7 +482,7 @@ struct ovl_fh *ovl_get_origin_fh(struct ovl_fs *ofs, struct dentry *origin)
- 	if (!ovl_can_decode_fh(origin->d_sb))
- 		return NULL;
- 
--	return ovl_encode_real_fh(ofs, origin, false);
-+	return ovl_encode_real_fh(ofs, d_inode(origin), false);
- }
- 
- int ovl_set_origin_fh(struct ovl_fs *ofs, const struct ovl_fh *fh,
-@@ -506,7 +507,7 @@ static int ovl_set_upper_fh(struct ovl_fs *ofs, struct dentry *upper,
- 	const struct ovl_fh *fh;
- 	int err;
- 
--	fh = ovl_encode_real_fh(ofs, upper, true);
-+	fh = ovl_encode_real_fh(ofs, d_inode(upper), true);
- 	if (IS_ERR(fh))
- 		return PTR_ERR(fh);
- 
-diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
-index 5868cb222955..036c9f39a14d 100644
---- a/fs/overlayfs/export.c
-+++ b/fs/overlayfs/export.c
-@@ -223,6 +223,7 @@ static int ovl_check_encode_origin(struct dentry *dentry)
- static int ovl_dentry_to_fid(struct ovl_fs *ofs, struct dentry *dentry,
- 			     u32 *fid, int buflen)
- {
-+	struct inode *inode = d_inode(dentry);
- 	struct ovl_fh *fh = NULL;
- 	int err, enc_lower;
- 	int len;
-@@ -236,8 +237,8 @@ static int ovl_dentry_to_fid(struct ovl_fs *ofs, struct dentry *dentry,
- 		goto fail;
- 
- 	/* Encode an upper or lower file handle */
--	fh = ovl_encode_real_fh(ofs, enc_lower ? ovl_dentry_lower(dentry) :
--				ovl_dentry_upper(dentry), !enc_lower);
-+	fh = ovl_encode_real_fh(ofs, enc_lower ? ovl_inode_lower(inode) :
-+				ovl_inode_upper(inode), !enc_lower);
- 	if (IS_ERR(fh))
- 		return PTR_ERR(fh);
- 
-diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
-index 5764f91d283e..42b73ae5ba01 100644
---- a/fs/overlayfs/namei.c
-+++ b/fs/overlayfs/namei.c
-@@ -542,7 +542,7 @@ int ovl_verify_origin_xattr(struct ovl_fs *ofs, struct dentry *dentry,
- 	struct ovl_fh *fh;
- 	int err;
- 
--	fh = ovl_encode_real_fh(ofs, real, is_upper);
-+	fh = ovl_encode_real_fh(ofs, d_inode(real), is_upper);
- 	err = PTR_ERR(fh);
- 	if (IS_ERR(fh)) {
- 		fh = NULL;
-@@ -738,7 +738,7 @@ int ovl_get_index_name(struct ovl_fs *ofs, struct dentry *origin,
- 	struct ovl_fh *fh;
- 	int err;
- 
--	fh = ovl_encode_real_fh(ofs, origin, false);
-+	fh = ovl_encode_real_fh(ofs, d_inode(origin), false);
- 	if (IS_ERR(fh))
- 		return PTR_ERR(fh);
- 
-diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
-index 0bfe35da4b7b..844874b4a91a 100644
---- a/fs/overlayfs/overlayfs.h
-+++ b/fs/overlayfs/overlayfs.h
-@@ -869,7 +869,7 @@ int ovl_copy_up_with_data(struct dentry *dentry);
- int ovl_maybe_copy_up(struct dentry *dentry, int flags);
- int ovl_copy_xattr(struct super_block *sb, const struct path *path, struct dentry *new);
- int ovl_set_attr(struct ovl_fs *ofs, struct dentry *upper, struct kstat *stat);
--struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry *real,
-+struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct inode *realinode,
- 				  bool is_upper);
- struct ovl_fh *ovl_get_origin_fh(struct ovl_fs *ofs, struct dentry *origin);
- int ovl_set_origin_fh(struct ovl_fs *ofs, const struct ovl_fh *fh,
+diff --git a/drivers/platform/x86/intel/tpmi_power_domains.c b/drivers/platform/x86/intel/tpmi_power_domains.c
+index 0609a8320f7e..12fb0943b5dc 100644
+--- a/drivers/platform/x86/intel/tpmi_power_domains.c
++++ b/drivers/platform/x86/intel/tpmi_power_domains.c
+@@ -81,6 +81,7 @@ static const struct x86_cpu_id tpmi_cpu_ids[] = {
+ 	X86_MATCH_VFM(INTEL_GRANITERAPIDS_X,	NULL),
+ 	X86_MATCH_VFM(INTEL_ATOM_CRESTMONT_X,	NULL),
+ 	X86_MATCH_VFM(INTEL_ATOM_CRESTMONT,	NULL),
++	X86_MATCH_VFM(INTEL_ATOM_DARKMONT_X,	NULL),
+ 	X86_MATCH_VFM(INTEL_GRANITERAPIDS_D,	NULL),
+ 	X86_MATCH_VFM(INTEL_PANTHERCOVE_X,	NULL),
+ 	{}
 -- 
 2.39.5
 
