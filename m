@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-108488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EE09A0C01C
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:39:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBC48A0C01E
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:39:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE9111884450
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:39:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 284B916A482
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:39:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4CA1FA252;
-	Mon, 13 Jan 2025 18:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9BB1FA8D3;
+	Mon, 13 Jan 2025 18:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UdWxnJW1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="msPTIKoE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3FD1FA243;
-	Mon, 13 Jan 2025 18:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D821FA8C6;
+	Mon, 13 Jan 2025 18:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793309; cv=none; b=jObL31tBLrG9iNIw1LNPZxKVgeZyoWfuDPjCdvoNzBVc3KDsCmhu4Fdug1EQUQuebpi9HrCXlzkxDBh5RQ8y0ra+gu9bFyPj8q4+D1SSTj7Uyo794T8ODF41E+mqQcXaDlHeQP2kwlGhET1rMjEFELOU4/wGUvag5R6ho20BuiQ=
+	t=1736793311; cv=none; b=U6PYwVY5wuIdJcH5I9ijOVgH6yCi9hiq//CvM6a2ty/wNPdJKmuqpc4M+E63diKl1zneeGJrX+lNg2KtWwXmqQqPnxsiAySYuY9BcxoGVUeIddkuiZWbgKTrAMKJLS8+kaavSNJd0/wWtEnW9wPSIzWtNTiknx5TrmkXHVloEKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793309; c=relaxed/simple;
-	bh=7vSgLRPXc4F0intZyXUNvaHvnTlo04HUBqKOi5D/r80=;
+	s=arc-20240116; t=1736793311; c=relaxed/simple;
+	bh=n0Pf6qpGoYAXXTCIUxq4k5sAvt6d3JS46oA5bUdbivA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bS6NTrZ2mlis74wW9rJA65R4bOscZFOXCb/pi3VzOsndtcxVUXS+JpTeLS8T1vgzoYkxzLH1P4SLd7sH5oIjPWZUK8kLEIUfzOVQpBKAwd4ayUgHwJI28ecf6k2skj2BaQl8tITm3AFWNYpLR2ponaS0EeuHHs+kovrAj6CJC7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UdWxnJW1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B57C4CEE7;
-	Mon, 13 Jan 2025 18:35:07 +0000 (UTC)
+	 MIME-Version; b=faY3dMs2Ht50hZvuilkpx79TNllpUYoXT3EQPqVDmLXzuylJ4/tghnoX1tLmj30skHIB+TRgJ1dKvBWKKpMAt5Efgk3ZgzOaJ5xBgEQYUa89L8/ToznjEuZNsUgC9OgEO2CRWZEfgbhur75oZJHjwba5kvfM34wo9jp6URvkJTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=msPTIKoE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41536C4CEE2;
+	Mon, 13 Jan 2025 18:35:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736793308;
-	bh=7vSgLRPXc4F0intZyXUNvaHvnTlo04HUBqKOi5D/r80=;
+	s=k20201202; t=1736793311;
+	bh=n0Pf6qpGoYAXXTCIUxq4k5sAvt6d3JS46oA5bUdbivA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UdWxnJW1EnusZzh5rYaYdWq5+cVGUD3WhA081mFXDCmbS1BXFxb8pEY772hV103jh
-	 ZXHkIL+Y9/5TResp1rXFzYNhLimhR0TjrrEEiGnSnOVq1+mMqAl3xuQyXMc5zQZtnl
-	 Jmd99u/h7ht5ECfiYK/3U7AzncMvgegD3uGnWbNeY3lglTGxBUL4hwZOstIOWT/XIM
-	 2D/+MGVpQRFxeOOXnUDeh/Mge4oIMSvVHBi6qICBinOlv7iiOIL5Q31hMwFR4SgNGt
-	 yzeKPmcIkN2IMj8sMKOq1kqdkdfmQHN3wYwaI6bZW5Po97tYyewzYIv+5ppjzngj7D
-	 xqbOzH5ozrEag==
+	b=msPTIKoE/Njjr8HTPGv3mFs9NyrADg/SMUvz0urDTVb2l2ijyzCMGOckEyTdeAdPm
+	 3+jIpGlS2hxqku++Pzdv2cUjHk1mfxVyaZWg/bplh7R4LldLEV6AoK5Bw9mPe1KJ4Q
+	 juh3A4XnXjADiLYo1sePmxpwH9AbdOjv6jx1XpHz4g4Fo1MevArVd3tPhUIgxclLTZ
+	 /hvpVDVAWPv//JToB0BNN9T66MXOEb0Yestzuf7e+sWRwzoaMYchP2Gh5dY2oT8edR
+	 XfY2RWaeLerEmCoqM89Pp344mWCLOfvqQbvjhqIjSzVoA0uOJ+vfJOEtszeh3ssb4v
+	 NoPchxvzfuQBw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Lizhi Xu <lizhi.xu@windriver.com>,
-	syzbot+76f33569875eb708e575@syzkaller.appspotmail.com,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
+Cc: Oleg Nesterov <oleg@redhat.com>,
 	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.12 19/20] afs: Fix merge preference rule failure condition
-Date: Mon, 13 Jan 2025 13:34:24 -0500
-Message-Id: <20250113183425.1783715-19-sashal@kernel.org>
+	Sasha Levin <sashal@kernel.org>,
+	arnd@arndb.de,
+	kees@kernel.org,
+	ak@linux.intel.com
+Subject: [PATCH AUTOSEL 6.12 20/20] poll_wait: add mb() to fix theoretical race between waitqueue_active() and .poll()
+Date: Mon, 13 Jan 2025 13:34:25 -0500
+Message-Id: <20250113183425.1783715-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250113183425.1783715-1-sashal@kernel.org>
 References: <20250113183425.1783715-1-sashal@kernel.org>
@@ -68,61 +67,64 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.9
 Content-Transfer-Encoding: 8bit
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 17a4fde81d3a7478d97d15304a6d61094a10c2e3 ]
+[ Upstream commit cacd9ae4bf801ff4125d8961bb9a3ba955e51680 ]
 
-syzbot reported a lock held when returning to userspace[1].  This is
-because if argc is less than 0 and the function returns directly, the held
-inode lock is not released.
+As the comment above waitqueue_active() explains, it can only be used
+if both waker and waiter have mb()'s that pair with each other. However
+__pollwait() is broken in this respect.
 
-Fix this by store the error in ret and jump to done to clean up instead of
-returning directly.
+This is not pipe-specific, but let's look at pipe_poll() for example:
 
-[dh: Modified Lizhi Xu's original patch to make it honour the error code
-from afs_split_string()]
+	poll_wait(...); // -> __pollwait() -> add_wait_queue()
 
-[1]
-WARNING: lock held when returning to user space!
-6.13.0-rc3-syzkaller-00209-g499551201b5f #0 Not tainted
-------------------------------------------------
-syz-executor133/5823 is leaving the kernel with locks still held!
-1 lock held by syz-executor133/5823:
- #0: ffff888071cffc00 (&sb->s_type->i_mutex_key#9){++++}-{4:4}, at: inode_lock include/linux/fs.h:818 [inline]
- #0: ffff888071cffc00 (&sb->s_type->i_mutex_key#9){++++}-{4:4}, at: afs_proc_addr_prefs_write+0x2bb/0x14e0 fs/afs/addr_prefs.c:388
+	LOAD(pipe->head);
+	LOAD(pipe->head);
 
-Reported-by: syzbot+76f33569875eb708e575@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=76f33569875eb708e575
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20241226012616.2348907-1-lizhi.xu@windriver.com/
-Link: https://lore.kernel.org/r/529850.1736261552@warthog.procyon.org.uk
-Tested-by: syzbot+76f33569875eb708e575@syzkaller.appspotmail.com
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
+In theory these LOAD()'s can leak into the critical section inside
+add_wait_queue() and can happen before list_add(entry, wq_head), in this
+case pipe_poll() can race with wakeup_pipe_readers/writers which do
+
+	smp_mb();
+	if (waitqueue_active(wq_head))
+		wake_up_interruptible(wq_head);
+
+There are more __pollwait()-like functions (grep init_poll_funcptr), and
+it seems that at least ep_ptable_queue_proc() has the same problem, so the
+patch adds smp_mb() into poll_wait().
+
+Link: https://lore.kernel.org/all/20250102163320.GA17691@redhat.com/
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20250107162717.GA18922@redhat.com
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/addr_prefs.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ include/linux/poll.h | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/fs/afs/addr_prefs.c b/fs/afs/addr_prefs.c
-index a189ff8a5034..c0384201b8fe 100644
---- a/fs/afs/addr_prefs.c
-+++ b/fs/afs/addr_prefs.c
-@@ -413,8 +413,10 @@ int afs_proc_addr_prefs_write(struct file *file, char *buf, size_t size)
+diff --git a/include/linux/poll.h b/include/linux/poll.h
+index d1ea4f3714a8..fc641b50f129 100644
+--- a/include/linux/poll.h
++++ b/include/linux/poll.h
+@@ -41,8 +41,16 @@ typedef struct poll_table_struct {
  
- 	do {
- 		argc = afs_split_string(&buf, argv, ARRAY_SIZE(argv));
--		if (argc < 0)
--			return argc;
-+		if (argc < 0) {
-+			ret = argc;
-+			goto done;
-+		}
- 		if (argc < 2)
- 			goto inval;
+ static inline void poll_wait(struct file * filp, wait_queue_head_t * wait_address, poll_table *p)
+ {
+-	if (p && p->_qproc && wait_address)
++	if (p && p->_qproc && wait_address) {
+ 		p->_qproc(filp, wait_address, p);
++		/*
++		 * This memory barrier is paired in the wq_has_sleeper().
++		 * See the comment above prepare_to_wait(), we need to
++		 * ensure that subsequent tests in this thread can't be
++		 * reordered with __add_wait_queue() in _qproc() paths.
++		 */
++		smp_mb();
++	}
+ }
  
+ /*
 -- 
 2.39.5
 
