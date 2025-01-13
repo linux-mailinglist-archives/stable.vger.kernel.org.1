@@ -1,124 +1,113 @@
-Return-Path: <stable+bounces-108551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA149A0C53F
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 00:09:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76964A0C57B
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 00:17:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3A0B7A22B6
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 23:09:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DD3A1886C40
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 23:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C305F1F8933;
-	Mon, 13 Jan 2025 23:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809851F9F70;
+	Mon, 13 Jan 2025 23:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L7bgk2cY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HegG9hO1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C8E1D61BF
-	for <stable@vger.kernel.org>; Mon, 13 Jan 2025 23:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37CBF1F9ECE;
+	Mon, 13 Jan 2025 23:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736809767; cv=none; b=Dde8dtvjscGpe66jN3rhccnzXWVWMmXLn3IWl5lJV9Q+UEOnaXapbK9nqH2fiFggKLrVZYpdlDF4BC9SwCZ8o14vbZ4nNqj81PBfRbKojQA4Zo+qFW7ZIwmory8EjPLnqeAguHKxm7dClNjG2rfByuic+cdb1rCKch9AdzaCFF8=
+	t=1736810181; cv=none; b=V9gs5EzBmyW8h5TEUSwxxYgvO8D1ODX5umEQbCcz2t9erUqKc5YG0oTyJcbKvB8jPYeQcO2KbyScORqT9TQXtC252urchFC+O0Qr+EYh4ZtO1ZzzsROw3FlPXxyF7JVWCVOmlWTQKfxlyQRICM0igGiTFqdNdlooQs1wPh9HV3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736809767; c=relaxed/simple;
-	bh=89tZHP3jZpuV9Y/Zh/wC7wBtnIeL8fJklUGgWrZRLlI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PHT0gD5L54B3xfkSt7NCxpGFY5hakgsCL37sFPA9i815yzmLFM/x8huhK2v7U4z7C08E9oZ9XccjyLUrSdRdaX6s0QqqWQuayTkvoAQ/1RO6sjRZCT3q2FmP7fvCw0AP5xbD2Qz3npUUGtNF/5ONyeoNlPtnkHZt05hSpHKXSOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L7bgk2cY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A225FC4CED6;
-	Mon, 13 Jan 2025 23:09:26 +0000 (UTC)
+	s=arc-20240116; t=1736810181; c=relaxed/simple;
+	bh=dDUcFVAojLU/9heIWIOGhgjjlgFXUYHJ762B3sZtUm4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WO8h2k8nMUeh9qBTyHAB3WwyAaPWK3eyR+W0I79tvZfYgtt6MOSlw+Immr2Kxe06hySKDGz/GuJKECCTFvXn7dkksXmvAkUL3LHpPsz19O5cIDYaOcR6xKkY8A3sDikPe+ytmtHeiOUHvH8eN4tN+MY0Vpeg2OpPkSPpvRoD5mA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HegG9hO1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A34C4CED6;
+	Mon, 13 Jan 2025 23:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736809767;
-	bh=89tZHP3jZpuV9Y/Zh/wC7wBtnIeL8fJklUGgWrZRLlI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L7bgk2cY3UV7SrPZsMjvHQJ6P3w8WizDpTe4bxt3lBAfOX1GKl1SVJp2TnF+D5WZ+
-	 vf+JmRik3w+8EzfIfwK3/R305Vt95qzQNF6qSJ5+LdK5Wx1K48NfOBVDNw+4MIr31q
-	 QfSbj77ELFKUEzS8D9RIZMzQwwBx259drQVG6BZjZkCexJjQjn9A3JCfcoS1QnlNDc
-	 12RiijwzTbEeL5dWBg6atDmulD/3NX571xxX9m6ClZhAKOtQ2RhxPhWxQyM6x7ty82
-	 1lO6W9GdNtPSJBvhS+4e3fYwK+HueT+M6huetOl2PaXyA5XT17o9ouddOsZNpU8zoH
-	 Lo3i4uvLCNvdQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: inv.git-commit@tdk.com,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y] iio: imu: inv_icm42600: fix timestamps after suspend if sensor is on
-Date: Mon, 13 Jan 2025 18:09:25 -0500
-Message-Id: <20250113160649-c595879e30bf00b9@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250113143131.568417-1-inv.git-commit@tdk.com>
-References: 
+	s=k20201202; t=1736810180;
+	bh=dDUcFVAojLU/9heIWIOGhgjjlgFXUYHJ762B3sZtUm4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HegG9hO11Mi+Q78pqexEdq/3Xi/tNcdQ7rjYu06lA8Tk4QPXdja8Yu/r6CG+97S3V
+	 vkTP2aoMPg4/4KQys8NGeI/mz7+YnDV8resLsv4HgYrUP7WhaLifajJmBpXa3F9Buk
+	 AkteYXJm6t2J1O10+FQ4DxJKE9HN5I1qrW6BVOPpmcrKZ4jzI3zRkZJoHxS4quF0mi
+	 CFfOOpuWzIWPislBFVc+lAdwuTgzOU2aJCi66W0EzbIz1+fLCS6pYoY6dGkTkRZrvk
+	 TMw2jvI/KOpahvUwcgeFJZ2VXNmcbSEZ822qfuvpW2H0O0f6bz9OpwcVKJg7JWk4ib
+	 YCOiDzlSMTk5g==
+Date: Mon, 13 Jan 2025 17:16:19 -0600
+From: Rob Herring <robh@kernel.org>
+To: Zijun Hu <zijun_hu@icloud.com>
+Cc: Saravana Kannan <saravanak@google.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Marc Zyngier <maz@kernel.org>,
+	Andreas Herrmann <andreas.herrmann@calxeda.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Oreoluwa Babatunde <quic_obabatun@quicinc.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v4 11/14] of: reserved-memory: Warn for missing static
+ reserved memory regions
+Message-ID: <20250113231619.GA1983895-robh@kernel.org>
+References: <20250109-of_core_fix-v4-0-db8a72415b8c@quicinc.com>
+ <20250109-of_core_fix-v4-11-db8a72415b8c@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250109-of_core_fix-v4-11-db8a72415b8c@quicinc.com>
 
-[ Sasha's backport helper bot ]
+On Thu, Jan 09, 2025 at 09:27:02PM +0800, Zijun Hu wrote:
+> From: Zijun Hu <quic_zijuhu@quicinc.com>
+> 
+> For child node of /reserved-memory, its property 'reg' may contain
+> multiple regions, but fdt_scan_reserved_mem_reg_nodes() only takes
+> into account the first region, and miss remaining regions.
+> 
+> Give warning message when missing remaining regions.
 
-Hi,
+Can't we just fix it to support more than 1 entry?
 
-Found matching upstream commit: 65a60a590142c54a3f3be11ff162db2d5b0e1e06
-
-WARNING: Author mismatch between patch and found commit:
-Backport author: inv.git-commit@tdk.com
-Commit author: Jean-Baptiste Maneyrol<jean-baptiste.maneyrol@tdk.com>
-
-
-Status in newer kernel trees:
-6.12.y | Present (different SHA1: 7982d8f24a9b)
-6.6.y | Not found
-
-Note: The patch differs from the upstream commit:
----
-1:  65a60a590142 ! 1:  9c96f19a264e iio: imu: inv_icm42600: fix timestamps after suspend if sensor is on
-    @@ Commit message
-         Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-         Link: https://patch.msgid.link/20241113-inv_icm42600-fix-timestamps-after-suspend-v1-1-dfc77c394173@tdk.com
-         Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-    +    (cherry picked from commit 65a60a590142c54a3f3be11ff162db2d5b0e1e06)
-     
-      ## drivers/iio/imu/inv_icm42600/inv_icm42600_core.c ##
-    +@@
-    + #include <linux/regmap.h>
-    + 
-    + #include <linux/iio/iio.h>
-    ++#include <linux/iio/common/inv_sensors_timestamp.h>
-    + 
-    + #include "inv_icm42600.h"
-    + #include "inv_icm42600_buffer.h"
-     @@ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c: static int inv_icm42600_suspend(struct device *dev)
-      static int inv_icm42600_resume(struct device *dev)
-      {
-      	struct inv_icm42600_state *st = dev_get_drvdata(dev);
-    -+	struct inv_icm42600_sensor_state *gyro_st = iio_priv(st->indio_gyro);
-    -+	struct inv_icm42600_sensor_state *accel_st = iio_priv(st->indio_accel);
-    ++	struct inv_sensors_timestamp *gyro_ts = iio_priv(st->indio_gyro);
-    ++	struct inv_sensors_timestamp *accel_ts = iio_priv(st->indio_accel);
-      	int ret;
-      
-      	mutex_lock(&st->lock);
-    @@ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c: static int inv_icm42600_resume
-      	/* restore FIFO data streaming */
-     -	if (st->fifo.on)
-     +	if (st->fifo.on) {
-    -+		inv_sensors_timestamp_reset(&gyro_st->ts);
-    -+		inv_sensors_timestamp_reset(&accel_st->ts);
-    ++		inv_sensors_timestamp_reset(gyro_ts);
-    ++		inv_sensors_timestamp_reset(accel_ts);
-      		ret = regmap_write(st->map, INV_ICM42600_REG_FIFO_CONFIG,
-      				   INV_ICM42600_FIFO_CONFIG_STREAM);
-     +	}
----
-
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+> 
+> Fixes: 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved memory regions are processed")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+> ---
+>  drivers/of/of_reserved_mem.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
+> index 03a8f03ed1da165d6d7bf907d931857260888225..e2da88d7706ab3c208386e29f31350178e67cd14 100644
+> --- a/drivers/of/of_reserved_mem.c
+> +++ b/drivers/of/of_reserved_mem.c
+> @@ -263,6 +263,11 @@ void __init fdt_scan_reserved_mem_reg_nodes(void)
+>  			       uname);
+>  			continue;
+>  		}
+> +
+> +		if (len > t_len)
+> +			pr_warn("%s() ignores %d regions in node '%s'\n",
+> +				__func__, len / t_len - 1, uname);
+> +
+>  		base = dt_mem_next_cell(dt_root_addr_cells, &prop);
+>  		size = dt_mem_next_cell(dt_root_size_cells, &prop);
+>  
+> 
+> -- 
+> 2.34.1
+> 
 
