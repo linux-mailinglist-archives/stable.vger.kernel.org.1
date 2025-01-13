@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-108502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06402A0C047
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:42:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FBE5A0C04F
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:43:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DB9F188879E
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:42:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC3843A405B
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:42:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4582C20C019;
-	Mon, 13 Jan 2025 18:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7003320CCCF;
+	Mon, 13 Jan 2025 18:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PxMjQXXX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aNTjw58a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1FD920B7E4;
-	Mon, 13 Jan 2025 18:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E5B20C49F;
+	Mon, 13 Jan 2025 18:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793346; cv=none; b=PTw3JHuy1PpCbSfMeiM0h7+y38llrGBQA3uCNth7ueWbzDo+QkPNK73r3RHOTtr3iYdQ67e/7EMq9rbjwpYrq5+Tngxd1yRFzc/YNe0WP8gnghH9N8AGmO7AOdRXr/+dAhsm9C85d2st+Gce48kBl02d3taGcOLUM3pBy4PcxRI=
+	t=1736793348; cv=none; b=AvLWqDetV1MuW6Ex3T36+daBAoIQLqPzks7N3JibRuXHWzsXerfa7QKJE4CIGVv8Ep0SQR5962ZhZyEqdoqjPsO5NQhsznMNfGy5pkvNBeHl9h9JIXhEuse0+ndbhkXNF32vDSpFQfT+xbo4eweTd2SaVtyZDrEO60wdr6b/uXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793346; c=relaxed/simple;
-	bh=FwVsBM8MCU5jCU97csf2TPv9NjCpeizSYe9aIzOxrxc=;
+	s=arc-20240116; t=1736793348; c=relaxed/simple;
+	bh=NweWt3/VFkOQG4Bzl/1bOMVfAobk9wNdlubl0XEoTUs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AbmsPR89YT5TRb+qSHddNrM6oDJINNdgbpwknxXadLLOxsTaSgBnLJha/U4pNG1u6QjUv76A8g2yL2/tEtyxrvokZggFqL0GmXCwcRn+YYBchOlZhRdrLve10O6SzdUvOn6+xhYaKMnnC+TrG+SCIBIokG3OuLE8MI63EvQkTf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PxMjQXXX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A48C4CEE2;
-	Mon, 13 Jan 2025 18:35:44 +0000 (UTC)
+	 MIME-Version; b=H28zBXRqLrof1m2thFRoERH7/Yesbi4xYlzEL/dTGyQKjWdO3fm3XMTw/f/cmiAdOhJNQ+TYYZp5zLRPuY37cYWsz+OVUU7ShdpO3MET7gotoP1oNCKt4go98dzUnLcB96R9O0nVdKMdxbQfKFdAijp77rKKFGeALEBON5NBBMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aNTjw58a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7BDDC4CED6;
+	Mon, 13 Jan 2025 18:35:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736793345;
-	bh=FwVsBM8MCU5jCU97csf2TPv9NjCpeizSYe9aIzOxrxc=;
+	s=k20201202; t=1736793348;
+	bh=NweWt3/VFkOQG4Bzl/1bOMVfAobk9wNdlubl0XEoTUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PxMjQXXXQRsEGOUK3xvlNyQpuKBjWCGPNat4Ksj+bK4+7AN4sZkhB8LtjE70Ouxwp
-	 UN/yCuf6cynLkRZZ2T7JMGaFbvKUc5m4yqWyobYVHdoU8PznyxhD0cvSX5Kar4w831
-	 hFt4s0tMeKRf7Wr9NcgrjBbGIG4hEeL8dOpL2qovS3VYhzhDwZAupdqhy20PEq11xl
-	 lgqk98fZ7Iyo76GpF2FwPB7FTLKL0ufOs8kphM6btfsY+l1IDnCg4XDj/HSRSHe0VT
-	 jC6g9iitwcNyPYmvzVTatOsENR9UHcMrgIxLTLPVElc0rAK1udQf1sQfIjplIHHeet
-	 2An/9ooynCCXQ==
+	b=aNTjw58awZxiNFhLX15R328lOKibNBUFU4mE2ece64nuQzyyxDcY6yJrwkDEIqThe
+	 FwKPkr95Ywy+w+N4dqGm5B5CMYoflCwYNNS0avHppQm0OeyWsTOGUoqporpFjgK5hu
+	 EufZGu3ealEqPmhDLpVEtip3DDT+2CmLxidQ1c60ylPrVIsy7xyrVGRZXuDVbiBSSh
+	 Dh8fN9j8d3AIT4tLTBWPkN+A3yCZlnSRuoOO1scS/U1XJ3BMxwWZsxJDoaowHPFkI4
+	 KlRu3sWStQLqC+5/S7KAwEEA8Ol9TdRDoB7Gqm1bM3rrLNR5nUz51PLLdSx74Z5rMJ
+	 OrE96fb1AznAg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zhang Kunbo <zhangkunbo@huawei.com>,
+Cc: David Howells <dhowells@redhat.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	linux-nfs@vger.kernel.org,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	viro@zeniv.linux.org.uk,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 03/10] fs: fix missing declaration of init_files
-Date: Mon, 13 Jan 2025 13:35:29 -0500
-Message-Id: <20250113183537.1784136-3-sashal@kernel.org>
+	ojeda@kernel.org,
+	maennich@google.com
+Subject: [PATCH AUTOSEL 6.1 04/10] kheaders: Ignore silly-rename files
+Date: Mon, 13 Jan 2025 13:35:30 -0500
+Message-Id: <20250113183537.1784136-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250113183537.1784136-1-sashal@kernel.org>
 References: <20250113183537.1784136-1-sashal@kernel.org>
@@ -66,34 +70,57 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.124
 Content-Transfer-Encoding: 8bit
 
-From: Zhang Kunbo <zhangkunbo@huawei.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 2b2fc0be98a828cf33a88a28e9745e8599fb05cf ]
+[ Upstream commit 973b710b8821c3401ad7a25360c89e94b26884ac ]
 
-fs/file.c should include include/linux/init_task.h  for
- declaration of init_files. This fixes the sparse warning:
+Tell tar to ignore silly-rename files (".__afs*" and ".nfs*") when building
+the header archive.  These occur when a file that is open is unlinked
+locally, but hasn't yet been closed.  Such files are visible to the user
+via the getdents() syscall and so programs may want to do things with them.
 
-fs/file.c:501:21: warning: symbol 'init_files' was not declared. Should it be static?
+During the kernel build, such files may be made during the processing of
+header files and the cleanup may get deferred by fput() which may result in
+tar seeing these files when it reads the directory, but they may have
+disappeared by the time it tries to open them, causing tar to fail with an
+error.  Further, we don't want to include them in the tarball if they still
+exist.
 
-Signed-off-by: Zhang Kunbo <zhangkunbo@huawei.com>
-Link: https://lore.kernel.org/r/20241217071836.2634868-1-zhangkunbo@huawei.com
+With CONFIG_HEADERS_INSTALL=y, something like the following may be seen:
+
+   find: './kernel/.tmp_cpio_dir/include/dt-bindings/reset/.__afs2080': No such file or directory
+   tar: ./include/linux/greybus/.__afs3C95: File removed before we read it
+
+The find warning doesn't seem to cause a problem.
+
+Fix this by telling tar when called from in gen_kheaders.sh to exclude such
+files.  This only affects afs and nfs; cifs uses the Windows Hidden
+attribute to prevent the file from being seen.
+
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20241213135013.2964079-2-dhowells@redhat.com
+cc: Masahiro Yamada <masahiroy@kernel.org>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+cc: linux-nfs@vger.kernel.org
+cc: linux-kernel@vger.kernel.org
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/file.c | 1 +
+ kernel/gen_kheaders.sh | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/fs/file.c b/fs/file.c
-index 48f0b28da524..bc0c087b31bb 100644
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -21,6 +21,7 @@
- #include <linux/rcupdate.h>
- #include <linux/close_range.h>
- #include <net/sock.h>
-+#include <linux/init_task.h>
+diff --git a/kernel/gen_kheaders.sh b/kernel/gen_kheaders.sh
+index 12bcd08fe79d..5d506c6e8c0e 100755
+--- a/kernel/gen_kheaders.sh
++++ b/kernel/gen_kheaders.sh
+@@ -82,6 +82,7 @@ find $cpio_dir -type f -print0 |
  
- #include "internal.h"
+ # Create archive and try to normalize metadata for reproducibility.
+ tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
++    --exclude=".__afs*" --exclude=".nfs*" \
+     --owner=0 --group=0 --sort=name --numeric-owner --mode=u=rw,go=r,a+X \
+     -I $XZ -cf $tarfile -C $cpio_dir/ . > /dev/null
  
 -- 
 2.39.5
