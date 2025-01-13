@@ -1,108 +1,159 @@
-Return-Path: <stable+bounces-108379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 454F0A0B25A
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 10:07:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20639A0B260
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 10:07:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE1B37A10C1
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 09:07:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5F6D3A594B
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 09:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20958233159;
-	Mon, 13 Jan 2025 09:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE47233D93;
+	Mon, 13 Jan 2025 09:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jwIzQp7J"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RW/FiS7J"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C0346B5;
-	Mon, 13 Jan 2025 09:07:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94875234978
+	for <stable@vger.kernel.org>; Mon, 13 Jan 2025 09:07:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736759235; cv=none; b=PRd1fYwPgCCjpiOVQsZ0yhncClrRT5LxtWdwD1/VXcbt43zy09B4DV49Lwoc6A4xGg/DwWMCsStzITm6ERhXt1iTMTe1rST4NfIr58iOr+xN7AVwZdzzQJGsHe5i6etOhSB8qTD/u4hzwg1sKMGhWq6y5KV4ROu9hnk8Hq51Nuk=
+	t=1736759266; cv=none; b=tvyGe0y7ptCUuSrOJCIAr/+rkV4afGBiaUvGzCkIpe/uaiuzWT5JzrL+ZlDm6Heb71cqnhnck9ebyhkR/wk3+4QyxeUZyT3pvZq1vL5KX3hGVTXf8koI12OaW25Hzvr1HsDGYlE/47AIABNNSWrv/cNsWT8BwLh849gvytv+cXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736759235; c=relaxed/simple;
-	bh=ba+6Bzic80ymbn2zGb9LkgdvSGg7IBi+B5HOhD0RHgw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lNnt+AatALbTuFb9S7t/dMktYJikbRPNHinECUmfVTz2T0e0aw/4/E5v5GS4YTpCWe1leoewgYarWBRHgC8pDupL2ZbJfqXh4+Iy5VhBb+VAnc1MsXZjXfOB7KIXqp5Z0qMipGqF4icjv9HJJvboXrBg/ogkM2Ii/vYmazCFQrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jwIzQp7J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6522DC4CED6;
-	Mon, 13 Jan 2025 09:07:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736759235;
-	bh=ba+6Bzic80ymbn2zGb9LkgdvSGg7IBi+B5HOhD0RHgw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jwIzQp7J9tHIhk/zHII29F2G6hu6Xof140j5CFwNIpEFGLa7PBErTvzI/8OkATJF8
-	 RPj3rRbPcqcrib5LaJZotmSF8vhe1xSnpTNH8P1CCehjdiJvY+dFcIAEpTzHAm5BED
-	 MkUNiVsd1TlvjmGeSAPhy8lWPVW+AtHacekaXHhDLb4SWRFqLUCmWJd3n6kNMLsqAE
-	 Y9n9rGy0LHwd33x7+awp/7fFmcaOT8O1X9QjSHadUDUQWH+2R3XWMVa6jDeOyn6Npr
-	 gGoHiXRlGeDYuyGQfevVUd001Z8wSD8rX/tJcRuEyeaw0hMs4nMA+aR2Pyninfokp9
-	 bipP+SvLsziuw==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1tXGPj-000000000J5-383H;
-	Mon, 13 Jan 2025 10:07:15 +0100
-Date: Mon, 13 Jan 2025 10:07:15 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Frank Oltmanns <frank@oltmanns.dev>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Chris Lew <quic_clew@quicinc.com>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Abel Vesa <abel.vesa@linaro.org>, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] soc: qcom: mark pd-mapper as broken
-Message-ID: <Z4TXww5rAkMR8OmM@hovoldconsulting.com>
-References: <20241010074246.15725-1-johan+linaro@kernel.org>
- <Zwj3jDhc9fRoCCn6@linaro.org>
- <87wmf7ahc3.fsf@oltmanns.dev>
- <Z3z7sHn6yrUvsc6Y@hovoldconsulting.com>
- <Z36Gag6XhOrsIXqK@hovoldconsulting.com>
- <87wmf18m8g.fsf@oltmanns.dev>
+	s=arc-20240116; t=1736759266; c=relaxed/simple;
+	bh=6yDyyW0a6Ly6O8248teCrbgEXbOE+SVqdnWMzK9oNwQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HjW8RW6kftK0GeAne6qrpF8Wpagu7wsbDVMdAoHLpzgw/4Z1GYWo0odLwlKSqmAgtIOkxz/aPGqPYGfhyxwPO24UoTJkFxdv3dJ+cwL/tUh7NhmMr8g1DlP/9RTqN3CtDCsFk4uzF3m2jJdGCtkdTgsv0nQF+cFwGkMMlCIud+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RW/FiS7J; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736759263;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DoCA3mgR5luSoFMglhHAYVKxgoy3EGwdMDnuXoKHBSs=;
+	b=RW/FiS7JhOnfjz9issLDEwrlrPppiFOHZzCkLS/ndVcNAHn88PbQZa8UhD8TCJOacLSpW4
+	0BhTATgGw93u/JZXTcmfybTnJUqkWyTXG4e9PSQUuvglUtax0fk+jNBRr6jSaT8QXBkPIs
+	tUbQBEpOCy8mHbAh0LBhroYJmazB3kg=
+Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
+ [209.85.219.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-624-3wmk4NxhNmmUTF54MZ5dog-1; Mon, 13 Jan 2025 04:07:42 -0500
+X-MC-Unique: 3wmk4NxhNmmUTF54MZ5dog-1
+X-Mimecast-MFC-AGG-ID: 3wmk4NxhNmmUTF54MZ5dog
+Received: by mail-yb1-f200.google.com with SMTP id 3f1490d57ef6-e572cd106f7so5384977276.3
+        for <stable@vger.kernel.org>; Mon, 13 Jan 2025 01:07:42 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736759262; x=1737364062;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DoCA3mgR5luSoFMglhHAYVKxgoy3EGwdMDnuXoKHBSs=;
+        b=UhDXhbLy/zWZPiyi2wyVLC97jHNWQMUpaSxKCH4K47Xi0zi9IzQoeXJXuezF8p+ZHA
+         mxhW4eAzpakRCgkqYcPNKvWpV1HIK5g3QRa6HkuUHBdrUge3TPdY9kt9xLnStn7iU0L2
+         Jj1DTo5eGt2QrXjxrZcThVqpu8lAcrjj20PR6CKOHlej9eLpzWVVHpQEBRjVXmN6OiYu
+         9K2HQxrfo+7meqQ7E67VZ6foAsBCTiHqFMv3TqA+a1xD+df5dLECIYrvEJ0potoIDpDq
+         NVyWSXYO8skRRGFXF14fXQDF2KjvggRxI1fLIH+oP29MZN2doeXGh3VDTsnWIumkeBjs
+         CREA==
+X-Forwarded-Encrypted: i=1; AJvYcCXY3HqC1HSO6ujfYifqjxuaCjTvQrQZ8EtsMeFuM9d+1DuXfqKDPRf2k/bw5iZoCotv1lguyBI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxE4pRGIbRTY0JhEmr4DSdySgclmX5YoZUTfcBQrochaTJXTQiN
+	8EIldXw+haHXIwsAlgd0C29O88Rs6g4iwAoU3YK6z8rGx9DIaYQYA5lzHFq/UfB1JV2xK7y0eIP
+	GpLFu+Uj6E1zU88B2OhZHNXJLlHpyJLVq5o9FVPq4U5qIESKKt7dFmr9JoSYA8iI1UQzDI/RSnB
+	qJchRpa9QTWuJQtKlpHb8XyIEbKbYo
+X-Gm-Gg: ASbGncsyQf92XBIWa1oaWgnc53CTRR22DVWOpiHBZC63xxUEVUI6MHC/iBN7mMH2FWO
+	7SsKD6ptlZmseJ9RoG3rh84t8tlNtlHDMMSkEKQ==
+X-Received: by 2002:a25:2104:0:b0:e47:f4e3:87e3 with SMTP id 3f1490d57ef6-e54edf25ca4mr10705873276.11.1736759261777;
+        Mon, 13 Jan 2025 01:07:41 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH+CmZ1v9e/WbMUz4yhx1sfIQirqoiE0T/w4GOD49eFf+cvd2Qrlw+zoWAPzA/qokVRzziYFs0iIh6kdpyEqho=
+X-Received: by 2002:a25:2104:0:b0:e47:f4e3:87e3 with SMTP id
+ 3f1490d57ef6-e54edf25ca4mr10705852276.11.1736759261303; Mon, 13 Jan 2025
+ 01:07:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87wmf18m8g.fsf@oltmanns.dev>
+References: <20250110083511.30419-1-sgarzare@redhat.com> <20250110083511.30419-2-sgarzare@redhat.com>
+ <1aa83abf-6baa-4cf1-a108-66b677bcfd93@rbox.co> <nedvcylhjxrkmkvgugsku2lpdjgjpo5exoke4o6clxcxh64s3i@jkjnvngazr5v>
+In-Reply-To: <nedvcylhjxrkmkvgugsku2lpdjgjpo5exoke4o6clxcxh64s3i@jkjnvngazr5v>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Mon, 13 Jan 2025 10:07:30 +0100
+X-Gm-Features: AbW1kvaVe4-Ehu2H7XpdFvk6JHj69SbGoUvKX4WzH9KRTtiYmUqWFms2gAxG3cY
+Message-ID: <CAGxU2F7BoMNi-z=SHsmCV5+99=CxHo4dxFeJnJ5=q9X=CM3QMA@mail.gmail.com>
+Subject: Re: [PATCH net v2 1/5] vsock/virtio: discard packets if the transport changes
+To: Michal Luczaj <mhal@rbox.co>
+Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, bpf@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Luigi Leonardi <leonardi@redhat.com>, 
+	"David S. Miller" <davem@davemloft.net>, Wongi Lee <qwerty@theori.io>, 
+	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Eric Dumazet <edumazet@google.com>, kvm@vger.kernel.org, 
+	Paolo Abeni <pabeni@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
+	Jason Wang <jasowang@redhat.com>, Simon Horman <horms@kernel.org>, Hyunwoo Kim <v4bel@theori.io>, 
+	Jakub Kicinski <kuba@kernel.org>, virtualization@lists.linux.dev, 
+	Bobby Eshleman <bobby.eshleman@bytedance.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Sat, Jan 11, 2025 at 03:21:35PM +0100, Frank Oltmanns wrote:
-> On 2025-01-08 at 15:06:34 +0100, Johan Hovold <johan@kernel.org> wrote:
+On Mon, 13 Jan 2025 at 09:57, Stefano Garzarella <sgarzare@redhat.com> wrote:
+> On Sun, Jan 12, 2025 at 11:42:30PM +0100, Michal Luczaj wrote:
 
-> > And today I also hit this on the sc8280xp CRD reference design, so as
-> > expected, there is nothing SoC specific about the audio service
-> > regression either:
+[...]
+
 > >
-> > [   11.235564] PDR: avs/audio get domain list txn wait failed: -110
-> > [   11.241976] PDR: service lookup for avs/audio failed: -110
+> >So, if I get this right:
+> >1. vsock_create() (refcnt=1) calls vsock_insert_unbound() (refcnt=2)
+> >2. transport->release() calls vsock_remove_bound() without checking if sk
+> >   was bound and moved to bound list (refcnt=1)
+> >3. vsock_bind() assumes sk is in unbound list and before
+> >   __vsock_insert_bound(vsock_bound_sockets()) calls
+> >   __vsock_remove_bound() which does:
+> >      list_del_init(&vsk->bound_table); // nop
+> >      sock_put(&vsk->sk);               // refcnt=0
 > >
-> > even if it may be masked by random changes in timing.
+> >The following fixes things for me. I'm just not certain that's the only
+> >place where transport destruction may lead to an unbound socket being
+> >removed from the unbound list.
 > >
-> > These means it affects also machines like the X13s which already have
-> > audio enabled.
-> 
-> I've blocklisted the in-kernel pd-mapper module for now and have
-> switched back to the userspace pd-mapper.
-> 
-> I don't know if it's helpful or not, but I don't get these error logs
-> when using to the in-kernel pd-mapper. It's just that the phone's mic
-> only works on approximately every third boot (unless I defer loading the
-> module).
+> >diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+> >index 7f7de6d88096..0fe807c8c052 100644
+> >--- a/net/vmw_vsock/virtio_transport_common.c
+> >+++ b/net/vmw_vsock/virtio_transport_common.c
+> >@@ -1303,7 +1303,8 @@ void virtio_transport_release(struct vsock_sock *vsk)
+> >
+> >       if (remove_sock) {
+> >               sock_set_flag(sk, SOCK_DONE);
+> >-              virtio_transport_remove_sock(vsk);
+> >+              if (vsock_addr_bound(&vsk->local_addr))
+> >+                      virtio_transport_remove_sock(vsk);
+>
+> I don't get this fix, virtio_transport_remove_sock() calls
+>    vsock_remove_sock()
+>      vsock_remove_bound()
+>        if (__vsock_in_bound_table(vsk))
+>            __vsock_remove_bound(vsk);
+>
+>
+> So, should already avoid this issue, no?
 
-Ok, then it sounds like you're hitting a separate bug that is also
-triggered by the changed timings with the in-kernel pd-mapper.
+I got it wrong, I see now what are you trying to do, but I don't think
+we should skip virtio_transport_remove_sock() entirely, it also purge
+the rx_queue.
 
-Are there any hints in the logs about what goes wrong in your setup? And
-the speakers are still working, it's just affecting the mic?
+>
+> Can the problem be in vsock_bind() ?
+>
+> Is this issue pre-existing or introduced by this series?
 
-Johan
+I think this is pre-existing, can you confirm?
+
+In that case, I'd not stop this series, and fix it in another patch/series.
+
+Thanks,
+Stefano
+
 
