@@ -1,120 +1,146 @@
-Return-Path: <stable+bounces-108422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A16CA0B68E
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 13:17:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07918A0B710
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 13:38:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17B743A76AA
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 12:17:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6546D3A5296
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 12:38:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943C122F179;
-	Mon, 13 Jan 2025 12:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F85222F15E;
+	Mon, 13 Jan 2025 12:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XoOfbyUz"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="tmRJruHo"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pv50p00im-ztdg10012001.me.com (pv50p00im-ztdg10012001.me.com [17.58.6.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CF622F171;
-	Mon, 13 Jan 2025 12:16:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F038122A4CB
+	for <stable@vger.kernel.org>; Mon, 13 Jan 2025 12:38:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736770614; cv=none; b=qAGeVAXo9q1IJEAHwumYCe8+rbnnGK+iL3tfQGIVCtwSxNApXTCwZEAT78j3HsR3KJYdsfiQbEeF7kjL7+5wO7ZQsh7PAiuDTfyCbJfakCuJtdk4xfiGlHPRl3mXMNRLLQvwngziH+R/BBxFGSZ7MyX6GLEBuQO67tWBJD8GE80=
+	t=1736771886; cv=none; b=A373WkUiHh7UpDnCTdoZVhBj0vwFZEtFZly+I/GWYiVJJtw5i19/iPB7J44E5jKNUwkNEA8Wo4guRnlMoKJwhcbjVIYtNWpO9iyQ0qarf8+7yN2GJw2gXN8U7XZ8GOY0chMXZ3M0l9kQPh8sZb7QNdS2lgEpP7dH5/7XfdoIeQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736770614; c=relaxed/simple;
-	bh=41SLTKC+nb9PCd09tF+CzOauhXsk0pD/q1mC/ocQehA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HzqMGd/JVyHrQyO7YYWbAubCbseqLrMDyw24rPoCspUZh2mts7opos3xLAbLmp1xrJ3AWANvbs3ARHg1bRgiz5SJW4mhz7w5hQrg1J4sWUHIyj/iQ4gQZ8Z3mamrLgZeCiCSp/phnoLkqlHD2HVEzLOV+GkbZ2MU3BcYEtNCZb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XoOfbyUz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF999C4CEE6;
-	Mon, 13 Jan 2025 12:16:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736770613;
-	bh=41SLTKC+nb9PCd09tF+CzOauhXsk0pD/q1mC/ocQehA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XoOfbyUzUiQEy7/YLao2q47R01DL/1ZgJfHFHTALS0or6fim+e0PZyL+JBDgj8r07
-	 pJhuPPSBaoGYDwi5baPDRvqQOhWg6hDQhk0uLrBfK/ki5Vl1Lu1zaghe7+P6hkA0Gb
-	 hcqUceCckZ/sTNqZ1JcHe+Wr25wgK+t11b2MNuT4L9BuyZk4xlNgZXqgAxzNV/Bx2r
-	 1cMtDaeXr85HGUYH0avVeTENkPD3uTRZbiKBmd6P+h46XQ3LzQ/Woya03eOuibyFWB
-	 unJJcLazPq/gX3tRHZ5MQyokmmGLECWVi/2bptlo+8TGVa6cMXZHQhh69H1VpKyAP8
-	 tXHPNEmBBZ8Qw==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1tXJNF-000000003ap-47LR;
-	Mon, 13 Jan 2025 13:16:54 +0100
-Date: Mon, 13 Jan 2025 13:16:53 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Abel Vesa <abel.vesa@linaro.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Caleb Connolly <caleb.connolly@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH RFC] soc: qcom: pmic_glink: Fix device access from worker
- during suspend
-Message-ID: <Z4UENSdocAo4uNjg@hovoldconsulting.com>
-References: <20250110-soc-qcom-pmic-glink-fix-device-access-on-worker-while-suspended-v1-1-e32fd6bf322e@linaro.org>
+	s=arc-20240116; t=1736771886; c=relaxed/simple;
+	bh=Cq99J4gcgYO0rKOCpC0Yoo5nKPwdwSdo3juaUq3rrKw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OqLCKqgA9XhfaJJbyyn/28NzqzZz21xvlchzSISc6A8dJJn3Ktw+U98gWeWIhvh/MVaX/pq+xjacpgrc9U/mac8ICMKFQeOZ5pbB/FU7lbHBTrVGoieMDSEBxAZ1qRM/J+/yabwi078wtop4Ix1EX4VkadSwKGD1nIeeVA4Gxbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=tmRJruHo; arc=none smtp.client-ip=17.58.6.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1736771883;
+	bh=f1Qt6NsMApyLTlUymw127A7H5gbCRRqBATfe8t+ZXHE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:
+	 x-icloud-hme;
+	b=tmRJruHozyU/hE2U8lJX0lGGaIvJ3oPoQOcjBljGi4fLg1IylvAjxeZrZ7bGKBv4B
+	 r6d6MkPnYLG4wQzS9H0b8Mo6GTTya1rbbnW3sAONFb+oQq0dZ33yZjxiYCaxZbftBe
+	 T+oy1pVpg1fC3zA9Azo+Npy8v7FHDQNYqRLyJi5RGIJVTvKT961j8p9hVN7mV4kYpn
+	 jnTZViKiKa4cqOgb1rbYnzDHC9/nRKS1Rn153re0FzXarVw9dE8RNtIeepCAWBldWP
+	 nFZ9TTIDxRb93jBeC5BsgziVn/LzqZaKkiM+sB5T5sZl4cn6BpUnIL0wf2aCHTN96a
+	 NtjGMMZPyBQ8Q==
+Received: from [192.168.1.25] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
+	by pv50p00im-ztdg10012001.me.com (Postfix) with ESMTPSA id F33C6A0144;
+	Mon, 13 Jan 2025 12:37:57 +0000 (UTC)
+Message-ID: <5a5df3a9-e9ff-48f4-804a-1d5d035f599f@icloud.com>
+Date: Mon, 13 Jan 2025 20:37:53 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250110-soc-qcom-pmic-glink-fix-device-access-on-worker-while-suspended-v1-1-e32fd6bf322e@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] Bluetooth: qca: Support downloading board ID specific
+ NVM for WCN6855
+To: Johan Hovold <johan@kernel.org>, Zijun Hu <quic_zijuhu@quicinc.com>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>,
+ Bjorn Andersson <andersson@kernel.org>, Steev Klimaszewski <steev@kali.org>,
+ Paul Menzel <pmenzel@molgen.mpg.de>, linux-bluetooth@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+ Bjorn Andersson <bjorande@quicinc.com>,
+ "Aiqun Yu (Maria)" <quic_aiquny@quicinc.com>,
+ Cheng Jiang <quic_chejiang@quicinc.com>,
+ Jens Glathe <jens.glathe@oldschoolsolutions.biz>, stable@vger.kernel.org,
+ Johan Hovold <johan+linaro@kernel.org>
+References: <20241116-x13s_wcn6855_fix-v2-1-c08c298d5fbf@quicinc.com>
+ <Z1v8vLWH7TmwwzQl@hovoldconsulting.com>
+ <Z4TbyIfVJL85oVXs@hovoldconsulting.com>
+Content-Language: en-US
+From: Zijun Hu <zijun_hu@icloud.com>
+In-Reply-To: <Z4TbyIfVJL85oVXs@hovoldconsulting.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: 9UfWYEaUXTbayRm_9U-9oMYSHcaRE_zi
+X-Proofpoint-GUID: 9UfWYEaUXTbayRm_9U-9oMYSHcaRE_zi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-13_04,2025-01-13_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
+ phishscore=0 mlxscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ suspectscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2308100000 definitions=main-2501130106
 
-On Fri, Jan 10, 2025 at 05:29:51PM +0200, Abel Vesa wrote:
-> The pmic_glink_altmode_worker() currently gets scheduled on the system_wq.
-> When the system is suspended (s2idle), the fact that the worker can be
-> scheduled to run while devices are still suspended provesto be a problem
-> when a Type-C retimer, switch or mux that is controlled over a bus like
-> I2C, because the I2C controller is suspended.
+On 2025/1/13 17:24, Johan Hovold wrote:
+> Hi Luiz,
 > 
-> This has been proven to be the case on the X Elite boards where such
-> retimers (ParadeTech PS8830) are used in order to handle Type-C
-> orientation and altmode configuration. The following warning is thrown:
+> On Fri, Dec 13, 2024 at 10:22:05AM +0100, Johan Hovold wrote:
+>> On Sat, Nov 16, 2024 at 07:49:23AM -0800, Zijun Hu wrote:
+>>> For WCN6855, board ID specific NVM needs to be downloaded once board ID
+>>> is available, but the default NVM is always downloaded currently, and
+>>> the wrong NVM causes poor RF performance which effects user experience.
+>>>
+>>> Fix by downloading board ID specific NVM if board ID is available.
 > 
-> [   35.134876] i2c i2c-4: Transfer while suspended
-> [   35.143865] WARNING: CPU: 0 PID: 99 at drivers/i2c/i2c-core.h:56 __i2c_transfer+0xb4/0x57c [i2c_core]
-> [   35.352879] Workqueue: events pmic_glink_altmode_worker [pmic_glink_altmode]
-> [   35.360179] pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-> [   35.455242] Call trace:
-> [   35.457826]  __i2c_transfer+0xb4/0x57c [i2c_core] (P)
-> [   35.463086]  i2c_transfer+0x98/0xf0 [i2c_core]
-> [   35.467713]  i2c_transfer_buffer_flags+0x54/0x88 [i2c_core]
-> [   35.473502]  regmap_i2c_write+0x20/0x48 [regmap_i2c]
-> [   35.478659]  _regmap_raw_write_impl+0x780/0x944
-> [   35.483401]  _regmap_bus_raw_write+0x60/0x7c
-> [   35.487848]  _regmap_write+0x134/0x184
-> [   35.491773]  regmap_write+0x54/0x78
-> [   35.495418]  ps883x_set+0x58/0xec [ps883x]
-> [   35.499688]  ps883x_sw_set+0x60/0x84 [ps883x]
-> [   35.504223]  typec_switch_set+0x48/0x74 [typec]
-> [   35.508952]  pmic_glink_altmode_worker+0x44/0x1fc [pmic_glink_altmode]
-> [   35.515712]  process_scheduled_works+0x1a0/0x2d0
-> [   35.520525]  worker_thread+0x2a8/0x3c8
-> [   35.524449]  kthread+0xfc/0x184
-> [   35.527749]  ret_from_fork+0x10/0x20
+>>> Fixes: 095327fede00 ("Bluetooth: hci_qca: Add support for QTI Bluetooth chip wcn6855")
+>>> Cc: stable@vger.kernel.org # 6.4
+>>> Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+>>> Tested-by: Johan Hovold <johan+linaro@kernel.org>
+>>> Tested-by: Steev Klimaszewski <steev@kali.org>
+>>> Tested-by: Jens Glathe <jens.glathe@oldschoolsolutions.biz>
+>>> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+>>
+>>> I will help to backport it to LTS kernels ASAP once this commit
+>>> is mainlined.
+>>> ---
+>>> Changes in v2:
+>>> - Correct subject and commit message
+>>> - Temporarily add nvm fallback logic to speed up backport.
+>>> — Add fix/stable tags as suggested by Luiz and Johan
+>>> - Link to v1: https://lore.kernel.org/r/20241113-x13s_wcn6855_fix-v1-1-15af0aa2549c@quicinc.com
+>>
+>> The board-specific NVM configuration files have now been included in the
+>> linux-firmware-20241210 release and are making their way into the
+>> distros (e.g. Arch Linux ARM and Fedora now ship them).
+>>
+>> Could we get this merged for 6.13-rc (and backported) so that Lenovo
+>> ThinkPad X13s users can finally enjoy excellent Bluetooth range? :)
 > 
-> The solution here is to schedule the altmode worker on the system_freezable_wq
-> instead of the system_wq. This will result in the altmode worker not being
-> scheduled to run until the devices are resumed first, which will give the
-> controllers like I2C a chance to resume before the transfer is requested.
+> This fix is still pending in your queue (I hope) and I was hoping you
+> would be able to get it into 6.13-rc. The reason, apart from this being
+> a crucial fix for users of this chipset, was also to avoid any conflicts
+> with the new "rampatch" firmware name feature (which will also
+> complicate backporting somewhat).
 > 
-> Fixes: 080b4e24852b ("soc: qcom: pmic_glink: Introduce altmode support")
-> Cc: stable@vger.kernel.org    # 6.3
-> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+> Those patches were resent on January 7 and have now been merged for 6.14
+> (presumably):
+> 
+> 	https://lore.kernel.org/all/20250107092650.498154-1-quic_chejiang@quicinc.com/
+> 
+> How do we handle this? Can you still get this fix into 6.13 or is it
+> now, as I assume, too late for that?
+> 
+> Zijun, depending on Luiz' reply, can you look into rebasing on top of the
+> patches now queued for linux-next?
+> 
 
-You forgot to include:
+sure. let me do it with high priority.
 
-Reported-by: Johan Hovold <johan+linaro@kernel.org>	
-Link: https://lore.kernel.org/lkml/Z1CCVjEZMQ6hJ-wK@hovoldconsulting.com/
+> Johan
 
-Johan
 
