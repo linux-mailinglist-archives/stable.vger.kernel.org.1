@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-108522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B54EFA0C08B
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:47:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3842A0C090
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:47:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D824B1886F1C
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:47:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 837597A4A1A
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 034FE224B09;
-	Mon, 13 Jan 2025 18:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446001D47AC;
+	Mon, 13 Jan 2025 18:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nRG3TzZ7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S4qpcz65"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD12F224AFE;
-	Mon, 13 Jan 2025 18:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF7E2253E3;
+	Mon, 13 Jan 2025 18:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793401; cv=none; b=lnKRSCXYRCaV0hEGx0HFmjg4RNrD/T7jjDe7eexwQ+6SsNJFntjl9Vo+pP6+qHZ7TP+Edh2TxNffttjDFqnY+BxTCHmEVPn14rXVHzqD3Rg0gvibkCKmVvl1/nWv53FPpDnBQiWPj4NbR07P7Vn89U8HbaLCvEcvjNG4YZKWRrI=
+	t=1736793404; cv=none; b=STZPPeC+tpbxVMoeBhCkayXedqNnrq7Nbl7AuhawWd9vTlTfj/pHGkhwZ87U/m0THqGw1iT7GEF3dqcg8phNS/Czvg/4JwbScAmYIVLp4OlceHUNUcIeQnqlFX80du0tuQ4QUKoLmNnIpVm0w3jT/9VP4/gmczEc27atAgAESks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793401; c=relaxed/simple;
-	bh=OSMd6m3CV9jUJ8WykRwJ1KDi0nH2xHT6tg95x+6TSTE=;
+	s=arc-20240116; t=1736793404; c=relaxed/simple;
+	bh=4QcOoX8RQgj8Dk9IljYu//Uk97Lg6dqLflcZhL4JsTw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OfIIXoHIQpabpGFWyHCYZlQ/LbkYK23d2HyCJ2nSWLb0xZuTHOuev6TjDgak7oVzXa4dEhttPUne1IGhVFyNeM/K/F1W9Qz7yHl/JguMVL4DL4qhk1a99ifOyp7ONnukdxUBqqWPCMSw2jFzjSfAwdA1s+8+F+J0fJDH/yi8ETg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nRG3TzZ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638D9C4CED6;
-	Mon, 13 Jan 2025 18:36:40 +0000 (UTC)
+	 MIME-Version; b=WGlvUPG+V11fxI9Owu4zHGpj9YsUbgaxjXoZDC/og9DIaCnWAKP7oFqwi0CosuaFxZYQwRbgveYng9/xOUC6duunskfUbUVuwNwDIGs1zH9GURQMHhNRzz+rAEYOUrnwIegkbVSHwMBexTSTD+y2VI4AheUpNDW8KH+yZ+qYnTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S4qpcz65; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9860BC4CED6;
+	Mon, 13 Jan 2025 18:36:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736793401;
-	bh=OSMd6m3CV9jUJ8WykRwJ1KDi0nH2xHT6tg95x+6TSTE=;
+	s=k20201202; t=1736793403;
+	bh=4QcOoX8RQgj8Dk9IljYu//Uk97Lg6dqLflcZhL4JsTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nRG3TzZ7riGviLHQv+8zZWc/liDi0FDgDzd5F+Taro6pfxyMP7luYTY63tsvXlepi
-	 d1yN/e55pIvdGZKibkUPG+ZJNVCXl6g71PH1BRPtSLaEtsJgLG1cKp2EgdlmaVr2pD
-	 bT8wYAF98LhdKZ9ib8GfO/6Tl4Iu/lKFjztI0HstVNQpcNI6FwZR3sCHpYRnyNjQ/b
-	 BF9rs7FfoUPgc+Cz+3LFWwPquks+AmH5pdFqp0WgpUX/P1yw2GGrbQMQskxdizBOSy
-	 xnqrSmuLzq9RwE+ELKxopuPa0v9XmxyW3EqGJ7zfiY47skBOevJZwta3ZtiYnRk01n
-	 fNX9pMxyeBwFw==
+	b=S4qpcz655n7XL36DUZ0tQ++0c8US7HGZA2hgbN3NQr0iNqocMdcCCq+F/foUKd3AC
+	 IMPQ7QfoIcJrV8p+b1CMSauN8nuMpZVDmtJ9eR024MiBvLbrXXwVeeDlC+0mMthKH2
+	 zlKfHIYR0K0t/1N5I+hnx7ZND/ZXrGw9FoJ6P4+1ht/1xKJzSDHRfCky7V32/6I+N2
+	 hRVn731sUJ5SaGB5EXqMEzfQbxV2CvjXv+uZ0Vq5y2AFItI3YaKYD18g4Xp6VrrXsn
+	 s7a3Tc0s03by0a+m902r/vWkB/q4g3IirX95h1Wq9W7bLI3IjYeLGKAmg3RaK1VuqE
+	 1dTJTPFuwZnqw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Leo Stone <leocstone@gmail.com>,
-	syzbot+2db3c7526ba68f4ea776@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
+Cc: David Howells <dhowells@redhat.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	linux-nfs@vger.kernel.org,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	quic_jjohnson@quicinc.com,
-	viro@zeniv.linux.org.uk,
-	sandeen@redhat.com,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 2/4] hfs: Sanity check the root record
-Date: Mon, 13 Jan 2025 13:36:31 -0500
-Message-Id: <20250113183633.1784590-2-sashal@kernel.org>
+	ojeda@kernel.org,
+	maennich@google.com
+Subject: [PATCH AUTOSEL 5.4 3/4] kheaders: Ignore silly-rename files
+Date: Mon, 13 Jan 2025 13:36:32 -0500
+Message-Id: <20250113183633.1784590-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250113183633.1784590-1-sashal@kernel.org>
 References: <20250113183633.1784590-1-sashal@kernel.org>
@@ -70,54 +70,58 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.289
 Content-Transfer-Encoding: 8bit
 
-From: Leo Stone <leocstone@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit b905bafdea21a75d75a96855edd9e0b6051eee30 ]
+[ Upstream commit 973b710b8821c3401ad7a25360c89e94b26884ac ]
 
-In the syzbot reproducer, the hfs_cat_rec for the root dir has type
-HFS_CDR_FIL after being read with hfs_bnode_read() in hfs_super_fill().
-This indicates it should be used as an hfs_cat_file, which is 102 bytes.
-Only the first 70 bytes of that struct are initialized, however,
-because the entrylength passed into hfs_bnode_read() is still the length of
-a directory record. This causes uninitialized values to be used later on,
-when the hfs_cat_rec union is treated as the larger hfs_cat_file struct.
+Tell tar to ignore silly-rename files (".__afs*" and ".nfs*") when building
+the header archive.  These occur when a file that is open is unlinked
+locally, but hasn't yet been closed.  Such files are visible to the user
+via the getdents() syscall and so programs may want to do things with them.
 
-Add a check to make sure the retrieved record has the correct type
-for the root directory (HFS_CDR_DIR), and make sure we load the correct
-number of bytes for a directory record.
+During the kernel build, such files may be made during the processing of
+header files and the cleanup may get deferred by fput() which may result in
+tar seeing these files when it reads the directory, but they may have
+disappeared by the time it tries to open them, causing tar to fail with an
+error.  Further, we don't want to include them in the tarball if they still
+exist.
 
-Reported-by: syzbot+2db3c7526ba68f4ea776@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2db3c7526ba68f4ea776
-Tested-by: syzbot+2db3c7526ba68f4ea776@syzkaller.appspotmail.com
-Tested-by: Leo Stone <leocstone@gmail.com>
-Signed-off-by: Leo Stone <leocstone@gmail.com>
-Link: https://lore.kernel.org/r/20241201051420.77858-1-leocstone@gmail.com
-Reviewed-by: Jan Kara <jack@suse.cz>
+With CONFIG_HEADERS_INSTALL=y, something like the following may be seen:
+
+   find: './kernel/.tmp_cpio_dir/include/dt-bindings/reset/.__afs2080': No such file or directory
+   tar: ./include/linux/greybus/.__afs3C95: File removed before we read it
+
+The find warning doesn't seem to cause a problem.
+
+Fix this by telling tar when called from in gen_kheaders.sh to exclude such
+files.  This only affects afs and nfs; cifs uses the Windows Hidden
+attribute to prevent the file from being seen.
+
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20241213135013.2964079-2-dhowells@redhat.com
+cc: Masahiro Yamada <masahiroy@kernel.org>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+cc: linux-nfs@vger.kernel.org
+cc: linux-kernel@vger.kernel.org
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfs/super.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/gen_kheaders.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/hfs/super.c b/fs/hfs/super.c
-index bcf820ce0e02..f82444fbbedc 100644
---- a/fs/hfs/super.c
-+++ b/fs/hfs/super.c
-@@ -419,11 +419,13 @@ static int hfs_fill_super(struct super_block *sb, void *data, int silent)
- 		goto bail_no_root;
- 	res = hfs_cat_find_brec(sb, HFS_ROOT_CNID, &fd);
- 	if (!res) {
--		if (fd.entrylength > sizeof(rec) || fd.entrylength < 0) {
-+		if (fd.entrylength != sizeof(rec.dir)) {
- 			res =  -EIO;
- 			goto bail_hfs_find;
- 		}
- 		hfs_bnode_read(fd.bnode, &rec, fd.entryoffset, fd.entrylength);
-+		if (rec.type != HFS_CDR_DIR)
-+			res = -EIO;
- 	}
- 	if (res)
- 		goto bail_hfs_find;
+diff --git a/kernel/gen_kheaders.sh b/kernel/gen_kheaders.sh
+index 206ab3d41ee7..7fc44d8da205 100755
+--- a/kernel/gen_kheaders.sh
++++ b/kernel/gen_kheaders.sh
+@@ -84,6 +84,7 @@ find $cpio_dir -type f -print0 |
+ 
+ # Create archive and try to normalize metadata for reproducibility.
+ tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
++    --exclude=".__afs*" --exclude=".nfs*" \
+     --owner=0 --group=0 --sort=name --numeric-owner --mode=u=rw,go=r,a+X \
+     -I $XZ -cf $tarfile -C $cpio_dir/ . > /dev/null
+ 
 -- 
 2.39.5
 
