@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-108386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EA7CA0B3B2
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 10:56:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4C3AA0B3B9
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 10:58:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36FF116333E
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 09:56:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 837113A54E9
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 09:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4392235C1B;
-	Mon, 13 Jan 2025 09:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6201FDA9D;
+	Mon, 13 Jan 2025 09:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2vxfY5A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PGIYVPo8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744E2235C06
-	for <stable@vger.kernel.org>; Mon, 13 Jan 2025 09:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAB01FDA94
+	for <stable@vger.kernel.org>; Mon, 13 Jan 2025 09:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736762160; cv=none; b=e7+cff9ow2slJY1O6ysnJPtEurrxOYhmPTyxm8JSTSkiDTd2ryvJuPDWDHjTt7bVDeH2o/gABz8jyY2xxCz090tf2uYDyMl/sr8ECq1p79s18uKUC2Dkt7Y1djcpX4w3GMsGX9MBHjMqy3AS3fJeKmppHVy3QftodAexaKcmX7k=
+	t=1736762270; cv=none; b=t1NN07MKgFxr56MrPP2rdNEYxOg4Hihuq/qm2GLeqrJQ7/Ri1S+7mAn9PLQG635noTXIdUz1ElT26+nyEfZRnz0xlB22xaeE8dhBikL0WCTGpWPtP8KWtViQnY9YeRyLBv6GOLixcS/MmFNhKiMJ7j64775xXa+wn90ME0VM3yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736762160; c=relaxed/simple;
-	bh=D10yNyO0IVRVd/jfi5CsaREOh39b3acWu/3+4/jaVv4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RgNqWZs6ssloYYy0OsupDyZySFhfxL1j/htqj5TZbtEgBAHvJKNv5POoYCaG7EVdty4KmRxhIzvG+/ebPzGiz6rHmW0X9FuzWpE1NVn6CuZJoTMHhisph0n4kD0zRBwc4cO4azoFE2FCuI0QKULFRWMxBzP2yI5OVooJcJAiR/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2vxfY5A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90788C4CEDD;
-	Mon, 13 Jan 2025 09:55:59 +0000 (UTC)
+	s=arc-20240116; t=1736762270; c=relaxed/simple;
+	bh=xQpEpKiReZ30NV7m/rypVVKD6ojAhgOjMVPQ7q1vm3U=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=C2qOrazcifFF1sFBfJv3h2sZgxIcKXtZwiLdqTcLmIPWj81uJFerI9MO5+Y9JXxSeJmBq+t1DIvza085gsnNVL0N3QIYaCh2U6syfgm7eCu7duZXakowZZ9Vld7AfCfcGQ0X7ZZupWv56fqyuWTU9XFcSS1HoPyDgg6ONAb73yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PGIYVPo8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 794FDC4CEDD;
+	Mon, 13 Jan 2025 09:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736762160;
-	bh=D10yNyO0IVRVd/jfi5CsaREOh39b3acWu/3+4/jaVv4=;
+	s=korg; t=1736762270;
+	bh=xQpEpKiReZ30NV7m/rypVVKD6ojAhgOjMVPQ7q1vm3U=;
 	h=Subject:To:Cc:From:Date:From;
-	b=L2vxfY5AO+LIS0uWPaIt15HLdlrT/WZH2JiJLLc3j/ky99+VA1q3mFFjSQXqiZgNJ
-	 0z42slykaSnkZU+FZhuLUth1ddLI5u0RwGinkqRnPWoF5cX7KUZzlVcih86sDUVxgk
-	 f74Du2u8bQusGzD8VYbuDcgt2PutBM0ndLR5gdXA=
-Subject: FAILED: patch "[PATCH] usb: dwc3: gadget: fix writing NYET threshold" failed to apply to 5.4-stable tree
-To: andre.draszik@linaro.org,Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org
+	b=PGIYVPo84gj/xGX0hGgkZrWurLDGdo/y8mduNFj5iMAOJF2h7jQNi9RiYEwAXRL0d
+	 GKfotlsjvX6wd1YBPVibfr9T63Agdu187w9CfHBdWESds/w2wcrqDxooemRqimHHSH
+	 w39Ty2BNUmvL8JdkUsg4thv3+9fVEqFBgEsZMfz4=
+Subject: FAILED: patch "[PATCH] iio: imu: inv_icm42600: fix spi burst write not supported" failed to apply to 6.6-stable tree
+To: jean-baptiste.maneyrol@tdk.com,Jonathan.Cameron@huawei.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 Jan 2025 10:55:56 +0100
-Message-ID: <2025011356-unwary-enrich-4187@gregkh>
+Date: Mon, 13 Jan 2025 10:57:47 +0100
+Message-ID: <2025011346-empty-yoyo-e301@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 01ea6bf5cb58b20cc1bd159f0cf74a76cf04bb69
+git cherry-pick -x c0f866de4ce447bca3191b9cefac60c4b36a7922
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025011356-unwary-enrich-4187@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025011346-empty-yoyo-e301@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,60 +77,73 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 01ea6bf5cb58b20cc1bd159f0cf74a76cf04bb69 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>
-Date: Mon, 9 Dec 2024 11:49:53 +0000
-Subject: [PATCH] usb: dwc3: gadget: fix writing NYET threshold
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From c0f866de4ce447bca3191b9cefac60c4b36a7922 Mon Sep 17 00:00:00 2001
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Date: Tue, 12 Nov 2024 10:30:10 +0100
+Subject: [PATCH] iio: imu: inv_icm42600: fix spi burst write not supported
 
-Before writing a new value to the register, the old value needs to be
-masked out for the new value to be programmed as intended, because at
-least in some cases the reset value of that field is 0xf (max value).
+Burst write with SPI is not working for all icm42600 chips. It was
+only used for setting user offsets with regmap_bulk_write.
 
-At the moment, the dwc3 core initialises the threshold to the maximum
-value (0xf), with the option to override it via a DT. No upstream DTs
-seem to override it, therefore this commit doesn't change behaviour for
-any upstream platform. Nevertheless, the code should be fixed to have
-the desired outcome.
+Add specific SPI regmap config for using only single write with SPI.
 
-Do so.
+Fixes: 9f9ff91b775b ("iio: imu: inv_icm42600: add SPI driver for inv_icm42600 driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Link: https://patch.msgid.link/20241112-inv-icm42600-fix-spi-burst-write-not-supported-v2-1-97690dc03607@tdk.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Fixes: 80caf7d21adc ("usb: dwc3: add lpm erratum support")
-Cc: stable@vger.kernel.org # 5.10+ (needs adjustment for 5.4)
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20241209-dwc3-nyet-fix-v2-1-02755683345b@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
-index ee73789326bc..f11570c8ffd0 100644
---- a/drivers/usb/dwc3/core.h
-+++ b/drivers/usb/dwc3/core.h
-@@ -464,6 +464,7 @@
- #define DWC3_DCTL_TRGTULST_SS_INACT	(DWC3_DCTL_TRGTULST(6))
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
+index 3a07e43e4cf1..18787a43477b 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
+@@ -403,6 +403,7 @@ struct inv_icm42600_sensor_state {
+ typedef int (*inv_icm42600_bus_setup)(struct inv_icm42600_state *);
  
- /* These apply for core versions 1.94a and later */
-+#define DWC3_DCTL_NYET_THRES_MASK	(0xf << 20)
- #define DWC3_DCTL_NYET_THRES(n)		(((n) & 0xf) << 20)
+ extern const struct regmap_config inv_icm42600_regmap_config;
++extern const struct regmap_config inv_icm42600_spi_regmap_config;
+ extern const struct dev_pm_ops inv_icm42600_pm_ops;
  
- #define DWC3_DCTL_KEEP_CONNECT		BIT(19)
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 83dc7304d701..31a654c6f15b 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4195,8 +4195,10 @@ static void dwc3_gadget_conndone_interrupt(struct dwc3 *dwc)
- 		WARN_ONCE(DWC3_VER_IS_PRIOR(DWC3, 240A) && dwc->has_lpm_erratum,
- 				"LPM Erratum not available on dwc3 revisions < 2.40a\n");
+ const struct iio_mount_matrix *
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+index 561d245c1d64..e43538e536f0 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+@@ -87,6 +87,21 @@ const struct regmap_config inv_icm42600_regmap_config = {
+ };
+ EXPORT_SYMBOL_NS_GPL(inv_icm42600_regmap_config, "IIO_ICM42600");
  
--		if (dwc->has_lpm_erratum && !DWC3_VER_IS_PRIOR(DWC3, 240A))
-+		if (dwc->has_lpm_erratum && !DWC3_VER_IS_PRIOR(DWC3, 240A)) {
-+			reg &= ~DWC3_DCTL_NYET_THRES_MASK;
- 			reg |= DWC3_DCTL_NYET_THRES(dwc->lpm_nyet_threshold);
-+		}
++/* define specific regmap for SPI not supporting burst write */
++const struct regmap_config inv_icm42600_spi_regmap_config = {
++	.name = "inv_icm42600",
++	.reg_bits = 8,
++	.val_bits = 8,
++	.max_register = 0x4FFF,
++	.ranges = inv_icm42600_regmap_ranges,
++	.num_ranges = ARRAY_SIZE(inv_icm42600_regmap_ranges),
++	.volatile_table = inv_icm42600_regmap_volatile_accesses,
++	.rd_noinc_table = inv_icm42600_regmap_rd_noinc_accesses,
++	.cache_type = REGCACHE_RBTREE,
++	.use_single_write = true,
++};
++EXPORT_SYMBOL_NS_GPL(inv_icm42600_spi_regmap_config, "IIO_ICM42600");
++
+ struct inv_icm42600_hw {
+ 	uint8_t whoami;
+ 	const char *name;
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
+index c55d8e672183..2bd2c4c8e50c 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
+@@ -59,7 +59,8 @@ static int inv_icm42600_probe(struct spi_device *spi)
+ 		return -EINVAL;
+ 	chip = (uintptr_t)match;
  
- 		dwc3_gadget_dctl_write_safe(dwc, reg);
- 	} else {
+-	regmap = devm_regmap_init_spi(spi, &inv_icm42600_regmap_config);
++	/* use SPI specific regmap */
++	regmap = devm_regmap_init_spi(spi, &inv_icm42600_spi_regmap_config);
+ 	if (IS_ERR(regmap))
+ 		return PTR_ERR(regmap);
+ 
 
 
