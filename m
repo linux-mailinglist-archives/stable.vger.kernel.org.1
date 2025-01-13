@@ -1,563 +1,114 @@
-Return-Path: <stable+bounces-108376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A358A0B1DB
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 09:58:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EC10A0B233
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 10:03:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E999C7A30C0
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 08:57:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CF5E188895B
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 09:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC26A237A3B;
-	Mon, 13 Jan 2025 08:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B567023A586;
+	Mon, 13 Jan 2025 09:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FGtlP+U0"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Esc745qO"
 X-Original-To: stable@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D10234967
-	for <stable@vger.kernel.org>; Mon, 13 Jan 2025 08:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB2F2397BC
+	for <stable@vger.kernel.org>; Mon, 13 Jan 2025 09:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736758670; cv=none; b=dCF2ElKQpFu0pGj1WunKR9UGHvaWY2AUTAcG6Smqa2szC/bOBVCOsLooeBwNVgZxZ1TIZh7KSmUGx47QrNkNHBuX2HGAhu9flsIfIbfWFbQzEFbd0DbLzU8eN/F/Zk+SvqE7Jhnmi5biP7YkboQsrWLHjbrGUismWHqkQVAdkUY=
+	t=1736758882; cv=none; b=i9SEThccvR7lPvwHfTOigPuXdWx0VzU52FI7kWSeK3yYWjRE1WYAEmO1+cDgmUx7BypoPu+sw28F44TVLSl2dXZW1o9V53V1QJzH0VRPlcUC170WV4yKeInylOgkJ0MMpSLaOUVGoCyQWbXdn7CPrMfJTW9sCL7BPcN6euYDgws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736758670; c=relaxed/simple;
-	bh=gxhVRl56OLcGDdCxi0XoDRzuHgb7y8m7p5OnGjvMagU=;
+	s=arc-20240116; t=1736758882; c=relaxed/simple;
+	bh=QfxFDE/SxN65YW8tROnk89UHpBfj2EpK7USnpplK1hA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GqjqDhMqNvBHFlzUXidsGhLu4Y9yLT0X9zRWrrHwPfgPF9S23whu2VAFi/Hme4Mo2ms+lO9Y+Fwhgnhq14MrQz9o46bGOu+n1p3/yKqBxM1WvrPm+usIRpKhrGRfyP34PYeH1l67jd8tgfjJSlq6jdw+ssp/Fa6V7FrQqS/cHTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FGtlP+U0; arc=none smtp.client-ip=170.10.129.124
+	 Content-Type:Content-Disposition:In-Reply-To; b=pm+Jbs2ViwKRuBRgUz6w615V4rvIOL3nbyUPARLh8pUfCGquqQEjbiqzh+GVw4XjIYPVh0mf0bWnGvCec82S+FblZH0e1g15VxosfLrC+8yhqAX1hLlA+UD6IR8EIuqZrafVS8pCF+eQyZ4l2LYBBf0gE+mlvl77uhSNpFmME44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Esc745qO; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736758667;
+	s=mimecast20190719; t=1736758880;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YWFyV30sJjQgolYVvQpFa3XlxtBBBiGLOI1I4dMHcn8=;
-	b=FGtlP+U05OA45+GG10M5iknMqr2wepxAW9KDHfteMk4oM4mHUzq98Q6EYQl+GSi6+EiiNA
-	eEZGNncS1uXaUDcCiwDHqLn9PQCORj0dokJW9kXS95XZEEw5w+xCy6Tj5tBpTh3TTYpNPo
-	OLDkwQN3U9s4ui47EYa7i2/IFbZmcQM=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-445-mUAb1ldAOg6nH2aYRGzVDA-1; Mon, 13 Jan 2025 03:57:44 -0500
-X-MC-Unique: mUAb1ldAOg6nH2aYRGzVDA-1
-X-Mimecast-MFC-AGG-ID: mUAb1ldAOg6nH2aYRGzVDA
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-aa67855b3deso323646366b.1
-        for <stable@vger.kernel.org>; Mon, 13 Jan 2025 00:57:44 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736758663; x=1737363463;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YWFyV30sJjQgolYVvQpFa3XlxtBBBiGLOI1I4dMHcn8=;
-        b=A+mUL2hsRwWqyspssCqO5gRY38Av9WGF2p475nuFueBaDSUmCZqUJdhTmz4IrlcogO
-         FfXgxj4IT1moMWhLq8HS0774EHosGS1OcbFDDWV2GeIafnOxkhJrv8l7ELlmaV8qjmfd
-         l/boe+W08R1bMf2MM3RwxSDGRilSg9rjPBcD0KBxUwzojNAC0CNNeQcYUXmroeAFqLvm
-         wdS+laKUmXAx5yjFpKiI62BAaMnhFps75c8tfhS1/McaOuxtjdfzIvakcpt56x30+MGC
-         FOFfVSIE5hRUvWVuUM9ERbFSLtHYvLc/qBwqA0ojYEN0qPhqPjj2qbhDsWJD1nCA9Bbg
-         ZU8w==
-X-Forwarded-Encrypted: i=1; AJvYcCUZ6MQyzBTMlqpyQGLTkYZnlI4L7r2jRVF1l1DprNc0G7WVjbT8O9cPj5J5Nkg+VJ4ahrsmCRA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhgfxeHChGZlNRhiQ0wCz4lyob7TD0jUzmpkrkjjvGYR1zRS1V
-	fn92bmh3vOZ0JaTg3qX062jyLZx+1RwxrCO2Bdyl49+ju4PM22Qgx9cQ90QadN5gbc4AJ+mIrjd
-	KySWLqDf+TdmPsr9m3F2Pjc8nY7o0+FRZJkLcaMFTQOa9E2sY5jDDhg==
-X-Gm-Gg: ASbGncuwzMlTaX+h3bfRfcnt4QVzOrBRUWBn114pvG4p7p+69qPgJ6/4pVqsY5Sq0Db
-	gwS5Bo6NkNE1TD4UHGt0SPbDC/O1eYZiVmNylQgplTjMtbf3pMhmfEGkpOP6TsN8f50VyWcKUmX
-	NDrWXI6TOK4Tj1XsnkLDLv84dE6dpPH7kxTpwJMSAuOOhCmlne7rrHG/YnnPwJTbx8AdI4rErbF
-	UmaLwvqjwK6ueIiQx95Jbll1ABSdpTMxDWdmOWxth2jxcbBRlNoFqRpjg57n1QzhX6W8f7kXYSH
-	2yMKzeF++55oLZUDRydAwNuVrjeNnsMM
-X-Received: by 2002:a17:906:c102:b0:aa6:7f99:81aa with SMTP id a640c23a62f3a-ab2ab676541mr1625696766b.6.1736758663396;
-        Mon, 13 Jan 2025 00:57:43 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGFyFaFt8L7jHJMAHrOnyp5s5Nyww/Em+5GZG5BQED1Or2rDl0D0YzsCzYMwzvKf6M5qsr3kw==
-X-Received: by 2002:a17:906:c102:b0:aa6:7f99:81aa with SMTP id a640c23a62f3a-ab2ab676541mr1625691266b.6.1736758662454;
-        Mon, 13 Jan 2025 00:57:42 -0800 (PST)
-Received: from sgarzare-redhat (host-82-53-134-100.retail.telecomitalia.it. [82.53.134.100])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab321168be8sm66386166b.121.2025.01.13.00.57.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jan 2025 00:57:41 -0800 (PST)
-Date: Mon, 13 Jan 2025 09:57:37 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Luigi Leonardi <leonardi@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
-	Wongi Lee <qwerty@theori.io>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Eric Dumazet <edumazet@google.com>, kvm@vger.kernel.org, 
-	Paolo Abeni <pabeni@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, Simon Horman <horms@kernel.org>, Hyunwoo Kim <v4bel@theori.io>, 
-	Jakub Kicinski <kuba@kernel.org>, virtualization@lists.linux.dev, 
-	Bobby Eshleman <bobby.eshleman@bytedance.com>, stable@vger.kernel.org
-Subject: Re: [PATCH net v2 1/5] vsock/virtio: discard packets if the
- transport changes
-Message-ID: <nedvcylhjxrkmkvgugsku2lpdjgjpo5exoke4o6clxcxh64s3i@jkjnvngazr5v>
-References: <20250110083511.30419-1-sgarzare@redhat.com>
- <20250110083511.30419-2-sgarzare@redhat.com>
- <1aa83abf-6baa-4cf1-a108-66b677bcfd93@rbox.co>
+	bh=bg84P2K9ssfrVByrnuh9eaewIWJz6nPH137Kv912h5Y=;
+	b=Esc745qOW5A46+xDgESCUUX0fIetQZWKHFX9SlajLRnuTyVz4RRdcmilZch/S5HlkP5O5G
+	VSXdr8QXUFJqtSccC/EsIFQXVrd/tpacgNpon2Oxr7eOS9Sk1UufYtvOPxAgtqSIRy5NKI
+	MjQX/ZDmuZb+wW+kbQ0ry1M7WOWTnBs=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-77-XNn9SKZQMqqh7Q_yC_NeJw-1; Mon,
+ 13 Jan 2025 04:01:16 -0500
+X-MC-Unique: XNn9SKZQMqqh7Q_yC_NeJw-1
+X-Mimecast-MFC-AGG-ID: XNn9SKZQMqqh7Q_yC_NeJw
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B5E7019560B9;
+	Mon, 13 Jan 2025 09:01:14 +0000 (UTC)
+Received: from fedora (unknown [10.72.116.4])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BCA4919560AD;
+	Mon, 13 Jan 2025 09:01:09 +0000 (UTC)
+Date: Mon, 13 Jan 2025 17:01:04 +0800
+From: Ming Lei <ming.lei@redhat.com>
+To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+	Christoph Hellwig <hch@lst.de>,
+	John Garry <john.g.garry@oracle.com>, stable@vger.kernel.org
+Subject: Re: [PATCH V2] block: mark GFP_NOIO around sysfs ->store()
+Message-ID: <Z4TWUCoZV_NVzHMa@fedora>
+References: <20250113084103.762630-1-ming.lei@redhat.com>
+ <076ee902633a7293393748cb972cc4a7743ec5c1.camel@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <1aa83abf-6baa-4cf1-a108-66b677bcfd93@rbox.co>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <076ee902633a7293393748cb972cc4a7743ec5c1.camel@linux.intel.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On Sun, Jan 12, 2025 at 11:42:30PM +0100, Michal Luczaj wrote:
->On 1/10/25 09:35, Stefano Garzarella wrote:
->> If the socket has been de-assigned or assigned to another transport,
->> we must discard any packets received because they are not expected
->> and would cause issues when we access vsk->transport.
->>
->> A possible scenario is described by Hyunwoo Kim in the attached link,
->> where after a first connect() interrupted by a signal, and a second
->> connect() failed, we can find `vsk->transport` at NULL, leading to a
->> NULL pointer dereference.
->>
->> Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
->> Cc: stable@vger.kernel.org
->> Reported-by: Hyunwoo Kim <v4bel@theori.io>
->> Reported-by: Wongi Lee <qwerty@theori.io>
->> Closes: https://lore.kernel.org/netdev/Z2LvdTTQR7dBmPb5@v4bel-B760M-AORUS-ELITE-AX/
->> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
->> ---
->>  net/vmw_vsock/virtio_transport_common.c | 7 +++++--
->>  1 file changed, 5 insertions(+), 2 deletions(-)
->>
->> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->> index 9acc13ab3f82..51a494b69be8 100644
->> --- a/net/vmw_vsock/virtio_transport_common.c
->> +++ b/net/vmw_vsock/virtio_transport_common.c
->> @@ -1628,8 +1628,11 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
->>
->>  	lock_sock(sk);
->>
->> -	/* Check if sk has been closed before lock_sock */
->> -	if (sock_flag(sk, SOCK_DONE)) {
->> +	/* Check if sk has been closed or assigned to another transport before
->> +	 * lock_sock (note: listener sockets are not assigned to any transport)
->> +	 */
->> +	if (sock_flag(sk, SOCK_DONE) ||
->> +	    (sk->sk_state != TCP_LISTEN && vsk->transport != &t->transport)) {
->>  		(void)virtio_transport_reset_no_sock(t, skb);
->>  		release_sock(sk);
->>  		sock_put(sk);
->
->I wanted to check if such special-casing for TCP_LISTEN doesn't bother
->BPF/sockmap, but instead I've hit a UAF.
->
->```
->#include <stdio.h>
->#include <stdlib.h>
->#include <sys/socket.h>
->#include <linux/vm_sockets.h>
->
->/* net/vmw_vsock/af_vsock.c */
->#define MAX_PORT_RETRIES	24
->
->static void die(const char *msg)
->{
->	perror(msg);
->	exit(-1);
->}
->
->int socket_bind(int port)
->{
->	struct sockaddr_vm addr = {
->		.svm_family = AF_VSOCK,
->		.svm_cid = VMADDR_CID_LOCAL,
->		.svm_port = port,
->	};
->	int s;
->
->	s = socket(AF_VSOCK, SOCK_SEQPACKET, 0);
->	if (s < 0)
->		die("socket");
->
->	if (bind(s, (struct sockaddr *)&addr, sizeof(addr)))
->		die("bind");
->
->	return s;
->}
->
->int main(void)
->{
->	struct sockaddr_vm addr;
->	socklen_t alen = sizeof(addr);
->	int dummy, i, s;
->
->	/* Play with `static u32 port` in __vsock_bind_connectible()
->	 * to fail vsock_auto_bind() at connect #1.
->	 */
->	dummy = socket_bind(VMADDR_PORT_ANY);
->	if (getsockname(dummy, (struct sockaddr *)&addr, &alen))
->		die("getsockname");
->	for (i = 0; i < MAX_PORT_RETRIES; ++i)
->		socket_bind(++addr.svm_port);
->
->	s = socket(AF_VSOCK, SOCK_SEQPACKET, 0);
->	if (s < 0)
->		die("socket s");
->
->	if (!connect(s, (struct sockaddr *)&addr, alen))
->		die("connect #1");
->	perror("ok, connect #1 failed; transport set, sk in unbound list");
->
->	addr.svm_cid = 42; /* non-existing */
->	if (!connect(s, (struct sockaddr *)&addr, alen))
->		die("connect #2");
->	/* vsock_assign_transport
->	 *   virtio_transport_release (vsk->transport->release)
->	 *     virtio_transport_remove_sock
->	 *       vsock_remove_sock
->	 *         vsock_remove_bound
->	 *           __vsock_remove_bound
->	 *             sock_put(&vsk->sk)
->	 */
->	perror("ok, connect #2 failed; transport unset, sk ref dropped");
->
->	addr.svm_cid = VMADDR_CID_LOCAL;
->	addr.svm_port = VMADDR_PORT_ANY;
->	if (bind(s, (struct sockaddr *)&addr, alen))
->		die("bind s");
->	/* vsock_bind
->	 *   __vsock_bind
->	 *     __vsock_bind_connectible
->	 *       __vsock_remove_bound
->	 *         sock_put(&vsk->sk)
->	 */
->
->	printf("done\n");
->	return 0;
->}
->```
->
->=========================
->WARNING: held lock freed!
->6.13.0-rc6+ #146 Not tainted
->-------------------------
->a.out/2057 is freeing memory ffff88816b46a200-ffff88816b46a9f7, with a lock still held there!
->ffff88816b46a458 (sk_lock-AF_VSOCK){+.+.}-{0:0}, at: vsock_bind+0x8a/0xe0
->2 locks held by a.out/2057:
-> #0: ffff88816b46a458 (sk_lock-AF_VSOCK){+.+.}-{0:0}, at: vsock_bind+0x8a/0xe0
-> #1: ffffffff86574a78 (vsock_table_lock){+...}-{3:3}, at: __vsock_bind+0x129/0x730
->
->stack backtrace:
->CPU: 7 UID: 1000 PID: 2057 Comm: a.out Not tainted 6.13.0-rc6+ #146
->Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
->Call Trace:
-> <TASK>
-> dump_stack_lvl+0x68/0x90
-> debug_check_no_locks_freed+0x21a/0x280
-> ? lockdep_hardirqs_on+0x78/0x100
-> kmem_cache_free+0x142/0x590
-> ? security_sk_free+0x54/0xf0
-> ? __sk_destruct+0x388/0x5a0
-> __sk_destruct+0x388/0x5a0
-> __vsock_bind+0x5e1/0x730
-> ? __pfx___vsock_bind+0x10/0x10
-> ? __local_bh_enable_ip+0xab/0x140
-> vsock_bind+0x97/0xe0
-> ? __pfx_vsock_bind+0x10/0x10
-> __sys_bind+0x154/0x1f0
-> ? __pfx___sys_bind+0x10/0x10
-> ? lockdep_hardirqs_on_prepare+0x16d/0x400
-> ? do_syscall_64+0x9f/0x1b0
-> ? lockdep_hardirqs_on+0x78/0x100
-> ? do_syscall_64+0x9f/0x1b0
-> __x64_sys_bind+0x6e/0xb0
-> ? lockdep_hardirqs_on+0x78/0x100
-> do_syscall_64+0x93/0x1b0
-> ? lockdep_hardirqs_on_prepare+0x16d/0x400
-> ? do_syscall_64+0x9f/0x1b0
-> ? lockdep_hardirqs_on+0x78/0x100
-> ? do_syscall_64+0x9f/0x1b0
-> entry_SYSCALL_64_after_hwframe+0x76/0x7e
->RIP: 0033:0x7fa9a618e34b
->Code: c3 66 0f 1f 44 00 00 48 8b 15 c9 9a 0c 00 f7 d8 64 89 02 b8 ff ff ff ff eb c1 0f 1f 44 00 00 f3 0f 1e fa b8 31 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 9d 9a 0c 00 f7 d8 64 89 01 48
->RSP: 002b:00007fff5e2d2f88 EFLAGS: 00000202 ORIG_RAX: 0000000000000031
->RAX: ffffffffffffffda RBX: 00007fff5e2d30e8 RCX: 00007fa9a618e34b
->RDX: 0000000000000010 RSI: 00007fff5e2d2fa0 RDI: 000000000000001c
->RBP: 00007fff5e2d2fc0 R08: 0000000010f8c010 R09: 0000000000000007
->R10: 0000000010f8c2a0 R11: 0000000000000202 R12: 0000000000000001
->R13: 0000000000000000 R14: 00007fa9a62b0000 R15: 0000000000403e00
-> </TASK>
->==================================================================
->BUG: KASAN: slab-use-after-free in __vsock_bind+0x62e/0x730
->Read of size 4 at addr ffff88816b46a74c by task a.out/2057
->
->CPU: 7 UID: 1000 PID: 2057 Comm: a.out Not tainted 6.13.0-rc6+ #146
->Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
->Call Trace:
-> <TASK>
-> dump_stack_lvl+0x68/0x90
-> print_report+0x174/0x4f6
-> ? __virt_addr_valid+0x208/0x400
-> ? __vsock_bind+0x62e/0x730
-> kasan_report+0xb9/0x190
-> ? __vsock_bind+0x62e/0x730
-> __vsock_bind+0x62e/0x730
-> ? __pfx___vsock_bind+0x10/0x10
-> ? __local_bh_enable_ip+0xab/0x140
-> vsock_bind+0x97/0xe0
-> ? __pfx_vsock_bind+0x10/0x10
-> __sys_bind+0x154/0x1f0
-> ? __pfx___sys_bind+0x10/0x10
-> ? lockdep_hardirqs_on_prepare+0x16d/0x400
-> ? do_syscall_64+0x9f/0x1b0
-> ? lockdep_hardirqs_on+0x78/0x100
-> ? do_syscall_64+0x9f/0x1b0
-> __x64_sys_bind+0x6e/0xb0
-> ? lockdep_hardirqs_on+0x78/0x100
-> do_syscall_64+0x93/0x1b0
-> ? lockdep_hardirqs_on_prepare+0x16d/0x400
-> ? do_syscall_64+0x9f/0x1b0
-> ? lockdep_hardirqs_on+0x78/0x100
-> ? do_syscall_64+0x9f/0x1b0
-> entry_SYSCALL_64_after_hwframe+0x76/0x7e
->RIP: 0033:0x7fa9a618e34b
->Code: c3 66 0f 1f 44 00 00 48 8b 15 c9 9a 0c 00 f7 d8 64 89 02 b8 ff ff ff ff eb c1 0f 1f 44 00 00 f3 0f 1e fa b8 31 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 9d 9a 0c 00 f7 d8 64 89 01 48
->RSP: 002b:00007fff5e2d2f88 EFLAGS: 00000202 ORIG_RAX: 0000000000000031
->RAX: ffffffffffffffda RBX: 00007fff5e2d30e8 RCX: 00007fa9a618e34b
->RDX: 0000000000000010 RSI: 00007fff5e2d2fa0 RDI: 000000000000001c
->RBP: 00007fff5e2d2fc0 R08: 0000000010f8c010 R09: 0000000000000007
->R10: 0000000010f8c2a0 R11: 0000000000000202 R12: 0000000000000001
->R13: 0000000000000000 R14: 00007fa9a62b0000 R15: 0000000000403e00
-> </TASK>
->
->Allocated by task 2057:
-> kasan_save_stack+0x1e/0x40
-> kasan_save_track+0x10/0x30
-> __kasan_slab_alloc+0x85/0x90
-> kmem_cache_alloc_noprof+0x131/0x450
-> sk_prot_alloc+0x5b/0x220
-> sk_alloc+0x2c/0x870
-> __vsock_create.constprop.0+0x2e/0xb60
-> vsock_create+0xe4/0x420
-> __sock_create+0x241/0x650
-> __sys_socket+0xf2/0x1a0
-> __x64_sys_socket+0x6e/0xb0
-> do_syscall_64+0x93/0x1b0
-> entry_SYSCALL_64_after_hwframe+0x76/0x7e
->
->Freed by task 2057:
-> kasan_save_stack+0x1e/0x40
-> kasan_save_track+0x10/0x30
-> kasan_save_free_info+0x37/0x60
-> __kasan_slab_free+0x4b/0x70
-> kmem_cache_free+0x1a1/0x590
-> __sk_destruct+0x388/0x5a0
-> __vsock_bind+0x5e1/0x730
-> vsock_bind+0x97/0xe0
-> __sys_bind+0x154/0x1f0
-> __x64_sys_bind+0x6e/0xb0
-> do_syscall_64+0x93/0x1b0
-> entry_SYSCALL_64_after_hwframe+0x76/0x7e
->
->The buggy address belongs to the object at ffff88816b46a200
-> which belongs to the cache AF_VSOCK of size 2040
->The buggy address is located 1356 bytes inside of
-> freed 2040-byte region [ffff88816b46a200, ffff88816b46a9f8)
->
->The buggy address belongs to the physical page:
->page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x16b468
->head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
->memcg:ffff888125368401
->flags: 0x17ffffc0000040(head|node=0|zone=2|lastcpupid=0x1fffff)
->page_type: f5(slab)
->raw: 0017ffffc0000040 ffff888110115540 dead000000000122 0000000000000000
->raw: 0000000000000000 00000000800f000f 00000001f5000000 ffff888125368401
->head: 0017ffffc0000040 ffff888110115540 dead000000000122 0000000000000000
->head: 0000000000000000 00000000800f000f 00000001f5000000 ffff888125368401
->head: 0017ffffc0000003 ffffea0005ad1a01 ffffffffffffffff 0000000000000000
->head: 0000000000000008 0000000000000000 00000000ffffffff 0000000000000000
->page dumped because: kasan: bad access detected
->
->Memory state around the buggy address:
-> ffff88816b46a600: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> ffff88816b46a680: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->>ffff88816b46a700: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->                                              ^
-> ffff88816b46a780: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> ffff88816b46a800: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->==================================================================
->------------[ cut here ]------------
->refcount_t: addition on 0; use-after-free.
->WARNING: CPU: 7 PID: 2057 at lib/refcount.c:25 refcount_warn_saturate+0xce/0x150
->Modules linked in: 9p kvm_intel kvm 9pnet_virtio 9pnet netfs i2c_piix4 i2c_smbus zram virtio_blk serio_raw fuse qemu_fw_cfg virtio_console
->CPU: 7 UID: 1000 PID: 2057 Comm: a.out Tainted: G    B              6.13.0-rc6+ #146
->Tainted: [B]=BAD_PAGE
->Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
->RIP: 0010:refcount_warn_saturate+0xce/0x150
->Code: 7b fe d8 03 01 e8 22 db ac fe 0f 0b eb b1 80 3d 6e fe d8 03 00 75 a8 48 c7 c7 e0 da 95 84 c6 05 5e fe d8 03 01 e8 02 db ac fe <0f> 0b eb 91 80 3d 4d fe d8 03 00 75 88 48 c7 c7 40 db 95 84 c6 05
->RSP: 0018:ffff8881285c7c90 EFLAGS: 00010282
->RAX: 0000000000000000 RBX: ffff88816b46a280 RCX: 0000000000000000
->RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000001
->RBP: 0000000000000002 R08: 0000000000000001 R09: ffffed10bcd76349
->R10: ffff8885e6bb1a4b R11: 0000000000000000 R12: ffff88816b46a768
->R13: ffff88816b46a280 R14: ffff88816b46a770 R15: ffffffff88901520
->FS:  00007fa9a606e740(0000) GS:ffff8885e6b80000(0000) knlGS:0000000000000000
->CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->CR2: 0000000010f8d488 CR3: 0000000130c4a000 CR4: 0000000000752ef0
->PKRU: 55555554
->Call Trace:
-> <TASK>
-> ? __warn.cold+0x5f/0x1ff
-> ? refcount_warn_saturate+0xce/0x150
-> ? report_bug+0x1ec/0x390
-> ? handle_bug+0x58/0x90
-> ? exc_invalid_op+0x13/0x40
-> ? asm_exc_invalid_op+0x16/0x20
-> ? refcount_warn_saturate+0xce/0x150
-> __vsock_bind+0x66d/0x730
-> ? __pfx___vsock_bind+0x10/0x10
-> ? __local_bh_enable_ip+0xab/0x140
-> vsock_bind+0x97/0xe0
-> ? __pfx_vsock_bind+0x10/0x10
-> __sys_bind+0x154/0x1f0
-> ? __pfx___sys_bind+0x10/0x10
-> ? lockdep_hardirqs_on_prepare+0x16d/0x400
-> ? do_syscall_64+0x9f/0x1b0
-> ? lockdep_hardirqs_on+0x78/0x100
-> ? do_syscall_64+0x9f/0x1b0
-> __x64_sys_bind+0x6e/0xb0
-> ? lockdep_hardirqs_on+0x78/0x100
-> do_syscall_64+0x93/0x1b0
-> ? lockdep_hardirqs_on_prepare+0x16d/0x400
-> ? do_syscall_64+0x9f/0x1b0
-> ? lockdep_hardirqs_on+0x78/0x100
-> ? do_syscall_64+0x9f/0x1b0
-> entry_SYSCALL_64_after_hwframe+0x76/0x7e
->RIP: 0033:0x7fa9a618e34b
->Code: c3 66 0f 1f 44 00 00 48 8b 15 c9 9a 0c 00 f7 d8 64 89 02 b8 ff ff ff ff eb c1 0f 1f 44 00 00 f3 0f 1e fa b8 31 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 9d 9a 0c 00 f7 d8 64 89 01 48
->RSP: 002b:00007fff5e2d2f88 EFLAGS: 00000202 ORIG_RAX: 0000000000000031
->RAX: ffffffffffffffda RBX: 00007fff5e2d30e8 RCX: 00007fa9a618e34b
->RDX: 0000000000000010 RSI: 00007fff5e2d2fa0 RDI: 000000000000001c
->RBP: 00007fff5e2d2fc0 R08: 0000000010f8c010 R09: 0000000000000007
->R10: 0000000010f8c2a0 R11: 0000000000000202 R12: 0000000000000001
->R13: 0000000000000000 R14: 00007fa9a62b0000 R15: 0000000000403e00
-> </TASK>
->irq event stamp: 9836
->hardirqs last  enabled at (9836): [<ffffffff8152121f>] __call_rcu_common.constprop.0+0x32f/0xe90
->hardirqs last disabled at (9835): [<ffffffff8152127c>] __call_rcu_common.constprop.0+0x38c/0xe90
->softirqs last  enabled at (9810): [<ffffffff84168aca>] vsock_bind+0x8a/0xe0
->softirqs last disabled at (9812): [<ffffffff84168429>] __vsock_bind+0x129/0x730
->---[ end trace 0000000000000000 ]---
->------------[ cut here ]------------
->refcount_t: underflow; use-after-free.
->WARNING: CPU: 7 PID: 2057 at lib/refcount.c:28 refcount_warn_saturate+0xee/0x150
->Modules linked in: 9p kvm_intel kvm 9pnet_virtio 9pnet netfs i2c_piix4 i2c_smbus zram virtio_blk serio_raw fuse qemu_fw_cfg virtio_console
->CPU: 7 UID: 1000 PID: 2057 Comm: a.out Tainted: G    B   W          6.13.0-rc6+ #146
->Tainted: [B]=BAD_PAGE, [W]=WARN
->Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
->RIP: 0010:refcount_warn_saturate+0xee/0x150
->Code: 5e fe d8 03 01 e8 02 db ac fe 0f 0b eb 91 80 3d 4d fe d8 03 00 75 88 48 c7 c7 40 db 95 84 c6 05 3d fe d8 03 01 e8 e2 da ac fe <0f> 0b e9 6e ff ff ff 80 3d 2d fe d8 03 00 0f 85 61 ff ff ff 48 c7
->RSP: 0018:ffff8881285c7b68 EFLAGS: 00010296
->RAX: 0000000000000000 RBX: ffff88816b46a280 RCX: 0000000000000000
->RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000001
->RBP: 0000000000000003 R08: 0000000000000001 R09: ffffed10bcd76349
->R10: ffff8885e6bb1a4b R11: 0000000000000000 R12: ffff88816b46a770
->R13: ffffffff88901520 R14: ffffffff88901520 R15: ffff888128cff640
->FS:  0000000000000000(0000) GS:ffff8885e6b80000(0000) knlGS:0000000000000000
->CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->CR2: 00007fa9a6156050 CR3: 0000000005a74000 CR4: 0000000000752ef0
->PKRU: 55555554
->Call Trace:
-> <TASK>
-> ? __warn.cold+0x5f/0x1ff
-> ? refcount_warn_saturate+0xee/0x150
-> ? report_bug+0x1ec/0x390
-> ? handle_bug+0x58/0x90
-> ? exc_invalid_op+0x13/0x40
-> ? asm_exc_invalid_op+0x16/0x20
-> ? refcount_warn_saturate+0xee/0x150
-> ? refcount_warn_saturate+0xee/0x150
-> vsock_remove_bound+0x187/0x1e0
-> __vsock_release+0x383/0x4a0
-> ? down_write+0x129/0x1c0
-> vsock_release+0x90/0x120
-> __sock_release+0xa3/0x250
-> sock_close+0x14/0x20
-> __fput+0x359/0xa80
-> ? trace_irq_enable.constprop.0+0xce/0x110
-> task_work_run+0x107/0x1d0
-> ? __pfx_do_raw_spin_lock+0x10/0x10
-> ? __pfx_task_work_run+0x10/0x10
-> do_exit+0x847/0x2560
-> ? __pfx_lock_release+0x10/0x10
-> ? do_raw_spin_lock+0x11a/0x240
-> ? __pfx_do_exit+0x10/0x10
-> ? rcu_is_watching+0x11/0xb0
-> ? trace_irq_enable.constprop.0+0xce/0x110
-> do_group_exit+0xb8/0x250
-> __x64_sys_exit_group+0x3a/0x50
-> x64_sys_call+0xfec/0x14f0
-> do_syscall_64+0x93/0x1b0
-> ? __pfx___up_read+0x10/0x10
-> ? rcu_is_watching+0x11/0xb0
-> ? trace_irq_enable.constprop.0+0xce/0x110
-> entry_SYSCALL_64_after_hwframe+0x76/0x7e
->RIP: 0033:0x7fa9a615606d
->Code: Unable to access opcode bytes at 0x7fa9a6156043.
->RSP: 002b:00007fff5e2d2f58 EFLAGS: 00000206 ORIG_RAX: 00000000000000e7
->RAX: ffffffffffffffda RBX: 00007fa9a6259fa8 RCX: 00007fa9a615606d
->RDX: 00000000000000e7 RSI: ffffffffffffff88 RDI: 0000000000000000
->RBP: 00007fff5e2d2fb0 R08: 00007fff5e2d2f00 R09: 00007fff5e2d2e8f
->R10: 00007fff5e2d2e10 R11: 0000000000000206 R12: 0000000000000001
->R13: 0000000000000000 R14: 00007fa9a6258680 R15: 00007fa9a6259fc0
-> </TASK>
->irq event stamp: 9836
->hardirqs last  enabled at (9836): [<ffffffff8152121f>] __call_rcu_common.constprop.0+0x32f/0xe90
->hardirqs last disabled at (9835): [<ffffffff8152127c>] __call_rcu_common.constprop.0+0x38c/0xe90
->softirqs last  enabled at (9810): [<ffffffff84168aca>] vsock_bind+0x8a/0xe0
->softirqs last disabled at (9812): [<ffffffff84168429>] __vsock_bind+0x129/0x730
->---[ end trace 0000000000000000 ]---
->
->So, if I get this right:
->1. vsock_create() (refcnt=1) calls vsock_insert_unbound() (refcnt=2)
->2. transport->release() calls vsock_remove_bound() without checking if sk
->   was bound and moved to bound list (refcnt=1)
->3. vsock_bind() assumes sk is in unbound list and before
->   __vsock_insert_bound(vsock_bound_sockets()) calls
->   __vsock_remove_bound() which does:
->      list_del_init(&vsk->bound_table); // nop
->      sock_put(&vsk->sk);               // refcnt=0
->
->The following fixes things for me. I'm just not certain that's the only
->place where transport destruction may lead to an unbound socket being
->removed from the unbound list.
->
->diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->index 7f7de6d88096..0fe807c8c052 100644
->--- a/net/vmw_vsock/virtio_transport_common.c
->+++ b/net/vmw_vsock/virtio_transport_common.c
->@@ -1303,7 +1303,8 @@ void virtio_transport_release(struct vsock_sock *vsk)
->
-> 	if (remove_sock) {
-> 		sock_set_flag(sk, SOCK_DONE);
->-		virtio_transport_remove_sock(vsk);
->+		if (vsock_addr_bound(&vsk->local_addr))
->+			virtio_transport_remove_sock(vsk);
+On Mon, Jan 13, 2025 at 09:50:37AM +0100, Thomas Hellström wrote:
+> Hi!
+> 
+> On Mon, 2025-01-13 at 16:41 +0800, Ming Lei wrote:
+> > sysfs ->store is called with queue freezed, meantime we have several
+> > ->store() callbacks(update_nr_requests, wbt, scheduler) to allocate
+> > memory with GFP_KERNEL which may run into direct reclaim code path,
+> > then potential deadlock can be caused.
+> > 
+> > Fix the issue by marking NOIO around sysfs ->store()
+> > 
+> > Reviewed-by: Christoph Hellwig <hch@lst.de>
+> > Reviewed-by: John Garry <john.g.garry@oracle.com>
+> > Reported-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> > Closes:
+> > https://lore.kernel.org/linux-block/ead7c5ce5138912c1f3179d62370b84a64014a38.camel@linux.intel.com/
+> > Fixes: bd166ef183c2 ("blk-mq-sched: add framework for MQ capable IO
+> > schedulers")
+> 
+> Does this fix also the #2 lockdep splat in that email?
 
-I don't get this fix, virtio_transport_remove_sock() calls
-   vsock_remove_sock()
-     vsock_remove_bound()
-       if (__vsock_in_bound_table(vsk))
-           __vsock_remove_bound(vsk);
+No.
+
+The #2 splat fix has been merged to for-6.14/block, and this patch only
+covers the one reported in the Closes link.
+
+https://lore.kernel.org/linux-block/20250110054726.1499538-1-hch@lst.de/
 
 
-So, should already avoid this issue, no?
-
-Can the problem be in vsock_bind() ?
-
-Is this issue pre-existing or introduced by this series?
-
-I'll also investigate a bit more.
-
-Thanks,
-Stefano
+Thanks, 
+Ming
 
 
