@@ -1,142 +1,80 @@
-Return-Path: <stable+bounces-108366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08FDEA0AE24
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 05:23:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFD17A0AEE1
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 06:47:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B519188676E
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 04:23:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9259A3A6A2F
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 05:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8818158875;
-	Mon, 13 Jan 2025 04:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF287230D02;
+	Mon, 13 Jan 2025 05:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="yTU8M+vt"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Gvb1JbKg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C72156F53;
-	Mon, 13 Jan 2025 04:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAFC10E0;
+	Mon, 13 Jan 2025 05:47:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736742204; cv=none; b=WewAVa8M+OxN+JTImrwR/JszCmXK2LQGmri7miUc2KgD36wh14pT4dWn8ezGGqxzxAuQpiSaIzJf4uzzKs6a/81PUBxOTdxPGl0+co5ighqMHUACF/20AP532P2Fu+JrAD12JknFyPuRH6GP2XYFYB3UKOemWA/gGsbH2I4B53Q=
+	t=1736747226; cv=none; b=fyRiDa7AR6ppmcJ/R/kaMymxjlU46WJCMg0DvdXY7eLa9Q32bjLxb38YG7kuDnYbsumdEOOh86wZfsT1OJysuv600x47qmbARqaxLd14K6B2+MPjLZNO8nup+GZlwFabR5N0KxHRBMuHmctTqTV4jXKlYImWdwtBVLP6UuWTKAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736742204; c=relaxed/simple;
-	bh=NgueuWBQacS1tChhi5qBiVeEnYq8VYhERXD3ULCHYb0=;
-	h=Date:To:From:Subject:Message-Id; b=jn7h8ZKgu32V8eDek1oljJqNlxxajbySl2RxiSvPRG/cblRgMEazjpdyFgL9iMZPY7N3OAuAij3WIHVelhAtETkZI5z2ke4wpYoHmXNhMmCcNVhMG+ViRRzKbGq8l5sXKi4AsdAR1tSrq/EXhc31UDPfe7Q0TU3u6n3BO+nxRhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=yTU8M+vt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ABD8C4CED6;
-	Mon, 13 Jan 2025 04:23:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1736742204;
-	bh=NgueuWBQacS1tChhi5qBiVeEnYq8VYhERXD3ULCHYb0=;
-	h=Date:To:From:Subject:From;
-	b=yTU8M+vtdF7bnMgONE68B6tc6hCBvDnz0/Aj1PH6SLyk7XS8L7sm4wNaOABtSV0Qu
-	 ZIu2HMpHATP3gf3AXZjFbZ7Ns/+7UNmsstubTUvW1zrsnsKo3/iN3I4Hh2DFiRW5wj
-	 GwpHXYH6HtniXKj55M9j+oNmR/dAcjVFyCV+bl38=
-Date: Sun, 12 Jan 2025 20:23:23 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark.tinguely@oracle.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,gechangwei@live.cn,willy@infradead.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-nonmm-stable] ocfs2-handle-a-symlink-read-error-correctly.patch removed from -mm tree
-Message-Id: <20250113042324.6ABD8C4CED6@smtp.kernel.org>
+	s=arc-20240116; t=1736747226; c=relaxed/simple;
+	bh=WxjPia5DOZxFoTySNZERWmTCb9+dkDfsOBYYwX7BeG4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PGjv0ur9qpuJb/UpzJNMI8GP/lM15iemAl9/9uvGUTd6CPxOmJuHR+Atdt/Sr49HdL/EYgeJD3Ft7x+w4I7wQsIp9kMrgFyrSYoPidnI3NXYAWfR9zO56WuNe65Iw8TMK8fZy/zaOf8m2FOJ3e5bpu8Dt3yCVqJz2Ybheh6zs/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Gvb1JbKg; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Ad6vN+9jm5mfnc84bnorTllpfcNEkE7FxLBj4K2qyJ4=; b=Gvb1JbKgM26C8KgKznRbayHR4T
+	RYO4Sjlpu6aS5TWw5KLmi7FuzZQGQPqcUfQ0iybSe1ywLqqpx2zHEK2HobZ3ha33sRjO2FFCXDkH8
+	nhjEBmGzpu3aHokasNqPKXibiFE4p5gfnnbmjVhIqXHm+TVnISTLoyK7eR/ACXIEB1pmYwHh5R2ku
+	+GNqK29IK215mY2MbtGX+2HUgP+bIFxormVDtQ5SqDaj25rjA5lXqaNPiomUaZ9Lp1omAYim66Hrp
+	nhXgQNoLHxkw9ux2EhVo37bowO4qsKnzMdDs+KR+UdiVT3CVU1GkhHtXxu7aHSOkZSvUDQOMCRirL
+	OWatxAhw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1tXDHz-000000044tu-44Je;
+	Mon, 13 Jan 2025 05:47:03 +0000
+Date: Sun, 12 Jan 2025 21:47:03 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Ming Lei <tom.leiming@gmail.com>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+	Ming Lei <ming.lei@redhat.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] block: mark GFP_NOIO around sysfs ->store()
+Message-ID: <Z4So1wfnrdf4uSxb@infradead.org>
+References: <20250113015833.698458-1-ming.lei@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250113015833.698458-1-ming.lei@redhat.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
+On Mon, Jan 13, 2025 at 09:58:33AM +0800, Ming Lei wrote:
+> sysfs ->store is called with queue freezed, meantime we have several
+> ->store() callbacks(update_nr_requests, wbt, scheduler) to allocate
+> memory with GFP_KERNEL which may run into direct reclaim code path,
+> then potential deadlock can be caused.
+> 
+> Fix the issue by marking NOIO around sysfs ->store()
 
-The quilt patch titled
-     Subject: ocfs2: handle a symlink read error correctly
-has been removed from the -mm tree.  Its filename was
-     ocfs2-handle-a-symlink-read-error-correctly.patch
+Yes, that's a good thing, and we should aim for more of that for
+block layer code that requires NOIO:
 
-This patch was dropped because it was merged into the mm-nonmm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: ocfs2: handle a symlink read error correctly
-Date: Thu, 5 Dec 2024 17:16:29 +0000
-
-Patch series "Convert ocfs2 to use folios".
-
-Mark did a conversion of ocfs2 to use folios and sent it to me as a
-giant patch for review ;-)
-
-So I've redone it as individual patches, and credited Mark for the patches
-where his code is substantially the same.  It's not a bad way to do it;
-his patch had some bugs and my patches had some bugs.  Hopefully all our
-bugs were different from each other.  And hopefully Mark likes all the
-changes I made to his code!
-
-
-This patch (of 23):
-
-If we can't read the buffer, be sure to unlock the page before returning.
-
-Link: https://lkml.kernel.org/r/20241205171653.3179945-1-willy@infradead.org
-Link: https://lkml.kernel.org/r/20241205171653.3179945-2-willy@infradead.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Mark Tinguely <mark.tinguely@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/ocfs2/symlink.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
---- a/fs/ocfs2/symlink.c~ocfs2-handle-a-symlink-read-error-correctly
-+++ a/fs/ocfs2/symlink.c
-@@ -65,7 +65,7 @@ static int ocfs2_fast_symlink_read_folio
- 
- 	if (status < 0) {
- 		mlog_errno(status);
--		return status;
-+		goto out;
- 	}
- 
- 	fe = (struct ocfs2_dinode *) bh->b_data;
-@@ -76,9 +76,10 @@ static int ocfs2_fast_symlink_read_folio
- 	memcpy(kaddr, link, len + 1);
- 	kunmap_atomic(kaddr);
- 	SetPageUptodate(page);
-+out:
- 	unlock_page(page);
- 	brelse(bh);
--	return 0;
-+	return status;
- }
- 
- const struct address_space_operations ocfs2_fast_symlink_aops = {
-_
-
-Patches currently in -mm which might be from willy@infradead.org are
-
-mm-page_alloc-cache-page_zone-result-in-free_unref_page.patch
-mm-make-alloc_pages_mpol-static.patch
-mm-page_alloc-export-free_frozen_pages-instead-of-free_unref_page.patch
-mm-page_alloc-move-set_page_refcounted-to-callers-of-post_alloc_hook.patch
-mm-page_alloc-move-set_page_refcounted-to-callers-of-prep_new_page.patch
-mm-page_alloc-move-set_page_refcounted-to-callers-of-get_page_from_freelist.patch
-mm-page_alloc-move-set_page_refcounted-to-callers-of-__alloc_pages_cpuset_fallback.patch
-mm-page_alloc-move-set_page_refcounted-to-callers-of-__alloc_pages_may_oom.patch
-mm-page_alloc-move-set_page_refcounted-to-callers-of-__alloc_pages_direct_compact.patch
-mm-page_alloc-move-set_page_refcounted-to-callers-of-__alloc_pages_direct_reclaim.patch
-mm-page_alloc-move-set_page_refcounted-to-callers-of-__alloc_pages_slowpath.patch
-mm-page_alloc-move-set_page_refcounted-to-end-of-__alloc_pages.patch
-mm-page_alloc-add-__alloc_frozen_pages.patch
-mm-mempolicy-add-alloc_frozen_pages.patch
-slab-allocate-frozen-pages.patch
-mm-remove-pagetranstail.patch
-
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 
