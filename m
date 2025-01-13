@@ -1,187 +1,130 @@
-Return-Path: <stable+bounces-108553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97F98A0C58D
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 00:20:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 262B1A0C598
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 00:26:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2DF43A4C33
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 23:20:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17F7C1679C3
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 23:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125B11F8F04;
-	Mon, 13 Jan 2025 23:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E801F8F04;
+	Mon, 13 Jan 2025 23:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mrWZoI7L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M61Fkc6T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7F716EC19;
-	Mon, 13 Jan 2025 23:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A054C1F941C;
+	Mon, 13 Jan 2025 23:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736810406; cv=none; b=FLgsWP6hh+coC6oexDp6sn66v78CC37gLrleLhepmw6k2MiwhgTaCS8OJaCExAJtGpm2EJjEKgcCUgR7vxhcuhXfWMQE4Ic5dN9gldqm3KQ9vrp+xFeXH7sKlWn4OpAS+kBkvl1Epb9aYhalZKFSLrzvdmjtVkDT/ueap8hVK5w=
+	t=1736810752; cv=none; b=nMpmv+gl32RA2n3UoWSGCJyl5+hi+uFNHtpCF9X7KwNUPWTJQ5q80gvvD1RIeiTBYx5kbTjzynpmO125//Jh1MlVPIeL6U/ib/ZxBJdOzxvqQviLqYFOs9kndle9WzSXwbbaBa+XSh1X3623ZGcYrQs2q8ALxP9Noa4S+SdFO0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736810406; c=relaxed/simple;
-	bh=09NPkdSE13fgHDvnIwFiLs1pv90mgp7kVS82OBB4dwA=;
-	h=Date:To:From:Subject:Message-Id; b=lsW/gIIZuPTz+BHAUJcCxVzdW2iqIOfCT/drC8iBoiIT67dM8GYxdExR1WSNR3T1wdYrQnSvxFsyH7HO5OkYuWWLLhMrHeKgfF+D5j9CfjW7RAj5/NBQLNfIef46mdGEYWprjsVy3sllRrRx8koTFSEv0f3C8d7JsVxJrku0JVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mrWZoI7L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DABAC4CEE2;
-	Mon, 13 Jan 2025 23:20:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1736810406;
-	bh=09NPkdSE13fgHDvnIwFiLs1pv90mgp7kVS82OBB4dwA=;
-	h=Date:To:From:Subject:From;
-	b=mrWZoI7L/ShvCIvpRA6JcoXOIN00Qh/BNl+xJlKbGtUO9By1j4UZnPCl3MuvyX7u7
-	 PCRWfcwEaO4QxFyFwvuGuLcwWNAUgzYusUypYbratFDQb/nV3Z6fxEew4J8PVSvWU+
-	 DlloWc9TMpDEwqngo8gqUqcqtaEr3jj0e3gt1UDg=
-Date: Mon, 13 Jan 2025 15:20:05 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,nphamcs@gmail.com,hannes@cmpxchg.org,chengming.zhou@linux.dev,yosryahmed@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-zswap-move-allocations-during-cpu-init-outside-the-lock.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250113232006.3DABAC4CEE2@smtp.kernel.org>
+	s=arc-20240116; t=1736810752; c=relaxed/simple;
+	bh=xdbkNfhzVGi5t9ubBvaCKgPr96uIkFavHnkVEJt4Hro=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IaY7pOKA3JLh9zsdJFSmniLSuvcmdGpZhE7aGfoLByPNabO+ffYxQHO8z2/suQGybdtgncC6yP1CsSL1XJWS4yqc8I9/8sbbAO+vlM23d5dZXRUCzxdvsMhI2lttuaC4KUxPakOUKeb3o52sPGjF5B343lNSSy77v7zGLfwvJk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M61Fkc6T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46ED4C4CED6;
+	Mon, 13 Jan 2025 23:25:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736810752;
+	bh=xdbkNfhzVGi5t9ubBvaCKgPr96uIkFavHnkVEJt4Hro=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=M61Fkc6To705m6TsvmDpF+ULDRihS8ld5R8AxKLBdQgXmkfaD/oIqQvR5ZjwmkUm9
+	 9ZMbDwD6T9tL1O0X3xnmbhbIFkJmDqCX36qF2b7sJmV0GMgPjVm+bWZ7YvhJ+lCiPA
+	 bMNmVM4TpRrEWpwaeAZYxskPsUVB3uGfieBIglNivMcfQowibTvRVE+FoYtoJWkrZf
+	 2aI9O1niKw9U/dqbQMVEMQMqBSkwMMZMyiINr/zechNiWTONcCtWqavA9NV0oP46Vk
+	 fPgbjMuTfBiPLvVJFOyYaeDFdA4b9NSoCEB2LwdlBja0tvxjVHisxKWAImqBKq4nz2
+	 m/se6gRY7pb0w==
+Date: Mon, 13 Jan 2025 17:25:51 -0600
+From: Rob Herring <robh@kernel.org>
+To: Zijun Hu <zijun_hu@icloud.com>
+Cc: Saravana Kannan <saravanak@google.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Marc Zyngier <maz@kernel.org>,
+	Andreas Herrmann <andreas.herrmann@calxeda.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Oreoluwa Babatunde <quic_obabatun@quicinc.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v4 09/14] of: reserved-memory: Fix using wrong number of
+ cells to get property 'alignment'
+Message-ID: <20250113232551.GB1983895-robh@kernel.org>
+References: <20250109-of_core_fix-v4-0-db8a72415b8c@quicinc.com>
+ <20250109-of_core_fix-v4-9-db8a72415b8c@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250109-of_core_fix-v4-9-db8a72415b8c@quicinc.com>
 
+On Thu, Jan 09, 2025 at 09:27:00PM +0800, Zijun Hu wrote:
+> From: Zijun Hu <quic_zijuhu@quicinc.com>
+> 
+> According to DT spec, size of property 'alignment' is based on parent
+> node’s #size-cells property.
+> 
+> But __reserved_mem_alloc_size() wrongly uses @dt_root_addr_cells to get
+> the property obviously.
+> 
+> Fix by using @dt_root_size_cells instead of @dt_root_addr_cells.
 
-The patch titled
-     Subject: mm: zswap: move allocations during CPU init outside the lock
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-zswap-move-allocations-during-cpu-init-outside-the-lock.patch
+I wonder if changing this might break someone. It's been this way for 
+a long time. It might be better to change the spec or just read 
+'alignment' as whatever size it happens to be (len / 4). It's not really 
+the kernel's job to validate the DT. We should first have some 
+validation in place to *know* if there are any current .dts files that 
+would break. That would probably be easier to implement in dtc than 
+dtschema. Cases of #address-cells != #size-cells should be pretty rare, 
+but that was the default for OpenFirmware.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-zswap-move-allocations-during-cpu-init-outside-the-lock.patch
+As the alignment is the base address alignment, it can be argued that 
+"#address-cells" makes more sense to use than "#size-cells". So maybe 
+the spec was a copy-n-paste error.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Yosry Ahmed <yosryahmed@google.com>
-Subject: mm: zswap: move allocations during CPU init outside the lock
-Date: Mon, 13 Jan 2025 21:44:58 +0000
-
-In zswap_cpu_comp_prepare(), allocations are made and assigned to various
-members of acomp_ctx under acomp_ctx->mutex.  However, allocations may
-recurse into zswap through reclaim, trying to acquire the same mutex and
-deadlocking.
-
-Move the allocations before the mutex critical section.  Only the
-initialization of acomp_ctx needs to be done with the mutex held.
-
-Link: https://lkml.kernel.org/r/20250113214458.2123410-1-yosryahmed@google.com
-Fixes: 12dcb0ef5406 ("mm: zswap: properly synchronize freeing resources during CPU hotunplug")
-Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/zswap.c |   42 ++++++++++++++++++++++++------------------
- 1 file changed, 24 insertions(+), 18 deletions(-)
-
---- a/mm/zswap.c~mm-zswap-move-allocations-during-cpu-init-outside-the-lock
-+++ a/mm/zswap.c
-@@ -820,15 +820,15 @@ static int zswap_cpu_comp_prepare(unsign
- {
- 	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
- 	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
--	struct crypto_acomp *acomp;
--	struct acomp_req *req;
-+	struct crypto_acomp *acomp = NULL;
-+	struct acomp_req *req = NULL;
-+	u8 *buffer = NULL;
- 	int ret;
- 
--	mutex_lock(&acomp_ctx->mutex);
--	acomp_ctx->buffer = kmalloc_node(PAGE_SIZE * 2, GFP_KERNEL, cpu_to_node(cpu));
--	if (!acomp_ctx->buffer) {
-+	buffer = kmalloc_node(PAGE_SIZE * 2, GFP_KERNEL, cpu_to_node(cpu));
-+	if (!buffer) {
- 		ret = -ENOMEM;
--		goto buffer_fail;
-+		goto fail;
- 	}
- 
- 	acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
-@@ -836,21 +836,25 @@ static int zswap_cpu_comp_prepare(unsign
- 		pr_err("could not alloc crypto acomp %s : %ld\n",
- 				pool->tfm_name, PTR_ERR(acomp));
- 		ret = PTR_ERR(acomp);
--		goto acomp_fail;
-+		goto fail;
- 	}
--	acomp_ctx->acomp = acomp;
--	acomp_ctx->is_sleepable = acomp_is_async(acomp);
- 
--	req = acomp_request_alloc(acomp_ctx->acomp);
-+	req = acomp_request_alloc(acomp);
- 	if (!req) {
- 		pr_err("could not alloc crypto acomp_request %s\n",
- 		       pool->tfm_name);
- 		ret = -ENOMEM;
--		goto req_fail;
-+		goto fail;
- 	}
--	acomp_ctx->req = req;
- 
-+	/*
-+	 * Only hold the mutex after completing allocations, otherwise we may
-+	 * recurse into zswap through reclaim and attempt to hold the mutex
-+	 * again resulting in a deadlock.
-+	 */
-+	mutex_lock(&acomp_ctx->mutex);
- 	crypto_init_wait(&acomp_ctx->wait);
-+
- 	/*
- 	 * if the backend of acomp is async zip, crypto_req_done() will wakeup
- 	 * crypto_wait_req(); if the backend of acomp is scomp, the callback
-@@ -859,15 +863,17 @@ static int zswap_cpu_comp_prepare(unsign
- 	acomp_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
- 				   crypto_req_done, &acomp_ctx->wait);
- 
-+	acomp_ctx->buffer = buffer;
-+	acomp_ctx->acomp = acomp;
-+	acomp_ctx->is_sleepable = acomp_is_async(acomp);
-+	acomp_ctx->req = req;
- 	mutex_unlock(&acomp_ctx->mutex);
- 	return 0;
- 
--req_fail:
--	crypto_free_acomp(acomp_ctx->acomp);
--acomp_fail:
--	kfree(acomp_ctx->buffer);
--buffer_fail:
--	mutex_unlock(&acomp_ctx->mutex);
-+fail:
-+	if (acomp)
-+		crypto_free_acomp(acomp);
-+	kfree(buffer);
- 	return ret;
- }
- 
-_
-
-Patches currently in -mm which might be from yosryahmed@google.com are
-
-mm-zswap-move-allocations-during-cpu-init-outside-the-lock.patch
-
+> 
+> Fixes: 3f0c82066448 ("drivers: of: add initialization code for dynamic reserved memory")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+> ---
+>  drivers/of/of_reserved_mem.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
+> index 45517b9e57b1add36bdf2109227ebbf7df631a66..d2753756d7c30adcbd52f57338e281c16d821488 100644
+> --- a/drivers/of/of_reserved_mem.c
+> +++ b/drivers/of/of_reserved_mem.c
+> @@ -409,12 +409,12 @@ static int __init __reserved_mem_alloc_size(unsigned long node, const char *unam
+>  
+>  	prop = of_get_flat_dt_prop(node, "alignment", &len);
+>  	if (prop) {
+> -		if (len != dt_root_addr_cells * sizeof(__be32)) {
+> +		if (len != dt_root_size_cells * sizeof(__be32)) {
+>  			pr_err("invalid alignment property in '%s' node.\n",
+>  				uname);
+>  			return -EINVAL;
+>  		}
+> -		align = dt_mem_next_cell(dt_root_addr_cells, &prop);
+> +		align = dt_mem_next_cell(dt_root_size_cells, &prop);
+>  	}
+>  
+>  	nomap = of_get_flat_dt_prop(node, "no-map", NULL) != NULL;
+> 
+> -- 
+> 2.34.1
+> 
 
