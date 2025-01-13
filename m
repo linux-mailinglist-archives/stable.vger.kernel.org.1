@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-108354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED5C4A0ADAC
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 04:04:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E68A0ADAD
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 04:04:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FA3B1651EB
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 03:04:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDBEA3A6D6A
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 03:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B10E85260;
-	Mon, 13 Jan 2025 03:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3568B13B2BB;
+	Mon, 13 Jan 2025 03:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="kyC3D1yZ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FaSzQ6VX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF2679E1;
-	Mon, 13 Jan 2025 03:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CCE13777E;
+	Mon, 13 Jan 2025 03:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736737445; cv=none; b=Was/JkjkpagmgAXH055eJq9Dnqn0BEj66EAwXDDulSt/bxEw0lR3ReQ3pyoCPNzf04nwaX+M5pNBXIfWovZDMrJWRN1VU0OIObjVv1N4B5l00eSoqFPp1sga6XZtn4v79E3Id3bKqELJ17uuzSaAm1HQtL+ZXU1eRiO9toJjWjI=
+	t=1736737449; cv=none; b=Lmr6unEXzAgK3u45PFHO4GngYlhgQbj19egDUUPCuQYLby9GgR7DLRP1OXNfvkBUdXzlQxlL7z4kMoleSNQa6Pu8B+JnTuBEK3cwSjJv4EXPHX7ZNRtzHyABKpLcc30vzrOG5bO2iH6nFkWMltBM1Bsja6h07i6ymMFQkr3Auj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736737445; c=relaxed/simple;
-	bh=Pn5uXofGmXkv/OmYnZb6LLzS2LOvVggJstpdmZ55V+w=;
-	h=Date:To:From:Subject:Message-Id; b=JnFiR+cCMYpnvAR44FpwnFPrD7JDKIlJwHEYXABxtJGtabhFkXy9E1EHRCwI4vegZz3hzw8Jgyr3GFODO5/4bhOKC+KtyG/wGJmTdaMkn+JlIItf29oBn3SRkQe47Ahh543r1ZblvvCe5zcIddz4JhP3aQJ019CWL5debPqQdmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=kyC3D1yZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B255BC4CEDF;
-	Mon, 13 Jan 2025 03:04:04 +0000 (UTC)
+	s=arc-20240116; t=1736737449; c=relaxed/simple;
+	bh=ItsLHNveGQSihSFkf2sULOU0N7GO/iSVEX65nufayJA=;
+	h=Date:To:From:Subject:Message-Id; b=r02uJAVVdxSzHrTaUksyJyq9nkBLu9RNSkNRAUB1ChxDhkYaNzhvNmt6aRcsCpqZ8Sq0XVSOZKHcKYkDJ89CgACAObSI6ZOtl+lVi09TIbEwuBwsdBKpeCpYUO8x+SDFcn31bf0r8vnrXLlpefHd088S0UduFtMv7JaSLgUELaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FaSzQ6VX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6C5C4CEDF;
+	Mon, 13 Jan 2025 03:04:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1736737444;
-	bh=Pn5uXofGmXkv/OmYnZb6LLzS2LOvVggJstpdmZ55V+w=;
+	s=korg; t=1736737448;
+	bh=ItsLHNveGQSihSFkf2sULOU0N7GO/iSVEX65nufayJA=;
 	h=Date:To:From:Subject:From;
-	b=kyC3D1yZrZNZXx0+yO93NpHCyDpwYnxnQqOQWCrdsXcDYlETR2dOoas+DzMxItXrA
-	 qtlkhOL8ef0OxKd2eD4t70m49DN5LIsFV7sdEclkQIs89173OvFOE5/kNHPQdzwZ4M
-	 0zazvabvxFwwFSi0x19zaWJkpT7DFI7ySEvnMc4Y=
-Date: Sun, 12 Jan 2025 19:04:04 -0800
-To: mm-commits@vger.kernel.org,ubizjak@gmail.com,stable@vger.kernel.org,catalin.marinas@arm.com,guoweikang.kernel@gmail.com,akpm@linux-foundation.org
+	b=FaSzQ6VXs6ISKoHQBNY9am+8W2JHiCUFbTW1b59odNAaYsvZekkltbtB0AGrFnhp4
+	 BIIzLAlwt2hPEOUshUhuyYbyxBchcKctW+lHtgsgo9PphjZe//aMnF37oF0UjS67G3
+	 DLvngYc2KdD520/URfVr6kk88xsFpH3kzOCU2u6c=
+Date: Sun, 12 Jan 2025 19:04:07 -0800
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,lorenzo.stoakes@oracle.com,Liam.Howlett@Oracle.com,jannh@google.com,surenb@google.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-kmemleak-fix-percpu-memory-leak-detection-failure.patch removed from -mm tree
-Message-Id: <20250113030404.B255BC4CEDF@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] tools-fix-atomic_set-definition-to-set-the-value-correctly.patch removed from -mm tree
+Message-Id: <20250113030408.6C6C5C4CEDF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,53 +50,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/kmemleak: fix percpu memory leak detection failure
+     Subject: tools: fix atomic_set() definition to set the value correctly
 has been removed from the -mm tree.  Its filename was
-     mm-kmemleak-fix-percpu-memory-leak-detection-failure.patch
+     tools-fix-atomic_set-definition-to-set-the-value-correctly.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Guo Weikang <guoweikang.kernel@gmail.com>
-Subject: mm/kmemleak: fix percpu memory leak detection failure
-Date: Fri, 27 Dec 2024 17:23:10 +0800
+From: Suren Baghdasaryan <surenb@google.com>
+Subject: tools: fix atomic_set() definition to set the value correctly
+Date: Fri, 27 Dec 2024 14:22:20 -0800
 
-kmemleak_alloc_percpu gives an incorrect min_count parameter, causing
-percpu memory to be considered a gray object.
+Currently vma test is failing because of the new vma_assert_attached()
+assertion.  The check is failing because previous refcount_set() inside
+vma_mark_attached() is a NoOp.  Fix the definition of atomic_set() to
+correctly set the value of the atomic.
 
-Link: https://lkml.kernel.org/r/20241227092311.3572500-1-guoweikang.kernel@gmail.com
-Fixes: 8c8685928910 ("mm/kmemleak: use IS_ERR_PCPU() for pointer in the percpu address space")
-Signed-off-by: Guo Weikang <guoweikang.kernel@gmail.com>
-Acked-by: Uros Bizjak <ubizjak@gmail.com>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Guo Weikang <guoweikang.kernel@gmail.com>
+Link: https://lkml.kernel.org/r/20241227222220.1726384-1-surenb@google.com
+Fixes: 9325b8b5a1cb ("tools: add skeleton code for userland testing of VMA logic")
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/kmemleak.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/shared/linux/maple_tree.h |    2 +-
+ tools/testing/vma/linux/atomic.h        |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/kmemleak.c~mm-kmemleak-fix-percpu-memory-leak-detection-failure
-+++ a/mm/kmemleak.c
-@@ -1093,7 +1093,7 @@ void __ref kmemleak_alloc_percpu(const v
- 	pr_debug("%s(0x%px, %zu)\n", __func__, ptr, size);
+--- a/tools/testing/shared/linux/maple_tree.h~tools-fix-atomic_set-definition-to-set-the-value-correctly
++++ a/tools/testing/shared/linux/maple_tree.h
+@@ -2,6 +2,6 @@
+ #define atomic_t int32_t
+ #define atomic_inc(x) uatomic_inc(x)
+ #define atomic_read(x) uatomic_read(x)
+-#define atomic_set(x, y) do {} while (0)
++#define atomic_set(x, y) uatomic_set(x, y)
+ #define U8_MAX UCHAR_MAX
+ #include "../../../../include/linux/maple_tree.h"
+--- a/tools/testing/vma/linux/atomic.h~tools-fix-atomic_set-definition-to-set-the-value-correctly
++++ a/tools/testing/vma/linux/atomic.h
+@@ -6,7 +6,7 @@
+ #define atomic_t int32_t
+ #define atomic_inc(x) uatomic_inc(x)
+ #define atomic_read(x) uatomic_read(x)
+-#define atomic_set(x, y) do {} while (0)
++#define atomic_set(x, y) uatomic_set(x, y)
+ #define U8_MAX UCHAR_MAX
  
- 	if (kmemleak_enabled && ptr && !IS_ERR_PCPU(ptr))
--		create_object_percpu((__force unsigned long)ptr, size, 0, gfp);
-+		create_object_percpu((__force unsigned long)ptr, size, 1, gfp);
- }
- EXPORT_SYMBOL_GPL(kmemleak_alloc_percpu);
- 
+ #endif	/* _LINUX_ATOMIC_H */
 _
 
-Patches currently in -mm which might be from guoweikang.kernel@gmail.com are
+Patches currently in -mm which might be from surenb@google.com are
 
-mm-shmem-refactor-to-reuse-vfs_parse_monolithic_sep-for-option-parsing.patch
-mm-early_ioremap-add-null-pointer-checks-to-prevent-null-pointer-dereference.patch
-mm-memblock-add-memblock_alloc_or_panic-interface.patch
-arch-s390-save_area_alloc-default-failure-behavior-changed-to-panic.patch
-mm-memmap-prevent-double-scanning-of-memmap-by-kmemleak.patch
+alloc_tag-skip-pgalloc_tag_swap-if-profiling-is-disabled.patch
+seqlock-add-raw_seqcount_try_begin.patch
+mm-convert-mm_lock_seq-to-a-proper-seqcount.patch
+mm-introduce-mmap_lock_speculate_try_beginretry.patch
+mm-introduce-vma_start_read_locked_nested-helpers.patch
+mm-move-per-vma-lock-into-vm_area_struct.patch
+mm-mark-vma-as-detached-until-its-added-into-vma-tree.patch
+mm-introduce-vma_iter_store_attached-to-use-with-attached-vmas.patch
+mm-mark-vmas-detached-upon-exit.patch
+types-move-struct-rcuwait-into-typesh.patch
+mm-allow-vma_start_read_locked-vma_start_read_locked_nested-to-fail.patch
+mm-move-mmap_init_lock-out-of-the-header-file.patch
+mm-uninline-the-main-body-of-vma_start_write.patch
+refcount-introduce-__refcount_addinc_not_zero_limited.patch
+mm-replace-vm_lock-and-detached-flag-with-a-reference-count.patch
+mm-move-lesser-used-vma_area_struct-members-into-the-last-cacheline.patch
+mm-debug-print-vm_refcnt-state-when-dumping-the-vma.patch
+mm-remove-extra-vma_numab_state_init-call.patch
+mm-prepare-lock_vma_under_rcu-for-vma-reuse-possibility.patch
+mm-make-vma-cache-slab_typesafe_by_rcu.patch
+docs-mm-document-latest-changes-to-vm_lock.patch
+alloc_tag-avoid-current-alloc_tag-manipulations-when-profiling-is-disabled.patch
 
 
