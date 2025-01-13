@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-108519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B02EA0C083
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:46:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CBD7A0C086
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:47:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2402163C32
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:46:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5417318879E2
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:47:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E8C22371A;
-	Mon, 13 Jan 2025 18:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94DB12248A5;
+	Mon, 13 Jan 2025 18:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pqu7iAwM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fdV2axPr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A067422370A;
-	Mon, 13 Jan 2025 18:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E5322489D;
+	Mon, 13 Jan 2025 18:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793390; cv=none; b=cF/x4+tAjxltbFUJF1nDHkIhUOP2qQ/2EN4jl58lkP6ZizcvebxnBAgXJuCREBYGmYZrbHjzkmWfqubO2HvubCMZutU0c0LpzeAds2BAGs+juG0vTlU6Ee19AjaOEk94NbRzxn96/icXchVFe/ALPnQswylcbPzndzUnQangGK8=
+	t=1736793393; cv=none; b=NkOFxiWPxj3rniNm3dQUZHz8HENbRU4QFam9KDyTPpnobvptFru4JVd2B14X379n4ZSzIFxy1/6Ko2jFdtR59HKcAbt5uZjO+UigXMTw6dO8IDwqv3bgz/JdACrIuPnGq9nf6rQb2M36G83UD1iAL/dIpyUqf6AAxnU3FbRA9ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793390; c=relaxed/simple;
-	bh=4QcOoX8RQgj8Dk9IljYu//Uk97Lg6dqLflcZhL4JsTw=;
+	s=arc-20240116; t=1736793393; c=relaxed/simple;
+	bh=HbtvBeIcZy2P32mTLCcMuGA1L+t+DPjp5Ry6smyZ6KQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qiFaCcTJz0C/9mgqAfIAKylW4wEwT1XXnQoO4zryVWb2zna5E8RiujwfbHSg1Nnc/hkw2uU+aFb9IN5bQZZtxx42pOE+djDtAjvqHfxeGlBpvwdqvUbSPlrIUYZwfpOZov+6UOzTIuMx8H6qOb/3msr9iqKOOcBs4N45OK7zLn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pqu7iAwM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5914AC4CED6;
-	Mon, 13 Jan 2025 18:36:29 +0000 (UTC)
+	 MIME-Version; b=iu2y8RWCqInYUwlOrN+46ntmTgfogbPkh/1dQUcYyk0wtePAyQwDKvMZB6OXkh4p7c9g0u6YwPNFssvREV34PtIPoas+A8Jg30EmKyEf0rBDp1JP1obyNw87NS6HO1jFZ0Bx9oYPXaIatVVDPBqImfsM8AqJs8MscTTVVmlxMPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fdV2axPr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34DBAC4CED6;
+	Mon, 13 Jan 2025 18:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736793390;
-	bh=4QcOoX8RQgj8Dk9IljYu//Uk97Lg6dqLflcZhL4JsTw=;
+	s=k20201202; t=1736793393;
+	bh=HbtvBeIcZy2P32mTLCcMuGA1L+t+DPjp5Ry6smyZ6KQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pqu7iAwMcA0kwPhsdvO67OnfbB9lDpc1LBr9NUcjnZVsPJYJIKv9cxTyLHm66EWeP
-	 xRtsrkiFbGBCqggYm2X33GG5NtApFazvikoi0NxL0FWr+wI5rY9fgUHN+zEVqBoyea
-	 rOg4oZocEwTjHmsgOZz6hbDfdP4RpSFPJzGiKbxuIsR1YyETqcNxB7VMqDusvozMuc
-	 s9al4ZPHs22p8o96IN6Vw0SdrrdVdbTVxvQ1Iq6N/1GpKpcWo15caEpNlRGA5meitf
-	 B01WGFVsX08mchYqY7wzekJ6siWfwG2w8kyX8Wdn34NTkzP7TsIEAuhVmoR0i66O3c
-	 ExBl4DNefBHKg==
+	b=fdV2axPrlTMzZlwNXgJjfDTwMnp1wrpT2ykuPgY3jIKymkjj30V/HChrtvgIH8cPl
+	 UjQjKy/xbMt9XE1y9I/jwFaEYeJpSIdhYGpsKjoSOaEoAmzhyi457U4oPR0WJ7GkNe
+	 ftoXRkrtia1ZwTOxy6LqqtkM8C+qSGjnR0FU+N2+5bIC9fR+fSW/dr3xo0pIIb85UO
+	 zBnseMAPcpqJhUb78+Jp5dpUj2QXN6TrxueYobHaEabGerywgc2EEk5tuxr48YKbZH
+	 txhuxU+lvdnQqKwhK0dtfH4QA4qrCoMXfw7mpk80CAI0mF0/68+YlHvWaJ9vR+8Ek2
+	 J9QqMPpfELu3Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	linux-nfs@vger.kernel.org,
+Cc: Oleg Nesterov <oleg@redhat.com>,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	ojeda@kernel.org,
-	maennich@google.com
-Subject: [PATCH AUTOSEL 5.10 4/5] kheaders: Ignore silly-rename files
-Date: Mon, 13 Jan 2025 13:36:18 -0500
-Message-Id: <20250113183619.1784510-4-sashal@kernel.org>
+	jack@suse.cz,
+	ak@linux.intel.com,
+	kees@kernel.org,
+	arnd@arndb.de
+Subject: [PATCH AUTOSEL 5.10 5/5] poll_wait: add mb() to fix theoretical race between waitqueue_active() and .poll()
+Date: Mon, 13 Jan 2025 13:36:19 -0500
+Message-Id: <20250113183619.1784510-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250113183619.1784510-1-sashal@kernel.org>
 References: <20250113183619.1784510-1-sashal@kernel.org>
@@ -70,58 +68,64 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.233
 Content-Transfer-Encoding: 8bit
 
-From: David Howells <dhowells@redhat.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 973b710b8821c3401ad7a25360c89e94b26884ac ]
+[ Upstream commit cacd9ae4bf801ff4125d8961bb9a3ba955e51680 ]
 
-Tell tar to ignore silly-rename files (".__afs*" and ".nfs*") when building
-the header archive.  These occur when a file that is open is unlinked
-locally, but hasn't yet been closed.  Such files are visible to the user
-via the getdents() syscall and so programs may want to do things with them.
+As the comment above waitqueue_active() explains, it can only be used
+if both waker and waiter have mb()'s that pair with each other. However
+__pollwait() is broken in this respect.
 
-During the kernel build, such files may be made during the processing of
-header files and the cleanup may get deferred by fput() which may result in
-tar seeing these files when it reads the directory, but they may have
-disappeared by the time it tries to open them, causing tar to fail with an
-error.  Further, we don't want to include them in the tarball if they still
-exist.
+This is not pipe-specific, but let's look at pipe_poll() for example:
 
-With CONFIG_HEADERS_INSTALL=y, something like the following may be seen:
+	poll_wait(...); // -> __pollwait() -> add_wait_queue()
 
-   find: './kernel/.tmp_cpio_dir/include/dt-bindings/reset/.__afs2080': No such file or directory
-   tar: ./include/linux/greybus/.__afs3C95: File removed before we read it
+	LOAD(pipe->head);
+	LOAD(pipe->head);
 
-The find warning doesn't seem to cause a problem.
+In theory these LOAD()'s can leak into the critical section inside
+add_wait_queue() and can happen before list_add(entry, wq_head), in this
+case pipe_poll() can race with wakeup_pipe_readers/writers which do
 
-Fix this by telling tar when called from in gen_kheaders.sh to exclude such
-files.  This only affects afs and nfs; cifs uses the Windows Hidden
-attribute to prevent the file from being seen.
+	smp_mb();
+	if (waitqueue_active(wq_head))
+		wake_up_interruptible(wq_head);
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20241213135013.2964079-2-dhowells@redhat.com
-cc: Masahiro Yamada <masahiroy@kernel.org>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-cc: linux-nfs@vger.kernel.org
-cc: linux-kernel@vger.kernel.org
+There are more __pollwait()-like functions (grep init_poll_funcptr), and
+it seems that at least ep_ptable_queue_proc() has the same problem, so the
+patch adds smp_mb() into poll_wait().
+
+Link: https://lore.kernel.org/all/20250102163320.GA17691@redhat.com/
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20250107162717.GA18922@redhat.com
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/gen_kheaders.sh | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/poll.h | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/gen_kheaders.sh b/kernel/gen_kheaders.sh
-index 206ab3d41ee7..7fc44d8da205 100755
---- a/kernel/gen_kheaders.sh
-+++ b/kernel/gen_kheaders.sh
-@@ -84,6 +84,7 @@ find $cpio_dir -type f -print0 |
+diff --git a/include/linux/poll.h b/include/linux/poll.h
+index 7e0fdcf905d2..a4af5e14dffe 100644
+--- a/include/linux/poll.h
++++ b/include/linux/poll.h
+@@ -43,8 +43,16 @@ typedef struct poll_table_struct {
  
- # Create archive and try to normalize metadata for reproducibility.
- tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
-+    --exclude=".__afs*" --exclude=".nfs*" \
-     --owner=0 --group=0 --sort=name --numeric-owner --mode=u=rw,go=r,a+X \
-     -I $XZ -cf $tarfile -C $cpio_dir/ . > /dev/null
+ static inline void poll_wait(struct file * filp, wait_queue_head_t * wait_address, poll_table *p)
+ {
+-	if (p && p->_qproc && wait_address)
++	if (p && p->_qproc && wait_address) {
+ 		p->_qproc(filp, wait_address, p);
++		/*
++		 * This memory barrier is paired in the wq_has_sleeper().
++		 * See the comment above prepare_to_wait(), we need to
++		 * ensure that subsequent tests in this thread can't be
++		 * reordered with __add_wait_queue() in _qproc() paths.
++		 */
++		smp_mb();
++	}
+ }
  
+ /*
 -- 
 2.39.5
 
