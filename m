@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-108353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E29A0AD97
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 03:53:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5C4A0ADAC
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 04:04:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E90811656D1
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 02:53:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FA3B1651EB
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 03:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4AA8249F;
-	Mon, 13 Jan 2025 02:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B10E85260;
+	Mon, 13 Jan 2025 03:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="0lh+tMLe"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="kyC3D1yZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8243EA98;
-	Mon, 13 Jan 2025 02:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF2679E1;
+	Mon, 13 Jan 2025 03:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736736822; cv=none; b=epDe2aDVheke6jbPVQvZX+zoCWemDR2ciObxfndJXiN3Dk/lZ5qnZuILlSByObDZ6s3Cl4ECxE6D53jkGpsupqZyORZlQEuxuzmPGP80yZrClBd+ifmKOYa3kGSq95fmv4AAHzPVrVMQBuMWZeWnbvIc8MZ7+HinCg7dKVT0g+c=
+	t=1736737445; cv=none; b=Was/JkjkpagmgAXH055eJq9Dnqn0BEj66EAwXDDulSt/bxEw0lR3ReQ3pyoCPNzf04nwaX+M5pNBXIfWovZDMrJWRN1VU0OIObjVv1N4B5l00eSoqFPp1sga6XZtn4v79E3Id3bKqELJ17uuzSaAm1HQtL+ZXU1eRiO9toJjWjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736736822; c=relaxed/simple;
-	bh=gNepMSvwmFWCyphcLQpWZE9s8SIEhnn8g1QwRrAduOg=;
-	h=Date:To:From:Subject:Message-Id; b=EY/C2rAODRn7pSiR1LZA1x5oU7m+W54ppecxiT6BZ2fsoJWCwoV593CMZsSzo/+MtT7Ln1ZPlDdbnwU3vyLqPcebhpXMOpnCT7tNJISPg+jv2HcQD+jAmwhRY2OEs4G5chkDC/870A25g+Hvz8rxsFkSbHWJArp0eDta9rY+4ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=0lh+tMLe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB554C4CEDF;
-	Mon, 13 Jan 2025 02:53:41 +0000 (UTC)
+	s=arc-20240116; t=1736737445; c=relaxed/simple;
+	bh=Pn5uXofGmXkv/OmYnZb6LLzS2LOvVggJstpdmZ55V+w=;
+	h=Date:To:From:Subject:Message-Id; b=JnFiR+cCMYpnvAR44FpwnFPrD7JDKIlJwHEYXABxtJGtabhFkXy9E1EHRCwI4vegZz3hzw8Jgyr3GFODO5/4bhOKC+KtyG/wGJmTdaMkn+JlIItf29oBn3SRkQe47Ahh543r1ZblvvCe5zcIddz4JhP3aQJ019CWL5debPqQdmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=kyC3D1yZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B255BC4CEDF;
+	Mon, 13 Jan 2025 03:04:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1736736821;
-	bh=gNepMSvwmFWCyphcLQpWZE9s8SIEhnn8g1QwRrAduOg=;
+	s=korg; t=1736737444;
+	bh=Pn5uXofGmXkv/OmYnZb6LLzS2LOvVggJstpdmZ55V+w=;
 	h=Date:To:From:Subject:From;
-	b=0lh+tMLeg2z9bh3kRX3nT/zEN5Uis96RMIlmH72tCUS8IFinBYjLS+7yWTOew0i99
-	 //HldTed4KzUXbHQqOHKobYQK+x2fHqi3H7KKJvIMmxHCjuMCE2MyOYlJI58u2qVF1
-	 AVqFVgdbEB3C7uOFVJeiu5cE6+AqdqWPQcFz9ZOk=
-Date: Sun, 12 Jan 2025 18:53:41 -0800
-To: mm-commits@vger.kernel.org,zzqq0103.hey@gmail.com,stable@vger.kernel.org,lihongbo22@huawei.com,brauner@kernel.org,songmuchun@bytedance.com,akpm@linux-foundation.org
+	b=kyC3D1yZrZNZXx0+yO93NpHCyDpwYnxnQqOQWCrdsXcDYlETR2dOoas+DzMxItXrA
+	 qtlkhOL8ef0OxKd2eD4t70m49DN5LIsFV7sdEclkQIs89173OvFOE5/kNHPQdzwZ4M
+	 0zazvabvxFwwFSi0x19zaWJkpT7DFI7ySEvnMc4Y=
+Date: Sun, 12 Jan 2025 19:04:04 -0800
+To: mm-commits@vger.kernel.org,ubizjak@gmail.com,stable@vger.kernel.org,catalin.marinas@arm.com,guoweikang.kernel@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [folded-merged] hugetlb-fix-null-pointer-dereference-in-trace_hugetlbfs_alloc_inode.patch removed from -mm tree
-Message-Id: <20250113025341.AB554C4CEDF@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-kmemleak-fix-percpu-memory-leak-detection-failure.patch removed from -mm tree
+Message-Id: <20250113030404.B255BC4CEDF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,52 +50,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: hugetlb: fix NULL pointer dereference in trace_hugetlbfs_alloc_inode
+     Subject: mm/kmemleak: fix percpu memory leak detection failure
 has been removed from the -mm tree.  Its filename was
-     hugetlb-fix-null-pointer-dereference-in-trace_hugetlbfs_alloc_inode.patch
+     mm-kmemleak-fix-percpu-memory-leak-detection-failure.patch
 
-This patch was dropped because it was folded into mm-fix-div-by-zero-in-bdi_ratio_from_pages-v2.patch
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Muchun Song <songmuchun@bytedance.com>
-Subject: hugetlb: fix NULL pointer dereference in trace_hugetlbfs_alloc_inode
-Date: Mon, 6 Jan 2025 11:31:17 +0800
+From: Guo Weikang <guoweikang.kernel@gmail.com>
+Subject: mm/kmemleak: fix percpu memory leak detection failure
+Date: Fri, 27 Dec 2024 17:23:10 +0800
 
-hugetlb_file_setup() will pass a NULL @dir to hugetlbfs_get_inode(), so we
-will access a NULL pointer for @dir.  Fix it and set __entry->dr to 0 if
-@dir is NULL.  Because ->i_ino cannot be 0 (see get_next_ino()), there is
-no confusing if user sees a 0 inode number.
+kmemleak_alloc_percpu gives an incorrect min_count parameter, causing
+percpu memory to be considered a gray object.
 
-Link: https://lkml.kernel.org/r/20250106033118.4640-1-songmuchun@bytedance.com
-Fixes: 318580ad7f28 ("hugetlbfs: support tracepoint")
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Reported-by: Cheung Wall <zzqq0103.hey@gmail.com>
-Closes: https://lore.kernel.org/linux-mm/02858D60-43C1-4863-A84F-3C76A8AF1F15@linux.dev/T/#
-Reviewed-by: Hongbo Li <lihongbo22@huawei.com>
-Cc: cheung wall <zzqq0103.hey@gmail.com>
-Cc: Christian Brauner <brauner@kernel.org>
+Link: https://lkml.kernel.org/r/20241227092311.3572500-1-guoweikang.kernel@gmail.com
+Fixes: 8c8685928910 ("mm/kmemleak: use IS_ERR_PCPU() for pointer in the percpu address space")
+Signed-off-by: Guo Weikang <guoweikang.kernel@gmail.com>
+Acked-by: Uros Bizjak <ubizjak@gmail.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Guo Weikang <guoweikang.kernel@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/trace/events/hugetlbfs.h |    2 +-
+ mm/kmemleak.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/trace/events/hugetlbfs.h~hugetlb-fix-null-pointer-dereference-in-trace_hugetlbfs_alloc_inode
-+++ a/include/trace/events/hugetlbfs.h
-@@ -23,7 +23,7 @@ TRACE_EVENT(hugetlbfs_alloc_inode,
- 	TP_fast_assign(
- 		__entry->dev		= inode->i_sb->s_dev;
- 		__entry->ino		= inode->i_ino;
--		__entry->dir		= dir->i_ino;
-+		__entry->dir		= dir ? dir->i_ino : 0;
- 		__entry->mode		= mode;
- 	),
+--- a/mm/kmemleak.c~mm-kmemleak-fix-percpu-memory-leak-detection-failure
++++ a/mm/kmemleak.c
+@@ -1093,7 +1093,7 @@ void __ref kmemleak_alloc_percpu(const v
+ 	pr_debug("%s(0x%px, %zu)\n", __func__, ptr, size);
+ 
+ 	if (kmemleak_enabled && ptr && !IS_ERR_PCPU(ptr))
+-		create_object_percpu((__force unsigned long)ptr, size, 0, gfp);
++		create_object_percpu((__force unsigned long)ptr, size, 1, gfp);
+ }
+ EXPORT_SYMBOL_GPL(kmemleak_alloc_percpu);
  
 _
 
-Patches currently in -mm which might be from songmuchun@bytedance.com are
+Patches currently in -mm which might be from guoweikang.kernel@gmail.com are
 
-mm-fix-div-by-zero-in-bdi_ratio_from_pages-v2.patch
+mm-shmem-refactor-to-reuse-vfs_parse_monolithic_sep-for-option-parsing.patch
+mm-early_ioremap-add-null-pointer-checks-to-prevent-null-pointer-dereference.patch
+mm-memblock-add-memblock_alloc_or_panic-interface.patch
+arch-s390-save_area_alloc-default-failure-behavior-changed-to-panic.patch
+mm-memmap-prevent-double-scanning-of-memmap-by-kmemleak.patch
 
 
