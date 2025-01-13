@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-108484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB1BA0C012
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:38:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F20DA0C014
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:38:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF9E27A48BD
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:38:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D41816A3E7
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B651F9AB3;
-	Mon, 13 Jan 2025 18:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 165FD1F9EDA;
+	Mon, 13 Jan 2025 18:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GEZDvJAv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b8fM5wyO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A811C5F09;
-	Mon, 13 Jan 2025 18:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BD21F9EBB;
+	Mon, 13 Jan 2025 18:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793303; cv=none; b=acA7AztwE9GqRJRbTd5346P6aFVXvT+8D+9cQAG8np+dD/psGwxdTSFYmSjmi4h44ttRZ/6WEWJLkeZcCn31NeKPL2pBZWxWMwTabbGz5WGMKJKEp94dzJ71pSHrZBBWX6Mts5bDznwzD6QbDewyD2iduwbskWw3y2txrV68P5k=
+	t=1736793304; cv=none; b=uYl7KusvvgLRY2JX0o4OphbNhT7E2Bs0IKaBQEWJb40pCp1rTeYN8wXcMNK1sacpK/TNIi5cgwA2PilpaEus+GkrJLF8S0cUzfIXj+ib8d4DExzVE7hcADGCTpvFrZkdGFFGzyREL2W8b89gaZjWm/RiL6f8I9LWKk3JTKUIPa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793303; c=relaxed/simple;
-	bh=a4cveYbeG8/EhzEDZ7gLlkTYb4O/rdm9OQZaqmMmiIE=;
+	s=arc-20240116; t=1736793304; c=relaxed/simple;
+	bh=Zj2gZNvL7MpN+xivJ7ur61/XqBLQqjM5r5bid6Vo0CQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nz6g63T3cczDXfP/rBENETCuASSolrSisKh5iJs5Y6hRXpft4QmTch12qGzQVafenpeaLHDyAAGyTeJwMes7nZpQQSvD141ghuR7oenD3irDFSPc5lGFMLJ71+/9Vn5BPPSSaCLlaG9oTnk4FXk1mkCUqY4T9FjSFANKF82NUzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GEZDvJAv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23230C4CEE3;
-	Mon, 13 Jan 2025 18:35:02 +0000 (UTC)
+	 MIME-Version; b=tNcbcOmCL847n+lcGp1S3Jiwoa/gPF9W9LrPHIYMJtGRuzk5Sab62b7nquGhVrzkOOlTgQ4KANuKfUg4BBZc5DdgdOHuzIO4DRFXf9l8HOK0bUaPQVlE7FZsBgIi/5GJ03ijrpUlsGUbk4Ml57gkPyVZ2Xm6SwB47fhhZwVbGpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b8fM5wyO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA1BC4CEE1;
+	Mon, 13 Jan 2025 18:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736793302;
-	bh=a4cveYbeG8/EhzEDZ7gLlkTYb4O/rdm9OQZaqmMmiIE=;
+	s=k20201202; t=1736793304;
+	bh=Zj2gZNvL7MpN+xivJ7ur61/XqBLQqjM5r5bid6Vo0CQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GEZDvJAvwsmSWtxwo4oNPzVLKC4qbJYQVwO5yHYQo2vXHMDrvQHyWlzXCC9EByyyk
-	 vPaK/QvxEkLj3nZgfYfO5HFHbilcyJ2ZRncINOVMK6SMzO7Quyb7fuZm9ba1V/wuon
-	 XEZQi2Hxt4fKDkN8W6ERj9zGIq8jVUJq2KmnyBk6mjG7nOEP+p4VSKpWrG/jtTDMoU
-	 9rMfHA8YECYIIGEfk2clSuMvJozfS8FoJevN/QFQmq7UypddVQfEEqspBgTq2vbCyz
-	 i24Bs12UsKDm/qJnHSO4pHqWfZJO1A3/8vpuxXl+a3kJ+Qhgi4lGWNQIF22S7DtnF9
-	 6Rkhp8cvs20yw==
+	b=b8fM5wyOQaNDpjW3KWALz1fxB2Ny51Uxtom71qkxtuYZ5ICPdxq01TF7+aGRXoTGj
+	 +HsI/UIn8dAARFa/TQrM8y8Y0AHJAXVVftXrUf7jTknOOQcT45Eg6N8zD8d+ZiI5Gk
+	 khCj4l+cTr9JpcAmedSjbuwIhm3SLTTJLDJ+RHCz0lpMhY5IhHcXyELwJXniZFZXNN
+	 /tNQwxg65PlQe4mg3cy9moyHXa6/LFigi2dfOyjwg8MIvbaQ19fq0qxEJ0MgER2hnu
+	 0IJJscP81upQPSs7fViwfOoIWl0r4pIy6QwQgnZPg/ox3caXE2hv2Hpfx0Qn4RHcDt
+	 z0X7GGOazRwqQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	hdegoede@redhat.com,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 15/20] platform/x86: ISST: Add Clearwater Forest to support list
-Date: Mon, 13 Jan 2025 13:34:20 -0500
-Message-Id: <20250113183425.1783715-15-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 16/20] ACPI: resource: acpi_dev_irq_override(): Check DMI match last
+Date: Mon, 13 Jan 2025 13:34:21 -0500
+Message-Id: <20250113183425.1783715-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250113183425.1783715-1-sashal@kernel.org>
 References: <20250113183425.1783715-1-sashal@kernel.org>
@@ -61,40 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.9
 Content-Transfer-Encoding: 8bit
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit cc1ff7bc1bb378e7c46992c977b605e97d908801 ]
+[ Upstream commit cd4a7b2e6a2437a5502910c08128ea3bad55a80b ]
 
-Add Clearwater Forest (INTEL_ATOM_DARKMONT_X) to SST support list by
-adding to isst_cpu_ids.
+acpi_dev_irq_override() gets called approx. 30 times during boot (15 legacy
+IRQs * 2 override_table entries). Of these 30 calls at max 1 will match
+the non DMI checks done by acpi_dev_irq_override(). The dmi_check_system()
+check is by far the most expensive check done by acpi_dev_irq_override(),
+make this call the last check done by acpi_dev_irq_override() so that it
+will be called at max 1 time instead of 30 times.
 
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://lore.kernel.org/r/20250103155255.1488139-2-srinivas.pandruvada@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/20241228165253.42584-1-hdegoede@redhat.com
+[ rjw: Subject edit ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/speed_select_if/isst_if_common.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/resource.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
-index 1e46e30dae96..dbcd3087aaa4 100644
---- a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
-+++ b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
-@@ -804,6 +804,7 @@ EXPORT_SYMBOL_GPL(isst_if_cdev_unregister);
- static const struct x86_cpu_id isst_cpu_ids[] = {
- 	X86_MATCH_VFM(INTEL_ATOM_CRESTMONT,	SST_HPM_SUPPORTED),
- 	X86_MATCH_VFM(INTEL_ATOM_CRESTMONT_X,	SST_HPM_SUPPORTED),
-+	X86_MATCH_VFM(INTEL_ATOM_DARKMONT_X,	SST_HPM_SUPPORTED),
- 	X86_MATCH_VFM(INTEL_EMERALDRAPIDS_X,	0),
- 	X86_MATCH_VFM(INTEL_GRANITERAPIDS_D,	SST_HPM_SUPPORTED),
- 	X86_MATCH_VFM(INTEL_GRANITERAPIDS_X,	SST_HPM_SUPPORTED),
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 821867de43be..f0ae46e7be36 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -671,11 +671,11 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
+ 	for (i = 0; i < ARRAY_SIZE(override_table); i++) {
+ 		const struct irq_override_cmp *entry = &override_table[i];
+ 
+-		if (dmi_check_system(entry->system) &&
+-		    entry->irq == gsi &&
++		if (entry->irq == gsi &&
+ 		    entry->triggering == triggering &&
+ 		    entry->polarity == polarity &&
+-		    entry->shareable == shareable)
++		    entry->shareable == shareable &&
++		    dmi_check_system(entry->system))
+ 			return entry->override;
+ 	}
+ 
 -- 
 2.39.5
 
