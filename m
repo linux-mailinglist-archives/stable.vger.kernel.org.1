@@ -1,83 +1,136 @@
-Return-Path: <stable+bounces-108417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 460E1A0B4CB
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 11:50:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 609D5A0B4CF
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 11:53:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C19A166D88
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 10:50:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73C3C16779A
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 10:53:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE90A22F14F;
-	Mon, 13 Jan 2025 10:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0061222F14B;
+	Mon, 13 Jan 2025 10:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vs4AstYt"
+	dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b="qSdc/V+Q"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ksmg02.maxima.ru (ksmg02.maxima.ru [81.200.124.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFD222F14E
-	for <stable@vger.kernel.org>; Mon, 13 Jan 2025 10:50:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE44242AA5;
+	Mon, 13 Jan 2025 10:52:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.200.124.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736765426; cv=none; b=MDlQzNLaRFndiXRv74N3rJ+rHyzEavc4Y8M/7PWwlV+qI/cuUKv/xltqyl1mY/s6NqI1UHMpMbfxvjBo/GuDeMH3PZQGfg8obm8PkJchZNZtspBmq8USIHRG7F7zcENb2tZO8X/R1XWsr/xH8gbPh6ZiYQQ+avvClLdWN+qedF4=
+	t=1736765582; cv=none; b=l5Gs+r+2Kp+KuERYbydZJk7xAfqjX49fgw7sAkOdjuQF3V2qCmFICraxHdP93DF4JV+JT0LVUQBZyQh1INm+EBL55KWyzC0RskhS3pkh20xpCHyBxsYJTnQ3EePgEIlx4CGUbZXna8qfiFtCeqwAg+zF8gStkF1mpyv3EttazRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736765426; c=relaxed/simple;
-	bh=D2tm71zv7KipJc+VkMa9Sh8Uaw+rgJrBkdk/b3Jpq1I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TliJ9/Z1O23jOWsAVlLWqu5mUGX2gB+fFAesVwfhDlmQjkDOY5MTqRXC+XIdYrsOB8/VMq53KI7sK+QxiWkIAvOc43eknVqg2R1r0sRhOF0Y/IcN4c2IAFHfcDcj55iSrVuTC900S4VkLmFrLN+oPjU11PfUAPTsNmRtpAxHl5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vs4AstYt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FCAC4CEDD;
-	Mon, 13 Jan 2025 10:50:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736765426;
-	bh=D2tm71zv7KipJc+VkMa9Sh8Uaw+rgJrBkdk/b3Jpq1I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vs4AstYtDhDOjUwtNM+ZgclbVLa55mV/bxUNmYXWrO9azEvyR/BzC/uoWxbCjrt2h
-	 c+MVpzqj//Ct0mhh34dmh/TtZV1LOmiYnJN8KlzUtI5cNZjWccL8rFtc2FJizHW7VG
-	 mBx67Zy92RP+Nl+76z2bAKWZUU3D02aorSMBs8kU=
-Date: Mon, 13 Jan 2025 11:50:23 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: jannh@google.com, lizetao1@huawei.com, ptsm@linux.microsoft.com,
-	stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] io_uring/eventfd: ensure
- io_eventfd_signal() defers another" failed to apply to 6.1-stable tree
-Message-ID: <2025011314-skinhead-thigh-b568@gregkh>
-References: <2025011246-appealing-angler-4f22@gregkh>
- <aa85959b-2890-42c9-beb8-0e0109494d90@kernel.dk>
+	s=arc-20240116; t=1736765582; c=relaxed/simple;
+	bh=OgIa1VE1pLjd2NsDBtMlWGuQgI2Xa6iE2TCjAasRjOs=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Afo4ske9OvwTCIfxtInYMHQsb906hIyyPro+6qUaWafEZcgRe6AkPm2Yo0HKbUrPLxJNK/b2QUQ8q0b2hrgPNaE8WiFxpkaxpOfGlN50hOtAKTuupdVR9slWMgj2T5VpBimdGVMyoq21w7D7eJqSg0vvlNNx+Kuy6jJknI/UBf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru; spf=pass smtp.mailfrom=mt-integration.ru; dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b=qSdc/V+Q; arc=none smtp.client-ip=81.200.124.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mt-integration.ru
+Received: from ksmg02.maxima.ru (localhost [127.0.0.1])
+	by ksmg02.maxima.ru (Postfix) with ESMTP id BC0081E000B;
+	Mon, 13 Jan 2025 13:52:55 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ksmg02.maxima.ru BC0081E000B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt-integration.ru;
+	s=sl; t=1736765575; bh=Z/dfpRdVljts0/41FJaCYWmNtEmsH3/l7xNFT7YOCwI=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+	b=qSdc/V+QdvAFmlcSdEkTnoL0rLCXxa6YHnKGkSLO1IJt+YamNKQYV0XsZiDdZjyLX
+	 hLyD40BDVouWrGZL7quN+Uo9LHYisroPVpyxYouwsDzvXJ3kRlDhWgy7vYicbzKBJi
+	 RkIgeBEPYa7S/XRtckSmL7JlN4jJ7yiehxhoi0UepfEr6W4ZmHjMw/FxLT1lNqhIRM
+	 t70PqPoYMYus3ECoqcpRmcy/M7Ngdq9Gp+K2wogco3WxWvIaU1m9usaNuvpt9v6MNQ
+	 uGuwQjvM4rLsgC1lh8e2tS2/eOd3gorP6Eedr7xF5KmruDXoBcgm+UIRsicvlpW3Dm
+	 8s8dXkV5D7SKQ==
+Received: from ksmg02.maxima.ru (autodiscover.maxima.ru [81.200.124.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "*.maxima.ru", Issuer "GlobalSign GCC R3 DV TLS CA 2020" (verified OK))
+	by ksmg02.maxima.ru (Postfix) with ESMTPS;
+	Mon, 13 Jan 2025 13:52:55 +0300 (MSK)
+Received: from GS-NOTE-190.mt.ru (10.0.246.105) by mmail-p-exch02.mt.ru
+ (81.200.124.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1544.4; Mon, 13 Jan
+ 2025 13:52:54 +0300
+From: Murad Masimov <m.masimov@mt-integration.ru>
+To: Sean Young <sean@mess.org>
+CC: Mauro Carvalho Chehab <mchehab@kernel.org>, Jarod Wilson
+	<jarod@redhat.com>, <linux-media@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Murad Masimov <m.masimov@mt-integration.ru>,
+	<stable@vger.kernel.org>,
+	<syzbot+34008406ee9a31b13c73@syzkaller.appspotmail.com>
+Subject: [PATCH 1/2] media: streamzap: fix race between device disconnection and urb callback
+Date: Mon, 13 Jan 2025 13:51:30 +0300
+Message-ID: <20250113105132.275-2-m.masimov@mt-integration.ru>
+X-Mailer: git-send-email 2.46.0.windows.1
+In-Reply-To: <20250113105132.275-1-m.masimov@mt-integration.ru>
+References: <20250113105132.275-1-m.masimov@mt-integration.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aa85959b-2890-42c9-beb8-0e0109494d90@kernel.dk>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: mt-exch-01.mt.ru (91.220.120.210) To mmail-p-exch02.mt.ru
+ (81.200.124.62)
+X-KSMG-AntiPhishing: NotDetected, bases: 2025/01/13 09:45:00
+X-KSMG-AntiSpam-Auth: dmarc=none header.from=mt-integration.ru;spf=none smtp.mailfrom=mt-integration.ru;dkim=none
+X-KSMG-AntiSpam-Envelope-From: m.masimov@mt-integration.ru
+X-KSMG-AntiSpam-Info: LuaCore: 49 0.3.49 28b3b64a43732373258a371bd1554adb2caa23cb, {rep_avail}, {Tracking_one_url, url3}, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, syzkaller.appspot.com:5.0.1,7.1.1;mt-integration.ru:7.1.1;ksmg02.maxima.ru:7.1.1;81.200.124.62:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2, FromAlignment: s, ApMailHostAddress: 81.200.124.62
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 190293 [Jan 13 2025]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.7
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/01/13 07:04:00 #26996016
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2025/01/13 09:45:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 7
 
-On Sun, Jan 12, 2025 at 07:55:26AM -0700, Jens Axboe wrote:
-> On 1/12/25 2:16 AM, gregkh@linuxfoundation.org wrote:
-> > 
-> > The patch below does not apply to the 6.1-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> > 
-> > To reproduce the conflict and resubmit, you may use the following commands:
-> > 
-> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-> > git checkout FETCH_HEAD
-> > git cherry-pick -x c9a40292a44e78f71258b8522655bffaf5753bdb
-> > # <resolve conflicts, build, test, etc.>
-> > git commit -s
-> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025011246-appealing-angler-4f22@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-> 
-> And here's the 6.1 version.
+Syzkaller has reported a general protection fault at function
+ir_raw_event_store_with_filter(). This crash is caused by a NULL pointer
+dereference of dev->raw pointer, even though it is checked for NULL in
+the same function, which means there is a race condition. It occurs due
+to the incorrect order of actions in the streamzap_disconnect() function:
+rc_unregister_device() is called before usb_kill_urb(). The dev->raw
+pointer is freed and set to NULL in rc_unregister_device(), and only
+after that usb_kill_urb() waits for in-progress requests to finish.
 
-Thanks, all 3 now queued up.
+If rc_unregister_device() is called while streamzap_callback() handler is
+not finished, this can lead to accessing freed resources. Thus
+rc_unregister_device() should be called after usb_kill_urb().
 
-greg k-h
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 8e9e60640067 ("V4L/DVB: staging/lirc: port lirc_streamzap to ir-core")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+34008406ee9a31b13c73@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=34008406ee9a31b13c73
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+---
+ drivers/media/rc/streamzap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/media/rc/streamzap.c b/drivers/media/rc/streamzap.c
+index 9b209e687f25..2ce62fe5d60f 100644
+--- a/drivers/media/rc/streamzap.c
++++ b/drivers/media/rc/streamzap.c
+@@ -385,8 +385,8 @@ static void streamzap_disconnect(struct usb_interface *interface)
+ 	if (!sz)
+ 		return;
+
+-	rc_unregister_device(sz->rdev);
+ 	usb_kill_urb(sz->urb_in);
++	rc_unregister_device(sz->rdev);
+ 	usb_free_urb(sz->urb_in);
+ 	usb_free_coherent(usbdev, sz->buf_in_len, sz->buf_in, sz->dma_in);
+
+--
+2.39.2
+
 
