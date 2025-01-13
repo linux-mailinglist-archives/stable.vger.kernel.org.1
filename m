@@ -1,52 +1,86 @@
-Return-Path: <stable+bounces-108449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1AF8A0BA2D
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 15:47:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB0BA0BA4B
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 15:50:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78B793A2446
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 14:47:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37574161B01
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 14:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27AC122CA13;
-	Mon, 13 Jan 2025 14:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC2C1FBBD9;
+	Mon, 13 Jan 2025 14:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="SJk5acOl"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="pgjGkx4G"
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-tydg10021701.me.com (pv50p00im-tydg10021701.me.com [17.58.6.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DD422CA1C
-	for <stable@vger.kernel.org>; Mon, 13 Jan 2025 14:43:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ABCB23A0F3
+	for <stable@vger.kernel.org>; Mon, 13 Jan 2025 14:46:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736779431; cv=none; b=pHq5s17tY4HArcHpZ9JiVH6QKBQSOhWe2Eh3KglZTWilDgr+RDyO7xOOqg2B4YoghFxIBNa8RqkUeg7+1IE3X4e9CoOVzwB+18a9xfV0zeqH7z+VUZhG+Tcclwwx7vSQ7IRhE/Yx0RTuo4Rh27klHucTlg5CcHFUzHNp7dgTcS4=
+	t=1736779598; cv=none; b=fiwYy3n79VYMHDyf+X44/7Y0dMemrYGzBY+zuvgGOUfbHsHi2y5jPOlQcC4Di6b/4Sl0t0c2uhsk2bzpGgnQRexXb66NK2WggEtK6ZZEDQzcnGFa4Rzr9jsQ1JM6FAiFwNJELrfKpHamRjk6eqa71OiSE4AE0YaQ9hK5G9T6ICs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736779431; c=relaxed/simple;
-	bh=VM0o4p0zSd4bVJ30pRgmtaMDXPlEtGS7nimk5GPXd/I=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=XjNV/uRFuaDOpftJRGyY8TwnxBj/1NLguG1BxMk/oHqmg8edyd7Kel+m2nggHC7bg/G6ISO1vypfz1J8ym7LkAQAeN4/FJUHSiHFG+3FVJx7dfzrIx+YsVvQTiSt2nBDXXK23UDSt32XU52+f8P/hxwLYc2hORBKKkwkxJaaPrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=SJk5acOl; arc=none smtp.client-ip=17.58.6.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1736779429;
-	bh=ajfpfvFLNkTlOGVGuLGACU1esDm5ZgHfXktoapNPqIw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:
-	 x-icloud-hme;
-	b=SJk5acOlbJiiRGZGuSN7hOm9PBkX4GF51OpuLewWanFp07ndOM7kytItwlBWC63Tx
-	 1i9oWZxd50DtqoJ9O+RlEuEirej6CsIcZDeYGJ3RJ+sF98l9j2pHNzjNy0MQ1wW13B
-	 uzubuzS7fmSs1IwI+b7pY7wFKwXzEWi+M6S2Jd4XMnuGh0MJmCk1irib2Vy8prNYA/
-	 cmM2oqg/foX+fH6cyvAEtlEEpJ2PiXQZDqvrpuSgPYcK7Eq6izdAjaBVbGvbmMrEOz
-	 CAFX1KiBvkQ15C9ZiGPmvt0eFO9rSPugEZiK0AHGrXf4zouMVe9RXv/SvpNNkoeVT8
-	 JSJQd+kJ6UqTg==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-tydg10021701.me.com (Postfix) with ESMTPSA id A9352CC6B16;
-	Mon, 13 Jan 2025 14:43:42 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Mon, 13 Jan 2025 22:43:23 +0800
-Subject: [PATCH v3] Bluetooth: qca: Fix poor RF performance for WCN6855
+	s=arc-20240116; t=1736779598; c=relaxed/simple;
+	bh=XXGUeMNtduH3jfxFczrGU1LWJGWgOXZPjvIRPPr0lYU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=N0ar6Fdv0z03eeLheDMUCy2zVUdifXN4FGf/yGVwMVM00pMeqpjL3p5m/h3+Wx66KPqJ8gt0IwZJ5U2tjO1Vpzd1p0igPmhUjMODjM6WQnme0PlOn+X36/ChKApbsuSlFQ6vjRag40G9P9fwBV38ETjMq276NjTRfCmaaX8IO7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=pgjGkx4G; arc=none smtp.client-ip=209.85.166.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-io1-f44.google.com with SMTP id ca18e2360f4ac-844ef6275c5so146250139f.0
+        for <stable@vger.kernel.org>; Mon, 13 Jan 2025 06:46:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1736779595; x=1737384395; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jtiliJx5j1ndYsGGG1phZCTgLfHL0dKhOHKuSNMEi48=;
+        b=pgjGkx4GNkW/XiewWGEc57VNPKfuId0k27A0UWkT/FcCS9f5sYilL2PaRvGm3smbfB
+         hwo7bgC4W73NYUxYRQNQR3XTYemFSx1DRcp8Adhvn+07bQNk9AgTs57sRwMPbn27CljT
+         x+eIDeRKaezqEBM4WnAoWdS0T/rjjSRAQv9YQhrZUAqgrioBl6yL7bNSDJUG+IOKPaTf
+         0EtTf52VNkrsXbiYhwG0GqYEWSMKNeZ/ntmLUs2gXJJpT2G0Y5lL8P3jjfFZZYACjVMx
+         nbws4sQOG0+L+d3HxoKulkeCr5n0vRNAoqE12b+kZmyCf6rNJ1Xktb+vMR0g6BKVuYGS
+         2fog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736779595; x=1737384395;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jtiliJx5j1ndYsGGG1phZCTgLfHL0dKhOHKuSNMEi48=;
+        b=Nqx8FsW4x+JGtjUVwIyzf/L5a8jf49Z8jr6labhDm5HyfBteNlQwC09uZ2inumezHr
+         SK/a55gRtMEw7dOckoMYUn6kC00H7BYflYSuYmVMSaF3vtG2XO08gtTtiZot8Ppz3L1d
+         +UYfR3vg6e6rZEp2ovYr1Gi7ph5lttVHiRU+C96p10N3VHxvzTBzDUZcPf2WQd/WLOfN
+         dlaq94QuoCdy7abxTbpGorIetxSdmxbHto1UUgn2+F9Mml5mShm6dW8TnuwFzLgJ9OQS
+         CDsNRvqh/Y4kFQsi4LD2bvrhCFNoc5eKnA6PLbD+3tssA4Q2Bw91vioMPGERXjTvvN7O
+         oZnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXaSPYur4ts3s4Vqooj/TU85s/xcTL6if932W63FmjWNPb5QlCfOc4WS81PIW+OSwI3ZXM1cUM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuKMJD7bHdpZtnCIGX8X0vNYoQ16yPF3bZgqWsbaw9CoPBEiyI
+	1sIzoJMCpi2aA/1vtSzOlOuB1yUB0jx6l414w3NltkyeMz+cxukjAhWIe5iaC9E=
+X-Gm-Gg: ASbGncs65a3v8vumbRerp+H8Lw/Y0eRxWQX37Y3FI3N4+c3Xy0YsnTB6lVoIV0dfQ0d
+	zQxBbr7D6QweJ2iVB0CouA1nPNrmPAT3ZKbcoI44YKz/YztXl3fPh4dcJ8hjHruS8coaeIER51W
+	9zAMrXT+SrqH2u2e3OQVPSJOo4MqzZfDv8co1HRl8JJPEikqMODd33islVRxEnlBnPXAT2XskNJ
+	zS+TMQtqrPClL0yXAoizSLGXswPqxOQQxU/rb4Rzjw/Zak=
+X-Google-Smtp-Source: AGHT+IG0orvDT8cdI9Iol5E8H6Fk+RBM9aLfOujcJ2s3aU1fEULaeNBcgCbArYSL0EMHC0H2PTp4Rg==
+X-Received: by 2002:a05:6e02:1c2a:b0:3a7:86ab:bebe with SMTP id e9e14a558f8ab-3ce3aa5adc0mr141968405ab.16.1736779595612;
+        Mon, 13 Jan 2025 06:46:35 -0800 (PST)
+Received: from [127.0.0.1] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4ea1b7178d1sm2790840173.95.2025.01.13.06.46.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jan 2025 06:46:35 -0800 (PST)
+From: Jens Axboe <axboe@kernel.dk>
+To: linux-block@vger.kernel.org, Ming Lei <tom.leiming@gmail.com>
+Cc: Ming Lei <ming.lei@redhat.com>, 
+ =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+ stable@vger.kernel.org
+In-Reply-To: <20250113015833.698458-1-ming.lei@redhat.com>
+References: <20250113015833.698458-1-ming.lei@redhat.com>
+Subject: Re: [PATCH] block: mark GFP_NOIO around sysfs ->store()
+Message-Id: <173677959482.1124551.14407464395957705701.b4-ty@kernel.dk>
+Date: Mon, 13 Jan 2025 07:46:34 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,86 +89,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250113-wcn6855_fix-v3-1-eeb8b0e19ef4@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAIomhWcC/03MQQ6CMBCF4auYWVvTaR0CrryHIQSHVmZh0VYRQ
- 7i7hZXL/yXvmyG5KC7BaTdDdKMkGUIOu98B9224OSVdbjDakEa06sOhKIkaL5PStuDW+JaIKsi
- PR3R53rRLnbuX9Brid8NHXNfVOSJioSa0qfnHRqNQsS7ZVGVH/urPz7ewBD7wcId6WZYfS+/kV
- a0AAAA=
-X-Change-ID: 20250113-wcn6855_fix-036ca2fa5559
-To: Marcel Holtmann <marcel@holtmann.org>, 
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
- Steev Klimaszewski <steev@kali.org>
-Cc: Bjorn Andersson <bjorande@quicinc.com>, 
- "Aiqun Yu (Maria)" <quic_aiquny@quicinc.com>, 
- Cheng Jiang <quic_chejiang@quicinc.com>, Johan Hovold <johan@kernel.org>, 
- Jens Glathe <jens.glathe@oldschoolsolutions.biz>, 
- Paul Menzel <pmenzel@molgen.mpg.de>, Zijun Hu <zijun_hu@icloud.com>, 
- Luiz Augusto von Dentz <luiz.von.dentz@intel.com>, 
- linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Proofpoint-ORIG-GUID: V3N0bx5LYFVmMyZP58jLBfK1_r8b6N55
-X-Proofpoint-GUID: V3N0bx5LYFVmMyZP58jLBfK1_r8b6N55
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-13_05,2025-01-13_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 clxscore=1015 mlxscore=0
- suspectscore=0 mlxlogscore=999 malwarescore=0 adultscore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2501130123
-X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
+X-Mailer: b4 0.14.3-dev-14bd6
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-For WCN6855, board ID specific NVM needs to be downloaded once board ID
-is available, but the default NVM is always downloaded currently.
+On Mon, 13 Jan 2025 09:58:33 +0800, Ming Lei wrote:
+> sysfs ->store is called with queue freezed, meantime we have several
+> ->store() callbacks(update_nr_requests, wbt, scheduler) to allocate
+> memory with GFP_KERNEL which may run into direct reclaim code path,
+> then potential deadlock can be caused.
+> 
+> Fix the issue by marking NOIO around sysfs ->store()
+> 
+> [...]
 
-The wrong NVM causes poor RF performance, and effects user experience
-for several types of laptop with WCN6855 on the market.
+Applied, thanks!
 
-Fix by downloading board ID specific NVM if board ID is available.
-
-Fixes: 095327fede00 ("Bluetooth: hci_qca: Add support for QTI Bluetooth chip wcn6855")
-Cc: stable@vger.kernel.org # 6.4
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
----
-Changes in v3:
-- Rework over tip of bluetooth-next tree.
-- Remove both Reviewed-by and Tested-by tags.
-- Link to v2: https://lore.kernel.org/r/20241116-x13s_wcn6855_fix-v2-1-c08c298d5fbf@quicinc.com
-
-Changes in v2:
-- Correct subject and commit message
-- Temporarily add nvm fallback logic to speed up backport.
-- Add fix/stable tags as suggested by Luiz and Johan
-- Link to v1: https://lore.kernel.org/r/20241113-x13s_wcn6855_fix-v1-1-15af0aa2549c@quicinc.com
----
- drivers/bluetooth/btqca.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-index a6b53d1f23dbd4666b93e10635f5f154f38d80a5..cdf09d9a9ad27c080f27c5fe8d61d76085e1fd2c 100644
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -909,8 +909,9 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 				 "qca/msnv%02x.bin", rom_ver);
- 			break;
- 		case QCA_WCN6855:
--			snprintf(config.fwname, sizeof(config.fwname),
--				 "qca/hpnv%02x.bin", rom_ver);
-+			qca_read_fw_board_id(hdev, &boardid);
-+			qca_get_nvm_name_by_board(config.fwname, sizeof(config.fwname),
-+						  "hpnv", soc_type, ver, rom_ver, boardid);
- 			break;
- 		case QCA_WCN7850:
- 			qca_get_nvm_name_by_board(config.fwname, sizeof(config.fwname),
-
----
-base-commit: a723753d039fd9a6c5998340ac65f4d9e2966ba8
-change-id: 20250113-wcn6855_fix-036ca2fa5559
+[1/1] block: mark GFP_NOIO around sysfs ->store()
+      commit: 7c0be4ead1f8f5f8be0803f347de0de81e3b8e1c
 
 Best regards,
 -- 
-Zijun Hu <quic_zijuhu@quicinc.com>
+Jens Axboe
+
+
 
 
