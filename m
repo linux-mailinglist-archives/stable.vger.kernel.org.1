@@ -1,156 +1,142 @@
-Return-Path: <stable+bounces-108365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7705BA0AE00
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 04:49:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08FDEA0AE24
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 05:23:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F1D93A6182
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 03:49:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B519188676E
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 04:23:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6CD5126BFA;
-	Mon, 13 Jan 2025 03:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8818158875;
+	Mon, 13 Jan 2025 04:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="G1Crzmzm"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="yTU8M+vt"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8173C3C;
-	Mon, 13 Jan 2025 03:49:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C72156F53;
+	Mon, 13 Jan 2025 04:23:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736740161; cv=none; b=mYHQrltnNSRGBfijwTJjrPs4yFcvShxV3A+ELqkNtyYDvvdb8B27V75peSTj5L3oRmmHPHz/BFrc3wTxMkgmnUwgWsFQUIE0i3uUUTMYMJ2qQc+Mzw+Pnq5H6yJ7hpBtLAZYG5NNyV3VlZ6Zs8cvdrOxzpFEJlns5NRoF8lPYcQ=
+	t=1736742204; cv=none; b=WewAVa8M+OxN+JTImrwR/JszCmXK2LQGmri7miUc2KgD36wh14pT4dWn8ezGGqxzxAuQpiSaIzJf4uzzKs6a/81PUBxOTdxPGl0+co5ighqMHUACF/20AP532P2Fu+JrAD12JknFyPuRH6GP2XYFYB3UKOemWA/gGsbH2I4B53Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736740161; c=relaxed/simple;
-	bh=CVvMkY29d++So0/YNo0iy2pjj2rlyxWBsHLs617WkGw=;
-	h=Subject:From:To:Cc:Date:Message-ID:MIME-Version:Content-Type; b=FrJCDg5aF/olZHBJ0aMploMb9UnI6zEfH3kQ9+Y7fCpdhqaYIg/iq/T/cR9PK+CIhEZnQPiRz4lV4ngsuI0ezGfgPWWZ5yUaGTjMVnqcWxehQwldVpevwmIpIgctNpGvoQCEOW4MlXBTL1i/xk9hCWuxlS9g8dN1IO7lOVJVUE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=G1Crzmzm; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50CNbKww024222;
-	Mon, 13 Jan 2025 03:49:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=/4fkptSCdc2xGU+GFFmeCmKqnsZW
-	EVajCUs8N9kD/zI=; b=G1Crzmzmw4pVVQpUCb/5jChUMRWtYs5wlfuD6OYu7nl1
-	Fx03NWe2W3lV8+nUVPJFZxCGYYKctu1P7gPBXn09Damkecb4a7y2LqMrFne67TVT
-	86vxA8AGVZCPq16g2x/k5QNOIeE3MsVxdsJ1E7jFSAWXRh+Wk+3mbmo32Aq+Hq40
-	MqdU94A8nTTMxc6LQixEyU5Upc9Y0ofnYgEjw/j/vUiqJRAgfnd9yLGUJGdcGkbr
-	KVwaVM5WNKgUn/VX4z9YuUoyDWSP+751rNt5Q4MvwSGyiF8FploZ4EVWZla+fKbo
-	kDI6OzMR0Wg8PewAEe7Fdly7exwV9uzGhT3P/lH93Q==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 444qjagjuk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Jan 2025 03:49:02 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50D3n2ja028967;
-	Mon, 13 Jan 2025 03:49:02 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 444qjagjuh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Jan 2025 03:49:02 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50D02ixM000875;
-	Mon, 13 Jan 2025 03:49:01 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44456jm4ef-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Jan 2025 03:49:01 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50D3mwFh41419018
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 13 Jan 2025 03:48:58 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3EE6120043;
-	Mon, 13 Jan 2025 03:48:58 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7070020040;
-	Mon, 13 Jan 2025 03:48:56 +0000 (GMT)
-Received: from [172.17.0.2] (unknown [9.3.101.175])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 13 Jan 2025 03:48:56 +0000 (GMT)
-Subject: [PATCH] powerpc/pseries/iommu: Don't unset window if it was never set
-From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com
-Cc: npiggin@gmail.com, christophe.leroy@csgroup.eu, gbatra@linux.vnet.ibm.com,
-        sbhat@linux.ibm.com, brking@linux.vnet.ibm.com,
-        linux-kernel@vger.kernel.org, vaibhav@linux.ibm.com,
-        vaish123@in.ibm.com, stable@vger.kernel.org
-Date: Mon, 13 Jan 2025 03:48:55 +0000
-Message-ID: <173674009556.1559.12487885286848752833.stgit@linux.ibm.com>
-User-Agent: StGit/1.5
+	s=arc-20240116; t=1736742204; c=relaxed/simple;
+	bh=NgueuWBQacS1tChhi5qBiVeEnYq8VYhERXD3ULCHYb0=;
+	h=Date:To:From:Subject:Message-Id; b=jn7h8ZKgu32V8eDek1oljJqNlxxajbySl2RxiSvPRG/cblRgMEazjpdyFgL9iMZPY7N3OAuAij3WIHVelhAtETkZI5z2ke4wpYoHmXNhMmCcNVhMG+ViRRzKbGq8l5sXKi4AsdAR1tSrq/EXhc31UDPfe7Q0TU3u6n3BO+nxRhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=yTU8M+vt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ABD8C4CED6;
+	Mon, 13 Jan 2025 04:23:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1736742204;
+	bh=NgueuWBQacS1tChhi5qBiVeEnYq8VYhERXD3ULCHYb0=;
+	h=Date:To:From:Subject:From;
+	b=yTU8M+vtdF7bnMgONE68B6tc6hCBvDnz0/Aj1PH6SLyk7XS8L7sm4wNaOABtSV0Qu
+	 ZIu2HMpHATP3gf3AXZjFbZ7Ns/+7UNmsstubTUvW1zrsnsKo3/iN3I4Hh2DFiRW5wj
+	 GwpHXYH6HtniXKj55M9j+oNmR/dAcjVFyCV+bl38=
+Date: Sun, 12 Jan 2025 20:23:23 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark.tinguely@oracle.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,gechangwei@live.cn,willy@infradead.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-nonmm-stable] ocfs2-handle-a-symlink-read-error-correctly.patch removed from -mm tree
+Message-Id: <20250113042324.6ABD8C4CED6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: DhHou8mYPADuflKu_0G5dCRbUKDq_ra1
-X-Proofpoint-ORIG-GUID: 0sYiMxJ7-Yew-lvxNi327WsAUdDkktwf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 malwarescore=0
- mlxlogscore=588 mlxscore=0 spamscore=0 lowpriorityscore=0 adultscore=0
- priorityscore=1501 suspectscore=0 impostorscore=0 bulkscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501130028
 
-On pSeries, when user attempts to use the same vfio container used by
-different iommu group, the spapr_tce_set_window() returns -EPERM
-and the subsequent cleanup leads to the below crash.
 
-   Kernel attempted to read user page (308) - exploit attempt?
-   BUG: Kernel NULL pointer dereference on read at 0x00000308
-   Faulting instruction address: 0xc0000000001ce358
-   Oops: Kernel access of bad area, sig: 11 [#1]
-   NIP:  c0000000001ce358 LR: c0000000001ce05c CTR: c00000000005add0
-   <snip>
-   NIP [c0000000001ce358] spapr_tce_unset_window+0x3b8/0x510
-   LR [c0000000001ce05c] spapr_tce_unset_window+0xbc/0x510
-   Call Trace:
-     spapr_tce_unset_window+0xbc/0x510 (unreliable)
-     tce_iommu_attach_group+0x24c/0x340 [vfio_iommu_spapr_tce]
-     vfio_container_attach_group+0xec/0x240 [vfio]
-     vfio_group_fops_unl_ioctl+0x548/0xb00 [vfio]
-     sys_ioctl+0x754/0x1580
-     system_call_exception+0x13c/0x330
-     system_call_vectored_common+0x15c/0x2ec
-   <snip>
-   --- interrupt: 3000
+The quilt patch titled
+     Subject: ocfs2: handle a symlink read error correctly
+has been removed from the -mm tree.  Its filename was
+     ocfs2-handle-a-symlink-read-error-correctly.patch
 
-Fix this by having null check for the tbl passed to the
-spapr_tce_unset_window().
+This patch was dropped because it was merged into the mm-nonmm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Fixes: f431a8cde7f1 ("powerpc/iommu: Reimplement the iommu_table_group_ops for pSeries")
-Cc: stable@vger.kernel.org
-Reported-by: Vaishnavi Bhat <vaish123@in.ibm.com>
-Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+------------------------------------------------------
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Subject: ocfs2: handle a symlink read error correctly
+Date: Thu, 5 Dec 2024 17:16:29 +0000
+
+Patch series "Convert ocfs2 to use folios".
+
+Mark did a conversion of ocfs2 to use folios and sent it to me as a
+giant patch for review ;-)
+
+So I've redone it as individual patches, and credited Mark for the patches
+where his code is substantially the same.  It's not a bad way to do it;
+his patch had some bugs and my patches had some bugs.  Hopefully all our
+bugs were different from each other.  And hopefully Mark likes all the
+changes I made to his code!
+
+
+This patch (of 23):
+
+If we can't read the buffer, be sure to unlock the page before returning.
+
+Link: https://lkml.kernel.org/r/20241205171653.3179945-1-willy@infradead.org
+Link: https://lkml.kernel.org/r/20241205171653.3179945-2-willy@infradead.org
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Mark Tinguely <mark.tinguely@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- arch/powerpc/platforms/pseries/iommu.c |    3 +++
- 1 file changed, 3 insertions(+)
 
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index 534cd159e9ab..78b895b568b3 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -2205,6 +2205,9 @@ static long spapr_tce_unset_window(struct iommu_table_group *table_group, int nu
- 	const char *win_name;
- 	int ret = -ENODEV;
- 
-+	if (!tbl) /* The table was never created OR window was never opened */
-+		return 0;
-+
- 	mutex_lock(&dma_win_init_mutex);
- 
- 	if ((num == 0) && is_default_window_table(table_group, tbl))
+ fs/ocfs2/symlink.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
+--- a/fs/ocfs2/symlink.c~ocfs2-handle-a-symlink-read-error-correctly
++++ a/fs/ocfs2/symlink.c
+@@ -65,7 +65,7 @@ static int ocfs2_fast_symlink_read_folio
+ 
+ 	if (status < 0) {
+ 		mlog_errno(status);
+-		return status;
++		goto out;
+ 	}
+ 
+ 	fe = (struct ocfs2_dinode *) bh->b_data;
+@@ -76,9 +76,10 @@ static int ocfs2_fast_symlink_read_folio
+ 	memcpy(kaddr, link, len + 1);
+ 	kunmap_atomic(kaddr);
+ 	SetPageUptodate(page);
++out:
+ 	unlock_page(page);
+ 	brelse(bh);
+-	return 0;
++	return status;
+ }
+ 
+ const struct address_space_operations ocfs2_fast_symlink_aops = {
+_
+
+Patches currently in -mm which might be from willy@infradead.org are
+
+mm-page_alloc-cache-page_zone-result-in-free_unref_page.patch
+mm-make-alloc_pages_mpol-static.patch
+mm-page_alloc-export-free_frozen_pages-instead-of-free_unref_page.patch
+mm-page_alloc-move-set_page_refcounted-to-callers-of-post_alloc_hook.patch
+mm-page_alloc-move-set_page_refcounted-to-callers-of-prep_new_page.patch
+mm-page_alloc-move-set_page_refcounted-to-callers-of-get_page_from_freelist.patch
+mm-page_alloc-move-set_page_refcounted-to-callers-of-__alloc_pages_cpuset_fallback.patch
+mm-page_alloc-move-set_page_refcounted-to-callers-of-__alloc_pages_may_oom.patch
+mm-page_alloc-move-set_page_refcounted-to-callers-of-__alloc_pages_direct_compact.patch
+mm-page_alloc-move-set_page_refcounted-to-callers-of-__alloc_pages_direct_reclaim.patch
+mm-page_alloc-move-set_page_refcounted-to-callers-of-__alloc_pages_slowpath.patch
+mm-page_alloc-move-set_page_refcounted-to-end-of-__alloc_pages.patch
+mm-page_alloc-add-__alloc_frozen_pages.patch
+mm-mempolicy-add-alloc_frozen_pages.patch
+slab-allocate-frozen-pages.patch
+mm-remove-pagetranstail.patch
 
 
