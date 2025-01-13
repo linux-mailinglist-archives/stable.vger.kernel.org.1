@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-108497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B508A0C03A
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:41:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D85A0C03F
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:41:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 725BA1887E10
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:41:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F1253A8999
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39A0E1CB518;
-	Mon, 13 Jan 2025 18:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A050B206F1D;
+	Mon, 13 Jan 2025 18:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PmuWOmIi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qan7dPNe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2EC1FFC59;
-	Mon, 13 Jan 2025 18:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C22C1CB501;
+	Mon, 13 Jan 2025 18:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793333; cv=none; b=qx3l8wR0Z9baIXuB44/sQVgJpKwMXGkpzoXun3NzeiK3eo7QAYsAvJUhsSpvyaXNs6LrMwguX8V4mHXHzB+5yKfn6YZ1d7e6eSQgyZMVZspQ8uDDYZ41Dsc1ZHvdSeVdAdk7+zYqPy0iZqUDIHHKEyjWGnH4NoXmnGotRUgRSUM=
+	t=1736793334; cv=none; b=ln0BnL+hm70jmYhv3UEpCumOnnNU70agO4pjrpjU/qalQiNq7tG94kpdXk9WYFAi4+lFgL2UWbKb+oFfXArQADiR17vJ6qDbu3DjJ4J7H7RqB2iGqK+Y+k5BB1bRAx+PX+Cad0aBOuLnu8BWClhvZPhjB+w28XtugBgaqcLwgQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793333; c=relaxed/simple;
-	bh=FhJQ8B2RND9ED4l7TJod052/Xv4xIBlkf++2T0FfpEE=;
+	s=arc-20240116; t=1736793334; c=relaxed/simple;
+	bh=QsA1Krjmg5wmxGv8YXarj+7ikJ4Flrmg1BcZiU71ZW8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=h+Ar1c75FtxcUe7Od1alFw2XsdcS+CPzApsU9kV41INF8FyP6F9Ij7BFHXzWfomgVHxNqBkjqYOBo12ABLYQpvQ7JSda6nArRE/2Qt0MY0EOIo6dfe+It2aztJcg8qK6BOboc/0CH4tMzSNMBJXi4DKTlO0WWWBb43JMx8JkVYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PmuWOmIi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77BF3C4CEE5;
-	Mon, 13 Jan 2025 18:35:31 +0000 (UTC)
+	 MIME-Version; b=ncvdoz4Xm8yBcTKLw5FxATCrnSB/wudCez3VZxWj9aFWl9Pua9GaImK/JLhrR337xmmPiqyZx6OE1JFUfu6xqGu1o1ez9AtB5rCfIy+bUAbCvBqoM56IC3a5ZTL/fTwt+mPV/zy2840cpsFP4UhmDvrsYr0U2+biWaS0G3+vBww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qan7dPNe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAF9C4CEE1;
+	Mon, 13 Jan 2025 18:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736793332;
-	bh=FhJQ8B2RND9ED4l7TJod052/Xv4xIBlkf++2T0FfpEE=;
+	s=k20201202; t=1736793333;
+	bh=QsA1Krjmg5wmxGv8YXarj+7ikJ4Flrmg1BcZiU71ZW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PmuWOmIiWjbWb6m2MdZ7zntuxLudArZQ9Hi4R0T4Fp/+Va715iti5JKZ6BvWLEJKu
-	 B0blAkYhhtu79a980PTroVjynH7kUl7NvEIcDLS5Jb+KuzlG7VcR91yyWQ7HKNi1FZ
-	 2+ZgTX1T8L4O+U5HKYnOWKQJMFtFBAg2gKPu5JdhJedKjXmwoK1mWexOFi51sbD19w
-	 vHkg4YaEq648Y5ZG1dimeuFEJe7SicF9+PKUuyTuTsoYPuMVL8WcaFv+xw9hJLKx7d
-	 +JGNzDuMj0CMSSdXLgFNDhRVD9DMN5YYRdUunfCBOX1PjUAd7z2NYVVxO75IRts0+B
-	 8q/PBqQdohbLA==
+	b=Qan7dPNe/Q6F1+SekSueUxEJM+3zBaqz4kqVdygfKeKIWfCXi2vktleiHq5QEZ4Pn
+	 WXIUFX0ln9onwdG39fi7qHSzIEdZ7AD9PZJEjuXWw2sE0yB7d2h72Nfo2ddgZfP+Ls
+	 W5MrU324kGFq2gG4SbuksH4+foem8lGpKHOf4wtPswiC2RHDW++HWUQQWJ3ZpqTHkK
+	 A2nzkzV7abuQieNLjY7PRGUpuQ8gIhFyaWPqMFDsw5xGuEdZC1fMm+BUV9rFGexDqo
+	 cpw6iGFAaaLPGbivFydtpXwKJFQIvQJ/yCLchFOz3T1oAc9fjpvG3GIwH7iH5GNHqm
+	 K7HR7z7JBbJKw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Marco Nelissen <marco.nelissen@gmail.com>,
+	"Darrick J . Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 08/10] ACPI: resource: acpi_dev_irq_override(): Check DMI match last
-Date: Mon, 13 Jan 2025 13:35:09 -0500
-Message-Id: <20250113183511.1783990-8-sashal@kernel.org>
+	linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 09/10] iomap: avoid avoid truncating 64-bit offset to 32 bits
+Date: Mon, 13 Jan 2025 13:35:10 -0500
+Message-Id: <20250113183511.1783990-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250113183511.1783990-1-sashal@kernel.org>
 References: <20250113183511.1783990-1-sashal@kernel.org>
@@ -67,46 +68,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.71
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Marco Nelissen <marco.nelissen@gmail.com>
 
-[ Upstream commit cd4a7b2e6a2437a5502910c08128ea3bad55a80b ]
+[ Upstream commit c13094b894de289514d84b8db56d1f2931a0bade ]
 
-acpi_dev_irq_override() gets called approx. 30 times during boot (15 legacy
-IRQs * 2 override_table entries). Of these 30 calls at max 1 will match
-the non DMI checks done by acpi_dev_irq_override(). The dmi_check_system()
-check is by far the most expensive check done by acpi_dev_irq_override(),
-make this call the last check done by acpi_dev_irq_override() so that it
-will be called at max 1 time instead of 30 times.
+on 32-bit kernels, iomap_write_delalloc_scan() was inadvertently using a
+32-bit position due to folio_next_index() returning an unsigned long.
+This could lead to an infinite loop when writing to an xfs filesystem.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20241228165253.42584-1-hdegoede@redhat.com
-[ rjw: Subject edit ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Marco Nelissen <marco.nelissen@gmail.com>
+Link: https://lore.kernel.org/r/20250109041253.2494374-1-marco.nelissen@gmail.com
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/iomap/buffered-io.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index df598de0cb18..f17dce80b7ba 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -662,11 +662,11 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
- 	for (i = 0; i < ARRAY_SIZE(override_table); i++) {
- 		const struct irq_override_cmp *entry = &override_table[i];
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index a05ee2cbb779..e7e6701806ad 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1095,7 +1095,7 @@ static int iomap_write_delalloc_scan(struct inode *inode,
+ 		}
  
--		if (dmi_check_system(entry->system) &&
--		    entry->irq == gsi &&
-+		if (entry->irq == gsi &&
- 		    entry->triggering == triggering &&
- 		    entry->polarity == polarity &&
--		    entry->shareable == shareable)
-+		    entry->shareable == shareable &&
-+		    dmi_check_system(entry->system))
- 			return entry->override;
+ 		/* move offset to start of next folio in range */
+-		start_byte = folio_next_index(folio) << PAGE_SHIFT;
++		start_byte = folio_pos(folio) + folio_size(folio);
+ 		folio_unlock(folio);
+ 		folio_put(folio);
  	}
- 
 -- 
 2.39.5
 
