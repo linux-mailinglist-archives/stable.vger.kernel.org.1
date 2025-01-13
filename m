@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-108495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2889FA0C033
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:41:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0063FA0C038
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:41:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF67F3A6F36
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:40:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7988B3A2994
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF501FCCE5;
-	Mon, 13 Jan 2025 18:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C845F1FC7FC;
+	Mon, 13 Jan 2025 18:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i8S2T/aN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Me2ER2gp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7401B1FC7FC;
-	Mon, 13 Jan 2025 18:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CDAB1FCFC5;
+	Mon, 13 Jan 2025 18:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793328; cv=none; b=Gf5WGqBvPVeysI8+GeTCQaRzCaeUvCPiGhQruSepKEKKIA6iPcn736jp49xnVsbTLOPT/4NcFKWEN3x0G6qGQOLDL/dx5ljmcO2nKJPwBh9FinXDTBpZkYU9vRTcPD6dE36JSt5TMCpGk8OW2eP7WFImPCV6obSG/kTExSjJ4Zs=
+	t=1736793331; cv=none; b=CjeBlCz5KbQIA2kmOr0gimp7JnceJ4uylGT4tvyERwJdppjIq+5l0ydIJ7soLvmlxrGrvLm7w0AHeukC6Yk/wOJqfzACsjY1agrXVVBA09g1yS3EQh8np/iA6pXj+R7VN+b6Dm7EkmPLltXPJ/kqhtIVZz1fSYpyNl1kq94C6mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793328; c=relaxed/simple;
-	bh=J3AxO9abyylv373NfKkPGlmMSGT+EVWJVM9UPh1tgoU=;
+	s=arc-20240116; t=1736793331; c=relaxed/simple;
+	bh=XAv+jz/bkNvYNMhL/vqbGq2zVw2DJExlfEMn82bOwbU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kvxNUz1NrUgUVRUCpHL3M8X0MeK5wo1npoQCo9P4npp1gxQiIVcKPFJpZDggVOPnVJ3k5WJyk1AQJiYsdjEvGsT7bdb4A0iS83yvnQ+r1YN/ECW1IDbQptqJpczcLQb5aR/VSts59BTW+QlkcDfkMCeeBDSBFBwXnckCuP2BRVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i8S2T/aN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10727C4CEE1;
-	Mon, 13 Jan 2025 18:35:26 +0000 (UTC)
+	 MIME-Version; b=IEt0Cj/yQi5HcIAFvoVUvdaVUDj6US2nQURzp95eOM0TEEKOOxuordH6y1dbO17tPuraFEU1TxPyvs8FVkrwI41NgWnAzeKf1qB9O5HEG5LejdfqpYMgGhVDe4TJQfK0xpF2t0obbHFbM1I63gmkv1tyvqSZlwcrYVKZ656Nt+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Me2ER2gp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD73C4CED6;
+	Mon, 13 Jan 2025 18:35:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736793328;
-	bh=J3AxO9abyylv373NfKkPGlmMSGT+EVWJVM9UPh1tgoU=;
+	s=k20201202; t=1736793331;
+	bh=XAv+jz/bkNvYNMhL/vqbGq2zVw2DJExlfEMn82bOwbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i8S2T/aNO5ud6lnlju2OjLQ7PvS8v10djP9MmGhX3zadBRitfvdjPyD5/i4aBKMOL
-	 b/gyTorD+bRwuUhbzKUtISUqL6/jmvymGCXs2YA7Q0K/Y/0dRupn/02zgm0npc3pqd
-	 t1PeDbYC9DxyyyaNlQDNzPApYzs9K2dFpMXkBn+7Z5I/Vwqs4vDQXje7fPwE5m+HUf
-	 aF/YVN57wQ321fw/FbOMFTc4BGGC++Si0ojkFuOGyWManiOd4OYJGAPzRU0Uuu2JbT
-	 aKHlrOq9I9zsJUOiYIlR5a7DXeLLSrq3GdCcu7JS32LalATvemkivU1YXADyhuDs1K
-	 AOxbL+0z/a99g==
+	b=Me2ER2gp8LPCaak9viOU/PB6mmiMyxq6vQvW5dJbTQHEDcDxnCskoj3jJDP+sjJeK
+	 FvwxnyZU6/QF+tBq5jwt9UUrRfaz/YqzSZw5MHKI4I5qHpnb6gL9IIHDi7raJS3l8O
+	 vp8xISTl7ps3pMuu8GGbUKFJk/ExPA2+Ry76NHAbjWocElyAVyOFZo+tyA0uaO3IGx
+	 JjKYdEJnRpShRYlNO+VtYq8szHWBAlYNMJqUmDwH82ZYAuv0+mYaO7yFNvrL6zDzYf
+	 XLtLoMb3uAM28Gh0UcV/1SFrdNBx536fg2gTjWrBy/kfys1MiPaHcPJt1hBcISwj9V
+	 Fqcg/iQAsXJsw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
 	Sasha Levin <sashal@kernel.org>,
-	James.Bottomley@HansenPartnership.com,
-	peter.wang@mediatek.com,
-	avri.altman@wdc.com,
-	ahalaney@redhat.com,
-	quic_mnaresh@quicinc.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 06/10] scsi: ufs: core: Honor runtime/system PM levels if set by host controller drivers
-Date: Mon, 13 Jan 2025 13:35:07 -0500
-Message-Id: <20250113183511.1783990-6-sashal@kernel.org>
+	jhs@mojatatu.com,
+	xiyou.wangcong@gmail.com,
+	jiri@resnulli.us,
+	shuah@kernel.org,
+	horms@kernel.org,
+	karansanghvi98@gmail.com,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 07/10] selftests: tc-testing: reduce rshift value
+Date: Mon, 13 Jan 2025 13:35:08 -0500
+Message-Id: <20250113183511.1783990-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250113183511.1783990-1-sashal@kernel.org>
 References: <20250113183511.1783990-1-sashal@kernel.org>
@@ -71,47 +72,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.71
 Content-Transfer-Encoding: 8bit
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit bb9850704c043e48c86cc9df90ee102e8a338229 ]
+[ Upstream commit e95274dfe86490ec2a5633035c24b2de6722841f ]
 
-Otherwise, the default levels will override the levels set by the host
-controller drivers.
+After previous change rshift >= 32 is no longer allowed.
+Modify the test to use 31, the test doesn't seem to send
+any traffic so the exact value shouldn't matter.
 
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20241219-ufs-qcom-suspend-fix-v3-2-63c4b95a70b9@linaro.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250103182458.1213486-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tools/testing/selftests/tc-testing/tc-tests/filters/flow.json | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 84dac9050074..5c74293fd685 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -10484,14 +10484,17 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
- 	}
- 
- 	/*
--	 * Set the default power management level for runtime and system PM.
-+	 * Set the default power management level for runtime and system PM if
-+	 * not set by the host controller drivers.
- 	 * Default power saving mode is to keep UFS link in Hibern8 state
- 	 * and UFS device in sleep state.
- 	 */
--	hba->rpm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
-+	if (!hba->rpm_lvl)
-+		hba->rpm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
- 						UFS_SLEEP_PWR_MODE,
- 						UIC_LINK_HIBERN8_STATE);
--	hba->spm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
-+	if (!hba->spm_lvl)
-+		hba->spm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
- 						UFS_SLEEP_PWR_MODE,
- 						UIC_LINK_HIBERN8_STATE);
- 
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/filters/flow.json b/tools/testing/selftests/tc-testing/tc-tests/filters/flow.json
+index 58189327f644..383fbda07245 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/filters/flow.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/filters/flow.json
+@@ -78,10 +78,10 @@
+         "setup": [
+             "$TC qdisc add dev $DEV1 ingress"
+         ],
+-        "cmdUnderTest": "$TC filter add dev $DEV1 parent ffff: handle 1 prio 1 protocol ip flow map key dst rshift 0xff",
++        "cmdUnderTest": "$TC filter add dev $DEV1 parent ffff: handle 1 prio 1 protocol ip flow map key dst rshift 0x1f",
+         "expExitCode": "0",
+         "verifyCmd": "$TC filter get dev $DEV1 parent ffff: handle 1 protocol ip prio 1 flow",
+-        "matchPattern": "filter parent ffff: protocol ip pref 1 flow chain [0-9]+ handle 0x1 map keys dst rshift 255 baseclass",
++        "matchPattern": "filter parent ffff: protocol ip pref 1 flow chain [0-9]+ handle 0x1 map keys dst rshift 31 baseclass",
+         "matchCount": "1",
+         "teardown": [
+             "$TC qdisc del dev $DEV1 ingress"
 -- 
 2.39.5
 
