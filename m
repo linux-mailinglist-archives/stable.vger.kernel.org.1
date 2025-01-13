@@ -1,132 +1,131 @@
-Return-Path: <stable+bounces-108382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE21A0B2A8
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 10:24:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B589A0B2A3
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 10:24:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 606071885CE6
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 09:24:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80804166366
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 09:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1837323A56B;
-	Mon, 13 Jan 2025 09:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3562397A5;
+	Mon, 13 Jan 2025 09:24:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SXu/XkJG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158DD22F19;
-	Mon, 13 Jan 2025 09:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57C1188906;
+	Mon, 13 Jan 2025 09:24:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736760265; cv=none; b=fi4omSOKVU5+4JaCwq4liMa5bOCRZ2rIk1KmcS0OoZXiANIg7o03s1b3V7lUGRHfdM1D9sO3cBUQNw5nH3yqnlyJmIDNk41mkIa9+PmkisqLkqM4dkw73uVymxib2f+hcC3VZQ/MJKN2H3UncyvLVL5XXVto5/w+hDGIHAmgvNE=
+	t=1736760264; cv=none; b=DEgmdccZelcdtQDlTr/MerM6GHOfq1b9mutgVPW2TkNguAVQFNc9KaRX0U+BWdmVM8SPwoeo5yM6HSblImRcz78+PLEtl0/eqNmkdndIDp3tw2/gXboNsN+0EFWWLpadgKItFNfEZfr63Z8y7qcVkKKYVeNj+a5jbDJhpcImxtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736760265; c=relaxed/simple;
-	bh=84bvFb6cD3GLpZUptbdmF7YOn8xMF2nDELR6ofKX8hM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=W5lvfCUYdJ7Ksk9x2jkHDIFZcLsW15Ado5NQvDIrvsGasisjDA+8DE1hkE1wI1v5LSnpL2ULP7JihPHMSEuFZds2XlJ/U4YKciW55eV+JkWX6y2wPcOL5lku8mf+vNk0ahR6D8yacYCHfsA5DH3+5YLLGorjLj339uDHT+Lkhro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-85bc5d0509bso952445241.1;
-        Mon, 13 Jan 2025 01:24:23 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736760262; x=1737365062;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kYZ4TIeu11XIguoy+lnYJTPraqx664zEMCZSQ2GxQKc=;
-        b=VsWzwbqPI2GB6K3AIEvaCWjLoIqSt4d8484GTZAyp/gLDHMPrFY1oaz4C3iPTDuce/
-         KKk27v/5cmokVJf1BuuMsu7/PM5ZYw3bZj6VFdYbIfGMsFQC0UQF8tiwNoXsMM+ugvyq
-         18xUB+Jd1WmQxdvy7bPyjmF3nS2iaR354VRxIAngjym06WKIwT6sgdSiG83/T0gC6iRN
-         qGnxlOuzdG+c/48gAo+otfU+0SqFybO/F6D/EC2h3kaBtkgNxN23FBx+HgVOIjkhRioh
-         Dk2GOJss0RIekep0Vn7FXSuaX44jq5NE8mV3OjnYmPZ0V20r9255jc4Rfjsbf2v8l5fd
-         X/EQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVc0B/Romia4+O5NxTdVSUp89q5QAdB3H8gz0YchgckHo9tjJo9M8tdXKmPt+dQlUq3WWLhwQ3mVcE65KGQ@vger.kernel.org, AJvYcCX5FBSzLdygQ5pvEFuxKKczVO7j00ufg1Y83VJD0OTsTha2kXiHk98MOa2rbxNkro5TbvkPEFE7XEh002xHXkwceCU=@vger.kernel.org, AJvYcCXjR0lTildetcPq6kK43xzXd8SX5T5vTTCvU7EvUdJd2XES0ftCm5Zd3EJfgRXuahbphyYSrTu7xY/T@vger.kernel.org, AJvYcCXmImnHQKyB9j+wzY/8Qmq6UFj4sRmwjpILxUSfp9+2mbhroGdZlkuH0okJuUFfO5rzj9zbpsMC@vger.kernel.org
-X-Gm-Message-State: AOJu0YwY/GNS3/GIScMT5X/WHhTADkcGtb7RRFekBiLrGzKVD4KkvH+C
-	i8JUQ59vhYTma+cdmL/vqLSqmWSbKhEc45LMuPLKk8ODS/nvUGIF5ZFCC2ZI
-X-Gm-Gg: ASbGncvudrGyp9fkjjlQMDCnVahGh6/qQhce1ORSLh5Cznf4EswX205TFhJ+8rflr4X
-	niJioXa9g/nnb9vZCr4S5dgH0/7jyLjtgxMLWAvi8LobkOu1kjmH1J2KjCIIHm6hp7EXWDAFWm5
-	pqbURvIXOs+T8CvX5YLUHdS8SAXFllceGr2TzUkCvf+g7ddGsnFCCbjHc3XeDoSqRreC20GGHpv
-	0iKt2c3HL43C/7gV1CC/A4D6jlSJ+5DsOleVfMZ21uCzvk+8Fm9balFBVfYk4DHsb26jz2sxpqO
-	hKORUPaRCaUa/4byS0c=
-X-Google-Smtp-Source: AGHT+IGYVy5ZX0kEmJ99FdTEiEGnhnakzJvC/hNJ82OXQhJgDuvBZcJMpl6cOu05qaiv0uWM9BT2Wg==
-X-Received: by 2002:a05:6102:509f:b0:4b2:bc6b:c845 with SMTP id ada2fe7eead31-4b3d0d763b1mr15360629137.6.1736760262196;
-        Mon, 13 Jan 2025 01:24:22 -0800 (PST)
-Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com. [209.85.217.52])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-8623134c6f8sm4646377241.4.2025.01.13.01.24.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Jan 2025 01:24:22 -0800 (PST)
-Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-4afde39e360so1360359137.0;
-        Mon, 13 Jan 2025 01:24:22 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUUvhsk1lWs07ojEJuiHoCthDx5xox1wD2BKALmHU3sxO2AviCOgloEfpn5UfVG3gOUU6RPXMKP@vger.kernel.org, AJvYcCWhFW8nLq/OC/8LyuWfecGGEujgc6Pe50IssrswpgPpSkVhro6OY2AE+W+D1wwHa9IjUaYJomy5lUqW@vger.kernel.org, AJvYcCWy6ld4sahUFa4VJ76/VbGhbWVD0FIrESsd6+Rzbl+lC8S6pkg5A3zLOU+aRPSqLefgb44tu2R8SB8nVW/N@vger.kernel.org, AJvYcCXokAZMoyjxWrBwOsxrY3nND8W0dm7PpPJo/4od9+SM3uvDHQ4tUBMHNb1gXsFQ0rUpp48zMZvdGQoHNV+YxIlD42k=@vger.kernel.org
-X-Received: by 2002:a05:6102:8017:b0:4b4:3a28:6491 with SMTP id
- ada2fe7eead31-4b43a286656mr17964850137.25.1736760261906; Mon, 13 Jan 2025
- 01:24:21 -0800 (PST)
+	s=arc-20240116; t=1736760264; c=relaxed/simple;
+	bh=O8ogNUi16IzOoAKmrNzGLQ/V2vo+Dds9Q28JEu9S4G0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q80GjMo9bm+EHz4ljhP90FZy17CZsjKB4eKctJQ/v4QDHGk4YnE5iHxGi26EgIONJjZGLU6yVAUqUqobNoS10AuO49dPsqoxoIbc3CJ6iKgiY+YuKIRHjSCzr5JaNSn/T6/ES5sBz4JvDMFMICe5pcid9uEiE1z1tq8vyJEW2ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SXu/XkJG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2B2C4CED6;
+	Mon, 13 Jan 2025 09:24:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736760264;
+	bh=O8ogNUi16IzOoAKmrNzGLQ/V2vo+Dds9Q28JEu9S4G0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SXu/XkJGzu45wBlW3MJDvuGnlOv69IDD9OWaVob3zI34ULXVuJeVlxgPCV0UkySUB
+	 VWiHTSTyF0MHH0/ZhQv8uT592YGp8o72PEwK5CpfhQB5X269MUJoEUnwhyBvcFVC7+
+	 +oiwNeF602ZA1UqfgAUHTaG75pGtnRrBw+x2c4N+9YxhKq2PJG2RPfYtIu4AIdV/Gt
+	 +T4mb7gE8Ob87w5YWw/q4DzBsI3S+6WyhgUJKSQxagckg5gbc7TsqyVCydWuuSuXSC
+	 2ONtmVnWFOjfna56GLuhe/M8ZuFNdZPvXBg7U7cOhdymiAPNuljQzj7SXo3AfY2l2r
+	 giEVJ+E1zwylQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1tXGgK-000000006ce-0PzK;
+	Mon, 13 Jan 2025 10:24:24 +0100
+Date: Mon, 13 Jan 2025 10:24:24 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Zijun Hu <quic_zijuhu@quicinc.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Steev Klimaszewski <steev@kali.org>,
+	Paul Menzel <pmenzel@molgen.mpg.de>, Zijun Hu <zijun_hu@icloud.com>,
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Bjorn Andersson <bjorande@quicinc.com>,
+	"Aiqun Yu (Maria)" <quic_aiquny@quicinc.com>,
+	Cheng Jiang <quic_chejiang@quicinc.com>,
+	Jens Glathe <jens.glathe@oldschoolsolutions.biz>,
+	stable@vger.kernel.org, Johan Hovold <johan+linaro@kernel.org>
+Subject: Re: [PATCH v2] Bluetooth: qca: Support downloading board ID specific
+ NVM for WCN6855
+Message-ID: <Z4TbyIfVJL85oVXs@hovoldconsulting.com>
+References: <20241116-x13s_wcn6855_fix-v2-1-c08c298d5fbf@quicinc.com>
+ <Z1v8vLWH7TmwwzQl@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250110221045.594596-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-In-Reply-To: <20250110221045.594596-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 13 Jan 2025 10:24:10 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUGbxJGCZB8U2CJ5cj6QBx2GqXt-Pp6czWNaq=45bOw8w@mail.gmail.com>
-X-Gm-Features: AbW1kvZg6d7Xxpj2ymrdwlth7H82qDIqd7wLoyU9raVAPvQzpgvyCJe9tRi-BY0
-Message-ID: <CAMuHMdUGbxJGCZB8U2CJ5cj6QBx2GqXt-Pp6czWNaq=45bOw8w@mail.gmail.com>
-Subject: Re: [PATCH v2] pinctrl: renesas: rzg2l: Update PFC_MASK to align with
- RZ/V2H requirements
-To: Prabhakar <prabhakar.csengg@gmail.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, linux-renesas-soc@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Biju Das <biju.das.jz@bp.renesas.com>, 
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z1v8vLWH7TmwwzQl@hovoldconsulting.com>
 
-On Fri, Jan 10, 2025 at 11:10=E2=80=AFPM Prabhakar <prabhakar.csengg@gmail.=
-com> wrote:
-> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
->
-> The PFC_MASK value for the PFC_mx register was previously hardcoded as
-> `0x07`, which is correct for SoCs in the RZ/G2L family but insufficient
-> for RZ/V2H and RZ/G3E, where the mask value should be `0x0f`. This
-> discrepancy caused incorrect PFC register configurations on RZ/V2H and
-> RZ/G3E SoCs.
->
-> On the RZ/G2L, the PFC_mx bitfields are also 4 bits wide, with bit 4
-> marked as reserved. The reserved bits are documented to read as zero and
-> be ignored when written. Updating the PFC_MASK definition from `0x07` to
-> `0x0f` ensures compatibility with both SoC families while maintaining
-> correct behavior on RZ/G2L.
->
-> Fixes: 9bd95ac86e70 ("pinctrl: renesas: rzg2l: Add support for RZ/V2H SoC=
-")
-> Cc: stable@vger.kernel.org
-> Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> ---
-> v1->v2
-> - Dropped SoC specific configuration
+Hi Luiz,
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-i.e. will queue in renesas-pinctrl for v6.14, as it is a fix.
+On Fri, Dec 13, 2024 at 10:22:05AM +0100, Johan Hovold wrote:
+> On Sat, Nov 16, 2024 at 07:49:23AM -0800, Zijun Hu wrote:
+> > For WCN6855, board ID specific NVM needs to be downloaded once board ID
+> > is available, but the default NVM is always downloaded currently, and
+> > the wrong NVM causes poor RF performance which effects user experience.
+> > 
+> > Fix by downloading board ID specific NVM if board ID is available.
 
-Gr{oetje,eeting}s,
+> > Fixes: 095327fede00 ("Bluetooth: hci_qca: Add support for QTI Bluetooth chip wcn6855")
+> > Cc: stable@vger.kernel.org # 6.4
+> > Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+> > Tested-by: Johan Hovold <johan+linaro@kernel.org>
+> > Tested-by: Steev Klimaszewski <steev@kali.org>
+> > Tested-by: Jens Glathe <jens.glathe@oldschoolsolutions.biz>
+> > Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+> 
+> > I will help to backport it to LTS kernels ASAP once this commit
+> > is mainlined.
+> > ---
+> > Changes in v2:
+> > - Correct subject and commit message
+> > - Temporarily add nvm fallback logic to speed up backport.
+> > — Add fix/stable tags as suggested by Luiz and Johan
+> > - Link to v1: https://lore.kernel.org/r/20241113-x13s_wcn6855_fix-v1-1-15af0aa2549c@quicinc.com
+> 
+> The board-specific NVM configuration files have now been included in the
+> linux-firmware-20241210 release and are making their way into the
+> distros (e.g. Arch Linux ARM and Fedora now ship them).
+> 
+> Could we get this merged for 6.13-rc (and backported) so that Lenovo
+> ThinkPad X13s users can finally enjoy excellent Bluetooth range? :)
 
-                        Geert
+This fix is still pending in your queue (I hope) and I was hoping you
+would be able to get it into 6.13-rc. The reason, apart from this being
+a crucial fix for users of this chipset, was also to avoid any conflicts
+with the new "rampatch" firmware name feature (which will also
+complicate backporting somewhat).
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+Those patches were resent on January 7 and have now been merged for 6.14
+(presumably):
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+	https://lore.kernel.org/all/20250107092650.498154-1-quic_chejiang@quicinc.com/
+
+How do we handle this? Can you still get this fix into 6.13 or is it
+now, as I assume, too late for that?
+
+Zijun, depending on Luiz' reply, can you look into rebasing on top of the
+patches now queued for linux-next?
+
+Johan
 
