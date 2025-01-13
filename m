@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-108506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09647A0C057
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:43:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A00A0C059
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:43:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF5513A2DFC
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:43:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 122C83A1975
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA7AA20F090;
-	Mon, 13 Jan 2025 18:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 348DA211715;
+	Mon, 13 Jan 2025 18:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VL62NJaa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dw9FcEy5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E9A20F07B;
-	Mon, 13 Jan 2025 18:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05EB211460;
+	Mon, 13 Jan 2025 18:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793355; cv=none; b=MrC6mV1NW0Pj0NtNOSWP3Gf4U0UDDAyc7AngE01LNPLo1I+0aG8ZoecK+sQRDrYl+P5YxwrMpPwNeNazkcynRN26bdSNLnSV6uqYcC4MkUutUiDdEb7cI/HZlVVRCJjDQViH/myxspxZbqzMT9UspiaVQsiJIDEekPxJe9Q2RGI=
+	t=1736793357; cv=none; b=jErvifTXvUsZans8fNirptdS3v0ZSKIygcNgBQuTgKTzjUI7dF0XlDed3Z/ZL7W5iX7Ee/W/nGzeAoH6SjXoj74hQzvxpJI4/RTdcXEH1WNLtQ8d9/7Wi/4UxP2PYJ5OslyUE4PE7MQTyKKE31b1AnhpzWtc/wq7Z7xUn/hBVMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793355; c=relaxed/simple;
-	bh=XAv+jz/bkNvYNMhL/vqbGq2zVw2DJExlfEMn82bOwbU=;
+	s=arc-20240116; t=1736793357; c=relaxed/simple;
+	bh=wczmufoKcjIgTjG6Z3shPMl/d7xYT7WGizP5sWsZ/dQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dpbvpnVTr5B+3Oy3iUX9IQsobdw3YeQ5YAuH9qjGAtlHZqkRrFWTCl4AQWwLtAYpSNz/v8rpmaor+GkksGkkHJY7zMqUhJJuGC2xrp/HIquxSgLdblF/7MkVZtoktOIPSbQlP7mWfP8O8wlOXFDXK3Xr45xo7L5Dk+/dENFspiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VL62NJaa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B43D8C4CED6;
-	Mon, 13 Jan 2025 18:35:53 +0000 (UTC)
+	 MIME-Version; b=qCEwyLDr2JlNeVcq80kbjnqir4RBmILJqd9QreFlBto6J/YhOkouGPwZTiWT0EGsK/1fJTtx2oOllU5oKzaYTxWd3u0+VoXLFDtiZLZabMN57BzF10aAD0ltR0i7MBFbtubpLP7+yiBD2LR9Elb8ynEUSHNfZu0iGLzaOqiNNYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dw9FcEy5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97718C4CEE5;
+	Mon, 13 Jan 2025 18:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736793355;
-	bh=XAv+jz/bkNvYNMhL/vqbGq2zVw2DJExlfEMn82bOwbU=;
+	s=k20201202; t=1736793356;
+	bh=wczmufoKcjIgTjG6Z3shPMl/d7xYT7WGizP5sWsZ/dQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VL62NJaacxc7y1MuobzGbEzqSGDp1KGlg9BW1WhuB1mBHFkljIZWDKIrnIkoAhg+P
-	 9vQnErh093F46z/Rd+Osb70NKZA792+TQiYN+EeWGFRZmIEHRKkmnsoUVi0xDt7wK6
-	 KoDyaLEiLN3E5zkJXDFMX+6wL0kaU3U/OKuAWs/+D1XBb52tLpSu2Rw641NfqAIJgr
-	 3xAtq7Ew7goKh2KGALGmNuaEL17cCEf7axST4zIOd54199/+OTHskeq7w+5YN60zbd
-	 86pzInGooKjn5/Ci4Jg/zuzJjbc2QnPPTKXGd8Dz9DTj4X3EjaDw9IS3c+O22P7wJm
-	 HEVTpXB820Emw==
+	b=Dw9FcEy5N76Cx36Wy0drJlU/Q7A+YRuNbGzC6Y/1Qg9bEOekG+TemxplGt2xSCull
+	 fkQkqUbC9wPYI386JbuvfsxGBZe+caffrMwekkNhk3XOEaEQz2QYlyzBodJ/r1yzBR
+	 nRnGNHRdNWdGNK0K2zahi8jECPd3RPoH+oFWvLWvjX9pTQK19Nh6O8xvZmdLkBSW5n
+	 xGKVNkuKRptW19fcZHzSJGNWApyoSBsxjBahDtNYP4CkDEYQ+isuYLA91S7UJbTrj2
+	 RP4ZmpSY2l35+yHFniBvG1sOjuM7w4bpYwlzJa2a3Sootr2TMGbH7EYqqRo2vm71wW
+	 k6EaYcH5F09cA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jhs@mojatatu.com,
-	xiyou.wangcong@gmail.com,
-	jiri@resnulli.us,
-	shuah@kernel.org,
-	horms@kernel.org,
-	karansanghvi98@gmail.com,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 07/10] selftests: tc-testing: reduce rshift value
-Date: Mon, 13 Jan 2025 13:35:33 -0500
-Message-Id: <20250113183537.1784136-7-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 08/10] ACPI: resource: acpi_dev_irq_override(): Check DMI match last
+Date: Mon, 13 Jan 2025 13:35:34 -0500
+Message-Id: <20250113183537.1784136-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250113183537.1784136-1-sashal@kernel.org>
 References: <20250113183537.1784136-1-sashal@kernel.org>
@@ -72,39 +67,46 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.124
 Content-Transfer-Encoding: 8bit
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit e95274dfe86490ec2a5633035c24b2de6722841f ]
+[ Upstream commit cd4a7b2e6a2437a5502910c08128ea3bad55a80b ]
 
-After previous change rshift >= 32 is no longer allowed.
-Modify the test to use 31, the test doesn't seem to send
-any traffic so the exact value shouldn't matter.
+acpi_dev_irq_override() gets called approx. 30 times during boot (15 legacy
+IRQs * 2 override_table entries). Of these 30 calls at max 1 will match
+the non DMI checks done by acpi_dev_irq_override(). The dmi_check_system()
+check is by far the most expensive check done by acpi_dev_irq_override(),
+make this call the last check done by acpi_dev_irq_override() so that it
+will be called at max 1 time instead of 30 times.
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250103182458.1213486-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/20241228165253.42584-1-hdegoede@redhat.com
+[ rjw: Subject edit ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/tc-testing/tc-tests/filters/flow.json | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/resource.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/filters/flow.json b/tools/testing/selftests/tc-testing/tc-tests/filters/flow.json
-index 58189327f644..383fbda07245 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/filters/flow.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/filters/flow.json
-@@ -78,10 +78,10 @@
-         "setup": [
-             "$TC qdisc add dev $DEV1 ingress"
-         ],
--        "cmdUnderTest": "$TC filter add dev $DEV1 parent ffff: handle 1 prio 1 protocol ip flow map key dst rshift 0xff",
-+        "cmdUnderTest": "$TC filter add dev $DEV1 parent ffff: handle 1 prio 1 protocol ip flow map key dst rshift 0x1f",
-         "expExitCode": "0",
-         "verifyCmd": "$TC filter get dev $DEV1 parent ffff: handle 1 protocol ip prio 1 flow",
--        "matchPattern": "filter parent ffff: protocol ip pref 1 flow chain [0-9]+ handle 0x1 map keys dst rshift 255 baseclass",
-+        "matchPattern": "filter parent ffff: protocol ip pref 1 flow chain [0-9]+ handle 0x1 map keys dst rshift 31 baseclass",
-         "matchCount": "1",
-         "teardown": [
-             "$TC qdisc del dev $DEV1 ingress"
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index b36b8592667d..f59a62396d65 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -645,11 +645,11 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
+ 	for (i = 0; i < ARRAY_SIZE(override_table); i++) {
+ 		const struct irq_override_cmp *entry = &override_table[i];
+ 
+-		if (dmi_check_system(entry->system) &&
+-		    entry->irq == gsi &&
++		if (entry->irq == gsi &&
+ 		    entry->triggering == triggering &&
+ 		    entry->polarity == polarity &&
+-		    entry->shareable == shareable)
++		    entry->shareable == shareable &&
++		    dmi_check_system(entry->system))
+ 			return entry->override;
+ 	}
+ 
 -- 
 2.39.5
 
