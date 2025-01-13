@@ -1,64 +1,64 @@
-Return-Path: <stable+bounces-108500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75AF9A0C046
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:42:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB342A0C048
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 19:42:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DDDC16A5BD
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:42:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 477E13A7FE2
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 18:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDDA8209679;
-	Mon, 13 Jan 2025 18:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B7320B1F3;
+	Mon, 13 Jan 2025 18:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ava6OrM/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RUoIHblM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73BF61C5496;
-	Mon, 13 Jan 2025 18:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142CB20AF89;
+	Mon, 13 Jan 2025 18:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793342; cv=none; b=WF80HhPlFie/a1CxyWfYSDoQNJLPBbdapPy3zSXJFG4gh1kB4H5ZM9UqYaO+LMfdjza9ojBZX1er480MylKP/Vd776UJl+vtg3Sl9pNEBf6nHSABOwEsNuDaezBcH01JpXh0SUKNI6YFhUoddhUjo+sdssqFd9Id4DBDZjA9xXw=
+	t=1736793345; cv=none; b=OKY4LY5wSAENyf97UYWDQEjlYNge6dLzVMzyqV37SyMzODJ++ZXECV72SpHoWZa6+u3ddQHWpS6Ixt12WIxYU4QN2YtDuTYPteSY2kElJO4RUPAGOSn//ZRVqsysux46MH8nxYPrq7GVBsUV7ywcC2JsoHXXmuwGguczweF2+lI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793342; c=relaxed/simple;
-	bh=g4m3iqCCHuo24pi498OinOOvT/DqOGwtiBqHKv/yM3g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Jo0qhoKwflaaLpltgK5s9vNA4Y7gTkXZem/9npafDedREwiSnaYqCnHUmflkCOrlVjphVHO+vezKvKHTbumsADtLFb4NCkrm7Y446+6Ohgy+1bixyYq8jNbZhFXDn5YF9AKKgFv8mf1zsIgUsHKugPyLVfNXUEYCSlBe9VI/y4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ava6OrM/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7572C4CED6;
-	Mon, 13 Jan 2025 18:35:40 +0000 (UTC)
+	s=arc-20240116; t=1736793345; c=relaxed/simple;
+	bh=u2zFzAaBRMPWTRzDckQPH3srUU5ZsguO5KNP5zWr598=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=YBNmGsTZt7oiGhKVuQs0qCNQR2fDLo8qXGCLp3rck0oorTwGJQgcudi0dc4xjzsmImxqoBidlVt5Qs6nov/ktQa5e5elXLnWuy8BsScBgXI+AFY6U4PqSL2JH7T7TJuA1R+1HXFkLbqtlqrjDD3m0EwK+BqFPu0GUHWNdnYRC70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RUoIHblM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 741FFC4CEE1;
+	Mon, 13 Jan 2025 18:35:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736793342;
-	bh=g4m3iqCCHuo24pi498OinOOvT/DqOGwtiBqHKv/yM3g=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Ava6OrM/t1tH9ygEMnkcZCXfriZS2aK76ynuHpTuFp5aD7mG1/0ysN+tZufnjyJXd
-	 r5XlLju3ksukS03BWg30/7EHTT/dIqUbVIQWQIXG66msRsB25ih+lmqv6qV23JZdk8
-	 9aBjb4hJucusiHAq5Kq1X/I/u16leSMQIY9oJbeJMNs+NThqtMwt1UnO+n6iI0crsn
-	 Xorg3E67jyic5ptAKs6sk3v09IKbEE6AdxtB5jx6jPnLoL0xnwZc+y+o32WOlSOWH/
-	 6a0+IpIh5AgHuhMx41Gzp5gZXx71+gPBeeQCYRQ7bfDSARr4rOWXqBp5mWTLDKA/Pi
-	 372uc0uAc+rhg==
+	s=k20201202; t=1736793344;
+	bh=u2zFzAaBRMPWTRzDckQPH3srUU5ZsguO5KNP5zWr598=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RUoIHblMs9b2FMaUZbWvS0IIfMOawBQfN/Y6zvB5ORl2qzSDPipjBozT0U4xmQHPN
+	 LzGPygXWZ0bixSHAiSE0sFdxQJSOXgbCEiFc4s+Z39m0qXqW1tbzwfngNdhXk0pn0T
+	 i5j/4VYbHse4IkGqH2Ea54S99yCqxt4Y7J6x2weamIRIC56bdfPjfK5Qi+/PP2qdNw
+	 KQDx73LWOM1lZoB5nE7zt3eOJY2eu+k8BmoE57YZMWy7RYKnyezMCAqQDTKMRY8Z5F
+	 oZM0g/npQAPBhP//ozm6cAKBft/FLdTwMX7ma9v+YP5MjNlaQyBaiZWvZpg+vtPr1m
+	 wOySNbaQHs0hg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Lizhi Xu <lizhi.xu@windriver.com>,
-	syzbot+985f827280dc3a6e7e92@syzkaller.appspotmail.com,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
+Cc: Leo Stone <leocstone@gmail.com>,
+	syzbot+2db3c7526ba68f4ea776@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	alex.aring@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 01/10] mac802154: check local interfaces before deleting sdata list
-Date: Mon, 13 Jan 2025 13:35:27 -0500
-Message-Id: <20250113183537.1784136-1-sashal@kernel.org>
+	sandeen@redhat.com,
+	viro@zeniv.linux.org.uk,
+	quic_jjohnson@quicinc.com,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 02/10] hfs: Sanity check the root record
+Date: Mon, 13 Jan 2025 13:35:28 -0500
+Message-Id: <20250113183537.1784136-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250113183537.1784136-1-sashal@kernel.org>
+References: <20250113183537.1784136-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,98 +70,54 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.124
 Content-Transfer-Encoding: 8bit
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Leo Stone <leocstone@gmail.com>
 
-[ Upstream commit eb09fbeb48709fe66c0d708aed81e910a577a30a ]
+[ Upstream commit b905bafdea21a75d75a96855edd9e0b6051eee30 ]
 
-syzkaller reported a corrupted list in ieee802154_if_remove. [1]
+In the syzbot reproducer, the hfs_cat_rec for the root dir has type
+HFS_CDR_FIL after being read with hfs_bnode_read() in hfs_super_fill().
+This indicates it should be used as an hfs_cat_file, which is 102 bytes.
+Only the first 70 bytes of that struct are initialized, however,
+because the entrylength passed into hfs_bnode_read() is still the length of
+a directory record. This causes uninitialized values to be used later on,
+when the hfs_cat_rec union is treated as the larger hfs_cat_file struct.
 
-Remove an IEEE 802.15.4 network interface after unregister an IEEE 802.15.4
-hardware device from the system.
+Add a check to make sure the retrieved record has the correct type
+for the root directory (HFS_CDR_DIR), and make sure we load the correct
+number of bytes for a directory record.
 
-CPU0					CPU1
-====					====
-genl_family_rcv_msg_doit		ieee802154_unregister_hw
-ieee802154_del_iface			ieee802154_remove_interfaces
-rdev_del_virtual_intf_deprecated	list_del(&sdata->list)
-ieee802154_if_remove
-list_del_rcu
-
-The net device has been unregistered, since the rcu grace period,
-unregistration must be run before ieee802154_if_remove.
-
-To avoid this issue, add a check for local->interfaces before deleting
-sdata list.
-
-[1]
-kernel BUG at lib/list_debug.c:58!
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 0 UID: 0 PID: 6277 Comm: syz-executor157 Not tainted 6.12.0-rc6-syzkaller-00005-g557329bcecc2 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-RIP: 0010:__list_del_entry_valid_or_report+0xf4/0x140 lib/list_debug.c:56
-Code: e8 a1 7e 00 07 90 0f 0b 48 c7 c7 e0 37 60 8c 4c 89 fe e8 8f 7e 00 07 90 0f 0b 48 c7 c7 40 38 60 8c 4c 89 fe e8 7d 7e 00 07 90 <0f> 0b 48 c7 c7 a0 38 60 8c 4c 89 fe e8 6b 7e 00 07 90 0f 0b 48 c7
-RSP: 0018:ffffc9000490f3d0 EFLAGS: 00010246
-RAX: 000000000000004e RBX: dead000000000122 RCX: d211eee56bb28d00
-RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
-RBP: ffff88805b278dd8 R08: ffffffff8174a12c R09: 1ffffffff2852f0d
-R10: dffffc0000000000 R11: fffffbfff2852f0e R12: dffffc0000000000
-R13: dffffc0000000000 R14: dead000000000100 R15: ffff88805b278cc0
-FS:  0000555572f94380(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000056262e4a3000 CR3: 0000000078496000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- __list_del_entry_valid include/linux/list.h:124 [inline]
- __list_del_entry include/linux/list.h:215 [inline]
- list_del_rcu include/linux/rculist.h:157 [inline]
- ieee802154_if_remove+0x86/0x1e0 net/mac802154/iface.c:687
- rdev_del_virtual_intf_deprecated net/ieee802154/rdev-ops.h:24 [inline]
- ieee802154_del_iface+0x2c0/0x5c0 net/ieee802154/nl-phy.c:323
- genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
- genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
- genl_rcv_msg+0xb14/0xec0 net/netlink/genetlink.c:1210
- netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2551
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
- netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
- netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1357
- netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1901
- sock_sendmsg_nosec net/socket.c:729 [inline]
- __sock_sendmsg+0x221/0x270 net/socket.c:744
- ____sys_sendmsg+0x52a/0x7e0 net/socket.c:2607
- ___sys_sendmsg net/socket.c:2661 [inline]
- __sys_sendmsg+0x292/0x380 net/socket.c:2690
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Reported-and-tested-by: syzbot+985f827280dc3a6e7e92@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=985f827280dc3a6e7e92
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/20241113095129.1457225-1-lizhi.xu@windriver.com
-Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+Reported-by: syzbot+2db3c7526ba68f4ea776@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2db3c7526ba68f4ea776
+Tested-by: syzbot+2db3c7526ba68f4ea776@syzkaller.appspotmail.com
+Tested-by: Leo Stone <leocstone@gmail.com>
+Signed-off-by: Leo Stone <leocstone@gmail.com>
+Link: https://lore.kernel.org/r/20241201051420.77858-1-leocstone@gmail.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac802154/iface.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/hfs/super.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac802154/iface.c b/net/mac802154/iface.c
-index 7e2065e72915..0233929502ec 100644
---- a/net/mac802154/iface.c
-+++ b/net/mac802154/iface.c
-@@ -689,6 +689,10 @@ void ieee802154_if_remove(struct ieee802154_sub_if_data *sdata)
- 	ASSERT_RTNL();
- 
- 	mutex_lock(&sdata->local->iflist_mtx);
-+	if (list_empty(&sdata->local->interfaces)) {
-+		mutex_unlock(&sdata->local->iflist_mtx);
-+		return;
-+	}
- 	list_del_rcu(&sdata->list);
- 	mutex_unlock(&sdata->local->iflist_mtx);
- 
+diff --git a/fs/hfs/super.c b/fs/hfs/super.c
+index 6764afa98a6f..431bdc65f723 100644
+--- a/fs/hfs/super.c
++++ b/fs/hfs/super.c
+@@ -418,11 +418,13 @@ static int hfs_fill_super(struct super_block *sb, void *data, int silent)
+ 		goto bail_no_root;
+ 	res = hfs_cat_find_brec(sb, HFS_ROOT_CNID, &fd);
+ 	if (!res) {
+-		if (fd.entrylength > sizeof(rec) || fd.entrylength < 0) {
++		if (fd.entrylength != sizeof(rec.dir)) {
+ 			res =  -EIO;
+ 			goto bail_hfs_find;
+ 		}
+ 		hfs_bnode_read(fd.bnode, &rec, fd.entryoffset, fd.entrylength);
++		if (rec.type != HFS_CDR_DIR)
++			res = -EIO;
+ 	}
+ 	if (res)
+ 		goto bail_hfs_find;
 -- 
 2.39.5
 
