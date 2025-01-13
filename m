@@ -1,113 +1,112 @@
-Return-Path: <stable+bounces-108536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED041A0C51D
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 00:06:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1064A0C531
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 00:09:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F3271885B8C
-	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 23:06:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDA27165A6F
+	for <lists+stable@lfdr.de>; Mon, 13 Jan 2025 23:09:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E6C1F942D;
-	Mon, 13 Jan 2025 23:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83EAA1F9F5F;
+	Mon, 13 Jan 2025 23:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fGN55zD+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZYoJU6r5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f51.google.com (mail-io1-f51.google.com [209.85.166.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586791D5150
-	for <stable@vger.kernel.org>; Mon, 13 Jan 2025 23:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2C01FA15D
+	for <stable@vger.kernel.org>; Mon, 13 Jan 2025 23:08:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736809603; cv=none; b=R+GaQ7Fae9A9yzFWfLRWFbaRivysHP9CV9uAu7F2JYbCv5vMUKjR9IONM0BCl39AMF9FPXwups7nB4IjQYfckupAb2DoqMTekM0dLU0WbOFdG+2sE9vg8Lu7f9kGa449qbdA78p5RCp7sr4sg2VG+Vu3aIMAr+XP9Ld/7YjbxKc=
+	t=1736809739; cv=none; b=bLdlD+Mh1q2IUEKkqKC16WznOgPkSjRkG9cV0c7GUsJMxq16ZBVOP4kNzMKGktrHpNTZ7lpeIkkcuWUrmXTzesDsJP8bR2moV5ceqcBi+33zcQGva8rf/2pBjB33uWpPHeBQNycwFyjnHElEENxbgQzkhDrPIQV6P0B2sFJvGao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736809603; c=relaxed/simple;
-	bh=FY3CAUHnUAGPlAvnTqBwytKqjfIe0H96ZK2+kvt3Gpo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SNgbD+hANurzUoZztFk86rVye81tzxu43qQRtIhv2FSk0Xq0F1pxa9SAp6kPdWhmcke0ftms/Kfj+tOgKj/O8i5uoiV67Nnwfu3OxuisjATmoIQhYGI8TipK4l4O0zlAowiFNM3LATjHaVO3ypIIZsP1E1osiCP7CYd1sePavxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fGN55zD+; arc=none smtp.client-ip=209.85.166.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-io1-f51.google.com with SMTP id ca18e2360f4ac-84a012f7232so188885639f.0
-        for <stable@vger.kernel.org>; Mon, 13 Jan 2025 15:06:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1736809600; x=1737414400; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=t98L05cLqoN9QlNAdFWwtAB2uSyAKNpsq0R3tlTJnx4=;
-        b=fGN55zD+QPKLTIC1ERc58hM9umFVkrs3t9SSVj3jKPYQaee3iswV/0spT0NsKCUget
-         JEyaj3elRNTisN9FN7FtU5LE4NLRwVksQ6Iqm7IzCO96TvYeJpyB84YBTzrg3KQtZIFP
-         uHobzoMZG9AS9FwjzAsqrxgm2ABSeadHkVotc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736809600; x=1737414400;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=t98L05cLqoN9QlNAdFWwtAB2uSyAKNpsq0R3tlTJnx4=;
-        b=dOYEZARAXnO+xxg8LAzspMIUqxC9DUsevQMoO1L8zPvMYinjoU0F6w4ETIV35BdQy/
-         XTq/LfLH+9SB6V+wab/PmCpZmNaphF6Xfh5ov6/ST4hMQuEUtyH+cCa4vP+hdWxAVnqf
-         qgVmtlxD2rUsCO/5TvAwh9K/a/tKEmPg5KWu5fTzBnuHyJdmAw1xeKUWLf1x5LZLZ0li
-         LZ3yUR4m7jY3sOV2QiqAslUkQiYFicjTACwnoiTjAODnSjTn1VqSl9iEMtRSbGJBfIhM
-         L1GczcjzPbQRBtlm6doiphp2DFrWzi3puSDaHzivFohHrCkbhnRIiKOeBTYXkP3HVv0c
-         rTgw==
-X-Forwarded-Encrypted: i=1; AJvYcCW1n8kyfDx4yvF8GEj1uZ4eG6EVVAsjQP5icVQC8ZMX4VzGBQLplvtaR2Obva3L0Ht4zCR3aAc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynvkradB9lMDaMUoQaMEVJvLlJ9z/ZyBt8FakFCocUOalsJroQ
-	dAEay9jsFX9KUtMdbXxWfqStUq6EpEa4xrz+1YuYmilb0l+ApRqmsvTn561Umws=
-X-Gm-Gg: ASbGncs6/CNSkrawVQJ6eG4JAcDP0dlkbqOPvIazeA/afn0nkwF7qTIgRpybcLgWJKd
-	k4Vj6qcl9pn3dJcJK5fTKpqOwZsdY9tqqM+vYxf1ePR5WzQiaDTePqEk1iIEaE6sONnEaclQBRm
-	PweR/FPLKqCSBAeLH1oLj366PADfzeKud6HPiWMujWdSbROa3ngqgY7un/1DHeCSs0tBwvXE6GB
-	Mhr/PWeIoshtVyFCyDVbdEU9HJf/Qa/QjbZzPGxQDxH+Cvut8S9PaG/wlah67o+6P0=
-X-Google-Smtp-Source: AGHT+IH8D8/WA3nsz270K68ibq75FwpYAmp8r79kGSFWGw5muQ30GDD6Uv2Knph7vskIzmqScVtI3A==
-X-Received: by 2002:a05:6e02:1a8f:b0:3cd:c260:9f55 with SMTP id e9e14a558f8ab-3ce47570cd3mr131591595ab.4.1736809600570;
-        Mon, 13 Jan 2025 15:06:40 -0800 (PST)
-Received: from [192.168.1.14] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4ea1b717838sm3014196173.102.2025.01.13.15.06.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Jan 2025 15:06:40 -0800 (PST)
-Message-ID: <15339541-8912-4a1f-b5ca-26dd825dfb88@linuxfoundation.org>
-Date: Mon, 13 Jan 2025 16:06:39 -0700
+	s=arc-20240116; t=1736809739; c=relaxed/simple;
+	bh=tShjpp39Ve+NxUDA/CSe2L1CLO+UEMz9mbcN7D/xmqQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=jFI0odJNZhZpV7ujUIv5QJlGsrAs/0v70JxR3qgSCvexBLE4EDGgbada6G2p79XG6CYwHYI7JEU5nATZsKTg/cwtPjhRvqT8qVhWCCJMVjZAxWvG8jH+x9iTAfy6eBjp23XcDjFWt26vnbJ99cS4XJxvX0PrnJwT2K6P5Tf4rH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZYoJU6r5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B39C4CED6;
+	Mon, 13 Jan 2025 23:08:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736809738;
+	bh=tShjpp39Ve+NxUDA/CSe2L1CLO+UEMz9mbcN7D/xmqQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZYoJU6r57xP0W3le0MUU5ZJOs0OqRTH7hmgCj55Y2rkh90IxywBs2r8aedf/xWrro
+	 MGtc0bzcjB6F8l0MFIqrs/XV2k/JSkAkg/4D0emMhEeJilXDd7qyn1d3bB/ul1u5eM
+	 pp+SVI1nOP77YWkMfY1VgCwkbFbLt4UHScNpSGRVPIlCZ8afbkiOFVqpdAFYsvwqhi
+	 6r8qeJp6vy6TxC8o7c/s+v5UKju7YF+w+n92uTjz5N8LCqybJ5+AqY+T6snbUoDFzD
+	 bZSZ0s21hPCUgNTVXD6zB5Mw6XRL+Kr1uiem7ms7Ykby2KemEZ9QKsrsfGTENBAjcP
+	 ySnWR/WGeiOew==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: alvalan9@foxmail.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1.y] scsi: sg: Fix slab-use-after-free read in sg_release()
+Date: Mon, 13 Jan 2025 18:08:56 -0500
+Message-Id: <20250113154914-d677dbd3643494e5@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <tencent_F25BABE1B0C2A434C8D316D5147CD849FE0A@qq.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/rseq: Fix rseq for cases without glibc support
-To: Raghavendra Rao Ananta <rananta@google.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20241210224435.15206-1-rananta@google.com>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20241210224435.15206-1-rananta@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 12/10/24 15:44, Raghavendra Rao Ananta wrote:
-> Currently the rseq constructor, rseq_init(), assumes that glibc always
-> has the support for rseq symbols (__rseq_size for instance). However,
-> glibc supports rseq from version 2.35 onwards. As a result, for the
-> systems that run glibc less than 2.35, the global rseq_size remains
-> initialized to -1U. When a thread then tries to register for rseq,
-> get_rseq_min_alloc_size() would end up returning -1U, which is
-> incorrect. Hence, initialize rseq_size for the cases where glibc doesn't
-> have the support for rseq symbols.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 73a4f5a704a2 ("selftests/rseq: Fix mm_cid test failure")
-> Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
-> ---
+[ Sasha's backport helper bot ]
 
-Applied to linux_kselftest next for Linux 6.14-rc1 after fixing the
-commit if for Fixes tag
+Hi,
 
-thanks,
--- Shuah
+The upstream commit SHA1 provided is correct: f10593ad9bc36921f623361c9e3dd96bd52d85ee
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: alvalan9@foxmail.com
+Commit author: Suraj Sonawane<surajsonawane0215@gmail.com>
+
+
+Status in newer kernel trees:
+6.12.y | Present (different SHA1: 1f5e2f1ca587)
+6.6.y | Present (different SHA1: 59b30afa5786)
+6.1.y | Not found
+
+Note: The patch differs from the upstream commit:
+---
+1:  f10593ad9bc3 ! 1:  7c77aeeb186d scsi: sg: Fix slab-use-after-free read in sg_release()
+    @@ Metadata
+      ## Commit message ##
+         scsi: sg: Fix slab-use-after-free read in sg_release()
+     
+    +    commit f10593ad9bc36921f623361c9e3dd96bd52d85ee upstream.
+    +
+         Fix a use-after-free bug in sg_release(), detected by syzbot with KASAN:
+     
+         BUG: KASAN: slab-use-after-free in lock_release+0x151/0xa30
+    @@ Commit message
+         Link: https://lore.kernel.org/r/20241120125944.88095-1-surajsonawane0215@gmail.com
+         Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+         Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+    +    Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+     
+      ## drivers/scsi/sg.c ##
+     @@ drivers/scsi/sg.c: sg_release(struct inode *inode, struct file *filp)
+    - 	SCSI_LOG_TIMEOUT(3, sg_printk(KERN_INFO, sdp, "sg_release\n"));
+      
+      	mutex_lock(&sdp->open_rel_lock);
+    + 	scsi_autopm_put_device(sdp->device);
+     -	kref_put(&sfp->f_ref, sg_remove_sfp);
+      	sdp->open_cnt--;
+      
+---
+
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.1.y        |  Success    |  Success   |
 
