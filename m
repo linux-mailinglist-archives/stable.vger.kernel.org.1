@@ -1,185 +1,208 @@
-Return-Path: <stable+bounces-108579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51F06A102F0
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 10:23:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B42A102F1
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 10:23:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FCF9167D5D
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 09:22:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9510E1886A1C
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 09:23:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ADB128EC6B;
-	Tue, 14 Jan 2025 09:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881F1230273;
+	Tue, 14 Jan 2025 09:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bla/8NyJ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="t9/CvVal"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3A8284A71
-	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 09:22:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC881C1AB4
+	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 09:23:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736846555; cv=none; b=lghtgtkli5FdFQFm1M0L1nb1tyXtzqAeL+mpMd32fc1KGimEPahvcS00uhy0MV1AbGn27WK5yV4c8JDrFs7uIERxHnQiUPo5w3YJRh4CF4ZYcC1+IpAqDEB9hq4BHN5l90fwnKzbqHjukac8fTDH3a9ESfP+cmdyDMOHF3xEtms=
+	t=1736846627; cv=none; b=JNjT5SpQXT63KSE2H0XfiHuNlUDzzWhyZBNZ2wPqdhwZ/t+eS58M4UB3JkQsHUSdHMIP69npOzr1HOyCLoMnqNgtVb5DfhENxr89dkjA3Hn/LfaG6zpExc5o2KNuHqnUioxaUeGQAEYxSAqK6T//8NF1CDusgONwGwomzKon6bU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736846555; c=relaxed/simple;
-	bh=jM3aQF/V7ROCNUJbA5YlAjn0Z2uHE1HMCotaEhPYWv0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=cmGrzd8ebXLql29OJTO2b97tZdR70Ay8TQVPeVdqpltsvt6DQlTtygnFvABDEBINIh6MqBsAaO/UPlkAIZNQu+O11Y9JUeK9/3HlcHComl5k1grbFmpI0no1n/j+3SyVuRoV5LnblP3yDv3RPavCqIEOToZ10ULqJiOIrE1VFRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bla/8NyJ; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736846553; x=1768382553;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version:content-transfer-encoding;
-  bh=jM3aQF/V7ROCNUJbA5YlAjn0Z2uHE1HMCotaEhPYWv0=;
-  b=bla/8NyJRTFOcwgahkzXUyh4tzWoKosWcq/ntuJKQahC9ypLBQ+n5CHI
-   /wtK3xeufZt66G48kI3jAfy4OLCVPkI2ZT0dMVp2F5H2ozME5Qya/CjR1
-   17wuQx3/zUQwTsQu+0mczNdWrocWiETxp167KkR6rsjQKban51vAuGXio
-   2tp0WV87GTkwcQeoPxB3oE0EzfG32tSvvBsaAziHQE8ZSydjtiL7LYlq+
-   CYvYUuTJAoUKDU56iF2Y+r/lnqXRDLcrdMx466Xzl5UJIdd22CSu0oRQZ
-   fVKVQyRdwXfKHhmvNel/HW3aJKEgbSpqNDyspN2BFvG7KtbkE6XLy22Lv
-   w==;
-X-CSE-ConnectionGUID: cFiP95t6T96kMPDKOqz/Sw==
-X-CSE-MsgGUID: R4STJrgrRJKLn1oh16nq5g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="54549941"
-X-IronPort-AV: E=Sophos;i="6.12,313,1728975600"; 
-   d="scan'208";a="54549941"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 01:22:33 -0800
-X-CSE-ConnectionGUID: MrWU+AF7TKim4rsN3zqS+w==
-X-CSE-MsgGUID: 2cql6zWLQI6Ut3NSf2PJ+Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,313,1728975600"; 
-   d="scan'208";a="109738408"
-Received: from slindbla-desk.ger.corp.intel.com (HELO localhost) ([10.245.246.230])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 01:22:30 -0800
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Dave Airlie <airlied@gmail.com>, Greg KH <gregkh@linuxfoundation.org>
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
- stable@vger.kernel.org, ashutosh.dixit@intel.com,
- dri-devel@lists.freedesktop.org
-Subject: Re: AAARRRGGGHHH!!!! (was Re: [PATCH 6.12.y] xe/oa: Fix query mode
- of operation for OAR/OAC)
-In-Reply-To: <CAPM=9txHupDKRShZLe8FA2kJwov-ScDASqJouUdxbMZ3X=U1-Q@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <2025010650-tuesday-motivate-5cbb@gregkh>
- <20250110205341.199539-1-umesh.nerlige.ramappa@intel.com>
- <2025011215-agreeing-bonfire-97ae@gregkh>
- <CAPM=9txHupDKRShZLe8FA2kJwov-ScDASqJouUdxbMZ3X=U1-Q@mail.gmail.com>
-Date: Tue, 14 Jan 2025 11:22:26 +0200
-Message-ID: <871px5iwbx.fsf@intel.com>
+	s=arc-20240116; t=1736846627; c=relaxed/simple;
+	bh=oYpAQBhA6oPHH4Ricya3Bzgts/o51VFx30fQ7a+NYj4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=URuk05sr/KONTmrXWV5kk0QOTJEnK0i1ectF61xOEuOvmxQHx7htaGhWbu1bqloS8EqKJU+mm2VjD6aUOCKeXDsVWRl5bkw4lZGoYc8Deb30aST4fYnHVdQXC7V3J80d6OZlV70RbflcktV/qcsvurkHS1fr2irSBgfhnkP5FFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=t9/CvVal; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-385df53e559so4172445f8f.3
+        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 01:23:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1736846624; x=1737451424; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Ujceh96Zfu+ZZBCUYvGUXM3Y+jEAHufrqSQjtD+xc6o=;
+        b=t9/CvValVtjyN/seQoO26P1c1AAKpOehFqzGbtV04iZlvjkFg6QpOm9uxjYJRf1wEk
+         oYMzf1pWBtqNFdO32OnQNEggoa0rLm+Ig1b/fZA1PG05UlZ0/E4CsWhV7V5nxsUgAqA0
+         +sNLX5Ib87QdJtAm/FZ2VScJ+ZAfRdhA7pYJ2ycTHNb+GBBQLIexm2OsoFCHLxZxl4my
+         iO/P/ruFQznpxMnEajfAoDpid701tw85DdZSRW4Nh1JdWscE/8vrHlzOBNjZpy64YY6j
+         cMIYGc4CAVY+AMqRV12o8jG5qtRsJ2q2mLDkHX2drKFCIAcAMEhKKjEzb2f+bXELZplK
+         xvnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736846624; x=1737451424;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ujceh96Zfu+ZZBCUYvGUXM3Y+jEAHufrqSQjtD+xc6o=;
+        b=V5mRhAX8qOpRyY+XbGjcZwJOV2JLuKoY95XX3zr1+jPfE3+Sv2uLAhsztXN5bRz6/S
+         QzPpsFz4UnNPI3rZV/tWoSnnzpGkoHoyVEub9MCo8Q0+WfYR9o+Y3DPayVTSsMtp8Mju
+         Ivq/npYds2ZT7iypZQKWzp7Vh0+5rHt3IBfO0bNqhsiVE5wq6kZwbcQRNly2PB1usoAJ
+         MNmsIm8ZgwL5TQkrhDjHxGNTPcEYelsAUj2Cj/wJQKQnD4AMMIZqpv6XhVdAJGCH5M6E
+         NamPJbebeVbl8gg8ATpjWD3rWEjT8Xeqr/DjiVi7wz2I7DTpq6Z4ksAP77gjeGnLsyNb
+         XsZw==
+X-Forwarded-Encrypted: i=1; AJvYcCWsYZK1hFTEqdMx6TZGGaySC+drC2Bq1+QkA0Z60XnlA9Z7nDIh56zXvz/jw8WmgpYQ4L072Xk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywim+ZGuKFvZykwoY/4h74owRE1vzAYHVH3B9RSQFIP3fiK3veM
+	hmid/8U6VyZFCr+/Kdd107GSBr3rhMY32x9bGYTbrY6MO+KMDHIJAQLRba1PmDA=
+X-Gm-Gg: ASbGncuwwL6qcjK/kADeUytyiQvtY5DZd6CiUlH+9WdER7CEkoFAFDnyM3XKm1ZTI/O
+	yp4+vJJuLa265z+i5QiurlrPeQrwxkPthW+y/1YFj1IV52ni3Wt/C+F63zLl9akfo/eyaa8F9la
+	tdPOXqlNZAzPnU/IQ8sLd9Z2E4Mnhh4hrS9L1xOLrEGLn8eCwD9qrXZT/WtNdDEsHZ9koZ8P3ip
+	Lbe5iytKeWulHL7GOzwdHMqwPsPQMzPKNIb2SL2sWST01hdxAV4h6DEztCPPBHw9wMOb4Kp5YdN
+	xvGLkMAV1D7tLSb6ZyqG
+X-Google-Smtp-Source: AGHT+IGUa5x9kNh4WH7UnCyzX3Q2GslgbUWvRhsg8TCGNensTbTol30VhBNVgwctwPWzJvCkmK/QEA==
+X-Received: by 2002:a5d:5e8a:0:b0:386:3918:16b1 with SMTP id ffacd0b85a97d-38a8730fc4bmr23941231f8f.39.1736846623863;
+        Tue, 14 Jan 2025 01:23:43 -0800 (PST)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-38a8e4b7ff0sm14396260f8f.77.2025.01.14.01.23.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Jan 2025 01:23:43 -0800 (PST)
+Message-ID: <20828ba5-ecb5-46a4-8be3-9119d93c383a@linaro.org>
+Date: Tue, 14 Jan 2025 10:23:42 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, 14 Jan 2025, Dave Airlie <airlied@gmail.com> wrote:
-> On Sun, 12 Jan 2025 at 22:19, Greg KH <gregkh@linuxfoundation.org> wrote:
->>
->> On Fri, Jan 10, 2025 at 12:53:41PM -0800, Umesh Nerlige Ramappa wrote:
->> > commit 55039832f98c7e05f1cf9e0d8c12b2490abd0f16 upstream
->>
->> <snip>
->>
->> > Fixes: 8135f1c09dd2 ("drm/xe/oa: Don't reset OAC_CONTEXT_ENABLE on OA =
-stream close")
->> > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
->> > Reviewed-by: Matthew Brost <matthew.brost@intel.com> # commit 1
->> > Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
->> > Cc: stable@vger.kernel.org # 6.12+
->> > Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
->> > Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
->> > Link: https://patchwork.freedesktop.org/patch/msgid/20241220171919.571=
-528-2-umesh.nerlige.ramappa@intel.com
->> > (cherry picked from commit 55039832f98c7e05f1cf9e0d8c12b2490abd0f16)
->> > Signed-off-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
->>
->> Oh I see what you all did here.
->>
->> I give up.  You all need to stop it with the duplicated git commit ids
->> all over the place.  It's a major pain and hassle all the time and is
->> something that NO OTHER subsystem does.
->
-> Let me try and work out what you think is the problem with this
-> particular commit as I read your email and I don't get it.
->
-> This commit is in drm-next as  55039832f98c7e05f1cf9e0d8c12b2490abd0f16
-> and says Fixes: 8135f1c09dd2 ("drm/xe/oa: Don't reset
-> OAC_CONTEXT_ENABLE on OA stream close)
->
-> It was pulled into drm-fixes a second time as a cherry-pick from next
-> as f0ed39830e6064d62f9c5393505677a26569bb56
-> (cherry picked from commit 55039832f98c7e05f1cf9e0d8c12b2490abd0f16)
->
-> Now the commit it Fixes: 8135f1c09dd2 is also at
-> 0c8650b09a365f4a31fca1d1d1e9d99c56071128
->
-> Now the above thing you wrote is your cherry-picked commit for stable?
-> since I don't see
-> (cherry picked from commit f0ed39830e6064d62f9c5393505677a26569bb56)
-> in my tree anywhere.
-
-The automatic cherry-pick for 6.12 stable failed, and Umesh provided the
-manually cherry-picked patch for it, apparently using -x in the process,
-adding the second cherry-pick annotation. The duplicate annotation
-hasn't been merged to any tree, it's not part of the process, it's just
-what happened with this manual stable backport. I think it would be wise
-to ignore that part of the whole discussion. It's really not that
-relevant.
-
-BR,
-Jani.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v2 1/5] thermal/drivers/mediatek/lvts: Disable
+ monitor mode during suspend
+To: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+ Lukasz Luba <lukasz.luba@arm.com>, Matthias Brugger
+ <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Alexandre Mergnat <amergnat@baylibre.com>, Balsam CHIHI <bchihi@baylibre.com>
+Cc: kernel@collabora.com, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, Hsin-Te Yuan <yuanhsinte@chromium.org>,
+ Chen-Yu Tsai <wenst@chromium.org>, =?UTF-8?Q?Bernhard_Rosenkr=C3=A4nzer?=
+ <bero@baylibre.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ stable@vger.kernel.org
+References: <20250113-mt8192-lvts-filtered-suspend-fix-v2-0-07a25200c7c6@collabora.com>
+ <20250113-mt8192-lvts-filtered-suspend-fix-v2-1-07a25200c7c6@collabora.com>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <20250113-mt8192-lvts-filtered-suspend-fix-v2-1-07a25200c7c6@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
->
-> So this patch comes into stable previously as
-> f0ed39830e6064d62f9c5393505677a26569bb56 ? and then when it comes in
-> as 55039832f98c7e05f1cf9e0d8c12b2490abd0f16 you didn't notice you
-> already had it, (there is where I think the extra step of searching in
-> git history for the patch (this seems easily automatable) should come
-> in.
->
-> Or is the concern with the Fixes: line referencing the wrong thing?
->
-> Dave.
->>
->> Yes, I know that DRM is special and unique and running at a zillion
->> times faster with more maintainers than any other subsystem and really,
->> it's bigger than the rest of the kernel combined, but hey, we ALL are a
->> common project here.  If each different subsystem decided to have their
->> own crazy workflows like this, we'd be in a world of hurt.  Right now
->> it's just you all that is causing this world of hurt, no one else, so
->> I'll complain to you.
->>
->> We have commits that end up looking like they go back in time that are
->> backported to stable releases BEFORE they end up in Linus's tree and
->> future releases.  This causes major havoc and I get complaints from
->> external people when they see this as obviously, it makes no sense at
->> all.
->>
->> And it easily breaks tools that tries to track where backports went and
->> if they are needed elsewhere, which ends up missing things because of
->> this crazy workflow.  So in the end, it's really only hurting YOUR
->> subsystem because of this.
->>
->> And yes, there is a simple way to fix this, DO NOT TAG COMMITS THAT ARE
->> DUPLICATES AS FOR STABLE.  Don't know why you all don't do that, would
->> save a world of hurt.
->>
->> I'm tired of it, please, just stop.  I am _this_ close to just ignoring
->> ALL DRM patches for stable trees...
->>
->> greg k-h
+Hi Nicolas,
 
---=20
-Jani Nikula, Intel
+On 13/01/2025 14:27, Nícolas F. R. A. Prado wrote:
+> When configured in filtered mode, the LVTS thermal controller will
+> monitor the temperature from the sensors and trigger an interrupt once a
+> thermal threshold is crossed.
+> 
+> Currently this is true even during suspend and resume. The problem with
+> that is that when enabling the internal clock of the LVTS controller in
+> lvts_ctrl_set_enable() during resume, the temperature reading can glitch
+> and appear much higher than the real one, resulting in a spurious
+> interrupt getting generated.
+> 
+> Disable the temperature monitoring and give some time for the signals to
+> stabilize during suspend in order to prevent such spurious interrupts.
+> 
+> Cc: stable@vger.kernel.org
+> Reported-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+> Closes: https://lore.kernel.org/all/20241108-lvts-v1-1-eee339c6ca20@chromium.org/
+> Fixes: 8137bb90600d ("thermal/drivers/mediatek/lvts_thermal: Add suspend and resume")
+> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+> ---
+>   drivers/thermal/mediatek/lvts_thermal.c | 36 +++++++++++++++++++++++++++++++--
+>   1 file changed, 34 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
+> index 07f7f3b7a2fb569cfc300dc2126ea426e161adff..a1a438ebad33c1fff8ca9781e12ef9e278eef785 100644
+> --- a/drivers/thermal/mediatek/lvts_thermal.c
+> +++ b/drivers/thermal/mediatek/lvts_thermal.c
+> @@ -860,6 +860,32 @@ static int lvts_ctrl_init(struct device *dev, struct lvts_domain *lvts_td,
+>   	return 0;
+>   }
+>   
+> +static void lvts_ctrl_monitor_enable(struct device *dev, struct lvts_ctrl *lvts_ctrl, bool enable)
+> +{
+> +	/*
+> +	 * Bitmaps to enable each sensor on filtered mode in the MONCTL0
+> +	 * register.
+> +	 */
+> +	static const u8 sensor_filt_bitmap[] = { BIT(0), BIT(1), BIT(2), BIT(3) };
+> +	u32 sensor_map = 0;
+> +	int i;
+> +
+> +	if (lvts_ctrl->mode != LVTS_MSR_FILTERED_MODE)
+> +		return;
+> +
+> +	if (enable) {
+> +		lvts_for_each_valid_sensor(i, lvts_ctrl)
+> +			sensor_map |= sensor_filt_bitmap[i];
+> +	}
+> +
+> +	/*
+> +	 * Bits:
+> +	 *      9: Single point access flow
+> +	 *    0-3: Enable sensing point 0-3
+> +	 */
+> +	writel(sensor_map | BIT(9), LVTS_MONCTL0(lvts_ctrl->base));
+> +}
+> +
+>   /*
+>    * At this point the configuration register is the only place in the
+>    * driver where we write multiple values. Per hardware constraint,
+> @@ -1381,8 +1407,11 @@ static int lvts_suspend(struct device *dev)
+>   
+>   	lvts_td = dev_get_drvdata(dev);
+>   
+> -	for (i = 0; i < lvts_td->num_lvts_ctrl; i++)
+> +	for (i = 0; i < lvts_td->num_lvts_ctrl; i++) {
+> +		lvts_ctrl_monitor_enable(dev, &lvts_td->lvts_ctrl[i], false);
+> +		usleep_range(100, 200);
+
+ From where this delay is coming from ?
+
+>   		lvts_ctrl_set_enable(&lvts_td->lvts_ctrl[i], false);
+> +	}
+>   
+>   	clk_disable_unprepare(lvts_td->clk);
+>   
+> @@ -1400,8 +1429,11 @@ static int lvts_resume(struct device *dev)
+>   	if (ret)
+>   		return ret;
+>   
+> -	for (i = 0; i < lvts_td->num_lvts_ctrl; i++)
+> +	for (i = 0; i < lvts_td->num_lvts_ctrl; i++) {
+>   		lvts_ctrl_set_enable(&lvts_td->lvts_ctrl[i], true);
+> +		usleep_range(100, 200);
+> +		lvts_ctrl_monitor_enable(dev, &lvts_td->lvts_ctrl[i], true);
+> +	}
+>   
+>   	return 0;
+>   }
+> 
+
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
