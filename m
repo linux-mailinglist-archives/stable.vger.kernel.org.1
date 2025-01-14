@@ -1,149 +1,213 @@
-Return-Path: <stable+bounces-108596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C867A10828
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 14:50:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D7B7A108A7
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 15:09:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80DF8166D9F
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 13:50:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81A663A0285
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 14:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF4222F19;
-	Tue, 14 Jan 2025 13:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBADC149C54;
+	Tue, 14 Jan 2025 14:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nigauri-org.20230601.gappssmtp.com header.i=@nigauri-org.20230601.gappssmtp.com header.b="bEFXh/PO"
+	dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b="A4y1RP1Z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from YT3PR01CU008.outbound.protection.outlook.com (mail-canadacentralazon11020130.outbound.protection.outlook.com [52.101.189.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C64E17557
-	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 13:50:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736862642; cv=none; b=RSep7xLV36czMGq0jxM3gxO85Q+ZoJnVn32ntKAEFr3ggZtb3F2mRyHyy7zNygu1tm9Z7mKYJDlWAzE9MOQkd28qFL8AcoLQ4LygBTwdSPwGRX7vLzYh7ZmYc0aUZZDlsax3JXXEzEcYCgaZBU7dciy5vH7YDhC5LJRbidyQ3p4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736862642; c=relaxed/simple;
-	bh=MK2AphVmYBUjHm1HCF0DhkauVUycpjqvY/5QFbqNgB4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jjV7ahE0ssufPbHFtfu4/qhFUDH4YYXoezpqSnFkLudqsehxRNPZgwtZX3yWallJCGYuLT35CVrbaLWvFeWjM5JZ0nXNpE/Qo8G+zu3bUTjhaK9pznUBk0dJ9a8cS7LwvSYzUcaZwFL+6s2JGUJJQmw5QlnVHiotPoZptA3MtrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nigauri.org; spf=none smtp.mailfrom=nigauri.org; dkim=pass (2048-bit key) header.d=nigauri-org.20230601.gappssmtp.com header.i=@nigauri-org.20230601.gappssmtp.com header.b=bEFXh/PO; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nigauri.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nigauri.org
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5d437235769so9502549a12.2
-        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 05:50:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nigauri-org.20230601.gappssmtp.com; s=20230601; t=1736862639; x=1737467439; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qK8eJ72oUfZkFBOw+tTcLnGpMzZXzfZ2mLBjQdYOmks=;
-        b=bEFXh/POozmDGCRznXWNSkQrNAb4Gv7QjPzIcp1Hb7amkblZBooQDnqgd/ldb1uU2P
-         fVgCtEyXsQZ7k8CZrE01/riIWUCdrsuQv0XXR0X5LTilImVzvL9xsB3rdw9tE+Qwd7ai
-         n4cuXs2hYyL6Mm1R9O+ugzsJf5X3M5KZKU9dTNkuagm+ZHJe80mGmjUW1U51cXVWFzKc
-         hx7nphzBMKxuJNEyJKdX2evsjOgs/LxOOO+BkM54xJRJOI/I1pljYd2l41/rVpYH/QWL
-         na9xmzonwRxJKtchTi8Vcar7yZoOcwM0fakqs0Guc7FXQAr0DkyBlJgFC+dLuh7CzLfr
-         c7jA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736862639; x=1737467439;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qK8eJ72oUfZkFBOw+tTcLnGpMzZXzfZ2mLBjQdYOmks=;
-        b=j9qlHV0xgD4K9QKq8iT4Y7ST34Q6t1W/kCOBoswN05HXxpw/zVu7hT8RoUAtPaQCTE
-         oC37NjkdcJSr/UkE7ixhJeY1W1V01KHPI24t0WPTh1M3nSuQ0hirUVMJkx3E0FQHH//Z
-         iomnOiGg8X9dEsDuzW5SliZG9XzMZKwmC1WYut6kbWtuurEh9RS6D0Djb5YuqA2R/ekK
-         VRUXzfZqlHYIJ/ZXft5tz1XcX4b60UT+MD4EiPzirhjDbHvRmxq6VUjuDoRFw17u4Z+h
-         ziIW2+8h2vYKeaeoJ8vctyzKAYde17SJVOufkaSojmpycxCee8b8nDOO/5qLbiJP+1Hm
-         t+QA==
-X-Forwarded-Encrypted: i=1; AJvYcCXhfR4Qr6RiHp0q3utRGd/98vK01j0w0+tOlI//wy81L0zbfoo4ZCAFQU+AY3FfF2b7l6tdJH8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTEZr8qdgSO6f3tDjDo/E73ZRfYxHh0wHedjwT/5ByzZPE3sLH
-	bU/+UavKtp8WrVX5kkLwAogcnB38hTUoYnlUnxjJWz8wbT225CDBjzepWJ5/Z9VA9zE+eO/fbVQ
-	Nm64KvgtjBFf4MDLFrePWPHWZbc/k8FdN3Sx+DJpx35JNPBRh
-X-Gm-Gg: ASbGnctdFdtGNkMqsokGo4xVl8oB+PB/8mryIdQM0/rwxRLGGU7uTZsEhFvqEje2fo7
-	PDkiXcO7ZFEn9paidtJ2rOV5HILg1+sX8GjlBxjc9MHE5lFQ4+mc86qdV92Z95QoocMFNDlo=
-X-Google-Smtp-Source: AGHT+IF46TQhtbMMZMIZCKwTcvvfKRkqdMf4+iusbVX+iTYMmw+SknyG/9KNTOsKRbNl7xnQQq1VrKvxMWJ1gHVadbI=
-X-Received: by 2002:a17:907:3d89:b0:aac:1ff1:d33d with SMTP id
- a640c23a62f3a-ab2ab740dd9mr2228481666b.30.1736862639349; Tue, 14 Jan 2025
- 05:50:39 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6B7148FE4;
+	Tue, 14 Jan 2025 14:07:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.189.130
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736863647; cv=fail; b=Fbu4Ss7bzqU4MHKOOk3C5IgJBB5Nj7ryAPn1asGN5KkTVhfuYp8hJ/sYIrefxeXar0LUmB3xqW92mYh5CS4vFIfQLrgKVuwb36uXXbIk4QqZxoNkyg2XtyN0Tw3Jjn8wD/MkmI7CBcuz3Kr3Pi+Qv7pv0Fuxz7oS6IxRQyz+QCI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736863647; c=relaxed/simple;
+	bh=VNZbXEoJ+u3CKMJrySOsIYH83GVEyeUhE1tAq59bnS8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=hf5K5DQXX2qfo/1uOpiS5RNJkVDk2s64KpYQhe6FR8cY3wieWKM1IIgEpK5FVNuHcav7lk9l8Sk4G1EQqTGIgohcvKgYrEE+OL5zrVPuc8rnhpA22hqI7FbAbNiUHkg0KdAVTlPAxu/Rcnwquaw8PrehOPMZNancQCarWSyiYB0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com; spf=pass smtp.mailfrom=efficios.com; dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b=A4y1RP1Z; arc=fail smtp.client-ip=52.101.189.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=efficios.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CkLpdZaEYFwwbZNNNC7Iz7FMUbtake9c8rLjlZ75ZtHYF5npv0xb3otR88Mc7wPqFEq+mTYk15mQHKM42EQI9KCyx+VWD0e3lKa7ORR1iX/cR0lqDQHoiyaQRUzAo3nDy/++0IehAU1UADkTDCaJ8H5l58HEKiU/GRUxpNDJLj2Fpf8m8JxXo7uIrIW82a3lNXn+np9ujIttMalMMBeIaAul2FOb66UB5xYyMrbcPCUWpiNubrKDhmoE71cdisWKRNENUkBW6Nf205h6a5O2zPO7SzUKKLVe2me7mVf1f3isnHDI498UJMi18u8D065hBaql1BK8L9MLbo/pVNd8/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ycODzSQ5BL+CKXmaAgEz94QJuyFswoZJoo70zS3RKz4=;
+ b=jHx/K/1Me5Z2xATVhWQ+rTnyPAXUt6bVFEJB+ztYcgSQ/RSCq8y0qZyJsVWLdWZXzuyvcjAgM7fCZtyb3TzbEo8T9fMUAVZZ2CgBgyqkUYX46Zkrwbq3muKSOz71gOBFnDNPX/+2Jdl7qDmjv+28vBEOZwOfdnWNZxXjmmtdD4Yg+JzEdqhwVl4a/MFm7LEJrpP4hzmDlPLX60kecnXYySiFmVUbealzM3a5DKWbvLn2eu35Yom8fFCslHzlS68QdvaHVPRzCVI0TJ80XGTPe3hy66S3FAglj5JSs2mJG+FlvM9P6tcWki4i0qk8UNR+qIiygS6GTXxG6s8ugqs/yg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
+ dkim=pass header.d=efficios.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ycODzSQ5BL+CKXmaAgEz94QJuyFswoZJoo70zS3RKz4=;
+ b=A4y1RP1Zdvs7wRxKZ4LZXHIN1WnsplDg8GzEt8gaOe+w5YVBo1zK7ccVGpEHHGxx9SQshhqjlh7Xm0rz9ZbovrBP0w+ri2b4D2Cgcm5b00ztbTeFog/kA+UX/E6yUCzKDMRtUMf1pDbLbH4roRdRsX24cA4pEKqRQHdsbpSct+ZTEhEqEbqvGRdRu14Bn4nPWlPnhPB3FwG9TxIb11+YBawy2zro1Xkefx3wQHXigmbqTR/ZOEfQkq8+xd8IqJuLKjymNjUU0SwCnhDIMsS7sIO9ZVvevleJivAXcRdl4fK2TrRPnz1NMVf2KTLkpOw1bQE7/EPOgIYBrKh+BCwZ4A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=efficios.com;
+Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:be::5)
+ by YT2PR01MB5387.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:52::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.12; Tue, 14 Jan
+ 2025 14:07:22 +0000
+Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::50f1:2e3f:a5dd:5b4]) by YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::50f1:2e3f:a5dd:5b4%4]) with mapi id 15.20.8356.010; Tue, 14 Jan 2025
+ 14:07:22 +0000
+Message-ID: <291b5c9a-af51-4b7a-91de-8408a33f8390@efficios.com>
+Date: Tue, 14 Jan 2025 09:07:19 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests/rseq: Fix rseq for cases without glibc support
+To: Shuah Khan <skhan@linuxfoundation.org>,
+ Raghavendra Rao Ananta <rananta@google.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+References: <20241210224435.15206-1-rananta@google.com>
+ <15339541-8912-4a1f-b5ca-26dd825dfb88@linuxfoundation.org>
+Content-Language: en-US
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+In-Reply-To: <15339541-8912-4a1f-b5ca-26dd825dfb88@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YQBPR0101CA0108.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:5::11) To YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:be::5)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241121071325.2148854-1-iwamatsu@nigauri.org>
-In-Reply-To: <20241121071325.2148854-1-iwamatsu@nigauri.org>
-From: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
-Date: Tue, 14 Jan 2025 22:50:13 +0900
-X-Gm-Features: AbW1kvYfwvDX59DGr73TkVKQWrZUOAfV-Cykp2gPV41y5Dp3jhO_fwHVhjZEQuo
-Message-ID: <CABMQnVJVTmnsx3RNYK01ikZ-jnn_y4pbrNAeZaKPzz0N_YFz5g@mail.gmail.com>
-Subject: Re: [PATCH v2] ARM: dts: socfpga: sodia: Fix mdio bus probe and PHY address
-To: dinguyen@kernel.org, robh+dt@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org
-Cc: Andrew Lunn <andrew@lunn.ch>, linux-arm-kernel@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: YT2PR01MB9175:EE_|YT2PR01MB5387:EE_
+X-MS-Office365-Filtering-Correlation-Id: 77dd5421-7307-4682-ac07-08dd34a4c3df
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZThsYllMMTFrR1lUMEpkWHdlSEkySFVGcWZ5RFpKVXc0SXRrL2o2QnZROUZl?=
+ =?utf-8?B?N0FRUE5FYm9CRnJEcGgrTHgvUXVFTGttV1BzTXdTN2VmV2cwc2lEZi9rYXE1?=
+ =?utf-8?B?NzB1RW5lRjhlRXk1U3NCRTN2NjN2SERXdkxGZHF0N21MYzZ5QWlYN2c5VEJy?=
+ =?utf-8?B?eWhYem80SWxhT3p4cThhZjZ6SlVkTlVuNklyUUNNYVJIMlYxMllYeTNoNU03?=
+ =?utf-8?B?cmdDY1lHQmczb1diM1pHbyttMHFBRWZvZHZ5QVVreWlWdDFCQ2IrbDNsNjl6?=
+ =?utf-8?B?NnJQUmFGeXRtOSsxd1QySmw5WjZuMEdraDFYaUpMVnV1bEo4VVFWckVLL3R3?=
+ =?utf-8?B?S0pLNEYrS0s4Zjlzekc4TjFnZUpEY0l6Z0VxVXlTSEY4UHhWcWVoYUw3UHo1?=
+ =?utf-8?B?YzRiQ3Y2MmJlRmgwUi9NVzlxYlh0RFNEZjNtcmN0cjFaeTU3QnRkcCtpbCtq?=
+ =?utf-8?B?OURxT0Iybkd1RGlqcmZJOGhFNjhaUWZCamdMVUZ3cEtqUlJSUStXSGc0UjMy?=
+ =?utf-8?B?bkpyQ09Lek90dFlrcVJnSnp6MzcyQVhlVVhzUklGZnVmRU1PMVEzSUVkcG1v?=
+ =?utf-8?B?VGdyTnphYjMyb3h2WFJETmozZjFuUUloQ1FKWlFYU05rUlJreHIrcFpSVjY3?=
+ =?utf-8?B?aFZJTFRCMGtocStIZUJwQmlrZWFXZVJhMnFNRkJ3NjdLL2lOQTA2OThrbkFF?=
+ =?utf-8?B?c2ZHMDdMTnBDeE0vbGhDV1NSellBV1ZFWFBZZWYzczlxTUlSbThOVnJCWTBI?=
+ =?utf-8?B?cXYxQUFZajIxTlZ2eFYzWUp1UTlldDROSzlrU2xwUjcxUXF4WXNYenRTTWlV?=
+ =?utf-8?B?a0FVYS9GUzVOcmtWY1R6a2hDdDVJdEh1K0JTcTEyc29aMzRsbUtFSW0veGJn?=
+ =?utf-8?B?NUkrTEdjQzZuaUZ2L2xIVUxWeGtkZElhU25xNXdXUDlNMkF3V3h5K1h3R1ZL?=
+ =?utf-8?B?SlJDRU9scWgxQW1GRjgrMURBYUovMFBHdVBsUjlxOEN6OVVxQTNoVGs0TlBR?=
+ =?utf-8?B?NFFKdytVaVNOcm1iUlBTenFUVHc2WDZ4WmIzeFZVdjhPV3A5VWZ6Z0F0TEJm?=
+ =?utf-8?B?NTQ0N3Bma1d1MFFWYmpMTTJubWs0UFo0NHF6ZGFHSXVnMlg4MFkrdUc5YUdj?=
+ =?utf-8?B?Q1F1dWtIcnZhQkFIV0FPQmZkS3pLK0pTeVpIaitHemVEUVZmTmhRMUFqaDdL?=
+ =?utf-8?B?eHR5QUJXbWxBMlRka0NpUU1PYmsxTmlhbmgzVVNWMGhud25PWm5hM1J1czR6?=
+ =?utf-8?B?MG1oTjJQMVZhWXBPTDFhR3IwSnJmdG9Od3RDZTlYSVUxQ2JvQWt1NkdhV2Fk?=
+ =?utf-8?B?UGp0VFkrOTI0eVBrZ3E4ZzZxNlpyeFI1OThBT3pMa0lSNVUzN3RRMGoyWWU4?=
+ =?utf-8?B?MTVPN2hEcGNyUGYzZ2pZU0ZHelNEeFl1SU9DT0tqTy9XdnFYR21CdkdkSTVy?=
+ =?utf-8?B?MS95Tm5HN1J5UXhJYUVaTjRlaG9xeTIrRkQvK21CdWNwWU1jRlpOaVBQdlpZ?=
+ =?utf-8?B?VGY0T2NTaTFNT09PZlEwdmZvOTZaRGNBaVJPVVlZdFFUcm9YbUVDV2lrRHdB?=
+ =?utf-8?B?Ui9XQUdacXNnQlhtd0JWd2hjWWw4cFRqNFNwRE1VMU1CcCt0K3FRb003Q09i?=
+ =?utf-8?B?eHNMbE0wOWJKaFdPZVhXZ21xbms0WTgvUDdmT3NOVVZxRmJkc1pjN2JhUThk?=
+ =?utf-8?B?ZGFlNmtvY0dpQTZmVXhyTnlyUkVkdzRBMHNqYzVuekNsZzViR2lMQitFZ0py?=
+ =?utf-8?Q?fNlIAwUnQil20SZNqkyWuxaUQ9vP4DlcyzmL9r1?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Q3JDaW5TcFNOOU1YTlpDelYyaTk2Q0VCdUp4RWd6WUlJWkR1QVRTbWNlOHk2?=
+ =?utf-8?B?MEorQUdhS1krSEZYWFE1aG1iUzZUZlRIMnhKT0Z5cFRvL0d3bUhlci9JNzh2?=
+ =?utf-8?B?SWpSaFF1YU42blV2MjhwaTI1bUxXK0gzdE1pbzlkcGdRZStMWGRFSTh6WUpo?=
+ =?utf-8?B?dGFBWkgrb2ZLTVE2V0FyVGtycU9EL1JZckNSbkFyaHVMNWVyMkVWY3cxLzQ1?=
+ =?utf-8?B?ZHcwbnlNcnR2NzNnSzdZTkYzYnp3aUlpd3d5SVhtTGVKbTVJK3F6NVBHMVlP?=
+ =?utf-8?B?ZG9UaVNHMjlmdlQzQU5YY3QrMzk3YlcyZVBoYzRGd1dWSDJOZVlKWjQ2K2My?=
+ =?utf-8?B?eDdxR3FTQlVWSEYyc3hEVHloRUJHb1lOR0gwZlRoZkl2SUhYLzRJRGM5R2J3?=
+ =?utf-8?B?dWtkWlJsWVJ0UExsbTZMb2FQK0FKc1BTK05jL3BteGhxZG9hSFdyWG1leUVV?=
+ =?utf-8?B?QkcxSmhEd3hsaW5KVXdIaFM2YzlIMUtkUzJvRFg2aHovQmNURVNCT2crWTNV?=
+ =?utf-8?B?TVZNa3RGOTZmRFBEQmJuVHJ6elVYc3JoWnd4R1RTRkg5djdOc09DcW41NnJz?=
+ =?utf-8?B?Tkhpc09RYi93ZjFGbEMvWHhCWEg4NEhlcU9Va1R0ZUdMWmFsZEZ5Z0c2TEJx?=
+ =?utf-8?B?ZEswWHBzYWEzRDh4b2tOcG0yZEQ3MGpqNUNHRG9Gd0ZTRXN5a3JzWDg3REpT?=
+ =?utf-8?B?UXMrem5pYWV3QjB6Um5jZkZLa3pjUWwwM1ZwbmdtVG1aMFYwRWhzc0RvYWxP?=
+ =?utf-8?B?UlQ3R0xZd0VJVXgyS0tzK3lnU252VG9pZTIwYlNhZnlPeFhDVFB6MjY1RDYv?=
+ =?utf-8?B?RjJiaE9MVUhFd3phUDhtM3dRd1VFWjNSc3pRR1hPcXNSUUJUMjVsSzdIanN4?=
+ =?utf-8?B?b1lDRHQ5UTZmbDZ5WmJ1ZE9wb1ZpVmZxdUpQYmNha3FVREVSSnczd0pNUm9Q?=
+ =?utf-8?B?dFNUME9wWTh2ZEErMk83SXdwV3Rid0VPMUtyT1VRbWtIV3BXdlRXWFpwUFJP?=
+ =?utf-8?B?VmdWM0pIcGdyU292c1RmcjI5Z1FZTkt5N1lYNWYrV1JoR0lLOUd2RzcrWXlW?=
+ =?utf-8?B?cUJEUmx0WUp6L1Y5MnBRUDRvMUhoYzhBa0RoYkxzS0w5dVcyblZ3TkJYS1dZ?=
+ =?utf-8?B?ZVVxTXgvQlhFVDl3WS9ZQzdkU1hISmZEU2lMVU5YNmhYYWhKOWpKM0xTbVd1?=
+ =?utf-8?B?cU5WOGdEV0s4SDEwTkdBUVkveFArNVBXaVQyNmMwcTdJZmxVWGpZMHZmNEpw?=
+ =?utf-8?B?QStoYXpyMVZPNnB4RFpnTjBwVkRwSVo5QjVCZWc5L1RNMjlWMVlNckxUeDRS?=
+ =?utf-8?B?SFR6VHlXak9vR05pM1pmR3FyTDVlaGJPaUdESWRCb2s5Um8zSGdrSHZXTmJL?=
+ =?utf-8?B?bU1Nd2hISUJYMWM5MkVyM3N4YUE0bEQyVG5RRkd3VldmWHJ4R1J6d1VnME9y?=
+ =?utf-8?B?RWMzTXo0cHNlNXh1YTNwMDdEN2V4Z2V5ME54ajE5YU03MUpCQmNISUxyZ1lD?=
+ =?utf-8?B?Sm5mdHZXRk1wUnhaNzZkZGxpKzBwRzgwUHZqRFZtaERldzE4V0VoQmMzZTRh?=
+ =?utf-8?B?L0VGbHN2VGg1MzMzYS95ZzN6QlFvYk5kNDBKRHNQZFh6Uy9jcjhiRGtiL1BQ?=
+ =?utf-8?B?emZhNkJ1eDZOdkgzVUMvcmxMVzRsL05zMWhYY25VMSs1ZTZ3dzRES1FMM0Rt?=
+ =?utf-8?B?YXFjU2hReHp6VCtGcXdLSWdRb1lsSHZNd09ZWEhHa0F6ZDFQQVY0b0Z6cDBG?=
+ =?utf-8?B?dmZVaTVuNFpVZXY0V3EyRHRSWklzbkJPQzVzMEk4NmU3MGowTFdCSUNVbmZ3?=
+ =?utf-8?B?MExpYUFBZHVDalNrWjFySFRxSVNJSzA3YWtIcElWdXN6SW9hWDI0Zjk5bWhE?=
+ =?utf-8?B?Tm5CaHZPNEV4a283VVk1SXN2SlVSL3pZakc1ZkpMaTBEaTg3bXkrUThteWhL?=
+ =?utf-8?B?eHphUmcvLzUvRFNwbC9XUmJpcFVGOVhFcTBBT2E4dDF2MUtwUDYyR0ZtWHVM?=
+ =?utf-8?B?aGt2TFhiSkp6VFRyQlA0WWNKeENOOS9HVjI1cjU1anNmMFJ5N01WWGtUU3dB?=
+ =?utf-8?B?VG4zbE84OS9XMmloTkhJb0NDYXlXd3NLWTlLQ2FJNXlIZ1Bmb3BCY3dxRFR2?=
+ =?utf-8?B?eFQ5SWxDNlZ0R0VpaEYzZElnUktETWNocG51UkJXTkJUd1hkdGMvVytId1ZV?=
+ =?utf-8?Q?O4wgM6u3pdYr6tL7y7BpcpM=3D?=
+X-OriginatorOrg: efficios.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 77dd5421-7307-4682-ac07-08dd34a4c3df
+X-MS-Exchange-CrossTenant-AuthSource: YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2025 14:07:22.3473
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WMb2d4vIQOrfXre108Hx6UGKj/CQ1t7+12I0bdFvFXl45JYd+LfMVYUutwJCAFf9wiMZ6221oAxB5b7kIhA+l9nGduhZnhFE7Fcre+EyWhk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT2PR01MB5387
 
-Hi Dinh,
+On 2025-01-13 18:06, Shuah Khan wrote:
+> On 12/10/24 15:44, Raghavendra Rao Ananta wrote:
+>> Currently the rseq constructor, rseq_init(), assumes that glibc always
+>> has the support for rseq symbols (__rseq_size for instance). However,
+>> glibc supports rseq from version 2.35 onwards. As a result, for the
+>> systems that run glibc less than 2.35, the global rseq_size remains
+>> initialized to -1U. When a thread then tries to register for rseq,
+>> get_rseq_min_alloc_size() would end up returning -1U, which is
+>> incorrect. Hence, initialize rseq_size for the cases where glibc doesn't
+>> have the support for rseq symbols.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 73a4f5a704a2 ("selftests/rseq: Fix mm_cid test failure")
+>> Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
+>> ---
+> 
+> Applied to linux_kselftest next for Linux 6.14-rc1 after fixing the
+> commit if for Fixes tag
 
-Could you check and apply this patch?
+Hi Shuah,
+
+I did not review nor ack this patch. I need to review it carefully
+to make sure it does not break anything else moving forward.
+
+Please wait before merging.
 
 Thanks,
-  Nobuhiro
 
-2024=E5=B9=B411=E6=9C=8821=E6=97=A5(=E6=9C=A8) 16:13 Nobuhiro Iwamatsu <iwa=
-matsu@nigauri.org>:
->
-> On SoCFPGA/Sodia board, mdio bus cannot be probed, so the PHY cannot be
-> found and the network device does not work.
->
-> ```
-> stmmaceth ff702000.ethernet eth0: __stmmac_open: Cannot attach to PHY (er=
-ror: -19)
-> ```
->
-> To probe the mdio bus, add "snps,dwmac-mdio" as compatible string of the
-> mdio bus. Also the PHY address connected to this board is 4. Therefore,
-> change to 4.
->
-> Cc: stable@vger.kernel.org # 6.3+
-> Signed-off-by: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
-> ---
->  v2: Update commit message from 'ID' to 'address'.
->      Drop Fixes tag, because that commit is not the cause.
->
->  arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts b=
-/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts
-> index ce0d6514eeb571..e4794ccb8e413f 100644
-> --- a/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts
-> +++ b/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts
-> @@ -66,8 +66,10 @@ &gmac1 {
->         mdio0 {
->                 #address-cells =3D <1>;
->                 #size-cells =3D <0>;
-> -               phy0: ethernet-phy@0 {
-> -                       reg =3D <0>;
-> +               compatible =3D "snps,dwmac-mdio";
-> +
-> +               phy0: ethernet-phy@4 {
-> +                       reg =3D <4>;
->                         rxd0-skew-ps =3D <0>;
->                         rxd1-skew-ps =3D <0>;
->                         rxd2-skew-ps =3D <0>;
-> --
-> 2.45.2
->
+Mathieu
 
+> 
+> thanks,
+> -- Shuah
 
---=20
-Nobuhiro Iwamatsu
-   iwamatsu at {nigauri.org / debian.org / kernel.org}
-   GPG ID: 32247FBB40AD1FA6
+-- 
+Mathieu Desnoyers
+EfficiOS Inc.
+https://www.efficios.com
+
 
