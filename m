@@ -1,300 +1,163 @@
-Return-Path: <stable+bounces-108571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9C94A0FFD8
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 05:03:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E416A0FFDD
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 05:10:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA766166520
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 04:03:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FE9F3A585A
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 04:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965AD5336D;
-	Tue, 14 Jan 2025 04:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5AC9231A48;
+	Tue, 14 Jan 2025 04:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FLn2lt7E"
+	dkim=pass (2048-bit key) header.d=kali.org header.i=@kali.org header.b="PbTC3g2S"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C61735953;
-	Tue, 14 Jan 2025 04:02:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F006C168DA
+	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 04:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736827379; cv=none; b=B/03mrB+cunxNlSSCaNByZdhzyUWwoFjX5YOXxIKFsBOXfgdJb1Gazsp4IW2HEi0c1p2oNKKLtuTCoee1ULEcrSdZP3pI0h8QjLpPjKtTUIQ3frzCl1oH55yajlPv/w5912lEGM7hXmbH/4uebNE/EIsMJ1b6C1jOoriQpocdF8=
+	t=1736827820; cv=none; b=DinkvYEZMarZ6W0qGxJeAwuyt+n3XHvFAwUmho3vkBjdlJwcswTi8dT1PSdKYF6CkAl4NJL5iEJq9BaE/6hVaMRr47noJf5X8bGVA55F1RZTpQtdhrp6OryhKBNPxfVAUEtvoBKnq40EFCfeqwhjXZbRwxUv+WzKrsyNgl9fmBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736827379; c=relaxed/simple;
-	bh=IT+CGMJUOqigyTEl7pGmnOBl5D0QTvQkf7ekyFaOg24=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sjyybe+RXwGxN/l1oXD61OnhHnUWPW/QjG10TVF8fxJCmPzLorlSafCgHlCKIeXiMy/fg3L9c0pRSg9Xz/0rT9r93QunFnlOhoKz98iX3LF5K5cQqjI+PjYNt9HWkBcjVX4/HVO6XAFhRaAlO08MZFwkwYiPw8XRtcTWNBnkOCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FLn2lt7E; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736827377; x=1768363377;
-  h=date:message-id:from:to:cc:subject:in-reply-to:
-   references:mime-version;
-  bh=IT+CGMJUOqigyTEl7pGmnOBl5D0QTvQkf7ekyFaOg24=;
-  b=FLn2lt7ErcjIbi5XDIYoCh/devoUrrqiezDh98BTkL3e63STBdPzvAjM
-   O3Uw4ZW9tZY4wJxVq4nckgh8fC1K89RX/wyvUuNTPzM3UYwAYnUuCqodC
-   tcSngq4ZWgki0/f8q96gRTTUHrXvhl1TWVAaf90hZDkzea/e/5aFIfgdQ
-   sEeVQxBcvHnDqBya3PxI79nlOR6WroXJoqniHt7iw6vzaUjeWDmujidG7
-   WMeanydLkqzAhBzp53/acsFUAsBU7h+JuokfhtawqFA9CYq35WxRxBk3T
-   ptzJK7tfgOaw6DE59xRdSuxKhoQ75XYRYWwvKdGYMp63Id5oATHFn9N1A
-   g==;
-X-CSE-ConnectionGUID: Y+eP9IHqRGWcjYE9Xxf17g==
-X-CSE-MsgGUID: JbfpEd+HRZO6IU8Eo138OA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="37024702"
-X-IronPort-AV: E=Sophos;i="6.12,313,1728975600"; 
-   d="scan'208";a="37024702"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2025 20:02:56 -0800
-X-CSE-ConnectionGUID: UwHoT03BRfGcO4eV0N5NKQ==
-X-CSE-MsgGUID: 3KDllL9bQHy2NPyYse/Gzg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,313,1728975600"; 
-   d="scan'208";a="104452112"
-Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com) ([10.165.21.142])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2025 20:02:56 -0800
-Date: Mon, 13 Jan 2025 20:02:55 -0800
-Message-ID: <85v7uidouo.wl-ashutosh.dixit@intel.com>
-From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-To: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Cc: stable-commits@vger.kernel.org, Lucas De Marchi
- <lucas.demarchi@intel.com>, Thomas =?ISO-8859-1?Q?Hellstr=F6m?=
- <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Sumit Semwal
- <sumit.semwal@linaro.org>, Christian =?ISO-8859-1?Q?K=F6nig?=
- <christian.koenig@amd.com>, Umesh Nerlige Ramappa
- <umesh.nerlige.ramappa@intel.com>
-Subject: Re: Patch "drm/xe/oa: Separate batch submission from waiting for completion" has been added to the 6.12-stable tree
-In-Reply-To: <20250113140353.1739560-1-sashal@kernel.org>
-References: <20250113140353.1739560-1-sashal@kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
- Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1736827820; c=relaxed/simple;
+	bh=PgZACnQ821havD91qnvSoVfopLpgxpU46DiDuNvahF8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hCJmbxCoW0mva25h6BcpsepQhPBI/53HP4nvTuWamBHAN7aoctP1sN9lDOPazJX7P4wxHMYt7rxJizX9mkbCetXDf+LtViigE2DRRhARKn2rnb77MdTyvvsVJoLqAsHUIOl+Mp+IfmhKP+/zb4kVCijH16fdJgmOZREJALCoT/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kali.org; spf=pass smtp.mailfrom=kali.org; dkim=pass (2048-bit key) header.d=kali.org header.i=@kali.org header.b=PbTC3g2S; arc=none smtp.client-ip=209.85.219.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kali.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kali.org
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-e3978c00a5aso7806308276.1
+        for <stable@vger.kernel.org>; Mon, 13 Jan 2025 20:10:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kali.org; s=google; t=1736827817; x=1737432617; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rpQAW5W6q1eOeJMunMwzYyOy3zwnSPg/tJEZNw0zLcM=;
+        b=PbTC3g2SfEiqpgg9va6mMh6Wkpiymy/1675fBsjSb806OUflpTNUxSjO2iz2/+g4+L
+         A1rQtiP9I5jC2ijce3ycXn/3elPDNxNXwm9WpjsAQu5eySZ0KSdUsCPe8HIq9UxnlQDP
+         DTbZb9Cl3ipoFyVQzJ/pZewJ5IhPuUG7fdtmSwSavBG3VDas9KA5I7z2RDEHYQ1xLWrb
+         63urM5MdBqcGfSHyB5F1no0Z54XPXjIOEoT0Y+YJacpYVGTTRHEhLN5BD12Xp8FP2AOR
+         ylN+MVXVSMgafIfdnFH1IROJ/29YGoF7A/Pw3y94V7mPJuLB2qfdpYNXd0/oq6rXxuBj
+         dPxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736827817; x=1737432617;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rpQAW5W6q1eOeJMunMwzYyOy3zwnSPg/tJEZNw0zLcM=;
+        b=f0lxKlVDHfiHFz6onRA2jClYNA6CapeQcbqfxiDsBiJX2k4h36Hpt9FFfeuJapaRmA
+         us9C8z7N9CeTxewf/4V66OiesSc6ij3bZDrrTXSWEqN7oRkDlM9WWn9PVzkxIiI5UayG
+         R1kEw7ViGclC+5AiVpmt7t84dDnwreEVWQMz7Nj9eIMD+CYsWrOhpOptVZPU9Oc2Thvx
+         U5CJslxSwKaKocFFVPi/d/P29GgjGhenz/2pWbnTFYBAa+iTLSrsNeq2PJA1uC/LXd5m
+         3TZ4ZGB63A8z5ZlYWspZpSnMKRPKZs9t1k6+Gz2JqW59dFbxqvKrlbq0px1p+msskowh
+         9t8A==
+X-Forwarded-Encrypted: i=1; AJvYcCVf8NQUh6oeuAvb6IITO6bkFG1gBqi8w6Jy5eSiyh5QXZQCIZha1h0yZx5T3YBJO3gXGPhZMFs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+zSLs/B9722rkuwg2uNq/1mZqJXLAVqFICp0oHmD/ia8WjuUd
+	/Uqs84z9nS5GucSvgTWQA5DLsNjTmL/Z7xA6JinONLDosYlPSnXeM9ptgToJHZbR7QoIcSXVjep
+	2eBw+W9/EXRCgdwj7ZmCz5FCI1dR1LQTN2OVUNw==
+X-Gm-Gg: ASbGncvnbCvd/TdvYF6uJJXkL+xW+DGHnJrJs79JrVAiNuXvNwUV0a9VTXE6fyw1lP0
+	mC312fuO7yiDaDwTQ71UeJibZFVFrmUZr7wTmnsU=
+X-Google-Smtp-Source: AGHT+IHCeN1OqSNyfpwvgLbMXzKY0s1C+MMCFUl8tg+k7mKXodKkqk20Pyg87hyIPkWnM+ZdQ+1JXLR6bDZ53cEiLYo=
+X-Received: by 2002:a05:690c:620c:b0:6ef:7dde:bdef with SMTP id
+ 00721157ae682-6f531240a04mr185997377b3.23.1736827816984; Mon, 13 Jan 2025
+ 20:10:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+References: <20250113-wcn6855_fix-v3-1-eeb8b0e19ef4@quicinc.com>
+In-Reply-To: <20250113-wcn6855_fix-v3-1-eeb8b0e19ef4@quicinc.com>
+From: Steev Klimaszewski <steev@kali.org>
+Date: Mon, 13 Jan 2025 22:10:02 -0600
+X-Gm-Features: AbW1kvYxKCoyq4xBZQUOsXW03R_0Xsj1y3vzkWzE77ZbEIl-L-nu7qSK9ncMtU4
+Message-ID: <CAKXuJqiJZTF-rdDp+1hkV597_Y4h1RSBOCiYJuupmdA8J=-SpA@mail.gmail.com>
+Subject: Re: [PATCH v3] Bluetooth: qca: Fix poor RF performance for WCN6855
+To: Zijun Hu <zijun_hu@icloud.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	Bjorn Andersson <bjorande@quicinc.com>, "Aiqun Yu (Maria)" <quic_aiquny@quicinc.com>, 
+	Cheng Jiang <quic_chejiang@quicinc.com>, Johan Hovold <johan@kernel.org>, 
+	Jens Glathe <jens.glathe@oldschoolsolutions.biz>, Paul Menzel <pmenzel@molgen.mpg.de>, 
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>, linux-bluetooth@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 13 Jan 2025 06:03:53 -0800, Sasha Levin wrote:
+Hi Zijun,
+
+On Mon, Jan 13, 2025 at 8:43=E2=80=AFAM Zijun Hu <zijun_hu@icloud.com> wrot=
+e:
+>
+> From: Zijun Hu <quic_zijuhu@quicinc.com>
+>
+> For WCN6855, board ID specific NVM needs to be downloaded once board ID
+> is available, but the default NVM is always downloaded currently.
+>
+> The wrong NVM causes poor RF performance, and effects user experience
+> for several types of laptop with WCN6855 on the market.
+>
+> Fix by downloading board ID specific NVM if board ID is available.
+>
+> Fixes: 095327fede00 ("Bluetooth: hci_qca: Add support for QTI Bluetooth c=
+hip wcn6855")
+> Cc: stable@vger.kernel.org # 6.4
+> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+> ---
+> Changes in v3:
+> - Rework over tip of bluetooth-next tree.
+> - Remove both Reviewed-by and Tested-by tags.
+> - Link to v2: https://lore.kernel.org/r/20241116-x13s_wcn6855_fix-v2-1-c0=
+8c298d5fbf@quicinc.com
+>
+> Changes in v2:
+> - Correct subject and commit message
+> - Temporarily add nvm fallback logic to speed up backport.
+> - Add fix/stable tags as suggested by Luiz and Johan
+> - Link to v1: https://lore.kernel.org/r/20241113-x13s_wcn6855_fix-v1-1-15=
+af0aa2549c@quicinc.com
+> ---
+>  drivers/bluetooth/btqca.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
+> index a6b53d1f23dbd4666b93e10635f5f154f38d80a5..cdf09d9a9ad27c080f27c5fe8=
+d61d76085e1fd2c 100644
+> --- a/drivers/bluetooth/btqca.c
+> +++ b/drivers/bluetooth/btqca.c
+> @@ -909,8 +909,9 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baud=
+rate,
+>                                  "qca/msnv%02x.bin", rom_ver);
+>                         break;
+>                 case QCA_WCN6855:
+> -                       snprintf(config.fwname, sizeof(config.fwname),
+> -                                "qca/hpnv%02x.bin", rom_ver);
+> +                       qca_read_fw_board_id(hdev, &boardid);
+> +                       qca_get_nvm_name_by_board(config.fwname, sizeof(c=
+onfig.fwname),
+> +                                                 "hpnv", soc_type, ver, =
+rom_ver, boardid);
+>                         break;
+>                 case QCA_WCN7850:
+>                         qca_get_nvm_name_by_board(config.fwname, sizeof(c=
+onfig.fwname),
+>
+> ---
+> base-commit: a723753d039fd9a6c5998340ac65f4d9e2966ba8
+> change-id: 20250113-wcn6855_fix-036ca2fa5559
+>
+> Best regards,
+> --
+> Zijun Hu <quic_zijuhu@quicinc.com>
 >
 
-Hello Sasha,
-
-> This is a note to let you know that I've just added the patch titled
->
->     drm/xe/oa: Separate batch submission from waiting for completion
->
-> to the 6.12-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->
-> The filename of the patch is:
->      drm-xe-oa-separate-batch-submission-from-waiting-for.patch
-> and it can be found in the queue-6.12 subdirectory.
->
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-
-I am writing about 3 emails I received (including this one) about 3 commits
-being added to stable. These are the 3 commits I am referring to (all
-commit SHA's refer to Linus' tree and first commit is at the bottom,
-everywhere in this email):
-
-    2fb4350a283af drm/xe/oa: Add input fence dependencies
-    c8507a25cebd1 drm/xe/oa/uapi: Define and parse OA sync properties
-    dddcb19ad4d4b drm/xe/oa: Separate batch submission from waiting for completion
-
-So none of these commits had any "Fixes:" tag or "Cc: stable" so not sure
-why they are being added to stable. Also, they are part of a 7 commit
-series so not sure why only 3 of the 7 commits are being added to stable?
-
-In addition, for this commit which is also added to stable:
-
-    f0ed39830e606 xe/oa: Fix query mode of operation for OAR/OAC
-
-We modified this commit for stable because it will otherwise with the
-previous 3 commits mentioned above, which we were assuming would not be in
-stable.
-
-Now, if we want all these commits in stable (I actually prefer it), we
-should just pick them straight from Linus' tree. This would be all these
-commits:
-
-    f0ed39830e606 xe/oa: Fix query mode of operation for OAR/OAC
-    c0403e4ceecae drm/xe/oa: Fix "Missing outer runtime PM protection" warning
-    85d3f9e84e062 drm/xe/oa: Allow only certain property changes from config
-    9920c8b88c5cf drm/xe/oa: Add syncs support to OA config ioctl
-    cc4e6994d5a23 drm/xe/oa: Move functions up so they can be reused for config ioctl
-    343dd246fd9b5 drm/xe/oa: Signal output fences
-    2fb4350a283af drm/xe/oa: Add input fence dependencies
-    c8507a25cebd1 drm/xe/oa/uapi: Define and parse OA sync properties
-    dddcb19ad4d4b drm/xe/oa: Separate batch submission from waiting for completion
-
-So: we should either drop the 3 patches at the top, or just pick all 9
-patches above. Doing the latter will probably be the simplest and I don't
-expect any conflicts, or if there are, I can help to resolve those.
-
-The above list can be generated by running the following in Linus' tree:
-
-    git log --oneline -- drivers/gpu/drm/xe/xe_oa.c
-
-Thanks.
---
-Ashutosh
-
->
->
->
-> commit 9aeced687e728b9de067a502a0780f8029e61763
-> Author: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> Date:   Tue Oct 22 13:03:46 2024 -0700
->
->     drm/xe/oa: Separate batch submission from waiting for completion
->
->     [ Upstream commit dddcb19ad4d4bbe943a72a1fb3266c6e8aa8d541 ]
->
->     When we introduce xe_syncs, we don't wait for internal OA programming
->     batches to complete. That is, xe_syncs are signaled asynchronously. In
->     anticipation for this, separate out batch submission from waiting for
->     completion of those batches.
->
->     v2: Change return type of xe_oa_submit_bb to "struct dma_fence *" (Matt B)
->     v3: Retain init "int err = 0;" in xe_oa_submit_bb (Jose)
->
->     Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
->     Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
->     Link: https://patchwork.freedesktop.org/patch/msgid/20241022200352.1192560-2-ashutosh.dixit@intel.com
->     Stable-dep-of: f0ed39830e60 ("xe/oa: Fix query mode of operation for OAR/OAC")
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
->
-> diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
-> index 78823f53d290..4962c9eb9a81 100644
-> --- a/drivers/gpu/drm/xe/xe_oa.c
-> +++ b/drivers/gpu/drm/xe/xe_oa.c
-> @@ -567,11 +567,10 @@ static __poll_t xe_oa_poll(struct file *file, poll_table *wait)
->	return ret;
->  }
->
-> -static int xe_oa_submit_bb(struct xe_oa_stream *stream, struct xe_bb *bb)
-> +static struct dma_fence *xe_oa_submit_bb(struct xe_oa_stream *stream, struct xe_bb *bb)
->  {
->	struct xe_sched_job *job;
->	struct dma_fence *fence;
-> -	long timeout;
->	int err = 0;
->
->	/* Kernel configuration is issued on stream->k_exec_q, not stream->exec_q */
-> @@ -585,14 +584,9 @@ static int xe_oa_submit_bb(struct xe_oa_stream *stream, struct xe_bb *bb)
->	fence = dma_fence_get(&job->drm.s_fence->finished);
->	xe_sched_job_push(job);
->
-> -	timeout = dma_fence_wait_timeout(fence, false, HZ);
-> -	dma_fence_put(fence);
-> -	if (timeout < 0)
-> -		err = timeout;
-> -	else if (!timeout)
-> -		err = -ETIME;
-> +	return fence;
->  exit:
-> -	return err;
-> +	return ERR_PTR(err);
->  }
->
->  static void write_cs_mi_lri(struct xe_bb *bb, const struct xe_oa_reg *reg_data, u32 n_regs)
-> @@ -656,6 +650,7 @@ static void xe_oa_store_flex(struct xe_oa_stream *stream, struct xe_lrc *lrc,
->  static int xe_oa_modify_ctx_image(struct xe_oa_stream *stream, struct xe_lrc *lrc,
->				  const struct flex *flex, u32 count)
->  {
-> +	struct dma_fence *fence;
->	struct xe_bb *bb;
->	int err;
->
-> @@ -667,7 +662,16 @@ static int xe_oa_modify_ctx_image(struct xe_oa_stream *stream, struct xe_lrc *lr
->
->	xe_oa_store_flex(stream, lrc, bb, flex, count);
->
-> -	err = xe_oa_submit_bb(stream, bb);
-> +	fence = xe_oa_submit_bb(stream, bb);
-> +	if (IS_ERR(fence)) {
-> +		err = PTR_ERR(fence);
-> +		goto free_bb;
-> +	}
-> +	xe_bb_free(bb, fence);
-> +	dma_fence_put(fence);
-> +
-> +	return 0;
-> +free_bb:
->	xe_bb_free(bb, NULL);
->  exit:
->	return err;
-> @@ -675,6 +679,7 @@ static int xe_oa_modify_ctx_image(struct xe_oa_stream *stream, struct xe_lrc *lr
->
->  static int xe_oa_load_with_lri(struct xe_oa_stream *stream, struct xe_oa_reg *reg_lri)
->  {
-> +	struct dma_fence *fence;
->	struct xe_bb *bb;
->	int err;
->
-> @@ -686,7 +691,16 @@ static int xe_oa_load_with_lri(struct xe_oa_stream *stream, struct xe_oa_reg *re
->
->	write_cs_mi_lri(bb, reg_lri, 1);
->
-> -	err = xe_oa_submit_bb(stream, bb);
-> +	fence = xe_oa_submit_bb(stream, bb);
-> +	if (IS_ERR(fence)) {
-> +		err = PTR_ERR(fence);
-> +		goto free_bb;
-> +	}
-> +	xe_bb_free(bb, fence);
-> +	dma_fence_put(fence);
-> +
-> +	return 0;
-> +free_bb:
->	xe_bb_free(bb, NULL);
->  exit:
->	return err;
-> @@ -914,15 +928,32 @@ static int xe_oa_emit_oa_config(struct xe_oa_stream *stream, struct xe_oa_config
->  {
->  #define NOA_PROGRAM_ADDITIONAL_DELAY_US 500
->	struct xe_oa_config_bo *oa_bo;
-> -	int err, us = NOA_PROGRAM_ADDITIONAL_DELAY_US;
-> +	int err = 0, us = NOA_PROGRAM_ADDITIONAL_DELAY_US;
-> +	struct dma_fence *fence;
-> +	long timeout;
->
-> +	/* Emit OA configuration batch */
->	oa_bo = xe_oa_alloc_config_buffer(stream, config);
->	if (IS_ERR(oa_bo)) {
->		err = PTR_ERR(oa_bo);
->		goto exit;
->	}
->
-> -	err = xe_oa_submit_bb(stream, oa_bo->bb);
-> +	fence = xe_oa_submit_bb(stream, oa_bo->bb);
-> +	if (IS_ERR(fence)) {
-> +		err = PTR_ERR(fence);
-> +		goto exit;
-> +	}
-> +
-> +	/* Wait till all previous batches have executed */
-> +	timeout = dma_fence_wait_timeout(fence, false, 5 * HZ);
-> +	dma_fence_put(fence);
-> +	if (timeout < 0)
-> +		err = timeout;
-> +	else if (!timeout)
-> +		err = -ETIME;
-> +	if (err)
-> +		drm_dbg(&stream->oa->xe->drm, "dma_fence_wait_timeout err %d\n", err);
->
->	/* Additional empirical delay needed for NOA programming after registers are written */
->	usleep_range(us, 2 * us);
+Tested on my X13s and working great here, thank you for this!
+Tested-by: Steev Klimaszewski <steev@kali.org> #Thinkpad X13s
 
