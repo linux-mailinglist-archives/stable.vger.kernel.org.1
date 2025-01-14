@@ -1,133 +1,260 @@
-Return-Path: <stable+bounces-108616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42E58A10BF0
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:13:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2DF0A10BF7
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:15:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFE893A3521
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 16:13:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CB8F7A153A
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 16:15:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 250821C1AAA;
-	Tue, 14 Jan 2025 16:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8AD1CC177;
+	Tue, 14 Jan 2025 16:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WBjRFNy4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ILH9a2vs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D6B1AA1DC
-	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 16:12:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184C51C8776;
+	Tue, 14 Jan 2025 16:15:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736871180; cv=none; b=mCmyGZGCqTNhd8XSs6G7XhSiRzgzEm76uy121fVL9FE6EkCmmKI+V7is4IrdFrZfftD+cZSsZT+pXyAjiGKeQrlajncjhl33dg+QwTBTpNI5y+gQOclzMRKPQz7SNCj3EfX3lejFMgPV51GZeGfFmoW+fdEcTsvLdwb7edfNu+E=
+	t=1736871329; cv=none; b=lUf1OeTpMh+SBSkSnY4+jd/EEwSPBrtq+QqCD11x7y3r6NS4QbuJyUp8IZP/l+7ZP16NNO5tOEPFMsQ8gWPc+nDpjnlqC7JvkAQbwVai13HX4tsnvs8Pi4Eo79od6WYf2p301ZcH9whlaKSYc7FgQR9Fnfbi9hMSbakEDIqaibk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736871180; c=relaxed/simple;
-	bh=DPxSBXYj5+Cie9FQhV3urqAbzP460lDWuePHUdfwhY0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XtGNBDFYKvoy5OqXUrKoS/F3d5lAYiJZmxP4cWUjlRjNGMrA7WWFZxhV7An2Aw7fnkevWCEiB5Gl43fru0ztVO7HJ2NXkmMVKujFXiFV20OEOpzO7V4oHtb7AxVVKTZmnf6eqSIsO+7iKcbtYfsi789xm/0Lde991mPPJB9dxj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WBjRFNy4; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7b6e5ee6ac7so474565885a.0
-        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 08:12:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1736871178; x=1737475978; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=V1ez0Y9/qkSWPKaIZfJ3AgE1cJ4EV6MroSfCc0eODCI=;
-        b=WBjRFNy4gZBzGOhImxq0c9ekN29DRNDBtaeSS04dpBZIQE7oN/6JuxOlS63F5SrTnd
-         r5KPObzu8r7GQUtCdb6AFmkyK9f5+w1XjJW6qNapkyx61jF3BsUuEFyZ6wCbRjoqJk7r
-         ps6nOnla/jRKsbvky7zjETR9P6iWtykr9peYg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736871178; x=1737475978;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=V1ez0Y9/qkSWPKaIZfJ3AgE1cJ4EV6MroSfCc0eODCI=;
-        b=tIGPA9KPBPiRTsj0wdGlAVf36yfdeejSiSnGmRsETiBMabV8/L+rdwco65BEJBhw0Y
-         ZnK1TZJkiIc4p8eC0juHHKguLm4Th82UWMRAe0S70HWP5K+ZeYzPMEtqQhxzKwZ4C3xi
-         nG3EGhnmq3GE7Si+bgzw6e+Gsx+9gDjfnXB7NTgbmho8Z1jY24HuY8Se3IuVHgx65tcL
-         Qa+BL4qceRHy4eDmsF2PDU8LG3fSHFjWpvRgxQSUXFSF0Lliynq0rrXW2AStDH5kOmeq
-         7dQgsd/8ewwL0ToJGFhQrRF/ELx71KduHeS/pfty+dvs0paMpcGS9dGjCFknL8iNWWFQ
-         riTg==
-X-Forwarded-Encrypted: i=1; AJvYcCU8P7YQt0sIfjVYx53aoYWJ9eeBm7kwSz6y0tMwg8jGIPuxDR0t0XtyMvW9dhTk2NyG23cLCG4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQKM9M0IacJvYfy1bket54KSl/DYJxSF55KyL3b4Hhgy/bCBww
-	QLjzexIY2QGeifke3zBAdyuZO54vMQtjQkmvkBO64OC406UqLP3W7jokzmKP6krUn53IFxLsLJv
-	Q
-X-Gm-Gg: ASbGncuh23b8ksa7eBtCi276E++C52UHg7jr75u4VCbi2sR+aM2nAV+UHJAwwXfvOdq
-	Iu3eBMxfhcqnHQroeYZzXo17dVO2LYsh6IOZNqjJHYoqSZgHswCE0TFCsTwHps0/k+oa+xShn7o
-	hXijwwzT+4GTGVeWb9op5BYQZ484TllXmY2wvquDiWfmQYRhamPFPcl335PBAv0X/+f6re+T+Ci
-	V+VGpXPoGUnLJgifx//scoVkyIIYRbgBHAQjbCGcqKrhjv6k1Pjja8V05uFcwfa8Q8=
-X-Google-Smtp-Source: AGHT+IHrpXsovA0TmTlCENO3wBEAm5DshEtDzJ+tfCxG67zi2dsgrXWeJ08LvJG3WrXCFjZLz5iriQ==
-X-Received: by 2002:a05:6e02:114f:b0:3ce:7cca:7c0d with SMTP id e9e14a558f8ab-3ce7cca7c40mr17669525ab.12.1736871167110;
-        Tue, 14 Jan 2025 08:12:47 -0800 (PST)
-Received: from [192.168.1.14] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3ce7d9d720esm3366995ab.70.2025.01.14.08.12.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Jan 2025 08:12:46 -0800 (PST)
-Message-ID: <af9577f7-71fb-4760-9bd6-c3fc43aa0f30@linuxfoundation.org>
-Date: Tue, 14 Jan 2025 09:12:45 -0700
+	s=arc-20240116; t=1736871329; c=relaxed/simple;
+	bh=F3j37I7eWux3kT/HLzcnR1v1ElCkcnxuIX95XEhfavs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=dzI4r04AsERFLkEZRe2oVZj50TlztbeTqM+TxgVsoNbjj/3DNwzHXRRQz7zxF/1XRsGkz6mje47b1ZO7giXyqpe5Nis9hJGj6ziw10ps42caOG8n1EoJq6OIlr1o85U4/nkdSjn5LWfYrZI+o0rSr932GRheqMEl/D6d9oFbm8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ILH9a2vs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D4D2C4CEDD;
+	Tue, 14 Jan 2025 16:15:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736871327;
+	bh=F3j37I7eWux3kT/HLzcnR1v1ElCkcnxuIX95XEhfavs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ILH9a2vskhMolQSuF7Ef38niRrZRsKp1vTPx4T9aqNvQKErCGlpyMOPS0oerUl97C
+	 E1aBpgxzsrz/ZPrvYcTi4EcIACwJBd5DO4VlIsnN4XKvdi/L5Fw2NzUbcddXFMBPz6
+	 2XGWCKRUBFb1wkbltURqQ7pnf1U6p2kgbEUB1eAVmeYIFti8IiTxICbKzJRZQ0HEXh
+	 4ogP7Zc2AfnmekN8nHfPstvaHtnhKS6+cYu25CKNV1xBBbCbRP7IBoR/81lelIHg2c
+	 0yC4XuBLf5enjERrsFzas4D0l70M1UmoMMcXR14Eto0rwWjLYyTPwmznxHfCD9hVx5
+	 W1UILPS0EoGtw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: tudor.ambarus@linaro.org,  pratyush@kernel.org,  mwalle@kernel.org,
+  miquel.raynal@bootlin.com,  richard@nod.at,  vigneshr@ti.com,
+  linux-mtd@lists.infradead.org,  linux-kernel@vger.kernel.org,
+  alvinzhou@mxic.com.tw,  leoyu@mxic.com.tw,  Cheng Ming Lin
+ <chengminglin@mxic.com.tw>,  stable@vger.kernel.org,  Cheng Ming Lin
+ <linchengming884@gmail.com>
+Subject: Re: [PATCH v2 1/1] mtd: spi-nor: core: replace dummy buswidth from
+ addr to data
+In-Reply-To: <3342163.44csPzL39Z@steina-w> (Alexander Stein's message of "Tue,
+	14 Jan 2025 13:57:59 +0100")
+References: <20241112075242.174010-1-linchengming884@gmail.com>
+	<20241112075242.174010-2-linchengming884@gmail.com>
+	<3342163.44csPzL39Z@steina-w>
+Date: Tue, 14 Jan 2025 16:15:24 +0000
+Message-ID: <mafs0zfjt5q3n.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/rseq: Fix rseq for cases without glibc support
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Raghavendra Rao Ananta <rananta@google.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20241210224435.15206-1-rananta@google.com>
- <15339541-8912-4a1f-b5ca-26dd825dfb88@linuxfoundation.org>
- <291b5c9a-af51-4b7a-91de-8408a33f8390@efficios.com>
- <fbfe56d9-863b-4bf4-868c-bc64e0d3e93a@efficios.com>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <fbfe56d9-863b-4bf4-868c-bc64e0d3e93a@efficios.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 1/14/25 07:27, Mathieu Desnoyers wrote:
-> On 2025-01-14 09:07, Mathieu Desnoyers wrote:
->> On 2025-01-13 18:06, Shuah Khan wrote:
->>> On 12/10/24 15:44, Raghavendra Rao Ananta wrote:
->>>> Currently the rseq constructor, rseq_init(), assumes that glibc always
->>>> has the support for rseq symbols (__rseq_size for instance). However,
->>>> glibc supports rseq from version 2.35 onwards. As a result, for the
->>>> systems that run glibc less than 2.35, the global rseq_size remains
->>>> initialized to -1U. When a thread then tries to register for rseq,
->>>> get_rseq_min_alloc_size() would end up returning -1U, which is
->>>> incorrect. Hence, initialize rseq_size for the cases where glibc doesn't
->>>> have the support for rseq symbols.
->>>>
->>>> Cc: stable@vger.kernel.org
->>>> Fixes: 73a4f5a704a2 ("selftests/rseq: Fix mm_cid test failure")
->>>> Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
->>>> ---
->>>
->>> Applied to linux_kselftest next for Linux 6.14-rc1 after fixing the
->>> commit if for Fixes tag
->>
->> Hi Shuah,
->>
->> I did not review nor ack this patch. I need to review it carefully
->> to make sure it does not break anything else moving forward.
->>
->> Please wait before merging.
-> 
-> I am preparing an alternative fix which keeps the selftests
-> code in sync with librseq.
-> 
+On Tue, Jan 14 2025, Alexander Stein wrote:
 
-Sorry for the mixup. I will go drop this now.
+> Hello everyone,
+>
+> Am Dienstag, 12. November 2024, 08:52:42 CET schrieb Cheng Ming Lin:
+>> From: Cheng Ming Lin <chengminglin@mxic.com.tw>
+>> 
+>> The default dummy cycle for Macronix SPI NOR flash in Octal Output
+>> Read Mode(1-1-8) is 20.
+>> 
+>> Currently, the dummy buswidth is set according to the address bus width.
+>> In the 1-1-8 mode, this means the dummy buswidth is 1. When converting
+>> dummy cycles to bytes, this results in 20 x 1 / 8 = 2 bytes, causing the
+>> host to read data 4 cycles too early.
+>> 
+>> Since the protocol data buswidth is always greater than or equal to the
+>> address buswidth. Setting the dummy buswidth to match the data buswidth
+>> increases the likelihood that the dummy cycle-to-byte conversion will be
+>> divisible, preventing the host from reading data prematurely.
+>> 
+>> Fixes: 0e30f47232ab5 ("mtd: spi-nor: add support for DTR protocol")
+>> Cc: stable@vger.kernel.org
+>> Reviewd-by: Pratyush Yadav <pratyush@kernel.org>
+>> Signed-off-by: Cheng Ming Lin <chengminglin@mxic.com.tw>
+>> ---
+>>  drivers/mtd/spi-nor/core.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>> 
+>> diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+>> index f9c189ed7353..c7aceaa8a43f 100644
+>> --- a/drivers/mtd/spi-nor/core.c
+>> +++ b/drivers/mtd/spi-nor/core.c
+>> @@ -89,7 +89,7 @@ void spi_nor_spimem_setup_op(const struct spi_nor *nor,
+>>  		op->addr.buswidth = spi_nor_get_protocol_addr_nbits(proto);
+>>  
+>>  	if (op->dummy.nbytes)
+>> -		op->dummy.buswidth = spi_nor_get_protocol_addr_nbits(proto);
+>> +		op->dummy.buswidth = spi_nor_get_protocol_data_nbits(proto);
+>>  
+>>  	if (op->data.nbytes)
+>>  		op->data.buswidth = spi_nor_get_protocol_data_nbits(proto);
+>> 
+>
+> I just noticed this commit caused a regression on my i.MX8M Plus based board,
+> detected using git bisect.
+> DT: arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
+> Starting with this patch read is only 1S-1S-1S, before it was
+> 1S-1S-4S.
+>
+> before:
+>> cat /sys/kernel/debug/spi-nor/spi0.0/params
+>> name            mt25qu512a
+>> id              20 bb 20 10 44 00
+>> size            64.0 MiB
+>> write size      1
+>> page size       256
+>> address nbytes  4
+>> flags           HAS_SR_TB | 4B_OPCODES | HAS_4BAIT | HAS_LOCK | HAS_4BIT_BP
+>> | HAS_SR_BP3_BIT6 | SOFT_RESET
+>> 
+>> opcodes
+>> 
+>>  read           0x6c
+>>  
+>>   dummy cycles  8
+>>  
+>>  erase          0xdc
+>>  program        0x12
+>>  8D extension   none
+>> 
+>> protocols
+>> 
+>>  read           1S-1S-4S
+>>  write          1S-1S-1S
+>>  register       1S-1S-1S
+>> 
+>> erase commands
+>> 
+>>  21 (4.00 KiB) [1]
+>>  dc (64.0 KiB) [3]
+>>  c7 (64.0 MiB)
+>> 
+>> sector map
+>> 
+>>  region (in hex)   | erase mask | overlaid
+>>  ------------------+------------+----------
+>>  00000000-03ffffff |     [   3] | no
+>
+> after:
+>> cat /sys/kernel/debug/spi-nor/spi0.0/params
+>> name            mt25qu512a
+>> id              20 bb 20 10 44 00
+>> size            64.0 MiB
+>> write size      1
+>> page size       256
+>> address nbytes  4
+>> flags           HAS_SR_TB | 4B_OPCODES | HAS_4BAIT | HAS_LOCK | HAS_4BIT_BP
+>> | HAS_SR_BP3_BIT6 | SOFT_RESET
+>> 
+>> opcodes
+>> 
+>>  read           0x13
+>>  
+>>   dummy cycles  0
+>>  
+>>  erase          0xdc
+>>  program        0x12
+>>  8D extension   none
+>> 
+>> protocols
+>> 
+>>  read           1S-1S-1S
+>>  write          1S-1S-1S
+>>  register       1S-1S-1S
+>> 
+>> erase commands
+>> 
+>>  21 (4.00 KiB) [1]
+>>  dc (64.0 KiB) [3]
+>>  c7 (64.0 MiB)
+>> 
+>> sector map
+>> 
+>>  region (in hex)   | erase mask | overlaid
+>>  ------------------+------------+----------
+>>  00000000-03ffffff |     [   3] | no
+>
+> AFAICT the patch seems sane, so it probably just uncovered another
+> problem already lurking somewhere deeper.
+> Given the HW similarity I expect imx8mn and imx8mm based platforms to be
+> affected as well.
+> Reverting this commit make the read to be 1S-1S-4S again.
+> Any ideas ow to tackling down this problem?
 
-thanks,
--- Shuah
+Thanks for reporting this. I spent some time digging through this, and I
+think I know what is going on.
+
+Most controller's supports_op hook call spi_mem_default_supports_op(),
+including nxp_fspi_supports_op(). In spi_mem_default_supports_op(),
+spi_mem_check_buswidth() is called to check if the buswidths for the op
+can actually be supported by the board's wiring. This wiring information
+comes from (among other things) the spi-{tx,rx}-bus-width DT properties.
+Based on these properties, SPI_TX_* or SPI_RX_* flags are set by
+of_spi_parse_dt(). spi_mem_check_buswidth() then uses these flags to
+make the decision whether an op can be supported by the board's wiring
+(in a way, indirectly checking against spi-{rx,tx}-bus-width).
+
+In arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi we have:
+
+	flash0: flash@0 {
+		reg = <0>;
+		compatible = "jedec,spi-nor";
+		spi-max-frequency = <80000000>;
+		spi-tx-bus-width = <1>;
+		spi-rx-bus-width = <4>;
+
+Now the tricky bit here is we do the below in spi_mem_check_buswidth():
+
+	if (op->dummy.nbytes &&
+	    spi_check_buswidth_req(mem, op->dummy.buswidth, true))
+		return false;
+
+The "true" parameter here means to "treat the op as TX". Since the board
+only supports 1-bit TX, the 4-bit dummy TX is considered as unsupported,
+and the op gets rejected. In reality, a dummy phase is neither a RX nor
+a TX. We should ideally treat it differently, and only check if it is
+one of 1, 2, 4, or 8, and not test it against the board capabilities at
+all.
+
+Alexander, can you test my theory by making sure it is indeed the dummy
+check in spi_mem_check_buswidth() that fails, and either removing it or
+passing "false" instead of "true" to spi_check_buswidth_req() fixes the
+bug for you?
+
+I took a quick look and the spi-tx-bus-width == 1 and spi-rx-bus-width >
+1 combination seems to be quite common so I think many other boards are
+affected by this bug as well.
+
+Since we are quite late in the cycle, and that changing
+spi_mem_check_buswidth() might cause all sorts of breakages, I think the
+best idea currently would be to revert this patch, and resend it with
+the other changes later.
+
+Tudor, Michael, Miquel, what do you think about this? We are at rc7 but
+I think we should send out a fixes PR with a revert. If you agree, I
+will send out a patch and a PR.
+
+-- 
+Regards,
+Pratyush Yadav
 
