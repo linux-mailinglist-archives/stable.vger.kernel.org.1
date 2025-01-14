@@ -1,224 +1,159 @@
-Return-Path: <stable+bounces-108650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA04BA111D9
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 21:26:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA96A1123F
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 21:42:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 258983A6D2F
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 20:25:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF00116274F
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 20:42:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BF9520D515;
-	Tue, 14 Jan 2025 20:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FD720B80F;
+	Tue, 14 Jan 2025 20:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b="FmrjpT07";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DkS5xN+S"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="mp/2kYD2"
 X-Original-To: stable@vger.kernel.org
-Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
+Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087B720C488;
-	Tue, 14 Jan 2025 20:25:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F16D1459FD;
+	Tue, 14 Jan 2025 20:41:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736886329; cv=none; b=fuCbsTgid7HtnOvQzwYVD3JNSp94noFl4lR4bJ8br5JNvmOPMt611Eg7ELLOirsbQpv2lzezU1U2onWJb7AWhv0+zN8zi7tBd70CvmaUjXY6kGewO+g/d26a+fRYFUl59shmlPup9KNQhwc4ZfhovLF0uFMGj+F5K5fPG8RB/2A=
+	t=1736887316; cv=none; b=lNM34YJdlYuSwHyu6IFTdeRsNFOq6Pewrttzkv5bV/LnvssGqCEnBELQhc8g9JZ9mx3Pz/apcKNoeqUzALbyDFDAHuZpzNQ8fEaaIPgGoPzd8TZgvT+YDwPI4d5IWGrBTUImcRpeShpjaziACYDz4aIvTiAgpK/r1ni7rTs0lDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736886329; c=relaxed/simple;
-	bh=Bd0I0lIMKMC4KxEOjUIKWSGVerkNEic9IL2ALFZ+R48=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ilf9cA7XHubBYiibjM6G2drcPGH/BCZlIGPTX7fnr6LYVyk+6swQRDRIcvsIstNLF1t0z63h7aAOfCIuk0okSMLs6cG9QfzbJ6jTNWvczVHKY9+3ljNUnn5G/pnsA26a+Y2RyFwgCUlFeCxw7gojwtbegK6QEAQSrnqfsDv1gjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name; spf=pass smtp.mailfrom=coelacanthus.name; dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b=FmrjpT07; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DkS5xN+S; arc=none smtp.client-ip=202.12.124.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=coelacanthus.name
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailflow.stl.internal (Postfix) with ESMTP id 6CA841D40BEE;
-	Tue, 14 Jan 2025 15:25:26 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Tue, 14 Jan 2025 15:25:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	coelacanthus.name; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1736886326; x=1736893526; bh=WfiGYnphGq
-	vudtD6RXFjAbGTohKPfJnsfNrRsHzlEL4=; b=FmrjpT07YapVSFaY1sGnvFnz1X
-	V3Wm4K9jF/8ZFsbjNyEHtlB+iE5FhcNl8xWf+/4OldWNfafM0TAwhl8aCBlTofh8
-	UqTU7IIEtFUcVJedu8CbGfZ3RYegTh+OlhwwmbCv1bmiELDc1Zyyw0v/k3xAcPTg
-	+cpw3JxrMj3tksGRxA86I2rOXftWQdLa+sao9gXpV0Uki+oqmlXv3j8xhLtYM4kQ
-	yD20dABste7apThlgQ9Sa1qTW9r6YOkPuj4CBEkdlrxFXeAE+XNTIJsDjPBlogSh
-	mLtlzIKSZN94apzID/Y1LN1G1aob8JOf3aMvbvqZN1DyuwhAZiy4+X5v9HEQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1736886326; x=
-	1736893526; bh=WfiGYnphGqvudtD6RXFjAbGTohKPfJnsfNrRsHzlEL4=; b=D
-	kS5xN+SrokCOeuGkeA0Rdl4Iche77/VAi327Qoasu9ZzmyB87bixfvKkTIMLX3vB
-	nkNc/BinfuUlHmTOzlZZ7hU2L3r+KJ6lmyualOmSRHNVQXzJMqZeG+8PwDRKgS5B
-	gXY9oklDQ4114W1eADDOTQp9U4hqLc6pTWRtdKALxkl7gYqE3Px3P1WbPI8hoyAm
-	vhL0t/blkS+migWR31gbiU+VTYyCWoQ5aPseWYq3+gag/tE1yErRRAUUBxBUlEah
-	DWXimM6yNxZ9eBda4zxRJ8AVZFN832dvhooTghHnOm3qvGXxysl3WpwyGUtJubxl
-	lNn3yDn3jX0LoOJB+limg==
-X-ME-Sender: <xms:NciGZ_LAYEY89IPy9tZNkEECacWIUsVz6LhZUbWymAxu9EzEvLTb1w>
-    <xme:NciGZzKvmee4bRhjDWOXnbbyr6nfBbenRZf0QHN7JXM1YbRALlmbosNptsoajVPGn
-    WBkvr3G42_OCElHQnc>
-X-ME-Received: <xmr:NciGZ3vcToVEMPiNKXM0DImFLeWH-OfXFVcjOLRh24oD94bXxzIvdBmonIi5Zg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudehiedgudefhecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthekredtredt
-    jeenucfhrhhomhepvegvlhgvshhtvgcunfhiuhcuoehufihusegtohgvlhgrtggrnhhthh
-    hushdrnhgrmhgvqeenucggtffrrghtthgvrhhnpeeuiefgudffleffgeeiffeffeefieel
-    veejgfehhfejffeutedvffeiudevtdelgeenucffohhmrghinhepkhgvrhhnvghlrdhorh
-    hgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepuhif
-    uhestghovghlrggtrghnthhhuhhsrdhnrghmvgdpnhgspghrtghpthhtohepvdejpdhmoh
-    guvgepshhmthhpohhuthdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghr
-    rdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehprghlmhgvrhesuggrsggsvghlthdrtg
-    homhdprhgtphhtthhopehfvghlihigohhnmhgrrhhssegrrhgthhhlihhnuhigrdhorhhg
-    pdhrtghpthhtoheplhguvhesshhtrhgrtggvrdhiohdprhgtphhtthhopehtghhlgieslh
-    hinhhuthhrohhnihigrdguvgdprhgtphhtthhopehufihusegtohgvlhgrtggrnhhthhhu
-    shdrnhgrmhgvpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhrtghpth
-    htohepkhgvvghssehkvghrnhgvlhdrohhrghdprhgtphhtthhopeiihhhouhhquhgrnhes
-    ihhstggrshdrrggtrdgtnh
-X-ME-Proxy: <xmx:NciGZ4bO8cwhk4-uRV0eZfRV6hSiI_tEdmWZabv9LRTHHgYg6V6WOA>
-    <xmx:NciGZ2YXTVYXTZ_yCzfIYqYalplE8HdGiIDiBJiwtNGNK4IiBfDmHg>
-    <xmx:NciGZ8A2x4hjK9eakMRBxIjgRkjryQHr9Bqoz02iLvDu9upqIyM82Q>
-    <xmx:NciGZ0ZhoKMWvlMfnTFAraZ7egopmUFY98diACn4Gi09PxqwjsJpCA>
-    <xmx:NsiGZyKYvMmwzYyeJFReKdwFq0HtBTp0o00acWOEI0hWn_ki4C_s1Izn>
-Feedback-ID: i95c648bc:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Jan 2025 15:25:24 -0500 (EST)
-From: Celeste Liu <uwu@coelacanthus.name>
-Date: Wed, 15 Jan 2025 04:24:58 +0800
-Subject: [PATCH v5 1/2] riscv/ptrace: add new regset to access original a0
- register
+	s=arc-20240116; t=1736887316; c=relaxed/simple;
+	bh=eChCjDfe+5qP39jVvD14ozYe3D0oCfwixEvuEuVlEN0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XwYOHtIl/RJP1UaSVYmcG/LLA85B5fy5rjOMkDszTCs9qulFTpI67x+MAcgYHpu4/qgVoJI1i8NTp2vsM9J6UKF6vapu/jiO7HF8toX9sXJBFTEDzEt4S0Aj1YDauLYW0YVaCQ49azdrHbeVV/FYibHe9ff3zRmvzhLZM4F8PBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=mp/2kYD2; arc=none smtp.client-ip=199.89.1.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 009.lax.mailroute.net (Postfix) with ESMTP id 4YXgz06jcKzlgMVb;
+	Tue, 14 Jan 2025 20:41:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1736887299; x=1739479300; bh=rzBLylIyj8bVzNZ/mtrpV/DG
+	OTTTimLWwe6O0B/wwds=; b=mp/2kYD2KPxYJ5bSKS93GkD77RNSyy8HmPpnPSFd
+	BS95wlSrOLR3cfu9bGk/Wh2uU7PsOw6u2musctDFAgnUN0cpfMXBv4+BTaqG54T8
+	13SX3gwoV4npcdU+DsN1IeELPqTixLAq+nT0R9/STqWDeEBD5Ymt8GZ8Eqw8wMFc
+	hJXsE44fDlHtRh3soEPpw6GJW4u4Ubae0fvHYTF1f7vcCWphiNDcvSKeUyqAXv5b
+	m+S93mt/wX0EuUQDncHFi3+nOj092B2L3jRdyiv1/vKBLPVPAWiPKCBxTcCDW34+
+	n8SMqjt3EVj0lXRCdr4tk21O+BZmj6lF479+2gYVfIiN6w==
+X-Virus-Scanned: by MailRoute
+Received: from 009.lax.mailroute.net ([127.0.0.1])
+ by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id NCQDeftpnuhx; Tue, 14 Jan 2025 20:41:39 +0000 (UTC)
+Received: from [100.66.154.22] (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4YXgyl5sK3zlgTWK;
+	Tue, 14 Jan 2025 20:41:35 +0000 (UTC)
+Message-ID: <cec304ef-0a5d-4f80-aaa4-05432c7a0b88@acm.org>
+Date: Tue, 14 Jan 2025 12:41:34 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250115-riscv-new-regset-v5-1-d0e6ec031a23@coelacanthus.name>
-References: <20250115-riscv-new-regset-v5-0-d0e6ec031a23@coelacanthus.name>
-In-Reply-To: <20250115-riscv-new-regset-v5-0-d0e6ec031a23@coelacanthus.name>
-To: Oleg Nesterov <oleg@redhat.com>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Eric Biederman <ebiederm@xmission.com>, 
- Kees Cook <kees@kernel.org>, Shuah Khan <shuah@kernel.org>, 
- Albert Ou <aou@eecs.berkeley.edu>
-Cc: Alexandre Ghiti <alex@ghiti.fr>, "Dmitry V. Levin" <ldv@strace.io>, 
- Andrea Bolognani <abologna@redhat.com>, 
- =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>, 
- Thomas Gleixner <tglx@linutronix.de>, Ron Economos <re@w6rz.net>, 
- Charlie Jenkins <charlie@rivosinc.com>, 
- Andrew Jones <ajones@ventanamicro.com>, Quan Zhou <zhouquan@iscas.ac.cn>, 
- Felix Yan <felixonmars@archlinux.org>, Ruizhe Pan <c141028@gmail.com>, 
- Guo Ren <guoren@kernel.org>, Yao Zi <ziyao@disroot.org>, 
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
- Celeste Liu <uwu@coelacanthus.name>, stable@vger.kernel.org, 
- =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@rivosinc.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3197; i=uwu@coelacanthus.name;
- h=from:subject:message-id; bh=Bd0I0lIMKMC4KxEOjUIKWSGVerkNEic9IL2ALFZ+R48=;
- b=owJ4nJvAy8zAJeafov85RWVtBeNptSSG9LYTahxei2+ZK7gL31/p1LKEL+S0u9TWg2pWopNOn
- ch+9jLbmr2jlIVBjItBVkyRJa+E5SfnpbPdezu2d8HMYWUCGcLAxSkAE1nRz8jQulbWYqJDmdS9
- yH0Xd0ZtaImSZtoiOvOPRm3rh46tD2JXMjJMt7t61ztq0xrZnQ+9mjfNvhsjKVJToZO/aUXVeeO
- /8z/yAADK3kiB
-X-Developer-Key: i=uwu@coelacanthus.name; a=openpgp;
- fpr=892EBC7DC392DFF9C9C03F1D15F4180E73787863
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] scsi: ufs: fix use-after free in init error and remove
+ paths
+To: =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Peter Griffin <peter.griffin@linaro.org>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+ Eric Biggers <ebiggers@kernel.org>
+Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,
+ Will McVicker <willmcvicker@google.com>, kernel-team@android.com,
+ linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-samsung-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, stable@vger.kernel.org
+References: <20250114-ufshcd-fix-v2-1-2dc627590a4a@linaro.org>
+ <58f1b701-68da-49c0-b2b1-e079bad4cd08@acm.org>
+ <13a3fdb675baa36fcda1bb254b05032b1175a2a8.camel@linaro.org>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <13a3fdb675baa36fcda1bb254b05032b1175a2a8.camel@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
-The orig_a0 is missing in struct user_regs_struct of riscv, and there is
-no way to add it without breaking UAPI. (See Link tag below)
+On 1/14/25 11:56 AM, Andr=C3=A9 Draszik wrote:
+> Hi Bart,
+>=20
+> On Tue, 2025-01-14 at 09:55 -0800, Bart Van Assche wrote:
+>> On 1/14/25 8:16 AM, Andr=C3=A9 Draszik wrote:
+>>> +/**
+>>> + * ufshcd_scsi_host_put_callback - deallocate underlying Scsi_Host a=
+nd
+>>> + *				=C2=A0=C2=A0 thereby the Host Bus Adapter (HBA)
+>>> + * @host: pointer to SCSI host
+>>> + */
+>>> +static void ufshcd_scsi_host_put_callback(void *host)
+>>> +{
+>>> +	scsi_host_put(host);
+>>> +}
+>>
+>> Please rename ufshcd_scsi_host_put_callback() such that the function
+>> name makes clear when this function is called instead of what the
+>> function does.
+>=20
+> Would you have a suggestion for such a name? Something like
+> ufshcd_driver_release_action()?
+>=20
+> Unless I'm misunderstanding you, I believe most drivers use
+> a function name that says what the function does, e.g.
+> dell_wmi_ddv_debugfs_remove (just as a completely random
+> example out of many).
+>=20
+> If going by when it is called and if applying this principle
+> throughout ufshcd, then there can only ever be one such
+> function in ufshcd, as all devm_add_action() callback actions
+> happen at driver release, which surely isn't what you mean.
+>=20
+> You probably meant something different?
 
-Like NT_ARM_SYSTEM_CALL do, we add a new regset name NT_RISCV_ORIG_A0 to
-access original a0 register from userspace via ptrace API.
+I meant what I wrote in my previous email: to chose another name
+for ufshcd_scsi_host_put_callback() only. Having a function name that
+duplicates the function body leaves readers of the code guessing
+from where the function is called. BTW, naming callbacks after their
+call site is a normal practice as far as I know. From ufs-qcom.c:
 
-Fixes: e2c0cdfba7f6 ("RISC-V: User-facing API")
-Link: https://lore.kernel.org/all/59505464-c84a-403d-972f-d4b2055eeaac@gmail.com/
-Cc: stable@vger.kernel.org
-Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
-Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
----
- arch/riscv/kernel/ptrace.c | 32 ++++++++++++++++++++++++++++++++
- include/uapi/linux/elf.h   |  1 +
- 2 files changed, 33 insertions(+)
+static const struct ufs_hba_variant_ops ufs_hba_qcom_vops =3D {
+	.name                   =3D "qcom",
+	.init                   =3D ufs_qcom_init,
+	.exit                   =3D ufs_qcom_exit,
+	.get_ufs_hci_version	=3D ufs_qcom_get_ufs_hci_version,
+	.clk_scale_notify	=3D ufs_qcom_clk_scale_notify,
+	.setup_clocks           =3D ufs_qcom_setup_clocks,
+	.hce_enable_notify      =3D ufs_qcom_hce_enable_notify,
+	.link_startup_notify    =3D ufs_qcom_link_startup_notify,
+	.pwr_change_notify	=3D ufs_qcom_pwr_change_notify,
+	.apply_dev_quirks	=3D ufs_qcom_apply_dev_quirks,
+	.fixup_dev_quirks       =3D ufs_qcom_fixup_dev_quirks,
+	.suspend		=3D ufs_qcom_suspend,
+	.resume			=3D ufs_qcom_resume,
+	.dbg_register_dump	=3D ufs_qcom_dump_dbg_regs,
+	.device_reset		=3D ufs_qcom_device_reset,
+	.config_scaling_param =3D ufs_qcom_config_scaling_param,
+	.reinit_notify		=3D ufs_qcom_reinit_notify,
+	.mcq_config_resource	=3D ufs_qcom_mcq_config_resource,
+	.get_hba_mac		=3D ufs_qcom_get_hba_mac,
+	.op_runtime_config	=3D ufs_qcom_op_runtime_config,
+	.get_outstanding_cqs	=3D ufs_qcom_get_outstanding_cqs,
+	.config_esi		=3D ufs_qcom_config_esi,
+};
 
-diff --git a/arch/riscv/kernel/ptrace.c b/arch/riscv/kernel/ptrace.c
-index ea67e9fb7a583683b922fe2c017ea61f3bc848db..ef9ab74c8575a5c440155973b1c625c06a867c97 100644
---- a/arch/riscv/kernel/ptrace.c
-+++ b/arch/riscv/kernel/ptrace.c
-@@ -31,6 +31,7 @@ enum riscv_regset {
- #ifdef CONFIG_RISCV_ISA_SUPM
- 	REGSET_TAGGED_ADDR_CTRL,
- #endif
-+	REGSET_ORIG_A0,
- };
- 
- static int riscv_gpr_get(struct task_struct *target,
-@@ -184,6 +185,29 @@ static int tagged_addr_ctrl_set(struct task_struct *target,
- }
- #endif
- 
-+static int riscv_orig_a0_get(struct task_struct *target,
-+			     const struct user_regset *regset,
-+			     struct membuf to)
-+{
-+	return membuf_store(&to, task_pt_regs(target)->orig_a0);
-+}
-+
-+static int riscv_orig_a0_set(struct task_struct *target,
-+			     const struct user_regset *regset,
-+			     unsigned int pos, unsigned int count,
-+			     const void *kbuf, const void __user *ubuf)
-+{
-+	unsigned long orig_a0 = task_pt_regs(target)->orig_a0;
-+	int ret;
-+
-+	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &orig_a0, 0, -1);
-+	if (ret)
-+		return ret;
-+
-+	task_pt_regs(target)->orig_a0 = orig_a0;
-+	return 0;
-+}
-+
- static const struct user_regset riscv_user_regset[] = {
- 	[REGSET_X] = {
- 		.core_note_type = NT_PRSTATUS,
-@@ -224,6 +248,14 @@ static const struct user_regset riscv_user_regset[] = {
- 		.set = tagged_addr_ctrl_set,
- 	},
- #endif
-+	[REGSET_ORIG_A0] = {
-+		.core_note_type = NT_RISCV_ORIG_A0,
-+		.n = 1,
-+		.size = sizeof(elf_greg_t),
-+		.align = sizeof(elf_greg_t),
-+		.regset_get = riscv_orig_a0_get,
-+		.set = riscv_orig_a0_set,
-+	},
- };
- 
- static const struct user_regset_view riscv_user_native_view = {
-diff --git a/include/uapi/linux/elf.h b/include/uapi/linux/elf.h
-index b44069d29cecc0f9de90ee66bfffd2137f4275a8..390060229601631da2fb27030d9fa2142e676c14 100644
---- a/include/uapi/linux/elf.h
-+++ b/include/uapi/linux/elf.h
-@@ -452,6 +452,7 @@ typedef struct elf64_shdr {
- #define NT_RISCV_CSR	0x900		/* RISC-V Control and Status Registers */
- #define NT_RISCV_VECTOR	0x901		/* RISC-V vector registers */
- #define NT_RISCV_TAGGED_ADDR_CTRL 0x902	/* RISC-V tagged address control (prctl()) */
-+#define NT_RISCV_ORIG_A0	  0x903	/* RISC-V original a0 register */
- #define NT_LOONGARCH_CPUCFG	0xa00	/* LoongArch CPU config registers */
- #define NT_LOONGARCH_CSR	0xa01	/* LoongArch control and status registers */
- #define NT_LOONGARCH_LSX	0xa02	/* LoongArch Loongson SIMD Extension registers */
-
--- 
-2.48.0
-
+Bart.
 
