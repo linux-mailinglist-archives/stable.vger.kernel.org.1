@@ -1,149 +1,129 @@
-Return-Path: <stable+bounces-108620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C210EA10C1E
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:21:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14BD3A10BD4
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:09:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AE243A3986
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 16:21:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F40D1681D9
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 16:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51DFD1B87C6;
-	Tue, 14 Jan 2025 16:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7491ACE12;
+	Tue, 14 Jan 2025 16:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fel.cvut.cz header.i=@fel.cvut.cz header.b="c3etpBcQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U6dO1bs7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpx.fel.cvut.cz (smtpx.feld.cvut.cz [147.32.210.153])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C051C189B8F;
-	Tue, 14 Jan 2025 16:21:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=147.32.210.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD731CC177
+	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 16:07:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736871694; cv=none; b=FLoOdTiUYIIP+SjecnMYzYmA40ZX9Svpzzl3bEg1s++AGg3I/K6rlK4qqyApMIWzvyFNPGONFwm2ETQkwDIEHOxrQXhuItWixaCvVAvirOTZyc/kTrUT5jOfBFWUGDHhhUUbKtjCh69m6eLRXmgU/T551ujjU6lNl7RyZbgyL/4=
+	t=1736870865; cv=none; b=AxfDddU8/o/EC/7cH02rcGoE1/81Q+udyGzdcsDV2u+LjS4+0v9lrmrfsFllOcfjaoNpCm6PPj5X3H53M3nSbFenOdLbo4las7F2UUP9n4n3siZsKDGPxbqZPVzABi0LeJinWYttKLcryNf13+f2xJlBoXw+uKerrVDWWCcUGwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736871694; c=relaxed/simple;
-	bh=sn+Zmy6mCJQb5Vc1n+gYyGej1pawETlFig4e2XvVyXQ=;
-	h=From:To:Subject:Date:Cc:References:In-Reply-To:MIME-Version:
-	 Content-Type:Content-Disposition:Message-Id; b=h5oUqKNsp6lqdYm93ZRPeNjN4n/VtXIoCu8DM06VNzOGizoxCSFyJwiBDaXaeLoi+5N3yrPVLDkQ/oOKu8fddU1NGCc5yiVcrHLF1QXxkyr5LHM8iCHIey2yv5aEKtKfznnv9WlWe0YQCnkpaCFv3sPZp47VVzl7rAzlxq+u+ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fel.cvut.cz; spf=pass smtp.mailfrom=fel.cvut.cz; dkim=pass (2048-bit key) header.d=fel.cvut.cz header.i=@fel.cvut.cz header.b=c3etpBcQ; arc=none smtp.client-ip=147.32.210.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fel.cvut.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fel.cvut.cz
-Received: from localhost (unknown [192.168.200.27])
-	by smtpx.fel.cvut.cz (Postfix) with ESMTP id E4DEA44D10;
-	Tue, 14 Jan 2025 17:11:33 +0100 (CET)
-X-Virus-Scanned: IMAP STYX AMAVIS
-Received: from smtpx.fel.cvut.cz ([192.168.200.2])
- by localhost (cerokez-250.feld.cvut.cz [192.168.200.27]) (amavis, port 10060)
- with ESMTP id ymDZRwU9WmaA; Tue, 14 Jan 2025 17:11:28 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fel.cvut.cz;
-	s=felmail; t=1736870788;
-	bh=OemNQe47UCdAT5Jy+ItPTfxRHUH7KhRBuUgna1noawY=;
-	h=From:To:Subject:Date:Cc:References:In-Reply-To:From;
-	b=c3etpBcQV8TcrPSKR8njiKdOCv3n99Ya+ESIeT2M4AaCFOXSjpkftsyGs1PfqFgmw
-	 kofPLHs1twWuhuCSL69QwgPDHPPj+nNQmwNBN8n7YlwX28yKj8kZj8qt+niay/eqU9
-	 3PnV+6AHtltAYIeI350oP2YFM6yyd/XzQWJbXjbBfXs1eWfzrGVHsdCXhkkjYpDOgJ
-	 xLyIf82ZzkwBJ5YCB1VQxMG8GJWmLy8p5pyGMyq0HOHgBZtOJRfbPKczJh3M6vYiS1
-	 fj0m3cLyax9SFEPVxasKfoxrxhZzu8hRBp+dK9JcqAgIPtSOk7Zi/GIuEVBkEnj5+X
-	 yvDmA/j5h5iTw==
-Received: from [10.0.1.209] (unknown [80.188.199.122])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pisa)
-	by smtpx.fel.cvut.cz (Postfix) with ESMTPSA id 5EA1D44C85;
-	Tue, 14 Jan 2025 17:06:28 +0100 (CET)
-From: Pavel Pisa <pisa@fel.cvut.cz>
-To: Fedor Pchelkin <pchelkin@ispras.ru>,
- "Marc Kleine-Budde" <mkl@pengutronix.de>
-Subject: Re: [PATCH] can: ctucanfd: handle skb allocation failure
-Date: Tue, 14 Jan 2025 17:06:38 +0100
-User-Agent: KMail/1.9.10
-Cc: Ondrej Ille <ondrej.ille@gmail.com>,
- Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
- Martin Jerabek <martin.jerabek01@gmail.com>,
- linux-can@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- lvc-project@linuxtesting.org,
- stable@vger.kernel.org
-References: <20250114152138.139580-1-pchelkin@ispras.ru>
-In-Reply-To: <20250114152138.139580-1-pchelkin@ispras.ru>
-X-KMail-QuotePrefix: > 
+	s=arc-20240116; t=1736870865; c=relaxed/simple;
+	bh=DjA+1pRYEwCTzZYR4gdpRvobmLbRIgWTLuTl2zytbuQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GOVo0IkI7xXsxIA3LoaF5RYR1AGjN0Od9+rhNqz2OUzylHuXZ4ub4KivG9c7rijAWlvuHV7LAptGn4m+KW4ESJwxmw4tO35lGJL4zIxVzKiwU3Ux1tdxwJB6WsX6JnJN1VQucpWO8PsmCi3oG2SwXp6ss/870EscQKS7uVd3rCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U6dO1bs7; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5d932eac638so10952686a12.1
+        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 08:07:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736870861; x=1737475661; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nh3NaFzjRJ2XtEvEnIMGyzyfuLh5N2xTIHOpyoyF/88=;
+        b=U6dO1bs7Sxl72khfvgDjJHiOijAMmnep0UNUmTleyxEMDEMUm3b2EFdQXL82aIl0Ti
+         9AW+beKmOGn7pPd3F+7T46PpMkVKK8Os3kB7OVArGrWSZV7/lCOnJFt/OWmQct7ClQkn
+         YIvx1qd/G3YBDIkooXiftGyOtO473hephAJOLksgA99H0E5F5AAnaeUsA+2GJ89g8FTX
+         SoMvbhDjAA0vK99Zz0M/AZbfB0glD4cMPRhLMbTWdznvvDf1TnM5Is4B9fdTaDJSHb+n
+         8wT0MBrsmrjEPSjr0xFGOJXbtldivvY+AKy8M1bsuwqcy4YXrZVRAHPGhqUb5d4yPkHP
+         PcSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736870861; x=1737475661;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Nh3NaFzjRJ2XtEvEnIMGyzyfuLh5N2xTIHOpyoyF/88=;
+        b=VjBrK/Gpx67f88M4ZdDT5CIIrLPa++NXGJ9isovcb/ZXkLLilNhAjZkkof57vFElm8
+         +QUfBXAhf8+I+PwvPIVUg594RIhnOKzXEHe7xYJeBWd3/crEI3ND3HlXy/E8Wsj/o+D7
+         a90a2W6UMOYS85e4dsXhEv4wQ+0wBXnTuZhWF/5AWA976PCTWgc1u/ynujkHeLwWdSZu
+         jPNfmr2dAoqZXm0KF5I4Lwd6AYjXjxadmXPxd4b1jDTF4mZ/g1D55V1fPpoe5+NNGmvv
+         SNKmAa53g4pQDPLTJZT9/1Ewd8jNfdU7IJKlYiNWDSKGGa9tkB+dnWY13WL8BgpeGSUA
+         tgoA==
+X-Gm-Message-State: AOJu0YzKBOhr1CqdtwvNWQN0rr7pedlKtZ9Qujphx5BmPQzc2Zioc20B
+	Mp/+J4hhuokfIVEU4M3AqKbpUSk1cLPZKVPpDZtgNUFWBsxKMq9QFPRMsA==
+X-Gm-Gg: ASbGnctucQYMQA5eg14nV7z/+i+5NXxQ1sDeno80pOWTQ5OtgUJr5UwKSN2rFrlFCRP
+	CYjKtrieTMAhMBy98cB24EwbWuc0/luAVFiezVrSAdTwrx46wDY1Lc2+XQ+V9J0sS17iq9HKDZh
+	bXZzrXx96QEHAr22E88L1q4bdbBGrdbIehaqvaVXBp19VEoLBwFu/GlVKQRqe0HlcXqoShGCGlp
+	gEj5+vRLxakGWWLOKuMUj6/B2FO4qtkPusfZTd+tKBWkI8mhp2x15fgaPV+FLCd0fuCsw==
+X-Google-Smtp-Source: AGHT+IES1UhJob9AV0Y3LD9sZar5Wkaew9X4idTdIiF/Klx5sHJb1X2OMwhjIQH77ZVMu3RC+O4Jdw==
+X-Received: by 2002:a05:6402:4023:b0:5d0:e2c8:dc8d with SMTP id 4fb4d7f45d1cf-5d972e1b962mr23227286a12.20.1736870861202;
+        Tue, 14 Jan 2025 08:07:41 -0800 (PST)
+Received: from 127.0.0.1localhost ([148.252.147.29])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d99008c523sm6417210a12.8.2025.01.14.08.07.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jan 2025 08:07:40 -0800 (PST)
+From: Pavel Begunkov <asml.silence@gmail.com>
+To: stable@vger.kernel.org
+Cc: asml.silence@gmail.com,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH stable-6.12] io_uring: don't touch sqd->thread off tw add
+Date: Tue, 14 Jan 2025 16:08:23 +0000
+Message-ID: <2c7b8e078a984bfaa67bf2156c100a833e080b55.1736870725.git.asml.silence@gmail.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <202501141706.38210.pisa@fel.cvut.cz>
+Content-Transfer-Encoding: 8bit
 
-Hello Fedor,
+[ upstream commit bd2703b42decebdcddf76e277ba76b4c4a142d73 ]
 
-thanks for spotting the problem.
+With IORING_SETUP_SQPOLL all requests are created by the SQPOLL task,
+which means that req->task should always match sqd->thread. Since
+accesses to sqd->thread should be separately protected, use req->task
+in io_req_normal_work_add() instead.
 
-On Tuesday 14 of January 2025 16:21:38 Fedor Pchelkin wrote:
-> If skb allocation fails, the pointer to struct can_frame is NULL. This
-> is actually handled everywhere inside ctucan_err_interrupt() except for
-> the only place.
->
-> Add the missed NULL check.
->
-> Found by Linux Verification Center (linuxtesting.org) with SVACE static
-> analysis tool.
->
-> Fixes: 2dcb8e8782d8 ("can: ctucanfd: add support for CTU CAN FD open-source
-> IP core - bus independent part.") Cc: stable@vger.kernel.org
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Note, in the eyes of io_req_normal_work_add(), the SQPOLL task struct
+is always pinned and alive, and sqd->thread can either be the task or
+NULL. It's only problematic if the compiler decides to reload the value
+after the null check, which is not so likely.
 
-Acked-by: Pavel Pisa <pisa@cmp.felk.cvut.cz>
+Cc: stable@vger.kernel.org
+Cc: Bui Quang Minh <minhquangbui99@gmail.com>
+Reported-by: lizetao <lizetao1@huawei.com>
+Fixes: 78f9b61bd8e54 ("io_uring: wake SQPOLL task when task_work is added to an empty queue")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/1cbbe72cf32c45a8fee96026463024cd8564a7d7.1736541357.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+---
+ io_uring/io_uring.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-> ---
->  drivers/net/can/ctucanfd/ctucanfd_base.c | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/net/can/ctucanfd/ctucanfd_base.c
-> b/drivers/net/can/ctucanfd/ctucanfd_base.c index 64c349fd4600..f65c1a1e05cc
-> 100644
-> --- a/drivers/net/can/ctucanfd/ctucanfd_base.c
-> +++ b/drivers/net/can/ctucanfd/ctucanfd_base.c
-> @@ -867,10 +867,12 @@ static void ctucan_err_interrupt(struct net_device
-> *ndev, u32 isr) }
->  			break;
->  		case CAN_STATE_ERROR_ACTIVE:
-> -			cf->can_id |= CAN_ERR_CNT;
-> -			cf->data[1] = CAN_ERR_CRTL_ACTIVE;
-> -			cf->data[6] = bec.txerr;
-> -			cf->data[7] = bec.rxerr;
-> +			if (skb) {
-> +				cf->can_id |= CAN_ERR_CNT;
-> +				cf->data[1] = CAN_ERR_CRTL_ACTIVE;
-> +				cf->data[6] = bec.txerr;
-> +				cf->data[7] = bec.rxerr;
-> +			}
->  			break;
->  		default:
->  			netdev_warn(ndev, "unhandled error state (%d:%s)!\n",
-
-
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 9849da128364..21f1bcba2f52 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1244,10 +1244,7 @@ static void io_req_normal_work_add(struct io_kiocb *req)
+ 
+ 	/* SQPOLL doesn't need the task_work added, it'll run it itself */
+ 	if (ctx->flags & IORING_SETUP_SQPOLL) {
+-		struct io_sq_data *sqd = ctx->sq_data;
+-
+-		if (sqd->thread)
+-			__set_notify_signal(sqd->thread);
++		__set_notify_signal(req->task);
+ 		return;
+ 	}
+ 
 -- 
+2.47.1
 
-                Pavel Pisa
-    phone:      +420 603531357
-    e-mail:     pisa@cmp.felk.cvut.cz
-    Department of Control Engineering FEE CVUT
-    Karlovo namesti 13, 121 35, Prague 2
-    university: http://control.fel.cvut.cz/
-    personal:   http://cmp.felk.cvut.cz/~pisa
-    social:     https://social.kernel.org/ppisa
-    projects:   https://www.openhub.net/accounts/ppisa
-    CAN related:http://canbus.pages.fel.cvut.cz/
-    RISC-V education: https://comparch.edu.cvut.cz/
-    Open Technologies Research Education and Exchange Services
-    https://gitlab.fel.cvut.cz/otrees/org/-/wikis/home
 
