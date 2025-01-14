@@ -1,244 +1,181 @@
-Return-Path: <stable+bounces-108622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14B59A10C47
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:29:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 541DAA10C51
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:32:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2139E18899E7
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 16:29:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E9E57A1023
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 16:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B2541C5F0F;
-	Tue, 14 Jan 2025 16:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02F017CA12;
+	Tue, 14 Jan 2025 16:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g0l/akWk"
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="Zj8zAh65"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9EE15746B;
-	Tue, 14 Jan 2025 16:29:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19BF1D5145;
+	Tue, 14 Jan 2025 16:31:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736872173; cv=none; b=pJUszGjOZmkpFgZ7eNiX84pAEvtBMWHkyb0t0tASWTdEKNnNDZn96JYYPfBjtspdZjyAHt0SDwPY0Z82zXZmP54GMZZETrQLhHWlbz6k9pbOl8QyIitpMtTSws5Pd8ISgnFtKrfbAGuRGxsfQDxioAQXKvAZtp6ImkbSDF7qGmI=
+	t=1736872296; cv=none; b=U3UbcQJeGiQhd7HTLv/PSG9i1wMO/6JCvRPsy4PWiWslHy2axpQkyg32n6JyPjtXoKjyMPorJkfZvW/mBjfAnzkfYsDhvrJhtxUQO0HcXqIRvsGeZ7Zsp/10JNctMbheMzCfjiWckmtNqk2zpxA18Gu8GQFLFQgKn6LtHYdYIqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736872173; c=relaxed/simple;
-	bh=h62z4y1wv+NTpFNoOfOMwrg0bd6GXzx/E3jJZhWJ5kA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=JHiGS/JcYPxEFgcbEGOlbT1aMxPqoSlMGeaUBfA96c14u/7NHkVeIPgVdKK7074FGeRWInvIlJ3Qv46X7ZB/pbdzTXl+XHCscIsXWNUEcCvxVmN4ZqKWE3qQb2pDtF1hi6MfM2LgeePrTmWz9UPsqfCjgG5xFPXE7RZXrd1cftA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g0l/akWk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89640C4CEDF;
-	Tue, 14 Jan 2025 16:29:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736872171;
-	bh=h62z4y1wv+NTpFNoOfOMwrg0bd6GXzx/E3jJZhWJ5kA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=g0l/akWkNUdWlMejGlteYuENKMox7ADPISatLnC1vgs3xaT9h3yXrP9qcQ86M+rgp
-	 I9gugjLyITShbUpOm42Pm+dFS4uufFlvxvRXKw5hvXFMeeTa2MaLXmqEmi9+OeVzWC
-	 YojSbtSfhCLqc1nzNR/Ws53hobpg13q2aUpLuO3mjsm7zUCIp4FKJoVnPSxRa0u5ME
-	 n9kPlebdSsH70RBCP6g5zaoWMKxRo9kXI4ffyKrTHHNstHpCMrdWb37uUq+DA2Qa9C
-	 FsrjD12EBac5fjZRHmYWKSiw7JqpH6R62kbe8bm85qSY8o3WXniakTNmRlnBrYkV6x
-	 tcW3zcsOdYm9w==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: pratyush@kernel.org,  mwalle@kernel.org,  miquel.raynal@bootlin.com,
-  richard@nod.at,  vigneshr@ti.com,  linux-mtd@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  Tudor Ambarus <tudor.ambarus@linaro.org>,
-  alvinzhou@mxic.com.tw,  leoyu@mxic.com.tw,  Cheng Ming Lin
- <chengminglin@mxic.com.tw>,  stable@vger.kernel.org,  Cheng Ming Lin
- <linchengming884@gmail.com>
-Subject: Re: [PATCH v2 1/1] mtd: spi-nor: core: replace dummy buswidth from
- addr to data
-In-Reply-To: <7762352.EvYhyI6sBW@steina-w> (Alexander Stein's message of "Tue,
-	14 Jan 2025 17:24:32 +0100")
-References: <20241112075242.174010-1-linchengming884@gmail.com>
-	<3342163.44csPzL39Z@steina-w>
-	<a6a9dfce-6cac-4831-9c96-45471f5ee13a@linaro.org>
-	<7762352.EvYhyI6sBW@steina-w>
-Date: Tue, 14 Jan 2025 16:29:28 +0000
-Message-ID: <mafs0sepl5pg7.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1736872296; c=relaxed/simple;
+	bh=GliCZdjc9UMRvHhc1En8aKi7hYaY/62aGAlKZEHFeoE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nt1lIgy49xZWAehrJz3jfurJtw8uYOIAlXnYPJZq8i4aBMmF5EnLR7dLq/lRMlFvzYFEz5LQ50M2cvyf3+V9TPyYwpmRbhIV/xhK9Hqy7qIuz5Wg+nH1ByopaNKnPxALXtRyP7Ggb+UWwa760dbLX9TER8s/erooeEe4f20+gxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=Zj8zAh65; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1tXjp3-00Gv4F-L7; Tue, 14 Jan 2025 17:31:21 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
+	bh=uc3P+aW58p1Wgl/FgiobWz7JZg3jTcWFJd6qr34VHyM=; b=Zj8zAh65jD1PreEiamMYVyGj2V
+	gVX5tchbNSM3Wv6Gbf12HUK9JCzyI2AeruIo25+HSbn3Qznzgu2mQ/0iFOtRy5SAV5/TFkMqXAQZ1
+	jWyhuoFcmKk2fyu+x36pLL6N2MWU6QAYB9pipAkxN1F/c0zcLbKV60O1kqVrr42NEwXkCXEdklOY8
+	kktFdnhdJqFuw+GpAIC+BMjvd19B08h220kQ4FdH7kvxA6ZlHMnKXUaToaVFB/srDG25lPBfT7p/c
+	DAxbe9IyFAL4NkWOG3gsimEY0TV5O5uEgj08MQQkPdFs0VQ7LkT29uAhr7DDwa2GZ9mj1HPWGscdG
+	CdAE0uvA==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1tXjp2-00007d-B3; Tue, 14 Jan 2025 17:31:20 +0100
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1tXjor-003bqh-Vn; Tue, 14 Jan 2025 17:31:10 +0100
+Message-ID: <fb6f876f-a4eb-4005-bd76-fff0632291b8@rbox.co>
+Date: Tue, 14 Jan 2025 17:31:08 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 1/5] vsock/virtio: discard packets if the transport
+ changes
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Luigi Leonardi <leonardi@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, Wongi Lee <qwerty@theori.io>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Eric Dumazet <edumazet@google.com>,
+ kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Simon Horman <horms@kernel.org>, Hyunwoo Kim <v4bel@theori.io>,
+ Jakub Kicinski <kuba@kernel.org>, virtualization@lists.linux.dev,
+ stable@vger.kernel.org
+References: <20250110083511.30419-1-sgarzare@redhat.com>
+ <20250110083511.30419-2-sgarzare@redhat.com>
+ <1aa83abf-6baa-4cf1-a108-66b677bcfd93@rbox.co>
+ <nedvcylhjxrkmkvgugsku2lpdjgjpo5exoke4o6clxcxh64s3i@jkjnvngazr5v>
+ <CAGxU2F7BoMNi-z=SHsmCV5+99=CxHo4dxFeJnJ5=q9X=CM3QMA@mail.gmail.com>
+ <cccb1a4f-5495-4db1-801e-eca211b757c3@rbox.co>
+ <nzpj4hc6m4jlqhcwv6ngmozl3hcoxr6kehoia4dps7jytxf6df@iqglusiqrm5n>
+ <903dd624-44e5-4792-8aac-0eaaf1e675c5@rbox.co>
+ <5nkibw33isxiw57jmoaadizo3m2p76ve6zioumlu2z2nh5lwck@xodwiv56zrou>
+ <7de34054-10cf-45d0-a869-adebb77ad913@rbox.co>
+ <n2itoh23kikzszzgmyejfwe3mdf6fmxzwbtyo5ahtxpaco3euq@osupldmckz7p>
+Content-Language: pl-PL, en-GB
+From: Michal Luczaj <mhal@rbox.co>
+In-Reply-To: <n2itoh23kikzszzgmyejfwe3mdf6fmxzwbtyo5ahtxpaco3euq@osupldmckz7p>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jan 14 2025, Alexander Stein wrote:
+On 1/14/25 11:16, Stefano Garzarella wrote:
+> On Tue, Jan 14, 2025 at 01:09:24AM +0100, Michal Luczaj wrote:
+>> On 1/13/25 16:01, Stefano Garzarella wrote:
+>>> On Mon, Jan 13, 2025 at 02:51:58PM +0100, Michal Luczaj wrote:
+>>>> On 1/13/25 12:05, Stefano Garzarella wrote:
+>>>>> ...
+>>>>> An alternative approach, which would perhaps allow us to avoid all this,
+>>>>> is to re-insert the socket in the unbound list after calling release()
+>>>>> when we deassign the transport.
+>>>>>
+>>>>> WDYT?
+>>>>
+>>>> If we can't keep the old state (sk_state, transport, etc) on failed
+>>>> re-connect() then reverting back to initial state sounds, uhh, like an
+>>>> option :) I'm not sure how well this aligns with (user's expectations of)
+>>>> good ol' socket API, but maybe that train has already left.
+>>>
+>>> We really want to behave as similar as possible with the other sockets,
+>>> like AF_INET, so I would try to continue toward that train.
+>>
+>> I was worried that such connect()/transport error handling may have some
+>> user visible side effects, but I guess I was wrong. I mean you can still
+>> reach a sk_state=TCP_LISTEN with a transport assigned[1], but perhaps
+>> that's a different issue.
+>>
+>> I've tried your suggestion on top of this series. Passes the tests.
+> 
+> Great, thanks!
+> 
+>>
+>> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+>> index fa9d1b49599b..4718fe86689d 100644
+>> --- a/net/vmw_vsock/af_vsock.c
+>> +++ b/net/vmw_vsock/af_vsock.c
+>> @@ -492,6 +492,10 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
+>> 		vsk->transport->release(vsk);
+>> 		vsock_deassign_transport(vsk);
+>>
+>> +		vsock_addr_unbind(&vsk->local_addr);
+>> +		vsock_addr_unbind(&vsk->remote_addr);
+> 
+> My only doubt is that if a user did a specific bind() before the
+> connect, this way we're resetting everything, is that right?
 
-> Hi Tudor,
->
-> Am Dienstag, 14. Januar 2025, 14:26:47 CET schrieb Tudor Ambarus:
->> On 1/14/25 12:57 PM, Alexander Stein wrote:
->> > Hello everyone,
->> 
->> Hi,
->> 
->> > 
->> > Am Dienstag, 12. November 2024, 08:52:42 CET schrieb Cheng Ming Lin:
->> >> From: Cheng Ming Lin <chengminglin@mxic.com.tw>
->> >>
->> >> The default dummy cycle for Macronix SPI NOR flash in Octal Output
->> >> Read Mode(1-1-8) is 20.
->> >>
->> >> Currently, the dummy buswidth is set according to the address bus width.
->> >> In the 1-1-8 mode, this means the dummy buswidth is 1. When converting
->> >> dummy cycles to bytes, this results in 20 x 1 / 8 = 2 bytes, causing the
->> >> host to read data 4 cycles too early.
->> >>
->> >> Since the protocol data buswidth is always greater than or equal to the
->> >> address buswidth. Setting the dummy buswidth to match the data buswidth
->> >> increases the likelihood that the dummy cycle-to-byte conversion will be
->> >> divisible, preventing the host from reading data prematurely.
->> >>
->> >> Fixes: 0e30f47232ab5 ("mtd: spi-nor: add support for DTR protocol")
->> >> Cc: stable@vger.kernel.org
->> >> Reviewd-by: Pratyush Yadav <pratyush@kernel.org>
->> >> Signed-off-by: Cheng Ming Lin <chengminglin@mxic.com.tw>
->> >> ---
->> >>  drivers/mtd/spi-nor/core.c | 2 +-
->> >>  1 file changed, 1 insertion(+), 1 deletion(-)
->> >>
->> >> diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
->> >> index f9c189ed7353..c7aceaa8a43f 100644
->> >> --- a/drivers/mtd/spi-nor/core.c
->> >> +++ b/drivers/mtd/spi-nor/core.c
->> >> @@ -89,7 +89,7 @@ void spi_nor_spimem_setup_op(const struct spi_nor *nor,
->> >>  		op->addr.buswidth = spi_nor_get_protocol_addr_nbits(proto);
->> >>  
->> >>  	if (op->dummy.nbytes)
->> >> -		op->dummy.buswidth = spi_nor_get_protocol_addr_nbits(proto);
->> >> +		op->dummy.buswidth = spi_nor_get_protocol_data_nbits(proto);
->> >>  
->> >>  	if (op->data.nbytes)
->> >>  		op->data.buswidth = spi_nor_get_protocol_data_nbits(proto);
->> >>
->> > 
->> > I just noticed this commit caused a regression on my i.MX8M Plus based board,
->> > detected using git bisect.
->> > DT: arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
->> > Starting with this patch read is only 1S-1S-1S, before it was
->> > 1S-1S-4S.
->> > 
->> > before:
->> >> cat /sys/kernel/debug/spi-nor/spi0.0/params
->> >> name            mt25qu512a
->> >> id              20 bb 20 10 44 00
->> >> size            64.0 MiB
->> >> write size      1
->> >> page size       256
->> >> address nbytes  4
->> >> flags           HAS_SR_TB | 4B_OPCODES | HAS_4BAIT | HAS_LOCK | HAS_4BIT_BP
->> >> | HAS_SR_BP3_BIT6 | SOFT_RESET
->> >>
->> >> opcodes
->> >>
->> >>  read           0x6c
->> >>  
->> >>   dummy cycles  8
->> >>  
->> >>  erase          0xdc
->> >>  program        0x12
->> >>  8D extension   none
->> >>
->> >> protocols
->> >>
->> >>  read           1S-1S-4S
->> >>  write          1S-1S-1S
->> >>  register       1S-1S-1S
->> >>
->> >> erase commands
->> >>
->> >>  21 (4.00 KiB) [1]
->> >>  dc (64.0 KiB) [3]
->> >>  c7 (64.0 MiB)
->> >>
->> >> sector map
->> >>
->> >>  region (in hex)   | erase mask | overlaid
->> >>  ------------------+------------+----------
->> >>  00000000-03ffffff |     [   3] | no
->> > 
->> > after:
->> >> cat /sys/kernel/debug/spi-nor/spi0.0/params
->> >> name            mt25qu512a
->> >> id              20 bb 20 10 44 00
->> >> size            64.0 MiB
->> >> write size      1
->> >> page size       256
->> >> address nbytes  4
->> >> flags           HAS_SR_TB | 4B_OPCODES | HAS_4BAIT | HAS_LOCK | HAS_4BIT_BP
->> >> | HAS_SR_BP3_BIT6 | SOFT_RESET
->> >>
->> >> opcodes
->> >>
->> >>  read           0x13
->> >>  
->> >>   dummy cycles  0
->> >>  
->> >>  erase          0xdc
->> >>  program        0x12
->> >>  8D extension   none
->> >>
->> >> protocols
->> >>
->> >>  read           1S-1S-1S
->> >>  write          1S-1S-1S
->> >>  register       1S-1S-1S
->> >>
->> >> erase commands
->> >>
->> >>  21 (4.00 KiB) [1]
->> >>  dc (64.0 KiB) [3]
->> >>  c7 (64.0 MiB)
->> >>
->> >> sector map
->> >>
->> >>  region (in hex)   | erase mask | overlaid
->> >>  ------------------+------------+----------
->> >>  00000000-03ffffff |     [   3] | no
->> > 
->> > AFAICT the patch seems sane, so it probably just uncovered another
->> > problem already lurking somewhere deeper.
->> > Given the HW similarity I expect imx8mn and imx8mm based platforms to be
->> > affected as well.
->> > Reverting this commit make the read to be 1S-1S-4S again.
->> > Any ideas ow to tackling down this problem?
->> > 
->> 
->> My guess is that 1S-1S-4S is stripped out in
->> spi_nor_spimem_adjust_hwcaps(). Maybe the controller has some limitation
->> in nxp_fspi_supports_op(). Would you add some prints, and check these
->> chunks of code?
->
-> Thanks for the fast response. I was able to track it down.
-> Eventually the buswidth check in spi_check_buswidth_req fails.
-> For command 0x3c:
-> Before revert:
->> mode: 0x800, buswidth: 2
-> After revert
->> mode: 0x800, buswidth: 1
->
-> The mode is set to SPI_RX_QUAD. Thus the check for dummy buswidth fails
-> now that data_nbits are used now.
->
-> For command 0x6c it's similar but op->dummy.buswidth is 4 now.
->
-> It boils down that there are SPI controllers which have
->> spi-tx-bus-width = <1>;
->> spi-rx-bus-width = <4>;
-> set in their DT nodes.
->
-> So it seems this combination is not supported.
+That is right.
 
-No, this check is wrong. See
-https://lore.kernel.org/linux-mtd/20241112075242.174010-1-linchengming884@gmail.com/T/#m7cc1a5055702f5a42a8f3949c968842d845914d7
+But we aren't changing much. Transport release already removes vsk from
+vsock_bound_sockets. So even though vsk->local_addr is untouched (i.e.
+vsock_addr_bound() returns `true`), vsk can't be picked by
+vsock_find_bound_socket(). User can't bind() it again, either.
 
--- 
-Regards,
-Pratyush Yadav
+And when patched as above: bind() works as "expected", but socket is pretty
+much useless, anyway. If I'm correct, the first failing connect() trips
+virtio_transport_recv_connecting(), which sets `sk->sk_err`. I don't see it
+being reset. Does the vsock suppose to keep sk_err state once set?
+
+Currently only AF_VSOCK throws ConnectionResetError:
+```
+from socket import *
+
+def test(family, addr):
+	s = socket(family, SOCK_STREAM)
+	assert s.connect_ex(addr) != 0
+
+	lis = socket(family, SOCK_STREAM)
+	lis.bind(addr)
+	lis.listen()
+	s.connect(addr)
+
+	p, _ = lis.accept()
+	p.send(b'x')
+	assert s.recv(1) == b'x'
+
+test(AF_INET, ('127.0.0.1', 2000))
+test(AF_UNIX, '\0/tmp/foo')
+test(AF_VSOCK, (1, 2000)) # VMADDR_CID_LOCAL
+```
+
+> Maybe we need to look better at the release, and prevent it from
+> removing the socket from the lists as you suggested, maybe adding a
+> function in af_vsock.c that all transports can call.
+
+I'd be happy to submit a proper patch, but it would be helpful to decide
+how close to AF_INET/AF_UNIX's behaviour is close enough. Or would you
+rather have that UAF plugged first?
+
 
