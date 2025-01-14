@@ -1,136 +1,262 @@
-Return-Path: <stable+bounces-108564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B10AA0FE55
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 02:56:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D55D6A0FE85
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 03:11:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35A27169BAD
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 01:56:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB09B169D96
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 02:11:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 251BF1FA147;
-	Tue, 14 Jan 2025 01:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52423595A;
+	Tue, 14 Jan 2025 02:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H1GWAZIM"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="eIydOx+m"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2059.outbound.protection.outlook.com [40.107.93.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441991C54A7;
-	Tue, 14 Jan 2025 01:56:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736819787; cv=none; b=kPgPat3+BL3PyCj2P57GjiwIMh0+05MEpX0H0FC8yNdCdv083lHhFLH0H9UonkfgKSwF5WWAIUihA1cWvJv5XCaaYfq5xcN/R1tFAFSA1QDZonzQao+3gS7GvVeP9CqTHNIloBN8+W80GQEdus6peElDUhkRlX04LOpFf0vuqhw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736819787; c=relaxed/simple;
-	bh=3M3MZYN7Sj4EH0969yosQdu1K2pz/j995ISyaaDQTys=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=teQQ/I6ZyCwJ9jT1RntkKEUnBTKhrMOkp5Xib0yZyzy5SNun6xh2UxH1gLSMF6qN3Fq7bOug37NY/C+2LsLuu3WGuOO3KBp71an3TgxBlzWdRV65SStvvMmDB+uBXW39j4HPZGhenjtG4zF0LJcZszkBIcQLAWjpLGwB0KSNxno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H1GWAZIM; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-aaee2c5ee6eso877676966b.1;
-        Mon, 13 Jan 2025 17:56:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736819784; x=1737424584; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3M3MZYN7Sj4EH0969yosQdu1K2pz/j995ISyaaDQTys=;
-        b=H1GWAZIM8ApVN7+RZRKxShcBionWOnK14hSw9DkIezviT/aJybZBkjpZjVa7yX7t9h
-         tcwkca+G/5CH9Nko343kOELNXghxeP29Urvy+NUsXww7GcV5k2xB1oKCI4XXjQPBE7Km
-         TN96xTKnZN4WRWhJDkGCQk6HIOQ7rOfSqsg3aSpQLgaBLkG+ZidJObGchU/KpgMlY89o
-         Q6s5v4tFUYilX4dzZCgS6XGbMjmmMZlp318kdrPDsmWoHBLv7/yR5wpC9yKPlk/kYJbm
-         jC9AnA3EAgD9N05/kaEglktNAhrMMaOP2A20e5/9g/gTwKHxbH6ouPT/3KU/fjt1pl9B
-         f/9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736819784; x=1737424584;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3M3MZYN7Sj4EH0969yosQdu1K2pz/j995ISyaaDQTys=;
-        b=TtFHAJNwlVD6QowI9Yu0z9l6fTtrQWsxPrOzYbUNWwBqGWvBEquWICjY95zAIzjB0l
-         eKIBvdqqWK4CGJlwGSeHqDoMe6fDYAmH9XdHFaLe/gIr4wnvSW4r7hfyaZopE12x0a1G
-         AzSv1KKiop2nRYVPgq2VQWSQStU6gUQUTGeX4DB66AwsDNxGk01hYLl53GGF39lbdEth
-         htWv71pMeP/tYED9k2YxWW4ZlTvHxq582bmcwDzjxPMVpeJVgq4LM8aA5SnGS27xp+Jr
-         SiWfv9Hw5Ltl5GB834XAQ/fB9nXznBOIATwmvHX+ItH+gNJObjl+9IofY+mShpW8YErP
-         mExw==
-X-Forwarded-Encrypted: i=1; AJvYcCUU4nl4HQ7DSPR+JffGOhHmdI+xLeL2YFNJC7sVaiE+IAlaUTCeSg7MSPqa8mfE7eiauI7NORDj@vger.kernel.org, AJvYcCUdZLXCZjGmpaa4AmEbv7RV9n49Jio8QZoGduR9nPaK1alK3XuSV0P4E4Ql9gGUgpELpwYUdEsarMORyqY=@vger.kernel.org, AJvYcCX8p3zpifK9qhr79ousEU4oGvaoW9/oMEI8xgQre8NSWViC7KUZizR1JlLLWGejgnutPzasMjmz@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSm943TvcJUpQXW60bogsPjYJORaodySGKqTonLhp1ptOsWFrM
-	GENKR39MdSzs+WYkt4m2jw8s8bktyub0q8oJ21myMtZ/fllGt7a3E5SrB6J5PHkyt//08Ui6S9+
-	mJTUBnpkmS+Q3bkuQaidqQPh2ILeEzAkh
-X-Gm-Gg: ASbGncs/xxA+yagx+LItuqzh43DS86ZeoPKP0Vmac5LsNP9+yFOtdrgQupiYOhFlwA2
-	59TmwN+Dfp3jD4jiVGAZ91JYJ9PERq02SDZ58pwU=
-X-Google-Smtp-Source: AGHT+IGFRcQRHulYo39QzcVokskq7ULXOs64DOSqsgLEBDN8VNb4jyHVDzfe2oaia4l5+ro0WhqdfMZda9BrZzKd94g=
-X-Received: by 2002:a17:907:9722:b0:aa6:89b9:e9c6 with SMTP id
- a640c23a62f3a-ab2ab6bfa44mr2099934066b.21.1736819784335; Mon, 13 Jan 2025
- 17:56:24 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36E18493
+	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 02:10:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736820660; cv=fail; b=KyZ8xyLtHXu70Dwk1WyexPJnEYM8PoGxopl+lF55kAZ6OgIRDPfvhfeo+c10L9Dxu81DGTeYCTAxtBh1rHafd8F9a9UQ7LxyEKV9PuXWxSJOq7ib7bAAtJTros7XfZJcWP4fNe6TdPe1AennHI3ZW+e0odbmXlnILC+8dWZLpJg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736820660; c=relaxed/simple;
+	bh=ChyTbVxUR8DSJYLaR/YYbZ3p0/It9JtCOMCGNWe06EY=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=R6VsMtIE5HtU8Yb1d7qbXj2TrarGm6F7q+6kn7gMgiwbKhRxc1AqWjNv7mp/dzIDzzqG9YtoHn5y7vH30U+r+b2i7Bu+Q5u6iCBHCud0VB+For9UaTrPjmmZ1JZA9on34rVRJLmdrFOkOR8YfJsVoxsiL2eXElAxdrv7B2MwEZo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=eIydOx+m; arc=fail smtp.client-ip=40.107.93.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cabSpD4bgDjBZ7FV7QBGwGqcc44aKe5Ei5fT0IHyKLfMVQeYUTCE4aZsZgMGO+jE4ItiMCyhURRtmXpa0bMiYbihOi91p6eaZgV5wF9WnVDZTnALw//6amKXNCMX7fJ5Qqkp/M5WtI+BY10GAAv8uw33kQqB+Fjrr3u58/quEwOR1WHEHEJ6dTpFLkuDY/J3KDeXwdQflMwPl6cKzWtWtiJ7OZziRHM7htZwMubLXU+xQkKqj66f4a8CWlVXd8NkqGAEpp+yTBLLVTgXZxw6/1Bc+E15g1nPa0+9XWsi4AbdlVfrQmT3zQikCXfUPG1hcBRObuWeMiT0m7cVDpRIsA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4WKmo2T4GO2JAG5PXoHWMC3MqejFR/mvo1aMUWM9bok=;
+ b=gfMHD2oUkQ8HSkGLNsDHPX/PklvbtNVpCdKIvj2Lk1XUxUxvBbs7GGjFcfHHLzcohqIPR8OgHm/wdUjzSLIP/kgmhdzi7wthDtuMeUjbAevKqZSpLtgaHNSiXIQbfKAUNzRJ5SnNTjt+sbEullwmPe6KFHdYSjcoFTbjThQUM5phN0Dkitm2wVsCoeLOYCuEUyitaQNg/dUE9GCVwMML+fSLOzkp0U1KFroZvnFIWYFD8sTVFoCgU99a9PmbOfpVFDF5kUtKn8My6F05LaiQHWGGoX1HVljhswmJzH+5+GBNDmw2ZQLwDsf4Ui/iLmQvUQE9SzIi0s6oSrlCfwpA5w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4WKmo2T4GO2JAG5PXoHWMC3MqejFR/mvo1aMUWM9bok=;
+ b=eIydOx+m85wUiiaiD3t5GJMVqUTCI0pTN+boodUJe3GLFSeMS+juhydhsFh3Npo71ihNDKDt6cM5ss4YyJzKO2GzgHPBIVJWVwr+6vqCz+GZilElIR43k+nVrjO7hspsotUUcfRDA/c4gUSd/IA5o1oEUQVpXQMkZ8bf36Uf08o=
+Received: from BN0PR10CA0008.namprd10.prod.outlook.com (2603:10b6:408:143::27)
+ by SA1PR12MB6798.namprd12.prod.outlook.com (2603:10b6:806:25a::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.17; Tue, 14 Jan
+ 2025 02:10:54 +0000
+Received: from MN1PEPF0000F0E2.namprd04.prod.outlook.com
+ (2603:10b6:408:143:cafe::a7) by BN0PR10CA0008.outlook.office365.com
+ (2603:10b6:408:143::27) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8335.18 via Frontend Transport; Tue,
+ 14 Jan 2025 02:10:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ MN1PEPF0000F0E2.mail.protection.outlook.com (10.167.242.40) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8356.11 via Frontend Transport; Tue, 14 Jan 2025 02:10:53 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 13 Jan
+ 2025 20:10:53 -0600
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 13 Jan
+ 2025 20:10:52 -0600
+Received: from localhost.localdomain (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Mon, 13 Jan 2025 20:10:47 -0600
+From: Wayne Lin <Wayne.Lin@amd.com>
+To: <amd-gfx@lists.freedesktop.org>
+CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>, Aurabindo Pillai
+	<aurabindo.pillai@amd.com>, Roman Li <roman.li@amd.com>, Wayne Lin
+	<wayne.lin@amd.com>, Tom Chung <chiahsuan.chung@amd.com>, Fangzhi Zuo
+	<jerry.zuo@amd.com>, Zaeem Mohamed <zaeem.mohamed@amd.com>, Solomon Chiu
+	<solomon.chiu@amd.com>, Daniel Wheeler <daniel.wheeler@amd.com>, Aric Cyr
+	<Aric.Cyr@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, "Alex
+ Deucher" <alexander.deucher@amd.com>, <stable@vger.kernel.org>, Sung Lee
+	<sung.lee@amd.com>
+Subject: [PATCH 07/11] drm/amd/display: Optimize cursor position updates
+Date: Tue, 14 Jan 2025 10:08:56 +0800
+Message-ID: <20250114020900.3804152-8-Wayne.Lin@amd.com>
+X-Mailer: git-send-email 2.37.3
+In-Reply-To: <20250114020900.3804152-1-Wayne.Lin@amd.com>
+References: <20250114020900.3804152-1-Wayne.Lin@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250108192346.2646627-1-kuba@kernel.org> <20250109145054.30925-1-fercerpav@gmail.com>
- <20250109083311.20f5f802@kernel.org> <TYSPR04MB7868EA6003981521C1B2FDAB8E1C2@TYSPR04MB7868.apcprd04.prod.outlook.com>
- <20250110181841.61a5bb33@kernel.org> <CAGfYmwVECrisZMhWAddmnczcLqFfNZ2boNAD5=p2HHuOhLy75w@mail.gmail.com>
- <20250113131934.5566be67@kernel.org>
-In-Reply-To: <20250113131934.5566be67@kernel.org>
-From: Potin Lai <potin.lai.pt@gmail.com>
-Date: Tue, 14 Jan 2025 09:56:13 +0800
-X-Gm-Features: AbW1kvZnUmbmr_6IRQgW51L1dj6t_nP3oXmByqhN6P48o_UCS6Kh-2_Tv9RPFzM
-Message-ID: <CAGfYmwXKyWrWm5z1Lra0_wX8iVfT8p9BHd3SWZPSvkZ1qfKqLA@mail.gmail.com>
-Subject: =?UTF-8?B?UmU6IOWbnuimhjogW0V4dGVybmFsXSBSZTogW1BBVENIXSBuZXQvbmNzaTogZml4IGxvYw==?=
-	=?UTF-8?B?a2luZyBpbiBHZXQgTUFDIEFkZHJlc3MgaGFuZGxpbmc=?=
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Paul Fertser <fercerpav@gmail.com>, =?UTF-8?B?UG90aW4gTGFpICjos7Tmn4/lu7cgKQ==?= <Potin.Lai@quantatw.com>, 
-	Samuel Mendoza-Jonas <sam@mendozajonas.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Ivan Mikhaylov <fr0st61te@gmail.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, 
-	=?UTF-8?B?Q29zbW8gQ2hvdSAoIOWRqOalt+WfuSk=?= <Cosmo.Chou@quantatw.com>, 
-	"patrick@stwcx.xyz" <patrick@stwcx.xyz>, Cosmo Chou <chou.cosmo@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000F0E2:EE_|SA1PR12MB6798:EE_
+X-MS-Office365-Filtering-Correlation-Id: 64d71a54-3569-454a-27b9-08dd3440ace7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?jiEEWLTwlYxK+EJCvCgQUynB3fzCMsruvOI6zJXF+gfHYkmFyh0D/CKkY8Pd?=
+ =?us-ascii?Q?obwl5dV6DYoQZ8kclAR7+SGOLzQdSekP66CJJuc5UtZCwUM02r3EOfQbm2es?=
+ =?us-ascii?Q?Jx+6/f7ug4x12PxBA+eWOJ5GexBxzGFZ/Rj4JFk8zbVExTlp9Fgddezp/JcE?=
+ =?us-ascii?Q?rJigDozhbQPA7Sb2d1CUS1CWyZALiFkzys8aOx84NmT+l0v3F6g8l1I7bxSp?=
+ =?us-ascii?Q?mvEQbdVasDpbmEm+Dbe6Ttnp0NtXYG0N3OUpC1/zfE/4IcG4roYu9Bzs7fye?=
+ =?us-ascii?Q?YNTSyPQX+nwFojOxBqivljG/1rxSVQuC0yY0EHB7uNejf3b8JE/M59KfCaEV?=
+ =?us-ascii?Q?d+o6NOGbBwkOiusuQnwmxmiehLLmYWoc4broYqvzR9HpZ/DkWdFEeYLurVlA?=
+ =?us-ascii?Q?G8/IospZ9K4kYSI75xK6qUfaIRl9bCFmlDqStH40pAcy3s3IbVdXMJpWYQGR?=
+ =?us-ascii?Q?exYBMQ7UaToy12xCm/1zo6YyfObQdrqmOOYAU/+PdP+PlmTSoFRAsIGPqBH/?=
+ =?us-ascii?Q?fyooI5IUBYEfNnPNo4QweFIoEq9Tg78OI4Pu3YARPO3uid2tVcVR4ULFgqyh?=
+ =?us-ascii?Q?vwBxhULcMju55GT+LuyWeUOvh897YZPqjOULbZTaYwYH6uCwpCcuwPyDbLbe?=
+ =?us-ascii?Q?RDZqrvAtPyTPpiDDMydh0h9ry24rxek9KBzp59jyIYysIib8Dbi65H6Qo8pP?=
+ =?us-ascii?Q?sLJUhLfGs1NWpCvZmhjS87CMRDUMpM9V1AmJiHcrp0YGd4k25mAE85C5V0Kr?=
+ =?us-ascii?Q?dlK3jTg1/7yFVGyo52DjpjwILd07pTkayjucZEk8gE2lqQZKzG0lyOMtwiHc?=
+ =?us-ascii?Q?0MCWvYexmb53ydgPeGxK2i9Jc8CEWE3EGyEbWP1Nla3N+injhtAOZTQNX2bq?=
+ =?us-ascii?Q?TAd5WiAnE+2V+shs36LzZLoDvfIgDms9N3PGmP3M7j8omp9/uRqHBYt2Rw3D?=
+ =?us-ascii?Q?e0w+duLInp4QMSXtApZlfJrE5YwX6SM/6jCse2ugqQpRM15Ronfag6OMdfPy?=
+ =?us-ascii?Q?5Pu+1K04WkfBlJMms1Ud09+9K3zYgBxc5L8hWAYjmkQ0G70VJzh5NcEOEg/6?=
+ =?us-ascii?Q?bLLuj95S7nqXHvgKbdymlfqjPD0Ky+b3iOU6xBoDmYxjY+xsEz/ZKAnQkkYm?=
+ =?us-ascii?Q?v2DFS18845tZML8oLyVsxk3H5OJzAbbG5BRrsVKS/92gjPSIfHOnt185uAJi?=
+ =?us-ascii?Q?OWUb7/J1ESRgWbqkjRwQAVtxEvHAMwIdxRp6nbKEHtXRQVk4AQXrOpni19mh?=
+ =?us-ascii?Q?AvdXs8P1dCrDuBHytq+XPyPMqJfKpXfbjYfi+kSlEnhqkXlLlDIYCcdmihKl?=
+ =?us-ascii?Q?Kim6Cj2F51zFlzdn+nSpiDu4eFfOrCssEB+cNGvcYD3aAdjQGro0udt5Fjt2?=
+ =?us-ascii?Q?I6fTBTwJ7yjmQ8bd5MHu2vWGpsu2Tf8WRh6BibXgVjYjl91fCPcgta7CS5zN?=
+ =?us-ascii?Q?aMNQqv72qMC4xM51IJ15nnfXXfvWOqI3XrBDCnQNYcc+Is5ni715pQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2025 02:10:53.9078
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 64d71a54-3569-454a-27b9-08dd3440ace7
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MN1PEPF0000F0E2.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6798
 
-On Tue, Jan 14, 2025 at 5:19=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Sat, 11 Jan 2025 19:12:51 +0800 Potin Lai wrote:
-> > > > Thanks for the new patch.
-> > > > I am currently tied up with other tasks, but I=E2=80=99ll make sure=
- to test
-> > > > it as soon as possible and share the results with you.
-> > >
-> > > Understood, would you be able to test it by January 13th?
-> > > Depending on how long we need to wait we may be better off
-> > > applying the patch already or waiting with committing..
-> >
-> > Hi Jakub & Paul,
-> >
-> > I had a test yesterday, the patch is working and the kernel panic does
-> > not happen any more, but we notice sometimes the config_apply_mac
-> > state runs before the gma command is handled.
-> >
-> > Cosmo helped me to find a potential state handling issue, and I
-> > submitted the v2 version.
-> > Please kindly have a look at v2 version with the link below.
-> > v2: https://lore.kernel.org/all/20250111-fix-ncsi-mac-v2-0-838e0a1a233a=
-@gmail.com/
->
-> Is there any reason why you reposted Paul's patch?
-> Patch 2 looks like a fix for a separate issue (but for the same
-> use case), am I wrong?
-Sorry, I thought the second patch needs to be followed by the first patch.
-Yes, these 2 patches are fixing different issues, I will remove Paul's
-patch in the next version (v3).
+From: Aric Cyr <Aric.Cyr@amd.com>
 
->
-> Also one thing you have not done is to provide the Tested-by: tag
-> on Paul's patch :)
+[why]
+Updating the cursor enablement register can be a slow operation and accumulates
+when high polling rate cursors cause frequent updates asynchronously to the
+cursor position.
 
-Tested-by: Potin Lai <potin.lai.pt@gmail.com>
+[how]
+Since the cursor enable bit is cached there is no need to update the
+enablement register if there is no change to it.  This removes the
+read-modify-write from the cursor position programming path in HUBP and
+DPP, leaving only the register writes.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Sung Lee <sung.lee@amd.com>
+Signed-off-by: Aric Cyr <Aric.Cyr@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+---
+ drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c   |  7 ++++---
+ .../gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c  |  6 ++++--
+ drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c |  8 +++++---
+ .../gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c   | 10 ++++++----
+ 4 files changed, 19 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c b/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c
+index e1da48b05d00..8f6529a98f31 100644
+--- a/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c
++++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c
+@@ -480,10 +480,11 @@ void dpp1_set_cursor_position(
+ 	if (src_y_offset + cursor_height <= 0)
+ 		cur_en = 0;  /* not visible beyond top edge*/
+ 
+-	REG_UPDATE(CURSOR0_CONTROL,
+-			CUR0_ENABLE, cur_en);
++	if (dpp_base->pos.cur0_ctl.bits.cur0_enable != cur_en) {
++		REG_UPDATE(CURSOR0_CONTROL, CUR0_ENABLE, cur_en);
+ 
+-	dpp_base->pos.cur0_ctl.bits.cur0_enable = cur_en;
++		dpp_base->pos.cur0_ctl.bits.cur0_enable = cur_en;
++	}
+ }
+ 
+ void dpp1_cnv_set_optional_cursor_attributes(
+diff --git a/drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c b/drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c
+index 3b6ca7974e18..1236e0f9a256 100644
+--- a/drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c
++++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c
+@@ -154,9 +154,11 @@ void dpp401_set_cursor_position(
+ 	struct dcn401_dpp *dpp = TO_DCN401_DPP(dpp_base);
+ 	uint32_t cur_en = pos->enable ? 1 : 0;
+ 
+-	REG_UPDATE(CURSOR0_CONTROL, CUR0_ENABLE, cur_en);
++	if (dpp_base->pos.cur0_ctl.bits.cur0_enable != cur_en) {
++		REG_UPDATE(CURSOR0_CONTROL, CUR0_ENABLE, cur_en);
+ 
+-	dpp_base->pos.cur0_ctl.bits.cur0_enable = cur_en;
++		dpp_base->pos.cur0_ctl.bits.cur0_enable = cur_en;
++	}
+ }
+ 
+ void dpp401_set_optional_cursor_attributes(
+diff --git a/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c b/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c
+index c74f6a3313a2..d537d0c53cf0 100644
+--- a/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c
++++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c
+@@ -1058,11 +1058,13 @@ void hubp2_cursor_set_position(
+ 	if (src_y_offset + cursor_height <= 0)
+ 		cur_en = 0;  /* not visible beyond top edge*/
+ 
+-	if (cur_en && REG_READ(CURSOR_SURFACE_ADDRESS) == 0)
+-		hubp->funcs->set_cursor_attributes(hubp, &hubp->curs_attr);
++	if (hubp->pos.cur_ctl.bits.cur_enable != cur_en) {
++		if (cur_en && REG_READ(CURSOR_SURFACE_ADDRESS) == 0)
++			hubp->funcs->set_cursor_attributes(hubp, &hubp->curs_attr);
+ 
+-	REG_UPDATE(CURSOR_CONTROL,
++		REG_UPDATE(CURSOR_CONTROL,
+ 			CURSOR_ENABLE, cur_en);
++	}
+ 
+ 	REG_SET_2(CURSOR_POSITION, 0,
+ 			CURSOR_X_POSITION, pos->x,
+diff --git a/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c b/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c
+index 28ceceaf9e31..03bfa902dc01 100644
+--- a/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c
++++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c
+@@ -742,11 +742,13 @@ void hubp401_cursor_set_position(
+ 			dc_fixpt_from_int(dst_x_offset),
+ 			param->h_scale_ratio));
+ 
+-	if (cur_en && REG_READ(CURSOR_SURFACE_ADDRESS) == 0)
+-		hubp->funcs->set_cursor_attributes(hubp, &hubp->curs_attr);
++	if (hubp->pos.cur_ctl.bits.cur_enable != cur_en) {
++		if (cur_en && REG_READ(CURSOR_SURFACE_ADDRESS) == 0)
++			hubp->funcs->set_cursor_attributes(hubp, &hubp->curs_attr);
+ 
+-	REG_UPDATE(CURSOR_CONTROL,
+-		CURSOR_ENABLE, cur_en);
++		REG_UPDATE(CURSOR_CONTROL,
++			CURSOR_ENABLE, cur_en);
++	}
+ 
+ 	REG_SET_2(CURSOR_POSITION, 0,
+ 		CURSOR_X_POSITION, x_pos,
+-- 
+2.37.3
+
 
