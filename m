@@ -1,63 +1,78 @@
-Return-Path: <stable+bounces-108633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4669A10E69
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 18:55:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D40BFA10EC3
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 19:01:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D362E16A027
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:55:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23AA13AA08F
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 18:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88B0C1FBC9B;
-	Tue, 14 Jan 2025 17:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11621FBCA0;
+	Tue, 14 Jan 2025 17:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="ro0Em/7m"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="czibEJnn"
 X-Original-To: stable@vger.kernel.org
-Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23DF1EE7AC;
-	Tue, 14 Jan 2025 17:55:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDFD2063FF
+	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 17:57:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736877337; cv=none; b=bZXcxPZ5+zeL7naEl2eA/tku8P3hFogQfiVFPmdZFDyBgy36T3VT23X77XqGfLMAtIWxLXB9tfEXYtdAcahY36xnkGItx62FvfP/nHqufPO1M4YUH5FZdyvmZCxFKBXxxcKsJAZGeOd16Czq5cIxa448V7yAi5hDl+rwh6uwTQY=
+	t=1736877475; cv=none; b=IVgP5cGHqAPcWSiHK2Vcxqc1rbz9QPSc6y03+0hmNdonD5vNXDo4vnrwlfIVdQ87X6qVyYKhEAN4k1cs3XxCJiiFD7s3Xr0FoYNc06GaGuy2jAorWSy+IvdVOWQQuIfRBZARKPd65X3Zilip+6xjEGA7hUFnAXZEv7maVe5zFn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736877337; c=relaxed/simple;
-	bh=OHmL6w79Y9VGVpAbxGEP9bE0AQIQfKl+7BgRzpI7zGU=;
+	s=arc-20240116; t=1736877475; c=relaxed/simple;
+	bh=TxMRwYzCnwl6uQRq6op+ElWOVvdYd8d7nOPZlZWcNiQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EVNro2im/DA1V6AzA5KrlQpV8vn/M4pTDRHrqyG0O97aJhxuu3JngsbNJQazFi3fGlqXgq7qMXtsFc8q0hpsPpNGiJDEKDUhpvueml78HiA2hDCPilrG+R6b0uHYad149y6hlCO4z7WZGJoKwdOfd/Wv0oUqnSpiZ16radjiqdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=ro0Em/7m; arc=none smtp.client-ip=199.89.1.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 008.lax.mailroute.net (Postfix) with ESMTP id 4YXcH472G0z6CmQyd;
-	Tue, 14 Jan 2025 17:55:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1736877321; x=1739469322; bh=rx+xxhgfz6Qv2U93Mr0uyJHH
-	3Uz3OWpv7e13MnI9pr4=; b=ro0Em/7mo2qYSG+4wF8NaY7HMuHC5oECKV3t+la6
-	KyggnwIpZUwBvFMlG1aBzhAHriMjCEYTdU8Sq0c9Td6MXxFqvZFuuB1TjiFVibKF
-	Fu1xR8VK3avTZwS4Gxjt8skCD4CXyIlP8N2VSke98A6EMwChSlg+drCp47iTXAC6
-	eZvCXQm+3ArjlzGzyA7LN5R5rQNL48EjR2Bzlq4VRz16S3Ret+SS9sZA1bWJa/BZ
-	AQUb0q6hzLUOZUQMcqeVLWthLQ6ejbEGmhGb5dnGGUPOJ/mU228+s0lik61FMSep
-	pZCHy6AFKDR6VgD6wd5+Is0RP8nqs49Q+D8+U5Jm3NTiJw==
-X-Virus-Scanned: by MailRoute
-Received: from 008.lax.mailroute.net ([127.0.0.1])
- by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id BUc2kVQEpj2k; Tue, 14 Jan 2025 17:55:21 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4YXcGt0mRjz6CmQyb;
-	Tue, 14 Jan 2025 17:55:17 +0000 (UTC)
-Message-ID: <58f1b701-68da-49c0-b2b1-e079bad4cd08@acm.org>
-Date: Tue, 14 Jan 2025 09:55:16 -0800
+	 In-Reply-To:Content-Type; b=nDzuB7ij/XTsOElwgUeh6tYYf9mve0rBwax0AQzHN/WFuZ3F2+JUS8K4NJDE/r8L632KSc4U3UDXEbsu3yPNd7IOnrxTnz2FbTH7U6QPDPHk/4lCs8tiB078+ZB75Ejid2Z1jSBnPjbyTKTtgHfDtjKGjniVgyxP7CHSF/DaJzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=czibEJnn; arc=none smtp.client-ip=209.85.166.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-3ce6b289e43so22360895ab.3
+        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 09:57:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1736877472; x=1737482272; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Y7YZstDiXjyB1zPsdbBPJIDIgikogr6PNjNg2k0F+Dc=;
+        b=czibEJnnlPjSEmQf3W1mQ0be8cVy88K6ROUwxTx7LgIsvr58aSpOyQf+Hv3NZHbbjA
+         YpsavFDpjDD229EFN6Er6t4vVAzWxhwgmZzYBBGkAXvBFSvxxEL5kqSp2PMHp5btgopn
+         6ISBj5bHsfdwrYQTqE80N/WRIrwRHLN5LyEhyT7bfC7erHOMVy6IfJNkgiDivCbeBAd2
+         /bYw9D9PTo3DuY+OtGiVsLcxMVN8OcHsSrB7zRQHhtZJ6vFOFRrwv5REiux7yV1foZ05
+         ouObLz05BIqBzrSMWrJSpeUrkFLfzxypZqZQ2og9V16QObTrEdFElQ9Ovplm/ffOLYUw
+         4Zmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736877472; x=1737482272;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y7YZstDiXjyB1zPsdbBPJIDIgikogr6PNjNg2k0F+Dc=;
+        b=kDwnr1Xl+o6dWnhC+5pCD4zlNvNaVv5lMXIer6Zbj0VsbXH6KN7gbPThVGhwEhdEcb
+         Kn4+61ezCzikxx9U/30XFwcCCBqT0kpU/LpeM79+lhvi/+95m1pLTK6ffWFb2EzVrt7C
+         QQELyeVZAwkHV/L7sYZNMlN0MK7QPPbHEUA15g4S7c75x3ZpAnKC+I3q36WgpLi5l3/U
+         zUb8DyagqB1oR3rLPuudJ4rn9m3An8LUuHOddu0T7gD+mV4e8ysFpnqv5D5eYe/s2MJ3
+         wWVX3hIO4QIa7K7+JFaJnAF6MYojZ4zniIasDckBuupLxZOpmDgS4RnNAWpKrX3jhA4u
+         XWiA==
+X-Forwarded-Encrypted: i=1; AJvYcCU3KrEgdlXw5IsuARTCsWZhZnjP5BvA1eyUVk4rc5dBO3b4J3q/OMt2NXYITq1h1W/ywEChFn8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFMvPthcSeINsPuHEDaKA/LOZ0DzS1O1EVZEAsVDTBxfBHSh/o
+	hpwPsPYwME4z2LBd7ylJdxfw+SwYKqB3cGXwmrmXumizdve20WKR2gbSm3kNQdQ=
+X-Gm-Gg: ASbGncum4kzNrtOGtyieBrXqXDePgCKtT8TgALtr7BVc98sY7r/WGAVS3PRGCSPtrpE
+	1g3tUymNWitLhdXwDuCCDfJA/gANRtsC3/osb45nKeVik7ARFNAYgvVVqQ8Pi+32U2WsVmoNLAI
+	X3IKrVzpiG8VS+jqWjiRL1JnJuLiyTIKPywRbGf63pWl31evN+yXdDrxXQut/GW+1w9v9drIOA5
+	0d2+y+duuPtteHfacu9dN1+GI5o92BbpXat+hPW+C0ilrUmo1ap
+X-Google-Smtp-Source: AGHT+IGM2drpw9X/rMTH6z+8c5xpupNIqajcv4pvVlwSoOOaEK5ifp+uXOoIV7PQX3wBEh9KYkSR2g==
+X-Received: by 2002:a05:6e02:1d94:b0:3ce:7ab4:1afc with SMTP id e9e14a558f8ab-3ce7ab4225dmr38914715ab.7.1736877471927;
+        Tue, 14 Jan 2025 09:57:51 -0800 (PST)
+Received: from [192.168.1.116] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4ea1b7459desm3632119173.125.2025.01.14.09.57.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Jan 2025 09:57:51 -0800 (PST)
+Message-ID: <d6208848-ecb5-44df-9d68-8845cd25d1b6@kernel.dk>
+Date: Tue, 14 Jan 2025 10:57:50 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,44 +80,43 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] scsi: ufs: fix use-after free in init error and remove
- paths
-To: =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Peter Griffin <peter.griffin@linaro.org>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
- Eric Biggers <ebiggers@kernel.org>
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,
- Will McVicker <willmcvicker@google.com>, kernel-team@android.com,
- linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-samsung-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-arm-msm@vger.kernel.org, stable@vger.kernel.org
-References: <20250114-ufshcd-fix-v2-1-2dc627590a4a@linaro.org>
+Subject: Re: [PATCH] io_uring/rsrc: require cloned buffers to share accounting
+ contexts
+To: Jann Horn <jannh@google.com>, Pavel Begunkov <asml.silence@gmail.com>,
+ io-uring@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250114-uring-check-accounting-v1-1-42e4145aa743@google.com>
+From: Jens Axboe <axboe@kernel.dk>
 Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20250114-ufshcd-fix-v2-1-2dc627590a4a@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250114-uring-check-accounting-v1-1-42e4145aa743@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 1/14/25 8:16 AM, Andr=C3=A9 Draszik wrote:
-> +/**
-> + * ufshcd_scsi_host_put_callback - deallocate underlying Scsi_Host and
-> + *				   thereby the Host Bus Adapter (HBA)
-> + * @host: pointer to SCSI host
-> + */
-> +static void ufshcd_scsi_host_put_callback(void *host)
-> +{
-> +	scsi_host_put(host);
-> +}
+On 1/14/25 10:49 AM, Jann Horn wrote:
+> When IORING_REGISTER_CLONE_BUFFERS is used to clone buffers from uring
+> instance A to uring instance B, where A and B use different MMs for
+> accounting, the accounting can go wrong:
+> If uring instance A is closed before uring instance B, the pinned memory
+> counters for uring instance B will be decremented, even though the pinned
+> memory was originally accounted through uring instance A; so the MM of
+> uring instance B can end up with negative locked memory.
+> 
+> Cc: stable@vger.kernel.org
+> Closes: https://lore.kernel.org/r/CAG48ez1zez4bdhmeGLEFxtbFADY4Czn3CV0u9d_TMcbvRA01bg@mail.gmail.com
+> Fixes: 7cc2a6eadcd7 ("io_uring: add IORING_REGISTER_COPY_BUFFERS method")
+> Signed-off-by: Jann Horn <jannh@google.com>
+> ---
+> To be clear, I think this is a very minor issue, feel free to take your
+> time landing it.
+> 
+> I put a stable marker on this, but I'm ambivalent about whether this
+> issue even warrants landing a fix in stable - feel free to remove the
+> Cc stable marker if you think it's unnecessary.
 
-Please rename ufshcd_scsi_host_put_callback() such that the function=20
-name makes clear when this function is called instead of what the=20
-function does.
+I'll just queue it up for 6.14. Let's just get it towards stable, if
+nothing else it provides consistent behavior across kernels. IMHO that's
+enough reason to move it to stable.
 
-Thanks,
-
-Bart.
+-- 
+Jens Axboe
 
