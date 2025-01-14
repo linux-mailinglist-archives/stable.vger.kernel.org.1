@@ -1,189 +1,115 @@
-Return-Path: <stable+bounces-108624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6267BA10C73
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:38:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A62A10C86
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:41:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72528167E5E
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 16:38:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF2C83A6F2B
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 16:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B2D1C3C0A;
-	Tue, 14 Jan 2025 16:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB3C1CDA04;
+	Tue, 14 Jan 2025 16:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Hg5brhCR"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Rlze2865"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADE51885BF
-	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 16:38:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702231C3C0A;
+	Tue, 14 Jan 2025 16:40:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736872731; cv=none; b=pkjClhVY37ootthfkIKKRnkkwaJI+L+Pc8icf/y7ZWLGSTpWCrDoob/fMXhrWSlRqJB77ihrOyN0Z8GENFI1VQ5toc0blT57bkd+oh9yJdzNpplVKPvrwuhw7Uge2Wfd1rWbpWwdmC+Ao0Np5N4qA1K7teHMytZiqX1DpaJhxSw=
+	t=1736872856; cv=none; b=JZTgFuH8kK+IDytXPLccQ+yU9TxpTLvV7jtIueFIlokHVhGjFnPhQNjhat8dIy5BQk2qZkQZeBC12Tdh/1TK0cVqFPqZWvk7QM9toVeQprmf9GCO25V4ao+71slhsP2CB4mHoHTjL1ArVQEJeUtwAcAgZTWZC4EMJlN4QFi9tHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736872731; c=relaxed/simple;
-	bh=8J9spKbZzL/OeiU/zohYEG6lwuij5+tYc504L7SdpAI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=naCzex1ACI3UIpZvAa62XYrYFawAlYBHWf2SvUF4qsRFGXWb4EsgUaADWzjBBAhJjCJrGSQuzsp06bExmsoK8vNAxbO1sWvLXqyIPyEM3j6F9v7eKZD3vgRs5P/fhYVNlhl4WlANy4bRq5/uC1BGarVbTO4ZXLgJUM6QPIUX6RY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Hg5brhCR; arc=none smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-467896541e1so289751cf.0
-        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 08:38:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736872729; x=1737477529; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5PExLh+VadLSZ/QEUDqe8VtyDXluJrgkbId1fgASES0=;
-        b=Hg5brhCR/0NZcOqFMFAetAehc3l7xjEmFSz7iesDrpebppjWi+aR8TNXKZxhhtcgyB
-         7WrC87fzwl7HuKo1fIYVH5RZVhOCGEMPgjsrQGMhBp7CM6yfha1pwajUBgoQk8GS+e5k
-         9Ze2ejjrC9Au+TB0s7eiT5IP0T5vGoD92vzuqxv++F83CGymJSnWu6Ov3fOBLrPZCbni
-         WaXC7x2C+Wz2UEKz331M+MwYt9Ugezrpbhh/OWjH1DH83wPtBdxhpeSyA6U8Mfbnv6zm
-         4bXKfDQxZArrV4bZoJ1y8Th0/gHVONmYovj3JE1y91awmPvtryu11NI2+u/q1GGZmmN6
-         Hstg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736872729; x=1737477529;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5PExLh+VadLSZ/QEUDqe8VtyDXluJrgkbId1fgASES0=;
-        b=wJbteqKXRoQdNo5UB5CYDIYEel5iisXLW/eyfXvPVV9TbbtIKlpGuuV54C2KnmRVXU
-         VTWd9oYYKRpBpKZSSxBhEH/voIMlLxZ2yggWvytgMl4Ida+B3C6F7C8xP/6k3qgi/+l2
-         eQqn7JGeueEbZAHt9z1lETLW+RlUltqe58AvdwJNupd4XtXO+1UljAoFlJvCBo2yX+Uk
-         WL3R/Vfn7Q69gc299J9YO+FXkAXEhTJ3wIDVlg2fTFO463KFka6vm3GoGZ08XwohB72L
-         FETmxg8pXkomzTyGQh5m9IwxlOXf4UBl/hBJWmT/SukKBqXC6HdKhCHK7oJIFAacnLFV
-         C6SA==
-X-Forwarded-Encrypted: i=1; AJvYcCXlA16xjrfOIGGPBCEo4htGcERxewSw2KvaA+eOjVN8oQJIONMIvPoPcYxfURMI+3VX12u01v4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLzK3Y/xbLW6vwpDFLmLXWPFP81vrADGlwog0nBqYnU00UC237
-	4cmJrq7qWte4yrm3nl9po1+J4wyslWI/KEyeOp/3Ip9d7f766sX398g4h4XIwJIHsfmiQUzf85L
-	28NivEar9GI3wloh0NtyQVgSUk8bTe1gW5bzE
-X-Gm-Gg: ASbGncs8fIDCaMU7huFXuZxvbEXqUtxY5BoWjr8VrqkVpAy4Bg6NCY9oYR0T4EUb1b+
-	B3H5K7EpiPpzp7GXK5iLG3/8mAU6x9aZp9R1o9VeZZZT8jA77qjMFpiBupc2gtQzfBKIL
-X-Google-Smtp-Source: AGHT+IHULoMHUVr5U4+2d4sGP84Mlu3dznQTDIXfUSL5YZ711SpqNbK8AfpZrJprp8DDA4JlPKfMeP9NWf0hutEBxTs=
-X-Received: by 2002:a05:622a:15cb:b0:46d:e5e1:4087 with SMTP id
- d75a77b69052e-46de9804f4dmr3293771cf.4.1736872728965; Tue, 14 Jan 2025
- 08:38:48 -0800 (PST)
+	s=arc-20240116; t=1736872856; c=relaxed/simple;
+	bh=lq+/z837AJ+Kp3yFSR1wGWEuFiQ6oXX7V6uG8OVj2Yo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NxwNPWqsrgE1cTToe2pn6/A0HWMyQfVQ0kGJ0rAeyUxxRpC+P4FJ5jaZyNvkl9cUy0gBgKdJP7PoT2zOnG9oPOPDgrCppIE/as1YowUqENlkq9Z+eoXj8btqhGWOCqAPey8BHas7OVIFcdb4RVaBIFjuyuUpcV6zQ4USlLHeYc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Rlze2865; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50EC0luh020686;
+	Tue, 14 Jan 2025 16:40:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2023-11-20; bh=wtrdQfEuTbF+3IQ2vXxNa7Fu9eAD9KJdup9DlDirwWE=; b=
+	Rlze2865UzUTms2Ncs9AHPgT2t5uN8d3ZpMT4KE87o0ELZy9XrHCwgIp4+iUu6PC
+	oAUCmuJQ3SUwHIZJuscXhuL9ZJK8DBBN0KicFA2hTTApAYjnF59pgRqfx1iD45QE
+	w18Haf9hgLnQebaOoH0DYkD1ceuNDVx3cv3EGB9BWuDemeTschMBxsj5j5tGBGlH
+	B7x2aDwPjhrWw+oDuZ67hSzn43myoxdRkLD66NJJDNmCvJGKWHQemOsUjJCAbFID
+	a/daZItZQVfphmPh1D1OCnoBj6rI37fF3PDhq9dfv6cu2Xtr84BjzgE53KY1k5N6
+	lsSV65mdKzAX6IGf3DJVAQ==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 443gpcp8xj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 14 Jan 2025 16:40:44 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 50EG78kg036392;
+	Tue, 14 Jan 2025 16:40:44 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 443f38vb6d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 14 Jan 2025 16:40:44 +0000
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 50EGegei005685;
+	Tue, 14 Jan 2025 16:40:43 GMT
+Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 443f38vb57-3;
+	Tue, 14 Jan 2025 16:40:43 +0000
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+To: linux-scsi@vger.kernel.org, jmeneghi@redhat.com,
+        =?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+        James.Bottomley@HansenPartnership.com, loberman@redhat.com,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] scsi: st: Regression fix: Don't set pos_unknown just after device recognition
+Date: Tue, 14 Jan 2025 11:40:12 -0500
+Message-ID: <173687227224.1044893.5868878901297954415.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <20241216113755.30415-1-Kai.Makisara@kolumbus.fi>
+References: <20241216113755.30415-1-Kai.Makisara@kolumbus.fi>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241226211639.1357704-1-surenb@google.com> <20241226211639.1357704-2-surenb@google.com>
- <20241226150127.73d1b2a08cf31dac1a900c1e@linux-foundation.org>
- <CAJuCfpFSYqQ1LN0OZQT+jU=vLXZa5-L2Agdk1gzMdk9J0Zb-vg@mail.gmail.com>
- <20241226162315.cbf088cb28fe897bfe1b075b@linux-foundation.org>
- <CAJuCfpG_cbwFSdL5mt0_M_t0Ejc_P3TA+QGxZvHMAK1P+z7_BA@mail.gmail.com>
- <20241226235900.5a4e3ab79840e08482380976@linux-foundation.org> <CAJuCfpHJ7D0oLfHYzb9jvktP4X6O=ySGe7CK7sZmVNpSnzDeiQ@mail.gmail.com>
-In-Reply-To: <CAJuCfpHJ7D0oLfHYzb9jvktP4X6O=ySGe7CK7sZmVNpSnzDeiQ@mail.gmail.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 14 Jan 2025 08:38:37 -0800
-X-Gm-Features: AbW1kvbnlQb82XrF-Q6CEpwNlX1U0rhXcc5wFoFd5lawM3uKO28GFhJAoLV88cw
-Message-ID: <CAJuCfpHu=nzDNMSFUuxze7V8NDahKPgO6YdF7pk9W8VDC4ME4g@mail.gmail.com>
-Subject: Re: [PATCH 2/2] alloc_tag: skip pgalloc_tag_swap if profiling is disabled
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: kent.overstreet@linux.dev, yuzhao@google.com, 00107082@163.com, 
-	quic_zhenhuah@quicinc.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-14_05,2025-01-13_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 malwarescore=0
+ spamscore=0 suspectscore=0 mlxlogscore=716 adultscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2411120000
+ definitions=main-2501140129
+X-Proofpoint-GUID: A7vcy-ycBZjaAGdG-IdHlU7QE3HjSH-z
+X-Proofpoint-ORIG-GUID: A7vcy-ycBZjaAGdG-IdHlU7QE3HjSH-z
 
-On Fri, Dec 27, 2024 at 9:28=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
->
-> On Thu, Dec 26, 2024 at 11:59=E2=80=AFPM Andrew Morton
-> <akpm@linux-foundation.org> wrote:
-> >
-> > On Thu, 26 Dec 2024 16:56:00 -0800 Suren Baghdasaryan <surenb@google.co=
-m> wrote:
-> >
-> > > On Thu, Dec 26, 2024 at 4:23=E2=80=AFPM Andrew Morton <akpm@linux-fou=
-ndation.org> wrote:
-> > > >
-> > > > On Thu, 26 Dec 2024 15:07:39 -0800 Suren Baghdasaryan <surenb@googl=
-e.com> wrote:
-> > > >
-> > > > > On Thu, Dec 26, 2024 at 3:01=E2=80=AFPM Andrew Morton <akpm@linux=
--foundation.org> wrote:
-> > > > > >
-> > > > > > On Thu, 26 Dec 2024 13:16:39 -0800 Suren Baghdasaryan <surenb@g=
-oogle.com> wrote:
-> > > > > >
-> > > > > > > When memory allocation profiling is disabled, there is no nee=
-d to swap
-> > > > > > > allocation tags during migration. Skip it to avoid unnecessar=
-y overhead.
-> > > > > > >
-> > > > > > > Fixes: e0a955bf7f61 ("mm/codetag: add pgalloc_tag_copy()")
-> > > > > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > > > > > > Cc: stable@vger.kernel.org
-> > > > > >
-> > > > > > Are these changes worth backporting?  Some indication of how mu=
-ch
-> > > > > > difference the patches make would help people understand why we=
-'re
-> > > > > > proposing a backport.
-> > > > >
-> > > > > The first patch ("alloc_tag: avoid current->alloc_tag manipulatio=
-ns
-> > > > > when profiling is disabled") I think is worth backporting. It
-> > > > > eliminates about half of the regression for slab allocations when
-> > > > > profiling is disabled.
-> > > >
-> > > > um, what regression?  The changelog makes no mention of this.  Plea=
-se
-> > > > send along a suitable Reported-by: and Closes: and a summary of the
-> > > > benefits so that people can actually see what this patch does, and =
-why.
-> > >
-> > > Sorry, I should have used "overhead" instead of "regression".
-> > > When one sets CONFIG_MEM_ALLOC_PROFILING=3Dy, the code gets instrumen=
-ted
-> > > and even if profiling is turned off, it still has a small performance
-> > > cost minimized by the use of mem_alloc_profiling_key static key. I
-> > > found a couple of places which were not protected with
-> > > mem_alloc_profiling_key, which means that even when profiling is
-> > > turned off, the code is still executed. Once I added these checks, th=
-e
-> > > overhead of the mode when memory profiling is enabled but turned off
-> > > went down by about 50%.
-> >
-> > Well, a 50% reduction in a 0.0000000001% overhead ain't much.
->
-> I wish the overhead was that low :)
->
-> I ran more comprehensive testing on Pixel 6 on Big, Medium and Little cor=
-es:
->
->                  Overhead before fixes            Overhead after fixes
->                  slab alloc      page alloc          slab alloc      page=
- alloc
-> Big               6.21%           5.32%                3.31%          4.9=
-3%
-> Medium       4.51%           5.05%                3.79%          4.39%
-> Little            7.62%           1.82%                6.68%          1.0=
-2%
+On Mon, 16 Dec 2024 13:37:55 +0200, Kai Mäkisara wrote:
 
-Hi Andrew,
-I just noticed that you added the above results to the description of
-this patch in mm-unstable: 366507569511 ("alloc_tag: skip
-pgalloc_tag_swap if profiling is disabled") but this improvement is
-mostly caused the the other patch in this series: 80aded2b9492
-("alloc_tag: avoid current->alloc_tag manipulations when profiling is
-disabled"). If this is not too much trouble, could you please move it
-into the description of the latter patch?
-Thanks,
-Suren.
+> Commit 9604eea5bd3a ("scsi: st: Add third party poweron reset handling")
+> in v6.6 added new code to handle the Power On/Reset Unit Attention
+> (POR UA) sense data. This was in addition to the existing method. When
+> this Unit Attention is received, the driver blocks attempts to read,
+> write and some other operations because the reset may have rewinded
+> the tape. Because of the added code, also the initial POR UA resulted
+> in blocking operations, including those that are used to set the driver
+> options after the device is recognized. Also, reading and writing are
+> refused, whereas they succeeded before this commit.
+> 
+> [...]
 
->
->
-> > But I
-> > added the final sentence to the changelog.
-> >
-> > It still doesn't tell us the very simple thing which we're all eager to
-> > know: how much faster did the kernel get??
+Applied to 6.14/scsi-queue, thanks!
+
+[1/1] scsi: st: Regression fix: Don't set pos_unknown just after device recognition
+      https://git.kernel.org/mkp/scsi/c/98b37881b749
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
 
