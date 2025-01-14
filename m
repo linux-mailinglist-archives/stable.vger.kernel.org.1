@@ -1,153 +1,108 @@
-Return-Path: <stable+bounces-108632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A133A10E36
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 18:51:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4669A10E69
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 18:55:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F6991678E5
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:51:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D362E16A027
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:55:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2301FA16E;
-	Tue, 14 Jan 2025 17:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88B0C1FBC9B;
+	Tue, 14 Jan 2025 17:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JJo/2yeB"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="ro0Em/7m"
 X-Original-To: stable@vger.kernel.org
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC141F9F52;
-	Tue, 14 Jan 2025 17:51:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23DF1EE7AC;
+	Tue, 14 Jan 2025 17:55:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736877105; cv=none; b=AlPwX0aUlv6QCcL21SzZPfApneWXsqpwsJy6vpXIzONIm6IQKYnwxvlp1qBp7xRyWhUNHuY8FYq8hOoYtRMJtNYdg4/8hxxc0uL1fOrtoD8xlhsVEPS5bvqX8k7Eg01/JDZ5SFqnoSPDDs9DcqsqZPiYkHt03kPWZhf0M6cuQio=
+	t=1736877337; cv=none; b=bZXcxPZ5+zeL7naEl2eA/tku8P3hFogQfiVFPmdZFDyBgy36T3VT23X77XqGfLMAtIWxLXB9tfEXYtdAcahY36xnkGItx62FvfP/nHqufPO1M4YUH5FZdyvmZCxFKBXxxcKsJAZGeOd16Czq5cIxa448V7yAi5hDl+rwh6uwTQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736877105; c=relaxed/simple;
-	bh=RIgH5xlGEh7zpAcM8UkufQeUQXGJ+YhTQW/JrMqOT38=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Amoq2C3I2Dg+TNg5TQLlNXdjj0o2WTtffU1PPgKxxLcE5mTUBXVqDuyuzotF2G7qqq13KJZ25gh1VFfDwJT5+MhqQWMmQXKpiAQWcn3M5lV5PztXpQDckTLYu42Lh5QbIjZreBvtzgwf39gkjgg4iAbAklEC3ZHBWYnCldetF54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JJo/2yeB; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0794C1C0007;
-	Tue, 14 Jan 2025 17:51:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1736877100;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vXrbWWwouiOx3yRkqgUv0mzdSo2ohjgt018nIlxC86g=;
-	b=JJo/2yeBbPQkrJ9gqV9ju4t/cLDYVYnOg9ZE3ot05ZGuDn93A6XG6+PpnqtnP5lcSobEeW
-	YWtguohSqHUIvWyaT4MHj2gSFw1Cn9zAQ21HwVleOoc+u2FP21fPMWh0v9mnBLs6sa0Mz8
-	Q/Bc4YSEQOqXk9ngZgbe3eTNwwmje//SyZWpBp90KBCfof4s49Q7mypzaxA1OGv99j/qL9
-	iS63HUOrmV5aFNT63wZBVfQYymuikqIRiIG4OeW+/C+F/a8Bbqb87B+7w4W35f62W7tRBj
-	aW0Yv7ICpBmfrb4djndmcO1zgx8+qzZN53d9+LXtGBDbzxdSQBPvsEfE+ZaB5w==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-  tudor.ambarus@linaro.org,  mwalle@kernel.org,  richard@nod.at,
-  vigneshr@ti.com,  linux-mtd@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  alvinzhou@mxic.com.tw,  leoyu@mxic.com.tw,
-  Cheng Ming Lin <chengminglin@mxic.com.tw>,  stable@vger.kernel.org,
-  Cheng Ming Lin <linchengming884@gmail.com>
-Subject: Re: [PATCH v2 1/1] mtd: spi-nor: core: replace dummy buswidth from
- addr to data
-In-Reply-To: <mafs0zfjt5q3n.fsf@kernel.org> (Pratyush Yadav's message of "Tue,
-	14 Jan 2025 16:15:24 +0000")
-References: <20241112075242.174010-1-linchengming884@gmail.com>
-	<20241112075242.174010-2-linchengming884@gmail.com>
-	<3342163.44csPzL39Z@steina-w> <mafs0zfjt5q3n.fsf@kernel.org>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Tue, 14 Jan 2025 18:51:38 +0100
-Message-ID: <87wmexp9lh.fsf@bootlin.com>
+	s=arc-20240116; t=1736877337; c=relaxed/simple;
+	bh=OHmL6w79Y9VGVpAbxGEP9bE0AQIQfKl+7BgRzpI7zGU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EVNro2im/DA1V6AzA5KrlQpV8vn/M4pTDRHrqyG0O97aJhxuu3JngsbNJQazFi3fGlqXgq7qMXtsFc8q0hpsPpNGiJDEKDUhpvueml78HiA2hDCPilrG+R6b0uHYad149y6hlCO4z7WZGJoKwdOfd/Wv0oUqnSpiZ16radjiqdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=ro0Em/7m; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4YXcH472G0z6CmQyd;
+	Tue, 14 Jan 2025 17:55:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1736877321; x=1739469322; bh=rx+xxhgfz6Qv2U93Mr0uyJHH
+	3Uz3OWpv7e13MnI9pr4=; b=ro0Em/7mo2qYSG+4wF8NaY7HMuHC5oECKV3t+la6
+	KyggnwIpZUwBvFMlG1aBzhAHriMjCEYTdU8Sq0c9Td6MXxFqvZFuuB1TjiFVibKF
+	Fu1xR8VK3avTZwS4Gxjt8skCD4CXyIlP8N2VSke98A6EMwChSlg+drCp47iTXAC6
+	eZvCXQm+3ArjlzGzyA7LN5R5rQNL48EjR2Bzlq4VRz16S3Ret+SS9sZA1bWJa/BZ
+	AQUb0q6hzLUOZUQMcqeVLWthLQ6ejbEGmhGb5dnGGUPOJ/mU228+s0lik61FMSep
+	pZCHy6AFKDR6VgD6wd5+Is0RP8nqs49Q+D8+U5Jm3NTiJw==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id BUc2kVQEpj2k; Tue, 14 Jan 2025 17:55:21 +0000 (UTC)
+Received: from [100.66.154.22] (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4YXcGt0mRjz6CmQyb;
+	Tue, 14 Jan 2025 17:55:17 +0000 (UTC)
+Message-ID: <58f1b701-68da-49c0-b2b1-e079bad4cd08@acm.org>
+Date: Tue, 14 Jan 2025 09:55:16 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] scsi: ufs: fix use-after free in init error and remove
+ paths
+To: =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Peter Griffin <peter.griffin@linaro.org>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+ Eric Biggers <ebiggers@kernel.org>
+Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,
+ Will McVicker <willmcvicker@google.com>, kernel-team@android.com,
+ linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-samsung-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, stable@vger.kernel.org
+References: <20250114-ufshcd-fix-v2-1-2dc627590a4a@linaro.org>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20250114-ufshcd-fix-v2-1-2dc627590a4a@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
 
-Hello Pratyush,
+On 1/14/25 8:16 AM, Andr=C3=A9 Draszik wrote:
+> +/**
+> + * ufshcd_scsi_host_put_callback - deallocate underlying Scsi_Host and
+> + *				   thereby the Host Bus Adapter (HBA)
+> + * @host: pointer to SCSI host
+> + */
+> +static void ufshcd_scsi_host_put_callback(void *host)
+> +{
+> +	scsi_host_put(host);
+> +}
 
-On 14/01/2025 at 16:15:24 GMT, Pratyush Yadav <pratyush@kernel.org> wrote:
-
->>> --- a/drivers/mtd/spi-nor/core.c
->>> +++ b/drivers/mtd/spi-nor/core.c
->>> @@ -89,7 +89,7 @@ void spi_nor_spimem_setup_op(const struct spi_nor *no=
-r,
->>>  		op->addr.buswidth =3D spi_nor_get_protocol_addr_nbits(proto);
->>>=20=20
->>>  	if (op->dummy.nbytes)
->>> -		op->dummy.buswidth =3D spi_nor_get_protocol_addr_nbits(proto);
->>> +		op->dummy.buswidth =3D spi_nor_get_protocol_data_nbits(proto);
-
-Facing recently a similar issue myself in the SPI NAND world, I believe
-we should get rid of the notion of bits when it comes to the dummy
-phase. I would appreciate a clarification like "dummy.cycles" which
-would typically not require any bus width implications.
-
-...
-
-> Most controller's supports_op hook call spi_mem_default_supports_op(),
-> including nxp_fspi_supports_op(). In spi_mem_default_supports_op(),
-> spi_mem_check_buswidth() is called to check if the buswidths for the op
-> can actually be supported by the board's wiring. This wiring information
-> comes from (among other things) the spi-{tx,rx}-bus-width DT properties.
-> Based on these properties, SPI_TX_* or SPI_RX_* flags are set by
-> of_spi_parse_dt(). spi_mem_check_buswidth() then uses these flags to
-> make the decision whether an op can be supported by the board's wiring
-> (in a way, indirectly checking against spi-{rx,tx}-bus-width).
-
-Thanks for the whole explanation, it's pretty clear.
-
-> In arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi we have:
->
-> 	flash0: flash@0 {
-> 		reg =3D <0>;
-> 		compatible =3D "jedec,spi-nor";
-> 		spi-max-frequency =3D <80000000>;
-> 		spi-tx-bus-width =3D <1>;
-> 		spi-rx-bus-width =3D <4>;
->
-> Now the tricky bit here is we do the below in spi_mem_check_buswidth():
->
-> 	if (op->dummy.nbytes &&
-> 	    spi_check_buswidth_req(mem, op->dummy.buswidth, true))
-> 		return false;
-
-May I challenge this entire section? Is there *any* reason to check
-anything against dummy cycles wrt the width? Maybe a "can handle x
-cycles" check would be interesting though, but I'd go for a different
-helper, that is specific to the dummy cycles.
-
-> The "true" parameter here means to "treat the op as TX". Since the
-> board only supports 1-bit TX, the 4-bit dummy TX is considered as
-> unsupported, and the op gets rejected. In reality, a dummy phase is
-> neither a RX nor a TX. We should ideally treat it differently, and
-> only check if it is one of 1, 2, 4, or 8, and not test it against the
-> board capabilities at all.
-
-...
-
-> Since we are quite late in the cycle, and that changing
-> spi_mem_check_buswidth() might cause all sorts of breakages, I think the
-> best idea currently would be to revert this patch, and resend it with
-> the other changes later.
->
-> Tudor, Michael, Miquel, what do you think about this? We are at rc7 but
-> I think we should send out a fixes PR with a revert. If you agree, I
-> will send out a patch and a PR.
-
-Either way I am fine. the -rc cycles are also available for us to
-settle. But it's true we can bikeshed a little bit, so feel free to
-revert this patch before sending the MR.
+Please rename ufshcd_scsi_host_put_callback() such that the function=20
+name makes clear when this function is called instead of what the=20
+function does.
 
 Thanks,
-Miqu=C3=A8l
+
+Bart.
 
