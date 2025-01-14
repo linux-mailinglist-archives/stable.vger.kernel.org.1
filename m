@@ -1,152 +1,159 @@
-Return-Path: <stable+bounces-108575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1786BA10141
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 08:27:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67C5CA1016C
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 08:40:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1C3F3A67A9
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 07:27:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E24FC3A1C6E
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 07:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4675233156;
-	Tue, 14 Jan 2025 07:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D63124633B;
+	Tue, 14 Jan 2025 07:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JydE2mjS"
+	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="IGxhTt6Z"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from gw2.atmark-techno.com (gw2.atmark-techno.com [35.74.137.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2B4240235;
-	Tue, 14 Jan 2025 07:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2202500A5
+	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 07:39:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.74.137.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736839650; cv=none; b=GS4mXkNTVwmh0/hMloiwev4LVya27/Ozld1tGpVOFTQcEPcilGlBdELC7LKEMC0GA8GBgf1f1+Ee1mGraL/27AYj3USw4HJx97ZL8HQinWLKLdQODLso5bdCPe8GHDa8773QYD+Ver9nvAX+dXcXMr9Hklg9MjCQkW3vSKQagQA=
+	t=1736840366; cv=none; b=kwGoiatvL8/7O05fGnKEtdwIjvwG3LTwgizcfpDKpRG3qTZ3is5IPMexHrAfHTkd36g+2mG+zitq3lyopgZs1avxEFDob7J7xs+CP7xybzmqLC/gnHaRgJDx0g5EfL3RCeTnHdgRajMZLA4CAbmVfUkw1x8y2uv7VlboZaY01nQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736839650; c=relaxed/simple;
-	bh=KJfe9nVlEn8D3imcOLIM2aumy8f4v35mSshgLI8XJhM=;
+	s=arc-20240116; t=1736840366; c=relaxed/simple;
+	bh=k360k2nENChaTtsCY0XTSnXsQJWoAdUqBiBV+ls1PWg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RI1uvAL8uXWTCS8CavdGHNxKkm17LI4kdL64VyIrfdy740nmJ/CTyx0OhLwqo+L1W5yYMsPZqSwNnmQ4kzYX+6Q1QWQASXUtlL4MpIH85cFgSspvM08WhFMSX+7V8xVqlhC4ix3Gk5iXXFhmqwmWTSeMdAkeWTl8NRfydrKXw/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JydE2mjS; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736839649; x=1768375649;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KJfe9nVlEn8D3imcOLIM2aumy8f4v35mSshgLI8XJhM=;
-  b=JydE2mjSyn+7BxXuVGoLQ5zanJkpq81GYkDpEpCeDrrmBJWpALOIjSQq
-   b/DlXXsC6sXgkleId77MSL+qgPCck80xYVzhyYPGP27jZX5CPxnEagHyw
-   pxHLcjuyoIylP3ubO+PLEAHIzzjhjjmhyTHoRdsg8derDXymx4W8tjHrk
-   AZnK1xYF7fML9O90MPRh12QhI5R/TGRqE+XeBYxaoibD0ia0ZELHDld2o
-   LcFsbVP3ChZEOP6meuQoNllA1OE5Xgk7mLyhNFrzpiSv4EftgPK+thFVp
-   BMjmN6M3MYw0VBG1niaVsHoAef5m1vc1GneLfb2ip9ptIVWBISzvaZRjf
-   Q==;
-X-CSE-ConnectionGUID: UTwq5YWcQCOgG9WRXrTVaw==
-X-CSE-MsgGUID: ufYZPSs5R5OdLAtWFIFuqA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="48505553"
-X-IronPort-AV: E=Sophos;i="6.12,313,1728975600"; 
-   d="scan'208";a="48505553"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2025 23:27:26 -0800
-X-CSE-ConnectionGUID: yfW+ptOYR5mGfoxEhg0Blg==
-X-CSE-MsgGUID: lzW8z/BNT229n2J3J5ggdA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,313,1728975600"; 
-   d="scan'208";a="105286103"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa009.fm.intel.com with ESMTP; 13 Jan 2025 23:27:20 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 773212A6; Tue, 14 Jan 2025 09:27:18 +0200 (EET)
-Date: Tue, 14 Jan 2025 09:27:18 +0200
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexei Starovoitov <ast@kernel.org>, 
-	Andrea Parri <parri.andrea@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Eric Chan <ericchancf@google.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Kai Huang <kai.huang@intel.com>, 
-	Kefeng Wang <wangkefeng.wang@huawei.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	Palmer Dabbelt <palmer@rivosinc.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Russell King <linux@armlinux.org.uk>, Samuel Holland <samuel.holland@sifive.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Yuntao Wang <ytcoode@gmail.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	stable@vger.kernel.org, Ashish Kalra <ashish.kalra@amd.com>, 
-	"Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: Re: [PATCHv3 2/2] x86/mm: Make memremap(MEMREMAP_WB) map memory as
- encrypted by default
-Message-ID: <vuj7mlvkvazuz5noupusqt2bk42vjkr5lkgivnrub2nby4ma6y@7ezpclbirwcs>
-References: <20250113131459.2008123-1-kirill.shutemov@linux.intel.com>
- <20250113131459.2008123-3-kirill.shutemov@linux.intel.com>
- <1532becb-f2be-4458-5d34-77070f2c5e2d@amd.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=SVY6ZAWB8eQgNaDnE1WXrYdqibjdcRuXrtXt3a7WPxpCCj93mdMqhsuOPKiQ3CRZwJ2RFGUEwDEh++ETpjrUONumwyCjsyAFAc5WZu9rMDkuNshhY6/b2m6J+st3B1jkfhDq2GAWVIYzUFFjxZOLN1cpInrZAqIKbiefYnOA0AI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com; spf=pass smtp.mailfrom=atmark-techno.com; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=IGxhTt6Z; arc=none smtp.client-ip=35.74.137.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atmark-techno.com
+Authentication-Results: gw2.atmark-techno.com;
+	dkim=pass (2048-bit key; unprotected) header.d=atmark-techno.com header.i=@atmark-techno.com header.a=rsa-sha256 header.s=google header.b=IGxhTt6Z;
+	dkim-atps=neutral
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by gw2.atmark-techno.com (Postfix) with ESMTPS id CC0F338C
+	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 16:39:17 +0900 (JST)
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-2ef775ec883so8987900a91.1
+        for <stable@vger.kernel.org>; Mon, 13 Jan 2025 23:39:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=atmark-techno.com; s=google; t=1736840357; x=1737445157; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PNYhzp6T4J8POxGMu2wCD4gj9nKfcrDVmiBH3+FTTC8=;
+        b=IGxhTt6Z/k8e1OeGtEYoLsQFfV+/fbjxRsxVS6H+Dd8iAQQiDVaFuHn7hT7JeXCiE9
+         0QyNY4acqAauXfYzOHtTtZYPfLRZ71HVy+bivuWwxy7PArIHiF4NaIrRxU3yfpehhXC8
+         u4q9H5OZDN/UX9+XAGxnwoFKuIqjvv9CAnBTH/k8L0/9H4eD4M71luTmPW5oe9rftzEZ
+         +qxY5zcKwafkh8/+nam5MJUr5duirk+q7JmTXYFf4w7ZpH3Ak/FXqtWBgJ4zPBwFhEuc
+         gYEcaKHlrCHRPi3sujdSKDS50HIk9wC9cLt65Jr+0qGpqxmnwiatsSPcdUZwikICOcnC
+         552Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736840357; x=1737445157;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PNYhzp6T4J8POxGMu2wCD4gj9nKfcrDVmiBH3+FTTC8=;
+        b=f6AgKwQXJ4j4InwRaQcKZrbZvZXN9joTkCslRyR17wdDsF9Y5Zb2VPFJ2ZLyVY+XDs
+         LY4HlCxiXkHQEsd/1LYTh4aeFC42j2ZaQ3xJAsG3B4mhBbZFdYgKiVl0Oh/kF2BwYm8P
+         yw1cyPWd3K7uxQ424W1FwSpevi1trPN1F8lnA/uvYqmj/UJh8jFVcNntas2PsE7aCY+A
+         fPb8MEFfz/RZbf9K2sCiXgI+udjjxX+ldF5GyeML/83m68LrDe0wpCEswz2A2RBprsPd
+         tT6AJ5rPWmzJt4MgYWcFp0MWqvqPrAeg8uYnNrX/J06HcU4hI7Q7ibE2Z+YN+f2oR9hg
+         6UgA==
+X-Gm-Message-State: AOJu0Yx/0mSocHmoEcxin8KHZGaNBbtOUyhPvCgYazRqx4XLC0bOoFCH
+	mGKBI85QVREDyLdeeXMitcOjiavkVTteZ0sRS7tkrzMbHJi2M+4AhPQlR+v6x+/JiRpDYmffLwH
+	FEwsxvk8dBBCd0u7lL6WB4sZyF5jQQNcmzaDtLXXWMahAbVhJUpmL5klf2CEMn0g=
+X-Gm-Gg: ASbGnctPCv+/3lG5exGT0npMHT43jOwobjKYJPVtyVOCUOyO/zHk91RxV2xKmdBLoGz
+	tw45srTh4DYeW+2acqktnrDmdNmWOswUbuUBgka9kT6P6aQ0peMq+bZowEe/0t5SYp1CvkwmWF2
+	0kOpgg4eUzDuoihFrCx8DSqjEMx2B5zF1zw4P/2Gjj7zgAZKiP4O8389wA7x7jtGR4tN2R40rO4
+	WwKmQPw+V08ZAd5f8ALRUVI8kxUafa0SWF5uMAHhH0Oa0E/VCrIwDmp95ySqsZpK4ELq69G5oGn
+	qdMBmetj2q1ORo9mO1UfqzKH676yHCDlg5XhQMlk
+X-Received: by 2002:a17:90b:2c84:b0:2ee:8430:b831 with SMTP id 98e67ed59e1d1-2f548f1628fmr36874505a91.2.1736840356842;
+        Mon, 13 Jan 2025 23:39:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFucZTLJamv/CQ5nIk/KY9RsHieGOsTWABI4Y2zHT3k7z/UYGhJL1HzEwHdatKUJuyyrTaJ6A==
+X-Received: by 2002:a17:90b:2c84:b0:2ee:8430:b831 with SMTP id 98e67ed59e1d1-2f548f1628fmr36874486a91.2.1736840356480;
+        Mon, 13 Jan 2025 23:39:16 -0800 (PST)
+Received: from localhost (117.209.187.35.bc.googleusercontent.com. [35.187.209.117])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f559469fa0sm8902619a91.44.2025.01.13.23.39.15
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 13 Jan 2025 23:39:16 -0800 (PST)
+Date: Tue, 14 Jan 2025 16:39:04 +0900
+From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Kairui Song <kasong@tencent.com>,
+	Desheng Wu <deshengwu@tencent.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15 0/3] ZRAM not releasing backing device backport
+Message-ID: <Z4YUmMI5e2yPmzHl@atmark-techno.com>
+References: <20250110075844.1173719-1-dominique.martinet@atmark-techno.com>
+ <2025011201-scorebook-kebab-2288@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <1532becb-f2be-4458-5d34-77070f2c5e2d@amd.com>
+In-Reply-To: <2025011201-scorebook-kebab-2288@gregkh>
 
-On Mon, Jan 13, 2025 at 02:47:56PM -0600, Tom Lendacky wrote:
-> On 1/13/25 07:14, Kirill A. Shutemov wrote:
-> > Currently memremap(MEMREMAP_WB) can produce decrypted/shared mapping:
-> > 
-> > memremap(MEMREMAP_WB)
-> >   arch_memremap_wb()
-> >     ioremap_cache()
-> >       __ioremap_caller(.encrytped = false)
-> > 
-> > In such cases, the IORES_MAP_ENCRYPTED flag on the memory will determine
-> > if the resulting mapping is encrypted or decrypted.
-> > 
-> > Creating a decrypted mapping without explicit request from the caller is
-> > risky:
-> > 
-> >   - It can inadvertently expose the guest's data and compromise the
-> >     guest.
-> > 
-> >   - Accessing private memory via shared/decrypted mapping on TDX will
-> >     either trigger implicit conversion to shared or #VE (depending on
-> >     VMM implementation).
-> > 
-> >     Implicit conversion is destructive: subsequent access to the same
-> >     memory via private mapping will trigger a hard-to-debug #VE crash.
-> > 
-> > The kernel already provides a way to request decrypted mapping
-> > explicitly via the MEMREMAP_DEC flag.
-> > 
-> > Modify memremap(MEMREMAP_WB) to produce encrypted/private mapping by
-> > default unless MEMREMAP_DEC is specified.
-> > 
-> > Fix the crash due to #VE on kexec in TDX guests if CONFIG_EISA is enabled.
+Greg Kroah-Hartman wrote on Sun, Jan 12, 2025 at 11:03:42AM +0100:
+> On Fri, Jan 10, 2025 at 04:58:41PM +0900, Dominique Martinet wrote:
+> > I've picked the "do not keep dangling zcomp pointer" patch from the
+> > linux-rc tree at the time, so kept Sasha's SOB and added mine on top
+> > -- please let me know if it wasn't appropriate.
 > 
-> This patch causes my bare-metal system to crash during boot when using
-> mem_encrypt=on:
-> 
-> [    2.392934] efi: memattr: Entry type should be RuntimeServiceCode/Data
-> [    2.393731] efi: memattr: ! 0x214c42f01f1162a-0xee70ac7bd1a9c629 [type=2028324321|attr=0x6590648fa4209879]
+> It's tricky to know, I dropped it and took what was in Linus's tree as
+> Sasha didn't actually review this one.
 
-Could you try if this helps?
+Thanks for saying this; I hadn't actually checked the stable backport
+(enough) either so I had another look, and the 6d2453c3dbc5
+("drivers/block/zram/zram_drv.c: do not keep dangling zcomp pointer
+after zram reset") backport by itself is wrong even if it did
+cherry-pick cleanly from master and a quick test appeared to work.
+The commit messages says "We do all reset operations under write lock"
+but that isn't true without also backporting 6f1637795f28 ("zram: fix
+race between zram_reset_device() and disksize_store()"), so with the
+current backport we've traded leaking zram->comp behind with a data race
+on disksize and comp.
 
-diff --git a/drivers/firmware/efi/memattr.c b/drivers/firmware/efi/memattr.c
-index c38b1a335590..b5051dcb7c1d 100644
---- a/drivers/firmware/efi/memattr.c
-+++ b/drivers/firmware/efi/memattr.c
-@@ -160,7 +160,7 @@ int __init efi_memattr_apply_permissions(struct mm_struct *mm,
- 	if (WARN_ON(!efi_enabled(EFI_MEMMAP)))
- 		return 0;
- 
--	tbl = memremap(efi_mem_attr_table, tbl_size, MEMREMAP_WB);
-+	tbl = memremap(efi_mem_attr_table, tbl_size, MEMREMAP_WB | MEMREMAP_DEC);
- 	if (!tbl) {
- 		pr_err("Failed to map EFI Memory Attributes table @ 0x%lx\n",
- 		       efi_mem_attr_table);
+With that extra commit as well, I think we're sane enough, but I'm not
+familiar with the zram code so I might have missed another prerequisite.
+
+
+With that and the previous problems, and given that manipulating
+zram devices is a privileged operation (so we're not looking at a must
+fix vulnerability), I'm actually rather inclined to just drop all the
+zram patches and not backport these to 5.15/5.10 unless someone actually
+reports problems around zram reset (or perhaps keep 5.15 but skip 5.10
+as you see fit)
+
+(
+  I'm not opposed to Kairui or someone else actually do these backport,
+  but I'm not confident it's worth the effort and think we're trading a
+  known problem (current behaviour) with potential unknown ones if
+  we're just cherry-picking an arbitrary subset of patches.
+  If someone wants to take over, the commits I had identified (from
+  Sasha's initial backport and this mail) for 5.10 were as follow:
+3b4f85d02a4b ("loop: let set_capacity_revalidate_and_notify update the bdev size")
+5dd55749b79c ("nvme: let set_capacity_revalidate_and_notify update the bdev size")
+b200e38c493b ("sd: update the bdev size in sd_revalidate_disk")
+449f4ec9892e ("block: remove the update_bdev parameter to set_capacity_revalidate_and_notify")
+6e017a3931d7 ("zram: use set_capacity_and_notify")
+6f1637795f28 ("zram: fix race between zram_reset_device() and disksize_store()")
+6d2453c3dbc5 ("drivers/block/zram/zram_drv.c: do not keep dangling zcomp pointer after zram reset")
+677294e4da96 ("zram: check comp is non-NULL before calling comp_destroy")
+74363ec674cb ("zram: fix uninitialized ZRAM not releasing backing device")
+)
+
+
+Thank you Greg for the follow-ups, and thank you Kairui for the
+suggestions during my earlier bug report.
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Dominique
 
