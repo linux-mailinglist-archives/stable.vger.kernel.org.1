@@ -1,176 +1,137 @@
-Return-Path: <stable+bounces-108646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7182A11118
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 20:24:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF6BAA11157
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 20:44:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E150B1889AE0
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 19:24:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AC837A37A5
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 19:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E16C1FC101;
-	Tue, 14 Jan 2025 19:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B27207E0B;
+	Tue, 14 Jan 2025 19:44:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tQX4r/MG"
 X-Original-To: stable@vger.kernel.org
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A510514A60C
-	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 19:24:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88BD20767A;
+	Tue, 14 Jan 2025 19:44:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736882684; cv=none; b=uOGj3GlaMUvUuR1SVZmyr32vKrkDyyiuiYbvKChCf0k5ULQeNtZSVmTNpkPztOZZfbU5MPq5Tz29wgLyRRoLzMOPkPyGbs/3Lum19ZvCeSFO1SxYAAGopXcg+uGwN1yMpex7r9UcoTLOzaFTiwnY1kYidtz1gSnQX3qhQ0PeLIw=
+	t=1736883871; cv=none; b=e1OXZaKNnHzGRZW7H7em/45xRKNUol0wHUm90htY09NDj0SRTdSX99jlZ9rzGuWwWBm3Vzg1OjRfBlZiWZWbA+K/bjzfT+u3ro4YiTTVI0r4jqfEaYG7biF1hvrPcynUiRFPSsoKJLP9Tgp9jwDb1Y3WrADQ5EufjUzYhQAVhB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736882684; c=relaxed/simple;
-	bh=o45MAMrCA7wvoqnK4eDlsnOU0b88J447QUTCrUvnjoM=;
+	s=arc-20240116; t=1736883871; c=relaxed/simple;
+	bh=QNhJNcQvlfjgdhjEkkoHb79mlnawyevNw4Pmp2t2UCQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vDtWIe1VPtjAZgzqCuBn/E3nAbrsuIZ1BkHMgqubHoM/4C5/WJg0YLOiyDvYzwwQ12dQmPuq+PQOjzWOMkX33nKAvlvSReLUpgc8bViB+yq1avmDBPtHGdgQMJv+J2OBaiRlP8bn25eVmQNYPJS1Sx46LCah/wcod0YxtzoADAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.98)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1tXmWd-000000003pJ-14r5;
-	Tue, 14 Jan 2025 19:24:31 +0000
-Date: Tue, 14 Jan 2025 19:24:22 +0000
-From: Daniel Golle <daniel@makrotopia.org>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, chunkuang.hu@kernel.org, ck.hu@mediatek.com
-Subject: [PATCH 6.12.y] drm/mediatek: Only touch DISP_REG_OVL_PITCH_MSB if
- AFBC is supported
-Message-ID: <Z4PLxgujddAwrJaR@makrotopia.org>
-References: <2025011258-registrar-obsessed-eb25@gregkh>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ujYVikuxg0n84uIvWfBCm6Jpc5punpZWOfcwhxWxZDrkw1F6GqDQD3nyUoLg+FBEQE+EqgCM3v+UBk3P77gdNSzc7yvPFVnurLJjUg6LgBEu76OcbeM05hpnqdYgielL+dLQwUYSmQZGri+kHNWS6SK5AA8F/pDwZHfLcwXMkIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tQX4r/MG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21014C4CEDD;
+	Tue, 14 Jan 2025 19:44:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736883870;
+	bh=QNhJNcQvlfjgdhjEkkoHb79mlnawyevNw4Pmp2t2UCQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tQX4r/MGQRt0j0vma95QWsnLJoYTy7h9PGouJqLNvc49tJEAHsCAngIJZEEZNwg8V
+	 FI0CWLcuX4nGz/OonBnvDYyHyGx2aZpE9Xm24sKWd5n2OcgxDZ2+vDIk/fTkj0s95t
+	 s6fzBIMsK1OJL/8bpMUZjdlqjuVBVI+9PD8uSMQanNrcGfVQLeMl5QGmzg41atE77G
+	 kw6RMI7mvOBL+TqC1HO8Z0iG5XP1cu6g1aaoN8DNcjTwbdA8W1/bBHcMZlsfWvy1Yy
+	 u5J7BZEDQfpwZoqG8guP/tXteaogV1q+sLDIhSKHydsSsm8A+bm7b5DBveB3xAYjyt
+	 7a+FSDt+PmyLQ==
+Date: Tue, 14 Jan 2025 19:44:26 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Conor Dooley <conor@kernel.org>
+Cc: linux-spi@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>,
+	stable@vger.kernel.org,
+	Daire McNamara <daire.mcnamara@microchip.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] spi: microchip-core: prevent RX overflows when transmit
+ size > FIFO size
+Message-ID: <33b35815-3575-490a-92de-4d1c2228257e@sirena.org.uk>
+References: <20250114-easiness-pregame-d1d2d4b57e7b@spud>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="x78JH1Kc4sb87YXt"
+Content-Disposition: inline
+In-Reply-To: <20250114-easiness-pregame-d1d2d4b57e7b@spud>
+X-Cookie: Sauron is alive in Argentina!
+
+
+--x78JH1Kc4sb87YXt
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2025011258-registrar-obsessed-eb25@gregkh>
+Content-Transfer-Encoding: quoted-printable
 
-Touching DISP_REG_OVL_PITCH_MSB leads to video overlay on MT2701, MT7623N
-and probably other older SoCs being broken.
+On Tue, Jan 14, 2025 at 05:13:49PM +0000, Conor Dooley wrote:
 
-Move setting up AFBC layer configuration into a separate function only
-being called on hardware which actually supports AFBC which restores the
-behavior as it was before commit c410fa9b07c3 ("drm/mediatek: Add AFBC
-support to Mediatek DRM driver") on non-AFBC hardware.
+> When the size of a transfer exceeds the size of the FIFO (32 bytes), RX
+> overflows will be generated and receive data will be corrupted and
+> warnings will be produced. For example, here's an error generated by a
+> transfer of 36 bytes:
 
-Fixes: c410fa9b07c3 ("drm/mediatek: Add AFBC support to Mediatek DRM driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/c7fbd3c3e633c0b7dd6d1cd78ccbdded31e1ca0f.1734397800.git.daniel@makrotopia.org/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-(cherry picked from commit f8d9b91739e1fb436447c437a346a36deb676a36)
----
- drivers/gpu/drm/mediatek/mtk_disp_ovl.c | 57 +++++++++++++------------
- 1 file changed, 29 insertions(+), 28 deletions(-)
+>   spi_master spi0: mchp_corespi_interrupt: RX OVERFLOW: rxlen: 4, txlen: 0
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-index e0c0bb01f65a..0e4da239cbeb 100644
---- a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-+++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-@@ -460,6 +460,29 @@ static unsigned int mtk_ovl_fmt_convert(struct mtk_disp_ovl *ovl,
- 	}
- }
- 
-+static void mtk_ovl_afbc_layer_config(struct mtk_disp_ovl *ovl,
-+				      unsigned int idx,
-+				      struct mtk_plane_pending_state *pending,
-+				      struct cmdq_pkt *cmdq_pkt)
-+{
-+	unsigned int pitch_msb = pending->pitch >> 16;
-+	unsigned int hdr_pitch = pending->hdr_pitch;
-+	unsigned int hdr_addr = pending->hdr_addr;
-+
-+	if (pending->modifier != DRM_FORMAT_MOD_LINEAR) {
-+		mtk_ddp_write_relaxed(cmdq_pkt, hdr_addr, &ovl->cmdq_reg, ovl->regs,
-+				      DISP_REG_OVL_HDR_ADDR(ovl, idx));
-+		mtk_ddp_write_relaxed(cmdq_pkt,
-+				      OVL_PITCH_MSB_2ND_SUBBUF | pitch_msb,
-+				      &ovl->cmdq_reg, ovl->regs, DISP_REG_OVL_PITCH_MSB(idx));
-+		mtk_ddp_write_relaxed(cmdq_pkt, hdr_pitch, &ovl->cmdq_reg, ovl->regs,
-+				      DISP_REG_OVL_HDR_PITCH(ovl, idx));
-+	} else {
-+		mtk_ddp_write_relaxed(cmdq_pkt, pitch_msb,
-+				      &ovl->cmdq_reg, ovl->regs, DISP_REG_OVL_PITCH_MSB(idx));
-+	}
-+}
-+
- void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
- 			  struct mtk_plane_state *state,
- 			  struct cmdq_pkt *cmdq_pkt)
-@@ -467,25 +490,13 @@ void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
- 	struct mtk_disp_ovl *ovl = dev_get_drvdata(dev);
- 	struct mtk_plane_pending_state *pending = &state->pending;
- 	unsigned int addr = pending->addr;
--	unsigned int hdr_addr = pending->hdr_addr;
--	unsigned int pitch = pending->pitch;
--	unsigned int hdr_pitch = pending->hdr_pitch;
-+	unsigned int pitch_lsb = pending->pitch & GENMASK(15, 0);
- 	unsigned int fmt = pending->format;
- 	unsigned int offset = (pending->y << 16) | pending->x;
- 	unsigned int src_size = (pending->height << 16) | pending->width;
- 	unsigned int blend_mode = state->base.pixel_blend_mode;
- 	unsigned int ignore_pixel_alpha = 0;
- 	unsigned int con;
--	bool is_afbc = pending->modifier != DRM_FORMAT_MOD_LINEAR;
--	union overlay_pitch {
--		struct split_pitch {
--			u16 lsb;
--			u16 msb;
--		} split_pitch;
--		u32 pitch;
--	} overlay_pitch;
--
--	overlay_pitch.pitch = pitch;
- 
- 	if (!pending->enable) {
- 		mtk_ovl_layer_off(dev, idx, cmdq_pkt);
-@@ -524,11 +535,12 @@ void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
- 	}
- 
- 	if (ovl->data->supports_afbc)
--		mtk_ovl_set_afbc(ovl, cmdq_pkt, idx, is_afbc);
-+		mtk_ovl_set_afbc(ovl, cmdq_pkt, idx,
-+				 pending->modifier != DRM_FORMAT_MOD_LINEAR);
- 
- 	mtk_ddp_write_relaxed(cmdq_pkt, con, &ovl->cmdq_reg, ovl->regs,
- 			      DISP_REG_OVL_CON(idx));
--	mtk_ddp_write_relaxed(cmdq_pkt, overlay_pitch.split_pitch.lsb | ignore_pixel_alpha,
-+	mtk_ddp_write_relaxed(cmdq_pkt, pitch_lsb | ignore_pixel_alpha,
- 			      &ovl->cmdq_reg, ovl->regs, DISP_REG_OVL_PITCH(idx));
- 	mtk_ddp_write_relaxed(cmdq_pkt, src_size, &ovl->cmdq_reg, ovl->regs,
- 			      DISP_REG_OVL_SRC_SIZE(idx));
-@@ -537,19 +549,8 @@ void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
- 	mtk_ddp_write_relaxed(cmdq_pkt, addr, &ovl->cmdq_reg, ovl->regs,
- 			      DISP_REG_OVL_ADDR(ovl, idx));
- 
--	if (is_afbc) {
--		mtk_ddp_write_relaxed(cmdq_pkt, hdr_addr, &ovl->cmdq_reg, ovl->regs,
--				      DISP_REG_OVL_HDR_ADDR(ovl, idx));
--		mtk_ddp_write_relaxed(cmdq_pkt,
--				      OVL_PITCH_MSB_2ND_SUBBUF | overlay_pitch.split_pitch.msb,
--				      &ovl->cmdq_reg, ovl->regs, DISP_REG_OVL_PITCH_MSB(idx));
--		mtk_ddp_write_relaxed(cmdq_pkt, hdr_pitch, &ovl->cmdq_reg, ovl->regs,
--				      DISP_REG_OVL_HDR_PITCH(ovl, idx));
--	} else {
--		mtk_ddp_write_relaxed(cmdq_pkt,
--				      overlay_pitch.split_pitch.msb,
--				      &ovl->cmdq_reg, ovl->regs, DISP_REG_OVL_PITCH_MSB(idx));
--	}
-+	if (ovl->data->supports_afbc)
-+		mtk_ovl_afbc_layer_config(ovl, idx, pending, cmdq_pkt);
- 
- 	mtk_ovl_set_bit_depth(dev, idx, fmt, cmdq_pkt);
- 	mtk_ovl_layer_on(dev, idx, cmdq_pkt);
--- 
-2.47.1
+> I am not entirely sure how this happens, as rxlen being 4 means that 32
+> of 36 bytes have been read from the RX FIFO so there should be
+> sufficient room for 4 more bytes but timing is likely a factor as simply
+> adding a delay in the transmit path is enough to avoid the overflows.
 
+The reads from the FIFO happen prior to the check for overflow in the
+interrupt handler so if we overflow then take the interrupt we will read
+the full 32 byte FIFO before it sees that there was an overflow.
+
+> @@ -221,6 +221,13 @@ static inline void mchp_corespi_write_fifo(struct mc=
+hp_corespi *spi)
+>  	while ((i < fifo_max) && !(mchp_corespi_read(spi, REG_STATUS) & STATUS_=
+TXFIFO_FULL)) {
+>  		u32 word;
+> =20
+> +		/*
+> +		 * If the transfer is larger than FIFO_DEPTH, spin until space
+> +		 * is made in the RX FIFO to avoid losing data to RX overflows
+> +		 */
+> +		while (mchp_corespi_read(spi, REG_STATUS) & STATUS_RXFIFO_FULL)
+> +			;
+> +
+
+So, this is the transmit side but we're polling the RX FIFO and not
+doing anything to clear it?  I see that the FIFO reads are driven from
+interrupt context.  If I had to guess I'd say that there's latency in
+the interrupt being delivered (possibly to a different CPU) and when the
+transfer is being driven by the TX side it's stuffing data into the TX
+FIFO faster than interrupts are being delivered (the TX side just seems
+to busy wait on there being space in the FIFO which can't be good for
+slower speeds...) so the TX and RX sides of the transfer get out of sync.
+
+Given that AFAICT the controller has to RX all the time I suspect you
+want to move the RX processing out of interrupt context into the main
+_transfer_one() function and busy wait for that too, or push the TX side
+into the interrupt handler (which at first glance looks simpler).
+Either way the two directions will be driven from the same place and so
+not get out of sync.
+
+--x78JH1Kc4sb87YXt
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmeGvpkACgkQJNaLcl1U
+h9B7hQf/UIVH5UNFPT2b35lXAFt6B4oUtXc0b6v9C0YQKfHaCZ5VjDt0y98xeb7/
+0+/+R2H4nJ3+0QMKwg98rJsA+GBQKyaUz+hAxI0O/uAigphZauge7WgiV2DnZmOv
+5uzDDkuKDVLyKZGuHObBvXkht6Oc1pObFzjkyCf4kiFLiMLUNA6CohKNZAH8CaIc
+OyyhD9y0o/YmArlNvkLOJGNll5BuLavTKDWqJyiHb6IQtSYZfk/MzZNFjYKu8QA3
+kaMNzUbO42hyRO11Rli3VBAkOzb+yBnDIuI4tpM+JuMZ5W4lOF0lrZql/rVp1wrv
+kAaF10f0JVTEqm+IADzPUiV/47kdiA==
+=HVpn
+-----END PGP SIGNATURE-----
+
+--x78JH1Kc4sb87YXt--
 
