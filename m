@@ -1,182 +1,224 @@
-Return-Path: <stable+bounces-108600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7194AA10933
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 15:25:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55874A1093D
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 15:27:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D43D07A319D
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 14:25:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB6287A4CD4
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 14:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B400114A4DD;
-	Tue, 14 Jan 2025 14:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53DA7145A0F;
+	Tue, 14 Jan 2025 14:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NR8JTW05"
+	dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b="qknHJVHa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from YT5PR01CU002.outbound.protection.outlook.com (mail-canadacentralazon11021111.outbound.protection.outlook.com [40.107.192.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AA0146A7B
-	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 14:25:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736864723; cv=none; b=XqygdnQhgw4uaY66oHxnjq4qoK/eWcfEF7hmRcm2yj9Z2jPbenK7mXHMv2q/i7hytgKztkWIy26xpkUJ6R4eWlBBxaT02IDgIGuSXBSvWvdAoB1AS6e0I1vnJ1k1PSXH8Zq9sycs4WqaIxhEqJcbVUC0V8r7BezBNw6vbD/6Vfs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736864723; c=relaxed/simple;
-	bh=3mZhZEpsVXvbK8kRBz620qSwc7gVFgby48NhPbc9xTE=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=lvmYVUPBD/44tXMQAu8T3e0vSjw7VLZ1Mvzzgrq1zZqJ+Zwf2rxjZScJoTF7GFo3h/cRGBmyOQmozOnMhm/KevGolp7CzO4zY+qEpuN9Rv6GcniTszuhU+qJHTWwwSvl6Rlw8Y2S5vsErdh+R1E5G18CvdYRmSR++OzefbZpx+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kyletso.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NR8JTW05; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kyletso.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2163c2f32fdso157410765ad.2
-        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 06:25:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736864721; x=1737469521; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=tSu4xp3Y6HOXZlKWn+sVDCe4JiYP/94emAGWE5skEzM=;
-        b=NR8JTW05iJ6lrIEmxwScGvR/9qBw6g5uNX8WthKPKwnXdCwrtEo21VKpc6eiOmCZMJ
-         JrR/szaLNa0lq0nQfyjCC9Qld7Q/XvN2TtRpplaDzHF5dcWkv0o5wrmwdI/zKPyrt7mh
-         qkkFegckV/hnVK78shNZsDsisxwGIjhmIYEt5jWR+uxOWgt8Qr4FwGINph+CKwAb334P
-         VtGXj2PCn6ftrsrZ5YPmN/BQ0tOu9ieJDIgT/mganbV0/rg2qnqkWBwQeWjZUqrRR6IJ
-         3XXnnU14LMcT6JnFbDZYwYsCawKX5mfdMELLcjdNAz39pl7rSauZWFuur9txgf8yCklX
-         P0lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736864721; x=1737469521;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tSu4xp3Y6HOXZlKWn+sVDCe4JiYP/94emAGWE5skEzM=;
-        b=oAvjQ5e68VTIpuWJDBeid7xp0eorut9zN/OyMxFMbz/aHSXEzJzCoAPAKIbIwmmo0D
-         keeL5uREC920XfAGjlknQaEBoZ4vWxbmU88kHtynXkmQyyUGl0pscjb+VZpIyMESdZEd
-         0iAvEmpo5cyzzM0c+oYCJ3OwdjYfvJ9uV0EFlsYQaVpjkt/pNYqMoVvyAGtMMwTslmlc
-         WJLGNznhhZZule28I4uQQWC4BashOUKc4SNsMg9b602NM3mKkBVI9FBIaYecb+qj0Xti
-         AgKUywBx7om3gRE6BGgP5rvgEKz3oOiNN4w3RPwMSOZY0wuBURra8ruC4FSx5407Fser
-         wb7g==
-X-Forwarded-Encrypted: i=1; AJvYcCXz5GxgkwXOMCdZewDyjR4b3kzJ3QJFCcGMmw5wbYvtWMEURneKlY8Yffe8wRvaWBJ6GEcpTkw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkVpDIDOyDMbMxuFkKw6ZGo9s/5M2/vdWOUXi/XWhkmvSdjYAT
-	EwwpmAuH5WdnNIYwvRiV3E1LjyeW/PJ7k4U6de6kdHElHgDGgzRC+nHIwcv7oykiVBONhe0LXbJ
-	ahyMZoQ==
-X-Google-Smtp-Source: AGHT+IGzEszmDZk4FhEWLOcRg1abwedqDueuOVK7MIK2k4wjynrs8GaVu9upTo3mx4cp9fIselYBFA62pIWo
-X-Received: from plbmo13.prod.google.com ([2002:a17:903:a8d:b0:216:31f0:27de])
- (user=kyletso job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c94f:b0:216:25a2:2ebe
- with SMTP id d9443c01a7336-21a83f573d7mr374935705ad.19.1736864720690; Tue, 14
- Jan 2025 06:25:20 -0800 (PST)
-Date: Tue, 14 Jan 2025 22:24:35 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3523623244C;
+	Tue, 14 Jan 2025 14:27:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.192.111
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736864836; cv=fail; b=EN6fTQ9qSY4Vvqp0Nbyin4yYfbaHFG+CIe3efxy+weMSXddTeaAYpM/S6SprAD9CjRXh/bCWFjFsmTfbuTpK/htD3LBL4FD8WvgWmggwHYd99reUbBL4rSM+MdfQcUiZLVS7ZtIIyfQstNHF1OY49IkmcsRRNfAjB7vyc6zVAHE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736864836; c=relaxed/simple;
+	bh=CZauzPepOAwA+bsEFyQZktVT7y0BZbYWkCXeqX6u0Qs=;
+	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=sF1Xtb6pzLF3qrW8kcIR5iuA5fIT3fdyCBTrWHTkkAUhpAFl7sypozLMWGDnF5KgabftnFRtSRYfAz4WSILSQWMKLgwEa8wo43/BCYjGmcAw8QlT21k5L+/lphJT5XS7OrCn0bHp7IWwH4vx3bbUBFCqqEH2g6wXzZsODzqnGl8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com; spf=pass smtp.mailfrom=efficios.com; dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b=qknHJVHa; arc=fail smtp.client-ip=40.107.192.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=efficios.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LaTL3DsZc18QtKitS/XSfJPNkNX5YQ+AE8Q/5iQ+9zFMreqlwLeW9I35ZicGakDr222ZM5wbaRHDak39kVvdaQpqomI1NKyJWG6PMz0G96F/BY3R1v63qzkw7gVhisNob72/TxSgaht0EKSAhx2jWKfvsECAcfP6YOlI7BD5MWtvKKmJM9P+UM1ReehnQnc/3crwP9KKFGPypzADu5MCWniz8eoNKyKiDZNihH8qSmIKngtgl93Z3BKzC2fTWF/qpi3gMVzBmGdmnyVXZE7+r36+UH9m8w0rFKIG8K01sgJg/Fhd4dqHzc50C90jBJSET0h2EcKgAOBztPVf3Svo1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1c2WdGaPGTdIBK7tkwt/E5fvFcnmF0Zw9KijNoYQUsU=;
+ b=pBqy17yeTiZ7QHBzXOOMGpjmxelUqZxmBcIxvBFHdXTufNmhoF+dY7AFslRYFNuJI89SpU3A68mqi3T6cO16HPD1Jbl2Kyjxsh+Y0/sjQ2ZCczZA3fA4oTkB4ZHjHic9pzTPkOTjPVNZJkd1O10UMpihlkSV5iIyVL0x91rE/smYj7ms/4/tcvRkzOdrrL7niRuG/IqT2wJKCto2TBIarXmcV1wccxAaZo+W1RZK0RHBeRvDendHgsVB1cI97amG4Ga/ExwyPucwmsO2MbfRu49tiXp+BpOtbf6OVN5XbOuApxSqzIEWwDUYecu2aLXQ90U4Zvm/XY2LnNMvlw0uIQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
+ dkim=pass header.d=efficios.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1c2WdGaPGTdIBK7tkwt/E5fvFcnmF0Zw9KijNoYQUsU=;
+ b=qknHJVHaho/G6SOXkzSUpWOUOBMVVKiOUHqRJCYhzKCfEl6whJzVXOf+VjYxE30M7YPKUxctaFHA2xKFb5rsnck+cxXoRliSMK93olrGat6LxLNC58dZ0Q6der0h/F+D3SOwUEox9cLi05aruJcUQu5gdhowE79+dpzFBJfBHfrqUShXQcZ0K9Uo4X0fQhjriT1++8pS0pL0bsCUkxTNGWe1Tiihh0ckSIW0kiHqHevELiXwgCqgv8h7W5oFbCZOLybtyEkFiadR5RnpnxX/qIYZNMH5/QABxi62evlrYT4Fx293aJiX1ILYhhAB00bO/aXDOsFVyvSdCe0/1dhZjg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=efficios.com;
+Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:be::5)
+ by TO1PPF55F13247B.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b08::646) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.13; Tue, 14 Jan
+ 2025 14:27:11 +0000
+Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::50f1:2e3f:a5dd:5b4]) by YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::50f1:2e3f:a5dd:5b4%4]) with mapi id 15.20.8356.010; Tue, 14 Jan 2025
+ 14:27:11 +0000
+Message-ID: <fbfe56d9-863b-4bf4-868c-bc64e0d3e93a@efficios.com>
+Date: Tue, 14 Jan 2025 09:27:10 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests/rseq: Fix rseq for cases without glibc support
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: Shuah Khan <skhan@linuxfoundation.org>,
+ Raghavendra Rao Ananta <rananta@google.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+References: <20241210224435.15206-1-rananta@google.com>
+ <15339541-8912-4a1f-b5ca-26dd825dfb88@linuxfoundation.org>
+ <291b5c9a-af51-4b7a-91de-8408a33f8390@efficios.com>
+Content-Language: en-US
+In-Reply-To: <291b5c9a-af51-4b7a-91de-8408a33f8390@efficios.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YQBP288CA0004.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:c01:6a::17) To YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:be::5)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.47.1.688.g23fc6f90ad-goog
-Message-ID: <20250114142435.2093857-1-kyletso@google.com>
-Subject: [PATCH v1] usb: typec: tcpci: Prevent Sink disconnection before
- vPpsShutdown in SPR PPS
-From: Kyle Tso <kyletso@google.com>
-To: heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org, 
-	andre.draszik@linaro.org, rdbabiera@google.com, m.felsch@pengutronix.de, 
-	xu.yang_2@nxp.com, u.kleine-koenig@baylibre.com, emanuele.ghidoli@toradex.com, 
-	badhri@google.com, amitsd@google.com
-Cc: linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	Kyle Tso <kyletso@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: YT2PR01MB9175:EE_|TO1PPF55F13247B:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1e356723-7f95-4dd4-d78a-08dd34a78891
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Uk5pUmRLUE9Nd2JKWlh1YjBKVFBrTThOeXprMUhOR1VlVk5ZRWwzMmh5N3d1?=
+ =?utf-8?B?RTJOTUc2WndQY1lOUWZUM1M0TG0rNjl4aFNrWHFlck1BYkExY3RLTmN1amtM?=
+ =?utf-8?B?MnpvaW9FdTFWYWRPTkxyOEluZDZrZnRNYjlXU240TlZIcGh3U1FiQkJsblBw?=
+ =?utf-8?B?QjQrd2VtWkpWQXJMR1ZvMDFDbFN6L0ZNSjQvV3pGTVR5Rm8wNUUvU0pqZDA0?=
+ =?utf-8?B?TTN1SDV2R28weDFhL1pabjdET3pXSWhqb3FYa2RGVU1keGJQc0dkeGpPYmVT?=
+ =?utf-8?B?eVBwQy9FblVHc2Exd1A4TkhpMmdsdk5MRlRscWtXS2orSU8yc2ZELzdRZFZa?=
+ =?utf-8?B?UXQ3NDQybVNTa1FBdjl6Rjc1UktlNU84cjBQaVBmd1cvRkF4WVUvejd3TXNV?=
+ =?utf-8?B?eEJLMFJzNGdrMEdaOVhTV2s1bjhkUTBSc2MvS2RYNU5DbU54T0ZPdzFRY01V?=
+ =?utf-8?B?Uk5LSnNOWGp6ZkpGTUQwV082eG9TanNZQjYvVytGWUdZSi84RDFhQUxETnNO?=
+ =?utf-8?B?SUFqdGpreGVrdTQyRHpJWk9NNHFUMWZTa1B0NXRlS2FvMzJJYzdVbFFaY0xR?=
+ =?utf-8?B?cGpqczU0ek1ONEVMaWNCZENxMUZYSXlDcXZXQ08vK3I2OEJHZVhMaWpnb3pi?=
+ =?utf-8?B?aVZXVkRZVklzaithZURzMFF4UGJ0U1IwazF0VC9JN0hSc21SdmlZckl6OG5H?=
+ =?utf-8?B?S2kyWWhaSFoyblJhRlUvVkd4NmltcExrL1hpYXdMaTZNekM5TDZFTE8vVjc4?=
+ =?utf-8?B?dmVkQ09qbU9YUGgyZmNlRzBHaWhVRlhzU1NVZ3ZnVjR6MnpQcDhvckJxYzlr?=
+ =?utf-8?B?VGhVK01Fd2Q3cmkvOWtDRHd2YTNxRFBRc08wdnA2MFJ2b0hFYkt6QXVyN2d4?=
+ =?utf-8?B?WlhsOHdpSWFwb24zVWdldWxYM2tGcnBLZzRkNktUUzdCYWJpenRzdUc2UFB3?=
+ =?utf-8?B?anA1L3NZVjdyaktxQUM1KytJSE1MWTlyRnZBME03MDlOZkUvdTFMTTR4ejkv?=
+ =?utf-8?B?NVZTVjByV1VLV2lyeC9HallBOEJhS1MwV0xVNENFVTc4TkRTNWZpY2dZSEdl?=
+ =?utf-8?B?bldOOHhxTzNyTUpDY2tOQnJPWXR4cEJ3ZHRtbm1mK0dhTytsejRJRVJIYmd1?=
+ =?utf-8?B?ZVhEQUdNU0pHSVhOM1BCVXgvMW13Y1ZBYVF4aDVhalhxdUlaY2p1cU9mQlFG?=
+ =?utf-8?B?alU4Wnp4VVpPQTQ2K3QvKzJSdCtaT2MyM3hnNlFQMDI4NEpHM09CcVRseGlB?=
+ =?utf-8?B?Z09wUFRadWtRUzFQVGxrNmNhUXJpZGZjU3pzK0R6OUI3VzlYM2Y1SWdyRFB2?=
+ =?utf-8?B?SkFUY1RYRElrcmtZMmIzUDd4Q0hRMEZxZHJxb0t3b0FOcDRRVnFZQnNiOEQ2?=
+ =?utf-8?B?ZGNnYUFoS3NOdnZIemE4OElJa2FCdkUrUlNvRnV3bmFzU0oxRnlJNmcxeFA1?=
+ =?utf-8?B?VmEyRVJnTkJzMVhXN0JDSVdNaEtNb3c4KzFxTWJNU0JYYzNueXJTUytaK3Vy?=
+ =?utf-8?B?RUxkTTFDc21xSndDS1hySjYwMlBsMFdDYkVkVEQ2U0JuU0pKMm9VZWQ1Ynhw?=
+ =?utf-8?B?c1dqRWhIYWJGWW5uenVYc0dQM2JOTW1mYW5qRzRBNjY3NVo0ZHBGMG5PTWpL?=
+ =?utf-8?B?OWdNaGRKYkxTL3p5UlBKb2tmeHk5QzRBU2oydFg2dVdtNWNTTGE4N0dlbmFq?=
+ =?utf-8?B?WmJ6YUMvM0hnYnFTMHlYTnN0SDJBdlFsVTM4NC93RjR1bEcvYnpZTEtMaTdx?=
+ =?utf-8?Q?QnVoy5EEO0a4leUsA41wuspIC6dN4IC9ZNfLxWi?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TE9VZldzSE1tZjRrOHJRN2NERjRIUE55RkUrK3llS20rNFI1OVh2OXRULzk2?=
+ =?utf-8?B?VytZSnBOQVJsU1pJaHlNZDFpQ0xpTnpObzhGbk81NGloNU0rQmtOR0R6WCtw?=
+ =?utf-8?B?dENpK1JjVmdIa0pIN21xK3NQZi8wOEtpbzB3ak1RdnliOTdYT25lT3daRUJX?=
+ =?utf-8?B?Y1YwTnZ0RS9ZRmVGanV1REFkczQxNU1GTE10WjMwMit4T09laWdHYzR2TVh5?=
+ =?utf-8?B?dkJyVzZ1ZDJlK2hKd3BNYTZ4VStnd2xiRDh1MDhmVlRVN2x1Q1EwRzdoTnlu?=
+ =?utf-8?B?T0lRbkVVakU0Y29LNHVwb2xQY2JXb0NuaG5qWDJ2U05EMXJldDVJUldWaWc1?=
+ =?utf-8?B?OElncXNpZUEwdFZwWEw4SUEwdUNaNHhGR1pjSXo1eDZzVVowdXBMM0JiWTYw?=
+ =?utf-8?B?UVk5QjVoMFVlN0k3VFc1TTdtZmtSaHg3YUNWaUU3SkI3QzRMQzZycHUvTEJt?=
+ =?utf-8?B?bXJhQ2NSRWRTcmMzTm9xb3R0aVlFdkdIR1lOL3FscDhlNFN3NE1uRlh6YUNY?=
+ =?utf-8?B?c3duMytSRit5Ky9vbmJCQXJtVFNmUUh0ei9IYTByRG50a2xVQ3ozS05QaUND?=
+ =?utf-8?B?WnNISm1xeS9paitFRWFaNFY2K2o1YmNxWE5zekVPWjkrcjZXYzI0SlBNLzJB?=
+ =?utf-8?B?YXpmTkdPMXo1b1RqaEh1cWdZb3Bvc3dGYll3SmxzejhKQ3lBNmN2SEJLTjEv?=
+ =?utf-8?B?ZkxCdHBXS3NGTWR2SC9zSFhKbFZkbVFiVGRSRkNmcnZralN6NlUrVC9jamF2?=
+ =?utf-8?B?R2hkbzFydWNJcVJER25PK2FHMGlUbmh0S0ZHb0tWUnFHNHM2K3FYejhvd285?=
+ =?utf-8?B?bnRQNVBqQVhwNkNOVFRCb0l0N01qRU5VWDRFNS9RVW82MFp4dDNrUTdtcENK?=
+ =?utf-8?B?ZGo4a2RrRmRvamtqRWdLYmFKWG1LY05oMTVQQmNENkNicWFWYnN0SHpGOWlw?=
+ =?utf-8?B?RDJ6WSsrWHIydjZEK3cxbVBvUmJYLzdYMTBWTHg3R083bm9KUzVzRG9HRjRG?=
+ =?utf-8?B?eEtXY01vOS9sR2NlNmF6aDlOaDFnbjZmZHQvc2w0RWc1UThHODNQemdHTFhn?=
+ =?utf-8?B?bjdTeUFxdjFUbkZmQjRFbmlMek0yb1hzRUlqQWlVMlRnRkh3TWRYOWhNU3ho?=
+ =?utf-8?B?QW9KL0pBZHRJRDhxeXhQMHZsdTJldmxLRlVZTVpUcVNyV2dMeEw5SmpyNFJB?=
+ =?utf-8?B?eXc0MmFpazFabnE5bUNOWmFjTGlJMTk4N3ZIK3hHa2RhdEJyNjdsV1pHN3k1?=
+ =?utf-8?B?a0dNMUhTUTlhMzRwZFEwU0htY01MUGtQQ0RzT2xxUTMxVHd5dm9JQlJtQnI1?=
+ =?utf-8?B?Q3V3SEcvRlFIMGs3bjJiU3pJd1lyazh4UWxGRUNCaXB1NkNzc2tiSW9zWTJm?=
+ =?utf-8?B?ci9tcVBkdWdnb1hrUGx1MG9NWHB2UjVUM1pwVTVad1lBcytkM0lvTDV5c253?=
+ =?utf-8?B?S3FiT0ljSU9HMUdReFoxRVRMSVZOZkI5S0pvQUdxRGdpcEwxZXJtQURKYmJE?=
+ =?utf-8?B?SW1iMXZhN3ZIK1o1dWVvZFBvUWdqVVJNQ2IrLzd2K09kSlNFOXRpOWxCRGVJ?=
+ =?utf-8?B?eVZKdXV4Nk8rRlB5OUYzNXN4QmhGVUFoN0xFQlUwNE1ENTBjMFJ3dTl3b1Ru?=
+ =?utf-8?B?Y3MzaVl3cXV4NWMrREtsSURsWkVHbStUeUtoYkxGak9WYnNZMXhVdjBSWUdp?=
+ =?utf-8?B?dGVZZmZ4a2FTa2dDL0pWZVl0RkExN2h1dmpLd1Jhb1FXYUNnRHA4YUc0QmZ3?=
+ =?utf-8?B?Q3IxYnIyM3YwekhsZGd1ZGdJTDAyTVdvSEdpQWNRUEdVMFF5QnRVYlNqVDZ6?=
+ =?utf-8?B?OHZ5emVjN0wraUVsK1dDdFBXUXZnZjVvdjRFME96SEVNMDJkaTJLTU1OMzZl?=
+ =?utf-8?B?QmtjQkF0VU13Y09EeWtTMUV6aFN4aGgvMlBTL2RYOVhzS3Q5ODFuRGRmNEc5?=
+ =?utf-8?B?eEMzWDRtLzY5bjduOWZXc2lTUmdGS0dlVnJqamN3VnJMMS9PTjFSSzFaR2ZV?=
+ =?utf-8?B?SVZNNXEwQ3hGc0IvSlh4OGR6Q2xJQUVKdUFxN01vQWlYeEQ4cU8rSDZnbVFw?=
+ =?utf-8?B?R3NYUUtLQkVVT0RIS1lVa2c2aXRkV3RMT0xEZXJUbGdDYnN6N3VpVFRmck90?=
+ =?utf-8?B?ZkRuOXBsMFpDV0xRbnZFWjduaWJNVFR2R0psTmxuT05YS2ovdGsxZVRhYnFH?=
+ =?utf-8?Q?+VzoWsNIf0/uhUXih/oPfoY=3D?=
+X-OriginatorOrg: efficios.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e356723-7f95-4dd4-d78a-08dd34a78891
+X-MS-Exchange-CrossTenant-AuthSource: YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2025 14:27:11.3273
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SHw6Uh7MNqnXvu6LuNRbI2z1jvC9Mjv8nXrsIKSyf98K18DucQSt738BHA9p+o72vNNMQH7OiACU1GSi4JI3pfn6bASTm7PoQpgRrWvKgsw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TO1PPF55F13247B
 
-The Source can drop its output voltage to the minimum of the requested
-PPS APDO voltage range when it is in Current Limit Mode. If this voltage
-falls within the range of vPpsShutdown, the Source initiates a Hard
-Reset and discharges Vbus. However, currently the Sink may disconnect
-before the voltage reaches vPpsShutdown, leading to unexpected behavior.
+On 2025-01-14 09:07, Mathieu Desnoyers wrote:
+> On 2025-01-13 18:06, Shuah Khan wrote:
+>> On 12/10/24 15:44, Raghavendra Rao Ananta wrote:
+>>> Currently the rseq constructor, rseq_init(), assumes that glibc always
+>>> has the support for rseq symbols (__rseq_size for instance). However,
+>>> glibc supports rseq from version 2.35 onwards. As a result, for the
+>>> systems that run glibc less than 2.35, the global rseq_size remains
+>>> initialized to -1U. When a thread then tries to register for rseq,
+>>> get_rseq_min_alloc_size() would end up returning -1U, which is
+>>> incorrect. Hence, initialize rseq_size for the cases where glibc doesn't
+>>> have the support for rseq symbols.
+>>>
+>>> Cc: stable@vger.kernel.org
+>>> Fixes: 73a4f5a704a2 ("selftests/rseq: Fix mm_cid test failure")
+>>> Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
+>>> ---
+>>
+>> Applied to linux_kselftest next for Linux 6.14-rc1 after fixing the
+>> commit if for Fixes tag
+> 
+> Hi Shuah,
+> 
+> I did not review nor ack this patch. I need to review it carefully
+> to make sure it does not break anything else moving forward.
+> 
+> Please wait before merging.
 
-Prevent premature disconnection by setting the Sink's disconnect
-threshold to the minimum vPpsShutdown value. Additionally, consider the
-voltage drop due to IR drop when calculating the appropriate threshold.
-This ensures a robust and reliable interaction between the Source and
-Sink during SPR PPS Current Limit Mode operation.
+I am preparing an alternative fix which keeps the selftests
+code in sync with librseq.
 
-Fixes: 4288debeaa4e ("usb: typec: tcpci: Fix up sink disconnect thresholds for PD")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kyle Tso <kyletso@google.com>
----
- drivers/usb/typec/tcpm/tcpci.c | 13 +++++++++----
- drivers/usb/typec/tcpm/tcpm.c  |  8 +++++---
- include/linux/usb/tcpm.h       |  3 ++-
- 3 files changed, 16 insertions(+), 8 deletions(-)
+Thanks,
 
-diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
-index 48762508cc86..19ab6647af70 100644
---- a/drivers/usb/typec/tcpm/tcpci.c
-+++ b/drivers/usb/typec/tcpm/tcpci.c
-@@ -27,6 +27,7 @@
- #define	VPPS_NEW_MIN_PERCENT			95
- #define	VPPS_VALID_MIN_MV			100
- #define	VSINKDISCONNECT_PD_MIN_PERCENT		90
-+#define	VPPS_SHUTDOWN_MIN_PERCENT		85
- 
- struct tcpci {
- 	struct device *dev;
-@@ -366,7 +367,8 @@ static int tcpci_enable_auto_vbus_discharge(struct tcpc_dev *dev, bool enable)
- }
- 
- static int tcpci_set_auto_vbus_discharge_threshold(struct tcpc_dev *dev, enum typec_pwr_opmode mode,
--						   bool pps_active, u32 requested_vbus_voltage_mv)
-+						   bool pps_active, u32 requested_vbus_voltage_mv,
-+						   u32 apdo_min_voltage_mv)
- {
- 	struct tcpci *tcpci = tcpc_to_tcpci(dev);
- 	unsigned int pwr_ctrl, threshold = 0;
-@@ -388,9 +390,12 @@ static int tcpci_set_auto_vbus_discharge_threshold(struct tcpc_dev *dev, enum ty
- 		threshold = AUTO_DISCHARGE_DEFAULT_THRESHOLD_MV;
- 	} else if (mode == TYPEC_PWR_MODE_PD) {
- 		if (pps_active)
--			threshold = ((VPPS_NEW_MIN_PERCENT * requested_vbus_voltage_mv / 100) -
--				     VSINKPD_MIN_IR_DROP_MV - VPPS_VALID_MIN_MV) *
--				     VSINKDISCONNECT_PD_MIN_PERCENT / 100;
-+			/*
-+			 * To prevent disconnect when the source is in Current Limit Mode.
-+			 * Set the threshold to the lowest possible voltage vPpsShutdown (min)
-+			 */
-+			threshold = VPPS_SHUTDOWN_MIN_PERCENT * apdo_min_voltage_mv / 100 -
-+				    VSINKPD_MIN_IR_DROP_MV;
- 		else
- 			threshold = ((VSRC_NEW_MIN_PERCENT * requested_vbus_voltage_mv / 100) -
- 				     VSINKPD_MIN_IR_DROP_MV - VSRC_VALID_MIN_MV) *
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 460dbde9fe22..e4b85a09c3ae 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -2973,10 +2973,12 @@ static int tcpm_set_auto_vbus_discharge_threshold(struct tcpm_port *port,
- 		return 0;
- 
- 	ret = port->tcpc->set_auto_vbus_discharge_threshold(port->tcpc, mode, pps_active,
--							    requested_vbus_voltage);
-+							    requested_vbus_voltage,
-+							    port->pps_data.min_volt);
- 	tcpm_log_force(port,
--		       "set_auto_vbus_discharge_threshold mode:%d pps_active:%c vbus:%u ret:%d",
--		       mode, pps_active ? 'y' : 'n', requested_vbus_voltage, ret);
-+		       "set_auto_vbus_discharge_threshold mode:%d pps_active:%c vbus:%u pps_apdo_min_volt:%u ret:%d",
-+		       mode, pps_active ? 'y' : 'n', requested_vbus_voltage,
-+		       port->pps_data.min_volt, ret);
- 
- 	return ret;
- }
-diff --git a/include/linux/usb/tcpm.h b/include/linux/usb/tcpm.h
-index 061da9546a81..b22e659f81ba 100644
---- a/include/linux/usb/tcpm.h
-+++ b/include/linux/usb/tcpm.h
-@@ -163,7 +163,8 @@ struct tcpc_dev {
- 	void (*frs_sourcing_vbus)(struct tcpc_dev *dev);
- 	int (*enable_auto_vbus_discharge)(struct tcpc_dev *dev, bool enable);
- 	int (*set_auto_vbus_discharge_threshold)(struct tcpc_dev *dev, enum typec_pwr_opmode mode,
--						 bool pps_active, u32 requested_vbus_voltage);
-+						 bool pps_active, u32 requested_vbus_voltage,
-+						 u32 pps_apdo_min_voltage);
- 	bool (*is_vbus_vsafe0v)(struct tcpc_dev *dev);
- 	void (*set_partner_usb_comm_capable)(struct tcpc_dev *dev, bool enable);
- 	void (*check_contaminant)(struct tcpc_dev *dev);
+Mathieu
+
+> 
+> Thanks,
+> 
+> Mathieu
+> 
+>>
+>> thanks,
+>> -- Shuah
+> 
+
 -- 
-2.47.1.688.g23fc6f90ad-goog
+Mathieu Desnoyers
+EfficiOS Inc.
+https://www.efficios.com
 
 
