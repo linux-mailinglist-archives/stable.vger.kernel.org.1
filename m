@@ -1,79 +1,52 @@
-Return-Path: <stable+bounces-108638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04DC5A11023
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 19:30:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55E8CA11075
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 19:49:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEB823A28F2
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 18:30:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F331E3A55C9
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 18:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44611FC0EF;
-	Tue, 14 Jan 2025 18:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF751FBEBD;
+	Tue, 14 Jan 2025 18:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kMJaW8yP"
+	dkim=pass (2048-bit key) header.d=o2.pl header.i=@o2.pl header.b="1vRBYHlI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77221FA8DB
-	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 18:30:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FAB1FA8CF
+	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 18:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736879436; cv=none; b=o/DT/LrtW+IhEs7ISIqBaKWgUPeK+Xov31pAJT8gahJCSfVImaQSsojT85Ernp3zbUubUE0XZABn85ZoXfm7cXZK+LZ5LGzsmqOFWfgwCYIClM0HZeMaskzYG4auS17zV+9coGvxQZ5qJmPRmzE6bmlNzBkNefhcc9oEKt1NB7g=
+	t=1736880571; cv=none; b=YQdxtHQIXrQPkbGvgkUUvg4/io0cRMFk098JQtmkP8PlqptLOv5tzmtDV3ew2N/8tqLsGypJxtRpgAMIrI42WnVgwNHnqBRiyOa0g71TP2l6ZcuG56bIQO3yTvFAIZR9temvY/gHI7FP5J32hlZbwQ0gLe88tnwzWgNK/5WXFNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736879436; c=relaxed/simple;
-	bh=iPnisaLwyn4uRPEB7WDrZKm+oOwdziGvVmNWYObjYxo=;
+	s=arc-20240116; t=1736880571; c=relaxed/simple;
+	bh=Ao/qbCvPFAimw5H7HrudebGMal2oKzqP4DCd7hDejYA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=u92BiGGpcDIhNg1JBhB9mqx6y+MGp761itWs1c+ufzGqVi8+yVbE2fKhl3SGny8hMWIydjPaw+uSKVtpJcBRMykI3YlrMDfKFaH47wbIhqWUOahKYREoLBm5jPNzqDE5ylvSNzF+MS4TEtyYHSf72xSpfYanfm2XoX0uWXYrWWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kMJaW8yP; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4363ae65100so61651825e9.0
-        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 10:30:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736879433; x=1737484233; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xWXRGYqIYfAFCWYGR5cc8ElnhXv1e/ZNViY5lKk/9zc=;
-        b=kMJaW8yPRv8X4zaUbVBHAP5OQmUfkdnaFTyP7w0M5dDIwBr0GsjckEDDIIHo9QxJBG
-         s0wqC4ofd0q7jDhobybdUjfMc0edDKl3x44coof7CsyDUT+ZzJ58r1Csl884aU6TLZ5o
-         C2qln8ecBjXRFzyJVNSNlrqMECMh9GV9Q1/t8MjdLFtaPKuSecnifjefnBrf+EgU5jgK
-         bq4JZV/JSmoz4N9zGHEkMr3ivTOCwoxK5d/O3+EOad6F+LSjtUj0Skzoql62MD5NlQ+3
-         CnLzlP0kArjypX5MbfOM414hpNBDnCxcuMeypX8QFfW7knJquIt4aE0LMzzs3Nid3zZQ
-         Ky4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736879433; x=1737484233;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xWXRGYqIYfAFCWYGR5cc8ElnhXv1e/ZNViY5lKk/9zc=;
-        b=qhNeOGdiZHAGD73BI2xuwGO2r1/fBG9WTpt4sOAzQgqHz3KvedHWCaozB/8vM0mJrn
-         QxqksVoWNqHeKPyAD71/gVkrRKc7AQEd2dt1LWPVi9WTkv5xWX1ed45Ut/GwdGA9Le0B
-         7gHNMf+CaJ71PMfOwoi7mAxOrgdYe4M3rp/2O/mycfMn4yQh9Y7DPo10pDN/Ow2pQLmp
-         MZUmdbslBwxt9lkCH3H0Hsot+jESBd1qi6UoF2vSoPB0y6Xk3g5Zy5B6FoaMarsz39Vg
-         QldksLNEbIskMNNXZ/kfujaBJa3ZPIXkS0+9Hyi7+XVERRtrhs0lvQ182gADaE1YIsBm
-         0z1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU/rE39iAAOtHouVN/C1gR1HT/D2yV8j0eAROiaKth5qUoaVqzVQTLjoVBWLwXVqzzzmlF7xSo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywc20rcA3LRPt9vcMG0B6vk5Z3m8kQ2eZiZ+mKjhT6Yn34k9xF8
-	UhaiLF0dYWJWNBaX7d9tLJzJBL1RIqLRgfwi9oPuaYbd+v9UrFZIHRh4ru2xz9o=
-X-Gm-Gg: ASbGncvFcubBVQsy7Oia7Sosq6ZgTJnmXm9pX89V0MiDtV1fRyUmN9ggxbON/FVWsot
-	GkoZ4drC0/jl1YVtGhQ8ZBjMpidk+7yfMwXwcSoF8+8u1HfwEwWIq5ngP3RnOea6wmunX0TGq9t
-	93OIJkqqEgjhZ/pZGqDneFG+9YiCmYAAEX9kTIxdU1khgLCazDrb/I3ORBYLTGX3feVSGsm10Hk
-	CFDFC/odM+aU/4LO06fP02jfn7n1rT/Q+YexbTV5LRZqDPqRBOkuRWPGEPCN7XoTTwX1KCpxFht
-	Qfh1u9bvWbAyFz0zNO84
-X-Google-Smtp-Source: AGHT+IEw8eHOips+m7BEL7pSk31Buqsgjf/0/YmNKYluWgMpJRjDHqhoLciiG4fuvyVDzaS9gJVk8A==
-X-Received: by 2002:a05:600c:46d2:b0:434:a1d3:a321 with SMTP id 5b1f17b1804b1-436e2679db4mr237168165e9.3.1736879433323;
-        Tue, 14 Jan 2025 10:30:33 -0800 (PST)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-436e2e8bea5sm217789155e9.31.2025.01.14.10.30.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Jan 2025 10:30:32 -0800 (PST)
-Message-ID: <90dd8d93-5653-47f1-8435-f03502e4c0cc@linaro.org>
-Date: Tue, 14 Jan 2025 19:30:31 +0100
+	 In-Reply-To:Content-Type; b=DPyp8bdRJa6bQ8stkpE1E00N22S0EnFhERT3naP1GZQCyKupviDnzHs8dO7dQh7TpSmCi4IipI7gA8QdEN14GAyoZRErvOjFruxpKWLpGCHe1z9KsXj6j5AwgUCoCw1YrtwF1wrNC0ZPRsoNqghC1bnHOV7oh+EnbPiyvH0+XFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (2048-bit key) header.d=o2.pl header.i=@o2.pl header.b=1vRBYHlI; arc=none smtp.client-ip=193.222.135.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
+Received: (wp-smtpd smtp.tlen.pl 31731 invoked from network); 14 Jan 2025 19:42:45 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=20241105;
+          t=1736880166; bh=B61v/e0Xw2LpP12l67OGsE6kgXCp+YEwnnxVBpRXJPk=;
+          h=Subject:To:Cc:From;
+          b=1vRBYHlI2idMYe1/mcJVRMK2eN8Sg9N97rzAr7SvAVaw9ecoX3D9R/6d8v1bQcEg/
+           FlChH8Porj/skFhEh7OgM0YA14vEy8Dmse3WFhJ43YMCwuss+dR2izhOnTg8+Kdrmb
+           7Fizc3XyDvCZodIwSWXT0h9AEG5bkGZHIc10wd5Ue5n4PNuaQME6RirVRMcPWxaMW5
+           FEo9D2yp0EvwUf2tzedY4jhCISQvBcszyDQHHVOLthCDeDlywc9kD79QwfuAKYrq+k
+           WpouAkATAKHCgMw2FSAl31zHlrrvrVPa39dpWOQ5IgXLkMltfUOhBI0P9LXMs+1AoX
+           dcu6z0pLUYpyQ==
+Received: from apn-78-30-73-117.dynamic.gprs.plus.pl (HELO [192.168.1.22]) (mat.jonczyk@o2.pl@[78.30.73.117])
+          (envelope-sender <mat.jonczyk@o2.pl>)
+          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <jiaxun.yang@flygoat.com>; 14 Jan 2025 19:42:45 +0100
+Message-ID: <6946ae6b-814c-4916-9428-e823c83aed3d@o2.pl>
+Date: Tue, 14 Jan 2025 19:42:42 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,58 +54,117 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v2 3/5] thermal/drivers/mediatek/lvts: Disable low
- offset IRQ for minimum threshold
-To: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
- Lukasz Luba <lukasz.luba@arm.com>, Matthias Brugger
- <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Alexandre Mergnat <amergnat@baylibre.com>, Balsam CHIHI <bchihi@baylibre.com>
-Cc: kernel@collabora.com, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, Hsin-Te Yuan <yuanhsinte@chromium.org>,
- Chen-Yu Tsai <wenst@chromium.org>, =?UTF-8?Q?Bernhard_Rosenkr=C3=A4nzer?=
- <bero@baylibre.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+Subject: Re: [PATCH] MIPS: pci-legacy: Override pci_address_to_pio
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Arnd Bergmann <arnd@arndb.de>, Baoquan He <bhe@redhat.com>
+Cc: linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
-References: <20250113-mt8192-lvts-filtered-suspend-fix-v2-0-07a25200c7c6@collabora.com>
- <20250113-mt8192-lvts-filtered-suspend-fix-v2-3-07a25200c7c6@collabora.com>
-Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20250113-mt8192-lvts-filtered-suspend-fix-v2-3-07a25200c7c6@collabora.com>
+References: <20250114-malta-io-fixes-v1-1-74ef1dc402ec@flygoat.com>
+Content-Language: en-GB, pl
+From: =?UTF-8?Q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
+Autocrypt: addr=mat.jonczyk@o2.pl; keydata=
+ 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
+ TANkZ3QqXNX2
+In-Reply-To: <20250114-malta-io-fixes-v1-1-74ef1dc402ec@flygoat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-WP-MailID: 5976697cab9f0e7e5aa619c2cfc0033e
+X-WP-AV: skaner antywirusowy Poczty o2
+X-WP-SPAM: NO 0000000 [wSNE]                               
 
-On 13/01/2025 14:27, Nícolas F. R. A. Prado wrote:
-> In order to get working interrupts, a low offset value needs to be
-> configured. The minimum value for it is 20 Celsius, which is what is
-> configured when there's no lower thermal trip (ie the thermal core
-> passes -INT_MAX as low trip temperature). However, when the temperature
-> gets that low and fluctuates around that value it causes an interrupt
-> storm.
-
-Is it really about an irq storm or about having a temperature threshold 
-set close to the ambiant temperature. So leading to unnecessary wakeups 
-as there is need for mitigation ?
-
-> Prevent that interrupt storm by not enabling the low offset interrupt if
-> the low threshold is the minimum one.
-
-The case where the high threshold is the INT_MAX should be handled too. 
-The system may have configured a thermal zone without critical trip 
-points, so setting the next upper threshold will program the register 
-with INT_MAX. I guess it is an undefined behavior in this case, right ?
-
-
+W dniu 14.01.2025 o 19:11, Jiaxun Yang pisze:
+> pci-legacy systems are not using logic_pio to managed PIO
+> allocations, thus the generic pci_address_to_pio won't work
+> when PCI_IOBASE is defined.
+>
+> Override the function to use architecture implementation to
+> fix the problem.
+>
 > Cc: stable@vger.kernel.org
+> Fixes: 4bfb53e7d317 ("mips: add <asm-generic/io.h> including")
+> Reported-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+> Closes: https://lore.kernel.org/r/99f75c66-4c2d-45dc-a808-b5ba440c7551@app.fastmail.com/
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> ---
+> This is a quick fix for fixes tree and stable backporting.
+> In long term, we should get logic_pio accept fixed mapping,
+> and make PCI core code aware of platforms not using vmap
+> for PCI_IOBASE.
+> ---
+>   arch/mips/pci/pci-legacy.c | 8 ++++++++
+>   1 file changed, 8 insertions(+)
+>
+> diff --git a/arch/mips/pci/pci-legacy.c b/arch/mips/pci/pci-legacy.c
+> index ec2567f8efd83bff7b106cbbd9ec7a6de0308c4c..66898fd182dc1fec1d1e9ae4c908873d59777182 100644
+> --- a/arch/mips/pci/pci-legacy.c
+> +++ b/arch/mips/pci/pci-legacy.c
+> @@ -29,6 +29,14 @@ static LIST_HEAD(controllers);
+>   
+>   static int pci_initialized;
+>   
+> +unsigned long pci_address_to_pio(phys_addr_t address)
+> +{
+> +	if (address > IO_SPACE_LIMIT)
+> +		return (unsigned long)-1;
+> +
+> +	return (unsigned long) address;
+> +}
+> +
 
-[ ... ]
+Hello,
 
+Thank you for this patch, I'm testing it right now.
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+Shouldn't this be #ifndef-ed CONFIG_MACH_LOONGSON64 and perhaps 
+CONFIG_RALINK?
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Loongson64 explicitly calls logic_pio_register_range(), so seems not to 
+need this. Ralink also
+defined PCI_IOBASE a long time ago.
+
+Greetings,
+
+Mateusz
+
 
