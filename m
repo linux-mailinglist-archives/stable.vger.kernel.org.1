@@ -1,375 +1,271 @@
-Return-Path: <stable+bounces-108619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2437A10C0C
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:16:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E98DA10C34
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:24:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD3D11888D84
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 16:16:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 333701888D76
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 16:24:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE351D47CB;
-	Tue, 14 Jan 2025 16:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7EF189B8F;
+	Tue, 14 Jan 2025 16:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="n4Iot13w"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="YFxXolk8";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="UgGDKLwZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68EDB1C2DB2
-	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 16:16:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E9C13BAEE;
+	Tue, 14 Jan 2025 16:24:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736871381; cv=none; b=XlxXRXqfOKYdrFrlTgbl0hY1rECOHbJ5oOK5lP/WUtcVrGu0OhXs+0aEUr8aOjcR5ZrR29dxqhvIfQgdadmf4oiFxNQfAf5UqVszXFixAza8E6vMLPR3wit7mnhvEkE3J39veRmNM45t1IAiZVJrDRpJz6YFDog0j2YuEr1unes=
+	t=1736871886; cv=none; b=OXHZoHEA5/tbEmb6gDBt2V5XOLurKBrFmAkFbxZq8mTr6L9C4xkqxFfFGIf9AiTgiGXxHkE3ejEAVRIo6hdEvus8iz3JZKW/Fm72HEFTL+Mh590VZKoi/LjfTBl7IYce+WL3hV3MM29NWs++BfUQvaKdZHNrNDBr0fJw7htEzH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736871381; c=relaxed/simple;
-	bh=ZgJo3DP4+WvK7jYux/ACpbJ4dQQ/62qBd5xk+YfnP7A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=BrUMmuKZNVOhbwxU4j3gWiIoK1b6IPAjqn2VsfvvZrAJrtsNN8CvJpg5mQp/FA6FZnRdI4mRADUH96ThPFpaVlYs09P1e4ixfGfuknE3ZXiqP+TmfYgev1qfV6cJMf73gQC4/fYhomY8eDTWI9CtstmJKA+bLxrsGGClBSr63h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=n4Iot13w; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-aa6b4cc7270so806999666b.0
-        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 08:16:18 -0800 (PST)
+	s=arc-20240116; t=1736871886; c=relaxed/simple;
+	bh=SuwsoYXiDZ1MHrWojiZH+LqdP7OVMzraPxLdy8klUcY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=di4OPfAhakRduP31KrA7TMFQ7IDGrRHw0EnylBarShUl8yoXG2eRX60dWfBgjWSs5WF7ry3c3CHoFsyq/xQRWL7DsiIT6EA2JdIp1GQl2RkVgJVIC97ikj1VEyLaZZRDr4y7uAbS4QGd5ysIsVvE9DELnRE7UZR/mRZFR7Tgvfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=YFxXolk8; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=UgGDKLwZ reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736871377; x=1737476177; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mJqg+/HnHgg1RZbPnt+p/XNLoPcWEGRQ84Ss98oznDI=;
-        b=n4Iot13wZSYT0UPXG23mU69j21J6RBrGctY68CgU7PTEFJWxlJv90WEP6uUVnAoExZ
-         N3Q5eLRGnn2j5yX5+7nJGC1kpiweaccgtxq94P0Yo5L2jW2pFjxUyv+g6HoZIBrAVHLg
-         VvTkfXYGZnJLRB6eJYA22Za7onDmiWGm3scQUQdNdnTtFVNG0OblSNYU8OhOL0t3G1lk
-         ur2Pt6H/q0ylCJCtRAJ/iylxK7XwNfqAU4fTIKrV8Ha9TPnXUhO0uE0x0c0frKJHkbdd
-         iqVpf4ucg5PHFSD/GySzMR/kHpeM2/r3CKGtkGUgzLpdLOgq/l+rHaC+z1f9hxWJP3/q
-         +UeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736871377; x=1737476177;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mJqg+/HnHgg1RZbPnt+p/XNLoPcWEGRQ84Ss98oznDI=;
-        b=qNESovOqQisuyGom4Cyk71C3YXNPsBz//XmlVaxaKeSaD3w0lvM+RF3FwadxWaHPu2
-         FYHMvXDV2znpIKTPiRS9Te9dk8aWn/iBc5dN42wgr4QiVZIQiFo9YEXqMjeNonNTTb3K
-         wF03VEdnDVPkLrr3qwSOFUaAwg0TikDTfE2pe9n56susU1Twwf5QSG33fmfgn4yExey4
-         68ZPvPUQIXSv39Rrl6/AwFctWt1ebaDvDeaXSx3l/8jk3x+eGRuGquk9gC1h9OZP6OIF
-         BAV+lmyyQMzQv7L8jkS3GWYXFXxGVzboD1IXTDRp8Vpo5FzFYfZEW9kcNsdszBOh1VdV
-         pZCg==
-X-Forwarded-Encrypted: i=1; AJvYcCXMejD6uw3v9RX7qrrIQEQuis4GBJRIVUOy+qg6OYfmRmFJMdpG6FPk0g8PTOmOxshLoOzcPnk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwL+Y9qULvZQVYrxm8tre6G/evwqEMjtsoHANCvyOoiJbUh/S05
-	Sa2IDBSJMDclvcFz9ljP5GHomn0/cqhgcbXLzEdaLo7k1/0Wt4vwbt29y7/Rqhw=
-X-Gm-Gg: ASbGncv1QGmlZzYTJ/Bt4ZsJBGn0phlHzzllk7NTil0k28WwMWO0/WGP5KOzreo+2vJ
-	B02hdG2wzO1CSG0DxLWwg8oVFVmuOGjmdZejb1kPbFw+6yCDBJVCtOW2WEXiHwGNAaC+YVI66uA
-	B36i/83O31xrD0P/+p2FRdqbwFe0UGpktCfL7ss1U03elVumV7jC/1qbVaNiEWeFUNejTdOg8em
-	MdFMQQq+XvIpQFOV9xbjbSNhiSUfq8Upyy2koJmV/378XZstH0XwcBFBx4Et+eEcrXn6J4VcF4m
-	TwiY8KUp06d6OFCMh4WcOuhxvWWQcpUsxxf4ZjMl
-X-Google-Smtp-Source: AGHT+IHmGJ4N4gtNTLAv7jsoVRRKVp2DJsAgH9A5WCYjUUasxTeYIS9hpw7fIgUeU/Q/iCGEhglboQ==
-X-Received: by 2002:a05:6402:1e94:b0:5d9:fa36:5964 with SMTP id 4fb4d7f45d1cf-5d9fa365c32mr5873031a12.2.1736871375098;
-        Tue, 14 Jan 2025 08:16:15 -0800 (PST)
-Received: from puffmais.c.googlers.com (140.20.91.34.bc.googleusercontent.com. [34.91.20.140])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c90d52edsm643536066b.42.2025.01.14.08.16.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 08:16:14 -0800 (PST)
-From: =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
-Date: Tue, 14 Jan 2025 16:16:09 +0000
-Subject: [PATCH v2] scsi: ufs: fix use-after free in init error and remove
- paths
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1736871883; x=1768407883;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=39dVf0Tb0fckv4UPirWil96f+ziUJtDlcOjzF/ZAKhQ=;
+  b=YFxXolk8jMvyMCkhNupXZ+t+PM79Cxjk17pyjlFowQ3DZKtQOm5mnCGM
+   Sz2zMLrktCLm2UlhVakdtruPFM9rIgMdsN28LkT8kY9f7sb6u2ow5psbY
+   KMP6d5x+nLebSmx+yHnB5Atw7NCTncO+QzaLBlMnDVySe/QUb8ikKEmfl
+   e6aBBL65zk4gkvD+Z1GXNLom+4nNMe3b4I+z9eogDkr8L6gm8lBpRxyBp
+   KdgWn4GgsEgI9cTlIMUMzcue1vqbBmBbL4SZj3AU4AHEPvGpqigvQ5aMK
+   53wjyEddqc14RVscH+q+so5JJ4VUqhWTs2urPA6ZWnFbyIziM3kf4voKG
+   g==;
+X-CSE-ConnectionGUID: OXSJm04TSmWgqkeplEc0ew==
+X-CSE-MsgGUID: Td7csQGBQomFzwXILfKdfQ==
+X-IronPort-AV: E=Sophos;i="6.12,314,1728943200"; 
+   d="scan'208";a="41047167"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 14 Jan 2025 17:24:38 +0100
+X-CheckPoint: {67868FC6-12-1CE016C0-E589DA3E}
+X-MAIL-CPID: A189C402A519FB2DCE8FDD4064935AF3_1
+X-Control-Analysis: str=0001.0A682F1C.67868FC7.000A,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2EE681691A5;
+	Tue, 14 Jan 2025 17:24:32 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1736871874;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=39dVf0Tb0fckv4UPirWil96f+ziUJtDlcOjzF/ZAKhQ=;
+	b=UgGDKLwZHj6xCzHqavdmXYZqlqxeU64reflfx/mGDvC8UVNdojAGjaweJYhmoG1lVHf31A
+	6/EiyWhCFrrll20Tc+LkPBJJ/4mBa434wYUxsfuZEcTqEq1SsyDF976aVtteY6n/tJdQwm
+	22Dmc0w1vrDRQsaeEKxrGSED8c4bBleQllsfk4UhQUAMtfP7MofNjfZhvEH9oEfxqFQOUu
+	I9imW0UJibd4M7fQv1UcCfOpaxbmthY+bNT78FPZ4qNuK6TRhoygyLWyvUTIz+i4iv19MT
+	p83bhr6fkzYX8VqPiLAOtFDUEMSTDNebiDBj1pnTxB95ShAeKjCAGDlvAnj/Rw==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: pratyush@kernel.org, mwalle@kernel.org, miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com, linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, Tudor Ambarus <tudor.ambarus@linaro.org>
+Cc: alvinzhou@mxic.com.tw, leoyu@mxic.com.tw, Cheng Ming Lin <chengminglin@mxic.com.tw>, stable@vger.kernel.org, Cheng Ming Lin <linchengming884@gmail.com>
+Subject: Re: [PATCH v2 1/1] mtd: spi-nor: core: replace dummy buswidth from addr to data
+Date: Tue, 14 Jan 2025 17:24:32 +0100
+Message-ID: <7762352.EvYhyI6sBW@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <a6a9dfce-6cac-4831-9c96-45471f5ee13a@linaro.org>
+References: <20241112075242.174010-1-linchengming884@gmail.com> <3342163.44csPzL39Z@steina-w> <a6a9dfce-6cac-4831-9c96-45471f5ee13a@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250114-ufshcd-fix-v2-1-2dc627590a4a@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAMiNhmcC/22MywrCMBAAf6Xs2ZVk2wh68j+kh5hHsyCJJDUoJ
- f9u7NnjDMxsUFxmV+AybJBd5cIpdqDDACbouDhk2xlIkBJSjvjyJRiLnt+oaBJnT3Yk76EHz+y
- 63me3uXPgsqb82d9V/uzfTZUo0ejTaKWd7lap64OjzumY8gJza+0Lkj3a6qUAAAA=
-To: Alim Akhtar <alim.akhtar@samsung.com>, 
- Avri Altman <avri.altman@wdc.com>, Bart Van Assche <bvanassche@acm.org>, 
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
- "Martin K. Petersen" <martin.petersen@oracle.com>, 
- Peter Griffin <peter.griffin@linaro.org>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- Eric Biggers <ebiggers@kernel.org>
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>, 
- Will McVicker <willmcvicker@google.com>, kernel-team@android.com, 
- linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-samsung-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-arm-msm@vger.kernel.org, stable@vger.kernel.org, 
- =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
-X-Mailer: b4 0.13.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-devm_blk_crypto_profile_init() registers a cleanup handler to run when
-the associated (platform-) device is being released. For UFS, the
-crypto private data and pointers are stored as part of the ufs_hba's
-data structure 'struct ufs_hba::crypto_profile'. This structure is
-allocated as part of the underlying ufshd allocation.
+Hi Tudor,
 
-During driver release or during error handling in ufshcd_pltfrm_init(),
-this structure is released as part of ufshcd_dealloc_host() before the
-(platform-) device associated with the crypto call above is released.
-Once this device is released, the crypto cleanup code will run, using
-the just-released 'struct ufs_hba::crypto_profile'. This causes a
-use-after-free situation:
+Am Dienstag, 14. Januar 2025, 14:26:47 CET schrieb Tudor Ambarus:
+> On 1/14/25 12:57 PM, Alexander Stein wrote:
+> > Hello everyone,
+>=20
+> Hi,
+>=20
+> >=20
+> > Am Dienstag, 12. November 2024, 08:52:42 CET schrieb Cheng Ming Lin:
+> >> From: Cheng Ming Lin <chengminglin@mxic.com.tw>
+> >>
+> >> The default dummy cycle for Macronix SPI NOR flash in Octal Output
+> >> Read Mode(1-1-8) is 20.
+> >>
+> >> Currently, the dummy buswidth is set according to the address bus widt=
+h.
+> >> In the 1-1-8 mode, this means the dummy buswidth is 1. When converting
+> >> dummy cycles to bytes, this results in 20 x 1 / 8 =3D 2 bytes, causing=
+ the
+> >> host to read data 4 cycles too early.
+> >>
+> >> Since the protocol data buswidth is always greater than or equal to the
+> >> address buswidth. Setting the dummy buswidth to match the data buswidth
+> >> increases the likelihood that the dummy cycle-to-byte conversion will =
+be
+> >> divisible, preventing the host from reading data prematurely.
+> >>
+> >> Fixes: 0e30f47232ab5 ("mtd: spi-nor: add support for DTR protocol")
+> >> Cc: stable@vger.kernel.org
+> >> Reviewd-by: Pratyush Yadav <pratyush@kernel.org>
+> >> Signed-off-by: Cheng Ming Lin <chengminglin@mxic.com.tw>
+> >> ---
+> >>  drivers/mtd/spi-nor/core.c | 2 +-
+> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+> >> index f9c189ed7353..c7aceaa8a43f 100644
+> >> --- a/drivers/mtd/spi-nor/core.c
+> >> +++ b/drivers/mtd/spi-nor/core.c
+> >> @@ -89,7 +89,7 @@ void spi_nor_spimem_setup_op(const struct spi_nor *n=
+or,
+> >>  		op->addr.buswidth =3D spi_nor_get_protocol_addr_nbits(proto);
+> >> =20
+> >>  	if (op->dummy.nbytes)
+> >> -		op->dummy.buswidth =3D spi_nor_get_protocol_addr_nbits(proto);
+> >> +		op->dummy.buswidth =3D spi_nor_get_protocol_data_nbits(proto);
+> >> =20
+> >>  	if (op->data.nbytes)
+> >>  		op->data.buswidth =3D spi_nor_get_protocol_data_nbits(proto);
+> >>
+> >=20
+> > I just noticed this commit caused a regression on my i.MX8M Plus based =
+board,
+> > detected using git bisect.
+> > DT: arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
+> > Starting with this patch read is only 1S-1S-1S, before it was
+> > 1S-1S-4S.
+> >=20
+> > before:
+> >> cat /sys/kernel/debug/spi-nor/spi0.0/params
+> >> name            mt25qu512a
+> >> id              20 bb 20 10 44 00
+> >> size            64.0 MiB
+> >> write size      1
+> >> page size       256
+> >> address nbytes  4
+> >> flags           HAS_SR_TB | 4B_OPCODES | HAS_4BAIT | HAS_LOCK | HAS_4B=
+IT_BP
+> >> | HAS_SR_BP3_BIT6 | SOFT_RESET
+> >>
+> >> opcodes
+> >>
+> >>  read           0x6c
+> >> =20
+> >>   dummy cycles  8
+> >> =20
+> >>  erase          0xdc
+> >>  program        0x12
+> >>  8D extension   none
+> >>
+> >> protocols
+> >>
+> >>  read           1S-1S-4S
+> >>  write          1S-1S-1S
+> >>  register       1S-1S-1S
+> >>
+> >> erase commands
+> >>
+> >>  21 (4.00 KiB) [1]
+> >>  dc (64.0 KiB) [3]
+> >>  c7 (64.0 MiB)
+> >>
+> >> sector map
+> >>
+> >>  region (in hex)   | erase mask | overlaid
+> >>  ------------------+------------+----------
+> >>  00000000-03ffffff |     [   3] | no
+> >=20
+> > after:
+> >> cat /sys/kernel/debug/spi-nor/spi0.0/params
+> >> name            mt25qu512a
+> >> id              20 bb 20 10 44 00
+> >> size            64.0 MiB
+> >> write size      1
+> >> page size       256
+> >> address nbytes  4
+> >> flags           HAS_SR_TB | 4B_OPCODES | HAS_4BAIT | HAS_LOCK | HAS_4B=
+IT_BP
+> >> | HAS_SR_BP3_BIT6 | SOFT_RESET
+> >>
+> >> opcodes
+> >>
+> >>  read           0x13
+> >> =20
+> >>   dummy cycles  0
+> >> =20
+> >>  erase          0xdc
+> >>  program        0x12
+> >>  8D extension   none
+> >>
+> >> protocols
+> >>
+> >>  read           1S-1S-1S
+> >>  write          1S-1S-1S
+> >>  register       1S-1S-1S
+> >>
+> >> erase commands
+> >>
+> >>  21 (4.00 KiB) [1]
+> >>  dc (64.0 KiB) [3]
+> >>  c7 (64.0 MiB)
+> >>
+> >> sector map
+> >>
+> >>  region (in hex)   | erase mask | overlaid
+> >>  ------------------+------------+----------
+> >>  00000000-03ffffff |     [   3] | no
+> >=20
+> > AFAICT the patch seems sane, so it probably just uncovered another
+> > problem already lurking somewhere deeper.
+> > Given the HW similarity I expect imx8mn and imx8mm based platforms to be
+> > affected as well.
+> > Reverting this commit make the read to be 1S-1S-4S again.
+> > Any ideas ow to tackling down this problem?
+> >=20
+>=20
+> My guess is that 1S-1S-4S is stripped out in
+> spi_nor_spimem_adjust_hwcaps(). Maybe the controller has some limitation
+> in nxp_fspi_supports_op(). Would you add some prints, and check these
+> chunks of code?
 
-    exynos-ufshc 14700000.ufs: ufshcd_pltfrm_init() failed -11
-    exynos-ufshc 14700000.ufs: probe with driver exynos-ufshc failed with error -11
-    Unable to handle kernel paging request at virtual address 01adafad6dadad88
-    Mem abort info:
-      ESR = 0x0000000096000004
-      EC = 0x25: DABT (current EL), IL = 32 bits
-      SET = 0, FnV = 0
-      EA = 0, S1PTW = 0
-      FSC = 0x04: level 0 translation fault
-    Data abort info:
-      ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-      CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-      GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-    [01adafad6dadad88] address between user and kernel address ranges
-    Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-    Modules linked in:
-    CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W          6.13.0-rc5-next-20250106+ #70
-    Tainted: [W]=WARN
-    Hardware name: Oriole (DT)
-    pstate: 20400005 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-    pc : kfree+0x60/0x2d8
-    lr : kvfree+0x44/0x60
-    sp : ffff80008009ba80
-    x29: ffff80008009ba90 x28: 0000000000000000 x27: ffffbcc6591e0130
-    x26: ffffbcc659309960 x25: ffffbcc658f89c50 x24: ffffbcc659539d80
-    x23: ffff22e000940040 x22: ffff22e001539010 x21: ffffbcc65714b22c
-    x20: 6b6b6b6b6b6b6b6b x19: 01adafad6dadad80 x18: 0000000000000000
-    x17: ffffbcc6579fbac8 x16: ffffbcc657a04300 x15: ffffbcc657a027f4
-    x14: ffffbcc656f969cc x13: ffffbcc6579fdc80 x12: ffffbcc6579fb194
-    x11: ffffbcc6579fbc34 x10: 0000000000000000 x9 : ffffbcc65714b22c
-    x8 : ffff80008009b880 x7 : 0000000000000000 x6 : ffff80008009b940
-    x5 : ffff80008009b8c0 x4 : ffff22e000940518 x3 : ffff22e006f54f40
-    x2 : ffffbcc657a02268 x1 : ffff80007fffffff x0 : ffffc1ffc0000000
-    Call trace:
-     kfree+0x60/0x2d8 (P)
-     kvfree+0x44/0x60
-     blk_crypto_profile_destroy_callback+0x28/0x70
-     devm_action_release+0x1c/0x30
-     release_nodes+0x6c/0x108
-     devres_release_all+0x98/0x100
-     device_unbind_cleanup+0x20/0x70
-     really_probe+0x218/0x2d0
+Thanks for the fast response. I was able to track it down.
+Eventually the buswidth check in spi_check_buswidth_req fails.
+=46or command 0x3c:
+Before revert:
+> mode: 0x800, buswidth: 2
+After revert
+> mode: 0x800, buswidth: 1
 
-In other words, the initialisation code flow is:
+The mode is set to SPI_RX_QUAD. Thus the check for dummy buswidth fails
+now that data_nbits are used now.
 
-  platform-device probe
-    ufshcd_pltfrm_init()
-      ufshcd_alloc_host()
-        scsi_host_alloc()
-          allocation of struct ufs_hba
-          creation of scsi-host devices
-    devm_blk_crypto_profile_init()
-      devm registration of cleanup handler using platform-device
+=46or command 0x6c it's similar but op->dummy.buswidth is 4 now.
 
-and during error handling of ufshcd_pltfrm_init() or during driver
-removal:
+It boils down that there are SPI controllers which have
+> spi-tx-bus-width =3D <1>;
+> spi-rx-bus-width =3D <4>;
+set in their DT nodes.
 
-  ufshcd_dealloc_host()
-    scsi_host_put()
-      put_device(scsi-host)
-        release of struct ufs_hba
-  put_device(platform-device)
-    crypto cleanup handler
-
-To fix this use-after free, change ufshcd_alloc_host() to register a
-devres action to automatically cleanup the underlying SCSI device on
-ufshcd destruction, without requiring explicit calls to
-ufshcd_dealloc_host(). This way:
-
-    * the crypto profile and all other ufs_hba-owned resources are
-      destroyed before SCSI (as they've been registered after)
-    * a memleak is plugged in tc-dwc-g210-pci.c as a side-effect
-    * EXPORT_SYMBOL_GPL(ufshcd_dealloc_host) can be removed fully as
-      it's not needed anymore
-    * no future drivers using ufshcd_alloc_host() could ever forget
-      adding the cleanup
-
-Fixes: cb77cb5abe1f ("blk-crypto: rename blk_keyslot_manager to blk_crypto_profile")
-Fixes: d76d9d7d1009 ("scsi: ufs: use devm_blk_ksm_init()")
-Cc: stable@vger.kernel.org
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
----
-Changes in v2:
-- completely new approach using devres action for Scsi_host cleanup, to
-  ensure ordering
-- add Fixes: and CC: stable tags (Eric)
-- Link to v1: https://lore.kernel.org/r/20250113-ufshcd-fix-v1-1-ca63d1d4bd55@linaro.org
----
-In my case, as per above trace I initially encountered an error in
-ufshcd_verify_dev_init(), which made me notice this problem. For
-reproducing, it'd be possible to change that function to just return an
-error.
-
-Other approaches for solving this issue I see are the following, but I
-believe this one here is the cleanest:
-
-* turn 'struct ufs_hba::crypto_profile' into a dynamically allocated
-  pointer, in which case it doesn't matter if cleanup runs after
-  scsi_host_put()
-* add an explicit devm_blk_crypto_profile_deinit() to be called by API
-  users when necessary, e.g. before ufshcd_dealloc_host() in this case
-* register the crypto cleanup handler against the scsi-host device
-  instead, like in v1 of this patch
----
- drivers/ufs/core/ufshcd.c        | 27 +++++++++++++++++----------
- drivers/ufs/host/ufshcd-pci.c    |  2 --
- drivers/ufs/host/ufshcd-pltfrm.c | 11 ++++-------
- include/ufs/ufshcd.h             |  1 -
- 4 files changed, 21 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 43ddae7318cb..84089f3f62b0 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -10279,16 +10279,6 @@ int ufshcd_system_thaw(struct device *dev)
- EXPORT_SYMBOL_GPL(ufshcd_system_thaw);
- #endif /* CONFIG_PM_SLEEP  */
- 
--/**
-- * ufshcd_dealloc_host - deallocate Host Bus Adapter (HBA)
-- * @hba: pointer to Host Bus Adapter (HBA)
-- */
--void ufshcd_dealloc_host(struct ufs_hba *hba)
--{
--	scsi_host_put(hba->host);
--}
--EXPORT_SYMBOL_GPL(ufshcd_dealloc_host);
--
- /**
-  * ufshcd_set_dma_mask - Set dma mask based on the controller
-  *			 addressing capability
-@@ -10307,6 +10297,16 @@ static int ufshcd_set_dma_mask(struct ufs_hba *hba)
- 	return dma_set_mask_and_coherent(hba->dev, DMA_BIT_MASK(32));
- }
- 
-+/**
-+ * ufshcd_scsi_host_put_callback - deallocate underlying Scsi_Host and
-+ *				   thereby the Host Bus Adapter (HBA)
-+ * @host: pointer to SCSI host
-+ */
-+static void ufshcd_scsi_host_put_callback(void *host)
-+{
-+	scsi_host_put(host);
-+}
-+
- /**
-  * ufshcd_alloc_host - allocate Host Bus Adapter (HBA)
-  * @dev: pointer to device handle
-@@ -10334,6 +10334,13 @@ int ufshcd_alloc_host(struct device *dev, struct ufs_hba **hba_handle)
- 		err = -ENOMEM;
- 		goto out_error;
- 	}
-+
-+	err = devm_add_action_or_reset(dev, ufshcd_scsi_host_put_callback,
-+				       host);
-+	if (err)
-+		return dev_err_probe(dev, err,
-+				     "failed to add ufshcd dealloc action\n");
-+
- 	host->nr_maps = HCTX_TYPE_POLL + 1;
- 	hba = shost_priv(host);
- 	hba->host = host;
-diff --git a/drivers/ufs/host/ufshcd-pci.c b/drivers/ufs/host/ufshcd-pci.c
-index ea39c5d5b8cf..9cfcaad23cf9 100644
---- a/drivers/ufs/host/ufshcd-pci.c
-+++ b/drivers/ufs/host/ufshcd-pci.c
-@@ -562,7 +562,6 @@ static void ufshcd_pci_remove(struct pci_dev *pdev)
- 	pm_runtime_forbid(&pdev->dev);
- 	pm_runtime_get_noresume(&pdev->dev);
- 	ufshcd_remove(hba);
--	ufshcd_dealloc_host(hba);
- }
- 
- /**
-@@ -605,7 +604,6 @@ ufshcd_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	err = ufshcd_init(hba, mmio_base, pdev->irq);
- 	if (err) {
- 		dev_err(&pdev->dev, "Initialization failed\n");
--		ufshcd_dealloc_host(hba);
- 		return err;
- 	}
- 
-diff --git a/drivers/ufs/host/ufshcd-pltfrm.c b/drivers/ufs/host/ufshcd-pltfrm.c
-index 505572d4fa87..adb0a65d9df5 100644
---- a/drivers/ufs/host/ufshcd-pltfrm.c
-+++ b/drivers/ufs/host/ufshcd-pltfrm.c
-@@ -488,13 +488,13 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
- 	if (err) {
- 		dev_err(dev, "%s: clock parse failed %d\n",
- 				__func__, err);
--		goto dealloc_host;
-+		goto out;
- 	}
- 	err = ufshcd_parse_regulator_info(hba);
- 	if (err) {
- 		dev_err(dev, "%s: regulator init failed %d\n",
- 				__func__, err);
--		goto dealloc_host;
-+		goto out;
- 	}
- 
- 	ufshcd_init_lanes_per_dir(hba);
-@@ -502,14 +502,14 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
- 	err = ufshcd_parse_operating_points(hba);
- 	if (err) {
- 		dev_err(dev, "%s: OPP parse failed %d\n", __func__, err);
--		goto dealloc_host;
-+		goto out;
- 	}
- 
- 	err = ufshcd_init(hba, mmio_base, irq);
- 	if (err) {
- 		dev_err_probe(dev, err, "Initialization failed with error %d\n",
- 			      err);
--		goto dealloc_host;
-+		goto out;
- 	}
- 
- 	pm_runtime_set_active(dev);
-@@ -517,8 +517,6 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
- 
- 	return 0;
- 
--dealloc_host:
--	ufshcd_dealloc_host(hba);
- out:
- 	return err;
- }
-@@ -534,7 +532,6 @@ void ufshcd_pltfrm_remove(struct platform_device *pdev)
- 
- 	pm_runtime_get_sync(&pdev->dev);
- 	ufshcd_remove(hba);
--	ufshcd_dealloc_host(hba);
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_put_noidle(&pdev->dev);
- }
-diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
-index da0fa5c65081..58eb6e897827 100644
---- a/include/ufs/ufshcd.h
-+++ b/include/ufs/ufshcd.h
-@@ -1311,7 +1311,6 @@ static inline void ufshcd_rmwl(struct ufs_hba *hba, u32 mask, u32 val, u32 reg)
- void ufshcd_enable_irq(struct ufs_hba *hba);
- void ufshcd_disable_irq(struct ufs_hba *hba);
- int ufshcd_alloc_host(struct device *, struct ufs_hba **);
--void ufshcd_dealloc_host(struct ufs_hba *);
- int ufshcd_hba_enable(struct ufs_hba *hba);
- int ufshcd_init(struct ufs_hba *, void __iomem *, unsigned int);
- int ufshcd_link_recovery(struct ufs_hba *hba);
-
----
-base-commit: 4e16367cfe0ce395f29d0482b78970cce8e1db73
-change-id: 20250113-ufshcd-fix-52409f2d32ff
+So it seems this combination is not supported.
 
 Best regards,
--- 
-André Draszik <andre.draszik@linaro.org>
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
 
