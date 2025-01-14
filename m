@@ -1,163 +1,173 @@
-Return-Path: <stable+bounces-108572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E416A0FFDD
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 05:10:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3181AA100E3
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 07:42:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FE9F3A585A
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 04:10:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D823C3A7F69
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 06:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5AC9231A48;
-	Tue, 14 Jan 2025 04:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8060423C6E4;
+	Tue, 14 Jan 2025 06:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kali.org header.i=@kali.org header.b="PbTC3g2S"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Y+DINK9L"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F006C168DA
-	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 04:10:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEB923A115;
+	Tue, 14 Jan 2025 06:42:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736827820; cv=none; b=DinkvYEZMarZ6W0qGxJeAwuyt+n3XHvFAwUmho3vkBjdlJwcswTi8dT1PSdKYF6CkAl4NJL5iEJq9BaE/6hVaMRr47noJf5X8bGVA55F1RZTpQtdhrp6OryhKBNPxfVAUEtvoBKnq40EFCfeqwhjXZbRwxUv+WzKrsyNgl9fmBg=
+	t=1736836965; cv=none; b=j9f+KlisY9SSA2xkDJ0KXux90wSGPMzUoqXOP6LiqCmym64+FM9tiKlQZPqQiuOJOZ3FRwkqBoPaju2wjSQ5pmtkR9beVPESdF/rCGlTAOvufkpLDEQglITM0sUotgIN4MTuYEUQC6L1suWATLNAcXHGyDsoylZQZ8bj8oL4SFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736827820; c=relaxed/simple;
-	bh=PgZACnQ821havD91qnvSoVfopLpgxpU46DiDuNvahF8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hCJmbxCoW0mva25h6BcpsepQhPBI/53HP4nvTuWamBHAN7aoctP1sN9lDOPazJX7P4wxHMYt7rxJizX9mkbCetXDf+LtViigE2DRRhARKn2rnb77MdTyvvsVJoLqAsHUIOl+Mp+IfmhKP+/zb4kVCijH16fdJgmOZREJALCoT/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kali.org; spf=pass smtp.mailfrom=kali.org; dkim=pass (2048-bit key) header.d=kali.org header.i=@kali.org header.b=PbTC3g2S; arc=none smtp.client-ip=209.85.219.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kali.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kali.org
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-e3978c00a5aso7806308276.1
-        for <stable@vger.kernel.org>; Mon, 13 Jan 2025 20:10:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kali.org; s=google; t=1736827817; x=1737432617; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rpQAW5W6q1eOeJMunMwzYyOy3zwnSPg/tJEZNw0zLcM=;
-        b=PbTC3g2SfEiqpgg9va6mMh6Wkpiymy/1675fBsjSb806OUflpTNUxSjO2iz2/+g4+L
-         A1rQtiP9I5jC2ijce3ycXn/3elPDNxNXwm9WpjsAQu5eySZ0KSdUsCPe8HIq9UxnlQDP
-         DTbZb9Cl3ipoFyVQzJ/pZewJ5IhPuUG7fdtmSwSavBG3VDas9KA5I7z2RDEHYQ1xLWrb
-         63urM5MdBqcGfSHyB5F1no0Z54XPXjIOEoT0Y+YJacpYVGTTRHEhLN5BD12Xp8FP2AOR
-         ylN+MVXVSMgafIfdnFH1IROJ/29YGoF7A/Pw3y94V7mPJuLB2qfdpYNXd0/oq6rXxuBj
-         dPxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736827817; x=1737432617;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rpQAW5W6q1eOeJMunMwzYyOy3zwnSPg/tJEZNw0zLcM=;
-        b=f0lxKlVDHfiHFz6onRA2jClYNA6CapeQcbqfxiDsBiJX2k4h36Hpt9FFfeuJapaRmA
-         us9C8z7N9CeTxewf/4V66OiesSc6ij3bZDrrTXSWEqN7oRkDlM9WWn9PVzkxIiI5UayG
-         R1kEw7ViGclC+5AiVpmt7t84dDnwreEVWQMz7Nj9eIMD+CYsWrOhpOptVZPU9Oc2Thvx
-         U5CJslxSwKaKocFFVPi/d/P29GgjGhenz/2pWbnTFYBAa+iTLSrsNeq2PJA1uC/LXd5m
-         3TZ4ZGB63A8z5ZlYWspZpSnMKRPKZs9t1k6+Gz2JqW59dFbxqvKrlbq0px1p+msskowh
-         9t8A==
-X-Forwarded-Encrypted: i=1; AJvYcCVf8NQUh6oeuAvb6IITO6bkFG1gBqi8w6Jy5eSiyh5QXZQCIZha1h0yZx5T3YBJO3gXGPhZMFs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+zSLs/B9722rkuwg2uNq/1mZqJXLAVqFICp0oHmD/ia8WjuUd
-	/Uqs84z9nS5GucSvgTWQA5DLsNjTmL/Z7xA6JinONLDosYlPSnXeM9ptgToJHZbR7QoIcSXVjep
-	2eBw+W9/EXRCgdwj7ZmCz5FCI1dR1LQTN2OVUNw==
-X-Gm-Gg: ASbGncvnbCvd/TdvYF6uJJXkL+xW+DGHnJrJs79JrVAiNuXvNwUV0a9VTXE6fyw1lP0
-	mC312fuO7yiDaDwTQ71UeJibZFVFrmUZr7wTmnsU=
-X-Google-Smtp-Source: AGHT+IHCeN1OqSNyfpwvgLbMXzKY0s1C+MMCFUl8tg+k7mKXodKkqk20Pyg87hyIPkWnM+ZdQ+1JXLR6bDZ53cEiLYo=
-X-Received: by 2002:a05:690c:620c:b0:6ef:7dde:bdef with SMTP id
- 00721157ae682-6f531240a04mr185997377b3.23.1736827816984; Mon, 13 Jan 2025
- 20:10:16 -0800 (PST)
+	s=arc-20240116; t=1736836965; c=relaxed/simple;
+	bh=cxjl2dKQjE2T3sE0Qk8Ni909AJcdJRbX8+4XuwMcNe0=;
+	h=Date:To:From:Subject:Message-Id; b=ESLPRepSC59Zv0vs6UGsuyBcHMlGgNHe69u1ZnnIXsSoq0ZfZy+3+uU3YIJTt2ke8c8LqjHSaa3Eq7tNqM0TFtkRwNam0EiLTEPE5cqbj2f20ZUI0kbvIuaELuxUrm5pTQ4NcRlFzF709iY/7wrt3jGSBMogY+R31vLkSFfLtVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Y+DINK9L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10459C4CEDD;
+	Tue, 14 Jan 2025 06:42:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1736836965;
+	bh=cxjl2dKQjE2T3sE0Qk8Ni909AJcdJRbX8+4XuwMcNe0=;
+	h=Date:To:From:Subject:From;
+	b=Y+DINK9L7KgV48bNkqIVKMzkSlZl/a3kOuTUjX7Hs63UXZeBUdRw0rSNZeIZJ+15V
+	 WyRN0WPTEMirI5QsqpF6A1xBhN2rt25OjA7pwL1/Gyu7niwBWStclikmLPVLbYHs1v
+	 qMsmeCmYS3OwL3HHXl8nfD9L79AWVPSKbTdrbSB8=
+Date: Mon, 13 Jan 2025 22:42:44 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sidhartha.kumar@oracle.com,lorenzo.stoakes@oracle.com,Liam.Howlett@Oracle.com,richard.weiyang@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-stable] maple_tree-simplify-split-calculation.patch removed from -mm tree
+Message-Id: <20250114064245.10459C4CEDD@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250113-wcn6855_fix-v3-1-eeb8b0e19ef4@quicinc.com>
-In-Reply-To: <20250113-wcn6855_fix-v3-1-eeb8b0e19ef4@quicinc.com>
-From: Steev Klimaszewski <steev@kali.org>
-Date: Mon, 13 Jan 2025 22:10:02 -0600
-X-Gm-Features: AbW1kvYxKCoyq4xBZQUOsXW03R_0Xsj1y3vzkWzE77ZbEIl-L-nu7qSK9ncMtU4
-Message-ID: <CAKXuJqiJZTF-rdDp+1hkV597_Y4h1RSBOCiYJuupmdA8J=-SpA@mail.gmail.com>
-Subject: Re: [PATCH v3] Bluetooth: qca: Fix poor RF performance for WCN6855
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Bjorn Andersson <bjorande@quicinc.com>, "Aiqun Yu (Maria)" <quic_aiquny@quicinc.com>, 
-	Cheng Jiang <quic_chejiang@quicinc.com>, Johan Hovold <johan@kernel.org>, 
-	Jens Glathe <jens.glathe@oldschoolsolutions.biz>, Paul Menzel <pmenzel@molgen.mpg.de>, 
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>, linux-bluetooth@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Zijun,
 
-On Mon, Jan 13, 2025 at 8:43=E2=80=AFAM Zijun Hu <zijun_hu@icloud.com> wrot=
-e:
->
-> From: Zijun Hu <quic_zijuhu@quicinc.com>
->
-> For WCN6855, board ID specific NVM needs to be downloaded once board ID
-> is available, but the default NVM is always downloaded currently.
->
-> The wrong NVM causes poor RF performance, and effects user experience
-> for several types of laptop with WCN6855 on the market.
->
-> Fix by downloading board ID specific NVM if board ID is available.
->
-> Fixes: 095327fede00 ("Bluetooth: hci_qca: Add support for QTI Bluetooth c=
-hip wcn6855")
-> Cc: stable@vger.kernel.org # 6.4
-> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-> ---
-> Changes in v3:
-> - Rework over tip of bluetooth-next tree.
-> - Remove both Reviewed-by and Tested-by tags.
-> - Link to v2: https://lore.kernel.org/r/20241116-x13s_wcn6855_fix-v2-1-c0=
-8c298d5fbf@quicinc.com
->
-> Changes in v2:
-> - Correct subject and commit message
-> - Temporarily add nvm fallback logic to speed up backport.
-> - Add fix/stable tags as suggested by Luiz and Johan
-> - Link to v1: https://lore.kernel.org/r/20241113-x13s_wcn6855_fix-v1-1-15=
-af0aa2549c@quicinc.com
-> ---
->  drivers/bluetooth/btqca.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-> index a6b53d1f23dbd4666b93e10635f5f154f38d80a5..cdf09d9a9ad27c080f27c5fe8=
-d61d76085e1fd2c 100644
-> --- a/drivers/bluetooth/btqca.c
-> +++ b/drivers/bluetooth/btqca.c
-> @@ -909,8 +909,9 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baud=
-rate,
->                                  "qca/msnv%02x.bin", rom_ver);
->                         break;
->                 case QCA_WCN6855:
-> -                       snprintf(config.fwname, sizeof(config.fwname),
-> -                                "qca/hpnv%02x.bin", rom_ver);
-> +                       qca_read_fw_board_id(hdev, &boardid);
-> +                       qca_get_nvm_name_by_board(config.fwname, sizeof(c=
-onfig.fwname),
-> +                                                 "hpnv", soc_type, ver, =
-rom_ver, boardid);
->                         break;
->                 case QCA_WCN7850:
->                         qca_get_nvm_name_by_board(config.fwname, sizeof(c=
-onfig.fwname),
->
-> ---
-> base-commit: a723753d039fd9a6c5998340ac65f4d9e2966ba8
-> change-id: 20250113-wcn6855_fix-036ca2fa5559
->
-> Best regards,
-> --
-> Zijun Hu <quic_zijuhu@quicinc.com>
->
+The quilt patch titled
+     Subject: maple_tree: simplify split calculation
+has been removed from the -mm tree.  Its filename was
+     maple_tree-simplify-split-calculation.patch
 
-Tested on my X13s and working great here, thank you for this!
-Tested-by: Steev Klimaszewski <steev@kali.org> #Thinkpad X13s
+This patch was dropped because it was merged into the mm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+------------------------------------------------------
+From: Wei Yang <richard.weiyang@gmail.com>
+Subject: maple_tree: simplify split calculation
+Date: Wed, 13 Nov 2024 03:16:14 +0000
+
+Patch series "simplify split calculation", v3.
+
+
+This patch (of 3):
+
+The current calculation for splitting nodes tries to enforce a minimum
+span on the leaf nodes.  This code is complex and never worked correctly
+to begin with, due to the min value being passed as 0 for all leaves.
+
+The calculation should just split the data as equally as possible
+between the new nodes.  Note that b_end will be one more than the data,
+so the left side is still favoured in the calculation.
+
+The current code may also lead to a deficient node by not leaving enough
+data for the right side of the split. This issue is also addressed with
+the split calculation change.
+
+[Liam.Howlett@Oracle.com: rephrase the change log]
+Link: https://lkml.kernel.org/r/20241113031616.10530-1-richard.weiyang@gmail.com
+Link: https://lkml.kernel.org/r/20241113031616.10530-2-richard.weiyang@gmail.com
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ lib/maple_tree.c |   23 ++++++-----------------
+ 1 file changed, 6 insertions(+), 17 deletions(-)
+
+--- a/lib/maple_tree.c~maple_tree-simplify-split-calculation
++++ a/lib/maple_tree.c
+@@ -1863,11 +1863,11 @@ static inline int mab_no_null_split(stru
+  * Return: The first split location.  The middle split is set in @mid_split.
+  */
+ static inline int mab_calc_split(struct ma_state *mas,
+-	 struct maple_big_node *bn, unsigned char *mid_split, unsigned long min)
++	 struct maple_big_node *bn, unsigned char *mid_split)
+ {
+ 	unsigned char b_end = bn->b_end;
+ 	int split = b_end / 2; /* Assume equal split. */
+-	unsigned char slot_min, slot_count = mt_slots[bn->type];
++	unsigned char slot_count = mt_slots[bn->type];
+ 
+ 	/*
+ 	 * To support gap tracking, all NULL entries are kept together and a node cannot
+@@ -1900,18 +1900,7 @@ static inline int mab_calc_split(struct
+ 		split = b_end / 3;
+ 		*mid_split = split * 2;
+ 	} else {
+-		slot_min = mt_min_slots[bn->type];
+-
+ 		*mid_split = 0;
+-		/*
+-		 * Avoid having a range less than the slot count unless it
+-		 * causes one node to be deficient.
+-		 * NOTE: mt_min_slots is 1 based, b_end and split are zero.
+-		 */
+-		while ((split < slot_count - 1) &&
+-		       ((bn->pivot[split] - min) < slot_count - 1) &&
+-		       (b_end - split > slot_min))
+-			split++;
+ 	}
+ 
+ 	/* Avoid ending a node on a NULL entry */
+@@ -2377,7 +2366,7 @@ static inline struct maple_enode
+ static inline unsigned char mas_mab_to_node(struct ma_state *mas,
+ 	struct maple_big_node *b_node, struct maple_enode **left,
+ 	struct maple_enode **right, struct maple_enode **middle,
+-	unsigned char *mid_split, unsigned long min)
++	unsigned char *mid_split)
+ {
+ 	unsigned char split = 0;
+ 	unsigned char slot_count = mt_slots[b_node->type];
+@@ -2390,7 +2379,7 @@ static inline unsigned char mas_mab_to_n
+ 	if (b_node->b_end < slot_count) {
+ 		split = b_node->b_end;
+ 	} else {
+-		split = mab_calc_split(mas, b_node, mid_split, min);
++		split = mab_calc_split(mas, b_node, mid_split);
+ 		*right = mas_new_ma_node(mas, b_node);
+ 	}
+ 
+@@ -2877,7 +2866,7 @@ static void mas_spanning_rebalance(struc
+ 		mast->bn->b_end--;
+ 		mast->bn->type = mte_node_type(mast->orig_l->node);
+ 		split = mas_mab_to_node(mas, mast->bn, &left, &right, &middle,
+-					&mid_split, mast->orig_l->min);
++					&mid_split);
+ 		mast_set_split_parents(mast, left, middle, right, split,
+ 				       mid_split);
+ 		mast_cp_to_nodes(mast, left, middle, right, split, mid_split);
+@@ -3365,7 +3354,7 @@ static void mas_split(struct ma_state *m
+ 		if (mas_push_data(mas, height, &mast, false))
+ 			break;
+ 
+-		split = mab_calc_split(mas, b_node, &mid_split, prev_l_mas.min);
++		split = mab_calc_split(mas, b_node, &mid_split);
+ 		mast_split_data(&mast, mas, split);
+ 		/*
+ 		 * Usually correct, mab_mas_cp in the above call overwrites
+_
+
+Patches currently in -mm which might be from richard.weiyang@gmail.com are
+
+
 
