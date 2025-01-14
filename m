@@ -1,164 +1,117 @@
-Return-Path: <stable+bounces-108635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFBAFA10F75
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 19:12:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D006A10F8E
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 19:14:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7E9E3A9117
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 18:10:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EB35188BD61
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 18:14:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9DCF21516E;
-	Tue, 14 Jan 2025 18:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CFA92040BD;
+	Tue, 14 Jan 2025 18:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h7IsANAN"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="TtUt0xtu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C4B215055;
-	Tue, 14 Jan 2025 18:04:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D899B1FC7E3
+	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 18:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736877848; cv=none; b=ifnz3oSd9ZsjA2J8QjPx1cEsiModUCiMuChgNR1dJXNebubQ7Jj04vIwycaVQXmcXwRudkDPwIlhZX+i599Oevoio3NYrysS8TkS/UemiucZhi//7qMzF8ZEKszAGsDanBJ90r22vSjpB8pLZTvfvYhih/nAdAqgRrgNRLkoBKM=
+	t=1736878207; cv=none; b=YGznrqqsqu2WD0HpDceZNbFQ0nCJ9C3cnJ6exgPKX7ECUxE2jJYkGzT9wLSo2UEGASZXnc7uJ/VKyyvKBGhxDv082lAcU2Vaip/6Oz77WkQ+SuaZsHvVtsY4nlyhqDNic6bJPILIH6oCISb5qAd0A8izenGqUgwtFu3ds9ZQtjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736877848; c=relaxed/simple;
-	bh=//WPnkeUMFLdD66obt4Oa+dfDwiQLbntnbgZQ7a/8BQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=sb3oWhrCImo6byxAiT1sSzRUhIMINmmT/da59w++rp2K/QOOSpBt4m0aNJOUA+wcquuH0OFxRmXyi9+kxhZxSAbTbDy1RJDrCydCriD7xZzOe3RkFNkO+hMY5HxGxA/fEwrJm02w41XsVClQeHtxSMM2is1nMu3Ig1MtHv0+DZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h7IsANAN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A98FC4CEDD;
-	Tue, 14 Jan 2025 18:04:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736877847;
-	bh=//WPnkeUMFLdD66obt4Oa+dfDwiQLbntnbgZQ7a/8BQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=h7IsANANpcRvLJ9tMi9aBc9jX6qxstFDBawbQzRm1dRIZ6BIM6YDBOn+EaVOWRPd1
-	 dOnxlqnGKVoNmWQ1kPxuKEhFctICyMl8+/rWKfnbCSui9jXKmoguvAW/FM/NsMK/EJ
-	 T4hJHBH+bsEEt3C6Hb26VIOvBALcugsuSg0GPzcqYBXAqGy6x4EMnZXyvpeGjdrt+J
-	 hAWKg6ktYmQTvn+FRgjGdTC8zi4ztXqCLgKGA9srqjUaJdUujCcpEDUFyJI7WE1Mu2
-	 UEUmb60c5hT+5Lk88mR08xl6lcyrrbRrQrsWhwaYGnFiZtZSlHTtr8Znn0VAL3thmC
-	 L/dCrb0ZTHcCg==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Alexander Stein
- <alexander.stein@ew.tq-group.com>,  tudor.ambarus@linaro.org,
-  mwalle@kernel.org,  richard@nod.at,  vigneshr@ti.com,
-  linux-mtd@lists.infradead.org,  linux-kernel@vger.kernel.org,
-  alvinzhou@mxic.com.tw,  leoyu@mxic.com.tw,  Cheng Ming Lin
- <chengminglin@mxic.com.tw>,  stable@vger.kernel.org,  Cheng Ming Lin
- <linchengming884@gmail.com>
-Subject: Re: [PATCH v2 1/1] mtd: spi-nor: core: replace dummy buswidth from
- addr to data
-In-Reply-To: <87wmexp9lh.fsf@bootlin.com> (Miquel Raynal's message of "Tue, 14
-	Jan 2025 18:51:38 +0100")
-References: <20241112075242.174010-1-linchengming884@gmail.com>
-	<20241112075242.174010-2-linchengming884@gmail.com>
-	<3342163.44csPzL39Z@steina-w> <mafs0zfjt5q3n.fsf@kernel.org>
-	<87wmexp9lh.fsf@bootlin.com>
-Date: Tue, 14 Jan 2025 18:04:03 +0000
-Message-ID: <mafs0ldvd5l2k.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1736878207; c=relaxed/simple;
+	bh=xt2EUpR+Drgf9WZVcSI4e/bScCfCLpE0kwHYQgg2tlA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=iAllNM/lemtpvzs/AOy24OH+okjqja4UPg0Jbr+0wo8C+QMAWxbuOI2wn5ChYBUg6MrYq7dG6zkcDkSQJSaNOhmDhGP6z2rZg5ZpRh8VSpD1j/k4rZZK55DSdjikBULK5eFti2FN+uEWu2mxA5MUc+PfFjrh0BQJBG4oXjoM+y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=TtUt0xtu; arc=none smtp.client-ip=209.85.166.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-3ce6b289e43so22456295ab.3
+        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 10:10:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1736878205; x=1737483005; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gaooOFOGtKSVaMzqMlIyw6V93Yl6VrFQA2qk2SuiUTE=;
+        b=TtUt0xtuXiHuJP68t7ijiM7HYbc7asuyQ5pGEpIIs8tdrVYj2NmppEcTVP/bgitnZq
+         xtD+WvLdP6yOkq+lDyhxUNAhhydjF+0L0LBnVTsBoGFYV4PUZc4Dg+GS4Uu7JPDAp+l6
+         RjpQuXfnZdsfCR3a+4ph0FcnorA733EAqIi46Lid/UjYQhBer9Rs+IK9RpLHx0pA0mOV
+         R9mO7Az7a4/z/WGTUtxs/ewr+VTMv1EjOEIvm7gB2qUbybbIpN6QPALVjwel5QX3csSH
+         Ob54G3ptt2K3I6jHdrnR6Mw0boubc9ILcSjo/J2tCHnCSICMKMDFQypSZDSuoSwAZXCs
+         bYhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736878205; x=1737483005;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gaooOFOGtKSVaMzqMlIyw6V93Yl6VrFQA2qk2SuiUTE=;
+        b=eDL9dc8mk3IHzU/p6YB++KvM2PuvHCxsgIh2lAwoO9HA+oVarbVz3KhWqYHau/cyvt
+         iAuXw0Sh0adpKOWbSwj5inOygpRIjbaUKMuHmMUAp3fTLr5m3CtgZsBueoCWlAXE12e9
+         MDb6p4W12H8NUNmhfASZ5ErpSgVPCWVhVuY8SLXvdSaRHf1JFbYycakKZeV/eLF0YjND
+         2TGqCJZhgdBDIzojReQ0A7DtjAkPZL8o7cteMJOAU1FwHvA5i80y7xmb1yUKqwvyOQEQ
+         LEoKvoZp76L7udWeWCH7F3EGGaUyMDbLePjqmoyjLIMYyCxftzmYSkYWk81w7UkoHAlQ
+         1qFA==
+X-Forwarded-Encrypted: i=1; AJvYcCVc3St6sIUx0s5tB9etN1nnylDhCX3nRLuSbAj9FGMi3+brTFAh7FLlQ1BE65O/X7Pbr+FoawU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWSonyYyeJswTYln/ltpUkjlwEjWhM7pTE4evBuTR6TcDoMTDn
+	2KS0QKRX5yn3E6fKLHMm/kZe4ZWCMkrevYm4nglwWdJ6jMtunlOsBHmdNV6ZmNQ=
+X-Gm-Gg: ASbGncvBqUhi/BLOWder+ec/f/rmDBmEN/RdJD6B3m5cEFCXbWxPpfm5rnPzgdYhjLf
+	YiMAmYG6fYQE29r41TGIejn5BtxcTm/MgupuSObz3Mp6vovrj2mghC5bOE4FnZT0dZ0+VMz48hG
+	OcumWPy8EAXx2hTtDxBN42ZnthYBrVbk8YB2kVfsQ2XKIUiiALjq5LmXsHpAKwso963WixVZ10c
+	vb9X4MzNySJcy6w+SBlzx8oCSAlygPJuhCXyzBnWA1THWc=
+X-Google-Smtp-Source: AGHT+IESxb4ZBWnQjANqv633zPRNwgXlL5qp0koS0neZNYlYqJdfFfgNSI/Dd5CsOfd6P4zPzpKMpw==
+X-Received: by 2002:a05:6e02:1f8a:b0:3cc:b7e4:6264 with SMTP id e9e14a558f8ab-3ce3a892c05mr203910065ab.0.1736878205032;
+        Tue, 14 Jan 2025 10:10:05 -0800 (PST)
+Received: from [127.0.0.1] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3ce6c1fc60dsm18220165ab.7.2025.01.14.10.10.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jan 2025 10:10:04 -0800 (PST)
+From: Jens Axboe <axboe@kernel.dk>
+To: Pavel Begunkov <asml.silence@gmail.com>, io-uring@vger.kernel.org, 
+ Jann Horn <jannh@google.com>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20250114-uring-check-accounting-v1-1-42e4145aa743@google.com>
+References: <20250114-uring-check-accounting-v1-1-42e4145aa743@google.com>
+Subject: Re: [PATCH] io_uring/rsrc: require cloned buffers to share
+ accounting contexts
+Message-Id: <173687820427.1326090.9681462149230294879.b4-ty@kernel.dk>
+Date: Tue, 14 Jan 2025 11:10:04 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3-dev-14bd6
 
-On Tue, Jan 14 2025, Miquel Raynal wrote:
 
-> Hello Pratyush,
->
-> On 14/01/2025 at 16:15:24 GMT, Pratyush Yadav <pratyush@kernel.org> wrote:
->
->>>> --- a/drivers/mtd/spi-nor/core.c
->>>> +++ b/drivers/mtd/spi-nor/core.c
->>>> @@ -89,7 +89,7 @@ void spi_nor_spimem_setup_op(const struct spi_nor *nor,
->>>>  		op->addr.buswidth = spi_nor_get_protocol_addr_nbits(proto);
->>>>  
->>>>  	if (op->dummy.nbytes)
->>>> -		op->dummy.buswidth = spi_nor_get_protocol_addr_nbits(proto);
->>>> +		op->dummy.buswidth = spi_nor_get_protocol_data_nbits(proto);
->
-> Facing recently a similar issue myself in the SPI NAND world, I believe
-> we should get rid of the notion of bits when it comes to the dummy
-> phase. I would appreciate a clarification like "dummy.cycles" which
-> would typically not require any bus width implications.
+On Tue, 14 Jan 2025 18:49:00 +0100, Jann Horn wrote:
+> When IORING_REGISTER_CLONE_BUFFERS is used to clone buffers from uring
+> instance A to uring instance B, where A and B use different MMs for
+> accounting, the accounting can go wrong:
+> If uring instance A is closed before uring instance B, the pinned memory
+> counters for uring instance B will be decremented, even though the pinned
+> memory was originally accounted through uring instance A; so the MM of
+> uring instance B can end up with negative locked memory.
+> 
+> [...]
 
-I agree. All peripheral drivers convert cycles to bytes, and controller
-drivers convert them back to cycles. This whole thing should be avoided,
-especially since it contains some traps with division truncation.
+Applied, thanks!
 
->
-> ...
->
->> Most controller's supports_op hook call spi_mem_default_supports_op(),
->> including nxp_fspi_supports_op(). In spi_mem_default_supports_op(),
->> spi_mem_check_buswidth() is called to check if the buswidths for the op
->> can actually be supported by the board's wiring. This wiring information
->> comes from (among other things) the spi-{tx,rx}-bus-width DT properties.
->> Based on these properties, SPI_TX_* or SPI_RX_* flags are set by
->> of_spi_parse_dt(). spi_mem_check_buswidth() then uses these flags to
->> make the decision whether an op can be supported by the board's wiring
->> (in a way, indirectly checking against spi-{rx,tx}-bus-width).
->
-> Thanks for the whole explanation, it's pretty clear.
->
->> In arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi we have:
->>
->> 	flash0: flash@0 {
->> 		reg = <0>;
->> 		compatible = "jedec,spi-nor";
->> 		spi-max-frequency = <80000000>;
->> 		spi-tx-bus-width = <1>;
->> 		spi-rx-bus-width = <4>;
->>
->> Now the tricky bit here is we do the below in spi_mem_check_buswidth():
->>
->> 	if (op->dummy.nbytes &&
->> 	    spi_check_buswidth_req(mem, op->dummy.buswidth, true))
->> 		return false;
->
-> May I challenge this entire section? Is there *any* reason to check
-> anything against dummy cycles wrt the width? Maybe a "can handle x
-> cycles" check would be interesting though, but I'd go for a different
-> helper, that is specific to the dummy cycles.
+[1/1] io_uring/rsrc: require cloned buffers to share accounting contexts
+      commit: 19d340a2988d4f3e673cded9dde405d727d7e248
 
-I suppose you would want to sanity check that the cycles are at least
-between 1, 2, 4, or 8 (or at the very least not 0).
-
->
->> The "true" parameter here means to "treat the op as TX". Since the
->> board only supports 1-bit TX, the 4-bit dummy TX is considered as
->> unsupported, and the op gets rejected. In reality, a dummy phase is
->> neither a RX nor a TX. We should ideally treat it differently, and
->> only check if it is one of 1, 2, 4, or 8, and not test it against the
->> board capabilities at all.
->
-> ...
->
->> Since we are quite late in the cycle, and that changing
->> spi_mem_check_buswidth() might cause all sorts of breakages, I think the
->> best idea currently would be to revert this patch, and resend it with
->> the other changes later.
->>
->> Tudor, Michael, Miquel, what do you think about this? We are at rc7 but
->> I think we should send out a fixes PR with a revert. If you agree, I
->> will send out a patch and a PR.
->
-> Either way I am fine. the -rc cycles are also available for us to
-> settle. But it's true we can bikeshed a little bit, so feel free to
-> revert this patch before sending the MR.
-
-To be clear, since the patch was added in v6.13-rc1 I want to revert it
-via a fixes pull request to Linus before he releases v6.13 this week. I
-want to fix it in v6.13, not in v6.14.
-
+Best regards,
 -- 
-Regards,
-Pratyush Yadav
+Jens Axboe
+
+
+
 
