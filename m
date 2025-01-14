@@ -1,154 +1,149 @@
-Return-Path: <stable+bounces-108595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DCFDA107DD
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 14:32:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C867A10828
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 14:50:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B19FD3A7C6B
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 13:32:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80DF8166D9F
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 13:50:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE987234CE4;
-	Tue, 14 Jan 2025 13:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF4222F19;
+	Tue, 14 Jan 2025 13:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="tOSH2xHT"
+	dkim=pass (2048-bit key) header.d=nigauri-org.20230601.gappssmtp.com header.i=@nigauri-org.20230601.gappssmtp.com header.b="bEFXh/PO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3A51C4617
-	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 13:32:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C64E17557
+	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 13:50:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736861531; cv=none; b=GMZwGRreYGxLyvgK9v6F9+0tuTRHiItkzg3SFDdFaWVwkUcWBt1LPcKbSigJFhlSAg5o/1+uIZwMzQ3Mjt6aaMa9exM1Ak+NGG65Qxx/MhMcWlvru5L1DWTE193g9p7+TnJxZBmy4XoL+DfiZlFObKE+Hc5SeMTih7cfJFZF2eI=
+	t=1736862642; cv=none; b=RSep7xLV36czMGq0jxM3gxO85Q+ZoJnVn32ntKAEFr3ggZtb3F2mRyHyy7zNygu1tm9Z7mKYJDlWAzE9MOQkd28qFL8AcoLQ4LygBTwdSPwGRX7vLzYh7ZmYc0aUZZDlsax3JXXEzEcYCgaZBU7dciy5vH7YDhC5LJRbidyQ3p4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736861531; c=relaxed/simple;
-	bh=C/n5ueEHMAubjla/enKlwcyP9Db0+La1s6xIRdKq9lA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DSlXvFMb9fgfx4IYHWD40EbenHG7fMKC7CtK88aocJGDDiKUqcqTbYi6FlM1CEVN7Zqw+9UosbMP0kfa8qGa9qMCUWoUcjNoabAnzrZChQ+aN6FyNIkNq3SRwXxgBQXUSoV9dkHs2HaXHAuOKGHotyW4NwJO1963ke1kQEZKpK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=tOSH2xHT; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4368a293339so62498595e9.3
-        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 05:32:09 -0800 (PST)
+	s=arc-20240116; t=1736862642; c=relaxed/simple;
+	bh=MK2AphVmYBUjHm1HCF0DhkauVUycpjqvY/5QFbqNgB4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jjV7ahE0ssufPbHFtfu4/qhFUDH4YYXoezpqSnFkLudqsehxRNPZgwtZX3yWallJCGYuLT35CVrbaLWvFeWjM5JZ0nXNpE/Qo8G+zu3bUTjhaK9pznUBk0dJ9a8cS7LwvSYzUcaZwFL+6s2JGUJJQmw5QlnVHiotPoZptA3MtrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nigauri.org; spf=none smtp.mailfrom=nigauri.org; dkim=pass (2048-bit key) header.d=nigauri-org.20230601.gappssmtp.com header.i=@nigauri-org.20230601.gappssmtp.com header.b=bEFXh/PO; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nigauri.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nigauri.org
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5d437235769so9502549a12.2
+        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 05:50:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1736861528; x=1737466328; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=nigauri-org.20230601.gappssmtp.com; s=20230601; t=1736862639; x=1737467439; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TlqTUnZXimSv0OpNMeG8KSN6cDTihkE7gFuE8ClySV4=;
-        b=tOSH2xHTd4HbCDjcMTlz/6HWT+Cqk/+ZBHwvSHyBA/MkG/Ap52G0zmjOnMW/qOF5EC
-         D0p08yvgNO5ehIQflM2mHC/8rEREmPTsrNoRgVc2lXHTmnhhE07JslDiT5OGK5EGXLMQ
-         lx7tw56SwXP/OYkakvBHpZ4LbyboSVTKwnnqkW3kkhtZ6IS4FSRbBR0L5WwpskQVuJ2+
-         v5beJv8CdE1zBnewnmo3F9y7aQOPMN3bXpGPYD659XMAG2jt7YAS9b2nvHJM5X/EJc0l
-         mJVvmx+sDuup909Qg1cdF/sxqQ83v7dzx0pHxTLlEMMpxrLpXOtCFqrJmym+ek3aTOsm
-         Y8EA==
+        bh=qK8eJ72oUfZkFBOw+tTcLnGpMzZXzfZ2mLBjQdYOmks=;
+        b=bEFXh/POozmDGCRznXWNSkQrNAb4Gv7QjPzIcp1Hb7amkblZBooQDnqgd/ldb1uU2P
+         fVgCtEyXsQZ7k8CZrE01/riIWUCdrsuQv0XXR0X5LTilImVzvL9xsB3rdw9tE+Qwd7ai
+         n4cuXs2hYyL6Mm1R9O+ugzsJf5X3M5KZKU9dTNkuagm+ZHJe80mGmjUW1U51cXVWFzKc
+         hx7nphzBMKxuJNEyJKdX2evsjOgs/LxOOO+BkM54xJRJOI/I1pljYd2l41/rVpYH/QWL
+         na9xmzonwRxJKtchTi8Vcar7yZoOcwM0fakqs0Guc7FXQAr0DkyBlJgFC+dLuh7CzLfr
+         c7jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736861528; x=1737466328;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1736862639; x=1737467439;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TlqTUnZXimSv0OpNMeG8KSN6cDTihkE7gFuE8ClySV4=;
-        b=M36Nw3KSwLaWtWmyxqpacXsOsAknB++hvmC9vQatEvhjmzDCllXJ4bj5lqjn32JZNW
-         NAKu0Y0lokuaDWbUSLRCM64QrGDSGdnpwicZJt7EiTnVx2qpCmc0Xh4KaqJECTJkYcGt
-         fqsUdKtNZt1abXtgEHl9naqx0yVl4Jq01RnhB7tr9yGoOmFTa3YezBKBjX0Bi6op6ypX
-         wUQZbM/2wd9xrQ51aDQ4oZYBHwgvQF9QAjg+sDov+YSYFrJe39c4zMEKUB8Ak8iZj1fR
-         M0EPNCRe2AKiG7nmCjJoq7zhzN8EFkrzbyArThtfEhDRn25plvaQOvIfu9Bk0NrQv6kn
-         YCyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUoCwMnggT3AKyOD6yatnROCqEmmtH38CEq4jrIY+d4r1imu53p8Hc446KXxE73t7DLBbebS5I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpVNvAZRsr/OEXc6wkAkkIzAfpWYhbc/FXKD+aw0JJqfHNL/i2
-	qv3hfGRw1B4vDN+6xmtvoQX90lODEwhh7Oj94HE7PRfoPAX8hBWV7gbzTROFPJw=
-X-Gm-Gg: ASbGncs5xXe+pepZerBbsANC/0j3BB0XkoZ2YKPMj0FSnonY6mQ/zgSf+ooTEfXy96l
-	vt6tKBrdwaOfHE9umlp3OWcek7W8PeHYtIojqScR2xnH/SQHfm7HLNlY8B46f9/ruVkAGXsen0/
-	hqWrUnm5g1hYxvPLe0w/dfUgkiwTBdkTkBuV6csKIehdKEWQI5zrWJQZEpFWIl+Nm/s0U+XOLoj
-	YE1JMaLtydcKfyncM03hLzgm9ZPKDfxzSWdXeV9yRlpzS2/ACrOxljW
-X-Google-Smtp-Source: AGHT+IGX7/UMGlqtT7zZvRfxlsgQa+uEneORt172vk0+CI+jGXB6Xgxav5wRl12bJyoriN3HKN0zhQ==
-X-Received: by 2002:a05:6000:4020:b0:385:e3c1:50d5 with SMTP id ffacd0b85a97d-38a87338fa8mr25876636f8f.48.1736861527841;
-        Tue, 14 Jan 2025 05:32:07 -0800 (PST)
-Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:a8b0:e23c:79c1:dc2b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e38c7aesm15154949f8f.53.2025.01.14.05.32.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 05:32:07 -0800 (PST)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	linux-gpio@vger.kernel.org,
-	Sean Anderson <sean.anderson@linux.dev>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Michal Simek <michal.simek@amd.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Robert Hancock <hancock@sedsystems.ca>,
-	Srinivas Neeli <srinivas.neeli@amd.com>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] gpio: xilinx: Convert gpio_lock to raw spinlock
-Date: Tue, 14 Jan 2025 14:32:06 +0100
-Message-ID: <173686152290.39040.17367940998093783534.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250110163354.2012654-1-sean.anderson@linux.dev>
-References: <20250110163354.2012654-1-sean.anderson@linux.dev>
+        bh=qK8eJ72oUfZkFBOw+tTcLnGpMzZXzfZ2mLBjQdYOmks=;
+        b=j9qlHV0xgD4K9QKq8iT4Y7ST34Q6t1W/kCOBoswN05HXxpw/zVu7hT8RoUAtPaQCTE
+         oC37NjkdcJSr/UkE7ixhJeY1W1V01KHPI24t0WPTh1M3nSuQ0hirUVMJkx3E0FQHH//Z
+         iomnOiGg8X9dEsDuzW5SliZG9XzMZKwmC1WYut6kbWtuurEh9RS6D0Djb5YuqA2R/ekK
+         VRUXzfZqlHYIJ/ZXft5tz1XcX4b60UT+MD4EiPzirhjDbHvRmxq6VUjuDoRFw17u4Z+h
+         ziIW2+8h2vYKeaeoJ8vctyzKAYde17SJVOufkaSojmpycxCee8b8nDOO/5qLbiJP+1Hm
+         t+QA==
+X-Forwarded-Encrypted: i=1; AJvYcCXhfR4Qr6RiHp0q3utRGd/98vK01j0w0+tOlI//wy81L0zbfoo4ZCAFQU+AY3FfF2b7l6tdJH8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTEZr8qdgSO6f3tDjDo/E73ZRfYxHh0wHedjwT/5ByzZPE3sLH
+	bU/+UavKtp8WrVX5kkLwAogcnB38hTUoYnlUnxjJWz8wbT225CDBjzepWJ5/Z9VA9zE+eO/fbVQ
+	Nm64KvgtjBFf4MDLFrePWPHWZbc/k8FdN3Sx+DJpx35JNPBRh
+X-Gm-Gg: ASbGnctdFdtGNkMqsokGo4xVl8oB+PB/8mryIdQM0/rwxRLGGU7uTZsEhFvqEje2fo7
+	PDkiXcO7ZFEn9paidtJ2rOV5HILg1+sX8GjlBxjc9MHE5lFQ4+mc86qdV92Z95QoocMFNDlo=
+X-Google-Smtp-Source: AGHT+IF46TQhtbMMZMIZCKwTcvvfKRkqdMf4+iusbVX+iTYMmw+SknyG/9KNTOsKRbNl7xnQQq1VrKvxMWJ1gHVadbI=
+X-Received: by 2002:a17:907:3d89:b0:aac:1ff1:d33d with SMTP id
+ a640c23a62f3a-ab2ab740dd9mr2228481666b.30.1736862639349; Tue, 14 Jan 2025
+ 05:50:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20241121071325.2148854-1-iwamatsu@nigauri.org>
+In-Reply-To: <20241121071325.2148854-1-iwamatsu@nigauri.org>
+From: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+Date: Tue, 14 Jan 2025 22:50:13 +0900
+X-Gm-Features: AbW1kvYfwvDX59DGr73TkVKQWrZUOAfV-Cykp2gPV41y5Dp3jhO_fwHVhjZEQuo
+Message-ID: <CABMQnVJVTmnsx3RNYK01ikZ-jnn_y4pbrNAeZaKPzz0N_YFz5g@mail.gmail.com>
+Subject: Re: [PATCH v2] ARM: dts: socfpga: sodia: Fix mdio bus probe and PHY address
+To: dinguyen@kernel.org, robh+dt@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org
+Cc: Andrew Lunn <andrew@lunn.ch>, linux-arm-kernel@lists.infradead.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Hi Dinh,
+
+Could you check and apply this patch?
+
+Thanks,
+  Nobuhiro
+
+2024=E5=B9=B411=E6=9C=8821=E6=97=A5(=E6=9C=A8) 16:13 Nobuhiro Iwamatsu <iwa=
+matsu@nigauri.org>:
+>
+> On SoCFPGA/Sodia board, mdio bus cannot be probed, so the PHY cannot be
+> found and the network device does not work.
+>
+> ```
+> stmmaceth ff702000.ethernet eth0: __stmmac_open: Cannot attach to PHY (er=
+ror: -19)
+> ```
+>
+> To probe the mdio bus, add "snps,dwmac-mdio" as compatible string of the
+> mdio bus. Also the PHY address connected to this board is 4. Therefore,
+> change to 4.
+>
+> Cc: stable@vger.kernel.org # 6.3+
+> Signed-off-by: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+> ---
+>  v2: Update commit message from 'ID' to 'address'.
+>      Drop Fixes tag, because that commit is not the cause.
+>
+>  arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts b=
+/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts
+> index ce0d6514eeb571..e4794ccb8e413f 100644
+> --- a/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts
+> +++ b/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts
+> @@ -66,8 +66,10 @@ &gmac1 {
+>         mdio0 {
+>                 #address-cells =3D <1>;
+>                 #size-cells =3D <0>;
+> -               phy0: ethernet-phy@0 {
+> -                       reg =3D <0>;
+> +               compatible =3D "snps,dwmac-mdio";
+> +
+> +               phy0: ethernet-phy@4 {
+> +                       reg =3D <4>;
+>                         rxd0-skew-ps =3D <0>;
+>                         rxd1-skew-ps =3D <0>;
+>                         rxd2-skew-ps =3D <0>;
+> --
+> 2.45.2
+>
 
 
-On Fri, 10 Jan 2025 11:33:54 -0500, Sean Anderson wrote:
-> irq_chip functions may be called in raw spinlock context. Therefore, we
-> must also use a raw spinlock for our own internal locking.
-> 
-> This fixes the following lockdep splat:
-> 
-> [    5.349336] =============================
-> [    5.353349] [ BUG: Invalid wait context ]
-> [    5.357361] 6.13.0-rc5+ #69 Tainted: G        W
-> [    5.363031] -----------------------------
-> [    5.367045] kworker/u17:1/44 is trying to lock:
-> [    5.371587] ffffff88018b02c0 (&chip->gpio_lock){....}-{3:3}, at: xgpio_irq_unmask (drivers/gpio/gpio-xilinx.c:433 (discriminator 8))
-> [    5.380079] other info that might help us debug this:
-> [    5.385138] context-{5:5}
-> [    5.387762] 5 locks held by kworker/u17:1/44:
-> [    5.392123] #0: ffffff8800014958 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work (kernel/workqueue.c:3204)
-> [    5.402260] #1: ffffffc082fcbdd8 (deferred_probe_work){+.+.}-{0:0}, at: process_one_work (kernel/workqueue.c:3205)
-> [    5.411528] #2: ffffff880172c900 (&dev->mutex){....}-{4:4}, at: __device_attach (drivers/base/dd.c:1006)
-> [    5.419929] #3: ffffff88039c8268 (request_class#2){+.+.}-{4:4}, at: __setup_irq (kernel/irq/internals.h:156 kernel/irq/manage.c:1596)
-> [    5.428331] #4: ffffff88039c80c8 (lock_class#2){....}-{2:2}, at: __setup_irq (kernel/irq/manage.c:1614)
-> [    5.436472] stack backtrace:
-> [    5.439359] CPU: 2 UID: 0 PID: 44 Comm: kworker/u17:1 Tainted: G        W          6.13.0-rc5+ #69
-> [    5.448690] Tainted: [W]=WARN
-> [    5.451656] Hardware name: xlnx,zynqmp (DT)
-> [    5.455845] Workqueue: events_unbound deferred_probe_work_func
-> [    5.461699] Call trace:
-> [    5.464147] show_stack+0x18/0x24 C
-> [    5.467821] dump_stack_lvl (lib/dump_stack.c:123)
-> [    5.471501] dump_stack (lib/dump_stack.c:130)
-> [    5.474824] __lock_acquire (kernel/locking/lockdep.c:4828 kernel/locking/lockdep.c:4898 kernel/locking/lockdep.c:5176)
-> [    5.478758] lock_acquire (arch/arm64/include/asm/percpu.h:40 kernel/locking/lockdep.c:467 kernel/locking/lockdep.c:5851 kernel/locking/lockdep.c:5814)
-> [    5.482429] _raw_spin_lock_irqsave (include/linux/spinlock_api_smp.h:111 kernel/locking/spinlock.c:162)
-> [    5.486797] xgpio_irq_unmask (drivers/gpio/gpio-xilinx.c:433 (discriminator 8))
-> [    5.490737] irq_enable (kernel/irq/internals.h:236 kernel/irq/chip.c:170 kernel/irq/chip.c:439 kernel/irq/chip.c:432 kernel/irq/chip.c:345)
-> [    5.494060] __irq_startup (kernel/irq/internals.h:241 kernel/irq/chip.c:180 kernel/irq/chip.c:250)
-> [    5.497645] irq_startup (kernel/irq/chip.c:270)
-> [    5.501143] __setup_irq (kernel/irq/manage.c:1807)
-> [    5.504728] request_threaded_irq (kernel/irq/manage.c:2208)
-> 
-> [...]
-
-Applied, thanks!
-
-[1/1] gpio: xilinx: Convert gpio_lock to raw spinlock
-      commit: 9860370c2172704b6b4f0075a0c2a29fd84af96a
-
-Best regards,
--- 
-Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+--=20
+Nobuhiro Iwamatsu
+   iwamatsu at {nigauri.org / debian.org / kernel.org}
+   GPG ID: 32247FBB40AD1FA6
 
