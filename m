@@ -1,181 +1,189 @@
-Return-Path: <stable+bounces-108623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 541DAA10C51
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:32:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6267BA10C73
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:38:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E9E57A1023
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 16:31:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72528167E5E
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 16:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02F017CA12;
-	Tue, 14 Jan 2025 16:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B2D1C3C0A;
+	Tue, 14 Jan 2025 16:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="Zj8zAh65"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Hg5brhCR"
 X-Original-To: stable@vger.kernel.org
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19BF1D5145;
-	Tue, 14 Jan 2025 16:31:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADE51885BF
+	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 16:38:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736872296; cv=none; b=U3UbcQJeGiQhd7HTLv/PSG9i1wMO/6JCvRPsy4PWiWslHy2axpQkyg32n6JyPjtXoKjyMPorJkfZvW/mBjfAnzkfYsDhvrJhtxUQO0HcXqIRvsGeZ7Zsp/10JNctMbheMzCfjiWckmtNqk2zpxA18Gu8GQFLFQgKn6LtHYdYIqI=
+	t=1736872731; cv=none; b=pkjClhVY37ootthfkIKKRnkkwaJI+L+Pc8icf/y7ZWLGSTpWCrDoob/fMXhrWSlRqJB77ihrOyN0Z8GENFI1VQ5toc0blT57bkd+oh9yJdzNpplVKPvrwuhw7Uge2Wfd1rWbpWwdmC+Ao0Np5N4qA1K7teHMytZiqX1DpaJhxSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736872296; c=relaxed/simple;
-	bh=GliCZdjc9UMRvHhc1En8aKi7hYaY/62aGAlKZEHFeoE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nt1lIgy49xZWAehrJz3jfurJtw8uYOIAlXnYPJZq8i4aBMmF5EnLR7dLq/lRMlFvzYFEz5LQ50M2cvyf3+V9TPyYwpmRbhIV/xhK9Hqy7qIuz5Wg+nH1ByopaNKnPxALXtRyP7Ggb+UWwa760dbLX9TER8s/erooeEe4f20+gxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=Zj8zAh65; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1tXjp3-00Gv4F-L7; Tue, 14 Jan 2025 17:31:21 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
-	bh=uc3P+aW58p1Wgl/FgiobWz7JZg3jTcWFJd6qr34VHyM=; b=Zj8zAh65jD1PreEiamMYVyGj2V
-	gVX5tchbNSM3Wv6Gbf12HUK9JCzyI2AeruIo25+HSbn3Qznzgu2mQ/0iFOtRy5SAV5/TFkMqXAQZ1
-	jWyhuoFcmKk2fyu+x36pLL6N2MWU6QAYB9pipAkxN1F/c0zcLbKV60O1kqVrr42NEwXkCXEdklOY8
-	kktFdnhdJqFuw+GpAIC+BMjvd19B08h220kQ4FdH7kvxA6ZlHMnKXUaToaVFB/srDG25lPBfT7p/c
-	DAxbe9IyFAL4NkWOG3gsimEY0TV5O5uEgj08MQQkPdFs0VQ7LkT29uAhr7DDwa2GZ9mj1HPWGscdG
-	CdAE0uvA==;
-Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1tXjp2-00007d-B3; Tue, 14 Jan 2025 17:31:20 +0100
-Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1tXjor-003bqh-Vn; Tue, 14 Jan 2025 17:31:10 +0100
-Message-ID: <fb6f876f-a4eb-4005-bd76-fff0632291b8@rbox.co>
-Date: Tue, 14 Jan 2025 17:31:08 +0100
+	s=arc-20240116; t=1736872731; c=relaxed/simple;
+	bh=8J9spKbZzL/OeiU/zohYEG6lwuij5+tYc504L7SdpAI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=naCzex1ACI3UIpZvAa62XYrYFawAlYBHWf2SvUF4qsRFGXWb4EsgUaADWzjBBAhJjCJrGSQuzsp06bExmsoK8vNAxbO1sWvLXqyIPyEM3j6F9v7eKZD3vgRs5P/fhYVNlhl4WlANy4bRq5/uC1BGarVbTO4ZXLgJUM6QPIUX6RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Hg5brhCR; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-467896541e1so289751cf.0
+        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 08:38:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1736872729; x=1737477529; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5PExLh+VadLSZ/QEUDqe8VtyDXluJrgkbId1fgASES0=;
+        b=Hg5brhCR/0NZcOqFMFAetAehc3l7xjEmFSz7iesDrpebppjWi+aR8TNXKZxhhtcgyB
+         7WrC87fzwl7HuKo1fIYVH5RZVhOCGEMPgjsrQGMhBp7CM6yfha1pwajUBgoQk8GS+e5k
+         9Ze2ejjrC9Au+TB0s7eiT5IP0T5vGoD92vzuqxv++F83CGymJSnWu6Ov3fOBLrPZCbni
+         WaXC7x2C+Wz2UEKz331M+MwYt9Ugezrpbhh/OWjH1DH83wPtBdxhpeSyA6U8Mfbnv6zm
+         4bXKfDQxZArrV4bZoJ1y8Th0/gHVONmYovj3JE1y91awmPvtryu11NI2+u/q1GGZmmN6
+         Hstg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736872729; x=1737477529;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5PExLh+VadLSZ/QEUDqe8VtyDXluJrgkbId1fgASES0=;
+        b=wJbteqKXRoQdNo5UB5CYDIYEel5iisXLW/eyfXvPVV9TbbtIKlpGuuV54C2KnmRVXU
+         VTWd9oYYKRpBpKZSSxBhEH/voIMlLxZ2yggWvytgMl4Ida+B3C6F7C8xP/6k3qgi/+l2
+         eQqn7JGeueEbZAHt9z1lETLW+RlUltqe58AvdwJNupd4XtXO+1UljAoFlJvCBo2yX+Uk
+         WL3R/Vfn7Q69gc299J9YO+FXkAXEhTJ3wIDVlg2fTFO463KFka6vm3GoGZ08XwohB72L
+         FETmxg8pXkomzTyGQh5m9IwxlOXf4UBl/hBJWmT/SukKBqXC6HdKhCHK7oJIFAacnLFV
+         C6SA==
+X-Forwarded-Encrypted: i=1; AJvYcCXlA16xjrfOIGGPBCEo4htGcERxewSw2KvaA+eOjVN8oQJIONMIvPoPcYxfURMI+3VX12u01v4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLzK3Y/xbLW6vwpDFLmLXWPFP81vrADGlwog0nBqYnU00UC237
+	4cmJrq7qWte4yrm3nl9po1+J4wyslWI/KEyeOp/3Ip9d7f766sX398g4h4XIwJIHsfmiQUzf85L
+	28NivEar9GI3wloh0NtyQVgSUk8bTe1gW5bzE
+X-Gm-Gg: ASbGncs8fIDCaMU7huFXuZxvbEXqUtxY5BoWjr8VrqkVpAy4Bg6NCY9oYR0T4EUb1b+
+	B3H5K7EpiPpzp7GXK5iLG3/8mAU6x9aZp9R1o9VeZZZT8jA77qjMFpiBupc2gtQzfBKIL
+X-Google-Smtp-Source: AGHT+IHULoMHUVr5U4+2d4sGP84Mlu3dznQTDIXfUSL5YZ711SpqNbK8AfpZrJprp8DDA4JlPKfMeP9NWf0hutEBxTs=
+X-Received: by 2002:a05:622a:15cb:b0:46d:e5e1:4087 with SMTP id
+ d75a77b69052e-46de9804f4dmr3293771cf.4.1736872728965; Tue, 14 Jan 2025
+ 08:38:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 1/5] vsock/virtio: discard packets if the transport
- changes
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
- Luigi Leonardi <leonardi@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, Wongi Lee <qwerty@theori.io>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Eric Dumazet <edumazet@google.com>,
- kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Simon Horman <horms@kernel.org>, Hyunwoo Kim <v4bel@theori.io>,
- Jakub Kicinski <kuba@kernel.org>, virtualization@lists.linux.dev,
- stable@vger.kernel.org
-References: <20250110083511.30419-1-sgarzare@redhat.com>
- <20250110083511.30419-2-sgarzare@redhat.com>
- <1aa83abf-6baa-4cf1-a108-66b677bcfd93@rbox.co>
- <nedvcylhjxrkmkvgugsku2lpdjgjpo5exoke4o6clxcxh64s3i@jkjnvngazr5v>
- <CAGxU2F7BoMNi-z=SHsmCV5+99=CxHo4dxFeJnJ5=q9X=CM3QMA@mail.gmail.com>
- <cccb1a4f-5495-4db1-801e-eca211b757c3@rbox.co>
- <nzpj4hc6m4jlqhcwv6ngmozl3hcoxr6kehoia4dps7jytxf6df@iqglusiqrm5n>
- <903dd624-44e5-4792-8aac-0eaaf1e675c5@rbox.co>
- <5nkibw33isxiw57jmoaadizo3m2p76ve6zioumlu2z2nh5lwck@xodwiv56zrou>
- <7de34054-10cf-45d0-a869-adebb77ad913@rbox.co>
- <n2itoh23kikzszzgmyejfwe3mdf6fmxzwbtyo5ahtxpaco3euq@osupldmckz7p>
-Content-Language: pl-PL, en-GB
-From: Michal Luczaj <mhal@rbox.co>
-In-Reply-To: <n2itoh23kikzszzgmyejfwe3mdf6fmxzwbtyo5ahtxpaco3euq@osupldmckz7p>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20241226211639.1357704-1-surenb@google.com> <20241226211639.1357704-2-surenb@google.com>
+ <20241226150127.73d1b2a08cf31dac1a900c1e@linux-foundation.org>
+ <CAJuCfpFSYqQ1LN0OZQT+jU=vLXZa5-L2Agdk1gzMdk9J0Zb-vg@mail.gmail.com>
+ <20241226162315.cbf088cb28fe897bfe1b075b@linux-foundation.org>
+ <CAJuCfpG_cbwFSdL5mt0_M_t0Ejc_P3TA+QGxZvHMAK1P+z7_BA@mail.gmail.com>
+ <20241226235900.5a4e3ab79840e08482380976@linux-foundation.org> <CAJuCfpHJ7D0oLfHYzb9jvktP4X6O=ySGe7CK7sZmVNpSnzDeiQ@mail.gmail.com>
+In-Reply-To: <CAJuCfpHJ7D0oLfHYzb9jvktP4X6O=ySGe7CK7sZmVNpSnzDeiQ@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 14 Jan 2025 08:38:37 -0800
+X-Gm-Features: AbW1kvbnlQb82XrF-Q6CEpwNlX1U0rhXcc5wFoFd5lawM3uKO28GFhJAoLV88cw
+Message-ID: <CAJuCfpHu=nzDNMSFUuxze7V8NDahKPgO6YdF7pk9W8VDC4ME4g@mail.gmail.com>
+Subject: Re: [PATCH 2/2] alloc_tag: skip pgalloc_tag_swap if profiling is disabled
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: kent.overstreet@linux.dev, yuzhao@google.com, 00107082@163.com, 
+	quic_zhenhuah@quicinc.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 1/14/25 11:16, Stefano Garzarella wrote:
-> On Tue, Jan 14, 2025 at 01:09:24AM +0100, Michal Luczaj wrote:
->> On 1/13/25 16:01, Stefano Garzarella wrote:
->>> On Mon, Jan 13, 2025 at 02:51:58PM +0100, Michal Luczaj wrote:
->>>> On 1/13/25 12:05, Stefano Garzarella wrote:
->>>>> ...
->>>>> An alternative approach, which would perhaps allow us to avoid all this,
->>>>> is to re-insert the socket in the unbound list after calling release()
->>>>> when we deassign the transport.
->>>>>
->>>>> WDYT?
->>>>
->>>> If we can't keep the old state (sk_state, transport, etc) on failed
->>>> re-connect() then reverting back to initial state sounds, uhh, like an
->>>> option :) I'm not sure how well this aligns with (user's expectations of)
->>>> good ol' socket API, but maybe that train has already left.
->>>
->>> We really want to behave as similar as possible with the other sockets,
->>> like AF_INET, so I would try to continue toward that train.
->>
->> I was worried that such connect()/transport error handling may have some
->> user visible side effects, but I guess I was wrong. I mean you can still
->> reach a sk_state=TCP_LISTEN with a transport assigned[1], but perhaps
->> that's a different issue.
->>
->> I've tried your suggestion on top of this series. Passes the tests.
-> 
-> Great, thanks!
-> 
->>
->> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->> index fa9d1b49599b..4718fe86689d 100644
->> --- a/net/vmw_vsock/af_vsock.c
->> +++ b/net/vmw_vsock/af_vsock.c
->> @@ -492,6 +492,10 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
->> 		vsk->transport->release(vsk);
->> 		vsock_deassign_transport(vsk);
->>
->> +		vsock_addr_unbind(&vsk->local_addr);
->> +		vsock_addr_unbind(&vsk->remote_addr);
-> 
-> My only doubt is that if a user did a specific bind() before the
-> connect, this way we're resetting everything, is that right?
+On Fri, Dec 27, 2024 at 9:28=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
+>
+> On Thu, Dec 26, 2024 at 11:59=E2=80=AFPM Andrew Morton
+> <akpm@linux-foundation.org> wrote:
+> >
+> > On Thu, 26 Dec 2024 16:56:00 -0800 Suren Baghdasaryan <surenb@google.co=
+m> wrote:
+> >
+> > > On Thu, Dec 26, 2024 at 4:23=E2=80=AFPM Andrew Morton <akpm@linux-fou=
+ndation.org> wrote:
+> > > >
+> > > > On Thu, 26 Dec 2024 15:07:39 -0800 Suren Baghdasaryan <surenb@googl=
+e.com> wrote:
+> > > >
+> > > > > On Thu, Dec 26, 2024 at 3:01=E2=80=AFPM Andrew Morton <akpm@linux=
+-foundation.org> wrote:
+> > > > > >
+> > > > > > On Thu, 26 Dec 2024 13:16:39 -0800 Suren Baghdasaryan <surenb@g=
+oogle.com> wrote:
+> > > > > >
+> > > > > > > When memory allocation profiling is disabled, there is no nee=
+d to swap
+> > > > > > > allocation tags during migration. Skip it to avoid unnecessar=
+y overhead.
+> > > > > > >
+> > > > > > > Fixes: e0a955bf7f61 ("mm/codetag: add pgalloc_tag_copy()")
+> > > > > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > > > > > > Cc: stable@vger.kernel.org
+> > > > > >
+> > > > > > Are these changes worth backporting?  Some indication of how mu=
+ch
+> > > > > > difference the patches make would help people understand why we=
+'re
+> > > > > > proposing a backport.
+> > > > >
+> > > > > The first patch ("alloc_tag: avoid current->alloc_tag manipulatio=
+ns
+> > > > > when profiling is disabled") I think is worth backporting. It
+> > > > > eliminates about half of the regression for slab allocations when
+> > > > > profiling is disabled.
+> > > >
+> > > > um, what regression?  The changelog makes no mention of this.  Plea=
+se
+> > > > send along a suitable Reported-by: and Closes: and a summary of the
+> > > > benefits so that people can actually see what this patch does, and =
+why.
+> > >
+> > > Sorry, I should have used "overhead" instead of "regression".
+> > > When one sets CONFIG_MEM_ALLOC_PROFILING=3Dy, the code gets instrumen=
+ted
+> > > and even if profiling is turned off, it still has a small performance
+> > > cost minimized by the use of mem_alloc_profiling_key static key. I
+> > > found a couple of places which were not protected with
+> > > mem_alloc_profiling_key, which means that even when profiling is
+> > > turned off, the code is still executed. Once I added these checks, th=
+e
+> > > overhead of the mode when memory profiling is enabled but turned off
+> > > went down by about 50%.
+> >
+> > Well, a 50% reduction in a 0.0000000001% overhead ain't much.
+>
+> I wish the overhead was that low :)
+>
+> I ran more comprehensive testing on Pixel 6 on Big, Medium and Little cor=
+es:
+>
+>                  Overhead before fixes            Overhead after fixes
+>                  slab alloc      page alloc          slab alloc      page=
+ alloc
+> Big               6.21%           5.32%                3.31%          4.9=
+3%
+> Medium       4.51%           5.05%                3.79%          4.39%
+> Little            7.62%           1.82%                6.68%          1.0=
+2%
 
-That is right.
+Hi Andrew,
+I just noticed that you added the above results to the description of
+this patch in mm-unstable: 366507569511 ("alloc_tag: skip
+pgalloc_tag_swap if profiling is disabled") but this improvement is
+mostly caused the the other patch in this series: 80aded2b9492
+("alloc_tag: avoid current->alloc_tag manipulations when profiling is
+disabled"). If this is not too much trouble, could you please move it
+into the description of the latter patch?
+Thanks,
+Suren.
 
-But we aren't changing much. Transport release already removes vsk from
-vsock_bound_sockets. So even though vsk->local_addr is untouched (i.e.
-vsock_addr_bound() returns `true`), vsk can't be picked by
-vsock_find_bound_socket(). User can't bind() it again, either.
-
-And when patched as above: bind() works as "expected", but socket is pretty
-much useless, anyway. If I'm correct, the first failing connect() trips
-virtio_transport_recv_connecting(), which sets `sk->sk_err`. I don't see it
-being reset. Does the vsock suppose to keep sk_err state once set?
-
-Currently only AF_VSOCK throws ConnectionResetError:
-```
-from socket import *
-
-def test(family, addr):
-	s = socket(family, SOCK_STREAM)
-	assert s.connect_ex(addr) != 0
-
-	lis = socket(family, SOCK_STREAM)
-	lis.bind(addr)
-	lis.listen()
-	s.connect(addr)
-
-	p, _ = lis.accept()
-	p.send(b'x')
-	assert s.recv(1) == b'x'
-
-test(AF_INET, ('127.0.0.1', 2000))
-test(AF_UNIX, '\0/tmp/foo')
-test(AF_VSOCK, (1, 2000)) # VMADDR_CID_LOCAL
-```
-
-> Maybe we need to look better at the release, and prevent it from
-> removing the socket from the lists as you suggested, maybe adding a
-> function in af_vsock.c that all transports can call.
-
-I'd be happy to submit a proper patch, but it would be helpful to decide
-how close to AF_INET/AF_UNIX's behaviour is close enough. Or would you
-rather have that UAF plugged first?
-
+>
+>
+> > But I
+> > added the final sentence to the changelog.
+> >
+> > It still doesn't tell us the very simple thing which we're all eager to
+> > know: how much faster did the kernel get??
 
