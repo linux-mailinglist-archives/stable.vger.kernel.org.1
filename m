@@ -1,328 +1,151 @@
-Return-Path: <stable+bounces-108630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BB34A10DD2
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 18:31:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A879A10E29
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 18:49:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AD063A49F7
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:31:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7807A1888A6B
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A821CB9EA;
-	Tue, 14 Jan 2025 17:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F409C1EE7AC;
+	Tue, 14 Jan 2025 17:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="YY2HPNj+"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1WKTnpll"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04D81CEAC9
-	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 17:31:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E82D16F265
+	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 17:49:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736875892; cv=none; b=HBhBUVLqOlrVupJDbGc05wQZ3VPNFzPg86CsP3HgAamFFZjHx0VqEoC6EWYg7iTY1eyAyd9Uju0nfPYqSRZ7lex7bl6AIsrqCqDAH+6OUbRjxjxohzKdFOIsua76v+i8f6VB9Axl5oJOc26m+MLjCifHizqo53/+tWdA5OuqCOw=
+	t=1736876957; cv=none; b=KXGwsWGMvL11lX/sZufBzBK5tgBTOmp0BAa6mHDqHg+vpjhH1fuFSGYTTSa84twP69WreWG4a/2Gbd+U7TjrPdDD664PHH31vRKgvuKNjdSyvqa3ZakjdGKKHJ+v2i6W5YXIPgErbx8RlP90mL2VsdzZddq0uO1L4Jl4ptygDpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736875892; c=relaxed/simple;
-	bh=jVflTgZ3FOBz6schQaT1OyG5KxtauCe2OLeQIRdgPuU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hLhIiqh6wvPXmX78HbeoCA3DWx3QI4D1PJAXbV3MRhA8i3HeV7wNFWKXWyOfH7zsZweGyCINKBI5MV32g4xPHBbObUxsDErgLZgPFg/v7NbO8u73tQf4drsI6/i4eZFnERnJswm8slMfbFSPww61EDLR0vNf0KbGBE9YM0ie3/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=YY2HPNj+; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-aaf0f1adef8so1216295966b.3
-        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 09:31:30 -0800 (PST)
+	s=arc-20240116; t=1736876957; c=relaxed/simple;
+	bh=+z7ZnXqzo+JwTlyzEMh+aCsl6hsl7DxqJLFJMsWnKp0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Ji1canmDkxnzkS0XAEV02Cbao2GS+WbtxfAr74lfqPkpdJ9xhGk8z87njM+P0GwHAtygJTDozj14O5+b8NbgNuXG/cw4lH0dFlNkIVlMrDgmHYvoKcFEo5g/rWJKSd1flJPx7/63l3gL3HSE7NLTlutJkno41m8/cpQip10qwTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1WKTnpll; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-435b0df5dbdso69775e9.0
+        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 09:49:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1736875889; x=1737480689; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=l+t+O4kXNvzNulYskbcr1Hqf6WMft5z4Yng45ms/3No=;
-        b=YY2HPNj+jHpteCYKT8OZQSMVey12cAnLtSk1VunhO2qrpSlNLIjohfMwVfwetHsZms
-         5zWOtsCMaLtglk3D1ByMpuXDpoVjE/CYfN5MPGYUzv2TvP/7o5SnfL7UuM5hx97002Ir
-         hHxkFQw0JQLlZZUhCJaklKyFTtPd+CI9mT1xc=
+        d=google.com; s=20230601; t=1736876954; x=1737481754; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y/EhUj+Z89V6RZrUYPhJfVMhULBGhnCEDRDY/TBf0Dc=;
+        b=1WKTnpllxHYy9OCIJZeUAvXCuCLQWGMUHrC2mkU10FGafHBRZnVpdxREume+4AkVzU
+         UOWZAoxjSZZwd5jEa0uuUwZp4iXzlF7cGQL1fm0JX0Ar2N7a2iZO+BKRywd6QfpMyI9e
+         NkphNXdhLBo8EVL5J8gegaDwIOkPgSRFa0Ia48U1ZMCjyUeOr2TJ4ini0P12HVVktzoe
+         3nbtK4OulmZVg7OaOgfqhF8kH4y+Hu8ySGC5pb+L6vpYBPz3edVTBefzUD7EoB8zHr9O
+         dWkdmg7hug1BiLJvJeb+kyMyYocQVm1h5uLsYft1L9SOLh6su4BeeiqQh0CbHvYzPX34
+         4gag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736875889; x=1737480689;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l+t+O4kXNvzNulYskbcr1Hqf6WMft5z4Yng45ms/3No=;
-        b=Va/3kLbauLLwzmMOgGx5jUK3ppPX7anTdlNrc8HYoszZWHKu3yUcWdL6BfHrOxHCvx
-         M/QJpvJOwjbi1T/VjFv3RpCSt9tCVA6/XKGNd3zy310x5YBGZyqhh0ydZRTvRFNlVm0n
-         HtHC63bk7qJwpW3i8mwUcLc+/B/HnqGMwK1SDgvt7k5xx7NydYoR2T5GCzDnrfUYd4II
-         Lv0Z2VTpgCx46KJ/05hTmhHrtuTYzqGvNNoJ8t3C6+LbLvwjXFhRAODY0N2e1BZyVk78
-         OkdxT6ZR7NxFnyULAg0B0RAcVZy9PzDxauownY+GLi89DVVeCFJWZNjGfU99MhMBStVh
-         TBfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWa3V6Ns6xuxvWXMwASUXkUzx/hGqemBakrHuH/NrrHya435LCStu+xEeNAEfJPprIW8xmksoA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywc+a8rcMdUulk/jihT0rMoQX9qI0/ZYozpfXNqsY/o6kmG0Ml+
-	Wak0/V8WfzBUsbNnK5GELU+V7Ek31SiQUQTGgUcE6P8MsaCy36BvlufApJlKfA4=
-X-Gm-Gg: ASbGncsCW9aaSoSx/Bp0LuOODBlzAOaE8acLsNNpR+JkhjR7iCoKnPSoV//JOx3ecz7
-	nxeWgbrny4m5b/vbCyhWFVwiIpp0gbYrWJ6EAxdne3bO5BzwUHuXoGzkFYX2bRDIjQTYRe7PxHV
-	9rUkwhtDaeSlCE2M8rAvn6N/5N+CGH6XyVfkvyLbAwzArIre8pgbdH3KCnT+LunfOaS7MHoeLiK
-	u+7U9Nsh9/igWLcNPuHH0A0rdyqKV+SIyHRwoh8F1HR13+444wE2sgjvfQf8xu+yFdE
-X-Google-Smtp-Source: AGHT+IEGoBDIAgYJBWrIFzFgdgMonC8p8M2XuZgFYsuIxX1JE2o2qpu4KNnmUX+avPDlgC6gqCFjhg==
-X-Received: by 2002:a17:907:6093:b0:ab3:47ca:2ece with SMTP id a640c23a62f3a-ab347ca9c1cmr86818366b.8.1736875888913;
-        Tue, 14 Jan 2025 09:31:28 -0800 (PST)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c95b1d53sm649888466b.152.2025.01.14.09.31.28
+        d=1e100.net; s=20230601; t=1736876954; x=1737481754;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Y/EhUj+Z89V6RZrUYPhJfVMhULBGhnCEDRDY/TBf0Dc=;
+        b=j/wdRS559pqib77UlXnxAX+nNqS5OzqiccoS6hdeLYiTc+1kE44tUriNlMlTpIli72
+         njFFXmqpINauCeN0ckYKCW+Pr3o9sudGmamj9guws1JRb5xmuHddKTfhetU5IlChnqM8
+         BqVWo4LLtA28m+3ZJhPXsWnaujJdhZh5+TyLNcUX/lbRBU8a/zu7mV4AecO2Q9PhLNV/
+         Xjx7VLmh0K3gLrHhmAFJVrP1bJI/LxL13YCSkLAWXw9Aol0wIRuajIPgG6vyAdqSWwpY
+         sPxUnXsJMKQl+GT4sZjgsArhcSU8AQsclmB/IAGyZLEUMCorrqRMBXwI7F5ip/Ys93Qj
+         sfow==
+X-Forwarded-Encrypted: i=1; AJvYcCVCFJlbOoafjDpQLVqwNmDImAQM8vE4J5b2HehgZcwRI0gjaEIydttFN1evBoxuFvgcMqZItG0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMeQGzCDNzIxDgeILqfgSl5MHfI7ucwTqT9FEvxluGjtr/UaPb
+	lnMCUNyl2qvzi3UTWcGLPzxIXlqsCYZmijCfTNDys1PLrXeIv2SO7qnxqzZlDA==
+X-Gm-Gg: ASbGncuWuzgCLGmfU0efcY7iZ5y9HbjpNHiVVcM61kFfNcoNczrDZTyIpDJrSkXp8DP
+	Fgt0sW4QTVt0ZVQXcNnhdreG9u2ocjmRe/Ow8v/DBM1kFhekdm+JfI4o9SdLhK80IcFz0/G0h7u
+	4NySzWdmUOTswNH6OZ/0RddM5a8iyUb06L2fCHGxeDWIxapib+0F9PnpLnuCsnWPRoACA1TwdFN
+	Ni7IOY+wDtZCIj3xpDB4DVE4lPV/FsXlll5DVaH5qwing==
+X-Google-Smtp-Source: AGHT+IHB5PEFMbygc74F/+oeDv4I6J+5PXKLGLeXGDUSZBKuRtqQ+Nu5FLfyHIAgxEZOSAQ6TxIaRQ==
+X-Received: by 2002:a05:600c:1c26:b0:436:186e:13a6 with SMTP id 5b1f17b1804b1-437735f9974mr1504555e9.6.1736876953451;
+        Tue, 14 Jan 2025 09:49:13 -0800 (PST)
+Received: from localhost ([2a00:79e0:9d:4:f0c9:ad9d:2327:39f5])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e9d8fd03sm188665915e9.6.2025.01.14.09.49.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 09:31:28 -0800 (PST)
-Date: Tue, 14 Jan 2025 18:31:26 +0100
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>, Dave Airlie <airlied@gmail.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-	stable@vger.kernel.org, ashutosh.dixit@intel.com,
-	dri-devel@lists.freedesktop.org
-Subject: Re: AAARRRGGGHHH!!!! (was Re: [PATCH 6.12.y] xe/oa: Fix query mode
- of operation for OAR/OAC)
-Message-ID: <Z4afbuFN1uc3zhOt@phenom.ffwll.local>
-References: <20250110205341.199539-1-umesh.nerlige.ramappa@intel.com>
- <2025011215-agreeing-bonfire-97ae@gregkh>
- <CAPM=9txn1x5A7xt+9YQ+nvLaQ3ycekC1Oj4J2PUpWCJwyQEL9w@mail.gmail.com>
- <CAPM=9twogjmTCc=UHBYkPPkrdHfm0PJ9VDoOg+X2jWZbdjVBww@mail.gmail.com>
- <2025011247-spoilage-hamster-28b2@gregkh>
- <CAPM=9tx1cFzhaZNz=gQOmP9Q0KEK5fMKZYSc-P0xA_f2sxoZ9w@mail.gmail.com>
- <2025011352-fox-wrangle-4d3f@gregkh>
- <CAPM=9tzkJ=dn2gq7GcvtN_C95ZzxwC7XMMXHBrwF6Ez6fYfU=g@mail.gmail.com>
- <Z4Z8rQKR2QEaWNyI@phenom.ffwll.local>
- <Z4aIGvAmMld_uztJ@lappy>
+        Tue, 14 Jan 2025 09:49:12 -0800 (PST)
+From: Jann Horn <jannh@google.com>
+Date: Tue, 14 Jan 2025 18:49:00 +0100
+Subject: [PATCH] io_uring/rsrc: require cloned buffers to share accounting
+ contexts
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z4aIGvAmMld_uztJ@lappy>
-X-Operating-System: Linux phenom 6.12.3-amd64 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250114-uring-check-accounting-v1-1-42e4145aa743@google.com>
+X-B4-Tracking: v=1; b=H4sIAIujhmcC/x2MWwqAIBAArxL7naC96yrRR22rLYGFVgTh3bM+Z
+ 2DmAU+OyUOXPODoYs+bjaDSBHAZrSHBc2TIZFZKpQpxOrZG4EK4ihFxO+3xiSIvK91MrcK8hhj
+ vjjTf/7gfQngBZfYV3mgAAAA=
+X-Change-ID: 20250114-uring-check-accounting-4356f8b91c37
+To: Jens Axboe <axboe@kernel.dk>, Pavel Begunkov <asml.silence@gmail.com>, 
+ io-uring@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Jann Horn <jannh@google.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1736876949; l=1948;
+ i=jannh@google.com; s=20240730; h=from:subject:message-id;
+ bh=+z7ZnXqzo+JwTlyzEMh+aCsl6hsl7DxqJLFJMsWnKp0=;
+ b=rT6imj0L69M67jWPfzUa4j3r15LHqo9N/M1tgoPDIYs3PyYjjQaqkzUMEUM0rjLK+d71yUF7K
+ VfBwaaiceztBH5kuBGGFABgLUxRisIXDO9iYv6BJm4AvG3e4CrZlc3M
+X-Developer-Key: i=jannh@google.com; a=ed25519;
+ pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
 
-On Tue, Jan 14, 2025 at 10:51:54AM -0500, Sasha Levin wrote:
-> On Tue, Jan 14, 2025 at 04:03:09PM +0100, Simona Vetter wrote:
-> > On Tue, Jan 14, 2025 at 11:01:34AM +1000, Dave Airlie wrote:
-> > > > > > We create a "web" when we backport commits, and mark things for "Fixes:"
-> > > > > > When we get those ids wrong because you all have duplicate commits for
-> > > > > > the same thing, everything breaks.
-> > > > > >
-> > > > > > > I just don't get what the ABI the tools expect is, and why everyone is
-> > > > > > > writing bespoke tools and getting it wrong, then blaming us for not
-> > > > > > > conforming. Fix the tools or write new ones when you realise the
-> > > > > > > situation is more complex than your initial ideas.
-> > > > > >
-> > > > > > All I want to see and care about is:
-> > > > > >
-> > > > > >  - for a stable commit, the id that the commit is in Linus's tree.
-> > > > > >  - for a Fixes: tag, the id that matches the commit in Linus's tree AND
-> > > > > >    the commit that got backported to stable trees.
-> > > > > >
-> > > > > > That's it, that's the whole "ABI".  The issue is that you all, for any
-> > > > > > number of commits, have 2 unique ids for any single commit and how are
-> > > > > > we supposed to figure that mess out...
-> > > > >
-> > > > > Pretty sure we've explained how a few times now, not sure we can do much more.
-> > > >
-> > > > And the same for me.
-> > > >
-> > > > > If you see a commit with a cherry-pick link in it and don't have any
-> > > > > sight on that commit in Linus's tree, ignore the cherry-pick link in
-> > > > > it, assume it's a future placeholder for that commit id. You could if
-> > > > > you wanted to store that info somewhere, but there shouldn't be a
-> > > > > need.
-> > > >
-> > > > Ok, this is "fine", I can live with it.  BUT that's not the real issue
-> > > > (and your own developers get confused by this, again, look at the
-> > > > original email that started this all, they used an invalid git id to
-> > > > send to us thinking that was the correct id to use.)
-> > > 
-> > > I'm going to go back and look at the one you pointed out as I'm
-> > > missing the issue with it, I thought it was due to a future ID being
-> > > used.
-> > 
-> > I think the issue is that with the cherry-picking we do, we don't update
-> > the Fixes: or Reverts: lines, so those still point at the og commit in
-> > -next, while the cherry-picked commit is in -fixes.
-> > 
-> > The fix for that (which our own cherry-pick scripts implement iirc) is to
-> > keep track of the cherry-picks (which is why we add that line) and treat
-> > them as aliases.
-> > 
-> > So if you have a Fixes: $sha1 pointing at -next, then if you do a
-> > full-text commit message search for (cherry picked from $sha1), you should
-> > be able to find it.
-> > 
-> > We could try to do that lookup with the cherry-pick scripts, but a lot of
-> > folks hand-roll these, so it's lossy at best. Plus you already have to
-> > keep track of aliases anyway since you're cherry-picking to stable, so I
-> > was assuming that this shouldn't cause additional issues.
-> > 
-> > The other part is that if you already have a cherry picked from $sha1 in
-> > your history, even if it wasn't done with stable cherry-pick, then you
-> > don't have to cherry-pick again. These should be easy to filter out.
-> > 
-> > But maybe I'm also not understanding what the issue is, I guess would need
-> > to look at a specific example.
-> > 
-> > > > > When future tools are analysing things, they will see the patch from
-> > > > > the merge window, the cherry-picked patches in the fixes tree, and
-> > > > > stable will reference the fixes, and the fixes patch will reference
-> > > > > the merge window one?
-> > > >
-> > > >
-> > > > > but I think when we cherry-pick patches from -next that fix
-> > > > > other patches from -next maybe the fixes lines should be reworked to
-> > > > > reference the previous Linus tree timeline not the future one. not
-> > > > > 100% sure this happens? Sima might know more.
-> > > >
-> > > > Please fix this up, if you all can.  That is the issue here.  And again,
-> > > > same for reverts.
-> > > >
-> > > > I think between the two, this is causing many fixes and reverts to go
-> > > > unresolved in the stable trees.
-> > > >
-> > > > > Now previously I think we'd be requested to remove the cherry-picks
-> > > > > from the -fixes commits as they were referencing things not in Linus'
-> > > > > tree, we said it was a bad idea, I think we did it anyways, we got
-> > > > > shouted at, we put it back, we get shouted that we are referencing
-> > > > > commits that aren't in Linus tree. Either the link is useful
-> > > > > information and we just assume cherry-picks of something we can't see
-> > > > > are a future placeholder and ignore it until it shows up in our
-> > > > > timeline.
-> > > >
-> > > > I still think it's lunacy to have a "cherry pick" commit refer to a
-> > > > commit that is NOT IN THE TREE YET and shows up in history as "IN THE
-> > > > FUTURE".  But hey, that's just me.
-> > > >
-> > > > Why do you have these markings at all?  Who are they helping?  Me?
-> > > > Someone else?
-> > > 
-> > > They are for helping you. Again if the commit that goes into -next is immutable,
-> > > there is no way for it to reference the commit that goes into -fixes
-> > > ahead of it.
-> > > 
-> > > The commit in -fixes needs to add the link to the future commit in
-> > > -next, that link is the cherry-pick statement.
-> > > 
-> > > When you get the future commit into the stable queue, you look for the
-> > > commit id in stable history as a cherry-pick and drop it if it's
-> > > already there.
-> > > 
-> > > I can't see any other way to do this, the future commit id is a
-> > > placeholder in Linus/stable tree, the commit is immutable and 99.99%
-> > > of the time it will arrive at some future point in time.
-> > > 
-> > > I'm open to how you would make this work that isn't lunacy, but I
-> > > can't really see a way since git commits are immutable.
-> > 
-> > Yeah the (cherry picked from $sha1) with a sha1 that's in -next and almost
-> > always shows up in Linus' tree in the future shouldn't be an issue. That
-> > part really is required for driver teams to manage their flows.
-> > 
-> > > > > I think we could ask to not merge things into -next with stable cc'ed
-> > > > > but I think that will result in a loss of valuable fixes esp for
-> > > > > backporters.
-> > > >
-> > > > Again, it's the Fixes and Reverts id referencing that is all messed up
-> > > > here.  That needs to be resolved.  If it takes you all the effort to
-> > > > make up a special "stable tree only" branch/series/whatever, I'm all for
-> > > > it, but as it is now, what you all are doing is NOT working for me at
-> > > > all.
-> > > 
-> > > I'll have to see if anyone is willing to consider pulling this sort of
-> > > feat off, it's not a small task, and it would have to be 99% automated
-> > > I think to be not too burdensome.
-> > 
-> > It's not that hard to script, dim cherry-pick already does it. It's the
-> > part where we need to guarantee that we never ever let one slip through
-> > didn't get this treatment of replacing the sha1.
-> > 
-> > The even more insideous one is when people rebase their -next or -fixes
-> > trees, since then the sha1 will really never ever show up. Which is why
-> > we're telling people to not mess with git history at all and instead
-> > cherry-pick. It's the lesser pain.
-> 
-> But this does happen with cherry picks... A few examples from what I saw
-> with drivers/gpu/drm/ and -stable:
-> 
-> 5a507b7d2be1 ("drm/mst: Fix NULL pointer dereference at
-> drm_dp_add_payload_part2") which landed as 8a0a7b98d4b6 ("drm/mst: Fix
-> NULL pointer dereference at drm_dp_add_payload_part2") rather than
-> 4545614c1d8da.
+When IORING_REGISTER_CLONE_BUFFERS is used to clone buffers from uring
+instance A to uring instance B, where A and B use different MMs for
+accounting, the accounting can go wrong:
+If uring instance A is closed before uring instance B, the pinned memory
+counters for uring instance B will be decremented, even though the pinned
+memory was originally accounted through uring instance A; so the MM of
+uring instance B can end up with negative locked memory.
 
-This one also landed through Alex' tree, and before he switched over to
-cherry-pick -x and not trying to fix things up with rebasing. Because in
-theory rebasing bugfixes out of -next into -fixes avoids all that trouble,
-in practice it just causes a reliably even bigger mess.
+Cc: stable@vger.kernel.org
+Closes: https://lore.kernel.org/r/CAG48ez1zez4bdhmeGLEFxtbFADY4Czn3CV0u9d_TMcbvRA01bg@mail.gmail.com
+Fixes: 7cc2a6eadcd7 ("io_uring: add IORING_REGISTER_COPY_BUFFERS method")
+Signed-off-by: Jann Horn <jannh@google.com>
+---
+To be clear, I think this is a very minor issue, feel free to take your
+time landing it.
 
-> e89afb51f97a ("drm/vmwgfx: Fix a 64bit regression on svga3") which
-> landed as c2aaa37dc18f ("drm/vmwgfx: Fix a 64bit regression on svga3")
-> rather than 873601687598.
+I put a stable marker on this, but I'm ambivalent about whether this
+issue even warrants landing a fix in stable - feel free to remove the
+Cc stable marker if you think it's unnecessary.
+---
+ io_uring/rsrc.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-This one is from 2021. Iirc it's the case that motivated us to improve the
-commiter documentation and make it clear that only maintainers should do
-cherry-picks. Occasionally people don't know and screw up.
+diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
+index 077f84684c18a0b3f5e622adb4978b6a00353b2f..caecc18dd5be03054ae46179bc0918887bf609a4 100644
+--- a/io_uring/rsrc.c
++++ b/io_uring/rsrc.c
+@@ -931,6 +931,13 @@ static int io_clone_buffers(struct io_ring_ctx *ctx, struct io_ring_ctx *src_ctx
+ 	int i, ret, off, nr;
+ 	unsigned int nbufs;
+ 
++	/*
++	 * Accounting state is shared between the two rings; that only works if
++	 * both rings are accounted towards the same counters.
++	 */
++	if (ctx->user != src_ctx->user || ctx->mm_account != src_ctx->mm_account)
++		return -EINVAL;
++
+ 	/* if offsets are given, must have nr specified too */
+ 	if (!arg->nr && (arg->dst_off || arg->src_off))
+ 		return -EINVAL;
 
-> a829f033e966 ("drm/i915: Wedge the GPU if command parser setup fails")
-> which indicates it's a cherry-pick, but I couldn't find the equivalent
-> commit landing at any point later on.
-
-This one was a maintainer action by Dave and me, where we went in and
-rebased an entire -next tree. Also from 2021, even more exceptional than
-the "committer cherry-picked themselves and screwed up".
-
-I'm not saying that the cherry-pick model with committers is error free.
-Not at all. It's just in my experience substantially less error prone than
-anything else, it's simply the less shit option.
-
-Roughly the options are:
-
-- rebase trees to not have duplicated commits. Breaks the committer model,
-  pretty much guarantees that you have commit references to absolutely
-  nowhere at all in practice because people butcher rebases all the time.
-  Also pisses off Linus with unecessary rebases that don't reflect actual
-  development history.
-
-  Plus we'd insta run out of maintainers in drm if we do this.
-
-  I think this is also what Alex tried to do until very recently.
-
-- cherry-pick, but pretend it didn't happen. This means either people
-  perfectly fix up all tags (see above, doesn't happen in practice) or you
-  need to do title based guessing games. Plus you need to do title-based
-  guessing games with the duplicates anyway.
-
-- cherry-pick -x. You can actually handle this one with scripts and no
-  human shouting. Unless people forgot to use -x or screwed up something
-  else (which is why we have a script and docs). Which does happene, but
-  the two examples you've found for that flow are from 2021. There should
-  also be some that are more recent.
-
-- we give up on stable for drm.
-
-Cheers, Sima
-
-> Or the following 3 commits:
-> 
-> 0811b9e4530d ("drm/amd/display: Add HUBP surface flip interrupt
-> handler") which has a stable tag, and no cherry-pick line.
-> 
-> 4ded1ec8d1b3 ("drm/amd/display: Add HUBP surface flip interrupt
-> handler") which is a different code change than the previous commit, and
-> a completely different commit message, no stable tag, and no cherry-pick
-> line.
-> 
-> 7af87fc1ba13 ("drm/amd/display: Add HUBP surface flip interrupt
-> handler") which has the same code change as above, and it has the same
-> commit message as 4ded1ec8d1b3 but with an added stable tag, and again -
-> no cherry-pick line.
-> 
-> -- 
-> Thanks,
-> Sasha
+---
+base-commit: c45323b7560ec87c37c729b703c86ee65f136d75
+change-id: 20250114-uring-check-accounting-4356f8b91c37
 
 -- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Jann Horn <jannh@google.com>
+
 
