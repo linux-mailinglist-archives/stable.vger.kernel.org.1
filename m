@@ -1,291 +1,152 @@
-Return-Path: <stable+bounces-108574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A80A100F0
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 07:46:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1786BA10141
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 08:27:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72CFD1677F4
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 06:46:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1C3F3A67A9
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 07:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B0424633E;
-	Tue, 14 Jan 2025 06:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4675233156;
+	Tue, 14 Jan 2025 07:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="oHXqwOqP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JydE2mjS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4694423D3E8;
-	Tue, 14 Jan 2025 06:46:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2B4240235;
+	Tue, 14 Jan 2025 07:27:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736837190; cv=none; b=EZcsujdv9DEokvWg6N3E3exOkg0yEqgwyPrbOTUYQoow0iKnsv7qJ5mTTrI2RESAyoKLXqP2R9VULuXkcPsgVxqCRlqJs94Rbe7UC2JJTKfMvKhqu5Pfyfm0qK1WVjCBPQxSLDZSC8uFO5P+LT2RNoFt3YTF5LzwESmlk5p8YNc=
+	t=1736839650; cv=none; b=GS4mXkNTVwmh0/hMloiwev4LVya27/Ozld1tGpVOFTQcEPcilGlBdELC7LKEMC0GA8GBgf1f1+Ee1mGraL/27AYj3USw4HJx97ZL8HQinWLKLdQODLso5bdCPe8GHDa8773QYD+Ver9nvAX+dXcXMr9Hklg9MjCQkW3vSKQagQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736837190; c=relaxed/simple;
-	bh=2xm4KLJFaDiyQobrj72vwCl0ACQJNzeUVztug7/MrmU=;
-	h=Date:To:From:Subject:Message-Id; b=dgBINHil5ChfF22d9EeDXoK5ijCIZm4nOChEek85tzR9I+lid+Yo3uwmlf+Qvho+/MN0aVfzjBEPTl0sOwwtmFZgMpc0wmrt54jsPd8E/O1G6hZkFSosBkcC1s7JqzhWFHjo7XULC7Cf1cN67MabNCAOswTjwwsC1rtFNEYPeg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=oHXqwOqP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19611C4CEDF;
-	Tue, 14 Jan 2025 06:46:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1736837190;
-	bh=2xm4KLJFaDiyQobrj72vwCl0ACQJNzeUVztug7/MrmU=;
-	h=Date:To:From:Subject:From;
-	b=oHXqwOqPoRF1Ic/Aaw+jr5wwmgmpZLh6zzapWFk2Nz3G2fVjfVTdYuMYDHzBRO1Sg
-	 +wJHFHyuptANxNBuScT5tB+BcYs1NiDa1Ve6IKbsnik4PPRlQHRw9r2jPmucOKWo/j
-	 yh6JleH5NwAJKUIfdqfoQjZs+YMpnh0FEwZv/3tg=
-Date: Mon, 13 Jan 2025 22:46:29 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,roman.gushchin@linux.dev,riel@surriel.com,osalvador@suse.de,nao.horiguchi@gmail.com,muchun.song@linux.dev,leitao@debian.org,ackerleytng@google.com,peterx@redhat.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-hugetlb-fix-avoid_reserve-to-allow-taking-folio-from-subpool.patch removed from -mm tree
-Message-Id: <20250114064630.19611C4CEDF@smtp.kernel.org>
+	s=arc-20240116; t=1736839650; c=relaxed/simple;
+	bh=KJfe9nVlEn8D3imcOLIM2aumy8f4v35mSshgLI8XJhM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RI1uvAL8uXWTCS8CavdGHNxKkm17LI4kdL64VyIrfdy740nmJ/CTyx0OhLwqo+L1W5yYMsPZqSwNnmQ4kzYX+6Q1QWQASXUtlL4MpIH85cFgSspvM08WhFMSX+7V8xVqlhC4ix3Gk5iXXFhmqwmWTSeMdAkeWTl8NRfydrKXw/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JydE2mjS; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736839649; x=1768375649;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KJfe9nVlEn8D3imcOLIM2aumy8f4v35mSshgLI8XJhM=;
+  b=JydE2mjSyn+7BxXuVGoLQ5zanJkpq81GYkDpEpCeDrrmBJWpALOIjSQq
+   b/DlXXsC6sXgkleId77MSL+qgPCck80xYVzhyYPGP27jZX5CPxnEagHyw
+   pxHLcjuyoIylP3ubO+PLEAHIzzjhjjmhyTHoRdsg8derDXymx4W8tjHrk
+   AZnK1xYF7fML9O90MPRh12QhI5R/TGRqE+XeBYxaoibD0ia0ZELHDld2o
+   LcFsbVP3ChZEOP6meuQoNllA1OE5Xgk7mLyhNFrzpiSv4EftgPK+thFVp
+   BMjmN6M3MYw0VBG1niaVsHoAef5m1vc1GneLfb2ip9ptIVWBISzvaZRjf
+   Q==;
+X-CSE-ConnectionGUID: UTwq5YWcQCOgG9WRXrTVaw==
+X-CSE-MsgGUID: ufYZPSs5R5OdLAtWFIFuqA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="48505553"
+X-IronPort-AV: E=Sophos;i="6.12,313,1728975600"; 
+   d="scan'208";a="48505553"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2025 23:27:26 -0800
+X-CSE-ConnectionGUID: yfW+ptOYR5mGfoxEhg0Blg==
+X-CSE-MsgGUID: lzW8z/BNT229n2J3J5ggdA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,313,1728975600"; 
+   d="scan'208";a="105286103"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa009.fm.intel.com with ESMTP; 13 Jan 2025 23:27:20 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 773212A6; Tue, 14 Jan 2025 09:27:18 +0200 (EET)
+Date: Tue, 14 Jan 2025 09:27:18 +0200
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexei Starovoitov <ast@kernel.org>, 
+	Andrea Parri <parri.andrea@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Eric Chan <ericchancf@google.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Kai Huang <kai.huang@intel.com>, 
+	Kefeng Wang <wangkefeng.wang@huawei.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	Palmer Dabbelt <palmer@rivosinc.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Russell King <linux@armlinux.org.uk>, Samuel Holland <samuel.holland@sifive.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Yuntao Wang <ytcoode@gmail.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	stable@vger.kernel.org, Ashish Kalra <ashish.kalra@amd.com>, 
+	"Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: Re: [PATCHv3 2/2] x86/mm: Make memremap(MEMREMAP_WB) map memory as
+ encrypted by default
+Message-ID: <vuj7mlvkvazuz5noupusqt2bk42vjkr5lkgivnrub2nby4ma6y@7ezpclbirwcs>
+References: <20250113131459.2008123-1-kirill.shutemov@linux.intel.com>
+ <20250113131459.2008123-3-kirill.shutemov@linux.intel.com>
+ <1532becb-f2be-4458-5d34-77070f2c5e2d@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1532becb-f2be-4458-5d34-77070f2c5e2d@amd.com>
 
+On Mon, Jan 13, 2025 at 02:47:56PM -0600, Tom Lendacky wrote:
+> On 1/13/25 07:14, Kirill A. Shutemov wrote:
+> > Currently memremap(MEMREMAP_WB) can produce decrypted/shared mapping:
+> > 
+> > memremap(MEMREMAP_WB)
+> >   arch_memremap_wb()
+> >     ioremap_cache()
+> >       __ioremap_caller(.encrytped = false)
+> > 
+> > In such cases, the IORES_MAP_ENCRYPTED flag on the memory will determine
+> > if the resulting mapping is encrypted or decrypted.
+> > 
+> > Creating a decrypted mapping without explicit request from the caller is
+> > risky:
+> > 
+> >   - It can inadvertently expose the guest's data and compromise the
+> >     guest.
+> > 
+> >   - Accessing private memory via shared/decrypted mapping on TDX will
+> >     either trigger implicit conversion to shared or #VE (depending on
+> >     VMM implementation).
+> > 
+> >     Implicit conversion is destructive: subsequent access to the same
+> >     memory via private mapping will trigger a hard-to-debug #VE crash.
+> > 
+> > The kernel already provides a way to request decrypted mapping
+> > explicitly via the MEMREMAP_DEC flag.
+> > 
+> > Modify memremap(MEMREMAP_WB) to produce encrypted/private mapping by
+> > default unless MEMREMAP_DEC is specified.
+> > 
+> > Fix the crash due to #VE on kexec in TDX guests if CONFIG_EISA is enabled.
+> 
+> This patch causes my bare-metal system to crash during boot when using
+> mem_encrypt=on:
+> 
+> [    2.392934] efi: memattr: Entry type should be RuntimeServiceCode/Data
+> [    2.393731] efi: memattr: ! 0x214c42f01f1162a-0xee70ac7bd1a9c629 [type=2028324321|attr=0x6590648fa4209879]
 
-The quilt patch titled
-     Subject: mm/hugetlb: fix avoid_reserve to allow taking folio from subpool
-has been removed from the -mm tree.  Its filename was
-     mm-hugetlb-fix-avoid_reserve-to-allow-taking-folio-from-subpool.patch
+Could you try if this helps?
 
-This patch was dropped because it was merged into the mm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: Peter Xu <peterx@redhat.com>
-Subject: mm/hugetlb: fix avoid_reserve to allow taking folio from subpool
-Date: Tue, 7 Jan 2025 15:39:56 -0500
-
-Patch series "mm/hugetlb: Refactor hugetlb allocation resv accounting",
-v2.
-
-This is a follow up on Ackerley's series here as replacement:
-
-https://lore.kernel.org/r/cover.1728684491.git.ackerleytng@google.com
-
-The goal of this series is to cleanup hugetlb resv accounting, especially
-during folio allocation, to decouple a few things:
-
-  - Hugetlb folios v.s. Hugetlbfs: IOW, the hope is in the future hugetlb
-    folios can be allocated completely without hugetlbfs.
-
-  - Decouple VMA v.s. hugetlb folio allocations: allocating a hugetlb folio
-    should not always require a hugetlbfs VMA.  For example, either it got
-    allocated from the inode level (see hugetlbfs_fallocate() where it used
-    a pesudo VMA for allocation), or it can be allocated by other kernel
-    subsystems.
-
-It paves way for other users to allocate hugetlb folios out of either
-system reservations, or subpools (instead of hugetlbfs, as a file system).
-For longer term, this prepares hugetlb as a separate concept versus
-hugetlbfs, so that hugetlb folios can be allocated by not only hugetlbfs
-and other things.
-
-Tests I've done:
-
-- I had a reproducer in patch 1 for the bug I found, this will start to
-  work after patch 1 or the whole set applied.
-
-- Hugetlb regression tests (on x86_64 2MBs), includes:
-
-  - All vmtests on hugetlbfs
-
-  - libhugetlbfs test suite (which may fail some tests, but no new failures
-    will be introduced by this series, so all such failures happen before
-    this series so shouldn't be relevant).
-
-
-This patch (of 7):
-
-Since commit 04f2cbe35699 ("hugetlb: guarantee that COW faults for a
-process that called mmap(MAP_PRIVATE) on hugetlbfs will succeed"),
-avoid_reserve was introduced for a special case of CoW on hugetlb private
-mappings, and only if the owner VMA is trying to allocate yet another
-hugetlb folio that is not reserved within the private vma reserved map.
-
-Later on, in commit d85f69b0b533 ("mm/hugetlb: alloc_huge_page handle
-areas hole punched by fallocate"), alloc_huge_page() enforced to not
-consume any global reservation as long as avoid_reserve=true.  This
-operation doesn't look correct, because even if it will enforce the
-allocation to not use global reservation at all, it will still try to take
-one reservation from the spool (if the subpool existed).  Then since the
-spool reserved pages take from global reservation, it'll also take one
-reservation globally.
-
-Logically it can cause global reservation to go wrong.
-
-I wrote a reproducer below, trigger this special path, and every run of
-such program will cause global reservation count to increment by one, until
-it hits the number of free pages:
-
-  #define _GNU_SOURCE             /* See feature_test_macros(7) */
-  #include <stdio.h>
-  #include <fcntl.h>
-  #include <errno.h>
-  #include <unistd.h>
-  #include <stdlib.h>
-  #include <sys/mman.h>
-
-  #define  MSIZE  (2UL << 20)
-
-  int main(int argc, char *argv[])
-  {
-      const char *path;
-      int *buf;
-      int fd, ret;
-      pid_t child;
-
-      if (argc < 2) {
-          printf("usage: %s <hugetlb_file>\n", argv[0]);
-          return -1;
-      }
-
-      path = argv[1];
-
-      fd = open(path, O_RDWR | O_CREAT, 0666);
-      if (fd < 0) {
-          perror("open failed");
-          return -1;
-      }
-
-      ret = fallocate(fd, 0, 0, MSIZE);
-      if (ret != 0) {
-          perror("fallocate");
-          return -1;
-      }
-
-      buf = mmap(NULL, MSIZE, PROT_READ|PROT_WRITE,
-                 MAP_PRIVATE, fd, 0);
-
-      if (buf == MAP_FAILED) {
-          perror("mmap() failed");
-          return -1;
-      }
-
-      /* Allocate a page */
-      *buf = 1;
-
-      child = fork();
-      if (child == 0) {
-          /* child doesn't need to do anything */
-          exit(0);
-      }
-
-      /* Trigger CoW from owner */
-      *buf = 2;
-
-      munmap(buf, MSIZE);
-      close(fd);
-      unlink(path);
-
-      return 0;
-  }
-
-It can only reproduce with a sub-mount when there're reserved pages on the
-spool, like:
-
-  # sysctl vm.nr_hugepages=128
-  # mkdir ./hugetlb-pool
-  # mount -t hugetlbfs -o min_size=8M,pagesize=2M none ./hugetlb-pool
-
-Then run the reproducer on the mountpoint:
-
-  # ./reproducer ./hugetlb-pool/test
-
-Fix it by taking the reservation from spool if available.  In general,
-avoid_reserve is IMHO more about "avoid vma resv map", not spool's.
-
-I copied stable, however I have no intention for backporting if it's not a
-clean cherry-pick, because private hugetlb mapping, and then fork() on top
-is too rare to hit.
-
-Link: https://lkml.kernel.org/r/20250107204002.2683356-1-peterx@redhat.com
-Link: https://lkml.kernel.org/r/20250107204002.2683356-2-peterx@redhat.com
-Fixes: d85f69b0b533 ("mm/hugetlb: alloc_huge_page handle areas hole punched by fallocate")
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>
-Tested-by: Ackerley Tng <ackerleytng@google.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: Breno Leitao <leitao@debian.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/hugetlb.c |   22 +++-------------------
- 1 file changed, 3 insertions(+), 19 deletions(-)
-
---- a/mm/hugetlb.c~mm-hugetlb-fix-avoid_reserve-to-allow-taking-folio-from-subpool
-+++ a/mm/hugetlb.c
-@@ -1398,8 +1398,7 @@ static unsigned long available_huge_page
+diff --git a/drivers/firmware/efi/memattr.c b/drivers/firmware/efi/memattr.c
+index c38b1a335590..b5051dcb7c1d 100644
+--- a/drivers/firmware/efi/memattr.c
++++ b/drivers/firmware/efi/memattr.c
+@@ -160,7 +160,7 @@ int __init efi_memattr_apply_permissions(struct mm_struct *mm,
+ 	if (WARN_ON(!efi_enabled(EFI_MEMMAP)))
+ 		return 0;
  
- static struct folio *dequeue_hugetlb_folio_vma(struct hstate *h,
- 				struct vm_area_struct *vma,
--				unsigned long address, int avoid_reserve,
--				long chg)
-+				unsigned long address, long chg)
- {
- 	struct folio *folio = NULL;
- 	struct mempolicy *mpol;
-@@ -1415,10 +1414,6 @@ static struct folio *dequeue_hugetlb_fol
- 	if (!vma_has_reserves(vma, chg) && !available_huge_pages(h))
- 		goto err;
- 
--	/* If reserves cannot be used, ensure enough pages are in the pool */
--	if (avoid_reserve && !available_huge_pages(h))
--		goto err;
--
- 	gfp_mask = htlb_alloc_mask(h);
- 	nid = huge_node(vma, address, gfp_mask, &mpol, &nodemask);
- 
-@@ -1434,7 +1429,7 @@ static struct folio *dequeue_hugetlb_fol
- 		folio = dequeue_hugetlb_folio_nodemask(h, gfp_mask,
- 							nid, nodemask);
- 
--	if (folio && !avoid_reserve && vma_has_reserves(vma, chg)) {
-+	if (folio && vma_has_reserves(vma, chg)) {
- 		folio_set_hugetlb_restore_reserve(folio);
- 		h->resv_huge_pages--;
- 	}
-@@ -3051,17 +3046,6 @@ struct folio *alloc_hugetlb_folio(struct
- 		gbl_chg = hugepage_subpool_get_pages(spool, 1);
- 		if (gbl_chg < 0)
- 			goto out_end_reservation;
--
--		/*
--		 * Even though there was no reservation in the region/reserve
--		 * map, there could be reservations associated with the
--		 * subpool that can be used.  This would be indicated if the
--		 * return value of hugepage_subpool_get_pages() is zero.
--		 * However, if avoid_reserve is specified we still avoid even
--		 * the subpool reservations.
--		 */
--		if (avoid_reserve)
--			gbl_chg = 1;
- 	}
- 
- 	/* If this allocation is not consuming a reservation, charge it now.
-@@ -3084,7 +3068,7 @@ struct folio *alloc_hugetlb_folio(struct
- 	 * from the global free pool (global change).  gbl_chg == 0 indicates
- 	 * a reservation exists for the allocation.
- 	 */
--	folio = dequeue_hugetlb_folio_vma(h, vma, addr, avoid_reserve, gbl_chg);
-+	folio = dequeue_hugetlb_folio_vma(h, vma, addr, gbl_chg);
- 	if (!folio) {
- 		spin_unlock_irq(&hugetlb_lock);
- 		folio = alloc_buddy_hugetlb_folio_with_mpol(h, vma, addr);
-_
-
-Patches currently in -mm which might be from peterx@redhat.com are
-
-
+-	tbl = memremap(efi_mem_attr_table, tbl_size, MEMREMAP_WB);
++	tbl = memremap(efi_mem_attr_table, tbl_size, MEMREMAP_WB | MEMREMAP_DEC);
+ 	if (!tbl) {
+ 		pr_err("Failed to map EFI Memory Attributes table @ 0x%lx\n",
+ 		       efi_mem_attr_table);
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
