@@ -1,117 +1,95 @@
-Return-Path: <stable+bounces-108628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4158A10D3F
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 18:14:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C254AA10D6F
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 18:20:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26E821884A9E
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:14:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78FBB3A1220
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:20:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB4F1D63E2;
-	Tue, 14 Jan 2025 17:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9692B1D47BB;
+	Tue, 14 Jan 2025 17:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gonFpl1k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C7TDimQ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6201D5154;
-	Tue, 14 Jan 2025 17:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D84723245A;
+	Tue, 14 Jan 2025 17:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736874837; cv=none; b=FdoWOvKX3NRioSR0xAiGbJg+zZ/RFZDEVV2/bD1aYEWSgGC7IQI19Gtc7Ur7y2/y6ZSMI26jj/YgkUyGPdiP3FqCuBFENrNbyC/AhDSOaAgdrnRJLuJu7zoxeFroG1Nuta1AZLFBXbkt7YrifIIIjujG5fRpYe6xExlMb1l3UfU=
+	t=1736875215; cv=none; b=nfg52LQQ50t+M0BQl3psNfOXZjk3V+HA8ID87W+CR3al4HTozwXluv55hUWrfy9DXxLukwwx/l/00HUZRLiI15e+d6aPOwQnzw8KjlKLsB+dA64g9Pqit2qNvJg/ORLhmwesXZ72TK06i2Vb0UO8ZF6YA0NvLcZWE40hj3SXXpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736874837; c=relaxed/simple;
-	bh=+cPongiPTXfYF42ILAuhGmrFbcuJWkTa3K4+cXN5O1Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cN5+EGLFZTx13CiyXxoZ2gTu2hfJUJuIgBn5++vHJk0solxpN9HsDOJRJXoQplhzcW6Sk76dv0Y0c05pRupCtRNzMVFzLXgLwBP1L5Fw5W7lqJyWCGWEM3mNMJsD03a3yuq/6cH0y6h3EVeNUrf3uEoCdJtMeFRY3xezZqUrAwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gonFpl1k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1053FC4CEDD;
-	Tue, 14 Jan 2025 17:13:54 +0000 (UTC)
+	s=arc-20240116; t=1736875215; c=relaxed/simple;
+	bh=Us42PgdTR1gECs3bZF/yH5bD1vAp+86dFeWSXqN2NQw=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=fdYEI1R1n+k7RlLRpXZhs1wo1buW6gRJf4dwBhfsmBDMPSlDF7BC+CfBh2jq454LpXJbOnTcCt88BCvsr9dRXNhUL33JVBLSoFvlsC6PBGy+LM0EEf09JrLGwDtXd7hMYVW2kYpSUlyypyCo6LYE6DmtJPvkfZO24LyMPqieR40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C7TDimQ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBAA6C4CEDD;
+	Tue, 14 Jan 2025 17:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736874836;
-	bh=+cPongiPTXfYF42ILAuhGmrFbcuJWkTa3K4+cXN5O1Q=;
-	h=From:To:Cc:Subject:Date:From;
-	b=gonFpl1kdx+aThw1x31zHGRxllAoIkG+ONJ+m/IW2Rjgb2AuitvfDkZ/+LXLEJLYS
-	 CGhu4+kt+Uqe4U+Zl06fYObMJL3C/gUmTwYIivcm+nGkn1+Ptlit1LtXmpPzVbh0W0
-	 pjHNAhUINgyHzn5TsHTQxflGHuRjtXgYeDlZ+tFV5X3036WpvXQZT9e6Y2QGNP9jcB
-	 xTOGc1ntQAH0FtlmqdOEjUQDJGeCt7GG5QaYfzAE+AqMEebTuVCOBMFStlO9dt/9Q7
-	 anqM/lIdtf4pCPUNPV/oZi2IxWLy0fbUF+sWxzFeYd+TlzBm4QXWcUKWkSh/BCMTKf
-	 4y8BP6vHyyFDg==
-From: Conor Dooley <conor@kernel.org>
-To: linux-spi@vger.kernel.org
-Cc: conor@kernel.org,
-	Conor Dooley <conor.dooley@microchip.com>,
-	stable@vger.kernel.org,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Mark Brown <broonie@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] spi: microchip-core: prevent RX overflows when transmit size > FIFO size
-Date: Tue, 14 Jan 2025 17:13:49 +0000
-Message-ID: <20250114-easiness-pregame-d1d2d4b57e7b@spud>
-X-Mailer: git-send-email 2.45.2
+	s=k20201202; t=1736875213;
+	bh=Us42PgdTR1gECs3bZF/yH5bD1vAp+86dFeWSXqN2NQw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=C7TDimQ4dEMEYEMrDdaUjdbrs/c5LFJhvJiKR6p8nMm/m9Q18AYxvPR5l55jur1VZ
+	 cRE7qvFzlbQn0osxe3SOXhpSg7EHgRN9OghWkYOTSMLSPJjY3JtTBP5qLs+N6iP89n
+	 iAU2hZDt1W0uQvxy2GJ7gzTbggSk6wQayOYYTca09QsUjIEQuuDyX+LhNJazlqeQh7
+	 jxnkFfb/5707I09MxntCjefPNv/gAiDA6vCq8IV7NSTNOJZGx801HsK218Nv2qKQTL
+	 SO64wlkdiX8hJOwPnUfuuGZE1pO7rvO5z4FYFrjD2KslERXQZSJN/jy8FP9LsHSE55
+	 R9u2Pz1FXxnpA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE2B8380AA5F;
+	Tue, 14 Jan 2025 17:20:37 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2024; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=zOeZgEc8f7sCpwLYHd+UXUO6lO4YDxO0JUopvPbfNLw=; b=owGbwMvMwCFWscWwfUFT0iXG02pJDOlts/2sn27c7rF6dq3FDIMZKpNDZGzWHQqaU6WW413A5 lz1fxV7RykLgxgHg6yYIkvi7b4WqfV/XHY497yFmcPKBDKEgYtTACZy5zvDP73Uhzs9iwIT7ugu 87Cov3dKM6I3iHumIct2k8a9Lle7HjL8T3fVuxL0n7uwZMJ6ba0o6YBvd1a/Xlb0Mu9u9tXTh2Q zeAE=
-X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3] Bluetooth: qca: Fix poor RF performance for WCN6855
+From: patchwork-bot+bluetooth@kernel.org
+Message-Id: 
+ <173687523651.62266.7168479061326166895.git-patchwork-notify@kernel.org>
+Date: Tue, 14 Jan 2025 17:20:36 +0000
+References: <20250113-wcn6855_fix-v3-1-eeb8b0e19ef4@quicinc.com>
+In-Reply-To: <20250113-wcn6855_fix-v3-1-eeb8b0e19ef4@quicinc.com>
+To: Zijun Hu <zijun_hu@icloud.com>
+Cc: marcel@holtmann.org, luiz.dentz@gmail.com, steev@kali.org,
+ bjorande@quicinc.com, quic_aiquny@quicinc.com, quic_chejiang@quicinc.com,
+ johan@kernel.org, jens.glathe@oldschoolsolutions.biz, pmenzel@molgen.mpg.de,
+ luiz.von.dentz@intel.com, linux-bluetooth@vger.kernel.org,
+ linux-kernel@vger.kernel.org, quic_zijuhu@quicinc.com, stable@vger.kernel.org
 
-From: Conor Dooley <conor.dooley@microchip.com>
+Hello:
 
-When the size of a transfer exceeds the size of the FIFO (32 bytes), RX
-overflows will be generated and receive data will be corrupted and
-warnings will be produced. For example, here's an error generated by a
-transfer of 36 bytes:
+This patch was applied to bluetooth/bluetooth-next.git (master)
+by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
 
-  spi_master spi0: mchp_corespi_interrupt: RX OVERFLOW: rxlen: 4, txlen: 0
+On Mon, 13 Jan 2025 22:43:23 +0800 you wrote:
+> From: Zijun Hu <quic_zijuhu@quicinc.com>
+> 
+> For WCN6855, board ID specific NVM needs to be downloaded once board ID
+> is available, but the default NVM is always downloaded currently.
+> 
+> The wrong NVM causes poor RF performance, and effects user experience
+> for several types of laptop with WCN6855 on the market.
+> 
+> [...]
 
-I am not entirely sure how this happens, as rxlen being 4 means that 32
-of 36 bytes have been read from the RX FIFO so there should be
-sufficient room for 4 more bytes but timing is likely a factor as simply
-adding a delay in the transmit path is enough to avoid the overflows.
+Here is the summary with links:
+  - [v3] Bluetooth: qca: Fix poor RF performance for WCN6855
+    https://git.kernel.org/bluetooth/bluetooth-next/c/67f8711aae4b
 
-CC: stable@vger.kernel.org
-Fixes: 9ac8d17694b6 ("spi: add support for microchip fpga spi controllers")
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
----
-Been sitting on this one for a bit, original reporter claims the problem
-isn't fixed, but it fixed the issue on my setup so I am sending the patch
-as it's an improvement on the status quo at the very least.
-
-CC: Conor Dooley <conor.dooley@microchip.com>
-CC: Daire McNamara <daire.mcnamara@microchip.com>
-CC: Mark Brown <broonie@kernel.org>
-CC: linux-spi@vger.kernel.org
-CC: linux-kernel@vger.kernel.org
----
- drivers/spi/spi-microchip-core.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/spi/spi-microchip-core.c b/drivers/spi/spi-microchip-core.c
-index 5b6af55855ef..3582fe8d3fc4 100644
---- a/drivers/spi/spi-microchip-core.c
-+++ b/drivers/spi/spi-microchip-core.c
-@@ -221,6 +221,13 @@ static inline void mchp_corespi_write_fifo(struct mchp_corespi *spi)
- 	while ((i < fifo_max) && !(mchp_corespi_read(spi, REG_STATUS) & STATUS_TXFIFO_FULL)) {
- 		u32 word;
- 
-+		/*
-+		 * If the transfer is larger than FIFO_DEPTH, spin until space
-+		 * is made in the RX FIFO to avoid losing data to RX overflows
-+		 */
-+		while (mchp_corespi_read(spi, REG_STATUS) & STATUS_RXFIFO_FULL)
-+			;
-+
- 		if (spi->n_bytes == 4)
- 			word = spi->tx_buf ? *((u32 *)spi->tx_buf) : 0xaa;
- 		else if (spi->n_bytes == 2)
+You are awesome, thank you!
 -- 
-2.45.2
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
