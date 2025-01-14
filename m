@@ -1,215 +1,185 @@
-Return-Path: <stable+bounces-108582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 404B0A103DC
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 11:17:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31324A103E6
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 11:19:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98F0B16641C
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 10:17:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BE161889557
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 10:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6F93DABE1;
-	Tue, 14 Jan 2025 10:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F791EE7C5;
+	Tue, 14 Jan 2025 10:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ahPXIm6t"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CqC4PSbL"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D72924334A
-	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 10:17:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD361ADC75;
+	Tue, 14 Jan 2025 10:19:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736849834; cv=none; b=QTgiVECoWYSHRcIIuamFxmosRE+wvjXhCfUj7jcgkCjpxe923OjbEmp061HQSjPTvextC4c0puqJwgexM/qksqkeD0ym1vmbOp8J/Poo4iGIG4Hm0DA8dTbhTOQc//8hD3nYugwYH0gTUomPdNN6EAmDYvoMHmzxD/fwN1b3QYA=
+	t=1736849955; cv=none; b=FVnIoZ0eihhHTsX1omFWZgjaJnOIVcJ2CS1dKXEcbM2AdfjIoNwyXF4Z3DF7XIdj7B3tkExk2qLb2iG6rI/jnW68N2aoRTgJeX0Qkhzarjrtr62vh8os8uglkA62i4X9ZcNDHpUFWEXtsocIPvS6vm+19Q1DiBq28OOuU7gTa6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736849834; c=relaxed/simple;
-	bh=ypeaiYFtbSkX4QzSfRyoiNwjIzU0Sf3YPd0V+9Ugxi4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HMI5qekq5Z4xS8auWZp531EM+3aoiBn3wISkVhumFV6afFFOsabp+Y3nWqQix9wSfH8RkCkZkSEjWMo6gMULqSNChtQxnaNhs7aOS80wuca6q8hUd7ialHTvyPLy8doXdC7/eKdPWJdyUcfxJeOEoQK5uB04OR1uFei4N195Ow0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ahPXIm6t; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736849831;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eW+mW3Tu9nGQ0HqpfC02Dq/7caIG1EhK/LPm3HcZUas=;
-	b=ahPXIm6tdbkE614rLMXiCQHWcNV05sfmjbUAIAj60yQe8G9m2/sZYjkxsn+AmR7MRE3a0Q
-	SphaGcrjI7DIAi5InYyc/YG4HzoHF4f/1CX1EM3fLuxlwZTFyhf1oS3xXlEgmB1xJzGKnc
-	y5+lHUXQxVICTTpUo5AMcGp3zt0hsmw=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-505-fd3Wplw_MSaZlbDgm-locQ-1; Tue, 14 Jan 2025 05:17:07 -0500
-X-MC-Unique: fd3Wplw_MSaZlbDgm-locQ-1
-X-Mimecast-MFC-AGG-ID: fd3Wplw_MSaZlbDgm-locQ
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-46798d74f0cso95524211cf.0
-        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 02:17:07 -0800 (PST)
+	s=arc-20240116; t=1736849955; c=relaxed/simple;
+	bh=q8+FLNP8K3/tvgD1K+ljoVgtw7XOZBMJxQlzT7AEMMo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ue5vyl7uFcxbZE83XqOoZp1aTcOqj8yFfI1eLICucIbsbCqj23kMJGZ756VdJJeHM683xpi1F+Dc7pAOZzeU8zke20lxcSnF+G6HsKrlMLb0B8VdXLQEG3XzHhwWQEKHr+Br0CWFaG4GDS/whggqqC8VN42hCcWFExQ2Do49qo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CqC4PSbL; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5d9f06f8cf2so2231486a12.3;
+        Tue, 14 Jan 2025 02:19:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736849952; x=1737454752; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=au+4nzSH0UlX4LucO2/pISWeQnVDf8eSFYGuYpAKTos=;
+        b=CqC4PSbLl+UW/KtKj2B4vVZvf8iwQjAVztotF6ZiyanHE90IMNT6L8yHYVlllFiQqZ
+         tyRy2n6RIx9OFkKCPbTDTe0sMt9jGL/TL5zXgsBP3MB0vl4JFBLM/LS3q474vMEPz+qB
+         9V3MFE/733TGsKuMLi/beJ+QgDwSMeGuZ6Pg+X1gOK0lot+r5jfi1mFH5m52CI47EtaN
+         0nPrMc0Rkz3HBWDQXDIvcOVFjbOynPN7jHHpcZlBLZ/xMdhUnzKw6CPVXBT/8IgCcOmg
+         uR3Y0iyNeeA9m6Z9k8wzaiBqT/9fFdMX49hY+D3anqQhZGiz087g6d7+OkPajiCrVEU1
+         +WAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736849827; x=1737454627;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eW+mW3Tu9nGQ0HqpfC02Dq/7caIG1EhK/LPm3HcZUas=;
-        b=Lr8qYLsEdia577bmrkoJ1Ox5nBI5UQhzZz39nM6nrVj6DriZiUY9/zwbgzsfSUO9Hg
-         jPrBrTvu4LURJAUPkozkq1YCvzFrOuVALuGirLn9fW7rJuRmC6WjINGR7H78JvNg9pkq
-         a2R65Z7raSJiKxGhIhINgOM+L84ifgH1ntVNtuug4BLCuDJmHiBKICUyIFtpMCbvZlCI
-         E6+zGd499dWQrKlW9bW20ZFHXyQ+cdAgQ/mbgcu1sfWau9gxCGjP7oC3M68M/OfuXxGd
-         cnrOV1VyfS42hQ54wslURbbLhLBC/phA4BPPQWpziCl3I3x8NsldqKZPhxsK+FOe54Ur
-         5FKA==
-X-Forwarded-Encrypted: i=1; AJvYcCXV6RnxoGOc6TZvx4iBLrhcWnu3F7NGIdvEwcRRdauXQ6Pxk18t5Y7L47FFWkcpfZU9pY2Je8c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YycdIZnN+QW/e23R10fUBrdcjXP7VNTN9vh32qX6D9k0Ec2aCOA
-	0MDUJaDsckF9Ps0z6/j3nykeyDzlJ2rQPx+0WBBVVQfDLYfCluLmWbNPsToIi00fc4qPPJnOQoh
-	WAT9bi3ppEm8b6+FdItOX16QGCJ1OygEef88+YYV7VZLHJyFg7S4bVQ==
-X-Gm-Gg: ASbGncvi/TA/UbDF2f/TV1fbVODhy0jfavrjl2a+EMeLqu/TkrA4LvxWz55JL3Fci4x
-	+HaTBuv9l2w37A0BeAkMLQp7/SEidZd6MTKZazpvdUAMNZxVfiVSs7q4lhxpiaDOK1lwAhdG8J/
-	oPXKeqf7HJpTS8vGQeTgaKMy75eb982ur9Q3DanrycD8fVOiYBhQVdvfj9eJ9fw97Z76k3YiRvQ
-	3UauVT9zJwEqSWPONJgElMJEsaLqg95qn98EetVznJIkLNur32zPEFMWxEW35Xb3HnOpCRpsucD
-	gbimI4yOL3s0UOSZsMAYfVdq8QFc3o49
-X-Received: by 2002:a05:622a:190d:b0:467:8734:994f with SMTP id d75a77b69052e-46c70eb036fmr352574091cf.0.1736849827293;
-        Tue, 14 Jan 2025 02:17:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGLaAzZkEVaIW8hnYA/mhsZiNuV3ut2W+7fORTaO+OQ8XSFW5VqRIMMDm+j9GPuo6wkgSZShQ==
-X-Received: by 2002:a05:622a:190d:b0:467:8734:994f with SMTP id d75a77b69052e-46c70eb036fmr352573511cf.0.1736849826374;
-        Tue, 14 Jan 2025 02:17:06 -0800 (PST)
-Received: from sgarzare-redhat (host-82-53-134-100.retail.telecomitalia.it. [82.53.134.100])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46c8732f9e8sm51362431cf.19.2025.01.14.02.17.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 02:17:05 -0800 (PST)
-Date: Tue, 14 Jan 2025 11:16:58 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Luigi Leonardi <leonardi@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
-	Wongi Lee <qwerty@theori.io>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Eric Dumazet <edumazet@google.com>, kvm@vger.kernel.org, 
-	Paolo Abeni <pabeni@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, Simon Horman <horms@kernel.org>, Hyunwoo Kim <v4bel@theori.io>, 
-	Jakub Kicinski <kuba@kernel.org>, virtualization@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH net v2 1/5] vsock/virtio: discard packets if the
- transport changes
-Message-ID: <n2itoh23kikzszzgmyejfwe3mdf6fmxzwbtyo5ahtxpaco3euq@osupldmckz7p>
-References: <20250110083511.30419-1-sgarzare@redhat.com>
- <20250110083511.30419-2-sgarzare@redhat.com>
- <1aa83abf-6baa-4cf1-a108-66b677bcfd93@rbox.co>
- <nedvcylhjxrkmkvgugsku2lpdjgjpo5exoke4o6clxcxh64s3i@jkjnvngazr5v>
- <CAGxU2F7BoMNi-z=SHsmCV5+99=CxHo4dxFeJnJ5=q9X=CM3QMA@mail.gmail.com>
- <cccb1a4f-5495-4db1-801e-eca211b757c3@rbox.co>
- <nzpj4hc6m4jlqhcwv6ngmozl3hcoxr6kehoia4dps7jytxf6df@iqglusiqrm5n>
- <903dd624-44e5-4792-8aac-0eaaf1e675c5@rbox.co>
- <5nkibw33isxiw57jmoaadizo3m2p76ve6zioumlu2z2nh5lwck@xodwiv56zrou>
- <7de34054-10cf-45d0-a869-adebb77ad913@rbox.co>
+        d=1e100.net; s=20230601; t=1736849952; x=1737454752;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=au+4nzSH0UlX4LucO2/pISWeQnVDf8eSFYGuYpAKTos=;
+        b=sV4XFku3UFG/DFZAHQxkUGiKrZMtn40F9lnkiLHp4FOpHzjGeuHJnnx5wzoQqL3HXk
+         vJPRyWUEoBj9XyQnc76wp59NM9pjeYd26veprQq5HqmSqg31QS2P2NpjZ6c8mUs0OiQW
+         HK/JywaxqCvD76yLvoKa6blozl1cm5AyEX1WGgx9liqu+vizRRpkXuBzh9T37WQw4vk9
+         kZB85hj2h1wPMAY60LlJ0VhB1uPsRRsYeC5Do6p9pjCIrm3W7S542esC6eTbxVdfjj3H
+         N7oeng3vZNXWraeylOdtyecQZNKY4x1aBpTXFYNLSjRtVhNeyHWaquJkv8g5tKcdSXFg
+         1XHA==
+X-Forwarded-Encrypted: i=1; AJvYcCUSK27Zy5TdXFs9ArQ1jUWCEM5riY85QDsr//n4KrFgxWzNtu7ijlq1BHPLehPD57+zcFKPsnZD27+c2bD2@vger.kernel.org, AJvYcCVuJR0IBCanYBmafzn1ccFHV7sSaZNAGmANPXpNZNemqkuQH645PGfEsiKkD0YrGx0z4HKQMCe6@vger.kernel.org, AJvYcCXaLPSyuXwPNhtuGLReelv0FIZZGFBgm3AnNwsHTXaFLEDAJIM2+glucDNtrskNaizUKBC8ZTFeEMjCmrTW@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzgoCwSn+ucNNXVK4M5ULgynP91OF0vxkD/R5Z2adyexV+qVx2
+	hVp3gJ/yHD8CmDwTvxQCAa+28JMucKJG61+MUa5/00tTYguQHv/9
+X-Gm-Gg: ASbGncvj+TRvc2qneQwBO+FtD4Kzv/67mC1Lpr/tm5WXw81hzay9sk8MwVqgdTIL618
+	Z8K7jj+k21rDYZeVP8bp7qBNdFgwx5G1ZM4AoYAONtTDMEmFx0x3R0lxtnzTXTK8k/O5/PBGbGl
+	mzVJF+54ugaqyZWO66Vi+S5h3j9GC6fDjIUfSs5e7ov2yGCxlfmyNibOM33n3z1+VcPBQ3zeKJ7
+	DR3FppJes2MOSCHKeK1Igx/YqlyEs/Xomzhs/B5kw+bb+wUS2CZdhynUuofCR66voMtwMvbydDe
+	rLuSPzm3SsyFH683BPs9KiUAjGEeF1NgEt9j9LocP41iXTBm0a2W9uthHSTyLeQ9akDuagi5qTL
+	q/dz4M5gm/qdmnxw5BHjXGg==
+X-Google-Smtp-Source: AGHT+IGehqA9xVupJMVpA4Cfk+IpdeF34C6tia8qD9Vr+uaKzMnOgSdI1DwUAPRlexmP8jPjGwcqPA==
+X-Received: by 2002:a17:907:368c:b0:aa6:9624:78fd with SMTP id a640c23a62f3a-ab2abc78a71mr2414171566b.48.1736849951491;
+        Tue, 14 Jan 2025 02:19:11 -0800 (PST)
+Received: from ?IPV6:2001:4c4e:11ce:6a00:d364:8993:3481:1e06? (20014C4E11CE6A00D364899334811E06.dsl.pool.telekom.hu. [2001:4c4e:11ce:6a00:d364:8993:3481:1e06])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c905ed87sm605318166b.28.2025.01.14.02.19.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Jan 2025 02:19:10 -0800 (PST)
+Message-ID: <5c1ba4db-1c15-459a-b7b5-ce3f22db7e39@gmail.com>
+Date: Tue, 14 Jan 2025 11:19:09 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <7de34054-10cf-45d0-a869-adebb77ad913@rbox.co>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] hfs/hfsplus: fix slab-out-of-bounds in
+ hfs_bnode_read_key
+To: Vasiliy Kovalev <kovalev@altlinux.org>, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: lvc-project@linuxtesting.org,
+ syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20241207121726.1058037-1-kovalev@altlinux.org>
+Content-Language: en-US
+From: Attila Szasz <szasza.contact@gmail.com>
+In-Reply-To: <20241207121726.1058037-1-kovalev@altlinux.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jan 14, 2025 at 01:09:24AM +0100, Michal Luczaj wrote:
->On 1/13/25 16:01, Stefano Garzarella wrote:
->> On Mon, Jan 13, 2025 at 02:51:58PM +0100, Michal Luczaj wrote:
->>> On 1/13/25 12:05, Stefano Garzarella wrote:
->>>> ...
->>>> An alternative approach, which would perhaps allow us to avoid all this,
->>>> is to re-insert the socket in the unbound list after calling release()
->>>> when we deassign the transport.
->>>>
->>>> WDYT?
->>>
->>> If we can't keep the old state (sk_state, transport, etc) on failed
->>> re-connect() then reverting back to initial state sounds, uhh, like an
->>> option :) I'm not sure how well this aligns with (user's expectations of)
->>> good ol' socket API, but maybe that train has already left.
->>
->> We really want to behave as similar as possible with the other sockets,
->> like AF_INET, so I would try to continue toward that train.
->
->I was worried that such connect()/transport error handling may have some
->user visible side effects, but I guess I was wrong. I mean you can still
->reach a sk_state=TCP_LISTEN with a transport assigned[1], but perhaps
->that's a different issue.
->
->I've tried your suggestion on top of this series. Passes the tests.
+This is exploitable for LPE and it should be fixed.
 
-Great, thanks!
-
+On 12/7/24 13:17, Vasiliy Kovalev wrote:
+> Syzbot reported an issue in hfs subsystem:
 >
->diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->index fa9d1b49599b..4718fe86689d 100644
->--- a/net/vmw_vsock/af_vsock.c
->+++ b/net/vmw_vsock/af_vsock.c
->@@ -492,6 +492,10 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
-> 		vsk->transport->release(vsk);
-> 		vsock_deassign_transport(vsk);
+> BUG: KASAN: slab-out-of-bounds in memcpy_from_page include/linux/highmem.h:423 [inline]
+> BUG: KASAN: slab-out-of-bounds in hfs_bnode_read fs/hfs/bnode.c:35 [inline]
+> BUG: KASAN: slab-out-of-bounds in hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
+> Write of size 94 at addr ffff8880123cd100 by task syz-executor237/5102
 >
->+		vsock_addr_unbind(&vsk->local_addr);
->+		vsock_addr_unbind(&vsk->remote_addr);
-
-My only doubt is that if a user did a specific bind() before the
-connect, this way we're resetting everything, is that right?
-
-Maybe we need to look better at the release, and prevent it from
-removing the socket from the lists as you suggested, maybe adding a
-function in af_vsock.c that all transports can call.
-
-Thanks,
-Stefano
-
->+		vsock_insert_unbound(vsk);
->+
-> 		/* transport's release() and destruct() can touch some socket
-> 		 * state, since we are reassigning the socket to a new transport
-> 		 * during vsock_connect(), let's reset these fields to have a
+> Call Trace:
+>   <TASK>
+>   __dump_stack lib/dump_stack.c:94 [inline]
+>   dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+>   print_address_description mm/kasan/report.c:377 [inline]
+>   print_report+0x169/0x550 mm/kasan/report.c:488
+>   kasan_report+0x143/0x180 mm/kasan/report.c:601
+>   kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
+>   __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
+>   memcpy_from_page include/linux/highmem.h:423 [inline]
+>   hfs_bnode_read fs/hfs/bnode.c:35 [inline]
+>   hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
+>   hfs_brec_insert+0x7f3/0xbd0 fs/hfs/brec.c:159
+>   hfs_cat_create+0x41d/0xa50 fs/hfs/catalog.c:118
+>   hfs_mkdir+0x6c/0xe0 fs/hfs/dir.c:232
+>   vfs_mkdir+0x2f9/0x4f0 fs/namei.c:4257
+>   do_mkdirat+0x264/0x3a0 fs/namei.c:4280
+>   __do_sys_mkdir fs/namei.c:4300 [inline]
+>   __se_sys_mkdir fs/namei.c:4298 [inline]
+>   __x64_sys_mkdir+0x6c/0x80 fs/namei.c:4298
+>   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+>   do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7fbdd6057a99
 >
->>> Another possibility would be to simply brick the socket on failed (re)connect.
->>
->> I see, though, this is not the behavior of AF_INET for example, right?
+> Add validation for key length in hfs_bnode_read_key to prevent
+> out-of-bounds memory access. Invalid key lengths, likely caused
+> by corrupted file system images (potentially due to malformed
+> data during image generation), now result in clearing the key
+> buffer, enhancing stability and reliability.
 >
->Right.
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=5f3a973ed3dfb85a6683
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+> ---
+> v2: add more information to the commit message regarding the purpose of the patch.
+> ---
+>   fs/hfs/bnode.c     | 6 ++++++
+>   fs/hfsplus/bnode.c | 6 ++++++
+>   2 files changed, 12 insertions(+)
 >
->> Do you have time to investigate/fix this problem?
->> If not, I'll try to look into it in the next few days, maybe next week.
->
->I'm happy to help, but it's not like I have any better ideas.
->
->Michal
->
->[1]: E.g. this way:
->```
->from socket import *
->
->MAX_PORT_RETRIES = 24 # net/vmw_vsock/af_vsock.c
->VMADDR_CID_LOCAL = 1
->VMADDR_PORT_ANY = -1
->hold = []
->
->def take_port(port):
->	s = socket(AF_VSOCK, SOCK_SEQPACKET)
->	s.bind((VMADDR_CID_LOCAL, port))
->	hold.append(s)
->	return s
->
->s = take_port(VMADDR_PORT_ANY)
->_, port = s.getsockname()
->for _ in range(MAX_PORT_RETRIES):
->	port += 1
->	take_port(port);
->
->s = socket(AF_VSOCK, SOCK_SEQPACKET)
->err = s.connect_ex((VMADDR_CID_LOCAL, port))
->assert err != 0
->print("ok, connect failed; transport set")
->
->s.bind((VMADDR_CID_LOCAL, port+1))
->s.listen(16)
->```
->
-
+> diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
+> index 6add6ebfef8967..cb823a8a6ba960 100644
+> --- a/fs/hfs/bnode.c
+> +++ b/fs/hfs/bnode.c
+> @@ -67,6 +67,12 @@ void hfs_bnode_read_key(struct hfs_bnode *node, void *key, int off)
+>   	else
+>   		key_len = tree->max_key_len + 1;
+>   
+> +	if (key_len > sizeof(hfs_btree_key) || key_len < 1) {
+> +		memset(key, 0, sizeof(hfs_btree_key));
+> +		pr_err("hfs: Invalid key length: %d\n", key_len);
+> +		return;
+> +	}
+> +
+>   	hfs_bnode_read(node, key, off, key_len);
+>   }
+>   
+> diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
+> index 87974d5e679156..079ea80534f7de 100644
+> --- a/fs/hfsplus/bnode.c
+> +++ b/fs/hfsplus/bnode.c
+> @@ -67,6 +67,12 @@ void hfs_bnode_read_key(struct hfs_bnode *node, void *key, int off)
+>   	else
+>   		key_len = tree->max_key_len + 2;
+>   
+> +	if (key_len > sizeof(hfsplus_btree_key) || key_len < 1) {
+> +		memset(key, 0, sizeof(hfsplus_btree_key));
+> +		pr_err("hfsplus: Invalid key length: %d\n", key_len);
+> +		return;
+> +	}
+> +
+>   	hfs_bnode_read(node, key, off, key_len);
+>   }
+>   
 
