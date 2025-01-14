@@ -1,246 +1,154 @@
-Return-Path: <stable+bounces-108594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B743A107C1
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 14:27:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DCFDA107DD
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 14:32:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E7AC3A60A9
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 13:26:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B19FD3A7C6B
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 13:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E98F1232434;
-	Tue, 14 Jan 2025 13:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE987234CE4;
+	Tue, 14 Jan 2025 13:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NGUQ5Tqs"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="tOSH2xHT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F28232429
-	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 13:26:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3A51C4617
+	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 13:32:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736861213; cv=none; b=kSJPodHMlkdhGB3pu1lS37tBxSup2jrHUQ0eGpe2WnwCtJ9dR4w1joYiKQE+9yi2EXfy/Xk1JivroJ1XOFFYWA+VGPr6HWtsk8N/SrYmVBuBNGs+xW5xZX5Blz0wgN81jsYkBQj+s11W+hlYFGhgt3veImLcnMVoHyQ1JP5JCiA=
+	t=1736861531; cv=none; b=GMZwGRreYGxLyvgK9v6F9+0tuTRHiItkzg3SFDdFaWVwkUcWBt1LPcKbSigJFhlSAg5o/1+uIZwMzQ3Mjt6aaMa9exM1Ak+NGG65Qxx/MhMcWlvru5L1DWTE193g9p7+TnJxZBmy4XoL+DfiZlFObKE+Hc5SeMTih7cfJFZF2eI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736861213; c=relaxed/simple;
-	bh=oqkdaJc7d1RBWIakykFDEpoN4JG+P49yBNR8Zxvs5iM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JtPF6uP05t8D8CQvycV0r+TSwoa7PNURuw+XdWo6sCdFKTbrkzBIiPWqNHCH1CL9HLc4C5uAXpy3z6DSRt0NYI89WXRNJnFvHw1eBWxa9s94lQhCVdBmqLYHU4ezfmtQk3qbR+Xqk9Qh+Ryet5stfpGTt71qBTDO6q5JzNgdzTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NGUQ5Tqs; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5d9f06f8cf2so2621261a12.3
-        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 05:26:51 -0800 (PST)
+	s=arc-20240116; t=1736861531; c=relaxed/simple;
+	bh=C/n5ueEHMAubjla/enKlwcyP9Db0+La1s6xIRdKq9lA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DSlXvFMb9fgfx4IYHWD40EbenHG7fMKC7CtK88aocJGDDiKUqcqTbYi6FlM1CEVN7Zqw+9UosbMP0kfa8qGa9qMCUWoUcjNoabAnzrZChQ+aN6FyNIkNq3SRwXxgBQXUSoV9dkHs2HaXHAuOKGHotyW4NwJO1963ke1kQEZKpK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=tOSH2xHT; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4368a293339so62498595e9.3
+        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 05:32:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736861210; x=1737466010; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SwP1fWlfGGErtp8bBZm5i5ifr1nN44Oj3Q18CXqmO5A=;
-        b=NGUQ5TqsMQ3Da6DLf43INyMamZAQR+qLQiPkaIllr7qo+sBTrZ7DSy471GnLL3AYTe
-         s+2uIsKy7HCiGw1hbOUfcplmg+ZEKzBE6wKt60Wcu/QC6qYIUKBA8dLmRftS/FQAMODx
-         vcxNdIt+YF5qZ8iwuUSidU1A6gdusLHdDVLTRY+m7KS/xQnSj0UR50E7XKxH40dBejX8
-         KhVp1JTOKE0/+2K5107kWe0LPpvxvTcT4T7DGa35XRaSYJABXfJ+N2CtqRDnrF91OoTR
-         JiJgoOZE09el5LTRETpRQ9V/FkSkuBmaSmJUtUo+dUhUWGMQTp/Yk2vvokKSpDH/iLq7
-         eL1A==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1736861528; x=1737466328; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TlqTUnZXimSv0OpNMeG8KSN6cDTihkE7gFuE8ClySV4=;
+        b=tOSH2xHTd4HbCDjcMTlz/6HWT+Cqk/+ZBHwvSHyBA/MkG/Ap52G0zmjOnMW/qOF5EC
+         D0p08yvgNO5ehIQflM2mHC/8rEREmPTsrNoRgVc2lXHTmnhhE07JslDiT5OGK5EGXLMQ
+         lx7tw56SwXP/OYkakvBHpZ4LbyboSVTKwnnqkW3kkhtZ6IS4FSRbBR0L5WwpskQVuJ2+
+         v5beJv8CdE1zBnewnmo3F9y7aQOPMN3bXpGPYD659XMAG2jt7YAS9b2nvHJM5X/EJc0l
+         mJVvmx+sDuup909Qg1cdF/sxqQ83v7dzx0pHxTLlEMMpxrLpXOtCFqrJmym+ek3aTOsm
+         Y8EA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736861210; x=1737466010;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SwP1fWlfGGErtp8bBZm5i5ifr1nN44Oj3Q18CXqmO5A=;
-        b=aVfIWnugo6pADF3Wx2ELSZu+vNp0I3pfjHgWvP50XxXK2EV8atXaHQpOssm1DXH98H
-         gD6d+L0f+EYd+XhMhjLyrxXJzA1eIYmqk4dkBhY5RbS4pYsAvJtI3cMELo6j+c1MQuiV
-         ILEga2/W4vwHN9wPpaNd0KETTjdTdwoNzKBrzRWYdVUbs/CKugqL50y3sWAwnP7cy56v
-         Ox8Ztw4UB8KIAcAvos/dyPzqtKBArI4WPK3WvVFGeI7+ayUjWx6LN0UWoOfE+eCUo5nM
-         Clk09Eup2g1qQ64895KfEnOfEgsA2Ybmkf1uQazSEduMd3Vkjxr0/XXoZehh4PKW56Df
-         W6Fw==
-X-Forwarded-Encrypted: i=1; AJvYcCVqQ53rvqpPW+NiZnswjg67toKhKZ80jXAcIo8PyGgcq1G+qzvmsO2XERslP4zG3w+QvGa1MQk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJY+yLpHbEfUnqqu0UJgPoDQ+XJbRMPSExlc87IKSbpltXbl+I
-	bXJHYH8bugX65q59E6hSnXZNVQUkluQwpIv9+zv/VdqeASElN1R4vIINn9V1VsM=
-X-Gm-Gg: ASbGncvCb9ds/c1vzC510WrLCx9IksAhOMMaiS2zdBVxQldi3UJjGkRZ4g90eh0uy3p
-	M5GpEWL6RjJy/lHC0Dn2gOkffbx1QOueHFlPl4Trfr/VcA2qNcTZmXH4QJjqIF1XmRcj481j5jD
-	/t9Xy451KZp0oO+bb1VempJz+GR25cp5L7GIzemQ+QVGTpoxCyJNx+DaVns0YG9Twm1mH2lbg41
-	wqD9N/cnyzU1IS7PD9KyYbXxX+B2Org9VWNJ2SnPcIQIaXkPcBaXD0MGK9GSqpyiQ==
-X-Google-Smtp-Source: AGHT+IHiyC46xplGJdklMtXND7RjzCQWOyPJKK3BjZRR0yKKUaFCWD64tUVUuhFaBnEGxcCpqnwQ7w==
-X-Received: by 2002:a05:6402:5187:b0:5d9:adb:4692 with SMTP id 4fb4d7f45d1cf-5d972e06b4cmr23050698a12.9.1736861209943;
-        Tue, 14 Jan 2025 05:26:49 -0800 (PST)
-Received: from [192.168.0.14] ([188.26.60.120])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d99008c496sm6287162a12.16.2025.01.14.05.26.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Jan 2025 05:26:49 -0800 (PST)
-Message-ID: <a6a9dfce-6cac-4831-9c96-45471f5ee13a@linaro.org>
-Date: Tue, 14 Jan 2025 13:26:47 +0000
+        d=1e100.net; s=20230601; t=1736861528; x=1737466328;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TlqTUnZXimSv0OpNMeG8KSN6cDTihkE7gFuE8ClySV4=;
+        b=M36Nw3KSwLaWtWmyxqpacXsOsAknB++hvmC9vQatEvhjmzDCllXJ4bj5lqjn32JZNW
+         NAKu0Y0lokuaDWbUSLRCM64QrGDSGdnpwicZJt7EiTnVx2qpCmc0Xh4KaqJECTJkYcGt
+         fqsUdKtNZt1abXtgEHl9naqx0yVl4Jq01RnhB7tr9yGoOmFTa3YezBKBjX0Bi6op6ypX
+         wUQZbM/2wd9xrQ51aDQ4oZYBHwgvQF9QAjg+sDov+YSYFrJe39c4zMEKUB8Ak8iZj1fR
+         M0EPNCRe2AKiG7nmCjJoq7zhzN8EFkrzbyArThtfEhDRn25plvaQOvIfu9Bk0NrQv6kn
+         YCyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUoCwMnggT3AKyOD6yatnROCqEmmtH38CEq4jrIY+d4r1imu53p8Hc446KXxE73t7DLBbebS5I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpVNvAZRsr/OEXc6wkAkkIzAfpWYhbc/FXKD+aw0JJqfHNL/i2
+	qv3hfGRw1B4vDN+6xmtvoQX90lODEwhh7Oj94HE7PRfoPAX8hBWV7gbzTROFPJw=
+X-Gm-Gg: ASbGncs5xXe+pepZerBbsANC/0j3BB0XkoZ2YKPMj0FSnonY6mQ/zgSf+ooTEfXy96l
+	vt6tKBrdwaOfHE9umlp3OWcek7W8PeHYtIojqScR2xnH/SQHfm7HLNlY8B46f9/ruVkAGXsen0/
+	hqWrUnm5g1hYxvPLe0w/dfUgkiwTBdkTkBuV6csKIehdKEWQI5zrWJQZEpFWIl+Nm/s0U+XOLoj
+	YE1JMaLtydcKfyncM03hLzgm9ZPKDfxzSWdXeV9yRlpzS2/ACrOxljW
+X-Google-Smtp-Source: AGHT+IGX7/UMGlqtT7zZvRfxlsgQa+uEneORt172vk0+CI+jGXB6Xgxav5wRl12bJyoriN3HKN0zhQ==
+X-Received: by 2002:a05:6000:4020:b0:385:e3c1:50d5 with SMTP id ffacd0b85a97d-38a87338fa8mr25876636f8f.48.1736861527841;
+        Tue, 14 Jan 2025 05:32:07 -0800 (PST)
+Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:a8b0:e23c:79c1:dc2b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e38c7aesm15154949f8f.53.2025.01.14.05.32.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jan 2025 05:32:07 -0800 (PST)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	linux-gpio@vger.kernel.org,
+	Sean Anderson <sean.anderson@linux.dev>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Michal Simek <michal.simek@amd.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Robert Hancock <hancock@sedsystems.ca>,
+	Srinivas Neeli <srinivas.neeli@amd.com>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] gpio: xilinx: Convert gpio_lock to raw spinlock
+Date: Tue, 14 Jan 2025 14:32:06 +0100
+Message-ID: <173686152290.39040.17367940998093783534.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20250110163354.2012654-1-sean.anderson@linux.dev>
+References: <20250110163354.2012654-1-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] mtd: spi-nor: core: replace dummy buswidth from
- addr to data
-To: Alexander Stein <alexander.stein@ew.tq-group.com>, pratyush@kernel.org,
- mwalle@kernel.org, miquel.raynal@bootlin.com, richard@nod.at,
- vigneshr@ti.com, linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: alvinzhou@mxic.com.tw, leoyu@mxic.com.tw,
- Cheng Ming Lin <chengminglin@mxic.com.tw>, stable@vger.kernel.org,
- Cheng Ming Lin <linchengming884@gmail.com>
-References: <20241112075242.174010-1-linchengming884@gmail.com>
- <20241112075242.174010-2-linchengming884@gmail.com>
- <3342163.44csPzL39Z@steina-w>
-Content-Language: en-US
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
-In-Reply-To: <3342163.44csPzL39Z@steina-w>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
 
-
-On 1/14/25 12:57 PM, Alexander Stein wrote:
-> Hello everyone,
-
-Hi,
-
+On Fri, 10 Jan 2025 11:33:54 -0500, Sean Anderson wrote:
+> irq_chip functions may be called in raw spinlock context. Therefore, we
+> must also use a raw spinlock for our own internal locking.
 > 
-> Am Dienstag, 12. November 2024, 08:52:42 CET schrieb Cheng Ming Lin:
->> From: Cheng Ming Lin <chengminglin@mxic.com.tw>
->>
->> The default dummy cycle for Macronix SPI NOR flash in Octal Output
->> Read Mode(1-1-8) is 20.
->>
->> Currently, the dummy buswidth is set according to the address bus width.
->> In the 1-1-8 mode, this means the dummy buswidth is 1. When converting
->> dummy cycles to bytes, this results in 20 x 1 / 8 = 2 bytes, causing the
->> host to read data 4 cycles too early.
->>
->> Since the protocol data buswidth is always greater than or equal to the
->> address buswidth. Setting the dummy buswidth to match the data buswidth
->> increases the likelihood that the dummy cycle-to-byte conversion will be
->> divisible, preventing the host from reading data prematurely.
->>
->> Fixes: 0e30f47232ab5 ("mtd: spi-nor: add support for DTR protocol")
->> Cc: stable@vger.kernel.org
->> Reviewd-by: Pratyush Yadav <pratyush@kernel.org>
->> Signed-off-by: Cheng Ming Lin <chengminglin@mxic.com.tw>
->> ---
->>  drivers/mtd/spi-nor/core.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
->> index f9c189ed7353..c7aceaa8a43f 100644
->> --- a/drivers/mtd/spi-nor/core.c
->> +++ b/drivers/mtd/spi-nor/core.c
->> @@ -89,7 +89,7 @@ void spi_nor_spimem_setup_op(const struct spi_nor *nor,
->>  		op->addr.buswidth = spi_nor_get_protocol_addr_nbits(proto);
->>  
->>  	if (op->dummy.nbytes)
->> -		op->dummy.buswidth = spi_nor_get_protocol_addr_nbits(proto);
->> +		op->dummy.buswidth = spi_nor_get_protocol_data_nbits(proto);
->>  
->>  	if (op->data.nbytes)
->>  		op->data.buswidth = spi_nor_get_protocol_data_nbits(proto);
->>
+> This fixes the following lockdep splat:
 > 
-> I just noticed this commit caused a regression on my i.MX8M Plus based board,
-> detected using git bisect.
-> DT: arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-> Starting with this patch read is only 1S-1S-1S, before it was
-> 1S-1S-4S.
+> [    5.349336] =============================
+> [    5.353349] [ BUG: Invalid wait context ]
+> [    5.357361] 6.13.0-rc5+ #69 Tainted: G        W
+> [    5.363031] -----------------------------
+> [    5.367045] kworker/u17:1/44 is trying to lock:
+> [    5.371587] ffffff88018b02c0 (&chip->gpio_lock){....}-{3:3}, at: xgpio_irq_unmask (drivers/gpio/gpio-xilinx.c:433 (discriminator 8))
+> [    5.380079] other info that might help us debug this:
+> [    5.385138] context-{5:5}
+> [    5.387762] 5 locks held by kworker/u17:1/44:
+> [    5.392123] #0: ffffff8800014958 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work (kernel/workqueue.c:3204)
+> [    5.402260] #1: ffffffc082fcbdd8 (deferred_probe_work){+.+.}-{0:0}, at: process_one_work (kernel/workqueue.c:3205)
+> [    5.411528] #2: ffffff880172c900 (&dev->mutex){....}-{4:4}, at: __device_attach (drivers/base/dd.c:1006)
+> [    5.419929] #3: ffffff88039c8268 (request_class#2){+.+.}-{4:4}, at: __setup_irq (kernel/irq/internals.h:156 kernel/irq/manage.c:1596)
+> [    5.428331] #4: ffffff88039c80c8 (lock_class#2){....}-{2:2}, at: __setup_irq (kernel/irq/manage.c:1614)
+> [    5.436472] stack backtrace:
+> [    5.439359] CPU: 2 UID: 0 PID: 44 Comm: kworker/u17:1 Tainted: G        W          6.13.0-rc5+ #69
+> [    5.448690] Tainted: [W]=WARN
+> [    5.451656] Hardware name: xlnx,zynqmp (DT)
+> [    5.455845] Workqueue: events_unbound deferred_probe_work_func
+> [    5.461699] Call trace:
+> [    5.464147] show_stack+0x18/0x24 C
+> [    5.467821] dump_stack_lvl (lib/dump_stack.c:123)
+> [    5.471501] dump_stack (lib/dump_stack.c:130)
+> [    5.474824] __lock_acquire (kernel/locking/lockdep.c:4828 kernel/locking/lockdep.c:4898 kernel/locking/lockdep.c:5176)
+> [    5.478758] lock_acquire (arch/arm64/include/asm/percpu.h:40 kernel/locking/lockdep.c:467 kernel/locking/lockdep.c:5851 kernel/locking/lockdep.c:5814)
+> [    5.482429] _raw_spin_lock_irqsave (include/linux/spinlock_api_smp.h:111 kernel/locking/spinlock.c:162)
+> [    5.486797] xgpio_irq_unmask (drivers/gpio/gpio-xilinx.c:433 (discriminator 8))
+> [    5.490737] irq_enable (kernel/irq/internals.h:236 kernel/irq/chip.c:170 kernel/irq/chip.c:439 kernel/irq/chip.c:432 kernel/irq/chip.c:345)
+> [    5.494060] __irq_startup (kernel/irq/internals.h:241 kernel/irq/chip.c:180 kernel/irq/chip.c:250)
+> [    5.497645] irq_startup (kernel/irq/chip.c:270)
+> [    5.501143] __setup_irq (kernel/irq/manage.c:1807)
+> [    5.504728] request_threaded_irq (kernel/irq/manage.c:2208)
 > 
-> before:
->> cat /sys/kernel/debug/spi-nor/spi0.0/params
->> name            mt25qu512a
->> id              20 bb 20 10 44 00
->> size            64.0 MiB
->> write size      1
->> page size       256
->> address nbytes  4
->> flags           HAS_SR_TB | 4B_OPCODES | HAS_4BAIT | HAS_LOCK | HAS_4BIT_BP
->> | HAS_SR_BP3_BIT6 | SOFT_RESET
->>
->> opcodes
->>
->>  read           0x6c
->>  
->>   dummy cycles  8
->>  
->>  erase          0xdc
->>  program        0x12
->>  8D extension   none
->>
->> protocols
->>
->>  read           1S-1S-4S
->>  write          1S-1S-1S
->>  register       1S-1S-1S
->>
->> erase commands
->>
->>  21 (4.00 KiB) [1]
->>  dc (64.0 KiB) [3]
->>  c7 (64.0 MiB)
->>
->> sector map
->>
->>  region (in hex)   | erase mask | overlaid
->>  ------------------+------------+----------
->>  00000000-03ffffff |     [   3] | no
-> 
-> after:
->> cat /sys/kernel/debug/spi-nor/spi0.0/params
->> name            mt25qu512a
->> id              20 bb 20 10 44 00
->> size            64.0 MiB
->> write size      1
->> page size       256
->> address nbytes  4
->> flags           HAS_SR_TB | 4B_OPCODES | HAS_4BAIT | HAS_LOCK | HAS_4BIT_BP
->> | HAS_SR_BP3_BIT6 | SOFT_RESET
->>
->> opcodes
->>
->>  read           0x13
->>  
->>   dummy cycles  0
->>  
->>  erase          0xdc
->>  program        0x12
->>  8D extension   none
->>
->> protocols
->>
->>  read           1S-1S-1S
->>  write          1S-1S-1S
->>  register       1S-1S-1S
->>
->> erase commands
->>
->>  21 (4.00 KiB) [1]
->>  dc (64.0 KiB) [3]
->>  c7 (64.0 MiB)
->>
->> sector map
->>
->>  region (in hex)   | erase mask | overlaid
->>  ------------------+------------+----------
->>  00000000-03ffffff |     [   3] | no
-> 
-> AFAICT the patch seems sane, so it probably just uncovered another
-> problem already lurking somewhere deeper.
-> Given the HW similarity I expect imx8mn and imx8mm based platforms to be
-> affected as well.
-> Reverting this commit make the read to be 1S-1S-4S again.
-> Any ideas ow to tackling down this problem?
-> 
+> [...]
 
-My guess is that 1S-1S-4S is stripped out in
-spi_nor_spimem_adjust_hwcaps(). Maybe the controller has some limitation
-in nxp_fspi_supports_op(). Would you add some prints, and check these
-chunks of code?
+Applied, thanks!
 
-Cheers,
-ta
+[1/1] gpio: xilinx: Convert gpio_lock to raw spinlock
+      commit: 9860370c2172704b6b4f0075a0c2a29fd84af96a
+
+Best regards,
+-- 
+Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
