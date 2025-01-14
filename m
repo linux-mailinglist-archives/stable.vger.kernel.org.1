@@ -1,172 +1,138 @@
-Return-Path: <stable+bounces-108637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF09CA10F97
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 19:15:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04DC5A11023
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 19:30:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19FE1162032
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 18:15:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEB823A28F2
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 18:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4CE207A28;
-	Tue, 14 Jan 2025 18:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44611FC0EF;
+	Tue, 14 Jan 2025 18:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="IONLLsLS";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="wAoc+aSO"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kMJaW8yP"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5292063DF;
-	Tue, 14 Jan 2025 18:12:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77221FA8DB
+	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 18:30:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736878326; cv=none; b=FBdyjLlBxQY2eabq2kOXisyq+O7qoNdNNt4q8SfTNRPuNT0xeBcqtbLOiU6mJIHQ7dRzxre7SJavNG69C4xFj0mQ8NRioZSqwp8rd8GfiAzaZXIKbOug6Tyun1MPmbUfkouREZl2oqRq09pyxeBmCFET6JhMOO3r9/+epr+AEBQ=
+	t=1736879436; cv=none; b=o/DT/LrtW+IhEs7ISIqBaKWgUPeK+Xov31pAJT8gahJCSfVImaQSsojT85Ernp3zbUubUE0XZABn85ZoXfm7cXZK+LZ5LGzsmqOFWfgwCYIClM0HZeMaskzYG4auS17zV+9coGvxQZ5qJmPRmzE6bmlNzBkNefhcc9oEKt1NB7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736878326; c=relaxed/simple;
-	bh=W2IvFO1oA5Iqc5+taulUn14dOEs6txDAF0rN8lo4VU4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=C3u7vldPYy/46c9E9yOoEFJyI+knM2hcND3hhZx58XfQrK0kOGXUYt+aKEBrArcqDlrIJY2PHzASkocbAK0ArrxFK8bgvzFb+dGIBj55uCLYMiEH/5s2vOCdx+trS1EVIL7jrwalSw2HPZNekvB93GO7H5veldNob7cFz7yphXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=IONLLsLS; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=wAoc+aSO; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id B62D21380235;
-	Tue, 14 Jan 2025 13:12:03 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Tue, 14 Jan 2025 13:12:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm3; t=1736878323; x=1736964723; bh=37
-	VfeONMGNgvwpF+tYFFmlQ8RXizDbaN+s6iQMuubGI=; b=IONLLsLSvee8PE/A6R
-	SZGL9FH47LgBPia2eGtfwn/IuDamNOniuwj0i0gzjn+T6BJqhb+pUiSnqnSYbbPI
-	uM7Ivq+VDtLKZ0cprFadh0XZ8jRdac+074yl31KIcKkr+oH+kFl4R2nZpgW3ioDn
-	adzrbFocsfRrJt9xKPsmVmFdowmsyF07iHWJNRGUFvrGfLtd5+bFjTWmt+stV+Fl
-	CU4A5XIdJrluwWDFv4yERSLw/aBT+MwgDijZIvZucTCv56NA4Fmnf2nG0p/tDpb2
-	puwrMMgup1otY13SJnY29jMJlYR9Q/fzkd4gwv8mySmbD7RTfkhmfLponFRbqQQe
-	iqNg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1736878323; x=1736964723; bh=37VfeONMGNgvwpF+tYFFmlQ8RXiz
-	DbaN+s6iQMuubGI=; b=wAoc+aSOYDBuMx0EPVI4g+J1tPAsoOl1poP/inZt1J/J
-	K8HP4KF/NV65myBsvdPfWo6/HE1Vbc0voPtHNGeLfBPTOsYY4sgmKrt7tXeXRVRO
-	LTiigc7Mux29BdXtclZlshBI3GIYOMg9949LFEjhNCUkPy91pEN+SB2PlOX2am50
-	s+Jz2EQ6ffA/lSIq7XSKg5f9Dht03zJ0j/BGtqAjYpbprLzIzL4w8jHZMKgwiwvD
-	NOvE9TcdAB2g4kh8ZPWge0kqfC7HX2/VjnYtZYdQ32qEFFUgcg73KwbKUU856VMY
-	MY4PvU8K9Mt8PAudDPL1zcowPENLClCFOGzp2bcGKQ==
-X-ME-Sender: <xms:86iGZ2AEqprmGAKo4_Bv8PWl9Db7TjDOKzDAvx2dKPniqG8MS8zSag>
-    <xme:86iGZwg5yCpMjlVRtwyynb6OB0-wrJM_2lvpnqkYTye9CTMJ1QBcTunCgOWCuCuI4
-    2C41QT1glB7qsVXh_A>
-X-ME-Received: <xmr:86iGZ5nQPZXqksmZjwDY8HU5Djlj35Mu3yYeFvm55oaELz7mbl2T1Uw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudehiedguddtlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkvfevofesthekredtredtjeen
-    ucfhrhhomheplfhirgiguhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflhihgh
-    horghtrdgtohhmqeenucggtffrrghtthgvrhhnpeekhfeuffdukefhledvffeijeehgedt
-    ueeiffevleekvefhveevtdekfefhgedvtdenucffohhmrghinhepkhgvrhhnvghlrdhorh
-    hgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhhi
-    rgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomhdpnhgspghrtghpthhtohepkedpmh
-    houggvpehsmhhtphhouhhtpdhrtghpthhtohepmhgrthdrjhhonhgtiiihkhesohdvrdhp
-    lhdprhgtphhtthhopegrrhhnugesrghrnhgusgdruggvpdhrtghpthhtoheplhhinhhugi
-    dqmhhiphhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidq
-    khgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslh
-    gvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhssghoghgvnhgusegr
-    lhhphhgrrdhfrhgrnhhkvghnrdguvgdprhgtphhtthhopegshhgvsehrvgguhhgrthdrtg
-    homhdprhgtphhtthhopehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhm
-X-ME-Proxy: <xmx:86iGZ0yzqlSkW-x05ZSzsT37mqGXrtfifxH61nPr27193t9vnJC-MA>
-    <xmx:86iGZ7RjGNixexGRkY4gp-dvhzD-F_7lSHzcrB4SxjQNHH5ZC0doTQ>
-    <xmx:86iGZ_bHzG69uUaFyaknUknD8C8oiTlIkOXLu5s5myFI6mbw_3K_zw>
-    <xmx:86iGZ0S5PUYjE0f6crooUaw5KLVyf4hHnPaMgGX3Ion6HjndCs9Gzw>
-    <xmx:86iGZ2ERVn3H1_nx6NFWjJcK4j6bgRu83N87i0pptH7G7dybuqjQv_xg>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Jan 2025 13:12:02 -0500 (EST)
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Tue, 14 Jan 2025 18:11:58 +0000
-Subject: [PATCH] MIPS: pci-legacy: Override pci_address_to_pio
+	s=arc-20240116; t=1736879436; c=relaxed/simple;
+	bh=iPnisaLwyn4uRPEB7WDrZKm+oOwdziGvVmNWYObjYxo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=u92BiGGpcDIhNg1JBhB9mqx6y+MGp761itWs1c+ufzGqVi8+yVbE2fKhl3SGny8hMWIydjPaw+uSKVtpJcBRMykI3YlrMDfKFaH47wbIhqWUOahKYREoLBm5jPNzqDE5ylvSNzF+MS4TEtyYHSf72xSpfYanfm2XoX0uWXYrWWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kMJaW8yP; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4363ae65100so61651825e9.0
+        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 10:30:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1736879433; x=1737484233; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xWXRGYqIYfAFCWYGR5cc8ElnhXv1e/ZNViY5lKk/9zc=;
+        b=kMJaW8yPRv8X4zaUbVBHAP5OQmUfkdnaFTyP7w0M5dDIwBr0GsjckEDDIIHo9QxJBG
+         s0wqC4ofd0q7jDhobybdUjfMc0edDKl3x44coof7CsyDUT+ZzJ58r1Csl884aU6TLZ5o
+         C2qln8ecBjXRFzyJVNSNlrqMECMh9GV9Q1/t8MjdLFtaPKuSecnifjefnBrf+EgU5jgK
+         bq4JZV/JSmoz4N9zGHEkMr3ivTOCwoxK5d/O3+EOad6F+LSjtUj0Skzoql62MD5NlQ+3
+         CnLzlP0kArjypX5MbfOM414hpNBDnCxcuMeypX8QFfW7knJquIt4aE0LMzzs3Nid3zZQ
+         Ky4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736879433; x=1737484233;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xWXRGYqIYfAFCWYGR5cc8ElnhXv1e/ZNViY5lKk/9zc=;
+        b=qhNeOGdiZHAGD73BI2xuwGO2r1/fBG9WTpt4sOAzQgqHz3KvedHWCaozB/8vM0mJrn
+         QxqksVoWNqHeKPyAD71/gVkrRKc7AQEd2dt1LWPVi9WTkv5xWX1ed45Ut/GwdGA9Le0B
+         7gHNMf+CaJ71PMfOwoi7mAxOrgdYe4M3rp/2O/mycfMn4yQh9Y7DPo10pDN/Ow2pQLmp
+         MZUmdbslBwxt9lkCH3H0Hsot+jESBd1qi6UoF2vSoPB0y6Xk3g5Zy5B6FoaMarsz39Vg
+         QldksLNEbIskMNNXZ/kfujaBJa3ZPIXkS0+9Hyi7+XVERRtrhs0lvQ182gADaE1YIsBm
+         0z1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU/rE39iAAOtHouVN/C1gR1HT/D2yV8j0eAROiaKth5qUoaVqzVQTLjoVBWLwXVqzzzmlF7xSo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywc20rcA3LRPt9vcMG0B6vk5Z3m8kQ2eZiZ+mKjhT6Yn34k9xF8
+	UhaiLF0dYWJWNBaX7d9tLJzJBL1RIqLRgfwi9oPuaYbd+v9UrFZIHRh4ru2xz9o=
+X-Gm-Gg: ASbGncvFcubBVQsy7Oia7Sosq6ZgTJnmXm9pX89V0MiDtV1fRyUmN9ggxbON/FVWsot
+	GkoZ4drC0/jl1YVtGhQ8ZBjMpidk+7yfMwXwcSoF8+8u1HfwEwWIq5ngP3RnOea6wmunX0TGq9t
+	93OIJkqqEgjhZ/pZGqDneFG+9YiCmYAAEX9kTIxdU1khgLCazDrb/I3ORBYLTGX3feVSGsm10Hk
+	CFDFC/odM+aU/4LO06fP02jfn7n1rT/Q+YexbTV5LRZqDPqRBOkuRWPGEPCN7XoTTwX1KCpxFht
+	Qfh1u9bvWbAyFz0zNO84
+X-Google-Smtp-Source: AGHT+IEw8eHOips+m7BEL7pSk31Buqsgjf/0/YmNKYluWgMpJRjDHqhoLciiG4fuvyVDzaS9gJVk8A==
+X-Received: by 2002:a05:600c:46d2:b0:434:a1d3:a321 with SMTP id 5b1f17b1804b1-436e2679db4mr237168165e9.3.1736879433323;
+        Tue, 14 Jan 2025 10:30:33 -0800 (PST)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-436e2e8bea5sm217789155e9.31.2025.01.14.10.30.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Jan 2025 10:30:32 -0800 (PST)
+Message-ID: <90dd8d93-5653-47f1-8435-f03502e4c0cc@linaro.org>
+Date: Tue, 14 Jan 2025 19:30:31 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v2 3/5] thermal/drivers/mediatek/lvts: Disable low
+ offset IRQ for minimum threshold
+To: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+ Lukasz Luba <lukasz.luba@arm.com>, Matthias Brugger
+ <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Alexandre Mergnat <amergnat@baylibre.com>, Balsam CHIHI <bchihi@baylibre.com>
+Cc: kernel@collabora.com, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, Hsin-Te Yuan <yuanhsinte@chromium.org>,
+ Chen-Yu Tsai <wenst@chromium.org>, =?UTF-8?Q?Bernhard_Rosenkr=C3=A4nzer?=
+ <bero@baylibre.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ stable@vger.kernel.org
+References: <20250113-mt8192-lvts-filtered-suspend-fix-v2-0-07a25200c7c6@collabora.com>
+ <20250113-mt8192-lvts-filtered-suspend-fix-v2-3-07a25200c7c6@collabora.com>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <20250113-mt8192-lvts-filtered-suspend-fix-v2-3-07a25200c7c6@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250114-malta-io-fixes-v1-1-74ef1dc402ec@flygoat.com>
-X-B4-Tracking: v=1; b=H4sIAO2ohmcC/x3LQQqAIBBA0avIrBtopMC6SrTQGmugNDQiiO6et
- Hx8/gOZk3CGXj2Q+JIsMRRQpWBabVgYZS4GXeu2Jmpwt9tpUSJ6uTmjaZkaR67zxkGZjsR/KM8
- wvu8HOMkAXWAAAAA=
-X-Change-ID: 20250114-malta-io-fixes-85e14b1b9f8b
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Arnd Bergmann <arnd@arndb.de>, Baoquan He <bhe@redhat.com>
-Cc: linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, 
- =?utf-8?q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>, 
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1588;
- i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=W2IvFO1oA5Iqc5+taulUn14dOEs6txDAF0rN8lo4VU4=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhvS2FZ+/Jbz5a7G1W/KJ39veVzdZrq+7fq5rvwXHn/K0W
- xZXqnlkOkpZGMS4GGTFFFlCBJT6NjReXHD9QdYfmDmsTCBDGLg4BWAiPjmMDCcbHza/PNW1blf+
- Vss834qwcNUWDr1lATeC+hfN4HvVrMXI8G3pn0XyQRGNW/7sfdn16V/2hNAjjerVk//G8zppzvn
- 3lw8A
-X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
- fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
 
-pci-legacy systems are not using logic_pio to managed PIO
-allocations, thus the generic pci_address_to_pio won't work
-when PCI_IOBASE is defined.
+On 13/01/2025 14:27, Nícolas F. R. A. Prado wrote:
+> In order to get working interrupts, a low offset value needs to be
+> configured. The minimum value for it is 20 Celsius, which is what is
+> configured when there's no lower thermal trip (ie the thermal core
+> passes -INT_MAX as low trip temperature). However, when the temperature
+> gets that low and fluctuates around that value it causes an interrupt
+> storm.
 
-Override the function to use architecture implementation to
-fix the problem.
+Is it really about an irq storm or about having a temperature threshold 
+set close to the ambiant temperature. So leading to unnecessary wakeups 
+as there is need for mitigation ?
 
-Cc: stable@vger.kernel.org
-Fixes: 4bfb53e7d317 ("mips: add <asm-generic/io.h> including")
-Reported-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Closes: https://lore.kernel.org/r/99f75c66-4c2d-45dc-a808-b5ba440c7551@app.fastmail.com/
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
----
-This is a quick fix for fixes tree and stable backporting.
-In long term, we should get logic_pio accept fixed mapping,
-and make PCI core code aware of platforms not using vmap
-for PCI_IOBASE.
----
- arch/mips/pci/pci-legacy.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+> Prevent that interrupt storm by not enabling the low offset interrupt if
+> the low threshold is the minimum one.
 
-diff --git a/arch/mips/pci/pci-legacy.c b/arch/mips/pci/pci-legacy.c
-index ec2567f8efd83bff7b106cbbd9ec7a6de0308c4c..66898fd182dc1fec1d1e9ae4c908873d59777182 100644
---- a/arch/mips/pci/pci-legacy.c
-+++ b/arch/mips/pci/pci-legacy.c
-@@ -29,6 +29,14 @@ static LIST_HEAD(controllers);
- 
- static int pci_initialized;
- 
-+unsigned long pci_address_to_pio(phys_addr_t address)
-+{
-+	if (address > IO_SPACE_LIMIT)
-+		return (unsigned long)-1;
-+
-+	return (unsigned long) address;
-+}
-+
- /*
-  * We need to avoid collisions with `mirrored' VGA ports
-  * and other strange ISA hardware, so we always want the
+The case where the high threshold is the INT_MAX should be handled too. 
+The system may have configured a thermal zone without critical trip 
+points, so setting the next upper threshold will program the register 
+with INT_MAX. I guess it is an undefined behavior in this case, right ?
 
----
-base-commit: dab2734f8e9ecba609d66d1dd087a392a7774c04
-change-id: 20250114-malta-io-fixes-85e14b1b9f8b
 
-Best regards,
+> Cc: stable@vger.kernel.org
+
+[ ... ]
+
+
 -- 
-Jiaxun Yang <jiaxun.yang@flygoat.com>
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
