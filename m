@@ -1,260 +1,195 @@
-Return-Path: <stable+bounces-108617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2DF0A10BF7
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:15:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2CF5A10C06
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 17:16:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CB8F7A153A
-	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 16:15:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C87571888DD9
+	for <lists+stable@lfdr.de>; Tue, 14 Jan 2025 16:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8AD1CC177;
-	Tue, 14 Jan 2025 16:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844091D3576;
+	Tue, 14 Jan 2025 16:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ILH9a2vs"
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="elOp0gmr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184C51C8776;
-	Tue, 14 Jan 2025 16:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3B61C5F31
+	for <stable@vger.kernel.org>; Tue, 14 Jan 2025 16:16:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736871329; cv=none; b=lUf1OeTpMh+SBSkSnY4+jd/EEwSPBrtq+QqCD11x7y3r6NS4QbuJyUp8IZP/l+7ZP16NNO5tOEPFMsQ8gWPc+nDpjnlqC7JvkAQbwVai13HX4tsnvs8Pi4Eo79od6WYf2p301ZcH9whlaKSYc7FgQR9Fnfbi9hMSbakEDIqaibk=
+	t=1736871369; cv=none; b=so7uG2SHgl3RDkUhqoUasrUFfgOY6vHrYg1ZIxZEZVjqq4LRVMj5sb72V0GDl+S4dXvEMezQvyqUcDxdTsPvx2WwJ5wDHMb6BrQ5SGnMD6Jm9VEV65mGrb7aY0Dk6GHZqVzm3hxvGPc+ZP42baL+i5zfKoZIPOPkNcPGlXNMOHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736871329; c=relaxed/simple;
-	bh=F3j37I7eWux3kT/HLzcnR1v1ElCkcnxuIX95XEhfavs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=dzI4r04AsERFLkEZRe2oVZj50TlztbeTqM+TxgVsoNbjj/3DNwzHXRRQz7zxF/1XRsGkz6mje47b1ZO7giXyqpe5Nis9hJGj6ziw10ps42caOG8n1EoJq6OIlr1o85U4/nkdSjn5LWfYrZI+o0rSr932GRheqMEl/D6d9oFbm8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ILH9a2vs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D4D2C4CEDD;
-	Tue, 14 Jan 2025 16:15:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736871327;
-	bh=F3j37I7eWux3kT/HLzcnR1v1ElCkcnxuIX95XEhfavs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ILH9a2vskhMolQSuF7Ef38niRrZRsKp1vTPx4T9aqNvQKErCGlpyMOPS0oerUl97C
-	 E1aBpgxzsrz/ZPrvYcTi4EcIACwJBd5DO4VlIsnN4XKvdi/L5Fw2NzUbcddXFMBPz6
-	 2XGWCKRUBFb1wkbltURqQ7pnf1U6p2kgbEUB1eAVmeYIFti8IiTxICbKzJRZQ0HEXh
-	 4ogP7Zc2AfnmekN8nHfPstvaHtnhKS6+cYu25CKNV1xBBbCbRP7IBoR/81lelIHg2c
-	 0yC4XuBLf5enjERrsFzas4D0l70M1UmoMMcXR14Eto0rwWjLYyTPwmznxHfCD9hVx5
-	 W1UILPS0EoGtw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: tudor.ambarus@linaro.org,  pratyush@kernel.org,  mwalle@kernel.org,
-  miquel.raynal@bootlin.com,  richard@nod.at,  vigneshr@ti.com,
-  linux-mtd@lists.infradead.org,  linux-kernel@vger.kernel.org,
-  alvinzhou@mxic.com.tw,  leoyu@mxic.com.tw,  Cheng Ming Lin
- <chengminglin@mxic.com.tw>,  stable@vger.kernel.org,  Cheng Ming Lin
- <linchengming884@gmail.com>
-Subject: Re: [PATCH v2 1/1] mtd: spi-nor: core: replace dummy buswidth from
- addr to data
-In-Reply-To: <3342163.44csPzL39Z@steina-w> (Alexander Stein's message of "Tue,
-	14 Jan 2025 13:57:59 +0100")
-References: <20241112075242.174010-1-linchengming884@gmail.com>
-	<20241112075242.174010-2-linchengming884@gmail.com>
-	<3342163.44csPzL39Z@steina-w>
-Date: Tue, 14 Jan 2025 16:15:24 +0000
-Message-ID: <mafs0zfjt5q3n.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1736871369; c=relaxed/simple;
+	bh=plNo3tKyS9lk3uMTbxdS+dYqP0/YCB1KP71YwEiI/uA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u6bfmpHvO/Jik7U0jXudb5DHsc65l4aSnhDaLpS8TVEwwaDGfy7j9VPZ/2bFRe9e8VyVvEVkpYln03BqGh2130fKg1FuJzR0hSfBw+aEPp4MQSSHaZWhZUHmxetJ1NUGsOl0hMKbhxBovD6awYS11T8uJLaYL6MMIjHlCqZY0ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=elOp0gmr; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-aaec61d0f65so1116199466b.1
+        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 08:16:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1736871363; x=1737476163; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Hy75zv0jPNz/NadWI9ulEIuyrYJnMlPP/tt3Y0Pl4XQ=;
+        b=elOp0gmr1LWwKvUI5D0UGhkaLf3eujRNrxtZbnJKywv2KjXhXadFy2xzk5/WrnwRVr
+         ioLSfrKv4L052686zZrBCXUTOBRZs5v0Es1Bw6hYsqcNoCp9iYftL9BzuFeN1wyEZ7Dm
+         HhACQUVRvD+bS5Jj/xjvfITPWfvQnYCJSiNJg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736871363; x=1737476163;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Hy75zv0jPNz/NadWI9ulEIuyrYJnMlPP/tt3Y0Pl4XQ=;
+        b=XNugePQ5WPHCakkDbqzhaEUHzxrcWOoz7y0xOxkgMeS/Pa9IYud4Vr9kCCxoOuEJne
+         2pdqRKygiiGSPdyCRySswQjvCzB6AGWOxZaaQGGRcXimbSnMDnwCo8R3E2NfbszjYDTh
+         VFysTIjin4vg6aazz/ike4vtuPI5ry8vCgEqBakZvKc8FUIYXA9FWVzzYe2JRHENUhU3
+         5O50Pk8pLiQ8mEexSjBTa7ZgpmPox4gP6iZYRE5latvx93LrV9mxTsuxs1U/fpT5/lnN
+         JrtF/jEZeSi8dVupMhXhlEqVT4MOGn8WOyFq4ZqDtu1Bu8GS6BG2d3IUM6oojkSSwEmH
+         P0LQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUzVOhmBTvzMf22yAJtejxbJuDz10FBSqxPGPwTLs5ubc3N9G6pDNB5jmsa3JVqx+fWA7XuELE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOF+EkLVoFOqLmz7eo/5Tv06Qzi1BYkK8zHicdE59cCPRwIrPq
+	egDAsK4ko0YCw601RAwbW4VYwbSLXPOB4X+Ac/PdvkXo/7KlLbGEaF081XyShO4=
+X-Gm-Gg: ASbGnct8ECZrPgcTn/twDnvxm7aI5f5kcSV/gDqDutlBwfwX047EfPzaKyoTxkS0zN1
+	dxUyo5dHmGcEuPoVD5K9t9F6glIYi/iHa4mAoE6TUFzNPZqKElvJl7GSds87tacKSUqUCED008/
+	gWFP55MoDFce3gwm1bsjfhxvg5zjdQMExj0zPAzrftiGn98NI8fkbn0WyUYR3W73KwjstIaodQQ
+	7KcwL8qt7pdYDoUGnVKi6j3l3xXjzgW1FgtEYbIkqawhjk7j1F8kSXoeH3YfY161qIz
+X-Google-Smtp-Source: AGHT+IEa8aQlIaJMwuoQ73JQ3b72nneYqB3RAVByBgtJRXcY8/paCVUpEXat3jH0K1HK9c0pr/tM+g==
+X-Received: by 2002:a17:906:2617:b0:ab3:30b5:fa62 with SMTP id a640c23a62f3a-ab330b5faf1mr416873966b.24.1736871363033;
+        Tue, 14 Jan 2025 08:16:03 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c90dc101sm655539766b.56.2025.01.14.08.16.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jan 2025 08:16:02 -0800 (PST)
+Date: Tue, 14 Jan 2025 17:16:00 +0100
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Dave Airlie <airlied@gmail.com>, Greg KH <gregkh@linuxfoundation.org>,
+	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+	stable@vger.kernel.org, ashutosh.dixit@intel.com,
+	dri-devel@lists.freedesktop.org
+Subject: Re: AAARRRGGGHHH!!!! (was Re: [PATCH 6.12.y] xe/oa: Fix query mode
+ of operation for OAR/OAC)
+Message-ID: <Z4aNwGys3epVzf7G@phenom.ffwll.local>
+References: <2025010650-tuesday-motivate-5cbb@gregkh>
+ <20250110205341.199539-1-umesh.nerlige.ramappa@intel.com>
+ <2025011215-agreeing-bonfire-97ae@gregkh>
+ <CAPM=9txn1x5A7xt+9YQ+nvLaQ3ycekC1Oj4J2PUpWCJwyQEL9w@mail.gmail.com>
+ <CAPM=9twogjmTCc=UHBYkPPkrdHfm0PJ9VDoOg+X2jWZbdjVBww@mail.gmail.com>
+ <2025011247-spoilage-hamster-28b2@gregkh>
+ <CAPM=9tx1cFzhaZNz=gQOmP9Q0KEK5fMKZYSc-P0xA_f2sxoZ9w@mail.gmail.com>
+ <Z4WKIbVzo8d-nln3@lappy>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z4WKIbVzo8d-nln3@lappy>
+X-Operating-System: Linux phenom 6.12.3-amd64 
 
-On Tue, Jan 14 2025, Alexander Stein wrote:
+On Mon, Jan 13, 2025 at 04:48:17PM -0500, Sasha Levin wrote:
+> On Mon, Jan 13, 2025 at 10:44:41AM +1000, Dave Airlie wrote:
+> > Pretty sure we've explained how a few times now, not sure we can do much more.
+> > 
+> > If you see a commit with a cherry-pick link in it and don't have any
+> > sight on that commit in Linus's tree, ignore the cherry-pick link in
+> > it, assume it's a future placeholder for that commit id. You could if
+> > you wanted to store that info somewhere, but there shouldn't be a
+> > need.
+> > 
+> > When the initial commit enters during the next merge window, you look
+> > for that subject or commit id in the stable tree already, if it
+> > exists, dump the latest Linus patch on the floor, it's already in
+> > stable your job is done.
+> 
+> We can't rely too heavily on the subject line. Consider the following two
+> very different commits that have the same subject line:
+> 
+> 	3119668c0e0a ("drm/amd/display: avoid disable otg when dig was disabled")
+> 	218784049f4b ("drm/amd/display: avoid disable otg when dig was disabled")
+> 
+> Now, if a new commit lands and it has the following "Fixes:" tag:
+> 
+> 	Fixes: abcdef12345 ("drm/amd/display: avoid disable otg when dig was disabled")
 
-> Hello everyone,
->
-> Am Dienstag, 12. November 2024, 08:52:42 CET schrieb Cheng Ming Lin:
->> From: Cheng Ming Lin <chengminglin@mxic.com.tw>
->> 
->> The default dummy cycle for Macronix SPI NOR flash in Octal Output
->> Read Mode(1-1-8) is 20.
->> 
->> Currently, the dummy buswidth is set according to the address bus width.
->> In the 1-1-8 mode, this means the dummy buswidth is 1. When converting
->> dummy cycles to bytes, this results in 20 x 1 / 8 = 2 bytes, causing the
->> host to read data 4 cycles too early.
->> 
->> Since the protocol data buswidth is always greater than or equal to the
->> address buswidth. Setting the dummy buswidth to match the data buswidth
->> increases the likelihood that the dummy cycle-to-byte conversion will be
->> divisible, preventing the host from reading data prematurely.
->> 
->> Fixes: 0e30f47232ab5 ("mtd: spi-nor: add support for DTR protocol")
->> Cc: stable@vger.kernel.org
->> Reviewd-by: Pratyush Yadav <pratyush@kernel.org>
->> Signed-off-by: Cheng Ming Lin <chengminglin@mxic.com.tw>
->> ---
->>  drivers/mtd/spi-nor/core.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->> 
->> diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
->> index f9c189ed7353..c7aceaa8a43f 100644
->> --- a/drivers/mtd/spi-nor/core.c
->> +++ b/drivers/mtd/spi-nor/core.c
->> @@ -89,7 +89,7 @@ void spi_nor_spimem_setup_op(const struct spi_nor *nor,
->>  		op->addr.buswidth = spi_nor_get_protocol_addr_nbits(proto);
->>  
->>  	if (op->dummy.nbytes)
->> -		op->dummy.buswidth = spi_nor_get_protocol_addr_nbits(proto);
->> +		op->dummy.buswidth = spi_nor_get_protocol_data_nbits(proto);
->>  
->>  	if (op->data.nbytes)
->>  		op->data.buswidth = spi_nor_get_protocol_data_nbits(proto);
->> 
->
-> I just noticed this commit caused a regression on my i.MX8M Plus based board,
-> detected using git bisect.
-> DT: arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-> Starting with this patch read is only 1S-1S-1S, before it was
-> 1S-1S-4S.
->
-> before:
->> cat /sys/kernel/debug/spi-nor/spi0.0/params
->> name            mt25qu512a
->> id              20 bb 20 10 44 00
->> size            64.0 MiB
->> write size      1
->> page size       256
->> address nbytes  4
->> flags           HAS_SR_TB | 4B_OPCODES | HAS_4BAIT | HAS_LOCK | HAS_4BIT_BP
->> | HAS_SR_BP3_BIT6 | SOFT_RESET
->> 
->> opcodes
->> 
->>  read           0x6c
->>  
->>   dummy cycles  8
->>  
->>  erase          0xdc
->>  program        0x12
->>  8D extension   none
->> 
->> protocols
->> 
->>  read           1S-1S-4S
->>  write          1S-1S-1S
->>  register       1S-1S-1S
->> 
->> erase commands
->> 
->>  21 (4.00 KiB) [1]
->>  dc (64.0 KiB) [3]
->>  c7 (64.0 MiB)
->> 
->> sector map
->> 
->>  region (in hex)   | erase mask | overlaid
->>  ------------------+------------+----------
->>  00000000-03ffffff |     [   3] | no
->
-> after:
->> cat /sys/kernel/debug/spi-nor/spi0.0/params
->> name            mt25qu512a
->> id              20 bb 20 10 44 00
->> size            64.0 MiB
->> write size      1
->> page size       256
->> address nbytes  4
->> flags           HAS_SR_TB | 4B_OPCODES | HAS_4BAIT | HAS_LOCK | HAS_4BIT_BP
->> | HAS_SR_BP3_BIT6 | SOFT_RESET
->> 
->> opcodes
->> 
->>  read           0x13
->>  
->>   dummy cycles  0
->>  
->>  erase          0xdc
->>  program        0x12
->>  8D extension   none
->> 
->> protocols
->> 
->>  read           1S-1S-1S
->>  write          1S-1S-1S
->>  register       1S-1S-1S
->> 
->> erase commands
->> 
->>  21 (4.00 KiB) [1]
->>  dc (64.0 KiB) [3]
->>  c7 (64.0 MiB)
->> 
->> sector map
->> 
->>  region (in hex)   | erase mask | overlaid
->>  ------------------+------------+----------
->>  00000000-03ffffff |     [   3] | no
->
-> AFAICT the patch seems sane, so it probably just uncovered another
-> problem already lurking somewhere deeper.
-> Given the HW similarity I expect imx8mn and imx8mm based platforms to be
-> affected as well.
-> Reverting this commit make the read to be 1S-1S-4S again.
-> Any ideas ow to tackling down this problem?
+This is why we're asking people to include the cherry-picked from line, so
+you're scripts can handle this automatically.
 
-Thanks for reporting this. I spent some time digging through this, and I
-think I know what is going on.
+Because then you get two cherry-picked from lines in your stable commits:
+- one from the drm cherry-pick
+- one from the stable cherry-pick
 
-Most controller's supports_op hook call spi_mem_default_supports_op(),
-including nxp_fspi_supports_op(). In spi_mem_default_supports_op(),
-spi_mem_check_buswidth() is called to check if the buswidths for the op
-can actually be supported by the board's wiring. This wiring information
-comes from (among other things) the spi-{tx,rx}-bus-width DT properties.
-Based on these properties, SPI_TX_* or SPI_RX_* flags are set by
-of_spi_parse_dt(). spi_mem_check_buswidth() then uses these flags to
-make the decision whether an op can be supported by the board's wiring
-(in a way, indirectly checking against spi-{rx,tx}-bus-width).
+And instead of only checking the stable cherry-pick line you just check
+both if you want an answer to the "do I have this one already?" question.
+There's two cases:
 
-In arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi we have:
+- You have a backport candidate, but want to check if you have it already.
+  When that happens with the 2nd commit your scripts will try to apply
+  that patch (because it doesn't match the cherry-picked from you've added
+  yourself), which will fail and result in an angry mail to dri-devel.
 
-	flash0: flash@0 {
-		reg = <0>;
-		compatible = "jedec,spi-nor";
-		spi-max-frequency = <80000000>;
-		spi-tx-bus-width = <1>;
-		spi-rx-bus-width = <4>;
+  But if you instead check against both your and the drm cherry-pick
+  lines, you'd know that you have this patch already and can drop it
+  automatically.
 
-Now the tricky bit here is we do the below in spi_mem_check_buswidth():
+- You get a Fixes: line like above, and want to know whether you need that
+  patch. You already have to consult all the stable cherry-pick lines to
+  make sure (because stable doesn't have that sha1 if the broken commit
+  was itself cherry-picked). If you instead check against both the drm and
+  stable cherry-pick lines then the tooling will do the right job.
 
-	if (op->dummy.nbytes &&
-	    spi_check_buswidth_req(mem, op->dummy.buswidth, true))
-		return false;
+Which is why Dave&me want these cherry-pick lines, but Alex has removed
+them again because of the last round of shouting about this. Because
+without cherry-pick lines you're down to guessing by title, which goes
+wrong.
 
-The "true" parameter here means to "treat the op as TX". Since the board
-only supports 1-bit TX, the 4-bit dummy TX is considered as unsupported,
-and the op gets rejected. In reality, a dummy phase is neither a RX nor
-a TX. We should ideally treat it differently, and only check if it is
-one of 1, 2, 4, or 8, and not test it against the board capabilities at
-all.
+So the only thing that's needed in the tooling is that instead of only
+looking at your own cherry-pick lines in stable commits to figure out
+whether you need a backport or have it already, or whether you need that
+bugfix or don't have the broken commit, is to look at all cherry-pick
+lines. And ask Alex to again add them.
 
-Alexander, can you test my theory by making sure it is indeed the dummy
-check in spi_mem_check_buswidth() that fails, and either removing it or
-passing "false" instead of "true" to spi_check_buswidth_req() fixes the
-bug for you?
+> Does it refer to one of the older commits? Or a new commit that will
+> show up during the merge window?
+> 
+> Or... What happens if a new commit with the very same subject line shows
+> up, and it has a cherry-pick link that points to a completely different
+> commit that is not in the tree yet? :)
+> 
+> But just in general, there are so many odd combinations of commits where
+> trying to follow the suggestion you've made will just break...
+> 
+> Something like these two identical commits which are not tagged for stable:
+> 
+> 	21afc872fbc2 ("drm/amd/display: Add monitor patch for specific eDP")
+> 	3d71a8726e05 ("drm/amd/display: Add monitor patch for specific eDP")
+ 
+Yeah sometimes people forget to add cc: stable. It happens. I don't think
+anything else is going on here.
 
-I took a quick look and the spi-tx-bus-width == 1 and spi-rx-bus-width >
-1 combination seems to be quite common so I think many other boards are
-affected by this bug as well.
+> And the following two identical ones which are tagged for stable:
+> 
+> 	b7cdccc6a849 ("drm/amd/display: Add monitor patch for specific eDP")
+> 	04a59c547575 ("drm/amd/display: Add monitor patch for specific eDP")
 
-Since we are quite late in the cycle, and that changing
-spi_mem_check_buswidth() might cause all sorts of breakages, I think the
-best idea currently would be to revert this patch, and resend it with
-the other changes later.
+Yeah this is just standard bugfix cherry-picking, except because you
+shouted about the cherry-pick lines last time around they're now gone, so
+you have no idea what's going on here.
 
-Tudor, Michael, Miquel, what do you think about this? We are at rc7 but
-I think we should send out a fixes PR with a revert. If you agree, I
-will send out a patch and a PR.
-
+Imo we should add the cherry-pick lines back and then this would be all
+clear.
+-Sima
 -- 
-Regards,
-Pratyush Yadav
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
 
