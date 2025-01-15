@@ -1,152 +1,182 @@
-Return-Path: <stable+bounces-108681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0314CA11B5C
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 08:57:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4585A11C0B
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 09:33:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EC273A697A
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 07:57:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BFE41884684
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 08:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6F622F152;
-	Wed, 15 Jan 2025 07:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD591DB14B;
+	Wed, 15 Jan 2025 08:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="Ct43ahka";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="LKBu93XS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N6fqVA6o"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A041DB123;
-	Wed, 15 Jan 2025 07:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C59A23F286;
+	Wed, 15 Jan 2025 08:33:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736927844; cv=none; b=Fx1U4AjNuVNXj+1A5rOkcln+5yAzC2KDmm0r8DOW17zqo+RPkbSSMgvgaFKD/6fPxcX4AB2lFmExVC+dRvyPURM88g+yKVZqQilIWzJnJvchJH4FV5apqvVLw1FPr99GwiQ3otAV3sEXqgz1fMRBpydBoOwqRQKEjr9TK+x+Jm4=
+	t=1736930018; cv=none; b=N6NdOS1h2RAE+F3zsEoYUwtkb6k5XtlhzO2aIPKmdqDKmuOVGD5+uaVLXjlFMPKjZAoBJHVfFg3ZQpEBEh42w5++oLzFIiY33WlWRdkWW2nhmxadUN0h/zKNc4SBEVctYv/azOm5imVUo+wOZyDfgt5mkG98UbHhroP4TV5jiMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736927844; c=relaxed/simple;
-	bh=qsvzSv0qRBJdleSHYPPiUrC/+SObfNvqoObJnmciACI=;
+	s=arc-20240116; t=1736930018; c=relaxed/simple;
+	bh=rr5s78EC3w/9YyGhSVI4b1y7Fm81akbFuF8CSzmLsUU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LAtr3j1rBXweuMYHyMGJZWTEQZLAxm+Nd66wKq4whOunQscOoej8JxRow+pllHZCzYAyyxQPb3/Iv2LWQFnhgyyrNA5RqBkrbZwShT36rAGgTbF4bLI+Bk20yAI1In/2588L3mnqoEz95WAlj45B+xZVYaUaEHHlTljko/oGGZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=Ct43ahka; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=LKBu93XS; arc=none smtp.client-ip=103.168.172.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 8C8EE1140212;
-	Wed, 15 Jan 2025 02:57:21 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Wed, 15 Jan 2025 02:57:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1736927841; x=1737014241; bh=w563hfhd+B
-	DMMJr6Q3ZoixUAdyy5P1R3/CjpcfLHGlw=; b=Ct43ahkaX2qeC6CUwi9pZL2QGV
-	U98ClqNRLOtjZDgvUInlVgdwVfbJHjgFjZ3x5jsEbQo7IaPTNLRx+nxjaTfzgMNu
-	1lmYm6lOK/JySfQ1ZfsTN9gxJp+CZwIoORgdf9esYldxRMh0OObxt1Z6/mZ+pXyx
-	JAJrNUsU74jWA+lQjXtauV2/rC049cutSLGztTUtzmvL36HJPi1fdvo92q1y4BkM
-	tISVAT57gM5r5RNZ6IK8LMf8EuO5u30YqWRYN8jieq5M+xnyEVhNIpsyk1ufoR+r
-	KwpwT0aM9sX70oDfFFNhF0Nz7uHrRTIEf30iGCPmkGVDgvQCoCxdMHh0cLAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1736927841; x=1737014241; bh=w563hfhd+BDMMJr6Q3ZoixUAdyy5P1R3/Cj
-	pcfLHGlw=; b=LKBu93XSkSgDKogkMHENVfCbf+Dq5V+N/7XkSQu82UmliViS1u1
-	RrhzPU3yESG1JFCCQ3U7Dc9Pv20pQbmM9n2A5kYFPbHfFzh13zn26MnOpo4rL+Og
-	vmOxl/IdK+G1NJSzypFL/mOV8wOUX817zH1r2luYNgyhJq882LofonK1W7K8DNjS
-	FrUT/o9QFsTh4J5V4SCrCPAlT9CPfWZVR/W2uMir5jcuSboatxsNxm9Zib1dyYbl
-	MRxg6p6/eit5t38yLf6qvqmwrhtg6KWnOr8cdsXcc7mdrq6g0HULub6Mwo4tomQH
-	DtxR5KcmRFriYItF8yft0easF0QDRxx2vbA==
-X-ME-Sender: <xms:YWqHZ95IER35KFnhpzpUCn7oshmhTJK4CKoFnUxM7NR9cnGWQMUj0w>
-    <xme:YWqHZ66WceC15P3Aki4EcP32gOgfQCFMOEOHrQRlPkjKkOiYo5UP5O99IywTrPMEB
-    jNE9YWedGaWjw>
-X-ME-Received: <xmr:YWqHZ0fUhWGNorjesj7TOi7AQldUvkoKdTit1EfYN7vH5jiO58DFPsYtDGuuJkXwfy3yKPbaEr93m56Q7nZxfcBR2R8tWJc5eqt0KA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudehjedgudduvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtf
-    frrghtthgvrhhnpeehgedvvedvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueef
-    hffgheekteenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpehgrhgvgheskhhrohgrhhdrtghomhdpnhgspghrtghpthhtohepuddvpdhmohguvgep
-    shhmthhpohhuthdprhgtphhtthhopegthhgvnhhqihhujhhiieeiieesghhmrghilhdrtg
-    homhdprhgtphhtthhopehnihhpuhhnrdhguhhpthgrsegrmhgurdgtohhmpdhrtghpthht
-    ohepnhhikhhhihhlrdgrghgrrhifrghlsegrmhgurdgtohhmpdhrtghpthhtoheplhhinh
-    hugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsggr
-    ihhjihgrjhhuudelledtsehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhtrggslhgvse
-    hvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:YWqHZ2KYCksQIpHvNGkIyiSSTHIoWbHEU2PK0ZH8ic2jh2bR2JZRDg>
-    <xmx:YWqHZxKyBit6Fd3_isHh69hTO017G7tWkPA9yRlKhSC9Mlyv3bSKoQ>
-    <xmx:YWqHZ_yZVJuP8IAGrYh84IuOt59Rhma0nac1ApvVPQLSpF-UGGQ_Sw>
-    <xmx:YWqHZ9KJSxSFwfM1bE4oDzKJF4-uFS8glREwEzoYNhGYjAXQWzMzQQ>
-    <xmx:YWqHZ7CiFZjLVyuVVQm25KaHW58TMg1tpxGm2uk8Ugiys-qlCf9S683l>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 15 Jan 2025 02:57:20 -0500 (EST)
-Date: Wed, 15 Jan 2025 08:57:19 +0100
-From: Greg KH <greg@kroah.com>
-To: Qiu-ji Chen <chenqiuji666@gmail.com>
-Cc: nipun.gupta@amd.com, nikhil.agarwal@amd.com,
-	linux-kernel@vger.kernel.org, baijiaju1990@gmail.com,
+	 Content-Type:Content-Disposition:In-Reply-To; b=pINOfkbx8sj3sDVmNVAPC3CmNjPn/Mjy+mS9qMgqwZmqOniwBqqwTNHzYDQxpctenziS8uOj/b9Y/LL4cxGmm1upq0+njMXx2ftOiDlan631B1V1b4WRM7bbi0FKN7922elC0CJUR7pJcgacz0QbiyHZjULm4CfVG6qGAWLrNhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N6fqVA6o; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-436a39e4891so44243395e9.1;
+        Wed, 15 Jan 2025 00:33:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736930015; x=1737534815; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=jRbGA5hfKNQNoBMn6E9hxMPXAsQYQxuMoAfdDX+Ku3E=;
+        b=N6fqVA6oNb6SWK4ZLNQflD8y9Mw0S0Sh/g9s+FkyHjEor3LKfacCFJQaLpknLLxZRU
+         al6VEQSpKSh5X6ESZY2RCoXym3SV1uL+CpFflAWtBnfT7hbGyGtt2Dw6KVXESBdeL+dV
+         LKZv1vLt1wzWukkN2A2Lb4XCRO6u5muTfcuSKaPbSQaq5x2OKZElKnV4QiF2dnm+eLN0
+         xuD4Ov/QTKAl8LB0ls+1FMxH/klXvTA0x8ugzu5eH36xe8O1gDIsIzyuO9PKOA69v74r
+         MLtOSv/xUlpvDzJYpHr6DzxLVXMOjzHbdC8ck6WICy+w06jD+OwlQNMTJqpgzpqJAPVB
+         i2vw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736930015; x=1737534815;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jRbGA5hfKNQNoBMn6E9hxMPXAsQYQxuMoAfdDX+Ku3E=;
+        b=wSb0Bo1l2O+aeqlqNOtLqHw0TnrdkjDmyM3QHGlDQcAZXGaosTvzgD0AHyt3WjiJ9D
+         nDAa+qTqxH97eWhtlwUauk26GKQ3ez3NM9xWsaLsDSVSIotbjBDYxOv3b8jI6LM/DfOp
+         6+YB7uXlAInR//9Ew0sXMay4dvowpwZt8cKjDhsCGn0vYz3Tqx1ef9RMzKbNf0iwUvfz
+         L3YiTt8duCIkjnuNzjSZys+L5mwaeVPB/j1HKrV12+nLYyb4nlliZEMO6hKVgjUaIuRm
+         QKvqc488a085YnL+oFpZOebKGK6rgidej7Sgi8E6RxjYIieCQfGtPhBcJD9kHcazERSs
+         Qurg==
+X-Forwarded-Encrypted: i=1; AJvYcCU9lpDQaC1DvM91IeOEO92/tTLt2234hcmw7EvUx0yNgmv0Z0MTjbYV0zDwBEnRvBEslX5yVk+DEyQ=@vger.kernel.org, AJvYcCVE+BmDGnZW6WPAalbF0tFXtCLbArSS+GMk+5mk1PkwPQvpr5xiLJPCl2AxBxVRhfxTLYyQjqhL9rSp9hcJ@vger.kernel.org, AJvYcCW8xrby+txV5vZtktr8BGLe068e5i+2fjzxzbSYaeYx80xZktsAmqvHWKGHsNhFFI/iSinTLIjD@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywkt6SW5RsDpHPDm6mxLElRzEZPP62Z/7Z7pjd9io9H0BVcgd39
+	1f3JXkkcCfB5Efz+6k+sjStnCPoMEfEz3vSjZOpYNwuWMcTy+MxJBWKdEepD
+X-Gm-Gg: ASbGncuxcLfjqNjOzKfj5InIWhkKQhhn8b+2DOYPwPRQkJkh/JPC8xeMTvhrKtjKpfl
+	wZhuiqVmx1mXVphaNOxGNc0IZdpzJXZBsNPY0FjQPFWqUT3jJewZAFmjyQAM+Uxauoa7klAVj93
+	Ef4YHbHd5iEtHj39mJuSzpFbWPOYnBRo0LDWDY9IPlKxeihVWDEq03XTNyQB4ir9uV0GDquSnN3
+	fAiOfFPmRjB2TgJ4NujvlkuUlOFzoGaA406OqhnAb+8qs++BQs7WVPIyB4iOEE8YElW+DOp/HV6
+	mm00iDf6
+X-Google-Smtp-Source: AGHT+IF7Dra5d6ki8O3COk+SLqWcJq2xaGIUHP116tcbjhTFS3reuK1GgRmhqIcUq60sOxi9rfERQw==
+X-Received: by 2002:a05:600c:3b99:b0:434:f925:f5c9 with SMTP id 5b1f17b1804b1-436e266dfe9mr223940145e9.6.1736930014457;
+        Wed, 15 Jan 2025 00:33:34 -0800 (PST)
+Received: from eichest-laptop (31-10-206-125.static.upc.ch. [31.10.206.125])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c749a127sm15360785e9.7.2025.01.15.00.33.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jan 2025 00:33:34 -0800 (PST)
+Date: Wed, 15 Jan 2025 09:33:32 +0100
+From: Stefan Eichenberger <eichest@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+Cc: abelvesa@kernel.org, peng.fan@nxp.com, mturquette@baylibre.com,
+	sboyd@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, shengjiu.wang@nxp.com,
+	francesco.dolcini@toradex.com, linux-clk@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2] cdx: Fix possible UAF error in driver_override_show()
-Message-ID: <2025011523-stage-snowbound-291a@gregkh>
-References: <20241112162338.39689-1-chenqiuji666@gmail.com>
- <2024111230-snowdrop-haven-3a54@gregkh>
- <CANgpojV8P7+LmDPNiJWezER6PK83Wj_QyX8iOKzfxO98WkSnDg@mail.gmail.com>
+Subject: Re: [PATCH v1] clk: imx: imx8-acm: fix flags for acm clocks
+Message-ID: <Z4dy3LiEAQ_gkQGG@eichest-laptop>
+References: <20250113094654.12998-1-eichest@gmail.com>
+ <CAA+D8ANvKQKJhn6qKbPhQeXPD5kxUo3Hg-FBLkDMOaWLTA8vVg@mail.gmail.com>
+ <Z4ZRYMf_uJW4poW9@eichest-laptop>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CANgpojV8P7+LmDPNiJWezER6PK83Wj_QyX8iOKzfxO98WkSnDg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z4ZRYMf_uJW4poW9@eichest-laptop>
 
-On Wed, Jan 15, 2025 at 12:04:16PM +0800, Qiu-ji Chen wrote:
-> > > ---
-> > >  drivers/cdx/cdx.c | 6 +++++-
-> > >  1 file changed, 5 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/cdx/cdx.c b/drivers/cdx/cdx.c
-> > > index 07371cb653d3..4af1901c9d52 100644
-> > > --- a/drivers/cdx/cdx.c
-> > > +++ b/drivers/cdx/cdx.c
-> > > @@ -470,8 +470,12 @@ static ssize_t driver_override_show(struct device *dev,
-> > >                                   struct device_attribute *attr, char *buf)
-> > >  {
-> > >       struct cdx_device *cdx_dev = to_cdx_device(dev);
-> > > +     ssize_t len;
-> > >
-> > > -     return sysfs_emit(buf, "%s\n", cdx_dev->driver_override);
-> > > +     device_lock(dev);
-> > > +     len = sysfs_emit(buf, "%s\n", cdx_dev->driver_override);
-> > > +     device_unlock(dev);
-> >
-> > No, you should not need to lock a device in a sysfs callback like this,
-> > especially for just printing out a string.
+Hi Shengjiu Wang,
+
+On Tue, Jan 14, 2025 at 12:58:24PM +0100, Stefan Eichenberger wrote:
+> Hi Shengjiu Wang,
 > 
-> This function is part of DEVICE_ATTR_RW, which includes both
-> driver_override_show() and driver_override_store(). These functions
-> can be executed concurrently in sysfs.
+> On Tue, Jan 14, 2025 at 03:49:10PM +0800, Shengjiu Wang wrote:
+> > On Mon, Jan 13, 2025 at 5:54 PM Stefan Eichenberger <eichest@gmail.com> wrote:
+> > >
+> > > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> > >
+> > > Currently, the flags for the ACM clocks are set to 0. This configuration
+> > > causes the fsl-sai audio driver to fail when attempting to set the
+> > > sysclk, returning an EINVAL error. The following error messages
+> > > highlight the issue:
+> > > fsl-sai 59090000.sai: ASoC: error at snd_soc_dai_set_sysclk on 59090000.sai: -22
+> > > imx-hdmi sound-hdmi: failed to set cpu sysclk: -22
+> > 
+> > The reason for this error is that the current clock parent can't
+> > support the rate
+> > you require (I think you want 11289600).
+> > 
+> > We can configure the dts to provide such source, for example:
+> > 
+> >  &sai5 {
+> > +       assigned-clocks = <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
+> > +                       <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
+> > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
+> > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
+> > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
+> > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_PLL>,
+> > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_SLV_BUS>,
+> > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_MST_BUS>,
+> > +                       <&sai5_lpcg 0>;
+> > +       assigned-clock-parents = <&aud_pll_div0_lpcg 0>, <&aud_rec1_lpcg 0>;
+> > +       assigned-clock-rates = <0>, <0>, <786432000>, <49152000>, <12288000>,
+> > +                                <722534400>, <45158400>, <11289600>,
+> > +                               <49152000>;
+> >         status = "okay";
+> >  };
+> > 
+> > Then your case should work.
+> > 
+> > >
+> > > By setting the flag CLK_SET_RATE_NO_REPARENT, we signal that the ACM
+> > 
+> > I don't think CLK_SET_RATE_NO_REPARENT is a good choice. which will cause
+> > the driver don't get an error from clk_set_rate().
 > 
-> The driver_override_store() function uses driver_set_override() to
-> update the driver_override value, and driver_set_override() internally
-> locks the device (device_lock(dev)). If driver_override_show() reads
-> cdx_dev->driver_override without locking, it could potentially access
-> a freed pointer if driver_override_store() frees the string
-> concurrently. This could lead to printing a kernel address, which is a
-> security risk since DEVICE_ATTR can be read by all users.
+> Thanks for the proposal, I will try it out tomorrow. Isn't this a
+> problem if other SAIs use the same clock source but with different
+> rates? 
+> 
+> If we have to define fixed rates in the DTS or else the clock driver
+> will return an error, isn't that a problem? Maybe I should change the
+> sai driver so that it ignores the failure and just takes the rate
+> configured? In the end audio works, even if it can't set the requested
+> rate.
 
-Ah, I missed the mess in driver_override_store(), so yes, that does make
-more sense now.  Please document this in the changelog so we understand
-it when you resubmit it as normally, we do not care about racing in
-sysfs attributes because it does not matter for simple values.
+The following clock tree change would allow the driver to work
+in our scenario:
+&sai5 {
+	assigned-clocks = <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
+			  <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_PLL>;
+	assigned-clock-parents = <&aud_pll_div1_lpcg 0>;
+	assigned-clock-rates = <0>, <11289600>;
+};
 
-thanks,
+However, this means we have to switch the parent clock to the audio pll
+1. For the simple setup with two SAIs, one for analog audio and one for
+HDMI this wouldn't be a problem. But I'm not sure if this is a good
+solution if a customer would add a third SAI which requires again a
+different parent clock rate.
 
-greg k-h
+One potential solution could be that the SAI driver tries to first
+derive the clock from the current parent and only if this fails it tries
+to modify its parent clock. What do you think about this solution?
+
+Regards,
+Stefan
+
 
