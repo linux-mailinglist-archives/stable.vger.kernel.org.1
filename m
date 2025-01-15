@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-109097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B0A1A121CF
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 12:00:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 685B7A12152
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:55:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD62616AF95
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:00:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 494B73AD126
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:54:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37E5A1E7C30;
-	Wed, 15 Jan 2025 11:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A07E156644;
+	Wed, 15 Jan 2025 10:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EiGE6W6i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYPowwgf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86F0248BAF;
-	Wed, 15 Jan 2025 11:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C691DB142;
+	Wed, 15 Jan 2025 10:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938843; cv=none; b=cneUHcuCXfF3n0I33GGcJm15EC4W+K69MvQ/6vbCdjNVtvYreYcit4dIg1D+vILkJUb9MQuzIMejoefiCN+KEKRtS3Nh7TfwhJJLQW5gGK0Z4DlXvxvW7y3AcaLCDVQeItMAi0MpYZltNS7zM8p34M6p/Wk/JqMz0Lu3CAaGxU4=
+	t=1736938463; cv=none; b=fPCL8ZFQMFrh9+avSmZexrdALQnyOhcGisVXs3gU4CvrGXuGylCjjBRx6oufnSTx1Crgl7MZqcOfOMfEZw9k7sD7CYpeH+ECRL+I/K/Xz33wdPtulG9hBO1jQl0c25uXoccssdeDOp1vOYqvPdL7GZceMVTgi/XsdmYSQuNEcWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938843; c=relaxed/simple;
-	bh=TDEixcouZYgHK7QVQUQZlK/GaWOsOtTDF8wAQ/YzRjw=;
+	s=arc-20240116; t=1736938463; c=relaxed/simple;
+	bh=ScLmvV2NCDPUXqckpyslVzJUQCmeG2tA5eD9ePq5DXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RAtvibt/RMtb0GLd7qcZqc4O9EFk4+zxu+dPjB4yZJ+Da0p3y9vOxFRXcZhKnvvLHINAr2GNAwdtBhiAwfGTq/j9eQv/h2riU9rK+5ELW/zz2Zo1h9XTZXHFmn7J3rRX2THmEEm14DO4pWpMXqcWtIeMofAi6r+qRC5GcBTGago=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EiGE6W6i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE64C4CEDF;
-	Wed, 15 Jan 2025 11:00:40 +0000 (UTC)
+	 MIME-Version; b=M0gxWFFFR8OvQst5E+lQjgzkWQHAXejrv9YMXJQVoXFny9QVS1TdHM3pxeaLWwTZMEVGsIXEDdvpU3TWIHWH9JHUt3IEh4HsofuFCys9//zTzUXbHKRRNbS7gvUc4cXY25E/7tRRe4zAqOPZOxPPkCVrXUgWQEJ2ciZIErypxpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYPowwgf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3252AC4CEDF;
+	Wed, 15 Jan 2025 10:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938841;
-	bh=TDEixcouZYgHK7QVQUQZlK/GaWOsOtTDF8wAQ/YzRjw=;
+	s=korg; t=1736938463;
+	bh=ScLmvV2NCDPUXqckpyslVzJUQCmeG2tA5eD9ePq5DXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EiGE6W6ic6z0UO1NsrGvspTnBd5vU88QAO2zOappZz8csQzpMFRRGYkS/6FHFwdvD
-	 5IEykxjKnOX37VUCTp+bZZpVNSuBjf+ePFmXJvU4rY79BHcFVCNWGQpEXASBeTd5sX
-	 TKFvITGvCts8E777ytVL2qnTKpwJ1QEVN390Hpy8=
+	b=tYPowwgfkEQsUELo2AL2mPC5+NMeejMEfWRdIoGMEkGmOnnD+xmgq1JOsSoirEMsq
+	 RYZoltsTftAKMqUzbj4ulG8yrQLN2/btOO3BJ/nLQcN0trTekSPjj+/lztzwsqJThz
+	 cqVQpwoeUbo7/A+32No/80AWFBX2KidjcDORdqUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zicheng Qu <quzicheng@huawei.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 082/129] staging: iio: ad9832: Correct phase range check
-Date: Wed, 15 Jan 2025 11:37:37 +0100
-Message-ID: <20250115103557.634385448@linuxfoundation.org>
+Subject: [PATCH 6.12 162/189] iio: adc: rockchip_saradc: fix information leak in triggered buffer
+Date: Wed, 15 Jan 2025 11:37:38 +0100
+Message-ID: <20250115103612.868204891@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zicheng Qu <quzicheng@huawei.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 4636e859ebe0011f41e35fa79bab585b8004e9a3 upstream.
+commit 38724591364e1e3b278b4053f102b49ea06ee17c upstream.
 
-User Perspective:
-When a user sets the phase value, the ad9832_write_phase() is called.
-The phase register has a 12-bit resolution, so the valid range is 0 to
-4095. If the phase offset value of 4096 is input, it effectively exactly
-equals 0 in the lower 12 bits, meaning no offset.
+The 'data' local struct is used to push data to user space from a
+triggered buffer, but it does not set values for inactive channels, as
+it only uses iio_for_each_active_channel() to assign new values.
 
-Reasons for the Change:
-1) Original Condition (phase > BIT(AD9832_PHASE_BITS)):
-This condition allows a phase value equal to 2^12, which is 4096.
-However, this value exceeds the valid 12-bit range, as the maximum valid
-phase value should be 4095.
-2) Modified Condition (phase >= BIT(AD9832_PHASE_BITS)):
-Ensures that the phase value is within the valid range, preventing
-invalid datafrom being written.
+Initialize the struct to zero before using it to avoid pushing
+uninitialized information to userspace.
 
-Impact on Subsequent Logic: st->data = cpu_to_be16(addr | phase):
-If the phase value is 2^12, i.e., 4096 (0001 0000 0000 0000), and addr
-is AD9832_REG_PHASE0 (1100 0000 0000 0000), then addr | phase results in
-1101 0000 0000 0000, occupying DB12. According to the section of WRITING
-TO A PHASE REGISTER in the datasheet, the MSB 12 PHASE0 bits should be
-DB11. The original condition leads to incorrect DB12 usage, which
-contradicts the datasheet and could pose potential issues for future
-updates if DB12 is used in such related cases.
-
-Fixes: ea707584bac1 ("Staging: IIO: DDS: AD9832 / AD9835 driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
-Link: https://patch.msgid.link/20241107011015.2472600-3-quzicheng@huawei.com
+Fixes: 4e130dc7b413 ("iio: adc: rockchip_saradc: Add support iio buffers")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-4-0cb6e98d895c@gmail.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/iio/frequency/ad9832.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/rockchip_saradc.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/staging/iio/frequency/ad9832.c
-+++ b/drivers/staging/iio/frequency/ad9832.c
-@@ -158,7 +158,7 @@ static int ad9832_write_frequency(struct
- static int ad9832_write_phase(struct ad9832_state *st,
- 			      unsigned long addr, unsigned long phase)
- {
--	if (phase > BIT(AD9832_PHASE_BITS))
-+	if (phase >= BIT(AD9832_PHASE_BITS))
- 		return -EINVAL;
+--- a/drivers/iio/adc/rockchip_saradc.c
++++ b/drivers/iio/adc/rockchip_saradc.c
+@@ -368,6 +368,8 @@ static irqreturn_t rockchip_saradc_trigg
+ 	int ret;
+ 	int i, j = 0;
  
- 	st->phase_data[0] = cpu_to_be16((AD9832_CMD_PHA8BITSW << CMD_SHIFT) |
++	memset(&data, 0, sizeof(data));
++
+ 	mutex_lock(&info->lock);
+ 
+ 	iio_for_each_active_channel(i_dev, i) {
 
 
 
