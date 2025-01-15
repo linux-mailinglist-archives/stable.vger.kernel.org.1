@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-108905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59198A120DC
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:50:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 309DAA12178
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:57:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7234016A60C
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:49:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC0DE3A488B
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:56:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0CC1248BBD;
-	Wed, 15 Jan 2025 10:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175091E9905;
+	Wed, 15 Jan 2025 10:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kvuf8iGz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hIRfnIfQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E160248BA6;
-	Wed, 15 Jan 2025 10:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C840E1E98FA;
+	Wed, 15 Jan 2025 10:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938198; cv=none; b=SqmGH1vmfB5AD7+weLbsMnF74k76J8laMNwuJ42zHPxPwTEMxRmxPUJMJDpTA5yQqRzZLmosKfRhUqQ9/iZ02TPQI+L/HLLf2GtF1s+4Cr5P0utjTrPixhwpHe4fd5VhDAXYVLmhy5DQq6GtgT0a0osJpSEAEi2a/BlsR/X8S8s=
+	t=1736938579; cv=none; b=BQ/VuVow1NdE+KqmDRTSkio5vipSAqV42sDUYcNDv5Dqk4HKCHnOqofLBNTDQbO7OCHQOXVXYbWNttsBaqMfK2I/dGMRARV1JXvNkqGPk2KCOF15+3nrzgRTfi9JFxUFxn+VX8gTUOxGNsSy+XbTmUmkCWvwKAVM469RwveNKmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938198; c=relaxed/simple;
-	bh=UsAxz5g1I9pYPYJDUU+7rfReVPA0uFQXdRwZGBfn9Zg=;
+	s=arc-20240116; t=1736938579; c=relaxed/simple;
+	bh=xVbcOGMYol1ImlLvQDrBaJBQoxtWtzTMwa9lnBRBy78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jq+z5e8nJknJyxIiKdgAwQFe1pqpkFHcHEoUChe1xS2Yk5Xmht/Xac8Rgakh3rlqPxdoQDQ0MByCikNoU/cMMlsBEAzfgQ4PbS+sPu1UTEH0daqX/YnpBvcfYqqo3ugFUZ+tbNl6FP8iaK4gcW7XQ1SukRNtSx8k20lU885xgvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kvuf8iGz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF38FC4CEDF;
-	Wed, 15 Jan 2025 10:49:57 +0000 (UTC)
+	 MIME-Version; b=urrfZP8On23z/4uUbm+msq6z9xCrjWPeiXDOPkq1Ss68N0zc+EcwiB04ohnCXbrLHOtlj7oLT8M/g8e6JG1Os5JELjmX+alSZRusrOCYwwvfPN3MTo3XaVZMQ1X2U4jiewpylVKLsCOR+hi1/Y4TCWKQImK1F8nIddWjSnSYvL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hIRfnIfQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BDCC4CEDF;
+	Wed, 15 Jan 2025 10:56:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938198;
-	bh=UsAxz5g1I9pYPYJDUU+7rfReVPA0uFQXdRwZGBfn9Zg=;
+	s=korg; t=1736938579;
+	bh=xVbcOGMYol1ImlLvQDrBaJBQoxtWtzTMwa9lnBRBy78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kvuf8iGzYcA7kaAhc+Tb8bV2I4+nEdAmu46lUF2yVFcZIagcbS7cgR3B8cG92a1J/
-	 Ut+/KeXaZP3uiAykRJBCEXD75M8heFa/i5AbOEql3MskJV305s6EjuvW+d7reEsiBN
-	 ZZxXr5g7gxIGO9Q2RRsuchTSkQIhWzUQqgdhQx/c=
+	b=hIRfnIfQWCd1nXTKDQx1dp/Qvdzkt1o1o8WvFpvvoUARXx+pDkjt4on4+rHny5erx
+	 jIj/OLVGkUWfcqWBYujpGtGSh83oKAxk3Sd8c4s1h1AF2SFr8cw0AxFZ+jMEN5w5/i
+	 0Yk+OZoWZRgzYir2CdaFVEXYqitt6wrfBFOsSWLU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiang Yu <quic_qianyu@quicinc.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 112/189] arm64: dts: qcom: x1e80100: Fix up BAR space size for PCIe6a
+	Jeroen de Borst <jeroendb@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 033/129] eth: gve: use appropriate helper to set xdp_features
 Date: Wed, 15 Jan 2025 11:36:48 +0100
-Message-ID: <20250115103610.921172468@linuxfoundation.org>
+Message-ID: <20250115103555.697669533@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiang Yu <quic_qianyu@quicinc.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit fb8e7b33c2174e00dfa411361eeed21eeaf3634b upstream.
+[ Upstream commit db78475ba0d3c66d430f7ded2388cc041078a542 ]
 
-As per memory map table, the region for PCIe6a is 64MByte. Hence, set the
-size of 32 bit non-prefetchable memory region beginning on address
-0x70300000 as 0x3d00000 so that BAR space assigned to BAR registers can be
-allocated from 0x70300000 to 0x74000000.
+Commit f85949f98206 ("xdp: add xdp_set_features_flag utility routine")
+added routines to inform the core about XDP flag changes.
+GVE support was added around the same time and missed using them.
 
-Fixes: 7af141850012 ("arm64: dts: qcom: x1e80100: Fix up BAR spaces")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20241113080508.3458849-1-quic_qianyu@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+GVE only changes the flags on error recover or resume.
+Presumably the flags may change during resume if VM migrated.
+User would not get the notification and upper devices would
+not get a chance to recalculate their flags.
+
+Fixes: 75eaae158b1b ("gve: Add XDP DROP and TX support for GQI-QPL format")
+Reviewed-By: Jeroen de Borst <jeroendb@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250106180210.1861784-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/google/gve/gve_main.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -2925,7 +2925,7 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
- 			ranges = <0x01000000 0x0 0x00000000 0x0 0x70200000 0x0 0x100000>,
--				 <0x02000000 0x0 0x70300000 0x0 0x70300000 0x0 0x1d00000>;
-+				 <0x02000000 0x0 0x70300000 0x0 0x70300000 0x0 0x3d00000>;
- 			bus-range = <0x00 0xff>;
+diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+index d70305654e7d..90d433b36799 100644
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -2009,14 +2009,18 @@ static void gve_service_task(struct work_struct *work)
  
- 			dma-coherent;
+ static void gve_set_netdev_xdp_features(struct gve_priv *priv)
+ {
++	xdp_features_t xdp_features;
++
+ 	if (priv->queue_format == GVE_GQI_QPL_FORMAT) {
+-		priv->dev->xdp_features = NETDEV_XDP_ACT_BASIC;
+-		priv->dev->xdp_features |= NETDEV_XDP_ACT_REDIRECT;
+-		priv->dev->xdp_features |= NETDEV_XDP_ACT_NDO_XMIT;
+-		priv->dev->xdp_features |= NETDEV_XDP_ACT_XSK_ZEROCOPY;
++		xdp_features = NETDEV_XDP_ACT_BASIC;
++		xdp_features |= NETDEV_XDP_ACT_REDIRECT;
++		xdp_features |= NETDEV_XDP_ACT_NDO_XMIT;
++		xdp_features |= NETDEV_XDP_ACT_XSK_ZEROCOPY;
+ 	} else {
+-		priv->dev->xdp_features = 0;
++		xdp_features = 0;
+ 	}
++
++	xdp_set_features_flag(priv->dev, xdp_features);
+ }
+ 
+ static int gve_init_priv(struct gve_priv *priv, bool skip_describe_device)
+-- 
+2.39.5
+
 
 
 
