@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-109009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A58DA1216A
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:56:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB2B8A120D6
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:49:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4B153AA7F9
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:55:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 526E87A15DA
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8CD1DB13A;
-	Wed, 15 Jan 2025 10:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBEC6156644;
+	Wed, 15 Jan 2025 10:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWpHHS+N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FzfuKMGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D073248BD1;
-	Wed, 15 Jan 2025 10:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DFD248BBD;
+	Wed, 15 Jan 2025 10:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938553; cv=none; b=j5E++DP14jQC8nqhTpnWl1pIaRI6X2mqPInmYeOqLKFTvrS4uxj9JU07rm/X/oKwkms0wSpPTBqRCTB0Rb56KaKJDHo5HosQiUn0s8nmB3BY5Tfx2L9C/kdZwvYCtCYItV+rLKCgmCnvZusCl7VgOpoEwPGufjDWdBcYVMO6mkY=
+	t=1736938171; cv=none; b=qEqjKkZExUvaIptYyVxLMbyJg8RjlpRTShma1g0rjXtTG9nVrWG1kSd42irRVGEqTXBSirUPjX2KKycP63Iqkx+D0zChxi4htKgWu35yrUMe1L0VzX2FXvFHMuLdz6dChYz6UQIjhYFwF4ZeuwPUTmnOYC6GzKKTHm/oaVY8Lz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938553; c=relaxed/simple;
-	bh=IZOKIgxJmvq0lHJcQy+Ee9Gg9Y06UtWYeIDVE9ydJ6M=;
+	s=arc-20240116; t=1736938171; c=relaxed/simple;
+	bh=ZF73ekGUNIrhWwwSW8PBWhhGdiEeN46ogbDjjYa6hAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R+nHpyRHtTib4IESuigsyLc6sU/o31W94dXsBU0vkP09nOJUEbhJCpudOiSIuMDFCp+wyzDB/H2IOv8S0RfTsAbRfFA70cErYs977+7z9dxTU4fztZoqnkeND32znmjAjbMRyaraZsASstXNeQga1wnPJFrW3qUTkkuXN4E0zSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWpHHS+N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7ABC4CEDF;
-	Wed, 15 Jan 2025 10:55:52 +0000 (UTC)
+	 MIME-Version; b=Xyy00TJdGc0b2BTXyCYv7yy0zybYs3wQC6PjDpmp7mC2WINnNY1xQoy+2UdxjvW1yqW3+RFjPnh652vnv5eZr4hLY6dtat5pVaXJMmyFqKNssrSwu0AGGrjsQVVyjz6r3Oj4wMv42qUp1MgqMajFtB6P/F17ZSksxfZLy3oKD2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FzfuKMGx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C23AC4CEDF;
+	Wed, 15 Jan 2025 10:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938553;
-	bh=IZOKIgxJmvq0lHJcQy+Ee9Gg9Y06UtWYeIDVE9ydJ6M=;
+	s=korg; t=1736938171;
+	bh=ZF73ekGUNIrhWwwSW8PBWhhGdiEeN46ogbDjjYa6hAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TWpHHS+NnCJ88alyiOD8BAlNiqa4NOSZnX/ybPu7yhzcyWQ9DIi8lP96EgMTXaLwi
-	 1zveh6X0YMkniCO5uxyguSDPsB8ZITPj5Fki+sc6MyNWrloa7t0SUpy3M2qXjyzGaP
-	 B5vND8ljl8ltuAuvbk3tD0fSvbF8/CZ3tMZcBorY=
+	b=FzfuKMGx+A8hI7xRxYfaASCQPM9F8vRfObDG6vXyX3ebUpL2Redf057Ufp8fJ8osE
+	 YbjoHhnqYXuJAnWHMeY/2zDQr1GqFtSLY4TinDhtF81iNkL0RnD8TNhvoajPcpZOvk
+	 6889FxtqDEh7WPmfrrxOo0Dt8iZDaGSCUJrLRVEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/129] bnxt_en: Fix possible memory leak when hwrm_req_replace fails
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Roman Li <Roman.Li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 105/189] drm/amd/display: Add check for granularity in dml ceil/floor helpers
 Date: Wed, 15 Jan 2025 11:36:41 +0100
-Message-ID: <20250115103555.409228933@linuxfoundation.org>
+Message-ID: <20250115103610.646174495@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Roman Li <Roman.Li@amd.com>
 
-[ Upstream commit c8dafb0e4398dacc362832098a04b97da3b0395b ]
+commit 0881fbc4fd62e00a2b8e102725f76d10351b2ea8 upstream.
 
-When hwrm_req_replace() fails, the driver is not invoking bnxt_req_drop()
-which could cause a memory leak.
+[Why]
+Wrapper functions for dcn_bw_ceil2() and dcn_bw_floor2()
+should check for granularity is non zero to avoid assert and
+divide-by-zero error in dcn_bw_ functions.
 
-Fixes: bbf33d1d9805 ("bnxt_en: update all firmware calls to use the new APIs")
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20250104043849.3482067-2-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[How]
+Add check for granularity 0.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Roman Li <Roman.Li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit f6e09701c3eb2ccb8cb0518e0b67f1c69742a4ec)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dml/dml_inline_defs.h |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
-index 7689086371e0..2980963208cb 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
-@@ -159,7 +159,7 @@ int bnxt_send_msg(struct bnxt_en_dev *edev,
+--- a/drivers/gpu/drm/amd/display/dc/dml/dml_inline_defs.h
++++ b/drivers/gpu/drm/amd/display/dc/dml/dml_inline_defs.h
+@@ -66,11 +66,15 @@ static inline double dml_max5(double a,
  
- 	rc = hwrm_req_replace(bp, req, fw_msg->msg, fw_msg->msg_len);
- 	if (rc)
--		return rc;
-+		goto drop_req;
- 
- 	hwrm_req_timeout(bp, req, fw_msg->timeout);
- 	resp = hwrm_req_hold(bp, req);
-@@ -171,6 +171,7 @@ int bnxt_send_msg(struct bnxt_en_dev *edev,
- 
- 		memcpy(fw_msg->resp, resp, resp_len);
- 	}
-+drop_req:
- 	hwrm_req_drop(bp, req);
- 	return rc;
+ static inline double dml_ceil(double a, double granularity)
+ {
++	if (granularity == 0)
++		return 0;
+ 	return (double) dcn_bw_ceil2(a, granularity);
  }
--- 
-2.39.5
-
+ 
+ static inline double dml_floor(double a, double granularity)
+ {
++	if (granularity == 0)
++		return 0;
+ 	return (double) dcn_bw_floor2(a, granularity);
+ }
+ 
+@@ -114,11 +118,15 @@ static inline double dml_ceil_2(double f
+ 
+ static inline double dml_ceil_ex(double x, double granularity)
+ {
++	if (granularity == 0)
++		return 0;
+ 	return (double) dcn_bw_ceil2(x, granularity);
+ }
+ 
+ static inline double dml_floor_ex(double x, double granularity)
+ {
++	if (granularity == 0)
++		return 0;
+ 	return (double) dcn_bw_floor2(x, granularity);
+ }
+ 
 
 
 
