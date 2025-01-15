@@ -1,75 +1,55 @@
-Return-Path: <stable+bounces-108656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EE5EA115F6
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 01:14:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B13C4A11628
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 01:41:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 418B318894CB
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 00:14:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F6A73A48C2
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 00:41:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2351442F;
-	Wed, 15 Jan 2025 00:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735891798F;
+	Wed, 15 Jan 2025 00:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RI8Mfrd5"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="EKESuERc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
+Received: from out.smtpout.orange.fr (out-12.smtpout.orange.fr [193.252.22.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D16A801
-	for <stable@vger.kernel.org>; Wed, 15 Jan 2025 00:14:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD2BDF58;
+	Wed, 15 Jan 2025 00:41:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.22.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736900070; cv=none; b=n5XTGoD61Z35ockOiIMDffDD1kEfEGTQ7KUzRcx6IFBtV9bA8ihYWiCxs8cEVQNRYAeUPC5ZNMPMXLOb1ItfSEmqG55mw3ZMm6HEmd31tPG867JwSpxrpRqGUrz61TAqVaUt4fhHzHTvLOwAobjiogbSH8bG+iJC2GJ5CpKOMDg=
+	t=1736901684; cv=none; b=hrQsixDmxY9fGbv8ksQgtiM/4Zj3FX/+Cve6nUJT3DAWtiuS2DOrKOx557ZZOR/m2KlyMZxNDXXJVYxrnNZliZWZvCAuqjrJQh/R6HeYEFwcAueyv+EWfyPe/vNuiJS09WF3R3jdLVbVJ178nixBWTfbalo1hB6BD0ohTAGyF84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736900070; c=relaxed/simple;
-	bh=O0qTtB+zZrm/orJLyLqvBwYs4M10BzLG72XW5iJNl5Y=;
+	s=arc-20240116; t=1736901684; c=relaxed/simple;
+	bh=gw0sEnFfF9yyUpFBF3pSCpeLmYQcTBuMeN1ndRR7Dg8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lq3fAAOn5/+7vEht22HCkZ/bWiipaV+nfdc331q4wxVx0S5Pkpf2Fy/HgUMRf+UEfcAmu9npe9HTKqyHlZzRJiADt6U92wy3CPyK9PU0sQgypf1ttfuz3AXhZ0+BEQrBX35DMa4uxzn1+LuOA9BLSvmwZ8p2AImggv4TYVbMdFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RI8Mfrd5; arc=none smtp.client-ip=209.85.166.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-3a8146a8ddaso15568025ab.1
-        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 16:14:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1736900067; x=1737504867; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Zi0cGbsSWcjei/FmFQ8GZN9F14dK0pBaQEx/pWI04A4=;
-        b=RI8Mfrd5S/bzGrqS/l/e5sa4hEP9M4nsVbMGQNdBnEaKWIrvS7kqAyBNpTo6Kms7ZY
-         Zb9jsyTz+x3oldUrri4Lc3ruKqf3wFhEK0a15kVPJp1GXrpJMcvwHAEMI+XBO2bj6wDg
-         gfLIyKQ3GAj3vi7SlZA7IK9p5qUnehNlN726Q=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736900067; x=1737504867;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zi0cGbsSWcjei/FmFQ8GZN9F14dK0pBaQEx/pWI04A4=;
-        b=MyEtG5/w54yBIw/f8cQEwRJj2pu8gKVzz+Y+urnzyLRMgEPyzUz7/syht49t+9BC3F
-         pAv0NYYZ9FAPWwc4bikwtR5WIz72RP4VuD2BrAQjvnKmGSkTD6NjSKT2GNYdsmIC3M15
-         motFY8xBKNWJsxYPejvJ9GKFcMVCvjqu2/nyTgtyqn/ugtYfVbJU+ut5LiOC/RPtyu+Q
-         HYgOJq6gkrnKiSRyUGMHa8YiSU3Nh9EhZgRh0QTOMusN4MPD1jf6AvQIW4qWB2fYJErn
-         Jvx7iTfOjuU6ZD/bZUDcO76MxfyqO4EXi2jHawbe4tpEy1234bBTriRAATqohYQ8uCIz
-         iHqw==
-X-Forwarded-Encrypted: i=1; AJvYcCWuXtjZlr3yIAeRftsbg8tSnBA3Gxl7Cq6be20f9T6f/9+W5NCl8BzKS8tEIeBDwFu0iR/uLao=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYPlJA11jdfeBc1IBy8/o5i9cN1ypfLcLWZVTIFyGZGZmEFuiB
-	KTERnhIH0r7jQKd6K36rDFui9dPnkS+TrEfARO8AtadiSV5d5ITgJRSU9JAyZqc=
-X-Gm-Gg: ASbGncuc6Vkgw4FrrEtVBEy4FQK3wpHn7fzD0FZu1sYR8kpvonXU5kskb2Bk3GjT5mh
-	p6maavnbitXIZ7M6t4PCx1ldxuR6UsZPhIa83FyhG/xy6a9KQ+p6hu9YeV4w88cZGy4wYKXN98l
-	m3tbRjXcCtOAPAHoYvMTLTDeMrwwQyBQaQBiy+2bdwVs2GKrcE+9pD57hrew40Z2xCOxRkXSkdV
-	fm00Ewij2TRIJaWURg8LuPyaof4Mxrtvk88cpn2u8pWczqxewbhUq9ThyLoHpzOdkM=
-X-Google-Smtp-Source: AGHT+IEdoNPbkBbn9CnzEh4euZf9jB75Vd6xeyvKGWpwgSFD4Lie6iDixMRv7ODFpjm5Wc+UzmRN6A==
-X-Received: by 2002:a05:6e02:1648:b0:3ce:78ab:d6be with SMTP id e9e14a558f8ab-3ce78abd778mr48881375ab.4.1736900067242;
-        Tue, 14 Jan 2025 16:14:27 -0800 (PST)
-Received: from [192.168.1.14] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4ea1b5fa1efsm3741371173.26.2025.01.14.16.14.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Jan 2025 16:14:26 -0800 (PST)
-Message-ID: <9b7228cf-29ed-4f35-8b8a-b4f8482c434e@linuxfoundation.org>
-Date: Tue, 14 Jan 2025 17:14:25 -0700
+	 In-Reply-To:Content-Type; b=dsM/T694z+N+Fx5fcjae4snU3pDu44Ds7/P8Ie3PUd0irewRCN/HhSmVpVi5PMctyT4/h1DXZ7tWlT+9IDQbCKAz4J7hiKmqsZQ1GeNTbrtsfVJyWgWqhroKXws2fDKkxTRHSFaa53TzDvkSZL7E49tEhAcP1QRhAv9pU1IUyg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=EKESuERc; arc=none smtp.client-ip=193.252.22.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [172.16.82.72] ([124.33.176.97])
+	by smtp.orange.fr with ESMTPA
+	id XrRxtAZHahEBsXrS1tWRaq; Wed, 15 Jan 2025 01:40:10 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1736901610;
+	bh=Pzxurqw09BYbAy2gGmiRENRLKoCtz6h34lxM0ADabRM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=EKESuERcPgvtjy16e/ke5QcgoCxZO2X/akoux/uZaU9OUxxImkyLF0e4KgjMeFxWV
+	 XEdPLrvK+TGBn/Xbq/xu4s3YJvcjrYQe8LKXlVxGHmZTAIBq43cwt6yxb/3LmbTtmT
+	 OV0LuSMQVocwX9Dq1cX7kc6iR/P4Vj4v7Tx7BTY1LDP9+5C5KyW0rEwD7fhLhAIjpJ
+	 m8C2Dikn3k04u2jyCbb/KdpC3PWwdpFanwNUTkqf07B3TpmPmr3J/o52Lbpxt9fMSb
+	 wOEtHxsBXWD+5GjcQbgdJyGfqQvjEZp9HqJBPHX4R6q/iTtCJkTJjdQS85tTg8iEPI
+	 Lsf/vrLmPCrhA==
+X-ME-Helo: [172.16.82.72]
+X-ME-Auth: bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 15 Jan 2025 01:40:10 +0100
+X-ME-IP: 124.33.176.97
+Message-ID: <319da2a9-b9a7-43bf-8cb4-bd87b2ebef92@wanadoo.fr>
+Date: Wed, 15 Jan 2025 09:40:00 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,64 +57,47 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/rseq: Fix handling of glibc without rseq
- support
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: linux-kernel@vger.kernel.org, Raghavendra Rao Ananta
- <rananta@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Boqun Feng <boqun.feng@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>,
- Carlos O'Donell <carlos@redhat.com>, Florian Weimer <fweimer@redhat.com>,
- Michael Jeanson <mjeanson@efficios.com>, linux-kselftest@vger.kernel.org,
- stable@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
-References: <20250114145132.612569-1-mathieu.desnoyers@efficios.com>
+Subject: Re: [PATCH] can: ctucanfd: handle skb allocation failure
+To: Fedor Pchelkin <pchelkin@ispras.ru>, Pavel Pisa <pisa@cmp.felk.cvut.cz>,
+ Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Ondrej Ille <ondrej.ille@gmail.com>,
+ Martin Jerabek <martin.jerabek01@gmail.com>, linux-can@vger.kernel.org,
+ linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
+ stable@vger.kernel.org
+References: <20250114152138.139580-1-pchelkin@ispras.ru>
 Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20250114145132.612569-1-mathieu.desnoyers@efficios.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Autocrypt: addr=mailhol.vincent@wanadoo.fr; keydata=
+ xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
+ LFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI+wrIEExYKAFoC
+ GwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AWIQTtj3AFdOZ/IOV06OKrX+uI
+ bbuZwgUCZx41XhgYaGtwczovL2tleXMub3BlbnBncC5vcmcACgkQq1/riG27mcIYiwEAkgKK
+ BJ+ANKwhTAAvL1XeApQ+2NNNEwFWzipVAGvTRigA+wUeyB3UQwZrwb7jsQuBXxhk3lL45HF5
+ 8+y4bQCUCqYGzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrbYZzu0JG5w8gxE6EtQe6LmxKMqP6E
+ yR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDldOjiq1/riG27mcIFAmceMvMCGwwF
+ CQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8VzsZwr/S44HCzcz5+jkxnVVQ5LZ4B
+ ANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
+In-Reply-To: <20250114152138.139580-1-pchelkin@ispras.ru>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 1/14/25 07:51, Mathieu Desnoyers wrote:
-> When porting librseq commit:
+On 15/01/2025 at 00:21, Fedor Pchelkin wrote:
+> If skb allocation fails, the pointer to struct can_frame is NULL. This
+> is actually handled everywhere inside ctucan_err_interrupt() except for
+> the only place.
 > 
-> commit c7b45750fa85 ("Adapt to glibc __rseq_size feature detection")
+> Add the missed NULL check.
 > 
-> from librseq to the kernel selftests, the following line was missed
-> at the end of rseq_init():
+> Found by Linux Verification Center (linuxtesting.org) with SVACE static
+> analysis tool.
 > 
->    rseq_size = get_rseq_kernel_feature_size();
-> 
-> which effectively leaves rseq_size initialized to -1U when glibc does not
-> have rseq support. glibc supports rseq from version 2.35 onwards.
-> 
-> In a following librseq commit
-> 
-> commit c67d198627c2 ("Only set 'rseq_size' on first thread registration")
-> 
-> to mimic the libc behavior, a new approach is taken: don't set the
-> feature size in 'rseq_size' until at least one thread has successfully
-> registered. This allows using 'rseq_size' in fast-paths to test for both
-> registration status and available features. The caveat is that on libc
-> either all threads are registered or none are, while with bare librseq
-> it is the responsability of the user to register all threads using rseq.
-> 
-> This combines the changes from the following librseq commits:
-> 
-> commit c7b45750fa85 ("Adapt to glibc __rseq_size feature detection")
-> commit c67d198627c2 ("Only set 'rseq_size' on first thread registration")
-> 
-> Fixes: 73a4f5a704a2 ("selftests/rseq: Fix mm_cid test failure")
-> Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+> Fixes: 2dcb8e8782d8 ("can: ctucanfd: add support for CTU CAN FD open-source IP core - bus independent part.")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 
-Hi Mathieu,
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 
-Can you double check these commits and make sure these are right
-ones in the mainline rc7?
+Yours sincerely,
+Vincent Mailhol
 
-I am seeing "Unknown commit id" warnings on all of these - my
-repo is at 6.13 rc7
-
-Also would you like to add Reported-by for Raghavendra Rao Ananta?
-
-thanks,
--- Shuah
 
