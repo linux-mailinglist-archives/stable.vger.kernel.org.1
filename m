@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-108752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F67CA12017
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E2CEA120D7
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:49:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B8681889B8F
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56006188AEC4
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97029248BA8;
-	Wed, 15 Jan 2025 10:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A1A248BDC;
+	Wed, 15 Jan 2025 10:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="045vXtKw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jH5jx3SR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53092248BA6;
-	Wed, 15 Jan 2025 10:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E99248BA1;
+	Wed, 15 Jan 2025 10:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937689; cv=none; b=JLavHbCdTW3pGtaDW2+xlJE3ZQDmbTq2aI3keinf46nxsXLiNTcRs0lBWf73lWEvKAogrl7I6SB+SaE5wJIRpihFnjRKmz9YHJ6z4FsT/0iHFOXo8uogNX98xHCrXaGzo1cvPIPqDglB4DLcE1gFyCCpn4wFzqRcPHq3fpwbx+s=
+	t=1736938178; cv=none; b=sekAE2iSq36XxaUXIiLOsSYy1jCRmvtuyQ3RjcD4POY+Hq2VtFu8yBFF3xKukp5mwGFAo4HYIls8sMG+ihqnmfEdmdgRfjmAPD5cE/F9bngebr+YR3geS4yofdLC2fgQxT1PQOaGyDTWtUX+pczgl5NEmXXoHm2SL8DG+z+xicY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937689; c=relaxed/simple;
-	bh=pnde8HLl+3a+wbW7KeJdPbCgCVg3wNU5XfjIUN0OpLk=;
+	s=arc-20240116; t=1736938178; c=relaxed/simple;
+	bh=Y6ocCXgMg9wBOrLPHIOKEdjKtokqwQp6p4q6n0qljhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vsoc/UIzk5tw9qP2/H34YwaSYZMn8TkHPGbXU7U57uaujcLNvjRlzZRfGZ1tekmg9mz8vQN/FY69wgvVesW3Ysdl97AvTnHq+lg1+JN1M5sKGCFQZP8BcR2ggZGNc1TUjhLjGWPyGIQnRDT1l+xixazIbLCTSJxZ7ByXwVhC02E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=045vXtKw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3806BC4CEE1;
-	Wed, 15 Jan 2025 10:41:28 +0000 (UTC)
+	 MIME-Version; b=t60eezLDZ3pwmVD5bGb2Qlh+oeZ/DnjgcSEhddqYLbg47fjbV8j70QP3VYemuz8PXywDvOK76dM/r2K2IENK1tm5tu2PW0YFTngpzsthBCXcBSb9uhVBoiB9/gEN6Om4Kge2N8n+1bS3NjQHLwMao5tkd53lKVRmGNF9AoXhXjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jH5jx3SR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 784DCC4CEDF;
+	Wed, 15 Jan 2025 10:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937688;
-	bh=pnde8HLl+3a+wbW7KeJdPbCgCVg3wNU5XfjIUN0OpLk=;
+	s=korg; t=1736938178;
+	bh=Y6ocCXgMg9wBOrLPHIOKEdjKtokqwQp6p4q6n0qljhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=045vXtKwstQO3qhjyk1cSxRMN/93K6oNeKKUgdenNymei02OBYbzBjiCe6gBoxzLZ
-	 w8lv8MRr4k+LU3b1k2pjDnvj80QJ8NopUHF7u3RFRfuwhUF8U+YV8qoyhMp9dZvBL1
-	 RwqAJyG7kqYZDsYYO687gpP+SK905LKYzvh8nJwM=
+	b=jH5jx3SRrKnzetOcwTkUJjV2QPd5Z6x5EFrNc4/sp6JyiEZzQ8gdRScOGnFrf16r0
+	 /R8NBZlG/y9tlDKS+W1bTlvL+VStHY327nlFOt2dIf+QahRZtz2uBK/Bo15ug5JMjG
+	 1rS2vQNasqhN2cI+/rvRsYMwkhm7HJjGPN2KmSm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 25/92] netfilter: conntrack: clamp maximum hashtable size to INT_MAX
+Subject: [PATCH 6.12 107/189] thermal: of: fix OF node leak in of_thermal_zone_find()
 Date: Wed, 15 Jan 2025 11:36:43 +0100
-Message-ID: <20250115103548.535530086@linuxfoundation.org>
+Message-ID: <20250115103610.721999496@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit b541ba7d1f5a5b7b3e2e22dc9e40e18a7d6dbc13 ]
+[ Upstream commit 9164e0912af206a72ddac4915f7784e470a04ace ]
 
-Use INT_MAX as maximum size for the conntrack hashtable. Otherwise, it
-is possible to hit WARN_ON_ONCE in __kvmalloc_node_noprof() when
-resizing hashtable because __GFP_NOWARN is unset. See:
+of_thermal_zone_find() calls of_parse_phandle_with_args(), but does not
+release the OF node reference obtained by it.
 
-  0708a0afe291 ("mm: Consider __GFP_NOWARN flag for oversized kvmalloc() calls")
+Add a of_node_put() call when the call is successful.
 
-Note: hashtable resize is only possible from init_netns.
-
-Fixes: 9cc1c73ad666 ("netfilter: conntrack: avoid integer overflow when resizing")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 3fd6d6e2b4e8 ("thermal/of: Rework the thermal device tree initialization")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Link: https://patch.msgid.link/20241224031809.950461-1-joe@pf.is.s.u-tokyo.ac.jp
+[ rjw: Changelog edit ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_core.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/thermal/thermal_of.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/nf_conntrack_core.c b/net/netfilter/nf_conntrack_core.c
-index 024f93fc8c0b..b7b2ed05ac50 100644
---- a/net/netfilter/nf_conntrack_core.c
-+++ b/net/netfilter/nf_conntrack_core.c
-@@ -2591,12 +2591,15 @@ void *nf_ct_alloc_hashtable(unsigned int *sizep, int nulls)
- 	struct hlist_nulls_head *hash;
- 	unsigned int nr_slots, i;
+diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
+index 07e09897165f..5d3d8ce672cd 100644
+--- a/drivers/thermal/thermal_of.c
++++ b/drivers/thermal/thermal_of.c
+@@ -176,6 +176,7 @@ static struct device_node *of_thermal_zone_find(struct device_node *sensor, int
+ 				goto out;
+ 			}
  
--	if (*sizep > (UINT_MAX / sizeof(struct hlist_nulls_head)))
-+	if (*sizep > (INT_MAX / sizeof(struct hlist_nulls_head)))
- 		return NULL;
- 
- 	BUILD_BUG_ON(sizeof(struct hlist_nulls_head) != sizeof(struct hlist_head));
- 	nr_slots = *sizep = roundup(*sizep, PAGE_SIZE / sizeof(struct hlist_nulls_head));
- 
-+	if (nr_slots > (INT_MAX / sizeof(struct hlist_nulls_head)))
-+		return NULL;
-+
- 	hash = kvcalloc(nr_slots, sizeof(struct hlist_nulls_head), GFP_KERNEL);
- 
- 	if (hash && nulls)
++			of_node_put(sensor_specs.np);
+ 			if ((sensor == sensor_specs.np) && id == (sensor_specs.args_count ?
+ 								  sensor_specs.args[0] : 0)) {
+ 				pr_debug("sensor %pOFn id=%d belongs to %pOFn\n", sensor, id, child);
 -- 
 2.39.5
 
