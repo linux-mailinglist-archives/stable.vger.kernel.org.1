@@ -1,274 +1,140 @@
-Return-Path: <stable+bounces-108692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0484BA11DD6
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:29:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 009AEA11D52
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:20:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25741188C6F9
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 09:29:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 527CB160E17
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 09:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DBAE2063C3;
-	Wed, 15 Jan 2025 09:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA191EEA45;
+	Wed, 15 Jan 2025 09:17:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iLaCtAc9";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MwMfS11J"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460B0246A1A;
-	Wed, 15 Jan 2025 09:16:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7AB31EEA37;
+	Wed, 15 Jan 2025 09:17:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736932614; cv=none; b=GM4QNrqB9G3Xz2PVXQoVDtP5LLkwCAOxbCTd22yJ8hr5k7E5r9UZDPtxKACTkTPQSVIFibm5AVWKgTdGB2g/7+4JQOXsd4SaM9qgQqL9vdNJdD6npbv4X/uRmmlskxA1vfcVtkSu3nc63idYVAF25/UnTypnqo1ayRXY4fu5XrI=
+	t=1736932670; cv=none; b=Ixlkn0OHQKyN3hrfqROP6iRr6kAXEB+HjTGaui+7nzUJgzShZkRH4hNeCx6o+aq62Hzwt1i629Lf24MmqfWgOvvJop+2yvDHtaTxZ5CDi86z0KeqWgJQoAQGJgm4o5xGnqXC90Y6YunGp5Ks104r8oWnPCM/w2ym7OwwhUTGEeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736932614; c=relaxed/simple;
-	bh=OjHWlL6rruvpCrgCYLcKs/RK6AzMS+reTATUmq7XLss=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IblDD+ZJ7chYetFpKPS+v3dH3nHwmUvgu/Irz/mng8qx4qJ6WgdOFBE7fL9+SJf7+dHSUKDSgTkqzBaGM74VNhCaBvwAAgT3mOb8p7NLJV11LBQuYrqWyC3s2wNErmtdscwiqKzV5OPtDDJFMFXCQIGWm34Fx6sEJbONmyEFLLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
-	by air.basealt.ru (Postfix) with ESMTPSA id EFD32233A9;
-	Wed, 15 Jan 2025 12:16:47 +0300 (MSK)
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-To: stable@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	kovalev@altlinux.org,
-	Eric Dumazet <edumazet@google.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15] net: defer final 'struct net' free in netns dismantle
-Date: Wed, 15 Jan 2025 12:16:42 +0300
-Message-Id: <20250115091642.335047-1-kovalev@altlinux.org>
-X-Mailer: git-send-email 2.33.8
+	s=arc-20240116; t=1736932670; c=relaxed/simple;
+	bh=b8ep7yzXNQ2WWN57kJpvalioLlKF1PoQtKnj+tbuBBc=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=nTKPE0yPglaUO21UbQqVuXwXXpP62+BxbjthtpdKoZUY/+WNVuf635uIM6YCP0QfGeOsMQe7hFcJFa3EmWD1Ladfq62FkpSe/1TeMhfWHPFlUNo2b54kBv33k/ndyPRx7YpYVNU4MkyUZzeg+FRJkMsx4mDpdnYD3XWD/Ojgfms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iLaCtAc9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MwMfS11J; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 15 Jan 2025 09:17:46 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1736932667;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=t6xJfgv7LGixGdzefMck9d8TezAcjPhpCPoF+6s9Kp4=;
+	b=iLaCtAc9MMWtblYY6FD4u6YSNy+ZYwIE5hWzc30m1Exg/JccKrkv7inTqvhLqBszIQxeXp
+	CBd8bIQh0AeWz6npo3noUDnB5SOI43LjgnufbFQiLK98YBh0Ba65IW1oBIpa/+UD/6CIWF
+	UVqvRfxJt2VKZU2EUiePzMgeyJJ5FV+w3z+ycYwg0/GPvA7ixknEnPdQGa7SRibTUOSRfK
+	PuAD7p02tSfa0llW5BCq89VXWOsjP4xQQSd19UZHFk+sVBWNurW6AiIm5hj5dtU4i2TBou
+	jMPhTPM9infI7ip3ao1UD8ywRtc8e+G1hn5lLYZJzuxKk2eKJ4OQXD6gCR+yyQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1736932667;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=t6xJfgv7LGixGdzefMck9d8TezAcjPhpCPoF+6s9Kp4=;
+	b=MwMfS11J0xw7TYuhXY+NupAeg5IfbFFuzkKTiAbZOMfBpQXcK/KdUoxoinPMbJWa35fo0r
+	yQT5AzkEnWOlLODw==
+From: "tip-bot2 for Xin Li (Intel)" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/fred: Fix the FRED RSP0 MSR out of sync with
+ its per-CPU cache
+Cc: "Xin Li (Intel)" <xin@zytor.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <173693266685.31546.12884479664258205675.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-From: Eric Dumazet <edumazet@google.com>
+The following commit has been merged into the x86/urgent branch of tip:
 
-commit 0f6ede9fbc747e2553612271bce108f7517e7a45 upstream.
+Commit-ID:     de31b3cd706347044e1a57d68c3a683d58e8cca4
+Gitweb:        https://git.kernel.org/tip/de31b3cd706347044e1a57d68c3a683d58e8cca4
+Author:        Xin Li (Intel) <xin@zytor.com>
+AuthorDate:    Fri, 10 Jan 2025 09:46:39 -08:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Tue, 14 Jan 2025 14:16:36 -08:00
 
-Ilya reported a slab-use-after-free in dst_destroy [1]
+x86/fred: Fix the FRED RSP0 MSR out of sync with its per-CPU cache
 
-Issue is in xfrm6_net_init() and xfrm4_net_init() :
+The FRED RSP0 MSR is only used for delivering events when running
+userspace.  Linux leverages this property to reduce expensive MSR
+writes and optimize context switches.  The kernel only writes the
+MSR when about to run userspace *and* when the MSR has actually
+changed since the last time userspace ran.
 
-They copy xfrm[46]_dst_ops_template into net->xfrm.xfrm[46]_dst_ops.
+This optimization is implemented by maintaining a per-CPU cache of
+FRED RSP0 and then checking that against the value for the top of
+current task stack before running userspace.
 
-But net structure might be freed before all the dst callbacks are
-called. So when dst_destroy() calls later :
+However cpu_init_fred_exceptions() writes the MSR without updating
+the per-CPU cache.  This means that the kernel might return to
+userspace with MSR_IA32_FRED_RSP0==0 when it needed to point to the
+top of current task stack.  This would induce a double fault (#DF),
+which is bad.
 
-if (dst->ops->destroy)
-    dst->ops->destroy(dst);
+A context switch after cpu_init_fred_exceptions() can paper over
+the issue since it updates the cached value.  That evidently
+happens most of the time explaining how this bug got through.
 
-dst->ops points to the old net->xfrm.xfrm[46]_dst_ops, which has been freed.
+Fix the bug through resynchronizing the FRED RSP0 MSR with its
+per-CPU cache in cpu_init_fred_exceptions().
 
-See a relevant issue fixed in :
-
-ac888d58869b ("net: do not delay dst_entries_add() in dst_release()")
-
-A fix is to queue the 'struct net' to be freed after one
-another cleanup_net() round (and existing rcu_barrier())
-
-[1]
-
-BUG: KASAN: slab-use-after-free in dst_destroy (net/core/dst.c:112)
-Read of size 8 at addr ffff8882137ccab0 by task swapper/37/0
-Dec 03 05:46:18 kernel:
-CPU: 37 UID: 0 PID: 0 Comm: swapper/37 Kdump: loaded Not tainted 6.12.0 #67
-Hardware name: Red Hat KVM/RHEL, BIOS 1.16.1-1.el9 04/01/2014
-Call Trace:
- <IRQ>
-dump_stack_lvl (lib/dump_stack.c:124)
-print_address_description.constprop.0 (mm/kasan/report.c:378)
-? dst_destroy (net/core/dst.c:112)
-print_report (mm/kasan/report.c:489)
-? dst_destroy (net/core/dst.c:112)
-? kasan_addr_to_slab (mm/kasan/common.c:37)
-kasan_report (mm/kasan/report.c:603)
-? dst_destroy (net/core/dst.c:112)
-? rcu_do_batch (kernel/rcu/tree.c:2567)
-dst_destroy (net/core/dst.c:112)
-rcu_do_batch (kernel/rcu/tree.c:2567)
-? __pfx_rcu_do_batch (kernel/rcu/tree.c:2491)
-? lockdep_hardirqs_on_prepare (kernel/locking/lockdep.c:4339 kernel/locking/lockdep.c:4406)
-rcu_core (kernel/rcu/tree.c:2825)
-handle_softirqs (kernel/softirq.c:554)
-__irq_exit_rcu (kernel/softirq.c:589 kernel/softirq.c:428 kernel/softirq.c:637)
-irq_exit_rcu (kernel/softirq.c:651)
-sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1049 arch/x86/kernel/apic/apic.c:1049)
- </IRQ>
- <TASK>
-asm_sysvec_apic_timer_interrupt (./arch/x86/include/asm/idtentry.h:702)
-RIP: 0010:default_idle (./arch/x86/include/asm/irqflags.h:37 ./arch/x86/include/asm/irqflags.h:92 arch/x86/kernel/process.c:743)
-Code: 00 4d 29 c8 4c 01 c7 4c 29 c2 e9 6e ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 90 0f 00 2d c7 c9 27 00 fb f4 <fa> c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 90
-RSP: 0018:ffff888100d2fe00 EFLAGS: 00000246
-RAX: 00000000001870ed RBX: 1ffff110201a5fc2 RCX: ffffffffb61a3e46
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffffb3d4d123
-RBP: 0000000000000000 R08: 0000000000000001 R09: ffffed11c7e1835d
-R10: ffff888e3f0c1aeb R11: 0000000000000000 R12: 0000000000000000
-R13: ffff888100d20000 R14: dffffc0000000000 R15: 0000000000000000
-? ct_kernel_exit.constprop.0 (kernel/context_tracking.c:148)
-? cpuidle_idle_call (kernel/sched/idle.c:186)
-default_idle_call (./include/linux/cpuidle.h:143 kernel/sched/idle.c:118)
-cpuidle_idle_call (kernel/sched/idle.c:186)
-? __pfx_cpuidle_idle_call (kernel/sched/idle.c:168)
-? lock_release (kernel/locking/lockdep.c:467 kernel/locking/lockdep.c:5848)
-? lockdep_hardirqs_on_prepare (kernel/locking/lockdep.c:4347 kernel/locking/lockdep.c:4406)
-? tsc_verify_tsc_adjust (arch/x86/kernel/tsc_sync.c:59)
-do_idle (kernel/sched/idle.c:326)
-cpu_startup_entry (kernel/sched/idle.c:423 (discriminator 1))
-start_secondary (arch/x86/kernel/smpboot.c:202 arch/x86/kernel/smpboot.c:282)
-? __pfx_start_secondary (arch/x86/kernel/smpboot.c:232)
-? soft_restart_cpu (arch/x86/kernel/head_64.S:452)
-common_startup_64 (arch/x86/kernel/head_64.S:414)
- </TASK>
-Dec 03 05:46:18 kernel:
-Allocated by task 12184:
-kasan_save_stack (mm/kasan/common.c:48)
-kasan_save_track (./arch/x86/include/asm/current.h:49 mm/kasan/common.c:60 mm/kasan/common.c:69)
-__kasan_slab_alloc (mm/kasan/common.c:319 mm/kasan/common.c:345)
-kmem_cache_alloc_noprof (mm/slub.c:4085 mm/slub.c:4134 mm/slub.c:4141)
-copy_net_ns (net/core/net_namespace.c:421 net/core/net_namespace.c:480)
-create_new_namespaces (kernel/nsproxy.c:110)
-unshare_nsproxy_namespaces (kernel/nsproxy.c:228 (discriminator 4))
-ksys_unshare (kernel/fork.c:3313)
-__x64_sys_unshare (kernel/fork.c:3382)
-do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-Dec 03 05:46:18 kernel:
-Freed by task 11:
-kasan_save_stack (mm/kasan/common.c:48)
-kasan_save_track (./arch/x86/include/asm/current.h:49 mm/kasan/common.c:60 mm/kasan/common.c:69)
-kasan_save_free_info (mm/kasan/generic.c:582)
-__kasan_slab_free (mm/kasan/common.c:271)
-kmem_cache_free (mm/slub.c:4579 mm/slub.c:4681)
-cleanup_net (net/core/net_namespace.c:456 net/core/net_namespace.c:446 net/core/net_namespace.c:647)
-process_one_work (kernel/workqueue.c:3229)
-worker_thread (kernel/workqueue.c:3304 kernel/workqueue.c:3391)
-kthread (kernel/kthread.c:389)
-ret_from_fork (arch/x86/kernel/process.c:147)
-ret_from_fork_asm (arch/x86/entry/entry_64.S:257)
-Dec 03 05:46:18 kernel:
-Last potentially related work creation:
-kasan_save_stack (mm/kasan/common.c:48)
-__kasan_record_aux_stack (mm/kasan/generic.c:541)
-insert_work (./include/linux/instrumented.h:68 ./include/asm-generic/bitops/instrumented-non-atomic.h:141 kernel/workqueue.c:788 kernel/workqueue.c:795 kernel/workqueue.c:2186)
-__queue_work (kernel/workqueue.c:2340)
-queue_work_on (kernel/workqueue.c:2391)
-xfrm_policy_insert (net/xfrm/xfrm_policy.c:1610)
-xfrm_add_policy (net/xfrm/xfrm_user.c:2116)
-xfrm_user_rcv_msg (net/xfrm/xfrm_user.c:3321)
-netlink_rcv_skb (net/netlink/af_netlink.c:2536)
-xfrm_netlink_rcv (net/xfrm/xfrm_user.c:3344)
-netlink_unicast (net/netlink/af_netlink.c:1316 net/netlink/af_netlink.c:1342)
-netlink_sendmsg (net/netlink/af_netlink.c:1886)
-sock_write_iter (net/socket.c:729 net/socket.c:744 net/socket.c:1165)
-vfs_write (fs/read_write.c:590 fs/read_write.c:683)
-ksys_write (fs/read_write.c:736)
-do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-Dec 03 05:46:18 kernel:
-Second to last potentially related work creation:
-kasan_save_stack (mm/kasan/common.c:48)
-__kasan_record_aux_stack (mm/kasan/generic.c:541)
-insert_work (./include/linux/instrumented.h:68 ./include/asm-generic/bitops/instrumented-non-atomic.h:141 kernel/workqueue.c:788 kernel/workqueue.c:795 kernel/workqueue.c:2186)
-__queue_work (kernel/workqueue.c:2340)
-queue_work_on (kernel/workqueue.c:2391)
-__xfrm_state_insert (./include/linux/workqueue.h:723 net/xfrm/xfrm_state.c:1150 net/xfrm/xfrm_state.c:1145 net/xfrm/xfrm_state.c:1513)
-xfrm_state_update (./include/linux/spinlock.h:396 net/xfrm/xfrm_state.c:1940)
-xfrm_add_sa (net/xfrm/xfrm_user.c:912)
-xfrm_user_rcv_msg (net/xfrm/xfrm_user.c:3321)
-netlink_rcv_skb (net/netlink/af_netlink.c:2536)
-xfrm_netlink_rcv (net/xfrm/xfrm_user.c:3344)
-netlink_unicast (net/netlink/af_netlink.c:1316 net/netlink/af_netlink.c:1342)
-netlink_sendmsg (net/netlink/af_netlink.c:1886)
-sock_write_iter (net/socket.c:729 net/socket.c:744 net/socket.c:1165)
-vfs_write (fs/read_write.c:590 fs/read_write.c:683)
-ksys_write (fs/read_write.c:736)
-do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-Fixes: a8a572a6b5f2 ("xfrm: dst_entries_init() per-net dst_ops")
-Reported-by: Ilya Maximets <i.maximets@ovn.org>
-Closes: https://lore.kernel.org/netdev/CANn89iKKYDVpB=MtmfH7nyv2p=rJWSLedO5k7wSZgtY_tO8WQg@mail.gmail.com/T/#m02c98c3009fe66382b73cfb4db9cf1df6fab3fbf
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20241204125455.3871859-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Fixes: fe85ee391966 ("x86/entry: Set FRED RSP0 on return to userspace instead of context switch")
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250110174639.1250829-1-xin%40zytor.com
 ---
-Backport to fix CVE-2024-56658
-Link: https://www.cve.org/CVERecord/?id=CVE-2024-56658
----
- include/net/net_namespace.h |  1 +
- net/core/net_namespace.c    | 21 ++++++++++++++++++++-
- 2 files changed, 21 insertions(+), 1 deletion(-)
+ arch/x86/kernel/fred.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
-index c47baa623ba586..a5d6e04c8e8b55 100644
---- a/include/net/net_namespace.h
-+++ b/include/net/net_namespace.h
-@@ -80,6 +80,7 @@ struct net {
- 						 * or to unregister pernet ops
- 						 * (pernet_ops_rwsem write locked).
- 						 */
-+	struct llist_node	defer_free_list;
- 	struct llist_node	cleanup_list;	/* namespaces on death row */
+diff --git a/arch/x86/kernel/fred.c b/arch/x86/kernel/fred.c
+index 8d32c3f..5e2cd10 100644
+--- a/arch/x86/kernel/fred.c
++++ b/arch/x86/kernel/fred.c
+@@ -50,7 +50,13 @@ void cpu_init_fred_exceptions(void)
+ 	       FRED_CONFIG_ENTRYPOINT(asm_fred_entrypoint_user));
  
- #ifdef CONFIG_KEYS
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index 3addbce20f8ed0..0217dd2635cdb4 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -430,11 +430,28 @@ static struct net *net_alloc(void)
- 	goto out;
- }
- 
-+static LLIST_HEAD(defer_free_list);
+ 	wrmsrl(MSR_IA32_FRED_STKLVLS, 0);
+-	wrmsrl(MSR_IA32_FRED_RSP0, 0);
 +
-+static void net_complete_free(void)
-+{
-+	struct llist_node *kill_list;
-+	struct net *net, *next;
++	/*
++	 * Ater a CPU offline/online cycle, the FRED RSP0 MSR should be
++	 * resynchronized with its per-CPU cache.
++	 */
++	wrmsrl(MSR_IA32_FRED_RSP0, __this_cpu_read(fred_rsp0));
 +
-+	/* Get the list of namespaces to free from last round. */
-+	kill_list = llist_del_all(&defer_free_list);
-+
-+	llist_for_each_entry_safe(net, next, kill_list, defer_free_list)
-+		kmem_cache_free(net_cachep, net);
-+
-+}
-+
- static void net_free(struct net *net)
- {
- 	if (refcount_dec_and_test(&net->passive)) {
- 		kfree(rcu_access_pointer(net->gen));
--		kmem_cache_free(net_cachep, net);
-+
-+		/* Wait for an extra rcu_barrier() before final free. */
-+		llist_add(&net->defer_free_list, &defer_free_list);
- 	}
- }
- 
-@@ -609,6 +626,8 @@ static void cleanup_net(struct work_struct *work)
- 	 */
- 	rcu_barrier();
- 
-+	net_complete_free();
-+
- 	/* Finally it is safe to free my network namespace structure */
- 	list_for_each_entry_safe(net, tmp, &net_exit_list, exit_list) {
- 		list_del_init(&net->exit_list);
--- 
-2.33.8
-
+ 	wrmsrl(MSR_IA32_FRED_RSP1, 0);
+ 	wrmsrl(MSR_IA32_FRED_RSP2, 0);
+ 	wrmsrl(MSR_IA32_FRED_RSP3, 0);
 
