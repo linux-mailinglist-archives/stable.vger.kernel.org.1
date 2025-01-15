@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-108762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFD5DA1202D
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:42:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4E0A12169
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:56:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5DB53A4AF1
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:42:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACC6D3A6590
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84195248BB1;
-	Wed, 15 Jan 2025 10:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA1F1E98E6;
+	Wed, 15 Jan 2025 10:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Oqrks39"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0D7VIB46"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41BAE248BA6;
-	Wed, 15 Jan 2025 10:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380731E7C02;
+	Wed, 15 Jan 2025 10:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937724; cv=none; b=N++V3RhD1F6meohVeN10QkHZ3w+ivAtOADC+KOO4ntrdozF5wY1mbn5rkKc0N2Ncvo4qUotT0O/wANF9PXWaI02vkGlaFcRYE4dLzLV2AA39MzCgX+yLX+tvbfWmwain4zMMD5m/XjA3cOuLrBhXlL4eqhJjg/tsCNhIqUhYsmc=
+	t=1736938550; cv=none; b=ZLTn/S2ALkzAd6H7wlTYLodkmq3KQPxiHWx0wAv2qWdc+XOmWS0uh4sou2jNF6Sye4LdTT1PFBzPlqiUK2nitVvMP9hLO3omNYL6BF76JP+25FkV1EIQWqhldMlgJQuMMkKM9/bAjzo6/APS48eRR+1XcH+fjGG9Z7BnMh8w314=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937724; c=relaxed/simple;
-	bh=ZkpkJrCaCPczV6Ur+TgaKPN3ouPQHIfKDUcI0L1zGjE=;
+	s=arc-20240116; t=1736938550; c=relaxed/simple;
+	bh=Ov5jgNk0w6YJsS+suHU58+NhqAxez4pzYLPwKn93/zg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YHC/dgockzKlgw3xWcHM1CozoMAO5Ser+naDqtM4UNkM2ApS+kzqwuzv0RoGzEdcr6ci2kdjvhRBUmzxhT5ybpe7TfkjvA/rIvBT4RcFTLL4uYRvdrfTagkBONXPvEqz4+kJyXI0qSoAi92Nv6E1O61ZGyt9RKhIETeMdJKOFU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Oqrks39; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6F0C4CEE2;
-	Wed, 15 Jan 2025 10:42:03 +0000 (UTC)
+	 MIME-Version; b=Wfn3dgOvgxCJsEApad+HU7e5Ajt+GaxTl0YEvS4HYzCBkqHm6hvRHcQRh0lKNFphWJvuFumFDNhgLDGjflOJ5qg9joMHbRvt/74IZaXcbHpoFpJVo3S8boj4b0SfimaYIiHNgrN5nipyObC6ymaFGA/oPhq131EC6JvMGUfSGB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0D7VIB46; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682F0C4CEDF;
+	Wed, 15 Jan 2025 10:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937723;
-	bh=ZkpkJrCaCPczV6Ur+TgaKPN3ouPQHIfKDUcI0L1zGjE=;
+	s=korg; t=1736938550;
+	bh=Ov5jgNk0w6YJsS+suHU58+NhqAxez4pzYLPwKn93/zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Oqrks39FPpOjQ5dDwRls1EQXUtShJYNr4l0S+q01gQNaF1BdAYY5AoA/KD/Kzm+x
-	 2Blmj+t2CHHad7j5s2w9TSqmO/TEht+0qLtTQX5S4x831NxWxvzx0PebATZ59nhwYX
-	 o06HhfSC9Cau11KnkyQpO1/3bFzpnJOzxs7PVRiQ=
+	b=0D7VIB46F4oFw61LWOOsd4A38lbV8vKkieh30+mPK1cpAxoxGu9ohGZO7pHgfcFhP
+	 5n6vXxkZcWioch1A7rMlmAI80GWKmJGCa+Mozv3Fl2uBTnrI+gxyNlud8ll/w/NFX4
+	 iGUch3Xt+nCnX3pZVE5VEwo6KPLDiyKfaBr49Rno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Simon Horman <horms@kernel.org>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 22/92] Bluetooth: hci_sync: Fix not setting Random Address when required
+Subject: [PATCH 6.6 025/129] pds_core: limit loop over fw name list
 Date: Wed, 15 Jan 2025 11:36:40 +0100
-Message-ID: <20250115103548.420275810@linuxfoundation.org>
+Message-ID: <20250115103555.371882453@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-[ Upstream commit c2994b008492db033d40bd767be1620229a3035e ]
+[ Upstream commit 8c817eb26230dc0ae553cee16ff43a4a895f6756 ]
 
-This fixes errors such as the following when Own address type is set to
-Random Address but it has not been programmed yet due to either be
-advertising or connecting:
+Add an array size limit to the for-loop to be sure we don't try
+to reference a fw_version string off the end of the fw info names
+array.  We know that our firmware only has a limited number
+of firmware slot names, but we shouldn't leave this unchecked.
 
-< HCI Command: LE Set Exte.. (0x08|0x0041) plen 13
-        Own address type: Random (0x03)
-        Filter policy: Ignore not in accept list (0x01)
-        PHYs: 0x05
-        Entry 0: LE 1M
-          Type: Passive (0x00)
-          Interval: 60.000 msec (0x0060)
-          Window: 30.000 msec (0x0030)
-        Entry 1: LE Coded
-          Type: Passive (0x00)
-          Interval: 180.000 msec (0x0120)
-          Window: 90.000 msec (0x0090)
-> HCI Event: Command Complete (0x0e) plen 4
-      LE Set Extended Scan Parameters (0x08|0x0041) ncmd 1
-        Status: Success (0x00)
-< HCI Command: LE Set Exten.. (0x08|0x0042) plen 6
-        Extended scan: Enabled (0x01)
-        Filter duplicates: Enabled (0x01)
-        Duration: 0 msec (0x0000)
-        Period: 0.00 sec (0x0000)
-> HCI Event: Command Complete (0x0e) plen 4
-      LE Set Extended Scan Enable (0x08|0x0042) ncmd 1
-        Status: Invalid HCI Command Parameters (0x12)
-
-Fixes: c45074d68a9b ("Bluetooth: Fix not generating RPA when required")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 45d76f492938 ("pds_core: set up device and adminq")
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250103195147.7408-1-shannon.nelson@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/amd/pds_core/devlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index b7a7b2afaa04..c6108e68f5a9 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -1006,9 +1006,9 @@ static bool adv_use_rpa(struct hci_dev *hdev, uint32_t flags)
+diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
+index d8218bb153d9..971d4278280d 100644
+--- a/drivers/net/ethernet/amd/pds_core/devlink.c
++++ b/drivers/net/ethernet/amd/pds_core/devlink.c
+@@ -117,7 +117,7 @@ int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
+ 	if (err && err != -EIO)
+ 		return err;
  
- static int hci_set_random_addr_sync(struct hci_dev *hdev, bdaddr_t *rpa)
- {
--	/* If we're advertising or initiating an LE connection we can't
--	 * go ahead and change the random address at this time. This is
--	 * because the eventual initiator address used for the
-+	/* If a random_addr has been set we're advertising or initiating an LE
-+	 * connection we can't go ahead and change the random address at this
-+	 * time. This is because the eventual initiator address used for the
- 	 * subsequently created connection will be undefined (some
- 	 * controllers use the new address and others the one we had
- 	 * when the operation started).
-@@ -1016,8 +1016,9 @@ static int hci_set_random_addr_sync(struct hci_dev *hdev, bdaddr_t *rpa)
- 	 * In this kind of scenario skip the update and let the random
- 	 * address be updated at the next cycle.
- 	 */
--	if (hci_dev_test_flag(hdev, HCI_LE_ADV) ||
--	    hci_lookup_le_connect(hdev)) {
-+	if (bacmp(&hdev->random_addr, BDADDR_ANY) &&
-+	    (hci_dev_test_flag(hdev, HCI_LE_ADV) ||
-+	    hci_lookup_le_connect(hdev))) {
- 		bt_dev_dbg(hdev, "Deferring random address update");
- 		hci_dev_set_flag(hdev, HCI_RPA_EXPIRED);
- 		return 0;
+-	listlen = fw_list.num_fw_slots;
++	listlen = min(fw_list.num_fw_slots, ARRAY_SIZE(fw_list.fw_names));
+ 	for (i = 0; i < listlen; i++) {
+ 		if (i < ARRAY_SIZE(fw_slotnames))
+ 			strscpy(buf, fw_slotnames[i], sizeof(buf));
 -- 
 2.39.5
 
