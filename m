@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-108775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F42EA12034
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:42:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C3DA121CB
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 12:00:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8AD23AA696
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:42:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC0FC3A3541
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:00:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B39E248BAF;
-	Wed, 15 Jan 2025 10:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA231E9905;
+	Wed, 15 Jan 2025 11:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBxR2D8k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2uH5nM8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D06248BA1;
-	Wed, 15 Jan 2025 10:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA09248BAF;
+	Wed, 15 Jan 2025 11:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937766; cv=none; b=igijZ0RQFhmzf0yDKZ1DoOb4pNmj6RWQ6OPdIeTBVgXXrMvMWEbbslufikvekwCO3yazTZBn/wLzAKh6mS/yUTmIb2LpnP0Y5srWD5U2HhIenT7xFNJt9GmUlMiqP4Q6Tjtw/oNvjsHZHaqMz/Yte4W58dmqOOWH6pc0An3I3Ys=
+	t=1736938828; cv=none; b=UJwj+tApvxsxzLT7fLorz/l0uJdId4Rwv9L0P7Kr/lv3LMNCqSk/HNQInZBFTH1/0AxY8jr8OTIZVZL90hBcvLEpH1/7IjJdnhW/do/Y4kDuyt6mRcFCNIj1S6xF5yKmcz+IOm06sxDzG5XwliBvUeE/5Qun3mkAfyAsktibZQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937766; c=relaxed/simple;
-	bh=Ae3BtkwsCSSavh4ms1LNzxu0cQGIh1aKCLH1vA2pyhc=;
+	s=arc-20240116; t=1736938828; c=relaxed/simple;
+	bh=afHLhcDU2TCOwR1aVbAqOfwhrsj7CvRUZM3TkpYUdYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lYLu5mthgGRQ+XIDJO1X1MnCwjEGjgTZ0JkouC8/TqeayqMUM0GyIuER7ek9pQd37d/ySBS3wUEb6/S27nJ4lQYG5TNR/az2a0gDeYMNgPwLUBirZYfKteaxfRJTkzAVqiGRzVOgJovz6+xV9ithKtRIhaWgEtVbG78ZQlmzCzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBxR2D8k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A17C4CEE1;
-	Wed, 15 Jan 2025 10:42:45 +0000 (UTC)
+	 MIME-Version; b=ZUk7Z25L4MdVj8Px3xiZvuPoBxUapq7WctE9FbiAuCz2VDMOq4Xzr9brs1IAJwHk43sBN2JY3KQBjLqJuDJws7E3HNMmEDaBLLm6tkmWAWrY7uIOpzr3XxbVyjNqsXZiS7tDUJQ5krsSmX6u1wlCxBOwbQ69WKioc1d6z3xhlQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2uH5nM8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538EEC4CEDF;
+	Wed, 15 Jan 2025 11:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937766;
-	bh=Ae3BtkwsCSSavh4ms1LNzxu0cQGIh1aKCLH1vA2pyhc=;
+	s=korg; t=1736938827;
+	bh=afHLhcDU2TCOwR1aVbAqOfwhrsj7CvRUZM3TkpYUdYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MBxR2D8kzleCipO5YzJjY9JN1pjedt2Pd+RTs5ULNaadQ+UNsVw8fA1m3JsyvE16M
-	 KVZjIaGE/9ZiSCeEVWMHmgdFsiBlSLkpEvVPyHkSY88UUnBWJv1kIJz9AvureCLz+i
-	 ZTRTpv9fcOrZ0XiibrEf+4JhKvFnsnpV6xUOaZPU=
+	b=B2uH5nM8MPLmwG+7Qc266Upd7S2j98us0EDCGlJdI5rosSJ+3uKkqDZIxkTLOkJLV
+	 Um33flr8MW1hQGiLiAtmbJGtW8+xQPpcYHkCu64T1D56+Ml2F33OhvlrI76dPqH9pT
+	 L7k9mjDoKO4d5/4G+3CFQcZ4sE5pz3zt7EMmq7Lg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Fabio Estevam <festevam@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 75/92] iio: adc: ti-ads124s08: Use gpiod_set_value_cansleep()
+	Milan Broz <gmazyland@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.6 078/129] dm-verity FEC: Fix RS FEC repair for roots unaligned to block size (take 2)
 Date: Wed, 15 Jan 2025 11:37:33 +0100
-Message-ID: <20250115103550.551564739@linuxfoundation.org>
+Message-ID: <20250115103557.480792438@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,164 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@gmail.com>
+From: Milan Broz <gmazyland@gmail.com>
 
-commit 2a8e34096ec70d73ebb6d9920688ea312700cbd9 upstream.
+commit 6df90c02bae468a3a6110bafbc659884d0c4966c upstream.
 
-Using gpiod_set_value() to control the reset GPIO causes some verbose
-warnings during boot when the reset GPIO is controlled by an I2C IO
-expander.
+This patch fixes an issue that was fixed in the commit
+  df7b59ba9245 ("dm verity: fix FEC for RS roots unaligned to block size")
+but later broken again in the commit
+  8ca7cab82bda ("dm verity fec: fix misaligned RS roots IO")
 
-As the caller can sleep, use the gpiod_set_value_cansleep() variant to
-fix the issue.
+If the Reed-Solomon roots setting spans multiple blocks, the code does not
+use proper parity bytes and randomly fails to repair even trivial errors.
 
-Tested on a custom i.MX93 board with a ADS124S08 ADC.
+This bug cannot happen if the sector size is multiple of RS roots
+setting (Android case with roots 2).
 
-Cc: stable@kernel.org
-Fixes: e717f8c6dfec ("iio: adc: Add the TI ads124s08 ADC code")
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
-Link: https://patch.msgid.link/20241122164308.390340-1-festevam@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+The previous solution was to find a dm-bufio block size that is multiple
+of the device sector size and roots size. Unfortunately, the optimization
+in commit 8ca7cab82bda ("dm verity fec: fix misaligned RS roots IO")
+is incorrect and uses data block size for some roots (for example, it uses
+4096 block size for roots = 20).
+
+This patch uses a different approach:
+
+ - It always uses a configured data block size for dm-bufio to avoid
+ possible misaligned IOs.
+
+ - and it caches the processed parity bytes, so it can join it
+ if it spans two blocks.
+
+As the RS calculation is called only if an error is detected and
+the process is computationally intensive, copying a few more bytes
+should not introduce performance issues.
+
+The issue was reported to cryptsetup with trivial reproducer
+  https://gitlab.com/cryptsetup/cryptsetup/-/issues/923
+
+Reproducer (with roots=20):
+
+ # create verity device with RS FEC
+ dd if=/dev/urandom of=data.img bs=4096 count=8 status=none
+ veritysetup format data.img hash.img --fec-device=fec.img --fec-roots=20 | \
+ awk '/^Root hash/{ print $3 }' >roothash
+
+ # create an erasure that should always be repairable with this roots setting
+ dd if=/dev/zero of=data.img conv=notrunc bs=1 count=4 seek=4 status=none
+
+ # try to read it through dm-verity
+ veritysetup open data.img test hash.img --fec-device=fec.img --fec-roots=20 $(cat roothash)
+ dd if=/dev/mapper/test of=/dev/null bs=4096 status=noxfer
+
+ Even now the log says it cannot repair it:
+   : verity-fec: 7:1: FEC 0: failed to correct: -74
+   : device-mapper: verity: 7:1: data block 0 is corrupted
+   ...
+
+With this fix, errors are properly repaired.
+   : verity-fec: 7:1: FEC 0: corrected 4 errors
+
+Signed-off-by: Milan Broz <gmazyland@gmail.com>
+Fixes: 8ca7cab82bda ("dm verity fec: fix misaligned RS roots IO")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Milan Broz <gmazyland@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ti-ads124s08.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/dm-verity-fec.c |   39 ++++++++++++++++++++++++++-------------
+ 1 file changed, 26 insertions(+), 13 deletions(-)
 
---- a/drivers/iio/adc/ti-ads124s08.c
-+++ b/drivers/iio/adc/ti-ads124s08.c
-@@ -183,9 +183,9 @@ static int ads124s_reset(struct iio_dev
- 	struct ads124s_private *priv = iio_priv(indio_dev);
+--- a/drivers/md/dm-verity-fec.c
++++ b/drivers/md/dm-verity-fec.c
+@@ -60,14 +60,19 @@ static int fec_decode_rs8(struct dm_veri
+  * to the data block. Caller is responsible for releasing buf.
+  */
+ static u8 *fec_read_parity(struct dm_verity *v, u64 rsb, int index,
+-			   unsigned int *offset, struct dm_buffer **buf)
++			   unsigned int *offset, unsigned int par_buf_offset,
++			  struct dm_buffer **buf)
+ {
+ 	u64 position, block, rem;
+ 	u8 *res;
  
- 	if (priv->reset_gpio) {
--		gpiod_set_value(priv->reset_gpio, 0);
-+		gpiod_set_value_cansleep(priv->reset_gpio, 0);
- 		udelay(200);
--		gpiod_set_value(priv->reset_gpio, 1);
-+		gpiod_set_value_cansleep(priv->reset_gpio, 1);
- 	} else {
- 		return ads124s_write_cmd(indio_dev, ADS124S08_CMD_RESET);
++	/* We have already part of parity bytes read, skip to the next block */
++	if (par_buf_offset)
++		index++;
++
+ 	position = (index + rsb) * v->fec->roots;
+ 	block = div64_u64_rem(position, v->fec->io_size, &rem);
+-	*offset = (unsigned int)rem;
++	*offset = par_buf_offset ? 0 : (unsigned int)rem;
+ 
+ 	res = dm_bufio_read(v->fec->bufio, block, buf);
+ 	if (IS_ERR(res)) {
+@@ -127,10 +132,11 @@ static int fec_decode_bufs(struct dm_ver
+ {
+ 	int r, corrected = 0, res;
+ 	struct dm_buffer *buf;
+-	unsigned int n, i, offset;
+-	u8 *par, *block;
++	unsigned int n, i, offset, par_buf_offset = 0;
++	u8 *par, *block, par_buf[DM_VERITY_FEC_RSM - DM_VERITY_FEC_MIN_RSN];
+ 
+-	par = fec_read_parity(v, rsb, block_offset, &offset, &buf);
++	par = fec_read_parity(v, rsb, block_offset, &offset,
++			      par_buf_offset, &buf);
+ 	if (IS_ERR(par))
+ 		return PTR_ERR(par);
+ 
+@@ -140,7 +146,8 @@ static int fec_decode_bufs(struct dm_ver
+ 	 */
+ 	fec_for_each_buffer_rs_block(fio, n, i) {
+ 		block = fec_buffer_rs_block(v, fio, n, i);
+-		res = fec_decode_rs8(v, fio, block, &par[offset], neras);
++		memcpy(&par_buf[par_buf_offset], &par[offset], v->fec->roots - par_buf_offset);
++		res = fec_decode_rs8(v, fio, block, par_buf, neras);
+ 		if (res < 0) {
+ 			r = res;
+ 			goto error;
+@@ -153,12 +160,21 @@ static int fec_decode_bufs(struct dm_ver
+ 		if (block_offset >= 1 << v->data_dev_block_bits)
+ 			goto done;
+ 
+-		/* read the next block when we run out of parity bytes */
+-		offset += v->fec->roots;
++		/* Read the next block when we run out of parity bytes */
++		offset += (v->fec->roots - par_buf_offset);
++		/* Check if parity bytes are split between blocks */
++		if (offset < v->fec->io_size && (offset + v->fec->roots) > v->fec->io_size) {
++			par_buf_offset = v->fec->io_size - offset;
++			memcpy(par_buf, &par[offset], par_buf_offset);
++			offset += par_buf_offset;
++		} else
++			par_buf_offset = 0;
++
+ 		if (offset >= v->fec->io_size) {
+ 			dm_bufio_release(buf);
+ 
+-			par = fec_read_parity(v, rsb, block_offset, &offset, &buf);
++			par = fec_read_parity(v, rsb, block_offset, &offset,
++					      par_buf_offset, &buf);
+ 			if (IS_ERR(par))
+ 				return PTR_ERR(par);
+ 		}
+@@ -743,10 +759,7 @@ int verity_fec_ctr(struct dm_verity *v)
+ 		return -E2BIG;
  	}
+ 
+-	if ((f->roots << SECTOR_SHIFT) & ((1 << v->data_dev_block_bits) - 1))
+-		f->io_size = 1 << v->data_dev_block_bits;
+-	else
+-		f->io_size = v->fec->roots << SECTOR_SHIFT;
++	f->io_size = 1 << v->data_dev_block_bits;
+ 
+ 	f->bufio = dm_bufio_client_create(f->dev->bdev,
+ 					  f->io_size,
 
 
 
