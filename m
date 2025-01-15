@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-109057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B38F1A12197
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:58:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DD9BA1202E
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:42:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5D7E16A88A
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:58:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50339162B43
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E1C1E7C02;
-	Wed, 15 Jan 2025 10:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB8E4248BA1;
+	Wed, 15 Jan 2025 10:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WIjefYB5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgKjDaFO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE5E248BD1;
-	Wed, 15 Jan 2025 10:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FE7248BA0;
+	Wed, 15 Jan 2025 10:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938714; cv=none; b=dVIkAkWEtSWJRpkDsKZI4n/L+AG7hIygKbRyT6G8PVNuIlzt4pS22Ypgm2jj/lnZ8Gz/zBeW+eELylmq9I9qqv+7OIrx6iyRS3/NsGcMgnttHGi0LEIy+P9jCQcDDJ+3SigAnwPNIfiPXq8G+stDyRlLn+uJBNwz9aB52O+mMe4=
+	t=1736937748; cv=none; b=nE775WTtBKXrhWjP5zM39BgZqsv5gyHQci5wj/eMZRV+2axcJdsjkaY3oVudqJ4lTrDxW3Yeg3o93NHc+NtQ9TNRoo5S/oDt8cprXQGgxwaxYG+luDhmf5C8nq1uIQpdwooLRzKJPxeb+fLasFg6v0kDiGeyA7xNEJW+PA9/2Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938714; c=relaxed/simple;
-	bh=TnNWTqW/cGyK2ln5xxBYRoIumIiz1nsyWryfLW6rYr0=;
+	s=arc-20240116; t=1736937748; c=relaxed/simple;
+	bh=MJFbPvkke3DUEEvwyJcTQ/NdRqSRxrv+KagLJdFrGZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G2cqi1kx7ih5AVp6c7Nzac/QLyAlebt/fngbMXh/gHIZGF+TbXgl/K2WoOBppIUoRs9pdM9Mp/dXamDEM9HUL86u8mp+1W8IK4jsX07Lu64DPO9Nn243cpmexZ+a3w3VhdnLZSX5+luAKxm3NkYbrZgjfDgFfmFTXJL6IP4xNpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WIjefYB5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C91FC4CEDF;
-	Wed, 15 Jan 2025 10:58:33 +0000 (UTC)
+	 MIME-Version; b=TKjPp/QFNhdtBkybRylwL9YknLaM3iD2qDM8xPtFX9izbI1VQKCGGUG7TvSZRXyt3KPEefy3BpztfZXliZEWm8g0rbBlp9RhjBNNxTOiojmWiQAHMB5RBJxJ5ekJHCirIMGZkHnNaguEAw6Y5DOflJJ2UJ/lrP0jfv6OOC0D+ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CgKjDaFO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72BACC4CEDF;
+	Wed, 15 Jan 2025 10:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938713;
-	bh=TnNWTqW/cGyK2ln5xxBYRoIumIiz1nsyWryfLW6rYr0=;
+	s=korg; t=1736937745;
+	bh=MJFbPvkke3DUEEvwyJcTQ/NdRqSRxrv+KagLJdFrGZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WIjefYB5X0KAdjpgl0FFXynRZPqR9MMvNzRLY7j80vZkkKo17N8FMjTUxyZaVzU69
-	 4UcBLjSDHdb8zQNKfjBb18NyoYHfP6CfGmIZ3p+OFrHvaCxPsNu7wxBzj3aN+WgRqD
-	 qgZoG9//Zor5vn/DT1JFsSPbPLDay/B+gaseBcc4=
+	b=CgKjDaFOg2BLiEnjhLud49gvcCMsd5EJJa6rBBxOp3xXfrDsUdz5sRn19/WCxui/r
+	 9PPUPtw9weSwvAfbDraD6BlbYfSl8R1gw0xcId+k/A3CY/Jlhc6ENp00Xp/WhUzwZE
+	 GP8bwY631ZLiNQCeyzRzfjC1lnrChKLGoIk37zbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 072/129] ACPI: resource: Add TongFang GM5HG0A to irq1_edge_low_force_override[]
-Date: Wed, 15 Jan 2025 11:37:27 +0100
-Message-ID: <20250115103557.249277532@linuxfoundation.org>
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 70/92] iio: dummy: iio_simply_dummy_buffer: fix information leak in triggered buffer
+Date: Wed, 15 Jan 2025 11:37:28 +0100
+Message-ID: <20250115103550.351165986@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 7ed4e4a659d99499dc6968c61970d41b64feeac0 upstream.
+commit 333be433ee908a53f283beb95585dfc14c8ffb46 upstream.
 
-The TongFang GM5HG0A is a TongFang barebone design which is sold under
-various brand names.
+The 'data' array is allocated via kmalloc() and it is used to push data
+to user space from a triggered buffer, but it does not set values for
+inactive channels, as it only uses iio_for_each_active_channel()
+to assign new values.
 
-The ACPI IRQ override for the keyboard IRQ must be used on these AMD Zen
-laptops in order for the IRQ to work.
+Use kzalloc for the memory allocation to avoid pushing uninitialized
+information to userspace.
 
-At least on the SKIKK Vanaheim variant the DMI product- and board-name
-strings have been replaced by the OEM with "Vanaheim" so checking that
-board-name contains "GM5HG0A" as is usually done for TongFang barebones
-quirks does not work.
-
-The DMI OEM strings do contain "GM5HG0A". I have looked at the dmidecode
-for a few other TongFang devices and the TongFang code-name string being
-in the OEM strings seems to be something which is consistently true.
-
-Add a quirk checking one of the DMI_OEM_STRING(s) is "GM5HG0A" in the hope
-that this will work for other OEM versions of the "GM5HG0A" too.
-
-Link: https://www.skikk.eu/en/laptops/vanaheim-15-rtx-4060
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219614
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241228164845.42381-1-hdegoede@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: 415f79244757 ("iio: Move IIO Dummy Driver out of staging")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-9-0cb6e98d895c@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/iio/dummy/iio_simple_dummy_buffer.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -633,6 +633,17 @@ static const struct dmi_system_id lg_lap
- 			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
- 		},
- 	},
-+	{
-+		/*
-+		 * TongFang GM5HG0A in case of the SKIKK Vanaheim relabel the
-+		 * board-name is changed, so check OEM strings instead. Note
-+		 * OEM string matches are always exact matches.
-+		 * https://bugzilla.kernel.org/show_bug.cgi?id=219614
-+		 */
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_OEM_STRING, "GM5HG0A"),
-+		},
-+	},
- 	{ }
- };
+--- a/drivers/iio/dummy/iio_simple_dummy_buffer.c
++++ b/drivers/iio/dummy/iio_simple_dummy_buffer.c
+@@ -48,7 +48,7 @@ static irqreturn_t iio_simple_dummy_trig
+ 	int i = 0, j;
+ 	u16 *data;
+ 
+-	data = kmalloc(indio_dev->scan_bytes, GFP_KERNEL);
++	data = kzalloc(indio_dev->scan_bytes, GFP_KERNEL);
+ 	if (!data)
+ 		goto done;
  
 
 
