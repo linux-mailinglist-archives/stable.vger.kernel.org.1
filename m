@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-109054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01EF9A12194
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:58:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C54A4A12029
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:42:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AC793AC533
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:58:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B655166796
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:42:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B2B1E7C02;
-	Wed, 15 Jan 2025 10:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2803248BB6;
+	Wed, 15 Jan 2025 10:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xAeVIqSF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uj1tKBLz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F07D248BD0;
-	Wed, 15 Jan 2025 10:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04BA248BA0;
+	Wed, 15 Jan 2025 10:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938704; cv=none; b=oYF6XuOC5jbcPuX1enI8vMsEei3XrEKkjX3ZEAdCU1p+KZ5xh3Vyfr+Nu9s9PgeetA9FdBL4cohRTOhYImdXACgbs1JlNuypJoiHV3j97+hunIVIcINSLGhOHkQypCLUwBEDXxJFm/aWnSMzwS0comj9+Mxz2FsesCmb38vU44g=
+	t=1736937736; cv=none; b=eR5se/fciqboVornCShDDYILP4cur0Ufers0NtffK638fL1lrbAxnXQFRJQvSixuOYQeKMKwWKqKgj8+4sHpAPua8oAd2+RMnP427F7EX8wg5MYL/c1uWP+EZ21idX9gYL4CYsBtxGxYy3x0hYDM9ai00CAWU8pZPjVd9GzJM/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938704; c=relaxed/simple;
-	bh=6QwTyAHNMqvyMrAGQNivNo/bQDLMRMF12uxMRSKE+w4=;
+	s=arc-20240116; t=1736937736; c=relaxed/simple;
+	bh=jQocUdsV1f6sk2LYIaeNKTi6lDknX43Co4af8B2nVt8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SLb9J/NQdS5Z6QnMd2g6GM7Kar8p3txYoM4hfQdRlquWF+3TlDM6NR2yLT4evlbK/T8ktBAwF1HwRZW9pd/ScdEEJ6EJ8T6V+c2tQAzA8xLRkhEAZc/N4hgwJXO1yotK4VmImZ+mZvqaivWus/xu2gfMgGiFiiFspVKfJq5HPjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xAeVIqSF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C733AC4CEDF;
-	Wed, 15 Jan 2025 10:58:23 +0000 (UTC)
+	 MIME-Version; b=m6nuTKJ1fmyexjdwE/Wc/xiu02KISVuQScfV65AcdML8EWGW3ALkF4GGGo9/ohV0G3hZJorF7QDKV9hXcbrb8bTDiSspFOwjQ/vozs4NXQi4suXI3L6PPSMcmEp/sIj6oSk3CvX9rdY77ilpOlYv8E2nZ19oIAlcasYn7dhbu3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uj1tKBLz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F54AC4CEE2;
+	Wed, 15 Jan 2025 10:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938704;
-	bh=6QwTyAHNMqvyMrAGQNivNo/bQDLMRMF12uxMRSKE+w4=;
+	s=korg; t=1736937736;
+	bh=jQocUdsV1f6sk2LYIaeNKTi6lDknX43Co4af8B2nVt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xAeVIqSFBFiqu3QhjxkWFX9D/7BUlqYqjYNJ9JcbHvlvu4aP2LYdMLZbnVmaRYxIL
-	 1Dzc1LbV9wKZSM7xmAbQTbSwi/f7YLSLx274tGmE14ouIQ+TeQoZgX+kYpyogB9WnR
-	 Y+LgfKijVShIjRXd29MaVCzfbCDHr6AVX72HI28M=
+	b=Uj1tKBLz74EVJcRfnz1H2RZr/vGR3kOBCKyulzsOVTuGVYOvSSMjgO5p2vN3fHuFA
+	 4AyN+dFstXwS7AHgD3fR4zE1yZySVpiWTPglU4VY0o2TnDtZARe54jfsg8cehLuHe2
+	 xYJREbDktpaBo2x7/TbgYwScOvioT0IUFH5dHcDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meetakshi Setiya <msetiya@microsoft.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 070/129] smb: client: sync the root session and superblock context passwords before automounting
+	stable <stable@kernel.org>,
+	Prashanth K <quic_prashk@quicinc.com>
+Subject: [PATCH 6.1 67/92] usb: gadget: f_uac2: Fix incorrect setting of bNumEndpoints
 Date: Wed, 15 Jan 2025 11:37:25 +0100
-Message-ID: <20250115103557.173583079@linuxfoundation.org>
+Message-ID: <20250115103550.229025697@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meetakshi Setiya <msetiya@microsoft.com>
+From: Prashanth K <quic_prashk@quicinc.com>
 
-commit 20b1aa912316ffb7fbb5f407f17c330f2a22ddff upstream.
+commit 057bd54dfcf68b1f67e6dfc32a47a72e12198495 upstream.
 
-In some cases, when password2 becomes the working password, the
-client swaps the two password fields in the root session struct, but
-not in the smb3_fs_context struct in cifs_sb. DFS automounts inherit
-fs context from their parent mounts. Therefore, they might end up
-getting the passwords in the stale order.
-The automount should succeed, because the mount function will end up
-retrying with the actual password anyway. But to reduce these
-unnecessary session setup retries for automounts, we can sync the
-parent context's passwords with the root session's passwords before
-duplicating it to the child's fs context.
+Currently afunc_bind sets std_ac_if_desc.bNumEndpoints to 1 if
+controls (mute/volume) are enabled. During next afunc_bind call,
+bNumEndpoints would be unchanged and incorrectly set to 1 even
+if the controls aren't enabled.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Meetakshi Setiya <msetiya@microsoft.com>
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fix this by resetting the value of bNumEndpoints to 0 on every
+afunc_bind call.
+
+Fixes: eaf6cbe09920 ("usb: gadget: f_uac2: add volume and mute support")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+Link: https://lore.kernel.org/r/20241211115915.159864-1-quic_prashk@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/namespace.c |   19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_uac2.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/smb/client/namespace.c
-+++ b/fs/smb/client/namespace.c
-@@ -196,11 +196,28 @@ static struct vfsmount *cifs_do_automoun
- 	struct smb3_fs_context tmp;
- 	char *full_path;
- 	struct vfsmount *mnt;
-+	struct cifs_sb_info *mntpt_sb;
-+	struct cifs_ses *ses;
+--- a/drivers/usb/gadget/function/f_uac2.c
++++ b/drivers/usb/gadget/function/f_uac2.c
+@@ -1176,6 +1176,7 @@ afunc_bind(struct usb_configuration *cfg
+ 		uac2->as_in_alt = 0;
+ 	}
  
- 	if (IS_ROOT(mntpt))
- 		return ERR_PTR(-ESTALE);
- 
--	cur_ctx = CIFS_SB(mntpt->d_sb)->ctx;
-+	mntpt_sb = CIFS_SB(mntpt->d_sb);
-+	ses = cifs_sb_master_tcon(mntpt_sb)->ses;
-+	cur_ctx = mntpt_sb->ctx;
-+
-+	/*
-+	 * At this point, the root session should be in the mntpt sb. We should
-+	 * bring the sb context passwords in sync with the root session's
-+	 * passwords. This would help prevent unnecessary retries and password
-+	 * swaps for automounts.
-+	 */
-+	mutex_lock(&ses->session_mutex);
-+	rc = smb3_sync_session_ctx_passwords(mntpt_sb, ses);
-+	mutex_unlock(&ses->session_mutex);
-+
-+	if (rc)
-+		return ERR_PTR(rc);
- 
- 	fc = fs_context_for_submount(path->mnt->mnt_sb->s_type, mntpt);
- 	if (IS_ERR(fc))
++	std_ac_if_desc.bNumEndpoints = 0;
+ 	if (FUOUT_EN(uac2_opts) || FUIN_EN(uac2_opts)) {
+ 		uac2->int_ep = usb_ep_autoconfig(gadget, &fs_ep_int_desc);
+ 		if (!uac2->int_ep) {
 
 
 
