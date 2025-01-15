@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-109021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8CBCA12172
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:56:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A818A120E2
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:50:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D63D1880550
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:56:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8821B188570D
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D954B1E98EE;
-	Wed, 15 Jan 2025 10:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F8E156644;
+	Wed, 15 Jan 2025 10:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AayOnzSq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eexcFxrU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E17248BDF;
-	Wed, 15 Jan 2025 10:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2542248BA1;
+	Wed, 15 Jan 2025 10:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938592; cv=none; b=DepDYK3s54p9HIsuo3Y2Gvn2neJUWjGZC7/Mc51FSIwyHhDV/2T6yyjHSJQ6Zn+MQOSbQlYjmCkZvuy6b8rmpetyrNQVvXJeFAtTeM/BOPHYU7QGYhugUdeArOhyRBnaNZodh1KFUXRpKicSpl9PKBhuan+lIodNFaNRw7xVWOo=
+	t=1736938212; cv=none; b=p+PzSmJBKVTgVrULMFH6PQu9p/CNvUMQaUJE3GdRx4UtO6cSpevzflyVgYLxElL55EAbRiQT3G4+CYtkgN6t29D/4ickni1iw8XZF6xorUZoaq55ZGw1VGYBvUg1Djs6KCIxN3TYlOeUW67avjFmah+UaDMQX8WssN1oP4nfMvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938592; c=relaxed/simple;
-	bh=FOPl9JvaMcAelsDcc11qhXlrqhTSqxU+NnyAjppA5ic=;
+	s=arc-20240116; t=1736938212; c=relaxed/simple;
+	bh=7ydR5Sx0uPpGyidMa4XNrq6Lh4ofBg2RI8Ku8hy33Yk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BOmsR3erP8NIw0g6MGEQv7ODK0M2j43iVHoc5SjO3sH16+SlnjnBXJJ31iXf9CRN0deCF0FwxUC2FPMdPx3x9RuXPgoePNmjOxEPzBjRY4D+j/Zs/Un5j4yxMvuMjDqlogBr6c/ezdawR6AZKiEHE+YPivX0B+M78DLAgLyM+FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AayOnzSq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF3AC4CEDF;
-	Wed, 15 Jan 2025 10:56:31 +0000 (UTC)
+	 MIME-Version; b=qE1Z1RETVVmjtsNn7SadBef69aZ0nlDwCDAKRVx7BoluUpAq/iR872JTdHsS3otwkXrDYeVqAakvRl3HjIw5+fjgveL8PtDUVPWNblPy4rZY1G+bYxkqLICOcbxVgTUEfx05dAk/uEuJzUgdQLVABQYc9FTjdSaJgdzwlKgBqP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eexcFxrU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04439C4CEDF;
+	Wed, 15 Jan 2025 10:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938592;
-	bh=FOPl9JvaMcAelsDcc11qhXlrqhTSqxU+NnyAjppA5ic=;
+	s=korg; t=1736938212;
+	bh=7ydR5Sx0uPpGyidMa4XNrq6Lh4ofBg2RI8Ku8hy33Yk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AayOnzSqCpMYDcVDT2wkqP3mgXKxrarPHwoSoE6+EFo5wQCPHb5YF5bbcavuPjIyC
-	 kmw6QjQmCUmGrcVouno3EIwevTM5QL+D3e8KOJVpUvzpUrPzoWloVOtlOKhUBPP2yd
-	 YFDjZme014/hFcqpcTYqs2i4/PkRquSepVOYY1R0=
+	b=eexcFxrUILl9q8La0AGNdqNviVhkl3/JmTHkjHTKAsVrhWRTYuh8l+Cz6I5pTcofc
+	 vSHe12MA2aIZJy7Ou97w3QO5F12byg72zTE4gV7U1Fnh94IMtDbywMhgmhwgO534n+
+	 v5FY10iUMHVBW7imCBdm7UXoQEjg7aNnDoIvkeYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 037/129] tcp: Annotate data-race around sk->sk_mark in tcp_v4_send_reset
+	Nam Cao <namcao@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.12 116/189] riscv: Fix sleeping in invalid context in die()
 Date: Wed, 15 Jan 2025 11:36:52 +0100
-Message-ID: <20250115103555.855238885@linuxfoundation.org>
+Message-ID: <20250115103611.091669230@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit 80fb40baba19e25a1b6f3ecff6fc5c0171806bde ]
+commit 6a97f4118ac07cfdc316433f385dbdc12af5025e upstream.
 
-This is a follow-up to 3c5b4d69c358 ("net: annotate data-races around
-sk->sk_mark"). sk->sk_mark can be read and written without holding
-the socket lock. IPv6 equivalent is already covered with READ_ONCE()
-annotation in tcp_v6_send_response().
+die() can be called in exception handler, and therefore cannot sleep.
+However, die() takes spinlock_t which can sleep with PREEMPT_RT enabled.
+That causes the following warning:
 
-Fixes: 3c5b4d69c358 ("net: annotate data-races around sk->sk_mark")
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/f459d1fc44f205e13f6d8bdca2c8bfb9902ffac9.1736244569.git.daniel@iogearbox.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 285, name: mutex
+preempt_count: 110001, expected: 0
+RCU nest depth: 0, expected: 0
+CPU: 0 UID: 0 PID: 285 Comm: mutex Not tainted 6.12.0-rc7-00022-ge19049cf7d56-dirty #234
+Hardware name: riscv-virtio,qemu (DT)
+Call Trace:
+    dump_backtrace+0x1c/0x24
+    show_stack+0x2c/0x38
+    dump_stack_lvl+0x5a/0x72
+    dump_stack+0x14/0x1c
+    __might_resched+0x130/0x13a
+    rt_spin_lock+0x2a/0x5c
+    die+0x24/0x112
+    do_trap_insn_illegal+0xa0/0xea
+    _new_vmalloc_restore_context_a0+0xcc/0xd8
+Oops - illegal instruction [#1]
+
+Switch to use raw_spinlock_t, which does not sleep even with PREEMPT_RT
+enabled.
+
+Fixes: 76d2a0493a17 ("RISC-V: Init and Halt Code")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: stable@vger.kernel.org
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20241118091333.1185288-1-namcao@linutronix.de
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_ipv4.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/kernel/traps.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index df3ddf31f8e6..705320f160ac 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -832,7 +832,7 @@ static void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb)
- 	sock_net_set(ctl_sk, net);
- 	if (sk) {
- 		ctl_sk->sk_mark = (sk->sk_state == TCP_TIME_WAIT) ?
--				   inet_twsk(sk)->tw_mark : sk->sk_mark;
-+				   inet_twsk(sk)->tw_mark : READ_ONCE(sk->sk_mark);
- 		ctl_sk->sk_priority = (sk->sk_state == TCP_TIME_WAIT) ?
- 				   inet_twsk(sk)->tw_priority : sk->sk_priority;
- 		transmit_time = tcp_transmit_time(sk);
--- 
-2.39.5
-
+--- a/arch/riscv/kernel/traps.c
++++ b/arch/riscv/kernel/traps.c
+@@ -35,7 +35,7 @@
+ 
+ int show_unhandled_signals = 1;
+ 
+-static DEFINE_SPINLOCK(die_lock);
++static DEFINE_RAW_SPINLOCK(die_lock);
+ 
+ static int copy_code(struct pt_regs *regs, u16 *val, const u16 *insns)
+ {
+@@ -81,7 +81,7 @@ void die(struct pt_regs *regs, const cha
+ 
+ 	oops_enter();
+ 
+-	spin_lock_irqsave(&die_lock, flags);
++	raw_spin_lock_irqsave(&die_lock, flags);
+ 	console_verbose();
+ 	bust_spinlocks(1);
+ 
+@@ -100,7 +100,7 @@ void die(struct pt_regs *regs, const cha
+ 
+ 	bust_spinlocks(0);
+ 	add_taint(TAINT_DIE, LOCKDEP_NOW_UNRELIABLE);
+-	spin_unlock_irqrestore(&die_lock, flags);
++	raw_spin_unlock_irqrestore(&die_lock, flags);
+ 	oops_exit();
+ 
+ 	if (in_interrupt())
 
 
 
