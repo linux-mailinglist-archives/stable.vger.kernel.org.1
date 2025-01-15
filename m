@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-108948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 114D1A12119
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:53:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76D63A121AA
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:59:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8493A3AC19A
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:52:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 155113AD21C
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7861E98FA;
-	Wed, 15 Jan 2025 10:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077611E9909;
+	Wed, 15 Jan 2025 10:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nUt/LzSQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="miJDP/hZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC8A248BA6;
-	Wed, 15 Jan 2025 10:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E531E9906;
+	Wed, 15 Jan 2025 10:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938343; cv=none; b=SRTfIyEyFD1jF75thB3xDgFYA5oKOs2+GT7/fWdI4MEN0ELeO22i0TyHqWlEqjvzM4uq42kUKeyh9f8uNg5Zus2/TO4kfGs6kQ1k0k8amgdKPnqoWaBfqtOc30frWaji/qADdJHQSSE+0iwwn7iCmEdwIYWRA/+gwFjMkd1aVEQ=
+	t=1736938740; cv=none; b=D1YQRukgHNTewngEc9px0nixaolTw5woepDAHRpnojIKH67ZOGhSHt98fLt7V52XPVmdyotyqkJfYxexFLn1/0DRrkVNana9/SYIOVcaL2iCCNejwCwL4Pknji8+9ROtFtLhMur0M16mILVxRt8LWQtdutjx2n2zCCC6XWoDX+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938343; c=relaxed/simple;
-	bh=bOBLWda86GNmDpoqCG/o8YFjeRwjbSMcsuGFcmTsryc=;
+	s=arc-20240116; t=1736938740; c=relaxed/simple;
+	bh=GZo1bUhMJmG714pTjs6pTtEVIMYoLAAWagElfD3cUuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FesFkgOp4WZdwDpzL881GXbL9Vck0e965vimwwy7vDxxQXZjBRa7Jyp+T+0RsN0Wtel/cfNsRVAH6FbhYJg2/eV++nXCvtnHbsW4L5sWfosIGoLKqTk/2yh4KqKm3SrBKur3WTDjM+bA/Lj5w1TR0frXzkulCxUnYCAO3dJuk88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nUt/LzSQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE7AC4CEDF;
-	Wed, 15 Jan 2025 10:52:22 +0000 (UTC)
+	 MIME-Version; b=PMsHFvxhMnPBcNUhbKNtvJeaXQyGGtflBtfA1lNKdDyDBx/wJrijjAc66ezAu93DWcz0EHVgDA2CxPJgXKL3FqViQCm1i8DOyRUrRonKtp5qWSa7ySgjBBwryy9dIB5ONt3ktO8weM39qmMWJzhbw7iQYMYW5DtLZq3VwKDhRs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=miJDP/hZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1909AC4CEE1;
+	Wed, 15 Jan 2025 10:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938343;
-	bh=bOBLWda86GNmDpoqCG/o8YFjeRwjbSMcsuGFcmTsryc=;
+	s=korg; t=1736938740;
+	bh=GZo1bUhMJmG714pTjs6pTtEVIMYoLAAWagElfD3cUuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nUt/LzSQWb/Sip89jfU82px19WgPR2FqTexFByWDUkoQtQboh2+k3IBI8w2dSyt4j
-	 cS0Bw5VV+ZYC3cW/+KkV5BnzwcnuH1iQvzvQN27k4ce5i4rJA+lSm+BaM/cpm0jJ5u
-	 9lgx/OJAGeZROAnG7WSzwFu45zTVaEpM2/1wXugM=
+	b=miJDP/hZSRAYhEhA02zQH0ylZcfyq4990E9uS1ywEWSLMJxlUesb3RkbZx3MqCVmK
+	 1j1DQd675y1JC7ADC2vPEjxxbrIWM8ynvnu8y6w1VjYUu3knrf2IgnWRG96m6tduZz
+	 5u8aKmOuUeAr4YN+bku+Eeh17BA9fXTucRsFrelk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ingo Rohloff <ingo.rohloff@lauterbach.com>
-Subject: [PATCH 6.12 154/189] usb: gadget: configfs: Ignore trailing LF for user strings to cdev
+	Melissa Wen <mwen@igalia.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 075/129] drm/amd/display: increase MAX_SURFACES to the value supported by hw
 Date: Wed, 15 Jan 2025 11:37:30 +0100
-Message-ID: <20250115103612.555721959@linuxfoundation.org>
+Message-ID: <20250115103557.363338726@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ingo Rohloff <ingo.rohloff@lauterbach.com>
+From: Melissa Wen <mwen@igalia.com>
 
-commit 9466545720e231fc02acd69b5f4e9138e09a26f6 upstream.
+commit 21541bc6b44241e3f791f9e552352d8440b2b29e upstream.
 
-Since commit c033563220e0f7a8
-("usb: gadget: configfs: Attach arbitrary strings to cdev")
-a user can provide extra string descriptors to a USB gadget via configfs.
+As the hw supports up to 4 surfaces, increase the maximum number of
+surfaces to prevent the DC error when trying to use more than three
+planes.
 
-For "manufacturer", "product", "serialnumber", setting the string via
-configfs ignores a trailing LF.
+[drm:dc_state_add_plane [amdgpu]] *ERROR* Surface: can not attach plane_state 000000003e2cb82c! Maximum is: 3
 
-For the arbitrary strings the LF was not ignored.
-
-This patch ignores a trailing LF to make this consistent with the existing
-behavior for "manufacturer", ...  string descriptors.
-
-Fixes: c033563220e0 ("usb: gadget: configfs: Attach arbitrary strings to cdev")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ingo Rohloff <ingo.rohloff@lauterbach.com>
-Link: https://lore.kernel.org/r/20241212154114.29295-1-ingo.rohloff@lauterbach.com
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3693
+Signed-off-by: Melissa Wen <mwen@igalia.com>
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit b8d6daffc871a42026c3c20bff7b8fa0302298c1)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/configfs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dc.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
-index 6499a88d346c..fba2a56dae97 100644
---- a/drivers/usb/gadget/configfs.c
-+++ b/drivers/usb/gadget/configfs.c
-@@ -827,11 +827,15 @@ static ssize_t gadget_string_s_store(struct config_item *item, const char *page,
- {
- 	struct gadget_string *string = to_gadget_string(item);
- 	int size = min(sizeof(string->string), len + 1);
-+	ssize_t cpy_len;
+--- a/drivers/gpu/drm/amd/display/dc/dc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc.h
+@@ -49,7 +49,7 @@ struct dmub_notification;
  
- 	if (len > USB_MAX_STRING_LEN)
- 		return -EINVAL;
+ #define DC_VER "3.2.247"
  
--	return strscpy(string->string, page, size);
-+	cpy_len = strscpy(string->string, page, size);
-+	if (cpy_len > 0 && string->string[cpy_len - 1] == '\n')
-+		string->string[cpy_len - 1] = 0;
-+	return len;
- }
- CONFIGFS_ATTR(gadget_string_, s);
- 
--- 
-2.48.0
-
+-#define MAX_SURFACES 3
++#define MAX_SURFACES 4
+ #define MAX_PLANES 6
+ #define MAX_STREAMS 6
+ #define MIN_VIEWPORT_SIZE 12
 
 
 
