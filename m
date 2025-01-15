@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-108734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2C48A1200A
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53BFCA120E3
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:50:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 168B1188A39D
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B87C18868BB
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3F71F9F41;
-	Wed, 15 Jan 2025 10:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA6761DB147;
+	Wed, 15 Jan 2025 10:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XfYUkuOx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IvpUVmTQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08063248BC8;
-	Wed, 15 Jan 2025 10:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664B3248BB2;
+	Wed, 15 Jan 2025 10:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937625; cv=none; b=QHZDzOYEBm7FNpX9ocUSOe1Nl/5ysYyfmajYP+kGN4WzYmMAbGLHC/Hd0BKy+YruHGeC2S9HvvIgqkShzBY2w3tOTmMogeNEm1o0t08fmcxUkL+t7WonK12qaiNOBuLRrcJsda0dVY5zlIkNa8O/4AGpcPU6i9W+PtWbc/6KUvU=
+	t=1736938216; cv=none; b=VHkLeCMOr3mtYUBYOznImJu8IQmnibpyNq8qdbHHMMO1Bze2ItcWB4WFbw1L/jGdXH1d47btnUIGDJpMR8vxYdXJWsD2nke1GhXko4Fa9+bvHoKhGOQmnFheLiQSi2NJpwzcjQKmT6iI8TpVFzMFFZ52+EEBV8tuB4J/luVv0Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937625; c=relaxed/simple;
-	bh=Q7+Y0gAmOuUjAAqO1f+yCMYXco5aI1ntLbuZR7u3Qjg=;
+	s=arc-20240116; t=1736938216; c=relaxed/simple;
+	bh=umRDkJ49bTZeUumtIXM+FG6byoj5/8DFlmonhfmuChM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=as5Xf+p+0MAv27Aatnvqu2WabT/r3Tkqn202A4WmZK0XfEnbwBLh3dycP8vbzCHEIwx1LqoNEc0OELl9PdyGQDIvy5weW63bCnqI3fpo1Z/ZtZJkTV2bDPXuAHKLITha49yy0k14hXM92/nwNoUkoOo0uWqmYJsULdNOLtApcC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XfYUkuOx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514F8C4CEE1;
-	Wed, 15 Jan 2025 10:40:24 +0000 (UTC)
+	 MIME-Version; b=sc66/r3dN5lho3gbWP0ZMEUZr3tZ7R3SMmp40F9AGcDQXPg2PCRJRban8H4lJ3MtZ5hD7XVfhmgssvIjegmffy/66pT4RzSoa4fEqppKTsHea+9VVdbAFfAZWiLa+4a8zeJY3jU/ZuSoJjf07/E/4fWbjcPOQq7kNYOd4pIfoqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IvpUVmTQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6C2C4CEDF;
+	Wed, 15 Jan 2025 10:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937624;
-	bh=Q7+Y0gAmOuUjAAqO1f+yCMYXco5aI1ntLbuZR7u3Qjg=;
+	s=korg; t=1736938216;
+	bh=umRDkJ49bTZeUumtIXM+FG6byoj5/8DFlmonhfmuChM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XfYUkuOxngXJ9T+LBADBjNwj6qOBaapywUBFEZ+sbxta14cxTlxarhyD6o8DAVch8
-	 CfOHi6ICQu3g/3qk1VKdvGiLtrX3zHeR89Pj/4fz0xkamQPaQt0GtDiNo28PsvDJ3m
-	 iDnNl30rnvIofDRLSZW9/liD0rGiCVpeDvOTp4ZY=
+	b=IvpUVmTQ/KlvTxk3HKW9lYA78B2eQkh1f6Ra+3GyM2qQwg3dAMtCPCUsiSIDeTIFV
+	 UwBd2/UpzZwowq/WHmSuwGKTvMJI4+HEUilcyvgZAaF04jBUIjg59wgey1bXRdvmsw
+	 wyid660J48kf0Nbt8761qMygyVgVMBg9qYHiSDrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 35/92] cpuidle: riscv-sbi: fix device node release in early exit of for_each_possible_cpu
+	Nam Cao <namcao@linutronix.de>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.12 117/189] riscv: kprobes: Fix incorrect address calculation
 Date: Wed, 15 Jan 2025 11:36:53 +0100
-Message-ID: <20250115103548.929890559@linuxfoundation.org>
+Message-ID: <20250115103611.129223109@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit 7e25044b804581b9c029d5a28d8800aebde18043 ]
+commit 13134cc949148e1dfa540a0fe5dc73569bc62155 upstream.
 
-The 'np' device_node is initialized via of_cpu_device_node_get(), which
-requires explicit calls to of_node_put() when it is no longer required
-to avoid leaking the resource.
+p->ainsn.api.insn is a pointer to u32, therefore arithmetic operations are
+multiplied by four. This is clearly undesirable for this case.
 
-Instead of adding the missing calls to of_node_put() in all execution
-paths, use the cleanup attribute for 'np' by means of the __free()
-macro, which automatically calls of_node_put() when the variable goes
-out of scope. Given that 'np' is only used within the
-for_each_possible_cpu(), reduce its scope to release the nood after
-every iteration of the loop.
+Cast it to (void *) first before any calculation.
 
-Fixes: 6abf32f1d9c5 ("cpuidle: Add RISC-V SBI CPU idle driver")
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20241116-cpuidle-riscv-sbi-cleanup-v3-1-a3a46372ce08@gmail.com
+Below is a sample before/after. The dumped memory is two kprobe slots, the
+first slot has
+
+  - c.addiw a0, 0x1c (0x7125)
+  - ebreak           (0x00100073)
+
+and the second slot has:
+
+  - c.addiw a0, -4   (0x7135)
+  - ebreak           (0x00100073)
+
+Before this patch:
+
+(gdb) x/16xh 0xff20000000135000
+0xff20000000135000:	0x7125	0x0000	0x0000	0x0000	0x7135	0x0010	0x0000	0x0000
+0xff20000000135010:	0x0073	0x0010	0x0000	0x0000	0x0000	0x0000	0x0000	0x0000
+
+After this patch:
+
+(gdb) x/16xh 0xff20000000125000
+0xff20000000125000:	0x7125	0x0073	0x0010	0x0000	0x7135	0x0073	0x0010	0x0000
+0xff20000000125010:	0x0000	0x0000	0x0000	0x0000	0x0000	0x0000	0x0000	0x0000
+
+Fixes: b1756750a397 ("riscv: kprobes: Use patch_text_nosync() for insn slots")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: stable@vger.kernel.org
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20241119111056.2554419-1-namcao@linutronix.de
 Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpuidle/cpuidle-riscv-sbi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/riscv/kernel/probes/kprobes.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpuidle/cpuidle-riscv-sbi.c b/drivers/cpuidle/cpuidle-riscv-sbi.c
-index af7320a768d2..963d5f171ef7 100644
---- a/drivers/cpuidle/cpuidle-riscv-sbi.c
-+++ b/drivers/cpuidle/cpuidle-riscv-sbi.c
-@@ -540,12 +540,12 @@ static int sbi_cpuidle_probe(struct platform_device *pdev)
- 	int cpu, ret;
- 	struct cpuidle_driver *drv;
- 	struct cpuidle_device *dev;
--	struct device_node *np, *pds_node;
-+	struct device_node *pds_node;
+--- a/arch/riscv/kernel/probes/kprobes.c
++++ b/arch/riscv/kernel/probes/kprobes.c
+@@ -30,7 +30,7 @@ static void __kprobes arch_prepare_ss_sl
+ 	p->ainsn.api.restore = (unsigned long)p->addr + len;
  
- 	/* Detect OSI support based on CPU DT nodes */
- 	sbi_cpuidle_use_osi = true;
- 	for_each_possible_cpu(cpu) {
--		np = of_cpu_device_node_get(cpu);
-+		struct device_node *np __free(device_node) = of_cpu_device_node_get(cpu);
- 		if (np &&
- 		    of_find_property(np, "power-domains", NULL) &&
- 		    of_find_property(np, "power-domain-names", NULL)) {
--- 
-2.39.5
-
+ 	patch_text_nosync(p->ainsn.api.insn, &p->opcode, len);
+-	patch_text_nosync(p->ainsn.api.insn + len, &insn, GET_INSN_LENGTH(insn));
++	patch_text_nosync((void *)p->ainsn.api.insn + len, &insn, GET_INSN_LENGTH(insn));
+ }
+ 
+ static void __kprobes arch_prepare_simulate(struct kprobe *p)
 
 
 
