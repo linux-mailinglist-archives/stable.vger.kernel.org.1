@@ -1,206 +1,136 @@
-Return-Path: <stable+bounces-109170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19AA6A12DC5
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 22:33:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EFD2A12DE3
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 22:44:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74D443A1C91
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 21:33:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABB0E1887E4A
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 21:44:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286B91DB15A;
-	Wed, 15 Jan 2025 21:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1DE11DB15A;
+	Wed, 15 Jan 2025 21:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="Iz7Ce5sr"
+	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="OkvreKIz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493801D7E5B
-	for <stable@vger.kernel.org>; Wed, 15 Jan 2025 21:33:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2AF1D61B7
+	for <stable@vger.kernel.org>; Wed, 15 Jan 2025 21:44:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736976828; cv=none; b=QPPi71V+v2DbD36z8/GXXxIlYtG5k9IUXd5opzw1XuxSx3Zm5lmnt8Pyls0ywG5EsTccPmf93NKtGXO+Fa6LrOEKNQhGAy7eCp+HBET2DGgqtOMeIuyEIqTXd7f7gJwD/zmhEjkKCxCMLJzOCiaCICIIr7uCLMKhezTcphJqO+c=
+	t=1736977487; cv=none; b=XC8zynPknEqIBtLiLr7UaAYRhJjGcJYuM4YATlJSHMP4YZZHWu4X+UFfHTL3qP64wuPQFjELDJNANE2f6oMsNoYGZahPLirhRW4ySGtx2vZjazAKlwjojFgK4Ze8lmSX5DwO8hV7SJaO22dkPmijI636KFmH73RX/ykaVNTHLig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736976828; c=relaxed/simple;
-	bh=h+NaRM7QL9IiCXNPkpaGcgGYiV9vj98spnFFYr03YdQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H2TFLja4HPuaL/rMu8GiO7T4+hdUXVZ569qztLPi4fkR3h5rPficlPX49HHsdTlaO3tFXY9O3TEQYUFZd5/610i/k5DIwDlwZpqT76QE/wk3xv3oOLbwwqaussilu3oRNW3bmVu5on39q8sGszUwu+hHAV9cfYxcgNJQhyUxA0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=Iz7Ce5sr; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2ee74291415so387442a91.3
-        for <stable@vger.kernel.org>; Wed, 15 Jan 2025 13:33:46 -0800 (PST)
+	s=arc-20240116; t=1736977487; c=relaxed/simple;
+	bh=ktwr+Bks+JGEYPz2bxmRQo+i2FTLq9SbvvFZOGDPuBM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HILMyFWA3get6dW0kTPAJkTizFTRSd/JU+pmjIQETsOVKSjVg/zAQYcAxRXLiAZRKVmlvvWHR7vak/5/Wka9LnddPU/boxFunkqQu6WNlJVr2Jzr7jDEodIXAEondXXSYCEZxCSrLfQuRm4syTPVS4yBo2HnvdkKXJzEF1sZJQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=OkvreKIz; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-216426b0865so3026515ad.0
+        for <stable@vger.kernel.org>; Wed, 15 Jan 2025 13:44:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1736976825; x=1737581625; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Qo4ETtsJlbJYJPy25LzBlpSKy4jxFb72+aJIYM6Qmdo=;
-        b=Iz7Ce5srZT5gfoDZYLv0SnxKNpjll61OVuimoOtJKvYm5hvlCn+OImr+w2QAwPMXjg
-         vjjKGUocKVsnv5b3/1I+XSEP5I0o3DB2nbGtz/cbrTahO/tD++CuwWXB0sBnT4xDbHhI
-         UFvreKQKQ8pIE0UYy8okrUmR0bTJTOK0Rs2hdn9K5EJ8oWDVQyn8S2OeKPEkS15f4Y1O
-         QpLJPTUXs2H/RXWoZxYlVw3K7BqnuK7G5hT6VGVYwsC1fuwdEYFbqARcPEzuXinfPm8W
-         cXsN5O+AKl6ku4ClL4BF3WMLjtMP08HVnRfAPWu9kHf1tOQkkrGFEZFIHibHXITxWVfC
-         ybag==
+        d=futuring-girl.com; s=google; t=1736977485; x=1737582285; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RvB57iWG41YV/c5cBE56VtHaQNyu0vUymV/5xtD6lV0=;
+        b=OkvreKIzB121R1+IskNdkmtiC3BiK2qY9B4BsBR9SnfXkLKylUW+hBiD+qSqIBUiwK
+         DFatjBOVIqB3jo6TmGXXgafR27PeG9CoY/yA3QtfM9Fxv6R7wajFyNEOquLQswRcqP++
+         0oUXjGJdRSKciSCwaFU7X+j0Ni4iLyUpo267xR8tbycDRHpPawyTvirkMwn5GFpTfcTk
+         86ZUXLvfXX14aiLImI6jpIJXb0tRcWLH87mnBviMydUnZya7hi163UV1F3OZs93/B5M4
+         51CnvL/M+kII9RKR0e9vUZmoqEWxuPHtPamHSk84FBFFhn+9YfG3oQVfB9bhRAVHdWfL
+         edZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736976825; x=1737581625;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qo4ETtsJlbJYJPy25LzBlpSKy4jxFb72+aJIYM6Qmdo=;
-        b=S3IbQa/ROJy6L9tcbrjRUpf0i35cBfzYsTzspQ/CeQpV328WIf4VB5qHAsJ12Z81fB
-         GZApQyhor5kD/IrOeb6nCZt6F/Wm3hOOQ+kIKxaz7687bum08jLZJVePON7fuE283qcQ
-         yEdiCXHW7MISiy5pspWaVCqybVVayIVsqy19kqxEAUBmei9LWgvI5X0kcuq+luQHdSqK
-         6rexWGzxUq5iHGDYRG9dkgsvJPC+zD/8VrOgB/rIqx+uPcatyQjycxD9Uge+vxJsBtif
-         Jyxe8CCVL7mjI75ck2Susx7rFbFVeOib3tQ37LK8OWZdbH1MIZ3r1W0DYTO9N2DlRlSG
-         T1zw==
-X-Forwarded-Encrypted: i=1; AJvYcCWaZKv/vmbCkCwjW6RIB2KkWsbPAtHUkRvAIml9n5KzVXVjj6XY0PiswHHcpwseNzrjrczGaDs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFB2uEYJ0T+KGh4J1A0JBiOsy17+9sASn9GbXNk1GbFUVmpUyH
-	Skacky12NrCrJizxv1SBj3TL2V1607DHyE8EnYB0AUwu4H9wOCjOKdLyMuc7Zf8=
-X-Gm-Gg: ASbGncsIZI1fNqhA3dmzFFCumrpLQgs89M/UcykU6FK9+R0sjphHjcUUb6zd+PpaJn6
-	u2OC3keUDhFy7kJhXD51rPLt9K5smSbs0i/iw+bLUmBDshn/615uiN0pqzdNS7CXjjQ8iu+oHxi
-	8hOc0z8hdy/OWVqIm6GIC/h+3qpuRLaQtIiQpaJHu9SG3E10Q83UZb+WZpSltHoWH7/jqBlNJBV
-	qRYz9gmQKizKSBRmYe3WekPevyZxhUi0FZufY8/+xMmNlc=
-X-Google-Smtp-Source: AGHT+IHeBFp9ozsD00dMGeBP70l/6pdoK1N3rRLqykt0VBwwJZB2RSCK6+oNoGuy+C0NCfg+cpgwSw==
-X-Received: by 2002:a17:90b:518b:b0:2ee:b2fe:eeee with SMTP id 98e67ed59e1d1-2f548eba7d0mr45962466a91.15.1736976824059;
-        Wed, 15 Jan 2025 13:33:44 -0800 (PST)
-Received: from ghost ([50.145.13.30])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f72c17fa66sm2035101a91.13.2025.01.15.13.33.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jan 2025 13:33:43 -0800 (PST)
-Date: Wed, 15 Jan 2025 13:33:38 -0800
-From: Charlie Jenkins <charlie@rivosinc.com>
-To: Celeste Liu <uwu@coelacanthus.name>
-Cc: Oleg Nesterov <oleg@redhat.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
-	Shuah Khan <shuah@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>, "Dmitry V. Levin" <ldv@strace.io>,
-	Andrea Bolognani <abologna@redhat.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>, Ron Economos <re@w6rz.net>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Quan Zhou <zhouquan@iscas.ac.cn>,
-	Felix Yan <felixonmars@archlinux.org>,
-	Ruizhe Pan <c141028@gmail.com>, Guo Ren <guoren@kernel.org>,
-	Yao Zi <ziyao@disroot.org>, linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@rivosinc.com>
-Subject: Re: [PATCH v6 1/3] riscv/ptrace: add new regset to access original
- a0 register
-Message-ID: <Z4gpstfwOanEy_Ck@ghost>
-References: <20250115-riscv-new-regset-v6-0-59bfddd33525@coelacanthus.name>
- <20250115-riscv-new-regset-v6-1-59bfddd33525@coelacanthus.name>
+        d=1e100.net; s=20230601; t=1736977485; x=1737582285;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RvB57iWG41YV/c5cBE56VtHaQNyu0vUymV/5xtD6lV0=;
+        b=n/WAvyK41F2IYqSY3PxibYbOTyLRI0+lUzVLnLEMyYZPhtizWEBYvFz6ZGuH2TJFhW
+         GK84eaX4Orxq7yph5ra5W3HoyCUarvEWOJynQCTqe2hfodystAz1LyIOxo5fCh2We1cC
+         TiMC9FkEHNhTnfrsuQQbDszOawoplZ0rsi1wdgxRc1DVuj1WU/5tR/qMQJqzaERt8EZE
+         bLXndC/vrB1kQHXSYsxu432FePtC8hYCFBwl3zA3LGVhqENeTGlg802IG7pKmwFfQiyZ
+         EStEEmxr9W2V4CkCVBFJVtjkrWyKbnG9Y6WB53vSjMTC6cBCyTU+6Dt0tLoyLts0gcev
+         ZItA==
+X-Gm-Message-State: AOJu0YyUSgQ7UuUX8uhV+pR2kq2uTTI3lJjT5LDGStxG6hPstVwExHuY
+	zdAZrEQlyw/tCmxUOyOdPyFvkWIJeq5A3CItuv7+Txs/y8WFzrfpQ9jT8QOktN+N7dhSCcAg9w+
+	vVhb61qZNQQ1E5+0+f0vHloAhg/YOvoWA/NSqUA==
+X-Gm-Gg: ASbGncuLDvibCgCXhhHCTJSEnRJvJciKi2ouiNCaCgoBp7zMsE5wMIO57+8ygsGzmM/
+	JmeKrlRYWeuPMlRI4r7pVU569A6KOEbLtnHXGJQ==
+X-Google-Smtp-Source: AGHT+IEYXpdn8fhLD//ERvKhi9v6Gra5TD7+h5eUOjnBpp4kMpMLPDHNmKwnTBtu9gBF333DQqP6e4pfNsr/yGZ1IAo=
+X-Received: by 2002:a17:90b:54cb:b0:2ee:8e75:4aeb with SMTP id
+ 98e67ed59e1d1-2f548ec9267mr49215825a91.17.1736977485235; Wed, 15 Jan 2025
+ 13:44:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250115-riscv-new-regset-v6-1-59bfddd33525@coelacanthus.name>
+References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Thu, 16 Jan 2025 06:44:34 +0900
+X-Gm-Features: AbW1kvbcxzww3783hiPRGUKquUIKhrVkJWtiveGXMEw6BJ3sW6loCB8MgyXi2MA
+Message-ID: <CAKL4bV5XnEP2ZgqGeHCwX-c0X5C4rPZ7iS0EUNW-hVd2TCHxKw@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/189] 6.12.10-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 15, 2025 at 07:13:27PM +0800, Celeste Liu wrote:
-> The orig_a0 is missing in struct user_regs_struct of riscv, and there is
-> no way to add it without breaking UAPI. (See Link tag below)
-> 
-> Like NT_ARM_SYSTEM_CALL do, we add a new regset name NT_RISCV_ORIG_A0 to
-> access original a0 register from userspace via ptrace API.
-> 
-> Fixes: e2c0cdfba7f6 ("RISC-V: User-facing API")
-> Link: https://lore.kernel.org/all/59505464-c84a-403d-972f-d4b2055eeaac@gmail.com/
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
-> Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
+Hi Greg
 
-Thank you!
+On Wed, Jan 15, 2025 at 7:45=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.10 release.
+> There are 189 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 17 Jan 2025 10:34:58 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.12.10-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Tested-by: Charlie Jenkins <charlie@rivosinc.com>
+6.12.10-rc1 tested.
 
-> ---
->  arch/riscv/kernel/ptrace.c | 32 ++++++++++++++++++++++++++++++++
->  include/uapi/linux/elf.h   |  1 +
->  2 files changed, 33 insertions(+)
-> 
-> diff --git a/arch/riscv/kernel/ptrace.c b/arch/riscv/kernel/ptrace.c
-> index ea67e9fb7a583683b922fe2c017ea61f3bc848db..ef9ab74c8575a5c440155973b1c625c06a867c97 100644
-> --- a/arch/riscv/kernel/ptrace.c
-> +++ b/arch/riscv/kernel/ptrace.c
-> @@ -31,6 +31,7 @@ enum riscv_regset {
->  #ifdef CONFIG_RISCV_ISA_SUPM
->  	REGSET_TAGGED_ADDR_CTRL,
->  #endif
-> +	REGSET_ORIG_A0,
->  };
->  
->  static int riscv_gpr_get(struct task_struct *target,
-> @@ -184,6 +185,29 @@ static int tagged_addr_ctrl_set(struct task_struct *target,
->  }
->  #endif
->  
-> +static int riscv_orig_a0_get(struct task_struct *target,
-> +			     const struct user_regset *regset,
-> +			     struct membuf to)
-> +{
-> +	return membuf_store(&to, task_pt_regs(target)->orig_a0);
-> +}
-> +
-> +static int riscv_orig_a0_set(struct task_struct *target,
-> +			     const struct user_regset *regset,
-> +			     unsigned int pos, unsigned int count,
-> +			     const void *kbuf, const void __user *ubuf)
-> +{
-> +	unsigned long orig_a0 = task_pt_regs(target)->orig_a0;
-> +	int ret;
-> +
-> +	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &orig_a0, 0, -1);
-> +	if (ret)
-> +		return ret;
-> +
-> +	task_pt_regs(target)->orig_a0 = orig_a0;
-> +	return 0;
-> +}
-> +
->  static const struct user_regset riscv_user_regset[] = {
->  	[REGSET_X] = {
->  		.core_note_type = NT_PRSTATUS,
-> @@ -224,6 +248,14 @@ static const struct user_regset riscv_user_regset[] = {
->  		.set = tagged_addr_ctrl_set,
->  	},
->  #endif
-> +	[REGSET_ORIG_A0] = {
-> +		.core_note_type = NT_RISCV_ORIG_A0,
-> +		.n = 1,
-> +		.size = sizeof(elf_greg_t),
-> +		.align = sizeof(elf_greg_t),
-> +		.regset_get = riscv_orig_a0_get,
-> +		.set = riscv_orig_a0_set,
-> +	},
->  };
->  
->  static const struct user_regset_view riscv_user_native_view = {
-> diff --git a/include/uapi/linux/elf.h b/include/uapi/linux/elf.h
-> index b44069d29cecc0f9de90ee66bfffd2137f4275a8..390060229601631da2fb27030d9fa2142e676c14 100644
-> --- a/include/uapi/linux/elf.h
-> +++ b/include/uapi/linux/elf.h
-> @@ -452,6 +452,7 @@ typedef struct elf64_shdr {
->  #define NT_RISCV_CSR	0x900		/* RISC-V Control and Status Registers */
->  #define NT_RISCV_VECTOR	0x901		/* RISC-V vector registers */
->  #define NT_RISCV_TAGGED_ADDR_CTRL 0x902	/* RISC-V tagged address control (prctl()) */
-> +#define NT_RISCV_ORIG_A0	  0x903	/* RISC-V original a0 register */
->  #define NT_LOONGARCH_CPUCFG	0xa00	/* LoongArch CPU config registers */
->  #define NT_LOONGARCH_CSR	0xa01	/* LoongArch control and status registers */
->  #define NT_LOONGARCH_LSX	0xa02	/* LoongArch Loongson SIMD Extension registers */
-> 
-> -- 
-> 2.48.0
-> 
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
+
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+
+[    0.000000] Linux version 6.12.10-rc1rv
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.2.1 20240910, GNU ld (GNU
+Binutils) 2.43.1) #1 SMP PREEMPT_DYNAMIC Thu Jan 16 05:32:18 JST 2025
+
+Thanks
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
