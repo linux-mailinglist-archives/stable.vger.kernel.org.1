@@ -1,82 +1,80 @@
-Return-Path: <stable+bounces-109172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F790A12E12
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 23:03:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD06CA12E1F
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 23:14:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85D701655F4
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 22:03:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4421162D80
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 22:14:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3771DA631;
-	Wed, 15 Jan 2025 22:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3763F1DB922;
+	Wed, 15 Jan 2025 22:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JioHDwVw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mFAMF/3e"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96ACE1DB551;
-	Wed, 15 Jan 2025 22:03:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AAFF14B959;
+	Wed, 15 Jan 2025 22:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736978601; cv=none; b=kAHEXLMUJxt6XAaq2k+SiV4l50HF+cbzknyBfUCc1Z7+9xsTKCllE/IDfPT1la/1qDMI7JV5v6vPa1VEiUx4EAej4LdYkYgjzpHA6tJE3FXynschsJBMJELF+soiNCDZY+OF6s+Pq84E6LZygURJCCzoiI8epTIkpk8bhhOmbuA=
+	t=1736979260; cv=none; b=Ig0Omq9vQ50/M8R5n24c/fXnORfRpJElTPg2eALWjA9t1d+D6EqgJsaAjyLK3KjT8UFqDBRBZ4kLltFd+2DvmHUf+WP7stWkNtTGTbZf/Y+fGg8jpNzEXfDvJnVhSEadLVLMPXMN+t1vbBx3tbbVxAKZ6BXpePfNKNdUgZgpk3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736978601; c=relaxed/simple;
-	bh=CgnU1/sySP0w+lwgzV2NxQUKxGmhLTz6BwTnXdFvWmI=;
+	s=arc-20240116; t=1736979260; c=relaxed/simple;
+	bh=OYJIAOSbItTp53QRHUFYCA93HDtJ+rK3bdspxDKulfI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SipZ2GlQfaahbbdDqoXw0q6RxPwOtHoH3GaZibBlIRjEcCBifj/jAN1vYlS0pLyRAMZ2RweBR3RBKaHOD4IisIH9TuLM2pZm4jzyemnKx8/HO+keG5xsK4XGfGt769gxeSxwq58LRgIcL/K7hNSELFLcIUbG5a1BUkWP26jDR8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JioHDwVw; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50FHX6W2027772;
-	Wed, 15 Jan 2025 22:03:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=60t2bc
-	CzpdqhCujC0lvE1ElDiSacn4+HB3fNhYfqdNA=; b=JioHDwVwJ3vYzVNK2auuS1
-	31w81oBZaj6tMkQk/1xYRels1TuDeqKGq0OcU9BQYaZQdSp+qlTaI5riaaFcnfEz
-	yJpVvHTUJr1wRinYheRElRC79AiZJO3LGi2I1/JNEt91744cB+Hub9m1Xhjvua3K
-	Qk5IeLkEQNIJyjg02V+CY5lckc8iMw7j5meHiZzj4J5fNfD6NwOgNo9F8K3qtNpV
-	vbb/RbP/10lf9woX7XosPVTVEWlzpqLrZJZw6XbJs8WZJRjyHvAeBXGCPhoIkxH/
-	/t/+MbGNcIoAyJqXiwUDNeQhtABk7RSrK8iftMM11ICXTnn84zJ9n+rFbQeTxjSQ
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4465gjvuka-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Jan 2025 22:03:13 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50FM0lgb004911;
-	Wed, 15 Jan 2025 22:03:13 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4465gjvuk8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Jan 2025 22:03:13 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50FLDokM007364;
-	Wed, 15 Jan 2025 22:03:12 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4443ynana2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Jan 2025 22:03:12 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50FM37bc19857848
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 15 Jan 2025 22:03:07 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9DC4258054;
-	Wed, 15 Jan 2025 22:03:07 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1C2615805C;
-	Wed, 15 Jan 2025 22:03:06 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 15 Jan 2025 22:03:05 +0000 (GMT)
-Message-ID: <583ca33e-aeb3-4401-8f72-9ad1a26d895d@linux.ibm.com>
-Date: Wed, 15 Jan 2025 17:03:04 -0500
+	 In-Reply-To:Content-Type; b=k+Ceqb92f+6awj95MBEyQNqOKFNoxQkxCJH/4GnGp6Gp8BNbn126t/AgX06mTJq2Ye6GlbSu4Etc4+tICG0NguRJHtK3rKmpoi2zIYzmI+bljf2jQ3F6r4ki8Ki3C6Sk/eu2U3iMPecR+e0xx2TICHAjlI2rATFqxr+Ken23hTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mFAMF/3e; arc=none smtp.client-ip=209.85.167.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3eb7ecc3c54so223594b6e.0;
+        Wed, 15 Jan 2025 14:14:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736979257; x=1737584057; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=8HKNpdFHanwKimxAIl6hBfo6D8KRL28BVynAHn3Wm+0=;
+        b=mFAMF/3ehSVQGsElqiazigs/+vZFMTxN3SP2YLiciYUMlN00LZe4s7gAo7Wor9DGJT
+         bR97M/H6jOrOWbjt1AV54GC5mLgLlYdFQD/zWMDvN7pV+RNQ1xmtu9q/yeOBGw2LrmdM
+         o2zk99ZWLi+F4iq2auY0HBX953yjPvo0ff/YjLTQU5AQbK4kX3AYVID4W3mqG5V906TW
+         mlClqdoqmfrhtaz2Q1NlLUrIgIWPGcqkLTYNh4VWSN+DTWo9kEi4xkfg0u5Rb3X74c5n
+         AtT6EcDh9owLzx28z4OVssqz3uL0fVQbP7GVMnU7F6zpC7iWcDwtjXRzPQhqdpwCv/f/
+         2xvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736979257; x=1737584057;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8HKNpdFHanwKimxAIl6hBfo6D8KRL28BVynAHn3Wm+0=;
+        b=cUFL1M+rrJrIc8cgMQcnW+54ST/WGCJqD+L16jSDtL4J7J8/TGWf2Jpv/EUm1DnHLQ
+         LkPJ+X1F/rJ78AlwDzwdXGQ2jHeEUnqJpzIBa0Ce3NPnZ6pADJZTlu7ZGi89mKIhfUbX
+         Q1GnkFg0YceE0ADhZqVPMAdNKUvRHNnob/Jr1G91q3G+D/cLn0Isut1VDPSLPJYYW28P
+         cZNQIbzK24cuDOv2CIOwlxSatfB4Yh5GDiDvBbmd1qrLOeg8uiPSFifuszwDj2C78p8w
+         q6YnSBSX9jwGCHSe45OFheXhgGUWOus50lHiz/h1T9ucEXadZDP7Awf/elEchJqeaTHX
+         8/sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVnZn1NdvWBo0+nVBxn6kkHqRawFw5olTSs4SZ8XGtE/nd/2hbYDI3fCZFtq2WojfKtVb0VY5dNymEtyu4=@vger.kernel.org, AJvYcCVuIMXTxBLAKMU/fv5kjcAGClQTs2aZJGuNe7EZm24g5hdmDV88zQfDkihfF+5qiNm5W3ufUrt5@vger.kernel.org
+X-Gm-Message-State: AOJu0Yww0+z9MMdqv3hCTPVC+QX3NHITvuNUvA1bKYYKIBMF3RAxQz8C
+	4HFn9YaACi5vuGwgPp+3UMwmyVFhet1J3qo1eBiuguJQaVQViJpl
+X-Gm-Gg: ASbGncvjvotvRbHRlqTs2P0Le8URZfn+yB/rM8wCLGUjVcM13zBFBuP4+E7Cx2txMgZ
+	BnjKMvlVfaBrUrbUM2S5vAClyKhiZDQ4Y6AAR8JPcFKBxVQWi+hed27gMXE+Db2vROqZgoDh0hb
+	s8q4tp1XrlKtxhbyYZEVnYM5aLhWbh69VCbge7pbzd7LI+ksr+XIXLqJ2dR2ZdVStWe1lOE9gRW
+	zdO8jE4po8axdTap54eBw76VR/1i0rc4Zwi14NKFukXUTXcsLgJ1f2fVuc+knHXc6CyRx7aJ8eu
+	4Vd1T9o8
+X-Google-Smtp-Source: AGHT+IGhn9ll3NB911ccBhd1unOJGldWrCQq0iGgnN4m0m8+Te4LLQNyBxBXnD940TpjnaUQ0xxj8w==
+X-Received: by 2002:a05:6808:3c4c:b0:3eb:6db7:f787 with SMTP id 5614622812f47-3ef2ec90357mr22780482b6e.11.1736979257247;
+        Wed, 15 Jan 2025 14:14:17 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7231855ee1esm6057593a34.32.2025.01.15.14.14.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Jan 2025 14:14:15 -0800 (PST)
+Message-ID: <4cd7adca-fd08-477c-a00a-f43a653456f8@gmail.com>
+Date: Wed, 15 Jan 2025 14:14:13 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,127 +82,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9] tpm: Map the ACPI provided event log
-To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org,
-        Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        Reiner Sailer <sailer@us.ibm.com>, Seiji Munetoh <munetoh@jp.ibm.com>,
-        Kylene Jo Hall <kjhall@us.ibm.com>, Stefan Berger <stefanb@us.ibm.com>,
-        Andrew Morton <akpm@osdl.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org,
-        Andy Liang <andy.liang@hpe.com>, linux-kernel@vger.kernel.org
-References: <20250115212237.57436-1-jarkko@kernel.org>
+Subject: Re: [PATCH 6.1 00/92] 6.1.125-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250115103547.522503305@linuxfoundation.org>
 Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20250115212237.57436-1-jarkko@kernel.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 0uAMK3IBFuBB6JP3F8mjkdeJAUkYceBA
-X-Proofpoint-GUID: UaQQTGyZ6TM_QIThGsR9uP7ZftMkQls2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-15_09,2025-01-15_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- clxscore=1011 suspectscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0
- priorityscore=1501 mlxlogscore=999 impostorscore=0 adultscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501150157
 
-
-
-On 1/15/25 4:22 PM, Jarkko Sakkinen wrote:
-> The following failure was reported:
+On 1/15/25 02:36, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.125 release.
+> There are 92 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> [   10.693310][    T1] tpm_tis STM0925:00: 2.0 TPM (device-id 0x3, rev-id 0)
-> [   10.848132][    T1] ------------[ cut here ]------------
-> [   10.853559][    T1] WARNING: CPU: 59 PID: 1 at mm/page_alloc.c:4727 __alloc_pages_noprof+0x2ca/0x330
-> [   10.862827][    T1] Modules linked in:
-> [   10.866671][    T1] CPU: 59 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-lp155.2.g52785e2-default #1 openSUSE Tumbleweed (unreleased) 588cd98293a7c9eba9013378d807364c088c9375
-> [   10.882741][    T1] Hardware name: HPE ProLiant DL320 Gen12/ProLiant DL320 Gen12, BIOS 1.20 10/28/2024
-> [   10.892170][    T1] RIP: 0010:__alloc_pages_noprof+0x2ca/0x330
-> [   10.898103][    T1] Code: 24 08 e9 4a fe ff ff e8 34 36 fa ff e9 88 fe ff ff 83 fe 0a 0f 86 b3 fd ff ff 80 3d 01 e7 ce 01 00 75 09 c6 05 f8 e6 ce 01 01 <0f> 0b 45 31 ff e9 e5 fe ff ff f7 c2 00 00 08 00 75 42 89 d9 80 e1
-> [   10.917750][    T1] RSP: 0000:ffffb7cf40077980 EFLAGS: 00010246
-> [   10.923777][    T1] RAX: 0000000000000000 RBX: 0000000000040cc0 RCX: 0000000000000000
-> [   10.931727][    T1] RDX: 0000000000000000 RSI: 000000000000000c RDI: 0000000000040cc0
+> Responses should be made by Fri, 17 Jan 2025 10:34:58 +0000.
+> Anything received after that time might be too late.
 > 
-> Above shows that ACPI pointed a 16 MiB buffer for the log events because
-> RSI maps to the 'order' parameter of __alloc_pages_noprof(). Address the
-> bug with kvmalloc() and devm_add_action_or_reset().
-
-Before at it was (at least) failing when the BIOS requested an excessive 
-size. Now since you don't want to limit the size of the log I suppose 
-you wouldn't also want to set a size of what is excessive so that the 
-driver could dev_warn() the user of an excessive-sized buffer ...
-
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.125-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
 > 
-> Suggested-by: Ard Biesheuvel <ardb@kernel.org>
-> Cc: stable@vger.kernel.org # v2.6.16+
-> Fixes: 55a82ab3181b ("[PATCH] tpm: add bios measurement log")
-> Reported-by: Andy Liang <andy.liang@hpe.com>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219495
-> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-
-> ---
-> v9:
-> * Call devm_add_action() as the last step and execute the plain action
->    in the fallback path:
->    https://lore.kernel.org/linux-integrity/87frlzzx14.wl-tiwai@suse.de/
-> v8:
-> * Reduced to only to this quick fix. Let HPE reserve 16 MiB if they want
->    to. We have mapping approach backed up in lore.
-> v7:
-> * Use devm_add_action_or_reset().
-> * Fix tags.
-> v6:
-> * A new patch.
-> ---
->   drivers/char/tpm/eventlog/acpi.c | 15 +++++++++++++--
->   1 file changed, 13 insertions(+), 2 deletions(-)
+> thanks,
 > 
-> diff --git a/drivers/char/tpm/eventlog/acpi.c b/drivers/char/tpm/eventlog/acpi.c
-> index 69533d0bfb51..cf02ec646f46 100644
-> --- a/drivers/char/tpm/eventlog/acpi.c
-> +++ b/drivers/char/tpm/eventlog/acpi.c
-> @@ -63,6 +63,11 @@ static bool tpm_is_tpm2_log(void *bios_event_log, u64 len)
->   	return n == 0;
->   }
->   
-> +static void tpm_bios_log_free(void *data)
-> +{
-> +	kvfree(data);
-> +}
-> +
->   /* read binary bios log */
->   int tpm_read_log_acpi(struct tpm_chip *chip)
->   {
-> @@ -136,7 +141,7 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
->   	}
->   
->   	/* malloc EventLog space */
-> -	log->bios_event_log = devm_kmalloc(&chip->dev, len, GFP_KERNEL);
-> +	log->bios_event_log = kvmalloc(len, GFP_KERNEL);
- >   	if (!log->bios_event_log)>   		return -ENOMEM;
->   
-> @@ -161,10 +166,16 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
->   		goto err;
->   	}
->   
-> +	ret = devm_add_action(&chip->dev, tpm_bios_log_free, log->bios_event_log);
-> +	if (ret) {
-> +		log->bios_event_log = NULL;
-> +		goto err;
-> +	}
-> +
->   	return format;
->   
->   err:
-> -	devm_kfree(&chip->dev, log->bios_event_log);
-> +	tpm_bios_log_free(log->bios_event_log);
->   	log->bios_event_log = NULL;
->   	return ret;
->   }
+> greg k-h
 
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
+
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
