@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-108981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB6FDA12143
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:54:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A239DA121F7
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 12:03:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1D12188176C
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:54:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47118166059
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3CE1E9900;
-	Wed, 15 Jan 2025 10:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE90248BAF;
+	Wed, 15 Jan 2025 11:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BHyKOhwE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dSByk+d0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058381DB13A;
-	Wed, 15 Jan 2025 10:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB551E9905;
+	Wed, 15 Jan 2025 11:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938456; cv=none; b=Yluw1MmJdRlRfYyF6D7HoHamO31vUGPQ/8b8lMNnfvPsdoK3enoIdjTnOIBE2QUlqJtBoaz0ZkHgeMxQf21TepfqhcW6cbohKW9wmJ7vhJFqM3eCWBiEJX8XGBaNcQIXHX7hVUyd+1DDK/T00/1WoOHFxENpzNKjW4eZ5BSKOLA=
+	t=1736938925; cv=none; b=kneDrSlOH6cL5O6tBLBCf6XvSjNwcD6Cl+yw30um3gaxdeFFplQe38rfG5n8SpRatWGT69gRbahZn8GmhZjNwcTWCNQOt78dvaV0GhcnmDnssHZQuh/v4SN9xe5Op/JH0gzP6Vu8wLZ93xwIXI+KRD/St25dAF74Ep5MuVE8x5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938456; c=relaxed/simple;
-	bh=Ns21EuwWW0XwkmiVjhkdb3fkeCsR9wDB1Pfe9f0nP9g=;
+	s=arc-20240116; t=1736938925; c=relaxed/simple;
+	bh=BmSAU7RkoOq02UHSbnGxyPu5Fx1KGEAR+yUqGv9YcgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lRJ1TpaRz+L6xLl355+kDgihPoqwST7KvhMHMdLA4GFLvwGLfih0BAcWnuLC9TTW6/QYEsI5KssqzHF25v5o29br1aJ/BAtwSe2t0TZ2zuGOW/RNf05Fo0QXPacu/WzamMZkddeEjahsiv8q1IOLIE/6iT/UmuulbV8mw3iG2oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BHyKOhwE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63725C4CEDF;
-	Wed, 15 Jan 2025 10:54:15 +0000 (UTC)
+	 MIME-Version; b=MypUv9xSUvRBGu/bCd6/4vSz13KgE1g85VmFxtb8jdwtL2p/7JCEd/SXM4I6uGKvdnr9b/OYFEwbQXcSV2XneKxzflQxjGOzGJA9PHJ+6KwWRGPEt96p9rJ4eOjapmxSPpQ9ryq5YqnbUa5VuC4JF1kUK5mytwkGMtS4JC0maxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dSByk+d0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97809C4CEDF;
+	Wed, 15 Jan 2025 11:02:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938455;
-	bh=Ns21EuwWW0XwkmiVjhkdb3fkeCsR9wDB1Pfe9f0nP9g=;
+	s=korg; t=1736938925;
+	bh=BmSAU7RkoOq02UHSbnGxyPu5Fx1KGEAR+yUqGv9YcgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BHyKOhwEBxktn3QRBhyTda4URGh4Sd6He2eqFLItMsaY7nPSovfjSGURxz7HMHzqu
-	 4OFJ1xQ3XjjynAxCdOXfHbMNTdYLI93r8Dm4LTVHohysVnpwB4lJPjEz0lYzliFpYT
-	 BVptfJa0TVISn0e2TCFP3ogTVx7PQtxsvvn6oIFY=
+	b=dSByk+d0RziCL3X+PNlWVvWpih/32z5inbnkvkSbbGR6NYgoUcw7OiNcU4UaSpnc8
+	 T9h46DptzQRASS0/fKfhImV7zdCzFpHiA5aAtdinALTkMF69M8faVBcdIJLJrrSsTo
+	 UY+NmAsrLCoYag7QACeK8HbS4iGYIrPE798XVpfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	lizetao <lizetao1@huawei.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 187/189] io_uring: dont touch sqd->thread off tw add
+	Carlos Song <carlos.song@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 108/129] iio: gyro: fxas21002c: Fix missing data update in trigger handler
 Date: Wed, 15 Jan 2025 11:38:03 +0100
-Message-ID: <20250115103613.866085887@linuxfoundation.org>
+Message-ID: <20250115103558.656842494@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Carlos Song <carlos.song@nxp.com>
 
-commit bd2703b42decebdcddf76e277ba76b4c4a142d73 upstream.
+commit fa13ac6cdf9b6c358e7d77c29fb60145c7a87965 upstream.
 
-With IORING_SETUP_SQPOLL all requests are created by the SQPOLL task,
-which means that req->task should always match sqd->thread. Since
-accesses to sqd->thread should be separately protected, use req->task
-in io_req_normal_work_add() instead.
+The fxas21002c_trigger_handler() may fail to acquire sample data because
+the runtime PM enters the autosuspend state and sensor can not return
+sample data in standby mode..
 
-Note, in the eyes of io_req_normal_work_add(), the SQPOLL task struct
-is always pinned and alive, and sqd->thread can either be the task or
-NULL. It's only problematic if the compiler decides to reload the value
-after the null check, which is not so likely.
+Resume the sensor before reading the sample data into the buffer within the
+trigger handler. After the data is read, place the sensor back into the
+autosuspend state.
 
-Cc: stable@vger.kernel.org
-Cc: Bui Quang Minh <minhquangbui99@gmail.com>
-Reported-by: lizetao <lizetao1@huawei.com>
-Fixes: 78f9b61bd8e54 ("io_uring: wake SQPOLL task when task_work is added to an empty queue")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/1cbbe72cf32c45a8fee96026463024cd8564a7d7.1736541357.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: a0701b6263ae ("iio: gyro: add core driver for fxas21002c")
+Signed-off-by: Carlos Song <carlos.song@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20241116152945.4006374-1-Frank.Li@nxp.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/iio/gyro/fxas21002c_core.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1244,10 +1244,7 @@ static void io_req_normal_work_add(struc
+--- a/drivers/iio/gyro/fxas21002c_core.c
++++ b/drivers/iio/gyro/fxas21002c_core.c
+@@ -730,14 +730,21 @@ static irqreturn_t fxas21002c_trigger_ha
+ 	int ret;
  
- 	/* SQPOLL doesn't need the task_work added, it'll run it itself */
- 	if (ctx->flags & IORING_SETUP_SQPOLL) {
--		struct io_sq_data *sqd = ctx->sq_data;
--
--		if (sqd->thread)
--			__set_notify_signal(sqd->thread);
-+		__set_notify_signal(req->task);
- 		return;
- 	}
+ 	mutex_lock(&data->lock);
++	ret = fxas21002c_pm_get(data);
++	if (ret < 0)
++		goto out_unlock;
++
+ 	ret = regmap_bulk_read(data->regmap, FXAS21002C_REG_OUT_X_MSB,
+ 			       data->buffer, CHANNEL_SCAN_MAX * sizeof(s16));
+ 	if (ret < 0)
+-		goto out_unlock;
++		goto out_pm_put;
+ 
+ 	iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
+ 					   data->timestamp);
+ 
++out_pm_put:
++	fxas21002c_pm_put(data);
++
+ out_unlock:
+ 	mutex_unlock(&data->lock);
  
 
 
