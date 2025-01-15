@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-109006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 260B3A1215C
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:55:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CCF3A120D2
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:49:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48452168D3F
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:55:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C74EC1885AC1
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25E61DB142;
-	Wed, 15 Jan 2025 10:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D93D3248BA6;
+	Wed, 15 Jan 2025 10:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mk0lZLta"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MuisjV+e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECE71DB13A;
-	Wed, 15 Jan 2025 10:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9510A156644;
+	Wed, 15 Jan 2025 10:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938543; cv=none; b=LJ8p9kWW2VNScbG/pyZa60NdZTYDcrF+y5Qkaomw4roAZhlCXLdYwlhobyPO4eXiZotq50sX1xiGeRBlL06X9vWfuTaivTO8XVnqZmftX8tDEFHO/2voQo5I3+AAbz/o6L+2TpFV3SIA59j5wH/ZWmkYX1dAJbaujmxB2SwQl2Y=
+	t=1736938161; cv=none; b=rCzGOfyMCfWQM05gH4w2XT5b8yzvXwwkaqmkjb05ZtS3zwYLM3CJgCTJUf7kk0HNXaeBZ7auhIUlKzSSM7x5cVxoDN7YUh6PHHvtsxu8PnSWCMhcV8Yq9mMWJULrfRcuyg7q9B8Dyhd2HOh2TwnaL12Zfif9UsHQNOfIZLKdn3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938543; c=relaxed/simple;
-	bh=ENY2C5j1VD1oJM5ny3+fT1PEorqr9aZgUQXDgoOEA80=;
+	s=arc-20240116; t=1736938161; c=relaxed/simple;
+	bh=zLYlPr1NsnrKp6QlFQrVUn1n0g4PW1TCRjA5V03uBUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nu3qlJbqCfz+sRWjy+P7xIWerYFuYifIs15m26FW29/TF+rn1fLJRc3taUKg9LxRIdH6lXjMXqUebGB5gwyZwMiTc/eLITLhN+pL4dan38xg3+4TO30FVE0LaR0ZIi4crTm/mYJUbm+/vp55X52IW8h4PVebo2mCSboMY+0qS3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mk0lZLta; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9DADC4CEDF;
-	Wed, 15 Jan 2025 10:55:42 +0000 (UTC)
+	 MIME-Version; b=btxWKHGaryx5Je1UOOW6ePgwGIfYEcrNw8btMLfMSET2HZqj272PTlQ/ZBdup9sS1/b96k+gb1G8S7P5uDSJudhPP0QGxwxku+oLewd2D7AQ/f3f27ixXJe3p7ZHKzYyakD7NxiYoknv3ea9Q7EV6D8zJbBMQVti5hQ8Uei9juI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MuisjV+e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C13EC4CEDF;
+	Wed, 15 Jan 2025 10:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938543;
-	bh=ENY2C5j1VD1oJM5ny3+fT1PEorqr9aZgUQXDgoOEA80=;
+	s=korg; t=1736938161;
+	bh=zLYlPr1NsnrKp6QlFQrVUn1n0g4PW1TCRjA5V03uBUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mk0lZLtawE6GKMZB4dP/hFbZRrXttvNUN2sM+lhww+yBUkN3QFmFz8HNAqx6gsSrr
-	 ant8bQFAl0g2SAeaOvTlz08AOEGC3daw/ITHEJISotk8JGTbHyaEq7HlObpcnLbCQi
-	 87NZCi1EFCvSjeahY/sPwthJerZ/ISw8NfgbyQC8=
+	b=MuisjV+eALzNqfH88peIQ/BK3no7OnBxsof8hEkGMWL9yMrOi8NGBfySxXnt2GRek
+	 ionl/LI4FIkD05nc0IXn8AAa3F1nhNxdBH7wGOIixnWZA7Tn8zdzm9mWaNldtCwIv2
+	 ABBuqLDV7GerZahIc8K//QcJBCF4c8vFPJjxlL4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/129] net: libwx: fix firmware mailbox abnormal return
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Mikhail Zaslonko <zaslonko@linux.ibm.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 102/189] btrfs: zlib: fix avail_in bytes for s390 zlib HW compression path
 Date: Wed, 15 Jan 2025 11:36:38 +0100
-Message-ID: <20250115103555.291943420@linuxfoundation.org>
+Message-ID: <20250115103610.391886077@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Mikhail Zaslonko <zaslonko@linux.ibm.com>
 
-[ Upstream commit 8ce4f287524c74a118b0af1eebd4b24a8efca57a ]
+commit 0ee4736c003daded513de0ff112d4a1e9c85bbab upstream.
 
-The existing SW-FW interaction flow on the driver is wrong. Follow this
-wrong flow, driver would never return error if there is a unknown command.
-Since firmware writes back 'firmware ready' and 'unknown command' in the
-mailbox message if there is an unknown command sent by driver. So reading
-'firmware ready' does not timeout. Then driver would mistakenly believe
-that the interaction has completed successfully.
+Since the input data length passed to zlib_compress_folios() can be
+arbitrary, always setting strm.avail_in to a multiple of PAGE_SIZE may
+cause read-in bytes to exceed the input range. Currently this triggers
+an assert in btrfs_compress_folios() on the debug kernel (see below).
+Fix strm.avail_in calculation for S390 hardware acceleration path.
 
-It tends to happen with the use of custom firmware. Move the check for
-'unknown command' out of the poll timeout for 'firmware ready'. And adjust
-the debug log so that mailbox messages are always printed when commands
-timeout.
+  assertion failed: *total_in <= orig_len, in fs/btrfs/compression.c:1041
+  ------------[ cut here ]------------
+  kernel BUG at fs/btrfs/compression.c:1041!
+  monitor event: 0040 ilc:2 [#1] PREEMPT SMP
+  CPU: 16 UID: 0 PID: 325 Comm: kworker/u273:3 Not tainted 6.13.0-20241204.rc1.git6.fae3b21430ca.300.fc41.s390x+debug #1
+  Hardware name: IBM 3931 A01 703 (z/VM 7.4.0)
+  Workqueue: btrfs-delalloc btrfs_work_helper
+  Krnl PSW : 0704d00180000000 0000021761df6538 (btrfs_compress_folios+0x198/0x1a0)
+             R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:1 PM:0 RI:0 EA:3
+  Krnl GPRS: 0000000080000000 0000000000000001 0000000000000047 0000000000000000
+             0000000000000006 ffffff01757bb000 000001976232fcc0 000000000000130c
+             000001976232fcd0 000001976232fcc8 00000118ff4a0e30 0000000000000001
+             00000111821ab400 0000011100000000 0000021761df6534 000001976232fb58
+  Krnl Code: 0000021761df6528: c020006f5ef4        larl    %r2,0000021762be2310
+             0000021761df652e: c0e5ffbd09d5        brasl   %r14,00000217615978d8
+            #0000021761df6534: af000000            mc      0,0
+            >0000021761df6538: 0707                bcr     0,%r7
+             0000021761df653a: 0707                bcr     0,%r7
+             0000021761df653c: 0707                bcr     0,%r7
+             0000021761df653e: 0707                bcr     0,%r7
+             0000021761df6540: c004004bb7ec        brcl    0,000002176276d518
+  Call Trace:
+   [<0000021761df6538>] btrfs_compress_folios+0x198/0x1a0
+  ([<0000021761df6534>] btrfs_compress_folios+0x194/0x1a0)
+   [<0000021761d97788>] compress_file_range+0x3b8/0x6d0
+   [<0000021761dcee7c>] btrfs_work_helper+0x10c/0x160
+   [<0000021761645760>] process_one_work+0x2b0/0x5d0
+   [<000002176164637e>] worker_thread+0x20e/0x3e0
+   [<000002176165221a>] kthread+0x15a/0x170
+   [<00000217615b859c>] __ret_from_fork+0x3c/0x60
+   [<00000217626e72d2>] ret_from_fork+0xa/0x38
+  INFO: lockdep is turned off.
+  Last Breaking-Event-Address:
+   [<0000021761597924>] _printk+0x4c/0x58
+  Kernel panic - not syncing: Fatal exception: panic_on_oops
 
-Fixes: 1efa9bfe58c5 ("net: libwx: Implement interaction with firmware")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Link: https://patch.msgid.link/20250103081013.1995939-1-jiawenwu@trustnetic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fd1e75d0105d ("btrfs: make compression path to be subpage compatible")
+CC: stable@vger.kernel.org # 6.12+
+Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_hw.c | 24 ++++++++++------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ fs/btrfs/zlib.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index 52130df26aee..d6bc2309d2a3 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -242,27 +242,25 @@ int wx_host_interface_command(struct wx *wx, u32 *buffer,
- 	status = read_poll_timeout(rd32, hicr, hicr & WX_MNG_MBOX_CTL_FWRDY, 1000,
- 				   timeout * 1000, false, wx, WX_MNG_MBOX_CTL);
- 
-+	buf[0] = rd32(wx, WX_MNG_MBOX);
-+	if ((buf[0] & 0xff0000) >> 16 == 0x80) {
-+		wx_err(wx, "Unknown FW command: 0x%x\n", buffer[0] & 0xff);
-+		status = -EINVAL;
-+		goto rel_out;
-+	}
-+
- 	/* Check command completion */
- 	if (status) {
--		wx_dbg(wx, "Command has failed with no status valid.\n");
--
--		buf[0] = rd32(wx, WX_MNG_MBOX);
--		if ((buffer[0] & 0xff) != (~buf[0] >> 24)) {
--			status = -EINVAL;
--			goto rel_out;
--		}
--		if ((buf[0] & 0xff0000) >> 16 == 0x80) {
--			wx_dbg(wx, "It's unknown cmd.\n");
--			status = -EINVAL;
--			goto rel_out;
--		}
--
-+		wx_err(wx, "Command has failed with no status valid.\n");
- 		wx_dbg(wx, "write value:\n");
- 		for (i = 0; i < dword_len; i++)
- 			wx_dbg(wx, "%x ", buffer[i]);
- 		wx_dbg(wx, "read value:\n");
- 		for (i = 0; i < dword_len; i++)
- 			wx_dbg(wx, "%x ", buf[i]);
-+		wx_dbg(wx, "\ncheck: %x %x\n", buffer[0] & 0xff, ~buf[0] >> 24);
-+
-+		goto rel_out;
- 	}
- 
- 	if (!return_data)
+diff --git a/fs/btrfs/zlib.c b/fs/btrfs/zlib.c
+index ddf0d5a448a7..c9e92c6941ec 100644
+--- a/fs/btrfs/zlib.c
++++ b/fs/btrfs/zlib.c
+@@ -174,10 +174,10 @@ int zlib_compress_folios(struct list_head *ws, struct address_space *mapping,
+ 					copy_page(workspace->buf + i * PAGE_SIZE,
+ 						  data_in);
+ 					start += PAGE_SIZE;
+-					workspace->strm.avail_in =
+-						(in_buf_folios << PAGE_SHIFT);
+ 				}
+ 				workspace->strm.next_in = workspace->buf;
++				workspace->strm.avail_in = min(bytes_left,
++							       in_buf_folios << PAGE_SHIFT);
+ 			} else {
+ 				unsigned int pg_off;
+ 				unsigned int cur_len;
 -- 
-2.39.5
+2.48.0
 
 
 
