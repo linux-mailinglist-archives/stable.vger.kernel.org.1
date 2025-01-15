@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-109064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF974A121A3
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:59:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6781A1212D
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:53:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C30473AD15D
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:58:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD6C53AD109
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 058F31E98F0;
-	Wed, 15 Jan 2025 10:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E2811E991F;
+	Wed, 15 Jan 2025 10:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dnz52hfj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dG8o7giY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C691E98E7;
-	Wed, 15 Jan 2025 10:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6541E7C02;
+	Wed, 15 Jan 2025 10:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938734; cv=none; b=MgdMnx2IiZCJfq6h6TN9nwHR+vEWHElwvqsdrQK143LZ80CmuMUNxju9wdhqUa8MQkbJ8cimG9v5IF52++ka+Mn2su2A/IWm7pL7hddKd2n8VfE4fBlAdY9/EDSY868CAP5Mf2749ks1ZlxxgDEPro5XmV2hN8RaFUkS9xe44Iw=
+	t=1736938367; cv=none; b=XrLYv+c2ZXAmgre8R4cDr8p9RnCqagLT9sOJVHLrdLO4xqgwPYrzkoGGU2kQ5cU4kRTWWefS8CeaCDDduQZ7hC0mZF9k8CNAYhrKM/FPeqp+IOp5zazNJIQVfkIWzmCtflXZBFnNj/CXR6VV8n7Pin9aCe/ZPVmvAeOt1ZMVguw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938734; c=relaxed/simple;
-	bh=p/9EZTol0D0iq088AMBnLdhNacIyU00QBQrULIT8Onc=;
+	s=arc-20240116; t=1736938367; c=relaxed/simple;
+	bh=795T2UJGZPNy2GwFqTGCypBYYr2k6wd6/ypy7F4oVZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IYoAEPfP1lkemM1JX/MlJIAS4DBqUr04msN0x2BDpryD/7oPFOzKSFzDtvj7j9/gr0JHRSR/3V5o23F1cmsynJh1nEzBTMZw8VxQuUpKPNcwV4GMsz0vv3GYqT4T6RD3HqSwvkcDTCVZ2H8QOgXtizbhOxIcdWyDCv65gSYKnbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dnz52hfj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39BD7C4CEDF;
-	Wed, 15 Jan 2025 10:58:54 +0000 (UTC)
+	 MIME-Version; b=mzNvNaLiYRZAoBXRb6SDg0hkq70+L/DtNGiiN05vASnzQoT0rQ9zmc47E30HyCiBgDMFwwkR1ZqoIAMH4yEtw4PDpuF1xC9rvytaazCU0P4NXLiXA5aXadjUuYuTbISNLZsN+9CAR0ba1Gxm8PvxRd29nbwJ2axvA1xcno+2tRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dG8o7giY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2FC1C4CEE2;
+	Wed, 15 Jan 2025 10:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938734;
-	bh=p/9EZTol0D0iq088AMBnLdhNacIyU00QBQrULIT8Onc=;
+	s=korg; t=1736938367;
+	bh=795T2UJGZPNy2GwFqTGCypBYYr2k6wd6/ypy7F4oVZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dnz52hfjumjfrgbBr86I+yFH+3AFD5U1BQ66lF9F+M+zmuHnMA6ALJATgFAnHFrC4
-	 kcsK4Rhu2xuqRzNAy4PA9BKedmxncY7cO8+o2KmJ1YM0OHDpKOEoU7bx5YqysWK+H6
-	 6EjQjIOv1DHAKgUowZ9SiAvCfyYJeSE0D3JHZjbY=
+	b=dG8o7giY2YjPKu+37i6isonInm4pZc9G6y8zr+3ou1jpY2Da7P0p2hk3QilpaSDu/
+	 XmxYF8zNGprr4hfTUwG2vaMyVxpRVemB07zbSTqkjJLtJKfKbNvVdgIcVJy9gpfLp4
+	 IVM3A9Mcmsq02p055zV42+YQyU2xQPnyaPS4+Uic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liankun Yang <liankun.yang@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/129] drm/mediatek: Fix mode valid issue for dp
-Date: Wed, 15 Jan 2025 11:37:05 +0100
-Message-ID: <20250115103556.365480150@linuxfoundation.org>
+	Chukun Pan <amadeus@jmu.edu.cn>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 130/189] USB: serial: option: add MeiG Smart SRM815
+Date: Wed, 15 Jan 2025 11:37:06 +0100
+Message-ID: <20250115103611.634743616@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liankun Yang <liankun.yang@mediatek.com>
+From: Chukun Pan <amadeus@jmu.edu.cn>
 
-[ Upstream commit 0d68b55887cedc7487036ed34cb4c2097c4228f1 ]
+commit c1947d244f807b1f95605b75a4059e7b37b5dcc3 upstream.
 
-Fix dp mode valid issue to avoid abnormal display of limit state.
+It looks like SRM815 shares ID with SRM825L.
 
-After DP passes link training, it can express the lane count of the
-current link status is good. Calculate the maximum bandwidth supported
-by DP using the current lane count.
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2dee ProdID=4d22 Rev= 4.14
+S:  Manufacturer=MEIG
+S:  Product=LTE-A Module
+S:  SerialNumber=123456
+C:* #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-The color format will select the best one based on the bandwidth
-requirements of the current timing mode. If the current timing mode
-uses RGB and meets the DP link bandwidth requirements, RGB will be used.
-
-If the timing mode uses RGB but does not meet the DP link bandwidthi
-requirements, it will continue to check whether YUV422 meets
-the DP link bandwidth.
-
-FEC overhead is approximately 2.4% from DP 1.4a spec 2.2.1.4.2.
-The down-spread amplitude shall either be disabled (0.0%) or up
-to 0.5% from 1.4a 3.5.2.6. Add up to approximately 3% total overhead.
-
-Because rate is already divided by 10,
-mode->clock does not need to be multiplied by 10.
-
-Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
-Signed-off-by: Liankun Yang <liankun.yang@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20241025083036.8829-3-liankun.yang@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
+Link: https://lore.kernel.org/lkml/20241215100027.1970930-1-amadeus@jmu.edu.cn/
+Link: https://lore.kernel.org/all/4333b4d0-281f-439d-9944-5570cbc4971d@gmail.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dp.c | 28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ drivers/usb/serial/option.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
-index 399423cb618c..3e1b400febde 100644
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -2313,12 +2313,19 @@ mtk_dp_bridge_mode_valid(struct drm_bridge *bridge,
- {
- 	struct mtk_dp *mtk_dp = mtk_dp_from_bridge(bridge);
- 	u32 bpp = info->color_formats & DRM_COLOR_FORMAT_YCBCR422 ? 16 : 24;
--	u32 rate = min_t(u32, drm_dp_max_link_rate(mtk_dp->rx_cap) *
--			      drm_dp_max_lane_count(mtk_dp->rx_cap),
--			 drm_dp_bw_code_to_link_rate(mtk_dp->max_linkrate) *
--			 mtk_dp->max_lanes);
-+	u32 lane_count_min = mtk_dp->train_info.lane_count;
-+	u32 rate = drm_dp_bw_code_to_link_rate(mtk_dp->train_info.link_rate) *
-+		   lane_count_min;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -621,7 +621,7 @@ static void option_instat_callback(struc
  
--	if (rate < mode->clock * bpp / 8)
-+	/*
-+	 *FEC overhead is approximately 2.4% from DP 1.4a spec 2.2.1.4.2.
-+	 *The down-spread amplitude shall either be disabled (0.0%) or up
-+	 *to 0.5% from 1.4a 3.5.2.6. Add up to approximately 3% total overhead.
-+	 *
-+	 *Because rate is already divided by 10,
-+	 *mode->clock does not need to be multiplied by 10
-+	 */
-+	if ((rate * 97 / 100) < (mode->clock * bpp / 8))
- 		return MODE_CLOCK_HIGH;
- 
- 	return MODE_OK;
-@@ -2359,10 +2366,9 @@ static u32 *mtk_dp_bridge_atomic_get_input_bus_fmts(struct drm_bridge *bridge,
- 	struct drm_display_mode *mode = &crtc_state->adjusted_mode;
- 	struct drm_display_info *display_info =
- 		&conn_state->connector->display_info;
--	u32 rate = min_t(u32, drm_dp_max_link_rate(mtk_dp->rx_cap) *
--			      drm_dp_max_lane_count(mtk_dp->rx_cap),
--			 drm_dp_bw_code_to_link_rate(mtk_dp->max_linkrate) *
--			 mtk_dp->max_lanes);
-+	u32 lane_count_min = mtk_dp->train_info.lane_count;
-+	u32 rate = drm_dp_bw_code_to_link_rate(mtk_dp->train_info.link_rate) *
-+		   lane_count_min;
- 
- 	*num_input_fmts = 0;
- 
-@@ -2371,8 +2377,8 @@ static u32 *mtk_dp_bridge_atomic_get_input_bus_fmts(struct drm_bridge *bridge,
- 	 * datarate of YUV422 and sink device supports YUV422, we output YUV422
- 	 * format. Use this condition, we can support more resolution.
- 	 */
--	if ((rate < (mode->clock * 24 / 8)) &&
--	    (rate > (mode->clock * 16 / 8)) &&
-+	if (((rate * 97 / 100) < (mode->clock * 24 / 8)) &&
-+	    ((rate * 97 / 100) > (mode->clock * 16 / 8)) &&
- 	    (display_info->color_formats & DRM_COLOR_FORMAT_YCBCR422)) {
- 		input_fmts = kcalloc(1, sizeof(*input_fmts), GFP_KERNEL);
- 		if (!input_fmts)
--- 
-2.39.5
-
+ /* MeiG Smart Technology products */
+ #define MEIGSMART_VENDOR_ID			0x2dee
+-/* MeiG Smart SRM825L based on Qualcomm 315 */
++/* MeiG Smart SRM815/SRM825L based on Qualcomm 315 */
+ #define MEIGSMART_PRODUCT_SRM825L		0x4d22
+ /* MeiG Smart SLM320 based on UNISOC UIS8910 */
+ #define MEIGSMART_PRODUCT_SLM320		0x4d41
+@@ -2405,6 +2405,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM770A, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },
 
 
 
