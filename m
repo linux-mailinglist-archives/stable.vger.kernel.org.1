@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-108954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B9BA12120
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:53:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9002BA12014
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C45373ACF2A
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:52:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EFEF169D43
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827F11E98EF;
-	Wed, 15 Jan 2025 10:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22381248BA8;
+	Wed, 15 Jan 2025 10:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4rim9mb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3IScjhX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCAC18952C;
-	Wed, 15 Jan 2025 10:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CDD248BA1;
+	Wed, 15 Jan 2025 10:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938364; cv=none; b=Ep8H4NtBhRZIMmG0UN4qanCqZLvsd7DitO3wXRonth8LzXtwXJOhiwDnavJYCT7iDUdS5c1dvHJn+neIn+WsSEZpOIwyj2ekRLmhJ519qICZsKlsv0s63+vqintc3IXEf8e6c9+qvNKVcIiTEf8Szns7MxMohqzObz6p5lmX2gQ=
+	t=1736937671; cv=none; b=E4G7fBTbN7XC52znMeeqBRH9qo7NIAa/7xCReWPGJR9GzubD2FxVY3zvozWvTrkA/zHosZt4hz2lgwk1nvpWro5VVs36cSQaVW45gtCE9pYE8Ooq8arbhoDty3ZzWtD/PAzyxNYFA0WPaAl5KrmWg5pTU1xqI0biV/lNRFS0hO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938364; c=relaxed/simple;
-	bh=aHmkFufDi4+cTlXDxPmXv0EqpHDTtiu+ELaoBVNZN+k=;
+	s=arc-20240116; t=1736937671; c=relaxed/simple;
+	bh=tPR4EXpXmgVOmYo3kqT9KgOT1eaFyPFVRsMDm1OWaH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9aBOxZVlYoBwDTGEZhC0ti2J38zBURMnLSZkQxyO72KHUPhbBxWTHbGrfSaumKB+WC+kGIPRO7EwImOW+UsJkNyV63mL9tZEWAifGmviIJMj8rOOrujq0dF1YlAHt1+aozmcorPc3Y1VM8gB+dboizhOaNyAeZTCybTqjjgeGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4rim9mb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2198C4CEDF;
-	Wed, 15 Jan 2025 10:52:43 +0000 (UTC)
+	 MIME-Version; b=WihTJMGV2Co6NqT/hDjV47tQfzywcwbFHpOJdeMUbbVQoLqfNjE3GxIrhbXrC1N4PPCougJo+e3p1OHKR3wWILAnWmKxaHfIMfwSBGHC+fWSQADFf6g27U+tN9/XpLRF5Z0qaNIgS6QUDDGSY7ufDLyTglp2m+4Q7FBy4kTzch0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3IScjhX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07AF5C4CEE1;
+	Wed, 15 Jan 2025 10:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938364;
-	bh=aHmkFufDi4+cTlXDxPmXv0EqpHDTtiu+ELaoBVNZN+k=;
+	s=korg; t=1736937671;
+	bh=tPR4EXpXmgVOmYo3kqT9KgOT1eaFyPFVRsMDm1OWaH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c4rim9mbnr+Y0lKOh+x3F9tmQ8PM2VCrq987enZ3MA+YuQvaXQQrwvB+aBR1U9knY
-	 2Bd/jbSGiysG+5ANL1UhAf0jC4SWZauPnB6HPAjzAUEURb/oIqgguoVF1U83V4dAwh
-	 5JEDBpzCP81RcfdaHl/ccTHD2+6BbiCHviWj2ZTs=
+	b=O3IScjhXvp7gaPSN6GoNr6NHNHZNSWDNhvo+RXbD4/0B0Q12gMrwrALH1iiDSuJTI
+	 Zc/N2sJJlSVojZ7lYU6ByPs9vRcKNOTfwAaa1y/0ZNlZBqOaUOSeOPl558LK6O2l5E
+	 r+q2I/zU7sDReaYHRINpQ3e00HQy+KRI9EHyBJck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3d92cfcfa84070b0a470@syzkaller.appspotmail.com,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 129/189] io_uring/sqpoll: zero sqd->thread on tctx errors
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.1 47/92] ACPI: resource: Add Asus Vivobook X1504VAP to irq1_level_low_skip_override[]
 Date: Wed, 15 Jan 2025 11:37:05 +0100
-Message-ID: <20250115103611.594834904@linuxfoundation.org>
+Message-ID: <20250115103549.417272313@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 4b7cfa8b6c28a9fa22b86894166a1a34f6d630ba upstream.
+commit 66d337fede44dcbab4107d37684af8fcab3d648e upstream.
 
-Syzkeller reports:
+Like the Vivobook X1704VAP the X1504VAP has its keyboard IRQ (1) described
+as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh which
+breaks the keyboard.
 
-BUG: KASAN: slab-use-after-free in thread_group_cputime+0x409/0x700 kernel/sched/cputime.c:341
-Read of size 8 at addr ffff88803578c510 by task syz.2.3223/27552
- Call Trace:
-  <TASK>
-  ...
-  kasan_report+0x143/0x180 mm/kasan/report.c:602
-  thread_group_cputime+0x409/0x700 kernel/sched/cputime.c:341
-  thread_group_cputime_adjusted+0xa6/0x340 kernel/sched/cputime.c:639
-  getrusage+0x1000/0x1340 kernel/sys.c:1863
-  io_uring_show_fdinfo+0xdfe/0x1770 io_uring/fdinfo.c:197
-  seq_show+0x608/0x770 fs/proc/fd.c:68
-  ...
+Add the X1504VAP to the irq1_level_low_skip_override[] quirk table to fix
+this.
 
-That's due to sqd->task not being cleared properly in cases where
-SQPOLL task tctx setup fails, which can essentially only happen with
-fault injection to insert allocation errors.
-
-Cc: stable@vger.kernel.org
-Fixes: 1251d2025c3e1 ("io_uring/sqpoll: early exit thread if task_context wasn't allocated")
-Reported-by: syzbot+3d92cfcfa84070b0a470@syzkaller.appspotmail.com
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/efc7ec7010784463b2e7466d7b5c02c2cb381635.1736519461.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219224
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20241220181352.25974-1-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/sqpoll.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/acpi/resource.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/io_uring/sqpoll.c
-+++ b/io_uring/sqpoll.c
-@@ -275,8 +275,12 @@ static int io_sq_thread(void *data)
- 	DEFINE_WAIT(wait);
- 
- 	/* offload context creation failed, just exit */
--	if (!current->io_uring)
-+	if (!current->io_uring) {
-+		mutex_lock(&sqd->lock);
-+		sqd->thread = NULL;
-+		mutex_unlock(&sqd->lock);
- 		goto err_out;
-+	}
- 
- 	snprintf(buf, sizeof(buf), "iou-sqp-%d", sqd->task_pid);
- 	set_task_comm(current, buf);
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -440,6 +440,13 @@ static const struct dmi_system_id asus_l
+ 		},
+ 	},
+ 	{
++		/* Asus Vivobook X1504VAP */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "X1504VAP"),
++		},
++	},
++	{
+ 		/* Asus Vivobook X1704VAP */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
 
 
 
