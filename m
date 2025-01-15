@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-109003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2A12A12159
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:55:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3A48A120F0
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:51:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C1171882D30
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:55:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87B553AADEE
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D751E98E7;
-	Wed, 15 Jan 2025 10:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25378248BCB;
+	Wed, 15 Jan 2025 10:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0STQa4MC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rDCRGeVO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34AD0156644;
-	Wed, 15 Jan 2025 10:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B1E248BB2;
+	Wed, 15 Jan 2025 10:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938533; cv=none; b=HazOktPYPGevqEF9bjHMX9Kz93IOmoLKT7fhpW3Y9FtWe0N3ftCGv3loRQLA5lyk0YKGrGeSXqpej8RcfrNczjJNDpqldBEcmUR6LSCIl1K2OhgZhsz+ePqJsNWFLyREi07eXDRQSkSPZio2RWdDMWORFCJoOi+EvtgL7Fqhc6A=
+	t=1736938257; cv=none; b=EXmTxT/HvbDOr5aZ6lVFEon0efYW4HMdDXEE1CvE1vUviXw/EWxeYvgXrzs2+ubYH9ICxqNy37gXb5sBwngI+dVLHzQnW2AVBtdGdhyKv41FqYEpOlKxH9qNC/7sqn/PrClZMXCY311QzjvvIVta2Lce2+Ns1ur3Hw3pWpMDOmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938533; c=relaxed/simple;
-	bh=b3Otez9F8iJs5MKdNcUQMAlZyahyp11xU4lGnjVGGfQ=;
+	s=arc-20240116; t=1736938257; c=relaxed/simple;
+	bh=qFQjom9t2KFF8ZBIOM/Pq4cJyuzc/QtwJbs3qc0fjvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SKEykVV0Jtw6mf4LX3dUP74CIfhSfHQLjYjF2tjeQNUYwxzm2xX/OEyB0Q0D9oAikHAfuWfSLbOtdj6m9aWFuSxYKJVMocXIPZ2UN9xSZ5Awqn1RglOsfYwQUj7dqkqipqlbNGUOFfHg+zuf40SMxH7RxitJbTGW4fuMiAEFh8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0STQa4MC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB308C4CEDF;
-	Wed, 15 Jan 2025 10:55:32 +0000 (UTC)
+	 MIME-Version; b=MZ6cw9xDvMKpZv8Y0IiKQmLmls5kuj1oVirhwKtN9SNMidg7h/JC3a16kzuob3Ix7fyTbktJLhiNf7Ihdo75MkOkJOgKhHAmy08jD2vjA5PK/Mv3Uzn09Z9UHO6TdviNFicf2XOzeL9VvE7dc4Px1Y8kntToz8GDoCG1CsCg7V0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rDCRGeVO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4267EC4CEDF;
+	Wed, 15 Jan 2025 10:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938533;
-	bh=b3Otez9F8iJs5MKdNcUQMAlZyahyp11xU4lGnjVGGfQ=;
+	s=korg; t=1736938257;
+	bh=qFQjom9t2KFF8ZBIOM/Pq4cJyuzc/QtwJbs3qc0fjvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0STQa4MCREg8x2jgCKDJ3qq2bwqe5JF0CDNBV5mv6iKvXn7ihQuFKy8wLI2ZCYLdP
-	 fAhMuHauJIZauzJu8NqUzNLKcR+cISVe+FC37N5F6c0nAW6E6LVpujlpeLv+lCzdCS
-	 vGvgnepIP1v44lGDTEaWUJOEDdS3qe9MttIjGvqI=
+	b=rDCRGeVOhcVBjwJNH1zFE8mYJ4uKaQ6YtdtSfQG5XK3MuLVCfK7ls7xJfdRuhTdT4
+	 dVyRPwy8AcFpdkIwAgkqEC++1rxlt2x8EcPLtE7AttdWrP1KFs88fbCrkKQ38zoMtY
+	 ZDo9dM2uPQElS6zvQASZF6sDhqUftaZAnaQZMPvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kernelxing@tencent.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/129] tcp/dccp: complete lockless accesses to sk->sk_max_ack_backlog
+	Al Viro <viro@zeniv.linux.org.uk>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 099/189] sctp: sysctl: plpmtud_probe_interval: avoid using current->nsproxy
 Date: Wed, 15 Jan 2025 11:36:35 +0100
-Message-ID: <20250115103555.175348782@linuxfoundation.org>
+Message-ID: <20250115103610.277717362@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 9a79c65f00e2b036e17af3a3a607d7d732b7affb ]
+commit 6259d2484d0ceff42245d1f09cc8cb6ee72d847a upstream.
 
-Since commit 099ecf59f05b ("net: annotate lockless accesses to
-sk->sk_max_ack_backlog") decided to handle the sk_max_ack_backlog
-locklessly, there is one more function mostly called in TCP/DCCP
-cases. So this patch completes it:)
+As mentioned in a previous commit of this series, using the 'net'
+structure via 'current' is not recommended for different reasons:
 
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240331090521.71965-1-kerneljasonxing@gmail.com
+- Inconsistency: getting info from the reader's/writer's netns vs only
+  from the opener's netns.
+
+- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
+  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
+  syzbot [1] using acct(2).
+
+The 'net' structure can be obtained from the table->data using
+container_of().
+
+Note that table->data could also be used directly, as this is the only
+member needed from the 'net' structure, but that would increase the size
+of this fix, to use '*data' everywhere 'net->sctp.probe_interval' is
+used.
+
+Fixes: d1e462a7a5f3 ("sctp: add probe_interval in sysctl and sock/asoc/transport")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-8-5df34b2083e8@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 3479c7549fb1 ("tcp/dccp: allow a connection when sk_max_ack_backlog is zero")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/inet_connection_sock.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sctp/sysctl.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
-index fee1e5650551..7b5e783ea24d 100644
---- a/include/net/inet_connection_sock.h
-+++ b/include/net/inet_connection_sock.h
-@@ -282,7 +282,7 @@ static inline int inet_csk_reqsk_queue_len(const struct sock *sk)
- 
- static inline int inet_csk_reqsk_queue_is_full(const struct sock *sk)
+--- a/net/sctp/sysctl.c
++++ b/net/sctp/sysctl.c
+@@ -569,7 +569,8 @@ static int proc_sctp_do_udp_port(const s
+ static int proc_sctp_do_probe_interval(const struct ctl_table *ctl, int write,
+ 				       void *buffer, size_t *lenp, loff_t *ppos)
  {
--	return inet_csk_reqsk_queue_len(sk) >= sk->sk_max_ack_backlog;
-+	return inet_csk_reqsk_queue_len(sk) >= READ_ONCE(sk->sk_max_ack_backlog);
- }
+-	struct net *net = current->nsproxy->net_ns;
++	struct net *net = container_of(ctl->data, struct net,
++				       sctp.probe_interval);
+ 	struct ctl_table tbl;
+ 	int ret, new_value;
  
- bool inet_csk_reqsk_queue_drop(struct sock *sk, struct request_sock *req);
--- 
-2.39.5
-
 
 
 
