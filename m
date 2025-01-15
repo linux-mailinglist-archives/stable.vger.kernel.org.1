@@ -1,243 +1,125 @@
-Return-Path: <stable+bounces-108663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 219D6A1171F
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 03:14:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E83A117BB
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 04:23:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FB1F188B14A
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 02:14:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF507166C51
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 03:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8F01581F2;
-	Wed, 15 Jan 2025 02:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF87217ADF7;
+	Wed, 15 Jan 2025 03:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="lALW9OYt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jXoOw39C"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DAEABE6C;
-	Wed, 15 Jan 2025 02:14:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5C46AA1;
+	Wed, 15 Jan 2025 03:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736907247; cv=none; b=ba3ddE4S3C0/NTx93NzwfNGv4QKgptNxebI2/2EhzrYrihw5y49eRtJ/MGYohRjgO3j6CGmpKGR0KH8e6M4MQyWpm8Ma0jGx7I4graMy5BWzXN01TuTreLLvHWdtPGk32Nx6ypn+YsIhj87Hb/yp9Pr0fyE7PHPwz7W3wq3dZGw=
+	t=1736911381; cv=none; b=RMLwxIt1uYtZK7FlmB62TM6QiwR9XLpRQdteixdXW9b0epsLA3qmFvO7y3Te5z+Jm0M3myJow9KnZ8KWNRHU2oUdN4bI2hl+13KPKiHge5965SZwtTO4MxUOZsF80kGLR/ZVGU8Pnf76YlqJCqrhWhTj93kKsxvEIjGvD94PLEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736907247; c=relaxed/simple;
-	bh=kWeRQdyat6TiZOrY10DmCqvzZNoQtHCcR9ebQNu0lVI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=HQP/UZlws+ykbLMWxbAkKcTuJJgwdENLmY1a4fGckV8Avynf729mJRPjQToBCjDmYR+0pB/YmvjHvfxs8FXbyg+z6aBWWbOGzvtDWv+1W3sPwtV2/6OZ6gqsGvQVq2Y1l6zOe+v0pGoPgALfanfRXKeN4AHMmQfh6f45ngi22XM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=lALW9OYt; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50EBEY3T000879;
-	Wed, 15 Jan 2025 02:13:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	1+eUp8lGe+ej895FJwwzd/ghRECdXZi8mrUuHFzRS3Q=; b=lALW9OYt/Djbf7wz
-	bG4qGyG2+OK6615H0gsfXe1ZGrN5VAHEBqERcUKiLWLg+Pt1+v62jpPyNjbJC4yP
-	uvBLfSE4WC2jh+ot/5ZHBwU8dIPZeKvwbdkUTp12Iy73dUj9uB4DEX0wfoP8is0Z
-	iRyUxNX5VHA+LAFaTXCDIKBlFNeFytedlE8UnMlCt06nz/+YXtbLQWreQaYQ5DC+
-	/5DQeMsiYYe778p/RPpIGYQnxs3NXcfc1Mf9xqu8D68PshRAgSQhhNJ2UH1Fq5t6
-	CEJu4mARmWZqgklBqyuCFmyyQKY+pzDsxfxpbEBk5GTuX3Fvd4Y6IFP5WsEQrlG8
-	Q4KJew==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 445pvnsugm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Jan 2025 02:13:33 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50F2DXhG003342
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Jan 2025 02:13:33 GMT
-Received: from [10.239.132.245] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 14 Jan
- 2025 18:13:28 -0800
-Message-ID: <9ae36424-2cb6-491d-8ac2-95bfe39828a2@quicinc.com>
-Date: Wed, 15 Jan 2025 10:13:21 +0800
+	s=arc-20240116; t=1736911381; c=relaxed/simple;
+	bh=Tca4XH1RiY/74FH6duaTmwocup7M/EKjp0h466Y8NjQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=l8nk7jX/ZfSz/7VzZh7sze3WPrw6Grexvs0UkudlzQPFSVQJRu5xriRCZmT5MoIjbYEAi9b4JzIRzv1EHqlouuHeYJBd1+mn9GLnPfhOxvBXVrM48swsjhBFVnHR3f4j+0K4Bv9H+qEReUuZA52CV0zsG7B9VfnWqvuGYOv1ms4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jXoOw39C; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736911380; x=1768447380;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Tca4XH1RiY/74FH6duaTmwocup7M/EKjp0h466Y8NjQ=;
+  b=jXoOw39CEOcmi30An9L246R6zaFN6+OYL976VuESGra4/5ORsHjoOqsQ
+   CMHXGgL2V/hwFIHFOOHfr0hnLYBmdBG0Wazmsmwc47wS4ertEndipJvL6
+   cWLm4bYxXs1kI9MmJEeSLjcYjNsXAsVE52+0A10+cW1quROIr2BrxzYUX
+   WvsNw1B5AcojjeV+O1Zvewxsu0QptXM00yShUcnQ7y/ucQ1pEoPWEmyxK
+   qVZ2Mr/UWM8MOZlfLl35ObYh/fR4RdCwCXt6Lf4MwS+/IP+t7iZAfGO9L
+   +hXDOuVxnTqq5qvSi6KpcoWn8ZVbgFp3ABjloimZEn50kO3m0mxx8mZck
+   Q==;
+X-CSE-ConnectionGUID: 4P2pCfY+S4GPnMhPVFCl3g==
+X-CSE-MsgGUID: 3D6w6xjOTDque+qCWcGD3g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="40997407"
+X-IronPort-AV: E=Sophos;i="6.12,316,1728975600"; 
+   d="scan'208";a="40997407"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 19:22:59 -0800
+X-CSE-ConnectionGUID: A/SXHqtqQG6YzkuRjkgwSg==
+X-CSE-MsgGUID: pfcvW7p9ST6cGKT97NfshQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,316,1728975600"; 
+   d="scan'208";a="105593665"
+Received: from p12ill20yoongsia.png.intel.com ([10.88.227.38])
+  by fmviesa009.fm.intel.com with ESMTP; 14 Jan 2025 19:22:55 -0800
+From: Song Yoong Siang <yoong.siang.song@intel.com>
+To: Stanislav Fomichev <sdf@fomichev.me>,
+	Vishal Chourasia <vishalc@linux.ibm.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: stable@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH net 1/1] tools: Sync if_xdp.h uapi tooling header
+Date: Wed, 15 Jan 2025 11:22:48 +0800
+Message-Id: <20250115032248.125742-1-yoong.siang.song@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] arm64: mm: Populate vmemmap/linear at the page level
- for hotplugged sections
-To: <anshuman.khandual@arm.com>, <catalin.marinas@arm.com>
-CC: <will@kernel.org>, <ardb@kernel.org>, <ryan.roberts@arm.com>,
-        <mark.rutland@arm.com>, <joey.gouly@arm.com>,
-        <dave.hansen@linux.intel.com>, <akpm@linux-foundation.org>,
-        <chenfeiyang@loongson.cn>, <chenhuacai@kernel.org>,
-        <linux-mm@kvack.org>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <quic_tingweiz@quicinc.com>,
-        <stable@vger.kernel.org>
-References: <20250109093824.452925-1-quic_zhenhuah@quicinc.com>
-Content-Language: en-US
-From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-In-Reply-To: <20250109093824.452925-1-quic_zhenhuah@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: YZhbkYNUb3w3w3vxjGdgWjHV3gLmQkpJ
-X-Proofpoint-ORIG-GUID: YZhbkYNUb3w3w3vxjGdgWjHV3gLmQkpJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-14_09,2025-01-13_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- clxscore=1015 priorityscore=1501 lowpriorityscore=0 phishscore=0
- bulkscore=0 mlxscore=0 malwarescore=0 suspectscore=0 spamscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501150013
+Content-Transfer-Encoding: 8bit
 
-Gentle reminder if you happened to miss it :)
+From: Vishal Chourasia <vishalc@linux.ibm.com>
 
-On 2025/1/9 17:38, Zhenhua Huang wrote:
-> On the arm64 platform with 4K base page config, SECTION_SIZE_BITS is set
-> to 27, making one section 128M. The related page struct which vmemmap
-> points to is 2M then.
-> Commit c1cc1552616d ("arm64: MMU initialisation") optimizes the
-> vmemmap to populate at the PMD section level which was suitable
-> initially since hot plug granule is always one section(128M). However,
-> commit ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
-> introduced a 2M(SUBSECTION_SIZE) hot plug granule, which disrupted the
-> existing arm64 assumptions.
-> 
-> Considering the vmemmap_free -> unmap_hotplug_pmd_range path, when
-> pmd_sect() is true, the entire PMD section is cleared, even if there is
-> other effective subsection. For example page_struct_map1 and
-> page_strcut_map2 are part of a single PMD entry and they are hot-added
-> sequentially. Then page_struct_map1 is removed, vmemmap_free() will clear
-> the entire PMD entry freeing the struct page map for the whole section,
-> even though page_struct_map2 is still active. Similar problem exists
-> with linear mapping as well, for 16K base page(PMD size = 32M) or 64K
-> base page(PMD = 512M), their block mappings exceed SUBSECTION_SIZE.
-> Tearing down the entire PMD mapping too will leave other subsections
-> unmapped in the linear mapping.
-> 
-> To address the issue, we need to prevent PMD/PUD/CONT mappings for both
-> linear and vmemmap for non-boot sections if corresponding size on the
-> given base page exceeds SUBSECTION_SIZE(2MB now).
-> 
-> Cc: stable@vger.kernel.org # v5.4+
-> Fixes: ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
-> Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-> ---
-> Hi Catalin and Anshuman,
-> I have addressed comments so far, please help review.
-> One outstanding point which not finalized is in vmemmap_populate(): how to judge hotplug
-> section. Currently I am using system_state, discussion:
-> https://lore.kernel.org/linux-mm/1515dae4-cb53-4645-8c72-d33b27ede7eb@quicinc.com/
->   arch/arm64/mm/mmu.c | 46 ++++++++++++++++++++++++++++++++++++---------
->   1 file changed, 37 insertions(+), 9 deletions(-)
-> 
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index e2739b69e11b..8718d6e454c5 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -42,9 +42,13 @@
->   #include <asm/pgalloc.h>
->   #include <asm/kfence.h>
->   
-> -#define NO_BLOCK_MAPPINGS	BIT(0)
-> -#define NO_CONT_MAPPINGS	BIT(1)
-> -#define NO_EXEC_MAPPINGS	BIT(2)	/* assumes FEAT_HPDS is not used */
-> +#define NO_PMD_BLOCK_MAPPINGS	BIT(0)
-> +#define NO_PUD_BLOCK_MAPPINGS	BIT(1)  /* Hotplug case: do not want block mapping for PUD */
-> +#define NO_BLOCK_MAPPINGS	(NO_PMD_BLOCK_MAPPINGS | NO_PUD_BLOCK_MAPPINGS)
-> +#define NO_PTE_CONT_MAPPINGS	BIT(2)
-> +#define NO_PMD_CONT_MAPPINGS	BIT(3)  /* Hotplug case: do not want cont mapping for PMD */
-> +#define NO_CONT_MAPPINGS	(NO_PTE_CONT_MAPPINGS | NO_PMD_CONT_MAPPINGS)
-> +#define NO_EXEC_MAPPINGS	BIT(4)	/* assumes FEAT_HPDS is not used */
->   
->   u64 kimage_voffset __ro_after_init;
->   EXPORT_SYMBOL(kimage_voffset);
-> @@ -224,7 +228,7 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
->   
->   		/* use a contiguous mapping if the range is suitably aligned */
->   		if ((((addr | next | phys) & ~CONT_PTE_MASK) == 0) &&
-> -		    (flags & NO_CONT_MAPPINGS) == 0)
-> +		    (flags & NO_PTE_CONT_MAPPINGS) == 0)
->   			__prot = __pgprot(pgprot_val(prot) | PTE_CONT);
->   
->   		init_pte(ptep, addr, next, phys, __prot);
-> @@ -254,7 +258,7 @@ static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
->   
->   		/* try section mapping first */
->   		if (((addr | next | phys) & ~PMD_MASK) == 0 &&
-> -		    (flags & NO_BLOCK_MAPPINGS) == 0) {
-> +		    (flags & NO_PMD_BLOCK_MAPPINGS) == 0) {
->   			pmd_set_huge(pmdp, phys, prot);
->   
->   			/*
-> @@ -311,7 +315,7 @@ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
->   
->   		/* use a contiguous mapping if the range is suitably aligned */
->   		if ((((addr | next | phys) & ~CONT_PMD_MASK) == 0) &&
-> -		    (flags & NO_CONT_MAPPINGS) == 0)
-> +		    (flags & NO_PMD_CONT_MAPPINGS) == 0)
->   			__prot = __pgprot(pgprot_val(prot) | PTE_CONT);
->   
->   		init_pmd(pmdp, addr, next, phys, __prot, pgtable_alloc, flags);
-> @@ -358,8 +362,8 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
->   		 * For 4K granule only, attempt to put down a 1GB block
->   		 */
->   		if (pud_sect_supported() &&
-> -		   ((addr | next | phys) & ~PUD_MASK) == 0 &&
-> -		    (flags & NO_BLOCK_MAPPINGS) == 0) {
-> +		    ((addr | next | phys) & ~PUD_MASK) == 0 &&
-> +		    (flags & NO_PUD_BLOCK_MAPPINGS) == 0) {
->   			pud_set_huge(pudp, phys, prot);
->   
->   			/*
-> @@ -1177,7 +1181,13 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
->   {
->   	WARN_ON((start < VMEMMAP_START) || (end > VMEMMAP_END));
->   
-> -	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES))
-> +	/*
-> +	 * Hotplugged section does not support hugepages as
-> +	 * PMD_SIZE (hence PUD_SIZE) section mapping covers
-> +	 * struct page range that exceeds a SUBSECTION_SIZE
-> +	 * i.e 2MB - for all available base page sizes.
-> +	 */
-> +	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES) || system_state != SYSTEM_BOOTING)
->   		return vmemmap_populate_basepages(start, end, node, altmap);
->   	else
->   		return vmemmap_populate_hugepages(start, end, node, altmap);
-> @@ -1339,9 +1349,27 @@ int arch_add_memory(int nid, u64 start, u64 size,
->   		    struct mhp_params *params)
->   {
->   	int ret, flags = NO_EXEC_MAPPINGS;
-> +	unsigned long start_pfn = PFN_DOWN(start);
-> +	struct mem_section *ms = __pfn_to_section(start_pfn);
->   
->   	VM_BUG_ON(!mhp_range_allowed(start, size, true));
->   
-> +	/* should not be invoked by early section */
-> +	WARN_ON(early_section(ms));
-> +
-> +	/*
-> +	 * Disallow BlOCK/CONT mappings if the corresponding size exceeds
-> +	 * SUBSECTION_SIZE which now is 2MB.
-> +	 *
-> +	 * PUD_BLOCK or PMD_CONT should consistently exceed SUBSECTION_SIZE
-> +	 * across all variable page size configurations, so add them directly
-> +	 */
-> +	flags |= NO_PUD_BLOCK_MAPPINGS | NO_PMD_CONT_MAPPINGS;
-> +	if (SUBSECTION_SHIFT < PMD_SHIFT)
-> +		flags |= NO_PMD_BLOCK_MAPPINGS;
-> +	if (SUBSECTION_SHIFT < CONT_PTE_SHIFT)
-> +		flags |= NO_PTE_CONT_MAPPINGS;
-> +
->   	if (can_set_direct_map())
->   		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
->   
+Sync if_xdp.h uapi header to remove following warning:
+
+Warning: Kernel ABI header at 'tools/include/uapi/linux/if_xdp.h' differs
+from latest version at 'include/uapi/linux/if_xdp.h'
+
+Fixes: 48eb03dd2630 ("xsk: Add TX timestamp and TX checksum offload support")
+Cc: <stable@vger.kernel.org> # 6.8
+Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
+Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
+---
+RFC: https://patchwork.kernel.org/project/netdevbpf/patch/Z4TjzzB8NSnTy_Wa@linux.ibm.com/
+---
+ tools/include/uapi/linux/if_xdp.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tools/include/uapi/linux/if_xdp.h b/tools/include/uapi/linux/if_xdp.h
+index 2f082b01ff22..42ec5ddaab8d 100644
+--- a/tools/include/uapi/linux/if_xdp.h
++++ b/tools/include/uapi/linux/if_xdp.h
+@@ -117,12 +117,12 @@ struct xdp_options {
+ 	((1ULL << XSK_UNALIGNED_BUF_OFFSET_SHIFT) - 1)
+ 
+ /* Request transmit timestamp. Upon completion, put it into tx_timestamp
+- * field of union xsk_tx_metadata.
++ * field of struct xsk_tx_metadata.
+  */
+ #define XDP_TXMD_FLAGS_TIMESTAMP		(1 << 0)
+ 
+ /* Request transmit checksum offload. Checksum start position and offset
+- * are communicated via csum_start and csum_offset fields of union
++ * are communicated via csum_start and csum_offset fields of struct
+  * xsk_tx_metadata.
+  */
+ #define XDP_TXMD_FLAGS_CHECKSUM			(1 << 1)
+-- 
+2.34.1
 
 
