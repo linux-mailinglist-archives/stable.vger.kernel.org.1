@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-108750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C391A12025
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:42:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D05EA12182
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:57:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2D5B3A4BB4
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 619993AA20D
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806B0248BA8;
-	Wed, 15 Jan 2025 10:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 306581DB142;
+	Wed, 15 Jan 2025 10:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTb3bVSI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8bDTgbG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DDCD248BA0;
-	Wed, 15 Jan 2025 10:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2EFA248BDF;
+	Wed, 15 Jan 2025 10:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937682; cv=none; b=qsTZezS/IdCr06AnxKpLdDAWQ4u71EZQ8X7K8mKCeckXgjukFUPM6xNjzNh9VBLi6UPKWvT0fPC1Shcf0qX6rJ6iSYubb5+yGQKXQcFVDU6OO/PlPLnxb29EIigl3zjvi/RX0oCHzQwaiql+rM/EIE7pGWHWFxm2NrK+95Pza04=
+	t=1736938643; cv=none; b=nV/F7s5AlV7N+uK6MQ3BBKPJnM2FOxvesIUkrO971A0gxCZPJEYwL7uuJGQrx9tQeZxUnbei7KOREE+PDGhbBKNS+2JLNZMsVRprn9HNJc9cllphL9pmr30gHPlKrdw8vfD4ZMCEpVxEQ6I9kZDibkdSZvvE80tB8VosI83nNZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937682; c=relaxed/simple;
-	bh=PnGM9v7qNYd9t8GoxbFUmf+oOSpiLrAQ+TRh+rVtYSw=;
+	s=arc-20240116; t=1736938643; c=relaxed/simple;
+	bh=fQws+m5rLClutmOx1brcl9nZgK3MWU7ZW/OaMpIK1PU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I13SsheEZ/DTlmuy9lpqxqC569kYGo0zxgAcakFuc+IzZi2GZvTxrwxdrCwXWuHVBHyf40rdzCSlx0THGoN2eSU+KVn5YJkiS2rrcYb+W9ahMFUcPu1qAnGSXSg6QPHuMabvZEWfXHapBPPeaRq9Atx2k24UtUR2jrrk1e0wFP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTb3bVSI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D89C4CEE1;
-	Wed, 15 Jan 2025 10:41:21 +0000 (UTC)
+	 MIME-Version; b=X3FoXryr0TsyG4Jq4+0tzU7ZXgwJJmdRVYPzUbFj/OhzeUwvgr1HVHmsIi4vY3mGOPzZ81ByXdANXqG25eu8Rf0Wh2jhGLb/m5Y2370CX1EgmnrfsS57o7Rr7MnhqTB+qGQXSvndKc3dqF/wZjWh6UBxTEeQdNuTNmo/m5N0gWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8bDTgbG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59EB4C4CEDF;
+	Wed, 15 Jan 2025 10:57:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937682;
-	bh=PnGM9v7qNYd9t8GoxbFUmf+oOSpiLrAQ+TRh+rVtYSw=;
+	s=korg; t=1736938642;
+	bh=fQws+m5rLClutmOx1brcl9nZgK3MWU7ZW/OaMpIK1PU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fTb3bVSIo702dY0P2WzZ1Ki/YNm+zS1FoB/o7kVYunSdh4FZt+AZsn8x5TIn0HGmU
-	 MTTt9Rfb7z63OmcjEwVNddvSqUXrfT73bAy2cvgkPZHlqIDAF/FxndkikYCtcy25rg
-	 xkuOFwDhbjdUa2qaoTojdaJaCblr6xhL4KxpzY7s=
+	b=j8bDTgbGIRNrFjC0/PgHFJrTohTJnyrOvIPwnw/I8hjT12QOVv0zhm93MwTkw/5lC
+	 VwRxTidCEi65y82pLrMnp0c0e77PSRt6W3kq3sRb5hYrCOJdAj/MZy9OUK/ymKfJ+f
+	 zt3OyffvjHHbhDFYJJM8B9NGUtbS+NKczdPWXH4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	BRUNO VERNAY <bruno.vernay@se.com>,
-	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
-Subject: [PATCH 6.1 50/92] bpf: Add MEM_WRITE attribute
+	syzbot+7848fee1f1e5c53f912b@syzkaller.appspotmail.com,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 053/129] afs: Fix the maximum cell name length
 Date: Wed, 15 Jan 2025 11:37:08 +0100
-Message-ID: <20250115103549.530434105@linuxfoundation.org>
+Message-ID: <20250115103556.485041337@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,189 +65,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: David Howells <dhowells@redhat.com>
 
-commit 6fad274f06f038c29660aa53fbad14241c9fd976 upstream.
+[ Upstream commit 8fd56ad6e7c90ac2bddb0741c6b248c8c5d56ac8 ]
 
-Add a MEM_WRITE attribute for BPF helper functions which can be used in
-bpf_func_proto to annotate an argument type in order to let the verifier
-know that the helper writes into the memory passed as an argument. In
-the past MEM_UNINIT has been (ab)used for this function, but the latter
-merely tells the verifier that the passed memory can be uninitialized.
+The kafs filesystem limits the maximum length of a cell to 256 bytes, but a
+problem occurs if someone actually does that: kafs tries to create a
+directory under /proc/net/afs/ with the name of the cell, but that fails
+with a warning:
 
-There have been bugs with overloading the latter but aside from that
-there are also cases where the passed memory is read + written which
-currently cannot be expressed, see also 4b3786a6c539 ("bpf: Zero former
-ARG_PTR_TO_{LONG,INT} args in case of error").
+        WARNING: CPU: 0 PID: 9 at fs/proc/generic.c:405
 
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20241021152809.33343-1-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: BRUNO VERNAY <bruno.vernay@se.com>
-Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
-Stable-dep-of: 8ea607330a39 ("bpf: Fix overloading of MEM_UNINIT's meaning")
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+because procfs limits the maximum filename length to 255.
+
+However, the DNS limits the maximum lookup length and, by extension, the
+maximum cell name, to 255 less two (length count and trailing NUL).
+
+Fix this by limiting the maximum acceptable cellname length to 253.  This
+also allows us to be sure we can create the "/afs/.<cell>/" mountpoint too.
+
+Further, split the YFS VL record cell name maximum to be the 256 allowed by
+the protocol and ignore the record retrieved by YFSVL.GetCellName if it
+exceeds 253.
+
+Fixes: c3e9f888263b ("afs: Implement client support for the YFSVL.GetCellName RPC op")
+Reported-by: syzbot+7848fee1f1e5c53f912b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/6776d25d.050a0220.3a8527.0048.GAE@google.com/
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/376236.1736180460@warthog.procyon.org.uk
+Tested-by: syzbot+7848fee1f1e5c53f912b@syzkaller.appspotmail.com
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h      |   14 +++++++++++---
- kernel/bpf/helpers.c     |   10 +++++-----
- kernel/bpf/ringbuf.c     |    2 +-
- kernel/bpf/syscall.c     |    2 +-
- kernel/trace/bpf_trace.c |    4 ++--
- net/core/filter.c        |    4 ++--
- 6 files changed, 22 insertions(+), 14 deletions(-)
+ fs/afs/afs.h      | 2 +-
+ fs/afs/afs_vl.h   | 1 +
+ fs/afs/vl_alias.c | 8 ++++++--
+ fs/afs/vlclient.c | 2 +-
+ 4 files changed, 9 insertions(+), 4 deletions(-)
 
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -464,6 +464,7 @@ enum bpf_type_flag {
- 	 */
- 	PTR_UNTRUSTED		= BIT(6 + BPF_BASE_TYPE_BITS),
+diff --git a/fs/afs/afs.h b/fs/afs/afs.h
+index 81815724db6c..25c17100798b 100644
+--- a/fs/afs/afs.h
++++ b/fs/afs/afs.h
+@@ -10,7 +10,7 @@
  
-+	/* MEM can be uninitialized. */
- 	MEM_UNINIT		= BIT(7 + BPF_BASE_TYPE_BITS),
+ #include <linux/in.h>
  
- 	/* DYNPTR points to memory local to the bpf program. */
-@@ -480,6 +481,13 @@ enum bpf_type_flag {
- 	 */
- 	MEM_ALIGNED		= BIT(17 + BPF_BASE_TYPE_BITS),
+-#define AFS_MAXCELLNAME		256  	/* Maximum length of a cell name */
++#define AFS_MAXCELLNAME		253  	/* Maximum length of a cell name (DNS limited) */
+ #define AFS_MAXVOLNAME		64  	/* Maximum length of a volume name */
+ #define AFS_MAXNSERVERS		8   	/* Maximum servers in a basic volume record */
+ #define AFS_NMAXNSERVERS	13  	/* Maximum servers in a N/U-class volume record */
+diff --git a/fs/afs/afs_vl.h b/fs/afs/afs_vl.h
+index 9c65ffb8a523..8da0899fbc08 100644
+--- a/fs/afs/afs_vl.h
++++ b/fs/afs/afs_vl.h
+@@ -13,6 +13,7 @@
+ #define AFS_VL_PORT		7003	/* volume location service port */
+ #define VL_SERVICE		52	/* RxRPC service ID for the Volume Location service */
+ #define YFS_VL_SERVICE		2503	/* Service ID for AuriStor upgraded VL service */
++#define YFS_VL_MAXCELLNAME	256  	/* Maximum length of a cell name in YFS protocol */
  
-+	/* MEM is being written to, often combined with MEM_UNINIT. Non-presence
-+	 * of MEM_WRITE means that MEM is only being read. MEM_WRITE without the
-+	 * MEM_UNINIT means that memory needs to be initialized since it is also
-+	 * read.
-+	 */
-+	MEM_WRITE		= BIT(18 + BPF_BASE_TYPE_BITS),
-+
- 	__BPF_TYPE_FLAG_MAX,
- 	__BPF_TYPE_LAST_FLAG	= __BPF_TYPE_FLAG_MAX - 1,
- };
-@@ -537,10 +545,10 @@ enum bpf_arg_type {
- 	ARG_PTR_TO_ALLOC_MEM_OR_NULL	= PTR_MAYBE_NULL | ARG_PTR_TO_ALLOC_MEM,
- 	ARG_PTR_TO_STACK_OR_NULL	= PTR_MAYBE_NULL | ARG_PTR_TO_STACK,
- 	ARG_PTR_TO_BTF_ID_OR_NULL	= PTR_MAYBE_NULL | ARG_PTR_TO_BTF_ID,
--	/* pointer to memory does not need to be initialized, helper function must fill
--	 * all bytes or clear them in error case.
-+	/* Pointer to memory does not need to be initialized, since helper function
-+	 * fills all bytes or clears them in error case.
- 	 */
--	ARG_PTR_TO_UNINIT_MEM		= MEM_UNINIT | ARG_PTR_TO_MEM,
-+	ARG_PTR_TO_UNINIT_MEM		= MEM_UNINIT | MEM_WRITE | ARG_PTR_TO_MEM,
- 	/* Pointer to valid memory of size known at compile time. */
- 	ARG_PTR_TO_FIXED_SIZE_MEM	= MEM_FIXED_SIZE | ARG_PTR_TO_MEM,
+ enum AFSVL_Operations {
+ 	VLGETENTRYBYID		= 503,	/* AFS Get VLDB entry by ID */
+diff --git a/fs/afs/vl_alias.c b/fs/afs/vl_alias.c
+index f04a80e4f5c3..83cf1bfbe343 100644
+--- a/fs/afs/vl_alias.c
++++ b/fs/afs/vl_alias.c
+@@ -302,6 +302,7 @@ static char *afs_vl_get_cell_name(struct afs_cell *cell, struct key *key)
+ static int yfs_check_canonical_cell_name(struct afs_cell *cell, struct key *key)
+ {
+ 	struct afs_cell *master;
++	size_t name_len;
+ 	char *cell_name;
  
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -107,7 +107,7 @@ const struct bpf_func_proto bpf_map_pop_
- 	.gpl_only	= false,
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type	= ARG_CONST_MAP_PTR,
--	.arg2_type	= ARG_PTR_TO_MAP_VALUE | MEM_UNINIT,
-+	.arg2_type	= ARG_PTR_TO_MAP_VALUE | MEM_UNINIT | MEM_WRITE,
- };
+ 	cell_name = afs_vl_get_cell_name(cell, key);
+@@ -313,8 +314,11 @@ static int yfs_check_canonical_cell_name(struct afs_cell *cell, struct key *key)
+ 		return 0;
+ 	}
  
- BPF_CALL_2(bpf_map_peek_elem, struct bpf_map *, map, void *, value)
-@@ -120,7 +120,7 @@ const struct bpf_func_proto bpf_map_peek
- 	.gpl_only	= false,
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type	= ARG_CONST_MAP_PTR,
--	.arg2_type	= ARG_PTR_TO_MAP_VALUE | MEM_UNINIT,
-+	.arg2_type	= ARG_PTR_TO_MAP_VALUE | MEM_UNINIT | MEM_WRITE,
- };
+-	master = afs_lookup_cell(cell->net, cell_name, strlen(cell_name),
+-				 NULL, false);
++	name_len = strlen(cell_name);
++	if (!name_len || name_len > AFS_MAXCELLNAME)
++		master = ERR_PTR(-EOPNOTSUPP);
++	else
++		master = afs_lookup_cell(cell->net, cell_name, name_len, NULL, false);
+ 	kfree(cell_name);
+ 	if (IS_ERR(master))
+ 		return PTR_ERR(master);
+diff --git a/fs/afs/vlclient.c b/fs/afs/vlclient.c
+index 00fca3c66ba6..16653f2ffe4f 100644
+--- a/fs/afs/vlclient.c
++++ b/fs/afs/vlclient.c
+@@ -671,7 +671,7 @@ static int afs_deliver_yfsvl_get_cell_name(struct afs_call *call)
+ 			return ret;
  
- BPF_CALL_3(bpf_map_lookup_percpu_elem, struct bpf_map *, map, void *, key, u32, cpu)
-@@ -531,7 +531,7 @@ const struct bpf_func_proto bpf_strtol_p
- 	.arg1_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
- 	.arg2_type	= ARG_CONST_SIZE,
- 	.arg3_type	= ARG_ANYTHING,
--	.arg4_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_ALIGNED,
-+	.arg4_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
- 	.arg4_size	= sizeof(s64),
- };
- 
-@@ -561,7 +561,7 @@ const struct bpf_func_proto bpf_strtoul_
- 	.arg1_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
- 	.arg2_type	= ARG_CONST_SIZE,
- 	.arg3_type	= ARG_ANYTHING,
--	.arg4_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_ALIGNED,
-+	.arg4_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
- 	.arg4_size	= sizeof(u64),
- };
- 
-@@ -1502,7 +1502,7 @@ static const struct bpf_func_proto bpf_d
- 	.arg1_type	= ARG_PTR_TO_UNINIT_MEM,
- 	.arg2_type	= ARG_CONST_SIZE_OR_ZERO,
- 	.arg3_type	= ARG_ANYTHING,
--	.arg4_type	= ARG_PTR_TO_DYNPTR | DYNPTR_TYPE_LOCAL | MEM_UNINIT,
-+	.arg4_type	= ARG_PTR_TO_DYNPTR | DYNPTR_TYPE_LOCAL | MEM_UNINIT | MEM_WRITE,
- };
- 
- BPF_CALL_5(bpf_dynptr_read, void *, dst, u32, len, struct bpf_dynptr_kern *, src,
---- a/kernel/bpf/ringbuf.c
-+++ b/kernel/bpf/ringbuf.c
-@@ -618,7 +618,7 @@ const struct bpf_func_proto bpf_ringbuf_
- 	.arg1_type	= ARG_CONST_MAP_PTR,
- 	.arg2_type	= ARG_ANYTHING,
- 	.arg3_type	= ARG_ANYTHING,
--	.arg4_type	= ARG_PTR_TO_DYNPTR | DYNPTR_TYPE_RINGBUF | MEM_UNINIT,
-+	.arg4_type	= ARG_PTR_TO_DYNPTR | DYNPTR_TYPE_RINGBUF | MEM_UNINIT | MEM_WRITE,
- };
- 
- BPF_CALL_2(bpf_ringbuf_submit_dynptr, struct bpf_dynptr_kern *, ptr, u64, flags)
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -5265,7 +5265,7 @@ static const struct bpf_func_proto bpf_k
- 	.arg1_type	= ARG_PTR_TO_MEM,
- 	.arg2_type	= ARG_CONST_SIZE_OR_ZERO,
- 	.arg3_type	= ARG_ANYTHING,
--	.arg4_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_ALIGNED,
-+	.arg4_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
- 	.arg4_size	= sizeof(u64),
- };
- 
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -1192,7 +1192,7 @@ static const struct bpf_func_proto bpf_g
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type	= ARG_PTR_TO_CTX,
- 	.arg2_type	= ARG_ANYTHING,
--	.arg3_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_ALIGNED,
-+	.arg3_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
- 	.arg3_size	= sizeof(u64),
- };
- 
-@@ -1209,7 +1209,7 @@ static const struct bpf_func_proto bpf_g
- 	.func		= get_func_ret,
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type	= ARG_PTR_TO_CTX,
--	.arg2_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_ALIGNED,
-+	.arg2_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
- 	.arg2_size	= sizeof(u64),
- };
- 
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -6243,7 +6243,7 @@ static const struct bpf_func_proto bpf_s
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type      = ARG_PTR_TO_CTX,
- 	.arg2_type      = ARG_ANYTHING,
--	.arg3_type      = ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_ALIGNED,
-+	.arg3_type      = ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
- 	.arg3_size	= sizeof(u32),
- 	.arg4_type      = ARG_ANYTHING,
- 	.arg5_type      = ARG_ANYTHING,
-@@ -6255,7 +6255,7 @@ static const struct bpf_func_proto bpf_x
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type      = ARG_PTR_TO_CTX,
- 	.arg2_type      = ARG_ANYTHING,
--	.arg3_type      = ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_ALIGNED,
-+	.arg3_type      = ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
- 	.arg3_size	= sizeof(u32),
- 	.arg4_type      = ARG_ANYTHING,
- 	.arg5_type      = ARG_ANYTHING,
+ 		namesz = ntohl(call->tmp);
+-		if (namesz > AFS_MAXCELLNAME)
++		if (namesz > YFS_VL_MAXCELLNAME)
+ 			return afs_protocol_error(call, afs_eproto_cellname_len);
+ 		paddedsz = (namesz + 3) & ~3;
+ 		call->count = namesz;
+-- 
+2.39.5
+
 
 
 
