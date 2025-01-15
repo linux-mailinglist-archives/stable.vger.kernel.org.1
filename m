@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-108919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B59A120EC
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:50:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06D7AA1217B
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:57:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30C123A9640
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:50:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7372C7A3D1F
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4310248BBD;
-	Wed, 15 Jan 2025 10:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172981E98E4;
+	Wed, 15 Jan 2025 10:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O00lvOm2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rcy4AP05"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F24248BA1;
-	Wed, 15 Jan 2025 10:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B671DB142;
+	Wed, 15 Jan 2025 10:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938247; cv=none; b=vFhKhV8XiYgDuunPd+Qbr5IuCoDm7c5/qAwTxAMOTWGByR6AG+aHOdV6Xb9ZN18GrD9LBQh4puGKFDDiYsQxDlJJATaQg1kS1LV7Q11olzrv1kVL4v9zNYpVEjajbms+dkDyFWadd2ndVuB386/6wL9YXLw0q5xA9K0p5spbW6g=
+	t=1736938626; cv=none; b=RpwsA2+Uzw6QXbB6rorDjWp3RnrAXy6An1EfQamwY9P2TQ82U5f7W/MiZ3P9fzzm1C5+q2cePLFIzxDe8U0m6MXSHHpF5rJlKhLeR/hvHZildeJOF0EWVu5N8EO85I607ad1f5FaveFgN7SmLjnahkiH05WpKgQEu2EstbD8C2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938247; c=relaxed/simple;
-	bh=6nuX7+VQVs3hl8HxA2WkoHtWIYpdsb3v9yj8L5qg1pE=;
+	s=arc-20240116; t=1736938626; c=relaxed/simple;
+	bh=3bgHBCUI/ZAXugNTkD/Lj9RXbtG12LK9eR1HWmjwZgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rfWFsuSl/CCOz/Mf/QxpJOGnr6nAwbl0c1h8ANBKVmShdvWDM7OEaA2G7QAXBn8WUYPZUATWNd+YYbuZSxX6ZqaBAnXCiPE7TUvT1YZehvcfn0mBGCYoZjsE9SCeGkfK8DE4N2JFj2O+xuXrYC6ljNrx3Eo8cC5P1MLevYLKpTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O00lvOm2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C4AC4CEDF;
-	Wed, 15 Jan 2025 10:50:46 +0000 (UTC)
+	 MIME-Version; b=GgGV5DVBMjxFQAYD2YOwk2t9l1gAVtHXc+cEvrlfoNRVI2UQsrIivd7ma1qiibY2kLxFRYC6xrp4Lamfh6/PSit3y1mkAQqIXRObWf6YPlicLymMAempxH22xh2rDvKTheSXrnF6yt6JEfKeNiaZppFvEKlpvyVbDEdWLOY3Ez8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rcy4AP05; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36775C4CEDF;
+	Wed, 15 Jan 2025 10:57:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938247;
-	bh=6nuX7+VQVs3hl8HxA2WkoHtWIYpdsb3v9yj8L5qg1pE=;
+	s=korg; t=1736938626;
+	bh=3bgHBCUI/ZAXugNTkD/Lj9RXbtG12LK9eR1HWmjwZgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O00lvOm2/wqbQM9v6hhiuSuZe3lzWMnXJ23tQloXiwTjs2JlmAJNF5QtwJp4laxr8
-	 QWBtdeATJERcp6uuXiZcjJo0CIsr5POQi3lgZ4usn502ex0xz05ZMOs5BF9S+JI2Qt
-	 EH824sfCXaXvwqVLlzwA+MPDVECgjveOxIn09bU8=
+	b=Rcy4AP05v/cCuR8IJcrTqFMZ7X0zZdZMMgrtQnR+Un3BwQR8jx2uetBhRoQmIza00
+	 34QoHtme/E9uI3SuBDbh7cwlO0tzCufYaeVcCxA2CUg6F17USUOqRofO85Offo9Wu/
+	 x/ZujI9LGQ9k0b5mb1iyCGlLyt0xzIIwZOavTQO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 096/189] sctp: sysctl: rto_min/max: avoid using current->nsproxy
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Li Zhijian <lizhijian@fujitsu.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 017/129] selftests/alsa: Fix circular dependency involving global-timer
 Date: Wed, 15 Jan 2025 11:36:32 +0100
-Message-ID: <20250115103610.153124630@linuxfoundation.org>
+Message-ID: <20250115103555.057695762@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +66,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-commit 9fc17b76fc70763780aa78b38fcf4742384044a5 upstream.
+[ Upstream commit 55853cb829dc707427c3519f6b8686682a204368 ]
 
-As mentioned in a previous commit of this series, using the 'net'
-structure via 'current' is not recommended for different reasons:
+The pattern rule `$(OUTPUT)/%: %.c` inadvertently included a circular
+dependency on the global-timer target due to its inclusion in
+$(TEST_GEN_PROGS_EXTENDED). This resulted in a circular dependency
+warning during the build process.
 
-- Inconsistency: getting info from the reader's/writer's netns vs only
-  from the opener's netns.
+To resolve this, the dependency on $(TEST_GEN_PROGS_EXTENDED) has been
+replaced with an explicit dependency on $(OUTPUT)/libatest.so. This change
+ensures that libatest.so is built before any other targets that require it,
+without creating a circular dependency.
 
-- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
-  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
-  syzbot [1] using acct(2).
+This fix addresses the following warning:
 
-The 'net' structure can be obtained from the table->data using
-container_of().
+make[4]: Entering directory 'tools/testing/selftests/alsa'
+make[4]: Circular default_modconfig/kselftest/alsa/global-timer <- default_modconfig/kselftest/alsa/global-timer dependency dropped.
+make[4]: Nothing to be done for 'all'.
+make[4]: Leaving directory 'tools/testing/selftests/alsa'
 
-Note that table->data could also be used directly, as this is the only
-member needed from the 'net' structure, but that would increase the size
-of this fix, to use '*data' everywhere 'net->sctp.rto_min/max' is used.
-
-Fixes: 4f3fdf3bc59c ("sctp: add check rto_min and rto_max in sysctl")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-5-5df34b2083e8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Link: https://patch.msgid.link/20241218025931.914164-1-lizhijian@fujitsu.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sysctl.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/alsa/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sctp/sysctl.c
-+++ b/net/sctp/sysctl.c
-@@ -433,7 +433,7 @@ static int proc_sctp_do_hmac_alg(const s
- static int proc_sctp_do_rto_min(const struct ctl_table *ctl, int write,
- 				void *buffer, size_t *lenp, loff_t *ppos)
- {
--	struct net *net = current->nsproxy->net_ns;
-+	struct net *net = container_of(ctl->data, struct net, sctp.rto_min);
- 	unsigned int min = *(unsigned int *) ctl->extra1;
- 	unsigned int max = *(unsigned int *) ctl->extra2;
- 	struct ctl_table tbl;
-@@ -461,7 +461,7 @@ static int proc_sctp_do_rto_min(const st
- static int proc_sctp_do_rto_max(const struct ctl_table *ctl, int write,
- 				void *buffer, size_t *lenp, loff_t *ppos)
- {
--	struct net *net = current->nsproxy->net_ns;
-+	struct net *net = container_of(ctl->data, struct net, sctp.rto_max);
- 	unsigned int min = *(unsigned int *) ctl->extra1;
- 	unsigned int max = *(unsigned int *) ctl->extra2;
- 	struct ctl_table tbl;
+diff --git a/tools/testing/selftests/alsa/Makefile b/tools/testing/selftests/alsa/Makefile
+index 5af9ba8a4645..140c7f821727 100644
+--- a/tools/testing/selftests/alsa/Makefile
++++ b/tools/testing/selftests/alsa/Makefile
+@@ -23,5 +23,5 @@ include ../lib.mk
+ $(OUTPUT)/libatest.so: conf.c alsa-local.h
+ 	$(CC) $(CFLAGS) -shared -fPIC $< $(LDLIBS) -o $@
+ 
+-$(OUTPUT)/%: %.c $(TEST_GEN_PROGS_EXTENDED) alsa-local.h
++$(OUTPUT)/%: %.c $(OUTPUT)/libatest.so alsa-local.h
+ 	$(CC) $(CFLAGS) $< $(LDLIBS) -latest -o $@
+-- 
+2.39.5
+
 
 
 
