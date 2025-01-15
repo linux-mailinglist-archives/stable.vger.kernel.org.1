@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-108915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757DAA120E8
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:50:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F38A1217A
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:57:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10BB03AA9E5
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:50:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 421191632EC
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:57:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3534248BCB;
-	Wed, 15 Jan 2025 10:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE4211E7C02;
+	Wed, 15 Jan 2025 10:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCi8lfP4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kdlr6D89"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908C0248BA1;
-	Wed, 15 Jan 2025 10:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B59F248BD1;
+	Wed, 15 Jan 2025 10:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938233; cv=none; b=jtATpkAU5pDADKTW2ll+Lb3SRAts/HafGhz2vFxKBw6zpLO6TYT6bKEh1Yn5SodkfAmi/TtcHa2TKA/dBhUN1v7VfuhhONfHsubkA9MZMOuAiWo7ZZ5lKfEQZHI3p1E1/lDImAkKAXrHgNyzGZ6ADGVCtERunGLCX7QoW4QU/H4=
+	t=1736938623; cv=none; b=b+cChs4EVNdXGGJ23os77JPY7pm9lUVeZJN1nv4paPZuqhK9FsVeXtNWk7WJYCKZzxNj+z5QZ8QDAOsi6rrCIDGHKKcjhmtYUfKzzmNWo5SmlnG8Y5OHoH5b/hVNCJ5idipefmTYHLpn4doo0FiIoHfkiCuc9wTu7p4Ij1toQVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938233; c=relaxed/simple;
-	bh=bARCnv5+psoDtvNkjlflY6CitRatzkpQi1KOAKB9EKw=;
+	s=arc-20240116; t=1736938623; c=relaxed/simple;
+	bh=bbUPFMCtHtx2FFR0BF74pMfztrhPOlPNqN2zLSOAVoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lWmFh1G45saWVSkQgtfjJBUDexOa/6WoEkfmXv7am0x/tsVGbL5i90kkzdhwp0BwMIXuqeuikIP3yRpDsdEwHUaNDEqmFhDdHpi8AyObutCnCKzS7wag4yCVB+pwPWCd1YqhOcdrppu3/eJOupXOiYldpU23UDwkKZ9x9kCqNp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCi8lfP4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F317CC4CEDF;
-	Wed, 15 Jan 2025 10:50:32 +0000 (UTC)
+	 MIME-Version; b=s1IoXzq1L+s1XKdCcKNAhSS2jcDxoQIBP2dY+z0ZP2Ipmazt4Mc7aZreIyRQIuJOrAdHgU6knTBa5tRXELshGdh9wJPn7/Nc/O5Q4KMHFodhMcH9Np+n5T3qUc9BoiiY5DRuAqx1mHiuhToKLnUXvFc1qtAiImxA476RVwSTVQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kdlr6D89; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6181C4CEDF;
+	Wed, 15 Jan 2025 10:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938233;
-	bh=bARCnv5+psoDtvNkjlflY6CitRatzkpQi1KOAKB9EKw=;
+	s=korg; t=1736938623;
+	bh=bbUPFMCtHtx2FFR0BF74pMfztrhPOlPNqN2zLSOAVoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YCi8lfP4XX9pd4HZikU4gx1UmdcO/ziO2gG4M2nZgaftaOqQxdmWorD5aoefwTa90
-	 lmdLYd0BlyzaqRrSch/okFuIL4cFuz3Yyr+OHrWRT7Y0+Npmd9G4kHQlyvsIIGOHt8
-	 MjWZdUdh3VM2tut1XrvLrf5aldPbYOYn9ydRX6Y0=
+	b=kdlr6D89dOsHTgKHbCdvJRDtpUaCykKdWs5jAqn/iE4B5JWOwY5zjRAz8Yt9ZVdPZ
+	 8KLIs4Y5Vda8kn94TGgaQO8A590Z6N2KvjUR8joKGp2odeEgi8JFpICDOkQeasosPY
+	 Sv55+Xx/7w4pSAqJt9XnKqRUKenzrAcBYa3VOtiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 095/189] sctp: sysctl: cookie_hmac_alg: avoid using current->nsproxy
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 016/129] ASoC: mediatek: disable buffer pre-allocation
 Date: Wed, 15 Jan 2025 11:36:31 +0100
-Message-ID: <20250115103610.116274707@linuxfoundation.org>
+Message-ID: <20250115103555.019508508@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-commit ea62dd1383913b5999f3d16ae99d411f41b528d4 upstream.
+[ Upstream commit 32c9c06adb5b157ef259233775a063a43746d699 ]
 
-As mentioned in a previous commit of this series, using the 'net'
-structure via 'current' is not recommended for different reasons:
+On Chromebooks based on Mediatek MT8195 or MT8188, the audio frontend
+(AFE) is limited to accessing a very small window (1 MiB) of memory,
+which is described as a reserved memory region in the device tree.
 
-- Inconsistency: getting info from the reader's/writer's netns vs only
-  from the opener's netns.
+On these two platforms, the maximum buffer size is given as 512 KiB.
+The MediaTek common code uses the same value for preallocations. This
+means that only the first two PCM substreams get preallocations, and
+then the whole space is exhausted, barring any other substreams from
+working. Since the substreams used are not always the first two, this
+means audio won't work correctly.
 
-- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
-  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
-  syzbot [1] using acct(2).
+This is observed on the MT8188 Geralt Chromebooks, on which the
+"mediatek,dai-link" property was dropped when it was upstreamed. That
+property causes the driver to only register the PCM substreams listed
+in the property, and in the order given.
 
-The 'net' structure can be obtained from the table->data using
-container_of().
+Instead of trying to compute an optimal value and figuring out which
+streams are used, simply disable preallocation. The PCM buffers are
+managed by the core and are allocated and released on the fly. There
+should be no impact to any of the other MediaTek platforms.
 
-Note that table->data could also be used directly, as this is the only
-member needed from the 'net' structure, but that would increase the size
-of this fix, to use '*data' everywhere 'net->sctp.sctp_hmac_alg' is
-used.
-
-Fixes: 3c68198e7511 ("sctp: Make hmac algorithm selection for cookie generation dynamic")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-4-5df34b2083e8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patch.msgid.link/20241219105303.548437-1-wenst@chromium.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sysctl.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/mediatek/common/mtk-afe-platform-driver.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/sctp/sysctl.c
-+++ b/net/sctp/sysctl.c
-@@ -387,7 +387,8 @@ static struct ctl_table sctp_net_table[]
- static int proc_sctp_do_hmac_alg(const struct ctl_table *ctl, int write,
- 				 void *buffer, size_t *lenp, loff_t *ppos)
- {
--	struct net *net = current->nsproxy->net_ns;
-+	struct net *net = container_of(ctl->data, struct net,
-+				       sctp.sctp_hmac_alg);
- 	struct ctl_table tbl;
- 	bool changed = false;
- 	char *none = "none";
+diff --git a/sound/soc/mediatek/common/mtk-afe-platform-driver.c b/sound/soc/mediatek/common/mtk-afe-platform-driver.c
+index 01501d5747a7..52495c930ca3 100644
+--- a/sound/soc/mediatek/common/mtk-afe-platform-driver.c
++++ b/sound/soc/mediatek/common/mtk-afe-platform-driver.c
+@@ -120,8 +120,8 @@ int mtk_afe_pcm_new(struct snd_soc_component *component,
+ 	struct mtk_base_afe *afe = snd_soc_component_get_drvdata(component);
+ 
+ 	size = afe->mtk_afe_hardware->buffer_bytes_max;
+-	snd_pcm_set_managed_buffer_all(pcm, SNDRV_DMA_TYPE_DEV,
+-				       afe->dev, size, size);
++	snd_pcm_set_managed_buffer_all(pcm, SNDRV_DMA_TYPE_DEV, afe->dev, 0, size);
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(mtk_afe_pcm_new);
+-- 
+2.39.5
+
 
 
 
