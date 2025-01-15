@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-109077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D010A121B6
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:59:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B6C6A12032
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:42:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21E697A12B5
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:59:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACB303AA4AD
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A0E1DB142;
-	Wed, 15 Jan 2025 10:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1488C248BA1;
+	Wed, 15 Jan 2025 10:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eMtOUyBs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvzDa6ob"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859C7248BB5;
-	Wed, 15 Jan 2025 10:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F82248BA0;
+	Wed, 15 Jan 2025 10:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938772; cv=none; b=MFtUTG7IflsArZxSdm21OEmYcmQnPQbQ1Zy+wjkBcO/bUxjth0fOtPJ5qdzlKAS73BwoTPI8AgSAmQeXu7lEtFsa3hTuRpz3mAmohabRF328YEpnS3kNAuX4/7aRjqrxOaaMqQ7PMZuJvpmFPVePt9OmnB3EhyNMK+JE+A88JTU=
+	t=1736937756; cv=none; b=Fo9I9DZoH3GiRMr16Lw7Blg5uPBRrdrFPOyi2zuSkXogkbwlV0SbmbUbQyPRfBL759ITYMOs/ZZXz4zPdNDg+D+7lUdcnE4beD7o+I7fN45k85cwdE7tMqil3RWHxD3IrF9aeeYKqEfVFhzWkDSQIOOjhlJktz5NYKFqRiVBwkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938772; c=relaxed/simple;
-	bh=C23+ACxZNYDw4+MtCa2Coa7OGbQcN3cK8sFtqH0yIFo=;
+	s=arc-20240116; t=1736937756; c=relaxed/simple;
+	bh=/JkeAwBa0FInAiQHPvNoQfXQ1bVTJvyDMQftg2kFiX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hqhu8d0G/d1iZKdeAe3MuM7z4DRud+fhdzi+XO8sdL0FOdso6IFIEJd98UoNKFWOxuip3GJDJ15fq4GUlV5aiARXdQ0lqKdLFxrv0q5zMDj3IoPqe8Dh4ONSu/PmFxhe/ovcb2sYF7lCEHn54mXg5wBijBzwF3iflArKwPX12Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eMtOUyBs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BED9C4CEE7;
-	Wed, 15 Jan 2025 10:59:31 +0000 (UTC)
+	 MIME-Version; b=U/QtD430X2Vm1M2JyvCjLpSHWUyz0hbnqVDzvrz7FUtixBbc/P/8dzt7/+NHD3CcghZB9tDOcD5MNnGgwoMCSZOOE2xDIUuLbQYBHoqD0bvy4lyGva5y8A/WImRsJYmozHiBDDWGvhEGoL/z0CeKLm3pW2hdsg53YfQ7AFn2eMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvzDa6ob; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDBCC4CEDF;
+	Wed, 15 Jan 2025 10:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938772;
-	bh=C23+ACxZNYDw4+MtCa2Coa7OGbQcN3cK8sFtqH0yIFo=;
+	s=korg; t=1736937756;
+	bh=/JkeAwBa0FInAiQHPvNoQfXQ1bVTJvyDMQftg2kFiX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eMtOUyBshb8pK4oFGgZEIzkwPfcAg+hV9aT7E5VK5wfW9rvFEzEDb5ilCoTEh0Fqg
-	 VjJ9UP/x/6sicioV2Qz6XSwl1n5bsNRM0IRW1gGIoyp6ML4BsGUfaW2dRQvFQkZ/4D
-	 O0vu/0HaamAQhKyxCIVCeP6dhVmfkIGtC3vEsqgQ=
+	b=VvzDa6obOtwxqmkUOcJ4fTl5mwM8TKyPz9VUzx57Ru0va1fZtId7gHqGlBp4plIoO
+	 VGvcNKrP9z2K3qxJptfktF73RkH8m0LvSQEacGpjPW90ZQNwLwJh/EnXxnwFFjkSQs
+	 cELBZ0uIubaRWWgFgSSPrr8A0An79zeVA5lbj2+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Mazakas <christian.mazakas@gmail.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 076/129] io_uring/timeout: fix multishot updates
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 73/92] iio: adc: ti-ads8688: fix information leak in triggered buffer
 Date: Wed, 15 Jan 2025 11:37:31 +0100
-Message-ID: <20250115103557.403293909@linuxfoundation.org>
+Message-ID: <20250115103550.471931025@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit c83c846231db8b153bfcb44d552d373c34f78245 upstream.
+commit 2a7377ccfd940cd6e9201756aff1e7852c266e69 upstream.
 
-After update only the first shot of a multishot timeout request adheres
-to the new timeout value while all subsequent retries continue to use
-the old value. Don't forget to update the timeout stored in struct
-io_timeout_data.
+The 'buffer' local array is used to push data to user space from a
+triggered buffer, but it does not set values for inactive channels, as
+it only uses iio_for_each_active_channel() to assign new values.
+
+Initialize the array to zero before using it to avoid pushing
+uninitialized information to userspace.
 
 Cc: stable@vger.kernel.org
-Fixes: ea97f6c8558e8 ("io_uring: add support for multishot timeouts")
-Reported-by: Christian Mazakas <christian.mazakas@gmail.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/e6516c3304eb654ec234cfa65c88a9579861e597.1736015288.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 61fa5dfa5f52 ("iio: adc: ti-ads8688: Fix alignment of buffer in iio_push_to_buffers_with_timestamp()")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-8-0cb6e98d895c@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/timeout.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ti-ads8688.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/timeout.c
-+++ b/io_uring/timeout.c
-@@ -413,10 +413,12 @@ static int io_timeout_update(struct io_r
+--- a/drivers/iio/adc/ti-ads8688.c
++++ b/drivers/iio/adc/ti-ads8688.c
+@@ -382,7 +382,7 @@ static irqreturn_t ads8688_trigger_handl
+ 	struct iio_poll_func *pf = p;
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	/* Ensure naturally aligned timestamp */
+-	u16 buffer[ADS8688_MAX_CHANNELS + sizeof(s64)/sizeof(u16)] __aligned(8);
++	u16 buffer[ADS8688_MAX_CHANNELS + sizeof(s64)/sizeof(u16)] __aligned(8) = { };
+ 	int i, j = 0;
  
- 	timeout->off = 0; /* noseq */
- 	data = req->async_data;
-+	data->ts = *ts;
-+
- 	list_add_tail(&timeout->list, &ctx->timeout_list);
- 	hrtimer_init(&data->timer, io_timeout_get_clock(data), mode);
- 	data->timer.function = io_timeout_fn;
--	hrtimer_start(&data->timer, timespec64_to_ktime(*ts), mode);
-+	hrtimer_start(&data->timer, timespec64_to_ktime(data->ts), mode);
- 	return 0;
- }
- 
+ 	for (i = 0; i < indio_dev->masklength; i++) {
 
 
 
