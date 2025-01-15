@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-108708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B899A11FD7
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:39:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6235BA120F3
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:51:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A47DC3A34A6
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:38:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB367188C880
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2E8248BC4;
-	Wed, 15 Jan 2025 10:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E95248BCB;
+	Wed, 15 Jan 2025 10:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ET8YAEzI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPcSaRcZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5306248BCE;
-	Wed, 15 Jan 2025 10:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66597248BA6;
+	Wed, 15 Jan 2025 10:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937538; cv=none; b=FlxQanUwzw7q1VqRzh+ts+8xRdpCrYHk4ETV88sbb6TDTZmQ6jVm4AKCuLId5Ax4HOTQhERkTTFq9O9/j82EtlUe5pfLEUZTN/cPZiqkonKPX/1wz77qERk4l/+E9wpqXT2SCKfhOuGRlhnHCAHuhGOy2Sgtcg1oo8dmTcxXxDc=
+	t=1736938268; cv=none; b=mUKSf3b5hQvPNlgAaWeBXbs0A1yt6rfh2IOAmml53exqSiqWHyW1xq3u313E4riUn1JgIIaFJS4KQGFKOZ2+fxIw4iHedU4TuCtKCODHzF6an1P92vfVq9g1q9P5AqvLJQaqGeh5frCAa2LuvJhqq4TWTK/M/ccTuPFmRCmZaiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937538; c=relaxed/simple;
-	bh=9CiB1H0CK72ZlTOLbBcHe73h8VTPgA0Y3pqBDAS0HnM=;
+	s=arc-20240116; t=1736938268; c=relaxed/simple;
+	bh=yWCnOfxVxQbozFShAMwEnCDIoTbYkdyWrcVHNnCVqRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uWRrVMnn0b5dUDa8NZDdMoAr6/F8DVquJMlL4JXLWLOUPK5r+UbIQ1IoD/9spx9WQxcyQ2RrYWxb+tVdkOoCK8SWQDJvRrWqzyQzWzSqKGjDVcy76cG7/HgRgzMas0TVxeb+8DjH4uoWE2VKA3zqrMbt2OLwfxUIQc0JbzkYoAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ET8YAEzI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 641F6C4CEE2;
-	Wed, 15 Jan 2025 10:38:57 +0000 (UTC)
+	 MIME-Version; b=cTpALVepuemXcZ6EnDqh7c9hw/+0W9Ti0+zjtuIuMjNdAYXBd+DAlGv2NWdpIbQ7FjwQO9o2sKixJYRdT1G4IvUcFpGkqdXB277+Rw/fNmSCesa4P3XXZ2AeSQclm0NTPsYTT/qXB9hNM9CS4ku/+55v9VK0THZx8iydRSypse4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPcSaRcZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B54FC4CEDF;
+	Wed, 15 Jan 2025 10:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937538;
-	bh=9CiB1H0CK72ZlTOLbBcHe73h8VTPgA0Y3pqBDAS0HnM=;
+	s=korg; t=1736938268;
+	bh=yWCnOfxVxQbozFShAMwEnCDIoTbYkdyWrcVHNnCVqRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ET8YAEzI+PwMQHrtv8pUfHpgaQY2Hs2IXB3qNhYnsHzNtZmCscQdo9IT3ojjl0yvX
-	 acBHMoMqzGoLjBhmUJvC4w3+So4+inuhAs2ojJku537gxwSeA4rMIbUNK1Q5LXPRHm
-	 QkdH9irtAums/wBRL6tZVa6ouUBtw1hZMkMXLhGA=
+	b=ZPcSaRcZeyd2183YIodPhP7pZqEkEYPbydDgIpYhjpm3WM3zoiwre0D4IURXDYMB2
+	 X4880z5lJ1dDoOL9REmpmrQsf3yrB8cYlKjiyipINvqzjBxuJA4Njqvdm42nukVULJ
+	 2j9Cw/cbGbY6OqQawZ6Oaw5pl1PjUvVR8B3K+1L4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1de5a37cb85a2d536330@syzkaller.appspotmail.com,
-	Yuezhang Mo <Yuezhang.Mo@sony.com>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 10/92] exfat: fix the infinite loop in __exfat_free_cluster()
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 092/189] mptcp: sysctl: avail sched: remove write access
 Date: Wed, 15 Jan 2025 11:36:28 +0100
-Message-ID: <20250115103547.943648051@linuxfoundation.org>
+Message-ID: <20250115103609.997650553@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuezhang Mo <Yuezhang.Mo@sony.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit a5324b3a488d883aa2d42f72260054e87d0940a0 ]
+commit 771ec78dc8b48d562e6015bb535ed3cd37043d78 upstream.
 
-In __exfat_free_cluster(), the cluster chain is traversed until the
-EOF cluster. If the cluster chain includes a loop due to file system
-corruption, the EOF cluster cannot be traversed, resulting in an
-infinite loop.
+'net.mptcp.available_schedulers' sysctl knob is there to list available
+schedulers, not to modify this list.
 
-This commit uses the total number of clusters to prevent this infinite
-loop.
+There are then no reasons to give write access to it.
 
-Reported-by: syzbot+1de5a37cb85a2d536330@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1de5a37cb85a2d536330
-Tested-by: syzbot+1de5a37cb85a2d536330@syzkaller.appspotmail.com
-Fixes: 31023864e67a ("exfat: add fat entry operations")
-Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
-Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Nothing would have been written anyway, but no errors would have been
+returned, which is unexpected.
+
+Fixes: 73c900aa3660 ("mptcp: add net.mptcp.available_schedulers")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-1-5df34b2083e8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/exfat/fatent.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/mptcp/ctrl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/exfat/fatent.c b/fs/exfat/fatent.c
-index 41ae4cce1f42..fe007ae2f23c 100644
---- a/fs/exfat/fatent.c
-+++ b/fs/exfat/fatent.c
-@@ -216,6 +216,16 @@ static int __exfat_free_cluster(struct inode *inode, struct exfat_chain *p_chain
- 
- 			if (err)
- 				goto dec_used_clus;
-+
-+			if (num_clusters >= sbi->num_clusters - EXFAT_FIRST_CLUSTER) {
-+				/*
-+				 * The cluster chain includes a loop, scan the
-+				 * bitmap to get the number of used clusters.
-+				 */
-+				exfat_count_used_clusters(sb, &sbi->used_clusters);
-+
-+				return 0;
-+			}
- 		} while (clu != EXFAT_EOF_CLUSTER);
- 	}
- 
+diff --git a/net/mptcp/ctrl.c b/net/mptcp/ctrl.c
+index 38d8121331d4..d9b57fab2a13 100644
+--- a/net/mptcp/ctrl.c
++++ b/net/mptcp/ctrl.c
+@@ -228,7 +228,7 @@ static struct ctl_table mptcp_sysctl_table[] = {
+ 	{
+ 		.procname = "available_schedulers",
+ 		.maxlen	= MPTCP_SCHED_BUF_MAX,
+-		.mode = 0644,
++		.mode = 0444,
+ 		.proc_handler = proc_available_schedulers,
+ 	},
+ 	{
 -- 
-2.39.5
+2.48.0
 
 
 
