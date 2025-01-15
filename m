@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-109046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE7ADA1218C
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:58:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 129FCA12108
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:52:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 585347A43A1
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:57:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38F413AC34C
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB63248BDF;
-	Wed, 15 Jan 2025 10:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E341E7C2E;
+	Wed, 15 Jan 2025 10:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eq1DZaU9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKVeQtBd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C066E248BD0;
-	Wed, 15 Jan 2025 10:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020BC248BCB;
+	Wed, 15 Jan 2025 10:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938676; cv=none; b=bNaptaryZSTANgJ7dmyzW1KHXS+sXaU6ldhfDk2wfc1tgKirRPsBfUTfYJ5w9gqtRtuubHKEXWk6sJJ632YMYMJDX/5iKYiy8uu7Zn1Og6SjLAi/eJXOiezmDt2JoYLn0uojHEnBbYavDn5liA9xRzDoBLWnzqx/FtBWCChNcEk=
+	t=1736938295; cv=none; b=rdiVAzPYGCR71ySRgE+l40km9eOgrGDDp4VhB4u5d7l3ApLbXRgjKYk1AG3lD2ZUuzlKIB90rUty4UBYoT3exAKYU9+JnQM9lHRacWl8f7HpaMsrd3b/H/siZFipKQRnH78ORxkVMbNWHq0lK9tn4OmJlh3iJiA10wbs0z79Cd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938676; c=relaxed/simple;
-	bh=9PQmzy+rESUNoT/vWELZTyMWpIvHeRQcrMUtrniRLoQ=;
+	s=arc-20240116; t=1736938295; c=relaxed/simple;
+	bh=sERtP/DV7D1hIGVPMop43dFSheKN7RnCCE1FQ+ZUDs4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EqQ7EtXd2FB+wsi3kfcKm9EeW3/uWosMRAhh4bj2HK0SDPQOFzZO37nIvkY78braqtUUpyvZ8UYs6L6yyzgBuzUz2NS1jXFA8vkpya1pR5/G2hibSv4vkBGMHCkcoQV/zXxKD/cYv2xyc5CgeSzlEr29CjjDPdsZIFwPgsWSJKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eq1DZaU9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31482C4CEDF;
-	Wed, 15 Jan 2025 10:57:55 +0000 (UTC)
+	 MIME-Version; b=c7bUo89LfyIN+oz9OSV1EI7TsEs3hFF5hVzCEn63+UKihSKCgxeMg1MsgM4v0CnZ5GWACX2hBLngCZ1ZcE6cyq53Z2Iu+sb5FTOBdGo3DiB9aCaZNESlc77gEjjfRbg6/5i/CkV/aWvD3FwBXpL9JGzkmPVassf1xu720TIWy1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKVeQtBd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60BA4C4CEDF;
+	Wed, 15 Jan 2025 10:51:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938676;
-	bh=9PQmzy+rESUNoT/vWELZTyMWpIvHeRQcrMUtrniRLoQ=;
+	s=korg; t=1736938294;
+	bh=sERtP/DV7D1hIGVPMop43dFSheKN7RnCCE1FQ+ZUDs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eq1DZaU9gBa9QdUFTM++OTNFZxxpky0zs2But9mdW1j93G+4JZVaHU7gJjvR4m8vm
-	 twf8/t7NBX4Co6BBc/okuqxl2LALDwJkmE7Lc1KCiWXTYF+jCll55jLqLeSKNTDUQs
-	 Og7E/ERoWZP7Yy/Feus9NKZY6c/x0xvw7G6vj3cQ=
+	b=qKVeQtBdsWNmB4pYj6/FSvP06A06I7jRu54+tj6k0ugIxtjvk9qFTg6S7rwaa590T
+	 cUiIjixNdpO+ECg0EfvZRmPlzv3Yk1u6bTZf2+BxItI1pL1MFcsQcA2baJJaUnuWiG
+	 l+jSDU4HPwbg7KlugR2oOsp5iaQSop1Wl2PKDuWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 062/129] sctp: sysctl: cookie_hmac_alg: avoid using current->nsproxy
+	stable <stable@kernel.org>,
+	Ben Wolsieffer <ben.wolsieffer@hefring.com>,
+	John Ogness <john.ogness@linutronix.de>
+Subject: [PATCH 6.12 141/189] serial: stm32: use port lock wrappers for break control
 Date: Wed, 15 Jan 2025 11:37:17 +0100
-Message-ID: <20250115103556.853988576@linuxfoundation.org>
+Message-ID: <20250115103612.051650471@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
 
-commit ea62dd1383913b5999f3d16ae99d411f41b528d4 upstream.
+commit 0cfc36ea51684b5932cd3951ded523777d807af2 upstream.
 
-As mentioned in a previous commit of this series, using the 'net'
-structure via 'current' is not recommended for different reasons:
+Commit 30e945861f3b ("serial: stm32: add support for break control")
+added another usage of the port lock, but was merged on the same day as
+c5d06662551c ("serial: stm32: Use port lock wrappers"), therefore the
+latter did not update this usage to use the port lock wrappers.
 
-- Inconsistency: getting info from the reader's/writer's netns vs only
-  from the opener's netns.
-
-- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
-  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
-  syzbot [1] using acct(2).
-
-The 'net' structure can be obtained from the table->data using
-container_of().
-
-Note that table->data could also be used directly, as this is the only
-member needed from the 'net' structure, but that would increase the size
-of this fix, to use '*data' everywhere 'net->sctp.sctp_hmac_alg' is
-used.
-
-Fixes: 3c68198e7511 ("sctp: Make hmac algorithm selection for cookie generation dynamic")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-4-5df34b2083e8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c5d06662551c ("serial: stm32: Use port lock wrappers")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Link: https://lore.kernel.org/r/20241216145323.111612-1-ben.wolsieffer@hefring.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/sysctl.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/tty/serial/stm32-usart.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/sctp/sysctl.c
-+++ b/net/sctp/sysctl.c
-@@ -391,7 +391,8 @@ static struct ctl_table sctp_net_table[]
- static int proc_sctp_do_hmac_alg(struct ctl_table *ctl, int write,
- 				 void *buffer, size_t *lenp, loff_t *ppos)
- {
--	struct net *net = current->nsproxy->net_ns;
-+	struct net *net = container_of(ctl->data, struct net,
-+				       sctp.sctp_hmac_alg);
- 	struct ctl_table tbl;
- 	bool changed = false;
- 	char *none = "none";
+--- a/drivers/tty/serial/stm32-usart.c
++++ b/drivers/tty/serial/stm32-usart.c
+@@ -1051,14 +1051,14 @@ static void stm32_usart_break_ctl(struct
+ 	const struct stm32_usart_offsets *ofs = &stm32_port->info->ofs;
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 
+ 	if (break_state)
+ 		stm32_usart_set_bits(port, ofs->rqr, USART_RQR_SBKRQ);
+ 	else
+ 		stm32_usart_clr_bits(port, ofs->rqr, USART_RQR_SBKRQ);
+ 
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static int stm32_usart_startup(struct uart_port *port)
 
 
 
