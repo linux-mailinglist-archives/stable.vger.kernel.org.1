@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-108882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C62A120C2
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:48:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A69A120C6
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:48:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 817373A44BC
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:48:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78D083A4241
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:48:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5069C248BD1;
-	Wed, 15 Jan 2025 10:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F90248BBD;
+	Wed, 15 Jan 2025 10:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2Lygcb+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnwggtTu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A965248BB2;
-	Wed, 15 Jan 2025 10:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F04248BB2;
+	Wed, 15 Jan 2025 10:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938123; cv=none; b=F2vF12wkpQEuJogQ1dKXnY3BfKBQAKjUyqYInXPvvUlefWPnhqwJlxkv+DR8MuSZPnDQhd6mfu1XOr5FKXEZNhAi5B1okHbgYm5FJrCOwdhh4pCnVHjGapPmfxMpbRRzz8ZTfHcTcBgyy3/vSkIX5VMrF6FLL5vIEqZ/A3xaeRw=
+	t=1736938136; cv=none; b=NUMx8Qs4RL6wz73PvkfYYbdHzcqaZ6GYDwatdNZNfiMXbazwMYAk6z+Jbd5YhLWtqUjeVJVf3yyZR6oSnnaITt1NcTnx2eTZJ1zneY2WR4Yh7NuMb+jZuJ6k8xSGxvHQiPyiV5+Ke2vEk87pWEm9J4DkUjZbpx57rFKZ+5hAnbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938123; c=relaxed/simple;
-	bh=96JDjjfffRb8VsjAn7f1DO86IGf0bfjk95OxvSUDZFQ=;
+	s=arc-20240116; t=1736938136; c=relaxed/simple;
+	bh=de93QA5KliX6qjE4SMDl2QUE2WYsQMc99tnwbMXsSNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hJ+4AsDgohP/gN/pHuvXIunoJuhbKDEXFmSVsnh/deQlcHqjO8sPa08Pi0boGYsz6Ea8Z3h9p6Nv/fHkM4AZ1ciO0qLzVrpWDHeCCFZKrw504sRQdeGk/9IzovEJ9IWbKOwT5WeRIp5HR0VpDmpO9FSju24jP8xyNQRhxi9O7M8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2Lygcb+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F21C4CEDF;
-	Wed, 15 Jan 2025 10:48:42 +0000 (UTC)
+	 MIME-Version; b=LyG2WEVWz9s0D0PLpNDJrxuoXCQauWczj8Q9rVcy4UFt3aMbdZTzqhpQF/2pM6hElVf0s8mF+MCL8n8UGEKjbp3GTf6ThzYAIMhCh/quXz8gvTsDRMxtmpFZyH4Gkv2y+jz3/kq8njcgN+mjze9xewmgfvcw+aIpj6ju63+tc1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnwggtTu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6501DC4CEE2;
+	Wed, 15 Jan 2025 10:48:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938122;
-	bh=96JDjjfffRb8VsjAn7f1DO86IGf0bfjk95OxvSUDZFQ=;
+	s=korg; t=1736938135;
+	bh=de93QA5KliX6qjE4SMDl2QUE2WYsQMc99tnwbMXsSNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G2Lygcb+rMYqPm1lcBxLCl2Gg8h8xXGZbAs+gOsJFhKeqYQHhhZGyc/UuJsR7tXPJ
-	 Lu/TC8TLTJlzOoY4rdqguooIklQErUFtjHnHBO2X09o7JePo4XcxomwTGaSxFO5BCl
-	 qj8oJcVlpKhvyaRRkuQiD+TFnOr1jaj5qwWww1uc=
+	b=rnwggtTuxXPXGYYRBRXEkvkZryS80Bo3zmoYR62UHMwpko4Nh0GNbZj1xkZDw8KNr
+	 pbyEnZ0UaeXIOzGSq3ZS84dfRR+/DYMXf586FHzDZ+CYcPqQNcHnFFqbrUt6oV2iR7
+	 uYQ5QbM98WObbrCDk3Mlib1PWM0G4JPleSnPLoF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
+	Arnd Bergmann <arnd@arndb.de>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	CK Hu <ck.hu@mediatek.com>,
 	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 062/189] drm/mediatek: Add support for 180-degree rotation in the display driver
-Date: Wed, 15 Jan 2025 11:35:58 +0100
-Message-ID: <20250115103608.831352520@linuxfoundation.org>
+Subject: [PATCH 6.12 063/189] drm/mediatek: stop selecting foreign drivers
+Date: Wed, 15 Jan 2025 11:35:59 +0100
+Message-ID: <20250115103608.869290026@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
 In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
 References: <20250115103606.357764746@linuxfoundation.org>
@@ -68,60 +68,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 5c9d7e79ba154e8e1f0bfdeb7b495f454c1a3eba ]
+[ Upstream commit 924d66011f2401a4145e2e814842c5c4572e439f ]
 
-mediatek-drm driver reported the capability of 180-degree rotation by
-adding `DRM_MODE_ROTATE_180` to the plane property, as flip-x combined
-with flip-y equals a 180-degree rotation. However, we did not handle
-the rotation property in the driver and lead to rotation issues.
+The PHY portion of the mediatek hdmi driver was originally part of
+the driver it self and later split out into drivers/phy, which a
+'select' to keep the prior behavior.
 
-Fixes: 74608d8feefd ("drm/mediatek: Add DRM_MODE_ROTATE_0 to rotation property")
-Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+However, this leads to build failures when the PHY driver cannot
+be built:
+
+WARNING: unmet direct dependencies detected for PHY_MTK_HDMI
+  Depends on [n]: (ARCH_MEDIATEK || COMPILE_TEST [=y]) && COMMON_CLK [=y] && OF [=y] && REGULATOR [=n]
+  Selected by [m]:
+  - DRM_MEDIATEK_HDMI [=m] && HAS_IOMEM [=y] && DRM [=m] && DRM_MEDIATEK [=m]
+ERROR: modpost: "devm_regulator_register" [drivers/phy/mediatek/phy-mtk-hdmi-drv.ko] undefined!
+ERROR: modpost: "rdev_get_drvdata" [drivers/phy/mediatek/phy-mtk-hdmi-drv.ko] undefined!
+
+The best option here is to just not select the phy driver and leave that
+up to the defconfig. Do the same for the other PHY and memory drivers
+selected here as well for consistency.
+
+Fixes: a481bf2f0ca4 ("drm/mediatek: Separate mtk_hdmi_phy to an independent module")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20241118025126.30808-1-jason-jh.lin@mediatek.com/
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20241218085837.2670434-1-arnd@kernel.org/
 Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_disp_ovl.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/mediatek/Kconfig | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-index e0c0bb01f65a..a3091bfcbd43 100644
---- a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-+++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-@@ -471,6 +471,7 @@ void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
- 	unsigned int pitch = pending->pitch;
- 	unsigned int hdr_pitch = pending->hdr_pitch;
- 	unsigned int fmt = pending->format;
-+	unsigned int rotation = pending->rotation;
- 	unsigned int offset = (pending->y << 16) | pending->x;
- 	unsigned int src_size = (pending->height << 16) | pending->width;
- 	unsigned int blend_mode = state->base.pixel_blend_mode;
-@@ -513,12 +514,19 @@ void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
- 			ignore_pixel_alpha = OVL_CONST_BLEND;
- 	}
- 
--	if (pending->rotation & DRM_MODE_REFLECT_Y) {
-+	/*
-+	 * Treat rotate 180 as flip x + flip y, and XOR the original rotation value
-+	 * to flip x + flip y to support both in the same time.
-+	 */
-+	if (rotation & DRM_MODE_ROTATE_180)
-+		rotation ^= DRM_MODE_REFLECT_X | DRM_MODE_REFLECT_Y;
-+
-+	if (rotation & DRM_MODE_REFLECT_Y) {
- 		con |= OVL_CON_VIRT_FLIP;
- 		addr += (pending->height - 1) * pending->pitch;
- 	}
- 
--	if (pending->rotation & DRM_MODE_REFLECT_X) {
-+	if (rotation & DRM_MODE_REFLECT_X) {
- 		con |= OVL_CON_HORZ_FLIP;
- 		addr += pending->pitch - 1;
- 	}
+diff --git a/drivers/gpu/drm/mediatek/Kconfig b/drivers/gpu/drm/mediatek/Kconfig
+index 417ac8c9af41..a749c01199d4 100644
+--- a/drivers/gpu/drm/mediatek/Kconfig
++++ b/drivers/gpu/drm/mediatek/Kconfig
+@@ -13,9 +13,6 @@ config DRM_MEDIATEK
+ 	select DRM_BRIDGE_CONNECTOR
+ 	select DRM_MIPI_DSI
+ 	select DRM_PANEL
+-	select MEMORY
+-	select MTK_SMI
+-	select PHY_MTK_MIPI_DSI
+ 	select VIDEOMODE_HELPERS
+ 	help
+ 	  Choose this option if you have a Mediatek SoCs.
+@@ -26,7 +23,6 @@ config DRM_MEDIATEK
+ config DRM_MEDIATEK_DP
+ 	tristate "DRM DPTX Support for MediaTek SoCs"
+ 	depends on DRM_MEDIATEK
+-	select PHY_MTK_DP
+ 	select DRM_DISPLAY_HELPER
+ 	select DRM_DISPLAY_DP_HELPER
+ 	select DRM_DISPLAY_DP_AUX_BUS
+@@ -37,6 +33,5 @@ config DRM_MEDIATEK_HDMI
+ 	tristate "DRM HDMI Support for Mediatek SoCs"
+ 	depends on DRM_MEDIATEK
+ 	select SND_SOC_HDMI_CODEC if SND_SOC
+-	select PHY_MTK_HDMI
+ 	help
+ 	  DRM/KMS HDMI driver for Mediatek SoCs
 -- 
 2.39.5
 
