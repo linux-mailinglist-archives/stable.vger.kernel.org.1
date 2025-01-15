@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-109090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97436A121C7
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 12:00:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D25A12134
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:54:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1183D3A2A27
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:00:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DDEE7A1480
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC501E9912;
-	Wed, 15 Jan 2025 11:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 174401DB142;
+	Wed, 15 Jan 2025 10:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YKbvi3L7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdGsJTu/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA2C1E98E7;
-	Wed, 15 Jan 2025 11:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A791E991F;
+	Wed, 15 Jan 2025 10:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938819; cv=none; b=V3K25dkd9q0+3iftBLIsqMQ4M8WGA74Cz8L3+DpvKOP1vve+5dEO37wxzwoOKiemuVfg1mXkffKY0NqIP44ogRbxmFlG6YVW3HPAiPRvi1f1D1NFhyCTOx1M0SlArdm91o84HoyHFcYzyAlke3OtZL0yoTzMNngHtZHZYWWf280=
+	t=1736938443; cv=none; b=nd/6yfyioqx9pr5/tEJc28XmA49n337rAMRN2wQKRMMAA4hPA5guz0xOoUnEWvnsXeGIB+83MAdVNb8lVAww99xdLP5wG1JEX8vui2g8Yc33pHhHUTZexZAWA0NicLizoGkH67C1smCNM9habRxFqhJhzCf9vOflk1Bbc83Fbgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938819; c=relaxed/simple;
-	bh=Ql+ZREUpsvE5xcaXPqrCJNZuNw2Mg+Q+6+xa6ZqGAKs=;
+	s=arc-20240116; t=1736938443; c=relaxed/simple;
+	bh=2CJKO2cjdecZnpakG7e4gOSCs/oOTX0v+SigMrlhvY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VLuxvMduHW/7bCNiyOZUhpYs1fA7xpn6V18Zp5Sjms3Q+k4TT7jko0o2OiNY3ADVYHuadoRc5yaRlCtgFbcbRxduqL2peOWHgzsIwpQlnVjgR3iXyCa2OYjE4Xp4nD9xHcdXbEp1P9i5dxICEYcOmk71P/XzjVDGxqa/25JlKWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YKbvi3L7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F8B4C4CEDF;
-	Wed, 15 Jan 2025 11:00:16 +0000 (UTC)
+	 MIME-Version; b=MBJw4T29Tq4GXYq371KsaJZCeA80/FhtHeNTrKjMLp+NQimZoDjjRJbSOJ0snKdLjPa34/Mcn8hhi0x5wdRvJM7ZYznJctDFK+bBYbp+86iQoNOUlSV85RRx5Ncw0lrpGioBmaw8d2xcYKP0yUhZWk0WpPmTUuzwQcZ2w4lCOOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdGsJTu/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CAF6C4CEDF;
+	Wed, 15 Jan 2025 10:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938817;
-	bh=Ql+ZREUpsvE5xcaXPqrCJNZuNw2Mg+Q+6+xa6ZqGAKs=;
+	s=korg; t=1736938443;
+	bh=2CJKO2cjdecZnpakG7e4gOSCs/oOTX0v+SigMrlhvY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YKbvi3L7mkU4Wv2ssX0cvfzEaU8Ij03r8Ec6kp3qyBBvfIm3emRXS3Rxz8GtCPxd+
-	 hqAAqhcbd7xyKlz8MM74bHTb6aKT2M+0sgSy3PAmYfLSdz2MHHI45a3xb4rPm0fMBT
-	 CZNThP0iyiXKeMHqB60utevXX8Npd5iaEjLh5yCo=
+	b=qdGsJTu/OGgpWmLnexUukc+HMdfIaGesDxuUUN5/PDXdnEBNGgwROX6RCxVt2kU5/
+	 K/DqMrnbuoMh0+biVVnRTO3/j9TD580pYSd6kePxp3EEfGMYRF95l0jD8eGvKANGpE
+	 EJ4+PjnZKfOdPKoKGvnrwjFcU9RvFLQNQUHLXbYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 105/129] iio: imu: kmx61: fix information leak in triggered buffer
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Ashutosh Dixit <ashutosh.dixit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 184/189] drm/xe/oa: Add input fence dependencies
 Date: Wed, 15 Jan 2025 11:38:00 +0100
-Message-ID: <20250115103558.541410529@linuxfoundation.org>
+Message-ID: <20250115103613.749396091@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-commit 6ae053113f6a226a2303caa4936a4c37f3bfff7b upstream.
+[ Upstream commit 2fb4350a283af03a5ee34ba765783a941f942b82 ]
 
-The 'buffer' local array is used to push data to user space from a
-triggered buffer, but it does not set values for inactive channels, as
-it only uses iio_for_each_active_channel() to assign new values.
+Add input fence dependencies which will make OA configuration wait till
+these dependencies are met (till input fences signal).
 
-Initialize the array to zero before using it to avoid pushing
-uninitialized information to userspace.
+v2: Change add_deps arg to xe_oa_submit_bb from bool to enum (Matt Brost)
 
-Cc: stable@vger.kernel.org
-Fixes: c3a23ecc0901 ("iio: imu: kmx61: Add support for data ready triggers")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-5-0cb6e98d895c@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241022200352.1192560-4-ashutosh.dixit@intel.com
+Stable-dep-of: f0ed39830e60 ("xe/oa: Fix query mode of operation for OAR/OAC")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/kmx61.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_oa.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
---- a/drivers/iio/imu/kmx61.c
-+++ b/drivers/iio/imu/kmx61.c
-@@ -1192,7 +1192,7 @@ static irqreturn_t kmx61_trigger_handler
- 	struct kmx61_data *data = kmx61_get_data(indio_dev);
- 	int bit, ret, i = 0;
- 	u8 base;
--	s16 buffer[8];
-+	s16 buffer[8] = { };
+diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
+index 94c558d949e1..fd14d62bfb54 100644
+--- a/drivers/gpu/drm/xe/xe_oa.c
++++ b/drivers/gpu/drm/xe/xe_oa.c
+@@ -42,6 +42,11 @@
+ #define DEFAULT_POLL_PERIOD_NS (NSEC_PER_SEC / DEFAULT_POLL_FREQUENCY_HZ)
+ #define XE_OA_UNIT_INVALID U32_MAX
  
- 	if (indio_dev == data->acc_indio_dev)
- 		base = KMX61_ACC_XOUT_L;
++enum xe_oa_submit_deps {
++	XE_OA_SUBMIT_NO_DEPS,
++	XE_OA_SUBMIT_ADD_DEPS,
++};
++
+ struct xe_oa_reg {
+ 	struct xe_reg addr;
+ 	u32 value;
+@@ -572,7 +577,8 @@ static __poll_t xe_oa_poll(struct file *file, poll_table *wait)
+ 	return ret;
+ }
+ 
+-static struct dma_fence *xe_oa_submit_bb(struct xe_oa_stream *stream, struct xe_bb *bb)
++static struct dma_fence *xe_oa_submit_bb(struct xe_oa_stream *stream, enum xe_oa_submit_deps deps,
++					 struct xe_bb *bb)
+ {
+ 	struct xe_sched_job *job;
+ 	struct dma_fence *fence;
+@@ -585,11 +591,22 @@ static struct dma_fence *xe_oa_submit_bb(struct xe_oa_stream *stream, struct xe_
+ 		goto exit;
+ 	}
+ 
++	if (deps == XE_OA_SUBMIT_ADD_DEPS) {
++		for (int i = 0; i < stream->num_syncs && !err; i++)
++			err = xe_sync_entry_add_deps(&stream->syncs[i], job);
++		if (err) {
++			drm_dbg(&stream->oa->xe->drm, "xe_sync_entry_add_deps err %d\n", err);
++			goto err_put_job;
++		}
++	}
++
+ 	xe_sched_job_arm(job);
+ 	fence = dma_fence_get(&job->drm.s_fence->finished);
+ 	xe_sched_job_push(job);
+ 
+ 	return fence;
++err_put_job:
++	xe_sched_job_put(job);
+ exit:
+ 	return ERR_PTR(err);
+ }
+@@ -667,7 +684,7 @@ static int xe_oa_modify_ctx_image(struct xe_oa_stream *stream, struct xe_lrc *lr
+ 
+ 	xe_oa_store_flex(stream, lrc, bb, flex, count);
+ 
+-	fence = xe_oa_submit_bb(stream, bb);
++	fence = xe_oa_submit_bb(stream, XE_OA_SUBMIT_NO_DEPS, bb);
+ 	if (IS_ERR(fence)) {
+ 		err = PTR_ERR(fence);
+ 		goto free_bb;
+@@ -696,7 +713,7 @@ static int xe_oa_load_with_lri(struct xe_oa_stream *stream, struct xe_oa_reg *re
+ 
+ 	write_cs_mi_lri(bb, reg_lri, 1);
+ 
+-	fence = xe_oa_submit_bb(stream, bb);
++	fence = xe_oa_submit_bb(stream, XE_OA_SUBMIT_NO_DEPS, bb);
+ 	if (IS_ERR(fence)) {
+ 		err = PTR_ERR(fence);
+ 		goto free_bb;
+@@ -944,7 +961,7 @@ static int xe_oa_emit_oa_config(struct xe_oa_stream *stream, struct xe_oa_config
+ 		goto exit;
+ 	}
+ 
+-	fence = xe_oa_submit_bb(stream, oa_bo->bb);
++	fence = xe_oa_submit_bb(stream, XE_OA_SUBMIT_ADD_DEPS, oa_bo->bb);
+ 	if (IS_ERR(fence)) {
+ 		err = PTR_ERR(fence);
+ 		goto exit;
+-- 
+2.39.5
+
 
 
 
