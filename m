@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-108885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32AE1A120C5
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:48:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6CE2A1217D
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:57:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4711A16A437
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:48:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98A183A5760
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F6EA248BDE;
-	Wed, 15 Jan 2025 10:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 889F0248BD0;
+	Wed, 15 Jan 2025 10:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YWrQjYjB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B7LxuSUG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D78F248BA6;
-	Wed, 15 Jan 2025 10:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470CD248BD4;
+	Wed, 15 Jan 2025 10:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938133; cv=none; b=KPUSXZRby6pNN/bXtzhBvCHTPoD++SUZRlZZ+Rhij9anB1MMAIHOPJxlNaMupl690OMMlvO2mN9jFFE96BqDSGtyGw8pNqXPacI34hBjpeJetW/Tl4xVHyM56v9zn2c8rjSc9zYCQP2r+pqr+hOlYpvn6pCUHJqUwubV9uEltOk=
+	t=1736938609; cv=none; b=TRyjtaQhLMmSLDiEiHhpRSZSw7wANK0fBXLV3DYOO4wg2cGrCMUunP98ePb8Jmw3d7Zj8o80BD2K+oqyVZMPKWRoM81AcJDFLBdyhO/bJJ1aXyO0TdZjaKz2IMDld+HykjKDTuoqFEfrRqVUpIgRoOs+TlSlJ3g7qGj5NnCPde8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938133; c=relaxed/simple;
-	bh=uvOpDJJrNToa+xn93Z91wbd6Uc3pgFVZu4oPUq/bipo=;
+	s=arc-20240116; t=1736938609; c=relaxed/simple;
+	bh=TTt5oPI0lENqjaHSCqlVvWS//yxms8J26gg1zYgUyHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O29jHQesZ0iPo/Uacp20LBSlHEQ3+uqylg2VB8ejsHdlvKGHmUhL5vKofoXO8eKTH6C5Ob++Ud3N5r0fi5GS4IOLjndjCWnRgKEga3+aTkNj0/5nNmtfcyG7AG73S1JaSAi6sbKprnkKV7uhUIQv2mTpx8laszgTLopeTC1tm6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YWrQjYjB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32862C4CEE4;
-	Wed, 15 Jan 2025 10:48:52 +0000 (UTC)
+	 MIME-Version; b=hR/IQQJSU+LcxBlSNgHLjyul31Gca2cmMQwDmRLKbI9zndnUoKBJTuPWnLubJ/tmVHR9yLrJuZ8AJvlmDaoYaJ7aRCjBhQHRyUgL8t0v5VCtUN4sw/oe2rZseAy6n5E42kQQ1J7rQIlVr7NHc7Mu/y3MUEIto7dRKGcrmMgpgDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B7LxuSUG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE2BC4CEDF;
+	Wed, 15 Jan 2025 10:56:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938132;
-	bh=uvOpDJJrNToa+xn93Z91wbd6Uc3pgFVZu4oPUq/bipo=;
+	s=korg; t=1736938609;
+	bh=TTt5oPI0lENqjaHSCqlVvWS//yxms8J26gg1zYgUyHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YWrQjYjBYrFFbhtzXdXw0NnDdkeEYsoheeW6xw7EWXEReQOtDFJ0EmANHYgUg/ekx
-	 nlu8WtezmWka5HIG0nnE0KYJ6Ipx4YgAZJ4ebKI3JwshIxtqFfwNp54x2J0MYvruVy
-	 F8Fa9+ZXQhOaan3wY8yzS033FVJ+ZcblQvicUGaU=
+	b=B7LxuSUGelH6YtofAkGlYejGx4RhoB/weFAioj/JME0BrJiU5ZHRTz18EdO4kADkx
+	 /FCGZtUi3YicN8jVpB0/OvKEsURHWO1+fteLG8vwZfL0eJF8sqdody6QOzg6CeS7+f
+	 WZ6PeM26xpwhjUdZ2t2/7NkVKkeljcnDcN7T5WPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Milan Broz <gmazyland@gmail.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.12 091/189] dm-verity FEC: Fix RS FEC repair for roots unaligned to block size (take 2)
+	Dmitry Safonov <dima@arista.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 012/129] ovl: support encoding fid from inode with no alias
 Date: Wed, 15 Jan 2025 11:36:27 +0100
-Message-ID: <20250115103609.960089035@linuxfoundation.org>
+Message-ID: <20250115103554.860722494@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,165 +63,170 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Milan Broz <gmazyland@gmail.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-commit 6df90c02bae468a3a6110bafbc659884d0c4966c upstream.
+[ Upstream commit c45beebfde34aa71afbc48b2c54cdda623515037 ]
 
-This patch fixes an issue that was fixed in the commit
-  df7b59ba9245 ("dm verity: fix FEC for RS roots unaligned to block size")
-but later broken again in the commit
-  8ca7cab82bda ("dm verity fec: fix misaligned RS roots IO")
+Dmitry Safonov reported that a WARN_ON() assertion can be trigered by
+userspace when calling inotify_show_fdinfo() for an overlayfs watched
+inode, whose dentry aliases were discarded with drop_caches.
 
-If the Reed-Solomon roots setting spans multiple blocks, the code does not
-use proper parity bytes and randomly fails to repair even trivial errors.
+The WARN_ON() assertion in inotify_show_fdinfo() was removed, because
+it is possible for encoding file handle to fail for other reason, but
+the impact of failing to encode an overlayfs file handle goes beyond
+this assertion.
 
-This bug cannot happen if the sector size is multiple of RS roots
-setting (Android case with roots 2).
+As shown in the LTP test case mentioned in the link below, failure to
+encode an overlayfs file handle from a non-aliased inode also leads to
+failure to report an fid with FAN_DELETE_SELF fanotify events.
 
-The previous solution was to find a dm-bufio block size that is multiple
-of the device sector size and roots size. Unfortunately, the optimization
-in commit 8ca7cab82bda ("dm verity fec: fix misaligned RS roots IO")
-is incorrect and uses data block size for some roots (for example, it uses
-4096 block size for roots = 20).
+As Dmitry notes in his analyzis of the problem, ovl_encode_fh() fails
+if it cannot find an alias for the inode, but this failure can be fixed.
+ovl_encode_fh() seldom uses the alias and in the case of non-decodable
+file handles, as is often the case with fanotify fid info,
+ovl_encode_fh() never needs to use the alias to encode a file handle.
 
-This patch uses a different approach:
+Defer finding an alias until it is actually needed so ovl_encode_fh()
+will not fail in the common case of FAN_DELETE_SELF fanotify events.
 
- - It always uses a configured data block size for dm-bufio to avoid
- possible misaligned IOs.
-
- - and it caches the processed parity bytes, so it can join it
- if it spans two blocks.
-
-As the RS calculation is called only if an error is detected and
-the process is computationally intensive, copying a few more bytes
-should not introduce performance issues.
-
-The issue was reported to cryptsetup with trivial reproducer
-  https://gitlab.com/cryptsetup/cryptsetup/-/issues/923
-
-Reproducer (with roots=20):
-
- # create verity device with RS FEC
- dd if=/dev/urandom of=data.img bs=4096 count=8 status=none
- veritysetup format data.img hash.img --fec-device=fec.img --fec-roots=20 | \
- awk '/^Root hash/{ print $3 }' >roothash
-
- # create an erasure that should always be repairable with this roots setting
- dd if=/dev/zero of=data.img conv=notrunc bs=1 count=4 seek=4 status=none
-
- # try to read it through dm-verity
- veritysetup open data.img test hash.img --fec-device=fec.img --fec-roots=20 $(cat roothash)
- dd if=/dev/mapper/test of=/dev/null bs=4096 status=noxfer
-
- Even now the log says it cannot repair it:
-   : verity-fec: 7:1: FEC 0: failed to correct: -74
-   : device-mapper: verity: 7:1: data block 0 is corrupted
-   ...
-
-With this fix, errors are properly repaired.
-   : verity-fec: 7:1: FEC 0: corrected 4 errors
-
-Signed-off-by: Milan Broz <gmazyland@gmail.com>
-Fixes: 8ca7cab82bda ("dm verity fec: fix misaligned RS roots IO")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 16aac5ad1fa9 ("ovl: support encoding non-decodable file handles")
+Reported-by: Dmitry Safonov <dima@arista.com>
+Closes: https://lore.kernel.org/linux-fsdevel/CAOQ4uxiie81voLZZi2zXS1BziXZCM24nXqPAxbu8kxXCUWdwOg@mail.gmail.com/
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Link: https://lore.kernel.org/r/20250105162404.357058-3-amir73il@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-verity-fec.c |   40 ++++++++++++++++++++++++++--------------
- 1 file changed, 26 insertions(+), 14 deletions(-)
+ fs/overlayfs/export.c | 46 +++++++++++++++++++++++--------------------
+ 1 file changed, 25 insertions(+), 21 deletions(-)
 
---- a/drivers/md/dm-verity-fec.c
-+++ b/drivers/md/dm-verity-fec.c
-@@ -60,15 +60,19 @@ static int fec_decode_rs8(struct dm_veri
-  * to the data block. Caller is responsible for releasing buf.
+diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
+index c56e4e0b8054..3a17e4366f28 100644
+--- a/fs/overlayfs/export.c
++++ b/fs/overlayfs/export.c
+@@ -181,35 +181,37 @@ static int ovl_connect_layer(struct dentry *dentry)
+  *
+  * Return 0 for upper file handle, > 0 for lower file handle or < 0 on error.
   */
- static u8 *fec_read_parity(struct dm_verity *v, u64 rsb, int index,
--			   unsigned int *offset, struct dm_buffer **buf,
--			   unsigned short ioprio)
-+			   unsigned int *offset, unsigned int par_buf_offset,
-+			   struct dm_buffer **buf, unsigned short ioprio)
+-static int ovl_check_encode_origin(struct dentry *dentry)
++static int ovl_check_encode_origin(struct inode *inode)
  {
- 	u64 position, block, rem;
- 	u8 *res;
+-	struct ovl_fs *ofs = OVL_FS(dentry->d_sb);
++	struct ovl_fs *ofs = OVL_FS(inode->i_sb);
+ 	bool decodable = ofs->config.nfs_export;
++	struct dentry *dentry;
++	int err;
  
-+	/* We have already part of parity bytes read, skip to the next block */
-+	if (par_buf_offset)
-+		index++;
-+
- 	position = (index + rsb) * v->fec->roots;
- 	block = div64_u64_rem(position, v->fec->io_size, &rem);
--	*offset = (unsigned int)rem;
-+	*offset = par_buf_offset ? 0 : (unsigned int)rem;
+ 	/* No upper layer? */
+ 	if (!ovl_upper_mnt(ofs))
+ 		return 1;
  
- 	res = dm_bufio_read_with_ioprio(v->fec->bufio, block, buf, ioprio);
- 	if (IS_ERR(res)) {
-@@ -128,11 +132,12 @@ static int fec_decode_bufs(struct dm_ver
- {
- 	int r, corrected = 0, res;
- 	struct dm_buffer *buf;
--	unsigned int n, i, offset;
--	u8 *par, *block;
-+	unsigned int n, i, offset, par_buf_offset = 0;
-+	u8 *par, *block, par_buf[DM_VERITY_FEC_RSM - DM_VERITY_FEC_MIN_RSN];
- 	struct bio *bio = dm_bio_from_per_bio_data(io, v->ti->per_io_data_size);
+ 	/* Lower file handle for non-upper non-decodable */
+-	if (!ovl_dentry_upper(dentry) && !decodable)
++	if (!ovl_inode_upper(inode) && !decodable)
+ 		return 1;
  
--	par = fec_read_parity(v, rsb, block_offset, &offset, &buf, bio_prio(bio));
-+	par = fec_read_parity(v, rsb, block_offset, &offset,
-+			      par_buf_offset, &buf, bio_prio(bio));
- 	if (IS_ERR(par))
- 		return PTR_ERR(par);
+ 	/* Upper file handle for pure upper */
+-	if (!ovl_dentry_lower(dentry))
++	if (!ovl_inode_lower(inode))
+ 		return 0;
  
-@@ -142,7 +147,8 @@ static int fec_decode_bufs(struct dm_ver
+ 	/*
+ 	 * Root is never indexed, so if there's an upper layer, encode upper for
+ 	 * root.
  	 */
- 	fec_for_each_buffer_rs_block(fio, n, i) {
- 		block = fec_buffer_rs_block(v, fio, n, i);
--		res = fec_decode_rs8(v, fio, block, &par[offset], neras);
-+		memcpy(&par_buf[par_buf_offset], &par[offset], v->fec->roots - par_buf_offset);
-+		res = fec_decode_rs8(v, fio, block, par_buf, neras);
- 		if (res < 0) {
- 			r = res;
- 			goto error;
-@@ -155,12 +161,21 @@ static int fec_decode_bufs(struct dm_ver
- 		if (block_offset >= 1 << v->data_dev_block_bits)
- 			goto done;
+-	if (dentry == dentry->d_sb->s_root)
++	if (inode == d_inode(inode->i_sb->s_root))
+ 		return 0;
  
--		/* read the next block when we run out of parity bytes */
--		offset += v->fec->roots;
-+		/* Read the next block when we run out of parity bytes */
-+		offset += (v->fec->roots - par_buf_offset);
-+		/* Check if parity bytes are split between blocks */
-+		if (offset < v->fec->io_size && (offset + v->fec->roots) > v->fec->io_size) {
-+			par_buf_offset = v->fec->io_size - offset;
-+			memcpy(par_buf, &par[offset], par_buf_offset);
-+			offset += par_buf_offset;
-+		} else
-+			par_buf_offset = 0;
+ 	/*
+ 	 * Upper decodable file handle for non-indexed upper.
+ 	 */
+-	if (ovl_dentry_upper(dentry) && decodable &&
+-	    !ovl_test_flag(OVL_INDEX, d_inode(dentry)))
++	if (ovl_inode_upper(inode) && decodable &&
++	    !ovl_test_flag(OVL_INDEX, inode))
+ 		return 0;
+ 
+ 	/*
+@@ -218,17 +220,25 @@ static int ovl_check_encode_origin(struct dentry *dentry)
+ 	 * ovl_connect_layer() will try to make origin's layer "connected" by
+ 	 * copying up a "connectable" ancestor.
+ 	 */
+-	if (d_is_dir(dentry) && decodable)
+-		return ovl_connect_layer(dentry);
++	if (!decodable || !S_ISDIR(inode->i_mode))
++		return 1;
 +
- 		if (offset >= v->fec->io_size) {
- 			dm_bufio_release(buf);
++	dentry = d_find_any_alias(inode);
++	if (!dentry)
++		return -ENOENT;
++
++	err = ovl_connect_layer(dentry);
++	dput(dentry);
++	if (err < 0)
++		return err;
  
--			par = fec_read_parity(v, rsb, block_offset, &offset, &buf, bio_prio(bio));
-+			par = fec_read_parity(v, rsb, block_offset, &offset,
-+					      par_buf_offset, &buf, bio_prio(bio));
- 			if (IS_ERR(par))
- 				return PTR_ERR(par);
- 		}
-@@ -724,10 +739,7 @@ int verity_fec_ctr(struct dm_verity *v)
- 		return -E2BIG;
- 	}
+ 	/* Lower file handle for indexed and non-upper dir/non-dir */
+ 	return 1;
+ }
  
--	if ((f->roots << SECTOR_SHIFT) & ((1 << v->data_dev_block_bits) - 1))
--		f->io_size = 1 << v->data_dev_block_bits;
--	else
--		f->io_size = v->fec->roots << SECTOR_SHIFT;
-+	f->io_size = 1 << v->data_dev_block_bits;
+-static int ovl_dentry_to_fid(struct ovl_fs *ofs, struct dentry *dentry,
++static int ovl_dentry_to_fid(struct ovl_fs *ofs, struct inode *inode,
+ 			     u32 *fid, int buflen)
+ {
+-	struct inode *inode = d_inode(dentry);
+ 	struct ovl_fh *fh = NULL;
+ 	int err, enc_lower;
+ 	int len;
+@@ -237,7 +247,7 @@ static int ovl_dentry_to_fid(struct ovl_fs *ofs, struct dentry *dentry,
+ 	 * Check if we should encode a lower or upper file handle and maybe
+ 	 * copy up an ancestor to make lower file handle connectable.
+ 	 */
+-	err = enc_lower = ovl_check_encode_origin(dentry);
++	err = enc_lower = ovl_check_encode_origin(inode);
+ 	if (enc_lower < 0)
+ 		goto fail;
  
- 	f->bufio = dm_bufio_client_create(f->dev->bdev,
- 					  f->io_size,
+@@ -257,8 +267,8 @@ static int ovl_dentry_to_fid(struct ovl_fs *ofs, struct dentry *dentry,
+ 	return err;
+ 
+ fail:
+-	pr_warn_ratelimited("failed to encode file handle (%pd2, err=%i)\n",
+-			    dentry, err);
++	pr_warn_ratelimited("failed to encode file handle (ino=%lu, err=%i)\n",
++			    inode->i_ino, err);
+ 	goto out;
+ }
+ 
+@@ -266,19 +276,13 @@ static int ovl_encode_fh(struct inode *inode, u32 *fid, int *max_len,
+ 			 struct inode *parent)
+ {
+ 	struct ovl_fs *ofs = OVL_FS(inode->i_sb);
+-	struct dentry *dentry;
+ 	int bytes, buflen = *max_len << 2;
+ 
+ 	/* TODO: encode connectable file handles */
+ 	if (parent)
+ 		return FILEID_INVALID;
+ 
+-	dentry = d_find_any_alias(inode);
+-	if (!dentry)
+-		return FILEID_INVALID;
+-
+-	bytes = ovl_dentry_to_fid(ofs, dentry, fid, buflen);
+-	dput(dentry);
++	bytes = ovl_dentry_to_fid(ofs, inode, fid, buflen);
+ 	if (bytes <= 0)
+ 		return FILEID_INVALID;
+ 
+-- 
+2.39.5
+
 
 
 
