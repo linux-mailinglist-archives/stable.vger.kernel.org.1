@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-109092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D9DA121CA
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 12:00:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD4BEA12141
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:54:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47BD316AE7C
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:00:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2D0D188CD9E
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:54:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34CF1E7C02;
-	Wed, 15 Jan 2025 11:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096331E98EA;
+	Wed, 15 Jan 2025 10:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xu7bSXED"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2J7rZ84u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F76C1E7C22;
-	Wed, 15 Jan 2025 11:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749021E7C02;
+	Wed, 15 Jan 2025 10:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938824; cv=none; b=P5FM6w/e/sD1p+fXnjORh6CsRlSTYBc7YEbmBdog2BMfA2x6qiL2Dsywt/UPtktFqDC9cI9dY+bbp+BaCutnzCXSY59bHRrPNTHF3d0QROyi6BHNCRQ5X5ppN8qkoUdbtg7dA+9bSZlZ+HRHPxWMHuhQ4/2JClY3qFX14Yaannk=
+	t=1736938452; cv=none; b=rTD6Ih8MURRBQsJtb1ln7i7maSHOu/i0QIUoc6InVykh03SgxxBBTt58NQEOCFQfxeFFDSSN2iKVHpUwDZ6xkowHN8FmERzKoHfMVgwbr+3+7WAQZPc3JsCoce9fXXmiR+utGXwex7apMeGV+cniwUKx1GLOQFXF3omVn6XPGLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938824; c=relaxed/simple;
-	bh=Zk/ypXSW/XlzKa7yAS2qeE2srLU06k82snOcq4wLlZU=;
+	s=arc-20240116; t=1736938452; c=relaxed/simple;
+	bh=BckolZOe6l0+wQ3obQh9hqL3R1VRYAXiaUKxYUf6lEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=baHBA+snxRWPYfDiFDqdJqj7QwxrBFUqk+rYDEMH/AWU8EJzzXvfZ98lzFNZOxuHEB6HSnhcA4yjkBLIFiHuIYp9RIN4IhPjh6hEgUp3MB+HQCqnNB/MUhPGCoE1erQCq2V3NhvCzgJ1ZE9ea/Z78yvTEvWqKidbauC5o5hiebo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xu7bSXED; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B84C4CEDF;
-	Wed, 15 Jan 2025 11:00:23 +0000 (UTC)
+	 MIME-Version; b=UlYjNEHW9Dl4dOMwFSs6pHvdnOBAM0sgYTTszM0Yq1ymeJyOVHqGV3xKdYnpovE/3EBJ2WAwQUWb8jyLsvbS0PHTAmPhRFdjTSygox1y+qXUghrTsJ1VVgjj5uEAfvLN4tZXllpQtC4/3PDwFcMRb76vOyMyIOhDRb5OWDxZYLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2J7rZ84u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 677FCC4CEDF;
+	Wed, 15 Jan 2025 10:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938824;
-	bh=Zk/ypXSW/XlzKa7yAS2qeE2srLU06k82snOcq4wLlZU=;
+	s=korg; t=1736938452;
+	bh=BckolZOe6l0+wQ3obQh9hqL3R1VRYAXiaUKxYUf6lEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xu7bSXEDxRQkfKSXjuo3R/4+rs6hE4aFrB8ik22OElge5Qipd3YCukByPiwP84rYP
-	 gbhAJWUyn0AE96qPMq1xxNlsTNc4k6JHHAYj9WUOkigApXiAlxlfz8ONYjAdFIqGsy
-	 Aj6UQpWFeQDhIr8zdzn+sGf/8srNH5eS/5VH1KDY=
+	b=2J7rZ84uT+HwZdJh/SNDlT+GbPgWE+2sg4jMrm77Z9gF0XuU2jOz6Nfq726zWG8IA
+	 kOanoBkXMVmnWu0AY+NdwTZzWtYQXjhYiKEuApulyXrsEuh2JN9zbZNjj/WcR1dd1d
+	 Ro+ZtUvcX92PX7WwXwgFkX3g0qqUspdj70KRrqfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 107/129] iio: adc: ti-ads8688: fix information leak in triggered buffer
+	Daniel Golle <daniel@makrotopia.org>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 186/189] drm/mediatek: Only touch DISP_REG_OVL_PITCH_MSB if AFBC is supported
 Date: Wed, 15 Jan 2025 11:38:02 +0100
-Message-ID: <20250115103558.620353998@linuxfoundation.org>
+Message-ID: <20250115103613.828562109@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Daniel Golle <daniel@makrotopia.org>
 
-commit 2a7377ccfd940cd6e9201756aff1e7852c266e69 upstream.
+[ Upstream commit f8d9b91739e1fb436447c437a346a36deb676a36 ]
 
-The 'buffer' local array is used to push data to user space from a
-triggered buffer, but it does not set values for inactive channels, as
-it only uses iio_for_each_active_channel() to assign new values.
+Touching DISP_REG_OVL_PITCH_MSB leads to video overlay on MT2701, MT7623N
+and probably other older SoCs being broken.
 
-Initialize the array to zero before using it to avoid pushing
-uninitialized information to userspace.
+Move setting up AFBC layer configuration into a separate function only
+being called on hardware which actually supports AFBC which restores the
+behavior as it was before commit c410fa9b07c3 ("drm/mediatek: Add AFBC
+support to Mediatek DRM driver") on non-AFBC hardware.
 
+Fixes: c410fa9b07c3 ("drm/mediatek: Add AFBC support to Mediatek DRM driver")
 Cc: stable@vger.kernel.org
-Fixes: 61fa5dfa5f52 ("iio: adc: ti-ads8688: Fix alignment of buffer in iio_push_to_buffers_with_timestamp()")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-8-0cb6e98d895c@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/c7fbd3c3e633c0b7dd6d1cd78ccbdded31e1ca0f.1734397800.git.daniel@makrotopia.org/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ti-ads8688.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/mediatek/mtk_disp_ovl.c | 57 +++++++++++++------------
+ 1 file changed, 29 insertions(+), 28 deletions(-)
 
---- a/drivers/iio/adc/ti-ads8688.c
-+++ b/drivers/iio/adc/ti-ads8688.c
-@@ -382,7 +382,7 @@ static irqreturn_t ads8688_trigger_handl
- 	struct iio_poll_func *pf = p;
- 	struct iio_dev *indio_dev = pf->indio_dev;
- 	/* Ensure naturally aligned timestamp */
--	u16 buffer[ADS8688_MAX_CHANNELS + sizeof(s64)/sizeof(u16)] __aligned(8);
-+	u16 buffer[ADS8688_MAX_CHANNELS + sizeof(s64)/sizeof(u16)] __aligned(8) = { };
- 	int i, j = 0;
+diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
+index a3091bfcbd43..19b0d5083981 100644
+--- a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
++++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
+@@ -460,6 +460,29 @@ static unsigned int mtk_ovl_fmt_convert(struct mtk_disp_ovl *ovl,
+ 	}
+ }
  
- 	for (i = 0; i < indio_dev->masklength; i++) {
++static void mtk_ovl_afbc_layer_config(struct mtk_disp_ovl *ovl,
++				      unsigned int idx,
++				      struct mtk_plane_pending_state *pending,
++				      struct cmdq_pkt *cmdq_pkt)
++{
++	unsigned int pitch_msb = pending->pitch >> 16;
++	unsigned int hdr_pitch = pending->hdr_pitch;
++	unsigned int hdr_addr = pending->hdr_addr;
++
++	if (pending->modifier != DRM_FORMAT_MOD_LINEAR) {
++		mtk_ddp_write_relaxed(cmdq_pkt, hdr_addr, &ovl->cmdq_reg, ovl->regs,
++				      DISP_REG_OVL_HDR_ADDR(ovl, idx));
++		mtk_ddp_write_relaxed(cmdq_pkt,
++				      OVL_PITCH_MSB_2ND_SUBBUF | pitch_msb,
++				      &ovl->cmdq_reg, ovl->regs, DISP_REG_OVL_PITCH_MSB(idx));
++		mtk_ddp_write_relaxed(cmdq_pkt, hdr_pitch, &ovl->cmdq_reg, ovl->regs,
++				      DISP_REG_OVL_HDR_PITCH(ovl, idx));
++	} else {
++		mtk_ddp_write_relaxed(cmdq_pkt, pitch_msb,
++				      &ovl->cmdq_reg, ovl->regs, DISP_REG_OVL_PITCH_MSB(idx));
++	}
++}
++
+ void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
+ 			  struct mtk_plane_state *state,
+ 			  struct cmdq_pkt *cmdq_pkt)
+@@ -467,9 +490,7 @@ void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
+ 	struct mtk_disp_ovl *ovl = dev_get_drvdata(dev);
+ 	struct mtk_plane_pending_state *pending = &state->pending;
+ 	unsigned int addr = pending->addr;
+-	unsigned int hdr_addr = pending->hdr_addr;
+-	unsigned int pitch = pending->pitch;
+-	unsigned int hdr_pitch = pending->hdr_pitch;
++	unsigned int pitch_lsb = pending->pitch & GENMASK(15, 0);
+ 	unsigned int fmt = pending->format;
+ 	unsigned int rotation = pending->rotation;
+ 	unsigned int offset = (pending->y << 16) | pending->x;
+@@ -477,16 +498,6 @@ void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
+ 	unsigned int blend_mode = state->base.pixel_blend_mode;
+ 	unsigned int ignore_pixel_alpha = 0;
+ 	unsigned int con;
+-	bool is_afbc = pending->modifier != DRM_FORMAT_MOD_LINEAR;
+-	union overlay_pitch {
+-		struct split_pitch {
+-			u16 lsb;
+-			u16 msb;
+-		} split_pitch;
+-		u32 pitch;
+-	} overlay_pitch;
+-
+-	overlay_pitch.pitch = pitch;
+ 
+ 	if (!pending->enable) {
+ 		mtk_ovl_layer_off(dev, idx, cmdq_pkt);
+@@ -532,11 +543,12 @@ void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
+ 	}
+ 
+ 	if (ovl->data->supports_afbc)
+-		mtk_ovl_set_afbc(ovl, cmdq_pkt, idx, is_afbc);
++		mtk_ovl_set_afbc(ovl, cmdq_pkt, idx,
++				 pending->modifier != DRM_FORMAT_MOD_LINEAR);
+ 
+ 	mtk_ddp_write_relaxed(cmdq_pkt, con, &ovl->cmdq_reg, ovl->regs,
+ 			      DISP_REG_OVL_CON(idx));
+-	mtk_ddp_write_relaxed(cmdq_pkt, overlay_pitch.split_pitch.lsb | ignore_pixel_alpha,
++	mtk_ddp_write_relaxed(cmdq_pkt, pitch_lsb | ignore_pixel_alpha,
+ 			      &ovl->cmdq_reg, ovl->regs, DISP_REG_OVL_PITCH(idx));
+ 	mtk_ddp_write_relaxed(cmdq_pkt, src_size, &ovl->cmdq_reg, ovl->regs,
+ 			      DISP_REG_OVL_SRC_SIZE(idx));
+@@ -545,19 +557,8 @@ void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
+ 	mtk_ddp_write_relaxed(cmdq_pkt, addr, &ovl->cmdq_reg, ovl->regs,
+ 			      DISP_REG_OVL_ADDR(ovl, idx));
+ 
+-	if (is_afbc) {
+-		mtk_ddp_write_relaxed(cmdq_pkt, hdr_addr, &ovl->cmdq_reg, ovl->regs,
+-				      DISP_REG_OVL_HDR_ADDR(ovl, idx));
+-		mtk_ddp_write_relaxed(cmdq_pkt,
+-				      OVL_PITCH_MSB_2ND_SUBBUF | overlay_pitch.split_pitch.msb,
+-				      &ovl->cmdq_reg, ovl->regs, DISP_REG_OVL_PITCH_MSB(idx));
+-		mtk_ddp_write_relaxed(cmdq_pkt, hdr_pitch, &ovl->cmdq_reg, ovl->regs,
+-				      DISP_REG_OVL_HDR_PITCH(ovl, idx));
+-	} else {
+-		mtk_ddp_write_relaxed(cmdq_pkt,
+-				      overlay_pitch.split_pitch.msb,
+-				      &ovl->cmdq_reg, ovl->regs, DISP_REG_OVL_PITCH_MSB(idx));
+-	}
++	if (ovl->data->supports_afbc)
++		mtk_ovl_afbc_layer_config(ovl, idx, pending, cmdq_pkt);
+ 
+ 	mtk_ovl_set_bit_depth(dev, idx, fmt, cmdq_pkt);
+ 	mtk_ovl_layer_on(dev, idx, cmdq_pkt);
+-- 
+2.39.5
+
 
 
 
