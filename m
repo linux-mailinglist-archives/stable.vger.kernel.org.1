@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-108940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F8EAA12109
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:52:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7625A12191
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:58:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1253A7A2204
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:52:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6973E3AC202
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:58:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89E6248BD1;
-	Wed, 15 Jan 2025 10:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6256A1DB142;
+	Wed, 15 Jan 2025 10:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tMxwV7oC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fnJtEe4d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0EF7248BC1;
-	Wed, 15 Jan 2025 10:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20060248BD0;
+	Wed, 15 Jan 2025 10:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938315; cv=none; b=XF/8XUXz4dpbSdcZzJjDEQ9hnX5dcGfIZPAlil4x+jYQd2hKsAIh4fJ59c90L82B54z+IphRsO9k2wYLHOWLUmtAFTeo5pVd/a9Myj7RXSzA/BQov37RtY1LTnk93q+3WJfFmylIQ3CnuyxABdR+X4+6PJFVC8n5nmB/B7w5eqI=
+	t=1736938695; cv=none; b=pXfwJD7Uw/CLooeeO3Bphsuil8Hl8k7GHSmTqRW60782JEyqet9n9vFVpquxmEWwE6XZFQHkw2esc/hGz1+I3e5phJKZ03xxN6vF9KuJQd3FY0HUqzgeyW/wFKI8m6VQ9PHqgZnY8v53NKKwYGYPUprtCMht//xqSWwXXeSZTZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938315; c=relaxed/simple;
-	bh=JDCNIK4YzvBaCLQFbdW9wrJrMfyO3N0yUmls7p4LsWM=;
+	s=arc-20240116; t=1736938695; c=relaxed/simple;
+	bh=c+kFFr2v3aID+t63o403I7SFHM8URDNQ+Fe0BTb/x6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Saf3RyOeWeoDqhc3lCk8Qb7ys/VCJP++vjxarheZVtWaJDIHHLyTWK/bseS9E0scGdqml/f+M5LE3nYCbQcFUoczQ969Ly9ee5q7bP5eMWTRB4ZqaZjrYy24IIa48XMQQ8+xCIhMcOvoq/Lt5sAVw1zGcudQWt8hZsE5p5ezE94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tMxwV7oC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0685FC4CEDF;
-	Wed, 15 Jan 2025 10:51:54 +0000 (UTC)
+	 MIME-Version; b=BGtbjGIQivu16GLLjUBt8T2srNxsLbKAgV3BXvUdzcPVgSYNNgnoSvDjgxng9krGdbzj7SH2wCYB7hd6O1Oo93fsf9f8NxYunVhUKX2FqXpWpWbmF4xZbB3278/HrED46p71UqLGaSzDFieshiac1JFDoS3q92QsF8ak4UNFeIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fnJtEe4d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BEB2C4CEDF;
+	Wed, 15 Jan 2025 10:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938315;
-	bh=JDCNIK4YzvBaCLQFbdW9wrJrMfyO3N0yUmls7p4LsWM=;
+	s=korg; t=1736938693;
+	bh=c+kFFr2v3aID+t63o403I7SFHM8URDNQ+Fe0BTb/x6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tMxwV7oCO+Q2ij+DA/gLjCnUrFyKPRBNebFs0A3LkJYXOrgHeZNUYYIbCzFSA29eZ
-	 KDDwg/OrlBHQXZDWj4aTGVFuJEc/8fYXJdcBTkhqewG5LLu4LLgJCYRp9EN6ZOPNGp
-	 HNjDrRJ7MOwCMEIwT4kXlTQWFqPfHPVlRiTLYNQE=
+	b=fnJtEe4dA23NdrMJrrAQi0sP9nsQah0HN5TCDZdzvob1p3tbhMUrPN26UUgQkxcIV
+	 0iC1+0e+P+xva5bjmeTZGX3dxUmqvKXsTuELk1GlZs3lDvzIL0etgv05TAgo1NkX4Y
+	 cRRPJij+LZ1QI1iLU74qSrcvR1bpp93elOPbzoMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Chang <waynec@nvidia.com>,
-	stable <stable@kernel.org>,
-	Kai-Heng Feng <kaihengf@nvidia.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Jon Hunter <jonathanh@nvidia.com>
-Subject: [PATCH 6.12 146/189] USB: core: Disable LPM only for non-suspended ports
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 067/129] ksmbd: Implement new SMB3 POSIX type
 Date: Wed, 15 Jan 2025 11:37:22 +0100
-Message-ID: <20250115103612.247437436@linuxfoundation.org>
+Message-ID: <20250115103557.051304741@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai-Heng Feng <kaihengf@nvidia.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 59bfeaf5454b7e764288d84802577f4a99bf0819 upstream.
+commit e8580b4c600e085b3c8e6404392de2f822d4c132 upstream.
 
-There's USB error when tegra board is shutting down:
-[  180.919315] usb 2-3: Failed to set U1 timeout to 0x0,error code -113
-[  180.919995] usb 2-3: Failed to set U1 timeout to 0xa,error code -113
-[  180.920512] usb 2-3: Failed to set U2 timeout to 0x4,error code -113
-[  186.157172] tegra-xusb 3610000.usb: xHCI host controller not responding, assume dead
-[  186.157858] tegra-xusb 3610000.usb: HC died; cleaning up
-[  186.317280] tegra-xusb 3610000.usb: Timeout while waiting for evaluate context command
+As SMB3 posix extension specification, Give posix file type to posix
+mode.
 
-The issue is caused by disabling LPM on already suspended ports.
+https://www.samba.org/~slow/SMB3_POSIX/fscc_posix_extensions.html#posix-file-type-definition
 
-For USB2 LPM, the LPM is already disabled during port suspend. For USB3
-LPM, port won't transit to U1/U2 when it's already suspended in U3,
-hence disabling LPM is only needed for ports that are not suspended.
-
-Cc: Wayne Chang <waynec@nvidia.com>
-Cc: stable <stable@kernel.org>
-Fixes: d920a2ed8620 ("usb: Disable USB3 LPM at shutdown")
-Signed-off-by: Kai-Heng Feng <kaihengf@nvidia.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://lore.kernel.org/r/20241206074817.89189-1-kaihengf@nvidia.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/port.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/smb/server/smb2pdu.c |   40 ++++++++++++++++++++++++++++++++++++++++
+ fs/smb/server/smb2pdu.h |   10 ++++++++++
+ 2 files changed, 50 insertions(+)
 
---- a/drivers/usb/core/port.c
-+++ b/drivers/usb/core/port.c
-@@ -452,10 +452,11 @@ static int usb_port_runtime_suspend(stru
- static void usb_port_shutdown(struct device *dev)
- {
- 	struct usb_port *port_dev = to_usb_port(dev);
-+	struct usb_device *udev = port_dev->child;
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -3989,6 +3989,26 @@ static int smb2_populate_readdir_entry(s
+ 		posix_info->DeviceId = cpu_to_le32(ksmbd_kstat->kstat->rdev);
+ 		posix_info->HardLinks = cpu_to_le32(ksmbd_kstat->kstat->nlink);
+ 		posix_info->Mode = cpu_to_le32(ksmbd_kstat->kstat->mode & 0777);
++		switch (ksmbd_kstat->kstat->mode & S_IFMT) {
++		case S_IFDIR:
++			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_DIR << POSIX_FILETYPE_SHIFT);
++			break;
++		case S_IFLNK:
++			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_SYMLINK << POSIX_FILETYPE_SHIFT);
++			break;
++		case S_IFCHR:
++			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_CHARDEV << POSIX_FILETYPE_SHIFT);
++			break;
++		case S_IFBLK:
++			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_BLKDEV << POSIX_FILETYPE_SHIFT);
++			break;
++		case S_IFIFO:
++			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_FIFO << POSIX_FILETYPE_SHIFT);
++			break;
++		case S_IFSOCK:
++			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_SOCKET << POSIX_FILETYPE_SHIFT);
++		}
++
+ 		posix_info->Inode = cpu_to_le64(ksmbd_kstat->kstat->ino);
+ 		posix_info->DosAttributes =
+ 			S_ISDIR(ksmbd_kstat->kstat->mode) ?
+@@ -5177,6 +5197,26 @@ static int find_file_posix_info(struct s
+ 	file_info->AllocationSize = cpu_to_le64(stat.blocks << 9);
+ 	file_info->HardLinks = cpu_to_le32(stat.nlink);
+ 	file_info->Mode = cpu_to_le32(stat.mode & 0777);
++	switch (stat.mode & S_IFMT) {
++	case S_IFDIR:
++		file_info->Mode |= cpu_to_le32(POSIX_TYPE_DIR << POSIX_FILETYPE_SHIFT);
++		break;
++	case S_IFLNK:
++		file_info->Mode |= cpu_to_le32(POSIX_TYPE_SYMLINK << POSIX_FILETYPE_SHIFT);
++		break;
++	case S_IFCHR:
++		file_info->Mode |= cpu_to_le32(POSIX_TYPE_CHARDEV << POSIX_FILETYPE_SHIFT);
++		break;
++	case S_IFBLK:
++		file_info->Mode |= cpu_to_le32(POSIX_TYPE_BLKDEV << POSIX_FILETYPE_SHIFT);
++		break;
++	case S_IFIFO:
++		file_info->Mode |= cpu_to_le32(POSIX_TYPE_FIFO << POSIX_FILETYPE_SHIFT);
++		break;
++	case S_IFSOCK:
++		file_info->Mode |= cpu_to_le32(POSIX_TYPE_SOCKET << POSIX_FILETYPE_SHIFT);
++	}
++
+ 	file_info->DeviceId = cpu_to_le32(stat.rdev);
  
--	if (port_dev->child) {
--		usb_disable_usb2_hardware_lpm(port_dev->child);
--		usb_unlocked_disable_lpm(port_dev->child);
-+	if (udev && !udev->port_is_suspended) {
-+		usb_disable_usb2_hardware_lpm(udev);
-+		usb_unlocked_disable_lpm(udev);
- 	}
+ 	/*
+--- a/fs/smb/server/smb2pdu.h
++++ b/fs/smb/server/smb2pdu.h
+@@ -500,4 +500,14 @@ static inline void *smb2_get_msg(void *b
+ 	return buf + 4;
  }
  
++#define POSIX_TYPE_FILE		0
++#define POSIX_TYPE_DIR		1
++#define POSIX_TYPE_SYMLINK	2
++#define POSIX_TYPE_CHARDEV	3
++#define POSIX_TYPE_BLKDEV	4
++#define POSIX_TYPE_FIFO		5
++#define POSIX_TYPE_SOCKET	6
++
++#define POSIX_FILETYPE_SHIFT	12
++
+ #endif	/* _SMB2PDU_H */
 
 
 
