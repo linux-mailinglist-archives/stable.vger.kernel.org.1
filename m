@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-109044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96975A1218B
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:57:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F4BA12018
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1CE47A4246
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:57:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 482A83A4841
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F52248BDF;
-	Wed, 15 Jan 2025 10:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B84D248BC5;
+	Wed, 15 Jan 2025 10:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ap7I9zhD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mc5/krNv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D9F248BD1;
-	Wed, 15 Jan 2025 10:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9998248BA8;
+	Wed, 15 Jan 2025 10:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938670; cv=none; b=iSfohj/6fcPEbGHeMMhGfhotWycX9AOBEjdAiCAd4YzcchU2pxfiQMVt+vNkoQSP5IAxVJ3zphr2p2YzWJOmtoIL5cJSypLKbBZ36UdUbsCCvAg2mzih8XAHH4HfEjrl1zYG6CWE1ihz1cz8/fWxpkjwpJ783o4qqzpxWP4479M=
+	t=1736937642; cv=none; b=s+dINY2YDUPBKGJhFsYPVZR2Y1aYNTZJ9Omf6+SMsSGgHG/9I/CXXiLhdPUT4nVJGjsgK+iGXlNotb/4icEZDWDA+gu50jIrnoH1EOBiNwqUrYkuWqtKyoyZXvJHiMNtquiP0ZySsKRQUw3APQGSyGg5C9bwlmZeBVR8VHUc4xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938670; c=relaxed/simple;
-	bh=hKvbN5MIvKKmPEN9c+cJHxZxSFrEcAfTK29P16C6UdM=;
+	s=arc-20240116; t=1736937642; c=relaxed/simple;
+	bh=ij+qBTOGI5mE1JuAhtQ9cu2v8FJrkgY5hIui5MWZwLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yu2Odr8WdAdPWgOx2GX/lxGIrQf0vRlWtrG1vuz00vgyepho1CbPlol+oSsWUKFrXgqODOIffBg2aNjWAEdOyLBdJkRrUtNS9zdIkNJGzNEfdlmUry8G2dkaMVqECTGlRI0irm5ZbFaaUQt5r8GmVA7FyjLZhgybpOah3H3OXdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ap7I9zhD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 816EEC4CEDF;
-	Wed, 15 Jan 2025 10:57:49 +0000 (UTC)
+	 MIME-Version; b=ifMcVDJNv9akVpIEDpmVqzYFSiEgsZSA3MP08pAkIQJpraX0PSXH8+YnTSYHixd3reXnK4UpMCvYVOeCbblBi4dYbGRpDAoYL/YTYBKoSreLKDW/1I3Mw7fM34Wac+Ntw35gz4OfqOVRhUEYDj+xvdDLDHk64sdkoTdGJPN8aTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mc5/krNv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6225C4CEE1;
+	Wed, 15 Jan 2025 10:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938670;
-	bh=hKvbN5MIvKKmPEN9c+cJHxZxSFrEcAfTK29P16C6UdM=;
+	s=korg; t=1736937642;
+	bh=ij+qBTOGI5mE1JuAhtQ9cu2v8FJrkgY5hIui5MWZwLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ap7I9zhDE3MnPJOzpNvq9L9YgSEnSiE8+rgA7Fh59UukzV92dhzFytaXOcQowD8cx
-	 oYLCb7Q1rkS3xaUy0oa4eF/9DFwz4zrjFWYuH6YJiJc5neRnv97HAKQHfNU+iYrU/p
-	 PT+aDCmoBsUKQlD1WEs/RViD/ufK41UFZqet3kww=
+	b=Mc5/krNvSdTzrf4mrqsVHT1nyM0fv8sywIR4c83WpBVrOuNb9cc9N/0S0StHntvcy
+	 IxwCsKS/MrF6JxxmhozIrET/xYgK8MMWZPWv9dpdtUOfnUeHz4pcKZNzYCCBkGIVr5
+	 Hd7J/knh72rn/TFiAoNr3xzE/oFLg4MFU5Xt5c4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/129] netfilter: conntrack: clamp maximum hashtable size to INT_MAX
+	Al Viro <viro@zeniv.linux.org.uk>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 40/92] sctp: sysctl: auth_enable: avoid using current->nsproxy
 Date: Wed, 15 Jan 2025 11:36:58 +0100
-Message-ID: <20250115103556.092986178@linuxfoundation.org>
+Message-ID: <20250115103549.126205811@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit b541ba7d1f5a5b7b3e2e22dc9e40e18a7d6dbc13 ]
+commit 15649fd5415eda664ef35780c2013adeb5d9c695 upstream.
 
-Use INT_MAX as maximum size for the conntrack hashtable. Otherwise, it
-is possible to hit WARN_ON_ONCE in __kvmalloc_node_noprof() when
-resizing hashtable because __GFP_NOWARN is unset. See:
+As mentioned in a previous commit of this series, using the 'net'
+structure via 'current' is not recommended for different reasons:
 
-  0708a0afe291 ("mm: Consider __GFP_NOWARN flag for oversized kvmalloc() calls")
+- Inconsistency: getting info from the reader's/writer's netns vs only
+  from the opener's netns.
 
-Note: hashtable resize is only possible from init_netns.
+- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
+  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
+  syzbot [1] using acct(2).
 
-Fixes: 9cc1c73ad666 ("netfilter: conntrack: avoid integer overflow when resizing")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The 'net' structure can be obtained from the table->data using
+container_of().
+
+Note that table->data could also be used directly, but that would
+increase the size of this fix, while 'sctp.ctl_sock' still needs to be
+retrieved from 'net' structure.
+
+Fixes: b14878ccb7fa ("net: sctp: cache auth_enable per endpoint")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-6-5df34b2083e8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_core.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/sctp/sysctl.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_core.c b/net/netfilter/nf_conntrack_core.c
-index e4ae2a08da6a..34ad5975fbf3 100644
---- a/net/netfilter/nf_conntrack_core.c
-+++ b/net/netfilter/nf_conntrack_core.c
-@@ -2568,12 +2568,15 @@ void *nf_ct_alloc_hashtable(unsigned int *sizep, int nulls)
- 	struct hlist_nulls_head *hash;
- 	unsigned int nr_slots, i;
+--- a/net/sctp/sysctl.c
++++ b/net/sctp/sysctl.c
+@@ -492,7 +492,7 @@ static int proc_sctp_do_alpha_beta(struc
+ static int proc_sctp_do_auth(struct ctl_table *ctl, int write,
+ 			     void *buffer, size_t *lenp, loff_t *ppos)
+ {
+-	struct net *net = current->nsproxy->net_ns;
++	struct net *net = container_of(ctl->data, struct net, sctp.auth_enable);
+ 	struct ctl_table tbl;
+ 	int new_value, ret;
  
--	if (*sizep > (UINT_MAX / sizeof(struct hlist_nulls_head)))
-+	if (*sizep > (INT_MAX / sizeof(struct hlist_nulls_head)))
- 		return NULL;
- 
- 	BUILD_BUG_ON(sizeof(struct hlist_nulls_head) != sizeof(struct hlist_head));
- 	nr_slots = *sizep = roundup(*sizep, PAGE_SIZE / sizeof(struct hlist_nulls_head));
- 
-+	if (nr_slots > (INT_MAX / sizeof(struct hlist_nulls_head)))
-+		return NULL;
-+
- 	hash = kvcalloc(nr_slots, sizeof(struct hlist_nulls_head), GFP_KERNEL);
- 
- 	if (hash && nulls)
--- 
-2.39.5
-
 
 
 
