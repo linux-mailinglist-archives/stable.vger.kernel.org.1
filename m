@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-109008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4E0A12169
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:56:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88C76A120D5
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:49:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACC6D3A6590
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:55:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 097B91889882
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA1F1E98E6;
-	Wed, 15 Jan 2025 10:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750CA1E7C2E;
+	Wed, 15 Jan 2025 10:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0D7VIB46"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tyhE+2JU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380731E7C02;
-	Wed, 15 Jan 2025 10:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFBF248BBD;
+	Wed, 15 Jan 2025 10:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938550; cv=none; b=ZLTn/S2ALkzAd6H7wlTYLodkmq3KQPxiHWx0wAv2qWdc+XOmWS0uh4sou2jNF6Sye4LdTT1PFBzPlqiUK2nitVvMP9hLO3omNYL6BF76JP+25FkV1EIQWqhldMlgJQuMMkKM9/bAjzo6/APS48eRR+1XcH+fjGG9Z7BnMh8w314=
+	t=1736938168; cv=none; b=XS/eUdklhFGS7OpfW4C++6uXaUnKIjFoCcBtE5s/Fiswh4ALqkJATDlZH5w9nXpF2QPqWETDermtb17jeIjdvTnzf41bz+bF/fwbR7lmyvXTB6x1fQdzdPS9HIiXsydB0hld2Y5l9oVwsrMAil2Xmt7xN3ObVRv9uahnAypXEsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938550; c=relaxed/simple;
-	bh=Ov5jgNk0w6YJsS+suHU58+NhqAxez4pzYLPwKn93/zg=;
+	s=arc-20240116; t=1736938168; c=relaxed/simple;
+	bh=yuC9lPRUEw3U4c1M++U8YqHLZ36i0vBKwcH8WmtqX04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wfn3dgOvgxCJsEApad+HU7e5Ajt+GaxTl0YEvS4HYzCBkqHm6hvRHcQRh0lKNFphWJvuFumFDNhgLDGjflOJ5qg9joMHbRvt/74IZaXcbHpoFpJVo3S8boj4b0SfimaYIiHNgrN5nipyObC6ymaFGA/oPhq131EC6JvMGUfSGB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0D7VIB46; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682F0C4CEDF;
-	Wed, 15 Jan 2025 10:55:49 +0000 (UTC)
+	 MIME-Version; b=FvYMunHFUt37APQU0gz8XMkQmByJXGySrw6wd21bn1U2KIbWpxmw1+u6Sbyz7x6ehiwsa0GpzWSTh9c8z8SB6peKKNdzNV1jiv1EZubsQ7r0FyQs3buCXYz8BHEmc+FKz0X9C3CAG131cP2lCYFvLXIEQF+SK2BeFxiHlEdTbBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tyhE+2JU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D2EEC4CEDF;
+	Wed, 15 Jan 2025 10:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938550;
-	bh=Ov5jgNk0w6YJsS+suHU58+NhqAxez4pzYLPwKn93/zg=;
+	s=korg; t=1736938168;
+	bh=yuC9lPRUEw3U4c1M++U8YqHLZ36i0vBKwcH8WmtqX04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0D7VIB46F4oFw61LWOOsd4A38lbV8vKkieh30+mPK1cpAxoxGu9ohGZO7pHgfcFhP
-	 5n6vXxkZcWioch1A7rMlmAI80GWKmJGCa+Mozv3Fl2uBTnrI+gxyNlud8ll/w/NFX4
-	 iGUch3Xt+nCnX3pZVE5VEwo6KPLDiyKfaBr49Rno=
+	b=tyhE+2JUkpKX/LM6uvKpl0/E3nXB65rNo99vRa7+5iTGeOUaxE5nddSh4fHs8Jhi/
+	 4rqKkhy1A/02GWQw5jj0C2ZO6jMA5dyjY62xQmB8nQCvFVkjbvKxnVOrsP3WHYOW6i
+	 SUbHheWFs37ehLzIoUFR5ZMN08glfNBCboCZd7Es=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Simon Horman <horms@kernel.org>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/129] pds_core: limit loop over fw name list
+	Alex Deucher <alexander.deucher@amd.com>,
+	Leo Li <sunpeng.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 6.12 104/189] drm/amd/display: Remove unnecessary amdgpu_irq_get/put
 Date: Wed, 15 Jan 2025 11:36:40 +0100
-Message-ID: <20250115103555.371882453@linuxfoundation.org>
+Message-ID: <20250115103610.597089506@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 8c817eb26230dc0ae553cee16ff43a4a895f6756 ]
+commit 5009628d8509dbb90e1b88e01eda00430fa24b4b upstream.
 
-Add an array size limit to the for-loop to be sure we don't try
-to reference a fw_version string off the end of the fw info names
-array.  We know that our firmware only has a limited number
-of firmware slot names, but we shouldn't leave this unchecked.
+[WHY & HOW]
+commit 7fb363c57522 ("drm/amd/display: Let drm_crtc_vblank_on/off manage interrupts")
+lets drm_crtc_vblank_* to manage interrupts in amdgpu_dm_crtc_set_vblank,
+and amdgpu_irq_get/put do not need to be called here.  Part of that
+patch got lost somehow, so fix it up.
 
-Fixes: 45d76f492938 ("pds_core: set up device and adminq")
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250103195147.7408-1-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7fb363c57522 ("drm/amd/display: Let drm_crtc_vblank_on/off manage interrupts")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Leo Li <sunpeng.li@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 3782305ce5807c18fbf092124b9e8303cf1723ae)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/pds_core/devlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   31 ----------------------
+ 1 file changed, 31 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
-index d8218bb153d9..971d4278280d 100644
---- a/drivers/net/ethernet/amd/pds_core/devlink.c
-+++ b/drivers/net/ethernet/amd/pds_core/devlink.c
-@@ -117,7 +117,7 @@ int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
- 	if (err && err != -EIO)
- 		return err;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -8393,16 +8393,6 @@ static void manage_dm_interrupts(struct
+ 				 struct amdgpu_crtc *acrtc,
+ 				 struct dm_crtc_state *acrtc_state)
+ {
+-	/*
+-	 * We have no guarantee that the frontend index maps to the same
+-	 * backend index - some even map to more than one.
+-	 *
+-	 * TODO: Use a different interrupt or check DC itself for the mapping.
+-	 */
+-	int irq_type =
+-		amdgpu_display_crtc_idx_to_irq_type(
+-			adev,
+-			acrtc->crtc_id);
+ 	struct drm_vblank_crtc_config config = {0};
+ 	struct dc_crtc_timing *timing;
+ 	int offdelay;
+@@ -8428,28 +8418,7 @@ static void manage_dm_interrupts(struct
  
--	listlen = fw_list.num_fw_slots;
-+	listlen = min(fw_list.num_fw_slots, ARRAY_SIZE(fw_list.fw_names));
- 	for (i = 0; i < listlen; i++) {
- 		if (i < ARRAY_SIZE(fw_slotnames))
- 			strscpy(buf, fw_slotnames[i], sizeof(buf));
--- 
-2.39.5
-
+ 		drm_crtc_vblank_on_config(&acrtc->base,
+ 					  &config);
+-
+-		amdgpu_irq_get(
+-			adev,
+-			&adev->pageflip_irq,
+-			irq_type);
+-#if defined(CONFIG_DRM_AMD_SECURE_DISPLAY)
+-		amdgpu_irq_get(
+-			adev,
+-			&adev->vline0_irq,
+-			irq_type);
+-#endif
+ 	} else {
+-#if defined(CONFIG_DRM_AMD_SECURE_DISPLAY)
+-		amdgpu_irq_put(
+-			adev,
+-			&adev->vline0_irq,
+-			irq_type);
+-#endif
+-		amdgpu_irq_put(
+-			adev,
+-			&adev->pageflip_irq,
+-			irq_type);
+ 		drm_crtc_vblank_off(&acrtc->base);
+ 	}
+ }
 
 
 
