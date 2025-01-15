@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-109031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06D7AA1217B
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:57:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C82A12157
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:55:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7372C7A3D1F
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:57:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2A76188140B
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172981E98E4;
-	Wed, 15 Jan 2025 10:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B4A1DB13A;
+	Wed, 15 Jan 2025 10:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rcy4AP05"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HeeypMjW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B671DB142;
-	Wed, 15 Jan 2025 10:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C601E9914;
+	Wed, 15 Jan 2025 10:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938626; cv=none; b=RpwsA2+Uzw6QXbB6rorDjWp3RnrAXy6An1EfQamwY9P2TQ82U5f7W/MiZ3P9fzzm1C5+q2cePLFIzxDe8U0m6MXSHHpF5rJlKhLeR/hvHZildeJOF0EWVu5N8EO85I607ad1f5FaveFgN7SmLjnahkiH05WpKgQEu2EstbD8C2Y=
+	t=1736938526; cv=none; b=rR3FbBLlstyqIUbkqeO98FaAlWs2CuzxNsfTJI31xIWXUUyrJs91x5EjLlapq0YRCA5D9ZwaY5n+5goDk/FHSKEdA+qCROclGMAJUDeIZr9cMXFXmYvYeNv7zF8VC83y3mSdzBp1bc2ngy//LgZcDwWinv1NiZBl4GIgHYzdnAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938626; c=relaxed/simple;
-	bh=3bgHBCUI/ZAXugNTkD/Lj9RXbtG12LK9eR1HWmjwZgk=;
+	s=arc-20240116; t=1736938526; c=relaxed/simple;
+	bh=wMu6hkGc7oLuDnXzXa3xnNk2MDCzu5lNGf1cdZcHMlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GgGV5DVBMjxFQAYD2YOwk2t9l1gAVtHXc+cEvrlfoNRVI2UQsrIivd7ma1qiibY2kLxFRYC6xrp4Lamfh6/PSit3y1mkAQqIXRObWf6YPlicLymMAempxH22xh2rDvKTheSXrnF6yt6JEfKeNiaZppFvEKlpvyVbDEdWLOY3Ez8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rcy4AP05; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36775C4CEDF;
-	Wed, 15 Jan 2025 10:57:06 +0000 (UTC)
+	 MIME-Version; b=tBT5uJID+casFWqAKygjkYK5fxIg3L+7UkJdjq+MVtPM+R+VnFsTZRykyNpCa93r4UO5E5oBzN+vH1EMD6XIUFoOAXz97l/HP3DSCSMyyel3HbCztVX00Kthitg8Pcb4kwNGBUa59dbX/RZ/9qj2IVGQYDIpXXD8jiQkwcjq524=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HeeypMjW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE5AC4CEE6;
+	Wed, 15 Jan 2025 10:55:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938626;
-	bh=3bgHBCUI/ZAXugNTkD/Lj9RXbtG12LK9eR1HWmjwZgk=;
+	s=korg; t=1736938526;
+	bh=wMu6hkGc7oLuDnXzXa3xnNk2MDCzu5lNGf1cdZcHMlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rcy4AP05v/cCuR8IJcrTqFMZ7X0zZdZMMgrtQnR+Un3BwQR8jx2uetBhRoQmIza00
-	 34QoHtme/E9uI3SuBDbh7cwlO0tzCufYaeVcCxA2CUg6F17USUOqRofO85Offo9Wu/
-	 x/ZujI9LGQ9k0b5mb1iyCGlLyt0xzIIwZOavTQO4=
+	b=HeeypMjW0uJO0nmhQR3MXF3OoYA/twOqLHBQfKzkSHfUZqX8dY+7621Y+S9MspIdf
+	 z5qhqlkIt4SdZ/Oi/8PtU+6baeQhQnbH+WnfRdpDPF3xRwxw9Ysmbli434kT6evmZa
+	 X02SorBxoBI66jXmqyJA1dv/ka+97WKed/LIQw3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Keisuke Nishimura <keisuke.nishimura@inria.fr>,
+	Simon Horman <horms@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/129] selftests/alsa: Fix circular dependency involving global-timer
-Date: Wed, 15 Jan 2025 11:36:32 +0100
-Message-ID: <20250115103555.057695762@linuxfoundation.org>
+Subject: [PATCH 6.6 018/129] ieee802154: ca8210: Add missing check for kfifo_alloc() in ca8210_probe()
+Date: Wed, 15 Jan 2025 11:36:33 +0100
+Message-ID: <20250115103555.095044312@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
 In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
 References: <20250115103554.357917208@linuxfoundation.org>
@@ -70,50 +68,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Keisuke Nishimura <keisuke.nishimura@inria.fr>
 
-[ Upstream commit 55853cb829dc707427c3519f6b8686682a204368 ]
+[ Upstream commit 2c87309ea741341c6722efdf1fb3f50dd427c823 ]
 
-The pattern rule `$(OUTPUT)/%: %.c` inadvertently included a circular
-dependency on the global-timer target due to its inclusion in
-$(TEST_GEN_PROGS_EXTENDED). This resulted in a circular dependency
-warning during the build process.
+ca8210_test_interface_init() returns the result of kfifo_alloc(),
+which can be non-zero in case of an error. The caller, ca8210_probe(),
+should check the return value and do error-handling if it fails.
 
-To resolve this, the dependency on $(TEST_GEN_PROGS_EXTENDED) has been
-replaced with an explicit dependency on $(OUTPUT)/libatest.so. This change
-ensures that libatest.so is built before any other targets that require it,
-without creating a circular dependency.
-
-This fix addresses the following warning:
-
-make[4]: Entering directory 'tools/testing/selftests/alsa'
-make[4]: Circular default_modconfig/kselftest/alsa/global-timer <- default_modconfig/kselftest/alsa/global-timer dependency dropped.
-make[4]: Nothing to be done for 'all'.
-make[4]: Leaving directory 'tools/testing/selftests/alsa'
-
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Link: https://patch.msgid.link/20241218025931.914164-1-lizhijian@fujitsu.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
+Signed-off-by: Keisuke Nishimura <keisuke.nishimura@inria.fr>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/20241029182712.318271-1-keisuke.nishimura@inria.fr
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/alsa/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ieee802154/ca8210.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/alsa/Makefile b/tools/testing/selftests/alsa/Makefile
-index 5af9ba8a4645..140c7f821727 100644
---- a/tools/testing/selftests/alsa/Makefile
-+++ b/tools/testing/selftests/alsa/Makefile
-@@ -23,5 +23,5 @@ include ../lib.mk
- $(OUTPUT)/libatest.so: conf.c alsa-local.h
- 	$(CC) $(CFLAGS) -shared -fPIC $< $(LDLIBS) -o $@
- 
--$(OUTPUT)/%: %.c $(TEST_GEN_PROGS_EXTENDED) alsa-local.h
-+$(OUTPUT)/%: %.c $(OUTPUT)/libatest.so alsa-local.h
- 	$(CC) $(CFLAGS) $< $(LDLIBS) -latest -o $@
+diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
+index 4ec0dab38872..0a0ad3d77557 100644
+--- a/drivers/net/ieee802154/ca8210.c
++++ b/drivers/net/ieee802154/ca8210.c
+@@ -3078,7 +3078,11 @@ static int ca8210_probe(struct spi_device *spi_device)
+ 	spi_set_drvdata(priv->spi, priv);
+ 	if (IS_ENABLED(CONFIG_IEEE802154_CA8210_DEBUGFS)) {
+ 		cascoda_api_upstream = ca8210_test_int_driver_write;
+-		ca8210_test_interface_init(priv);
++		ret = ca8210_test_interface_init(priv);
++		if (ret) {
++			dev_crit(&spi_device->dev, "ca8210_test_interface_init failed\n");
++			goto error;
++		}
+ 	} else {
+ 		cascoda_api_upstream = NULL;
+ 	}
 -- 
 2.39.5
 
