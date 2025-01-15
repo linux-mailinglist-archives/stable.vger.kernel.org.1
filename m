@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-109001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C82A12157
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:55:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 403FFA11FE5
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:39:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2A76188140B
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:55:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 895407A23E3
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B4A1DB13A;
-	Wed, 15 Jan 2025 10:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5A41E9909;
+	Wed, 15 Jan 2025 10:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HeeypMjW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQxU8Lnh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C601E9914;
-	Wed, 15 Jan 2025 10:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6F41E9904;
+	Wed, 15 Jan 2025 10:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938526; cv=none; b=rR3FbBLlstyqIUbkqeO98FaAlWs2CuzxNsfTJI31xIWXUUyrJs91x5EjLlapq0YRCA5D9ZwaY5n+5goDk/FHSKEdA+qCROclGMAJUDeIZr9cMXFXmYvYeNv7zF8VC83y3mSdzBp1bc2ngy//LgZcDwWinv1NiZBl4GIgHYzdnAk=
+	t=1736937556; cv=none; b=QV182rWGD8aqhRnIuUiHHgFyyrRuSy4KkuUqNGuaGyp1dFe5GB8/l/NXxakVnKa9XPjGbRV5mPVrCoK8MIKO4iGkD4GvgJ9ztTQP+BMQg/X+WT7YXCPA5OcH8/uaP/vx/E7ieuPm6eyImBz2PI90W3dSsK8Ixz29EgGR5i0adYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938526; c=relaxed/simple;
-	bh=wMu6hkGc7oLuDnXzXa3xnNk2MDCzu5lNGf1cdZcHMlo=;
+	s=arc-20240116; t=1736937556; c=relaxed/simple;
+	bh=wcLBkmYjQVNA4njtYCWsjQzmp4MOM0DJvuzck8sqQDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tBT5uJID+casFWqAKygjkYK5fxIg3L+7UkJdjq+MVtPM+R+VnFsTZRykyNpCa93r4UO5E5oBzN+vH1EMD6XIUFoOAXz97l/HP3DSCSMyyel3HbCztVX00Kthitg8Pcb4kwNGBUa59dbX/RZ/9qj2IVGQYDIpXXD8jiQkwcjq524=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HeeypMjW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE5AC4CEE6;
-	Wed, 15 Jan 2025 10:55:25 +0000 (UTC)
+	 MIME-Version; b=UiBit6No2NLah55q+szwwZaVdfOd21Tui7lT7neNf+qIVfR5gWbXzbykM1tiqjHbR4ooiqBEznapkji1t39Ig1LSVICloc1PmxLXeVgR7G4RGUevld1jnSkrNG7VTf3WeTRUcFLUdO8kiE1w+hlSw1pJIYY3ryrNo6mNoNSkqTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQxU8Lnh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 626E2C4CEEA;
+	Wed, 15 Jan 2025 10:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938526;
-	bh=wMu6hkGc7oLuDnXzXa3xnNk2MDCzu5lNGf1cdZcHMlo=;
+	s=korg; t=1736937556;
+	bh=wcLBkmYjQVNA4njtYCWsjQzmp4MOM0DJvuzck8sqQDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HeeypMjW0uJO0nmhQR3MXF3OoYA/twOqLHBQfKzkSHfUZqX8dY+7621Y+S9MspIdf
-	 z5qhqlkIt4SdZ/Oi/8PtU+6baeQhQnbH+WnfRdpDPF3xRwxw9Ysmbli434kT6evmZa
-	 X02SorBxoBI66jXmqyJA1dv/ka+97WKed/LIQw3A=
+	b=RQxU8LnhiP68fJS/EIyeNdYMG0H+zIwJXAHqmnZqcBl9ow2HafvH2nVuszCvzFslP
+	 ILs+YHFUmcv6G0vorYV4Zj1Lrpitgydev9Au8fKe3mUO7GDNXJ6mLYN9M2sKN+ENUL
+	 tBM/neKWquwLylhnRmKPND5WddeF3dUtFi4kAF+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keisuke Nishimura <keisuke.nishimura@inria.fr>,
-	Simon Horman <horms@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Jason Xing <kernelxing@tencent.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 018/129] ieee802154: ca8210: Add missing check for kfifo_alloc() in ca8210_probe()
+Subject: [PATCH 6.1 15/92] tcp/dccp: complete lockless accesses to sk->sk_max_ack_backlog
 Date: Wed, 15 Jan 2025 11:36:33 +0100
-Message-ID: <20250115103555.095044312@linuxfoundation.org>
+Message-ID: <20250115103548.148855501@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keisuke Nishimura <keisuke.nishimura@inria.fr>
+From: Jason Xing <kernelxing@tencent.com>
 
-[ Upstream commit 2c87309ea741341c6722efdf1fb3f50dd427c823 ]
+[ Upstream commit 9a79c65f00e2b036e17af3a3a607d7d732b7affb ]
 
-ca8210_test_interface_init() returns the result of kfifo_alloc(),
-which can be non-zero in case of an error. The caller, ca8210_probe(),
-should check the return value and do error-handling if it fails.
+Since commit 099ecf59f05b ("net: annotate lockless accesses to
+sk->sk_max_ack_backlog") decided to handle the sk_max_ack_backlog
+locklessly, there is one more function mostly called in TCP/DCCP
+cases. So this patch completes it:)
 
-Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
-Signed-off-by: Keisuke Nishimura <keisuke.nishimura@inria.fr>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/20241029182712.318271-1-keisuke.nishimura@inria.fr
-Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240331090521.71965-1-kerneljasonxing@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 3479c7549fb1 ("tcp/dccp: allow a connection when sk_max_ack_backlog is zero")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ieee802154/ca8210.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ include/net/inet_connection_sock.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
-index 4ec0dab38872..0a0ad3d77557 100644
---- a/drivers/net/ieee802154/ca8210.c
-+++ b/drivers/net/ieee802154/ca8210.c
-@@ -3078,7 +3078,11 @@ static int ca8210_probe(struct spi_device *spi_device)
- 	spi_set_drvdata(priv->spi, priv);
- 	if (IS_ENABLED(CONFIG_IEEE802154_CA8210_DEBUGFS)) {
- 		cascoda_api_upstream = ca8210_test_int_driver_write;
--		ca8210_test_interface_init(priv);
-+		ret = ca8210_test_interface_init(priv);
-+		if (ret) {
-+			dev_crit(&spi_device->dev, "ca8210_test_interface_init failed\n");
-+			goto error;
-+		}
- 	} else {
- 		cascoda_api_upstream = NULL;
- 	}
+diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
+index 4242f863f560..1611fb656ea9 100644
+--- a/include/net/inet_connection_sock.h
++++ b/include/net/inet_connection_sock.h
+@@ -281,7 +281,7 @@ static inline int inet_csk_reqsk_queue_len(const struct sock *sk)
+ 
+ static inline int inet_csk_reqsk_queue_is_full(const struct sock *sk)
+ {
+-	return inet_csk_reqsk_queue_len(sk) >= sk->sk_max_ack_backlog;
++	return inet_csk_reqsk_queue_len(sk) >= READ_ONCE(sk->sk_max_ack_backlog);
+ }
+ 
+ bool inet_csk_reqsk_queue_drop(struct sock *sk, struct request_sock *req);
 -- 
 2.39.5
 
