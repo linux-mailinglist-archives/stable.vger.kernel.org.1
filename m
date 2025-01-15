@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-109068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1348AA121AB
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:59:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5547A12153
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:55:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6040D7A2066
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:59:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8500D3AB434
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859C5248BDF;
-	Wed, 15 Jan 2025 10:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D52718952C;
+	Wed, 15 Jan 2025 10:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cKdjOIZA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wsn7XE68"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9A11F9F41;
-	Wed, 15 Jan 2025 10:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397CE248BA1;
+	Wed, 15 Jan 2025 10:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938747; cv=none; b=e+GIW60ApamXXWAlIS746hsiQMcvdLkCczbwKI7NwquQSbcqcrcFbVTzxfnZ5Otk/e7iZuG2yPrPmA5SDoICrmyE/GILlE/Ky4R5CYR86pHFYO7AxGgBa9BE1IeDR1M2BJRlDjuo/uLpgcGG8FL6Ghr0+bobQaQd61lx+oiIQUQ=
+	t=1736938474; cv=none; b=iHNfjQPLzWd6QtfXiavR2bljNP3ZR3TpjcNZC0tFDzN3DVw4GU+0JgvmsysPe0SEhXiMyJfyTiLl9OrJu9PgwJjcDozr8BQcYJB4ik2nxlMhG/oOW7W0t3v4hOZg+lviMhxrWl+6lO6W6F9+AMMJZWuuozfyofd5mRBRu7DzT3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938747; c=relaxed/simple;
-	bh=9+Ob+Bz4Aime04RSB8msp7eJwNZJXPMarnoD4ju+Q10=;
+	s=arc-20240116; t=1736938474; c=relaxed/simple;
+	bh=J7i1wauo7Bi1Q5TxoJ3h+l3sTgakbJ3OwAdowTForF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EkyvWFImQDEtvjpUJ/yH7d0Qucid2zrXKNHLN2Dc6CTAVo/802/qCGaKkLjg6Hfy289Tmhw+PypgCxfYxlWnSjDnrLZBu8om0C7lzu3NLyPo8TnOm4B9dyam8PeBKpBAnPuHjN1Du46N11S2zSYBh1FMErjpo22ToO61ZXxXA7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cKdjOIZA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD89C4CEDF;
-	Wed, 15 Jan 2025 10:59:05 +0000 (UTC)
+	 MIME-Version; b=JI/Ti2kppsG2G0ZipboEN2M/Sqw2eHlb/0V4FwSMKVHZW1aShZblS9R/yEwfswlFLJfaPjsHDyV7AE/2Tkb06IZSwB59+Lmcr693V+X80FDGNbg9a01qMr1mYorlQC8fqGl7W3Bvw4+iz+1qhft1AG8QNeC78otrYeQ43gjUru0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wsn7XE68; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2400EC4CEDF;
+	Wed, 15 Jan 2025 10:54:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938746;
-	bh=9+Ob+Bz4Aime04RSB8msp7eJwNZJXPMarnoD4ju+Q10=;
+	s=korg; t=1736938473;
+	bh=J7i1wauo7Bi1Q5TxoJ3h+l3sTgakbJ3OwAdowTForF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cKdjOIZAnVHfDxfoStSFWD33gtggoQKdABODdr6vcqXU0OHkMORYa1hMaid3mEmXJ
-	 2VO+FfOYVv9kzbJNRNuzu8z5wr8xBxKnI1FK7SjU/HfhCdfDzrLh68UfZlSvo5qs/i
-	 bGSz7ohT8mzUO4EaF8ZfqSab099eAbWfdv5PD0ts=
+	b=wsn7XE68PQ5GbGhgC4ltnIrCI8MMcEF7hWV7tAt9JcR2O9jmsIf5VsjrUQ9dIttJZ
+	 Yn86YrErrz+z3DEMKRjDBBxZYQoS2pQHaW2xX5t6CTVCfnsQpkM3eonedibdgFyO4/
+	 8GRCgfS+eqd6IAQUnocwLvJv8Ph0YyXtKqH2Y6jg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.6 085/129] usb: dwc3: gadget: fix writing NYET threshold
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 164/189] iio: adc: ti-ads1119: fix information leak in triggered buffer
 Date: Wed, 15 Jan 2025 11:37:40 +0100
-Message-ID: <20250115103557.749618526@linuxfoundation.org>
+Message-ID: <20250115103612.943171639@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,64 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 01ea6bf5cb58b20cc1bd159f0cf74a76cf04bb69 upstream.
+commit 75f339d3ecd38cb1ce05357d647189d4a7f7ed08 upstream.
 
-Before writing a new value to the register, the old value needs to be
-masked out for the new value to be programmed as intended, because at
-least in some cases the reset value of that field is 0xf (max value).
+The 'scan' local struct is used to push data to user space from a
+triggered buffer, but it has a hole between the sample (unsigned int)
+and the timestamp. This hole is never initialized.
 
-At the moment, the dwc3 core initialises the threshold to the maximum
-value (0xf), with the option to override it via a DT. No upstream DTs
-seem to override it, therefore this commit doesn't change behaviour for
-any upstream platform. Nevertheless, the code should be fixed to have
-the desired outcome.
+Initialize the struct to zero before using it to avoid pushing
+uninitialized information to userspace.
 
-Do so.
-
-Fixes: 80caf7d21adc ("usb: dwc3: add lpm erratum support")
-Cc: stable@vger.kernel.org # 5.10+ (needs adjustment for 5.4)
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20241209-dwc3-nyet-fix-v2-1-02755683345b@linaro.org
+Cc: stable@vger.kernel.org
+Fixes: a9306887eba4 ("iio: adc: ti-ads1119: Add driver")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-2-0cb6e98d895c@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.h   |    1 +
- drivers/usb/dwc3/gadget.c |    4 +++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ti-ads1119.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/dwc3/core.h
-+++ b/drivers/usb/dwc3/core.h
-@@ -451,6 +451,7 @@
- #define DWC3_DCTL_TRGTULST_SS_INACT	(DWC3_DCTL_TRGTULST(6))
+diff --git a/drivers/iio/adc/ti-ads1119.c b/drivers/iio/adc/ti-ads1119.c
+index e9d9d4d46d38..2615a275acb3 100644
+--- a/drivers/iio/adc/ti-ads1119.c
++++ b/drivers/iio/adc/ti-ads1119.c
+@@ -506,6 +506,8 @@ static irqreturn_t ads1119_trigger_handler(int irq, void *private)
+ 	unsigned int index;
+ 	int ret;
  
- /* These apply for core versions 1.94a and later */
-+#define DWC3_DCTL_NYET_THRES_MASK	(0xf << 20)
- #define DWC3_DCTL_NYET_THRES(n)		(((n) & 0xf) << 20)
- 
- #define DWC3_DCTL_KEEP_CONNECT		BIT(19)
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4208,8 +4208,10 @@ static void dwc3_gadget_conndone_interru
- 		WARN_ONCE(DWC3_VER_IS_PRIOR(DWC3, 240A) && dwc->has_lpm_erratum,
- 				"LPM Erratum not available on dwc3 revisions < 2.40a\n");
- 
--		if (dwc->has_lpm_erratum && !DWC3_VER_IS_PRIOR(DWC3, 240A))
-+		if (dwc->has_lpm_erratum && !DWC3_VER_IS_PRIOR(DWC3, 240A)) {
-+			reg &= ~DWC3_DCTL_NYET_THRES_MASK;
- 			reg |= DWC3_DCTL_NYET_THRES(dwc->lpm_nyet_threshold);
-+		}
- 
- 		dwc3_gadget_dctl_write_safe(dwc, reg);
- 	} else {
++	memset(&scan, 0, sizeof(scan));
++
+ 	if (!iio_trigger_using_own(indio_dev)) {
+ 		index = find_first_bit(indio_dev->active_scan_mask,
+ 				       iio_get_masklength(indio_dev));
+-- 
+2.48.0
+
 
 
 
