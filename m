@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-108839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B028A1208D
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:46:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 253A2A1209E
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:47:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57525167D39
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:46:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17A003A374C
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7471E7C2E;
-	Wed, 15 Jan 2025 10:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB32A248BD1;
+	Wed, 15 Jan 2025 10:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="noVgbti+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="drYw/1DH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1D71DB147;
-	Wed, 15 Jan 2025 10:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974CF248BB2;
+	Wed, 15 Jan 2025 10:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937975; cv=none; b=Aahe7zDabHGbOq6yc+CmMLeeO/RvsQPqpl3XB3OivyqrFnWDW/P1w6mjboWxi00iC7q1skGXPaHL9Dtc+bJyqT5yKxAVzQLWLnVJd4iHe5Ct1iWSVL9IUKosoDpbLSRclpCZZ2HqBNAiJke46fGoYwxUgZHZA/DKqOagh21/f0w=
+	t=1736938013; cv=none; b=UVwpm0t+LTQR9pxCmVh37mlr3KxWWLyhMrREZ0liPy8LuA3d2ZgKSOpm5tr5cuiiUDy/l7XCUReu6/1Pt3Gb8v5R5q41DyrOqU3y8ZrT6P/ZKSkOdfbC+yQwzQpR5ajW0iCMLvIYQraYE8OKdfN/MsGqXnOXHu38RovUMjppJRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937975; c=relaxed/simple;
-	bh=ccCZvnP0Izl+UJlrpMoqDlT1Bb2Z3r6kYYqpyRLLCdY=;
+	s=arc-20240116; t=1736938013; c=relaxed/simple;
+	bh=XAcBmaa/bYLtToBt/BiG7ELznXMlnwhKy/iupvLs24g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pBeMxPJ79TsCd3D+Hklia1Djz7KafVhusp0MMfqRwj6AKNGTRcC48asL1cHQZ97jbDHYbtMhTjpNSAHyctUSEHXobZ3DWXlfKsla/Hv79MR8QMlCAcmqA2cJPmQyCageMvO5fpwuFQKZ/zVOXUw5Zngovppy2mPcWoJrW+jfJXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=noVgbti+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DDFCC4CEDF;
-	Wed, 15 Jan 2025 10:46:14 +0000 (UTC)
+	 MIME-Version; b=a/g2u0QYJ2Ury63YF7Lt5s6iz0X4/UO5vBjOLhtddOp82cTWktfGangVRT/ODBLxEW+aqqdN3MPk4v2Qkaxms9mgsKPtuwAbdjsGO9ur4DCRklwFcUObe8uFozdWJs1UR8Siy+rY5DQy7wlUdWMh0Cz195EGVegEcSg323wLykU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=drYw/1DH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2CE2C4CEDF;
+	Wed, 15 Jan 2025 10:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937974;
-	bh=ccCZvnP0Izl+UJlrpMoqDlT1Bb2Z3r6kYYqpyRLLCdY=;
+	s=korg; t=1736938013;
+	bh=XAcBmaa/bYLtToBt/BiG7ELznXMlnwhKy/iupvLs24g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=noVgbti+59k6bNxPXDjE8UnLgacVq+zWGSqdj/JKKyoS6pJfPpdS+bL++ameGiIhu
-	 0tbA0SdkFyGRPTqrFWzQ77jOpFMloduWsBmTr9akk2xAdO2HVdSxTHucWAr7YtS0Q8
-	 l11zGlSDoBPM7rpmadgU9U+m6Uf+Kgxf87dJIsL8=
+	b=drYw/1DHrZOyaLcbe4kLbbBI2q3DlVq2UeRD/tOiPsQPEWPlPZNnAXtJXYhELiSaO
+	 CDRyTzJWbL83tHUSROd2T3+l5+lNGUWOLTf6vJcKIu4BQk8mRVU5RwS/MJJ5wpIxsu
+	 JfAd9H4wZ3GLnWvG+bhEF9tCFle3/+HF2v7gPCP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+339e9dbe3a2ca419b85d@syzkaller.appspotmail.com,
-	Anand Jain <anand.jain@oracle.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Simon Horman <horms@kernel.org>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 029/189] btrfs: avoid NULL pointer dereference if no valid extent tree
-Date: Wed, 15 Jan 2025 11:35:25 +0100
-Message-ID: <20250115103607.521732986@linuxfoundation.org>
+Subject: [PATCH 6.12 030/189] pds_core: limit loop over fw name list
+Date: Wed, 15 Jan 2025 11:35:26 +0100
+Message-ID: <20250115103607.561393480@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
 In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
 References: <20250115103606.357764746@linuxfoundation.org>
@@ -68,89 +69,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-[ Upstream commit 6aecd91a5c5b68939cf4169e32bc49f3cd2dd329 ]
+[ Upstream commit 8c817eb26230dc0ae553cee16ff43a4a895f6756 ]
 
-[BUG]
-Syzbot reported a crash with the following call trace:
+Add an array size limit to the for-loop to be sure we don't try
+to reference a fw_version string off the end of the fw info names
+array.  We know that our firmware only has a limited number
+of firmware slot names, but we shouldn't leave this unchecked.
 
-  BTRFS info (device loop0): scrub: started on devid 1
-  BUG: kernel NULL pointer dereference, address: 0000000000000208
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 106e70067 P4D 106e70067 PUD 107143067 PMD 0
-  Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
-  CPU: 1 UID: 0 PID: 689 Comm: repro Kdump: loaded Tainted: G           O       6.13.0-rc4-custom+ #206
-  Tainted: [O]=OOT_MODULE
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
-  RIP: 0010:find_first_extent_item+0x26/0x1f0 [btrfs]
-  Call Trace:
-   <TASK>
-   scrub_find_fill_first_stripe+0x13d/0x3b0 [btrfs]
-   scrub_simple_mirror+0x175/0x260 [btrfs]
-   scrub_stripe+0x5d4/0x6c0 [btrfs]
-   scrub_chunk+0xbb/0x170 [btrfs]
-   scrub_enumerate_chunks+0x2f4/0x5f0 [btrfs]
-   btrfs_scrub_dev+0x240/0x600 [btrfs]
-   btrfs_ioctl+0x1dc8/0x2fa0 [btrfs]
-   ? do_sys_openat2+0xa5/0xf0
-   __x64_sys_ioctl+0x97/0xc0
-   do_syscall_64+0x4f/0x120
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-   </TASK>
-
-[CAUSE]
-The reproducer is using a corrupted image where extent tree root is
-corrupted, thus forcing to use "rescue=all,ro" mount option to mount the
-image.
-
-Then it triggered a scrub, but since scrub relies on extent tree to find
-where the data/metadata extents are, scrub_find_fill_first_stripe()
-relies on an non-empty extent root.
-
-But unfortunately scrub_find_fill_first_stripe() doesn't really expect
-an NULL pointer for extent root, it use extent_root to grab fs_info and
-triggered a NULL pointer dereference.
-
-[FIX]
-Add an extra check for a valid extent root at the beginning of
-scrub_find_fill_first_stripe().
-
-The new error path is introduced by 42437a6386ff ("btrfs: introduce
-mount option rescue=ignorebadroots"), but that's pretty old, and later
-commit b979547513ff ("btrfs: scrub: introduce helper to find and fill
-sector info for a scrub_stripe") changed how we do scrub.
-
-So for kernels older than 6.6, the fix will need manual backport.
-
-Reported-by: syzbot+339e9dbe3a2ca419b85d@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/67756935.050a0220.25abdd.0a12.GAE@google.com/
-Fixes: 42437a6386ff ("btrfs: introduce mount option rescue=ignorebadroots")
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 45d76f492938 ("pds_core: set up device and adminq")
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250103195147.7408-1-shannon.nelson@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/scrub.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/amd/pds_core/devlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
-index 3a3427428074..c73a41b1ad56 100644
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -1541,6 +1541,10 @@ static int scrub_find_fill_first_stripe(struct btrfs_block_group *bg,
- 	u64 extent_gen;
- 	int ret;
+diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
+index 2681889162a2..44971e71991f 100644
+--- a/drivers/net/ethernet/amd/pds_core/devlink.c
++++ b/drivers/net/ethernet/amd/pds_core/devlink.c
+@@ -118,7 +118,7 @@ int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
+ 	if (err && err != -EIO)
+ 		return err;
  
-+	if (unlikely(!extent_root)) {
-+		btrfs_err(fs_info, "no valid extent root for scrub");
-+		return -EUCLEAN;
-+	}
- 	memset(stripe->sectors, 0, sizeof(struct scrub_sector_verification) *
- 				   stripe->nr_sectors);
- 	scrub_stripe_reset_bitmaps(stripe);
+-	listlen = fw_list.num_fw_slots;
++	listlen = min(fw_list.num_fw_slots, ARRAY_SIZE(fw_list.fw_names));
+ 	for (i = 0; i < listlen; i++) {
+ 		if (i < ARRAY_SIZE(fw_slotnames))
+ 			strscpy(buf, fw_slotnames[i], sizeof(buf));
 -- 
 2.39.5
 
