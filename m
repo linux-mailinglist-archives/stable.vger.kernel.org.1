@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-109082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01763A121BC
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:59:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D43FFA1212B
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:53:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A97C16AC83
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:59:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 153FA188D780
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87EE81E7C02;
-	Wed, 15 Jan 2025 10:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF4B1E7C2E;
+	Wed, 15 Jan 2025 10:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nSi2LW/V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGmgiTYu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4434E248BB0;
-	Wed, 15 Jan 2025 10:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EFBB248BDC;
+	Wed, 15 Jan 2025 10:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938789; cv=none; b=bbfwCd1JbWj95+y+aV21W8/W/RzkZtd3ruaAljl/9lTr80m5Fm0APP9PwXpFI6tjFqkslgluXZ1JEbZBDDg44JZbGczRFMbZY6ui4cFWIXxTcywhcmtwsMtg+zudaeLgh2LKAr8Gi9D2nTGJW3u+MD5JY96lY8U94Tg+D1qW5CY=
+	t=1736938416; cv=none; b=Ch9Kp5DW03dNePLPpCVWIRKLeC0PQVQGDe10jzVct/svt2DGJB6Lnj+Lsk1YKxsiHqaub+reCbkttwj/TpTByVzg8pi/oX+0UMa5acT5zC/jIcdQ5hSFRbd+pdE4/N8kSma30F1wRIcB7MkC5XwPYBAtIvRfClWQFKzXlqD2gc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938789; c=relaxed/simple;
-	bh=rA+mUKiJI69pim4TCDDoSOl33S3cobNgb29korjCwFU=;
+	s=arc-20240116; t=1736938416; c=relaxed/simple;
+	bh=pFlxqZLrtpIc7YovvWJINsTksn8H2h7XuDERGmlc9zQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MhdL++f7BOVd7DHkubshVgHFrYG7T+bDSDP/NahbCCAhMJKXbDnYjcorxUl1ZE0vmB/qBhFlWkWZSLQMDXTIfKypFShW0daO9rtvmOjA8oGQ6aJxXZGYCibluBH9Q9ASn26Jqv3qvOoVfjm7Y7gZu9hhfqppW0+AyKNGDlWMBJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nSi2LW/V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F9D4C4CEDF;
-	Wed, 15 Jan 2025 10:59:48 +0000 (UTC)
+	 MIME-Version; b=IRoVjji5S8qMY4G2/oFN3bQnxN0daLHhW6tvli1zK6ncXS8fvNkR/OyKjH/hFDMjvlzJd1sIJt0DIxYSKAU7EqurbtJNHcmprYFeqXyR7wVE7pzBcIDOtX08tv5QfGG0a6Zsrl894rsaMU27SyQAoiZZt4ss7XI9woPVVkvMNsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGmgiTYu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 171EAC4CEDF;
+	Wed, 15 Jan 2025 10:53:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938788;
-	bh=rA+mUKiJI69pim4TCDDoSOl33S3cobNgb29korjCwFU=;
+	s=korg; t=1736938416;
+	bh=pFlxqZLrtpIc7YovvWJINsTksn8H2h7XuDERGmlc9zQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nSi2LW/VAdN4R6lbyUQU9Q/qHTK64L9Xc8jyrY20D4R+YUztjFcsG07tkn7o0kuCq
-	 +Ib7TsAXEnM0v8veyHdOZ7RybfIsDRA7aLHYyMxxC0zzMRM23WbWJL+0tkPKZ85UM0
-	 i9zyuEhzJGFckiruYR0z5AUziMT+n4gBG9v/mTkw=
+	b=AGmgiTYuoK4hUP33pI+K0encsh2e9h5cAvzQ0vAV44m1KuiqalyNSR5j2TF2VS10V
+	 ZWMYNYgPlQlm7EYADmMt6GMVerwYC5Q+4HO7uBNMcWzVdGnjpyz3jDNa7e3glnpbvT
+	 lMtagn9JmySVd8le4mlMS3H5XegVXM59lP87Z9JQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Prashanth K <quic_prashk@quicinc.com>
-Subject: [PATCH 6.6 098/129] usb: gadget: f_uac2: Fix incorrect setting of bNumEndpoints
+	Jie Gan <quic_jiegan@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 177/189] arm64: dts: qcom: sa8775p: fix the secure device bootup issue
 Date: Wed, 15 Jan 2025 11:37:53 +0100
-Message-ID: <20250115103558.272377573@linuxfoundation.org>
+Message-ID: <20250115103613.470194436@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashanth K <quic_prashk@quicinc.com>
+From: Jie Gan <quic_jiegan@quicinc.com>
 
-commit 057bd54dfcf68b1f67e6dfc32a47a72e12198495 upstream.
+[ Upstream commit 8a6442ec3437083348f32a6159b9a67bf66417bc ]
 
-Currently afunc_bind sets std_ac_if_desc.bNumEndpoints to 1 if
-controls (mute/volume) are enabled. During next afunc_bind call,
-bNumEndpoints would be unchanged and incorrectly set to 1 even
-if the controls aren't enabled.
+The secure device(fused) cannot bootup with TPDM_DCC device. So
+disable it in DT.
 
-Fix this by resetting the value of bNumEndpoints to 0 on every
-afunc_bind call.
-
-Fixes: eaf6cbe09920 ("usb: gadget: f_uac2: add volume and mute support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
-Link: https://lore.kernel.org/r/20241211115915.159864-1-quic_prashk@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6596118ccdcd ("arm64: dts: qcom: Add coresight nodes for SA8775p")
+Signed-off-by: Jie Gan <quic_jiegan@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241219025216.3463527-1-quic_jiegan@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_uac2.c |    1 +
+ arch/arm64/boot/dts/qcom/sa8775p.dtsi | 1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/usb/gadget/function/f_uac2.c
-+++ b/drivers/usb/gadget/function/f_uac2.c
-@@ -1176,6 +1176,7 @@ afunc_bind(struct usb_configuration *cfg
- 		uac2->as_in_alt = 0;
- 	}
+diff --git a/arch/arm64/boot/dts/qcom/sa8775p.dtsi b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
+index 320a94dcac5c..8a21448c0fa8 100644
+--- a/arch/arm64/boot/dts/qcom/sa8775p.dtsi
++++ b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
+@@ -1940,6 +1940,7 @@
  
-+	std_ac_if_desc.bNumEndpoints = 0;
- 	if (FUOUT_EN(uac2_opts) || FUIN_EN(uac2_opts)) {
- 		uac2->int_ep = usb_ep_autoconfig(gadget, &fs_ep_int_desc);
- 		if (!uac2->int_ep) {
+ 			qcom,cmb-element-bits = <32>;
+ 			qcom,cmb-msrs-num = <32>;
++			status = "disabled";
+ 
+ 			out-ports {
+ 				port {
+-- 
+2.39.5
+
 
 
 
