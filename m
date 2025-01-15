@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-108928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39655A120F5
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:51:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 645F6A12185
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:57:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82F1E188CCF5
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:51:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F6BE16A169
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:57:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C1F248BD1;
-	Wed, 15 Jan 2025 10:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB84C1DB142;
+	Wed, 15 Jan 2025 10:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtQLpoWu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8J1fbDF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4398E248BA1;
-	Wed, 15 Jan 2025 10:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B32248BD0;
+	Wed, 15 Jan 2025 10:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938275; cv=none; b=go9B0nMSxyhNqukIZUMVdV7meK7jEAcVM6AdyAa2rkEt17lB3S0FNKg5QszdEfMGThVP5LRN9hgzAll+xp0Nc179LbZcrNqOxggwLbu4yDNMhIuaGrg2gEJd4X+EHbcKWFhgAIFRs3tM6AdtYLHv0rZJ9uRUOiq3vKCAkDpJ/Js=
+	t=1736938652; cv=none; b=STvz98eKEKt6IJObl3tdZq3fYzpE09xUbD1b1bwGZb6QPm4Ie41vqVf/OVqFgqHaTplZJGXtouMhFq4/DUAEecpEFNfuHm0ASnGz0UGMvNagvjUSsJZeaZKmqyP/FPWHbTHpdHrtgizRgh6f0b3OUnqNf9zPcCNwcO+DXrXG6Fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938275; c=relaxed/simple;
-	bh=dBVlBBJgUI/P88/d8/Dvy8HnadNPuNzU8RzUaDVeqe4=;
+	s=arc-20240116; t=1736938652; c=relaxed/simple;
+	bh=B6C8qtpAXKV4gopT33aBMnnpmQSME3MWwh8CpwOTl6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qP/dhvOZL13aYAAX+CK2AwJYLtHGoMSOImqEvW1/srudTmGnF3MMozhSeGDKgu3xtIvEXMQnVsUE8exX0mPifXqzVPgQa+vepqLKcS/HWpqSFdn68XryKu80Dvf5CxBpr1o4BqPd4YtuU9RtaVtQIn/AZWo7yaPQKeKD6eUs3Hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtQLpoWu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A093CC4CEE1;
-	Wed, 15 Jan 2025 10:51:14 +0000 (UTC)
+	 MIME-Version; b=ArFguOV9ry3EzBKv8/tacx5ly6Yfzm47H02HPbqZrLJbkvFPdVQOhsMaESFHZwBmAQ2Yf1fca92Vp1a3fI2REKcRH9rr7eqA0rai/lrodyOHBW1mo/JkTOreRbDaioSADvwyJ7FXhNNlPqGa/88Ihv/vajUErPbjAGHRnYOm/a0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8J1fbDF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04DB9C4CEDF;
+	Wed, 15 Jan 2025 10:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938275;
-	bh=dBVlBBJgUI/P88/d8/Dvy8HnadNPuNzU8RzUaDVeqe4=;
+	s=korg; t=1736938652;
+	bh=B6C8qtpAXKV4gopT33aBMnnpmQSME3MWwh8CpwOTl6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YtQLpoWuu+Yy5Z+5VujV//hd85tCAp195ov1rbAtleYm0Yd2nJF1RmZUmxRi7kdkh
-	 T5ZyTlUi8+5lX31EFkWrqZiXbtfp6eNGzwnxw+5DZUlsJpunyNuSLTmD4CxGYswxbF
-	 v8a8bQZLGSpHOe43w0o+dx0hZ1HRR7tCNqSD7xDc=
+	b=V8J1fbDFbiwyFEWZeZ6rYTL/MZnVSyHS12+IAN8wfIvya9Uz1I2TigzVEk0yNpSvw
+	 9ypYe+Q6ZpZPucEiZB/o+oKkypYAnihoOxcAWEnzBIS/2m91My19GmK+GD6K30sbMx
+	 1jVcU3LSj5i3En9LYhqVQFKbREBSGmMm8vYnjTXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giuseppe Corbelli <giuseppe.corbelli@antaresvision.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 135/189] USB: serial: cp210x: add Phoenix Contact UPS Device
+	Andrew Jones <ajones@ventanamicro.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 056/129] cpuidle: riscv-sbi: fix device node release in early exit of for_each_possible_cpu
 Date: Wed, 15 Jan 2025 11:37:11 +0100
-Message-ID: <20250115103611.824637033@linuxfoundation.org>
+Message-ID: <20250115103556.600482343@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 854eee93bd6e3dca619d47087af4d65b2045828e upstream.
+[ Upstream commit 7e25044b804581b9c029d5a28d8800aebde18043 ]
 
-Phoenix Contact sells UPS Quint devices [1] with a custom datacable [2]
-that embeds a Silicon Labs converter:
+The 'np' device_node is initialized via of_cpu_device_node_get(), which
+requires explicit calls to of_node_put() when it is no longer required
+to avoid leaking the resource.
 
-Bus 001 Device 003: ID 1b93:1013 Silicon Labs Phoenix Contact UPS Device
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.00
-  bDeviceClass            0
-  bDeviceSubClass         0
-  bDeviceProtocol         0
-  bMaxPacketSize0        64
-  idVendor           0x1b93
-  idProduct          0x1013
-  bcdDevice            1.00
-  iManufacturer           1 Silicon Labs
-  iProduct                2 Phoenix Contact UPS Device
-  iSerial                 3 <redacted>
-  bNumConfigurations	 1
-  Configuration Descriptor:
-    bLength                 9
-    bDescriptorType         2
-    wTotalLength       0x0020
-    bNumInterfaces          1
-    bConfigurationValue     1
-    iConfiguration          0
-    bmAttributes         0x80
-      (Bus Powered)
-    MaxPower              100mA
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        0
-      bAlternateSetting       0
-      bNumEndpoints           2
-      bInterfaceClass       255 Vendor Specific Class
-      bInterfaceSubClass      0
-      bInterfaceProtocol      0
-      iInterface              2 Phoenix Contact UPS Device
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x01  EP 1 OUT
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0040  1x 64 bytes
-        bInterval               0
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x82  EP 2 IN
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0040  1x 64 bytes
-        bInterval               0
+Instead of adding the missing calls to of_node_put() in all execution
+paths, use the cleanup attribute for 'np' by means of the __free()
+macro, which automatically calls of_node_put() when the variable goes
+out of scope. Given that 'np' is only used within the
+for_each_possible_cpu(), reduce its scope to release the nood after
+every iteration of the loop.
 
-[1] https://www.phoenixcontact.com/en-pc/products/power-supply-unit-quint-ps-1ac-24dc-10-2866763
-[2] https://www.phoenixcontact.com/en-il/products/data-cable-preassembled-ifs-usb-datacable-2320500
-
-Reported-by: Giuseppe Corbelli <giuseppe.corbelli@antaresvision.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6abf32f1d9c5 ("cpuidle: Add RISC-V SBI CPU idle driver")
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://lore.kernel.org/r/20241116-cpuidle-riscv-sbi-cleanup-v3-1-a3a46372ce08@gmail.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/cp210x.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/cpuidle/cpuidle-riscv-sbi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/cp210x.c
-+++ b/drivers/usb/serial/cp210x.c
-@@ -223,6 +223,7 @@ static const struct usb_device_id id_tab
- 	{ USB_DEVICE(0x19CF, 0x3000) }, /* Parrot NMEA GPS Flight Recorder */
- 	{ USB_DEVICE(0x1ADB, 0x0001) }, /* Schweitzer Engineering C662 Cable */
- 	{ USB_DEVICE(0x1B1C, 0x1C00) }, /* Corsair USB Dongle */
-+	{ USB_DEVICE(0x1B93, 0x1013) }, /* Phoenix Contact UPS Device */
- 	{ USB_DEVICE(0x1BA4, 0x0002) },	/* Silicon Labs 358x factory default */
- 	{ USB_DEVICE(0x1BE3, 0x07A6) }, /* WAGO 750-923 USB Service Cable */
- 	{ USB_DEVICE(0x1D6F, 0x0010) }, /* Seluxit ApS RF Dongle */
+diff --git a/drivers/cpuidle/cpuidle-riscv-sbi.c b/drivers/cpuidle/cpuidle-riscv-sbi.c
+index c0fe92409175..71d433bb0ce6 100644
+--- a/drivers/cpuidle/cpuidle-riscv-sbi.c
++++ b/drivers/cpuidle/cpuidle-riscv-sbi.c
+@@ -534,12 +534,12 @@ static int sbi_cpuidle_probe(struct platform_device *pdev)
+ 	int cpu, ret;
+ 	struct cpuidle_driver *drv;
+ 	struct cpuidle_device *dev;
+-	struct device_node *np, *pds_node;
++	struct device_node *pds_node;
+ 
+ 	/* Detect OSI support based on CPU DT nodes */
+ 	sbi_cpuidle_use_osi = true;
+ 	for_each_possible_cpu(cpu) {
+-		np = of_cpu_device_node_get(cpu);
++		struct device_node *np __free(device_node) = of_cpu_device_node_get(cpu);
+ 		if (np &&
+ 		    of_property_present(np, "power-domains") &&
+ 		    of_property_present(np, "power-domain-names")) {
+-- 
+2.39.5
+
 
 
 
