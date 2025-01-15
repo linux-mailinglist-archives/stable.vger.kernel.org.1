@@ -1,283 +1,166 @@
-Return-Path: <stable+bounces-109156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83F88A12AC9
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 19:21:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4DACA12ACF
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 19:23:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B4963A6155
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 18:21:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37E5D7A2670
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 18:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748261B4F17;
-	Wed, 15 Jan 2025 18:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E011D63F5;
+	Wed, 15 Jan 2025 18:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UKthHPrR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="curbvbP3"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A5B1D63DB
-	for <stable@vger.kernel.org>; Wed, 15 Jan 2025 18:20:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E8024A7D5;
+	Wed, 15 Jan 2025 18:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736965255; cv=none; b=MGvieqimVrfi9c1WSa5JwV2ECJwtu9moRWDDQNsrdKprKrWyvZktbZlSM+QZpa0SeiMBcSaSvoTT13+eSCfFdx3Wr9eBYNKMeveU3zltTT2FBFN/owgG5nD7e9aHjSpvML60ZPdKEGYh2731hSWKU9bLLx4OpcbOXJByWx/GoVQ=
+	t=1736965379; cv=none; b=LixHIPEtYFNC57nJ4YqJXt39wQnsxhQuIBS9sjBp27uMmDyXX7zOcygBAPknt6rze0UcNhvyPzrA+o2l/HOj8UIt4KfUuKQRFn4eb6Xr2iVFkUhpj6AF7vJCdz4JdrS0JKR9NUszWStKEjukxfHUGiGWR3sIiUgw9hC6GYRIRyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736965255; c=relaxed/simple;
-	bh=crkpbfr0cyZ1Z0pzWbXKtZoKR5PhDOvC4WlpehnMP2o=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tAp8FXYA9SNW+HYu3cybp7dWvrHQLyZfJw4eWubIFzwfXjqj9BxZlOHkWEmhXhJqxqDAHTt4NawoeQ0ZkJWn4VoX6LGGFk9sNJIuD1aKVVFfi8a/+MVsTVFIiVrML1ndjdp29dTThaNsuto3dN1Ex8pm2wLWGHX1YBjeXT4crTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UKthHPrR; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736965252; x=1768501252;
-  h=date:message-id:from:to:cc:subject:in-reply-to:
-   references:mime-version;
-  bh=crkpbfr0cyZ1Z0pzWbXKtZoKR5PhDOvC4WlpehnMP2o=;
-  b=UKthHPrRDg0KyfLkGlutl/USfaMVE5ysJrj4ekFpybeT+MzXx9hAwjHG
-   08V35GFVOn4zpEvmcLHPdRtJxXzzUxGK7BOWvZL8UKv9m1EGvf4XpQDlg
-   qpZIUya+DNNPfqhkdbQzP7L3/VIgBbKqmdUvGX6oPtthLTl1D5KIgYSvn
-   DiIoLhshSkIUFRBUshsyeTSU8t6dJi65oH6vTv0mTjzrjW/y61dB6WclR
-   2/uerACL3UFtIeS/TROUTaDTYPia8K/8ICv74P+hNcFLqFQqV4DAekAXr
-   nBWzvW2LEtFkM0aQbXGK4OGR6kxkEjTBAcSpjoBrNj4oc/BKgb3T27C8J
-   g==;
-X-CSE-ConnectionGUID: vPkwImtcSc6IGs3nltEbtw==
-X-CSE-MsgGUID: G4/OoiHqQAuD9HD9+z4UQA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11316"; a="37475048"
-X-IronPort-AV: E=Sophos;i="6.13,207,1732608000"; 
-   d="scan'208";a="37475048"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2025 10:20:51 -0800
-X-CSE-ConnectionGUID: yk22gKRuRe2WNuwm/8caiA==
-X-CSE-MsgGUID: v+TSuEM7TDKwJBVxL/o0nQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,207,1732608000"; 
-   d="scan'208";a="104996029"
-Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com) ([10.165.21.142])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2025 10:20:52 -0800
-Date: Wed, 15 Jan 2025 10:20:51 -0800
-Message-ID: <85tta0djlo.wl-ashutosh.dixit@intel.com>
-From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 182/189] drm/xe/oa: Separate batch submission from waiting for completion
-In-Reply-To: <20250115103613.670557960@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>	<20250115103613.670557960@linuxfoundation.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
- Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1736965379; c=relaxed/simple;
+	bh=+D4fVNgXMgXNYg+FYqmlIW+aVPKuibad+XU5z8DGPo8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oWul4yLfpnmK6dTvuMOcmI/8dVAFknjJPO09yrNxrQwxKgUz+TyB4G5dJJVKn9BHlq+zWNOembQVbw7XenL1IKPfRHVoaqyBCu6J7JEENOMheS3GsHgA4nbq5QzS9F3WzHEjSejce42nR0sNNzJujjguyiUz4NFui1ijgo7Wlqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=curbvbP3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6B6C4CEE3;
+	Wed, 15 Jan 2025 18:22:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736965379;
+	bh=+D4fVNgXMgXNYg+FYqmlIW+aVPKuibad+XU5z8DGPo8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=curbvbP3CDSi5KpGt4sbhmZPg2t+v6pmdOs56ERfjoFizv99qDFhWio0h+fdmeV/M
+	 Gud1a1Afpau4ErsmOBGVkvMYG22L50suzZVOKzJ9HAoijML8snzZim+nn37af9VFpb
+	 ASRHaOge6+xOfokmJK5kL3IZ5yzcQ7usPXTSlVd+/efx/NPUC+4MpCkV/2n4TMF8Pc
+	 8CocP2ZOqbCocEjiCL8yJYQlRJmdty9VCGKRB7ixI0ShYRkhadS1ulzVT+GJV772Xm
+	 F2QnoFyIYBN3nmeDa9R3KcmnccKrY/9kg2IEj0ZQ0a9URKw0n24ccbEP1Ex9psO/aP
+	 Xd1xJLN7JSppQ==
+Date: Wed, 15 Jan 2025 18:22:55 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>,
+	stable@vger.kernel.org,
+	Daire McNamara <daire.mcnamara@microchip.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] spi: microchip-core: prevent RX overflows when transmit
+ size > FIFO size
+Message-ID: <20250115-resubmit-glove-ca6ce06c9d4f@spud>
+References: <20250114-easiness-pregame-d1d2d4b57e7b@spud>
+ <33b35815-3575-490a-92de-4d1c2228257e@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-
-On Wed, 15 Jan 2025 02:37:58 -0800, Greg Kroah-Hartman wrote:
->
-
-Hi Greg,
-
-> 6.12-stable review patch.  If anyone has any objections, please let me know.
-
-> This is a note to let you know that I've just added the patch titled
->
->     drm/xe/oa: Separate batch submission from waiting for completion
->
-> to the 6.12-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->
-> The filename of the patch is:
->      drm-xe-oa-separate-batch-submission-from-waiting-for.patch
-> and it can be found in the queue-6.12 subdirectory.
->
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-
-I am writing about 3 emails I received (including this one) about 3 commits
-being added to stable. These are the 3 commits I am referring to (all
-commit SHA's refer to Linus' tree and first commit is at the bottom,
-everywhere in this email):
-
-    2fb4350a283af drm/xe/oa: Add input fence dependencies
-    c8507a25cebd1 drm/xe/oa/uapi: Define and parse OA sync properties
-    dddcb19ad4d4b drm/xe/oa: Separate batch submission from waiting for completion
-
-Apparently these are added to stable to avoid conflicts with this commit:
-
-    f0ed39830e606 xe/oa: Fix query mode of operation for OAR/OAC
-
-However, the 3 commits are part of a 7 commit series and are incomplete in
-themeselves and will break userspace. So we should add the remaining 4
-commits of the series to stable too. Thes are the ones:
-
-    85d3f9e84e062 drm/xe/oa: Allow only certain property changes from config
-    9920c8b88c5cf drm/xe/oa: Add syncs support to OA config ioctl
-    cc4e6994d5a23 drm/xe/oa: Move functions up so they can be reused for config ioctl
-    343dd246fd9b5 drm/xe/oa: Signal output fences
-
-The above list can be generated by running the following in Linus' tree:
-
-    git log --oneline -- drivers/gpu/drm/xe/xe_oa.c
-
-Thanks.
---
-Ashutosh
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="Z5NkYWbRBvvFFc3z"
+Content-Disposition: inline
+In-Reply-To: <33b35815-3575-490a-92de-4d1c2228257e@sirena.org.uk>
 
 
+--Z5NkYWbRBvvFFc3z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->
-> ------------------
->
-> From: Ashutosh Dixit <ashutosh.dixit@intel.com>
->
-> [ Upstream commit dddcb19ad4d4bbe943a72a1fb3266c6e8aa8d541 ]
->
-> When we introduce xe_syncs, we don't wait for internal OA programming
-> batches to complete. That is, xe_syncs are signaled asynchronously. In
-> anticipation for this, separate out batch submission from waiting for
-> completion of those batches.
->
-> v2: Change return type of xe_oa_submit_bb to "struct dma_fence *" (Matt B)
-> v3: Retain init "int err = 0;" in xe_oa_submit_bb (Jose)
->
-> Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> Link: https://patchwork.freedesktop.org/patch/msgid/20241022200352.1192560-2-ashutosh.dixit@intel.com
-> Stable-dep-of: f0ed39830e60 ("xe/oa: Fix query mode of operation for OAR/OAC")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  drivers/gpu/drm/xe/xe_oa.c | 57 +++++++++++++++++++++++++++++---------
->  1 file changed, 44 insertions(+), 13 deletions(-)
->
-> diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
-> index 78823f53d290..4962c9eb9a81 100644
-> --- a/drivers/gpu/drm/xe/xe_oa.c
-> +++ b/drivers/gpu/drm/xe/xe_oa.c
-> @@ -567,11 +567,10 @@ static __poll_t xe_oa_poll(struct file *file, poll_table *wait)
->	return ret;
->  }
->
-> -static int xe_oa_submit_bb(struct xe_oa_stream *stream, struct xe_bb *bb)
-> +static struct dma_fence *xe_oa_submit_bb(struct xe_oa_stream *stream, struct xe_bb *bb)
->  {
->	struct xe_sched_job *job;
->	struct dma_fence *fence;
-> -	long timeout;
->	int err = 0;
->
->	/* Kernel configuration is issued on stream->k_exec_q, not stream->exec_q */
-> @@ -585,14 +584,9 @@ static int xe_oa_submit_bb(struct xe_oa_stream *stream, struct xe_bb *bb)
->	fence = dma_fence_get(&job->drm.s_fence->finished);
->	xe_sched_job_push(job);
->
-> -	timeout = dma_fence_wait_timeout(fence, false, HZ);
-> -	dma_fence_put(fence);
-> -	if (timeout < 0)
-> -		err = timeout;
-> -	else if (!timeout)
-> -		err = -ETIME;
-> +	return fence;
->  exit:
-> -	return err;
-> +	return ERR_PTR(err);
->  }
->
->  static void write_cs_mi_lri(struct xe_bb *bb, const struct xe_oa_reg *reg_data, u32 n_regs)
-> @@ -656,6 +650,7 @@ static void xe_oa_store_flex(struct xe_oa_stream *stream, struct xe_lrc *lrc,
->  static int xe_oa_modify_ctx_image(struct xe_oa_stream *stream, struct xe_lrc *lrc,
->				  const struct flex *flex, u32 count)
->  {
-> +	struct dma_fence *fence;
->	struct xe_bb *bb;
->	int err;
->
-> @@ -667,7 +662,16 @@ static int xe_oa_modify_ctx_image(struct xe_oa_stream *stream, struct xe_lrc *lr
->
->	xe_oa_store_flex(stream, lrc, bb, flex, count);
->
-> -	err = xe_oa_submit_bb(stream, bb);
-> +	fence = xe_oa_submit_bb(stream, bb);
-> +	if (IS_ERR(fence)) {
-> +		err = PTR_ERR(fence);
-> +		goto free_bb;
-> +	}
-> +	xe_bb_free(bb, fence);
-> +	dma_fence_put(fence);
-> +
-> +	return 0;
-> +free_bb:
->	xe_bb_free(bb, NULL);
->  exit:
->	return err;
-> @@ -675,6 +679,7 @@ static int xe_oa_modify_ctx_image(struct xe_oa_stream *stream, struct xe_lrc *lr
->
->  static int xe_oa_load_with_lri(struct xe_oa_stream *stream, struct xe_oa_reg *reg_lri)
->  {
-> +	struct dma_fence *fence;
->	struct xe_bb *bb;
->	int err;
->
-> @@ -686,7 +691,16 @@ static int xe_oa_load_with_lri(struct xe_oa_stream *stream, struct xe_oa_reg *re
->
->	write_cs_mi_lri(bb, reg_lri, 1);
->
-> -	err = xe_oa_submit_bb(stream, bb);
-> +	fence = xe_oa_submit_bb(stream, bb);
-> +	if (IS_ERR(fence)) {
-> +		err = PTR_ERR(fence);
-> +		goto free_bb;
-> +	}
-> +	xe_bb_free(bb, fence);
-> +	dma_fence_put(fence);
-> +
-> +	return 0;
-> +free_bb:
->	xe_bb_free(bb, NULL);
->  exit:
->	return err;
-> @@ -914,15 +928,32 @@ static int xe_oa_emit_oa_config(struct xe_oa_stream *stream, struct xe_oa_config
->  {
->  #define NOA_PROGRAM_ADDITIONAL_DELAY_US 500
->	struct xe_oa_config_bo *oa_bo;
-> -	int err, us = NOA_PROGRAM_ADDITIONAL_DELAY_US;
-> +	int err = 0, us = NOA_PROGRAM_ADDITIONAL_DELAY_US;
-> +	struct dma_fence *fence;
-> +	long timeout;
->
-> +	/* Emit OA configuration batch */
->	oa_bo = xe_oa_alloc_config_buffer(stream, config);
->	if (IS_ERR(oa_bo)) {
->		err = PTR_ERR(oa_bo);
->		goto exit;
->	}
->
-> -	err = xe_oa_submit_bb(stream, oa_bo->bb);
-> +	fence = xe_oa_submit_bb(stream, oa_bo->bb);
-> +	if (IS_ERR(fence)) {
-> +		err = PTR_ERR(fence);
-> +		goto exit;
-> +	}
-> +
-> +	/* Wait till all previous batches have executed */
-> +	timeout = dma_fence_wait_timeout(fence, false, 5 * HZ);
-> +	dma_fence_put(fence);
-> +	if (timeout < 0)
-> +		err = timeout;
-> +	else if (!timeout)
-> +		err = -ETIME;
-> +	if (err)
-> +		drm_dbg(&stream->oa->xe->drm, "dma_fence_wait_timeout err %d\n", err);
->
->	/* Additional empirical delay needed for NOA programming after registers are written */
->	usleep_range(us, 2 * us);
-> --
-> 2.39.5
->
->
->
+On Tue, Jan 14, 2025 at 07:44:26PM +0000, Mark Brown wrote:
+> On Tue, Jan 14, 2025 at 05:13:49PM +0000, Conor Dooley wrote:
+>=20
+> > When the size of a transfer exceeds the size of the FIFO (32 bytes), RX
+> > overflows will be generated and receive data will be corrupted and
+> > warnings will be produced. For example, here's an error generated by a
+> > transfer of 36 bytes:
+>=20
+> >   spi_master spi0: mchp_corespi_interrupt: RX OVERFLOW: rxlen: 4, txlen=
+: 0
+>=20
+> > I am not entirely sure how this happens, as rxlen being 4 means that 32
+> > of 36 bytes have been read from the RX FIFO so there should be
+> > sufficient room for 4 more bytes but timing is likely a factor as simply
+> > adding a delay in the transmit path is enough to avoid the overflows.
+>=20
+> The reads from the FIFO happen prior to the check for overflow in the
+> interrupt handler so if we overflow then take the interrupt we will read
+> the full 32 byte FIFO before it sees that there was an overflow.
+>=20
+> > @@ -221,6 +221,13 @@ static inline void mchp_corespi_write_fifo(struct =
+mchp_corespi *spi)
+> >  	while ((i < fifo_max) && !(mchp_corespi_read(spi, REG_STATUS) & STATU=
+S_TXFIFO_FULL)) {
+> >  		u32 word;
+> > =20
+> > +		/*
+> > +		 * If the transfer is larger than FIFO_DEPTH, spin until space
+> > +		 * is made in the RX FIFO to avoid losing data to RX overflows
+> > +		 */
+> > +		while (mchp_corespi_read(spi, REG_STATUS) & STATUS_RXFIFO_FULL)
+> > +			;
+> > +
+>=20
+> So, this is the transmit side but we're polling the RX FIFO and not
+> doing anything to clear it?  I see that the FIFO reads are driven from
+> interrupt context.  If I had to guess I'd say that there's latency in
+> the interrupt being delivered (possibly to a different CPU) and when the
+> transfer is being driven by the TX side it's stuffing data into the TX
+> FIFO faster than interrupts are being delivered (the TX side just seems
+> to busy wait on there being space in the FIFO which can't be good for
+> slower speeds...) so the TX and RX sides of the transfer get out of sync.
+>=20
+> Given that AFAICT the controller has to RX all the time I suspect you
+> want to move the RX processing out of interrupt context into the main
+> _transfer_one() function and busy wait for that too, or push the TX side
+> into the interrupt handler (which at first glance looks simpler).
+> Either way the two directions will be driven from the same place and so
+> not get out of sync.
+
+Hmm, at first glance it is indeed simpler, but it may be a bit of a
+poor compromise. There used to be calls to
+mchp_corespi_write_fifo() in the interrupt handler, but I removed them
+in the ?summer? because messages were being sent out of order. IIRC what
+happens is that the tx fifo can be emptied by the controller hardware
+before the whole message has been written into it, thereby generating
+the interrupts and triggering a parallel call to mchp_corespi_write_fifo().
+
+To avoid that, the first byte could be sent by transfer_one(), and then
+everything else handled by the current implementation of
+mchp_corespi_write_fifo(), but I think that would cause "actual" RX
+overflows, without cutting down to sending (FIFO_MAX - 1) bytes per call
+or ensuring that the rx fifo is read before the tx one. Given the timing
+issues there seem to be around the rx ready/tx done interrupts and the
+rx/tx fifo status bits being set/cleared, I don't want to play games
+there. That means cutting down to something well under FIFO_MAX (which
+is 32 bytes), probably to something like 1/2/4 bytes depending on
+transfer size since that can be done in a single write on the bus and
+will allow the same code to be used in transfer_one() and in the
+interrupt handler.
+
+Moving it out of the interrupt handler entirely probably makes the code
+a lot easier to reason about, so I think I'd actually rather do that.
+That said, I don't think I would want that change going into fixes as it's
+a pretty intrusive change, although given where we are in the cycle it
+ain't as much of a problem since I'd not be sending it until after 6.13
+is released anyway.
+
+Cheers,
+Conor.
+
+--Z5NkYWbRBvvFFc3z
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ4f8/wAKCRB4tDGHoIJi
+0sxSAP9Sacu1Z0IeulFVDuWALhs+Q8UBxLnHHq7v86EDxrv0LQEApdIWGaIiq32O
+yMwbARDUox2mcfPSB8Ah4ivZxIQaHwY=
+=Id6j
+-----END PGP SIGNATURE-----
+
+--Z5NkYWbRBvvFFc3z--
 
