@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-109022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 417B9A12173
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:56:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED0B5A12000
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:40:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6444E169CBB
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:56:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4F44161001
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E39F1E7C02;
-	Wed, 15 Jan 2025 10:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1699248BDA;
+	Wed, 15 Jan 2025 10:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BXDrZiS8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/updjOf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B013248BD4;
-	Wed, 15 Jan 2025 10:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A016248BA1;
+	Wed, 15 Jan 2025 10:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938596; cv=none; b=sclw0iWGzL/Okw4IZKpNJkL3EOZKiVfUJJEaKKAG5MQwgn/3MbTXZEv3Q0TTSzm71aKc7P3mD8FmS3phsnRh0hrYS8o2kLds2bOp6rpUqtCeuqjaTSTTvxedyg/gFhKt3udJbzqZHnaYKM3HjXWIOKnZlF0Q3uox0SFKQ8CrNIU=
+	t=1736937599; cv=none; b=KL11uBNW9iJcz6GKVrajXHYPrwR7d64KaBil8/upaNnLdIJPTJ4gtsWB6Y9frH9y+wCk5Dna7PM28slzyGGdozPdiEXUs6lbqfUQHFDwrdH2ypXm64h/+4bfZrfOlvUtQzymsTY9WoIXpef9pMR44P8fFFiqEWOm1OxPkWQ1+14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938596; c=relaxed/simple;
-	bh=6WE8ZXsvKpgKgBCzRrC/o2OrM3iPorvhYT70bSHi/KE=;
+	s=arc-20240116; t=1736937599; c=relaxed/simple;
+	bh=fCXUShe75TEeKRU4XUDfbVPe2W7nWKEHpEa0322KcmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ipoOwR8uV0HClQ8HZgfOcLZFKKKZ5d1sBsWDQ96cMPJXIFOYeCVw+WXvYGzU9btTowauQKnN6sd1kzjapJleJqUemUtsIWkYCEuFkkj7w80qsfNtAkH7tO52SFMKxBE7Si4qiSnuAnbl8AW3z+iUNvcNd2Vgx2rJsCYRZ14YNfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BXDrZiS8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6646AC4CEDF;
-	Wed, 15 Jan 2025 10:56:35 +0000 (UTC)
+	 MIME-Version; b=ZzGB9tJSTICnsUQB8zBzWiO3+MBG+0rTjLxHrUNYyjKxeSi8/l5imjhsJP1R+87jbJqTvp1cSudWhqEc/JBsNIfOp4K0u7QDk4L0myHL1/XoeP8KLIl6mSFO5bwlTln6NM9jiT+CntnncAisyK8DKucuHTgENc+Gd5gtap1g6qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/updjOf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811E8C4CEDF;
+	Wed, 15 Jan 2025 10:39:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938596;
-	bh=6WE8ZXsvKpgKgBCzRrC/o2OrM3iPorvhYT70bSHi/KE=;
+	s=korg; t=1736937599;
+	bh=fCXUShe75TEeKRU4XUDfbVPe2W7nWKEHpEa0322KcmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BXDrZiS8CcvnSG5JPwZ3ubTMkCprY0dSt2W319I66TpLb+ff7yWaX8Z7FZNRbYaxv
-	 OJFNyWpLVT+3O/B288yi/d58k3FINlYTXER3I8zTH0y0sWwC5t62v1I9vxBXk1DRh0
-	 hC+TcNEow/g7EXpAAbmgbKB3O76RayIkSxExwgIU=
+	b=J/updjOfWBvF7NzfJLDWA/+6xUEqczdRRsEjiL1/Rp4RVCLb9ChLF6i9naQpOFCPq
+	 /EuPRFrZO7v7p8VEGSgoHJz6pOLMNVpy22larNtp3QQ4Qajp6c1FW2ee8q8yMSaFIB
+	 W2R9SSZdikB2Ya6+BX0/ww2PUpL7cpOrQrGsP+EU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Joe Thornber <thornber@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/129] ovl: pass realinode to ovl_encode_real_fh() instead of realdentry
+Subject: [PATCH 6.1 08/92] dm array: fix cursor index when skipping across block boundaries
 Date: Wed, 15 Jan 2025 11:36:26 +0100
-Message-ID: <20250115103554.818009363@linuxfoundation.org>
+Message-ID: <20250115103547.867132363@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,134 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit 07aeefae7ff44d80524375253980b1bdee2396b0 ]
+[ Upstream commit 0bb1968da2737ba68fd63857d1af2b301a18d3bf ]
 
-We want to be able to encode an fid from an inode with no alias.
+dm_array_cursor_skip() seeks to the target position by loading array
+blocks iteratively until the specified number of entries to skip is
+reached. When seeking across block boundaries, it uses
+dm_array_cursor_next() to step into the next block.
+dm_array_cursor_skip() must first move the cursor index to the end
+of the current block; otherwise, the cursor position could incorrectly
+remain in the same block, causing the actual number of skipped entries
+to be much smaller than expected.
 
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Link: https://lore.kernel.org/r/20250105162404.357058-2-amir73il@gmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: c45beebfde34 ("ovl: support encoding fid from inode with no alias")
+This bug affects cache resizing in v2 metadata and could lead to data
+loss if the fast device is shrunk during the first-time resume. For
+example:
+
+1. create a cache metadata consists of 32768 blocks, with a dirty block
+   assigned to the second bitmap block. cache_restore v1.0 is required.
+
+cat <<EOF >> cmeta.xml
+<superblock uuid="" block_size="64" nr_cache_blocks="32768" \
+policy="smq" hint_width="4">
+  <mappings>
+    <mapping cache_block="32767" origin_block="0" dirty="true"/>
+  </mappings>
+</superblock>
+EOF
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+cache_restore -i cmeta.xml -o /dev/mapper/cmeta --metadata-version=2
+
+2. bring up the cache while attempt to discard all the blocks belonging
+   to the second bitmap block (block# 32576 to 32767). The last command
+   is expected to fail, but it actually succeeds.
+
+dmsetup create cdata --table "0 2084864 linear /dev/sdc 8192"
+dmsetup create corig --table "0 65536 linear /dev/sdc 2105344"
+dmsetup create cache --table "0 65536 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 64 2 metadata2 writeback smq \
+2 migration_threshold 0"
+
+In addition to the reproducer described above, this fix can be
+verified using the "array_cursor/skip" tests in dm-unit:
+  dm-unit run /pdata/array_cursor/skip/ --kernel-dir <KERNEL_DIR>
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: 9b696229aa7d ("dm persistent data: add cursor skip functions to the cursor APIs")
+Reviewed-by: Joe Thornber <thornber@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/copy_up.c   | 11 ++++++-----
- fs/overlayfs/export.c    |  5 +++--
- fs/overlayfs/namei.c     |  4 ++--
- fs/overlayfs/overlayfs.h |  2 +-
- 4 files changed, 12 insertions(+), 10 deletions(-)
+ drivers/md/persistent-data/dm-array.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
-index 5c9af24bae4a..f14c412c5609 100644
---- a/fs/overlayfs/copy_up.c
-+++ b/fs/overlayfs/copy_up.c
-@@ -371,13 +371,13 @@ int ovl_set_attr(struct ovl_fs *ofs, struct dentry *upperdentry,
- 	return err;
- }
+diff --git a/drivers/md/persistent-data/dm-array.c b/drivers/md/persistent-data/dm-array.c
+index aab0385ed53b..767ab60507d9 100644
+--- a/drivers/md/persistent-data/dm-array.c
++++ b/drivers/md/persistent-data/dm-array.c
+@@ -998,6 +998,7 @@ int dm_array_cursor_skip(struct dm_array_cursor *c, uint32_t count)
+ 		}
  
--struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry *real,
-+struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct inode *realinode,
- 				  bool is_upper)
- {
- 	struct ovl_fh *fh;
- 	int fh_type, dwords;
- 	int buflen = MAX_HANDLE_SZ;
--	uuid_t *uuid = &real->d_sb->s_uuid;
-+	uuid_t *uuid = &realinode->i_sb->s_uuid;
- 	int err;
+ 		count -= remaining;
++		c->index += (remaining - 1);
+ 		r = dm_array_cursor_next(c);
  
- 	/* Make sure the real fid stays 32bit aligned */
-@@ -394,7 +394,8 @@ struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry *real,
- 	 * the price or reconnecting the dentry.
- 	 */
- 	dwords = buflen >> 2;
--	fh_type = exportfs_encode_fh(real, (void *)fh->fb.fid, &dwords, 0);
-+	fh_type = exportfs_encode_inode_fh(realinode, (void *)fh->fb.fid,
-+					   &dwords, NULL, 0);
- 	buflen = (dwords << 2);
- 
- 	err = -EIO;
-@@ -436,7 +437,7 @@ struct ovl_fh *ovl_get_origin_fh(struct ovl_fs *ofs, struct dentry *origin)
- 	if (!ovl_can_decode_fh(origin->d_sb))
- 		return NULL;
- 
--	return ovl_encode_real_fh(ofs, origin, false);
-+	return ovl_encode_real_fh(ofs, d_inode(origin), false);
- }
- 
- int ovl_set_origin_fh(struct ovl_fs *ofs, const struct ovl_fh *fh,
-@@ -461,7 +462,7 @@ static int ovl_set_upper_fh(struct ovl_fs *ofs, struct dentry *upper,
- 	const struct ovl_fh *fh;
- 	int err;
- 
--	fh = ovl_encode_real_fh(ofs, upper, true);
-+	fh = ovl_encode_real_fh(ofs, d_inode(upper), true);
- 	if (IS_ERR(fh))
- 		return PTR_ERR(fh);
- 
-diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
-index 611ff567a1aa..c56e4e0b8054 100644
---- a/fs/overlayfs/export.c
-+++ b/fs/overlayfs/export.c
-@@ -228,6 +228,7 @@ static int ovl_check_encode_origin(struct dentry *dentry)
- static int ovl_dentry_to_fid(struct ovl_fs *ofs, struct dentry *dentry,
- 			     u32 *fid, int buflen)
- {
-+	struct inode *inode = d_inode(dentry);
- 	struct ovl_fh *fh = NULL;
- 	int err, enc_lower;
- 	int len;
-@@ -241,8 +242,8 @@ static int ovl_dentry_to_fid(struct ovl_fs *ofs, struct dentry *dentry,
- 		goto fail;
- 
- 	/* Encode an upper or lower file handle */
--	fh = ovl_encode_real_fh(ofs, enc_lower ? ovl_dentry_lower(dentry) :
--				ovl_dentry_upper(dentry), !enc_lower);
-+	fh = ovl_encode_real_fh(ofs, enc_lower ? ovl_inode_lower(inode) :
-+				ovl_inode_upper(inode), !enc_lower);
- 	if (IS_ERR(fh))
- 		return PTR_ERR(fh);
- 
-diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
-index f10ac4ae35f0..2d2ef671b36b 100644
---- a/fs/overlayfs/namei.c
-+++ b/fs/overlayfs/namei.c
-@@ -536,7 +536,7 @@ int ovl_verify_origin_xattr(struct ovl_fs *ofs, struct dentry *dentry,
- 	struct ovl_fh *fh;
- 	int err;
- 
--	fh = ovl_encode_real_fh(ofs, real, is_upper);
-+	fh = ovl_encode_real_fh(ofs, d_inode(real), is_upper);
- 	err = PTR_ERR(fh);
- 	if (IS_ERR(fh)) {
- 		fh = NULL;
-@@ -732,7 +732,7 @@ int ovl_get_index_name(struct ovl_fs *ofs, struct dentry *origin,
- 	struct ovl_fh *fh;
- 	int err;
- 
--	fh = ovl_encode_real_fh(ofs, origin, false);
-+	fh = ovl_encode_real_fh(ofs, d_inode(origin), false);
- 	if (IS_ERR(fh))
- 		return PTR_ERR(fh);
- 
-diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
-index 61e03d664d7d..ca63a26a6170 100644
---- a/fs/overlayfs/overlayfs.h
-+++ b/fs/overlayfs/overlayfs.h
-@@ -832,7 +832,7 @@ int ovl_copy_up_with_data(struct dentry *dentry);
- int ovl_maybe_copy_up(struct dentry *dentry, int flags);
- int ovl_copy_xattr(struct super_block *sb, const struct path *path, struct dentry *new);
- int ovl_set_attr(struct ovl_fs *ofs, struct dentry *upper, struct kstat *stat);
--struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry *real,
-+struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct inode *realinode,
- 				  bool is_upper);
- struct ovl_fh *ovl_get_origin_fh(struct ovl_fs *ofs, struct dentry *origin);
- int ovl_set_origin_fh(struct ovl_fs *ofs, const struct ovl_fh *fh,
+ 	} while (!r);
 -- 
 2.39.5
 
