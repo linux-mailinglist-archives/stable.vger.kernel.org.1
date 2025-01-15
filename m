@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-108963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F28BFA12139
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:54:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BF1FA121B3
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:59:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35DA13A4BB8
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:53:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8C6716AF5C
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1FE1E98EA;
-	Wed, 15 Jan 2025 10:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC6C1E98E4;
+	Wed, 15 Jan 2025 10:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PiGffQj+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7thQlmO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEAFE1E98F6;
-	Wed, 15 Jan 2025 10:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B134248BB9;
+	Wed, 15 Jan 2025 10:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938394; cv=none; b=b+ir/TnZlrrRi4TLlOLgSaPoSaHnzqsNsqnJxG2FfTkZC1xCQbGV4bU/VmHPrCiS37HjnG5AMUwro6WhZWHXv23EXqIYbtzHCE7Txa4trIbe2RKUP8ZybxHi2QuyYivKF0pXHG+IgxHZVwJ758jq1wlpVwZEhQ5qvNq2k44wBYI=
+	t=1736938764; cv=none; b=ulhP1mXtpAC9vLr+X/Y8MLKjQpd32MKVbZXJcgIqMF/M5sJHgsfuROJ0zcKmCyXFR96Yh061XYlPpaLhCpXiBX1r2ipoaIz1GkKE7ikjBouERYSmGsWAYyK9p3hwDq9g0TzQMa2YLEMfSaarZrVTu16Gw8tuymqnA1uxStt9qEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938394; c=relaxed/simple;
-	bh=Xmjf8xMInVLrR8cLHd1bpZ1e/2dc6Vsaq57oDXSMVrA=;
+	s=arc-20240116; t=1736938764; c=relaxed/simple;
+	bh=ERelHAiKO37JmEV7mVGENaXzcYRA/BIfBTyt55y7WSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PLT4ZfzY3jpSHZTHVoVJLHPNyapD9LwlsFQA9BGeaKIT4R5L5io6VHv54IzCQXhLGrF/G02ptGFfOOz+fFsfQEr2FSYr+0WIPjCmoaZRgIlEdkaiDE+LNbx6sZC1sDyWdCQzRxv9fRScGfaLrgpn8rynESF0p7M4sSgKkJjkJMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PiGffQj+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B256C4CEDF;
-	Wed, 15 Jan 2025 10:53:13 +0000 (UTC)
+	 MIME-Version; b=VB444VzKvK5JOzi9BAtZF6a3ZkB7HHBexfcHeV7WMl4HXtRya4W/7JpB4Tc0QMDubkYslDov1rD63oE2k39Y6HOdY54y1IZp0Ow/C3lOcdzvpx910VlpNNSzRb1Yub/MDVLaDBINMuIJ7XHwYXQVBvKZqhuBuluAnhrYPIiNO9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7thQlmO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E11C4CEDF;
+	Wed, 15 Jan 2025 10:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938394;
-	bh=Xmjf8xMInVLrR8cLHd1bpZ1e/2dc6Vsaq57oDXSMVrA=;
+	s=korg; t=1736938763;
+	bh=ERelHAiKO37JmEV7mVGENaXzcYRA/BIfBTyt55y7WSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PiGffQj+iGnwEx9zHQ8zPpapX8eEl0IdfePbg0+9Uyr4PO9R026qS4pcZRFVQ+a5n
-	 WxWKDTEakhQCw+gFXOokotk/kADPBIrOIKfkeqoD3vfyF0ba21bmPxF0j8i5wb0YMv
-	 oE++G1eSs1/8KwCEx89EeziKwch6EZKoy8QKm1iM=
+	b=d7thQlmO79buGYWpAtxLxN4QvBpS6HeggUTvn7BZHa1/wcxMy+HOn+bZsPpRejKRC
+	 W/SuLYyPI/iQfGXNS5Rubcdc6b0cWlIqY11SwpQYObUYOYzOpEGYN8IhimXzVHl1lV
+	 HsQpz+fZdu9mhiv9n5+a8pXW5M6a7VxLoZ38liFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 170/189] iio: adc: at91: call input_free_device() on allocated iio_dev
+	Christina Schimpe <christina.schimpe@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 6.6 091/129] x86/fpu: Ensure shadow stack is active before "getting" registers
 Date: Wed, 15 Jan 2025 11:37:46 +0100
-Message-ID: <20250115103613.191890645@linuxfoundation.org>
+Message-ID: <20250115103557.996269037@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
-commit de6a73bad1743e9e81ea5a24c178c67429ff510b upstream.
+commit a9d9c33132d49329ada647e4514d210d15e31d81 upstream.
 
-Current implementation of at91_ts_register() calls input_free_deivce()
-on st->ts_input, however, the err label can be reached before the
-allocated iio_dev is stored to st->ts_input. Thus call
-input_free_device() on input instead of st->ts_input.
+The x86 shadow stack support has its own set of registers. Those registers
+are XSAVE-managed, but they are "supervisor state components" which means
+that userspace can not touch them with XSAVE/XRSTOR.  It also means that
+they are not accessible from the existing ptrace ABI for XSAVE state.
+Thus, there is a new ptrace get/set interface for it.
 
-Fixes: 84882b060301 ("iio: adc: at91_adc: Add support for touchscreens without TSMR")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Link: https://patch.msgid.link/20241207043045.1255409-1-joe@pf.is.s.u-tokyo.ac.jp
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+The regset code that ptrace uses provides an ->active() handler in
+addition to the get/set ones. For shadow stack this ->active() handler
+verifies that shadow stack is enabled via the ARCH_SHSTK_SHSTK bit in the
+thread struct. The ->active() handler is checked from some call sites of
+the regset get/set handlers, but not the ptrace ones. This was not
+understood when shadow stack support was put in place.
+
+As a result, both the set/get handlers can be called with
+XFEATURE_CET_USER in its init state, which would cause get_xsave_addr() to
+return NULL and trigger a WARN_ON(). The ssp_set() handler luckily has an
+ssp_active() check to avoid surprising the kernel with shadow stack
+behavior when the kernel is not ready for it (ARCH_SHSTK_SHSTK==0). That
+check just happened to avoid the warning.
+
+But the ->get() side wasn't so lucky. It can be called with shadow stacks
+disabled, triggering the warning in practice, as reported by Christina
+Schimpe:
+
+WARNING: CPU: 5 PID: 1773 at arch/x86/kernel/fpu/regset.c:198 ssp_get+0x89/0xa0
+[...]
+Call Trace:
+<TASK>
+? show_regs+0x6e/0x80
+? ssp_get+0x89/0xa0
+? __warn+0x91/0x150
+? ssp_get+0x89/0xa0
+? report_bug+0x19d/0x1b0
+? handle_bug+0x46/0x80
+? exc_invalid_op+0x1d/0x80
+? asm_exc_invalid_op+0x1f/0x30
+? __pfx_ssp_get+0x10/0x10
+? ssp_get+0x89/0xa0
+? ssp_get+0x52/0xa0
+__regset_get+0xad/0xf0
+copy_regset_to_user+0x52/0xc0
+ptrace_regset+0x119/0x140
+ptrace_request+0x13c/0x850
+? wait_task_inactive+0x142/0x1d0
+? do_syscall_64+0x6d/0x90
+arch_ptrace+0x102/0x300
+[...]
+
+Ensure that shadow stacks are active in a thread before looking them up
+in the XSAVE buffer. Since ARCH_SHSTK_SHSTK and user_ssp[SHSTK_EN] are
+set at the same time, the active check ensures that there will be
+something to find in the XSAVE buffer.
+
+[ dhansen: changelog/subject tweaks ]
+
+Fixes: 2fab02b25ae7 ("x86: Add PTRACE interface for shadow stack")
+Reported-by: Christina Schimpe <christina.schimpe@intel.com>
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Tested-by: Christina Schimpe <christina.schimpe@intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250107233056.235536-1-rick.p.edgecombe%40intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/at91_adc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/fpu/regset.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/adc/at91_adc.c
-+++ b/drivers/iio/adc/at91_adc.c
-@@ -979,7 +979,7 @@ static int at91_ts_register(struct iio_d
- 	return ret;
+diff --git a/arch/x86/kernel/fpu/regset.c b/arch/x86/kernel/fpu/regset.c
+index 6bc1eb2a21bd..887b0b8e21e3 100644
+--- a/arch/x86/kernel/fpu/regset.c
++++ b/arch/x86/kernel/fpu/regset.c
+@@ -190,7 +190,8 @@ int ssp_get(struct task_struct *target, const struct user_regset *regset,
+ 	struct fpu *fpu = &target->thread.fpu;
+ 	struct cet_user_state *cetregs;
  
- err:
--	input_free_device(st->ts_input);
-+	input_free_device(input);
- 	return ret;
- }
+-	if (!cpu_feature_enabled(X86_FEATURE_USER_SHSTK))
++	if (!cpu_feature_enabled(X86_FEATURE_USER_SHSTK) ||
++	    !ssp_active(target, regset))
+ 		return -ENODEV;
  
+ 	sync_fpstate(fpu);
+-- 
+2.48.0
+
 
 
 
