@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-109015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD8CA1216D
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:56:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8596A12022
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57BFF1886300
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:56:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E580A18899DA
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:42:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2C41E98EA;
-	Wed, 15 Jan 2025 10:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534B3248BAC;
+	Wed, 15 Jan 2025 10:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIxkkgJA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IcJIz5rT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A3C1DB13A;
-	Wed, 15 Jan 2025 10:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10846248BA0;
+	Wed, 15 Jan 2025 10:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938573; cv=none; b=DyD/dR6L4LtK6OlwqtucRX9Z+KRo0C9dPvx0y4kdyJ2x/fgbgoMcH/MBvbrN1pLWvKG8H+ihKhtOHlJGVS06b/rYTwhMbZxYbpOE9UxTPTl2Y9pfQac02LSC3RcWIdCCY9f6AWjolNI4d4wU7vPJEEmwkKtxGJK9zA9zNmkdugY=
+	t=1736937714; cv=none; b=UQM3uNePUoFDDK+mL1iNu/Ud1cELuvdPVRMIiZlti58WA5zKofR/273A41z3JLUtk8Ro/JJL8lkgROxK4RzrcsA/7h0T+V9N3uj5btamZqqVNNEplYx1LbjmOLs7NZaVw45M+3apzvoMpvyBV/t3Ji7mwU44MXXCwlRaeikTYRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938573; c=relaxed/simple;
-	bh=cpyUoZQ/IvcVimrNmpx6kCswBC+xCjRpLH8WiB71HBw=;
+	s=arc-20240116; t=1736937714; c=relaxed/simple;
+	bh=2SoNho78Xcp+2iGUokUPe3V9RQfHfNOYDTqXelMEvGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=niQ5VakpqagoFXdhk602QhgMhc3dLx1b51COEFOL1KH/A3uYTixWP/7aM7XLk9RGOtYw5gkCK5/Dxhu81HGRaxQiuNwrnXo9qqQQtDbRphpVNrxktxf5Yc7/Lc+15k8lVjij/RHxkwVdcwQg4QBOFQ93c+N/5CVmdYXD/h7evGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIxkkgJA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58EACC4CEDF;
-	Wed, 15 Jan 2025 10:56:12 +0000 (UTC)
+	 MIME-Version; b=lr/MEAEPlxYVnCv1BVzZrpFl7r5tdBuQaX+wUEff1toJA3kZEY0nYl1Mtc5uxvrD6BRb3BAXxbgRRGuMdlUnlLmd64JoizrXVu+/HLrf5L8uoiYVwJuI7xp3AwWat5JEKrhbXYZrEIJt6+bFdOcQTD4vbbslHIFLGw83eDqJeP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IcJIz5rT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA2EC4CEE2;
+	Wed, 15 Jan 2025 10:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938572;
-	bh=cpyUoZQ/IvcVimrNmpx6kCswBC+xCjRpLH8WiB71HBw=;
+	s=korg; t=1736937713;
+	bh=2SoNho78Xcp+2iGUokUPe3V9RQfHfNOYDTqXelMEvGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LIxkkgJAguTgsiS/JEIXQv2F3N5CEmYfpr7xEHwHNB0WxHs0zKEN1TeAfRcIJPwIr
-	 iouxPs1A+rjbdnYrdSGki+vBjLrh/P2ZOT8qbxt+tpDU9alOJ8HN9pU9+jPCxc2Drh
-	 84Bg5mSJhg75bPBXcWhBFs859rEQSp06LCUV+N9E=
+	b=IcJIz5rTDjDYQWTOnZQCT+ODD4AHRV29ZvhgXZxWKAqIAmM103r7huRui8hfvscLY
+	 Ht2mKbnbklOuq8ZuUb1SWP7jo3vyAn8cXTSHomEhKTLvh+g3KEi5Ml8bk5YS/VRZ0l
+	 o+nElx+GrlpEr7d8/ZxBlSeR8UUbKqOwtHDVLpW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Liankun Yang <liankun.yang@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/129] tls: Fix tls_sw_sendmsg error handling
-Date: Wed, 15 Jan 2025 11:36:46 +0100
-Message-ID: <20250115103555.619995555@linuxfoundation.org>
+Subject: [PATCH 6.1 29/92] drm/mediatek: Fix YCbCr422 color format issue for DP
+Date: Wed, 15 Jan 2025 11:36:47 +0100
+Message-ID: <20250115103548.690721455@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Liankun Yang <liankun.yang@mediatek.com>
 
-[ Upstream commit b341ca51d2679829d26a3f6a4aa9aee9abd94f92 ]
+[ Upstream commit ef24fbd8f12015ff827973fffefed3902ffd61cc ]
 
-We've noticed that NFS can hang when using RPC over TLS on an unstable
-connection, and investigation shows that the RPC layer is stuck in a tight
-loop attempting to transmit, but forever getting -EBADMSG back from the
-underlying network.  The loop begins when tcp_sendmsg_locked() returns
--EPIPE to tls_tx_records(), but that error is converted to -EBADMSG when
-calling the socket's error reporting handler.
+Setting up misc0 for Pixel Encoding Format.
 
-Instead of converting errors from tcp_sendmsg_locked(), let's pass them
-along in this path.  The RPC layer handles -EPIPE by reconnecting the
-transport, which prevents the endless attempts to transmit on a broken
-connection.
+According to the definition of YCbCr in spec 1.2a Table 2-96,
+0x1 << 1 should be written to the register.
 
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
-Link: https://patch.msgid.link/9594185559881679d81f071b181a10eb07cd079f.1736004079.git.bcodding@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Use switch case to distinguish RGB, YCbCr422,
+and unsupported color formats.
+
+Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
+Signed-off-by: Liankun Yang <liankun.yang@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20241025083036.8829-2-liankun.yang@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/mediatek/mtk_dp.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index df166f6afad8..6e30fe879d53 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -458,7 +458,7 @@ int tls_tx_records(struct sock *sk, int flags)
+diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
+index c24eeb7ffde7..04e3f72fa232 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dp.c
++++ b/drivers/gpu/drm/mediatek/mtk_dp.c
+@@ -457,18 +457,16 @@ static int mtk_dp_set_color_format(struct mtk_dp *mtk_dp,
+ 				   enum dp_pixelformat color_format)
+ {
+ 	u32 val;
+-
+-	/* update MISC0 */
+-	mtk_dp_update_bits(mtk_dp, MTK_DP_ENC0_P0_3034,
+-			   color_format << DP_TEST_COLOR_FORMAT_SHIFT,
+-			   DP_TEST_COLOR_FORMAT_MASK);
++	u32 misc0_color;
  
- tx_err:
- 	if (rc < 0 && rc != -EAGAIN)
--		tls_err_abort(sk, -EBADMSG);
-+		tls_err_abort(sk, rc);
+ 	switch (color_format) {
+ 	case DP_PIXELFORMAT_YUV422:
+ 		val = PIXEL_ENCODE_FORMAT_DP_ENC0_P0_YCBCR422;
++		misc0_color = DP_COLOR_FORMAT_YCbCr422;
+ 		break;
+ 	case DP_PIXELFORMAT_RGB:
+ 		val = PIXEL_ENCODE_FORMAT_DP_ENC0_P0_RGB;
++		misc0_color = DP_COLOR_FORMAT_RGB;
+ 		break;
+ 	default:
+ 		drm_warn(mtk_dp->drm_dev, "Unsupported color format: %d\n",
+@@ -476,6 +474,11 @@ static int mtk_dp_set_color_format(struct mtk_dp *mtk_dp,
+ 		return -EINVAL;
+ 	}
  
- 	return rc;
- }
++	/* update MISC0 */
++	mtk_dp_update_bits(mtk_dp, MTK_DP_ENC0_P0_3034,
++			   misc0_color,
++			   DP_TEST_COLOR_FORMAT_MASK);
++
+ 	mtk_dp_update_bits(mtk_dp, MTK_DP_ENC0_P0_303C,
+ 			   val, PIXEL_ENCODE_FORMAT_DP_ENC0_P0_MASK);
+ 	return 0;
 -- 
 2.39.5
 
