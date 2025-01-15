@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-108768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A53B4A1202B
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:42:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B38F1A12197
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:58:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE447162E3C
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:42:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5D7E16A88A
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:58:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC879248BA7;
-	Wed, 15 Jan 2025 10:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E1C1E7C02;
+	Wed, 15 Jan 2025 10:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkXmmpYt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WIjefYB5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEFF248BA0;
-	Wed, 15 Jan 2025 10:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE5E248BD1;
+	Wed, 15 Jan 2025 10:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937742; cv=none; b=Ridsg1ZpNag4fAO/aod6XOn6KtkS8MOHyYIq1jXSnBzkYEQF9SeMSnd9IUr3yFcA0JElDEnSsEI/rBlTD+YI0CFoCGt3gR6A8KQiTcsgOSwFQqbC98Di2+xAqK867vSNQPx+UF4c07ZZrhNiW5rwhN+HIuTfg1g8tbJnGbsUK0g=
+	t=1736938714; cv=none; b=dVIkAkWEtSWJRpkDsKZI4n/L+AG7hIygKbRyT6G8PVNuIlzt4pS22Ypgm2jj/lnZ8Gz/zBeW+eELylmq9I9qqv+7OIrx6iyRS3/NsGcMgnttHGi0LEIy+P9jCQcDDJ+3SigAnwPNIfiPXq8G+stDyRlLn+uJBNwz9aB52O+mMe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937742; c=relaxed/simple;
-	bh=EB290JqnO+5yNfzwdyQavCnoHrKkUHcm36jCnRBl1Vg=;
+	s=arc-20240116; t=1736938714; c=relaxed/simple;
+	bh=TnNWTqW/cGyK2ln5xxBYRoIumIiz1nsyWryfLW6rYr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R6Mkrd/qNDiC5+LtHqB190+/skuInTk1/B4C8Df20exWVi85v112K1yM9gQWMatfrd1qkDRv+durbPacdelP5he770YB7kt51lw5dV3GoJl2+YKgqJTEPqyNyz0MqfxPEnMW02DQNcJ9TkOKY24yGy36KbZj6vEnoLtwMsnu4ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkXmmpYt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D479C4CEE1;
-	Wed, 15 Jan 2025 10:42:22 +0000 (UTC)
+	 MIME-Version; b=G2cqi1kx7ih5AVp6c7Nzac/QLyAlebt/fngbMXh/gHIZGF+TbXgl/K2WoOBppIUoRs9pdM9Mp/dXamDEM9HUL86u8mp+1W8IK4jsX07Lu64DPO9Nn243cpmexZ+a3w3VhdnLZSX5+luAKxm3NkYbrZgjfDgFfmFTXJL6IP4xNpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WIjefYB5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C91FC4CEDF;
+	Wed, 15 Jan 2025 10:58:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937742;
-	bh=EB290JqnO+5yNfzwdyQavCnoHrKkUHcm36jCnRBl1Vg=;
+	s=korg; t=1736938713;
+	bh=TnNWTqW/cGyK2ln5xxBYRoIumIiz1nsyWryfLW6rYr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wkXmmpYtjYQvM1B8sKVpeZo13l3xleJvs+k0uab6+OHMVkpRRImsCsbE47DVzGHVv
-	 mu8fWc6N9W3QULiZLxlFHXX4+4XZq1PdP0DAx6nSch5J3LxziLMB7Q8GLXVnLl87E8
-	 XUhZBcpBRysAbbjyV1GZRMndrF5QC6UFmez9zY0c=
+	b=WIjefYB5X0KAdjpgl0FFXynRZPqR9MMvNzRLY7j80vZkkKo17N8FMjTUxyZaVzU69
+	 4UcBLjSDHdb8zQNKfjBb18NyoYHfP6CfGmIZ3p+OFrHvaCxPsNu7wxBzj3aN+WgRqD
+	 qgZoG9//Zor5vn/DT1JFsSPbPLDay/B+gaseBcc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 69/92] iio: pressure: zpa2326: fix information leak in triggered buffer
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 072/129] ACPI: resource: Add TongFang GM5HG0A to irq1_edge_low_force_override[]
 Date: Wed, 15 Jan 2025 11:37:27 +0100
-Message-ID: <20250115103550.314055775@linuxfoundation.org>
+Message-ID: <20250115103557.249277532@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 6007d10c5262f6f71479627c1216899ea7f09073 upstream.
+commit 7ed4e4a659d99499dc6968c61970d41b64feeac0 upstream.
 
-The 'sample' local struct is used to push data to user space from a
-triggered buffer, but it has a hole between the temperature and the
-timestamp (u32 pressure, u16 temperature, GAP, u64 timestamp).
-This hole is never initialized.
+The TongFang GM5HG0A is a TongFang barebone design which is sold under
+various brand names.
 
-Initialize the struct to zero before using it to avoid pushing
-uninitialized information to userspace.
+The ACPI IRQ override for the keyboard IRQ must be used on these AMD Zen
+laptops in order for the IRQ to work.
 
-Cc: stable@vger.kernel.org
-Fixes: 03b262f2bbf4 ("iio:pressure: initial zpa2326 barometer support")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-3-0cb6e98d895c@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+At least on the SKIKK Vanaheim variant the DMI product- and board-name
+strings have been replaced by the OEM with "Vanaheim" so checking that
+board-name contains "GM5HG0A" as is usually done for TongFang barebones
+quirks does not work.
+
+The DMI OEM strings do contain "GM5HG0A". I have looked at the dmidecode
+for a few other TongFang devices and the TongFang code-name string being
+in the OEM strings seems to be something which is consistently true.
+
+Add a quirk checking one of the DMI_OEM_STRING(s) is "GM5HG0A" in the hope
+that this will work for other OEM versions of the "GM5HG0A" too.
+
+Link: https://www.skikk.eu/en/laptops/vanaheim-15-rtx-4060
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219614
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20241228164845.42381-1-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/pressure/zpa2326.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/resource.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/iio/pressure/zpa2326.c
-+++ b/drivers/iio/pressure/zpa2326.c
-@@ -586,6 +586,8 @@ static int zpa2326_fill_sample_buffer(st
- 	}   sample;
- 	int err;
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -633,6 +633,17 @@ static const struct dmi_system_id lg_lap
+ 			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
+ 		},
+ 	},
++	{
++		/*
++		 * TongFang GM5HG0A in case of the SKIKK Vanaheim relabel the
++		 * board-name is changed, so check OEM strings instead. Note
++		 * OEM string matches are always exact matches.
++		 * https://bugzilla.kernel.org/show_bug.cgi?id=219614
++		 */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_OEM_STRING, "GM5HG0A"),
++		},
++	},
+ 	{ }
+ };
  
-+	memset(&sample, 0, sizeof(sample));
-+
- 	if (test_bit(0, indio_dev->active_scan_mask)) {
- 		/* Get current pressure from hardware FIFO. */
- 		err = zpa2326_dequeue_pressure(indio_dev, &sample.pressure);
 
 
 
