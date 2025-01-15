@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-108771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B61FAA12030
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:42:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 114D1A12119
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:53:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B711188A0D0
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:42:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8493A3AC19A
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D48B3248BB6;
-	Wed, 15 Jan 2025 10:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7861E98FA;
+	Wed, 15 Jan 2025 10:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLHGy5RB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nUt/LzSQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9116B248BA0;
-	Wed, 15 Jan 2025 10:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC8A248BA6;
+	Wed, 15 Jan 2025 10:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937753; cv=none; b=CEkHExJoW5lE3wS6QINu5IGAhIdXH6TAKcfm/LW9UvQDvno+YfTh4nTqUuNSy/x/oqpRBXgat3PIfwLpzgpcaVG+u1cd7rWKVc/iPi+Q6LlpvJVFmbiWW3nS4+2lv/GO71JicQFz8cnkXtfpjGyVBcxUZyC8NR4KWj3a0vQADeI=
+	t=1736938343; cv=none; b=SRTfIyEyFD1jF75thB3xDgFYA5oKOs2+GT7/fWdI4MEN0ELeO22i0TyHqWlEqjvzM4uq42kUKeyh9f8uNg5Zus2/TO4kfGs6kQ1k0k8amgdKPnqoWaBfqtOc30frWaji/qADdJHQSSE+0iwwn7iCmEdwIYWRA/+gwFjMkd1aVEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937753; c=relaxed/simple;
-	bh=SUcy45RplAgE0a6em4aH7uonpRGg4QA+h1kNGc0imP8=;
+	s=arc-20240116; t=1736938343; c=relaxed/simple;
+	bh=bOBLWda86GNmDpoqCG/o8YFjeRwjbSMcsuGFcmTsryc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WvsWr1WW6B7Zt4oHuItvpW4+o4Ue0aVCmPddQVOzGM2LMvq9uB1LQmTZ+ZOkqflCT36chLGtZmE5qHaaJf2RSX5eqrIskOLjra1e9gYo5+ELc8xUt95wnvOcTmSV3sOYE6L+bZPvGy3YVCvAGjKaUO0xKg45LYtxIOPjoQvmAIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLHGy5RB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99365C4CEE4;
-	Wed, 15 Jan 2025 10:42:32 +0000 (UTC)
+	 MIME-Version; b=FesFkgOp4WZdwDpzL881GXbL9Vck0e965vimwwy7vDxxQXZjBRa7Jyp+T+0RsN0Wtel/cfNsRVAH6FbhYJg2/eV++nXCvtnHbsW4L5sWfosIGoLKqTk/2yh4KqKm3SrBKur3WTDjM+bA/Lj5w1TR0frXzkulCxUnYCAO3dJuk88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nUt/LzSQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE7AC4CEDF;
+	Wed, 15 Jan 2025 10:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937753;
-	bh=SUcy45RplAgE0a6em4aH7uonpRGg4QA+h1kNGc0imP8=;
+	s=korg; t=1736938343;
+	bh=bOBLWda86GNmDpoqCG/o8YFjeRwjbSMcsuGFcmTsryc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bLHGy5RBjwLA0A4bwUiTsXhDILJRInG0+rUxiFUPqAnsXKPs0nZItdd6bdW/q1GiD
-	 hu5ZBaZb+OuCzHV4fk7UgOowdHpl6+R7X0gpKjgFEujv53YZ+82u9cUttQB8Rb3QA3
-	 fq1Gg82G58/yNC11+ep98QzBxFo5S0CaQxDkQksY=
+	b=nUt/LzSQWb/Sip89jfU82px19WgPR2FqTexFByWDUkoQtQboh2+k3IBI8w2dSyt4j
+	 cS0Bw5VV+ZYC3cW/+KkV5BnzwcnuH1iQvzvQN27k4ce5i4rJA+lSm+BaM/cpm0jJ5u
+	 9lgx/OJAGeZROAnG7WSzwFu45zTVaEpM2/1wXugM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 72/92] iio: imu: kmx61: fix information leak in triggered buffer
+	stable <stable@kernel.org>,
+	Ingo Rohloff <ingo.rohloff@lauterbach.com>
+Subject: [PATCH 6.12 154/189] usb: gadget: configfs: Ignore trailing LF for user strings to cdev
 Date: Wed, 15 Jan 2025 11:37:30 +0100
-Message-ID: <20250115103550.434462406@linuxfoundation.org>
+Message-ID: <20250115103612.555721959@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Ingo Rohloff <ingo.rohloff@lauterbach.com>
 
-commit 6ae053113f6a226a2303caa4936a4c37f3bfff7b upstream.
+commit 9466545720e231fc02acd69b5f4e9138e09a26f6 upstream.
 
-The 'buffer' local array is used to push data to user space from a
-triggered buffer, but it does not set values for inactive channels, as
-it only uses iio_for_each_active_channel() to assign new values.
+Since commit c033563220e0f7a8
+("usb: gadget: configfs: Attach arbitrary strings to cdev")
+a user can provide extra string descriptors to a USB gadget via configfs.
 
-Initialize the array to zero before using it to avoid pushing
-uninitialized information to userspace.
+For "manufacturer", "product", "serialnumber", setting the string via
+configfs ignores a trailing LF.
 
-Cc: stable@vger.kernel.org
-Fixes: c3a23ecc0901 ("iio: imu: kmx61: Add support for data ready triggers")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-5-0cb6e98d895c@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+For the arbitrary strings the LF was not ignored.
+
+This patch ignores a trailing LF to make this consistent with the existing
+behavior for "manufacturer", ...  string descriptors.
+
+Fixes: c033563220e0 ("usb: gadget: configfs: Attach arbitrary strings to cdev")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ingo Rohloff <ingo.rohloff@lauterbach.com>
+Link: https://lore.kernel.org/r/20241212154114.29295-1-ingo.rohloff@lauterbach.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/kmx61.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/configfs.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/imu/kmx61.c
-+++ b/drivers/iio/imu/kmx61.c
-@@ -1192,7 +1192,7 @@ static irqreturn_t kmx61_trigger_handler
- 	struct kmx61_data *data = kmx61_get_data(indio_dev);
- 	int bit, ret, i = 0;
- 	u8 base;
--	s16 buffer[8];
-+	s16 buffer[8] = { };
+diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
+index 6499a88d346c..fba2a56dae97 100644
+--- a/drivers/usb/gadget/configfs.c
++++ b/drivers/usb/gadget/configfs.c
+@@ -827,11 +827,15 @@ static ssize_t gadget_string_s_store(struct config_item *item, const char *page,
+ {
+ 	struct gadget_string *string = to_gadget_string(item);
+ 	int size = min(sizeof(string->string), len + 1);
++	ssize_t cpy_len;
  
- 	if (indio_dev == data->acc_indio_dev)
- 		base = KMX61_ACC_XOUT_L;
+ 	if (len > USB_MAX_STRING_LEN)
+ 		return -EINVAL;
+ 
+-	return strscpy(string->string, page, size);
++	cpy_len = strscpy(string->string, page, size);
++	if (cpy_len > 0 && string->string[cpy_len - 1] == '\n')
++		string->string[cpy_len - 1] = 0;
++	return len;
+ }
+ CONFIGFS_ATTR(gadget_string_, s);
+ 
+-- 
+2.48.0
+
 
 
 
