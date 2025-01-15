@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-108895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96469A120D3
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:49:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE9DA11FEE
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:40:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D82BB188B2FC
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:49:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30F261619B4
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:39:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F6D1DB142;
-	Wed, 15 Jan 2025 10:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E33D248BA1;
+	Wed, 15 Jan 2025 10:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KftgEvZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrSttz2h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F99248BC1;
-	Wed, 15 Jan 2025 10:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570831E98EF;
+	Wed, 15 Jan 2025 10:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938164; cv=none; b=fJJrbN6ASW8kGnIAPl7azdZz4bg7oeatSyQq7W7G1fsLahNQg2hbjVRniyeIEtcZpHZd8bU6rnKvVXaU8UwLegaNrd6Y+sAbz6BUuLoyhW3s4Flk3zOtxhrj3P8ZNaPFoXE0giQM+M5ub3KSqB/1HZ14XjfD+bsVfN+QxwYbSmc=
+	t=1736937580; cv=none; b=WjbPb+71QFh9HTTobg7gkyG4NdK+0JWsaT4C6lApesHqvl5HNvsoz42H3DhE4e/NbuGMTvtfHFuLsYI038AJrKSHG6pjRwzumkAp17530Quu81zstFDhFhCmqGx0N2R9uIwsLyYfNwEHEBiHkyXYNUEx+HoMOD+ee9dHHbgZAFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938164; c=relaxed/simple;
-	bh=AmSCOq8FXZIpIK4FJT74DaJVbMVCSP/mpl56CnRK40o=;
+	s=arc-20240116; t=1736937580; c=relaxed/simple;
+	bh=8R7kI8vBoeddzhuvbNKg2kJ1+VwMp6U/46e6xNSfG2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qQjb7k1HP8HdI0AKQthoCxfILSAl465o/OQ3O7bqPCf2K1TtlcbZwpZO9LcuYNeP5H5kSnHptCpMJ/BcJ9jOtnNLixdYWDFTPt6smjBV0ttARGAJ6CZ9LlukDlLHCVjOKz3itZnsfyGeWiRDF8+hJziIS1dWSaCN1LBEmpkk0zE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1KftgEvZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49EE1C4CEDF;
-	Wed, 15 Jan 2025 10:49:24 +0000 (UTC)
+	 MIME-Version; b=eYg2ixCCBVVUqnoT6ZfXqgj0glWH3FzQQVupg6CFJTUb1qwGmHNBJnwq0FYMZMflKVQaPbXME1ayW+TOl8QncAt3ERVEPxCFL3wYctxQPkc5KICzVZbclQJXGxttoEH8QpAVYAz0pJrpDAtupjzrMaDHOAIoz0Xzk8lri99Ntwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rrSttz2h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B53DC4CEDF;
+	Wed, 15 Jan 2025 10:39:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938164;
-	bh=AmSCOq8FXZIpIK4FJT74DaJVbMVCSP/mpl56CnRK40o=;
+	s=korg; t=1736937579;
+	bh=8R7kI8vBoeddzhuvbNKg2kJ1+VwMp6U/46e6xNSfG2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1KftgEvZgAK6PTsq4LX5DJlnp8gDYCcze9pgHllKIw9bPcBdi0WNJOVS3dHy9kGdM
-	 dnznyq0F5ZMrtv6jTZ+gOT/MiWNXEhCOfumr9U5P8/FpkV+3+mGv637yxhknZdythK
-	 9944BRU6NqbQeeOwPZKOASVyOugoX1xldGiWfNBk=
+	b=rrSttz2hVvFsmKD2mpJb+ggltiygwQnni4IZKwfmCB/BZgq46MqADvZ0GmXpdZwdE
+	 O9ggYUKwN5u+4VGwrLZ5wXKrUEv/pdEvsGytqRy/tM+1Xf4nGbfSJz6WQAgJGVjWZP
+	 awM3EThqst8jb5EFV5nV8APlc5Ljb2fcvhKP1yWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuijing Li <shuijing.li@mediatek.com>,
-	Jens Ziller <zillerbaer@gmx.de>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Subject: [PATCH 6.12 103/189] Revert "drm/mediatek: dsi: Correct calculation formula of PHY Timing"
+	Benjamin Coddington <bcodding@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 21/92] tls: Fix tls_sw_sendmsg error handling
 Date: Wed, 15 Jan 2025 11:36:39 +0100
-Message-ID: <20250115103610.430609107@linuxfoundation.org>
+Message-ID: <20250115103548.381459900@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-commit d08555758fb1dbfb48f0cb58176fdc98009e6070 upstream.
+[ Upstream commit b341ca51d2679829d26a3f6a4aa9aee9abd94f92 ]
 
-This reverts commit 417d8c47271d5cf1a705e997065873b2a9a36fd4.
+We've noticed that NFS can hang when using RPC over TLS on an unstable
+connection, and investigation shows that the RPC layer is stuck in a tight
+loop attempting to transmit, but forever getting -EBADMSG back from the
+underlying network.  The loop begins when tcp_sendmsg_locked() returns
+-EPIPE to tls_tx_records(), but that error is converted to -EBADMSG when
+calling the socket's error reporting handler.
 
-With that patch the panel in the Tentacruel ASUS Chromebook CM14
-(CM1402F) flickers. There are 1 or 2 times per second a black panel.
-Stable Kernel 6.11.5 and mainline 6.12-rc4 works only when reverse
-that patch.
+Instead of converting errors from tcp_sendmsg_locked(), let's pass them
+along in this path.  The RPC layer handles -EPIPE by reconnecting the
+transport, which prevents the endless attempts to transmit on a broken
+connection.
 
-Fixes: 417d8c47271d ("drm/mediatek: dsi: Correct calculation formula of PHY Timing")
-Cc: stable@vger.kernel.org
-Cc: Shuijing Li <shuijing.li@mediatek.com>
-Reported-by: Jens Ziller <zillerbaer@gmx.de>
-Closes: https://patchwork.kernel.org/project/dri-devel/patch/20240412031208.30688-1-shuijing.li@mediatek.com/
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20241212001908.6056-1-chunkuang.hu@kernel.org/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
+Link: https://patch.msgid.link/9594185559881679d81f071b181a10eb07cd079f.1736004079.git.bcodding@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dsi.c |   27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ net/tls/tls_sw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/mediatek/mtk_dsi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dsi.c
-@@ -248,23 +248,22 @@ static void mtk_dsi_phy_timconfig(struct
- 	u32 data_rate_mhz = DIV_ROUND_UP(dsi->data_rate, HZ_PER_MHZ);
- 	struct mtk_phy_timing *timing = &dsi->phy_timing;
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 348abadbc2d8..5310441240e7 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -452,7 +452,7 @@ int tls_tx_records(struct sock *sk, int flags)
  
--	timing->lpx = (80 * data_rate_mhz / (8 * 1000)) + 1;
--	timing->da_hs_prepare = (59 * data_rate_mhz + 4 * 1000) / 8000 + 1;
--	timing->da_hs_zero = (163 * data_rate_mhz + 11 * 1000) / 8000 + 1 -
-+	timing->lpx = (60 * data_rate_mhz / (8 * 1000)) + 1;
-+	timing->da_hs_prepare = (80 * data_rate_mhz + 4 * 1000) / 8000;
-+	timing->da_hs_zero = (170 * data_rate_mhz + 10 * 1000) / 8000 + 1 -
- 			     timing->da_hs_prepare;
--	timing->da_hs_trail = (78 * data_rate_mhz + 7 * 1000) / 8000 + 1;
-+	timing->da_hs_trail = timing->da_hs_prepare + 1;
+ tx_err:
+ 	if (rc < 0 && rc != -EAGAIN)
+-		tls_err_abort(sk, -EBADMSG);
++		tls_err_abort(sk, rc);
  
--	timing->ta_go = 4 * timing->lpx;
--	timing->ta_sure = 3 * timing->lpx / 2;
--	timing->ta_get = 5 * timing->lpx;
--	timing->da_hs_exit = (118 * data_rate_mhz / (8 * 1000)) + 1;
-+	timing->ta_go = 4 * timing->lpx - 2;
-+	timing->ta_sure = timing->lpx + 2;
-+	timing->ta_get = 4 * timing->lpx;
-+	timing->da_hs_exit = 2 * timing->lpx + 1;
- 
--	timing->clk_hs_prepare = (57 * data_rate_mhz / (8 * 1000)) + 1;
--	timing->clk_hs_post = (65 * data_rate_mhz + 53 * 1000) / 8000 + 1;
--	timing->clk_hs_trail = (78 * data_rate_mhz + 7 * 1000) / 8000 + 1;
--	timing->clk_hs_zero = (330 * data_rate_mhz / (8 * 1000)) + 1 -
--			      timing->clk_hs_prepare;
--	timing->clk_hs_exit = (118 * data_rate_mhz / (8 * 1000)) + 1;
-+	timing->clk_hs_prepare = 70 * data_rate_mhz / (8 * 1000);
-+	timing->clk_hs_post = timing->clk_hs_prepare + 8;
-+	timing->clk_hs_trail = timing->clk_hs_prepare;
-+	timing->clk_hs_zero = timing->clk_hs_trail * 4;
-+	timing->clk_hs_exit = 2 * timing->clk_hs_trail;
- 
- 	timcon0 = FIELD_PREP(LPX, timing->lpx) |
- 		  FIELD_PREP(HS_PREP, timing->da_hs_prepare) |
+ 	return rc;
+ }
+-- 
+2.39.5
+
 
 
 
