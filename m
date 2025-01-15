@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-108945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E24CA12112
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:52:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A53B4A1202B
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:42:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B17073AC603
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:52:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE447162E3C
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7C7156644;
-	Wed, 15 Jan 2025 10:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC879248BA7;
+	Wed, 15 Jan 2025 10:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmt7JMXx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkXmmpYt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA8C248BA1;
-	Wed, 15 Jan 2025 10:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEFF248BA0;
+	Wed, 15 Jan 2025 10:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938333; cv=none; b=U9P7w0oYMCL6M3lJ/YwRHHxvF1tgPWfqPVzT15Qh7dx1DwnmjrLUg6jsMwzcsiI0lKRQIWFWLgVgYbKWZzRcSjLLbDL+xf//AWZzxXxEVtwZsTpPTrpAEA8yn7mkZohbkdzE3pemwrJFxY1bHJttwESoOzlJqVFMGKxGfb6ppV8=
+	t=1736937742; cv=none; b=Ridsg1ZpNag4fAO/aod6XOn6KtkS8MOHyYIq1jXSnBzkYEQF9SeMSnd9IUr3yFcA0JElDEnSsEI/rBlTD+YI0CFoCGt3gR6A8KQiTcsgOSwFQqbC98Di2+xAqK867vSNQPx+UF4c07ZZrhNiW5rwhN+HIuTfg1g8tbJnGbsUK0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938333; c=relaxed/simple;
-	bh=+bvj2f8u8Xp58Yf5QPbZuoxAo0geG4bUMhDngini7/Y=;
+	s=arc-20240116; t=1736937742; c=relaxed/simple;
+	bh=EB290JqnO+5yNfzwdyQavCnoHrKkUHcm36jCnRBl1Vg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CIqNcQRLXrOMpyNujM3Nu24WXa/q+fVFb0GebTz07qEE+Nx9NJ1+bcZ4wp47+XgTVri9AMVlmyouagBM2qI/MRaaCGIQ63tICrbIrW8y78WtQiECDUAFuV9XVZ0P9zCVjFCqvLJhNN/JNH63qhCqWKz0hVaXkFw/M9I1jDJx+gI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmt7JMXx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A59DC4CEDF;
-	Wed, 15 Jan 2025 10:52:12 +0000 (UTC)
+	 MIME-Version; b=R6Mkrd/qNDiC5+LtHqB190+/skuInTk1/B4C8Df20exWVi85v112K1yM9gQWMatfrd1qkDRv+durbPacdelP5he770YB7kt51lw5dV3GoJl2+YKgqJTEPqyNyz0MqfxPEnMW02DQNcJ9TkOKY24yGy36KbZj6vEnoLtwMsnu4ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkXmmpYt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D479C4CEE1;
+	Wed, 15 Jan 2025 10:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938333;
-	bh=+bvj2f8u8Xp58Yf5QPbZuoxAo0geG4bUMhDngini7/Y=;
+	s=korg; t=1736937742;
+	bh=EB290JqnO+5yNfzwdyQavCnoHrKkUHcm36jCnRBl1Vg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tmt7JMXxPhY37Tzi2zKkV+v4qieItsk1J6kYQbnSDxawcAXw8JMWZXs2bXeOw00Fg
-	 l1ga5GqelEFjUbZvRpS5rli15wEHZC9lIOcfpcDNFnjdXvY0kbobDgPAyMfdr2JVzQ
-	 uxadElzWhyojYUBwYShgZDEWli8hvGAqLwSwBQzw=
+	b=wkXmmpYtjYQvM1B8sKVpeZo13l3xleJvs+k0uab6+OHMVkpRRImsCsbE47DVzGHVv
+	 mu8fWc6N9W3QULiZLxlFHXX4+4XZq1PdP0DAx6nSch5J3LxziLMB7Q8GLXVnLl87E8
+	 XUhZBcpBRysAbbjyV1GZRMndrF5QC6UFmez9zY0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Prashanth K <quic_prashk@quicinc.com>
-Subject: [PATCH 6.12 151/189] usb: gadget: f_uac2: Fix incorrect setting of bNumEndpoints
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 69/92] iio: pressure: zpa2326: fix information leak in triggered buffer
 Date: Wed, 15 Jan 2025 11:37:27 +0100
-Message-ID: <20250115103612.436350490@linuxfoundation.org>
+Message-ID: <20250115103550.314055775@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashanth K <quic_prashk@quicinc.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 057bd54dfcf68b1f67e6dfc32a47a72e12198495 upstream.
+commit 6007d10c5262f6f71479627c1216899ea7f09073 upstream.
 
-Currently afunc_bind sets std_ac_if_desc.bNumEndpoints to 1 if
-controls (mute/volume) are enabled. During next afunc_bind call,
-bNumEndpoints would be unchanged and incorrectly set to 1 even
-if the controls aren't enabled.
+The 'sample' local struct is used to push data to user space from a
+triggered buffer, but it has a hole between the temperature and the
+timestamp (u32 pressure, u16 temperature, GAP, u64 timestamp).
+This hole is never initialized.
 
-Fix this by resetting the value of bNumEndpoints to 0 on every
-afunc_bind call.
+Initialize the struct to zero before using it to avoid pushing
+uninitialized information to userspace.
 
-Fixes: eaf6cbe09920 ("usb: gadget: f_uac2: add volume and mute support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
-Link: https://lore.kernel.org/r/20241211115915.159864-1-quic_prashk@quicinc.com
+Cc: stable@vger.kernel.org
+Fixes: 03b262f2bbf4 ("iio:pressure: initial zpa2326 barometer support")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-3-0cb6e98d895c@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_uac2.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/pressure/zpa2326.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/gadget/function/f_uac2.c
-+++ b/drivers/usb/gadget/function/f_uac2.c
-@@ -1185,6 +1185,7 @@ afunc_bind(struct usb_configuration *cfg
- 		uac2->as_in_alt = 0;
- 	}
+--- a/drivers/iio/pressure/zpa2326.c
++++ b/drivers/iio/pressure/zpa2326.c
+@@ -586,6 +586,8 @@ static int zpa2326_fill_sample_buffer(st
+ 	}   sample;
+ 	int err;
  
-+	std_ac_if_desc.bNumEndpoints = 0;
- 	if (FUOUT_EN(uac2_opts) || FUIN_EN(uac2_opts)) {
- 		uac2->int_ep = usb_ep_autoconfig(gadget, &fs_ep_int_desc);
- 		if (!uac2->int_ep) {
++	memset(&sample, 0, sizeof(sample));
++
+ 	if (test_bit(0, indio_dev->active_scan_mask)) {
+ 		/* Get current pressure from hardware FIFO. */
+ 		err = zpa2326_dequeue_pressure(indio_dev, &sample.pressure);
 
 
 
