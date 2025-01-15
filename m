@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-109000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58307A12163
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:56:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54212A11FFE
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:40:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E78DE3AC613
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:55:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD48F7A05E8
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0832D1E9908;
-	Wed, 15 Jan 2025 10:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91AB01E991F;
+	Wed, 15 Jan 2025 10:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNj73Ta2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yoCyA/cr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98BA1E98FF;
-	Wed, 15 Jan 2025 10:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1BA1E9919;
+	Wed, 15 Jan 2025 10:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938523; cv=none; b=UiQn8EU1g4wuVzbwYVoPMiQnoJbEL1cyTQ3m5R97ZuCv0JDUfnloMFZ6uCB/N5ng6yz8mMLXG07o1duAGfyhZnUmNQhfJAXQP6MvIrXTZLEZRAwHnW21gmzhLAEDgc24rxkIYsRMBAId8SEkDwVXMVBzFr7hTJVG7aCOq4bMVXs=
+	t=1736937592; cv=none; b=T9mntUa/N1IxOuWH8Ip8EkTGZmoJ2zdhLDtrSINluTBkJK3TL05KMSyo8DkZyeL4gsPRdnACv0onO4DaeOd0AtlFSWsUNynXQZgHDQwyQtRWOuuJq6d1d8ynkx+eoNeltqucT5LU+NbKKeTTJEJtJrkSK/fune4dncioNiQ2Yu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938523; c=relaxed/simple;
-	bh=ksAZHqL7RHrVT6yIrDUq0YeVIjFWM82BnerPUOJQcBI=;
+	s=arc-20240116; t=1736937592; c=relaxed/simple;
+	bh=xKg20PL6u2NMyrC8fbJZkXj58jp64JehYhzkWVd/iQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FG35xXOnJL5ybFVMO+0Q89VOkl2nFHhfBqA5mdW2ivnpUdukWmCFiIHN2e3PR5exTCGXZnS3SaONe8GDocX/gHCULdoi1TxsE8UO3lYC7wXbYp1vab3aCEu1PxlLoz8zZFsS7fuVfK5vFpAEo2bTQapnhM+yDKOwjLrDRbPYe40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNj73Ta2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 196A3C4CEDF;
-	Wed, 15 Jan 2025 10:55:22 +0000 (UTC)
+	 MIME-Version; b=Kq7Q+P197+hi8Iw91zUUNPbWaY+UvzXwBY6l+q55Kr88VBiDlLyfAvvrXhF90ci5eY+nM0iJLhOKaEEgLJIUaBtLGO6AHBeGAjQXEgUl+N/QpGlsZC1lw2kneoIldGL9v8aaqi29gHEX7PHdAQSEs7MokkWJMcB96LsRo0QeZ/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yoCyA/cr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A21A6C4CEDF;
+	Wed, 15 Jan 2025 10:39:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938523;
-	bh=ksAZHqL7RHrVT6yIrDUq0YeVIjFWM82BnerPUOJQcBI=;
+	s=korg; t=1736937592;
+	bh=xKg20PL6u2NMyrC8fbJZkXj58jp64JehYhzkWVd/iQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pNj73Ta2UfrhVVgHLmXFCN/Cc0lDlL7BsWI1q/+Exw0pZgvtGb5oORU3q0ponINYB
-	 51G90RRBhavLlBsOkb0kV25Mtf1pQMa7wtsgnQ5g7MvFiV63YKRm/iQwoEkeAJeta6
-	 gQDKjiFZnPI1oZTftzyKlsrMURpBvecMEMtQYmOA=
+	b=yoCyA/creaHIYpvcCX+5iBqD1p8D6mfvCtxtpT0/Lzt9IiP5fecKDAaJQPu14LNuz
+	 o+4UTqCjp61E9J6UquceGYLsIvgap3hn/7kybzmUWZ70KAMjiyIHmOMSpxtDVPL/Wg
+	 hMGuywMd1UQ4nGrtmPLGIs+lb5A9J5cKxqeUNnWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1de5a37cb85a2d536330@syzkaller.appspotmail.com,
-	Yuezhang Mo <Yuezhang.Mo@sony.com>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Joe Thornber <thornber@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/129] exfat: fix the infinite loop in __exfat_free_cluster()
+Subject: [PATCH 6.1 06/92] dm array: fix releasing a faulty array block twice in dm_array_cursor_end
 Date: Wed, 15 Jan 2025 11:36:24 +0100
-Message-ID: <20250115103554.737544123@linuxfoundation.org>
+Message-ID: <20250115103547.790120810@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuezhang Mo <Yuezhang.Mo@sony.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit a5324b3a488d883aa2d42f72260054e87d0940a0 ]
+[ Upstream commit f2893c0804d86230ffb8f1c8703fdbb18648abc8 ]
 
-In __exfat_free_cluster(), the cluster chain is traversed until the
-EOF cluster. If the cluster chain includes a loop due to file system
-corruption, the EOF cluster cannot be traversed, resulting in an
-infinite loop.
+When dm_bm_read_lock() fails due to locking or checksum errors, it
+releases the faulty block implicitly while leaving an invalid output
+pointer behind. The caller of dm_bm_read_lock() should not operate on
+this invalid dm_block pointer, or it will lead to undefined result.
+For example, the dm_array_cursor incorrectly caches the invalid pointer
+on reading a faulty array block, causing a double release in
+dm_array_cursor_end(), then hitting the BUG_ON in dm-bufio cache_put().
 
-This commit uses the total number of clusters to prevent this infinite
-loop.
+Reproduce steps:
 
-Reported-by: syzbot+1de5a37cb85a2d536330@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1de5a37cb85a2d536330
-Tested-by: syzbot+1de5a37cb85a2d536330@syzkaller.appspotmail.com
-Fixes: 31023864e67a ("exfat: add fat entry operations")
-Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
-Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+1. initialize a cache device
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc $262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1
+dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. wipe the second array block offline
+
+dmsteup remove cache cmeta cdata corig
+mapping_root=$(dd if=/dev/sdc bs=1c count=8 skip=192 \
+2>/dev/null | hexdump -e '1/8 "%u\n"')
+ablock=$(dd if=/dev/sdc bs=1c count=8 skip=$((4096*mapping_root+2056)) \
+2>/dev/null | hexdump -e '1/8 "%u\n"')
+dd if=/dev/zero of=/dev/sdc bs=4k count=1 seek=$ablock
+
+3. try reopen the cache device
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc $262144"
+dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+Kernel logs:
+
+(snip)
+device-mapper: array: array_block_check failed: blocknr 0 != wanted 10
+device-mapper: block manager: array validator check failed for block 10
+device-mapper: array: get_ablock failed
+device-mapper: cache metadata: dm_array_cursor_next for mapping failed
+------------[ cut here ]------------
+kernel BUG at drivers/md/dm-bufio.c:638!
+
+Fix by setting the cached block pointer to NULL on errors.
+
+In addition to the reproducer described above, this fix can be
+verified using the "array_cursor/damaged" test in dm-unit:
+  dm-unit run /pdata/array_cursor/damaged --kernel-dir <KERNEL_DIR>
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: fdd1315aa5f0 ("dm array: introduce cursor api")
+Reviewed-by: Joe Thornber <thornber@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exfat/fatent.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/md/persistent-data/dm-array.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/fs/exfat/fatent.c b/fs/exfat/fatent.c
-index 56b870d9cc0d..428d862a1d2b 100644
---- a/fs/exfat/fatent.c
-+++ b/fs/exfat/fatent.c
-@@ -216,6 +216,16 @@ static int __exfat_free_cluster(struct inode *inode, struct exfat_chain *p_chain
+diff --git a/drivers/md/persistent-data/dm-array.c b/drivers/md/persistent-data/dm-array.c
+index eff9b41869f2..d8ec2c6c1b2e 100644
+--- a/drivers/md/persistent-data/dm-array.c
++++ b/drivers/md/persistent-data/dm-array.c
+@@ -912,23 +912,27 @@ static int load_ablock(struct dm_array_cursor *c)
+ 	if (c->block)
+ 		unlock_ablock(c->info, c->block);
  
- 			if (err)
- 				goto dec_used_clus;
-+
-+			if (num_clusters >= sbi->num_clusters - EXFAT_FIRST_CLUSTER) {
-+				/*
-+				 * The cluster chain includes a loop, scan the
-+				 * bitmap to get the number of used clusters.
-+				 */
-+				exfat_count_used_clusters(sb, &sbi->used_clusters);
-+
-+				return 0;
-+			}
- 		} while (clu != EXFAT_EOF_CLUSTER);
+-	c->block = NULL;
+-	c->ab = NULL;
+ 	c->index = 0;
+ 
+ 	r = dm_btree_cursor_get_value(&c->cursor, &key, &value_le);
+ 	if (r) {
+ 		DMERR("dm_btree_cursor_get_value failed");
+-		dm_btree_cursor_end(&c->cursor);
++		goto out;
+ 
+ 	} else {
+ 		r = get_ablock(c->info, le64_to_cpu(value_le), &c->block, &c->ab);
+ 		if (r) {
+ 			DMERR("get_ablock failed");
+-			dm_btree_cursor_end(&c->cursor);
++			goto out;
+ 		}
  	}
+ 
++	return 0;
++
++out:
++	dm_btree_cursor_end(&c->cursor);
++	c->block = NULL;
++	c->ab = NULL;
+ 	return r;
+ }
  
 -- 
 2.39.5
