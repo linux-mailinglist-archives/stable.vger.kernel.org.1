@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-108800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D43A1204F
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:44:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F28BFA12139
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:54:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5255C188B3D0
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:44:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35DA13A4BB8
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EC15248BD3;
-	Wed, 15 Jan 2025 10:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1FE1E98EA;
+	Wed, 15 Jan 2025 10:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JF91jbU3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PiGffQj+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51CF248BC7;
-	Wed, 15 Jan 2025 10:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEAFE1E98F6;
+	Wed, 15 Jan 2025 10:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937844; cv=none; b=ojbc4wFR8l/sJDgQi1VeEi9nVSJxBiEceEDDKGRop6xzaPwvxXqIxvVmKshXaYXRbCdS3VSlipbMoIncAedzdb8jWvLwZxCEOgqYTHC6GdYiLlpzOxr+8eFYNv9TRMoG9Gk4fPjM43qKXAzS19pk1kQE6fKNN3qT3a6mRUvFtsI=
+	t=1736938394; cv=none; b=b+ir/TnZlrrRi4TLlOLgSaPoSaHnzqsNsqnJxG2FfTkZC1xCQbGV4bU/VmHPrCiS37HjnG5AMUwro6WhZWHXv23EXqIYbtzHCE7Txa4trIbe2RKUP8ZybxHi2QuyYivKF0pXHG+IgxHZVwJ758jq1wlpVwZEhQ5qvNq2k44wBYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937844; c=relaxed/simple;
-	bh=P7+bi58GN5PE4q17wi+EFjZM8BX2e3cT5DbXTzF6r2A=;
+	s=arc-20240116; t=1736938394; c=relaxed/simple;
+	bh=Xmjf8xMInVLrR8cLHd1bpZ1e/2dc6Vsaq57oDXSMVrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a7NatKNhmGAUTJd+6I/owXzzfOBDmYl1zrxY291mSG5JwGpUOkIfBkfireL45QLkRQkT4Qqca8ZMFZuQDYLoPhRVwsikeauKdfE23ZWjE/QX61+6HeEhtuOh9q3dotYD3Zk6gQX5LheL+mC5d88Deu7lRzIxJK2D28+gX1cmVco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JF91jbU3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 031E6C4CEE1;
-	Wed, 15 Jan 2025 10:44:03 +0000 (UTC)
+	 MIME-Version; b=PLT4ZfzY3jpSHZTHVoVJLHPNyapD9LwlsFQA9BGeaKIT4R5L5io6VHv54IzCQXhLGrF/G02ptGFfOOz+fFsfQEr2FSYr+0WIPjCmoaZRgIlEdkaiDE+LNbx6sZC1sDyWdCQzRxv9fRScGfaLrgpn8rynESF0p7M4sSgKkJjkJMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PiGffQj+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B256C4CEDF;
+	Wed, 15 Jan 2025 10:53:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937844;
-	bh=P7+bi58GN5PE4q17wi+EFjZM8BX2e3cT5DbXTzF6r2A=;
+	s=korg; t=1736938394;
+	bh=Xmjf8xMInVLrR8cLHd1bpZ1e/2dc6Vsaq57oDXSMVrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JF91jbU36hff28AKjyeSIkB111DSSogZGpcEGyCNBepYIW+2aXXLoxbALyZBe7Q77
-	 Y9Y8Uozc8z7CqUfkm+2vWPUmZe8u8i8cu1holUWrv4g8tz36VWjJlI6R7hl/dzrWgI
-	 z5abpBs+MhPXxgzRUAR6TwvyvW6Y/GYe1dsDk6So=
+	b=PiGffQj+iGnwEx9zHQ8zPpapX8eEl0IdfePbg0+9Uyr4PO9R026qS4pcZRFVQ+a5n
+	 WxWKDTEakhQCw+gFXOokotk/kADPBIrOIKfkeqoD3vfyF0ba21bmPxF0j8i5wb0YMv
+	 oE++G1eSs1/8KwCEx89EeziKwch6EZKoy8QKm1iM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea della Porta <andrea.porta@suse.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 88/92] of: address: Preserve the flags portion on 1:1 dma-ranges mapping
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 170/189] iio: adc: at91: call input_free_device() on allocated iio_dev
 Date: Wed, 15 Jan 2025 11:37:46 +0100
-Message-ID: <20250115103551.082610109@linuxfoundation.org>
+Message-ID: <20250115103613.191890645@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea della Porta <andrea.porta@suse.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 7f05e20b989ac33c9c0f8c2028ec0a566493548f ]
+commit de6a73bad1743e9e81ea5a24c178c67429ff510b upstream.
 
-A missing or empty dma-ranges in a DT node implies a 1:1 mapping for dma
-translations. In this specific case, the current behaviour is to zero out
-the entire specifier so that the translation could be carried on as an
-offset from zero. This includes address specifier that has flags (e.g.
-PCI ranges).
+Current implementation of at91_ts_register() calls input_free_deivce()
+on st->ts_input, however, the err label can be reached before the
+allocated iio_dev is stored to st->ts_input. Thus call
+input_free_device() on input instead of st->ts_input.
 
-Once the flags portion has been zeroed, the translation chain is broken
-since the mapping functions will check the upcoming address specifier
-against mismatching flags, always failing the 1:1 mapping and its entire
-purpose of always succeeding.
-
-Set to zero only the address portion while passing the flags through.
-
-Fixes: dbbdee94734b ("of/address: Merge all of the bus translation code")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrea della Porta <andrea.porta@suse.com>
-Tested-by: Herve Codina <herve.codina@bootlin.com>
-Link: https://lore.kernel.org/r/e51ae57874e58a9b349c35e2e877425ebc075d7a.1732441813.git.andrea.porta@suse.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 84882b060301 ("iio: adc: at91_adc: Add support for touchscreens without TSMR")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Link: https://patch.msgid.link/20241207043045.1255409-1-joe@pf.is.s.u-tokyo.ac.jp
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/address.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/adc/at91_adc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/of/address.c b/drivers/of/address.c
-index 596381e70c0a..e93b7b527f61 100644
---- a/drivers/of/address.c
-+++ b/drivers/of/address.c
-@@ -466,7 +466,8 @@ static int of_translate_one(struct device_node *parent, struct of_bus *bus,
- 	}
- 	if (ranges == NULL || rlen == 0) {
- 		offset = of_read_number(addr, na);
--		memset(addr, 0, pna * 4);
-+		/* set address to zero, pass flags through */
-+		memset(addr + pbus->flag_cells, 0, (pna - pbus->flag_cells) * 4);
- 		pr_debug("empty ranges; 1:1 translation\n");
- 		goto finish;
- 	}
--- 
-2.39.5
-
+--- a/drivers/iio/adc/at91_adc.c
++++ b/drivers/iio/adc/at91_adc.c
+@@ -979,7 +979,7 @@ static int at91_ts_register(struct iio_d
+ 	return ret;
+ 
+ err:
+-	input_free_device(st->ts_input);
++	input_free_device(input);
+ 	return ret;
+ }
+ 
 
 
 
