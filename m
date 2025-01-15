@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-108850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 253A2A1209E
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F930A1209F
 	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:47:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17A003A374C
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:46:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8F94163705
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB32A248BD1;
-	Wed, 15 Jan 2025 10:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10FF6248BC1;
+	Wed, 15 Jan 2025 10:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="drYw/1DH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N3zX+WMs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974CF248BB2;
-	Wed, 15 Jan 2025 10:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FA8248BA6;
+	Wed, 15 Jan 2025 10:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938013; cv=none; b=UVwpm0t+LTQR9pxCmVh37mlr3KxWWLyhMrREZ0liPy8LuA3d2ZgKSOpm5tr5cuiiUDy/l7XCUReu6/1Pt3Gb8v5R5q41DyrOqU3y8ZrT6P/ZKSkOdfbC+yQwzQpR5ajW0iCMLvIYQraYE8OKdfN/MsGqXnOXHu38RovUMjppJRs=
+	t=1736938023; cv=none; b=JbKsNaaEBEkT2/vCPWHkHrQCJBWgC3VnD+sHO1LpZQmy8cIXVtlM8oETBdxWVlgNVJO+yBeGumHIjrfm/oy/suLQBCtL/UUbrxOwyTeVJlm0ZyTpMvpDfwU93QanPdaUtReyQM+IQ0p6iwxaXss8XR2kJsElbTP7bTFXeD6mdlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938013; c=relaxed/simple;
-	bh=XAcBmaa/bYLtToBt/BiG7ELznXMlnwhKy/iupvLs24g=;
+	s=arc-20240116; t=1736938023; c=relaxed/simple;
+	bh=KBPS1WXdHrPDUCTcyEtGIGfwPSKCIRnjr5jpp6HN0d4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a/g2u0QYJ2Ury63YF7Lt5s6iz0X4/UO5vBjOLhtddOp82cTWktfGangVRT/ODBLxEW+aqqdN3MPk4v2Qkaxms9mgsKPtuwAbdjsGO9ur4DCRklwFcUObe8uFozdWJs1UR8Siy+rY5DQy7wlUdWMh0Cz195EGVegEcSg323wLykU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=drYw/1DH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2CE2C4CEDF;
-	Wed, 15 Jan 2025 10:46:52 +0000 (UTC)
+	 MIME-Version; b=SndOPeutOHzwG0zFINAnIVcuW+6WtyZzqW1CmWCagOzb4nWzFOOXlGcICX5N6WB+0Lf9v1iun2pmviinxF+m1AZkUQWzGEPC7LRByU5E/I3Dicq4Fxb0u7w1rUlj7S+lBC7PFQ3y7jVImOMPyvVYMnwiw76kkt08iDkvXPidI5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N3zX+WMs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16EB4C4CEDF;
+	Wed, 15 Jan 2025 10:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938013;
-	bh=XAcBmaa/bYLtToBt/BiG7ELznXMlnwhKy/iupvLs24g=;
+	s=korg; t=1736938023;
+	bh=KBPS1WXdHrPDUCTcyEtGIGfwPSKCIRnjr5jpp6HN0d4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=drYw/1DHrZOyaLcbe4kLbbBI2q3DlVq2UeRD/tOiPsQPEWPlPZNnAXtJXYhELiSaO
-	 CDRyTzJWbL83tHUSROd2T3+l5+lNGUWOLTf6vJcKIu4BQk8mRVU5RwS/MJJ5wpIxsu
-	 JfAd9H4wZ3GLnWvG+bhEF9tCFle3/+HF2v7gPCP8=
+	b=N3zX+WMsmUr2MDmpzj3s+mKU0CWRWkqqCVNBmk1+Jbrm2vhU66MFZca01qhdf4feZ
+	 vphhb8ZH77jEIb/Z7gcH5tXgr/DHFMlUe7PXVlOKQv0sEqSv6udfjZT0F1qhvXiz6S
+	 4dCkfDvEebQDrEO2RjG+TMx7xdTfDjyjpC+QnDio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Simon Horman <horms@kernel.org>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 030/189] pds_core: limit loop over fw name list
-Date: Wed, 15 Jan 2025 11:35:26 +0100
-Message-ID: <20250115103607.561393480@linuxfoundation.org>
+Subject: [PATCH 6.12 031/189] bnxt_en: Fix possible memory leak when hwrm_req_replace fails
+Date: Wed, 15 Jan 2025 11:35:27 +0100
+Message-ID: <20250115103607.600835815@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
 In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
 References: <20250115103606.357764746@linuxfoundation.org>
@@ -69,40 +68,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit 8c817eb26230dc0ae553cee16ff43a4a895f6756 ]
+[ Upstream commit c8dafb0e4398dacc362832098a04b97da3b0395b ]
 
-Add an array size limit to the for-loop to be sure we don't try
-to reference a fw_version string off the end of the fw info names
-array.  We know that our firmware only has a limited number
-of firmware slot names, but we shouldn't leave this unchecked.
+When hwrm_req_replace() fails, the driver is not invoking bnxt_req_drop()
+which could cause a memory leak.
 
-Fixes: 45d76f492938 ("pds_core: set up device and adminq")
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250103195147.7408-1-shannon.nelson@amd.com
+Fixes: bbf33d1d9805 ("bnxt_en: update all firmware calls to use the new APIs")
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250104043849.3482067-2-michael.chan@broadcom.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/pds_core/devlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
-index 2681889162a2..44971e71991f 100644
---- a/drivers/net/ethernet/amd/pds_core/devlink.c
-+++ b/drivers/net/ethernet/amd/pds_core/devlink.c
-@@ -118,7 +118,7 @@ int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
- 	if (err && err != -EIO)
- 		return err;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
+index fdd6356f21ef..546d9a3d7efe 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
+@@ -208,7 +208,7 @@ int bnxt_send_msg(struct bnxt_en_dev *edev,
  
--	listlen = fw_list.num_fw_slots;
-+	listlen = min(fw_list.num_fw_slots, ARRAY_SIZE(fw_list.fw_names));
- 	for (i = 0; i < listlen; i++) {
- 		if (i < ARRAY_SIZE(fw_slotnames))
- 			strscpy(buf, fw_slotnames[i], sizeof(buf));
+ 	rc = hwrm_req_replace(bp, req, fw_msg->msg, fw_msg->msg_len);
+ 	if (rc)
+-		return rc;
++		goto drop_req;
+ 
+ 	hwrm_req_timeout(bp, req, fw_msg->timeout);
+ 	resp = hwrm_req_hold(bp, req);
+@@ -220,6 +220,7 @@ int bnxt_send_msg(struct bnxt_en_dev *edev,
+ 
+ 		memcpy(fw_msg->resp, resp, resp_len);
+ 	}
++drop_req:
+ 	hwrm_req_drop(bp, req);
+ 	return rc;
+ }
 -- 
 2.39.5
 
