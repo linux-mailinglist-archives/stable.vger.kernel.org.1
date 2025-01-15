@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-108711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19591A11FDD
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:39:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 757DAA120E8
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:50:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4BB3162598
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:39:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10BB03AA9E5
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983D11E98EC;
-	Wed, 15 Jan 2025 10:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3534248BCB;
+	Wed, 15 Jan 2025 10:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxadTR/I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCi8lfP4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44EE8248BD5;
-	Wed, 15 Jan 2025 10:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908C0248BA1;
+	Wed, 15 Jan 2025 10:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937549; cv=none; b=UyZ0/jC1pbXmWrNMCBCG7fReABLXVCPDelgZwdLGPTA5O3NAbqJY+ZsoT7NQsLYU7Ge2Hf//TKhqSOyLriuqiRl695BVqaDcjudWNxlk617JzJalDUap0WF0LYmwHKWBWFC7LfM7EQFYxAxWfe0axVSgpMNcHTbmFYWb7Aj/2/8=
+	t=1736938233; cv=none; b=jtATpkAU5pDADKTW2ll+Lb3SRAts/HafGhz2vFxKBw6zpLO6TYT6bKEh1Yn5SodkfAmi/TtcHa2TKA/dBhUN1v7VfuhhONfHsubkA9MZMOuAiWo7ZZ5lKfEQZHI3p1E1/lDImAkKAXrHgNyzGZ6ADGVCtERunGLCX7QoW4QU/H4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937549; c=relaxed/simple;
-	bh=k5o0B9GDgcnVw3Wf5W2Q4YG/yz12LaQ00aYNcqRebpY=;
+	s=arc-20240116; t=1736938233; c=relaxed/simple;
+	bh=bARCnv5+psoDtvNkjlflY6CitRatzkpQi1KOAKB9EKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aW5w7vtuoyMwDSNlIM+8A4F/qSbw663yyijvF1kRHRBZDEg0wKlgKOBu99kPxV5/bVRw0iAZPdFXKOlZgCdwcVYXdFa2wzGmFb3CKiEv1aCOFhWIPAs8RD11C+nDQ9GDFvh6DWD12KdTmgp9PTQ7XFY9vTzaUOgq2hJFb/JO+f4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxadTR/I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22CD4C4CEE2;
-	Wed, 15 Jan 2025 10:39:07 +0000 (UTC)
+	 MIME-Version; b=lWmFh1G45saWVSkQgtfjJBUDexOa/6WoEkfmXv7am0x/tsVGbL5i90kkzdhwp0BwMIXuqeuikIP3yRpDsdEwHUaNDEqmFhDdHpi8AyObutCnCKzS7wag4yCVB+pwPWCd1YqhOcdrppu3/eJOupXOiYldpU23UDwkKZ9x9kCqNp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCi8lfP4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F317CC4CEDF;
+	Wed, 15 Jan 2025 10:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937548;
-	bh=k5o0B9GDgcnVw3Wf5W2Q4YG/yz12LaQ00aYNcqRebpY=;
+	s=korg; t=1736938233;
+	bh=bARCnv5+psoDtvNkjlflY6CitRatzkpQi1KOAKB9EKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KxadTR/I4GsmZKBz4svB27+iu/n8Jp6PIQKCHLid3/bLiBhoBUm2zL6DvjMGcO9Am
-	 71jiRKzq2LXt+OoPapFJmxhlZBKyRd0yESkGLu0yzAO9yPo1kOSTsjG716C8oTZenj
-	 CuuevI4DWRekBD9UYF3+Xo14SLDUyIYFdT+Alub4=
+	b=YCi8lfP4XX9pd4HZikU4gx1UmdcO/ziO2gG4M2nZgaftaOqQxdmWorD5aoefwTa90
+	 lmdLYd0BlyzaqRrSch/okFuIL4cFuz3Yyr+OHrWRT7Y0+Npmd9G4kHQlyvsIIGOHt8
+	 MjWZdUdh3VM2tut1XrvLrf5aldPbYOYn9ydRX6Y0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keisuke Nishimura <keisuke.nishimura@inria.fr>,
-	Simon Horman <horms@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 13/92] ieee802154: ca8210: Add missing check for kfifo_alloc() in ca8210_probe()
+	Al Viro <viro@zeniv.linux.org.uk>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 095/189] sctp: sysctl: cookie_hmac_alg: avoid using current->nsproxy
 Date: Wed, 15 Jan 2025 11:36:31 +0100
-Message-ID: <20250115103548.070523646@linuxfoundation.org>
+Message-ID: <20250115103610.116274707@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keisuke Nishimura <keisuke.nishimura@inria.fr>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 2c87309ea741341c6722efdf1fb3f50dd427c823 ]
+commit ea62dd1383913b5999f3d16ae99d411f41b528d4 upstream.
 
-ca8210_test_interface_init() returns the result of kfifo_alloc(),
-which can be non-zero in case of an error. The caller, ca8210_probe(),
-should check the return value and do error-handling if it fails.
+As mentioned in a previous commit of this series, using the 'net'
+structure via 'current' is not recommended for different reasons:
 
-Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
-Signed-off-by: Keisuke Nishimura <keisuke.nishimura@inria.fr>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/20241029182712.318271-1-keisuke.nishimura@inria.fr
-Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- Inconsistency: getting info from the reader's/writer's netns vs only
+  from the opener's netns.
+
+- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
+  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
+  syzbot [1] using acct(2).
+
+The 'net' structure can be obtained from the table->data using
+container_of().
+
+Note that table->data could also be used directly, as this is the only
+member needed from the 'net' structure, but that would increase the size
+of this fix, to use '*data' everywhere 'net->sctp.sctp_hmac_alg' is
+used.
+
+Fixes: 3c68198e7511 ("sctp: Make hmac algorithm selection for cookie generation dynamic")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-4-5df34b2083e8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ieee802154/ca8210.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/sctp/sysctl.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
-index c2201e0adc46..1659bbffdb91 100644
---- a/drivers/net/ieee802154/ca8210.c
-+++ b/drivers/net/ieee802154/ca8210.c
-@@ -3078,7 +3078,11 @@ static int ca8210_probe(struct spi_device *spi_device)
- 	spi_set_drvdata(priv->spi, priv);
- 	if (IS_ENABLED(CONFIG_IEEE802154_CA8210_DEBUGFS)) {
- 		cascoda_api_upstream = ca8210_test_int_driver_write;
--		ca8210_test_interface_init(priv);
-+		ret = ca8210_test_interface_init(priv);
-+		if (ret) {
-+			dev_crit(&spi_device->dev, "ca8210_test_interface_init failed\n");
-+			goto error;
-+		}
- 	} else {
- 		cascoda_api_upstream = NULL;
- 	}
--- 
-2.39.5
-
+--- a/net/sctp/sysctl.c
++++ b/net/sctp/sysctl.c
+@@ -387,7 +387,8 @@ static struct ctl_table sctp_net_table[]
+ static int proc_sctp_do_hmac_alg(const struct ctl_table *ctl, int write,
+ 				 void *buffer, size_t *lenp, loff_t *ppos)
+ {
+-	struct net *net = current->nsproxy->net_ns;
++	struct net *net = container_of(ctl->data, struct net,
++				       sctp.sctp_hmac_alg);
+ 	struct ctl_table tbl;
+ 	bool changed = false;
+ 	char *none = "none";
 
 
 
