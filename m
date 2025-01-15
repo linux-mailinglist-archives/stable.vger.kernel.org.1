@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-108912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B656A120E6
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:50:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0079A1200C
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D05207A32FC
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:50:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1489D1884A30
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D87801DB13A;
-	Wed, 15 Jan 2025 10:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01B2248BBE;
+	Wed, 15 Jan 2025 10:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rr7GYU/T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qp66sTdH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938C1248BC1;
-	Wed, 15 Jan 2025 10:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79759248BC4;
+	Wed, 15 Jan 2025 10:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938223; cv=none; b=i9+XTfCMgENnc7/TmfiU+BSJvm47QIG0YI7g81TvncSJ0Zys+l7uc8T1/RvQCoFDUmNclbuoUJPBV8zbN+XqC+1b1mJ7CSkmuYYqb/INoMBZXHeNEsG6EShCgdCKTeUwDhFUMMnApkOa6vLmREp7oyyuqN5NNpw7CIRJgWaTWQY=
+	t=1736937635; cv=none; b=mDgo1b7KbGxMnh1qh/pr2ABidQ6GE9Tw+m1BVoTz8HY9uov/+F3f5yPBNNIwmWrh/CRtF+quLSMdboZdA2vCS5ODeVan5jEFLPb2mgsv7165VsXrK0iq9kdF0U7nDGGAJ1gR9Irx0wBXVBo1en+3wWveg8LzuRxe4S+IY9HK2mM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938223; c=relaxed/simple;
-	bh=W7FJ7JQT468TZ2B7eTmlsl10j1EY6NmEbLdkn7dRbkc=;
+	s=arc-20240116; t=1736937635; c=relaxed/simple;
+	bh=hc76LcOQB60j7H7uJ/hycBgaWFf/73SVvgzSYh0dPv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oka9NbPb4AdXxaWF7EwFrO1blDK48Lr7ex3LO1HnjTxqwH1AYjFehpDGNDnGhJpqZJRWW3AChLmTgVrjSeekTId1ljbEgNDg3qP3C3+Pztx7uKu0xSNtHEE5Gbgsa4NxpoPFuc7EXE1Er6Inl1TdwgAjobRc/6fw8NlHyFa//BQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rr7GYU/T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA48C4CEDF;
-	Wed, 15 Jan 2025 10:50:22 +0000 (UTC)
+	 MIME-Version; b=UYPP9RmPM88roWTtwHtOOBqUJVMvA/PgaCAEUEO2vYDbWqpPtXmDz3AJ5F9zNamkhg4J/aD1xSwb1hhQlv649l5owgygthorStHDa1c763JZBgMkC1vB4U7F8MSnX0z+jtZOzcCYCmYxXSwqcR4XpjCbfIC6FbQVBeIQ+ILv+qI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qp66sTdH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D861FC4CEE1;
+	Wed, 15 Jan 2025 10:40:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938223;
-	bh=W7FJ7JQT468TZ2B7eTmlsl10j1EY6NmEbLdkn7dRbkc=;
+	s=korg; t=1736937635;
+	bh=hc76LcOQB60j7H7uJ/hycBgaWFf/73SVvgzSYh0dPv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rr7GYU/TvQBOjIU/E8IxH9OH447hLYX3v8sCF+7Rg6E9Ca1x1Y1CTFqhrsVgqSuQn
-	 9S0XH4LH7s384ckL+ktRQ2cIHUxrg2P/xAwwRpSIFPNcv+m/pRD7rkzivKacMGbphx
-	 HeYcv1KwYlRA+rju13usFuLaqkb0Khb7Z2g4COpk=
+	b=qp66sTdH64Er9x3ZlGd22JWYWCiPLAOTT92zqrSUi8tcBUXLN7nFeQMlpF+T6F4A/
+	 5canzfEtvAYqRdxlMw9gQcANEoilKxwYr21hiLdTmEHSHU2hgUF8aPEQuqqA6Y9t2a
+	 bOHYnNn1fcOBzcryyrfcuyarwfwQnukDjjYizmuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.12 119/189] ACPI: resource: Add TongFang GM5HG0A to irq1_edge_low_force_override[]
-Date: Wed, 15 Jan 2025 11:36:55 +0100
-Message-ID: <20250115103611.208479006@linuxfoundation.org>
+	Al Viro <viro@zeniv.linux.org.uk>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 38/92] sctp: sysctl: cookie_hmac_alg: avoid using current->nsproxy
+Date: Wed, 15 Jan 2025 11:36:56 +0100
+Message-ID: <20250115103549.047359820@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 7ed4e4a659d99499dc6968c61970d41b64feeac0 upstream.
+commit ea62dd1383913b5999f3d16ae99d411f41b528d4 upstream.
 
-The TongFang GM5HG0A is a TongFang barebone design which is sold under
-various brand names.
+As mentioned in a previous commit of this series, using the 'net'
+structure via 'current' is not recommended for different reasons:
 
-The ACPI IRQ override for the keyboard IRQ must be used on these AMD Zen
-laptops in order for the IRQ to work.
+- Inconsistency: getting info from the reader's/writer's netns vs only
+  from the opener's netns.
 
-At least on the SKIKK Vanaheim variant the DMI product- and board-name
-strings have been replaced by the OEM with "Vanaheim" so checking that
-board-name contains "GM5HG0A" as is usually done for TongFang barebones
-quirks does not work.
+- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
+  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
+  syzbot [1] using acct(2).
 
-The DMI OEM strings do contain "GM5HG0A". I have looked at the dmidecode
-for a few other TongFang devices and the TongFang code-name string being
-in the OEM strings seems to be something which is consistently true.
+The 'net' structure can be obtained from the table->data using
+container_of().
 
-Add a quirk checking one of the DMI_OEM_STRING(s) is "GM5HG0A" in the hope
-that this will work for other OEM versions of the "GM5HG0A" too.
+Note that table->data could also be used directly, as this is the only
+member needed from the 'net' structure, but that would increase the size
+of this fix, to use '*data' everywhere 'net->sctp.sctp_hmac_alg' is
+used.
 
-Link: https://www.skikk.eu/en/laptops/vanaheim-15-rtx-4060
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219614
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241228164845.42381-1-hdegoede@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 3c68198e7511 ("sctp: Make hmac algorithm selection for cookie generation dynamic")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-4-5df34b2083e8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/sctp/sysctl.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -646,6 +646,17 @@ static const struct dmi_system_id irq1_e
- 			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
- 		},
- 	},
-+	{
-+		/*
-+		 * TongFang GM5HG0A in case of the SKIKK Vanaheim relabel the
-+		 * board-name is changed, so check OEM strings instead. Note
-+		 * OEM string matches are always exact matches.
-+		 * https://bugzilla.kernel.org/show_bug.cgi?id=219614
-+		 */
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_OEM_STRING, "GM5HG0A"),
-+		},
-+	},
- 	{ }
- };
- 
+--- a/net/sctp/sysctl.c
++++ b/net/sctp/sysctl.c
+@@ -380,7 +380,8 @@ static struct ctl_table sctp_net_table[]
+ static int proc_sctp_do_hmac_alg(struct ctl_table *ctl, int write,
+ 				 void *buffer, size_t *lenp, loff_t *ppos)
+ {
+-	struct net *net = current->nsproxy->net_ns;
++	struct net *net = container_of(ctl->data, struct net,
++				       sctp.sctp_hmac_alg);
+ 	struct ctl_table tbl;
+ 	bool changed = false;
+ 	char *none = "none";
 
 
 
