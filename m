@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-108898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC029A120D4
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:49:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD23A12162
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:55:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE83016716B
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:49:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F00B41880287
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:56:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1520B248BCB;
-	Wed, 15 Jan 2025 10:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF5F1E98E0;
+	Wed, 15 Jan 2025 10:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKvf6IKK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWuV0qnZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56AF248BA1;
-	Wed, 15 Jan 2025 10:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC090156644;
+	Wed, 15 Jan 2025 10:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938174; cv=none; b=buAj4+OZzM+yJ+Sc338uI7dQKSsllGgLyXflVJZzMWqVbo+ZQd/DAK8v3JXK0iI5foMFR9h6LCvZdFWX36TfNjwu8yJcCd2qXUrACFbOlMRHYq6A08uVl4PxT9Ib8J8XU7/4IKgWqsBwyMkF7O/3c9lmhhOdVd8b+/f139mOr/8=
+	t=1736938556; cv=none; b=teURyPVHZkxVpz0zjg8brcs3KQmIZHpDz7C9AWqjvZsYcLEDvFIi3yEAbTgAVP+OcACjFmcAY4rABA4gGMrbjaQOl8U2an35+bd3lqq6oCRWa/+zmk2v/Y59gnBy9I+NHGmUiZAqpNDT7tGtY43Tlu/YTtABepOLdvuKFw0HqiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938174; c=relaxed/simple;
-	bh=LL6G4yCqeJ7Z55shYK0thCXdg+1TrAxK0o2VOoci3qw=;
+	s=arc-20240116; t=1736938556; c=relaxed/simple;
+	bh=irjRTGArn+iqGZHCFBz1NB0HdqzE26TqgySZwnNnIvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lPSJ1QpLPHhdpl5xQA2UapF7yLcekavCOASN8mDVyU0K6JM5pFbsJdcWxGbd6rOulIvbIo+iMmo1LLqaWNjKILaOLITmbCdoQMQvDKhDaNeAvvwjLBxNG7VZaqU9pEDM02Jap8YLBhNLSRln6ZrGgo0Brbyav9B6Rguj735BayI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKvf6IKK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB8EC4CEDF;
-	Wed, 15 Jan 2025 10:49:34 +0000 (UTC)
+	 MIME-Version; b=AYbRH6x4fBB3EP/1e5roEzncJQewbXdZWQqks0XzXhaHrKr9Hh/OzSqobTFWY7JEUkXwr4+AATqcH6jMZ4lNZb0URfnY1B1b5T/AA8LEu0xkpQO1b9dvaeST7cMAkB+5OnfWVm4GKnrDrz+m/l6ybLP7awFDz42Zv6C/8PXWOUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWuV0qnZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC11C4CEDF;
+	Wed, 15 Jan 2025 10:55:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938174;
-	bh=LL6G4yCqeJ7Z55shYK0thCXdg+1TrAxK0o2VOoci3qw=;
+	s=korg; t=1736938556;
+	bh=irjRTGArn+iqGZHCFBz1NB0HdqzE26TqgySZwnNnIvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WKvf6IKKF5UJPods7HaJBD2gRHSQiGtLVzC5U/c5XPwxuhegrG5VJ+Ahfcxcd8amH
-	 +SV35YzfhC9M7whaPNCjO515SX1hxTNBk05u93s6j7qFweGwgYDVba+MgxUPckrPQp
-	 1GhmIHIYV4VRitVJfVyEK0099s9bmWd9rcsY6pT0=
+	b=lWuV0qnZWmGUma30PXkwZq9dX33LKbEplbXdJILqk9yaV5q4PG9tj4XN6jYT+q+/X
+	 MUQhxg7JyixNypAo5zDCgwGXx8c6g4D+F+RbM78I9SM3bpd3YCe4SlWUAofO/+BEwL
+	 34WyXhda9XLJKNvP5tULB/IEQ30APd14KlivTY10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
+	Anumula Murali Mohan Reddy <anumula@chelsio.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 106/189] cgroup/cpuset: Prevent leakage of isolated CPUs into sched domains
+Subject: [PATCH 6.6 027/129] cxgb4: Avoid removal of uninserted tid
 Date: Wed, 15 Jan 2025 11:36:42 +0100
-Message-ID: <20250115103610.684207139@linuxfoundation.org>
+Message-ID: <20250115103555.448301690@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,134 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Anumula Murali Mohan Reddy <anumula@chelsio.com>
 
-[ Upstream commit 9b496a8bbed9cc292b0dfd796f38ec58b6d0375f ]
+[ Upstream commit 4c1224501e9d6c5fd12d83752f1c1b444e0e3418 ]
 
-Isolated CPUs are not allowed to be used in a non-isolated partition.
-The only exception is the top cpuset which is allowed to contain boot
-time isolated CPUs.
+During ARP failure, tid is not inserted but _c4iw_free_ep()
+attempts to remove tid which results in error.
+This patch fixes the issue by avoiding removal of uninserted tid.
 
-Commit ccac8e8de99c ("cgroup/cpuset: Fix remote root partition creation
-problem") introduces a simplified scheme of including only partition
-roots in sched domain generation. However, it does not properly account
-for this exception case. This can result in leakage of isolated CPUs
-into a sched domain.
-
-Fix it by making sure that isolated CPUs are excluded from the top
-cpuset before generating sched domains.
-
-Also update the way the boot time isolated CPUs are handled in
-test_cpuset_prs.sh to make sure that those isolated CPUs are really
-isolated instead of just skipping them in the tests.
-
-Fixes: ccac8e8de99c ("cgroup/cpuset: Fix remote root partition creation problem")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 59437d78f088 ("cxgb4/chtls: fix ULD connection failures due to wrong TID base")
+Signed-off-by: Anumula Murali Mohan Reddy <anumula@chelsio.com>
+Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
+Link: https://patch.msgid.link/20250103092327.1011925-1-anumula@chelsio.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c                        | 10 +++++-
- .../selftests/cgroup/test_cpuset_prs.sh       | 33 +++++++++++--------
- 2 files changed, 28 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index a4dd285cdf39..c431c50512bd 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -862,7 +862,15 @@ static int generate_sched_domains(cpumask_var_t **domains,
- 	 */
- 	if (cgrpv2) {
- 		for (i = 0; i < ndoms; i++) {
--			cpumask_copy(doms[i], csa[i]->effective_cpus);
-+			/*
-+			 * The top cpuset may contain some boot time isolated
-+			 * CPUs that need to be excluded from the sched domain.
-+			 */
-+			if (csa[i] == &top_cpuset)
-+				cpumask_and(doms[i], csa[i]->effective_cpus,
-+					    housekeeping_cpumask(HK_TYPE_DOMAIN));
-+			else
-+				cpumask_copy(doms[i], csa[i]->effective_cpus);
- 			if (dattr)
- 				dattr[i] = SD_ATTR_INIT;
- 		}
-diff --git a/tools/testing/selftests/cgroup/test_cpuset_prs.sh b/tools/testing/selftests/cgroup/test_cpuset_prs.sh
-index 03c1bdaed2c3..400a696a0d21 100755
---- a/tools/testing/selftests/cgroup/test_cpuset_prs.sh
-+++ b/tools/testing/selftests/cgroup/test_cpuset_prs.sh
-@@ -86,15 +86,15 @@ echo "" > test/cpuset.cpus
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+index b215ff14da1b..3989c9491f0f 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+@@ -1799,7 +1799,10 @@ void cxgb4_remove_tid(struct tid_info *t, unsigned int chan, unsigned int tid,
+ 	struct adapter *adap = container_of(t, struct adapter, tids);
+ 	struct sk_buff *skb;
  
- #
- # If isolated CPUs have been reserved at boot time (as shown in
--# cpuset.cpus.isolated), these isolated CPUs should be outside of CPUs 0-7
-+# cpuset.cpus.isolated), these isolated CPUs should be outside of CPUs 0-8
- # that will be used by this script for testing purpose. If not, some of
--# the tests may fail incorrectly. These isolated CPUs will also be removed
--# before being compared with the expected results.
-+# the tests may fail incorrectly. These pre-isolated CPUs should stay in
-+# an isolated state throughout the testing process for now.
- #
- BOOT_ISOLCPUS=$(cat $CGROUP2/cpuset.cpus.isolated)
- if [[ -n "$BOOT_ISOLCPUS" ]]
- then
--	[[ $(echo $BOOT_ISOLCPUS | sed -e "s/[,-].*//") -le 7 ]] &&
-+	[[ $(echo $BOOT_ISOLCPUS | sed -e "s/[,-].*//") -le 8 ]] &&
- 		skip_test "Pre-isolated CPUs ($BOOT_ISOLCPUS) overlap CPUs to be tested"
- 	echo "Pre-isolated CPUs: $BOOT_ISOLCPUS"
- fi
-@@ -683,15 +683,19 @@ check_isolcpus()
- 		EXPECT_VAL2=$EXPECT_VAL
- 	fi
- 
-+	#
-+	# Appending pre-isolated CPUs
-+	# Even though CPU #8 isn't used for testing, it can't be pre-isolated
-+	# to make appending those CPUs easier.
-+	#
-+	[[ -n "$BOOT_ISOLCPUS" ]] && {
-+		EXPECT_VAL=${EXPECT_VAL:+${EXPECT_VAL},}${BOOT_ISOLCPUS}
-+		EXPECT_VAL2=${EXPECT_VAL2:+${EXPECT_VAL2},}${BOOT_ISOLCPUS}
+-	WARN_ON(tid_out_of_range(&adap->tids, tid));
++	if (tid_out_of_range(&adap->tids, tid)) {
++		dev_err(adap->pdev_dev, "tid %d out of range\n", tid);
++		return;
 +	}
-+
- 	#
- 	# Check cpuset.cpus.isolated cpumask
- 	#
--	if [[ -z "$BOOT_ISOLCPUS" ]]
--	then
--		ISOLCPUS=$(cat $ISCPUS)
--	else
--		ISOLCPUS=$(cat $ISCPUS | sed -e "s/,*$BOOT_ISOLCPUS//")
--	fi
- 	[[ "$EXPECT_VAL2" != "$ISOLCPUS" ]] && {
- 		# Take a 50ms pause and try again
- 		pause 0.05
-@@ -731,8 +735,6 @@ check_isolcpus()
- 		fi
- 	done
- 	[[ "$ISOLCPUS" = *- ]] && ISOLCPUS=${ISOLCPUS}$LASTISOLCPU
--	[[ -n "BOOT_ISOLCPUS" ]] &&
--		ISOLCPUS=$(echo $ISOLCPUS | sed -e "s/,*$BOOT_ISOLCPUS//")
  
- 	[[ "$EXPECT_VAL" = "$ISOLCPUS" ]]
- }
-@@ -836,8 +838,11 @@ run_state_test()
- 		# if available
- 		[[ -n "$ICPUS" ]] && {
- 			check_isolcpus $ICPUS
--			[[ $? -ne 0 ]] && test_fail $I "isolated CPU" \
--				"Expect $ICPUS, get $ISOLCPUS instead"
-+			[[ $? -ne 0 ]] && {
-+				[[ -n "$BOOT_ISOLCPUS" ]] && ICPUS=${ICPUS},${BOOT_ISOLCPUS}
-+				test_fail $I "isolated CPU" \
-+					"Expect $ICPUS, get $ISOLCPUS instead"
-+			}
- 		}
- 		reset_cgroup_states
- 		#
+ 	if (t->tid_tab[tid - adap->tids.tid_base]) {
+ 		t->tid_tab[tid - adap->tids.tid_base] = NULL;
 -- 
 2.39.5
 
