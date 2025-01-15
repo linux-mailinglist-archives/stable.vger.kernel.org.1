@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-109040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A5CAA12186
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:57:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E46FA1201B
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D73AF7A405D
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:57:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B3A11889BEC
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7711E3594E;
-	Wed, 15 Jan 2025 10:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0BD0248BA7;
+	Wed, 15 Jan 2025 10:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZCmt6m9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRQKa4lo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A7C248BD0;
-	Wed, 15 Jan 2025 10:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA05248BA0;
+	Wed, 15 Jan 2025 10:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938656; cv=none; b=NVYilwUnjDaQHqK4nW3hLF9W9GXPLaE3Ji/s9p5nDIHSHkE3gW040o/10O5TEqgHZd1dJC4XqmcmopYN1I1bOcN79hLcx40poZoRNOHQgeV9QvrLFgOny6Hj6/V6qsu8PhZgHsS+h6e42W3ZTJwVeLe1NydcWSuOCxZMaZRZIew=
+	t=1736937699; cv=none; b=OseqyodFAT/AoEy1OLL6m3/Pcc0RWxezIiVtP0+GwmlrYM/feeQGjNrh40I0DOSA/9MfbiQSrQoAAKBXXzXKSY8K1JDSNQwhy4SBnN7w0WjTV+eauQ2Vay0tncG/wDo3Z86H/PYVbUUjK3qdg9at+TcbPiRD/XmmWY2tLbMqTQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938656; c=relaxed/simple;
-	bh=Y0wLDnOOwI6vS+Y7OvyptIBnhJ0pjg8kYhRQscuvX3E=;
+	s=arc-20240116; t=1736937699; c=relaxed/simple;
+	bh=auiRrgbnYrzmN2onjQvMuf5/hS73Z9s7w2Uujp1kUjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W8809WX36YYLoCvP1XbNI4cCYV6eA11KXXy7Dck9T2xy3x/Txqs7ZJ7zdxjeUfCT8CTs6E3yZrn05hYbmW0gVxpyR74kZOcRIFK8NRsKUPXHkp4ZeVR1qL2wzlKTq13EmCchH/StIKANJfWMtaHYN0ez8HUV10aW9OeguhHGhLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZCmt6m9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD5BC4CEE1;
-	Wed, 15 Jan 2025 10:57:35 +0000 (UTC)
+	 MIME-Version; b=mfmgiubEoETDqOkNQELqqQtthj/3aXs1FFrg6I5IWe4AghI+oUTbhAS2uiuM9U4xzEuY1ejrmHimwLL8ixcKJZnR2/lf8IQLLY66FLk9ltIeMwpHDzb7Pe474E77w/lVhL1t4crR5hXqSNypRcEtIJXtFvC0yDN7/4mDnlIUt/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRQKa4lo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF08C4CEE1;
+	Wed, 15 Jan 2025 10:41:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938656;
-	bh=Y0wLDnOOwI6vS+Y7OvyptIBnhJ0pjg8kYhRQscuvX3E=;
+	s=korg; t=1736937699;
+	bh=auiRrgbnYrzmN2onjQvMuf5/hS73Z9s7w2Uujp1kUjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IZCmt6m9pw0JbRskH53scj8pxesNDdOn+qr9Xu42mS8tUQY03dRfT1T2o4kl2udnk
-	 ylqxVbrcFPfB54sIW+4ONndxtH/l4txtZ/J6kkjuVF7Q9jxPtXEzmFuErMdYdP+LIt
-	 ASafkQq7DwmGnkCBBw17rzZMiHyy41aeyDjtlVp4=
+	b=JRQKa4loI//WFufdnHv09JkVZk5Ln9fi8vv4CSauLDuMUib4UG2yDKpGJIn6IDvC+
+	 XLSL9KLrGpfm0AbhryUVEI1d/ARCSOqjpa8h99tY9ghNuNWdDNvDEaYWu4VJP6KwU5
+	 Yh8H0h+fPZYe+UlYvq4W1VuyHYvUt+Di55+r3Guw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Lu <luxu.kernel@bytedance.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/129] riscv: mm: Fix the out of bound issue of vmemmap address
+	Zicheng Qu <quzicheng@huawei.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 54/92] staging: iio: ad9834: Correct phase range check
 Date: Wed, 15 Jan 2025 11:37:12 +0100
-Message-ID: <20250115103556.640239725@linuxfoundation.org>
+Message-ID: <20250115103549.695100187@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +60,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Lu <luxu.kernel@bytedance.com>
+From: Zicheng Qu <quzicheng@huawei.com>
 
-[ Upstream commit f754f27e98f88428aaf6be6e00f5cbce97f62d4b ]
+commit c0599762f0c7e260b99c6b7bceb8eae69b804c94 upstream.
 
-In sparse vmemmap model, the virtual address of vmemmap is calculated as:
-((struct page *)VMEMMAP_START - (phys_ram_base >> PAGE_SHIFT)).
-And the struct page's va can be calculated with an offset:
-(vmemmap + (pfn)).
+User Perspective:
+When a user sets the phase value, the ad9834_write_phase() is called.
+The phase register has a 12-bit resolution, so the valid range is 0 to
+4095. If the phase offset value of 4096 is input, it effectively exactly
+equals 0 in the lower 12 bits, meaning no offset.
 
-However, when initializing struct pages, kernel actually starts from the
-first page from the same section that phys_ram_base belongs to. If the
-first page's physical address is not (phys_ram_base >> PAGE_SHIFT), then
-we get an va below VMEMMAP_START when calculating va for it's struct page.
+Reasons for the Change:
+1) Original Condition (phase > BIT(AD9834_PHASE_BITS)):
+This condition allows a phase value equal to 2^12, which is 4096.
+However, this value exceeds the valid 12-bit range, as the maximum valid
+phase value should be 4095.
+2) Modified Condition (phase >= BIT(AD9834_PHASE_BITS)):
+Ensures that the phase value is within the valid range, preventing
+invalid datafrom being written.
 
-For example, if phys_ram_base starts from 0x82000000 with pfn 0x82000, the
-first page in the same section is actually pfn 0x80000. During
-init_unavailable_range(), we will initialize struct page for pfn 0x80000
-with virtual address ((struct page *)VMEMMAP_START - 0x2000), which is
-below VMEMMAP_START as well as PCI_IO_END.
+Impact on Subsequent Logic: st->data = cpu_to_be16(addr | phase):
+If the phase value is 2^12, i.e., 4096 (0001 0000 0000 0000), and addr
+is AD9834_REG_PHASE0 (1100 0000 0000 0000), then addr | phase results in
+1101 0000 0000 0000, occupying DB12. According to the section of WRITING
+TO A PHASE REGISTER in the datasheet, the MSB 12 PHASE0 bits should be
+DB11. The original condition leads to incorrect DB12 usage, which
+contradicts the datasheet and could pose potential issues for future
+updates if DB12 is used in such related cases.
 
-This commit fixes this bug by introducing a new variable
-'vmemmap_start_pfn' which is aligned with memory section size and using
-it to calculate vmemmap address instead of phys_ram_base.
-
-Fixes: a11dd49dcb93 ("riscv: Sparse-Memory/vmemmap out-of-bounds fix")
-Signed-off-by: Xu Lu <luxu.kernel@bytedance.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Tested-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
-Link: https://lore.kernel.org/r/20241209122617.53341-1-luxu.kernel@bytedance.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 12b9d5bf76bf ("Staging: IIO: DDS: AD9833 / AD9834 driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20241107011015.2472600-2-quzicheng@huawei.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/page.h    |  1 +
- arch/riscv/include/asm/pgtable.h |  2 +-
- arch/riscv/mm/init.c             | 17 ++++++++++++++++-
- 3 files changed, 18 insertions(+), 2 deletions(-)
+ drivers/staging/iio/frequency/ad9834.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/include/asm/page.h b/arch/riscv/include/asm/page.h
-index 94b3d6930fc3..4d1f58848129 100644
---- a/arch/riscv/include/asm/page.h
-+++ b/arch/riscv/include/asm/page.h
-@@ -122,6 +122,7 @@ struct kernel_mapping {
+--- a/drivers/staging/iio/frequency/ad9834.c
++++ b/drivers/staging/iio/frequency/ad9834.c
+@@ -131,7 +131,7 @@ static int ad9834_write_frequency(struct
+ static int ad9834_write_phase(struct ad9834_state *st,
+ 			      unsigned long addr, unsigned long phase)
+ {
+-	if (phase > BIT(AD9834_PHASE_BITS))
++	if (phase >= BIT(AD9834_PHASE_BITS))
+ 		return -EINVAL;
+ 	st->data = cpu_to_be16(addr | phase);
  
- extern struct kernel_mapping kernel_map;
- extern phys_addr_t phys_ram_base;
-+extern unsigned long vmemmap_start_pfn;
- 
- #define is_kernel_mapping(x)	\
- 	((x) >= kernel_map.virt_addr && (x) < (kernel_map.virt_addr + kernel_map.size))
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 37829dab4a0a..f540b2625714 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -84,7 +84,7 @@
-  * Define vmemmap for pfn_to_page & page_to_pfn calls. Needed if kernel
-  * is configured with CONFIG_SPARSEMEM_VMEMMAP enabled.
-  */
--#define vmemmap		((struct page *)VMEMMAP_START - (phys_ram_base >> PAGE_SHIFT))
-+#define vmemmap		((struct page *)VMEMMAP_START - vmemmap_start_pfn)
- 
- #define PCI_IO_SIZE      SZ_16M
- #define PCI_IO_END       VMEMMAP_START
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 3245bb525212..bdf8ac6c7e30 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -32,6 +32,7 @@
- #include <asm/ptdump.h>
- #include <asm/sections.h>
- #include <asm/soc.h>
-+#include <asm/sparsemem.h>
- #include <asm/tlbflush.h>
- 
- #include "../kernel/head.h"
-@@ -57,6 +58,13 @@ EXPORT_SYMBOL(pgtable_l5_enabled);
- phys_addr_t phys_ram_base __ro_after_init;
- EXPORT_SYMBOL(phys_ram_base);
- 
-+#ifdef CONFIG_SPARSEMEM_VMEMMAP
-+#define VMEMMAP_ADDR_ALIGN	(1ULL << SECTION_SIZE_BITS)
-+
-+unsigned long vmemmap_start_pfn __ro_after_init;
-+EXPORT_SYMBOL(vmemmap_start_pfn);
-+#endif
-+
- unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)]
- 							__page_aligned_bss;
- EXPORT_SYMBOL(empty_zero_page);
-@@ -221,8 +229,12 @@ static void __init setup_bootmem(void)
- 	 * Make sure we align the start of the memory on a PMD boundary so that
- 	 * at worst, we map the linear mapping with PMD mappings.
- 	 */
--	if (!IS_ENABLED(CONFIG_XIP_KERNEL))
-+	if (!IS_ENABLED(CONFIG_XIP_KERNEL)) {
- 		phys_ram_base = memblock_start_of_DRAM() & PMD_MASK;
-+#ifdef CONFIG_SPARSEMEM_VMEMMAP
-+		vmemmap_start_pfn = round_down(phys_ram_base, VMEMMAP_ADDR_ALIGN) >> PAGE_SHIFT;
-+#endif
-+	}
- 
- 	/*
- 	 * In 64-bit, any use of __va/__pa before this point is wrong as we
-@@ -1080,6 +1092,9 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
- 	kernel_map.xiprom_sz = (uintptr_t)(&_exiprom) - (uintptr_t)(&_xiprom);
- 
- 	phys_ram_base = CONFIG_PHYS_RAM_BASE;
-+#ifdef CONFIG_SPARSEMEM_VMEMMAP
-+	vmemmap_start_pfn = round_down(phys_ram_base, VMEMMAP_ADDR_ALIGN) >> PAGE_SHIFT;
-+#endif
- 	kernel_map.phys_addr = (uintptr_t)CONFIG_PHYS_RAM_BASE;
- 	kernel_map.size = (uintptr_t)(&_end) - (uintptr_t)(&_start);
- 
--- 
-2.39.5
-
 
 
 
