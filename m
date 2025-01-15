@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-108733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9824AA1200B
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8CBCA12172
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:56:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CE9A165595
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D63D1880550
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2352309A1;
-	Wed, 15 Jan 2025 10:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D954B1E98EE;
+	Wed, 15 Jan 2025 10:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RuZowKRq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AayOnzSq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2042248BC8;
-	Wed, 15 Jan 2025 10:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E17248BDF;
+	Wed, 15 Jan 2025 10:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937621; cv=none; b=SGBt93Fmq+8vxLpWZ/UKT+Rk1ypPdgl0bSK2h2ozXdVNgnLabC1zvm8i3kXDFGiW0/fSj63/eP+XRp3HYK4olTqc+9OZSDC485VfmoWTULYWMnDq+nSQ1hjXHJI1nhiTgBgmB8E98eB4jiwoXiUxFrBK6JdgGJhmEjSakttGAcI=
+	t=1736938592; cv=none; b=DepDYK3s54p9HIsuo3Y2Gvn2neJUWjGZC7/Mc51FSIwyHhDV/2T6yyjHSJQ6Zn+MQOSbQlYjmCkZvuy6b8rmpetyrNQVvXJeFAtTeM/BOPHYU7QGYhugUdeArOhyRBnaNZodh1KFUXRpKicSpl9PKBhuan+lIodNFaNRw7xVWOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937621; c=relaxed/simple;
-	bh=UBDxkXAx1fC4ti45nCXz3JD1acRGerPzBtoLxFjDqNY=;
+	s=arc-20240116; t=1736938592; c=relaxed/simple;
+	bh=FOPl9JvaMcAelsDcc11qhXlrqhTSqxU+NnyAjppA5ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s61y1CenKRzOJi/c+/Q8JdzfWnAwQpAU/ShApBzP8a2kUtT2oHl0GDsHZcKkb0AthVZW3XSpQ50h3ncxZA2yChlYKTeSlmCvZ1u8mEzcX+86TqR0RUlgZ1nHgWUueHhcTilsera9XmB0sRUR4r/RJXvssLPMpsKlLKH/FPE7+J8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RuZowKRq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF3A2C4CEE1;
-	Wed, 15 Jan 2025 10:40:20 +0000 (UTC)
+	 MIME-Version; b=BOmsR3erP8NIw0g6MGEQv7ODK0M2j43iVHoc5SjO3sH16+SlnjnBXJJ31iXf9CRN0deCF0FwxUC2FPMdPx3x9RuXPgoePNmjOxEPzBjRY4D+j/Zs/Un5j4yxMvuMjDqlogBr6c/ezdawR6AZKiEHE+YPivX0B+M78DLAgLyM+FI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AayOnzSq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF3AC4CEDF;
+	Wed, 15 Jan 2025 10:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937621;
-	bh=UBDxkXAx1fC4ti45nCXz3JD1acRGerPzBtoLxFjDqNY=;
+	s=korg; t=1736938592;
+	bh=FOPl9JvaMcAelsDcc11qhXlrqhTSqxU+NnyAjppA5ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RuZowKRqBUcYaZk6nQItC7YpLSkoNkrrwEEW0F0+GpEn7VIxLEu2bFv5cCKk3g1Gs
-	 F/vVtpsjDcYpuCyjI3MeOVeEg2W+e5i4ZlaE7HX45a8NNGcYlo5zv+Y+/3VZIjwPBH
-	 T87mgrggYwwjZ1jnK0wDuuRUJ6RFCBN7GcuqoM7A=
+	b=AayOnzSqCpMYDcVDT2wkqP3mgXKxrarPHwoSoE6+EFo5wQCPHb5YF5bbcavuPjIyC
+	 kmw6QjQmCUmGrcVouno3EIwevTM5QL+D3e8KOJVpUvzpUrPzoWloVOtlOKhUBPP2yd
+	 YFDjZme014/hFcqpcTYqs2i4/PkRquSepVOYY1R0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	He Wang <xw897002528@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 34/92] ksmbd: fix unexpectedly changed path in ksmbd_vfs_kern_path_locked
+Subject: [PATCH 6.6 037/129] tcp: Annotate data-race around sk->sk_mark in tcp_v4_send_reset
 Date: Wed, 15 Jan 2025 11:36:52 +0100
-Message-ID: <20250115103548.892780488@linuxfoundation.org>
+Message-ID: <20250115103555.855238885@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: He Wang <xw897002528@gmail.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 2ac538e40278a2c0c051cca81bcaafc547d61372 ]
+[ Upstream commit 80fb40baba19e25a1b6f3ecff6fc5c0171806bde ]
 
-When `ksmbd_vfs_kern_path_locked` met an error and it is not the last
-entry, it will exit without restoring changed path buffer. But later this
-buffer may be used as the filename for creation.
+This is a follow-up to 3c5b4d69c358 ("net: annotate data-races around
+sk->sk_mark"). sk->sk_mark can be read and written without holding
+the socket lock. IPv6 equivalent is already covered with READ_ONCE()
+annotation in tcp_v6_send_response().
 
-Fixes: c5a709f08d40 ("ksmbd: handle caseless file creation")
-Signed-off-by: He Wang <xw897002528@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 3c5b4d69c358 ("net: annotate data-races around sk->sk_mark")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/f459d1fc44f205e13f6d8bdca2c8bfb9902ffac9.1736244569.git.daniel@iogearbox.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/vfs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv4/tcp_ipv4.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
-index eaae67a2f720..396d4ea77d34 100644
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -1249,6 +1249,8 @@ int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
- 					      filepath,
- 					      flags,
- 					      path);
-+			if (!is_last)
-+				next[0] = '/';
- 			if (err)
- 				goto out2;
- 			else if (is_last)
-@@ -1256,7 +1258,6 @@ int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
- 			path_put(parent_path);
- 			*parent_path = *path;
- 
--			next[0] = '/';
- 			remain_len -= filename_len + 1;
- 		}
- 
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index df3ddf31f8e6..705320f160ac 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -832,7 +832,7 @@ static void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb)
+ 	sock_net_set(ctl_sk, net);
+ 	if (sk) {
+ 		ctl_sk->sk_mark = (sk->sk_state == TCP_TIME_WAIT) ?
+-				   inet_twsk(sk)->tw_mark : sk->sk_mark;
++				   inet_twsk(sk)->tw_mark : READ_ONCE(sk->sk_mark);
+ 		ctl_sk->sk_priority = (sk->sk_state == TCP_TIME_WAIT) ?
+ 				   inet_twsk(sk)->tw_priority : sk->sk_priority;
+ 		transmit_time = tcp_transmit_time(sk);
 -- 
 2.39.5
 
