@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-108783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 888A8A1203C
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:43:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20FEBA121AC
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:59:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA9FC1643CF
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:43:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 734F77A29F9
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24853248BB6;
-	Wed, 15 Jan 2025 10:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D4B91E7C02;
+	Wed, 15 Jan 2025 10:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GwhV8TNR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQEDzMJo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50F5248BAC;
-	Wed, 15 Jan 2025 10:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABD620764C;
+	Wed, 15 Jan 2025 10:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937791; cv=none; b=oZZUsi5cTfjwjm8c1biXFzpGbp9VrDLQHcWLpEkcjUvRTCVHiWebwu5Y0q9atR01qVJcZVXZwezuOj8yQ1S9r0oEzLIk5HrqDRwr0SccsKA6Y0fhOEnT5gNtpV9VdCsm+yl7ARoFCXqkvzLLRX9f95mSGFvMMafR8qanUFesqG0=
+	t=1736938749; cv=none; b=fWLZ6VXhkxbvRkUNcgBREn23KE41vcM4auo6ipQ88hl73i0hlquFbrDpDEdAtI8Eb3+iaRkiPP2e3AW0O/89hlPBKD/mrSzqoGw3/bat+/q3twe6fIdByPRoE/Zh0gQ8NKOAX2SOncr5d81ByeypH5a57IW4EUso9joJmusaesE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937791; c=relaxed/simple;
-	bh=zacmWXIqOz2IedpR7s7khdWQIIKtqY2NVlgo0IsxUxU=;
+	s=arc-20240116; t=1736938749; c=relaxed/simple;
+	bh=wk3Nzme819B3koKbNI++TFVHmNls5jBdjmPeX6wZIgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YHe0IBI9umJW/N1TEMvFOMcrwnCFBl2YATXqS3fWV1gwa2ak9oXvmI7LY15Hg14ILEOYzghedEfXkR7PEPDpuh2M8NMW/dHR8PO1uxgvhM2MHj//9yXyT0s5DjkjjBQTscmTT/LVED8Ui6+8qYUA1oFne3C8t7O9m79vpr5ITCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GwhV8TNR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF94C4CEE2;
-	Wed, 15 Jan 2025 10:43:10 +0000 (UTC)
+	 MIME-Version; b=qSyOIgSk5NeQCIjVg3b2SH5BQHQKZ1nnY4ByPvOqXbfx/w8CeH69Y0wDpoII8m4co3+Ff3fbYcCc5+7Gi2TN/ZhLYtUVcUBM/AHKK/1usZxPT647dxiCzpqHoZZRIbN5KZFbIgEoqo25Q5gf0xAsJQhuFe6kcQrpua1sIkO9o8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQEDzMJo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFDC7C4CEDF;
+	Wed, 15 Jan 2025 10:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937791;
-	bh=zacmWXIqOz2IedpR7s7khdWQIIKtqY2NVlgo0IsxUxU=;
+	s=korg; t=1736938749;
+	bh=wk3Nzme819B3koKbNI++TFVHmNls5jBdjmPeX6wZIgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GwhV8TNRp4yyNN50dr8xFkolJ0JaPRxkmL39F1jS73wFIzj6MLKPqyZjgwBTXiOXt
-	 BpJw4sU4yE4rwimisGmUBx5QrDkd9wKTyDK2uu7Wz6sUVXp5VbZTd93jg57CDkwIDm
-	 JWkU+Sr5mzoPsIpt9XHZRbKVL3zPRU9WPzJIyICU=
+	b=xQEDzMJohSe6p4vw+m+kHukQT7ikUtIAzTdvK/RzhhKHkfhw7KLG/MLhm9BOq4g7p
+	 o9JVYPjAiDx+YIyTDJ3NGtRnJiO1AVZ1GR9HapTyJ5KbuGFsrTi1Sr76ddTvtcNg5T
+	 C/zO6JECGF0v5mtyB3+iEA8mE+k6KUFFoRcBQ0b4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 83/92] of: unittest: Add bus address range parsing tests
+	stable <stable@kernel.org>,
+	Li Huafei <lihuafei1@huawei.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 086/129] topology: Keep the cpumask unchanged when printing cpumap
 Date: Wed, 15 Jan 2025 11:37:41 +0100
-Message-ID: <20250115103550.875060416@linuxfoundation.org>
+Message-ID: <20250115103557.795304628@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Li Huafei <lihuafei1@huawei.com>
 
-[ Upstream commit 6d32dadb11a6480be62c6ada901bbdcbda1775c9 ]
+commit cbd399f78e23ad4492c174fc5e6b3676dba74a52 upstream.
 
-While there are tests for "dma-ranges" helpers, "ranges" is missing any
-tests. It's the same underlying code, but for completeness add a test
-for "ranges" parsing iterators. This is in preparation to add some
-additional "ranges" helpers.
+During fuzz testing, the following warning was discovered:
 
-Link: https://lore.kernel.org/r/20230328-dt-address-helpers-v1-1-e2456c3e77ab@kernel.org
-Signed-off-by: Rob Herring <robh@kernel.org>
-Stable-dep-of: 7f05e20b989a ("of: address: Preserve the flags portion on 1:1 dma-ranges mapping")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ different return values (15 and 11) from vsnprintf("%*pbl
+ ", ...)
+
+ test:keyward is WARNING in kvasprintf
+ WARNING: CPU: 55 PID: 1168477 at lib/kasprintf.c:30 kvasprintf+0x121/0x130
+ Call Trace:
+  kvasprintf+0x121/0x130
+  kasprintf+0xa6/0xe0
+  bitmap_print_to_buf+0x89/0x100
+  core_siblings_list_read+0x7e/0xb0
+  kernfs_file_read_iter+0x15b/0x270
+  new_sync_read+0x153/0x260
+  vfs_read+0x215/0x290
+  ksys_read+0xb9/0x160
+  do_syscall_64+0x56/0x100
+  entry_SYSCALL_64_after_hwframe+0x78/0xe2
+
+The call trace shows that kvasprintf() reported this warning during the
+printing of core_siblings_list. kvasprintf() has several steps:
+
+ (1) First, calculate the length of the resulting formatted string.
+
+ (2) Allocate a buffer based on the returned length.
+
+ (3) Then, perform the actual string formatting.
+
+ (4) Check whether the lengths of the formatted strings returned in
+     steps (1) and (2) are consistent.
+
+If the core_cpumask is modified between steps (1) and (3), the lengths
+obtained in these two steps may not match. Indeed our test includes cpu
+hotplugging, which should modify core_cpumask while printing.
+
+To fix this issue, cache the cpumask into a temporary variable before
+calling cpumap_print_{list, cpumask}_to_buf(), to keep it unchanged
+during the printing process.
+
+Fixes: bb9ec13d156e ("topology: use bin_attribute to break the size limitation of cpumap ABI")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Li Huafei <lihuafei1@huawei.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://lore.kernel.org/r/20241114110141.94725-1-lihuafei1@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/unittest.c | 53 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
+ drivers/base/topology.c |   24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-index ce1386074e66..cd321f5b9d3c 100644
---- a/drivers/of/unittest.c
-+++ b/drivers/of/unittest.c
-@@ -1019,6 +1019,58 @@ static void __init of_unittest_pci_dma_ranges(void)
- 	of_node_put(np);
+--- a/drivers/base/topology.c
++++ b/drivers/base/topology.c
+@@ -27,9 +27,17 @@ static ssize_t name##_read(struct file *
+ 			   loff_t off, size_t count)				\
+ {										\
+ 	struct device *dev = kobj_to_dev(kobj);                                 \
++	cpumask_var_t mask;							\
++	ssize_t n;								\
+ 										\
+-	return cpumap_print_bitmask_to_buf(buf, topology_##mask(dev->id),	\
+-					   off, count);                         \
++	if (!alloc_cpumask_var(&mask, GFP_KERNEL))				\
++		return -ENOMEM;							\
++										\
++	cpumask_copy(mask, topology_##mask(dev->id));				\
++	n = cpumap_print_bitmask_to_buf(buf, mask, off, count);			\
++	free_cpumask_var(mask);							\
++										\
++	return n;								\
+ }										\
+ 										\
+ static ssize_t name##_list_read(struct file *file, struct kobject *kobj,	\
+@@ -37,9 +45,17 @@ static ssize_t name##_list_read(struct f
+ 				loff_t off, size_t count)			\
+ {										\
+ 	struct device *dev = kobj_to_dev(kobj);					\
++	cpumask_var_t mask;							\
++	ssize_t n;								\
++										\
++	if (!alloc_cpumask_var(&mask, GFP_KERNEL))				\
++		return -ENOMEM;							\
++										\
++	cpumask_copy(mask, topology_##mask(dev->id));				\
++	n = cpumap_print_list_to_buf(buf, mask, off, count);			\
++	free_cpumask_var(mask);							\
+ 										\
+-	return cpumap_print_list_to_buf(buf, topology_##mask(dev->id),		\
+-					off, count);				\
++	return n;								\
  }
  
-+static void __init of_unittest_bus_ranges(void)
-+{
-+	struct device_node *np;
-+	struct of_range range;
-+	struct of_range_parser parser;
-+	int i = 0;
-+
-+	np = of_find_node_by_path("/testcase-data/address-tests");
-+	if (!np) {
-+		pr_err("missing testcase data\n");
-+		return;
-+	}
-+
-+	if (of_range_parser_init(&parser, np)) {
-+		pr_err("missing ranges property\n");
-+		return;
-+	}
-+
-+	/*
-+	 * Get the "ranges" from the device tree
-+	 */
-+	for_each_of_range(&parser, &range) {
-+		unittest(range.flags == IORESOURCE_MEM,
-+			"for_each_of_range wrong flags on node %pOF flags=%x (expected %x)\n",
-+			np, range.flags, IORESOURCE_MEM);
-+		if (!i) {
-+			unittest(range.size == 0x40000000,
-+				 "for_each_of_range wrong size on node %pOF size=%llx\n",
-+				 np, range.size);
-+			unittest(range.cpu_addr == 0x70000000,
-+				 "for_each_of_range wrong CPU addr (%llx) on node %pOF",
-+				 range.cpu_addr, np);
-+			unittest(range.bus_addr == 0x70000000,
-+				 "for_each_of_range wrong bus addr (%llx) on node %pOF",
-+				 range.pci_addr, np);
-+		} else {
-+			unittest(range.size == 0x20000000,
-+				 "for_each_of_range wrong size on node %pOF size=%llx\n",
-+				 np, range.size);
-+			unittest(range.cpu_addr == 0xd0000000,
-+				 "for_each_of_range wrong CPU addr (%llx) on node %pOF",
-+				 range.cpu_addr, np);
-+			unittest(range.bus_addr == 0x00000000,
-+				 "for_each_of_range wrong bus addr (%llx) on node %pOF",
-+				 range.pci_addr, np);
-+		}
-+		i++;
-+	}
-+
-+	of_node_put(np);
-+}
-+
- static void __init of_unittest_parse_interrupts(void)
- {
- 	struct device_node *np;
-@@ -3521,6 +3573,7 @@ static int __init of_unittest(void)
- 	of_unittest_dma_get_max_cpu_address();
- 	of_unittest_parse_dma_ranges();
- 	of_unittest_pci_dma_ranges();
-+	of_unittest_bus_ranges();
- 	of_unittest_match_node();
- 	of_unittest_platform_populate();
- 	of_unittest_overlay();
--- 
-2.39.5
-
+ define_id_show_func(physical_package_id, "%d");
 
 
 
