@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-108760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3392DA12023
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF6CA1216E
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:56:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56357162DFA
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFA341883E2F
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1936248BA8;
-	Wed, 15 Jan 2025 10:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 711AA1E7C02;
+	Wed, 15 Jan 2025 10:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6lFLc3P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwwderOg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDE7248BA1;
-	Wed, 15 Jan 2025 10:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED1E248BBA;
+	Wed, 15 Jan 2025 10:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937717; cv=none; b=i1Uo+9N69THr10cwmyr+iJvWLASwmTJq4wFwz60eeb4R0iGUmv0CIRoOwX9xXbQL0qKJofXaVkd92HoVel0YO1saaaaehEIAtufiy2HeGsdDAnQqT+3O4KG5f24Oppq19tw9C5GXFtobEEkjdRSqdHhZXAK8oNLQLckXwkTbV8s=
+	t=1736938583; cv=none; b=e+dS8JDHe1i6Gy7nfknAnsyzXBHr8ZP3fTV2TcpQbTPI1vBFALnIUednIdsBH7ZephFLVTIlx5RniJwpBmMbVPBm66+qUoJKgTA8AckJ9GZHlZHYrVm0+ZvCICVojoZN+37LAK5ac+SWuJQ5y7j2l0p4bwzw8gYW6ohGjC23xA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937717; c=relaxed/simple;
-	bh=Jjuvu2NqGnTLsW/HlYntY8KQ050oK9OQv0IudhnTa0M=;
+	s=arc-20240116; t=1736938583; c=relaxed/simple;
+	bh=e6xuu3kwmtUNZmzc73U3C6soqD/gSZdxn7Z3VQSBDp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lNjqGyB6/NRmH/XQNf7JAJsJSOPi5Ic0xSB52L8zplRGd3G3JLTxjkcJ1m2HqstIQDYqSGY+KbKSAt0sLHPua8R3P5+stLfINbTm25b23a+dhb9oZk8DUxarE2y4xa/4E8dIUNC1Iu0YBz1uirvsnoCe0avjBdFmnzpPWWkBJoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6lFLc3P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A939C4CEE2;
-	Wed, 15 Jan 2025 10:41:56 +0000 (UTC)
+	 MIME-Version; b=OgHfa76JLdVWqlUCMhoYt4LLTlKkjsGCMJSWiLtEf1BRPXFlGDW4pbgGg0VoeoiUKIuR/I4RZcrijsmnw0ERBh5j8uq2YRrHx4ZOAL7A5nEoCRecLHzP8shb7zNqZjafu+h2HcBETRqDUq0hZ+Ajea+SnlQrRPnxQsIbkGOuV2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwwderOg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90179C4CEDF;
+	Wed, 15 Jan 2025 10:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937717;
-	bh=Jjuvu2NqGnTLsW/HlYntY8KQ050oK9OQv0IudhnTa0M=;
+	s=korg; t=1736938583;
+	bh=e6xuu3kwmtUNZmzc73U3C6soqD/gSZdxn7Z3VQSBDp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z6lFLc3P49CU5Jy8rZ0/LsXBaLkU2yYhOwVchb+SjMb3Dt6V59DTbAWKY09rXGTOQ
-	 zI2YiGYtVpVV/VYRzbyZqFzHvU0JZVsik+VPDBOAg3hO4gnd9Q97A9gP53v2ZuQ6Xi
-	 6PU8YfThmLkwRRrG/I71x3CdQWm2HQXeNnrDwSRk=
+	b=OwwderOgZSXYpC6XX0GGW3ovN4D64hmDYHTAGABStgb6le8JkYvCA9z8Eq9Ndr1ZV
+	 0sxfn+YpqlqbsyWCz26usZFj9LEUXypr5WnBmVoinkcJesak1Jg0hl/nv6l0I8wx8a
+	 ZuHlFZ6HNZ1k+ExJgWfA+cHvVxThCYEg4el6XQcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liankun Yang <liankun.yang@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 30/92] drm/mediatek: Fix mode valid issue for dp
-Date: Wed, 15 Jan 2025 11:36:48 +0100
-Message-ID: <20250115103548.727942246@linuxfoundation.org>
+Subject: [PATCH 6.6 034/129] Bluetooth: hci_sync: Fix not setting Random Address when required
+Date: Wed, 15 Jan 2025 11:36:49 +0100
+Message-ID: <20250115103555.739494202@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liankun Yang <liankun.yang@mediatek.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 0d68b55887cedc7487036ed34cb4c2097c4228f1 ]
+[ Upstream commit c2994b008492db033d40bd767be1620229a3035e ]
 
-Fix dp mode valid issue to avoid abnormal display of limit state.
+This fixes errors such as the following when Own address type is set to
+Random Address but it has not been programmed yet due to either be
+advertising or connecting:
 
-After DP passes link training, it can express the lane count of the
-current link status is good. Calculate the maximum bandwidth supported
-by DP using the current lane count.
+< HCI Command: LE Set Exte.. (0x08|0x0041) plen 13
+        Own address type: Random (0x03)
+        Filter policy: Ignore not in accept list (0x01)
+        PHYs: 0x05
+        Entry 0: LE 1M
+          Type: Passive (0x00)
+          Interval: 60.000 msec (0x0060)
+          Window: 30.000 msec (0x0030)
+        Entry 1: LE Coded
+          Type: Passive (0x00)
+          Interval: 180.000 msec (0x0120)
+          Window: 90.000 msec (0x0090)
+> HCI Event: Command Complete (0x0e) plen 4
+      LE Set Extended Scan Parameters (0x08|0x0041) ncmd 1
+        Status: Success (0x00)
+< HCI Command: LE Set Exten.. (0x08|0x0042) plen 6
+        Extended scan: Enabled (0x01)
+        Filter duplicates: Enabled (0x01)
+        Duration: 0 msec (0x0000)
+        Period: 0.00 sec (0x0000)
+> HCI Event: Command Complete (0x0e) plen 4
+      LE Set Extended Scan Enable (0x08|0x0042) ncmd 1
+        Status: Invalid HCI Command Parameters (0x12)
 
-The color format will select the best one based on the bandwidth
-requirements of the current timing mode. If the current timing mode
-uses RGB and meets the DP link bandwidth requirements, RGB will be used.
-
-If the timing mode uses RGB but does not meet the DP link bandwidthi
-requirements, it will continue to check whether YUV422 meets
-the DP link bandwidth.
-
-FEC overhead is approximately 2.4% from DP 1.4a spec 2.2.1.4.2.
-The down-spread amplitude shall either be disabled (0.0%) or up
-to 0.5% from 1.4a 3.5.2.6. Add up to approximately 3% total overhead.
-
-Because rate is already divided by 10,
-mode->clock does not need to be multiplied by 10.
-
-Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
-Signed-off-by: Liankun Yang <liankun.yang@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20241025083036.8829-3-liankun.yang@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: c45074d68a9b ("Bluetooth: Fix not generating RPA when required")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dp.c | 28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ net/bluetooth/hci_sync.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
-index 04e3f72fa232..09a496588b50 100644
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -2277,12 +2277,19 @@ mtk_dp_bridge_mode_valid(struct drm_bridge *bridge,
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index d95e2b55badb..d6f40806ee51 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -1049,9 +1049,9 @@ static bool adv_use_rpa(struct hci_dev *hdev, uint32_t flags)
+ 
+ static int hci_set_random_addr_sync(struct hci_dev *hdev, bdaddr_t *rpa)
  {
- 	struct mtk_dp *mtk_dp = mtk_dp_from_bridge(bridge);
- 	u32 bpp = info->color_formats & DRM_COLOR_FORMAT_YCBCR422 ? 16 : 24;
--	u32 rate = min_t(u32, drm_dp_max_link_rate(mtk_dp->rx_cap) *
--			      drm_dp_max_lane_count(mtk_dp->rx_cap),
--			 drm_dp_bw_code_to_link_rate(mtk_dp->max_linkrate) *
--			 mtk_dp->max_lanes);
-+	u32 lane_count_min = mtk_dp->train_info.lane_count;
-+	u32 rate = drm_dp_bw_code_to_link_rate(mtk_dp->train_info.link_rate) *
-+		   lane_count_min;
- 
--	if (rate < mode->clock * bpp / 8)
-+	/*
-+	 *FEC overhead is approximately 2.4% from DP 1.4a spec 2.2.1.4.2.
-+	 *The down-spread amplitude shall either be disabled (0.0%) or up
-+	 *to 0.5% from 1.4a 3.5.2.6. Add up to approximately 3% total overhead.
-+	 *
-+	 *Because rate is already divided by 10,
-+	 *mode->clock does not need to be multiplied by 10
-+	 */
-+	if ((rate * 97 / 100) < (mode->clock * bpp / 8))
- 		return MODE_CLOCK_HIGH;
- 
- 	return MODE_OK;
-@@ -2323,10 +2330,9 @@ static u32 *mtk_dp_bridge_atomic_get_input_bus_fmts(struct drm_bridge *bridge,
- 	struct drm_display_mode *mode = &crtc_state->adjusted_mode;
- 	struct drm_display_info *display_info =
- 		&conn_state->connector->display_info;
--	u32 rate = min_t(u32, drm_dp_max_link_rate(mtk_dp->rx_cap) *
--			      drm_dp_max_lane_count(mtk_dp->rx_cap),
--			 drm_dp_bw_code_to_link_rate(mtk_dp->max_linkrate) *
--			 mtk_dp->max_lanes);
-+	u32 lane_count_min = mtk_dp->train_info.lane_count;
-+	u32 rate = drm_dp_bw_code_to_link_rate(mtk_dp->train_info.link_rate) *
-+		   lane_count_min;
- 
- 	*num_input_fmts = 0;
- 
-@@ -2335,8 +2341,8 @@ static u32 *mtk_dp_bridge_atomic_get_input_bus_fmts(struct drm_bridge *bridge,
- 	 * datarate of YUV422 and sink device supports YUV422, we output YUV422
- 	 * format. Use this condition, we can support more resolution.
+-	/* If we're advertising or initiating an LE connection we can't
+-	 * go ahead and change the random address at this time. This is
+-	 * because the eventual initiator address used for the
++	/* If a random_addr has been set we're advertising or initiating an LE
++	 * connection we can't go ahead and change the random address at this
++	 * time. This is because the eventual initiator address used for the
+ 	 * subsequently created connection will be undefined (some
+ 	 * controllers use the new address and others the one we had
+ 	 * when the operation started).
+@@ -1059,8 +1059,9 @@ static int hci_set_random_addr_sync(struct hci_dev *hdev, bdaddr_t *rpa)
+ 	 * In this kind of scenario skip the update and let the random
+ 	 * address be updated at the next cycle.
  	 */
--	if ((rate < (mode->clock * 24 / 8)) &&
--	    (rate > (mode->clock * 16 / 8)) &&
-+	if (((rate * 97 / 100) < (mode->clock * 24 / 8)) &&
-+	    ((rate * 97 / 100) > (mode->clock * 16 / 8)) &&
- 	    (display_info->color_formats & DRM_COLOR_FORMAT_YCBCR422)) {
- 		input_fmts = kcalloc(1, sizeof(*input_fmts), GFP_KERNEL);
- 		if (!input_fmts)
+-	if (hci_dev_test_flag(hdev, HCI_LE_ADV) ||
+-	    hci_lookup_le_connect(hdev)) {
++	if (bacmp(&hdev->random_addr, BDADDR_ANY) &&
++	    (hci_dev_test_flag(hdev, HCI_LE_ADV) ||
++	    hci_lookup_le_connect(hdev))) {
+ 		bt_dev_dbg(hdev, "Deferring random address update");
+ 		hci_dev_set_flag(hdev, HCI_RPA_EXPIRED);
+ 		return 0;
 -- 
 2.39.5
 
