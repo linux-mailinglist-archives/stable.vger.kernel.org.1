@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-109014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F38EA1216C
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:56:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FABBA1201F
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5861A18815F7
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:56:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 585F5161C48
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEBD61E991F;
-	Wed, 15 Jan 2025 10:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20A8248BA0;
+	Wed, 15 Jan 2025 10:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvtdhntZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPfSjsZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95551E9916;
-	Wed, 15 Jan 2025 10:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F18C248BA6;
+	Wed, 15 Jan 2025 10:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938569; cv=none; b=bR6ZJptUEyb5Z3UDt4PF51ttl/hZT7VZ6jiopQza1TlWKjXuWWJ9A/DbjOAdQZ2jUzfeN0PJQqpE6wASvteQpfKkq/DQ2F8tKRa0rePACxUsN619dlYXTrdRSlQIlac+zWwi9Vru6QQaG5ulnc/CbhUl4AXu4ba5eTnRyRkWlT4=
+	t=1736937706; cv=none; b=i0K3PqDqG/0JPm4e41aWi6AitqT4mV303teJVPQCqAbsc/FiuNInngtMSUIphSMRTwqLC25LpnhymtT204dtUeZNYTzRTp8BGwZg3tw8GU44901f+XxZoVvct6OG+hv2YYaBMsYenPOFIwU5gj8RPhCyKdQfUOT82Vp3GxMY07I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938569; c=relaxed/simple;
-	bh=/yiuqolGkxcxaYzKOln4PV4NLneLGdwZWukgtBG/5nU=;
+	s=arc-20240116; t=1736937706; c=relaxed/simple;
+	bh=dlkILevdgqa3WSkIor5mUZk2mQPy1O0Mcd9s6l/PPZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U9DXoIwnkGGSLGBYEGq0SGzAafLGB/FZHC5RuP7ZvketYtZAuoKyk6kFid+Tutbxm6gxqe1Yd0S7bjLmS2u595H8WDaeXzaQGMaQhfxnInHaY/HHPAKIZjmZiCSapgMlaEIGZz3SPejpfdbmaqQ4VzQhrYnYEwb71RmhELwYmXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvtdhntZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12AF0C4CEE1;
-	Wed, 15 Jan 2025 10:56:08 +0000 (UTC)
+	 MIME-Version; b=hqEekRAGPXWRwUNLPTWdb9BzpxYbJFcRyHKpTn3a5a60DC26OCdIsdvgiaYh91CSylLA/D0dFORQ4ffQB7Edo8O7Z49j9PCe5OWlal7wBcCeMpGX4tzvwZDE99B9vH4fZMa628h3fBCVylSvUKyP+48BCO+f26wIkNqtN9kGQh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aPfSjsZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E09C4CEE2;
+	Wed, 15 Jan 2025 10:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938569;
-	bh=/yiuqolGkxcxaYzKOln4PV4NLneLGdwZWukgtBG/5nU=;
+	s=korg; t=1736937706;
+	bh=dlkILevdgqa3WSkIor5mUZk2mQPy1O0Mcd9s6l/PPZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wvtdhntZkO++qhZ5vlzb8bU2NQCy9bAHfC5vIies/DsH2rZWeVxaPo1APgQqjsq3L
-	 jel9YnlTFbm0fggDpETbSAcjGn6le+nh2DZN6ttdvTLazcT9UvA9q+adllnddGhp+x
-	 WLLmxc8dIVIVRinOhNa4E2tHkId+0QJMKcUD9as4=
+	b=aPfSjsZTyWwjUBV4gIew85T2Fz72D/Z+NSAcKrI4Trx64sK4ZYlmPgYqAv4UVvi7d
+	 gbU6v4SZmsXm4ZkkREjKaG9krgEh/nEHo5rWLnQhCMlSC3Vv4LQRpAXDQ0+2xJiOtR
+	 B0Vrkav/XTiiwrvFv1Gmxir6DcGAqkcVzOc/QjaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
-	En-Wei Wu <en-wei.wu@canonical.com>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Chenguang Zhao <zhaochenguang@kylinos.cn>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 030/129] igc: return early when failing to read EECD register
+Subject: [PATCH 6.1 27/92] net/mlx5: Fix variable not being completed when function returns
 Date: Wed, 15 Jan 2025 11:36:45 +0100
-Message-ID: <20250115103555.581002736@linuxfoundation.org>
+Message-ID: <20250115103548.613134866@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: En-Wei Wu <en-wei.wu@canonical.com>
+From: Chenguang Zhao <zhaochenguang@kylinos.cn>
 
-[ Upstream commit bd2776e39c2a82ef4681d02678bb77b3d41e79be ]
+[ Upstream commit 0e2909c6bec9048f49d0c8e16887c63b50b14647 ]
 
-When booting with a dock connected, the igc driver may get stuck for ~40
-seconds if PCIe link is lost during initialization.
+When cmd_alloc_index(), fails cmd_work_handler() needs
+to complete ent->slotted before returning early.
+Otherwise the task which issued the command may hang:
 
-This happens because the driver access device after EECD register reads
-return all F's, indicating failed reads. Consequently, hw->hw_addr is set
-to NULL, which impacts subsequent rd32() reads. This leads to the driver
-hanging in igc_get_hw_semaphore_i225(), as the invalid hw->hw_addr
-prevents retrieving the expected value.
+   mlx5_core 0000:01:00.0: cmd_work_handler:877:(pid 3880418): failed to allocate command entry
+   INFO: task kworker/13:2:4055883 blocked for more than 120 seconds.
+         Not tainted 4.19.90-25.44.v2101.ky10.aarch64 #1
+   "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+   kworker/13:2    D    0 4055883      2 0x00000228
+   Workqueue: events mlx5e_tx_dim_work [mlx5_core]
+   Call trace:
+      __switch_to+0xe8/0x150
+      __schedule+0x2a8/0x9b8
+      schedule+0x2c/0x88
+      schedule_timeout+0x204/0x478
+      wait_for_common+0x154/0x250
+      wait_for_completion+0x28/0x38
+      cmd_exec+0x7a0/0xa00 [mlx5_core]
+      mlx5_cmd_exec+0x54/0x80 [mlx5_core]
+      mlx5_core_modify_cq+0x6c/0x80 [mlx5_core]
+      mlx5_core_modify_cq_moderation+0xa0/0xb8 [mlx5_core]
+      mlx5e_tx_dim_work+0x54/0x68 [mlx5_core]
+      process_one_work+0x1b0/0x448
+      worker_thread+0x54/0x468
+      kthread+0x134/0x138
+      ret_from_fork+0x10/0x18
 
-To address this, a validation check and a corresponding return value
-catch is added for the EECD register read result. If all F's are
-returned, indicating PCIe link loss, the driver will return -ENXIO
-immediately. This avoids the 40-second hang and significantly improves
-boot time when using a dock with an igc NIC.
-
-Log before the patch:
-[    0.911913] igc 0000:70:00.0: enabling device (0000 -> 0002)
-[    0.912386] igc 0000:70:00.0: PTM enabled, 4ns granularity
-[    1.571098] igc 0000:70:00.0 (unnamed net_device) (uninitialized): PCIe link lost, device now detached
-[   43.449095] igc_get_hw_semaphore_i225: igc 0000:70:00.0 (unnamed net_device) (uninitialized): Driver can't access device - SMBI bit is set.
-[   43.449186] igc 0000:70:00.0: probe with driver igc failed with error -13
-[   46.345701] igc 0000:70:00.0: enabling device (0000 -> 0002)
-[   46.345777] igc 0000:70:00.0: PTM enabled, 4ns granularity
-
-Log after the patch:
-[    1.031000] igc 0000:70:00.0: enabling device (0000 -> 0002)
-[    1.032097] igc 0000:70:00.0: PTM enabled, 4ns granularity
-[    1.642291] igc 0000:70:00.0 (unnamed net_device) (uninitialized): PCIe link lost, device now detached
-[    5.480490] igc 0000:70:00.0: enabling device (0000 -> 0002)
-[    5.480516] igc 0000:70:00.0: PTM enabled, 4ns granularity
-
-Fixes: ab4056126813 ("igc: Add NVM support")
-Cc: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Signed-off-by: En-Wei Wu <en-wei.wu@canonical.com>
-Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 485d65e13571 ("net/mlx5: Add a timeout to acquire the command queue semaphore")
+Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Acked-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250108030009.68520-1-zhaochenguang@kylinos.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_base.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_base.c b/drivers/net/ethernet/intel/igc/igc_base.c
-index 9fae8bdec2a7..1613b562d17c 100644
---- a/drivers/net/ethernet/intel/igc/igc_base.c
-+++ b/drivers/net/ethernet/intel/igc/igc_base.c
-@@ -68,6 +68,10 @@ static s32 igc_init_nvm_params_base(struct igc_hw *hw)
- 	u32 eecd = rd32(IGC_EECD);
- 	u16 size;
- 
-+	/* failed to read reg and got all F's */
-+	if (!(~eecd))
-+		return -ENXIO;
-+
- 	size = FIELD_GET(IGC_EECD_SIZE_EX_MASK, eecd);
- 
- 	/* Added to a constant, "size" becomes the left-shift value
-@@ -221,6 +225,8 @@ static s32 igc_get_invariants_base(struct igc_hw *hw)
- 
- 	/* NVM initialization */
- 	ret_val = igc_init_nvm_params_base(hw);
-+	if (ret_val)
-+		goto out;
- 	switch (hw->mac.type) {
- 	case igc_i225:
- 		ret_val = igc_init_nvm_params_i225(hw);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+index 4a1eb6cd699c..6dbb4021fd2f 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+@@ -1003,6 +1003,7 @@ static void cmd_work_handler(struct work_struct *work)
+ 				complete(&ent->done);
+ 			}
+ 			up(&cmd->vars.sem);
++			complete(&ent->slotted);
+ 			return;
+ 		}
+ 	} else {
 -- 
 2.39.5
 
