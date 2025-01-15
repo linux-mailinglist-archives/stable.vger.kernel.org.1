@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-108995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045CEA12150
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:55:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C81BA11FD6
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:38:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87CDA1881C0F
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:55:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EE8C3A11E7
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C27C18952C;
-	Wed, 15 Jan 2025 10:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C522248BA4;
+	Wed, 15 Jan 2025 10:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QiL+q0g2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jA/0aouq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48054248BDE;
-	Wed, 15 Jan 2025 10:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA0A248BBF;
+	Wed, 15 Jan 2025 10:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938506; cv=none; b=ZcqzXa9/gdruawrzMrgV+WgX7jkmVXANoVaKC5qpcHSnqwAatIGvvt+PVDk5ziWS1rxRZOv8K47HmE93Ie4Y0+c/s91sG5a1Uu2LUTHExcglTmCd6AS/4uo4XCH1FiEomkXbGJt2m0rftLIeejtEthlajoXBFo8VmBNx3s5c0FA=
+	t=1736937534; cv=none; b=VXLUxjfi5fzN/2zuqjkbQkeAvEokKwhzeaFme5iFN8uvVZ4kqhoNEWI7tQ73+4yW1yILdkHQW7l9t+9EWMpVAUQnoOKx3UExgQ2QGgi0YZohx4egtpmOAWHnxZR+Iif2kK4JRYEfzbTNKczMWPhVkxLtYVbSOJ1hODASq7y/qrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938506; c=relaxed/simple;
-	bh=HunJTmBSyNM2ktU7UxrnbKwbtz4hvEzFxyxl8u1CQx8=;
+	s=arc-20240116; t=1736937534; c=relaxed/simple;
+	bh=uemHpkaJiWzJa66Fkzw3h+8L61HfLAJ88oMcCMtvhAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K6atiYjNYiOYcS6kpOK30cUYoBGkTWElVLk7UNkCzcR6OHLb9/FZRp5KjzwE/EUzmvcKy7y4SoTaKQ8wh2dEZm5oWEH+nWobd6vqRMqFvo075AD62gmN+CSW+pu6MYsbgLcjQcGH/J5hTPl1dUCP4/j8JMG131LHTjJ6kMXgIrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QiL+q0g2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C7AC4CEE2;
-	Wed, 15 Jan 2025 10:55:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=a2zbVx5KCGCVr18IEr2xhXlZdUR04F2SMqrnDR4+CWnlMFRX3oKjWCcxVjrljsmnSO2wspKroMRiDkyg7+ml09dMgMEYJbO91+bZKIAKqjMurpu9/8c51+gj1TlDqJsKgXn25lK58Aqzy2kdI2Dt+eTlo/iwNWPva4OoJXmA7tI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jA/0aouq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3CBDC4CEDF;
+	Wed, 15 Jan 2025 10:38:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938506;
-	bh=HunJTmBSyNM2ktU7UxrnbKwbtz4hvEzFxyxl8u1CQx8=;
+	s=korg; t=1736937534;
+	bh=uemHpkaJiWzJa66Fkzw3h+8L61HfLAJ88oMcCMtvhAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QiL+q0g2VPkykFSY6cXOkh3N+Y8X5swNbOFfOWGWHvUYMceFIvYbXDVS4yHavvQKq
-	 NGE6OKZEISeT0k+sJvMyCNpB+5HUsRAVWZVwiK31T2yG7yCvagTMmnjJ7TwcRu5uKS
-	 MenqRDd6Szl4pgnWrZFnGymqX23BCDBTn4qYj+5E=
+	b=jA/0aouqtwtHmlWBzkEcuV06m4Sy43vVqnbnzQiP4Xd7mYJiAdvxI6aOk+6Kew3oq
+	 ONtlCH4a9hBF3UmtZ72ovNwUMCXfIRc5eeq7dJ1VSjD5szw2LVQ2cnCbd5/n5rYLHn
+	 VHIwHcGry2Fr5WtS4YLuUiwQfd/WJCvNKVLTAL88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 004/129] jbd2: flush filesystem device before updating tail sequence
+	=?UTF-8?q?Dario=20Wei=C3=9Fer?= <dario@cure53.de>,
+	Max Kellermann <max.kellermann@ionos.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.1 01/92] ceph: give up on paths longer than PATH_MAX
 Date: Wed, 15 Jan 2025 11:36:19 +0100
-Message-ID: <20250115103554.537031689@linuxfoundation.org>
+Message-ID: <20250115103547.583898967@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-[ Upstream commit a0851ea9cd555c333795b85ddd908898b937c4e1 ]
+commit 550f7ca98ee028a606aa75705a7e77b1bd11720f upstream.
 
-When committing transaction in jbd2_journal_commit_transaction(), the
-disk caches for the filesystem device should be flushed before updating
-the journal tail sequence. However, this step is missed if the journal
-is not located on the filesystem device. As a result, the filesystem may
-become inconsistent following a power failure or system crash. Fix it by
-ensuring that the filesystem device is flushed appropriately.
+If the full path to be built by ceph_mdsc_build_path() happens to be
+longer than PATH_MAX, then this function will enter an endless (retry)
+loop, effectively blocking the whole task.  Most of the machine
+becomes unusable, making this a very simple and effective DoS
+vulnerability.
 
-Fixes: 3339578f0578 ("jbd2: cleanup journal tail after transaction commit")
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://lore.kernel.org/r/20241203014407.805916-3-yi.zhang@huaweicloud.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+I cannot imagine why this retry was ever implemented, but it seems
+rather useless and harmful to me.  Let's remove it and fail with
+ENAMETOOLONG instead.
+
+Cc: stable@vger.kernel.org
+Reported-by: Dario Weißer <dario@cure53.de>
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Reviewed-by: Alex Markuze <amarkuze@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+[idryomov@gmail.com: backport to 6.1: pr_warn() is still in use]
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/commit.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ceph/mds_client.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/fs/jbd2/commit.c b/fs/jbd2/commit.c
-index 0cd7439470fc..84663ff7dc50 100644
---- a/fs/jbd2/commit.c
-+++ b/fs/jbd2/commit.c
-@@ -777,9 +777,9 @@ void jbd2_journal_commit_transaction(journal_t *journal)
- 	/*
- 	 * If the journal is not located on the file system device,
- 	 * then we must flush the file system device before we issue
--	 * the commit record
-+	 * the commit record and update the journal tail sequence.
- 	 */
--	if (commit_transaction->t_need_data_flush &&
-+	if ((commit_transaction->t_need_data_flush || update_tail) &&
- 	    (journal->j_fs_dev != journal->j_dev) &&
- 	    (journal->j_flags & JBD2_BARRIER))
- 		blkdev_issue_flush(journal->j_fs_dev);
--- 
-2.39.5
-
+--- a/fs/ceph/mds_client.c
++++ b/fs/ceph/mds_client.c
+@@ -2447,12 +2447,11 @@ retry:
+ 
+ 	if (pos < 0) {
+ 		/*
+-		 * A rename didn't occur, but somehow we didn't end up where
+-		 * we thought we would. Throw a warning and try again.
++		 * The path is longer than PATH_MAX and this function
++		 * cannot ever succeed.  Creating paths that long is
++		 * possible with Ceph, but Linux cannot use them.
+ 		 */
+-		pr_warn("build_path did not end path lookup where "
+-			"expected, pos is %d\n", pos);
+-		goto retry;
++		return ERR_PTR(-ENAMETOOLONG);
+ 	}
+ 
+ 	*pbase = base;
 
 
 
