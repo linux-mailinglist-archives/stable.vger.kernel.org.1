@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-109019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D9AA12171
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:56:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C49BA120E0
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:50:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D0867A21A9
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:56:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 754F8188B094
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA771E98FA;
-	Wed, 15 Jan 2025 10:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE131E98F1;
+	Wed, 15 Jan 2025 10:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+UP981V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4hFJcAG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D6A248BD1;
-	Wed, 15 Jan 2025 10:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5951E98E4;
+	Wed, 15 Jan 2025 10:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938586; cv=none; b=SILh4zlDQHlu/OXVRmAw3Y2y3pLUVSxPNNlYHe+mMcWYv4rn/UVjZPfCYrZHI2Ic0boYyRbTYaLSjApYy2RL4KpZwZna3aFWjnOYkAhhS9DCMKh/m4yImk6fblY9cYVDpua674WBNXyzvjDS6vajHXcDy8L8cU/bKv632oog174=
+	t=1736938205; cv=none; b=fArR9lyp3uvGEET6NpLZqxTMuqQ0Z4WywUCHqSF0nWTwA3Xqzq/gRWqTmcPIkeEMtAA35fvMM2lZ++4T4+Gc8yObRE7b16Ir2zWLqnv+KNiqIWnn6LnP8yjpUxOvPhGG5iIdvwWk9F5U5Eb3Uow93GCAvooLXOrq1SQ3XnXzrQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938586; c=relaxed/simple;
-	bh=3SBoWHz0cDiBJbdbMLtdPUi8+a9dP6/7aTzzKtH5dVk=;
+	s=arc-20240116; t=1736938205; c=relaxed/simple;
+	bh=jUkFeOvezK/IHEeoa8JofPyVT/WiwwhoYqjQjaHdYN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FFozy0okh1xBpzsA6QyGkSon+dYd9NGJmaVZEDTKkcOD+ezZQQj7IzoUNCyQUWW/C9aLHPBQBOnJ59VNNUGoqr4+uYtvDKBozGssBclU1ujtCR6eJFuPBgBvV0AJzUVnbYm73fh9RcN+oyvL58/YVE4I5KQEWeN0OocMKMCwkcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+UP981V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD184C4CEDF;
-	Wed, 15 Jan 2025 10:56:25 +0000 (UTC)
+	 MIME-Version; b=IkajAIUPYuyppND+J3VdSfajKXwXItu6Hw3PZaF+0IHCzAwJ7JvjbK01DzpcoP0Waj8/uOfZkdBzyEOM2Oyslppb3ZfcRlyOlUtmk/A9FblUSzD1xOqZEN5Ey/v+maVodKovHU9VIsGVMcxWy3m7db/h8BcsHuULPsdTY5F2FPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4hFJcAG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA9BC4CEE2;
+	Wed, 15 Jan 2025 10:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938586;
-	bh=3SBoWHz0cDiBJbdbMLtdPUi8+a9dP6/7aTzzKtH5dVk=;
+	s=korg; t=1736938205;
+	bh=jUkFeOvezK/IHEeoa8JofPyVT/WiwwhoYqjQjaHdYN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J+UP981V5tDG8PKUOAC1UH066C2wvDPQ4FYzBrQp5m0+yB3jruc8JZWVqsN2jp8Ar
-	 qTd/wVIRmpJuweW2nbP9yljnMr7i+jy6FKLZftm8vonhz58eeFk9Lx4Wm9VK+gX6j1
-	 VOKZIcA0NXBOw6tM7KyviU4w1ufVzqUtUZnpuyrI=
+	b=j4hFJcAG/lc+/c8mGcoNhGyjrQEPig19fGpj+VAhad7csA7xrTAGv+tdzyhZNLNYF
+	 TP/41ujH+bNJFVenEU1WXKA40zvMU/B9mQ6MwTDkbf6kDoyhE9flOMFC3VQXpKb8dO
+	 nyCIuIBIAn647jqfdbRIwHOah8hmcdOBBHThbElc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/129] Bluetooth: MGMT: Fix Add Device to responding before completing
+	Meetakshi Setiya <msetiya@microsoft.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 114/189] smb: client: sync the root session and superblock context passwords before automounting
 Date: Wed, 15 Jan 2025 11:36:50 +0100
-Message-ID: <20250115103555.776934131@linuxfoundation.org>
+Message-ID: <20250115103611.012847740@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Meetakshi Setiya <msetiya@microsoft.com>
 
-[ Upstream commit a182d9c84f9c52fb5db895ecceeee8b3a1bf661e ]
+commit 20b1aa912316ffb7fbb5f407f17c330f2a22ddff upstream.
 
-Add Device with LE type requires updating resolving/accept list which
-requires quite a number of commands to complete and each of them may
-fail, so instead of pretending it would always work this checks the
-return of hci_update_passive_scan_sync which indicates if everything
-worked as intended.
+In some cases, when password2 becomes the working password, the
+client swaps the two password fields in the root session struct, but
+not in the smb3_fs_context struct in cifs_sb. DFS automounts inherit
+fs context from their parent mounts. Therefore, they might end up
+getting the passwords in the stale order.
+The automount should succeed, because the mount function will end up
+retrying with the actual password anyway. But to reduce these
+unnecessary session setup retries for automounts, we can sync the
+parent context's passwords with the root session's passwords before
+duplicating it to the child's fs context.
 
-Fixes: e8907f76544f ("Bluetooth: hci_sync: Make use of hci_cmd_sync_queue set 3")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Meetakshi Setiya <msetiya@microsoft.com>
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/mgmt.c | 38 ++++++++++++++++++++++++++++++++++++--
- 1 file changed, 36 insertions(+), 2 deletions(-)
+ fs/smb/client/namespace.c |   19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 1175248e4bec..e3440f0d7d9d 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -7589,6 +7589,24 @@ static void device_added(struct sock *sk, struct hci_dev *hdev,
- 	mgmt_event(MGMT_EV_DEVICE_ADDED, hdev, &ev, sizeof(ev), sk);
- }
+--- a/fs/smb/client/namespace.c
++++ b/fs/smb/client/namespace.c
+@@ -196,11 +196,28 @@ static struct vfsmount *cifs_do_automoun
+ 	struct smb3_fs_context tmp;
+ 	char *full_path;
+ 	struct vfsmount *mnt;
++	struct cifs_sb_info *mntpt_sb;
++	struct cifs_ses *ses;
  
-+static void add_device_complete(struct hci_dev *hdev, void *data, int err)
-+{
-+	struct mgmt_pending_cmd *cmd = data;
-+	struct mgmt_cp_add_device *cp = cmd->param;
-+
-+	if (!err) {
-+		device_added(cmd->sk, hdev, &cp->addr.bdaddr, cp->addr.type,
-+			     cp->action);
-+		device_flags_changed(NULL, hdev, &cp->addr.bdaddr,
-+				     cp->addr.type, hdev->conn_flags,
-+				     PTR_UINT(cmd->user_data));
-+	}
-+
-+	mgmt_cmd_complete(cmd->sk, hdev->id, MGMT_OP_ADD_DEVICE,
-+			  mgmt_status(err), &cp->addr, sizeof(cp->addr));
-+	mgmt_pending_free(cmd);
-+}
-+
- static int add_device_sync(struct hci_dev *hdev, void *data)
- {
- 	return hci_update_passive_scan_sync(hdev);
-@@ -7597,6 +7615,7 @@ static int add_device_sync(struct hci_dev *hdev, void *data)
- static int add_device(struct sock *sk, struct hci_dev *hdev,
- 		      void *data, u16 len)
- {
-+	struct mgmt_pending_cmd *cmd;
- 	struct mgmt_cp_add_device *cp = data;
- 	u8 auto_conn, addr_type;
- 	struct hci_conn_params *params;
-@@ -7677,9 +7696,24 @@ static int add_device(struct sock *sk, struct hci_dev *hdev,
- 			current_flags = params->flags;
- 	}
+ 	if (IS_ROOT(mntpt))
+ 		return ERR_PTR(-ESTALE);
  
--	err = hci_cmd_sync_queue(hdev, add_device_sync, NULL, NULL);
--	if (err < 0)
-+	cmd = mgmt_pending_new(sk, MGMT_OP_ADD_DEVICE, hdev, data, len);
-+	if (!cmd) {
-+		err = -ENOMEM;
- 		goto unlock;
-+	}
+-	cur_ctx = CIFS_SB(mntpt->d_sb)->ctx;
++	mntpt_sb = CIFS_SB(mntpt->d_sb);
++	ses = cifs_sb_master_tcon(mntpt_sb)->ses;
++	cur_ctx = mntpt_sb->ctx;
 +
-+	cmd->user_data = UINT_PTR(current_flags);
++	/*
++	 * At this point, the root session should be in the mntpt sb. We should
++	 * bring the sb context passwords in sync with the root session's
++	 * passwords. This would help prevent unnecessary retries and password
++	 * swaps for automounts.
++	 */
++	mutex_lock(&ses->session_mutex);
++	rc = smb3_sync_session_ctx_passwords(mntpt_sb, ses);
++	mutex_unlock(&ses->session_mutex);
 +
-+	err = hci_cmd_sync_queue(hdev, add_device_sync, cmd,
-+				 add_device_complete);
-+	if (err < 0) {
-+		err = mgmt_cmd_complete(sk, hdev->id, MGMT_OP_ADD_DEVICE,
-+					MGMT_STATUS_FAILED, &cp->addr,
-+					sizeof(cp->addr));
-+		mgmt_pending_free(cmd);
-+	}
-+
-+	goto unlock;
++	if (rc)
++		return ERR_PTR(rc);
  
- added:
- 	device_added(sk, hdev, &cp->addr.bdaddr, cp->addr.type, cp->action);
--- 
-2.39.5
-
+ 	fc = fs_context_for_submount(path->mnt->mnt_sb->s_type, mntpt);
+ 	if (IS_ERR(fc))
 
 
 
