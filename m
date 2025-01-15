@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-109051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7625A12191
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:58:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E3EA1210A
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:52:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6973E3AC202
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:58:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0648188D4DA
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6256A1DB142;
-	Wed, 15 Jan 2025 10:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB25D1DB142;
+	Wed, 15 Jan 2025 10:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fnJtEe4d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KDp+P0hF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20060248BD0;
-	Wed, 15 Jan 2025 10:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990FC248BC1;
+	Wed, 15 Jan 2025 10:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938695; cv=none; b=pXfwJD7Uw/CLooeeO3Bphsuil8Hl8k7GHSmTqRW60782JEyqet9n9vFVpquxmEWwE6XZFQHkw2esc/hGz1+I3e5phJKZ03xxN6vF9KuJQd3FY0HUqzgeyW/wFKI8m6VQ9PHqgZnY8v53NKKwYGYPUprtCMht//xqSWwXXeSZTZ4=
+	t=1736938319; cv=none; b=m7Tz6uH7G7ngDlfEADpmrvVEi68wxpcumWq22ZMZLAahtf4mRK5GrloXhIE6//Y7DHOEyi74dTonbFb9HHuQguc5waaege7aKnXJ6ktOGAmHxPQ7tYJOJ/AAdSQSJxfF/E39DSEcCBQgyEp9/V/kjA1Pepw/ClIld1fqVKDGQJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938695; c=relaxed/simple;
-	bh=c+kFFr2v3aID+t63o403I7SFHM8URDNQ+Fe0BTb/x6U=;
+	s=arc-20240116; t=1736938319; c=relaxed/simple;
+	bh=tSoPxCGYbrkhtJqmz8MJs5AFvtT8oreoTm/Ru2urNT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BGtbjGIQivu16GLLjUBt8T2srNxsLbKAgV3BXvUdzcPVgSYNNgnoSvDjgxng9krGdbzj7SH2wCYB7hd6O1Oo93fsf9f8NxYunVhUKX2FqXpWpWbmF4xZbB3278/HrED46p71UqLGaSzDFieshiac1JFDoS3q92QsF8ak4UNFeIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fnJtEe4d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BEB2C4CEDF;
-	Wed, 15 Jan 2025 10:58:12 +0000 (UTC)
+	 MIME-Version; b=q9DDahMjtauiz+jZHzCpZM/9/g/dc2xL7d3fHNWh2qSh9hSNZxJe+K+nsgVsRofiTvD20tGulDlwhHYVTR8tUYE+UpPQemuGXNMMVZ0gL8IHWhVY83ktU8I5iRAKDDGasijdYbrwiEdQgaQ4TDNXFgPCaRawbdlBRgOFvLaEwM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KDp+P0hF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047D6C4CEDF;
+	Wed, 15 Jan 2025 10:51:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938693;
-	bh=c+kFFr2v3aID+t63o403I7SFHM8URDNQ+Fe0BTb/x6U=;
+	s=korg; t=1736938319;
+	bh=tSoPxCGYbrkhtJqmz8MJs5AFvtT8oreoTm/Ru2urNT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fnJtEe4dA23NdrMJrrAQi0sP9nsQah0HN5TCDZdzvob1p3tbhMUrPN26UUgQkxcIV
-	 0iC1+0e+P+xva5bjmeTZGX3dxUmqvKXsTuELk1GlZs3lDvzIL0etgv05TAgo1NkX4Y
-	 cRRPJij+LZ1QI1iLU74qSrcvR1bpp93elOPbzoMw=
+	b=KDp+P0hFtGrLOKe7o4JDgtKm3nRVgy24aofyyvajKniQOwa0cONox82HHHSEk9P3L
+	 hQreflBnURwMvNRaYiBDUDhU22hSupTnISDK6UPskY+LtDLOmF+jTnb3TJiuAdRr26
+	 uMzaV6HZAJhmT5IMTzWbywAm3Y4bi5hT/T/M4l00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 067/129] ksmbd: Implement new SMB3 POSIX type
-Date: Wed, 15 Jan 2025 11:37:22 +0100
-Message-ID: <20250115103557.051304741@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Ma Ke <make_ruc2021@163.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.12 147/189] usb: fix reference leak in usb_new_device()
+Date: Wed, 15 Jan 2025 11:37:23 +0100
+Message-ID: <20250115103612.284572548@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Ma Ke <make_ruc2021@163.com>
 
-commit e8580b4c600e085b3c8e6404392de2f822d4c132 upstream.
+commit 0df11fa8cee5a9cf8753d4e2672bb3667138c652 upstream.
 
-As SMB3 posix extension specification, Give posix file type to posix
-mode.
+When device_add(&udev->dev) succeeds and a later call fails,
+usb_new_device() does not properly call device_del(). As comment of
+device_add() says, 'if device_add() succeeds, you should call
+device_del() when you want to get rid of it. If device_add() has not
+succeeded, use only put_device() to drop the reference count'.
 
-https://www.samba.org/~slow/SMB3_POSIX/fscc_posix_extensions.html#posix-file-type-definition
+Found by code review.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Cc: stable <stable@kernel.org>
+Fixes: 9f8b17e643fe ("USB: make usbdevices export their device nodes instead of using a separate class")
+Signed-off-by: Ma Ke <make_ruc2021@163.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20241218071346.2973980-1-make_ruc2021@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |   40 ++++++++++++++++++++++++++++++++++++++++
- fs/smb/server/smb2pdu.h |   10 ++++++++++
- 2 files changed, 50 insertions(+)
+ drivers/usb/core/hub.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -3989,6 +3989,26 @@ static int smb2_populate_readdir_entry(s
- 		posix_info->DeviceId = cpu_to_le32(ksmbd_kstat->kstat->rdev);
- 		posix_info->HardLinks = cpu_to_le32(ksmbd_kstat->kstat->nlink);
- 		posix_info->Mode = cpu_to_le32(ksmbd_kstat->kstat->mode & 0777);
-+		switch (ksmbd_kstat->kstat->mode & S_IFMT) {
-+		case S_IFDIR:
-+			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_DIR << POSIX_FILETYPE_SHIFT);
-+			break;
-+		case S_IFLNK:
-+			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_SYMLINK << POSIX_FILETYPE_SHIFT);
-+			break;
-+		case S_IFCHR:
-+			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_CHARDEV << POSIX_FILETYPE_SHIFT);
-+			break;
-+		case S_IFBLK:
-+			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_BLKDEV << POSIX_FILETYPE_SHIFT);
-+			break;
-+		case S_IFIFO:
-+			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_FIFO << POSIX_FILETYPE_SHIFT);
-+			break;
-+		case S_IFSOCK:
-+			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_SOCKET << POSIX_FILETYPE_SHIFT);
-+		}
-+
- 		posix_info->Inode = cpu_to_le64(ksmbd_kstat->kstat->ino);
- 		posix_info->DosAttributes =
- 			S_ISDIR(ksmbd_kstat->kstat->mode) ?
-@@ -5177,6 +5197,26 @@ static int find_file_posix_info(struct s
- 	file_info->AllocationSize = cpu_to_le64(stat.blocks << 9);
- 	file_info->HardLinks = cpu_to_le32(stat.nlink);
- 	file_info->Mode = cpu_to_le32(stat.mode & 0777);
-+	switch (stat.mode & S_IFMT) {
-+	case S_IFDIR:
-+		file_info->Mode |= cpu_to_le32(POSIX_TYPE_DIR << POSIX_FILETYPE_SHIFT);
-+		break;
-+	case S_IFLNK:
-+		file_info->Mode |= cpu_to_le32(POSIX_TYPE_SYMLINK << POSIX_FILETYPE_SHIFT);
-+		break;
-+	case S_IFCHR:
-+		file_info->Mode |= cpu_to_le32(POSIX_TYPE_CHARDEV << POSIX_FILETYPE_SHIFT);
-+		break;
-+	case S_IFBLK:
-+		file_info->Mode |= cpu_to_le32(POSIX_TYPE_BLKDEV << POSIX_FILETYPE_SHIFT);
-+		break;
-+	case S_IFIFO:
-+		file_info->Mode |= cpu_to_le32(POSIX_TYPE_FIFO << POSIX_FILETYPE_SHIFT);
-+		break;
-+	case S_IFSOCK:
-+		file_info->Mode |= cpu_to_le32(POSIX_TYPE_SOCKET << POSIX_FILETYPE_SHIFT);
-+	}
-+
- 	file_info->DeviceId = cpu_to_le32(stat.rdev);
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -2663,13 +2663,13 @@ int usb_new_device(struct usb_device *ud
+ 		err = sysfs_create_link(&udev->dev.kobj,
+ 				&port_dev->dev.kobj, "port");
+ 		if (err)
+-			goto fail;
++			goto out_del_dev;
  
- 	/*
---- a/fs/smb/server/smb2pdu.h
-+++ b/fs/smb/server/smb2pdu.h
-@@ -500,4 +500,14 @@ static inline void *smb2_get_msg(void *b
- 	return buf + 4;
- }
+ 		err = sysfs_create_link(&port_dev->dev.kobj,
+ 				&udev->dev.kobj, "device");
+ 		if (err) {
+ 			sysfs_remove_link(&udev->dev.kobj, "port");
+-			goto fail;
++			goto out_del_dev;
+ 		}
  
-+#define POSIX_TYPE_FILE		0
-+#define POSIX_TYPE_DIR		1
-+#define POSIX_TYPE_SYMLINK	2
-+#define POSIX_TYPE_CHARDEV	3
-+#define POSIX_TYPE_BLKDEV	4
-+#define POSIX_TYPE_FIFO		5
-+#define POSIX_TYPE_SOCKET	6
-+
-+#define POSIX_FILETYPE_SHIFT	12
-+
- #endif	/* _SMB2PDU_H */
+ 		if (!test_and_set_bit(port1, hub->child_usage_bits))
+@@ -2683,6 +2683,8 @@ int usb_new_device(struct usb_device *ud
+ 	pm_runtime_put_sync_autosuspend(&udev->dev);
+ 	return err;
+ 
++out_del_dev:
++	device_del(&udev->dev);
+ fail:
+ 	usb_set_device_state(udev, USB_STATE_NOTATTACHED);
+ 	pm_runtime_disable(&udev->dev);
 
 
 
