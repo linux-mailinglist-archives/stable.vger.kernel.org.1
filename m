@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-108982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F947A1213D
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:54:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E6B1A121D2
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 12:00:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8284C167148
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:54:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA595188C397
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3019A1DB13A;
-	Wed, 15 Jan 2025 10:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BA71E98E7;
+	Wed, 15 Jan 2025 11:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHf9uUmQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYsyK6JR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECDF248BA6;
-	Wed, 15 Jan 2025 10:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64609248BAF;
+	Wed, 15 Jan 2025 11:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938460; cv=none; b=tyLBk+MGH5uaRLdpkX8MeQXf9VpoSepf3dGM7aUiAr9GMpDNqLL0UG6z1S1E6knVeYTqR8CWgCbqq/Y9lmIyUY+FtweHH5GyToBla/Ljl3GgBL9m3rlW2Cbc1GMZNpHzhjJtmqfgzL3t+otRzPYtHTGlTX4xGKQTZqmeBkHYTdc=
+	t=1736938851; cv=none; b=hFkM9KAi9TDuobdyK6wTLgvoXnbjIbiZdlhSiBZCHMffVSXwkfzNv/59nTEcR9O0/iHzqNzaa2W9WLAdKl2C495JTbqAopurOl66PALeGZyndYhZ6LRggDdrCM93BQRICG2IDN3fm9xnicJRjJALSzjTqQ46ldrSX6YfaP6Z0R4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938460; c=relaxed/simple;
-	bh=cIaH3eiAufUoDUUZo26EsjBTcxsAo27og1IPubzbCxY=;
+	s=arc-20240116; t=1736938851; c=relaxed/simple;
+	bh=fZ8tx/ztFBG+o/yVgFSE+HWaJr/RWnvZ565IaMqYHQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QRMcRZH/y4S5xDlIXYptktrNgli8yWjbZZnm90OSA9f4oWq+yQfhzmd3/S8uri9kvATdvb26imydbD6dOoCfBNavwYpi4E3lKVK5p1WU9i41OQPzUz2d7+xWqhvgvZnU0CyggpXadWZhcFPNrp+5lTZEm4NH4IWQTmw6XSHV+IU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHf9uUmQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3981EC4CEDF;
-	Wed, 15 Jan 2025 10:54:19 +0000 (UTC)
+	 MIME-Version; b=AbTyHw2dzAJ1sdcrcxWDzUoWucpRSsI2mPHaHVG02CUDs4MXnj2+x2x0WEfSYkEGdgkLwsqxdY/+EanWt0yhJQquwXVY6oud+vnWSB1Wi/xPeK6Fv2S6yjMkiaflpWzxWwDNN1uHtCDib5wP+RqnBjj15HIZhlkELLYFKf20oRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aYsyK6JR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEB17C4CEDF;
+	Wed, 15 Jan 2025 11:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938459;
-	bh=cIaH3eiAufUoDUUZo26EsjBTcxsAo27og1IPubzbCxY=;
+	s=korg; t=1736938851;
+	bh=fZ8tx/ztFBG+o/yVgFSE+HWaJr/RWnvZ565IaMqYHQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tHf9uUmQTVnVA5ZUZxRQbxIQ++nkTNBZYtoUujrSoJb66S4yDR/TpiqoS5xo9MvDB
-	 y2z7TttPZUqbFQp4+0gcWQcEn+3LgM09qujh8ukwIpdPcouJeu7ZxFQTctd6cFon/4
-	 kShWmDvYQIAiABuM49Q85myyKCjMPvplOSn5UEP4=
+	b=aYsyK6JRX4WSL6dClqmfX7xVtKbde1Jl7T5zDXM2M2zJ7OG/QBHLFWKEGyrfNaWnr
+	 49YFzmtBtltPLr63EjwFQrNZatUwODDVxElcB/6q4KkUNUbVGXDAycBNu+emn2yZ8P
+	 bEdSTSPDAYDCD5u5xaf1/6axUSDL7Vx5FxZkpe9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	stable@kernel.org,
+	Fabio Estevam <festevam@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 188/189] iio: imu: inv_icm42600: fix spi burst write not supported
+Subject: [PATCH 6.6 109/129] iio: adc: ti-ads124s08: Use gpiod_set_value_cansleep()
 Date: Wed, 15 Jan 2025 11:38:04 +0100
-Message-ID: <20250115103613.905041416@linuxfoundation.org>
+Message-ID: <20250115103558.695850852@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Fabio Estevam <festevam@gmail.com>
 
-commit c0f866de4ce447bca3191b9cefac60c4b36a7922 upstream.
+commit 2a8e34096ec70d73ebb6d9920688ea312700cbd9 upstream.
 
-Burst write with SPI is not working for all icm42600 chips. It was
-only used for setting user offsets with regmap_bulk_write.
+Using gpiod_set_value() to control the reset GPIO causes some verbose
+warnings during boot when the reset GPIO is controlled by an I2C IO
+expander.
 
-Add specific SPI regmap config for using only single write with SPI.
+As the caller can sleep, use the gpiod_set_value_cansleep() variant to
+fix the issue.
 
-Fixes: 9f9ff91b775b ("iio: imu: inv_icm42600: add SPI driver for inv_icm42600 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Link: https://patch.msgid.link/20241112-inv-icm42600-fix-spi-burst-write-not-supported-v2-1-97690dc03607@tdk.com
+Tested on a custom i.MX93 board with a ADS124S08 ADC.
+
+Cc: stable@kernel.org
+Fixes: e717f8c6dfec ("iio: adc: Add the TI ads124s08 ADC code")
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Link: https://patch.msgid.link/20241122164308.390340-1-festevam@gmail.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600.h      |    1 +
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |   15 +++++++++++++++
- drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c  |    3 ++-
- 3 files changed, 18 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ti-ads124s08.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-@@ -403,6 +403,7 @@ struct inv_icm42600_sensor_state {
- typedef int (*inv_icm42600_bus_setup)(struct inv_icm42600_state *);
+--- a/drivers/iio/adc/ti-ads124s08.c
++++ b/drivers/iio/adc/ti-ads124s08.c
+@@ -183,9 +183,9 @@ static int ads124s_reset(struct iio_dev
+ 	struct ads124s_private *priv = iio_priv(indio_dev);
  
- extern const struct regmap_config inv_icm42600_regmap_config;
-+extern const struct regmap_config inv_icm42600_spi_regmap_config;
- extern const struct dev_pm_ops inv_icm42600_pm_ops;
- 
- const struct iio_mount_matrix *
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -87,6 +87,21 @@ const struct regmap_config inv_icm42600_
- };
- EXPORT_SYMBOL_NS_GPL(inv_icm42600_regmap_config, IIO_ICM42600);
- 
-+/* define specific regmap for SPI not supporting burst write */
-+const struct regmap_config inv_icm42600_spi_regmap_config = {
-+	.name = "inv_icm42600",
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.max_register = 0x4FFF,
-+	.ranges = inv_icm42600_regmap_ranges,
-+	.num_ranges = ARRAY_SIZE(inv_icm42600_regmap_ranges),
-+	.volatile_table = inv_icm42600_regmap_volatile_accesses,
-+	.rd_noinc_table = inv_icm42600_regmap_rd_noinc_accesses,
-+	.cache_type = REGCACHE_RBTREE,
-+	.use_single_write = true,
-+};
-+EXPORT_SYMBOL_NS_GPL(inv_icm42600_spi_regmap_config, IIO_ICM42600);
-+
- struct inv_icm42600_hw {
- 	uint8_t whoami;
- 	const char *name;
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-@@ -59,7 +59,8 @@ static int inv_icm42600_probe(struct spi
- 		return -EINVAL;
- 	chip = (uintptr_t)match;
- 
--	regmap = devm_regmap_init_spi(spi, &inv_icm42600_regmap_config);
-+	/* use SPI specific regmap */
-+	regmap = devm_regmap_init_spi(spi, &inv_icm42600_spi_regmap_config);
- 	if (IS_ERR(regmap))
- 		return PTR_ERR(regmap);
- 
+ 	if (priv->reset_gpio) {
+-		gpiod_set_value(priv->reset_gpio, 0);
++		gpiod_set_value_cansleep(priv->reset_gpio, 0);
+ 		udelay(200);
+-		gpiod_set_value(priv->reset_gpio, 1);
++		gpiod_set_value_cansleep(priv->reset_gpio, 1);
+ 	} else {
+ 		return ads124s_write_cmd(indio_dev, ADS124S08_CMD_RESET);
+ 	}
 
 
 
