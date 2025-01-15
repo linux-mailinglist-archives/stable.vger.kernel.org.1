@@ -1,109 +1,117 @@
-Return-Path: <stable+bounces-109143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41F18A126E5
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 16:07:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36ED0A1270E
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 16:17:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A939162433
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 15:07:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C241B3A11C8
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 15:16:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 701E513C81B;
-	Wed, 15 Jan 2025 15:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D72B14037F;
+	Wed, 15 Jan 2025 15:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2hHCbCq1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N+spigIw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076187711F;
-	Wed, 15 Jan 2025 15:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7171304B0;
+	Wed, 15 Jan 2025 15:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736953670; cv=none; b=eM8v5OBTOoBjzYlVspAjqnMInphwcy4EbapVTTOwf2Hsqw6zG/a2E0Wp8h2aJ4XoCbRam1JY+IoPItRZ9tIqz8T4sNkQHLkFkh3PVwDTso6p9uor/hFyRzjttnH5Klsr6RpN+4ZX7WJjvrhjgteKhusA150Jvo6eNgaTLwhY1Cc=
+	t=1736954218; cv=none; b=Ls6fgurH26P/0f0v2Ld52L/gqh4ZMPFNK4RLUGHuUpyGxZaDUD340D+nI/LiyiG3FMCNJgbqDbh7STULKhNAeRR0qwElVFjWFq060Lu+zRdehSKitMu+oDEYYbTwLcF/6QUaw7fHqfnUe9hE2NiomcI0xehFTYiVWNOnTD7Co4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736953670; c=relaxed/simple;
-	bh=6tNY2Q8TLfNr3PgrRY67w8rUseQLL2cKPwzfJgy6s1M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BN1W8yMhatyfB/6rEzVUHXeMzgN9OgZ91xQof5lbVY2Fwq6cmLcYusg9wEhiDI5F6Ojx9lhdh4DZ7BRKupOzH/1+lYIb0IHoGH7XL6HpKGelhtUrmtq1uxpzVkc8Eg6XZJuDC34t4p2StU1eFAvr/OW4v6hRgkizRHdd6TSH3gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2hHCbCq1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE09AC4CED1;
-	Wed, 15 Jan 2025 15:07:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736953669;
-	bh=6tNY2Q8TLfNr3PgrRY67w8rUseQLL2cKPwzfJgy6s1M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=2hHCbCq1bcRvlmPNCNdcVWDY7pKTNQRquwo6xCz+YKQUve8IXHtpMFiy7gRGxxnB8
-	 sb0VnmdHeoFxJixQbj7rcNzFY95rm2ZySgJMJES2o8iv4nh0mDxWx7xhizH8BWGNe5
-	 EI3Og8PpOqw5uKBSr1vPhqKMJDw4WRKLjUmvLemY=
-Date: Wed, 15 Jan 2025 16:07:45 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Ron Economos <re@w6rz.net>
-Cc: Pavel Machek <pavel@denx.de>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.1 00/92] 6.1.125-rc1 review
-Message-ID: <2025011506-pronto-antirust-6ded@gregkh>
-References: <20250115103547.522503305@linuxfoundation.org>
- <Z4evJUkzHauW+zOU@duo.ucw.cz>
- <eb167e35-ab0d-4037-aa44-3fa74a450e69@w6rz.net>
+	s=arc-20240116; t=1736954218; c=relaxed/simple;
+	bh=e8H0zp7MNqacJBs9d1qkeznwR6hkG7iTAzUns3yznHk=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=Z2QIYRcJ8G1fGp98/ZDZGW4dNIUHZdtpLz4k/+CmAAULIDt+iW7lADb3aFXgBTkTUIyaoWM1673XrLHtNLg59T9SW+Pd8JjFwLtjcSQ9lWqlI6zu5dU1A6FQEFXFNuTJ9YvaLli44XTujt5XVAvj8muQM2LPatkoSpKdbZMRQgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+spigIw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9BCC4CED1;
+	Wed, 15 Jan 2025 15:16:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736954217;
+	bh=e8H0zp7MNqacJBs9d1qkeznwR6hkG7iTAzUns3yznHk=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=N+spigIwsmVvcO+naMqY4IPzo8kCADHBlmCTv21F+N/bWa9updqD8nMB7AIvY+Giq
+	 u+nY2s1Pz3UVP/sTFxoe6N43jSUHGKNcFm6wSomY8DbCUf07wrRPUH+CuwVM2FwSon
+	 wZc0tLQLUNkQyE5wR1dFSOVPwIyArDcBAliYVVd8iuaQLprt+Xp/LbwJl0o9SUxbW+
+	 dIApDrrPaR4NeBn6Qtdjo9w9ceevORLXWb1AC4ZOgkTyCPf2vh/a4aSnXqSl0Oaznu
+	 RnUtyO58Vk4IbbYC6uGSyTQDcvrExOP0NxKB5uEOFiP5Wpa7Yuk0oSUcnMXbk8h+HD
+	 jSN2sEVKH+nbw==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <eb167e35-ab0d-4037-aa44-3fa74a450e69@w6rz.net>
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] brcmfmac: NULL pointer dereference on tx statistic
+ update
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20250110134502.824722-1-marcel.hamer@windriver.com>
+References: <20250110134502.824722-1-marcel.hamer@windriver.com>
+To: Marcel Hamer <marcel.hamer@windriver.com>
+Cc: Arend van Spriel <arend.vanspriel@broadcom.com>,
+ linux-wireless@vger.kernel.org, Marcel Hamer <marcel.hamer@windriver.com>,
+ stable@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <173695421441.512722.1081406482312817540.kvalo@kernel.org>
+Date: Wed, 15 Jan 2025 15:16:56 +0000 (UTC)
 
-On Wed, Jan 15, 2025 at 06:09:06AM -0800, Ron Economos wrote:
-> On 1/15/25 04:50, Pavel Machek wrote:
-> > Hi!
-> > 
-> > > This is the start of the stable review cycle for the 6.1.125 release.
-> > > There are 92 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > Still building, but we already have failures on risc-v.
-> > 
-> > drivers/usb/core/port.c: In function 'usb_port_shutdown':
-> > 2912
-> > drivers/usb/core/port.c:417:26: error: 'struct usb_device' has no member named 'port_is_suspended'
-> > 2913
-> >    417 |         if (udev && !udev->port_is_suspended) {
-> > 2914
-> >        |                          ^~
-> > 2915
-> > make[4]: *** [scripts/Makefile.build:250: drivers/usb/core/port.o] Error 1
-> > 2916
-> > make[4]: *** Waiting for unfinished jobs....
-> > 2917
-> >    CC      drivers/gpu/drm/radeon/radeon_test.o
-> > 
-> > https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/pipelines/1626266073
-> > 
-> > Best regards,
-> > 								Pavel
+Marcel Hamer <marcel.hamer@windriver.com> wrote:
+
+> On removal of the device or unloading of the kernel module a potential
+> NULL pointer dereference occurs.
 > 
-> I'm seeing the build failure here also. Looks like it's due to not having
-> CONFIG_PM set in the config. The member "port_is_suspended" is inside of an
-> #ifdef CONFIG_PM in include/linux/usb.h. The #ifdef CONFIG_PM has been
-> removed at some point.
+> The following sequence deletes the interface:
+> 
+>   brcmf_detach()
+>     brcmf_remove_interface()
+>       brcmf_del_if()
+> 
+> Inside the brcmf_del_if() function the drvr->if2bss[ifidx] is updated to
+> BRCMF_BSSIDX_INVALID (-1) if the bsscfgidx matches.
+> 
+> After brcmf_remove_interface() call the brcmf_proto_detach() function is
+> called providing the following sequence:
+> 
+>   brcmf_detach()
+>     brcmf_proto_detach()
+>       brcmf_proto_msgbuf_detach()
+>         brcmf_flowring_detach()
+>           brcmf_msgbuf_delete_flowring()
+>             brcmf_msgbuf_remove_flowring()
+>               brcmf_flowring_delete()
+>                 brcmf_get_ifp()
+>                 brcmf_txfinalize()
+> 
+> Since brcmf_get_ip() can and actually will return NULL in this case the
+> call to brcmf_txfinalize() will result in a NULL pointer dereference
+> inside brcmf_txfinalize() when trying to update
+> ifp->ndev->stats.tx_errors.
+> 
+> This will only happen if a flowring still has an skb.
+> 
+> Although the NULL pointer dereference has only been seen when trying to update
+> the tx statistic, all other uses of the ifp pointer have been guarded as well.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Marcel Hamer <marcel.hamer@windriver.com>
+> Link: https://lore.kernel.org/all/b519e746-ddfd-421f-d897-7620d229e4b2@gmail.com/
 
-Yeah, it was fixed up in 6.4 with commit 130eac417085 ("xhci: use
-pm_ptr() instead of #ifdef for CONFIG_PM conditionals"), which is why we
-didn't see this as a dependency.  I'll see if I can figure that out
-tomorrow for how to backport it as it doesn't apply cleanly.
+If you submit v3, please add 'wifi:'.
 
-thanks,
+ERROR: 'wifi:' prefix missing: '[PATCH v2] brcmfmac: NULL pointer dereference on tx statistic update'
 
-greg k-h
+Patch set to Changes Requested.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20250110134502.824722-1-marcel.hamer@windriver.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
