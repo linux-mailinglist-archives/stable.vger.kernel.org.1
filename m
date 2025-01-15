@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-108712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8195A11FDF
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:39:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95B59A120EC
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:50:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9962161E2C
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:39:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30C123A9640
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:50:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B731552FA;
-	Wed, 15 Jan 2025 10:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4310248BBD;
+	Wed, 15 Jan 2025 10:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OVjijUq+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O00lvOm2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61D0248BC9;
-	Wed, 15 Jan 2025 10:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F24248BA1;
+	Wed, 15 Jan 2025 10:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937552; cv=none; b=EEWAClOPtBTTr3ERin0LQi48QXl3VjgieJf7L8jjjpkAFaYwFamprzk/hY2GEQsAQ+dJGQAFBeUKUNAeEW0pIZodzwvXl59cOJ47nt0WpJKyqhlObv7IERlmnXb8EvmF/whoBJy3fksHbu9hpdkgDOO9iXfzpAiUwczJd9dqUyw=
+	t=1736938247; cv=none; b=vFhKhV8XiYgDuunPd+Qbr5IuCoDm7c5/qAwTxAMOTWGByR6AG+aHOdV6Xb9ZN18GrD9LBQh4puGKFDDiYsQxDlJJATaQg1kS1LV7Q11olzrv1kVL4v9zNYpVEjajbms+dkDyFWadd2ndVuB386/6wL9YXLw0q5xA9K0p5spbW6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937552; c=relaxed/simple;
-	bh=OqAMAcwmbG0+oGrSnPB3pD472RqTWDl6x+N2r8p+lkE=;
+	s=arc-20240116; t=1736938247; c=relaxed/simple;
+	bh=6nuX7+VQVs3hl8HxA2WkoHtWIYpdsb3v9yj8L5qg1pE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfr56OD6we7jrYdIFXmaSn0cOzkIlC2k2+Qxrhg7YmrwrgHo1rdsfrRYAf5eU9x23S7zWX/uGkznKgvSp5eKpKKgtZXaCfxhMNrveUiUqVZVETsDZ3+LDr+5c6x/Q/zCKU/fLFjtv8pRs0W4ELhKZ72G6aON/Gw0wrrJSkG7weM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVjijUq+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E87DEC4CEE2;
-	Wed, 15 Jan 2025 10:39:11 +0000 (UTC)
+	 MIME-Version; b=rfWFsuSl/CCOz/Mf/QxpJOGnr6nAwbl0c1h8ANBKVmShdvWDM7OEaA2G7QAXBn8WUYPZUATWNd+YYbuZSxX6ZqaBAnXCiPE7TUvT1YZehvcfn0mBGCYoZjsE9SCeGkfK8DE4N2JFj2O+xuXrYC6ljNrx3Eo8cC5P1MLevYLKpTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O00lvOm2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C4AC4CEDF;
+	Wed, 15 Jan 2025 10:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937552;
-	bh=OqAMAcwmbG0+oGrSnPB3pD472RqTWDl6x+N2r8p+lkE=;
+	s=korg; t=1736938247;
+	bh=6nuX7+VQVs3hl8HxA2WkoHtWIYpdsb3v9yj8L5qg1pE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OVjijUq+yQFCopdmAM6jRHLFOfJZs+LNZCHw2UgiyH/aEWzZGBWf3ci8YM1iDgUEw
-	 6Y968ELXDrxpGBs9IG+WC7+BGo04DpXHEr+0aBpY6ftjaI/v6hHgyqn8U6YWJjXKAz
-	 u9FDtcLnN6Pb6jBqqI1/yzk6+vwxSDkOe59aOvtc=
+	b=O00lvOm2/wqbQM9v6hhiuSuZe3lzWMnXJ23tQloXiwTjs2JlmAJNF5QtwJp4laxr8
+	 QWBtdeATJERcp6uuXiZcjJo0CIsr5POQi3lgZ4usn502ex0xz05ZMOs5BF9S+JI2Qt
+	 EH824sfCXaXvwqVLlzwA+MPDVECgjveOxIn09bU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonio Pastor <antonio.pastor@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 14/92] net: 802: LLC+SNAP OID:PID lookup on start of skb data
+	Al Viro <viro@zeniv.linux.org.uk>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 096/189] sctp: sysctl: rto_min/max: avoid using current->nsproxy
 Date: Wed, 15 Jan 2025 11:36:32 +0100
-Message-ID: <20250115103548.111360112@linuxfoundation.org>
+Message-ID: <20250115103610.153124630@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antonio Pastor <antonio.pastor@gmail.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 1e9b0e1c550c42c13c111d1a31e822057232abc4 ]
+commit 9fc17b76fc70763780aa78b38fcf4742384044a5 upstream.
 
-802.2+LLC+SNAP frames received by napi_complete_done() with GRO and DSA
-have skb->transport_header set two bytes short, or pointing 2 bytes
-before network_header & skb->data. This was an issue as snap_rcv()
-expected offset to point to SNAP header (OID:PID), causing packet to
-be dropped.
+As mentioned in a previous commit of this series, using the 'net'
+structure via 'current' is not recommended for different reasons:
 
-A fix at llc_fixup_skb() (a024e377efed) resets transport_header for any
-LLC consumers that may care about it, and stops SNAP packets from being
-dropped, but doesn't fix the problem which is that LLC and SNAP should
-not use transport_header offset.
+- Inconsistency: getting info from the reader's/writer's netns vs only
+  from the opener's netns.
 
-Ths patch eliminates the use of transport_header offset for SNAP lookup
-of OID:PID so that SNAP does not rely on the offset at all.
-The offset is reset after pull for any SNAP packet consumers that may
-(but shouldn't) use it.
+- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
+  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
+  syzbot [1] using acct(2).
 
-Fixes: fda55eca5a33 ("net: introduce skb_transport_header_was_set()")
-Signed-off-by: Antonio Pastor <antonio.pastor@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250103012303.746521-1-antonio.pastor@gmail.com
+The 'net' structure can be obtained from the table->data using
+container_of().
+
+Note that table->data could also be used directly, as this is the only
+member needed from the 'net' structure, but that would increase the size
+of this fix, to use '*data' everywhere 'net->sctp.rto_min/max' is used.
+
+Fixes: 4f3fdf3bc59c ("sctp: add check rto_min and rto_max in sysctl")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-5-5df34b2083e8@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/802/psnap.c | 4 ++--
+ net/sctp/sysctl.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/802/psnap.c b/net/802/psnap.c
-index 1406bfdbda13..dbd9647f2ef1 100644
---- a/net/802/psnap.c
-+++ b/net/802/psnap.c
-@@ -55,11 +55,11 @@ static int snap_rcv(struct sk_buff *skb, struct net_device *dev,
- 		goto drop;
- 
- 	rcu_read_lock();
--	proto = find_snap_client(skb_transport_header(skb));
-+	proto = find_snap_client(skb->data);
- 	if (proto) {
- 		/* Pass the frame on. */
--		skb->transport_header += 5;
- 		skb_pull_rcsum(skb, 5);
-+		skb_reset_transport_header(skb);
- 		rc = proto->rcvfunc(skb, dev, &snap_packet_type, orig_dev);
- 	}
- 	rcu_read_unlock();
--- 
-2.39.5
-
+--- a/net/sctp/sysctl.c
++++ b/net/sctp/sysctl.c
+@@ -433,7 +433,7 @@ static int proc_sctp_do_hmac_alg(const s
+ static int proc_sctp_do_rto_min(const struct ctl_table *ctl, int write,
+ 				void *buffer, size_t *lenp, loff_t *ppos)
+ {
+-	struct net *net = current->nsproxy->net_ns;
++	struct net *net = container_of(ctl->data, struct net, sctp.rto_min);
+ 	unsigned int min = *(unsigned int *) ctl->extra1;
+ 	unsigned int max = *(unsigned int *) ctl->extra2;
+ 	struct ctl_table tbl;
+@@ -461,7 +461,7 @@ static int proc_sctp_do_rto_min(const st
+ static int proc_sctp_do_rto_max(const struct ctl_table *ctl, int write,
+ 				void *buffer, size_t *lenp, loff_t *ppos)
+ {
+-	struct net *net = current->nsproxy->net_ns;
++	struct net *net = container_of(ctl->data, struct net, sctp.rto_max);
+ 	unsigned int min = *(unsigned int *) ctl->extra1;
+ 	unsigned int max = *(unsigned int *) ctl->extra2;
+ 	struct ctl_table tbl;
 
 
 
