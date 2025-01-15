@@ -1,166 +1,99 @@
-Return-Path: <stable+bounces-109157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4DACA12ACF
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 19:23:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5187AA12AD9
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 19:28:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37E5D7A2670
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 18:23:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96B441886C97
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 18:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E011D63F5;
-	Wed, 15 Jan 2025 18:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E7A1D61A7;
+	Wed, 15 Jan 2025 18:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="curbvbP3"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="RmfnBgs8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E8024A7D5;
-	Wed, 15 Jan 2025 18:22:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9421D0E27;
+	Wed, 15 Jan 2025 18:28:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736965379; cv=none; b=LixHIPEtYFNC57nJ4YqJXt39wQnsxhQuIBS9sjBp27uMmDyXX7zOcygBAPknt6rze0UcNhvyPzrA+o2l/HOj8UIt4KfUuKQRFn4eb6Xr2iVFkUhpj6AF7vJCdz4JdrS0JKR9NUszWStKEjukxfHUGiGWR3sIiUgw9hC6GYRIRyQ=
+	t=1736965726; cv=none; b=Us8AUTn3RTDdOKH8iyTGEnPplRYWhPgKoOereVF11wkSPFwRVcuzeSS7Pty2X+vJxfj4/x+Zm6c6x+QlrxsnUENNM+7y1rMI5x/zC+uiOSsAqQuzVSkgym173yIQtfku9fwQl4JJF6HQ9/017PxnbHXMujy8UvAsXzR+HkUo2ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736965379; c=relaxed/simple;
-	bh=+D4fVNgXMgXNYg+FYqmlIW+aVPKuibad+XU5z8DGPo8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oWul4yLfpnmK6dTvuMOcmI/8dVAFknjJPO09yrNxrQwxKgUz+TyB4G5dJJVKn9BHlq+zWNOembQVbw7XenL1IKPfRHVoaqyBCu6J7JEENOMheS3GsHgA4nbq5QzS9F3WzHEjSejce42nR0sNNzJujjguyiUz4NFui1ijgo7Wlqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=curbvbP3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6B6C4CEE3;
-	Wed, 15 Jan 2025 18:22:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736965379;
-	bh=+D4fVNgXMgXNYg+FYqmlIW+aVPKuibad+XU5z8DGPo8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=curbvbP3CDSi5KpGt4sbhmZPg2t+v6pmdOs56ERfjoFizv99qDFhWio0h+fdmeV/M
-	 Gud1a1Afpau4ErsmOBGVkvMYG22L50suzZVOKzJ9HAoijML8snzZim+nn37af9VFpb
-	 ASRHaOge6+xOfokmJK5kL3IZ5yzcQ7usPXTSlVd+/efx/NPUC+4MpCkV/2n4TMF8Pc
-	 8CocP2ZOqbCocEjiCL8yJYQlRJmdty9VCGKRB7ixI0ShYRkhadS1ulzVT+GJV772Xm
-	 F2QnoFyIYBN3nmeDa9R3KcmnccKrY/9kg2IEj0ZQ0a9URKw0n24ccbEP1Ex9psO/aP
-	 Xd1xJLN7JSppQ==
-Date: Wed, 15 Jan 2025 18:22:55 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>,
-	stable@vger.kernel.org,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: microchip-core: prevent RX overflows when transmit
- size > FIFO size
-Message-ID: <20250115-resubmit-glove-ca6ce06c9d4f@spud>
-References: <20250114-easiness-pregame-d1d2d4b57e7b@spud>
- <33b35815-3575-490a-92de-4d1c2228257e@sirena.org.uk>
+	s=arc-20240116; t=1736965726; c=relaxed/simple;
+	bh=xNeYzSK3zL2lGDOr6R1RJV1FuHlfXpO8MLFSu4jISbc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=peaeB50Y56gi5Pw0dYgEbSSzlase52zEDqgvTTYuSAtJU20uuXwqmxuiA5jXjdbXsFPLDkIP+f17LKqh7/DvsaeWLjRB8raO80HRosLX9uOjBajVE8g27ipMIxLtqGvPcN+q29AgfpeiQAFFWTQkqKadZIpK7lF+t6q9xknwbfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=RmfnBgs8; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from fpc.intra.ispras.ru (unknown [10.10.165.17])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 6BD9E40777BC;
+	Wed, 15 Jan 2025 18:28:33 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 6BD9E40777BC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1736965713;
+	bh=/8Eyh7O9bpDg/OyeWKB2DrDQebuGwJUMHzlI8f8c3+c=;
+	h=From:To:Cc:Subject:Date:From;
+	b=RmfnBgs8y57Wtm0yVOvSNzvSKhVWlksCZtzTYLaHayuR9Not45ns5v8AM1L8z2jOs
+	 F2NjrTid2xR2NGxl/06rWX3467ONMtDmk8gPZ4quzGQLCtq8BoXKXnwZYmHNJPWx1C
+	 cGAPI8AFXjbm2EdaYNJ1jNfiHuFqsHI3ULksVHg4=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Jon Mason <jdmason@kudzu.us>
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Allen Hubbe <allenbh@gmail.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	ntb@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH] ntb: use 64-bit arithmetic for the MSI doorbell mask
+Date: Wed, 15 Jan 2025 21:28:17 +0300
+Message-Id: <20250115182817.24445-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Z5NkYWbRBvvFFc3z"
-Content-Disposition: inline
-In-Reply-To: <33b35815-3575-490a-92de-4d1c2228257e@sirena.org.uk>
+Content-Transfer-Encoding: 8bit
 
+msi_db_mask is of type 'u64', still the standard 'int' arithmetic is
+performed to compute its value.
 
---Z5NkYWbRBvvFFc3z
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+While most of the ntb_hw drivers actually don't utilize the higher 32
+bits of the doorbell mask now, this may be the case for Switchtec - see
+switchtec_ntb_init_db().
 
-On Tue, Jan 14, 2025 at 07:44:26PM +0000, Mark Brown wrote:
-> On Tue, Jan 14, 2025 at 05:13:49PM +0000, Conor Dooley wrote:
->=20
-> > When the size of a transfer exceeds the size of the FIFO (32 bytes), RX
-> > overflows will be generated and receive data will be corrupted and
-> > warnings will be produced. For example, here's an error generated by a
-> > transfer of 36 bytes:
->=20
-> >   spi_master spi0: mchp_corespi_interrupt: RX OVERFLOW: rxlen: 4, txlen=
-: 0
->=20
-> > I am not entirely sure how this happens, as rxlen being 4 means that 32
-> > of 36 bytes have been read from the RX FIFO so there should be
-> > sufficient room for 4 more bytes but timing is likely a factor as simply
-> > adding a delay in the transmit path is enough to avoid the overflows.
->=20
-> The reads from the FIFO happen prior to the check for overflow in the
-> interrupt handler so if we overflow then take the interrupt we will read
-> the full 32 byte FIFO before it sees that there was an overflow.
->=20
-> > @@ -221,6 +221,13 @@ static inline void mchp_corespi_write_fifo(struct =
-mchp_corespi *spi)
-> >  	while ((i < fifo_max) && !(mchp_corespi_read(spi, REG_STATUS) & STATU=
-S_TXFIFO_FULL)) {
-> >  		u32 word;
-> > =20
-> > +		/*
-> > +		 * If the transfer is larger than FIFO_DEPTH, spin until space
-> > +		 * is made in the RX FIFO to avoid losing data to RX overflows
-> > +		 */
-> > +		while (mchp_corespi_read(spi, REG_STATUS) & STATUS_RXFIFO_FULL)
-> > +			;
-> > +
->=20
-> So, this is the transmit side but we're polling the RX FIFO and not
-> doing anything to clear it?  I see that the FIFO reads are driven from
-> interrupt context.  If I had to guess I'd say that there's latency in
-> the interrupt being delivered (possibly to a different CPU) and when the
-> transfer is being driven by the TX side it's stuffing data into the TX
-> FIFO faster than interrupts are being delivered (the TX side just seems
-> to busy wait on there being space in the FIFO which can't be good for
-> slower speeds...) so the TX and RX sides of the transfer get out of sync.
->=20
-> Given that AFAICT the controller has to RX all the time I suspect you
-> want to move the RX processing out of interrupt context into the main
-> _transfer_one() function and busy wait for that too, or push the TX side
-> into the interrupt handler (which at first glance looks simpler).
-> Either way the two directions will be driven from the same place and so
-> not get out of sync.
+Found by Linux Verification Center (linuxtesting.org) with SVACE static
+analysis tool.
 
-Hmm, at first glance it is indeed simpler, but it may be a bit of a
-poor compromise. There used to be calls to
-mchp_corespi_write_fifo() in the interrupt handler, but I removed them
-in the ?summer? because messages were being sent out of order. IIRC what
-happens is that the tx fifo can be emptied by the controller hardware
-before the whole message has been written into it, thereby generating
-the interrupts and triggering a parallel call to mchp_corespi_write_fifo().
+Fixes: 2b0569b3b7e6 ("NTB: Add MSI interrupt support to ntb_transport")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+---
+ drivers/ntb/ntb_transport.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-To avoid that, the first byte could be sent by transfer_one(), and then
-everything else handled by the current implementation of
-mchp_corespi_write_fifo(), but I think that would cause "actual" RX
-overflows, without cutting down to sending (FIFO_MAX - 1) bytes per call
-or ensuring that the rx fifo is read before the tx one. Given the timing
-issues there seem to be around the rx ready/tx done interrupts and the
-rx/tx fifo status bits being set/cleared, I don't want to play games
-there. That means cutting down to something well under FIFO_MAX (which
-is 32 bytes), probably to something like 1/2/4 bytes depending on
-transfer size since that can be done in a single write on the bus and
-will allow the same code to be used in transfer_one() and in the
-interrupt handler.
+diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
+index a22ea4a4b202..4f775c3e218f 100644
+--- a/drivers/ntb/ntb_transport.c
++++ b/drivers/ntb/ntb_transport.c
+@@ -1353,7 +1353,7 @@ static int ntb_transport_probe(struct ntb_client *self, struct ntb_dev *ndev)
+ 	qp_count = ilog2(qp_bitmap);
+ 	if (nt->use_msi) {
+ 		qp_count -= 1;
+-		nt->msi_db_mask = 1 << qp_count;
++		nt->msi_db_mask = BIT_ULL(qp_count);
+ 		ntb_db_clear_mask(ndev, nt->msi_db_mask);
+ 	}
+ 
+-- 
+2.39.5
 
-Moving it out of the interrupt handler entirely probably makes the code
-a lot easier to reason about, so I think I'd actually rather do that.
-That said, I don't think I would want that change going into fixes as it's
-a pretty intrusive change, although given where we are in the cycle it
-ain't as much of a problem since I'd not be sending it until after 6.13
-is released anyway.
-
-Cheers,
-Conor.
-
---Z5NkYWbRBvvFFc3z
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ4f8/wAKCRB4tDGHoIJi
-0sxSAP9Sacu1Z0IeulFVDuWALhs+Q8UBxLnHHq7v86EDxrv0LQEApdIWGaIiq32O
-yMwbARDUox2mcfPSB8Ah4ivZxIQaHwY=
-=Id6j
------END PGP SIGNATURE-----
-
---Z5NkYWbRBvvFFc3z--
 
