@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-108924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6021FA120F1
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:51:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A03EEA1215A
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:55:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D940188C87C
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:51:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1314169670
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A9C5248BA1;
-	Wed, 15 Jan 2025 10:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1ECF1E98F1;
+	Wed, 15 Jan 2025 10:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfoXg0jW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I3gDpMs4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F84248BD1;
-	Wed, 15 Jan 2025 10:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E92F1E98EA;
+	Wed, 15 Jan 2025 10:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938261; cv=none; b=QyMNFsE9mW2KmdTYqOxKoAXpDh4EWLhhkJIiTrkf42U4wLp7PSxEXULmSSrl3BmIP/THF0BEvA8kBIBO+uz3U7oiEvISZ9G/1kPv1RujYRi5FBkt3R6rnJRN9q0Z/cSUdcQosZikxi5t2vveHzZjIocTdnKBoOasUKrrH9/LSYU=
+	t=1736938536; cv=none; b=Hb7bksWdUJNJU2xZpEKNiB7gLXwVnRxzCrxNKx0B9OXXxnZW4EVFLbjq9+tfEr216Gb1sgiKdcVLOHtp3IoggJXAA5wCxVYiyB70XbEngENbIr/xFeTA1ogujM4ynfm8D5++LACWt/C0+hvMyGjFsaQ0+7QiJWpaYFvFaJznWFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938261; c=relaxed/simple;
-	bh=cc8QMFJ1xVx2hcrJq53Y9n5AxLvAz6Va/SyzoBzpnew=;
+	s=arc-20240116; t=1736938536; c=relaxed/simple;
+	bh=XVxZZtJKToOcLL3paivXlFqFpO4Q9SY1Fxrbznt9siY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O0Av9Vv9KCPnQbV/tTkVmY2sxmjPqGmTWUC1nMmw57zDbQtvhOFZ2Dr84MGxQloY/h62yjQEsF3ZULC8n8RBgj/wuQ2thxAIr6hFpDhlTYZqYTSHJA7uFmIPZp/Wtbut1r5BoqPkaDnemLPe0XysqTs/xva9DuQt0R27QbLf/Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfoXg0jW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B82A7C4CEDF;
-	Wed, 15 Jan 2025 10:51:00 +0000 (UTC)
+	 MIME-Version; b=UzNbOIXArXPI2ybnOCpnCa8AkzFhcHow4X0mLz7D+08mwi3y07aOcNfwtEBHK92Z5mDE/FPIQCThqC4tchMOWLWAOU4wrigKMAPVZYqhjybsAoTinMZv4B7Wn/DGOscL/3uWdfu/mcYp9vN9UVLO6sG22DhFVRsegtP9BfL4vpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I3gDpMs4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBCB3C4CEDF;
+	Wed, 15 Jan 2025 10:55:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938261;
-	bh=cc8QMFJ1xVx2hcrJq53Y9n5AxLvAz6Va/SyzoBzpnew=;
+	s=korg; t=1736938536;
+	bh=XVxZZtJKToOcLL3paivXlFqFpO4Q9SY1Fxrbznt9siY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wfoXg0jWmXK7ftFcH9GdHUBE1/FD894J9c2QTD+SVphBkLaeNaquCPq9sKOKNKYEf
-	 22cHzQ6u73cLDIfPe0CX4VMK1+XgO+KIOukzwXNtyB1t/h+qhBPGF7Y6WFb83Bbjfh
-	 b78xLDMDMt5V6QD1UxIUzt5h1tQY++NP4cSeGvmA=
+	b=I3gDpMs4XU0x1LhZWb7/mqTcEF0xXGWKxBRndSF1Ff6oFyi8/vaKRIYdT9cgFVt0G
+	 YPqrB7PpMAp/R1pmLzp5vdXMpdgU3IvNwJliCN4OPuri5v7iOymVUk0SiNSazxMQWL
+	 wJtyVLy/a6P0jOQjc3NS/05NO0hAvJiaM9J1dCQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 100/189] rds: sysctl: rds_tcp_{rcv,snd}buf: avoid using current->nsproxy
+	Zhongqiu Duan <dzq.aishenghu0@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 021/129] tcp/dccp: allow a connection when sk_max_ack_backlog is zero
 Date: Wed, 15 Jan 2025 11:36:36 +0100
-Message-ID: <20250115103610.315942476@linuxfoundation.org>
+Message-ID: <20250115103555.214101613@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,122 +65,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Zhongqiu Duan <dzq.aishenghu0@gmail.com>
 
-commit 7f5611cbc4871c7fb1ad36c2e5a9edad63dca95c upstream.
+[ Upstream commit 3479c7549fb1dfa7a1db4efb7347c7b8ef50de4b ]
 
-As mentioned in a previous commit of this series, using the 'net'
-structure via 'current' is not recommended for different reasons:
+If the backlog of listen() is set to zero, sk_acceptq_is_full() allows
+one connection to be made, but inet_csk_reqsk_queue_is_full() does not.
+When the net.ipv4.tcp_syncookies is zero, inet_csk_reqsk_queue_is_full()
+will cause an immediate drop before the sk_acceptq_is_full() check in
+tcp_conn_request(), resulting in no connection can be made.
 
-- Inconsistency: getting info from the reader's/writer's netns vs only
-  from the opener's netns.
+This patch tries to keep consistent with 64a146513f8f ("[NET]: Revert
+incorrect accept queue backlog changes.").
 
-- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
-  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
-  syzbot [1] using acct(2).
-
-The per-netns structure can be obtained from the table->data using
-container_of(), then the 'net' one can be retrieved from the listen
-socket (if available).
-
-Fixes: c6a58ffed536 ("RDS: TCP: Add sysctl tunables for sndbuf/rcvbuf on rds-tcp socket")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-9-5df34b2083e8@kernel.org
+Link: https://lore.kernel.org/netdev/20250102080258.53858-1-kuniyu@amazon.com/
+Fixes: ef547f2ac16b ("tcp: remove max_qlen_log")
+Signed-off-by: Zhongqiu Duan <dzq.aishenghu0@gmail.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250102171426.915276-1-dzq.aishenghu0@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/tcp.c |   39 ++++++++++++++++++++++++++++++++-------
- 1 file changed, 32 insertions(+), 7 deletions(-)
+ include/net/inet_connection_sock.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/rds/tcp.c
-+++ b/net/rds/tcp.c
-@@ -61,8 +61,10 @@ static atomic_t rds_tcp_unloading = ATOM
+diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
+index 7b5e783ea24d..e85834722b8f 100644
+--- a/include/net/inet_connection_sock.h
++++ b/include/net/inet_connection_sock.h
+@@ -282,7 +282,7 @@ static inline int inet_csk_reqsk_queue_len(const struct sock *sk)
  
- static struct kmem_cache *rds_tcp_conn_slab;
- 
--static int rds_tcp_skbuf_handler(const struct ctl_table *ctl, int write,
--				 void *buffer, size_t *lenp, loff_t *fpos);
-+static int rds_tcp_sndbuf_handler(const struct ctl_table *ctl, int write,
-+				  void *buffer, size_t *lenp, loff_t *fpos);
-+static int rds_tcp_rcvbuf_handler(const struct ctl_table *ctl, int write,
-+				  void *buffer, size_t *lenp, loff_t *fpos);
- 
- static int rds_tcp_min_sndbuf = SOCK_MIN_SNDBUF;
- static int rds_tcp_min_rcvbuf = SOCK_MIN_RCVBUF;
-@@ -74,7 +76,7 @@ static struct ctl_table rds_tcp_sysctl_t
- 		/* data is per-net pointer */
- 		.maxlen         = sizeof(int),
- 		.mode           = 0644,
--		.proc_handler   = rds_tcp_skbuf_handler,
-+		.proc_handler   = rds_tcp_sndbuf_handler,
- 		.extra1		= &rds_tcp_min_sndbuf,
- 	},
- #define	RDS_TCP_RCVBUF	1
-@@ -83,7 +85,7 @@ static struct ctl_table rds_tcp_sysctl_t
- 		/* data is per-net pointer */
- 		.maxlen         = sizeof(int),
- 		.mode           = 0644,
--		.proc_handler   = rds_tcp_skbuf_handler,
-+		.proc_handler   = rds_tcp_rcvbuf_handler,
- 		.extra1		= &rds_tcp_min_rcvbuf,
- 	},
- };
-@@ -682,10 +684,10 @@ static void rds_tcp_sysctl_reset(struct
- 	spin_unlock_irq(&rds_tcp_conn_lock);
+ static inline int inet_csk_reqsk_queue_is_full(const struct sock *sk)
+ {
+-	return inet_csk_reqsk_queue_len(sk) >= READ_ONCE(sk->sk_max_ack_backlog);
++	return inet_csk_reqsk_queue_len(sk) > READ_ONCE(sk->sk_max_ack_backlog);
  }
  
--static int rds_tcp_skbuf_handler(const struct ctl_table *ctl, int write,
-+static int rds_tcp_skbuf_handler(struct rds_tcp_net *rtn,
-+				 const struct ctl_table *ctl, int write,
- 				 void *buffer, size_t *lenp, loff_t *fpos)
- {
--	struct net *net = current->nsproxy->net_ns;
- 	int err;
- 
- 	err = proc_dointvec_minmax(ctl, write, buffer, lenp, fpos);
-@@ -694,11 +696,34 @@ static int rds_tcp_skbuf_handler(const s
- 			*(int *)(ctl->extra1));
- 		return err;
- 	}
--	if (write)
-+
-+	if (write && rtn->rds_tcp_listen_sock && rtn->rds_tcp_listen_sock->sk) {
-+		struct net *net = sock_net(rtn->rds_tcp_listen_sock->sk);
-+
- 		rds_tcp_sysctl_reset(net);
-+	}
-+
- 	return 0;
- }
- 
-+static int rds_tcp_sndbuf_handler(const struct ctl_table *ctl, int write,
-+				  void *buffer, size_t *lenp, loff_t *fpos)
-+{
-+	struct rds_tcp_net *rtn = container_of(ctl->data, struct rds_tcp_net,
-+					       sndbuf_size);
-+
-+	return rds_tcp_skbuf_handler(rtn, ctl, write, buffer, lenp, fpos);
-+}
-+
-+static int rds_tcp_rcvbuf_handler(const struct ctl_table *ctl, int write,
-+				  void *buffer, size_t *lenp, loff_t *fpos)
-+{
-+	struct rds_tcp_net *rtn = container_of(ctl->data, struct rds_tcp_net,
-+					       rcvbuf_size);
-+
-+	return rds_tcp_skbuf_handler(rtn, ctl, write, buffer, lenp, fpos);
-+}
-+
- static void rds_tcp_exit(void)
- {
- 	rds_tcp_set_unloading();
+ bool inet_csk_reqsk_queue_drop(struct sock *sk, struct request_sock *req);
+-- 
+2.39.5
+
 
 
 
