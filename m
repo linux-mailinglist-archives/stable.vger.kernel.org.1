@@ -1,199 +1,161 @@
-Return-Path: <stable+bounces-109141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E09A125AD
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 15:14:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19AE1A12620
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 15:36:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 541511889338
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 14:14:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A47013A1EA1
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 14:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292A343ACB;
-	Wed, 15 Jan 2025 14:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1DD78F41;
+	Wed, 15 Jan 2025 14:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="SZLyvQDs"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lnt051st"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2050.outbound.protection.outlook.com [40.107.96.50])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B61F70808;
-	Wed, 15 Jan 2025 14:14:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736950450; cv=fail; b=ARyCyBdPTkkriL5SOpiZKqSkJmZEr33lfi7bjoD4WSVTXMkNKf++QTDdrn0KDOsMv8myYoJ7J5dJMaKcJkXlx0pO95ULkcBB2NylHVleP5d8f58RPLsOVL+ehIc/zotC1Fi9bSipTHjVL865/e+9k2owiyIB5HiZ9b/Vc1LeYFc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736950450; c=relaxed/simple;
-	bh=79Ps8HsSEVbfmu7XYWZsstj7/nQ8dNrz85W3z5u41jM=;
-	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID:Date; b=TYjCz3vWntLrOaejMgQ7osIrc5j+3PHlA0WqWoZlIbjJ3ZtHkuFA7Fnj/9XF8n+V+a52tJkAKTiMMSBMEnd3cD9SdscFY69GfJRTIJYP8A9pMXoVAolv5zPDYj/xVqUxr/918XooOD5SeQGrivh7vVgx13Tw/sln0TmXpjyipVI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=SZLyvQDs; arc=fail smtp.client-ip=40.107.96.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z1lzoFjH+P8ke10pP9uuH76wRpY22K20ct2ZKQ/LKXkHlTr2y+GWcT7AbtZkXD8dTMwCRjalfH2TvMHtq2CuKj2her1KvH3RIJWuM/BpyRlRZ8BAL3fVpOjk7e9eWM/yZ7QoKyZNoM4jqGWiS0PAmQDKbB8KpD/HzOH15Yexv/k+zs4vZJ0sy0RtSUeMepY0jlCldxce+fLJbSatcdHaFjQ6eaozUvTz2YObJ/HSJbgkZsIGvo1S+aR17JQVzV+f09hwQmrTcCF9SKSOy5w1FcfnQGDQMmxDHMEplvZWMaxSlKNnqOWYIyBWhJ3vfMO9DVaAmutkZGIWuBzYoaAh6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rvXaf7RKCcj30Bs/wMZGGupcBRwKZWsoqTY3Sy3IFlc=;
- b=mmTPD23zzVDc6i5GivhSfHoO1zfmsnQcFx42lm3UI7qxkry3nniJ3LBvj0kbawG4ITZzOAHr4nczYVRebIqtB2TihUrjfC5PgJVr2nonpTd0M7ts6OMtZe5rinL1P1s8+MObN+7IKhhK0C+8rXRvyiyWtm7d90ld2A+VqssoGE8V2Bgw//qmUzAlJKknczWjxADq53r6+GwH0smjHOAOudCxvG9imgT0Efd5PbUXkw/oW81HvsunN69/1dtnUzSFGDktNnx207m4cHlKg8wpulRw1NxqzK54G/CDIgs1NyV2bnY1u7LWTlG/6fK+mD6xbwxYGe9cymiUDVggoKxF6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rvXaf7RKCcj30Bs/wMZGGupcBRwKZWsoqTY3Sy3IFlc=;
- b=SZLyvQDs4t1mye1oiJiOzQ5yD9O0NdHguKcSkFt6lTM3f6czN0v1IA/dNmtgZqepyeAw0NnhpPUWQzOocsIN0pKB2EPCzEK6XAFbXhN/iR5xL29kLq3NesfMgPTOqj7ESuZ4NvS2xse5ZSgKyARagsE/1BjnQzFem312o6lbcrPt9378ek/qLtRabedTqWWTvXQ2typbPQaYjIA5J5+IljwbFfNKxIWCXdSA6qScd42bUFgpTDTgkKRoK8+T4ydIQsVeE6JkvlPQdqYy1Z0xzziLnAhfNchuJeKStM56b/+wODa+914eg16xrvyY59sXaI6qVVqBMFEPaVUaYD8pNg==
-Received: from PH8PR15CA0008.namprd15.prod.outlook.com (2603:10b6:510:2d2::27)
- by IA1PR12MB6161.namprd12.prod.outlook.com (2603:10b6:208:3eb::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.13; Wed, 15 Jan
- 2025 14:14:04 +0000
-Received: from CY4PEPF0000EE34.namprd05.prod.outlook.com
- (2603:10b6:510:2d2:cafe::1f) by PH8PR15CA0008.outlook.office365.com
- (2603:10b6:510:2d2::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.14 via Frontend Transport; Wed,
- 15 Jan 2025 14:14:03 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CY4PEPF0000EE34.mail.protection.outlook.com (10.167.242.40) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8356.11 via Frontend Transport; Wed, 15 Jan 2025 14:14:03 +0000
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 15 Jan
- 2025 06:13:47 -0800
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail205.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 15 Jan
- 2025 06:13:47 -0800
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
- Transport; Wed, 15 Jan 2025 06:13:46 -0800
-From: Jon Hunter <jonathanh@nvidia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
-	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-	<rwarsow@gmx.de>, <conor@kernel.org>, <hargar@microsoft.com>,
-	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 6.12 000/189] 6.12.10-rc1 review
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98567433CE;
+	Wed, 15 Jan 2025 14:36:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736951769; cv=none; b=LMnZBFe3GYw0gz7DIT19polGfu97bAaO15VGDyuSZsU1KoVBRYT/3mEX9/hVEOrlt6fX1kgTGmrVX5xlOpUlSOytnOZ5wSKYrj61XTx8Ylre2lI/b70ek02InKQLlF6G0TIwJ7rAom9sh91Dq2Dno+mlSKqlWWmvRfKz41IICI4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736951769; c=relaxed/simple;
+	bh=c3e4qA0spOndgNqhvczt5F/tnLWEKVzdMiVKh58mEAs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e/ukk3aHOQ2Vsut4Zul2lTOGCG0fafSItFzZgCl0gMnPyqLqpkRXPGOMfQJXxJ4sYR4EIcIleMZjap5VRle1sOJfTdcsQzf0Ionw1UzYXm9r4rYDWyWl0TlTEr9ZWP8qIF45Ml7bnuTNF/6cWPZolGq0s7OEZfkXBa/wFO4XzaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=lnt051st; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50F3r2BF019723;
+	Wed, 15 Jan 2025 14:35:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=bRv5FAA/c71hkwafkzyrYcPe3qTn1SXwuO4ZJ3gXn
+	Fs=; b=lnt051stOQEkG8ZoBJt5/n8CjIXyq+HSicHEU/B6nFlV9gaHQtaiC6c5E
+	E4nqDy/h2gkSbjOcnOWaUVJ6EyEyswjvF+ZEk26TmYwI4d3ZEyLSVTWOqdfrSb8r
+	dK2+ECShNON7vCcmfGfXU/bthUQRbbuXr00iKkNbPzk/xB1pFoZoYR95c4qqcVJh
+	mFxzXIxUaANfsrsEb+FBRhZ0QHPCxG+5jVdWcuY6LUDZXBMLlBQ7lEQ9KLOnfgTk
+	0bVln7Vz1o5MuzQlGEDiMxH3mxrTQ3F1zbbHLM2j0j88EgHusA8pp4AhMcY/Cbp6
+	pOSwreSjlN92XdAVHe9Hzm6NryZCA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4465gjtphq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Jan 2025 14:35:41 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50FEPpsu014961;
+	Wed, 15 Jan 2025 14:35:40 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4465gjtphn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Jan 2025 14:35:40 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50FBKKhw017003;
+	Wed, 15 Jan 2025 14:35:39 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4444fk8ppb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Jan 2025 14:35:39 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50FEZZpv14090708
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 15 Jan 2025 14:35:35 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 399A220043;
+	Wed, 15 Jan 2025 14:35:35 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1F77E2004B;
+	Wed, 15 Jan 2025 14:35:33 +0000 (GMT)
+Received: from ltcrain34-lp2.aus.stglabs.ibm.com (unknown [9.3.101.41])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 15 Jan 2025 14:35:32 +0000 (GMT)
+From: Narayana Murty N <nnmlinux@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
+        linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org, mahesh@linux.ibm.com, oohall@gmail.com,
+        npiggin@gmail.com, christophe.leroy@csgroup.eu, maddy@linux.ibm.com,
+        naveen@kernel.org, vaibhav@linux.ibm.com, ganeshgr@linux.ibm.com,
+        sbhat@linux.ibm.com, ritesh.list@gmail.com
+Subject: [PATCH v4] powerpc/pseries/eeh: Fix get PE state translation
+Date: Wed, 15 Jan 2025 08:35:29 -0600
+Message-ID: <20250115143529.136704-1-nnmlinux@linux.ibm.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <91938c95-7d33-44c6-8a6c-935e9e1bd6d4@rnnvmail202.nvidia.com>
-Date: Wed, 15 Jan 2025 06:13:46 -0800
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE34:EE_|IA1PR12MB6161:EE_
-X-MS-Office365-Filtering-Correlation-Id: ecf6e05a-6fca-4ad3-c482-08dd356edd7c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cEk3enBpRG5qVUR0UTc1SGM4NnQ1ZjViVi9UdGhGR1hDN0xtc3E1YmdQVkxv?=
- =?utf-8?B?Z1JPREtrUGFBQkloNnp5OEFndlRGWlRLNkNOcGJ6UkxORDZ1eDRBSURzMmhC?=
- =?utf-8?B?WFBiV1ZaWkxBR1drbUhlOGNUQXdOTlZIbVZhL1hoTE1lRitob1hjMVU5UU91?=
- =?utf-8?B?SWtEdWZKN3daaStQeVBZT0FVWlROdXNNRGFGMTVDSDF2QzFwWEc1RWRJdlFu?=
- =?utf-8?B?RXZlckRRMjVwVlVJWThFZ1hvN3NWb3RPcS92bGp4NDZNczNCLytPTzd1RUJH?=
- =?utf-8?B?blQxdXk2Q3J3QTF3cjZBWlpjRzdTNTdQc0ZucWNwUGE5RXNMeWFJWHF4ek5B?=
- =?utf-8?B?T0dQUGxna2pSRC92MjZ4MGdPcExWVjVlUHk5WlRiQnhZT3lwZGVGOHlUMDdZ?=
- =?utf-8?B?VlkzRTZjNkVTR2RubjZlb0g3YkpOeEExZElIOG53YXRSSWJuY0pFRWJrblMx?=
- =?utf-8?B?Y2xYdmppVHdqNEhFOFMyL2Q5UzlsaTdrSVRoZUwrei9EZitRd2xJMWlwTE1H?=
- =?utf-8?B?THVyMmV0aFk4UjZRSVRMcHNHMGFWUEFzNDEzdy9DMWl6S3hZWDVmcllheWkz?=
- =?utf-8?B?TzVFTHlQeWhqYUozQzRzQlA0bktjZEpYblNKdldaUWhtNFBSMmhQTVVnL1VZ?=
- =?utf-8?B?ZldlVGp2TTZpMTZzTXBXSXV3eVhkM1hNYWM5Y0s4NjBtODhtOXAvTzlVbFdl?=
- =?utf-8?B?NGdPZ1NPcDEvVFh0QVE2U3RiWFdsa1pFaDdRa1VlQ1IxM1lody9ONDdJMkxu?=
- =?utf-8?B?ajVicmJFcWhKejVhYVEvVThoS3lDRUlBbnZYZVJDS3RidlpXcjduMmJuQXV3?=
- =?utf-8?B?OUtIRXdpRE5vdFdJUG45T0ZoR3c3RjJWTVlKZTBtRldxVzF3L1FMMVk4YnF3?=
- =?utf-8?B?QmtyUGdWVktHcGZ0RmtDbVhwVkUwOHZhQ1Fjd2x2ajVrdXc1Y0V6WWdhYW4x?=
- =?utf-8?B?bGpPa3JUZzh2ZTJ3aFhtT2U4QmVuQTV0NXpsMVM5M1FTQTRGMDdnQnZMT2pB?=
- =?utf-8?B?bXVOdzdzSXpTcUtrTlFoUkJaekVZdW1lVVBMQzBvRytWQ0dvYUpDeG9xMVJz?=
- =?utf-8?B?cktDRjdoR0hLYkgyYk9iS1poMlVsRlFRbFU0Qk5haWRIMW5GQ2xsaHk3aGhw?=
- =?utf-8?B?TnpBWnRGT3BTalRVOTdEOEF2ZldsVUJ1eU50bzJjMGZFMFFsT0pwZHBiM3Ni?=
- =?utf-8?B?c0dST0RuTCtId1VNUDl0YlVucDNXUSt2R2JQVUhTUEtRelMxZm5UK2Iyam5r?=
- =?utf-8?B?Y0JTaHAxOHhNbElTSlo1anVUM25mdWN1dDgyZHlvWVJockh5aGxKT0lJOS9r?=
- =?utf-8?B?UGs2RUVhL0tZNTgraUpGL1ZJNmU3SUhTZUswckdGTDRCLzh1WDJyRzZnMUtR?=
- =?utf-8?B?Z3hoSHhkVk02Z0xRbUE2Y21iVEpOaTFUWGpOOURpOHVSSGhSLzhwcHRHNThw?=
- =?utf-8?B?UnVIQkczNU9MT1UxSWdHSTNqR0VjbUZLak8vUURIUi8rbW1LSUQvZ3JHNFpp?=
- =?utf-8?B?YS81UU5KeE9BbUNEZVlLK3NISjh3SWhsY1V3d3Vud1g1YnFSN2NZNk5EZjNj?=
- =?utf-8?B?VmpuRCtkRk1sMlFyb2tWWWhuQmF2cEdFWXg5dEE5NGNhS2NRVi91U1EvODAw?=
- =?utf-8?B?N09OZ0d6VXRnTDE4SDk3ZGorR1E3TXQrZlh1QVptU2N0Ymp0NGQrYjZGQVox?=
- =?utf-8?B?NXRZZzg3Z0JnTHErYnJUeCtNZFhiOUNNZ3BCOHhsYnNvaUZqUEc4R0FQczFv?=
- =?utf-8?B?b2NERnlRcDFWZncvK2wxRmF4N0pWNjB5UjFiVEVHTm15NVN6TFF3ZlQ2YUt4?=
- =?utf-8?B?dnVPR3BjdVZvS2lvaEYzVFpaaU9iZ0RxV0dWZERUNTJpbjI5S2c4cGxlMERW?=
- =?utf-8?B?RXVaMGhVaXRVd1hSN2U4V3hXUFMrRnRpb2E5M1FmalRpS0NadjU4K2p2b1FS?=
- =?utf-8?B?YXg1ZlBzS3JVaHBUYzNZcDVvODYyMVlOeTAzeWJMZ0RBcE5UcE5wWS9keEdo?=
- =?utf-8?Q?OeUjheFJS2RcTMQNxBteO8eEE8S4Mw=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2025 14:14:03.4000
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ecf6e05a-6fca-4ad3-c482-08dd356edd7c
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EE34.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6161
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: f7jHl0UtK7lq1PMqmIhF7h3AIW_SRpaJ
+X-Proofpoint-GUID: V4gWDD-ZohALAT7S-pwnZZxoxWL2Zsi8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-15_05,2025-01-15_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
+ clxscore=1015 suspectscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0
+ priorityscore=1501 mlxlogscore=999 impostorscore=0 adultscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501150110
 
-On Wed, 15 Jan 2025 11:34:56 +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.10 release.
-> There are 189 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 17 Jan 2025 10:34:58 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.10-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+The PE Reset State "0" returned by RTAS calls
+"ibm_read_slot_reset_[state|state2]" indicates that the reset is
+deactivated and the PE is in a state where MMIO and DMA are allowed.
+However, the current implementation of "pseries_eeh_get_state()" does
+not reflect this, causing drivers to incorrectly assume that MMIO and
+DMA operations cannot be resumed.
 
-All tests passing for Tegra ...
+The userspace drivers as a part of EEH recovery using VFIO ioctls fail
+to detect when the recovery process is complete. The VFIO_EEH_PE_GET_STATE
+ioctl does not report the expected EEH_PE_STATE_NORMAL state, preventing
+userspace drivers from functioning properly on pseries systems.
 
-Test results for stable-v6.12:
-    10 builds:	10 pass, 0 fail
-    26 boots:	26 pass, 0 fail
-    116 tests:	116 pass, 0 fail
+The patch addresses this issue by updating 'pseries_eeh_get_state()'
+to include "EEH_STATE_MMIO_ENABLED" and "EEH_STATE_DMA_ENABLED" in
+the result mask for PE Reset State "0". This ensures correct state
+reporting to the callers, aligning the behavior with the PAPR specification
+and fixing the bug in EEH recovery for VFIO user workflows.
 
-Linux version:	6.12.10-rc1-gd056ad259f16
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
-                tegra20-ventana, tegra210-p2371-2180,
-                tegra210-p3450-0000, tegra30-cardhu-a04
+Fixes: 00ba05a12b3c ("powerpc/pseries: Cleanup on pseries_eeh_get_state()")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
 
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
+---
+Changelog:
+V1:https://lore.kernel.org/all/20241107042027.338065-1-nnmlinux@linux.ibm.com/
+--added Fixes tag for "powerpc/pseries: Cleanup on
+pseries_eeh_get_state()".
+V2:https://lore.kernel.org/stable/20241212075044.10563-1-nnmlinux%40linux.ibm.com
+--Updated the patch description to include it in the stable kernel tree.
+V3:https://lore.kernel.org/all/87v7vm8pwz.fsf@gmail.com/
+--Updated commit description.
+---
+ arch/powerpc/platforms/pseries/eeh_pseries.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Jon
+diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
+index 1893f66371fa..b12ef382fec7 100644
+--- a/arch/powerpc/platforms/pseries/eeh_pseries.c
++++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
+@@ -580,8 +580,10 @@ static int pseries_eeh_get_state(struct eeh_pe *pe, int *delay)
+ 
+ 	switch(rets[0]) {
+ 	case 0:
+-		result = EEH_STATE_MMIO_ACTIVE |
+-			 EEH_STATE_DMA_ACTIVE;
++		result = EEH_STATE_MMIO_ACTIVE	|
++			 EEH_STATE_DMA_ACTIVE	|
++			 EEH_STATE_MMIO_ENABLED	|
++			 EEH_STATE_DMA_ENABLED;
+ 		break;
+ 	case 1:
+ 		result = EEH_STATE_RESET_ACTIVE |
+-- 
+2.47.1
+
 
