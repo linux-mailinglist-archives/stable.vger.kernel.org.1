@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-108746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE50CA1200F
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B9BA12120
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:53:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01E74188AE57
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C45373ACF2A
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:52:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA1B4248BCA;
-	Wed, 15 Jan 2025 10:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827F11E98EF;
+	Wed, 15 Jan 2025 10:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yIlQBMHb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4rim9mb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B1E248BAF;
-	Wed, 15 Jan 2025 10:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCAC18952C;
+	Wed, 15 Jan 2025 10:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937668; cv=none; b=fkHxubvF5crqmP1qY9prpXIor4wW4UeWxG2+DHmlUqWzs0L1eCZl4YIEQN1VDlmHEVeQo3MDUWIv7RrwUDLkEVnBLTHW3zAK+4F5IxyHjQfn1iXzgHQspz3EVTZpyYMgGW+fQnyjvx8hUbmS0B2/cmBdwNBhWQ3t3S7PRBV23lw=
+	t=1736938364; cv=none; b=Ep8H4NtBhRZIMmG0UN4qanCqZLvsd7DitO3wXRonth8LzXtwXJOhiwDnavJYCT7iDUdS5c1dvHJn+neIn+WsSEZpOIwyj2ekRLmhJ519qICZsKlsv0s63+vqintc3IXEf8e6c9+qvNKVcIiTEf8Szns7MxMohqzObz6p5lmX2gQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937668; c=relaxed/simple;
-	bh=NwhaqSIwEfbJEHXHshMtTc6+iCKyKDeaimXgt6xJzLc=;
+	s=arc-20240116; t=1736938364; c=relaxed/simple;
+	bh=aHmkFufDi4+cTlXDxPmXv0EqpHDTtiu+ELaoBVNZN+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a0N8qr17b/fquiJ2jHR1qiK4PHx6Pn8/p87a76U3udhV/IANl+W4LaYU5Qu3Vm7GuuGRmeC0KeL3BYztz8ELmVZyeO7ex9QFVuDPoOeDyHQIpvfTcPhuusFFPFB6d9yS6q8YHrQtcAOPpE4FO+1aeX4qtx1GK/91zHgPAPynrrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yIlQBMHb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B49C4CEE1;
-	Wed, 15 Jan 2025 10:41:07 +0000 (UTC)
+	 MIME-Version; b=f9aBOxZVlYoBwDTGEZhC0ti2J38zBURMnLSZkQxyO72KHUPhbBxWTHbGrfSaumKB+WC+kGIPRO7EwImOW+UsJkNyV63mL9tZEWAifGmviIJMj8rOOrujq0dF1YlAHt1+aozmcorPc3Y1VM8gB+dboizhOaNyAeZTCybTqjjgeGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4rim9mb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2198C4CEDF;
+	Wed, 15 Jan 2025 10:52:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937668;
-	bh=NwhaqSIwEfbJEHXHshMtTc6+iCKyKDeaimXgt6xJzLc=;
+	s=korg; t=1736938364;
+	bh=aHmkFufDi4+cTlXDxPmXv0EqpHDTtiu+ELaoBVNZN+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yIlQBMHb/cmdHntRWnmocV4KpltgS2kPU+j1YhPEd1Rb57wjTXgCnTPqtwEUL0MG1
-	 tA5zr00i4M95wZtu6sr6Lake+oCORV1osh1zDyZJfLoHXZgkacnVQPk54qcjFIwGj+
-	 LKrcGPH5IBMHivg0/JP6C0k+4J9792G4Z9D4rlmc=
+	b=c4rim9mbnr+Y0lKOh+x3F9tmQ8PM2VCrq987enZ3MA+YuQvaXQQrwvB+aBR1U9knY
+	 2Bd/jbSGiysG+5ANL1UhAf0jC4SWZauPnB6HPAjzAUEURb/oIqgguoVF1U83V4dAwh
+	 5JEDBpzCP81RcfdaHl/ccTHD2+6BbiCHviWj2ZTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 46/92] ACPI: resource: Add TongFang GM5HG0A to irq1_edge_low_force_override[]
-Date: Wed, 15 Jan 2025 11:37:04 +0100
-Message-ID: <20250115103549.377507910@linuxfoundation.org>
+	syzbot+3d92cfcfa84070b0a470@syzkaller.appspotmail.com,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 129/189] io_uring/sqpoll: zero sqd->thread on tctx errors
+Date: Wed, 15 Jan 2025 11:37:05 +0100
+Message-ID: <20250115103611.594834904@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 7ed4e4a659d99499dc6968c61970d41b64feeac0 upstream.
+commit 4b7cfa8b6c28a9fa22b86894166a1a34f6d630ba upstream.
 
-The TongFang GM5HG0A is a TongFang barebone design which is sold under
-various brand names.
+Syzkeller reports:
 
-The ACPI IRQ override for the keyboard IRQ must be used on these AMD Zen
-laptops in order for the IRQ to work.
+BUG: KASAN: slab-use-after-free in thread_group_cputime+0x409/0x700 kernel/sched/cputime.c:341
+Read of size 8 at addr ffff88803578c510 by task syz.2.3223/27552
+ Call Trace:
+  <TASK>
+  ...
+  kasan_report+0x143/0x180 mm/kasan/report.c:602
+  thread_group_cputime+0x409/0x700 kernel/sched/cputime.c:341
+  thread_group_cputime_adjusted+0xa6/0x340 kernel/sched/cputime.c:639
+  getrusage+0x1000/0x1340 kernel/sys.c:1863
+  io_uring_show_fdinfo+0xdfe/0x1770 io_uring/fdinfo.c:197
+  seq_show+0x608/0x770 fs/proc/fd.c:68
+  ...
 
-At least on the SKIKK Vanaheim variant the DMI product- and board-name
-strings have been replaced by the OEM with "Vanaheim" so checking that
-board-name contains "GM5HG0A" as is usually done for TongFang barebones
-quirks does not work.
+That's due to sqd->task not being cleared properly in cases where
+SQPOLL task tctx setup fails, which can essentially only happen with
+fault injection to insert allocation errors.
 
-The DMI OEM strings do contain "GM5HG0A". I have looked at the dmidecode
-for a few other TongFang devices and the TongFang code-name string being
-in the OEM strings seems to be something which is consistently true.
-
-Add a quirk checking one of the DMI_OEM_STRING(s) is "GM5HG0A" in the hope
-that this will work for other OEM versions of the "GM5HG0A" too.
-
-Link: https://www.skikk.eu/en/laptops/vanaheim-15-rtx-4060
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219614
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241228164845.42381-1-hdegoede@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: 1251d2025c3e1 ("io_uring/sqpoll: early exit thread if task_context wasn't allocated")
+Reported-by: syzbot+3d92cfcfa84070b0a470@syzkaller.appspotmail.com
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/efc7ec7010784463b2e7466d7b5c02c2cb381635.1736519461.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ io_uring/sqpoll.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -615,6 +615,17 @@ static const struct dmi_system_id lg_lap
- 			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
- 		},
- 	},
-+	{
-+		/*
-+		 * TongFang GM5HG0A in case of the SKIKK Vanaheim relabel the
-+		 * board-name is changed, so check OEM strings instead. Note
-+		 * OEM string matches are always exact matches.
-+		 * https://bugzilla.kernel.org/show_bug.cgi?id=219614
-+		 */
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_OEM_STRING, "GM5HG0A"),
-+		},
-+	},
- 	{ }
- };
+--- a/io_uring/sqpoll.c
++++ b/io_uring/sqpoll.c
+@@ -275,8 +275,12 @@ static int io_sq_thread(void *data)
+ 	DEFINE_WAIT(wait);
  
+ 	/* offload context creation failed, just exit */
+-	if (!current->io_uring)
++	if (!current->io_uring) {
++		mutex_lock(&sqd->lock);
++		sqd->thread = NULL;
++		mutex_unlock(&sqd->lock);
+ 		goto err_out;
++	}
+ 
+ 	snprintf(buf, sizeof(buf), "iou-sqp-%d", sqd->task_pid);
+ 	set_task_comm(current, buf);
 
 
 
