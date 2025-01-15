@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-108959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75B42A1211F
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:53:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 822CCA12019
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B362E188D67E
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:53:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AE69161B1A
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A97781E98F1;
-	Wed, 15 Jan 2025 10:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14674248BA6;
+	Wed, 15 Jan 2025 10:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOrHkWCC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ra+U74bE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C5F248BDE;
-	Wed, 15 Jan 2025 10:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8030248BA1;
+	Wed, 15 Jan 2025 10:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938381; cv=none; b=LmuP1T+sG0fci75u6BPeGNgT23Uz1xkMgzvZHCUh7AkR+WUvqRJ9dfz9e22uYm4zEn8oHtlDUzAZIN2h0UfRTwPienvpkxJfJM28OdBM3sr8C3p7oEm0mO2xCWkkp2dNiCpFxiDRzxdLj0JkNCX3FWxxFQzVF2IY12FSk18la7s=
+	t=1736937692; cv=none; b=lVJBYvqOHnsnEDMM7ctszJY32U4ChVTIG/h1pOmui7cF7e03UBkd/dkCqEm/Yp6mJ8AnojvmCzu4SHhFzLH72IIL1cCZ8KACWC8JMwCenqUZCF/0IOvwHVXuttdVap17jU+qdVGJJJJEatikcknmsDa6O99lq7avs9zjKYqUjO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938381; c=relaxed/simple;
-	bh=JMpxtZwX27HnzmZPB4jHNLG+zgWA5L6hRKORx7nSYdo=;
+	s=arc-20240116; t=1736937692; c=relaxed/simple;
+	bh=NHYERWe9/VckxbKmBBSlxE5He4lKzsrjP/VpbUvN6e4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fc7Kr9VGkbmiD68SAVmX81/OfTTzE9RCCdRhQYxCCjOumTAfIECN4T7joJaAmgetRFNJvn2L3g0TuYt9Dg9Bzc01FmHgtib0M2N0tkSiI5NluShm66o0WfOoiBKiCGbYdjMuXiyishkvlH5KdFS1HJdLWQ8V70nVabKT9fJZ14k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOrHkWCC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89A6C4CEDF;
-	Wed, 15 Jan 2025 10:53:00 +0000 (UTC)
+	 MIME-Version; b=j8bedOO9AA8F00RaYtkvZ18d3ElpZcw6Godvy5pQ4qGASEPeP316u7Jwqz8vghN6rfvH2QFHn6JVJbRiv67Wz9F8daJVgDbZ9ujIfjZmspSQGW5gc/zSXBOCRlA3ku4SN06AwaVvCcm5xGV2dfX0+PLEO40bBrWICjVomY+Tt/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ra+U74bE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E9FC4CEE1;
+	Wed, 15 Jan 2025 10:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938381;
-	bh=JMpxtZwX27HnzmZPB4jHNLG+zgWA5L6hRKORx7nSYdo=;
+	s=korg; t=1736937692;
+	bh=NHYERWe9/VckxbKmBBSlxE5He4lKzsrjP/VpbUvN6e4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cOrHkWCCDMvmhuu4ohII8t2dkJexYVM/F2tQ1E6lXQDd3rq/A6inHfydkgc51s4T3
-	 AbdT5/QI2L0A1fks7g5VjFpnMZVed66QarMX+YpwpGgS2AYEgCCUHzw6AhIuLiGpiY
-	 AcRFg5/MKMBzfNOzK12XXNoJcY2QCvoPf8AWTC9Q=
+	b=Ra+U74bEvyCLi5sFjWpX8G9osl0vNs13kGUecze3RV90W7q8lYhnWgix84ovudsTU
+	 9KppXlfEHLiow+c8oClCXrIjUjrYX7rHTrWsXfuRygaLpNDE1UV/SiWHGp0LDK7hd7
+	 cWVuVS2exou0swvM7FN2te7Yj6J023mXeN8Aw98Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lubomir Rintel <lkundrak@v3.sk>,
-	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.12 134/189] usb-storage: Add max sectors quirk for Nokia 208
+	Chukun Pan <amadeus@jmu.edu.cn>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 52/92] USB: serial: option: add MeiG Smart SRM815
 Date: Wed, 15 Jan 2025 11:37:10 +0100
-Message-ID: <20250115103611.786806146@linuxfoundation.org>
+Message-ID: <20250115103549.606713622@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lubomir Rintel <lrintel@redhat.com>
+From: Chukun Pan <amadeus@jmu.edu.cn>
 
-commit cdef30e0774802df2f87024d68a9d86c3b99ca2a upstream.
+commit c1947d244f807b1f95605b75a4059e7b37b5dcc3 upstream.
 
-This fixes data corruption when accessing the internal SD card in mass
-storage mode.
+It looks like SRM815 shares ID with SRM825L.
 
-I am actually not too sure why. I didn't figure a straightforward way to
-reproduce the issue, but i seem to get garbage when issuing a lot (over 50)
-of large reads (over 120 sectors) are done in a quick succession. That is,
-time seems to matter here -- larger reads are fine if they are done with
-some delay between them.
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2dee ProdID=4d22 Rev= 4.14
+S:  Manufacturer=MEIG
+S:  Product=LTE-A Module
+S:  SerialNumber=123456
+C:* #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-But I'm not great at understanding this sort of things, so I'll assume
-the issue other, smarter, folks were seeing with similar phones is the
-same problem and I'll just put my quirk next to theirs.
-
-The "Software details" screen on the phone is as follows:
-
-  V 04.06
-  07-08-13
-  RM-849
-  (c) Nokia
-
-TL;DR version of the device descriptor:
-
-  idVendor           0x0421 Nokia Mobile Phones
-  idProduct          0x06c2
-  bcdDevice            4.06
-  iManufacturer           1 Nokia
-  iProduct                2 Nokia 208
-
-The patch assumes older firmwares are broken too (I'm unable to test, but
-no biggie if they aren't I guess), and I have no idea if newer firmware
-exists.
-
-Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-Cc: stable <stable@kernel.org>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250101212206.2386207-1-lkundrak@v3.sk
+Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
+Link: https://lore.kernel.org/lkml/20241215100027.1970930-1-amadeus@jmu.edu.cn/
+Link: https://lore.kernel.org/all/4333b4d0-281f-439d-9944-5570cbc4971d@gmail.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_devs.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/serial/option.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/storage/unusual_devs.h
-+++ b/drivers/usb/storage/unusual_devs.h
-@@ -255,6 +255,13 @@ UNUSUAL_DEV(  0x0421, 0x06aa, 0x1110, 0x
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_MAX_SECTORS_64 ),
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -621,7 +621,7 @@ static void option_instat_callback(struc
  
-+/* Added by Lubomir Rintel <lkundrak@v3.sk>, a very fine chap */
-+UNUSUAL_DEV(  0x0421, 0x06c2, 0x0000, 0x0406,
-+		"Nokia",
-+		"Nokia 208",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_MAX_SECTORS_64 ),
-+
- #ifdef NO_SDDR09
- UNUSUAL_DEV(  0x0436, 0x0005, 0x0100, 0x0100,
- 		"Microtech",
+ /* MeiG Smart Technology products */
+ #define MEIGSMART_VENDOR_ID			0x2dee
+-/* MeiG Smart SRM825L based on Qualcomm 315 */
++/* MeiG Smart SRM815/SRM825L based on Qualcomm 315 */
+ #define MEIGSMART_PRODUCT_SRM825L		0x4d22
+ /* MeiG Smart SLM320 based on UNISOC UIS8910 */
+ #define MEIGSMART_PRODUCT_SLM320		0x4d41
+@@ -2405,6 +2405,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM770A, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },
 
 
 
