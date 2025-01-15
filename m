@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-108724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56E15A11FFF
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:40:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C248BA1217F
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:57:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AB2A3A9D56
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:40:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80D013A88B9
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67EB1E9901;
-	Wed, 15 Jan 2025 10:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432BF1E7C02;
+	Wed, 15 Jan 2025 10:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctk97Poo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cFx7I74O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7DF248BCA;
-	Wed, 15 Jan 2025 10:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AA9248BD0;
+	Wed, 15 Jan 2025 10:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937589; cv=none; b=UjTk1F7XVIA2Nixdj59S92wDUPR27OgViKm9J1mPMTOvRaI8LikIeu/4KrLB+zwUqNEm2nM775I7OdhxzeChc9eclpb3dHk+16iqkrgQvBxhbByLTWMvyvvbHPZcQb9cHFcOrO1B8uSjLeXuzkT8aX1AjnDD+uybqFB0NWK891k=
+	t=1736938630; cv=none; b=qVfU4REaCwl8wkRozdS/HLw5upzFWIZjY2hiFVVCGAPpR7uiwbn7QM0qFvul5QD3kTkicbJj1Z36D0bcnJFQkYFkcnZSySvqoV3zK/rknLB2WCzvx39Gd+XIxKARfbV+WmdbwblvxzhPRTAYckiZ/Vt8RWCSn1U2HIwnKnCsK7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937589; c=relaxed/simple;
-	bh=XhrM5PgFMNHKd7kh7TUM1zfO465f1Jke3RIXoXoKxJE=;
+	s=arc-20240116; t=1736938630; c=relaxed/simple;
+	bh=2MJ7gaYMZC8pCb5zE9wspCdjLOpgx8auGslOF6LJW2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DD+YxqnCVIOkqQfbEHwhq14WsvFnGZHpt2BCID3Hsj4MnsRbAda96htNYC7vkMYZFrFZ0k/iaXjprpf9O2lGQPckK5bD19FMeCh+9jRsLQZ46eIgo6bHGHCXm6dSJJtFFXciosgOHsnaAkHIo5JONCrLq8CWtfSwelf8tlNRN08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ctk97Poo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C10C4CEDF;
-	Wed, 15 Jan 2025 10:39:48 +0000 (UTC)
+	 MIME-Version; b=NTmH0bPdR9z6OOLieI+ghUXMOGb6X6L6/a4/i2UkpVaCnxfwDnWH9JVBbDv7TvhmNZkmJB7v10CYrsLDHum8Dw2WJRa3BkupE1PpCYoSf6pAZw46rT3869izfaZhpnCXnpTqRxikUSTSacp/8jHlvPiJ1028lwkelNNB2Up7LJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cFx7I74O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6177EC4CEDF;
+	Wed, 15 Jan 2025 10:57:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937588;
-	bh=XhrM5PgFMNHKd7kh7TUM1zfO465f1Jke3RIXoXoKxJE=;
+	s=korg; t=1736938629;
+	bh=2MJ7gaYMZC8pCb5zE9wspCdjLOpgx8auGslOF6LJW2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ctk97PoorKTy+HbcQTeC3mxELQmiiahV1MbrRBFlKuGcWgwYFE3doFjG4OKFn0CFu
-	 k5lfS1t7OrinQE+kHJK1eVO/TJyQYhWQkaLEoIqjdBNSBbg/NalU87nUyYQbufs6oM
-	 UPgLzhhsRvEnv8cFGB8Gl0NYrn2shMNJRjE3p5aw=
+	b=cFx7I74Oju/8EM2645Xqq7RKteetrkxmSZj0Ni/HEEgpnjQBrJ+hO33eQLn5xefzZ
+	 f9NwRtyULKWHUjdlQ0ru7GWa+Xonti2Y+bZ13syPYiJVK7pO2tv3Q9dcZvVWQnGs7Q
+	 r+vCLy3nJ2FUfwzSPxKftM8ovNQv5mla3t4/0bdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	syzbot+205c2644abdff9d3f9fc@syzkaller.appspotmail.com,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 05/92] jbd2: flush filesystem device before updating tail sequence
+Subject: [PATCH 6.6 008/129] exfat: fix the infinite loop in exfat_readdir()
 Date: Wed, 15 Jan 2025 11:36:23 +0100
-Message-ID: <20250115103547.745159293@linuxfoundation.org>
+Message-ID: <20250115103554.697577241@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-[ Upstream commit a0851ea9cd555c333795b85ddd908898b937c4e1 ]
+[ Upstream commit fee873761bd978d077d8c55334b4966ac4cb7b59 ]
 
-When committing transaction in jbd2_journal_commit_transaction(), the
-disk caches for the filesystem device should be flushed before updating
-the journal tail sequence. However, this step is missed if the journal
-is not located on the filesystem device. As a result, the filesystem may
-become inconsistent following a power failure or system crash. Fix it by
-ensuring that the filesystem device is flushed appropriately.
+If the file system is corrupted so that a cluster is linked to
+itself in the cluster chain, and there is an unused directory
+entry in the cluster, 'dentry' will not be incremented, causing
+condition 'dentry < max_dentries' unable to prevent an infinite
+loop.
 
-Fixes: 3339578f0578 ("jbd2: cleanup journal tail after transaction commit")
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://lore.kernel.org/r/20241203014407.805916-3-yi.zhang@huaweicloud.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+This infinite loop causes s_lock not to be released, and other
+tasks will hang, such as exfat_sync_fs().
+
+This commit stops traversing the cluster chain when there is unused
+directory entry in the cluster to avoid this infinite loop.
+
+Reported-by: syzbot+205c2644abdff9d3f9fc@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=205c2644abdff9d3f9fc
+Tested-by: syzbot+205c2644abdff9d3f9fc@syzkaller.appspotmail.com
+Fixes: ca06197382bd ("exfat: add directory operations")
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/commit.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/exfat/dir.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/jbd2/commit.c b/fs/jbd2/commit.c
-index 7b34deec8b87..6d02dcad8ffd 100644
---- a/fs/jbd2/commit.c
-+++ b/fs/jbd2/commit.c
-@@ -811,9 +811,9 @@ void jbd2_journal_commit_transaction(journal_t *journal)
- 	/*
- 	 * If the journal is not located on the file system device,
- 	 * then we must flush the file system device before we issue
--	 * the commit record
-+	 * the commit record and update the journal tail sequence.
- 	 */
--	if (commit_transaction->t_need_data_flush &&
-+	if ((commit_transaction->t_need_data_flush || update_tail) &&
- 	    (journal->j_fs_dev != journal->j_dev) &&
- 	    (journal->j_flags & JBD2_BARRIER))
- 		blkdev_issue_flush(journal->j_fs_dev);
+diff --git a/fs/exfat/dir.c b/fs/exfat/dir.c
+index 7a715016b96f..f4f81e349cef 100644
+--- a/fs/exfat/dir.c
++++ b/fs/exfat/dir.c
+@@ -125,7 +125,7 @@ static int exfat_readdir(struct inode *inode, loff_t *cpos, struct exfat_dir_ent
+ 			type = exfat_get_entry_type(ep);
+ 			if (type == TYPE_UNUSED) {
+ 				brelse(bh);
+-				break;
++				goto out;
+ 			}
+ 
+ 			if (type != TYPE_FILE && type != TYPE_DIR) {
+@@ -189,6 +189,7 @@ static int exfat_readdir(struct inode *inode, loff_t *cpos, struct exfat_dir_ent
+ 		}
+ 	}
+ 
++out:
+ 	dir_entry->namebuf.lfn[0] = '\0';
+ 	*cpos = EXFAT_DEN_TO_B(dentry);
+ 	return 0;
 -- 
 2.39.5
 
