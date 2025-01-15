@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-108780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 766C4A12039
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:43:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0644A1213F
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:54:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FEC816318E
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:43:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9376168451
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0719248BAC;
-	Wed, 15 Jan 2025 10:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2215248BDE;
+	Wed, 15 Jan 2025 10:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KucBWZuW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tY/8+YXN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDE5248BA1;
-	Wed, 15 Jan 2025 10:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DAC248BA1;
+	Wed, 15 Jan 2025 10:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937782; cv=none; b=q68DA2NaLuo+/dNNZrdLb8fYbRbwD/dPxvLPnjAk2r29/6RUYhH8vjO+1NOkYEvkpNHbUe5SFB1VdXD8p2bIMBukV3gg99wTDASezOVlajxevwPn0SJZuJDILJLHQwFM+C64/EdSDvwgjVCnfeXV8K45U8r9rLWo94NyFh+pY+o=
+	t=1736938470; cv=none; b=fH8vprWBHXuXHQ/v25fv0NiLsM0AaXn0zg/ZzjeoflzAcBSIWYNpbDPEWXCR9LQWPKLPtt97y92vU4ImnddR3etlAmpqzqq4a88lUEsx25OgK2B7N0HN1KT26cGz9hIaeVKJusS8FOk0CnWO/QfNjQXGEpRTXhe6Bf97LL1kbDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937782; c=relaxed/simple;
-	bh=pWV666QUqtXahZWZ90MK3NoTZYtHy7H8X4ug/xCXUQg=;
+	s=arc-20240116; t=1736938470; c=relaxed/simple;
+	bh=MrP6nkUfxV+hphMk0nq8CU9bPjkcahOuGJ3ZKotSLFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cAAdpoJXUPdI99VmXBpIKHKxVMlMgGKC0c+tdE5VoCItDYw6ut/u0ZrfuhcBpfVjsRvG9cCF4bba3AFG/seFlugKD5jZcKB490HCKCqwGY0Fob2mpVrkSgBoQXb/SbfQNGw0hI3JOOmVAdno4HeQKm0TZRsHhQHj42uexcQnIDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KucBWZuW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8420C4CEE2;
-	Wed, 15 Jan 2025 10:43:01 +0000 (UTC)
+	 MIME-Version; b=nvLKwOC0pnKamAAJce0qd4r4wiOlyJbX1XhggyTzbvPdKyxQ88HwyEr4sUg+BNcuqYcJfqB7O11UNQfdphHky98Hl5mu0CHTVnPyTOrvbSbxtPhxgrDF4IZZJf0NYYFdIrn9D41lSTblCgwQAPPZhkdH6AKGhT6d7LPkGUzNlKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tY/8+YXN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA777C4CEDF;
+	Wed, 15 Jan 2025 10:54:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937782;
-	bh=pWV666QUqtXahZWZ90MK3NoTZYtHy7H8X4ug/xCXUQg=;
+	s=korg; t=1736938470;
+	bh=MrP6nkUfxV+hphMk0nq8CU9bPjkcahOuGJ3ZKotSLFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KucBWZuWZqb7Y0OzMJ7vtZKbDyzjFe/nLgvS7vnMvwmeTH1tDz/h77a3iKUhQGEDl
-	 3cVvN16AuPf1tGOHyqyRxMuwUpeaYGy+xUKBHUOuCXCzxefin1o08PAB3r65t5tif8
-	 4YFBi58scOnSUhmM/2hLcw2ymgG/FMq2ihLkvEoA=
+	b=tY/8+YXN0ZOJWFgcUkKHUxLgbGHnrunQ6Yj8NCeiGGMu8E+mh2K3DnJwD7VTcbrdl
+	 QQkI94RtxxK8S3YUnqsryW/AkxMEybY60H5HXJ40SaKoiSEU4uNbhpAW5jWXFBz8qV
+	 rRQPSCluPYsz5iABPFmelYSveIfcm89BUm4nuOgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Taube <Mr.Bossman075@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 80/92] ARM: dts: imxrt1050: Fix clocks for mmc
-Date: Wed, 15 Jan 2025 11:37:38 +0100
-Message-ID: <20250115103550.760581053@linuxfoundation.org>
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 163/189] iio: adc: ti-ads8688: fix information leak in triggered buffer
+Date: Wed, 15 Jan 2025 11:37:39 +0100
+Message-ID: <20250115103612.905987478@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Taube <Mr.Bossman075@gmail.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 5f122030061db3e5d2bddd9cf5c583deaa6c54ff ]
+commit 2a7377ccfd940cd6e9201756aff1e7852c266e69 upstream.
 
-One of the usdhc1 controller's clocks should be IMXRT1050_CLK_AHB_PODF not
-IMXRT1050_CLK_OSC.
+The 'buffer' local array is used to push data to user space from a
+triggered buffer, but it does not set values for inactive channels, as
+it only uses iio_for_each_active_channel() to assign new values.
 
-Fixes: 1c4f01be3490 ("ARM: dts: imx: Add i.MXRT1050-EVK support")
-Signed-off-by: Jesse Taube <Mr.Bossman075@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Initialize the array to zero before using it to avoid pushing
+uninitialized information to userspace.
+
+Cc: stable@vger.kernel.org
+Fixes: 61fa5dfa5f52 ("iio: adc: ti-ads8688: Fix alignment of buffer in iio_push_to_buffers_with_timestamp()")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-8-0cb6e98d895c@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/imxrt1050.dtsi | 2 +-
+ drivers/iio/adc/ti-ads8688.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/imxrt1050.dtsi b/arch/arm/boot/dts/imxrt1050.dtsi
-index 03e6a858a7be..a25eae9bd38a 100644
---- a/arch/arm/boot/dts/imxrt1050.dtsi
-+++ b/arch/arm/boot/dts/imxrt1050.dtsi
-@@ -87,7 +87,7 @@
- 			reg = <0x402c0000 0x4000>;
- 			interrupts = <110>;
- 			clocks = <&clks IMXRT1050_CLK_IPG_PDOF>,
--				<&clks IMXRT1050_CLK_OSC>,
-+				<&clks IMXRT1050_CLK_AHB_PODF>,
- 				<&clks IMXRT1050_CLK_USDHC1>;
- 			clock-names = "ipg", "ahb", "per";
- 			bus-width = <4>;
--- 
-2.39.5
-
+--- a/drivers/iio/adc/ti-ads8688.c
++++ b/drivers/iio/adc/ti-ads8688.c
+@@ -381,7 +381,7 @@ static irqreturn_t ads8688_trigger_handl
+ 	struct iio_poll_func *pf = p;
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	/* Ensure naturally aligned timestamp */
+-	u16 buffer[ADS8688_MAX_CHANNELS + sizeof(s64)/sizeof(u16)] __aligned(8);
++	u16 buffer[ADS8688_MAX_CHANNELS + sizeof(s64)/sizeof(u16)] __aligned(8) = { };
+ 	int i, j = 0;
+ 
+ 	iio_for_each_active_channel(indio_dev, i) {
 
 
 
