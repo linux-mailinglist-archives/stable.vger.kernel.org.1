@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-108994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63805A1214F
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:55:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF7DBA120BD
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:48:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE3F47A1F6D
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:55:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 112963AA4B8
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:48:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 178871E98F1;
-	Wed, 15 Jan 2025 10:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 381931E98F6;
+	Wed, 15 Jan 2025 10:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSmBudnS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IPe+rjnp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C868D1E98EA;
-	Wed, 15 Jan 2025 10:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DA61E98EA;
+	Wed, 15 Jan 2025 10:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938502; cv=none; b=PZiE0eKp9GlAGQTrwez9YBykmCMLb3aVZ4+E3qtcGpXKwhJWTJfrw8pSFYQOUzb6Wikd1bP4Wh17Nenln/kv4xJg4D9t2M1gva2a/ZWGC0yCO8CReA2XSHijICYM8PvwFL3DODii1YrPiJbUxtXqJWtUkbeba0w75Sm51wTgF7c=
+	t=1736938103; cv=none; b=GpjOQoB0Km6pMZQgOQrUj84zxsBKGncxBIxaFwTAyoxS6ysBtyFGdE9Feq4frqn/NZ048QoFaBvimEMiudLQHKreF9VcdyVxAMWeeaP/9Ev5wH/2wUjDxXFj1NjPQA5GF5l8e5KJ9mvayTX9WuNb92Z9VfCVP/N2iOqw8WMAk14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938502; c=relaxed/simple;
-	bh=pzNtzX83mi0JVvz4Ga7AQGLRsUL0pR5/FmpHvJN8/Tk=;
+	s=arc-20240116; t=1736938103; c=relaxed/simple;
+	bh=qD1jfbEvWE2wUQ36rpDd/oleUImvULlT3uZNo/kUuwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3dfYqtrhj8q/Hq3lgWp3YxBmjW6TSXfZisGikIZXhyfgbNSpJScqvRgFeGp7ItUSWyUANARYRButj3Ci+b4nzQ+WTYJNXrj+etr1pXzwc7bdGe55/xJcs6VtdyRt2br+yIVYvV1HjkjLNk3g7Uy6g36B4qEdNGa58Yv5xWZ+24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSmBudnS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F4BC4CEDF;
-	Wed, 15 Jan 2025 10:55:01 +0000 (UTC)
+	 MIME-Version; b=UCFBNOq7CEKgKiPepbGRzFvQ3SonH3ldTvjbwtw0E8oO2d7laR8b0RCa8XBDfir7AbtWLxFys+rL04pCryJHc269VXLKSzYuWlTHpNdQIWzpH9A/AKB2JBlZGBfJdEsxgn0joP70NnVocnw2J5nliKLVtPeiFgBuiebj7njclRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IPe+rjnp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A923C4CEDF;
+	Wed, 15 Jan 2025 10:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938502;
-	bh=pzNtzX83mi0JVvz4Ga7AQGLRsUL0pR5/FmpHvJN8/Tk=;
+	s=korg; t=1736938102;
+	bh=qD1jfbEvWE2wUQ36rpDd/oleUImvULlT3uZNo/kUuwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JSmBudnSQJ9QpgKgztL+N3i9Al8wVWad8XmHXGHMbEBvelThOvhE3d6RE7UUz2Eai
-	 yqFMjrr2WombCOPnpQNpHVyRfR4qs9pNKAjYrhn/ti8pZdIsgK0PgObVgvFsxHxtx5
-	 vLrkTiDI125whayVlVrHKtRFZ+Y5x2bnbeZOjp7A=
+	b=IPe+rjnpif/5KeI+W/NoQPSmzlnS33WLhmjZYuGweEvmWMMHcC4W8LxYQru2+TUtG
+	 nGbRl8wh7LmQBSV4wJJuU4oLuhu1k2kq6CoAGs/LV4hRXOTgeCesFM4vwRcRK0TVoM
+	 mPGNJLtmucELvc56EHPgxGTLxmezMY9i7HPCFIJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	Atish Patra <atishp@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 003/129] jbd2: increase IO priority for writing revoke records
-Date: Wed, 15 Jan 2025 11:36:18 +0100
-Message-ID: <20250115103554.499797469@linuxfoundation.org>
+Subject: [PATCH 6.12 083/189] drivers/perf: riscv: Fix Platform firmware event data
+Date: Wed, 15 Jan 2025 11:36:19 +0100
+Message-ID: <20250115103609.656314701@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Atish Patra <atishp@rivosinc.com>
 
-[ Upstream commit ac1e21bd8c883aeac2f1835fc93b39c1e6838b35 ]
+[ Upstream commit fc58db9aeb15e89b69ff5e9abc69ecf9e5f888ed ]
 
-Commit '6a3afb6ac6df ("jbd2: increase the journal IO's priority")'
-increases the priority of journal I/O by marking I/O with the
-JBD2_JOURNAL_REQ_FLAGS. However, that commit missed the revoke buffers,
-so also addresses that kind of I/Os.
+Platform firmware event data field is allowed to be 62 bits for
+Linux as uppper most two bits are reserved to indicate SBI fw or
+platform specific firmware events.
+However, the event data field is masked as per the hardware raw
+event mask which is not correct.
 
-Fixes: 6a3afb6ac6df ("jbd2: increase the journal IO's priority")
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://lore.kernel.org/r/20241203014407.805916-2-yi.zhang@huaweicloud.com
-Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fix the platform firmware event data field with proper mask.
+
+Fixes: f0c9363db2dd ("perf/riscv-sbi: Add platform specific firmware event handling")
+
+Signed-off-by: Atish Patra <atishp@rivosinc.com>
+Link: https://lore.kernel.org/r/20241212-pmu_event_fixes_v2-v2-1-813e8a4f5962@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/revoke.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/include/asm/sbi.h |  1 +
+ drivers/perf/riscv_pmu_sbi.c | 12 +++++-------
+ 2 files changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/fs/jbd2/revoke.c b/fs/jbd2/revoke.c
-index 4556e4689024..ce63d5fde9c3 100644
---- a/fs/jbd2/revoke.c
-+++ b/fs/jbd2/revoke.c
-@@ -654,7 +654,7 @@ static void flush_descriptor(journal_t *journal,
- 	set_buffer_jwrite(descriptor);
- 	BUFFER_TRACE(descriptor, "write");
- 	set_buffer_dirty(descriptor);
--	write_dirty_buffer(descriptor, REQ_SYNC);
-+	write_dirty_buffer(descriptor, JBD2_JOURNAL_REQ_FLAGS);
- }
- #endif
+diff --git a/arch/riscv/include/asm/sbi.h b/arch/riscv/include/asm/sbi.h
+index 98f631b051db..9be38b05f4ad 100644
+--- a/arch/riscv/include/asm/sbi.h
++++ b/arch/riscv/include/asm/sbi.h
+@@ -158,6 +158,7 @@ struct riscv_pmu_snapshot_data {
+ };
  
+ #define RISCV_PMU_RAW_EVENT_MASK GENMASK_ULL(47, 0)
++#define RISCV_PMU_PLAT_FW_EVENT_MASK GENMASK_ULL(61, 0)
+ #define RISCV_PMU_RAW_EVENT_IDX 0x20000
+ #define RISCV_PLAT_FW_EVENT	0xFFFF
+ 
+diff --git a/drivers/perf/riscv_pmu_sbi.c b/drivers/perf/riscv_pmu_sbi.c
+index 1aa303f76cc7..3473ba02abf3 100644
+--- a/drivers/perf/riscv_pmu_sbi.c
++++ b/drivers/perf/riscv_pmu_sbi.c
+@@ -507,7 +507,6 @@ static int pmu_sbi_event_map(struct perf_event *event, u64 *econfig)
+ {
+ 	u32 type = event->attr.type;
+ 	u64 config = event->attr.config;
+-	u64 raw_config_val;
+ 	int ret;
+ 
+ 	/*
+@@ -528,21 +527,20 @@ static int pmu_sbi_event_map(struct perf_event *event, u64 *econfig)
+ 	case PERF_TYPE_RAW:
+ 		/*
+ 		 * As per SBI specification, the upper 16 bits must be unused
+-		 * for a raw event.
++		 * for a hardware raw event.
+ 		 * Bits 63:62 are used to distinguish between raw events
+ 		 * 00 - Hardware raw event
+ 		 * 10 - SBI firmware events
+ 		 * 11 - Risc-V platform specific firmware event
+ 		 */
+-		raw_config_val = config & RISCV_PMU_RAW_EVENT_MASK;
++
+ 		switch (config >> 62) {
+ 		case 0:
+ 			ret = RISCV_PMU_RAW_EVENT_IDX;
+-			*econfig = raw_config_val;
++			*econfig = config & RISCV_PMU_RAW_EVENT_MASK;
+ 			break;
+ 		case 2:
+-			ret = (raw_config_val & 0xFFFF) |
+-				(SBI_PMU_EVENT_TYPE_FW << 16);
++			ret = (config & 0xFFFF) | (SBI_PMU_EVENT_TYPE_FW << 16);
+ 			break;
+ 		case 3:
+ 			/*
+@@ -551,7 +549,7 @@ static int pmu_sbi_event_map(struct perf_event *event, u64 *econfig)
+ 			 * Event data - raw event encoding
+ 			 */
+ 			ret = SBI_PMU_EVENT_TYPE_FW << 16 | RISCV_PLAT_FW_EVENT;
+-			*econfig = raw_config_val;
++			*econfig = config & RISCV_PMU_PLAT_FW_EVENT_MASK;
+ 			break;
+ 		}
+ 		break;
 -- 
 2.39.5
 
