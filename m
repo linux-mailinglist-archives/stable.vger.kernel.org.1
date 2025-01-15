@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-108789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FC58A12043
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:43:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE7ADA1218C
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:58:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84AFA3A1A29
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:43:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 585347A43A1
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:57:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00FF0248BA8;
-	Wed, 15 Jan 2025 10:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB63248BDF;
+	Wed, 15 Jan 2025 10:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IugysFql"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eq1DZaU9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3167248BA0;
-	Wed, 15 Jan 2025 10:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C066E248BD0;
+	Wed, 15 Jan 2025 10:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937810; cv=none; b=l+NjWQ7RlUM31Qt9xuVeEmKyGlE4Mzs6BJlc+1GjvGbxeqwWHwdcyQ3kxpmQAZ0brI0060giDsn91sNd3zjTCJLxIk1OEKCbSjykRfSXsmCOeJo8exbZ5OIFGbz9q2/nv+63OJSUX6DhxqiiWHqEeqTwTAjN+yeKZkW/4AvGnC8=
+	t=1736938676; cv=none; b=bNaptaryZSTANgJ7dmyzW1KHXS+sXaU6ldhfDk2wfc1tgKirRPsBfUTfYJ5w9gqtRtuubHKEXWk6sJJ632YMYMJDX/5iKYiy8uu7Zn1Og6SjLAi/eJXOiezmDt2JoYLn0uojHEnBbYavDn5liA9xRzDoBLWnzqx/FtBWCChNcEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937810; c=relaxed/simple;
-	bh=DGemDNftQiM+XrK96VjuVtmm+DzpboF5nCTe76Hgvm8=;
+	s=arc-20240116; t=1736938676; c=relaxed/simple;
+	bh=9PQmzy+rESUNoT/vWELZTyMWpIvHeRQcrMUtrniRLoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B9U9XEVul5+J/GlnEt7F0bFK7PqcthKm6CDZ+ZF7PjSjyo6bY+JNMWubxRFufBSVOqYkk4SPJF83kaq6unVCo7fieozRFqK2zDq0N4/JeJLp6GrBonKyYZUIKT9446hayp57M/iITj5+NGJDbp04Qn9RUuO5EjgK7FbEGJwOKjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IugysFql; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA419C4CEE1;
-	Wed, 15 Jan 2025 10:43:29 +0000 (UTC)
+	 MIME-Version; b=EqQ7EtXd2FB+wsi3kfcKm9EeW3/uWosMRAhh4bj2HK0SDPQOFzZO37nIvkY78braqtUUpyvZ8UYs6L6yyzgBuzUz2NS1jXFA8vkpya1pR5/G2hibSv4vkBGMHCkcoQV/zXxKD/cYv2xyc5CgeSzlEr29CjjDPdsZIFwPgsWSJKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eq1DZaU9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31482C4CEDF;
+	Wed, 15 Jan 2025 10:57:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937810;
-	bh=DGemDNftQiM+XrK96VjuVtmm+DzpboF5nCTe76Hgvm8=;
+	s=korg; t=1736938676;
+	bh=9PQmzy+rESUNoT/vWELZTyMWpIvHeRQcrMUtrniRLoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IugysFqlBaSOWn4+aYVkk+zOw+c53JA0OOGgbySjVvzPfR1pCLBMDAsNTQREsHHYJ
-	 gk/vsRd368H6pljQkX2aB/KbugzaBq2yHSGLHHDCM8yga+H0G5KRlUjei9cTJxHm4d
-	 HYR23ET0BckbF7CWy/TwgMMgZ833SCYDlV8BtU3I=
+	b=eq1DZaU9gBa9QdUFTM++OTNFZxxpky0zs2But9mdW1j93G+4JZVaHU7gJjvR4m8vm
+	 twf8/t7NBX4Co6BBc/okuqxl2LALDwJkmE7Lc1KCiWXTYF+jCll55jLqLeSKNTDUQs
+	 Og7E/ERoWZP7Yy/Feus9NKZY6c/x0xvw7G6vj3cQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Li Huafei <lihuafei1@huawei.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 59/92] topology: Keep the cpumask unchanged when printing cpumap
+	Al Viro <viro@zeniv.linux.org.uk>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 062/129] sctp: sysctl: cookie_hmac_alg: avoid using current->nsproxy
 Date: Wed, 15 Jan 2025 11:37:17 +0100
-Message-ID: <20250115103549.917834335@linuxfoundation.org>
+Message-ID: <20250115103556.853988576@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Huafei <lihuafei1@huawei.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit cbd399f78e23ad4492c174fc5e6b3676dba74a52 upstream.
+commit ea62dd1383913b5999f3d16ae99d411f41b528d4 upstream.
 
-During fuzz testing, the following warning was discovered:
+As mentioned in a previous commit of this series, using the 'net'
+structure via 'current' is not recommended for different reasons:
 
- different return values (15 and 11) from vsnprintf("%*pbl
- ", ...)
+- Inconsistency: getting info from the reader's/writer's netns vs only
+  from the opener's netns.
 
- test:keyward is WARNING in kvasprintf
- WARNING: CPU: 55 PID: 1168477 at lib/kasprintf.c:30 kvasprintf+0x121/0x130
- Call Trace:
-  kvasprintf+0x121/0x130
-  kasprintf+0xa6/0xe0
-  bitmap_print_to_buf+0x89/0x100
-  core_siblings_list_read+0x7e/0xb0
-  kernfs_file_read_iter+0x15b/0x270
-  new_sync_read+0x153/0x260
-  vfs_read+0x215/0x290
-  ksys_read+0xb9/0x160
-  do_syscall_64+0x56/0x100
-  entry_SYSCALL_64_after_hwframe+0x78/0xe2
+- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
+  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
+  syzbot [1] using acct(2).
 
-The call trace shows that kvasprintf() reported this warning during the
-printing of core_siblings_list. kvasprintf() has several steps:
+The 'net' structure can be obtained from the table->data using
+container_of().
 
- (1) First, calculate the length of the resulting formatted string.
+Note that table->data could also be used directly, as this is the only
+member needed from the 'net' structure, but that would increase the size
+of this fix, to use '*data' everywhere 'net->sctp.sctp_hmac_alg' is
+used.
 
- (2) Allocate a buffer based on the returned length.
-
- (3) Then, perform the actual string formatting.
-
- (4) Check whether the lengths of the formatted strings returned in
-     steps (1) and (2) are consistent.
-
-If the core_cpumask is modified between steps (1) and (3), the lengths
-obtained in these two steps may not match. Indeed our test includes cpu
-hotplugging, which should modify core_cpumask while printing.
-
-To fix this issue, cache the cpumask into a temporary variable before
-calling cpumap_print_{list, cpumask}_to_buf(), to keep it unchanged
-during the printing process.
-
-Fixes: bb9ec13d156e ("topology: use bin_attribute to break the size limitation of cpumap ABI")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Li Huafei <lihuafei1@huawei.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://lore.kernel.org/r/20241114110141.94725-1-lihuafei1@huawei.com
+Fixes: 3c68198e7511 ("sctp: Make hmac algorithm selection for cookie generation dynamic")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-4-5df34b2083e8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/topology.c |   24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ net/sctp/sysctl.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/base/topology.c
-+++ b/drivers/base/topology.c
-@@ -27,9 +27,17 @@ static ssize_t name##_read(struct file *
- 			   loff_t off, size_t count)				\
- {										\
- 	struct device *dev = kobj_to_dev(kobj);                                 \
-+	cpumask_var_t mask;							\
-+	ssize_t n;								\
- 										\
--	return cpumap_print_bitmask_to_buf(buf, topology_##mask(dev->id),	\
--					   off, count);                         \
-+	if (!alloc_cpumask_var(&mask, GFP_KERNEL))				\
-+		return -ENOMEM;							\
-+										\
-+	cpumask_copy(mask, topology_##mask(dev->id));				\
-+	n = cpumap_print_bitmask_to_buf(buf, mask, off, count);			\
-+	free_cpumask_var(mask);							\
-+										\
-+	return n;								\
- }										\
- 										\
- static ssize_t name##_list_read(struct file *file, struct kobject *kobj,	\
-@@ -37,9 +45,17 @@ static ssize_t name##_list_read(struct f
- 				loff_t off, size_t count)			\
- {										\
- 	struct device *dev = kobj_to_dev(kobj);					\
-+	cpumask_var_t mask;							\
-+	ssize_t n;								\
-+										\
-+	if (!alloc_cpumask_var(&mask, GFP_KERNEL))				\
-+		return -ENOMEM;							\
-+										\
-+	cpumask_copy(mask, topology_##mask(dev->id));				\
-+	n = cpumap_print_list_to_buf(buf, mask, off, count);			\
-+	free_cpumask_var(mask);							\
- 										\
--	return cpumap_print_list_to_buf(buf, topology_##mask(dev->id),		\
--					off, count);				\
-+	return n;								\
- }
- 
- define_id_show_func(physical_package_id, "%d");
+--- a/net/sctp/sysctl.c
++++ b/net/sctp/sysctl.c
+@@ -391,7 +391,8 @@ static struct ctl_table sctp_net_table[]
+ static int proc_sctp_do_hmac_alg(struct ctl_table *ctl, int write,
+ 				 void *buffer, size_t *lenp, loff_t *ppos)
+ {
+-	struct net *net = current->nsproxy->net_ns;
++	struct net *net = container_of(ctl->data, struct net,
++				       sctp.sctp_hmac_alg);
+ 	struct ctl_table tbl;
+ 	bool changed = false;
+ 	char *none = "none";
 
 
 
