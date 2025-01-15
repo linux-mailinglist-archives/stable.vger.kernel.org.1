@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-108926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6235BA120F3
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:51:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46302A12176
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:56:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB367188C880
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:51:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AE3B16A28F
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:56:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E95248BCB;
-	Wed, 15 Jan 2025 10:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962851E98E4;
+	Wed, 15 Jan 2025 10:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPcSaRcZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2FFVpRq+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66597248BA6;
-	Wed, 15 Jan 2025 10:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539E5248BD1;
+	Wed, 15 Jan 2025 10:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938268; cv=none; b=mUKSf3b5hQvPNlgAaWeBXbs0A1yt6rfh2IOAmml53exqSiqWHyW1xq3u313E4riUn1JgIIaFJS4KQGFKOZ2+fxIw4iHedU4TuCtKCODHzF6an1P92vfVq9g1q9P5AqvLJQaqGeh5frCAa2LuvJhqq4TWTK/M/ccTuPFmRCmZaiQ=
+	t=1736938612; cv=none; b=bchGLsZflYhZW6r1LA3mnLHUJXiJco4LV6/S3hXiaJd0PqgQit0M6fVpqneNIyIX9lC4ySaNhmmsi5skzEZTeo0kxqTuD1njKkjngiCgNcRx7nUT9M7L1QxNQ/Jt29aLGpEaKnFmFXzF9NqTM3LjdC20xlErcaC2tfEzfpPmKME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938268; c=relaxed/simple;
-	bh=yWCnOfxVxQbozFShAMwEnCDIoTbYkdyWrcVHNnCVqRM=;
+	s=arc-20240116; t=1736938612; c=relaxed/simple;
+	bh=8tHS2hnK5a2Jlq8fMGvOG5WBj5G4+hi7zSzaZRHC0U0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cTpALVepuemXcZ6EnDqh7c9hw/+0W9Ti0+zjtuIuMjNdAYXBd+DAlGv2NWdpIbQ7FjwQO9o2sKixJYRdT1G4IvUcFpGkqdXB277+Rw/fNmSCesa4P3XXZ2AeSQclm0NTPsYTT/qXB9hNM9CS4ku/+55v9VK0THZx8iydRSypse4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPcSaRcZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B54FC4CEDF;
-	Wed, 15 Jan 2025 10:51:07 +0000 (UTC)
+	 MIME-Version; b=NXvYWGn39+fD1ylIhCM+sDCAp9dOIx2OsOD6G15euGN8C5R5ePjPxfZC8YVayF4WZLUVJrH1rlECRUZ440NuOZAfPObDtaxF09hLL2HGMO+EToPaIoCrUBP/rMlAapBbnij5YYlzMR8FKgWWspcXx+hWVlxnUjybbOcx0oaJfeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2FFVpRq+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2EA8C4CEDF;
+	Wed, 15 Jan 2025 10:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938268;
-	bh=yWCnOfxVxQbozFShAMwEnCDIoTbYkdyWrcVHNnCVqRM=;
+	s=korg; t=1736938612;
+	bh=8tHS2hnK5a2Jlq8fMGvOG5WBj5G4+hi7zSzaZRHC0U0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZPcSaRcZeyd2183YIodPhP7pZqEkEYPbydDgIpYhjpm3WM3zoiwre0D4IURXDYMB2
-	 X4880z5lJ1dDoOL9REmpmrQsf3yrB8cYlKjiyipINvqzjBxuJA4Njqvdm42nukVULJ
-	 2j9Cw/cbGbY6OqQawZ6Oaw5pl1PjUvVR8B3K+1L4=
+	b=2FFVpRq+FSQU/ihkhqRjii9L1x4AE/QkeCBmH0Jb1x/PbphLs5sUQSCbuaYSYKIR2
+	 CJrt4fgLljRtpQf9Por96OcvgLBijGMi4FpETFnw+psVtXRgqSU1eajbd/jllvfJTt
+	 7kTebcSkW8lDGBgBJDR4qeMtciML4JvlbhhwLMG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 092/189] mptcp: sysctl: avail sched: remove write access
+	syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com,
+	syzbot+de04e06b28cfecf2281c@syzkaller.appspotmail.com,
+	syzbot+c8c8238b394be4a1087d@syzkaller.appspotmail.com,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 013/129] erofs: handle overlapped pclusters out of crafted images properly
 Date: Wed, 15 Jan 2025 11:36:28 +0100
-Message-ID: <20250115103609.997650553@linuxfoundation.org>
+Message-ID: <20250115103554.900034081@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-commit 771ec78dc8b48d562e6015bb535ed3cd37043d78 upstream.
+commit 9e2f9d34dd12e6e5b244ec488bcebd0c2d566c50 upstream.
 
-'net.mptcp.available_schedulers' sysctl knob is there to list available
-schedulers, not to modify this list.
+syzbot reported a task hang issue due to a deadlock case where it is
+waiting for the folio lock of a cached folio that will be used for
+cache I/Os.
 
-There are then no reasons to give write access to it.
+After looking into the crafted fuzzed image, I found it's formed with
+several overlapped big pclusters as below:
 
-Nothing would have been written anyway, but no errors would have been
-returned, which is unexpected.
+ Ext:   logical offset   |  length :     physical offset    |  length
+   0:        0..   16384 |   16384 :     151552..    167936 |   16384
+   1:    16384..   32768 |   16384 :     155648..    172032 |   16384
+   2:    32768..   49152 |   16384 :  537223168.. 537239552 |   16384
+...
 
-Fixes: 73c900aa3660 ("mptcp: add net.mptcp.available_schedulers")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-1-5df34b2083e8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Here, extent 0/1 are physically overlapped although it's entirely
+_impossible_ for normal filesystem images generated by mkfs.
+
+First, managed folios containing compressed data will be marked as
+up-to-date and then unlocked immediately (unlike in-place folios) when
+compressed I/Os are complete.  If physical blocks are not submitted in
+the incremental order, there should be separate BIOs to avoid dependency
+issues.  However, the current code mis-arranges z_erofs_fill_bio_vec()
+and BIO submission which causes unexpected BIO waits.
+
+Second, managed folios will be connected to their own pclusters for
+efficient inter-queries.  However, this is somewhat hard to implement
+easily if overlapped big pclusters exist.  Again, these only appear in
+fuzzed images so let's simply fall back to temporary short-lived pages
+for correctness.
+
+Additionally, it justifies that referenced managed folios cannot be
+truncated for now and reverts part of commit 2080ca1ed3e4 ("erofs: tidy
+up `struct z_erofs_bvec`") for simplicity although it shouldn't be any
+difference.
+
+Reported-by: syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com
+Reported-by: syzbot+de04e06b28cfecf2281c@syzkaller.appspotmail.com
+Reported-by: syzbot+c8c8238b394be4a1087d@syzkaller.appspotmail.com
+Tested-by: syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/0000000000002fda01061e334873@google.com
+Fixes: 8e6c8fa9f2e9 ("erofs: enable big pcluster feature")
+Link: https://lore.kernel.org/r/20240910070847.3356592-1-hsiangkao@linux.alibaba.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/ctrl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/erofs/zdata.c | 59 +++++++++++++++++++++++++-----------------------
+ 1 file changed, 31 insertions(+), 28 deletions(-)
 
-diff --git a/net/mptcp/ctrl.c b/net/mptcp/ctrl.c
-index 38d8121331d4..d9b57fab2a13 100644
---- a/net/mptcp/ctrl.c
-+++ b/net/mptcp/ctrl.c
-@@ -228,7 +228,7 @@ static struct ctl_table mptcp_sysctl_table[] = {
- 	{
- 		.procname = "available_schedulers",
- 		.maxlen	= MPTCP_SCHED_BUF_MAX,
--		.mode = 0644,
-+		.mode = 0444,
- 		.proc_handler = proc_available_schedulers,
- 	},
- 	{
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index 1c0e6167d8e7..9fa07436a4da 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -1483,14 +1483,13 @@ static struct page *pickup_page_for_submission(struct z_erofs_pcluster *pcl,
+ 		goto out;
+ 
+ 	lock_page(page);
+-
+-	/* only true if page reclaim goes wrong, should never happen */
+-	DBG_BUGON(justfound && PagePrivate(page));
+-
+-	/* the page is still in manage cache */
+-	if (page->mapping == mc) {
++	if (likely(page->mapping == mc)) {
+ 		WRITE_ONCE(pcl->compressed_bvecs[nr].page, page);
+ 
++		/*
++		 * The cached folio is still in managed cache but without
++		 * a valid `->private` pcluster hint.  Let's reconnect them.
++		 */
+ 		if (!PagePrivate(page)) {
+ 			/*
+ 			 * impossible to be !PagePrivate(page) for
+@@ -1504,22 +1503,24 @@ static struct page *pickup_page_for_submission(struct z_erofs_pcluster *pcl,
+ 			SetPagePrivate(page);
+ 		}
+ 
+-		/* no need to submit io if it is already up-to-date */
+-		if (PageUptodate(page)) {
+-			unlock_page(page);
+-			page = NULL;
++		if (likely(page->private == (unsigned long)pcl)) {
++			/* don't submit cache I/Os again if already uptodate */
++			if (PageUptodate(page)) {
++				unlock_page(page);
++				page = NULL;
++
++			}
++			goto out;
+ 		}
+-		goto out;
++		/*
++		 * Already linked with another pcluster, which only appears in
++		 * crafted images by fuzzers for now.  But handle this anyway.
++		 */
++		tocache = false;	/* use temporary short-lived pages */
++	} else {
++		DBG_BUGON(1); /* referenced managed folios can't be truncated */
++		tocache = true;
+ 	}
+-
+-	/*
+-	 * the managed page has been truncated, it's unsafe to
+-	 * reuse this one, let's allocate a new cache-managed page.
+-	 */
+-	DBG_BUGON(page->mapping);
+-	DBG_BUGON(!justfound);
+-
+-	tocache = true;
+ 	unlock_page(page);
+ 	put_page(page);
+ out_allocpage:
+@@ -1677,16 +1678,11 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+ 		end = cur + pcl->pclusterpages;
+ 
+ 		do {
+-			struct page *page;
+-
+-			page = pickup_page_for_submission(pcl, i++,
+-					&f->pagepool, mc);
+-			if (!page)
+-				continue;
++			struct page *page = NULL;
+ 
+ 			if (bio && (cur != last_index + 1 ||
+ 				    last_bdev != mdev.m_bdev)) {
+-submit_bio_retry:
++drain_io:
+ 				submit_bio(bio);
+ 				if (memstall) {
+ 					psi_memstall_leave(&pflags);
+@@ -1695,6 +1691,13 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+ 				bio = NULL;
+ 			}
+ 
++			if (!page) {
++				page = pickup_page_for_submission(pcl, i++,
++						&f->pagepool, mc);
++				if (!page)
++					continue;
++			}
++
+ 			if (unlikely(PageWorkingset(page)) && !memstall) {
+ 				psi_memstall_enter(&pflags);
+ 				memstall = 1;
+@@ -1715,7 +1718,7 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+ 			}
+ 
+ 			if (bio_add_page(bio, page, PAGE_SIZE, 0) < PAGE_SIZE)
+-				goto submit_bio_retry;
++				goto drain_io;
+ 
+ 			last_index = cur;
+ 			bypass = false;
 -- 
-2.48.0
+2.39.5
 
 
 
