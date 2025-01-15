@@ -1,269 +1,218 @@
-Return-Path: <stable+bounces-108679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B839A11AFD
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 08:35:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 548BCA11B1D
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 08:40:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB3003A2201
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 07:35:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66A74188ACCD
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 07:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C55622F39A;
-	Wed, 15 Jan 2025 07:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D598122F3A6;
+	Wed, 15 Jan 2025 07:40:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="7btgNDP2";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="u/ZFPW/u"
 X-Original-To: stable@vger.kernel.org
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E1E1DB125;
-	Wed, 15 Jan 2025 07:35:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D74418952C;
+	Wed, 15 Jan 2025 07:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736926544; cv=none; b=hQNkVBHeYwDAj/BYpa//wydcqsTswX5WwHOYxrahgX42XkEql6Npkq/5ljb4AEWtwR2ApfzLSaljcr2rMfANnWVWm8vVeiHGvu4ZDkoo24sE7iSPD6bGOuGQBt2M6K4oEd2rNG4ddsv5UF2S/urteL6jffXPnGs7KbjV5eNFg+Q=
+	t=1736926816; cv=none; b=JpfW4V7yesX2mkE8XHIp8REuxAWo0fZ6MWSJeyF/65uSSVDJJFn/rPWL5PpeclVfmKo7X/UNPfS9MmgnD/DXi9hJmnaHQh6WvgprqYDFDcd3vgnlIP3FiM/+sO9z0RIlF/KKQEL1MaiMG3GSR29wsI3vdrfP3nTu3YULcVacqOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736926544; c=relaxed/simple;
-	bh=9Wl1KF8qzrTClUqBG3bPTGOceXm1qn2C8CRgwj4kHkk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CTaZuq+Ezn6Fy1mxZIQCWG1ZLoQAfaW7mzO11KpBtnpQQrRzZU4WF7XAOvdH8ZzY3ahcl6Ngt6s+ofkKPK0DGHCyqDzovQm5THz1v0C9fqiJO8KaMmi9/7Lhq4TZyAom+waoZCvIhLwTt+IJLUNxcWCe9s+hR1m+teh15j4ufsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from localhost.localdomain (188.234.32.57) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Wed, 15 Jan
- 2025 10:35:23 +0300
-From: d.privalov <d.privalov@omp.ru>
-To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: "David S. Miller" <davem@davemloft.net>, Alexey Kuznetsov
-	<kuznet@ms2.inr.ac.ru>, Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>, Jakub
- Kicinski <kuba@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, Martin
- KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>, Yonghong Song
-	<yhs@fb.com>, John Fastabend <john.fastabend@gmail.com>, KP Singh
-	<kpsingh@kernel.org>, Eric Dumazet <edumazet@google.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<bpf@vger.kernel.org>, <lvc-project@linuxtesting.org>, Martin KaFai Lau
-	<martin.lau@kernel.org>, Kuniyuki Iwashima <kuniyu@amazon.com>, Dmitriy
- Privalov <d.privalov@omp.ru>
-Subject: [PATCH 5.10 1/1] tcp/dccp: Don't use timer_pending() in reqsk_queue_unlink().
-Date: Wed, 15 Jan 2025 10:35:32 +0300
-Message-ID: <20250115073532.212653-1-d.privalov@omp.ru>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1736926816; c=relaxed/simple;
+	bh=tqtOiF3aj+eIdil+2uwLgo8A19tDJyH9LhKmQsFfqpY=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=d/YT1aw6y46RHo4+aP0l/QYl33b70aZ+1Pal0/PXzST17Lr9GfLcwqZrmZ1unF8M5eX9VKQU8cCEKmJbZ0W1ivv0XDniCegLKqc8fZ0gmxin9GVpnJqW1tYM+8QAowvteGDcxDc5lR67v66FkbTxeYmwkZmVav+Ty1+iAe6geaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=7btgNDP2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=u/ZFPW/u; arc=none smtp.client-ip=202.12.124.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id D076A25401D8;
+	Wed, 15 Jan 2025 02:40:11 -0500 (EST)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-10.internal (MEProxy); Wed, 15 Jan 2025 02:40:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1736926811;
+	 x=1737013211; bh=nAJjcj2BGDopYbS6SMWIeAy5fwPHqqTKZFevk8AgF/M=; b=
+	7btgNDP25U8IulQz7eItqhRXEPfGriEcTj6TzzCvpf+QUSpYG5uNeuYeqHsJc8+i
+	qtP1DnotoLqEFLZqU6uYpMfzmJf3JgBg5+WpGyK2TwlMEPYwDlbST69V7baAtJkP
+	ddEnbGBY9zlbVU9ES30X+Or/ETS/umwMbYFc5arfqMUWgG2TOgFxsqboScEw0JcD
+	oT1TQRhlg0DcgP7RUAV4p/5y9/zJ2jXEJg2y67uMO0ycRlbT1N+7POzJfknDiNPv
+	3tSUg2V5J10dkOAV9X5sApDWg0lL5xsrhihMNixHHe4R6NyPbQ2ePm8ZYFONJtXW
+	VfHzY+ItZyWShOKKrIVeqw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1736926811; x=
+	1737013211; bh=nAJjcj2BGDopYbS6SMWIeAy5fwPHqqTKZFevk8AgF/M=; b=u
+	/ZFPW/u9GrhgMl2SnA6zjbBn/AZnY44SmAbYODAgUcA8ibHrzwe879qh4XxJKuoN
+	sBYJ6eVB0dgWs1xEBHx/U/c7HNjd31BJgkmOCI4MHMeUVN+l2CTP0LVassENOcg8
+	+dYb4CmRVJ4rl71pGtMxAgX895CTma8sujkm8nbi3ZgFQwrAHG2K7NGr0tGIAvdJ
+	ADFlMWgm/sn83OhmQAzv0j/d455vk+FRhN7O5OUrsNO9njAu012yNqipKR8452l6
+	dPXzfn5SejKPPuS6G+cnYGYWRDTzOrsSJ26e5x5Knqm+lRert0NlLhmTNyyrQjjF
+	mAkNwpc4LOzPa4T8Wpx2w==
+X-ME-Sender: <xms:WmaHZ4kpdOmJVZWYPoI4A6kIa30t28eMEsIiLUILgMiAk9_Nie06eg>
+    <xme:WmaHZ33hCCSJqf6go6lylmmUcR9sC3854sEBEZf6xCaK_sEB2eMoXQn19tuc0ZZ2c
+    6pwEGntdO-ejBUKL0E>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudehjedguddtkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthhqredtredt
+    jeenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusg
+    druggvqeenucggtffrrghtthgvrhhnpedvhfdvkeeuudevfffftefgvdevfedvleehvddv
+    geejvdefhedtgeegveehfeeljeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopeej
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehtshgsohhgvghnugesrghlphhhrg
+    drfhhrrghnkhgvnhdruggvpdhrtghpthhtohepjhhirgiguhhnrdihrghnghesfhhlhihg
+    ohgrthdrtghomhdprhgtphhtthhopehmrghtrdhjohhntgiihihksehovddrphhlpdhrtg
+    hpthhtohepsghhvgesrhgvughhrghtrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgv
+    rhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmh
+    hiphhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehv
+    ghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:WmaHZ2qo-o4aqgDQNIDPomjaQxxtBovgejipQe20AmfJajFnc7t-JQ>
+    <xmx:WmaHZ0ldpIZjqq5oSSlrgRipVrRSVRbGaRTah_JhogTZc6xELOWh8A>
+    <xmx:WmaHZ20SW4mYG8mz5glZ_hdo0L1x6Tl4m1q_1xY4sXzegbv_4U8MDA>
+    <xmx:WmaHZ7tit1HGeow2hDlqVqYPDVRuM_eTH0MVwI5ZdMg-7Hl3tjtU7Q>
+    <xmx:W2aHZwoDUwzwQT61tpOa24r5R3ipcipt0Kgkqi2S8sMYhWLfbJ-aRBbB>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id A7A412220072; Wed, 15 Jan 2025 02:40:10 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 01/15/2025 07:08:50
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 19
-X-KSE-AntiSpam-Info: Lua profiles 190342 [Jan 15 2025]
-X-KSE-AntiSpam-Info: Version: 6.1.1.7
-X-KSE-AntiSpam-Info: Envelope from: d.privalov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 49 0.3.49
- 28b3b64a43732373258a371bd1554adb2caa23cb
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 188.234.32.57 in (user)
- b.barracudacentral.org}
-X-KSE-AntiSpam-Info:
-	nvd.nist.gov:7.1.1;omp.ru:7.1.1;patch.msgid.link:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;lore.kernel.org:7.1.1;188.234.32.57:7.1.2
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: ApMailHostAddress: 188.234.32.57
-X-KSE-AntiSpam-Info: {DNS response errors}
-X-KSE-AntiSpam-Info: Rate: 19
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 01/15/2025 07:11:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 1/15/2025 1:37:00 AM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+Date: Wed, 15 Jan 2025 08:38:36 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Jiaxun Yang" <jiaxun.yang@flygoat.com>,
+ "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+ "Baoquan He" <bhe@redhat.com>
+Cc: "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ linux-kernel@vger.kernel.org,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ =?UTF-8?Q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
+Message-Id: <23f46c23-a58e-4a85-8733-480b5ebf993b@app.fastmail.com>
+In-Reply-To: <fb3aa671-45bc-4d57-b90b-2056eeed0ea6@app.fastmail.com>
+References: <20250114-malta-io-fixes-v1-1-74ef1dc402ec@flygoat.com>
+ <5ef27e01-2c5a-400a-be32-d3bcdeea6d26@app.fastmail.com>
+ <fb3aa671-45bc-4d57-b90b-2056eeed0ea6@app.fastmail.com>
+Subject: Re: [PATCH] MIPS: pci-legacy: Override pci_address_to_pio
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+On Tue, Jan 14, 2025, at 20:20, Jiaxun Yang wrote:
+> =E5=9C=A82025=E5=B9=B41=E6=9C=8814=E6=97=A5=E4=B8=80=E6=9C=88 =E4=B8=8B=
+=E5=8D=887:03=EF=BC=8CArnd Bergmann=E5=86=99=E9=81=93=EF=BC=9A
+>> On Tue, Jan 14, 2025, at 19:11, Jiaxun Yang wrote:
+>>>=20
+>>> +unsigned long pci_address_to_pio(phys_addr_t address)
+>>> +{
+>>> +	if (address > IO_SPACE_LIMIT)
+>>> +		return (unsigned long)-1;
+>>> +
+>>> +	return (unsigned long) address;
+>>> +}
+>>> +
+>>>  /*
+>>
+>> Isn't the argument to this function a CPU physical address? I
+>> don't think there is a point comparing it to IO_SPACE_LIMIT
+>> on architectures where I/O space is memory mapped.
+>
+> Actually not. It seems like the argument here is just raw PIO offset,
+> without applying mips_io_port_base.
+>
+> We should validate it to ensure it's within the range specified by
+> mips_io_port_base (which is sized by IO_SPACE_LIMIT).
 
-commit e8c526f2bdf1845bedaf6a478816a3d06fa78b8f upstream.
+I don't know what you mean with "raw PIO offset", but I don't think
+that's how it's supopsed to be used. Here is how this gets called
+in of_pci_range_to_resource()
 
-Martin KaFai Lau reported use-after-free [0] in reqsk_timer_handler().
+        if (res->flags & IORESOURCE_IO) {
+                unsigned long port;
+                err =3D pci_register_io_range(&np->fwnode, range->cpu_ad=
+dr,
+                                range->size);
+                if (err)
+                        goto invalid_range;
+                port =3D pci_address_to_pio(range->cpu_addr);
+                if (port =3D=3D (unsigned long)-1) {
+                        err =3D -EINVAL;
+                        goto invalid_range;
+                }
+                start =3D port;
+       }
 
-  """
-  We are seeing a use-after-free from a bpf prog attached to
-  trace_tcp_retransmit_synack. The program passes the req->sk to the
-  bpf_sk_storage_get_tracing kernel helper which does check for null
-  before using it.
-  """
+Where "range->cpu_addr" is the phys_addr_t location of the
+MMIO window that maps the host controllers port ranges, i.e.
+the fully translated address from the "ranges" property.
 
-The commit 83fccfc3940c ("inet: fix potential deadlock in
-reqsk_queue_unlink()") added timer_pending() in reqsk_queue_unlink() not
-to call del_timer_sync() from reqsk_timer_handler(), but it introduced a
-small race window.
+The point of the pci_address_to_pio() function is to convert
+this into the Linux-internal virtual port number that gets
+used as an argument to inb()/outb() and reported in
+/proc/ioports and that may or may not be the same as the
+address on the bus itself, depending on the how the translation
+gets set up.
 
-Before the timer is called, expire_timers() calls detach_timer(timer, true)
-to clear timer->entry.pprev and marks it as not pending.
+On loongson, we seem to have two port ranges that are set up
+like
 
-If reqsk_queue_unlink() checks timer_pending() just after expire_timers()
-calls detach_timer(), TCP will miss del_timer_sync(); the reqsk timer will
-continue running and send multiple SYN+ACKs until it expires.
+                isa@18000000 {
+                        compatible =3D "isa";
+                        ranges =3D <1 0x0 0x0 0x18000000 0x4000>;
+                };
 
-The reported UAF could happen if req->sk is close()d earlier than the timer
-expiration, which is 63s by default.
+                pci@1a000000 {
+                        ranges =3D <0x01000000 0x0 0x00020000 0x0 0x1802=
+0000 0x0 0x00020000>,
+                                 <0x02000000 0x0 0x40000000 0x0 0x400000=
+00 0x0 0x40000000>;
+                }
 
-The scenario would be
+Here, the cpu_addr is 0x18000000 for the isa bus and=20
+0x18020000 for the PCI bus, apparently the intention being that
+these are consecutive in physical space, though Linux is free
+to rearrange the logical port numbers in a different way, e.g.
+to ensure that the PCI bus can use port numbers below 0x10000.
 
-  1. inet_csk_complete_hashdance() calls inet_csk_reqsk_queue_drop(),
-     but del_timer_sync() is missed
+On Malta, I see a very strange
 
-  2. reqsk timer is executed and scheduled again
+        isa {
+                compatible =3D "isa";
+                ranges =3D <1 0 0 0x1000>;
+        };
 
-  3. req->sk is accept()ed and reqsk_put() decrements rsk_refcnt, but
-     reqsk timer still has another one, and inet_csk_accept() does not
-     clear req->sk for non-TFO sockets
+which maps the first 4096 port numbers into cpu_addr=3D0x0. The
+actual port window appears to be at a board specific location
 
-  4. sk is close()d
+#define MALTA_GT_PORT_BASE      get_gt_port_base(GT_PCI0IOLD_OFS)
+#define MALTA_BONITO_PORT_BASE  ((unsigned long)ioremap (0x1fd00000, 0x1=
+0000))
+#define MALTA_MSC_PORT_BASE     get_msc_port_base(MSC01_PCI_SC2PIOBASL)
 
-  5. reqsk timer is executed again, and BPF touches req->sk
+So e.g. on Bonito, the ranges property would have to be
 
-Let's not use timer_pending() by passing the caller context to
-__inet_csk_reqsk_queue_drop().
+      ranges =3D <1 0 0x1fd00000 0x1000>;
 
-Note that reqsk timer is pinned, so the issue does not happen in most
-use cases. [1]
+Not sure if this is patched in by the bootloader, or where the
+corresponding window for PCI gets defined, but I suspect that
+the reason for the regression is that the caller of
+pci_address_to_pio() accidentally passed in '0' instead of
+the physical address, and it happened to work because of the
+missing PCI_IOBASE definition but broke after that got defined.
 
-[0]
-BUG: KFENCE: use-after-free read in bpf_sk_storage_get_tracing+0x2e/0x1b0
-
-Use-after-free read at 0x00000000a891fb3a (in kfence-#1):
-bpf_sk_storage_get_tracing+0x2e/0x1b0
-bpf_prog_5ea3e95db6da0438_tcp_retransmit_synack+0x1d20/0x1dda
-bpf_trace_run2+0x4c/0xc0
-tcp_rtx_synack+0xf9/0x100
-reqsk_timer_handler+0xda/0x3d0
-run_timer_softirq+0x292/0x8a0
-irq_exit_rcu+0xf5/0x320
-sysvec_apic_timer_interrupt+0x6d/0x80
-asm_sysvec_apic_timer_interrupt+0x16/0x20
-intel_idle_irq+0x5a/0xa0
-cpuidle_enter_state+0x94/0x273
-cpu_startup_entry+0x15e/0x260
-start_secondary+0x8a/0x90
-secondary_startup_64_no_verify+0xfa/0xfb
-
-kfence-#1: 0x00000000a72cc7b6-0x00000000d97616d9, size=2376, cache=TCPv6
-
-allocated by task 0 on cpu 9 at 260507.901592s:
-sk_prot_alloc+0x35/0x140
-sk_clone_lock+0x1f/0x3f0
-inet_csk_clone_lock+0x15/0x160
-tcp_create_openreq_child+0x1f/0x410
-tcp_v6_syn_recv_sock+0x1da/0x700
-tcp_check_req+0x1fb/0x510
-tcp_v6_rcv+0x98b/0x1420
-ipv6_list_rcv+0x2258/0x26e0
-napi_complete_done+0x5b1/0x2990
-mlx5e_napi_poll+0x2ae/0x8d0
-net_rx_action+0x13e/0x590
-irq_exit_rcu+0xf5/0x320
-common_interrupt+0x80/0x90
-asm_common_interrupt+0x22/0x40
-cpuidle_enter_state+0xfb/0x273
-cpu_startup_entry+0x15e/0x260
-start_secondary+0x8a/0x90
-secondary_startup_64_no_verify+0xfa/0xfb
-
-freed by task 0 on cpu 9 at 260507.927527s:
-rcu_core_si+0x4ff/0xf10
-irq_exit_rcu+0xf5/0x320
-sysvec_apic_timer_interrupt+0x6d/0x80
-asm_sysvec_apic_timer_interrupt+0x16/0x20
-cpuidle_enter_state+0xfb/0x273
-cpu_startup_entry+0x15e/0x260
-start_secondary+0x8a/0x90
-secondary_startup_64_no_verify+0xfa/0xfb
-
-Fixes: 83fccfc3940c ("inet: fix potential deadlock in reqsk_queue_unlink()")
-Reported-by: Martin KaFai Lau <martin.lau@kernel.org>
-Closes: https://lore.kernel.org/netdev/eb6684d0-ffd9-4bdc-9196-33f690c25824@linux.dev/
-Link: https://lore.kernel.org/netdev/b55e2ca0-42f2-4b7c-b445-6ffd87ca74a0@linux.dev/ [1]
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20241014223312.4254-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[d.privalov: adapt calling __inet_csk_reqsk_queue_drop()]
-Signed-off-by: Dmitriy Privalov <d.privalov@omp.ru>
---- 
-Backport fix for CVE-2024-50154
-Link: https://nvd.nist.gov/vuln/detail/CVE-2024-50154
----
- net/ipv4/inet_connection_sock.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
-
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index 6ebe43b4d28f..332133aae3e1 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -722,21 +722,31 @@ static bool reqsk_queue_unlink(struct request_sock *req)
- 		found = __sk_nulls_del_node_init_rcu(req_to_sk(req));
- 		spin_unlock(lock);
- 	}
--	if (timer_pending(&req->rsk_timer) && del_timer_sync(&req->rsk_timer))
--		reqsk_put(req);
-+
- 	return found;
- }
- 
--bool inet_csk_reqsk_queue_drop(struct sock *sk, struct request_sock *req)
-+static bool __inet_csk_reqsk_queue_drop(struct sock *sk,
-+					struct request_sock *req,
-+					bool from_timer)
- {
- 	bool unlinked = reqsk_queue_unlink(req);
- 
-+	if (!from_timer && del_timer_sync(&req->rsk_timer))
-+		reqsk_put(req);
-+
- 	if (unlinked) {
- 		reqsk_queue_removed(&inet_csk(sk)->icsk_accept_queue, req);
- 		reqsk_put(req);
- 	}
-+
- 	return unlinked;
- }
-+
-+bool inet_csk_reqsk_queue_drop(struct sock *sk, struct request_sock *req)
-+{
-+	return __inet_csk_reqsk_queue_drop(sk, req, false);
-+}
- EXPORT_SYMBOL(inet_csk_reqsk_queue_drop);
- 
- void inet_csk_reqsk_queue_drop_and_put(struct sock *sk, struct request_sock *req)
-@@ -804,7 +814,8 @@ static void reqsk_timer_handler(struct timer_list *t)
- 		return;
- 	}
- drop:
--	inet_csk_reqsk_queue_drop_and_put(sk_listener, req);`
-+	__inet_csk_reqsk_queue_drop(sk_listener, req, true);
-+	reqsk_put(req);
- }
- 
- static void reqsk_queue_hash_req(struct request_sock *req,
--- 
-2.34.1
-
+       Arnd
 
