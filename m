@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-109024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A77AAA12175
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:56:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB2A6A1200D
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF81A18843EE
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:56:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 953C5163927
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2DD1DB142;
-	Wed, 15 Jan 2025 10:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807D11E9911;
+	Wed, 15 Jan 2025 10:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjupiRm+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y1tookXX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C246248BD1;
-	Wed, 15 Jan 2025 10:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D73D1E990E;
+	Wed, 15 Jan 2025 10:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938602; cv=none; b=VZ1MsUYLthBJBhS48slsH+4WGjKycsb3GvhBFHkJT53SjW8T9ftzIizcDTtq2PcapqfiMI8TzVc1RJ9HCt8FQk+Ubh8q3i/u5TWXhAymUpbdCpn/2aOAK8ykC57/RmMoHNStOtzMb1AXnFesfpH6JuGfHXbqsz3tZo0SC+hWXjI=
+	t=1736937632; cv=none; b=TKUDlvrJBbXuJ5cR2+6+e7mBHLAuy2A5dYbrlcjPShUOtexvwiKIYn1QOIse7j2AUYUAzBOAVHFCGrvZAhDlSH3sV1b2LhImZa01rm5xYWmMpJ59IBqbWWYfp7eCPwKmGKVEsYxaT4XIO4myGVuX5YBY/tRy0coFUCoMxbyyJUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938602; c=relaxed/simple;
-	bh=YfZhHAcUjcC3N5Ab1OR0ojCNwV804L4m9kzDFLqb3nc=;
+	s=arc-20240116; t=1736937632; c=relaxed/simple;
+	bh=JZzzSbgwQ5GzL9ZHypGyB0tyM9AsWQq/lgjcrj8LnfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k9PRmSzyGZGLmHBD/00RDNeegoh4vc1s4TYxdv5SN/z3Y8goIteFFvZivJ4JwoDT3KB5YBpopW1rdmRKTXjytit5JOmHsbTq7Sfa+K/S0dvOFhlsLz+LqBCHHcRamBKBPvTXLwO7d3nX/4mI6JSYAgBD3iwdb0tELQZ/jWcmvks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjupiRm+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0040C4CEDF;
-	Wed, 15 Jan 2025 10:56:41 +0000 (UTC)
+	 MIME-Version; b=aSoYhufg0isrt2cfRnIhxoOvRjsRvqGxzTKqVaM3Oe8eIhHYQiHTxGfsqkJ7huEDVfIIEJP1MqsHcLtN3LzPPl6j8Uqtz9k0otmE4vlv9Q8sG2WqMOPjwHGKjZM2ei4/yN0NRcpAmWSdjsYFWQ2IvCDd/+uTJBLqSlApIJidpgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y1tookXX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48928C4CEE1;
+	Wed, 15 Jan 2025 10:40:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938602;
-	bh=YfZhHAcUjcC3N5Ab1OR0ojCNwV804L4m9kzDFLqb3nc=;
+	s=korg; t=1736937631;
+	bh=JZzzSbgwQ5GzL9ZHypGyB0tyM9AsWQq/lgjcrj8LnfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TjupiRm+Ycz+JmqDnaXs5EElXcH3KfEOnFFZkHh/zc4czryZ1dNOsezCVQBnmr5fA
-	 33UHsClmZvvV+LzXzRJZYbvC3CYv/XY+8yY3xECPPBzMmhGpO3+RVyCNdf5A4nVscg
-	 MVib2K5fFFrntGFiu23/l6XgxCYY71KgUnukn81c=
+	b=y1tookXXhwqerIFHM6HsJQis9a+iD+zy2dlal7zHrtl5JS91wlRR87GdeW2Bwm99l
+	 wmywZR9qqqEbNjVccp9iF45Q7xJF9gJ6Kl4ZiYUuEAVPqSMe40SH7wOMtNge6Ii2MG
+	 lhcfaRGpbZ5olgPEnaMkeNVOi6Xx6ahM7q6hnQak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Yang <richard.weiyang@gmail.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>
-Subject: [PATCH 6.6 039/129] memblock tests: fix implicit declaration of function numa_valid_node
-Date: Wed, 15 Jan 2025 11:36:54 +0100
-Message-ID: <20250115103555.929360778@linuxfoundation.org>
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.1 37/92] dm-ebs: dont set the flag DM_TARGET_PASSES_INTEGRITY
+Date: Wed, 15 Jan 2025 11:36:55 +0100
+Message-ID: <20250115103549.010366888@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Yang <richard.weiyang@gmail.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 9364a7e40d54e6858479f0a96e1a04aa1204be16 upstream.
+commit 47f33c27fc9565fb0bc7dfb76be08d445cd3d236 upstream.
 
-commit 8043832e2a12 ("memblock: use numa_valid_node() helper to check
-for invalid node ID") introduce a new helper numa_valid_node(), which is
-not defined in memblock tests.
+dm-ebs uses dm-bufio to process requests that are not aligned on logical
+sector size. dm-bufio doesn't support passing integrity data (and it is
+unclear how should it do it), so we shouldn't set the
+DM_TARGET_PASSES_INTEGRITY flag.
 
-Let's add it in the corresponding header file.
-
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-CC: Mike Rapoport (IBM) <rppt@kernel.org>
-Link: https://lore.kernel.org/r/20240624015432.31134-1-richard.weiyang@gmail.com
-Signed-off-by: Mike Rapoport <rppt@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: d3c7b35c20d6 ("dm: add emulated block size target")
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/include/linux/numa.h |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/md/dm-ebs-target.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/include/linux/numa.h
-+++ b/tools/include/linux/numa.h
-@@ -13,4 +13,9 @@
- 
- #define	NUMA_NO_NODE	(-1)
- 
-+static inline bool numa_valid_node(int nid)
-+{
-+	return nid >= 0 && nid < MAX_NUMNODES;
-+}
-+
- #endif /* _LINUX_NUMA_H */
+--- a/drivers/md/dm-ebs-target.c
++++ b/drivers/md/dm-ebs-target.c
+@@ -441,7 +441,7 @@ static int ebs_iterate_devices(struct dm
+ static struct target_type ebs_target = {
+ 	.name		 = "ebs",
+ 	.version	 = {1, 0, 1},
+-	.features	 = DM_TARGET_PASSES_INTEGRITY,
++	.features	 = 0,
+ 	.module		 = THIS_MODULE,
+ 	.ctr		 = ebs_ctr,
+ 	.dtr		 = ebs_dtr,
 
 
 
