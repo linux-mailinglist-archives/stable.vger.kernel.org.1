@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-108883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD699A120C3
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:48:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C208A12006
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:40:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF90516A2C2
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:48:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 667CB3AA66F
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57952248BC1;
-	Wed, 15 Jan 2025 10:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357871E98F2;
+	Wed, 15 Jan 2025 10:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eog4+eeh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eJ6Lg7+P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A24248BB2;
-	Wed, 15 Jan 2025 10:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2335248BA0;
+	Wed, 15 Jan 2025 10:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938126; cv=none; b=NfLR5gyq679dJLw2Se13I72vS+MXEGjPkxJNUujonh+ufmg2Y/Bkt5M8whPi1r50AF8UMbWlywUhxdAor3i17HzmhDRDZsVvGAZk2sv+rOcd6fLf4gHouXLTEhWmVY6RPdFoKecDMldnv4f9yxzDAKlH7N4KCLOvOOfKsnq2M0Q=
+	t=1736937596; cv=none; b=KkbgXNMOSZfs0IdH4x3XOh0uRu3TyCwWBRxmztCk+gLKOgvS3XlS11aExJRFoq3aotxQrAyYFKog6rpOMHajy+mL5NPl3S1CiOtpoKdftJfow07kgWyO/PHP724HKZd4/QORVXifs14xER6DFXOFN8/AViOJiXAw5D1AiArVuLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938126; c=relaxed/simple;
-	bh=W7szpo4/fa4TzyIKGIh+mDTdhFs3My+UxKyyCKxe29M=;
+	s=arc-20240116; t=1736937596; c=relaxed/simple;
+	bh=4A1SXdKYO5c/lyo5sTMPgtz1HOA2ZZ9YCAfHKBmQqqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YACnWXD6vXQStIONKddDpEmuSzlq1VLQbCw1c5XxVHpWaJYzwI4aKDukL9zhajA8xhK0jIrxLED1uYRTJW9ZRKR+ULWi5S3HkZeyJg3Qc/ePoKUDOc+2Sed977ce0gX8HfGExB1IBGUWxdOCWspI1M0+s74Z6ZrI2Sx3ikuk1DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eog4+eeh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76889C4CEDF;
-	Wed, 15 Jan 2025 10:48:45 +0000 (UTC)
+	 MIME-Version; b=JGci4zIiGEFsRVPYk8nOy9PC8GVGxfC/tg5ebs/MO5Y2VKRKxXeKH0ViyWeQ7AYm+mEfSAmvvhhNwHWv9Tfjxf3tXsWKeknnb8RwLThgrCkn87oVo41zxVafikFIHwaDKW+W1Jdbkv7M+JJHiu0YItiXIlYMBLWKjUoeYZfpcv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eJ6Lg7+P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C811C4CEE4;
+	Wed, 15 Jan 2025 10:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938126;
-	bh=W7szpo4/fa4TzyIKGIh+mDTdhFs3My+UxKyyCKxe29M=;
+	s=korg; t=1736937595;
+	bh=4A1SXdKYO5c/lyo5sTMPgtz1HOA2ZZ9YCAfHKBmQqqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eog4+eehwmG49pD4FmZj15Dfx0D2+V50QJfs9EifeFxmjDD1agRSIEKRjmY/GO0eh
-	 Xyd6V9QybURLH3CQR+8GAL8ajtgwJAFG8Cxs4TrU3iRUwR+lkkMW3D6+t9xC7x2hYt
-	 i84O+hUsTHzvwsaebCr1gijPx69q0DxkyOodZfbM=
+	b=eJ6Lg7+P35JtRfGspuYPjhKqkhBvA2TxUatl9/yZK5dvLeEaOkB7jm9l59o5R7svU
+	 SH0GZVToSu8Y6dGwC1XJOC0v2cUeekOfuIpTDmXCliVBTgKnX2kQobvj49EbK7eh19
+	 d4P48/vTmpkTuCtPRLDr9vvstorVjuTtEMxeaVTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.12 089/189] fs: fix is_mnt_ns_file()
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Joe Thornber <thornber@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 07/92] dm array: fix unreleased btree blocks on closing a faulty array cursor
 Date: Wed, 15 Jan 2025 11:36:25 +0100
-Message-ID: <20250115103609.884498482@linuxfoundation.org>
+Message-ID: <20250115103547.828761001@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-commit aa21f333c86c8a09d39189de87abb0153d338190 upstream.
+[ Upstream commit 626f128ee9c4133b1cfce4be2b34a1508949370e ]
 
-Commit 1fa08aece425 ("nsfs: convert to path_from_stashed() helper") reused
-nsfs dentry's d_fsdata, which no longer contains a pointer to
-proc_ns_operations.
+The cached block pointer in dm_array_cursor might be NULL if it reaches
+an unreadable array block, or the array is empty. Therefore,
+dm_array_cursor_end() should call dm_btree_cursor_end() unconditionally,
+to prevent leaving unreleased btree blocks.
 
-Fix the remaining use in is_mnt_ns_file().
+This fix can be verified using the "array_cursor/iterate/empty" test
+in dm-unit:
+  dm-unit run /pdata/array_cursor/iterate/empty --kernel-dir <KERNEL_DIR>
 
-Fixes: 1fa08aece425 ("nsfs: convert to path_from_stashed() helper")
-Cc: stable@vger.kernel.org # v6.9
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Link: https://lore.kernel.org/r/20241211121118.85268-1-mszeredi@redhat.com
-Acked-by: Al Viro <viro@zeniv.linux.org.uk>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: fdd1315aa5f0 ("dm array: introduce cursor api")
+Reviewed-by: Joe Thornber <thornber@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/md/persistent-data/dm-array.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -2055,9 +2055,15 @@ SYSCALL_DEFINE1(oldumount, char __user *
+diff --git a/drivers/md/persistent-data/dm-array.c b/drivers/md/persistent-data/dm-array.c
+index d8ec2c6c1b2e..aab0385ed53b 100644
+--- a/drivers/md/persistent-data/dm-array.c
++++ b/drivers/md/persistent-data/dm-array.c
+@@ -955,10 +955,10 @@ EXPORT_SYMBOL_GPL(dm_array_cursor_begin);
  
- static bool is_mnt_ns_file(struct dentry *dentry)
+ void dm_array_cursor_end(struct dm_array_cursor *c)
  {
-+	struct ns_common *ns;
+-	if (c->block) {
++	if (c->block)
+ 		unlock_ablock(c->info, c->block);
+-		dm_btree_cursor_end(&c->cursor);
+-	}
 +
- 	/* Is this a proxy for a mount namespace? */
--	return dentry->d_op == &ns_dentry_operations &&
--	       dentry->d_fsdata == &mntns_operations;
-+	if (dentry->d_op != &ns_dentry_operations)
-+		return false;
-+
-+	ns = d_inode(dentry)->i_private;
-+
-+	return ns->ops == &mntns_operations;
++	dm_btree_cursor_end(&c->cursor);
  }
+ EXPORT_SYMBOL_GPL(dm_array_cursor_end);
  
- struct ns_common *from_mnt_ns(struct mnt_namespace *mnt)
+-- 
+2.39.5
+
 
 
 
