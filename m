@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-108938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FFA6A12105
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:52:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5C94A1219B
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:58:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFC3816AA0E
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:52:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDE5516AAD4
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB50D1E9910;
-	Wed, 15 Jan 2025 10:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C03248BD4;
+	Wed, 15 Jan 2025 10:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/Z1LfIR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tb1PB+4g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E7B1E9906;
-	Wed, 15 Jan 2025 10:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B48248BD0;
+	Wed, 15 Jan 2025 10:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938308; cv=none; b=nP05sNhWh3VhlPSG8vonNw1UcW0HTX9AjQQwqjKLKzkbY/t8qBdm84C2CFHw2/YvNaAAvRyDU5HJvwLr3aYY/zPQE3MZ3iQnA6g/Lgjsh+ONt7EcWXesMUpOxCzN37kQkKpL4wktEjrcoyqz8zDQQLlwyXLvNCPbXgEoS/cL8fM=
+	t=1736938729; cv=none; b=erO9xLZTY14rTGpUK7SH2RJG1D/lx6szhnBHdL8MzsrvjQ+HEFZhHuoQBMw1A9VG0bYyQXceBY6IN+33vyEZ7BNnU2Km/yBvSrkvs/k6Wgi9cePC/V9CalIcVe4cIsM/qiPb1Y4iIyiUUR0okHrwjFEPlvvonv59RFi1U32z1bM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938308; c=relaxed/simple;
-	bh=x9RyD+0YW0Jt3hO3Gxxmi58mHHjWso56SXd+gbdCOX8=;
+	s=arc-20240116; t=1736938729; c=relaxed/simple;
+	bh=ukEBvjKvlcdBKXcAcZtL3yaUKJ7p6Zcu/QVaw9/Vpyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i4sPHJlCaiEwBYU7dShuZhNAXPVGS0e7d1r3Yoal5H+SY9qSDVUKvPuzfbMC0i8GcZLBzBeQ8NCOpFfaBQMU3BR3hirw8DKnCpH/uJ7HTIgPMjVhBHmFdwA6boXdDgc6SOaoGiX8bDCyerEKsImrOEvxwzgFEpfrDAiacGohJUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/Z1LfIR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D0EC4CEE8;
-	Wed, 15 Jan 2025 10:51:47 +0000 (UTC)
+	 MIME-Version; b=ulSp/rhU8qIq4THZhXUOyaqQ4x8p30U2hr/R+NH27hGaDVrDXKv8xE7yix92H6uUFO7MLqqet3hB64WvRUODM45zXABd7gsiQ1dXsLH1tZzTz4cIbcitd5PqKXaG7G394QgixtohQv2yV+REJNtpS0xtgQfOqxEvkckVTebP+4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tb1PB+4g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 795BBC4CEDF;
+	Wed, 15 Jan 2025 10:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938308;
-	bh=x9RyD+0YW0Jt3hO3Gxxmi58mHHjWso56SXd+gbdCOX8=;
+	s=korg; t=1736938728;
+	bh=ukEBvjKvlcdBKXcAcZtL3yaUKJ7p6Zcu/QVaw9/Vpyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e/Z1LfIRkTZjirwRyLn7+lcXitcYcw+hqJH3/oL5bcbQYRKc8e1sjrQM3ciQd1NLM
-	 3ZgRB1IDOEWfRo6Iodi0uZN1RETFJuXv1rGWlU0NIp6mzDtyoM3WGgG41sQ07Dr/Rq
-	 dvIQUjxR816KxcDyzacIm9Ll1heWStqExy1He4V4=
+	b=tb1PB+4gAq29mArfZNTbgX3WELIP0PUF+dMBSlG1EnPFdGRrfb6fBosD9up5ldL+g
+	 DFVqp5XYzPBcqE/ojZX5Tw8A2mlfAzc4qy6OQG1wp8JMHfvLveKmzrLYq1EtdqtNes
+	 Sph4DFYWMoHetjiGM4ptKsDydD1GvGe9ml8OBi1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Melissa Wen <mwen@igalia.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 127/189] drm/amd/display: increase MAX_SURFACES to the value supported by hw
+	Arnd Bergmann <arnd@arndb.de>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 048/129] drm/mediatek: stop selecting foreign drivers
 Date: Wed, 15 Jan 2025 11:37:03 +0100
-Message-ID: <20250115103611.510268843@linuxfoundation.org>
+Message-ID: <20250115103556.286938027@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Melissa Wen <mwen@igalia.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 21541bc6b44241e3f791f9e552352d8440b2b29e upstream.
+[ Upstream commit 924d66011f2401a4145e2e814842c5c4572e439f ]
 
-As the hw supports up to 4 surfaces, increase the maximum number of
-surfaces to prevent the DC error when trying to use more than three
-planes.
+The PHY portion of the mediatek hdmi driver was originally part of
+the driver it self and later split out into drivers/phy, which a
+'select' to keep the prior behavior.
 
-[drm:dc_state_add_plane [amdgpu]] *ERROR* Surface: can not attach plane_state 000000003e2cb82c! Maximum is: 3
+However, this leads to build failures when the PHY driver cannot
+be built:
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3693
-Signed-off-by: Melissa Wen <mwen@igalia.com>
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b8d6daffc871a42026c3c20bff7b8fa0302298c1)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+WARNING: unmet direct dependencies detected for PHY_MTK_HDMI
+  Depends on [n]: (ARCH_MEDIATEK || COMPILE_TEST [=y]) && COMMON_CLK [=y] && OF [=y] && REGULATOR [=n]
+  Selected by [m]:
+  - DRM_MEDIATEK_HDMI [=m] && HAS_IOMEM [=y] && DRM [=m] && DRM_MEDIATEK [=m]
+ERROR: modpost: "devm_regulator_register" [drivers/phy/mediatek/phy-mtk-hdmi-drv.ko] undefined!
+ERROR: modpost: "rdev_get_drvdata" [drivers/phy/mediatek/phy-mtk-hdmi-drv.ko] undefined!
+
+The best option here is to just not select the phy driver and leave that
+up to the defconfig. Do the same for the other PHY and memory drivers
+selected here as well for consistency.
+
+Fixes: a481bf2f0ca4 ("drm/mediatek: Separate mtk_hdmi_phy to an independent module")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20241218085837.2670434-1-arnd@kernel.org/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/mediatek/Kconfig | 5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dc.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc.h
-@@ -57,7 +57,7 @@ struct dmub_notification;
- 
- #define DC_VER "3.2.301"
- 
--#define MAX_SURFACES 3
-+#define MAX_SURFACES 4
- #define MAX_PLANES 6
- #define MAX_STREAMS 6
- #define MIN_VIEWPORT_SIZE 12
+diff --git a/drivers/gpu/drm/mediatek/Kconfig b/drivers/gpu/drm/mediatek/Kconfig
+index 76cab28e010c..d2652751d190 100644
+--- a/drivers/gpu/drm/mediatek/Kconfig
++++ b/drivers/gpu/drm/mediatek/Kconfig
+@@ -10,9 +10,6 @@ config DRM_MEDIATEK
+ 	select DRM_KMS_HELPER
+ 	select DRM_MIPI_DSI
+ 	select DRM_PANEL
+-	select MEMORY
+-	select MTK_SMI
+-	select PHY_MTK_MIPI_DSI
+ 	select VIDEOMODE_HELPERS
+ 	help
+ 	  Choose this option if you have a Mediatek SoCs.
+@@ -23,7 +20,6 @@ config DRM_MEDIATEK
+ config DRM_MEDIATEK_DP
+ 	tristate "DRM DPTX Support for MediaTek SoCs"
+ 	depends on DRM_MEDIATEK
+-	select PHY_MTK_DP
+ 	select DRM_DISPLAY_HELPER
+ 	select DRM_DISPLAY_DP_HELPER
+ 	select DRM_DP_AUX_BUS
+@@ -34,6 +30,5 @@ config DRM_MEDIATEK_HDMI
+ 	tristate "DRM HDMI Support for Mediatek SoCs"
+ 	depends on DRM_MEDIATEK
+ 	select SND_SOC_HDMI_CODEC if SND_SOC
+-	select PHY_MTK_HDMI
+ 	help
+ 	  DRM/KMS HDMI driver for Mediatek SoCs
+-- 
+2.39.5
+
 
 
 
