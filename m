@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-108717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C54A11FEA
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:39:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 260B3A1215C
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:55:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F078F1889FC4
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:39:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48452168D3F
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:55:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 459C41E98F2;
-	Wed, 15 Jan 2025 10:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25E61DB142;
+	Wed, 15 Jan 2025 10:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmUrKmR9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mk0lZLta"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1F61E7C15;
-	Wed, 15 Jan 2025 10:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECE71DB13A;
+	Wed, 15 Jan 2025 10:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937570; cv=none; b=I9L1V/lNiSfoWn21vPUZfNS+wJuYnieOk9+iYnqA97vg5FbysrlV/VS4JFiQlKQCHHvMuFTbNjiHP4VKIt99ngO8cKo12/4YMhu5yH2C+iivVQbJn9XTwmNCK9hwctpRB1DemCnKq4KOPq53kjzA5go41cjD4NtqBDS7/nSUNS4=
+	t=1736938543; cv=none; b=LJ8p9kWW2VNScbG/pyZa60NdZTYDcrF+y5Qkaomw4roAZhlCXLdYwlhobyPO4eXiZotq50sX1xiGeRBlL06X9vWfuTaivTO8XVnqZmftX8tDEFHO/2voQo5I3+AAbz/o6L+2TpFV3SIA59j5wH/ZWmkYX1dAJbaujmxB2SwQl2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937570; c=relaxed/simple;
-	bh=RHWUWRsZstTiLrl/wA0ZRT5euYWwUYBpc+cZoLD21QU=;
+	s=arc-20240116; t=1736938543; c=relaxed/simple;
+	bh=ENY2C5j1VD1oJM5ny3+fT1PEorqr9aZgUQXDgoOEA80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q7mygm27kFkb/3CCewlmrYml2ofWWSwPtjPHYodLHTMzm4QFjrRUMNBqt43pfGg1rXi+9RyNORJfjE1xWEKmJilWGrK0Uc25fQIinjsX8GN4IVfOtci4duzMdlzX+LrbmvNRkBMvfXnfxLvomAbVtmnF12TWE47HY78bnvu95KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmUrKmR9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9659C4CEDF;
-	Wed, 15 Jan 2025 10:39:28 +0000 (UTC)
+	 MIME-Version; b=Nu3qlJbqCfz+sRWjy+P7xIWerYFuYifIs15m26FW29/TF+rn1fLJRc3taUKg9LxRIdH6lXjMXqUebGB5gwyZwMiTc/eLITLhN+pL4dan38xg3+4TO30FVE0LaR0ZIi4crTm/mYJUbm+/vp55X52IW8h4PVebo2mCSboMY+0qS3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mk0lZLta; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9DADC4CEDF;
+	Wed, 15 Jan 2025 10:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937569;
-	bh=RHWUWRsZstTiLrl/wA0ZRT5euYWwUYBpc+cZoLD21QU=;
+	s=korg; t=1736938543;
+	bh=ENY2C5j1VD1oJM5ny3+fT1PEorqr9aZgUQXDgoOEA80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gmUrKmR9oqROeUOWUFfV8jpWCbk8dpMmXeRDFrM6U887HS2NSRQ8Ve4zsoWNCVM7P
-	 6lyb5zw7/RmiR/OmPrLk8n00zEnSbg04xEAOoQeM48v9Bz4wJ4Ym8YQA9RmpZ+X7uH
-	 +WpmpLQsMieL5/XvdGLbhMR9pE5u2wVuanxOC3p8=
+	b=mk0lZLtawE6GKMZB4dP/hFbZRrXttvNUN2sM+lhww+yBUkN3QFmFz8HNAqx6gsSrr
+	 ant8bQFAl0g2SAeaOvTlz08AOEGC3daw/ITHEJISotk8JGTbHyaEq7HlObpcnLbCQi
+	 87NZCi1EFCvSjeahY/sPwthJerZ/ISw8NfgbyQC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anumula Murali Mohan Reddy <anumula@chelsio.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 19/92] cxgb4: Avoid removal of uninserted tid
-Date: Wed, 15 Jan 2025 11:36:37 +0100
-Message-ID: <20250115103548.301521057@linuxfoundation.org>
+Subject: [PATCH 6.6 023/129] net: libwx: fix firmware mailbox abnormal return
+Date: Wed, 15 Jan 2025 11:36:38 +0100
+Message-ID: <20250115103555.291943420@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anumula Murali Mohan Reddy <anumula@chelsio.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit 4c1224501e9d6c5fd12d83752f1c1b444e0e3418 ]
+[ Upstream commit 8ce4f287524c74a118b0af1eebd4b24a8efca57a ]
 
-During ARP failure, tid is not inserted but _c4iw_free_ep()
-attempts to remove tid which results in error.
-This patch fixes the issue by avoiding removal of uninserted tid.
+The existing SW-FW interaction flow on the driver is wrong. Follow this
+wrong flow, driver would never return error if there is a unknown command.
+Since firmware writes back 'firmware ready' and 'unknown command' in the
+mailbox message if there is an unknown command sent by driver. So reading
+'firmware ready' does not timeout. Then driver would mistakenly believe
+that the interaction has completed successfully.
 
-Fixes: 59437d78f088 ("cxgb4/chtls: fix ULD connection failures due to wrong TID base")
-Signed-off-by: Anumula Murali Mohan Reddy <anumula@chelsio.com>
-Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
-Link: https://patch.msgid.link/20250103092327.1011925-1-anumula@chelsio.com
+It tends to happen with the use of custom firmware. Move the check for
+'unknown command' out of the poll timeout for 'firmware ready'. And adjust
+the debug log so that mailbox messages are always printed when commands
+timeout.
+
+Fixes: 1efa9bfe58c5 ("net: libwx: Implement interaction with firmware")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Link: https://patch.msgid.link/20250103081013.1995939-1-jiawenwu@trustnetic.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c | 24 ++++++++++------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-index 7ce112b95b62..c09240a5693b 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-@@ -1800,7 +1800,10 @@ void cxgb4_remove_tid(struct tid_info *t, unsigned int chan, unsigned int tid,
- 	struct adapter *adap = container_of(t, struct adapter, tids);
- 	struct sk_buff *skb;
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+index 52130df26aee..d6bc2309d2a3 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -242,27 +242,25 @@ int wx_host_interface_command(struct wx *wx, u32 *buffer,
+ 	status = read_poll_timeout(rd32, hicr, hicr & WX_MNG_MBOX_CTL_FWRDY, 1000,
+ 				   timeout * 1000, false, wx, WX_MNG_MBOX_CTL);
  
--	WARN_ON(tid_out_of_range(&adap->tids, tid));
-+	if (tid_out_of_range(&adap->tids, tid)) {
-+		dev_err(adap->pdev_dev, "tid %d out of range\n", tid);
-+		return;
++	buf[0] = rd32(wx, WX_MNG_MBOX);
++	if ((buf[0] & 0xff0000) >> 16 == 0x80) {
++		wx_err(wx, "Unknown FW command: 0x%x\n", buffer[0] & 0xff);
++		status = -EINVAL;
++		goto rel_out;
 +	}
++
+ 	/* Check command completion */
+ 	if (status) {
+-		wx_dbg(wx, "Command has failed with no status valid.\n");
+-
+-		buf[0] = rd32(wx, WX_MNG_MBOX);
+-		if ((buffer[0] & 0xff) != (~buf[0] >> 24)) {
+-			status = -EINVAL;
+-			goto rel_out;
+-		}
+-		if ((buf[0] & 0xff0000) >> 16 == 0x80) {
+-			wx_dbg(wx, "It's unknown cmd.\n");
+-			status = -EINVAL;
+-			goto rel_out;
+-		}
+-
++		wx_err(wx, "Command has failed with no status valid.\n");
+ 		wx_dbg(wx, "write value:\n");
+ 		for (i = 0; i < dword_len; i++)
+ 			wx_dbg(wx, "%x ", buffer[i]);
+ 		wx_dbg(wx, "read value:\n");
+ 		for (i = 0; i < dword_len; i++)
+ 			wx_dbg(wx, "%x ", buf[i]);
++		wx_dbg(wx, "\ncheck: %x %x\n", buffer[0] & 0xff, ~buf[0] >> 24);
++
++		goto rel_out;
+ 	}
  
- 	if (t->tid_tab[tid - adap->tids.tid_base]) {
- 		t->tid_tab[tid - adap->tids.tid_base] = NULL;
+ 	if (!return_data)
 -- 
 2.39.5
 
