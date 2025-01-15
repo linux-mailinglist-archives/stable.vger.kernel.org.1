@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-108925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C910A120F2
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:51:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C54A11FEA
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:39:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4FEA3AAF8A
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:51:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F078F1889FC4
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717E2248BC1;
-	Wed, 15 Jan 2025 10:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 459C41E98F2;
+	Wed, 15 Jan 2025 10:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q6wxlB/c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmUrKmR9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD85248BB2;
-	Wed, 15 Jan 2025 10:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1F61E7C15;
+	Wed, 15 Jan 2025 10:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938265; cv=none; b=WS2nB/M6F8/8rNN/7Zqn8s0/T8QIAoUfR6nEKHFyqnOJimEf9NnbV8O2wAVMXWYBkZWUI+lVV3QdLsgJPuDNvd/jxs8pibD+KoXjv2kpTJ3jORH7RfSC/KXhoPn8aItUk/7ZAtrcVVc/nhYCl2SQQTiSR5sdRW66rpiW3lEAon8=
+	t=1736937570; cv=none; b=I9L1V/lNiSfoWn21vPUZfNS+wJuYnieOk9+iYnqA97vg5FbysrlV/VS4JFiQlKQCHHvMuFTbNjiHP4VKIt99ngO8cKo12/4YMhu5yH2C+iivVQbJn9XTwmNCK9hwctpRB1DemCnKq4KOPq53kjzA5go41cjD4NtqBDS7/nSUNS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938265; c=relaxed/simple;
-	bh=WcqCHEcHBtg8TI3WZuoskawLnd9+3eU0ln0yIv5kolA=;
+	s=arc-20240116; t=1736937570; c=relaxed/simple;
+	bh=RHWUWRsZstTiLrl/wA0ZRT5euYWwUYBpc+cZoLD21QU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KISPDjCZR9EnYDORpHKEvriZSC46al1jBjsGRRqwy6XNYskepGXT1QmtdGVqOtFJGxQ3cgN/AR3cGnNsiM0PrTGv7szTsJsc0amDIjb14eA9WXKidjfcSvS6avhTembP4Sgnh1OinaPtJ5H2NPYGxKumTycoARiBwpsj7b4/XHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q6wxlB/c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047FAC4CEDF;
-	Wed, 15 Jan 2025 10:51:03 +0000 (UTC)
+	 MIME-Version; b=Q7mygm27kFkb/3CCewlmrYml2ofWWSwPtjPHYodLHTMzm4QFjrRUMNBqt43pfGg1rXi+9RyNORJfjE1xWEKmJilWGrK0Uc25fQIinjsX8GN4IVfOtci4duzMdlzX+LrbmvNRkBMvfXnfxLvomAbVtmnF12TWE47HY78bnvu95KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmUrKmR9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9659C4CEDF;
+	Wed, 15 Jan 2025 10:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938264;
-	bh=WcqCHEcHBtg8TI3WZuoskawLnd9+3eU0ln0yIv5kolA=;
+	s=korg; t=1736937569;
+	bh=RHWUWRsZstTiLrl/wA0ZRT5euYWwUYBpc+cZoLD21QU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q6wxlB/cAMSSA9s4D3qksHR3hgmO83c6JPIAj6iF4d9q8l4h66lvY2OGdjdEwdR5l
-	 njA9b8AoEHO9BPqBAcYMKjvw+nqrJdrSzfHPZHZbh5krv1Gb3F4eupnh1mVDx4oUDm
-	 25nyTdapwvZYszml5LbEmZGGaGWXCEatDks+QtoU=
+	b=gmUrKmR9oqROeUOWUFfV8jpWCbk8dpMmXeRDFrM6U887HS2NSRQ8Ve4zsoWNCVM7P
+	 6lyb5zw7/RmiR/OmPrLk8n00zEnSbg04xEAOoQeM48v9Bz4wJ4Ym8YQA9RmpZ+X7uH
+	 +WpmpLQsMieL5/XvdGLbhMR9pE5u2wVuanxOC3p8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 101/189] ksmbd: Implement new SMB3 POSIX type
+	Anumula Murali Mohan Reddy <anumula@chelsio.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 19/92] cxgb4: Avoid removal of uninserted tid
 Date: Wed, 15 Jan 2025 11:36:37 +0100
-Message-ID: <20250115103610.355375370@linuxfoundation.org>
+Message-ID: <20250115103548.301521057@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Anumula Murali Mohan Reddy <anumula@chelsio.com>
 
-commit e8580b4c600e085b3c8e6404392de2f822d4c132 upstream.
+[ Upstream commit 4c1224501e9d6c5fd12d83752f1c1b444e0e3418 ]
 
-As SMB3 posix extension specification, Give posix file type to posix
-mode.
+During ARP failure, tid is not inserted but _c4iw_free_ep()
+attempts to remove tid which results in error.
+This patch fixes the issue by avoiding removal of uninserted tid.
 
-https://www.samba.org/~slow/SMB3_POSIX/fscc_posix_extensions.html#posix-file-type-definition
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 59437d78f088 ("cxgb4/chtls: fix ULD connection failures due to wrong TID base")
+Signed-off-by: Anumula Murali Mohan Reddy <anumula@chelsio.com>
+Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
+Link: https://patch.msgid.link/20250103092327.1011925-1-anumula@chelsio.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |   40 ++++++++++++++++++++++++++++++++++++++++
- fs/smb/server/smb2pdu.h |   10 ++++++++++
- 2 files changed, 50 insertions(+)
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -3988,6 +3988,26 @@ static int smb2_populate_readdir_entry(s
- 		posix_info->DeviceId = cpu_to_le32(ksmbd_kstat->kstat->rdev);
- 		posix_info->HardLinks = cpu_to_le32(ksmbd_kstat->kstat->nlink);
- 		posix_info->Mode = cpu_to_le32(ksmbd_kstat->kstat->mode & 0777);
-+		switch (ksmbd_kstat->kstat->mode & S_IFMT) {
-+		case S_IFDIR:
-+			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_DIR << POSIX_FILETYPE_SHIFT);
-+			break;
-+		case S_IFLNK:
-+			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_SYMLINK << POSIX_FILETYPE_SHIFT);
-+			break;
-+		case S_IFCHR:
-+			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_CHARDEV << POSIX_FILETYPE_SHIFT);
-+			break;
-+		case S_IFBLK:
-+			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_BLKDEV << POSIX_FILETYPE_SHIFT);
-+			break;
-+		case S_IFIFO:
-+			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_FIFO << POSIX_FILETYPE_SHIFT);
-+			break;
-+		case S_IFSOCK:
-+			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_SOCKET << POSIX_FILETYPE_SHIFT);
-+		}
-+
- 		posix_info->Inode = cpu_to_le64(ksmbd_kstat->kstat->ino);
- 		posix_info->DosAttributes =
- 			S_ISDIR(ksmbd_kstat->kstat->mode) ?
-@@ -5176,6 +5196,26 @@ static int find_file_posix_info(struct s
- 	file_info->AllocationSize = cpu_to_le64(stat.blocks << 9);
- 	file_info->HardLinks = cpu_to_le32(stat.nlink);
- 	file_info->Mode = cpu_to_le32(stat.mode & 0777);
-+	switch (stat.mode & S_IFMT) {
-+	case S_IFDIR:
-+		file_info->Mode |= cpu_to_le32(POSIX_TYPE_DIR << POSIX_FILETYPE_SHIFT);
-+		break;
-+	case S_IFLNK:
-+		file_info->Mode |= cpu_to_le32(POSIX_TYPE_SYMLINK << POSIX_FILETYPE_SHIFT);
-+		break;
-+	case S_IFCHR:
-+		file_info->Mode |= cpu_to_le32(POSIX_TYPE_CHARDEV << POSIX_FILETYPE_SHIFT);
-+		break;
-+	case S_IFBLK:
-+		file_info->Mode |= cpu_to_le32(POSIX_TYPE_BLKDEV << POSIX_FILETYPE_SHIFT);
-+		break;
-+	case S_IFIFO:
-+		file_info->Mode |= cpu_to_le32(POSIX_TYPE_FIFO << POSIX_FILETYPE_SHIFT);
-+		break;
-+	case S_IFSOCK:
-+		file_info->Mode |= cpu_to_le32(POSIX_TYPE_SOCKET << POSIX_FILETYPE_SHIFT);
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+index 7ce112b95b62..c09240a5693b 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+@@ -1800,7 +1800,10 @@ void cxgb4_remove_tid(struct tid_info *t, unsigned int chan, unsigned int tid,
+ 	struct adapter *adap = container_of(t, struct adapter, tids);
+ 	struct sk_buff *skb;
+ 
+-	WARN_ON(tid_out_of_range(&adap->tids, tid));
++	if (tid_out_of_range(&adap->tids, tid)) {
++		dev_err(adap->pdev_dev, "tid %d out of range\n", tid);
++		return;
 +	}
-+
- 	file_info->DeviceId = cpu_to_le32(stat.rdev);
  
- 	/*
---- a/fs/smb/server/smb2pdu.h
-+++ b/fs/smb/server/smb2pdu.h
-@@ -502,4 +502,14 @@ static inline void *smb2_get_msg(void *b
- 	return buf + 4;
- }
- 
-+#define POSIX_TYPE_FILE		0
-+#define POSIX_TYPE_DIR		1
-+#define POSIX_TYPE_SYMLINK	2
-+#define POSIX_TYPE_CHARDEV	3
-+#define POSIX_TYPE_BLKDEV	4
-+#define POSIX_TYPE_FIFO		5
-+#define POSIX_TYPE_SOCKET	6
-+
-+#define POSIX_FILETYPE_SHIFT	12
-+
- #endif	/* _SMB2PDU_H */
+ 	if (t->tid_tab[tid - adap->tids.tid_base]) {
+ 		t->tid_tab[tid - adap->tids.tid_base] = NULL;
+-- 
+2.39.5
+
 
 
 
