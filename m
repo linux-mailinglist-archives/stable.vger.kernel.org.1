@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-108739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62F4BA12018
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA20A120E9
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:50:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 482A83A4841
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DA81188B0B7
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B84D248BC5;
-	Wed, 15 Jan 2025 10:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23652248BD1;
+	Wed, 15 Jan 2025 10:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mc5/krNv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSGfdTxc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9998248BA8;
-	Wed, 15 Jan 2025 10:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C86248BA1;
+	Wed, 15 Jan 2025 10:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937642; cv=none; b=s+dINY2YDUPBKGJhFsYPVZR2Y1aYNTZJ9Omf6+SMsSGgHG/9I/CXXiLhdPUT4nVJGjsgK+iGXlNotb/4icEZDWDA+gu50jIrnoH1EOBiNwqUrYkuWqtKyoyZXvJHiMNtquiP0ZySsKRQUw3APQGSyGg5C9bwlmZeBVR8VHUc4xY=
+	t=1736938236; cv=none; b=MZ6buOfFLldK5KsWN6jealYcLeKaPtZqXmJZhqCez9/Gnr9frhr/tLw8rBjt8FD0f8X5IvyL3yi0CuLtv12+w4mS2ISo4dOdG6N7q0997UYyLCrXUfHFMpZEcvWTc+0K5aLRpEOIpEelDM91JmxW22xezQVJmRRYvVr653bR1HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937642; c=relaxed/simple;
-	bh=ij+qBTOGI5mE1JuAhtQ9cu2v8FJrkgY5hIui5MWZwLg=;
+	s=arc-20240116; t=1736938236; c=relaxed/simple;
+	bh=GMz60ypjJCNywqN6x/LakGf+vBbSQ5ZfRu1ALlEFoxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ifMcVDJNv9akVpIEDpmVqzYFSiEgsZSA3MP08pAkIQJpraX0PSXH8+YnTSYHixd3reXnK4UpMCvYVOeCbblBi4dYbGRpDAoYL/YTYBKoSreLKDW/1I3Mw7fM34Wac+Ntw35gz4OfqOVRhUEYDj+xvdDLDHk64sdkoTdGJPN8aTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mc5/krNv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6225C4CEE1;
-	Wed, 15 Jan 2025 10:40:41 +0000 (UTC)
+	 MIME-Version; b=ft5dz4bq+sdh8hgcSEyZxtrI9qHo/cPNCuGV5chjKJEJkF2IvJOioycjNFlFUBDEILh5hqyt/hGq+8QuQElS1547YilB+H0PVTyqZJt+sV+MwTwCyy/X9UlMmanDBtLf0PV8FDaHDdDjEe2flaYThsXGfVBOQECpkytNgYueMXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tSGfdTxc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46749C4CEDF;
+	Wed, 15 Jan 2025 10:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937642;
-	bh=ij+qBTOGI5mE1JuAhtQ9cu2v8FJrkgY5hIui5MWZwLg=;
+	s=korg; t=1736938236;
+	bh=GMz60ypjJCNywqN6x/LakGf+vBbSQ5ZfRu1ALlEFoxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mc5/krNvSdTzrf4mrqsVHT1nyM0fv8sywIR4c83WpBVrOuNb9cc9N/0S0StHntvcy
-	 IxwCsKS/MrF6JxxmhozIrET/xYgK8MMWZPWv9dpdtUOfnUeHz4pcKZNzYCCBkGIVr5
-	 Hd7J/knh72rn/TFiAoNr3xzE/oFLg4MFU5Xt5c4E=
+	b=tSGfdTxcq8L3J83NiLibveJGpyIxKUV1PxU8T1r8TLQAfeCxPDaCH4u2JCrw+23RI
+	 3AinFqYmN4ABpiVyH+YWZ1cLLRpdvennYs/DlUUVvsYm/6D+aHI45IsUNBXbZQMe+q
+	 NLHGO4WY0TdTdaYyBJdkoGO3Sm49oKoAMnyGWt1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 40/92] sctp: sysctl: auth_enable: avoid using current->nsproxy
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Kenneth Feng <kenneth.feng@amd.com>,
+	Kun Liu <Kun.Liu2@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 122/189] drm/amd/pm:  fix BUG: scheduling while atomic
 Date: Wed, 15 Jan 2025 11:36:58 +0100
-Message-ID: <20250115103549.126205811@linuxfoundation.org>
+Message-ID: <20250115103611.321019972@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Kun Liu <Kun.Liu2@amd.com>
 
-commit 15649fd5415eda664ef35780c2013adeb5d9c695 upstream.
+commit 2a238b09bfd04e8155a7a323364bce1c38b28c0f upstream.
 
-As mentioned in a previous commit of this series, using the 'net'
-structure via 'current' is not recommended for different reasons:
+atomic scheduling will be triggered in interrupt handler for
+AC/DC mode switch as following backtrace.
+Call Trace:
+ <IRQ>
+ dump_stack_lvl
+ __schedule_bug
+ __schedule
+ schedule
+ schedule_preempt_disabled
+ __mutex_lock
+ smu_cmn_send_smc_msg_with_param
+ smu_v13_0_irq_process
+ amdgpu_irq_dispatch
+ amdgpu_ih_process
+ amdgpu_irq_handler
+ __handle_irq_event_percpu
+ handle_irq_event
+ handle_edge_irq
+ __common_interrupt
+ common_interrupt
+ </IRQ>
+ <TASK>
+ asm_common_interrupt
 
-- Inconsistency: getting info from the reader's/writer's netns vs only
-  from the opener's netns.
-
-- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
-  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
-  syzbot [1] using acct(2).
-
-The 'net' structure can be obtained from the table->data using
-container_of().
-
-Note that table->data could also be used directly, but that would
-increase the size of this fix, while 'sctp.ctl_sock' still needs to be
-retrieved from 'net' structure.
-
-Fixes: b14878ccb7fa ("net: sctp: cache auth_enable per endpoint")
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
+Signed-off-by: Kun Liu <Kun.Liu2@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 03cc84b102d1a832e8dfc59344346dedcebcdf42)
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-6-5df34b2083e8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/sysctl.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h         |    2 ++
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c       |   12 ++++++------
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c |    1 +
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c |    1 +
+ 4 files changed, 10 insertions(+), 6 deletions(-)
 
---- a/net/sctp/sysctl.c
-+++ b/net/sctp/sysctl.c
-@@ -492,7 +492,7 @@ static int proc_sctp_do_alpha_beta(struc
- static int proc_sctp_do_auth(struct ctl_table *ctl, int write,
- 			     void *buffer, size_t *lenp, loff_t *ppos)
- {
--	struct net *net = current->nsproxy->net_ns;
-+	struct net *net = container_of(ctl->data, struct net, sctp.auth_enable);
- 	struct ctl_table tbl;
- 	int new_value, ret;
+--- a/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h
++++ b/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h
+@@ -302,5 +302,7 @@ int smu_v13_0_set_wbrf_exclusion_ranges(
+ int smu_v13_0_get_boot_freq_by_index(struct smu_context *smu,
+ 				     enum smu_clk_type clk_type,
+ 				     uint32_t *value);
++
++void smu_v13_0_interrupt_work(struct smu_context *smu);
+ #endif
+ #endif
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+@@ -1320,11 +1320,11 @@ static int smu_v13_0_set_irq_state(struc
+ 	return 0;
+ }
  
+-static int smu_v13_0_ack_ac_dc_interrupt(struct smu_context *smu)
++void smu_v13_0_interrupt_work(struct smu_context *smu)
+ {
+-	return smu_cmn_send_smc_msg(smu,
+-				    SMU_MSG_ReenableAcDcInterrupt,
+-				    NULL);
++	smu_cmn_send_smc_msg(smu,
++			     SMU_MSG_ReenableAcDcInterrupt,
++			     NULL);
+ }
+ 
+ #define THM_11_0__SRCID__THM_DIG_THERM_L2H		0		/* ASIC_TEMP > CG_THERMAL_INT.DIG_THERM_INTH  */
+@@ -1377,12 +1377,12 @@ static int smu_v13_0_irq_process(struct
+ 			switch (ctxid) {
+ 			case SMU_IH_INTERRUPT_CONTEXT_ID_AC:
+ 				dev_dbg(adev->dev, "Switched to AC mode!\n");
+-				smu_v13_0_ack_ac_dc_interrupt(smu);
++				schedule_work(&smu->interrupt_work);
+ 				adev->pm.ac_power = true;
+ 				break;
+ 			case SMU_IH_INTERRUPT_CONTEXT_ID_DC:
+ 				dev_dbg(adev->dev, "Switched to DC mode!\n");
+-				smu_v13_0_ack_ac_dc_interrupt(smu);
++				schedule_work(&smu->interrupt_work);
+ 				adev->pm.ac_power = false;
+ 				break;
+ 			case SMU_IH_INTERRUPT_CONTEXT_ID_THERMAL_THROTTLING:
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -3126,6 +3126,7 @@ static const struct pptable_funcs smu_v1
+ 	.is_asic_wbrf_supported = smu_v13_0_0_wbrf_support_check,
+ 	.enable_uclk_shadow = smu_v13_0_enable_uclk_shadow,
+ 	.set_wbrf_exclusion_ranges = smu_v13_0_set_wbrf_exclusion_ranges,
++	.interrupt_work = smu_v13_0_interrupt_work,
+ };
+ 
+ void smu_v13_0_0_set_ppt_funcs(struct smu_context *smu)
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+@@ -2704,6 +2704,7 @@ static const struct pptable_funcs smu_v1
+ 	.is_asic_wbrf_supported = smu_v13_0_7_wbrf_support_check,
+ 	.enable_uclk_shadow = smu_v13_0_enable_uclk_shadow,
+ 	.set_wbrf_exclusion_ranges = smu_v13_0_set_wbrf_exclusion_ranges,
++	.interrupt_work = smu_v13_0_interrupt_work,
+ };
+ 
+ void smu_v13_0_7_set_ppt_funcs(struct smu_context *smu)
 
 
 
