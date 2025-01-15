@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-109100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E6B1A121D2
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 12:00:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F689A1213E
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:54:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA595188C397
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:00:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3E6A168610
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BA71E98E7;
-	Wed, 15 Jan 2025 11:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B19C1DB142;
+	Wed, 15 Jan 2025 10:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYsyK6JR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRHNLGwM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64609248BAF;
-	Wed, 15 Jan 2025 11:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D0E248BD1;
+	Wed, 15 Jan 2025 10:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938851; cv=none; b=hFkM9KAi9TDuobdyK6wTLgvoXnbjIbiZdlhSiBZCHMffVSXwkfzNv/59nTEcR9O0/iHzqNzaa2W9WLAdKl2C495JTbqAopurOl66PALeGZyndYhZ6LRggDdrCM93BQRICG2IDN3fm9xnicJRjJALSzjTqQ46ldrSX6YfaP6Z0R4=
+	t=1736938467; cv=none; b=sLSX2i+QlNepGhDcptU3Es4DAz8evONYAuA/aXkRxiwsTzjgLx7RceaRexcualKLIJyi4wAhj7Gt4Uj5K67GdsdqpvE+bhQparJGqgKJTi/jIk0ggUDWamD3PSBHhPGgNQZrmbRf63xQNF+UQQfjEOVKbNfOVGvzEKGaSilyNS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938851; c=relaxed/simple;
-	bh=fZ8tx/ztFBG+o/yVgFSE+HWaJr/RWnvZ565IaMqYHQI=;
+	s=arc-20240116; t=1736938467; c=relaxed/simple;
+	bh=DyqArR/cDlss4y/VzZlkzDfta+Nq/MAdy4TUNUVRIgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AbTyHw2dzAJ1sdcrcxWDzUoWucpRSsI2mPHaHVG02CUDs4MXnj2+x2x0WEfSYkEGdgkLwsqxdY/+EanWt0yhJQquwXVY6oud+vnWSB1Wi/xPeK6Fv2S6yjMkiaflpWzxWwDNN1uHtCDib5wP+RqnBjj15HIZhlkELLYFKf20oRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aYsyK6JR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEB17C4CEDF;
-	Wed, 15 Jan 2025 11:00:50 +0000 (UTC)
+	 MIME-Version; b=uoR+Ot3i4Axmp4ULYFCeu5b5b1YEIo88SnRs13yKF/LJ0TUiMetAE+U+ahyQGK/YapAMB922H9579thhI3zlI37wv96HrGHmwNaw3IIs+RBnsi+ZG+AksvyZW//RSuq9BA+Qq0Y63LrLCTmdgMhPGJS7ohYhkpIOv1t/aFb8pqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRHNLGwM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F3B7C4CEDF;
+	Wed, 15 Jan 2025 10:54:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938851;
-	bh=fZ8tx/ztFBG+o/yVgFSE+HWaJr/RWnvZ565IaMqYHQI=;
+	s=korg; t=1736938467;
+	bh=DyqArR/cDlss4y/VzZlkzDfta+Nq/MAdy4TUNUVRIgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aYsyK6JRX4WSL6dClqmfX7xVtKbde1Jl7T5zDXM2M2zJ7OG/QBHLFWKEGyrfNaWnr
-	 49YFzmtBtltPLr63EjwFQrNZatUwODDVxElcB/6q4KkUNUbVGXDAycBNu+emn2yZ8P
-	 bEdSTSPDAYDCD5u5xaf1/6axUSDL7Vx5FxZkpe9g=
+	b=PRHNLGwM6dYpMtmQPSx+HoWEetGk6L5nBm+r1hnscf2BpTWoQ+5xBqT8R/sfCnKN7
+	 LKvOm2W1eVzLtO+2HM/oi3+zyOkmuT//Q7zp44AryIZt5YqZ46sR04CdR7u5AHdpaj
+	 KKvkyFJhQME3rkA1CRrUzbymoTd9lHNOh0SGKD+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Fabio Estevam <festevam@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 109/129] iio: adc: ti-ads124s08: Use gpiod_set_value_cansleep()
-Date: Wed, 15 Jan 2025 11:38:04 +0100
-Message-ID: <20250115103558.695850852@linuxfoundation.org>
+	Sridhar Samudrala <sridhar.samudrala@intel.com>,
+	Joe Damato <jdamato@fastly.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 189/189] netdev: prevent accessing NAPI instances from another namespace
+Date: Wed, 15 Jan 2025 11:38:05 +0100
+Message-ID: <20250115103613.943251030@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 2a8e34096ec70d73ebb6d9920688ea312700cbd9 upstream.
+commit d1cacd74776895f6435941f86a1130e58f6dd226 upstream.
 
-Using gpiod_set_value() to control the reset GPIO causes some verbose
-warnings during boot when the reset GPIO is controlled by an I2C IO
-expander.
+The NAPI IDs were not fully exposed to user space prior to the netlink
+API, so they were never namespaced. The netlink API must ensure that
+at the very least NAPI instance belongs to the same netns as the owner
+of the genl sock.
 
-As the caller can sleep, use the gpiod_set_value_cansleep() variant to
-fix the issue.
+napi_by_id() can become static now, but it needs to move because of
+dev_get_by_napi_id().
 
-Tested on a custom i.MX93 board with a ADS124S08 ADC.
-
-Cc: stable@kernel.org
-Fixes: e717f8c6dfec ("iio: adc: Add the TI ads124s08 ADC code")
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
-Link: https://patch.msgid.link/20241122164308.390340-1-festevam@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: stable@vger.kernel.org
+Fixes: 1287c1ae0fc2 ("netdev-genl: Support setting per-NAPI config values")
+Fixes: 27f91aaf49b3 ("netdev-genl: Add netlink framework functions for napi")
+Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Reviewed-by: Joe Damato <jdamato@fastly.com>
+Link: https://patch.msgid.link/20250106180137.1861472-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ti-ads124s08.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/dev.c         |   43 ++++++++++++++++++++++++++++++-------------
+ net/core/dev.h         |    3 ++-
+ net/core/netdev-genl.c |    4 +---
+ 3 files changed, 33 insertions(+), 17 deletions(-)
 
---- a/drivers/iio/adc/ti-ads124s08.c
-+++ b/drivers/iio/adc/ti-ads124s08.c
-@@ -183,9 +183,9 @@ static int ads124s_reset(struct iio_dev
- 	struct ads124s_private *priv = iio_priv(indio_dev);
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -753,6 +753,36 @@ int dev_fill_forward_path(const struct n
+ }
+ EXPORT_SYMBOL_GPL(dev_fill_forward_path);
  
- 	if (priv->reset_gpio) {
--		gpiod_set_value(priv->reset_gpio, 0);
-+		gpiod_set_value_cansleep(priv->reset_gpio, 0);
- 		udelay(200);
--		gpiod_set_value(priv->reset_gpio, 1);
-+		gpiod_set_value_cansleep(priv->reset_gpio, 1);
++/* must be called under rcu_read_lock(), as we dont take a reference */
++static struct napi_struct *napi_by_id(unsigned int napi_id)
++{
++	unsigned int hash = napi_id % HASH_SIZE(napi_hash);
++	struct napi_struct *napi;
++
++	hlist_for_each_entry_rcu(napi, &napi_hash[hash], napi_hash_node)
++		if (napi->napi_id == napi_id)
++			return napi;
++
++	return NULL;
++}
++
++/* must be called under rcu_read_lock(), as we dont take a reference */
++struct napi_struct *netdev_napi_by_id(struct net *net, unsigned int napi_id)
++{
++	struct napi_struct *napi;
++
++	napi = napi_by_id(napi_id);
++	if (!napi)
++		return NULL;
++
++	if (WARN_ON_ONCE(!napi->dev))
++		return NULL;
++	if (!net_eq(net, dev_net(napi->dev)))
++		return NULL;
++
++	return napi;
++}
++
+ /**
+  *	__dev_get_by_name	- find a device by its name
+  *	@net: the applicable net namespace
+@@ -6291,19 +6321,6 @@ bool napi_complete_done(struct napi_stru
+ }
+ EXPORT_SYMBOL(napi_complete_done);
+ 
+-/* must be called under rcu_read_lock(), as we dont take a reference */
+-struct napi_struct *napi_by_id(unsigned int napi_id)
+-{
+-	unsigned int hash = napi_id % HASH_SIZE(napi_hash);
+-	struct napi_struct *napi;
+-
+-	hlist_for_each_entry_rcu(napi, &napi_hash[hash], napi_hash_node)
+-		if (napi->napi_id == napi_id)
+-			return napi;
+-
+-	return NULL;
+-}
+-
+ static void skb_defer_free_flush(struct softnet_data *sd)
+ {
+ 	struct sk_buff *skb, *next;
+--- a/net/core/dev.h
++++ b/net/core/dev.h
+@@ -22,6 +22,8 @@ struct sd_flow_limit {
+ 
+ extern int netdev_flow_limit_table_len;
+ 
++struct napi_struct *netdev_napi_by_id(struct net *net, unsigned int napi_id);
++
+ #ifdef CONFIG_PROC_FS
+ int __init dev_proc_init(void);
+ #else
+@@ -146,7 +148,6 @@ void xdp_do_check_flushed(struct napi_st
+ static inline void xdp_do_check_flushed(struct napi_struct *napi) { }
+ #endif
+ 
+-struct napi_struct *napi_by_id(unsigned int napi_id);
+ void kick_defer_list_purge(struct softnet_data *sd, unsigned int cpu);
+ 
+ #define XMIT_RECURSION_LIMIT	8
+--- a/net/core/netdev-genl.c
++++ b/net/core/netdev-genl.c
+@@ -164,8 +164,6 @@ netdev_nl_napi_fill_one(struct sk_buff *
+ 	void *hdr;
+ 	pid_t pid;
+ 
+-	if (WARN_ON_ONCE(!napi->dev))
+-		return -EINVAL;
+ 	if (!(napi->dev->flags & IFF_UP))
+ 		return 0;
+ 
+@@ -216,7 +214,7 @@ int netdev_nl_napi_get_doit(struct sk_bu
+ 	rtnl_lock();
+ 	rcu_read_lock();
+ 
+-	napi = napi_by_id(napi_id);
++	napi = netdev_napi_by_id(genl_info_net(info), napi_id);
+ 	if (napi) {
+ 		err = netdev_nl_napi_fill_one(rsp, napi, info);
  	} else {
- 		return ads124s_write_cmd(indio_dev, ADS124S08_CMD_RESET);
- 	}
 
 
 
