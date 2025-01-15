@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-108896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88C76A120D5
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:49:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46FF6A12005
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:40:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 097B91889882
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:49:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32AAB7A142B
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750CA1E7C2E;
-	Wed, 15 Jan 2025 10:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD40248BC7;
+	Wed, 15 Jan 2025 10:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tyhE+2JU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHEuKE6Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFBF248BBD;
-	Wed, 15 Jan 2025 10:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C388248BD5;
+	Wed, 15 Jan 2025 10:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938168; cv=none; b=XS/eUdklhFGS7OpfW4C++6uXaUnKIjFoCcBtE5s/Fiswh4ALqkJATDlZH5w9nXpF2QPqWETDermtb17jeIjdvTnzf41bz+bF/fwbR7lmyvXTB6x1fQdzdPS9HIiXsydB0hld2Y5l9oVwsrMAil2Xmt7xN3ObVRv9uahnAypXEsU=
+	t=1736937610; cv=none; b=KD+527DGwTBTYO7fN1fFb5cXfn1EIQbWs5NOcqc4vO021QwSjaUKrlkdmN/ZU6MvofISZV0ksxFuuUz6ZbKkh00sXiMFrvItaCaNZr2KDV9ykA6K3SEe+EGFgdGlm1D/OgZozM50SCbNpFANjR+8cGVdL8G80MIAIXj6h6WtRe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938168; c=relaxed/simple;
-	bh=yuC9lPRUEw3U4c1M++U8YqHLZ36i0vBKwcH8WmtqX04=;
+	s=arc-20240116; t=1736937610; c=relaxed/simple;
+	bh=QpDo9IxZzWsEGsXlC1RTy2pFrm6sUTxRpIRaSJ+svec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FvYMunHFUt37APQU0gz8XMkQmByJXGySrw6wd21bn1U2KIbWpxmw1+u6Sbyz7x6ehiwsa0GpzWSTh9c8z8SB6peKKNdzNV1jiv1EZubsQ7r0FyQs3buCXYz8BHEmc+FKz0X9C3CAG131cP2lCYFvLXIEQF+SK2BeFxiHlEdTbBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tyhE+2JU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D2EEC4CEDF;
-	Wed, 15 Jan 2025 10:49:27 +0000 (UTC)
+	 MIME-Version; b=LqY1uEmyH5sZtpz5YrBcUB9esJqkc9T/maZwDN8ickg/giRdCOS+TCYaPVGTFagzdSdFhdkLCtwNtkFqz5RPBZfPmmxDdo5uBUGWlBXFZmGcP8i/569RlH4aupAUCg81mu5o3LKsYOI50CBunxGcWSP9DjUFYOamcDQWTGo+63s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHEuKE6Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F1BC4CEE1;
+	Wed, 15 Jan 2025 10:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938168;
-	bh=yuC9lPRUEw3U4c1M++U8YqHLZ36i0vBKwcH8WmtqX04=;
+	s=korg; t=1736937609;
+	bh=QpDo9IxZzWsEGsXlC1RTy2pFrm6sUTxRpIRaSJ+svec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tyhE+2JUkpKX/LM6uvKpl0/E3nXB65rNo99vRa7+5iTGeOUaxE5nddSh4fHs8Jhi/
-	 4rqKkhy1A/02GWQw5jj0C2ZO6jMA5dyjY62xQmB8nQCvFVkjbvKxnVOrsP3WHYOW6i
-	 SUbHheWFs37ehLzIoUFR5ZMN08glfNBCboCZd7Es=
+	b=GHEuKE6Z/kQLqkkn98toJTp4KCtlRYbGFQKpxwSta87NK+q7YgKHd14VwQgHTxjqc
+	 se4FogaH/3NkWZVcmOI27Fl59X/Eg9Gn/qacBbi93MeS7ts43wDvoPNNtdivkezieT
+	 rmYWiF0o8Tl1ta0vrskLaqveW/QgCqzmSx2jreXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Leo Li <sunpeng.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 6.12 104/189] drm/amd/display: Remove unnecessary amdgpu_irq_get/put
-Date: Wed, 15 Jan 2025 11:36:40 +0100
-Message-ID: <20250115103610.597089506@linuxfoundation.org>
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 23/92] tcp: Annotate data-race around sk->sk_mark in tcp_v4_send_reset
+Date: Wed, 15 Jan 2025 11:36:41 +0100
+Message-ID: <20250115103548.457824198@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-commit 5009628d8509dbb90e1b88e01eda00430fa24b4b upstream.
+[ Upstream commit 80fb40baba19e25a1b6f3ecff6fc5c0171806bde ]
 
-[WHY & HOW]
-commit 7fb363c57522 ("drm/amd/display: Let drm_crtc_vblank_on/off manage interrupts")
-lets drm_crtc_vblank_* to manage interrupts in amdgpu_dm_crtc_set_vblank,
-and amdgpu_irq_get/put do not need to be called here.  Part of that
-patch got lost somehow, so fix it up.
+This is a follow-up to 3c5b4d69c358 ("net: annotate data-races around
+sk->sk_mark"). sk->sk_mark can be read and written without holding
+the socket lock. IPv6 equivalent is already covered with READ_ONCE()
+annotation in tcp_v6_send_response().
 
-Fixes: 7fb363c57522 ("drm/amd/display: Let drm_crtc_vblank_on/off manage interrupts")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Leo Li <sunpeng.li@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 3782305ce5807c18fbf092124b9e8303cf1723ae)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3c5b4d69c358 ("net: annotate data-races around sk->sk_mark")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/f459d1fc44f205e13f6d8bdca2c8bfb9902ffac9.1736244569.git.daniel@iogearbox.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   31 ----------------------
- 1 file changed, 31 deletions(-)
+ net/ipv4/tcp_ipv4.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -8393,16 +8393,6 @@ static void manage_dm_interrupts(struct
- 				 struct amdgpu_crtc *acrtc,
- 				 struct dm_crtc_state *acrtc_state)
- {
--	/*
--	 * We have no guarantee that the frontend index maps to the same
--	 * backend index - some even map to more than one.
--	 *
--	 * TODO: Use a different interrupt or check DC itself for the mapping.
--	 */
--	int irq_type =
--		amdgpu_display_crtc_idx_to_irq_type(
--			adev,
--			acrtc->crtc_id);
- 	struct drm_vblank_crtc_config config = {0};
- 	struct dc_crtc_timing *timing;
- 	int offdelay;
-@@ -8428,28 +8418,7 @@ static void manage_dm_interrupts(struct
- 
- 		drm_crtc_vblank_on_config(&acrtc->base,
- 					  &config);
--
--		amdgpu_irq_get(
--			adev,
--			&adev->pageflip_irq,
--			irq_type);
--#if defined(CONFIG_DRM_AMD_SECURE_DISPLAY)
--		amdgpu_irq_get(
--			adev,
--			&adev->vline0_irq,
--			irq_type);
--#endif
- 	} else {
--#if defined(CONFIG_DRM_AMD_SECURE_DISPLAY)
--		amdgpu_irq_put(
--			adev,
--			&adev->vline0_irq,
--			irq_type);
--#endif
--		amdgpu_irq_put(
--			adev,
--			&adev->pageflip_irq,
--			irq_type);
- 		drm_crtc_vblank_off(&acrtc->base);
- 	}
- }
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index 984435cb1013..805b1a9eca1c 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -832,7 +832,7 @@ static void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb)
+ 	sock_net_set(ctl_sk, net);
+ 	if (sk) {
+ 		ctl_sk->sk_mark = (sk->sk_state == TCP_TIME_WAIT) ?
+-				   inet_twsk(sk)->tw_mark : sk->sk_mark;
++				   inet_twsk(sk)->tw_mark : READ_ONCE(sk->sk_mark);
+ 		ctl_sk->sk_priority = (sk->sk_state == TCP_TIME_WAIT) ?
+ 				   inet_twsk(sk)->tw_priority : sk->sk_priority;
+ 		transmit_time = tcp_transmit_time(sk);
+-- 
+2.39.5
+
 
 
 
