@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-108952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28218A12116
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:52:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F42EA12034
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:42:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19BDC16A1A2
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:52:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8AD23AA696
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E6B248BC1;
-	Wed, 15 Jan 2025 10:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B39E248BAF;
+	Wed, 15 Jan 2025 10:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFojp3mm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBxR2D8k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473B2248BA1;
-	Wed, 15 Jan 2025 10:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D06248BA1;
+	Wed, 15 Jan 2025 10:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938357; cv=none; b=J4scFEap3OQCn7oHQyl7J67CiczT1MuYZ3fOKXar2mKvgqUhzImP0w3N52hLglzy33GaMfvh+GvSQMNyPjpDnFI9honcmE8qGQ739QCbVzOWhxSYVb6Fbur/1NoUSIPuvLUGvC0DCaPnZEp7jBjAlK4cPz+YTJWiACUJCIZR4zk=
+	t=1736937766; cv=none; b=igijZ0RQFhmzf0yDKZ1DoOb4pNmj6RWQ6OPdIeTBVgXXrMvMWEbbslufikvekwCO3yazTZBn/wLzAKh6mS/yUTmIb2LpnP0Y5srWD5U2HhIenT7xFNJt9GmUlMiqP4Q6Tjtw/oNvjsHZHaqMz/Yte4W58dmqOOWH6pc0An3I3Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938357; c=relaxed/simple;
-	bh=w5SuH9oezq77LWx1fQ+84qw6oB1Ws0m0nSgUNsV6J2c=;
+	s=arc-20240116; t=1736937766; c=relaxed/simple;
+	bh=Ae3BtkwsCSSavh4ms1LNzxu0cQGIh1aKCLH1vA2pyhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nHawmCTEN0UZoK/1yHiUe7Uk/L3JvIKcdi9BV2Kjkqrl94Q8Ma3LWHPGTvufbMr492aY8I4PrvwXaj12Sm7PwKh5WCInNyLWfgrNafDYY3KHfdfL6q+7sHu2M4F3gczb6WleDY9JgKJ/vckH7/hzySEXPaeXK2+clURNmd2FbqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFojp3mm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA866C4CEDF;
-	Wed, 15 Jan 2025 10:52:36 +0000 (UTC)
+	 MIME-Version; b=lYLu5mthgGRQ+XIDJO1X1MnCwjEGjgTZ0JkouC8/TqeayqMUM0GyIuER7ek9pQd37d/ySBS3wUEb6/S27nJ4lQYG5TNR/az2a0gDeYMNgPwLUBirZYfKteaxfRJTkzAVqiGRzVOgJovz6+xV9ithKtRIhaWgEtVbG78ZQlmzCzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBxR2D8k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A17C4CEE1;
+	Wed, 15 Jan 2025 10:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938357;
-	bh=w5SuH9oezq77LWx1fQ+84qw6oB1Ws0m0nSgUNsV6J2c=;
+	s=korg; t=1736937766;
+	bh=Ae3BtkwsCSSavh4ms1LNzxu0cQGIh1aKCLH1vA2pyhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TFojp3mmhFlk7EptpzwJLopCg175k+kHavxSN+YsaGa24fjw/40/TpVoDj0SyNee3
-	 DLTCc2EhYEmMQyWCzXcZgdWC5w3D7wucqCo9gBhgiCRktfHf3JH8ZY/gnMqKJ1MRLT
-	 tOuZLjnz2ZNCPNbWG7SynTl0F0xRIElrxJyp1z1s=
+	b=MBxR2D8kzleCipO5YzJjY9JN1pjedt2Pd+RTs5ULNaadQ+UNsVw8fA1m3JsyvE16M
+	 KVZjIaGE/9ZiSCeEVWMHmgdFsiBlSLkpEvVPyHkSY88UUnBWJv1kIJz9AvureCLz+i
+	 ZTRTpv9fcOrZ0XiibrEf+4JhKvFnsnpV6xUOaZPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	stable@kernel.org,
+	Fabio Estevam <festevam@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 157/189] iio: pressure: zpa2326: fix information leak in triggered buffer
+Subject: [PATCH 6.1 75/92] iio: adc: ti-ads124s08: Use gpiod_set_value_cansleep()
 Date: Wed, 15 Jan 2025 11:37:33 +0100
-Message-ID: <20250115103612.676193029@linuxfoundation.org>
+Message-ID: <20250115103550.551564739@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Fabio Estevam <festevam@gmail.com>
 
-commit 6007d10c5262f6f71479627c1216899ea7f09073 upstream.
+commit 2a8e34096ec70d73ebb6d9920688ea312700cbd9 upstream.
 
-The 'sample' local struct is used to push data to user space from a
-triggered buffer, but it has a hole between the temperature and the
-timestamp (u32 pressure, u16 temperature, GAP, u64 timestamp).
-This hole is never initialized.
+Using gpiod_set_value() to control the reset GPIO causes some verbose
+warnings during boot when the reset GPIO is controlled by an I2C IO
+expander.
 
-Initialize the struct to zero before using it to avoid pushing
-uninitialized information to userspace.
+As the caller can sleep, use the gpiod_set_value_cansleep() variant to
+fix the issue.
 
-Cc: stable@vger.kernel.org
-Fixes: 03b262f2bbf4 ("iio:pressure: initial zpa2326 barometer support")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-3-0cb6e98d895c@gmail.com
+Tested on a custom i.MX93 board with a ADS124S08 ADC.
+
+Cc: stable@kernel.org
+Fixes: e717f8c6dfec ("iio: adc: Add the TI ads124s08 ADC code")
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Link: https://patch.msgid.link/20241122164308.390340-1-festevam@gmail.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/pressure/zpa2326.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/adc/ti-ads124s08.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/pressure/zpa2326.c
-+++ b/drivers/iio/pressure/zpa2326.c
-@@ -586,6 +586,8 @@ static int zpa2326_fill_sample_buffer(st
- 	}   sample;
- 	int err;
+--- a/drivers/iio/adc/ti-ads124s08.c
++++ b/drivers/iio/adc/ti-ads124s08.c
+@@ -183,9 +183,9 @@ static int ads124s_reset(struct iio_dev
+ 	struct ads124s_private *priv = iio_priv(indio_dev);
  
-+	memset(&sample, 0, sizeof(sample));
-+
- 	if (test_bit(0, indio_dev->active_scan_mask)) {
- 		/* Get current pressure from hardware FIFO. */
- 		err = zpa2326_dequeue_pressure(indio_dev, &sample.pressure);
+ 	if (priv->reset_gpio) {
+-		gpiod_set_value(priv->reset_gpio, 0);
++		gpiod_set_value_cansleep(priv->reset_gpio, 0);
+ 		udelay(200);
+-		gpiod_set_value(priv->reset_gpio, 1);
++		gpiod_set_value_cansleep(priv->reset_gpio, 1);
+ 	} else {
+ 		return ads124s_write_cmd(indio_dev, ADS124S08_CMD_RESET);
+ 	}
 
 
 
