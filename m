@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-108730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46FF6A12005
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:40:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A58DA1216A
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:56:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32AAB7A142B
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:40:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4B153AA7F9
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:55:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD40248BC7;
-	Wed, 15 Jan 2025 10:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8CD1DB13A;
+	Wed, 15 Jan 2025 10:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHEuKE6Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWpHHS+N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C388248BD5;
-	Wed, 15 Jan 2025 10:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D073248BD1;
+	Wed, 15 Jan 2025 10:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937610; cv=none; b=KD+527DGwTBTYO7fN1fFb5cXfn1EIQbWs5NOcqc4vO021QwSjaUKrlkdmN/ZU6MvofISZV0ksxFuuUz6ZbKkh00sXiMFrvItaCaNZr2KDV9ykA6K3SEe+EGFgdGlm1D/OgZozM50SCbNpFANjR+8cGVdL8G80MIAIXj6h6WtRe4=
+	t=1736938553; cv=none; b=j5E++DP14jQC8nqhTpnWl1pIaRI6X2mqPInmYeOqLKFTvrS4uxj9JU07rm/X/oKwkms0wSpPTBqRCTB0Rb56KaKJDHo5HosQiUn0s8nmB3BY5Tfx2L9C/kdZwvYCtCYItV+rLKCgmCnvZusCl7VgOpoEwPGufjDWdBcYVMO6mkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937610; c=relaxed/simple;
-	bh=QpDo9IxZzWsEGsXlC1RTy2pFrm6sUTxRpIRaSJ+svec=;
+	s=arc-20240116; t=1736938553; c=relaxed/simple;
+	bh=IZOKIgxJmvq0lHJcQy+Ee9Gg9Y06UtWYeIDVE9ydJ6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LqY1uEmyH5sZtpz5YrBcUB9esJqkc9T/maZwDN8ickg/giRdCOS+TCYaPVGTFagzdSdFhdkLCtwNtkFqz5RPBZfPmmxDdo5uBUGWlBXFZmGcP8i/569RlH4aupAUCg81mu5o3LKsYOI50CBunxGcWSP9DjUFYOamcDQWTGo+63s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHEuKE6Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F1BC4CEE1;
-	Wed, 15 Jan 2025 10:40:08 +0000 (UTC)
+	 MIME-Version; b=R+nHpyRHtTib4IESuigsyLc6sU/o31W94dXsBU0vkP09nOJUEbhJCpudOiSIuMDFCp+wyzDB/H2IOv8S0RfTsAbRfFA70cErYs977+7z9dxTU4fztZoqnkeND32znmjAjbMRyaraZsASstXNeQga1wnPJFrW3qUTkkuXN4E0zSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWpHHS+N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7ABC4CEDF;
+	Wed, 15 Jan 2025 10:55:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937609;
-	bh=QpDo9IxZzWsEGsXlC1RTy2pFrm6sUTxRpIRaSJ+svec=;
+	s=korg; t=1736938553;
+	bh=IZOKIgxJmvq0lHJcQy+Ee9Gg9Y06UtWYeIDVE9ydJ6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GHEuKE6Z/kQLqkkn98toJTp4KCtlRYbGFQKpxwSta87NK+q7YgKHd14VwQgHTxjqc
-	 se4FogaH/3NkWZVcmOI27Fl59X/Eg9Gn/qacBbi93MeS7ts43wDvoPNNtdivkezieT
-	 rmYWiF0o8Tl1ta0vrskLaqveW/QgCqzmSx2jreXQ=
+	b=TWpHHS+NnCJ88alyiOD8BAlNiqa4NOSZnX/ybPu7yhzcyWQ9DIi8lP96EgMTXaLwi
+	 1zveh6X0YMkniCO5uxyguSDPsB8ZITPj5Fki+sc6MyNWrloa7t0SUpy3M2qXjyzGaP
+	 B5vND8ljl8ltuAuvbk3tD0fSvbF8/CZ3tMZcBorY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Eric Dumazet <edumazet@google.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 23/92] tcp: Annotate data-race around sk->sk_mark in tcp_v4_send_reset
+Subject: [PATCH 6.6 026/129] bnxt_en: Fix possible memory leak when hwrm_req_replace fails
 Date: Wed, 15 Jan 2025 11:36:41 +0100
-Message-ID: <20250115103548.457824198@linuxfoundation.org>
+Message-ID: <20250115103555.409228933@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit 80fb40baba19e25a1b6f3ecff6fc5c0171806bde ]
+[ Upstream commit c8dafb0e4398dacc362832098a04b97da3b0395b ]
 
-This is a follow-up to 3c5b4d69c358 ("net: annotate data-races around
-sk->sk_mark"). sk->sk_mark can be read and written without holding
-the socket lock. IPv6 equivalent is already covered with READ_ONCE()
-annotation in tcp_v6_send_response().
+When hwrm_req_replace() fails, the driver is not invoking bnxt_req_drop()
+which could cause a memory leak.
 
-Fixes: 3c5b4d69c358 ("net: annotate data-races around sk->sk_mark")
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/f459d1fc44f205e13f6d8bdca2c8bfb9902ffac9.1736244569.git.daniel@iogearbox.net
+Fixes: bbf33d1d9805 ("bnxt_en: update all firmware calls to use the new APIs")
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250104043849.3482067-2-michael.chan@broadcom.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_ipv4.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index 984435cb1013..805b1a9eca1c 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -832,7 +832,7 @@ static void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb)
- 	sock_net_set(ctl_sk, net);
- 	if (sk) {
- 		ctl_sk->sk_mark = (sk->sk_state == TCP_TIME_WAIT) ?
--				   inet_twsk(sk)->tw_mark : sk->sk_mark;
-+				   inet_twsk(sk)->tw_mark : READ_ONCE(sk->sk_mark);
- 		ctl_sk->sk_priority = (sk->sk_state == TCP_TIME_WAIT) ?
- 				   inet_twsk(sk)->tw_priority : sk->sk_priority;
- 		transmit_time = tcp_transmit_time(sk);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
+index 7689086371e0..2980963208cb 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
+@@ -159,7 +159,7 @@ int bnxt_send_msg(struct bnxt_en_dev *edev,
+ 
+ 	rc = hwrm_req_replace(bp, req, fw_msg->msg, fw_msg->msg_len);
+ 	if (rc)
+-		return rc;
++		goto drop_req;
+ 
+ 	hwrm_req_timeout(bp, req, fw_msg->timeout);
+ 	resp = hwrm_req_hold(bp, req);
+@@ -171,6 +171,7 @@ int bnxt_send_msg(struct bnxt_en_dev *edev,
+ 
+ 		memcpy(fw_msg->resp, resp, resp_len);
+ 	}
++drop_req:
+ 	hwrm_req_drop(bp, req);
+ 	return rc;
+ }
 -- 
 2.39.5
 
