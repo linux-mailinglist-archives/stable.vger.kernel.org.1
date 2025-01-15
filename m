@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-108934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 129FCA12108
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:52:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E588A12044
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:43:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38F413AC34C
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:51:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67C9016375B
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E341E7C2E;
-	Wed, 15 Jan 2025 10:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6D1F248BBD;
+	Wed, 15 Jan 2025 10:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKVeQtBd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w05HvCKs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020BC248BCB;
-	Wed, 15 Jan 2025 10:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87708248BA8;
+	Wed, 15 Jan 2025 10:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938295; cv=none; b=rdiVAzPYGCR71ySRgE+l40km9eOgrGDDp4VhB4u5d7l3ApLbXRgjKYk1AG3lD2ZUuzlKIB90rUty4UBYoT3exAKYU9+JnQM9lHRacWl8f7HpaMsrd3b/H/siZFipKQRnH78ORxkVMbNWHq0lK9tn4OmJlh3iJiA10wbs0z79Cd8=
+	t=1736937813; cv=none; b=OwISEI8Wij15kip9083Pavq1x4dxfTrzF/NIrPVGXflpBs75lo+4WHI8LaJi/3JeKxHxNTnyZs742Hu6i3B2UnePkLhTE3MhzB+I4X+14DEgRmysNZURS95A5R8PxW6eW1rWTsyoa0r5LOsJ1/UdkZ5gjodOK8b+zxD1f8lWRhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938295; c=relaxed/simple;
-	bh=sERtP/DV7D1hIGVPMop43dFSheKN7RnCCE1FQ+ZUDs4=;
+	s=arc-20240116; t=1736937813; c=relaxed/simple;
+	bh=rbb4jy0AWJDGpg8/cu14tudUro75Q8bPmz2yEc5u9Lg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c7bUo89LfyIN+oz9OSV1EI7TsEs3hFF5hVzCEn63+UKihSKCgxeMg1MsgM4v0CnZ5GWACX2hBLngCZ1ZcE6cyq53Z2Iu+sb5FTOBdGo3DiB9aCaZNESlc77gEjjfRbg6/5i/CkV/aWvD3FwBXpL9JGzkmPVassf1xu720TIWy1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKVeQtBd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60BA4C4CEDF;
-	Wed, 15 Jan 2025 10:51:34 +0000 (UTC)
+	 MIME-Version; b=o57lPXXzAwdC6Jhy9YL3m6Gjjhyt4NQzt5UdXlvZPP7JnbBngCbgegL5cNVcxkOxmFOPvHJF8QrjrQ2AGGQtIoPcFBjXZ1v0EGUSTOpNoaW+4nWJWfVZ93iASYZ7E7DPHGdmvsrawxqLPywg9PGZpNExTOO/KihXcKdloabZ1qE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w05HvCKs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB61C4CEE2;
+	Wed, 15 Jan 2025 10:43:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938294;
-	bh=sERtP/DV7D1hIGVPMop43dFSheKN7RnCCE1FQ+ZUDs4=;
+	s=korg; t=1736937813;
+	bh=rbb4jy0AWJDGpg8/cu14tudUro75Q8bPmz2yEc5u9Lg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qKVeQtBdsWNmB4pYj6/FSvP06A06I7jRu54+tj6k0ugIxtjvk9qFTg6S7rwaa590T
-	 cUiIjixNdpO+ECg0EfvZRmPlzv3Yk1u6bTZf2+BxItI1pL1MFcsQcA2baJJaUnuWiG
-	 l+jSDU4HPwbg7KlugR2oOsp5iaQSop1Wl2PKDuWA=
+	b=w05HvCKsITMUG6wz4dQJ9vUjuzaSE0sOhyk/exSlBXzs/vXCbd/NJlwtTD7Tqc192
+	 ezs0o/SUL8RnfkzamtJrAhgdhHeL+CP3Oaeh6L6fWb99EdG15uhQZihWcgYJEaUQUK
+	 Xlhgt+2ix+jbDFv5LhdC0jjZXtzEIJucnfUR3xpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Ben Wolsieffer <ben.wolsieffer@hefring.com>,
-	John Ogness <john.ogness@linutronix.de>
-Subject: [PATCH 6.12 141/189] serial: stm32: use port lock wrappers for break control
-Date: Wed, 15 Jan 2025 11:37:17 +0100
-Message-ID: <20250115103612.051650471@linuxfoundation.org>
+	Rengarajan S <rengarajan.s@microchip.com>
+Subject: [PATCH 6.1 60/92] misc: microchip: pci1xxxx: Resolve kernel panic during GPIO IRQ handling
+Date: Wed, 15 Jan 2025 11:37:18 +0100
+Message-ID: <20250115103549.956723224@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+From: Rengarajan S <rengarajan.s@microchip.com>
 
-commit 0cfc36ea51684b5932cd3951ded523777d807af2 upstream.
+commit 194f9f94a5169547d682e9bbcc5ae6d18a564735 upstream.
 
-Commit 30e945861f3b ("serial: stm32: add support for break control")
-added another usage of the port lock, but was merged on the same day as
-c5d06662551c ("serial: stm32: Use port lock wrappers"), therefore the
-latter did not update this usage to use the port lock wrappers.
+Resolve kernel panic caused by improper handling of IRQs while
+accessing GPIO values. This is done by replacing generic_handle_irq with
+handle_nested_irq.
 
-Fixes: c5d06662551c ("serial: stm32: Use port lock wrappers")
+Fixes: 1f4d8ae231f4 ("misc: microchip: pci1xxxx: Add gpio irq handler and irq helper functions irq_ack, irq_mask, irq_unmask and irq_set_type of irq_chip.")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Link: https://lore.kernel.org/r/20241216145323.111612-1-ben.wolsieffer@hefring.com
+Signed-off-by: Rengarajan S <rengarajan.s@microchip.com>
+Link: https://lore.kernel.org/r/20241205133626.1483499-2-rengarajan.s@microchip.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/stm32-usart.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gpio.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/stm32-usart.c
-+++ b/drivers/tty/serial/stm32-usart.c
-@@ -1051,14 +1051,14 @@ static void stm32_usart_break_ctl(struct
- 	const struct stm32_usart_offsets *ofs = &stm32_port->info->ofs;
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&port->lock, flags);
-+	uart_port_lock_irqsave(port, &flags);
- 
- 	if (break_state)
- 		stm32_usart_set_bits(port, ofs->rqr, USART_RQR_SBKRQ);
- 	else
- 		stm32_usart_clr_bits(port, ofs->rqr, USART_RQR_SBKRQ);
- 
--	spin_unlock_irqrestore(&port->lock, flags);
-+	uart_port_unlock_irqrestore(port, flags);
- }
- 
- static int stm32_usart_startup(struct uart_port *port)
+--- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gpio.c
++++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gpio.c
+@@ -273,7 +273,7 @@ static irqreturn_t pci1xxxx_gpio_irq_han
+ 			writel(BIT(bit), priv->reg_base + INTR_STATUS_OFFSET(gpiobank));
+ 			spin_unlock_irqrestore(&priv->lock, flags);
+ 			irq = irq_find_mapping(gc->irq.domain, (bit + (gpiobank * 32)));
+-			generic_handle_irq(irq);
++			handle_nested_irq(irq);
+ 		}
+ 	}
+ 	spin_lock_irqsave(&priv->lock, flags);
 
 
 
