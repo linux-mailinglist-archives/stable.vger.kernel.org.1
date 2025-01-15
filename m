@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-108968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6D41A1213C
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:54:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEB1FA121BA
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:59:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 316D03ADAA5
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:53:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A25E3A7577
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:59:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 978DD156644;
-	Wed, 15 Jan 2025 10:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78B71E7C02;
+	Wed, 15 Jan 2025 10:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2A7WKGlT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJ8fwpJR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543A918952C;
-	Wed, 15 Jan 2025 10:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5B8248BB0;
+	Wed, 15 Jan 2025 10:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938410; cv=none; b=cT9pRTin12zPy0dAiveg94eJa+QJb7LjQvuD5OM2MBA+RvkDCBSFmNxaxCHU8aLXMFHR6No166Q3ejOkXF8WVEIhyrTELXFr+Z5IIxMSZ18Aw23FgkqrnmXAsYgJ3f4qm6GNlH6unwBABKjcaiJoiVGlQfatGcvBmsY/1qWSSxk=
+	t=1736938782; cv=none; b=kMxn0SHZltQ1aJyEEI542dNTuimBwTYFUf2s8ZGQ6ZCpkHnpiQ89uKOGq+oiZbjW4+WNpHzi3FYoLpu/a88AMQ3bPNxYtN5PLAIobM0hzxhluUDtMS0qmspAhX0TEvyFCmX1xkdFL7waMck8GLabVMvqdQZdEENmdhwPrCHAnO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938410; c=relaxed/simple;
-	bh=CqzuPQegzPc+hoyTYKzdm/njAfdW5ls22CI+2LAGkT4=;
+	s=arc-20240116; t=1736938782; c=relaxed/simple;
+	bh=y/USKRa0y9BAQOH3ASDfDYPT80rrzPPa6R0uREOylrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AxyPxq9TxEB9BU2wGpAZ9YsZWVSkLffDGb4uGpm2F8FOibkorZDJGOaWch5dY7jBcL0SEbR9Q6ofk2lEsbyol+g0OAsziY1M6xeSEgvEwDVg6PdVnGwb7psrMcQc9Boe6y4YHiNFUe74+E/XfB0Tzy7SpZ35CFfxUn9dtZfbBjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2A7WKGlT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2405C4CEDF;
-	Wed, 15 Jan 2025 10:53:29 +0000 (UTC)
+	 MIME-Version; b=nJqyKqpmy2wMmGM8u/n902CrxG+FdTG83oR1vKd/O8I65q7eoJNgsT3+ImbHVhRXjaeqFKpmkVaMAuhxqb/ARrlqlK1Nz4LOhFRVz8mrGz8d9K16xMtlZGha38IszEteu/LFJiHwJjcENFrNE8q10ZXMrOmn/ycAFT0Gll8Etk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJ8fwpJR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 281B8C4CEDF;
+	Wed, 15 Jan 2025 10:59:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938410;
-	bh=CqzuPQegzPc+hoyTYKzdm/njAfdW5ls22CI+2LAGkT4=;
+	s=korg; t=1736938781;
+	bh=y/USKRa0y9BAQOH3ASDfDYPT80rrzPPa6R0uREOylrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2A7WKGlTo9RMw36+iP8MxA/OxX0uvHSe5ApMfJNda83tmrSo38VkOaN7YUCyV8vza
-	 s+jdRdHpPHxXdCll3Ta2wOyLsRQ7CmJctY/8wWIejsVZLMwY8HAx/de1wMPnRD2OGs
-	 wa9Hukp9QXFhdwl4xIIYn3XSsd9eOoVqu/Mx83/4=
+	b=gJ8fwpJRJCfXWymHTkVfJVKZCUStkeYZnNMlLpuXRGDd0XeokbDcGLxtSNSbFnyP4
+	 drLmRXty2fnaZLVPZ8htGjOOO26Dr5Gq7Z0oMeE+wHUKHPSprT142SLqza2SiGWrKx
+	 eyhuAEmsVMiLMax5akBWE7YUrUTjrocUm+VoEeTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 175/189] arm64: dts: imx95: correct the address length of netcmix_blk_ctrl
+	stable <stable@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 096/129] usb: gadget: midi2: Reverse-select at the right place
 Date: Wed, 15 Jan 2025 11:37:51 +0100
-Message-ID: <20250115103613.386532590@linuxfoundation.org>
+Message-ID: <20250115103558.195799817@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit c5b8d2c370842e3f9a15655893d8c597e2d981d9 ]
+commit 6f660ffce7c938f2a5d8473c0e0b45e4fb25ef7f upstream.
 
-The netc_blk_ctrl is controlled by the imx95-blk-ctl clock driver and
-provides relevant clock configurations for NETC, SAI and MQS. Its address
-length should be 8 bytes instead of 0x1000.
+We should do reverse selection of other components from
+CONFIG_USB_F_MIDI2 which is tristate, instead of
+CONFIG_USB_CONFIGFS_F_MIDI2 which is bool, for satisfying subtle
+module dependencies.
 
-Fixes: 7764fef26ea9 ("arm64: dts: imx95: Add NETCMIX block control support")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8b645922b223 ("usb: gadget: Add support for USB MIDI 2.0 function driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20250101131124.27599-1-tiwai@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx95.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/Kconfig |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
-index 03661e76550f..40cbb071f265 100644
---- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-@@ -1609,7 +1609,7 @@
+--- a/drivers/usb/gadget/Kconfig
++++ b/drivers/usb/gadget/Kconfig
+@@ -210,6 +210,8 @@ config USB_F_MIDI
  
- 		netcmix_blk_ctrl: syscon@4c810000 {
- 			compatible = "nxp,imx95-netcmix-blk-ctrl", "syscon";
--			reg = <0x0 0x4c810000 0x0 0x10000>;
-+			reg = <0x0 0x4c810000 0x0 0x8>;
- 			#clock-cells = <1>;
- 			clocks = <&scmi_clk IMX95_CLK_BUSNETCMIX>;
- 			assigned-clocks = <&scmi_clk IMX95_CLK_BUSNETCMIX>;
--- 
-2.39.5
-
+ config USB_F_MIDI2
+ 	tristate
++	select SND_UMP
++	select SND_UMP_LEGACY_RAWMIDI
+ 
+ config USB_F_HID
+ 	tristate
+@@ -444,8 +446,6 @@ config USB_CONFIGFS_F_MIDI2
+ 	depends on USB_CONFIGFS
+ 	depends on SND
+ 	select USB_LIBCOMPOSITE
+-	select SND_UMP
+-	select SND_UMP_LEGACY_RAWMIDI
+ 	select USB_F_MIDI2
+ 	help
+ 	  The MIDI 2.0 function driver provides the generic emulated
 
 
 
