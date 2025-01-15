@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-108933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C8B7A12107
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:52:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FC58A12043
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:43:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1644B3AC218
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:51:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84AFA3A1A29
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875201E98E3;
-	Wed, 15 Jan 2025 10:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00FF0248BA8;
+	Wed, 15 Jan 2025 10:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c7sTP9qL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IugysFql"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B59248BCB;
-	Wed, 15 Jan 2025 10:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3167248BA0;
+	Wed, 15 Jan 2025 10:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938292; cv=none; b=Uxp8czXxC/m4NOzKuJoMj62mEKrQfcI9AMJR/FkxyBEdDIAkkmH9Q11rz0PfsSHNW/+X2zxsOjagpr3W/w+HMxbPkbRltPy5u8s3hnZOmN4A3t383Ks4rr5/rTxp5pd1fMWpITeRrVkMw/l4X+IOQmrsPk4VSg6adWsq65JKyoY=
+	t=1736937810; cv=none; b=l+NjWQ7RlUM31Qt9xuVeEmKyGlE4Mzs6BJlc+1GjvGbxeqwWHwdcyQ3kxpmQAZ0brI0060giDsn91sNd3zjTCJLxIk1OEKCbSjykRfSXsmCOeJo8exbZ5OIFGbz9q2/nv+63OJSUX6DhxqiiWHqEeqTwTAjN+yeKZkW/4AvGnC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938292; c=relaxed/simple;
-	bh=TK7dTgpgB5+f46RRVtt/RL/gq7X8v/zc04Q5wQYDvHw=;
+	s=arc-20240116; t=1736937810; c=relaxed/simple;
+	bh=DGemDNftQiM+XrK96VjuVtmm+DzpboF5nCTe76Hgvm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J0FUk2dYxLG8U8Me/HFhQ3FnL2HlgTXh5U10Zy4S2UA7gpd7l/HbF2Oa0s1kV1YyeNEmnDzLE5LAhT+OmvQOermC9I2/oplhre4uMuoH/vGuSspF+K1giQC/adQgnn8wLhUtdCox6HMxHWhkGgKmLobZpazNT58dkv0Ypq44Ugg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c7sTP9qL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C161C4CEDF;
-	Wed, 15 Jan 2025 10:51:31 +0000 (UTC)
+	 MIME-Version; b=B9U9XEVul5+J/GlnEt7F0bFK7PqcthKm6CDZ+ZF7PjSjyo6bY+JNMWubxRFufBSVOqYkk4SPJF83kaq6unVCo7fieozRFqK2zDq0N4/JeJLp6GrBonKyYZUIKT9446hayp57M/iITj5+NGJDbp04Qn9RUuO5EjgK7FbEGJwOKjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IugysFql; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA419C4CEE1;
+	Wed, 15 Jan 2025 10:43:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938291;
-	bh=TK7dTgpgB5+f46RRVtt/RL/gq7X8v/zc04Q5wQYDvHw=;
+	s=korg; t=1736937810;
+	bh=DGemDNftQiM+XrK96VjuVtmm+DzpboF5nCTe76Hgvm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c7sTP9qLvs8oyMuQ/rM8GRJnYcA2w5itAniPPDedzOdjA07PZAOYu982N/YzfMb96
-	 JOEv/pHb74j1HiZhMpe0kAjKIjY0nX9v/9yaaMg09jUZtTHK//aANXQ9pPpV3geRkc
-	 kVZHIIMknQBGBlXTFpPwLu1kcXawL0tclmDybH7o=
+	b=IugysFqlBaSOWn4+aYVkk+zOw+c53JA0OOGgbySjVvzPfR1pCLBMDAsNTQREsHHYJ
+	 gk/vsRd368H6pljQkX2aB/KbugzaBq2yHSGLHHDCM8yga+H0G5KRlUjei9cTJxHm4d
+	 HYR23ET0BckbF7CWy/TwgMMgZ833SCYDlV8BtU3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	stable <stable@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.12 140/189] tty: serial: 8250: Fix another runtime PM usage counter underflow
-Date: Wed, 15 Jan 2025 11:37:16 +0100
-Message-ID: <20250115103612.013750785@linuxfoundation.org>
+	Li Huafei <lihuafei1@huawei.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 59/92] topology: Keep the cpumask unchanged when printing cpumap
+Date: Wed, 15 Jan 2025 11:37:17 +0100
+Message-ID: <20250115103549.917834335@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +60,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Li Huafei <lihuafei1@huawei.com>
 
-commit ed2761958ad77e54791802b07095786150eab844 upstream.
+commit cbd399f78e23ad4492c174fc5e6b3676dba74a52 upstream.
 
-The commit f9b11229b79c ("serial: 8250: Fix PM usage_count for console
-handover") fixed one runtime PM usage counter balance problem that
-occurs because .dev is not set during univ8250 setup preventing call to
-pm_runtime_get_sync(). Later, univ8250_console_exit() will trigger the
-runtime PM usage counter underflow as .dev is already set at that time.
+During fuzz testing, the following warning was discovered:
 
-Call pm_runtime_get_sync() to balance the RPM usage counter also in
-serial8250_register_8250_port() before trying to add the port.
+ different return values (15 and 11) from vsnprintf("%*pbl
+ ", ...)
 
-Reported-by: Borislav Petkov (AMD) <bp@alien8.de>
-Fixes: bedb404e91bb ("serial: 8250_port: Don't use power management for kernel console")
+ test:keyward is WARNING in kvasprintf
+ WARNING: CPU: 55 PID: 1168477 at lib/kasprintf.c:30 kvasprintf+0x121/0x130
+ Call Trace:
+  kvasprintf+0x121/0x130
+  kasprintf+0xa6/0xe0
+  bitmap_print_to_buf+0x89/0x100
+  core_siblings_list_read+0x7e/0xb0
+  kernfs_file_read_iter+0x15b/0x270
+  new_sync_read+0x153/0x260
+  vfs_read+0x215/0x290
+  ksys_read+0xb9/0x160
+  do_syscall_64+0x56/0x100
+  entry_SYSCALL_64_after_hwframe+0x78/0xe2
+
+The call trace shows that kvasprintf() reported this warning during the
+printing of core_siblings_list. kvasprintf() has several steps:
+
+ (1) First, calculate the length of the resulting formatted string.
+
+ (2) Allocate a buffer based on the returned length.
+
+ (3) Then, perform the actual string formatting.
+
+ (4) Check whether the lengths of the formatted strings returned in
+     steps (1) and (2) are consistent.
+
+If the core_cpumask is modified between steps (1) and (3), the lengths
+obtained in these two steps may not match. Indeed our test includes cpu
+hotplugging, which should modify core_cpumask while printing.
+
+To fix this issue, cache the cpumask into a temporary variable before
+calling cpumap_print_{list, cpumask}_to_buf(), to keep it unchanged
+during the printing process.
+
+Fixes: bb9ec13d156e ("topology: use bin_attribute to break the size limitation of cpumap ABI")
 Cc: stable <stable@kernel.org>
-Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20241210170120.2231-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Li Huafei <lihuafei1@huawei.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://lore.kernel.org/r/20241114110141.94725-1-lihuafei1@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_core.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/base/topology.c |   24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_core.c
-+++ b/drivers/tty/serial/8250/8250_core.c
-@@ -812,6 +812,9 @@ int serial8250_register_8250_port(const
- 			uart->dl_write = up->dl_write;
+--- a/drivers/base/topology.c
++++ b/drivers/base/topology.c
+@@ -27,9 +27,17 @@ static ssize_t name##_read(struct file *
+ 			   loff_t off, size_t count)				\
+ {										\
+ 	struct device *dev = kobj_to_dev(kobj);                                 \
++	cpumask_var_t mask;							\
++	ssize_t n;								\
+ 										\
+-	return cpumap_print_bitmask_to_buf(buf, topology_##mask(dev->id),	\
+-					   off, count);                         \
++	if (!alloc_cpumask_var(&mask, GFP_KERNEL))				\
++		return -ENOMEM;							\
++										\
++	cpumask_copy(mask, topology_##mask(dev->id));				\
++	n = cpumap_print_bitmask_to_buf(buf, mask, off, count);			\
++	free_cpumask_var(mask);							\
++										\
++	return n;								\
+ }										\
+ 										\
+ static ssize_t name##_list_read(struct file *file, struct kobject *kobj,	\
+@@ -37,9 +45,17 @@ static ssize_t name##_list_read(struct f
+ 				loff_t off, size_t count)			\
+ {										\
+ 	struct device *dev = kobj_to_dev(kobj);					\
++	cpumask_var_t mask;							\
++	ssize_t n;								\
++										\
++	if (!alloc_cpumask_var(&mask, GFP_KERNEL))				\
++		return -ENOMEM;							\
++										\
++	cpumask_copy(mask, topology_##mask(dev->id));				\
++	n = cpumap_print_list_to_buf(buf, mask, off, count);			\
++	free_cpumask_var(mask);							\
+ 										\
+-	return cpumap_print_list_to_buf(buf, topology_##mask(dev->id),		\
+-					off, count);				\
++	return n;								\
+ }
  
- 		if (uart->port.type != PORT_8250_CIR) {
-+			if (uart_console_registered(&uart->port))
-+				pm_runtime_get_sync(uart->port.dev);
-+
- 			if (serial8250_isa_config != NULL)
- 				serial8250_isa_config(0, &uart->port,
- 						&uart->capabilities);
+ define_id_show_func(physical_package_id, "%d");
 
 
 
