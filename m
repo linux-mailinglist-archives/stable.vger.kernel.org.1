@@ -1,82 +1,128 @@
-Return-Path: <stable+bounces-109181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC002A12EC1
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 23:54:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9635A12ED1
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 23:57:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0320167C92
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 22:54:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CF887A45D4
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 22:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5071DB372;
-	Wed, 15 Jan 2025 22:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B431DD0D6;
+	Wed, 15 Jan 2025 22:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="EMJ7AYOZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ep/p2WaH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392F28F77;
-	Wed, 15 Jan 2025 22:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CEA01991AF;
+	Wed, 15 Jan 2025 22:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736981665; cv=none; b=bL+cOOn7jI7sOuGIGpogR7kZeQMSYnnS7HRkZ3h4qTDyvz6HkfXBax/v66ddP5JgFh7SRXwaACBjGQkXQ2R2cgwAR9oy66nRpFmvZh0sVTHCbqrxdyN2XozBByGe4hBF397FtiIci0L24a5cjIidz+qkaU1ZwgZXoejB91h7onU=
+	t=1736981834; cv=none; b=RTYuwiDM0rtX6kkfs/V1tuvow8bYTpGdN8+7IlOUOshBEHEXn2se1hmK2sWqyYToIM6ATdyPmxQOP7eTv6xEZhk8nI3V9s7YDPV8zEtjw2d5XxD71Rl6EFtMIziLHC/7BA3vt3YM2lYq0C7i/VA6+foqTeEpRlqhQL+LF9xYSnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736981665; c=relaxed/simple;
-	bh=GztnMrOjBn6CpkdQ0LThEvpzVmWPcr/qYWuQD4BWq9c=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=qQ3UYTyMLfS+D+KPs/k6+DMESQnQUVPtBUz1WJjVXvIUShScmERB7lXicRuABICbAIf7t9yb1cwoWW2Bn4rfIXHH74gAn4SwXw66+alOW9bYVJ55JWDqaD8L0L5BMKGFk9OSJwULEENqt5zib0VPM6LOyike0nt+/PJTCczNGl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=EMJ7AYOZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 475D0C4CED1;
-	Wed, 15 Jan 2025 22:54:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1736981664;
-	bh=GztnMrOjBn6CpkdQ0LThEvpzVmWPcr/qYWuQD4BWq9c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EMJ7AYOZmeaV/MS6YAhMcx1TTnZlauCOzegbWX0GBnGhpPeffEwzLGJUH4WgFh3OV
-	 5gvtaX/WzwPBR5MGiZYizj2+3CWhMhk++bVyqc1tVhZre1mMWY0iTNq5VIhJDTuIND
-	 a12I25A1btyaduJTAHEtP+3804rzZjvQztDdPWQo=
-Date: Wed, 15 Jan 2025 14:54:23 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Muchun Song <muchun.song@linux.dev>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Jann Horn
- <jannh@google.com>, Shuah Khan <shuah@kernel.org>, David Hildenbrand
- <david@redhat.com>, =?UTF-8?Q?Miko=C5=82aj?= Lenczewski
- <miko.lenczewski@arm.com>, Mark Rutland <mark.rutland@arm.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] mm: Clear uffd-wp PTE/PMD state on mremap()
-Message-Id: <20250115145423.62ec971812b8d975c16b9993@linux-foundation.org>
-In-Reply-To: <9221000a-161b-46ea-a065-ee339837aacb@lucifer.local>
-References: <20250107144755.1871363-1-ryan.roberts@arm.com>
-	<20250107144755.1871363-2-ryan.roberts@arm.com>
-	<26ee9ae0-405f-4085-a864-48d1ee6371f1@arm.com>
-	<Z4fui1wQ97Hlmbqd@x1n>
-	<9221000a-161b-46ea-a065-ee339837aacb@lucifer.local>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1736981834; c=relaxed/simple;
+	bh=mYB9Gt0BsmQrA7uaueijExQDwc5lV4ChkIz6jqeaTCE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=EdNAU68DulIWXEhwv+kRtkwN0QBNQlu6W+eUmjODiGwioTvy17ILbY2hM3Swcx2voRw3h67KBlHkeNBwOku3NCr+eA3gxIVXEQ+0DBoYlP7pe3yldm70qwZbgLvWyiYO6bE43ndkpPv/R5+yy1tL8ERmERNST7iigmegCm2dypI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ep/p2WaH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898E2C4CED1;
+	Wed, 15 Jan 2025 22:57:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736981834;
+	bh=mYB9Gt0BsmQrA7uaueijExQDwc5lV4ChkIz6jqeaTCE=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=ep/p2WaH5RQYWtwgggQkxdbHcLWnO63pRI2WHnvERRPkx4hBP8q46ohCdxo146nFg
+	 R5l/Qxz5gNm4DTWX0cTh46R4qIDGpgN3ddkI74CrsQ90CtxuLMtyu302ineIYzI4vX
+	 S3+y6Yq78ltAeJEeA/8ry9GNbc9bKaLFKqQWXjTgRGH6/IAEhJXXXdj0A26OBYbkBW
+	 SYZ8RU+MiJUnT47H/38LgtmIKSbSDVHvw6sidbEUQUuJf1h4XoIbMyEhFQXaq3q/3h
+	 ybttAOotkZoNt250J9cLYGXntdv6BzJbGZv4cFlEp8IIcDBUs+eDwTsfCM61OfKYxI
+	 sfRYLsYsyn5PQ==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 16 Jan 2025 00:57:09 +0200
+Message-Id: <D730O4K9L593.1CJKTW6NO6TUB@kernel.org>
+Subject: Re: [PATCH v9] tpm: Map the ACPI provided event log
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Stefan Berger" <stefanb@linux.ibm.com>,
+ <linux-integrity@vger.kernel.org>, "Peter Huewe" <peterhuewe@gmx.de>,
+ "Jason Gunthorpe" <jgg@ziepe.ca>, "Colin Ian King"
+ <colin.i.king@gmail.com>, "Reiner Sailer" <sailer@us.ibm.com>, "Seiji
+ Munetoh" <munetoh@jp.ibm.com>, "Kylene Jo Hall" <kjhall@us.ibm.com>,
+ "Stefan Berger" <stefanb@us.ibm.com>, "Andrew Morton" <akpm@osdl.org>
+Cc: "Ard Biesheuvel" <ardb@kernel.org>, <stable@vger.kernel.org>, "Andy
+ Liang" <andy.liang@hpe.com>, <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.18.2
+References: <20250115212237.57436-1-jarkko@kernel.org>
+ <583ca33e-aeb3-4401-8f72-9ad1a26d895d@linux.ibm.com>
+In-Reply-To: <583ca33e-aeb3-4401-8f72-9ad1a26d895d@linux.ibm.com>
 
-On Wed, 15 Jan 2025 17:30:20 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+On Thu Jan 16, 2025 at 12:03 AM EET, Stefan Berger wrote:
+>
+>
+> On 1/15/25 4:22 PM, Jarkko Sakkinen wrote:
+> > The following failure was reported:
+> >=20
+> > [   10.693310][    T1] tpm_tis STM0925:00: 2.0 TPM (device-id 0x3, rev-=
+id 0)
+> > [   10.848132][    T1] ------------[ cut here ]------------
+> > [   10.853559][    T1] WARNING: CPU: 59 PID: 1 at mm/page_alloc.c:4727 =
+__alloc_pages_noprof+0x2ca/0x330
+> > [   10.862827][    T1] Modules linked in:
+> > [   10.866671][    T1] CPU: 59 UID: 0 PID: 1 Comm: swapper/0 Not tainte=
+d 6.12.0-lp155.2.g52785e2-default #1 openSUSE Tumbleweed (unreleased) 588cd=
+98293a7c9eba9013378d807364c088c9375
+> > [   10.882741][    T1] Hardware name: HPE ProLiant DL320 Gen12/ProLiant=
+ DL320 Gen12, BIOS 1.20 10/28/2024
+> > [   10.892170][    T1] RIP: 0010:__alloc_pages_noprof+0x2ca/0x330
+> > [   10.898103][    T1] Code: 24 08 e9 4a fe ff ff e8 34 36 fa ff e9 88 =
+fe ff ff 83 fe 0a 0f 86 b3 fd ff ff 80 3d 01 e7 ce 01 00 75 09 c6 05 f8 e6 =
+ce 01 01 <0f> 0b 45 31 ff e9 e5 fe ff ff f7 c2 00 00 08 00 75 42 89 d9 80 e=
+1
+> > [   10.917750][    T1] RSP: 0000:ffffb7cf40077980 EFLAGS: 00010246
+> > [   10.923777][    T1] RAX: 0000000000000000 RBX: 0000000000040cc0 RCX:=
+ 0000000000000000
+> > [   10.931727][    T1] RDX: 0000000000000000 RSI: 000000000000000c RDI:=
+ 0000000000040cc0
+> >=20
+> > Above shows that ACPI pointed a 16 MiB buffer for the log events becaus=
+e
+> > RSI maps to the 'order' parameter of __alloc_pages_noprof(). Address th=
+e
+> > bug with kvmalloc() and devm_add_action_or_reset().
+>
+> Before at it was (at least) failing when the BIOS requested an excessive=
+=20
+> size. Now since you don't want to limit the size of the log I suppose=20
+> you wouldn't also want to set a size of what is excessive so that the=20
+> driver could dev_warn() the user of an excessive-sized buffer ...
+>
+> >=20
+> > Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+> > Cc: stable@vger.kernel.org # v2.6.16+
+> > Fixes: 55a82ab3181b ("[PATCH] tpm: add bios measurement log")
+> > Reported-by: Andy Liang <andy.liang@hpe.com>
+> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219495
+> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+>
+> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 
-> I sort of favour putting hotfixes in quick, but this one has gone in
-> quicker than some reviewed hotfixes which we left in unstable... however
-> towards the end of a cycle I think Andrew is stuck between a rock and a
-> hard place in deciding how to handle these.
-> 
-> So I'm guessing the heuristic is 'allow to simmer in unstable if time
-> permits in cycle', if known 'good egg' + no objection + towards end of
-> cycle + hotfix - send.
+Sorry there was small glitch because I had a small diff unamended
+to the commit. See the last diff:
 
-Yup.  Plus this patch had such a convincing changelog ;)
+https://lore.kernel.org/linux-integrity/20250115224315.482487-1-jarkko@kern=
+el.org/T/#u
+
+I guess the reviewed-by still holds, right? :-)
+
+BR, Jarkko
 
