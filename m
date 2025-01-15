@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-108874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDB5FA120B8
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:48:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC49A1215D
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:55:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42567188CABD
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:48:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 905FF3ACE30
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CDB248BC1;
-	Wed, 15 Jan 2025 10:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64AC0248BAE;
+	Wed, 15 Jan 2025 10:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uHdCCXl8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPMTIiHH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76228248BDE;
-	Wed, 15 Jan 2025 10:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8AA1DB151;
+	Wed, 15 Jan 2025 10:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938096; cv=none; b=XtMZqL1TrxwwcSThppHNVPpQiBie1QxNVas4LzAI3GotEwfrZfWW6aLIHdy+fWX4JlA9mBeugNYWTOyEXNO4KyCN062Gk7YOOBP/GJqQdOfyC1GN/9U3wrWyOcvV3xk4GVMaVu4hURC2hjBBCbJpDFKIzHHqdRgo+EggrHLH98M=
+	t=1736938499; cv=none; b=YdOEDJgXw+nJdMc6cbFsqKyTni6YKWW9M93u2AadQ1VFUgZ68+fQtsCqtQfdO7jXL0uwNN/rxmHMnzWF83rwsqshu2rqXis34webWwBMlZ8dcNypf+d1uQMR4y3Q6cXlNfa1NJ8dunzkXQlmax7glZDURl3+jqKm57NS0LVAAyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938096; c=relaxed/simple;
-	bh=DBvTNx5WZ00FXWc9brltJLXVau2q4RNCLcI8SZa5Qr0=;
+	s=arc-20240116; t=1736938499; c=relaxed/simple;
+	bh=9K2QoTwgo15k0ggJhgx+JhXBJ8t09+UsNjaXeVeEurE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mTPiGHGBckGU7bIYPkyTQtuaZgQoSbsCTaO5lR9kg+tF9S03c0C/AHHWLJFNMgGbdpFHv2jQRAaVRaGdpv7rAeaXUXqvEhgZCjys2ggnM6rQEsW4kqqQyaUfDAaHiFCEngANg6mYarm/LXedBME36rh/mvdvdEi87Q3YJ+xCuz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uHdCCXl8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A70D5C4CEDF;
-	Wed, 15 Jan 2025 10:48:15 +0000 (UTC)
+	 MIME-Version; b=LE3/47jt0NcZR1UiGuEpsC3aOvW3eS/o+ag8IrHG6cq3VPXEGZI2FLol8TgGlOANpo/bazkKZIYNmG+nkSVvGGFo1ZvaS1VyuQ5wCZNvdRUsQgNOIOY7T90a46G3Sg1ttjJpWEbw8fy6kbA4lEiz5gEfARyNqcNKj8p9odc2JRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPMTIiHH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81082C4CEE4;
+	Wed, 15 Jan 2025 10:54:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938096;
-	bh=DBvTNx5WZ00FXWc9brltJLXVau2q4RNCLcI8SZa5Qr0=;
+	s=korg; t=1736938499;
+	bh=9K2QoTwgo15k0ggJhgx+JhXBJ8t09+UsNjaXeVeEurE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uHdCCXl83FVzNp7SO/AWWJBLB9tYjocOMrmu5G6n+qZkkrgn6pig5VdRQBfu9jcVB
-	 7PtwjxPesdpxs5Ca9Fn/8FLUcj3YO1ZshPejya6QGclHWGvK0aWhnEey5EcEOyaDnH
-	 xOcllnN4lT4G/Q46TXkRdLi3pPv58aJY9QZO3j8w=
+	b=HPMTIiHHvrtFMo5at5QaCkEee5dJgINRt3joh60qo8fXeTCF6CXwLiBq8NpYM61LA
+	 qiPhUJyKACIRY08fBF5/lD5NI5UcoQaKIIKPdKgvQvL2w2EMspJJIzHcnPM/YzKKpC
+	 Cql7KQAdIPh4agveXSRgHPJrIrmzkMZlRtC+8EPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Baranger <nicolas.baranger@3xo.fr>,
-	David Howells <dhowells@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <smfrench@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	netfs@lists.linux.dev,
-	linux-cifs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/189] netfs: Fix kernel async DIO
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>
+Subject: [PATCH 6.6 002/129] memblock: use numa_valid_node() helper to check for invalid node ID
 Date: Wed, 15 Jan 2025 11:36:17 +0100
-Message-ID: <20250115103609.579059069@linuxfoundation.org>
+Message-ID: <20250115103554.457474714@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,83 +61,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Mike Rapoport (IBM) <rppt@kernel.org>
 
-[ Upstream commit 3f6bc9e3ab9b127171d39f9ac6eca1abb693b731 ]
+commit 8043832e2a123fd9372007a29192f2f3ba328cd6 upstream.
 
-Netfslib needs to be able to handle kernel-initiated asynchronous DIO that
-is supplied with a bio_vec[] array.  Currently, because of the async flag,
-this gets passed to netfs_extract_user_iter() which throws a warning and
-fails because it only handles IOVEC and UBUF iterators.  This can be
-triggered through a combination of cifs and a loopback blockdev with
-something like:
+Introduce numa_valid_node(nid) that verifies that nid is a valid node ID
+and use that instead of comparing nid parameter with either NUMA_NO_NODE
+or MAX_NUMNODES.
 
-        mount //my/cifs/share /foo
-        dd if=/dev/zero of=/foo/m0 bs=4K count=1K
-        losetup --sector-size 4096 --direct-io=on /dev/loop2046 /foo/m0
-        echo hello >/dev/loop2046
+This makes the checks for valid node IDs consistent and more robust and
+allows to get rid of multiple WARNings.
 
-This causes the following to appear in syslog:
-
-        WARNING: CPU: 2 PID: 109 at fs/netfs/iterator.c:50 netfs_extract_user_iter+0x170/0x250 [netfs]
-
-and the write to fail.
-
-Fix this by removing the check in netfs_unbuffered_write_iter_locked() that
-causes async kernel DIO writes to be handled as userspace writes.  Note
-that this change relies on the kernel caller maintaining the existence of
-the bio_vec array (or kvec[] or folio_queue) until the op is complete.
-
-Fixes: 153a9961b551 ("netfs: Implement unbuffered/DIO write support")
-Reported-by: Nicolas Baranger <nicolas.baranger@3xo.fr>
-Closes: https://lore.kernel.org/r/fedd8a40d54b2969097ffa4507979858@3xo.fr/
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/608725.1736275167@warthog.procyon.org.uk
-Tested-by: Nicolas Baranger <nicolas.baranger@3xo.fr>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-cc: Steve French <smfrench@gmail.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: netfs@lists.linux.dev
-cc: linux-cifs@vger.kernel.org
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/netfs/direct_write.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/linux/numa.h |    5 +++++
+ mm/memblock.c        |   28 +++++++---------------------
+ 2 files changed, 12 insertions(+), 21 deletions(-)
 
-diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
-index 88f2adfab75e..26cf9c94deeb 100644
---- a/fs/netfs/direct_write.c
-+++ b/fs/netfs/direct_write.c
-@@ -67,7 +67,7 @@ ssize_t netfs_unbuffered_write_iter_locked(struct kiocb *iocb, struct iov_iter *
- 		 * allocate a sufficiently large bvec array and may shorten the
- 		 * request.
- 		 */
--		if (async || user_backed_iter(iter)) {
-+		if (user_backed_iter(iter)) {
- 			n = netfs_extract_user_iter(iter, len, &wreq->iter, 0);
- 			if (n < 0) {
- 				ret = n;
-@@ -77,6 +77,11 @@ ssize_t netfs_unbuffered_write_iter_locked(struct kiocb *iocb, struct iov_iter *
- 			wreq->direct_bv_count = n;
- 			wreq->direct_bv_unpin = iov_iter_extract_will_pin(iter);
- 		} else {
-+			/* If this is a kernel-generated async DIO request,
-+			 * assume that any resources the iterator points to
-+			 * (eg. a bio_vec array) will persist till the end of
-+			 * the op.
-+			 */
- 			wreq->iter = *iter;
- 		}
+--- a/include/linux/numa.h
++++ b/include/linux/numa.h
+@@ -15,6 +15,11 @@
+ #define	NUMA_NO_NODE	(-1)
+ #define	NUMA_NO_MEMBLK	(-1)
  
--- 
-2.39.5
-
++static inline bool numa_valid_node(int nid)
++{
++	return nid >= 0 && nid < MAX_NUMNODES;
++}
++
+ /* optionally keep NUMA memory info available post init */
+ #ifdef CONFIG_NUMA_KEEP_MEMINFO
+ #define __initdata_or_meminfo
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -754,7 +754,7 @@ bool __init_memblock memblock_validate_n
+ 
+ 	/* calculate lose page */
+ 	for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid) {
+-		if (nid == NUMA_NO_NODE)
++		if (!numa_valid_node(nid))
+ 			nr_pages += end_pfn - start_pfn;
+ 	}
+ 
+@@ -1043,7 +1043,7 @@ static bool should_skip_region(struct me
+ 		return false;
+ 
+ 	/* only memory regions are associated with nodes, check it */
+-	if (nid != NUMA_NO_NODE && nid != m_nid)
++	if (numa_valid_node(nid) && nid != m_nid)
+ 		return true;
+ 
+ 	/* skip hotpluggable memory regions if needed */
+@@ -1100,10 +1100,6 @@ void __next_mem_range(u64 *idx, int nid,
+ 	int idx_a = *idx & 0xffffffff;
+ 	int idx_b = *idx >> 32;
+ 
+-	if (WARN_ONCE(nid == MAX_NUMNODES,
+-	"Usage of MAX_NUMNODES is deprecated. Use NUMA_NO_NODE instead\n"))
+-		nid = NUMA_NO_NODE;
+-
+ 	for (; idx_a < type_a->cnt; idx_a++) {
+ 		struct memblock_region *m = &type_a->regions[idx_a];
+ 
+@@ -1197,9 +1193,6 @@ void __init_memblock __next_mem_range_re
+ 	int idx_a = *idx & 0xffffffff;
+ 	int idx_b = *idx >> 32;
+ 
+-	if (WARN_ONCE(nid == MAX_NUMNODES, "Usage of MAX_NUMNODES is deprecated. Use NUMA_NO_NODE instead\n"))
+-		nid = NUMA_NO_NODE;
+-
+ 	if (*idx == (u64)ULLONG_MAX) {
+ 		idx_a = type_a->cnt - 1;
+ 		if (type_b != NULL)
+@@ -1285,7 +1278,7 @@ void __init_memblock __next_mem_pfn_rang
+ 
+ 		if (PFN_UP(r->base) >= PFN_DOWN(r->base + r->size))
+ 			continue;
+-		if (nid == MAX_NUMNODES || nid == r_nid)
++		if (!numa_valid_node(nid) || nid == r_nid)
+ 			break;
+ 	}
+ 	if (*idx >= type->cnt) {
+@@ -1321,10 +1314,6 @@ int __init_memblock memblock_set_node(ph
+ 	int start_rgn, end_rgn;
+ 	int i, ret;
+ 
+-	if (WARN_ONCE(nid == MAX_NUMNODES,
+-		      "Usage of MAX_NUMNODES is deprecated. Use NUMA_NO_NODE instead\n"))
+-		nid = NUMA_NO_NODE;
+-
+ 	ret = memblock_isolate_range(type, base, size, &start_rgn, &end_rgn);
+ 	if (ret)
+ 		return ret;
+@@ -1434,9 +1423,6 @@ phys_addr_t __init memblock_alloc_range_
+ 	enum memblock_flags flags = choose_memblock_flags();
+ 	phys_addr_t found;
+ 
+-	if (WARN_ONCE(nid == MAX_NUMNODES, "Usage of MAX_NUMNODES is deprecated. Use NUMA_NO_NODE instead\n"))
+-		nid = NUMA_NO_NODE;
+-
+ 	if (!align) {
+ 		/* Can't use WARNs this early in boot on powerpc */
+ 		dump_stack();
+@@ -1449,7 +1435,7 @@ again:
+ 	if (found && !memblock_reserve(found, size))
+ 		goto done;
+ 
+-	if (nid != NUMA_NO_NODE && !exact_nid) {
++	if (numa_valid_node(nid) && !exact_nid) {
+ 		found = memblock_find_in_range_node(size, align, start,
+ 						    end, NUMA_NO_NODE,
+ 						    flags);
+@@ -1969,7 +1955,7 @@ static void __init_memblock memblock_dum
+ 		end = base + size - 1;
+ 		flags = rgn->flags;
+ #ifdef CONFIG_NUMA
+-		if (memblock_get_region_node(rgn) != MAX_NUMNODES)
++		if (numa_valid_node(memblock_get_region_node(rgn)))
+ 			snprintf(nid_buf, sizeof(nid_buf), " on node %d",
+ 				 memblock_get_region_node(rgn));
+ #endif
+@@ -2158,7 +2144,7 @@ static void __init memmap_init_reserved_
+ 		start = region->base;
+ 		end = start + region->size;
+ 
+-		if (nid == NUMA_NO_NODE || nid >= MAX_NUMNODES)
++		if (!numa_valid_node(nid))
+ 			nid = early_pfn_to_nid(PFN_DOWN(start));
+ 
+ 		reserve_bootmem_region(start, end, nid);
+@@ -2247,7 +2233,7 @@ static int memblock_debug_show(struct se
+ 
+ 		seq_printf(m, "%4d: ", i);
+ 		seq_printf(m, "%pa..%pa ", &reg->base, &end);
+-		if (nid != MAX_NUMNODES)
++		if (numa_valid_node(nid))
+ 			seq_printf(m, "%4d ", nid);
+ 		else
+ 			seq_printf(m, "%4c ", 'x');
 
 
 
