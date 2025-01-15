@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-108958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08BBAA1211E
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:53:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E58EA12183
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:57:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AB2D160542
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:53:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE26A3AA677
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 437891E7C33;
-	Wed, 15 Jan 2025 10:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF7B248BD1;
+	Wed, 15 Jan 2025 10:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vH71FITN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rlSrMuqM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2924248BDE;
-	Wed, 15 Jan 2025 10:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A142248BD4;
+	Wed, 15 Jan 2025 10:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938378; cv=none; b=m7CDd6XjNZj/TqUj06m04EUtHimi/dikE+E6jXzFelW4X2xs9rSIme/0R9qObrQWethzFrM1ljoA5CQsJ014MifEPDOB1p3Ne8oBraZwqEueYoLxYvSdPPzsunCXvQCosu2of/OdhPGiWl7xcgJyliGNwnVlMgLjEy6YiQqs37U=
+	t=1736938649; cv=none; b=awhKOo4VeUYc0xncBMqVQwUug915tgP37v4ax7TW1woVQAty98KBWERqRQvSu9UEE9rxbiW9adGg5gSGsBxuuGetHKpbQGY66bwPk+op8gEXr89BC5LHxzk7nSmNtW4egkmvqT+uswuf/71pBoaQLjwCC2TJ1RLvBvozavhnIx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938378; c=relaxed/simple;
-	bh=3L9kIyQ/OHOc1TsnOvq6LUDcLvH0jfP1MhtH648YJLc=;
+	s=arc-20240116; t=1736938649; c=relaxed/simple;
+	bh=bV0pBLt33rDG74QHg/Fs1vSGiHp0BA0VL27DHO61Q6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y21l5iqR6Tf2VZaTDaDZOyBnVpnYLLQN89bk2ZUAC67EgSpNFU09gr/UzXDN6cxoMcVs/eVBuwmU+Wc6Q3dj5djZlfOVMbuJPMvfJsD8vqjiT1QYwxwB3wShaTBJ2PEaskpbybhnBXFnuCahzYXwU1xAYH9I7XwisYoZyxLnzjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vH71FITN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4F6C4CEDF;
-	Wed, 15 Jan 2025 10:52:57 +0000 (UTC)
+	 MIME-Version; b=UPbkOB0ZR209ie3pXgOM4SRTQOXMaXo5LN+E/nydu0gZbp3NBdq6IA5aMm73qgieJDMo+1eQkxZ045aBn6fJV7lJ97PaNJycPs/gzXefkMSKW2nEz8MUb13I/iJV4SntoIE7VGulG2e7/sVZhIcGclysOg92L0bFtB837vnGUSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rlSrMuqM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D7D3C4CEDF;
+	Wed, 15 Jan 2025 10:57:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938377;
-	bh=3L9kIyQ/OHOc1TsnOvq6LUDcLvH0jfP1MhtH648YJLc=;
+	s=korg; t=1736938649;
+	bh=bV0pBLt33rDG74QHg/Fs1vSGiHp0BA0VL27DHO61Q6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vH71FITNZjfKjV9Cp5ko3criut5pmbdcfiKpXktAAorMOu2Riov5Hh31UF5UhJL94
-	 rGYRlqUTPFuBYk6Gy6GuLifv3tWBpMViaGfLquHRUoO25wag7H3JrF0Uw4hn2Z+0pG
-	 gQkky3BZWL/7r0p93xDn52u4rT5nEXGa795PJj4I=
+	b=rlSrMuqMUT3tDU1WT8hIrCpYc4J9dfE4mO5oiF9tGpcG6DHQeea/F4ogZiHOmrtDe
+	 Oyaz8FG8AddoF/6rvFcutmOjxr6h+3u1E6shsFNO3urY9p+hk8ykO9bvDKr4SS91Pk
+	 YKmmlsis1fBD2Uhgmwj7Ix21QLKQcBXhbxoePEgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zicheng Qu <quzicheng@huawei.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 133/189] staging: iio: ad9832: Correct phase range check
-Date: Wed, 15 Jan 2025 11:37:09 +0100
-Message-ID: <20250115103611.748195045@linuxfoundation.org>
+	He Wang <xw897002528@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 055/129] ksmbd: fix unexpectedly changed path in ksmbd_vfs_kern_path_locked
+Date: Wed, 15 Jan 2025 11:37:10 +0100
+Message-ID: <20250115103556.562294648@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zicheng Qu <quzicheng@huawei.com>
+From: He Wang <xw897002528@gmail.com>
 
-commit 4636e859ebe0011f41e35fa79bab585b8004e9a3 upstream.
+[ Upstream commit 2ac538e40278a2c0c051cca81bcaafc547d61372 ]
 
-User Perspective:
-When a user sets the phase value, the ad9832_write_phase() is called.
-The phase register has a 12-bit resolution, so the valid range is 0 to
-4095. If the phase offset value of 4096 is input, it effectively exactly
-equals 0 in the lower 12 bits, meaning no offset.
+When `ksmbd_vfs_kern_path_locked` met an error and it is not the last
+entry, it will exit without restoring changed path buffer. But later this
+buffer may be used as the filename for creation.
 
-Reasons for the Change:
-1) Original Condition (phase > BIT(AD9832_PHASE_BITS)):
-This condition allows a phase value equal to 2^12, which is 4096.
-However, this value exceeds the valid 12-bit range, as the maximum valid
-phase value should be 4095.
-2) Modified Condition (phase >= BIT(AD9832_PHASE_BITS)):
-Ensures that the phase value is within the valid range, preventing
-invalid datafrom being written.
-
-Impact on Subsequent Logic: st->data = cpu_to_be16(addr | phase):
-If the phase value is 2^12, i.e., 4096 (0001 0000 0000 0000), and addr
-is AD9832_REG_PHASE0 (1100 0000 0000 0000), then addr | phase results in
-1101 0000 0000 0000, occupying DB12. According to the section of WRITING
-TO A PHASE REGISTER in the datasheet, the MSB 12 PHASE0 bits should be
-DB11. The original condition leads to incorrect DB12 usage, which
-contradicts the datasheet and could pose potential issues for future
-updates if DB12 is used in such related cases.
-
-Fixes: ea707584bac1 ("Staging: IIO: DDS: AD9832 / AD9835 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
-Link: https://patch.msgid.link/20241107011015.2472600-3-quzicheng@huawei.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c5a709f08d40 ("ksmbd: handle caseless file creation")
+Signed-off-by: He Wang <xw897002528@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/iio/frequency/ad9832.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/vfs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/staging/iio/frequency/ad9832.c
-+++ b/drivers/staging/iio/frequency/ad9832.c
-@@ -158,7 +158,7 @@ static int ad9832_write_frequency(struct
- static int ad9832_write_phase(struct ad9832_state *st,
- 			      unsigned long addr, unsigned long phase)
- {
--	if (phase > BIT(AD9832_PHASE_BITS))
-+	if (phase >= BIT(AD9832_PHASE_BITS))
- 		return -EINVAL;
+diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
+index 2c548e8efef0..d0c19ad9d014 100644
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -1259,6 +1259,8 @@ int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
+ 					      filepath,
+ 					      flags,
+ 					      path);
++			if (!is_last)
++				next[0] = '/';
+ 			if (err)
+ 				goto out2;
+ 			else if (is_last)
+@@ -1266,7 +1268,6 @@ int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
+ 			path_put(parent_path);
+ 			*parent_path = *path;
  
- 	st->phase_data[0] = cpu_to_be16((AD9832_CMD_PHA8BITSW << CMD_SHIFT) |
+-			next[0] = '/';
+ 			remain_len -= filename_len + 1;
+ 		}
+ 
+-- 
+2.39.5
+
 
 
 
