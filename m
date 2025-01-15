@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-109075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 041DDA121B4
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:59:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2A93A1204B
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:43:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FE3516ADFC
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:59:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64FA93A1815
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:43:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E44248BDF;
-	Wed, 15 Jan 2025 10:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36658248BB2;
+	Wed, 15 Jan 2025 10:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BH9RQrwH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FB3V0Di4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF8B248BB5;
-	Wed, 15 Jan 2025 10:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A4F248BA7;
+	Wed, 15 Jan 2025 10:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938766; cv=none; b=GnYDniOaE2Jj1VRGqiz8IhvAsqy7SsRW7SSDmlFonnUgTtYKkDq0UzNjMguISgT8yC10ExsNpWYLIsueLiu6I0UyDFz04bEBU4jaKGdLLk/BA2M31UrwgcrpDtoxX2FN2CkapjD+KFhtuUwragWciKxw+HMFrnkQ1FaqadmB++g=
+	t=1736937833; cv=none; b=jdpLXAi/m+rSVUhZwdSE2mJzMKl/020NNuoJNKH68hmAZEfaQV0eiq2uck1KkHb0omzbJ60zzVqsakP8ureAgq9WOCmsVbWckq3ukMQN/va4Hg00kbe9biyX3kC10TNnDTcG54DgYVD5emsksqE1NnIsHB4Lk8JnHzjF8nU3elc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938766; c=relaxed/simple;
-	bh=8cWpgjchkrvgJMYp3HjeqG2ZDseuux3nkowB8MJ6A6M=;
+	s=arc-20240116; t=1736937833; c=relaxed/simple;
+	bh=pDw5F8wIw/MgbADSg5EbXuMCcY5tJ4jhywH242pOfqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UsnI3oRuC52Y9xWh0opnDBOmNghCbRnTApTHYo+iz7woUY3gcW2loVUbH9VwnIJYBP2vKngLgmqD6cgo2yegD7LTy1Ruc8Rx322SBWL6dJwL+k03t5cuD9Xe8WGBrFof0OrGQXOETrwD0mL1SMr/3tghDal+JbTPqT89pe7DsWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BH9RQrwH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11993C4CEE2;
-	Wed, 15 Jan 2025 10:59:25 +0000 (UTC)
+	 MIME-Version; b=BApMp+Qa6aqlPAI7FLtJENXpW3gM6MH6HPw6pjuUGlW7xWhbEfideNo2JUTPLtPnqbpuDHNnbIRzdViFU+tfsNOa8ds4A7kGftOsRWBvsU7W8f+1orsruuGk09tGLS+p0UJ8lY+crAiDfqsG5k8PahGOhVu/QQUE04VhB9T1JBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FB3V0Di4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1647BC4CEE2;
+	Wed, 15 Jan 2025 10:43:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938766;
-	bh=8cWpgjchkrvgJMYp3HjeqG2ZDseuux3nkowB8MJ6A6M=;
+	s=korg; t=1736937832;
+	bh=pDw5F8wIw/MgbADSg5EbXuMCcY5tJ4jhywH242pOfqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BH9RQrwHSaPPy2ReCb+juj9KHV6HyIpsSI/GNL7bjhZNgSgiCZ/Yn1NDlUDwn8UKu
-	 lvNqJ+Wi6+wqTwQsmtflPUk9hhqhZemzil5qP/aJMXap0fjFGOtWw/Dl/zMRHUrGBt
-	 LDDRN/denWTqqjjmmUfn133Cz0vhXw72aBMH+VhM=
+	b=FB3V0Di4820glyzO1FFWFqbD+xwOsVDDf0f7owo4lvwfQDZFnxnWAo5EK7+0qW0r2
+	 tyg6utw05KxxAooHKhZM7iH7DbF0JMh+QJDd7EBBDqEA81IO7Y7eUFlXjeClDnecjs
+	 8BYWlYmncXoDlCcDSVVd/mmXekTsonfxhIbT/HMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Prashanth K <quic_prashk@quicinc.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.6 092/129] usb: dwc3-am62: Disable autosuspend during remove
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Joseph Qi <jiangqi903@gmail.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 89/92] ocfs2: correct return value of ocfs2_local_free_info()
 Date: Wed, 15 Jan 2025 11:37:47 +0100
-Message-ID: <20250115103558.036759514@linuxfoundation.org>
+Message-ID: <20250115103551.121319830@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +69,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashanth K <quic_prashk@quicinc.com>
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
 
-commit 625e70ccb7bbbb2cc912e23c63390946170c085c upstream.
+[ Upstream commit d32840ad4a111c6abd651fbf6b5996e6123913da ]
 
-Runtime PM documentation (Section 5) mentions, during remove()
-callbacks, drivers should undo the runtime PM changes done in
-probe(). Usually this means calling pm_runtime_disable(),
-pm_runtime_dont_use_autosuspend() etc. Hence add missing
-function to disable autosuspend on dwc3-am62 driver unbind.
+Now in ocfs2_local_free_info(), it returns 0 even if it actually fails.
+Though it doesn't cause any real problem since the only caller
+dquot_disable() ignores the return value, we'd better return correct as it
+is.
 
-Fixes: e8784c0aec03 ("drivers: usb: dwc3: Add AM62 USB wrapper driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20241209105728.3216872-1-quic_prashk@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20230528132033.217664-1-joseph.qi@linux.alibaba.com
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Joseph Qi <jiangqi903@gmail.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 5f3fd772d152 ("ocfs2: fix slab-use-after-free due to dangling pointer dqi_priv")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-am62.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/ocfs2/quota_local.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/dwc3/dwc3-am62.c
-+++ b/drivers/usb/dwc3/dwc3-am62.c
-@@ -284,6 +284,7 @@ static void dwc3_ti_remove(struct platfo
+diff --git a/fs/ocfs2/quota_local.c b/fs/ocfs2/quota_local.c
+index 404ca3a62508..257f13cdd14c 100644
+--- a/fs/ocfs2/quota_local.c
++++ b/fs/ocfs2/quota_local.c
+@@ -815,7 +815,7 @@ static int ocfs2_local_free_info(struct super_block *sb, int type)
+ 	struct ocfs2_quota_chunk *chunk;
+ 	struct ocfs2_local_disk_chunk *dchunk;
+ 	int mark_clean = 1, len;
+-	int status;
++	int status = 0;
  
- 	pm_runtime_put_sync(dev);
- 	pm_runtime_disable(dev);
-+	pm_runtime_dont_use_autosuspend(dev);
- 	pm_runtime_set_suspended(dev);
+ 	iput(oinfo->dqi_gqinode);
+ 	ocfs2_simple_drop_lockres(OCFS2_SB(sb), &oinfo->dqi_gqlock);
+@@ -857,17 +857,14 @@ static int ocfs2_local_free_info(struct super_block *sb, int type)
+ 				 oinfo->dqi_libh,
+ 				 olq_update_info,
+ 				 info);
+-	if (status < 0) {
++	if (status < 0)
+ 		mlog_errno(status);
+-		goto out;
+-	}
+-
+ out:
+ 	ocfs2_inode_unlock(sb_dqopt(sb)->files[type], 1);
+ 	brelse(oinfo->dqi_libh);
+ 	brelse(oinfo->dqi_lqi_bh);
+ 	kfree(oinfo);
+-	return 0;
++	return status;
  }
  
+ static void olq_set_dquot(struct buffer_head *bh, void *private)
+-- 
+2.39.5
+
 
 
 
