@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-108904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E95A120DB
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:49:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37E2EA12179
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:57:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 552C73A9250
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:49:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5105B16A300
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C4F248BCB;
-	Wed, 15 Jan 2025 10:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 585B81E98E7;
+	Wed, 15 Jan 2025 10:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXcilxE6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NuoVf5Kj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A5A248BA1;
-	Wed, 15 Jan 2025 10:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C3F1E98E4;
+	Wed, 15 Jan 2025 10:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938194; cv=none; b=i3h/5bImmHn0emjzbZuBFcyzTFKwdc/ViV4g/KXpQXqGG54pkzL/nyLBE3rbZCi94254WTys2PtvzD5JUPuVJnlRuPHOaeqpge/MNZXqpM1G41rfY4I+Rlpbsm/Jk/PSDJO4zx2HzJGtUfAhz+kCOLaY/W5WTQsaJRgE0CIfjfY=
+	t=1736938620; cv=none; b=OyOJzCi9Y3TZG7NZpUD2WKdah6N/Fq23V+nxYPuBcKt09WekyXveg2AIiUdXuCMohdmH5x00J723Fk+jDmsK2S3xgvh0DXgyMv/bQnhkRi6549mj4B1UxPouNojq0JToE0zMQjmEhsn0Irr2EtU05GC65jclTSNBq4EZU0ACA10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938194; c=relaxed/simple;
-	bh=RtLa1hxC3wSeTb+g8Ab2j21mjK9F/Fs0SZmI4/0yQQY=;
+	s=arc-20240116; t=1736938620; c=relaxed/simple;
+	bh=ZAJiKgJ3xZc40tE7gDvTkPo4UyivKHnlcDrQcXFs0ps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eAAqdwYRxdQUxFMJjd8S5G4krmUpxejUDQqQPKrzFlyIuKLhh3eBmsi6j37ylreJuhBvBx33iBl7p9a5L6DjyBsI9T1NhzC004d9u8Rnhtp2Za1Yh2mWNBa/9cqIJsCW36BCIaCnQMAlJ/wGsmceRYY3yVXGha1YB1+CK+IqMaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXcilxE6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32546C4CEDF;
-	Wed, 15 Jan 2025 10:49:53 +0000 (UTC)
+	 MIME-Version; b=iHvBFW5MY6Sxn2mjglYIa/TLbF7LzuwMrg7mdrVS1jjPrsrVqZmt5L7/S0DXPiZbC+ZpJIAnj35jbRoYE6vGeJNPi3BxTTGCUpuli13aBAigd2LGpQ8Hsh9p9bxg5T5Bqm9pizZRIZnSkG2O1kqkH+0L9UQ/lOjluNCEkLJz+2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NuoVf5Kj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36AE0C4CEDF;
+	Wed, 15 Jan 2025 10:56:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938194;
-	bh=RtLa1hxC3wSeTb+g8Ab2j21mjK9F/Fs0SZmI4/0yQQY=;
+	s=korg; t=1736938619;
+	bh=ZAJiKgJ3xZc40tE7gDvTkPo4UyivKHnlcDrQcXFs0ps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pXcilxE67ytWpddqh8KqRvUN1dGcIvEGFzwK5vEY7UDkVsnGmqkFigy965lCDmXVo
-	 HKYD8L0e1rLkI23U1DwfTZ/1DQCm5G6fuxY23V+jWSUNuKR279r95YC1y64lpmCO6l
-	 J+G9MECCreqhH2vVUALi+8KJ9QVwZFh7npd6vH48=
+	b=NuoVf5KjxGg76dLO08qV0dkV0/ZMrqgvylNAUerfiXMLnTdaZpwSgGU6k6Cr2kAuF
+	 R271ogcXuERjZyy/1iu8sTO4XoCztIqF4GrJNdPaErWUdw76ZQPswiXopvGqKWeJpU
+	 +rEHtPszcLzctMgkLeGI6aMHBMnsEkaQ67dTzhwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 094/189] mptcp: sysctl: blackhole timeout: avoid using current->nsproxy
+	Shuming Fan <shumingf@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 015/129] ASoC: rt722: add delay time to wait for the calibration procedure
 Date: Wed, 15 Jan 2025 11:36:30 +0100
-Message-ID: <20250115103610.078785719@linuxfoundation.org>
+Message-ID: <20250115103554.980007723@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Shuming Fan <shumingf@realtek.com>
 
-commit 92cf7a51bdae24a32c592adcdd59a773ae149289 upstream.
+[ Upstream commit c9e3ebdc52ebe028f238c9df5162ae92483bedd5 ]
 
-As mentioned in the previous commit, using the 'net' structure via
-'current' is not recommended for different reasons:
+The calibration procedure needs some time to finish.
+This patch adds the delay time to ensure the calibration procedure is completed correctly.
 
-- Inconsistency: getting info from the reader's/writer's netns vs only
-  from the opener's netns.
-
-- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
-  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
-  syzbot [1] using acct(2).
-
-The 'pernet' structure can be obtained from the table->data using
-container_of().
-
-Fixes: 27069e7cb3d1 ("mptcp: disable active MPTCP in case of blackhole")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-3-5df34b2083e8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shuming Fan <shumingf@realtek.com>
+Link: https://patch.msgid.link/20241218091307.96656-1-shumingf@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/ctrl.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/soc/codecs/rt722-sdca.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/mptcp/ctrl.c b/net/mptcp/ctrl.c
-index 81c30aa02196..b0dd008e2114 100644
---- a/net/mptcp/ctrl.c
-+++ b/net/mptcp/ctrl.c
-@@ -160,7 +160,9 @@ static int proc_blackhole_detect_timeout(const struct ctl_table *table,
- 					 int write, void *buffer, size_t *lenp,
- 					 loff_t *ppos)
- {
--	struct mptcp_pernet *pernet = mptcp_get_pernet(current->nsproxy->net_ns);
-+	struct mptcp_pernet *pernet = container_of(table->data,
-+						   struct mptcp_pernet,
-+						   blackhole_timeout);
- 	int ret;
- 
- 	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+diff --git a/sound/soc/codecs/rt722-sdca.c b/sound/soc/codecs/rt722-sdca.c
+index b9b330375add..0f9f592744ad 100644
+--- a/sound/soc/codecs/rt722-sdca.c
++++ b/sound/soc/codecs/rt722-sdca.c
+@@ -1466,13 +1466,18 @@ static void rt722_sdca_jack_preset(struct rt722_sdca_priv *rt722)
+ 		0x008d);
+ 	/* check HP calibration FSM status */
+ 	for (loop_check = 0; loop_check < chk_cnt; loop_check++) {
++		usleep_range(10000, 11000);
+ 		ret = rt722_sdca_index_read(rt722, RT722_VENDOR_CALI,
+ 			RT722_DAC_DC_CALI_CTL3, &calib_status);
+-		if (ret < 0 || loop_check == chk_cnt)
++		if (ret < 0)
+ 			dev_dbg(&rt722->slave->dev, "calibration failed!, ret=%d\n", ret);
+ 		if ((calib_status & 0x0040) == 0x0)
+ 			break;
+ 	}
++
++	if (loop_check == chk_cnt)
++		dev_dbg(&rt722->slave->dev, "%s, calibration time-out!\n", __func__);
++
+ 	/* Set ADC09 power entity floating control */
+ 	rt722_sdca_index_write(rt722, RT722_VENDOR_HDA_CTL, RT722_ADC0A_08_PDE_FLOAT_CTL,
+ 		0x2a12);
 -- 
-2.48.0
+2.39.5
 
 
 
