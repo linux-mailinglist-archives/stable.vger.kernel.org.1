@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-108920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C9DCA120ED
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:50:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1AC6A11FE4
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:39:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF5C916A7B9
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:50:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45A9C1889D00
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:39:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA9F4248BDC;
-	Wed, 15 Jan 2025 10:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE1422309A1;
+	Wed, 15 Jan 2025 10:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGUgimF9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yEJ+YL6U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A6C248BA6;
-	Wed, 15 Jan 2025 10:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3C71E991F;
+	Wed, 15 Jan 2025 10:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938250; cv=none; b=smX6CPwndLDIYnva0Jji+UEq5lsyoUdQCTRvUVoYvRhoOFmE/RCLKQoyNcBW0DEs5MGxxnFbfTDnHGt3KiMUAl9MPGrsJwPFJjKlZffOc9Nxxofg/yOZfuA8KeL6o2VY0Cw92V1MfovV+2+terOqb6PBDKh0KmCRYfZzYtHC3vA=
+	t=1736937560; cv=none; b=CMSGwk7p15fKcyoaB/I8vMgwHvV/4csqP6V9d2U4NGENlClIYw3vdCqnLAAquvuy2x/X8lXXk1UIE99TW8EH4vcK0uMsF1vPuzc/4TV0kKJYZ3BwXSslGrTawI1ZlEbrr14hLLL5cNM28ym9ckWBWeXHFR9Dt113iMVCIMa2abY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938250; c=relaxed/simple;
-	bh=/fhC0g/SSCzXgCh1qVuIgYyAAUdJFuXMgGRdSuPF9IQ=;
+	s=arc-20240116; t=1736937560; c=relaxed/simple;
+	bh=YSofo2uRGk3eru5wDP8cgJieZa2kKYMRasrFKx0zLYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LIcqIcqAbjPExDlX2f4+kAbkAQizRWQcgezJHIvrl9KmNT4ZRTjDiRmGOIcHOgG/V+t7E0OR8dqYri8w+3MMy4sthpnU2vRtDSG+dzyXreZXuURHVWWyag4kaOP2aqOHsPVZZlG++Id5ukXXaP34gxuRYxyGShr801howcmkUDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GGUgimF9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23302C4CEDF;
-	Wed, 15 Jan 2025 10:50:49 +0000 (UTC)
+	 MIME-Version; b=n+S3cTB/XeefP8SG3Y+Qo3egiVcby9LWPJ5JNKFHOVYvWkWwpKqO68/s6THSi+rZE24t9UMw7vpBvMxSKkgjgL5VE658G6xMuSPXBuoA3GRa/sl0SEUVQpJze5aF9va+sW7QWtQpXAmX7bz9mBhGP43dqnGfjlJyaSXxHtQTq3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yEJ+YL6U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D253DC4CEDF;
+	Wed, 15 Jan 2025 10:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938250;
-	bh=/fhC0g/SSCzXgCh1qVuIgYyAAUdJFuXMgGRdSuPF9IQ=;
+	s=korg; t=1736937559;
+	bh=YSofo2uRGk3eru5wDP8cgJieZa2kKYMRasrFKx0zLYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GGUgimF9fbdiZ77F3rCFsBd4P1E4TaNBxhKXQyfywQh2GZdWc3usrHbZplM5JTOpr
-	 avBXGDC3jK/5B6vVzxA2WZjWyBaAft0Z2VAaaKM9LIYmHPWYRNdrdDJpQKnZMUPF4h
-	 NXUJ4+Cf0DyYpKT76wIuCbXTqLhlBwf0L9S3I4aw=
+	b=yEJ+YL6Une3Do0nMaw3MEtNXT6KRW5MJ5AudLBpJE6XlVGIkhBefkUqwLiTBvJPek
+	 81j8bY6F3M0MDU9ZkScLlNHuVaulKLp3qkSCOaKeS3JWj9/XXBjD3lp8TCyPZPCOve
+	 rWdL6g87+On8dlX57kZdbYrHFIwWpVzTd8R6Zm94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 097/189] sctp: sysctl: auth_enable: avoid using current->nsproxy
-Date: Wed, 15 Jan 2025 11:36:33 +0100
-Message-ID: <20250115103610.189735615@linuxfoundation.org>
+	Zhongqiu Duan <dzq.aishenghu0@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 16/92] tcp/dccp: allow a connection when sk_max_ack_backlog is zero
+Date: Wed, 15 Jan 2025 11:36:34 +0100
+Message-ID: <20250115103548.187703370@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +65,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Zhongqiu Duan <dzq.aishenghu0@gmail.com>
 
-commit 15649fd5415eda664ef35780c2013adeb5d9c695 upstream.
+[ Upstream commit 3479c7549fb1dfa7a1db4efb7347c7b8ef50de4b ]
 
-As mentioned in a previous commit of this series, using the 'net'
-structure via 'current' is not recommended for different reasons:
+If the backlog of listen() is set to zero, sk_acceptq_is_full() allows
+one connection to be made, but inet_csk_reqsk_queue_is_full() does not.
+When the net.ipv4.tcp_syncookies is zero, inet_csk_reqsk_queue_is_full()
+will cause an immediate drop before the sk_acceptq_is_full() check in
+tcp_conn_request(), resulting in no connection can be made.
 
-- Inconsistency: getting info from the reader's/writer's netns vs only
-  from the opener's netns.
+This patch tries to keep consistent with 64a146513f8f ("[NET]: Revert
+incorrect accept queue backlog changes.").
 
-- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
-  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
-  syzbot [1] using acct(2).
-
-The 'net' structure can be obtained from the table->data using
-container_of().
-
-Note that table->data could also be used directly, but that would
-increase the size of this fix, while 'sctp.ctl_sock' still needs to be
-retrieved from 'net' structure.
-
-Fixes: b14878ccb7fa ("net: sctp: cache auth_enable per endpoint")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-6-5df34b2083e8@kernel.org
+Link: https://lore.kernel.org/netdev/20250102080258.53858-1-kuniyu@amazon.com/
+Fixes: ef547f2ac16b ("tcp: remove max_qlen_log")
+Signed-off-by: Zhongqiu Duan <dzq.aishenghu0@gmail.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250102171426.915276-1-dzq.aishenghu0@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sysctl.c |    2 +-
+ include/net/inet_connection_sock.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sctp/sysctl.c
-+++ b/net/sctp/sysctl.c
-@@ -499,7 +499,7 @@ static int proc_sctp_do_alpha_beta(const
- static int proc_sctp_do_auth(const struct ctl_table *ctl, int write,
- 			     void *buffer, size_t *lenp, loff_t *ppos)
- {
--	struct net *net = current->nsproxy->net_ns;
-+	struct net *net = container_of(ctl->data, struct net, sctp.auth_enable);
- 	struct ctl_table tbl;
- 	int new_value, ret;
+diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
+index 1611fb656ea9..7649d4901f0c 100644
+--- a/include/net/inet_connection_sock.h
++++ b/include/net/inet_connection_sock.h
+@@ -281,7 +281,7 @@ static inline int inet_csk_reqsk_queue_len(const struct sock *sk)
  
+ static inline int inet_csk_reqsk_queue_is_full(const struct sock *sk)
+ {
+-	return inet_csk_reqsk_queue_len(sk) >= READ_ONCE(sk->sk_max_ack_backlog);
++	return inet_csk_reqsk_queue_len(sk) > READ_ONCE(sk->sk_max_ack_backlog);
+ }
+ 
+ bool inet_csk_reqsk_queue_drop(struct sock *sk, struct request_sock *req);
+-- 
+2.39.5
+
 
 
 
