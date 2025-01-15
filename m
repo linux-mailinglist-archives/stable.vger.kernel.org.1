@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-108799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE652A1204E
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:44:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C45FAA1212A
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:53:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E150316607E
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:44:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 483C27A1411
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151D1248BC4;
-	Wed, 15 Jan 2025 10:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B351E98F6;
+	Wed, 15 Jan 2025 10:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gc5iUAHZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYRbMv3I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EF7248BB6;
-	Wed, 15 Jan 2025 10:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A329248BA1;
+	Wed, 15 Jan 2025 10:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937841; cv=none; b=dcJkMjbzMNC+8ggcdpw9MuN2XKtAvfUYFMtMpdOSVDSBjX0N+AQJEJQig4TNgEb6qm8Kksi4thBA7yOV3XsyPq9KFW7NYrnOfiitRtfjUNWMPR+CF1qh2rnUqk6222DJEnTk6ojC+oggo97WMNrg74FoR2tw2zpIZRGSHQi3P6A=
+	t=1736938407; cv=none; b=SRal0vug50N3YsQH+lg0pcMboXRFlGCtbLJEaZ799HXbAREH8peA3GnMeZtTaToMftTtQgsq9jWiFN/NMjEPcdvbLbXhMgNBVOS+TgAYI2i9Ln/I/sJnTOB079GyZlffNtH06kNZRs2M2WozolqdUmVBNs33Lz8iJlciUoYxgPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937841; c=relaxed/simple;
-	bh=WquYRL/b4SHdO75VXCr3PwOuJk/2nU5heyOF8Ewyaj8=;
+	s=arc-20240116; t=1736938407; c=relaxed/simple;
+	bh=nQEh4tnBgs8U/FRWQJ1rdAGoSsKjfen3e1eioWtwnRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rEwIjy6bFm56DxaUTMIqXz4zuZkjtm8DzlxSwNt/CP7qvwGBJ4nepWZQn8LZGjHgEYKsMMDXkIzNwjjkhk7awcBYEk9PZdplEcI0yckzePOv5vDHsM0crIbBdN40aZMQKqKOFPMmLB+1XrfGZXtpKLD4M3p8GDMqmKyDbyUcg34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gc5iUAHZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECC8C4CEE1;
-	Wed, 15 Jan 2025 10:44:00 +0000 (UTC)
+	 MIME-Version; b=YPHSwrRfkAfFDf5UMk49T4jpbOP4rksUQ0CohwxQclyumEDH//LBFlkptN9LeO4YvCON9K/1vv8SHFc3ZXCkRxWtTu/6HCMXCJ4QDvTX/UW+ksCYqTrTph4t5wB+1gpMsNRkDC1YyD5dJG+Q5eLVEA3KMVuplEF4PY+y+nxWCzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYRbMv3I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC96BC4CEE2;
+	Wed, 15 Jan 2025 10:53:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937841;
-	bh=WquYRL/b4SHdO75VXCr3PwOuJk/2nU5heyOF8Ewyaj8=;
+	s=korg; t=1736938407;
+	bh=nQEh4tnBgs8U/FRWQJ1rdAGoSsKjfen3e1eioWtwnRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gc5iUAHZfJoxuhROBq5nPMNjZA4rEhi5qoNN91xAszDNcrC26q1hReqzkS8JAd4sV
-	 m3BScnlSPdWj4BhOPlpkVGbej7bDTdwwIUste9LUBHMqe4nUBinYa8YOClvCpCbTI/
-	 wZPueP5mD2cYpMiAQJsIkpY/mhUntJUENGLSpEYQ=
+	b=MYRbMv3I4mfqR4P/n0dnuydzauxw1CHhjlZxt6LwzWn0b11Lb/1Jv+o0EW4MKcwZ1
+	 oxsauI3Er9bV38naYjO+3Y1NfemuHJXNsh5tfMXoYhXvpoTcYzclbPYnPF992Em94X
+	 Km1v4KrA+35+p2OgknoaeX0B4sgaOlP1zZcAxWKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 92/92] drm: adv7511: Fix use-after-free in adv7533_attach_dsi()
+	Jann Horn <jannh@google.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 174/189] io_uring/eventfd: ensure io_eventfd_signal() defers another RCU period
 Date: Wed, 15 Jan 2025 11:37:50 +0100
-Message-ID: <20250115103551.244330793@linuxfoundation.org>
+Message-ID: <20250115103613.346350199@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +59,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 81adbd3ff21c1182e06aa02c6be0bfd9ea02d8e8 ]
+Commit c9a40292a44e78f71258b8522655bffaf5753bdb upstream.
 
-The host_node pointer was assigned and freed in adv7533_parse_dt(), and
-later, adv7533_attach_dsi() uses the same. Fix this use-after-free issue
-by dropping of_node_put() in adv7533_parse_dt() and calling of_node_put()
-in error path of probe() and also in the remove().
+io_eventfd_do_signal() is invoked from an RCU callback, but when
+dropping the reference to the io_ev_fd, it calls io_eventfd_free()
+directly if the refcount drops to zero. This isn't correct, as any
+potential freeing of the io_ev_fd should be deferred another RCU grace
+period.
 
-Fixes: 1e4d58cd7f88 ("drm/bridge: adv7533: Create a MIPI DSI device")
+Just call io_eventfd_put() rather than open-code the dec-and-test and
+free, which will correctly defer it another RCU grace period.
+
+Fixes: 21a091b970cd ("io_uring: signal registered eventfd to process deferred task work")
+Reported-by: Jann Horn <jannh@google.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241119192040.152657-2-biju.das.jz@bp.renesas.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/adv7511/adv7511_drv.c | 10 ++++++++--
- drivers/gpu/drm/bridge/adv7511/adv7533.c     |  2 --
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ io_uring/eventfd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-index cb6923eed7ca..3e6fe8604959 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-@@ -1224,8 +1224,10 @@ static int adv7511_probe(struct i2c_client *i2c, const struct i2c_device_id *id)
- 		return ret;
+--- a/io_uring/eventfd.c
++++ b/io_uring/eventfd.c
+@@ -38,7 +38,7 @@ static void io_eventfd_do_signal(struct
+ 	eventfd_signal_mask(ev_fd->cq_ev_fd, EPOLL_URING_WAKE);
  
- 	ret = adv7511_init_regulators(adv7511);
--	if (ret)
--		return dev_err_probe(dev, ret, "failed to init regulators\n");
-+	if (ret) {
-+		dev_err_probe(dev, ret, "failed to init regulators\n");
-+		goto err_of_node_put;
-+	}
- 
- 	/*
- 	 * The power down GPIO is optional. If present, toggle it from active to
-@@ -1345,6 +1347,8 @@ static int adv7511_probe(struct i2c_client *i2c, const struct i2c_device_id *id)
- 	i2c_unregister_device(adv7511->i2c_edid);
- uninit_regulators:
- 	adv7511_uninit_regulators(adv7511);
-+err_of_node_put:
-+	of_node_put(adv7511->host_node);
- 
- 	return ret;
+ 	if (refcount_dec_and_test(&ev_fd->refs))
+-		io_eventfd_free(rcu);
++		call_rcu(&ev_fd->rcu, io_eventfd_free);
  }
-@@ -1353,6 +1357,8 @@ static void adv7511_remove(struct i2c_client *i2c)
- {
- 	struct adv7511 *adv7511 = i2c_get_clientdata(i2c);
  
-+	of_node_put(adv7511->host_node);
-+
- 	adv7511_uninit_regulators(adv7511);
- 
- 	drm_bridge_remove(&adv7511->bridge);
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7533.c b/drivers/gpu/drm/bridge/adv7511/adv7533.c
-index 3a79297ca980..6a4733c70827 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7533.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7533.c
-@@ -184,8 +184,6 @@ int adv7533_parse_dt(struct device_node *np, struct adv7511 *adv)
- 	if (!adv->host_node)
- 		return -ENODEV;
- 
--	of_node_put(adv->host_node);
--
- 	adv->use_timing_gen = !of_property_read_bool(np,
- 						"adi,disable-timing-generator");
- 
--- 
-2.39.5
-
+ void io_eventfd_signal(struct io_ring_ctx *ctx)
 
 
 
