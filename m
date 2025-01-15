@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-109062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5C94A1219B
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:58:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE74A12111
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:52:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDE5516AAD4
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:58:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EDFD164AC7
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C03248BD4;
-	Wed, 15 Jan 2025 10:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F38B1E9910;
+	Wed, 15 Jan 2025 10:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tb1PB+4g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9Eokesk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B48248BD0;
-	Wed, 15 Jan 2025 10:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8F91E9909;
+	Wed, 15 Jan 2025 10:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938729; cv=none; b=erO9xLZTY14rTGpUK7SH2RJG1D/lx6szhnBHdL8MzsrvjQ+HEFZhHuoQBMw1A9VG0bYyQXceBY6IN+33vyEZ7BNnU2Km/yBvSrkvs/k6Wgi9cePC/V9CalIcVe4cIsM/qiPb1Y4iIyiUUR0okHrwjFEPlvvonv59RFi1U32z1bM=
+	t=1736938346; cv=none; b=JdtzBajpBzoYPP2Dh0CxZjX2Y05EMCilTrBtsSrbYWSjStgyUCGzjbNKLH7oRNUY5mnzGN0YERy5XcFdEhYeGzm0cxnR36zGcKjPANpXX40VpXiGNCpGEWK8wjEfulYXgnmv+0dSrCJUfqc09EoPnysJaTTu8Af401wKyT0QXng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938729; c=relaxed/simple;
-	bh=ukEBvjKvlcdBKXcAcZtL3yaUKJ7p6Zcu/QVaw9/Vpyg=;
+	s=arc-20240116; t=1736938346; c=relaxed/simple;
+	bh=RWQUNCXjSCwe0WuSPeeVxuhTo3tmrNqmmEAfX+SoOwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ulSp/rhU8qIq4THZhXUOyaqQ4x8p30U2hr/R+NH27hGaDVrDXKv8xE7yix92H6uUFO7MLqqet3hB64WvRUODM45zXABd7gsiQ1dXsLH1tZzTz4cIbcitd5PqKXaG7G394QgixtohQv2yV+REJNtpS0xtgQfOqxEvkckVTebP+4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tb1PB+4g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 795BBC4CEDF;
-	Wed, 15 Jan 2025 10:58:48 +0000 (UTC)
+	 MIME-Version; b=Jtmq4/jWatBhLQqKDHzMbHLz/EsSlh5qDmA+85FY+Zhx4JZXgpllx2b1Ux0brN7NWrs18meyj1m7leBcajUTz6l/AR0JJfo8Js30pc2S3E6Gd9VY3d/Np1bfX/QqxlkE0uL0Vl8dAdTHHJzpAkROa/JjQRB21waygdrbSo0iooM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9Eokesk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B74C4CEE4;
+	Wed, 15 Jan 2025 10:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938728;
-	bh=ukEBvjKvlcdBKXcAcZtL3yaUKJ7p6Zcu/QVaw9/Vpyg=;
+	s=korg; t=1736938346;
+	bh=RWQUNCXjSCwe0WuSPeeVxuhTo3tmrNqmmEAfX+SoOwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tb1PB+4gAq29mArfZNTbgX3WELIP0PUF+dMBSlG1EnPFdGRrfb6fBosD9up5ldL+g
-	 DFVqp5XYzPBcqE/ojZX5Tw8A2mlfAzc4qy6OQG1wp8JMHfvLveKmzrLYq1EtdqtNes
-	 Sph4DFYWMoHetjiGM4ptKsDydD1GvGe9ml8OBi1E=
+	b=T9EokeskpcX9cNF0wVuEdSoU/g1wqsasCCCZS28hXGfaU6hZlpWKGDud2/6EA1H+g
+	 axq30tELQYvvq3pRonrqph1K2DkyJmbJ+CtorNwi4aMWR7wOXtHr8DHLeak+wGBTLS
+	 cZyNcxPyLQ9dw6VJNDv+OaoK/edbSw8JiJ0HVjgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/129] drm/mediatek: stop selecting foreign drivers
-Date: Wed, 15 Jan 2025 11:37:03 +0100
-Message-ID: <20250115103556.286938027@linuxfoundation.org>
+	Christian Mazakas <christian.mazakas@gmail.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 128/189] io_uring/timeout: fix multishot updates
+Date: Wed, 15 Jan 2025 11:37:04 +0100
+Message-ID: <20250115103611.546870118@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 924d66011f2401a4145e2e814842c5c4572e439f ]
+commit c83c846231db8b153bfcb44d552d373c34f78245 upstream.
 
-The PHY portion of the mediatek hdmi driver was originally part of
-the driver it self and later split out into drivers/phy, which a
-'select' to keep the prior behavior.
+After update only the first shot of a multishot timeout request adheres
+to the new timeout value while all subsequent retries continue to use
+the old value. Don't forget to update the timeout stored in struct
+io_timeout_data.
 
-However, this leads to build failures when the PHY driver cannot
-be built:
-
-WARNING: unmet direct dependencies detected for PHY_MTK_HDMI
-  Depends on [n]: (ARCH_MEDIATEK || COMPILE_TEST [=y]) && COMMON_CLK [=y] && OF [=y] && REGULATOR [=n]
-  Selected by [m]:
-  - DRM_MEDIATEK_HDMI [=m] && HAS_IOMEM [=y] && DRM [=m] && DRM_MEDIATEK [=m]
-ERROR: modpost: "devm_regulator_register" [drivers/phy/mediatek/phy-mtk-hdmi-drv.ko] undefined!
-ERROR: modpost: "rdev_get_drvdata" [drivers/phy/mediatek/phy-mtk-hdmi-drv.ko] undefined!
-
-The best option here is to just not select the phy driver and leave that
-up to the defconfig. Do the same for the other PHY and memory drivers
-selected here as well for consistency.
-
-Fixes: a481bf2f0ca4 ("drm/mediatek: Separate mtk_hdmi_phy to an independent module")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20241218085837.2670434-1-arnd@kernel.org/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: ea97f6c8558e8 ("io_uring: add support for multishot timeouts")
+Reported-by: Christian Mazakas <christian.mazakas@gmail.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/e6516c3304eb654ec234cfa65c88a9579861e597.1736015288.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/Kconfig | 5 -----
- 1 file changed, 5 deletions(-)
+ io_uring/timeout.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mediatek/Kconfig b/drivers/gpu/drm/mediatek/Kconfig
-index 76cab28e010c..d2652751d190 100644
---- a/drivers/gpu/drm/mediatek/Kconfig
-+++ b/drivers/gpu/drm/mediatek/Kconfig
-@@ -10,9 +10,6 @@ config DRM_MEDIATEK
- 	select DRM_KMS_HELPER
- 	select DRM_MIPI_DSI
- 	select DRM_PANEL
--	select MEMORY
--	select MTK_SMI
--	select PHY_MTK_MIPI_DSI
- 	select VIDEOMODE_HELPERS
- 	help
- 	  Choose this option if you have a Mediatek SoCs.
-@@ -23,7 +20,6 @@ config DRM_MEDIATEK
- config DRM_MEDIATEK_DP
- 	tristate "DRM DPTX Support for MediaTek SoCs"
- 	depends on DRM_MEDIATEK
--	select PHY_MTK_DP
- 	select DRM_DISPLAY_HELPER
- 	select DRM_DISPLAY_DP_HELPER
- 	select DRM_DP_AUX_BUS
-@@ -34,6 +30,5 @@ config DRM_MEDIATEK_HDMI
- 	tristate "DRM HDMI Support for Mediatek SoCs"
- 	depends on DRM_MEDIATEK
- 	select SND_SOC_HDMI_CODEC if SND_SOC
--	select PHY_MTK_HDMI
- 	help
- 	  DRM/KMS HDMI driver for Mediatek SoCs
--- 
-2.39.5
-
+--- a/io_uring/timeout.c
++++ b/io_uring/timeout.c
+@@ -409,10 +409,12 @@ static int io_timeout_update(struct io_r
+ 
+ 	timeout->off = 0; /* noseq */
+ 	data = req->async_data;
++	data->ts = *ts;
++
+ 	list_add_tail(&timeout->list, &ctx->timeout_list);
+ 	hrtimer_init(&data->timer, io_timeout_get_clock(data), mode);
+ 	data->timer.function = io_timeout_fn;
+-	hrtimer_start(&data->timer, timespec64_to_ktime(*ts), mode);
++	hrtimer_start(&data->timer, timespec64_to_ktime(data->ts), mode);
+ 	return 0;
+ }
+ 
 
 
 
