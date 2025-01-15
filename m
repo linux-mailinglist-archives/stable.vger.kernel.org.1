@@ -1,177 +1,158 @@
-Return-Path: <stable+bounces-109179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 521B7A12E5E
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 23:43:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6651A12E88
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 23:49:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6872F165258
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 22:43:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 792593A4BDE
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 22:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A109D1DC197;
-	Wed, 15 Jan 2025 22:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8FDF1DC9BA;
+	Wed, 15 Jan 2025 22:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="Faloxm+z"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kF+qHA5L"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71BE1D79A9
-	for <stable@vger.kernel.org>; Wed, 15 Jan 2025 22:43:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243EC1DC9B3;
+	Wed, 15 Jan 2025 22:48:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736980986; cv=none; b=N2MZxMLA9Sd2NQUzQmh7sspISF52nG04Tl62NRCwvpFE3GxKOoHMINxCBur+0bhtt9CwDuUfbSkLMl0CpeKtQrTIIYhH+otvne+jWuz8capytH5OOtIRWk9DfXebm7bCROW+W1huzyWATj8QfSEZBlCMnnJM1GmXn3BfjSXZ0kg=
+	t=1736981339; cv=none; b=cZ+ARysowEW6diHtNVimIO9CeuGghgl/DPsH0eTdh9Q0fTPc8A5c4uLPXV0/W0rcPQXK8Wg4Si9Updu8s5/60lso7t1QCugO/cDHz1OJK9X7WV9vF6MzPil/UpprrPsrcO7G3jOKBJAGnbttGe2xJppYNqo8QvNeNLQfrCvfUwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736980986; c=relaxed/simple;
-	bh=yL6U+qd9McH0WeBiO4msfSFQjHRbrZ8Ebmmtycj45mY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YEzFK1Mjn3zvbasi2rphOiigEwZT7iJDUTe4isVXRAZoABSqLDNacGIQMEX0gb+nSlqD9ibpjtgxfuKiqQzqFnkmy3ChWyiRRWsIU8vjyi85La/vJqlcJbS90faUrGjnkIv1C/sQT2au9VbR5l1GJ2XQ88cwQhPQCnyPNVQOLJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=Faloxm+z; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2166f1e589cso4760985ad.3
-        for <stable@vger.kernel.org>; Wed, 15 Jan 2025 14:43:04 -0800 (PST)
+	s=arc-20240116; t=1736981339; c=relaxed/simple;
+	bh=NdFF9kX1/Vnozkr4mCse44pEonummA6x4jJYIoQGiOA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VGhMdgObH15JKb8lh968zVbR14hwWilLA2RlCp9J2rlD/dmLSMa+e6c/vvcVec7AihK/39hkAzrBp3s+NTQ7GN+T22OTIuj1jxZ8hqchadGT5UWr2WuoMs7D65vyj1TPZbSthSf27ub2hvunOFfAL3GKZaPPGrKc8yboPzKWtq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kF+qHA5L; arc=none smtp.client-ip=209.85.160.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-2a3c075ddb6so212451fac.2;
+        Wed, 15 Jan 2025 14:48:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1736980984; x=1737585784; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q1YubPgC/8eI2lbaVxtAtUgVaIXVapt21tVigfpGQfQ=;
-        b=Faloxm+zhHaMwNZOyI+Nxi5I53I/aWoXcjWGhCbNBJzwaxCmQLwU1hUdgAiWzRz40t
-         9A8fVaabbbIpUzxInDzVUpDQ0tL5HdrypeqTSHeUL/tbzEU2aWZmy7012h9NiIH4BRRm
-         rc8rvj9xJwpx2SedyWhl0VCbTy12CnW8mocP/W27DqTzgYXFE4Pz7KUQ/tZWpaTEjv4n
-         xNdCa3dBpis7m6P54uweNfDwicw7wiTGACkd6BoUH9GIolRMnSLaa2VktKGnqE5J0+Po
-         uMT0IMlqW0LiJKgJRuXutU5jEancL8WToRy1Z0br9WfqVOBMyEyJmcEaAW+67bD3U+hB
-         E9eQ==
+        d=gmail.com; s=20230601; t=1736981337; x=1737586137; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=IIZv+cKYKHCdFLLY6CZ4A4ADQJbuIZXylkRNjMRB0to=;
+        b=kF+qHA5LxwimYGeNXmO+zqcLOIbyP4skaos2LljlqeW3hhkzVEarqHR/Uy1dm03UbW
+         vHc3y5HBYQj7Xzhtzr6MRFUJtEsMuJrVgYbO7TCw7r0oHdxVi/+FSvGB2cOY3XIxz9TB
+         eEjEVru3Jr+BqyfQnCun9oPnGiEoHKEk7zVc4ypLE8RtswDxVk8IL49GLsdtmbvXYZ3L
+         0kns7JruMvcDGqfD9ogoRc3YSnkdOOhpjI1qbNugSHQzYHfqc0bd8waAFfpdZyIT65/S
+         30vtWXpHUqXASc/3vUZvWtmZeGfo/7pB3wsANhLEmdSS5mrOzCjnesMbf/rSf08utkUb
+         CK7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736980984; x=1737585784;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1736981337; x=1737586137;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Q1YubPgC/8eI2lbaVxtAtUgVaIXVapt21tVigfpGQfQ=;
-        b=Rn5TI9X0FjaR1JsUR2Gm3HwfO+3p+FPOKbAB9NddoY79dkscMxm8Sh5ORBNLHZuYv6
-         j2SAmawJjZuGP5FPky2Eh945KfQosXiHPY/k5SMwvYSFfaAjBHFMmGJ7xGJqNq2215b+
-         AsvfIawpJsAfBEifl90ig58yhVbvvUoGz2wOR0LwnddQsCFJJXgblI5f2zYEuLux13FX
-         pg0RkprcoFhIJ+Df3Dc5ZFmoaOMoBVijcNYf1FpNi+XH/g6Xq30d6JSXAe0xWwc2thJL
-         UE45Bdx9z1eA7aefMP4wSWfYUeYdYkV14tlSQqg24pVCElgAgXZ3NtT5weQUZx2XymYp
-         fkwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVM51cJAC8rVR/HqqDYqvvWZPhvLsUPU98vKcUYs4jR6ApXCXWyBKBgqfHqmwlRuffWmJSWecY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNi/6mZBcKs06d+2PHznP8/lgCWcv0651doGqMKYF2ADB75L1h
-	KhMgoOY4LcdTVcAkDCwcqshjo4VPimrfCd20wBzdhbKOFa7vQyTs4PKw7ow9qrw=
-X-Gm-Gg: ASbGncsUi2lAQq9q+0LGiQCbTGTrq1wqSDzWq8Vdzhz10kAuz1+oZ0QtIKS30UL1hcD
-	r3CLPCKnBVspWEOvxnbQjdP6g/9Dsd5DFPdwsSOni/RpZanlAGv2gumJPxxEhwlWN/iuztzhVum
-	PlvIarh6bdIqZcwgTb//jUyrIDL8Ne1Cy3wx7f8QLRCQq1KY/Wkt0qcZNR+5t8g2fQCFz/7otKA
-	UMrVAbQtoSQOK7snP83221dfV8lwf6mzS2VuIfp/olRp2k=
-X-Google-Smtp-Source: AGHT+IHvvdjAhB26TfABelCo2yezRGgIVCLHqbk75eU3TNKSL+BscHjkrJVVlUgyTbGeTyl7z8y3Mg==
-X-Received: by 2002:a05:6a00:1385:b0:72a:aa0f:c86e with SMTP id d2e1a72fcca58-72d21f17738mr44987044b3a.4.1736980984037;
-        Wed, 15 Jan 2025 14:43:04 -0800 (PST)
-Received: from ghost ([50.145.13.30])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72d405942b0sm9709309b3a.74.2025.01.15.14.43.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jan 2025 14:43:03 -0800 (PST)
-Date: Wed, 15 Jan 2025 14:43:00 -0800
-From: Charlie Jenkins <charlie@rivosinc.com>
-To: Celeste Liu <uwu@coelacanthus.name>
-Cc: Oleg Nesterov <oleg@redhat.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
-	Shuah Khan <shuah@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>, "Dmitry V. Levin" <ldv@strace.io>,
-	Andrea Bolognani <abologna@redhat.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>, Ron Economos <re@w6rz.net>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Quan Zhou <zhouquan@iscas.ac.cn>,
-	Felix Yan <felixonmars@archlinux.org>,
-	Ruizhe Pan <c141028@gmail.com>, Guo Ren <guoren@kernel.org>,
-	Yao Zi <ziyao@disroot.org>, linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@rivosinc.com>
-Subject: Re: [PATCH v6 0/3] riscv/ptrace: add new regset to access original
- a0 register
-Message-ID: <Z4g59EaNblLWKPXF@ghost>
-References: <20250115-riscv-new-regset-v6-0-59bfddd33525@coelacanthus.name>
+        bh=IIZv+cKYKHCdFLLY6CZ4A4ADQJbuIZXylkRNjMRB0to=;
+        b=dG9hoQatcztUNLe6eKNXmbNSp8nDRGkUuPK1ZCIqhG5tqCrcjkKqYH6lKLVMLxJGEF
+         +8LNpAvbzlFWIODdZTyiVIZPcrABCliYxxztWYAfDAmroHHhWcDyvCyIHmpn8p2gJdn/
+         2D71INd1FBB0kj2ZXKKFdRz4Mo1MmovFDp902xyBB/DB0mMo+8tB/gPDVB60EAI35udo
+         +bKLskTqkNBOYQZMf7am26E9G9YK0u60txjxGX/FYuQmpIG5H4OQ2Vp9K+bCf3cX0yUN
+         LAJ/WGtamqt/MF0llgHbwRzlIinjuvQLhPnyuDDpMn8KiZZtzG95vDQSjj+IZWDwv64E
+         XVfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUfJcFDrKWOdq75+gwqw+f1Cgo0Gau55i3AGlPtHZyx5dkXG1UZ5NZW1NG2dpHelasmIoCcFobH@vger.kernel.org, AJvYcCWntik37jBJzSTjqevXjSiF/zFxruTmGErWxQw7Oyz5HOsBqtsPQhP931onkPrMv494un4ubB5mFZl3zuM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoZ801YY01k5fdORl29q3RZUSyaGGSBRbqV/shLO4lYYbazd3+
+	yj99vWVvrrbhFKVMqL28ERnpvtTe79YazOJxg4NnNVYJfNOOMYH/
+X-Gm-Gg: ASbGncuOrX5jY0ExQSRVsgpuRGVL7h4Iu7Sq4z8EhyFPn61WsHyYzNwvMxwr0aOdMod
+	nRcnyxXMM3ANGWPB85/NZ8KUqM4MwWvLvXEuNYoH26iTumZOs9mj9k3NwLrtGEhhMmT9qzt1Tml
+	E23r/jLisF0AMvrEOtoSGL+G3bfh30ZAcnSMfvjyWddMl/JXetSOoD63HMA8/mPwxUp9zculm2A
+	h0VjEVTZ8wvWrMqqAdB1tJr0uhCZPk/FnpOHwcp9ZzUcmkDWtZkHKq1px4mX6lo+37le9Zow6Cn
+	BfpSoFxk
+X-Google-Smtp-Source: AGHT+IGzubkSbjP36Rdu/ReqhlmhZkX2ApxvwtIQkzuE+0/4QKWU20ejTiAgbt2mK0jhNN6560dqOQ==
+X-Received: by 2002:a05:6870:2a46:b0:29e:2da3:3f7b with SMTP id 586e51a60fabf-2aa065102fbmr17380989fac.7.1736981337209;
+        Wed, 15 Jan 2025 14:48:57 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2ad80a5cb64sm6777406fac.47.2025.01.15.14.48.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Jan 2025 14:48:56 -0800 (PST)
+Message-ID: <52233679-07ea-44ed-b3e6-cc356001d505@gmail.com>
+Date: Wed, 15 Jan 2025 14:48:54 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250115-riscv-new-regset-v6-0-59bfddd33525@coelacanthus.name>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 000/189] 6.12.10-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250115103606.357764746@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 15, 2025 at 07:13:26PM +0800, Celeste Liu wrote:
-> The orig_a0 is missing in struct user_regs_struct of riscv, and there is
-> no way to add it without breaking UAPI. (See Link tag below)
+On 1/15/25 02:34, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.10 release.
+> There are 189 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Like NT_ARM_SYSTEM_CALL do, we add a new regset name NT_RISCV_ORIG_A0 to
-> access original a0 register from userspace via ptrace API.
+> Responses should be made by Fri, 17 Jan 2025 10:34:58 +0000.
+> Anything received after that time might be too late.
 > 
-> Link: https://lore.kernel.org/all/59505464-c84a-403d-972f-d4b2055eeaac@gmail.com/
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.10-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
 > 
-> Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
-> ---
-> Changes in v6:
-> - Fix obsolute comment.
-> - Copy include/linux/stddef.h to tools/include to use offsetofend in
->   selftests.
-> - Link to v5: https://lore.kernel.org/r/20250115-riscv-new-regset-v5-0-d0e6ec031a23@coelacanthus.name
+> thanks,
 > 
-> Changes in v5:
-> - Fix wrong usage in selftests.
-> - Link to v4: https://lore.kernel.org/r/20241226-riscv-new-regset-v4-0-4496a29d0436@coelacanthus.name
-> 
-> Changes in v4:
-> - Fix a copy paste error in selftest. (Forget to commit...)
-> - Link to v3: https://lore.kernel.org/r/20241226-riscv-new-regset-v3-0-f5b96465826b@coelacanthus.name
-> 
-> Changes in v3:
-> - Use return 0 directly for readability.
-> - Fix test for modify a0.
-> - Add Fixes: tag
-> - Remove useless Cc: stable.
-> - Selftest will check both a0 and orig_a0, but depends on the
->   correctness of PTRACE_GET_SYSCALL_INFO.
-> - Link to v2: https://lore.kernel.org/r/20241203-riscv-new-regset-v2-0-d37da8c0cba6@coelacanthus.name
-> 
-> Changes in v2:
-> - Fix integer width.
-> - Add selftest.
-> - Link to v1: https://lore.kernel.org/r/20241201-riscv-new-regset-v1-1-c83c58abcc7b@coelacanthus.name
-> 
-> ---
-> Celeste Liu (3):
->       riscv/ptrace: add new regset to access original a0 register
->       tools: copy include/linux/stddef.h to tools/include
->       riscv: selftests: Add a ptrace test to verify a0 and orig_a0 access
-> 
->  arch/riscv/kernel/ptrace.c                   |  32 +++++
->  include/uapi/linux/elf.h                     |   1 +
->  tools/include/linux/stddef.h                 |  85 ++++++++++++
->  tools/include/uapi/linux/stddef.h            |   6 +-
->  tools/testing/selftests/riscv/abi/.gitignore |   1 +
->  tools/testing/selftests/riscv/abi/Makefile   |   6 +-
->  tools/testing/selftests/riscv/abi/ptrace.c   | 193 +++++++++++++++++++++++++++
->  7 files changed, 319 insertions(+), 5 deletions(-)
-> ---
-> base-commit: 0e287d31b62bb53ad81d5e59778384a40f8b6f56
-> change-id: 20241201-riscv-new-regset-d529b952ad0d
-> 
-> Best regards,
-> -- 
-> Celeste Liu <uwu@coelacanthus.name>
-> 
+> greg k-h
 
-There is also this series that looks like it will solve this problem by
-providing an architecture agnostic way of changing syscall args with
-PTRACE_SET_SYSCALL_INFO [1].
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-- Charlie
-
-[1] https://lore.kernel.org/lkml/20250113170925.GA392@altlinux.org/
-
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
