@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-108902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36E64A120DA
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:49:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD8CA1216D
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:56:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA66A3A6762
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:49:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57BFF1886300
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:56:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 974E8248BC1;
-	Wed, 15 Jan 2025 10:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2C41E98EA;
+	Wed, 15 Jan 2025 10:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ovmnfxvr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIxkkgJA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52DDA248BA1;
-	Wed, 15 Jan 2025 10:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A3C1DB13A;
+	Wed, 15 Jan 2025 10:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938188; cv=none; b=boV4hBbR9U6wmhNSPsBNdcC3U7FObHxXRK0Df/TtAHUzIZvuX6ayz6PQwtinaVt3d2RvK/H9iYJRfJ4WOaqkZiMN4jczyNptbK77EY4GYwxCbCQQdpvfnTngZ37abBdH+5ZcoJYymLtQfkLuGS4seAnihiJLI4WQs9ZXtMw2I2c=
+	t=1736938573; cv=none; b=DyD/dR6L4LtK6OlwqtucRX9Z+KRo0C9dPvx0y4kdyJ2x/fgbgoMcH/MBvbrN1pLWvKG8H+ihKhtOHlJGVS06b/rYTwhMbZxYbpOE9UxTPTl2Y9pfQac02LSC3RcWIdCCY9f6AWjolNI4d4wU7vPJEEmwkKtxGJK9zA9zNmkdugY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938188; c=relaxed/simple;
-	bh=XehYhwq9iSkFQLKJCiKLgnC/YOCsqwabY779gm8DqDs=;
+	s=arc-20240116; t=1736938573; c=relaxed/simple;
+	bh=cpyUoZQ/IvcVimrNmpx6kCswBC+xCjRpLH8WiB71HBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j/bPTgTp6AE+OhDO2ONSPMb/0hdndz9i50UiYPtJc6eNBl5uoTLiYiKxPHriZgfu5euSLB8IDfV5zaCEq2qE368Yko7m3cEIhqPHeY8SIih0DE8ttKElbhsZ0RB0TdXf5bGMZiubtGee+/+lUOez7tTudJDmfs8cxFNT1BaDzv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ovmnfxvr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6981C4CEDF;
-	Wed, 15 Jan 2025 10:49:47 +0000 (UTC)
+	 MIME-Version; b=niQ5VakpqagoFXdhk602QhgMhc3dLx1b51COEFOL1KH/A3uYTixWP/7aM7XLk9RGOtYw5gkCK5/Dxhu81HGRaxQiuNwrnXo9qqQQtDbRphpVNrxktxf5Yc7/Lc+15k8lVjij/RHxkwVdcwQg4QBOFQ93c+N/5CVmdYXD/h7evGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIxkkgJA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58EACC4CEDF;
+	Wed, 15 Jan 2025 10:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938188;
-	bh=XehYhwq9iSkFQLKJCiKLgnC/YOCsqwabY779gm8DqDs=;
+	s=korg; t=1736938572;
+	bh=cpyUoZQ/IvcVimrNmpx6kCswBC+xCjRpLH8WiB71HBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OvmnfxvrgXfUWT3HjqnhJoE7bUa/wbTmONpVZu6ufbeEARv2XRWryjQqoNrnhPcHf
-	 muupkQ5pqxYkOmObZ0DsCmS/+UaheI/uS8c//gd1sqvJ2MpHrzehCxxA76P/PjwsWW
-	 lx0o6XDhHIyu5yIZqi7gHK0ae7eLwCH9j7QcbMwk=
+	b=LIxkkgJAguTgsiS/JEIXQv2F3N5CEmYfpr7xEHwHNB0WxHs0zKEN1TeAfRcIJPwIr
+	 iouxPs1A+rjbdnYrdSGki+vBjLrh/P2ZOT8qbxt+tpDU9alOJ8HN9pU9+jPCxc2Drh
+	 84Bg5mSJhg75bPBXcWhBFs859rEQSp06LCUV+N9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ji Fa <jifa@huawei.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Waiman Long <longman@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 110/189] cgroup/cpuset: remove kernfs active break
+Subject: [PATCH 6.6 031/129] tls: Fix tls_sw_sendmsg error handling
 Date: Wed, 15 Jan 2025 11:36:46 +0100
-Message-ID: <20250115103610.839258809@linuxfoundation.org>
+Message-ID: <20250115103555.619995555@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,133 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-[ Upstream commit 3cb97a927fffe443e1e7e8eddbfebfdb062e86ed ]
+[ Upstream commit b341ca51d2679829d26a3f6a4aa9aee9abd94f92 ]
 
-A warning was found:
+We've noticed that NFS can hang when using RPC over TLS on an unstable
+connection, and investigation shows that the RPC layer is stuck in a tight
+loop attempting to transmit, but forever getting -EBADMSG back from the
+underlying network.  The loop begins when tcp_sendmsg_locked() returns
+-EPIPE to tls_tx_records(), but that error is converted to -EBADMSG when
+calling the socket's error reporting handler.
 
-WARNING: CPU: 10 PID: 3486953 at fs/kernfs/file.c:828
-CPU: 10 PID: 3486953 Comm: rmdir Kdump: loaded Tainted: G
-RIP: 0010:kernfs_should_drain_open_files+0x1a1/0x1b0
-RSP: 0018:ffff8881107ef9e0 EFLAGS: 00010202
-RAX: 0000000080000002 RBX: ffff888154738c00 RCX: dffffc0000000000
-RDX: 0000000000000007 RSI: 0000000000000004 RDI: ffff888154738c04
-RBP: ffff888154738c04 R08: ffffffffaf27fa15 R09: ffffed102a8e7180
-R10: ffff888154738c07 R11: 0000000000000000 R12: ffff888154738c08
-R13: ffff888750f8c000 R14: ffff888750f8c0e8 R15: ffff888154738ca0
-FS:  00007f84cd0be740(0000) GS:ffff8887ddc00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000555f9fbe00c8 CR3: 0000000153eec001 CR4: 0000000000370ee0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- kernfs_drain+0x15e/0x2f0
- __kernfs_remove+0x165/0x300
- kernfs_remove_by_name_ns+0x7b/0xc0
- cgroup_rm_file+0x154/0x1c0
- cgroup_addrm_files+0x1c2/0x1f0
- css_clear_dir+0x77/0x110
- kill_css+0x4c/0x1b0
- cgroup_destroy_locked+0x194/0x380
- cgroup_rmdir+0x2a/0x140
+Instead of converting errors from tcp_sendmsg_locked(), let's pass them
+along in this path.  The RPC layer handles -EPIPE by reconnecting the
+transport, which prevents the endless attempts to transmit on a broken
+connection.
 
-It can be explained by:
-rmdir 				echo 1 > cpuset.cpus
-				kernfs_fop_write_iter // active=0
-cgroup_rm_file
-kernfs_remove_by_name_ns	kernfs_get_active // active=1
-__kernfs_remove					  // active=0x80000002
-kernfs_drain			cpuset_write_resmask
-wait_event
-//waiting (active == 0x80000001)
-				kernfs_break_active_protection
-				// active = 0x80000001
-// continue
-				kernfs_unbreak_active_protection
-				// active = 0x80000002
-...
-kernfs_should_drain_open_files
-// warning occurs
-				kernfs_put_active
-
-This warning is caused by 'kernfs_break_active_protection' when it is
-writing to cpuset.cpus, and the cgroup is removed concurrently.
-
-The commit 3a5a6d0c2b03 ("cpuset: don't nest cgroup_mutex inside
-get_online_cpus()") made cpuset_hotplug_workfn asynchronous, This change
-involves calling flush_work(), which can create a multiple processes
-circular locking dependency that involve cgroup_mutex, potentially leading
-to a deadlock. To avoid deadlock. the commit 76bb5ab8f6e3 ("cpuset: break
-kernfs active protection in cpuset_write_resmask()") added
-'kernfs_break_active_protection' in the cpuset_write_resmask. This could
-lead to this warning.
-
-After the commit 2125c0034c5d ("cgroup/cpuset: Make cpuset hotplug
-processing synchronous"), the cpuset_write_resmask no longer needs to
-wait the hotplug to finish, which means that concurrent hotplug and cpuset
-operations are no longer possible. Therefore, the deadlock doesn't exist
-anymore and it does not have to 'break active protection' now. To fix this
-warning, just remove kernfs_break_active_protection operation in the
-'cpuset_write_resmask'.
-
-Fixes: bdb2fd7fc56e ("kernfs: Skip kernfs_drain_open_files() more aggressively")
-Fixes: 76bb5ab8f6e3 ("cpuset: break kernfs active protection in cpuset_write_resmask()")
-Reported-by: Ji Fa <jifa@huawei.com>
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Acked-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
+Link: https://patch.msgid.link/9594185559881679d81f071b181a10eb07cd079f.1736004079.git.bcodding@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c | 25 -------------------------
- 1 file changed, 25 deletions(-)
+ net/tls/tls_sw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index c431c50512bd..24ece85fd3b1 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -3110,29 +3110,6 @@ ssize_t cpuset_write_resmask(struct kernfs_open_file *of,
- 	int retval = -ENODEV;
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index df166f6afad8..6e30fe879d53 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -458,7 +458,7 @@ int tls_tx_records(struct sock *sk, int flags)
  
- 	buf = strstrip(buf);
--
--	/*
--	 * CPU or memory hotunplug may leave @cs w/o any execution
--	 * resources, in which case the hotplug code asynchronously updates
--	 * configuration and transfers all tasks to the nearest ancestor
--	 * which can execute.
--	 *
--	 * As writes to "cpus" or "mems" may restore @cs's execution
--	 * resources, wait for the previously scheduled operations before
--	 * proceeding, so that we don't end up keep removing tasks added
--	 * after execution capability is restored.
--	 *
--	 * cpuset_handle_hotplug may call back into cgroup core asynchronously
--	 * via cgroup_transfer_tasks() and waiting for it from a cgroupfs
--	 * operation like this one can lead to a deadlock through kernfs
--	 * active_ref protection.  Let's break the protection.  Losing the
--	 * protection is okay as we check whether @cs is online after
--	 * grabbing cpuset_mutex anyway.  This only happens on the legacy
--	 * hierarchies.
--	 */
--	css_get(&cs->css);
--	kernfs_break_active_protection(of->kn);
--
- 	cpus_read_lock();
- 	mutex_lock(&cpuset_mutex);
- 	if (!is_cpuset_online(cs))
-@@ -3163,8 +3140,6 @@ ssize_t cpuset_write_resmask(struct kernfs_open_file *of,
- out_unlock:
- 	mutex_unlock(&cpuset_mutex);
- 	cpus_read_unlock();
--	kernfs_unbreak_active_protection(of->kn);
--	css_put(&cs->css);
- 	flush_workqueue(cpuset_migrate_mm_wq);
- 	return retval ?: nbytes;
+ tx_err:
+ 	if (rc < 0 && rc != -EAGAIN)
+-		tls_err_abort(sk, -EBADMSG);
++		tls_err_abort(sk, rc);
+ 
+ 	return rc;
  }
 -- 
 2.39.5
