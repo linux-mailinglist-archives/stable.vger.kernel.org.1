@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-108892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1954DA120D0
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:49:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59678A120A6
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:47:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 621A33A7C0F
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:49:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A16F1188C84E
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D0B1E9909;
-	Wed, 15 Jan 2025 10:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5A7248BDE;
+	Wed, 15 Jan 2025 10:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iglqo7kA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2hZ54uRv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468431E98EE;
-	Wed, 15 Jan 2025 10:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578E9248BA6;
+	Wed, 15 Jan 2025 10:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938155; cv=none; b=KRjUeHPnPs2YApq81BPZU8m+dcPHysJ8eTulwdV9DJBZWg2xeyIkXZzc3KFcxhY9zRlKGW30QUlSarQ9PQdOZI4HGwO3EbuvVrzAV463jNf9U3dwy54yV99SjDYGyEQb3ov9ktpCN3l/q66oj5/kipG50Gp0Kx6O8lOQ5D7E87M=
+	t=1736938048; cv=none; b=rDod8emIcdsGlAjiJ7Jen3LbmaN46V9gxiJFqjGxDrUztRWoFbYeDdQuIViGuQN7N2mgKzjS7gaHKxJ3JUjecjQtyaAOBTMS6b6liCu+U72bP16BLZKJHBmQYRn96XzKZX+qZIqSFyppT1t19FwOicZ7e6JRSwkEwHqyP/11544=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938155; c=relaxed/simple;
-	bh=vrmVfkkabVLIfIPYbvpA1NdBat20q3XlgS4FqpA3GRc=;
+	s=arc-20240116; t=1736938048; c=relaxed/simple;
+	bh=CXk1HFZG3MPDZmSou1Mt+lqABGCcFsq/KDSfmqArv7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qMyFYN4XMU220Nt8yQWMsSjgTopGZ5syG+JHRYcB3j+2uzRJxS5KarOQCluzjzDnvVxqOY9ajAHw7fOsxyjnEqrXGSZMo/ycANN5TSWAJFgbHlfBb5Mstv2ncKaEE3iTH162TlYgp2Jcb4+JqfqP/i1mhtZ70tc+6HetIf7SfU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iglqo7kA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C7EC4CEDF;
-	Wed, 15 Jan 2025 10:49:14 +0000 (UTC)
+	 MIME-Version; b=MGr2qdZlBVXD5Ji1wTNhVKbSxqyWXJCHsZfiQdrIM5EHeorQbeszBWGPMwxxllMVYFinG7j+fPD7DFVHQvyRolCTAGp91QGMT2Pm3pHEjpdoXIFdezvNQVYm46GuPsoj0IKgE/OzN7tBMntXP7eviWcOqaGtF12DCz/ZIzO/xgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2hZ54uRv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CA5C4CEDF;
+	Wed, 15 Jan 2025 10:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938155;
-	bh=vrmVfkkabVLIfIPYbvpA1NdBat20q3XlgS4FqpA3GRc=;
+	s=korg; t=1736938048;
+	bh=CXk1HFZG3MPDZmSou1Mt+lqABGCcFsq/KDSfmqArv7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iglqo7kAbj78XsNwzHslcVvWa2MbU0wyamhRm1ocWVtB6NTqw4Hb7X0wQGRlTPwMh
-	 h09rFVBqcuALaV9p9f79Rt++3/L+qwnab4Uth0uq5TOCUrCMILwT2khxp4JW17SIXi
-	 qYvx0viiJDE4kWh7nPuZEQUDLKKigCltqmSet69M=
+	b=2hZ54uRvEKI6CcbjW2jfwLcqoCtRuWD0UsGPOJkp+13rt0JSgqIJsMYRX01cA5Ney
+	 +rhkfGCvme89eXqT6d31bUrxwKQWJeZcYP101D4FMKhclmLx5/FZRxr7wNDxRfYS5K
+	 +ab6WJANBeqb5AkclOWoAAb88qOEp1d2VS19dxTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenguang Zhao <zhaochenguang@kylinos.cn>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Guoqing Jiang <guoqing.jiang@canonical.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 059/189] net/mlx5: Fix variable not being completed when function returns
-Date: Wed, 15 Jan 2025 11:35:55 +0100
-Message-ID: <20250115103608.716785368@linuxfoundation.org>
+Subject: [PATCH 6.12 060/189] drm/mediatek: Set private->all_drm_private[i]->drm to NULL if mtk_drm_bind returns err
+Date: Wed, 15 Jan 2025 11:35:56 +0100
+Message-ID: <20250115103608.754349287@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
 In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
 References: <20250115103606.357764746@linuxfoundation.org>
@@ -68,60 +67,90 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chenguang Zhao <zhaochenguang@kylinos.cn>
+From: Guoqing Jiang <guoqing.jiang@canonical.com>
 
-[ Upstream commit 0e2909c6bec9048f49d0c8e16887c63b50b14647 ]
+[ Upstream commit 36684e9d88a2e2401ae26715a2e217cb4295cea7 ]
 
-When cmd_alloc_index(), fails cmd_work_handler() needs
-to complete ent->slotted before returning early.
-Otherwise the task which issued the command may hang:
+The pointer need to be set to NULL, otherwise KASAN complains about
+use-after-free. Because in mtk_drm_bind, all private's drm are set
+as follows.
 
-   mlx5_core 0000:01:00.0: cmd_work_handler:877:(pid 3880418): failed to allocate command entry
-   INFO: task kworker/13:2:4055883 blocked for more than 120 seconds.
-         Not tainted 4.19.90-25.44.v2101.ky10.aarch64 #1
-   "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-   kworker/13:2    D    0 4055883      2 0x00000228
-   Workqueue: events mlx5e_tx_dim_work [mlx5_core]
-   Call trace:
-      __switch_to+0xe8/0x150
-      __schedule+0x2a8/0x9b8
-      schedule+0x2c/0x88
-      schedule_timeout+0x204/0x478
-      wait_for_common+0x154/0x250
-      wait_for_completion+0x28/0x38
-      cmd_exec+0x7a0/0xa00 [mlx5_core]
-      mlx5_cmd_exec+0x54/0x80 [mlx5_core]
-      mlx5_core_modify_cq+0x6c/0x80 [mlx5_core]
-      mlx5_core_modify_cq_moderation+0xa0/0xb8 [mlx5_core]
-      mlx5e_tx_dim_work+0x54/0x68 [mlx5_core]
-      process_one_work+0x1b0/0x448
-      worker_thread+0x54/0x468
-      kthread+0x134/0x138
-      ret_from_fork+0x10/0x18
+private->all_drm_private[i]->drm = drm;
 
-Fixes: 485d65e13571 ("net/mlx5: Add a timeout to acquire the command queue semaphore")
-Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Acked-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250108030009.68520-1-zhaochenguang@kylinos.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+And drm will be released by drm_dev_put in case mtk_drm_kms_init returns
+failure. However, the shutdown path still accesses the previous allocated
+memory in drm_atomic_helper_shutdown.
+
+[   84.874820] watchdog: watchdog0: watchdog did not stop!
+[   86.512054] ==================================================================
+[   86.513162] BUG: KASAN: use-after-free in drm_atomic_helper_shutdown+0x33c/0x378
+[   86.514258] Read of size 8 at addr ffff0000d46fc068 by task shutdown/1
+[   86.515213]
+[   86.515455] CPU: 1 UID: 0 PID: 1 Comm: shutdown Not tainted 6.13.0-rc1-mtk+gfa1a78e5d24b-dirty #55
+[   86.516752] Hardware name: Unknown Product/Unknown Product, BIOS 2022.10 10/01/2022
+[   86.517960] Call trace:
+[   86.518333]  show_stack+0x20/0x38 (C)
+[   86.518891]  dump_stack_lvl+0x90/0xd0
+[   86.519443]  print_report+0xf8/0x5b0
+[   86.519985]  kasan_report+0xb4/0x100
+[   86.520526]  __asan_report_load8_noabort+0x20/0x30
+[   86.521240]  drm_atomic_helper_shutdown+0x33c/0x378
+[   86.521966]  mtk_drm_shutdown+0x54/0x80
+[   86.522546]  platform_shutdown+0x64/0x90
+[   86.523137]  device_shutdown+0x260/0x5b8
+[   86.523728]  kernel_restart+0x78/0xf0
+[   86.524282]  __do_sys_reboot+0x258/0x2f0
+[   86.524871]  __arm64_sys_reboot+0x90/0xd8
+[   86.525473]  invoke_syscall+0x74/0x268
+[   86.526041]  el0_svc_common.constprop.0+0xb0/0x240
+[   86.526751]  do_el0_svc+0x4c/0x70
+[   86.527251]  el0_svc+0x4c/0xc0
+[   86.527719]  el0t_64_sync_handler+0x144/0x168
+[   86.528367]  el0t_64_sync+0x198/0x1a0
+[   86.528920]
+[   86.529157] The buggy address belongs to the physical page:
+[   86.529972] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff0000d46fd4d0 pfn:0x1146fc
+[   86.531319] flags: 0xbfffc0000000000(node=0|zone=2|lastcpupid=0xffff)
+[   86.532267] raw: 0bfffc0000000000 0000000000000000 dead000000000122 0000000000000000
+[   86.533390] raw: ffff0000d46fd4d0 0000000000000000 00000000ffffffff 0000000000000000
+[   86.534511] page dumped because: kasan: bad access detected
+[   86.535323]
+[   86.535559] Memory state around the buggy address:
+[   86.536265]  ffff0000d46fbf00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[   86.537314]  ffff0000d46fbf80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[   86.538363] >ffff0000d46fc000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[   86.544733]                                                           ^
+[   86.551057]  ffff0000d46fc080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[   86.557510]  ffff0000d46fc100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[   86.563928] ==================================================================
+[   86.571093] Disabling lock debugging due to kernel taint
+[   86.577642] Unable to handle kernel paging request at virtual address e0e9c0920000000b
+[   86.581834] KASAN: maybe wild-memory-access in range [0x0752049000000058-0x075204900000005f]
+...
+
+Fixes: 1ef7ed48356c ("drm/mediatek: Modify mediatek-drm for mt8195 multi mmsys support")
+Signed-off-by: Guoqing Jiang <guoqing.jiang@canonical.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20241223023227.1258112-1-guoqing.jiang@canonical.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-index 6bd8a18e3af3..e733b81e18a2 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-@@ -1013,6 +1013,7 @@ static void cmd_work_handler(struct work_struct *work)
- 				complete(&ent->done);
- 			}
- 			up(&cmd->vars.sem);
-+			complete(&ent->slotted);
- 			return;
- 		}
- 	} else {
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+index 2c1cb335d862..4e93fd075e03 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -673,6 +673,8 @@ static int mtk_drm_bind(struct device *dev)
+ err_free:
+ 	private->drm = NULL;
+ 	drm_dev_put(drm);
++	for (i = 0; i < private->data->mmsys_dev_num; i++)
++		private->all_drm_private[i]->drm = NULL;
+ 	return ret;
+ }
+ 
 -- 
 2.39.5
 
