@@ -1,157 +1,177 @@
-Return-Path: <stable+bounces-109182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46A19A12EC5
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 23:55:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 521B7A12E5E
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 23:43:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EFE61883C39
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 22:55:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6872F165258
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 22:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9BF71DD88B;
-	Wed, 15 Jan 2025 22:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A109D1DC197;
+	Wed, 15 Jan 2025 22:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bD4Igbc5"
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="Faloxm+z"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4971DA11B;
-	Wed, 15 Jan 2025 22:55:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71BE1D79A9
+	for <stable@vger.kernel.org>; Wed, 15 Jan 2025 22:43:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736981725; cv=none; b=g9fcRRWVdakVjNqz1QESkx3GQP7qqR2OyMplnkV5cFFvajdMRhFLFK8WNWW9bDlW93PLKhQA3l2XFJ6oZ+yUoBJvsvItezgtAFXMPZTCGdcshWUmA1VQVQoZXdWrkekRWR5ijkprKwCttZkm7iq47Knl9+W7QqJlnuvOTthEPOg=
+	t=1736980986; cv=none; b=N2MZxMLA9Sd2NQUzQmh7sspISF52nG04Tl62NRCwvpFE3GxKOoHMINxCBur+0bhtt9CwDuUfbSkLMl0CpeKtQrTIIYhH+otvne+jWuz8capytH5OOtIRWk9DfXebm7bCROW+W1huzyWATj8QfSEZBlCMnnJM1GmXn3BfjSXZ0kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736981725; c=relaxed/simple;
-	bh=A9E1UIFSKc33JB9vhCT75gVdWuTZFCsp3gTv5ZbQRuQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DI7hTLTsUhBz/ExJgbi3NZSLcm0TdFBsQpqt/p3tpkD+7nogwUMuQDJTgoGdd6YY/MX2cTIo4P2DB26RQTsmXZkvwpiG5y1TIo9VWteUGOkZGb8EJQNHDreRATfSRyA5C8L969vrVKYCjlBkRyhqI+3DNBKIH8gEdGHRrGQYR/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bD4Igbc5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9522AC4CED1;
-	Wed, 15 Jan 2025 22:55:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736981725;
-	bh=A9E1UIFSKc33JB9vhCT75gVdWuTZFCsp3gTv5ZbQRuQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=bD4Igbc54x9juhEYmVIos2uTbaf+GnEP3kb+6uHWlPn93t5A/S0uQTuOeBSib4lvS
-	 BY9BFZYJAKbZaK1LF9Hs0yU8rsq+vmwk/i5VSwvTza7BoP92X9bwNsvMUPCVmLhoa6
-	 Qjzbp+rLDf+VR7Dr3vuqxAIHaInIsWvPvsFSX1rfjlb8yD2AMwsTVd8iMIVqkGLGGp
-	 XxbG6EsGaD+igWl8QlyirbnLnDKOKmYGxzLQf/FJHuuZPeB1qeiZyiri9iauOE9t3W
-	 WOhhxMDzu+JKVzCWM6HOEo7kudXQp+ZM0iNiSFYTpUwIF6kWuHrrwI9eEplTqnWLkh
-	 AeS8XpbJ1UcGg==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-integrity@vger.kernel.org,
-	Peter Huewe <peterhuewe@gmx.de>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Stefan Berger <stefanb@us.ibm.com>,
-	Reiner Sailer <sailer@us.ibm.com>,
-	Seiji Munetoh <munetoh@jp.ibm.com>,
-	Andrew Morton <akpm@osdl.org>,
-	Kylene Jo Hall <kjhall@us.ibm.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>,
-	stable@vger.kernel.org,
-	Andy Liang <andy.liang@hpe.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v10] tpm: Map the ACPI provided event log
-Date: Thu, 16 Jan 2025 00:42:56 +0200
-Message-ID: <20250115224315.482487-1-jarkko@kernel.org>
-X-Mailer: git-send-email 2.48.0
+	s=arc-20240116; t=1736980986; c=relaxed/simple;
+	bh=yL6U+qd9McH0WeBiO4msfSFQjHRbrZ8Ebmmtycj45mY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YEzFK1Mjn3zvbasi2rphOiigEwZT7iJDUTe4isVXRAZoABSqLDNacGIQMEX0gb+nSlqD9ibpjtgxfuKiqQzqFnkmy3ChWyiRRWsIU8vjyi85La/vJqlcJbS90faUrGjnkIv1C/sQT2au9VbR5l1GJ2XQ88cwQhPQCnyPNVQOLJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=Faloxm+z; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2166f1e589cso4760985ad.3
+        for <stable@vger.kernel.org>; Wed, 15 Jan 2025 14:43:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1736980984; x=1737585784; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q1YubPgC/8eI2lbaVxtAtUgVaIXVapt21tVigfpGQfQ=;
+        b=Faloxm+zhHaMwNZOyI+Nxi5I53I/aWoXcjWGhCbNBJzwaxCmQLwU1hUdgAiWzRz40t
+         9A8fVaabbbIpUzxInDzVUpDQ0tL5HdrypeqTSHeUL/tbzEU2aWZmy7012h9NiIH4BRRm
+         rc8rvj9xJwpx2SedyWhl0VCbTy12CnW8mocP/W27DqTzgYXFE4Pz7KUQ/tZWpaTEjv4n
+         xNdCa3dBpis7m6P54uweNfDwicw7wiTGACkd6BoUH9GIolRMnSLaa2VktKGnqE5J0+Po
+         uMT0IMlqW0LiJKgJRuXutU5jEancL8WToRy1Z0br9WfqVOBMyEyJmcEaAW+67bD3U+hB
+         E9eQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736980984; x=1737585784;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q1YubPgC/8eI2lbaVxtAtUgVaIXVapt21tVigfpGQfQ=;
+        b=Rn5TI9X0FjaR1JsUR2Gm3HwfO+3p+FPOKbAB9NddoY79dkscMxm8Sh5ORBNLHZuYv6
+         j2SAmawJjZuGP5FPky2Eh945KfQosXiHPY/k5SMwvYSFfaAjBHFMmGJ7xGJqNq2215b+
+         AsvfIawpJsAfBEifl90ig58yhVbvvUoGz2wOR0LwnddQsCFJJXgblI5f2zYEuLux13FX
+         pg0RkprcoFhIJ+Df3Dc5ZFmoaOMoBVijcNYf1FpNi+XH/g6Xq30d6JSXAe0xWwc2thJL
+         UE45Bdx9z1eA7aefMP4wSWfYUeYdYkV14tlSQqg24pVCElgAgXZ3NtT5weQUZx2XymYp
+         fkwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVM51cJAC8rVR/HqqDYqvvWZPhvLsUPU98vKcUYs4jR6ApXCXWyBKBgqfHqmwlRuffWmJSWecY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNi/6mZBcKs06d+2PHznP8/lgCWcv0651doGqMKYF2ADB75L1h
+	KhMgoOY4LcdTVcAkDCwcqshjo4VPimrfCd20wBzdhbKOFa7vQyTs4PKw7ow9qrw=
+X-Gm-Gg: ASbGncsUi2lAQq9q+0LGiQCbTGTrq1wqSDzWq8Vdzhz10kAuz1+oZ0QtIKS30UL1hcD
+	r3CLPCKnBVspWEOvxnbQjdP6g/9Dsd5DFPdwsSOni/RpZanlAGv2gumJPxxEhwlWN/iuztzhVum
+	PlvIarh6bdIqZcwgTb//jUyrIDL8Ne1Cy3wx7f8QLRCQq1KY/Wkt0qcZNR+5t8g2fQCFz/7otKA
+	UMrVAbQtoSQOK7snP83221dfV8lwf6mzS2VuIfp/olRp2k=
+X-Google-Smtp-Source: AGHT+IHvvdjAhB26TfABelCo2yezRGgIVCLHqbk75eU3TNKSL+BscHjkrJVVlUgyTbGeTyl7z8y3Mg==
+X-Received: by 2002:a05:6a00:1385:b0:72a:aa0f:c86e with SMTP id d2e1a72fcca58-72d21f17738mr44987044b3a.4.1736980984037;
+        Wed, 15 Jan 2025 14:43:04 -0800 (PST)
+Received: from ghost ([50.145.13.30])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72d405942b0sm9709309b3a.74.2025.01.15.14.43.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jan 2025 14:43:03 -0800 (PST)
+Date: Wed, 15 Jan 2025 14:43:00 -0800
+From: Charlie Jenkins <charlie@rivosinc.com>
+To: Celeste Liu <uwu@coelacanthus.name>
+Cc: Oleg Nesterov <oleg@redhat.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
+	Shuah Khan <shuah@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>, "Dmitry V. Levin" <ldv@strace.io>,
+	Andrea Bolognani <abologna@redhat.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>, Ron Economos <re@w6rz.net>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Quan Zhou <zhouquan@iscas.ac.cn>,
+	Felix Yan <felixonmars@archlinux.org>,
+	Ruizhe Pan <c141028@gmail.com>, Guo Ren <guoren@kernel.org>,
+	Yao Zi <ziyao@disroot.org>, linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@rivosinc.com>
+Subject: Re: [PATCH v6 0/3] riscv/ptrace: add new regset to access original
+ a0 register
+Message-ID: <Z4g59EaNblLWKPXF@ghost>
+References: <20250115-riscv-new-regset-v6-0-59bfddd33525@coelacanthus.name>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250115-riscv-new-regset-v6-0-59bfddd33525@coelacanthus.name>
 
-The following failure was reported:
+On Wed, Jan 15, 2025 at 07:13:26PM +0800, Celeste Liu wrote:
+> The orig_a0 is missing in struct user_regs_struct of riscv, and there is
+> no way to add it without breaking UAPI. (See Link tag below)
+> 
+> Like NT_ARM_SYSTEM_CALL do, we add a new regset name NT_RISCV_ORIG_A0 to
+> access original a0 register from userspace via ptrace API.
+> 
+> Link: https://lore.kernel.org/all/59505464-c84a-403d-972f-d4b2055eeaac@gmail.com/
+> 
+> Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
+> ---
+> Changes in v6:
+> - Fix obsolute comment.
+> - Copy include/linux/stddef.h to tools/include to use offsetofend in
+>   selftests.
+> - Link to v5: https://lore.kernel.org/r/20250115-riscv-new-regset-v5-0-d0e6ec031a23@coelacanthus.name
+> 
+> Changes in v5:
+> - Fix wrong usage in selftests.
+> - Link to v4: https://lore.kernel.org/r/20241226-riscv-new-regset-v4-0-4496a29d0436@coelacanthus.name
+> 
+> Changes in v4:
+> - Fix a copy paste error in selftest. (Forget to commit...)
+> - Link to v3: https://lore.kernel.org/r/20241226-riscv-new-regset-v3-0-f5b96465826b@coelacanthus.name
+> 
+> Changes in v3:
+> - Use return 0 directly for readability.
+> - Fix test for modify a0.
+> - Add Fixes: tag
+> - Remove useless Cc: stable.
+> - Selftest will check both a0 and orig_a0, but depends on the
+>   correctness of PTRACE_GET_SYSCALL_INFO.
+> - Link to v2: https://lore.kernel.org/r/20241203-riscv-new-regset-v2-0-d37da8c0cba6@coelacanthus.name
+> 
+> Changes in v2:
+> - Fix integer width.
+> - Add selftest.
+> - Link to v1: https://lore.kernel.org/r/20241201-riscv-new-regset-v1-1-c83c58abcc7b@coelacanthus.name
+> 
+> ---
+> Celeste Liu (3):
+>       riscv/ptrace: add new regset to access original a0 register
+>       tools: copy include/linux/stddef.h to tools/include
+>       riscv: selftests: Add a ptrace test to verify a0 and orig_a0 access
+> 
+>  arch/riscv/kernel/ptrace.c                   |  32 +++++
+>  include/uapi/linux/elf.h                     |   1 +
+>  tools/include/linux/stddef.h                 |  85 ++++++++++++
+>  tools/include/uapi/linux/stddef.h            |   6 +-
+>  tools/testing/selftests/riscv/abi/.gitignore |   1 +
+>  tools/testing/selftests/riscv/abi/Makefile   |   6 +-
+>  tools/testing/selftests/riscv/abi/ptrace.c   | 193 +++++++++++++++++++++++++++
+>  7 files changed, 319 insertions(+), 5 deletions(-)
+> ---
+> base-commit: 0e287d31b62bb53ad81d5e59778384a40f8b6f56
+> change-id: 20241201-riscv-new-regset-d529b952ad0d
+> 
+> Best regards,
+> -- 
+> Celeste Liu <uwu@coelacanthus.name>
+> 
 
-[   10.693310][    T1] tpm_tis STM0925:00: 2.0 TPM (device-id 0x3, rev-id 0)
-[   10.848132][    T1] ------------[ cut here ]------------
-[   10.853559][    T1] WARNING: CPU: 59 PID: 1 at mm/page_alloc.c:4727 __alloc_pages_noprof+0x2ca/0x330
-[   10.862827][    T1] Modules linked in:
-[   10.866671][    T1] CPU: 59 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-lp155.2.g52785e2-default #1 openSUSE Tumbleweed (unreleased) 588cd98293a7c9eba9013378d807364c088c9375
-[   10.882741][    T1] Hardware name: HPE ProLiant DL320 Gen12/ProLiant DL320 Gen12, BIOS 1.20 10/28/2024
-[   10.892170][    T1] RIP: 0010:__alloc_pages_noprof+0x2ca/0x330
-[   10.898103][    T1] Code: 24 08 e9 4a fe ff ff e8 34 36 fa ff e9 88 fe ff ff 83 fe 0a 0f 86 b3 fd ff ff 80 3d 01 e7 ce 01 00 75 09 c6 05 f8 e6 ce 01 01 <0f> 0b 45 31 ff e9 e5 fe ff ff f7 c2 00 00 08 00 75 42 89 d9 80 e1
-[   10.917750][    T1] RSP: 0000:ffffb7cf40077980 EFLAGS: 00010246
-[   10.923777][    T1] RAX: 0000000000000000 RBX: 0000000000040cc0 RCX: 0000000000000000
-[   10.931727][    T1] RDX: 0000000000000000 RSI: 000000000000000c RDI: 0000000000040cc0
+There is also this series that looks like it will solve this problem by
+providing an architecture agnostic way of changing syscall args with
+PTRACE_SET_SYSCALL_INFO [1].
 
-Above shows that ACPI pointed a 16 MiB buffer for the log events because
-RSI maps to the 'order' parameter of __alloc_pages_noprof(). Address the
-bug with kvmalloc() and devm_add_action_or_reset().
+- Charlie
 
-Suggested-by: Ard Biesheuvel <ardb@kernel.org>
-Cc: stable@vger.kernel.org # v2.6.16+
-Fixes: 55a82ab3181b ("[PATCH] tpm: add bios measurement log")
-Reported-by: Andy Liang <andy.liang@hpe.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219495
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
-v10:
-* Had forgotten diff to staging (sorry).
-v9:
-* Call devm_add_action() as the last step and execute the plain action
-  in the fallback path:
-  https://lore.kernel.org/linux-integrity/87frlzzx14.wl-tiwai@suse.de/
-v8:
-* Reduced to only to this quick fix. Let HPE reserve 16 MiB if they want
-  to. We have mapping approach backed up in lore.
-v7:
-* Use devm_add_action_or_reset().
-* Fix tags.
-v6:
-* A new patch.
----
- drivers/char/tpm/eventlog/acpi.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/char/tpm/eventlog/acpi.c b/drivers/char/tpm/eventlog/acpi.c
-index 69533d0bfb51..50770cafa835 100644
---- a/drivers/char/tpm/eventlog/acpi.c
-+++ b/drivers/char/tpm/eventlog/acpi.c
-@@ -63,6 +63,11 @@ static bool tpm_is_tpm2_log(void *bios_event_log, u64 len)
- 	return n == 0;
- }
- 
-+static void tpm_bios_log_free(void *data)
-+{
-+	kvfree(data);
-+}
-+
- /* read binary bios log */
- int tpm_read_log_acpi(struct tpm_chip *chip)
- {
-@@ -136,7 +141,7 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
- 	}
- 
- 	/* malloc EventLog space */
--	log->bios_event_log = devm_kmalloc(&chip->dev, len, GFP_KERNEL);
-+	log->bios_event_log = kvmalloc(len, GFP_KERNEL);
- 	if (!log->bios_event_log)
- 		return -ENOMEM;
- 
-@@ -161,10 +166,14 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
- 		goto err;
- 	}
- 
-+	ret = devm_add_action(&chip->dev, tpm_bios_log_free, log->bios_event_log);
-+	if (ret)
-+		goto err;
-+
- 	return format;
- 
- err:
--	devm_kfree(&chip->dev, log->bios_event_log);
-+	tpm_bios_log_free(log->bios_event_log);
- 	log->bios_event_log = NULL;
- 	return ret;
- }
--- 
-2.48.0
+[1] https://lore.kernel.org/lkml/20250113170925.GA392@altlinux.org/
 
 
