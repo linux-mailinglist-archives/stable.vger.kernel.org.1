@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-108897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB2B8A120D6
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:49:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FF38A12010
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 526E87A15DA
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:49:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7F7D1624EF
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBEC6156644;
-	Wed, 15 Jan 2025 10:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EDE3248BBF;
+	Wed, 15 Jan 2025 10:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FzfuKMGx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ooeu0oTk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DFD248BBD;
-	Wed, 15 Jan 2025 10:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE929248BAA;
+	Wed, 15 Jan 2025 10:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938171; cv=none; b=qEqjKkZExUvaIptYyVxLMbyJg8RjlpRTShma1g0rjXtTG9nVrWG1kSd42irRVGEqTXBSirUPjX2KKycP63Iqkx+D0zChxi4htKgWu35yrUMe1L0VzX2FXvFHMuLdz6dChYz6UQIjhYFwF4ZeuwPUTmnOYC6GzKKTHm/oaVY8Lz8=
+	t=1736937650; cv=none; b=KZu9zurfzRow7sa4LW4kBi7H5DpSEfcIGsy68Gh7eWI0p8I7URPeIfYMQdLa15/ucZD2ilxUbXTVVbURB2py6UE2NOZai9LaIpsaTEaN2xzrQuKqtFJ9kkk2Pm5Bc5JtOgO8fv6924WWC2iWp1TytxQ7MU6QELjoulF+ZfS1/Kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938171; c=relaxed/simple;
-	bh=ZF73ekGUNIrhWwwSW8PBWhhGdiEeN46ogbDjjYa6hAA=;
+	s=arc-20240116; t=1736937650; c=relaxed/simple;
+	bh=YcJszVYqnvSTwtEikeX6UrOw7PuQjlxNzlgjD3pDq6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xyy00TJdGc0b2BTXyCYv7yy0zybYs3wQC6PjDpmp7mC2WINnNY1xQoy+2UdxjvW1yqW3+RFjPnh652vnv5eZr4hLY6dtat5pVaXJMmyFqKNssrSwu0AGGrjsQVVyjz6r3Oj4wMv42qUp1MgqMajFtB6P/F17ZSksxfZLy3oKD2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FzfuKMGx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C23AC4CEDF;
-	Wed, 15 Jan 2025 10:49:30 +0000 (UTC)
+	 MIME-Version; b=NcsvlUktubQLNfT7eFmBQscoLgSF3a5DtYhEkkvGsCzXPAxV8mQc+ioiUt9WO5gUOZMqtvmkRXkqIowKO1GyzX23Y8h4CELe0BdL4zDLSPsHuoKTf1/P2b8c6tgq/3OjujLsh6OFnLwl+dzeJkMp7qTcm6oX0cAO8is5BYZzPSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ooeu0oTk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C22DC4CEE2;
+	Wed, 15 Jan 2025 10:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938171;
-	bh=ZF73ekGUNIrhWwwSW8PBWhhGdiEeN46ogbDjjYa6hAA=;
+	s=korg; t=1736937649;
+	bh=YcJszVYqnvSTwtEikeX6UrOw7PuQjlxNzlgjD3pDq6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FzfuKMGx+A8hI7xRxYfaASCQPM9F8vRfObDG6vXyX3ebUpL2Redf057Ufp8fJ8osE
-	 YbjoHhnqYXuJAnWHMeY/2zDQr1GqFtSLY4TinDhtF81iNkL0RnD8TNhvoajPcpZOvk
-	 6889FxtqDEh7WPmfrrxOo0Dt8iZDaGSCUJrLRVEY=
+	b=Ooeu0oTkeH0hrI/05zwlHyKocmobHR/YX9lz7ZHJakhebTZ+gPOySd3KuX6cjAg99
+	 5uJTYyT9o65Lx0v1v5wRoBGcqBtRjri0v+I+oO/Gl6+UGIwDcFJvPcYcN1R2k/wyZL
+	 2FXgkNFZsNJ0f2p1UzqK0R+4VyRDhQbhUDrmOXL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Roman Li <Roman.Li@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 105/189] drm/amd/display: Add check for granularity in dml ceil/floor helpers
-Date: Wed, 15 Jan 2025 11:36:41 +0100
-Message-ID: <20250115103610.646174495@linuxfoundation.org>
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 24/92] netfilter: nf_tables: imbalance in flowtable binding
+Date: Wed, 15 Jan 2025 11:36:42 +0100
+Message-ID: <20250115103548.496291480@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Li <Roman.Li@amd.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 0881fbc4fd62e00a2b8e102725f76d10351b2ea8 upstream.
+[ Upstream commit 13210fc63f353fe78584048079343413a3cdf819 ]
 
-[Why]
-Wrapper functions for dcn_bw_ceil2() and dcn_bw_floor2()
-should check for granularity is non zero to avoid assert and
-divide-by-zero error in dcn_bw_ functions.
+All these cases cause imbalance between BIND and UNBIND calls:
 
-[How]
-Add check for granularity 0.
+- Delete an interface from a flowtable with multiple interfaces
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Signed-off-by: Roman Li <Roman.Li@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit f6e09701c3eb2ccb8cb0518e0b67f1c69742a4ec)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- Add a (device to a) flowtable with --check flag
+
+- Delete a netns containing a flowtable
+
+- In an interactive nft session, create a table with owner flag and
+  flowtable inside, then quit.
+
+Fix it by calling FLOW_BLOCK_UNBIND when unregistering hooks, then
+remove late FLOW_BLOCK_UNBIND call when destroying flowtable.
+
+Fixes: ff4bf2f42a40 ("netfilter: nf_tables: add nft_unregister_flowtable_hook()")
+Reported-by: Phil Sutter <phil@nwl.cc>
+Tested-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dml_inline_defs.h |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/netfilter/nf_tables_api.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dml/dml_inline_defs.h
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dml_inline_defs.h
-@@ -66,11 +66,15 @@ static inline double dml_max5(double a,
- 
- static inline double dml_ceil(double a, double granularity)
- {
-+	if (granularity == 0)
-+		return 0;
- 	return (double) dcn_bw_ceil2(a, granularity);
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 07bcf9b7d779..8176533c50ab 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -7979,6 +7979,7 @@ static void nft_unregister_flowtable_hook(struct net *net,
  }
  
- static inline double dml_floor(double a, double granularity)
+ static void __nft_unregister_flowtable_net_hooks(struct net *net,
++						 struct nft_flowtable *flowtable,
+ 						 struct list_head *hook_list,
+ 					         bool release_netdev)
  {
-+	if (granularity == 0)
-+		return 0;
- 	return (double) dcn_bw_floor2(a, granularity);
+@@ -7986,6 +7987,8 @@ static void __nft_unregister_flowtable_net_hooks(struct net *net,
+ 
+ 	list_for_each_entry_safe(hook, next, hook_list, list) {
+ 		nf_unregister_net_hook(net, &hook->ops);
++		flowtable->data.type->setup(&flowtable->data, hook->ops.dev,
++					    FLOW_BLOCK_UNBIND);
+ 		if (release_netdev) {
+ 			list_del(&hook->list);
+ 			kfree_rcu(hook, rcu);
+@@ -7994,9 +7997,10 @@ static void __nft_unregister_flowtable_net_hooks(struct net *net,
  }
  
-@@ -114,11 +118,15 @@ static inline double dml_ceil_2(double f
- 
- static inline double dml_ceil_ex(double x, double granularity)
+ static void nft_unregister_flowtable_net_hooks(struct net *net,
++					       struct nft_flowtable *flowtable,
+ 					       struct list_head *hook_list)
  {
-+	if (granularity == 0)
-+		return 0;
- 	return (double) dcn_bw_ceil2(x, granularity);
+-	__nft_unregister_flowtable_net_hooks(net, hook_list, false);
++	__nft_unregister_flowtable_net_hooks(net, flowtable, hook_list, false);
  }
  
- static inline double dml_floor_ex(double x, double granularity)
- {
-+	if (granularity == 0)
-+		return 0;
- 	return (double) dcn_bw_floor2(x, granularity);
+ static int nft_register_flowtable_net_hooks(struct net *net,
+@@ -8618,8 +8622,6 @@ static void nf_tables_flowtable_destroy(struct nft_flowtable *flowtable)
+ 
+ 	flowtable->data.type->free(&flowtable->data);
+ 	list_for_each_entry_safe(hook, next, &flowtable->hook_list, list) {
+-		flowtable->data.type->setup(&flowtable->data, hook->ops.dev,
+-					    FLOW_BLOCK_UNBIND);
+ 		list_del_rcu(&hook->list);
+ 		kfree_rcu(hook, rcu);
+ 	}
+@@ -9902,6 +9904,7 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
+ 							   &nft_trans_flowtable_hooks(trans),
+ 							   NFT_MSG_DELFLOWTABLE);
+ 				nft_unregister_flowtable_net_hooks(net,
++								   nft_trans_flowtable(trans),
+ 								   &nft_trans_flowtable_hooks(trans));
+ 			} else {
+ 				list_del_rcu(&nft_trans_flowtable(trans)->list);
+@@ -9910,6 +9913,7 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
+ 							   &nft_trans_flowtable(trans)->hook_list,
+ 							   NFT_MSG_DELFLOWTABLE);
+ 				nft_unregister_flowtable_net_hooks(net,
++						nft_trans_flowtable(trans),
+ 						&nft_trans_flowtable(trans)->hook_list);
+ 			}
+ 			break;
+@@ -10140,11 +10144,13 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ 		case NFT_MSG_NEWFLOWTABLE:
+ 			if (nft_trans_flowtable_update(trans)) {
+ 				nft_unregister_flowtable_net_hooks(net,
++						nft_trans_flowtable(trans),
+ 						&nft_trans_flowtable_hooks(trans));
+ 			} else {
+ 				nft_use_dec_restore(&trans->ctx.table->use);
+ 				list_del_rcu(&nft_trans_flowtable(trans)->list);
+ 				nft_unregister_flowtable_net_hooks(net,
++						nft_trans_flowtable(trans),
+ 						&nft_trans_flowtable(trans)->hook_list);
+ 			}
+ 			break;
+@@ -10685,7 +10691,8 @@ static void __nft_release_hook(struct net *net, struct nft_table *table)
+ 	list_for_each_entry(chain, &table->chains, list)
+ 		__nf_tables_unregister_hook(net, table, chain, true);
+ 	list_for_each_entry(flowtable, &table->flowtables, list)
+-		__nft_unregister_flowtable_net_hooks(net, &flowtable->hook_list,
++		__nft_unregister_flowtable_net_hooks(net, flowtable,
++						     &flowtable->hook_list,
+ 						     true);
  }
  
+-- 
+2.39.5
+
 
 
 
