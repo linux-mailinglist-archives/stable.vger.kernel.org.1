@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-108773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88918A12031
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:42:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 693D1A121C5
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 12:00:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA6C81650FD
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:42:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B8A116AE27
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:00:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD2F248BB2;
-	Wed, 15 Jan 2025 10:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5ABA20D500;
+	Wed, 15 Jan 2025 11:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0YmCs3Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbXQDk1A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9AAC248BA0;
-	Wed, 15 Jan 2025 10:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0B01E98E4;
+	Wed, 15 Jan 2025 11:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937759; cv=none; b=pkHYUGanGtQi8BbPt0ToDVGePwch3uh7+6m60m0FbZE9/i+k0MWz9gtLicRrEEj7QlfjAfVrcVer/AnCgZzF/K5xUFSAh3d0UWtOaxcUKx5RBBTKuAE+pgAtjgjM4H611vziYe1TyQ9tWm36U0p3YbGUP6Wfu93hKkntHmdc3RA=
+	t=1736938810; cv=none; b=qglLovGFU0EVFFr0lBSIIuQJexpAlang1JajbqKEvcxg3ngRokyKYlHKDD/xdLkBImyYVjNSUEGdTpcgdzWCTFt26Vymu/gu4bBogE2vnffsXTsYzSkDFUWRJih/xTw5iLvrvx0zf/kash2FZC6tk8Bj9Hzsi/tHpYEwdiOfAGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937759; c=relaxed/simple;
-	bh=uGeGApO3gBnDO8N/gWnbNKmU36iw03Th7VhULZTpOA4=;
+	s=arc-20240116; t=1736938810; c=relaxed/simple;
+	bh=HYJt2j0OO1UA/KsRRr6TY0f2DqcVfy53sL9o0smbp50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KH2ourjqA6D4sMVdIfl5DLB8YU7usVQDN/vqt95EqYYu5dFNsuXlghyGm7tCwv0D6NNbYG2okGb8vPofwh5nJ952coK4H2cke7THOb0JppFSYiBxbTKRTTR6soNuMQFa/EYHty1GCuDc3p3AX6pnrEbz/hwi3dtGiSJGqmdMrTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0YmCs3Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F5E0C4CEDF;
-	Wed, 15 Jan 2025 10:42:38 +0000 (UTC)
+	 MIME-Version; b=POJg9aWDypmluD6QuQqvT5K7VcOWHVPxhaYm6AaOJPIL3nzFxuAi/kWi4JDwW0cRbdAPMxpqWWa7CWRwSGvYn3YK/+JddhQKrZ+D0SeYjfKp3MB0slP2v6Vl2/4BdQ/KlYY/Yr7Mw9AJ8pWnETYdkezqNm/l5ZmK7bmnxjh5rJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vbXQDk1A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2F6C4CEE4;
+	Wed, 15 Jan 2025 11:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937759;
-	bh=uGeGApO3gBnDO8N/gWnbNKmU36iw03Th7VhULZTpOA4=;
+	s=korg; t=1736938810;
+	bh=HYJt2j0OO1UA/KsRRr6TY0f2DqcVfy53sL9o0smbp50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M0YmCs3ZAADdtfVgUZvSHzXCX/aZJ6FYxBGBT14lAysGL2RZ2fPxBDBGwlBKXry8Q
-	 1nyyx5lBsWeHWniR2GMxsvnV/DbkTqRZsa+jGMo2VmwcIPvj2J+KiRqbT4NviAZpP5
-	 fWkl7PYzR2WqJI1iHV5pXdc9JQa2rIye0UMuumAM=
+	b=vbXQDk1AZ9batfHSk+Vq5d0mA/QFyyy0yri+kuxbb6S+DOtOWLOY0g4GpqJxVIpQn
+	 zs4aL9AFqTYvQdEtly+3f5rjUh5HHQITKT7dfWy+DXJ4rwxEJnukgV0EyLdhwKhqFc
+	 9UExWv4UK4o/TbuZVYoY9mi5HT8O+feuCs3IOZU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Song <carlos.song@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 74/92] iio: gyro: fxas21002c: Fix missing data update in trigger handler
+	Ye Bin <yebin10@huawei.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Bin Lan <lanbincn@qq.com>
+Subject: [PATCH 6.6 077/129] f2fs: fix null-ptr-deref in f2fs_submit_page_bio()
 Date: Wed, 15 Jan 2025 11:37:32 +0100
-Message-ID: <20250115103550.512082534@linuxfoundation.org>
+Message-ID: <20250115103557.440984416@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Song <carlos.song@nxp.com>
+From: Ye Bin <yebin10@huawei.com>
 
-commit fa13ac6cdf9b6c358e7d77c29fb60145c7a87965 upstream.
+commit b7d0a97b28083084ebdd8e5c6bccd12e6ec18faa upstream.
 
-The fxas21002c_trigger_handler() may fail to acquire sample data because
-the runtime PM enters the autosuspend state and sensor can not return
-sample data in standby mode..
+There's issue as follows when concurrently installing the f2fs.ko
+module and mounting the f2fs file system:
+KASAN: null-ptr-deref in range [0x0000000000000020-0x0000000000000027]
+RIP: 0010:__bio_alloc+0x2fb/0x6c0 [f2fs]
+Call Trace:
+ <TASK>
+ f2fs_submit_page_bio+0x126/0x8b0 [f2fs]
+ __get_meta_page+0x1d4/0x920 [f2fs]
+ get_checkpoint_version.constprop.0+0x2b/0x3c0 [f2fs]
+ validate_checkpoint+0xac/0x290 [f2fs]
+ f2fs_get_valid_checkpoint+0x207/0x950 [f2fs]
+ f2fs_fill_super+0x1007/0x39b0 [f2fs]
+ mount_bdev+0x183/0x250
+ legacy_get_tree+0xf4/0x1e0
+ vfs_get_tree+0x88/0x340
+ do_new_mount+0x283/0x5e0
+ path_mount+0x2b2/0x15b0
+ __x64_sys_mount+0x1fe/0x270
+ do_syscall_64+0x5f/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Resume the sensor before reading the sample data into the buffer within the
-trigger handler. After the data is read, place the sensor back into the
-autosuspend state.
+Above issue happens as the biset of the f2fs file system is not
+initialized before register "f2fs_fs_type".
+To address above issue just register "f2fs_fs_type" at the last in
+init_f2fs_fs(). Ensure that all f2fs file system resources are
+initialized.
 
-Fixes: a0701b6263ae ("iio: gyro: add core driver for fxas21002c")
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20241116152945.4006374-1-Frank.Li@nxp.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: f543805fcd60 ("f2fs: introduce private bioset")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Bin Lan <lanbincn@qq.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/gyro/fxas21002c_core.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/f2fs/super.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/iio/gyro/fxas21002c_core.c
-+++ b/drivers/iio/gyro/fxas21002c_core.c
-@@ -730,14 +730,21 @@ static irqreturn_t fxas21002c_trigger_ha
- 	int ret;
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -4931,9 +4931,6 @@ static int __init init_f2fs_fs(void)
+ 	err = register_shrinker(&f2fs_shrinker_info, "f2fs-shrinker");
+ 	if (err)
+ 		goto free_sysfs;
+-	err = register_filesystem(&f2fs_fs_type);
+-	if (err)
+-		goto free_shrinker;
+ 	f2fs_create_root_stats();
+ 	err = f2fs_init_post_read_processing();
+ 	if (err)
+@@ -4956,7 +4953,12 @@ static int __init init_f2fs_fs(void)
+ 	err = f2fs_create_casefold_cache();
+ 	if (err)
+ 		goto free_compress_cache;
++	err = register_filesystem(&f2fs_fs_type);
++	if (err)
++		goto free_casefold_cache;
+ 	return 0;
++free_casefold_cache:
++	f2fs_destroy_casefold_cache();
+ free_compress_cache:
+ 	f2fs_destroy_compress_cache();
+ free_compress_mempool:
+@@ -4971,8 +4973,6 @@ free_post_read:
+ 	f2fs_destroy_post_read_processing();
+ free_root_stats:
+ 	f2fs_destroy_root_stats();
+-	unregister_filesystem(&f2fs_fs_type);
+-free_shrinker:
+ 	unregister_shrinker(&f2fs_shrinker_info);
+ free_sysfs:
+ 	f2fs_exit_sysfs();
+@@ -4996,6 +4996,7 @@ fail:
  
- 	mutex_lock(&data->lock);
-+	ret = fxas21002c_pm_get(data);
-+	if (ret < 0)
-+		goto out_unlock;
-+
- 	ret = regmap_bulk_read(data->regmap, FXAS21002C_REG_OUT_X_MSB,
- 			       data->buffer, CHANNEL_SCAN_MAX * sizeof(s16));
- 	if (ret < 0)
--		goto out_unlock;
-+		goto out_pm_put;
- 
- 	iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
- 					   data->timestamp);
- 
-+out_pm_put:
-+	fxas21002c_pm_put(data);
-+
- out_unlock:
- 	mutex_unlock(&data->lock);
- 
+ static void __exit exit_f2fs_fs(void)
+ {
++	unregister_filesystem(&f2fs_fs_type);
+ 	f2fs_destroy_casefold_cache();
+ 	f2fs_destroy_compress_cache();
+ 	f2fs_destroy_compress_mempool();
+@@ -5004,7 +5005,6 @@ static void __exit exit_f2fs_fs(void)
+ 	f2fs_destroy_iostat_processing();
+ 	f2fs_destroy_post_read_processing();
+ 	f2fs_destroy_root_stats();
+-	unregister_filesystem(&f2fs_fs_type);
+ 	unregister_shrinker(&f2fs_shrinker_info);
+ 	f2fs_exit_sysfs();
+ 	f2fs_destroy_garbage_collection_cache();
 
 
 
