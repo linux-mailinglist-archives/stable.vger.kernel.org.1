@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-108937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0F42A12100
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:51:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E34DA1218F
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:58:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2275C188CD62
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:51:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 900F916A6CA
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B4C1DB145;
-	Wed, 15 Jan 2025 10:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DDC91E7C02;
+	Wed, 15 Jan 2025 10:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvhrwLkz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mfBN826l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CC6156644;
-	Wed, 15 Jan 2025 10:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFFE248BD0;
+	Wed, 15 Jan 2025 10:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938305; cv=none; b=fFbHK8G2AE8D17BvM77cdqITDF2Uhb1nOoLkq+54z+vHhQjLPqJ+7cmABfYakYuNnT08zO2F0p8K74iIthyzUJYQcF1XT6eeOisXj/MmR2vJyNA/agVFN5IMqwMEqpfRoHDQ3+bya2KEkK7oQBtrXa9IIelKf3gzM/mFBlUHwJE=
+	t=1736938687; cv=none; b=lnuPlNu9vcngpt8jxk1lNuiPwWdC8SwuJu+Cu7+QdNaAFyUmY82ezJMyNIvdFRkksEIhdYKZfUi11x1XRFQoHe6GKwXfHouLoa4qZ8e1fNwvBVla81haYu8u33hNYxqjlqWEnapC2+tFELmLZX+ffcVwdK9Gv/T2gHBE4l20K0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938305; c=relaxed/simple;
-	bh=3jLGme07+Zjw+TO1c44jG8JtPppcwJhSxgKbZQkge30=;
+	s=arc-20240116; t=1736938687; c=relaxed/simple;
+	bh=ZO99xXDQbAmpLkkFke9iXr9qOvBhWiyoeM5IISgttaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V+MYNok5XU17ttgnR/ZOI+4vGC5wBSdPAf3H/SDa4ablloK6Onkpou+wTmECj2FJswFNoay28YKdO2iswAosr8RgfSjxnSKW2Ae1d4Q711JMNYA8lGyATrlIN5RGhETfxLFUt0tPS2k518pHQYNxRhwg8hI4yXPXUwUpeza8rqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvhrwLkz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49F0C4CEDF;
-	Wed, 15 Jan 2025 10:51:44 +0000 (UTC)
+	 MIME-Version; b=mhLlgvZmImtxWao1mmGzhlcnCHhg5+U4SvldPkh2y0q8MAI2T4zQEgis5Nx1gCvC4sx8KkoAIJdl4idKZXNbFJKg/l9rr70TfRrXDPPgkSn7hG+FtT2O2eJIifk6tvSjJEvi+NjgQdgOQrQVQw/BDCvgcuHwDshw2MbBQJGFLko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mfBN826l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81129C4CEDF;
+	Wed, 15 Jan 2025 10:58:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938305;
-	bh=3jLGme07+Zjw+TO1c44jG8JtPppcwJhSxgKbZQkge30=;
+	s=korg; t=1736938687;
+	bh=ZO99xXDQbAmpLkkFke9iXr9qOvBhWiyoeM5IISgttaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vvhrwLkzrTE930TvnhAIvpic0OicJCg7BDg+MzuiYI6KMne4qGUivZnbw+fx4fBf8
-	 2oyC+blD+L2BWgKYzxZp54ZkfCj+8AVh2GBuxWbHJZfVr5RqAxQlb3QK3aO4KTQqHP
-	 dmCA+g6Z7Q3ovVu13VG02lwpNFbTi+RQSAeGBjZA=
+	b=mfBN826l3bJQK77PxoGWuKjx3zlQ2VOXvI/hy47Y3pEBRbRx49iuTOe7NraVpXJR6
+	 lGi1SUa0y/O9hz0AfZuKyZo51W0tQkPwuUFiyIRLYrK1ikBWwxdBozau7eoqsvbJKq
+	 sqaNG9Rsnb2dM+BQEZkPNFm9vR/s+eIRCA5jfkzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Prashanth K <quic_prashk@quicinc.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.12 144/189] usb: dwc3-am62: Disable autosuspend during remove
+	Al Viro <viro@zeniv.linux.org.uk>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 065/129] sctp: sysctl: udp_port: avoid using current->nsproxy
 Date: Wed, 15 Jan 2025 11:37:20 +0100
-Message-ID: <20250115103612.167549504@linuxfoundation.org>
+Message-ID: <20250115103556.972385402@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashanth K <quic_prashk@quicinc.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 625e70ccb7bbbb2cc912e23c63390946170c085c upstream.
+commit c10377bbc1972d858eaf0ab366a311b39f8ef1b6 upstream.
 
-Runtime PM documentation (Section 5) mentions, during remove()
-callbacks, drivers should undo the runtime PM changes done in
-probe(). Usually this means calling pm_runtime_disable(),
-pm_runtime_dont_use_autosuspend() etc. Hence add missing
-function to disable autosuspend on dwc3-am62 driver unbind.
+As mentioned in a previous commit of this series, using the 'net'
+structure via 'current' is not recommended for different reasons:
 
-Fixes: e8784c0aec03 ("drivers: usb: dwc3: Add AM62 USB wrapper driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20241209105728.3216872-1-quic_prashk@quicinc.com
+- Inconsistency: getting info from the reader's/writer's netns vs only
+  from the opener's netns.
+
+- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
+  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
+  syzbot [1] using acct(2).
+
+The 'net' structure can be obtained from the table->data using
+container_of().
+
+Note that table->data could also be used directly, but that would
+increase the size of this fix, while 'sctp.ctl_sock' still needs to be
+retrieved from 'net' structure.
+
+Fixes: 046c052b475e ("sctp: enable udp tunneling socks")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-7-5df34b2083e8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-am62.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/sctp/sysctl.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/dwc3-am62.c
-+++ b/drivers/usb/dwc3/dwc3-am62.c
-@@ -309,6 +309,7 @@ static void dwc3_ti_remove(struct platfo
- 
- 	pm_runtime_put_sync(dev);
- 	pm_runtime_disable(dev);
-+	pm_runtime_dont_use_autosuspend(dev);
- 	pm_runtime_set_suspended(dev);
- }
- 
+--- a/net/sctp/sysctl.c
++++ b/net/sctp/sysctl.c
+@@ -532,7 +532,7 @@ static int proc_sctp_do_auth(struct ctl_
+ static int proc_sctp_do_udp_port(struct ctl_table *ctl, int write,
+ 				 void *buffer, size_t *lenp, loff_t *ppos)
+ {
+-	struct net *net = current->nsproxy->net_ns;
++	struct net *net = container_of(ctl->data, struct net, sctp.udp_port);
+ 	unsigned int min = *(unsigned int *)ctl->extra1;
+ 	unsigned int max = *(unsigned int *)ctl->extra2;
+ 	struct ctl_table tbl;
 
 
 
