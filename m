@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-108894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CCF3A120D2
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:49:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C2ADA11FED
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:39:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C74EC1885AC1
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:49:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D63067A2F02
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D93D3248BA6;
-	Wed, 15 Jan 2025 10:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEA31E98EA;
+	Wed, 15 Jan 2025 10:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MuisjV+e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUNROpb1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9510A156644;
-	Wed, 15 Jan 2025 10:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6846C1E7C16;
+	Wed, 15 Jan 2025 10:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938161; cv=none; b=rCzGOfyMCfWQM05gH4w2XT5b8yzvXwwkaqmkjb05ZtS3zwYLM3CJgCTJUf7kk0HNXaeBZ7auhIUlKzSSM7x5cVxoDN7YUh6PHHvtsxu8PnSWCMhcV8Yq9mMWJULrfRcuyg7q9B8Dyhd2HOh2TwnaL12Zfif9UsHQNOfIZLKdn3A=
+	t=1736937576; cv=none; b=sHX40NU7HesSsfn0PnpDSHMuRFMgxMz4HLr+5vMYWvRQtCvxsNwo82BN03r6alV+hqzCyPTVpASrqox0riJDIgKfsVU2FL5Iy3jzsCZdvx0uuDHOHiO1V6y+DY1ojcFoy0L0QhXqwlRRi/loBdX+amowD+V09GyQhD6r7Y9ze64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938161; c=relaxed/simple;
-	bh=zLYlPr1NsnrKp6QlFQrVUn1n0g4PW1TCRjA5V03uBUs=;
+	s=arc-20240116; t=1736937576; c=relaxed/simple;
+	bh=SyrZmfdZ09jdJFIzHAXVqXwI5D2BqiPalJJagx5XOWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=btxWKHGaryx5Je1UOOW6ePgwGIfYEcrNw8btMLfMSET2HZqj272PTlQ/ZBdup9sS1/b96k+gb1G8S7P5uDSJudhPP0QGxwxku+oLewd2D7AQ/f3f27ixXJe3p7ZHKzYyakD7NxiYoknv3ea9Q7EV6D8zJbBMQVti5hQ8Uei9juI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MuisjV+e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C13EC4CEDF;
-	Wed, 15 Jan 2025 10:49:20 +0000 (UTC)
+	 MIME-Version; b=i54qPpHm+kqiIYMbDnvUx/CqWGnhkr6gfutdRsXLf4/Yz0vBMQGooEh9vKm/uxYQ8hs9/maeHW8j9WgVLZGf9g+FMrBp1smNX+MqZ5t9g+5Giiw1vEelHN53pz7aQGe0WgGBDbCzPBij47/fMCg/z9w4y16B/IrowSAoLqo9YFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUNROpb1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C44AC4CEDF;
+	Wed, 15 Jan 2025 10:39:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938161;
-	bh=zLYlPr1NsnrKp6QlFQrVUn1n0g4PW1TCRjA5V03uBUs=;
+	s=korg; t=1736937575;
+	bh=SyrZmfdZ09jdJFIzHAXVqXwI5D2BqiPalJJagx5XOWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MuisjV+eALzNqfH88peIQ/BK3no7OnBxsof8hEkGMWL9yMrOi8NGBfySxXnt2GRek
-	 ionl/LI4FIkD05nc0IXn8AAa3F1nhNxdBH7wGOIixnWZA7Tn8zdzm9mWaNldtCwIv2
-	 ABBuqLDV7GerZahIc8K//QcJBCF4c8vFPJjxlL4Y=
+	b=XUNROpb1LqdA7tVOGW/IJDlDOo9UnOSaaANy4iVr4aV7V+gw9Ky+0vpD5gf1oJcM4
+	 fQJE0uktrfuKYxS5dZDtl/YCUrVtT07wo05Ip94xi/PG2fGNfcGcbSSley8/XeYNcv
+	 zpWOl5IWrzoqZxga80TbGOyVuxwcKTdcLlt5tlZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Mikhail Zaslonko <zaslonko@linux.ibm.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 102/189] btrfs: zlib: fix avail_in bytes for s390 zlib HW compression path
+	Milena Olech <milena.olech@intel.com>,
+	Przemyslaw Korba <przemyslaw.korba@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.1 20/92] ice: fix incorrect PHY settings for 100 GB/s
 Date: Wed, 15 Jan 2025 11:36:38 +0100
-Message-ID: <20250115103610.391886077@linuxfoundation.org>
+Message-ID: <20250115103548.341043022@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+From: Przemyslaw Korba <przemyslaw.korba@intel.com>
 
-commit 0ee4736c003daded513de0ff112d4a1e9c85bbab upstream.
+[ Upstream commit 6c5b989116083a98f45aada548ff54e7a83a9c2d ]
 
-Since the input data length passed to zlib_compress_folios() can be
-arbitrary, always setting strm.avail_in to a multiple of PAGE_SIZE may
-cause read-in bytes to exceed the input range. Currently this triggers
-an assert in btrfs_compress_folios() on the debug kernel (see below).
-Fix strm.avail_in calculation for S390 hardware acceleration path.
+ptp4l application reports too high offset when ran on E823 device
+with a 100GB/s link. Those values cannot go under 100ns, like in a
+working case when using 100 GB/s cable.
 
-  assertion failed: *total_in <= orig_len, in fs/btrfs/compression.c:1041
-  ------------[ cut here ]------------
-  kernel BUG at fs/btrfs/compression.c:1041!
-  monitor event: 0040 ilc:2 [#1] PREEMPT SMP
-  CPU: 16 UID: 0 PID: 325 Comm: kworker/u273:3 Not tainted 6.13.0-20241204.rc1.git6.fae3b21430ca.300.fc41.s390x+debug #1
-  Hardware name: IBM 3931 A01 703 (z/VM 7.4.0)
-  Workqueue: btrfs-delalloc btrfs_work_helper
-  Krnl PSW : 0704d00180000000 0000021761df6538 (btrfs_compress_folios+0x198/0x1a0)
-             R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:1 PM:0 RI:0 EA:3
-  Krnl GPRS: 0000000080000000 0000000000000001 0000000000000047 0000000000000000
-             0000000000000006 ffffff01757bb000 000001976232fcc0 000000000000130c
-             000001976232fcd0 000001976232fcc8 00000118ff4a0e30 0000000000000001
-             00000111821ab400 0000011100000000 0000021761df6534 000001976232fb58
-  Krnl Code: 0000021761df6528: c020006f5ef4        larl    %r2,0000021762be2310
-             0000021761df652e: c0e5ffbd09d5        brasl   %r14,00000217615978d8
-            #0000021761df6534: af000000            mc      0,0
-            >0000021761df6538: 0707                bcr     0,%r7
-             0000021761df653a: 0707                bcr     0,%r7
-             0000021761df653c: 0707                bcr     0,%r7
-             0000021761df653e: 0707                bcr     0,%r7
-             0000021761df6540: c004004bb7ec        brcl    0,000002176276d518
-  Call Trace:
-   [<0000021761df6538>] btrfs_compress_folios+0x198/0x1a0
-  ([<0000021761df6534>] btrfs_compress_folios+0x194/0x1a0)
-   [<0000021761d97788>] compress_file_range+0x3b8/0x6d0
-   [<0000021761dcee7c>] btrfs_work_helper+0x10c/0x160
-   [<0000021761645760>] process_one_work+0x2b0/0x5d0
-   [<000002176164637e>] worker_thread+0x20e/0x3e0
-   [<000002176165221a>] kthread+0x15a/0x170
-   [<00000217615b859c>] __ret_from_fork+0x3c/0x60
-   [<00000217626e72d2>] ret_from_fork+0xa/0x38
-  INFO: lockdep is turned off.
-  Last Breaking-Event-Address:
-   [<0000021761597924>] _printk+0x4c/0x58
-  Kernel panic - not syncing: Fatal exception: panic_on_oops
+This is due to incorrect frequency settings on the PHY clocks for
+100 GB/s speed. Changes are introduced to align with the internal
+hardware documentation, and correctly initialize frequency in PHY
+clocks with the frequency values that are in our HW spec.
 
-Fixes: fd1e75d0105d ("btrfs: make compression path to be subpage compatible")
-CC: stable@vger.kernel.org # 6.12+
-Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To reproduce the issue run ptp4l as a Time Receiver on E823 device,
+and observe the offset, which will never approach values seen
+in the PTP working case.
+
+Reproduction output:
+ptp4l -i enp137s0f3 -m -2 -s -f /etc/ptp4l_8275.conf
+ptp4l[5278.775]: master offset      12470 s2 freq  +41288 path delay -3002
+ptp4l[5278.837]: master offset      10525 s2 freq  +39202 path delay -3002
+ptp4l[5278.900]: master offset     -24840 s2 freq  -20130 path delay -3002
+ptp4l[5278.963]: master offset      10597 s2 freq  +37908 path delay -3002
+ptp4l[5279.025]: master offset       8883 s2 freq  +36031 path delay -3002
+ptp4l[5279.088]: master offset       7267 s2 freq  +34151 path delay -3002
+ptp4l[5279.150]: master offset       5771 s2 freq  +32316 path delay -3002
+ptp4l[5279.213]: master offset       4388 s2 freq  +30526 path delay -3002
+ptp4l[5279.275]: master offset     -30434 s2 freq  -28485 path delay -3002
+ptp4l[5279.338]: master offset     -28041 s2 freq  -27412 path delay -3002
+ptp4l[5279.400]: master offset       7870 s2 freq  +31118 path delay -3002
+
+Fixes: 3a7496234d17 ("ice: implement basic E822 PTP support")
+Reviewed-by: Milena Olech <milena.olech@intel.com>
+Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/zlib.c | 4 ++--
+ drivers/net/ethernet/intel/ice/ice_ptp_consts.h | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/zlib.c b/fs/btrfs/zlib.c
-index ddf0d5a448a7..c9e92c6941ec 100644
---- a/fs/btrfs/zlib.c
-+++ b/fs/btrfs/zlib.c
-@@ -174,10 +174,10 @@ int zlib_compress_folios(struct list_head *ws, struct address_space *mapping,
- 					copy_page(workspace->buf + i * PAGE_SIZE,
- 						  data_in);
- 					start += PAGE_SIZE;
--					workspace->strm.avail_in =
--						(in_buf_folios << PAGE_SHIFT);
- 				}
- 				workspace->strm.next_in = workspace->buf;
-+				workspace->strm.avail_in = min(bytes_left,
-+							       in_buf_folios << PAGE_SHIFT);
- 			} else {
- 				unsigned int pg_off;
- 				unsigned int cur_len;
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_consts.h b/drivers/net/ethernet/intel/ice/ice_ptp_consts.h
+index 4109aa3b2fcd..87ce20540f57 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_consts.h
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_consts.h
+@@ -359,9 +359,9 @@ const struct ice_vernier_info_e822 e822_vernier[NUM_ICE_PTP_LNK_SPD] = {
+ 		/* rx_desk_rsgb_par */
+ 		644531250, /* 644.53125 MHz Reed Solomon gearbox */
+ 		/* tx_desk_rsgb_pcs */
+-		644531250, /* 644.53125 MHz Reed Solomon gearbox */
++		390625000, /* 390.625 MHz Reed Solomon gearbox */
+ 		/* rx_desk_rsgb_pcs */
+-		644531250, /* 644.53125 MHz Reed Solomon gearbox */
++		390625000, /* 390.625 MHz Reed Solomon gearbox */
+ 		/* tx_fixed_delay */
+ 		1620,
+ 		/* pmd_adj_divisor */
 -- 
-2.48.0
+2.39.5
 
 
 
