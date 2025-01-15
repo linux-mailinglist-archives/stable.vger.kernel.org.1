@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-108828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D37E0A12080
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:45:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B028A1208D
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:46:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B16E0167640
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:45:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57525167D39
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A510D1E9900;
-	Wed, 15 Jan 2025 10:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7471E7C2E;
+	Wed, 15 Jan 2025 10:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCUL/fpT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="noVgbti+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD671E98F4;
-	Wed, 15 Jan 2025 10:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1D71DB147;
+	Wed, 15 Jan 2025 10:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937938; cv=none; b=lO/8R+NeJbw3YTYhG3ZCEXus0nDbIFLUKAM09SZef/7rMJTSgfwNdgoXAepG7JNxErwIYDxzAWmIUyAxtJJOnuKsausuZAXlKTOuyQTsy4+0W+2rMHjDgxTxgcCTI0249rYyhsVraiT+iwyyLmbYwvSQsIGNsGjCUdsUPofwNfk=
+	t=1736937975; cv=none; b=Aahe7zDabHGbOq6yc+CmMLeeO/RvsQPqpl3XB3OivyqrFnWDW/P1w6mjboWxi00iC7q1skGXPaHL9Dtc+bJyqT5yKxAVzQLWLnVJd4iHe5Ct1iWSVL9IUKosoDpbLSRclpCZZ2HqBNAiJke46fGoYwxUgZHZA/DKqOagh21/f0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937938; c=relaxed/simple;
-	bh=YGsExRkN8GN110HkNpAmN8CgtkKfUZvIPkiNaXNTC+c=;
+	s=arc-20240116; t=1736937975; c=relaxed/simple;
+	bh=ccCZvnP0Izl+UJlrpMoqDlT1Bb2Z3r6kYYqpyRLLCdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HnfXOu1iHGicqL6EIN6TPFiiTku9H+crv+aVW84R7F+vDrb2Og/Do5yrQQV3EyEldPiNnSjbL7nPIUB7LfrUeEe/TrI+t1jOsPQhxf5/wNZsrSPQQb+j7CFJK2mIWXZmJo621MfbIJlFYKy30RqqaIHcr4xa1PCY9zoqRxKr5oQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCUL/fpT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF483C4CEE2;
-	Wed, 15 Jan 2025 10:45:37 +0000 (UTC)
+	 MIME-Version; b=pBeMxPJ79TsCd3D+Hklia1Djz7KafVhusp0MMfqRwj6AKNGTRcC48asL1cHQZ97jbDHYbtMhTjpNSAHyctUSEHXobZ3DWXlfKsla/Hv79MR8QMlCAcmqA2cJPmQyCageMvO5fpwuFQKZ/zVOXUw5Zngovppy2mPcWoJrW+jfJXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=noVgbti+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DDFCC4CEDF;
+	Wed, 15 Jan 2025 10:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937938;
-	bh=YGsExRkN8GN110HkNpAmN8CgtkKfUZvIPkiNaXNTC+c=;
+	s=korg; t=1736937974;
+	bh=ccCZvnP0Izl+UJlrpMoqDlT1Bb2Z3r6kYYqpyRLLCdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lCUL/fpT+ONt8Olwh7kYAVi8UGdUd1si3+Y1AFwsiTyefEicc6SAdeG239qbU+ZtM
-	 fvchedMlra+GWke2dRcWNnM+0IkezROepyH/L90WyjWetep/DmqqndR10Fht3ksiOf
-	 MBh3js0d9ZwToNuOg5AJ4TwpILemqEZdvy1UhV2E=
+	b=noVgbti+59k6bNxPXDjE8UnLgacVq+zWGSqdj/JKKyoS6pJfPpdS+bL++ameGiIhu
+	 0tbA0SdkFyGRPTqrFWzQ77jOpFMloduWsBmTr9akk2xAdO2HVdSxTHucWAr7YtS0Q8
+	 l11zGlSDoBPM7rpmadgU9U+m6Uf+Kgxf87dJIsL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+339e9dbe3a2ca419b85d@syzkaller.appspotmail.com,
+	Anand Jain <anand.jain@oracle.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 028/189] net: libwx: fix firmware mailbox abnormal return
-Date: Wed, 15 Jan 2025 11:35:24 +0100
-Message-ID: <20250115103607.480646322@linuxfoundation.org>
+Subject: [PATCH 6.12 029/189] btrfs: avoid NULL pointer dereference if no valid extent tree
+Date: Wed, 15 Jan 2025 11:35:25 +0100
+Message-ID: <20250115103607.521732986@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
 In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
 References: <20250115103606.357764746@linuxfoundation.org>
@@ -66,74 +68,89 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 8ce4f287524c74a118b0af1eebd4b24a8efca57a ]
+[ Upstream commit 6aecd91a5c5b68939cf4169e32bc49f3cd2dd329 ]
 
-The existing SW-FW interaction flow on the driver is wrong. Follow this
-wrong flow, driver would never return error if there is a unknown command.
-Since firmware writes back 'firmware ready' and 'unknown command' in the
-mailbox message if there is an unknown command sent by driver. So reading
-'firmware ready' does not timeout. Then driver would mistakenly believe
-that the interaction has completed successfully.
+[BUG]
+Syzbot reported a crash with the following call trace:
 
-It tends to happen with the use of custom firmware. Move the check for
-'unknown command' out of the poll timeout for 'firmware ready'. And adjust
-the debug log so that mailbox messages are always printed when commands
-timeout.
+  BTRFS info (device loop0): scrub: started on devid 1
+  BUG: kernel NULL pointer dereference, address: 0000000000000208
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 106e70067 P4D 106e70067 PUD 107143067 PMD 0
+  Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+  CPU: 1 UID: 0 PID: 689 Comm: repro Kdump: loaded Tainted: G           O       6.13.0-rc4-custom+ #206
+  Tainted: [O]=OOT_MODULE
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
+  RIP: 0010:find_first_extent_item+0x26/0x1f0 [btrfs]
+  Call Trace:
+   <TASK>
+   scrub_find_fill_first_stripe+0x13d/0x3b0 [btrfs]
+   scrub_simple_mirror+0x175/0x260 [btrfs]
+   scrub_stripe+0x5d4/0x6c0 [btrfs]
+   scrub_chunk+0xbb/0x170 [btrfs]
+   scrub_enumerate_chunks+0x2f4/0x5f0 [btrfs]
+   btrfs_scrub_dev+0x240/0x600 [btrfs]
+   btrfs_ioctl+0x1dc8/0x2fa0 [btrfs]
+   ? do_sys_openat2+0xa5/0xf0
+   __x64_sys_ioctl+0x97/0xc0
+   do_syscall_64+0x4f/0x120
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+   </TASK>
 
-Fixes: 1efa9bfe58c5 ("net: libwx: Implement interaction with firmware")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Link: https://patch.msgid.link/20250103081013.1995939-1-jiawenwu@trustnetic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[CAUSE]
+The reproducer is using a corrupted image where extent tree root is
+corrupted, thus forcing to use "rescue=all,ro" mount option to mount the
+image.
+
+Then it triggered a scrub, but since scrub relies on extent tree to find
+where the data/metadata extents are, scrub_find_fill_first_stripe()
+relies on an non-empty extent root.
+
+But unfortunately scrub_find_fill_first_stripe() doesn't really expect
+an NULL pointer for extent root, it use extent_root to grab fs_info and
+triggered a NULL pointer dereference.
+
+[FIX]
+Add an extra check for a valid extent root at the beginning of
+scrub_find_fill_first_stripe().
+
+The new error path is introduced by 42437a6386ff ("btrfs: introduce
+mount option rescue=ignorebadroots"), but that's pretty old, and later
+commit b979547513ff ("btrfs: scrub: introduce helper to find and fill
+sector info for a scrub_stripe") changed how we do scrub.
+
+So for kernels older than 6.6, the fix will need manual backport.
+
+Reported-by: syzbot+339e9dbe3a2ca419b85d@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/linux-btrfs/67756935.050a0220.25abdd.0a12.GAE@google.com/
+Fixes: 42437a6386ff ("btrfs: introduce mount option rescue=ignorebadroots")
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_hw.c | 24 ++++++++++------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ fs/btrfs/scrub.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index 1bf9c38e4125..deaf670c160e 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -334,27 +334,25 @@ int wx_host_interface_command(struct wx *wx, u32 *buffer,
- 	status = read_poll_timeout(rd32, hicr, hicr & WX_MNG_MBOX_CTL_FWRDY, 1000,
- 				   timeout * 1000, false, wx, WX_MNG_MBOX_CTL);
+diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
+index 3a3427428074..c73a41b1ad56 100644
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -1541,6 +1541,10 @@ static int scrub_find_fill_first_stripe(struct btrfs_block_group *bg,
+ 	u64 extent_gen;
+ 	int ret;
  
-+	buf[0] = rd32(wx, WX_MNG_MBOX);
-+	if ((buf[0] & 0xff0000) >> 16 == 0x80) {
-+		wx_err(wx, "Unknown FW command: 0x%x\n", buffer[0] & 0xff);
-+		status = -EINVAL;
-+		goto rel_out;
++	if (unlikely(!extent_root)) {
++		btrfs_err(fs_info, "no valid extent root for scrub");
++		return -EUCLEAN;
 +	}
-+
- 	/* Check command completion */
- 	if (status) {
--		wx_dbg(wx, "Command has failed with no status valid.\n");
--
--		buf[0] = rd32(wx, WX_MNG_MBOX);
--		if ((buffer[0] & 0xff) != (~buf[0] >> 24)) {
--			status = -EINVAL;
--			goto rel_out;
--		}
--		if ((buf[0] & 0xff0000) >> 16 == 0x80) {
--			wx_dbg(wx, "It's unknown cmd.\n");
--			status = -EINVAL;
--			goto rel_out;
--		}
--
-+		wx_err(wx, "Command has failed with no status valid.\n");
- 		wx_dbg(wx, "write value:\n");
- 		for (i = 0; i < dword_len; i++)
- 			wx_dbg(wx, "%x ", buffer[i]);
- 		wx_dbg(wx, "read value:\n");
- 		for (i = 0; i < dword_len; i++)
- 			wx_dbg(wx, "%x ", buf[i]);
-+		wx_dbg(wx, "\ncheck: %x %x\n", buffer[0] & 0xff, ~buf[0] >> 24);
-+
-+		goto rel_out;
- 	}
- 
- 	if (!return_data)
+ 	memset(stripe->sectors, 0, sizeof(struct scrub_sector_verification) *
+ 				   stripe->nr_sectors);
+ 	scrub_stripe_reset_bitmaps(stripe);
 -- 
 2.39.5
 
