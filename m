@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-108787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D5B0A12042
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:43:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8666BA12156
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:55:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38C363A3F68
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:43:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 434A73ABE6D
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:54:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1FC5248BA7;
-	Wed, 15 Jan 2025 10:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C6051DB142;
+	Wed, 15 Jan 2025 10:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RYnV6iwP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0RDGTcIK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F258248BA0;
-	Wed, 15 Jan 2025 10:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB82248BD1;
+	Wed, 15 Jan 2025 10:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937804; cv=none; b=B5XhdQz89J5qhDcOLY5iRUrADL2s1glrcBkCTf0g7IRiLF6YUnV2pV1ouGSSQcAz14kqa6FXawzknyLQ4c7tonMBYiYZRCsLg90JeGI1ozMGkl5rxWZo8kUagCxlSM+fPiRXpOVU+Ld75oFMNpFz3vYjCatFFAiocRXO0e56Ypo=
+	t=1736938487; cv=none; b=sEsqYfY+zn3l8rmuid4RfCIMu8/0VrgtfE4HaL11PbgcyxvaKD+bBz0RuEoUsggSxCSX0PDwMATDE0P7ty3FIlxLkWmWT5DMnA+m2ytdxnJ6bE1TMj12J4LpZlHmr48jIWpF4R4CnP83SL8lGU3fx8RSBeCMV3lvkEmMDvjBQAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937804; c=relaxed/simple;
-	bh=emvujC7Z3PU2JMP4vS9mTu+t4Y9jCxj/QD6ybBNWgps=;
+	s=arc-20240116; t=1736938487; c=relaxed/simple;
+	bh=NWgtYKd5cPjkMHerMbj0g8cDeRCoA/dy64825gA88G4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VrhMqPBH+b9wXZbUx9okIe0QCuCzlEWk8RsyyfmsU2Hsf+zEK8/JuDWXsXAQ482SO4H3uhMhVfkDuQSX0rsUomYwCVnl5NMn1kz9o06uASRzFB83pGija+BADFqxinkMPyrOHsFjxxSmcqK3lVX3ap8ZxWXJTiUguXLCuC5P2/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RYnV6iwP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B722EC4CEE4;
-	Wed, 15 Jan 2025 10:43:23 +0000 (UTC)
+	 MIME-Version; b=Du3v1xmm1WF8gOk1puBHn9VxgRzj4wiv0Uzlwu6hH6RMOAY31tQP5A/EZi3ZyXAbPNEledR42X9b4fjlg2UMF6NcBWRjlKYrE06H+w31Ko8hGZBuaNLI6vRj9L64OodCL5wAugLp5rn3++BBsn6WUu3qSfa47P455Gg8vHaIA6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0RDGTcIK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284A5C4CEE2;
+	Wed, 15 Jan 2025 10:54:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937804;
-	bh=emvujC7Z3PU2JMP4vS9mTu+t4Y9jCxj/QD6ybBNWgps=;
+	s=korg; t=1736938487;
+	bh=NWgtYKd5cPjkMHerMbj0g8cDeRCoA/dy64825gA88G4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RYnV6iwP8fIfbF2eWUt+86ZWAgpFKw61USqgMsI8RX2QPFxksZ14szKO/qgFeKMkp
-	 HsNSx978fT1ZjdhnV9iOFpL48ZJntne9NqyHT6JaUH+xLMjgjXbSOR6akdc45Y3RlE
-	 HihouPnKFTZk4cZHo9Mq2RBsieGElRx58SBCknBA=
+	b=0RDGTcIKRB6emg7sHwKIJ9hLg9VPH2jzXupzQBoqdcsjdL19tqhoR3Zvj+N6Vme5o
+	 xWvl6kPaXefsldabWWBhoVXUiBhLSrqhoxG4pLRuJA6iH+e5bLtW2AyiDo/Cj8NYZj
+	 PadkFx5iSwzgNLjO2JCZGqtMwp8YyNqYI4nXAheY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Rob Herring <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 86/92] of: address: Remove duplicated functions
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 168/189] iio: imu: inv_icm42600: fix timestamps after suspend if sensor is on
 Date: Wed, 15 Jan 2025 11:37:44 +0100
-Message-ID: <20250115103551.004969380@linuxfoundation.org>
+Message-ID: <20250115103613.107183786@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-[ Upstream commit 3eb030c60835668997d5763b1a0c7938faf169f6 ]
+commit 65a60a590142c54a3f3be11ff162db2d5b0e1e06 upstream.
 
-The recently added of_bus_default_flags_translate() performs the exact
-same operation as of_bus_pci_translate() and of_bus_isa_translate().
+Currently suspending while sensors are one will result in timestamping
+continuing without gap at resume. It can work with monotonic clock but
+not with other clocks. Fix that by resetting timestamping.
 
-Avoid duplicated code replacing both of_bus_pci_translate() and
-of_bus_isa_translate() with of_bus_default_flags_translate().
-
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Link: https://lore.kernel.org/r/20231017110221.189299-3-herve.codina@bootlin.com
-Signed-off-by: Rob Herring <robh@kernel.org>
-Stable-dep-of: 7f05e20b989a ("of: address: Preserve the flags portion on 1:1 dma-ranges mapping")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Link: https://patch.msgid.link/20241113-inv_icm42600-fix-timestamps-after-suspend-v1-1-dfc77c394173@tdk.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/address.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/of/address.c b/drivers/of/address.c
-index 4f7f4f519e80..39abcad30ddb 100644
---- a/drivers/of/address.c
-+++ b/drivers/of/address.c
-@@ -221,10 +221,6 @@ static u64 of_bus_pci_map(__be32 *addr, const __be32 *range, int na, int ns,
- 	return da - cp;
- }
- 
--static int of_bus_pci_translate(__be32 *addr, u64 offset, int na)
--{
--	return of_bus_default_translate(addr + 1, offset, na - 1);
--}
- #endif /* CONFIG_PCI */
- 
- int of_pci_address_to_resource(struct device_node *dev, int bar,
-@@ -334,11 +330,6 @@ static u64 of_bus_isa_map(__be32 *addr, const __be32 *range, int na, int ns,
- 	return da - cp;
- }
- 
--static int of_bus_isa_translate(__be32 *addr, u64 offset, int na)
--{
--	return of_bus_default_translate(addr + 1, offset, na - 1);
--}
--
- static unsigned int of_bus_isa_get_flags(const __be32 *addr)
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+@@ -822,6 +822,8 @@ out_unlock:
+ static int inv_icm42600_resume(struct device *dev)
  {
- 	unsigned int flags = 0;
-@@ -369,7 +360,7 @@ static struct of_bus of_busses[] = {
- 		.match = of_bus_pci_match,
- 		.count_cells = of_bus_pci_count_cells,
- 		.map = of_bus_pci_map,
--		.translate = of_bus_pci_translate,
-+		.translate = of_bus_default_flags_translate,
- 		.has_flags = true,
- 		.get_flags = of_bus_pci_get_flags,
- 	},
-@@ -381,7 +372,7 @@ static struct of_bus of_busses[] = {
- 		.match = of_bus_isa_match,
- 		.count_cells = of_bus_isa_count_cells,
- 		.map = of_bus_isa_map,
--		.translate = of_bus_isa_translate,
-+		.translate = of_bus_default_flags_translate,
- 		.has_flags = true,
- 		.get_flags = of_bus_isa_get_flags,
- 	},
--- 
-2.39.5
-
+ 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
++	struct inv_icm42600_sensor_state *gyro_st = iio_priv(st->indio_gyro);
++	struct inv_icm42600_sensor_state *accel_st = iio_priv(st->indio_accel);
+ 	int ret;
+ 
+ 	mutex_lock(&st->lock);
+@@ -842,9 +844,12 @@ static int inv_icm42600_resume(struct de
+ 		goto out_unlock;
+ 
+ 	/* restore FIFO data streaming */
+-	if (st->fifo.on)
++	if (st->fifo.on) {
++		inv_sensors_timestamp_reset(&gyro_st->ts);
++		inv_sensors_timestamp_reset(&accel_st->ts);
+ 		ret = regmap_write(st->map, INV_ICM42600_REG_FIFO_CONFIG,
+ 				   INV_ICM42600_FIFO_CONFIG_STREAM);
++	}
+ 
+ out_unlock:
+ 	mutex_unlock(&st->lock);
 
 
 
