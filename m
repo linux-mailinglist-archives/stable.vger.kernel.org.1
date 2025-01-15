@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-108976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11CD6A12147
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:54:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BC65A121C2
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 12:00:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AF2E3AB0BB
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:53:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 205753A43E3
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E7D1E98E3;
-	Wed, 15 Jan 2025 10:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B6C1E9916;
+	Wed, 15 Jan 2025 11:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6nkIPxs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9CFebsX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38771E98F8;
-	Wed, 15 Jan 2025 10:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20CC1E990E;
+	Wed, 15 Jan 2025 11:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938436; cv=none; b=reax7vydBs7Zhful7xAbaVFyZS1hS6fivbnwzhb/2gDN3Nsd1ZtkSPTVO5ZlQXzGt5D4cUkR/+rdmcwYoc7OYPnn0KUH4YXjhrCwxMlAgb4DWni6l5zPSwiwZeOXqPeoxSTB1oEl2WUcmjbgtq8RtuqV3AlDXgsw/zNfymCBK3g=
+	t=1736938806; cv=none; b=klSYaeYz1Zux2tl/lMRWEyd4FVyi2i0ecRBu2WTS4v5a2ma4O9grWnNTfBaavf+ooOjUIh3NpyBBJ6S0/1KVOx7sp1VOAOeKD+64hYeDcDvd+kTFhampHMVZpqopRB98nugu9jsgC3xDyhZpvc52u1vl1FYFQQgjcleGsEGgDoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938436; c=relaxed/simple;
-	bh=QrqAIQwpt/fthDQ/Zm9aQ/XR5o4lSf1VhB479NjRVg4=;
+	s=arc-20240116; t=1736938806; c=relaxed/simple;
+	bh=MUNOD1KJcBRgancNZOC+q2Y78U5XMZBYo1Mtg6pJY8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eMno4YYJc3Yt0wMOhZeo0+eCB++Xy+MiWGCQYB+k9a4inGHSFRBuXAie2NoiOAY/wAU8HvvQamWL3w9EAvUlYEoH96ZkT2w8jvHSGtMV/TQSAJAzloSv6myZaqRgQJr2MBE785avvpooynkFv3VWBJjQ8+dyGgMOe95a9QAtQhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6nkIPxs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E646BC4CEDF;
-	Wed, 15 Jan 2025 10:53:55 +0000 (UTC)
+	 MIME-Version; b=Rq4Efw9eS8SOzeQsB8/X/uywgcaV5JKP7WGcz5WjIjHy1Z5yWx6Tr+JkSXxR/+JO8i2gjnEx8FIm2HbvLtiAexMlqZx5iqDaLmip60oq1Zb7tv1IHK8R07V9EtLLR4D0OrflXKrHnD5JfO7pQQRnHyoRIukEZwsuJyAHb+1I2ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9CFebsX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF53C4CEDF;
+	Wed, 15 Jan 2025 11:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938436;
-	bh=QrqAIQwpt/fthDQ/Zm9aQ/XR5o4lSf1VhB479NjRVg4=;
+	s=korg; t=1736938806;
+	bh=MUNOD1KJcBRgancNZOC+q2Y78U5XMZBYo1Mtg6pJY8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G6nkIPxssgiAu5OhnWikCR+ln96LLCywIeZ5kup0pI6a/fCQiMNfi19vFgpd1jbaO
-	 t5QwxNRH25AcmrlM0FMJDdO3VjRFiqWOAjDYXYTuI+tO7ST7hH2/4Fov08npD4QkNe
-	 Or/ZSEJ009ws0yfk73maXoEzvlztGIKl5STrzBEo=
+	b=P9CFebsXUmAYeaeG1g64hC7oYu6MPARusMbivzapgx97gG7nWVYNuXzP1pz2Hw7EX
+	 19JEh1bq1mOyKo/Fhelp4KdD/jIDJlRpd5gG2GufT04LJTz9VuQy8lxKIBwM0fKrpm
+	 QmIP8efZmh6XTkQZKPeb3SK0v6UUfQprIkg9lLWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Ashutosh Dixit <ashutosh.dixit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 182/189] drm/xe/oa: Separate batch submission from waiting for completion
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 103/129] iio: dummy: iio_simply_dummy_buffer: fix information leak in triggered buffer
 Date: Wed, 15 Jan 2025 11:37:58 +0100
-Message-ID: <20250115103613.670557960@linuxfoundation.org>
+Message-ID: <20250115103558.459119352@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,155 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit dddcb19ad4d4bbe943a72a1fb3266c6e8aa8d541 ]
+commit 333be433ee908a53f283beb95585dfc14c8ffb46 upstream.
 
-When we introduce xe_syncs, we don't wait for internal OA programming
-batches to complete. That is, xe_syncs are signaled asynchronously. In
-anticipation for this, separate out batch submission from waiting for
-completion of those batches.
+The 'data' array is allocated via kmalloc() and it is used to push data
+to user space from a triggered buffer, but it does not set values for
+inactive channels, as it only uses iio_for_each_active_channel()
+to assign new values.
 
-v2: Change return type of xe_oa_submit_bb to "struct dma_fence *" (Matt B)
-v3: Retain init "int err = 0;" in xe_oa_submit_bb (Jose)
+Use kzalloc for the memory allocation to avoid pushing uninitialized
+information to userspace.
 
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241022200352.1192560-2-ashutosh.dixit@intel.com
-Stable-dep-of: f0ed39830e60 ("xe/oa: Fix query mode of operation for OAR/OAC")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 415f79244757 ("iio: Move IIO Dummy Driver out of staging")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-9-0cb6e98d895c@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_oa.c | 57 +++++++++++++++++++++++++++++---------
- 1 file changed, 44 insertions(+), 13 deletions(-)
+ drivers/iio/dummy/iio_simple_dummy_buffer.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
-index 78823f53d290..4962c9eb9a81 100644
---- a/drivers/gpu/drm/xe/xe_oa.c
-+++ b/drivers/gpu/drm/xe/xe_oa.c
-@@ -567,11 +567,10 @@ static __poll_t xe_oa_poll(struct file *file, poll_table *wait)
- 	return ret;
- }
+--- a/drivers/iio/dummy/iio_simple_dummy_buffer.c
++++ b/drivers/iio/dummy/iio_simple_dummy_buffer.c
+@@ -48,7 +48,7 @@ static irqreturn_t iio_simple_dummy_trig
+ 	int i = 0, j;
+ 	u16 *data;
  
--static int xe_oa_submit_bb(struct xe_oa_stream *stream, struct xe_bb *bb)
-+static struct dma_fence *xe_oa_submit_bb(struct xe_oa_stream *stream, struct xe_bb *bb)
- {
- 	struct xe_sched_job *job;
- 	struct dma_fence *fence;
--	long timeout;
- 	int err = 0;
+-	data = kmalloc(indio_dev->scan_bytes, GFP_KERNEL);
++	data = kzalloc(indio_dev->scan_bytes, GFP_KERNEL);
+ 	if (!data)
+ 		goto done;
  
- 	/* Kernel configuration is issued on stream->k_exec_q, not stream->exec_q */
-@@ -585,14 +584,9 @@ static int xe_oa_submit_bb(struct xe_oa_stream *stream, struct xe_bb *bb)
- 	fence = dma_fence_get(&job->drm.s_fence->finished);
- 	xe_sched_job_push(job);
- 
--	timeout = dma_fence_wait_timeout(fence, false, HZ);
--	dma_fence_put(fence);
--	if (timeout < 0)
--		err = timeout;
--	else if (!timeout)
--		err = -ETIME;
-+	return fence;
- exit:
--	return err;
-+	return ERR_PTR(err);
- }
- 
- static void write_cs_mi_lri(struct xe_bb *bb, const struct xe_oa_reg *reg_data, u32 n_regs)
-@@ -656,6 +650,7 @@ static void xe_oa_store_flex(struct xe_oa_stream *stream, struct xe_lrc *lrc,
- static int xe_oa_modify_ctx_image(struct xe_oa_stream *stream, struct xe_lrc *lrc,
- 				  const struct flex *flex, u32 count)
- {
-+	struct dma_fence *fence;
- 	struct xe_bb *bb;
- 	int err;
- 
-@@ -667,7 +662,16 @@ static int xe_oa_modify_ctx_image(struct xe_oa_stream *stream, struct xe_lrc *lr
- 
- 	xe_oa_store_flex(stream, lrc, bb, flex, count);
- 
--	err = xe_oa_submit_bb(stream, bb);
-+	fence = xe_oa_submit_bb(stream, bb);
-+	if (IS_ERR(fence)) {
-+		err = PTR_ERR(fence);
-+		goto free_bb;
-+	}
-+	xe_bb_free(bb, fence);
-+	dma_fence_put(fence);
-+
-+	return 0;
-+free_bb:
- 	xe_bb_free(bb, NULL);
- exit:
- 	return err;
-@@ -675,6 +679,7 @@ static int xe_oa_modify_ctx_image(struct xe_oa_stream *stream, struct xe_lrc *lr
- 
- static int xe_oa_load_with_lri(struct xe_oa_stream *stream, struct xe_oa_reg *reg_lri)
- {
-+	struct dma_fence *fence;
- 	struct xe_bb *bb;
- 	int err;
- 
-@@ -686,7 +691,16 @@ static int xe_oa_load_with_lri(struct xe_oa_stream *stream, struct xe_oa_reg *re
- 
- 	write_cs_mi_lri(bb, reg_lri, 1);
- 
--	err = xe_oa_submit_bb(stream, bb);
-+	fence = xe_oa_submit_bb(stream, bb);
-+	if (IS_ERR(fence)) {
-+		err = PTR_ERR(fence);
-+		goto free_bb;
-+	}
-+	xe_bb_free(bb, fence);
-+	dma_fence_put(fence);
-+
-+	return 0;
-+free_bb:
- 	xe_bb_free(bb, NULL);
- exit:
- 	return err;
-@@ -914,15 +928,32 @@ static int xe_oa_emit_oa_config(struct xe_oa_stream *stream, struct xe_oa_config
- {
- #define NOA_PROGRAM_ADDITIONAL_DELAY_US 500
- 	struct xe_oa_config_bo *oa_bo;
--	int err, us = NOA_PROGRAM_ADDITIONAL_DELAY_US;
-+	int err = 0, us = NOA_PROGRAM_ADDITIONAL_DELAY_US;
-+	struct dma_fence *fence;
-+	long timeout;
- 
-+	/* Emit OA configuration batch */
- 	oa_bo = xe_oa_alloc_config_buffer(stream, config);
- 	if (IS_ERR(oa_bo)) {
- 		err = PTR_ERR(oa_bo);
- 		goto exit;
- 	}
- 
--	err = xe_oa_submit_bb(stream, oa_bo->bb);
-+	fence = xe_oa_submit_bb(stream, oa_bo->bb);
-+	if (IS_ERR(fence)) {
-+		err = PTR_ERR(fence);
-+		goto exit;
-+	}
-+
-+	/* Wait till all previous batches have executed */
-+	timeout = dma_fence_wait_timeout(fence, false, 5 * HZ);
-+	dma_fence_put(fence);
-+	if (timeout < 0)
-+		err = timeout;
-+	else if (!timeout)
-+		err = -ETIME;
-+	if (err)
-+		drm_dbg(&stream->oa->xe->drm, "dma_fence_wait_timeout err %d\n", err);
- 
- 	/* Additional empirical delay needed for NOA programming after registers are written */
- 	usleep_range(us, 2 * us);
--- 
-2.39.5
-
 
 
 
