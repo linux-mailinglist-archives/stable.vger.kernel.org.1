@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-109034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22196A1217E
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:57:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 372EBA12013
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44ED4163557
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:57:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59EFD1883F38
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B203F1DB142;
-	Wed, 15 Jan 2025 10:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C703248BB1;
+	Wed, 15 Jan 2025 10:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aBjnwuBK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VECKCg6n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB523594E;
-	Wed, 15 Jan 2025 10:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0483248BA8;
+	Wed, 15 Jan 2025 10:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938636; cv=none; b=aHTQ+AzaubNdu2gT6K7f0Ws9Z+ZLuVX4hRmQ38J1gPTUiAEG3sGXsvxk5JTei3zLS2J0Qc+j8hYO1xWpurRlZeiyAolzCb5e8odtgrc99ABsQexfhI+Kc5l9FsUv4v2wDJ3fPMqOisJhfoTYEk4BgqW1/xBk7Xrmd6NTk2OKdiw=
+	t=1736937678; cv=none; b=SftfVldYmaZG9SHhpLxH6UD50+TLkzkBsMCeJjClzOjckK0V0LxLhxNVCPte3FftzwydU/a9VVL/veGHhp5QgAnEdeRd+VQspeWBG/M6dmekCr7W7yCVRR13XFgg3RHo/TlnT1zgHkzNoM+aho/7Bdk8S6wdxTS/uA2LggeaD6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938636; c=relaxed/simple;
-	bh=yWWno3ZL6xf8VLUM8xPF3mAWtWA/o6Ia1gVKYB8j7vA=;
+	s=arc-20240116; t=1736937678; c=relaxed/simple;
+	bh=sg36DisQ6/XUOvMPseLcsLqb6vU+HOwIdtAFzNRDbwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jJuW6bMw2eotKorKmN9GlYVwT9oPE8qpn60bt2RTwcYDFzisVB/ZFL0g/xpKPm8kHxqmgjfbArP0pqPtfSbNxkF/iJAlf+u+eogQHxGQWLBGS30dsMedcgJux7dPcch4VI7CqjCLgbBaflKlpsFpmToJIrQRDFt/Wj9UDxJKWIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBjnwuBK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E83E6C4CEDF;
-	Wed, 15 Jan 2025 10:57:15 +0000 (UTC)
+	 MIME-Version; b=h81+RSIdfmIa3pEFbDL9c9Jllj0hLjDfNO4QDN/2oTs4SZ+ui/0Nl5i2Ih9duu8d6yyeV7Lzve7Mj/XW3Vjvyyc/ns9CTN5W3s0qt34PYmmEmuvPS1pxjaygid4OpSrNdzqcAxS2qUfTFDh9VbOwyzWnUYVE5N3ZQf9Sp6yVlcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VECKCg6n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF84C4CEE3;
+	Wed, 15 Jan 2025 10:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938636;
-	bh=yWWno3ZL6xf8VLUM8xPF3mAWtWA/o6Ia1gVKYB8j7vA=;
+	s=korg; t=1736937678;
+	bh=sg36DisQ6/XUOvMPseLcsLqb6vU+HOwIdtAFzNRDbwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aBjnwuBK2fp3+fBbslcb0oqbpgvB9T/+BlrM6p98cSgZ+bMmBm5QV5hNctvtTepU/
-	 H8TlqHFRHdjwElkthW1ZkXw1BpAta5gT3Gn/GxXbLDUO0bEPh7GhZoofM+vo0wN5wm
-	 PWjDm9ysxyrdp2MKD4sK8PB8F6EdtfuDWRwdUg/0=
+	b=VECKCg6nqIPdi0G8xSYy3D3DlFUfZjuTLA8Cdp4aG9rwahN5Du9mGsmhy+zgW/nQH
+	 J3mUHXUDPpQzn4MGis8JT383gS0bnVjvXAXrQlzFLh9yQTQ72VWEtzi/rgtlNJzaiF
+	 t4cKjN5Xzn2uwQbjKmgGMuZBoGzROpvcqNITtjbk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liankun Yang <liankun.yang@mediatek.com>,
-	Guillaume Ranquet <granquet@baylibre.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/129] drm/mediatek: Add return value check when reading DPCD
-Date: Wed, 15 Jan 2025 11:37:06 +0100
-Message-ID: <20250115103556.402353083@linuxfoundation.org>
+	Milan Broz <gmazyland@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.1 49/92] dm-verity FEC: Fix RS FEC repair for roots unaligned to block size (take 2)
+Date: Wed, 15 Jan 2025 11:37:07 +0100
+Message-ID: <20250115103549.492162002@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +61,164 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liankun Yang <liankun.yang@mediatek.com>
+From: Milan Broz <gmazyland@gmail.com>
 
-[ Upstream commit 522908140645865dc3e2fac70fd3b28834dfa7be ]
+commit 6df90c02bae468a3a6110bafbc659884d0c4966c upstream.
 
-Check the return value of drm_dp_dpcd_readb() to confirm that
-AUX communication is successful. To simplify the code, replace
-drm_dp_dpcd_readb() and DP_GET_SINK_COUNT() with drm_dp_read_sink_count().
+This patch fixes an issue that was fixed in the commit
+  df7b59ba9245 ("dm verity: fix FEC for RS roots unaligned to block size")
+but later broken again in the commit
+  8ca7cab82bda ("dm verity fec: fix misaligned RS roots IO")
 
-Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
-Signed-off-by: Liankun Yang <liankun.yang@mediatek.com>
-Reviewed-by: Guillaume Ranquet <granquet@baylibre.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20241218113448.2992-1-liankun.yang@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If the Reed-Solomon roots setting spans multiple blocks, the code does not
+use proper parity bytes and randomly fails to repair even trivial errors.
+
+This bug cannot happen if the sector size is multiple of RS roots
+setting (Android case with roots 2).
+
+The previous solution was to find a dm-bufio block size that is multiple
+of the device sector size and roots size. Unfortunately, the optimization
+in commit 8ca7cab82bda ("dm verity fec: fix misaligned RS roots IO")
+is incorrect and uses data block size for some roots (for example, it uses
+4096 block size for roots = 20).
+
+This patch uses a different approach:
+
+ - It always uses a configured data block size for dm-bufio to avoid
+ possible misaligned IOs.
+
+ - and it caches the processed parity bytes, so it can join it
+ if it spans two blocks.
+
+As the RS calculation is called only if an error is detected and
+the process is computationally intensive, copying a few more bytes
+should not introduce performance issues.
+
+The issue was reported to cryptsetup with trivial reproducer
+  https://gitlab.com/cryptsetup/cryptsetup/-/issues/923
+
+Reproducer (with roots=20):
+
+ # create verity device with RS FEC
+ dd if=/dev/urandom of=data.img bs=4096 count=8 status=none
+ veritysetup format data.img hash.img --fec-device=fec.img --fec-roots=20 | \
+ awk '/^Root hash/{ print $3 }' >roothash
+
+ # create an erasure that should always be repairable with this roots setting
+ dd if=/dev/zero of=data.img conv=notrunc bs=1 count=4 seek=4 status=none
+
+ # try to read it through dm-verity
+ veritysetup open data.img test hash.img --fec-device=fec.img --fec-roots=20 $(cat roothash)
+ dd if=/dev/mapper/test of=/dev/null bs=4096 status=noxfer
+
+ Even now the log says it cannot repair it:
+   : verity-fec: 7:1: FEC 0: failed to correct: -74
+   : device-mapper: verity: 7:1: data block 0 is corrupted
+   ...
+
+With this fix, errors are properly repaired.
+   : verity-fec: 7:1: FEC 0: corrected 4 errors
+
+Signed-off-by: Milan Broz <gmazyland@gmail.com>
+Fixes: 8ca7cab82bda ("dm verity fec: fix misaligned RS roots IO")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Milan Broz <gmazyland@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dp.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/md/dm-verity-fec.c |   39 ++++++++++++++++++++++++++-------------
+ 1 file changed, 26 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
-index 3e1b400febde..be4de26c77f9 100644
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -2005,7 +2005,6 @@ static enum drm_connector_status mtk_dp_bdg_detect(struct drm_bridge *bridge)
- 	struct mtk_dp *mtk_dp = mtk_dp_from_bridge(bridge);
- 	enum drm_connector_status ret = connector_status_disconnected;
- 	bool enabled = mtk_dp->enabled;
--	u8 sink_count = 0;
+--- a/drivers/md/dm-verity-fec.c
++++ b/drivers/md/dm-verity-fec.c
+@@ -60,14 +60,19 @@ static int fec_decode_rs8(struct dm_veri
+  * to the data block. Caller is responsible for releasing buf.
+  */
+ static u8 *fec_read_parity(struct dm_verity *v, u64 rsb, int index,
+-			   unsigned int *offset, struct dm_buffer **buf)
++			   unsigned int *offset, unsigned int par_buf_offset,
++			  struct dm_buffer **buf)
+ {
+ 	u64 position, block, rem;
+ 	u8 *res;
  
- 	if (!mtk_dp->train_info.cable_plugged_in)
- 		return ret;
-@@ -2020,8 +2019,8 @@ static enum drm_connector_status mtk_dp_bdg_detect(struct drm_bridge *bridge)
- 	 * function, we just need to check the HPD connection to check
- 	 * whether we connect to a sink device.
- 	 */
--	drm_dp_dpcd_readb(&mtk_dp->aux, DP_SINK_COUNT, &sink_count);
--	if (DP_GET_SINK_COUNT(sink_count))
++	/* We have already part of parity bytes read, skip to the next block */
++	if (par_buf_offset)
++		index++;
 +
-+	if (drm_dp_read_sink_count(&mtk_dp->aux) > 0)
- 		ret = connector_status_connected;
+ 	position = (index + rsb) * v->fec->roots;
+ 	block = div64_u64_rem(position, v->fec->io_size, &rem);
+-	*offset = (unsigned int)rem;
++	*offset = par_buf_offset ? 0 : (unsigned int)rem;
  
- 	if (!enabled)
--- 
-2.39.5
-
+ 	res = dm_bufio_read(v->fec->bufio, block, buf);
+ 	if (IS_ERR(res)) {
+@@ -127,10 +132,11 @@ static int fec_decode_bufs(struct dm_ver
+ {
+ 	int r, corrected = 0, res;
+ 	struct dm_buffer *buf;
+-	unsigned int n, i, offset;
+-	u8 *par, *block;
++	unsigned int n, i, offset, par_buf_offset = 0;
++	u8 *par, *block, par_buf[DM_VERITY_FEC_RSM - DM_VERITY_FEC_MIN_RSN];
+ 
+-	par = fec_read_parity(v, rsb, block_offset, &offset, &buf);
++	par = fec_read_parity(v, rsb, block_offset, &offset,
++			      par_buf_offset, &buf);
+ 	if (IS_ERR(par))
+ 		return PTR_ERR(par);
+ 
+@@ -140,7 +146,8 @@ static int fec_decode_bufs(struct dm_ver
+ 	 */
+ 	fec_for_each_buffer_rs_block(fio, n, i) {
+ 		block = fec_buffer_rs_block(v, fio, n, i);
+-		res = fec_decode_rs8(v, fio, block, &par[offset], neras);
++		memcpy(&par_buf[par_buf_offset], &par[offset], v->fec->roots - par_buf_offset);
++		res = fec_decode_rs8(v, fio, block, par_buf, neras);
+ 		if (res < 0) {
+ 			r = res;
+ 			goto error;
+@@ -153,12 +160,21 @@ static int fec_decode_bufs(struct dm_ver
+ 		if (block_offset >= 1 << v->data_dev_block_bits)
+ 			goto done;
+ 
+-		/* read the next block when we run out of parity bytes */
+-		offset += v->fec->roots;
++		/* Read the next block when we run out of parity bytes */
++		offset += (v->fec->roots - par_buf_offset);
++		/* Check if parity bytes are split between blocks */
++		if (offset < v->fec->io_size && (offset + v->fec->roots) > v->fec->io_size) {
++			par_buf_offset = v->fec->io_size - offset;
++			memcpy(par_buf, &par[offset], par_buf_offset);
++			offset += par_buf_offset;
++		} else
++			par_buf_offset = 0;
++
+ 		if (offset >= v->fec->io_size) {
+ 			dm_bufio_release(buf);
+ 
+-			par = fec_read_parity(v, rsb, block_offset, &offset, &buf);
++			par = fec_read_parity(v, rsb, block_offset, &offset,
++					      par_buf_offset, &buf);
+ 			if (IS_ERR(par))
+ 				return PTR_ERR(par);
+ 		}
+@@ -743,10 +759,7 @@ int verity_fec_ctr(struct dm_verity *v)
+ 		return -E2BIG;
+ 	}
+ 
+-	if ((f->roots << SECTOR_SHIFT) & ((1 << v->data_dev_block_bits) - 1))
+-		f->io_size = 1 << v->data_dev_block_bits;
+-	else
+-		f->io_size = v->fec->roots << SECTOR_SHIFT;
++	f->io_size = 1 << v->data_dev_block_bits;
+ 
+ 	f->bufio = dm_bufio_client_create(f->dev->bdev,
+ 					  f->io_size,
 
 
 
