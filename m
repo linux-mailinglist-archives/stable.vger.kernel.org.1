@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-108754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A63B0A1201C
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39655A120F5
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:51:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DEF17A30E7
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82F1E188CCF5
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4442248BB1;
-	Wed, 15 Jan 2025 10:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C1F248BD1;
+	Wed, 15 Jan 2025 10:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OSy0o/hf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtQLpoWu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E993248BA1;
-	Wed, 15 Jan 2025 10:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4398E248BA1;
+	Wed, 15 Jan 2025 10:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937696; cv=none; b=UJQuETQdJPTUy4pzcrvrfRKhz7/+pj2N7o4+Xw2UcHMtfE8CRtbG1dKX6cfSwX2kl2BqKVQ3uMO3HWIJyX/tv+3FNLFNGCbnh/MBW9nrswRTjaLT+by8dst/bF5Czr7cOmBz9+J77M6neNi+ZWzTdR+y9hJ6xKI+faOJnHG4Nag=
+	t=1736938275; cv=none; b=go9B0nMSxyhNqukIZUMVdV7meK7jEAcVM6AdyAa2rkEt17lB3S0FNKg5QszdEfMGThVP5LRN9hgzAll+xp0Nc179LbZcrNqOxggwLbu4yDNMhIuaGrg2gEJd4X+EHbcKWFhgAIFRs3tM6AdtYLHv0rZJ9uRUOiq3vKCAkDpJ/Js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937696; c=relaxed/simple;
-	bh=TwSkpl+VPYOjriuocnfddbuiA9j1n3cbh4d+nLT+wFA=;
+	s=arc-20240116; t=1736938275; c=relaxed/simple;
+	bh=dBVlBBJgUI/P88/d8/Dvy8HnadNPuNzU8RzUaDVeqe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W7J3nZLqFtj8tmwQ5mPXTHYjkhxnWjdahARWgQskql3nKjP92xdiMiXXxqQy8eksm4Yhd4tdp5CY8i9A5ABc1HmqyYmsZvg3JzXivjgWk+gfKuVrW8N74T+g0RSyeeqSJatofgKGe0S4+wYtPNZ2S8miKcE/5xqiL5D0TA/3Pnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OSy0o/hf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 608FEC4CEE3;
-	Wed, 15 Jan 2025 10:41:35 +0000 (UTC)
+	 MIME-Version; b=qP/dhvOZL13aYAAX+CK2AwJYLtHGoMSOImqEvW1/srudTmGnF3MMozhSeGDKgu3xtIvEXMQnVsUE8exX0mPifXqzVPgQa+vepqLKcS/HWpqSFdn68XryKu80Dvf5CxBpr1o4BqPd4YtuU9RtaVtQIn/AZWo7yaPQKeKD6eUs3Hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtQLpoWu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A093CC4CEE1;
+	Wed, 15 Jan 2025 10:51:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937695;
-	bh=TwSkpl+VPYOjriuocnfddbuiA9j1n3cbh4d+nLT+wFA=;
+	s=korg; t=1736938275;
+	bh=dBVlBBJgUI/P88/d8/Dvy8HnadNPuNzU8RzUaDVeqe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OSy0o/hfamUQxMxekuvUUWcmo87/koqi61Ol6sD78zsTJ/JR+xiUSP4kurNF2i4K8
-	 Ge14jNVhWKN0TuE8AlraTduO5Jk3QEJ9r7HofKcZs7LaH9HPATukuTPcQrJVPcx6c4
-	 A2fr/OkKPQsDhPls9huZY0UokYXXJX2afCXTynzw=
+	b=YtQLpoWuu+Yy5Z+5VujV//hd85tCAp195ov1rbAtleYm0Yd2nJF1RmZUmxRi7kdkh
+	 T5ZyTlUi8+5lX31EFkWrqZiXbtfp6eNGzwnxw+5DZUlsJpunyNuSLTmD4CxGYswxbF
+	 v8a8bQZLGSpHOe43w0o+dx0hZ1HRR7tCNqSD7xDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Hrusecky <michal.hrusecky@turris.com>,
+	Giuseppe Corbelli <giuseppe.corbelli@antaresvision.com>,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 53/92] USB: serial: option: add Neoway N723-EA support
+Subject: [PATCH 6.12 135/189] USB: serial: cp210x: add Phoenix Contact UPS Device
 Date: Wed, 15 Jan 2025 11:37:11 +0100
-Message-ID: <20250115103549.645843390@linuxfoundation.org>
+Message-ID: <20250115103611.824637033@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Hrusecky <michal.hrusecky@turris.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit f5b435be70cb126866fa92ffc6f89cda9e112c75 upstream.
+commit 854eee93bd6e3dca619d47087af4d65b2045828e upstream.
 
-Update the USB serial option driver to support Neoway N723-EA.
+Phoenix Contact sells UPS Quint devices [1] with a custom datacable [2]
+that embeds a Silicon Labs converter:
 
-ID 2949:8700 Marvell Mobile Composite Device Bus
+Bus 001 Device 003: ID 1b93:1013 Silicon Labs Phoenix Contact UPS Device
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.00
+  bDeviceClass            0
+  bDeviceSubClass         0
+  bDeviceProtocol         0
+  bMaxPacketSize0        64
+  idVendor           0x1b93
+  idProduct          0x1013
+  bcdDevice            1.00
+  iManufacturer           1 Silicon Labs
+  iProduct                2 Phoenix Contact UPS Device
+  iSerial                 3 <redacted>
+  bNumConfigurations	 1
+  Configuration Descriptor:
+    bLength                 9
+    bDescriptorType         2
+    wTotalLength       0x0020
+    bNumInterfaces          1
+    bConfigurationValue     1
+    iConfiguration          0
+    bmAttributes         0x80
+      (Bus Powered)
+    MaxPower              100mA
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       0
+      bNumEndpoints           2
+      bInterfaceClass       255 Vendor Specific Class
+      bInterfaceSubClass      0
+      bInterfaceProtocol      0
+      iInterface              2 Phoenix Contact UPS Device
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x01  EP 1 OUT
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval               0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x82  EP 2 IN
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval               0
 
-T:  Bus=02 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2949 ProdID=8700 Rev= 1.00
-S:  Manufacturer=Marvell
-S:  Product=Mobile Composite Device Bus
-S:  SerialNumber=200806006809080000
-C:* #Ifs= 5 Cfg#= 1 Atr=c0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=03
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
-E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=89(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0e(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 6 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+[1] https://www.phoenixcontact.com/en-pc/products/power-supply-unit-quint-ps-1ac-24dc-10-2866763
+[2] https://www.phoenixcontact.com/en-il/products/data-cable-preassembled-ifs-usb-datacable-2320500
 
-Tested successfully connecting to the Internet via rndis interface after
-dialing via AT commands on If#=4 or If#=6.
-
-Not sure of the purpose of the other serial interface.
-
-Signed-off-by: Michal Hrusecky <michal.hrusecky@turris.com>
+Reported-by: Giuseppe Corbelli <giuseppe.corbelli@antaresvision.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    1 +
+ drivers/usb/serial/cp210x.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2413,6 +2413,7 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(1) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0640, 0xff),			/* TCL IK512 ECM */
- 	  .driver_info = NCTRL(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2949, 0x8700, 0xff) },			/* Neoway N723-EA */
- 	{ } /* Terminating entry */
- };
- MODULE_DEVICE_TABLE(usb, option_ids);
+--- a/drivers/usb/serial/cp210x.c
++++ b/drivers/usb/serial/cp210x.c
+@@ -223,6 +223,7 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(0x19CF, 0x3000) }, /* Parrot NMEA GPS Flight Recorder */
+ 	{ USB_DEVICE(0x1ADB, 0x0001) }, /* Schweitzer Engineering C662 Cable */
+ 	{ USB_DEVICE(0x1B1C, 0x1C00) }, /* Corsair USB Dongle */
++	{ USB_DEVICE(0x1B93, 0x1013) }, /* Phoenix Contact UPS Device */
+ 	{ USB_DEVICE(0x1BA4, 0x0002) },	/* Silicon Labs 358x factory default */
+ 	{ USB_DEVICE(0x1BE3, 0x07A6) }, /* WAGO 750-923 USB Service Cable */
+ 	{ USB_DEVICE(0x1D6F, 0x0010) }, /* Seluxit ApS RF Dongle */
 
 
 
