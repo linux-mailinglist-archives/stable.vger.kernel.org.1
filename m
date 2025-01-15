@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-109080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEB1FA121BA
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:59:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DB0DA12129
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:53:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A25E3A7577
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:59:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F3A5165201
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78B71E7C02;
-	Wed, 15 Jan 2025 10:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98051DB145;
+	Wed, 15 Jan 2025 10:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJ8fwpJR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MbgU7B70"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5B8248BB0;
-	Wed, 15 Jan 2025 10:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65519248BDC;
+	Wed, 15 Jan 2025 10:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938782; cv=none; b=kMxn0SHZltQ1aJyEEI542dNTuimBwTYFUf2s8ZGQ6ZCpkHnpiQ89uKOGq+oiZbjW4+WNpHzi3FYoLpu/a88AMQ3bPNxYtN5PLAIobM0hzxhluUDtMS0qmspAhX0TEvyFCmX1xkdFL7waMck8GLabVMvqdQZdEENmdhwPrCHAnO4=
+	t=1736938413; cv=none; b=WTpkqzmD/VYGO13/bmaBaYagVwFXUwYjH+gaTW/SLyX9IitYsdSDO2iMnqn7vU8t2n0JqqpQAw4QH3YoJueDt3KsSH4X4gCS6UGeKtCb6po1NtGJhO+RyOB+UVPAgxzAr8TLB/2nwycB9nYuigI9kETOC4VaMwdRW7PdrTzuyWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938782; c=relaxed/simple;
-	bh=y/USKRa0y9BAQOH3ASDfDYPT80rrzPPa6R0uREOylrs=;
+	s=arc-20240116; t=1736938413; c=relaxed/simple;
+	bh=uE627QwAk6q/Hr+GQ1bsctU09aPJhJcRiQ6KWMmQ5D4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nJqyKqpmy2wMmGM8u/n902CrxG+FdTG83oR1vKd/O8I65q7eoJNgsT3+ImbHVhRXjaeqFKpmkVaMAuhxqb/ARrlqlK1Nz4LOhFRVz8mrGz8d9K16xMtlZGha38IszEteu/LFJiHwJjcENFrNE8q10ZXMrOmn/ycAFT0Gll8Etk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJ8fwpJR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 281B8C4CEDF;
-	Wed, 15 Jan 2025 10:59:40 +0000 (UTC)
+	 MIME-Version; b=jtb6NJLiO7l8FNv4b2Y9xCKTd9aSaQ3o1tBPZHTReqASq9of5UE0BiRMCPHnLuKmGrJKHw8lnLEXR5BXmO/nV54drlShVJxRHTUb4XEdNU5IRBxJTYY2kUGQGGdKmOyYEvaQC2DQIhhN/v0gFGNAT37GoQ8wTDsoFR49A+coGWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MbgU7B70; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F20C4CEDF;
+	Wed, 15 Jan 2025 10:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938781;
-	bh=y/USKRa0y9BAQOH3ASDfDYPT80rrzPPa6R0uREOylrs=;
+	s=korg; t=1736938413;
+	bh=uE627QwAk6q/Hr+GQ1bsctU09aPJhJcRiQ6KWMmQ5D4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gJ8fwpJRJCfXWymHTkVfJVKZCUStkeYZnNMlLpuXRGDd0XeokbDcGLxtSNSbFnyP4
-	 drLmRXty2fnaZLVPZ8htGjOOO26Dr5Gq7Z0oMeE+wHUKHPSprT142SLqza2SiGWrKx
-	 eyhuAEmsVMiLMax5akBWE7YUrUTjrocUm+VoEeTc=
+	b=MbgU7B70Jku+327PlTvl0x3qDi4vN5jbhfOI5NVOm76LL3nCCpl9UuZbvkW47y0Nr
+	 K48JtyjjRMbMRB4kfl2/iueckXIX90CgA++WFOpi15tUF/iJIjXvluGKOalVWyLH1G
+	 ncaCgwZErMgm+pgNgL+DvQmHoIvTEi+01o8zgYDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 096/129] usb: gadget: midi2: Reverse-select at the right place
-Date: Wed, 15 Jan 2025 11:37:51 +0100
-Message-ID: <20250115103558.195799817@linuxfoundation.org>
+	Jesse Taube <Mr.Bossman075@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 176/189] ARM: dts: imxrt1050: Fix clocks for mmc
+Date: Wed, 15 Jan 2025 11:37:52 +0100
+Message-ID: <20250115103613.430477513@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Jesse Taube <Mr.Bossman075@gmail.com>
 
-commit 6f660ffce7c938f2a5d8473c0e0b45e4fb25ef7f upstream.
+[ Upstream commit 5f122030061db3e5d2bddd9cf5c583deaa6c54ff ]
 
-We should do reverse selection of other components from
-CONFIG_USB_F_MIDI2 which is tristate, instead of
-CONFIG_USB_CONFIGFS_F_MIDI2 which is bool, for satisfying subtle
-module dependencies.
+One of the usdhc1 controller's clocks should be IMXRT1050_CLK_AHB_PODF not
+IMXRT1050_CLK_OSC.
 
-Fixes: 8b645922b223 ("usb: gadget: Add support for USB MIDI 2.0 function driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20250101131124.27599-1-tiwai@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1c4f01be3490 ("ARM: dts: imx: Add i.MXRT1050-EVK support")
+Signed-off-by: Jesse Taube <Mr.Bossman075@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/Kconfig |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imxrt1050.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/Kconfig
-+++ b/drivers/usb/gadget/Kconfig
-@@ -210,6 +210,8 @@ config USB_F_MIDI
- 
- config USB_F_MIDI2
- 	tristate
-+	select SND_UMP
-+	select SND_UMP_LEGACY_RAWMIDI
- 
- config USB_F_HID
- 	tristate
-@@ -444,8 +446,6 @@ config USB_CONFIGFS_F_MIDI2
- 	depends on USB_CONFIGFS
- 	depends on SND
- 	select USB_LIBCOMPOSITE
--	select SND_UMP
--	select SND_UMP_LEGACY_RAWMIDI
- 	select USB_F_MIDI2
- 	help
- 	  The MIDI 2.0 function driver provides the generic emulated
+diff --git a/arch/arm/boot/dts/nxp/imx/imxrt1050.dtsi b/arch/arm/boot/dts/nxp/imx/imxrt1050.dtsi
+index dd714d235d5f..b0bad0d1ba36 100644
+--- a/arch/arm/boot/dts/nxp/imx/imxrt1050.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imxrt1050.dtsi
+@@ -87,7 +87,7 @@
+ 			reg = <0x402c0000 0x4000>;
+ 			interrupts = <110>;
+ 			clocks = <&clks IMXRT1050_CLK_IPG_PDOF>,
+-				<&clks IMXRT1050_CLK_OSC>,
++				<&clks IMXRT1050_CLK_AHB_PODF>,
+ 				<&clks IMXRT1050_CLK_USDHC1>;
+ 			clock-names = "ipg", "ahb", "per";
+ 			bus-width = <4>;
+-- 
+2.39.5
+
 
 
 
