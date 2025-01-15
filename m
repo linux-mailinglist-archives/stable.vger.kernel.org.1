@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-109128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A873A12260
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 12:21:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 895B6A1228A
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 12:28:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BB5A16A93E
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:21:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCBD7188EB97
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0A91E7C27;
-	Wed, 15 Jan 2025 11:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E658B1EEA5F;
+	Wed, 15 Jan 2025 11:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="l4HCJsNt"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="f6f9iEGe"
 X-Original-To: stable@vger.kernel.org
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.53])
+Received: from out162-62-57-64.mail.qq.com (out162-62-57-64.mail.qq.com [162.62.57.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F59C248BA4
-	for <stable@vger.kernel.org>; Wed, 15 Jan 2025 11:20:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEE01E9910
+	for <stable@vger.kernel.org>; Wed, 15 Jan 2025 11:28:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736940059; cv=none; b=KDomz93I1kTZH/fGgRaLSRnfhrufp7VABGFZseXhpKTJ1AGJzwcgy/f2jC7RRaxhIXorgRa44Ire9opxpDsP7WcJtTzj/+5eOiDml2q2zz+J8U28XuQL2cBmqTFdtzNUBE1kgwqrtDbLRa2wxo1cur3bq3dCPsYRd2/CTKhvQ9Y=
+	t=1736940498; cv=none; b=mUwoWkWpDK5wPlKIPspEM6qFa4GgwO+E3sf2S0SWSyNbbeGaNGnqWtOItT0Gc6N4uXkUk3VTUw7et8DZW445U35cG5ZHcAsR5Ko5Xd3heCDsW36Y1alzaeYPoqvbeT49uWimzsh8DW0hFp8Xhf6jk58uX2CDEGcnEpOkYODVYVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736940059; c=relaxed/simple;
-	bh=rV/e7tTFiS5l3l+P+Yoatvor7lHmI1Tlly63upaTiR4=;
+	s=arc-20240116; t=1736940498; c=relaxed/simple;
+	bh=oB7udLPL30IO659T41Bgn8a12hkKyiXIMEJp5/vfgZQ=;
 	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=ndRu2qc2R3lznv8mVYlbddWXTPnQU/fKcdR9LzI2xiFb2uLhlvaVSMzDsTXjvgz7/Ph/KIcnBaBVX4JV+Pl/8JR6FHBpiwSjKM0/ZIUqyZ4Y0EPxvXWE6LQkXj2rG9bfAXagjZLPHQGeNPgn5FpITpybQ1mql0gRCxFyAZvOtkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=l4HCJsNt; arc=none smtp.client-ip=43.163.128.53
+	 MIME-Version; b=gXLVtyLIfcF8tRINyqUOuc0JPtriEa8bghlI6UglfpR+gmVTUEmOChfgy7r0KU+rmzx0klCFN40J0TI41QhzhvGsMYOAuhsETR8vd5T3xoADlqM8v7oPFx+3a28j3JK0TzpJ0GEDyZD/9CNhZzuaIlSv7knYDytruA5zXpHrAfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=f6f9iEGe; arc=none smtp.client-ip=162.62.57.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1736940050; bh=NMinsTC3QldCmAAktAz6+DtG7g8CZInMB+0LwVc9UUA=;
+	t=1736940184; bh=GT2YRhEBNK6XLXso2yAEHT9wHS+FTpk4KK5cpVL08TM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l4HCJsNtOuUYwZhhGtEnurYCJaY0g/l/h5a/uuEHsI62QPMrp72gVZON2oK2bblUS
-	 pX8HIIfFrf4vlkOGigkCZwDzaln+fNuEmSYm2y5BJjaecl21N9CXgewfw/te0ke035
-	 6J/YsIn7GnLgTnn26zlD7u3vzz0H/In7kEpufO1c=
+	b=f6f9iEGeaFigzGjIttsKq/SAnWNFKdHVWExZCSi0pErLy6hqAyC48FyIx45VN81gh
+	 9FH7bFgKv2hEmV4+cKCTPDVssPn/LJ6NW+QOP30oC+Gr6j5s+nrNrKo4dg6/CRqgsq
+	 +Jse6L+5EeuzS+49JqNTdOZV0coATyp+l4sd/Qe8=
 Received: from pek-blan-cn-l1.corp.ad.wrs.com ([120.244.194.130])
-	by newxmesmtplogicsvrszgpua8-0.qq.com (NewEsmtp) with SMTP
-	id 5263D2EB; Wed, 15 Jan 2025 19:20:38 +0800
-X-QQ-mid: xmsmtpt1736940038td6y6kvwo
-Message-ID: <tencent_72F5138E2C8C53C3392D4E4DF0C796A48006@qq.com>
-X-QQ-XMAILINFO: Ntt/5q+SsafOXjC8ebRc5VHI0z3J9PZVpl9rfaX4zlnEUD7kgK9kag0mqfEHnv
-	 f0qwJZ4vRRUoSmEmJX5GLn4zsEiNtz5nELvEk10x5hbKu3JqmCdUwmT9bU6anpNSwq6kNNnuyFOK
-	 qPJDsNWjWJrbkiGWNtBYVnxNPMzjr0rPTPAuAJ3B3DN/2pQfXa+Ajv+uSCJMeqGAG0pbFKEmMBuT
-	 YtFCInor2mREbEi68MgsE+ic3K2fsp/6Wn8gu2FhLelhMNQu91HJMwU4Dsz6+E8G6WVb9CheEKhh
-	 k5LtEqQHwfwLWkPGvER1+wzo3FVvJ+SxDOUBGdGrXD3R1TY8jIBdVmNUvkzHKy8bNRM7HYbkT2R7
-	 rwNcYjR/4WMkCzRlwHzogRcvAMz0rETAkLPY3BTumvEl/RvTLPMk3byDz285sZEkEZTrW0+YF0Tb
-	 swpDcGM8AKX1tq97jgfHmlriADq1lliRdfXy4Myfwcva4r+YwL58g1nz4bXrlzpB9UuTSwKc6CUB
-	 iZbLLkSfM5F/0F6AOgDNmPj+x/X7LUwlFfzKYpxM5QiakQDsri6uK6o2oUUE5J4uAyhpEAkoWwr2
-	 48H4MfKTJjOvdKBlEMUBn1Nxq/14IZICJ/ZAu+ONG9tpv0QrHJXsyUkmDdLSwxNr5F7eNvTY6bFb
-	 o6budQrPMXPiZcsCgUTvuB9jF6lE+gujhnWuDW0Rp3LtYEeMDkFbnG7wwCKz+L1REcq6WC86EBTN
-	 vBtF55tw79q2rquhe/8RhScip1C4sR+hbIsOuZQf4kbCTd8I9IviVt+8gsQgsvFFpWEnWpVjvsqE
-	 MbBjlN2YFQCgmtuJ2cv/SJGjf5BMWE3KgWYM8z6W6SfXujxK9JtrB+E3SECnT2GCZR++X1retND2
-	 BVdlHMiui42p3vydKdXLMU/4YVMrux2Yfv8K4/SkCaMeVcFh/Tzr83RJ9q7sEA7aJL5olYrIhksX
-	 FtRADj9Hdgoi3cKkppXVlAr4nO8stsDipX38EEanVGIalKULLLkRd9E35yvNCk2AAVG4prE58PPR
-	 ttDxgATKAteUEG10fF
+	by newxmesmtplogicsvrszb20-0.qq.com (NewEsmtp) with SMTP
+	id 5B38F078; Wed, 15 Jan 2025 19:22:51 +0800
+X-QQ-mid: xmsmtpt1736940171tzj1938as
+Message-ID: <tencent_D8E19A36BCE6EAA35572DF7A17470906AD05@qq.com>
+X-QQ-XMAILINFO: M5WvXNp9ZPrQPKGM+FDFPuV+FFynVo0WuvtTeBswgD0gC5gqfbp53br1Wgn7QI
+	 XWt+xvZQAqvutVf1IuHYlLJJA0NLXLA/xwzvdIMH9Bw8FDvaxsMIjZQqH+S/TsxktqgYtPLgqDOV
+	 lFPBPFQJ/oJZTjh2vTCGe5NvXJkLExPtmwOJZvLalStXt/0pvF6un4BBSAxcjnq+1+tlJHFjcKZS
+	 1SHjSC0O3t+QZVoHPFm4Womer4RqCq3Y+BTqGpmnx4bZVsmNr3bJZyOrXwDEdtTvB5EyqPaSBREW
+	 VCnAOZPHEZFvbc2b/VAu+diBd0Y4rjsbPgzaRXc8Dpcs9gE+lVXDKZHCIdAWXzPkzHZSwwH6352x
+	 B2WsBUj1UZPPR5QSMCczzGjElY22H3rUdWWkmBo9yVlu/eva/WJtByGVm8sJ6KSTwSypn6mN9HYy
+	 EJuOa01DS1lxyto/0TELT2YC7+rn3nUeVKCmd+qshlSUA4BUbop+bKbDtQKHmXHu1HDuoev11vXA
+	 V+wjqhU6hN06hCrC+5y85JL4mDqSXdool2S94/X8aipPG8k9INXXDgOVIxkw180XAq0ctzWdnlaD
+	 5TBMFd6g1o+UP81YdDvKJzdqR/e2eGZM2qw3HH5spPlmJVyS9etobj4MXEvOcYkVo8GnJsTZsiEt
+	 jqIRM22T1aHZC7cSVfSIMeZH9pguXQEY9XRejgPdZg6JDc9afMLg1zOOS7z7ZkCFOoWumfeeuFOM
+	 TmP+xVW2rkguHclgl4oCrp39+OqO2OH5DleUNJkd4I4fIaGM4Jjug9j0StMgfxYvcC5yiK4ICoIH
+	 YB0eb+mnQYTW32fqgWxSYaPcM8rh+aCfNyUUQ83taZ52DiGQlhEqLfX2/6K+VKN2jNk15ARQvp2y
+	 oGJBcFl1Ey4gJf2NjYyTaTXUuFElMXI5xzjCJa+wAXOdVHFRakqBdlFcJLID4ShOwayESA9faf/v
+	 ZjJiiPb8GtdPGp8W+d5vd8KPVHvP46FM2o3Tju/oe0kqQbTyqgUBZs9QNC7R6Aes4bnvHd9hrQ+H
+	 WDFMwq9mf/0vFihSqeo+6aXSOE5SrKpY1wYOAa87KKDFip/n7Agm7oOPkZkrEyjIzDgCwIeg==
 X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
 From: lanbincn@qq.com
 To: stable@vger.kernel.org
 Cc: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Bin Lan <lanbincn@qq.com>
-Subject: [PATCH 5.15.y] iio: adc: rockchip_saradc: fix information leak in triggered buffer
-Date: Wed, 15 Jan 2025 19:20:38 +0800
-X-OQ-MSGID: <20250115112038.1958-1-lanbincn@qq.com>
+Subject: [PATCH 5.10.y] iio: adc: rockchip_saradc: fix information leak in triggered buffer
+Date: Wed, 15 Jan 2025 19:22:51 +0800
+X-OQ-MSGID: <20250115112251.2504-1-lanbincn@qq.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2025011310-spider-motor-0ef7@gregkh>
-References: <2025011310-spider-motor-0ef7@gregkh>
+In-Reply-To: <2025011310-ruckus-ceramics-7ebc@gregkh>
+References: <2025011310-ruckus-ceramics-7ebc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,10 +100,10 @@ Signed-off-by: Bin Lan <lanbincn@qq.com>
  1 file changed, 2 insertions(+)
 
 diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
-index a237fe469a30..3197fd2b3aad 100644
+index 12584f1631d8..deb58e232770 100644
 --- a/drivers/iio/adc/rockchip_saradc.c
 +++ b/drivers/iio/adc/rockchip_saradc.c
-@@ -270,6 +270,8 @@ static irqreturn_t rockchip_saradc_trigger_handler(int irq, void *p)
+@@ -254,6 +254,8 @@ static irqreturn_t rockchip_saradc_trigger_handler(int irq, void *p)
  	int ret;
  	int i, j = 0;
  
