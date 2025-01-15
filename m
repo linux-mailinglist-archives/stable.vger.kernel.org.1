@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-108983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 685B7A12152
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:55:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DD1AA121D0
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 12:00:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 494B73AD126
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:54:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FC0616AF46
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:00:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A07E156644;
-	Wed, 15 Jan 2025 10:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D561E98F0;
+	Wed, 15 Jan 2025 11:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYPowwgf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFtGfwGP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C691DB142;
-	Wed, 15 Jan 2025 10:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5E0248BAF;
+	Wed, 15 Jan 2025 11:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938463; cv=none; b=fPCL8ZFQMFrh9+avSmZexrdALQnyOhcGisVXs3gU4CvrGXuGylCjjBRx6oufnSTx1Crgl7MZqcOfOMfEZw9k7sD7CYpeH+ECRL+I/K/Xz33wdPtulG9hBO1jQl0c25uXoccssdeDOp1vOYqvPdL7GZceMVTgi/XsdmYSQuNEcWE=
+	t=1736938844; cv=none; b=D1IqScOkU2Byvgoe9orOfjT4NUy4PPB0qAoL8lqNmtZOhKz0VJtJuB3yP1J3oA5p6xD04A6AiOmj3w4pJGBIREycAx5jnMYLM7nufKhIMoi6f9WhkXzQZd73D6uhRTfeq3MIR02mLV/eEnLWqHd0O1TOQNHMVsMLGa5mS+8Woes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938463; c=relaxed/simple;
-	bh=ScLmvV2NCDPUXqckpyslVzJUQCmeG2tA5eD9ePq5DXM=;
+	s=arc-20240116; t=1736938844; c=relaxed/simple;
+	bh=qHZIeJr3UwR4RJPxKkAAh+QWFUa30bunhBJIbfG1ZV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M0gxWFFFR8OvQst5E+lQjgzkWQHAXejrv9YMXJQVoXFny9QVS1TdHM3pxeaLWwTZMEVGsIXEDdvpU3TWIHWH9JHUt3IEh4HsofuFCys9//zTzUXbHKRRNbS7gvUc4cXY25E/7tRRe4zAqOPZOxPPkCVrXUgWQEJ2ciZIErypxpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYPowwgf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3252AC4CEDF;
-	Wed, 15 Jan 2025 10:54:22 +0000 (UTC)
+	 MIME-Version; b=mbz8BL6ZWqQwDSAsiq2dv/nd8tkxBU79F5rttaUku6GlPAxqubicu4Aj2GV62cEv/4Rcn1aqi+FQElIEe2/WWOFCC0ROH8LYDwOZHbW1bM1wHBXoIcwTCoYkG3SP3cZOReYZ1VsA/W7Oblw0+Rfl7HCPnlSckkOO7PmCeD5T2WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFtGfwGP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EAA7C4CEDF;
+	Wed, 15 Jan 2025 11:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938463;
-	bh=ScLmvV2NCDPUXqckpyslVzJUQCmeG2tA5eD9ePq5DXM=;
+	s=korg; t=1736938844;
+	bh=qHZIeJr3UwR4RJPxKkAAh+QWFUa30bunhBJIbfG1ZV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tYPowwgfkEQsUELo2AL2mPC5+NMeejMEfWRdIoGMEkGmOnnD+xmgq1JOsSoirEMsq
-	 RYZoltsTftAKMqUzbj4ulG8yrQLN2/btOO3BJ/nLQcN0trTekSPjj+/lztzwsqJThz
-	 cqVQpwoeUbo7/A+32No/80AWFBX2KidjcDORdqUM=
+	b=OFtGfwGPQxb3u28ZwYj6MxnPdmp7StDSHxQnkDdR0n9iP+DVVFyLL7RJ/20AASRo0
+	 1PeKNIcmSxqqlIMKa14KfDvocy7b5i1ocG+ZQtW9iOY0qq3Am754xqCwcCKq7g8u4D
+	 yM3jEtR7Q5zeyNOHV3on//TZH4p51FAf9xU64mLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 162/189] iio: adc: rockchip_saradc: fix information leak in triggered buffer
+	Lubomir Rintel <lkundrak@v3.sk>,
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.6 083/129] usb-storage: Add max sectors quirk for Nokia 208
 Date: Wed, 15 Jan 2025 11:37:38 +0100
-Message-ID: <20250115103612.868204891@linuxfoundation.org>
+Message-ID: <20250115103557.673743204@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Lubomir Rintel <lrintel@redhat.com>
 
-commit 38724591364e1e3b278b4053f102b49ea06ee17c upstream.
+commit cdef30e0774802df2f87024d68a9d86c3b99ca2a upstream.
 
-The 'data' local struct is used to push data to user space from a
-triggered buffer, but it does not set values for inactive channels, as
-it only uses iio_for_each_active_channel() to assign new values.
+This fixes data corruption when accessing the internal SD card in mass
+storage mode.
 
-Initialize the struct to zero before using it to avoid pushing
-uninitialized information to userspace.
+I am actually not too sure why. I didn't figure a straightforward way to
+reproduce the issue, but i seem to get garbage when issuing a lot (over 50)
+of large reads (over 120 sectors) are done in a quick succession. That is,
+time seems to matter here -- larger reads are fine if they are done with
+some delay between them.
 
-Cc: stable@vger.kernel.org
-Fixes: 4e130dc7b413 ("iio: adc: rockchip_saradc: Add support iio buffers")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-4-0cb6e98d895c@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+But I'm not great at understanding this sort of things, so I'll assume
+the issue other, smarter, folks were seeing with similar phones is the
+same problem and I'll just put my quirk next to theirs.
+
+The "Software details" screen on the phone is as follows:
+
+  V 04.06
+  07-08-13
+  RM-849
+  (c) Nokia
+
+TL;DR version of the device descriptor:
+
+  idVendor           0x0421 Nokia Mobile Phones
+  idProduct          0x06c2
+  bcdDevice            4.06
+  iManufacturer           1 Nokia
+  iProduct                2 Nokia 208
+
+The patch assumes older firmwares are broken too (I'm unable to test, but
+no biggie if they aren't I guess), and I have no idea if newer firmware
+exists.
+
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+Cc: stable <stable@kernel.org>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250101212206.2386207-1-lkundrak@v3.sk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/rockchip_saradc.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/storage/unusual_devs.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/iio/adc/rockchip_saradc.c
-+++ b/drivers/iio/adc/rockchip_saradc.c
-@@ -368,6 +368,8 @@ static irqreturn_t rockchip_saradc_trigg
- 	int ret;
- 	int i, j = 0;
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -255,6 +255,13 @@ UNUSUAL_DEV(  0x0421, 0x06aa, 0x1110, 0x
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 		US_FL_MAX_SECTORS_64 ),
  
-+	memset(&data, 0, sizeof(data));
++/* Added by Lubomir Rintel <lkundrak@v3.sk>, a very fine chap */
++UNUSUAL_DEV(  0x0421, 0x06c2, 0x0000, 0x0406,
++		"Nokia",
++		"Nokia 208",
++		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
++		US_FL_MAX_SECTORS_64 ),
 +
- 	mutex_lock(&info->lock);
- 
- 	iio_for_each_active_channel(i_dev, i) {
+ #ifdef NO_SDDR09
+ UNUSUAL_DEV(  0x0436, 0x0005, 0x0100, 0x0100,
+ 		"Microtech",
 
 
 
