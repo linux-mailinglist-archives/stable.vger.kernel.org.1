@@ -1,277 +1,295 @@
-Return-Path: <stable+bounces-108694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AB5FA11D7D
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:24:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DBE4A11D87
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:24:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C5693AB059
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 09:23:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DBFB3AA078
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 09:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 772122309A1;
-	Wed, 15 Jan 2025 09:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2EC236A6E;
+	Wed, 15 Jan 2025 09:20:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpRSSMeK"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D960122FACA;
-	Wed, 15 Jan 2025 09:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158CB2288EC
+	for <stable@vger.kernel.org>; Wed, 15 Jan 2025 09:20:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736932767; cv=none; b=gCVkXXaZuTXEHTdoepRAHQjZdj0D8ROTkY4zyRKNsjTJ1N8b4BTGhcZfyehIvxOwFyyJr+EfQJOo8TxKU2+ZuxjRF8WdX1+PKzC/9iQHq4bNe6XcUUNAz8B6FJVKHWJNeQvY8tf7yF2Hl2KEfIiF19HCOPr5STMKEVhVysT4bMs=
+	t=1736932856; cv=none; b=a5QMEZJFEG7RNhV03zub0mxrR0KfI5L+alv8vPb1PUN79U/IPpPshzZYlG5r6nzEvxS4hQFNjjk+uFx/e1oNITClBx/IliGj5q1+XaqVaDSS6v9ZfCyZ8t51nGUg3xWjlDNgFI+xjGMG5OxuziAknCECSF39yczQtXSbMnJ24Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736932767; c=relaxed/simple;
-	bh=hZnmZpsSybCTH1E14UMX1xw4897EKM3ygXvOmOnmRtA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QnL5n0mVNLfSiI881xmFVeKdPAiX1eFGKJFvhBRnFKfLCeg9CtQDh4GVnVJntB/4zn3ZHeSpV5MqL2oBrNNMZ8rsoWEfB+BhuhfvazE4CUG52idGiLpRYHLWB2w0pJCsdoieAesWvqzCm/+kWygLrnXU/g3+DhSC1c6pnwo+1Ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
-	by air.basealt.ru (Postfix) with ESMTPSA id A42F8233C6;
-	Wed, 15 Jan 2025 12:19:21 +0300 (MSK)
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-To: stable@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	kovalev@altlinux.org,
-	Eric Dumazet <edumazet@google.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10] net: defer final 'struct net' free in netns dismantle
-Date: Wed, 15 Jan 2025 12:19:13 +0300
-Message-Id: <20250115091913.335173-1-kovalev@altlinux.org>
-X-Mailer: git-send-email 2.33.8
+	s=arc-20240116; t=1736932856; c=relaxed/simple;
+	bh=cWqYGqRDV5mWWl7ey8RTzlhW9gOdlvdVh3zHhel2C7Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dbOBp1Yj2eW8bA7Vm41qWKahRNy/3N1kVZL5QmORxZS+4aezIQ5ll4r4a2ooQ5TCBy9dC1HX9a7ZoVLq7b84BOAWh9bhDs0x4q4ch1/9/9N6f4NLe4aIX4/5nQn+sYdbcTkvKiFHmHXIhCbgCS3ZhTnjk+pUS2c38GLpIBw9zZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpRSSMeK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B648C4CEDF;
+	Wed, 15 Jan 2025 09:20:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1736932855;
+	bh=cWqYGqRDV5mWWl7ey8RTzlhW9gOdlvdVh3zHhel2C7Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=wpRSSMeKiYJyK4Vj1zBC/ITBz1umDYlfRSNvzm+gyOn7iGtPRuqF07MPgJG9w5Kb3
+	 HgzUTO9aRmkF+3qyK6sGKitVo0xZ+o/0KD8vKL4du+m27GxxET+r5WyixnBMTDp2CT
+	 0ZrwZ1pg874GvdR9pPUYsT1Tx9PGhiMfLfb5Adxw=
+Date: Wed, 15 Jan 2025 10:20:51 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Alex Deucher <alexdeucher@gmail.com>
+Cc: Sasha Levin <sashal@kernel.org>, Simona Vetter <simona.vetter@ffwll.ch>,
+	Dave Airlie <airlied@gmail.com>,
+	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+	stable@vger.kernel.org, ashutosh.dixit@intel.com,
+	dri-devel@lists.freedesktop.org
+Subject: Re: AAARRRGGGHHH!!!! (was Re: [PATCH 6.12.y] xe/oa: Fix query mode
+ of operation for OAR/OAC)
+Message-ID: <2025011506-gloater-zoning-ad41@gregkh>
+References: <2025011215-agreeing-bonfire-97ae@gregkh>
+ <CAPM=9txn1x5A7xt+9YQ+nvLaQ3ycekC1Oj4J2PUpWCJwyQEL9w@mail.gmail.com>
+ <CAPM=9twogjmTCc=UHBYkPPkrdHfm0PJ9VDoOg+X2jWZbdjVBww@mail.gmail.com>
+ <2025011247-spoilage-hamster-28b2@gregkh>
+ <CAPM=9tx1cFzhaZNz=gQOmP9Q0KEK5fMKZYSc-P0xA_f2sxoZ9w@mail.gmail.com>
+ <2025011352-fox-wrangle-4d3f@gregkh>
+ <CAPM=9tzkJ=dn2gq7GcvtN_C95ZzxwC7XMMXHBrwF6Ez6fYfU=g@mail.gmail.com>
+ <Z4Z8rQKR2QEaWNyI@phenom.ffwll.local>
+ <Z4aIGvAmMld_uztJ@lappy>
+ <CADnq5_OtYOcf3k1j+xqXpeaRymYZvr8nSX9bnGHQQ6RT24uyFA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CADnq5_OtYOcf3k1j+xqXpeaRymYZvr8nSX9bnGHQQ6RT24uyFA@mail.gmail.com>
 
-From: Eric Dumazet <edumazet@google.com>
+On Tue, Jan 14, 2025 at 11:11:42AM -0500, Alex Deucher wrote:
+> On Tue, Jan 14, 2025 at 11:02 AM Sasha Levin <sashal@kernel.org> wrote:
+> >
+> > On Tue, Jan 14, 2025 at 04:03:09PM +0100, Simona Vetter wrote:
+> > >On Tue, Jan 14, 2025 at 11:01:34AM +1000, Dave Airlie wrote:
+> > >> > > > We create a "web" when we backport commits, and mark things for "Fixes:"
+> > >> > > > When we get those ids wrong because you all have duplicate commits for
+> > >> > > > the same thing, everything breaks.
+> > >> > > >
+> > >> > > > > I just don't get what the ABI the tools expect is, and why everyone is
+> > >> > > > > writing bespoke tools and getting it wrong, then blaming us for not
+> > >> > > > > conforming. Fix the tools or write new ones when you realise the
+> > >> > > > > situation is more complex than your initial ideas.
+> > >> > > >
+> > >> > > > All I want to see and care about is:
+> > >> > > >
+> > >> > > >  - for a stable commit, the id that the commit is in Linus's tree.
+> > >> > > >  - for a Fixes: tag, the id that matches the commit in Linus's tree AND
+> > >> > > >    the commit that got backported to stable trees.
+> > >> > > >
+> > >> > > > That's it, that's the whole "ABI".  The issue is that you all, for any
+> > >> > > > number of commits, have 2 unique ids for any single commit and how are
+> > >> > > > we supposed to figure that mess out...
+> > >> > >
+> > >> > > Pretty sure we've explained how a few times now, not sure we can do much more.
+> > >> >
+> > >> > And the same for me.
+> > >> >
+> > >> > > If you see a commit with a cherry-pick link in it and don't have any
+> > >> > > sight on that commit in Linus's tree, ignore the cherry-pick link in
+> > >> > > it, assume it's a future placeholder for that commit id. You could if
+> > >> > > you wanted to store that info somewhere, but there shouldn't be a
+> > >> > > need.
+> > >> >
+> > >> > Ok, this is "fine", I can live with it.  BUT that's not the real issue
+> > >> > (and your own developers get confused by this, again, look at the
+> > >> > original email that started this all, they used an invalid git id to
+> > >> > send to us thinking that was the correct id to use.)
+> > >>
+> > >> I'm going to go back and look at the one you pointed out as I'm
+> > >> missing the issue with it, I thought it was due to a future ID being
+> > >> used.
+> > >
+> > >I think the issue is that with the cherry-picking we do, we don't update
+> > >the Fixes: or Reverts: lines, so those still point at the og commit in
+> > >-next, while the cherry-picked commit is in -fixes.
+> > >
+> > >The fix for that (which our own cherry-pick scripts implement iirc) is to
+> > >keep track of the cherry-picks (which is why we add that line) and treat
+> > >them as aliases.
+> > >
+> > >So if you have a Fixes: $sha1 pointing at -next, then if you do a
+> > >full-text commit message search for (cherry picked from $sha1), you should
+> > >be able to find it.
+> > >
+> > >We could try to do that lookup with the cherry-pick scripts, but a lot of
+> > >folks hand-roll these, so it's lossy at best. Plus you already have to
+> > >keep track of aliases anyway since you're cherry-picking to stable, so I
+> > >was assuming that this shouldn't cause additional issues.
+> > >
+> > >The other part is that if you already have a cherry picked from $sha1 in
+> > >your history, even if it wasn't done with stable cherry-pick, then you
+> > >don't have to cherry-pick again. These should be easy to filter out.
+> > >
+> > >But maybe I'm also not understanding what the issue is, I guess would need
+> > >to look at a specific example.
+> > >
+> > >> > > When future tools are analysing things, they will see the patch from
+> > >> > > the merge window, the cherry-picked patches in the fixes tree, and
+> > >> > > stable will reference the fixes, and the fixes patch will reference
+> > >> > > the merge window one?
+> > >> >
+> > >> >
+> > >> > > but I think when we cherry-pick patches from -next that fix
+> > >> > > other patches from -next maybe the fixes lines should be reworked to
+> > >> > > reference the previous Linus tree timeline not the future one. not
+> > >> > > 100% sure this happens? Sima might know more.
+> > >> >
+> > >> > Please fix this up, if you all can.  That is the issue here.  And again,
+> > >> > same for reverts.
+> > >> >
+> > >> > I think between the two, this is causing many fixes and reverts to go
+> > >> > unresolved in the stable trees.
+> > >> >
+> > >> > > Now previously I think we'd be requested to remove the cherry-picks
+> > >> > > from the -fixes commits as they were referencing things not in Linus'
+> > >> > > tree, we said it was a bad idea, I think we did it anyways, we got
+> > >> > > shouted at, we put it back, we get shouted that we are referencing
+> > >> > > commits that aren't in Linus tree. Either the link is useful
+> > >> > > information and we just assume cherry-picks of something we can't see
+> > >> > > are a future placeholder and ignore it until it shows up in our
+> > >> > > timeline.
+> > >> >
+> > >> > I still think it's lunacy to have a "cherry pick" commit refer to a
+> > >> > commit that is NOT IN THE TREE YET and shows up in history as "IN THE
+> > >> > FUTURE".  But hey, that's just me.
+> > >> >
+> > >> > Why do you have these markings at all?  Who are they helping?  Me?
+> > >> > Someone else?
+> > >>
+> > >> They are for helping you. Again if the commit that goes into -next is immutable,
+> > >> there is no way for it to reference the commit that goes into -fixes
+> > >> ahead of it.
+> > >>
+> > >> The commit in -fixes needs to add the link to the future commit in
+> > >> -next, that link is the cherry-pick statement.
+> > >>
+> > >> When you get the future commit into the stable queue, you look for the
+> > >> commit id in stable history as a cherry-pick and drop it if it's
+> > >> already there.
+> > >>
+> > >> I can't see any other way to do this, the future commit id is a
+> > >> placeholder in Linus/stable tree, the commit is immutable and 99.99%
+> > >> of the time it will arrive at some future point in time.
+> > >>
+> > >> I'm open to how you would make this work that isn't lunacy, but I
+> > >> can't really see a way since git commits are immutable.
+> > >
+> > >Yeah the (cherry picked from $sha1) with a sha1 that's in -next and almost
+> > >always shows up in Linus' tree in the future shouldn't be an issue. That
+> > >part really is required for driver teams to manage their flows.
+> > >
+> > >> > > I think we could ask to not merge things into -next with stable cc'ed
+> > >> > > but I think that will result in a loss of valuable fixes esp for
+> > >> > > backporters.
+> > >> >
+> > >> > Again, it's the Fixes and Reverts id referencing that is all messed up
+> > >> > here.  That needs to be resolved.  If it takes you all the effort to
+> > >> > make up a special "stable tree only" branch/series/whatever, I'm all for
+> > >> > it, but as it is now, what you all are doing is NOT working for me at
+> > >> > all.
+> > >>
+> > >> I'll have to see if anyone is willing to consider pulling this sort of
+> > >> feat off, it's not a small task, and it would have to be 99% automated
+> > >> I think to be not too burdensome.
+> > >
+> > >It's not that hard to script, dim cherry-pick already does it. It's the
+> > >part where we need to guarantee that we never ever let one slip through
+> > >didn't get this treatment of replacing the sha1.
+> > >
+> > >The even more insideous one is when people rebase their -next or -fixes
+> > >trees, since then the sha1 will really never ever show up. Which is why
+> > >we're telling people to not mess with git history at all and instead
+> > >cherry-pick. It's the lesser pain.
+> >
+> > But this does happen with cherry picks... A few examples from what I saw
+> > with drivers/gpu/drm/ and -stable:
+> >
+> > 5a507b7d2be1 ("drm/mst: Fix NULL pointer dereference at
+> > drm_dp_add_payload_part2") which landed as 8a0a7b98d4b6 ("drm/mst: Fix
+> > NULL pointer dereference at drm_dp_add_payload_part2") rather than
+> > 4545614c1d8da.
+> >
+> > e89afb51f97a ("drm/vmwgfx: Fix a 64bit regression on svga3") which
+> > landed as c2aaa37dc18f ("drm/vmwgfx: Fix a 64bit regression on svga3")
+> > rather than 873601687598.
+> >
+> > a829f033e966 ("drm/i915: Wedge the GPU if command parser setup fails")
+> > which indicates it's a cherry-pick, but I couldn't find the equivalent
+> > commit landing at any point later on.
+> >
+> >
+> > Or the following 3 commits:
+> >
+> > 0811b9e4530d ("drm/amd/display: Add HUBP surface flip interrupt
+> > handler") which has a stable tag, and no cherry-pick line.
+> >
+> > 4ded1ec8d1b3 ("drm/amd/display: Add HUBP surface flip interrupt
+> > handler") which is a different code change than the previous commit, and
+> > a completely different commit message, no stable tag, and no cherry-pick
+> > line.
+> >
+> > 7af87fc1ba13 ("drm/amd/display: Add HUBP surface flip interrupt
+> > handler") which has the same code change as above, and it has the same
+> > commit message as 4ded1ec8d1b3 but with an added stable tag, and again -
+> > no cherry-pick line.
+> 
+> In fairness, these pre-dated the amdgpu tree using cherry-pick -x.  I
+> had stopped doing that for a while because I kept getting yelled at
+> for referencing commits that were only in -next.  I've since started
+> using -x when I need to cherry-pick a fix to -fixes.
 
-commit 0f6ede9fbc747e2553612271bce108f7517e7a45 upstream.
+Ok, here's the most recent one that I tripped over, and the CVE
+community hit as well (a CVE consumer reported the problem to me):
+	a6dd15981c03 ("drm/amdgpu: prevent NULL pointer dereference if ATIF is not supported")
+which showed up in the 6.12 release (6.12-rc6 to be specific), but yet
+has the line:
+	Fixes: c9b7c809b89f ("drm/amd: Guard against bad data for ATIF ACPI method")
+while that commit was NOT in Linus's tree and did not get there until
+6.13-rc1.
 
-Ilya reported a slab-use-after-free in dst_destroy [1]
+So here we have a commit that claims it fixes a commit that is not yet
+in the tree.  This of course caused havoc with tools that assumed that
+if a commit says it fixes something, that fix is in the tree already
+(i.e. the CVE assignment scripts.)  After much digging around, it turns
+out that the _REAL_ fixes commit id was:
+	bf58f03931fd ("drm/amd: Guard against bad data for ATIF ACPI method")
+which really showed up in 6.12-rc5 (and was backported to stable commits
+as it too claimed to solve a problem in those kernels.)
 
-Issue is in xfrm6_net_init() and xfrm4_net_init() :
+So this is a real problem, and shows up and we have to then explain to
+external people, "no, what that commit says really isn't true, it's
+really fixing this other commit over there which is why we applied it
+and why we had to manually mark this CVE as THAT commit being the
+offending one, not this other one over there...)
 
-They copy xfrm[46]_dst_ops_template into net->xfrm.xfrm[46]_dst_ops.
+So again, if you all wish to keep your current workflow, wonderful, but
+realize it has consequences.  Those consequences are stable maintainers
+that are loath to touch these patches, CVE maintainers who cringe every
+time they see a DRM patch being assigned a CVE and hope that the tags
+are correct and they don't have to manually research it to determine if
+it is right or not (remember, we assign 8 CVEs a day, that workload does
+not lend itself to hand-holding at all) and also there are confused
+users when they try to determine where a fix should be applied to
+because they want to not follow the stable kernels and do their own
+thing (RHEL, SLES, ChromeOS, cloud-monstrosities, etc.)
 
-But net structure might be freed before all the dst callbacks are
-called. So when dst_destroy() calls later :
+I'm trying to point out "your workflow is causing problems."  If you
+want to ignore that statement, fine.  But that doesn't mean it's not a
+valid statement.
 
-if (dst->ops->destroy)
-    dst->ops->destroy(dst);
-
-dst->ops points to the old net->xfrm.xfrm[46]_dst_ops, which has been freed.
-
-See a relevant issue fixed in :
-
-ac888d58869b ("net: do not delay dst_entries_add() in dst_release()")
-
-A fix is to queue the 'struct net' to be freed after one
-another cleanup_net() round (and existing rcu_barrier())
-
-[1]
-
-BUG: KASAN: slab-use-after-free in dst_destroy (net/core/dst.c:112)
-Read of size 8 at addr ffff8882137ccab0 by task swapper/37/0
-Dec 03 05:46:18 kernel:
-CPU: 37 UID: 0 PID: 0 Comm: swapper/37 Kdump: loaded Not tainted 6.12.0 #67
-Hardware name: Red Hat KVM/RHEL, BIOS 1.16.1-1.el9 04/01/2014
-Call Trace:
- <IRQ>
-dump_stack_lvl (lib/dump_stack.c:124)
-print_address_description.constprop.0 (mm/kasan/report.c:378)
-? dst_destroy (net/core/dst.c:112)
-print_report (mm/kasan/report.c:489)
-? dst_destroy (net/core/dst.c:112)
-? kasan_addr_to_slab (mm/kasan/common.c:37)
-kasan_report (mm/kasan/report.c:603)
-? dst_destroy (net/core/dst.c:112)
-? rcu_do_batch (kernel/rcu/tree.c:2567)
-dst_destroy (net/core/dst.c:112)
-rcu_do_batch (kernel/rcu/tree.c:2567)
-? __pfx_rcu_do_batch (kernel/rcu/tree.c:2491)
-? lockdep_hardirqs_on_prepare (kernel/locking/lockdep.c:4339 kernel/locking/lockdep.c:4406)
-rcu_core (kernel/rcu/tree.c:2825)
-handle_softirqs (kernel/softirq.c:554)
-__irq_exit_rcu (kernel/softirq.c:589 kernel/softirq.c:428 kernel/softirq.c:637)
-irq_exit_rcu (kernel/softirq.c:651)
-sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1049 arch/x86/kernel/apic/apic.c:1049)
- </IRQ>
- <TASK>
-asm_sysvec_apic_timer_interrupt (./arch/x86/include/asm/idtentry.h:702)
-RIP: 0010:default_idle (./arch/x86/include/asm/irqflags.h:37 ./arch/x86/include/asm/irqflags.h:92 arch/x86/kernel/process.c:743)
-Code: 00 4d 29 c8 4c 01 c7 4c 29 c2 e9 6e ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 90 0f 00 2d c7 c9 27 00 fb f4 <fa> c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 90
-RSP: 0018:ffff888100d2fe00 EFLAGS: 00000246
-RAX: 00000000001870ed RBX: 1ffff110201a5fc2 RCX: ffffffffb61a3e46
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffffb3d4d123
-RBP: 0000000000000000 R08: 0000000000000001 R09: ffffed11c7e1835d
-R10: ffff888e3f0c1aeb R11: 0000000000000000 R12: 0000000000000000
-R13: ffff888100d20000 R14: dffffc0000000000 R15: 0000000000000000
-? ct_kernel_exit.constprop.0 (kernel/context_tracking.c:148)
-? cpuidle_idle_call (kernel/sched/idle.c:186)
-default_idle_call (./include/linux/cpuidle.h:143 kernel/sched/idle.c:118)
-cpuidle_idle_call (kernel/sched/idle.c:186)
-? __pfx_cpuidle_idle_call (kernel/sched/idle.c:168)
-? lock_release (kernel/locking/lockdep.c:467 kernel/locking/lockdep.c:5848)
-? lockdep_hardirqs_on_prepare (kernel/locking/lockdep.c:4347 kernel/locking/lockdep.c:4406)
-? tsc_verify_tsc_adjust (arch/x86/kernel/tsc_sync.c:59)
-do_idle (kernel/sched/idle.c:326)
-cpu_startup_entry (kernel/sched/idle.c:423 (discriminator 1))
-start_secondary (arch/x86/kernel/smpboot.c:202 arch/x86/kernel/smpboot.c:282)
-? __pfx_start_secondary (arch/x86/kernel/smpboot.c:232)
-? soft_restart_cpu (arch/x86/kernel/head_64.S:452)
-common_startup_64 (arch/x86/kernel/head_64.S:414)
- </TASK>
-Dec 03 05:46:18 kernel:
-Allocated by task 12184:
-kasan_save_stack (mm/kasan/common.c:48)
-kasan_save_track (./arch/x86/include/asm/current.h:49 mm/kasan/common.c:60 mm/kasan/common.c:69)
-__kasan_slab_alloc (mm/kasan/common.c:319 mm/kasan/common.c:345)
-kmem_cache_alloc_noprof (mm/slub.c:4085 mm/slub.c:4134 mm/slub.c:4141)
-copy_net_ns (net/core/net_namespace.c:421 net/core/net_namespace.c:480)
-create_new_namespaces (kernel/nsproxy.c:110)
-unshare_nsproxy_namespaces (kernel/nsproxy.c:228 (discriminator 4))
-ksys_unshare (kernel/fork.c:3313)
-__x64_sys_unshare (kernel/fork.c:3382)
-do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-Dec 03 05:46:18 kernel:
-Freed by task 11:
-kasan_save_stack (mm/kasan/common.c:48)
-kasan_save_track (./arch/x86/include/asm/current.h:49 mm/kasan/common.c:60 mm/kasan/common.c:69)
-kasan_save_free_info (mm/kasan/generic.c:582)
-__kasan_slab_free (mm/kasan/common.c:271)
-kmem_cache_free (mm/slub.c:4579 mm/slub.c:4681)
-cleanup_net (net/core/net_namespace.c:456 net/core/net_namespace.c:446 net/core/net_namespace.c:647)
-process_one_work (kernel/workqueue.c:3229)
-worker_thread (kernel/workqueue.c:3304 kernel/workqueue.c:3391)
-kthread (kernel/kthread.c:389)
-ret_from_fork (arch/x86/kernel/process.c:147)
-ret_from_fork_asm (arch/x86/entry/entry_64.S:257)
-Dec 03 05:46:18 kernel:
-Last potentially related work creation:
-kasan_save_stack (mm/kasan/common.c:48)
-__kasan_record_aux_stack (mm/kasan/generic.c:541)
-insert_work (./include/linux/instrumented.h:68 ./include/asm-generic/bitops/instrumented-non-atomic.h:141 kernel/workqueue.c:788 kernel/workqueue.c:795 kernel/workqueue.c:2186)
-__queue_work (kernel/workqueue.c:2340)
-queue_work_on (kernel/workqueue.c:2391)
-xfrm_policy_insert (net/xfrm/xfrm_policy.c:1610)
-xfrm_add_policy (net/xfrm/xfrm_user.c:2116)
-xfrm_user_rcv_msg (net/xfrm/xfrm_user.c:3321)
-netlink_rcv_skb (net/netlink/af_netlink.c:2536)
-xfrm_netlink_rcv (net/xfrm/xfrm_user.c:3344)
-netlink_unicast (net/netlink/af_netlink.c:1316 net/netlink/af_netlink.c:1342)
-netlink_sendmsg (net/netlink/af_netlink.c:1886)
-sock_write_iter (net/socket.c:729 net/socket.c:744 net/socket.c:1165)
-vfs_write (fs/read_write.c:590 fs/read_write.c:683)
-ksys_write (fs/read_write.c:736)
-do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-Dec 03 05:46:18 kernel:
-Second to last potentially related work creation:
-kasan_save_stack (mm/kasan/common.c:48)
-__kasan_record_aux_stack (mm/kasan/generic.c:541)
-insert_work (./include/linux/instrumented.h:68 ./include/asm-generic/bitops/instrumented-non-atomic.h:141 kernel/workqueue.c:788 kernel/workqueue.c:795 kernel/workqueue.c:2186)
-__queue_work (kernel/workqueue.c:2340)
-queue_work_on (kernel/workqueue.c:2391)
-__xfrm_state_insert (./include/linux/workqueue.h:723 net/xfrm/xfrm_state.c:1150 net/xfrm/xfrm_state.c:1145 net/xfrm/xfrm_state.c:1513)
-xfrm_state_update (./include/linux/spinlock.h:396 net/xfrm/xfrm_state.c:1940)
-xfrm_add_sa (net/xfrm/xfrm_user.c:912)
-xfrm_user_rcv_msg (net/xfrm/xfrm_user.c:3321)
-netlink_rcv_skb (net/netlink/af_netlink.c:2536)
-xfrm_netlink_rcv (net/xfrm/xfrm_user.c:3344)
-netlink_unicast (net/netlink/af_netlink.c:1316 net/netlink/af_netlink.c:1342)
-netlink_sendmsg (net/netlink/af_netlink.c:1886)
-sock_write_iter (net/socket.c:729 net/socket.c:744 net/socket.c:1165)
-vfs_write (fs/read_write.c:590 fs/read_write.c:683)
-ksys_write (fs/read_write.c:736)
-do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-Fixes: a8a572a6b5f2 ("xfrm: dst_entries_init() per-net dst_ops")
-Reported-by: Ilya Maximets <i.maximets@ovn.org>
-Closes: https://lore.kernel.org/netdev/CANn89iKKYDVpB=MtmfH7nyv2p=rJWSLedO5k7wSZgtY_tO8WQg@mail.gmail.com/T/#m02c98c3009fe66382b73cfb4db9cf1df6fab3fbf
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20241204125455.3871859-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
----
-Backport to fix CVE-2024-56658
-Link: https://www.cve.org/CVERecord/?id=CVE-2024-56658
----
- include/net/net_namespace.h |  1 +
- net/core/net_namespace.c    | 25 +++++++++++++++++++++++--
- 2 files changed, 24 insertions(+), 2 deletions(-)
-
-diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
-index eb0e7731f3b1c8..df95d553923937 100644
---- a/include/net/net_namespace.h
-+++ b/include/net/net_namespace.h
-@@ -80,6 +80,7 @@ struct net {
- 						 * or to unregister pernet ops
- 						 * (pernet_ops_rwsem write locked).
- 						 */
-+	struct llist_node	defer_free_list;
- 	struct llist_node	cleanup_list;	/* namespaces on death row */
- 
- #ifdef CONFIG_KEYS
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index 6192a05ebcce2c..232c5afc1f777d 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -452,10 +452,29 @@ static struct net *net_alloc(void)
- 	goto out;
- }
- 
-+static LLIST_HEAD(defer_free_list);
-+
-+static void net_complete_free(void)
-+{
-+	struct llist_node *kill_list;
-+	struct net *net, *next;
-+
-+	/* Get the list of namespaces to free from last round. */
-+	kill_list = llist_del_all(&defer_free_list);
-+
-+	llist_for_each_entry_safe(net, next, kill_list, defer_free_list)
-+		kmem_cache_free(net_cachep, net);
-+
-+}
-+
- static void net_free(struct net *net)
- {
--	kfree(rcu_access_pointer(net->gen));
--	kmem_cache_free(net_cachep, net);
-+	if (refcount_dec_and_test(&net->passive)) {
-+		kfree(rcu_access_pointer(net->gen));
-+
-+		/* Wait for an extra rcu_barrier() before final free. */
-+		llist_add(&net->defer_free_list, &defer_free_list);
-+	}
- }
- 
- void net_drop_ns(void *p)
-@@ -628,6 +647,8 @@ static void cleanup_net(struct work_struct *work)
- 	 */
- 	rcu_barrier();
- 
-+	net_complete_free();
-+
- 	/* Finally it is safe to free my network namespace structure */
- 	list_for_each_entry_safe(net, tmp, &net_exit_list, exit_list) {
- 		list_del_init(&net->exit_list);
--- 
-2.33.8
-
+greg k-h
 
