@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-109065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C18ABA121A9
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:59:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B237EA120E5
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:50:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45C357A27CA
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:59:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B0CC3A9AEA
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBDB248BD1;
-	Wed, 15 Jan 2025 10:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 202A1248BD1;
+	Wed, 15 Jan 2025 10:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LI4nsdJm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Df5rIUjO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26E71E98E6;
-	Wed, 15 Jan 2025 10:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB9B248BBD;
+	Wed, 15 Jan 2025 10:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938737; cv=none; b=uSv8xV1Jf8P7vE10hxOjJ6h+4U/5aeIxyTBywJM/sEUKsFNIWKAYz7LfKa+eUgaIpYpctxb0g38af1YlQgWlnnRBY7MdgBvYy63EbP/0V/BWpzZTR07SL+f19jwq63VMlT96p8JlRQ1ecgMTcv/txy+hexoIfz/OzmS6WXrVTiI=
+	t=1736938226; cv=none; b=MeXHXjSipqWRxYcreaxOF91BlO45Nhjeg5GiGWQ4zPFtGEBDAvH73wxnrYQR2ia09PuD498woVkWArIlZnxKen+1wTEJdvC/UnlcDBPu9Xmp2xhaF6nG1wls9PstpzzQZyJyG4bx4BP7jFX977Co5VO1hhIAPexiF+9ogu2AeXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938737; c=relaxed/simple;
-	bh=mqFW0Z5EYA6yX36df4gCeQ33SGQF4MAIp35TmgYtzTA=;
+	s=arc-20240116; t=1736938226; c=relaxed/simple;
+	bh=dCXo+qZDiSITcXY1+yqxQqyudwxgG01gDe9IQ57ltqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tzpqYRygaT8yywUtr2KsXjq51p+IrGxPPr16f0T/j7Pye6EexKKEMUMr80KIGVoQ0iGfcgad5bhmDcBOxQ+Ok5urB6xTs5ejocSpFMnfsRgkV8mJc8zQQEAvAtJWp9Ta8eF1933bmTJdHi2Q3d7rELUOc6W6kqnKUPYKRzP0NeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LI4nsdJm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29BA3C4CEE4;
-	Wed, 15 Jan 2025 10:58:56 +0000 (UTC)
+	 MIME-Version; b=QzRQOtHxbSXb0I3sGSUeL6V5RhfFxxsNpiPMK7oX1YzIXUmnBpV2HnGTJKXf2EYNtJdJ2ivLOYnJdA03B9MDKQkZbY4xsnqTKCsoRMGcNOWueoWqnLinqfv6JBnTqXMbtVuj3wpuJfgjhoZ60QL75VkEkKR27H/gig/BiEnSZt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Df5rIUjO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B39FC4CEDF;
+	Wed, 15 Jan 2025 10:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938737;
-	bh=mqFW0Z5EYA6yX36df4gCeQ33SGQF4MAIp35TmgYtzTA=;
+	s=korg; t=1736938226;
+	bh=dCXo+qZDiSITcXY1+yqxQqyudwxgG01gDe9IQ57ltqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LI4nsdJms/PKA7+iFOrRB06fM7GFGNiOzT07RmdBaCpSb9NFyjXfdxYc3AWyhvaAM
-	 y+CkaOBejOZa9zAGDIv6la/scj3jcu1GqAlzibHmF4jiEoopqQXL5ImlpY9s0kvwHQ
-	 sSepRQBJgpsxxlVdRl2nx+aeON2lHKUbpArGJpGI=
+	b=Df5rIUjO6gRC/1Knpc1sF2LVN3MGUmDD/BMtIUXaYBTy5e1/Nhvda6RVKb9xIg57c
+	 NlSZ+ElkTHv2FQ4YKK8iy5kYyhxg46Ke2gfN6tTKnD34dVyGiNtFIyjPpdGOWhNXSr
+	 V/1hV7zvHGxj1yTSF1T/9BKdO51MJVHp1LgWXwjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 041/129] iio: imu: inv_icm42600: fix timestamps after suspend if sensor is on
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.12 120/189] ACPI: resource: Add Asus Vivobook X1504VAP to irq1_level_low_skip_override[]
 Date: Wed, 15 Jan 2025 11:36:56 +0100
-Message-ID: <20250115103556.012875347@linuxfoundation.org>
+Message-ID: <20250115103611.245348009@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 65a60a590142c54a3f3be11ff162db2d5b0e1e06 upstream.
+commit 66d337fede44dcbab4107d37684af8fcab3d648e upstream.
 
-Currently suspending while sensors are one will result in timestamping
-continuing without gap at resume. It can work with monotonic clock but
-not with other clocks. Fix that by resetting timestamping.
+Like the Vivobook X1704VAP the X1504VAP has its keyboard IRQ (1) described
+as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh which
+breaks the keyboard.
 
-Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Link: https://patch.msgid.link/20241113-inv_icm42600-fix-timestamps-after-suspend-v1-1-dfc77c394173@tdk.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Add the X1504VAP to the irq1_level_low_skip_override[] quirk table to fix
+this.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219224
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20241220181352.25974-1-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/acpi/resource.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -17,6 +17,7 @@
- #include <linux/regmap.h>
- 
- #include <linux/iio/iio.h>
-+#include <linux/iio/common/inv_sensors_timestamp.h>
- 
- #include "inv_icm42600.h"
- #include "inv_icm42600_buffer.h"
-@@ -725,6 +726,8 @@ out_unlock:
- static int inv_icm42600_resume(struct device *dev)
- {
- 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
-+	struct inv_sensors_timestamp *gyro_ts = iio_priv(st->indio_gyro);
-+	struct inv_sensors_timestamp *accel_ts = iio_priv(st->indio_accel);
- 	int ret;
- 
- 	mutex_lock(&st->lock);
-@@ -745,9 +748,12 @@ static int inv_icm42600_resume(struct de
- 		goto out_unlock;
- 
- 	/* restore FIFO data streaming */
--	if (st->fifo.on)
-+	if (st->fifo.on) {
-+		inv_sensors_timestamp_reset(gyro_ts);
-+		inv_sensors_timestamp_reset(accel_ts);
- 		ret = regmap_write(st->map, INV_ICM42600_REG_FIFO_CONFIG,
- 				   INV_ICM42600_FIFO_CONFIG_STREAM);
-+	}
- 
- out_unlock:
- 	mutex_unlock(&st->lock);
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -441,6 +441,13 @@ static const struct dmi_system_id irq1_l
+ 		},
+ 	},
+ 	{
++		/* Asus Vivobook X1504VAP */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "X1504VAP"),
++		},
++	},
++	{
+ 		/* Asus Vivobook X1704VAP */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
 
 
 
