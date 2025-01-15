@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-109048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0071A1218E
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:58:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CD86A120FF
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:51:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDBA91886A5F
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:58:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F37116A949
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A60A248BDF;
-	Wed, 15 Jan 2025 10:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CD7E248BA6;
+	Wed, 15 Jan 2025 10:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9qgOKCX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OZds1HM0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BE8248BD0;
-	Wed, 15 Jan 2025 10:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD685248BA1;
+	Wed, 15 Jan 2025 10:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938685; cv=none; b=BJOW1EAIWueC4NsQeBlxwkvCJl5y/WmBK/11ejrvDxbXTPSqZ2vd/zeCeM5EWoHRnJqjjOhQkAM/Fkgu7P8QYfVHaA+zVcizXKQ9XsSDgtvNxbMDPT+wz+/wE3iuBUlsp9L4ZivAHbJGWuK33YLXF1DO3TJlwdeDGIImkUd4JSg=
+	t=1736938301; cv=none; b=jUICEQRprLpB/fuFAwMXB78KqV5zxqr4t63mF/zxDcINRtHP2yDK0cfbR+vj5SQnB38P9UufshIRx3q5QYHX+uxiwVvVeRPEUDCmE19KDUiK7TK4TD8rwk8l378H+JZwkn5KTxGzr3wE69x8/VVroMuIJGejMxCGyCjq4V6Qh0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938685; c=relaxed/simple;
-	bh=2jYaVWUq+ZNRkWDNmgG7SnHUFEIanLrBpUMTUg8L2Ss=;
+	s=arc-20240116; t=1736938301; c=relaxed/simple;
+	bh=I8m0bA3yxk2KTuXBaz/TckW3lchdEuHeUEgAzcbpMKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MdBjB2dMtvURf9fA3UjZdgKdaDiwAL/cym4HzPm2kOSGLUmKr+17ukqk66PsKl2xHXdDMf3FImgDMrgjHYvRRb7WYhVga3huGErzXuqVdE7txb8o0flpyWyfuVwHsmXuUplwBT6eYlfGTdTRkqF+vceJgmTd/rSL5I1j5WZ7E0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9qgOKCX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B00C4CEDF;
-	Wed, 15 Jan 2025 10:58:03 +0000 (UTC)
+	 MIME-Version; b=XQ6E3/GWN0n4EVWSITIQOLKtvUm9irupED+fvUEdLUAXzCU8taS/vGHPEjVZoC2NqgpT52Y90p9rbJCcJX9hvUyLuyJQIBg4YWHaLfSa6q6fwP/qOe/mahR2D3NtR6uvJhzYTjUo2MO3xJdsHhcX+rWHEVriSnax5pWhCS/Fjtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OZds1HM0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EED7C4CEDF;
+	Wed, 15 Jan 2025 10:51:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938683;
-	bh=2jYaVWUq+ZNRkWDNmgG7SnHUFEIanLrBpUMTUg8L2Ss=;
+	s=korg; t=1736938301;
+	bh=I8m0bA3yxk2KTuXBaz/TckW3lchdEuHeUEgAzcbpMKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y9qgOKCX+4pLrKzK3Q4HLDzDRQaWx7ZRHjZJT+bch3dhM3muR9zCQ54lNZfLe21F9
-	 KeiLAn/631Fa3ORYYsjUHhwVwggPJeBLr1i48Sd8h4vA2qhqfq/QcLnc1fc1p53VC4
-	 dsTIVFDSnLZMkGMCDy0PlpXb0M62jh7kH/nMQezg=
+	b=OZds1HM0jMzAsxKXvIkUXYOqd8j8h2ZJW747lWKKxDrJwvp5D7g3d/rrncCrMK2hg
+	 Bm94bRCnAFCK36dqeU49ZOJ/uD4VMBDo6rW41/I0Yk631/1vsJxNF3I9EquFEvNPTn
+	 HYIYz4Mj5QuxlfSjm0ks2otvSqkhdm544jxFvk/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 064/129] sctp: sysctl: auth_enable: avoid using current->nsproxy
+	Christina Schimpe <christina.schimpe@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 6.12 143/189] x86/fpu: Ensure shadow stack is active before "getting" registers
 Date: Wed, 15 Jan 2025 11:37:19 +0100
-Message-ID: <20250115103556.931192418@linuxfoundation.org>
+Message-ID: <20250115103612.128642344@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
-commit 15649fd5415eda664ef35780c2013adeb5d9c695 upstream.
+commit a9d9c33132d49329ada647e4514d210d15e31d81 upstream.
 
-As mentioned in a previous commit of this series, using the 'net'
-structure via 'current' is not recommended for different reasons:
+The x86 shadow stack support has its own set of registers. Those registers
+are XSAVE-managed, but they are "supervisor state components" which means
+that userspace can not touch them with XSAVE/XRSTOR.  It also means that
+they are not accessible from the existing ptrace ABI for XSAVE state.
+Thus, there is a new ptrace get/set interface for it.
 
-- Inconsistency: getting info from the reader's/writer's netns vs only
-  from the opener's netns.
+The regset code that ptrace uses provides an ->active() handler in
+addition to the get/set ones. For shadow stack this ->active() handler
+verifies that shadow stack is enabled via the ARCH_SHSTK_SHSTK bit in the
+thread struct. The ->active() handler is checked from some call sites of
+the regset get/set handlers, but not the ptrace ones. This was not
+understood when shadow stack support was put in place.
 
-- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
-  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
-  syzbot [1] using acct(2).
+As a result, both the set/get handlers can be called with
+XFEATURE_CET_USER in its init state, which would cause get_xsave_addr() to
+return NULL and trigger a WARN_ON(). The ssp_set() handler luckily has an
+ssp_active() check to avoid surprising the kernel with shadow stack
+behavior when the kernel is not ready for it (ARCH_SHSTK_SHSTK==0). That
+check just happened to avoid the warning.
 
-The 'net' structure can be obtained from the table->data using
-container_of().
+But the ->get() side wasn't so lucky. It can be called with shadow stacks
+disabled, triggering the warning in practice, as reported by Christina
+Schimpe:
 
-Note that table->data could also be used directly, but that would
-increase the size of this fix, while 'sctp.ctl_sock' still needs to be
-retrieved from 'net' structure.
+WARNING: CPU: 5 PID: 1773 at arch/x86/kernel/fpu/regset.c:198 ssp_get+0x89/0xa0
+[...]
+Call Trace:
+<TASK>
+? show_regs+0x6e/0x80
+? ssp_get+0x89/0xa0
+? __warn+0x91/0x150
+? ssp_get+0x89/0xa0
+? report_bug+0x19d/0x1b0
+? handle_bug+0x46/0x80
+? exc_invalid_op+0x1d/0x80
+? asm_exc_invalid_op+0x1f/0x30
+? __pfx_ssp_get+0x10/0x10
+? ssp_get+0x89/0xa0
+? ssp_get+0x52/0xa0
+__regset_get+0xad/0xf0
+copy_regset_to_user+0x52/0xc0
+ptrace_regset+0x119/0x140
+ptrace_request+0x13c/0x850
+? wait_task_inactive+0x142/0x1d0
+? do_syscall_64+0x6d/0x90
+arch_ptrace+0x102/0x300
+[...]
 
-Fixes: b14878ccb7fa ("net: sctp: cache auth_enable per endpoint")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-6-5df34b2083e8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Ensure that shadow stacks are active in a thread before looking them up
+in the XSAVE buffer. Since ARCH_SHSTK_SHSTK and user_ssp[SHSTK_EN] are
+set at the same time, the active check ensures that there will be
+something to find in the XSAVE buffer.
+
+[ dhansen: changelog/subject tweaks ]
+
+Fixes: 2fab02b25ae7 ("x86: Add PTRACE interface for shadow stack")
+Reported-by: Christina Schimpe <christina.schimpe@intel.com>
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Tested-by: Christina Schimpe <christina.schimpe@intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250107233056.235536-1-rick.p.edgecombe%40intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/sysctl.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/fpu/regset.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/sctp/sysctl.c
-+++ b/net/sctp/sysctl.c
-@@ -503,7 +503,7 @@ static int proc_sctp_do_alpha_beta(struc
- static int proc_sctp_do_auth(struct ctl_table *ctl, int write,
- 			     void *buffer, size_t *lenp, loff_t *ppos)
- {
--	struct net *net = current->nsproxy->net_ns;
-+	struct net *net = container_of(ctl->data, struct net, sctp.auth_enable);
- 	struct ctl_table tbl;
- 	int new_value, ret;
+--- a/arch/x86/kernel/fpu/regset.c
++++ b/arch/x86/kernel/fpu/regset.c
+@@ -190,7 +190,8 @@ int ssp_get(struct task_struct *target,
+ 	struct fpu *fpu = &target->thread.fpu;
+ 	struct cet_user_state *cetregs;
  
+-	if (!cpu_feature_enabled(X86_FEATURE_USER_SHSTK))
++	if (!cpu_feature_enabled(X86_FEATURE_USER_SHSTK) ||
++	    !ssp_active(target, regset))
+ 		return -ENODEV;
+ 
+ 	sync_fpstate(fpu);
 
 
 
