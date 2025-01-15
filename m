@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-108935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 074E2A120FE
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:51:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0071A1218E
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:58:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1416F188D44C
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:51:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDBA91886A5F
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:58:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA51E248BDC;
-	Wed, 15 Jan 2025 10:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A60A248BDF;
+	Wed, 15 Jan 2025 10:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGXShhuz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9qgOKCX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97252248BB2;
-	Wed, 15 Jan 2025 10:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BE8248BD0;
+	Wed, 15 Jan 2025 10:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938298; cv=none; b=gck2XMXHTjmFSsfhGCz229XcDa1jNaTIUjenkcddrIzDVEQiWlhR+4KQTH1fzmM3GdIFoqd2XvTd56zjmeVM0LFjrZFXGrTR+qplRLvQeoKRddXzYSV+oQwarCdgoN/eg0cCR9Zg8c0CLnrpdOeWo54CQTJwO6wr7JRvnS0JcMY=
+	t=1736938685; cv=none; b=BJOW1EAIWueC4NsQeBlxwkvCJl5y/WmBK/11ejrvDxbXTPSqZ2vd/zeCeM5EWoHRnJqjjOhQkAM/Fkgu7P8QYfVHaA+zVcizXKQ9XsSDgtvNxbMDPT+wz+/wE3iuBUlsp9L4ZivAHbJGWuK33YLXF1DO3TJlwdeDGIImkUd4JSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938298; c=relaxed/simple;
-	bh=VaOZPG+QH6IUoswXZL1tKEDwqGRX15Qi2dm0WEsDgSQ=;
+	s=arc-20240116; t=1736938685; c=relaxed/simple;
+	bh=2jYaVWUq+ZNRkWDNmgG7SnHUFEIanLrBpUMTUg8L2Ss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UsjH50FFCTqLb5HWUawQz392qA7ddkeClYr3tTmRohjkQLElc9ffrhQDcLpXXsFkClVr6os/jvRK7nnc15V+6rwLQHxQzEp5+3cRaxePt5dztR0NRh4Pz6LRl3TjzI2lxQBrWr7g0yswOUv5d00ygDkUJChmW43dsGL1i/nEeSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGXShhuz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 093F9C4CEDF;
-	Wed, 15 Jan 2025 10:51:37 +0000 (UTC)
+	 MIME-Version; b=MdBjB2dMtvURf9fA3UjZdgKdaDiwAL/cym4HzPm2kOSGLUmKr+17ukqk66PsKl2xHXdDMf3FImgDMrgjHYvRRb7WYhVga3huGErzXuqVdE7txb8o0flpyWyfuVwHsmXuUplwBT6eYlfGTdTRkqF+vceJgmTd/rSL5I1j5WZ7E0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9qgOKCX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B00C4CEDF;
+	Wed, 15 Jan 2025 10:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938298;
-	bh=VaOZPG+QH6IUoswXZL1tKEDwqGRX15Qi2dm0WEsDgSQ=;
+	s=korg; t=1736938683;
+	bh=2jYaVWUq+ZNRkWDNmgG7SnHUFEIanLrBpUMTUg8L2Ss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HGXShhuzCSExMZYJi7Xigup2MgHf0FQBD/BKiqTPd/yyF0uzx6P8WdkiH8T5aqcdx
-	 tB/XTco9ERNdZeqNOdO9nLEaHTRqpwqMItc8Uh0geW/N9sJCPq+Rwi8vUxr0rBmU5o
-	 DfVN5u2hvL8CUVDr80lmLRAAh0UlKeAdIprhLqv0=
+	b=y9qgOKCX+4pLrKzK3Q4HLDzDRQaWx7ZRHjZJT+bch3dhM3muR9zCQ54lNZfLe21F9
+	 KeiLAn/631Fa3ORYYsjUHhwVwggPJeBLr1i48Sd8h4vA2qhqfq/QcLnc1fc1p53VC4
+	 dsTIVFDSnLZMkGMCDy0PlpXb0M62jh7kH/nMQezg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Lianqin Hu <hulianqin@vivo.com>
-Subject: [PATCH 6.12 142/189] usb: gadget: u_serial: Disable ep before setting port to null to fix the crash caused by port being null
-Date: Wed, 15 Jan 2025 11:37:18 +0100
-Message-ID: <20250115103612.089615456@linuxfoundation.org>
+	Al Viro <viro@zeniv.linux.org.uk>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 064/129] sctp: sysctl: auth_enable: avoid using current->nsproxy
+Date: Wed, 15 Jan 2025 11:37:19 +0100
+Message-ID: <20250115103556.931192418@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lianqin Hu <hulianqin@vivo.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 13014969cbf07f18d62ceea40bd8ca8ec9d36cec upstream.
+commit 15649fd5415eda664ef35780c2013adeb5d9c695 upstream.
 
-Considering that in some extreme cases, when performing the
-unbinding operation, gserial_disconnect has cleared gser->ioport,
-which triggers gadget reconfiguration, and then calls gs_read_complete,
-resulting in access to a null pointer. Therefore, ep is disabled before
-gserial_disconnect sets port to null to prevent this from happening.
+As mentioned in a previous commit of this series, using the 'net'
+structure via 'current' is not recommended for different reasons:
 
-Call trace:
- gs_read_complete+0x58/0x240
- usb_gadget_giveback_request+0x40/0x160
- dwc3_remove_requests+0x170/0x484
- dwc3_ep0_out_start+0xb0/0x1d4
- __dwc3_gadget_start+0x25c/0x720
- kretprobe_trampoline.cfi_jt+0x0/0x8
- kretprobe_trampoline.cfi_jt+0x0/0x8
- udc_bind_to_driver+0x1d8/0x300
- usb_gadget_probe_driver+0xa8/0x1dc
- gadget_dev_desc_UDC_store+0x13c/0x188
- configfs_write_iter+0x160/0x1f4
- vfs_write+0x2d0/0x40c
- ksys_write+0x7c/0xf0
- __arm64_sys_write+0x20/0x30
- invoke_syscall+0x60/0x150
- el0_svc_common+0x8c/0xf8
- do_el0_svc+0x28/0xa0
- el0_svc+0x24/0x84
+- Inconsistency: getting info from the reader's/writer's netns vs only
+  from the opener's netns.
 
-Fixes: c1dca562be8a ("usb gadget: split out serial core")
-Cc: stable <stable@kernel.org>
-Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Lianqin Hu <hulianqin@vivo.com>
-Link: https://lore.kernel.org/r/TYUPR06MB621733B5AC690DBDF80A0DCCD2042@TYUPR06MB6217.apcprd06.prod.outlook.com
+- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
+  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
+  syzbot [1] using acct(2).
+
+The 'net' structure can be obtained from the table->data using
+container_of().
+
+Note that table->data could also be used directly, but that would
+increase the size of this fix, while 'sctp.ctl_sock' still needs to be
+retrieved from 'net' structure.
+
+Fixes: b14878ccb7fa ("net: sctp: cache auth_enable per endpoint")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-6-5df34b2083e8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/u_serial.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/sctp/sysctl.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -1420,6 +1420,10 @@ void gserial_disconnect(struct gserial *
- 	/* REVISIT as above: how best to track this? */
- 	port->port_line_coding = gser->port_line_coding;
+--- a/net/sctp/sysctl.c
++++ b/net/sctp/sysctl.c
+@@ -503,7 +503,7 @@ static int proc_sctp_do_alpha_beta(struc
+ static int proc_sctp_do_auth(struct ctl_table *ctl, int write,
+ 			     void *buffer, size_t *lenp, loff_t *ppos)
+ {
+-	struct net *net = current->nsproxy->net_ns;
++	struct net *net = container_of(ctl->data, struct net, sctp.auth_enable);
+ 	struct ctl_table tbl;
+ 	int new_value, ret;
  
-+	/* disable endpoints, aborting down any active I/O */
-+	usb_ep_disable(gser->out);
-+	usb_ep_disable(gser->in);
-+
- 	port->port_usb = NULL;
- 	gser->ioport = NULL;
- 	if (port->port.count > 0) {
-@@ -1431,10 +1435,6 @@ void gserial_disconnect(struct gserial *
- 	spin_unlock(&port->port_lock);
- 	spin_unlock_irqrestore(&serial_port_lock, flags);
- 
--	/* disable endpoints, aborting down any active I/O */
--	usb_ep_disable(gser->out);
--	usb_ep_disable(gser->in);
--
- 	/* finally, free any unused/unusable I/O buffers */
- 	spin_lock_irqsave(&port->port_lock, flags);
- 	if (port->port.count == 0)
 
 
 
