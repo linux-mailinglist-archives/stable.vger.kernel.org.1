@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-109029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37E2EA12179
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:57:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19591A11FDD
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:39:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5105B16A300
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:57:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4BB3162598
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 585B81E98E7;
-	Wed, 15 Jan 2025 10:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983D11E98EC;
+	Wed, 15 Jan 2025 10:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NuoVf5Kj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxadTR/I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C3F1E98E4;
-	Wed, 15 Jan 2025 10:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44EE8248BD5;
+	Wed, 15 Jan 2025 10:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938620; cv=none; b=OyOJzCi9Y3TZG7NZpUD2WKdah6N/Fq23V+nxYPuBcKt09WekyXveg2AIiUdXuCMohdmH5x00J723Fk+jDmsK2S3xgvh0DXgyMv/bQnhkRi6549mj4B1UxPouNojq0JToE0zMQjmEhsn0Irr2EtU05GC65jclTSNBq4EZU0ACA10=
+	t=1736937549; cv=none; b=UyZ0/jC1pbXmWrNMCBCG7fReABLXVCPDelgZwdLGPTA5O3NAbqJY+ZsoT7NQsLYU7Ge2Hf//TKhqSOyLriuqiRl695BVqaDcjudWNxlk617JzJalDUap0WF0LYmwHKWBWFC7LfM7EQFYxAxWfe0axVSgpMNcHTbmFYWb7Aj/2/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938620; c=relaxed/simple;
-	bh=ZAJiKgJ3xZc40tE7gDvTkPo4UyivKHnlcDrQcXFs0ps=;
+	s=arc-20240116; t=1736937549; c=relaxed/simple;
+	bh=k5o0B9GDgcnVw3Wf5W2Q4YG/yz12LaQ00aYNcqRebpY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iHvBFW5MY6Sxn2mjglYIa/TLbF7LzuwMrg7mdrVS1jjPrsrVqZmt5L7/S0DXPiZbC+ZpJIAnj35jbRoYE6vGeJNPi3BxTTGCUpuli13aBAigd2LGpQ8Hsh9p9bxg5T5Bqm9pizZRIZnSkG2O1kqkH+0L9UQ/lOjluNCEkLJz+2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NuoVf5Kj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36AE0C4CEDF;
-	Wed, 15 Jan 2025 10:56:58 +0000 (UTC)
+	 MIME-Version; b=aW5w7vtuoyMwDSNlIM+8A4F/qSbw663yyijvF1kRHRBZDEg0wKlgKOBu99kPxV5/bVRw0iAZPdFXKOlZgCdwcVYXdFa2wzGmFb3CKiEv1aCOFhWIPAs8RD11C+nDQ9GDFvh6DWD12KdTmgp9PTQ7XFY9vTzaUOgq2hJFb/JO+f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxadTR/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22CD4C4CEE2;
+	Wed, 15 Jan 2025 10:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938619;
-	bh=ZAJiKgJ3xZc40tE7gDvTkPo4UyivKHnlcDrQcXFs0ps=;
+	s=korg; t=1736937548;
+	bh=k5o0B9GDgcnVw3Wf5W2Q4YG/yz12LaQ00aYNcqRebpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NuoVf5KjxGg76dLO08qV0dkV0/ZMrqgvylNAUerfiXMLnTdaZpwSgGU6k6Cr2kAuF
-	 R271ogcXuERjZyy/1iu8sTO4XoCztIqF4GrJNdPaErWUdw76ZQPswiXopvGqKWeJpU
-	 +rEHtPszcLzctMgkLeGI6aMHBMnsEkaQ67dTzhwQ=
+	b=KxadTR/I4GsmZKBz4svB27+iu/n8Jp6PIQKCHLid3/bLiBhoBUm2zL6DvjMGcO9Am
+	 71jiRKzq2LXt+OoPapFJmxhlZBKyRd0yESkGLu0yzAO9yPo1kOSTsjG716C8oTZenj
+	 CuuevI4DWRekBD9UYF3+Xo14SLDUyIYFdT+Alub4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuming Fan <shumingf@realtek.com>,
-	Mark Brown <broonie@kernel.org>,
+	Keisuke Nishimura <keisuke.nishimura@inria.fr>,
+	Simon Horman <horms@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/129] ASoC: rt722: add delay time to wait for the calibration procedure
-Date: Wed, 15 Jan 2025 11:36:30 +0100
-Message-ID: <20250115103554.980007723@linuxfoundation.org>
+Subject: [PATCH 6.1 13/92] ieee802154: ca8210: Add missing check for kfifo_alloc() in ca8210_probe()
+Date: Wed, 15 Jan 2025 11:36:31 +0100
+Message-ID: <20250115103548.070523646@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuming Fan <shumingf@realtek.com>
+From: Keisuke Nishimura <keisuke.nishimura@inria.fr>
 
-[ Upstream commit c9e3ebdc52ebe028f238c9df5162ae92483bedd5 ]
+[ Upstream commit 2c87309ea741341c6722efdf1fb3f50dd427c823 ]
 
-The calibration procedure needs some time to finish.
-This patch adds the delay time to ensure the calibration procedure is completed correctly.
+ca8210_test_interface_init() returns the result of kfifo_alloc(),
+which can be non-zero in case of an error. The caller, ca8210_probe(),
+should check the return value and do error-handling if it fails.
 
-Signed-off-by: Shuming Fan <shumingf@realtek.com>
-Link: https://patch.msgid.link/20241218091307.96656-1-shumingf@realtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
+Signed-off-by: Keisuke Nishimura <keisuke.nishimura@inria.fr>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/20241029182712.318271-1-keisuke.nishimura@inria.fr
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt722-sdca.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ieee802154/ca8210.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/rt722-sdca.c b/sound/soc/codecs/rt722-sdca.c
-index b9b330375add..0f9f592744ad 100644
---- a/sound/soc/codecs/rt722-sdca.c
-+++ b/sound/soc/codecs/rt722-sdca.c
-@@ -1466,13 +1466,18 @@ static void rt722_sdca_jack_preset(struct rt722_sdca_priv *rt722)
- 		0x008d);
- 	/* check HP calibration FSM status */
- 	for (loop_check = 0; loop_check < chk_cnt; loop_check++) {
-+		usleep_range(10000, 11000);
- 		ret = rt722_sdca_index_read(rt722, RT722_VENDOR_CALI,
- 			RT722_DAC_DC_CALI_CTL3, &calib_status);
--		if (ret < 0 || loop_check == chk_cnt)
-+		if (ret < 0)
- 			dev_dbg(&rt722->slave->dev, "calibration failed!, ret=%d\n", ret);
- 		if ((calib_status & 0x0040) == 0x0)
- 			break;
+diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
+index c2201e0adc46..1659bbffdb91 100644
+--- a/drivers/net/ieee802154/ca8210.c
++++ b/drivers/net/ieee802154/ca8210.c
+@@ -3078,7 +3078,11 @@ static int ca8210_probe(struct spi_device *spi_device)
+ 	spi_set_drvdata(priv->spi, priv);
+ 	if (IS_ENABLED(CONFIG_IEEE802154_CA8210_DEBUGFS)) {
+ 		cascoda_api_upstream = ca8210_test_int_driver_write;
+-		ca8210_test_interface_init(priv);
++		ret = ca8210_test_interface_init(priv);
++		if (ret) {
++			dev_crit(&spi_device->dev, "ca8210_test_interface_init failed\n");
++			goto error;
++		}
+ 	} else {
+ 		cascoda_api_upstream = NULL;
  	}
-+
-+	if (loop_check == chk_cnt)
-+		dev_dbg(&rt722->slave->dev, "%s, calibration time-out!\n", __func__);
-+
- 	/* Set ADC09 power entity floating control */
- 	rt722_sdca_index_write(rt722, RT722_VENDOR_HDA_CTL, RT722_ADC0A_08_PDE_FLOAT_CTL,
- 		0x2a12);
 -- 
 2.39.5
 
