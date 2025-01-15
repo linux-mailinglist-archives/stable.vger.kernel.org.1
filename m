@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-109005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02490A1215B
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:55:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C910A120F2
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:51:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FF5118805A8
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:55:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4FEA3AAF8A
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407BC1DB151;
-	Wed, 15 Jan 2025 10:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717E2248BC1;
+	Wed, 15 Jan 2025 10:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NyJrHLDm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q6wxlB/c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0566156644;
-	Wed, 15 Jan 2025 10:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD85248BB2;
+	Wed, 15 Jan 2025 10:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938540; cv=none; b=kAQ1tg7dpy0GcHC+j9OnosNI7QjlE0HE29oPDY/cu6RNUzvbSIxbx0KHTBkcDzxCXiDgF3PDCyEAqUam57DZEaSUfoDZYUG+EEVQgAco8JYWm/cWb/QpDvnqpNQm9sq6vi2fYGYLT81eY0Q3gl2yWLU65JBzSssUqC9+Ci1ZN/g=
+	t=1736938265; cv=none; b=WS2nB/M6F8/8rNN/7Zqn8s0/T8QIAoUfR6nEKHFyqnOJimEf9NnbV8O2wAVMXWYBkZWUI+lVV3QdLsgJPuDNvd/jxs8pibD+KoXjv2kpTJ3jORH7RfSC/KXhoPn8aItUk/7ZAtrcVVc/nhYCl2SQQTiSR5sdRW66rpiW3lEAon8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938540; c=relaxed/simple;
-	bh=8LqhHz49Yufy+0KXXq4PgmipRacSeeWEjr2MjjrurvM=;
+	s=arc-20240116; t=1736938265; c=relaxed/simple;
+	bh=WcqCHEcHBtg8TI3WZuoskawLnd9+3eU0ln0yIv5kolA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HXzEO0O7uHR4zID7byF7tjyOO/5Hfe5JNjRsirWInNZjC5qn4y0yP6pBlbHwy65YbMU4bN9VjZ7B9umL15D0Ekv4DL2c3465zj7VKVWknP5tWQ82c+dN3e9sM28siAfjrWGOnEh/FQHEaxdAmTO2irESMruzX6ViKAFRiNeb9rM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NyJrHLDm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1BFC4CEDF;
-	Wed, 15 Jan 2025 10:55:39 +0000 (UTC)
+	 MIME-Version; b=KISPDjCZR9EnYDORpHKEvriZSC46al1jBjsGRRqwy6XNYskepGXT1QmtdGVqOtFJGxQ3cgN/AR3cGnNsiM0PrTGv7szTsJsc0amDIjb14eA9WXKidjfcSvS6avhTembP4Sgnh1OinaPtJ5H2NPYGxKumTycoARiBwpsj7b4/XHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q6wxlB/c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047FAC4CEDF;
+	Wed, 15 Jan 2025 10:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938539;
-	bh=8LqhHz49Yufy+0KXXq4PgmipRacSeeWEjr2MjjrurvM=;
+	s=korg; t=1736938264;
+	bh=WcqCHEcHBtg8TI3WZuoskawLnd9+3eU0ln0yIv5kolA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NyJrHLDmuKY7jkmsDEWVtVzwaD4yAp6H4GjXEcqZL/xURmpir9DBK5ftWkJHSAJSb
-	 be62r662JtL9hbwjysjyELAK+fEKxSnVZGziKPgiSnaR+2VMdYgvS+49+nzCS/+ob3
-	 6QBbGqxRZDxjL4oUjmgsIvWb0zjWB/0Nq3wH3HL8=
+	b=q6wxlB/cAMSSA9s4D3qksHR3hgmO83c6JPIAj6iF4d9q8l4h66lvY2OGdjdEwdR5l
+	 njA9b8AoEHO9BPqBAcYMKjvw+nqrJdrSzfHPZHZbh5krv1Gb3F4eupnh1mVDx4oUDm
+	 25nyTdapwvZYszml5LbEmZGGaGWXCEatDks+QtoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1dbb57d994e54aaa04d2@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/129] net_sched: cls_flow: validate TCA_FLOW_RSHIFT attribute
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 101/189] ksmbd: Implement new SMB3 POSIX type
 Date: Wed, 15 Jan 2025 11:36:37 +0100
-Message-ID: <20250115103555.253776186@linuxfoundation.org>
+Message-ID: <20250115103610.355375370@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit a039e54397c6a75b713b9ce7894a62e06956aa92 ]
+commit e8580b4c600e085b3c8e6404392de2f822d4c132 upstream.
 
-syzbot found that TCA_FLOW_RSHIFT attribute was not validated.
-Right shitfing a 32bit integer is undefined for large shift values.
+As SMB3 posix extension specification, Give posix file type to posix
+mode.
 
-UBSAN: shift-out-of-bounds in net/sched/cls_flow.c:329:23
-shift exponent 9445 is too large for 32-bit type 'u32' (aka 'unsigned int')
-CPU: 1 UID: 0 PID: 54 Comm: kworker/u8:3 Not tainted 6.13.0-rc3-syzkaller-00180-g4f619d518db9 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Workqueue: ipv6_addrconf addrconf_dad_work
-Call Trace:
- <TASK>
-  __dump_stack lib/dump_stack.c:94 [inline]
-  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
-  ubsan_epilogue lib/ubsan.c:231 [inline]
-  __ubsan_handle_shift_out_of_bounds+0x3c8/0x420 lib/ubsan.c:468
-  flow_classify+0x24d5/0x25b0 net/sched/cls_flow.c:329
-  tc_classify include/net/tc_wrapper.h:197 [inline]
-  __tcf_classify net/sched/cls_api.c:1771 [inline]
-  tcf_classify+0x420/0x1160 net/sched/cls_api.c:1867
-  sfb_classify net/sched/sch_sfb.c:260 [inline]
-  sfb_enqueue+0x3ad/0x18b0 net/sched/sch_sfb.c:318
-  dev_qdisc_enqueue+0x4b/0x290 net/core/dev.c:3793
-  __dev_xmit_skb net/core/dev.c:3889 [inline]
-  __dev_queue_xmit+0xf0e/0x3f50 net/core/dev.c:4400
-  dev_queue_xmit include/linux/netdevice.h:3168 [inline]
-  neigh_hh_output include/net/neighbour.h:523 [inline]
-  neigh_output include/net/neighbour.h:537 [inline]
-  ip_finish_output2+0xd41/0x1390 net/ipv4/ip_output.c:236
-  iptunnel_xmit+0x55d/0x9b0 net/ipv4/ip_tunnel_core.c:82
-  udp_tunnel_xmit_skb+0x262/0x3b0 net/ipv4/udp_tunnel_core.c:173
-  geneve_xmit_skb drivers/net/geneve.c:916 [inline]
-  geneve_xmit+0x21dc/0x2d00 drivers/net/geneve.c:1039
-  __netdev_start_xmit include/linux/netdevice.h:5002 [inline]
-  netdev_start_xmit include/linux/netdevice.h:5011 [inline]
-  xmit_one net/core/dev.c:3590 [inline]
-  dev_hard_start_xmit+0x27a/0x7d0 net/core/dev.c:3606
-  __dev_queue_xmit+0x1b73/0x3f50 net/core/dev.c:4434
+https://www.samba.org/~slow/SMB3_POSIX/fscc_posix_extensions.html#posix-file-type-definition
 
-Fixes: e5dfb815181f ("[NET_SCHED]: Add flow classifier")
-Reported-by: syzbot+1dbb57d994e54aaa04d2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6777bf49.050a0220.178762.0040.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250103104546.3714168-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/cls_flow.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c |   40 ++++++++++++++++++++++++++++++++++++++++
+ fs/smb/server/smb2pdu.h |   10 ++++++++++
+ 2 files changed, 50 insertions(+)
 
-diff --git a/net/sched/cls_flow.c b/net/sched/cls_flow.c
-index 6ab317b48d6c..815216b564f3 100644
---- a/net/sched/cls_flow.c
-+++ b/net/sched/cls_flow.c
-@@ -356,7 +356,8 @@ static const struct nla_policy flow_policy[TCA_FLOW_MAX + 1] = {
- 	[TCA_FLOW_KEYS]		= { .type = NLA_U32 },
- 	[TCA_FLOW_MODE]		= { .type = NLA_U32 },
- 	[TCA_FLOW_BASECLASS]	= { .type = NLA_U32 },
--	[TCA_FLOW_RSHIFT]	= { .type = NLA_U32 },
-+	[TCA_FLOW_RSHIFT]	= NLA_POLICY_MAX(NLA_U32,
-+						 31 /* BITS_PER_U32 - 1 */),
- 	[TCA_FLOW_ADDEND]	= { .type = NLA_U32 },
- 	[TCA_FLOW_MASK]		= { .type = NLA_U32 },
- 	[TCA_FLOW_XOR]		= { .type = NLA_U32 },
--- 
-2.39.5
-
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -3988,6 +3988,26 @@ static int smb2_populate_readdir_entry(s
+ 		posix_info->DeviceId = cpu_to_le32(ksmbd_kstat->kstat->rdev);
+ 		posix_info->HardLinks = cpu_to_le32(ksmbd_kstat->kstat->nlink);
+ 		posix_info->Mode = cpu_to_le32(ksmbd_kstat->kstat->mode & 0777);
++		switch (ksmbd_kstat->kstat->mode & S_IFMT) {
++		case S_IFDIR:
++			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_DIR << POSIX_FILETYPE_SHIFT);
++			break;
++		case S_IFLNK:
++			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_SYMLINK << POSIX_FILETYPE_SHIFT);
++			break;
++		case S_IFCHR:
++			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_CHARDEV << POSIX_FILETYPE_SHIFT);
++			break;
++		case S_IFBLK:
++			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_BLKDEV << POSIX_FILETYPE_SHIFT);
++			break;
++		case S_IFIFO:
++			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_FIFO << POSIX_FILETYPE_SHIFT);
++			break;
++		case S_IFSOCK:
++			posix_info->Mode |= cpu_to_le32(POSIX_TYPE_SOCKET << POSIX_FILETYPE_SHIFT);
++		}
++
+ 		posix_info->Inode = cpu_to_le64(ksmbd_kstat->kstat->ino);
+ 		posix_info->DosAttributes =
+ 			S_ISDIR(ksmbd_kstat->kstat->mode) ?
+@@ -5176,6 +5196,26 @@ static int find_file_posix_info(struct s
+ 	file_info->AllocationSize = cpu_to_le64(stat.blocks << 9);
+ 	file_info->HardLinks = cpu_to_le32(stat.nlink);
+ 	file_info->Mode = cpu_to_le32(stat.mode & 0777);
++	switch (stat.mode & S_IFMT) {
++	case S_IFDIR:
++		file_info->Mode |= cpu_to_le32(POSIX_TYPE_DIR << POSIX_FILETYPE_SHIFT);
++		break;
++	case S_IFLNK:
++		file_info->Mode |= cpu_to_le32(POSIX_TYPE_SYMLINK << POSIX_FILETYPE_SHIFT);
++		break;
++	case S_IFCHR:
++		file_info->Mode |= cpu_to_le32(POSIX_TYPE_CHARDEV << POSIX_FILETYPE_SHIFT);
++		break;
++	case S_IFBLK:
++		file_info->Mode |= cpu_to_le32(POSIX_TYPE_BLKDEV << POSIX_FILETYPE_SHIFT);
++		break;
++	case S_IFIFO:
++		file_info->Mode |= cpu_to_le32(POSIX_TYPE_FIFO << POSIX_FILETYPE_SHIFT);
++		break;
++	case S_IFSOCK:
++		file_info->Mode |= cpu_to_le32(POSIX_TYPE_SOCKET << POSIX_FILETYPE_SHIFT);
++	}
++
+ 	file_info->DeviceId = cpu_to_le32(stat.rdev);
+ 
+ 	/*
+--- a/fs/smb/server/smb2pdu.h
++++ b/fs/smb/server/smb2pdu.h
+@@ -502,4 +502,14 @@ static inline void *smb2_get_msg(void *b
+ 	return buf + 4;
+ }
+ 
++#define POSIX_TYPE_FILE		0
++#define POSIX_TYPE_DIR		1
++#define POSIX_TYPE_SYMLINK	2
++#define POSIX_TYPE_CHARDEV	3
++#define POSIX_TYPE_BLKDEV	4
++#define POSIX_TYPE_FIFO		5
++#define POSIX_TYPE_SOCKET	6
++
++#define POSIX_FILETYPE_SHIFT	12
++
+ #endif	/* _SMB2PDU_H */
 
 
 
