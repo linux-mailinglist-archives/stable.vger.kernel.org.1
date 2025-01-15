@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-108947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E3DDA1210E
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:52:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61B2AA121D1
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 12:00:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E43C11676F1
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:52:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 052AD3A4389
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:00:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E301E98E7;
-	Wed, 15 Jan 2025 10:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988201E98E4;
+	Wed, 15 Jan 2025 11:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4QhTzeV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N30Fr1LQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC11F1E7C2E;
-	Wed, 15 Jan 2025 10:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5516C248BAF;
+	Wed, 15 Jan 2025 11:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938339; cv=none; b=F3h2Ten8GM+PnhgsdSj7KXM/JC2uWXUVfP1IavpAFXo5E/TESIfaYLwHpoOCBVA0Zgpi8vATgelc7E3FcrHj5u1yOR0WLIKclYralUS7kjHRpmnd4HMDXz9S4YevS5JYpi+AojnATur9zGuLD597ZgcGwSgbkWhk8J/OT704nAM=
+	t=1736938848; cv=none; b=J+rQstQsHUzR6ox///nTcuqZHWH508tiRBS4uQdgu4wqa+VUVyfpyJXgfp14yOib0bHU+ir/qGOxQb4Wn840OeoNUD57F0BlzYOUvz6pLNqOrCYfHDRz/KRkcsVoygn45C3/SmiMDyAbwNcn2zZ4WX2xdy1Wt/+vQedJWrlTN0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938339; c=relaxed/simple;
-	bh=6yF/Aw5JI44Ncxr7cZAhPq/l0VVUg1JuUkfOkVnuyO8=;
+	s=arc-20240116; t=1736938848; c=relaxed/simple;
+	bh=Pp3lPTfY3d+ll2o2bACF6noe38xlzjjYR8Csgiv/igo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g7vXYVGqdgrWXLUxIb9uHUOXgjdQjObcKPmJr0wRAdWj0xDnuFy2NP2OksZfSr7loySfS+cJntiPNc6FoHwST19N8a3GWeRzkJHvd4PyKp00TZyhExVaMqylAHj29KxIF9iEXAtXi4XWZidvE7d2/Z8LXzC33wMLkbsnIzZhtCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4QhTzeV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 490DBC4CEE2;
-	Wed, 15 Jan 2025 10:52:19 +0000 (UTC)
+	 MIME-Version; b=VMoaz/Q3sT+GM7z2SlYe5Pyw2/O3Z2UrntpUdEf8hveEogFrZJO2fX9PzozM62Qbwo/M8ky4MjxlGC7y9OVw1n7W8d2nAH2ZZT4deMqjON7+npI7EbuaVnT5zn/KS5qJLGt6ce8JITJB+zFD6wqdKCy0vT0xYO7ND39cEaS9AiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N30Fr1LQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD46C4CEDF;
+	Wed, 15 Jan 2025 11:00:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938339;
-	bh=6yF/Aw5JI44Ncxr7cZAhPq/l0VVUg1JuUkfOkVnuyO8=;
+	s=korg; t=1736938847;
+	bh=Pp3lPTfY3d+ll2o2bACF6noe38xlzjjYR8Csgiv/igo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4QhTzeVh2n/7FNmB12Af1na7mNR957PJ9iXrOr0ACpq0/seveyZ2Ey9UcBvYRbP7
-	 vZP2AtHFkblb04AFc5KpmVvPV1vxpv4b3br4/Ejgj2iyPBHVphREyWT44CFCZ9bO2J
-	 Em5cL1MTmKZjMHRKWYw+fz9rFC5GwXpjcxpALooM=
+	b=N30Fr1LQcqt7jAnHqMQ6TwArmZZyvWUsmSmilMHkwrpsH4XwQzb5XB1dh1EzR25Ju
+	 yG8f8IfDNDZy+fRxD1j0qYNunq6d73NPnekv348Uqb2ykBRWXgtKM7Rplis7YdaqQg
+	 tHn9iSw9WadKEIHywBUHeDvbNg8JnCNC2PnOHPms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Akash M <akash.m5@samsung.com>
-Subject: [PATCH 6.12 153/189] usb: gadget: f_fs: Remove WARN_ON in functionfs_bind
+	Jesse Zhang <jesse.zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 074/129] drm/amdkfd: fixed page fault when enable MES shader debugger
 Date: Wed, 15 Jan 2025 11:37:29 +0100
-Message-ID: <20250115103612.517716013@linuxfoundation.org>
+Message-ID: <20250115103557.324618837@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akash M <akash.m5@samsung.com>
+From: Jesse.zhang@amd.com <Jesse.zhang@amd.com>
 
-commit dfc51e48bca475bbee984e90f33fdc537ce09699 upstream.
+commit 9738609449c3e44d1afb73eecab4763362b57930 upstream.
 
-This commit addresses an issue related to below kernel panic where
-panic_on_warn is enabled. It is caused by the unnecessary use of WARN_ON
-in functionsfs_bind, which easily leads to the following scenarios.
+Initialize the process context address before setting the shader debugger.
 
-1.adb_write in adbd               2. UDC write via configfs
-  =================	             =====================
+[  260.781212] amdgpu 0000:03:00.0: amdgpu: [gfxhub] page fault (src_id:0 ring:32 vmid:0 pasid:0)
+[  260.781236] amdgpu 0000:03:00.0: amdgpu:   in page starting at address 0x0000000000000000 from client 10
+[  260.781255] amdgpu 0000:03:00.0: amdgpu: GCVM_L2_PROTECTION_FAULT_STATUS:0x00040A40
+[  260.781270] amdgpu 0000:03:00.0: amdgpu:      Faulty UTCL2 client ID: CPC (0x5)
+[  260.781284] amdgpu 0000:03:00.0: amdgpu:      MORE_FAULTS: 0x0
+[  260.781296] amdgpu 0000:03:00.0: amdgpu:      WALKER_ERROR: 0x0
+[  260.781308] amdgpu 0000:03:00.0: amdgpu:      PERMISSION_FAULTS: 0x4
+[  260.781320] amdgpu 0000:03:00.0: amdgpu:      MAPPING_ERROR: 0x0
+[  260.781332] amdgpu 0000:03:00.0: amdgpu:      RW: 0x1
+[  260.782017] amdgpu 0000:03:00.0: amdgpu: [gfxhub] page fault (src_id:0 ring:32 vmid:0 pasid:0)
+[  260.782039] amdgpu 0000:03:00.0: amdgpu:   in page starting at address 0x0000000000000000 from client 10
+[  260.782058] amdgpu 0000:03:00.0: amdgpu: GCVM_L2_PROTECTION_FAULT_STATUS:0x00040A41
+[  260.782073] amdgpu 0000:03:00.0: amdgpu:      Faulty UTCL2 client ID: CPC (0x5)
+[  260.782087] amdgpu 0000:03:00.0: amdgpu:      MORE_FAULTS: 0x1
+[  260.782098] amdgpu 0000:03:00.0: amdgpu:      WALKER_ERROR: 0x0
+[  260.782110] amdgpu 0000:03:00.0: amdgpu:      PERMISSION_FAULTS: 0x4
+[  260.782122] amdgpu 0000:03:00.0: amdgpu:      MAPPING_ERROR: 0x0
+[  260.782137] amdgpu 0000:03:00.0: amdgpu:      RW: 0x1
+[  260.782155] amdgpu 0000:03:00.0: amdgpu: [gfxhub] page fault (src_id:0 ring:32 vmid:0 pasid:0)
+[  260.782166] amdgpu 0000:03:00.0: amdgpu:   in page starting at address 0x0000000000000000 from client 10
 
-->usb_ffs_open_thread()           ->UDC write
- ->open_functionfs()               ->configfs_write_iter()
-  ->adb_open()                      ->gadget_dev_desc_UDC_store()
-   ->adb_write()                     ->usb_gadget_register_driver_owner
-                                      ->driver_register()
-->StartMonitor()                       ->bus_add_driver()
- ->adb_read()                           ->gadget_bind_driver()
-<times-out without BIND event>           ->configfs_composite_bind()
-                                          ->usb_add_function()
-->open_functionfs()                        ->ffs_func_bind()
- ->adb_open()                               ->functionfs_bind()
-                                       <ffs->state !=FFS_ACTIVE>
-
-The adb_open, adb_read, and adb_write operations are invoked from the
-daemon, but trying to bind the function is a process that is invoked by
-UDC write through configfs, which opens up the possibility of a race
-condition between the two paths. In this race scenario, the kernel panic
-occurs due to the WARN_ON from functionfs_bind when panic_on_warn is
-enabled. This commit fixes the kernel panic by removing the unnecessary
-WARN_ON.
-
-Kernel panic - not syncing: kernel: panic_on_warn set ...
-[   14.542395] Call trace:
-[   14.542464]  ffs_func_bind+0x1c8/0x14a8
-[   14.542468]  usb_add_function+0xcc/0x1f0
-[   14.542473]  configfs_composite_bind+0x468/0x588
-[   14.542478]  gadget_bind_driver+0x108/0x27c
-[   14.542483]  really_probe+0x190/0x374
-[   14.542488]  __driver_probe_device+0xa0/0x12c
-[   14.542492]  driver_probe_device+0x3c/0x220
-[   14.542498]  __driver_attach+0x11c/0x1fc
-[   14.542502]  bus_for_each_dev+0x104/0x160
-[   14.542506]  driver_attach+0x24/0x34
-[   14.542510]  bus_add_driver+0x154/0x270
-[   14.542514]  driver_register+0x68/0x104
-[   14.542518]  usb_gadget_register_driver_owner+0x48/0xf4
-[   14.542523]  gadget_dev_desc_UDC_store+0xf8/0x144
-[   14.542526]  configfs_write_iter+0xf0/0x138
-
-Fixes: ddf8abd25994 ("USB: f_fs: the FunctionFS driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Akash M <akash.m5@samsung.com>
-Link: https://lore.kernel.org/r/20241219125221.1679-1-akash.m5@samsung.com
+Fixes: 438b39ac74e2 ("drm/amdkfd: pause autosuspend when creating pdd")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3849
+Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5b231f5bc9ff02ec5737f2ec95cdf15ac95088e9)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_fs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_debug.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -2285,7 +2285,7 @@ static int functionfs_bind(struct ffs_da
- 	struct usb_gadget_strings **lang;
- 	int first_id;
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_debug.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_debug.c
+@@ -349,10 +349,27 @@ int kfd_dbg_set_mes_debug_mode(struct kf
+ {
+ 	uint32_t spi_dbg_cntl = pdd->spi_dbg_override | pdd->spi_dbg_launch_mode;
+ 	uint32_t flags = pdd->process->dbg_flags;
++	struct amdgpu_device *adev = pdd->dev->adev;
++	int r;
  
--	if (WARN_ON(ffs->state != FFS_ACTIVE
-+	if ((ffs->state != FFS_ACTIVE
- 		 || test_and_set_bit(FFS_FL_BOUND, &ffs->flags)))
- 		return -EBADFD;
+ 	if (!kfd_dbg_is_per_vmid_supported(pdd->dev))
+ 		return 0;
  
++	if (!pdd->proc_ctx_cpu_ptr) {
++			r = amdgpu_amdkfd_alloc_gtt_mem(adev,
++				AMDGPU_MES_PROC_CTX_SIZE,
++				&pdd->proc_ctx_bo,
++				&pdd->proc_ctx_gpu_addr,
++				&pdd->proc_ctx_cpu_ptr,
++				false);
++		if (r) {
++			dev_err(adev->dev,
++			"failed to allocate process context bo\n");
++			return r;
++		}
++		memset(pdd->proc_ctx_cpu_ptr, 0, AMDGPU_MES_PROC_CTX_SIZE);
++	}
++
+ 	return amdgpu_mes_set_shader_debugger(pdd->dev->adev, pdd->proc_ctx_gpu_addr, spi_dbg_cntl,
+ 						pdd->watch_points, flags, sq_trap_en);
+ }
 
 
 
