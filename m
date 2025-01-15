@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-108745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81BEBA12020
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FFA6A12105
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:52:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39C6E3A29A8
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFC3816AA0E
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53552248BCD;
-	Wed, 15 Jan 2025 10:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB50D1E9910;
+	Wed, 15 Jan 2025 10:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YWchJY8g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/Z1LfIR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5BB248BA0;
-	Wed, 15 Jan 2025 10:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E7B1E9906;
+	Wed, 15 Jan 2025 10:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937665; cv=none; b=FPem0IfAxIf0EHsi9KpCDvYGrjLm0pUjVtYOObrr2RTJLmQtumkFo7ojaYw85lJRYG50kOPWQSG9AoaVGLEaQOLyp8qd47rDIwzsbanikuOWM6jKufgMyHW/xFjpckLy0boHIbyFH34lFvKzL3RO2R4XHsn2ZzaAhbH+4d/89Yw=
+	t=1736938308; cv=none; b=nP05sNhWh3VhlPSG8vonNw1UcW0HTX9AjQQwqjKLKzkbY/t8qBdm84C2CFHw2/YvNaAAvRyDU5HJvwLr3aYY/zPQE3MZ3iQnA6g/Lgjsh+ONt7EcWXesMUpOxCzN37kQkKpL4wktEjrcoyqz8zDQQLlwyXLvNCPbXgEoS/cL8fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937665; c=relaxed/simple;
-	bh=l+RlmR1N4KC7lq8oJeB8Ffve8grQWMiCYDblaSpjkpc=;
+	s=arc-20240116; t=1736938308; c=relaxed/simple;
+	bh=x9RyD+0YW0Jt3hO3Gxxmi58mHHjWso56SXd+gbdCOX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZgSuKsceHCVCBzsr1rzB2k/Rh8OhyMrYVXCOSuBuCykoce7HTvvSnEIBaCU8sfiDNnnPHuaNCAJck49bDudpCtXPXZbbb5kAFB5mZFC00LfQkGjMWxCIaGPT4ZSO+knFYIbg/+tGDEqwz+QrjQlHvw5zBnhziykAhs/qpA+XIo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YWchJY8g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27257C4CEE1;
-	Wed, 15 Jan 2025 10:41:03 +0000 (UTC)
+	 MIME-Version; b=i4sPHJlCaiEwBYU7dShuZhNAXPVGS0e7d1r3Yoal5H+SY9qSDVUKvPuzfbMC0i8GcZLBzBeQ8NCOpFfaBQMU3BR3hirw8DKnCpH/uJ7HTIgPMjVhBHmFdwA6boXdDgc6SOaoGiX8bDCyerEKsImrOEvxwzgFEpfrDAiacGohJUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/Z1LfIR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D0EC4CEE8;
+	Wed, 15 Jan 2025 10:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937664;
-	bh=l+RlmR1N4KC7lq8oJeB8Ffve8grQWMiCYDblaSpjkpc=;
+	s=korg; t=1736938308;
+	bh=x9RyD+0YW0Jt3hO3Gxxmi58mHHjWso56SXd+gbdCOX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YWchJY8gthuJS7m9tumK7FSg3tQxufMXpMn40ad0llGsAXJ2yVqYhPCshVnYZhIXP
-	 IEccpHlPXqbM9o6Ca/oVtU3mnaiE4v7C5ugW1Aj8NTI/gxGmx7XCDL5SQyeti+Fkkl
-	 ZQVbnWldPedvLbWrFRMlJdOx3o+yarVjWDYa/IkE=
+	b=e/Z1LfIRkTZjirwRyLn7+lcXitcYcw+hqJH3/oL5bcbQYRKc8e1sjrQM3ciQd1NLM
+	 3ZgRB1IDOEWfRo6Iodi0uZN1RETFJuXv1rGWlU0NIp6mzDtyoM3WGgG41sQ07Dr/Rq
+	 dvIQUjxR816KxcDyzacIm9Ll1heWStqExy1He4V4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.1 45/92] riscv: Fix sleeping in invalid context in die()
+	Melissa Wen <mwen@igalia.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 127/189] drm/amd/display: increase MAX_SURFACES to the value supported by hw
 Date: Wed, 15 Jan 2025 11:37:03 +0100
-Message-ID: <20250115103549.328488921@linuxfoundation.org>
+Message-ID: <20250115103611.510268843@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Melissa Wen <mwen@igalia.com>
 
-commit 6a97f4118ac07cfdc316433f385dbdc12af5025e upstream.
+commit 21541bc6b44241e3f791f9e552352d8440b2b29e upstream.
 
-die() can be called in exception handler, and therefore cannot sleep.
-However, die() takes spinlock_t which can sleep with PREEMPT_RT enabled.
-That causes the following warning:
+As the hw supports up to 4 surfaces, increase the maximum number of
+surfaces to prevent the DC error when trying to use more than three
+planes.
 
-BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 285, name: mutex
-preempt_count: 110001, expected: 0
-RCU nest depth: 0, expected: 0
-CPU: 0 UID: 0 PID: 285 Comm: mutex Not tainted 6.12.0-rc7-00022-ge19049cf7d56-dirty #234
-Hardware name: riscv-virtio,qemu (DT)
-Call Trace:
-    dump_backtrace+0x1c/0x24
-    show_stack+0x2c/0x38
-    dump_stack_lvl+0x5a/0x72
-    dump_stack+0x14/0x1c
-    __might_resched+0x130/0x13a
-    rt_spin_lock+0x2a/0x5c
-    die+0x24/0x112
-    do_trap_insn_illegal+0xa0/0xea
-    _new_vmalloc_restore_context_a0+0xcc/0xd8
-Oops - illegal instruction [#1]
+[drm:dc_state_add_plane [amdgpu]] *ERROR* Surface: can not attach plane_state 000000003e2cb82c! Maximum is: 3
 
-Switch to use raw_spinlock_t, which does not sleep even with PREEMPT_RT
-enabled.
-
-Fixes: 76d2a0493a17 ("RISC-V: Init and Halt Code")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3693
+Signed-off-by: Melissa Wen <mwen@igalia.com>
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit b8d6daffc871a42026c3c20bff7b8fa0302298c1)
 Cc: stable@vger.kernel.org
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20241118091333.1185288-1-namcao@linutronix.de
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/traps.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dc.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/riscv/kernel/traps.c
-+++ b/arch/riscv/kernel/traps.c
-@@ -27,7 +27,7 @@
+--- a/drivers/gpu/drm/amd/display/dc/dc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc.h
+@@ -57,7 +57,7 @@ struct dmub_notification;
  
- int show_unhandled_signals = 1;
+ #define DC_VER "3.2.301"
  
--static DEFINE_SPINLOCK(die_lock);
-+static DEFINE_RAW_SPINLOCK(die_lock);
- 
- void die(struct pt_regs *regs, const char *str)
- {
-@@ -38,7 +38,7 @@ void die(struct pt_regs *regs, const cha
- 
- 	oops_enter();
- 
--	spin_lock_irqsave(&die_lock, flags);
-+	raw_spin_lock_irqsave(&die_lock, flags);
- 	console_verbose();
- 	bust_spinlocks(1);
- 
-@@ -55,7 +55,7 @@ void die(struct pt_regs *regs, const cha
- 
- 	bust_spinlocks(0);
- 	add_taint(TAINT_DIE, LOCKDEP_NOW_UNRELIABLE);
--	spin_unlock_irqrestore(&die_lock, flags);
-+	raw_spin_unlock_irqrestore(&die_lock, flags);
- 	oops_exit();
- 
- 	if (in_interrupt())
+-#define MAX_SURFACES 3
++#define MAX_SURFACES 4
+ #define MAX_PLANES 6
+ #define MAX_STREAMS 6
+ #define MIN_VIEWPORT_SIZE 12
 
 
 
