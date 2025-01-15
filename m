@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-108944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74815A1210D
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:52:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49138A12196
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:58:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7EEA188D8BB
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:52:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3FCC7A0678
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0893A248BA6;
-	Wed, 15 Jan 2025 10:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682811DB142;
+	Wed, 15 Jan 2025 10:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jwktRgbN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nz46fpzi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD32248BD1;
-	Wed, 15 Jan 2025 10:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265C4248BD0;
+	Wed, 15 Jan 2025 10:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938329; cv=none; b=T/6Vyg0sGVrWT/GnGzpVJ4BtImhIpZYP9PNAdrbOthqnr5b9ih2yAdgWcciLTDSs3kfK0AqyIM/Tt8pd1T5mBGFHAHtgDl3Y/Gy7+KFF+G2a09gpXnCycH65BWwLGxuheovX1jX7BSO50XYnhxhvGJ4CSLvncJ+nXxaC9j1LGK0=
+	t=1736938711; cv=none; b=FP0oNiegkFXkj6u6afxcLII+oHH3mg8WgVd4EnCobAjgu2pqq0KELhx6FuAiNIEAdPkznR2CMArL2mmBqyj0idQidDjEU505f/ZL7cvLH6PaM+LE3oUOKvQtU7xGf2a/csHZiWNVbmD9EkPq8up++aYmAcD/6fMWog5SFyP5kzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938329; c=relaxed/simple;
-	bh=QPjDHaWGvcuMH39m4dyEsTzetNdWZj+hR2TIelvxRs0=;
+	s=arc-20240116; t=1736938711; c=relaxed/simple;
+	bh=Tzl1XKkOMIwrkNYlT1w+ENMjyYk7Qt1c8h4mWrCq32A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C6NtU1yJYD3fjCmT7xj+6esff7iMDW9oq3ZnYUUtx0xz5KCr8kwTzq19p1k8bCgAQEqiyfpnV/mJKldXF/7zJoKjztMYQS1BOHStOFWE5bFJvkb0p83QB0EHvImCH2al4wPDgEuEVVb/oTihtRMYOKNOL+t4y3ImO69xLT3miow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jwktRgbN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27769C4CEE2;
-	Wed, 15 Jan 2025 10:52:08 +0000 (UTC)
+	 MIME-Version; b=HW+tKlMVuuAhNRHATcceKkUDi/sgAasPNPslv5lz6y0rGVn676vcRlC49aSlX6kNZ+cT2T9po/H7lYejxA5r1iXONIpD1i+ED21/SMgeeAfUotNb39/bvQVn/mCiklZlysnu73rruZfT/i02xiXGp7KW0+Gzgog/i2eK8dudSk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nz46fpzi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A475CC4CEDF;
+	Wed, 15 Jan 2025 10:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938329;
-	bh=QPjDHaWGvcuMH39m4dyEsTzetNdWZj+hR2TIelvxRs0=;
+	s=korg; t=1736938711;
+	bh=Tzl1XKkOMIwrkNYlT1w+ENMjyYk7Qt1c8h4mWrCq32A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jwktRgbNZnDtUqafd0tzMN7KJTUwfPWvVYGTbxSuXD8x070R2SdoNwbLp4mkGG4qo
-	 NtJxhJ3RkNlsdalfASQ5iJwhhpdMTLr6O5b9JY1+2ilY0pXJIGKmWnvq/kv1up+be/
-	 7fCUnQk1Ohe5Var+dkXsUIsQyYkCOT60gkdUcR0g=
+	b=Nz46fpzizYLTnRDS6QrxGmxo0Zet25Qz+R8VuCYecm9F+fVIteEaD4k+vjYgGjQyx
+	 U/VNsP8yp7sQ3RTONIwt0V3SEY49h3vCIgy6Y2L9yvwDfNLaW9xKTWvcUeaiOh4ggf
+	 JuJO6nZQRNEViWUvbWoHI17l/ezA/2UjcYcy9cPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 6.12 150/189] usb: typec: tcpci: fix NULL pointer issue on shared irq case
+	Nam Cao <namcao@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.6 071/129] riscv: Fix sleeping in invalid context in die()
 Date: Wed, 15 Jan 2025 11:37:26 +0100
-Message-ID: <20250115103612.400190842@linuxfoundation.org>
+Message-ID: <20250115103557.210693101@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,145 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Nam Cao <namcao@linutronix.de>
 
-commit 862a9c0f68487fd6ced15622d9cdcec48f8b5aaa upstream.
+commit 6a97f4118ac07cfdc316433f385dbdc12af5025e upstream.
 
-The tcpci_irq() may meet below NULL pointer dereference issue:
+die() can be called in exception handler, and therefore cannot sleep.
+However, die() takes spinlock_t which can sleep with PREEMPT_RT enabled.
+That causes the following warning:
 
-[    2.641851] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
-[    2.641951] status 0x1, 0x37f
-[    2.650659] Mem abort info:
-[    2.656490]   ESR = 0x0000000096000004
-[    2.660230]   EC = 0x25: DABT (current EL), IL = 32 bits
-[    2.665532]   SET = 0, FnV = 0
-[    2.668579]   EA = 0, S1PTW = 0
-[    2.671715]   FSC = 0x04: level 0 translation fault
-[    2.676584] Data abort info:
-[    2.679459]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-[    2.684936]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[    2.689980]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[    2.695284] [0000000000000010] user address but active_mm is swapper
-[    2.701632] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-[    2.707883] Modules linked in:
-[    2.710936] CPU: 1 UID: 0 PID: 87 Comm: irq/111-2-0051 Not tainted 6.12.0-rc6-06316-g7f63786ad3d1-dirty #4
-[    2.720570] Hardware name: NXP i.MX93 11X11 EVK board (DT)
-[    2.726040] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    2.732989] pc : tcpci_irq+0x38/0x318
-[    2.736647] lr : _tcpci_irq+0x14/0x20
-[    2.740295] sp : ffff80008324bd30
-[    2.743597] x29: ffff80008324bd70 x28: ffff800080107894 x27: ffff800082198f70
-[    2.750721] x26: ffff0000050e6680 x25: ffff000004d172ac x24: ffff0000050f0000
-[    2.757845] x23: ffff000004d17200 x22: 0000000000000001 x21: ffff0000050f0000
-[    2.764969] x20: ffff000004d17200 x19: 0000000000000000 x18: 0000000000000001
-[    2.772093] x17: 0000000000000000 x16: ffff80008183d8a0 x15: ffff00007fbab040
-[    2.779217] x14: ffff00007fb918c0 x13: 0000000000000000 x12: 000000000000017a
-[    2.786341] x11: 0000000000000001 x10: 0000000000000a90 x9 : ffff80008324bd00
-[    2.793465] x8 : ffff0000050f0af0 x7 : ffff00007fbaa840 x6 : 0000000000000031
-[    2.800589] x5 : 000000000000017a x4 : 0000000000000002 x3 : 0000000000000002
-[    2.807713] x2 : ffff80008324bd3a x1 : 0000000000000010 x0 : 0000000000000000
-[    2.814838] Call trace:
-[    2.817273]  tcpci_irq+0x38/0x318
-[    2.820583]  _tcpci_irq+0x14/0x20
-[    2.823885]  irq_thread_fn+0x2c/0xa8
-[    2.827456]  irq_thread+0x16c/0x2f4
-[    2.830940]  kthread+0x110/0x114
-[    2.834164]  ret_from_fork+0x10/0x20
-[    2.837738] Code: f9426420 f9001fe0 d2800000 52800201 (f9400a60)
+BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 285, name: mutex
+preempt_count: 110001, expected: 0
+RCU nest depth: 0, expected: 0
+CPU: 0 UID: 0 PID: 285 Comm: mutex Not tainted 6.12.0-rc7-00022-ge19049cf7d56-dirty #234
+Hardware name: riscv-virtio,qemu (DT)
+Call Trace:
+    dump_backtrace+0x1c/0x24
+    show_stack+0x2c/0x38
+    dump_stack_lvl+0x5a/0x72
+    dump_stack+0x14/0x1c
+    __might_resched+0x130/0x13a
+    rt_spin_lock+0x2a/0x5c
+    die+0x24/0x112
+    do_trap_insn_illegal+0xa0/0xea
+    _new_vmalloc_restore_context_a0+0xcc/0xd8
+Oops - illegal instruction [#1]
 
-This may happen on shared irq case. Such as two Type-C ports share one
-irq. After the first port finished tcpci_register_port(), it may trigger
-interrupt. However, if the interrupt comes by chance the 2nd port finishes
-devm_request_threaded_irq(), the 2nd port interrupt handler will run at
-first. Then the above issue happens due to tcpci is still a NULL pointer
-in tcpci_irq() when dereference to regmap.
+Switch to use raw_spinlock_t, which does not sleep even with PREEMPT_RT
+enabled.
 
-  devm_request_threaded_irq()
-				<-- port1 irq comes
-  disable_irq(client->irq);
-  tcpci_register_port()
-
-This will restore the logic to the state before commit (77e85107a771 "usb:
-typec: tcpci: support edge irq").
-
-However, moving tcpci_register_port() earlier creates a problem when use
-edge irq because tcpci_init() will be called before
-devm_request_threaded_irq(). The tcpci_init() writes the ALERT_MASK to
-the hardware to tell it to start generating interrupts but we're not ready
-to deal with them yet, then the ALERT events may be missed and ALERT line
-will not recover to high level forever. To avoid the issue, this will also
-set ALERT_MASK register after devm_request_threaded_irq() return.
-
-Fixes: 77e85107a771 ("usb: typec: tcpci: support edge irq")
-Cc: stable <stable@kernel.org>
-Tested-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20241218095328.2604607-1-xu.yang_2@nxp.com
+Fixes: 76d2a0493a17 ("RISC-V: Init and Halt Code")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: stable@vger.kernel.org
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20241118091333.1185288-1-namcao@linutronix.de
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpci.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ arch/riscv/kernel/traps.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
-index ed32583829be..24a6a4354df8 100644
---- a/drivers/usb/typec/tcpm/tcpci.c
-+++ b/drivers/usb/typec/tcpm/tcpci.c
-@@ -700,7 +700,7 @@ static int tcpci_init(struct tcpc_dev *tcpc)
+--- a/arch/riscv/kernel/traps.c
++++ b/arch/riscv/kernel/traps.c
+@@ -34,7 +34,7 @@
  
- 	tcpci->alert_mask = reg;
+ int show_unhandled_signals = 1;
  
--	return tcpci_write16(tcpci, TCPC_ALERT_MASK, reg);
-+	return 0;
- }
+-static DEFINE_SPINLOCK(die_lock);
++static DEFINE_RAW_SPINLOCK(die_lock);
  
- irqreturn_t tcpci_irq(struct tcpci *tcpci)
-@@ -923,22 +923,27 @@ static int tcpci_probe(struct i2c_client *client)
+ static void dump_kernel_instr(const char *loglvl, struct pt_regs *regs)
+ {
+@@ -66,7 +66,7 @@ void die(struct pt_regs *regs, const cha
  
- 	chip->data.set_orientation = err;
+ 	oops_enter();
  
-+	chip->tcpci = tcpci_register_port(&client->dev, &chip->data);
-+	if (IS_ERR(chip->tcpci))
-+		return PTR_ERR(chip->tcpci);
-+
- 	err = devm_request_threaded_irq(&client->dev, client->irq, NULL,
- 					_tcpci_irq,
- 					IRQF_SHARED | IRQF_ONESHOT,
- 					dev_name(&client->dev), chip);
- 	if (err < 0)
--		return err;
-+		goto unregister_port;
+-	spin_lock_irqsave(&die_lock, flags);
++	raw_spin_lock_irqsave(&die_lock, flags);
+ 	console_verbose();
+ 	bust_spinlocks(1);
  
--	/*
--	 * Disable irq while registering port. If irq is configured as an edge
--	 * irq this allow to keep track and process the irq as soon as it is enabled.
--	 */
--	disable_irq(client->irq);
--	chip->tcpci = tcpci_register_port(&client->dev, &chip->data);
--	enable_irq(client->irq);
-+	/* Enable chip interrupts at last */
-+	err = tcpci_write16(chip->tcpci, TCPC_ALERT_MASK, chip->tcpci->alert_mask);
-+	if (err < 0)
-+		goto unregister_port;
+@@ -85,7 +85,7 @@ void die(struct pt_regs *regs, const cha
  
--	return PTR_ERR_OR_ZERO(chip->tcpci);
-+	return 0;
-+
-+unregister_port:
-+	tcpci_unregister_port(chip->tcpci);
-+	return err;
- }
+ 	bust_spinlocks(0);
+ 	add_taint(TAINT_DIE, LOCKDEP_NOW_UNRELIABLE);
+-	spin_unlock_irqrestore(&die_lock, flags);
++	raw_spin_unlock_irqrestore(&die_lock, flags);
+ 	oops_exit();
  
- static void tcpci_remove(struct i2c_client *client)
--- 
-2.48.0
-
+ 	if (in_interrupt())
 
 
 
