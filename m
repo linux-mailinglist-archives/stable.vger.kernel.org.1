@@ -1,113 +1,80 @@
-Return-Path: <stable+bounces-108672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68D5BA119A1
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 07:27:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDD9FA119A3
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 07:27:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8727F7A4351
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 06:27:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9682A3A5A7C
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 06:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5CB22F832;
-	Wed, 15 Jan 2025 06:27:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gTFVkxSB"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A851322F824;
+	Wed, 15 Jan 2025 06:27:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98AB822F82C
-	for <stable@vger.kernel.org>; Wed, 15 Jan 2025 06:27:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58E11E572F;
+	Wed, 15 Jan 2025 06:27:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736922439; cv=none; b=UEMP2GjvkeJAb6cdriw5s+0cpH2gHQz4IYABXgU/XhXdhYE1SRNpUfP2rxyZBzZjFjJqZgwDvHooomep4IYQSd40PyAS/AQ52K9lvIZN0HUdKLe5zCbItO7CMg6kUtE6yV3nMRLFbqDdW75esxjsalBPg+d5WQEM501j4Jktz1M=
+	t=1736922470; cv=none; b=CCk6MhjbYy8X8WEyppfi5ZuJUBzepTO0avOUYALHKc0Vssce+uMv9TsDykZ0DS2wbgpD/JFBG3xLiBd5q261/463HTZKov+MpcL6yAevA1EnyoYbQXU6CjsqINt1E0L0VIG7+mvCR/8tPWl65GkER0BxMMZCfEXBrfOH2Xf8M8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736922439; c=relaxed/simple;
-	bh=7bdH9utNFE6KJeqwnxFBJA5Qizh+vNGgqoqSH4K14dg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XDZmi0mSGWxAeSt+Ih68x61YXQrVGris1kJW7UKCwCAM2kblWEeuEbgnDUgd5WFkE8GlsWQRW858XB3NNCZElW0yL+MKYU4Bj2exR36o/PzHV8XKv5INB/Y2WZjvtoaWB9atuY41UB6dU87nX85Jen3t1yhN5EeauTCFL8xWCVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gTFVkxSB; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a9e44654ae3so1010458966b.1
-        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 22:27:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736922436; x=1737527236; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7bdH9utNFE6KJeqwnxFBJA5Qizh+vNGgqoqSH4K14dg=;
-        b=gTFVkxSBuB0kUxrR/m16p8YcB6GHnXFc+ww7s6uUoCI7VmIe9tkDSPAkiIUeNiB9WZ
-         5zuewpPFVAC5krnMJ00CB0NwH4v4DfoAyxd/JXn3cP4IA2MOSuKTinS6sixZF1QsaGrN
-         2qqJnTRS3C0fuIIcUIHZHVYaJT5zRyO08A1JnuwbTZwihh5fOUssEBZ8WBd6X1LpUqqb
-         EQcigHQ+CUKnrArp2RnjPX/gxXRHDxYcM659YS+0jARaSlLv3PVwE48iohnCwfX7KFc2
-         MGzpQLwehqriVKUAM5LrW2h7bsm8q61c4tN7ZFuObBjHa7ZwuOT20EanCxdU91rYEQiX
-         4FuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736922436; x=1737527236;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7bdH9utNFE6KJeqwnxFBJA5Qizh+vNGgqoqSH4K14dg=;
-        b=qijcmkl8q7yzPoE1OczSw8/lS2fdmD+3vypymS8mjkgzHDH6fmreQAnATf2V9+Pjiq
-         cbLI4MHT/G7bHJ/GzxxPvjSmMqqiveV8n01hiUd/510yC62NK6s34Gb3Ln5U3j6Br0Yj
-         A5IFLNVXquyp7unV+ljdDqGmF3XHT25ViwWxTP2DzE308jlbjZBKkhUW83Bx/uCSVT1e
-         XYMKtNkYTD6Ni2wigh+HSKV614y0lwpOB4V9wFMQVybMNdI6amcuxPQQGSHtFuSADaGB
-         juN239VZqRSIn7AgvP/8SiI5P5I/AbEF2PfWy9lSYXkI2ASbaGswgOHjZdasId8/b8Xh
-         ahvw==
-X-Forwarded-Encrypted: i=1; AJvYcCUFq4Q+458mqADHeDKVtJ5pr2WFDrQJcAEHP/6SwIg8Dqrx+2cDSftqYi6WWdUqlO54HWJVACY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YziyhBaFQQjH73O3UYZiAtMSXLNWzdQP0dvQ3AzVibjdd0tsbJj
-	P5WJb+1mI9ALFusO9vaNIB3ijph5HjO01exj250LrqSdHuBj8MV2T9+bYS4Bd72sIXaLJSnhmNF
-	b
-X-Gm-Gg: ASbGnctYYvE/1A+UfFMrcLcUIlpkdCjy6+NSWnxdbARYMizLgnPRt8jeMahBBVTpTEz
-	Gg1ff2Naph6gS0nL1S0zr2Nthl7OHUXOQapVHGH2/ejVydo4AiEw8/UMy88KDnFyv8fOAIK191X
-	0HfQBmFPrsprGNUwfrY8jez8H+gFKRGk46ZyQcDxbQiLFcbBWhMvtMnBB6BlFm28X0RiGwEcmHz
-	tCLdPzrK6VkcU1JDZv4rLQNmtUn9Mc3Y2JYTo6KQ7nUoloJbHnhRNp9hpFYeznUSA==
-X-Google-Smtp-Source: AGHT+IFA1Yjzod676tgBpT+pdawUDG6xVmkvVZy+3MR/AN2mwfOhAtphEeoSb0u6+N6EFLjRGfjdGA==
-X-Received: by 2002:a17:907:728e:b0:aa6:a9fe:46e5 with SMTP id a640c23a62f3a-ab2abde568emr2595107666b.53.1736922435733;
-        Tue, 14 Jan 2025 22:27:15 -0800 (PST)
-Received: from [192.168.0.14] ([188.26.60.120])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c9563b06sm722100566b.100.2025.01.14.22.27.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Jan 2025 22:27:15 -0800 (PST)
-Message-ID: <7df1ea9b-5fc3-414a-b0bb-595296537d01@linaro.org>
-Date: Wed, 15 Jan 2025 06:27:13 +0000
+	s=arc-20240116; t=1736922470; c=relaxed/simple;
+	bh=j2R4QF6QX6Xs9gB6kFKYzfdEOjAjpD4z8qgvJ/bocl8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LJvCz2sS6ZDjVcTbbak6FppEFR+o1PT+uoHKuVhkFEl9Ldx0c5tYZ0ngSJlv5W3YyNTmqnyIN0Ofk6B40rGbiWo1KZXDxUah4yuCiQvxXhDbx9fbw+3kjp8W5htswnHOJUyY5nQCT3RmwWvAGJ7pMPLYSJXfFobc44G3T+InJKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 0232968B05; Wed, 15 Jan 2025 07:27:43 +0100 (CET)
+Date: Wed, 15 Jan 2025 07:27:43 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>, Carlos Maiolino <cem@kernel.org>,
+	linux-xfs@vger.kernel.org, xfs-stable <xfs-stable@lists.linux.dev>,
+	stable@vger.kernel.org, david.flynn@oracle.com
+Subject: Re: [PATCH] xfs: fix online repair probing when
+ CONFIG_XFS_ONLINE_REPAIR=n
+Message-ID: <20250115062743.GA29997@lst.de>
+References: <20250114224819.GD2103004@frogsfrogsfrogs> <20250115060615.GA29387@lst.de> <20250115062037.GF3557553@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] mtd: spi-nor: core: replace dummy buswidth from
- addr to data
-To: Miquel Raynal <miquel.raynal@bootlin.com>,
- Pratyush Yadav <pratyush@kernel.org>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>, mwalle@kernel.org,
- richard@nod.at, vigneshr@ti.com, linux-mtd@lists.infradead.org,
- linux-kernel@vger.kernel.org, alvinzhou@mxic.com.tw, leoyu@mxic.com.tw,
- Cheng Ming Lin <chengminglin@mxic.com.tw>, stable@vger.kernel.org,
- Cheng Ming Lin <linchengming884@gmail.com>
-References: <20241112075242.174010-1-linchengming884@gmail.com>
- <20241112075242.174010-2-linchengming884@gmail.com>
- <3342163.44csPzL39Z@steina-w> <mafs0zfjt5q3n.fsf@kernel.org>
- <87wmexp9lh.fsf@bootlin.com>
-Content-Language: en-US
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
-In-Reply-To: <87wmexp9lh.fsf@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250115062037.GF3557553@frogsfrogsfrogs>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 
+On Tue, Jan 14, 2025 at 10:20:37PM -0800, Darrick J. Wong wrote:
+> Good point, we could cut it off right then and there.  Though this seems
+> a little gross:
+> 
+> 	if (xchk_could_repair(sc))
+> #ifdef CONFIG_XFS_ONLINE_REPAIR
+> 		sc->sm->sm_flags |= XFS_SCRUB_OFLAG_CORRUPT;
+> #else
+> 		return -EOPNOTSUPP;
+> #endif
+> 	return 0;
+> 
+> but I don't mind.  Some day the stubs will go away, fingers crossed.
 
+We'll I'd write it as:
 
-On 1/14/25 5:51 PM, Miquel Raynal wrote:
->> Tudor, Michael, Miquel, what do you think about this? We are at rc7 but
->> I think we should send out a fixes PR with a revert. If you agree, I
->> will send out a patch and a PR.
-> Either way I am fine. the -rc cycles are also available for us to
+	if (xchk_could_repair(sc)) {
+		if (!IS_ENABLED(CONFIG_XFS_ONLINE_REPAIR))
+			return -EOPNOTSUPP;
+		sc->sm->sm_flags |= XFS_SCRUB_OFLAG_CORRUPT;
+	}
 
-same. You could also temporarily fix nxp driver by tracking RX, this way
-having both macronix and nxp happy.
+but I'm fine with either version:
+
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 
