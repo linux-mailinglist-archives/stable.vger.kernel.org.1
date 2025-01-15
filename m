@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-109012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47962A12164
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:56:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F67CA12017
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FD651880980
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:56:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B8681889B8F
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49BE71E98E7;
-	Wed, 15 Jan 2025 10:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97029248BA8;
+	Wed, 15 Jan 2025 10:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUl0skKw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="045vXtKw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052981DB13A;
-	Wed, 15 Jan 2025 10:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53092248BA6;
+	Wed, 15 Jan 2025 10:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938563; cv=none; b=oEzX4MSafD+8gnU/HAapgPTyPOD8DMDFb24g+EBXl1u0JuH0PVxW2zSvA7/BEew8jwBB+E+uk0Mu4Q3OaLzE5o2zQHchiQKEKPnzP//sURoefBqz/lqOS0YZk1Klw3vz5z5vJhfJKaEHcvABSF6pTpUj3a+6VIFP54nWPuHPu7I=
+	t=1736937689; cv=none; b=JLavHbCdTW3pGtaDW2+xlJE3ZQDmbTq2aI3keinf46nxsXLiNTcRs0lBWf73lWEvKAogrl7I6SB+SaE5wJIRpihFnjRKmz9YHJ6z4FsT/0iHFOXo8uogNX98xHCrXaGzo1cvPIPqDglB4DLcE1gFyCCpn4wFzqRcPHq3fpwbx+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938563; c=relaxed/simple;
-	bh=L0baaO3NkfPtMQTiEAJGTuXd8amxAHCXSJvj6irZb5I=;
+	s=arc-20240116; t=1736937689; c=relaxed/simple;
+	bh=pnde8HLl+3a+wbW7KeJdPbCgCVg3wNU5XfjIUN0OpLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aNeRvc72/kfVFbT21Ll4fwYazjl76Q1V93jyTC0goJnvqpn0eILjFi4XdU+3LK7fq7rGOvb21985wKC9HpxT9pL+AnASU5AxeB0TR5F0VXIkFDI0JBMt3TRhHFS6+X+2G3e04A1fjsxdjQrvS+PW3DMVN/ZLgxg86AbWKXpiz8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUl0skKw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83407C4CEDF;
-	Wed, 15 Jan 2025 10:56:02 +0000 (UTC)
+	 MIME-Version; b=Vsoc/UIzk5tw9qP2/H34YwaSYZMn8TkHPGbXU7U57uaujcLNvjRlzZRfGZ1tekmg9mz8vQN/FY69wgvVesW3Ysdl97AvTnHq+lg1+JN1M5sKGCFQZP8BcR2ggZGNc1TUjhLjGWPyGIQnRDT1l+xixazIbLCTSJxZ7ByXwVhC02E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=045vXtKw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3806BC4CEE1;
+	Wed, 15 Jan 2025 10:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938562;
-	bh=L0baaO3NkfPtMQTiEAJGTuXd8amxAHCXSJvj6irZb5I=;
+	s=korg; t=1736937688;
+	bh=pnde8HLl+3a+wbW7KeJdPbCgCVg3wNU5XfjIUN0OpLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vUl0skKwyHn1PfaQzZ5h5uH9QiFPnZRX/5MGrxJXmkYkwaCIV5zPdCR+U1ULzXgLT
-	 Mt2vjCMqOaqcISuAjFqEhyfBTKgdzejcIrKyBW4TEqtybAghRiAfGnltjmqxLC5hav
-	 fT/CoQ02dLQwa1Xxmm06AGBHl2/93lkdgv8S39Kw=
+	b=045vXtKwstQO3qhjyk1cSxRMN/93K6oNeKKUgdenNymei02OBYbzBjiCe6gBoxzLZ
+	 w8lv8MRr4k+LU3b1k2pjDnvj80QJ8NopUHF7u3RFRfuwhUF8U+YV8qoyhMp9dZvBL1
+	 RwqAJyG7kqYZDsYYO687gpP+SK905LKYzvh8nJwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Milena Olech <milena.olech@intel.com>,
-	Przemyslaw Korba <przemyslaw.korba@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.6 028/129] ice: fix incorrect PHY settings for 100 GB/s
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 25/92] netfilter: conntrack: clamp maximum hashtable size to INT_MAX
 Date: Wed, 15 Jan 2025 11:36:43 +0100
-Message-ID: <20250115103555.488538390@linuxfoundation.org>
+Message-ID: <20250115103548.535530086@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Przemyslaw Korba <przemyslaw.korba@intel.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 6c5b989116083a98f45aada548ff54e7a83a9c2d ]
+[ Upstream commit b541ba7d1f5a5b7b3e2e22dc9e40e18a7d6dbc13 ]
 
-ptp4l application reports too high offset when ran on E823 device
-with a 100GB/s link. Those values cannot go under 100ns, like in a
-working case when using 100 GB/s cable.
+Use INT_MAX as maximum size for the conntrack hashtable. Otherwise, it
+is possible to hit WARN_ON_ONCE in __kvmalloc_node_noprof() when
+resizing hashtable because __GFP_NOWARN is unset. See:
 
-This is due to incorrect frequency settings on the PHY clocks for
-100 GB/s speed. Changes are introduced to align with the internal
-hardware documentation, and correctly initialize frequency in PHY
-clocks with the frequency values that are in our HW spec.
+  0708a0afe291 ("mm: Consider __GFP_NOWARN flag for oversized kvmalloc() calls")
 
-To reproduce the issue run ptp4l as a Time Receiver on E823 device,
-and observe the offset, which will never approach values seen
-in the PTP working case.
+Note: hashtable resize is only possible from init_netns.
 
-Reproduction output:
-ptp4l -i enp137s0f3 -m -2 -s -f /etc/ptp4l_8275.conf
-ptp4l[5278.775]: master offset      12470 s2 freq  +41288 path delay -3002
-ptp4l[5278.837]: master offset      10525 s2 freq  +39202 path delay -3002
-ptp4l[5278.900]: master offset     -24840 s2 freq  -20130 path delay -3002
-ptp4l[5278.963]: master offset      10597 s2 freq  +37908 path delay -3002
-ptp4l[5279.025]: master offset       8883 s2 freq  +36031 path delay -3002
-ptp4l[5279.088]: master offset       7267 s2 freq  +34151 path delay -3002
-ptp4l[5279.150]: master offset       5771 s2 freq  +32316 path delay -3002
-ptp4l[5279.213]: master offset       4388 s2 freq  +30526 path delay -3002
-ptp4l[5279.275]: master offset     -30434 s2 freq  -28485 path delay -3002
-ptp4l[5279.338]: master offset     -28041 s2 freq  -27412 path delay -3002
-ptp4l[5279.400]: master offset       7870 s2 freq  +31118 path delay -3002
-
-Fixes: 3a7496234d17 ("ice: implement basic E822 PTP support")
-Reviewed-by: Milena Olech <milena.olech@intel.com>
-Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 9cc1c73ad666 ("netfilter: conntrack: avoid integer overflow when resizing")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp_consts.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nf_conntrack_core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_consts.h b/drivers/net/ethernet/intel/ice/ice_ptp_consts.h
-index 4109aa3b2fcd..87ce20540f57 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_consts.h
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_consts.h
-@@ -359,9 +359,9 @@ const struct ice_vernier_info_e822 e822_vernier[NUM_ICE_PTP_LNK_SPD] = {
- 		/* rx_desk_rsgb_par */
- 		644531250, /* 644.53125 MHz Reed Solomon gearbox */
- 		/* tx_desk_rsgb_pcs */
--		644531250, /* 644.53125 MHz Reed Solomon gearbox */
-+		390625000, /* 390.625 MHz Reed Solomon gearbox */
- 		/* rx_desk_rsgb_pcs */
--		644531250, /* 644.53125 MHz Reed Solomon gearbox */
-+		390625000, /* 390.625 MHz Reed Solomon gearbox */
- 		/* tx_fixed_delay */
- 		1620,
- 		/* pmd_adj_divisor */
+diff --git a/net/netfilter/nf_conntrack_core.c b/net/netfilter/nf_conntrack_core.c
+index 024f93fc8c0b..b7b2ed05ac50 100644
+--- a/net/netfilter/nf_conntrack_core.c
++++ b/net/netfilter/nf_conntrack_core.c
+@@ -2591,12 +2591,15 @@ void *nf_ct_alloc_hashtable(unsigned int *sizep, int nulls)
+ 	struct hlist_nulls_head *hash;
+ 	unsigned int nr_slots, i;
+ 
+-	if (*sizep > (UINT_MAX / sizeof(struct hlist_nulls_head)))
++	if (*sizep > (INT_MAX / sizeof(struct hlist_nulls_head)))
+ 		return NULL;
+ 
+ 	BUILD_BUG_ON(sizeof(struct hlist_nulls_head) != sizeof(struct hlist_head));
+ 	nr_slots = *sizep = roundup(*sizep, PAGE_SIZE / sizeof(struct hlist_nulls_head));
+ 
++	if (nr_slots > (INT_MAX / sizeof(struct hlist_nulls_head)))
++		return NULL;
++
+ 	hash = kvcalloc(nr_slots, sizeof(struct hlist_nulls_head), GFP_KERNEL);
+ 
+ 	if (hash && nulls)
 -- 
 2.39.5
 
