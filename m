@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-108741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FF38A12010
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC029A120D4
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:49:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7F7D1624EF
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE83016716B
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:49:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EDE3248BBF;
-	Wed, 15 Jan 2025 10:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1520B248BCB;
+	Wed, 15 Jan 2025 10:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ooeu0oTk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKvf6IKK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE929248BAA;
-	Wed, 15 Jan 2025 10:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56AF248BA1;
+	Wed, 15 Jan 2025 10:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937650; cv=none; b=KZu9zurfzRow7sa4LW4kBi7H5DpSEfcIGsy68Gh7eWI0p8I7URPeIfYMQdLa15/ucZD2ilxUbXTVVbURB2py6UE2NOZai9LaIpsaTEaN2xzrQuKqtFJ9kkk2Pm5Bc5JtOgO8fv6924WWC2iWp1TytxQ7MU6QELjoulF+ZfS1/Kw=
+	t=1736938174; cv=none; b=buAj4+OZzM+yJ+Sc338uI7dQKSsllGgLyXflVJZzMWqVbo+ZQd/DAK8v3JXK0iI5foMFR9h6LCvZdFWX36TfNjwu8yJcCd2qXUrACFbOlMRHYq6A08uVl4PxT9Ib8J8XU7/4IKgWqsBwyMkF7O/3c9lmhhOdVd8b+/f139mOr/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937650; c=relaxed/simple;
-	bh=YcJszVYqnvSTwtEikeX6UrOw7PuQjlxNzlgjD3pDq6Y=;
+	s=arc-20240116; t=1736938174; c=relaxed/simple;
+	bh=LL6G4yCqeJ7Z55shYK0thCXdg+1TrAxK0o2VOoci3qw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NcsvlUktubQLNfT7eFmBQscoLgSF3a5DtYhEkkvGsCzXPAxV8mQc+ioiUt9WO5gUOZMqtvmkRXkqIowKO1GyzX23Y8h4CELe0BdL4zDLSPsHuoKTf1/P2b8c6tgq/3OjujLsh6OFnLwl+dzeJkMp7qTcm6oX0cAO8is5BYZzPSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ooeu0oTk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C22DC4CEE2;
-	Wed, 15 Jan 2025 10:40:49 +0000 (UTC)
+	 MIME-Version; b=lPSJ1QpLPHhdpl5xQA2UapF7yLcekavCOASN8mDVyU0K6JM5pFbsJdcWxGbd6rOulIvbIo+iMmo1LLqaWNjKILaOLITmbCdoQMQvDKhDaNeAvvwjLBxNG7VZaqU9pEDM02Jap8YLBhNLSRln6ZrGgo0Brbyav9B6Rguj735BayI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKvf6IKK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB8EC4CEDF;
+	Wed, 15 Jan 2025 10:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937649;
-	bh=YcJszVYqnvSTwtEikeX6UrOw7PuQjlxNzlgjD3pDq6Y=;
+	s=korg; t=1736938174;
+	bh=LL6G4yCqeJ7Z55shYK0thCXdg+1TrAxK0o2VOoci3qw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ooeu0oTkeH0hrI/05zwlHyKocmobHR/YX9lz7ZHJakhebTZ+gPOySd3KuX6cjAg99
-	 5uJTYyT9o65Lx0v1v5wRoBGcqBtRjri0v+I+oO/Gl6+UGIwDcFJvPcYcN1R2k/wyZL
-	 2FXgkNFZsNJ0f2p1UzqK0R+4VyRDhQbhUDrmOXL4=
+	b=WKvf6IKKF5UJPods7HaJBD2gRHSQiGtLVzC5U/c5XPwxuhegrG5VJ+Ahfcxcd8amH
+	 +SV35YzfhC9M7whaPNCjO515SX1hxTNBk05u93s6j7qFweGwgYDVba+MgxUPckrPQp
+	 1GhmIHIYV4VRitVJfVyEK0099s9bmWd9rcsY6pT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 24/92] netfilter: nf_tables: imbalance in flowtable binding
+Subject: [PATCH 6.12 106/189] cgroup/cpuset: Prevent leakage of isolated CPUs into sched domains
 Date: Wed, 15 Jan 2025 11:36:42 +0100
-Message-ID: <20250115103548.496291480@linuxfoundation.org>
+Message-ID: <20250115103610.684207139@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +62,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 13210fc63f353fe78584048079343413a3cdf819 ]
+[ Upstream commit 9b496a8bbed9cc292b0dfd796f38ec58b6d0375f ]
 
-All these cases cause imbalance between BIND and UNBIND calls:
+Isolated CPUs are not allowed to be used in a non-isolated partition.
+The only exception is the top cpuset which is allowed to contain boot
+time isolated CPUs.
 
-- Delete an interface from a flowtable with multiple interfaces
+Commit ccac8e8de99c ("cgroup/cpuset: Fix remote root partition creation
+problem") introduces a simplified scheme of including only partition
+roots in sched domain generation. However, it does not properly account
+for this exception case. This can result in leakage of isolated CPUs
+into a sched domain.
 
-- Add a (device to a) flowtable with --check flag
+Fix it by making sure that isolated CPUs are excluded from the top
+cpuset before generating sched domains.
 
-- Delete a netns containing a flowtable
+Also update the way the boot time isolated CPUs are handled in
+test_cpuset_prs.sh to make sure that those isolated CPUs are really
+isolated instead of just skipping them in the tests.
 
-- In an interactive nft session, create a table with owner flag and
-  flowtable inside, then quit.
-
-Fix it by calling FLOW_BLOCK_UNBIND when unregistering hooks, then
-remove late FLOW_BLOCK_UNBIND call when destroying flowtable.
-
-Fixes: ff4bf2f42a40 ("netfilter: nf_tables: add nft_unregister_flowtable_hook()")
-Reported-by: Phil Sutter <phil@nwl.cc>
-Tested-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: ccac8e8de99c ("cgroup/cpuset: Fix remote root partition creation problem")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ kernel/cgroup/cpuset.c                        | 10 +++++-
+ .../selftests/cgroup/test_cpuset_prs.sh       | 33 +++++++++++--------
+ 2 files changed, 28 insertions(+), 15 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 07bcf9b7d779..8176533c50ab 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7979,6 +7979,7 @@ static void nft_unregister_flowtable_hook(struct net *net,
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index a4dd285cdf39..c431c50512bd 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -862,7 +862,15 @@ static int generate_sched_domains(cpumask_var_t **domains,
+ 	 */
+ 	if (cgrpv2) {
+ 		for (i = 0; i < ndoms; i++) {
+-			cpumask_copy(doms[i], csa[i]->effective_cpus);
++			/*
++			 * The top cpuset may contain some boot time isolated
++			 * CPUs that need to be excluded from the sched domain.
++			 */
++			if (csa[i] == &top_cpuset)
++				cpumask_and(doms[i], csa[i]->effective_cpus,
++					    housekeeping_cpumask(HK_TYPE_DOMAIN));
++			else
++				cpumask_copy(doms[i], csa[i]->effective_cpus);
+ 			if (dattr)
+ 				dattr[i] = SD_ATTR_INIT;
+ 		}
+diff --git a/tools/testing/selftests/cgroup/test_cpuset_prs.sh b/tools/testing/selftests/cgroup/test_cpuset_prs.sh
+index 03c1bdaed2c3..400a696a0d21 100755
+--- a/tools/testing/selftests/cgroup/test_cpuset_prs.sh
++++ b/tools/testing/selftests/cgroup/test_cpuset_prs.sh
+@@ -86,15 +86,15 @@ echo "" > test/cpuset.cpus
+ 
+ #
+ # If isolated CPUs have been reserved at boot time (as shown in
+-# cpuset.cpus.isolated), these isolated CPUs should be outside of CPUs 0-7
++# cpuset.cpus.isolated), these isolated CPUs should be outside of CPUs 0-8
+ # that will be used by this script for testing purpose. If not, some of
+-# the tests may fail incorrectly. These isolated CPUs will also be removed
+-# before being compared with the expected results.
++# the tests may fail incorrectly. These pre-isolated CPUs should stay in
++# an isolated state throughout the testing process for now.
+ #
+ BOOT_ISOLCPUS=$(cat $CGROUP2/cpuset.cpus.isolated)
+ if [[ -n "$BOOT_ISOLCPUS" ]]
+ then
+-	[[ $(echo $BOOT_ISOLCPUS | sed -e "s/[,-].*//") -le 7 ]] &&
++	[[ $(echo $BOOT_ISOLCPUS | sed -e "s/[,-].*//") -le 8 ]] &&
+ 		skip_test "Pre-isolated CPUs ($BOOT_ISOLCPUS) overlap CPUs to be tested"
+ 	echo "Pre-isolated CPUs: $BOOT_ISOLCPUS"
+ fi
+@@ -683,15 +683,19 @@ check_isolcpus()
+ 		EXPECT_VAL2=$EXPECT_VAL
+ 	fi
+ 
++	#
++	# Appending pre-isolated CPUs
++	# Even though CPU #8 isn't used for testing, it can't be pre-isolated
++	# to make appending those CPUs easier.
++	#
++	[[ -n "$BOOT_ISOLCPUS" ]] && {
++		EXPECT_VAL=${EXPECT_VAL:+${EXPECT_VAL},}${BOOT_ISOLCPUS}
++		EXPECT_VAL2=${EXPECT_VAL2:+${EXPECT_VAL2},}${BOOT_ISOLCPUS}
++	}
++
+ 	#
+ 	# Check cpuset.cpus.isolated cpumask
+ 	#
+-	if [[ -z "$BOOT_ISOLCPUS" ]]
+-	then
+-		ISOLCPUS=$(cat $ISCPUS)
+-	else
+-		ISOLCPUS=$(cat $ISCPUS | sed -e "s/,*$BOOT_ISOLCPUS//")
+-	fi
+ 	[[ "$EXPECT_VAL2" != "$ISOLCPUS" ]] && {
+ 		# Take a 50ms pause and try again
+ 		pause 0.05
+@@ -731,8 +735,6 @@ check_isolcpus()
+ 		fi
+ 	done
+ 	[[ "$ISOLCPUS" = *- ]] && ISOLCPUS=${ISOLCPUS}$LASTISOLCPU
+-	[[ -n "BOOT_ISOLCPUS" ]] &&
+-		ISOLCPUS=$(echo $ISOLCPUS | sed -e "s/,*$BOOT_ISOLCPUS//")
+ 
+ 	[[ "$EXPECT_VAL" = "$ISOLCPUS" ]]
  }
- 
- static void __nft_unregister_flowtable_net_hooks(struct net *net,
-+						 struct nft_flowtable *flowtable,
- 						 struct list_head *hook_list,
- 					         bool release_netdev)
- {
-@@ -7986,6 +7987,8 @@ static void __nft_unregister_flowtable_net_hooks(struct net *net,
- 
- 	list_for_each_entry_safe(hook, next, hook_list, list) {
- 		nf_unregister_net_hook(net, &hook->ops);
-+		flowtable->data.type->setup(&flowtable->data, hook->ops.dev,
-+					    FLOW_BLOCK_UNBIND);
- 		if (release_netdev) {
- 			list_del(&hook->list);
- 			kfree_rcu(hook, rcu);
-@@ -7994,9 +7997,10 @@ static void __nft_unregister_flowtable_net_hooks(struct net *net,
- }
- 
- static void nft_unregister_flowtable_net_hooks(struct net *net,
-+					       struct nft_flowtable *flowtable,
- 					       struct list_head *hook_list)
- {
--	__nft_unregister_flowtable_net_hooks(net, hook_list, false);
-+	__nft_unregister_flowtable_net_hooks(net, flowtable, hook_list, false);
- }
- 
- static int nft_register_flowtable_net_hooks(struct net *net,
-@@ -8618,8 +8622,6 @@ static void nf_tables_flowtable_destroy(struct nft_flowtable *flowtable)
- 
- 	flowtable->data.type->free(&flowtable->data);
- 	list_for_each_entry_safe(hook, next, &flowtable->hook_list, list) {
--		flowtable->data.type->setup(&flowtable->data, hook->ops.dev,
--					    FLOW_BLOCK_UNBIND);
- 		list_del_rcu(&hook->list);
- 		kfree_rcu(hook, rcu);
- 	}
-@@ -9902,6 +9904,7 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
- 							   &nft_trans_flowtable_hooks(trans),
- 							   NFT_MSG_DELFLOWTABLE);
- 				nft_unregister_flowtable_net_hooks(net,
-+								   nft_trans_flowtable(trans),
- 								   &nft_trans_flowtable_hooks(trans));
- 			} else {
- 				list_del_rcu(&nft_trans_flowtable(trans)->list);
-@@ -9910,6 +9913,7 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
- 							   &nft_trans_flowtable(trans)->hook_list,
- 							   NFT_MSG_DELFLOWTABLE);
- 				nft_unregister_flowtable_net_hooks(net,
-+						nft_trans_flowtable(trans),
- 						&nft_trans_flowtable(trans)->hook_list);
- 			}
- 			break;
-@@ -10140,11 +10144,13 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
- 		case NFT_MSG_NEWFLOWTABLE:
- 			if (nft_trans_flowtable_update(trans)) {
- 				nft_unregister_flowtable_net_hooks(net,
-+						nft_trans_flowtable(trans),
- 						&nft_trans_flowtable_hooks(trans));
- 			} else {
- 				nft_use_dec_restore(&trans->ctx.table->use);
- 				list_del_rcu(&nft_trans_flowtable(trans)->list);
- 				nft_unregister_flowtable_net_hooks(net,
-+						nft_trans_flowtable(trans),
- 						&nft_trans_flowtable(trans)->hook_list);
- 			}
- 			break;
-@@ -10685,7 +10691,8 @@ static void __nft_release_hook(struct net *net, struct nft_table *table)
- 	list_for_each_entry(chain, &table->chains, list)
- 		__nf_tables_unregister_hook(net, table, chain, true);
- 	list_for_each_entry(flowtable, &table->flowtables, list)
--		__nft_unregister_flowtable_net_hooks(net, &flowtable->hook_list,
-+		__nft_unregister_flowtable_net_hooks(net, flowtable,
-+						     &flowtable->hook_list,
- 						     true);
- }
- 
+@@ -836,8 +838,11 @@ run_state_test()
+ 		# if available
+ 		[[ -n "$ICPUS" ]] && {
+ 			check_isolcpus $ICPUS
+-			[[ $? -ne 0 ]] && test_fail $I "isolated CPU" \
+-				"Expect $ICPUS, get $ISOLCPUS instead"
++			[[ $? -ne 0 ]] && {
++				[[ -n "$BOOT_ISOLCPUS" ]] && ICPUS=${ICPUS},${BOOT_ISOLCPUS}
++				test_fail $I "isolated CPU" \
++					"Expect $ICPUS, get $ISOLCPUS instead"
++			}
+ 		}
+ 		reset_cgroup_states
+ 		#
 -- 
 2.39.5
 
