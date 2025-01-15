@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-109053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65CABA12193
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:58:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C362AA1210B
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:52:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A321D1883F65
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:58:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AE647A25B2
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:52:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36DBA3594E;
-	Wed, 15 Jan 2025 10:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD4D1E98E4;
+	Wed, 15 Jan 2025 10:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGCW9ypp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGC23kfR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94ED248BD0;
-	Wed, 15 Jan 2025 10:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12141DB151;
+	Wed, 15 Jan 2025 10:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938701; cv=none; b=siI5liiuoBiyCav93QNyZqLQB8ilD2G/BIlXW8R2cHfIS0lwQP3Mw/6tvbSQxbUMjox0tqOZRydQLNlodTf8wLhYIB07WGCXfrt+34KBiNYSnhugBeuhO2BJveG3szsVdJRLBo/ZkyPJs4ccHUzPOPYG+IZkfbCdXd/TUlDDABk=
+	t=1736938323; cv=none; b=Z6GAci1LkKtmSiXgJiyS/iressrN1f5+wE7iIBGtfl2GSSrAzzyE7obPfNghSE6SvZzuSYyOljbYIHgvS5ShMR0P0eQT0UEgibHzhjcV4jA8IfA/Ab080pDrklcetEejdMy5+QbfPJWs3Xw9HBd5Q/16obRST/YCW2wzarxIXTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938701; c=relaxed/simple;
-	bh=O0qxxGCIujx4V8PdUMliPkRD5JIN1f515OITJv90q84=;
+	s=arc-20240116; t=1736938323; c=relaxed/simple;
+	bh=9XeOEvWB0kgzwPfGwBW7+CwxKYp7pBO6XdjMEoVdhsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SobbXCwBMhSDEfrmgn8DU8T25nO1go/UiLH0IiVREAW20LgGhzI90MUfIP+m1tFIFurzsF0zaTGtgQEXvxcJHSAQMynt4YkGNigz2xMgkiFHd3Rf5mnwqBjBChM2AJP8nf4y9ZMlVaL5M+6AuSam1MgzewW2qDmIJSCvjQR5g1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGCW9ypp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D5FEC4CEDF;
-	Wed, 15 Jan 2025 10:58:20 +0000 (UTC)
+	 MIME-Version; b=LtaJXir8onsEVQctmee870mLGrns115+8CeK/xNUGgcoNWqb3bfZvhV1hZZDRTFdjqQzNxk/RZtJVzppq/0b8A7EFLFiEvVsF6lfrVPDppEQ02hwn44N+2l1PKaXQaXxKGG3wPGE/Sv2uSw0ddPz/tCKF/zy3VwIS4nmJRZ7FbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGC23kfR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FBD4C4CEDF;
+	Wed, 15 Jan 2025 10:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938700;
-	bh=O0qxxGCIujx4V8PdUMliPkRD5JIN1f515OITJv90q84=;
+	s=korg; t=1736938322;
+	bh=9XeOEvWB0kgzwPfGwBW7+CwxKYp7pBO6XdjMEoVdhsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HGCW9yppf4SEvgZBDP7PDvqzaGxnCzEPOvUmisdVs9E4zHn0T/jcpTMn2fh3Ttv7m
-	 BTYbbmbqeMa+MRTIb0RuCLThiV5OZVMdGCMnBlG48m/BiMHM7uSHmNDkZZSC8T4flN
-	 jwwgIn7iy0JtyycSkJ53sllJzsRPmM58OIUuowrk=
+	b=eGC23kfRvpOtZQw9pADCWlrNHJ8N8KoehvEs4fXky6p4SHfIt/E8ekI4QKqnDUOg8
+	 MXG/rWJFInCA1We3qXzG3K19H5x2MLrAa4Aj541RNn0pMwpVY5VrQAep6dJ+yi1auS
+	 ywrCrfESGEDMRCgB/zDT6p2m5DU4BWew8WH3k990=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/129] thermal: of: fix OF node leak in of_thermal_zone_find()
+	stable <stable@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 148/189] usb: gadget: midi2: Reverse-select at the right place
 Date: Wed, 15 Jan 2025 11:37:24 +0100
-Message-ID: <20250115103557.128763222@linuxfoundation.org>
+Message-ID: <20250115103612.324047753@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 9164e0912af206a72ddac4915f7784e470a04ace ]
+commit 6f660ffce7c938f2a5d8473c0e0b45e4fb25ef7f upstream.
 
-of_thermal_zone_find() calls of_parse_phandle_with_args(), but does not
-release the OF node reference obtained by it.
+We should do reverse selection of other components from
+CONFIG_USB_F_MIDI2 which is tristate, instead of
+CONFIG_USB_CONFIGFS_F_MIDI2 which is bool, for satisfying subtle
+module dependencies.
 
-Add a of_node_put() call when the call is successful.
-
-Fixes: 3fd6d6e2b4e8 ("thermal/of: Rework the thermal device tree initialization")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Link: https://patch.msgid.link/20241224031809.950461-1-joe@pf.is.s.u-tokyo.ac.jp
-[ rjw: Changelog edit ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8b645922b223 ("usb: gadget: Add support for USB MIDI 2.0 function driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20250101131124.27599-1-tiwai@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/thermal_of.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/gadget/Kconfig |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
-index 4e5f86c21456..0f520cf923a1 100644
---- a/drivers/thermal/thermal_of.c
-+++ b/drivers/thermal/thermal_of.c
-@@ -203,6 +203,7 @@ static struct device_node *of_thermal_zone_find(struct device_node *sensor, int
- 				goto out;
- 			}
+--- a/drivers/usb/gadget/Kconfig
++++ b/drivers/usb/gadget/Kconfig
+@@ -211,6 +211,8 @@ config USB_F_MIDI
  
-+			of_node_put(sensor_specs.np);
- 			if ((sensor == sensor_specs.np) && id == (sensor_specs.args_count ?
- 								  sensor_specs.args[0] : 0)) {
- 				pr_debug("sensor %pOFn id=%d belongs to %pOFn\n", sensor, id, child);
--- 
-2.39.5
-
+ config USB_F_MIDI2
+ 	tristate
++	select SND_UMP
++	select SND_UMP_LEGACY_RAWMIDI
+ 
+ config USB_F_HID
+ 	tristate
+@@ -445,8 +447,6 @@ config USB_CONFIGFS_F_MIDI2
+ 	depends on USB_CONFIGFS
+ 	depends on SND
+ 	select USB_LIBCOMPOSITE
+-	select SND_UMP
+-	select SND_UMP_LEGACY_RAWMIDI
+ 	select USB_F_MIDI2
+ 	help
+ 	  The MIDI 2.0 function driver provides the generic emulated
 
 
 
