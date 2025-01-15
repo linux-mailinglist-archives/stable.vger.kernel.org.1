@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-108899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E2CEA120D7
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:49:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16DF2A12165
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:56:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56006188AEC4
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:49:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FB9E1696CE
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:56:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A1A248BDC;
-	Wed, 15 Jan 2025 10:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9926C1E7C02;
+	Wed, 15 Jan 2025 10:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jH5jx3SR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKJPJEMw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E99248BA1;
-	Wed, 15 Jan 2025 10:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54736156644;
+	Wed, 15 Jan 2025 10:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938178; cv=none; b=sekAE2iSq36XxaUXIiLOsSYy1jCRmvtuyQ3RjcD4POY+Hq2VtFu8yBFF3xKukp5mwGFAo4HYIls8sMG+ihqnmfEdmdgRfjmAPD5cE/F9bngebr+YR3geS4yofdLC2fgQxT1PQOaGyDTWtUX+pczgl5NEmXXoHm2SL8DG+z+xicY=
+	t=1736938566; cv=none; b=hadfXQ1H/4HszTJ7wyzU8MEKUqDCYhjru1C0PfyudzLeEdwNqCEw/pJV2nh7MFW+EBV4S/UBu0NzrW8d5kRORwl6voAQecST+Bq3eCipBXs/PJqDVdRAv26M3KHJHEbzt+2wISKFLZ0QshZ121ljgJLahDT6PRg42IvYymSC1fA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938178; c=relaxed/simple;
-	bh=Y6ocCXgMg9wBOrLPHIOKEdjKtokqwQp6p4q6n0qljhk=;
+	s=arc-20240116; t=1736938566; c=relaxed/simple;
+	bh=u9vrgY48gYoS3DZokGRG87O4wNEAOB1u31Q2Ae4W5jI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t60eezLDZ3pwmVD5bGb2Qlh+oeZ/DnjgcSEhddqYLbg47fjbV8j70QP3VYemuz8PXywDvOK76dM/r2K2IENK1tm5tu2PW0YFTngpzsthBCXcBSb9uhVBoiB9/gEN6Om4Kge2N8n+1bS3NjQHLwMao5tkd53lKVRmGNF9AoXhXjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jH5jx3SR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 784DCC4CEDF;
-	Wed, 15 Jan 2025 10:49:37 +0000 (UTC)
+	 MIME-Version; b=uYUb/Oiz5yJo0s9+ioORgavtJgh8hE8HXXZkaIzhUa7VBMlNNPSomfYNQVD3vfW7y7l9CR2U4Y4eyI59JiAvaWmx4a1jDJ/asblooUTKK3eHYrmbWnK2j+9tuisGv7G+ic7ttjoDigjMhCk+vO+vBBB5oHLj/IbwPbjYmwicXNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKJPJEMw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 986C2C4CEE4;
+	Wed, 15 Jan 2025 10:56:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938178;
-	bh=Y6ocCXgMg9wBOrLPHIOKEdjKtokqwQp6p4q6n0qljhk=;
+	s=korg; t=1736938566;
+	bh=u9vrgY48gYoS3DZokGRG87O4wNEAOB1u31Q2Ae4W5jI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jH5jx3SRrKnzetOcwTkUJjV2QPd5Z6x5EFrNc4/sp6JyiEZzQ8gdRScOGnFrf16r0
-	 /R8NBZlG/y9tlDKS+W1bTlvL+VStHY327nlFOt2dIf+QahRZtz2uBK/Bo15ug5JMjG
-	 1rS2vQNasqhN2cI+/rvRsYMwkhm7HJjGPN2KmSm4=
+	b=nKJPJEMwLt4L5mkTW091zV+jt1jxKLR8fqkBdEw6kWyrzRwcMQ01ryZRofZDxi1Eh
+	 mw5TIvhTQj4BQfSaaIHwmsqbqbg4ToJK0KGu1iv2VBciTjikbXqfscd7llMCWO8LH/
+	 200GDzIbBBq485srVYGajTKyfq/CNqq9fjkq9+og=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Julia Lawall <Julia.Lawall@inria.fr>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 107/189] thermal: of: fix OF node leak in of_thermal_zone_find()
-Date: Wed, 15 Jan 2025 11:36:43 +0100
-Message-ID: <20250115103610.721999496@linuxfoundation.org>
+Subject: [PATCH 6.6 029/129] igc: field get conversion
+Date: Wed, 15 Jan 2025 11:36:44 +0100
+Message-ID: <20250115103555.528771800@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +65,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Jesse Brandeburg <jesse.brandeburg@intel.com>
 
-[ Upstream commit 9164e0912af206a72ddac4915f7784e470a04ace ]
+[ Upstream commit a8e0c7a6800dc466ac815264c16971b9adf7ffbd ]
 
-of_thermal_zone_find() calls of_parse_phandle_with_args(), but does not
-release the OF node reference obtained by it.
+Refactor the igc driver to use FIELD_GET() for mask and shift reads,
+which reduces lines of code and adds clarity of intent.
 
-Add a of_node_put() call when the call is successful.
+This code was generated by the following coccinelle/spatch script and
+then manually repaired in a later patch.
 
-Fixes: 3fd6d6e2b4e8 ("thermal/of: Rework the thermal device tree initialization")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Link: https://patch.msgid.link/20241224031809.950461-1-joe@pf.is.s.u-tokyo.ac.jp
-[ rjw: Changelog edit ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+@get@
+constant shift,mask;
+type T;
+expression a;
+@@
+-((T)((a) & mask) >> shift)
++FIELD_GET(mask, a)
+
+and applied via:
+spatch --sp-file field_prep.cocci --in-place --dir \
+ drivers/net/ethernet/intel/
+
+Cc: Julia Lawall <Julia.Lawall@inria.fr>
+Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: bd2776e39c2a ("igc: return early when failing to read EECD register")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/thermal_of.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/igc/igc_base.c | 6 ++----
+ drivers/net/ethernet/intel/igc/igc_i225.c | 5 ++---
+ drivers/net/ethernet/intel/igc/igc_main.c | 6 ++----
+ drivers/net/ethernet/intel/igc/igc_phy.c  | 4 ++--
+ 4 files changed, 8 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
-index 07e09897165f..5d3d8ce672cd 100644
---- a/drivers/thermal/thermal_of.c
-+++ b/drivers/thermal/thermal_of.c
-@@ -176,6 +176,7 @@ static struct device_node *of_thermal_zone_find(struct device_node *sensor, int
- 				goto out;
- 			}
+diff --git a/drivers/net/ethernet/intel/igc/igc_base.c b/drivers/net/ethernet/intel/igc/igc_base.c
+index a1d815af507d..9fae8bdec2a7 100644
+--- a/drivers/net/ethernet/intel/igc/igc_base.c
++++ b/drivers/net/ethernet/intel/igc/igc_base.c
+@@ -68,8 +68,7 @@ static s32 igc_init_nvm_params_base(struct igc_hw *hw)
+ 	u32 eecd = rd32(IGC_EECD);
+ 	u16 size;
  
-+			of_node_put(sensor_specs.np);
- 			if ((sensor == sensor_specs.np) && id == (sensor_specs.args_count ?
- 								  sensor_specs.args[0] : 0)) {
- 				pr_debug("sensor %pOFn id=%d belongs to %pOFn\n", sensor, id, child);
+-	size = (u16)((eecd & IGC_EECD_SIZE_EX_MASK) >>
+-		     IGC_EECD_SIZE_EX_SHIFT);
++	size = FIELD_GET(IGC_EECD_SIZE_EX_MASK, eecd);
+ 
+ 	/* Added to a constant, "size" becomes the left-shift value
+ 	 * for setting word_size.
+@@ -162,8 +161,7 @@ static s32 igc_init_phy_params_base(struct igc_hw *hw)
+ 	phy->reset_delay_us	= 100;
+ 
+ 	/* set lan id */
+-	hw->bus.func = (rd32(IGC_STATUS) & IGC_STATUS_FUNC_MASK) >>
+-			IGC_STATUS_FUNC_SHIFT;
++	hw->bus.func = FIELD_GET(IGC_STATUS_FUNC_MASK, rd32(IGC_STATUS));
+ 
+ 	/* Make sure the PHY is in a good state. Several people have reported
+ 	 * firmware leaving the PHY's page select register set to something
+diff --git a/drivers/net/ethernet/intel/igc/igc_i225.c b/drivers/net/ethernet/intel/igc/igc_i225.c
+index d2562c8e8015..0dd61719f1ed 100644
+--- a/drivers/net/ethernet/intel/igc/igc_i225.c
++++ b/drivers/net/ethernet/intel/igc/igc_i225.c
+@@ -579,9 +579,8 @@ s32 igc_set_ltr_i225(struct igc_hw *hw, bool link)
+ 
+ 			/* Calculate tw_system (nsec). */
+ 			if (speed == SPEED_100) {
+-				tw_system = ((rd32(IGC_EEE_SU) &
+-					     IGC_TW_SYSTEM_100_MASK) >>
+-					     IGC_TW_SYSTEM_100_SHIFT) * 500;
++				tw_system = FIELD_GET(IGC_TW_SYSTEM_100_MASK,
++						      rd32(IGC_EEE_SU)) * 500;
+ 			} else {
+ 				tw_system = (rd32(IGC_EEE_SU) &
+ 					     IGC_TW_SYSTEM_1000_MASK) * 500;
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index da1018d83262..91a4722460f6 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -3708,8 +3708,7 @@ static int igc_enable_nfc_rule(struct igc_adapter *adapter,
+ 	}
+ 
+ 	if (rule->filter.match_flags & IGC_FILTER_FLAG_VLAN_TCI) {
+-		int prio = (rule->filter.vlan_tci & VLAN_PRIO_MASK) >>
+-			   VLAN_PRIO_SHIFT;
++		int prio = FIELD_GET(VLAN_PRIO_MASK, rule->filter.vlan_tci);
+ 
+ 		err = igc_add_vlan_prio_filter(adapter, prio, rule->action);
+ 		if (err)
+@@ -3731,8 +3730,7 @@ static void igc_disable_nfc_rule(struct igc_adapter *adapter,
+ 		igc_del_etype_filter(adapter, rule->filter.etype);
+ 
+ 	if (rule->filter.match_flags & IGC_FILTER_FLAG_VLAN_TCI) {
+-		int prio = (rule->filter.vlan_tci & VLAN_PRIO_MASK) >>
+-			   VLAN_PRIO_SHIFT;
++		int prio = FIELD_GET(VLAN_PRIO_MASK, rule->filter.vlan_tci);
+ 
+ 		igc_del_vlan_prio_filter(adapter, prio);
+ 	}
+diff --git a/drivers/net/ethernet/intel/igc/igc_phy.c b/drivers/net/ethernet/intel/igc/igc_phy.c
+index d0d9e7170154..7cd8716d2ffa 100644
+--- a/drivers/net/ethernet/intel/igc/igc_phy.c
++++ b/drivers/net/ethernet/intel/igc/igc_phy.c
+@@ -727,7 +727,7 @@ static s32 igc_write_xmdio_reg(struct igc_hw *hw, u16 addr,
+  */
+ s32 igc_write_phy_reg_gpy(struct igc_hw *hw, u32 offset, u16 data)
+ {
+-	u8 dev_addr = (offset & GPY_MMD_MASK) >> GPY_MMD_SHIFT;
++	u8 dev_addr = FIELD_GET(GPY_MMD_MASK, offset);
+ 	s32 ret_val;
+ 
+ 	offset = offset & GPY_REG_MASK;
+@@ -758,7 +758,7 @@ s32 igc_write_phy_reg_gpy(struct igc_hw *hw, u32 offset, u16 data)
+  */
+ s32 igc_read_phy_reg_gpy(struct igc_hw *hw, u32 offset, u16 *data)
+ {
+-	u8 dev_addr = (offset & GPY_MMD_MASK) >> GPY_MMD_SHIFT;
++	u8 dev_addr = FIELD_GET(GPY_MMD_MASK, offset);
+ 	s32 ret_val;
+ 
+ 	offset = offset & GPY_REG_MASK;
 -- 
 2.39.5
 
