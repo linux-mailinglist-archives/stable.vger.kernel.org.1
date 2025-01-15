@@ -1,128 +1,188 @@
-Return-Path: <stable+bounces-109183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9635A12ED1
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 23:57:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B3D8A12F40
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 00:30:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CF887A45D4
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 22:57:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B12F47A29F6
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 23:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B431DD0D6;
-	Wed, 15 Jan 2025 22:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD291DDA17;
+	Wed, 15 Jan 2025 23:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ep/p2WaH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VosqbvC+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CEA01991AF;
-	Wed, 15 Jan 2025 22:57:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E49F14B959;
+	Wed, 15 Jan 2025 23:29:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736981834; cv=none; b=RTYuwiDM0rtX6kkfs/V1tuvow8bYTpGdN8+7IlOUOshBEHEXn2se1hmK2sWqyYToIM6ATdyPmxQOP7eTv6xEZhk8nI3V9s7YDPV8zEtjw2d5XxD71Rl6EFtMIziLHC/7BA3vt3YM2lYq0C7i/VA6+foqTeEpRlqhQL+LF9xYSnU=
+	t=1736983797; cv=none; b=uA0S8mZNqbJVrZcn6Tvaew9faUEav28oZCxQ60DYWpTJJfLe5Sh3qw0RsWM+JNUpmpMqgIP23cbprMLAzSZv90Ff8DhhgYfC/ui0Qe5Kq0uy0nqmCiR38VmiW1CUbWL7SMZ8AvcWbqfJBKhhKOSqP8vmCSWH/1LfMYLg5ZM446g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736981834; c=relaxed/simple;
-	bh=mYB9Gt0BsmQrA7uaueijExQDwc5lV4ChkIz6jqeaTCE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=EdNAU68DulIWXEhwv+kRtkwN0QBNQlu6W+eUmjODiGwioTvy17ILbY2hM3Swcx2voRw3h67KBlHkeNBwOku3NCr+eA3gxIVXEQ+0DBoYlP7pe3yldm70qwZbgLvWyiYO6bE43ndkpPv/R5+yy1tL8ERmERNST7iigmegCm2dypI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ep/p2WaH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898E2C4CED1;
-	Wed, 15 Jan 2025 22:57:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736981834;
-	bh=mYB9Gt0BsmQrA7uaueijExQDwc5lV4ChkIz6jqeaTCE=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=ep/p2WaH5RQYWtwgggQkxdbHcLWnO63pRI2WHnvERRPkx4hBP8q46ohCdxo146nFg
-	 R5l/Qxz5gNm4DTWX0cTh46R4qIDGpgN3ddkI74CrsQ90CtxuLMtyu302ineIYzI4vX
-	 S3+y6Yq78ltAeJEeA/8ry9GNbc9bKaLFKqQWXjTgRGH6/IAEhJXXXdj0A26OBYbkBW
-	 SYZ8RU+MiJUnT47H/38LgtmIKSbSDVHvw6sidbEUQUuJf1h4XoIbMyEhFQXaq3q/3h
-	 ybttAOotkZoNt250J9cLYGXntdv6BzJbGZv4cFlEp8IIcDBUs+eDwTsfCM61OfKYxI
-	 sfRYLsYsyn5PQ==
+	s=arc-20240116; t=1736983797; c=relaxed/simple;
+	bh=tR8UaN7ZYY+xze2NiGBqja/fsWyajwNrPbVBlhYFccM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bj3SntQabii5TX5NWu+zU3SxlR/WMCBlnTA6lX7kaWlN6FiMgPDHaHW706rIpp1ln4NzH/M0BP+Pf0zEnZGA49cquLdBCtS3yLz1RwBxri9GS2aOZLrc3rctedyO+rsXl9+QeEdDAeUA5TLZDY3puNtcwoU7ah+TewJFpPpOL00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VosqbvC+; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-436a03197b2so1471215e9.2;
+        Wed, 15 Jan 2025 15:29:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736983794; x=1737588594; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AA85lizn+4y3tVKckeAfu/sCD8UsF/7zytrgJMgx6X8=;
+        b=VosqbvC+nQFkmfn0v+3KfWt0zQIlYt6znzdXqNXDdF6HpwaRfsHUZmE7oaMkW6W65N
+         fEUbEcaPsQzdCK56cTJDOG7vlXibl6OhnFnQV3E2bYBoY7yZVHb3BRVDLeeVzAfLVlWv
+         sverBpTYTMM4GWUJTcMINh7Rp0oyDOhNNzxhiNNT8Y2J9kpnG9KPRY/4q7EyOO9VmnyG
+         RVpX95atX0Qx6ZPybW8C9hjU8a3GVHufCppPCs5ZiiqlNBC8pNlRLDedc4J3ypR9W/LN
+         DzxoqkmvRHbSrqUlS7SHpWWS3ur6LkmexzzupqHzpeLAPdk00CLnozQoobxs6PQv4ftP
+         9BNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736983794; x=1737588594;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AA85lizn+4y3tVKckeAfu/sCD8UsF/7zytrgJMgx6X8=;
+        b=LPYInu/Uvys5x9HlbD+AEqMI87m+1tKBuJ/ErHwszQ1499m1Rfl8S3VFxTVw1A8exL
+         kif2hP+Rw5Dg+JeJEgQaOUzjIN1giwtzYnXChun6tvUxASzN25fwCtDjxZsiS4Qe/QBN
+         QOnloVaXvr1POdjKIrVm8BiE7MRx8pxEZylmto3+aw7Xb+t714XBSysQ2uI5wAAa9IDy
+         AQ5ZWyNbtes3mWZn5nduojOZQt9wIegFPYRysQYisXTnOi/HmjK2WoUmdwr7EDNOVRaC
+         O9RbOe2yqLJZw9+UettkaJq0QJ/hbnwkZDl8r3MwNMZ+sn5J+ILyV5JxdEo5akASWvaf
+         pPPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVbBZyUZ4ZnKBJvXcqV586lzFG3wqRImsIPZhqi2hRGDN2beVEvPywChUz2a62r0THinXf6dyHAohj2@vger.kernel.org, AJvYcCVkvjNCuynpGKqGCLlaNanEIOK+dQGznsPSbZeLkgKkqDeNCVxcbdc9H1sWShwTOVxfFWX6hgaR@vger.kernel.org, AJvYcCWr5G93KZgDuSnNhD0QumET8zM0pgOjL6Dnq3eL6JAACe2Sckuin3/oOuuSPX5ImRQzwv5V56ML@vger.kernel.org, AJvYcCXmQKiY1tquNBqX8vk6TZgKxpp5Hmt8ezZXlYdnmO/w28xxp+ECKornixFwaZ5LFqnZbRyqNOmZewqN8fRg@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCud6djVBXlxUppGObaR0zBpQ8CHJc/uoJW8ybdn2hIKet5SLp
+	JNRbocc0mLznANil/KjABr20rpTM20Iv1fGTWZrn0MHFqCoLi4F4Mu/nnA==
+X-Gm-Gg: ASbGnctDKBKW6HLCMEoVhECTRTzTY6fXHZajA3JXjCx0efEsIC+7RaE+pu5zKhaP23V
+	m3RMueJ/xU1xhBtMZQ1/gN9YEh2F0f1rpm9mue5/KohuDkFzoKwd6KKMgY4k/yc3DlYoKgzhUPC
+	U8TVcEhgfkoHoMyI2WW0V57TTwdBJJxAV/J7iU/MujJvX1EEs/+gLAiAhvxKa1FgHWlr6vzJSDO
+	D+PuI/zNExxusK5Srspni/fqS8IK+DOAfli0HHC53NPLIzpo653vOZeiQf5GUA3XFB65nyYxS8/
+	XSNmgaUMm0ih8hbLPGg=
+X-Google-Smtp-Source: AGHT+IGHT6gwn/i7tqdptm35vr6/1ZvguxuWOv8R6zd9N7gFMI1OVesj0CUG1ETkcppAJyxXugo7nA==
+X-Received: by 2002:a05:600c:1384:b0:436:1c04:aa8e with SMTP id 5b1f17b1804b1-436e26bdac1mr335593495e9.16.1736983794166;
+        Wed, 15 Jan 2025 15:29:54 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bebccc93asm542914f8f.17.2025.01.15.15.29.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jan 2025 15:29:53 -0800 (PST)
+Date: Wed, 15 Jan 2025 23:29:52 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ <linux-hams@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>,
+ <stable@vger.kernel.org>
+Subject: Re: [PATCH net] net/rose: prevent integer overflows in
+ rose_setsockopt()
+Message-ID: <20250115232952.1d4ef002@pumpkin>
+In-Reply-To: <20250115164220.19954-1-n.zhandarovich@fintech.ru>
+References: <20250115164220.19954-1-n.zhandarovich@fintech.ru>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 16 Jan 2025 00:57:09 +0200
-Message-Id: <D730O4K9L593.1CJKTW6NO6TUB@kernel.org>
-Subject: Re: [PATCH v9] tpm: Map the ACPI provided event log
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Stefan Berger" <stefanb@linux.ibm.com>,
- <linux-integrity@vger.kernel.org>, "Peter Huewe" <peterhuewe@gmx.de>,
- "Jason Gunthorpe" <jgg@ziepe.ca>, "Colin Ian King"
- <colin.i.king@gmail.com>, "Reiner Sailer" <sailer@us.ibm.com>, "Seiji
- Munetoh" <munetoh@jp.ibm.com>, "Kylene Jo Hall" <kjhall@us.ibm.com>,
- "Stefan Berger" <stefanb@us.ibm.com>, "Andrew Morton" <akpm@osdl.org>
-Cc: "Ard Biesheuvel" <ardb@kernel.org>, <stable@vger.kernel.org>, "Andy
- Liang" <andy.liang@hpe.com>, <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.18.2
-References: <20250115212237.57436-1-jarkko@kernel.org>
- <583ca33e-aeb3-4401-8f72-9ad1a26d895d@linux.ibm.com>
-In-Reply-To: <583ca33e-aeb3-4401-8f72-9ad1a26d895d@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu Jan 16, 2025 at 12:03 AM EET, Stefan Berger wrote:
->
->
-> On 1/15/25 4:22 PM, Jarkko Sakkinen wrote:
-> > The following failure was reported:
-> >=20
-> > [   10.693310][    T1] tpm_tis STM0925:00: 2.0 TPM (device-id 0x3, rev-=
-id 0)
-> > [   10.848132][    T1] ------------[ cut here ]------------
-> > [   10.853559][    T1] WARNING: CPU: 59 PID: 1 at mm/page_alloc.c:4727 =
-__alloc_pages_noprof+0x2ca/0x330
-> > [   10.862827][    T1] Modules linked in:
-> > [   10.866671][    T1] CPU: 59 UID: 0 PID: 1 Comm: swapper/0 Not tainte=
-d 6.12.0-lp155.2.g52785e2-default #1 openSUSE Tumbleweed (unreleased) 588cd=
-98293a7c9eba9013378d807364c088c9375
-> > [   10.882741][    T1] Hardware name: HPE ProLiant DL320 Gen12/ProLiant=
- DL320 Gen12, BIOS 1.20 10/28/2024
-> > [   10.892170][    T1] RIP: 0010:__alloc_pages_noprof+0x2ca/0x330
-> > [   10.898103][    T1] Code: 24 08 e9 4a fe ff ff e8 34 36 fa ff e9 88 =
-fe ff ff 83 fe 0a 0f 86 b3 fd ff ff 80 3d 01 e7 ce 01 00 75 09 c6 05 f8 e6 =
-ce 01 01 <0f> 0b 45 31 ff e9 e5 fe ff ff f7 c2 00 00 08 00 75 42 89 d9 80 e=
-1
-> > [   10.917750][    T1] RSP: 0000:ffffb7cf40077980 EFLAGS: 00010246
-> > [   10.923777][    T1] RAX: 0000000000000000 RBX: 0000000000040cc0 RCX:=
- 0000000000000000
-> > [   10.931727][    T1] RDX: 0000000000000000 RSI: 000000000000000c RDI:=
- 0000000000040cc0
-> >=20
-> > Above shows that ACPI pointed a 16 MiB buffer for the log events becaus=
-e
-> > RSI maps to the 'order' parameter of __alloc_pages_noprof(). Address th=
-e
-> > bug with kvmalloc() and devm_add_action_or_reset().
->
-> Before at it was (at least) failing when the BIOS requested an excessive=
-=20
-> size. Now since you don't want to limit the size of the log I suppose=20
-> you wouldn't also want to set a size of what is excessive so that the=20
-> driver could dev_warn() the user of an excessive-sized buffer ...
->
-> >=20
-> > Suggested-by: Ard Biesheuvel <ardb@kernel.org>
-> > Cc: stable@vger.kernel.org # v2.6.16+
-> > Fixes: 55a82ab3181b ("[PATCH] tpm: add bios measurement log")
-> > Reported-by: Andy Liang <andy.liang@hpe.com>
-> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219495
-> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
->
-> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+On Wed, 15 Jan 2025 08:42:20 -0800
+Nikita Zhandarovich <n.zhandarovich@fintech.ru> wrote:
 
-Sorry there was small glitch because I had a small diff unamended
-to the commit. See the last diff:
+> In case of possible unpredictably large arguments passed to
+> rose_setsockopt() and multiplied by extra values on top of that,
+> integer overflows may occur.
+> 
+> Do the safest minimum and fix these issues by checking the
+> contents of 'opt' and returning -EINVAL if they are too large. Also,
+> switch to unsigned int and remove useless check for negative 'opt'
+> in ROSE_IDLE case.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with static
+> analysis tool SVACE.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+> ---
+>  net/rose/af_rose.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+> 
+> diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
+> index 59050caab65c..72c65d938a15 100644
+> --- a/net/rose/af_rose.c
+> +++ b/net/rose/af_rose.c
+> @@ -397,15 +397,15 @@ static int rose_setsockopt(struct socket *sock, int level, int optname,
+>  {
+>  	struct sock *sk = sock->sk;
+>  	struct rose_sock *rose = rose_sk(sk);
+> -	int opt;
+> +	unsigned int opt;
+>  
+>  	if (level != SOL_ROSE)
+>  		return -ENOPROTOOPT;
+>  
+> -	if (optlen < sizeof(int))
+> +	if (optlen < sizeof(unsigned int))
+>  		return -EINVAL;
+>  
+> -	if (copy_from_sockptr(&opt, optval, sizeof(int)))
+> +	if (copy_from_sockptr(&opt, optval, sizeof(unsigned int)))
 
-https://lore.kernel.org/linux-integrity/20250115224315.482487-1-jarkko@kern=
-el.org/T/#u
+Shouldn't all those be 'sizeof (opt)' ?
 
-I guess the reviewed-by still holds, right? :-)
+	David
 
-BR, Jarkko
+>  		return -EFAULT;
+>  
+>  	switch (optname) {
+> @@ -414,31 +414,31 @@ static int rose_setsockopt(struct socket *sock, int level, int optname,
+>  		return 0;
+>  
+>  	case ROSE_T1:
+> -		if (opt < 1)
+> +		if (opt < 1 || opt > UINT_MAX / HZ)
+>  			return -EINVAL;
+>  		rose->t1 = opt * HZ;
+>  		return 0;
+>  
+>  	case ROSE_T2:
+> -		if (opt < 1)
+> +		if (opt < 1 || opt > UINT_MAX / HZ)
+>  			return -EINVAL;
+>  		rose->t2 = opt * HZ;
+>  		return 0;
+>  
+>  	case ROSE_T3:
+> -		if (opt < 1)
+> +		if (opt < 1 || opt > UINT_MAX / HZ)
+>  			return -EINVAL;
+>  		rose->t3 = opt * HZ;
+>  		return 0;
+>  
+>  	case ROSE_HOLDBACK:
+> -		if (opt < 1)
+> +		if (opt < 1 || opt > UINT_MAX / HZ)
+>  			return -EINVAL;
+>  		rose->hb = opt * HZ;
+>  		return 0;
+>  
+>  	case ROSE_IDLE:
+> -		if (opt < 0)
+> +		if (opt > UINT_MAX / (60 * HZ))
+>  			return -EINVAL;
+>  		rose->idle = opt * 60 * HZ;
+>  		return 0;
+> 
+
 
