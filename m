@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-108719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C2ADA11FED
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:39:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E17DA1215E
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:55:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D63067A2F02
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:39:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0DBD168277
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEA31E98EA;
-	Wed, 15 Jan 2025 10:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05E931DB13A;
+	Wed, 15 Jan 2025 10:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUNROpb1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aL95dJw0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6846C1E7C16;
-	Wed, 15 Jan 2025 10:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63EC248BD1;
+	Wed, 15 Jan 2025 10:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937576; cv=none; b=sHX40NU7HesSsfn0PnpDSHMuRFMgxMz4HLr+5vMYWvRQtCvxsNwo82BN03r6alV+hqzCyPTVpASrqox0riJDIgKfsVU2FL5Iy3jzsCZdvx0uuDHOHiO1V6y+DY1ojcFoy0L0QhXqwlRRi/loBdX+amowD+V09GyQhD6r7Y9ze64=
+	t=1736938546; cv=none; b=YijxJQFY3L9v87+hkOmRtNRwqHFQU//NzG8FHrE0a9B6EpRJSYYWCR3FREmhY05ACOjOrnGmtKzmwvLxoJ/Y0TtGWQzt0X199vjgcZ5GKlZWuPdLhRW2+gXUFN0T/Y+GBEyLMjFdtsa2BtPv25mIJpESeI0hk22hMWId28qdEqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937576; c=relaxed/simple;
-	bh=SyrZmfdZ09jdJFIzHAXVqXwI5D2BqiPalJJagx5XOWE=;
+	s=arc-20240116; t=1736938546; c=relaxed/simple;
+	bh=TLFJu78FcdHfQUK1pQI7pFiCkTIHht+BduRn2vJddoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i54qPpHm+kqiIYMbDnvUx/CqWGnhkr6gfutdRsXLf4/Yz0vBMQGooEh9vKm/uxYQ8hs9/maeHW8j9WgVLZGf9g+FMrBp1smNX+MqZ5t9g+5Giiw1vEelHN53pz7aQGe0WgGBDbCzPBij47/fMCg/z9w4y16B/IrowSAoLqo9YFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUNROpb1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C44AC4CEDF;
-	Wed, 15 Jan 2025 10:39:35 +0000 (UTC)
+	 MIME-Version; b=cThT44Dqw0t4kz1OipyipDAiowB2FFYM8OV61W7gzAxTxBlaNXy17uCpUK1Dng8D9UwbbEaxZaNH2XcSvgl1aVT+Ro65TGWhLtSlSlL6nSkdGPSKiufN9xKrllkTHoSQUiuzGDRrGBtDFW3SAis88YFHwb9W4krXBZeu/jM9HA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aL95dJw0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C72C4CEDF;
+	Wed, 15 Jan 2025 10:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937575;
-	bh=SyrZmfdZ09jdJFIzHAXVqXwI5D2BqiPalJJagx5XOWE=;
+	s=korg; t=1736938546;
+	bh=TLFJu78FcdHfQUK1pQI7pFiCkTIHht+BduRn2vJddoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XUNROpb1LqdA7tVOGW/IJDlDOo9UnOSaaANy4iVr4aV7V+gw9Ky+0vpD5gf1oJcM4
-	 fQJE0uktrfuKYxS5dZDtl/YCUrVtT07wo05Ip94xi/PG2fGNfcGcbSSley8/XeYNcv
-	 zpWOl5IWrzoqZxga80TbGOyVuxwcKTdcLlt5tlZ4=
+	b=aL95dJw0TxVcWkqdio7f0T9ptANHiJlQiSwTL+zPIuNQODDSrxQupUMQmtTLhXb/+
+	 YQEike0MHFpQ57HJId9StKzpH54HbssMUSsq1BloU+7fCm+nCNZitnU8w+VOoGcEyN
+	 gEBJfQynKGJ/TTcar11eVgIGI9lBnuE81NXrqMi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Milena Olech <milena.olech@intel.com>,
-	Przemyslaw Korba <przemyslaw.korba@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.1 20/92] ice: fix incorrect PHY settings for 100 GB/s
-Date: Wed, 15 Jan 2025 11:36:38 +0100
-Message-ID: <20250115103548.341043022@linuxfoundation.org>
+	syzbot+339e9dbe3a2ca419b85d@syzkaller.appspotmail.com,
+	Anand Jain <anand.jain@oracle.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 024/129] btrfs: avoid NULL pointer dereference if no valid extent tree
+Date: Wed, 15 Jan 2025 11:36:39 +0100
+Message-ID: <20250115103555.332641616@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +64,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Przemyslaw Korba <przemyslaw.korba@intel.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 6c5b989116083a98f45aada548ff54e7a83a9c2d ]
+[ Upstream commit 6aecd91a5c5b68939cf4169e32bc49f3cd2dd329 ]
 
-ptp4l application reports too high offset when ran on E823 device
-with a 100GB/s link. Those values cannot go under 100ns, like in a
-working case when using 100 GB/s cable.
+[BUG]
+Syzbot reported a crash with the following call trace:
 
-This is due to incorrect frequency settings on the PHY clocks for
-100 GB/s speed. Changes are introduced to align with the internal
-hardware documentation, and correctly initialize frequency in PHY
-clocks with the frequency values that are in our HW spec.
+  BTRFS info (device loop0): scrub: started on devid 1
+  BUG: kernel NULL pointer dereference, address: 0000000000000208
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 106e70067 P4D 106e70067 PUD 107143067 PMD 0
+  Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+  CPU: 1 UID: 0 PID: 689 Comm: repro Kdump: loaded Tainted: G           O       6.13.0-rc4-custom+ #206
+  Tainted: [O]=OOT_MODULE
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
+  RIP: 0010:find_first_extent_item+0x26/0x1f0 [btrfs]
+  Call Trace:
+   <TASK>
+   scrub_find_fill_first_stripe+0x13d/0x3b0 [btrfs]
+   scrub_simple_mirror+0x175/0x260 [btrfs]
+   scrub_stripe+0x5d4/0x6c0 [btrfs]
+   scrub_chunk+0xbb/0x170 [btrfs]
+   scrub_enumerate_chunks+0x2f4/0x5f0 [btrfs]
+   btrfs_scrub_dev+0x240/0x600 [btrfs]
+   btrfs_ioctl+0x1dc8/0x2fa0 [btrfs]
+   ? do_sys_openat2+0xa5/0xf0
+   __x64_sys_ioctl+0x97/0xc0
+   do_syscall_64+0x4f/0x120
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+   </TASK>
 
-To reproduce the issue run ptp4l as a Time Receiver on E823 device,
-and observe the offset, which will never approach values seen
-in the PTP working case.
+[CAUSE]
+The reproducer is using a corrupted image where extent tree root is
+corrupted, thus forcing to use "rescue=all,ro" mount option to mount the
+image.
 
-Reproduction output:
-ptp4l -i enp137s0f3 -m -2 -s -f /etc/ptp4l_8275.conf
-ptp4l[5278.775]: master offset      12470 s2 freq  +41288 path delay -3002
-ptp4l[5278.837]: master offset      10525 s2 freq  +39202 path delay -3002
-ptp4l[5278.900]: master offset     -24840 s2 freq  -20130 path delay -3002
-ptp4l[5278.963]: master offset      10597 s2 freq  +37908 path delay -3002
-ptp4l[5279.025]: master offset       8883 s2 freq  +36031 path delay -3002
-ptp4l[5279.088]: master offset       7267 s2 freq  +34151 path delay -3002
-ptp4l[5279.150]: master offset       5771 s2 freq  +32316 path delay -3002
-ptp4l[5279.213]: master offset       4388 s2 freq  +30526 path delay -3002
-ptp4l[5279.275]: master offset     -30434 s2 freq  -28485 path delay -3002
-ptp4l[5279.338]: master offset     -28041 s2 freq  -27412 path delay -3002
-ptp4l[5279.400]: master offset       7870 s2 freq  +31118 path delay -3002
+Then it triggered a scrub, but since scrub relies on extent tree to find
+where the data/metadata extents are, scrub_find_fill_first_stripe()
+relies on an non-empty extent root.
 
-Fixes: 3a7496234d17 ("ice: implement basic E822 PTP support")
-Reviewed-by: Milena Olech <milena.olech@intel.com>
-Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+But unfortunately scrub_find_fill_first_stripe() doesn't really expect
+an NULL pointer for extent root, it use extent_root to grab fs_info and
+triggered a NULL pointer dereference.
+
+[FIX]
+Add an extra check for a valid extent root at the beginning of
+scrub_find_fill_first_stripe().
+
+The new error path is introduced by 42437a6386ff ("btrfs: introduce
+mount option rescue=ignorebadroots"), but that's pretty old, and later
+commit b979547513ff ("btrfs: scrub: introduce helper to find and fill
+sector info for a scrub_stripe") changed how we do scrub.
+
+So for kernels older than 6.6, the fix will need manual backport.
+
+Reported-by: syzbot+339e9dbe3a2ca419b85d@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/linux-btrfs/67756935.050a0220.25abdd.0a12.GAE@google.com/
+Fixes: 42437a6386ff ("btrfs: introduce mount option rescue=ignorebadroots")
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp_consts.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/scrub.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_consts.h b/drivers/net/ethernet/intel/ice/ice_ptp_consts.h
-index 4109aa3b2fcd..87ce20540f57 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_consts.h
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_consts.h
-@@ -359,9 +359,9 @@ const struct ice_vernier_info_e822 e822_vernier[NUM_ICE_PTP_LNK_SPD] = {
- 		/* rx_desk_rsgb_par */
- 		644531250, /* 644.53125 MHz Reed Solomon gearbox */
- 		/* tx_desk_rsgb_pcs */
--		644531250, /* 644.53125 MHz Reed Solomon gearbox */
-+		390625000, /* 390.625 MHz Reed Solomon gearbox */
- 		/* rx_desk_rsgb_pcs */
--		644531250, /* 644.53125 MHz Reed Solomon gearbox */
-+		390625000, /* 390.625 MHz Reed Solomon gearbox */
- 		/* tx_fixed_delay */
- 		1620,
- 		/* pmd_adj_divisor */
+diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
+index a2d91d9f8a10..6be092bb814f 100644
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -1538,6 +1538,10 @@ static int scrub_find_fill_first_stripe(struct btrfs_block_group *bg,
+ 	u64 extent_gen;
+ 	int ret;
+ 
++	if (unlikely(!extent_root)) {
++		btrfs_err(fs_info, "no valid extent root for scrub");
++		return -EUCLEAN;
++	}
+ 	memset(stripe->sectors, 0, sizeof(struct scrub_sector_verification) *
+ 				   stripe->nr_sectors);
+ 	scrub_stripe_reset_bitmaps(stripe);
 -- 
 2.39.5
 
