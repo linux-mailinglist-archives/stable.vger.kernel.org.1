@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-108731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4BDA12007
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:40:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4D9AA12171
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:56:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9B9A188A660
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:40:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D0867A21A9
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8A81E98E4;
-	Wed, 15 Jan 2025 10:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA771E98FA;
+	Wed, 15 Jan 2025 10:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRNYM3lW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+UP981V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68170248BD9;
-	Wed, 15 Jan 2025 10:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D6A248BD1;
+	Wed, 15 Jan 2025 10:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937614; cv=none; b=ZhdNG6w3SUlYw6gKj+UGVeZno8A0pu58gDweMDAOc+TSDa05QG3zlhCWOpNh2LPoCHK9imTP0p2C3WJsY9ut5FvGS4F+ieGEJKFU5dTm5dVpOprm0i7rPKK0NVwjEu47aXj7xYl+xIoshJLK4t/t799BWtCVDWwwH6SdZ4aRlcM=
+	t=1736938586; cv=none; b=SILh4zlDQHlu/OXVRmAw3Y2y3pLUVSxPNNlYHe+mMcWYv4rn/UVjZPfCYrZHI2Ic0boYyRbTYaLSjApYy2RL4KpZwZna3aFWjnOYkAhhS9DCMKh/m4yImk6fblY9cYVDpua674WBNXyzvjDS6vajHXcDy8L8cU/bKv632oog174=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937614; c=relaxed/simple;
-	bh=JZ+f/VsjkQDeQo159DLn/TU8El4Vxymquyz5pEJCK1k=;
+	s=arc-20240116; t=1736938586; c=relaxed/simple;
+	bh=3SBoWHz0cDiBJbdbMLtdPUi8+a9dP6/7aTzzKtH5dVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h31oMMwCgT4NMnKEt/14ty2C5i4G39Hw/6+oas/ixZJSXhKCZCNteoJdX80FwAK58Dij/9+dJp7fxfgdN5hu+4ERziik2ulcOcKh1eQxXXuHjx+HxV7IV09tScODqLPwbiCH31in1q5hcfPgeOacVRoGePF/N5ZNINe54XOIOTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRNYM3lW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD5ABC4CEE1;
-	Wed, 15 Jan 2025 10:40:13 +0000 (UTC)
+	 MIME-Version; b=FFozy0okh1xBpzsA6QyGkSon+dYd9NGJmaVZEDTKkcOD+ezZQQj7IzoUNCyQUWW/C9aLHPBQBOnJ59VNNUGoqr4+uYtvDKBozGssBclU1ujtCR6eJFuPBgBvV0AJzUVnbYm73fh9RcN+oyvL58/YVE4I5KQEWeN0OocMKMCwkcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+UP981V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD184C4CEDF;
+	Wed, 15 Jan 2025 10:56:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937614;
-	bh=JZ+f/VsjkQDeQo159DLn/TU8El4Vxymquyz5pEJCK1k=;
+	s=korg; t=1736938586;
+	bh=3SBoWHz0cDiBJbdbMLtdPUi8+a9dP6/7aTzzKtH5dVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YRNYM3lWcMt9bR//Q9Kt6G6c344huO6lsjk29XRWNttBPPZ30JcUmJE9enamT7rbl
-	 DjEkpaD18zXWDRhacQHoSvr6we/nUd5YPpAPFsIHnnd4BoWwUYa22Lq1zM1x3vP9Qj
-	 C+VyjEOUPcoy7ioLOySqChaykcwoOCsHI1wyeEd4=
+	b=J+UP981V5tDG8PKUOAC1UH066C2wvDPQ4FYzBrQp5m0+yB3jruc8JZWVqsN2jp8Ar
+	 qTd/wVIRmpJuweW2nbP9yljnMr7i+jy6FKLZftm8vonhz58eeFk9Lx4Wm9VK+gX6j1
+	 VOKZIcA0NXBOw6tM7KyviU4w1ufVzqUtUZnpuyrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <liangwentao@iscas.ac.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 32/92] ksmbd: fix a missing return value check bug
+Subject: [PATCH 6.6 035/129] Bluetooth: MGMT: Fix Add Device to responding before completing
 Date: Wed, 15 Jan 2025 11:36:50 +0100
-Message-ID: <20250115103548.807940688@linuxfoundation.org>
+Message-ID: <20250115103555.776934131@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <liangwentao@iscas.ac.cn>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 4c16e1cadcbcaf3c82d5fc310fbd34d0f5d0db7c ]
+[ Upstream commit a182d9c84f9c52fb5db895ecceeee8b3a1bf661e ]
 
-In the smb2_send_interim_resp(), if ksmbd_alloc_work_struct()
-fails to allocate a node, it returns a NULL pointer to the
-in_work pointer. This can lead to an illegal memory write of
-in_work->response_buf when allocate_interim_rsp_buf() attempts
-to perform a kzalloc() on it.
+Add Device with LE type requires updating resolving/accept list which
+requires quite a number of commands to complete and each of them may
+fail, so instead of pretending it would always work this checks the
+return of hci_update_passive_scan_sync which indicates if everything
+worked as intended.
 
-To address this issue, incorporating a check for the return
-value of ksmbd_alloc_work_struct() ensures that the function
-returns immediately upon allocation failure, thereby preventing
-the aforementioned illegal memory access.
-
-Fixes: 041bba4414cd ("ksmbd: fix wrong interim response on compound")
-Signed-off-by: Wentao Liang <liangwentao@iscas.ac.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: e8907f76544f ("Bluetooth: hci_sync: Make use of hci_cmd_sync_queue set 3")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/bluetooth/mgmt.c | 38 ++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 36 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 71478a590e83..9d041fc558e3 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -712,6 +712,9 @@ void smb2_send_interim_resp(struct ksmbd_work *work, __le32 status)
- 	struct smb2_hdr *rsp_hdr;
- 	struct ksmbd_work *in_work = ksmbd_alloc_work_struct();
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 1175248e4bec..e3440f0d7d9d 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -7589,6 +7589,24 @@ static void device_added(struct sock *sk, struct hci_dev *hdev,
+ 	mgmt_event(MGMT_EV_DEVICE_ADDED, hdev, &ev, sizeof(ev), sk);
+ }
  
-+	if (!in_work)
-+		return;
++static void add_device_complete(struct hci_dev *hdev, void *data, int err)
++{
++	struct mgmt_pending_cmd *cmd = data;
++	struct mgmt_cp_add_device *cp = cmd->param;
 +
- 	if (allocate_interim_rsp_buf(in_work)) {
- 		pr_err("smb_allocate_rsp_buf failed!\n");
- 		ksmbd_free_work_struct(in_work);
++	if (!err) {
++		device_added(cmd->sk, hdev, &cp->addr.bdaddr, cp->addr.type,
++			     cp->action);
++		device_flags_changed(NULL, hdev, &cp->addr.bdaddr,
++				     cp->addr.type, hdev->conn_flags,
++				     PTR_UINT(cmd->user_data));
++	}
++
++	mgmt_cmd_complete(cmd->sk, hdev->id, MGMT_OP_ADD_DEVICE,
++			  mgmt_status(err), &cp->addr, sizeof(cp->addr));
++	mgmt_pending_free(cmd);
++}
++
+ static int add_device_sync(struct hci_dev *hdev, void *data)
+ {
+ 	return hci_update_passive_scan_sync(hdev);
+@@ -7597,6 +7615,7 @@ static int add_device_sync(struct hci_dev *hdev, void *data)
+ static int add_device(struct sock *sk, struct hci_dev *hdev,
+ 		      void *data, u16 len)
+ {
++	struct mgmt_pending_cmd *cmd;
+ 	struct mgmt_cp_add_device *cp = data;
+ 	u8 auto_conn, addr_type;
+ 	struct hci_conn_params *params;
+@@ -7677,9 +7696,24 @@ static int add_device(struct sock *sk, struct hci_dev *hdev,
+ 			current_flags = params->flags;
+ 	}
+ 
+-	err = hci_cmd_sync_queue(hdev, add_device_sync, NULL, NULL);
+-	if (err < 0)
++	cmd = mgmt_pending_new(sk, MGMT_OP_ADD_DEVICE, hdev, data, len);
++	if (!cmd) {
++		err = -ENOMEM;
+ 		goto unlock;
++	}
++
++	cmd->user_data = UINT_PTR(current_flags);
++
++	err = hci_cmd_sync_queue(hdev, add_device_sync, cmd,
++				 add_device_complete);
++	if (err < 0) {
++		err = mgmt_cmd_complete(sk, hdev->id, MGMT_OP_ADD_DEVICE,
++					MGMT_STATUS_FAILED, &cp->addr,
++					sizeof(cp->addr));
++		mgmt_pending_free(cmd);
++	}
++
++	goto unlock;
+ 
+ added:
+ 	device_added(sk, hdev, &cp->addr.bdaddr, cp->addr.type, cp->action);
 -- 
 2.39.5
 
