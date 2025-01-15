@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-109079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56D3AA121B9
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:59:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE652A1204E
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:44:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78EBD16ADD3
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:59:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E150316607E
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3ABF248BD1;
-	Wed, 15 Jan 2025 10:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151D1248BC4;
+	Wed, 15 Jan 2025 10:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQcTNiMJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gc5iUAHZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8B3248BB0;
-	Wed, 15 Jan 2025 10:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EF7248BB6;
+	Wed, 15 Jan 2025 10:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938778; cv=none; b=b/DYNIfji88dt4KKxOYimmqmw9x+IHPjL8aJSkPIADnpOLp1Oe00lxF/8U/JjObwXG9MCOwJ5xxDsN8YuFy4wMo+dMjcPA70kA4mo3WE0BVcfd0jI2L8kmm4SNqQJ8VMTIyoM2ogWGxXll4+T6oLGkD1oHsVciEwLDvE4rrlUU4=
+	t=1736937841; cv=none; b=dcJkMjbzMNC+8ggcdpw9MuN2XKtAvfUYFMtMpdOSVDSBjX0N+AQJEJQig4TNgEb6qm8Kksi4thBA7yOV3XsyPq9KFW7NYrnOfiitRtfjUNWMPR+CF1qh2rnUqk6222DJEnTk6ojC+oggo97WMNrg74FoR2tw2zpIZRGSHQi3P6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938778; c=relaxed/simple;
-	bh=8g9X/gIc/c0Kny34xVLDrQg6dekXty3jwHoAL1mRE5Y=;
+	s=arc-20240116; t=1736937841; c=relaxed/simple;
+	bh=WquYRL/b4SHdO75VXCr3PwOuJk/2nU5heyOF8Ewyaj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DIqOCSHqgp7w2Av6drFD884EIyMLSFZUv9sHaKKvgv7lROiCJx22TT/ad6mJmJQVs6Qy7CobC87QCssCw0jDe1gJIr90oWKhGcaZ6uLltTIPVGJoTtCRkGC+U+1uXGJkmjEdrzrlF6WJr14ufnWk5JVTfLa5mAmEpRiYT+8DwDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQcTNiMJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9831C4CEE2;
-	Wed, 15 Jan 2025 10:59:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rEwIjy6bFm56DxaUTMIqXz4zuZkjtm8DzlxSwNt/CP7qvwGBJ4nepWZQn8LZGjHgEYKsMMDXkIzNwjjkhk7awcBYEk9PZdplEcI0yckzePOv5vDHsM0crIbBdN40aZMQKqKOFPMmLB+1XrfGZXtpKLD4M3p8GDMqmKyDbyUcg34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gc5iUAHZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECC8C4CEE1;
+	Wed, 15 Jan 2025 10:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938778;
-	bh=8g9X/gIc/c0Kny34xVLDrQg6dekXty3jwHoAL1mRE5Y=;
+	s=korg; t=1736937841;
+	bh=WquYRL/b4SHdO75VXCr3PwOuJk/2nU5heyOF8Ewyaj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQcTNiMJP/8eBB1kQm3EnpMZUdWpK4DST4gvtr+Sxl/ZCuYR3/9opIiuWQyPgfPXr
-	 HTFKWLSKdTNUPSrndVkquLlnYZglDzkN2UpAyRGRorfWJEGAouyz9+/tjLzjqBvIZv
-	 Qx1wLmENnfyM0/41bLix4WkhJsbCOsrpgj5/2lio=
+	b=Gc5iUAHZfJoxuhROBq5nPMNjZA4rEhi5qoNN91xAszDNcrC26q1hReqzkS8JAd4sV
+	 m3BScnlSPdWj4BhOPlpkVGbej7bDTdwwIUste9LUBHMqe4nUBinYa8YOClvCpCbTI/
+	 wZPueP5mD2cYpMiAQJsIkpY/mhUntJUENGLSpEYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ma Ke <make_ruc2021@163.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.6 095/129] usb: fix reference leak in usb_new_device()
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 92/92] drm: adv7511: Fix use-after-free in adv7533_attach_dsi()
 Date: Wed, 15 Jan 2025 11:37:50 +0100
-Message-ID: <20250115103558.155858324@linuxfoundation.org>
+Message-ID: <20250115103551.244330793@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +61,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make_ruc2021@163.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit 0df11fa8cee5a9cf8753d4e2672bb3667138c652 upstream.
+[ Upstream commit 81adbd3ff21c1182e06aa02c6be0bfd9ea02d8e8 ]
 
-When device_add(&udev->dev) succeeds and a later call fails,
-usb_new_device() does not properly call device_del(). As comment of
-device_add() says, 'if device_add() succeeds, you should call
-device_del() when you want to get rid of it. If device_add() has not
-succeeded, use only put_device() to drop the reference count'.
+The host_node pointer was assigned and freed in adv7533_parse_dt(), and
+later, adv7533_attach_dsi() uses the same. Fix this use-after-free issue
+by dropping of_node_put() in adv7533_parse_dt() and calling of_node_put()
+in error path of probe() and also in the remove().
 
-Found by code review.
-
-Cc: stable <stable@kernel.org>
-Fixes: 9f8b17e643fe ("USB: make usbdevices export their device nodes instead of using a separate class")
-Signed-off-by: Ma Ke <make_ruc2021@163.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20241218071346.2973980-1-make_ruc2021@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1e4d58cd7f88 ("drm/bridge: adv7533: Create a MIPI DSI device")
+Cc: stable@vger.kernel.org
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241119192040.152657-2-biju.das.jz@bp.renesas.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/adv7511/adv7511_drv.c | 10 ++++++++--
+ drivers/gpu/drm/bridge/adv7511/adv7533.c     |  2 --
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -2633,13 +2633,13 @@ int usb_new_device(struct usb_device *ud
- 		err = sysfs_create_link(&udev->dev.kobj,
- 				&port_dev->dev.kobj, "port");
- 		if (err)
--			goto fail;
-+			goto out_del_dev;
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+index cb6923eed7ca..3e6fe8604959 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+@@ -1224,8 +1224,10 @@ static int adv7511_probe(struct i2c_client *i2c, const struct i2c_device_id *id)
+ 		return ret;
  
- 		err = sysfs_create_link(&port_dev->dev.kobj,
- 				&udev->dev.kobj, "device");
- 		if (err) {
- 			sysfs_remove_link(&udev->dev.kobj, "port");
--			goto fail;
-+			goto out_del_dev;
- 		}
+ 	ret = adv7511_init_regulators(adv7511);
+-	if (ret)
+-		return dev_err_probe(dev, ret, "failed to init regulators\n");
++	if (ret) {
++		dev_err_probe(dev, ret, "failed to init regulators\n");
++		goto err_of_node_put;
++	}
  
- 		if (!test_and_set_bit(port1, hub->child_usage_bits))
-@@ -2651,6 +2651,8 @@ int usb_new_device(struct usb_device *ud
- 	pm_runtime_put_sync_autosuspend(&udev->dev);
- 	return err;
+ 	/*
+ 	 * The power down GPIO is optional. If present, toggle it from active to
+@@ -1345,6 +1347,8 @@ static int adv7511_probe(struct i2c_client *i2c, const struct i2c_device_id *id)
+ 	i2c_unregister_device(adv7511->i2c_edid);
+ uninit_regulators:
+ 	adv7511_uninit_regulators(adv7511);
++err_of_node_put:
++	of_node_put(adv7511->host_node);
  
-+out_del_dev:
-+	device_del(&udev->dev);
- fail:
- 	usb_set_device_state(udev, USB_STATE_NOTATTACHED);
- 	pm_runtime_disable(&udev->dev);
+ 	return ret;
+ }
+@@ -1353,6 +1357,8 @@ static void adv7511_remove(struct i2c_client *i2c)
+ {
+ 	struct adv7511 *adv7511 = i2c_get_clientdata(i2c);
+ 
++	of_node_put(adv7511->host_node);
++
+ 	adv7511_uninit_regulators(adv7511);
+ 
+ 	drm_bridge_remove(&adv7511->bridge);
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7533.c b/drivers/gpu/drm/bridge/adv7511/adv7533.c
+index 3a79297ca980..6a4733c70827 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7533.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7533.c
+@@ -184,8 +184,6 @@ int adv7533_parse_dt(struct device_node *np, struct adv7511 *adv)
+ 	if (!adv->host_node)
+ 		return -ENODEV;
+ 
+-	of_node_put(adv->host_node);
+-
+ 	adv->use_timing_gen = !of_property_read_bool(np,
+ 						"adi,disable-timing-generator");
+ 
+-- 
+2.39.5
+
 
 
 
