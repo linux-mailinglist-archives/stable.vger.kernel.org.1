@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-108971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64755A1212E
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:53:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A264A121BD
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:59:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6DCA188D9C0
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:53:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6EE4E7A1548
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABCF01E98EF;
-	Wed, 15 Jan 2025 10:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EED61E7C02;
+	Wed, 15 Jan 2025 10:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORaX0jk2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZJfABJJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52627248BDE;
-	Wed, 15 Jan 2025 10:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFDE248BB0;
+	Wed, 15 Jan 2025 10:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938420; cv=none; b=LpL5IWPvXvslUE8bepaVp9dPKq+E+895lOyPtF7OqPaRG+24QnRQdyiQazQFpjECVUIkrmLu8u2ZKS9XE2e6HLr57j8mokQ1wLgmtV5BeyHq6dIznpxPjszrJBpGty2i7JTEHhhvp/17FVKrTE9h3hInENR+tC5TIlEFprWNPRY=
+	t=1736938792; cv=none; b=OzUm+9b5zC4XHOKDBAYR/17q0onQ0b+gkgsgSucX4zP9/eNcaXu7P/IzDxRf0wL93DkqTlcO2i59VdTbF0snPd/Mly4plzN9rKg0KGLevWu6+McfQI+9a2JTtEG+2NzLgxpzyxXHMevIbtdt4sO06UmSGL9nOSj7ULPM83I6AUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938420; c=relaxed/simple;
-	bh=4oIQ1kQ1NO9eDY4xl/ICe73BR4smZPMqO3miLdPFAkQ=;
+	s=arc-20240116; t=1736938792; c=relaxed/simple;
+	bh=ah+zMvKMjd8upROTCtkHdQaFfBCraTQkYsTrhBSTp4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gfeJdWcKVElaZC3dhhLyVrfvNVHJaG7PmQ1xgAFk6/KaqNkwCOWqZMfmm95rPK6dzYB5Kd9Itgdph8EpiN7nBgiqSPrVPQVakMNrUi4yVJB1gb39wKmnfgysMmc+sGIPBqncKaPR5YnS4Hwkvs/gk4u1X84TYDDQ2txJe9uJ39g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORaX0jk2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36FA2C4CEDF;
-	Wed, 15 Jan 2025 10:53:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uyV3FP8ivN0EWjE4xi3w3Clz32TTO3IX2sG6oeDBGEFb3zOc0PfbxREAEQhh+H9MQZC5M0obrJHwr81ONQmFPxyaKzJ4aXZbQXwOeRRO7KBDAxB9jAUcdJXiQnqeC7VGjEUrviRUXIjbEe4gR4CrS6rBeiMjWm6uHLsVrvpDabU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZJfABJJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD834C4CEDF;
+	Wed, 15 Jan 2025 10:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938420;
-	bh=4oIQ1kQ1NO9eDY4xl/ICe73BR4smZPMqO3miLdPFAkQ=;
+	s=korg; t=1736938792;
+	bh=ah+zMvKMjd8upROTCtkHdQaFfBCraTQkYsTrhBSTp4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ORaX0jk2hXIpUI9Vvxa0Qng87GM63CfiIAwljSyQ18ou+1FQLHd135UShewwjUbpJ
-	 BYu3antOTeSLIyw3kVkBvzMgVnisgqPSSVJGvtt3ZIuI74jJUuOUsCUMdji7iaKOTv
-	 1jBZSEcXZnFRo62rUn2Z0mP1KhLXubSY/hEoaKzU=
+	b=HZJfABJJR11J6KoJWqsuQA7Skp09ixysWgJwrh49AOL+pFAp7k4SNZkSRPOXgZTLN
+	 tecBHI3qFZIzSRweHy2B7f1NP25Zb6kWEMDjTgqlIJVMZY6UFk27Xu84yxp7bWXqhV
+	 QeVMh12nS1MKphMHkoqh1OJl+mMrS6WDJINdYF4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Stas <daniil.stas@posteo.net>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Chris Healy <cphealy@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	linux-kernel@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	linux-ide@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 178/189] hwmon: (drivetemp) Fix driver producing garbage data when SCSI errors occur
+	stable <stable@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.6 099/129] usb: typec: tcpm/tcpci_maxim: fix error code in max_contaminant_read_resistance_kohm()
 Date: Wed, 15 Jan 2025 11:37:54 +0100
-Message-ID: <20250115103613.511631208@linuxfoundation.org>
+Message-ID: <20250115103558.309588394@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,76 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Stas <daniil.stas@posteo.net>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 82163d63ae7a4c36142cd252388737205bb7e4b9 ]
+commit b9711ff7cde0cfbcdd44cb1fac55b6eec496e690 upstream.
 
-scsi_execute_cmd() function can return both negative (linux codes) and
-positive (scsi_cmnd result field) error codes.
+If max_contaminant_read_adc_mv() fails, then return the error code.  Don't
+return zero.
 
-Currently the driver just passes error codes of scsi_execute_cmd() to
-hwmon core, which is incorrect because hwmon only checks for negative
-error codes. This leads to hwmon reporting uninitialized data to
-userspace in case of SCSI errors (for example if the disk drive was
-disconnected).
-
-This patch checks scsi_execute_cmd() output and returns -EIO if it's
-error code is positive.
-
-Fixes: 5b46903d8bf37 ("hwmon: Driver for disk and solid state drives with temperature sensors")
-Signed-off-by: Daniil Stas <daniil.stas@posteo.net>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Chris Healy <cphealy@gmail.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>
-Cc: Martin K. Petersen <martin.petersen@oracle.com>
-Cc: Bart Van Assche <bvanassche@acm.org>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-scsi@vger.kernel.org
-Cc: linux-ide@vger.kernel.org
-Cc: linux-hwmon@vger.kernel.org
-Link: https://lore.kernel.org/r/20250105213618.531691-1-daniil.stas@posteo.net
-[groeck: Avoid inline variable declaration for portability]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 02b332a06397 ("usb: typec: maxim_contaminant: Implement check_contaminant callback")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: André Draszik <andre.draszik@linaro.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/f1bf3768-419e-40dd-989c-f7f455d6c824@stanley.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/drivetemp.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/usb/typec/tcpm/maxim_contaminant.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/drivetemp.c b/drivers/hwmon/drivetemp.c
-index 6bdd21aa005a..2a4ec55ddb47 100644
---- a/drivers/hwmon/drivetemp.c
-+++ b/drivers/hwmon/drivetemp.c
-@@ -165,6 +165,7 @@ static int drivetemp_scsi_command(struct drivetemp_data *st,
- {
- 	u8 scsi_cmd[MAX_COMMAND_SIZE];
- 	enum req_op op;
-+	int err;
+--- a/drivers/usb/typec/tcpm/maxim_contaminant.c
++++ b/drivers/usb/typec/tcpm/maxim_contaminant.c
+@@ -137,7 +137,7 @@ static int max_contaminant_read_resistan
  
- 	memset(scsi_cmd, 0, sizeof(scsi_cmd));
- 	scsi_cmd[0] = ATA_16;
-@@ -192,8 +193,11 @@ static int drivetemp_scsi_command(struct drivetemp_data *st,
- 	scsi_cmd[12] = lba_high;
- 	scsi_cmd[14] = ata_command;
+ 		mv = max_contaminant_read_adc_mv(chip, channel, sleep_msec, raw, true);
+ 		if (mv < 0)
+-			return ret;
++			return mv;
  
--	return scsi_execute_cmd(st->sdev, scsi_cmd, op, st->smartdata,
--				ATA_SECT_SIZE, HZ, 5, NULL);
-+	err = scsi_execute_cmd(st->sdev, scsi_cmd, op, st->smartdata,
-+			       ATA_SECT_SIZE, HZ, 5, NULL);
-+	if (err > 0)
-+		err = -EIO;
-+	return err;
- }
+ 		/* OVP enable */
+ 		ret = regmap_update_bits(regmap, TCPC_VENDOR_CC_CTRL2, CCOVPDIS, 0);
+@@ -159,7 +159,7 @@ static int max_contaminant_read_resistan
  
- static int drivetemp_ata_command(struct drivetemp_data *st, u8 feature,
--- 
-2.39.5
-
+ 	mv = max_contaminant_read_adc_mv(chip, channel, sleep_msec, raw, true);
+ 	if (mv < 0)
+-		return ret;
++		return mv;
+ 	/* Disable current source */
+ 	ret = regmap_update_bits(regmap, TCPC_VENDOR_CC_CTRL2, SBURPCTRL, 0);
+ 	if (ret < 0)
 
 
 
