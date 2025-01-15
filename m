@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-108769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DD9BA1202E
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:42:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 442F4A12117
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:53:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50339162B43
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:42:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F1E43AD36E
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB8E4248BA1;
-	Wed, 15 Jan 2025 10:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32BA61E98E6;
+	Wed, 15 Jan 2025 10:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgKjDaFO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8npawyz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FE7248BA0;
-	Wed, 15 Jan 2025 10:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44C11DB151;
+	Wed, 15 Jan 2025 10:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937748; cv=none; b=nE775WTtBKXrhWjP5zM39BgZqsv5gyHQci5wj/eMZRV+2axcJdsjkaY3oVudqJ4lTrDxW3Yeg3o93NHc+NtQ9TNRoo5S/oDt8cprXQGgxwaxYG+luDhmf5C8nq1uIQpdwooLRzKJPxeb+fLasFg6v0kDiGeyA7xNEJW+PA9/2Q0=
+	t=1736938339; cv=none; b=POHpk2u+TgCfZ7WMTQseWOCz3/rBFcHO5xI3XTXPpJf8R82ID5992mfaG0Q4FQm8AfVFIM8+mkUrep959cZinZWNRzzTSPU4FJtY630sDoxDMVxwfXJrilQ22AgExxv/uwGzUExtYMarHT9smXEDeXW0F3df6okfyhoJbtAxNqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937748; c=relaxed/simple;
-	bh=MJFbPvkke3DUEEvwyJcTQ/NdRqSRxrv+KagLJdFrGZg=;
+	s=arc-20240116; t=1736938339; c=relaxed/simple;
+	bh=syV8TVZKaCSbVPHCX+QYEgGwl8zd+Qv8ZlXHeIhGlCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TKjPp/QFNhdtBkybRylwL9YknLaM3iD2qDM8xPtFX9izbI1VQKCGGUG7TvSZRXyt3KPEefy3BpztfZXliZEWm8g0rbBlp9RhjBNNxTOiojmWiQAHMB5RBJxJ5ekJHCirIMGZkHnNaguEAw6Y5DOflJJ2UJ/lrP0jfv6OOC0D+ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CgKjDaFO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72BACC4CEDF;
-	Wed, 15 Jan 2025 10:42:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sXmks47h5ZdJHjiHLa3BUNxBk10Hf68KuvuWiKuPXRQFppQQdhsFPqHRLyRtO0RZ+TLps4OV9NGhI8ggi1QkRZXqWj1AlVDROcqypGPYHL8eWMUW4YpriQiqEr8Hf1lEFF6yXnHMml0LxOsW5ZthM9BbOh9SlzXCH7kdj4P/juU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8npawyz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C85E5C4CEDF;
+	Wed, 15 Jan 2025 10:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937745;
-	bh=MJFbPvkke3DUEEvwyJcTQ/NdRqSRxrv+KagLJdFrGZg=;
+	s=korg; t=1736938336;
+	bh=syV8TVZKaCSbVPHCX+QYEgGwl8zd+Qv8ZlXHeIhGlCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CgKjDaFOg2BLiEnjhLud49gvcCMsd5EJJa6rBBxOp3xXfrDsUdz5sRn19/WCxui/r
-	 9PPUPtw9weSwvAfbDraD6BlbYfSl8R1gw0xcId+k/A3CY/Jlhc6ENp00Xp/WhUzwZE
-	 GP8bwY631ZLiNQCeyzRzfjC1lnrChKLGoIk37zbU=
+	b=j8npawyzcLm+4gwGu3bswJJcg8t06qy6D/8pYaUBOmJI7IQKYl5N/iNgUuSY0nVcM
+	 o/wki8aVmYXNW4jG5MnEvs6WIQw7gl25hrcj0hMlVnYcaR7zHd23JDx3h1zcLVuIUq
+	 GFpiTQ+eHkTW4JqxsteWlshNpmM+jRx7SrZ6Jrh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 70/92] iio: dummy: iio_simply_dummy_buffer: fix information leak in triggered buffer
+	stable <stable@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.12 152/189] usb: typec: tcpm/tcpci_maxim: fix error code in max_contaminant_read_resistance_kohm()
 Date: Wed, 15 Jan 2025 11:37:28 +0100
-Message-ID: <20250115103550.351165986@linuxfoundation.org>
+Message-ID: <20250115103612.477220425@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,45 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 333be433ee908a53f283beb95585dfc14c8ffb46 upstream.
+commit b9711ff7cde0cfbcdd44cb1fac55b6eec496e690 upstream.
 
-The 'data' array is allocated via kmalloc() and it is used to push data
-to user space from a triggered buffer, but it does not set values for
-inactive channels, as it only uses iio_for_each_active_channel()
-to assign new values.
+If max_contaminant_read_adc_mv() fails, then return the error code.  Don't
+return zero.
 
-Use kzalloc for the memory allocation to avoid pushing uninitialized
-information to userspace.
-
-Cc: stable@vger.kernel.org
-Fixes: 415f79244757 ("iio: Move IIO Dummy Driver out of staging")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-9-0cb6e98d895c@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 02b332a06397 ("usb: typec: maxim_contaminant: Implement check_contaminant callback")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: André Draszik <andre.draszik@linaro.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/f1bf3768-419e-40dd-989c-f7f455d6c824@stanley.mountain
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dummy/iio_simple_dummy_buffer.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/maxim_contaminant.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/dummy/iio_simple_dummy_buffer.c
-+++ b/drivers/iio/dummy/iio_simple_dummy_buffer.c
-@@ -48,7 +48,7 @@ static irqreturn_t iio_simple_dummy_trig
- 	int i = 0, j;
- 	u16 *data;
+--- a/drivers/usb/typec/tcpm/maxim_contaminant.c
++++ b/drivers/usb/typec/tcpm/maxim_contaminant.c
+@@ -135,7 +135,7 @@ static int max_contaminant_read_resistan
  
--	data = kmalloc(indio_dev->scan_bytes, GFP_KERNEL);
-+	data = kzalloc(indio_dev->scan_bytes, GFP_KERNEL);
- 	if (!data)
- 		goto done;
+ 		mv = max_contaminant_read_adc_mv(chip, channel, sleep_msec, raw, true);
+ 		if (mv < 0)
+-			return ret;
++			return mv;
  
+ 		/* OVP enable */
+ 		ret = regmap_update_bits(regmap, TCPC_VENDOR_CC_CTRL2, CCOVPDIS, 0);
+@@ -157,7 +157,7 @@ static int max_contaminant_read_resistan
+ 
+ 	mv = max_contaminant_read_adc_mv(chip, channel, sleep_msec, raw, true);
+ 	if (mv < 0)
+-		return ret;
++		return mv;
+ 	/* Disable current source */
+ 	ret = regmap_update_bits(regmap, TCPC_VENDOR_CC_CTRL2, SBURPCTRL, 0);
+ 	if (ret < 0)
 
 
 
