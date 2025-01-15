@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-108796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2A93A1204B
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:43:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBA65A12126
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:53:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64FA93A1815
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:43:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDD78161986
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36658248BB2;
-	Wed, 15 Jan 2025 10:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C11D248BC1;
+	Wed, 15 Jan 2025 10:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FB3V0Di4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FD4PovQ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A4F248BA7;
-	Wed, 15 Jan 2025 10:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB18156644;
+	Wed, 15 Jan 2025 10:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937833; cv=none; b=jdpLXAi/m+rSVUhZwdSE2mJzMKl/020NNuoJNKH68hmAZEfaQV0eiq2uck1KkHb0omzbJ60zzVqsakP8ureAgq9WOCmsVbWckq3ukMQN/va4Hg00kbe9biyX3kC10TNnDTcG54DgYVD5emsksqE1NnIsHB4Lk8JnHzjF8nU3elc=
+	t=1736938398; cv=none; b=KcTLA1D6kngb4DRhTb3kuW4CxS+Kpw+YyUVr2mbZyC5lbIKj2t42ZDhFlxw/SSIIOx6ih8dCiPhZRpiveuGDkXO23Nhf1/eh7mas5kLOGObERRyK6j1RV/kiDnhUvb5REounR36eOvl8HlmbknC/BeLrZs4XzGdyLFu/yC9OWks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937833; c=relaxed/simple;
-	bh=pDw5F8wIw/MgbADSg5EbXuMCcY5tJ4jhywH242pOfqs=;
+	s=arc-20240116; t=1736938398; c=relaxed/simple;
+	bh=Xa/C3llAE+j0FPat1/+bMn3UWXpF/EomPRiFWcVYZE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BApMp+Qa6aqlPAI7FLtJENXpW3gM6MH6HPw6pjuUGlW7xWhbEfideNo2JUTPLtPnqbpuDHNnbIRzdViFU+tfsNOa8ds4A7kGftOsRWBvsU7W8f+1orsruuGk09tGLS+p0UJ8lY+crAiDfqsG5k8PahGOhVu/QQUE04VhB9T1JBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FB3V0Di4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1647BC4CEE2;
-	Wed, 15 Jan 2025 10:43:51 +0000 (UTC)
+	 MIME-Version; b=J9qVYYyOlDsem4+1EL9OGUycnuXAEZeXnbInJBvgz1MnL8lbpk74tFwcP3w822BcSmZ7UKzqgdAjJunLFwdflDYvsyFBvumhkhzBOq0g5dHIKU5EARNqg7tkfZ0mqfQyDnXYRZv5eEiFYUqajqKf6GXUvdfFTuYGUuLZbc8ZLrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FD4PovQ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB93C4CEDF;
+	Wed, 15 Jan 2025 10:53:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937832;
-	bh=pDw5F8wIw/MgbADSg5EbXuMCcY5tJ4jhywH242pOfqs=;
+	s=korg; t=1736938397;
+	bh=Xa/C3llAE+j0FPat1/+bMn3UWXpF/EomPRiFWcVYZE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FB3V0Di4820glyzO1FFWFqbD+xwOsVDDf0f7owo4lvwfQDZFnxnWAo5EK7+0qW0r2
-	 tyg6utw05KxxAooHKhZM7iH7DbF0JMh+QJDd7EBBDqEA81IO7Y7eUFlXjeClDnecjs
-	 8BYWlYmncXoDlCcDSVVd/mmXekTsonfxhIbT/HMw=
+	b=FD4PovQ8ZnVe8hy/Vd3LlPdN0l71qBTzV8AIaJ3SJkyUk9XOB8+E10CW+z6VM0UKX
+	 d0zMZinf1RMIv3IE9JtuJegn2bUow+TcQYQasRCQ8FYB2aDMck3pAANpRZ1Loo8p2D
+	 sbNipz1YWO86M5q+A6Ha13yUEJ0eGK+FvxyWoIY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Joseph Qi <jiangqi903@gmail.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 89/92] ocfs2: correct return value of ocfs2_local_free_info()
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 171/189] iio: inkern: call iio_device_put() only on mapped devices
 Date: Wed, 15 Jan 2025 11:37:47 +0100
-Message-ID: <20250115103551.121319830@linuxfoundation.org>
+Message-ID: <20250115103613.231278101@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,71 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit d32840ad4a111c6abd651fbf6b5996e6123913da ]
+commit 64f43895b4457532a3cc524ab250b7a30739a1b1 upstream.
 
-Now in ocfs2_local_free_info(), it returns 0 even if it actually fails.
-Though it doesn't cause any real problem since the only caller
-dquot_disable() ignores the return value, we'd better return correct as it
-is.
+In the error path of iio_channel_get_all(), iio_device_put() is called
+on all IIO devices, which can cause a refcount imbalance. Fix this error
+by calling iio_device_put() only on IIO devices whose refcounts were
+previously incremented by iio_device_get().
 
-Link: https://lkml.kernel.org/r/20230528132033.217664-1-joseph.qi@linux.alibaba.com
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Joseph Qi <jiangqi903@gmail.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 5f3fd772d152 ("ocfs2: fix slab-use-after-free due to dangling pointer dqi_priv")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 314be14bb893 ("iio: Rename _st_ functions to loose the bit that meant the staging version.")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Link: https://patch.msgid.link/20241204111342.1246706-1-joe@pf.is.s.u-tokyo.ac.jp
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/quota_local.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/iio/inkern.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ocfs2/quota_local.c b/fs/ocfs2/quota_local.c
-index 404ca3a62508..257f13cdd14c 100644
---- a/fs/ocfs2/quota_local.c
-+++ b/fs/ocfs2/quota_local.c
-@@ -815,7 +815,7 @@ static int ocfs2_local_free_info(struct super_block *sb, int type)
- 	struct ocfs2_quota_chunk *chunk;
- 	struct ocfs2_local_disk_chunk *dchunk;
- 	int mark_clean = 1, len;
--	int status;
-+	int status = 0;
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -499,7 +499,7 @@ struct iio_channel *iio_channel_get_all(
+ 	return_ptr(chans);
  
- 	iput(oinfo->dqi_gqinode);
- 	ocfs2_simple_drop_lockres(OCFS2_SB(sb), &oinfo->dqi_gqlock);
-@@ -857,17 +857,14 @@ static int ocfs2_local_free_info(struct super_block *sb, int type)
- 				 oinfo->dqi_libh,
- 				 olq_update_info,
- 				 info);
--	if (status < 0) {
-+	if (status < 0)
- 		mlog_errno(status);
--		goto out;
--	}
--
- out:
- 	ocfs2_inode_unlock(sb_dqopt(sb)->files[type], 1);
- 	brelse(oinfo->dqi_libh);
- 	brelse(oinfo->dqi_lqi_bh);
- 	kfree(oinfo);
--	return 0;
-+	return status;
+ error_free_chans:
+-	for (i = 0; i < nummaps; i++)
++	for (i = 0; i < mapind; i++)
+ 		iio_device_put(chans[i].indio_dev);
+ 	return ERR_PTR(ret);
  }
- 
- static void olq_set_dquot(struct buffer_head *bh, void *private)
--- 
-2.39.5
-
 
 
 
