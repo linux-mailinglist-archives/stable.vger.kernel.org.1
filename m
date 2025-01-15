@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-109025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 099CBA1217C
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:57:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B656A120E6
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:50:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C06783A8D83
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:56:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D05207A32FC
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:50:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49BFC248BD4;
-	Wed, 15 Jan 2025 10:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D87801DB13A;
+	Wed, 15 Jan 2025 10:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00r/s9YA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rr7GYU/T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D49248BD1;
-	Wed, 15 Jan 2025 10:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938C1248BC1;
+	Wed, 15 Jan 2025 10:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938606; cv=none; b=cyAJTbTn686sIt/jsJFTXFM64nr8EXomrmzWQLVnX2oMYSpb19y2giG+P3eKOgHEd3fVvH+a/ntiY0Q3j/YKtnOXwit+qpXZug9Q2+jyTB86BykfAs32E/1whZpTlV6h1AdVjcKR7o4EXqGzJpmV/TOPD3DQbH0Hn+ithqhjY8g=
+	t=1736938223; cv=none; b=i9+XTfCMgENnc7/TmfiU+BSJvm47QIG0YI7g81TvncSJ0Zys+l7uc8T1/RvQCoFDUmNclbuoUJPBV8zbN+XqC+1b1mJ7CSkmuYYqb/INoMBZXHeNEsG6EShCgdCKTeUwDhFUMMnApkOa6vLmREp7oyyuqN5NNpw7CIRJgWaTWQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938606; c=relaxed/simple;
-	bh=0Wf1g26PZG19LFOjMD6Hnyebvhs7cjrnF0JIW6Zaz+o=;
+	s=arc-20240116; t=1736938223; c=relaxed/simple;
+	bh=W7FJ7JQT468TZ2B7eTmlsl10j1EY6NmEbLdkn7dRbkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HPNzcr6IgZJnNoCvhRxNcKVKP+eqD+Yb5GD2tPRMfEQ7dTYVvC5N3udMzGYMXxIkS42GO1t+TgTMfbM5kvB9iTEllHdL3ib0yz35PivWyhtufsznEMGmS2Wlse9vUun5SFXjnTS1yGMrhePneNQFOwW+JYNFrmi6eMPPBPwrKi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00r/s9YA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BFEAC4CEDF;
-	Wed, 15 Jan 2025 10:56:45 +0000 (UTC)
+	 MIME-Version; b=oka9NbPb4AdXxaWF7EwFrO1blDK48Lr7ex3LO1HnjTxqwH1AYjFehpDGNDnGhJpqZJRWW3AChLmTgVrjSeekTId1ljbEgNDg3qP3C3+Pztx7uKu0xSNtHEE5Gbgsa4NxpoPFuc7EXE1Er6Inl1TdwgAjobRc/6fw8NlHyFa//BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rr7GYU/T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA48C4CEDF;
+	Wed, 15 Jan 2025 10:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938605;
-	bh=0Wf1g26PZG19LFOjMD6Hnyebvhs7cjrnF0JIW6Zaz+o=;
+	s=korg; t=1736938223;
+	bh=W7FJ7JQT468TZ2B7eTmlsl10j1EY6NmEbLdkn7dRbkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=00r/s9YAGBxtTXbHxqi1VIo+vWhr6ra2zglJqHLT6QtFMnPudovtBVgXbW8ARJE8g
-	 VFt4yT5+G70r0cT9wFJWCh5h1s4RezWmtlv/p22AhdZf1qJXPG2MHbY79RzH3StCpp
-	 qEDm+Tk4ue1+KxHcfxPuPnHTo6czgGdP8tk9THkc=
+	b=Rr7GYU/TvQBOjIU/E8IxH9OH447hLYX3v8sCF+7Rg6E9Ca1x1Y1CTFqhrsVgqSuQn
+	 9S0XH4LH7s384ckL+ktRQ2cIHUxrg2P/xAwwRpSIFPNcv+m/pRD7rkzivKacMGbphx
+	 HeYcv1KwYlRA+rju13usFuLaqkb0Khb7Z2g4COpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Narasimhan V <Narasimhan.V@amd.com>,
-	Jan Beulich <jbeulich@suse.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>
-Subject: [PATCH 6.6 040/129] x86/mm/numa: Use NUMA_NO_NODE when calling memblock_set_node()
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.12 119/189] ACPI: resource: Add TongFang GM5HG0A to irq1_edge_low_force_override[]
 Date: Wed, 15 Jan 2025 11:36:55 +0100
-Message-ID: <20250115103555.967496613@linuxfoundation.org>
+Message-ID: <20250115103611.208479006@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Beulich <jbeulich@suse.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 3ac36aa7307363b7247ccb6f6a804e11496b2b36 upstream.
+commit 7ed4e4a659d99499dc6968c61970d41b64feeac0 upstream.
 
-memblock_set_node() warns about using MAX_NUMNODES, see
+The TongFang GM5HG0A is a TongFang barebone design which is sold under
+various brand names.
 
-  e0eec24e2e19 ("memblock: make memblock_set_node() also warn about use of MAX_NUMNODES")
+The ACPI IRQ override for the keyboard IRQ must be used on these AMD Zen
+laptops in order for the IRQ to work.
 
-for details.
+At least on the SKIKK Vanaheim variant the DMI product- and board-name
+strings have been replaced by the OEM with "Vanaheim" so checking that
+board-name contains "GM5HG0A" as is usually done for TongFang barebones
+quirks does not work.
 
-Reported-by: Narasimhan V <Narasimhan.V@amd.com>
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
-Cc: stable@vger.kernel.org
-[bp: commit message]
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/r/20240603141005.23261-1-bp@kernel.org
-Link: https://lore.kernel.org/r/abadb736-a239-49e4-ab42-ace7acdd4278@suse.com
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+The DMI OEM strings do contain "GM5HG0A". I have looked at the dmidecode
+for a few other TongFang devices and the TongFang code-name string being
+in the OEM strings seems to be something which is consistently true.
+
+Add a quirk checking one of the DMI_OEM_STRING(s) is "GM5HG0A" in the hope
+that this will work for other OEM versions of the "GM5HG0A" too.
+
+Link: https://www.skikk.eu/en/laptops/vanaheim-15-rtx-4060
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219614
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20241228164845.42381-1-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/numa.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/acpi/resource.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/arch/x86/mm/numa.c
-+++ b/arch/x86/mm/numa.c
-@@ -492,7 +492,7 @@ static void __init numa_clear_kernel_nod
- 	for_each_reserved_mem_region(mb_region) {
- 		int nid = memblock_get_region_node(mb_region);
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -646,6 +646,17 @@ static const struct dmi_system_id irq1_e
+ 			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
+ 		},
+ 	},
++	{
++		/*
++		 * TongFang GM5HG0A in case of the SKIKK Vanaheim relabel the
++		 * board-name is changed, so check OEM strings instead. Note
++		 * OEM string matches are always exact matches.
++		 * https://bugzilla.kernel.org/show_bug.cgi?id=219614
++		 */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_OEM_STRING, "GM5HG0A"),
++		},
++	},
+ 	{ }
+ };
  
--		if (nid != MAX_NUMNODES)
-+		if (nid != NUMA_NO_NODE)
- 			node_set(nid, reserved_nodemask);
- 	}
- 
-@@ -613,9 +613,9 @@ static int __init numa_init(int (*init_f
- 	nodes_clear(node_online_map);
- 	memset(&numa_meminfo, 0, sizeof(numa_meminfo));
- 	WARN_ON(memblock_set_node(0, ULLONG_MAX, &memblock.memory,
--				  MAX_NUMNODES));
-+				  NUMA_NO_NODE));
- 	WARN_ON(memblock_set_node(0, ULLONG_MAX, &memblock.reserved,
--				  MAX_NUMNODES));
-+				  NUMA_NO_NODE));
- 	/* In case that parsing SRAT failed. */
- 	WARN_ON(memblock_clear_hotplug(0, ULLONG_MAX));
- 	numa_reset_distance();
 
 
 
