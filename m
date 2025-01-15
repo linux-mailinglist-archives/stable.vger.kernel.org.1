@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-109043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69D13A12189
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:57:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66706A12106
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:52:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62B627A4196
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:57:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E77743A6DC3
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0571E7C02;
-	Wed, 15 Jan 2025 10:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2C91E98EE;
+	Wed, 15 Jan 2025 10:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZyMuIpS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xmk/6aqw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAA5248BD0;
-	Wed, 15 Jan 2025 10:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4151E98E3;
+	Wed, 15 Jan 2025 10:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938666; cv=none; b=fsLN418b/A8t2DOTwLxsepV/IgO46Ay8tvekND/UUSY/ptFc78vZ0B5LjSw6L3/I6c++rcvAEmeAYiV39yJOYMFpVbrH1pJW3zKT6CgTGJCfveoMzzMgfu6C4IBX9rJVYC0JhSnqNaYYHFin/fGar5Ml+T14G33NNZYddtd1KvU=
+	t=1736938288; cv=none; b=HmDbLOeHfhohRBL8zYI75tROLYqW9d04m9288Rgu/VLqqBYrKFQ7lB7zqPIL2nreHWubNvSIKXLW3PFNmMsxL/YEaHV1KMFDgJUsfNbdUDajdd28AvQpPMkvsGflw/YOAFmacBbywJafRuqJfSsoJWsVwBWXXpvTrWmcQ7a/V7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938666; c=relaxed/simple;
-	bh=Wvllju2buEf3o7fc93uHAPOy0eEOoGWNjDCRcEr355Y=;
+	s=arc-20240116; t=1736938288; c=relaxed/simple;
+	bh=XePNtQGldHFHSRI9OCY6lQsTV1257TxC2KcdWSuQc5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YJBaeas7NFRDR5sFhsPukhu98m1pE3x0bedlM0WOeDFcgNagBXOUzB4Dh56iPs0/WQ2qm+hk7I45EY38UdL0tjd4FyQCdBUtpGpT1hBC+cbHtsGFsC7uqTlZlIFbjU2JnE4rP8odzXKa9xXT7RW07OR3VRq8SrdBSypQCDeoblQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZyMuIpS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25800C4CEDF;
-	Wed, 15 Jan 2025 10:57:45 +0000 (UTC)
+	 MIME-Version; b=O04qh+NLEm6eMkRy11wL9DSjRrRf16OYeDYV7160tKLGC37cgRo+7J9binhlY/YXhIT1fIpKY3AmynzExuxTHOfODAZ0PU8E2INZyUClXOo8imtnj0NehYQ/V+Rxln0ou2UVNKml3e1hrkD0vQUZ//lvogAnj6eqOaUPjAEsSBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xmk/6aqw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDEF3C4CEDF;
+	Wed, 15 Jan 2025 10:51:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938666;
-	bh=Wvllju2buEf3o7fc93uHAPOy0eEOoGWNjDCRcEr355Y=;
+	s=korg; t=1736938288;
+	bh=XePNtQGldHFHSRI9OCY6lQsTV1257TxC2KcdWSuQc5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HZyMuIpSdo0vzIY+RKN5lBjgDVddzYqJS+h/K4RxXf/3NfQnQeG0cyD4LssP7BvKy
-	 FBRuumGz8c2rBMx4L6kOtqSMDtFFs5S5z2SFugjjVXm6RyhYibNjOEVrwjuDrwPz31
-	 DcmUq4T9EYsLzI8N2OoijJ9ay+WYHF+SQcBbGzoQ=
+	b=xmk/6aqwuU4aMI4uEq/1SgTD0l0LnKGk26ysIYd7M8grvaG1R7GTCASMnDT/5F0fg
+	 XP7RexWA4RCwsh0fP3dT1+F0LzNszAdQj6yju7Uo2+oNZciNw/yzQL/qO/yTVloBcw
+	 j9xYTLQtXnGngm8GziO7Q5GFKMWyMW+fqUtNfYJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.6 060/129] dm-ebs: dont set the flag DM_TARGET_PASSES_INTEGRITY
+	stable <stable@kernel.org>,
+	Rengarajan S <rengarajan.s@microchip.com>
+Subject: [PATCH 6.12 139/189] misc: microchip: pci1xxxx: Resolve return code mismatch during GPIO set config
 Date: Wed, 15 Jan 2025 11:37:15 +0100
-Message-ID: <20250115103556.774306371@linuxfoundation.org>
+Message-ID: <20250115103611.977222449@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
-References: <20250115103554.357917208@linuxfoundation.org>
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Rengarajan S <rengarajan.s@microchip.com>
 
-commit 47f33c27fc9565fb0bc7dfb76be08d445cd3d236 upstream.
+commit c7a5378a0f707686de3ddb489f1653c523bb7dcc upstream.
 
-dm-ebs uses dm-bufio to process requests that are not aligned on logical
-sector size. dm-bufio doesn't support passing integrity data (and it is
-unclear how should it do it), so we shouldn't set the
-DM_TARGET_PASSES_INTEGRITY flag.
+Driver returns -EOPNOTSUPPORTED on unsupported parameters case in set
+config. Upper level driver checks for -ENOTSUPP. Because of the return
+code mismatch, the ioctls from userspace fail. Resolve the issue by
+passing -ENOTSUPP during unsupported case.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Fixes: d3c7b35c20d6 ("dm: add emulated block size target")
+Fixes: 7d3e4d807df2 ("misc: microchip: pci1xxxx: load gpio driver for the gpio controller auxiliary device enumerated by the auxiliary bus driver.")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Rengarajan S <rengarajan.s@microchip.com>
+Link: https://lore.kernel.org/r/20241205133626.1483499-3-rengarajan.s@microchip.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-ebs-target.c |    2 +-
+ drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gpio.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/md/dm-ebs-target.c
-+++ b/drivers/md/dm-ebs-target.c
-@@ -442,7 +442,7 @@ static int ebs_iterate_devices(struct dm
- static struct target_type ebs_target = {
- 	.name		 = "ebs",
- 	.version	 = {1, 0, 1},
--	.features	 = DM_TARGET_PASSES_INTEGRITY,
-+	.features	 = 0,
- 	.module		 = THIS_MODULE,
- 	.ctr		 = ebs_ctr,
- 	.dtr		 = ebs_dtr,
+--- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gpio.c
++++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gpio.c
+@@ -148,7 +148,7 @@ static int pci1xxxx_gpio_set_config(stru
+ 		pci1xxx_assign_bit(priv->reg_base, OPENDRAIN_OFFSET(offset), (offset % 32), true);
+ 		break;
+ 	default:
+-		ret = -EOPNOTSUPP;
++		ret = -ENOTSUPP;
+ 		break;
+ 	}
+ 	spin_unlock_irqrestore(&priv->lock, flags);
 
 
 
