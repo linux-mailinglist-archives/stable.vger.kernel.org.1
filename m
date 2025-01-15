@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-108748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3966A12024
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:41:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22196A1217E
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:57:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 666873A3A3B
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:41:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44ED4163557
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6239248BB2;
-	Wed, 15 Jan 2025 10:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B203F1DB142;
+	Wed, 15 Jan 2025 10:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJyKfAov"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aBjnwuBK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E04248BB1;
-	Wed, 15 Jan 2025 10:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB523594E;
+	Wed, 15 Jan 2025 10:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937675; cv=none; b=RxoUqWxtzJASEmY0fsnL05jqjDF1eTHeYDYdUHqlCoRb0J63ALwsbKLMuHzQ/+rS4wjQp8yo7qDzKjt89LQalK3ZAqlDo4beLlU4LmXLjeGkw7+7pkDm+Zyu+5OI7fPJDy7z5SEU3jk5bA7H+tlLRn+JucB3+QwC6WlL/q6+35Q=
+	t=1736938636; cv=none; b=aHTQ+AzaubNdu2gT6K7f0Ws9Z+ZLuVX4hRmQ38J1gPTUiAEG3sGXsvxk5JTei3zLS2J0Qc+j8hYO1xWpurRlZeiyAolzCb5e8odtgrc99ABsQexfhI+Kc5l9FsUv4v2wDJ3fPMqOisJhfoTYEk4BgqW1/xBk7Xrmd6NTk2OKdiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937675; c=relaxed/simple;
-	bh=wEw7xShPyizmJeq25bAO0QN78p8Fc8PPgQ9HE9DvSRo=;
+	s=arc-20240116; t=1736938636; c=relaxed/simple;
+	bh=yWWno3ZL6xf8VLUM8xPF3mAWtWA/o6Ia1gVKYB8j7vA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V8EjZ2P+n7dlk0cuizl75gSRfVRIzZxWP03jb0gqbqi/Np38IwzQA/Qc9AJbGngv//IWmFu/EPxX2kGrSrhxcIJcgOJ7QS32Fv0/omQaMDjc+P5tcG7CmzszNfrez8ghVpfOjO5u97AdemSnqc0FI31sWA1DpPahc1e6TomrXpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJyKfAov; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 956ADC4CEE4;
-	Wed, 15 Jan 2025 10:41:14 +0000 (UTC)
+	 MIME-Version; b=jJuW6bMw2eotKorKmN9GlYVwT9oPE8qpn60bt2RTwcYDFzisVB/ZFL0g/xpKPm8kHxqmgjfbArP0pqPtfSbNxkF/iJAlf+u+eogQHxGQWLBGS30dsMedcgJux7dPcch4VI7CqjCLgbBaflKlpsFpmToJIrQRDFt/Wj9UDxJKWIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBjnwuBK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E83E6C4CEDF;
+	Wed, 15 Jan 2025 10:57:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937675;
-	bh=wEw7xShPyizmJeq25bAO0QN78p8Fc8PPgQ9HE9DvSRo=;
+	s=korg; t=1736938636;
+	bh=yWWno3ZL6xf8VLUM8xPF3mAWtWA/o6Ia1gVKYB8j7vA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FJyKfAov4rqYPqioDNMNJigONjlnvohn2Tj1y9yfNOH2trf6iKmXmVltQU0Vz3Fa1
-	 LLr9Taz9JT9y0Aog1fQOENRSsUw9h67TGgbW2RpIfdeH2BkO+eKTcb3B0oM0Wvv/aS
-	 cQW62vSpVXUxjep4gYrxQMM4Tq4qbGOmfgGmZtgI=
+	b=aBjnwuBK2fp3+fBbslcb0oqbpgvB9T/+BlrM6p98cSgZ+bMmBm5QV5hNctvtTepU/
+	 H8TlqHFRHdjwElkthW1ZkXw1BpAta5gT3Gn/GxXbLDUO0bEPh7GhZoofM+vo0wN5wm
+	 PWjDm9ysxyrdp2MKD4sK8PB8F6EdtfuDWRwdUg/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Melissa Wen <mwen@igalia.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 48/92] drm/amd/display: increase MAX_SURFACES to the value supported by hw
+	Liankun Yang <liankun.yang@mediatek.com>,
+	Guillaume Ranquet <granquet@baylibre.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 051/129] drm/mediatek: Add return value check when reading DPCD
 Date: Wed, 15 Jan 2025 11:37:06 +0100
-Message-ID: <20250115103549.454153726@linuxfoundation.org>
+Message-ID: <20250115103556.402353083@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-References: <20250115103547.522503305@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Melissa Wen <mwen@igalia.com>
+From: Liankun Yang <liankun.yang@mediatek.com>
 
-commit 21541bc6b44241e3f791f9e552352d8440b2b29e upstream.
+[ Upstream commit 522908140645865dc3e2fac70fd3b28834dfa7be ]
 
-As the hw supports up to 4 surfaces, increase the maximum number of
-surfaces to prevent the DC error when trying to use more than three
-planes.
+Check the return value of drm_dp_dpcd_readb() to confirm that
+AUX communication is successful. To simplify the code, replace
+drm_dp_dpcd_readb() and DP_GET_SINK_COUNT() with drm_dp_read_sink_count().
 
-[drm:dc_state_add_plane [amdgpu]] *ERROR* Surface: can not attach plane_state 000000003e2cb82c! Maximum is: 3
-
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3693
-Signed-off-by: Melissa Wen <mwen@igalia.com>
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b8d6daffc871a42026c3c20bff7b8fa0302298c1)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
+Signed-off-by: Liankun Yang <liankun.yang@mediatek.com>
+Reviewed-by: Guillaume Ranquet <granquet@baylibre.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20241218113448.2992-1-liankun.yang@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/mediatek/mtk_dp.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dc.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc.h
-@@ -49,7 +49,7 @@ struct dmub_notification;
+diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
+index 3e1b400febde..be4de26c77f9 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dp.c
++++ b/drivers/gpu/drm/mediatek/mtk_dp.c
+@@ -2005,7 +2005,6 @@ static enum drm_connector_status mtk_dp_bdg_detect(struct drm_bridge *bridge)
+ 	struct mtk_dp *mtk_dp = mtk_dp_from_bridge(bridge);
+ 	enum drm_connector_status ret = connector_status_disconnected;
+ 	bool enabled = mtk_dp->enabled;
+-	u8 sink_count = 0;
  
- #define DC_VER "3.2.207"
+ 	if (!mtk_dp->train_info.cable_plugged_in)
+ 		return ret;
+@@ -2020,8 +2019,8 @@ static enum drm_connector_status mtk_dp_bdg_detect(struct drm_bridge *bridge)
+ 	 * function, we just need to check the HPD connection to check
+ 	 * whether we connect to a sink device.
+ 	 */
+-	drm_dp_dpcd_readb(&mtk_dp->aux, DP_SINK_COUNT, &sink_count);
+-	if (DP_GET_SINK_COUNT(sink_count))
++
++	if (drm_dp_read_sink_count(&mtk_dp->aux) > 0)
+ 		ret = connector_status_connected;
  
--#define MAX_SURFACES 3
-+#define MAX_SURFACES 4
- #define MAX_PLANES 6
- #define MAX_STREAMS 6
- #define MAX_SINKS_PER_LINK 4
+ 	if (!enabled)
+-- 
+2.39.5
+
 
 
 
