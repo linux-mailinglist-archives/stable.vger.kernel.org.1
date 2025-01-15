@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-108858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA5B1A120A4
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:47:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FAF9A12083
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 11:45:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B95D7A43BF
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:47:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E378516825C
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 10:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4A2248BBD;
-	Wed, 15 Jan 2025 10:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2FB20896C;
+	Wed, 15 Jan 2025 10:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZYyV5Bk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="txNmmoqG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6A4248BA6;
-	Wed, 15 Jan 2025 10:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8817A1E9909;
+	Wed, 15 Jan 2025 10:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938041; cv=none; b=OtB2ayQQ3Cmq3NArOThO2THt2I6X1PrBjWG8jQEQ3evqMzueLwSqzqgjZT/Ui53w304rDNBhVJxfvpDrh79y5Z8tJ2AY+PpY3jWv3MIn/tgGyNrxUdvz2f2vWXEWwwI4sZcHQCfwyrVRaXaTcrcNuu3Ne404JNRc1V8sYltxjv4=
+	t=1736937941; cv=none; b=tc5G1OEWkeQwu0Ju2H/5UUbJEAtXNoLacOrX6nivYCh8Lsxd2dUhSrrb9GTIeic50toRKNoMYL78zpJayPoFtaBE9sCkd37N+zvZfOXoBg9XK6dFk+8nd8x5cTmFAY2b7PawvqrAe7cZHBy9xisp7ymR+aDk4sSNrZ0ZujNGe2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938041; c=relaxed/simple;
-	bh=H0mxeEumr8ZAra8RKQDHDYd1LTf5UBwQisrAiHqkk/U=;
+	s=arc-20240116; t=1736937941; c=relaxed/simple;
+	bh=SPikfIEURs41OVutNCJg1ZjvWKLKS1IGwOnNX/s7xww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o9gsGXneO5FszvoCF8hAhznvOhDQ2NeMDshTJRs5GgiWOIbPWHDCmR9N9nlLixuGp3Tl/AAY68AZs8/jqPE5rFM+k7GP2cw1EcA/dot2WiRV6PY0ziP2k/dJ1BLM+wTNPGg5U16IVHR62b0qTWmRrGVqwcE+iixABqPpDnbKksc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZYyV5Bk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C198FC4CEDF;
-	Wed, 15 Jan 2025 10:47:20 +0000 (UTC)
+	 MIME-Version; b=nbmc7QgrKLF0ci6e7sV34Oq4P72Hd2fp9s2jqKQy68I9gTKdTmTovJZr//kZNiwFt1hcZ9zPaOrV3QM6tJNtiQCimm8AcTAFvAHDVH95FGAJ/x8ISJmcJ63aQQK0et9VxwSB2F6eTxFJbCAGz8BzE/QdZg3f8Lw+H10aMITK9fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=txNmmoqG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2325C4CEDF;
+	Wed, 15 Jan 2025 10:45:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938041;
-	bh=H0mxeEumr8ZAra8RKQDHDYd1LTf5UBwQisrAiHqkk/U=;
+	s=korg; t=1736937941;
+	bh=SPikfIEURs41OVutNCJg1ZjvWKLKS1IGwOnNX/s7xww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IZYyV5BkU4NsRZS2Bi8fUnU8zVuI+R2hbaDCED+pRTgEPaXTzJtJyOu4znuiB+ILy
-	 amTC4P4iOG8mIQUwFbopGrjVfD4SeMBpAu/keehBP/3FMUEPaX+DW9vMpoy9ebUHeH
-	 vxKA9Tz+tysxrQLOdyl8nM3pU5wGhs99w7NvH9XE=
+	b=txNmmoqGRCiBcsIQP17Ejz2K06/4S15DyPymnSYZhvosnX+QqsS/L3TSaBILdzFN7
+	 p+ZX/CBwKb/UAIvhpUtiDtt4H9Yd0igNtx+c4I7+7S610bkozUNrElQK6XF7cYCqTe
+	 WWyz+CdU0t5rgs86vcFTWYsyaea9gFQdBAs9fn6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Milena Olech <milena.olech@intel.com>,
-	Przemyslaw Korba <przemyslaw.korba@intel.com>,
+	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
+	En-Wei Wu <en-wei.wu@canonical.com>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.12 036/189] ice: fix incorrect PHY settings for 100 GB/s
-Date: Wed, 15 Jan 2025 11:35:32 +0100
-Message-ID: <20250115103607.803498042@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 037/189] igc: return early when failing to read EECD register
+Date: Wed, 15 Jan 2025 11:35:33 +0100
+Message-ID: <20250115103607.843616893@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
 In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
 References: <20250115103606.357764746@linuxfoundation.org>
@@ -68,63 +69,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Przemyslaw Korba <przemyslaw.korba@intel.com>
+From: En-Wei Wu <en-wei.wu@canonical.com>
 
-[ Upstream commit 6c5b989116083a98f45aada548ff54e7a83a9c2d ]
+[ Upstream commit bd2776e39c2a82ef4681d02678bb77b3d41e79be ]
 
-ptp4l application reports too high offset when ran on E823 device
-with a 100GB/s link. Those values cannot go under 100ns, like in a
-working case when using 100 GB/s cable.
+When booting with a dock connected, the igc driver may get stuck for ~40
+seconds if PCIe link is lost during initialization.
 
-This is due to incorrect frequency settings on the PHY clocks for
-100 GB/s speed. Changes are introduced to align with the internal
-hardware documentation, and correctly initialize frequency in PHY
-clocks with the frequency values that are in our HW spec.
+This happens because the driver access device after EECD register reads
+return all F's, indicating failed reads. Consequently, hw->hw_addr is set
+to NULL, which impacts subsequent rd32() reads. This leads to the driver
+hanging in igc_get_hw_semaphore_i225(), as the invalid hw->hw_addr
+prevents retrieving the expected value.
 
-To reproduce the issue run ptp4l as a Time Receiver on E823 device,
-and observe the offset, which will never approach values seen
-in the PTP working case.
+To address this, a validation check and a corresponding return value
+catch is added for the EECD register read result. If all F's are
+returned, indicating PCIe link loss, the driver will return -ENXIO
+immediately. This avoids the 40-second hang and significantly improves
+boot time when using a dock with an igc NIC.
 
-Reproduction output:
-ptp4l -i enp137s0f3 -m -2 -s -f /etc/ptp4l_8275.conf
-ptp4l[5278.775]: master offset      12470 s2 freq  +41288 path delay -3002
-ptp4l[5278.837]: master offset      10525 s2 freq  +39202 path delay -3002
-ptp4l[5278.900]: master offset     -24840 s2 freq  -20130 path delay -3002
-ptp4l[5278.963]: master offset      10597 s2 freq  +37908 path delay -3002
-ptp4l[5279.025]: master offset       8883 s2 freq  +36031 path delay -3002
-ptp4l[5279.088]: master offset       7267 s2 freq  +34151 path delay -3002
-ptp4l[5279.150]: master offset       5771 s2 freq  +32316 path delay -3002
-ptp4l[5279.213]: master offset       4388 s2 freq  +30526 path delay -3002
-ptp4l[5279.275]: master offset     -30434 s2 freq  -28485 path delay -3002
-ptp4l[5279.338]: master offset     -28041 s2 freq  -27412 path delay -3002
-ptp4l[5279.400]: master offset       7870 s2 freq  +31118 path delay -3002
+Log before the patch:
+[    0.911913] igc 0000:70:00.0: enabling device (0000 -> 0002)
+[    0.912386] igc 0000:70:00.0: PTM enabled, 4ns granularity
+[    1.571098] igc 0000:70:00.0 (unnamed net_device) (uninitialized): PCIe link lost, device now detached
+[   43.449095] igc_get_hw_semaphore_i225: igc 0000:70:00.0 (unnamed net_device) (uninitialized): Driver can't access device - SMBI bit is set.
+[   43.449186] igc 0000:70:00.0: probe with driver igc failed with error -13
+[   46.345701] igc 0000:70:00.0: enabling device (0000 -> 0002)
+[   46.345777] igc 0000:70:00.0: PTM enabled, 4ns granularity
 
-Fixes: 3a7496234d17 ("ice: implement basic E822 PTP support")
-Reviewed-by: Milena Olech <milena.olech@intel.com>
-Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Log after the patch:
+[    1.031000] igc 0000:70:00.0: enabling device (0000 -> 0002)
+[    1.032097] igc 0000:70:00.0: PTM enabled, 4ns granularity
+[    1.642291] igc 0000:70:00.0 (unnamed net_device) (uninitialized): PCIe link lost, device now detached
+[    5.480490] igc 0000:70:00.0: enabling device (0000 -> 0002)
+[    5.480516] igc 0000:70:00.0: PTM enabled, 4ns granularity
+
+Fixes: ab4056126813 ("igc: Add NVM support")
+Cc: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+Signed-off-by: En-Wei Wu <en-wei.wu@canonical.com>
+Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp_consts.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_base.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_consts.h b/drivers/net/ethernet/intel/ice/ice_ptp_consts.h
-index e6980b94a6c1..3005dd252a10 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_consts.h
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_consts.h
-@@ -761,9 +761,9 @@ const struct ice_vernier_info_e82x e822_vernier[NUM_ICE_PTP_LNK_SPD] = {
- 		/* rx_desk_rsgb_par */
- 		644531250, /* 644.53125 MHz Reed Solomon gearbox */
- 		/* tx_desk_rsgb_pcs */
--		644531250, /* 644.53125 MHz Reed Solomon gearbox */
-+		390625000, /* 390.625 MHz Reed Solomon gearbox */
- 		/* rx_desk_rsgb_pcs */
--		644531250, /* 644.53125 MHz Reed Solomon gearbox */
-+		390625000, /* 390.625 MHz Reed Solomon gearbox */
- 		/* tx_fixed_delay */
- 		1620,
- 		/* pmd_adj_divisor */
+diff --git a/drivers/net/ethernet/intel/igc/igc_base.c b/drivers/net/ethernet/intel/igc/igc_base.c
+index 9fae8bdec2a7..1613b562d17c 100644
+--- a/drivers/net/ethernet/intel/igc/igc_base.c
++++ b/drivers/net/ethernet/intel/igc/igc_base.c
+@@ -68,6 +68,10 @@ static s32 igc_init_nvm_params_base(struct igc_hw *hw)
+ 	u32 eecd = rd32(IGC_EECD);
+ 	u16 size;
+ 
++	/* failed to read reg and got all F's */
++	if (!(~eecd))
++		return -ENXIO;
++
+ 	size = FIELD_GET(IGC_EECD_SIZE_EX_MASK, eecd);
+ 
+ 	/* Added to a constant, "size" becomes the left-shift value
+@@ -221,6 +225,8 @@ static s32 igc_get_invariants_base(struct igc_hw *hw)
+ 
+ 	/* NVM initialization */
+ 	ret_val = igc_init_nvm_params_base(hw);
++	if (ret_val)
++		goto out;
+ 	switch (hw->mac.type) {
+ 	case igc_i225:
+ 		ret_val = igc_init_nvm_params_i225(hw);
 -- 
 2.39.5
 
