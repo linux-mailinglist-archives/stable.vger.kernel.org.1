@@ -1,127 +1,167 @@
-Return-Path: <stable+bounces-108667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-108668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C266A1183A
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 05:04:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84699A11892
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 05:46:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA23518895BB
-	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 04:04:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A24D77A20F6
+	for <lists+stable@lfdr.de>; Wed, 15 Jan 2025 04:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CAF022F171;
-	Wed, 15 Jan 2025 04:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD00E22F38B;
+	Wed, 15 Jan 2025 04:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kyrZPtID"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P5D7hgXe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f68.google.com (mail-ej1-f68.google.com [209.85.218.68])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC0122DC43;
-	Wed, 15 Jan 2025 04:04:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3B9156880
+	for <stable@vger.kernel.org>; Wed, 15 Jan 2025 04:45:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736913870; cv=none; b=ODNZ6x1wlm+AdXZfvyRE8ICh0sZTPlMDsXNHa2AcUpk2KNKp/QoDzyYF/fSMrm8woxhhn16sV/HtOdlENSo4vxQnnhhjm97lannvWu6XTozVkwUBDUqzWK5KeJAqOwIwO4B/MTDmrGCVQCxr9ZSufHvQTZwFuyMSPDqEAQ/Slyk=
+	t=1736916358; cv=none; b=PG1Ki4KPmFSuzkpLStIz6yQGW53cyqnBIUw6Xip9muxjkiFCV6Ja/fUM+qHEYwjCCIrWArzapI7eIMKi2+oUks5hMKynscN1UgUb3aaFM3+H66yFixHVo7lbWsmgdAZl5m6J7YR88uh/B9vj5pQCEVKeLxQ39aWxtkVA/Iq9zks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736913870; c=relaxed/simple;
-	bh=Hrv8gMoqO0BrVz1tl3/c25HZPEWd0W/8W3pdH0QxPGU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ShyjtfpuV9ddCxJrlvDjaGDQOPktzOnZyGa67zlk+GGvjQtUk2Gfnm+DBdHi+AyLrVpNjNzs6gMVUNivYupxHh17DmrR0AuvHSLUTgJW1CDsbnt4fN8XcR0ul33dI444defj/By2bmaB7yNjlL0YPzNMp4sWaBL0YDmhUZP8BMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kyrZPtID; arc=none smtp.client-ip=209.85.218.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f68.google.com with SMTP id a640c23a62f3a-aaf6b1a5f2bso85125166b.1;
-        Tue, 14 Jan 2025 20:04:28 -0800 (PST)
+	s=arc-20240116; t=1736916358; c=relaxed/simple;
+	bh=Rs3iU75BPjBxdbiw5HZnrXaDjajAgcAfQrjJFAg8Srg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ZSCxyBfRV4mUWi+Gh/x+bQxTxyX/bsFK0JadCr72o3Xll9G52HDlb+ajBeW59p4SpIUGPpMOrwbmDcwxCkvbUqg7F/gFMJfNAJBo/UoenvuUtTYJo5rkPb7nXUvFo+RSBWnetYjZXIOFSIMZy/FH1MKbv9oZVsnNkPvyqe+1c2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kyletso.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P5D7hgXe; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kyletso.bounces.google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2178115051dso114192995ad.1
+        for <stable@vger.kernel.org>; Tue, 14 Jan 2025 20:45:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736913867; x=1737518667; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=zyLGSlQ20YLW5Gv3AEQHS4rGBNB7Gh5nw6FdZ02MNFA=;
-        b=kyrZPtIDTJ31YSctFPuDbS+464o4+LJAYAxgxsPdUu4T6UDMexr5eh5wRbinsqQxs7
-         zOHPYYxccM/Ukljc52TVUOhwVwOdWC7UVuB1WPvwuOZvZxvja4eCmqkfgAjAA9eQ2ewW
-         2hsfv+OQ+D/x0euiTsbOaxVhemwy0GbEgJy0Qh2A3MMPUNnUK6fWQLZpIX8baoal5yF8
-         lDVBSarod+zBhUEkh1516bx6/UNYE8BTfRF//Zc1PEPZAOGxamhIJPZFlx42SGumXHf0
-         mvGLnuXHLzIf3bNn8FptIyATjSeSiBePYZGYVIz1DK0mVajWo4B/J25DGZ8ToquUCvVq
-         0hCQ==
+        d=google.com; s=20230601; t=1736916355; x=1737521155; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=uzJUS+TBGgIy8wVOHUCLoOBsCy49bT0VT2xYdEdiljY=;
+        b=P5D7hgXeaPQ3ppPuYRbJlJmJOIhid/GY3kOUfElhh0lx03Xs2oxOQTVwjS5UizkBlG
+         k9McnpK7YAU6oDHN+Clgvj2ouAAi/UqISy0onfHEtkLvP4hpo2JJgfYm53moEMwFcE+c
+         kZxglAVs48UPYh+jUDzcIA1i3CBC0da/iP2q1tvVycaG4R5PYF2PfWBQbiX5Pw+Hacsk
+         TSVSWEXpMuSVFbajVXqsAg47YFN81UBfEIAszxYXPXgRAIEn4kQ2YnJr0sdbL0htzGRa
+         auGxQ1AjdUCeXH8lGspWKSiH9sauJeINfcGa+5d3tjser613xrwn44BVRJCzXxJixKMh
+         rt8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736913867; x=1737518667;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zyLGSlQ20YLW5Gv3AEQHS4rGBNB7Gh5nw6FdZ02MNFA=;
-        b=Wx4Pxq7OEtzqb7FBR9cB1L2/C26osCVGLAZD6h2NaSD0PdlTyYMj6VKNVMOTfaA6Vc
-         EpbhmFuWlaVIOuP/4plk6BNlpi2iToEL1TS7Oxt9TFwnTHz8BwtSAjUuSfrF4cjUXhZe
-         ax3Go4whm1LpI53nzOZTnBLtQwJORaOSposakbyPcGHYA5wMbIuQqJMRXflUg0xj60mH
-         o3PuPjFsA7X/WyiLVgWwfukCp0FpnKkUuP60wkWkZYo1vEdUBJkZZvyKu2v2LAqln/1N
-         SvmsvsfRfg8C+UsAezCnH/sQlA1BIDMgwCEcP1cuUHt9fyjgTRvi3EBlv9Rl8HVratAE
-         G0ig==
-X-Forwarded-Encrypted: i=1; AJvYcCVkJ/vWcB0wkfzLE7VKK8ViR3yNdMn58NQYpdaTsohs0+0L85/odKR/gWR8jQEp6vcdoGRhGnbMYWg5tXk=@vger.kernel.org, AJvYcCWtZqMnKxCL31Gu8maNx2XSu6RscoRgWswq7QQZZgOlJs28ZguIiib1g3Bx0UsINVJeOtx2zDHY@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3DLEKlGyzUv4b+VLj3B97SHSEdDFgh4GQWV5CQOCflTBBdC75
-	egUlEC/Gg5+ODFfKRVqnbvOnnv7/BeUr0QzqfyY/JBRbZ4TbZOcK3JgpusvBDaX+kAXyBUCcXFI
-	TsMX8E+Kp9VYaw9LUcC1WYddr1Nc=
-X-Gm-Gg: ASbGncvFZc/BtbFWgiD0QJqM7qQGa7c/EG5I6njZUGv7rDI13JBN8UswPhtb57ZorGt
-	nafYXXWuIZ28bAyJhT+nLyl/dN0q/StRY2BosFZM=
-X-Google-Smtp-Source: AGHT+IEJzj2KsNd0OjxmQfpo3hsfbQzIae8XdE1ZR+CV3NLu7bQce0DUEm9z6J6yBj426GIx1w6Tr6uEkw1+BKxUE/8=
-X-Received: by 2002:a17:907:1c09:b0:ab3:47cb:5327 with SMTP id
- a640c23a62f3a-ab347cb7ee0mr220603466b.5.1736913866766; Tue, 14 Jan 2025
- 20:04:26 -0800 (PST)
+        d=1e100.net; s=20230601; t=1736916355; x=1737521155;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uzJUS+TBGgIy8wVOHUCLoOBsCy49bT0VT2xYdEdiljY=;
+        b=a5+Ua4zZLvwcx/+B5gLSIX5LkRaYyNV+PPBL+Ix6dvcNvhQy7Dh5c7+odlDdGEzG04
+         9ZmQO62PTjtG1DQyPJtWVeFrGN5bzTh64icNs6apFnAiIk2tUocqlf3598X8TTZRnn8U
+         gVEtP+OswdojM95cWMZEWheVt/roWSOffzpP8uUsN3p4+Bo9a0Pqp7DJbP7TjRpOZKy/
+         AgDEZO32t3yVcpE3qh1kH7UUsaQ7Eya+WWn+JpncPHSFFY2n6q91TT1Bq+a10EiVA7wd
+         8HlKyR7TjoYF4QAXeErtgsAbOTRCBVNgG96I8MJj2epJTteG3XLkCowN/V4XbeX7w6e5
+         N1Pg==
+X-Forwarded-Encrypted: i=1; AJvYcCXrVgwpxHe9y0JZxhYooJD6LsF3H/e2uCsQ8jfsaGnYJLEquJDYCri+j87ExBT5vuygGuPpJTs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRKySnxzlQKLtt53P5A+qoHVnge2UlgeoX68epuJi8z8/BUWSa
+	eIQp2MAWvSGcMmHGMGNiUghZQG5eF9Qszr/YSxXhMxQVu0YJufoS99/gxlF2Abz76Ak7oH1LQfs
+	/7NF5Ig==
+X-Google-Smtp-Source: AGHT+IH+6g5AYVxZ4+GIsTrLIh8vINC6goLc5AwIWvkIO0MYDuXuHUHdA5IzdZb0nDr+V2ZRBE4yDoW7REMO
+X-Received: from pgll188.prod.google.com ([2002:a63:25c5:0:b0:7fd:4c8f:e6a1])
+ (user=kyletso job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:12cc:b0:1e1:e2d8:fd1d
+ with SMTP id adf61e73a8af0-1e88d0a2b46mr41166358637.33.1736916355337; Tue, 14
+ Jan 2025 20:45:55 -0800 (PST)
+Date: Wed, 15 Jan 2025 12:45:48 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241112162338.39689-1-chenqiuji666@gmail.com> <2024111230-snowdrop-haven-3a54@gregkh>
-In-Reply-To: <2024111230-snowdrop-haven-3a54@gregkh>
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
-Date: Wed, 15 Jan 2025 12:04:16 +0800
-X-Gm-Features: AbW1kvY45bWih72RGhOxDLiaY7dXbytHhNcB6WMbA_YpP-YT-Fze83etmjjyFPE
-Message-ID: <CANgpojV8P7+LmDPNiJWezER6PK83Wj_QyX8iOKzfxO98WkSnDg@mail.gmail.com>
-Subject: Re: [PATCH v2] cdx: Fix possible UAF error in driver_override_show()
-To: Greg KH <greg@kroah.com>
-Cc: nipun.gupta@amd.com, nikhil.agarwal@amd.com, linux-kernel@vger.kernel.org, 
-	baijiaju1990@gmail.com, stable@vger.kernel.org
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.48.0.rc2.279.g1de40edade-goog
+Message-ID: <20250115044548.2701138-1-kyletso@google.com>
+Subject: [PATCH v2] usb: dwc3: core: Defer the probe until USB power supply ready
+From: Kyle Tso <kyletso@google.com>
+To: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org, raychi@google.com
+Cc: badhri@google.com, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	royluo@google.com, bvanassche@acm.org, Kyle Tso <kyletso@google.com>, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-> > ---
-> >  drivers/cdx/cdx.c | 6 +++++-
-> >  1 file changed, 5 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/cdx/cdx.c b/drivers/cdx/cdx.c
-> > index 07371cb653d3..4af1901c9d52 100644
-> > --- a/drivers/cdx/cdx.c
-> > +++ b/drivers/cdx/cdx.c
-> > @@ -470,8 +470,12 @@ static ssize_t driver_override_show(struct device *dev,
-> >                                   struct device_attribute *attr, char *buf)
-> >  {
-> >       struct cdx_device *cdx_dev = to_cdx_device(dev);
-> > +     ssize_t len;
-> >
-> > -     return sysfs_emit(buf, "%s\n", cdx_dev->driver_override);
-> > +     device_lock(dev);
-> > +     len = sysfs_emit(buf, "%s\n", cdx_dev->driver_override);
-> > +     device_unlock(dev);
->
-> No, you should not need to lock a device in a sysfs callback like this,
-> especially for just printing out a string.
+Currently, DWC3 driver attempts to acquire the USB power supply only
+once during the probe. If the USB power supply is not ready at that
+time, the driver simply ignores the failure and continues the probe,
+leading to permanent non-functioning of the gadget vbus_draw callback.
 
-This function is part of DEVICE_ATTR_RW, which includes both
-driver_override_show() and driver_override_store(). These functions
-can be executed concurrently in sysfs.
+Address this problem by delaying the dwc3 driver initialization until
+the USB power supply is registered.
 
-The driver_override_store() function uses driver_set_override() to
-update the driver_override value, and driver_set_override() internally
-locks the device (device_lock(dev)). If driver_override_show() reads
-cdx_dev->driver_override without locking, it could potentially access
-a freed pointer if driver_override_store() frees the string
-concurrently. This could lead to printing a kernel address, which is a
-security risk since DEVICE_ATTR can be read by all users.
+Fixes: 6f0764b5adea ("usb: dwc3: add a power supply for current control")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kyle Tso <kyletso@google.com>
+---
+v1 -> v2:
+- get the power supply in a dedicated function
 
-Additionally, a similar pattern is used in drivers/amba/bus.c, as well
-as many other bus drivers, where device_lock() is taken in the show
-function, and it has been working without issues.
+---
+ drivers/usb/dwc3/core.c | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
-Regards,
-Qiu-ji Chen
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 7578c5133568..dfa1b5fe48dc 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1684,8 +1684,6 @@ static void dwc3_get_properties(struct dwc3 *dwc)
+ 	u8			tx_thr_num_pkt_prd = 0;
+ 	u8			tx_max_burst_prd = 0;
+ 	u8			tx_fifo_resize_max_num;
+-	const char		*usb_psy_name;
+-	int			ret;
+ 
+ 	/* default to highest possible threshold */
+ 	lpm_nyet_threshold = 0xf;
+@@ -1720,13 +1718,6 @@ static void dwc3_get_properties(struct dwc3 *dwc)
+ 
+ 	dwc->sys_wakeup = device_may_wakeup(dwc->sysdev);
+ 
+-	ret = device_property_read_string(dev, "usb-psy-name", &usb_psy_name);
+-	if (ret >= 0) {
+-		dwc->usb_psy = power_supply_get_by_name(usb_psy_name);
+-		if (!dwc->usb_psy)
+-			dev_err(dev, "couldn't get usb power supply\n");
+-	}
+-
+ 	dwc->has_lpm_erratum = device_property_read_bool(dev,
+ 				"snps,has-lpm-erratum");
+ 	device_property_read_u8(dev, "snps,lpm-nyet-threshold",
+@@ -2129,6 +2120,23 @@ static int dwc3_get_num_ports(struct dwc3 *dwc)
+ 	return 0;
+ }
+ 
++static struct power_supply *dwc3_get_usb_power_supply(struct dwc3 *dwc)
++{
++	struct power_supply *usb_psy;
++	const char *usb_psy_name;
++	int ret;
++
++	ret = device_property_read_string(dwc->dev, "usb-psy-name", &usb_psy_name);
++	if (ret < 0)
++		return NULL;
++
++	usb_psy = power_supply_get_by_name(usb_psy_name);
++	if (!usb_psy)
++		return ERR_PTR(-EPROBE_DEFER);
++
++	return usb_psy;
++}
++
+ static int dwc3_probe(struct platform_device *pdev)
+ {
+ 	struct device		*dev = &pdev->dev;
+@@ -2185,6 +2193,10 @@ static int dwc3_probe(struct platform_device *pdev)
+ 
+ 	dwc3_get_software_properties(dwc);
+ 
++	dwc->usb_psy = dwc3_get_usb_power_supply(dwc);
++	if (IS_ERR(dwc->usb_psy))
++		return dev_err_probe(dev, PTR_ERR(dwc->usb_psy), "couldn't get usb power supply\n");
++
+ 	dwc->reset = devm_reset_control_array_get_optional_shared(dev);
+ 	if (IS_ERR(dwc->reset)) {
+ 		ret = PTR_ERR(dwc->reset);
+-- 
+2.48.0.rc2.279.g1de40edade-goog
+
 
