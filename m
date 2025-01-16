@@ -1,125 +1,153 @@
-Return-Path: <stable+bounces-109250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29B9FA138FA
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 12:30:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC90BA13912
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 12:34:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 833821885722
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 11:30:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12FE73A7A27
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 11:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063721DE3CA;
-	Thu, 16 Jan 2025 11:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAAFF1DE4FA;
+	Thu, 16 Jan 2025 11:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="S5PRRw1E"
+	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="SBylZs2J"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C401DDC37
-	for <stable@vger.kernel.org>; Thu, 16 Jan 2025 11:30:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E35B1DE2B1
+	for <stable@vger.kernel.org>; Thu, 16 Jan 2025 11:34:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737027048; cv=none; b=BJbWAnfgGgvo/w3M1b3F9WK6TRIId2mjWikM0Eeq6pWGoY0aFzJqeYPUTcZYzaPk1QVbCS1cepSA1QcF+IEaag1phdAWDmoxAbYahtzM7eL3VX/SdKggR8ESNSvepOQQBa5XCYmKbwuujGgM6YGDtychqirkMzFMcrRCHx0RTZA=
+	t=1737027250; cv=none; b=VACQTlaizCbLioKsRKShZ9U6tH2lKjWWBc9DUeYkQN4+yjPNQq5NlMNiiELBcq8eRoj4meHKTCQle1O07xNgxs0Rxe5dIcX+q+nI/6ZuKJywmPpHUzkCJrd40l/CAEvxGLg1PqzwGbf/GqcmqIdjyKXvspuVJHljboTOxHRDjYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737027048; c=relaxed/simple;
-	bh=kzDN9dmdAK48wXWx0awduq7CrBP6vYP35O8PwR+e9qk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=U4ypsAIFb7TH8segbQEjZbazCnW/1lZb6PNCg4Q8J3vQ7h4dRxWoiHjFj6T6d7N3zkMjWjOwr87W1dzuDcVZlzAQdGa+GDFI8Q5axnpD1wklMHkbRyQhdTc0m8KqHJ502z5AQeNuWBJbpUGD7bl0+VOEMBHhrGV4iSr2FKOC3HU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=S5PRRw1E; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3862b40a6e0so484027f8f.0
-        for <stable@vger.kernel.org>; Thu, 16 Jan 2025 03:30:46 -0800 (PST)
+	s=arc-20240116; t=1737027250; c=relaxed/simple;
+	bh=hXneXuQ61cYntgNn/sssniG0GrUQ4hSFAcED56KHbH8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uUHUSgXHgDRVgOXY/wCoKJV1oZnfUX2zoTcvbfMqHJxJQLyULiSEiw7LiYFfOM5SWnTf8QdrqoBRoYxFTnC6r8p6zSgVZ8O+T4j9qtOVXqLAjZYTVsSbZ1gi5VUr2dcS+71N2quJ+FdqOMZHr/+wXfqxq5XKxVVW9TcE56WeBgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=SBylZs2J; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tweaklogic.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2163b0c09afso12935755ad.0
+        for <stable@vger.kernel.org>; Thu, 16 Jan 2025 03:34:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1737027045; x=1737631845; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=kzDN9dmdAK48wXWx0awduq7CrBP6vYP35O8PwR+e9qk=;
-        b=S5PRRw1En8G+21KOJC9ZD6IqUHXgz4xQLsvIBxr/XWZPdIgRHRo/eicNlgEHSbm1kb
-         1GSs0FuwZkJWhSTbI8sRnjw4lqGhGVOHWmzZ0yxkZ199QjpJ48qSkyfwlh0J7t2cDH16
-         5O+UvF7PGwbTxzl8xtZQjUu2yIhdNvIjWZaX7uFfOqe4w24yiEAkdt1+OoG+UHZ0ii6u
-         4l9rBpEwm0MJgnEvnBvLGqAb2KXZ1W7WasebdcT1tz8uneIWS4mZcpNqQUbB3A6WCvIU
-         VaO0n04kdHOCGitjn0dYqnYnHbSiJdKfZFG5DzRhNNd9oYOuRAVQuWsx2j0NfW/la/bm
-         m4Wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737027045; x=1737631845;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+        d=tweaklogic.com; s=google; t=1737027248; x=1737632048; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=kzDN9dmdAK48wXWx0awduq7CrBP6vYP35O8PwR+e9qk=;
-        b=Dv1c8ZEnMqfuzJVDBaEuYSTeQa7+rc/pNqh8oU3E/baAEqJUl7azL6Asl28/OwC8Ed
-         M5yloXBfnGZLrqzeXtSNV+nV/aaaaXqZ/lRlAVZMrC4Cd4rasZ9QgNU4i5S6uDNO8L7+
-         WygaNFHNmXCRAYO1oVgM6HjPRItYk4mJjTE+cw3GROBA+Kpqapn/B8RujL1RWMbRNRra
-         VR5G0aRYhidZhwg0EvGafXy9pUaX/vq/gfsvgNQygI1bqs37oLkFqAkfXeXoeYehpJA8
-         E3jSBAm8Im3+gLWN6NjV3xULBWxWjJ+dfXj+hYq/EPAfmqR4gyhGtXSPOsceU7Rv+44j
-         cQUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWha5zDwUki3BKR6HmZp3TP0sKEV/fD/2AZaUAb2BwXUAxxk/fO/b6BWNQbPjVMl1jhTs/4Qvo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKPBXRSz2+ezoz1qukoUQJ+ACsCchgC1CutB1EvTCucWfuscWT
-	+KdmygGRyNNCTTXyHGGmvESdw2jue8Ks6YNsxkZYD6eUNW4iLvdtHmHLBkOPykQ=
-X-Gm-Gg: ASbGncvytj6ttBIQHM3pIMy8HuIjxCX9xx82OeXRM8L4A/3eJ01WoA7L5liimSyFBtI
-	3X+EFvX+hU3SuGcw+yG8BU8VtwDUz/0pzeyz3cgDYbGLoE4dPk8j37BzsX9N9qhlhpDYFQJx9w2
-	4b8roPW5S4Z5VijF76oCsbWIS7JrK158PCa7oz+Xplp3gpftGnS5b9M+WEthSvqzFCgKcbYmBPp
-	BKVBNqwCWclmXKRb0p6X+Rk80VqAlh7cGm1d/B6joFn8rpKsvZi/J9qFHJ5+A==
-X-Google-Smtp-Source: AGHT+IGsW7R8SXZiI21rLVry2LB3/IZkmamq2Z2hj3KPYHeT5ENtm5n56n32F1wCYQ4Tz4sR0OmrNQ==
-X-Received: by 2002:a5d:648b:0:b0:386:3e3c:ef1 with SMTP id ffacd0b85a97d-38a87312f36mr34852486f8f.35.1737027045345;
-        Thu, 16 Jan 2025 03:30:45 -0800 (PST)
-Received: from [10.1.1.109] ([80.111.64.44])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c74ac707sm55516355e9.15.2025.01.16.03.30.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jan 2025 03:30:44 -0800 (PST)
-Message-ID: <941c7920a7d07496222e6e93cb338ca6df38dc33.camel@linaro.org>
-Subject: Re: [PATCH v3] scsi: ufs: fix use-after free in init error and
- remove paths
-From: =?ISO-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
-To: Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman
- <avri.altman@wdc.com>,  Bart Van Assche <bvanassche@acm.org>, "James E.J.
- Bottomley" <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
- <martin.petersen@oracle.com>, Peter Griffin <peter.griffin@linaro.org>,
- Krzysztof Kozlowski <krzk@kernel.org>, Manivannan Sadhasivam
- <manivannan.sadhasivam@linaro.org>,  Mike Snitzer <snitzer@redhat.com>,
- Jens Axboe <axboe@kernel.dk>, Ulf Hansson <ulf.hansson@linaro.org>,  Eric
- Biggers <ebiggers@google.com>
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>, Will McVicker
- <willmcvicker@google.com>, kernel-team@android.com,
- linux-scsi@vger.kernel.org,  linux-kernel@vger.kernel.org,
- linux-samsung-soc@vger.kernel.org,  linux-arm-kernel@lists.infradead.org,
- linux-arm-msm@vger.kernel.org,  stable@vger.kernel.org
-Date: Thu, 16 Jan 2025 11:30:43 +0000
-In-Reply-To: <20250116-ufshcd-fix-v3-1-6a83004ea85c@linaro.org>
-References: <20250116-ufshcd-fix-v3-1-6a83004ea85c@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.1-4 
+        bh=7YktfQbK04MmcrLOtepFIXUYlByhE6kzjeLH7SfhVzM=;
+        b=SBylZs2J7hpeLVZwrZt16G7iExemqMiAuJSLkmccRPiEG9QoNUYsGVJehBMyyERSN2
+         46/R66vz6hudpyjQEAT5R36uHBV53ne4UTuf5JcYEoB2HwlGlvu4H168ONvfF/Tptxfr
+         5V/pMeotn8F7iAIMLdqHTQ6vwg46bq4TNUgodwmjZrdK66uvwSvTo72auwOIZQn2aop3
+         JD4nFxk8nOi5MYX4QTbbEyEabaoK0+cJXBl0sEwBZ+FhEfv+FpkOolgRBWB2nm/w0xAp
+         mLfEmRLHstZyJ/e/9rwzNVMkQLhyLTM02v5wpxaFWZHl40VnsPONSpL6clacJ3wX4Wb7
+         KmRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737027248; x=1737632048;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7YktfQbK04MmcrLOtepFIXUYlByhE6kzjeLH7SfhVzM=;
+        b=jnfl0y+FbdjqmBLA/5c7bGf/FIpCVuWblS/hse4Agc7/7lP1/i6j3UWKfZj98b/DzS
+         60OZU1DIxNyBxVn4Vf7Yz4Qt06psRaH7xPQhinm3uHIjBQc6/vYriVFcFW3TiaEOq5zj
+         Yu4jdeTC9C7Ox29X59dKFDqCOLNXXY5qTGI5QrpYGsi2ecqpVsXfhFYqWKxJNLWNdsXD
+         gc/ljOtmcUEJsm+nrOCURjLbW3UhtOBKVNCj7Z/d3WKfDFnYu2SCCaopVCEGSidLgtDL
+         ofOIBBTwM9lZWk+W2fg7Vvxa9ZebaHaAOfqDIlo7Np/OLTEhVxIaeDyUzbwHHN/vBmMF
+         XYsA==
+X-Forwarded-Encrypted: i=1; AJvYcCWtkWnqqLzMtJV6T9a5e2Zk+qgIjPktuD1HULkIGrUStIZE/jja16k/OH7Rv1g3BJ/KHu/5+sg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPPLW/T0tzAixKdlUddjddXDKougc3oxgeHA8wEj7+ft4mhWVP
+	9pCUtu1lpSBrr4yRTuksQdaWqFpeHVuR2f4p280SSa2NlXu3lNdkVFSLUPCyewg=
+X-Gm-Gg: ASbGncv+GJBlBtj/DnJiuoUJ/xG3OrWhY91G8Hdn9nwWH2SxZvAoOHDSWXHAFhoA/Hq
+	3YAwwG53i1iYe9YCPPD0ZkyRWbo6SyJcSqvc/KZwxpXuLhbN3zafz83XzIwF4P0UnhlYyHW+26u
+	UfANf+DK1OmwfozD1rzuF1O/yngAiz+awl48MA3wUG0WZhcnoprXURfQVHBkIrNHRInrB4VlbLz
+	oXTqIcHXPa0Zb0MX12bS9Z2EU2+oUIIbSqIKOLizeBm2LY8YXR8oskhgRRr81PFBg9MUFLba7Az
+X-Google-Smtp-Source: AGHT+IHn0LVg8saEn8D4DZWe1zUwgh/bi1Q+v/D6XJ0zjNhEGPRiwLuR9bIWFuiS8tWZKmN8T2HC6A==
+X-Received: by 2002:a05:6a00:858b:b0:728:8c17:127d with SMTP id d2e1a72fcca58-72d21f2da93mr50495307b3a.8.1737027247871;
+        Thu, 16 Jan 2025 03:34:07 -0800 (PST)
+Received: from [192.168.50.161] ([180.150.112.66])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-a317b761b9asm11387383a12.12.2025.01.16.03.34.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Jan 2025 03:34:07 -0800 (PST)
+Message-ID: <ad1b01ba-53c0-4adf-aee4-a9bc0ff88ae0@tweaklogic.com>
+Date: Thu, 16 Jan 2025 22:04:01 +1030
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: light: apds9306: fix max_scale_nano values
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, stable@vger.kernel.org
+References: <20250112-apds9306_nano_vals-v1-1-82fb145d0b16@gmail.com>
+Content-Language: en-US
+From: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+In-Reply-To: <20250112-apds9306_nano_vals-v1-1-82fb145d0b16@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2025-01-16 at 11:18 +0000, Andr=C3=A9 Draszik wrote:
-> Changes in v2:
-> - completely new approach using devres action for Scsi_host cleanup, to
-> =C2=A0 ensure ordering
+On 12/1/25 10:38, Javier Carrasco wrote:
+> The two provided max_scale_nano values must be multiplied by 100 and 10
+> respectively to achieve nano units. According to the comments:
+> 
+> Max scale for apds0306 is 16.326432 → the fractional part is 0.326432,
+> which is 326432000 in NANO. The current value is 3264320.
+> 
+> Max scale for apds0306-065 is 14.09721 → the fractional part is 0.09712,
+> which is 97120000 in NANO. The current value is 9712000.
+> 
+> Update max_scale_nano initialization to use the right NANO fractional
+> parts.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 620d1e6c7a3f ("iio: light: Add support for APDS9306 Light Sensor")
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> ---
+>   drivers/iio/light/apds9306.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/light/apds9306.c b/drivers/iio/light/apds9306.c
+> index 69a0d609cffc91cc3daba160f309f511270be385..5ed7e17f49e76206609aba83c85e8144c536d17d 100644
+> --- a/drivers/iio/light/apds9306.c
+> +++ b/drivers/iio/light/apds9306.c
+> @@ -108,11 +108,11 @@ static const struct part_id_gts_multiplier apds9306_gts_mul[] = {
+>   	{
+>   		.part_id = 0xB1,
+>   		.max_scale_int = 16,
+> -		.max_scale_nano = 3264320,
+> +		.max_scale_nano = 326432000,
+>   	}, {
+>   		.part_id = 0xB3,
+>   		.max_scale_int = 14,
+> -		.max_scale_nano = 9712000,
+> +		.max_scale_nano = 97120000,
+>   	},
+>   };
+>   
+> 
+> ---
+> base-commit: 577a66e2e634f712384c57a98f504c44ea4b47da
+> change-id: 20241218-apds9306_nano_vals-d880219a82f2
+> 
+> Best regards,
+Hi Javier,
 
-Just repeating this again due to updated recipients list:
+You are correct.
+  From iio_gts_linearize() function in industrialio-gts-helper.c
+*lin_scale = (u64)scale_whole * (u64)scaler + (u64)(scale_nano / (NANO / scaler));
+where "scaler" equals NANO (1000000000UL)
 
-This new approach now means that Scsi_host cleanup (scsi_host_put)
-happens after ufshcd's hba->dev cleanup and I am not sure if this
-approach has wider implications (in particular if there is any
-underlying assumption or requirement for the Scsi_host device to
-clean up before the ufshcd device).
+I tested it, no issues. The values did not deviate much as this is nano scale.
 
-Simple testing using a few iteration of manual module bind/unbind
-worked, as did the error handling / cleanup during init. But I'm
-not sure if that is sufficient testing for the changed release
-ordering.
+Tested-by: subhajit.ghosh@tweaklogic.com
 
-Cheers,
-Andre'
+Regards,
+Subhajit Ghosh
 
 
