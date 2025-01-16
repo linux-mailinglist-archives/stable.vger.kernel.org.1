@@ -1,245 +1,169 @@
-Return-Path: <stable+bounces-109253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BDE0A1394A
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 12:41:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB18DA13980
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 12:53:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 024E73A449D
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 11:41:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 244B0161199
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 11:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 229F01DE3CA;
-	Thu, 16 Jan 2025 11:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D326B1DE880;
+	Thu, 16 Jan 2025 11:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ooq+sz3H"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="YLPGhTQ/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2941DDC20
-	for <stable@vger.kernel.org>; Thu, 16 Jan 2025 11:41:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BA71DE4EF;
+	Thu, 16 Jan 2025 11:52:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737027696; cv=none; b=TCv0nc1uzQeYK3FMdQg1NK9BpWsCbaoCZnfL9wVIFor9k+89kncCVc1aUU8WW77Lcz8HVY+PraplZicsv+Nh/HthFehWE5Zy2coj6/ZDWDl+zvIQNF+SvThVOkwu7SuGIjmErpLHzPursoIVXSyPeCX3X/l4CMulbF4tuK8vV7s=
+	t=1737028368; cv=none; b=hZgFsbqZshxCAdBk1NW2j6eJ4mLwQKcxZx0qSmkXzOpNfeVauF5rcR6VHiWLeo75Ur9eh/JaIUX/zlcmBafsTGCivTmv+c3OoksZRWDh/NIPsvsKpi2yWXCPWWC49SjGJrwJcBQMp9YzV0gLyixKIS9Esx2RjxEEoss/vy3XXR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737027696; c=relaxed/simple;
-	bh=zAzvQkgyVrWT7h0H+w/wyN5QepOC/QzZ2EN0PbZeYXM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZN9/UTQKMdN8T+RqOET6qCY7AkdUkzQGHWctzUYaPgOrrJ7FXpxZj4S5Z1cc45Nrr8jp262OyO612UCTORdUaMA/B3jjYLH3J0AW+akhf0VcO7b2/2mHTyPFALcwHor9ZY9KQ0uo3RHTp80n5O+jOV3DpmcnaYaunQBB9dWTVTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ooq+sz3H; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5401af8544bso4112e87.1
-        for <stable@vger.kernel.org>; Thu, 16 Jan 2025 03:41:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737027693; x=1737632493; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5ajRTt+sTCFa/yzDvj8sHUr1nS9xu5mD6luchoIVOyo=;
-        b=Ooq+sz3HoGrjrgpXHIqPSUjS89L+Rsydmc47DI9xBMOi8B0aadDV3kshBR0k/FMdBm
-         REA0q++4IY8fPJmdbL/LN3z3bitadELYWBYtbLleDTl3rwhlAK3OgnzS9qgRp6DUstGM
-         v4Qawng02/bYnq8byLuD4UkYGnosbAQ+C2j0JyaMj7MzAKUkd3oH+/erc8f59vwoglGR
-         LSoc3j0theZRw8YaKR2F5mC6sOzzTIEOh9ZOYOsu07stZ+hkQLFjts6d9SXBwqIwEUfH
-         5xPZQOCt0PEcixRk8grBrtLn9YiUxH9mO2sMIDqClp8qasP1HQSMBH9IKLIvl9miHEBm
-         MvtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737027693; x=1737632493;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5ajRTt+sTCFa/yzDvj8sHUr1nS9xu5mD6luchoIVOyo=;
-        b=tbkg9NqrC+u+arf9I73z77AJtAs18ix9mHZSNyPlsiUKlNv+keJEwXYLt+6q/FyP1T
-         su6J4Y1H9JO5/orOiJIkA5oKZdz1LtDcZXikDnUmjNlu+Eb+suPh5hMyK7faEMy7iDfO
-         PGgySw1JoSe/5LWW1wpreh7/EOpmmrSq7CbgcxGTno0BmTbsXd57J5W8MUoVO+Ta9vQJ
-         wu9GD4geJxp7NhMyQcy9NWxpUTJ1MsMTP0MG/BG8krixTnmw7lKDW7fqApJ17PkAE8Ac
-         oN453qQdAE8I1MPJt4jtaYTQ0BdSYLx8/C8GH+zzDzgIMKrHT/tPxx5NTJMWfvKG1WIm
-         NQHw==
-X-Forwarded-Encrypted: i=1; AJvYcCUKep1I3nWEuhHQr4xxLmZNs/bq+K+U3LXw8QE+Rda8p0Mf6NVUAMgqFoa/daBkV1arKhpmU2g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhWq4Sj/sYfDsnmaFVaeaNtYLIIj1vNyL4XM9rwRdhQmgPdhzI
-	CsWoagNbrZUMFkCVD4Z4Ei1Wtp4v5i+4ue/Is2+bNjkXNjKNnhTUCOLX27++GSAyEzmJ7CVHWRX
-	bm24GfB+7023M6RxO0znUvMrz2DgC4ud0EfxM
-X-Gm-Gg: ASbGnctcG9HPtj069LHSk1fGrqVztETUCbj2Eqz1IQeiq9AJ+dBwMB5N5FVEHyURJLD
-	AwryG7bDi5veLNK5HWQkVcshSXwP+i/4VGRgSuJNSx1Xi3tTRP76OGdFQDM9cq613tLl5ggM=
-X-Google-Smtp-Source: AGHT+IFP7WO7kDE2/46Cyx0Cg9OQ/0H9hXxKtWG6n9UrYOXfjmj+ZVQhyiloRgp5iy8m2aej53iHuMHB3u+ZMcWXnow=
-X-Received: by 2002:a19:7002:0:b0:542:6b39:1d57 with SMTP id
- 2adb3069b0e04-542f46a3191mr131036e87.3.1737027693046; Thu, 16 Jan 2025
- 03:41:33 -0800 (PST)
+	s=arc-20240116; t=1737028368; c=relaxed/simple;
+	bh=IIkgJW5uzFF+glFM/tgQ5XQXHbpkGyOEDF+vsD1oDY0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=OWVObqkrNvukbQz/K5v/uo6cXLgthWbb9/1F81QZ5jX1noaHK+CpafMS2GXpKKNEL91lc7VaqViiIRevfZhxRy7tHFhsDvn/MaYEcokBlRMqi2nxDUU9bY7WC9MQ+vxhygjzwPbxDdwwjHMyf1clMoMeO1rxU9u2kQeeQZTQSls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=YLPGhTQ/; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50G85g94020410;
+	Thu, 16 Jan 2025 11:52:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=8N2eoZ
+	3YvYb/SFAyhdNqcY8Vat04k3vLluJ3ZnnVVm4=; b=YLPGhTQ/onE5PqfR+SwDxA
+	DfLdixm+6D0nsa5LrWiA28HY1aJ3ycqvsuzPQjC4DvGHKjYLSqKIbgxlT0V4B4BV
+	BNLdDluszzLAI0EMvhjFYd7W95JB+z3MecvgVqXYhZbs0JcCSqVPwkOzepKjT2rr
+	KTEX3E10yPngKBGDVIn8AXXlhO+4a+lEMbLv6YSgVUAlv+u22XV88joGBdGYco7p
+	07aeaqj7Zv5sV1VaOiplpECKMIvyjebBgqqyPoGy2uIFoEy0qtV74eOGDbYi5oJ2
+	bBJTv98ylPjvx563LvSWXkrw6nLB4QZ2zGnVD8YxQLrJHJXYDCPADLiH/rf5/3tg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 446xa391bn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Jan 2025 11:52:13 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50GBkD7g028253;
+	Thu, 16 Jan 2025 11:52:13 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 446xa391bj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Jan 2025 11:52:13 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50GAk3J8001089;
+	Thu, 16 Jan 2025 11:52:12 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44456k5cyb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Jan 2025 11:52:12 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50GBqBtm29098512
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 16 Jan 2025 11:52:11 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 802F45806D;
+	Thu, 16 Jan 2025 11:52:11 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 00BD658080;
+	Thu, 16 Jan 2025 11:52:10 +0000 (GMT)
+Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.131.6])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 16 Jan 2025 11:52:09 +0000 (GMT)
+Message-ID: <906089e5f4e24182dc776488959dc595c92a616c.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 6/7] ima: Discard files opened with O_PATH
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Roberto Sassu <roberto.sassu@huaweicloud.com>, viro@zeniv.linux.org.uk,
+        brauner@kernel.org, jack@suse.cz, dmitry.kasatkin@gmail.com,
+        eric.snowberg@oracle.com, paul@paul-moore.com, jmorris@namei.org,
+        serge@hallyn.com
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org,
+        Roberto Sassu <roberto.sassu@huawei.com>, stable@vger.kernel.org
+Date: Thu, 16 Jan 2025 06:52:09 -0500
+In-Reply-To: <20241128100621.461743-7-roberto.sassu@huaweicloud.com>
+References: <20241128100621.461743-1-roberto.sassu@huaweicloud.com>
+	 <20241128100621.461743-7-roberto.sassu@huaweicloud.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250114142435.2093857-1-kyletso@google.com> <Z4jsp4J6AX0X-uwX@kuha.fi.intel.com>
-In-Reply-To: <Z4jsp4J6AX0X-uwX@kuha.fi.intel.com>
-From: Kyle Tso <kyletso@google.com>
-Date: Thu, 16 Jan 2025 19:41:16 +0800
-X-Gm-Features: AbW1kvaJ3ZYNqz0ChrdDMtHBrULy6UybRZ5KHQDoRRzRtFi3Fiw33c6yXzCEHYM
-Message-ID: <CAGZ6i=3W-WsZ7Hz9T2wEYnFFMmFPpjgnrWQuHo=a_QJn8jzUOA@mail.gmail.com>
-Subject: Re: [PATCH v1] usb: typec: tcpci: Prevent Sink disconnection before
- vPpsShutdown in SPR PPS
-To: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc: gregkh@linuxfoundation.org, andre.draszik@linaro.org, rdbabiera@google.com, 
-	m.felsch@pengutronix.de, xu.yang_2@nxp.com, u.kleine-koenig@baylibre.com, 
-	emanuele.ghidoli@toradex.com, badhri@google.com, amitsd@google.com, 
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 1QLzUOACWmiCUstkNHBoWu8bxOFAwfe1
+X-Proofpoint-ORIG-GUID: tlsjCwY0L238jXouCxhTav_tXU-wJYhA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-16_05,2025-01-16_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
+ bulkscore=0 clxscore=1015 adultscore=0 mlxlogscore=861 priorityscore=1501
+ suspectscore=0 spamscore=0 phishscore=0 impostorscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501160086
 
-On Thu, Jan 16, 2025 at 7:25=E2=80=AFPM Heikki Krogerus
-<heikki.krogerus@linux.intel.com> wrote:
->
-> On Tue, Jan 14, 2025 at 10:24:35PM +0800, Kyle Tso wrote:
-> > The Source can drop its output voltage to the minimum of the requested
-> > PPS APDO voltage range when it is in Current Limit Mode. If this voltag=
-e
-> > falls within the range of vPpsShutdown, the Source initiates a Hard
-> > Reset and discharges Vbus. However, currently the Sink may disconnect
-> > before the voltage reaches vPpsShutdown, leading to unexpected behavior=
+On Thu, 2024-11-28 at 11:06 +0100, Roberto Sassu wrote:
+> From: Roberto Sassu <roberto.sassu@huawei.com>
+>=20
+> According to man open.2, files opened with O_PATH are not really opened. =
+The
+> obtained file descriptor is used to indicate a location in the filesystem
+> tree and to perform operations that act purely at the file descriptor
+> level.
+>=20
+> Thus, ignore open() syscalls with O_PATH, since IMA cares about file data=
 .
-> >
-> > Prevent premature disconnection by setting the Sink's disconnect
-> > threshold to the minimum vPpsShutdown value. Additionally, consider the
-> > voltage drop due to IR drop when calculating the appropriate threshold.
-> > This ensures a robust and reliable interaction between the Source and
-> > Sink during SPR PPS Current Limit Mode operation.
-> >
-> > Fixes: 4288debeaa4e ("usb: typec: tcpci: Fix up sink disconnect thresho=
-lds for PD")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Kyle Tso <kyletso@google.com>
->
-> You've resend this, right? So is this v2 (or v1)?
->
-> Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
->
+>=20
+> Cc: stable@vger.kernel.org=C2=A0# v2.6.39.x
+> Fixes: 1abf0c718f15a ("New kind of open files - "location only".")
+> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
 
-Hello Heikki,
+Thanks, Roberto.
 
-Thank you for the review.
+Note: Ignoring open() with O_PATH impacts policies containing "func=3DFILE_=
+CHECK"
+rules.
 
-Apologies for the resend. This is indeed the v1 patch. The previous
-email was accidentally sent with an incomplete recipient list.
+Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
 
-Thanks,
-Kyle
+> ---
+> =C2=A0security/integrity/ima/ima_main.c | 6 ++++--
+> =C2=A01 file changed, 4 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/i=
+ma_main.c
+> index 50b37420ea2c..712c3a522e6c 100644
+> --- a/security/integrity/ima/ima_main.c
+> +++ b/security/integrity/ima/ima_main.c
+> @@ -202,7 +202,8 @@ static void ima_file_free(struct file *file)
+> =C2=A0	struct inode *inode =3D file_inode(file);
+> =C2=A0	struct ima_iint_cache *iint;
+> =C2=A0
+> -	if (!ima_policy_flag || !S_ISREG(inode->i_mode))
+> +	if (!ima_policy_flag || !S_ISREG(inode->i_mode) ||
+> +	=C2=A0=C2=A0=C2=A0 (file->f_flags & O_PATH))
+> =C2=A0		return;
+> =C2=A0
+> =C2=A0	iint =3D ima_iint_find(inode);
+> @@ -232,7 +233,8 @@ static int process_measurement(struct file *file, con=
+st struct
+> cred *cred,
+> =C2=A0	enum hash_algo hash_algo;
+> =C2=A0	unsigned int allowed_algos =3D 0;
+> =C2=A0
+> -	if (!ima_policy_flag || !S_ISREG(inode->i_mode))
+> +	if (!ima_policy_flag || !S_ISREG(inode->i_mode) ||
+> +	=C2=A0=C2=A0=C2=A0 (file->f_flags & O_PATH))
+> =C2=A0		return 0;
+> =C2=A0
+> =C2=A0	/* Return an IMA_MEASURE, IMA_APPRAISE, IMA_AUDIT action
 
-> > ---
-> >  drivers/usb/typec/tcpm/tcpci.c | 13 +++++++++----
-> >  drivers/usb/typec/tcpm/tcpm.c  |  8 +++++---
-> >  include/linux/usb/tcpm.h       |  3 ++-
-> >  3 files changed, 16 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tc=
-pci.c
-> > index 48762508cc86..19ab6647af70 100644
-> > --- a/drivers/usb/typec/tcpm/tcpci.c
-> > +++ b/drivers/usb/typec/tcpm/tcpci.c
-> > @@ -27,6 +27,7 @@
-> >  #define      VPPS_NEW_MIN_PERCENT                    95
-> >  #define      VPPS_VALID_MIN_MV                       100
-> >  #define      VSINKDISCONNECT_PD_MIN_PERCENT          90
-> > +#define      VPPS_SHUTDOWN_MIN_PERCENT               85
-> >
-> >  struct tcpci {
-> >       struct device *dev;
-> > @@ -366,7 +367,8 @@ static int tcpci_enable_auto_vbus_discharge(struct =
-tcpc_dev *dev, bool enable)
-> >  }
-> >
-> >  static int tcpci_set_auto_vbus_discharge_threshold(struct tcpc_dev *de=
-v, enum typec_pwr_opmode mode,
-> > -                                                bool pps_active, u32 r=
-equested_vbus_voltage_mv)
-> > +                                                bool pps_active, u32 r=
-equested_vbus_voltage_mv,
-> > +                                                u32 apdo_min_voltage_m=
-v)
-> >  {
-> >       struct tcpci *tcpci =3D tcpc_to_tcpci(dev);
-> >       unsigned int pwr_ctrl, threshold =3D 0;
-> > @@ -388,9 +390,12 @@ static int tcpci_set_auto_vbus_discharge_threshold=
-(struct tcpc_dev *dev, enum ty
-> >               threshold =3D AUTO_DISCHARGE_DEFAULT_THRESHOLD_MV;
-> >       } else if (mode =3D=3D TYPEC_PWR_MODE_PD) {
-> >               if (pps_active)
-> > -                     threshold =3D ((VPPS_NEW_MIN_PERCENT * requested_=
-vbus_voltage_mv / 100) -
-> > -                                  VSINKPD_MIN_IR_DROP_MV - VPPS_VALID_=
-MIN_MV) *
-> > -                                  VSINKDISCONNECT_PD_MIN_PERCENT / 100=
-;
-> > +                     /*
-> > +                      * To prevent disconnect when the source is in Cu=
-rrent Limit Mode.
-> > +                      * Set the threshold to the lowest possible volta=
-ge vPpsShutdown (min)
-> > +                      */
-> > +                     threshold =3D VPPS_SHUTDOWN_MIN_PERCENT * apdo_mi=
-n_voltage_mv / 100 -
-> > +                                 VSINKPD_MIN_IR_DROP_MV;
-> >               else
-> >                       threshold =3D ((VSRC_NEW_MIN_PERCENT * requested_=
-vbus_voltage_mv / 100) -
-> >                                    VSINKPD_MIN_IR_DROP_MV - VSRC_VALID_=
-MIN_MV) *
-> > diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcp=
-m.c
-> > index 460dbde9fe22..e4b85a09c3ae 100644
-> > --- a/drivers/usb/typec/tcpm/tcpm.c
-> > +++ b/drivers/usb/typec/tcpm/tcpm.c
-> > @@ -2973,10 +2973,12 @@ static int tcpm_set_auto_vbus_discharge_thresho=
-ld(struct tcpm_port *port,
-> >               return 0;
-> >
-> >       ret =3D port->tcpc->set_auto_vbus_discharge_threshold(port->tcpc,=
- mode, pps_active,
-> > -                                                         requested_vbu=
-s_voltage);
-> > +                                                         requested_vbu=
-s_voltage,
-> > +                                                         port->pps_dat=
-a.min_volt);
-> >       tcpm_log_force(port,
-> > -                    "set_auto_vbus_discharge_threshold mode:%d pps_act=
-ive:%c vbus:%u ret:%d",
-> > -                    mode, pps_active ? 'y' : 'n', requested_vbus_volta=
-ge, ret);
-> > +                    "set_auto_vbus_discharge_threshold mode:%d pps_act=
-ive:%c vbus:%u pps_apdo_min_volt:%u ret:%d",
-> > +                    mode, pps_active ? 'y' : 'n', requested_vbus_volta=
-ge,
-> > +                    port->pps_data.min_volt, ret);
-> >
-> >       return ret;
-> >  }
-> > diff --git a/include/linux/usb/tcpm.h b/include/linux/usb/tcpm.h
-> > index 061da9546a81..b22e659f81ba 100644
-> > --- a/include/linux/usb/tcpm.h
-> > +++ b/include/linux/usb/tcpm.h
-> > @@ -163,7 +163,8 @@ struct tcpc_dev {
-> >       void (*frs_sourcing_vbus)(struct tcpc_dev *dev);
-> >       int (*enable_auto_vbus_discharge)(struct tcpc_dev *dev, bool enab=
-le);
-> >       int (*set_auto_vbus_discharge_threshold)(struct tcpc_dev *dev, en=
-um typec_pwr_opmode mode,
-> > -                                              bool pps_active, u32 req=
-uested_vbus_voltage);
-> > +                                              bool pps_active, u32 req=
-uested_vbus_voltage,
-> > +                                              u32 pps_apdo_min_voltage=
-);
-> >       bool (*is_vbus_vsafe0v)(struct tcpc_dev *dev);
-> >       void (*set_partner_usb_comm_capable)(struct tcpc_dev *dev, bool e=
-nable);
-> >       void (*check_contaminant)(struct tcpc_dev *dev);
-> > --
-> > 2.47.1.688.g23fc6f90ad-goog
->
-> --
-> heikki
 
