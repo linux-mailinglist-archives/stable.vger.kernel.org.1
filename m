@@ -1,184 +1,168 @@
-Return-Path: <stable+bounces-109267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDAE5A13A9B
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 14:13:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD01A13ABE
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 14:19:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35D023A867A
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 13:13:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 187AB188A5CB
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 13:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E701F37A8;
-	Thu, 16 Jan 2025 13:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8286722A4CF;
+	Thu, 16 Jan 2025 13:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="A7eWZjmZ"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="L/YsZg8a"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D74519CC39;
-	Thu, 16 Jan 2025 13:13:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13ACA1DE2AD;
+	Thu, 16 Jan 2025 13:19:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737033210; cv=none; b=kozCXg4o9ns1FcIfflSk1rkOb3Xkh8AUumIQluTw2LL04RWOVsT6GInMA7yc5wLSrE8FYyn4OTN8WLweyJnFQNFNiV4dkuCNqJ42woAiz8ouFL+TtqehiNp4iQifAzkjWTzcE4i44Vh1TfhIJkLvtwVDUZrr5WAGGWg6NM/rrQA=
+	t=1737033551; cv=none; b=jwxC6BVhUCDBzAUEdgEZhafVxh5ZXFfZVa7eM77q7aQTOwSPJ0GhLachAHRyYTQHMHLYaB2egiY+OYtiQkt8aFwfe6aSFOMPyv7PEtCRINfIJgdg6u7iwolrZrRgmnUb5/qAvcWpROt1CRIqVNIfypjJ6OuJCEyVgCuPbEFkQnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737033210; c=relaxed/simple;
-	bh=a4FelPve24hx2H541JYRkMU/NzufVucHC49QLg/Y6nI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=N/THiKubvfZFNb2rasLgFYcyQnKF0GqhGaYN9hIQtymf55JIUniNa4m02BWxpFCSbKyxPzx7O10Ln9piRqK1RdmfGECRXjbOmtUhafFUkkxGOAN5y4eupiJCij0wPQfqknB0jDOhEyg8m80iLkcivEPc8+pz6xZoTZB5mGahV+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=A7eWZjmZ; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50G78xVM019751;
-	Thu, 16 Jan 2025 13:13:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=BEbmGn
-	qQf1/62KTsvyxoe5FQYiW9lG/p4Gib5T766i8=; b=A7eWZjmZKL9H8DuPQs0Xg4
-	9tKBHhscO/XwQqEuPGZrcNj7RHAgVdxy3zBF+kGxNUvJSZDaNSNqdynbxA6QR5VE
-	4+cuR/G6b2G3k3BX+DJCZVLIw7T0X/D33r0TNsVpoTdrSgVwdG4NeK7TOg5GrHUf
-	CgubsLOQP4MCWkGVnBWDFL4olwodMMrJzqFXAo4kiGYXWDjEfwy2XEl5KdQ54u6Z
-	9fuMm9rdY166X9OL+Wpk+lzFEpMigifrzrhNuRy0wqX47J8B7KoyjxzRIOb6ppjr
-	55L0Gw6UD+o1ZVcP5Y2oE+ICYwe1EvaCenvH9N8XR8/Lxzp9wZ+w7SpkdCG+ZVJw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 446eg5wrk6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Jan 2025 13:13:03 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50GDAgM0011301;
-	Thu, 16 Jan 2025 13:13:02 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 446eg5wrk3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Jan 2025 13:13:02 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50G9t5HB007385;
-	Thu, 16 Jan 2025 13:13:01 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4443yndykd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Jan 2025 13:13:01 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50GDD1iR29819634
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 Jan 2025 13:13:01 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 11D1458065;
-	Thu, 16 Jan 2025 13:13:01 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 17A6558057;
-	Thu, 16 Jan 2025 13:13:00 +0000 (GMT)
-Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.122.241])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 16 Jan 2025 13:13:00 +0000 (GMT)
-Message-ID: <71ef0b0abbb5cb9cfff7b8287542308b9a0b88d4.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 7/7] ima: Reset IMA_NONACTION_RULE_FLAGS after
- post_setattr
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Roberto Sassu <roberto.sassu@huaweicloud.com>, viro@zeniv.linux.org.uk,
-        brauner@kernel.org, jack@suse.cz, dmitry.kasatkin@gmail.com,
-        eric.snowberg@oracle.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org,
-        Roberto Sassu <roberto.sassu@huawei.com>, stable@vger.kernel.org
-Date: Thu, 16 Jan 2025 08:12:59 -0500
-In-Reply-To: <20241128100621.461743-8-roberto.sassu@huaweicloud.com>
-References: <20241128100621.461743-1-roberto.sassu@huaweicloud.com>
-	 <20241128100621.461743-8-roberto.sassu@huaweicloud.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1737033551; c=relaxed/simple;
+	bh=BFxVXJJabloKs7r9Ax8zWdGqbl8ktI2pQICt6LoVVE8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fhsLA5dO3p+49rRhbTEp+qQAhmuf4GtHOwVshsOm0OlKzXyJHHYy1CM7RPpyvc5gbZP3X6XgO2z5keExXPbn+EjMI/R1b6tUDQvBrSQvUA6AB9PguFv+Tg4O61lKSv6jom2mbnmFuFYWpU/W3ghFgNURiUthF/ni/E7ljnaFEoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=L/YsZg8a; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1737033547;
+	bh=BFxVXJJabloKs7r9Ax8zWdGqbl8ktI2pQICt6LoVVE8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=L/YsZg8aHcfPf2SBOAGkuZNb0Rd0AgPQTwR+GEt9a/NNVVFH46/KHDX4A/y1i6rGj
+	 QXg7AXFiMperBDsoFI8MxX0p+aI2hv7sMbroQzdreXz/FbBUWhdUTfgKmpOwiPiyLK
+	 tRDw3He6SieKgxXPbamDhWOMrppT6aeF2J9LDjccYLYUAUP+IB97Dl4HtpgWYF4s7o
+	 ZjO0cpn6TVnvRKmutLy22LLM8756cAfgyJJXgLgak5CQSkMalSZ/g+sfTflqqDn4bv
+	 TGx1s1Ue2kA0i5aM9I7lCdAq2awESlrYMnYPMU1sAxOxm8r6EakllcOwDZlnCurUFW
+	 AaUtoOt1ofQug==
+Received: from notapiano (unknown [IPv6:2804:14c:1a9:53ee::1001])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nfraprado)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 142D517E0E9E;
+	Thu, 16 Jan 2025 14:19:00 +0100 (CET)
+Date: Thu, 16 Jan 2025 10:18:54 -0300
+From: =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <nfraprado@collabora.com>
+To: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Alexandre Mergnat <amergnat@baylibre.com>,
+	Balsam CHIHI <bchihi@baylibre.com>, kernel@collabora.com,
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Bernhard =?utf-8?Q?Rosenkr=C3=A4nzer?= <bero@baylibre.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH RESEND v2 1/5] thermal/drivers/mediatek/lvts: Disable
+ monitor mode during suspend
+Message-ID: <554102c6-d597-4dc8-b760-3e2b9078e471@notapiano>
+References: <20250113-mt8192-lvts-filtered-suspend-fix-v2-0-07a25200c7c6@collabora.com>
+ <20250113-mt8192-lvts-filtered-suspend-fix-v2-1-07a25200c7c6@collabora.com>
+ <20828ba5-ecb5-46a4-8be3-9119d93c383a@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: uDhFwdqcGNgLHe6QWTo2O8Z-H_B0tG1E
-X-Proofpoint-ORIG-GUID: n32nTXmeXhDBCBbzNnUbIzeTg-g9H8XU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-16_05,2025-01-16_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
- clxscore=1015 phishscore=0 malwarescore=0 spamscore=0 adultscore=0
- mlxscore=0 impostorscore=0 lowpriorityscore=0 mlxlogscore=999
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501160098
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20828ba5-ecb5-46a4-8be3-9119d93c383a@linaro.org>
 
-On Thu, 2024-11-28 at 11:06 +0100, Roberto Sassu wrote:
-> From: Roberto Sassu <roberto.sassu@huawei.com>
->=20
-> Commit 11c60f23ed13 ("integrity: Remove unused macro
-> IMA_ACTION_RULE_FLAGS") removed the IMA_ACTION_RULE_FLAGS mask, due to it
-> not being used after commit 0d73a55208e9 ("ima: re-introduce own integrit=
-y
-> cache lock").
->=20
-> However, it seems that the latter commit mistakenly used the wrong mask
-> when moving the code from ima_inode_post_setattr() to
-> process_measurement(). There is no mention in the commit message about th=
-is
-> change and it looks quite important, since changing from IMA_ACTIONS_FLAG=
-S
-> (later renamed to IMA_NONACTION_FLAGS) to IMA_ACTION_RULE_FLAGS was done =
-by
-> commit 42a4c603198f0 ("ima: fix ima_inode_post_setattr").
->=20
-> Restore the original change, but with new mask 0xfb000000 since the
-> policy-specific flags changed meanwhile, and rename IMA_ACTION_RULE_FLAGS
-> to IMA_NONACTION_RULE_FLAGS, to be consistent with IMA_NONACTION_FLAGS.
+On Tue, Jan 14, 2025 at 10:23:42AM +0100, Daniel Lezcano wrote:
+> 
+> Hi Nicolas,
+> 
+> On 13/01/2025 14:27, Nícolas F. R. A. Prado wrote:
+> > When configured in filtered mode, the LVTS thermal controller will
+> > monitor the temperature from the sensors and trigger an interrupt once a
+> > thermal threshold is crossed.
+> > 
+> > Currently this is true even during suspend and resume. The problem with
+> > that is that when enabling the internal clock of the LVTS controller in
+> > lvts_ctrl_set_enable() during resume, the temperature reading can glitch
+> > and appear much higher than the real one, resulting in a spurious
+> > interrupt getting generated.
+> > 
+> > Disable the temperature monitoring and give some time for the signals to
+> > stabilize during suspend in order to prevent such spurious interrupts.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+> > Closes: https://lore.kernel.org/all/20241108-lvts-v1-1-eee339c6ca20@chromium.org/
+> > Fixes: 8137bb90600d ("thermal/drivers/mediatek/lvts_thermal: Add suspend and resume")
+> > Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> > Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+> > ---
+> >   drivers/thermal/mediatek/lvts_thermal.c | 36 +++++++++++++++++++++++++++++++--
+> >   1 file changed, 34 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
+> > index 07f7f3b7a2fb569cfc300dc2126ea426e161adff..a1a438ebad33c1fff8ca9781e12ef9e278eef785 100644
+> > --- a/drivers/thermal/mediatek/lvts_thermal.c
+> > +++ b/drivers/thermal/mediatek/lvts_thermal.c
+> > @@ -860,6 +860,32 @@ static int lvts_ctrl_init(struct device *dev, struct lvts_domain *lvts_td,
+> >   	return 0;
+> >   }
+> > +static void lvts_ctrl_monitor_enable(struct device *dev, struct lvts_ctrl *lvts_ctrl, bool enable)
+> > +{
+> > +	/*
+> > +	 * Bitmaps to enable each sensor on filtered mode in the MONCTL0
+> > +	 * register.
+> > +	 */
+> > +	static const u8 sensor_filt_bitmap[] = { BIT(0), BIT(1), BIT(2), BIT(3) };
+> > +	u32 sensor_map = 0;
+> > +	int i;
+> > +
+> > +	if (lvts_ctrl->mode != LVTS_MSR_FILTERED_MODE)
+> > +		return;
+> > +
+> > +	if (enable) {
+> > +		lvts_for_each_valid_sensor(i, lvts_ctrl)
+> > +			sensor_map |= sensor_filt_bitmap[i];
+> > +	}
+> > +
+> > +	/*
+> > +	 * Bits:
+> > +	 *      9: Single point access flow
+> > +	 *    0-3: Enable sensing point 0-3
+> > +	 */
+> > +	writel(sensor_map | BIT(9), LVTS_MONCTL0(lvts_ctrl->base));
+> > +}
+> > +
+> >   /*
+> >    * At this point the configuration register is the only place in the
+> >    * driver where we write multiple values. Per hardware constraint,
+> > @@ -1381,8 +1407,11 @@ static int lvts_suspend(struct device *dev)
+> >   	lvts_td = dev_get_drvdata(dev);
+> > -	for (i = 0; i < lvts_td->num_lvts_ctrl; i++)
+> > +	for (i = 0; i < lvts_td->num_lvts_ctrl; i++) {
+> > +		lvts_ctrl_monitor_enable(dev, &lvts_td->lvts_ctrl[i], false);
+> > +		usleep_range(100, 200);
+> 
+> From where this delay is coming from ?
 
-Thanks, Roberto.  Please summarize the reason for reverting the change.  So=
-mething
-like:  Restore the original change to not reset the new file status after .=
-..
+That's empirical. I tested several times doing system suspend and resume on the
+machines hooked to our lab and that was the minimum delay I could find that
+still never resulted in the spurious readings.
 
->=20
-> Cc: stable@vger.kernel.org=C2=A0# v4.16.x
-> Fixes: 11c60f23ed13 ("integrity: Remove unused macro IMA_ACTION_RULE_FLAG=
-S")
-> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Unfortunately the technical documentation I have access to never even mentioned
+that this issue could arise, let alone what the timing constraints were, so this
+had to be figured out empirically.
 
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-
-> ---
-> =C2=A0security/integrity/ima/ima.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 1 +
-> =C2=A0security/integrity/ima/ima_main.c | 2 +-
-> =C2=A02 files changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/security/integrity/ima/ima.h b/security/integrity/ima/ima.h
-> index 22c3b87cfcac..32ffef2cc92a 100644
-> --- a/security/integrity/ima/ima.h
-> +++ b/security/integrity/ima/ima.h
-> @@ -141,6 +141,7 @@ struct ima_kexec_hdr {
-> =C2=A0
-> =C2=A0/* IMA iint policy rule cache flags */
-> =C2=A0#define IMA_NONACTION_FLAGS	0xff000000
-> +#define IMA_NONACTION_RULE_FLAGS	0xfb000000
-> =C2=A0#define IMA_DIGSIG_REQUIRED	0x01000000
-> =C2=A0#define IMA_PERMIT_DIRECTIO	0x02000000
-> =C2=A0#define IMA_NEW_FILE		0x04000000
-> diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/i=
-ma_main.c
-> index 712c3a522e6c..83e467ad18d4 100644
-> --- a/security/integrity/ima/ima_main.c
-> +++ b/security/integrity/ima/ima_main.c
-> @@ -277,7 +277,7 @@ static int process_measurement(struct file *file, con=
-st struct
-> cred *cred,
-> =C2=A0		/* reset appraisal flags if ima_inode_post_setattr was called */
-> =C2=A0		iint->flags &=3D ~(IMA_APPRAISE | IMA_APPRAISED |
-> =C2=A0				 IMA_APPRAISE_SUBMASK | IMA_APPRAISED_SUBMASK |
-> -				 IMA_NONACTION_FLAGS);
-> +				 IMA_NONACTION_RULE_FLAGS);
-> =C2=A0
-> =C2=A0	/*
-> =C2=A0	 * Re-evaulate the file if either the xattr has changed or the
-
+Thanks,
+Nícolas
 
