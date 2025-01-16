@@ -1,168 +1,268 @@
-Return-Path: <stable+bounces-109298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27E33A13E9D
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 17:00:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9877AA13ED0
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 17:07:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 358BE3AF268
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 15:59:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 872D416BD78
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 16:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8381322CF03;
-	Thu, 16 Jan 2025 15:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E1A22CBED;
+	Thu, 16 Jan 2025 16:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XGb2KXfR"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="yeTrX9xC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2082.outbound.protection.outlook.com [40.107.243.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81DC22A80B
-	for <stable@vger.kernel.org>; Thu, 16 Jan 2025 15:58:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737043116; cv=none; b=bqIHbqM5bRm4IN4AFGIlezZN7nzGOlbBCGYIWugPOOBUF5vumGl3XUOMB9k45PODqC8WWgPb98CJ8sKCNQJslZeM/pnE1zn8926AxdT747vKNWVeDyMztmdGg+590/SoI1JSAknuGYP0LQX+5ZYpzSssPvDy8N1Y2fqhwI5oEto=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737043116; c=relaxed/simple;
-	bh=TsAFTtAPHFDWqClgUwsN+5G3GYn9qmIlLxL/HqroH30=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mJVRNal16X7yOO3RdqnYmQ5/9rJPrIbk0nvD+5fgtn3ScF9gxvdr1BjSOZhAmDcnVRpwdDj1uh/c2zHc+M7JHbsZvbHUS1pGHVc6bSoAw0LsYKRVj2RcAyftJo6He1aQVb2vVPrWjTu4sBGdU9n00HFP2NewUb3QaPexlXkBS0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XGb2KXfR; arc=none smtp.client-ip=209.85.219.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e549dd7201cso1896414276.0
-        for <stable@vger.kernel.org>; Thu, 16 Jan 2025 07:58:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1737043113; x=1737647913; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=xZg7i9Gkt1p2UGCmQVCKIa0P9txKm7ecHDqIrA9B8RM=;
-        b=XGb2KXfRVGoR1Eiu2vhPmmbLb2hgGv98FzMH1i/BCE2WlVNjyrK6XSkboDb0+S2R6m
-         VwrLtxBm6p/7n1Ivtl3o2OO7KZqbDmRCRSQD4/IDvdgPpoz4tVvtAlpUC9PTkDIAUNpT
-         qkSCmD8rAu7ocUUJgPbP8e/4KtcqaUHczLXKmNGhSVPl1ZS1jFZg+3BTbqQrP058bnCs
-         2d34r7vb/n845hGfiLdSw5Hkmo65lhMfsVArev4uPOs4/9x9rJ+AMEV6ZwBb+eTqpc3C
-         Fc594a6C7iV8EzTzD4JXzI+S1sp7CahklZPtIqDnQvA5BrYTkonhou1sKnWXm96akzn1
-         Rm8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737043113; x=1737647913;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xZg7i9Gkt1p2UGCmQVCKIa0P9txKm7ecHDqIrA9B8RM=;
-        b=r4thaRDH09RmDDiJOyEVwbxxTKbtOkan7ZkQcLJUuwJS7pvgQAe1jfwn9X5eGVGzR/
-         WLUavK7cfmP/parCBUwIXX3PehS5SLPfI5e7+SHhijvy01Hjv7DtNHK3ixqD7Oq177DI
-         bBEl9MNF79swT9uAIDFwGnkHlc5h71VUwiZSldRJMweDBE/eUrgZ15u2B8CK5kETq4w9
-         SqKmvj4rhNvYK8FU1inqYl4jaU2VaN3YWRmdBv/d2+o3qPGMQj36zuzFjvR9IoaocFnF
-         +FTNlQuaG5rUyTPSZkNkydQX6lZAvnkh5SntpqjKTZ0lwSXv1HVeBOJqVpau+WK37Q3g
-         f6xA==
-X-Forwarded-Encrypted: i=1; AJvYcCWZ9UiQT/4UWJacC6COH91eHUSdDt/EzUOzjWZTvp/exvhsEoO898Qs7xBpIOMazLEMsWSHsJI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz22GxJLo2ydbZqW3ZoMqGTWhe7hkNftWrkBFEU9BHQt8L1nK08
-	nY0CQiCiv1M9tvsm7eK+LdLhZDGqXBqcZUlW4EXUpqgLoE3rOSUdxPIbKFrlMoaIzLCPwEz16dL
-	fD7tXyUlMpgSpPfUMjKsIW+rF95VI57/j+vxbIw==
-X-Gm-Gg: ASbGnctHYwQQnSzfUJNP2v0V8HsBRp3xJbRY9xeKaz87Y51ATyErHXu2mQ/UJ7BJ6tK
-	pYudp5v9fQAA1kOkp6mvVtn5uqdZZ41WGSgFTEQk=
-X-Google-Smtp-Source: AGHT+IG1qVTRfq3rD5NuthhfaJDGZx9itjIkE76nEv6cFISZ83dbq/vsbg+foxsWE2MrG6pQrDxrf7Opr66/DdtZa/k=
-X-Received: by 2002:a05:6902:161b:b0:e57:31f1:972e with SMTP id
- 3f1490d57ef6-e5731f1a4b2mr20182789276.29.1737043112819; Thu, 16 Jan 2025
- 07:58:32 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D79E22BAC1;
+	Thu, 16 Jan 2025 16:07:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.82
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737043663; cv=fail; b=YJeCC9/lPb++io5HEgCKQbW6RIb3rKfzHPZa+GlNBc3JUl7i/Bh7jpVGgWovNYK1N08MtP0F5Z7svUIkYkltdkn79ePpvzn9WMjoFXav6/+3oJvs/qeyr+aGt4w2IOy2XsdNfBKb1U6aou4z9JpmcPID47S2cqa+GhbxD5zFmiY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737043663; c=relaxed/simple;
+	bh=XUVD+dDg6XPrWO/z7J3Hw5ae6oAMeOwTgI9XXMEr21Q=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Qj3hgBuEJWijZI13e3VBA9f19LFLhcl2K7Oi6Dq7NAdE/ilBYANatfsc7YuWoJiYr4xgoFLymzg8Bs6slZnhkKSUQiocRP9LUt9aNUEbWw6X0d0KWTR10EWs/sWJB+keRAl7BkIVWVGPLNWJq9nvfzfxkNM414PZC70CfZJMKH0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=yeTrX9xC; arc=fail smtp.client-ip=40.107.243.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gTB2bbt7Mc5MmVstp8nxoeeq8otrqrjY1jsBMaYMlwzQK9d8vG8HnAsdqfzbAKGaSnpMqwr+0SbzS0VQKD2HGIWy8gQ9UxgEaBTX0L/WcyXbj2LVuu4gzFC0NaGLWwaVZJqM4mQjipWmAxJR5eHsIWllk/z9BU1e9bIpOPZ414ERJZc2yQpU3MjvgRysUMXcv2oc+QIJrIsjd+RjKg3FSd2Dg2PIDQtwzI5Gq08j2SLhYtzko8LVz92v0RKp/OF4ZL2gByso0ZXkamOwXpPi2lSpL+W1+rOPcBsET7HhRgu34QCadxCTsZv6sYjcL5OOQ6nmZ3T19A+kH/F30RSy1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7cGaWVN6b4G/1Y1kKh9JVyZas1GfqQ1AhMvE+F4Cku0=;
+ b=TQPUgiVOoN+VplE0OhNCqC6rscGdyrCjoWYebw2Lw2UB0MFGS6V8cdW5tyiOyaHDoOjuWElb6OxDdBJXYUo9YnmJSWMnZaFZZJ1xMfVp8n+w7bLYRHWjj+7jZGM4ZB1ANBkdP2lZ1qUCJV3NmThOP38N6j/Ts7p2Y1Xh6ZftT9tQKbFvGPdf8VpLoaoa4SrNSaShH0jPvwpqJROqnuC7+bnEY1jXlFx/oNVHhPsdR6nhZu5VEFAAfp/i+f9z3NIdOrYN87OgiLqdC+6kmCNTYPncUwUMUtmC2ga67MtF6zzS4omusRS8yWQxoWUunpOFoKUwB9+DbGXwCueLCjr4jA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7cGaWVN6b4G/1Y1kKh9JVyZas1GfqQ1AhMvE+F4Cku0=;
+ b=yeTrX9xCAk4WQ5FBtDDxTQYEDCDTST0EzuhAJE+OtJr+llPdpipqZGC5Wa61D6xUPmbHvQlbsERiQI5GYxPEG/HuSvctVKbH/F//e/Xn1gSnyx1sOPawEP4JH7gr3WHnhkCougdrqFzCAE8Ox6FSPS9czNQscKjkgOPMF7OLd8A=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH2PR12MB4956.namprd12.prod.outlook.com (2603:10b6:610:69::11)
+ by PH0PR12MB8052.namprd12.prod.outlook.com (2603:10b6:510:28b::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.12; Thu, 16 Jan
+ 2025 16:07:38 +0000
+Received: from CH2PR12MB4956.namprd12.prod.outlook.com
+ ([fe80::fa2c:c4d3:e069:248d]) by CH2PR12MB4956.namprd12.prod.outlook.com
+ ([fe80::fa2c:c4d3:e069:248d%5]) with mapi id 15.20.8314.015; Thu, 16 Jan 2025
+ 16:07:38 +0000
+Message-ID: <ab28f8d9-266a-48ca-80cb-21ac66a97e61@amd.com>
+Date: Thu, 16 Jan 2025 10:07:35 -0600
+User-Agent: Mozilla Thunderbird
+Reply-To: tanmay.shah@amd.com
+Subject: Re: [PATCH v2] mailbox: zynqmp: Remove invalid __percpu annotation in
+ zynqmp_ipi_probe()
+To: Uros Bizjak <ubizjak@gmail.com>
+Cc: Michal Simek <michal.simek@amd.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Jassi Brar <jassisinghbrar@gmail.com>
+References: <20241214091327.4716-1-ubizjak@gmail.com>
+ <25eb1e35-83b0-46f4-9a9c-138c89665e05@amd.com>
+ <65a1d19e-e793-4371-a33d-e2374908d7f8@amd.com>
+ <CAFULd4YKGnOwumpUeW5Yyr-G+BmC=LUSVbFWg74GC9a628VN5w@mail.gmail.com>
+Content-Language: en-US
+From: Tanmay Shah <tanmay.shah@amd.com>
+In-Reply-To: <CAFULd4YKGnOwumpUeW5Yyr-G+BmC=LUSVbFWg74GC9a628VN5w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SA1P222CA0135.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:3c2::13) To CH2PR12MB4956.namprd12.prod.outlook.com
+ (2603:10b6:610:69::11)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250115014118.4086729-1-xiaolei.wang@windriver.com>
-In-Reply-To: <20250115014118.4086729-1-xiaolei.wang@windriver.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 16 Jan 2025 16:57:56 +0100
-X-Gm-Features: AbW1kvYIxEEhaAOaS13it3QYjlHMEzrYgUS_q1Twane_cAE7ZLMDO-j-7TvLw_Y
-Message-ID: <CAPDyKFrpwPLjk+fzAC+1=z5rWJ0UiSTndbq2hET64KDcwsNzKw@mail.gmail.com>
-Subject: Re: [PATCH v3] pmdomain: imx8mp-blk-ctrl: add missing loop break condition
-To: Xiaolei Wang <xiaolei.wang@windriver.com>
-Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, Frank.Li@nxp.com, ping.bai@nxp.com, 
-	l.stach@pengutronix.de, marex@denx.de, aford173@gmail.com, 
-	linux-pm@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB4956:EE_|PH0PR12MB8052:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5e47d717-c826-4d31-dcc7-08dd3647e59d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bjZpcGVGL3FCM1FOeHhkUjQvdU5tdE5zbk11QVh6dGVxeWVkblRZYXNUZ0Y1?=
+ =?utf-8?B?Vk1SSW0zZk9QNE91TUVkT1dJWDlHNVozRGVIRmlhSDAzMmQ4bkwwS2hrRlJv?=
+ =?utf-8?B?dEtibGh6N2dFU0llSTlIMzFUN2hoUDU4VTNPaW5FWVJCSDZPTTRnK1l6VFY5?=
+ =?utf-8?B?NjlIQWZzUG85YUYrNTVWR05halFPZElyY3V0Yk5ISUUwSy8zT3JTSERHMEty?=
+ =?utf-8?B?cW1VNHlwNGNtaVdBSHgyMmx4b25WVjNiVUJLcCt2bE9qV3h0MktJK3o2bVRj?=
+ =?utf-8?B?QS9IeXIzYUxtWGVNc1hBUk1wRjIxV0lONUVtd0FiVHVEenkra0NZTE5zNUZW?=
+ =?utf-8?B?WCsyUjdJQXB5SHhPYXVaZ3BQOTY5YjZHYlJHNjhuNG9PZG94c2wrRzNhZitK?=
+ =?utf-8?B?Ti8yaXFYMVFqSEJLdDJ6VDcycE5XZXJNRVR6Yzdtbmt2SVlJWkVCdlVObElX?=
+ =?utf-8?B?WjVFeEVNR1FFY095TVRnRmYxWkZSWTBFbFFUcnpHVUFhTDlCZllRNlJUTG80?=
+ =?utf-8?B?b1paZlpPTG1BYkVISDY5cDl0a2pKTHZyWEhXaU9PUFphVjIwUVFiVE0vLytY?=
+ =?utf-8?B?cGJ2dDNMN1JBdVVWaFFhZ1FyM3NmTFA0RUNWc3pvU3p3alNDTzF2RjdLbGJv?=
+ =?utf-8?B?SGtDNkNubXZXaGxJdHZRbVc4aEFhdWk2WVdtL1E1ME1pNlZWbW51bHNGWEJl?=
+ =?utf-8?B?NkVGRUFOYnJtQUhNY0dpYjJ1SmM1Q3J5L25aN0x6WXhxNDB6WXNvKzlCOUl5?=
+ =?utf-8?B?Z0E0a2JtK0l0SmN0d0hSUEp5dTA5MzFwczJZM1gxYTAwNGQ2YWRVKy9sVXdW?=
+ =?utf-8?B?UXM3V1Z2eHBzMk1kS0VCK3lZYUNzdVd6WGFpaTRDTFFTbDhjY0hob2hvZXdh?=
+ =?utf-8?B?eXhJcHQ4UzNvYWxwcGJKd3RjcnRPdVpaQ1FoQ1VFRElVclE4WGoyL1lSckNi?=
+ =?utf-8?B?amE0T2RScWpFK1NoWFVBUWh1ZFpDcjJjbVdrd1hDc202cEV4Zy9PNnBLc3VE?=
+ =?utf-8?B?d2ZxejJBMHZzOGRPSXB2d3E4UjJGdHJPd3BjQnRZYnBBbWNTTE5qOTdiSXZk?=
+ =?utf-8?B?UkNXb0NiNklGSHhhWGRqQ1NEd0h6OWFUWWdpYktPMXc4YlByS254cVJJSUJv?=
+ =?utf-8?B?bVRTSEliaVRuTGtUdldnVFNkWWxKWVI0MG5Ub2luQUw3eHNteGFBTjFBQVhZ?=
+ =?utf-8?B?d0hQbDVOdFdBU2xHYTYyOHJMUzF3cUdZOG0zZDdzaDh2OWYxcWNOZkR6K2hw?=
+ =?utf-8?B?cjVCdDVGZzZRbWc5cGI2OHY2Q1ZFN1Fia085RzMwRW95U3FUNDNLbXVRSUlW?=
+ =?utf-8?B?MVhGYUFCd0xLZTdGNWtPa0VnL20rY1pGTnNWR1VGUUhoNllDRE90Vlo0Y0l0?=
+ =?utf-8?B?aStlQytoSHVEcmtEVnRiOURYL3VDVUNVVSs5TXpTQTdOdGE0M1dMNkdyODhV?=
+ =?utf-8?B?ZVRrRkZxb1VSTEdDb0swY0gvYU9DZnRSWDhDaG03eWdLbUEvb3J5K1lQaVZC?=
+ =?utf-8?B?VE1yYlhkMGFhTHpQVzR2bDFWbUNVSUZscFFUYTRpazZzZWlkUWRYS0RTa2dt?=
+ =?utf-8?B?bVZlY29zSFBRcGlZM2JHZy9YNlV6MTdJSXk5dkQyZEhqV3lGVm80SkErYkd4?=
+ =?utf-8?B?NFg1ZUQxRjFFTVU1STB0Q1Y2dWsyL05pQ09HVG5CY29YVUVvOTE3Ri90dXV6?=
+ =?utf-8?B?eXp3bWJTa0VJYmRteFJobDhTR2YzcnlTT2JtbGowMGd4V2xtUVl3Vms3OU5T?=
+ =?utf-8?B?bXlkRDFnTm1GTzlkaHcrMXNEbnNKZVBFSitJbk5KUDhQTHZkL2ZUaWpyWXhm?=
+ =?utf-8?B?cW8vUlBXUi9IWTZaMFVKRzRkaGw1Q2tGVlZkelc5ajF3TFM3cXppRk00b3Zm?=
+ =?utf-8?Q?wyga6zGZWpN4b?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB4956.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RXNqem1NT05pSURDUThlOE10cGdMa29CeUVScjd6MUgzZjYzclVkdS8rcFNz?=
+ =?utf-8?B?VjVKckFoSG1HNWFFNFZuTVdIbmIxbktsRFRtUVNZbGU4TmdwaGI3QktnaytE?=
+ =?utf-8?B?SFROS3Z0VkdSckt2MWtzV3hIaDVxR3JLVkdSRXBFeDdNODQzelFKejZUdlJN?=
+ =?utf-8?B?UE9hemlZaGg0ZlJRSjNSNWRSYVRUTFk1dEpORDlTbnRlZmdua2xWUVlKOFVl?=
+ =?utf-8?B?bFVBTmF4ZWpqLzU2RW5PbURZVndUTC9ETC85SUlmeTY0cjNMbU04YVVxTmZ1?=
+ =?utf-8?B?OGNpVWZjazlBazRjUU5uTXVuK00zRjVmWnhqVGkrcUFUYlVEcURmeGJyT2hz?=
+ =?utf-8?B?VUREWmVCUis3V2RCUFlRS0ZQZnVsV1JoS0dyMWViRTV5bmVzZzJTL0hvaHBR?=
+ =?utf-8?B?eWRySFNobDZYejFQSHh5NUNMaGtVZkpDVzgzbEk1aVY0d3R5Qmc5b0FoNGJO?=
+ =?utf-8?B?c1lTWWRZRkYrR3dNUVR0TGFEL2JDcURsR01iY2kwWk90MUNTek5ORUEvR0E0?=
+ =?utf-8?B?TEFHRTB3eTVBNVpNczg4WlU0MldCbnRLSmtzb21XMDI2VDRnWHlRVjBQd0xa?=
+ =?utf-8?B?WEprcFIzbXIxcWw3VUNwTXdJUDVvckI1NWdKaVJyNmVFaEZPalBiSHlhUzJl?=
+ =?utf-8?B?dThZTEUrQUswbmF3aFlNQ05EWVliUnFWV2RGY0JFZHFUUnVtUE55WHpiV3BN?=
+ =?utf-8?B?ZDQ2MU5WdlVnTmlBb0FPaytVUEU3Um5XRjkvRGY3VS90TmJORGZjbXZzQXIy?=
+ =?utf-8?B?YStvRW9mVXV3emo3LzZ1NGtKN0p5ZlZEMWRYMVpjVGFkdHdQcGFRZW5icVhS?=
+ =?utf-8?B?WVlKb2NXaVhIZ0YycDBtMVdaV1hZMUNRaWhFM0l6Tm9aeElOaGVTRGgxbzNG?=
+ =?utf-8?B?R3pIYUFqZGdvV29pcTd4cHZzSSttSE9QaGZlbENncU1FR0xveVBkelk2UEd1?=
+ =?utf-8?B?ay96bmVLQ2FvdE11eU1WUlQ4Z3V0dlgxanltQ1RIcmhZWVg1RzlwQmZBbWY5?=
+ =?utf-8?B?QUVsWTVqT0FPNHRKQjdSd1QxNFZ5U2RSUkVmUmxYU3FnZ0ZVZm8vMjVQUGN0?=
+ =?utf-8?B?aDQyZVFudm42WmhTekJSa3JSZkJ6bWJ2NDVXNktuYzU0SVE2N2JMVVk1VjMr?=
+ =?utf-8?B?TW5nSlF0K0tjMHpzUFFCVUc0U1VKN1Nvc3BMM3EwSXQ2dkdscjVoVFFxK2VL?=
+ =?utf-8?B?NytLRHZTRSsxOEsyMXhST0NmckVDcm5GMmIyNzdGOEFWRERWWDJBUkRxaHJY?=
+ =?utf-8?B?NGcvcUdJTzUxVVU3aXUxQm42dnpodis1NWhGSkZOWWRmSk02Yzh5WE5OSEEv?=
+ =?utf-8?B?dkhjTCtGSTFXYzV6VEs0Tk9sL29zSWxIeEYvaUJBMXI2dUtXWDR2Z3J0Ykpy?=
+ =?utf-8?B?VDdPaHc1YkVrQmg0NG50OTdWWGtTb0RIelZvZ2ZFdlJOOGZEaHpFRlYvKzJF?=
+ =?utf-8?B?MGIzaDA5dmFRYmxNQVNoL0lrVENBUTVGMGRCNmF1bE1nR0x2dGk4dDhsMWNk?=
+ =?utf-8?B?QkRVZkM2Y3Nqb0cvMUtLWXRnS2lEQjZQdzVoS0dqV2pLODc0bEJCUHNNaHVZ?=
+ =?utf-8?B?TU9LZW82YUVUcGdxZVNOWE1yd2Y2ZDFzM3lzUHBoLzZ1VDIzT08xSXdnMjNE?=
+ =?utf-8?B?bXE4djUwdDAzanl2YlprdlBNVy9DUzZpQk5rY3pnTFArdzdVeGpNMmdtMy82?=
+ =?utf-8?B?UlpBWkl4QkJPakRNTkhOckN3QlJJQVVtUWFJUnJTSFdLWVA3MGlBdVpWaGty?=
+ =?utf-8?B?L0xGbEVvZzZ3c1NCUUsyV3ZYZmQ1M0ZjL002QjU4RlM2RHFXd0FMcWlvVjNS?=
+ =?utf-8?B?LzNBUXBnNkFtOHNUWjZJOVdvMDlDRGJNb0lNT1JOUVluamxGUE9uYVQrb25G?=
+ =?utf-8?B?K1pFaWF3bjRVVVNuVmdkWEdKVGxyeHZ6OVpud2RYMjVuOEZuREozMlZEb3A3?=
+ =?utf-8?B?NW1icUY1RjljZlRJellLZUxUT1l1OUlGT0d0cFh1RUpyRVVpVzFJUUNvWlUy?=
+ =?utf-8?B?QWJxNDh6L2Q5TmsweVlhR3dlVjhkeDJwbm01ektYK0dMN2prM3ZaL3QwNkNM?=
+ =?utf-8?B?V1pGV3B4Qm4wUkR0N0VVUm5LeDlPM2N5T3k3NHozd3BxcEtIY2YrdERwSWRT?=
+ =?utf-8?Q?CfajANKU72CCKUVvLe/Qw7NKJ?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5e47d717-c826-4d31-dcc7-08dd3647e59d
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB4956.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2025 16:07:38.0990
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: z6JRVaEVHHOk9e9RZQKR0ifuXN11cYm8Tg/N0BDPYXgU2ZZGPIFJ/h+1HApbkWR2
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8052
 
-On Wed, 15 Jan 2025 at 02:41, Xiaolei Wang <xiaolei.wang@windriver.com> wrote:
->
-> Currently imx8mp_blk_ctrl_remove() will continue the for loop
-> until an out-of-bounds exception occurs.
->
-> pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> pc : dev_pm_domain_detach+0x8/0x48
-> lr : imx8mp_blk_ctrl_shutdown+0x58/0x90
-> sp : ffffffc084f8bbf0
-> x29: ffffffc084f8bbf0 x28: ffffff80daf32ac0 x27: 0000000000000000
-> x26: ffffffc081658d78 x25: 0000000000000001 x24: ffffffc08201b028
-> x23: ffffff80d0db9490 x22: ffffffc082340a78 x21: 00000000000005b0
-> x20: ffffff80d19bc180 x19: 000000000000000a x18: ffffffffffffffff
-> x17: ffffffc080a39e08 x16: ffffffc080a39c98 x15: 4f435f464f006c72
-> x14: 0000000000000004 x13: ffffff80d0172110 x12: 0000000000000000
-> x11: ffffff80d0537740 x10: ffffff80d05376c0 x9 : ffffffc0808ed2d8
-> x8 : ffffffc084f8bab0 x7 : 0000000000000000 x6 : 0000000000000000
-> x5 : ffffff80d19b9420 x4 : fffffffe03466e60 x3 : 0000000080800077
-> x2 : 0000000000000000 x1 : 0000000000000001 x0 : 0000000000000000
-> Call trace:
->  dev_pm_domain_detach+0x8/0x48
->  platform_shutdown+0x2c/0x48
->  device_shutdown+0x158/0x268
->  kernel_restart_prepare+0x40/0x58
->  kernel_kexec+0x58/0xe8
->  __do_sys_reboot+0x198/0x258
->  __arm64_sys_reboot+0x2c/0x40
->  invoke_syscall+0x5c/0x138
->  el0_svc_common.constprop.0+0x48/0xf0
->  do_el0_svc+0x24/0x38
->  el0_svc+0x38/0xc8
->  el0t_64_sync_handler+0x120/0x130
->  el0t_64_sync+0x190/0x198
-> Code: 8128c2d0 ffffffc0 aa1e03e9 d503201f
->
-> Fixes: 556f5cf9568a ("soc: imx: add i.MX8MP HSIO blk-ctrl")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-> Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
-> Reviewed-by: Fabio Estevam <festevam@gmail.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-
-Applied for fixes, thanks!
-
-Kind regards
-Uffe
 
 
-> ---
-> v1:
->   https://patchwork.kernel.org/project/imx/patch/20250113045609.842243-1-xiaolei.wang@windriver.com/
->
-> v2:
->   Update commit subject
->
-> v3:
->   cc stable
->
->  drivers/pmdomain/imx/imx8mp-blk-ctrl.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-> index e3a0f64c144c..3668fe66b22c 100644
-> --- a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-> +++ b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-> @@ -770,7 +770,7 @@ static void imx8mp_blk_ctrl_remove(struct platform_device *pdev)
->
->         of_genpd_del_provider(pdev->dev.of_node);
->
-> -       for (i = 0; bc->onecell_data.num_domains; i++) {
-> +       for (i = 0; i < bc->onecell_data.num_domains; i++) {
->                 struct imx8mp_blk_ctrl_domain *domain = &bc->domains[i];
->
->                 pm_genpd_remove(&domain->genpd);
-> --
-> 2.25.1
->
+On 1/16/25 2:52 AM, Uros Bizjak wrote:
+> On Mon, Dec 16, 2024 at 6:47 PM Tanmay Shah <tanmay.shah@amd.com> wrote:
+>>
+>> Reviewed-by: Tanmay Shah <tanmay.shah@amd.com>
+> 
+> Is there anything else expected from me to move this patch forward?
+> 
+> Uros.
+> 
+
+Not from my side. I am not sure workflow for this subsystem but, I 
+believe this needs RB from Jassi. (subsystem maintainer).
+
+>>
+>> On 12/16/24 1:16 AM, Michal Simek wrote:
+>>>
+>>>
+>>> On 12/14/24 10:12, Uros Bizjak wrote:
+>>>> struct zynqmp_ipi_pdata __percpu *pdata is not a per-cpu variable,
+>>>> so it should not be annotated with __percpu annotation.
+>>>>
+>>>> Remove invalid __percpu annotation to fix several
+>>>>
+>>>> zynqmp-ipi-mailbox.c:920:15: warning: incorrect type in assignment
+>>>> (different address spaces)
+>>>> zynqmp-ipi-mailbox.c:920:15:    expected struct zynqmp_ipi_pdata
+>>>> [noderef] __percpu *pdata
+>>>> zynqmp-ipi-mailbox.c:920:15:    got void *
+>>>> zynqmp-ipi-mailbox.c:927:56: warning: incorrect type in argument 3
+>>>> (different address spaces)
+>>>> zynqmp-ipi-mailbox.c:927:56:    expected unsigned int [usertype]
+>>>> *out_value
+>>>> zynqmp-ipi-mailbox.c:927:56:    got unsigned int [noderef] __percpu *
+>>>> ...
+>>>>
+>>>> and several
+>>>>
+>>>> drivers/mailbox/zynqmp-ipi-mailbox.c:924:9: warning: dereference of
+>>>> noderef expression
+>>>> ...
+>>>>
+>>>> sparse warnings.
+>>>>
+>>>> There were no changes in the resulting object file.
+>>>>
+>>>> Cc: stable@vger.kernel.org
+>>>> Fixes: 6ffb1635341b ("mailbox: zynqmp: handle SGI for shared IPI")
+>>>> Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+>>>> Cc: Jassi Brar <jassisinghbrar@gmail.com>
+>>>> Cc: Michal Simek <michal.simek@amd.com>
+>>>> Cc: Tanmay Shah <tanmay.shah@amd.com>
+>>>> ---
+>>>> v2: - Fix typo in commit message
+>>>>       - Add Fixes and Cc: stable.
+>>>> ---
+>>>>    drivers/mailbox/zynqmp-ipi-mailbox.c | 2 +-
+>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/
+>>>> zynqmp-ipi-mailbox.c
+>>>> index aa5249da59b2..0c143beaafda 100644
+>>>> --- a/drivers/mailbox/zynqmp-ipi-mailbox.c
+>>>> +++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
+>>>> @@ -905,7 +905,7 @@ static int zynqmp_ipi_probe(struct platform_device
+>>>> *pdev)
+>>>>    {
+>>>>        struct device *dev = &pdev->dev;
+>>>>        struct device_node *nc, *np = pdev->dev.of_node;
+>>>> -    struct zynqmp_ipi_pdata __percpu *pdata;
+>>>> +    struct zynqmp_ipi_pdata *pdata;
+>>>>        struct of_phandle_args out_irq;
+>>>>        struct zynqmp_ipi_mbox *mbox;
+>>>>        int num_mboxes, ret = -EINVAL;
+>>>
+>>> Tanmay: Please take a look
+>>>
+>>> I think this patch is correct. Pdata structure is allocated only once
+>>> not for every CPU and marking here is not correct. Information from
+>>> zynqmp_ipi_pdata are likely fixed and the same for every CPU. Only IRQ
+>>> handling is done per cpu basis but that's it.
+>>>
+>>> Reviewed-by: Michal Simek <michal.simek@amd.com>
+>>>
+>>> Thanks,
+>>> Michal
+>>>
+>>
+
 
