@@ -1,302 +1,296 @@
-Return-Path: <stable+bounces-109220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFEBA133EA
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 08:31:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D5FBA133F5
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 08:32:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2EEB188294B
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 07:31:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 178933A0134
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 07:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323B219ABC2;
-	Thu, 16 Jan 2025 07:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5F141A8F95;
+	Thu, 16 Jan 2025 07:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="ss9FfK8X"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YftAFy6p"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B3A199FC1;
-	Thu, 16 Jan 2025 07:27:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3541AB531;
+	Thu, 16 Jan 2025 07:31:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737012482; cv=none; b=oXjTHPPHgPZW/6dwrIQfqbVam2Qdun5K+mMJoBpQbnTpD5d+qD3yFedMbqAIWvMqJQi357uqOMK47BqDeVm7Y2T7wOkDhRM6dO/YVt1Jd29cHoZJYRRfr2KFLBncamSqk4vyP+P45SNLzAA6v+pUofkE6ZVUgh2Y2YcJfOhl0zs=
+	t=1737012671; cv=none; b=CuaiNrEVYbqa9cibzIrGiO6iyHNaSnWdu81bZnJ+xpQq0ex6uxKvHov0WFtvAniJzR6KBmv7od8vcxLV5C8vl88c/Km//8NxXKy2E7Re0qRkAz3uW5iYwj55DoO71EJezzYPZ+sIjoU0U6uqpeVomBqqiuegITXY89ULBqu/irk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737012482; c=relaxed/simple;
-	bh=DMKREo++5GYgYbU7DrQaKy55Cmlm9KURSOVKcrmn5zw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iB5cY3srNEda8IoCpacyVFDygCF2Wbh/DK0lXrCCZZvU9ejzEW38UwTz3ItsCEeglweCu3t5hYtQn1aumvIlZUeKDMyq2kpheq9ZvV42u2nqSCLPYPdCJgeBzjxTq3LecKa5teWxrwn8yVtBu1YiP2z7hNwncIQsCgB7jFLDJ3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=ss9FfK8X; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [192.168.7.202] ([71.202.166.45])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 50G7RBDo3602966
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Wed, 15 Jan 2025 23:27:12 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 50G7RBDo3602966
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2024121701; t=1737012432;
-	bh=ZwfUBejq+Moxf/HAMrR5/vFX6Uq3zII0FJYRH/4Un2g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ss9FfK8X2P7iTUASdvVFQHcoBH1FX2JdGHR/iQPrpM9bx0dgMe5rGYagXFFdUse35
-	 Iks9G97h5ERHZp1g+AaZPqiLZMu4SDWHxKAXL9O2SzBEVYct+GnMDsx2YoWMYHPbNX
-	 N2W0NJbev1SB8q8NWK7TVs/qzJ4Fhdzswf+JaoCzme+vmX3V24KgW1SrjhkioKRC5M
-	 /UrTnf8WOJDkkdMKXmHe9skUx10eAsUQLIEmU+o7+aNFg7kVpTDzbnEi7RDGpHdWUQ
-	 ZkZvXjJjNAw8S+H38T+a7dX+o4pgo/yLlhffQ5NYXreQ1AJAqX+MFXNQ70nz33QIzh
-	 4lMDJCi3npQtA==
-Message-ID: <417271c4-0297-41da-a39b-5d5b28dd73f9@zytor.com>
-Date: Wed, 15 Jan 2025 23:27:11 -0800
+	s=arc-20240116; t=1737012671; c=relaxed/simple;
+	bh=N4CTZPhh7SYMQpI3xkNGDWxExoBcXjQWr5wcyiutEaM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qc8hinHC3DuHCTbDDobUmT7H4hteXUehoRoO8ZgRdG4+RCr2eOC9D+Kzr2hacnKr9R51k84MJ9fkXziBrcxkAS4J665/jO3JSUNY0dqS8FwUMpV2Lun5HsQ81xUfFIM0qdhQWcgUjZCgHgLRKhtxyEtJGmS2+O5bBl8Xjh/mFjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YftAFy6p; arc=none smtp.client-ip=209.85.166.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-3a9628d20f0so4368345ab.2;
+        Wed, 15 Jan 2025 23:31:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737012669; x=1737617469; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aMJuqVP9xZ6e824fp9u5ndERb9mrfeYm7csKDRij//w=;
+        b=YftAFy6pZWVNuNj84kOpG05v6cUFZFzlHfZgLL/T+U117U0IBt/7JGktCEcf8N8R+W
+         dkHrj47q3DT2ZkRwmOu7JQyQf2VwoSjJYj2bagJ84bhOAV0vjzJneX/wNoAC7fbuLSo2
+         ZmZTqpk+A7oZnTPhU04H0EigHtioYh9mSgJ/eze3WOLFlG/Bl67i0yQGxz5CUjNRSOPr
+         HFCRwhh/mdRBPy/jf/5vULaoWqF/OunIb1rBt57VDQkANLXjZzlGY+rqGTmsNVfGUADv
+         V51Ta6mAqpe9qbYIrzqv5WDGdT9buBR7mmDKDzfIO/HFlWDlSwzvLYnMGtB3KlEPAlLV
+         U3RQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737012669; x=1737617469;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aMJuqVP9xZ6e824fp9u5ndERb9mrfeYm7csKDRij//w=;
+        b=sp821Aq7u6td59hp3ZyBmwOwISUIy2ZPd85LHnDqT+rqk9YHcbcnR0mPqlIX+V7282
+         uFovUXdt7hu0vVwON21hrU5EqWtDDI26kRbsS0XyATUxA47nAnuGCBzbSjn1Oh4IyBtp
+         eEHP7EG9Z/bo6pqaNHin4v9uIL4pSrRMs5+wanj29TwIOVwWBQr9qxGqIQ8Q3h8qZZUM
+         tXp0CcpuBsweEd8YjN1Ifcu5z7c5Hg3AK9xbqiDrNYJE/uPqmaWISbAPI5jaqmByQb1B
+         APoQm7Wt5u5kOMU14cOyd0/pMqR31EW8kzAqB1PQxrmQw4gbNePB4cylQGqMeSoCd8DW
+         +6hw==
+X-Forwarded-Encrypted: i=1; AJvYcCVSfbynEsQbV5V9vYgPV8dqxJAnRH1NqlXxHbHEwa81Dwwr2DhMO/x9zquJZ2xGcGrml0wB57CfLWP1L+Lv@vger.kernel.org, AJvYcCW/uI3jZVZFA5lm4r9qnHyDAUPbWfhDdPfvbKEE+WYvi1FiVtT/1+bEgokFdfe0mBYKD2vSGY3D@vger.kernel.org, AJvYcCXYqDECM+frXTg3TqalX0Frj5HBRHYrwQvPNVA/HRIbrCg3b+DSax7KblqevFF75G+SqHtCr7y5+Jw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcNRA02XJekU2Bg67Z2p8te+SWip2y0dhsojXTqCRjjr/yuJHf
+	HQikGFyv+hyWn0CvZhWFSsZJCuQkfKhAhoDxzRdCjoQPPrKDTsNZ9Y5RItDDQUp2f+i8Q9f7McE
+	LPywlT2FQWShMbMtrrww2rMOmgUo=
+X-Gm-Gg: ASbGncseO4ew/8rS5QwOXOGoCYFTv9G7daBdOWYbNim/x3pwaZCvVxVY/0WD83NLbSy
+	B2RnUqPPCGT552jYoN1jaKsEcFQCQALv+7PviMA==
+X-Google-Smtp-Source: AGHT+IF1ff9iGSm6xVezEjJOvE+/T2WhT+6/CMhCEb6PEQNtT4EoujG5Cy/nW1Q6k5jX4nnbRMzMBCjMXcEqUJNCrm4=
+X-Received: by 2002:a05:6e02:1d11:b0:3ce:7f88:1f50 with SMTP id
+ e9e14a558f8ab-3ce7f88218bmr82643225ab.2.1737012668468; Wed, 15 Jan 2025
+ 23:31:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/fred: Optimize the FRED entry by prioritizing
- high-probability event dispatching
-To: Ethan Zhao <haifeng.zhao@linux.intel.com>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Cc: tglx@linutronix.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zytor.com, andrew.cooper3@citrix.com, mingo@redhat.com,
-        bp@alien8.de, etzhao@outlook.com
-References: <20250116065145.2747960-1-haifeng.zhao@linux.intel.com>
-Content-Language: en-US
-From: Xin Li <xin@zytor.com>
-Autocrypt: addr=xin@zytor.com; keydata=
- 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
- l75w1xInsg==
-In-Reply-To: <20250116065145.2747960-1-haifeng.zhao@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250113094654.12998-1-eichest@gmail.com> <CAA+D8ANvKQKJhn6qKbPhQeXPD5kxUo3Hg-FBLkDMOaWLTA8vVg@mail.gmail.com>
+ <Z4ZRYMf_uJW4poW9@eichest-laptop> <Z4dy3LiEAQ_gkQGG@eichest-laptop>
+ <CAA+D8AO75MLyP5AWDJoogw8ae4GRtZfSR-HT+S26bXoaVs8saQ@mail.gmail.com>
+ <Z4eQX_VnBEVqxT_r@eichest-laptop> <CAA+D8APivJWD-AqwmQ-mtcr=ZHot5rfA8FRWF2+p-_mq5BGxHA@mail.gmail.com>
+ <Z4i0G5Tw4q0v8DTL@eichest-laptop>
+In-Reply-To: <Z4i0G5Tw4q0v8DTL@eichest-laptop>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Thu, 16 Jan 2025 15:30:55 +0800
+X-Gm-Features: AbW1kvaGTG5piw6TJpqkEDtHRmvjOo9HK905H8DjWClafLXjlYSC7QR9I0a9tm8
+Message-ID: <CAA+D8AOakQdnEe9ZrfTCrWcjHJRRU0kqFVsiu8+FMiHeMAVV_g@mail.gmail.com>
+Subject: Re: [PATCH v1] clk: imx: imx8-acm: fix flags for acm clocks
+To: Stefan Eichenberger <eichest@gmail.com>
+Cc: abelvesa@kernel.org, peng.fan@nxp.com, mturquette@baylibre.com, 
+	sboyd@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, shengjiu.wang@nxp.com, 
+	francesco.dolcini@toradex.com, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 1/15/2025 10:51 PM, Ethan Zhao wrote:
-> External interrupts (EVENT_TYPE_EXTINT) and system calls (EVENT_TYPE_OTHER)
-> occur more frequently than other events in a typical system. Prioritizing
-> these events saves CPU cycles and optimizes the efficiency of performance-
-> critical paths.
+On Thu, Jan 16, 2025 at 3:24=E2=80=AFPM Stefan Eichenberger <eichest@gmail.=
+com> wrote:
+>
+> Hi Shengjiu Wang,
+>
+> On Thu, Jan 16, 2025 at 12:01:13PM +0800, Shengjiu Wang wrote:
+> > On Wed, Jan 15, 2025 at 6:39=E2=80=AFPM Stefan Eichenberger <eichest@gm=
+ail.com> wrote:
+> > >
+> > > On Wed, Jan 15, 2025 at 05:14:09PM +0800, Shengjiu Wang wrote:
+> > > > On Wed, Jan 15, 2025 at 4:33=E2=80=AFPM Stefan Eichenberger <eiches=
+t@gmail.com> wrote:
+> > > > >
+> > > > > Hi Shengjiu Wang,
+> > > > >
+> > > > > On Tue, Jan 14, 2025 at 12:58:24PM +0100, Stefan Eichenberger wro=
+te:
+> > > > > > Hi Shengjiu Wang,
+> > > > > >
+> > > > > > On Tue, Jan 14, 2025 at 03:49:10PM +0800, Shengjiu Wang wrote:
+> > > > > > > On Mon, Jan 13, 2025 at 5:54=E2=80=AFPM Stefan Eichenberger <=
+eichest@gmail.com> wrote:
+> > > > > > > >
+> > > > > > > > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> > > > > > > >
+> > > > > > > > Currently, the flags for the ACM clocks are set to 0. This =
+configuration
+> > > > > > > > causes the fsl-sai audio driver to fail when attempting to =
+set the
+> > > > > > > > sysclk, returning an EINVAL error. The following error mess=
+ages
+> > > > > > > > highlight the issue:
+> > > > > > > > fsl-sai 59090000.sai: ASoC: error at snd_soc_dai_set_sysclk=
+ on 59090000.sai: -22
+> > > > > > > > imx-hdmi sound-hdmi: failed to set cpu sysclk: -22
+> > > > > > >
+> > > > > > > The reason for this error is that the current clock parent ca=
+n't
+> > > > > > > support the rate
+> > > > > > > you require (I think you want 11289600).
+> > > > > > >
+> > > > > > > We can configure the dts to provide such source, for example:
+> > > > > > >
+> > > > > > >  &sai5 {
+> > > > > > > +       assigned-clocks =3D <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>=
+,
+> > > > > > > +                       <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
+> > > > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_=
+CLK_PLL>,
+> > > > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_=
+CLK_SLV_BUS>,
+> > > > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_=
+CLK_MST_BUS>,
+> > > > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_=
+CLK_PLL>,
+> > > > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_=
+CLK_SLV_BUS>,
+> > > > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_=
+CLK_MST_BUS>,
+> > > > > > > +                       <&sai5_lpcg 0>;
+> > > > > > > +       assigned-clock-parents =3D <&aud_pll_div0_lpcg 0>, <&=
+aud_rec1_lpcg 0>;
+> > > > > > > +       assigned-clock-rates =3D <0>, <0>, <786432000>, <4915=
+2000>, <12288000>,
+> > > > > > > +                                <722534400>, <45158400>, <11=
+289600>,
+> > > > > > > +                               <49152000>;
+> > > > > > >         status =3D "okay";
+> > > > > > >  };
+> > > > > > >
+> > > > > > > Then your case should work.
+> > > > > > >
+> > > > > > > >
+> > > > > > > > By setting the flag CLK_SET_RATE_NO_REPARENT, we signal tha=
+t the ACM
+> > > > > > >
+> > > > > > > I don't think CLK_SET_RATE_NO_REPARENT is a good choice. whic=
+h will cause
+> > > > > > > the driver don't get an error from clk_set_rate().
+> > > > > >
+> > > > > > Thanks for the proposal, I will try it out tomorrow. Isn't this=
+ a
+> > > > > > problem if other SAIs use the same clock source but with differ=
+ent
+> > > > > > rates?
+> > > > > >
+> > > > > > If we have to define fixed rates in the DTS or else the clock d=
+river
+> > > > > > will return an error, isn't that a problem? Maybe I should chan=
+ge the
+> > > > > > sai driver so that it ignores the failure and just takes the ra=
+te
+> > > > > > configured? In the end audio works, even if it can't set the re=
+quested
+> > > > > > rate.
+> > > > >
+> > > > > The following clock tree change would allow the driver to work
+> > > > > in our scenario:
+> > > > > &sai5 {
+> > > > >         assigned-clocks =3D <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
+> > > > >                           <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CL=
+K_PLL>;
+> > > > >         assigned-clock-parents =3D <&aud_pll_div1_lpcg 0>;
+> > > > >         assigned-clock-rates =3D <0>, <11289600>;
+> > > > > };
+> > > >
+> > > > In which we configure PLL_0 for 48KHz series (8kHz/16kHz/32kHz/48kH=
+z),
+> > > > PLL_1 for 44kHz series (11kHz/22kHz/44kHz),
+> > > > which should fit for most audio requirements.
+> > > >
+> > > > >
+> > > > > However, this means we have to switch the parent clock to the aud=
+io pll
+> > > > > 1. For the simple setup with two SAIs, one for analog audio and o=
+ne for
+> > > > > HDMI this wouldn't be a problem. But I'm not sure if this is a go=
+od
+> > > > > solution if a customer would add a third SAI which requires again=
+ a
+> > > > > different parent clock rate.
+> > > >
+> > > > We won't change the PLL's rate in the driver,  so as PLL_0 for 48kH=
+z,
+> > > > PLL_1 for 44kHz,  even with a third SAI or more,  they should work.
+> > > >
+> > > > >
+> > > > > One potential solution could be that the SAI driver tries to firs=
+t
+> > > > > derive the clock from the current parent and only if this fails i=
+t tries
+> > > > > to modify its parent clock. What do you think about this solution=
+?
+> > > > >
+> > >
+> > > I did some more testing and I'm still not happy with the current
+> > > solution. The problem is that if we change the SAI5 mclk clock parent=
+ it
+> > > can either support the 44kHz series or the 48kHz series. However, in =
+the
+> > > case of HDMI we do not know in advance what the user wants.
+> > >
+> > > This means when testing either this works:
+> > > speaker-test -D hw:2,0 -r 48000 -c 2
+> > > or this works:
+> > > speaker-test -D hw:2,0 -r 44100 -c 2
+> > > With:
+> > > card 2: imxaudiohdmitx [imx-audio-hdmi-tx], device 0: i.MX HDMI i2s-h=
+ifi-0 [i.MX HDMI i2s-hifi-0]
+> >
+> > Are you using the setting below?  then should not either,  should both =
+works
+> >  &sai5 {
+> > +       assigned-clocks =3D <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
+> > +                       <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
+> > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
+> > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BU=
+S>,
+> > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BU=
+S>,
+> > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_PLL>,
+> > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_SLV_BU=
+S>,
+> > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_MST_BU=
+S>,
+> > +                       <&sai5_lpcg 0>;
+> > +       assigned-clock-parents =3D <&aud_pll_div0_lpcg 0>, <&aud_rec1_l=
+pcg 0>;
+> > +       assigned-clock-rates =3D <0>, <0>, <786432000>, <49152000>, <12=
+288000>,
+> > +                                <722534400>, <45158400>, <11289600>,
+> > +                               <49152000>;
+> >         status =3D "okay";
+> >  };
+>
+> Sorry I didn't communicate that properly. Yes I was trying with these
+> settings but they do not work. The problem does not seem to be that the
+> driver can not adjust the rate for the audio (so e.g. 44kHz or 48kHz)
+> but that snd_soc_dai_set_sysclk in imx-hdmi.c fails with EINVAL. This
+> results in a call to fsl_sai_set_mclk_rate in fsl_sai.c with clk_id 1
+> (mclk_clk[1]) and a freq of 11289600 which causes the fail.
+> Interestingly, in fsl_sai_set_bclk we then only use clk_get_rate on
+> mclk_clk[0] which is set to audio_ipg_clk (rate 175000000) and we do not
+> use mclk_clk[1] anymore at all. This is why I'm not sure if this call to
+> snd_soc_dai_set_syclk is really necessary?
+>
 
-We deliberately hold off sending performance improvement patches at this
-point, but first of all please read:
-     https://lore.kernel.org/lkml/87fs766o3t.ffs@tglx/
+Could you please check if you have the below commit in your test tree?
+35121e9def07 clk: imx: imx8: Use clk_hw pointer for self registered
+clock in clk_parent_data
 
-Thanks!
-     Xin
+if not, please cherry-pick it.
 
-> 
-> When examining the compiler-generated assembly code for event dispatching
-> in the functions fred_entry_from_user() and fred_entry_from_kernel(), it
-> was observed that the compiler intelligently uses a binary search to match
-> all event type values (0-7) and perform dispatching. As a result, even if
-> the following cases:
-> 
-> 	case EVENT_TYPE_EXTINT:
-> 		return fred_extint(regs);
-> 	case EVENT_TYPE_OTHER:
-> 		return fred_other(regs);
-> 
-> are placed at the beginning of the switch() statement, the generated
-> assembly code would remain the same, and the expected prioritization would
-> not be achieved.
-> 
-> Command line to check the assembly code generated by the compiler for
-> fred_entry_from_user():
-> 
-> $objdump -d vmlinux.o | awk '/<fred_entry_from_user>:/{c=65} c&&c--'
-> 
-> 00000000000015a0 <fred_entry_from_user>:
-> 15a0:       0f b6 87 a6 00 00 00    movzbl 0xa6(%rdi),%eax
-> 15a7:       48 8b 77 78             mov    0x78(%rdi),%rsi
-> 15ab:       55                      push   %rbp
-> 15ac:       48 c7 47 78 ff ff ff    movq   $0xffffffffffffffff,0x78(%rdi)
-> 15b3:       ff
-> 15b4:       83 e0 0f                and    $0xf,%eax
-> 15b7:       48 89 e5                mov    %rsp,%rbp
-> 15ba:       3c 04                   cmp    $0x4,%al
-> -->>			            /* match 4(EVENT_TYPE_SWINT) first */
-> 15bc:       74 78                   je     1636 <fred_entry_from_user+0x96>
-> 15be:       77 15                   ja     15d5 <fred_entry_from_user+0x35>
-> 15c0:       3c 02                   cmp    $0x2,%al
-> 15c2:       74 53                   je     1617 <fred_entry_from_user+0x77>
-> 15c4:       77 65                   ja     162b <fred_entry_from_user+0x8b>
-> 15c6:       84 c0                   test   %al,%al
-> 15c8:       75 42                   jne    160c <fred_entry_from_user+0x6c>
-> 15ca:       e8 71 fc ff ff          callq  1240 <fred_extint>
-> 15cf:       5d                      pop    %rbp
-> 15d0:       e9 00 00 00 00          jmpq   15d5 <fred_entry_from_user+0x35>
-> 15d5:       3c 06                   cmp    $0x6,%al
-> 15d7:       74 7c                   je     1655 <fred_entry_from_user+0xb5>
-> 15d9:       72 66                   jb     1641 <fred_entry_from_user+0xa1>
-> 15db:       3c 07                   cmp    $0x7,%al
-> 15dd:       75 2d                   jne    160c <fred_entry_from_user+0x6c>
-> 15df:       8b 87 a4 00 00 00       mov    0xa4(%rdi),%eax
-> 15e5:       25 ff 00 00 02          and    $0x20000ff,%eax
-> 15ea:       3d 01 00 00 02          cmp    $0x2000001,%eax
-> 15ef:       75 6f                   jne    1660 <fred_entry_from_user+0xc0>
-> 15f1:       48 8b 77 50             mov    0x50(%rdi),%rsi
-> 15f5:       48 c7 47 50 da ff ff    movq   $0xffffffffffffffda,0x50(%rdi)
-> ... ...
-> 
-> Command line to check the assembly code generated by the compiler for
-> fred_entry_from_kernel():
-> 
-> $objdump -d vmlinux.o | awk '/<fred_entry_from_kernel>:/{c=65} c&&c--'
-> 
-> 00000000000016b0 <fred_entry_from_kernel>:
-> 16b0:       0f b6 87 a6 00 00 00    movzbl 0xa6(%rdi),%eax
-> 16b7:       48 8b 77 78             mov    0x78(%rdi),%rsi
-> 16bb:       55                      push   %rbp
-> 16bc:       48 c7 47 78 ff ff ff    movq   $0xffffffffffffffff,0x78(%rdi)
-> 16c3:       ff
-> 16c4:       83 e0 0f                and    $0xf,%eax
-> 16c7:       48 89 e5                mov    %rsp,%rbp
-> 16ca:       3c 03                   cmp    $0x3,%al
-> -->>                                /* match 3(EVENT_TYPE_HWEXC) first */
-> 16cc:       74 3c                 je     170a <fred_entry_from_kernel+0x5a>
-> 16ce:       76 13                 jbe    16e3 <fred_entry_from_kernel+0x33>
-> 16d0:       3c 05                 cmp    $0x5,%al
-> 16d2:       74 41                 je     1715 <fred_entry_from_kernel+0x65>
-> 16d4:       3c 06                 cmp    $0x6,%al
-> 16d6:       75 27                 jne    16ff <fred_entry_from_kernel+0x4f>
-> 16d8:       e8 73 fe ff ff        callq  1550 <fred_swexc.isra.3>
-> 16dd:       5d                    pop    %rbp
-> ... ...
-> 
-> Therefore, it is necessary to handle EVENT_TYPE_EXTINT and EVENT_TYPE_OTHER
-> before the switch statement using if-else syntax to ensure the compiler
-> generates the desired code. After applying the patch, the verification
-> results are as follows:
-> 
-> $objdump -d vmlinux.o | awk '/<fred_entry_from_user>:/{c=65} c&&c--'
-> 
-> 00000000000015a0 <fred_entry_from_user>:
-> 15a0:       0f b6 87 a6 00 00 00    movzbl 0xa6(%rdi),%eax
-> 15a7:       48 8b 77 78             mov    0x78(%rdi),%rsi
-> 15ab:       55                      push   %rbp
-> 15ac:       48 c7 47 78 ff ff ff    movq   $0xffffffffffffffff,0x78(%rdi)
-> 15b3:       ff
-> 15b4:       48 89 e5                mov    %rsp,%rbp
-> 15b7:       83 e0 0f                and    $0xf,%eax
-> 15ba:       74 34                   je     15f0 <fred_entry_from_user+0x50>
-> -->>				    /* match 0(EVENT_TYPE_EXTINT) first */
-> 15bc:       3c 07                   cmp    $0x7,%al
-> -->>                                /* match 7(EVENT_TYPE_OTHER) second *
-> 15be:       74 6e                   je     162e <fred_entry_from_user+0x8e>
-> 15c0:       3c 04                   cmp    $0x4,%al
-> 15c2:       0f 84 93 00 00 00       je     165b <fred_entry_from_user+0xbb>
-> 15c8:       76 13                   jbe    15dd <fred_entry_from_user+0x3d>
-> 15ca:       3c 05                   cmp    $0x5,%al
-> 15cc:       74 41                   je     160f <fred_entry_from_user+0x6f>
-> 15ce:       3c 06                   cmp    $0x6,%al
-> 15d0:       75 51                   jne    1623 <fred_entry_from_user+0x83>
-> 15d2:       e8 79 ff ff ff          callq  1550 <fred_swexc.isra.3>
-> 15d7:       5d                      pop    %rbp
-> 15d8:       e9 00 00 00 00          jmpq   15dd <fred_entry_from_user+0x3d>
-> 15dd:       3c 02                   cmp    $0x2,%al
-> 15df:       74 1a                   je     15fb <fred_entry_from_user+0x5b>
-> 15e1:       3c 03                   cmp    $0x3,%al
-> 15e3:       75 3e                   jne    1623 <fred_entry_from_user+0x83>
-> ... ...
-> 
-> The same desired code in fred_entry_from_kernel is no longer repeated.
-> 
-> While the C code with if-else placed before switch() may appear ugly, it
-> works. Additionally, using a jump table is not advisable; even if the jump
-> table resides in the L1 cache, the cost of loading it is over 10 times the
-> latency of a cmp instruction.
-> 
-> Signed-off-by: Ethan Zhao <haifeng.zhao@linux.intel.com>
-> ---
-> base commit: 619f0b6fad524f08d493a98d55bac9ab8895e3a6
-> ---
->   arch/x86/entry/entry_fred.c | 25 +++++++++++++++++++------
->   1 file changed, 19 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/x86/entry/entry_fred.c b/arch/x86/entry/entry_fred.c
-> index f004a4dc74c2..591f47771ecf 100644
-> --- a/arch/x86/entry/entry_fred.c
-> +++ b/arch/x86/entry/entry_fred.c
-> @@ -228,9 +228,18 @@ __visible noinstr void fred_entry_from_user(struct pt_regs *regs)
->   	/* Invalidate orig_ax so that syscall_get_nr() works correctly */
->   	regs->orig_ax = -1;
->   
-> -	switch (regs->fred_ss.type) {
-> -	case EVENT_TYPE_EXTINT:
-> +	if (regs->fred_ss.type == EVENT_TYPE_EXTINT)
->   		return fred_extint(regs);
-> +	else if (regs->fred_ss.type == EVENT_TYPE_OTHER)
-> +		return fred_other(regs);
-> +
-> +	/*
-> +	 * Dispatch EVENT_TYPE_EXTINT and EVENT_TYPE_OTHER(syscall) type events
-> +	 * first due to their high probability and let the compiler create binary search
-> +	 * dispatching for the remaining events
-> +	 */
-> +
-> +	switch (regs->fred_ss.type) {
->   	case EVENT_TYPE_NMI:
->   		if (likely(regs->fred_ss.vector == X86_TRAP_NMI))
->   			return fred_exc_nmi(regs);
-> @@ -245,8 +254,6 @@ __visible noinstr void fred_entry_from_user(struct pt_regs *regs)
->   		break;
->   	case EVENT_TYPE_SWEXC:
->   		return fred_swexc(regs, error_code);
-> -	case EVENT_TYPE_OTHER:
-> -		return fred_other(regs);
->   	default: break;
->   	}
->   
-> @@ -260,9 +267,15 @@ __visible noinstr void fred_entry_from_kernel(struct pt_regs *regs)
->   	/* Invalidate orig_ax so that syscall_get_nr() works correctly */
->   	regs->orig_ax = -1;
->   
-> -	switch (regs->fred_ss.type) {
-> -	case EVENT_TYPE_EXTINT:
-> +	if (regs->fred_ss.type == EVENT_TYPE_EXTINT)
->   		return fred_extint(regs);
-> +
-> +	/*
-> +	 * Dispatch EVENT_TYPE_EXTINT type event first due to its high probability
-> +	 * and let the compiler do binary search dispatching for the other events
-> +	 */
-> +
-> +	switch (regs->fred_ss.type) {
->   	case EVENT_TYPE_NMI:
->   		if (likely(regs->fred_ss.vector == X86_TRAP_NMI))
->   			return fred_exc_nmi(regs);
+The audio_ipg_clk can be selected if there is no other choice.
+but the rate 175000000 is not accurate for 44kHz. what we got
+is 44102Hz. This is the reason I don't like to use this source.
 
+best regards
+Shengjiu Wang
 
