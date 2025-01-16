@@ -1,210 +1,272 @@
-Return-Path: <stable+bounces-109215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ACCBA13359
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 07:49:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20A3CA13371
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 07:57:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C7AA3A8032
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 06:48:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97A553A4936
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 06:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444231DB546;
-	Thu, 16 Jan 2025 06:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7031C1CF96;
+	Thu, 16 Jan 2025 06:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LTxPOW6z"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a/A0onfg"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2068.outbound.protection.outlook.com [40.107.237.68])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C5B1AAA10;
-	Thu, 16 Jan 2025 06:46:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737009971; cv=fail; b=lmouc6vdMHIhBvMMWwZVIRGL7RLlI6VvRhZ50q/vtQ6zdjqAHDHi+LnAIRgKfRxwgHtZcwapQT2i9HL9kUEb2DXkNKLtQU1e06TgrU5gtbYMNvSizSEuORh2bwd1DL0D+qBf9R2FAgvD++vWv8s24okrPX5L3axZJwSDcU2Gi2M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737009971; c=relaxed/simple;
-	bh=IfNpVg0m7YroXm4TsUJjaWw8CNn9yaYMJALC5ibXPms=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NrbflBVNgOX357RlGNGB6sK+V64Sih6XSc6nTotoHcKyp7zjifOuSHCDaJd6HpVSzQtPdCbmHwU/nqWSLWvYk0/yu8v/eZ249HawrKKL356nm9/jsQZ2+o9l9FFrLsfjGkntOevtACltAhPQ+UMub0f/NI7+++rXrr5zfAs3kVg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=LTxPOW6z; arc=fail smtp.client-ip=40.107.237.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oLbzSVfu4UGJ0rzkQ2GB1RbRSQFwdIiGPZW7GqoXYvjJ9C+y0i30/jWKGV1ey40Ker44OjmmagNfGWC6nbX6A+Cam/dpbj940BXObRkGSu62XpKP8PLGo534zypitc4OZsD0JB7eDM5HkRcqP0UX8YSm1/bPEAQ/imLe1HuuVaTklwSyqCQH8dBBVuLcnmJMZxYYuZuRw+JHcN5G2vn2ixMclQfg7C0WtJL6+cIZixUdi+mXn2iEm0IEG58i6GTyp76mgHSJWzTpbPoYJROjDoEZcwYNCRo0pc7rw8tTpRKW26q9X9vNXUr2U12ZITmzvqoMVbPzdC+X+rZPNn7MCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XyOk8uptiOWQrwzJCJepJFE9ycZHXMuoZzTcmbc2Y2g=;
- b=JnvejceUnUiJemkJliy3raZpsZhOxkIcla7IN+SD5QVtmydqnZGI/0WC8k50xYh7VnTVXtM2sbudJEVLv9t29ui2SWU4NaAuIpA8RlxRoAcguWGxUBLKgTS46xXMnukpZXzd/bMMSrta09oeMCqUWczt8C+PZQ1JhyvjsiNJoGTIsUH/CEzwgGE3moWw3lgKCX0uzE7faFZMXLY313YZXftuoD5T9FrnUGbNUT0q8meWdFoqCJ+6h1XqPUCEdpvbiGvJSUrn2h4qFhXGkvkQcACJ1WdPMmmDSZdTJkPjw0dofDzphnYR0dZNUbaRkOLwjMudmTW+mycTfZedvidX0w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XyOk8uptiOWQrwzJCJepJFE9ycZHXMuoZzTcmbc2Y2g=;
- b=LTxPOW6zJS6zRL4U+q2ZudRg0u0oaw8fPIX33WA8JH624lGifs6Ni/3RYST87zjdFq+1XJ6zCNU4OkC5xC8HDPybzSaHi7gKyow+u1RcVEnCIC5RUeZJSUctIv8TVEomAIKesySCaLJIxbP62Cw6KpSo6kC9QK+oQecEuSbOdZwylux5UoD45C/gC+89D5AUsKzo+YoshkX52uuX0LMZZp3ay/GVd3VmpGobLTXOyRbWFuRHQkJsdnlyQVBIw2CD4NYvm3wfShLIcxsWtdRbI03LW/GHMLxt2jqSh4ILEl7zxuXnk14X3gpWg4+GN1iZwJJHHccClov54IIqP5z7fA==
-Received: from CH0PR04CA0059.namprd04.prod.outlook.com (2603:10b6:610:77::34)
- by DS7PR12MB5863.namprd12.prod.outlook.com (2603:10b6:8:7a::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.13; Thu, 16 Jan
- 2025 06:45:58 +0000
-Received: from CH2PEPF00000147.namprd02.prod.outlook.com
- (2603:10b6:610:77:cafe::a8) by CH0PR04CA0059.outlook.office365.com
- (2603:10b6:610:77::34) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.14 via Frontend Transport; Thu,
- 16 Jan 2025 06:45:57 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CH2PEPF00000147.mail.protection.outlook.com (10.167.244.104) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8356.11 via Frontend Transport; Thu, 16 Jan 2025 06:45:57 +0000
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 15 Jan
- 2025 22:45:46 -0800
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail205.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 15 Jan
- 2025 22:45:46 -0800
-Received: from henryl-vm.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Wed, 15 Jan 2025 22:45:44 -0800
-From: Henry Lin <henryl@nvidia.com>
-To: JC Kuo <jckuo@nvidia.com>, Vinod Koul <vkoul@kernel.org>, "Kishon Vijay
- Abraham I" <kishon@kernel.org>, Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>, Henry Lin <henryl@nvidia.com>
-CC: <linux-phy@lists.infradead.org>, <linux-tegra@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, BH Hsieh <bhsieh@nvidia.com>,
-	<stable@vger.kernel.org>
-Subject: [PATCH] phy: tegra: xusb: reset VBUS & ID OVERRIDE
-Date: Thu, 16 Jan 2025 14:44:25 +0800
-Message-ID: <20250116064425.53551-1-henryl@nvidia.com>
-X-Mailer: git-send-email 2.25.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3389B1C695;
+	Thu, 16 Jan 2025 06:57:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737010661; cv=none; b=pLZ3sXUIE0CctsbXUknqwjoQWydA5CQYB/MRAz9dXoq/JATo08vOeSNJoCneL+WHj98gllAVfC0ARMyjpwsZDQhriDy34xIYjr2clW2KwvIEBTah8IiIY2M3G5BUlE9tCP9cnQrjXcVSWEaevK1GZ2P7OHLyzv+Xv1bHtxqh4Lk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737010661; c=relaxed/simple;
+	bh=MvD2J1oZPwkIygePCQJT7XRxl/xiw0lmZYjX7R6nLFo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Jt44vJxibrQ/JjhRBkdhh5SGmfRAPWkbnc2+k4CrgYgnQinfaLnL+dHS1n2Ha7dXapI5xaEBNA3GSt7qqJPIl1qe8HZPjTnw/WV4xril7m7oXhtAEeC33nZ5cjVf2/GwW1GZltLYLcT81R0zcjGi8F23nfoBMqjiQHzpv9TmGEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a/A0onfg; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737010659; x=1768546659;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=MvD2J1oZPwkIygePCQJT7XRxl/xiw0lmZYjX7R6nLFo=;
+  b=a/A0onfgY9YDj2Y/2ORuisC8m9Efo7hNlgP++cY3nUytgRvqBlzTYDBi
+   x1OAb2micnFiCrCQDbPceo7MNvb+2PFuQgdsnUhIi3cDQmj8RThrN3aL/
+   8TX7uu94/fIzeWIeilysuLrljKTI9WcDKJTy3HHgfibTeVhPC+x/+PX6G
+   tqTVQgF8wavjMqExVBYkpJFYUdxALtcJQDCTmdxNlDKOoOtmWbRwjykP/
+   k5vnlBcsCgiSNcDf/ceKrXZgJ4lZmaTz4fUEhuSG3WGEOlxOmDKG9vsb/
+   Lm/pFjcMtFrOiJbLezAbLGkPU0UCLq5Vi/0b0bxVDLPDx0/yniATVlJ/l
+   g==;
+X-CSE-ConnectionGUID: i/oydVynQlq2JNBpJP4xbA==
+X-CSE-MsgGUID: +zNLlSE/Tt+X/kbzHVvnTQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="48796528"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
+   d="scan'208";a="48796528"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2025 22:57:39 -0800
+X-CSE-ConnectionGUID: eLi/E/HeQLqWrG4jWw+lAg==
+X-CSE-MsgGUID: sJktBkrmTQuhWd2CEZH8YQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,208,1732608000"; 
+   d="scan'208";a="110365616"
+Received: from unknown (HELO HaiSPR.bj.intel.com) ([10.240.192.152])
+  by fmviesa004.fm.intel.com with ESMTP; 15 Jan 2025 22:57:34 -0800
+From: Ethan Zhao <haifeng.zhao@linux.intel.com>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: tglx@linutronix.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	xin@zytor.com,
+	andrew.cooper3@citrix.com,
+	mingo@redhat.com,
+	bp@alien8.de,
+	etzhao@outlook.com
+Subject: [PATCH] x86/fred: Optimize the FRED entry by prioritizing high-probability event dispatching
+Date: Thu, 16 Jan 2025 14:51:45 +0800
+Message-Id: <20250116065145.2747960-1-haifeng.zhao@linux.intel.com>
+X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF00000147:EE_|DS7PR12MB5863:EE_
-X-MS-Office365-Filtering-Correlation-Id: d956eb09-fab4-4946-9338-08dd35f96edb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?pvr3uk/dZoHWWMANpbrXr+lHojch6h0Kaj119DsQW6qsEjnh/XKx4sDb9Uuc?=
- =?us-ascii?Q?oeMBCbThZd6aJCZwGHwaiK6auW0n2+Pl07r+5PFE0vcyKZ8+PnO32igayYBN?=
- =?us-ascii?Q?Mv9N4k5DNp6zdU9YKTKtDvKfe5mj+H5MFqCSLqrMONBPozhxnFWXmW8xdMw2?=
- =?us-ascii?Q?LwKhbke9OHK9JGa6bVv5+gAUxc7plwt+Gnf/mQrAgVLXTmWM6K+TIgMrXjiS?=
- =?us-ascii?Q?WFIuFlruZFwK0Happpdc9bU2XYe0xry0v/JLsFQNi+PNh2MKYiIS2RybALsc?=
- =?us-ascii?Q?0JqQyGMwnz+rxHdBYgE+cqqkmp7hVQ2CJVfVzosGyTr43xyQWR1YlC/kyY6T?=
- =?us-ascii?Q?uU7YfloUXtY6VRWF9ywyZH2aDVaHKrRstn/kmrI6at4tD/RS0UPOWBZfi2bp?=
- =?us-ascii?Q?sASv2OTS/NthqkWI5RUhrwtCfHNqYWubTtLJCx6RQjAzWYoP/D5ChFncHLow?=
- =?us-ascii?Q?NgajonMB61CrtK01gaE8/dc6oqikDWf1rYWpH+5wcO+4bDXcwIWfZ/a+MthX?=
- =?us-ascii?Q?dYOsgGJxdKNf4LGidaB1g9GE3df6TCQCqfAWx75Vy9MZW9WP9SoNmLxT39VW?=
- =?us-ascii?Q?YgOJHyQlI6Iu5IT7Lepm3frpO5saRVZTYLQn5SGj8fGaPTLGHNSx5Z3XuSFW?=
- =?us-ascii?Q?6kh/hCKZQjwcNpMFbbD2ohoMyVNUTU47PmOEnNCiqQNM0VSiRguK6ycZr4cx?=
- =?us-ascii?Q?r5NejD/OP7Lu037z2DHLPB3lhA0fZP8WO/tPIwareM+ARhd6vWMGG9Enwr2c?=
- =?us-ascii?Q?FM2OUPyXYvOk3/fvSMhhFCHf0d9LqI3uUbG/D8EO9J6IMImZZc4Hdp2F4pCI?=
- =?us-ascii?Q?SBjljcDP+jPRrZkKQeQvwSstw6XcwVXonKml7pjcCtlUV6iaQyjlYIRR92lA?=
- =?us-ascii?Q?lGs7/O1g8jDdR6Gk6zczff6LRVlnx3tmrjgGb3z0lszEs0Utbw6xaBvfTzjo?=
- =?us-ascii?Q?X1ZpT5HDpdXQNxKKenjZk0NoDaBVHxgeO7C/ilOfPqobt10a4Wluv+f1H3tX?=
- =?us-ascii?Q?Qhi2vugWcTBV9dXR5tM1Vhx7/SKq9VhCJzZ2ZlfI+aa7Awtktii5QBpAsjxf?=
- =?us-ascii?Q?AA1Ug3oiXzwrGbA6JzRLFB8dj6tdJpVG1fsaAAyF+cIPBPZYV8jDgGUALTeG?=
- =?us-ascii?Q?i7oSJDld7bsdYbpImHOjrUrfgjKRMcAHD5Bm3YmXlfjd1dYqIJi1/DKql9LA?=
- =?us-ascii?Q?ICYKmN0xTd1khJXUIPkPP48mUSz9Jlvr/q63RyGxNHEIX5OAblxDVFVScoJ2?=
- =?us-ascii?Q?ETOzeQb3AVmbHhw9zXKj2gyDn1zuXFodTd6qnSM5ianm+oG5EbN3Fd35nX8d?=
- =?us-ascii?Q?WanLkCe3kft0c6KW3sqpHsnREMEy4L+kWmVIZHkB3Zi1oJei4k80wbcnIENZ?=
- =?us-ascii?Q?nHE911SKkE68Vgoa2N6pJrBS1NPPxn15MvLf/4C5RD+5DO4Qc5oFyvRXFXZV?=
- =?us-ascii?Q?mGJvLI2oGPlREs9SsTf+5PjzDnu19pzW3trKQcOSRiMv3yZJYO/rxpiYG5UD?=
- =?us-ascii?Q?lVsLP5mT9FLzjIQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2025 06:45:57.7772
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d956eb09-fab4-4946-9338-08dd35f96edb
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF00000147.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5863
 
-From: BH Hsieh <bhsieh@nvidia.com>
+External interrupts (EVENT_TYPE_EXTINT) and system calls (EVENT_TYPE_OTHER)
+occur more frequently than other events in a typical system. Prioritizing
+these events saves CPU cycles and optimizes the efficiency of performance-
+critical paths.
 
-Observed VBUS_OVERRIDE & ID_OVERRIDE might be programmed
-with unexpected value prior to XUSB PADCTL driver, this
-could also occur in virtualization scenario.
+When examining the compiler-generated assembly code for event dispatching
+in the functions fred_entry_from_user() and fred_entry_from_kernel(), it
+was observed that the compiler intelligently uses a binary search to match
+all event type values (0-7) and perform dispatching. As a result, even if
+the following cases:
 
-For example, UEFI firmware programs ID_OVERRIDE=GROUNDED to set
-a type-c port to host mode and keeps the value to kernel.
-If the type-c port is connected a usb host, below errors can be
-observed right after USB host mode driver gets probed. The errors
-would keep until usb role class driver detects the type-c port
-as device mode and notifies usb device mode driver to set both
-ID_OVERRIDE and VBUS_OVERRIDE to correct value by XUSB PADCTL
-driver.
+	case EVENT_TYPE_EXTINT:
+		return fred_extint(regs);
+	case EVENT_TYPE_OTHER:
+		return fred_other(regs);
 
-[  173.765814] usb usb3-port2: Cannot enable. Maybe the USB cable is bad?
-[  173.765837] usb usb3-port2: config error
+are placed at the beginning of the switch() statement, the generated
+assembly code would remain the same, and the expected prioritization would
+not be achieved.
 
-Taking virtualization into account, asserting XUSB PADCTL
-reset would break XUSB functions used by other guest OS,
-hence only reset VBUS & ID OVERRIDE of the port in
-utmi_phy_init.
+Command line to check the assembly code generated by the compiler for
+fred_entry_from_user():
 
-Fixes: bbf711682cd5 ("phy: tegra: xusb: Add Tegra186 support")
-Cc: stable@vger.kernel.org
-Signed-off-by: BH Hsieh <bhsieh@nvidia.com>
-Signed-off-by: Henry Lin <henryl@nvidia.com>
+$objdump -d vmlinux.o | awk '/<fred_entry_from_user>:/{c=65} c&&c--'
+
+00000000000015a0 <fred_entry_from_user>:
+15a0:       0f b6 87 a6 00 00 00    movzbl 0xa6(%rdi),%eax
+15a7:       48 8b 77 78             mov    0x78(%rdi),%rsi
+15ab:       55                      push   %rbp
+15ac:       48 c7 47 78 ff ff ff    movq   $0xffffffffffffffff,0x78(%rdi)
+15b3:       ff
+15b4:       83 e0 0f                and    $0xf,%eax
+15b7:       48 89 e5                mov    %rsp,%rbp
+15ba:       3c 04                   cmp    $0x4,%al
+-->>			            /* match 4(EVENT_TYPE_SWINT) first */
+15bc:       74 78                   je     1636 <fred_entry_from_user+0x96>
+15be:       77 15                   ja     15d5 <fred_entry_from_user+0x35>
+15c0:       3c 02                   cmp    $0x2,%al
+15c2:       74 53                   je     1617 <fred_entry_from_user+0x77>
+15c4:       77 65                   ja     162b <fred_entry_from_user+0x8b>
+15c6:       84 c0                   test   %al,%al
+15c8:       75 42                   jne    160c <fred_entry_from_user+0x6c>
+15ca:       e8 71 fc ff ff          callq  1240 <fred_extint>
+15cf:       5d                      pop    %rbp
+15d0:       e9 00 00 00 00          jmpq   15d5 <fred_entry_from_user+0x35>
+15d5:       3c 06                   cmp    $0x6,%al
+15d7:       74 7c                   je     1655 <fred_entry_from_user+0xb5>
+15d9:       72 66                   jb     1641 <fred_entry_from_user+0xa1>
+15db:       3c 07                   cmp    $0x7,%al
+15dd:       75 2d                   jne    160c <fred_entry_from_user+0x6c>
+15df:       8b 87 a4 00 00 00       mov    0xa4(%rdi),%eax
+15e5:       25 ff 00 00 02          and    $0x20000ff,%eax
+15ea:       3d 01 00 00 02          cmp    $0x2000001,%eax
+15ef:       75 6f                   jne    1660 <fred_entry_from_user+0xc0>
+15f1:       48 8b 77 50             mov    0x50(%rdi),%rsi
+15f5:       48 c7 47 50 da ff ff    movq   $0xffffffffffffffda,0x50(%rdi)
+... ...
+
+Command line to check the assembly code generated by the compiler for
+fred_entry_from_kernel():
+
+$objdump -d vmlinux.o | awk '/<fred_entry_from_kernel>:/{c=65} c&&c--'
+
+00000000000016b0 <fred_entry_from_kernel>:
+16b0:       0f b6 87 a6 00 00 00    movzbl 0xa6(%rdi),%eax
+16b7:       48 8b 77 78             mov    0x78(%rdi),%rsi
+16bb:       55                      push   %rbp
+16bc:       48 c7 47 78 ff ff ff    movq   $0xffffffffffffffff,0x78(%rdi)
+16c3:       ff
+16c4:       83 e0 0f                and    $0xf,%eax
+16c7:       48 89 e5                mov    %rsp,%rbp
+16ca:       3c 03                   cmp    $0x3,%al
+-->>                                /* match 3(EVENT_TYPE_HWEXC) first */
+16cc:       74 3c                 je     170a <fred_entry_from_kernel+0x5a>
+16ce:       76 13                 jbe    16e3 <fred_entry_from_kernel+0x33>
+16d0:       3c 05                 cmp    $0x5,%al
+16d2:       74 41                 je     1715 <fred_entry_from_kernel+0x65>
+16d4:       3c 06                 cmp    $0x6,%al
+16d6:       75 27                 jne    16ff <fred_entry_from_kernel+0x4f>
+16d8:       e8 73 fe ff ff        callq  1550 <fred_swexc.isra.3>
+16dd:       5d                    pop    %rbp
+... ...
+
+Therefore, it is necessary to handle EVENT_TYPE_EXTINT and EVENT_TYPE_OTHER
+before the switch statement using if-else syntax to ensure the compiler
+generates the desired code. After applying the patch, the verification
+results are as follows:
+
+$objdump -d vmlinux.o | awk '/<fred_entry_from_user>:/{c=65} c&&c--'
+
+00000000000015a0 <fred_entry_from_user>:
+15a0:       0f b6 87 a6 00 00 00    movzbl 0xa6(%rdi),%eax
+15a7:       48 8b 77 78             mov    0x78(%rdi),%rsi
+15ab:       55                      push   %rbp
+15ac:       48 c7 47 78 ff ff ff    movq   $0xffffffffffffffff,0x78(%rdi)
+15b3:       ff
+15b4:       48 89 e5                mov    %rsp,%rbp
+15b7:       83 e0 0f                and    $0xf,%eax
+15ba:       74 34                   je     15f0 <fred_entry_from_user+0x50>
+-->>				    /* match 0(EVENT_TYPE_EXTINT) first */
+15bc:       3c 07                   cmp    $0x7,%al
+-->>                                /* match 7(EVENT_TYPE_OTHER) second *
+15be:       74 6e                   je     162e <fred_entry_from_user+0x8e>
+15c0:       3c 04                   cmp    $0x4,%al
+15c2:       0f 84 93 00 00 00       je     165b <fred_entry_from_user+0xbb>
+15c8:       76 13                   jbe    15dd <fred_entry_from_user+0x3d>
+15ca:       3c 05                   cmp    $0x5,%al
+15cc:       74 41                   je     160f <fred_entry_from_user+0x6f>
+15ce:       3c 06                   cmp    $0x6,%al
+15d0:       75 51                   jne    1623 <fred_entry_from_user+0x83>
+15d2:       e8 79 ff ff ff          callq  1550 <fred_swexc.isra.3>
+15d7:       5d                      pop    %rbp
+15d8:       e9 00 00 00 00          jmpq   15dd <fred_entry_from_user+0x3d>
+15dd:       3c 02                   cmp    $0x2,%al
+15df:       74 1a                   je     15fb <fred_entry_from_user+0x5b>
+15e1:       3c 03                   cmp    $0x3,%al
+15e3:       75 3e                   jne    1623 <fred_entry_from_user+0x83>
+... ...
+
+The same desired code in fred_entry_from_kernel is no longer repeated.
+
+While the C code with if-else placed before switch() may appear ugly, it
+works. Additionally, using a jump table is not advisable; even if the jump
+table resides in the L1 cache, the cost of loading it is over 10 times the
+latency of a cmp instruction.
+
+Signed-off-by: Ethan Zhao <haifeng.zhao@linux.intel.com>
 ---
- drivers/phy/tegra/xusb-tegra186.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+base commit: 619f0b6fad524f08d493a98d55bac9ab8895e3a6
+---
+ arch/x86/entry/entry_fred.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/phy/tegra/xusb-tegra186.c b/drivers/phy/tegra/xusb-tegra186.c
-index 0f60d5d1c167..34c6d424a3e8 100644
---- a/drivers/phy/tegra/xusb-tegra186.c
-+++ b/drivers/phy/tegra/xusb-tegra186.c
-@@ -928,6 +928,7 @@ static int tegra186_utmi_phy_init(struct phy *phy)
- 	unsigned int index = lane->index;
- 	struct device *dev = padctl->dev;
- 	int err;
-+	u32 reg;
+diff --git a/arch/x86/entry/entry_fred.c b/arch/x86/entry/entry_fred.c
+index f004a4dc74c2..591f47771ecf 100644
+--- a/arch/x86/entry/entry_fred.c
++++ b/arch/x86/entry/entry_fred.c
+@@ -228,9 +228,18 @@ __visible noinstr void fred_entry_from_user(struct pt_regs *regs)
+ 	/* Invalidate orig_ax so that syscall_get_nr() works correctly */
+ 	regs->orig_ax = -1;
  
- 	port = tegra_xusb_find_usb2_port(padctl, index);
- 	if (!port) {
-@@ -935,6 +936,13 @@ static int tegra186_utmi_phy_init(struct phy *phy)
- 		return -ENODEV;
+-	switch (regs->fred_ss.type) {
+-	case EVENT_TYPE_EXTINT:
++	if (regs->fred_ss.type == EVENT_TYPE_EXTINT)
+ 		return fred_extint(regs);
++	else if (regs->fred_ss.type == EVENT_TYPE_OTHER)
++		return fred_other(regs);
++
++	/*
++	 * Dispatch EVENT_TYPE_EXTINT and EVENT_TYPE_OTHER(syscall) type events
++	 * first due to their high probability and let the compiler create binary search
++	 * dispatching for the remaining events
++	 */
++
++	switch (regs->fred_ss.type) {
+ 	case EVENT_TYPE_NMI:
+ 		if (likely(regs->fred_ss.vector == X86_TRAP_NMI))
+ 			return fred_exc_nmi(regs);
+@@ -245,8 +254,6 @@ __visible noinstr void fred_entry_from_user(struct pt_regs *regs)
+ 		break;
+ 	case EVENT_TYPE_SWEXC:
+ 		return fred_swexc(regs, error_code);
+-	case EVENT_TYPE_OTHER:
+-		return fred_other(regs);
+ 	default: break;
  	}
  
-+	/* reset VBUS&ID OVERRIDE */
-+	reg = padctl_readl(padctl, USB2_VBUS_ID);
-+	reg &= ~VBUS_OVERRIDE;
-+	reg &= ~ID_OVERRIDE(~0);
-+	reg |= ID_OVERRIDE_FLOATING;
-+	padctl_writel(padctl, reg, USB2_VBUS_ID);
+@@ -260,9 +267,15 @@ __visible noinstr void fred_entry_from_kernel(struct pt_regs *regs)
+ 	/* Invalidate orig_ax so that syscall_get_nr() works correctly */
+ 	regs->orig_ax = -1;
+ 
+-	switch (regs->fred_ss.type) {
+-	case EVENT_TYPE_EXTINT:
++	if (regs->fred_ss.type == EVENT_TYPE_EXTINT)
+ 		return fred_extint(regs);
 +
- 	if (port->supply && port->mode == USB_DR_MODE_HOST) {
- 		err = regulator_enable(port->supply);
- 		if (err) {
++	/*
++	 * Dispatch EVENT_TYPE_EXTINT type event first due to its high probability
++	 * and let the compiler do binary search dispatching for the other events
++	 */
++
++	switch (regs->fred_ss.type) {
+ 	case EVENT_TYPE_NMI:
+ 		if (likely(regs->fred_ss.vector == X86_TRAP_NMI))
+ 			return fred_exc_nmi(regs);
 -- 
-2.25.1
+2.31.1
 
 
