@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-109194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF28EA12FA8
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 01:26:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE8BA12FA7
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 01:26:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 373A67A04D0
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 00:25:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0010164053
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 00:25:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFDEE8F6E;
-	Thu, 16 Jan 2025 00:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA11A957;
+	Thu, 16 Jan 2025 00:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KOXRxL1W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lu1s2Gff"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8A079EA
-	for <stable@vger.kernel.org>; Thu, 16 Jan 2025 00:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC75079EA
+	for <stable@vger.kernel.org>; Thu, 16 Jan 2025 00:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736987155; cv=none; b=ZmFIZqV3H8D5EaMa3HDCFoKND8gtc7ZA7UcNslFyySd1dLTDSwpuN2b4LK2CZjOepkTB2mOHl9JRr3/NVXnhU7/lqSIQmM/zDzR9jvlTwRVRDsnoy7v1maoQ/qf6jz4nY+bT3BwjZYfu5RXzIzlodLgAfGR7MpI6P8PWwqeRf6I=
+	t=1736987158; cv=none; b=oduT3QQlKROMsD3bY+A8UsB5ws1EObWS7Ho6LI12S3LUawC4YTzfP4cm4GyIIhgIYqo39F0Pk+ymm13SEaWMZptd6jJ/u5k9EUF8Pi88t4HzWOx2ogYvoEQNxwwYSQxsqLZlNhCX31ji9KAAdNFHp5mIdZNTOZ689qjJ8v5jJA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736987155; c=relaxed/simple;
-	bh=HEiqext8iNe3heJ3AIbAdK6RyUVOqxzoMfwnE9lRLcE=;
+	s=arc-20240116; t=1736987158; c=relaxed/simple;
+	bh=cx97lTrKgf1AynBQsvpjcJ2HsM9JFjltlPceCNoYTv8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Lq8v3/N8vL1KNSo6SQ+Hc3x3KWy/I2q9ogRo7CzJIybXxI3nnlNIXtNn5heMJF3DI54ZTLpSIRvATuGZ1R4iupKCOLTOT2FEGZNugVAmXCs3JNMQ3ub+MSVQGwBWw3PAybDP34FVI9e6T/LSQUwuACKTzVIVrY7UrgYujZUN6nU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KOXRxL1W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9542BC4CED1;
-	Thu, 16 Jan 2025 00:25:54 +0000 (UTC)
+	 MIME-Version; b=Qh1jfyHEzChJ0XwfRmetQt1JHWi3OKLTPTMQs9ttilL9SuuYYNM6JnVcCeMKe6V0vfc2Kwj+RQAiGhMcd/7Aa1UPnOnrwLl3KUPtrA8Yc0WHMufb3Cei+pUeURAfu00Jj0wjnsnNzc4GiD+bybri1CZ5epPTWBDSFfg1BVZWrs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lu1s2Gff; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A3D2C4CED1;
+	Thu, 16 Jan 2025 00:25:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736987155;
-	bh=HEiqext8iNe3heJ3AIbAdK6RyUVOqxzoMfwnE9lRLcE=;
+	s=k20201202; t=1736987158;
+	bh=cx97lTrKgf1AynBQsvpjcJ2HsM9JFjltlPceCNoYTv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KOXRxL1WUtfOE1W08N8uRHukLB+tGa9g1dcvPV829/cwrpMy8t7rCVkwMQ+O496S+
-	 13GSaWrVJUGIBU95vKaTUJl+9jj7zIuO4lVDyKTdIE6uL9ko3xHrZt/HVlj10SMbuy
-	 I0udvUwlfl1nBixSCFEPWAcT01IAfUfjIZfB0Xnih3hYgD4CnNYMV+J9X2WeVkR/kh
-	 6xIIGKVoY87D2UqUG/wsYaId1FKADfJMh0YCOVg1TrgUUummIXHa4I9dI2XlzSNObg
-	 oTaA58X9m086fYLvxOuzjrVI383GttDoBRFiUV1PpjcuF4rwOx8X09a6Jj6z6dAh5y
-	 tUg+V5xik8zrA==
+	b=lu1s2GffX72uuX7ZxIjdMFwFEBd6w7OJZ/EzVctQ0oxkr0PSr5HiNklxr0Ek4rX1S
+	 hotS6bnXvCx3NZIvwchbK45XtlfcwLwK9uOX7DlfeMjfadUzAHmUUm3WxSMbSKKUIV
+	 fAHdpl5h+HRUHKTJLw25UWf3FGzPTMeNcVZqb9nc91+DykYPVGw8WDbiM9hv7Bm7h2
+	 DDNWgQZqSOsibncu2Il3SvJtaU7W/b17IoXuGU/rAqWuLfeKaz5XHRZ0TVp1uwXSz9
+	 49mh1J1ZhhBbcRN9FLzkKY1ro/Ea+4t6HatIirC+0yb2tMQ/BC9HKgkZZQammkRhcr
+	 /FxGT+sY38caA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Vasiliy Kovalev <kovalev@altlinux.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10/5.15] can: hi311x: hi3110_can_ist(): fix potential use-after-free
-Date: Wed, 15 Jan 2025 19:25:50 -0500
-Message-Id: <20250115153633-e699a15416d3092c@stable.kernel.org>
+Subject: Re: [PATCH 5.10] xsk: fix OOB map writes when deleting elements
+Date: Wed, 15 Jan 2025 19:25:55 -0500
+Message-Id: <20250115170933-2e0be919fe8f32c7@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250115090118.334324-1-kovalev@altlinux.org>
+In-Reply-To:  <20250115084347.333515-1-kovalev@altlinux.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,62 +63,48 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 9ad86d377ef4a19c75a9c639964879a5b25a433b
+The upstream commit SHA1 provided is correct: 32cd3db7de97c0c7a018756ce66244342fd583f0
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Vasiliy Kovalev<kovalev@altlinux.org>
-Commit author: Dario Binacchi<dario.binacchi@amarulasolutions.com>
+Commit author: Maciej Fijalkowski<maciej.fijalkowski@intel.com>
 
 
 Status in newer kernel trees:
-6.12.y | Present (different SHA1: bc30b2fe8c54)
-6.6.y | Present (different SHA1: 112802200944)
-6.1.y | Present (different SHA1: 4ad77eb8f2e0)
-5.15.y | Not found
+6.12.y | Present (different SHA1: d486b5741d98)
+6.6.y | Present (different SHA1: f8abd03f83d5)
+6.1.y | Present (different SHA1: ed08c93d5a98)
+5.15.y | Present (different SHA1: 4d03f705e9d7)
+5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  9ad86d377ef4 ! 1:  6ca160114ff4 can: hi311x: hi3110_can_ist(): fix potential use-after-free
+1:  32cd3db7de97 ! 1:  56235b048d31 xsk: fix OOB map writes when deleting elements
     @@ Metadata
       ## Commit message ##
-         can: hi311x: hi3110_can_ist(): fix potential use-after-free
+         xsk: fix OOB map writes when deleting elements
      
-    +    [ Upstream commit 9ad86d377ef4a19c75a9c639964879a5b25a433b ]
+    +    commit 32cd3db7de97c0c7a018756ce66244342fd583f0 upstream.
     +
-         The commit a22bd630cfff ("can: hi311x: do not report txerr and rxerr
-         during bus-off") removed the reporting of rxerr and txerr even in case
-         of correct operation (i. e. not bus-off).
+         Jordy says:
+     
+         "
     @@ Commit message
-         Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-         Link: https://patch.msgid.link/20241122221650.633981-5-dario.binacchi@amarulasolutions.com
-         Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-    +    [kovalev: changed the call order of netif_rx_ni()
-    +    according to netif_rx() of the upstream patch]
+         Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+         Link: https://lore.kernel.org/r/20241122121030.716788-2-maciej.fijalkowski@intel.com
+         Signed-off-by: Alexei Starovoitov <ast@kernel.org>
     +    Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
      
-      ## drivers/net/can/spi/hi311x.c ##
-     @@ drivers/net/can/spi/hi311x.c: static irqreturn_t hi3110_can_ist(int irq, void *dev_id)
-      			tx_state = txerr >= rxerr ? new_state : 0;
-      			rx_state = txerr <= rxerr ? new_state : 0;
-      			can_change_state(net, cf, tx_state, rx_state);
-    --			netif_rx(skb);
-    +-			netif_rx_ni(skb);
-      
-      			if (new_state == CAN_STATE_BUS_OFF) {
-    -+				netif_rx(skb);
-    ++				netif_rx_ni(skb);
-      				can_bus_off(net);
-      				if (priv->can.restart_ms == 0) {
-      					priv->force_quit = 1;
-     @@ drivers/net/can/spi/hi311x.c: static irqreturn_t hi3110_can_ist(int irq, void *dev_id)
-    - 				cf->can_id |= CAN_ERR_CNT;
-    + 			} else {
-      				cf->data[6] = txerr;
-      				cf->data[7] = rxerr;
-    -+				netif_rx(skb);
-    ++				netif_rx_ni(skb);
-      			}
-      		}
+      ## net/xdp/xskmap.c ##
+    -@@ net/xdp/xskmap.c: static long xsk_map_delete_elem(struct bpf_map *map, void *key)
+    +@@ net/xdp/xskmap.c: static int xsk_map_delete_elem(struct bpf_map *map, void *key)
+    + {
+      	struct xsk_map *m = container_of(map, struct xsk_map, map);
+    - 	struct xdp_sock __rcu **map_entry;
+    - 	struct xdp_sock *old_xs;
+    + 	struct xdp_sock *old_xs, **map_entry;
+     -	int k = *(u32 *)key;
+     +	u32 k = *(u32 *)key;
       
 ---
 
@@ -126,6 +112,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
 | stable/linux-5.10.y       |  Success    |  Success   |
 
