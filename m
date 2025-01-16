@@ -1,158 +1,109 @@
-Return-Path: <stable+bounces-109201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93AD6A1310C
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 03:05:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08BC4A131B8
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 04:25:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BEB0164525
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 02:05:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7470E3A4AE5
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 03:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767A864A8F;
-	Thu, 16 Jan 2025 02:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2BBF78F47;
+	Thu, 16 Jan 2025 03:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OcavWrOn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.nfschina.com (unknown [42.101.60.213])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 29DB78836;
-	Thu, 16 Jan 2025 02:05:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.101.60.213
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F4A1482F2;
+	Thu, 16 Jan 2025 03:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736993108; cv=none; b=sOzEENN3gNnrFAuHnTTPEsnzBYZpYxQ2lUEM5N7lcTUIZuzm0Wm2DArkIIV5l1IVAMUOciSa1Vx4+Evl694QYWfOmo+/Yzx/oYjnkyki/wrbOf1J4XVOb2zoovJL8JX47EtxWGLj0aB+4wm5tJo1FEYWZb7nRElU7XDYoumHbdM=
+	t=1736997920; cv=none; b=bmJENhmezDewpt19QHMQNJmPkwfxSSJLctzCmDfQAvlTP4DVnNhRvFM0o/PrJLI5oG3gwTG+metyT93zAQxH+9iPr63jVpjk9UNXx2DiJMUcEfmFKly1xmHR+Y6Xs8PnoKKTtl0TWLBi/zlvJRTN+X3UURaEixKGqSFdySNoljk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736993108; c=relaxed/simple;
-	bh=K41LxaeY5b1PJhdqsphAZteLpi5PMaWTF/rGxvUmgEQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type; b=LL0kLTm9YmB+aH3RS/8hZ7eCbGAOypsiwhU7LKGm1kPCVoS7N2Go/pj/HtLDFRMl+ZBcaMUbl+tbW7E3vfcanihnuL60P5UfihDbF5MnWbKc7+kd8c0jyFEp8AAk3kesLvuIFGDp41dHmfL3ZBLNIK00hGlU3Q+ZhM7gHD6K63o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com; spf=pass smtp.mailfrom=nfschina.com; arc=none smtp.client-ip=42.101.60.213
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
-Received: from [172.30.20.101] (unknown [180.167.10.98])
-	by mail.nfschina.com (MailData Gateway V2.8.8) with ESMTPSA id B711660108120;
-	Thu, 16 Jan 2025 10:04:47 +0800 (CST)
-Message-ID: <6f79c23a-7acb-5faf-5e8d-104ca37dbb08@nfschina.com>
-Date: Thu, 16 Jan 2025 10:04:47 +0800
+	s=arc-20240116; t=1736997920; c=relaxed/simple;
+	bh=Qh95bfftKSAqWbqh1JWGCL2eQxCGpzz4NwlXtWeDByk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OjOnAb0TWuyrIc3pOVefxonEiNn0OkGZYPtMwhxqyZel6IvGBBil/67nNyadXSZtMwDfVu+75Tn13py+XSUjZLSf1RI2XvHZick7BDKF7FZP8F4QrMLy293VCSVKpWZsVpKXtyH2dGV8RjofNOR26tSBvtMjQkKpcPWtMjCgLvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OcavWrOn; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736997918; x=1768533918;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Qh95bfftKSAqWbqh1JWGCL2eQxCGpzz4NwlXtWeDByk=;
+  b=OcavWrOn8UKs2Wbm1DiE3bNKxdDT7slUlUaIGJPY4Hlgor+/dhUcu40e
+   /S+2hk2e4ypmGbsYgbDQzHcEEXo6rFTmm87BpjHoGOEzx3ZH3300wQ2RJ
+   LziaI+dxNk+L2gnsXml8pQFU9Rko4OclyWCW42NbE9C8DNXHLdxeYiFFk
+   0UDODDFxIRlkqAoLaNYKbz3FgMch+H39lxqrh+TFel4Z8d1LmRs4500+2
+   tR1GyIINuF5RiuGB4Z0qggMcZpcET5B9QUklPJzi4fgZZji1hNYxRlorD
+   EznNhSwTm7fbuBQnnlOFH+8jx89A5/8xmWQHgHT10+wmPKuebwUwi4q8P
+   A==;
+X-CSE-ConnectionGUID: ymbCBnmlQdicZRPiqvRAqA==
+X-CSE-MsgGUID: rPLL8Z1bRJeNgNb5xxIIEA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="37478857"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
+   d="scan'208";a="37478857"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2025 19:25:18 -0800
+X-CSE-ConnectionGUID: F+/z/oqMQ1OjVZPfvtHgNA==
+X-CSE-MsgGUID: i5TgPROpRCCPvYlrGUipKQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="142604327"
+Received: from pg15swiplab1181.png.altera.com ([10.244.232.167])
+  by orviesa001.jf.intel.com with ESMTP; 15 Jan 2025 19:25:15 -0800
+From: niravkumar.l.rabara@intel.com
+To: Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
+	linux@treblig.org,
+	Shen Lichuan <shenlichuan@vivo.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	u.kleine-koenig@baylibre.com,
+	linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH v2 0/3] mtd: rawnand: cadence: improvement and fixes
+Date: Thu, 16 Jan 2025 11:21:51 +0800
+Message-Id: <20250116032154.3976447-1-niravkumar.l.rabara@intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.1
-Subject: Re: [PATCH net] net/rose: prevent integer overflows in
- rose_setsockopt()
-Content-Language: en-US
-To: David Laight <david.laight.linux@gmail.com>,
- Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- linux-hams@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
- stable@vger.kernel.org, kernel-janitors@vger.kernel.org
-X-MD-Sfrom: suhui@nfschina.com
-X-MD-SrcIP: 180.167.10.98
-From: Su Hui <suhui@nfschina.com>
-In-Reply-To: <20250115232952.1d4ef002@pumpkin>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 2025/1/16 07:29, David Laight wrote:
-> On Wed, 15 Jan 2025 08:42:20 -0800
-> Nikita Zhandarovich <n.zhandarovich@fintech.ru> wrote:
->
->> In case of possible unpredictably large arguments passed to
->> rose_setsockopt() and multiplied by extra values on top of that,
->> integer overflows may occur.
->>
->> Do the safest minimum and fix these issues by checking the
->> contents of 'opt' and returning -EINVAL if they are too large. Also,
->> switch to unsigned int and remove useless check for negative 'opt'
->> in ROSE_IDLE case.
->>
->> Found by Linux Verification Center (linuxtesting.org) with static
->> analysis tool SVACE.
->>
->> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
->> ---
->>   net/rose/af_rose.c | 16 ++++++++--------
->>   1 file changed, 8 insertions(+), 8 deletions(-)
->>
->> diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
->> index 59050caab65c..72c65d938a15 100644
->> --- a/net/rose/af_rose.c
->> +++ b/net/rose/af_rose.c
->> @@ -397,15 +397,15 @@ static int rose_setsockopt(struct socket *sock, int level, int optname,
->>   {
->>   	struct sock *sk = sock->sk;
->>   	struct rose_sock *rose = rose_sk(sk);
->> -	int opt;
->> +	unsigned int opt;
->>   
->>   	if (level != SOL_ROSE)
->>   		return -ENOPROTOOPT;
->>   
->> -	if (optlen < sizeof(int))
->> +	if (optlen < sizeof(unsigned int))
->>   		return -EINVAL;
->>   
->> -	if (copy_from_sockptr(&opt, optval, sizeof(int)))
->> +	if (copy_from_sockptr(&opt, optval, sizeof(unsigned int)))
-> Shouldn't all those be 'sizeof (opt)' ?
->
-> 	David
->
->>   		return -EFAULT;
->>   
->>   	switch (optname) {
->> @@ -414,31 +414,31 @@ static int rose_setsockopt(struct socket *sock, int level, int optname,
->>   		return 0;
->>   
->>   	case ROSE_T1:
->> -		if (opt < 1)
->> +		if (opt < 1 || opt > UINT_MAX / HZ)
+From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
 
-'rose->t1' is unsigned long, how about 'opt > ULONG_MAX / HZ' ?
+This patchset introduces improvements and fixes for cadence nand driver.
+The changes include:
 
-BTW, I think only in 32bit or 16bit machine when 'sizeof(int) == 
-sizeof(unsigned long)',
-this integer overflows may occur..
+1. Support deferred prob mechanism when DMA driver is not probed yet.
+2. Map the slave DMA address using dma_map_resource. When ARM SMMU
+   is enabled, using a direct physical address of SDMA results in
+   DMA transaction failure.
+3. Fixed the incorrect device context used for dma_unmap_single.
 
-Su Hui
+v2 changes:-
+- Added the missing Fixes and Cc: stable tags to the patches.
 
->>   			return -EINVAL;
->>   		rose->t1 = opt * HZ;
->>   		return 0;
->>   
->>   	case ROSE_T2:
->> -		if (opt < 1)
->> +		if (opt < 1 || opt > UINT_MAX / HZ)
->>   			return -EINVAL;
->>   		rose->t2 = opt * HZ;
->>   		return 0;
->>   
->>   	case ROSE_T3:
->> -		if (opt < 1)
->> +		if (opt < 1 || opt > UINT_MAX / HZ)
->>   			return -EINVAL;
->>   		rose->t3 = opt * HZ;
->>   		return 0;
->>   
->>   	case ROSE_HOLDBACK:
->> -		if (opt < 1)
->> +		if (opt < 1 || opt > UINT_MAX / HZ)
->>   			return -EINVAL;
->>   		rose->hb = opt * HZ;
->>   		return 0;
->>   
->>   	case ROSE_IDLE:
->> -		if (opt < 0)
->> +		if (opt > UINT_MAX / (60 * HZ))
->>   			return -EINVAL;
->>   		rose->idle = opt * 60 * HZ;
->>   		return 0;
->>
+Niravkumar L Rabara (3):
+  mtd: rawnand: cadence: support deferred prob when DMA is not ready
+  mtd: rawnand: cadence: use dma_map_resource for sdma address
+  mtd: rawnand: cadence: fix incorrect dev context in dma_unmap_single
+
+ .../mtd/nand/raw/cadence-nand-controller.c    | 35 +++++++++++++++----
+ 1 file changed, 28 insertions(+), 7 deletions(-)
+
+-- 
+2.25.1
+
 
