@@ -1,202 +1,158 @@
-Return-Path: <stable+bounces-109200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26718A1300C
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 01:35:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93AD6A1310C
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 03:05:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53B7F188847F
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 00:35:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BEB0164525
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 02:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8B51C69D;
-	Thu, 16 Jan 2025 00:35:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HT1Kqsn4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767A864A8F;
+	Thu, 16 Jan 2025 02:05:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5646BAD23;
-	Thu, 16 Jan 2025 00:35:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.nfschina.com (unknown [42.101.60.213])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 29DB78836;
+	Thu, 16 Jan 2025 02:05:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.101.60.213
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736987727; cv=none; b=jmqZRNT6tixrSe3bc5vKAvmfSvRcOWueQ5njBreGVaQ2XL/HzGSxyhcvwuAq9TQnMcdeun8ca3qyKCEiOxqbGYmvEKzL4/xsdNs/XpkhR9DoScM0ycVxsthCXUhb2GmzsTWWKgMVkB5Mc8pAZiJK8LYuoZGVbg0lMTkeB3Qgmr4=
+	t=1736993108; cv=none; b=sOzEENN3gNnrFAuHnTTPEsnzBYZpYxQ2lUEM5N7lcTUIZuzm0Wm2DArkIIV5l1IVAMUOciSa1Vx4+Evl694QYWfOmo+/Yzx/oYjnkyki/wrbOf1J4XVOb2zoovJL8JX47EtxWGLj0aB+4wm5tJo1FEYWZb7nRElU7XDYoumHbdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736987727; c=relaxed/simple;
-	bh=BBa8VxfeD4axvKZyATn6Z7TsOR2lON5GH2Td1tKbhMY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=OUsjQgPwvHF2BcNYq1KYf9KrynxXVsLaOZSzh4br1X6Gy+JT8Zk6A/OmEpBcA5kAP088dCD6scS1fd8zZcUcwR5fOhyaeLJ4Vli9xmqNfXdilsHoB0jQVEINd9e85SoxV/gVim/j2adcmERbmIj9E9rQ+eKHF873FeIpVA5ham8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HT1Kqsn4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30BDFC4CED1;
-	Thu, 16 Jan 2025 00:35:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736987727;
-	bh=BBa8VxfeD4axvKZyATn6Z7TsOR2lON5GH2Td1tKbhMY=;
-	h=Date:From:To:Cc:Subject:From;
-	b=HT1Kqsn4c2e222Xi/tm/2jglKA+5M0Za3rPrBQOr2gI+sa3LOWi4vidWmI6xBvR1o
-	 WjuCv0uQ/plGzELP510AlFvB7eSPts4yk7ohN3jpIcHzixPWcguhWwF7PJzZPukao+
-	 vgP4NJSXOzQm3lImUchTL8A9+WRxUHgfWjxbTuYj13/Q7QepvaxK7AfXpqvIicsBkY
-	 6FUHvS+L1t10njgvpR/0NV1u4yF6bsPwcX2sa7vgNNzCtHapi1iVxQM797rwJmqa7Y
-	 ilLa+AhR6wPNLSpRsQDdz3jcHuEwSaub2entRtI694gu2s+ccm6+eBcRTO0WqTx2tV
-	 gpx8L70RRCnPA==
-Date: Wed, 15 Jan 2025 16:35:26 -0800
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Carlos Maiolino <cem@kernel.org>
-Cc: linux-xfs@vger.kernel.org, hch@lst.de,
-	xfs-stable <xfs-stable@lists.linux.dev>, stable@vger.kernel.org,
-	david.flynn@oracle.com
-Subject: [PATCH v2] xfs: fix online repair probing when
- CONFIG_XFS_ONLINE_REPAIR=n
-Message-ID: <20250116003526.GE3566461@frogsfrogsfrogs>
+	s=arc-20240116; t=1736993108; c=relaxed/simple;
+	bh=K41LxaeY5b1PJhdqsphAZteLpi5PMaWTF/rGxvUmgEQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type; b=LL0kLTm9YmB+aH3RS/8hZ7eCbGAOypsiwhU7LKGm1kPCVoS7N2Go/pj/HtLDFRMl+ZBcaMUbl+tbW7E3vfcanihnuL60P5UfihDbF5MnWbKc7+kd8c0jyFEp8AAk3kesLvuIFGDp41dHmfL3ZBLNIK00hGlU3Q+ZhM7gHD6K63o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com; spf=pass smtp.mailfrom=nfschina.com; arc=none smtp.client-ip=42.101.60.213
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
+Received: from [172.30.20.101] (unknown [180.167.10.98])
+	by mail.nfschina.com (MailData Gateway V2.8.8) with ESMTPSA id B711660108120;
+	Thu, 16 Jan 2025 10:04:47 +0800 (CST)
+Message-ID: <6f79c23a-7acb-5faf-5e8d-104ca37dbb08@nfschina.com>
+Date: Thu, 16 Jan 2025 10:04:47 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.1
+Subject: Re: [PATCH net] net/rose: prevent integer overflows in
+ rose_setsockopt()
+Content-Language: en-US
+To: David Laight <david.laight.linux@gmail.com>,
+ Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ linux-hams@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
+ stable@vger.kernel.org, kernel-janitors@vger.kernel.org
+X-MD-Sfrom: suhui@nfschina.com
+X-MD-SrcIP: 180.167.10.98
+From: Su Hui <suhui@nfschina.com>
+In-Reply-To: <20250115232952.1d4ef002@pumpkin>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Darrick J. Wong <djwong@kernel.org>
+On 2025/1/16 07:29, David Laight wrote:
+> On Wed, 15 Jan 2025 08:42:20 -0800
+> Nikita Zhandarovich <n.zhandarovich@fintech.ru> wrote:
+>
+>> In case of possible unpredictably large arguments passed to
+>> rose_setsockopt() and multiplied by extra values on top of that,
+>> integer overflows may occur.
+>>
+>> Do the safest minimum and fix these issues by checking the
+>> contents of 'opt' and returning -EINVAL if they are too large. Also,
+>> switch to unsigned int and remove useless check for negative 'opt'
+>> in ROSE_IDLE case.
+>>
+>> Found by Linux Verification Center (linuxtesting.org) with static
+>> analysis tool SVACE.
+>>
+>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+>> ---
+>>   net/rose/af_rose.c | 16 ++++++++--------
+>>   1 file changed, 8 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
+>> index 59050caab65c..72c65d938a15 100644
+>> --- a/net/rose/af_rose.c
+>> +++ b/net/rose/af_rose.c
+>> @@ -397,15 +397,15 @@ static int rose_setsockopt(struct socket *sock, int level, int optname,
+>>   {
+>>   	struct sock *sk = sock->sk;
+>>   	struct rose_sock *rose = rose_sk(sk);
+>> -	int opt;
+>> +	unsigned int opt;
+>>   
+>>   	if (level != SOL_ROSE)
+>>   		return -ENOPROTOOPT;
+>>   
+>> -	if (optlen < sizeof(int))
+>> +	if (optlen < sizeof(unsigned int))
+>>   		return -EINVAL;
+>>   
+>> -	if (copy_from_sockptr(&opt, optval, sizeof(int)))
+>> +	if (copy_from_sockptr(&opt, optval, sizeof(unsigned int)))
+> Shouldn't all those be 'sizeof (opt)' ?
+>
+> 	David
+>
+>>   		return -EFAULT;
+>>   
+>>   	switch (optname) {
+>> @@ -414,31 +414,31 @@ static int rose_setsockopt(struct socket *sock, int level, int optname,
+>>   		return 0;
+>>   
+>>   	case ROSE_T1:
+>> -		if (opt < 1)
+>> +		if (opt < 1 || opt > UINT_MAX / HZ)
 
-I received a report from the release engineering side of the house that
-xfs_scrub without the -n flag (aka fix it mode) would try to fix a
-broken filesystem even on a kernel that doesn't have online repair built
-into it:
+'rose->t1' is unsigned long, how about 'opt > ULONG_MAX / HZ' ?
 
- # xfs_scrub -dTvn /mnt/test
- EXPERIMENTAL xfs_scrub program in use! Use at your own risk!
- Phase 1: Find filesystem geometry.
- /mnt/test: using 1 threads to scrub.
- Phase 1: Memory used: 132k/0k (108k/25k), time:  0.00/ 0.00/ 0.00s
- <snip>
- Phase 4: Repair filesystem.
- <snip>
- Info: /mnt/test/some/victimdir directory entries: Attempting repair. (repair.c line 351)
- Corruption: /mnt/test/some/victimdir directory entries: Repair unsuccessful; offline repair required. (repair.c line 204)
+BTW, I think only in 32bit or 16bit machine when 'sizeof(int) == 
+sizeof(unsigned long)',
+this integer overflows may occur..
 
-Source: https://blogs.oracle.com/linux/post/xfs-online-filesystem-repair
+Su Hui
 
-It is strange that xfs_scrub doesn't refuse to run, because the kernel
-is supposed to return EOPNOTSUPP if we actually needed to run a repair,
-and xfs_io's repair subcommand will perror that.  And yet:
-
- # xfs_io -x -c 'repair probe' /mnt/test
- #
-
-The first problem is commit dcb660f9222fd9 (4.15) which should have had
-xchk_probe set the CORRUPT OFLAG so that any of the repair machinery
-will get called at all.
-
-It turns out that some refactoring that happened in the 6.6-6.8 era
-broke the operation of this corner case.  What we *really* want to
-happen is that all the predicates that would steer xfs_scrub_metadata()
-towards calling xrep_attempt() should function the same way that they do
-when repair is compiled in; and then xrep_attempt gets to return the
-fatal EOPNOTSUPP error code that causes the probe to fail.
-
-Instead, commit 8336a64eb75cba (6.6) started the failwhale swimming by
-hoisting OFLAG checking logic into a helper whose non-repair stub always
-returns false, causing scrub to return "repair not needed" when in fact
-the repair is not supported.  Prior to that commit, the oflag checking
-that was open-coded in scrub.c worked correctly.
-
-Similarly, in commit 4bdfd7d15747b1 (6.8) we hoisted the IFLAG_REPAIR
-and ALREADY_FIXED logic into a helper whose non-repair stub always
-returns false, so we never enter the if test body that would have called
-xrep_attempt, let alone fail to decode the OFLAGs correctly.
-
-The final insult (yes, we're doing The Naked Gun now) is commit
-48a72f60861f79 (6.8) in which we hoisted the "are we going to try a
-repair?" predicate into yet another function with a non-repair stub
-always returns false.
-
-Fix xchk_probe to trigger xrep_probe if repair is enabled, or return
-EOPNOTSUPP directly if it is not.  For all the other scrub types, we
-need to fix the header predicates so that the ->repair functions (which
-are all xrep_notsupported) get called to return EOPNOTSUPP.  Commit
-48a72 is tagged here because the scrub code prior to LTS 6.12 are
-incomplete and not worth patching.
-
-Reported-by: David Flynn <david.flynn@oracle.com>
-Cc: <stable@vger.kernel.org> # v6.8
-Fixes: 48a72f60861f79 ("xfs: don't complain about unfixed metadata when repairs were injected")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
----
- fs/xfs/scrub/common.h |    5 -----
- fs/xfs/scrub/repair.h |   11 ++++++++++-
- fs/xfs/scrub/scrub.c  |   12 ++++++++++++
- 3 files changed, 22 insertions(+), 6 deletions(-)
-
-diff --git a/fs/xfs/scrub/common.h b/fs/xfs/scrub/common.h
-index 546be550b221b6..4722cb51fd1522 100644
---- a/fs/xfs/scrub/common.h
-+++ b/fs/xfs/scrub/common.h
-@@ -225,7 +225,6 @@ static inline bool xchk_skip_xref(struct xfs_scrub_metadata *sm)
- bool xchk_dir_looks_zapped(struct xfs_inode *dp);
- bool xchk_pptr_looks_zapped(struct xfs_inode *ip);
- 
--#ifdef CONFIG_XFS_ONLINE_REPAIR
- /* Decide if a repair is required. */
- static inline bool xchk_needs_repair(const struct xfs_scrub_metadata *sm)
- {
-@@ -245,10 +244,6 @@ static inline bool xchk_could_repair(const struct xfs_scrub *sc)
- 	return (sc->sm->sm_flags & XFS_SCRUB_IFLAG_REPAIR) &&
- 		!(sc->flags & XREP_ALREADY_FIXED);
- }
--#else
--# define xchk_needs_repair(sc)		(false)
--# define xchk_could_repair(sc)		(false)
--#endif /* CONFIG_XFS_ONLINE_REPAIR */
- 
- int xchk_metadata_inode_forks(struct xfs_scrub *sc);
- 
-diff --git a/fs/xfs/scrub/repair.h b/fs/xfs/scrub/repair.h
-index 823c00d1a50262..af0a3a9e5ed978 100644
---- a/fs/xfs/scrub/repair.h
-+++ b/fs/xfs/scrub/repair.h
-@@ -191,7 +191,16 @@ int xrep_reset_metafile_resv(struct xfs_scrub *sc);
- #else
- 
- #define xrep_ino_dqattach(sc)	(0)
--#define xrep_will_attempt(sc)	(false)
-+
-+/*
-+ * When online repair is not built into the kernel, we still want to attempt
-+ * the repair so that the stub xrep_attempt below will return EOPNOTSUPP.
-+ */
-+static inline bool xrep_will_attempt(const struct xfs_scrub *sc)
-+{
-+	return (sc->sm->sm_flags & XFS_SCRUB_IFLAG_FORCE_REBUILD) ||
-+		xchk_needs_repair(sc->sm);
-+}
- 
- static inline int
- xrep_attempt(
-diff --git a/fs/xfs/scrub/scrub.c b/fs/xfs/scrub/scrub.c
-index d3a4ddd918f621..01fdbbc7adf30e 100644
---- a/fs/xfs/scrub/scrub.c
-+++ b/fs/xfs/scrub/scrub.c
-@@ -149,6 +149,18 @@ xchk_probe(
- 	if (xchk_should_terminate(sc, &error))
- 		return error;
- 
-+	/*
-+	 * If the caller is probing to see if repair works but repair isn't
-+	 * built into the kernel, return EOPNOTSUPP because that's the signal
-+	 * that userspace expects.  If online repair is built in, set the
-+	 * CORRUPT flag (without any of the usual tracing/logging) to force us
-+	 * into xrep_probe.
-+	 */
-+	if (xchk_could_repair(sc)) {
-+		if (!IS_ENABLED(CONFIG_XFS_ONLINE_REPAIR))
-+			return -EOPNOTSUPP;
-+		sc->sm->sm_flags |= XFS_SCRUB_OFLAG_CORRUPT;
-+	}
- 	return 0;
- }
- 
+>>   			return -EINVAL;
+>>   		rose->t1 = opt * HZ;
+>>   		return 0;
+>>   
+>>   	case ROSE_T2:
+>> -		if (opt < 1)
+>> +		if (opt < 1 || opt > UINT_MAX / HZ)
+>>   			return -EINVAL;
+>>   		rose->t2 = opt * HZ;
+>>   		return 0;
+>>   
+>>   	case ROSE_T3:
+>> -		if (opt < 1)
+>> +		if (opt < 1 || opt > UINT_MAX / HZ)
+>>   			return -EINVAL;
+>>   		rose->t3 = opt * HZ;
+>>   		return 0;
+>>   
+>>   	case ROSE_HOLDBACK:
+>> -		if (opt < 1)
+>> +		if (opt < 1 || opt > UINT_MAX / HZ)
+>>   			return -EINVAL;
+>>   		rose->hb = opt * HZ;
+>>   		return 0;
+>>   
+>>   	case ROSE_IDLE:
+>> -		if (opt < 0)
+>> +		if (opt > UINT_MAX / (60 * HZ))
+>>   			return -EINVAL;
+>>   		rose->idle = opt * 60 * HZ;
+>>   		return 0;
+>>
 
