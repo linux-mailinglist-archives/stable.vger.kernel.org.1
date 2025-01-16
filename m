@@ -1,183 +1,162 @@
-Return-Path: <stable+bounces-109262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6B91A13A08
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 13:38:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05139A13A2E
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 13:47:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E6483A3709
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 12:38:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 924301677AD
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 12:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E475D1DE894;
-	Thu, 16 Jan 2025 12:38:11 +0000 (UTC)
-X-Original-To: stable@vger.kernel.org
-Received: from exchange.fintech.ru (exchange.fintech.ru [195.54.195.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C031DE882;
+	Thu, 16 Jan 2025 12:46:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w0Qs08X8"
+X-Original-To: Stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D211E50B;
-	Thu, 16 Jan 2025 12:38:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.54.195.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE171DE4EA
+	for <Stable@vger.kernel.org>; Thu, 16 Jan 2025 12:46:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737031091; cv=none; b=RLZjp5fp6tBXcCKNMaHzE2nS33YDP3DtKeQkfYGALDeWr660EkxnXH4Z5t+QFvysjBvsUycfYgeKfWTaP97dbepI5Fs/xH6emwlafxQihRs99dJBAkvVIbN2oVRJ+gjjP/DIFOMd8v6gIk4X7WpYFXoj1bWjxg8pBOPlpa+rNGM=
+	t=1737031611; cv=none; b=tq9yEgk5WaqTgjaX1qleG9g0aclqAZ7LzpSzsKA/PApiSAkaiXpE8okZqOG3lbeFXMiw0ru0cLm3D0sSzE1KeDGssIOSKLEIYzMHhQO0Bwj9pFCGSRa2WVIGoW3/NT+flpDC7HlQk10a0SBLhvCbNlg3DPc2CHCSJhz3Q2lWlD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737031091; c=relaxed/simple;
-	bh=jonUW3dEfOtfI8lihvuawd6C1cWCqfdoW81F2sROXnk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=e0aKh4T521DBxSNnninRVVEFGPiJyL1QJY2bGwsRY6fp/Ztw0NSQCvQL510mh+ymhJU/PKob+oyIkr3ld6Z4EyoLcOYy3PfGDg6C2W+xzqUggLFLK0Vih2ljDkSLsYCPBG46VyTnmEdrx1lKm/Iw9NF8IjBX+p3j5suou61WUos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru; spf=pass smtp.mailfrom=fintech.ru; arc=none smtp.client-ip=195.54.195.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fintech.ru
-Received: from Ex16-01.fintech.ru (10.0.10.18) by exchange.fintech.ru
- (195.54.195.169) with Microsoft SMTP Server (TLS) id 14.3.498.0; Thu, 16 Jan
- 2025 15:38:02 +0300
-Received: from [192.168.211.130] (10.0.253.138) by Ex16-01.fintech.ru
- (10.0.10.18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Thu, 16 Jan
- 2025 15:38:02 +0300
-Message-ID: <f5a76ca2-33cd-471d-8997-797a9a070804@fintech.ru>
-Date: Thu, 16 Jan 2025 04:37:59 -0800
+	s=arc-20240116; t=1737031611; c=relaxed/simple;
+	bh=kx14joYE/SMEsXn3F7fOhMw7rIxtkev7vsHRLoVzXEs=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=KO1FhU06DZpwG7Pa3Pfo3DYiTCh2guDwBprggURJl99SaNxWELGmNSbKzyPx7hlHtDgjfvU/G75O0NFxaMhM0kfos+Ajg/JRJ1mbgnAjpW+/bX0uGYRzgAJYy4RWPL7+KjamVZnEOMn0E/tAZ3dwVc2ZzC/Uten+d3GFQcxjp48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w0Qs08X8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B643C4CED6;
+	Thu, 16 Jan 2025 12:46:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1737031610;
+	bh=kx14joYE/SMEsXn3F7fOhMw7rIxtkev7vsHRLoVzXEs=;
+	h=Subject:To:From:Date:From;
+	b=w0Qs08X8ApWxcVbmSnx+/MVmX7WdAv+QQHP9YrtFJloj3cCoziO9oWY9mCG10tQzI
+	 xVIgzHFQM7JQNVNDqILONp2u1IhxDRgH3MUyy8gAqvnX5wrPfpV+Ryb2qzVWY5Uwpw
+	 3XTb2+4zNIUVmn6J1WyJeIpQ5Wpb70UAvsMNtAO8=
+Subject: patch "iio: dac: ad3552r-common: fix ad3541/2r ranges" added to char-misc-next
+To: adureghello@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,dlechner@baylibre.com
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 16 Jan 2025 13:46:38 +0100
+Message-ID: <2025011638-overrule-squishy-47c3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net/rose: prevent integer overflows in
- rose_setsockopt()
-To: Su Hui <suhui@nfschina.com>, David Laight <david.laight.linux@gmail.com>
-CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	<linux-hams@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>,
-	<stable@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-References: <6f79c23a-7acb-5faf-5e8d-104ca37dbb08@nfschina.com>
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Content-Language: en-US, ru-RU
-In-Reply-To: <6f79c23a-7acb-5faf-5e8d-104ca37dbb08@nfschina.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: Ex16-02.fintech.ru (10.0.10.19) To Ex16-01.fintech.ru
- (10.0.10.18)
 
-Hello,
 
-On 1/15/25 18:04, Su Hui wrote:
-> On 2025/1/16 07:29, David Laight wrote:
->> On Wed, 15 Jan 2025 08:42:20 -0800
->> Nikita Zhandarovich <n.zhandarovich@fintech.ru> wrote:
->>
->>> In case of possible unpredictably large arguments passed to
->>> rose_setsockopt() and multiplied by extra values on top of that,
->>> integer overflows may occur.
->>>
->>> Do the safest minimum and fix these issues by checking the
->>> contents of 'opt' and returning -EINVAL if they are too large. Also,
->>> switch to unsigned int and remove useless check for negative 'opt'
->>> in ROSE_IDLE case.
->>>
->>> Found by Linux Verification Center (linuxtesting.org) with static
->>> analysis tool SVACE.
->>>
->>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
->>> ---
->>>   net/rose/af_rose.c | 16 ++++++++--------
->>>   1 file changed, 8 insertions(+), 8 deletions(-)
->>>
->>> diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
->>> index 59050caab65c..72c65d938a15 100644
->>> --- a/net/rose/af_rose.c
->>> +++ b/net/rose/af_rose.c
->>> @@ -397,15 +397,15 @@ static int rose_setsockopt(struct socket *sock,
->>> int level, int optname,
->>>   {
->>>       struct sock *sk = sock->sk;
->>>       struct rose_sock *rose = rose_sk(sk);
->>> -    int opt;
->>> +    unsigned int opt;
->>>         if (level != SOL_ROSE)
->>>           return -ENOPROTOOPT;
->>>   -    if (optlen < sizeof(int))
->>> +    if (optlen < sizeof(unsigned int))
->>>           return -EINVAL;
->>>   -    if (copy_from_sockptr(&opt, optval, sizeof(int)))
->>> +    if (copy_from_sockptr(&opt, optval, sizeof(unsigned int)))
->> Shouldn't all those be 'sizeof (opt)' ?
->>
->>     David
->>
+This is a note to let you know that I've just added the patch titled
 
-Agreed, but my thinking was to keep it somewhat symmetrical to other
-similar checks in XXX_setsockopt(). For instance, in net/ax25/af_ax25.c,
-courtesy of commit 7b75c5a8c41 ("net: pass a sockptr_t into
-->setsockopt") an explicit type is used.
+    iio: dac: ad3552r-common: fix ad3541/2r ranges
 
-I don't mind sending v2, as it would be a bit neater.
+to my char-misc git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
+in the char-misc-next branch.
 
->>>           return -EFAULT;
->>>         switch (optname) {
->>> @@ -414,31 +414,31 @@ static int rose_setsockopt(struct socket *sock,
->>> int level, int optname,
->>>           return 0;
->>>         case ROSE_T1:
->>> -        if (opt < 1)
->>> +        if (opt < 1 || opt > UINT_MAX / HZ)
-> 
-> 'rose->t1' is unsigned long, how about 'opt > ULONG_MAX / HZ' ?
-> 
-> BTW, I think only in 32bit or 16bit machine when 'sizeof(int) ==
-> sizeof(unsigned long)',
-> this integer overflows may occur..
-> 
-> Su Hui
-> 
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
 
-Here I was influenced by commits dc35616e6c29 ("netrom: fix api breakage
-in nr_setsockopt()") and 9371937092d5 ("ax25: uninitialized variable in
-ax25_setsockopt()") that essentially state that we only copy 4 bytes
-from userspace so opt being ulong is not desired. Even if the result of
-* HZ ends up stored in ulong 'XXX->t1'.
+The patch will also be merged in the next major kernel release
+during the merge window.
 
-I may be wrong but I think same principle applies to rose_setsockopt().
+If you have any questions about this process, please let me know.
 
-All we need to do here is to enable a sanity check that there is no
-int/uint overflow in right hand expression before the result gets stored
-in ulong.
 
->>>               return -EINVAL;
->>>           rose->t1 = opt * HZ;
->>>           return 0;
->>>         case ROSE_T2:
->>> -        if (opt < 1)
->>> +        if (opt < 1 || opt > UINT_MAX / HZ)
->>>               return -EINVAL;
->>>           rose->t2 = opt * HZ;
->>>           return 0;
->>>         case ROSE_T3:
->>> -        if (opt < 1)
->>> +        if (opt < 1 || opt > UINT_MAX / HZ)
->>>               return -EINVAL;
->>>           rose->t3 = opt * HZ;
->>>           return 0;
->>>         case ROSE_HOLDBACK:
->>> -        if (opt < 1)
->>> +        if (opt < 1 || opt > UINT_MAX / HZ)
->>>               return -EINVAL;
->>>           rose->hb = opt * HZ;
->>>           return 0;
->>>         case ROSE_IDLE:
->>> -        if (opt < 0)
->>> +        if (opt > UINT_MAX / (60 * HZ))
->>>               return -EINVAL;
->>>           rose->idle = opt * 60 * HZ;
->>>           return 0;
->>>
+From 1e758b613212b6964518a67939535910b5aee831 Mon Sep 17 00:00:00 2001
+From: Angelo Dureghello <adureghello@baylibre.com>
+Date: Wed, 8 Jan 2025 18:29:15 +0100
+Subject: iio: dac: ad3552r-common: fix ad3541/2r ranges
 
-Regards,
-Nikita
+Fix ad3541/2r voltage ranges to be as per ad3542r datasheet,
+rev. C, table 38 (page 57).
+
+The wrong ad354xr ranges was generating erroneous Vpp output.
+
+In more details:
+- fix wrong number of ranges, they are 5 ranges, not 6,
+- remove non-existent 0-3V range,
+- adjust order, since ad3552r_find_range() get a wrong index,
+  producing a wrong Vpp as output.
+
+Retested all the ranges on real hardware, EVALAD3542RFMCZ:
+
+adi,output-range-microvolt (fdt):
+<(000000) (2500000)>;   ok (Rfbx1, switch 10)
+<(000000) (5000000)>;   ok (Rfbx1, switch 10)
+<(000000) (10000000)>;  ok (Rfbx1, switch 10)
+<(-5000000) (5000000)>; ok (Rfbx2, switch +/- 5)
+<(-2500000) (7500000)>; ok (Rfbx2, switch -2.5/7.5)
+
+Fixes: 8f2b54824b28 ("drivers:iio:dac: Add AD3552R driver support")
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250108-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v2-1-2dac02f04638@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ drivers/iio/dac/ad3552r-common.c | 5 ++---
+ drivers/iio/dac/ad3552r.h        | 8 +++-----
+ 2 files changed, 5 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/iio/dac/ad3552r-common.c b/drivers/iio/dac/ad3552r-common.c
+index 0f495df2e5ce..03e0864f5084 100644
+--- a/drivers/iio/dac/ad3552r-common.c
++++ b/drivers/iio/dac/ad3552r-common.c
+@@ -22,11 +22,10 @@ EXPORT_SYMBOL_NS_GPL(ad3552r_ch_ranges, "IIO_AD3552R");
+ 
+ const s32 ad3542r_ch_ranges[AD3542R_MAX_RANGES][2] = {
+ 	[AD3542R_CH_OUTPUT_RANGE_0__2P5V]	= { 0, 2500 },
+-	[AD3542R_CH_OUTPUT_RANGE_0__3V]		= { 0, 3000 },
+ 	[AD3542R_CH_OUTPUT_RANGE_0__5V]		= { 0, 5000 },
+ 	[AD3542R_CH_OUTPUT_RANGE_0__10V]	= { 0, 10000 },
+-	[AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V]	= { -2500, 7500 },
+-	[AD3542R_CH_OUTPUT_RANGE_NEG_5__5V]	= { -5000, 5000 }
++	[AD3542R_CH_OUTPUT_RANGE_NEG_5__5V]	= { -5000, 5000 },
++	[AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V]	= { -2500, 7500 }
+ };
+ EXPORT_SYMBOL_NS_GPL(ad3542r_ch_ranges, "IIO_AD3552R");
+ 
+diff --git a/drivers/iio/dac/ad3552r.h b/drivers/iio/dac/ad3552r.h
+index fd5a3dfd1d1c..4b5581039ae9 100644
+--- a/drivers/iio/dac/ad3552r.h
++++ b/drivers/iio/dac/ad3552r.h
+@@ -131,7 +131,7 @@
+ #define AD3552R_CH1_ACTIVE				BIT(1)
+ 
+ #define AD3552R_MAX_RANGES	5
+-#define AD3542R_MAX_RANGES	6
++#define AD3542R_MAX_RANGES	5
+ #define AD3552R_QUAD_SPI	2
+ 
+ extern const s32 ad3552r_ch_ranges[AD3552R_MAX_RANGES][2];
+@@ -189,16 +189,14 @@ enum ad3552r_ch_vref_select {
+ enum ad3542r_ch_output_range {
+ 	/* Range from 0 V to 2.5 V. Requires Rfb1x connection */
+ 	AD3542R_CH_OUTPUT_RANGE_0__2P5V,
+-	/* Range from 0 V to 3 V. Requires Rfb1x connection  */
+-	AD3542R_CH_OUTPUT_RANGE_0__3V,
+ 	/* Range from 0 V to 5 V. Requires Rfb1x connection  */
+ 	AD3542R_CH_OUTPUT_RANGE_0__5V,
+ 	/* Range from 0 V to 10 V. Requires Rfb2x connection  */
+ 	AD3542R_CH_OUTPUT_RANGE_0__10V,
+-	/* Range from -2.5 V to 7.5 V. Requires Rfb2x connection  */
+-	AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V,
+ 	/* Range from -5 V to 5 V. Requires Rfb2x connection  */
+ 	AD3542R_CH_OUTPUT_RANGE_NEG_5__5V,
++	/* Range from -2.5 V to 7.5 V. Requires Rfb2x connection  */
++	AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V,
+ };
+ 
+ enum ad3552r_ch_output_range {
+-- 
+2.48.1
+
+
 
