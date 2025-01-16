@@ -1,179 +1,113 @@
-Return-Path: <stable+bounces-109210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F10A132B5
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 06:44:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7978FA132E5
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 06:59:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D592F1888CC3
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 05:44:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3603188550F
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 05:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7519517B401;
-	Thu, 16 Jan 2025 05:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1BD218DF62;
+	Thu, 16 Jan 2025 05:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="pBIzyWaq"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Fbs0WkuE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE3E7346F;
-	Thu, 16 Jan 2025 05:44:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343D7141987;
+	Thu, 16 Jan 2025 05:59:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737006240; cv=none; b=VnWtlMFSyTSYttZ66eTXqAXeNQIumoFVCiS2bnxb2nPbYi97bCic2Phh154PRRtOVjTNzh0GtO43CH9IlPMEQT+1GhgLmNO+dZKmt+lF+Sl3UIF17On2JOZuw9ppTELFzqThsij5MwwQunAmrdIggYRAIrVaVPGDmY3obTkD7V4=
+	t=1737007177; cv=none; b=VbC/a8EN3oXFZ3MGRjg6fOKkmmEiRxPLBP6jqV8ME14F1Rki8JgOKBjQz6+J/+ZgnTcS8atUH0sIxUd9C6e7aGfe6Ey7uGpqtz+2xGhO768gEpZGIKfTprdg1HVwE0KcobvjyvbFGOHsOpS3Mi7IrX5CXqNQhwzuuS6+D8dy6xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737006240; c=relaxed/simple;
-	bh=sKPLjQHoglkW6ceUFpnkVoQIURajNn1Ecl+60kbmeMQ=;
-	h=Date:To:From:Subject:Message-Id; b=cZisaIkrZ614RJk9x/02GBxSAN+g33JyvsR9XZMC4Hsbha/wpYqHH/WndhN9cCRqPlC59VHIuR5MMQ+2adcZqBtWEaWikX1BBOgp1e388r4NYli/1uPw9YlBM1GaMtzx+la5R4WyugdZRzYKrIkBKCAQuSAjETadvt0/C9NWDXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=pBIzyWaq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED134C4CED6;
-	Thu, 16 Jan 2025 05:43:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1737006240;
-	bh=sKPLjQHoglkW6ceUFpnkVoQIURajNn1Ecl+60kbmeMQ=;
-	h=Date:To:From:Subject:From;
-	b=pBIzyWaqBka9GddGfXOlw0NP56yaZPBCgtfHSaJK7PqE7TaGMQvfoErkIiZV9bcJL
-	 6uaZKkGbRbWaz1EgnvZZTXVFJvbf/q/EvbL03C4207ctoc6ZHwOZvXHWqiFe9zVbGl
-	 g85UjRg/IOZ1qE6wSOCWdTP/nJVxaK50wBQkJhWQ=
-Date: Wed, 15 Jan 2025 21:43:59 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,songmuchun@bytedance.com,shakeelb@google.com,roman.gushchin@linux.dev,mkoutny@suse.com,mhocko@suse.com,hannes@cmpxchg.org,chenridong@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] memcg-fix-soft-lockup-in-the-oom-process.patch removed from -mm tree
-Message-Id: <20250116054359.ED134C4CED6@smtp.kernel.org>
+	s=arc-20240116; t=1737007177; c=relaxed/simple;
+	bh=lcQqiuG2mKaEftTvzcONznF2dzWJHPToqMHqJUIACM0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dV755jxMIY3lTsWRDyN9SYwl3NMcrznTYfj0VTu46Zwz+rqmddE/IJD6rBwUCrJ/77iovR+PUwmBOJw0qTdf0CUBZhvLmbE7oCLRSs2hBWhOtBghPOUwlaIv212y059tAue5F107OnoIeZyC3I+wLGP5+wouRa2H7AAJHT8ITEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=Fbs0WkuE; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 0be75eb0d3cf11efbd192953cf12861f-20250116
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=7JOyXQZobW/luOOWb6Nlyqh7d3eh8Z9mp/NnINZ9kOA=;
+	b=Fbs0WkuEllL1bpCk7dkNsU1yFPKHmKWB+iC4Wl9Mv7fVIYoEVlMWIwsDqkGipBF5kWog1grTzEPbqOCUC6u1gX+OZvzpvRRTGAYef1XsRUfyjLeKqnumd9WJsrMWEoap9kI3gmgptXMppLjxXm9Ca6DN9UuBD+7zwEaaDAUvYKw=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.46,REQID:105c0f99-3796-48e8-b88e-02debce993fe,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:60aa074,CLOUDID:7df1f90e-078a-483b-8929-714244d25c49,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
+	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 0be75eb0d3cf11efbd192953cf12861f-20250116
+Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw02.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 207954963; Thu, 16 Jan 2025 13:59:28 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Thu, 16 Jan 2025 13:59:27 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.28 via Frontend Transport; Thu, 16 Jan 2025 13:59:26 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
+	<Michael.Lo@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+	<km.lin@mediatek.com>, <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
+	<posh.sun@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>, <stable@vger.kernel.org>
+Subject: [PATCH] wifi: mt76: mt7925: ensure wow pattern command align fw format
+Date: Thu, 16 Jan 2025 13:59:25 +0800
+Message-ID: <20250116055925.3856856-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-The quilt patch titled
-     Subject: memcg: fix soft lockup in the OOM process
-has been removed from the -mm tree.  Its filename was
-     memcg-fix-soft-lockup-in-the-oom-process.patch
+Align the format of "struct mt7925_wow_pattern_tlv" with
+firmware to ensure proper functionality.
 
-This patch was dropped because it was merged into the mm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: Chen Ridong <chenridong@huawei.com>
-Subject: memcg: fix soft lockup in the OOM process
-Date: Tue, 24 Dec 2024 02:52:38 +0000
-
-A soft lockup issue was found in the product with about 56,000 tasks were
-in the OOM cgroup, it was traversing them when the soft lockup was
-triggered.
-
-watchdog: BUG: soft lockup - CPU#2 stuck for 23s! [VM Thread:1503066]
-CPU: 2 PID: 1503066 Comm: VM Thread Kdump: loaded Tainted: G
-Hardware name: Huawei Cloud OpenStack Nova, BIOS
-RIP: 0010:console_unlock+0x343/0x540
-RSP: 0000:ffffb751447db9a0 EFLAGS: 00000247 ORIG_RAX: ffffffffffffff13
-RAX: 0000000000000001 RBX: 0000000000000000 RCX: 00000000ffffffff
-RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000247
-RBP: ffffffffafc71f90 R08: 0000000000000000 R09: 0000000000000040
-R10: 0000000000000080 R11: 0000000000000000 R12: ffffffffafc74bd0
-R13: ffffffffaf60a220 R14: 0000000000000247 R15: 0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f2fe6ad91f0 CR3: 00000004b2076003 CR4: 0000000000360ee0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- vprintk_emit+0x193/0x280
- printk+0x52/0x6e
- dump_task+0x114/0x130
- mem_cgroup_scan_tasks+0x76/0x100
- dump_header+0x1fe/0x210
- oom_kill_process+0xd1/0x100
- out_of_memory+0x125/0x570
- mem_cgroup_out_of_memory+0xb5/0xd0
- try_charge+0x720/0x770
- mem_cgroup_try_charge+0x86/0x180
- mem_cgroup_try_charge_delay+0x1c/0x40
- do_anonymous_page+0xb5/0x390
- handle_mm_fault+0xc4/0x1f0
-
-This is because thousands of processes are in the OOM cgroup, it takes a
-long time to traverse all of them.  As a result, this lead to soft lockup
-in the OOM process.
-
-To fix this issue, call 'cond_resched' in the 'mem_cgroup_scan_tasks'
-function per 1000 iterations.  For global OOM, call
-'touch_softlockup_watchdog' per 1000 iterations to avoid this issue.
-
-Link: https://lkml.kernel.org/r/20241224025238.3768787-1-chenridong@huaweicloud.com
-Fixes: 9cbb78bb3143 ("mm, memcg: introduce own oom handler to iterate only over its own threads")
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Shakeel Butt <shakeelb@google.com>
-Cc: Muchun Song <songmuchun@bytedance.com>
-Cc: Michal Koutný <mkoutny@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 ---
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- mm/memcontrol.c |    7 ++++++-
- mm/oom_kill.c   |    8 +++++++-
- 2 files changed, 13 insertions(+), 2 deletions(-)
-
---- a/mm/memcontrol.c~memcg-fix-soft-lockup-in-the-oom-process
-+++ a/mm/memcontrol.c
-@@ -1161,6 +1161,7 @@ void mem_cgroup_scan_tasks(struct mem_cg
- {
- 	struct mem_cgroup *iter;
- 	int ret = 0;
-+	int i = 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+index 1e47d2c61b54..6bf1623e542e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+@@ -566,8 +566,8 @@ struct mt7925_wow_pattern_tlv {
+ 	u8 offset;
+ 	u8 mask[MT76_CONNAC_WOW_MASK_MAX_LEN];
+ 	u8 pattern[MT76_CONNAC_WOW_PATTEN_MAX_LEN];
+-	u8 rsv[7];
+-} __packed;
++	u8 rsv[4];
++};
  
- 	BUG_ON(mem_cgroup_is_root(memcg));
- 
-@@ -1169,8 +1170,12 @@ void mem_cgroup_scan_tasks(struct mem_cg
- 		struct task_struct *task;
- 
- 		css_task_iter_start(&iter->css, CSS_TASK_ITER_PROCS, &it);
--		while (!ret && (task = css_task_iter_next(&it)))
-+		while (!ret && (task = css_task_iter_next(&it))) {
-+			/* Avoid potential softlockup warning */
-+			if ((++i & 1023) == 0)
-+				cond_resched();
- 			ret = fn(task, arg);
-+		}
- 		css_task_iter_end(&it);
- 		if (ret) {
- 			mem_cgroup_iter_break(memcg, iter);
---- a/mm/oom_kill.c~memcg-fix-soft-lockup-in-the-oom-process
-+++ a/mm/oom_kill.c
-@@ -44,6 +44,7 @@
- #include <linux/init.h>
- #include <linux/mmu_notifier.h>
- #include <linux/cred.h>
-+#include <linux/nmi.h>
- 
- #include <asm/tlb.h>
- #include "internal.h"
-@@ -430,10 +431,15 @@ static void dump_tasks(struct oom_contro
- 		mem_cgroup_scan_tasks(oc->memcg, dump_task, oc);
- 	else {
- 		struct task_struct *p;
-+		int i = 0;
- 
- 		rcu_read_lock();
--		for_each_process(p)
-+		for_each_process(p) {
-+			/* Avoid potential softlockup warning */
-+			if ((++i & 1023) == 0)
-+				touch_softlockup_watchdog();
- 			dump_task(p, oc);
-+		}
- 		rcu_read_unlock();
- 	}
- }
-_
-
-Patches currently in -mm which might be from chenridong@huawei.com are
-
+ struct roc_acquire_tlv {
+ 	__le16 tag;
+-- 
+2.45.2
 
 
