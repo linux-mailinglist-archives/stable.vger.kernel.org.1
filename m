@@ -1,161 +1,174 @@
-Return-Path: <stable+bounces-109225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D58A135DA
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 09:50:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC125A135E0
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 09:52:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C9B6164341
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 08:50:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2095D7A1704
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 08:52:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84AFD1D7E5C;
-	Thu, 16 Jan 2025 08:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E612B1D63C8;
+	Thu, 16 Jan 2025 08:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b="AwmewLz3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A54Hvi80"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0.infotecs.ru (mx0.infotecs.ru [91.244.183.115])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D9535944;
-	Thu, 16 Jan 2025 08:49:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.244.183.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE32135944;
+	Thu, 16 Jan 2025 08:52:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737017394; cv=none; b=p1wa0ByIaKebW68140vQGkkRns0zfCZ7q3LxTEY0w+kS6vmQyjvLt8BRlWm805aPBpd99ROaW9WxTmabvdr3VuOFoLSufeo7JiDfYr0DrsabpJmeYB0tiqQWMj1d3u+wao7rRq0WqyIIdeZtEo3MO3CuCt0xyTKxWG9yqG/3rMc=
+	t=1737017544; cv=none; b=QlhfnH16sCOVdvbwNoomjAoLWQIiBWySokzSDZRsHUMGKWjAQ15Qm88TBKvQIr/N2V4FP392MVnbBHtik2muGEIpbUN4fbslHSILH0U5MzNIe9DHZWg+5VNi5FMxolPSF/0rGxiUMiYl3SghrRTPPUdw5HpJcadKnnVCI77qB78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737017394; c=relaxed/simple;
-	bh=Ay0ixWvSyXQi4ZXOFtgmghu+2Uv6P88QyD0VBuIy3NA=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=LMhOEo1tT8vxjVkQaHjqBYviqYXTMmF/Pauv/nFxIXe3VMiZhysUj8f+pMq+qPUt1UOcq3nIrpwi5njF1kq7oSqFBXF+ZmmWw4NvoeqfT6UZHIcWJFalTguR3tHbiqsvDF0LrFpZ/V0zYz3JR8XkkzQ4qwIGT0H9N2LzFTGSBgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru; spf=pass smtp.mailfrom=infotecs.ru; dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b=AwmewLz3; arc=none smtp.client-ip=91.244.183.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infotecs.ru
-Received: from mx0.infotecs-nt (localhost [127.0.0.1])
-	by mx0.infotecs.ru (Postfix) with ESMTP id 4F4CF104EF8A;
-	Thu, 16 Jan 2025 11:49:49 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx0.infotecs.ru 4F4CF104EF8A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infotecs.ru; s=mx;
-	t=1737017389; bh=QFT97n2tszIVPac1sIYnOooZaURyzmEqOYawWd99dlw=;
-	h=From:To:CC:Subject:Date:From;
-	b=AwmewLz32MHeMYc0iGxeM33WUQkrZdIpZ57aNy2N1Yw4L148Mmll+1p82y6mlE0Rb
-	 urnissziXHZFEhE63pRmauyftwDtcBwk9cp7UMFgG1oyDHDdKshQokK8js5eXFrRP7
-	 NIYhd2zT4gWL6dpfG3cep0yI33XzNpesCCNQvwWk=
-Received: from msk-exch-02.infotecs-nt (msk-exch-02.infotecs-nt [10.0.7.192])
-	by mx0.infotecs-nt (Postfix) with ESMTP id 4A1A7302E8A0;
-	Thu, 16 Jan 2025 11:49:49 +0300 (MSK)
-From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: Julan Hsu <julanhsu@google.com>, "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "lvc-project@linuxtesting.org"
-	<lvc-project@linuxtesting.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: [PATCH v3] wifi: mac80211: fix integer overflow in
- hwmp_route_info_get()
-Thread-Topic: [PATCH v3] wifi: mac80211: fix integer overflow in
- hwmp_route_info_get()
-Thread-Index: AQHbZ/OZISFF+ut0wEeUiomHEH881w==
-Date: Thu, 16 Jan 2025 08:49:48 +0000
-Message-ID: <20250116084948.3933834-1-Ilia.Gavrilov@infotecs.ru>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-exclaimer-md-config: 208ac3cd-1ed4-4982-a353-bdefac89ac0a
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1737017544; c=relaxed/simple;
+	bh=DuleUejWG0q+WtTiZMiTAG5HKVGnT69fUZwBSvGNOHg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Uye6TAIBCCBvBRbrGrKXTIDhmBJ99lnXVrvGHs+vd5/cMOA2woE8M3iYnU+CyQCuiLgZTlPtX0u0dDKHze+6SNdDlvXvxze69ezbGFGm5xVymhivQJ/I1xqi1P6/n1Af153g10eafQPEeSyGT0TuRMFENPq89Ay6iHDb6a4mRWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A54Hvi80; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-53f22fd6887so639963e87.2;
+        Thu, 16 Jan 2025 00:52:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737017541; x=1737622341; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zAUtyQ+0uLQvtoh7VA3lKvtKY7elMPWjYH/V5sBZpQ4=;
+        b=A54Hvi80RycY7lF/7sanIQl0sja+0vQuz/CwQkG61G4O2HUkb9CcIoCeOYCM+LW6vK
+         kX8szEYWF2ULvZU9ZOLycb8hoBJX3JZiT1bn/oiiaM9dLO2OoMEGmshP++fRuyiSZ6Uh
+         h2HT7wqB+zYLg26GIqmXkyh+Fd9EArpWqXCkpCbPTmBY1CWB8pBiVIewONrFXDy/Cmg1
+         Ja6WIObcTLAR5Qzo+3poobAgCShQMpVzgWBqGzxj8oIb6KtiiXqRBrBUEpANCrarb8+r
+         P+xVJm/cG0zppmJ91w2eWgC5J6NDAzmI4sBc2RGd0ckSEJGgJvN0luUPb6Lnr9fqtoNU
+         Eg5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737017541; x=1737622341;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zAUtyQ+0uLQvtoh7VA3lKvtKY7elMPWjYH/V5sBZpQ4=;
+        b=HdP4nDbB/YhgMBx3TcxAQBeCIb+cCAsmN/dbCDu4KsT99O6YKo5nDgmvqlXyaLuOkp
+         YYvPaZX0AyFtsZ034Q1PELbwU99sXUYeu0TqrzrXzWeGyIVd+MiaytStrUVwiEomxSYt
+         huTJ6KdEn0gaG+hQOm5JMlnkSayMAVJl4IdKrOHEyIfkXBvQW7q6WoQkmn+2CsYmZzef
+         vPQuOA+nYc2l2sGwAr/RMK6nKaN69HKeZrKVu/IDrb6y4zl5nL2oPIr8zfhusRFpH6d9
+         rf+nI5/KdQEQ4vmvyLtIDkWvxem0rXYdsyTFT6twsc7ViiZtIX1ieIWhv9AznxekCZm1
+         LE6g==
+X-Forwarded-Encrypted: i=1; AJvYcCUvAj7Cuyo8DIhJujCrew9iaufctS4F8c41m+UrirqZFXX1aa8a2hJ7tbhenFLFgMUqED3T6V7G@vger.kernel.org, AJvYcCXnVhnlGl3vZd2FbXak6M06/ih6hYzQdtDIgXmXzmBF1ZQy4yCd0o5Y4hSzY9962co1S0BzH+MBpaoanR0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyUozsc28Kv/muHXJjmC+SGnAubUvLfWLfRshqMhOu0mPWI3vK
+	gLlrZNUAeyq2IO0dTL/rEH60b125vV5Tet7sT1c/cI/0XeIFcs56/Uv8dc4x1RjKRgWT7dLao2Q
+	cXV3XZszGT6VSUn+sBHoa9tUMagE=
+X-Gm-Gg: ASbGnctetkE6l26wfYn2roT+D1hfZefesvRVZsKzdQba0morJsSncEGP3zhN1WOQUP4
+	j1aWLWxVxDDd+OURoIpJbLO2AmYaT85jfI6dthw==
+X-Google-Smtp-Source: AGHT+IERCbAaD0M5Y9SM85jk5clNOfZT04do4722yH5mwwpZJo2wuqBSFTzAaWO0/vEKFrZEjdW9aDQ5LPy5SvtlMwA=
+X-Received: by 2002:a05:6512:15a3:b0:542:2f5a:5f52 with SMTP id
+ 2adb3069b0e04-542845b9037mr9528748e87.13.1737017540615; Thu, 16 Jan 2025
+ 00:52:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KLMS-Rule-ID: 5
-X-KLMS-Message-Action: clean
-X-KLMS-AntiSpam-Status: not scanned, disabled by settings
-X-KLMS-AntiSpam-Interceptor-Info: not scanned
-X-KLMS-AntiPhishing: Clean, bases: 2025/01/16 07:12:00
-X-KLMS-AntiVirus: Kaspersky Security for Linux Mail Server, version 8.0.3.30, bases: 2025/01/15 23:13:00 #27037711
-X-KLMS-AntiVirus-Status: Clean, skipped
+References: <20241214091327.4716-1-ubizjak@gmail.com> <25eb1e35-83b0-46f4-9a9c-138c89665e05@amd.com>
+ <65a1d19e-e793-4371-a33d-e2374908d7f8@amd.com>
+In-Reply-To: <65a1d19e-e793-4371-a33d-e2374908d7f8@amd.com>
+From: Uros Bizjak <ubizjak@gmail.com>
+Date: Thu, 16 Jan 2025 09:52:09 +0100
+X-Gm-Features: AbW1kvbmNHUA99Y_rC7F59MIS_A75PDQtUYNHaYZC64fWzu8F9D0ufvUl_rINoE
+Message-ID: <CAFULd4YKGnOwumpUeW5Yyr-G+BmC=LUSVbFWg74GC9a628VN5w@mail.gmail.com>
+Subject: Re: [PATCH v2] mailbox: zynqmp: Remove invalid __percpu annotation in zynqmp_ipi_probe()
+To: tanmay.shah@amd.com
+Cc: Michal Simek <michal.simek@amd.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Jassi Brar <jassisinghbrar@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Since the new_metric and last_hop_metric variables can reach
-the MAX_METRIC(0xffffffff) value, an integer overflow may occur
-when multiplying them by 10/9. It can lead to incorrect behavior.
+On Mon, Dec 16, 2024 at 6:47=E2=80=AFPM Tanmay Shah <tanmay.shah@amd.com> w=
+rote:
+>
+> Reviewed-by: Tanmay Shah <tanmay.shah@amd.com>
 
-Found by InfoTeCS on behalf of Linux Verification Center
-(linuxtesting.org) with SVACE.
+Is there anything else expected from me to move this patch forward?
 
-Fixes: a8d418d9ac25 ("mac80211: mesh: only switch path when new metric is a=
-t least 10% better")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
----
-v2:
-- Remove 64-bit arithmetic according to https://lore.kernel.org/all/a6bd38c=
-58f2f7685eac53844f2336432503c328e.camel@sipsolutions.net/
-- Replace multiplication by 10/9 with a function that compares metrics by a=
-dding 10% without integer overflow
-v3:
-- Fix a typo (persent->percent)
- net/mac80211/mesh_hwmp.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+Uros.
 
-diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index 4e9546e998b6..79aa29d61e6b 100644
---- a/net/mac80211/mesh_hwmp.c
-+++ b/net/mac80211/mesh_hwmp.c
-@@ -367,6 +367,26 @@ u32 airtime_link_metric_get(struct ieee80211_local *lo=
-cal,
- 	return (u32)result;
- }
-=20
-+static inline bool is_metric_better(u32 x, u32 y, u32 percent)
-+{
-+	u32 a, e;
-+
-+	if (x >=3D y)
-+		return false;
-+
-+	a =3D mult_frac(x, percent, 100);
-+
-+	if (check_add_overflow(x, a, &e)) {
-+		if (x > y - a)
-+			return false;
-+	} else {
-+		if (e > y)
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
- /**
-  * hwmp_route_info_get - Update routing info to originator and transmitter
-  *
-@@ -458,8 +478,8 @@ static u32 hwmp_route_info_get(struct ieee80211_sub_if_=
-data *sdata,
- 				    (mpath->sn =3D=3D orig_sn &&
- 				     (rcu_access_pointer(mpath->next_hop) !=3D
- 						      sta ?
--					      mult_frac(new_metric, 10, 9) :
--					      new_metric) >=3D mpath->metric)) {
-+					      !is_metric_better(new_metric, mpath->metric, 10) :
-+					      new_metric >=3D mpath->metric))) {
- 					process =3D false;
- 					fresh_info =3D false;
- 				}
-@@ -533,8 +553,8 @@ static u32 hwmp_route_info_get(struct ieee80211_sub_if_=
-data *sdata,
- 			if ((mpath->flags & MESH_PATH_FIXED) ||
- 			    ((mpath->flags & MESH_PATH_ACTIVE) &&
- 			     ((rcu_access_pointer(mpath->next_hop) !=3D sta ?
--				       mult_frac(last_hop_metric, 10, 9) :
--				       last_hop_metric) > mpath->metric)))
-+				      !is_metric_better(last_hop_metric, mpath->metric, 10) :
-+				       last_hop_metric > mpath->metric))))
- 				fresh_info =3D false;
- 		} else {
- 			mpath =3D mesh_path_add(sdata, ta);
---=20
-2.39.5
+>
+> On 12/16/24 1:16 AM, Michal Simek wrote:
+> >
+> >
+> > On 12/14/24 10:12, Uros Bizjak wrote:
+> >> struct zynqmp_ipi_pdata __percpu *pdata is not a per-cpu variable,
+> >> so it should not be annotated with __percpu annotation.
+> >>
+> >> Remove invalid __percpu annotation to fix several
+> >>
+> >> zynqmp-ipi-mailbox.c:920:15: warning: incorrect type in assignment
+> >> (different address spaces)
+> >> zynqmp-ipi-mailbox.c:920:15:    expected struct zynqmp_ipi_pdata
+> >> [noderef] __percpu *pdata
+> >> zynqmp-ipi-mailbox.c:920:15:    got void *
+> >> zynqmp-ipi-mailbox.c:927:56: warning: incorrect type in argument 3
+> >> (different address spaces)
+> >> zynqmp-ipi-mailbox.c:927:56:    expected unsigned int [usertype]
+> >> *out_value
+> >> zynqmp-ipi-mailbox.c:927:56:    got unsigned int [noderef] __percpu *
+> >> ...
+> >>
+> >> and several
+> >>
+> >> drivers/mailbox/zynqmp-ipi-mailbox.c:924:9: warning: dereference of
+> >> noderef expression
+> >> ...
+> >>
+> >> sparse warnings.
+> >>
+> >> There were no changes in the resulting object file.
+> >>
+> >> Cc: stable@vger.kernel.org
+> >> Fixes: 6ffb1635341b ("mailbox: zynqmp: handle SGI for shared IPI")
+> >> Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+> >> Cc: Jassi Brar <jassisinghbrar@gmail.com>
+> >> Cc: Michal Simek <michal.simek@amd.com>
+> >> Cc: Tanmay Shah <tanmay.shah@amd.com>
+> >> ---
+> >> v2: - Fix typo in commit message
+> >>      - Add Fixes and Cc: stable.
+> >> ---
+> >>   drivers/mailbox/zynqmp-ipi-mailbox.c | 2 +-
+> >>   1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/
+> >> zynqmp-ipi-mailbox.c
+> >> index aa5249da59b2..0c143beaafda 100644
+> >> --- a/drivers/mailbox/zynqmp-ipi-mailbox.c
+> >> +++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
+> >> @@ -905,7 +905,7 @@ static int zynqmp_ipi_probe(struct platform_device
+> >> *pdev)
+> >>   {
+> >>       struct device *dev =3D &pdev->dev;
+> >>       struct device_node *nc, *np =3D pdev->dev.of_node;
+> >> -    struct zynqmp_ipi_pdata __percpu *pdata;
+> >> +    struct zynqmp_ipi_pdata *pdata;
+> >>       struct of_phandle_args out_irq;
+> >>       struct zynqmp_ipi_mbox *mbox;
+> >>       int num_mboxes, ret =3D -EINVAL;
+> >
+> > Tanmay: Please take a look
+> >
+> > I think this patch is correct. Pdata structure is allocated only once
+> > not for every CPU and marking here is not correct. Information from
+> > zynqmp_ipi_pdata are likely fixed and the same for every CPU. Only IRQ
+> > handling is done per cpu basis but that's it.
+> >
+> > Reviewed-by: Michal Simek <michal.simek@amd.com>
+> >
+> > Thanks,
+> > Michal
+> >
+>
 
