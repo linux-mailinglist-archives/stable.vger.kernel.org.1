@@ -1,303 +1,191 @@
-Return-Path: <stable+bounces-109255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ADF3A1398F
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 12:59:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D99A3A139C2
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 13:11:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2488C7A4233
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 11:59:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36B103A3FCC
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 12:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392AC1DE4ED;
-	Thu, 16 Jan 2025 11:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99BEA1D86F6;
+	Thu, 16 Jan 2025 12:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KS51Ayne";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="I+IHIycy"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="EsZlZdTF"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from out203-205-221-202.mail.qq.com (out203-205-221-202.mail.qq.com [203.205.221.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101A11DE4DF;
-	Thu, 16 Jan 2025 11:59:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E0F156F57
+	for <stable@vger.kernel.org>; Thu, 16 Jan 2025 12:11:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737028764; cv=none; b=k7IOWBzdHnD78PG1Bt/awEqsLlaaRtEi1B+U/zR4U8fRRMZnHB6QkfSxS2cxOYGfAOt+Rb1zRL3jG4+knxeR4hpfeYBievqWUWl27Uzfpodgrxs9TM3oFabOUeIc38uttkULe/BKKdnXU+rlKCjosP2AFbYqMoAji7L/O9N/g6c=
+	t=1737029486; cv=none; b=OF3ZD3SxazoFktxBNT2yFF2cOmwOOjVei9sW+RihaciljnfEtqvt0XkomvM5ky/y4YJOaDd7xWEjTlNbBfXgbkFvkgrB0T0ZBcHqlMXRPZ8CyAH8gjuO6IS+6LG7QNFUkF0FEJMKqSeE3hOjROWDhYvojda/g9rWnh/KfU85Hc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737028764; c=relaxed/simple;
-	bh=3cJU61/ZenvPxChdYrSQCkO/hY5x5qFih4oZuKVwdFQ=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Jv5g8JL/Ts/aH82us+xH0MQUWZuRiXgKVcwxxIerOkvfnfZdBbJ/BPI5nHEv2YwYixMlpRrcBoK0v3Gy7bsMmX5LvwsT6Ro6gGsEKYC1FXu7uETzA6ppdhCjKNXEu8wonT3Ab1QPvPPVAy+L9bEg1hp0yehSPbIy/if8Sv6fzbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KS51Ayne; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=I+IHIycy; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 16 Jan 2025 11:59:19 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1737028759;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kbWNuPMnoH/ShCgpP3PO10BLIgninj07YzHaH1mHTDM=;
-	b=KS51AyneYG/yyRqrh/gUXtx43pL4lSXgP/WXU8/R6XL6+a9JrIZp9447tkPcDdSPMX8IFy
-	0uNuP+vmIa5ppWF6OL9XtZcu+j2U5gtC1WFq3Fu4xuUV3v5Bl0JAInYpXrV2VuGpLMfokm
-	oJ6UYLXQimOAKFKodfFWj43ATyF9/mH0PFeaaeuXwPt04g8FSplOsx2xiBWOZjBnHHRAFb
-	WVYHNtmZOCyy7P/u/VvDDLtlLCWD9/bMAFGVy/MZShgruBonYh+P/aJ3YLMjo6yaA8gaUL
-	3WePosIPjc5DoyRlC5Et+JQuZ3BOPH7neXallzcn5HPPP+d1JmeZU/cNgl5WmQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1737028759;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kbWNuPMnoH/ShCgpP3PO10BLIgninj07YzHaH1mHTDM=;
-	b=I+IHIycy4LHJGypmCWOUBcXF0T39TENvkS5TugbMrVdc+yfON3a/5EDhy5DII1rBIyUPEu
-	6lsbNrdsOTxwNyBA==
-From: "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] timers/migration: Enforce group initialization
- visibility to tree walkers
-Cc: Frederic Weisbecker <frederic@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250114231507.21672-3-frederic@kernel.org>
-References: <20250114231507.21672-3-frederic@kernel.org>
+	s=arc-20240116; t=1737029486; c=relaxed/simple;
+	bh=Vn92oXYrdzuUQvymh9r1vxBCgvgAaX/yQTdJBxcGSX4=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=fxXOxul9kvE0JdTz9SfV5FAn3UXQw1TWesjQYh6A6xds2iBemvztuTC4B+9uyP7h3l5O6rdr8Cd1Or9RR4A3D+ChQ0GEW+jVWYNvvXzsmZ9bQ8eK9dteMSL5FyzFYCg8xfsqei0LCrlp2Nlny1SpCCHMfQTkheUYJzC/R83wrWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=EsZlZdTF; arc=none smtp.client-ip=203.205.221.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1737029170; bh=Ne47eDEGDuwXfrc/0O+Wb4Kw9SLoah0GwKOVrft3XJ8=;
+	h=From:To:Cc:Subject:Date;
+	b=EsZlZdTFaykHcLZVJ/kbVgxfn8VnWX1zalVs5s3eZfPivADGNmcGiGuvvRc+Y5RE9
+	 8jhLwqTTzzYAYKxSpSXCGLFhCMezc+mDzc9k60L475/GwZOBw0c2mBgIUoqvlOvyOC
+	 NgNu1V94hUlwmKzo7nGcLJLBoFJ5IzE4/i22T58k=
+Received: from my-pc.corp.ad.wrs.com ([120.244.194.130])
+	by newxmesmtplogicsvrszc16-0.qq.com (NewEsmtp) with SMTP
+	id 171002D9; Thu, 16 Jan 2025 20:05:49 +0800
+X-QQ-mid: xmsmtpt1737029149t0roob1iz
+Message-ID: <tencent_58418A96BD26EB035F32DE1A12670EA6A005@qq.com>
+X-QQ-XMAILINFO: ONeCszOCk2GVyz9e/3frtlc7ExLElrt9Q5xaHOL7popTwYzTs7Kii02AWk1LWT
+	 I1iq2YV0Z9pRnL3ZzMvNimT6P/5np8+fLX9BNgIYUlekVYYMavnKthR9MBm8ixUaJ92YKTim4RmK
+	 89k9mxr/Z5cX7xJJcnKcPpUyDmhFyIPWgVwacHqHLUy2Kb8PYo9VeAebUCUYwmCMIKpiqQLK2HHR
+	 u/elNgTfYMml0lLeVifBKOxxLpJB7Is0/smk2AFyp8hM/HtmNcXnjQn6dZwMXdUnM3kgK3zsLCSN
+	 nGAQq9KF3hPuB2eJ0uY4inKNVrbtlKcjXFISHYFS3SdjCDTbU55pBjJOJjRRFp/kicie8KuQ5g9W
+	 unColHZvu9TzL8ftjh62bu4P0sg/xX1CMxuyu34Q6MFi61zpB2NKJqwvV7ef9BxPhrT+G27tBp24
+	 zJSAiNn7saTgA3FqXQ6XBH6zOuKv0T0HukI90R7ZXuQj1Q+/Ca+Zqh35AVIwUQWIhCuDH69YhQuj
+	 Mwqb4JLW85zzXPB3K3TE7xKt/J/OD57pupnkYJ6b2maWbJFsam2cKqB4pW7/plv8EY3Wa9h+Zmoc
+	 K8Vk69GgrG40NZFQSeVr2Y5ZJ44d6aAypg8fuUFwpylz46betuwnL5dnpeIwzh+aT/loisaIiFj9
+	 prTRHankFU1enON/MlWInWVYv8ytnJxb1whOAf6WtyXrw341JsNWnlNqb8+aVuB0rOl7wAWPEIaM
+	 RC8GQrggl0X0uv5TjtizAuJz59z9Nnls9glQ6Pbdd/GVz4UkscAlNUnh8IXEnFSbl9NFuBnPo9F8
+	 MJKVOcHiH0JdllNFGyQ3zRM7QAaxjo5f85N9Ao79z8qYUxkoRl4tLLiTWk595+vqZYCnJvlQW9MC
+	 roK5MbSaU97jvmi8CbQJnM0V4fmdoyIM8KXvIlZkAzZLCZiFP1y42x4EIEWBnXknaxGqh7gsxpfm
+	 H07fF2OSRE9e7hMUeQKQ==
+X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
+From: lanbincn@qq.com
+To: stable@vger.kernel.org
+Cc: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Bin Lan <lanbincn@qq.com>
+Subject: [PATCH 6.6.y] drm/amd/display: Fix out-of-bounds access in 'dcn21_link_encoder_create'
+Date: Thu, 16 Jan 2025 20:05:47 +0800
+X-OQ-MSGID: <20250116120547.2218-1-lanbincn@qq.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173702875928.31546.10203265346385825030.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-The following commit has been merged into the timers/urgent branch of tip:
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-Commit-ID:     de3ced72a79280fefd680e5e101d8b9f03cfa1d7
-Gitweb:        https://git.kernel.org/tip/de3ced72a79280fefd680e5e101d8b9f03cfa1d7
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Wed, 15 Jan 2025 00:15:05 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 16 Jan 2025 12:47:11 +01:00
+commit 63de35a8fcfca59ae8750d469a7eb220c7557baf upstream.
 
-timers/migration: Enforce group initialization visibility to tree walkers
+An issue was identified in the dcn21_link_encoder_create function where
+an out-of-bounds access could occur when the hpd_source index was used
+to reference the link_enc_hpd_regs array. This array has a fixed size
+and the index was not being checked against the array's bounds before
+accessing it.
 
-Commit 2522c84db513 ("timers/migration: Fix another race between hotplug
-and idle entry/exit") fixed yet another race between idle exit and CPU
-hotplug up leading to a wrong "0" value migrator assigned to the top
-level. However there is yet another situation that remains unhandled:
+This fix adds a conditional check to ensure that the hpd_source index is
+within the valid range of the link_enc_hpd_regs array. If the index is
+out of bounds, the function now returns NULL to prevent undefined
+behavior.
 
-         [GRP0:0]
-      migrator  = TMIGR_NONE
-      active    = NONE
-      groupmask = 1
-      /     \      \
-     0       1     2..7
-   idle      idle   idle
+References:
 
-0) The system is fully idle.
+[   65.920507] ------------[ cut here ]------------
+[   65.920510] UBSAN: array-index-out-of-bounds in drivers/gpu/drm/amd/amdgpu/../display/dc/resource/dcn21/dcn21_resource.c:1312:29
+[   65.920519] index 7 is out of range for type 'dcn10_link_enc_hpd_registers [5]'
+[   65.920523] CPU: 3 PID: 1178 Comm: modprobe Tainted: G           OE      6.8.0-cleanershaderfeatureresetasdntipmi200nv2132 #13
+[   65.920525] Hardware name: AMD Majolica-RN/Majolica-RN, BIOS WMJ0429N_Weekly_20_04_2 04/29/2020
+[   65.920527] Call Trace:
+[   65.920529]  <TASK>
+[   65.920532]  dump_stack_lvl+0x48/0x70
+[   65.920541]  dump_stack+0x10/0x20
+[   65.920543]  __ubsan_handle_out_of_bounds+0xa2/0xe0
+[   65.920549]  dcn21_link_encoder_create+0xd9/0x140 [amdgpu]
+[   65.921009]  link_create+0x6d3/0xed0 [amdgpu]
+[   65.921355]  create_links+0x18a/0x4e0 [amdgpu]
+[   65.921679]  dc_create+0x360/0x720 [amdgpu]
+[   65.921999]  ? dmi_matches+0xa0/0x220
+[   65.922004]  amdgpu_dm_init+0x2b6/0x2c90 [amdgpu]
+[   65.922342]  ? console_unlock+0x77/0x120
+[   65.922348]  ? dev_printk_emit+0x86/0xb0
+[   65.922354]  dm_hw_init+0x15/0x40 [amdgpu]
+[   65.922686]  amdgpu_device_init+0x26a8/0x33a0 [amdgpu]
+[   65.922921]  amdgpu_driver_load_kms+0x1b/0xa0 [amdgpu]
+[   65.923087]  amdgpu_pci_probe+0x1b7/0x630 [amdgpu]
+[   65.923087]  local_pci_probe+0x4b/0xb0
+[   65.923087]  pci_device_probe+0xc8/0x280
+[   65.923087]  really_probe+0x187/0x300
+[   65.923087]  __driver_probe_device+0x85/0x130
+[   65.923087]  driver_probe_device+0x24/0x110
+[   65.923087]  __driver_attach+0xac/0x1d0
+[   65.923087]  ? __pfx___driver_attach+0x10/0x10
+[   65.923087]  bus_for_each_dev+0x7d/0xd0
+[   65.923087]  driver_attach+0x1e/0x30
+[   65.923087]  bus_add_driver+0xf2/0x200
+[   65.923087]  driver_register+0x64/0x130
+[   65.923087]  ? __pfx_amdgpu_init+0x10/0x10 [amdgpu]
+[   65.923087]  __pci_register_driver+0x61/0x70
+[   65.923087]  amdgpu_init+0x7d/0xff0 [amdgpu]
+[   65.923087]  do_one_initcall+0x49/0x310
+[   65.923087]  ? kmalloc_trace+0x136/0x360
+[   65.923087]  do_init_module+0x6a/0x270
+[   65.923087]  load_module+0x1fce/0x23a0
+[   65.923087]  init_module_from_file+0x9c/0xe0
+[   65.923087]  ? init_module_from_file+0x9c/0xe0
+[   65.923087]  idempotent_init_module+0x179/0x230
+[   65.923087]  __x64_sys_finit_module+0x5d/0xa0
+[   65.923087]  do_syscall_64+0x76/0x120
+[   65.923087]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+[   65.923087] RIP: 0033:0x7f2d80f1e88d
+[   65.923087] Code: 5b 41 5c c3 66 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 73 b5 0f 00 f7 d8 64 89 01 48
+[   65.923087] RSP: 002b:00007ffc7bc1aa78 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
+[   65.923087] RAX: ffffffffffffffda RBX: 0000564c9c1db130 RCX: 00007f2d80f1e88d
+[   65.923087] RDX: 0000000000000000 RSI: 0000564c9c1e5480 RDI: 000000000000000f
+[   65.923087] RBP: 0000000000040000 R08: 0000000000000000 R09: 0000000000000002
+[   65.923087] R10: 000000000000000f R11: 0000000000000246 R12: 0000564c9c1e5480
+[   65.923087] R13: 0000564c9c1db260 R14: 0000000000000000 R15: 0000564c9c1e54b0
+[   65.923087]  </TASK>
+[   65.923927] ---[ end trace ]---
 
-         [GRP0:0]
-      migrator  = CPU 0
-      active    = CPU 0
-      groupmask = 1
-      /     \      \
-     0       1     2..7
-   active   idle   idle
-
-1) CPU 0 is activating. It has done the cmpxchg on the top's ->migr_state
-but it hasn't yet returned to __walk_groups().
-
-         [GRP0:0]
-      migrator  = CPU 0
-      active    = CPU 0, CPU 1
-      groupmask = 1
-      /     \      \
-     0       1     2..7
-   active  active  idle
-
-2) CPU 1 is activating. CPU 0 stays the migrator (still stuck in
-__walk_groups(), delayed by #VMEXIT for example).
-
-                    [GRP1:0]
-                migrator = TMIGR_NONE
-                active   = NONE
-                groupmask = 1
-             /                   \
-         [GRP0:0]                  [GRP0:1]
-      migrator  = CPU 0           migrator = TMIGR_NONE
-      active    = CPU 0, CPU1     active   = NONE
-      groupmask = 1               groupmask = 2
-      /     \      \
-     0       1     2..7                   8
-   active  active  idle                !online
-
-3) CPU 8 is preparing to boot. CPUHP_TMIGR_PREPARE is being ran by CPU 1
-which has created the GRP0:1 and the new top GRP1:0 connected to GRP0:1
-and GRP0:0. CPU 1 hasn't yet propagated its activation up to GRP1:0.
-
-                    [GRP1:0]
-               migrator = GRP0:0
-               active   = GRP0:0
-               groupmask = 1
-             /                   \
-         [GRP0:0]                  [GRP0:1]
-     migrator  = CPU 0           migrator = TMIGR_NONE
-     active    = CPU 0, CPU1     active   = NONE
-     groupmask = 1               groupmask = 2
-     /     \      \
-    0       1     2..7                   8
-  active  active  idle                !online
-
-4) CPU 0 finally resumed after its #VMEXIT. It's in __walk_groups()
-returning from tmigr_cpu_active(). The new top GRP1:0 is visible and
-fetched and the pre-initialized groupmask of GRP0:0 is also visible.
-As a result tmigr_active_up() is called to GRP1:0 with GRP0:0 as active
-and migrator. CPU 0 is returning to __walk_groups() but suffers again
-a #VMEXIT.
-
-                    [GRP1:0]
-               migrator = GRP0:0
-               active   = GRP0:0
-               groupmask = 1
-             /                   \
-         [GRP0:0]                  [GRP0:1]
-     migrator  = CPU 0           migrator = TMIGR_NONE
-     active    = CPU 0, CPU1     active   = NONE
-     groupmask = 1               groupmask = 2
-     /     \      \
-    0       1     2..7                   8
-  active  active  idle                 !online
-
-5) CPU 1 propagates its activation of GRP0:0 to GRP1:0. This has no
-   effect since CPU 0 did it already.
-
-                    [GRP1:0]
-               migrator = GRP0:0
-               active   = GRP0:0, GRP0:1
-               groupmask = 1
-             /                   \
-         [GRP0:0]                  [GRP0:1]
-     migrator  = CPU 0           migrator = CPU 8
-     active    = CPU 0, CPU1     active   = CPU 8
-     groupmask = 1               groupmask = 2
-     /     \      \                     \
-    0       1     2..7                   8
-  active  active  idle                 active
-
-6) CPU 1 links CPU 8 to its group. CPU 8 boots and goes through
-   CPUHP_AP_TMIGR_ONLINE which propagates activation.
-
-                                   [GRP2:0]
-                              migrator = TMIGR_NONE
-                              active   = NONE
-                              groupmask = 1
-                             /                \
-                    [GRP1:0]                    [GRP1:1]
-               migrator = GRP0:0              migrator = TMIGR_NONE
-               active   = GRP0:0, GRP0:1      active   = NONE
-               groupmask = 1                  groupmask = 2
-             /                   \
-         [GRP0:0]                  [GRP0:1]                [GRP0:2]
-     migrator  = CPU 0           migrator = CPU 8        migrator = TMIGR_NONE
-     active    = CPU 0, CPU1     active   = CPU 8        active   = NONE
-     groupmask = 1               groupmask = 2           groupmask = 0
-     /     \      \                     \
-    0       1     2..7                   8                  64
-  active  active  idle                 active             !online
-
-7) CPU 64 is booting. CPUHP_TMIGR_PREPARE is being ran by CPU 1
-which has created the GRP1:1, GRP0:2 and the new top GRP2:0 connected to
-GRP1:1 and GRP1:0. CPU 1 hasn't yet propagated its activation up to
-GRP2:0.
-
-                                   [GRP2:0]
-                              migrator = 0 (!!!)
-                              active   = NONE
-                              groupmask = 1
-                             /                \
-                    [GRP1:0]                    [GRP1:1]
-               migrator = GRP0:0              migrator = TMIGR_NONE
-               active   = GRP0:0, GRP0:1      active   = NONE
-               groupmask = 1                  groupmask = 2
-             /                   \
-         [GRP0:0]                  [GRP0:1]                [GRP0:2]
-     migrator  = CPU 0           migrator = CPU 8        migrator = TMIGR_NONE
-     active    = CPU 0, CPU1     active   = CPU 8        active   = NONE
-     groupmask = 1               groupmask = 2           groupmask = 0
-     /     \      \                     \
-    0       1     2..7                   8                  64
-  active  active  idle                 active             !online
-
-8) CPU 0 finally resumed after its #VMEXIT. It's in __walk_groups()
-returning from tmigr_cpu_active(). The new top GRP2:0 is visible and
-fetched but the pre-initialized groupmask of GRP1:0 is not because no
-ordering made its initialization visible. As a result tmigr_active_up()
-may be called to GRP2:0 with a "0" child's groumask. Leaving the timers
-ignored for ever when the system is fully idle.
-
-The race is highly theoretical and perhaps impossible in practice but
-the groupmask of the child is not the only concern here as the whole
-initialization of the child is not guaranteed to be visible to any
-tree walker racing against hotplug (idle entry/exit, remote handling,
-etc...). Although the current code layout seem to be resilient to such
-hazards, this doesn't tell much about the future.
-
-Fix this with enforcing address dependency between group initialization
-and the write/read to the group's parent's pointer. Fortunately that
-doesn't involve any barrier addition in the fast paths.
-
-Fixes: 10a0e6f3d3db ("timers/migration: Move hierarchy setup into cpuhotplug prepare callback")
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250114231507.21672-3-frederic@kernel.org
-
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Roman Li <roman.li@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Bin Lan <lanbincn@qq.com>
 ---
- kernel/time/timer_migration.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+Backport to fix CVE-2024-56608
+Link: https://nvd.nist.gov/vuln/detail/CVE-2024-56608
+---
+ drivers/gpu/drm/amd/display/dc/dcn21/dcn21_resource.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/time/timer_migration.c b/kernel/time/timer_migration.c
-index c8a8ea2..371a62a 100644
---- a/kernel/time/timer_migration.c
-+++ b/kernel/time/timer_migration.c
-@@ -534,8 +534,13 @@ static void __walk_groups(up_f up, struct tmigr_walk *data,
- 			break;
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_resource.c b/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_resource.c
+index d1a25fe6c44f..8dffa5b6426e 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_resource.c
+@@ -1315,7 +1315,7 @@ static struct link_encoder *dcn21_link_encoder_create(
+ 		kzalloc(sizeof(struct dcn21_link_encoder), GFP_KERNEL);
+ 	int link_regs_id;
  
- 		child = group;
--		group = group->parent;
-+		/*
-+		 * Pairs with the store release on group connection
-+		 * to make sure group initialization is visible.
-+		 */
-+		group = READ_ONCE(group->parent);
- 		data->childmask = child->groupmask;
-+		WARN_ON_ONCE(!data->childmask);
- 	} while (group);
- }
+-	if (!enc21)
++	if (!enc21 || enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
+ 		return NULL;
  
-@@ -1578,7 +1583,12 @@ static void tmigr_connect_child_parent(struct tmigr_group *child,
- 		child->groupmask = BIT(parent->num_children++);
- 	}
- 
--	child->parent = parent;
-+	/*
-+	 * Make sure parent initialization is visible before publishing it to a
-+	 * racing CPU entering/exiting idle. This RELEASE barrier enforces an
-+	 * address dependency that pairs with the READ_ONCE() in __walk_groups().
-+	 */
-+	smp_store_release(&child->parent, parent);
- 
- 	raw_spin_unlock(&parent->lock);
- 	raw_spin_unlock_irq(&child->lock);
+ 	link_regs_id =
+-- 
+2.43.0
+
 
