@@ -1,169 +1,252 @@
-Return-Path: <stable+bounces-109254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB18DA13980
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 12:53:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA9E1A13993
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 12:59:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 244B0161199
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 11:52:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F0623A6FCE
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 11:59:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D326B1DE880;
-	Thu, 16 Jan 2025 11:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778A81DE88C;
+	Thu, 16 Jan 2025 11:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="YLPGhTQ/"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XXK1U73s";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+fDcsw21"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BA71DE4EF;
-	Thu, 16 Jan 2025 11:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1257B1DE4E1;
+	Thu, 16 Jan 2025 11:59:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737028368; cv=none; b=hZgFsbqZshxCAdBk1NW2j6eJ4mLwQKcxZx0qSmkXzOpNfeVauF5rcR6VHiWLeo75Ur9eh/JaIUX/zlcmBafsTGCivTmv+c3OoksZRWDh/NIPsvsKpi2yWXCPWWC49SjGJrwJcBQMp9YzV0gLyixKIS9Esx2RjxEEoss/vy3XXR4=
+	t=1737028765; cv=none; b=Fk+vcUVk1OuxD9gCxLBm8usD/pJgWRHV5QclPG4fWoeloSQPv/ja31BsQjDgx6Rls9mmJSOZYxXLm7keGDLb9SPhZr7AOofjQcjMshiGCTnsAdH2R9kib4O2CEbjsHHON83vWMH/kLhqTFeZ3ftGdGM7q4vJ3tnYv5tTQQxMEQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737028368; c=relaxed/simple;
-	bh=IIkgJW5uzFF+glFM/tgQ5XQXHbpkGyOEDF+vsD1oDY0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OWVObqkrNvukbQz/K5v/uo6cXLgthWbb9/1F81QZ5jX1noaHK+CpafMS2GXpKKNEL91lc7VaqViiIRevfZhxRy7tHFhsDvn/MaYEcokBlRMqi2nxDUU9bY7WC9MQ+vxhygjzwPbxDdwwjHMyf1clMoMeO1rxU9u2kQeeQZTQSls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=YLPGhTQ/; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50G85g94020410;
-	Thu, 16 Jan 2025 11:52:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=8N2eoZ
-	3YvYb/SFAyhdNqcY8Vat04k3vLluJ3ZnnVVm4=; b=YLPGhTQ/onE5PqfR+SwDxA
-	DfLdixm+6D0nsa5LrWiA28HY1aJ3ycqvsuzPQjC4DvGHKjYLSqKIbgxlT0V4B4BV
-	BNLdDluszzLAI0EMvhjFYd7W95JB+z3MecvgVqXYhZbs0JcCSqVPwkOzepKjT2rr
-	KTEX3E10yPngKBGDVIn8AXXlhO+4a+lEMbLv6YSgVUAlv+u22XV88joGBdGYco7p
-	07aeaqj7Zv5sV1VaOiplpECKMIvyjebBgqqyPoGy2uIFoEy0qtV74eOGDbYi5oJ2
-	bBJTv98ylPjvx563LvSWXkrw6nLB4QZ2zGnVD8YxQLrJHJXYDCPADLiH/rf5/3tg
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 446xa391bn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Jan 2025 11:52:13 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50GBkD7g028253;
-	Thu, 16 Jan 2025 11:52:13 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 446xa391bj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Jan 2025 11:52:13 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50GAk3J8001089;
-	Thu, 16 Jan 2025 11:52:12 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44456k5cyb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Jan 2025 11:52:12 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50GBqBtm29098512
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 Jan 2025 11:52:11 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 802F45806D;
-	Thu, 16 Jan 2025 11:52:11 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 00BD658080;
-	Thu, 16 Jan 2025 11:52:10 +0000 (GMT)
-Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.131.6])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 16 Jan 2025 11:52:09 +0000 (GMT)
-Message-ID: <906089e5f4e24182dc776488959dc595c92a616c.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 6/7] ima: Discard files opened with O_PATH
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Roberto Sassu <roberto.sassu@huaweicloud.com>, viro@zeniv.linux.org.uk,
-        brauner@kernel.org, jack@suse.cz, dmitry.kasatkin@gmail.com,
-        eric.snowberg@oracle.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org,
-        Roberto Sassu <roberto.sassu@huawei.com>, stable@vger.kernel.org
-Date: Thu, 16 Jan 2025 06:52:09 -0500
-In-Reply-To: <20241128100621.461743-7-roberto.sassu@huaweicloud.com>
-References: <20241128100621.461743-1-roberto.sassu@huaweicloud.com>
-	 <20241128100621.461743-7-roberto.sassu@huaweicloud.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1737028765; c=relaxed/simple;
+	bh=VL5njPtD9/k1Krz5quht4JFJMZqX+HtjyOx5Q3qyDps=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=qsTPNRBxj7lx/UlfdgdkBsvJTSfp1EPOMgrmXBYaftGBUuYd8URSmY9N5RQ8QAlXr+2eTXhP+XuulVnh0zeB+HeJZWnzAzs/fPKv+xqnCdXOUznq5dftlS/IoMPxrKeq8w8y4A5PSH4FUC/jTM1dkM2PMF7mWXicmlElI3SVLIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XXK1U73s; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+fDcsw21; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 16 Jan 2025 11:59:19 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1737028760;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ij1MTI0T1tgO3J/S/AkxDmTXzUZfujoAJkWX9RRz77c=;
+	b=XXK1U73sTxDkNP7t7DM/38XpdCy6moEs25UkNMvDe8FDVQrCQTLFjeytWF2W9bSsA3bRuH
+	f3jj5OsUBWECnCfyJlTc8qH8/3Mxkg5Y9XfgxIybnQwZIv3xObzN0ERew0gSroC9EeAhBP
+	eEk3EdOsA37qKxD0dRLfgZ2dZnX7eeMx6hfQSzMPUjyedIk+r1R4FhKkvXV922KHCnIdGG
+	436wTe+pO955/jPRd+SmsZtsLSEN+E9/AsSB2j+CNMW271JZHt04GdN/unaTcQmV96gpoc
+	XNb4uMqChCa4cmL++ED7/EKcWXKV2/bQR6bim9XE/ajFdBVMIL06+VTx1G8rMA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1737028760;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ij1MTI0T1tgO3J/S/AkxDmTXzUZfujoAJkWX9RRz77c=;
+	b=+fDcsw21iFqGubQMh8J3tgsr7v1pm/vcWycF92J0q1mAD4zvIkrDbct2LtlzFagePedYER
+	Nj7zbG5ggphkHmCw==
+From: "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/urgent] timers/migration: Fix another race between
+ hotplug and idle entry/exit
+Cc: Frederic Weisbecker <frederic@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250114231507.21672-2-frederic@kernel.org>
+References: <20250114231507.21672-2-frederic@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 1QLzUOACWmiCUstkNHBoWu8bxOFAwfe1
-X-Proofpoint-ORIG-GUID: tlsjCwY0L238jXouCxhTav_tXU-wJYhA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-16_05,2025-01-16_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
- bulkscore=0 clxscore=1015 adultscore=0 mlxlogscore=861 priorityscore=1501
- suspectscore=0 spamscore=0 phishscore=0 impostorscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501160086
+Message-ID: <173702875988.31546.13232905901775426951.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Thu, 2024-11-28 at 11:06 +0100, Roberto Sassu wrote:
-> From: Roberto Sassu <roberto.sassu@huawei.com>
->=20
-> According to man open.2, files opened with O_PATH are not really opened. =
-The
-> obtained file descriptor is used to indicate a location in the filesystem
-> tree and to perform operations that act purely at the file descriptor
-> level.
->=20
-> Thus, ignore open() syscalls with O_PATH, since IMA cares about file data=
-.
->=20
-> Cc: stable@vger.kernel.org=C2=A0# v2.6.39.x
-> Fixes: 1abf0c718f15a ("New kind of open files - "location only".")
-> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+The following commit has been merged into the timers/urgent branch of tip:
 
-Thanks, Roberto.
+Commit-ID:     b729cc1ec21a5899b7879ccfbe1786664928d597
+Gitweb:        https://git.kernel.org/tip/b729cc1ec21a5899b7879ccfbe1786664928d597
+Author:        Frederic Weisbecker <frederic@kernel.org>
+AuthorDate:    Wed, 15 Jan 2025 00:15:04 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 16 Jan 2025 12:47:11 +01:00
 
-Note: Ignoring open() with O_PATH impacts policies containing "func=3DFILE_=
-CHECK"
-rules.
+timers/migration: Fix another race between hotplug and idle entry/exit
 
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+Commit 10a0e6f3d3db ("timers/migration: Move hierarchy setup into
+cpuhotplug prepare callback") fixed a race between idle exit and CPU
+hotplug up leading to a wrong "0" value migrator assigned to the top
+level. However there is still a situation that remains unhandled:
 
-> ---
-> =C2=A0security/integrity/ima/ima_main.c | 6 ++++--
-> =C2=A01 file changed, 4 insertions(+), 2 deletions(-)
->=20
-> diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/i=
-ma_main.c
-> index 50b37420ea2c..712c3a522e6c 100644
-> --- a/security/integrity/ima/ima_main.c
-> +++ b/security/integrity/ima/ima_main.c
-> @@ -202,7 +202,8 @@ static void ima_file_free(struct file *file)
-> =C2=A0	struct inode *inode =3D file_inode(file);
-> =C2=A0	struct ima_iint_cache *iint;
-> =C2=A0
-> -	if (!ima_policy_flag || !S_ISREG(inode->i_mode))
-> +	if (!ima_policy_flag || !S_ISREG(inode->i_mode) ||
-> +	=C2=A0=C2=A0=C2=A0 (file->f_flags & O_PATH))
-> =C2=A0		return;
-> =C2=A0
-> =C2=A0	iint =3D ima_iint_find(inode);
-> @@ -232,7 +233,8 @@ static int process_measurement(struct file *file, con=
-st struct
-> cred *cred,
-> =C2=A0	enum hash_algo hash_algo;
-> =C2=A0	unsigned int allowed_algos =3D 0;
-> =C2=A0
-> -	if (!ima_policy_flag || !S_ISREG(inode->i_mode))
-> +	if (!ima_policy_flag || !S_ISREG(inode->i_mode) ||
-> +	=C2=A0=C2=A0=C2=A0 (file->f_flags & O_PATH))
-> =C2=A0		return 0;
-> =C2=A0
-> =C2=A0	/* Return an IMA_MEASURE, IMA_APPRAISE, IMA_AUDIT action
+         [GRP0:0]
+        migrator  = TMIGR_NONE
+        active    = NONE
+        groupmask = 0
+        /     \      \
+       0       1     2..7
+     idle      idle   idle
 
+0) The system is fully idle.
+
+         [GRP0:0]
+        migrator  = CPU 0
+        active    = CPU 0
+        groupmask = 0
+        /     \      \
+       0       1     2..7
+     active   idle   idle
+
+1) CPU 0 is activating. It has done the cmpxchg on the top's ->migr_state
+but it hasn't yet returned to __walk_groups().
+
+         [GRP0:0]
+        migrator  = CPU 0
+        active    = CPU 0, CPU 1
+        groupmask = 0
+        /     \      \
+       0       1     2..7
+     active  active  idle
+
+2) CPU 1 is activating. CPU 0 stays the migrator (still stuck in
+__walk_groups(), delayed by #VMEXIT for example).
+
+                 [GRP1:0]
+              migrator = TMIGR_NONE
+              active   = NONE
+              groupmask = 0
+              /                  \
+        [GRP0:0]                      [GRP0:1]
+       migrator  = CPU 0           migrator = TMIGR_NONE
+       active    = CPU 0, CPU1     active   = NONE
+       groupmask = 2               groupmask = 1
+       /     \      \
+      0       1     2..7                   8
+    active  active  idle              !online
+
+3) CPU 8 is preparing to boot. CPUHP_TMIGR_PREPARE is being ran by CPU 1
+which has created the GRP0:1 and the new top GRP1:0 connected to GRP0:1
+and GRP0:0. The groupmask of GRP0:0 is now 2. CPU 1 hasn't yet
+propagated its activation up to GRP1:0.
+
+                 [GRP1:0]
+              migrator = 0 (!!!)
+              active   = NONE
+              groupmask = 0
+              /                  \
+        [GRP0:0]                  [GRP0:1]
+       migrator  = CPU 0           migrator = TMIGR_NONE
+       active    = CPU 0, CPU1     active   = NONE
+       groupmask = 2               groupmask = 1
+       /     \      \
+      0       1     2..7                   8
+    active  active  idle                !online
+
+4) CPU 0 finally resumed after its #VMEXIT. It's in __walk_groups()
+returning from tmigr_cpu_active(). The new top GRP1:0 is visible and
+fetched but the freshly updated groupmask of GRP0:0 may not be visible
+due to lack of ordering! As a result tmigr_active_up() is called to
+GRP0:0 with a child's groupmask of "0". This buggy "0" groupmask then
+becomes the migrator for GRP1:0 forever. As a result, timers on a fully
+idle system get ignored.
+
+One possible fix would be to define TMIGR_NONE as "0" so that such a
+race would have no effect. And after all TMIGR_NONE doesn't need to be
+anything else. However this would leave an uncomfortable state machine
+where gears happen not to break by chance but are vulnerable to future
+modifications.
+
+Keep TMIGR_NONE as is instead and pre-initialize to "1" the groupmask of
+any newly created top level. This groupmask is guaranteed to be visible
+upon fetching the corresponding group for the 1st time:
+
+_ By the upcoming CPU thanks to CPU hotplug synchronization between the
+  control CPU (BP) and the booting one (AP).
+
+_ By the control CPU since the groupmask and parent pointers are
+  initialized locally.
+
+_ By all CPUs belonging to the same group than the control CPU because
+  they must wait for it to ever become idle before needing to walk to
+  the new top. The cmpcxhg() on ->migr_state then makes sure its
+  groupmask is visible.
+
+With this pre-initialization, it is guaranteed that if a future top level
+is linked to an old one, it is walked through with a valid groupmask.
+
+Fixes: 10a0e6f3d3db ("timers/migration: Move hierarchy setup into cpuhotplug prepare callback")
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250114231507.21672-2-frederic@kernel.org
+---
+ kernel/time/timer_migration.c | 29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/time/timer_migration.c b/kernel/time/timer_migration.c
+index 8d57f76..c8a8ea2 100644
+--- a/kernel/time/timer_migration.c
++++ b/kernel/time/timer_migration.c
+@@ -1487,6 +1487,21 @@ static void tmigr_init_group(struct tmigr_group *group, unsigned int lvl,
+ 	s.seq = 0;
+ 	atomic_set(&group->migr_state, s.state);
+ 
++	/*
++	 * If this is a new top-level, prepare its groupmask in advance.
++	 * This avoids accidents where yet another new top-level is
++	 * created in the future and made visible before the current groupmask.
++	 */
++	if (list_empty(&tmigr_level_list[lvl])) {
++		group->groupmask = BIT(0);
++		/*
++		 * The previous top level has prepared its groupmask already,
++		 * simply account it as the first child.
++		 */
++		if (lvl > 0)
++			group->num_children = 1;
++	}
++
+ 	timerqueue_init_head(&group->events);
+ 	timerqueue_init(&group->groupevt.nextevt);
+ 	group->groupevt.nextevt.expires = KTIME_MAX;
+@@ -1550,8 +1565,20 @@ static void tmigr_connect_child_parent(struct tmigr_group *child,
+ 	raw_spin_lock_irq(&child->lock);
+ 	raw_spin_lock_nested(&parent->lock, SINGLE_DEPTH_NESTING);
+ 
++	if (activate) {
++		/*
++		 * @child is the old top and @parent the new one. In this
++		 * case groupmask is pre-initialized and @child already
++		 * accounted, along with its new sibling corresponding to the
++		 * CPU going up.
++		 */
++		WARN_ON_ONCE(child->groupmask != BIT(0) || parent->num_children != 2);
++	} else {
++		/* Adding @child for the CPU going up to @parent. */
++		child->groupmask = BIT(parent->num_children++);
++	}
++
+ 	child->parent = parent;
+-	child->groupmask = BIT(parent->num_children++);
+ 
+ 	raw_spin_unlock(&parent->lock);
+ 	raw_spin_unlock_irq(&child->lock);
 
