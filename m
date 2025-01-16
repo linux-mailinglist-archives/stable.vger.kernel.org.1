@@ -1,126 +1,370 @@
-Return-Path: <stable+bounces-109274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2446EA13B77
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 15:00:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 791EEA13C05
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 15:21:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A09813A9864
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 13:59:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9464D169A1A
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 14:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFF722A80E;
-	Thu, 16 Jan 2025 13:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865C622A7F2;
+	Thu, 16 Jan 2025 14:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="BYA8sk+T"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HYW32PCN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21F2142900;
-	Thu, 16 Jan 2025 13:59:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388D01DE2B9;
+	Thu, 16 Jan 2025 14:21:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737035995; cv=none; b=EnvvC1/98rPpgUehd8O7I7DI1GhCtgJU1Sf6EkFzFX2W9VZ8nri7XgpnzNY0c0g5YBEhW3Od90wVjO348QhLmwj02WWOO2eeg7MhYGe6hNMJKhMnQwOlwRYHpM+60DTc8DN+LGnL4Rj+6hflhzBvNx63w7bH1Mksle28yr6kA4c=
+	t=1737037291; cv=none; b=NUQtzooocyywAnVlUweOMIcKPpRAgM2qFn+R2c53unV5dRWtzP5v9bAUaQlO6zns7gvEZXYYrSo00ivG4/BF8ig1ID9Z38TepKeNS5KY0EvJmhPbDpsL4MU0xS+pHJpw0D3rnrNODjigdpg+FXqXnIvgRBgl1WBW0mZssvtlzFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737035995; c=relaxed/simple;
-	bh=px5Bdgtp2OTF52R0VT2ubJv0O73DimsN43ajQoFJNZ8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kHId8+kd+tzaLdlzAqVp2hGehr9qGO733KaHVV1rWg7Ll+USr3Lq/Z23EJbA48QV1BJd+H2ulWDB4jw1+kl+Lc5NbfCN4nvGqMsfL9UqN0nfsLKTpaX3qbzDm+z67KyHomhFT/mpFwBQvUdaTswY8SsWf8IJbofBFNO2X4LjvEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=BYA8sk+T; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4363ae65100so9468705e9.0;
-        Thu, 16 Jan 2025 05:59:53 -0800 (PST)
+	s=arc-20240116; t=1737037291; c=relaxed/simple;
+	bh=dwaSp5xMRzHktOe682J3LGPLEcV0xhRUzeSBvEX8Mew=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Mo+IBlFQTZ7IoCvyesVlq87lLcIITVxvZFT+HPkTyRmm3yeZ/TOdJ94Ba3SaBORQqY8p2CXuJS32YxBSDR8i9dA3+sTU0d/2IaaiTCHF3NC7xm4TRojhrDI7+VYjLa9pJCNdO4BMa9M48C4TTsErEY2ra6HSCjFHQLNEVwHM6DM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HYW32PCN; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-aaeec07b705so192560566b.2;
+        Thu, 16 Jan 2025 06:21:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1737035992; x=1737640792; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jMlvmu7FV/MvmLeJnp4tivJfwp2wZsqjEEGDvDazn7M=;
-        b=BYA8sk+TiAGGZ3bltOhvqLh1xMNKfnZIumGGOKgpBKoH4M79AYyw0Zt2+Rkzyj6kI9
-         zTmpW9TBTK26gRfKFoSnGW1R1YQuKFudL6V9nATJXHeQgfZ6w14qVdpV/g+6xt0Iktrp
-         u6ppuOks34EeHi30k82iSeJDhOmrwnsJKAKoqJdJkZfwICdgpO6FQLessQzKRcbz7Us7
-         cm/y2hSXx134ljezqoKLIL6LnViHfdMsy+SQ7sdhe6Y0CrSa7WKwUYfYrj3Usz51vtdP
-         2JDzLHPIfqhCuTYbhqs6k/hSqmq75BAMM9CzTsf/PDbly98zYGxIfnA9fVNUdprg9E6q
-         yEoA==
+        d=gmail.com; s=20230601; t=1737037285; x=1737642085; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=QmeOLrN3HjD73FIb8e2i1EvlrIVIEl/1nyBa+LHcTNY=;
+        b=HYW32PCNREvX3GqPv0LaVRU9P3xcLuNek7RXyS9/HdHAYqqSYF6s9uog+daRy4B/t1
+         5Ujw00Y8eT2CYtIF3Xpp+jZp6rzaomdSUxZTp7XK4ofnKtO3RhNwZSBm9XvnI0Bfpcyu
+         vpzYm/upZLXa8yjx881IDnPD0lyspO5rtv5CxA0CwuQM+aJNb5yAoHtnxtJv3rtZnrQS
+         eFfmc8cOa/GDsx30llsHQMPfxC3c2EslyMRjj9z4N4YOolFeq/evbESoMjNkYHSvnToY
+         HltsewMaeosHxr0xwPV5MhlzsgJawOC7979VhnJl/J/xYFh5A22PdXNymr9AFSYHCWhy
+         HX0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737035992; x=1737640792;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jMlvmu7FV/MvmLeJnp4tivJfwp2wZsqjEEGDvDazn7M=;
-        b=MywaCI+fa9b5+Zad2Kf4zVnT6wQs/enQdOQog+z0/Zp6i5LatUnFVgwRL8J8iRy2pt
-         kNn4/XodMOH8xEOoLP/JD19hVhUOTjY4GZs3gUci1XOL+uHTsi/BsSAJUwJfHnfWUAB9
-         wh6pJm2Mb/Pl2+jKJA6P0X06hbxyMxNxM9RhVfqz4JK2i1MpT7ZP1lJiX9Mdn9nfWxZd
-         Q28RDf7A69hblfjWnTllVdpTZq4eHhihmg/TwSgsO2UfN1Lul9whB2nieAAqoX/k7f3d
-         5DcfhdQxTIisPKmgulwe+AH0kjo9gMBxa4Zd3pGWG7QvAUGo24A8gbkFHOuTLho+fJ4j
-         YzWw==
-X-Forwarded-Encrypted: i=1; AJvYcCUggs/XZYLRTv4Us9REvixBALHNl6/jkixlWTcxMAp80XUfzRzLLSbG2KiJAkZo5X2k9xxVJ8k9@vger.kernel.org, AJvYcCUmCFyFlT98B4T19SfQwv44uKvDTA0V+KtCxuYue0bN8JsWmOMy/grF8FzrjwiEZ7JSLkHz464VZLAhKYg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3vLdziJxGrIXJMk1nD47irATtQaEEZLbtnAK5nHA6cntHJ4AD
-	7jrx0jik62O3vXvRLRJyUGiA67UVeiBVJF1pV0xJ/h0FatIH+lM=
-X-Gm-Gg: ASbGnctIgUXAX1DfR60u4ergW/dp8Q3e6bKrcehX/QfvaIYv3FTwch29GWrnvDHFUoR
-	+LpiO4BzehIMgpYopydXCj9MlFcea7hlLkjiPwoKm/hCTQQZxGdN2/PsAgT9nA0iPUQ+TV/Hdi4
-	92vQ9anbVkna0f44mubTz/MViyQ3TE/die/ak7CpMO354eBKDKtuBIUVGBE8N0VncWe9vqbnLPt
-	baqCAU5D7VH4mUM/7zPxC6KdlrGDiVwCKtyW+fsiyAwCmW4U/UpdnrbUTgt+d5O67NnSn+XNIWx
-	aRRj/ozx4Hgl2v03jjfeuOasm16fn3I8
-X-Google-Smtp-Source: AGHT+IFQVa7sIfMZs7UU7EftapEtYR7s0peJFt5nInyxf/thFRizsBjQuiKWN2f60y1CfSPNwOsH9w==
-X-Received: by 2002:a05:600c:3ca4:b0:434:a26c:8291 with SMTP id 5b1f17b1804b1-436e26e203emr282266185e9.24.1737035991790;
-        Thu, 16 Jan 2025 05:59:51 -0800 (PST)
-Received: from [192.168.1.3] (p5b2acf03.dip0.t-ipconnect.de. [91.42.207.3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c7499942sm60089475e9.6.2025.01.16.05.59.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Jan 2025 05:59:51 -0800 (PST)
-Message-ID: <2067ef97-98e9-4321-a5b3-aa5a61abacd9@googlemail.com>
-Date: Thu, 16 Jan 2025 14:59:50 +0100
+        d=1e100.net; s=20230601; t=1737037285; x=1737642085;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QmeOLrN3HjD73FIb8e2i1EvlrIVIEl/1nyBa+LHcTNY=;
+        b=XS4jsZbYSMGHvIeOfYPPF/G+rklbHJ7foeugI+b19G9l/70HMvVp6OysXF+uK1uLeL
+         Tkopp16Vr4umV2clj4UapJ1+flzI1oW0keWcXxLJIiUSdgJOicz5Rwj5kpHUAcFCE1JO
+         Zt3/NixcH1s2ze30vTwRWHm8y3YU4yd+Yi4WpIqVD/EnmIAxxZWOkKgJIWZjJwFMrbqj
+         ufWkupi4oy2FNCu1bo+ZV9blCW4Q+geNzu8XFXwLtoO+W1WDWDRarZa5uK0lTidfouJS
+         8lvrbzpKzZno6023sDtxGEFjDI5RemAYaGszq7C4trl7PJfRo7cPr1jf4z3uRyjlkLIO
+         yYTw==
+X-Forwarded-Encrypted: i=1; AJvYcCVn8o6xM7C1U2/mokWK+rW6mensZWmLSwaomQD5D6RPoTpX28/b48oRvPc1m/SlRAJJ/4Juz38ftCg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdCme1PEJ0PAGrVYQm6hL8jHuO/lbCHORUwGFAh1+beGKN5IEt
+	OrZ0KsHmNIBrCKF/5VUNzEc08myM9rpiFcnjJpjCHYccbFCwKmVJO2L/e98EnPwQoZOu4GnrH50
+	jabaTuq/jMnWEigey16BfOSPLRh6hODfk
+X-Gm-Gg: ASbGnctdQUr0ThSFGpNFGMpqqECApD7qxB5B3YDXOjFoMya9BLwhUppOWt3WbYbuJ4S
+	CfRIGlxLYn4lzswPq06xR8xO9PceYLJrSN66dgQ==
+X-Google-Smtp-Source: AGHT+IErJNq6LjOq1QVjak6xidjAVOxzehQ1LA2FQcXYy5NUu+JCa3SmraGguVPI51P2ajvlR679uv4oRBsn396n2hE=
+X-Received: by 2002:a17:907:9711:b0:aa6:1e9a:e45a with SMTP id
+ a640c23a62f3a-ab2abdc368emr2835635566b.46.1737037285083; Thu, 16 Jan 2025
+ 06:21:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.1 00/92] 6.1.125-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250115103547.522503305@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Lars Pedersen <lapeddk@gmail.com>
+Date: Thu, 16 Jan 2025 15:21:13 +0100
+X-Gm-Features: AbW1kvYa-f6ncelJyoAvjidcP8g8LNYVNbsLP4Gske-5mxUKYMHiiW9BfZOnumw
+Message-ID: <CAKd8=GsoKj5eG6VAMkrxMbzNyoBX=JiwafrfXman8xMNK+XU_w@mail.gmail.com>
+Subject: SPI regression seen on ARM am335x in kernel 6.12.8 and 6.6.71
+To: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev, broonie@kernel.org, linux-spi@vger.kernel.org, 
+	psiddaiah@mvista.com
+Content-Type: text/plain; charset="UTF-8"
 
-Am 15.01.2025 um 11:36 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.1.125 release.
-> There are 92 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hi. We have discovered an SPI regression when upgrading from 6.1.99 to
+a newer LTS version. Same error on kernel 6.6.71 and 6.12.8.
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+I think we have identified the problem down to the reference clock
+calculation that seems to end up to zero in the spi-omap2-mcspi
+driver.
 
-I have CONFIG_PM=Y (and many more dependent config options) in my config, so I'm not 
-seeing the build failure reported by others who don't have that set.
+Also we think it relates to commit
+4c6ac5446d060f0bf435ccc8bc3aa7b7b5f718ad, where OMAP2_MCSPI_MAX_FREQ
+is used as fallback on error. In our case it seems to hit the else
+case.
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+Snippets for device tree, spi-omap2-mcspi driver and kernel divide by
+zero error log with dynamic debug enabled.
 
+/Lars Pedersen
 
-Beste Grüße,
-Peter Schneider
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 67441b2cd603..8fedfc7db1fa 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1559,12 +1559,13 @@ static int omap2_mcspi_probe(struct
+platform_device *pdev)
+                dev_err(&pdev->dev, "Cannot request IRQ");
+                goto free_ctlr;
+        }
+-
++       dev_dbg(&pdev->dev, "DEBUG_EXTRA pre calc\n");
+        mcspi->ref_clk = devm_clk_get_optional_enabled(&pdev->dev, NULL);
+        if (IS_ERR(mcspi->ref_clk))
+                mcspi->ref_clk_hz = OMAP2_MCSPI_MAX_FREQ;
+        else
+                mcspi->ref_clk_hz = clk_get_rate(mcspi->ref_clk);
++       dev_dbg(&pdev->dev, "DEBUG_EXTRA: ref_clk_hz %d\n", mcspi->ref_clk_hz);
+        ctlr->max_speed_hz = mcspi->ref_clk_hz;
+        ctlr->min_speed_hz = mcspi->ref_clk_hz >> 15;
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+---8<---
+/dts-v1/;
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+#include "am33xx.dtsi"
+#include <dt-bindings/interrupt-controller/irq.h>
+...
+
+&spi0 {
+status = "okay";
+pinctrl-names = "default";
+pinctrl-0 = <&spi0_pins_default>;
+ti,spi-num-cs = <1>;
+
+flash@0 {
+compatible = "jedec,spi-nor";
+reg = <0>;
+spi-tx-bus-width = <1>;
+spi-rx-bus-width = <1>;
+spi-max-frequency = <10000000>;
+
+partitions {
+compatible = "fixed-partitions";
+#address-cells = <1>;
+#size-cells = <1>;
+partition@0 {
+reg = <0x0 0x1f00000>;
+label = "radio-program";
+};
+partition@1f00000 {
+reg = <0x1f00000 0xe0000>;
+label = "linux-data";
+read-only;
+};
+partition@1fe0000 {
+reg = <0x1fe0000 0x10000>;
+label = "radio-config";
+read-only;
+};
+partition@1ff0000 {
+reg = <0x1ff0000 0x10000>;
+label = "baseband-config";
+read-only;
+};
+};
+};
+};
+
+---8<---
+Jan 16 11:30:53 ptxdist kernel: omap2_mcspi 48030000.spi: DEBUG_EXTRA pre calc
+Jan 16 11:30:54 ptxdist kernel: omap2_mcspi 48030000.spi: DEBUG_EXTRA:
+ref_clk_hz 0
+Jan 16 11:30:54 ptxdist kernel: omap2_mcspi 48030000.spi: registered host spi0
+Jan 16 11:30:54 ptxdist kernel: Division by zero in kernel.
+Jan 16 11:30:54 ptxdist kernel: CPU: 0 UID: 0 PID: 161 Comm:
+(udev-worker) Not tainted 6.12.8 #1
+Jan 16 11:30:54 ptxdist kernel: Hardware name: Generic AM33XX
+(Flattened Device Tree)
+Jan 16 11:30:54 ptxdist kernel: Call trace:
+Jan 16 11:30:54 ptxdist kernel:  dump_backtrace from show_stack+0x20/0x38
+Jan 16 11:30:54 ptxdist kernel:  r7:c4a7ff00 r6:c0cef6bc r5:00000000 r4:600f0113
+Jan 16 11:30:54 ptxdist kernel:  show_stack from dump_stack_lvl+0x40/0x78
+Jan 16 11:30:54 ptxdist kernel:  dump_stack_lvl from dump_stack+0x18/0x28
+Jan 16 11:30:54 ptxdist kernel:  r7:c4a7ff00 r6:00000008 r5:c477dbc0 r4:c4a7ec00
+Jan 16 11:30:54 ptxdist kernel:  dump_stack from __div0+0x24/0x34
+Jan 16 11:30:54 ptxdist kernel:  __div0 from Ldiv0+0x8/0x10
+Jan 16 11:30:54 ptxdist kernel:  omap2_mcspi_setup_transfer
+[spi_omap2_mcspi] from omap2_mcspi_setup+0x134/0x20c [spi_omap2_mcspi]
+Jan 16 11:30:54 ptxdist kernel:  r9:c4a7ff28 r8:c477dbd0 r7:c4a7ff00
+r6:c4a7ec00 r5:c2572c10 r4:00000001
+Jan 16 11:30:54 ptxdist kernel:  omap2_mcspi_setup [spi_omap2_mcspi]
+from spi_setup+0x124/0x4f8
+Jan 16 11:30:54 ptxdist kernel:  r9:c4a7edaf r8:00000000 r7:c2572c10
+r6:c4a7fc00 r5:00000000 r4:c4a7ec00
+Jan 16 11:30:54 ptxdist kernel:  spi_setup from __spi_add_device+0x15c/0x300
+Jan 16 11:30:54 ptxdist kernel:  r6:c4a7fc00 r5:c4a7ec00 r4:c4a7ed9f
+Jan 16 11:30:54 ptxdist kernel:  __spi_add_device from
+of_register_spi_devices+0x74/0x1a8
+Jan 16 11:30:54 ptxdist kernel:  r10:c0fe67cc r9:c4a7fd98 r8:c4a7fdd4
+r7:c4a7ec00 r6:c4a7fc00 r5:00000000
+Jan 16 11:30:54 ptxdist kernel:  r4:cfce0df4
+Jan 16 11:30:54 ptxdist kernel:  of_register_spi_devices from
+spi_register_controller+0x3d0/0x4d0
+Jan 16 11:30:54 ptxdist kernel:  r9:c4a7fd98 r8:c0fe67d4 r7:c4a7fda0
+r6:00000000 r5:c0fe67d4 r4:c4a7fc00
+Jan 16 11:30:54 ptxdist kernel:  spi_register_controller from
+devm_spi_register_controller+0x54/0xbc
+Jan 16 11:30:54 ptxdist kernel:  r10:bf006108 r9:c2572c10 r8:c4a7fc00
+r7:c2572c10 r6:c4a7fc00 r5:c4a7ff00
+Jan 16 11:30:54 ptxdist kernel:  r4:c46cd2c0
+Jan 16 11:30:54 ptxdist kernel:  devm_spi_register_controller from
+omap2_mcspi_probe+0x51c/0x5cc [spi_omap2_mcspi]
+Jan 16 11:30:54 ptxdist kernel:  r7:c4a7fc00 r6:c2572c10 r5:c4a7ff00 r4:c2572c10
+Jan 16 11:30:54 ptxdist kernel:  omap2_mcspi_probe [spi_omap2_mcspi]
+from platform_probe+0x6c/0xd0
+Jan 16 11:30:54 ptxdist kernel:  r10:d0481ed0 r9:00000001 r8:00000000
+r7:c1028ef8 r6:bf004014 r5:c2572c10
+Jan 16 11:30:54 ptxdist kernel:  r4:00000000
+Jan 16 11:30:54 ptxdist kernel:  platform_probe from really_probe+0xf0/0x3ec
+Jan 16 11:30:54 ptxdist kernel:  r7:c1028ef8 r6:bf004014 r5:00000000 r4:c2572c10
+Jan 16 11:30:54 ptxdist kernel:  really_probe from
+__driver_probe_device+0xac/0x13c
+Jan 16 11:30:54 ptxdist kernel:  r8:c27a50b4 r7:0000007d r6:c2572c10
+r5:bf004014 r4:c2572c10
+Jan 16 11:30:54 ptxdist kernel:  __driver_probe_device from
+driver_probe_device+0x40/0xe4
+Jan 16 11:30:54 ptxdist kernel:  r5:bf004014 r4:c1071d9c
+Jan 16 11:30:54 ptxdist kernel:  driver_probe_device from
+__driver_attach+0x154/0x204
+Jan 16 11:30:54 ptxdist kernel:  r7:00000000 r6:c2572c54 r5:bf004014 r4:c2572c10
+Jan 16 11:30:54 ptxdist kernel:  __driver_attach from bus_for_each_dev+0x8c/0xf0
+Jan 16 11:30:54 ptxdist kernel:  r7:00000000 r6:c20e96c0 r5:c06404ec r4:bf004014
+Jan 16 11:30:54 ptxdist kernel:  bus_for_each_dev from driver_attach+0x2c/0x44
+Jan 16 11:30:54 ptxdist kernel:  r7:c20e96c0 r6:00000000 r5:c27a5080 r4:bf004014
+Jan 16 11:30:54 ptxdist kernel:  driver_attach from bus_add_driver+0x104/0x244
+Jan 16 11:30:54 ptxdist kernel:  bus_add_driver from driver_register+0x8c/0x164
+Jan 16 11:30:54 ptxdist kernel:  r8:00000000 r7:bf004100 r6:c101f840
+r5:a7ac7714 r4:bf004014
+Jan 16 11:30:54 ptxdist kernel:  driver_register from
+__platform_driver_register+0x2c/0x40
+Jan 16 11:30:54 ptxdist kernel:  r5:a7ac7714 r4:c0fac2fc
+Jan 16 11:30:54 ptxdist kernel:  __platform_driver_register from
+omap2_mcspi_driver_init+0x38/0x1000 [spi_omap2_mcspi]
+Jan 16 11:30:54 ptxdist kernel:  omap2_mcspi_driver_init
+[spi_omap2_mcspi] from do_one_initcall+0x68/0x2b8
+Jan 16 11:30:54 ptxdist kernel:  r5:c2a95800 r4:bf008000
+Jan 16 11:30:54 ptxdist kernel:  do_one_initcall from do_init_module+0x64/0x218
+Jan 16 11:30:54 ptxdist kernel:  r8:bf004100 r7:bf004100 r6:c477d240
+r5:00000000 r4:bf004100
+Jan 16 11:30:54 ptxdist kernel:  do_init_module from load_module+0x7e4/0xa18
+Jan 16 11:30:54 ptxdist kernel:  r6:00000000 r5:00000000 r4:00000000
+Jan 16 11:30:54 ptxdist kernel:  load_module from
+init_module_from_file+0xa4/0xec
+Jan 16 11:30:54 ptxdist kernel:  r10:c477c080 r9:c1054a48 r8:c477c080
+r7:c1054a38 r6:b5b1d7f0 r5:c477c080
+Jan 16 11:30:54 ptxdist kernel:  r4:00000000
+Jan 16 11:30:54 ptxdist kernel:  init_module_from_file from
+sys_finit_module+0x244/0x39c
+Jan 16 11:30:54 ptxdist kernel:  r6:00000001 r5:000000f4 r4:c2a95800
+Jan 16 11:30:54 ptxdist kernel:  sys_finit_module from
+__sys_trace_return+0x0/0x10
+Jan 16 11:30:54 ptxdist kernel: Exception stack(0xd0481fa8 to 0xd0481ff0)
+Jan 16 11:30:54 ptxdist kernel: 1fa0:                   14cb6a00
+00000000 0000001a b5b1d7f0 00000000 00000000
+Jan 16 11:30:54 ptxdist kernel: 1fc0: 14cb6a00 00000000 00826358
+0000017b 008456d0 b6f75934 b5b1739d 00000000
+Jan 16 11:30:54 ptxdist kernel: 1fe0: bee9d538 bee9d528 b5b16643 b6c5d262
+Jan 16 11:30:54 ptxdist kernel:  r10:0000017b r9:c2a95800 r8:c01002c4
+r7:0000017b r6:00826358 r5:00000000
+Jan 16 11:30:54 ptxdist kernel:  r4:14cb6a00
+Jan 16 11:30:54 ptxdist kernel: Division by zero in kernel.
+Jan 16 11:30:54 ptxdist kernel: CPU: 0 UID: 0 PID: 161 Comm:
+(udev-worker) Not tainted 6.12.8 #1
+Jan 16 11:30:54 ptxdist kernel: Hardware name: Generic AM33XX
+(Flattened Device Tree)
+Jan 16 11:30:54 ptxdist kernel: Call trace:
+Jan 16 11:30:54 ptxdist kernel:  dump_backtrace from show_stack+0x20/0x38
+Jan 16 11:30:54 ptxdist kernel:  r7:c4a7ff00 r6:c0cef6bc r5:00000000 r4:600f0113
+Jan 16 11:30:54 ptxdist kernel:  show_stack from dump_stack_lvl+0x40/0x78
+Jan 16 11:30:54 ptxdist kernel:  dump_stack_lvl from dump_stack+0x18/0x28
+Jan 16 11:30:54 ptxdist kernel:  r7:c4a7ff00 r6:00000008 r5:c477dbc0 r4:c4a7ec00
+Jan 16 11:30:54 ptxdist kernel:  dump_stack from __div0+0x24/0x34
+Jan 16 11:30:54 ptxdist kernel:  __div0 from Ldiv0+0x8/0x10
+Jan 16 11:30:54 ptxdist kernel:  omap2_mcspi_setup_transfer
+[spi_omap2_mcspi] from omap2_mcspi_setup+0x134/0x20c [spi_omap2_mcspi]
+Jan 16 11:30:54 ptxdist kernel:  r9:c4a7ff28 r8:c477dbd0 r7:c4a7ff00
+r6:c4a7ec00 r5:c2572c10 r4:00000001
+Jan 16 11:30:54 ptxdist kernel:  omap2_mcspi_setup [spi_omap2_mcspi]
+from spi_setup+0x124/0x4f8
+Jan 16 11:30:54 ptxdist kernel:  r9:c4a7edaf r8:00000000 r7:c2572c10
+r6:c4a7fc00 r5:00000000 r4:c4a7ec00
+Jan 16 11:30:54 ptxdist kernel:  spi_setup from __spi_add_device+0x15c/0x300
+Jan 16 11:30:54 ptxdist kernel:  r6:c4a7fc00 r5:c4a7ec00 r4:c4a7ed9f
+Jan 16 11:30:54 ptxdist kernel:  __spi_add_device from
+of_register_spi_devices+0x74/0x1a8
+Jan 16 11:30:54 ptxdist kernel:  r10:c0fe67cc r9:c4a7fd98 r8:c4a7fdd4
+r7:c4a7ec00 r6:c4a7fc00 r5:00000000
+Jan 16 11:30:54 ptxdist kernel:  r4:cfce0df4
+Jan 16 11:30:54 ptxdist kernel:  of_register_spi_devices from
+spi_register_controller+0x3d0/0x4d0
+Jan 16 11:30:54 ptxdist kernel:  r9:c4a7fd98 r8:c0fe67d4 r7:c4a7fda0
+r6:00000000 r5:c0fe67d4 r4:c4a7fc00
+Jan 16 11:30:54 ptxdist kernel:  spi_register_controller from
+devm_spi_register_controller+0x54/0xbc
+Jan 16 11:30:54 ptxdist kernel:  r10:bf006108 r9:c2572c10 r8:c4a7fc00
+r7:c2572c10 r6:c4a7fc00 r5:c4a7ff00
+Jan 16 11:30:54 ptxdist kernel:  r4:c46cd2c0
+Jan 16 11:30:54 ptxdist kernel:  devm_spi_register_controller from
+omap2_mcspi_probe+0x51c/0x5cc [spi_omap2_mcspi]
+Jan 16 11:30:54 ptxdist kernel:  r7:c4a7fc00 r6:c2572c10 r5:c4a7ff00 r4:c2572c10
+Jan 16 11:30:54 ptxdist kernel:  omap2_mcspi_probe [spi_omap2_mcspi]
+from platform_probe+0x6c/0xd0
+Jan 16 11:30:54 ptxdist kernel:  r10:d0481ed0 r9:00000001 r8:00000000
+r7:c1028ef8 r6:bf004014 r5:c2572c10
+Jan 16 11:30:54 ptxdist kernel:  r4:00000000
+Jan 16 11:30:54 ptxdist kernel:  platform_probe from really_probe+0xf0/0x3ec
+Jan 16 11:30:54 ptxdist kernel:  r7:c1028ef8 r6:bf004014 r5:00000000 r4:c2572c10
+Jan 16 11:30:54 ptxdist kernel:  really_probe from
+__driver_probe_device+0xac/0x13c
+Jan 16 11:30:54 ptxdist kernel:  r8:c27a50b4 r7:0000007d r6:c2572c10
+r5:bf004014 r4:c2572c10
+Jan 16 11:30:54 ptxdist kernel:  __driver_probe_device from
+driver_probe_device+0x40/0xe4
+Jan 16 11:30:54 ptxdist kernel:  r5:bf004014 r4:c1071d9c
+Jan 16 11:30:54 ptxdist kernel:  driver_probe_device from
+__driver_attach+0x154/0x204
+Jan 16 11:30:54 ptxdist kernel:  r7:00000000 r6:c2572c54 r5:bf004014 r4:c2572c10
+Jan 16 11:30:54 ptxdist kernel:  __driver_attach from bus_for_each_dev+0x8c/0xf0
+Jan 16 11:30:54 ptxdist kernel:  r7:00000000 r6:c20e96c0 r5:c06404ec r4:bf004014
+Jan 16 11:30:54 ptxdist kernel:  bus_for_each_dev from driver_attach+0x2c/0x44
+Jan 16 11:30:54 ptxdist kernel:  r7:c20e96c0 r6:00000000 r5:c27a5080 r4:bf004014
+Jan 16 11:30:54 ptxdist kernel:  driver_attach from bus_add_driver+0x104/0x244
+Jan 16 11:30:54 ptxdist kernel:  bus_add_driver from driver_register+0x8c/0x164
+Jan 16 11:30:54 ptxdist kernel:  r8:00000000 r7:bf004100 r6:c101f840
+r5:a7ac7714 r4:bf004014
+Jan 16 11:30:54 ptxdist kernel:  driver_register from
+__platform_driver_register+0x2c/0x40
+Jan 16 11:30:54 ptxdist kernel:  r5:a7ac7714 r4:c0fac2fc
+Jan 16 11:30:54 ptxdist kernel:  __platform_driver_register from
+omap2_mcspi_driver_init+0x38/0x1000 [spi_omap2_mcspi]
+Jan 16 11:30:54 ptxdist kernel:  omap2_mcspi_driver_init
+[spi_omap2_mcspi] from do_one_initcall+0x68/0x2b8
+Jan 16 11:30:54 ptxdist kernel:  r5:c2a95800 r4:bf008000
+Jan 16 11:30:54 ptxdist kernel:  do_one_initcall from do_init_module+0x64/0x218
+Jan 16 11:30:54 ptxdist kernel:  r8:bf004100 r7:bf004100 r6:c477d240
+r5:00000000 r4:bf004100
+Jan 16 11:30:54 ptxdist kernel:  do_init_module from load_module+0x7e4/0xa18
+Jan 16 11:30:54 ptxdist kernel:  r6:00000000 r5:00000000 r4:00000000
+Jan 16 11:30:54 ptxdist kernel:  load_module from
+init_module_from_file+0xa4/0xec
+Jan 16 11:30:54 ptxdist kernel:  r10:c477c080 r9:c1054a48 r8:c477c080
+r7:c1054a38 r6:b5b1d7f0 r5:c477c080
+Jan 16 11:30:54 ptxdist kernel:  r4:00000000
+Jan 16 11:30:54 ptxdist kernel:  init_module_from_file from
+sys_finit_module+0x244/0x39c
+Jan 16 11:30:54 ptxdist kernel:  r6:00000001 r5:000000f4 r4:c2a95800
+Jan 16 11:30:54 ptxdist kernel:  sys_finit_module from
+__sys_trace_return+0x0/0x10
+Jan 16 11:30:54 ptxdist kernel: Exception stack(0xd0481fa8 to 0xd0481ff0)
+Jan 16 11:30:54 ptxdist kernel: 1fa0:                   14cb6a00
+00000000 0000001a b5b1d7f0 00000000 00000000
+Jan 16 11:30:54 ptxdist kernel: 1fc0: 14cb6a00 00000000 00826358
+0000017b 008456d0 b6f75934 b5b1739d 00000000
+Jan 16 11:30:55 ptxdist kernel: 1fe0: bee9d538 bee9d528 b5b16643 b6c5d262
+Jan 16 11:30:55 ptxdist kernel:  r10:0000017b r9:c2a95800 r8:c01002c4
+r7:0000017b r6:00826358 r5:00000000
+Jan 16 11:30:55 ptxdist kernel:  r4:14cb6a00
+Jan 16 11:30:55 ptxdist kernel: spi spi0.0: setup: speed 0, sample
+leading edge, clk normal
+Jan 16 11:30:55 ptxdist kernel: spi spi0.0: setup mode 0, 8 bits/w,
+10000000 Hz max --> 0
 
