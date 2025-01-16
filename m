@@ -1,158 +1,242 @@
-Return-Path: <stable+bounces-109276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44928A13C26
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 15:26:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCC3CA13C46
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 15:31:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D28216515F
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 14:26:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 707553A372C
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 14:30:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8B422ACE7;
-	Thu, 16 Jan 2025 14:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847D9189F43;
+	Thu, 16 Jan 2025 14:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="J4mq97ox";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OpEikvnd";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="J4mq97ox";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OpEikvnd"
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="cRe2cJRd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7DCB22A7F2;
-	Thu, 16 Jan 2025 14:26:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163761DA100
+	for <stable@vger.kernel.org>; Thu, 16 Jan 2025 14:30:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737037600; cv=none; b=beNqbsPYpWJnZPoOpi2OnopvYg7Xp0mAUsQNjEjA1dLYJ+tqZQyyh4FP+WAR1MaevW0adnkJQ+W9d6TulwDyxp3/ANCkO4PFiDy94vpfyZD8MKtRRE1YH1C/6/Zi2JaMTmJjSK/237HDuwN4RqbaJgOx52HoCYLPb2hIMEetFYI=
+	t=1737037859; cv=none; b=UQXyWkM1Ij3PsVsHWmyvdBimNIYPsJ8OLypFGlzj+JjH4bDcmziAblQgFC+82tBVFL9j0Psub0rQk4c3cILExlLaghFwPgYxrmvxkUiWfKCrA32N4Z/NmX8z9qfuIYXpNrDqHhH5GcJgYahiPyRqrOkkNL479m7SgbNOQoV48ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737037600; c=relaxed/simple;
-	bh=VKtNrWvWk+iN/uKZ4Unnp197D6rui9M2yZka5smhU88=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XptZOd/tjr+jj6qCwQCqgsQF85XvgFOMYfCSqeFUofF13lFGYbD1Py9CrFNNO9SFgl3BpFK0axY0f1rNsIgp16h1MBfttG+xB2bvxDDs/02VPrtZfwYbS8lbzcUAWtoaCuOrID0p10Q5vjdGdjHb9q1FDZJBB3Cw6rdsvEq5Y9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=J4mq97ox; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OpEikvnd; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=J4mq97ox; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OpEikvnd; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id F3EDD211CA;
-	Thu, 16 Jan 2025 14:26:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1737037597; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I3benVHZIe6d7ABJ0Gv3HWlD5LOOVZSFAyIgJZe2mWE=;
-	b=J4mq97oxfDOnCDBH/8CrAVMLNwN5WRJn+O8l6EgS88A/vr7bYJQgWmWIlp54zdNBu9Qhh5
-	jxE5oegrd6Cz3jRBaSfblLrncykQbFfdgxAXshZNuevUaQYkaLYZ5t7k8bsJPO75qJkxyl
-	oe+79sTH+qr/VeqO8W6LahEgTieo06A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1737037597;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I3benVHZIe6d7ABJ0Gv3HWlD5LOOVZSFAyIgJZe2mWE=;
-	b=OpEikvndlDcnOZitBBOqWsA/iB+0IZFo8Qjystd7RBO5i9FOU17u7yvTJwXsoGUJZqr2AZ
-	Zvnkfg4ARHCbc3Dw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1737037597; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I3benVHZIe6d7ABJ0Gv3HWlD5LOOVZSFAyIgJZe2mWE=;
-	b=J4mq97oxfDOnCDBH/8CrAVMLNwN5WRJn+O8l6EgS88A/vr7bYJQgWmWIlp54zdNBu9Qhh5
-	jxE5oegrd6Cz3jRBaSfblLrncykQbFfdgxAXshZNuevUaQYkaLYZ5t7k8bsJPO75qJkxyl
-	oe+79sTH+qr/VeqO8W6LahEgTieo06A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1737037597;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I3benVHZIe6d7ABJ0Gv3HWlD5LOOVZSFAyIgJZe2mWE=;
-	b=OpEikvndlDcnOZitBBOqWsA/iB+0IZFo8Qjystd7RBO5i9FOU17u7yvTJwXsoGUJZqr2AZ
-	Zvnkfg4ARHCbc3Dw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BDE7113A57;
-	Thu, 16 Jan 2025 14:26:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id S4/RLBwXiWfXUQAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Thu, 16 Jan 2025 14:26:36 +0000
-Date: Thu, 16 Jan 2025 15:26:36 +0100
-Message-ID: <87a5bqj0mb.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Evgeny Kapun <abacabadabacaba@gmail.com>
-Cc: Kailang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Linux Sound Mailing List <linux-sound@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Regressions Mailing List <regressions@lists.linux.dev>,
-	Linux Stable Mailing List <stable@vger.kernel.org>
-Subject: Re: [REGRESSION] Distorted sound on Acer Aspire A115-31 laptop
-In-Reply-To: <0494014b-3aa2-4102-8b5b-7625d8c864e2@gmail.com>
-References: <e142749b-7714-4733-9452-918fbe328c8f@gmail.com>
-	<8734ijwru5.wl-tiwai@suse.de>
-	<57883f2e-49cd-4aa4-9879-7dcdf7fec6df@gmail.com>
-	<87ldw89l7e.wl-tiwai@suse.de>
-	<fc506097-9d04-442c-9efd-c9e7ce0f3ace@gmail.com>
-	<58300a2a06e34f3e89bf7a097b3cd4ca@realtek.com>
-	<0494014b-3aa2-4102-8b5b-7625d8c864e2@gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	s=arc-20240116; t=1737037859; c=relaxed/simple;
+	bh=EPBrtyq7kVmo3E7PGeZ3TVLkGONQsKJCMhcEqL/17M8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gh85Pr4SLa6Dq5o5jFnNwkKRoHXZxQvOqssXoirEQyngm3P1grMvnwML28RypBXk7RdMfr+zvC7mwmCY6mc29k++6uAUpUxQr8qB4Dny3ArxS7adaB2Wk++leVJCj6nPvm0CozRdtsIhHw9akwgeDUXfgN/gx1vRH3bZyDYXUB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=cRe2cJRd; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43621d27adeso6348415e9.2
+        for <stable@vger.kernel.org>; Thu, 16 Jan 2025 06:30:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1737037855; x=1737642655; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=a3/WPboTDu+6FR8CAU3xw5F2IuwYeqnTtNKrAdM5QKA=;
+        b=cRe2cJRdtjCIzyVacVVpRE2R4VFXqyuwJIKT/l/uKblCWX5az+HB0Mm2PLqUNhuUoA
+         DDr4aXqWCQVomR7MubMv8Znis+lsyIQKOhN+eTg2GJ2fe23kGvoOu/Odgl71ERk3iGbp
+         TJUwIsvfuHzZ+9WjMXdUwybxhPsBpkQthMtV0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737037855; x=1737642655;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=a3/WPboTDu+6FR8CAU3xw5F2IuwYeqnTtNKrAdM5QKA=;
+        b=r+pb73x4Bm1t0Ap/FgtVKfp/P5vqiLSShggljvIBxv43C+529scQsPCyG1Qp8KXNTu
+         TqWR/30emDWx1YoD5oTMfTdx9j/9ouA9tuaVr+VKi7RGIxj61Gcv/pI7hNFKCceWP7DD
+         E5CZm4psXBBXYl61IfVQNdsDgWixtajiWvy3LTvsGSoB3w+cTRYun8JXySIhpGCiTDRf
+         oRAVwdPiiqy3MdRPsLdB1nMfTrdVu6UY1Bho3q/iQTpUWPoVeEqkHOyR1pvbvcURHaqs
+         KA2MIOmZffDWespTj98LiznpBIdD993PfVjXH+uj9o21BevYtOJ+vothk7FplUmqbX7a
+         5OkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUHRJKqc3ShJ75M42BKTfwCAB6ZT+e9zCZeQ7Cadxgg2PBOnncnzKDWEJV7yxdYogtgqLdF2Uc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywSW2HS+fNichWqFUeFMl2gu6c58LLYgf4wMaBQLsJswYJTCQb
+	hR0UnAxNRnjBN2BS6HJbTvf92yDgCr7+j1ctDsLmuGb8Lo8hx8xV1ZaZGH8R70M=
+X-Gm-Gg: ASbGnctO21niqtFJpb/EibTJ/kyDRq6r2KkmuKay4UVa+oioXJwKh8STKIVz09yChXZ
+	yn8jQMm+DljGjb4nYwkSvpqWwwVdcDhTPRZPpAverT8Gu3iySh1wx9Xb9aZWg0WMMgeUmBfXsRy
+	rcL8d2vepCwQXjxCHKyMC9duHoVudM2xeWUV8SkueU3HT6+mHbBu1wMcHaFaRZMhKYpD9xaybb8
+	IMo19y3UzewF/LChVs3nyZK62WFFVstuKOhpdL0VEyXrHUvtYMymETeHtanjt/SshZ9
+X-Google-Smtp-Source: AGHT+IHjCovbuDFJ0v9aaZ1SdBt3vgUUVOCFOWA3+FJIYczCS5lvo/bWFIKonN3efDkQ4hh8TWtBxA==
+X-Received: by 2002:a05:600c:4f81:b0:434:f1d5:1453 with SMTP id 5b1f17b1804b1-436e2531ec8mr332965685e9.0.1737037854956;
+        Thu, 16 Jan 2025 06:30:54 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c753c617sm61767585e9.37.2025.01.16.06.30.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jan 2025 06:30:54 -0800 (PST)
+Date: Thu, 16 Jan 2025 15:30:51 +0100
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>, Sasha Levin <sashal@kernel.org>,
+	Dave Airlie <airlied@gmail.com>,
+	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+	stable@vger.kernel.org, ashutosh.dixit@intel.com,
+	dri-devel@lists.freedesktop.org
+Subject: Re: AAARRRGGGHHH!!!! (was Re: [PATCH 6.12.y] xe/oa: Fix query mode
+ of operation for OAR/OAC)
+Message-ID: <Z4kYG0cZdo2JncyE@phenom.ffwll.local>
+References: <Z4Z8rQKR2QEaWNyI@phenom.ffwll.local>
+ <Z4aIGvAmMld_uztJ@lappy>
+ <Z4afbuFN1uc3zhOt@phenom.ffwll.local>
+ <Z4d6406b82Pu1PRV@phenom.ffwll.local>
+ <2025011503-algorithm-composed-3b81@gregkh>
+ <Z4eY4rv8ygi9dRbz@phenom.ffwll.local>
+ <Z4ft1fFjbwy0EF-X@lappy>
+ <Z4gGKVFFXBQEm_OB@phenom.ffwll.local>
+ <Z4jV_cPkg82X6FrY@phenom.ffwll.local>
+ <2025011610-request-unleveled-8191@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Score: -3.30
-X-Spamd-Result: default: False [-3.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.991];
-	MIME_GOOD(-0.10)[text/plain];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	URIBL_BLOCKED(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_TLS_ALL(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_DN_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Level: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025011610-request-unleveled-8191@gregkh>
+X-Operating-System: Linux phenom 6.12.3-amd64 
 
-On Sat, 11 Jan 2025 16:00:33 +0100,
-Evgeny Kapun wrote:
+On Thu, Jan 16, 2025 at 02:52:23PM +0100, Greg KH wrote:
+> On Thu, Jan 16, 2025 at 10:48:45AM +0100, Simona Vetter wrote:
+> > Maybe also helps to go back from examples to the generic algorithm, which
+> > is two steps:
+> > 
+> > 1. You first need to find the root sha1 that all the cherry picks
+> > originate from. If the sha1 you have doesn't resolve, you skip this.
+> > Otherwise look at the commit message, if it has a "(cherry picked from
+> > $sha)" line you pick the first line (they're ordered like sob lines), and
+> > that's the root sha1. It might not resolve, but it's the search key you
+> > need.
+> > 
+> > 2. You go hunt for all cherry pick aliases for that root sha1. Strictly
+> > speaking you'd need to search the entire history, but in practice commits
+> > only travel back in time by 3-4 months at most (or a bit less thatn 2 full
+> > kernel releases).  Half a year is the defensive assumption. So there's two
+> > subcases:
+> > 
+> > 2a) If you want to find the right commit in upstream, you scan half a year of
+> > history in Linus' repo starting from the current tip.
+> > 
+> > 2b) If you want to check for cherry picks in a stable branch, either to
+> > check whether you already have that backport, or whether you need to
+> > backport the bugfix for a buggy backport (due to Fixes/Revert: lines). You
+> > scan all the stable commits, plus half a year of history from the release
+> > tag Linus has done.
+> > 
+> > It's a bit madness, but more importantly, it's scriptable madness. And
+> > since this confuses drm maintainers too, we do have that partially
+> > implemented in our own scripts, to make sure we don't miss any bugfixes we
+> > need in drm-fixes. Partially because we never have unresolved sha1 in our
+> > own repos, because they also contain the -next branches where the root
+> > commit is.
 > 
-> On 12/24/24 04:54, Kailang wrote:
-> > Please test attach patch.
+> Yes, this is total madness.  Scanning the tree for every commit that we
+> want to apply, or potentially apply, or figuring out if there is a
+> missing fixes for that commit, is an exponential slowdown.
 > 
-> This patch, when applied to kernel version 6.12.8, appears to fix the
-> issue. There are no distortions, and the left and the right channel
-> can be controlled independently.
+> Right now we have tools that can go "where was this commit backported
+> to" and give us that answer very quickly:
+> 	$ /usr/bin/time ~/linux/vulns/tools/verhaal/id_found_in 79d67c499c3f886202a40c5cb27e747e4fa4d738
+> 	5.4.289 5.10.233 5.15.176 6.1.124 6.6.70 6.12.9 6.13-rc6
+> 	0.06user 0.03system 0:00.09elapsed 100%CPU (0avgtext+0avgdata 5856maxresident)k
+> 	0inputs+0outputs (0major+1953minor)pagefaults 0swaps
+> as we pre-process the whole kernel tree ahead of time and populate a
+> database we can query.
+> 
+> Code for this is here:
+> 	https://git.sr.ht/~gregkh/verhaal
+> and that's what we use now for the CVEs to determine when a
+> vulnerability showed up, and when it was fixed, and in what branches of
+> the tree.
+> 
+> our older tool took a bit longer:
+> 	$ /usr/bin/time ~/linux/stable/commit_tree/id_found_in 79d67c499c3f886202a40c5cb27e747e4fa4d738
+> 	5.4.289 5.10.233 5.15.176 6.1.124 6.6.70 6.12.9 6.13-rc6
+> 	0.30user 0.90system 0:00.60elapsed 198%CPU (0avgtext+0avgdata 366820maxresident)k
+> 	0inputs+0outputs (0major+167451minor)pagefaults 0swaps
+> as it abused the filesystem as a database with the output of some 'git
+> log' results and relied on 'git grep' a lot to do regex matching.  And
+> that turned out to miss a lot of things and have false-positives, hence
+> the rewrite above.  I still personally use the old tool for some stable
+> work as speed
+> 
+> Code for the old version is here:
+> 	https://git.sr.ht/~gregkh/linux-stable_commit_tree
+> 
+> .6 seconds doesn't sound like a lot, but when you have to run other
+> queries at the same time to walk branches and the like, and you're
+> usually running it on a machine that is doing kernel builds at the same
+> time, AND you are doing lookups for all commits in a series (100-500 at
+> a time) or all CVEs issued so far (5000+), speed matters, hence the
+> rewrite which also fixed some consistancy issues we had in our CVE
+> entries.
+> 
+> So to add a whole new "now I need to walk back in time across ALL active
+> kernel branches right now, AND maybe go dig elsewhere too" just to get
+> things correct for one subsystem, you can see my disinterest and claims
+> that "this sucks and is too much work and I'm going to give up".
 
-Good to hear.
+Oh I know, but I'm honestly super happy that we've moved from "this is
+impossible madness" to "the script takes way too long". Which frankly I
+expected we'll get to, because the git grep stuff is ok for us, it's
+definitely not fast enough at the scale of stable backports and cve
+assignments.
 
-Kailang, care to submit a proper patch for merging?
+> To do this "right" what I feel I need to do is find ALL matching commits
+> in the kernel tree (based on linux-next reports I know DRM isn't the
+> only offender here, many commits flow through multiple trees at the same
+> time, but only DRM seems to trigger the problems) and then work on
+> commit ids as having "aliases" with the duplicate matches.  I'm already
+> starting to collect a bunch of "this id is invalid" stuff and maybe come
+> up with a "rewrite" table to do queries off of as many times our Fixes
+> and even Revert ids are wrong.
 
+So for the annotated cherry-picks I think you need a table with 2 rows,
+first has the real commit sha1 (and if you scan linux-next you should
+never have a sha1 that doesn't resolve), the second the root sha1 of the
+cherry-pick chain, as annotated in the first "(cherry picked from
+$root_sha1)" in the commit message.
 
-thanks,
+The full cherry-pick query would then still be the two step process,
+except you can skip at step 1 because if there's no entry, you know that
+this commit is not part of a cherry-pick group. Since at least with the
+drm flow you'll always see the cherry-picks first as new commits land in
+Linus' tree.
 
-Takashi
+Then just fill that table with new entries as you scan for updates in
+Linus' tree (I wouldn't scan linux-next except for testing this, because
+you might pick up bogus entries).
+
+That should be enough to do all the alias querying you need for properly
+annotated cherry-picks. But it's not enough for the case of where a patch
+is applied twice, without that annotation. So not sure what to do with
+those, imo teaching maintainers to annotate them is probably the best
+option, since guessing is error prone.
+
+> Ugh, time to dust off my old SQL book and figure out some table joins...
+> I'll consider working on this during the merge window and see what I can
+> come up with.
+> 
+> Any pointers to where the scripts you all use for your "catch the
+> duplicates" logic you describe above are for the drm developers to use?
+
+Probably not much use, because the actual logic is the git log greps from
+this thread, and we cheat with not handling a bunch of corner cases. But
+it's dim cherry-pick-branch and dim cherry-pick in our maintainer tools
+that helps with the cherry-picking:
+
+https://gitlab.freedesktop.org/drm/maintainer-tools/-/blob/master/dim?ref_type=heads#L1600
+
+Comes with some docs too:
+
+https://drm.pages.freedesktop.org/maintainer-tools/dim.html
+
+Cheers, Sima
+-- 
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
 
