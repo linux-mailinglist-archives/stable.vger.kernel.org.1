@@ -1,249 +1,162 @@
-Return-Path: <stable+bounces-109237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33EB6A137F9
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 11:33:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D705A13828
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 11:41:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DBA9188AB45
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 10:33:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2AE43A4421
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 10:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310761DDC2B;
-	Thu, 16 Jan 2025 10:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7801DE3AA;
+	Thu, 16 Jan 2025 10:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Z9XbPZXX"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="nFeW31+o"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261DF19539F;
-	Thu, 16 Jan 2025 10:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8631DE2D5;
+	Thu, 16 Jan 2025 10:41:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737023586; cv=none; b=FdPULHkbPyUBTTRwL8UrhgN7ZjDUk20Tvipw0MdpkCxJanqkVgfgFOSFtyB2Ipq7tDYbYh7+V2zFJw6EIlmt+J3rvCFRS6zMf6QG5IIMduK5fOKPhjOWxwGw5TSTYCaGWRkp2JCuCSgG5NJTV5Lo9IHjBF4/xt2+lZWC6yBeR10=
+	t=1737024081; cv=none; b=Uy3o57ZBCZkOzXzh6i3x0OX3q68JxG61oZYgQG3hBT2eRUqbo/nBOq790xTUOm4R7HiBsmaR0cWofDKihifrp0q5y4dOsSxwn3cN/EP0gLF5/pFjDFYvr5CBjDCNr3i9K/D3w32BgF8A4aStyD2zXp9MvgIGpRpaB5lCJYa9puI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737023586; c=relaxed/simple;
-	bh=QU5d+Tyq+Qb2PApXjG+Zo+3QY/YuLIJeuJDQkS5Wwrs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vv7Tm1SDJNKhN1id0HPl4d81Mdxjhkqd16AeoW/D2+HSKE1VOR9E0H3Zu4g3FXnMWTh9UTom+pIvOKgYOvkvBG6MUBuHCJlahMM/Pmd7ov0vMEulLs3Icpom+ymDbLhTuVadbmEuGB/7flMwBszQ4WVOopIDf+XvxY2Cg+TqQ8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Z9XbPZXX; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=YQozZ0qAw76KyENUe8cP271dJjMXAoDFnL7V32VXPSM=; b=Z9XbPZXXGMBLk78qmBqAmyE/8n
-	MjspFRXmpAYMjU9mdXnUIrC4bOAPTh3qoW9gERMtQFaUrSIhBZGAULSu06rAU/usgdpwZCyUW5nac
-	Oqz4NxrsKi89mLRzPjaY8syLOGYjv7DIhVjPHLuZeUxys7azJdoCPaTcBLbn694ucdRBnSl7zyJIw
-	Cvnby9sxf/O+JL8EJs7OwmKA1DnunlM1S9TRI5KCuf+h/LeN+Klkk7KS+VawFW1csgGIef2YQD4OT
-	CZj3ejz8J9EAQcMNujxY2eZlijCgn9GwDkKpI49BOUa3Qkmu8VodAyOErBynaSrcyg3uaOmj/9T8J
-	e3XL8obQ==;
-Received: from 77-249-17-89.cable.dynamic.v4.ziggo.nl ([77.249.17.89] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tYNBJ-0000000C52v-2zEW;
-	Thu, 16 Jan 2025 10:32:57 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id C8471300777; Thu, 16 Jan 2025 11:32:56 +0100 (CET)
-Date: Thu, 16 Jan 2025 11:32:56 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: kan.liang@linux.intel.com
-Cc: mingo@redhat.com, acme@kernel.org, namhyung@kernel.org,
-	irogers@google.com, adrian.hunter@intel.com,
-	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
-	ak@linux.intel.com, eranian@google.com, dapeng1.mi@linux.intel.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH V9 1/3] perf/x86/intel: Avoid pmu_disable/enable if
- !cpuc->enabled in sample read
-Message-ID: <20250116103256.GI8362@noisy.programming.kicks-ass.net>
-References: <20250115184318.2854459-1-kan.liang@linux.intel.com>
+	s=arc-20240116; t=1737024081; c=relaxed/simple;
+	bh=F2jjeSHmqeA1OxCEc/MQasgQfbNP8k/wM3gcdbxOtWc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qMi+vLcnNHabZVPq/WdD1ySMWEr5U3hwbOk6eUl+7cs6y6CXhWJcdWk4UQnecvaT5maRIRbWhnWxujkYk8NjI3AffjfIxd7KTffEnvC3ZBBmWFKMnpzdwMwag3MiCnYtxZNBTfWJeh4bakW4X/OTIJS7pUo2GsILSdmmiKQBn5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=nFeW31+o; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50FNaSWk022760;
+	Thu, 16 Jan 2025 10:40:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=jFhZcHYhyYN41m7TucbDL8T1wPLRWSGcyxYRt2+DS
+	dA=; b=nFeW31+oBjaKgI7YXNVpxyr1pmt0F+50SFiXh8AoyfT6f5JfjoP5StZmq
+	NWB0FsOJ4tuSUJo+JriZj1g70Lmv0qZnDDQp5jEyYgTKcjJ0gwSDvZoxrCUqKNrA
+	5qPjGSC1FU6NzdHrnC7Q53rNyfwvs56OXHeWY4VsAvoR+YvC2ldUZdtrnp+018t9
+	xbpkfbw6N7KwQefGyWMCTLjRtmn7j8hsdglMgiut8WFUmir/slM+NqGj+7ipVF+r
+	VdACDhEMlj+JPiu8K7N9r98zi9f4tDScaXLbHOlRqQKZ5n+SGLebuSogo3LReqPE
+	il9pVc/GT/3wrVUOi7+KBX5LvhuNA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 446pub2exh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Jan 2025 10:40:55 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50GAesbd018482;
+	Thu, 16 Jan 2025 10:40:54 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 446pub2exd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Jan 2025 10:40:54 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50GAFY99007386;
+	Thu, 16 Jan 2025 10:40:54 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4443yndaux-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Jan 2025 10:40:53 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50GAeomm13893918
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 16 Jan 2025 10:40:50 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 10FCE20043;
+	Thu, 16 Jan 2025 10:40:50 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0CEDC20040;
+	Thu, 16 Jan 2025 10:40:48 +0000 (GMT)
+Received: from ltcrain34-lp2.aus.stglabs.ibm.com (unknown [9.3.101.41])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 16 Jan 2025 10:40:47 +0000 (GMT)
+From: Narayana Murty N <nnmlinux@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
+        linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org, mahesh@linux.ibm.com, oohall@gmail.com,
+        npiggin@gmail.com, christophe.leroy@csgroup.eu, maddy@linux.ibm.com,
+        naveen@kernel.org, vaibhav@linux.ibm.com, ganeshgr@linux.ibm.com,
+        sbhat@linux.ibm.com, ritesh.list@gmail.com
+Subject: [PATCH v4 RESEND] powerpc/pseries/eeh: Fix get PE state translation
+Date: Thu, 16 Jan 2025 04:39:54 -0600
+Message-ID: <20250116103954.17324-1-nnmlinux@linux.ibm.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250115184318.2854459-1-kan.liang@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: K56dcDvyYhXRIc3dxc6r2-AtaUX9LZsV
+X-Proofpoint-ORIG-GUID: a8eHIkh39Maiz4QKYnd62ZUOvtwDZwEp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-16_04,2025-01-16_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
+ spamscore=0 malwarescore=0 lowpriorityscore=0 mlxscore=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 mlxlogscore=999 clxscore=1015 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501160077
 
-On Wed, Jan 15, 2025 at 10:43:16AM -0800, kan.liang@linux.intel.com wrote:
-> From: Kan Liang <kan.liang@linux.intel.com>
-> 
-> The WARN_ON(this_cpu_read(cpu_hw_events.enabled)) in the
-> intel_pmu_save_and_restart_reload() is triggered, when sampling read
-> topdown events.
-> 
-> In a NMI handler, the cpu_hw_events.enabled is set and used to indicate
-> the status of core PMU. The generic pmu->pmu_disable_count, updated in
-> the perf_pmu_disable/enable pair, is not touched.
-> However, the perf_pmu_disable/enable pair is invoked when sampling read
-> in a NMI handler. The cpuc->enabled is mistakenly set by the
-> perf_pmu_enable().
-> 
-> Avoid perf_pmu_disable/enable() if the core PMU is already disabled.
-> 
-> Fixes: 7b2c05a15d29 ("perf/x86/intel: Generic support for hardware TopDown metrics")
-> Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-> Cc: stable@vger.kernel.org
-> ---
->  arch/x86/events/intel/core.c | 7 +++++--
->  arch/x86/events/intel/ds.c   | 9 ++++++---
->  2 files changed, 11 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-> index 2a2824e9c50d..bce423ad3fad 100644
-> --- a/arch/x86/events/intel/core.c
-> +++ b/arch/x86/events/intel/core.c
-> @@ -2778,15 +2778,18 @@ DEFINE_STATIC_CALL(intel_pmu_update_topdown_event, x86_perf_event_update);
->  static void intel_pmu_read_topdown_event(struct perf_event *event)
->  {
->  	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-> +	int pmu_enabled = cpuc->enabled;
->  
->  	/* Only need to call update_topdown_event() once for group read. */
->  	if ((cpuc->txn_flags & PERF_PMU_TXN_READ) &&
->  	    !is_slots_event(event))
->  		return;
->  
-> -	perf_pmu_disable(event->pmu);
-> +	if (pmu_enabled)
-> +		perf_pmu_disable(event->pmu);
->  	static_call(intel_pmu_update_topdown_event)(event);
-> -	perf_pmu_enable(event->pmu);
-> +	if (pmu_enabled)
-> +		perf_pmu_enable(event->pmu);
->  }
->  
->  static void intel_pmu_read_event(struct perf_event *event)
-> diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
-> index ba74e1198328..81b6ec8e824e 100644
-> --- a/arch/x86/events/intel/ds.c
-> +++ b/arch/x86/events/intel/ds.c
-> @@ -2096,11 +2096,14 @@ get_next_pebs_record_by_bit(void *base, void *top, int bit)
->  
->  void intel_pmu_auto_reload_read(struct perf_event *event)
->  {
-> -	WARN_ON(!(event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD));
-> +	int pmu_enabled = this_cpu_read(cpu_hw_events.enabled);
->  
-> -	perf_pmu_disable(event->pmu);
-> +	WARN_ON(!(event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD));
-> +	if (pmu_enabled)
-> +		perf_pmu_disable(event->pmu);
->  	intel_pmu_drain_pebs_buffer();
-> -	perf_pmu_enable(event->pmu);
-> +	if (pmu_enabled)
-> +		perf_pmu_enable(event->pmu);
->  }
+The PE Reset State "0" returned by RTAS calls
+"ibm_read_slot_reset_[state|state2]" indicates that the reset is
+deactivated and the PE is in a state where MMIO and DMA are allowed.
+However, the current implementation of "pseries_eeh_get_state()" does
+not reflect this, causing drivers to incorrectly assume that MMIO and
+DMA operations cannot be resumed.
 
-Hurmp.. would it not be nicer to merge that logic. Perhaps something
-like so?
+The userspace drivers as a part of EEH recovery using VFIO ioctls fail
+to detect when the recovery process is complete. The VFIO_EEH_PE_GET_STATE
+ioctl does not report the expected EEH_PE_STATE_NORMAL state, preventing
+userspace drivers from functioning properly on pseries systems.
+
+The patch addresses this issue by updating 'pseries_eeh_get_state()'
+to include "EEH_STATE_MMIO_ENABLED" and "EEH_STATE_DMA_ENABLED" in
+the result mask for PE Reset State "0". This ensures correct state
+reporting to the callers, aligning the behavior with the PAPR specification
+and fixing the bug in EEH recovery for VFIO user workflows.
+
+Fixes: 00ba05a12b3c ("powerpc/pseries: Cleanup on pseries_eeh_get_state()")
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
 
 ---
- arch/x86/events/intel/core.c | 41 +++++++++++++++++++++++------------------
- arch/x86/events/intel/ds.c   | 11 +----------
- arch/x86/events/perf_event.h |  2 +-
- 3 files changed, 25 insertions(+), 29 deletions(-)
+Changelog:
+V1:https://lore.kernel.org/all/20241107042027.338065-1-nnmlinux@linux.ibm.com/
+--added Fixes tag for "powerpc/pseries: Cleanup on
+pseries_eeh_get_state()".
+V2:https://lore.kernel.org/stable/20241212075044.10563-1-nnmlinux%40linux.ibm.com
+--Updated the patch description to include it in the stable kernel tree.
+V3:https://lore.kernel.org/all/87v7vm8pwz.fsf@gmail.com/
+--Updated commit description.
+---
+ arch/powerpc/platforms/pseries/eeh_pseries.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 7601196d1d18..5b491a6815e6 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -2785,28 +2785,33 @@ static u64 icl_update_topdown_event(struct perf_event *event)
+diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
+index 1893f66371fa..b12ef382fec7 100644
+--- a/arch/powerpc/platforms/pseries/eeh_pseries.c
++++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
+@@ -580,8 +580,10 @@ static int pseries_eeh_get_state(struct eeh_pe *pe, int *delay)
  
- DEFINE_STATIC_CALL(intel_pmu_update_topdown_event, x86_perf_event_update);
- 
--static void intel_pmu_read_topdown_event(struct perf_event *event)
-+static void intel_pmu_read_event(struct perf_event *event)
- {
--	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-+	if (event->hw.flags & (PERF_X86_EVENT_AUTO_RELOAD | PERF_X86_EVENT_TOPDOWN)) {
-+		struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-+		bool pmu_enabled = cpuc->enabled;
- 
--	/* Only need to call update_topdown_event() once for group read. */
--	if ((cpuc->txn_flags & PERF_PMU_TXN_READ) &&
--	    !is_slots_event(event))
--		return;
-+		/* Only need to call update_topdown_event() once for group read. */
-+		if (is_topdown_event(event) && !is_slots_event(event) &&
-+		    (cpuc->txn_flags & PERF_PMU_TXN_READ))
-+			return;
- 
--	perf_pmu_disable(event->pmu);
--	static_call(intel_pmu_update_topdown_event)(event);
--	perf_pmu_enable(event->pmu);
--}
-+		cpuc->enabled = 0;
-+		if (pmu_enabled)
-+			intel_pmu_disable_all();
- 
--static void intel_pmu_read_event(struct perf_event *event)
--{
--	if (event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD)
--		intel_pmu_auto_reload_read(event);
--	else if (is_topdown_count(event))
--		intel_pmu_read_topdown_event(event);
--	else
--		x86_perf_event_update(event);
-+		if (is_topdown_event(event))
-+			static_call(intel_pmu_update_topdown_event)(event);
-+		else
-+			intel_pmu_drain_pebs_buffer();
-+
-+		cpuc->enabled = pmu_enabled;
-+		if (pmu_enabled)
-+			intel_pmu_enable_all(0);
-+		return;
-+	}
-+
-+	x86_perf_event_update(event);
- }
- 
- static void intel_pmu_enable_fixed(struct perf_event *event)
-diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
-index ba74e1198328..050098c54ae7 100644
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -953,7 +953,7 @@ int intel_pmu_drain_bts_buffer(void)
- 	return 1;
- }
- 
--static inline void intel_pmu_drain_pebs_buffer(void)
-+void intel_pmu_drain_pebs_buffer(void)
- {
- 	struct perf_sample_data data;
- 
-@@ -2094,15 +2094,6 @@ get_next_pebs_record_by_bit(void *base, void *top, int bit)
- 	return NULL;
- }
- 
--void intel_pmu_auto_reload_read(struct perf_event *event)
--{
--	WARN_ON(!(event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD));
--
--	perf_pmu_disable(event->pmu);
--	intel_pmu_drain_pebs_buffer();
--	perf_pmu_enable(event->pmu);
--}
--
- /*
-  * Special variant of intel_pmu_save_and_restart() for auto-reload.
-  */
-diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
-index 31c2771545a6..38b3e30f8988 100644
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -1643,7 +1643,7 @@ void intel_pmu_pebs_disable_all(void);
- 
- void intel_pmu_pebs_sched_task(struct perf_event_pmu_context *pmu_ctx, bool sched_in);
- 
--void intel_pmu_auto_reload_read(struct perf_event *event);
-+void intel_pmu_drain_pebs_buffer(void);
- 
- void intel_pmu_store_pebs_lbrs(struct lbr_entry *lbr);
- 
+ 	switch(rets[0]) {
+ 	case 0:
+-		result = EEH_STATE_MMIO_ACTIVE |
+-			 EEH_STATE_DMA_ACTIVE;
++		result = EEH_STATE_MMIO_ACTIVE	|
++			 EEH_STATE_DMA_ACTIVE	|
++			 EEH_STATE_MMIO_ENABLED	|
++			 EEH_STATE_DMA_ENABLED;
+ 		break;
+ 	case 1:
+ 		result = EEH_STATE_RESET_ACTIVE |
+-- 
+2.47.1
+
 
