@@ -1,370 +1,158 @@
-Return-Path: <stable+bounces-109275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 791EEA13C05
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 15:21:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44928A13C26
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 15:26:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9464D169A1A
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 14:21:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D28216515F
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 14:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865C622A7F2;
-	Thu, 16 Jan 2025 14:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8B422ACE7;
+	Thu, 16 Jan 2025 14:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HYW32PCN"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="J4mq97ox";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OpEikvnd";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="J4mq97ox";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OpEikvnd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388D01DE2B9;
-	Thu, 16 Jan 2025 14:21:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7DCB22A7F2;
+	Thu, 16 Jan 2025 14:26:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737037291; cv=none; b=NUQtzooocyywAnVlUweOMIcKPpRAgM2qFn+R2c53unV5dRWtzP5v9bAUaQlO6zns7gvEZXYYrSo00ivG4/BF8ig1ID9Z38TepKeNS5KY0EvJmhPbDpsL4MU0xS+pHJpw0D3rnrNODjigdpg+FXqXnIvgRBgl1WBW0mZssvtlzFI=
+	t=1737037600; cv=none; b=beNqbsPYpWJnZPoOpi2OnopvYg7Xp0mAUsQNjEjA1dLYJ+tqZQyyh4FP+WAR1MaevW0adnkJQ+W9d6TulwDyxp3/ANCkO4PFiDy94vpfyZD8MKtRRE1YH1C/6/Zi2JaMTmJjSK/237HDuwN4RqbaJgOx52HoCYLPb2hIMEetFYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737037291; c=relaxed/simple;
-	bh=dwaSp5xMRzHktOe682J3LGPLEcV0xhRUzeSBvEX8Mew=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Mo+IBlFQTZ7IoCvyesVlq87lLcIITVxvZFT+HPkTyRmm3yeZ/TOdJ94Ba3SaBORQqY8p2CXuJS32YxBSDR8i9dA3+sTU0d/2IaaiTCHF3NC7xm4TRojhrDI7+VYjLa9pJCNdO4BMa9M48C4TTsErEY2ra6HSCjFHQLNEVwHM6DM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HYW32PCN; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-aaeec07b705so192560566b.2;
-        Thu, 16 Jan 2025 06:21:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737037285; x=1737642085; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=QmeOLrN3HjD73FIb8e2i1EvlrIVIEl/1nyBa+LHcTNY=;
-        b=HYW32PCNREvX3GqPv0LaVRU9P3xcLuNek7RXyS9/HdHAYqqSYF6s9uog+daRy4B/t1
-         5Ujw00Y8eT2CYtIF3Xpp+jZp6rzaomdSUxZTp7XK4ofnKtO3RhNwZSBm9XvnI0Bfpcyu
-         vpzYm/upZLXa8yjx881IDnPD0lyspO5rtv5CxA0CwuQM+aJNb5yAoHtnxtJv3rtZnrQS
-         eFfmc8cOa/GDsx30llsHQMPfxC3c2EslyMRjj9z4N4YOolFeq/evbESoMjNkYHSvnToY
-         HltsewMaeosHxr0xwPV5MhlzsgJawOC7979VhnJl/J/xYFh5A22PdXNymr9AFSYHCWhy
-         HX0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737037285; x=1737642085;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QmeOLrN3HjD73FIb8e2i1EvlrIVIEl/1nyBa+LHcTNY=;
-        b=XS4jsZbYSMGHvIeOfYPPF/G+rklbHJ7foeugI+b19G9l/70HMvVp6OysXF+uK1uLeL
-         Tkopp16Vr4umV2clj4UapJ1+flzI1oW0keWcXxLJIiUSdgJOicz5Rwj5kpHUAcFCE1JO
-         Zt3/NixcH1s2ze30vTwRWHm8y3YU4yd+Yi4WpIqVD/EnmIAxxZWOkKgJIWZjJwFMrbqj
-         ufWkupi4oy2FNCu1bo+ZV9blCW4Q+geNzu8XFXwLtoO+W1WDWDRarZa5uK0lTidfouJS
-         8lvrbzpKzZno6023sDtxGEFjDI5RemAYaGszq7C4trl7PJfRo7cPr1jf4z3uRyjlkLIO
-         yYTw==
-X-Forwarded-Encrypted: i=1; AJvYcCVn8o6xM7C1U2/mokWK+rW6mensZWmLSwaomQD5D6RPoTpX28/b48oRvPc1m/SlRAJJ/4Juz38ftCg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdCme1PEJ0PAGrVYQm6hL8jHuO/lbCHORUwGFAh1+beGKN5IEt
-	OrZ0KsHmNIBrCKF/5VUNzEc08myM9rpiFcnjJpjCHYccbFCwKmVJO2L/e98EnPwQoZOu4GnrH50
-	jabaTuq/jMnWEigey16BfOSPLRh6hODfk
-X-Gm-Gg: ASbGnctdQUr0ThSFGpNFGMpqqECApD7qxB5B3YDXOjFoMya9BLwhUppOWt3WbYbuJ4S
-	CfRIGlxLYn4lzswPq06xR8xO9PceYLJrSN66dgQ==
-X-Google-Smtp-Source: AGHT+IErJNq6LjOq1QVjak6xidjAVOxzehQ1LA2FQcXYy5NUu+JCa3SmraGguVPI51P2ajvlR679uv4oRBsn396n2hE=
-X-Received: by 2002:a17:907:9711:b0:aa6:1e9a:e45a with SMTP id
- a640c23a62f3a-ab2abdc368emr2835635566b.46.1737037285083; Thu, 16 Jan 2025
- 06:21:25 -0800 (PST)
+	s=arc-20240116; t=1737037600; c=relaxed/simple;
+	bh=VKtNrWvWk+iN/uKZ4Unnp197D6rui9M2yZka5smhU88=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XptZOd/tjr+jj6qCwQCqgsQF85XvgFOMYfCSqeFUofF13lFGYbD1Py9CrFNNO9SFgl3BpFK0axY0f1rNsIgp16h1MBfttG+xB2bvxDDs/02VPrtZfwYbS8lbzcUAWtoaCuOrID0p10Q5vjdGdjHb9q1FDZJBB3Cw6rdsvEq5Y9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=J4mq97ox; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OpEikvnd; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=J4mq97ox; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OpEikvnd; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id F3EDD211CA;
+	Thu, 16 Jan 2025 14:26:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1737037597; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I3benVHZIe6d7ABJ0Gv3HWlD5LOOVZSFAyIgJZe2mWE=;
+	b=J4mq97oxfDOnCDBH/8CrAVMLNwN5WRJn+O8l6EgS88A/vr7bYJQgWmWIlp54zdNBu9Qhh5
+	jxE5oegrd6Cz3jRBaSfblLrncykQbFfdgxAXshZNuevUaQYkaLYZ5t7k8bsJPO75qJkxyl
+	oe+79sTH+qr/VeqO8W6LahEgTieo06A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1737037597;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I3benVHZIe6d7ABJ0Gv3HWlD5LOOVZSFAyIgJZe2mWE=;
+	b=OpEikvndlDcnOZitBBOqWsA/iB+0IZFo8Qjystd7RBO5i9FOU17u7yvTJwXsoGUJZqr2AZ
+	Zvnkfg4ARHCbc3Dw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1737037597; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I3benVHZIe6d7ABJ0Gv3HWlD5LOOVZSFAyIgJZe2mWE=;
+	b=J4mq97oxfDOnCDBH/8CrAVMLNwN5WRJn+O8l6EgS88A/vr7bYJQgWmWIlp54zdNBu9Qhh5
+	jxE5oegrd6Cz3jRBaSfblLrncykQbFfdgxAXshZNuevUaQYkaLYZ5t7k8bsJPO75qJkxyl
+	oe+79sTH+qr/VeqO8W6LahEgTieo06A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1737037597;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I3benVHZIe6d7ABJ0Gv3HWlD5LOOVZSFAyIgJZe2mWE=;
+	b=OpEikvndlDcnOZitBBOqWsA/iB+0IZFo8Qjystd7RBO5i9FOU17u7yvTJwXsoGUJZqr2AZ
+	Zvnkfg4ARHCbc3Dw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BDE7113A57;
+	Thu, 16 Jan 2025 14:26:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id S4/RLBwXiWfXUQAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Thu, 16 Jan 2025 14:26:36 +0000
+Date: Thu, 16 Jan 2025 15:26:36 +0100
+Message-ID: <87a5bqj0mb.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Evgeny Kapun <abacabadabacaba@gmail.com>
+Cc: Kailang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Linux Sound Mailing List <linux-sound@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Regressions Mailing List <regressions@lists.linux.dev>,
+	Linux Stable Mailing List <stable@vger.kernel.org>
+Subject: Re: [REGRESSION] Distorted sound on Acer Aspire A115-31 laptop
+In-Reply-To: <0494014b-3aa2-4102-8b5b-7625d8c864e2@gmail.com>
+References: <e142749b-7714-4733-9452-918fbe328c8f@gmail.com>
+	<8734ijwru5.wl-tiwai@suse.de>
+	<57883f2e-49cd-4aa4-9879-7dcdf7fec6df@gmail.com>
+	<87ldw89l7e.wl-tiwai@suse.de>
+	<fc506097-9d04-442c-9efd-c9e7ce0f3ace@gmail.com>
+	<58300a2a06e34f3e89bf7a097b3cd4ca@realtek.com>
+	<0494014b-3aa2-4102-8b5b-7625d8c864e2@gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-From: Lars Pedersen <lapeddk@gmail.com>
-Date: Thu, 16 Jan 2025 15:21:13 +0100
-X-Gm-Features: AbW1kvYa-f6ncelJyoAvjidcP8g8LNYVNbsLP4Gske-5mxUKYMHiiW9BfZOnumw
-Message-ID: <CAKd8=GsoKj5eG6VAMkrxMbzNyoBX=JiwafrfXman8xMNK+XU_w@mail.gmail.com>
-Subject: SPI regression seen on ARM am335x in kernel 6.12.8 and 6.6.71
-To: stable@vger.kernel.org
-Cc: regressions@lists.linux.dev, broonie@kernel.org, linux-spi@vger.kernel.org, 
-	psiddaiah@mvista.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Score: -3.30
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.991];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	URIBL_BLOCKED(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCVD_TLS_ALL(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_DN_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-Hi. We have discovered an SPI regression when upgrading from 6.1.99 to
-a newer LTS version. Same error on kernel 6.6.71 and 6.12.8.
+On Sat, 11 Jan 2025 16:00:33 +0100,
+Evgeny Kapun wrote:
+> 
+> On 12/24/24 04:54, Kailang wrote:
+> > Please test attach patch.
+> 
+> This patch, when applied to kernel version 6.12.8, appears to fix the
+> issue. There are no distortions, and the left and the right channel
+> can be controlled independently.
 
-I think we have identified the problem down to the reference clock
-calculation that seems to end up to zero in the spi-omap2-mcspi
-driver.
+Good to hear.
 
-Also we think it relates to commit
-4c6ac5446d060f0bf435ccc8bc3aa7b7b5f718ad, where OMAP2_MCSPI_MAX_FREQ
-is used as fallback on error. In our case it seems to hit the else
-case.
+Kailang, care to submit a proper patch for merging?
 
-Snippets for device tree, spi-omap2-mcspi driver and kernel divide by
-zero error log with dynamic debug enabled.
 
-/Lars Pedersen
+thanks,
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 67441b2cd603..8fedfc7db1fa 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1559,12 +1559,13 @@ static int omap2_mcspi_probe(struct
-platform_device *pdev)
-                dev_err(&pdev->dev, "Cannot request IRQ");
-                goto free_ctlr;
-        }
--
-+       dev_dbg(&pdev->dev, "DEBUG_EXTRA pre calc\n");
-        mcspi->ref_clk = devm_clk_get_optional_enabled(&pdev->dev, NULL);
-        if (IS_ERR(mcspi->ref_clk))
-                mcspi->ref_clk_hz = OMAP2_MCSPI_MAX_FREQ;
-        else
-                mcspi->ref_clk_hz = clk_get_rate(mcspi->ref_clk);
-+       dev_dbg(&pdev->dev, "DEBUG_EXTRA: ref_clk_hz %d\n", mcspi->ref_clk_hz);
-        ctlr->max_speed_hz = mcspi->ref_clk_hz;
-        ctlr->min_speed_hz = mcspi->ref_clk_hz >> 15;
-
----8<---
-/dts-v1/;
-
-#include "am33xx.dtsi"
-#include <dt-bindings/interrupt-controller/irq.h>
-...
-
-&spi0 {
-status = "okay";
-pinctrl-names = "default";
-pinctrl-0 = <&spi0_pins_default>;
-ti,spi-num-cs = <1>;
-
-flash@0 {
-compatible = "jedec,spi-nor";
-reg = <0>;
-spi-tx-bus-width = <1>;
-spi-rx-bus-width = <1>;
-spi-max-frequency = <10000000>;
-
-partitions {
-compatible = "fixed-partitions";
-#address-cells = <1>;
-#size-cells = <1>;
-partition@0 {
-reg = <0x0 0x1f00000>;
-label = "radio-program";
-};
-partition@1f00000 {
-reg = <0x1f00000 0xe0000>;
-label = "linux-data";
-read-only;
-};
-partition@1fe0000 {
-reg = <0x1fe0000 0x10000>;
-label = "radio-config";
-read-only;
-};
-partition@1ff0000 {
-reg = <0x1ff0000 0x10000>;
-label = "baseband-config";
-read-only;
-};
-};
-};
-};
-
----8<---
-Jan 16 11:30:53 ptxdist kernel: omap2_mcspi 48030000.spi: DEBUG_EXTRA pre calc
-Jan 16 11:30:54 ptxdist kernel: omap2_mcspi 48030000.spi: DEBUG_EXTRA:
-ref_clk_hz 0
-Jan 16 11:30:54 ptxdist kernel: omap2_mcspi 48030000.spi: registered host spi0
-Jan 16 11:30:54 ptxdist kernel: Division by zero in kernel.
-Jan 16 11:30:54 ptxdist kernel: CPU: 0 UID: 0 PID: 161 Comm:
-(udev-worker) Not tainted 6.12.8 #1
-Jan 16 11:30:54 ptxdist kernel: Hardware name: Generic AM33XX
-(Flattened Device Tree)
-Jan 16 11:30:54 ptxdist kernel: Call trace:
-Jan 16 11:30:54 ptxdist kernel:  dump_backtrace from show_stack+0x20/0x38
-Jan 16 11:30:54 ptxdist kernel:  r7:c4a7ff00 r6:c0cef6bc r5:00000000 r4:600f0113
-Jan 16 11:30:54 ptxdist kernel:  show_stack from dump_stack_lvl+0x40/0x78
-Jan 16 11:30:54 ptxdist kernel:  dump_stack_lvl from dump_stack+0x18/0x28
-Jan 16 11:30:54 ptxdist kernel:  r7:c4a7ff00 r6:00000008 r5:c477dbc0 r4:c4a7ec00
-Jan 16 11:30:54 ptxdist kernel:  dump_stack from __div0+0x24/0x34
-Jan 16 11:30:54 ptxdist kernel:  __div0 from Ldiv0+0x8/0x10
-Jan 16 11:30:54 ptxdist kernel:  omap2_mcspi_setup_transfer
-[spi_omap2_mcspi] from omap2_mcspi_setup+0x134/0x20c [spi_omap2_mcspi]
-Jan 16 11:30:54 ptxdist kernel:  r9:c4a7ff28 r8:c477dbd0 r7:c4a7ff00
-r6:c4a7ec00 r5:c2572c10 r4:00000001
-Jan 16 11:30:54 ptxdist kernel:  omap2_mcspi_setup [spi_omap2_mcspi]
-from spi_setup+0x124/0x4f8
-Jan 16 11:30:54 ptxdist kernel:  r9:c4a7edaf r8:00000000 r7:c2572c10
-r6:c4a7fc00 r5:00000000 r4:c4a7ec00
-Jan 16 11:30:54 ptxdist kernel:  spi_setup from __spi_add_device+0x15c/0x300
-Jan 16 11:30:54 ptxdist kernel:  r6:c4a7fc00 r5:c4a7ec00 r4:c4a7ed9f
-Jan 16 11:30:54 ptxdist kernel:  __spi_add_device from
-of_register_spi_devices+0x74/0x1a8
-Jan 16 11:30:54 ptxdist kernel:  r10:c0fe67cc r9:c4a7fd98 r8:c4a7fdd4
-r7:c4a7ec00 r6:c4a7fc00 r5:00000000
-Jan 16 11:30:54 ptxdist kernel:  r4:cfce0df4
-Jan 16 11:30:54 ptxdist kernel:  of_register_spi_devices from
-spi_register_controller+0x3d0/0x4d0
-Jan 16 11:30:54 ptxdist kernel:  r9:c4a7fd98 r8:c0fe67d4 r7:c4a7fda0
-r6:00000000 r5:c0fe67d4 r4:c4a7fc00
-Jan 16 11:30:54 ptxdist kernel:  spi_register_controller from
-devm_spi_register_controller+0x54/0xbc
-Jan 16 11:30:54 ptxdist kernel:  r10:bf006108 r9:c2572c10 r8:c4a7fc00
-r7:c2572c10 r6:c4a7fc00 r5:c4a7ff00
-Jan 16 11:30:54 ptxdist kernel:  r4:c46cd2c0
-Jan 16 11:30:54 ptxdist kernel:  devm_spi_register_controller from
-omap2_mcspi_probe+0x51c/0x5cc [spi_omap2_mcspi]
-Jan 16 11:30:54 ptxdist kernel:  r7:c4a7fc00 r6:c2572c10 r5:c4a7ff00 r4:c2572c10
-Jan 16 11:30:54 ptxdist kernel:  omap2_mcspi_probe [spi_omap2_mcspi]
-from platform_probe+0x6c/0xd0
-Jan 16 11:30:54 ptxdist kernel:  r10:d0481ed0 r9:00000001 r8:00000000
-r7:c1028ef8 r6:bf004014 r5:c2572c10
-Jan 16 11:30:54 ptxdist kernel:  r4:00000000
-Jan 16 11:30:54 ptxdist kernel:  platform_probe from really_probe+0xf0/0x3ec
-Jan 16 11:30:54 ptxdist kernel:  r7:c1028ef8 r6:bf004014 r5:00000000 r4:c2572c10
-Jan 16 11:30:54 ptxdist kernel:  really_probe from
-__driver_probe_device+0xac/0x13c
-Jan 16 11:30:54 ptxdist kernel:  r8:c27a50b4 r7:0000007d r6:c2572c10
-r5:bf004014 r4:c2572c10
-Jan 16 11:30:54 ptxdist kernel:  __driver_probe_device from
-driver_probe_device+0x40/0xe4
-Jan 16 11:30:54 ptxdist kernel:  r5:bf004014 r4:c1071d9c
-Jan 16 11:30:54 ptxdist kernel:  driver_probe_device from
-__driver_attach+0x154/0x204
-Jan 16 11:30:54 ptxdist kernel:  r7:00000000 r6:c2572c54 r5:bf004014 r4:c2572c10
-Jan 16 11:30:54 ptxdist kernel:  __driver_attach from bus_for_each_dev+0x8c/0xf0
-Jan 16 11:30:54 ptxdist kernel:  r7:00000000 r6:c20e96c0 r5:c06404ec r4:bf004014
-Jan 16 11:30:54 ptxdist kernel:  bus_for_each_dev from driver_attach+0x2c/0x44
-Jan 16 11:30:54 ptxdist kernel:  r7:c20e96c0 r6:00000000 r5:c27a5080 r4:bf004014
-Jan 16 11:30:54 ptxdist kernel:  driver_attach from bus_add_driver+0x104/0x244
-Jan 16 11:30:54 ptxdist kernel:  bus_add_driver from driver_register+0x8c/0x164
-Jan 16 11:30:54 ptxdist kernel:  r8:00000000 r7:bf004100 r6:c101f840
-r5:a7ac7714 r4:bf004014
-Jan 16 11:30:54 ptxdist kernel:  driver_register from
-__platform_driver_register+0x2c/0x40
-Jan 16 11:30:54 ptxdist kernel:  r5:a7ac7714 r4:c0fac2fc
-Jan 16 11:30:54 ptxdist kernel:  __platform_driver_register from
-omap2_mcspi_driver_init+0x38/0x1000 [spi_omap2_mcspi]
-Jan 16 11:30:54 ptxdist kernel:  omap2_mcspi_driver_init
-[spi_omap2_mcspi] from do_one_initcall+0x68/0x2b8
-Jan 16 11:30:54 ptxdist kernel:  r5:c2a95800 r4:bf008000
-Jan 16 11:30:54 ptxdist kernel:  do_one_initcall from do_init_module+0x64/0x218
-Jan 16 11:30:54 ptxdist kernel:  r8:bf004100 r7:bf004100 r6:c477d240
-r5:00000000 r4:bf004100
-Jan 16 11:30:54 ptxdist kernel:  do_init_module from load_module+0x7e4/0xa18
-Jan 16 11:30:54 ptxdist kernel:  r6:00000000 r5:00000000 r4:00000000
-Jan 16 11:30:54 ptxdist kernel:  load_module from
-init_module_from_file+0xa4/0xec
-Jan 16 11:30:54 ptxdist kernel:  r10:c477c080 r9:c1054a48 r8:c477c080
-r7:c1054a38 r6:b5b1d7f0 r5:c477c080
-Jan 16 11:30:54 ptxdist kernel:  r4:00000000
-Jan 16 11:30:54 ptxdist kernel:  init_module_from_file from
-sys_finit_module+0x244/0x39c
-Jan 16 11:30:54 ptxdist kernel:  r6:00000001 r5:000000f4 r4:c2a95800
-Jan 16 11:30:54 ptxdist kernel:  sys_finit_module from
-__sys_trace_return+0x0/0x10
-Jan 16 11:30:54 ptxdist kernel: Exception stack(0xd0481fa8 to 0xd0481ff0)
-Jan 16 11:30:54 ptxdist kernel: 1fa0:                   14cb6a00
-00000000 0000001a b5b1d7f0 00000000 00000000
-Jan 16 11:30:54 ptxdist kernel: 1fc0: 14cb6a00 00000000 00826358
-0000017b 008456d0 b6f75934 b5b1739d 00000000
-Jan 16 11:30:54 ptxdist kernel: 1fe0: bee9d538 bee9d528 b5b16643 b6c5d262
-Jan 16 11:30:54 ptxdist kernel:  r10:0000017b r9:c2a95800 r8:c01002c4
-r7:0000017b r6:00826358 r5:00000000
-Jan 16 11:30:54 ptxdist kernel:  r4:14cb6a00
-Jan 16 11:30:54 ptxdist kernel: Division by zero in kernel.
-Jan 16 11:30:54 ptxdist kernel: CPU: 0 UID: 0 PID: 161 Comm:
-(udev-worker) Not tainted 6.12.8 #1
-Jan 16 11:30:54 ptxdist kernel: Hardware name: Generic AM33XX
-(Flattened Device Tree)
-Jan 16 11:30:54 ptxdist kernel: Call trace:
-Jan 16 11:30:54 ptxdist kernel:  dump_backtrace from show_stack+0x20/0x38
-Jan 16 11:30:54 ptxdist kernel:  r7:c4a7ff00 r6:c0cef6bc r5:00000000 r4:600f0113
-Jan 16 11:30:54 ptxdist kernel:  show_stack from dump_stack_lvl+0x40/0x78
-Jan 16 11:30:54 ptxdist kernel:  dump_stack_lvl from dump_stack+0x18/0x28
-Jan 16 11:30:54 ptxdist kernel:  r7:c4a7ff00 r6:00000008 r5:c477dbc0 r4:c4a7ec00
-Jan 16 11:30:54 ptxdist kernel:  dump_stack from __div0+0x24/0x34
-Jan 16 11:30:54 ptxdist kernel:  __div0 from Ldiv0+0x8/0x10
-Jan 16 11:30:54 ptxdist kernel:  omap2_mcspi_setup_transfer
-[spi_omap2_mcspi] from omap2_mcspi_setup+0x134/0x20c [spi_omap2_mcspi]
-Jan 16 11:30:54 ptxdist kernel:  r9:c4a7ff28 r8:c477dbd0 r7:c4a7ff00
-r6:c4a7ec00 r5:c2572c10 r4:00000001
-Jan 16 11:30:54 ptxdist kernel:  omap2_mcspi_setup [spi_omap2_mcspi]
-from spi_setup+0x124/0x4f8
-Jan 16 11:30:54 ptxdist kernel:  r9:c4a7edaf r8:00000000 r7:c2572c10
-r6:c4a7fc00 r5:00000000 r4:c4a7ec00
-Jan 16 11:30:54 ptxdist kernel:  spi_setup from __spi_add_device+0x15c/0x300
-Jan 16 11:30:54 ptxdist kernel:  r6:c4a7fc00 r5:c4a7ec00 r4:c4a7ed9f
-Jan 16 11:30:54 ptxdist kernel:  __spi_add_device from
-of_register_spi_devices+0x74/0x1a8
-Jan 16 11:30:54 ptxdist kernel:  r10:c0fe67cc r9:c4a7fd98 r8:c4a7fdd4
-r7:c4a7ec00 r6:c4a7fc00 r5:00000000
-Jan 16 11:30:54 ptxdist kernel:  r4:cfce0df4
-Jan 16 11:30:54 ptxdist kernel:  of_register_spi_devices from
-spi_register_controller+0x3d0/0x4d0
-Jan 16 11:30:54 ptxdist kernel:  r9:c4a7fd98 r8:c0fe67d4 r7:c4a7fda0
-r6:00000000 r5:c0fe67d4 r4:c4a7fc00
-Jan 16 11:30:54 ptxdist kernel:  spi_register_controller from
-devm_spi_register_controller+0x54/0xbc
-Jan 16 11:30:54 ptxdist kernel:  r10:bf006108 r9:c2572c10 r8:c4a7fc00
-r7:c2572c10 r6:c4a7fc00 r5:c4a7ff00
-Jan 16 11:30:54 ptxdist kernel:  r4:c46cd2c0
-Jan 16 11:30:54 ptxdist kernel:  devm_spi_register_controller from
-omap2_mcspi_probe+0x51c/0x5cc [spi_omap2_mcspi]
-Jan 16 11:30:54 ptxdist kernel:  r7:c4a7fc00 r6:c2572c10 r5:c4a7ff00 r4:c2572c10
-Jan 16 11:30:54 ptxdist kernel:  omap2_mcspi_probe [spi_omap2_mcspi]
-from platform_probe+0x6c/0xd0
-Jan 16 11:30:54 ptxdist kernel:  r10:d0481ed0 r9:00000001 r8:00000000
-r7:c1028ef8 r6:bf004014 r5:c2572c10
-Jan 16 11:30:54 ptxdist kernel:  r4:00000000
-Jan 16 11:30:54 ptxdist kernel:  platform_probe from really_probe+0xf0/0x3ec
-Jan 16 11:30:54 ptxdist kernel:  r7:c1028ef8 r6:bf004014 r5:00000000 r4:c2572c10
-Jan 16 11:30:54 ptxdist kernel:  really_probe from
-__driver_probe_device+0xac/0x13c
-Jan 16 11:30:54 ptxdist kernel:  r8:c27a50b4 r7:0000007d r6:c2572c10
-r5:bf004014 r4:c2572c10
-Jan 16 11:30:54 ptxdist kernel:  __driver_probe_device from
-driver_probe_device+0x40/0xe4
-Jan 16 11:30:54 ptxdist kernel:  r5:bf004014 r4:c1071d9c
-Jan 16 11:30:54 ptxdist kernel:  driver_probe_device from
-__driver_attach+0x154/0x204
-Jan 16 11:30:54 ptxdist kernel:  r7:00000000 r6:c2572c54 r5:bf004014 r4:c2572c10
-Jan 16 11:30:54 ptxdist kernel:  __driver_attach from bus_for_each_dev+0x8c/0xf0
-Jan 16 11:30:54 ptxdist kernel:  r7:00000000 r6:c20e96c0 r5:c06404ec r4:bf004014
-Jan 16 11:30:54 ptxdist kernel:  bus_for_each_dev from driver_attach+0x2c/0x44
-Jan 16 11:30:54 ptxdist kernel:  r7:c20e96c0 r6:00000000 r5:c27a5080 r4:bf004014
-Jan 16 11:30:54 ptxdist kernel:  driver_attach from bus_add_driver+0x104/0x244
-Jan 16 11:30:54 ptxdist kernel:  bus_add_driver from driver_register+0x8c/0x164
-Jan 16 11:30:54 ptxdist kernel:  r8:00000000 r7:bf004100 r6:c101f840
-r5:a7ac7714 r4:bf004014
-Jan 16 11:30:54 ptxdist kernel:  driver_register from
-__platform_driver_register+0x2c/0x40
-Jan 16 11:30:54 ptxdist kernel:  r5:a7ac7714 r4:c0fac2fc
-Jan 16 11:30:54 ptxdist kernel:  __platform_driver_register from
-omap2_mcspi_driver_init+0x38/0x1000 [spi_omap2_mcspi]
-Jan 16 11:30:54 ptxdist kernel:  omap2_mcspi_driver_init
-[spi_omap2_mcspi] from do_one_initcall+0x68/0x2b8
-Jan 16 11:30:54 ptxdist kernel:  r5:c2a95800 r4:bf008000
-Jan 16 11:30:54 ptxdist kernel:  do_one_initcall from do_init_module+0x64/0x218
-Jan 16 11:30:54 ptxdist kernel:  r8:bf004100 r7:bf004100 r6:c477d240
-r5:00000000 r4:bf004100
-Jan 16 11:30:54 ptxdist kernel:  do_init_module from load_module+0x7e4/0xa18
-Jan 16 11:30:54 ptxdist kernel:  r6:00000000 r5:00000000 r4:00000000
-Jan 16 11:30:54 ptxdist kernel:  load_module from
-init_module_from_file+0xa4/0xec
-Jan 16 11:30:54 ptxdist kernel:  r10:c477c080 r9:c1054a48 r8:c477c080
-r7:c1054a38 r6:b5b1d7f0 r5:c477c080
-Jan 16 11:30:54 ptxdist kernel:  r4:00000000
-Jan 16 11:30:54 ptxdist kernel:  init_module_from_file from
-sys_finit_module+0x244/0x39c
-Jan 16 11:30:54 ptxdist kernel:  r6:00000001 r5:000000f4 r4:c2a95800
-Jan 16 11:30:54 ptxdist kernel:  sys_finit_module from
-__sys_trace_return+0x0/0x10
-Jan 16 11:30:54 ptxdist kernel: Exception stack(0xd0481fa8 to 0xd0481ff0)
-Jan 16 11:30:54 ptxdist kernel: 1fa0:                   14cb6a00
-00000000 0000001a b5b1d7f0 00000000 00000000
-Jan 16 11:30:54 ptxdist kernel: 1fc0: 14cb6a00 00000000 00826358
-0000017b 008456d0 b6f75934 b5b1739d 00000000
-Jan 16 11:30:55 ptxdist kernel: 1fe0: bee9d538 bee9d528 b5b16643 b6c5d262
-Jan 16 11:30:55 ptxdist kernel:  r10:0000017b r9:c2a95800 r8:c01002c4
-r7:0000017b r6:00826358 r5:00000000
-Jan 16 11:30:55 ptxdist kernel:  r4:14cb6a00
-Jan 16 11:30:55 ptxdist kernel: spi spi0.0: setup: speed 0, sample
-leading edge, clk normal
-Jan 16 11:30:55 ptxdist kernel: spi spi0.0: setup mode 0, 8 bits/w,
-10000000 Hz max --> 0
+Takashi
 
