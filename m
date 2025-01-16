@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-109258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D99A3A139C2
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 13:11:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA786A139CA
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 13:17:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36B103A3FCC
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 12:11:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F37E3A4D29
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 12:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99BEA1D86F6;
-	Thu, 16 Jan 2025 12:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB571DE3D9;
+	Thu, 16 Jan 2025 12:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="EsZlZdTF"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="f6f2ixGi"
 X-Original-To: stable@vger.kernel.org
-Received: from out203-205-221-202.mail.qq.com (out203-205-221-202.mail.qq.com [203.205.221.202])
+Received: from out203-205-221-205.mail.qq.com (out203-205-221-205.mail.qq.com [203.205.221.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E0F156F57
-	for <stable@vger.kernel.org>; Thu, 16 Jan 2025 12:11:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC101DE2CA
+	for <stable@vger.kernel.org>; Thu, 16 Jan 2025 12:16:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737029486; cv=none; b=OF3ZD3SxazoFktxBNT2yFF2cOmwOOjVei9sW+RihaciljnfEtqvt0XkomvM5ky/y4YJOaDd7xWEjTlNbBfXgbkFvkgrB0T0ZBcHqlMXRPZ8CyAH8gjuO6IS+6LG7QNFUkF0FEJMKqSeE3hOjROWDhYvojda/g9rWnh/KfU85Hc0=
+	t=1737029821; cv=none; b=BF3KButpeyOAkyhvn82qrFrKW786ngAXkawUf6HkL7E/SCz1eR4iKSvrw1wZi2mqREK3SLr3Yd0KPUl2NPQrUwnzHPPOaDJ6Xx0wErw32hzAcTWy+VtyGK0iGWjLLYVlfLoJlphw0CRtMiboSYUm0brHjyixvdBXWLRDa32i5qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737029486; c=relaxed/simple;
-	bh=Vn92oXYrdzuUQvymh9r1vxBCgvgAaX/yQTdJBxcGSX4=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=fxXOxul9kvE0JdTz9SfV5FAn3UXQw1TWesjQYh6A6xds2iBemvztuTC4B+9uyP7h3l5O6rdr8Cd1Or9RR4A3D+ChQ0GEW+jVWYNvvXzsmZ9bQ8eK9dteMSL5FyzFYCg8xfsqei0LCrlp2Nlny1SpCCHMfQTkheUYJzC/R83wrWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=EsZlZdTF; arc=none smtp.client-ip=203.205.221.202
+	s=arc-20240116; t=1737029821; c=relaxed/simple;
+	bh=euoQa3KZyVqNePae6UQAw3rSSTMb9rovghnJmjRpmOs=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=aorboovLfqfLHxrn2VTdpGV2sbXFDPGztx7RnMIMvJQ0DUp/gDkF1fBEVEfvkEkWyympithJIajonewdg+YEyu9W5+QuBxsfFqnHrtFqn/aOiZjmz//SX6tvcyks/HJdKoHuGDesr+L/Zg1l0wAK1L12Gbava3Hm/WDuVao6IHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=f6f2ixGi; arc=none smtp.client-ip=203.205.221.205
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1737029170; bh=Ne47eDEGDuwXfrc/0O+Wb4Kw9SLoah0GwKOVrft3XJ8=;
+	t=1737029809; bh=UHxuv1t4BOfs+IWO2Yg2FYYCGG1mgiodfFw8rEypJsk=;
 	h=From:To:Cc:Subject:Date;
-	b=EsZlZdTFaykHcLZVJ/kbVgxfn8VnWX1zalVs5s3eZfPivADGNmcGiGuvvRc+Y5RE9
-	 8jhLwqTTzzYAYKxSpSXCGLFhCMezc+mDzc9k60L475/GwZOBw0c2mBgIUoqvlOvyOC
-	 NgNu1V94hUlwmKzo7nGcLJLBoFJ5IzE4/i22T58k=
+	b=f6f2ixGitPN4Tc4i4R+DuDACeZl7mK0QFEVmF4G4qW9/ydm7ObkpYCNo5RIHoqzvx
+	 +Zcbt/HLRP3Mp/Y/DvacRkFkFJsps93LOqF2DDxFYCK4ykjVxxC42qQx/T7d3qVXVW
+	 17xjnTQ+HVEsxll7xBoPMBE5sfp49qsoZqcGZCNo=
 Received: from my-pc.corp.ad.wrs.com ([120.244.194.130])
-	by newxmesmtplogicsvrszc16-0.qq.com (NewEsmtp) with SMTP
-	id 171002D9; Thu, 16 Jan 2025 20:05:49 +0800
-X-QQ-mid: xmsmtpt1737029149t0roob1iz
-Message-ID: <tencent_58418A96BD26EB035F32DE1A12670EA6A005@qq.com>
-X-QQ-XMAILINFO: ONeCszOCk2GVyz9e/3frtlc7ExLElrt9Q5xaHOL7popTwYzTs7Kii02AWk1LWT
-	 I1iq2YV0Z9pRnL3ZzMvNimT6P/5np8+fLX9BNgIYUlekVYYMavnKthR9MBm8ixUaJ92YKTim4RmK
-	 89k9mxr/Z5cX7xJJcnKcPpUyDmhFyIPWgVwacHqHLUy2Kb8PYo9VeAebUCUYwmCMIKpiqQLK2HHR
-	 u/elNgTfYMml0lLeVifBKOxxLpJB7Is0/smk2AFyp8hM/HtmNcXnjQn6dZwMXdUnM3kgK3zsLCSN
-	 nGAQq9KF3hPuB2eJ0uY4inKNVrbtlKcjXFISHYFS3SdjCDTbU55pBjJOJjRRFp/kicie8KuQ5g9W
-	 unColHZvu9TzL8ftjh62bu4P0sg/xX1CMxuyu34Q6MFi61zpB2NKJqwvV7ef9BxPhrT+G27tBp24
-	 zJSAiNn7saTgA3FqXQ6XBH6zOuKv0T0HukI90R7ZXuQj1Q+/Ca+Zqh35AVIwUQWIhCuDH69YhQuj
-	 Mwqb4JLW85zzXPB3K3TE7xKt/J/OD57pupnkYJ6b2maWbJFsam2cKqB4pW7/plv8EY3Wa9h+Zmoc
-	 K8Vk69GgrG40NZFQSeVr2Y5ZJ44d6aAypg8fuUFwpylz46betuwnL5dnpeIwzh+aT/loisaIiFj9
-	 prTRHankFU1enON/MlWInWVYv8ytnJxb1whOAf6WtyXrw341JsNWnlNqb8+aVuB0rOl7wAWPEIaM
-	 RC8GQrggl0X0uv5TjtizAuJz59z9Nnls9glQ6Pbdd/GVz4UkscAlNUnh8IXEnFSbl9NFuBnPo9F8
-	 MJKVOcHiH0JdllNFGyQ3zRM7QAaxjo5f85N9Ao79z8qYUxkoRl4tLLiTWk595+vqZYCnJvlQW9MC
-	 roK5MbSaU97jvmi8CbQJnM0V4fmdoyIM8KXvIlZkAzZLCZiFP1y42x4EIEWBnXknaxGqh7gsxpfm
-	 H07fF2OSRE9e7hMUeQKQ==
-X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
+	by newxmesmtplogicsvrszb16-1.qq.com (NewEsmtp) with SMTP
+	id 20E204B7; Thu, 16 Jan 2025 20:08:14 +0800
+X-QQ-mid: xmsmtpt1737029294t3zo7p8um
+Message-ID: <tencent_A6264C7FC305AD420DEF47932496B5150E06@qq.com>
+X-QQ-XMAILINFO: MyIXMys/8kCt7fCwrIruHEMhL8utDGPZy2NXRLq6OOzXDvB9t2E0H+7jmSQSsZ
+	 fow6SKrm6XKaOESL1y2ayAns8dmdiVhoHwqXhf7mfwEy5IxrwBsdXkfHBZsHILvjPJ8jXHvSdItn
+	 4fJDOqWUrjfbed2FNb4EwVSV6/FzGQJYCt0LNe+H4s2N7Zi4WbLES7XlKv2m686Z2/CUyAqX8lGC
+	 aLt05s9Netfk5Tl5S6Yj08SsmeOiqrJ7PSe5Hq2/HInAtzK0CnVXLA26LpUC9t0nUe1TWGff6O5L
+	 IoneS0Kg7DaibXwYPY+aeI52Hvf7lIJ7sZ4w8kRdZErI/QMvObOryn+D30DTtlRqRWSW0JSJQIPs
+	 dRXET6hoxyrkl9YtEhcayDQqpzPScWTimmMB2UCyIyFNxizBTcJv/N8GF3FoHi3rREmPBa9bpAzY
+	 p/MnSxAf+hxszOjy7GqK/pabdApdh0MyTZuoiHdYWA9t9lKXgGgNnwGdXkj952ByLFPEyA8d6pb9
+	 AQSUhs3d3Q5vBEwHw10zTd42GOnzVU/8j+vMTVA/HVJpEX+YJORs/PW/zGJ3hjM9qYJLKhb4Zl5B
+	 kmXmN0NSxXAgiwMbWHKUUzevqWNF1wj9vsN1+/OtHWM34jEVbpaCXHn1aHNzUoi6UBztEp9W9KSv
+	 YapRGPG5ddopv/UQhjA7WjA6xFqBhRlPyFw5yRtGtF9k9b4zxbSBai+k/VsHsw4aXuFqy01Y6YFW
+	 LZ//DsBojXFWeLc1LjgYDObtp5WOrTgF6Z/K3UAfDwdCYfEWK/JqzqXm0fmhQLGx4fE5RTy5UBCM
+	 SrCb1F0Y99OWlDwfQiSca3UDGHjLiVADPwDdMB6vWdpcaaX/mjP6dY9ujpzKGXY6IC3cmV2tGLbU
+	 qPU6OPtxmja5wTLd2AByBBUR7Yj0GwImmjcqv6pQmgQfd9XwgLAocmj706mWbuagZVTCKVa963Q6
+	 pk1kBoPupWUhwF0j6EYAXmHfHn+DYx773VwoEgLOcb0zednqOEZ6QZN6ma/UJoZHkus/3FLvVehI
+	 T+5hDgBLiQwP0uSMT9OD5AeA7ZxtA=
+X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
 From: lanbincn@qq.com
 To: stable@vger.kernel.org
 Cc: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
@@ -68,9 +69,9 @@ Cc: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Hamza Mahfooz <hamza.mahfooz@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Bin Lan <lanbincn@qq.com>
-Subject: [PATCH 6.6.y] drm/amd/display: Fix out-of-bounds access in 'dcn21_link_encoder_create'
-Date: Thu, 16 Jan 2025 20:05:47 +0800
-X-OQ-MSGID: <20250116120547.2218-1-lanbincn@qq.com>
+Subject: [PATCH 6.1.y] drm/amd/display: Fix out-of-bounds access in 'dcn21_link_encoder_create'
+Date: Thu, 16 Jan 2025 20:08:14 +0800
+X-OQ-MSGID: <20250116120814.2815-1-lanbincn@qq.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -173,10 +174,10 @@ Link: https://nvd.nist.gov/vuln/detail/CVE-2024-56608
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_resource.c b/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_resource.c
-index d1a25fe6c44f..8dffa5b6426e 100644
+index ce6c70e25703..dd71ea2568e2 100644
 --- a/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_resource.c
 +++ b/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_resource.c
-@@ -1315,7 +1315,7 @@ static struct link_encoder *dcn21_link_encoder_create(
+@@ -1340,7 +1340,7 @@ static struct link_encoder *dcn21_link_encoder_create(
  		kzalloc(sizeof(struct dcn21_link_encoder), GFP_KERNEL);
  	int link_regs_id;
  
