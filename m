@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-109224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68499A13582
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 09:37:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D58A135DA
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 09:50:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB9853A4CA4
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 08:37:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C9B6164341
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 08:50:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638E71BEF74;
-	Thu, 16 Jan 2025 08:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84AFD1D7E5C;
+	Thu, 16 Jan 2025 08:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b="KTxDg9+N"
+	dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b="AwmewLz3"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0.infotecs.ru (mx0.infotecs.ru [91.244.183.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355BA197A8B;
-	Thu, 16 Jan 2025 08:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D9535944;
+	Thu, 16 Jan 2025 08:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.244.183.115
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737016642; cv=none; b=cn4CCYmhTy6QF0AjkgYiUbBSDC+AsQyRhKymm2vrR+lLpJXMrzwRPIR7slopJJ6CE5STNutNT1QJEdZ42+wT6gPdzDIZK+trSEqj2UMs9W9k/F/WZyCb+C2QyeZ7wbq9NRt3gc/gtfi2MrLluPFj7/efhOCAQchGw3xVV6Dk8Vw=
+	t=1737017394; cv=none; b=p1wa0ByIaKebW68140vQGkkRns0zfCZ7q3LxTEY0w+kS6vmQyjvLt8BRlWm805aPBpd99ROaW9WxTmabvdr3VuOFoLSufeo7JiDfYr0DrsabpJmeYB0tiqQWMj1d3u+wao7rRq0WqyIIdeZtEo3MO3CuCt0xyTKxWG9yqG/3rMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737016642; c=relaxed/simple;
-	bh=u97bZSAzNPdN2wy4YPbkJbKCCPI3tneN0r7EHqmk074=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=hRJ0Y3cOQE+1F22kuhlIARW5emfbECelHEexNsr1g7VG12sHzvlasyny/l6CesPl61Jt615EQ5yQOUBVaaNk5iw8zsG+3mKNHH5Lxp+TV6C25cbA2CTSIYDPfdFZoKBz7Tt26eAN5GUpdQAAbEywzRzP1RYmQJ+SgJ6xuHHNIlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru; spf=pass smtp.mailfrom=infotecs.ru; dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b=KTxDg9+N; arc=none smtp.client-ip=91.244.183.115
+	s=arc-20240116; t=1737017394; c=relaxed/simple;
+	bh=Ay0ixWvSyXQi4ZXOFtgmghu+2Uv6P88QyD0VBuIy3NA=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=LMhOEo1tT8vxjVkQaHjqBYviqYXTMmF/Pauv/nFxIXe3VMiZhysUj8f+pMq+qPUt1UOcq3nIrpwi5njF1kq7oSqFBXF+ZmmWw4NvoeqfT6UZHIcWJFalTguR3tHbiqsvDF0LrFpZ/V0zYz3JR8XkkzQ4qwIGT0H9N2LzFTGSBgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru; spf=pass smtp.mailfrom=infotecs.ru; dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b=AwmewLz3; arc=none smtp.client-ip=91.244.183.115
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infotecs.ru
 Received: from mx0.infotecs-nt (localhost [127.0.0.1])
-	by mx0.infotecs.ru (Postfix) with ESMTP id EEC3B104E004;
-	Thu, 16 Jan 2025 11:31:30 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx0.infotecs.ru EEC3B104E004
+	by mx0.infotecs.ru (Postfix) with ESMTP id 4F4CF104EF8A;
+	Thu, 16 Jan 2025 11:49:49 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx0.infotecs.ru 4F4CF104EF8A
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infotecs.ru; s=mx;
-	t=1737016291; bh=r7SMpMaUy70vtJ0RMkNydBK1HZgkL2YTYqhJ3MxRekE=;
+	t=1737017389; bh=QFT97n2tszIVPac1sIYnOooZaURyzmEqOYawWd99dlw=;
 	h=From:To:CC:Subject:Date:From;
-	b=KTxDg9+Nxth9UAT9w3CjedxdIwT8siUJWV4wGLHeaaQ2S1nGHXlokTNZ2XjSoS3Vn
-	 buS0c87Ps1EDleikTY6APGVJAfKosnQPLCj67uzXGumno+PO0nLsFly9ndaAIJtBzD
-	 nXpqAyZVnvS6BPEoavNEyH4wrKxxeIbhGNdp+ztM=
+	b=AwmewLz32MHeMYc0iGxeM33WUQkrZdIpZ57aNy2N1Yw4L148Mmll+1p82y6mlE0Rb
+	 urnissziXHZFEhE63pRmauyftwDtcBwk9cp7UMFgG1oyDHDdKshQokK8js5eXFrRP7
+	 NIYhd2zT4gWL6dpfG3cep0yI33XzNpesCCNQvwWk=
 Received: from msk-exch-02.infotecs-nt (msk-exch-02.infotecs-nt [10.0.7.192])
-	by mx0.infotecs-nt (Postfix) with ESMTP id E8C943066066;
-	Thu, 16 Jan 2025 11:31:30 +0300 (MSK)
+	by mx0.infotecs-nt (Postfix) with ESMTP id 4A1A7302E8A0;
+	Thu, 16 Jan 2025 11:49:49 +0300 (MSK)
 From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 To: Johannes Berg <johannes@sipsolutions.net>
 CC: Julan Hsu <julanhsu@google.com>, "linux-wireless@vger.kernel.org"
@@ -50,13 +50,13 @@ CC: Julan Hsu <julanhsu@google.com>, "linux-wireless@vger.kernel.org"
 	<linux-kernel@vger.kernel.org>, "lvc-project@linuxtesting.org"
 	<lvc-project@linuxtesting.org>, "stable@vger.kernel.org"
 	<stable@vger.kernel.org>
-Subject: [PATCH v2] wifi: mac80211: fix integer overflow in
+Subject: [PATCH v3] wifi: mac80211: fix integer overflow in
  hwmp_route_info_get()
-Thread-Topic: [PATCH v2] wifi: mac80211: fix integer overflow in
+Thread-Topic: [PATCH v3] wifi: mac80211: fix integer overflow in
  hwmp_route_info_get()
-Thread-Index: AQHbZ/EKB/18T1vQNESPvuAAOLFY3A==
-Date: Thu, 16 Jan 2025 08:31:30 +0000
-Message-ID: <20250116083128.3901602-1-Ilia.Gavrilov@infotecs.ru>
+Thread-Index: AQHbZ/OZISFF+ut0wEeUiomHEH881w==
+Date: Thu, 16 Jan 2025 08:49:48 +0000
+Message-ID: <20250116084948.3933834-1-Ilia.Gavrilov@infotecs.ru>
 Accept-Language: ru-RU, en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -95,11 +95,13 @@ v2:
 58f2f7685eac53844f2336432503c328e.camel@sipsolutions.net/
 - Replace multiplication by 10/9 with a function that compares metrics by a=
 dding 10% without integer overflow
+v3:
+- Fix a typo (persent->percent)
  net/mac80211/mesh_hwmp.c | 28 ++++++++++++++++++++++++----
  1 file changed, 24 insertions(+), 4 deletions(-)
 
 diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index 4e9546e998b6..4a7446e4c226 100644
+index 4e9546e998b6..79aa29d61e6b 100644
 --- a/net/mac80211/mesh_hwmp.c
 +++ b/net/mac80211/mesh_hwmp.c
 @@ -367,6 +367,26 @@ u32 airtime_link_metric_get(struct ieee80211_local *lo=
@@ -107,14 +109,14 @@ cal,
  	return (u32)result;
  }
 =20
-+static inline bool is_metric_better(u32 x, u32 y, u32 persent)
++static inline bool is_metric_better(u32 x, u32 y, u32 percent)
 +{
 +	u32 a, e;
 +
 +	if (x >=3D y)
 +		return false;
 +
-+	a =3D mult_frac(x, persent, 100);
++	a =3D mult_frac(x, percent, 100);
 +
 +	if (check_add_overflow(x, a, &e)) {
 +		if (x > y - a)
