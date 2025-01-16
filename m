@@ -1,175 +1,190 @@
-Return-Path: <stable+bounces-109259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7182A139C8
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 13:16:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AB80A13A02
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 13:36:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA6737A4E2F
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 12:16:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 462DF1649BD
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 12:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBF31DE3DE;
-	Thu, 16 Jan 2025 12:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218911DE4E1;
+	Thu, 16 Jan 2025 12:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="b7p+gSME"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ao2PcRIa";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dDhuFC+8"
 X-Original-To: stable@vger.kernel.org
-Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870B01DE3AB
-	for <stable@vger.kernel.org>; Thu, 16 Jan 2025 12:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C1024A7F8;
+	Thu, 16 Jan 2025 12:36:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737029809; cv=none; b=m/21nab2eruRyXkWcr4VyxHpkhB/nT2G1p3EFOC+t5QioOMey7hOYSfSorZSDzhc3WpfV9YmEV/qgchjD36uhvb+lycIlb13AwM6y5KtCvoapjuQiUy8faMxUr9PGZ1ggDojbvjERY1TG7DV6pB1RPv9gMgY0JCYlPH+Jnhg5yw=
+	t=1737030971; cv=none; b=fowlesvB+EfnPqyZilTJGcavK6ANb19T2AedbbsJkxXMZyQhJZoUkX+l2b54boVEkjtGLgqziGhnf4G6k5rxa1ajEjlM1qQ/x2zCpP8frIx1ZmDttl9y2nY8LcW7/bLIladxTMahHyaCRKtB3HXJSX5OPsksE8zKLbncryfFWuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737029809; c=relaxed/simple;
-	bh=ocgb+1wnTY/YH/HdsbZvFHbSP4O4fTBIZk7OOy0UaRc=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version:Content-Type; b=UwGJU1QgFqY+MYy/DOikbkg5cy4TUppyAVm2PJddmetzCJS5f9Btx5lZ7d41mpawt5FIo/J4tyjlrxaCjFYpHhACmauUTVxPDHP0YaMlQVpldYjEOCYvayD9z09WD+qsytj/lpRoCIvRYsDEojC4K4XoFLEl2ixcCy3CaWe8wWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=b7p+gSME; arc=none smtp.client-ip=162.62.58.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1737029796; bh=f841JuwicRpt5PO6Wmjhtcegojum5gRKFv9yV11B8PU=;
-	h=From:To:Cc:Subject:Date;
-	b=b7p+gSMEXjM2A8ziWpuwivWNTlTArUPhJKitexjCjvmXWmzBu5WbtpwdNS4vaUpUq
-	 HhiKLdw1/Kkclm69x1/K4GCenNM6xPOW19omHBYo1iQJTXpthCxvA3GE+fEDfPcGQi
-	 fg8kK9MtZ2jTC2bcIMX1aJ8+OdebbTtm0/UpTAVk=
-Received: from my-pc.corp.ad.wrs.com ([120.244.194.130])
-	by newxmesmtplogicsvrszgpuc5-0.qq.com (NewEsmtp) with SMTP
-	id 29534612; Thu, 16 Jan 2025 20:10:21 +0800
-X-QQ-mid: xmsmtpt1737029421thjdgkjah
-Message-ID: <tencent_FA36A0C6E3834FF2D95A12671766AE418505@qq.com>
-X-QQ-XMAILINFO: NyTsQ4JOu2J2p4Bnopz1Nr0X72rQqMfcoheopPBDhlqqGnmiBLrEsDWczQGROf
-	 3Ajp3orCjsH5mfarvqK/sXEfAhNYQ3CuNpua0jK71ZgzXPnx1d3KwcsuhlStk9yvLtbzG5JqLY1i
-	 GOk4HRVjnCcjN/Zt/i6Pt0TgDo+xv3tCjWF3nXyaiOxvGfUttT0LRMMRKJnMg0yAa1MPcSs9IWFf
-	 i3MrEIj93047b+8N/4yfRhlD+qad+3ctC9Jb5qZIBbbPqxfAY4XRDGlZ/zp1PRbtS5IfnpmHxdh5
-	 zjnDSc+7qHt2dNpHXigILZMR2qHA6/E/Wy6CN5PVxWNMWhjsQbCgFV9UEfhqpQPQW/JbhWwoV1nN
-	 Ii1RJSeMXq8CDo6Z4wIK0Dc0nhbsxxMnyHbiNrEipwAzdww2aOhMqyH4dLcpd8Ao3WkayEFIKEMj
-	 Yc4kZoIKrfYRGbf69J3yWh9xkHUbYa3OQoqomu6Li3ATrh849twn0T1FrRUiS2DVxjRfWVNXfRAf
-	 hJRPzdA4bN8H3hecKOqY9ncr+2iNyrbvtWdkEwi0Xm5OmBEg1icctV7YN/Dwxn+jS0Wfs3R8LPcZ
-	 Rawhs3v1lm1eSBswVPKeuLPt/NEjTABfax0XEpiw09mkYzfiuYF10duIsvE20e5AiInfLseKIiPC
-	 /JsKQuRB8WymeWHd+rCg8Gsc188JadQjhIZXdAnM7g2CE4M7sKs3shke19dMeND8TG6B2vcE+L+Y
-	 SLIDOTkJWYtOs/I0QAeNKhxfrhuDp9PYkczsPPMo126J0yOqqZXbR0V6JKvVHQR3kCfX2EYI0LTA
-	 g6FEG2rAwA5vnlMrjX197vyxX3OpsSjCmURSunFH3nrD1JRd0PFI7FQCFMe+YnFPAIQf8wB6vLmj
-	 Es0EnK7ks4x7oIFeYfJ6yFlGSLRLn2oVna4TDxNvpHdPH5Kp+aTSe9c6bLE9zude3o1BGnTX8EQd
-	 0sWNNSKrdmFjg0110Xv5Gc1VLbKbk3KGyItaPsHV6v8JDJfAKPxblqL9rT8cigQO2jkwYfmr7cSu
-	 UsNUgNKg==
-X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
-From: lanbincn@qq.com
-To: stable@vger.kernel.org
-Cc: Kang Yang <quic_kangyang@quicinc.com>,
-	David Ruth <druth@chromium.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Bin Lan <lanbincn@qq.com>
-Subject: [PATCH 6.1.y] wifi: ath10k: avoid NULL pointer error during sdio remove
-Date: Thu, 16 Jan 2025 20:10:20 +0800
-X-OQ-MSGID: <20250116121020.3416-1-lanbincn@qq.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1737030971; c=relaxed/simple;
+	bh=Mc5NbTY5ITF1qqajCHYIWrEwVrAh6CQ+E20x2atM42Q=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=Rcu9ZPghgRBOE4A5RvKZOulC+pd1oObNybMnbfFdGor+cieDvs4KbtheCoDpjvAJF5Q9ejOWjUx+aCGVgGxRYU2bgSBbELJt+bXDojPuDtIRI0J1DsMt2bBfylVov4/80QA5LpTey20CV9xgsoainWVk2C1OwaBRY0IGX8P/2RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ao2PcRIa; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dDhuFC+8; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 16 Jan 2025 12:36:07 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1737030968;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ej4l6wuZJB9G3BGGgBaL+wxiRkD0U0/BOuINWAZDAZo=;
+	b=Ao2PcRIa/pm+SOXrXZNr4zZfzuCHTaxSeM0rHEmOJnSgp4Ope2c4CFbHeUCh6v3R1ybndL
+	QP/Fb+tH3opQCwcpCwz222wrxUdxzGkGMzONxgVRhbDQzfE1f4FTJReAlhhF055O/+nchz
+	JFhgYytl6MpYbVr0RLSafXB5/p0Xf60Oaif6NmEW16kmGxf2MF3iQxPx35lupZUGuUrzVN
+	WON7WNm4ag+MrJN83D1AyO8I5r4Wy7ZCkz0KIWLGVauYAVNDqvdaDZmmcPiTateBr44UWV
+	nGbPpKaKvozssAPNsHBMpwnMDkna72YgiFRymvH/24Q/ythwFQw9M9zxeeNJ2A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1737030968;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ej4l6wuZJB9G3BGGgBaL+wxiRkD0U0/BOuINWAZDAZo=;
+	b=dDhuFC+8tXj6TIscy8NUT5AhLmfgtWuN4xZarwzA5JAUPgnzU1J2kiK+r5CUM4+jqvKy3l
+	av4VbCPtDWZTG6BA==
+From: "tip-bot2 for Koichiro Den" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/urgent] hrtimers: Handle CPU state correctly on hotplug
+Cc: Koichiro Den <koichiro.den@canonical.com>,
+ Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20241220134421.3809834-1-koichiro.den@canonical.com>
+References: <20241220134421.3809834-1-koichiro.den@canonical.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Message-ID: <173703096711.31546.10185525717139575022.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-From: Kang Yang <quic_kangyang@quicinc.com>
+The following commit has been merged into the timers/urgent branch of tip:
 
-commit 95c38953cb1ecf40399a676a1f85dfe2b5780a9a upstream.
+Commit-ID:     2f8dea1692eef2b7ba6a256246ed82c365fdc686
+Gitweb:        https://git.kernel.org/tip/2f8dea1692eef2b7ba6a256246ed82c365fdc686
+Author:        Koichiro Den <koichiro.den@canonical.com>
+AuthorDate:    Fri, 20 Dec 2024 22:44:21 +09:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 16 Jan 2025 13:06:14 +01:00
 
-When running 'rmmod ath10k', ath10k_sdio_remove() will free sdio
-workqueue by destroy_workqueue(). But if CONFIG_INIT_ON_FREE_DEFAULT_ON
-is set to yes, kernel panic will happen:
-Call trace:
- destroy_workqueue+0x1c/0x258
- ath10k_sdio_remove+0x84/0x94
- sdio_bus_remove+0x50/0x16c
- device_release_driver_internal+0x188/0x25c
- device_driver_detach+0x20/0x2c
+hrtimers: Handle CPU state correctly on hotplug
 
-This is because during 'rmmod ath10k', ath10k_sdio_remove() will call
-ath10k_core_destroy() before destroy_workqueue(). wiphy_dev_release()
-will finally be called in ath10k_core_destroy(). This function will free
-struct cfg80211_registered_device *rdev and all its members, including
-wiphy, dev and the pointer of sdio workqueue. Then the pointer of sdio
-workqueue will be set to NULL due to CONFIG_INIT_ON_FREE_DEFAULT_ON.
+Consider a scenario where a CPU transitions from CPUHP_ONLINE to halfway
+through a CPU hotunplug down to CPUHP_HRTIMERS_PREPARE, and then back to
+CPUHP_ONLINE:
 
-After device release, destroy_workqueue() will use NULL pointer then the
-kernel panic happen.
+Since hrtimers_prepare_cpu() does not run, cpu_base.hres_active remains set
+to 1 throughout. However, during a CPU unplug operation, the tick and the
+clockevents are shut down at CPUHP_AP_TICK_DYING. On return to the online
+state, for instance CFS incorrectly assumes that the hrtick is already
+active, and the chance of the clockevent device to transition to oneshot
+mode is also lost forever for the CPU, unless it goes back to a lower state
+than CPUHP_HRTIMERS_PREPARE once.
 
-Call trace:
-ath10k_sdio_remove
-  ->ath10k_core_unregister
-    ……
-    ->ath10k_core_stop
-      ->ath10k_hif_stop
-        ->ath10k_sdio_irq_disable
-    ->ath10k_hif_power_down
-      ->del_timer_sync(&ar_sdio->sleep_timer)
-  ->ath10k_core_destroy
-    ->ath10k_mac_destroy
-      ->ieee80211_free_hw
-        ->wiphy_free
-    ……
-          ->wiphy_dev_release
-  ->destroy_workqueue
+This round-trip reveals another issue; cpu_base.online is not set to 1
+after the transition, which appears as a WARN_ON_ONCE in enqueue_hrtimer().
 
-Need to call destroy_workqueue() before ath10k_core_destroy(), free
-the work queue buffer first and then free pointer of work queue by
-ath10k_core_destroy(). This order matches the error path order in
-ath10k_sdio_probe().
+Aside of that, the bulk of the per CPU state is not reset either, which
+means there are dangling pointers in the worst case.
 
-No work will be queued on sdio workqueue between it is destroyed and
-ath10k_core_destroy() is called. Based on the call_stack above, the
-reason is:
-Only ath10k_sdio_sleep_timer_handler(), ath10k_sdio_hif_tx_sg() and
-ath10k_sdio_irq_disable() will queue work on sdio workqueue.
-Sleep timer will be deleted before ath10k_core_destroy() in
-ath10k_hif_power_down().
-ath10k_sdio_irq_disable() only be called in ath10k_hif_stop().
-ath10k_core_unregister() will call ath10k_hif_power_down() to stop hif
-bus, so ath10k_sdio_hif_tx_sg() won't be called anymore.
+Address this by adding a corresponding startup() callback, which resets the
+stale per CPU state and sets the online flag.
 
-Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00189
+[ tglx: Make the new callback unconditionally available, remove the online
+  	modification in the prepare() callback and clear the remaining
+  	state in the starting callback instead of the prepare callback ]
 
-Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-Tested-by: David Ruth <druth@chromium.org>
-Reviewed-by: David Ruth <druth@chromium.org>
-Link: https://patch.msgid.link/20241008022246.1010-1-quic_kangyang@quicinc.com
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Bin Lan <lanbincn@qq.com>
+Fixes: 5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
+Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241220134421.3809834-1-koichiro.den@canonical.com
 ---
- drivers/net/wireless/ath/ath10k/sdio.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/linux/hrtimer.h |  1 +
+ kernel/cpu.c            |  2 +-
+ kernel/time/hrtimer.c   | 11 ++++++++++-
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
-index 79e09c7a82b3..886070b2a722 100644
---- a/drivers/net/wireless/ath/ath10k/sdio.c
-+++ b/drivers/net/wireless/ath/ath10k/sdio.c
-@@ -3,6 +3,7 @@
-  * Copyright (c) 2004-2011 Atheros Communications Inc.
-  * Copyright (c) 2011-2012,2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2016-2017 Erik Stromdahl <erik.stromdahl@gmail.com>
-+ * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
+diff --git a/include/linux/hrtimer.h b/include/linux/hrtimer.h
+index 7ef5f7e..f7bfdcf 100644
+--- a/include/linux/hrtimer.h
++++ b/include/linux/hrtimer.h
+@@ -386,6 +386,7 @@ extern void __init hrtimers_init(void);
+ extern void sysrq_timer_list_show(void);
  
- #include <linux/module.h>
-@@ -2647,9 +2648,9 @@ static void ath10k_sdio_remove(struct sdio_func *func)
+ int hrtimers_prepare_cpu(unsigned int cpu);
++int hrtimers_cpu_starting(unsigned int cpu);
+ #ifdef CONFIG_HOTPLUG_CPU
+ int hrtimers_cpu_dying(unsigned int cpu);
+ #else
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index b605334..0509a97 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -2179,7 +2179,7 @@ static struct cpuhp_step cpuhp_hp_states[] = {
+ 	},
+ 	[CPUHP_AP_HRTIMERS_DYING] = {
+ 		.name			= "hrtimers:dying",
+-		.startup.single		= NULL,
++		.startup.single		= hrtimers_cpu_starting,
+ 		.teardown.single	= hrtimers_cpu_dying,
+ 	},
+ 	[CPUHP_AP_TICK_DYING] = {
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 80fe374..030426c 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -2202,6 +2202,15 @@ int hrtimers_prepare_cpu(unsigned int cpu)
+ 	}
  
- 	netif_napi_del(&ar->napi);
- 
--	ath10k_core_destroy(ar);
--
- 	destroy_workqueue(ar_sdio->workqueue);
+ 	cpu_base->cpu = cpu;
++	hrtimer_cpu_base_init_expiry_lock(cpu_base);
++	return 0;
++}
 +
-+	ath10k_core_destroy(ar);
++int hrtimers_cpu_starting(unsigned int cpu)
++{
++	struct hrtimer_cpu_base *cpu_base = this_cpu_ptr(&hrtimer_bases);
++
++	/* Clear out any left over state from a CPU down operation */
+ 	cpu_base->active_bases = 0;
+ 	cpu_base->hres_active = 0;
+ 	cpu_base->hang_detected = 0;
+@@ -2210,7 +2219,6 @@ int hrtimers_prepare_cpu(unsigned int cpu)
+ 	cpu_base->expires_next = KTIME_MAX;
+ 	cpu_base->softirq_expires_next = KTIME_MAX;
+ 	cpu_base->online = 1;
+-	hrtimer_cpu_base_init_expiry_lock(cpu_base);
+ 	return 0;
  }
  
- static const struct sdio_device_id ath10k_sdio_devices[] = {
--- 
-2.43.0
-
+@@ -2286,5 +2294,6 @@ int hrtimers_cpu_dying(unsigned int dying_cpu)
+ void __init hrtimers_init(void)
+ {
+ 	hrtimers_prepare_cpu(smp_processor_id());
++	hrtimers_cpu_starting(smp_processor_id());
+ 	open_softirq(HRTIMER_SOFTIRQ, hrtimer_run_softirq);
+ }
 
