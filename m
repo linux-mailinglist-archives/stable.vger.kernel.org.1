@@ -1,220 +1,105 @@
-Return-Path: <stable+bounces-109227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A574FA135E5
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 09:57:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B280A13622
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 10:04:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEC241887BA0
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 08:57:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF3467A10D9
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 09:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A941D6DD8;
-	Thu, 16 Jan 2025 08:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b+iUGFTV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75E71D7E5F;
+	Thu, 16 Jan 2025 09:04:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA351D618A
-	for <stable@vger.kernel.org>; Thu, 16 Jan 2025 08:57:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665891A08BC;
+	Thu, 16 Jan 2025 09:04:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737017841; cv=none; b=Oo+6SPjTBfnfyrwUPa55dYmugZdQoAOQO5idFoo8ZGJ92j8XkKtQevAJ2IIA+jF1EjcVW52p9BmBQlCHurf+c0jTio/KF7CPAkcJBuW53dgUpDioabKaldT6iNY0y5onfQCWz/kBBCbg+OsrPl2N+iudRLGeL0aAt89D1M5W2H4=
+	t=1737018285; cv=none; b=N/hIjhl5cG/YvXomlTquURjfE44Wd05jA6tDhTQAbQFih4cf6owPicF5XeqcBGxb6JDv4xZiqWVtGOccsdMWPPCashwRr8xwab3g7cpFpC4OrA5JF/71f9WhI8WfZk1XKlcV/av1faDJOwwn3wFO+EX0BiFyWeuaamRICc+tgTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737017841; c=relaxed/simple;
-	bh=PtUhQynYgZLYfz9e+zHBnnH2YW9fJ84gqLC9SnFqqqU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KdOzgOHq2na7YwI7kQROPzgXhPN4F9Mn7SyQ3Wd5sTRnQ0ckI719Hx5dkII+n/2WjiUVoYJY/NqfeaKHmLziFXQpeAYB/IMpOQQvV9Ze0pQlYxHH7irr3hlwS40WCoa/BAKPIkQTA1zSWCknYTwb6scHMxpZYLlTEGJMPAVGSc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=b+iUGFTV; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1737017838;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pmkLmsyIcPYmFuaESsfI5oPSmcbmJsLv+8kU8eWcxJk=;
-	b=b+iUGFTVAQTEESja0Q2tHSyjXymaEO+gM2Ow+H6WseVs4tQUCnDgSieFrf4N99ZynKKZV/
-	JEGAuo6h4Ezc12u+ghHLDJxbnukg91t+dQec10P4JMiod1j4Nbx3lnRjKtlV+JS2BaYWRj
-	QsgiPERHC2isFLHuBUfd1p/B/WckPKM=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-610-etILI7TNP3mS3pdWSkX6Ow-1; Thu, 16 Jan 2025 03:57:16 -0500
-X-MC-Unique: etILI7TNP3mS3pdWSkX6Ow-1
-X-Mimecast-MFC-AGG-ID: etILI7TNP3mS3pdWSkX6Ow
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4679db55860so13441711cf.3
-        for <stable@vger.kernel.org>; Thu, 16 Jan 2025 00:57:16 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737017836; x=1737622636;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pmkLmsyIcPYmFuaESsfI5oPSmcbmJsLv+8kU8eWcxJk=;
-        b=CojLxI66Kf5gZTnOhj/APDg6virduGNfWcrrPg74Jhv0ehbCF0GFHL/SgdETyE5jpO
-         VXMUHvfDWpcB2jqPrDaQD+D50muAbS3YBUkyGkciIVYoH1D55iYbE+21DOVcO8B5EH5X
-         yApJDJA75lz9XKI7frQHV+tb/KK/gOk2GCzKQcDa9j1Uc1vTD9u5H1c4NtqN8aj4kK5C
-         x36RNddbIPf2FAbLWxsPEd918v6108wurPHyWyMcf1+oaun6MRszuORYPyaKIK4Y0/l5
-         kCo4yxrOSzXYsvZOgLAeRCTKAbZ6nSa0E1tioMcYS5d7EZ4QaTVrWPl0Kbavb3VhNWk8
-         jm3w==
-X-Forwarded-Encrypted: i=1; AJvYcCUk20OobwpvYgyalr+EGNi/csqLnmx4BKyys+ozdaTYbj9uMakL5T/XFvBBXJ8PIkpWt6VdkYs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yykn2/9xaJruwapiX9nUT5LmtugOvcuNK7o+bsg+NXq5Lte7DRC
-	xyu1gmfcxqslY3IqxfZi5OGl9PsIpmjNbeBsXzxj7nJ9MksqEm2UrmL4NvO/Zq3i7Os0Nk0KlTw
-	8DfGk/C2A7jHyc9fvVi/03W7wGnJRLuzBoEoMqQlV7l/GGmIHfomWEQ==
-X-Gm-Gg: ASbGncvrDWl9QozkkHNPlgheCOenpmmjAkfem+F+mK+BmnKO6tvq6M7xdPlk4EKEeKa
-	pNFK65RySxBjJYLzdmkeH7H63HO8XDznJV5R/p0rGFSTOs2FY14qYjkqsNcFGPCV+ozVPGnB+Ja
-	aYv3/Hp5bwSDtcyLMp8nyEm+lDIY0fI1kbkXbz0EtT7s3lRERlK/xVDuydLtMqbzZ/RZ2BtNJ63
-	05CiH/bfvCyWRC5BP7Av1b72XhW0McO+Wvn6JExGFmCOdFU3/QN8o6E+sIcxs1no3BgIL9uGGyb
-	E/V1B2cFqEPQPAD71/JCSTncNLd1/aO4
-X-Received: by 2002:ac8:5813:0:b0:466:aee5:a5b with SMTP id d75a77b69052e-46c70fd1faemr467248151cf.10.1737017836165;
-        Thu, 16 Jan 2025 00:57:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEO29yrvkRyeFaWTkkTVXxmLbJIQYKA6Cnx5MRQ30jCm4qRaBjl6Z9IlhJpdMAezqnYQnnKAw==
-X-Received: by 2002:ac8:5813:0:b0:466:aee5:a5b with SMTP id d75a77b69052e-46c70fd1faemr467247821cf.10.1737017835757;
-        Thu, 16 Jan 2025 00:57:15 -0800 (PST)
-Received: from sgarzare-redhat (host-82-53-134-100.retail.telecomitalia.it. [82.53.134.100])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46c873216dbsm73689241cf.7.2025.01.16.00.57.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jan 2025 00:57:15 -0800 (PST)
-Date: Thu, 16 Jan 2025 09:57:07 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Luigi Leonardi <leonardi@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
-	Wongi Lee <qwerty@theori.io>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Eric Dumazet <edumazet@google.com>, kvm@vger.kernel.org, 
-	Paolo Abeni <pabeni@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, Simon Horman <horms@kernel.org>, Hyunwoo Kim <v4bel@theori.io>, 
-	Jakub Kicinski <kuba@kernel.org>, virtualization@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH net v2 1/5] vsock/virtio: discard packets if the
- transport changes
-Message-ID: <pl4mhcim7v3ukv6eseynh6x2r6nftf7yuayjzd3ftyupwy5r2h@ixmlevubqzb2>
-References: <1aa83abf-6baa-4cf1-a108-66b677bcfd93@rbox.co>
- <nedvcylhjxrkmkvgugsku2lpdjgjpo5exoke4o6clxcxh64s3i@jkjnvngazr5v>
- <CAGxU2F7BoMNi-z=SHsmCV5+99=CxHo4dxFeJnJ5=q9X=CM3QMA@mail.gmail.com>
- <cccb1a4f-5495-4db1-801e-eca211b757c3@rbox.co>
- <nzpj4hc6m4jlqhcwv6ngmozl3hcoxr6kehoia4dps7jytxf6df@iqglusiqrm5n>
- <903dd624-44e5-4792-8aac-0eaaf1e675c5@rbox.co>
- <5nkibw33isxiw57jmoaadizo3m2p76ve6zioumlu2z2nh5lwck@xodwiv56zrou>
- <7de34054-10cf-45d0-a869-adebb77ad913@rbox.co>
- <n2itoh23kikzszzgmyejfwe3mdf6fmxzwbtyo5ahtxpaco3euq@osupldmckz7p>
- <fb6f876f-a4eb-4005-bd76-fff0632291b8@rbox.co>
+	s=arc-20240116; t=1737018285; c=relaxed/simple;
+	bh=kGkp+1pokDJpHR7iSo16jsNz+JlQ+wnqu3AQ9BEa/jA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Xg/Gx5oEFJ9+7pT74sEn6Mxu710o+YeDlMQkbARc6hzDhZXQDN4OJ4gHlUJrbfgPWpEzJqbuesMbT5bAk83OLajYJy0YBpmaFIvbgVswYL+Fh66cbhd9+wb7ZRBaUxWOktqSjWlLPWoFi/pfgAKu87jth4wYFuR9Pj+QzDcJlp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C8A9911FB;
+	Thu, 16 Jan 2025 01:05:09 -0800 (PST)
+Received: from [10.57.94.252] (unknown [10.57.94.252])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 247763F673;
+	Thu, 16 Jan 2025 01:04:39 -0800 (PST)
+Message-ID: <873aede9-bfcd-4c95-a93d-ec1881554f39@arm.com>
+Date: Thu, 16 Jan 2025 09:04:37 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <fb6f876f-a4eb-4005-bd76-fff0632291b8@rbox.co>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/2] mm: Clear uffd-wp PTE/PMD state on mremap()
+Content-Language: en-GB
+To: Peter Xu <peterx@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+ Shuah Khan <shuah@kernel.org>, David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Miko=C5=82aj_Lenczewski?= <miko.lenczewski@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+References: <20250107144755.1871363-1-ryan.roberts@arm.com>
+ <20250107144755.1871363-2-ryan.roberts@arm.com> <Z4gaUAt9w8s1rLPK@x1n>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <Z4gaUAt9w8s1rLPK@x1n>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 14, 2025 at 05:31:08PM +0100, Michal Luczaj wrote:
->On 1/14/25 11:16, Stefano Garzarella wrote:
->> On Tue, Jan 14, 2025 at 01:09:24AM +0100, Michal Luczaj wrote:
->>> On 1/13/25 16:01, Stefano Garzarella wrote:
->>>> On Mon, Jan 13, 2025 at 02:51:58PM +0100, Michal Luczaj wrote:
->>>>> On 1/13/25 12:05, Stefano Garzarella wrote:
->>>>>> ...
->>>>>> An alternative approach, which would perhaps allow us to avoid all this,
->>>>>> is to re-insert the socket in the unbound list after calling release()
->>>>>> when we deassign the transport.
->>>>>>
->>>>>> WDYT?
->>>>>
->>>>> If we can't keep the old state (sk_state, transport, etc) on failed
->>>>> re-connect() then reverting back to initial state sounds, uhh, like an
->>>>> option :) I'm not sure how well this aligns with (user's expectations of)
->>>>> good ol' socket API, but maybe that train has already left.
->>>>
->>>> We really want to behave as similar as possible with the other sockets,
->>>> like AF_INET, so I would try to continue toward that train.
->>>
->>> I was worried that such connect()/transport error handling may have some
->>> user visible side effects, but I guess I was wrong. I mean you can still
->>> reach a sk_state=TCP_LISTEN with a transport assigned[1], but perhaps
->>> that's a different issue.
->>>
->>> I've tried your suggestion on top of this series. Passes the tests.
+On 15/01/2025 20:28, Peter Xu wrote:
+> On Tue, Jan 07, 2025 at 02:47:52PM +0000, Ryan Roberts wrote:
+>> When mremap()ing a memory region previously registered with userfaultfd
+>> as write-protected but without UFFD_FEATURE_EVENT_REMAP, an
+>> inconsistency in flag clearing leads to a mismatch between the vma flags
+>> (which have uffd-wp cleared) and the pte/pmd flags (which do not have
+>> uffd-wp cleared). This mismatch causes a subsequent mprotect(PROT_WRITE)
+>> to trigger a warning in page_table_check_pte_flags() due to setting the
+>> pte to writable while uffd-wp is still set.
 >>
->> Great, thanks!
+>> Fix this by always explicitly clearing the uffd-wp pte/pmd flags on any
+>> such mremap() so that the values are consistent with the existing
+>> clearing of VM_UFFD_WP. Be careful to clear the logical flag regardless
+>> of its physical form; a PTE bit, a swap PTE bit, or a PTE marker. Cover
+>> PTE, huge PMD and hugetlb paths.
 >>
->>>
->>> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->>> index fa9d1b49599b..4718fe86689d 100644
->>> --- a/net/vmw_vsock/af_vsock.c
->>> +++ b/net/vmw_vsock/af_vsock.c
->>> @@ -492,6 +492,10 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
->>> 		vsk->transport->release(vsk);
->>> 		vsock_deassign_transport(vsk);
->>>
->>> +		vsock_addr_unbind(&vsk->local_addr);
->>> +		vsock_addr_unbind(&vsk->remote_addr);
->>
->> My only doubt is that if a user did a specific bind() before the
->> connect, this way we're resetting everything, is that right?
->
->That is right.
->
->But we aren't changing much. Transport release already removes vsk from
->vsock_bound_sockets. So even though vsk->local_addr is untouched (i.e.
->vsock_addr_bound() returns `true`), vsk can't be picked by
->vsock_find_bound_socket(). User can't bind() it again, either.
+>> Co-developed-by: Mikołaj Lenczewski <miko.lenczewski@arm.com>
+>> Signed-off-by: Mikołaj Lenczewski <miko.lenczewski@arm.com>
+>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+>> Closes: https://lore.kernel.org/linux-mm/810b44a8-d2ae-4107-b665-5a42eae2d948@arm.com/
+>> Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
+>> Cc: stable@vger.kernel.org
+> 
+> Nothing I see wrong:
+> 
+> Reviewed-by: Peter Xu <peterx@redhat.com>
 
-Okay, I see, so maybe for now makes sense to merge your patch, to fix 
-the UAF fist.
+Great thanks!
 
->
->And when patched as above: bind() works as "expected", but socket is pretty
->much useless, anyway. If I'm correct, the first failing connect() trips
->virtio_transport_recv_connecting(), which sets `sk->sk_err`. I don't see it
->being reset. Does the vsock suppose to keep sk_err state once set?
+> 
+> One trivial thing: some multiple-line comments is following the net/ coding
+> style rather than mm/, but well.. I don't think it's a huge deal.
+> 
+> https://www.kernel.org/doc/html/v4.10/process/coding-style.html#commenting
 
-Nope, I think this is another thing to fix.
+Noted, I'll aim to get it right in future.
 
->
->Currently only AF_VSOCK throws ConnectionResetError:
->```
->from socket import *
->
->def test(family, addr):
->	s = socket(family, SOCK_STREAM)
->	assert s.connect_ex(addr) != 0
->
->	lis = socket(family, SOCK_STREAM)
->	lis.bind(addr)
->	lis.listen()
->	s.connect(addr)
->
->	p, _ = lis.accept()
->	p.send(b'x')
->	assert s.recv(1) == b'x'
->
->test(AF_INET, ('127.0.0.1', 2000))
->test(AF_UNIX, '\0/tmp/foo')
->test(AF_VSOCK, (1, 2000)) # VMADDR_CID_LOCAL
->```
->
->> Maybe we need to look better at the release, and prevent it from
->> removing the socket from the lists as you suggested, maybe adding a
->> function in af_vsock.c that all transports can call.
->
->I'd be happy to submit a proper patch, but it would be helpful to decide
->how close to AF_INET/AF_UNIX's behaviour is close enough. Or would you
->rather have that UAF plugged first?
->
-
-I'd say, let's fix the UAF first, then fix the behaviour (also in a
-single series, but I prefer 2 separate patches if possible).
-About that, AF_VSOCK was started with the goal of following AF_INET as
-closely as possible, and the test suite should serve that as well, so if
-we can solve this problem and get closer to AF_INET, possibly even
-adding a dedicated test, that would be ideal!
-
-Thank you very much for the help!
-Stefano
+> 
+> Thanks again.
+> 
 
 
