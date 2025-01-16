@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-109264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D4CBA13A30
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1384FA13A2F
 	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 13:47:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DFAC18892F0
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 12:47:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA6AA1679F3
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 12:47:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E33A1DE89B;
-	Thu, 16 Jan 2025 12:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C7BD1DE89D;
+	Thu, 16 Jan 2025 12:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4AvWYvF"
-X-Original-To: stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ge29SYzq"
+X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F89D1DE892
-	for <stable@vger.kernel.org>; Thu, 16 Jan 2025 12:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A981DE4EA
+	for <Stable@vger.kernel.org>; Thu, 16 Jan 2025 12:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737031614; cv=none; b=QSap3bjtA0S0Xeu19kfH9UV5CsM29IZll4xZAyqT6Et4j7AOabzytctBNWoHWxtRXFeweqW0AKzpKNMgUjFY3yMuWUDHPMaNRsp/35VC0ShW8uL9amX++BDcJTFN4/R7l7OqQDuDfJm/l1RUtDSNOrP8rK72S2yicWKNt9jdupA=
+	t=1737031617; cv=none; b=a41UBB6PdvkKa3EpZ57MDDs+MSW2K/t/9jeFWMNGURmkqxEi4Sd2tyImFt/HO3wonEKiLN4nlCrBy8iwRniVGDxDPNPu4Qi4BDKtll6DbO0NH1XhKD2/wKwi2YoLlUgr+ffwqWNCRlmOUhz1uwXwS4y23zu58qis/B7nrQKxhp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737031614; c=relaxed/simple;
-	bh=iGB0mjgfGz02lJERVrFhyVvNez/tA1ojYkrYMtOx1JQ=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=P8Ave8mQyDYyX8Waq690HPlXSmxQMMM/BrGJl2UXdL/wAPJ5SLAmpD9y93SimfX4nj/QWOKMScij29g9Cx3lib9ug6pa7LbBe9faitEBlFUYjKdIUnOUjXeGzBoFDhbkP1+6v9qjckP4FaK2evunS4vZUJisePqXbT88LvQWUo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4AvWYvF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 872DAC4CED6;
-	Thu, 16 Jan 2025 12:46:53 +0000 (UTC)
+	s=arc-20240116; t=1737031617; c=relaxed/simple;
+	bh=Ngtb5GYGoX5S3jWq4z3VB3QEPtSW+IMgAdbozW/5QJg=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=RbfN/v6A5Od5yniqbEnRJDYJ/S3raI8QMG5D7QOnCD61fudEGfs5cCTX2aDhLjGEQt9kHOqNzgdM2Om9SQfLTLRZ1HfsGKJWtB3jrvyE9oeObkmC+II0pVTmL0bRcmRW6eBQB87zdDABkavLkqJT9G+bttPZu2j2DIX7rR8acjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ge29SYzq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86172C4CEE2;
+	Thu, 16 Jan 2025 12:46:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737031613;
-	bh=iGB0mjgfGz02lJERVrFhyVvNez/tA1ojYkrYMtOx1JQ=;
+	s=korg; t=1737031616;
+	bh=Ngtb5GYGoX5S3jWq4z3VB3QEPtSW+IMgAdbozW/5QJg=;
 	h=Subject:To:From:Date:From;
-	b=a4AvWYvFM7F6TL7YKD+6FdksiWk8sSw9rney5raXkDfEiVWY/BFxF/ISko6rIuThf
-	 7v05SJcGEKF9zNVJdnoofx6ro5FGAf+mNDLtubA1tkEyqkONNH3/hRNrEUikNHX/aB
-	 U+XZsxomR7LSHJqeoa4wHM4wlGdUYIVryYJj+NOA=
-Subject: patch "iio: chemical: bme680: Fix uninitialized variable in" added to char-misc-next
-To: dan.carpenter@linaro.org,Jonathan.Cameron@huawei.com,stable@vger.kernel.org,vassilisamir@gmail.com
+	b=Ge29SYzqDG5SoJEp83ZK3RXGCUeRHTjyLUID8mw7+bDwtLHTFQEccrzCqH+W/bTqd
+	 /Rs1yzibBW85lHa/l6IyLy2v5VE5oPlbb/9cTrZUV08Rrj0dcw6rwFzdmG+V0E6DRT
+	 U1oZ1ZtJSgaIlnn+xoz8wPlzoUauetwlM1WJfQUo=
+Subject: patch "iio: dac: ad3552r-hs: clear reset status flag" added to char-misc-next
+To: adureghello@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,dlechner@baylibre.com
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 Jan 2025 13:46:38 +0100
-Message-ID: <2025011638-retrace-symphony-9325@gregkh>
+Date: Thu, 16 Jan 2025 13:46:39 +0100
+Message-ID: <2025011639-gargle-multitude-f714@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: chemical: bme680: Fix uninitialized variable in
+    iio: dac: ad3552r-hs: clear reset status flag
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,46 +69,46 @@ during the merge window.
 If you have any questions about this process, please let me know.
 
 
-From 20eb1fae4145bc45717aa8a6d05fcd6a64ed856a Mon Sep 17 00:00:00 2001
-From: Dan Carpenter <dan.carpenter@linaro.org>
-Date: Wed, 8 Jan 2025 12:37:22 +0300
-Subject: iio: chemical: bme680: Fix uninitialized variable in
- __bme680_read_raw()
+From 012b8276f08a67b9f2e2fd0f35363ae4a75e5267 Mon Sep 17 00:00:00 2001
+From: Angelo Dureghello <adureghello@baylibre.com>
+Date: Wed, 8 Jan 2025 18:29:16 +0100
+Subject: iio: dac: ad3552r-hs: clear reset status flag
 
-The bme680_read_temp() function takes a pointer to s16 but we're passing
-an int pointer to it.  This will not work on big endian systems and it
-also means that the other 16 bits are uninitialized.
+Clear reset status flag, to keep error status register
+clean after reset (ad3552r manual, rev B table 38).
 
-Pass an s16 type variable.
+Reset error flag was left to 1, so debugging registers, the
+"Error Status Register" was dirty (0x01). It is important
+to clear this bit, so if there is any reset event over normal
+working mode, it is possible to detect it.
 
-Fixes: f51171ce2236 ("iio: chemical: bme680: Add SCALE and RAW channels")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Link: https://patch.msgid.link/4addb68c-853a-49fc-8d40-739e78db5fa1@stanley.mountain
-Cc: <stable@vger.kernel.org>
+Fixes: 0b4d9fe58be8 ("iio: dac: ad3552r: add high-speed platform driver")
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250108-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v2-2-2dac02f04638@baylibre.com
+Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/chemical/bme680_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/dac/ad3552r-hs.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
-index d12270409c8a..a2949daf9467 100644
---- a/drivers/iio/chemical/bme680_core.c
-+++ b/drivers/iio/chemical/bme680_core.c
-@@ -874,11 +874,11 @@ static int bme680_read_raw(struct iio_dev *indio_dev,
- 	case IIO_CHAN_INFO_RAW:
- 		switch (chan->type) {
- 		case IIO_TEMP:
--			ret = bme680_read_temp(data, (s16 *)&chan_val);
-+			ret = bme680_read_temp(data, &temp_chan_val);
- 			if (ret)
- 				return ret;
+diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
+index 216c634f3eaf..8974df625670 100644
+--- a/drivers/iio/dac/ad3552r-hs.c
++++ b/drivers/iio/dac/ad3552r-hs.c
+@@ -329,6 +329,12 @@ static int ad3552r_hs_setup(struct ad3552r_hs_state *st)
+ 		dev_info(st->dev, "Chip ID error. Expected 0x%x, Read 0x%x\n",
+ 			 AD3552R_ID, id);
  
--			*val = chan_val;
-+			*val = temp_chan_val;
- 			return IIO_VAL_INT;
- 		case IIO_PRESSURE:
- 			ret = bme680_read_press(data, &chan_val);
++	/* Clear reset error flag, see ad3552r manual, rev B table 38. */
++	ret = st->data->bus_reg_write(st->back, AD3552R_REG_ADDR_ERR_STATUS,
++				      AD3552R_MASK_RESET_STATUS, 1);
++	if (ret)
++		return ret;
++
+ 	ret = st->data->bus_reg_write(st->back,
+ 				      AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
+ 				      0, 1);
 -- 
 2.48.1
 
