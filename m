@@ -1,300 +1,156 @@
-Return-Path: <stable+bounces-109240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 375ABA13845
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 11:48:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D51F2A13849
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 11:50:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D8481885D5C
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 10:48:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE368161494
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 10:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD221DE2BD;
-	Thu, 16 Jan 2025 10:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0931DE2BA;
+	Thu, 16 Jan 2025 10:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wWAYUStC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kZdqsF37"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836FB1DE2A6
-	for <stable@vger.kernel.org>; Thu, 16 Jan 2025 10:48:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B8119539F;
+	Thu, 16 Jan 2025 10:50:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737024518; cv=none; b=iLFzuEg97hz65kUZMjoDx03ah35zcuiMn97iEFFNH4fXrRgPk27qkIILKj8jJ+7XH/gM/DPGU8HcYOC4+TCZIUCEjQE+lyapPYEBjI7JwYRWlMS6wfQ8QVkxMU2+o4pCoRj9QwvRPXQ6aH3dQTGtzinJGonrxQM4lofWEUS06tQ=
+	t=1737024650; cv=none; b=mgm2vvOqdYGwGCJFuTBdKd5xEJUJiRbYXqmQPiEjt3IC6s//2ry6I/qjcjHmZ+uMvNbGS5+R+CTPhSAnVFLfHlKQZK+5ed1g7p35MM/C8Y7us1lMNM3DN1/AtdYX3Z//Tvg/fbSOo0NMdNNomLh88WAPQulhbPFZFOtMMjWyFJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737024518; c=relaxed/simple;
-	bh=u9XFg39HPyG8rqv7eF8mTN149vcnkYLhk08IiOkjGkA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t0qFBznbudZ23MNQkbDFj3iydhE4Fy1R2fShtpzPKHIv93yGXOkKLB1H4fYWFeb+QidWEwGGSdiL2M0BmWaBmSlDEigDYlOP0nfV28ztkku7xLM4ykSRMWe1p98IrSOk00CYvoot7tfBrvZU9evyr3LggCdg50Jk6R7SiF497zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wWAYUStC; arc=none smtp.client-ip=209.85.217.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-4afd68271b6so143974137.0
-        for <stable@vger.kernel.org>; Thu, 16 Jan 2025 02:48:36 -0800 (PST)
+	s=arc-20240116; t=1737024650; c=relaxed/simple;
+	bh=OeNeCtcrONL801H/WZiafjSKFBzM3TLEC3IK7ijLiRU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FOjt0ZxMk/sWfu7lffRSQCRa4bPZDjv7jkMswkAhT5adTmV2oBo3BM+kwGq6DPEJ6lw8BUWtr2SutBU5xOgrIx+SzjPXWFQrS9Lnl9fU1UzfP3yknpocJ1YAxQSjtEIdgju/A1Ur1Wwpx6ppsHVZoaJYhgxgaHzYTZpQVFsap54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kZdqsF37; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ef87d24c2dso1126087a91.1;
+        Thu, 16 Jan 2025 02:50:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1737024515; x=1737629315; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=LCT1zI4OT1vpFsYxXFe9LQUvS7Xlh9EgI5AipLw3miM=;
-        b=wWAYUStClN7EXlEfIZ33VpHVBT6mCVcWOkHWg/aP/gLpv4u0nRa9cyvNGivU7Ovn39
-         WWSTN7DBUPxTTtRH+6iippThliGNcTz/r2AoOAPX5IZ9820uBc4lBnPFEDU92r5iR2fi
-         OG/3a7bfMyci5FKdRccuAOM6gcSRqq4xV3DApIQN15lc/wuGikoqvmts236Z5R+RL0G/
-         3rRfDOdZd1efrFHCKHRK0G6tQeeuJfENV8sxwV1JSslY32OJ1FGU+U3N4BiwHiaKpBpj
-         irRZ+x+bX4YYXbTVhLeyxOn37FEI5bdFo+J3iz3L65HtOUiO4eehoSv5ksqx3VeLmQ7Z
-         1Edw==
+        d=gmail.com; s=20230601; t=1737024648; x=1737629448; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rY9XRKJvOJ8/3ciXecDpmNkHd5QK6jGNJj71By9HiJs=;
+        b=kZdqsF37+GltjD+TtagnebPDNvKz51tBWVrY9Frvw7IoqAywPqMEM6ZPq/51R8oYln
+         LtoZwwpdRlzs4qv0jWnnAE1dlc/H1Pw1EFSGLSU+WEaX2UoeZvS7YPUv7O9GDV6NUt8M
+         YEVJWp/e98sErRnIrbLOPoztH08kJ519O7K5lm6ayeK//zLP5yhvvE76VCo/ePqKLbxS
+         H8462vdxf3/FdsdTdBL4PRMfNxaXF3OkrFNMvfW42kJ8JRuJ8FtsoQIJzFmF0aXyOXUE
+         CCFy3zuwgDNx5iREGnZTeL5KnnEbwyshb9tiY3rPW/klAg4K378So3/F+AZhvAN4RXzl
+         15Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737024515; x=1737629315;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LCT1zI4OT1vpFsYxXFe9LQUvS7Xlh9EgI5AipLw3miM=;
-        b=w+QtW20cWl311vr/ZuuGyS9vanFjkAM5rJCSwi1Q1tSpiVpulmeoi5znhtEvDVVN5T
-         Eohk2dZNJ1nVkSVNisDOFKSuS7OD5GXf5Cwcc70NFCFjHaexS3236hwQp4PyJq1/dvqA
-         74OrkgZX/IzYaXLbgooLPf09uihw0Iso1SASj8GzM/qxZjinyl4f62WfVD4H/Jb3cSMm
-         ud/1gzi1UaAX/nz9R1RvVoqtnIAnFF840jYsepVXccUclv1uhxsrHgvuwzESMw3BEg4l
-         5cGDD+hXs6gTqxU3+Uk1jQGkzGIp7qrY6pSau6dRN6HxHqxTgr86rk5hRlJ43k1gP4O0
-         +a8Q==
-X-Gm-Message-State: AOJu0YxetURlpsZnWtdxae/Z+UP5BFLFJHb7JoHgjqbK5SnpngFPoL6Q
-	6o+xMDuvt6hw3YuZcLoY0LOy1XqvnHs1HuYBV7r1/Z37VQuy7yA2ZXJDcIrz2WfJ9v7iZG3uZXr
-	nlBPRDSn8AN/n1ZAe0oxfHnvNydt7Ol+BxYrvKA==
-X-Gm-Gg: ASbGncsqt+IjJGxdscsD5w0lGKAt5MCGBo6DdxSqonj+KoU0qBDA+EmVc1Q1XCIZF/f
-	hEcyYA2xUw4wCbdjv3IrKfbxKEvTiFr6MmLeIA90=
-X-Google-Smtp-Source: AGHT+IG8gYhAWxdgo4p4HzmjwQWQ94NvOR5d54MWDMQAfpeO9WURUE8UD95sTlO+C1IU9Qx2OQ0F4OEBu0Ka2fnenk8=
-X-Received: by 2002:a05:6102:2b81:b0:4b2:48ef:3cf2 with SMTP id
- ada2fe7eead31-4b3d0fe7048mr29507046137.25.1737024515296; Thu, 16 Jan 2025
- 02:48:35 -0800 (PST)
+        d=1e100.net; s=20230601; t=1737024648; x=1737629448;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rY9XRKJvOJ8/3ciXecDpmNkHd5QK6jGNJj71By9HiJs=;
+        b=RhsIKWd/6vVx0061K23RYp1BcplZO9i6c/JRZS9TJvIrSX4U7vXxlMCAKzlgls02d7
+         KhZWcit1E6Bkas8JvtOJVWggbqy8blu796y3+7evwrv9JsNWE05MMdqL9b9rMPIa+ut7
+         MPiTwkb/reH9/X1WNscZbUnZbpKVYEWh8CsZJ8W1MHrrfoHhFxq07eky5KZbIaNZxZ9r
+         utm0Cvmbr9pLnS8H9aOdEe6XMEUXzZU50S/4R5GuRph8BSwtWbmBvXO0M+7gHs0x5UTZ
+         tIv3molBgpr2GhEbhxrkWRiWZaK2RlAJPOKFPrIpzWnVYfehMiiCbQwfqR/3vghbFRhm
+         z1Lw==
+X-Forwarded-Encrypted: i=1; AJvYcCUENoG5F5PyNwDn63Ix/XDp7kejo+8XaBgGCKO5ZoXKMB7bdzOdQ6I9TzEsZLCWLoh1HFL9CL8aRLjRf5QfYaSMBA==@vger.kernel.org, AJvYcCV9UUIxpoBUZGrvfMyL+DAOjoQ+Q/oFDlx9WUft3NijnpuvVorgHccGyQX/784IDLtEsbnxD25c@vger.kernel.org, AJvYcCVASpQn0KVTAKoELik9AKkZf+FTbW9NB4RV3GdIGRAmahAJ3VCTBllPH1UvI6wRBd4s0OtakAoUdVfDUz0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0X8hhLu6oMtxDne+eEQFFBsgSeTG46e5ypfF4J2rqtelTBo68
+	w6o1ZHJ0sFhuxkzg3wMU2TyZTL9+AAb0SwFnGRPvloxB7rR7Qurt
+X-Gm-Gg: ASbGncup1kgZDiUok7rcA8cRyAxLj0QB+njqtfAyNkZWb6TLBowOqdoY/ZsbalQzDkT
+	TxPr0IljXZreujXzGu/lm4Hxg5scuSc+erev+1+91UcvKFtNkk1RZI4skseoIpwdq9Y0/TDzS+R
+	zHJtgO/ETKwvxikIQjHBThEI8bmFPZ8ZQhmionIcVX9pRf24BsDOlvUx/DtsW9L3byv8HA9W6VK
+	dvF55klxszZ0LNu0x3SDJk+/CW2CZFcwANJ/F7Z00966M19gUupXdgiYspsJYh7Hbw9a3koYKHu
+	k2mWEcHZ
+X-Google-Smtp-Source: AGHT+IHOV72YO7rbqVMyaLFj8IoR3lyUCUWSbQtM1clkvTCv6q4Db7N3rGOjRkdRIL7nJr31+/wMrg==
+X-Received: by 2002:a17:90b:2b83:b0:2ee:a4f2:b311 with SMTP id 98e67ed59e1d1-2f548f103e9mr47378292a91.8.1737024647747;
+        Thu, 16 Jan 2025 02:50:47 -0800 (PST)
+Received: from visitorckw-System-Product-Name ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f72c2bb332sm3273949a91.36.2025.01.16.02.50.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jan 2025 02:50:47 -0800 (PST)
+Date: Thu, 16 Jan 2025 18:50:41 +0800
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: James Clark <james.clark@linaro.org>
+Cc: mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
+	jolsa@kernel.org, irogers@google.com, adrian.hunter@intel.com,
+	kan.liang@linux.intel.com,
+	Ching-Chun Huang <jserv@ccns.ncku.edu.tw>,
+	Chun-Ying Huang <chuang@cs.nycu.edu.tw>,
+	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, peterz@infradead.org, mingo@redhat.com,
+	acme@kernel.org, namhyung@kernel.org
+Subject: Re: [PATCH v2] perf bench: Fix undefined behavior in cmpworker()
+Message-ID: <Z4jkgatm62bNybb+@visitorckw-System-Product-Name>
+References: <20250107073906.3323640-1-visitorckw@gmail.com>
+ <d90e130c-984a-4b9f-8297-ead2857ab361@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250115103547.522503305@linuxfoundation.org>
-In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 16 Jan 2025 16:18:24 +0530
-X-Gm-Features: AbW1kvbHnl8KdKwXAVuaxCqnHkSKU6IB1QZRoqweOPf4JkpbzgeHXkmoeBTwW0M
-Message-ID: <CA+G9fYs6cKNmVBqeo_weTAPmJmBH_A_ai1WYvLwtnXcf3TDoiA@mail.gmail.com>
-Subject: Re: [PATCH 6.1 00/92] 6.1.125-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, Kai-Heng Feng <kaihengf@nvidia.com>, Wayne Chang <waynec@nvidia.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Anders Roxell <anders.roxell@linaro.org>, 
-	Dan Carpenter <dan.carpenter@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d90e130c-984a-4b9f-8297-ead2857ab361@linaro.org>
 
-On Wed, 15 Jan 2025 at 16:10, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Thu, Jan 16, 2025 at 10:40:45AM +0000, James Clark wrote:
+> 
+> 
+> On 07/01/2025 7:39 am, Kuan-Wei Chiu wrote:
+> > The comparison function cmpworker() violates the C standard's
+> > requirements for qsort() comparison functions, which mandate symmetry
+> > and transitivity:
+> > 
+> > Symmetry: If x < y, then y > x.
+> > Transitivity: If x < y and y < z, then x < z.
+> > 
+> > In its current implementation, cmpworker() incorrectly returns 0 when
+> > w1->tid < w2->tid, which breaks both symmetry and transitivity. This
+> > violation causes undefined behavior, potentially leading to issues such
+> > as memory corruption in glibc [1].
+> > 
+> > Fix the issue by returning -1 when w1->tid < w2->tid, ensuring
+> > compliance with the C standard and preventing undefined behavior.
+> > 
+> > Link: https://www.qualys.com/2024/01/30/qsort.txt [1]
+> > Fixes: 121dd9ea0116 ("perf bench: Add epoll parallel epoll_wait benchmark")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+> > ---
+> > Changes in v2:
+> > - Rewrite commit message
+> > 
+> >   tools/perf/bench/epoll-wait.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/tools/perf/bench/epoll-wait.c b/tools/perf/bench/epoll-wait.c
+> > index ef5c4257844d..4868d610e9bf 100644
+> > --- a/tools/perf/bench/epoll-wait.c
+> > +++ b/tools/perf/bench/epoll-wait.c
+> > @@ -420,7 +420,7 @@ static int cmpworker(const void *p1, const void *p2)
+> >   	struct worker *w1 = (struct worker *) p1;
+> >   	struct worker *w2 = (struct worker *) p2;
+> > -	return w1->tid > w2->tid;
+> > +	return w1->tid > w2->tid ? 1 : -1;
+> 
+> I suppose you can skip the 0 for equality because you know that no two tids
+> are the same?
 >
-> This is the start of the stable review cycle for the 6.1.125 release.
-> There are 92 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 17 Jan 2025 10:34:58 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.125-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Yes, exactly.
 
-As other reported,
-The arm axm55xx_defconfig and footbridge_defconfig build failed and
-also arc, mips, parisc, Powerpc, s390 and sh builds failed with below
-warnings / errors.
+> Anyone looking at this in the future might still think it's still wrong
+> unless it does the full comparison. Even if it's not technically required I
+> would write it like a "normal" one now that we're here:
+> 
+>   if (w1->tid > w2->tid) return 1;
+>   if (w1->tid < w2->tid) return -1;
+>   return 0;
+> 
+Sure. I'll make that change in v3.
 
-Error:
-----
-drivers/usb/core/port.c:417:21: error: no member named
-'port_is_suspended' in 'struct usb_device'
-  417 |         if (udev && !udev->port_is_suspended) {
-      |                      ~~~~  ^
-1 error generated.
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Build regression:
-gcc-compiler-drivers_usb_core_port_c-error-struct-usb_device-has-no-member-named-port_is_suspended
-
-The bad commit points to,
-  USB: core: Disable LPM only for non-suspended ports
-   commit 59bfeaf5454b7e764288d84802577f4a99bf0819 upstream.
-
-## Build
-* kernel: 6.1.125-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-* git commit: f121d22cf28ea1a09e9040843f57dd73dde42bc0
-* git describe: v6.1.124-93-gf121d22cf28e
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.124-93-gf121d22cf28e
-
-## Test Regressions (compared to v6.1.123-82-g88f2306b7d74)
-* arc, build
-  - gcc-9-axs103_defconfig
-  - gcc-9-vdk_hs38_smp_defconfig
-
-* arm, build
-  - clang-19-axm55xx_defconfig
-  - clang-19-footbridge_defconfig
-  - clang-nightly-axm55xx_defconfig
-  - clang-nightly-footbridge_defconfig
-  - gcc-13-axm55xx_defconfig
-  - gcc-13-footbridge_defconfig
-  - gcc-8-axm55xx_defconfig
-  - gcc-8-footbridge_defconfig
-
-* mips, build
-  - gcc-12-ath79_defconfig
-  - gcc-12-bcm47xx_defconfig
-  - gcc-12-rt305x_defconfig
-  - gcc-8-ath79_defconfig
-  - gcc-8-bcm47xx_defconfig
-  - gcc-8-rt305x_defconfig
-
-* parisc, build
-  - gcc-11-allmodconfig
-  - gcc-11-allyesconfig
-  - gcc-11-defconfig
-
-* powerpc, build
-  - clang-19-cell_defconfig
-  - clang-19-ppc64e_defconfig
-  - clang-nightly-cell_defconfig
-  - clang-nightly-ppc64e_defconfig
-  - gcc-13-cell_defconfig
-  - gcc-13-ppc64e_defconfig
-  - gcc-8-cell_defconfig
-  - gcc-8-ppc64e_defconfig
-
-* s390, build
-  - clang-19-allmodconfig
-  - clang-19-allyesconfig
-  - gcc-13-allmodconfig
-  - gcc-13-allyesconfig
-  - gcc-8-allyesconfig
-
-* sh, build
-  - gcc-11-defconfig
-  - gcc-11-shx3_defconfig
-  - gcc-8-defconfig
-  - gcc-8-shx3_defconfig
-
-
-## Metric Regressions (compared to v6.1.123-82-g88f2306b7d74)
-
-## Test Fixes (compared to v6.1.123-82-g88f2306b7d74)
-
-## Metric Fixes (compared to v6.1.123-82-g88f2306b7d74)
-
-## Test result summary
-total: 82792, pass: 63395, fail: 4390, skip: 14641, xfail: 366
-
-## Build Summary
-* arc: 6 total, 3 passed, 3 failed
-* arm: 139 total, 131 passed, 8 failed
-* arm64: 46 total, 44 passed, 2 failed
-* i386: 31 total, 27 passed, 4 failed
-* mips: 30 total, 19 passed, 11 failed
-* parisc: 5 total, 2 passed, 3 failed
-* powerpc: 36 total, 25 passed, 11 failed
-* riscv: 14 total, 13 passed, 1 failed
-* s390: 18 total, 12 passed, 6 failed
-* sh: 12 total, 6 passed, 6 failed
-* sparc: 9 total, 8 passed, 1 failed
-* x86_64: 38 total, 38 passed, 0 failed
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Regards,
+Kuan-Wei
 
