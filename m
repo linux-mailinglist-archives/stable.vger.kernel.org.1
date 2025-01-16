@@ -1,91 +1,65 @@
-Return-Path: <stable+bounces-109241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D51F2A13849
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 11:50:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43BAFA1384B
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 11:51:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE368161494
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 10:50:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B175160C43
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 10:51:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0931DE2BA;
-	Thu, 16 Jan 2025 10:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A011DE2C1;
+	Thu, 16 Jan 2025 10:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kZdqsF37"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="NNkuYFJY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B8119539F;
-	Thu, 16 Jan 2025 10:50:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E100519539F;
+	Thu, 16 Jan 2025 10:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737024650; cv=none; b=mgm2vvOqdYGwGCJFuTBdKd5xEJUJiRbYXqmQPiEjt3IC6s//2ry6I/qjcjHmZ+uMvNbGS5+R+CTPhSAnVFLfHlKQZK+5ed1g7p35MM/C8Y7us1lMNM3DN1/AtdYX3Z//Tvg/fbSOo0NMdNNomLh88WAPQulhbPFZFOtMMjWyFJw=
+	t=1737024683; cv=none; b=lvdSQR+6bXj+d619TOM8AlfOkJORDmc30rs9ajqfJwjsTq4QlVn1s/r4hgVCfFUPPoO2TUT51mt0Rd/uSoUB0H8fI+QzZ5/sSREwmBp33al53ETnGXYzBFgUrZXXXTd9qIs+Ez3Mn4t4YYQQYSFI9C2D/eCZduItELVGR8B4eGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737024650; c=relaxed/simple;
-	bh=OeNeCtcrONL801H/WZiafjSKFBzM3TLEC3IK7ijLiRU=;
+	s=arc-20240116; t=1737024683; c=relaxed/simple;
+	bh=udEk1jg766leWDtC3YL+cmAPvUjMMRcQGtk6yyA5p/g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FOjt0ZxMk/sWfu7lffRSQCRa4bPZDjv7jkMswkAhT5adTmV2oBo3BM+kwGq6DPEJ6lw8BUWtr2SutBU5xOgrIx+SzjPXWFQrS9Lnl9fU1UzfP3yknpocJ1YAxQSjtEIdgju/A1Ur1Wwpx6ppsHVZoaJYhgxgaHzYTZpQVFsap54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kZdqsF37; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ef87d24c2dso1126087a91.1;
-        Thu, 16 Jan 2025 02:50:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737024648; x=1737629448; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rY9XRKJvOJ8/3ciXecDpmNkHd5QK6jGNJj71By9HiJs=;
-        b=kZdqsF37+GltjD+TtagnebPDNvKz51tBWVrY9Frvw7IoqAywPqMEM6ZPq/51R8oYln
-         LtoZwwpdRlzs4qv0jWnnAE1dlc/H1Pw1EFSGLSU+WEaX2UoeZvS7YPUv7O9GDV6NUt8M
-         YEVJWp/e98sErRnIrbLOPoztH08kJ519O7K5lm6ayeK//zLP5yhvvE76VCo/ePqKLbxS
-         H8462vdxf3/FdsdTdBL4PRMfNxaXF3OkrFNMvfW42kJ8JRuJ8FtsoQIJzFmF0aXyOXUE
-         CCFy3zuwgDNx5iREGnZTeL5KnnEbwyshb9tiY3rPW/klAg4K378So3/F+AZhvAN4RXzl
-         15Cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737024648; x=1737629448;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rY9XRKJvOJ8/3ciXecDpmNkHd5QK6jGNJj71By9HiJs=;
-        b=RhsIKWd/6vVx0061K23RYp1BcplZO9i6c/JRZS9TJvIrSX4U7vXxlMCAKzlgls02d7
-         KhZWcit1E6Bkas8JvtOJVWggbqy8blu796y3+7evwrv9JsNWE05MMdqL9b9rMPIa+ut7
-         MPiTwkb/reH9/X1WNscZbUnZbpKVYEWh8CsZJ8W1MHrrfoHhFxq07eky5KZbIaNZxZ9r
-         utm0Cvmbr9pLnS8H9aOdEe6XMEUXzZU50S/4R5GuRph8BSwtWbmBvXO0M+7gHs0x5UTZ
-         tIv3molBgpr2GhEbhxrkWRiWZaK2RlAJPOKFPrIpzWnVYfehMiiCbQwfqR/3vghbFRhm
-         z1Lw==
-X-Forwarded-Encrypted: i=1; AJvYcCUENoG5F5PyNwDn63Ix/XDp7kejo+8XaBgGCKO5ZoXKMB7bdzOdQ6I9TzEsZLCWLoh1HFL9CL8aRLjRf5QfYaSMBA==@vger.kernel.org, AJvYcCV9UUIxpoBUZGrvfMyL+DAOjoQ+Q/oFDlx9WUft3NijnpuvVorgHccGyQX/784IDLtEsbnxD25c@vger.kernel.org, AJvYcCVASpQn0KVTAKoELik9AKkZf+FTbW9NB4RV3GdIGRAmahAJ3VCTBllPH1UvI6wRBd4s0OtakAoUdVfDUz0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0X8hhLu6oMtxDne+eEQFFBsgSeTG46e5ypfF4J2rqtelTBo68
-	w6o1ZHJ0sFhuxkzg3wMU2TyZTL9+AAb0SwFnGRPvloxB7rR7Qurt
-X-Gm-Gg: ASbGncup1kgZDiUok7rcA8cRyAxLj0QB+njqtfAyNkZWb6TLBowOqdoY/ZsbalQzDkT
-	TxPr0IljXZreujXzGu/lm4Hxg5scuSc+erev+1+91UcvKFtNkk1RZI4skseoIpwdq9Y0/TDzS+R
-	zHJtgO/ETKwvxikIQjHBThEI8bmFPZ8ZQhmionIcVX9pRf24BsDOlvUx/DtsW9L3byv8HA9W6VK
-	dvF55klxszZ0LNu0x3SDJk+/CW2CZFcwANJ/F7Z00966M19gUupXdgiYspsJYh7Hbw9a3koYKHu
-	k2mWEcHZ
-X-Google-Smtp-Source: AGHT+IHOV72YO7rbqVMyaLFj8IoR3lyUCUWSbQtM1clkvTCv6q4Db7N3rGOjRkdRIL7nJr31+/wMrg==
-X-Received: by 2002:a17:90b:2b83:b0:2ee:a4f2:b311 with SMTP id 98e67ed59e1d1-2f548f103e9mr47378292a91.8.1737024647747;
-        Thu, 16 Jan 2025 02:50:47 -0800 (PST)
-Received: from visitorckw-System-Product-Name ([140.113.216.168])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f72c2bb332sm3273949a91.36.2025.01.16.02.50.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jan 2025 02:50:47 -0800 (PST)
-Date: Thu, 16 Jan 2025 18:50:41 +0800
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
-To: James Clark <james.clark@linaro.org>
-Cc: mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
-	jolsa@kernel.org, irogers@google.com, adrian.hunter@intel.com,
-	kan.liang@linux.intel.com,
-	Ching-Chun Huang <jserv@ccns.ncku.edu.tw>,
-	Chun-Ying Huang <chuang@cs.nycu.edu.tw>,
-	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, peterz@infradead.org, mingo@redhat.com,
-	acme@kernel.org, namhyung@kernel.org
-Subject: Re: [PATCH v2] perf bench: Fix undefined behavior in cmpworker()
-Message-ID: <Z4jkgatm62bNybb+@visitorckw-System-Product-Name>
-References: <20250107073906.3323640-1-visitorckw@gmail.com>
- <d90e130c-984a-4b9f-8297-ead2857ab361@linaro.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ttlCzfDqBzN2sZh7ADk5rGQfQe5UssHumkeVeVnqhRofDQSvW02YJQzJSEc0hPLf7piKzairOiTTXYEnRB3VZ2pa/482ESOk5JGhd/gRnmYU9lAiWMEkhS+hf4C5UkzOTd0wdZGBDZpBKMpwsnARWXUCH+Jjf0zCOBVv+u5Wm7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=NNkuYFJY; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=wzbEg2Uym/RfTI4+/bX5iwFr7gHGdR2b38FGkzYxqPo=; b=NNkuYFJY5hIHc3o3AFXQamH8Mn
+	up2ug9Y0lsKs7CzuWOAuWiwvgEdM3sJPUCI2bfbPiIGsYiasu+t1/EaW1QO0cMBb88m2nrLuKzyrP
+	UBn189gHD21Fgp5xkuJVDCCE1oVdSG2/o1W4p+3tuwQr9ZtIBcgzLI6EtG+fyOlSrae8xutzW4hrw
+	yT3wzVK3wvThtvr8mu+1l1GCM4e70BOtsLJzyxfOO0RgguTLfHR5SyQ8EQKsyKl6iUDkedUVGd6nt
+	vuF4crzHKE03ffiI1wDMC35V19+46sWZj5h7H7FZIWBeYzT1wkwUUa7/a6MutWxCj6NbRyFpbG74R
+	Qgr8NXIQ==;
+Received: from 77-249-17-89.cable.dynamic.v4.ziggo.nl ([77.249.17.89] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1tYNT1-0000000CKLa-04cl;
+	Thu, 16 Jan 2025 10:51:15 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 8EC9F300777; Thu, 16 Jan 2025 11:51:14 +0100 (CET)
+Date: Thu, 16 Jan 2025 11:51:14 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: kan.liang@linux.intel.com
+Cc: mingo@redhat.com, acme@kernel.org, namhyung@kernel.org,
+	irogers@google.com, adrian.hunter@intel.com,
+	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+	ak@linux.intel.com, eranian@google.com, dapeng1.mi@linux.intel.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH V9 1/3] perf/x86/intel: Avoid pmu_disable/enable if
+ !cpuc->enabled in sample read
+Message-ID: <20250116105114.GH8385@noisy.programming.kicks-ass.net>
+References: <20250115184318.2854459-1-kan.liang@linux.intel.com>
+ <20250116103256.GI8362@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -94,63 +68,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d90e130c-984a-4b9f-8297-ead2857ab361@linaro.org>
+In-Reply-To: <20250116103256.GI8362@noisy.programming.kicks-ass.net>
 
-On Thu, Jan 16, 2025 at 10:40:45AM +0000, James Clark wrote:
-> 
-> 
-> On 07/01/2025 7:39 am, Kuan-Wei Chiu wrote:
-> > The comparison function cmpworker() violates the C standard's
-> > requirements for qsort() comparison functions, which mandate symmetry
-> > and transitivity:
-> > 
-> > Symmetry: If x < y, then y > x.
-> > Transitivity: If x < y and y < z, then x < z.
-> > 
-> > In its current implementation, cmpworker() incorrectly returns 0 when
-> > w1->tid < w2->tid, which breaks both symmetry and transitivity. This
-> > violation causes undefined behavior, potentially leading to issues such
-> > as memory corruption in glibc [1].
-> > 
-> > Fix the issue by returning -1 when w1->tid < w2->tid, ensuring
-> > compliance with the C standard and preventing undefined behavior.
-> > 
-> > Link: https://www.qualys.com/2024/01/30/qsort.txt [1]
-> > Fixes: 121dd9ea0116 ("perf bench: Add epoll parallel epoll_wait benchmark")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-> > ---
-> > Changes in v2:
-> > - Rewrite commit message
-> > 
-> >   tools/perf/bench/epoll-wait.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/tools/perf/bench/epoll-wait.c b/tools/perf/bench/epoll-wait.c
-> > index ef5c4257844d..4868d610e9bf 100644
-> > --- a/tools/perf/bench/epoll-wait.c
-> > +++ b/tools/perf/bench/epoll-wait.c
-> > @@ -420,7 +420,7 @@ static int cmpworker(const void *p1, const void *p2)
-> >   	struct worker *w1 = (struct worker *) p1;
-> >   	struct worker *w2 = (struct worker *) p2;
-> > -	return w1->tid > w2->tid;
-> > +	return w1->tid > w2->tid ? 1 : -1;
-> 
-> I suppose you can skip the 0 for equality because you know that no two tids
-> are the same?
->
-Yes, exactly.
+On Thu, Jan 16, 2025 at 11:32:56AM +0100, Peter Zijlstra wrote:
 
-> Anyone looking at this in the future might still think it's still wrong
-> unless it does the full comparison. Even if it's not technically required I
-> would write it like a "normal" one now that we're here:
-> 
->   if (w1->tid > w2->tid) return 1;
->   if (w1->tid < w2->tid) return -1;
->   return 0;
-> 
-Sure. I'll make that change in v3.
+> diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
+> index ba74e1198328..050098c54ae7 100644
+> --- a/arch/x86/events/intel/ds.c
+> +++ b/arch/x86/events/intel/ds.c
+> @@ -953,7 +953,7 @@ int intel_pmu_drain_bts_buffer(void)
+>  	return 1;
+>  }
+>  
+> -static inline void intel_pmu_drain_pebs_buffer(void)
+> +void intel_pmu_drain_pebs_buffer(void)
+>  {
+>  	struct perf_sample_data data;
+>  
 
-Regards,
-Kuan-Wei
+Also, while poking there, I noticed we never did the below :/
+
+
+---
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 5b491a6815e6..20a2556de645 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -3081,7 +3081,7 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
+ 
+ 		handled++;
+ 		x86_pmu_handle_guest_pebs(regs, &data);
+-		x86_pmu.drain_pebs(regs, &data);
++		static_call(x86_pmu_drain_pebs)(regs, &data);
+ 		status &= intel_ctrl | GLOBAL_STATUS_TRACE_TOPAPMI;
+ 
+ 		/*
+diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
+index 050098c54ae7..75e5e6678282 100644
+--- a/arch/x86/events/intel/ds.c
++++ b/arch/x86/events/intel/ds.c
+@@ -956,8 +956,7 @@ int intel_pmu_drain_bts_buffer(void)
+ void intel_pmu_drain_pebs_buffer(void)
+ {
+ 	struct perf_sample_data data;
+-
+-	x86_pmu.drain_pebs(NULL, &data);
++	static_call(x86_pmu_drain_pebs)(NULL, &data);
+ }
+ 
+ /*
+diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
+index 38b3e30f8988..fb635e2b9909 100644
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -1107,6 +1107,7 @@ extern struct x86_pmu x86_pmu __read_mostly;
+ 
+ DECLARE_STATIC_CALL(x86_pmu_set_period, *x86_pmu.set_period);
+ DECLARE_STATIC_CALL(x86_pmu_update,     *x86_pmu.update);
++DECLARE_STATIC_CALL(x86_pmu_drain_pebs, *x86_pmu.drain_pebs);
+ 
+ static __always_inline struct x86_perf_task_context_opt *task_context_opt(void *ctx)
+ {
 
