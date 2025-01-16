@@ -1,105 +1,270 @@
-Return-Path: <stable+bounces-109228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B280A13622
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 10:04:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36361A1366E
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 10:19:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF3467A10D9
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 09:04:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B2BF18886CF
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 09:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75E71D7E5F;
-	Thu, 16 Jan 2025 09:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6D71D79BE;
+	Thu, 16 Jan 2025 09:19:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665891A08BC;
-	Thu, 16 Jan 2025 09:04:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5791126AF6;
+	Thu, 16 Jan 2025 09:18:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737018285; cv=none; b=N/hIjhl5cG/YvXomlTquURjfE44Wd05jA6tDhTQAbQFih4cf6owPicF5XeqcBGxb6JDv4xZiqWVtGOccsdMWPPCashwRr8xwab3g7cpFpC4OrA5JF/71f9WhI8WfZk1XKlcV/av1faDJOwwn3wFO+EX0BiFyWeuaamRICc+tgTU=
+	t=1737019141; cv=none; b=cWz/ldBX2VCC6Qrsfrdd1xwMCoB44Ikq8gyNIqwFJiUOGrsjy+NqBiR+Hr/FGfSYlWCvNClVg/+36u80lizKIbhU+5LgAZkFyrx5cLEbNesHUdQ5qlTaMwPn2IZ1iLG05iKNZJ7wtt9PD/Ue5FV72e7w1Zi5GP0jAGRU/VpWoOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737018285; c=relaxed/simple;
-	bh=kGkp+1pokDJpHR7iSo16jsNz+JlQ+wnqu3AQ9BEa/jA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Xg/Gx5oEFJ9+7pT74sEn6Mxu710o+YeDlMQkbARc6hzDhZXQDN4OJ4gHlUJrbfgPWpEzJqbuesMbT5bAk83OLajYJy0YBpmaFIvbgVswYL+Fh66cbhd9+wb7ZRBaUxWOktqSjWlLPWoFi/pfgAKu87jth4wYFuR9Pj+QzDcJlp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C8A9911FB;
-	Thu, 16 Jan 2025 01:05:09 -0800 (PST)
-Received: from [10.57.94.252] (unknown [10.57.94.252])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 247763F673;
-	Thu, 16 Jan 2025 01:04:39 -0800 (PST)
-Message-ID: <873aede9-bfcd-4c95-a93d-ec1881554f39@arm.com>
-Date: Thu, 16 Jan 2025 09:04:37 +0000
+	s=arc-20240116; t=1737019141; c=relaxed/simple;
+	bh=5dqH2aw6J/DvANLLtr1H47C/n4iBtvaLs7nTBNr/7aE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EfhB+GJR8YvfqRsTHYTl4dSCcQkvISZubDUt1HAQN+DzhFNxmOYFYUn6SD9sjSeDZNa5OX3cBNsHUFC2U7YZDek3//sMa5ayPzgkCBg+Sab7hYGfCMAszjx3brBgcw25cpKXf1faI9qW9/J7P8Lj7y/zfNWeu2f3+TrvwcSzMJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from inp1wst086.omp.ru (81.22.207.138) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Thu, 16 Jan
+ 2025 12:18:41 +0300
+From: Dmitriy Privalov <d.privalov@omp.ru>
+To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: "David S. Miller" <davem@davemloft.net>, Alexey Kuznetsov
+	<kuznet@ms2.inr.ac.ru>, Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>, Jakub
+ Kicinski <kuba@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, Martin
+ KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>, Yonghong Song
+	<yhs@fb.com>, John Fastabend <john.fastabend@gmail.com>, KP Singh
+	<kpsingh@kernel.org>, Eric Dumazet <edumazet@google.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<bpf@vger.kernel.org>, <lvc-project@linuxtesting.org>, Martin KaFai Lau
+	<martin.lau@kernel.org>, Kuniyuki Iwashima <kuniyu@amazon.com>, Dmitriy
+ Privalov <d.privalov@omp.ru>
+Subject: [PATCH v2 5.10 1/1] tcp/dccp: Don't use timer_pending() in reqsk_queue_unlink().
+Date: Thu, 16 Jan 2025 12:17:57 +0300
+Message-ID: <20250116091757.646769-1-d.privalov@omp.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/2] mm: Clear uffd-wp PTE/PMD state on mremap()
-Content-Language: en-GB
-To: Peter Xu <peterx@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
- Shuah Khan <shuah@kernel.org>, David Hildenbrand <david@redhat.com>,
- =?UTF-8?Q?Miko=C5=82aj_Lenczewski?= <miko.lenczewski@arm.com>,
- Mark Rutland <mark.rutland@arm.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org, stable@vger.kernel.org
-References: <20250107144755.1871363-1-ryan.roberts@arm.com>
- <20250107144755.1871363-2-ryan.roberts@arm.com> <Z4gaUAt9w8s1rLPK@x1n>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <Z4gaUAt9w8s1rLPK@x1n>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 01/16/2025 08:29:11
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 19
+X-KSE-AntiSpam-Info: Lua profiles 190363 [Jan 16 2025]
+X-KSE-AntiSpam-Info: Version: 6.1.1.7
+X-KSE-AntiSpam-Info: Envelope from: d.privalov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 49 0.3.49
+ 28b3b64a43732373258a371bd1554adb2caa23cb
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 81.22.207.138 in (user)
+ b.barracudacentral.org}
+X-KSE-AntiSpam-Info:
+	patch.msgid.link:7.1.1;81.22.207.138:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;omp.ru:7.1.1;lore.kernel.org:7.1.1;inp1wst086.omp.ru:7.1.1;nvd.nist.gov:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: ApMailHostAddress: 81.22.207.138
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 19
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 01/16/2025 08:33:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 1/16/2025 6:48:00 AM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
-On 15/01/2025 20:28, Peter Xu wrote:
-> On Tue, Jan 07, 2025 at 02:47:52PM +0000, Ryan Roberts wrote:
->> When mremap()ing a memory region previously registered with userfaultfd
->> as write-protected but without UFFD_FEATURE_EVENT_REMAP, an
->> inconsistency in flag clearing leads to a mismatch between the vma flags
->> (which have uffd-wp cleared) and the pte/pmd flags (which do not have
->> uffd-wp cleared). This mismatch causes a subsequent mprotect(PROT_WRITE)
->> to trigger a warning in page_table_check_pte_flags() due to setting the
->> pte to writable while uffd-wp is still set.
->>
->> Fix this by always explicitly clearing the uffd-wp pte/pmd flags on any
->> such mremap() so that the values are consistent with the existing
->> clearing of VM_UFFD_WP. Be careful to clear the logical flag regardless
->> of its physical form; a PTE bit, a swap PTE bit, or a PTE marker. Cover
->> PTE, huge PMD and hugetlb paths.
->>
->> Co-developed-by: Mikołaj Lenczewski <miko.lenczewski@arm.com>
->> Signed-off-by: Mikołaj Lenczewski <miko.lenczewski@arm.com>
->> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
->> Closes: https://lore.kernel.org/linux-mm/810b44a8-d2ae-4107-b665-5a42eae2d948@arm.com/
->> Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
->> Cc: stable@vger.kernel.org
-> 
-> Nothing I see wrong:
-> 
-> Reviewed-by: Peter Xu <peterx@redhat.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-Great thanks!
+commit e8c526f2bdf1845bedaf6a478816a3d06fa78b8f upstream.
 
-> 
-> One trivial thing: some multiple-line comments is following the net/ coding
-> style rather than mm/, but well.. I don't think it's a huge deal.
-> 
-> https://www.kernel.org/doc/html/v4.10/process/coding-style.html#commenting
+Martin KaFai Lau reported use-after-free [0] in reqsk_timer_handler().
 
-Noted, I'll aim to get it right in future.
+  """
+  We are seeing a use-after-free from a bpf prog attached to
+  trace_tcp_retransmit_synack. The program passes the req->sk to the
+  bpf_sk_storage_get_tracing kernel helper which does check for null
+  before using it.
+  """
 
-> 
-> Thanks again.
-> 
+The commit 83fccfc3940c ("inet: fix potential deadlock in
+reqsk_queue_unlink()") added timer_pending() in reqsk_queue_unlink() not
+to call del_timer_sync() from reqsk_timer_handler(), but it introduced a
+small race window.
 
+Before the timer is called, expire_timers() calls detach_timer(timer, true)
+to clear timer->entry.pprev and marks it as not pending.
+
+If reqsk_queue_unlink() checks timer_pending() just after expire_timers()
+calls detach_timer(), TCP will miss del_timer_sync(); the reqsk timer will
+continue running and send multiple SYN+ACKs until it expires.
+
+The reported UAF could happen if req->sk is close()d earlier than the timer
+expiration, which is 63s by default.
+
+The scenario would be
+
+  1. inet_csk_complete_hashdance() calls inet_csk_reqsk_queue_drop(),
+     but del_timer_sync() is missed
+
+  2. reqsk timer is executed and scheduled again
+
+  3. req->sk is accept()ed and reqsk_put() decrements rsk_refcnt, but
+     reqsk timer still has another one, and inet_csk_accept() does not
+     clear req->sk for non-TFO sockets
+
+  4. sk is close()d
+
+  5. reqsk timer is executed again, and BPF touches req->sk
+
+Let's not use timer_pending() by passing the caller context to
+__inet_csk_reqsk_queue_drop().
+
+Note that reqsk timer is pinned, so the issue does not happen in most
+use cases. [1]
+
+[0]
+BUG: KFENCE: use-after-free read in bpf_sk_storage_get_tracing+0x2e/0x1b0
+
+Use-after-free read at 0x00000000a891fb3a (in kfence-#1):
+bpf_sk_storage_get_tracing+0x2e/0x1b0
+bpf_prog_5ea3e95db6da0438_tcp_retransmit_synack+0x1d20/0x1dda
+bpf_trace_run2+0x4c/0xc0
+tcp_rtx_synack+0xf9/0x100
+reqsk_timer_handler+0xda/0x3d0
+run_timer_softirq+0x292/0x8a0
+irq_exit_rcu+0xf5/0x320
+sysvec_apic_timer_interrupt+0x6d/0x80
+asm_sysvec_apic_timer_interrupt+0x16/0x20
+intel_idle_irq+0x5a/0xa0
+cpuidle_enter_state+0x94/0x273
+cpu_startup_entry+0x15e/0x260
+start_secondary+0x8a/0x90
+secondary_startup_64_no_verify+0xfa/0xfb
+
+kfence-#1: 0x00000000a72cc7b6-0x00000000d97616d9, size=2376, cache=TCPv6
+
+allocated by task 0 on cpu 9 at 260507.901592s:
+sk_prot_alloc+0x35/0x140
+sk_clone_lock+0x1f/0x3f0
+inet_csk_clone_lock+0x15/0x160
+tcp_create_openreq_child+0x1f/0x410
+tcp_v6_syn_recv_sock+0x1da/0x700
+tcp_check_req+0x1fb/0x510
+tcp_v6_rcv+0x98b/0x1420
+ipv6_list_rcv+0x2258/0x26e0
+napi_complete_done+0x5b1/0x2990
+mlx5e_napi_poll+0x2ae/0x8d0
+net_rx_action+0x13e/0x590
+irq_exit_rcu+0xf5/0x320
+common_interrupt+0x80/0x90
+asm_common_interrupt+0x22/0x40
+cpuidle_enter_state+0xfb/0x273
+cpu_startup_entry+0x15e/0x260
+start_secondary+0x8a/0x90
+secondary_startup_64_no_verify+0xfa/0xfb
+
+freed by task 0 on cpu 9 at 260507.927527s:
+rcu_core_si+0x4ff/0xf10
+irq_exit_rcu+0xf5/0x320
+sysvec_apic_timer_interrupt+0x6d/0x80
+asm_sysvec_apic_timer_interrupt+0x16/0x20
+cpuidle_enter_state+0xfb/0x273
+cpu_startup_entry+0x15e/0x260
+start_secondary+0x8a/0x90
+secondary_startup_64_no_verify+0xfa/0xfb
+
+Fixes: 83fccfc3940c ("inet: fix potential deadlock in reqsk_queue_unlink()")
+Reported-by: Martin KaFai Lau <martin.lau@kernel.org>
+Closes: https://lore.kernel.org/netdev/eb6684d0-ffd9-4bdc-9196-33f690c25824@linux.dev/
+Link: https://lore.kernel.org/netdev/b55e2ca0-42f2-4b7c-b445-6ffd87ca74a0@linux.dev/ [1]
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20241014223312.4254-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[d.privalov: adapt calling __inet_csk_reqsk_queue_drop()]
+Signed-off-by: Dmitriy Privalov <d.privalov@omp.ru>
+---
+Backport fix for CVE-2024-50154
+Link: https://nvd.nist.gov/vuln/detail/CVE-2024-50154
+---
+v2: Fix patch applying
+
+ net/ipv4/inet_connection_sock.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
+
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index 1dfa561e8f981..d912894ad4adc 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -700,21 +700,31 @@ static bool reqsk_queue_unlink(struct request_sock *req)
+ 		found = __sk_nulls_del_node_init_rcu(req_to_sk(req));
+ 		spin_unlock(lock);
+ 	}
+-	if (timer_pending(&req->rsk_timer) && del_timer_sync(&req->rsk_timer))
+-		reqsk_put(req);
++
+ 	return found;
+ }
+ 
+-bool inet_csk_reqsk_queue_drop(struct sock *sk, struct request_sock *req)
++static bool __inet_csk_reqsk_queue_drop(struct sock *sk,
++					struct request_sock *req,
++					bool from_timer)
+ {
+ 	bool unlinked = reqsk_queue_unlink(req);
+ 
++	if (!from_timer && del_timer_sync(&req->rsk_timer))
++		reqsk_put(req);
++
+ 	if (unlinked) {
+ 		reqsk_queue_removed(&inet_csk(sk)->icsk_accept_queue, req);
+ 		reqsk_put(req);
+ 	}
++
+ 	return unlinked;
+ }
++
++bool inet_csk_reqsk_queue_drop(struct sock *sk, struct request_sock *req)
++{
++	return __inet_csk_reqsk_queue_drop(sk, req, false);
++}
+ EXPORT_SYMBOL(inet_csk_reqsk_queue_drop);
+ 
+ void inet_csk_reqsk_queue_drop_and_put(struct sock *sk, struct request_sock *req)
+@@ -781,7 +791,8 @@ static void reqsk_timer_handler(struct timer_list *t)
+ 		return;
+ 	}
+ drop:
+-	inet_csk_reqsk_queue_drop_and_put(sk_listener, req);
++	__inet_csk_reqsk_queue_drop(sk_listener, req, true);
++	reqsk_put(req);
+ }
+ 
+ static void reqsk_queue_hash_req(struct request_sock *req,
+-- 
+2.34.1
 
