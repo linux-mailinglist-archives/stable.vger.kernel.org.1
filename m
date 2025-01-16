@@ -1,161 +1,123 @@
-Return-Path: <stable+bounces-109286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9F4CA13D9F
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 16:30:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B5DA13DBD
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 16:34:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25D20188B78C
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 15:30:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB20C164B38
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 15:34:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C94C22B8BD;
-	Thu, 16 Jan 2025 15:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AED8122B8B9;
+	Thu, 16 Jan 2025 15:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kg3LO/7E"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="BTW4YFJ6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6A478F2B;
-	Thu, 16 Jan 2025 15:29:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD62024A7F6;
+	Thu, 16 Jan 2025 15:34:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737041399; cv=none; b=AMnlciaUE/fI6ceRSRU5yGFr9fihlt2Q4mA0PL2jfUZ7J+v0VB7HlWcdtCooibJ1YH34TSeeNgLyD938epydhmtML849k/+2rSITjAO/lM/MnPMwqpf/VtjSef6ojNX2AeQqz8ot0T9nOz8PC4gowd7TQhIF/y84FVLxLTw7rUs=
+	t=1737041685; cv=none; b=rz6syiReV9gzbIPcpX9mj0pUt8fNhvhXdmjtclH6YXn8QcaoE/nJ81a66aTy3QsjyhWjL2xHrU69AwvDKuZ2dIXxOGYkJ7sVHrZCVXqBTvZiA88t2PMgFKBjtBDbPCfSFZEMLCGpIdiZS7C48c5wRWtk/HljiH7NgtfGZxd435E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737041399; c=relaxed/simple;
-	bh=2frU9X7dbWLUl8WO2hD3vcwXOw47sVSnR2+r8CWLSKA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SjXBHC4MS9kOF1wi6lFhRgm53bmU4AUpJZRITh9JiuDE3uZtR6h/A8ZNM8agPaavazqhGByY1wOh7MApBlTQkzNVtmlZ7e1PWfphGm9KGohLCWxrtTWmJXok+lBtwHUAFcVMJPYG67WpOwPLZreA/JSe+yfHo+ya1Zduu87JHK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kg3LO/7E; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-385de59c1a0so647223f8f.2;
-        Thu, 16 Jan 2025 07:29:57 -0800 (PST)
+	s=arc-20240116; t=1737041685; c=relaxed/simple;
+	bh=y4crMJVNNSHNOuMvHECSfD9Gl9BCNbLj0WOCOJV2KG8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bMaEbqwOtRy8/LyynCIQqbC3TQ4kHVUmq8gVIgvg6ruEKD7gDXIg04yaNu4dDHIsQ4Esk5hq+z9tifS0oAjykKuNUt9Wqp5fI8HHIw5Ixp9HZr5QoFHRed795+0Zvduk7oY64qnPl93QuIjtwvv1f5eblHvE1HyNxIxwbkw6eyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=BTW4YFJ6; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43624b2d453so10953805e9.2;
+        Thu, 16 Jan 2025 07:34:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737041395; x=1737646195; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8tw313LemcnV4eOs9J849ueqzSp6vM+lhTqL56doHZU=;
-        b=kg3LO/7E2LceMkqHd/4cCQYz5qtQ1AnkrwXGW7RAV4Zpx39ufgGm4VxAd3GfLdLQlT
-         W4EussN3nCYS1J/ngvo8ky3JO8WaSJYskAbebKwKzX2yKaajTAZPASxbB+WYdyRyl3Ur
-         G8wAula5+bd45JHyQrjjNavTZRJWOe1pTP4a52liCryjARHLUd1jQSChgY/pz7lMAzyN
-         UCEGJaUa31YF29szJZyfE6oLknlxK8yaX4mcE3/5QHr0P4f+x07Ydxbprtkb7dv88h+m
-         Hce+4vuMGO8s5AoVajR/nHUD9+MXjc7bIcXNjljfiv+M3NkL4ef5AiKKpOBIbjMeZ0+R
-         sBnQ==
+        d=googlemail.com; s=20230601; t=1737041682; x=1737646482; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EIMiu7qfvV+XA/dz3F5+XwUyd0m6b8Z8Cw1RmbU0RNs=;
+        b=BTW4YFJ6df4Olsh5SJc4H3HAFqUzpEAmu6ASnITyJbR1sViS4qK5l0ZCmjSriCW73P
+         9F66RnBrijbdfB1g60v2ZYurwyO8MKByNXfF1+7jgVm9LMgmbFWabMFZ4P0B/NPbxEPr
+         2eajzMDDGCV6jAtU5ULmTtlqWardbi4T6vVUwGJwAhSynFLCy2DIGjukCQfli0W0INC6
+         7GZCDU53yy29id5UyIB2JM8TRFoqgfSghDppvvkzonSYFF3VO4P18cQBVbxqFK5KzCxm
+         GiQl/F9Fk8qhVI2f1Wuzz4udRuhJff7EuyRhHCLx3rUhn1tCPSkwweBSCQ6oltWi2npw
+         NZbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737041395; x=1737646195;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8tw313LemcnV4eOs9J849ueqzSp6vM+lhTqL56doHZU=;
-        b=BvHXgrHQ0oyrUXtf46BPryu/6/dc4CZlJPrbqdRX28WAeHJcZ13bsg2u33nt/LXsg0
-         h2W38TLG2lAl6ilBYLoMNwZUgj1jC7Q52N9sxpjavCMIInVEwi7sVJlWSOkUVQTHuAjT
-         Qn/A3O8LEr1Q97ujsv0NfM9Dn8Bj8U9e1UdI6/JMrms3w6lv8zam5xVLNJbp8O7JbYAB
-         4/uUx6l6YNn4kKoTgLnsh63IbxsjpeZj6SYT96kBYkNqKPJTj74L8yHnmsKYSAyUE0Sa
-         UpmVbuiAmHnt1ptagcefYe7iqiAD3vJc1NCuj4iT/SANIbT/rhtDiQw9hkV6gAMRRFR8
-         YPhg==
-X-Forwarded-Encrypted: i=1; AJvYcCVZzPTwNJVdDhkZm0/j4CUWDLAL9dX0zP2MYwVMqw6oPhsr4DrT0xw5U/iLECKyHQ3JyTSTbUaiMUZ7c4o=@vger.kernel.org, AJvYcCWd/9mqbNLHHK1s+8y1W6591KmgvqBp4lZEI9cgY366TyL5Xhmy3G1F/VYC6uUonP2Irsy7ceqp@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzb1x8sOvJ2JZVlECSPX5TCK8tWIFMeEoaXwfXQeuCuislWPdNt
-	0Tx0GnC5vdTQ+DxyCkDCFZ+wey1H+IfpBDDECtX3zy0rSQQTJXUW
-X-Gm-Gg: ASbGncsMsYPbblgOslTXWDs0fyhO0Exsn9o/PfkgkgrZCLPFapVXPn6x6nsyPqxBEdi
-	QNm6a4wW8Liq5f+neJ9mlkK6Br6FRy3YGsPQkx2Zbmr1pFJP5iUvbHcGC7BHP1YscMJBPQyfSh0
-	xyZ8zIf52Y48TY+67vr6m/F6lfrBrO3R8ZswaX2ARP6XeGcY6hSQ0R97fBUk99Z9Bz3OdSffSPG
-	eoJo5z41O5WZZd37ltN08TjEuS8Unp2jxBcwuL3JUBINMZRToXeQe6RggBKDsrF2EvUOjo=
-X-Google-Smtp-Source: AGHT+IEef8S7Jx5rYUCpDubnXGjnbOP3kPqHoI2nCeuf4dEPI9YGEFPuF5pDKiffY/hcSYgjAqouxA==
-X-Received: by 2002:a5d:64cc:0:b0:385:e8ce:7483 with SMTP id ffacd0b85a97d-38a872faf34mr23870496f8f.4.1737041395360;
-        Thu, 16 Jan 2025 07:29:55 -0800 (PST)
-Received: from home.paul.comp (paulfertser.info. [2001:470:26:54b:226:9eff:fe70:80c2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43890409758sm2800065e9.2.2025.01.16.07.29.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jan 2025 07:29:55 -0800 (PST)
-Received: from home.paul.comp (home.paul.comp [IPv6:0:0:0:0:0:0:0:1])
-	by home.paul.comp (8.15.2/8.15.2/Debian-22+deb11u3) with ESMTP id 50GFTpkn008705;
-	Thu, 16 Jan 2025 18:29:52 +0300
-Received: (from paul@localhost)
-	by home.paul.comp (8.15.2/8.15.2/Submit) id 50GFTnrZ008702;
-	Thu, 16 Jan 2025 18:29:49 +0300
-From: Paul Fertser <fercerpav@gmail.com>
-To: Potin Lai <potin.lai.pt@gmail.com>, Cosmo Chou <chou.cosmo@gmail.com>,
-        Eddie James <eajames@linux.ibm.com>,
-        Samuel Mendoza-Jonas <sam@mendozajonas.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ivan Mikhaylov <fr0st61te@gmail.com>,
-        Paul Fertser <fercerpav@gmail.com>, stable@vger.kernel.org
-Subject: [PATCH] net/ncsi: wait for the last response to Deselect Package before configuring channel
-Date: Thu, 16 Jan 2025 18:29:00 +0300
-Message-Id: <20250116152900.8656-1-fercerpav@gmail.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <CAGfYmwVH1A+imBF5TLenLaSM0Zf0C5wgfgocYix9Ye_7siR_xQ@mail.gmail.com>
-References: <CAGfYmwVH1A+imBF5TLenLaSM0Zf0C5wgfgocYix9Ye_7siR_xQ@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1737041682; x=1737646482;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EIMiu7qfvV+XA/dz3F5+XwUyd0m6b8Z8Cw1RmbU0RNs=;
+        b=wITRY5HmsSRvWxm78NnWekR5MRpJZPchz8W/GfT8e7YNRGGOdd0m5pMrOJ2ETMPqg+
+         g1/KLdfrn+kimPB/1qHqZYkyuIzSoU/cH4CA9ByYOo+iyfNKP9E22patg58hVguCFSmG
+         jG/qiSRmwQe5Fkg+fb/3xvmdXo4Zplc8JQF+H9pcvdNUm0JbUQ02bRsgTKFMCJaZwRa5
+         hYxFXp9Jzn6MOZrlMV/SZE2Dop9EGVRs9rp7/O0ttFp4pJvg1zgHZ+Yz549UNWXKaqI5
+         eQ1uI7WYTEeB8O4PLprKX7wemZ19O5nH3SRW5fze0LuoUwlenrenwK0oIQAyvICnBKKU
+         cDmA==
+X-Forwarded-Encrypted: i=1; AJvYcCWFtquSavlUtRxQCdlEW7RMTUXoVlMchOOgVBAaa+7AzH0AdL9L9E7c6NRuQjczP1Hpq75Sr7pQTAbaKI8=@vger.kernel.org, AJvYcCWPxfrlEZObG0aQYx4nuJL+p6MrQID/ZSh1s295H7+hEdiyleLQKZeddrcOFXrEoOOPlOC5cnrz@vger.kernel.org
+X-Gm-Message-State: AOJu0YyExLU7NMgammLVcXTRPAHZ0sS38yQHME37ieoDiDvQ2NWQ5SFj
+	+4fVzKLNG625WRxLaLsM/ITxuiqWbhMkgNJk/fjOsFG0MGNRJkg=
+X-Gm-Gg: ASbGnctSlXwSAFK0pP35DwHJQOe7MSxEba05+mgyuIF7EriiKx0EZQ3lQOrMuknJagY
+	utJhTz7sSriBlhasObxK62YkZlLnHR6bjlQPhZWoc7Dp7FwmHtZk6XvagyESFL6be6WBjDoHBiC
+	pBUFx1ic5VWk66qejwKwXOdvxr4vjX0T3PL4cGU0dn/lX4OSoe7oQu/4e0hcZLxtdpa/27buIUA
+	e/tF8gfXiEXEYX5QXL0bMSRi4i6u7lLKpzJhWIcjFJMpqgTdJHS6cUcg0wO1Uwj5ugkSVFJfmYR
+	Omus4SMJAJJCvjaA9zrt4jevL2g3QjOW
+X-Google-Smtp-Source: AGHT+IHFgTwOy4bMk8ut+aUp4MgqoTA81b/86r0Q0oUdh9GfbgBkjvEf1gAqWFQn7R/bNHGuDu+Xjw==
+X-Received: by 2002:a05:600c:4fc6:b0:436:1baa:de1c with SMTP id 5b1f17b1804b1-436e269793cmr317709405e9.13.1737041681915;
+        Thu, 16 Jan 2025 07:34:41 -0800 (PST)
+Received: from [192.168.1.3] (p5b2acf03.dip0.t-ipconnect.de. [91.42.207.3])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4389046250csm2525965e9.25.2025.01.16.07.34.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Jan 2025 07:34:41 -0800 (PST)
+Message-ID: <7b7c1a70-db81-41f5-abc3-8395aa600a6e@googlemail.com>
+Date: Thu, 16 Jan 2025 16:34:40 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.6 000/129] 6.6.72-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250115103554.357917208@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-The NCSI state machine as it's currently implemented assumes that
-transition to the next logical state is performed either explicitly by
-calling `schedule_work(&ndp->work)` to re-queue itself or implicitly
-after processing the predefined (ndp->pending_req_num) number of
-replies. Thus to avoid the configuration FSM from advancing prematurely
-and getting out of sync with the process it's essential to not skip
-waiting for a reply.
+Am 15.01.2025 um 11:36 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.6.72 release.
+> There are 129 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-This patch makes the code wait for reception of the Deselect Package
-response for the last package probed before proceeding to channel
-configuration.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-Thanks go to Potin Lai and Cosmo Chou for the initial investigation and
-testing.
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-Fixes: 8e13f70be05e ("net/ncsi: Probe single packages to avoid conflict")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paul Fertser <fercerpav@gmail.com>
----
- net/ncsi/ncsi-manage.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
-index 5cf55bde366d..bf8e27b84a66 100644
---- a/net/ncsi/ncsi-manage.c
-+++ b/net/ncsi/ncsi-manage.c
-@@ -1373,6 +1373,12 @@ static void ncsi_probe_channel(struct ncsi_dev_priv *ndp)
- 		nd->state = ncsi_dev_state_probe_package;
- 		break;
- 	case ncsi_dev_state_probe_package:
-+		if (ndp->package_probe_id >= 8) {
-+			/* Last package probed, finishing */
-+			ndp->flags |= NCSI_DEV_PROBED;
-+			break;
-+		}
-+
- 		ndp->pending_req_num = 1;
- 
- 		nca.type = NCSI_PKT_CMD_SP;
-@@ -1489,13 +1495,8 @@ static void ncsi_probe_channel(struct ncsi_dev_priv *ndp)
- 		if (ret)
- 			goto error;
- 
--		/* Probe next package */
-+		/* Probe next package after receiving response */
- 		ndp->package_probe_id++;
--		if (ndp->package_probe_id >= 8) {
--			/* Probe finished */
--			ndp->flags |= NCSI_DEV_PROBED;
--			break;
--		}
- 		nd->state = ncsi_dev_state_probe_package;
- 		ndp->active_package = NULL;
- 		break;
+Beste Grüße,
+Peter Schneider
+
 -- 
-2.34.1
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
