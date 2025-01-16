@@ -1,225 +1,228 @@
-Return-Path: <stable+bounces-109294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDA86A13E3E
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 16:53:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD525A13E49
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 16:54:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8CEC16C3A6
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 15:53:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13B7516C192
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 15:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F62F22CBC7;
-	Thu, 16 Jan 2025 15:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EB322BACA;
+	Thu, 16 Jan 2025 15:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nFnyi6aU"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r5hLHK5Z"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2082.outbound.protection.outlook.com [40.107.92.82])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C43D22CA19;
-	Thu, 16 Jan 2025 15:53:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.82
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737042802; cv=fail; b=VVOWIEUWOh9SJHphMkoQxdnxHwuFWhPh+uN0TZn8Ku/rPKG1bfrZ/Y/+zeta/EznUKL02YoD+AoLRlZQp9hGlDi5ij3ylfw89x5T/KXkOWzgrqTSdDD51m+nUcN1wP7hNUdsmk6VwaShsXDXl41vePIBhcUa3plDPCl9mljuEBM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737042802; c=relaxed/simple;
-	bh=7QyTJ7y8T1jyAfpVk0Ud0K2zPZq+LAtJ3IdzDboqyBY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tBNU8MQ6+SyVRJVYmMySZoANHzWUy+p49L77i1RXovCXFactDdRXzwCB400lIZG+g39mcY5+cx6DDnx8i0nxOQtzrl8VwGqQJDQ5xJk0789/m3Sd054VocOsRjaSarO92GeXM6zpEvgPMYcQvpge7aWW06yhWiOKEOnNpJQVUxI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nFnyi6aU; arc=fail smtp.client-ip=40.107.92.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YjxJGPLplx5Q5KBmdgQZGArwyjqYgNbSUXWLKQDLfWEp1jzaxfDokH6FKf8TQ2im7kXcPIzCZJy7N7nALGDTGO3OIOOAn8jriDk9eumu+GacD6XRsBFwDbdFdfghxg3IEnvL8YrTAeZlPZyo+4J1ZUsJbCxWEmmq+cSKY3J7HnPEM0TNQAl6hnbF5nFbpblvt8UBDaT7IIjx+3GlP/EbMI1gQvTuRoNM7nkMxcPh/K2xfTc+fPhwHXA7iVjLoR8uU83Cn7Onm/HCdbh4TwUxTGF2dlzssy/lbOKJXBPJQMSHfvP0briAgdQENpcErBnq3Cg7KD2YbdpccDP4eSwhJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=m4WczvLfzRBfFY2JJ7fpEpdmW48zpdWuGwNm8EJBdpg=;
- b=fUAGUaoXvWwvBA/nvgMZgvnzdcdc8GNuhsYhEEHFU+Qcw5ZSaR2VHZKkgY3S/XfEPrFT8yKzDET7bTkPyrvH4UETO4dr9VcvNq1r2osFIjxg2705H5CKZ+Rjb4WtU3oAYnwwCV/jqCF6NUCAU+BuC7srPo5IlTATjL/s1EB/kqxLmTCI8zmZRHAD25zy6DPMM+89jp7/pNfFRLfOS/+CRkLxp/SpHnePZcWRBgrfxbkHgLox5khv/JDrPIyXpjF/vFi8gctQDymUA7QF0D3It5Q4D+D3pi0h5Ti2WFA+twiC4QpUkpl9nVR6BzE9SYnhsrnlJ6KPPbWH71iaJ4JzTQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=m4WczvLfzRBfFY2JJ7fpEpdmW48zpdWuGwNm8EJBdpg=;
- b=nFnyi6aU1iqvCyJPILdsQUhbusT9shenI9tMr4ZzgTWuW+qOm+ykU4zwoD5nJ7hHuXcIuu8DD9BSYdYXRa1bR2FLIbCDLHsYkIZhWyuNAhLeSYdksb5hiWnToxzFWmxhowaRuvJgMNm4RD8pNjC+GVjoqraJ/uYAac8pWuGFmAYHohiSEUlPKOIPiBCNWQennnYp5jllmRqwOQhXzI336CqhR3E0ZrJ6jD97fi0fXbKwzwQGbIcq1RBTJFFecJffpvFzeJy421PwC+1PLtLV3LWOHV1vexBIQ4huLrjoLLwBRFoKk/7IeLb/PunhK4dDzpWXyhvSoUtcbi+bBH7gNw==
-Received: from BN0PR03CA0002.namprd03.prod.outlook.com (2603:10b6:408:e6::7)
- by MN6PR12MB8472.namprd12.prod.outlook.com (2603:10b6:208:46c::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.15; Thu, 16 Jan
- 2025 15:53:16 +0000
-Received: from BN1PEPF00005FFE.namprd05.prod.outlook.com
- (2603:10b6:408:e6:cafe::f8) by BN0PR03CA0002.outlook.office365.com
- (2603:10b6:408:e6::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.13 via Frontend Transport; Thu,
- 16 Jan 2025 15:53:16 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BN1PEPF00005FFE.mail.protection.outlook.com (10.167.243.230) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8356.11 via Frontend Transport; Thu, 16 Jan 2025 15:53:16 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 16 Jan
- 2025 07:53:01 -0800
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 16 Jan
- 2025 07:53:00 -0800
-Received: from 13db4e1-lcedt.nvidia.com (10.127.8.11) by mail.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Thu, 16 Jan 2025 07:52:58 -0800
-From: Mohan Kumar D <mkumard@nvidia.com>
-To: <vkoul@kernel.org>, <thierry.reding@gmail.com>, <jonathanh@nvidia.com>
-CC: <dmaengine@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, Mohan Kumar D
-	<mkumard@nvidia.com>
-Subject: [PATCH v2 2/2] dmaengine: tegra210-adma: check for adma max page
-Date: Thu, 16 Jan 2025 21:22:20 +0530
-Message-ID: <20250116155220.3896947-3-mkumard@nvidia.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250116155220.3896947-1-mkumard@nvidia.com>
-References: <20250116155220.3896947-1-mkumard@nvidia.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB7422BAA2
+	for <stable@vger.kernel.org>; Thu, 16 Jan 2025 15:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737042825; cv=none; b=n8exy4aMq4zrA/DvDlcew5BpBA0Co7IoBU2qyH7oL4Dg4WHBQjDIVyQBfHY96roBRA4jTJbVHV8+zWbaY8keY8ef2diKfkHd2xEN9sCGKfxIq665rkZD4c8Vgz84Rroc3inJDVB/7BGhVFkb9LgYo4C4Rx84ZPx2/Hnsbb+VKyY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737042825; c=relaxed/simple;
+	bh=Q7aXi4fcGo6T1SehVHNdY3YQJ59WO0VvIIZiNerAq64=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=iAfOtb0P46tcUv00caOEvaCFyYJn9/c7gYg8eJmyIb9wCrWi8uqwTRIDPhN6Sc+ctzvqG7U88+DlGVugYWbClJSPQI3H69MMfUdOPxx4jP25zHvJ4Gzk7YwlmygJ+3NwrV9SsihEibJ5KNG6VZAse2I9Cudth3bGuTNzR+gw1xE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--bgeffon.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r5hLHK5Z; arc=none smtp.client-ip=209.85.222.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--bgeffon.bounces.google.com
+Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-7b6e6cf6742so271062085a.3
+        for <stable@vger.kernel.org>; Thu, 16 Jan 2025 07:53:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1737042822; x=1737647622; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=+NgxzohitdM1qWFyHYVoLcjjA8gFpN7ubVQANdColG0=;
+        b=r5hLHK5ZCoUNXy5lcs2O53Bd7U9YQQLRg1VuD1mFi/jtMgfSJEBvfGehNM+5cLK//V
+         IUU53SWd4FWlZ8QjGl8Es58lLZR6hJZYmZFHcQvwc465o8XctGfvChWwLMzCqUPSJ4U1
+         cx9E5ZlI7vrw5vUGH7vwciesaeXGCCZmGMS9LUpE5+V4fp7qNBYAqq3pg7M7O1JmVuWA
+         ZZDaU2VJmwYJCCfAW5HCrbVqa4/adTWOImRpYWujRqEFslw0NgVHN+yVcazt0614AGkq
+         lI/XZrkVgpnO7WCXEiFRYAdnPNKAqq6DrgbNA1mb8C5P1ZqXW8adm7+6pG+H2EvhlIwK
+         4IZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737042822; x=1737647622;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+NgxzohitdM1qWFyHYVoLcjjA8gFpN7ubVQANdColG0=;
+        b=askjJsxtozRjsNkm44tBVf8+XpAmLq/hJhZC+t/deDLc0Ta3ORQrcNEHrug5wkdFaP
+         gRrzHCmh37TZtU8lb8qsEHuKI3Q8Rjez54nUiIzLHKG+VWNlDCHwbZvN7kYao924VssS
+         +iVL+n8QNxx/g/si62r4iCCC02IBgAWgMqoBLQk5Z6QL9fj2llcYzkJSH4MTP+flwnEF
+         x+bBhdFIjJrThQMWveTHm1vf8YuYZ/sK8rYtfsvscKHOgh4/z9j5dc/Msr33qxY6No+p
+         rVwQHb50xohGGu2h5AcgXb7sXaiDoRtZCDkARVv9AZwKDXVaJPNNAZR9EHkexCN2qhvq
+         8HaA==
+X-Forwarded-Encrypted: i=1; AJvYcCWWmNCC0it273vFMJlqj9dGOYuT6P9nRfBCIr/JnePnMW3xy+2TBKr4jIiEvRIASdpxHJVvvyI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhpPTWpDZS0N1YderAOf2S4H87NECatItvILSm25lZWM7Vyw/+
+	ER+jFFEDAeh2iRxySIV6mIhGb4lNk9l7JS8nl077wQvT340CwQpELpmOiAht9bEc5D9phfS3gAz
+	HzOk4Sw==
+X-Google-Smtp-Source: AGHT+IGJOnZhDdWOuqF4V2FKZrAxZRVdn4bKnAiEpdg+yjoPSSoWSLu+uDS4cdr2EjL67ZS7jo3Ffc+mWC1W
+X-Received: from qkhn21.prod.google.com ([2002:a05:620a:2235:b0:7b6:cc15:8bb0])
+ (user=bgeffon job=prod-delivery.src-stubby-dispatcher) by 2002:a05:620a:5e15:b0:7be:3cd7:dd95
+ with SMTP id af79cd13be357-7be3cd7de65mr1979422985a.12.1737042822520; Thu, 16
+ Jan 2025 07:53:42 -0800 (PST)
+Date: Thu, 16 Jan 2025 10:53:40 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00005FFE:EE_|MN6PR12MB8472:EE_
-X-MS-Office365-Filtering-Correlation-Id: 45c9aace-a1ae-45ab-a11b-08dd3645e433
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|82310400026|36860700013|30052699003;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?K2a13Uk5zZHbBXRvklmNpQCs7NEL6C1pBeppszcuujiTevtc/Lj+Iabyc7/w?=
- =?us-ascii?Q?mOJSiJ/qiHYqgm49Pqphpamry5qeCEm4j35GrERGWhDe2MgVnP1UyLkY36WE?=
- =?us-ascii?Q?ybAgVdl3X/AwQlMKo/bNMxEu/d38er2Q4LGX6ONDjCZekiiu+R0Ujz+ypItD?=
- =?us-ascii?Q?Jp4KqBJRI38F6v2rQlNyWl0NrboF17vLFhehHqIucsvYjFkYzzGoiXeGku4A?=
- =?us-ascii?Q?v7mjNVrnQ7fFzdNMYbSx0pXVpH99n0mruUlKGPYGdpM9jzsTTK4lYoEENKOG?=
- =?us-ascii?Q?I4zhjTGTD9A3tMEmhkoxQQh7LnQhaRhOobqLFSNO/AU7VTAsBtaj/0EyU9Ac?=
- =?us-ascii?Q?+3P5Lb88We+f8GbZb3Q/UgWjXUiZMZfH0h0oAD7QIxWZRa5ZosjqwM0j0Zvh?=
- =?us-ascii?Q?qdzzky9vNCG3T3EzxzjMBn9T7jrGXuW62tY6y5CoaGY4tvyzE6z21Tly0k8v?=
- =?us-ascii?Q?uGoVq+Yy69J5zTbUiVrfhMZm8Bm3R8cfgk2uWVUoEZfMLql7FC971bJ2++ux?=
- =?us-ascii?Q?ibll6MZlf6fyQBac/wElAHMIFLRA8NUT/7Rz8H0TXLcV+TE8lTQ9a4IwSJl/?=
- =?us-ascii?Q?KdxW1dB/rKXBcpYjV3l8+g7L7C5N3clhqMAjoT+zoQOs/Z16p5voK0ZZ2Vtj?=
- =?us-ascii?Q?oaDPvie5+j0kDd2alm8Bjd4hRkv6GqYZn/bOL38AABDXfWB48Pr+5LoXaz80?=
- =?us-ascii?Q?ZN6ovPP0yHO7OPTkxvPIXV78SoUjIb6FWKSMMoABacj3P4Ers8jLXZsb/r+R?=
- =?us-ascii?Q?aAYvmJ0fMPrJiGGu2xVLarx8sLL6Y3mHSH1y9KPU/hnNSHSDPDtSLHU6em5K?=
- =?us-ascii?Q?CvCqWDh6VDY2PE+/uTWzixCoYOcI8WOTSzN+9ZLQ6ScmceY3i6n/MDqVwMuA?=
- =?us-ascii?Q?ms+FpBsLNsmLkHk5hgsZB5xHtLTqnz0DbE0iAyNT9CR3nA5SYgjpkAhFedeT?=
- =?us-ascii?Q?xXLBptoI9dRTN+GeV8Pz+WxTGd6V4YA0wXHaj4yTIwk3/atWkAgIMoaoryCZ?=
- =?us-ascii?Q?StQwszwt1lzeN6vq7hbe6DMJWAReHdil5lAwPMUOidFHaSDHjUVEkH1twg8+?=
- =?us-ascii?Q?1d/5Nc26lcJiWCUmhh28OAcj0C3KPzcS3EhWBwL38a70rVgKOjAY95wedzke?=
- =?us-ascii?Q?DiTc5OOqNQceuChFSFKebbeqQ2wAW+1qflwLPYb3ws73rzGa0iDUeP39lFOE?=
- =?us-ascii?Q?ssWTijk99ydT45NpjhANrb8z6mCakc1oDOYcWvlbPzEY+M7+F93ZExFoYEc5?=
- =?us-ascii?Q?bkUZ/MRvddLz8dQ0Z5GNcYtFj3jANuWmTbOp9GxvW6/Gjz35cyrpLxChFibC?=
- =?us-ascii?Q?rf2aC4PXCOnm2jzkx8G185/fB15O/LbLPI7QgFZm0qrl7Yg1b+MmtBGbFNUN?=
- =?us-ascii?Q?+HlsIUwUw8vyInfPA78mjeIolKL8f8v0JfGSTXXmeT3TKBa4NkOKzd4KI4+m?=
- =?us-ascii?Q?qdF5bw7oqXjlcKVwTX7YmX0MVzJXdxI4sgBNhDMXbnIOt12wFNrt4MjZPuKX?=
- =?us-ascii?Q?Muw3sd6qjTkoAXM=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(1800799024)(82310400026)(36860700013)(30052699003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2025 15:53:16.3835
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 45c9aace-a1ae-45ab-a11b-08dd3645e433
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00005FFE.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8472
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.48.0.rc2.279.g1de40edade-goog
+Message-ID: <20250116155340.533180-1-bgeffon@google.com>
+Subject: [PATCH v2] drm/i915: Fix page cleanup on DMA remap failure
+From: Brian Geffon <bgeffon@google.com>
+To: intel-gfx@lists.freedesktop.org
+Cc: chris.p.wilson@intel.com, jani.saarinen@intel.com, tomasz.mistat@intel.com, 
+	vidya.srinivas@intel.com, ville.syrjala@linux.intel.com, 
+	jani.nikula@linux.intel.com, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Brian Geffon <bgeffon@google.com>, 
+	stable@vger.kernel.org, Tomasz Figa <tfiga@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Have additional check for max channel page during the probe
-to cover if any offset overshoot happens due to wrong DT
-configuration.
+When converting to folios the cleanup path of shmem_get_pages() was
+missed. When a DMA remap fails and the max segment size is greater than
+PAGE_SIZE it will attempt to retry the remap with a PAGE_SIZEd segment
+size. The cleanup code isn't properly using the folio apis and as a
+result isn't handling compound pages correctly.
 
-Fixes: 68811c928f88 ("dmaengine: tegra210-adma: Support channel page")
+v1 -> v2:
+  (Ville) Fixed locations where we were not clearing mapping unevictable.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Mohan Kumar D <mkumard@nvidia.com>
+Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
+Cc: Vidya Srinivas <vidya.srinivas@intel.com>
+Link: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13487
+Link: https://lore.kernel.org/lkml/20250116135636.410164-1-bgeffon@google.com/
+Fixes: 0b62af28f249 ("i915: convert shmem_sg_free_table() to use a folio_batch")
+Signed-off-by: Brian Geffon <bgeffon@google.com>
+Suggested-by: Tomasz Figa <tfiga@google.com>
 ---
- drivers/dma/tegra210-adma.c                  | 7 ++++++-
- drivers/phy/freescale/phy-fsl-samsung-hdmi.c | 2 +-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/gem/i915_gem_object.h |  3 +--
+ drivers/gpu/drm/i915/gem/i915_gem_shmem.c  | 23 +++++++++-------------
+ drivers/gpu/drm/i915/gem/i915_gem_ttm.c    |  7 ++++---
+ 3 files changed, 14 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/dma/tegra210-adma.c b/drivers/dma/tegra210-adma.c
-index 258220c9cb50..393e8a8a5bc1 100644
---- a/drivers/dma/tegra210-adma.c
-+++ b/drivers/dma/tegra210-adma.c
-@@ -83,7 +83,9 @@ struct tegra_adma;
-  * @nr_channels: Number of DMA channels available.
-  * @ch_fifo_size_mask: Mask for FIFO size field.
-  * @sreq_index_offset: Slave channel index offset.
-+ * @max_page: Maximum ADMA Channel Page.
-  * @has_outstanding_reqs: If DMA channel can have outstanding requests.
-+ * @set_global_pg_config: Global page programming.
-  */
- struct tegra_adma_chip_data {
- 	unsigned int (*adma_get_burst_config)(unsigned int burst_size);
-@@ -99,6 +101,7 @@ struct tegra_adma_chip_data {
- 	unsigned int nr_channels;
- 	unsigned int ch_fifo_size_mask;
- 	unsigned int sreq_index_offset;
-+	unsigned int max_page;
- 	bool has_outstanding_reqs;
- 	void (*set_global_pg_config)(struct tegra_adma *tdma);
- };
-@@ -854,6 +857,7 @@ static const struct tegra_adma_chip_data tegra210_chip_data = {
- 	.nr_channels		= 22,
- 	.ch_fifo_size_mask	= 0xf,
- 	.sreq_index_offset	= 2,
-+	.max_page		= 0,
- 	.has_outstanding_reqs	= false,
- 	.set_global_pg_config	= NULL,
- };
-@@ -871,6 +875,7 @@ static const struct tegra_adma_chip_data tegra186_chip_data = {
- 	.nr_channels		= 32,
- 	.ch_fifo_size_mask	= 0x1f,
- 	.sreq_index_offset	= 4,
-+	.max_page		= 4,
- 	.has_outstanding_reqs	= true,
- 	.set_global_pg_config	= tegra186_adma_global_page_config,
- };
-@@ -922,7 +927,7 @@ static int tegra_adma_probe(struct platform_device *pdev)
- 			page_offset = lower_32_bits(res_page->start) -
- 						lower_32_bits(res_base->start);
- 			page_no = page_offset / cdata->ch_base_offset;
--			if (page_no == 0)
-+			if (page_no == 0 || page_no > cdata->max_page)
- 				return -EINVAL;
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_object.h b/drivers/gpu/drm/i915/gem/i915_gem_object.h
+index 3dc61cbd2e11..0f122a12d4a5 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_object.h
++++ b/drivers/gpu/drm/i915/gem/i915_gem_object.h
+@@ -843,8 +843,7 @@ int shmem_sg_alloc_table(struct drm_i915_private *i915, struct sg_table *st,
+ 			 size_t size, struct intel_memory_region *mr,
+ 			 struct address_space *mapping,
+ 			 unsigned int max_segment);
+-void shmem_sg_free_table(struct sg_table *st, struct address_space *mapping,
+-			 bool dirty, bool backup);
++void shmem_sg_free_table(struct sg_table *st, bool dirty, bool backup);
+ void __shmem_writeback(size_t size, struct address_space *mapping);
  
- 			tdma->ch_page_no = page_no - 1;
-diff --git a/drivers/phy/freescale/phy-fsl-samsung-hdmi.c b/drivers/phy/freescale/phy-fsl-samsung-hdmi.c
-index 45004f598e4d..2af939bab62b 100644
---- a/drivers/phy/freescale/phy-fsl-samsung-hdmi.c
-+++ b/drivers/phy/freescale/phy-fsl-samsung-hdmi.c
-@@ -466,7 +466,7 @@ static int fsl_samsung_hdmi_phy_configure(struct fsl_samsung_hdmi_phy *phy,
- 	writeb(REG21_SEL_TX_CK_INV | FIELD_PREP(REG21_PMS_S_MASK,
- 	       cfg->pll_div_regs[2] >> 4), phy->regs + PHY_REG(21));
+ #ifdef CONFIG_MMU_NOTIFIER
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+index fe69f2c8527d..b320d9dfd6d3 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+@@ -29,16 +29,13 @@ static void check_release_folio_batch(struct folio_batch *fbatch)
+ 	cond_resched();
+ }
  
--	fsl_samsung_hdmi_phy_configure_pll_lock_det(phy, cfg);
-+	//fsl_samsung_hdmi_phy_configure_pll_lock_det(phy, cfg);
+-void shmem_sg_free_table(struct sg_table *st, struct address_space *mapping,
+-			 bool dirty, bool backup)
++void shmem_sg_free_table(struct sg_table *st, bool dirty, bool backup)
+ {
+ 	struct sgt_iter sgt_iter;
+ 	struct folio_batch fbatch;
+ 	struct folio *last = NULL;
+ 	struct page *page;
  
- 	writeb(REG33_FIX_DA | REG33_MODE_SET_DONE, phy->regs + PHY_REG(33));
+-	mapping_clear_unevictable(mapping);
+-
+ 	folio_batch_init(&fbatch);
+ 	for_each_sgt_page(page, sgt_iter, st) {
+ 		struct folio *folio = page_folio(page);
+@@ -180,10 +177,10 @@ int shmem_sg_alloc_table(struct drm_i915_private *i915, struct sg_table *st,
+ 	return 0;
+ err_sg:
+ 	sg_mark_end(sg);
++	mapping_clear_unevictable(mapping);
+ 	if (sg != st->sgl) {
+-		shmem_sg_free_table(st, mapping, false, false);
++		shmem_sg_free_table(st, false, false);
+ 	} else {
+-		mapping_clear_unevictable(mapping);
+ 		sg_free_table(st);
+ 	}
  
+@@ -209,8 +206,6 @@ static int shmem_get_pages(struct drm_i915_gem_object *obj)
+ 	struct address_space *mapping = obj->base.filp->f_mapping;
+ 	unsigned int max_segment = i915_sg_segment_size(i915->drm.dev);
+ 	struct sg_table *st;
+-	struct sgt_iter sgt_iter;
+-	struct page *page;
+ 	int ret;
+ 
+ 	/*
+@@ -239,9 +234,8 @@ static int shmem_get_pages(struct drm_i915_gem_object *obj)
+ 		 * for PAGE_SIZE chunks instead may be helpful.
+ 		 */
+ 		if (max_segment > PAGE_SIZE) {
+-			for_each_sgt_page(page, sgt_iter, st)
+-				put_page(page);
+-			sg_free_table(st);
++			/* Leave the mapping unevictable while we retry */
++			shmem_sg_free_table(st, false, false);
+ 			kfree(st);
+ 
+ 			max_segment = PAGE_SIZE;
+@@ -265,7 +259,8 @@ static int shmem_get_pages(struct drm_i915_gem_object *obj)
+ 	return 0;
+ 
+ err_pages:
+-	shmem_sg_free_table(st, mapping, false, false);
++	mapping_clear_unevictable(mapping);
++	shmem_sg_free_table(st, false, false);
+ 	/*
+ 	 * shmemfs first checks if there is enough memory to allocate the page
+ 	 * and reports ENOSPC should there be insufficient, along with the usual
+@@ -402,8 +397,8 @@ void i915_gem_object_put_pages_shmem(struct drm_i915_gem_object *obj, struct sg_
+ 	if (i915_gem_object_needs_bit17_swizzle(obj))
+ 		i915_gem_object_save_bit_17_swizzle(obj, pages);
+ 
+-	shmem_sg_free_table(pages, file_inode(obj->base.filp)->i_mapping,
+-			    obj->mm.dirty, obj->mm.madv == I915_MADV_WILLNEED);
++	mapping_clear_unevictable(file_inode(obj->base.filp)->i_mapping);
++	shmem_sg_free_table(pages, obj->mm.dirty, obj->mm.madv == I915_MADV_WILLNEED);
+ 	kfree(pages);
+ 	obj->mm.dirty = false;
+ }
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
+index 10d8673641f7..37f51a04b838 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
+@@ -232,7 +232,8 @@ static int i915_ttm_tt_shmem_populate(struct ttm_device *bdev,
+ 	return 0;
+ 
+ err_free_st:
+-	shmem_sg_free_table(st, filp->f_mapping, false, false);
++	mapping_clear_unevictable(filp->f_mapping);
++	shmem_sg_free_table(st, false, false);
+ 
+ 	return err;
+ }
+@@ -243,8 +244,8 @@ static void i915_ttm_tt_shmem_unpopulate(struct ttm_tt *ttm)
+ 	bool backup = ttm->page_flags & TTM_TT_FLAG_SWAPPED;
+ 	struct sg_table *st = &i915_tt->cached_rsgt.table;
+ 
+-	shmem_sg_free_table(st, file_inode(i915_tt->filp)->i_mapping,
+-			    backup, backup);
++	mapping_clear_unevictable(file_inode(i915_tt->filp)->i_mapping);
++	shmem_sg_free_table(st, backup, backup);
+ }
+ 
+ static void i915_ttm_tt_release(struct kref *ref)
 -- 
-2.25.1
+2.48.0.rc2.279.g1de40edade-goog
 
 
