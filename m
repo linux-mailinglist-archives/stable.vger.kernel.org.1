@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-109204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6739BA131BD
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 04:26:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC6D7A131BE
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 04:26:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4E1C7A2B14
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 03:25:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 662797A29C6
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 03:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE8B13635C;
-	Thu, 16 Jan 2025 03:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CDA2148850;
+	Thu, 16 Jan 2025 03:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PckeBSIS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HRDwsNo/"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75CA13635B;
-	Thu, 16 Jan 2025 03:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746F11487C8;
+	Thu, 16 Jan 2025 03:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736997933; cv=none; b=cy9iwJaIqMi4j33nsy5avSvSP4Bi+F3dd/Xwjm8/N2r+umeJMkBwZM6PlJaX2fGEbaWpXnfbZP6BVMNd8eMETrVfsmiHnEDT9wgK1N7orLUzEWbWV9iQrR4Vin+4NPgIbMMaijrKI4cQ6RRJ7yGaUmChKdYkrxf5GeifZinIvEg=
+	t=1736997938; cv=none; b=kbEZPYiwok2C87PzVP9KSQJ01QBlCMFUciUo89gUkHt0nbEhEcEVhlhv3Zo/u0vyf9RM1NLuO36952tz42yVi2ZgSXWTH766P1NUbxVboZIqJwNmIfSS7/CwLFmtkuLPBCrZLVN18qvJd+/u63JtLaDYIsYXxJVhdBvQnpcFCsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736997933; c=relaxed/simple;
-	bh=it0li0YYogXZ6lxr/8sOjCldpc3M/I48MQwObTe+uj0=;
+	s=arc-20240116; t=1736997938; c=relaxed/simple;
+	bh=td3ZZ0j0HLouPMAMZAhj2DUcSXrlnPeWRXzfXSyW9Gs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dG3vDawN2k1yjrb1UVix0Xu8UwLoG+UrpiytuGAATiyC2ln4AqRt3+KTEJnjRZnR0LayEKpFm7xBSLeHynlfe/DueQslFVac7BBF2lBmGSCJB75PE+6eCC9XKC+TBekHQyiZJ3z4QEj5QOpiE8pcGYnc9ELXawq0Xk6xkS7SgCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PckeBSIS; arc=none smtp.client-ip=198.175.65.18
+	 MIME-Version; b=F7ttHNFLI0Th/yBrfA5E72QNi916Id3+OLa6TIz5lbD5EUrV50nDeOi93Zs58TAEsI/2yn9NdiGzLJM36nuXBjdGE9oE1PNdxYIYSyB46/nBQI3lGOUGSl9aVPc9u9egbnlN2obfT7n18CdY3Y9aldSYTThg3qvQlK5X+4U2Rrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HRDwsNo/; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736997932; x=1768533932;
+  t=1736997936; x=1768533936;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=it0li0YYogXZ6lxr/8sOjCldpc3M/I48MQwObTe+uj0=;
-  b=PckeBSISQQk7R7MDhv6BtZsIe+fkwZ33fvcOTi+NK2D+8r3PM1x94bTH
-   ybQLXmTCOI/pUfqvCXhRey6UqLUHjIPdOJtj3g4k2t7T2He+BiTwDv8+Q
-   UGHnrD1qv02TynQ4BU66bACzMtEUXOUzGJS+8WYcnu1AyzI7I11cJl6cQ
-   eMqWPDysBaFyeSwLu0GaVGUcKzl9t+MAM0zT0z0LVlTz57Q9dqJ8pxpNq
-   3s+dlW7Zxsv76WW6ggxqb/++ocJDlGOdFZNYOgfWw7mJPN3z3FH7+eJkM
-   t80LS3OIF0OYxeaIbnHpsvPc5UvJJ7pIgUz6MJ9YHGo+pj9T2yEHr3le7
-   A==;
-X-CSE-ConnectionGUID: 0j5TzDjyROW6IHegeKP+rA==
-X-CSE-MsgGUID: 83Q1FY6LT6KAwf1iLePe1w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="37478900"
+  bh=td3ZZ0j0HLouPMAMZAhj2DUcSXrlnPeWRXzfXSyW9Gs=;
+  b=HRDwsNo/LydDY+NKPe1bgjNhVavjnE13NXiNYKbSknncXBusW9DQFVoa
+   gumw4rtpRS3m0u/YKDHBKxqLAslCDoDrBR6F0s3FaA8WooQ6STSD52h4e
+   z/DovjlYT0BWAzPuOYm5ixsG5Dgfb3Ur1+899jqS3ungeTlaTR88Wa656
+   BEk/x9JnzzpxvlSPwaJNipUi1CmaUrC7f+fN0lAm140JO1yp7QS56AObn
+   e2eAVenApQHpVrtvT8zqSgtXCnWd4lBQ+rEifh6rY80/7t1IcR8cvDjxy
+   D9zoXZG/4OA0/WeLWDrU4uphOEx1ZJi2TEv3J/yhaXTYxiBy0BytWwyoy
+   w==;
+X-CSE-ConnectionGUID: j/tdAceTRaKNCBWpR67woA==
+X-CSE-MsgGUID: gDDHeOynRqeGUTKKH0J6Ew==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="37478918"
 X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="37478900"
+   d="scan'208";a="37478918"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2025 19:25:31 -0800
-X-CSE-ConnectionGUID: UNy1vifpQya6JUUjsaamGA==
-X-CSE-MsgGUID: 11xnMHdZS5S5S5md6mZkPQ==
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2025 19:25:36 -0800
+X-CSE-ConnectionGUID: yEniKsXdQiWkMRkAKPxzKw==
+X-CSE-MsgGUID: Kd575k5bQYGSVVDfyZxTwQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="142604356"
+   d="scan'208";a="142604370"
 Received: from pg15swiplab1181.png.altera.com ([10.244.232.167])
-  by orviesa001.jf.intel.com with ESMTP; 15 Jan 2025 19:25:28 -0800
+  by orviesa001.jf.intel.com with ESMTP; 15 Jan 2025 19:25:33 -0800
 From: niravkumar.l.rabara@intel.com
 To: Miquel Raynal <miquel.raynal@bootlin.com>,
 	Richard Weinberger <richard@nod.at>,
@@ -70,9 +70,9 @@ To: Miquel Raynal <miquel.raynal@bootlin.com>,
 	linux-mtd@lists.infradead.org,
 	linux-kernel@vger.kernel.org
 Cc: stable@vger.kernel.org
-Subject: [PATCH v2 2/3] mtd: rawnand: cadence: use dma_map_resource for sdma address
-Date: Thu, 16 Jan 2025 11:21:53 +0800
-Message-Id: <20250116032154.3976447-3-niravkumar.l.rabara@intel.com>
+Subject: [PATCH v2 3/3] mtd: rawnand: cadence: fix incorrect dev context in dma_unmap_single
+Date: Thu, 16 Jan 2025 11:21:54 +0800
+Message-Id: <20250116032154.3976447-4-niravkumar.l.rabara@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250116032154.3976447-1-niravkumar.l.rabara@intel.com>
 References: <20250116032154.3976447-1-niravkumar.l.rabara@intel.com>
@@ -86,113 +86,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
 
-Map the slave DMA I/O address using dma_map_resource.
-When ARM SMMU is enabled, using a direct physical address of SDMA results
-in DMA transaction failure.
+dma_map_single is using dma_dev->dev, however dma_unmap_single
+is using cdns_ctrl->dev, which is incorrect.
+Used the correct device context dma_dev->dev for dma_unmap_single.
 
 Fixes: ec4ba01e894d ("mtd: rawnand: Add new Cadence NAND driver to MTD subsystem")
 Cc: stable@vger.kernel.org
 Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
 ---
- .../mtd/nand/raw/cadence-nand-controller.c    | 29 ++++++++++++++++---
- 1 file changed, 25 insertions(+), 4 deletions(-)
+ drivers/mtd/nand/raw/cadence-nand-controller.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/mtd/nand/raw/cadence-nand-controller.c b/drivers/mtd/nand/raw/cadence-nand-controller.c
-index 5e27f5546f1b..8281151cf869 100644
+index 8281151cf869..2d50eeb902ac 100644
 --- a/drivers/mtd/nand/raw/cadence-nand-controller.c
 +++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
-@@ -471,6 +471,8 @@ struct cdns_nand_ctrl {
- 	struct {
- 		void __iomem *virt;
- 		dma_addr_t dma;
-+		dma_addr_t iova_dma;
-+		u32 size;
- 	} io;
+@@ -1863,12 +1863,12 @@ static int cadence_nand_slave_dma_transfer(struct cdns_nand_ctrl *cdns_ctrl,
+ 	dma_async_issue_pending(cdns_ctrl->dmac);
+ 	wait_for_completion(&finished);
  
- 	int irq;
-@@ -1835,11 +1837,11 @@ static int cadence_nand_slave_dma_transfer(struct cdns_nand_ctrl *cdns_ctrl,
- 	}
- 
- 	if (dir == DMA_FROM_DEVICE) {
--		src_dma = cdns_ctrl->io.dma;
-+		src_dma = cdns_ctrl->io.iova_dma;
- 		dst_dma = buf_dma;
- 	} else {
- 		src_dma = buf_dma;
--		dst_dma = cdns_ctrl->io.dma;
-+		dst_dma = cdns_ctrl->io.iova_dma;
- 	}
- 
- 	tx = dmaengine_prep_dma_memcpy(cdns_ctrl->dmac, dst_dma, src_dma, len,
-@@ -2869,6 +2871,7 @@ cadence_nand_irq_cleanup(int irqnum, struct cdns_nand_ctrl *cdns_ctrl)
- static int cadence_nand_init(struct cdns_nand_ctrl *cdns_ctrl)
- {
- 	dma_cap_mask_t mask;
-+	struct dma_device *dma_dev = cdns_ctrl->dmac->device;
- 	int ret;
- 
- 	cdns_ctrl->cdma_desc = dma_alloc_coherent(cdns_ctrl->dev,
-@@ -2913,6 +2916,16 @@ static int cadence_nand_init(struct cdns_nand_ctrl *cdns_ctrl)
- 		}
- 	}
- 
-+	cdns_ctrl->io.iova_dma = dma_map_resource(dma_dev->dev, cdns_ctrl->io.dma,
-+						  cdns_ctrl->io.size,
-+						  DMA_BIDIRECTIONAL, 0);
-+
-+	ret = dma_mapping_error(dma_dev->dev, cdns_ctrl->io.iova_dma);
-+	if (ret) {
-+		dev_err(cdns_ctrl->dev, "Failed to map I/O resource to DMA\n");
-+		goto dma_release_chnl;
-+	}
-+
- 	nand_controller_init(&cdns_ctrl->controller);
- 	INIT_LIST_HEAD(&cdns_ctrl->chips);
- 
-@@ -2923,18 +2936,22 @@ static int cadence_nand_init(struct cdns_nand_ctrl *cdns_ctrl)
- 	if (ret) {
- 		dev_err(cdns_ctrl->dev, "Failed to register MTD: %d\n",
- 			ret);
--		goto dma_release_chnl;
-+		goto unmap_dma_resource;
- 	}
- 
- 	kfree(cdns_ctrl->buf);
- 	cdns_ctrl->buf = kzalloc(cdns_ctrl->buf_size, GFP_KERNEL);
- 	if (!cdns_ctrl->buf) {
- 		ret = -ENOMEM;
--		goto dma_release_chnl;
-+		goto unmap_dma_resource;
- 	}
+-	dma_unmap_single(cdns_ctrl->dev, buf_dma, len, dir);
++	dma_unmap_single(dma_dev->dev, buf_dma, len, dir);
  
  	return 0;
  
-+unmap_dma_resource:
-+	dma_unmap_resource(dma_dev->dev, cdns_ctrl->io.iova_dma,
-+			   cdns_ctrl->io.size, DMA_BIDIRECTIONAL, 0);
-+
- dma_release_chnl:
- 	if (cdns_ctrl->dmac)
- 		dma_release_channel(cdns_ctrl->dmac);
-@@ -2956,6 +2973,8 @@ static int cadence_nand_init(struct cdns_nand_ctrl *cdns_ctrl)
- static void cadence_nand_remove(struct cdns_nand_ctrl *cdns_ctrl)
- {
- 	cadence_nand_chips_cleanup(cdns_ctrl);
-+	dma_unmap_resource(cdns_ctrl->dmac->device->dev, cdns_ctrl->io.iova_dma,
-+			   cdns_ctrl->io.size, DMA_BIDIRECTIONAL, 0);
- 	cadence_nand_irq_cleanup(cdns_ctrl->irq, cdns_ctrl);
- 	kfree(cdns_ctrl->buf);
- 	dma_free_coherent(cdns_ctrl->dev, sizeof(struct cadence_nand_cdma_desc),
-@@ -3020,7 +3039,9 @@ static int cadence_nand_dt_probe(struct platform_device *ofdev)
- 	cdns_ctrl->io.virt = devm_platform_get_and_ioremap_resource(ofdev, 1, &res);
- 	if (IS_ERR(cdns_ctrl->io.virt))
- 		return PTR_ERR(cdns_ctrl->io.virt);
-+
- 	cdns_ctrl->io.dma = res->start;
-+	cdns_ctrl->io.size = resource_size(res);
+ err_unmap:
+-	dma_unmap_single(cdns_ctrl->dev, buf_dma, len, dir);
++	dma_unmap_single(dma_dev->dev, buf_dma, len, dir);
  
- 	dt->clk = devm_clk_get(cdns_ctrl->dev, "nf_clk");
- 	if (IS_ERR(dt->clk))
+ err:
+ 	dev_dbg(cdns_ctrl->dev, "Fall back to CPU I/O\n");
 -- 
 2.25.1
 
