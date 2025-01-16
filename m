@@ -1,76 +1,62 @@
-Return-Path: <stable+bounces-109211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7978FA132E5
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 06:59:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B5BA132EA
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 07:02:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3603188550F
-	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 05:59:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4D261602D3
+	for <lists+stable@lfdr.de>; Thu, 16 Jan 2025 06:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1BD218DF62;
-	Thu, 16 Jan 2025 05:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA8018A6D7;
+	Thu, 16 Jan 2025 06:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Fbs0WkuE"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="rAqShkry"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343D7141987;
-	Thu, 16 Jan 2025 05:59:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF50E4414;
+	Thu, 16 Jan 2025 06:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737007177; cv=none; b=VbC/a8EN3oXFZ3MGRjg6fOKkmmEiRxPLBP6jqV8ME14F1Rki8JgOKBjQz6+J/+ZgnTcS8atUH0sIxUd9C6e7aGfe6Ey7uGpqtz+2xGhO768gEpZGIKfTprdg1HVwE0KcobvjyvbFGOHsOpS3Mi7IrX5CXqNQhwzuuS6+D8dy6xQ=
+	t=1737007322; cv=none; b=L85JfYqwNHl+27qu63TeuBnQpXy1j/YbFSOKGPJgexGElIQkwmUbG9hE0ipZaXqVwkHhW1UKnvQF1+QfEpnxzowg7pBuftapQ9KJaUHOKKsXGe2sB/+p6gNdRAFkGSWwaX6vYa9YdVfHa4WU+dcELT13J1BLmxZwzqEXv2zh7ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737007177; c=relaxed/simple;
-	bh=lcQqiuG2mKaEftTvzcONznF2dzWJHPToqMHqJUIACM0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dV755jxMIY3lTsWRDyN9SYwl3NMcrznTYfj0VTu46Zwz+rqmddE/IJD6rBwUCrJ/77iovR+PUwmBOJw0qTdf0CUBZhvLmbE7oCLRSs2hBWhOtBghPOUwlaIv212y059tAue5F107OnoIeZyC3I+wLGP5+wouRa2H7AAJHT8ITEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=Fbs0WkuE; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 0be75eb0d3cf11efbd192953cf12861f-20250116
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=7JOyXQZobW/luOOWb6Nlyqh7d3eh8Z9mp/NnINZ9kOA=;
-	b=Fbs0WkuEllL1bpCk7dkNsU1yFPKHmKWB+iC4Wl9Mv7fVIYoEVlMWIwsDqkGipBF5kWog1grTzEPbqOCUC6u1gX+OZvzpvRRTGAYef1XsRUfyjLeKqnumd9WJsrMWEoap9kI3gmgptXMppLjxXm9Ca6DN9UuBD+7zwEaaDAUvYKw=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.46,REQID:105c0f99-3796-48e8-b88e-02debce993fe,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:60aa074,CLOUDID:7df1f90e-078a-483b-8929-714244d25c49,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
-	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 0be75eb0d3cf11efbd192953cf12861f-20250116
-Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw02.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 207954963; Thu, 16 Jan 2025 13:59:28 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Thu, 16 Jan 2025 13:59:27 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.28 via Frontend Transport; Thu, 16 Jan 2025 13:59:26 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
-	<Michael.Lo@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-	<km.lin@mediatek.com>, <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
-	<posh.sun@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
-	<mingyen.hsieh@mediatek.com>, <stable@vger.kernel.org>
-Subject: [PATCH] wifi: mt76: mt7925: ensure wow pattern command align fw format
-Date: Thu, 16 Jan 2025 13:59:25 +0800
-Message-ID: <20250116055925.3856856-1-mingyen.hsieh@mediatek.com>
+	s=arc-20240116; t=1737007322; c=relaxed/simple;
+	bh=6EVTeRJE2qQCguMHU0pY4y9+LWlFHp8/ngKKdgj04Hw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tEDrmb/iPpkO8FPj0D/XV4Sllq43te/rUew2qZV8l588IT8B5De/rkPZ28PLm+rQihbNbzdyIIK2N2YJRwzWHDtXl4EzEITMPOQ5/C3T9oEtFPTHvJIuZqSVEM6qYYhiAWtM/X4ZVx1KUd2sEZzD1aM/vAH8sA6+Ri9R41vjS8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=rAqShkry; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=4DMsSC2RM4vuk2GbjdcAOU5F1L9kx8kK+5rMeV2MByc=; b=rAqShkryCJOX5Icn5jkfzSE6rX
+	XnGmJmfJnJ1RT/CnuRwBU1/eTS/jPl6vYt5ZQfnI3JmDdLAL5Aq59jjPl8AfEvOWBCm+0blR3hzO2
+	b9CKRSj+CTvpFliRfZs0638JrDDLZCAp+MJgBkwWdrNlg/Bm1VRVQzTRGHRZZZsxDNRadbP0b1esX
+	/bxcNgaK2xSJXyYN2l5cJPtgA7Lnf56fK3V7I/xfOXsRRTjMG5wrz5B8q33qDHDChNVlFEaWOHswt
+	PeJu531s34v+XKTC7c+1fKk4YxIO6f0W93xbjOBtu4eYhvyc2oCLdWwGy88gXG35w6dykKruYoLSP
+	ahQzt3jQ==;
+Received: from 2a02-8389-2341-5b80-1199-69ad-3684-6d55.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:1199:69ad:3684:6d55] helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1tYIx5-0000000Dv84-460f;
+	Thu, 16 Jan 2025 06:02:00 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Carlos Maiolino <cem@kernel.org>
+Cc: "Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	linux-xfs@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] xfs: check for dead buffers in xfs_buf_find_insert
+Date: Thu, 16 Jan 2025 07:01:41 +0100
+Message-ID: <20250116060151.87164-2-hch@lst.de>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20250116060151.87164-1-hch@lst.de>
+References: <20250116060151.87164-1-hch@lst.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,35 +64,40 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Commit 32dd4f9c506b ("xfs: remove a superflous hash lookup when inserting
+new buffers") converted xfs_buf_find_insert to use
+rhashtable_lookup_get_insert_fast and thus an operation that returns the
+existing buffer when an insert would duplicate the hash key.  But this
+code path misses the check for a buffer with a reference count of zero,
+which could lead to reusing an about to be freed buffer.  Fix this by
+using the same atomic_inc_not_zero pattern as xfs_buf_insert.
 
-Align the format of "struct mt7925_wow_pattern_tlv" with
-firmware to ensure proper functionality.
-
-Cc: stable@vger.kernel.org
-Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Fixes: 32dd4f9c506b ("xfs: remove a superflous hash lookup when inserting new buffers")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Cc: <stable@vger.kernel.org> # v6.0
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/xfs/xfs_buf.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
-index 1e47d2c61b54..6bf1623e542e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
-@@ -566,8 +566,8 @@ struct mt7925_wow_pattern_tlv {
- 	u8 offset;
- 	u8 mask[MT76_CONNAC_WOW_MASK_MAX_LEN];
- 	u8 pattern[MT76_CONNAC_WOW_PATTEN_MAX_LEN];
--	u8 rsv[7];
--} __packed;
-+	u8 rsv[4];
-+};
- 
- struct roc_acquire_tlv {
- 	__le16 tag;
+diff --git a/fs/xfs/xfs_buf.c b/fs/xfs/xfs_buf.c
+index 6f313fbf7669..f80e39fde53b 100644
+--- a/fs/xfs/xfs_buf.c
++++ b/fs/xfs/xfs_buf.c
+@@ -664,9 +664,8 @@ xfs_buf_find_insert(
+ 		spin_unlock(&bch->bc_lock);
+ 		goto out_free_buf;
+ 	}
+-	if (bp) {
++	if (bp && atomic_inc_not_zero(&bp->b_hold)) {
+ 		/* found an existing buffer */
+-		atomic_inc(&bp->b_hold);
+ 		spin_unlock(&bch->bc_lock);
+ 		error = xfs_buf_find_lock(bp, flags);
+ 		if (error)
 -- 
 2.45.2
 
