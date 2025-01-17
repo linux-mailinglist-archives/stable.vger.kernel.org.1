@@ -1,82 +1,87 @@
-Return-Path: <stable+bounces-109354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAABFA14E6E
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 12:24:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2C77A14E71
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 12:25:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36AD77A37BA
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 11:24:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E900188227F
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 11:25:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4092B1FECA2;
-	Fri, 17 Jan 2025 11:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6612D1FBEBF;
+	Fri, 17 Jan 2025 11:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMGjjGEh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qp1R4vDK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7711FE479
-	for <stable@vger.kernel.org>; Fri, 17 Jan 2025 11:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2737A46BF
+	for <stable@vger.kernel.org>; Fri, 17 Jan 2025 11:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737113043; cv=none; b=Ibb/i8EWp/QT3EmrnZkUz5TAbCpJSdleHwHbNDtfR6lQHI1SILnyvwqh9TkHZpeLHtuPxSpTpEd2NzMiiH9OMPCB9ngIiI+Ps9nqfVGW9txPtOcs2rzBZxQLPkOygHTTe6l34UZp47aUnXzHV9lU2ActAEQEMPDMjySVfId8VZ4=
+	t=1737113141; cv=none; b=AaUH3TYy/CDsIUQS1EXg65EmqPlXVrmNKpJpgWRdcvRd8Arq5NTMN07ZrAniopAXqk2hwfBSFm4BafZWM+cTTzNEohb+xIVmxERVfAOz5scm52OBywEK0IEGveE+CFCXmLvQcifhScBfgCCLYyYdDCHx/+4ayTVq1unPmozxyqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737113043; c=relaxed/simple;
-	bh=Mpgdb55r7B3y3fAk7zqf8DxSHscTAMRNmMenqfRsAAI=;
+	s=arc-20240116; t=1737113141; c=relaxed/simple;
+	bh=H7A2hqMxKZYMX9asT2op2wIPHhhvQn1el8J9qlmdtis=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J3JrDclwKo7+fp5CF6rgaBJMdQ4kDhczdbOEMOzSXyhALJXBtYdLOYlOb7LS4bCwC1xno/QZwjKKSq/MXntygOvqGY2BZsL8D/PeBlntobsGMBrY40TNqhtGDEoRBtSdWPdaSUbo5zoLGvLqqxhEeRorx3woQEXJe3cXITPJVX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMGjjGEh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9637C4CEDD;
-	Fri, 17 Jan 2025 11:24:01 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dbzorqb+Sd1TQbsOz7NUfS2/8Vn68S4K9+bJGc4KfGxHsgGw2Dm+klb3ncgmdd7ACnmupV6yIlGkKgmafzeqdUkyZa/j8QSC6ZrFcZz81oG0/Zb1G+VzTG4XXFZe7ZtJupetGkto650IjXV4EvDNsj+QX1Kp9ahNwMZcTSQnlX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qp1R4vDK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E4E5C4CEDD;
+	Fri, 17 Jan 2025 11:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737113042;
-	bh=Mpgdb55r7B3y3fAk7zqf8DxSHscTAMRNmMenqfRsAAI=;
+	s=korg; t=1737113140;
+	bh=H7A2hqMxKZYMX9asT2op2wIPHhhvQn1el8J9qlmdtis=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XMGjjGEhe6TVc7hCrLuH2S8UCYUP1KIufs0vi7nOHBxPzud70p5IS1PG/85Yh0pfz
-	 8HrKPFBAh1Ou+qFBBjobpXMDS9IO2JQOSq1rwY2wp9bC7Amk0xI7gzq13WjZLQgoaq
-	 LmbhaZFcrd/qpL1y7pYK/BGwTT0O+h2tOHCB71J8=
-Date: Fri, 17 Jan 2025 12:23:58 +0100
+	b=Qp1R4vDKGsYVTSE+0Gmin5L01IIwaxm5u81jCuOsFQ0XP0R1hyps7+7dMVFT6mVvD
+	 k6hfLf0C4qF0PVm4QKvSTXV+V7or4SoDBK36qLYRrOHb7iowfvuQvJHkyAZjOjhwpZ
+	 xte/EL3Lqrew7nv5rkRqZZ1UPD6dNbL1JjtDFtaE=
+Date: Fri, 17 Jan 2025 12:25:37 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Terry Tritton <terry.tritton@linaro.org>
-Cc: stable <stable@vger.kernel.org>, Vidya Sagar <vidyas@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Daniel Verkamp <dverkamp@chromium.org>
-Subject: Re: [REGRESSION] Cuttlefish boot issue on lts branches
-Message-ID: <2025011740-driller-rendering-e85d@gregkh>
-References: <CABeuJB2PdWVaP_8EUe34CJwoVRLuU8tMi6kVkWok5EAxwpiEHw@mail.gmail.com>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Dave Airlie <airlied@gmail.com>,
+	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+	stable@vger.kernel.org, ashutosh.dixit@intel.com,
+	dri-devel@lists.freedesktop.org
+Subject: Re: AAARRRGGGHHH!!!! (was Re: [PATCH 6.12.y] xe/oa: Fix query mode
+ of operation for OAR/OAC)
+Message-ID: <2025011749-pueblo-brought-3107@gregkh>
+References: <2025010650-tuesday-motivate-5cbb@gregkh>
+ <20250110205341.199539-1-umesh.nerlige.ramappa@intel.com>
+ <2025011215-agreeing-bonfire-97ae@gregkh>
+ <CAPM=9txn1x5A7xt+9YQ+nvLaQ3ycekC1Oj4J2PUpWCJwyQEL9w@mail.gmail.com>
+ <2025011244-backlit-jubilance-4fa1@gregkh>
+ <jwnn3zov3akpnqzbk5lss3r6q4yupj6indmmapwvh6hadcdycg@pvquyntsvqpe>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <CABeuJB2PdWVaP_8EUe34CJwoVRLuU8tMi6kVkWok5EAxwpiEHw@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <jwnn3zov3akpnqzbk5lss3r6q4yupj6indmmapwvh6hadcdycg@pvquyntsvqpe>
 
-On Fri, Jan 17, 2025 at 11:01:17AM +0000, Terry Tritton wrote:
-> Hi all,
-> We've seen a regression on several lts branches(at least 5.10,5.15,6.1) causing
-> boot issues on cuttlefish/crossvm android emulation on arm64.
+On Fri, Jan 17, 2025 at 12:01:01PM +0100, Uwe Kleine-König wrote:
+> On Sun, Jan 12, 2025 at 10:06:42PM +0100, Greg KH wrote:
+> > That's fine, the issue is that you are the only ones with "duplicate"
+> > commits in the tree that are both tagged for stable, every release.
 > 
-> The offending patch is:
->     PCI: Use preserve_config in place of pci_flags
+> Isn't a solution as easy as teaching your tooling not to create/accept
+> commits on -next with Cc: stable? This way folks intending to push a
+> change will notice it should go to the fixes branch. And if only
+> afterwards you notice this is a critical fix that should get backported
+> at least the commit that takes more time entering mainline doesn't have
+> the stable tag.
 > 
-> It looks like this patch was added to stable by AUTOSEL but without the other
-> 3 patches in the series:
->     https://lore.kernel.org/all/20240508174138.3630283-1-vidyas@nvidia.com/
-> 
-> Applying the missing patches resolves the issue but they do not apply cleanly.
-> 
-> Can we revert this patch on the lts branches?
+> Maybe additionally make sure that Fixes: and revert notices only point
+> to commits that are an ancestor.
 
-Sure, can you please send the revert with all of this information so we
-get it correct and you get proper credit for finding/fixing it?
+The commit is always an ancestor, the "trick" is which one when the
+ancestor was cherry-picked previously?  That's the real problem here..
 
-thanks,
-
-greg k-h
+gre k-h
 
