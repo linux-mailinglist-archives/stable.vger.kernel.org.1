@@ -1,108 +1,80 @@
-Return-Path: <stable+bounces-109353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFC11A14E5A
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 12:22:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAABFA14E6E
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 12:24:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22C9E3A8340
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 11:22:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36AD77A37BA
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 11:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C311FE44A;
-	Fri, 17 Jan 2025 11:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4092B1FECA2;
+	Fri, 17 Jan 2025 11:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIXiHvhW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMGjjGEh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0451FCFCA;
-	Fri, 17 Jan 2025 11:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7711FE479
+	for <stable@vger.kernel.org>; Fri, 17 Jan 2025 11:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737112929; cv=none; b=a9wNG9I0M+8hoWcWMj7uMEEkE6fx+S0yLp+LfGoGqAVKqptEDXKZcqh/ji+MGAZ/btIj2a3ClHVQOCOIzmOhGEM+sKJF7pbLj2uAS8J6Wi4CkGPL1lzOBuhTt2aRWFxt0jK3LhWhfJDUKdDze2+RK0GiSUZqrWwzEty1Hrb5K7E=
+	t=1737113043; cv=none; b=Ibb/i8EWp/QT3EmrnZkUz5TAbCpJSdleHwHbNDtfR6lQHI1SILnyvwqh9TkHZpeLHtuPxSpTpEd2NzMiiH9OMPCB9ngIiI+Ps9nqfVGW9txPtOcs2rzBZxQLPkOygHTTe6l34UZp47aUnXzHV9lU2ActAEQEMPDMjySVfId8VZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737112929; c=relaxed/simple;
-	bh=ChlFzvKNc0Ha/ZcLninVyJ/F0u9LMThy0WMW4/hIloU=;
+	s=arc-20240116; t=1737113043; c=relaxed/simple;
+	bh=Mpgdb55r7B3y3fAk7zqf8DxSHscTAMRNmMenqfRsAAI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pa8uUKDZazGbltjJS5O2IT3P0avgJ/8sSNMzWKS/Xu+GW1xMYGFV17Z3e2FGo1O2fKQS8Za9QHbFJz2+xtpHib6Ru7nAyg57CuI+qHyERYgDwsD65EnzJbPpzPhWvXdVr0YRM2+sva+080E72qzrsgsLyzX0Vps6EYXZjhY6jaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIXiHvhW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59359C4CEDD;
-	Fri, 17 Jan 2025 11:22:05 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=J3JrDclwKo7+fp5CF6rgaBJMdQ4kDhczdbOEMOzSXyhALJXBtYdLOYlOb7LS4bCwC1xno/QZwjKKSq/MXntygOvqGY2BZsL8D/PeBlntobsGMBrY40TNqhtGDEoRBtSdWPdaSUbo5zoLGvLqqxhEeRorx3woQEXJe3cXITPJVX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMGjjGEh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9637C4CEDD;
+	Fri, 17 Jan 2025 11:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737112925;
-	bh=ChlFzvKNc0Ha/ZcLninVyJ/F0u9LMThy0WMW4/hIloU=;
+	s=korg; t=1737113042;
+	bh=Mpgdb55r7B3y3fAk7zqf8DxSHscTAMRNmMenqfRsAAI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LIXiHvhW+Y7ToPqapdcbMOj94KUBYIlHszOdhYPUVYAm99qEF1OPXinLrOQIfo87C
-	 UTs2oWbHkHp7O0PPFZfS4X6Wo3w4FP5aF/sCb9SxcVgcLI+U0+fmJoelXOz8cP2oNH
-	 XUzusDiTZhWqxeqMwjpvwjHu0xC0a22RtERaBYPs=
-Date: Fri, 17 Jan 2025 12:22:02 +0100
+	b=XMGjjGEhe6TVc7hCrLuH2S8UCYUP1KIufs0vi7nOHBxPzud70p5IS1PG/85Yh0pfz
+	 8HrKPFBAh1Ou+qFBBjobpXMDS9IO2JQOSq1rwY2wp9bC7Amk0xI7gzq13WjZLQgoaq
+	 LmbhaZFcrd/qpL1y7pYK/BGwTT0O+h2tOHCB71J8=
+Date: Fri, 17 Jan 2025 12:23:58 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Kyle Tso <kyletso@google.com>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	andre.draszik@linaro.org, rdbabiera@google.com,
-	m.felsch@pengutronix.de, xu.yang_2@nxp.com,
-	u.kleine-koenig@baylibre.com, emanuele.ghidoli@toradex.com,
-	badhri@google.com, amitsd@google.com, linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v1] usb: typec: tcpci: Prevent Sink disconnection before
- vPpsShutdown in SPR PPS
-Message-ID: <2025011702-pronto-sequel-7e87@gregkh>
-References: <20250114142435.2093857-1-kyletso@google.com>
- <Z4jsp4J6AX0X-uwX@kuha.fi.intel.com>
- <CAGZ6i=3W-WsZ7Hz9T2wEYnFFMmFPpjgnrWQuHo=a_QJn8jzUOA@mail.gmail.com>
+To: Terry Tritton <terry.tritton@linaro.org>
+Cc: stable <stable@vger.kernel.org>, Vidya Sagar <vidyas@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Daniel Verkamp <dverkamp@chromium.org>
+Subject: Re: [REGRESSION] Cuttlefish boot issue on lts branches
+Message-ID: <2025011740-driller-rendering-e85d@gregkh>
+References: <CABeuJB2PdWVaP_8EUe34CJwoVRLuU8tMi6kVkWok5EAxwpiEHw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGZ6i=3W-WsZ7Hz9T2wEYnFFMmFPpjgnrWQuHo=a_QJn8jzUOA@mail.gmail.com>
+In-Reply-To: <CABeuJB2PdWVaP_8EUe34CJwoVRLuU8tMi6kVkWok5EAxwpiEHw@mail.gmail.com>
 
-On Thu, Jan 16, 2025 at 07:41:16PM +0800, Kyle Tso wrote:
-> On Thu, Jan 16, 2025 at 7:25 PM Heikki Krogerus
-> <heikki.krogerus@linux.intel.com> wrote:
-> >
-> > On Tue, Jan 14, 2025 at 10:24:35PM +0800, Kyle Tso wrote:
-> > > The Source can drop its output voltage to the minimum of the requested
-> > > PPS APDO voltage range when it is in Current Limit Mode. If this voltage
-> > > falls within the range of vPpsShutdown, the Source initiates a Hard
-> > > Reset and discharges Vbus. However, currently the Sink may disconnect
-> > > before the voltage reaches vPpsShutdown, leading to unexpected behavior.
-> > >
-> > > Prevent premature disconnection by setting the Sink's disconnect
-> > > threshold to the minimum vPpsShutdown value. Additionally, consider the
-> > > voltage drop due to IR drop when calculating the appropriate threshold.
-> > > This ensures a robust and reliable interaction between the Source and
-> > > Sink during SPR PPS Current Limit Mode operation.
-> > >
-> > > Fixes: 4288debeaa4e ("usb: typec: tcpci: Fix up sink disconnect thresholds for PD")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Kyle Tso <kyletso@google.com>
-> >
-> > You've resend this, right? So is this v2 (or v1)?
-> >
-> > Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> >
+On Fri, Jan 17, 2025 at 11:01:17AM +0000, Terry Tritton wrote:
+> Hi all,
+> We've seen a regression on several lts branches(at least 5.10,5.15,6.1) causing
+> boot issues on cuttlefish/crossvm android emulation on arm64.
 > 
-> Hello Heikki,
+> The offending patch is:
+>     PCI: Use preserve_config in place of pci_flags
 > 
-> Thank you for the review.
+> It looks like this patch was added to stable by AUTOSEL but without the other
+> 3 patches in the series:
+>     https://lore.kernel.org/all/20240508174138.3630283-1-vidyas@nvidia.com/
 > 
-> Apologies for the resend. This is indeed the v1 patch. The previous
-> email was accidentally sent with an incomplete recipient list.
+> Applying the missing patches resolves the issue but they do not apply cleanly.
+> 
+> Can we revert this patch on the lts branches?
 
-Our tools play havoc when we have duplicates like this, always increment
-the version number when resending as obviously you did the resend for
-some reason.  Also, it let's us know which ones to review, what would
-you do if you saw both of these in your inbox?
-
-I'll try to fix this up by hand this time..
+Sure, can you please send the revert with all of this information so we
+get it correct and you get proper credit for finding/fixing it?
 
 thanks,
 
