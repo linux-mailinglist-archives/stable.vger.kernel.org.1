@@ -1,177 +1,252 @@
-Return-Path: <stable+bounces-109369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20F29A1509E
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 14:37:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DF1AA150F9
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 14:54:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0177D1602BB
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 13:37:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABB5E164DBC
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 13:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78EAC200130;
-	Fri, 17 Jan 2025 13:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49B11FFC68;
+	Fri, 17 Jan 2025 13:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SxINPgMm"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hewSYLQb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86A6200100;
-	Fri, 17 Jan 2025 13:36:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4281FAC59
+	for <stable@vger.kernel.org>; Fri, 17 Jan 2025 13:54:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737121008; cv=none; b=OpZofyoJXxuG1FDa2B8TLpCjzQ4LvyBo8l68TH0aEdk77rszjTT5uWgdzCNpaTqAzsqElpW786oqphf+cUySF6GkYTuJvoJlhZrK/k8mTRorfuB2LxBKaOkTeVivGk1FUwOqY89XFCdcITY68wbi0wYiBXwsEIFPX7Jez8Y9elw=
+	t=1737122052; cv=none; b=ovfaXrWmMPnnBS5C6MyWwFQPIGQ5iZp7mV9JyqAjZy3gZANvSOZAJ3HXDZ/+IVN67litnOduF5SPdp/qk/GfS/llPTbxpuCzXTN98Ni3PsA5Pno2cz9XF0kcSS8V88Xp72vkQ4ubI95shxvjQL6N8ErTD2ownIc2kYsr11VAFTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737121008; c=relaxed/simple;
-	bh=ykoOYP5A9GqLIO8ujgXlxd/k2bw6vl/rJwrKvkpumwo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TnAqrEWBLnDbWnS1w4ozJHkkkJX9gBR4qivHqdiCdCdpMnF3pR7AbDC9c/Dh3+JBKKeqtiw98ufkEGKIlI9UCP7kqF7k+PdBOvNEXZXF76X0X4vAmCdlmdNABiTc+cR+1eUechYYYRbv4ykjyPlilSqSX+S38HQYUR5lyWzroHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SxINPgMm; arc=none smtp.client-ip=209.85.161.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-5f321876499so1141403eaf.1;
-        Fri, 17 Jan 2025 05:36:46 -0800 (PST)
+	s=arc-20240116; t=1737122052; c=relaxed/simple;
+	bh=A9aAMGGnsTEhFX1U+oiiKa/uAspmjBna60FbJ48QEPE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=RgR2APouuy9Brq1Oq4fPXFRsbDM5arT9c/ft4tSGBV4NXToSkpSbLMtR9s3Np+32IFBjC5wv5jyP2XJzM/qgsPczSKqYR9DrszaCzu3YUDOlFAqaiaBS/g3RjW6dDqli3UcL9RhB7nW/mtN6cLnWqTHPurBlEMMuWW5tE1Q4ks4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hewSYLQb; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4361b6f9faeso13436375e9.1
+        for <stable@vger.kernel.org>; Fri, 17 Jan 2025 05:54:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737121006; x=1737725806; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iT6JakgGMnf6JWUAg95lo0Hdan+g6MjCBqiydljWY8k=;
-        b=SxINPgMmG7YLCk24d+zUggLplNQry9HoTOwKAbMbWrbQakYgGtnR7uSik0j9NXfqjB
-         4PpXdCHXbbeeVQq+VaNbSCBvKOlic3OG1TvNlgyct+5wwi25Tdk9oWGkvZYTWu7rkMBH
-         RnWTkHdT27B1c9uRKSRtXRyJvc8YP4ORYCyiovF/VnZNW+ISnIkWxlmJJG8fugsj/+8i
-         wW+p6vJsBNQB/7e/hYjRCOOGmXRjcrjlZ+CKlMcfQBTS7sbp6z2gw8PysCQ3i5f6K5zP
-         BGnlwuUxCJuTiHdXdrvQmr2/19nV1YrS8nIO/1Fb7DSfgt6BwB63+eGc3rJeD2YyWgBu
-         Fh3Q==
+        d=linaro.org; s=google; t=1737122049; x=1737726849; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=G8dm039u0h/bE0Lku8VlFtIRyKFOkFgqiMCpqXYzbhk=;
+        b=hewSYLQbrZF282ncJCotaMM8z4V9AVqjVTVRs0P7oH509Gr+eyVtvztXz9c85p0YtR
+         X9k8F9sDtxGu6g8C1WV78dIlJjnY/BHIjetydXyroVYw9asjM725a4sq4Fv6R0ep0eJU
+         K4COPk+pBHoOmqhYIM3XQ2KUulBXU+U5Z/XLXBKQnYqkTtUY8w7aHFy/w0RD9UB5oPw/
+         d5lmq2yMR6oDGt2b8uWpl+p/FomycmeZI4xiVpGfftC+QnKl600qfnLQXOZZVVCzL9LC
+         snFvGdYEuWCJaPENUKF6jMHzcdg3IDb9PXACQqSZCdSz/KnFUiGYsHcn6XeRLrZHyEPZ
+         eDjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737121006; x=1737725806;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iT6JakgGMnf6JWUAg95lo0Hdan+g6MjCBqiydljWY8k=;
-        b=RuV7Ojr9pk6KGdHm0aavXEttmH8H/Q9qywJZyHB8IYm0x/udCgqw9kd4Yhv5O8MqyU
-         p9Mh67Dp9IicpWUDXBZ5VDeX2EGw4G7VIYGXloYwhdYygqyqJ6fDb0+yz5sG8xrLeh1s
-         0uVoS1/YWCPpiQYuvpyPuBfpvx6b+gakuvqe91PuA3L0vCV6e6GPFvBxm4lQD1AWwvuW
-         0WH6l9u0vQWvplz0y0zeHhl3vXOtiMhlxMtdE1Uq9ifLcRal1ppC8H+yXxcY6n1MfHSC
-         lVf+t4rMxkz+QL+mpkNAOXc0vlI7jTNsKfsZTxRdGTBBwNg4hT7GvexzMDuB/TF5TTAh
-         A8Rw==
-X-Forwarded-Encrypted: i=1; AJvYcCVnzmOWxpuf/kddiuJ2uv+oQPH2GH5aUTYvs9NoTIwVb73iS7bLTYL1PIdhk4sNqi1tIxyTcIkfroOt@vger.kernel.org, AJvYcCVxaVA6nP7I0AqasCekxYk317OinA2+mLLzZpBMTUs3ryI2z043eE4ux30F1a2rFcPCQ+o=@vger.kernel.org, AJvYcCWdOgmuke28C4AVsOEGY5y6n6IEsMfoloAZH+lvZ5DGLjg6WfhjrDCRqEHvsPuu6R1B9GNfBfm0so0PDmt9@vger.kernel.org, AJvYcCWq+QAc/o4J5Vx1mVJUo9q32Sflwtuhz7XWeoFduZNdjWK4WWtbDPl4I0QzDXp7AP4TedGlRylo@vger.kernel.org, AJvYcCXQM2icEZZHVgl3/4DmzFtowqNHNfZpOe8xbO29IiW8kxEAqi5Qh/aI9f/X0+5jdU55E604yV5nuifi9go6koFgAn7Z@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAatkwXzX1YSjvR6hTy7+PZdFByykqGIkYzt60SJoRFcyWoX7b
-	45T2evYrmb7Tl9vPzM+TPaPqeG2AiNOqKWTWvy8s/r/iPBo68pLc3799+6+yasfPAlEHa8RFedz
-	JZeG8XQ7IdEhYUTSCJa6s/iQQU30=
-X-Gm-Gg: ASbGncvReyTe/rvHytM9qDMJvgjPm7g/GEWha2ZKD9FIEWaYfu/CB0IbLPX4C/xI4m8
-	jTFfCdMM1EI67z7zf+3coLmj5IjnVzRJhZU2DAg==
-X-Google-Smtp-Source: AGHT+IFvad+ZXGCoxHtM0gw/gElj7za0zj2PpUGCXThzkgXaHc8LVmM4fMDPZpqOAat3utTHabdLcbeS11L77l1I0c0=
-X-Received: by 2002:a05:6870:2a47:b0:29f:a6e2:4108 with SMTP id
- 586e51a60fabf-2b1869b0fa6mr6727343fac.2.1737121005718; Fri, 17 Jan 2025
- 05:36:45 -0800 (PST)
+        d=1e100.net; s=20230601; t=1737122049; x=1737726849;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=G8dm039u0h/bE0Lku8VlFtIRyKFOkFgqiMCpqXYzbhk=;
+        b=KPUygMBOVXWFT+/bYG0BhnbFqLwd2+MxAjggd8MMms7WcxyPjm9Pi3uNFfMNEQIJW3
+         XtaetpiaCTP5Ym7zHEr3lqwlWzjOhrzvhyMh2IcmQ8U31XecT7F3+XKGlUsu7yhC/FzY
+         TeBXemz5t8vLd571EAlChreWsEVUDQNGwwkLUSjHBfLam0VwPCjJc3CT07nqqAQK0/Wp
+         0U9wKfE2O3KmoU9Hqjj+R1wO3eJQJVMnAoXv5xqwilqXMYQ3OQcizpG8mIvDJQRQP77o
+         aZgjTaM5gcxwKLfEgv94hAYOFkHiYM7E2kjewct9jJvUkRiSMAwKsIzK8XS9hakcGcTZ
+         v0ow==
+X-Forwarded-Encrypted: i=1; AJvYcCWc9owQg56KhI9JsiN9YfwwwbjDLmW1nOYIUoQIBC60G17PUhSqfvs8OsUCxIp30eXXKJoO5k4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxO2pkRJJehS5xybMGZHKlK9y7tslCAr8k2yCTpTkT3JP3/msDK
+	U20tBZEcNCf0P1EYPvgd9zHYf4Ew7mk+onMMK0CobKIRGy4DojNhq1zWFT5erXY=
+X-Gm-Gg: ASbGnctctER54HcAsWfTcx47rKfDRz3561F4N9ozNO1cPwSec4Lxb2vLdvclYCD9N4K
+	6Mn0S5flkKeuWnyWMG7gxeCNTFi6eLm8s5gxTeJ8G9XKp952KJcrh6RjGfCHuzINR+C/AlNwFZf
+	gXI132nqPSDc3YcB1p/69yNj20X3XjBOXYLBWEo0+mezyNXXA+7idGncUK65CKiSsRjyuso4QHh
+	9U6/q8Bh98RNPPjYzcf0dTIkxWyF2193EVR1n0NuLDGgwlLbMvYwmS5cCsK8Ot0LQ==
+X-Google-Smtp-Source: AGHT+IGIKvWGLgyUIWVx/VXmZV84JzoLHCX1quTsEBQ4TrIU9xwoJZlGH1jpLDRZRCWPwilY6CwVFw==
+X-Received: by 2002:a7b:cc06:0:b0:437:c453:ff19 with SMTP id 5b1f17b1804b1-437c6b4707cmr100788035e9.14.1737122049058;
+        Fri, 17 Jan 2025 05:54:09 -0800 (PST)
+Received: from [127.0.1.1] ([176.61.106.227])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bf3221bf0sm2545279f8f.28.2025.01.17.05.54.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jan 2025 05:54:08 -0800 (PST)
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Subject: [PATCH v10 0/4] clk: qcom: Add support for multiple power-domains
+ for a clock controller.
+Date: Fri, 17 Jan 2025 13:54:06 +0000
+Message-Id: <20250117-b4-linux-next-24-11-18-clock-multiple-power-domains-v10-0-13f2bb656dad@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250117005539.325887-1-eyal.birger@gmail.com>
- <20250117013927.GB2610@redhat.com> <20250117170229.f1e1a9f03a8547d31cd875db@kernel.org>
-In-Reply-To: <20250117170229.f1e1a9f03a8547d31cd875db@kernel.org>
-From: Eyal Birger <eyal.birger@gmail.com>
-Date: Fri, 17 Jan 2025 05:36:34 -0800
-X-Gm-Features: AbW1kvbmNpeFCohqRZCOjNCkMbLk4tbkvbKDcf6UHeDZf44yJqqbEtRACKxLRMY
-Message-ID: <CAHsH6Gtbo39pVjVWbPfSjePPyFYVLWJq9m3HLWgDGp1orvD+GA@mail.gmail.com>
-Subject: Re: [PATCH] seccomp: passthrough uretprobe systemcall without filtering
-To: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>, kees@kernel.org, luto@amacapital.net, wad@chromium.org, 
-	andrii@kernel.org, jolsa@kernel.org, alexei.starovoitov@gmail.com, 
-	olsajiri@gmail.com, cyphar@cyphar.com, songliubraving@fb.com, yhs@fb.com, 
-	john.fastabend@gmail.com, peterz@infradead.org, tglx@linutronix.de, 
-	bp@alien8.de, daniel@iogearbox.net, ast@kernel.org, andrii.nakryiko@gmail.com, 
-	rostedt@goodmis.org, rafi@rbk.io, shmulik.ladkani@gmail.com, 
-	bpf@vger.kernel.org, linux-api@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAP5gimcC/63RTW7DIBAF4KtErEsFw/DXVe9RdYEBJ6iObdmJm
+ yrK3TvJpq68o13OW7xvYK5szlPJM3vZXdmUlzKXoadBiqcdi4fQ7zMviQIGAlBK6XiDvCv9+cL
+ 7fDlxQC4lpzh2Q/zgx3N3KmOX+Th85omn4RhKP/OgW+8xRdQQGDWPU27L5cG+vdN8KPNpmL4eW
+ yzynv7NWyQXvLEBmuSgCcq+UkWYhudh2rM7uMAKAV2HACFBZ6s1JptRbxC1RkwdoghxyqSQlNI
+ gwwbBNWLrECQEFbqEIjZGbV+i10jlTTQhMYADE9E4iRvErBFfhxhCANGZYIRrnNkg9gcBKqxCL
+ CE2KwFtEh6d2yDuHxBHiE5exdx6KcL2u/wKUaIO8YS0UrcNCp3b8Pvwt9vtG/NhD5QgBAAA
+X-Change-ID: 20241118-b4-linux-next-24-11-18-clock-multiple-power-domains-a5f994dc452a
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
+ Rajendra Nayak <quic_rjendra@quicinc.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-1b0d6
 
-On Fri, Jan 17, 2025 at 12:02=E2=80=AFAM Masami Hiramatsu <mhiramat@kernel.=
-org> wrote:
->
-> On Fri, 17 Jan 2025 02:39:28 +0100
-> Oleg Nesterov <oleg@redhat.com> wrote:
->
-> > On 01/16, Eyal Birger wrote:
-> > >
-> > > Fixes: ff474a78cef5 ("uprobe: Add uretprobe syscall to speed up retur=
-n probe")
-> > > Reported-by: Rafael Buchbinder <rafi@rbk.io>
-> > > Link: https://lore.kernel.org/lkml/CAHsH6Gs3Eh8DFU0wq58c_LF8A4_+o6z45=
-6J7BidmcVY2AqOnHQ@mail.gmail.com/
-> > > Cc: stable@vger.kernel.org
-> > ...
-> > > @@ -1359,6 +1359,11 @@ int __secure_computing(const struct seccomp_da=
-ta *sd)
-> > >     this_syscall =3D sd ? sd->nr :
-> > >             syscall_get_nr(current, current_pt_regs());
-> > >
-> > > +#ifdef CONFIG_X86_64
-> > > +   if (unlikely(this_syscall =3D=3D __NR_uretprobe) && !in_ia32_sysc=
-all())
-> > > +           return 0;
-> > > +#endif
-> >
-> > Acked-by: Oleg Nesterov <oleg@redhat.com>
-> >
-> >
-> > A note for the seccomp maintainers...
-> >
-> > I don't know what do you think, but I agree in advance that the very fa=
-ct this
-> > patch adds "#ifdef CONFIG_X86_64" into __secure_computing() doesn't loo=
-k nice.
-> >
->
-> Indeed. in_ia32_syscall() depends arch/x86 too.
-> We can add an inline function like;
->
-> ``` uprobes.h
-> static inline bool is_uprobe_syscall(int syscall)
-> {
->         // arch_is_uprobe_syscall check can be replaced by Kconfig,
->         // something like CONFIG_ARCH_URETPROBE_SYSCALL.
-> #ifdef arch_is_uprobe_syscall
->         return arch_is_uprobe_syscall(syscall)
-> #else
->         return false;
-> #endif
-> }
-> ```
-> and
-> ``` arch/x86/include/asm/uprobes.h
-> #define arch_is_uprobe_syscall(syscall) \
->         (IS_ENABLED(CONFIG_X86_64) && syscall =3D=3D __NR_uretprobe && !i=
-n_ia32_syscall())
-> ```
+Changes in v10:
+- Updated the commit log of patch #1 to make the reasoning - that it makes
+  applying the subsequent patch cleaner/nicer clear - Bjorn
+- Substantially rewrites final patch commit to mostly reflect Bjorn's
+  summation of my long and rambling previous paragraphs.
+  Being a visual person, I've included some example pseudo-code which
+  hopefully makes the intent clearer plus some ASCII art >= Klimt.
+- Link to v9: https://lore.kernel.org/r/20241230-b4-linux-next-24-11-18-clock-multiple-power-domains-v9-0-f15fb405efa5@linaro.org
 
-Notice it'll need to be enclosed in ifdef CONFIG_X86_64 as __NR_uretprobe
-isn't defined otherwise so the IS_ENABLED isn't needed.
+Changes in v9:
+- Added patch to unwind pm subdomains in reverse order.
+  It would also be possible to squash this patch into patch#2 but,
+  my own preference is for more granular patches like this instead of
+  "slipping in" functional changes in larger patches like #2. - bod
+- Unwinding pm subdomain on error in patch #2.
+  To facilitate this change patch #1 was created - Vlad
+- Drops Bjorn's RB on patch #2. There is a small churn in this patch
+  but enough that a reviewer might reasonably expect RB to be given again.
+- Amends commit log for patch #3 further.
+  v8 added a lot to the commit log to provide further information but, it
+  is clear from the comments I received on the commit log that the added
+  verbiage was occlusive not elucidative.
+  Reduce down the commit log of patch #3 - especially Q&A item #1.
+  Sometimes less is more.
+- Link to v8: https://lore.kernel.org/r/20241211-b4-linux-next-24-11-18-clock-multiple-power-domains-v8-0-5d93cef910a4@linaro.org
 
->
-> > The problem is that we need a simple patch for -stable which fixes the =
-real
-> > problem. We can cleanup this logic later, I think.
->
-> Hmm, at least we should make it is_uprobe_syscall() in uprobes.h so that
-> do not pollute the seccomp subsystem with #ifdef.
+Changes in v8:
+- Picks up change I agreed with Vlad but failed to cherry-pick into my b4
+  tree - Vlad/Bod
+- Rewords the commit log for patch #3. As I read it I decided I might
+  translate bits of it from thought-stream into English - Bod
+- Link to v7: https://lore.kernel.org/r/20241211-b4-linux-next-24-11-18-clock-multiple-power-domains-v7-0-7e302fd09488@linaro.org
 
-I like this approach.
+Changes in v7:
+- Expand commit log in patch #3
+  I've discussed with Bjorn on IRC and video what to put into the log here
+  and captured most of what we discussed.
 
-Notice it does add a couple of includes that weren't there before:
-- arch/x86/include/asm/uprobes.h would include asm/unistd.h
-- seccomp.c would include linux/uprobes.h
+  Mostly the point here is voting for voltages in the power-domain list
+  is up to the drivers to do with performance states/opp-tables not for the
+  GDSC code. - Bjorn/Bryan
+- Link to v6: https://lore.kernel.org/r/20241129-b4-linux-next-24-11-18-clock-multiple-power-domains-v6-0-24486a608b86@linaro.org
 
-So it's a less "trivial" patch... If that's ok I can repost with these
-changes.
+Changes in v6:
+- Passes NULL to second parameter of devm_pm_domain_attach_list - Vlad
+- Link to v5: https://lore.kernel.org/r/20241128-b4-linux-next-24-11-18-clock-multiple-power-domains-v5-0-ca2826c46814@linaro.org
 
-Eyal.
+Changes in v5:
+- In-lines devm_pm_domain_attach_list() in probe() directly - Vlad
+- Link to v4: https://lore.kernel.org/r/20241127-b4-linux-next-24-11-18-clock-multiple-power-domains-v4-0-4348d40cb635@linaro.org
+
+v4:
+- Adds Bjorn's RB to first patch - Bjorn
+- Drops the 'd' in "and int" - Bjorn
+- Amends commit log of patch 3 to capture a number of open questions -
+  Bjorn
+- Link to v3: https://lore.kernel.org/r/20241126-b4-linux-next-24-11-18-clock-multiple-power-domains-v3-0-836dad33521a@linaro.org
+
+v3:
+- Fixes commit log "per which" - Bryan
+- Link to v2: https://lore.kernel.org/r/20241125-b4-linux-next-24-11-18-clock-multiple-power-domains-v2-0-a5e7554d7e45@linaro.org
+
+v2:
+The main change in this version is Bjorn's pointing out that pm_runtime_*
+inside of the gdsc_enable/gdsc_disable path would be recursive and cause a
+lockdep splat. Dmitry alluded to this too.
+
+Bjorn pointed to stuff being done lower in the gdsc_register() routine that
+might be a starting point.
+
+I iterated around that idea and came up with patch #3. When a gdsc has no
+parent and the pd_list is non-NULL then attach that orphan GDSC to the
+clock controller power-domain list.
+
+Existing subdomain code in gdsc_register() will connect the parent GDSCs in
+the clock-controller to the clock-controller subdomain, the new code here
+does that same job for a list of power-domains the clock controller depends
+on.
+
+To Dmitry's point about MMCX and MCX dependencies for the registers inside
+of the clock controller, I have switched off all references in a test dtsi
+and confirmed that accessing the clock-controller regs themselves isn't
+required.
+
+On the second point I also verified my test branch with lockdep on which
+was a concern with the pm_domain version of this solution but I wanted to
+cover it anyway with the new approach for completeness sake.
+
+Here's the item-by-item list of changes:
+
+- Adds a patch to capture pm_genpd_add_subdomain() result code - Bryan
+- Changes changelog of second patch to remove singleton and generally
+  to make the commit log easier to understand - Bjorn
+- Uses demv_pm_domain_attach_list - Vlad
+- Changes error check to if (ret < 0 && ret != -EEXIST) - Vlad
+- Retains passing &pd_data instead of NULL - because NULL doesn't do
+  the same thing - Bryan/Vlad
+- Retains standalone function qcom_cc_pds_attach() because the pd_data
+  enumeration looks neater in a standalone function - Bryan/Vlad
+- Drops pm_runtime in favour of gdsc_add_subdomain_list() for each
+  power-domain in the pd_list.
+  The pd_list will be whatever is pointed to by power-domains = <>
+  in the dtsi - Bjorn
+- Link to v1: https://lore.kernel.org/r/20241118-b4-linux-next-24-11-18-clock-multiple-power-domains-v1-0-b7a2bd82ba37@linaro.org
+
+v1:
+On x1e80100 and it's SKUs the Camera Clock Controller - CAMCC has
+multiple power-domains which power it. Usually with a single power-domain
+the core platform code will automatically switch on the singleton
+power-domain for you. If you have multiple power-domains for a device, in
+this case the clock controller, you need to switch those power-domains
+on/off yourself.
+
+The clock controllers can also contain Global Distributed
+Switch Controllers - GDSCs which themselves can be referenced from dtsi
+nodes ultimately triggering a gdsc_en() in drivers/clk/qcom/gdsc.c.
+
+As an example:
+
+cci0: cci@ac4a000 {
+	power-domains = <&camcc TITAN_TOP_GDSC>;
+};
+
+This series adds the support to attach a power-domain list to the
+clock-controllers and the GDSCs those controllers provide so that in the
+case of the above example gdsc_toggle_logic() will trigger the power-domain
+list with pm_runtime_resume_and_get() and pm_runtime_put_sync()
+respectively.
+
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+---
+Bryan O'Donoghue (4):
+      clk: qcom: gdsc: Release pm subdomains in reverse add order
+      clk: qcom: gdsc: Capture pm_genpd_add_subdomain result code
+      clk: qcom: common: Add support for power-domain attachment
+      clk: qcom: Support attaching GDSCs to multiple parents
+
+ drivers/clk/qcom/common.c |  6 ++++
+ drivers/clk/qcom/gdsc.c   | 75 +++++++++++++++++++++++++++++++++++++++--------
+ drivers/clk/qcom/gdsc.h   |  1 +
+ 3 files changed, 69 insertions(+), 13 deletions(-)
+---
+base-commit: 0907e7fb35756464aa34c35d6abb02998418164b
+change-id: 20241118-b4-linux-next-24-11-18-clock-multiple-power-domains-a5f994dc452a
+
+Best regards,
+-- 
+Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+
 
