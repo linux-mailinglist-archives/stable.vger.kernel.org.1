@@ -1,138 +1,186 @@
-Return-Path: <stable+bounces-109394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AF00A152A7
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 16:19:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB5BAA152C8
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 16:23:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C59DF16B78C
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 15:19:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 285521882C93
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 15:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B72193067;
-	Fri, 17 Jan 2025 15:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6771B15CD74;
+	Fri, 17 Jan 2025 15:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iKRKDEgc"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="WP1KtlQq";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dRtQSTs1"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B421B14884C;
-	Fri, 17 Jan 2025 15:18:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2197B14884C;
+	Fri, 17 Jan 2025 15:23:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737127135; cv=none; b=BDu5CqcKJqx3fnECiybemJpR20+H9q9FsJD/LcA9MJwAo1fcj3MRem0LQGVgJGX+qnjGZdfvfh/LFzyOlhV33zPBeUz68/4UogvCjKsvxHZwcMCXx7B2/nEgINmGI4azNi/7AajysuN3KSzgs7MFJ+xrGX54N6hiqbOewOo2PDE=
+	t=1737127414; cv=none; b=KLy0VSRljXDCoF2NChE+vy6PE+YHg/etZ/nYFXILR+b+EDghtxGSkjSSCMCW46OdeOJTH/l5WUmtbTLpxxW6J3vI+TI5CKbfeLxA1oIqV1aajvhmWPA3fHd1Gj3+sx8rJtbnZu5NShpd5Qh6shI1bLYRLVp7DuTslyIwdR1q3DE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737127135; c=relaxed/simple;
-	bh=ccZPE7fqhciJeBEtguK8eWJ8wR1KZE2kbEW/4xZB99Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CWNcJeyaVXdyx1n0OH7zNRQZKRNTSBZs8Zw+H7nNdjgaTJB2RkYovndv/OeoPNS4eXk/Zbn9kHb1/jcY20r4hNTMrXJC3ylBhuSo1K5I/jPPa95N5goqbJFiYJfb1kmR3ciengY5VF/kxoKGxgBqIoiRzuLuJRlplF+2LrWr+tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iKRKDEgc; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737127134; x=1768663134;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ccZPE7fqhciJeBEtguK8eWJ8wR1KZE2kbEW/4xZB99Y=;
-  b=iKRKDEgc0oYTor5yFB6FhB1LmDP2qlpfAqjfqM9z8qzkPyWI3KVYS3qT
-   JwyB7ukjQuL/h/d3pEQalNxD91yPsUmCQxtx+lG3Ejz8nz2ebqDzoZFDp
-   N55Q9qT1BGlW3QfsTN4DtqNq+S4KiUFiuo2HFtNAdtsWXJXTbFG+Ai+X4
-   9XRbQkdibX5o+sIshnhfUzGiYKbUHtZ4hN04QrXRV2pONlrUU1KRRVIVt
-   kZTq54BqEcOa/07mn+4AFQigDKkxxkjU3RXpJftzeyWAYidTkvT7fwWok
-   kDGVO7RHCsO4qvXhUAP8IZn36eekMclOeYzsjnObH1p5EPSy8VltH+l5Y
-   Q==;
-X-CSE-ConnectionGUID: I0J2ZhJhS2yQ0lFFHNKxLg==
-X-CSE-MsgGUID: CgYmS2ktSsyjN3o6QHCyYw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11318"; a="37798351"
-X-IronPort-AV: E=Sophos;i="6.13,212,1732608000"; 
-   d="scan'208";a="37798351"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2025 07:18:51 -0800
-X-CSE-ConnectionGUID: oW9l30i0SlaY7wgr04LkVw==
-X-CSE-MsgGUID: gD5WkwFJQYq4N1oL+LpqkA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="106292023"
-Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
-  by orviesa007.jf.intel.com with ESMTP; 17 Jan 2025 07:18:51 -0800
-From: kan.liang@linux.intel.com
-To: peterz@infradead.org,
-	mingo@redhat.com,
-	acme@kernel.org,
-	namhyung@kernel.org,
-	irogers@google.com,
-	linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org
-Cc: ak@linux.intel.com,
-	ravi.bangoria@amd.com,
-	jolsa@redhat.com,
-	Kan Liang <kan.liang@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/3] perf: Fix low freq setting via IOC_PERIOD
-Date: Fri, 17 Jan 2025 07:19:12 -0800
-Message-Id: <20250117151913.3043942-2-kan.liang@linux.intel.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20250117151913.3043942-1-kan.liang@linux.intel.com>
-References: <20250117151913.3043942-1-kan.liang@linux.intel.com>
+	s=arc-20240116; t=1737127414; c=relaxed/simple;
+	bh=tc10Oirv0JpSWlIOHFi7UMzv3xRUBTNg0nUl906Q8nM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kNOm+DxNXYEO4PZy80NaZVBuHiKmCi/pXbW2B7FZYv+FuXTtbyil/JGQE5XK1etrCbgAUv5unofOy9TtiN+JgwK4OGJvffX5R7tEBZOVgUyxJHXE/2Mik0z4inbVdqad/FC6Bsn5olomQKm5/E6xruIF1pKe1ekaDujtLbq00Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=WP1KtlQq; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dRtQSTs1; arc=none smtp.client-ip=103.168.172.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id ECC041140122;
+	Fri, 17 Jan 2025 10:23:29 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Fri, 17 Jan 2025 10:23:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1737127409; x=1737213809; bh=8+jxORCvtC
+	O1UVW79wt1NLNBpDwrWUOYHCySH1HZJJE=; b=WP1KtlQq0wd8YKHI+ufrouNriM
+	VgQkYWZeTLxC6Kz8jwM55ZqgglzmzyEUdDk/k9Dy3UkmNtlHuSti6saC9CKakafN
+	wrQOjpLLWOrf+3gwi9dirlLZm1DOsHhGqcgmoCCfy/sbF8m7j6zK5MyoOPDx2ZmR
+	2g90S1rVkpnpFGhcJY1TMaBhOghsCuEckjrrQPjOvr11LvLgvtP81nkB5dSLPEQq
+	lFHVkJlE33U0Wojrf+8kT08KBO/+kuVtzu2cPfgrb9JnmryZiXa7w5uk84lxbXwb
+	i4H4tNRLH4HRNAP4vBPpGc6A/NqU1n8DMT8FqYsE8KaRCfRBMtxO3Obs0lAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1737127409; x=1737213809; bh=8+jxORCvtCO1UVW79wt1NLNBpDwrWUOYHCy
+	SH1HZJJE=; b=dRtQSTs1gii4ez3E70cPRG58yKAcmv1iFEQ9jxDM22qGC69xJMR
+	m93mCV+seh8v5lr7IS6g9757BJ5ErB5RgjYFPw8jHb+JkKC6tB8JDCwwV289jDj6
+	za5jUjaBogwvoo56LU4RcIm7Pe1p44lc0m6STlAIVFmMCGxNQ6YZGGmKeP7Ne/fY
+	YtURY543Ad4AuPNiwOMfDHnYWWMZUE6AbFMVjrIdA4N4KDHC8/yNMn6cbLPt+yBN
+	Rv6nBk/nzISymGufkDE5DzI7CeFrn0JxBJr5ouvzJ2cODL4cYlyYJFVmMTGBfSu9
+	WIx5c7RAyAhGK7zKyakhkD8uMXOpGXttyKA==
+X-ME-Sender: <xms:8XWKZ2NXf0LVIwmdBuUCE5_w9E0R69LUw9CTTdqcqawYS7QcrWz8sw>
+    <xme:8XWKZ09D9WnLu8cdoqdVAoDp02Dt2B19zJ-zO3Z8qs0BkvkP2wW8GkmKGh7s2vZdj
+    g6pZHN15tAQtA>
+X-ME-Received: <xmr:8XWKZ9T6Gv66Zp00SpU-JpVj5k6Pev2x4ydJWBT8nWhYLJSAaQ_gZR_V2YDHl2oX1im6Ud9gveySR_BBXrFr5yF1pKZIyVKPMDjHDA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudeifedgjeegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrf
+    grthhtvghrnhepgeehueehgfdtledutdelkeefgeejteegieekheefudeiffdvudeffeel
+    vedttddvnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhdp
+    nhgspghrtghpthhtohepvddtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehsih
+    hmohhnrgdrvhgvthhtvghrsehffhiflhhlrdgthhdprhgtphhtthhopegrlhgvgigrnhgu
+    vghrrdguvghutghhvghrsegrmhgurdgtohhmpdhrtghpthhtohepshhtrggslhgvsehvgh
+    gvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgvqdgtohhmmhhithhs
+    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhushhhihigihhonhhgse
+    hkhihlihhnohhsrdgtnhdprhgtphhtthhopegthhhrihhsthhirghnrdhkohgvnhhighes
+    rghmugdrtghomhdprhgtphhtthhopeigihhnhhhuihdrphgrnhesrghmugdrtghomhdprh
+    gtphhtthhopegrihhrlhhivggusehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhimhho
+    nhgrsehffhiflhhlrdgthh
+X-ME-Proxy: <xmx:8XWKZ2uwKsfxqTDmrPBJZcxraUFcRUFSoG791awAFjux8WR-oKFWTA>
+    <xmx:8XWKZ-cDldANaC3nCiwSQVtR-0l_swxSfQfFmxrXX2eku9bkH9EF-w>
+    <xmx:8XWKZ63PzhxSidW7zsId0sl3eRq1N6G2SrwrPkt2JoUvzPFRYBFtqg>
+    <xmx:8XWKZy9svf6NA8Mb4PQbgUyYYmyBdqlbuQSUXsM1bUwCITZIGLqgmw>
+    <xmx:8XWKZ88Fd1OkD9b8vEg5Iqvnp_kyxzNz8bi1cPbtXU7ESZkhL507EZZD>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 17 Jan 2025 10:23:28 -0500 (EST)
+Date: Fri, 17 Jan 2025 16:23:25 +0100
+From: Greg KH <greg@kroah.com>
+To: Simona Vetter <simona.vetter@ffwll.ch>
+Cc: "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"stable-commits@vger.kernel.org" <stable-commits@vger.kernel.org>,
+	"oushixiong@kylinos.cn" <oushixiong@kylinos.cn>,
+	"Koenig, Christian" <Christian.Koenig@amd.com>,
+	"Pan, Xinhui" <Xinhui.Pan@amd.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	DRI Development <dri-devel@lists.freedesktop.org>
+Subject: Re: Patch "drm/radeon: Delay Connector detecting when HPD singals is
+ unstable" has been added to the 6.6-stable tree
+Message-ID: <2025011717-ambush-viable-a27a@gregkh>
+References: <20250103004210.471570-1-sashal@kernel.org>
+ <BL1PR12MB5144226AD0D6697DBF25ED56F7122@BL1PR12MB5144.namprd12.prod.outlook.com>
+ <Z4pzIzRg2xpYv2mJ@phenom.ffwll.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z4pzIzRg2xpYv2mJ@phenom.ffwll.local>
 
-From: Kan Liang <kan.liang@linux.intel.com>
+On Fri, Jan 17, 2025 at 04:11:31PM +0100, Simona Vetter wrote:
+> On Wed, Jan 08, 2025 at 12:02:03AM +0000, Deucher, Alexander wrote:
+> > [Public]
+> > 
+> > > -----Original Message-----
+> > > From: Sasha Levin <sashal@kernel.org>
+> > > Sent: Thursday, January 2, 2025 7:42 PM
+> > > To: stable-commits@vger.kernel.org; oushixiong@kylinos.cn
+> > > Cc: Deucher, Alexander <Alexander.Deucher@amd.com>; Koenig, Christian
+> > > <Christian.Koenig@amd.com>; Pan, Xinhui <Xinhui.Pan@amd.com>; David Airlie
+> > > <airlied@gmail.com>; Simona Vetter <simona@ffwll.ch>
+> > > Subject: Patch "drm/radeon: Delay Connector detecting when HPD singals is
+> > > unstable" has been added to the 6.6-stable tree
+> > >
+> > > This is a note to let you know that I've just added the patch titled
+> > >
+> > >     drm/radeon: Delay Connector detecting when HPD singals is unstable
+> > >
+> > > to the 6.6-stable tree which can be found at:
+> > >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> > >
+> > > The filename of the patch is:
+> > >      drm-radeon-delay-connector-detecting-when-hpd-singal.patch
+> > > and it can be found in the queue-6.6 subdirectory.
+> > >
+> > > If you, or anyone else, feels it should not be added to the stable tree, please let
+> > > <stable@vger.kernel.org> know about it.
+> > >
+> > >
+> > >
+> > > commit 20430c3e75a06c4736598de02404f768653d953a
+> > > Author: Shixiong Ou <oushixiong@kylinos.cn>
+> > > Date:   Thu May 9 16:57:58 2024 +0800
+> > >
+> > >     drm/radeon: Delay Connector detecting when HPD singals is unstable
+> > >
+> > >     [ Upstream commit 949658cb9b69ab9d22a42a662b2fdc7085689ed8 ]
+> > >
+> > >     In some causes, HPD signals will jitter when plugging in
+> > >     or unplugging HDMI.
+> > >
+> > >     Rescheduling the hotplug work for a second when EDID may still be
+> > >     readable but HDP is disconnected, and fixes this issue.
+> > >
+> > >     Signed-off-by: Shixiong Ou <oushixiong@kylinos.cn>
+> > >     Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> > >     Stable-dep-of: 979bfe291b5b ("Revert "drm/radeon: Delay Connector detecting
+> > > when HPD singals is unstable"")
+> > 
+> > 
+> > Please drop both of these patches.  There is no need to pull back a
+> > patch just so that you can apply the revert.
+> 
+> Since we've just been discussing stable backports at length, how did this
+> one happen?
+> 
+> 949658cb9b69ab9d22a42a662b2fdc7085689ed8 is in v6.11 and 979bfe291b5b in
+> v6.13-rc1, so there's definitely a need to backport the latter to v6.11.y
+> and v6.12.y. And maybe there was a cherry-pick of 949658cb9b69ab9d22a42a66
+> to older stable releases already, but that doesn't seem to be the case. So
+> what happened here?
 
-A low freq cannot be set via IOC_PERIOD on some platforms.
+I think Sasha's revert checker caught this one accidentally, but I'll
+defer to him for the final answer.
 
-The perf_event_check_period() introduced in commit 81ec3f3c4c4d
-("perf/x86: Add check_period PMU callback") intended to check the
-period, rather than the freq. A low freq may be mistakenly rejected by
-the limit_period().
+thanks,
 
-Fixes: 81ec3f3c4c4d ("perf/x86: Add check_period PMU callback")
-Closes: https://lore.kernel.org/lkml/20250115154949.3147-1-ravi.bangoria@amd.com/
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: stable@vger.kernel.org
----
- kernel/events/core.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
-
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index f91ba29048ce..a9a04d4f3619 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -5960,14 +5960,15 @@ static int _perf_event_period(struct perf_event *event, u64 value)
- 	if (!value)
- 		return -EINVAL;
- 
--	if (event->attr.freq && value > sysctl_perf_event_sample_rate)
--		return -EINVAL;
--
--	if (perf_event_check_period(event, value))
--		return -EINVAL;
--
--	if (!event->attr.freq && (value & (1ULL << 63)))
--		return -EINVAL;
-+	if (event->attr.freq) {
-+		if (value > sysctl_perf_event_sample_rate)
-+			return -EINVAL;
-+	} else {
-+		if (perf_event_check_period(event, value))
-+			return -EINVAL;
-+		if (value & (1ULL << 63))
-+			return -EINVAL;
-+	}
- 
- 	event_function_call(event, __perf_event_period, &value);
- 
--- 
-2.38.1
-
+greg k-h
 
