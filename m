@@ -1,90 +1,177 @@
-Return-Path: <stable+bounces-109368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 416F8A15098
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 14:34:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20F29A1509E
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 14:37:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6C7F3A83CD
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 13:34:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0177D1602BB
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 13:37:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF331FF618;
-	Fri, 17 Jan 2025 13:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78EAC200130;
+	Fri, 17 Jan 2025 13:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MhJLfHwm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SxINPgMm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4D51FDE11
-	for <stable@vger.kernel.org>; Fri, 17 Jan 2025 13:34:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86A6200100;
+	Fri, 17 Jan 2025 13:36:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737120868; cv=none; b=fjnpIsFQi79MY+6cQoFXsTqm629yFkdFF9QKLd/Ptt6yNj2DV2NtYZgnUFo1f5EIBPkYsVOMfxxOFLuiKzo2u8gvH2fUkY9CXRsaiiRrk6l2TnJQI/gRF+1aRpOwIruH43AK3F9c/Cu/gWjpyvpbyT25M9d5uJwjT2nzlK6pzzA=
+	t=1737121008; cv=none; b=OpZofyoJXxuG1FDa2B8TLpCjzQ4LvyBo8l68TH0aEdk77rszjTT5uWgdzCNpaTqAzsqElpW786oqphf+cUySF6GkYTuJvoJlhZrK/k8mTRorfuB2LxBKaOkTeVivGk1FUwOqY89XFCdcITY68wbi0wYiBXwsEIFPX7Jez8Y9elw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737120868; c=relaxed/simple;
-	bh=xJozY5lV24/SGdMdkgL94sZFDwoBHt/7dqMj9adyiuY=;
+	s=arc-20240116; t=1737121008; c=relaxed/simple;
+	bh=ykoOYP5A9GqLIO8ujgXlxd/k2bw6vl/rJwrKvkpumwo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UMWtqlL4cQ+erSOVOjciBOEWWvr79x3KlMMskDchxPYaqPe6LZ1Gnpc8ZWZry8GaUV+gBdxN2+YFiCXX3Ag5Ms2p7+5TDSNSksGmGqgW6tkq6C4GLm3BS9DKUbJitAuyodmc8R3dZdzqjvdfbvjCiQOvu4dCDP0lQOa2ThuO7e8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MhJLfHwm; arc=none smtp.client-ip=209.85.219.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e4419a47887so3167902276.0
-        for <stable@vger.kernel.org>; Fri, 17 Jan 2025 05:34:26 -0800 (PST)
+	 To:Cc:Content-Type; b=TnAqrEWBLnDbWnS1w4ozJHkkkJX9gBR4qivHqdiCdCdpMnF3pR7AbDC9c/Dh3+JBKKeqtiw98ufkEGKIlI9UCP7kqF7k+PdBOvNEXZXF76X0X4vAmCdlmdNABiTc+cR+1eUechYYYRbv4ykjyPlilSqSX+S38HQYUR5lyWzroHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SxINPgMm; arc=none smtp.client-ip=209.85.161.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-5f321876499so1141403eaf.1;
+        Fri, 17 Jan 2025 05:36:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1737120865; x=1737725665; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=xJozY5lV24/SGdMdkgL94sZFDwoBHt/7dqMj9adyiuY=;
-        b=MhJLfHwmnpMmZOF0DwokUeadZ/9VCu9vVrAiDvXkBjgpdzIfKboBpWonHdEV248Kzs
-         qgedwYe9gy4qM6jjjNDhPGBGI130ytxuiP4vjvGLdIhbNLNLSBZwwI1fcbtHhMB6KQKP
-         vsdGHl9/Gd2G2hUet3BNl8bV0iqBd7fqiSGsNndUO+Yu8vWayiy5eQ16wou17SvOEIRF
-         jiGWTclJmojrkF38YlCib8mgzAF0uQSkVw178+LB1xmAjxYfFLBBuEvKRiBFGvkwQf9q
-         XPpinlLJ+9pwBCx4KUw+uYJnA2UTIUtsLllUYNCv279GYT94X7MUh1VzWH1skw9JKOZB
-         6Y0g==
+        d=gmail.com; s=20230601; t=1737121006; x=1737725806; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iT6JakgGMnf6JWUAg95lo0Hdan+g6MjCBqiydljWY8k=;
+        b=SxINPgMmG7YLCk24d+zUggLplNQry9HoTOwKAbMbWrbQakYgGtnR7uSik0j9NXfqjB
+         4PpXdCHXbbeeVQq+VaNbSCBvKOlic3OG1TvNlgyct+5wwi25Tdk9oWGkvZYTWu7rkMBH
+         RnWTkHdT27B1c9uRKSRtXRyJvc8YP4ORYCyiovF/VnZNW+ISnIkWxlmJJG8fugsj/+8i
+         wW+p6vJsBNQB/7e/hYjRCOOGmXRjcrjlZ+CKlMcfQBTS7sbp6z2gw8PysCQ3i5f6K5zP
+         BGnlwuUxCJuTiHdXdrvQmr2/19nV1YrS8nIO/1Fb7DSfgt6BwB63+eGc3rJeD2YyWgBu
+         Fh3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737120865; x=1737725665;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xJozY5lV24/SGdMdkgL94sZFDwoBHt/7dqMj9adyiuY=;
-        b=FG7k2fT2p2TwD4SOxgfkMCtkwBC/djss6RZ73yt8pD1pRDOKeJ/mKZxnv9WpTlme2e
-         gWW6tx8eHUTTMd4aBe3TpGG8tKLwW2bwOgocVCdstqyiMFGYnoM22zokQl+cDAfhu73/
-         wU7m6TjNSlJNen9IotVmKr5DxBLjMGiLQjeBRzwW+1XbPQtZs3Ic+4bC8RgGH05bR9ka
-         18uM7eXX6pIhwQ5H5muY8sEX7SutPaQCHBOIEzYemnq8eC8QMMI8RVWqeNpoI9dqc23a
-         8a21Z+gsiTEWzZ/R3od0pP8Kl84lE9oF5bdzaLVTMVgJi1rirlnf4FOTh5warR9olqjx
-         lInQ==
-X-Gm-Message-State: AOJu0YwykNbNhCGGJKew9pjtXw6LUN8c/j1Db7TY/mjLGlwnVaE8ASD5
-	hJjdn4sH9fXlafOJWLX/4KZ8eVgPrVNeApmAjKej83c5wK2itamoRJQgBoSKixmSR4LWORfwX6p
-	/h9xvYCaIQjqpFcsDPeoDH/kzKJmW9Ji2tt4+Yoj3nIS797SH
-X-Gm-Gg: ASbGncvtMK3L+sIW3ZssWzeM49Ks4yW51tLZCGxDhBbY4lh2N4HYNWl5Uq6TA/q9YoY
-	w9yU5y1oHh17B4YHbMwZs75+F19VopCRrKvS5
-X-Google-Smtp-Source: AGHT+IEOgjG0GD+SDOj1DNPqpS8uC9bE+PoZo6UOgv6b3+TZN9jWMuw/JC+eqe1YneXO6eIcXrkwnsJ7CECF/c9GLoc=
-X-Received: by 2002:a05:690c:7091:b0:6ef:8177:c322 with SMTP id
- 00721157ae682-6f6eb67caa9mr17298037b3.13.1737120865247; Fri, 17 Jan 2025
- 05:34:25 -0800 (PST)
+        d=1e100.net; s=20230601; t=1737121006; x=1737725806;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iT6JakgGMnf6JWUAg95lo0Hdan+g6MjCBqiydljWY8k=;
+        b=RuV7Ojr9pk6KGdHm0aavXEttmH8H/Q9qywJZyHB8IYm0x/udCgqw9kd4Yhv5O8MqyU
+         p9Mh67Dp9IicpWUDXBZ5VDeX2EGw4G7VIYGXloYwhdYygqyqJ6fDb0+yz5sG8xrLeh1s
+         0uVoS1/YWCPpiQYuvpyPuBfpvx6b+gakuvqe91PuA3L0vCV6e6GPFvBxm4lQD1AWwvuW
+         0WH6l9u0vQWvplz0y0zeHhl3vXOtiMhlxMtdE1Uq9ifLcRal1ppC8H+yXxcY6n1MfHSC
+         lVf+t4rMxkz+QL+mpkNAOXc0vlI7jTNsKfsZTxRdGTBBwNg4hT7GvexzMDuB/TF5TTAh
+         A8Rw==
+X-Forwarded-Encrypted: i=1; AJvYcCVnzmOWxpuf/kddiuJ2uv+oQPH2GH5aUTYvs9NoTIwVb73iS7bLTYL1PIdhk4sNqi1tIxyTcIkfroOt@vger.kernel.org, AJvYcCVxaVA6nP7I0AqasCekxYk317OinA2+mLLzZpBMTUs3ryI2z043eE4ux30F1a2rFcPCQ+o=@vger.kernel.org, AJvYcCWdOgmuke28C4AVsOEGY5y6n6IEsMfoloAZH+lvZ5DGLjg6WfhjrDCRqEHvsPuu6R1B9GNfBfm0so0PDmt9@vger.kernel.org, AJvYcCWq+QAc/o4J5Vx1mVJUo9q32Sflwtuhz7XWeoFduZNdjWK4WWtbDPl4I0QzDXp7AP4TedGlRylo@vger.kernel.org, AJvYcCXQM2icEZZHVgl3/4DmzFtowqNHNfZpOe8xbO29IiW8kxEAqi5Qh/aI9f/X0+5jdU55E604yV5nuifi9go6koFgAn7Z@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAatkwXzX1YSjvR6hTy7+PZdFByykqGIkYzt60SJoRFcyWoX7b
+	45T2evYrmb7Tl9vPzM+TPaPqeG2AiNOqKWTWvy8s/r/iPBo68pLc3799+6+yasfPAlEHa8RFedz
+	JZeG8XQ7IdEhYUTSCJa6s/iQQU30=
+X-Gm-Gg: ASbGncvReyTe/rvHytM9qDMJvgjPm7g/GEWha2ZKD9FIEWaYfu/CB0IbLPX4C/xI4m8
+	jTFfCdMM1EI67z7zf+3coLmj5IjnVzRJhZU2DAg==
+X-Google-Smtp-Source: AGHT+IFvad+ZXGCoxHtM0gw/gElj7za0zj2PpUGCXThzkgXaHc8LVmM4fMDPZpqOAat3utTHabdLcbeS11L77l1I0c0=
+X-Received: by 2002:a05:6870:2a47:b0:29f:a6e2:4108 with SMTP id
+ 586e51a60fabf-2b1869b0fa6mr6727343fac.2.1737121005718; Fri, 17 Jan 2025
+ 05:36:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CABeuJB2PdWVaP_8EUe34CJwoVRLuU8tMi6kVkWok5EAxwpiEHw@mail.gmail.com>
- <2025011740-driller-rendering-e85d@gregkh>
-In-Reply-To: <2025011740-driller-rendering-e85d@gregkh>
-From: Terry Tritton <terry.tritton@linaro.org>
-Date: Fri, 17 Jan 2025 13:34:14 +0000
-X-Gm-Features: AbW1kvaRju37P1mCxFjLann-rhiNTKCMKJGDpkpddV49FDmaUzR9bGVE_90KW94
-Message-ID: <CABeuJB3xEQfgx1TiKyxREQjTJ6jh=xt=N7bTQoKgjAN1Xoa5WA@mail.gmail.com>
-Subject: Re: [REGRESSION] Cuttlefish boot issue on lts branches
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable <stable@vger.kernel.org>, Vidya Sagar <vidyas@nvidia.com>, 
-	Sasha Levin <sashal@kernel.org>, Daniel Verkamp <dverkamp@chromium.org>
+References: <20250117005539.325887-1-eyal.birger@gmail.com>
+ <20250117013927.GB2610@redhat.com> <20250117170229.f1e1a9f03a8547d31cd875db@kernel.org>
+In-Reply-To: <20250117170229.f1e1a9f03a8547d31cd875db@kernel.org>
+From: Eyal Birger <eyal.birger@gmail.com>
+Date: Fri, 17 Jan 2025 05:36:34 -0800
+X-Gm-Features: AbW1kvbmNpeFCohqRZCOjNCkMbLk4tbkvbKDcf6UHeDZf44yJqqbEtRACKxLRMY
+Message-ID: <CAHsH6Gtbo39pVjVWbPfSjePPyFYVLWJq9m3HLWgDGp1orvD+GA@mail.gmail.com>
+Subject: Re: [PATCH] seccomp: passthrough uretprobe systemcall without filtering
+To: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Oleg Nesterov <oleg@redhat.com>, kees@kernel.org, luto@amacapital.net, wad@chromium.org, 
+	andrii@kernel.org, jolsa@kernel.org, alexei.starovoitov@gmail.com, 
+	olsajiri@gmail.com, cyphar@cyphar.com, songliubraving@fb.com, yhs@fb.com, 
+	john.fastabend@gmail.com, peterz@infradead.org, tglx@linutronix.de, 
+	bp@alien8.de, daniel@iogearbox.net, ast@kernel.org, andrii.nakryiko@gmail.com, 
+	rostedt@goodmis.org, rafi@rbk.io, shmulik.ladkani@gmail.com, 
+	bpf@vger.kernel.org, linux-api@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thanks Greg,
-whats the best way to do that?
-Do you need a patch for each lts branch affected or just one based on stable?
+On Fri, Jan 17, 2025 at 12:02=E2=80=AFAM Masami Hiramatsu <mhiramat@kernel.=
+org> wrote:
+>
+> On Fri, 17 Jan 2025 02:39:28 +0100
+> Oleg Nesterov <oleg@redhat.com> wrote:
+>
+> > On 01/16, Eyal Birger wrote:
+> > >
+> > > Fixes: ff474a78cef5 ("uprobe: Add uretprobe syscall to speed up retur=
+n probe")
+> > > Reported-by: Rafael Buchbinder <rafi@rbk.io>
+> > > Link: https://lore.kernel.org/lkml/CAHsH6Gs3Eh8DFU0wq58c_LF8A4_+o6z45=
+6J7BidmcVY2AqOnHQ@mail.gmail.com/
+> > > Cc: stable@vger.kernel.org
+> > ...
+> > > @@ -1359,6 +1359,11 @@ int __secure_computing(const struct seccomp_da=
+ta *sd)
+> > >     this_syscall =3D sd ? sd->nr :
+> > >             syscall_get_nr(current, current_pt_regs());
+> > >
+> > > +#ifdef CONFIG_X86_64
+> > > +   if (unlikely(this_syscall =3D=3D __NR_uretprobe) && !in_ia32_sysc=
+all())
+> > > +           return 0;
+> > > +#endif
+> >
+> > Acked-by: Oleg Nesterov <oleg@redhat.com>
+> >
+> >
+> > A note for the seccomp maintainers...
+> >
+> > I don't know what do you think, but I agree in advance that the very fa=
+ct this
+> > patch adds "#ifdef CONFIG_X86_64" into __secure_computing() doesn't loo=
+k nice.
+> >
+>
+> Indeed. in_ia32_syscall() depends arch/x86 too.
+> We can add an inline function like;
+>
+> ``` uprobes.h
+> static inline bool is_uprobe_syscall(int syscall)
+> {
+>         // arch_is_uprobe_syscall check can be replaced by Kconfig,
+>         // something like CONFIG_ARCH_URETPROBE_SYSCALL.
+> #ifdef arch_is_uprobe_syscall
+>         return arch_is_uprobe_syscall(syscall)
+> #else
+>         return false;
+> #endif
+> }
+> ```
+> and
+> ``` arch/x86/include/asm/uprobes.h
+> #define arch_is_uprobe_syscall(syscall) \
+>         (IS_ENABLED(CONFIG_X86_64) && syscall =3D=3D __NR_uretprobe && !i=
+n_ia32_syscall())
+> ```
+
+Notice it'll need to be enclosed in ifdef CONFIG_X86_64 as __NR_uretprobe
+isn't defined otherwise so the IS_ENABLED isn't needed.
+
+>
+> > The problem is that we need a simple patch for -stable which fixes the =
+real
+> > problem. We can cleanup this logic later, I think.
+>
+> Hmm, at least we should make it is_uprobe_syscall() in uprobes.h so that
+> do not pollute the seccomp subsystem with #ifdef.
+
+I like this approach.
+
+Notice it does add a couple of includes that weren't there before:
+- arch/x86/include/asm/uprobes.h would include asm/unistd.h
+- seccomp.c would include linux/uprobes.h
+
+So it's a less "trivial" patch... If that's ok I can repost with these
+changes.
+
+Eyal.
 
