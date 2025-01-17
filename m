@@ -1,77 +1,102 @@
-Return-Path: <stable+bounces-109317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B43CA14735
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 01:59:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87E21A1477E
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 02:22:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 133943A06C2
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 00:59:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4B6E7A2F09
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 01:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF64711CAF;
-	Fri, 17 Jan 2025 00:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E345D27466;
+	Fri, 17 Jan 2025 01:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H0HlG9rI"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="NMq6i7fs"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EFD23BE;
-	Fri, 17 Jan 2025 00:59:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7731F957;
+	Fri, 17 Jan 2025 01:21:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737075557; cv=none; b=ofzATpuqi9f8FhCXnfi/HGySS1MpRlaVE1d+WVU2BvDU0s7JGDjLMZopzxQO9z3J4itbLgzIylWSKgRbTYrFwRlh9g2oVYaPUgo6i/ED3JGW0r0LPykjCUQW/TSRYd+YvbbId7YEHQofL2KnNyk5c1JSiwPSbFSuV+x8qGSofdA=
+	t=1737076914; cv=none; b=f8sGu1UXyHYMtGmYwd0ti+cDB0DUSpIbvb1M8mSYBs3cGBsCNQJdka7DSqxWSB3ICqwAkk3FRo2EGpAUjupxW0+AxrErLpCw6C32KLoivvN5RwNEaQwM5w35FiIj8ZChwE3DVlhrfjip3yuW/LRFCwUrqtPue4HrpgkZ4Qjo6V8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737075557; c=relaxed/simple;
-	bh=MXxGeE8rkgxIZ0hDJ/rUzIhzoHyLBZofKIUf2wRAUys=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V2nEbD+zJHADDxCQ9xc8ySNf6+iabDOBFQFFHMN37D1NX9TiuM8Giz9rgd55kjJ2FJIkWNrZAchRTsDmr6bDNwwtPOjmIXnV93Hy5/mI8XRt1keNalS1gAoVZOORsq5m3GgWUORXw9g5NUO2L8hqYws+HZiG89QW5EWbeBcw5j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H0HlG9rI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F7F3C4CEDF;
-	Fri, 17 Jan 2025 00:59:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737075556;
-	bh=MXxGeE8rkgxIZ0hDJ/rUzIhzoHyLBZofKIUf2wRAUys=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=H0HlG9rIN5Kw/i86LB0qtBRXAqUQCWWjhryrZq77lxTAT5k1qRcmz022/AYPqgQ52
-	 pQvKIQCmBGRe0989KZvI1kTCR6QcpIqt0hHH4C67B2L1EDKYEJikbfUciTPO0X71iz
-	 p0qyEnjDGEGyjIAL8luMHP7OCHQdJ5s5Hc1yeFf5ws1UC3uUpZvWdg8qNLeU/CD9OO
-	 LFhJ6tNYogjXnD0/o5SCXaYPR7hgzle02FTr12JW8Ma2bfwLKRMm8ozvkxVqxqnq7u
-	 rZTlE5ajaa/vxLROTHTW5JrTQTwJiZjOK24r95kT5qjRAnU8wS09tgtzuOYjC9mcgx
-	 0Whr6kkHccRdg==
-Date: Thu, 16 Jan 2025 16:59:14 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Gui-Dong Han <2045gemini@gmail.com>
-Cc: 3chas3@gmail.com, linux-atm-general@lists.sourceforge.net,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- baijiaju1990@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH] atm/fore200e: Fix possible data race in fore200e_open()
-Message-ID: <20250116165914.35f72b1a@kernel.org>
-In-Reply-To: <20250115131006.364530-1-2045gemini@gmail.com>
-References: <20250115131006.364530-1-2045gemini@gmail.com>
+	s=arc-20240116; t=1737076914; c=relaxed/simple;
+	bh=7wfOt2FoExF+GKwYDUlX+OzjGgkUeRtIF++6jEWvFzA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Qp8fcxjkk9olyAh2AK/oGl3wtWAYVefWqwcdGpeNDNbYrNjfUe8MHs7l1Nzw5UAzfi85iY6ADe2T+POzo7+XD2QmfSXstzS96TxUXLKUm2FPAmgCHawok0fvzBXn01f30SvXK9NDI+CZTgE6IYRJKMSaSGAjUHtvSFnIFbPsweU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=NMq6i7fs; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [IPV6:2601:646:8080:c1f1:e386:c572:17d3:6ddc] ([IPv6:2601:646:8080:c1f1:e386:c572:17d3:6ddc])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 50H1LLAT3940796
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Thu, 16 Jan 2025 17:21:21 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 50H1LLAT3940796
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2024121701; t=1737076882;
+	bh=gjWhULIjjRSz2e8v8Mb0+8MpcEhcCtBb7eD5X5gs8bo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NMq6i7fs9gyq8rkmyc5VNFrgKV0H+jn6dM3nsXoN/9oiE0zt6HBRKancfbSi40gpQ
+	 7vwiUHaFlGUgSGesL+bde9FV17u+8aeBg2I5HoVxoT+8pDZr9d1afb+g0MbRnFjHBx
+	 t3X9C9Ofq3NTOStYD2DPxtW7KvaNfsUqVD3uFrk4CR/yHw7PetWhgW68tswC2QhF3N
+	 XFmoeIOi9JQLi6SvMv3t+OOkPpZ+2srBzaDBFBjI/htQlKHBL+YYzQYa5pRb3fFmQc
+	 Nl4Brbf3PG/nc3T6C4YJ1vL3V9CuJmYF/WzZl5Vffpr2fiaWnvFp+AKHi66nha/lM6
+	 S8KOKwOVeUrjw==
+Message-ID: <d90975a0-6b01-4a2e-92c2-2af2326e1299@zytor.com>
+Date: Thu, 16 Jan 2025 17:21:16 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/fred: Optimize the FRED entry by prioritizing
+ high-probability event dispatching
+To: Ethan Zhao <etzhao@outlook.com>, Xin Li <xin@zytor.com>,
+        Ethan Zhao <haifeng.zhao@linux.intel.com>,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc: tglx@linutronix.de, dave.hansen@linux.intel.com, x86@kernel.org,
+        andrew.cooper3@citrix.com, mingo@redhat.com, bp@alien8.de
+References: <20250116065145.2747960-1-haifeng.zhao@linux.intel.com>
+ <417271c4-0297-41da-a39b-5d5b28dd73f9@zytor.com>
+ <TYZPR03MB8801E2BF68A08887A238A32CD11A2@TYZPR03MB8801.apcprd03.prod.outlook.com>
+ <05b13e99-c7e5-4db7-90bd-a89a91f4e327@zytor.com>
+ <TYZPR03MB88013A5D71079FF9E6776E49D11B2@TYZPR03MB8801.apcprd03.prod.outlook.com>
+Content-Language: en-US
+From: "H. Peter Anvin" <hpa@zytor.com>
+In-Reply-To: <TYZPR03MB88013A5D71079FF9E6776E49D11B2@TYZPR03MB8801.apcprd03.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, 15 Jan 2025 13:10:06 +0000 Gui-Dong Han wrote:
-> Protect access to fore200e->available_cell_rate with rate_mtx lock to
-> prevent potential data race.
+On 1/16/25 16:37, Ethan Zhao wrote:
+>>
+>> hpa suggested to introduce "switch_likely" for this kind of optimization
+>> on a switch statement, which is also easier to read.  I measured it with
+>> a user space focus test, it does improve performance a lot.  But 
+>> obviously there are still a lot of work to do.
 > 
-> The field fore200e.available_cell_rate is generally protected by the lock
-> fore200e.rate_mtx when accessed. In all other read and write cases, this
-> field is consistently protected by the lock, except for this case and
-> during initialization.
+> Find a way to instruct compiler to pick the right hot branch meanwhile 
+> make folks
+> reading happy... yup, a lot of work.
+> 
 
-That's not sufficient in terms of analysis.
+It's not that complicated, believe it or not.
 
-You need to be able to articulate what can go wrong.
--- 
-pw-bot: reject
+/*
+  * switch(v) biased for speed in the case v == l
+  *
+  * Note: gcc is quite sensitive to the exact form of this
+  * expression.
+  */
+#define switch_likely(v,l) \
+	switch((__typeof__(v))__builtin_expect((v),(l)))
+
+	-hpa
+
 
