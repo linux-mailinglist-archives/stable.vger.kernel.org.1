@@ -1,98 +1,75 @@
-Return-Path: <stable+bounces-109395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB5BAA152C8
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 16:23:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F89A152E2
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 16:30:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 285521882C93
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 15:23:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2B4F1881601
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 15:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6771B15CD74;
-	Fri, 17 Jan 2025 15:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB3C19882F;
+	Fri, 17 Jan 2025 15:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="WP1KtlQq";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dRtQSTs1"
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="LXD/OzzO"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2197B14884C;
-	Fri, 17 Jan 2025 15:23:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBB7194C61
+	for <stable@vger.kernel.org>; Fri, 17 Jan 2025 15:30:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737127414; cv=none; b=KLy0VSRljXDCoF2NChE+vy6PE+YHg/etZ/nYFXILR+b+EDghtxGSkjSSCMCW46OdeOJTH/l5WUmtbTLpxxW6J3vI+TI5CKbfeLxA1oIqV1aajvhmWPA3fHd1Gj3+sx8rJtbnZu5NShpd5Qh6shI1bLYRLVp7DuTslyIwdR1q3DE=
+	t=1737127810; cv=none; b=YKOM63jZkm4bXtSH//1xf2Ub0pLB6SpFClEtY+UJk7R/qg4hc5pu6jcF9ULIiF2oAUoZLAB7gbbG1t+i1yY6AdINymQKkVTf4EPTusXZyfNiGR1YMKgVsNI2koTN5ZwbdxVWQ2nPpZwByWeJlu6EhMIGNbZ4SA5PJ8CHs4cUocE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737127414; c=relaxed/simple;
-	bh=tc10Oirv0JpSWlIOHFi7UMzv3xRUBTNg0nUl906Q8nM=;
+	s=arc-20240116; t=1737127810; c=relaxed/simple;
+	bh=uuSs7NkbOPTV/6yYazPnve2zh8oXn2vhyyl6G4ErXgc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kNOm+DxNXYEO4PZy80NaZVBuHiKmCi/pXbW2B7FZYv+FuXTtbyil/JGQE5XK1etrCbgAUv5unofOy9TtiN+JgwK4OGJvffX5R7tEBZOVgUyxJHXE/2Mik0z4inbVdqad/FC6Bsn5olomQKm5/E6xruIF1pKe1ekaDujtLbq00Z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=WP1KtlQq; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dRtQSTs1; arc=none smtp.client-ip=103.168.172.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id ECC041140122;
-	Fri, 17 Jan 2025 10:23:29 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Fri, 17 Jan 2025 10:23:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1737127409; x=1737213809; bh=8+jxORCvtC
-	O1UVW79wt1NLNBpDwrWUOYHCySH1HZJJE=; b=WP1KtlQq0wd8YKHI+ufrouNriM
-	VgQkYWZeTLxC6Kz8jwM55ZqgglzmzyEUdDk/k9Dy3UkmNtlHuSti6saC9CKakafN
-	wrQOjpLLWOrf+3gwi9dirlLZm1DOsHhGqcgmoCCfy/sbF8m7j6zK5MyoOPDx2ZmR
-	2g90S1rVkpnpFGhcJY1TMaBhOghsCuEckjrrQPjOvr11LvLgvtP81nkB5dSLPEQq
-	lFHVkJlE33U0Wojrf+8kT08KBO/+kuVtzu2cPfgrb9JnmryZiXa7w5uk84lxbXwb
-	i4H4tNRLH4HRNAP4vBPpGc6A/NqU1n8DMT8FqYsE8KaRCfRBMtxO3Obs0lAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1737127409; x=1737213809; bh=8+jxORCvtCO1UVW79wt1NLNBpDwrWUOYHCy
-	SH1HZJJE=; b=dRtQSTs1gii4ez3E70cPRG58yKAcmv1iFEQ9jxDM22qGC69xJMR
-	m93mCV+seh8v5lr7IS6g9757BJ5ErB5RgjYFPw8jHb+JkKC6tB8JDCwwV289jDj6
-	za5jUjaBogwvoo56LU4RcIm7Pe1p44lc0m6STlAIVFmMCGxNQ6YZGGmKeP7Ne/fY
-	YtURY543Ad4AuPNiwOMfDHnYWWMZUE6AbFMVjrIdA4N4KDHC8/yNMn6cbLPt+yBN
-	Rv6nBk/nzISymGufkDE5DzI7CeFrn0JxBJr5ouvzJ2cODL4cYlyYJFVmMTGBfSu9
-	WIx5c7RAyAhGK7zKyakhkD8uMXOpGXttyKA==
-X-ME-Sender: <xms:8XWKZ2NXf0LVIwmdBuUCE5_w9E0R69LUw9CTTdqcqawYS7QcrWz8sw>
-    <xme:8XWKZ09D9WnLu8cdoqdVAoDp02Dt2B19zJ-zO3Z8qs0BkvkP2wW8GkmKGh7s2vZdj
-    g6pZHN15tAQtA>
-X-ME-Received: <xmr:8XWKZ9T6Gv66Zp00SpU-JpVj5k6Pev2x4ydJWBT8nWhYLJSAaQ_gZR_V2YDHl2oX1im6Ud9gveySR_BBXrFr5yF1pKZIyVKPMDjHDA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudeifedgjeegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrf
-    grthhtvghrnhepgeehueehgfdtledutdelkeefgeejteegieekheefudeiffdvudeffeel
-    vedttddvnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhdp
-    nhgspghrtghpthhtohepvddtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehsih
-    hmohhnrgdrvhgvthhtvghrsehffhiflhhlrdgthhdprhgtphhtthhopegrlhgvgigrnhgu
-    vghrrdguvghutghhvghrsegrmhgurdgtohhmpdhrtghpthhtohepshhtrggslhgvsehvgh
-    gvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgvqdgtohhmmhhithhs
-    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhushhhihigihhonhhgse
-    hkhihlihhnohhsrdgtnhdprhgtphhtthhopegthhhrihhsthhirghnrdhkohgvnhhighes
-    rghmugdrtghomhdprhgtphhtthhopeigihhnhhhuihdrphgrnhesrghmugdrtghomhdprh
-    gtphhtthhopegrihhrlhhivggusehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhimhho
-    nhgrsehffhiflhhlrdgthh
-X-ME-Proxy: <xmx:8XWKZ2uwKsfxqTDmrPBJZcxraUFcRUFSoG791awAFjux8WR-oKFWTA>
-    <xmx:8XWKZ-cDldANaC3nCiwSQVtR-0l_swxSfQfFmxrXX2eku9bkH9EF-w>
-    <xmx:8XWKZ63PzhxSidW7zsId0sl3eRq1N6G2SrwrPkt2JoUvzPFRYBFtqg>
-    <xmx:8XWKZy9svf6NA8Mb4PQbgUyYYmyBdqlbuQSUXsM1bUwCITZIGLqgmw>
-    <xmx:8XWKZ88Fd1OkD9b8vEg5Iqvnp_kyxzNz8bi1cPbtXU7ESZkhL507EZZD>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 17 Jan 2025 10:23:28 -0500 (EST)
-Date: Fri, 17 Jan 2025 16:23:25 +0100
-From: Greg KH <greg@kroah.com>
-To: Simona Vetter <simona.vetter@ffwll.ch>
-Cc: "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=QGNuB3Zc7sRb0Pec18v/gBWpel/s+llHz0gAiFM0/OTcSlSRft0S2uNZeiAt/MUGMANG5mHz7wZyqUOO1WQdbW6TuJaa0PvWd1xdK4s6j37od6SjIB6pO0h1Ku74S7z6OxCI92ARu9xwSTzY93lTjqdeQdjDUa7pn/o5AlxHaCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=LXD/OzzO; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-38633b5dbcfso2500545f8f.2
+        for <stable@vger.kernel.org>; Fri, 17 Jan 2025 07:30:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1737127805; x=1737732605; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PMN0xxHnTn7/r6lyp4MJCux5tDpWjt3j/fmoD58AMqk=;
+        b=LXD/OzzOgBJ49Wxuo9wiLFROK+vbBTMeYP4oJrfd6Js8H4txeOyDiLV8+4tjpyTfCZ
+         5vq6hCJY6yOR0aDtGRjGYtHnAXiE/VtTuTv0owJaBYLMSmulf/gxRX3JMG3ufccYaR0L
+         2pyoa/yYdYQhmx6uSsiYOEkWKpYUKpYSyrhao=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737127805; x=1737732605;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PMN0xxHnTn7/r6lyp4MJCux5tDpWjt3j/fmoD58AMqk=;
+        b=CGY0sJ4G85NO36ddOWwIVErCV6ZLdM1nzewjkAW4C7cX4UnKKC74nJ09T+DXOxSbUE
+         zwl9ZVj8GRyM+OCxAaB6Mfxn5lXUnoiDvNjuGJtwvMAbTYeUJHnimsNAOwtyoz4ly8yF
+         3Z33LZ0/640ZNzIlAe+6EuqVN6gnAM5qRr2vyheKvCnCwc+OyJR3vJSwqfUjW/nDKBUP
+         Zx5R4vjuKLWH9u+gLG+k6nKJ91wA4T3Fse9pZ7jdD41NNazntKh9jJ3QYvg73vpQ7eIx
+         uFly8y33TBmb1R7OYIeifnTXwn34YboiIkVaLupV8dO6DzjzjOKApZY7Xtq8g7/5JM7t
+         dtyA==
+X-Gm-Message-State: AOJu0YyP5mysgzM6glMlaIBf+wOD295UNNe48jBbNPmXPQ72a8FLAr0y
+	tLF2cCxO2ckMLaXBEbS3n0Ccg+nmRAjxqEw9ibvdizTzmJ6yxJXRK733h9qq3a8=
+X-Gm-Gg: ASbGncu76ocRHdmwfKTOaSAUdXNaI8/VyPPrQJee8P5TPhD0vj2jax7NEccMxSM4YEs
+	M9ktrVj7+P8oAKBj/CGRDv9ulblysUweqSLB3C+s1C5v12ewR8IRsGHeMEJ7fpS1P5IL+eHhDml
+	CYtFfvMDYLh2dHJ/j2XFqZXKt7GdBaliUncVqvmgIaXuseRtL+YvPpi6vikBFYC+nrpdFBlcqhZ
+	9puWBM0etBtGR1NucwP3K8jp5vKA/93ZEUWIzOBKwe89kPdvWp3VdhFqGiJkkliK7sO
+X-Google-Smtp-Source: AGHT+IERWF8sIS1dMqT5AGGWertem30EsWZljTh6nQHb58gskcBklmaUmoaA8cvAXYwGl9KdHnRWXA==
+X-Received: by 2002:a05:6000:1f8d:b0:385:d7f9:f157 with SMTP id ffacd0b85a97d-38bf57a749dmr3470574f8f.36.1737127805618;
+        Fri, 17 Jan 2025 07:30:05 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bf3221b7fsm2764368f8f.27.2025.01.17.07.30.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jan 2025 07:30:05 -0800 (PST)
+Date: Fri, 17 Jan 2025 16:30:03 +0100
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: "Deucher, Alexander" <Alexander.Deucher@amd.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
 	"stable-commits@vger.kernel.org" <stable-commits@vger.kernel.org>,
 	"oushixiong@kylinos.cn" <oushixiong@kylinos.cn>,
 	"Koenig, Christian" <Christian.Koenig@amd.com>,
@@ -101,7 +78,7 @@ Cc: "Deucher, Alexander" <Alexander.Deucher@amd.com>,
 	DRI Development <dri-devel@lists.freedesktop.org>
 Subject: Re: Patch "drm/radeon: Delay Connector detecting when HPD singals is
  unstable" has been added to the 6.6-stable tree
-Message-ID: <2025011717-ambush-viable-a27a@gregkh>
+Message-ID: <Z4p3e44qS7uP2Y_Q@phenom.ffwll.local>
 References: <20250103004210.471570-1-sashal@kernel.org>
  <BL1PR12MB5144226AD0D6697DBF25ED56F7122@BL1PR12MB5144.namprd12.prod.outlook.com>
  <Z4pzIzRg2xpYv2mJ@phenom.ffwll.local>
@@ -114,6 +91,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <Z4pzIzRg2xpYv2mJ@phenom.ffwll.local>
+X-Operating-System: Linux phenom 6.12.3-amd64 
 
 On Fri, Jan 17, 2025 at 04:11:31PM +0100, Simona Vetter wrote:
 > On Wed, Jan 08, 2025 at 12:02:03AM +0000, Deucher, Alexander wrote:
@@ -177,10 +155,15 @@ On Fri, Jan 17, 2025 at 04:11:31PM +0100, Simona Vetter wrote:
 > to older stable releases already, but that doesn't seem to be the case. So
 > what happened here?
 
-I think Sasha's revert checker caught this one accidentally, but I'll
-defer to him for the final answer.
+Some other examples people brought up:
 
-thanks,
+https://lore.kernel.org/stable/a31d3d49-1861-19a2-2bb4-8793c8eabee9@mailbox.org/
 
-greg k-h
+https://lore.kernel.org/stable/a31d3d49-1861-19a2-2bb4-8793c8eabee9@mailbox.org/
+
+-Sima
+-- 
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
 
