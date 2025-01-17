@@ -1,277 +1,306 @@
-Return-Path: <stable+bounces-109346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECF8BA14B17
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 09:26:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87983A14BF1
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 10:16:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC1587A2369
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 08:26:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4720D1888450
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 09:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38C21F8901;
-	Fri, 17 Jan 2025 08:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21E11F7914;
+	Fri, 17 Jan 2025 09:16:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="UnUHBZNp"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Received: from out203-205-221-210.mail.qq.com (out203-205-221-210.mail.qq.com [203.205.221.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDC61F869B;
-	Fri, 17 Jan 2025 08:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737102389; cv=fail; b=cG0H+lJI7LkMhiFvzoU+hgYPCc1UG1sn/dJ3pLIv6aJJjjERSSPlLUA+/T9Xe1AG3AS+kVpmJyLHgyv89MjWjT/2dtBFKpDDjgr+0Mq+LpydsGnXXOOBQZyFdsMuG0vnSRis/3Jj76XnFbc8M9GiqlghGFzrXXG+Gfz0/rYg/jM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737102389; c=relaxed/simple;
-	bh=ayd+JBbvot0OXs4NxQtanOey8jyw0YpOPbcno6Jtm7g=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Ifr4g3BHrnvqZqXcaahPgqHLfT4Uj8vRmFSUCaXl+7rnRoQn67g/cMFEfmv5ISrU/w5kMvI7CEY122f0pX2z/bq/7Qf4FJuMBlR+T/aJAMZd9xWlaswEiEUbuMFXFbjJYx8amgNyftMLYfYhJ5zdRTlpc7ju53BaPpfcHDHQtAw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50H7nrF5011256;
-	Fri, 17 Jan 2025 08:26:09 GMT
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2048.outbound.protection.outlook.com [104.47.55.48])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 446wf7ha7e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Jan 2025 08:26:08 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rzpcz4O9r5rAGRa3DMtvPuJzFLj1XEqzGsXRK2jY+xAf+wRYIB4J99+262wZ/6P55QDBqGSPHqZnxSPOXmW2seZzFAD3nRuMqIZx+CThbla4mp7+ikOP9HHENUOV0C3o5yxCWx5tBk6SU7wOTGfqNV1pYndTzM8M+HTtMqJdtaUMJei4G+/FrQdBwDrEdPYtZJZmjWuxl09WRD9RTwMmggpqsdo0vtVqKFqL6PoA0t5LuPz/LftMjeqKOy+Y2leYloWhInDnqpn102Cl3+YwYVqj92C682kW49JGgYJh40Qr8TFM3AkwPOgoGy3yjXemmjor6+Cd7+8p1GmZrRFKeA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TCDbXpqYM8nhmhb87vm0V5SADenvt0EOWS1eWZ/zgx4=;
- b=EnjY9htA5XK4Xf3U/oCKSVLPEAgXn/d9EqI1AP1q63EnWgeD69oTOQi7BmmAHlENCk7EKyUdYc8wxOFfBZvdOLDpm94E82Xx6paxRbIBflgub2myGoFGhmltwt0NEYUnvuw4i/7c02xDJUEb+UlMThpw5UzKsbCOzqaqhGktUsuKqAaYE0Ck+30/C95jChT2Fj8Y7J8BVly2dUASIlayql0IlCzns8fGKsLqktNeloYg+xTq/6uP1dOelUZHdiHgTD5cMracJs0Xa85rMIHdLvB0hgEavbip3z/bGHUb/PGX2FgkomsOj7XN5D6F5Qm7SQOoCUSgUeJaCf5Yo3j3dA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-Received: from SJ0PR11MB5866.namprd11.prod.outlook.com (2603:10b6:a03:429::10)
- by SN7PR11MB7707.namprd11.prod.outlook.com (2603:10b6:806:322::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.18; Fri, 17 Jan
- 2025 08:26:06 +0000
-Received: from SJ0PR11MB5866.namprd11.prod.outlook.com
- ([fe80::265f:31c0:f775:c25b]) by SJ0PR11MB5866.namprd11.prod.outlook.com
- ([fe80::265f:31c0:f775:c25b%7]) with mapi id 15.20.8356.014; Fri, 17 Jan 2025
- 08:26:05 +0000
-From: Bo Sun <Bo.Sun.CN@windriver.com>
-To: Kexin.Hao@windriver.com
-Cc: linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Will Deacon <will@kernel.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-        Vidya Sagar <vidyas@nvidia.com>, Bo Sun <bo.sun.cn@windriver.com>
-Subject: [PATCH] PCI: controller: Restore PCI_REASSIGN_ALL_BUS when PCI_PROBE_ONLY is enabled
-Date: Fri, 17 Jan 2025 16:24:14 +0800
-Message-ID: <20250117082428.129353-1-Bo.Sun.CN@windriver.com>
-X-Mailer: git-send-email 2.48.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR01CA0008.apcprd01.prod.exchangelabs.com
- (2603:1096:4:191::10) To SJ0PR11MB5866.namprd11.prod.outlook.com
- (2603:10b6:a03:429::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB93B7083E
+	for <stable@vger.kernel.org>; Fri, 17 Jan 2025 09:16:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.210
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737105384; cv=none; b=pgOXlGcOZDgVtq9DKM7vGXOlhkOlxtgFBWjWObtRScBjJ8OE3pKkvIvYXyWVQ01YCUUr76uOlBhga9RGST4sgS/UHSSzt3xfkbY6LeU1UeZkYkxtQ0BsTWAfby2STWFxE+wu14Vr6Vo5jpWqpcClG1dJKEaz5HwoIBvP0LyPT3k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737105384; c=relaxed/simple;
+	bh=Ja1h1FbI0CXA36SRD72nIyocER3ZIURUvMYh+6Snjwc=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version:Content-Type; b=XdmIf6OgnPsqt+K6nrGc0Ch+8tYDGLHqcpKYzOJCEAWhpgiFXYjUfJMPpBXUZ60xKJq9RshudjvCOB/tRjJCm5oH9LmKz9GNjTjy6yCj2PKKW3TLspxW5bmFfzIycWJuM9nJBe18w4k0y7iFx77rPiUdeBJCk0J8m1DyEfqrT4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=UnUHBZNp; arc=none smtp.client-ip=203.205.221.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1737105370;
+	bh=jMimZjNP/fFt+TlEL0Hf4hg/lxp91Eskda57r09Ywek=;
+	h=From:To:Cc:Subject:Date;
+	b=UnUHBZNpsjf9KU1punuW898VygEWqUSTX1UE8zQZdMMtZ3kpMmAE1wS5R3EYLKz4K
+	 MGpvkgs69uwsLl3cHEGYAEqB+8x/WuxDYcXmnPzwRFxZdGDUJ9vAy2U74vfdVAWYxM
+	 nh2JK4PUiQjRkehD5avk8ZwicqsczULuc17qKltM=
+Received: from LAPTOP-HOSUGD0G.wrs.com ([120.244.194.130])
+	by newxmesmtplogicsvrsza29-0.qq.com (NewEsmtp) with SMTP
+	id 3F99549D; Fri, 17 Jan 2025 17:15:57 +0800
+X-QQ-mid: xmsmtpt1737105357tvh2m6khk
+Message-ID: <tencent_3C6A983FEE24F5AC197086612E1A8E692309@qq.com>
+X-QQ-XMAILINFO: NRc7AC9SoYbTTYFpE0ZAqvgW9cKEqXO3z2Gh5ZXk7z64v0GEBfrCFSb2jJH51W
+	 K7tLZ5UPpOeoWme9CcTL9RD0mcHVonFtErE+53ScXHPaYO4beXxaliQ9wIniZ1pgUBAHScm+N1Le
+	 E0sP44FLudWDc4rZAFhcFv1DEqTOo99vONdqsE7VVxTGbcZ/CCrNJ7RVZzCOXMM8Edb6IMQgdusR
+	 fZY220m2My9kZS6cuUhDtOrL8jT5AJLLPexRT0JAf0XmHLxMTNDxdZlego/kxoLNITVldUqVPerp
+	 aP7rGnhSHWcE3HEuGAPVrVYAf57qWLqMZUz3UkV8ky3LeUnoF5KBHLQGa3R5VXxbAm0pVoaManTd
+	 2aUKPa1tp4St/EINDdoUGGZBL7dxMjW1TD4c3E/3pT6Hcdibfnynb6pT6qCOYRDOYwBr6e+7Ag/A
+	 ghiHOVy0G40/okkFNnmJRXJC9BMwGXCsfBxJVZfXTRLCPY2UuUHZ9sv3iOWi0zAQWGnBy/AALFCd
+	 /+jWYNKvvx0VjL/RwMpnp5FM9/GIevmFDKOm9rqrjpkV5qT+RgheeDNUF66QHgagITT7Rt/CdvmZ
+	 ohd58bgvAvs1tO99couHM9UxGAzkytkNYTFc0Ng+JcFMCiaX+FBiyTHTWrWLAJQ3r8NtPnorBrvv
+	 7/qHLQ7ERG5eVmWbVKfz0lg+/qfK8Y9AdnQkDRPWbcp/dUtv551JYF/njAVfcsSB/KI0ys+rkb2f
+	 ll9f09BqwRHdWuoeqwluBiplh3dwsr9rFAarTcLxyetx8X0l1iiqSaej+UVEZDvwTkId8ZTkPojo
+	 KuW45L74p/w14yQUcGvc3+2uo5JvW471NzpybClaH/JPDR/ospVS0GZaHUVdlw4WOfwv1s3MCDzE
+	 OumGCPt9XHNWxEUIvM0Fg2QFTBSq7aj68o4SXrRXyTZpR/LhoIzt7I8bS4+pY9Zp4dQnWU9Czhmn
+	 Mh9yU/e16iXYJqUWI9o2S1D21iqH5dC8Q5z6Fji4lVlndFemPuqYQset2zsABK4/9ZfIneTttwPa
+	 fgN/lNg8nddrfqTLeLoYohnv6WFScc31j9hGLF+g==
+X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
+From: alvalan9@foxmail.com
+To: stable@vger.kernel.org
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 6.1.y] drm/amdgpu: fix usage slab after free
+Date: Fri, 17 Jan 2025 17:15:58 +0800
+X-OQ-MSGID: <20250117091558.5713-1-alvalan9@foxmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB5866:EE_|SN7PR11MB7707:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6d9ed0b1-1b3a-4f36-1dbe-08dd36d06446
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|52116014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?KI2S12yS+LqHceY7PhldDtWXz9R/ReAYmh+OI38s03tMRTEtpydoRelGz8/u?=
- =?us-ascii?Q?hxCUGnUfnaSFTaX0K37rBgRAUzoFSlKZbK7Ru2Xs+3ZMiU7MzMNf+M2YxfPt?=
- =?us-ascii?Q?IaZu8Q9QjR0fbWXOs56Vjj1THa9F0DUOVFHbBjzAevVUVwWFf0dZD1AHsKz+?=
- =?us-ascii?Q?oLn8duEC3wOuKe6oFch6amXfRXFPLdQvJVg5fDGHOZEMcwZdBazHK8l5B4j/?=
- =?us-ascii?Q?cEFBD7VAE/9VE+CPwXizceDvqScRZ944QuljFqPIG0Lu1BQhexVuXHkgsAkj?=
- =?us-ascii?Q?P91yM21+rur6WlF0OW3Kbn35tvoIFNK2WnkHJIUQTsS7vQ7zGAwzV6sWjQtm?=
- =?us-ascii?Q?aocKxk4lprQCj/iTKP7nxz+/RgaBRo8Ppp0T9ArZ/5tjv84/o8jAQCwQbYlN?=
- =?us-ascii?Q?l6hCBacnvlW94zn6iiZP+zQVkh5cILVbK0LGT1RrTEgLQS18wj/Qo24iKcar?=
- =?us-ascii?Q?H/F9C/Us0K2s/tv+UIR6mkD/CEpPVPR7LYRbETrRkCXxFV6TXxsazgLwCTX7?=
- =?us-ascii?Q?2c3At63Vpka+kQRL+nYmp0DPziJNjyrN0UZw6QuFhaUBAb1nQQXORloIACqG?=
- =?us-ascii?Q?Es51w2AzvcjCLNFI/14TQqBgOJlwf2VhWoSzGX2j8ndo9C3M04fo10Rol3hU?=
- =?us-ascii?Q?yQGYWHvvnCgC3oox9HBdsa5/nEySK0fFy4AugEsAArJj+p1gMcdq2iaSkWpP?=
- =?us-ascii?Q?nC90cf8ZQAehAHqdjl0yqbwJHSRy5Pjq4VBcyn30gHNhnFNEYKg32OTx2XWE?=
- =?us-ascii?Q?PuQ7jczqeLRS47S9NAO3VTvhO5sGZzrpPgSCiGyI2Cf6+1FA3VgMwTagxOzp?=
- =?us-ascii?Q?+y+fEKzdloriaTQEKY6dV7oaLMGQrjQhjIXqPq8QCRQHcuNFAE1IjTaknw9D?=
- =?us-ascii?Q?dRW+n3l0lslQ0tW6hsQQeaIemb7mdqGsPHd7rbiBgY5Rf43WNEBcwn+GBIn0?=
- =?us-ascii?Q?e/tWZOkje57zgamKclRRRe+XIIGaiwgdwLbj6dK704IL0Diad9X9YpclE/7V?=
- =?us-ascii?Q?3FvY89fs3o8+0inwSD/XjoazHAbXDXpSwB14fWSLi8Q7Oc3l9dfIEj28VFwC?=
- =?us-ascii?Q?TOYQCPq9bL+8U7HumWYLQVcPUHFed7cLcMwbTrv7spV83klFRLZV3TAhcv+G?=
- =?us-ascii?Q?rhPcEBGGMg3KeowvsEcqQW62xb/c9w9mRnUvWaIHdVvM7fzZ3BT3jn/P5Uq4?=
- =?us-ascii?Q?lqHhYfRORW7TXG87yKwWZ40bdKfMVX2QoMG5r0w5aBgwsf0DUIbc8tvxfc2I?=
- =?us-ascii?Q?nh/bi8Sj0eARlTiRgnolkiwKtyXDMkElnwT1PoDOGVSVWbVBv9THLptR6cR9?=
- =?us-ascii?Q?471jJKNRZ1uSNjGLmLN836xfMAl3gn1UJl2TgnOLj3CF+sQXHlGodmVPQL/O?=
- =?us-ascii?Q?1QsibE7Z9t6z97xFAs0Q08eqjMTVHYItbDb6r/UZKUJXQ/6Bbz6bzhqukRi8?=
- =?us-ascii?Q?oQBh3I1ezz1WO3FXLyjL1XfxOnXfI6Gi?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5866.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ci8hxaAl1RsgTapEEu0eAz4huqFocNwn6wLZChsfAKvLTu5Sije4pQXmXwsb?=
- =?us-ascii?Q?gNGhGqGVR8JMVEBS6ysE++WUr1PqEWYIOkIyHRSw7yRFRDXzn4/ffaX8sMch?=
- =?us-ascii?Q?vWEwmUNBqsOWVRP5cp5VeRVvPqNIKsWTDI4aX2HvDyFy6iOJv15eZrUiziU4?=
- =?us-ascii?Q?SmE/UrCFgG0ou3Gb5G3Gpxc9AVr3toqIXaMrLLrTTUSN1flLMKwl9PPvihEd?=
- =?us-ascii?Q?E5bH5TP0cuvaptEvfI/pRvdwwgsnKDUhllzXIAL65pTaPt9AIPynyOYhDLMZ?=
- =?us-ascii?Q?iKYOH678SRZENi5VIHVZB3Lfq/7/yKKEtX0KFaAb4UiESAwF1N7JZqi3YRQt?=
- =?us-ascii?Q?+MKwpGx87bRKwAISJbrtGHkpl8xFwkw8jtSZbZ7ahwV6IBBEYYLpVTRb7ZPu?=
- =?us-ascii?Q?fVSdXhDpUuvXxyPCmGQq4hsAk1IBT0sWZfOz9x9EIPlFpLCa6quXP0qFmJhA?=
- =?us-ascii?Q?yF9MZg04QfQmny/h3BDR6gBdW7WjECVwAAa4PQIXgCiXJWQ8F+qwQPS7pkJK?=
- =?us-ascii?Q?wH9zpPY0v91X+RxA2h2rx85RCY7YquLOqULg6lpHAXEC8lxsc/WXftaY0MeW?=
- =?us-ascii?Q?VEWiG1hi7kj7UznXolQIdtFMk5XGX9Rb5N+tIsB/yInegrG4jnCkmozCJ5NJ?=
- =?us-ascii?Q?miDjmNSHhRdFVCpqQVYiMxyjbTi+oqHtqmIxcRTkA2INPY/JvEVTPFqredBO?=
- =?us-ascii?Q?vW3dq2RcDKn7PInXCLvo4xitwOEewvGqEo1UBX/pfa4Q7yg6TLNzi4Sb1raP?=
- =?us-ascii?Q?5wW9Uf4ugTwQdk8qR8UjASHEQwHquq0r8p8obMtuAvH4VS/wEkpuq4CmXzL3?=
- =?us-ascii?Q?R7Lqz69mwcnQYHbgW3Xs0U2m/9pf3nyFtS//Kb4tFTzEU3GtMZ8LGj9JVQ+8?=
- =?us-ascii?Q?+QGryH+ZRq0cT755qb0Ua5rhlcUlTu8Petp648kEDMusq89GYSFPnabfOgu/?=
- =?us-ascii?Q?cnLGl06ngYGeXHh2pq3IQ3ltxDYtNjYhAAiUH5fkHjCSDz7v1luINB43yhap?=
- =?us-ascii?Q?psPQ//qaq/ynU+GrBX8uzjHHUByVBzuK6UTFwKkEhVzNlp8Myr7EUg5BbiZF?=
- =?us-ascii?Q?ICgDC3GCb2+WVAUlxLyXmHlF224vqSx4JsUCBT1dSbRD56K1OPSWu/Bd3V3a?=
- =?us-ascii?Q?RzflYVVOY60gLrU5LNwZCpLaczi2ET4VztjtShzS9uY+1BNrtSXW4urFhQJs?=
- =?us-ascii?Q?2+gkb4FAD0ZUqnmWoBzvXSV8UWeW9n76DDmpLcnP01M4IbtWblRdDRk2Uo3P?=
- =?us-ascii?Q?/MTnx8wwLUUzGDEv+Fjn8Th32ngrZBZBXRO/b8gokiSqFVYeHbcHWH26pX8W?=
- =?us-ascii?Q?4GpEFKhwnin2C8FsvP/8BajlnoqUeQ/ticQNk8vl2oNy+JyOEB8IOCGuJMLn?=
- =?us-ascii?Q?oFs/jAER/gDVpwWLtwts/eAww1lOkvE4r2pPfXM44EsN9iX4TuS4l0FyHxTY?=
- =?us-ascii?Q?AuDBTaWeYKZvuzvrEgbqsMOWAvMOLB7SofrrUlbqX+KdRktrF0D7y9vM1znL?=
- =?us-ascii?Q?aUEIIAopOKzx2iUD63U/qpyUJF3ZMY+iYevQFIexntgfCsOKQwcYqdHX4gSV?=
- =?us-ascii?Q?DclBqp/9cFLOjkOwOuBceZKF18oUF4nlv/fc1oqfPobn8Tleq3Sn6fqUgdqk?=
- =?us-ascii?Q?BA=3D=3D?=
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6d9ed0b1-1b3a-4f36-1dbe-08dd36d06446
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5866.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2025 08:26:05.7914
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zZWsLnlx89suzhkM5m5p+Uo1GlQGXsSnGdU/Ee0YR9FnW3jSaYkvCzkdtWevBl89HQyVngaOXz+4RzqV9ZWOBQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7707
-X-Proofpoint-ORIG-GUID: GsYV8nRlNHnYQkhirI9Cy64LFEHqaMWN
-X-Authority-Analysis: v=2.4 cv=X8moKHTe c=1 sm=1 tr=0 ts=678a1420 cx=c_pps a=+hq7TYb7Jqj0EztKBnUMzg==:117 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=VdSt8ZQiCzkA:10 a=bRTqI5nwn0kA:10 a=VwQbUJbxAAAA:8
- a=t7CeM3EgAAAA:8 a=OQzckKujYBuisFixx9sA:9 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: GsYV8nRlNHnYQkhirI9Cy64LFEHqaMWN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-17_03,2025-01-16_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1011
- bulkscore=0 lowpriorityscore=0 priorityscore=1501 adultscore=0 mlxscore=0
- malwarescore=0 impostorscore=0 spamscore=0 mlxlogscore=999 suspectscore=0
- classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.21.0-2411120000 definitions=main-2501170066
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On our Marvell OCTEON CN96XX board, we observed the following panic on
-the latest kernel:
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000080
-Mem abort info:
-  ESR = 0x0000000096000005
-  EC = 0x25: DABT (current EL), IL = 32 bits
-  SET = 0, FnV = 0
-  EA = 0, S1PTW = 0
-  FSC = 0x05: level 1 translation fault
-Data abort info:
-  ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-  CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-  GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[0000000000000080] user address but active_mm is swapper
-Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
-Modules linked in:
-CPU: 9 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.13.0-rc7-00149-g9bffa1ad25b8 #1
-Hardware name: Marvell OcteonTX CN96XX board (DT)
-pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : of_pci_add_properties+0x278/0x4c8
-lr : of_pci_add_properties+0x258/0x4c8
-sp : ffff8000822ef9b0
-x29: ffff8000822ef9b0 x28: ffff000106dd8000 x27: ffff800081bc3b30
-x26: ffff800081540118 x25: ffff8000813d2be0 x24: 0000000000000000
-x23: ffff00010528a800 x22: ffff000107c50000 x21: ffff0001039c2630
-x20: ffff0001039c2630 x19: 0000000000000000 x18: ffffffffffffffff
-x17: 00000000a49c1b85 x16: 0000000084c07b58 x15: ffff000103a10f98
-x14: ffffffffffffffff x13: ffff000103a10f96 x12: 0000000000000003
-x11: 0101010101010101 x10: 000000000000002c x9 : ffff800080ca7acc
-x8 : ffff0001038fd900 x7 : 0000000000000000 x6 : 0000000000696370
-x5 : 0000000000000000 x4 : 0000000000000002 x3 : ffff8000822efa40
-x2 : ffff800081341000 x1 : ffff000107c50000 x0 : 0000000000000000
-Call trace:
- of_pci_add_properties+0x278/0x4c8 (P)
- of_pci_make_dev_node+0xe0/0x158
- pci_bus_add_device+0x158/0x210
- pci_bus_add_devices+0x40/0x98
- pci_host_probe+0x94/0x118
- pci_host_common_probe+0x120/0x1a0
- platform_probe+0x70/0xf0
- really_probe+0xb4/0x2a8
- __driver_probe_device+0x80/0x140
- driver_probe_device+0x48/0x170
- __driver_attach+0x9c/0x1b0
- bus_for_each_dev+0x7c/0xe8
- driver_attach+0x2c/0x40
- bus_add_driver+0xec/0x218
- driver_register+0x68/0x138
- __platform_driver_register+0x2c/0x40
- gen_pci_driver_init+0x24/0x38
- do_one_initcall+0x4c/0x278
- kernel_init_freeable+0x1f4/0x3d0
- kernel_init+0x28/0x1f0
- ret_from_fork+0x10/0x20
-Code: aa1603e1 f0005522 d2800044 91000042 (f94040a0)
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-This regression was introduced by commit 7246a4520b4b ("PCI: Use
-preserve_config in place of pci_flags"). On our board, the 002:00:07.0
-bridge is misconfigured by the bootloader. Both its secondary and
-subordinate bus numbers are initialized to 0, while its fixed secondary
-bus number is set to 8. However, bus number 8 is also assigned to another
-bridge (0002:00:0f.0). Although this is a bootloader issue, before the
-change in commit 7246a4520b4b, the PCI_REASSIGN_ALL_BUS flag was
-set by default when PCI_PROBE_ONLY was enabled, ensuing that all the
-bus number for these bridges were reassigned, avoiding any conflicts.
+commit b61badd20b443eabe132314669bb51a263982e5c upstream.
 
-After the change introduced in commit 7246a4520b4b, the bus numbers
-assigned by the bootloader are reused by all other bridges, except
-the misconfigured 002:00:07.0 bridge. The kernel attempt to reconfigure
-002:00:07.0 by reusing the fixed secondary bus number 8 assigned by
-bootloader. However, since a pci_bus has already been allocated for
-bus 8 due to the probe of 0002:00:0f.0, no new pci_bus allocated for
-002:00:07.0. This results in a pci bridge device without a pci_bus
-attached (pdev->subordinate == NULL). Consequently, accessing
-pdev->subordinate in of_pci_prop_bus_range() leads to a NULL pointer
-dereference.
+[  +0.000021] BUG: KASAN: slab-use-after-free in drm_sched_entity_flush+0x6cb/0x7a0 [gpu_sched]
+[  +0.000027] Read of size 8 at addr ffff8881b8605f88 by task amd_pci_unplug/2147
 
-To summarize, we need to restore the PCI_REASSIGN_ALL_BUS flag when
-PCI_PROBE_ONLY is enabled in order to work around issue like the one
-described above.
+[  +0.000023] CPU: 6 PID: 2147 Comm: amd_pci_unplug Not tainted 6.10.0+ #1
+[  +0.000016] Hardware name: ASUS System Product Name/ROG STRIX B550-F GAMING (WI-FI), BIOS 1401 12/03/2020
+[  +0.000016] Call Trace:
+[  +0.000008]  <TASK>
+[  +0.000009]  dump_stack_lvl+0x76/0xa0
+[  +0.000017]  print_report+0xce/0x5f0
+[  +0.000017]  ? drm_sched_entity_flush+0x6cb/0x7a0 [gpu_sched]
+[  +0.000019]  ? srso_return_thunk+0x5/0x5f
+[  +0.000015]  ? kasan_complete_mode_report_info+0x72/0x200
+[  +0.000016]  ? drm_sched_entity_flush+0x6cb/0x7a0 [gpu_sched]
+[  +0.000019]  kasan_report+0xbe/0x110
+[  +0.000015]  ? drm_sched_entity_flush+0x6cb/0x7a0 [gpu_sched]
+[  +0.000023]  __asan_report_load8_noabort+0x14/0x30
+[  +0.000014]  drm_sched_entity_flush+0x6cb/0x7a0 [gpu_sched]
+[  +0.000020]  ? srso_return_thunk+0x5/0x5f
+[  +0.000013]  ? __kasan_check_write+0x14/0x30
+[  +0.000016]  ? __pfx_drm_sched_entity_flush+0x10/0x10 [gpu_sched]
+[  +0.000020]  ? srso_return_thunk+0x5/0x5f
+[  +0.000013]  ? __kasan_check_write+0x14/0x30
+[  +0.000013]  ? srso_return_thunk+0x5/0x5f
+[  +0.000013]  ? enable_work+0x124/0x220
+[  +0.000015]  ? __pfx_enable_work+0x10/0x10
+[  +0.000013]  ? srso_return_thunk+0x5/0x5f
+[  +0.000014]  ? free_large_kmalloc+0x85/0xf0
+[  +0.000016]  drm_sched_entity_destroy+0x18/0x30 [gpu_sched]
+[  +0.000020]  amdgpu_vce_sw_fini+0x55/0x170 [amdgpu]
+[  +0.000735]  ? __kasan_check_read+0x11/0x20
+[  +0.000016]  vce_v4_0_sw_fini+0x80/0x110 [amdgpu]
+[  +0.000726]  amdgpu_device_fini_sw+0x331/0xfc0 [amdgpu]
+[  +0.000679]  ? mutex_unlock+0x80/0xe0
+[  +0.000017]  ? __pfx_amdgpu_device_fini_sw+0x10/0x10 [amdgpu]
+[  +0.000662]  ? srso_return_thunk+0x5/0x5f
+[  +0.000014]  ? __kasan_check_write+0x14/0x30
+[  +0.000013]  ? srso_return_thunk+0x5/0x5f
+[  +0.000013]  ? mutex_unlock+0x80/0xe0
+[  +0.000016]  amdgpu_driver_release_kms+0x16/0x80 [amdgpu]
+[  +0.000663]  drm_minor_release+0xc9/0x140 [drm]
+[  +0.000081]  drm_release+0x1fd/0x390 [drm]
+[  +0.000082]  __fput+0x36c/0xad0
+[  +0.000018]  __fput_sync+0x3c/0x50
+[  +0.000014]  __x64_sys_close+0x7d/0xe0
+[  +0.000014]  x64_sys_call+0x1bc6/0x2680
+[  +0.000014]  do_syscall_64+0x70/0x130
+[  +0.000014]  ? srso_return_thunk+0x5/0x5f
+[  +0.000014]  ? irqentry_exit_to_user_mode+0x60/0x190
+[  +0.000015]  ? srso_return_thunk+0x5/0x5f
+[  +0.000014]  ? irqentry_exit+0x43/0x50
+[  +0.000012]  ? srso_return_thunk+0x5/0x5f
+[  +0.000013]  ? exc_page_fault+0x7c/0x110
+[  +0.000015]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  +0.000014] RIP: 0033:0x7ffff7b14f67
+[  +0.000013] Code: ff e8 0d 16 02 00 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 41 c3 48 83 ec 18 89 7c 24 0c e8 73 ba f7 ff
+[  +0.000026] RSP: 002b:00007fffffffe378 EFLAGS: 00000246 ORIG_RAX: 0000000000000003
+[  +0.000019] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ffff7b14f67
+[  +0.000014] RDX: 0000000000000000 RSI: 00007ffff7f6f47a RDI: 0000000000000003
+[  +0.000014] RBP: 00007fffffffe3a0 R08: 0000555555569890 R09: 0000000000000000
+[  +0.000014] R10: 0000000000000000 R11: 0000000000000246 R12: 00007fffffffe5c8
+[  +0.000013] R13: 00005555555552a9 R14: 0000555555557d48 R15: 00007ffff7ffd040
+[  +0.000020]  </TASK>
 
+[  +0.000016] Allocated by task 383 on cpu 7 at 26.880319s:
+[  +0.000014]  kasan_save_stack+0x28/0x60
+[  +0.000008]  kasan_save_track+0x18/0x70
+[  +0.000007]  kasan_save_alloc_info+0x38/0x60
+[  +0.000007]  __kasan_kmalloc+0xc1/0xd0
+[  +0.000007]  kmalloc_trace_noprof+0x180/0x380
+[  +0.000007]  drm_sched_init+0x411/0xec0 [gpu_sched]
+[  +0.000012]  amdgpu_device_init+0x695f/0xa610 [amdgpu]
+[  +0.000658]  amdgpu_driver_load_kms+0x1a/0x120 [amdgpu]
+[  +0.000662]  amdgpu_pci_probe+0x361/0xf30 [amdgpu]
+[  +0.000651]  local_pci_probe+0xe7/0x1b0
+[  +0.000009]  pci_device_probe+0x248/0x890
+[  +0.000008]  really_probe+0x1fd/0x950
+[  +0.000008]  __driver_probe_device+0x307/0x410
+[  +0.000007]  driver_probe_device+0x4e/0x150
+[  +0.000007]  __driver_attach+0x223/0x510
+[  +0.000006]  bus_for_each_dev+0x102/0x1a0
+[  +0.000007]  driver_attach+0x3d/0x60
+[  +0.000006]  bus_add_driver+0x2ac/0x5f0
+[  +0.000006]  driver_register+0x13d/0x490
+[  +0.000008]  __pci_register_driver+0x1ee/0x2b0
+[  +0.000007]  llc_sap_close+0xb0/0x160 [llc]
+[  +0.000009]  do_one_initcall+0x9c/0x3e0
+[  +0.000008]  do_init_module+0x241/0x760
+[  +0.000008]  load_module+0x51ac/0x6c30
+[  +0.000006]  __do_sys_init_module+0x234/0x270
+[  +0.000007]  __x64_sys_init_module+0x73/0xc0
+[  +0.000006]  x64_sys_call+0xe3/0x2680
+[  +0.000006]  do_syscall_64+0x70/0x130
+[  +0.000007]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+[  +0.000015] Freed by task 2147 on cpu 6 at 160.507651s:
+[  +0.000013]  kasan_save_stack+0x28/0x60
+[  +0.000007]  kasan_save_track+0x18/0x70
+[  +0.000007]  kasan_save_free_info+0x3b/0x60
+[  +0.000007]  poison_slab_object+0x115/0x1c0
+[  +0.000007]  __kasan_slab_free+0x34/0x60
+[  +0.000007]  kfree+0xfa/0x2f0
+[  +0.000007]  drm_sched_fini+0x19d/0x410 [gpu_sched]
+[  +0.000012]  amdgpu_fence_driver_sw_fini+0xc4/0x2f0 [amdgpu]
+[  +0.000662]  amdgpu_device_fini_sw+0x77/0xfc0 [amdgpu]
+[  +0.000653]  amdgpu_driver_release_kms+0x16/0x80 [amdgpu]
+[  +0.000655]  drm_minor_release+0xc9/0x140 [drm]
+[  +0.000071]  drm_release+0x1fd/0x390 [drm]
+[  +0.000071]  __fput+0x36c/0xad0
+[  +0.000008]  __fput_sync+0x3c/0x50
+[  +0.000007]  __x64_sys_close+0x7d/0xe0
+[  +0.000007]  x64_sys_call+0x1bc6/0x2680
+[  +0.000007]  do_syscall_64+0x70/0x130
+[  +0.000007]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+[  +0.000014] The buggy address belongs to the object at ffff8881b8605f80
+               which belongs to the cache kmalloc-64 of size 64
+[  +0.000020] The buggy address is located 8 bytes inside of
+               freed 64-byte region [ffff8881b8605f80, ffff8881b8605fc0)
+
+[  +0.000028] The buggy address belongs to the physical page:
+[  +0.000011] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1b8605
+[  +0.000008] anon flags: 0x17ffffc0000000(node=0|zone=2|lastcpupid=0x1fffff)
+[  +0.000007] page_type: 0xffffefff(slab)
+[  +0.000009] raw: 0017ffffc0000000 ffff8881000428c0 0000000000000000 dead000000000001
+[  +0.000006] raw: 0000000000000000 0000000000200020 00000001ffffefff 0000000000000000
+[  +0.000006] page dumped because: kasan: bad access detected
+
+[  +0.000012] Memory state around the buggy address:
+[  +0.000011]  ffff8881b8605e80: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+[  +0.000015]  ffff8881b8605f00: 00 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc
+[  +0.000015] >ffff8881b8605f80: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+[  +0.000013]                       ^
+[  +0.000011]  ffff8881b8606000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fc
+[  +0.000014]  ffff8881b8606080: fc fc fc fc fc fc fc fa fb fb fb fb fb fb fb fb
+[  +0.000013] ==================================================================
+
+The issue reproduced on VG20 during the IGT pci_unplug test.
+The root cause of the issue is that the function drm_sched_fini is called before drm_sched_entity_kill.
+In drm_sched_fini, the drm_sched_rq structure is freed, but this structure is later accessed by
+each entity within the run queue, leading to invalid memory access.
+To resolve this, the order of cleanup calls is updated:
+
+    Before:
+        amdgpu_fence_driver_sw_fini
+        amdgpu_device_ip_fini
+
+    After:
+        amdgpu_device_ip_fini
+        amdgpu_fence_driver_sw_fini
+
+This updated order ensures that all entities in the IPs are cleaned up first, followed by proper
+cleanup of the schedulers.
+
+Additional Investigation:
+
+During debugging, another issue was identified in the amdgpu_vce_sw_fini function. The vce.vcpu_bo
+buffer must be freed only as the final step in the cleanup process to prevent any premature
+access during earlier cleanup stages.
+
+v2: Using Christian suggestion call drm_sched_entity_destroy before drm_sched_fini.
+
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: 7246a4520b4b ("PCI: Use preserve_config in place of pci_flags")
-Signed-off-by: Bo Sun <Bo.Sun.CN@windriver.com>
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 ---
- drivers/pci/controller/pci-host-common.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 4 ++--
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c    | 6 +++---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pci/controller/pci-host-common.c b/drivers/pci/controller/pci-host-common.c
-index cf5f59a745b3..615923acbc3e 100644
---- a/drivers/pci/controller/pci-host-common.c
-+++ b/drivers/pci/controller/pci-host-common.c
-@@ -73,6 +73,10 @@ int pci_host_common_probe(struct platform_device *pdev)
- 	if (IS_ERR(cfg))
- 		return PTR_ERR(cfg);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 0b2a27806bec..bd98d08b66c6 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4131,8 +4131,8 @@ void amdgpu_device_fini_sw(struct amdgpu_device *adev)
+ 	int idx;
+ 	bool px;
  
-+	/* Do not reassign resources if probe only */
-+	if (!pci_has_flag(PCI_PROBE_ONLY))
-+		pci_add_flags(PCI_REASSIGN_ALL_BUS);
+-	amdgpu_fence_driver_sw_fini(adev);
+ 	amdgpu_device_ip_fini(adev);
++	amdgpu_fence_driver_sw_fini(adev);
+ 	release_firmware(adev->firmware.gpu_info_fw);
+ 	adev->firmware.gpu_info_fw = NULL;
+ 	adev->accel_working = false;
+@@ -6129,7 +6129,7 @@ int amdgpu_in_reset(struct amdgpu_device *adev)
+ {
+ 	return atomic_read(&adev->reset_domain->in_gpu_reset);
+ 	}
+-	
 +
- 	bridge->sysdata = cfg;
- 	bridge->ops = (struct pci_ops *)&ops->pci_ops;
- 	bridge->msi_domain = true;
+ /**
+  * amdgpu_device_halt() - bring hardware to some kind of halt state
+  *
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c
+index bc030588cd22..251416ad4652 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c
+@@ -220,15 +220,15 @@ int amdgpu_vce_sw_fini(struct amdgpu_device *adev)
+ 
+ 	drm_sched_entity_destroy(&adev->vce.entity);
+ 
+-	amdgpu_bo_free_kernel(&adev->vce.vcpu_bo, &adev->vce.gpu_addr,
+-		(void **)&adev->vce.cpu_addr);
+-
+ 	for (i = 0; i < adev->vce.num_rings; i++)
+ 		amdgpu_ring_fini(&adev->vce.ring[i]);
+ 
+ 	release_firmware(adev->vce.fw);
+ 	mutex_destroy(&adev->vce.idle_mutex);
+ 
++	amdgpu_bo_free_kernel(&adev->vce.vcpu_bo, &adev->vce.gpu_addr,
++		(void **)&adev->vce.cpu_addr);
++
+ 	return 0;
+ }
+ 
 -- 
-2.48.1
+2.43.0
 
 
