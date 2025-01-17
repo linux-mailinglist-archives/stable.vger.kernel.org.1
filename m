@@ -1,147 +1,112 @@
-Return-Path: <stable+bounces-109412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EA47A158E4
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 22:16:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82A33A1593D
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 22:55:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB15E3A1C9F
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 21:16:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A14177A1F14
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 21:55:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEACA1A8F84;
-	Fri, 17 Jan 2025 21:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C213371750;
+	Fri, 17 Jan 2025 21:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="WWhYbGgq"
+	dkim=pass (1024-bit key) header.d=vodafonemail.de header.i=@vodafonemail.de header.b="OY51NRjE"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from mr5.vodafonemail.de (mr5.vodafonemail.de [145.253.228.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87202149C55;
-	Fri, 17 Jan 2025 21:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CF01AA1D0;
+	Fri, 17 Jan 2025 21:55:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.253.228.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737148572; cv=none; b=VG7/PZ40WrfeOs/9niLsgDYMWZCcsBVo4ZtbA+JNYQoDPdqiIA2KuWgo9XGtQxtoLFZnl6MQMWOWooni2OBkh59XwToV+5KWh54l1J0Usj3AQPWiyioQYIyjLdS56diRWxmb7kWNmrZaK9ZPJdfVV4zhn+Xu8TZfMJ7VBsiwAwU=
+	t=1737150907; cv=none; b=ZD0uRRX1czunXAWwVanzkkoqlZz1fOagZghhS6+YqKIiDSbzO7rEJx2wqrK9ImazxG/AnW3/pLvU6IRz/1pUAsoJgEQaXXsKcKmeIp+QW/nW5fPOtEEXQc1kEyH1x0rViCwsfF4//6KtpfjrXLI51/4fp74huz7krScGceBJ9wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737148572; c=relaxed/simple;
-	bh=nWEQx70NCwtwNPc1XNlaPe6/oXaDl+iP9y47p1jRxes=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LMcTP8ZWSOtL7iElIlmGxjROjxn+hEm4dPv/c1HVoEVxLpmcOI0QmDi/k67YZMzd7AHYPX8DWEAGNRAJRQLShW8fpeFn+WGJIVt42XOTf5m2ZvoVzAeQSPcGHePei/O+Zeod6pj8W736yqRjyOFZuzQft4uJk6sFw15h3dffzkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=WWhYbGgq; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AF462101D2388;
-	Fri, 17 Jan 2025 22:16:06 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1737148567;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Dh/0Jzdkf3ZovZrFrS2H1TUALuhMd3aUUOuqhaBvLp4=;
-	b=WWhYbGgqnUD7IHUYqtVi5Ao42tItDYT/bZwuOSTDLFweQpcjhAvoqJcjn3NfHOPYiX8eg5
-	/Tgw9+R6flAwCCLtxhdDEFyOXbw5/A5zNIOiRLiMhgQHKcogrzmTU1JFQ6TBfkdt9yP2mT
-	BZQZIuYlzo+OR7+EaBrxGBTQWNf9m/SzPzGsRGSNdmF4Gvj2L+gE5IHNIx6XiQKbp4OaK3
-	agfnqeh4ahdyyJ5ab++gcnsedeqsvltmsL6etgO8G1H0eqMujKwabF6XcQBti3YZQ0YVAJ
-	zPPTCQ3L2DwMVzeR8tylryqQQ/cJJztpQxmxnKKI0PFKfDFQS2wyFpqzhqHBvA==
-Date: Fri, 17 Jan 2025 22:16:04 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: 6.1.125 build fail was -- Re: [PATCH 6.1 00/92] 6.1.125-rc1 review
-Message-ID: <Z4rIlESGC6mwi8HP@duo.ucw.cz>
-References: <20250115103547.522503305@linuxfoundation.org>
- <Z4evJUkzHauW+zOU@duo.ucw.cz>
- <Z4e+u8gj6BV37WdM@duo.ucw.cz>
- <2025011725-underdog-heftiness-49df@gregkh>
+	s=arc-20240116; t=1737150907; c=relaxed/simple;
+	bh=EgUvX/yubHLFXVGDlOx5BcpIID1kRUY/frGe5pWJVwU=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=cyNOJ6ZmAKbLL3W2rr13CyejqaCRP6M/PK9moOOC5ffTy88JS3bBdFiZlTyAkTykseV3+R480Wwq1UxVgAciNtfw5OAhWnliATHLQTQHyfeiU+f90OC7AJTpKSTeTfqrnCirCAxE6S86npWIYdjnIXUDSB+DtyNBPB8vEMu1Ng0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vodafonemail.de; spf=pass smtp.mailfrom=vodafonemail.de; dkim=pass (1024-bit key) header.d=vodafonemail.de header.i=@vodafonemail.de header.b=OY51NRjE; arc=none smtp.client-ip=145.253.228.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vodafonemail.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vodafonemail.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vodafonemail.de;
+	s=vfde-mb-mr2-23sep; t=1737150382;
+	bh=9AwIqC5aMeeG2nanENIKbL/veGn0lLTvGb6kKGXu6P0=;
+	h=Message-ID:Date:User-Agent:From:Subject:To:Content-Language:
+	 Content-Type:From;
+	b=OY51NRjE9ism995iRHLichPOMm8MsBg55+YTqpksSnM/1tzS7k70ybZbAcwUL3yT9
+	 cWK17mN8pDGz77/vz1Dkl96nl93Ty00wBNT+4AXZqxcedJduRZYuU2t5cM3RFyoYE1
+	 lFFuQ9HMJwX4FG7S2via3RvD8rIP0/KUGbKWJeb0=
+Received: from smtp.vodafone.de (unknown [10.0.0.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by mr5.vodafonemail.de (Postfix) with ESMTPS id 4YZYG55t6kz1y9x;
+	Fri, 17 Jan 2025 21:46:21 +0000 (UTC)
+Received: from [192.168.178.41] (port-92-196-123-118.dynamic.as20676.net [92.196.123.118])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.vodafone.de (Postfix) with ESMTPSA id 4YZYFr2Fjjz8sZc;
+	Fri, 17 Jan 2025 21:46:05 +0000 (UTC)
+Message-ID: <6555309b-830d-449b-800c-55306c19c659@vodafonemail.de>
+Date: Fri, 17 Jan 2025 22:45:59 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="6TOuS2KVQQGJVwKw"
-Content-Disposition: inline
-In-Reply-To: <2025011725-underdog-heftiness-49df@gregkh>
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+From: Farblos <farblos@vodafonemail.de>
+Subject: Frequent kernel messages related to IR keymap rc-cec with kernel
+ 6.12.10 and HDMI monitor
+To: stable@vger.kernel.org, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+ linux-media@vger.kernel.org
+Cc: regressions@lists.linux.dev
+Content-Language: de-DE-frami, en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-purgate-type: clean
+X-purgate: clean
+X-purgate-size: 1677
+X-purgate-ID: 155817::1737150377-F97F9465-8A32A04D/0/0
 
+This is on Debian testing with the following kernel, built from
+the tarball on kernel.org:
 
---6TOuS2KVQQGJVwKw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+  Linux sappc1 6.12.10 #4 SMP PREEMPT_DYNAMIC Fri Jan 17 22:17:45 CET 2025 x86_64 GNU/Linux
 
-Hi!
+It is running on an 12th gen Intel Framework laptop, with monitor
+connected through Framework's USB-C-to-HDMI adapter (the 3rd gen
+one):
 
-> > > Still building, but we already have failures on risc-v.
-> > >=20
-> > > drivers/usb/core/port.c: In function 'usb_port_shutdown':
-> > > 2912
-> > > drivers/usb/core/port.c:417:26: error: 'struct usb_device' has no mem=
-ber named 'port_is_suspended'
-> > > 2913
-> > >   417 |         if (udev && !udev->port_is_suspended) {
-> > > 2914
-> > >       |                          ^~
-> > > 2915
-> > > make[4]: *** [scripts/Makefile.build:250: drivers/usb/core/port.o] Er=
-ror 1
-> > > 2916
-> > > make[4]: *** Waiting for unfinished jobs....
-> > > 2917
-> > >   CC      drivers/gpu/drm/radeon/radeon_test.o
-> >=20
-> > And there's similar failure on x86:
-> >=20
-> > https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/pipelin=
-es/1626266073
->=20
-> Thanks for testing and letting me know,
+  https://knowledgebase.frame.work/hdmi-expansion-card-generations-Sk7AQKUv2
 
-Ok, so it seems _this_ failure is fixed... but there's new one. Build
-failure on risc-v.
+Since my kernel got upgraded to version 6.12.*, I get frequently
+journal messages like these:
 
-  LD      .tmp_vmlinux.kallsyms1
-2941
-riscv64-linux-gnu-ld: drivers/usb/host/xhci-pci.o: in function `xhci_pci_re=
-sume':
-2942
-xhci-pci.c:(.text+0xd8c): undefined reference to `xhci_resume'
-2943
-riscv64-linux-gnu-ld: xhci-pci.c:(.text+0xe1a): undefined reference to `xhc=
-i_suspend'
-2944
-make[1]: *** [scripts/Makefile.vmlinux:34: vmlinux] Error 1
-2945
-make: *** [Makefile:1250: vmlinux] Error 2
+  Jan 15 15:24:51 host01 kernel: Registered IR keymap rc-cec
+  Jan 15 15:24:51 host01 kernel: rc rc0: DP-3 as /devices/pci0000:00/0000:00:02.0/rc/rc0
+  Jan 15 15:24:51 host01 kernel: input: DP-3 as /devices/pci0000:00/0000:00:02.0/rc/rc0/input146
+  Jan 15 15:24:51 host01 systemd-logind[1456]: Watching system buttons on /dev/input/event11 (DP-3)
+  Jan 15 15:24:51 host01 Xorg[1663]: (II) config/udev: Adding input device DP-3 (/dev/input/event11)
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/888318=
-0471
+I tried to ignore these as long as they have been showing up during boot
+only or when screen resolution got changed using xrandr, but today I
+noticed that these repeat every 30 secs or so when my screen saver is
+active.  Which then kind of floods the journal.
 
-(I have also 2 runtime failures, I'm retrying those jobs.
+With the previous 6.11.* kernel series I would see these messages
+only once, during startup.  When using a DisplayPort adapter instead
+of the HDMI adapter, these messages do not show up either.
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/pipelines/1=
-630005263
+I guess that it is not the CEC subsystem being responsible here, but
+rather some other component which triggers it more frequently than
+earlier.  Any help on how to find more about this issue appreciated.
 
-). I partly reconsructed To:.
+Please CC me in replies.
 
-Best regards,
-
-								Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---6TOuS2KVQQGJVwKw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ4rIlAAKCRAw5/Bqldv6
-8hQsAJ0TGzbekcSv5eUGhFEUUXubYqjAEQCeNSbnof5Wib7DZi2JlJKWZy/EAsA=
-=4SBr
------END PGP SIGNATURE-----
-
---6TOuS2KVQQGJVwKw--
+Thanks!
 
