@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-109400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E670DA15412
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 17:18:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADC5FA1542D
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 17:24:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE8733A1D5C
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 16:18:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F34B53A4D93
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 16:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA5E19D09C;
-	Fri, 17 Jan 2025 16:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC3D19D8A9;
+	Fri, 17 Jan 2025 16:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="lZbQ85YO"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="P/2DodBq"
 X-Original-To: stable@vger.kernel.org
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD16719ABB6;
-	Fri, 17 Jan 2025 16:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3FDC19C578;
+	Fri, 17 Jan 2025 16:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737130720; cv=none; b=aYLnLEK8eEXZfBAMMYoOtbrfU0br/iHbDK7tZc7GuZCbAxnRzFemUM7j7/jRnjwmKPHtYbJeNJzpYS5E1CSbc6nudbFRpR2At+FHfsdQRU75LGv7UfavADBXG/YZuvwEls1IzHALHqZFlg7JV9I+7Og7J4/79qhlALyB5Xtj6ks=
+	t=1737131054; cv=none; b=YXzVk1Q/HBNeFya/atMu30ctqXrv9ca27hFtSc+NN7odgdyuotmPwk+H+W1eS4USBiIzg/g/V3ox+rEqZCUzBl+h+HIInG2IaC5y9XxpxBzr61GoMj/93d6LIQJR8nGz++dch3hsFZx2WJbbv6uZkQOHi84tP2Y9PfGBPWostgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737130720; c=relaxed/simple;
-	bh=sNB1uFZu2mloisjdFqNHk8gx5JdSczvBHoAr2NbAulY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mTUSSRslJNfLTkq86s7OVaphWujTIdTmBQKcNrDAtbTlmF7r74bURmny1M6nOAZGgEe6D4USBZrJWjX0me5/1Df4xAqyADmCES3u4nyTm9ZAd0lZv0C99Noirw7GhYZcYlOUmN8hRn+k9cOfcivJm9svaNNvbRwlBV99POqLJp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=lZbQ85YO; arc=none smtp.client-ip=198.137.202.136
+	s=arc-20240116; t=1737131054; c=relaxed/simple;
+	bh=tybeA7r93PgFDrpKwJMpovI5WbYdZovVz8taaQoVIvI=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=pS9uhEFjdvL8WwZH5mTuvEnsu91S63JkXljxQK9E9tcdFQIVVdNT3nY43IN2fjYvGZ1USR+VZ99ByGZvqhEz6kPcH6IUPKITrbJF8HBIUbWUKWMIeAY00sLE1YS/kDu+ptqZLhulMShIHAZhPYHn2BAhTlwPMVejopZQqDsSXkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=P/2DodBq; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Received: from [IPV6:2601:646:8080:c1f1:e386:c572:17d3:6ddc] ([IPv6:2601:646:8080:c1f1:e386:c572:17d3:6ddc])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 50HGHe8n033816
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 50HGNeUV034966
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Fri, 17 Jan 2025 08:17:41 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 50HGHe8n033816
+	Fri, 17 Jan 2025 08:23:41 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 50HGNeUV034966
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2024121701; t=1737130662;
-	bh=OPSHPuabXC/5Wx6kXSJEUR24EKV1g+IykVWVbIKLyHo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lZbQ85YOnalhAQ/mMnubxBiGj2rzjIjzUSmFR9bsSsV9NZC5iHe082wO55Gj295ja
-	 lSrj8TOz2ro6hkXJDMDf+62qi0apCfa3UKrZyYHJP06RaX+z2hbFmo8eyIWDDKCiSY
-	 ZbDB6cjmG7WBn1/wFhDIJOSZxAg8u9stR3M8rFY5Nz/4xWOelPUbC1E+XL+N7cZ33G
-	 icMHeQBRqAhksIvo0GvgFKhC0gSQ9jUmJl6KLc9fvcvuoWKqsxgJ4t5fe7vngHGq3N
-	 ZEtjR0EXm/ahCZBVj3Z97W7CrJBaMLtdbkfuTTs/Jv2YGe+W4825JkYEoB+TcMBfaE
-	 Q+Ov2Hh+eOyMg==
-Message-ID: <21a2dc23-a87f-42aa-b5c0-ab828b1c6ad8@zytor.com>
-Date: Fri, 17 Jan 2025 08:17:35 -0800
+	s=2024121701; t=1737131022;
+	bh=79ilTLzybvTs3bji+6rF5zCXsuvfAB61gXOc6zccAkI=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=P/2DodBqn9/VGrVMDj3cwatrsG+XmLw6kGSEpKKkOucuzDbJtDst7A/6M1wYL+G3L
+	 2I++gnicLfqB1Cfg0eJzArZ55IheF/HuvVwfwR+X6QYT7HDN9VMoAo1m8rSvYTHA61
+	 zCZDUY8395ikjuGV4obcZ05mfa9NfumBKowcsGk3gYl8EaZrVEx8+bh0t0X+26apF7
+	 QqGBlSvkG1GA0ryV1BoqhDSeF6N5qGuZYejMucsXqozS8G5dT9z/UM+zKFlSW3Yox9
+	 QRohsi1N5v3/n4H42qFDsHA/RNnakRACs+FaMD73jtiMZik3EEQ6QE/7Sa7lr16/OY
+	 vPJFbcx0NXT4w==
+Message-ID: <9315ac61-f617-4449-ae23-72ad23eb668a@zytor.com>
+Date: Fri, 17 Jan 2025 08:23:35 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,6 +58,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] x86/fred: Optimize the FRED entry by prioritizing
  high-probability event dispatching
+From: "H. Peter Anvin" <hpa@zytor.com>
 To: Xin Li <xin@zytor.com>, Ethan Zhao <haifeng.zhao@linux.intel.com>,
         Ethan Zhao <etzhao@outlook.com>, linux-kernel@vger.kernel.org,
         stable@vger.kernel.org
@@ -73,44 +74,39 @@ References: <20250116065145.2747960-1-haifeng.zhao@linux.intel.com>
  <4d485294-959b-42a6-a847-513e8e3d0070@zytor.com>
  <33b89995-b638-4a6b-a75f-8278562237c4@linux.intel.com>
  <d96d60b9-fa17-4981-a7e9-1b8bab1a7eed@zytor.com>
+ <21a2dc23-a87f-42aa-b5c0-ab828b1c6ad8@zytor.com>
 Content-Language: en-US
-From: "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <d96d60b9-fa17-4981-a7e9-1b8bab1a7eed@zytor.com>
+In-Reply-To: <21a2dc23-a87f-42aa-b5c0-ab828b1c6ad8@zytor.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-
-
-On 1/16/25 21:54, Xin Li wrote:
-> On 1/16/2025 9:18 PM, Ethan Zhao wrote:
+On 1/17/25 08:17, H. Peter Anvin wrote:
 >>>
->>> Just swap the 2 arguments, and it should be:
->>> +    switch_likely (etype, EVENT_TYPE_OTHER) {
->>>
->>>
->> after swapped the parameters as following:
->> +#define switch_likely(v,l) \
->> + switch((__typeof__(v))__builtin_expect((v),(l)))
->> +
->>   __visible noinstr void fred_entry_from_user(struct pt_regs *regs)
->>   {
->>          unsigned long error_code = regs->orig_ax;
->> +       unsigned short etype = regs->fred_ss.type & 0xf;
+>>> -       switch (regs->fred_ss.type) {
+>>> +       switch_likely (etype, (EVENT_TYPE_EXTINT == etype || 
+>>> EVENT_TYPE_OTHER == etype)) {
 >>
->>          /* Invalidate orig_ax so that syscall_get_nr() works 
->> correctly */
->>          regs->orig_ax = -1;
+>> This is not what I suggested, the (l) argument should be only one
+>> constant; __builtin_expect() doesn't allow 2 different constants.
 >>
->> -       switch (regs->fred_ss.type) {
->> +       switch_likely (etype, (EVENT_TYPE_EXTINT == etype || 
->> EVENT_TYPE_OTHER == etype)) {
 > 
-> This is not what I suggested, the (l) argument should be only one
-> constant; __builtin_expect() doesn't allow 2 different constants.
+> The (l) argument is not a boolean expression! It is the *expected value* 
+> of (v).
 > 
 
-The (l) argument is not a boolean expression! It is the *expected value* 
-of (v).
+Also, EVENT_TYPE_EXTINT == etype is not Linux style.
+
+More fundamentally, though, I have to question this unless based on 
+profiling, because it isn't at all clear that EXTINT is more important 
+than FAULT (page faults, to be specific.)
+
+To optimize syscalls, you want to do a one-shot comparison of the entire 
+syscall64 signature (event type, 64-bit flag, and vector) as a mask and 
+compare. For that you want to make sure the compiler loads the high 32 
+bits into a register so that your mask and compare values can be 
+immediates. In other words, you don't actually want it to be part of the 
+switch at all, and you want *other* EVENT_TYPE_OTHER to fall back to the 
+switch with regular (low) priority.
 
 	-hpa
 
