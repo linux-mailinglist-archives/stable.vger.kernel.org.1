@@ -1,149 +1,148 @@
-Return-Path: <stable+bounces-109409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD87A157AC
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 19:55:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D270A15818
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 20:25:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 602AD161AF3
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 18:55:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E1333A94D0
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 19:24:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768A11A23B7;
-	Fri, 17 Jan 2025 18:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5961A841A;
+	Fri, 17 Jan 2025 19:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GkAav3jw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XLo1JinN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347B119B3EC
-	for <stable@vger.kernel.org>; Fri, 17 Jan 2025 18:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6877525A62F;
+	Fri, 17 Jan 2025 19:24:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737140129; cv=none; b=ggpMBnetAHR+5nrrkroxyKezsnySGrJYm6X8idnR1VMGtZxcP/YN2F/IvYByJZn2TYBgwDtDbaqVL+Ng60miLDUxbw2yS0LCAU4CGrHTXc6gsUHdV8A86oqNhPpg69LvpuckHhm1NVaxERfwypTxKtVRKtQXeRGtQxCVgtru0iY=
+	t=1737141893; cv=none; b=mDnX7gh9Am9xfgX1rMgiXMXccyv3gXo1qGuC9Fpg73OeQ2+TLyZ2Q5HFA6uES/Q4hw8q7Dm8kTt+uSfps0F2QU/l7Z42pswB3xf6/9VPQC/eKMQZ/UQJtVMfod4+qTCHKpPE3qEftlHol5gXSMWq3OKhcOlgGveVZJUZ3nIFOfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737140129; c=relaxed/simple;
-	bh=4ZNeMXc8bXUQH5lZVCibPgDSRPPMJdPNPkyl3sOP3Fs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=G8ZB+xKNRbj+t/iK/v0iZUC5hCIQK0sara9M1kuHIiJZHhqvecbY0OWVzlirk0HXJvC8Idiv1fUf/oEvgP8OI+MStBL8/JT+7MBgWg4gIL3DUhGUBgFhSQFXwQ0hVXeMm6sPT0YgT+X8Rn7b60Lu4L1E2uUiPIR6pGBeXLqXagY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GkAav3jw; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-216266cc0acso57729315ad.0
-        for <stable@vger.kernel.org>; Fri, 17 Jan 2025 10:55:27 -0800 (PST)
+	s=arc-20240116; t=1737141893; c=relaxed/simple;
+	bh=Gsn5nz20V2fIN2FayyDmPhjKVGCG561deT7CzmcmdFo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ADFzyR2YgyW/f294ZwaJh71636K99IUMgGk9wj8dDwECv8VqSmfNkuhMduI+lF6rw48zhXAiwMnrZCb/Zfx+VrzMIOshy2TT9MDnjIRa9fPb2910CzMdsNlGAhR9Y3JIGKpz4T0e2fNceqFfvl/Fj/aQDF2n4Vy6V0MjKGUklk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XLo1JinN; arc=none smtp.client-ip=209.85.161.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-5fa2685c5c0so1088501eaf.3;
+        Fri, 17 Jan 2025 11:24:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737140126; x=1737744926; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7tYVzLVUp0HCs5m0H/hnGBktgCUu9xEce2kHKxeFjrw=;
-        b=GkAav3jwsgGH6bDVINy2zCrfDsTs+4MPCfmNL+KTWutITLigAs9qt8dqnlfXGI9AtO
-         XIeh1VNDhGaxwm9w5IqXBin1BcOYwXbk3lPHBCzbIM3YxrjciztvYAphM6Dd+g59lntG
-         W6NaZWyNWFP31r0nH+8wHS9AOcc1hWqxfVHk2rMzW29xNRWJe3RqhpIPEsYESPHkY6Dv
-         pZYLntHULofffarN2QeHBe3AUwKgTIGacQl7R0dnlE97q/GfcFfOEEgL07SiVJSveUXn
-         spLQ2iBn0uSY96JFNk3TG76oYAUQs32k2tkMeLqpnYtAQCW16DvfHvfrq65a4ApUCGXO
-         hyAw==
+        d=gmail.com; s=20230601; t=1737141891; x=1737746691; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Gsn5nz20V2fIN2FayyDmPhjKVGCG561deT7CzmcmdFo=;
+        b=XLo1JinNLo2WBtzHdRfXH7KEJzuBuADMU78TUCUo+RWS/OAqcGdViTTdpE3hdLZjiB
+         YUus7uxJ/v4fYINHDJl+fQhJ8ZKXx1MD7eRTQZqHs7aaE0BUO41R2x1SU5nVjdsW777G
+         BKSbKXjnseJLDvjaxEFxl9SxImFt9B8Jxpt1Msf+5EbcZYboqEJC+EmPgLqbn7QnsZfm
+         a+8ECf3Nr8GZ2LgkE+CMHkN8KfvHouW8sI5aZwStJPUYf8akL9RVTj/KhnNys9rrCkdV
+         w4hkOmnGeiBnIWIOUqe18IquLcFLchP9pl3FJ1fF9oGmcXPHXZ5biG6zUAMhypz64C/t
+         36Ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737140126; x=1737744926;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7tYVzLVUp0HCs5m0H/hnGBktgCUu9xEce2kHKxeFjrw=;
-        b=CdiQq/SDzHfoqQW4LuHdFi0zPE6354YQZr3gjo/kRyHyb1njmPIuCqH29+BMYbzxwy
-         6PcaUfQ4Xj3hktf9R5K2l4ZiVuQw1+7L5CRY7gYg/Cs03v4TUYfSMoqMTPytROLN7MjC
-         TW9dB4fE3UMXfQPkg+G+MPz+UqV427vS0Dh8Vy/XsGMuc1CcxcaCzqxSVbSRCtY5B/WS
-         nVcNfpKFvo8F8rr1LgY3jyXBsync4tdaf6PIwjS4KAbs+tTbnJiOLtdXsKfBqzpyPuGH
-         0XCI/XD8moMV/ysww0T/KuZExwX6aMtMawP2zoU+XC5+2Xb/EK1Lagy4vGDtgOIXIh8B
-         ZoRw==
-X-Forwarded-Encrypted: i=1; AJvYcCVa+SJRWbw6WiZjQ06iSO+pIl6dHrsuYppyGtkuEJt9CHtLZkJaEX9yWiWy+hhjUHScpOS6yiM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpbjBeDa/JbiYqFfW5dA/uhwwmfjqcjtEhHFoDoxOmY/E7FD5Q
-	88sRvL/U3kEO7P545UT4V41YUjwvAdHLksMbQbmMzGc0NEH7OFGLRWFaLa0LcM2Td/1mWZxp3Py
-	0VA==
-X-Google-Smtp-Source: AGHT+IGXPAimC+Ce2xkspg/B1RjSodIgpaFL41aSTo/tticGhxczap+Lz1AMKHlJ13hJlwHcVNWYppG2cCk=
-X-Received: from pfx20.prod.google.com ([2002:a05:6a00:a454:b0:726:d6e6:a38])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:918d:b0:1e1:9e9f:ae4
- with SMTP id adf61e73a8af0-1eb21719f66mr5647320637.13.1737140126530; Fri, 17
- Jan 2025 10:55:26 -0800 (PST)
-Date: Fri, 17 Jan 2025 10:55:25 -0800
-In-Reply-To: <8bfc2790-a159-795f-6e4d-38b10227d726@igalia.com>
+        d=1e100.net; s=20230601; t=1737141891; x=1737746691;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Gsn5nz20V2fIN2FayyDmPhjKVGCG561deT7CzmcmdFo=;
+        b=iN//jcVqQuSL9x31E30S/i49mHgfiCAehWqHXmEypM1w5UOU09cTaIGeV/lDwhGFnh
+         OPOqmsVlqQGeN6Wh8z7NX+o+v8RCzyMvSUyx/t25Jp3PL2sPhpJREqpwaLVixvmVBkGq
+         GZPxpSb/TTrlSLokYZDxtkCR6jfXVKT8N+l0DUpQqA7hh9DWTQ5VN8m8hJs1HP4SfOGV
+         nZpUsqkKmx6kZrZD2Cy9WFrBnY6auDe6JwiZSBgE+HanrJuMDfOd953VjEYPjGQzQ3ct
+         xpCz6lO3DpT1IKx6+cNxHecHZFFH8Q9Tb6Z/bvetyoCLe16cElC+jqzatC54lVxAgh2u
+         4Zzg==
+X-Forwarded-Encrypted: i=1; AJvYcCU51twM7wKHXCrwi9wxRlppmIQ1JkZwdGN1BvN3o8MDplnjFmftjBkQMgzyHcnjYIdModG0jzOBaV4QMs1mdhChOiWr@vger.kernel.org, AJvYcCWIebZ520dLfceiUD4+P8D/nJij8S9End6UrglOtcetUyMH1/xm8lVDYxJjCRpDTZpFaUUtne+sLn/bIgPa@vger.kernel.org, AJvYcCXEMPjTFc7ISHXNXxlwe/ghkjjn2b3F7I5aJDPbLUFk2hYRAn2znZ5Uy3+X0PYwxmfLCsq7SJTk@vger.kernel.org, AJvYcCXXxVVZIlg/UfFrfbDwifw5nubKS0g8wB/fesGr0WeGaBkdUq6XglbkePiLYbNxvX9ktMqCUhl7zVfH@vger.kernel.org, AJvYcCXw4g44WMNetxBW/JxF0K1e3ghvHqTOZtdaX8Xiktn0rXJOPnLA7WFdspL0Eirbxikx+9s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6PiM+7mo6L9rNF7fsfBi1bve5Ob9Np2O8X50mTg1QNtfbZNf4
+	0+02uVu2B3/S+mI8ib4DULIEpR3bB9/gzFT9xLNzjDBiyWeal1KV05Bb10HAf5w+iTZEjs8IlIp
+	EKCtOe5DqCjDt5PRxgBR2P8STJqE=
+X-Gm-Gg: ASbGncuU8MNeB9BBqf0rXWcMYd+zYCdM8RHN+EuLlIaM4XnXVrSsbRrpBiUHziyuAF+
+	ByTY0qXcMaqpgG/eGDkwNA9JWQD93+zajd3ONuQ==
+X-Google-Smtp-Source: AGHT+IGHQ/grVoTLQnEmUWIYJs8UfQSiHq9tDjdF267G1+pIhrwjMq0XabaARMf0WLjgOqKpCyD9WFNRUAxWyYBCYaI=
+X-Received: by 2002:a05:6870:7e87:b0:28c:8476:dd76 with SMTP id
+ 586e51a60fabf-2b1c0c54085mr2788856fac.29.1737141891437; Fri, 17 Jan 2025
+ 11:24:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20241226033847.760293-1-gavinguo@igalia.com> <Z3AWJjUDmfCnD99S@lappy>
- <Z3w8wPRvjNyDXSQS@google.com> <8bfc2790-a159-795f-6e4d-38b10227d726@igalia.com>
-Message-ID: <Z4qnnb4CsqVvZVzO@google.com>
-Subject: Re: [PATCH 6.6] KVM: x86: Make x2APIC ID 100% readonly
-From: Sean Christopherson <seanjc@google.com>
-To: Gavin Guo <gavinguo@igalia.com>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org, mhal@rbox.co, 
-	haoyuwu254@gmail.com, pbonzini@redhat.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+References: <20250117005539.325887-1-eyal.birger@gmail.com>
+ <20250117013927.GB2610@redhat.com> <20250117170229.f1e1a9f03a8547d31cd875db@kernel.org>
+ <20250117140924.GA21203@redhat.com> <CAEf4BzYhcG8waFMFoQS5dFWVkQGP6ed_0mwGTK4quN5+6-8XuA@mail.gmail.com>
+In-Reply-To: <CAEf4BzYhcG8waFMFoQS5dFWVkQGP6ed_0mwGTK4quN5+6-8XuA@mail.gmail.com>
+From: Eyal Birger <eyal.birger@gmail.com>
+Date: Fri, 17 Jan 2025 11:24:40 -0800
+X-Gm-Features: AbW1kvaFtcIMDe8uGBVXTe6f37MfmRRP3kByqLIaU1d2db6mBf5fy6h5vCUCnVE
+Message-ID: <CAHsH6GvgqXgd3F_Nqf-f-tOigtmOACXFukSm+Wpi561xf2vCAA@mail.gmail.com>
+Subject: Re: [PATCH] seccomp: passthrough uretprobe systemcall without filtering
+To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Cc: Oleg Nesterov <oleg@redhat.com>, Masami Hiramatsu <mhiramat@kernel.org>, kees@kernel.org, 
+	luto@amacapital.net, wad@chromium.org, andrii@kernel.org, jolsa@kernel.org, 
+	alexei.starovoitov@gmail.com, olsajiri@gmail.com, cyphar@cyphar.com, 
+	songliubraving@fb.com, yhs@fb.com, john.fastabend@gmail.com, 
+	peterz@infradead.org, tglx@linutronix.de, bp@alien8.de, daniel@iogearbox.net, 
+	ast@kernel.org, rostedt@goodmis.org, rafi@rbk.io, shmulik.ladkani@gmail.com, 
+	bpf@vger.kernel.org, linux-api@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 09, 2025, Gavin Guo wrote:
-> 
-> On 1/7/25 04:27, Sean Christopherson wrote:
-> > On Sat, Dec 28, 2024, Sasha Levin wrote:
-> > > On Thu, Dec 26, 2024 at 11:38:47AM +0800, Gavin Guo wrote:
-> > > > From: Sean Christopherson <seanjc@google.com>
-> > > > 
-> > > > [ Upstream commit 4b7c3f6d04bd53f2e5b228b6821fb8f5d1ba3071 ]
-> > > > 
-> > > > Ignore the userspace provided x2APIC ID when fixing up APIC state for
-> > > > KVM_SET_LAPIC, i.e. make the x2APIC fully readonly in KVM.  Commit
-> > > > a92e2543d6a8 ("KVM: x86: use hardware-compatible format for APIC ID
-> > > > register"), which added the fixup, didn't intend to allow userspace to
-> > > > modify the x2APIC ID.  In fact, that commit is when KVM first started
-> > > > treating the x2APIC ID as readonly, apparently to fix some race:
-
-...
-
-> > > > Reported-by: Michal Luczaj <mhal@rbox.co>
-> > > > Closes: https://lore.kernel.org/all/814baa0c-1eaa-4503-129f-059917365e80@rbox.co
-> > > > Reported-by: Haoyu Wu <haoyuwu254@gmail.com>
-> > > > Closes: https://lore.kernel.org/all/20240126161633.62529-1-haoyuwu254@gmail.com
-> > > > Reported-by: syzbot+545f1326f405db4e1c3e@syzkaller.appspotmail.com
-> > > > Closes: https://lore.kernel.org/all/000000000000c2a6b9061cbca3c3@google.com
-> > > > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > > > Message-ID: <20240802202941.344889-2-seanjc@google.com>
-> > > > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> > > > Signed-off-by: Gavin Guo <gavinguo@igalia.com>
-> > > As this one isn't tagged for stable, the KVM maintainers should ack the
-> > > backport before we take it.
-> > What's the motivation for applying this to 6.6?  AFAIK, there's no real world use
-> > case that benefits from the patch, the fix is purely to plug a hole where fuzzers,
-> > e.g. syzkaller, can trip a WARN.
-> > 
-> > That said, this is essentially a prerequisite for "KVM: x86: Re-split x2APIC ICR
-> > into ICR+ICR2 for AMD (x2AVIC)"[*], and it's relatively low risk, so I'm not
-> > opposed to landing it in 6.6.
-> > 
-> > [*] https://lore.kernel.org/all/2024100123-unreached-enrage-2cb1@gregkh
+On Fri, Jan 17, 2025 at 9:51=E2=80=AFAM Andrii Nakryiko
+<andrii.nakryiko@gmail.com> wrote:
 >
-> Thank you for reviewing the backporting. This backporting aims to address the
-> syzkaller warning message and ensure that the stable kernel is consistent
-> with the upstream version.
+> On Fri, Jan 17, 2025 at 6:10=E2=80=AFAM Oleg Nesterov <oleg@redhat.com> w=
+rote:
+> >
+> > On 01/17, Masami Hiramatsu wrote:
+> > >
+> > > On Fri, 17 Jan 2025 02:39:28 +0100
+> > > Oleg Nesterov <oleg@redhat.com> wrote:
+> > >
+> > > > A note for the seccomp maintainers...
+> > > >
+> > > > I don't know what do you think, but I agree in advance that the ver=
+y fact this
+> > > > patch adds "#ifdef CONFIG_X86_64" into __secure_computing() doesn't=
+ look nice.
+> > > >
+> > >
+> > > Indeed. in_ia32_syscall() depends arch/x86 too.
+> > > We can add an inline function like;
+> > >
+> > > ``` uprobes.h
+> > > static inline bool is_uprobe_syscall(int syscall)
+> > > {
+> >
+> > We can, and this is what I tried to suggest from the very beginning.
+> > But I agree with Eyal who decided to send the most trivial fix for
+> > -stable, we can add the helper later.
+> >
+> > I don't think it should live in uprobes.h and I'd prefer something
+> > like arch_seccomp_ignored(int) but I won't insist.
+>
+> yep, I think this is the way, keeping it as a general category. Should
+> we also put rt_sigreturn there explicitly as well? Also, wouldn't it
+> be better to have it as a non-arch-specific function for something
+> like rt_sigreturn where defining it per each arch is cumbersome, and
+> have the default implementation also call into an arch-specific
+> function?
 
-IMO, that's not sufficient justification for backporting to stable kernels.  This
-does not fix a problem that any real VMM will ever encounter, there's no security
-implications, and outside of kernels that are running with panic_on_warn=1, which
-seems insane outside of explicit test environments, there is zero risk to the host.
+I like the more generic approach and keeping CONFIG_X86 out of seccomp,
+and more generic than uprobes, however, I'm not sure where a common part
+to place it which includes arch/x86/include/asm/syscall.h would be. And
+as mentioned before, this would make this bugfix more complex to backport.
 
-This is a bit of a bad example because I do expect this commit to land in 6.6 at
-some point because it's a preqreq.  But I don't want to set the precedent that
-every commit that addresses a fuzzer-induced WARN is stable material.
+For that reason I wouldn't refactor handling rt_sigreturn as part of
+this fix.
 
-Sanity check WARNs in KVM are tricky because userspace can shove arbitrary guest
-state into KVM, i.e. avoiding what are effectively false positives requires quite
-a bit of thought, and practically speaking such false positives will happen from
-time to time.  While I definitely want to keep KVM warning-free, I also don't want
-to discourage sanity checks in KVM, i.e. I view intermittent false positives in
-KVM as a cost of doing business.
-
-If we start treating what are effectively false positives as stable material, then
-it changes the math, i.e. each false positive becomes more costly because there
-are backporting implications, and we'll naturally be more conservative in adding
-sanity checks, which I don't want to happen.
+Thanks!
+Eyal.
 
