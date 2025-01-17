@@ -1,125 +1,190 @@
-Return-Path: <stable+bounces-109414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07466A15951
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 23:03:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED521A159C9
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 00:06:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E164188C8F6
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 22:03:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48FFF188A28C
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 23:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0CA21DAC88;
-	Fri, 17 Jan 2025 22:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43211D932F;
+	Fri, 17 Jan 2025 23:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="FLf1eAGi"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="z52x9VYb"
 X-Original-To: stable@vger.kernel.org
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2051.outbound.protection.outlook.com [40.107.236.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54ED019AD90;
-	Fri, 17 Jan 2025 22:03:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737151397; cv=none; b=IMbQ0fZ04AraKsj3trinvxCWpfJJwRAPT3WDiQzcdZ9rlsf4sQCLO+29SiNuKQDX3RhX26IfrmR0pr34OElIpwYFs5oM4wDGXoHLkA/K4ZCcN883CgcTZFBGhuTDGyYPxyk2URrmTQka63XmNdffGYcPr0ZfgBglYKX/3PJXJLY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737151397; c=relaxed/simple;
-	bh=xY6e8RsoEZ6A+tJaci/cDSUApI6DhAPRsuEwbap3tgo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sOgLf99hlI494W5EJT5EA/HSK7s9YxRiiIkfgMPLeNvSYOOsNciqwfp1+KIGUacPM8ygALNtj3Hcs+mfKjErxnem4igQSHjdO1MGbW9FYuVxe64cT2U/eKI4+W1YzflzlN3zyw8LKj4QuR0yGC4Xbi0vioIxSlDzvNTcrbg0nMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=FLf1eAGi; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1tYuQl-008Vo7-H0; Fri, 17 Jan 2025 23:03:07 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
-	bh=M/reCYsLr6s08s3R0WErIkODtGqCjwAs+f2DwNyZQg8=; b=FLf1eAGim4Tnh+661wlmPJ+n1S
-	yCa8uVopDrAmvazxt16YzB4jYlGXfgtAzjl5f4Apwm5xS4XxBWWPLFYHnDZm9Ft1ZQyGt3BW94Hdv
-	K6CPNyCPpuaIibiuFu1gM5bbGOK4WUHVW3maLrgqmnU+Ls8WguohVomVYHnoqsVXOSiq9bNl/lVqd
-	7qrmb3R3GH4Y768hXDBSw1RALrUe3yyD6aZdDN63L4rCFXIR20qFH4TnZDwLE3hkeuYmTljqxGyUB
-	M+c3EVGzOThShKerEI2HtjWisX/xfgVB7dJVJIi7NpUK7M1Fak6/LSo59WuuL5w2mFIQXe9IVc54T
-	ysJIkptg==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1tYuQj-00059q-Um; Fri, 17 Jan 2025 23:03:06 +0100
-Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1tYuQe-001shf-2d; Fri, 17 Jan 2025 23:03:00 +0100
-Message-ID: <e3085fe8-3dae-40b2-970f-b8cda956a8f5@rbox.co>
-Date: Fri, 17 Jan 2025 23:02:58 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AC119CC27;
+	Fri, 17 Jan 2025 23:06:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737155170; cv=fail; b=dyBRgRxWeOqIPzUJwdPa1j56KW5BolsJIiduHGI06qIRtDufEXnJD1VtdZ4asork6WFmWGNL9xPVewCvAng63RqRsRZfXJrEBl6CzmwU7hCJMxdpM34AYlJSs3hc14MEtttfR3ONzWUmB2XSAki8B02NA2Q7kT+y2bBYCyqRwxE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737155170; c=relaxed/simple;
+	bh=OTR9h8QePVb5IZyKL8sdfIiNUaUsUbJbPVe+DTAgcSQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=meFN2ns5UiN2mer2hcpcYNg9zvGJVJmxPgItt3P96NGug5al+MyrktEa4vMvbjIOl502MGwotU1PjAbO/EPj92sdorpTWEItDws339n74XhVMf5fcd0JueYAGgD61spsQwjKMXVvBSmNC9HFNJjw7yhVYe6JVbIEj14MxXFf39k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=z52x9VYb; arc=fail smtp.client-ip=40.107.236.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WDTzUlS5Zf6F+7M0zf8oMT1bn2sffstDn92HwjJmY9SkMkLEh6yrxuO3Sym056qUH989tAMK5UYTLDgj1aurQkRV0iyWvyZe0p/xMZMqFy0vzyRDaezMwO0+SL/s9eUvUMD+qZZAWnvp7VSWtGk5NbDJWhhXMn54084KYND3ZLaDF1cpq1FY38s0Dq5GbOvgTurSbLBdzhJKvUAA8kgd9gdNF1N2398emLHM36es2k+X3C2P9er6o2ozFG49mgdCyEtf1+gssXi+hxdRAEjx+Xbfm5+oAaXP8dIIrhjA8ftK0zyFiaymDGhjrmg8IXwMGQF+aTeFNSk+z+vDCmwOKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6ySIk3pBIjSKn4YITxkTGquDYfdPwbdRvOGnaUY9hSI=;
+ b=kZELUwuG0fAIBCAQS2J+Knd4ZHmsnWttGjBXcT3WmeuhSjHP78VQZV1JEphHQlbAwveqcE1pQmsM2Lh0IhTi5iv8LYfFfty5wFlgRKcStP783fkbP4GktSbx7XGC4wXEE2GAa1wyjrMAKKJ5mW1jm9Iz/f1S/1UgmljUcurcZOKirm89pwQdO7tDUzEBdl7Gz6db2QKDyPrew32rLQBsAtsKclNYOaUtjVtVryJUC6wKFxXO6Xn9Ych2v+2/PuL2vIKuYdrUwR6gLVQavrudlcebuykevG8dsYMlreNcYxU/RxGty8GlYxZuX4w0Cj1vgTX08N3EmgEkhx6u4znTIw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6ySIk3pBIjSKn4YITxkTGquDYfdPwbdRvOGnaUY9hSI=;
+ b=z52x9VYbxeaC7r8RoOFmPtZyBZ0GWq8iJgUTTN9CqYqR4MeFbwZ1TbIG4TznKmgzrUUFdp7+89mMrXp1spWgfo3rhhEi8O/4abhRzGcGhqPzlbsfy+HHgMi7TE/LR5pxNRNDxRtFA2S9mUKwBIYBTTUBqN5hvCFS1XgIFrmsRBw=
+Received: from PH8PR02CA0027.namprd02.prod.outlook.com (2603:10b6:510:2da::18)
+ by SJ2PR12MB9239.namprd12.prod.outlook.com (2603:10b6:a03:55e::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.14; Fri, 17 Jan
+ 2025 23:06:02 +0000
+Received: from SJ1PEPF000023D5.namprd21.prod.outlook.com
+ (2603:10b6:510:2da:cafe::3) by PH8PR02CA0027.outlook.office365.com
+ (2603:10b6:510:2da::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.16 via Frontend Transport; Fri,
+ 17 Jan 2025 23:06:01 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ1PEPF000023D5.mail.protection.outlook.com (10.167.244.70) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8377.0 via Frontend Transport; Fri, 17 Jan 2025 23:06:01 +0000
+Received: from tlendack-t1.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 17 Jan
+ 2025 17:06:00 -0600
+From: Tom Lendacky <thomas.lendacky@amd.com>
+To: <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: Herbert Xu <herbert@gondor.apana.org.au>, David Miller
+	<davem@davemloft.net>, John Allen <john.allen@amd.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH] crypto: ccp - Fix check for the primary ASP device
+Date: Fri, 17 Jan 2025 17:05:47 -0600
+Message-ID: <9cb3a054c95327fe26de41419dd23c914f141614.1737155147.git.thomas.lendacky@amd.com>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 1/5] vsock/virtio: discard packets if the transport
- changes
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
- Luigi Leonardi <leonardi@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, Wongi Lee <qwerty@theori.io>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Eric Dumazet <edumazet@google.com>,
- kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Simon Horman <horms@kernel.org>, Hyunwoo Kim <v4bel@theori.io>,
- Jakub Kicinski <kuba@kernel.org>, virtualization@lists.linux.dev,
- stable@vger.kernel.org
-References: <1aa83abf-6baa-4cf1-a108-66b677bcfd93@rbox.co>
- <nedvcylhjxrkmkvgugsku2lpdjgjpo5exoke4o6clxcxh64s3i@jkjnvngazr5v>
- <CAGxU2F7BoMNi-z=SHsmCV5+99=CxHo4dxFeJnJ5=q9X=CM3QMA@mail.gmail.com>
- <cccb1a4f-5495-4db1-801e-eca211b757c3@rbox.co>
- <nzpj4hc6m4jlqhcwv6ngmozl3hcoxr6kehoia4dps7jytxf6df@iqglusiqrm5n>
- <903dd624-44e5-4792-8aac-0eaaf1e675c5@rbox.co>
- <5nkibw33isxiw57jmoaadizo3m2p76ve6zioumlu2z2nh5lwck@xodwiv56zrou>
- <7de34054-10cf-45d0-a869-adebb77ad913@rbox.co>
- <n2itoh23kikzszzgmyejfwe3mdf6fmxzwbtyo5ahtxpaco3euq@osupldmckz7p>
- <fb6f876f-a4eb-4005-bd76-fff0632291b8@rbox.co>
- <pl4mhcim7v3ukv6eseynh6x2r6nftf7yuayjzd3ftyupwy5r2h@ixmlevubqzb2>
-From: Michal Luczaj <mhal@rbox.co>
-Content-Language: pl-PL, en-GB
-In-Reply-To: <pl4mhcim7v3ukv6eseynh6x2r6nftf7yuayjzd3ftyupwy5r2h@ixmlevubqzb2>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000023D5:EE_|SJ2PR12MB9239:EE_
+X-MS-Office365-Filtering-Correlation-Id: ecdd0a57-e4fd-4a76-58b0-08dd374b831a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|36860700013|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?qxgldtWcx8aFQP2h3rVXh1ocb6e+F++yno9jD6WTPqvyDQBjQ9gue9vJKcxv?=
+ =?us-ascii?Q?rx6kVFpymyfCaKV3n/MDToRhEr+t01FwJUlEJfYtej3WnPsvFTsbwgYTvLeO?=
+ =?us-ascii?Q?goHNTRvIm/itsEwt6HxYvX3QmdVbLuMKmSr4R+TeA8udhRPwfPTvZt5IdvYT?=
+ =?us-ascii?Q?bbUuTR3xzBEU2hkfFrSCy/N9lcmGFSf6OOMqsT0qOWtsUVVZBEoDJ9VSyIGX?=
+ =?us-ascii?Q?PY5LkAktZJgi6+UOo/lMrHmi2JtOTnw6lV/wnF8pOthHvqS7XuXqfPxCPaUj?=
+ =?us-ascii?Q?DNiJuMNUQ5hfQafgS3//oiizgl/vom1PHfPbESZK7vPtUeuivClbahZsar7d?=
+ =?us-ascii?Q?xZd0onEWWBIrVBO2X4qNxcqVPxR4fK1nnGnfZRuhHyKXO3XAA7gocRPDR6s9?=
+ =?us-ascii?Q?nQX2hTvArGEOjeqTuRZIij5KS/TvWFFSbNd2vSNMc9vOFC4T2X9RNS98GLA7?=
+ =?us-ascii?Q?S/r0Dbf65FjlF5xm72wnxYXy/OdKgnvyK/NaGSYDMeLvPNZvaNsxq1/W75X0?=
+ =?us-ascii?Q?0nKlluDnTnuTu+yiAKOYJ3AztuctB+ZJk8mrpxy6iGbN2i3jyTnkGsUYqUDn?=
+ =?us-ascii?Q?zGe6kS1FembvyLwvSVDIVtOfQUassa+x2a8ScjNwHRqfuE7gW+jaRPZREmIP?=
+ =?us-ascii?Q?0vUk5r5Y3vERgFdQZD2cRZ9QSxUQHtQJ84ZMqQ9vTREzw02ZHsqfemmA/YJk?=
+ =?us-ascii?Q?6Rve66vVlzFVXWxKZYjG5oU1y/6yllxTrSrM1Pdq1gQxw45YbyAD8Cuk24Aj?=
+ =?us-ascii?Q?HzT0Q0n8dZT5u9SKd9nRhjKySKll9bAbm/MfDhp3xG6wfGLOlmhQuPiIdwKa?=
+ =?us-ascii?Q?w2AKNHzJPglOKSJD4lE29OFIN/Te0Zy8APwm63KRxTAfeGxyN5PJfxGrAABm?=
+ =?us-ascii?Q?EPwG5Yna84w1MauU4CfhaZ6EUYnBCZStgulRAXK/M0QAVWhFcyi5i3XWbjq7?=
+ =?us-ascii?Q?jfA2k/r/32hKMprld4xgK05aRpoBu9BXRBvzDDlGC9Ve9f7uxGC+TAxL8E27?=
+ =?us-ascii?Q?hz7EK2FEf/qEApslKDJjZIdlHWQhBvyR+pQuufuS3SVzsv/9a8d8vPV7NBMX?=
+ =?us-ascii?Q?NUsr5nlr7X8woz1lkf7yoCxskPMt80lSXV29B5W1L7cc/xKZW1jlJuIxzMBI?=
+ =?us-ascii?Q?BqCT1HmqSX01zcm4c6DEHiJj5gETGstMWgY+fkoz+nBO70YNZo42JJa+kvVx?=
+ =?us-ascii?Q?Sa8V8yNtQ8DxL3ce3k2E1OvgwtWw1wP6M7eZ96iN6TnIx5ALepHc8D4Ui7Ql?=
+ =?us-ascii?Q?2SiuFmMUCkCVKzns+4JBh23FpUPEt1sRiIQG3Vgx/aPVBAHADXZMO7zd6qMF?=
+ =?us-ascii?Q?TcJgebhpJx9bF0QNWi29gZEti5zfzWyaCxqDyPRqQrQBG6FxeBdclXBoAtyP?=
+ =?us-ascii?Q?DN1bYu61OU6hU92Y07G/urIvRGsl3xnqrN6dE2gELbGVeA9mX5W3DDfRFqsL?=
+ =?us-ascii?Q?qIkdncmxBWZxBYuFY5oEfTz6y08IWgjZFbLgSbQMjbE4i7BPP4d/Oaj2EDhA?=
+ =?us-ascii?Q?sQ8V6YKekFVlvec=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2025 23:06:01.6532
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ecdd0a57-e4fd-4a76-58b0-08dd374b831a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF000023D5.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9239
 
-On 1/16/25 09:57, Stefano Garzarella wrote:
-> On Tue, Jan 14, 2025 at 05:31:08PM +0100, Michal Luczaj wrote:
->>> ...
->>> Maybe we need to look better at the release, and prevent it from
->>> removing the socket from the lists as you suggested, maybe adding a
->>> function in af_vsock.c that all transports can call.
->>
->> I'd be happy to submit a proper patch, but it would be helpful to decide
->> how close to AF_INET/AF_UNIX's behaviour is close enough. Or would you
->> rather have that UAF plugged first?
->>
-> 
-> I'd say, let's fix the UAF first, then fix the behaviour (also in a
-> single series, but I prefer 2 separate patches if possible).
-> About that, AF_VSOCK was started with the goal of following AF_INET as
-> closely as possible, and the test suite should serve that as well, so if
-> we can solve this problem and get closer to AF_INET, possibly even
-> adding a dedicated test, that would be ideal!
+Currently, the ASP primary device check does not have support for PCI
+domains, and, as a result, when the system is configured with PCI domains
+(PCI segments) the wrong device can be selected as primary. This results
+in commands submitted to the device timing out and failing. The device
+check also relies on specific device and function assignments that may
+not hold in the future.
 
-All right, so let's keep the binding and allow removal from (un)bound list
-only on socket destruction. This is transport independent, changes are
-pretty minimal and, well, keeps the binding. Mixes well with the connect()
-behaviour fix.
+Fix the primary ASP device check to include support for PCI domains and
+to perform proper checking of the Bus/Device/Function positions.
 
-Let me know what you think:
-https://lore.kernel.org/netdev/20250117-vsock-transport-vs-autobind-v1-0-c802c803762d@rbox.co/
+Fixes: 2a6170dfe755 ("crypto: ccp: Add Platform Security Processor (PSP) device support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+---
+ drivers/crypto/ccp/sp-pci.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-Thanks,
-Michal
+diff --git a/drivers/crypto/ccp/sp-pci.c b/drivers/crypto/ccp/sp-pci.c
+index 248d98fd8c48..157f9a9ed636 100644
+--- a/drivers/crypto/ccp/sp-pci.c
++++ b/drivers/crypto/ccp/sp-pci.c
+@@ -189,14 +189,17 @@ static bool sp_pci_is_master(struct sp_device *sp)
+ 	pdev_new = to_pci_dev(dev_new);
+ 	pdev_cur = to_pci_dev(dev_cur);
+ 
+-	if (pdev_new->bus->number < pdev_cur->bus->number)
+-		return true;
++	if (pci_domain_nr(pdev_new->bus) != pci_domain_nr(pdev_cur->bus))
++		return pci_domain_nr(pdev_new->bus) < pci_domain_nr(pdev_cur->bus);
+ 
+-	if (PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn))
+-		return true;
++	if (pdev_new->bus->number != pdev_cur->bus->number)
++		return pdev_new->bus->number < pdev_cur->bus->number;
+ 
+-	if (PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn))
+-		return true;
++	if (PCI_SLOT(pdev_new->devfn) != PCI_SLOT(pdev_cur->devfn))
++		return PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn);
++
++	if (PCI_FUNC(pdev_new->devfn) != PCI_FUNC(pdev_cur->devfn))
++		return PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn);
+ 
+ 	return false;
+ }
+
+base-commit: cd26cd65476711e2c69e0a049c0eeef4b743f5ac
+-- 
+2.46.2
 
 
