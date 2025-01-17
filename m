@@ -1,87 +1,140 @@
-Return-Path: <stable+bounces-109355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2C77A14E71
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 12:25:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA69AA14E7B
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 12:28:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E900188227F
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 11:25:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13D3B3A88C8
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 11:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6612D1FBEBF;
-	Fri, 17 Jan 2025 11:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7119B1FE46C;
+	Fri, 17 Jan 2025 11:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qp1R4vDK"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="yW3iFQLE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2737A46BF
-	for <stable@vger.kernel.org>; Fri, 17 Jan 2025 11:25:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9818B1FDE09
+	for <stable@vger.kernel.org>; Fri, 17 Jan 2025 11:27:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737113141; cv=none; b=AaUH3TYy/CDsIUQS1EXg65EmqPlXVrmNKpJpgWRdcvRd8Arq5NTMN07ZrAniopAXqk2hwfBSFm4BafZWM+cTTzNEohb+xIVmxERVfAOz5scm52OBywEK0IEGveE+CFCXmLvQcifhScBfgCCLYyYdDCHx/+4ayTVq1unPmozxyqw=
+	t=1737113273; cv=none; b=RNv5cpIeiTZM8KZWHaiAWiG6tZLWp+jjOwWSXeq5wiUY53hszMH3fRznC/Y0730BSaW5JzWb9k/qD/ktGdzFQWCWzAd322SPXZ+kDpgqJzGuWOIqebMPfOaKRzaHhJNj9SAq5bX087bdxEqOSTm5PZ0+6iM5J8owAyIN0viIXPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737113141; c=relaxed/simple;
-	bh=H7A2hqMxKZYMX9asT2op2wIPHhhvQn1el8J9qlmdtis=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dbzorqb+Sd1TQbsOz7NUfS2/8Vn68S4K9+bJGc4KfGxHsgGw2Dm+klb3ncgmdd7ACnmupV6yIlGkKgmafzeqdUkyZa/j8QSC6ZrFcZz81oG0/Zb1G+VzTG4XXFZe7ZtJupetGkto650IjXV4EvDNsj+QX1Kp9ahNwMZcTSQnlX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qp1R4vDK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E4E5C4CEDD;
-	Fri, 17 Jan 2025 11:25:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737113140;
-	bh=H7A2hqMxKZYMX9asT2op2wIPHhhvQn1el8J9qlmdtis=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Qp1R4vDKGsYVTSE+0Gmin5L01IIwaxm5u81jCuOsFQ0XP0R1hyps7+7dMVFT6mVvD
-	 k6hfLf0C4qF0PVm4QKvSTXV+V7or4SoDBK36qLYRrOHb7iowfvuQvJHkyAZjOjhwpZ
-	 xte/EL3Lqrew7nv5rkRqZZ1UPD6dNbL1JjtDFtaE=
-Date: Fri, 17 Jan 2025 12:25:37 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Dave Airlie <airlied@gmail.com>,
-	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-	stable@vger.kernel.org, ashutosh.dixit@intel.com,
-	dri-devel@lists.freedesktop.org
-Subject: Re: AAARRRGGGHHH!!!! (was Re: [PATCH 6.12.y] xe/oa: Fix query mode
- of operation for OAR/OAC)
-Message-ID: <2025011749-pueblo-brought-3107@gregkh>
-References: <2025010650-tuesday-motivate-5cbb@gregkh>
- <20250110205341.199539-1-umesh.nerlige.ramappa@intel.com>
- <2025011215-agreeing-bonfire-97ae@gregkh>
- <CAPM=9txn1x5A7xt+9YQ+nvLaQ3ycekC1Oj4J2PUpWCJwyQEL9w@mail.gmail.com>
- <2025011244-backlit-jubilance-4fa1@gregkh>
- <jwnn3zov3akpnqzbk5lss3r6q4yupj6indmmapwvh6hadcdycg@pvquyntsvqpe>
+	s=arc-20240116; t=1737113273; c=relaxed/simple;
+	bh=WyThD8FrVBJCKDybx9LaT3OiS2rtnaogPPFxd7+ndtA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=haJp5ABlYhpIVMCu1wchRoJ9gOxmL9iZ12VQK+Kr7tbhbKXBdDWJLO2kNBSHDyogdCR4A1ftzy5C7giyyoxzbq77oaTkBZIEKcF+1tfLc7R3TIdyWvBze8r1euzebiEU0AZVbLKvfCmaucKONl8lPJhg3VnLiyKvcfO/nhwE7fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=yW3iFQLE; arc=none smtp.client-ip=209.85.219.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e5787c3fcf8so3601033276.1
+        for <stable@vger.kernel.org>; Fri, 17 Jan 2025 03:27:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1737113270; x=1737718070; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=RxfEkKlYRP7ukIrs1MaCPw8T+wP3qoi186DEfWEac0E=;
+        b=yW3iFQLE+aCthxXOqRuxgYtGjPFBBIx1L5OScZVVdblhd7JHw/lmYR9VVn5SK4Z2xl
+         XYnwJ+FFCiQFujF+n5qjGd57NcyHSVlZOFg5Rh/FcNfpVQpHynbkmAJmXgrFOkyg/uEs
+         MnuX4jwtDiaz4NDTn7oJ4KpWtljuOGTihcf1DODcrR62vMtTe7mVGJPM6O5TjWqBTZLi
+         kwUbFK5AoXxf1a8JpSDtMVcwUrMLyRKbWoPAbxvX/pNFRtRoT3nJHJtekBwu1JTuXxj+
+         z09ELZLHDBg5qr3GdJe3sv2UZKg1TtdJ5Pm9bkJq+AAYXQtnJRYEXzPatdwU33AeJWfl
+         HDBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737113270; x=1737718070;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RxfEkKlYRP7ukIrs1MaCPw8T+wP3qoi186DEfWEac0E=;
+        b=JSOA5PU0/oTYDRaQC4XoUz4zSJsX0Qxf6QCrjospM7pYZbzhmu3FCgio56mH+V1RjR
+         e8sQr/SpVGOG0u+YJ/uy/tCPEr26a9hLGBCUFNXjGM2Rtt/dX/KgysLVfSJ+O+GwdOue
+         BwyzDAn6rvMtaNiv8zIn6ualtPXbetOfD0P1G1m7PSS7f9exyuzlVo5jOx9teNkRWHEg
+         bEvlyBD30hFjN2QwgbUKWXGWECngnU+lsca0KkY8DAGcHlt94K3h6XYZSRGEjoJPOD8l
+         winD0/O8E6VAZFYhrJJDglEMGHHxkscoTZbWnm3yv9vWUUfbj2VSORZWC3adyKuXsFMq
+         JjRA==
+X-Forwarded-Encrypted: i=1; AJvYcCWYAGwLBpB4d98jga8nIzHBrTCMe6OxCk5jbgycMN3Y/g+0F3fJzYM1j7M8kX6jbsR0zazZ99E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRVbWbQkQtUQk97CxSflJTQ20OzgPbGurrZ50llW6w6fsW0l52
+	gHxKsnejPm6crCu7ngQCOmzTwNMjMraNwPsu1HbWRHTPkP5u1mFfO8UhvTFGpq+yBHZVO+pp4l8
+	rrpd4m8k4vOv03Qd/3mdMQgDhPxONtf2IEFSqXg==
+X-Gm-Gg: ASbGncsu536R44/XaMtWWQdvUw3gunXj6Qt0ccWY8iiYaTDS3ET9vh/2haak0qS9YUR
+	ga6UvFKoZ0q88zxvNTDIBO3yTWrPSWL37JWuCWQA=
+X-Google-Smtp-Source: AGHT+IEusORJsnLAB7uFHDjBIfrb4yJchecR7K5y4IVMIjvxS62ubvLYuQH1myauXkx8D3tFzPYY0Wl0i5Jr+dSW0ss=
+X-Received: by 2002:a05:690c:6d88:b0:6f6:c9c6:9547 with SMTP id
+ 00721157ae682-6f6eb93f836mr13306007b3.33.1737113270604; Fri, 17 Jan 2025
+ 03:27:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <jwnn3zov3akpnqzbk5lss3r6q4yupj6indmmapwvh6hadcdycg@pvquyntsvqpe>
+References: <20250116-qcom-ice-fix-dev-leak-v1-0-84d937683790@linaro.org>
+In-Reply-To: <20250116-qcom-ice-fix-dev-leak-v1-0-84d937683790@linaro.org>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Fri, 17 Jan 2025 12:27:14 +0100
+X-Gm-Features: AbW1kvaav0qfOpmqvSp4jWBVis9VJqr0HfdaWWKr4JZ4uCU_pLkRAxHIiYm35ms
+Message-ID: <CAPDyKFrV6OASHxtS-yKxBvhRpjkN2POFdL5EiWHyj+geZ8ufCw@mail.gmail.com>
+Subject: Re: [PATCH 0/4] soc: qcom: ice: fix dev reference leaked through of_qcom_ice_get
+To: Tudor Ambarus <tudor.ambarus@linaro.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Abel Vesa <abel.vesa@linaro.org>, 
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, Eric Biggers <ebiggers@google.com>, 
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	andre.draszik@linaro.org, peter.griffin@linaro.org, willmcvicker@google.com, 
+	kernel-team@android.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Jan 17, 2025 at 12:01:01PM +0100, Uwe Kleine-König wrote:
-> On Sun, Jan 12, 2025 at 10:06:42PM +0100, Greg KH wrote:
-> > That's fine, the issue is that you are the only ones with "duplicate"
-> > commits in the tree that are both tagged for stable, every release.
-> 
-> Isn't a solution as easy as teaching your tooling not to create/accept
-> commits on -next with Cc: stable? This way folks intending to push a
-> change will notice it should go to the fixes branch. And if only
-> afterwards you notice this is a critical fix that should get backported
-> at least the commit that takes more time entering mainline doesn't have
-> the stable tag.
-> 
-> Maybe additionally make sure that Fixes: and revert notices only point
-> to commits that are an ancestor.
+On Thu, 16 Jan 2025 at 15:49, Tudor Ambarus <tudor.ambarus@linaro.org> wrote:
+>
+> Hi!
+>
+> I was recently pointed to this driver for an example on how consumers
+> can get a pointer to the supplier's driver data and I noticed a leak.
+>
+> Callers of of_qcom_ice_get() leak the device reference taken by
+> of_find_device_by_node(). Introduce devm variant for of_qcom_ice_get()
+> to spare consumers of an extra call to put the dev reference.
+>
+> This set touches mmc and scsi subsystems. Since the fix is trivial for
+> them, I'd suggest taking everything through the SoC tree with Acked-by
+> tags if people consider this useful. Thanks!
 
-The commit is always an ancestor, the "trick" is which one when the
-ancestor was cherry-picked previously?  That's the real problem here..
+Sure!
 
-gre k-h
+>
+> Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+
+Acked-by: Ulf Hansson <ulf.hansson@linaro.org> # For MMC
+
+Kind regards
+Uffe
+
+> ---
+> Tudor Ambarus (4):
+>       soc: qcom: ice: introduce devm_of_qcom_ice_get
+>       mmc: sdhci-msm: fix dev reference leaked through of_qcom_ice_get
+>       scsi: ufs: qcom: fix dev reference leaked through of_qcom_ice_get
+>       soc: qcom: ice: make of_qcom_ice_get() static
+>
+>  drivers/mmc/host/sdhci-msm.c |  2 +-
+>  drivers/soc/qcom/ice.c       | 37 +++++++++++++++++++++++++++++++++++--
+>  drivers/ufs/host/ufs-qcom.c  |  2 +-
+>  include/soc/qcom/ice.h       |  3 ++-
+>  4 files changed, 39 insertions(+), 5 deletions(-)
+> ---
+> base-commit: b323d8e7bc03d27dec646bfdccb7d1a92411f189
+> change-id: 20250110-qcom-ice-fix-dev-leak-bbff59a964fb
+>
+> Best regards,
+> --
+> Tudor Ambarus <tudor.ambarus@linaro.org>
+>
 
