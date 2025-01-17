@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-109344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822DFA14AFF
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 09:19:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 607EFA14B02
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 09:20:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DF9B161CCD
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 08:19:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAE483A0FE8
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 08:20:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865FA1F866E;
-	Fri, 17 Jan 2025 08:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBEE61F8900;
+	Fri, 17 Jan 2025 08:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="baEy9UsS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HO+D1oDm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440AD1F7066
-	for <stable@vger.kernel.org>; Fri, 17 Jan 2025 08:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883811F8699
+	for <stable@vger.kernel.org>; Fri, 17 Jan 2025 08:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737101991; cv=none; b=qkW9EsjCFnsL1MrQ0eNjB9BiaJcoq0JOOG++vsbAdpz0SW+L1L6pAl1yQ526BXwDnYGbCnwpIxFM7fQnkRaVX5g5OIHAlF4DJVsQLUuJ6pWyh8nWJPRWsoh9FbfSonkKrC4nEOlXwR5ElxFYs7KFIV18uosXBZe7Vmr8i6K8P/I=
+	t=1737102017; cv=none; b=fJJMWX4nuySvfyyMJ0OcYO419XM1t2JQKhasBUuGR2HzR5i3tGO6clUfq7sCflu1yEL8iJPUinQM8vQcvgs9uhZrtCkcKLw/exo8YvwY1IA7vw3Ju71Tsiln2giuqA8g+bCF9I0odgvElespxzdD82Gr7dGoPBQXekn1gQ1qUXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737101991; c=relaxed/simple;
-	bh=tux2UJzNaDbsRLFTbIvhKwgnyOd/PRLw8HX7+/x3U7Q=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=jllV4rsqBD9noR9iBcllfVsPxqJYyQnoQHu9EVH5wmg9gCdt/EWrCY1txiCI4aRTf+SxLm1+KB+0CYy9QUBA6bu0oykFFpahGrJUCOd+4xuiEHNnVJPKB4W/77189Bp8V1EXNbUYREN5epNyaa2S5SmIpff+RtuZxqOvzyHvwCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=baEy9UsS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C22C4CEDD;
-	Fri, 17 Jan 2025 08:19:50 +0000 (UTC)
+	s=arc-20240116; t=1737102017; c=relaxed/simple;
+	bh=/Y0NUz/bouJ57UHjGCZSqsghp0RyhT5B+8KEXF5mSHs=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=SG8wrob8IwCCLq7LZPxTE3RjIEcz1G7bmDgAo1HSXQjqwCNzqyQYHhAkNkKxm3Z+za3NNe3tvnQRkqeSAHjYa94efRBUnfRSaU2TjI4OwiynlM0QtQ64LhXFyvwLwlt2TDyrrbYufXQOudw/0eYoyi2v/maP314o0k4kVsR5C+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HO+D1oDm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 935E5C4CEDD;
+	Fri, 17 Jan 2025 08:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737101990;
-	bh=tux2UJzNaDbsRLFTbIvhKwgnyOd/PRLw8HX7+/x3U7Q=;
+	s=korg; t=1737102017;
+	bh=/Y0NUz/bouJ57UHjGCZSqsghp0RyhT5B+8KEXF5mSHs=;
 	h=Subject:To:From:Date:From;
-	b=baEy9UsSvkn81j/V65JEsqEcRVfAbBUqw9tgb7sUtxNBEOcp4JBuE86tN0ZjwKZ5z
-	 FvdKBWU5/vy1RodW384z8TIYo8aM64xmwyPqKncVSoqc6PACfcOhLp422lg/z7sL0p
-	 2dFTp7dx28zduQa1YfFM1oRVdUE+9U4p0ve7bdls=
-Subject: patch "USB: serial: quatech2: fix null-ptr-deref in qt2_process_read_urb()" added to usb-testing
+	b=HO+D1oDmcBHOCEnjHZRtDpbOK0F6gQ8bxzFf2yV+zSTXnHP8uEZg/+xYXPdHbgOfK
+	 U2kUGBRH4n9UvBWHkDww8oXKyA2otSP3IX2jaG3OLJnI528a5XfGZvXI2GJ/pFMzfi
+	 1J5eQokCTJOUQN3ZwUkLEPt2rhqYboNnX9jWZIRU=
+Subject: patch "USB: serial: quatech2: fix null-ptr-deref in qt2_process_read_urb()" added to usb-next
 To: qasdev00@gmail.com,gregkh@linuxfoundation.org,johan@kernel.org,stable@vger.kernel.org,syzbot+506479ebf12fe435d01a@syzkaller.appspotmail.com
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 17 Jan 2025 09:19:40 +0100
-Message-ID: <2025011740-polio-childless-ffe2@gregkh>
+Date: Fri, 17 Jan 2025 09:20:04 +0100
+Message-ID: <2025011704-undercook-batboy-9f78@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,13 +58,13 @@ This is a note to let you know that I've just added the patch titled
 
 to my usb git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
-in the usb-testing branch.
+in the usb-next branch.
 
 The patch will show up in the next release of the linux-next tree
 (usually sometime within the next 24 hours during the week.)
 
-The patch will be merged to the usb-next branch sometime soon,
-after it passes testing, and the merge window is open.
+The patch will also be merged in the next major kernel release
+during the merge window.
 
 If you have any questions about this process, please let me know.
 
