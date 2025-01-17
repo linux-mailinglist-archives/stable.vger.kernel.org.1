@@ -1,91 +1,141 @@
-Return-Path: <stable+bounces-109402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6C69A15431
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 17:25:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D89A1551C
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 17:59:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4F121668D9
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 16:25:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C16993A4515
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 16:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A4E19C574;
-	Fri, 17 Jan 2025 16:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95BF19F487;
+	Fri, 17 Jan 2025 16:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="cEA4SQLT"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FX6T+eAp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E269443;
-	Fri, 17 Jan 2025 16:25:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33239199249
+	for <stable@vger.kernel.org>; Fri, 17 Jan 2025 16:59:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737131118; cv=none; b=lcZiK6vWsM/3mjeCKrqFnakbQ/z3j11EdPj59mlVaBElG3rvvWJJdOrhYlIOOuHkxbXK+egOjeTGAf+x+qUW6HaOmMM36O+WEK+PEqvgK2RwymupshOL+3Mus8onz/gsW6jWyFsyY+ppvwCQiW+96THk+gX25VS6C50mFNPeuV4=
+	t=1737133158; cv=none; b=J0ytOuSLEAlIJ3w12vQz61jpJXxtIpv8tvDncDLVO1ppzTRevH6mhGWC1prDEF2I8ktko1atCz/CGibFkVHYkSE60iii2FzMzaGtCGvIv/EfzI/Vv5RwxfNENbLd2/YaZunQmRR9EHn3WuDLH5nCz/9QcSGvgPEIiiUuEyD7Bbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737131118; c=relaxed/simple;
-	bh=I8EpZonizEFVHQxzlw54g7V7LZ0QLS1FMKRkuMi7P54=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VpHH176b5rY35leHFG+WwBeZ2sFl7Hnor1gW5TONTUNcPIzoh1yDfh/G4xBBQmpqMbNoft06x0/GZ82PfGo1QITx+XYKkrxGDw6KIpsuNN4F7K3BQdExfy2XOvuac3/hX1rZyntfonhqMY68yN9tZ0XiSQQDUik8Cki3CyC4TJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=cEA4SQLT; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [IPV6:2601:646:8080:c1f1:e386:c572:17d3:6ddc] ([IPv6:2601:646:8080:c1f1:e386:c572:17d3:6ddc])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 50HGOmrR037200
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Fri, 17 Jan 2025 08:24:48 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 50HGOmrR037200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2024121701; t=1737131089;
-	bh=cYqdHxwjXLBzNcwPlVzG9npiTRsahmwSbuxX8PL3YNA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cEA4SQLT7qqu68qTb1s7N19d54GgYTOnb05jFFEz8+IE7pte79qBIPqvAAtnCWzJp
-	 3Q+aE6kacfV1NgbFj7eNswpXrjeWDhSVo/fyvWQdfd545KOX6bT+akV+Ata1+iYsDA
-	 0kFMyeK1SmXzAqQfK75wrmuX1XXe+1hG7FzygKsK/J3njHq9kupQt1Q59EZms77SwN
-	 Tu9HMuJELx7Ks5C002S4DOS4R4jr5z//+LGs+2wG4GEZb1e1GeyeY+NKQtyNu0b6M8
-	 83UeS1jplJ57cW0LfxILxk1dTbaxQM7h5rO3np3bDPAejTeFmmgSPKENA+6krCAbJA
-	 DJ7pctuSPh6cg==
-Message-ID: <c111ecfe-9055-46f3-8bd0-808a4dc039dd@zytor.com>
-Date: Fri, 17 Jan 2025 08:24:43 -0800
+	s=arc-20240116; t=1737133158; c=relaxed/simple;
+	bh=eELjTMxy9R374bYdUfkFwRMkrtaOe7EhJHvKRy25pnE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qrMa+KZnWGKpxB/ntN/VxhK4VFAkJ5PhYs87/mTU7Hf4tJyvsyltcjfD8Gexq2Rknq7m8GXooGV/AV/q9QI/KlyySSHi93hogI2ju9uHj6Suk0P22Z7TI3M0LWMuqxJu45YhLEOPT2LQWTDBwfe3pCTacqxJxjJ6vHVK1STQzYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FX6T+eAp; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2161eb95317so46923425ad.1
+        for <stable@vger.kernel.org>; Fri, 17 Jan 2025 08:59:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1737133156; x=1737737956; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=XkhbZO8tYS+x52lOvx8K04qENXNly95zhsaFcqaUxAQ=;
+        b=FX6T+eApkix0ks3jZyk0VSywgekeWYV+VEoow8Q3dDk9yMSfXe6G4SHjguPc/Ig5bc
+         L02K6zFvs+ZGZLYOfSUnB6dRdiAvI0nfhKHp7hCF0md1MexzMqVRj8TSO2IkkuINbkaQ
+         Gmzdw6syA8hYh7krDlgcLAU2u7KAG8c4jFdOe1mQk1mHqBpIiV7z8YcrhdTVVDijWOyH
+         sNS0gmo+F/AQWgRyQLBuDyQLJX5PizYcKUccFjrjucOzjwskSwahnD8k9/98eggfCrAT
+         ANVWicHzTN9ofaoD7svlu4r6pW6nE5GkcXAeBYJwnOEbEryPA32J+zW7QVHkjuXdmggg
+         lrRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737133156; x=1737737956;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XkhbZO8tYS+x52lOvx8K04qENXNly95zhsaFcqaUxAQ=;
+        b=CHi8jzINAL1ABJeuUl1BfNlLJNbJ91SwM3PzF+M68H/mnhKHZTFngi0qxhmDw7X6pU
+         pmx1G79J9s9upbDbIi8RU3CCQb3kXsH276s5i7movN8vUCnwM1aABkyKVmX+a70fv3sZ
+         ihwbu4xxd6+RBHGC2b0AfHo/zofWqXvR23hFMplWI5KZz4YcW5deaDuuz6jIgy7kDH8o
+         k8BcDlHuNJnvAXHEF4sFH1mGFn1zFVmnvblQJHOZOSrHfl4FajTpVaVk3x4XPcqkpg85
+         suZa03LoHdFTHhdIHa0rlv3N85kabmi621hbkhKEMETBbRDemE6lKsPHs7aAG45z1Kub
+         GBkw==
+X-Forwarded-Encrypted: i=1; AJvYcCUViE23NDj4TonHHVAEgVOFS8wqHsh7pnq5Ea7KzfuX2QrtgvbrA/SXYYyi7AwmGcoi4Ry7BqM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWH3Lnk5lZCX67koHd0GeSONfD/AfYUQz6cy6VHKQkBcA2ky8J
+	VQsj/d+Ub9I85+NwF64U4ZKju3DM8WY5Au4BI+Wen9dKr/0uQDRXHw4q3kHE0w==
+X-Gm-Gg: ASbGnct3yPw9LNvc7JRaunZ1MJzg0QyHZdTPgf87t5VX9hHfOk5rR5RTHwrIINBKJQR
+	y3Vy53+qAcxiVifLpxi0eoKiFf4XnnasU0t2CQYghzbu4xRc3YJSI1VAWXizx8R1WByMnNxNFe6
+	Egl7XeIW8kmL98H8H5kN9k9/uOyQm9KKsP9F35kBH+Sr3o2GtujylFyUixwx+/1HPsJdFxYCfj1
+	B9YKoAZsOORwwLAWlZnz05E/OLArM+EvrCHa1XibxjstkunWVbUbH0kHIVZy3mGPHLd
+X-Google-Smtp-Source: AGHT+IEfnnL3mUhpv8k8DjWFKRShJa/iF7JsGrlzqODd5Qcyj+91fLelDJ83KysyOwgQsgiCtdXH0A==
+X-Received: by 2002:a05:6a20:9143:b0:1e0:dc06:4f4d with SMTP id adf61e73a8af0-1eb214da876mr5836750637.19.1737133156381;
+        Fri, 17 Jan 2025 08:59:16 -0800 (PST)
+Received: from thinkpad ([117.193.215.12])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-a9bdf0b43aasm2041206a12.66.2025.01.17.08.59.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jan 2025 08:59:15 -0800 (PST)
+Date: Fri, 17 Jan 2025 22:29:07 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: "Bao D. Nguyen" <quic_nguyenb@quicinc.com>
+Cc: quic_cang@quicinc.com, bvanassche@acm.org, avri.altman@wdc.com,
+	peter.wang@mediatek.com, martin.petersen@oracle.com,
+	linux-scsi@vger.kernel.org, stable@vger.kernel.org,
+	Bean Huo <beanhuo@micron.com>,
+	Daejun Park <daejun7.park@samsung.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/1] scsi: ufs: core: Fix the HIGH/LOW_TEMP Bit
+ Definitions
+Message-ID: <20250117165907.rfdaayq4a6ichhmy@thinkpad>
+References: <69992b3e3e3434a5c7643be5a64de48be892ca46.1736793068.git.quic_nguyenb@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/fred: Optimize the FRED entry by prioritizing
- high-probability event dispatching
-To: Ethan Zhao <haifeng.zhao@linux.intel.com>, Xin Li <xin@zytor.com>,
-        Ethan Zhao <etzhao@outlook.com>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Cc: tglx@linutronix.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        andrew.cooper3@citrix.com, mingo@redhat.com, bp@alien8.de
-References: <20250116065145.2747960-1-haifeng.zhao@linux.intel.com>
- <417271c4-0297-41da-a39b-5d5b28dd73f9@zytor.com>
- <TYZPR03MB8801E2BF68A08887A238A32CD11A2@TYZPR03MB8801.apcprd03.prod.outlook.com>
- <05b13e99-c7e5-4db7-90bd-a89a91f4e327@zytor.com>
- <TYZPR03MB88013A5D71079FF9E6776E49D11B2@TYZPR03MB8801.apcprd03.prod.outlook.com>
- <d90975a0-6b01-4a2e-92c2-2af2326e1299@zytor.com>
- <56b92130-7082-422c-952c-9834ebdb7268@linux.intel.com>
- <4d485294-959b-42a6-a847-513e8e3d0070@zytor.com>
- <33b89995-b638-4a6b-a75f-8278562237c4@linux.intel.com>
-Content-Language: en-US
-From: "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <33b89995-b638-4a6b-a75f-8278562237c4@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <69992b3e3e3434a5c7643be5a64de48be892ca46.1736793068.git.quic_nguyenb@quicinc.com>
 
+On Mon, Jan 13, 2025 at 10:32:07AM -0800, Bao D. Nguyen wrote:
+> According to the UFS Device Specification, the dExtendedUFSFeaturesSupport
+> defines the support for TOO_HIGH_TEMPERATURE as bit[4] and the
+> TOO_LOW_TEMPERATURE as bit[5]. Correct the code to match with
+> the UFS device specification definition.
 > 
-> In short, seems that __builtin_expect not work with switch(), at least for
->   gcc version 8.5.0 20210514(RHEL).
+> Fixes: e88e2d322 ("scsi: ufs: core: Probe for temperature notification support")
+
+Fixes commit SHA should be 12 characters:
+
+Fixes: e88e2d32200a ("scsi: ufs: core: Probe for temperature notification support")
+
+- Mani
+
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
+> Reviewed-by: Avri Altman <Avri.Altman@wdc.com>
+> ---
+>  include/ufs/ufs.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/ufs/ufs.h b/include/ufs/ufs.h
+> index e594abe..f0c6111 100644
+> --- a/include/ufs/ufs.h
+> +++ b/include/ufs/ufs.h
+> @@ -386,8 +386,8 @@ enum {
+>  
+>  /* Possible values for dExtendedUFSFeaturesSupport */
+>  enum {
+> -	UFS_DEV_LOW_TEMP_NOTIF		= BIT(4),
+> -	UFS_DEV_HIGH_TEMP_NOTIF		= BIT(5),
+> +	UFS_DEV_HIGH_TEMP_NOTIF		= BIT(4),
+> +	UFS_DEV_LOW_TEMP_NOTIF		= BIT(5),
+>  	UFS_DEV_EXT_TEMP_NOTIF		= BIT(6),
+>  	UFS_DEV_HPB_SUPPORT		= BIT(7),
+>  	UFS_DEV_WRITE_BOOSTER_SUP	= BIT(8),
+> -- 
+> 2.7.4
 > 
 
-For forward-facing optimizations, please don't use an ancient version of 
-gcc as the benchmark.
-
-	-hpa
-
+-- 
+மணிவண்ணன் சதாசிவம்
 
