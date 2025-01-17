@@ -1,119 +1,82 @@
-Return-Path: <stable+bounces-109319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1989A147A3
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 02:40:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5412A14837
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 03:25:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B67C0188E158
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 01:40:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58C161888CA3
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 02:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958B686330;
-	Fri, 17 Jan 2025 01:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DE811F560A;
+	Fri, 17 Jan 2025 02:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OiGZFqG+"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="MDIT/uIU"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC8F70825
-	for <stable@vger.kernel.org>; Fri, 17 Jan 2025 01:40:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C171096F;
+	Fri, 17 Jan 2025 02:25:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737078015; cv=none; b=ZLWRsDSH81YsQFSfD9XuDNu/CG8dbY2SgjZfenuxRWB1LR4t2BSX969kRVFXoc5CUl0Ov7eZ2evf3TE87Vm09opMAbOCrnF/drlThGJXaY6zNkQ2peBkfzg6YIOkq9KcGzsBeN2KEkDOe5OOaDJ834F4tvt8zxNHomuyFXbza3I=
+	t=1737080705; cv=none; b=bdNTM6+jvDWkklJNYmcwL6/5O1ymiTNHXaaEyQuf/3MeZ0JLhnijKRYx+Z53vlIZRiMowDJSCY4KipFZ9sv6t6tKriuzZql5FqmjtQqabYLbhBI21agP+WsxdTrZmagqMt2eFOGTfnlPByEH+UkyLBSk7yfpKpBS1TlQE3rVSk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737078015; c=relaxed/simple;
-	bh=TKJzr0OhYmz+MamxDkfKOjlqzLok1X/zkroGwhHT/q8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ComVptNiK6C875q5EmzD071FqOapfZpPlZnVsN7rVIlQeG41tlr9V7M9ZJ1mzHv1gkuXz8KPBgsQm6NH71cYOeMTI0UdJ6x/22iBTjSA7SAv/IY/Y+762k4BIXZHqVT40RhuBiGUJwmzQjcZ0UFD2yTp9drvN+CqdTaBDqfbzA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OiGZFqG+; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1737078011;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UQy/sgLNUMS5fRTHYjN4T8wUXZQCjsvCjzoYC0ySohE=;
-	b=OiGZFqG+rzpAAL+AsI9GRBvJ3xndG96yqvZDcJhh3PVDP66zyv5k582HUsTXz/ERkzKhN/
-	TRsBBwX6jbasPClkp6FmfluThU+nb7XYwY+LSNos1hWAdwiRFCDiLdH4nEK8SHZwGqWVi6
-	OfxMCsSh7vA1z699SHaXkHGJO3LI3xM=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-669-gQ6bp8kSPHCE_E90amJsbw-1; Thu,
- 16 Jan 2025 20:40:07 -0500
-X-MC-Unique: gQ6bp8kSPHCE_E90amJsbw-1
-X-Mimecast-MFC-AGG-ID: gQ6bp8kSPHCE_E90amJsbw
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B7A9F1955DC9;
-	Fri, 17 Jan 2025 01:40:03 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.224.118])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 6402519560A3;
-	Fri, 17 Jan 2025 01:39:54 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Fri, 17 Jan 2025 02:39:38 +0100 (CET)
-Date: Fri, 17 Jan 2025 02:39:28 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: Eyal Birger <eyal.birger@gmail.com>
-Cc: kees@kernel.org, luto@amacapital.net, wad@chromium.org,
-	mhiramat@kernel.org, andrii@kernel.org, jolsa@kernel.org,
-	alexei.starovoitov@gmail.com, olsajiri@gmail.com, cyphar@cyphar.com,
-	songliubraving@fb.com, yhs@fb.com, john.fastabend@gmail.com,
-	peterz@infradead.org, tglx@linutronix.de, bp@alien8.de,
-	daniel@iogearbox.net, ast@kernel.org, andrii.nakryiko@gmail.com,
-	rostedt@goodmis.org, rafi@rbk.io, shmulik.ladkani@gmail.com,
-	bpf@vger.kernel.org, linux-api@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] seccomp: passthrough uretprobe systemcall without
- filtering
-Message-ID: <20250117013927.GB2610@redhat.com>
-References: <20250117005539.325887-1-eyal.birger@gmail.com>
+	s=arc-20240116; t=1737080705; c=relaxed/simple;
+	bh=K66+KBx0lgtFW+ZOCmttgm95Hz1kk6u/sIgx91pWfQs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=aBoh3JcYxh23D78Dmd5i+kHzeo+AbDnwYOEdT/KZG/jXVKg8GxkAiaaNZwwINO/3Af4gnzjguSiNJ8cM3qI59N4o7qWT6HItYAU38JPmFzg9CkC6D/hf+cvMrvI2FYDaesLj/vtKiP8znMpvAgJjciqiTeEhHVhhTEIpiCmF2zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=MDIT/uIU; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1158)
+	id 3221520591AA; Thu, 16 Jan 2025 18:25:02 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3221520591AA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1737080702;
+	bh=K66+KBx0lgtFW+ZOCmttgm95Hz1kk6u/sIgx91pWfQs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=MDIT/uIUjMkmQFNj8iWCBwmJgnL1i4x71GzljdXVv6Bju7VT21kr0yBYf0rYnzcTc
+	 ETcO1vibmY/I7hUhbYYVAI7pT8DtjYYgFUje3w1VHkva/VbJxrkTblPayLdqbg/ReJ
+	 h5ACweBO2TkCoMy3t0HVkphtKA7DXevHIphqXnlI=
+From: Hardik Garg <hargar@linux.microsoft.com>
+To: gregkh@linuxfoundation.org
+Cc: akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	srw@sladewatkins.net,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org
+Subject: Re: [PATCH 6.1] 6.1.125-rc1 review
+Date: Thu, 16 Jan 2025 18:25:02 -0800
+Message-Id: <1737080702-23479-1-git-send-email-hargar@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+References: <20250115103547.522503305@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250117005539.325887-1-eyal.birger@gmail.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On 01/16, Eyal Birger wrote:
->
-> Fixes: ff474a78cef5 ("uprobe: Add uretprobe syscall to speed up return probe")
-> Reported-by: Rafael Buchbinder <rafi@rbk.io>
-> Link: https://lore.kernel.org/lkml/CAHsH6Gs3Eh8DFU0wq58c_LF8A4_+o6z456J7BidmcVY2AqOnHQ@mail.gmail.com/
-> Cc: stable@vger.kernel.org
-...
-> @@ -1359,6 +1359,11 @@ int __secure_computing(const struct seccomp_data *sd)
->  	this_syscall = sd ? sd->nr :
->  		syscall_get_nr(current, current_pt_regs());
->
-> +#ifdef CONFIG_X86_64
-> +	if (unlikely(this_syscall == __NR_uretprobe) && !in_ia32_syscall())
-> +		return 0;
-> +#endif
+The kernel, bpf tool, amd kselftest tool builds fine for v6.1.125-rc1 on x86 and arm64 Azure VM.
 
-Acked-by: Oleg Nesterov <oleg@redhat.com>
+Tested-by: Hardik Garg <hargar@linux.microsoft.com>
 
 
-A note for the seccomp maintainers...
 
-I don't know what do you think, but I agree in advance that the very fact this
-patch adds "#ifdef CONFIG_X86_64" into __secure_computing() doesn't look nice.
 
-The problem is that we need a simple patch for -stable which fixes the real
-problem. We can cleanup this logic later, I think.
-
-Oleg.
-
+Thanks,
+Hardik
 
