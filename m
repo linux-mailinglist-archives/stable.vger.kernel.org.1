@@ -1,161 +1,98 @@
-Return-Path: <stable+bounces-109391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D56B9A152A1
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 16:18:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E16A152A2
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 16:18:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DE9F188E57B
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 15:17:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 829001696C9
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 15:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8B51547E0;
-	Fri, 17 Jan 2025 15:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682FC146013;
+	Fri, 17 Jan 2025 15:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K+g9hPQp"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bW5+GmD2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B55113CF9C
-	for <stable@vger.kernel.org>; Fri, 17 Jan 2025 15:16:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2DE52B9B9
+	for <stable@vger.kernel.org>; Fri, 17 Jan 2025 15:18:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737127018; cv=none; b=RSIUb/nUN9vV5nsFcfOLekFxPBZagUjDIkmhoy7JV8T3BqsVQOxLUeeoQNMc7A4gLBAxDuyo4KyKHkykgmiyk0bdMKg3i+o3Usi9PYeBs3LeDoCVz+0PK57RK//mBxAZT1QQZ/wSr78JzUw9cg7QRNM4fxBJTguQOhHgYYsFudE=
+	t=1737127095; cv=none; b=uk0yrOG8N+aYwtz+P2i5lI18N3y6sp703bUeLEQH4XlGq2nAXae5dUMhDmwnhp58JlMomaI1fBBUO71J6sY4zLn6MG6F//niMf3Ip1xnpUPi0OGdzeUB5e6CSsZvFJegTU1iGmTyvX51d8keqTA9T9A02RjDZaOO9NhJKDTw/NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737127018; c=relaxed/simple;
-	bh=h0X2VXvAAWi9cbt9KOEkNpn273bdUe9uS6uUDIIjfq8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GyoxUmf3/tC2Emh2qT9op0vCunjTBeSwVv6fMO/O9v4bIK5/6Ik2vhlZO8lCPkmXiXBapaC7Te6dn0iLZgJicXUl79tCNvAnZvqqIrVYmdoj2i1oHN+IbCw0LH+E3nO61Zm1pFWV1WfWsZeANY+vBA9YVlJT49yfHih35eZMmxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=K+g9hPQp; arc=none smtp.client-ip=209.85.128.52
+	s=arc-20240116; t=1737127095; c=relaxed/simple;
+	bh=r5gfrwCYhXiBFd8QfgNOM0dbwFRlbMdfevSFagig3R8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ulEmVzZE0b7aqEPIbWObp1g6V3zbVy7J1WB/C65TjopmUfedgjxQ5FF6FTkafJ3TySR8BrJugEa0M/MJ+k/0CgGsn91mk8DGAX0/Imo1ZxP86T/hapwcCzau7BC/f9UmtTDNSR2gRCW38FLojoPIcbUC2/PGgKm38aXiP5iMyB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bW5+GmD2; arc=none smtp.client-ip=209.85.219.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4361b0ec57aso21733795e9.0
-        for <stable@vger.kernel.org>; Fri, 17 Jan 2025 07:16:56 -0800 (PST)
+Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e3c9ec344efso3312069276.2
+        for <stable@vger.kernel.org>; Fri, 17 Jan 2025 07:18:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1737127015; x=1737731815; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+BrOIqxWYZt/I1FyoHZ5CmAjrJ1pDPLVkwqBRaZ+leA=;
-        b=K+g9hPQpZxBU1ePE/RokaheiRsI6NByaRkxNGk+BSLW0x2UtvMNHnOgfRd0RcFQXVa
-         i+S2+uW/Y04lnHoSkmEbjAappzVJMyq+qvEQUGcvMtDw/15pqWc1R9JB+af3r2tLeate
-         EZDWiqInvfzXu2tzv48mICmHNkRj0SFPXDHNOxV2ivVl1xO1R26BD+L28XKvtgx3R2lw
-         seX+c1AhUUdNKo9Jlo2DKrMhN4lEtBmp6pr4sKYuH4CDeK76HTTlVRFK7o8TIubzqqI4
-         WzFOOZc9lL3kXiu4BVBDFiL6TEbSgvzq+F/6dbMxKQ9MCLqmiHQ89lEbSEq1MLFHCcR3
-         FHlQ==
+        d=linaro.org; s=google; t=1737127092; x=1737731892; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=r5gfrwCYhXiBFd8QfgNOM0dbwFRlbMdfevSFagig3R8=;
+        b=bW5+GmD2yGYxZSQHEjDqW9yASzYq9mtMRkds8kgP3sXsTYGoBJkM1YsNN9f2P4PhMZ
+         mQBu+KC7BlL/FSINsG9Ib0FOiYG96tYz7px1hmGjpBdStRbIVI9ItXmvTSLirFnPKAjj
+         rqIJp3KCt0h9hzUW96FStbAocHQjaIe7cxqy0DXbW2/65C9EglcLUCrgUV+UfXX7fBjm
+         lWdlRy49LNrdH+ovXfK8sAKirOGTUmBjSe4u5FC5FcZn7mYP8t9ngfLmB0O+vjGeVNcs
+         HsieHxr/T+tU99ePBf2WLG/pXuPdPiB5NZlk4bYTt3cfLIL7WXmKDk+jO+kLudFAW8si
+         nyuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737127015; x=1737731815;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1737127092; x=1737731892;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+BrOIqxWYZt/I1FyoHZ5CmAjrJ1pDPLVkwqBRaZ+leA=;
-        b=OuW12uV9uxGUm9HVMpAsOe0NRhDDLZTywuEmil//NwkKNKAI2t8lT8Tx5EBD67J34f
-         vVBhJu6CUdpusz5jhSiLySSRcXmSFv9FbTPNLCBkIy2f9g22w+jHFxJ03DGlLkgVrvzS
-         /wCwsBSFsEiRvXRJpa4IRhz7ebwFHOTyBf0FoGbZ8wT7KcTrK9P6Z0RnqRPhCP+mwmAi
-         QPGK8h9iI1FpaqzqkcLR4bogJ1YL1YD9VrkABC7BpIduf/i/UxBrT0/CeLldonc16AtD
-         rNVeQhrA3GcNf4pCLQ3Ez05D4yPP4szrIvUF6gzeLAEfgc4zPqNSeWekYZhjSPbgtZe+
-         KxXw==
-X-Gm-Message-State: AOJu0YxzypU1P+8OP/DKpuWvtDSXn3PDgApbWjLwiCYI3D4TtfxkBQRs
-	p16L4alQgWzdzXxbl8eYJvdIaNFO0OXfki3bo5cITYFU/xMzEMhdUl3T68h2afSWkMSKBjVAC6W
-	Q
-X-Gm-Gg: ASbGnctrXNh4EY7DxcqC34/J6bbTmrvqqTnvv8sxlc+24RauJU4cZ4lwTtaNZKWXAhF
-	S72xjOS2wXeuHcRdZ+XG7EXOaJxFx9Fzp8erWLdh41g0BwjpTxIgUzLWs3W4kjesZNun2Ao2NwD
-	t6rCgDDlKpoYrofrAhcCXU8LDnYI07kevyYLx39MN31oejJB25Zl/AV5Z328tX7pMrydtVbfyQc
-	viIYt1Pl7N8yhNCATgSNjRHJvKKJ8k7tWch1J0l58V08wir610eLk8T0g3HJvRbbgEmLfJUr7e7
-	ejAUf/5TzVrkPNfHWKr0FqQvY51E6gHpoxKVItSd+ooSnKMd8KenwKvFwMb5ed7p
-X-Google-Smtp-Source: AGHT+IEkelJC7QndwJs5I/PDo1OBr3DYwc2EACC6EoBeYoMFRicGO+n1DDGN0VyD0A0aFEw1NlNYPA==
-X-Received: by 2002:a05:600c:1c83:b0:434:a746:9c82 with SMTP id 5b1f17b1804b1-438913be56bmr34294915e9.5.1737127015267;
-        Fri, 17 Jan 2025 07:16:55 -0800 (PST)
-Received: from green.cable.virginm.net (nail-04-b2-v4wan-169014-cust557.vm26.cable.virginm.net. [82.47.146.46])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4389046b0f5sm36923505e9.39.2025.01.17.07.16.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jan 2025 07:16:54 -0800 (PST)
-From: Terry Tritton <terry.tritton@linaro.org>
-To: stable <stable@vger.kernel.org>
-Cc: Terry Tritton <ttritton@google.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Daniel Verkamp <dverkamp@chromium.org>,
-	Terry Tritton <terry.tritton@linaro.org>
-Subject: [PATCH 6.6] Revert "PCI: Use preserve_config in place of pci_flags"
-Date: Fri, 17 Jan 2025 15:16:51 +0000
-Message-Id: <20250117151651.6468-1-terry.tritton@linaro.org>
-X-Mailer: git-send-email 2.39.5
+        bh=r5gfrwCYhXiBFd8QfgNOM0dbwFRlbMdfevSFagig3R8=;
+        b=Ylmdl0FVdf3F8Z4sdh4I2OW1cpFON8GL+ngJkbg2bWbdg+NLuys9lMYDQ6LwayvgYO
+         Jk5WHAodYa1oZh4njuWtnBxjwheumjnnvWArGkw0H9CIQfeV6VRmqReuN9SA7siddEyn
+         dXWjaSvyCvyF8cscdCfX1VfP0CX8jaOaMRfqNteSmHjPocf/PZdu9XpVRrh1NlOfsdPv
+         QhngPV+o+cot+FVh3c4YFP7WIFEwjOJu7SS4sKGNKc2gKVaQhfaI1/jER/2dhuUIgAJK
+         C1P3kSj0IAkmVlikSh5sCjZrRYp6qKxGVnpilDqSBiBVFZihBU8j4GE1t4bV7wxbZFPs
+         qaEw==
+X-Gm-Message-State: AOJu0YwHkVjVJ8Di4gTgWWYXc46aCfC7w7T3ZiQbUH/R6wSEotnkFUQk
+	2n50SKwWYB7whl4tAMbCevvvFmIQsm9DGB/X6WTB6t53KedmpjvMugnoSQNPItBSZpMCEaKYPhj
+	s+5SWQHluhwhyTyj0ioN+L9DRCFB8Bz5xCw9M4w==
+X-Gm-Gg: ASbGncsXvLTtTo7jwxyWhApm3u3cXhs7UAtkkdiuWEDhaBqt55wYBymlzqsrKiHPCBN
+	OlEhIYmdJknSYXHZT30WqAcebgS6iWEdfzYTa
+X-Google-Smtp-Source: AGHT+IHdNqUGwDTrcGRxRTDN/0cqnZ+8Xq+27pa0/unVlrUTi1ZhKMjre5Pa7//xtPewNlU0bJD4WBwYLd+IDxBfvZ8=
+X-Received: by 2002:a05:690c:f81:b0:6ee:7797:672 with SMTP id
+ 00721157ae682-6f6eb6589f1mr19581867b3.7.1737127092603; Fri, 17 Jan 2025
+ 07:18:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CABeuJB2PdWVaP_8EUe34CJwoVRLuU8tMi6kVkWok5EAxwpiEHw@mail.gmail.com>
+ <2025011740-driller-rendering-e85d@gregkh> <CABeuJB3xEQfgx1TiKyxREQjTJ6jh=xt=N7bTQoKgjAN1Xoa5WA@mail.gmail.com>
+ <2025011710-chug-hefty-2fd6@gregkh>
+In-Reply-To: <2025011710-chug-hefty-2fd6@gregkh>
+From: Terry Tritton <terry.tritton@linaro.org>
+Date: Fri, 17 Jan 2025 15:18:01 +0000
+X-Gm-Features: AbW1kvZRlwwM1aGoGDk-CVgxo9-cGW6MjQU52XVZC64COHp7ZMWQCmf7SExYt70
+Message-ID: <CABeuJB0jMbysm06guUvCA_O9Dbqmd6n0X93deiVtqgQwWW9TQA@mail.gmail.com>
+Subject: Re: [REGRESSION] Cuttlefish boot issue on lts branches
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable <stable@vger.kernel.org>, Vidya Sagar <vidyas@nvidia.com>, 
+	Sasha Levin <sashal@kernel.org>, Daniel Verkamp <dverkamp@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 
-This reverts commit 3e221877dd92dfeccc840700868e7fef2675181b which is
-commit 7246a4520b4bf1494d7d030166a11b5226f6d508 upstream.
+> One for each branch please, as the git ids for the commit is different
+> on each one, right?
 
-This patch causes a regression in cuttlefish/crossvm boot on arm64.
+Thanks that's what I assumed but wasn't sure if there was some script
+that did some magic.
 
-The patch was part of a series that when applied will not cause a regression
-but this patch was backported to the 6.6 branch by itself.
+Sent those to stable now, let me know if there are any issues.
 
-The other patches do not apply cleanly to the 6.6 branch.
-
-Signed-off-by: Terry Tritton <terry.tritton@linaro.org>
----
- drivers/pci/controller/pci-host-common.c |  4 ++++
- drivers/pci/probe.c                      | 20 +++++++++++---------
- 2 files changed, 15 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/pci/controller/pci-host-common.c b/drivers/pci/controller/pci-host-common.c
-index e2602e38ae45..6be3266cd7b5 100644
---- a/drivers/pci/controller/pci-host-common.c
-+++ b/drivers/pci/controller/pci-host-common.c
-@@ -73,6 +73,10 @@ int pci_host_common_probe(struct platform_device *pdev)
- 	if (IS_ERR(cfg))
- 		return PTR_ERR(cfg);
- 
-+	/* Do not reassign resources if probe only */
-+	if (!pci_has_flag(PCI_PROBE_ONLY))
-+		pci_add_flags(PCI_REASSIGN_ALL_BUS);
-+
- 	bridge->sysdata = cfg;
- 	bridge->ops = (struct pci_ops *)&ops->pci_ops;
- 	bridge->msi_domain = true;
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 7e84e472b338..03b519a22840 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -3096,18 +3096,20 @@ int pci_host_probe(struct pci_host_bridge *bridge)
- 
- 	bus = bridge->bus;
- 
--	/* If we must preserve the resource configuration, claim now */
--	if (bridge->preserve_config)
--		pci_bus_claim_resources(bus);
--
- 	/*
--	 * Assign whatever was left unassigned. If we didn't claim above,
--	 * this will reassign everything.
-+	 * We insert PCI resources into the iomem_resource and
-+	 * ioport_resource trees in either pci_bus_claim_resources()
-+	 * or pci_bus_assign_resources().
- 	 */
--	pci_assign_unassigned_root_bus_resources(bus);
-+	if (pci_has_flag(PCI_PROBE_ONLY)) {
-+		pci_bus_claim_resources(bus);
-+	} else {
-+		pci_bus_size_bridges(bus);
-+		pci_bus_assign_resources(bus);
- 
--	list_for_each_entry(child, &bus->children, node)
--		pcie_bus_configure_settings(child);
-+		list_for_each_entry(child, &bus->children, node)
-+			pcie_bus_configure_settings(child);
-+	}
- 
- 	pci_bus_add_devices(bus);
- 	return 0;
--- 
-2.39.5
-
+Thanks
+Terry
 
