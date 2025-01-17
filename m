@@ -1,141 +1,126 @@
-Return-Path: <stable+bounces-109403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78D89A1551C
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 17:59:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AF8CA15534
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 18:03:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C16993A4515
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 16:59:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06D0F3AADC4
+	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 17:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95BF19F487;
-	Fri, 17 Jan 2025 16:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A57D019EEBD;
+	Fri, 17 Jan 2025 17:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FX6T+eAp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mp6uj4PW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33239199249
-	for <stable@vger.kernel.org>; Fri, 17 Jan 2025 16:59:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E1C19D892;
+	Fri, 17 Jan 2025 17:02:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737133158; cv=none; b=J0ytOuSLEAlIJ3w12vQz61jpJXxtIpv8tvDncDLVO1ppzTRevH6mhGWC1prDEF2I8ktko1atCz/CGibFkVHYkSE60iii2FzMzaGtCGvIv/EfzI/Vv5RwxfNENbLd2/YaZunQmRR9EHn3WuDLH5nCz/9QcSGvgPEIiiUuEyD7Bbc=
+	t=1737133371; cv=none; b=MCSDMQT73jIknoE1sHlPPlb4B8xFNZy7w8NTciZMnHOBH6NZFyISmZ0kU4TcUzF+wscBKuvP074UXJWpoPPeYX484JLLzRlXsMRx38+qgPWBACAq/0KWnSs2ru/pMmVwu+taP3KsK4C9ycpYitnmd5KHIEIdcYDyYShMf1K9inY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737133158; c=relaxed/simple;
-	bh=eELjTMxy9R374bYdUfkFwRMkrtaOe7EhJHvKRy25pnE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qrMa+KZnWGKpxB/ntN/VxhK4VFAkJ5PhYs87/mTU7Hf4tJyvsyltcjfD8Gexq2Rknq7m8GXooGV/AV/q9QI/KlyySSHi93hogI2ju9uHj6Suk0P22Z7TI3M0LWMuqxJu45YhLEOPT2LQWTDBwfe3pCTacqxJxjJ6vHVK1STQzYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FX6T+eAp; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2161eb95317so46923425ad.1
-        for <stable@vger.kernel.org>; Fri, 17 Jan 2025 08:59:16 -0800 (PST)
+	s=arc-20240116; t=1737133371; c=relaxed/simple;
+	bh=wFgjuoyBqwQ4sQPn4mUJKjloW9Bov770FPUWOprtCX0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uXot4LrbWg/eZ2lCAsM8kMulKPf9J79kn+TB/Sfnk/YDy7w9qCUpMZixde75MPeC6MNmOSqdnuQ+VEOzknRmY8QyHV433/l15tMqcpvR+8ZZXGtU7EeTpXI3zGjLNWybG6tR008Ik5O1ezfKHxWoTVSvKRl96qr5c3Ug+7QePEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mp6uj4PW; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2ef760a1001so4130834a91.0;
+        Fri, 17 Jan 2025 09:02:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1737133156; x=1737737956; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=XkhbZO8tYS+x52lOvx8K04qENXNly95zhsaFcqaUxAQ=;
-        b=FX6T+eApkix0ks3jZyk0VSywgekeWYV+VEoow8Q3dDk9yMSfXe6G4SHjguPc/Ig5bc
-         L02K6zFvs+ZGZLYOfSUnB6dRdiAvI0nfhKHp7hCF0md1MexzMqVRj8TSO2IkkuINbkaQ
-         Gmzdw6syA8hYh7krDlgcLAU2u7KAG8c4jFdOe1mQk1mHqBpIiV7z8YcrhdTVVDijWOyH
-         sNS0gmo+F/AQWgRyQLBuDyQLJX5PizYcKUccFjrjucOzjwskSwahnD8k9/98eggfCrAT
-         ANVWicHzTN9ofaoD7svlu4r6pW6nE5GkcXAeBYJwnOEbEryPA32J+zW7QVHkjuXdmggg
-         lrRA==
+        d=gmail.com; s=20230601; t=1737133369; x=1737738169; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=X4kDojqUMiIFkZnyNMg3tExxWOhbTs+aQLMwWb7s2ao=;
+        b=mp6uj4PWOCl8KJdGmWwmikSZTIQ6tI1mAppMqoQD7/8dAw/4Nrw6qnlGgVVriHlW8M
+         EgVWiu1nUmwht7RTHiugx3vtHgzInp2a4Ya0dqslC2HOtIBI0ym5lE6pOeUYS0VzJgg3
+         UoSazN7s7hEgUzcGonG6z6seGqpItM75hHM6kBFZpsbnt1wgw05XUKhmCh8mS0Q0yPPs
+         DqC+mR0xpuqu+q7b80bomEetd7rrx3fai819wscPlm1kMl6sldAGmujApw08vkiS4/Nq
+         V333y+oSe30O2OLNKbzWYy6N620bgL/7KvIcFgApu7nNrVBZm1Y5WthP7kNpOfLbo/Fk
+         FGvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737133156; x=1737737956;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XkhbZO8tYS+x52lOvx8K04qENXNly95zhsaFcqaUxAQ=;
-        b=CHi8jzINAL1ABJeuUl1BfNlLJNbJ91SwM3PzF+M68H/mnhKHZTFngi0qxhmDw7X6pU
-         pmx1G79J9s9upbDbIi8RU3CCQb3kXsH276s5i7movN8vUCnwM1aABkyKVmX+a70fv3sZ
-         ihwbu4xxd6+RBHGC2b0AfHo/zofWqXvR23hFMplWI5KZz4YcW5deaDuuz6jIgy7kDH8o
-         k8BcDlHuNJnvAXHEF4sFH1mGFn1zFVmnvblQJHOZOSrHfl4FajTpVaVk3x4XPcqkpg85
-         suZa03LoHdFTHhdIHa0rlv3N85kabmi621hbkhKEMETBbRDemE6lKsPHs7aAG45z1Kub
-         GBkw==
-X-Forwarded-Encrypted: i=1; AJvYcCUViE23NDj4TonHHVAEgVOFS8wqHsh7pnq5Ea7KzfuX2QrtgvbrA/SXYYyi7AwmGcoi4Ry7BqM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWH3Lnk5lZCX67koHd0GeSONfD/AfYUQz6cy6VHKQkBcA2ky8J
-	VQsj/d+Ub9I85+NwF64U4ZKju3DM8WY5Au4BI+Wen9dKr/0uQDRXHw4q3kHE0w==
-X-Gm-Gg: ASbGnct3yPw9LNvc7JRaunZ1MJzg0QyHZdTPgf87t5VX9hHfOk5rR5RTHwrIINBKJQR
-	y3Vy53+qAcxiVifLpxi0eoKiFf4XnnasU0t2CQYghzbu4xRc3YJSI1VAWXizx8R1WByMnNxNFe6
-	Egl7XeIW8kmL98H8H5kN9k9/uOyQm9KKsP9F35kBH+Sr3o2GtujylFyUixwx+/1HPsJdFxYCfj1
-	B9YKoAZsOORwwLAWlZnz05E/OLArM+EvrCHa1XibxjstkunWVbUbH0kHIVZy3mGPHLd
-X-Google-Smtp-Source: AGHT+IEfnnL3mUhpv8k8DjWFKRShJa/iF7JsGrlzqODd5Qcyj+91fLelDJ83KysyOwgQsgiCtdXH0A==
-X-Received: by 2002:a05:6a20:9143:b0:1e0:dc06:4f4d with SMTP id adf61e73a8af0-1eb214da876mr5836750637.19.1737133156381;
-        Fri, 17 Jan 2025 08:59:16 -0800 (PST)
-Received: from thinkpad ([117.193.215.12])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-a9bdf0b43aasm2041206a12.66.2025.01.17.08.59.12
+        d=1e100.net; s=20230601; t=1737133369; x=1737738169;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=X4kDojqUMiIFkZnyNMg3tExxWOhbTs+aQLMwWb7s2ao=;
+        b=NLOKTUW47az42hc6Cgh62HcqYVVfJDeu5WvOc4A2eu0ytWjOUNWDjCGsNwite17y9b
+         A2QEJw+Kl10lfd0Hlnxy30jzQspedubaVAucgETCzfWIXPmn0kNufeMB2ZUwVl6w+rgn
+         80NjEIohXNLIQliPP6Rhm92g31fSFksM9442QliKHptC01qzsq5TinT3puXK9sOaNU5L
+         6XtyC0o9TCEhzkp7nNxP4HI4C6Q9BeswJ8jZGT+1v5gUei4yD113j3RzZKzjNfk5nqbI
+         pV0O6p72pUzte2RqrNMms3EbBK6jM+Rb/XpVYEPYodtQPtCFHBPPylltQ8M6SAH6eFqc
+         NPrA==
+X-Forwarded-Encrypted: i=1; AJvYcCXTmOmXOsjWAsxdbAq6O8GNywqIiVzZyu0VsQhW9DcLkqVcLLE2YJMVkHjPYewvVu7MXHAYwaQz+LBxj6g=@vger.kernel.org, AJvYcCXuCx6u9Nd9EyAhspfef8ayDIENxacXLhWQlRUX8Up5p5ystevwvqOB8/WzqiOqmhibnIC+W4vZ@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSVKnGawbO/i1u5gRj8Nh9Zg0hVu9QKvdw9g4IBVuOoHbpR2WC
+	N4LBdc18wtaGx2Z2XwJL+6FWo9Cyx3Sht74igVV1P6oL/VmnsR7Z
+X-Gm-Gg: ASbGnctV6rz8mnJRyGVACKFcOD3FdFoL3QCjG50Xm0ACYaFnEpf1vTIE5K7yznZW1G4
+	vXXFLnZtW9+iwwpOoy3WRPP6OrgJHNPbEgQy7wIxC/g8okFjGZqurVWlPdTTf/X9ce4JGbAknRc
+	sQ8JZyzXxxZWh1BzdW2M6c6omhrQf/WOjc5qS+B5RKO0ibaeeheHXAJOMPs+DdsM9EIE95wkXAt
+	R9lQioq4CD/5vew3KOSqOEnJhkbqDlh5KHa8WMnC/DyZSo39ddWoQr/Tw==
+X-Google-Smtp-Source: AGHT+IFSKYz5MJBYL73PaQgH4rfTufNnsapr7Rut4pl5xrZYZx9FoXciCNIkw1AxE63eVLgrgYPDDw==
+X-Received: by 2002:a17:90b:2f50:b0:2ee:fdf3:38ea with SMTP id 98e67ed59e1d1-2f782d32c45mr4034054a91.23.1737133369113;
+        Fri, 17 Jan 2025 09:02:49 -0800 (PST)
+Received: from nick-mbp.. ([59.188.211.160])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-2f72c1ccf46sm5544422a91.22.2025.01.17.09.02.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jan 2025 08:59:15 -0800 (PST)
-Date: Fri, 17 Jan 2025 22:29:07 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: "Bao D. Nguyen" <quic_nguyenb@quicinc.com>
-Cc: quic_cang@quicinc.com, bvanassche@acm.org, avri.altman@wdc.com,
-	peter.wang@mediatek.com, martin.petersen@oracle.com,
-	linux-scsi@vger.kernel.org, stable@vger.kernel.org,
-	Bean Huo <beanhuo@micron.com>,
-	Daejun Park <daejun7.park@samsung.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/1] scsi: ufs: core: Fix the HIGH/LOW_TEMP Bit
- Definitions
-Message-ID: <20250117165907.rfdaayq4a6ichhmy@thinkpad>
-References: <69992b3e3e3434a5c7643be5a64de48be892ca46.1736793068.git.quic_nguyenb@quicinc.com>
+        Fri, 17 Jan 2025 09:02:48 -0800 (PST)
+From: Nick Chan <towinchenmi@gmail.com>
+To: Hector Martin <marcan@marcan.st>,
+	Sven Peter <sven@svenpeter.dev>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>,
+	asahi@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Nick Chan <towinchenmi@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] irqchip/apple-aic: Only handle PMC interrupt as FIQ when configured to fire FIQ
+Date: Sat, 18 Jan 2025 01:02:27 +0800
+Message-ID: <20250117170227.45243-1-towinchenmi@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <69992b3e3e3434a5c7643be5a64de48be892ca46.1736793068.git.quic_nguyenb@quicinc.com>
 
-On Mon, Jan 13, 2025 at 10:32:07AM -0800, Bao D. Nguyen wrote:
-> According to the UFS Device Specification, the dExtendedUFSFeaturesSupport
-> defines the support for TOO_HIGH_TEMPERATURE as bit[4] and the
-> TOO_LOW_TEMPERATURE as bit[5]. Correct the code to match with
-> the UFS device specification definition.
-> 
-> Fixes: e88e2d322 ("scsi: ufs: core: Probe for temperature notification support")
+The CPU PMU in Apple SoCs can be configured to fire its interrupt in one
+of several ways, and since Apple A11 one of the method is FIQ. Only handle
+the PMC interrupt as a FIQ when the CPU PMU has been configured to fire
+FIQs.
 
-Fixes commit SHA should be 12 characters:
+Cc: stable@vger.kernel.org
+Fixes: c7708816c944 ("irqchip/apple-aic: Wire PMU interrupts")
+Signed-off-by: Nick Chan <towinchenmi@gmail.com>
+---
+ drivers/irqchip/irq-apple-aic.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Fixes: e88e2d32200a ("scsi: ufs: core: Probe for temperature notification support")
+diff --git a/drivers/irqchip/irq-apple-aic.c b/drivers/irqchip/irq-apple-aic.c
+index da5250f0155c..c3d435103d6d 100644
+--- a/drivers/irqchip/irq-apple-aic.c
++++ b/drivers/irqchip/irq-apple-aic.c
+@@ -577,7 +577,8 @@ static void __exception_irq_entry aic_handle_fiq(struct pt_regs *regs)
+ 						  AIC_FIQ_HWIRQ(AIC_TMR_EL02_VIRT));
+ 	}
+ 
+-	if (read_sysreg_s(SYS_IMP_APL_PMCR0_EL1) & PMCR0_IACT) {
++	if (read_sysreg_s(SYS_IMP_APL_PMCR0_EL1) &
++	    (FIELD_PREP(PMCR0_IMODE, PMCR0_IMODE_FIQ) | PMCR0_IACT)) {
+ 		int irq;
+ 		if (cpumask_test_cpu(smp_processor_id(),
+ 				     &aic_irqc->fiq_aff[AIC_CPU_PMU_P]->aff))
 
-- Mani
-
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
-> Reviewed-by: Avri Altman <Avri.Altman@wdc.com>
-> ---
->  include/ufs/ufs.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/ufs/ufs.h b/include/ufs/ufs.h
-> index e594abe..f0c6111 100644
-> --- a/include/ufs/ufs.h
-> +++ b/include/ufs/ufs.h
-> @@ -386,8 +386,8 @@ enum {
->  
->  /* Possible values for dExtendedUFSFeaturesSupport */
->  enum {
-> -	UFS_DEV_LOW_TEMP_NOTIF		= BIT(4),
-> -	UFS_DEV_HIGH_TEMP_NOTIF		= BIT(5),
-> +	UFS_DEV_HIGH_TEMP_NOTIF		= BIT(4),
-> +	UFS_DEV_LOW_TEMP_NOTIF		= BIT(5),
->  	UFS_DEV_EXT_TEMP_NOTIF		= BIT(6),
->  	UFS_DEV_HPB_SUPPORT		= BIT(7),
->  	UFS_DEV_WRITE_BOOSTER_SUP	= BIT(8),
-> -- 
-> 2.7.4
-> 
-
+base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
 -- 
-மணிவண்ணன் சதாசிவம்
+2.48.1
+
 
