@@ -1,130 +1,189 @@
-Return-Path: <stable+bounces-109448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19A87A15D90
-	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 16:06:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 729A2A15D8C
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 16:05:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11EA27A150F
-	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 15:05:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A45033A8344
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 15:05:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46738199EB0;
-	Sat, 18 Jan 2025 15:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F84318FC7B;
+	Sat, 18 Jan 2025 15:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FRb2mZWd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mFgCJ5cC"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B444199230
-	for <stable@vger.kernel.org>; Sat, 18 Jan 2025 15:05:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA34172BB9;
+	Sat, 18 Jan 2025 15:05:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737212749; cv=none; b=Jgsh/W5mVYlzgfSQpSv2aikn+B4cIcXJS5fIiPuk0eQtaxauSEB7ANpWfMOmiysThiGGPSPTs8LbsM2oO6Ni5esKo/evx1wji+ka79UPVEpIhJxy+zicCHO1E+4hB6ySWk/65ChgeK8N8nKjFfgtp2UR4AsoyyCggJ0M5AkLG9Q=
+	t=1737212744; cv=none; b=jFfA3lTJ95upSs/JEnSzfTAfMbN+4I90bBiwldG1fFdFc7qKXqBYiYH0qS35a+ufQt3WNuw2GfxOSLrblG6AYX2taSTvKWS2GTt7VcTRH4bl/l8/c7uE+0csygGNyfx6sG3reZ+wwEl4HPpvfNQ3dGjwkMYuxes8JS99mbj+Bkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737212749; c=relaxed/simple;
-	bh=FB5tEY/SIGgEcj+wCphizTJs+zgzCCFaTisQu4Io4D8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dIgCgidyjzUao2v0MYe0L4x9yj7YOpZ8woa9v6H6AXTHakdpebosEUlR4q2qljxQVce0lCrOkOaXjVWb6kIBJIrgf73lzp3laG/qjhGnRAgnQBaekjSxQEJGmkWk084URhot+nW9xS1GY0532D3/GpRRhqtegPSyXaCMVwudonY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FRb2mZWd; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1737212746;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FB5tEY/SIGgEcj+wCphizTJs+zgzCCFaTisQu4Io4D8=;
-	b=FRb2mZWd/Pqvd37xQYEnHHRq2jHImqw9nrcX5e0aDnDJKRJZQKzDiW/RgcjmX/631RBK4G
-	jiWOqNPbKc+iDwBcWrC4qaLg7ol6RIoz5p8KhduMhWKGaNEIiaFL6POkMiyRRWAGP77qEE
-	WH9UWGKjFAIztL7TdCUSmWycR1LMECY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-552-kWG6VUqGNcauERNYzyMBkQ-1; Sat,
- 18 Jan 2025 10:05:42 -0500
-X-MC-Unique: kWG6VUqGNcauERNYzyMBkQ-1
-X-Mimecast-MFC-AGG-ID: kWG6VUqGNcauERNYzyMBkQ
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8EAA119560B1;
-	Sat, 18 Jan 2025 15:05:37 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.224.39])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id AFEAD195608A;
-	Sat, 18 Jan 2025 15:05:27 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Sat, 18 Jan 2025 16:05:12 +0100 (CET)
-Date: Sat, 18 Jan 2025 16:05:01 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
-	Eyal Birger <eyal.birger@gmail.com>, kees@kernel.org,
-	luto@amacapital.net, wad@chromium.org, andrii@kernel.org,
-	jolsa@kernel.org, alexei.starovoitov@gmail.com, olsajiri@gmail.com,
-	cyphar@cyphar.com, songliubraving@fb.com, yhs@fb.com,
-	john.fastabend@gmail.com, peterz@infradead.org, tglx@linutronix.de,
-	bp@alien8.de, daniel@iogearbox.net, ast@kernel.org,
-	rostedt@goodmis.org, rafi@rbk.io, shmulik.ladkani@gmail.com,
-	bpf@vger.kernel.org, linux-api@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	"Dmitry V. Levin" <ldv@strace.io>
-Subject: Re: [PATCH] seccomp: passthrough uretprobe systemcall without
- filtering
-Message-ID: <20250118150500.GB21464@redhat.com>
-References: <20250117005539.325887-1-eyal.birger@gmail.com>
- <20250117013927.GB2610@redhat.com>
- <20250117170229.f1e1a9f03a8547d31cd875db@kernel.org>
- <20250117140924.GA21203@redhat.com>
- <CAEf4BzYhcG8waFMFoQS5dFWVkQGP6ed_0mwGTK4quN5+6-8XuA@mail.gmail.com>
+	s=arc-20240116; t=1737212744; c=relaxed/simple;
+	bh=HCgfeFhghhnquXDMpgRcUKVSWvaAsWZvb8AhfrNJIak=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=INw5/Um52//R7SkGLVWyf6diSCem5MW3a+bb95q+EB4Mt/lzZHO+ntZPiBYzz9oK3x72xGq7XljXND1eeHE2PhGbqqG508Ll0yvDMz7X25P4CwFmcvcyQl/QM8Mqf4liwMzjZUeiuDfacyHlBzHbjQa1pYeST/5U9P23rp6b9WU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mFgCJ5cC; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2162c0f6a39so80058225ad.0;
+        Sat, 18 Jan 2025 07:05:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737212741; x=1737817541; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=1Iua3t9C/J/1q9h1fZ0xnBvoSDkRDj5Sy2cZeXicSi4=;
+        b=mFgCJ5cCiZPWXJhKwHdREmS3qMQDRD+nWN3mZ8B0fNvTJAoo5JuFxfYbQI0PqnRy5T
+         VgItAFHmVrFWAxL0NjUvsUZLFdAGHFHd0dq7go2ArcHTHy8OJ9CV78ZJdZTVUtlZQFH5
+         vdEjhyee8EFJ3XWkQZoew7av15VqaZdsgXiducKihGy3rWY3RymzmsnBDK7m6oXiooe8
+         L8/kjU25fSg0XPuaV/3OcYZxxRsjWhjbcQgkrDFAlI1o4/U1f5IMjdhRuvmL9X0P8GfD
+         JupdOlw2dhequoP+soRhKySc64NK9KNZnNhEqYpjcmYgOSVJW50LVeKpwPM8EcCCbK5g
+         Q4kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737212741; x=1737817541;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1Iua3t9C/J/1q9h1fZ0xnBvoSDkRDj5Sy2cZeXicSi4=;
+        b=X15zTX9GSQnHv4PYuALfpZPVmsUdO4McaIAsA0A4z5iX0J0WrsVdG78YpTkN7ItDCC
+         fHmS4CRiRa6TAgSWhxBgMwsUjL+FfKa+ieaE7WBnmkwZvyGLhBjVlvrKxUxsV8A5zj2y
+         /qp+nhQAosy0r1ZjbYI3BeMYceOTiR+XpGqA9clt/OKHt3OsmWWyeTaqKT1ETVDp+g2y
+         pSOlynWfnMLuCan70fbJvK6SyA6TbEr1Isj9omvwwC2UVLOg2Df4VHOtRwGJC1wbTzzw
+         dGtBbpmjkuCwawWPIHkRqqdpuk8BgNMCZoYuE8jMqlcUWmYEGFulaNBSK4utD1zZKKAC
+         CDUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV1YxquLMwvI6fcrmU7TPiYUeO51Aj5ckhRx0ucxd7o2t9uBh6LdOJNV5yGNK8/EQVSDawoM2HuC9fZi8s=@vger.kernel.org, AJvYcCW0o7RhRPjZX5fbdJQkgf5omgfV+UzeUH2TAvJUqWvC8Zis+X23N7YTAIobOPBdYyEDIJ1rohY9@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXQpy/l2GrbU9apH/P7RYQurvoZBQiqi3Ihrwrp1J5WMHCnCl4
+	zLnJZNOWCcPqplq6PIvMJV1Y6sIuFJ6RnFWu5Ie3nUCL9vTEgjqK
+X-Gm-Gg: ASbGncu5xP0QTyqoK7MbBVxrl3fJz0DSw7vH9FhEiINK/0DyFeDgjrJfLXqw7yQsITN
+	1mqqmkUYZC2zPCZJJPX1dhRHoc8ERsaLBKBFCe+veAc/YZerGOcN3FrXvl8phQhl9I6h2kb0AeR
+	JYDymBABKgHOoVg2RwwcJPSC1CHX8rZ+64GMA/mMDPIUBlYhvDDKGhXDyLVejxyKcefkjegXpKK
+	JlzKha67q5cJi3o3si21+BDAwPqREPgCa5KxKpPXS2IXbF6ZzJiRfhgVpQIrVf7lIQTCpoKxdEb
+	U35/hbiLrJFvOYe0CrH0GYnyalOAWVwPWg5bk9fU1VE=
+X-Google-Smtp-Source: AGHT+IFpQMdVUnbccWTogoQYFaVldVkBGykq8niVtAJDYzv6ogJZIV7ncgny0pgiIs/ggx2LyVYlqg==
+X-Received: by 2002:a05:6a00:b0f:b0:725:4a1b:38ec with SMTP id d2e1a72fcca58-72d8c46ea61mr19367828b3a.3.1737212740644;
+        Sat, 18 Jan 2025 07:05:40 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72daba48eadsm3916329b3a.138.2025.01.18.07.05.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 18 Jan 2025 07:05:39 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <d0919169-ee06-4bdd-b2e3-2f776db90971@roeck-us.net>
+Date: Sat, 18 Jan 2025 07:05:37 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEf4BzYhcG8waFMFoQS5dFWVkQGP6ed_0mwGTK4quN5+6-8XuA@mail.gmail.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 00/92] 6.1.125-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org
+References: <20250115103547.522503305@linuxfoundation.org>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20250115103547.522503305@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 01/17, Andrii Nakryiko wrote:
->
-> On Fri, Jan 17, 2025 at 6:10 AM Oleg Nesterov <oleg@redhat.com> wrote:
-> >
-> > We can, and this is what I tried to suggest from the very beginning.
-> > But I agree with Eyal who decided to send the most trivial fix for
-> > -stable, we can add the helper later.
-> >
-> > I don't think it should live in uprobes.h and I'd prefer something
-> > like arch_seccomp_ignored(int) but I won't insist.
->
-> yep, I think this is the way, keeping it as a general category. Should
-> we also put rt_sigreturn there explicitly as well? Also, wouldn't it
-> be better to have it as a non-arch-specific function for something
-> like rt_sigreturn where defining it per each arch is cumbersome, and
-> have the default implementation also call into an arch-specific
-> function?
+On 1/15/25 02:36, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.125 release.
+> There are 92 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 17 Jan 2025 10:34:58 +0000.
+> Anything received after that time might be too late.
+> 
 
-I personally don't think we should exclude rt_sigreturn. and I guess
-we can't do it in a arch-agnostic way, think of __NR_ia32_sigreturn.
+Various allmodconfig builds fail. Example:
 
-However. These are all good questions that need a separate discussion.
-Plus the SECCOMP_RET_TRACE/strace issue raised by Dmitry. And probably
-even more.
+Building csky:allmodconfig ... failed
+--------------
+Error log:
+ERROR: modpost: "xhci_suspend" [drivers/usb/host/xhci-pci.ko] undefined!
+ERROR: modpost: "xhci_resume" [drivers/usb/host/xhci-pci.ko] undefined!
+make[2]: [scripts/Makefile.modpost:127: Module.symvers] Error 1 (ignored)
 
-But IMO it would be better to push the trivial (and urgent) fix to
--stable first, then discuss the possible cleanups/improvements.
+This is because the backport of commit 9734fd7a2777 ("xhci: use pm_ptr()
+instead of #ifdef for CONFIG_PM conditionals") is wrong.
 
-What do you think?
+9734fd7a2777:
 
-Oleg.
+-#ifdef CONFIG_PM
+         xhci_pci_hc_driver.pci_suspend = xhci_pci_suspend;
+         xhci_pci_hc_driver.pci_resume = xhci_pci_resume;
+         xhci_pci_hc_driver.shutdown = xhci_pci_shutdown;
+-#endif
+
+130eac4170859 (upstream version of 9734fd7a2777):
+
+-#ifdef CONFIG_PM
+-       xhci_pci_hc_driver.pci_suspend = xhci_pci_suspend;
+-       xhci_pci_hc_driver.pci_resume = xhci_pci_resume;
+-       xhci_pci_hc_driver.pci_poweroff_late = xhci_pci_poweroff_late;
+-       xhci_pci_hc_driver.shutdown = xhci_pci_shutdown;
+-#endif
++       xhci_pci_hc_driver.pci_suspend = pm_ptr(xhci_pci_suspend);
++       xhci_pci_hc_driver.pci_resume = pm_ptr(xhci_pci_resume);
++       xhci_pci_hc_driver.pci_poweroff_late = pm_ptr(xhci_pci_poweroff_late);
++       xhci_pci_hc_driver.shutdown = pm_ptr(xhci_pci_shutdown);
+
+Guenter
 
 
