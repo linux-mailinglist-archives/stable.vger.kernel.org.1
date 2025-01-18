@@ -1,99 +1,89 @@
-Return-Path: <stable+bounces-109452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B1ABA15E0C
-	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 17:27:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15C7AA15E1B
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 17:36:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAAE318865FA
-	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 16:27:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 863D31886ACD
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 16:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B77519D890;
-	Sat, 18 Jan 2025 16:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E85199E8B;
+	Sat, 18 Jan 2025 16:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="QA/hRL0x";
-	dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="k9A26UUi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hN0wx/io"
 X-Original-To: stable@vger.kernel.org
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880C9189BAC;
-	Sat, 18 Jan 2025 16:27:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.80
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737217663; cv=pass; b=YalOPCWjCNxvN+E+q4xmUzml+m8q+RvyXXtOd96/0hak1aSm2vfDiz9I9KmcH+xbtbWxOsICpNdGgH13gOuBNwSwPhTQSkhoAxorX7KBfnPwnH/tAuX4a93BjOatEIt0Av1opQR4lF6LfQ/MegHOiUc/gocjVQ5uyotUwng75To=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737217663; c=relaxed/simple;
-	bh=Brw7OfMfjvuPokfGFOcEpB6SUYrTLdtJW6Lejz1fCwo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SaSVkX/AW7FR3NPvumplfOvDfvocyfa/vRbDarmevNI8KxKe60dIRpwHuhse2y8N9HnI4vvEtXvj+QZBNhClL++5li9QN/AUj8bmYQpMZeRzoOlsNVUejd69qAJ382DOO6C2UKqYCmixoygL/Giqo3H1w989b9VuU53KViSwnFs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=QA/hRL0x; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=k9A26UUi; arc=pass smtp.client-ip=85.215.255.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goldelico.com
-ARC-Seal: i=1; a=rsa-sha256; t=1737217633; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=ccIaQsb3BHfYH+KCA7utCbjOM3Tz98o/a/P5ePWbPTKUYJnxL/efz0uCaBCQzIkZcC
-    5hAWc+vo6yviwi152FdtCkT8eGWavv8ASJKdJWuHH7BZ1C6PJ6uHg3y4ocfmHttLMjR7
-    k24AC6OYSJFVEkYCDD8ne4JC7MX/NWjGFMn9UMDHw8IYLI+hwb+L5oZMpghleInAnlqN
-    AcybBQBV9uanqJP5Ef2Zu9hKh0rAbebNt2e+Z5XEiO7ZFjlsqQ+7VuzFivWFJaR+t/UM
-    JkBCkQFloIEXmvBQScW6+vn0HXwxl3CrQ+HgzDU+6IZ044YU09Ecn1Jy3Uvgj79gyVXI
-    zZuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1737217633;
-    s=strato-dkim-0002; d=strato.com;
-    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=ALNYgGIU0bOwCAXhii7PEb5qykvoBzksseibl7WN1AY=;
-    b=DiOnJ8mn6k8KA2AUCGuUZU3aaylENHT8KyyYlBc/rXcZZXfOmgAyFyl1Xd0WcswOCn
-    GSD9/SyMM3l6c94FMZXtgGvJzi1iknzPHoEiZxF/Xccjv/fuRC7Crb+wo1SFqm1zcnSa
-    XPH3y/wxjDVPkB3TE4DFkQMPm/BUQuaC+Wjit6XeGSMwWZZcX36Qyy0PL8tDvnoWbTH8
-    4bfAeR1MrxXW8B/GJmeYNYtXnz88F7Vh0wUE1astlUDudlSoP3QSc/j2RNV3MvJQ5EP0
-    8R0jXjFMHC0QX8GsFUEAmtKAlCy5mmj0133vT2WmN3/antRuuLGI1hWoSFIHWQQNnjEW
-    ecTw==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1737217633;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=ALNYgGIU0bOwCAXhii7PEb5qykvoBzksseibl7WN1AY=;
-    b=QA/hRL0xixeYf6hjHOTBhoIk6Ly16r/wMLfl4jzweimY7G5JNl5x2uRkogpAX5XBlj
-    iN2f6JZOlxcqAPkxp5EgGrb3z4p/hQ4d/d0wHuyeOxaFPk3ItbF6HUPzgsAhhM+AIPYu
-    ovf7WGYDH9MtPmScLZSLn89Xg/2PDc9FEK6A8QbGkZjdl3ps5tMjju/tjedP+QFV47hx
-    4eEF2XdUWKtlp2kGL9VDhYw7l2GV5QuDrxSo0ENqlBethSe6r2iZMO8HagV2Mh4h5e8k
-    /50W4JpEGu8RjmwE8RrI/0DLdWt6kExLCaQh5vQFIr7Y/XV2JmOu3W7lgDsvIlOZfxZJ
-    2b0Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1737217633;
-    s=strato-dkim-0003; d=goldelico.com;
-    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=ALNYgGIU0bOwCAXhii7PEb5qykvoBzksseibl7WN1AY=;
-    b=k9A26UUi/ySHqXwC2NyrvY8uQRpI5NfZwBu7pZok74fhcY8ONDpbk+9YyyejutQTkR
-    PlWMiPfAOvBd2uhi87Bg==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o12DNOsPj0lFzL1yeTwZ"
-Received: from localhost.localdomain
-    by smtp.strato.de (RZmta 51.2.21 DYNA|AUTH)
-    with ESMTPSA id Qeb5b110IGRDRLm
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Sat, 18 Jan 2025 17:27:13 +0100 (CET)
-From: "H. Nikolaus Schaller" <hns@goldelico.com>
-To: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Ray Jui <rjui@broadcom.com>,
-	Scott Branden <sbranden@broadcom.com>
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	devicetree@vger.kernel.org,
-	linux-rpi-kernel@lists.infradead.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAF215CD78;
+	Sat, 18 Jan 2025 16:36:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737218181; cv=none; b=IAPhuhEG50BuyYvk2UqtHtpUEGpGW3bRnYEAexxzrvFP1DHZaSvm19ZChpkN2omYEuxXxnTCUwUJ7UHJasXX4umo9ndG9NlsCmIE/rbVmz2+O7bpRjFIzBAfWmPz75k4TCR890WG3R4VkKZrEHViHqWycRWnsP8R30nYjlcqWeY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737218181; c=relaxed/simple;
+	bh=eh1SfXx9U8ZBjcOmI+c31uIuIYkcVWt69AWwx4rbptc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NrqCUZEtiep+Su/K4mMUUoxMWm0EEVUa0QlC1FisHfCLVRGzgYTBge6jVmX8zGyjPI3o+96FhjFcdx+soU5YCe6DpmkQ1dAent80jXSHCLh6cms780hdhaOieWikF7mKu5vKmoSFwlaYYjAN4CHYvnBaG9AQOpKJVgZCq1jW0UM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hN0wx/io; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2ef748105deso4154684a91.1;
+        Sat, 18 Jan 2025 08:36:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737218179; x=1737822979; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lBcCkYZGqUKu3cSA3W2Zh/4n8iTPp48ifQZWMJrBSVA=;
+        b=hN0wx/ioW22sNvoxIq/NN0HJmP9fU/yToeh9+e+OdTAkXUtIeM5rABjTh+UV5djpQw
+         g1Xp9w5/OfD6DAJ+dnbDIJah7EbkvCwZqpxc107jcfE4YtzkAyh/X/BJ50JfUUhAbgfc
+         v2zfdrNUMYFzvH6HEoPhW6zJolk+J3gpOMwMRNz5rVTsChfYYWttcfap7TdmQAiQCDKo
+         /MxrlzBfujqw4ns4M2lQn86io7FoS8W1UOEhWs/y85IyDBTlKF1pXDgsmnWcRVcFPfmp
+         7wpKwH+UaajRDDlmivMnK6icpXS8CN/OkEubir0Cc0sEAe9UJwVhw3UCpK+G5BU7sofR
+         Rz9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737218179; x=1737822979;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lBcCkYZGqUKu3cSA3W2Zh/4n8iTPp48ifQZWMJrBSVA=;
+        b=be3T6zHXKzi54kTwZCf8SqWEuemRYkVd/1ctRoTwfioPE5ouLhZ6yq8arRMWT1MInB
+         7YYacsIKpmlmCn6Xxik1RApBKFj1LTtvRN0VxWSTMP1gxE9qJ+QTlFDtEJQnlMcewVys
+         JnD/SCjNA7SJsDYuISjuZ+yROQ7Rd5J66GuPCi751bvLiTKFW3OqVJtu+rrD+AYyGJvS
+         1ULo9AFxmFSmtoeHd4QGJU51RkxTVJHF+sJDWZH/H0Wmhl1tge0VcindEuOxg14n30JP
+         iURqZ0QHz4bKWkTpmUJI7d2IOX+8a5EzXub4+ZKnTgeffnp911JE/tjpCAr7nd/xQAds
+         MaAg==
+X-Forwarded-Encrypted: i=1; AJvYcCVS5/Jt8UYWAsztY3VEnyoZHZloYS3+iQd545fTI5GeMNrwYHQ0K37t4u9w/825QecI83FjxBFK@vger.kernel.org, AJvYcCX4EMroZG6XbjiZbPk1hE1LA0dq9xMfemgXe+JSzgN2pOdNz2Ey5f5t7cJe1FHL9k7G2s27qRw9phBdd8U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+24z+Yx9tLL1YV/4kLkLW/JaLqPi4Ga12rsWRbMWxJLkEHzgE
+	xjhgEGdARnX8Xbgb/1TXVb5IY1JTZcdyIkqSB1ylOt8j3LrJXFLQY4QK4EQx
+X-Gm-Gg: ASbGnculGn4KUGcT9Ruth/uYqOn1FPFWy87FufGcc01Y5nNGHL+gRFXWPSgqLJxbuRA
+	W33WQ2OP1hrZWJrIlKhcvXWlSjiKKx21Gx1iTcEAPRS3qR6PPoYYQPQlLVPsShbZGqbO8ab43Rl
+	508ajPe6g2iKFHcsFfILdB9Gu8aGI/zy1VdZ8MfbMlTTh5YCKxjZLGbroxotxSgqIf+oe5BhW8z
+	w+snyUsw/vZsgPQhHOBJMQRYh++snmlmOVkhtmyjA2EEp+BBF00AY6rayyCbC2rvDpPkKk=
+X-Google-Smtp-Source: AGHT+IFIC6xQyN0czHlq14fUPCGSYmLyGoA8mjgv2tG6wO4ESEzTfyUD4RwRKSlW4dbm9htceT7Hgw==
+X-Received: by 2002:a17:90b:270c:b0:2ee:8031:cdbc with SMTP id 98e67ed59e1d1-2f782d2c9a1mr8501141a91.23.1737218179378;
+        Sat, 18 Jan 2025 08:36:19 -0800 (PST)
+Received: from nick-mbp.. ([59.188.211.160])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-2f72c2bae59sm8156962a91.30.2025.01.18.08.36.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Jan 2025 08:36:18 -0800 (PST)
+From: Nick Chan <towinchenmi@gmail.com>
+To: Hector Martin <marcan@marcan.st>,
+	Sven Peter <sven@svenpeter.dev>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>,
+	asahi@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	letux-kernel@openphoenux.org,
-	stable@vger.kernel.org,
-	"H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: [PATCH v2] Revert v6.2-rc1 and later "ARM: dts: bcm2835-rpi: Use firmware clocks for display"
-Date: Sat, 18 Jan 2025 17:27:07 +0100
-Message-ID: <cb9e10dfb4f50207e33ddac16794ee6b806744da.1737217627.git.hns@goldelico.com>
-X-Mailer: git-send-email 2.47.0
+	linux-kernel@vger.kernel.org
+Cc: Nick Chan <towinchenmi@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] irqchip/apple-aic: Only handle PMC interrupt as FIQ when configured to fire FIQ
+Date: Sun, 19 Jan 2025 00:31:42 +0800
+Message-ID: <20250118163554.16733-1-towinchenmi@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -101,62 +91,47 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="us-ascii"
 
-This reverts commit 27ab05e1b7e5c5ec9b4f658e1b2464c0908298a6.
+The CPU PMU in Apple SoCs can be configured to fire its interrupt in one
+of several ways, and since Apple A11 one of the method is FIQ. Only handle
+the PMC interrupt as a FIQ when the CPU PMU has been configured to fire
+FIQs.
 
-I tried to upgrade a RasPi 3B+ with Waveshare 7inch HDMI LCD
-from 6.1.y to 6.6.y but found that the display is broken with
-this log message:
-
-[   17.776315] vc4-drm soc:gpu: bound 3f400000.hvs (ops vc4_drm_unregister [vc4])
-[   17.784034] platform 3f806000.vec: deferred probe pending
-
-Some tests revealed that while 6.1.y works, 6.2-rc1 is already broken but all
-newer kernels as well. And a bisect did lead me to this patch.
-
-I could repair several versions up to 6.13-rc7 by doing
-this revert. Newer kernels have just to take care of
-
-commit f702475b839c ("ARM: dts: bcm2835-rpi: Move duplicate firmware-clocks to bcm2835-rpi.dtsi")
-
-but that is straightforward.
-
-Fixes: 27ab05e1b7e5 ("ARM: dts: bcm2835-rpi: Use firmware clocks for display")
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+Cc: stable@vger.kernel.org
+Fixes: c7708816c944 ("irqchip/apple-aic: Wire PMU interrupts")
+Signed-off-by: Nick Chan <towinchenmi@gmail.com>
 ---
- arch/arm/boot/dts/bcm2835-rpi-common.dtsi | 17 -----------------
- 1 file changed, 17 deletions(-)
 
-diff --git a/arch/arm/boot/dts/bcm2835-rpi-common.dtsi b/arch/arm/boot/dts/bcm2835-rpi-common.dtsi
-index 4e7b4a592da7c..8a55b6cded592 100644
---- a/arch/arm/boot/dts/bcm2835-rpi-common.dtsi
-+++ b/arch/arm/boot/dts/bcm2835-rpi-common.dtsi
-@@ -7,23 +7,6 @@
+Changes in v2:
+Fix the conditional to have the intented behavior of evaluating to true
+only when both PMCR0_IMODE is PMCR0_IMODE_FIQ and PMCR0_IACT is set by
+reverting the conditional to how it is before c7708816c944.
+
+Link to v1: https://lore.kernel.org/asahi/20250117170227.45243-1-towinchenmi@gmail.com/T
+
+- Nick Chan
+
+
+ drivers/irqchip/irq-apple-aic.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/irqchip/irq-apple-aic.c b/drivers/irqchip/irq-apple-aic.c
+index da5250f0155c..2b1684c60e3c 100644
+--- a/drivers/irqchip/irq-apple-aic.c
++++ b/drivers/irqchip/irq-apple-aic.c
+@@ -577,7 +577,8 @@ static void __exception_irq_entry aic_handle_fiq(struct pt_regs *regs)
+ 						  AIC_FIQ_HWIRQ(AIC_TMR_EL02_VIRT));
+ 	}
  
- #include <dt-bindings/power/raspberrypi-power.h>
- 
--&firmware {
--	firmware_clocks: clocks {
--		compatible = "raspberrypi,firmware-clocks";
--		#clock-cells = <1>;
--	};
--};
--
--&hdmi {
--	clocks = <&firmware_clocks 9>,
--		 <&firmware_clocks 13>;
--	clock-names = "pixel", "hdmi";
--};
--
- &v3d {
- 	power-domains = <&power RPI_POWER_DOMAIN_V3D>;
- };
--
--&vec {
--	clocks = <&firmware_clocks 15>;
--};
+-	if (read_sysreg_s(SYS_IMP_APL_PMCR0_EL1) & PMCR0_IACT) {
++	if ((read_sysreg_s(SYS_IMP_APL_PMCR0_EL1) & (PMCR0_IMODE | PMCR0_IACT)) ==
++			(FIELD_PREP(PMCR0_IMODE, PMCR0_IMODE_FIQ) | PMCR0_IACT)) {
+ 		int irq;
+ 		if (cpumask_test_cpu(smp_processor_id(),
+ 				     &aic_irqc->fiq_aff[AIC_CPU_PMU_P]->aff))
+
+base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
 -- 
-2.47.0
+2.48.1
 
 
