@@ -1,190 +1,139 @@
-Return-Path: <stable+bounces-109415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED521A159C9
-	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 00:06:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D084DA15A3C
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 01:10:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48FFF188A28C
-	for <lists+stable@lfdr.de>; Fri, 17 Jan 2025 23:06:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58E5B18877AB
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 00:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43211D932F;
-	Fri, 17 Jan 2025 23:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3FD64D;
+	Sat, 18 Jan 2025 00:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="z52x9VYb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TSnJFEnP"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2051.outbound.protection.outlook.com [40.107.236.51])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AC119CC27;
-	Fri, 17 Jan 2025 23:06:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737155170; cv=fail; b=dyBRgRxWeOqIPzUJwdPa1j56KW5BolsJIiduHGI06qIRtDufEXnJD1VtdZ4asork6WFmWGNL9xPVewCvAng63RqRsRZfXJrEBl6CzmwU7hCJMxdpM34AYlJSs3hc14MEtttfR3ONzWUmB2XSAki8B02NA2Q7kT+y2bBYCyqRwxE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737155170; c=relaxed/simple;
-	bh=OTR9h8QePVb5IZyKL8sdfIiNUaUsUbJbPVe+DTAgcSQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=meFN2ns5UiN2mer2hcpcYNg9zvGJVJmxPgItt3P96NGug5al+MyrktEa4vMvbjIOl502MGwotU1PjAbO/EPj92sdorpTWEItDws339n74XhVMf5fcd0JueYAGgD61spsQwjKMXVvBSmNC9HFNJjw7yhVYe6JVbIEj14MxXFf39k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=z52x9VYb; arc=fail smtp.client-ip=40.107.236.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WDTzUlS5Zf6F+7M0zf8oMT1bn2sffstDn92HwjJmY9SkMkLEh6yrxuO3Sym056qUH989tAMK5UYTLDgj1aurQkRV0iyWvyZe0p/xMZMqFy0vzyRDaezMwO0+SL/s9eUvUMD+qZZAWnvp7VSWtGk5NbDJWhhXMn54084KYND3ZLaDF1cpq1FY38s0Dq5GbOvgTurSbLBdzhJKvUAA8kgd9gdNF1N2398emLHM36es2k+X3C2P9er6o2ozFG49mgdCyEtf1+gssXi+hxdRAEjx+Xbfm5+oAaXP8dIIrhjA8ftK0zyFiaymDGhjrmg8IXwMGQF+aTeFNSk+z+vDCmwOKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6ySIk3pBIjSKn4YITxkTGquDYfdPwbdRvOGnaUY9hSI=;
- b=kZELUwuG0fAIBCAQS2J+Knd4ZHmsnWttGjBXcT3WmeuhSjHP78VQZV1JEphHQlbAwveqcE1pQmsM2Lh0IhTi5iv8LYfFfty5wFlgRKcStP783fkbP4GktSbx7XGC4wXEE2GAa1wyjrMAKKJ5mW1jm9Iz/f1S/1UgmljUcurcZOKirm89pwQdO7tDUzEBdl7Gz6db2QKDyPrew32rLQBsAtsKclNYOaUtjVtVryJUC6wKFxXO6Xn9Ych2v+2/PuL2vIKuYdrUwR6gLVQavrudlcebuykevG8dsYMlreNcYxU/RxGty8GlYxZuX4w0Cj1vgTX08N3EmgEkhx6u4znTIw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6ySIk3pBIjSKn4YITxkTGquDYfdPwbdRvOGnaUY9hSI=;
- b=z52x9VYbxeaC7r8RoOFmPtZyBZ0GWq8iJgUTTN9CqYqR4MeFbwZ1TbIG4TznKmgzrUUFdp7+89mMrXp1spWgfo3rhhEi8O/4abhRzGcGhqPzlbsfy+HHgMi7TE/LR5pxNRNDxRtFA2S9mUKwBIYBTTUBqN5hvCFS1XgIFrmsRBw=
-Received: from PH8PR02CA0027.namprd02.prod.outlook.com (2603:10b6:510:2da::18)
- by SJ2PR12MB9239.namprd12.prod.outlook.com (2603:10b6:a03:55e::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.14; Fri, 17 Jan
- 2025 23:06:02 +0000
-Received: from SJ1PEPF000023D5.namprd21.prod.outlook.com
- (2603:10b6:510:2da:cafe::3) by PH8PR02CA0027.outlook.office365.com
- (2603:10b6:510:2da::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.16 via Frontend Transport; Fri,
- 17 Jan 2025 23:06:01 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SJ1PEPF000023D5.mail.protection.outlook.com (10.167.244.70) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8377.0 via Frontend Transport; Fri, 17 Jan 2025 23:06:01 +0000
-Received: from tlendack-t1.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 17 Jan
- 2025 17:06:00 -0600
-From: Tom Lendacky <thomas.lendacky@amd.com>
-To: <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Herbert Xu <herbert@gondor.apana.org.au>, David Miller
-	<davem@davemloft.net>, John Allen <john.allen@amd.com>,
-	<stable@vger.kernel.org>
-Subject: [PATCH] crypto: ccp - Fix check for the primary ASP device
-Date: Fri, 17 Jan 2025 17:05:47 -0600
-Message-ID: <9cb3a054c95327fe26de41419dd23c914f141614.1737155147.git.thomas.lendacky@amd.com>
-X-Mailer: git-send-email 2.46.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B702195;
+	Sat, 18 Jan 2025 00:09:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737158998; cv=none; b=oNztOj9HuTm76sbNSc4Ud++KAvg/fktp7F6eC3kOhnwintDWWqrXT/f39Zf6KrZY8Zy4jCMPv3en4TfJCiUTDJNbKDNQCpbn7QGvhX7rSi8g5jqoPcbkkPUT4/JxnwmTbw1YPRc+0JD+Z4vo6IpfTBvziOBdvaH9MvldfhUyVXw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737158998; c=relaxed/simple;
+	bh=fWb6fS0xl2IfrGBjsnDoAvlLsvH6sWapTEfnkNR0tH0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dlGJwLdsNsmlbUahLZNPhZIJOr1eSlhrvrG3siPC8lHQVhjRVQuXJuYhfd23BB2eRI7nHZiX0VW0AdEfSYp1jZsfRsN3i2IcjUAK5r2FPNukfzfFox4Dym15IaQXBP4CvOCMia6fnKUSnO1jld96D+639d1m1taF+Sxku3xqHvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TSnJFEnP; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737158996; x=1768694996;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fWb6fS0xl2IfrGBjsnDoAvlLsvH6sWapTEfnkNR0tH0=;
+  b=TSnJFEnPHbH6QIqixyCtKCeHu7f7PdO5a4yqG9XxPyFSP5HiBf3sxF+U
+   ul2ZwGFDhc6XNhB0+Pgfg2kXXgI1YiL5Pz7COvKLeiO6D5LIFmnhz8Z6E
+   zTuAGsFbrbvi7uwvQF0B6oPOyHi/ik4LuccxhVY2cOcc9K33krmIsLsqW
+   x1d33bumSzVSDAtLpCJB0OXWTXPUb2B1jECy0hGrVGY2Qsae5ZZKyYl3G
+   ct9NahIkL+n9a9GLOPuWM6nlZtrMfJv1y7LBUNUqFSEMNk/AKa05oxM1z
+   48tKWO9leltvX8o0oIvpcMdIpB0kxd7PXhAQeimAc88W14lnXTxspI58g
+   A==;
+X-CSE-ConnectionGUID: MMoOPOROQ6m27SAsEyE1zQ==
+X-CSE-MsgGUID: c/T39tgKS0iy5KaeWYbm2Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11318"; a="36882007"
+X-IronPort-AV: E=Sophos;i="6.13,213,1732608000"; 
+   d="scan'208";a="36882007"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2025 16:09:55 -0800
+X-CSE-ConnectionGUID: I/M0CykhTxm0sKMYmbolmw==
+X-CSE-MsgGUID: OZWBn/3/Q+GbJFbL/Xp87g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,213,1732608000"; 
+   d="scan'208";a="105977308"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 17 Jan 2025 16:09:53 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tYwPO-000Ts3-28;
+	Sat, 18 Jan 2025 00:09:50 +0000
+Date: Sat, 18 Jan 2025 08:09:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: Qiu-ji Chen <chenqiuji666@gmail.com>, nipun.gupta@amd.com,
+	nikhil.agarwal@amd.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-kernel@vger.kernel.org, baijiaju1990@gmail.com,
+	greg@kroah.com, Qiu-ji Chen <chenqiuji666@gmail.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] cdx: Fix possible UAF error in driver_override_show()
+Message-ID: <202501180719.sDmtGnhD-lkp@intel.com>
+References: <20250115090449.102060-1-chenqiuji666@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000023D5:EE_|SJ2PR12MB9239:EE_
-X-MS-Office365-Filtering-Correlation-Id: ecdd0a57-e4fd-4a76-58b0-08dd374b831a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|36860700013|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?qxgldtWcx8aFQP2h3rVXh1ocb6e+F++yno9jD6WTPqvyDQBjQ9gue9vJKcxv?=
- =?us-ascii?Q?rx6kVFpymyfCaKV3n/MDToRhEr+t01FwJUlEJfYtej3WnPsvFTsbwgYTvLeO?=
- =?us-ascii?Q?goHNTRvIm/itsEwt6HxYvX3QmdVbLuMKmSr4R+TeA8udhRPwfPTvZt5IdvYT?=
- =?us-ascii?Q?bbUuTR3xzBEU2hkfFrSCy/N9lcmGFSf6OOMqsT0qOWtsUVVZBEoDJ9VSyIGX?=
- =?us-ascii?Q?PY5LkAktZJgi6+UOo/lMrHmi2JtOTnw6lV/wnF8pOthHvqS7XuXqfPxCPaUj?=
- =?us-ascii?Q?DNiJuMNUQ5hfQafgS3//oiizgl/vom1PHfPbESZK7vPtUeuivClbahZsar7d?=
- =?us-ascii?Q?xZd0onEWWBIrVBO2X4qNxcqVPxR4fK1nnGnfZRuhHyKXO3XAA7gocRPDR6s9?=
- =?us-ascii?Q?nQX2hTvArGEOjeqTuRZIij5KS/TvWFFSbNd2vSNMc9vOFC4T2X9RNS98GLA7?=
- =?us-ascii?Q?S/r0Dbf65FjlF5xm72wnxYXy/OdKgnvyK/NaGSYDMeLvPNZvaNsxq1/W75X0?=
- =?us-ascii?Q?0nKlluDnTnuTu+yiAKOYJ3AztuctB+ZJk8mrpxy6iGbN2i3jyTnkGsUYqUDn?=
- =?us-ascii?Q?zGe6kS1FembvyLwvSVDIVtOfQUassa+x2a8ScjNwHRqfuE7gW+jaRPZREmIP?=
- =?us-ascii?Q?0vUk5r5Y3vERgFdQZD2cRZ9QSxUQHtQJ84ZMqQ9vTREzw02ZHsqfemmA/YJk?=
- =?us-ascii?Q?6Rve66vVlzFVXWxKZYjG5oU1y/6yllxTrSrM1Pdq1gQxw45YbyAD8Cuk24Aj?=
- =?us-ascii?Q?HzT0Q0n8dZT5u9SKd9nRhjKySKll9bAbm/MfDhp3xG6wfGLOlmhQuPiIdwKa?=
- =?us-ascii?Q?w2AKNHzJPglOKSJD4lE29OFIN/Te0Zy8APwm63KRxTAfeGxyN5PJfxGrAABm?=
- =?us-ascii?Q?EPwG5Yna84w1MauU4CfhaZ6EUYnBCZStgulRAXK/M0QAVWhFcyi5i3XWbjq7?=
- =?us-ascii?Q?jfA2k/r/32hKMprld4xgK05aRpoBu9BXRBvzDDlGC9Ve9f7uxGC+TAxL8E27?=
- =?us-ascii?Q?hz7EK2FEf/qEApslKDJjZIdlHWQhBvyR+pQuufuS3SVzsv/9a8d8vPV7NBMX?=
- =?us-ascii?Q?NUsr5nlr7X8woz1lkf7yoCxskPMt80lSXV29B5W1L7cc/xKZW1jlJuIxzMBI?=
- =?us-ascii?Q?BqCT1HmqSX01zcm4c6DEHiJj5gETGstMWgY+fkoz+nBO70YNZo42JJa+kvVx?=
- =?us-ascii?Q?Sa8V8yNtQ8DxL3ce3k2E1OvgwtWw1wP6M7eZ96iN6TnIx5ALepHc8D4Ui7Ql?=
- =?us-ascii?Q?2SiuFmMUCkCVKzns+4JBh23FpUPEt1sRiIQG3Vgx/aPVBAHADXZMO7zd6qMF?=
- =?us-ascii?Q?TcJgebhpJx9bF0QNWi29gZEti5zfzWyaCxqDyPRqQrQBG6FxeBdclXBoAtyP?=
- =?us-ascii?Q?DN1bYu61OU6hU92Y07G/urIvRGsl3xnqrN6dE2gELbGVeA9mX5W3DDfRFqsL?=
- =?us-ascii?Q?qIkdncmxBWZxBYuFY5oEfTz6y08IWgjZFbLgSbQMjbE4i7BPP4d/Oaj2EDhA?=
- =?us-ascii?Q?sQ8V6YKekFVlvec=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2025 23:06:01.6532
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ecdd0a57-e4fd-4a76-58b0-08dd374b831a
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF000023D5.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9239
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250115090449.102060-1-chenqiuji666@gmail.com>
 
-Currently, the ASP primary device check does not have support for PCI
-domains, and, as a result, when the system is configured with PCI domains
-(PCI segments) the wrong device can be selected as primary. This results
-in commands submitted to the device timing out and failing. The device
-check also relies on specific device and function assignments that may
-not hold in the future.
+Hi Qiu-ji,
 
-Fix the primary ASP device check to include support for PCI domains and
-to perform proper checking of the Bus/Device/Function positions.
+kernel test robot noticed the following build warnings:
 
-Fixes: 2a6170dfe755 ("crypto: ccp: Add Platform Security Processor (PSP) device support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
----
- drivers/crypto/ccp/sp-pci.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+[auto build test WARNING on linus/master]
+[also build test WARNING on v6.13-rc7 next-20250117]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/drivers/crypto/ccp/sp-pci.c b/drivers/crypto/ccp/sp-pci.c
-index 248d98fd8c48..157f9a9ed636 100644
---- a/drivers/crypto/ccp/sp-pci.c
-+++ b/drivers/crypto/ccp/sp-pci.c
-@@ -189,14 +189,17 @@ static bool sp_pci_is_master(struct sp_device *sp)
- 	pdev_new = to_pci_dev(dev_new);
- 	pdev_cur = to_pci_dev(dev_cur);
- 
--	if (pdev_new->bus->number < pdev_cur->bus->number)
--		return true;
-+	if (pci_domain_nr(pdev_new->bus) != pci_domain_nr(pdev_cur->bus))
-+		return pci_domain_nr(pdev_new->bus) < pci_domain_nr(pdev_cur->bus);
- 
--	if (PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn))
--		return true;
-+	if (pdev_new->bus->number != pdev_cur->bus->number)
-+		return pdev_new->bus->number < pdev_cur->bus->number;
- 
--	if (PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn))
--		return true;
-+	if (PCI_SLOT(pdev_new->devfn) != PCI_SLOT(pdev_cur->devfn))
-+		return PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn);
-+
-+	if (PCI_FUNC(pdev_new->devfn) != PCI_FUNC(pdev_cur->devfn))
-+		return PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn);
- 
- 	return false;
- }
+url:    https://github.com/intel-lab-lkp/linux/commits/Qiu-ji-Chen/cdx-Fix-possible-UAF-error-in-driver_override_show/20250115-170808
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20250115090449.102060-1-chenqiuji666%40gmail.com
+patch subject: [PATCH v3] cdx: Fix possible UAF error in driver_override_show()
+config: arm64-randconfig-004-20250116 (https://download.01.org/0day-ci/archive/20250118/202501180719.sDmtGnhD-lkp@intel.com/config)
+compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project f5cd181ffbb7cb61d582fe130d46580d5969d47a)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250118/202501180719.sDmtGnhD-lkp@intel.com/reproduce)
 
-base-commit: cd26cd65476711e2c69e0a049c0eeef4b743f5ac
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501180719.sDmtGnhD-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/cdx/cdx.c:473:10: warning: variable 'len' set but not used [-Wunused-but-set-variable]
+     473 |         ssize_t len;
+         |                 ^
+>> drivers/cdx/cdx.c:478:1: warning: non-void function does not return a value [-Wreturn-type]
+     478 | }
+         | ^
+   2 warnings generated.
+
+
+vim +478 drivers/cdx/cdx.c
+
+48a6c7bced2a78 Nipun Gupta 2023-03-13  468  
+48a6c7bced2a78 Nipun Gupta 2023-03-13  469  static ssize_t driver_override_show(struct device *dev,
+48a6c7bced2a78 Nipun Gupta 2023-03-13  470  				    struct device_attribute *attr, char *buf)
+48a6c7bced2a78 Nipun Gupta 2023-03-13  471  {
+48a6c7bced2a78 Nipun Gupta 2023-03-13  472  	struct cdx_device *cdx_dev = to_cdx_device(dev);
+4228bb0224f83f Qiu-ji Chen 2025-01-15  473  	ssize_t len;
+48a6c7bced2a78 Nipun Gupta 2023-03-13  474  
+4228bb0224f83f Qiu-ji Chen 2025-01-15  475  	device_lock(dev);
+4228bb0224f83f Qiu-ji Chen 2025-01-15  476  	len = sysfs_emit(buf, "%s\n", cdx_dev->driver_override);
+4228bb0224f83f Qiu-ji Chen 2025-01-15  477  	device_unlock(dev);
+48a6c7bced2a78 Nipun Gupta 2023-03-13 @478  }
+48a6c7bced2a78 Nipun Gupta 2023-03-13  479  static DEVICE_ATTR_RW(driver_override);
+48a6c7bced2a78 Nipun Gupta 2023-03-13  480  
+
 -- 
-2.46.2
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
