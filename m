@@ -1,211 +1,239 @@
-Return-Path: <stable+bounces-109427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51870A15B97
-	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 07:02:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09EF4A15B9A
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 07:10:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAF81188A9C7
-	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 06:02:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47FBE3A93FE
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 06:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392A01547CC;
-	Sat, 18 Jan 2025 06:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1860814A09A;
+	Sat, 18 Jan 2025 06:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="tQEKRLb4"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="uHGlGhW+"
 X-Original-To: stable@vger.kernel.org
-Received: from APC01-PSA-obe.outbound.protection.outlook.com (mail-psaapc01olkn2052.outbound.protection.outlook.com [40.92.52.52])
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F8814A088;
-	Sat, 18 Jan 2025 06:02:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.52.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737180143; cv=fail; b=nQTev1dO0ThQ4xu2OveUjiWW+c6Oq3G4SH5clK6nzQLCI3Fku7FmLs8vhuSuepcLQaEc7GF8MFa2kxHTYtitHSoKNXF7H5rSWvJG9CB43A3brxL3BWntvOEz69/UeVIXJDvqdPEJQYPNMzYneBf/n2HOUxHoCIZJ21yt02mPh/I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737180143; c=relaxed/simple;
-	bh=G9I6TFVa5+gXTH0GKzp3D8paJf9STulDA140IlynWEE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=iSn8J0vXeNgALB8lEQNCIP/HX6Aj2Frhr1BqGXrovt0Yk36MU6GucZ3unig6hdUcOBh4FKAls5niNr8kc7/mT3Svd3Ee1zLkNX8dEG8dp7Va7McEPqglL/0Dtp4PEME6p4ZlUwYdaXZmoV93YnIaGIfzEZ/H//Zxb0KO9fAjq6s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=tQEKRLb4; arc=fail smtp.client-ip=40.92.52.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KPTTyEp5ffYL3qrOK10GkXkWdBpUUS1kZL9zDMIkTKfKCYUKzX4nqiB4SvZ8Bs9GKEmpRNCCmcvHYA+F/ywmHDfAbO8LNYCfNL734sA4oMEOnVwOf9b/87r1fLbqu1hPx7dj0sgyWavZdkS60GyAo1AsLySzE1L4TFsB+1Qk8qomTcDvqrQfFjzda1YI+oWyRgRz2hW92YmHcI1smdZ1bj8iNgSQoyt2sixHATCOdwFwMMFd2Of2Wde7V8vLTfDkKT8C2t2ugZ2woWeOfyCP08aENTKMcB+LEqVTbc6fgLw/AtHswsNqGSppywRBDjEFUQxD//fBehAAbLbSRkzsJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZgAXADvKKQ10frr8wTTSa5doV3Hip97igbFSxMiwKgQ=;
- b=cHSCh2P/5ILq7TnMpuWcizTp+4S21jS72pS5bl/9XhljXy1AZRNrr34koUNL+PJ+IZD55cFZHJeiIaA2EgYKFyfWdA3djhty9shebnR91/GjvU8C8ZQbNSyLyNUdhEeCAyo3x9hpMpuY99cOdJrT7blWxjFNgb17bDdniH3H0KGiKRS8MeFLeFBxlAXtap0l7a/Egk7/A5oq9g97AA5Z4cdb070SK23B54qkPIWrWco4cxN1kClNzdkDH8h434MTOd3v/FcyUUQjVzEpWMm9Ee2NPNGsfQO3kkR46+bK1WPa4naFcvvmKvKV5Hc9fYhiQFGGJ1peUstUkZc5kJcwGg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZgAXADvKKQ10frr8wTTSa5doV3Hip97igbFSxMiwKgQ=;
- b=tQEKRLb4HOAnx6mfctjpLGmSjmfZSoPDwHgCYJqudv6da7nRfdcGras2kjKoQC1GohuXZmr4psqm0Q7sPQ6NykQjvZLFV9SEEbQb2jrneIEntaT286q4DvgpF2mDUIJ7IqTM2WJtMQaBn/VBNVKVWrKWEgbvSR6Zhaag8eQKLfvT3tjnPMBOnKChGs65iIx75Ae9PJYhKZrUBPx9e3VXmOcAAP5//A6IF12NCRY7aq13SIGlO3euGIm36nr5GEesd7tgED4IQK6wLGVvhapkAYLQoKf3T1L1OR4aWOLl8E136eVsNqBjpk/CgHNzxIvjy3zkmBLJ5Tng97sbh7xHYw==
-Received: from TYZPR03MB8801.apcprd03.prod.outlook.com (2603:1096:405:a1::8)
- by SEYPR03MB7684.apcprd03.prod.outlook.com (2603:1096:101:142::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.13; Sat, 18 Jan
- 2025 06:02:17 +0000
-Received: from TYZPR03MB8801.apcprd03.prod.outlook.com
- ([fe80::cb5d:6807:7a00:5006]) by TYZPR03MB8801.apcprd03.prod.outlook.com
- ([fe80::cb5d:6807:7a00:5006%6]) with mapi id 15.20.8356.014; Sat, 18 Jan 2025
- 06:02:16 +0000
-Message-ID:
- <TYZPR03MB8801069F4F0FA06AB346C69ED1E52@TYZPR03MB8801.apcprd03.prod.outlook.com>
-Date: Sat, 18 Jan 2025 14:02:15 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/fred: Optimize the FRED entry by prioritizing
- high-probability event dispatching
-To: "H. Peter Anvin" <hpa@zytor.com>,
- Ethan Zhao <haifeng.zhao@linux.intel.com>, Xin Li <xin@zytor.com>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc: tglx@linutronix.de, dave.hansen@linux.intel.com, x86@kernel.org,
- andrew.cooper3@citrix.com, mingo@redhat.com, bp@alien8.de
-References: <20250116065145.2747960-1-haifeng.zhao@linux.intel.com>
- <417271c4-0297-41da-a39b-5d5b28dd73f9@zytor.com>
- <TYZPR03MB8801E2BF68A08887A238A32CD11A2@TYZPR03MB8801.apcprd03.prod.outlook.com>
- <05b13e99-c7e5-4db7-90bd-a89a91f4e327@zytor.com>
- <TYZPR03MB88013A5D71079FF9E6776E49D11B2@TYZPR03MB8801.apcprd03.prod.outlook.com>
- <d90975a0-6b01-4a2e-92c2-2af2326e1299@zytor.com>
- <56b92130-7082-422c-952c-9834ebdb7268@linux.intel.com>
- <4d485294-959b-42a6-a847-513e8e3d0070@zytor.com>
- <33b89995-b638-4a6b-a75f-8278562237c4@linux.intel.com>
- <c111ecfe-9055-46f3-8bd0-808a4dc039dd@zytor.com>
- <TYZPR03MB880148D071B32806DBB1ACFFD1E52@TYZPR03MB8801.apcprd03.prod.outlook.com>
- <C3BA43FA-06BA-416A-B8C2-0E56F2638D80@zytor.com>
- <TYZPR03MB88015FA45675DD73D8570834D1E52@TYZPR03MB8801.apcprd03.prod.outlook.com>
- <228DA62B-BB59-4DDD-8658-67862366C1A2@zytor.com>
-Content-Language: en-US
-From: Ethan Zhao <etzhao@outlook.com>
-In-Reply-To: <228DA62B-BB59-4DDD-8658-67862366C1A2@zytor.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SG2PR01CA0126.apcprd01.prod.exchangelabs.com
- (2603:1096:4:40::30) To TYZPR03MB8801.apcprd03.prod.outlook.com
- (2603:1096:405:a1::8)
-X-Microsoft-Original-Message-ID:
- <9b2ea080-7fe3-4e74-9994-c789fabf517a@outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AFF13B2A9
+	for <stable@vger.kernel.org>; Sat, 18 Jan 2025 06:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737180620; cv=none; b=fYgaXRwxlieeQVd4Hz79wIjKK/iCtruqt9g0R/Iw3z3zU6A3cXDZhfdN22LNiUxTwyYMQ+WGLHaVdqHIErF/VlLx74lgMd+kVzFI66CH1c9GdsgtSkxKIYBzJyekds1QQW3N1bHH/7J3mcsKelB7lka6kET+B6nMyLNHSJNXR8E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737180620; c=relaxed/simple;
+	bh=qvp+vj9B9b/5QOQJQV8LzHBpf2GzxI5mxi+u+Q2cmDM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=hS9jH68kmZhCgPB06bsMe2FjC2jnZN2J/FW6a5TvBSl4aqid2g4XGuMEZleFti8LTVBu1HadbHFGMSVhFy+49bfu2fgxPNQrkZujjfF3yqotfWwfxKCpwsNBaISQl5463j3EqQMdOQrCZtnL9ragaUD/rfSsb7bISeXqfm3p3S0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=uHGlGhW+; arc=none smtp.client-ip=203.254.224.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20250118061015epoutp0112c62fab74594a3f3205ce3f7c2e08ff~btJDonNgv0411704117epoutp01-
+	for <stable@vger.kernel.org>; Sat, 18 Jan 2025 06:10:15 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20250118061015epoutp0112c62fab74594a3f3205ce3f7c2e08ff~btJDonNgv0411704117epoutp01-
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1737180615;
+	bh=SFjx4bqj1nep3JVl84W3D1/cwhpIa9Kam0/A9tc2sww=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=uHGlGhW+ZAoHZDa451qZCBj5QbJUlfGt0cqKKJXfRl4eo6uTLf8AKIWKfx5CAXQ2A
+	 DoHzxue2VIvLegnSsm+IeZYwv6jItVPSjUp+1sew760VavkuhZL3q87K8QM1HwTcAB
+	 CKPM9f0vTd/NP2nDmLn2inBi4Q9+rUAYDxT3W2as=
+Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTP id
+	20250118061014epcas5p44dfdcad7a27416b95c2772e494fba194~btJC5kONt3104431044epcas5p4q;
+	Sat, 18 Jan 2025 06:10:14 +0000 (GMT)
+Received: from epsmgec5p1new.samsung.com (unknown [182.195.38.178]) by
+	epsnrtp1.localdomain (Postfix) with ESMTP id 4YZmRT484yz4x9Ps; Sat, 18 Jan
+	2025 06:10:13 +0000 (GMT)
+Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
+	epsmgec5p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	51.82.19710.5C54B876; Sat, 18 Jan 2025 15:10:13 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+	20250118061013epcas5p3d0d1d702ddbc5a8add31e23241a86e9e~btJBINuVh2330723307epcas5p3D;
+	Sat, 18 Jan 2025 06:10:13 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+	epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+	20250118061013epsmtrp19d7e34ee68682476d9be4ca996925e8f~btJBHVvY41109711097epsmtrp1S;
+	Sat, 18 Jan 2025 06:10:13 +0000 (GMT)
+X-AuditID: b6c32a44-363dc70000004cfe-dc-678b45c5b650
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+	epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	5C.C0.18729.4C54B876; Sat, 18 Jan 2025 15:10:12 +0900 (KST)
+Received: from [107.122.5.126] (unknown [107.122.5.126]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250118061010epsmtip1147bac060724109b7678f9ad6eedcdf3~btI_j5YK01589915899epsmtip1Q;
+	Sat, 18 Jan 2025 06:10:10 +0000 (GMT)
+Message-ID: <52a0dd32-59be-4b41-859d-a8b4c8787792@samsung.com>
+Date: Sat, 18 Jan 2025 11:39:58 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYZPR03MB8801:EE_|SEYPR03MB7684:EE_
-X-MS-Office365-Filtering-Correlation-Id: 51be4e03-647f-47b0-d203-08dd3785a908
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|461199028|36102599003|8060799006|19110799003|5072599009|15080799006|6090799003|56899033|12091999003|440099028|3412199025;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QmQ2R0R6VGpRczdnSUZERW5IN0NibGpNL3RaYitzYnFHR2tFbEdJeEFVb1FL?=
- =?utf-8?B?YjkwK0RtdnByZXkrcXRWQ2VLV2ZXWUtmT0Y0QU9nSmhucTdlajNOUVduWmhw?=
- =?utf-8?B?M3RXVnJGM1ZIYXlNVlU1ckdlNVZ4NGNkRFV6dDR1WDNteDVVQzVuUUFvZkVr?=
- =?utf-8?B?c01wUnpvTjBUVzBHWmVQQnVkeHhBK3E3RWlaZVRWSHJ3TWFpc2JPOUYvNThM?=
- =?utf-8?B?WEU4bGFlVVk2TjhTUnVKSnZWa25OdEprbGpVNW4xLzlvZFJQRzJIZDgwRnpO?=
- =?utf-8?B?Q3Q0Q0wwc3c3bWtEOGczUXhJNXZDajZoTlE2U3NmU0tRQ2h1bU1oRVZFc2Vo?=
- =?utf-8?B?TXV5NWQ5cllnWlhmYVJzMzNIblV2anZtT1orYW5MbEhZUExZRlFrSjVXeEo1?=
- =?utf-8?B?ZVRtOGhsbXhsTW5OMlRsanB1YWhST1BGZWpqbHM3QU41NzVWUFg4ZXhpR3VG?=
- =?utf-8?B?clZRVTQxZW8ybVUvSnBvWldNbkZ3MS9Bam5wc0IwSERxQktUVnNmellZM3A1?=
- =?utf-8?B?VjdiZXJzeW1wZndJOVBRK2xLbXBPallwdXdRWXFBSFJXbzc4dUZTSnpVeXlK?=
- =?utf-8?B?Y3hjTDhCRDhJbHV3czMrU2lPQXNHbEpWR2J0WXJSVXU3T3hXV25YZGtkc3pk?=
- =?utf-8?B?cmVQNlBhUG5wSVMxZ0VBMExtMFRNMnc3ODFlcHkyUDdqbXV3RU9TaTFzdFFz?=
- =?utf-8?B?YmZjem1PaUhKNWVTek44VGxGV2tQZTVqdGp1Vnh2RDRQRnJTNmpxWGJ2NmRj?=
- =?utf-8?B?VThoRlE0R25pNHU1Y0xZdWhpcGtIU2E3aml6WkxvRXBSeGw3SGlJZDFPb2kz?=
- =?utf-8?B?QUZEWGZYYXUxRlhOWkVmNDZ6TlFsbGJJTEtrUEMwelQ4d0V3ZEkrajRsR3p3?=
- =?utf-8?B?bXorRzRENjQrSk15MXNGREY1cW1BWXlFUmkzWjAwOVRGUERMeUhuQUJKdGVO?=
- =?utf-8?B?YWxmUlU4V2xGbXJNYTkzUHlIdTBYNHY4RDZJU2REUy9vVXZhK05xTVpNTmRE?=
- =?utf-8?B?d0pGbmR3WGdKdzczaTN3bXloYTRlbnJ2U2Rxb2dGMHkwNlljazljYzJTRWtu?=
- =?utf-8?B?TDdxTTYzMEorWThtZngzemVNZFB6eVE0L0JhU1V6dnZrY04wUGNaODlZdGs5?=
- =?utf-8?B?MExQak5WWlJVK3FYSTc2eEZYbk84aEVxMGIySG5vZEw0eFlyemJ3VXJTQU0r?=
- =?utf-8?B?VVdYRkd1OThQa1ZmcXZhQXE4ak02S0NYZEtPbWZMS1ZRSSt5LzJ5b0QxWE9G?=
- =?utf-8?B?OTJMNE9JSzBWMzlsN3NuNHRPdVM3dGhMakl3U1MrRUNsRGdvbUdWT3ZPQThi?=
- =?utf-8?B?b0V4NzRKbGI1RTlnM0pYUXFZc0JzM2llWDNPQ0FRcU1abHJWOUVrM1o5bWNv?=
- =?utf-8?B?eTJMZDlaQzY2MEtMQ0UySzhnOW42Mis3NGdhTDhZNk9hNy8wZHdFRlZzVTk0?=
- =?utf-8?B?bzJWM3pKUVhkNkIzTlN1OTd2ZjQvN1pnQzI1bXBhNE5lVldqWFVxWWg0R290?=
- =?utf-8?B?WjZCQW40RzJnajE1cmYzOHlKK2V0cDh6R3BZdjRFZlhrSW9EckdqSFJEbGsw?=
- =?utf-8?B?Zit3UT09?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RWNSNmVYZGJjTHdxcno1MW1jbEJpR3IzOWdaK2l0K3Q4TkNNSW5UeHREQmo1?=
- =?utf-8?B?dWNUUENnUXE3cDl0ZDBlT3VyNXJ1SldzbThsUDZhYXg2YndqMGVKd0RGeFI1?=
- =?utf-8?B?SzBDMjBvT2w5VnNIa1FLV2RQcWkxWjNIWnEyUTNrUk1Qb2dzdHM4N2k5N1NZ?=
- =?utf-8?B?WjlNNnhQM2thNk04aUEzYnFDY3hOWHZkbktCQjJaNkJyQVFCczRYWmhqa2VI?=
- =?utf-8?B?dXR3dHp6b0NDSUI5U3NHS09vMFdqZGp4Q0ZJZldpWmhsdlhaU0JwQURseXQ0?=
- =?utf-8?B?d0dBY1lUSG03cGhmY2Y5c24wdnJ2eVgxOXpocUphcnFqN2hGV2t0NnJqRXU3?=
- =?utf-8?B?cEZHNnJuM0creFI3cFRqeFd4UVN4UHhZa3U4d0Raak1CV1F1aWNLbkRJODl6?=
- =?utf-8?B?Sit6eDNtbjRQQ2JGT3pYNjl5cEs3L3NFMVR0NEZ3OEpBTnJzVjVjcVNlVVd5?=
- =?utf-8?B?SE1EYTZ2WE52Tm5rT1A4UElsN0oyVmNMZG5tUmVrdkhiT2FxcTRTTWRSRG1N?=
- =?utf-8?B?RXVBWXdJclpNQ3NzajJNM3NReDU3VE1ySC9BclVYS2FUMm9xc0NlQXhwaGJy?=
- =?utf-8?B?Nk1ZZDk1VXpyclhjRVRianpiL1BUNFN3S3JlVGRUYURpeFQrWlcxQWRJWVBS?=
- =?utf-8?B?UEFKd2YxRHJhaHg0cllNM3VDdjh0VFk4dC9yd0FwRDgzN3k5N25RWDJXRjhI?=
- =?utf-8?B?QjB2dk9oaEt0NmxBQVlTd2JXdU5jdjhXWDZOK0ZKalFvb1lIMVJqMzlHS29w?=
- =?utf-8?B?NzZ4bGt5Rk55VlE2QnB6MnJwQUlwbk1XU2hzSG5MN005OE1HQ3hqb2ZmSTZD?=
- =?utf-8?B?ZG1XRG0rL3RCdTNwU09tTjMwdytPSktremdjSlhRSnNqRjhJQk0yTW5XZ3Q4?=
- =?utf-8?B?UGpXUEhCRk42N1FONVo5eFhQcldlNXMvRDZyZmU0QXUvWlpjVVlRRHRmb3F2?=
- =?utf-8?B?VUEvbVpUZnRkOTZIQzhGTlVIK2xlMlpuQ3pzTW1oZUtpL3NpSmpOd3J3emhp?=
- =?utf-8?B?bE91UTgyVVBTWFllR2lkdEJxNktZeS9WMWJ1S3YzMjV5cTh0djNjK2R6QVdM?=
- =?utf-8?B?RlVNQWxxVjBrckwvY21yaFBIRnl2NHYxUkhhYk5PeFZTQzR5WTF0V1JGbFk0?=
- =?utf-8?B?VHBuTWtJN3dzTHRBcVNEbVZtTHhhYUNjdWJDR2Y2RUlsVVlDZUFqbnVHcnkw?=
- =?utf-8?B?bUZDM3Y2SzF4SGVNMXNmdXhkazZtQklwcHA4RWJ6WGovVFVBczFkN2ZhNEJ1?=
- =?utf-8?B?amNPNmxZdXNhR2RKQjRmNkxaVjZhSkFSTUZHWmFaRFJKOW1uaEhEeXZ4WThH?=
- =?utf-8?B?WkgxLzVXT1lGcW5YRC9XYld3TjRJWTVNako2bnNxaG5iMWVZbnRsaVpPRGI3?=
- =?utf-8?B?YncyUWFYTzFMK1BKODE5V1lIdXQ5dWFyOVppeExrd0RqZ3J6ak5rUjcwS1hi?=
- =?utf-8?B?cjFlUHZzVEwyTU4wVklMOVovdnc1K2V0ckwrb3M4b2dYa0dvbXNlZDcxM3Zt?=
- =?utf-8?B?KzY2VnZnaStFMkpRSS9pTktzWXIrYVY1bW9rOTZHbGd0ZndNckwyT0k3czNu?=
- =?utf-8?B?bmpFcUFHMXVtYlROYmcvMnFob3h6RElTWmw1RXNmK3RmYmN6NFNXMk05ckdE?=
- =?utf-8?Q?Zng3GKlBURcPT+lmAnPKnfsocp27jFKPK+9y5YhR9JrQ=3D?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 51be4e03-647f-47b0-d203-08dd3785a908
-X-MS-Exchange-CrossTenant-AuthSource: TYZPR03MB8801.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jan 2025 06:02:16.6250
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR03MB7684
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] usb: gadget: f_midi: Fixing wMaxPacketSize exceeded
+ issue during MIDI bind retries
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: quic_jjohnson@quicinc.com, kees@kernel.org, abdul.rahim@myyahoo.com,
+	m.grzeschik@pengutronix.de, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, jh0801.jung@samsung.com,
+	dh10.jung@samsung.com, naushad@samsung.com, akash.m5@samsung.com,
+	rc93.raju@samsung.com, taehyun.cho@samsung.com, hongpooh.kim@samsung.com,
+	eomji.oh@samsung.com, shijie.cai@samsung.com, alim.akhtar@samsung.com,
+	stable@vger.kernel.org, thiagu.r@samsung.com
+Content-Language: en-US
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+In-Reply-To: <2025011726-hydration-nephew-0d65@gregkh>
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrNJsWRmVeSWpSXmKPExsWy7bCmhu5R1+50g70npC2mT9vIavHm6ipW
+	iwfztrFZ3Fkwjcni1PKFTBbNi9ezWUzas5XF4u7DHywW696eZ7W4vGsOm8WiZa3MFlvarjBZ
+	fDr6n9WicctdVotVnXNYLC5/38lssWDjI0aLSQdFLVY0tzI7CHtsWtXJ5rF/7hp2j2MvjrN7
+	9P818Ji4p86jb8sqRo/Pm+QC2KOybTJSE1NSixRS85LzUzLz0m2VvIPjneNNzQwMdQ0tLcyV
+	FPISc1NtlVx8AnTdMnOAPlFSKEvMKQUKBSQWFyvp29kU5ZeWpCpk5BeX2CqlFqTkFJgU6BUn
+	5haX5qXr5aWWWBkaGBiZAhUmZGds+BhXsFahYurF1ywNjLeluhg5OCQETCSObC3rYuTiEBLY
+	zSix4Pw8VgjnE6PExydH2SCcb4wSn1e+Y+xi5ATrWHx9HQtEYi+jRFvTIaiqt4wSb/9tYwKZ
+	yytgJzHjBw9IA4uAqsTrN1dZQWxeAUGJkzOfsIDYogLyEvdvzWAHsYUFMiW+Tu8CWyAioCHx
+	8ugtsAXMAoeYJRof/QRrYBYQl7j1ZD7YfDYBQ4lnJ2xAwpwCZhIX9nZDlchLNG+dzQzSKyHw
+	gUPiw7sGNoirXSROPf7PDmELS7w6vgXKlpJ42d8GZSdL7Jn0BcrOkDi06hAzhG0vsXrBGVaQ
+	vcwCmhLrd+lD7OKT6P39hAkSjLwSHW1CENWqEqcaL0NtlZa4t+QaK4TtIXGq7TvYdCGBLhaJ
+	d0f1JjAqzEIKlVlInpyF5JtZCIsXMLKsYpRMLSjOTU9NNi0wzEsth8d2cn7uJkZwKtdy2cF4
+	Y/4/vUOMTByMhxglOJiVRHjTfnekC/GmJFZWpRblxxeV5qQWH2I0BUbPRGYp0eR8YDbJK4k3
+	NLE0MDEzMzOxNDYzVBLnbd7Zki4kkJ5YkpqdmlqQWgTTx8TBKdXApCpZu+SOdUxQRBvfud7H
+	TQfq37KWNTxct6JiV+TMe/b+c1QmXvTZXHLW9AGP2dSM4hvun2s7FX2/WjnUH9p9pomX68sc
+	RRWu1dU92+Vmrsov/7larZnzuqPF2Vm/pEOCr0/2X1F6tkKceXPPyi0Mv8P7Zuxi2Pjq8ULP
+	+1Kfn8a29Ge5dezY9+rhpXhb5+XiGlXMJyJZNKvW7HayOc//r+dg71yGO0c6/F+/bnm+e/bM
+	93O2OT91D3/7+f2umSFXHaTnnE516y5udppQnxBzIL675lfh8773RyridFde1P60x+77VnkZ
+	lVX7NAOXsd+/JVu9+aV7j8P8Y4mMJ/IulCsdb/vOViYg0iSYcW6ZpBJLcUaioRZzUXEiAEnh
+	ssJuBAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrJIsWRmVeSWpSXmKPExsWy7bCSnO4R1+50gw0PzC2mT9vIavHm6ipW
+	iwfztrFZ3Fkwjcni1PKFTBbNi9ezWUzas5XF4u7DHywW696eZ7W4vGsOm8WiZa3MFlvarjBZ
+	fDr6n9WicctdVotVnXNYLC5/38lssWDjI0aLSQdFLVY0tzI7CHtsWtXJ5rF/7hp2j2MvjrN7
+	9P818Ji4p86jb8sqRo/Pm+QC2KO4bFJSczLLUov07RK4MjZ8jCtYq1Ax9eJrlgbG21JdjJwc
+	EgImEouvr2PpYuTiEBLYzSix//xmNoiEtMTrWV2MELawxMp/z9khil4zSux+tY6pi5GDg1fA
+	TmLGDx6QGhYBVYnXb66ygti8AoISJ2c+YQGxRQXkJe7fmsEOYgsLZErcOzUTbL6IgIbEy6O3
+	wBYzCxxilvjx6ikjxIIuFomN8+4zg1QxC4hL3HoyH2wZm4ChxLMTNiBhTgEziQt7u1kgSswk
+	urZCHMoMtKx562zmCYxCs5DcMQvJpFlIWmYhaVnAyLKKUTK1oDg3PbfYsMAwL7Vcrzgxt7g0
+	L10vOT93EyM4drU0dzBuX/VB7xAjEwfjIUYJDmYlEd603x3pQrwpiZVVqUX58UWlOanFhxil
+	OViUxHnFX/SmCAmkJ5akZqemFqQWwWSZODilGpj27LHsFOTpaGHPiVta4tcpJMh3tHj37u3Z
+	Bi9OLpW6IShxbL7tN4Hwx58Xxi9gYmA7XMTYaCC0mV3Dy0ZEvEUoLqG3utZ/vhirhtkPQ5OZ
+	P0/sqNw84VrPJZVzUl7TIpZtPZr4onOHXYxP9R+zV78WXJ+822jdhSrnYGnXkpeGQVJV154e
+	KL3bNaOJ52FZ69tM953ZAZw9bru9lvMtyz1TmHDg5Euh/1ceXlqip+WhwCjApLyVf/6m4/sT
+	PXQiIxqO/rMPvyVcd/TPJ64JM11aXrif7BZsiVjHdtZBblX1hQOSWcymvvcksq78Tf1Rojpz
+	qnFx2c4iJ7VJa88XPv3won6+kIuOZ3xB0qbrUkosxRmJhlrMRcWJABbGozhMAwAA
+X-CMS-MailID: 20250118061013epcas5p3d0d1d702ddbc5a8add31e23241a86e9e
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20241208152338epcas5p4fde427bb4467414417083221067ac7ab
+References: <CGME20241208152338epcas5p4fde427bb4467414417083221067ac7ab@epcas5p4.samsung.com>
+	<20241208152322.1653-1-selvarasu.g@samsung.com>
+	<2024121845-cactus-geology-8df3@gregkh>
+	<9f16a8ac-1623-425e-a46e-41e4133218e5@samsung.com>
+	<2024122013-scary-paver-fcff@gregkh>
+	<a1dedf06-e804-4580-a690-25e55312eab8@samsung.com>
+	<2024122007-flail-traverse-b7b8@gregkh>
+	<6629115f-5208-42fe-8bf4-25d808129741@samsung.com>
+	<7d7a0d7a-76bb-49a8-82f8-07ee53893145@samsung.com>
+	<2025011726-hydration-nephew-0d65@gregkh>
 
-On 1/18/2025 12:14 PM, H. Peter Anvin wrote:
-> On January 17, 2025 8:06:27 PM PST, Ethan Zhao <etzhao@outlook.com> wrote:
->> On 1/18/2025 11:41 AM, H. Peter Anvin wrote:
->>> On January 17, 2025 7:29:36 PM PST, Ethan Zhao <etzhao@outlook.com> wrote:
->>>> On 1/18/2025 12:24 AM, H. Peter Anvin wrote:
->>>>>> In short, seems that __builtin_expect not work with switch(), at least for
->>>>>>     gcc version 8.5.0 20210514(RHEL).
->>>>>>
->>>>> For forward-facing optimizations, please don't use an ancient version of gcc as the benchmark.
->>>> Even there is a latest Gcc built-in feature could work for this case, it is highly unlikely that Linus would adopt such trick into upstream kernel (only works for specific ver compiler). the same resultto those downstream vendors/LTS kernels. thus, making an optimization with latest only Gcc would construct an impractical benchmark-only performance barrier. As to the __builtin_expect(), my understanding, it was designed to only work for if(bool value) {
->>>> }
->>>> else if(bool value) {
->>>> } The value of the condition expression returned by __builtin_expect() is a bool const. while switch(variable) expects a variable. so it is normal for Gcc that it doesn't work with it.
->>>>
->>>> If I got something wrong, please let me know.
->>>>
->>>> Thanks,
->>>> Ethan
->>>>
->>>>>       -hpa
->>>>>
->>> That is not true at all; we do that pretty much *all the time*. The reason is that the new compiler versions will become mainstream on a much shorter time scale than the lifespan of kernel code.
->> Yup, time walks forward...
->> But it is very painful to backporting like jobs to make those things in position for eager/no-waiting customers.
->>
->> Thanks,
->> Ethan
->>
->>> We do care about not making the code for the current mainstream compilers *worse* in the process, and we care about not *breaking* the backrev compilers.
-> Keep in mind we're not even talking about feature enablement here, but a microoptimization. The latter we really need to be syntactically lightweight and abstracted enough to deal with, for example, compiler changes.
 
-Fully agree. we are looking at 'micro optimization', not feature level, system level optimization, need to be abstracted to micro lightweight method to
-verify or think about its pros-cons.
+On 1/17/2025 4:35 PM, Greg KH wrote:
+> On Thu, Jan 16, 2025 at 10:49:24AM +0530, Selvarasu Ganesan wrote:
+>> On 12/21/2024 11:37 PM, Selvarasu Ganesan wrote:
+>>> On 12/20/2024 8:45 PM, Greg KH wrote:
+>>>> On Fri, Dec 20, 2024 at 07:02:06PM +0530, Selvarasu Ganesan wrote:
+>>>>> On 12/20/2024 5:54 PM, Greg KH wrote:
+>>>>>> On Wed, Dec 18, 2024 at 03:51:50PM +0530, Selvarasu Ganesan wrote:
+>>>>>>> On 12/18/2024 11:01 AM, Greg KH wrote:
+>>>>>>>> On Sun, Dec 08, 2024 at 08:53:20PM +0530, Selvarasu Ganesan wrote:
+>>>>>>>>> The current implementation sets the wMaxPacketSize of bulk in/out
+>>>>>>>>> endpoints to 1024 bytes at the end of the f_midi_bind function.
+>>>>>>>>> However,
+>>>>>>>>> in cases where there is a failure in the first midi bind attempt,
+>>>>>>>>> consider rebinding.
+>>>>>>>> What considers rebinding?  Your change does not modify that.
+>>>>>>> Hi Greg,
+>>>>>>> Thanks for your review comments.
+>>>>>>>
+>>>>>>>
+>>>>>>> Here the term "rebind" in this context refers to attempting to
+>>>>>>> bind the
+>>>>>>> MIDI function a second time in certain scenarios.
+>>>>>>> The situations where rebinding is considered include:
+>>>>>>>
+>>>>>>>      * When there is a failure in the first UDC write attempt,
+>>>>>>> which may be
+>>>>>>>        caused by other functions bind along with MIDI
+>>>>>>>      * Runtime composition change : Example : MIDI,ADB to MIDI. Or
+>>>>>>> MIDI to
+>>>>>>>        MIDI,ADB
+>>>>>>>
+>>>>>>> The issue arises during the second time the "f_midi_bind" function is
+>>>>>>> called. The problem lies in the fact that the size of
+>>>>>>> "bulk_in_desc.wMaxPacketSize" is set to 1024 during the first call,
+>>>>>>> which exceeds the hardware capability of the dwc3 TX/RX FIFO
+>>>>>>> (ep->maxpacket_limit = 512).
+>>>>>> Ok, but then why not properly reset ALL of the options/values when a
+>>>>>> failure happens, not just this one when the initialization happens
+>>>>>> again?  Odds are you might be missing the change of something else
+>>>>>> here
+>>>>>> as well, right?
+>>>>> Are you suggesting that we reset the entire value of
+>>>>> usb_endpoint_descriptor before call usb_ep_autoconfig? If so, Sorry
+>>>>> I am
+>>>>> not clear on your reasoning for wanting to reset all options/values.
+>>>>> After all, all values will be overwritten
+>>>>> afterusb_ep_autoconfig.Additionally, the wMaxPacketSize is the only
+>>>>> value being checked during the EP claim process (usb_ep_autoconfig),
+>>>>> and
+>>>>> it has caused issues where claiming wMaxPacketSize is grater than
+>>>>> ep->maxpacket_limit.
+>>>> Then fix up that value on failure, if things fail you should reset it
+>>>> back to a "known good state", right?  And what's wrong with resetting
+>>>> all of the values anyway, wouldn't that be the correct thing to do?
+>>> Yes, It's back to known good state if we reset wMaxPacketSize. There
+>>> is no point to reset all values in the usb endpoint descriptor
+>>> structure as all the member of this structure are predefined value
+>>> except wMaxPacketSize and bEndpointAddress. The bEndpointAddress is
+>>> obtain as part of usb_ep_autoconfig.
+>>>
+>>> static struct usb_endpoint_descriptor bulk_out_desc = {
+>>>          .bLength =              USB_DT_ENDPOINT_AUDIO_SIZE,
+>>>          .bDescriptorType =      USB_DT_ENDPOINT,
+>>>          .bEndpointAddress =     USB_DIR_OUT,
+>>>          .bmAttributes =         USB_ENDPOINT_XFER_BULK,
+>>> };
+>>>
+>> HI Greg,
+>>
+>> Gentle remainder for your further comments or suggestions on this.
+> Sorry, I don't remember, it was thousands of patches reviewed ago.  If
+> you feel your submission was correct, and no changes are needed, resend
+> with an expanded changelog text to help explain things so I don't have
+> the same questions again.
+>
+> thanks,
+>
+> greg k-h
+
+Hi Greg,
+
+I understand. Thanks for your update.
+
+Yes, no changes are needed. I updated new version with expanded 
+changelog in below link.
+
+https://lore.kernel.org/all/20250118060134.927-1-selvarasu.g@samsung.com/
 
 Thanks,
-Ethan
-
+Selva
+>
 
