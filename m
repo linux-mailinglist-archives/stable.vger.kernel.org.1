@@ -1,125 +1,102 @@
-Return-Path: <stable+bounces-109438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F86EA15CAE
-	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 13:25:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFE44A15CB2
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 13:26:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91B0C167022
-	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 12:25:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28F413A03BD
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 12:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDC2918CBFB;
-	Sat, 18 Jan 2025 12:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0778F18C933;
+	Sat, 18 Jan 2025 12:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EAMZowvc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BmXQdxIp"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C9C13BADF;
-	Sat, 18 Jan 2025 12:25:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB1213BADF
+	for <stable@vger.kernel.org>; Sat, 18 Jan 2025 12:26:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737203103; cv=none; b=Ad3aH30iviQ0a29GEqFUE2yT0xDvjNdxkAsLDeDb+dDAMp4R/tbRtIpZ3L9mC6no4B7Q32fg2u/K4+0QaPIQnhXvlP05XGqNJGQgWvgO3XL65wRPQ/JblfmFtI3s6px7/XkxmBAiBCZweosUHn5u9QBhL5gT6WMmaOuZJLUBhsc=
+	t=1737203170; cv=none; b=jmr1Z1B993aHGDITMknd0OQ1K//plKlG/GkeBG2PewkpRCEmLtkPJ4w5kt2lgej3XXyBxhjno7nQr6J26ZK03TcKbiOeXiKL8Jzp5H2rUdXs3kM5u28s77o1gl0RM7IMJvlVAqiUdFnipYtfHfXRC1KzdeSRWj1o9Hq43lIcCg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737203103; c=relaxed/simple;
-	bh=8bocchLEvBYJ1Ltc/vlXsJuW8LNfAxE97FasDuykO5g=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oyefS+7gZmN3SvwIpVGb/jbiNg8z3Grlc7bWlwT1plg27jcmhicWJ1EkOudrAGzJy4d/1p+wVR5bhsRYhYmD1oc/mGfS3qQQSenpDXeD8fQ4MHSMUtBAV/O2yONlcEn74T0rynwT5y7bZ7wnJuQL4wKw45OIqyobe3UPmbo3isc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EAMZowvc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39640C4CED1;
-	Sat, 18 Jan 2025 12:24:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737203102;
-	bh=8bocchLEvBYJ1Ltc/vlXsJuW8LNfAxE97FasDuykO5g=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EAMZowvcHG/0QnVtB8HAXhdukl+/zrGQd67dqCZtF3J6wiQI12OBoWX5Eb/ursKDo
-	 uG88Y4vLdZ9u2W8LT0hksXgWBn+P4DX1X5VhCFDV/0LYCfSnmpD99Ep8+jjo707Fnu
-	 x8Bad3CZqZ6BxpMApKLgJ8fS8YjlWSi+8HNfpiqjj8LhnDahl5BliFz12tQGBOdD0N
-	 NhQ96C4/1CW6SIaGMbeA2bsFBdVvyYMxCdcy7rtcegCnCAG5Ly+NMBiuTc0l3iHTMp
-	 6LgrS750aNyDGWtVKxcqNSwAbWkWCSFNyIgoqwFe5S3MTyVJS2H9Y/B10GdDwfLoZX
-	 Vnu2QSMvJ/BfA==
-Date: Sat, 18 Jan 2025 12:24:55 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>, Lars-Peter Clausen
- <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: light: apds9306: fix max_scale_nano values
-Message-ID: <20250118122455.54c1e96e@jic23-huawei>
-In-Reply-To: <20250112-apds9306_nano_vals-v1-1-82fb145d0b16@gmail.com>
-References: <20250112-apds9306_nano_vals-v1-1-82fb145d0b16@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1737203170; c=relaxed/simple;
+	bh=9GozWhGiXzbSaJc3Gm9n9GFF06XkQppQRXajrAmB2qM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=EAnEJ5rAZT7nm8bNymLccF2Utg0+QqcFSBprg9UfbjoICMNsIpxBRGYRAwnYPBGXQXRX1STwlF2LguwshNMC7z3pjJQWOTC9r659+PwBdXGVI9jD3x67smjli6rSP9yqCi2cuaj7M2iK27kd4gnuKfrruTdnNXkWxqfjD6LMhZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BmXQdxIp; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737203169; x=1768739169;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=9GozWhGiXzbSaJc3Gm9n9GFF06XkQppQRXajrAmB2qM=;
+  b=BmXQdxIp2j2GW8SS3QSE3BVubRIYTTWmBvrkA2MKsSBedtqcgzmgr2wT
+   JoDmY7qnKpnO/6c1zcssbT1SJGZ6oSsNXh18ouMERnzXK2DcEHcudd34S
+   aPoD7E5j9Nw5u9HWuD8NXnPhqV3SxQu/JozBsUOh7vCd2aF3dLYMK6adO
+   hEKVJ3KC2Smh6H0LdzGcdI0sE+SgPmE2x/8vWBIyMHdAalwfm5IYB1gL7
+   59tQQaGCFrENTV/5in5phfWliFJk7I6IxmJUD2Tl167ADItkT8aH2DXvS
+   R08xBQrHTFds5zH/ROQdP0HctzbrEzavSczX5TP6F5xZ+HcQEfY5XoOB5
+   g==;
+X-CSE-ConnectionGUID: sMtiKr4YTpq2woqjcgO6DQ==
+X-CSE-MsgGUID: MH6WftJ/SqaUGj8juu75Eg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11319"; a="25227524"
+X-IronPort-AV: E=Sophos;i="6.13,215,1732608000"; 
+   d="scan'208";a="25227524"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2025 04:26:08 -0800
+X-CSE-ConnectionGUID: 9V3KoMZuR8ahI/Gqs0ip5Q==
+X-CSE-MsgGUID: R01mUOanRGCgdr11vyhMHg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="110106648"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa003.fm.intel.com with ESMTP; 18 Jan 2025 04:26:07 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tZ7tt-000UQl-0b;
+	Sat, 18 Jan 2025 12:26:05 +0000
+Date: Sat, 18 Jan 2025 20:26:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ron Economos <re@w6rz.net>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 6.1] Partial revert of xhci: use pm_ptr() instead #ifdef
+ for CONFIG_PM conditionals
+Message-ID: <Z4ud2ua6GrwqaaBl@9bc2624f7252>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250118122409.4052121-1-re@w6rz.net>
 
-On Sun, 12 Jan 2025 01:08:11 +0100
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+Hi,
 
-> The two provided max_scale_nano values must be multiplied by 100 and 10
-> respectively to achieve nano units. According to the comments:
->=20
-> Max scale for apds0306 is 16.326432 =E2=86=92 the fractional part is 0.32=
-6432,
-> which is 326432000 in NANO. The current value is 3264320.
->=20
-> Max scale for apds0306-065 is 14.09721 =E2=86=92 the fractional part is 0=
-.09712,
-> which is 97120000 in NANO. The current value is 9712000.
->=20
-> Update max_scale_nano initialization to use the right NANO fractional
-> parts.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 620d1e6c7a3f ("iio: light: Add support for APDS9306 Light Sensor")
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Thanks for your patch.
 
-This just missed last pull request for this cycle.
-I've locally advanced my fixes branch to include all the material that will
-merge in next couple of weeks, but for now can't push it out without making
-a mess of linux-next (it will be in wrong place in the sequence)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-So applied, but you can't see it yet!
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
 
-Jonathan
+Rule: The upstream commit ID must be specified with a separate line above the commit text.
+Subject: [PATCH 6.1] Partial revert of xhci: use pm_ptr() instead #ifdef for CONFIG_PM conditionals
+Link: https://lore.kernel.org/stable/20250118122409.4052121-1-re%40w6rz.net
 
-> ---
->  drivers/iio/light/apds9306.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/iio/light/apds9306.c b/drivers/iio/light/apds9306.c
-> index 69a0d609cffc91cc3daba160f309f511270be385..5ed7e17f49e76206609aba83c=
-85e8144c536d17d 100644
-> --- a/drivers/iio/light/apds9306.c
-> +++ b/drivers/iio/light/apds9306.c
-> @@ -108,11 +108,11 @@ static const struct part_id_gts_multiplier apds9306=
-_gts_mul[] =3D {
->  	{
->  		.part_id =3D 0xB1,
->  		.max_scale_int =3D 16,
-> -		.max_scale_nano =3D 3264320,
-> +		.max_scale_nano =3D 326432000,
->  	}, {
->  		.part_id =3D 0xB3,
->  		.max_scale_int =3D 14,
-> -		.max_scale_nano =3D 9712000,
-> +		.max_scale_nano =3D 97120000,
->  	},
->  };
-> =20
->=20
-> ---
-> base-commit: 577a66e2e634f712384c57a98f504c44ea4b47da
-> change-id: 20241218-apds9306_nano_vals-d880219a82f2
->=20
-> Best regards,
+Please ignore this mail if the patch is not relevant for upstream.
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
