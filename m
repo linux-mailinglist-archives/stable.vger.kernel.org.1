@@ -1,158 +1,154 @@
-Return-Path: <stable+bounces-109429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FD96A15BA0
-	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 07:37:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1F81A15BA6
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 08:09:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B584A188A162
-	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 06:37:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4BAB7A40CC
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 07:09:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0B913C9C4;
-	Sat, 18 Jan 2025 06:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953421459F6;
+	Sat, 18 Jan 2025 07:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="Dj917hP1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NaxqycKJ"
 X-Original-To: stable@vger.kernel.org
-Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6321339A4
-	for <stable@vger.kernel.org>; Sat, 18 Jan 2025 06:37:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDF1126C1E;
+	Sat, 18 Jan 2025 07:09:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737182235; cv=none; b=DGO4LthkxaMZQTH5Ajtk9c4QSr/hoHQnertark/G6gD2WW+LH8JCkOopk67Ik02O7b9GUZUHVzT4azgG0XBOfhU/ip5U2PwM4dHsKylLM8PcHW/JpOF5JF2HoaJ3Va+9K9mJEYHGzAiFdYc5L+EjO85SNCaIA67lWePgXqlGJxo=
+	t=1737184147; cv=none; b=jxBsdGZYQSa+dT1L7zKWC97I/RSbbY2arm/toGmjWhmnVx7J4aaWCQCiPOLjuvIXrSl6p45S3FGAgQ9JK96YuXA3B5g/RBXpTQPJgON3fvem9SNnf/RWtDVq/vfYYT/RaxUsEW5pLT5YN6U3pA/W5fkKsPd4E6J0seuWTOJ0Mhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737182235; c=relaxed/simple;
-	bh=dRODH/gAyL7GzhxgsvNA/Peix7Gy7vRP9fwBfST8dJo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Rlf7I5xFpGCy9VK5tou07ceLztyWhzbyZ539oQO5/o/w0+CHuIiLUJxZPAKu+SM5lT7O+4lYdycHZy0tHfaj8cwAUJSSKTwhgxAPAtqisTqADj3rpLEwRPCLxgzwY6E+OoAy5X+HcEwxwLwERV262HiMPUYztmDUlyOgoYHx0Js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=Dj917hP1; arc=none smtp.client-ip=35.89.44.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-5010a.ext.cloudfilter.net ([10.0.29.199])
-	by cmsmtp with ESMTPS
-	id YqQxt8VIF09RnZ2SAtCaVB; Sat, 18 Jan 2025 06:37:06 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id Z2S9tj9NkUbwIZ2S9tVYaZ; Sat, 18 Jan 2025 06:37:05 +0000
-X-Authority-Analysis: v=2.4 cv=JK49sdKb c=1 sm=1 tr=0 ts=678b4c11
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=VdSt8ZQiCzkA:10 a=7vwVE5O1G3EA:10 a=p0WdMEafAAAA:8
- a=k4zwkoC_-2IYBYaSvqgA:9 a=QEXdDO2ut3YA:10 a=hTR6fmoedSdf3N0JiVF8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ERI8uvsF7n4j8nNwPKwkUCzYQVPqT3od8kfcsdqqzBI=; b=Dj917hP1KX7/noZph7CzQ6Uj3Y
-	WhXuH78INJbVCmcBrwwZ29jdCKtzVaCLqIUPqQXLPGsItPv5RST25HEqPegnqK7xv7cE/Qi6N454+
-	tdWkSKh3EB4sanjlyNBBIZQ5R8aeFL7NUVJm2Ut6YFtznMNfES2WrsUxo74we4BvIh0B78GJubuwS
-	SJ3G8POF+yn1zDGV63wpPXu2Zzs6cUVms3ChZ/ikLlIzfFb7D06UpWAYluv+qRY10529Pvt8jtwyj
-	ZnJp0vD2r0rvlduEX5XNPbs0jI8l3Z0/aTW4ztq+qhzHHaCFW71Ixbk2hI7QZBcSSd1Ny5yBCiGCd
-	qBOkyW5g==;
-Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:57280 helo=[10.0.1.116])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1tZ2S8-003VdN-2y;
-	Fri, 17 Jan 2025 23:37:04 -0700
-Message-ID: <133dbfa0-4a37-4ae0-bb95-1a35f668ec11@w6rz.net>
-Date: Fri, 17 Jan 2025 22:37:03 -0800
+	s=arc-20240116; t=1737184147; c=relaxed/simple;
+	bh=ydYUFpTfoFKyM7TEYILooPRIN9Ue1rFIdpad2ndazg0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VpTxGiQ/HYYSM5XJM+ZwnoDYGn5A5xyVPjmdAVS6uE5+REpp3KwhO/Ty5fpKkKNuXAGK2CycW4SluggpkRyvZn1GNDUfYq5E/Q7Cuz+efF2dgXiDjLsdTcMZ41rQ9sWJlqsBfvEtlRlroXfKCNzZfaAFIk4Ie0S1vzbZpeUonU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NaxqycKJ; arc=none smtp.client-ip=209.85.214.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-21649a7bcdcso52098635ad.1;
+        Fri, 17 Jan 2025 23:09:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737184145; x=1737788945; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1jIl1C9RNfXF7o6KaUUW4aB3oigDEkuPQe5BHvQikPQ=;
+        b=NaxqycKJ77UedoY/Ocplge9k9ZRiiZWKBsFY5HfzYVLVewW8ZCmwvgV6rN9Lth2x+O
+         RzZrHoTD9WMzvjfkJPtOkvRDsK6SIiC3K7lfAMupV8hjVREOkAY165N/srA3ZTZjUaft
+         tmHDyIS1RSwAfPbwQxWsSZzNOJFY3fi+lbNAR7YkUVhqtMx1eIk9REp+ur6zdfU9aarv
+         CoS7F+7xnzcvuPDLgZk9cwu940yLeo+MFWapaHusmd85llm0HXA488F0wqWyETK7BoHB
+         b/4jJ2pVbDRmFeJ5l52u/yDTGOey/ycZvfLMe6Da+rcc64BiqGeo/zlnriig0XU+3C/j
+         +PCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737184145; x=1737788945;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1jIl1C9RNfXF7o6KaUUW4aB3oigDEkuPQe5BHvQikPQ=;
+        b=e4JRxZHKS268WLDxS22O2bWKv5pvsr9lil3gsiL1kN1uUGgRZ/MxiUzzxF6mJvWO/y
+         j/h0neGj/noT9+dRdcoVBzAlCYYQrzYXsGz4pVPH4tHp6UrC9dRvNSwlyoHmo4lwhaaA
+         DqLbn/fth1qw9KwUuGF8yLCW+oIHLk9UzXywk+9qcxIGwvu0SNf/UkGpES2I6IVcb/Tn
+         IwFSQx0zxmNktvZYqfKXKHzmOet+yalKko4h4JLv5ha87gNly1PgczMYMgl4xQ5Tzrl7
+         wVxt6XvPldAGVEEMnR6zUm6Giz9veBhCzOywypAIx15dpwF/3O77Wisj9nKnnPVPArGU
+         qw3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXfDUOMpcszbgPi0Hd1f4RHAO7Si2uzF6wNWZf9QXaueybftASQe36tyroCfqiF85/8rYatZYo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1EEO2kXMJz31EtnLQxH3Oh2PxVG9ZJUcwnTMx1C616Qv0lS0s
+	WUPmLtYXMERoSQtUS2jCW+oda5Kqv+JWHYJEpDeaBaBvgVqeq1fxs/oupoKWFLccNg==
+X-Gm-Gg: ASbGnctVXiE3LUSZi/grdYha3tD8scFmEnChI9flMyqWTc+ChwdR/jSjZVYAKTlE1TU
+	0OXGCGYC51xV1Kg6Jol4T7NVK3EwzyS6IVc3kIMj/PEfTqcNPpliH0XXg8oyUPJLww7MMnhimvD
+	Sh3RfVHuyMZHJ6PDMz5VznhmE/9jmHxtjjZ1MsutCzoAI6nOI+1MJsWrEBDgnABsQQJDuWNXdVH
+	+GqZf+BAkudVfvJ5d1hZlQoZhoJLCDgzGv+k0lG1jPW8EpoeuU2+MA0Qh4I7CVW5A8PKtRaXCXe
+	d0+JHlV3wDo=
+X-Google-Smtp-Source: AGHT+IEfe3yetVbWE4OnE9wUlQB+bU+2YSQDKPzVZdbmNXsaIGY6VYUaW4ad1aTcJ3GUUvSVs0ADOA==
+X-Received: by 2002:a05:6a20:7fa9:b0:1e8:c159:b6ef with SMTP id adf61e73a8af0-1eb215fb150mr9240395637.37.1737184145188;
+        Fri, 17 Jan 2025 23:09:05 -0800 (PST)
+Received: from localhost.localdomain ([117.140.170.17])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72dab81762bsm3197643b3a.62.2025.01.17.23.09.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jan 2025 23:09:04 -0800 (PST)
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
+To: nipun.gupta@amd.com,
+	nikhil.agarwal@amd.com
+Cc: linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com,
+	greg@kroah.com,
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v4] cdx: Fix possible UAF error in driver_override_show()
+Date: Sat, 18 Jan 2025 15:08:33 +0800
+Message-ID: <20250118070833.27201-1-chenqiuji666@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: 6.1.125 build fail was -- Re: [PATCH 6.1 00/92] 6.1.125-rc1
- review
-To: Pavel Machek <pavel@denx.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250115103547.522503305@linuxfoundation.org>
- <Z4evJUkzHauW+zOU@duo.ucw.cz> <Z4e+u8gj6BV37WdM@duo.ucw.cz>
- <2025011725-underdog-heftiness-49df@gregkh> <Z4rIlESGC6mwi8HP@duo.ucw.cz>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <Z4rIlESGC6mwi8HP@duo.ucw.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.223.253.157
-X-Source-L: No
-X-Exim-ID: 1tZ2S8-003VdN-2y
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.116]) [73.223.253.157]:57280
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 1
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfJfcmx1V6RIyoOw36lxg9pVeaYWsFXiRX28eJD3vnv607RcCE/eQH/xUkiaz75EUcpPHo6PxOPLHZT6oTarkp5VyC8Nsj9FX7MyWDqX9yKdjwBoxr3ee
- 8N83AK3b4kLS10a1JbHh9J2YScFKgJOoM++IHXKd9oMQawDCTQ16Upk1g8z0iuR7qb3RJcOo+3gWnw==
+Content-Transfer-Encoding: 8bit
 
-On 1/17/25 13:16, Pavel Machek wrote:
-> Hi!
->
->>>> Still building, but we already have failures on risc-v.
->>>>
->>>> drivers/usb/core/port.c: In function 'usb_port_shutdown':
->>>> 2912
->>>> drivers/usb/core/port.c:417:26: error: 'struct usb_device' has no member named 'port_is_suspended'
->>>> 2913
->>>>    417 |         if (udev && !udev->port_is_suspended) {
->>>> 2914
->>>>        |                          ^~
->>>> 2915
->>>> make[4]: *** [scripts/Makefile.build:250: drivers/usb/core/port.o] Error 1
->>>> 2916
->>>> make[4]: *** Waiting for unfinished jobs....
->>>> 2917
->>>>    CC      drivers/gpu/drm/radeon/radeon_test.o
->>> And there's similar failure on x86:
->>>
->>> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/pipelines/1626266073
->> Thanks for testing and letting me know,
-> Ok, so it seems _this_ failure is fixed... but there's new one. Build
-> failure on risc-v.
->
->    LD      .tmp_vmlinux.kallsyms1
-> 2941
-> riscv64-linux-gnu-ld: drivers/usb/host/xhci-pci.o: in function `xhci_pci_resume':
-> 2942
-> xhci-pci.c:(.text+0xd8c): undefined reference to `xhci_resume'
-> 2943
-> riscv64-linux-gnu-ld: xhci-pci.c:(.text+0xe1a): undefined reference to `xhci_suspend'
-> 2944
-> make[1]: *** [scripts/Makefile.vmlinux:34: vmlinux] Error 1
-> 2945
-> make: *** [Makefile:1250: vmlinux] Error 2
->
-> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/8883180471
->
-> (I have also 2 runtime failures, I'm retrying those jobs.
->
-> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/pipelines/1630005263
->
-> ). I partly reconsructed To:.
->
-> Best regards,
->
-> 								Pavel
+Fixed a possible UAF problem in driver_override_show() in drivers/cdx/cdx.c
 
-Seeing the build failure on RISC-V here also. The fixup patch was a 
-little too aggressive. I tried just removing the #ifdef CONFIG_PM around 
-"port_is_suspended" in include/linux/usb.h and it builds okay.
+This function driver_override_show() is part of DEVICE_ATTR_RW, which
+includes both driver_override_show() and driver_override_store().
+These functions can be executed concurrently in sysfs.
+
+The driver_override_store() function uses driver_set_override() to
+update the driver_override value, and driver_set_override() internally
+locks the device (device_lock(dev)). If driver_override_show() reads
+cdx_dev->driver_override without locking, it could potentially access
+a freed pointer if driver_override_store() frees the string
+concurrently. This could lead to printing a kernel address, which is a
+security risk since DEVICE_ATTR can be read by all users.
+
+Additionally, a similar pattern is used in drivers/amba/bus.c, as well
+as many other bus drivers, where device_lock() is taken in the show
+function, and it has been working without issues.
+
+This potential bug was detected by our experimental static analysis
+tool, which analyzes locking APIs and paired functions to identify
+data races and atomicity violations.
+
+Fixes: 1f86a00c1159 ("bus/fsl-mc: add support for 'driver_override' in the mc-bus")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+---
+V2:
+Modified the title and description.
+Removed the changes to cdx_bus_match().
+
+V3:
+Revised the description to make it clearer.
+Thanks Greg KH for helpful suggestions.
+
+V4:
+Fixed the incorrect code logic.
+---
+ drivers/cdx/cdx.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/cdx/cdx.c b/drivers/cdx/cdx.c
+index 76eac3653b1c..daa0fb62a1f7 100644
+--- a/drivers/cdx/cdx.c
++++ b/drivers/cdx/cdx.c
+@@ -470,8 +470,12 @@ static ssize_t driver_override_show(struct device *dev,
+ 				    struct device_attribute *attr, char *buf)
+ {
+ 	struct cdx_device *cdx_dev = to_cdx_device(dev);
++	ssize_t len;
+ 
+-	return sysfs_emit(buf, "%s\n", cdx_dev->driver_override);
++	device_lock(dev);
++	len = sysfs_emit(buf, "%s\n", cdx_dev->driver_override);
++	device_unlock(dev);
++	return len;
+ }
+ static DEVICE_ATTR_RW(driver_override);
+ 
+-- 
+2.43.0
 
 
