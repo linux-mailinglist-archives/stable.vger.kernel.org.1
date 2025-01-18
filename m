@@ -1,139 +1,140 @@
-Return-Path: <stable+bounces-109416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D084DA15A3C
-	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 01:10:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EBCBA15AC3
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 02:00:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58E5B18877AB
-	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 00:10:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37E163A04EE
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 00:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3FD64D;
-	Sat, 18 Jan 2025 00:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9849617BA6;
+	Sat, 18 Jan 2025 00:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TSnJFEnP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ItqBaSxV"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B702195;
-	Sat, 18 Jan 2025 00:09:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4351E15E97;
+	Sat, 18 Jan 2025 00:59:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737158998; cv=none; b=oNztOj9HuTm76sbNSc4Ud++KAvg/fktp7F6eC3kOhnwintDWWqrXT/f39Zf6KrZY8Zy4jCMPv3en4TfJCiUTDJNbKDNQCpbn7QGvhX7rSi8g5jqoPcbkkPUT4/JxnwmTbw1YPRc+0JD+Z4vo6IpfTBvziOBdvaH9MvldfhUyVXw=
+	t=1737161987; cv=none; b=iRIwMyEsF04pSu0NOVG1mo4eqYeSxq5mS20+xXLNBlUXfAZE0wUa5nsJSyAwvnUz+bXjdxqbjcNIDMt/Rc19mFZYX4vKGaPzEZ5wC/NYnYXbg63RiUacvXWZy/GnbPATtjj7Hl70joUWXjldnavJ9OJgaUkLl0U9liAjWN+R7uI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737158998; c=relaxed/simple;
-	bh=fWb6fS0xl2IfrGBjsnDoAvlLsvH6sWapTEfnkNR0tH0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dlGJwLdsNsmlbUahLZNPhZIJOr1eSlhrvrG3siPC8lHQVhjRVQuXJuYhfd23BB2eRI7nHZiX0VW0AdEfSYp1jZsfRsN3i2IcjUAK5r2FPNukfzfFox4Dym15IaQXBP4CvOCMia6fnKUSnO1jld96D+639d1m1taF+Sxku3xqHvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TSnJFEnP; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737158996; x=1768694996;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fWb6fS0xl2IfrGBjsnDoAvlLsvH6sWapTEfnkNR0tH0=;
-  b=TSnJFEnPHbH6QIqixyCtKCeHu7f7PdO5a4yqG9XxPyFSP5HiBf3sxF+U
-   ul2ZwGFDhc6XNhB0+Pgfg2kXXgI1YiL5Pz7COvKLeiO6D5LIFmnhz8Z6E
-   zTuAGsFbrbvi7uwvQF0B6oPOyHi/ik4LuccxhVY2cOcc9K33krmIsLsqW
-   x1d33bumSzVSDAtLpCJB0OXWTXPUb2B1jECy0hGrVGY2Qsae5ZZKyYl3G
-   ct9NahIkL+n9a9GLOPuWM6nlZtrMfJv1y7LBUNUqFSEMNk/AKa05oxM1z
-   48tKWO9leltvX8o0oIvpcMdIpB0kxd7PXhAQeimAc88W14lnXTxspI58g
-   A==;
-X-CSE-ConnectionGUID: MMoOPOROQ6m27SAsEyE1zQ==
-X-CSE-MsgGUID: c/T39tgKS0iy5KaeWYbm2Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11318"; a="36882007"
-X-IronPort-AV: E=Sophos;i="6.13,213,1732608000"; 
-   d="scan'208";a="36882007"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2025 16:09:55 -0800
-X-CSE-ConnectionGUID: I/M0CykhTxm0sKMYmbolmw==
-X-CSE-MsgGUID: OZWBn/3/Q+GbJFbL/Xp87g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,213,1732608000"; 
-   d="scan'208";a="105977308"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 17 Jan 2025 16:09:53 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tYwPO-000Ts3-28;
-	Sat, 18 Jan 2025 00:09:50 +0000
-Date: Sat, 18 Jan 2025 08:09:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Qiu-ji Chen <chenqiuji666@gmail.com>, nipun.gupta@amd.com,
-	nikhil.agarwal@amd.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org, baijiaju1990@gmail.com,
-	greg@kroah.com, Qiu-ji Chen <chenqiuji666@gmail.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] cdx: Fix possible UAF error in driver_override_show()
-Message-ID: <202501180719.sDmtGnhD-lkp@intel.com>
-References: <20250115090449.102060-1-chenqiuji666@gmail.com>
+	s=arc-20240116; t=1737161987; c=relaxed/simple;
+	bh=uaEJZevoStR+cPvxphxQmN77PF6t7QNpu/VGdhXGNPk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=DKyvgtuReTT59fIGgBr2ANluKox4RTN9qRoUwl8O6acTEMqro4j1y8v6N/rMQSVfWlcA01yQUCRdZl53u9voeUPyLe60zgOgO5hU5SRfHHAKPR/kkP1rzj47R0WNJWL46k+MkCn2H/089ZqalfpdVwzEv04T0P7Qzg4iDNwroT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ItqBaSxV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1A4C4CEDD;
+	Sat, 18 Jan 2025 00:59:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737161986;
+	bh=uaEJZevoStR+cPvxphxQmN77PF6t7QNpu/VGdhXGNPk=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=ItqBaSxVUU9XHkoXX3hnFj/W2EaUts8cezDfAOW+ov9foW/4TT+cP330s6fZqJU/Y
+	 Ub5fO6XAaD3jG35OMbPyUV6KkPN7wuYAwE4UX5+mCzmFZAh2AmiGnT2phyMM7WTBo+
+	 sMW3Mzwck8yRvAXbXgxRUrH1liapqttjE7QbjlCJGtadHkWTXegH+f7uig2C6TkRp7
+	 51RtFMmbQQNgSk4VJS6U6cBA/tYauqN/cEvXEvKOhMbFmCfqv+GbEuz2trOSTdoSsv
+	 sW5eMlqMQycwwwgG6ZhZXkO/2NceE5Q6uArXm6wEmqKKuZtdbW/DH8/67fiodrtrKX
+	 bjtqSkBKCDYlA==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250115090449.102060-1-chenqiuji666@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 18 Jan 2025 02:59:41 +0200
+Message-Id: <D74SJ1CDKZRF.A6XC66V9UT1U@kernel.org>
+Cc: <linux-integrity@vger.kernel.org>, "Peter Huewe" <peterhuewe@gmx.de>,
+ "Jason Gunthorpe" <jgg@ziepe.ca>, "Colin Ian King"
+ <colin.i.king@gmail.com>, "Stefan Berger" <stefanb@us.ibm.com>, "Reiner
+ Sailer" <sailer@us.ibm.com>, "Seiji Munetoh" <munetoh@jp.ibm.com>, "Andrew
+ Morton" <akpm@osdl.org>, "Kylene Jo Hall" <kjhall@us.ibm.com>, "Ard
+ Biesheuvel" <ardb@kernel.org>, <stable@vger.kernel.org>, "Andy Liang"
+ <andy.liang@hpe.com>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v10] tpm: Map the ACPI provided event log
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Takashi Iwai" <tiwai@suse.de>
+X-Mailer: aerc 0.18.2
+References: <20250115224315.482487-1-jarkko@kernel.org>
+ <87cyglsjdh.wl-tiwai@suse.de> <D74DJJTER7IQ.3KT9ECIRLN0JW@kernel.org>
+ <878qr9shga.wl-tiwai@suse.de>
+In-Reply-To: <878qr9shga.wl-tiwai@suse.de>
 
-Hi Qiu-ji,
+On Fri Jan 17, 2025 at 3:22 PM EET, Takashi Iwai wrote:
+> On Fri, 17 Jan 2025 14:15:05 +0100,
+> Jarkko Sakkinen wrote:
+> >=20
+> > On Fri Jan 17, 2025 at 2:41 PM EET, Takashi Iwai wrote:
+> > > On Wed, 15 Jan 2025 23:42:56 +0100,
+> > > Jarkko Sakkinen wrote:
+> > > >=20
+> > > > The following failure was reported:
+> > > >=20
+> > > > [   10.693310][    T1] tpm_tis STM0925:00: 2.0 TPM (device-id 0x3, =
+rev-id 0)
+> > > > [   10.848132][    T1] ------------[ cut here ]------------
+> > > > [   10.853559][    T1] WARNING: CPU: 59 PID: 1 at mm/page_alloc.c:4=
+727 __alloc_pages_noprof+0x2ca/0x330
+> > > > [   10.862827][    T1] Modules linked in:
+> > > > [   10.866671][    T1] CPU: 59 UID: 0 PID: 1 Comm: swapper/0 Not ta=
+inted 6.12.0-lp155.2.g52785e2-default #1 openSUSE Tumbleweed (unreleased) 5=
+88cd98293a7c9eba9013378d807364c088c9375
+> > > > [   10.882741][    T1] Hardware name: HPE ProLiant DL320 Gen12/ProL=
+iant DL320 Gen12, BIOS 1.20 10/28/2024
+> > > > [   10.892170][    T1] RIP: 0010:__alloc_pages_noprof+0x2ca/0x330
+> > > > [   10.898103][    T1] Code: 24 08 e9 4a fe ff ff e8 34 36 fa ff e9=
+ 88 fe ff ff 83 fe 0a 0f 86 b3 fd ff ff 80 3d 01 e7 ce 01 00 75 09 c6 05 f8=
+ e6 ce 01 01 <0f> 0b 45 31 ff e9 e5 fe ff ff f7 c2 00 00 08 00 75 42 89 d9 =
+80 e1
+> > > > [   10.917750][    T1] RSP: 0000:ffffb7cf40077980 EFLAGS: 00010246
+> > > > [   10.923777][    T1] RAX: 0000000000000000 RBX: 0000000000040cc0 =
+RCX: 0000000000000000
+> > > > [   10.931727][    T1] RDX: 0000000000000000 RSI: 000000000000000c =
+RDI: 0000000000040cc0
+> > > >=20
+> > > > Above shows that ACPI pointed a 16 MiB buffer for the log events be=
+cause
+> > > > RSI maps to the 'order' parameter of __alloc_pages_noprof(). Addres=
+s the
+> > > > bug with kvmalloc() and devm_add_action_or_reset().
+> > > >=20
+> > > > Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+> > > > Cc: stable@vger.kernel.org # v2.6.16+
+> > > > Fixes: 55a82ab3181b ("[PATCH] tpm: add bios measurement log")
+> > > > Reported-by: Andy Liang <andy.liang@hpe.com>
+> > > > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219495
+> > > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> > >
+> > > One of my previous review comments overlooked?
+> > > The subject line still doesn't match with the actual code change.
+> >=20
+> > True, thanks for catching this.
+> >=20
+> > >
+> > > I guess "Map the ACPI provided event log" is meant for another patch,
+> > > not for this fix.
+> >=20
+> > https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/=
+commit/
+> >=20
+> > I edited also the description a bit. Does this make more sense to you
+> > now? (also denote any additonal possible tags)
+>
+> Yes, looks good.  Thanks!
 
-kernel test robot noticed the following build warnings:
+Can I add your reviewd-by? Just asking so that tags will be what is
+expected.
 
-[auto build test WARNING on linus/master]
-[also build test WARNING on v6.13-rc7 next-20250117]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>
+>
+> Takashi
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Qiu-ji-Chen/cdx-Fix-possible-UAF-error-in-driver_override_show/20250115-170808
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20250115090449.102060-1-chenqiuji666%40gmail.com
-patch subject: [PATCH v3] cdx: Fix possible UAF error in driver_override_show()
-config: arm64-randconfig-004-20250116 (https://download.01.org/0day-ci/archive/20250118/202501180719.sDmtGnhD-lkp@intel.com/config)
-compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project f5cd181ffbb7cb61d582fe130d46580d5969d47a)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250118/202501180719.sDmtGnhD-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202501180719.sDmtGnhD-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   drivers/cdx/cdx.c:473:10: warning: variable 'len' set but not used [-Wunused-but-set-variable]
-     473 |         ssize_t len;
-         |                 ^
->> drivers/cdx/cdx.c:478:1: warning: non-void function does not return a value [-Wreturn-type]
-     478 | }
-         | ^
-   2 warnings generated.
-
-
-vim +478 drivers/cdx/cdx.c
-
-48a6c7bced2a78 Nipun Gupta 2023-03-13  468  
-48a6c7bced2a78 Nipun Gupta 2023-03-13  469  static ssize_t driver_override_show(struct device *dev,
-48a6c7bced2a78 Nipun Gupta 2023-03-13  470  				    struct device_attribute *attr, char *buf)
-48a6c7bced2a78 Nipun Gupta 2023-03-13  471  {
-48a6c7bced2a78 Nipun Gupta 2023-03-13  472  	struct cdx_device *cdx_dev = to_cdx_device(dev);
-4228bb0224f83f Qiu-ji Chen 2025-01-15  473  	ssize_t len;
-48a6c7bced2a78 Nipun Gupta 2023-03-13  474  
-4228bb0224f83f Qiu-ji Chen 2025-01-15  475  	device_lock(dev);
-4228bb0224f83f Qiu-ji Chen 2025-01-15  476  	len = sysfs_emit(buf, "%s\n", cdx_dev->driver_override);
-4228bb0224f83f Qiu-ji Chen 2025-01-15  477  	device_unlock(dev);
-48a6c7bced2a78 Nipun Gupta 2023-03-13 @478  }
-48a6c7bced2a78 Nipun Gupta 2023-03-13  479  static DEVICE_ATTR_RW(driver_override);
-48a6c7bced2a78 Nipun Gupta 2023-03-13  480  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+BR, Jarkko
 
