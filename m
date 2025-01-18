@@ -1,68 +1,68 @@
-Return-Path: <stable+bounces-109421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22AEBA15B5D
-	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 05:01:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0281A15B5F
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 05:06:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38E047A0291
-	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 04:00:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A773E168E4E
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 04:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D7377102;
-	Sat, 18 Jan 2025 04:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1333487BF;
+	Sat, 18 Jan 2025 04:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="KjdpzKcM"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="QIcfSJ0/"
 X-Original-To: stable@vger.kernel.org
-Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sg2apc01olkn2075.outbound.protection.outlook.com [40.92.53.75])
+Received: from APC01-TYZ-obe.outbound.protection.outlook.com (mail-tyzapc01olkn2066.outbound.protection.outlook.com [40.92.107.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45037FD;
-	Sat, 18 Jan 2025 04:00:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.53.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3C57FD;
+	Sat, 18 Jan 2025 04:06:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.107.66
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737172854; cv=fail; b=SExCE9DtYPUpVi2hABxBjDqWqM+yezdEYyeDBrg91Xf6lwANkTOcw3mAGdC8YU07qAw21ffMjeBlwh/79y3/SQHVrLDu8jfo3eMzVu299GzXzmsbMWUrZZGiamp/BKZe0hUHWs9EfGxmU173dkHf0RhGiS5wj6V7Li7nYjSWMpU=
+	t=1737173195; cv=fail; b=NF73V6ZNQTs4QCCyTExVPFxalYBqEcSk60Nmh7BkeRHw7vudCys9MYj9M593pSNCobHqDfasZWo8Wu6MV4Fc9YEzRt4GTlobyCu9MCzN2wdZYqJ5gSOyAOzxh6MINUp92vGYvNaQM+bE595/SHwgMtl6pL3fgJ2zQ3Zzeh5LFEA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737172854; c=relaxed/simple;
-	bh=HXMnNIlpkSkRUu9CMvKoZSUim/+5EzXwIDCl2NcUoZs=;
+	s=arc-20240116; t=1737173195; c=relaxed/simple;
+	bh=bonNK+ArhWGtB97KUpn5tW59BK+XauJgTujz1nTzfZY=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=sA2DGqJDgNA0Y3jzVizTAECAFCZZg7GXxZ/Y837IH3GVKElS7kvn1wTIRUzGDIz6ImY+NpQCOiRSlLECMHpTQWv0ERv+xCcUWEyEn0zkl1fCqUIaIh4R+TItSQqP9LUFoJ5581ae1/5ceMCGgKVdUi6wE2Yk2TTEhD/Crh7IGQk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=KjdpzKcM; arc=fail smtp.client-ip=40.92.53.75
+	 Content-Type:MIME-Version; b=MqHDVIEXhs7VO5+BmXJefUlHSLtjicyhfSmaGzR7xd3f7AL5qornIYSNKfTLg4r9+Xh7Ked9Kgk/mJ/og9oE5ni+0wsDjKMbhb0G1Gc2z7/9IkSTCZ13IEjjVaCzXtQefZk7SMUylEoNmlsi0vbxpl6xW8B+m6EOAkI/7qVkGj8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=QIcfSJ0/; arc=fail smtp.client-ip=40.92.107.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FAtbfXF5rsGQA/M/XBG29GKJPTncdS3iXucvVkpyQfzPudrOGH/JFFwnlNwLdPj/7VfLHPXOfaDIi3+Ca3BV0RRqHqLDk2Jg01DrDw37ItZix8LvJyaNAPLDpyYBPJ45RnGn2eKlhuFKVg7aBg2Ay5Rshk3VYKJP4Xo/dDt5dm04J3lVvCDg22sOp7/MwwID4bnPsu9S9gMmN9Ylnovn8pRthHDj6F8Af18/oej0dcOlBJP8v4VldQgiSR2vZGjbDGJDcF25znysR6vto7RpbMJyEJdkWq2dmNCs51fOsn+OE/uY33tEaJEt1yqT6+qrbeQd0MvimMc8TLWufueVxQ==
+ b=LY4LOa+BIaQexGxXouPWyywt3y1BkEHG8SbZMwStGDIiF2rhHSycykqrfyZfwCfm4ngotUO8BOZh9rUq4pqaONAHay8BydkVSJWSS3Msy0rHrVdsUnKpBpVwKh/sVNAB+kHQkQYmz3ENvtKPhWqpVbpa6tkLtwi8uTHEb2TUcpF6nqC7t7r0lqpT8KMH/qAkyQ8rak+F0APGyhigJbFU+A9h2E8XZjV9MCKbVXzsq+VqtGwWHNw7qMIWMNW+XESut5zP/Upfm1qu5aoEO582HYyAGo9U44Uul/Ji2TABVnUdYFLtDY4G9ixnbVFsbNh2zI9VrHcAlTkxQBwxkHqN2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3YyCyFODTpMTXaUtYhMMzpo2PwfDubl6LkOiL+8ZhXM=;
- b=EPW5hUpdEwSy9kPgqhn8vk3O35D9xCrir9LCR9v8I+tCfRcJiJPEsVAbKOgPiC4Ag0G3BDMEZljpY5ITUfDyMzhEN53o1YqA0EtO1pn0g5jF9LJC/Ajenl4rYYM1/XgCL9g4FIm84qBp3IHeDQK0odBaJq9I7ikyunW0i4q4qtqNS/cShdyZdCcltmaUp4cs73ZOhOUVeKEABmIY6Hvm/z61EFJneO28mIrJIQDxblPfgKhBxUSGsm1tXlvnp/Z9y9iqHpilxo7g+xEQqeoS69ZZqh9S3nC/QJqwSedamDmShcDli2uz1sYwCWkeVWEExD2JxWtf26k74mNEhWt0sw==
+ bh=IBrdz+BslU/MR0z+hZvm27MFA0E0JHfggP9cGga+dUc=;
+ b=tWb1Kfa+EPEcho2Z/ofN760dtrkOxz9mz91S0TwAtT1LdKBwhjG0l/Fuv67A3KTsg2ngBvziUNwtcPe2om3HtS+YOTdt2ohKzBeJ/+EtZOexj00r7BhYVXl/tYI7+x6w8HnYOxAbepiyl7mjawgw/zATvDH+qp5x7HaBXvrPXCFAee1q6iYcyZhqYvGfc0ie5ExbzQ+no9pedNUxcfpUxASA6qoMxLC53F2pmhYYOSrRvKnj0r0+inskf1nLIa0A43/eZTVdNE4BWJVb5E2QMdzq6nrgebw+hY4VR30eR2CX+RjydzhAfEppUxnK0vKWOGUuDhh7s94EjZo+LQnalw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3YyCyFODTpMTXaUtYhMMzpo2PwfDubl6LkOiL+8ZhXM=;
- b=KjdpzKcMX3/2Frj7jxMgm+fjhUQeU0WKLrqGmTZpnW4SDazfT6WkJ0evjVq2kOZ8Xh061BQ270kI2Ly9AROVEAlC4mGHPapUYFSIsBkBLZ53tbwdShqtmP2alVVHcOk9Zz92WQqPSFYk5s3V+po1z8WW+/LUMbxNml0oiBAJHf7CqpbfKaNBK4QZBiXUkd2JCGAP5kZeoca7zPdphqSMujMYlEogtrizewqrdNm5+oLtayxD5xTlCI77bCGmSIxoIPW3dE5To16mQVLgS1mSdNTaxjADQ0Nm02lqDUhdZLDvxjRDJrzLkF89WRm0d6yXUb44qoTzu8r+jMYIueEleQ==
+ bh=IBrdz+BslU/MR0z+hZvm27MFA0E0JHfggP9cGga+dUc=;
+ b=QIcfSJ0/cxpJECXST/08jFKujODTomLg09zTJnNE6/1511g3NjUGuMHrB1XXzP771PfpUJztsnTYPddrVTSizxYtSXXxs0qeNETSyCdtHVwgEsp79joPvKhs8d6/oa26MaIiKmdbn8cM+DSc9mdOb+8bjAtv3ihLeEvt0aA/7AR4F6rMFubahHRqpbKw/ihH1ORxyBFwIEvkfTtnQMZW+afeO6zVVbwpHGbcmyze/Xk165u4cyF4yUNTmUQehU64lnHWR81QyW0ChW9E4GQ598Q6V98ec5tbnStZcNgPns+sjo8hwomIqoQ7C7+N4QeFiReyZELaeDVDXcA6K9e7eQ==
 Received: from TYZPR03MB8801.apcprd03.prod.outlook.com (2603:1096:405:a1::8)
  by SEYPR03MB7757.apcprd03.prod.outlook.com (2603:1096:101:147::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.16; Sat, 18 Jan
- 2025 04:00:48 +0000
+ 2025 04:06:29 +0000
 Received: from TYZPR03MB8801.apcprd03.prod.outlook.com
  ([fe80::cb5d:6807:7a00:5006]) by TYZPR03MB8801.apcprd03.prod.outlook.com
  ([fe80::cb5d:6807:7a00:5006%6]) with mapi id 15.20.8356.014; Sat, 18 Jan 2025
- 04:00:48 +0000
+ 04:06:29 +0000
 Message-ID:
- <TYZPR03MB8801A04C30D95381FD9205BED1E52@TYZPR03MB8801.apcprd03.prod.outlook.com>
-Date: Sat, 18 Jan 2025 12:00:46 +0800
+ <TYZPR03MB88015FA45675DD73D8570834D1E52@TYZPR03MB8801.apcprd03.prod.outlook.com>
+Date: Sat, 18 Jan 2025 12:06:27 +0800
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] x86/fred: Optimize the FRED entry by prioritizing
  high-probability event dispatching
-To: "H. Peter Anvin" <hpa@zytor.com>, Xin Li <xin@zytor.com>,
- Ethan Zhao <haifeng.zhao@linux.intel.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
+To: "H. Peter Anvin" <hpa@zytor.com>,
+ Ethan Zhao <haifeng.zhao@linux.intel.com>, Xin Li <xin@zytor.com>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc: tglx@linutronix.de, dave.hansen@linux.intel.com, x86@kernel.org,
  andrew.cooper3@citrix.com, mingo@redhat.com, bp@alien8.de
 References: <20250116065145.2747960-1-haifeng.zhao@linux.intel.com>
@@ -74,19 +74,19 @@ References: <20250116065145.2747960-1-haifeng.zhao@linux.intel.com>
  <56b92130-7082-422c-952c-9834ebdb7268@linux.intel.com>
  <4d485294-959b-42a6-a847-513e8e3d0070@zytor.com>
  <33b89995-b638-4a6b-a75f-8278562237c4@linux.intel.com>
- <d96d60b9-fa17-4981-a7e9-1b8bab1a7eed@zytor.com>
- <21a2dc23-a87f-42aa-b5c0-ab828b1c6ad8@zytor.com>
- <9315ac61-f617-4449-ae23-72ad23eb668a@zytor.com>
+ <c111ecfe-9055-46f3-8bd0-808a4dc039dd@zytor.com>
+ <TYZPR03MB880148D071B32806DBB1ACFFD1E52@TYZPR03MB8801.apcprd03.prod.outlook.com>
+ <C3BA43FA-06BA-416A-B8C2-0E56F2638D80@zytor.com>
 Content-Language: en-US
 From: Ethan Zhao <etzhao@outlook.com>
-In-Reply-To: <9315ac61-f617-4449-ae23-72ad23eb668a@zytor.com>
+In-Reply-To: <C3BA43FA-06BA-416A-B8C2-0E56F2638D80@zytor.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SG2PR04CA0180.apcprd04.prod.outlook.com
- (2603:1096:4:14::18) To TYZPR03MB8801.apcprd03.prod.outlook.com
+X-ClientProxiedBy: SG2PR02CA0047.apcprd02.prod.outlook.com
+ (2603:1096:3:18::35) To TYZPR03MB8801.apcprd03.prod.outlook.com
  (2603:1096:405:a1::8)
 X-Microsoft-Original-Message-ID:
- <392c3622-1b1b-4214-b67e-728783cf0f4c@outlook.com>
+ <cc7438bd-3d49-43ef-a39d-25fd797bbdc4@outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,71 +96,71 @@ MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: TYZPR03MB8801:EE_|SEYPR03MB7757:EE_
-X-MS-Office365-Filtering-Correlation-Id: f3fc8e49-6ee6-40de-b7a5-08dd3774b0d5
+X-MS-Office365-Filtering-Correlation-Id: 3200975b-3e16-435e-bb23-08dd37757c10
 X-Microsoft-Antispam:
 	BCL:0;ARA:14566002|6090799003|461199028|36102599003|15080799006|5072599009|19110799003|8060799006|440099028|3412199025;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Y2h0c1NycG1zalE5WlZZMEtac2VuM3N3aWE5T1czK1NQL0UvMEpockJ5QVJT?=
- =?utf-8?B?VjMzS3JLcERYTHlnQVdmZnlGSEQ2c1FEOU5YSTliSzI1VWxXK0lYUDN5UU1u?=
- =?utf-8?B?L2hLSGdNU3hpVzNsVGhWZG04d3RTWHQ0MW8rWlY5ZGhEM3d5T2JMQml2R0pK?=
- =?utf-8?B?WWpMU05sd3FncjE2eU1iNWRRY01hbi9pMElueERldVZwbEQ0aTh5Uk1wTC9o?=
- =?utf-8?B?Q1V1enIyVjZraGNqbVF5KzhMUi91cjBiaE5VWjAyV2xoWW00cTRmOUJ1MWJv?=
- =?utf-8?B?VVdPZXF2bXZ0cjBXdjMvMnBmSXBKS2VwTmFna0tnZFM4TzRmZSt4ZkdMRFU5?=
- =?utf-8?B?M2VBb2J1RUR5UWtDR2VvNVBEaEd4S3Rzak4ra1lGRHV6Vnlvejl1bzJMelRi?=
- =?utf-8?B?OVJHQlMzRmJHUTFpejYzS1JpSUZ4SFBVSHRGOFVObVNmdTZFUXVNR1E2M2FX?=
- =?utf-8?B?UjZIaFVNMzcwN0o3YmlzQVFqNGxpOVVBQ1pnNjd4S29OcTQrVGp4U2t1dFFT?=
- =?utf-8?B?VTdHMG9OZkxnSzhmS1Y3MW41czNjOWVRc2pEY2dzTGxwOWROdlljL2xVWkJI?=
- =?utf-8?B?a1VWaTNXaU9RK2QxVHZkVml2WjY5U0RKTlNNaytubktCVHFGYm1KRnVQQWI2?=
- =?utf-8?B?emJpZnRDT1hNc0Q2QTFjV2tjdWd6bERPaDlGSlV0eHdnenQrcFgxT1hMb0NK?=
- =?utf-8?B?ODZma2M5OG5WUEVJbnZUakViU2Zmc21iMWFacGxNakg4Y3ZMTWJhbkxsYUJG?=
- =?utf-8?B?ZkxSSU5GOTl6ekhNOG80ZFVTQmhoUng5dFMrQklPWDNvYmxla3BpYVdaenFW?=
- =?utf-8?B?b0F3ZVJBSk4rQm5IejJzSmVYRjRlWjhIMEF4bWIzczhCWlRyTHNjbkNhMDBu?=
- =?utf-8?B?eTVzcEFITHIxZ2RnUUlkSGxLYXNNVUQveXhRMjdwRnRaL0lVbFVIYkFMVUFh?=
- =?utf-8?B?QUFhdUJUY0NscjByeG5qVy82dWdqYUttV0traFErQUJJWTgwSko1YTlpbHNH?=
- =?utf-8?B?cEdEei9UVXRQemJrUkNxRW9MOC9tZUo3cnZnNnlCMlRVMm9wbEVzRWdRM2I2?=
- =?utf-8?B?bWFSc2NWRThORkJpNWw4RzNPTnQ3REFwV3pnK0Y2dnhXbVZzUGd1SFh1RnBy?=
- =?utf-8?B?SUIxMWlqTERWZm9nL0ZKaGtoWWQveThZM1dmTUVYZ3RuaHgxcGxWTlFSQW01?=
- =?utf-8?B?U3ZkUGVZNmFJSmw3NTJxcTRBRU80K3U4alRUWktVUnNBS1JCVDF6MnBqaHZn?=
- =?utf-8?B?cFFBSGlhOTk3UCtHbU4xRXB5cnYvRzJIQStQWFZWZW1vQUNjRThTNlhrVENB?=
- =?utf-8?B?NURlMXdQSWZzaFUwT2FPMnBMZjFjUjYyNVR0UlpwaWM1NEZydTlGUi9qZDEw?=
- =?utf-8?B?ME5KV29iSHFZSjNhUm1EaTBnTVFHdG1yUXFvK2xXZGpVOE54aFIzaER4QUJq?=
- =?utf-8?B?c0wzNGJ6azdqVytnTjgxMlQwb1VwOVhIcUZZMHJSN2FRZFlIYnZFY1ZmbUJn?=
- =?utf-8?Q?ZU3kOw=3D?=
+	=?utf-8?B?U3o5WTNtVWpUVHJQV0hLdFgzVTZOcklwSUNtL3Rob0I4SnhyRXlmQnR0WVhB?=
+ =?utf-8?B?L2s2NStKb21MeWZKS0d0T3ROOUUxZ2JUem55UDhLMXk5R0RjVGZCMGxsdEZW?=
+ =?utf-8?B?Z1QrZWowQTRhaHVpUjZYLzkwaWI1SENGTXJ3RERmRHZ4Qmt2SmYwNWhmWUVE?=
+ =?utf-8?B?RWNVYnJYSEhBenBYTDBTTzU5eitOQjdZdHpLdkRTQWRYR01OMm0rV01jcGF5?=
+ =?utf-8?B?cXFaNTE1clBYd3IwVk56WkE3emw0MUoxMEg5N3ltWlFYNUovWTRiclJmUUxM?=
+ =?utf-8?B?R3RHUUtGMEEyS0lrRjZPUlg4aitGejNuc0IrOXF4R1R6cmlzeGx4M0dod3dK?=
+ =?utf-8?B?b1ZJelVqQXgzSzFubEZLdm9NZ1BMU2JNMW9nUUJkckg0TVBiZEZwQ1hYYVkr?=
+ =?utf-8?B?ajkyRnZMMXc0VW0vRWZLWHJFb1c3bFJVKzllNUhUenhZTzc2emZxbmNXd1Zy?=
+ =?utf-8?B?Y2Rub293Mm9Ud1lGR3lqMEJEZmtNSjErMVd3ZlhuWUZwY3hocVBDcXJ5WElx?=
+ =?utf-8?B?MWRjNVRuYU5wUTJpTHFKK2o5UHN3OUU1SWxZbmZxMDBmT3FvTDBZWE9KZjVK?=
+ =?utf-8?B?WUFlZnRjeEdSVU4vUzh4QnowKzdzNUorU0tpTGgyYUpIUHcrb0czUVVGL3p3?=
+ =?utf-8?B?R1ZKOUU3aFYxL201Z1BuZkorUUYyWUJSdVRVNDI0VkplMGYzZlRaUkZqaGRH?=
+ =?utf-8?B?NHB4bHcyclY5YkY1MGtxSGcwczhXYVY3cERCbFkyS0RmcWhpaXlobGJIUEdI?=
+ =?utf-8?B?TjlPQzdJQ0JnVFpzdFhrajdpd01ESWNHTGRoOHg5OTZNR0o1dEF6OGZjejdn?=
+ =?utf-8?B?MGNpd0pPN0ZqOXpWUHFIRVN6OWpJUkJKWW1EaTBGSUZaOWRObVpieGpnUStH?=
+ =?utf-8?B?TFhESE8wUE9vTkI3SWRTSU9vbm1VdUs3Q1A4VGNXM3FKQUZhajUyMG1pSnlx?=
+ =?utf-8?B?Z3hwcEVkeWs3NGNiZHVZdEt1bmZBODJQOVZ5V1hXRTc2dW0rR29OV0xJeTYz?=
+ =?utf-8?B?d3ArYVJwa0IvTTYxdmFuN0FTTkVMVW1vWkNHWEp6UmplZDBxNjR2RFIvWmNa?=
+ =?utf-8?B?dkJNUU0rSGRQNVl5ck80U3RDdGE0bWRVcDZkM3hOdk5UQjdOZXhhRk12bnRa?=
+ =?utf-8?B?SGpqTStxaW14UjYyTTJCRGp1dXh6UFdoZ3JGcXlwUDNNR0gvdmlBVXZKQk5N?=
+ =?utf-8?B?SXl6VkhtTEVvYi9uSE95OG1xVFB5dzhZbmMwaDZKemozZGpZNW1vUDAxV3BH?=
+ =?utf-8?B?OGU5NUllYlhjY1gyZ3VvQ2I5bmNhUUZUQzNqc1V2NytoQTZ5YmE0cS9JM1p2?=
+ =?utf-8?B?VUFUdndvc0xTZ1NyQmhlV3pScktkQnNpYWdaR2Ivd3F3djZQUmU0Y2VCOG9T?=
+ =?utf-8?B?enhIUkQ4VFM4MkltQlR5T0ZYVERySVlaeXI3VzVBamdyZHl0cElORzl5aFBJ?=
+ =?utf-8?B?QUJVc3p3ckt2dUcwM0UrbE5VVmdiN21XVm1CWS91SWRpYmRuOExnUGcvL3hs?=
+ =?utf-8?Q?X4Rt8g=3D?=
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RmlwdXZqTVNsaUxYbFhWNC81VDZNeGJDQXd2OUJKQ2dNbGpCRWhqOCtYc0FC?=
- =?utf-8?B?SDJSL1k1WWswRGZpKytEZmxLTzkwVXJ1MWhQVEk5Z2lTZTZubkZwWDJPZHJl?=
- =?utf-8?B?MGJtdFMxMnRJZ2k0RVMyR2RQTStlNExITmQxVkFScllJYmtIdEorL3IvcWZs?=
- =?utf-8?B?dGNmL0djbDUzdFJ1VndmRGJBTTE5bklSakY4d09ydWVJR3N4d1k1dU5zUWM1?=
- =?utf-8?B?NXdISTlpNXNMTGJUOXFYa3YzT2V4UFNoQk1ZNDFVYmhhTzFTQ0pBYnFuR2Ir?=
- =?utf-8?B?aUxTNjJUTFdLUGlNVjNxRDFueVBVQThqT0gvK1JMM1N5aHdzRnZ4TlRJRnBS?=
- =?utf-8?B?eXArMUxWYkQ0UWNPakhYN1VUNE1tRTFiL0NnZFNEMnh3MUVadkZ4dlhZRDBF?=
- =?utf-8?B?WENsdFU3b1pIZ3Urai81Y2xvSlppTWhrTmFKYmlnUTBta1ZjUWlCV3dmUWdW?=
- =?utf-8?B?OWtVQVlpSU56TUxYSkp3enJUSU9OZGVoeFNFSzBtYUFFa2QyMTRZK1Vkblgv?=
- =?utf-8?B?cVdVTnltZEgxejFXVHlZMTVnNzlOWFFaQ3ZKSXUvZ0V0U2l1dzk3eHhDdVZM?=
- =?utf-8?B?dStWaUtMKzJxL0d5b3FjMi9ucXlwb1NEd2JoaXhqSk01YWV0RHRTeUhBaEJO?=
- =?utf-8?B?UHc3NGhnSHVhMnFnK0NrMWhqbDlCN29CUlJVTE1xYUM5enU0MDZ3aUhXTkxF?=
- =?utf-8?B?WE5jYk4xaXJUUUp6dW5LZkZUcHh2M0t6WmgwdGwrSmRMcTlndzlHWENVK0lX?=
- =?utf-8?B?azUxTzJxQjdZT2gzVDVzRU04WXBvNXZ0cE40NktqS2FEOFRLNCtjelFUUDBl?=
- =?utf-8?B?UDdrTWFXRUV2akZmd3VDMDNKMHFzckFlVS94L2Q4cHFnYTRpNTJIVGlwS0xR?=
- =?utf-8?B?MmtmZUxmK04vSEhUVUVmaC9jRDFMYWZ1YzZCOVExbFVFcjZ4cnYzNDlEa0Za?=
- =?utf-8?B?Mmk4NUJmRW1GNkYxM0FWdWpqWWozVFZqb3RuZ2dsNDZGTTBVM2hZTG1KMEpV?=
- =?utf-8?B?YUtnM0Z5RGFiWjVRREdSOFFUTVRGa1BxWWRMR2RuSHhKSFVrRjZjK3hlK0h6?=
- =?utf-8?B?N0VQSVZ3Tk90LzdkcCs5U2lvcnhRdFpadUdnZklZdys1TENCL0JPdS9lMmhj?=
- =?utf-8?B?b0pxY3REZXMyQ1dKd2RyVG53dldackpTbVdEZ3FRZ2xIL0VwcTdjYldGMXpu?=
- =?utf-8?B?dmgzVjNNMU1DSWNqY3g5QU5NTktMSDNSQlZyQzRDYWJ2Z3pCekJiQng5Ykgz?=
- =?utf-8?B?SzQ0RlBKN25ERDFQN0JIcm04ZWZrU0xtS2Y0ZE5TKzBIcGpsS1Z0dUNyQjBF?=
- =?utf-8?B?RDFwY3R0Uis0bmdQUndJUE9XQk5UNWgzVEp2NXR1TmhwNWorNnJpR0doeVor?=
- =?utf-8?B?OU9VVG05bUJLZExxcTRvcjl1ZDBKbUZvUkxrakhxWEhqMVJ0TjV1S1FQckRP?=
- =?utf-8?B?anEvQ2R5eWthTm40Q2Z3ODFVZVQ1ZEdPT3hHNHhMNkpGYlU3K0phZmtzMS8y?=
- =?utf-8?B?U1NtVVUraXA5L0FlOWxEa3VBWjliL2NkWXNCR2Q3ZDFnUjhmRVNtSmJVWXRX?=
- =?utf-8?B?TmRJVmU0ZDdFekF4SGtZZTVzdlpRbWVRNkhxM0ZhVk1TRlZEb3dMbzRMWnFX?=
- =?utf-8?Q?0I37TkloH79GDQOShHVyi+FbNn7ZcTc+1dlFfae7FThw=3D?=
+	=?utf-8?B?Z1oyOUlidTVScTAwbW5GamQyOWxNMTNwY2FzdkVPOXM5ZVNjYVdCQW1IYm1L?=
+ =?utf-8?B?UE54N2djeVZnelI1R2JKWHAxV2ZJR2xPNHBNRmdpTUlTdU9FejROdTV3QUtk?=
+ =?utf-8?B?Y1N2bllBZzNoVmoxd3dGT05GbE1hMW14YW1nbUYyMzFsYjFqS1pSYWFyT2dy?=
+ =?utf-8?B?VlE0MUlacStoaSswbDJ6M0ltcGdCQ2t0cm1pbnhWcmtjcmsrbDd6Mm42VkM0?=
+ =?utf-8?B?SHN4QXVOODNUaHV1RG5ORTlyT1pZSDlVQURzem1wQWpNNi9lN3lXTmxXL1ov?=
+ =?utf-8?B?R0M1RWxVNVg4ZW12Mm00VlhranZUMXBwKzV3K0NPczJJdUR4eHhRblJjUmZn?=
+ =?utf-8?B?S1gxSXNDZ2p6aGVRT2wxNW13enZCWCs5elNIZ2Q2R1pGYWUxOHJYQUkxRWZL?=
+ =?utf-8?B?aTEySlY0YW1TU0N2c3Bqbmx1dWFlQWFPVWFYaS9OY1pWd29nMHVYb0U2bjVm?=
+ =?utf-8?B?K0cwVWpOOXVqZ0c3VnhPSTk4WndpZDZSMndKYnF1Wnd0UXN4TjNEUHB0Sy9O?=
+ =?utf-8?B?THBQTTdtOVYzZEhUNmpKTUtOdkNSMVlLbXc0Z0RRQ3J4Uzc3YWNkN2huS3lU?=
+ =?utf-8?B?Z0RGU0FWakpQTk1ZMnU1TXNLY2F2dEdJR01NNm9ydFAvQVpjcXpWcStUcktO?=
+ =?utf-8?B?RlFpdnJXN3ZPOE52V29yZC9zSkdzdXBvWG9oSHRVcmZpQm5pSEl2Qjd2aitr?=
+ =?utf-8?B?MUJnYkdRT1p2enA2cjRsamlmU2NNblBSKzlRR1Zpc3ZDdnFuQjF4L1pWY3Vn?=
+ =?utf-8?B?OWJBNWQySmJiUUpIYkNDaWlENitXZUhpUk1ML2ZFVEpYY2tIcXB1NjFLaity?=
+ =?utf-8?B?SVYvSzdvOCtKaDA5NW5YeURVWHVEQzNxaFN2bDFPUDhmQWNOeTU5eHdaS0lx?=
+ =?utf-8?B?MktSQWxRVGJ6N1VvLzgvUEloZCtpQ2Y4bURmSHFkUFJHSXBRNGRKK0FhYzlC?=
+ =?utf-8?B?Sy91SW1HU2NqdU84czMrNzEvdlU3TWROa1Y4ckFoa2JFcU9nTDV2UmQrbUoz?=
+ =?utf-8?B?Wlk3K0dWZ3hxRHhXMm5QVHdlNENsaDVNazhUUFUyVnl0a0VSMUdsU3NDN29Z?=
+ =?utf-8?B?dDlYK3p1dU5wSTgwSDZRbGFaOHRWTnZid2NTcXRPbldUZFBzU3NOL2tpOUY1?=
+ =?utf-8?B?dWhMTjQ3bWR2Y0R0ZE1GS3ZGRjJnc2pGMCtBNXl5OWdTVFMzbEdQNDEyV25h?=
+ =?utf-8?B?WFYrTkVlNVRWRDAzcWxmMU1MSVNtTFhVcUZKWmROeGJ3SzU2bEMzY0NGRWVt?=
+ =?utf-8?B?RVVoazZkNjJ2Unk0alRYeUd2dzg5ZjRTVWt4Zm5rb0VnV2FzemZCd1lNYzd5?=
+ =?utf-8?B?K1FSQ2w5NkF4alVUd05GQy96L0F5NlV5ODNMdTdFb25GT2pKUE5VVFl4em9t?=
+ =?utf-8?B?ekxERERTL2J5dDZ3NHlOTGk1ZDYxZWZsdXF0RzN1RDZlcTFEVlVTZmszTG9w?=
+ =?utf-8?B?aDdSY2tHbVJlTzB6cmk2SGxIOVhtN0I4dnVrRWd1eFpWVDdTRHI4cW9zMXdz?=
+ =?utf-8?B?aklBV3VKMlZQYkhIc1lqYmV0NDRPcXQxRkxVZno0SkJzaTlLSGlqaVVacllN?=
+ =?utf-8?B?SXRrcEZVR001L1VhZnF6N3JOQ01EcS9UWFlia0JHUklnZ1ZCTmdOdmhxK3pL?=
+ =?utf-8?Q?IbDbGrpf7z1zNgJQqmDcc+HYe8Vhuq8AvuBpVG5+FRA4=3D?=
 X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f3fc8e49-6ee6-40de-b7a5-08dd3774b0d5
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3200975b-3e16-435e-bb23-08dd37757c10
 X-MS-Exchange-CrossTenant-AuthSource: TYZPR03MB8801.apcprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jan 2025 04:00:48.2024
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jan 2025 04:06:29.1190
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -168,51 +168,33 @@ X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
 	00000000-0000-0000-0000-000000000000
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR03MB7757
 
-On 1/18/2025 12:23 AM, H. Peter Anvin wrote:
-> On 1/17/25 08:17, H. Peter Anvin wrote:
+On 1/18/2025 11:41 AM, H. Peter Anvin wrote:
+> On January 17, 2025 7:29:36 PM PST, Ethan Zhao <etzhao@outlook.com> wrote:
+>> On 1/18/2025 12:24 AM, H. Peter Anvin wrote:
+>>>> In short, seems that __builtin_expect not work with switch(), at least for
+>>>>    gcc version 8.5.0 20210514(RHEL).
 >>>>
->>>> -       switch (regs->fred_ss.type) {
->>>> +       switch_likely (etype, (EVENT_TYPE_EXTINT == etype || 
->>>> EVENT_TYPE_OTHER == etype)) {
->>>
->>> This is not what I suggested, the (l) argument should be only one
->>> constant; __builtin_expect() doesn't allow 2 different constants.
->>>
+>>> For forward-facing optimizations, please don't use an ancient version of gcc as the benchmark.
+>> Even there is a latest Gcc built-in feature could work for this case, it is highly unlikely that Linus would adopt such trick into upstream kernel (only works for specific ver compiler). the same resultto those downstream vendors/LTS kernels. thus, making an optimization with latest only Gcc would construct an impractical benchmark-only performance barrier. As to the __builtin_expect(), my understanding, it was designed to only work for if(bool value) {
+>> }
+>> else if(bool value) {
+>> } The value of the condition expression returned by __builtin_expect() is a bool const. while switch(variable) expects a variable. so it is normal for Gcc that it doesn't work with it.
 >>
->> The (l) argument is not a boolean expression! It is the *expected 
->> value* of (v).
+>> If I got something wrong, please let me know.
 >>
->
-> Also, EVENT_TYPE_EXTINT == etype is not Linux style.
->
-> More fundamentally, though, I have to question this unless based on 
-> profiling, because it isn't at all clear that EXTINT is more important 
-> than FAULT (page faults, to be specific.)
->
-Perhaps the conclusion about which is more important/higher probability among EXTINT,SYSCALL,PF only applies to specific kind of workload system,
-no one-size-fit-all conclusion there to dig.
+>> Thanks,
+>> Ethan
+>>
+>>>      -hpa
+>>>
+> That is not true at all; we do that pretty much *all the time*. The reason is that the new compiler versions will become mainstream on a much shorter time scale than the lifespan of kernel code.
 
-But for a normal system, it is certainty that events like EXTINT,SYSCALL,PF would happen in higher probability than others. saving some cycles for
-their paths isn't hard to understand. just like taking shortcut at event type dispatching level, no other changes.
-
-> To optimize syscalls, you want to do a one-shot comparison of the 
-> entire syscall64 signature (event type, 64-bit flag, and vector) as a 
-> mask and compare. For 
-
-To whole event dispatching path for syscalls, yep.
-
-> that you want to make sure the compiler loads the high 32 bits into a 
-> register so that your mask and compare values can be immediates. In 
-> other words, you don't actually want it to be part of the switch at 
-> all, and you want *other* EVENT_TYPE_OTHER to fall back to the switch 
-> with regular (low) priority.
-
-switch() seems not too bad, at least compared to jump table.
+Yup, time walks forward...
+But it is very painful to backporting like jobs to make those things in position for eager/no-waiting customers.
 
 Thanks,
 Ethan
 
 >
->     -hpa
->
+> We do care about not making the code for the current mainstream compilers *worse* in the process, and we care about not *breaking* the backrev compilers.
 
