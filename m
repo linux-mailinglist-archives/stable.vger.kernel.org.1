@@ -1,89 +1,49 @@
-Return-Path: <stable+bounces-109454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15C7AA15E1B
-	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 17:36:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8FA3A15E27
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 17:54:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 863D31886ACD
-	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 16:36:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 300BB1886F38
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 16:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E85199E8B;
-	Sat, 18 Jan 2025 16:36:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hN0wx/io"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15AA519CC24;
+	Sat, 18 Jan 2025 16:54:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAF215CD78;
-	Sat, 18 Jan 2025 16:36:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45ABC7FD
+	for <stable@vger.kernel.org>; Sat, 18 Jan 2025 16:54:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737218181; cv=none; b=IAPhuhEG50BuyYvk2UqtHtpUEGpGW3bRnYEAexxzrvFP1DHZaSvm19ZChpkN2omYEuxXxnTCUwUJ7UHJasXX4umo9ndG9NlsCmIE/rbVmz2+O7bpRjFIzBAfWmPz75k4TCR890WG3R4VkKZrEHViHqWycRWnsP8R30nYjlcqWeY=
+	t=1737219277; cv=none; b=a8y/4SoubiPq1K7BcYlRWWJ4qKG7B444xKcork/GcKL+PCATTg5BagqDcvUkJp2VLzlxzEolfXRaBFMaueFOAzVNJEIBqK/4o/EunK2tQqpfZUGRX/wVs7jG5ns3CJ8nOCW3YJWiwinhkh8D5iYH/5AOmU0U8G/gaJQn7T1vCGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737218181; c=relaxed/simple;
-	bh=eh1SfXx9U8ZBjcOmI+c31uIuIYkcVWt69AWwx4rbptc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NrqCUZEtiep+Su/K4mMUUoxMWm0EEVUa0QlC1FisHfCLVRGzgYTBge6jVmX8zGyjPI3o+96FhjFcdx+soU5YCe6DpmkQ1dAent80jXSHCLh6cms780hdhaOieWikF7mKu5vKmoSFwlaYYjAN4CHYvnBaG9AQOpKJVgZCq1jW0UM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hN0wx/io; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2ef748105deso4154684a91.1;
-        Sat, 18 Jan 2025 08:36:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737218179; x=1737822979; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lBcCkYZGqUKu3cSA3W2Zh/4n8iTPp48ifQZWMJrBSVA=;
-        b=hN0wx/ioW22sNvoxIq/NN0HJmP9fU/yToeh9+e+OdTAkXUtIeM5rABjTh+UV5djpQw
-         g1Xp9w5/OfD6DAJ+dnbDIJah7EbkvCwZqpxc107jcfE4YtzkAyh/X/BJ50JfUUhAbgfc
-         v2zfdrNUMYFzvH6HEoPhW6zJolk+J3gpOMwMRNz5rVTsChfYYWttcfap7TdmQAiQCDKo
-         /MxrlzBfujqw4ns4M2lQn86io7FoS8W1UOEhWs/y85IyDBTlKF1pXDgsmnWcRVcFPfmp
-         7wpKwH+UaajRDDlmivMnK6icpXS8CN/OkEubir0Cc0sEAe9UJwVhw3UCpK+G5BU7sofR
-         Rz9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737218179; x=1737822979;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lBcCkYZGqUKu3cSA3W2Zh/4n8iTPp48ifQZWMJrBSVA=;
-        b=be3T6zHXKzi54kTwZCf8SqWEuemRYkVd/1ctRoTwfioPE5ouLhZ6yq8arRMWT1MInB
-         7YYacsIKpmlmCn6Xxik1RApBKFj1LTtvRN0VxWSTMP1gxE9qJ+QTlFDtEJQnlMcewVys
-         JnD/SCjNA7SJsDYuISjuZ+yROQ7Rd5J66GuPCi751bvLiTKFW3OqVJtu+rrD+AYyGJvS
-         1ULo9AFxmFSmtoeHd4QGJU51RkxTVJHF+sJDWZH/H0Wmhl1tge0VcindEuOxg14n30JP
-         iURqZ0QHz4bKWkTpmUJI7d2IOX+8a5EzXub4+ZKnTgeffnp911JE/tjpCAr7nd/xQAds
-         MaAg==
-X-Forwarded-Encrypted: i=1; AJvYcCVS5/Jt8UYWAsztY3VEnyoZHZloYS3+iQd545fTI5GeMNrwYHQ0K37t4u9w/825QecI83FjxBFK@vger.kernel.org, AJvYcCX4EMroZG6XbjiZbPk1hE1LA0dq9xMfemgXe+JSzgN2pOdNz2Ey5f5t7cJe1FHL9k7G2s27qRw9phBdd8U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+24z+Yx9tLL1YV/4kLkLW/JaLqPi4Ga12rsWRbMWxJLkEHzgE
-	xjhgEGdARnX8Xbgb/1TXVb5IY1JTZcdyIkqSB1ylOt8j3LrJXFLQY4QK4EQx
-X-Gm-Gg: ASbGnculGn4KUGcT9Ruth/uYqOn1FPFWy87FufGcc01Y5nNGHL+gRFXWPSgqLJxbuRA
-	W33WQ2OP1hrZWJrIlKhcvXWlSjiKKx21Gx1iTcEAPRS3qR6PPoYYQPQlLVPsShbZGqbO8ab43Rl
-	508ajPe6g2iKFHcsFfILdB9Gu8aGI/zy1VdZ8MfbMlTTh5YCKxjZLGbroxotxSgqIf+oe5BhW8z
-	w+snyUsw/vZsgPQhHOBJMQRYh++snmlmOVkhtmyjA2EEp+BBF00AY6rayyCbC2rvDpPkKk=
-X-Google-Smtp-Source: AGHT+IFIC6xQyN0czHlq14fUPCGSYmLyGoA8mjgv2tG6wO4ESEzTfyUD4RwRKSlW4dbm9htceT7Hgw==
-X-Received: by 2002:a17:90b:270c:b0:2ee:8031:cdbc with SMTP id 98e67ed59e1d1-2f782d2c9a1mr8501141a91.23.1737218179378;
-        Sat, 18 Jan 2025 08:36:19 -0800 (PST)
-Received: from nick-mbp.. ([59.188.211.160])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-2f72c2bae59sm8156962a91.30.2025.01.18.08.36.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Jan 2025 08:36:18 -0800 (PST)
-From: Nick Chan <towinchenmi@gmail.com>
-To: Hector Martin <marcan@marcan.st>,
-	Sven Peter <sven@svenpeter.dev>,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
-	asahi@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Nick Chan <towinchenmi@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] irqchip/apple-aic: Only handle PMC interrupt as FIQ when configured to fire FIQ
-Date: Sun, 19 Jan 2025 00:31:42 +0800
-Message-ID: <20250118163554.16733-1-towinchenmi@gmail.com>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1737219277; c=relaxed/simple;
+	bh=Tp7Wc2DVq6fBV+4ZDRn2KausfnrCiU9P2SQTjMaUG78=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=A8yLIXo5gsMNHkxeTPI1X9KzMn9+NHlhfl76JnSd+zARPJII4QMyEfPeGisKW+l9XHvgCrNVRSZKdj/UgYo152jzb81OP/avo2y7gx9Twbf3VrjGHmwGhmeZNfp8E81mvUO+7s+dO/o5crsiSrlEaxmq/vLDy+DJliSA6OhV8dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
+	(Authenticated sender: kovalevvv)
+	by air.basealt.ru (Postfix) with ESMTPSA id 56109233BA;
+	Sat, 18 Jan 2025 19:54:24 +0300 (MSK)
+From: Vasiliy Kovalev <kovalev@altlinux.org>
+To: stable@vger.kernel.org
+Cc: David Howells <dhowells@redhat.com>,
+	lvc-project@linuxtesting.org,
+	kovalev@altlinux.org,
+	Baokun Li <libaokun1@huawei.com>,
+	stable@kernel.org,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.1] fscache: delete fscache_cookie_lru_timer when fscache exits to avoid UAF
+Date: Sat, 18 Jan 2025 19:53:49 +0300
+Message-Id: <20250118165349.472773-1-kovalev@altlinux.org>
+X-Mailer: git-send-email 2.33.8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,46 +52,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The CPU PMU in Apple SoCs can be configured to fire its interrupt in one
-of several ways, and since Apple A11 one of the method is FIQ. Only handle
-the PMC interrupt as a FIQ when the CPU PMU has been configured to fire
-FIQs.
+From: Baokun Li <libaokun1@huawei.com>
 
-Cc: stable@vger.kernel.org
-Fixes: c7708816c944 ("irqchip/apple-aic: Wire PMU interrupts")
-Signed-off-by: Nick Chan <towinchenmi@gmail.com>
+commit 72a6e22c604c95ddb3b10b5d3bb85b6ff4dbc34f upstream.
+
+The fscache_cookie_lru_timer is initialized when the fscache module
+is inserted, but is not deleted when the fscache module is removed.
+If timer_reduce() is called before removing the fscache module,
+the fscache_cookie_lru_timer will be added to the timer list of
+the current cpu. Afterwards, a use-after-free will be triggered
+in the softIRQ after removing the fscache module, as follows:
+
+==================================================================
+BUG: unable to handle page fault for address: fffffbfff803c9e9
+ PF: supervisor read access in kernel mode
+ PF: error_code(0x0000) - not-present page
+PGD 21ffea067 P4D 21ffea067 PUD 21ffe6067 PMD 110a7c067 PTE 0
+Oops: Oops: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Tainted: G W 6.11.0-rc3 #855
+Tainted: [W]=WARN
+RIP: 0010:__run_timer_base.part.0+0x254/0x8a0
+Call Trace:
+ <IRQ>
+ tmigr_handle_remote_up+0x627/0x810
+ __walk_groups.isra.0+0x47/0x140
+ tmigr_handle_remote+0x1fa/0x2f0
+ handle_softirqs+0x180/0x590
+ irq_exit_rcu+0x84/0xb0
+ sysvec_apic_timer_interrupt+0x6e/0x90
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20
+RIP: 0010:default_idle+0xf/0x20
+ default_idle_call+0x38/0x60
+ do_idle+0x2b5/0x300
+ cpu_startup_entry+0x54/0x60
+ start_secondary+0x20d/0x280
+ common_startup_64+0x13e/0x148
+ </TASK>
+Modules linked in: [last unloaded: netfs]
+==================================================================
+
+Therefore delete fscache_cookie_lru_timer when removing the fscahe module.
+
+Fixes: 12bb21a29c19 ("fscache: Implement cookie user counting and resource pinning")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240826112056.2458299-1-libaokun@huaweicloud.com
+Acked-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[kovalev: use the `del_timer_sync()` call instead of `timer_shutdown_sync()`]
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
 ---
+Backport to fix CVE-2024-46786
+Link: https://www.cve.org/CVERecord/?id=CVE-2024-46786
+---
+ fs/fscache/main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Changes in v2:
-Fix the conditional to have the intented behavior of evaluating to true
-only when both PMCR0_IMODE is PMCR0_IMODE_FIQ and PMCR0_IACT is set by
-reverting the conditional to how it is before c7708816c944.
-
-Link to v1: https://lore.kernel.org/asahi/20250117170227.45243-1-towinchenmi@gmail.com/T
-
-- Nick Chan
-
-
- drivers/irqchip/irq-apple-aic.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/irqchip/irq-apple-aic.c b/drivers/irqchip/irq-apple-aic.c
-index da5250f0155c..2b1684c60e3c 100644
---- a/drivers/irqchip/irq-apple-aic.c
-+++ b/drivers/irqchip/irq-apple-aic.c
-@@ -577,7 +577,8 @@ static void __exception_irq_entry aic_handle_fiq(struct pt_regs *regs)
- 						  AIC_FIQ_HWIRQ(AIC_TMR_EL02_VIRT));
- 	}
+diff --git a/fs/fscache/main.c b/fs/fscache/main.c
+index dad85fd84f6f9f..dc37c9df3bef7d 100644
+--- a/fs/fscache/main.c
++++ b/fs/fscache/main.c
+@@ -114,6 +114,7 @@ static void __exit fscache_exit(void)
  
--	if (read_sysreg_s(SYS_IMP_APL_PMCR0_EL1) & PMCR0_IACT) {
-+	if ((read_sysreg_s(SYS_IMP_APL_PMCR0_EL1) & (PMCR0_IMODE | PMCR0_IACT)) ==
-+			(FIELD_PREP(PMCR0_IMODE, PMCR0_IMODE_FIQ) | PMCR0_IACT)) {
- 		int irq;
- 		if (cpumask_test_cpu(smp_processor_id(),
- 				     &aic_irqc->fiq_aff[AIC_CPU_PMU_P]->aff))
-
-base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
+ 	kmem_cache_destroy(fscache_cookie_jar);
+ 	fscache_proc_cleanup();
++	del_timer_sync(&fscache_cookie_lru_timer);
+ 	destroy_workqueue(fscache_wq);
+ 	pr_notice("Unloaded\n");
+ }
 -- 
-2.48.1
+2.33.8
 
 
