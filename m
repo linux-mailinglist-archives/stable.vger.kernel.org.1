@@ -1,117 +1,167 @@
-Return-Path: <stable+bounces-109434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBAD9A15C27
-	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 10:27:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE846A15C9D
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 13:15:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5864818899B0
-	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 09:27:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 381283A70C4
+	for <lists+stable@lfdr.de>; Sat, 18 Jan 2025 12:15:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448C117E918;
-	Sat, 18 Jan 2025 09:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 119E9158870;
+	Sat, 18 Jan 2025 12:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="j6cJJBrb";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Y5Rg6+It"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="anfoKGoF"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36081A32;
-	Sat, 18 Jan 2025 09:27:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AC918D656
+	for <stable@vger.kernel.org>; Sat, 18 Jan 2025 12:15:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737192462; cv=none; b=c+xBR0sKw8Tvi6WrFIR/N/lAGIOVz0uRuBFB9JLvmtB8LEOjQD6zGECke//xnClMEsEZAOBfura8UUgPu7ccsEmdht4TdajZ1y9QyOczowHyeHCrW1yDsWbPSytroNufm7Mh8cu7R3A8EuivXZiGJEHCztcOfDyLIZlhBVgl1Ss=
+	t=1737202524; cv=none; b=pBMF05J/23mnxkueNHwUp2UWrogOsfnOP1yoxAODQMSyXn7ld7trktPh+p5l9jLLPQqIudjrT8EX3exjg2YsGOy+k9KKGk3uGvBqJV7mxexlaYLkRGU3TfP1HT1DvbVi+gnCjuM1B0PWLuxubdboPUNn52FvEBNEAsFVGJIE9kQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737192462; c=relaxed/simple;
-	bh=QfFpxojFlK1cR6s836/jrQOwflKa0RmdYDZcDOcslH0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bCF7u4bu2eGrhl4clQb1sDKRJaljvhEpte2JVV/jW6WFCcNHLc8mgtYDIO1h+1GNpk/7mi21/kKYoZPlZjZX/WcZlZdEdmHWK7bSOV+YTfEOnMm6otjFEi9AECzzcE76gGQ0k8g8n7bpSBxSXsQIvf0H2Ek41QfwkrX7f/+xyFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=j6cJJBrb; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Y5Rg6+It; arc=none smtp.client-ip=103.168.172.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id F27051140142;
-	Sat, 18 Jan 2025 04:27:38 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Sat, 18 Jan 2025 04:27:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1737192458; x=1737278858; bh=hbbn5s1hjV
-	hA5LwIyMZO8QF6OuOBer8UprGir9N3N+Q=; b=j6cJJBrbMHoVNQFPn1Wjt6y+nS
-	tvAOBdojQrjrTHpw7Qnij8VUXNMa6v47xXzhHY/atIdw8BmSF2r81HIFI7OCx61o
-	jx5wyqHQR9Ay3QYjY9zW1PCErmc2dNlYkv3IAu7tsuqyvGrC7nx7gtfwJTCFJFvk
-	/jyNEdIpKOLrIL+NNvsX05iebJxlQVqe7qy/3b0Z32WKW3vpOxdP1cF2CUWV7ZJ3
-	Bk4nwYSjD+lq2EX7LXaods9OvwfQjF1QAJ2Dl0dYSDBsZ+hwXVVXnX1DXF5tlJ+4
-	2q2oYb1isxYVo1G85ukEjsX07FIeTdSbTYBs+DaI6P6yGHd97wldtx26vrZw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1737192458; x=1737278858; bh=hbbn5s1hjVhA5LwIyMZO8QF6OuOBer8UprG
-	ir9N3N+Q=; b=Y5Rg6+ItKcPSj5jm7gbGr8i8zlNq6w+EsqcUHF1vW+YBe+a831z
-	jLjLYOCGCc7BP4Ku2xNlKYkWguLiPv+zC56fRc0AGKdJ9iC+J/umoRz7x+4T8rV+
-	JW8Lr1cOUw/u4jEBoVTCSJ0ftSeowRG8h81lTZMDue5LXSXL+DYJ1bdrWCGgS9oW
-	w8s2AdQ632/hkP1Yfgb1UvEQvaPLTYSQH4sfU0CRLscyNhqSS2/r4eDV2bTNzLYS
-	7vEgMH6xGt6P4Epk11qr5+vavg9OeiO1RkstTjgjBfK/PLndRqh7oQBcioV+yNcF
-	dr4vSBuQMkE/KRzCzB9lEXUUuoBf4k/iYJw==
-X-ME-Sender: <xms:CnSLZxj9ytDnMrHlhlIQcOZkxK9ECZxSnDROTVXLaDNpvguJCXDq5A>
-    <xme:CnSLZ2Bv56_wDipr-PTRRhDoCLC95hEj-_Fs0r9mVmSFSCrSBagHJMgykWPAXdlMK
-    JxsGTlVYD-bPQ>
-X-ME-Received: <xmr:CnSLZxEEe7epnMwtgXKM1REft3ughQds-sP4zt9YRa76atJqpM91I_WTDgbyFzpUmEgWmci4emFFj5qcDOLhgwyxtZY6K2B5bMyjbg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudeihedgtdegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrf
-    grthhtvghrnhepheegvdevvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefh
-    gfehkeetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epghhrvghgsehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopeeipdhmohguvgepshhm
-    thhpohhuthdprhgtphhtthhopegrrhgusgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
-    epshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhu
-    gidqvghfihesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:CnSLZ2Rtl2eEZD_GaSHAwPe9ZeZS7HaeSPOecDIy2mKK69nxTeBQSA>
-    <xmx:CnSLZ-wvNfSHNTrPmssysYm0s5Rsun5NxU7Td6DSvzwmjRL0fs-Yow>
-    <xmx:CnSLZ84LKhrTnHduzjIiJ18_Y1J-i4-nF7ckEOI5nYuKUmmBR8Yx9g>
-    <xmx:CnSLZzysB-NXC7fA_jywXk4AP0cUtcV6YSr-s42-4N-13F3iET0X3w>
-    <xmx:CnSLZ1nY0fN7me7qxE7RqlLzrSGPehvB0TbkB7dPVjoiuVfHxBfH_69G>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 18 Jan 2025 04:27:38 -0500 (EST)
-Date: Sat, 18 Jan 2025 10:27:36 +0100
-From: Greg KH <greg@kroah.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: "# 3.4.x" <stable@vger.kernel.org>,
-	linux-efi <linux-efi@vger.kernel.org>
-Subject: Re: backport request
-Message-ID: <2025011828-nutmeg-reverence-4063@gregkh>
-References: <CAMj1kXFiGMeyQSMsYWuEgSnXVU4GfVC3JDLGhZ7L2=BEvxHVsQ@mail.gmail.com>
+	s=arc-20240116; t=1737202524; c=relaxed/simple;
+	bh=eWg61S/3Lo9Jw4Jtf0JuRHqAA4IfSdB9FH+nb9aQbuM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l8OaWWOMSWWJIdQ+V10GR6Ul1Ug8xhFmzFDI/xKPZZvFssAKXycWb+x8Gc85DB+g/jQMNgmEwM350OIJufhswG85JexKKJbXDhbK0KFiPQ+L1RBZj7xujTU84oh/yhmX2aiuJ8R5574odJ9/l5IwK+M4fkajgpByAdYxfswTG6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=anfoKGoF; arc=none smtp.client-ip=35.89.44.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5005a.ext.cloudfilter.net ([10.0.29.234])
+	by cmsmtp with ESMTPS
+	id Z6Akt6IpSfC5ZZ7jVtsWST; Sat, 18 Jan 2025 12:15:21 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id Z7jUtRecIXugoZ7jUtsM89; Sat, 18 Jan 2025 12:15:20 +0000
+X-Authority-Analysis: v=2.4 cv=A+anPLWG c=1 sm=1 tr=0 ts=678b9b58
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=VdSt8ZQiCzkA:10 a=7vwVE5O1G3EA:10 a=HaFmDPmJAAAA:8 a=SlZi4aQT4Pts4r2Ut8gA:9
+ a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=jNEHRUiV3KsXEr2fffS1na4/pVSuMmZ2MnReCt+KGdE=; b=anfoKGoFdfSgknU/iGJ9Xgt9Ji
+	ZTatkcW+nAJsnU0sV3PTKYvY3onABZCa6VDZtQDryzL/MmpqSuM4DBEb51QZgpiclmjJ3liYBFyod
+	uF7pQbnhZv/G3mooqG1BQdKdJcp5i4N0fouJkxu9AsKz0wmV8PA7F+sQU2xeinkrXb7Yb2xfZLWr6
+	50NHutpnAfohLnbn10gxx02qzMD8tDcAWuTOekm/ItgfQEJZB7OX1CHpNpTL9OreHLE+PQwu8lpJ1
+	TJV23Ylm0acgcfqWa5nqCvnZjE4p4OSBF2muGaA76nTgdelt3WTjNETBg99sBiyAKn/MdTtPeSpvu
+	m92cJBFA==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:48288 helo=beavis.silicon)
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1tZ7jT-001E1E-1l;
+	Sat, 18 Jan 2025 05:15:19 -0700
+From: Ron Economos <re@w6rz.net>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org
+Cc: Pavel Machek <pavel@denx.de>,
+	linux-kernel@vger.kernel.org,
+	Ron Economos <re@w6rz.net>
+Subject: [PATCH 6.1] Partial revert of xhci: use pm_ptr() instead #ifdef for CONFIG_PM conditionals
+Date: Sat, 18 Jan 2025 04:15:05 -0800
+Message-ID: <20250118121505.4052080-1-re@w6rz.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXFiGMeyQSMsYWuEgSnXVU4GfVC3JDLGhZ7L2=BEvxHVsQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1tZ7jT-001E1E-1l
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net (beavis.silicon) [73.223.253.157]:48288
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 3
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfKS58u2RAmR3kruGIpaK+ur19XxvKl/IxAdRg8jPDBiU8WiJWVMmm9mEQu3+1VskcTM4OuSK1QKhIzbatYllu2B6scwrbMLqjaJx4VOaXZ96zKPu1qV1
+ pJBCZvnJo6jVUYPUnL+DAPOjFjJYJVBxmxcYnMd40UrNcy9iD5rKTRb7m54LMCVeoon6zOwbj922pw==
 
-On Sat, Jan 18, 2025 at 10:10:11AM +0100, Ard Biesheuvel wrote:
-> Please backport
-> 
-> 0b2c29fb68f8bf3e87a9
-> efi/zboot: Limit compression options to GZIP and ZSTD
-> 
-> to v6.12. Future work on kexec and EFI zboot will only support those
-> compression methods, and currently, only Loongarch on Debian uses this
-> with a different compression method (XZ) and so now is the time to
-> make this change.
+This fixes the build when CONFIG_PM is not set
 
-Now queued up, thanks.
+Signed-off-by: Ron Economos <re@w6rz.net>
+---
+ drivers/usb/host/xhci-pci.c | 8 +++++++-
+ include/linux/usb/hcd.h     | 2 ++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-greg k-h
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index 1d71e8ef9919..2ff049e02326 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -571,6 +571,7 @@ static void xhci_pci_remove(struct pci_dev *dev)
+ 		pci_set_power_state(dev, PCI_D3hot);
+ }
+ 
++#ifdef CONFIG_PM
+ /*
+  * In some Intel xHCI controllers, in order to get D3 working,
+  * through a vendor specific SSIC CONFIG register at offset 0x883c,
+@@ -720,6 +721,7 @@ static void xhci_pci_shutdown(struct usb_hcd *hcd)
+ 	if (xhci->quirks & XHCI_SPURIOUS_WAKEUP)
+ 		pci_set_power_state(pdev, PCI_D3hot);
+ }
++#endif /* CONFIG_PM */
+ 
+ /*-------------------------------------------------------------------------*/
+ 
+@@ -761,17 +763,21 @@ static struct pci_driver xhci_pci_driver = {
+ 	/* suspend and resume implemented later */
+ 
+ 	.shutdown = 	usb_hcd_pci_shutdown,
++#ifdef CONFIG_PM
+ 	.driver = {
+-		.pm = pm_ptr(&usb_hcd_pci_pm_ops),
++		.pm = &usb_hcd_pci_pm_ops
+ 	},
++#endif
+ };
+ 
+ static int __init xhci_pci_init(void)
+ {
+ 	xhci_init_driver(&xhci_pci_hc_driver, &xhci_pci_overrides);
++#ifdef CONFIG_PM
+ 	xhci_pci_hc_driver.pci_suspend = xhci_pci_suspend;
+ 	xhci_pci_hc_driver.pci_resume = xhci_pci_resume;
+ 	xhci_pci_hc_driver.shutdown = xhci_pci_shutdown;
++#endif
+ 	return pci_register_driver(&xhci_pci_driver);
+ }
+ module_init(xhci_pci_init);
+diff --git a/include/linux/usb/hcd.h b/include/linux/usb/hcd.h
+index 575716d3672a..cd667acf6267 100644
+--- a/include/linux/usb/hcd.h
++++ b/include/linux/usb/hcd.h
+@@ -486,7 +486,9 @@ extern void usb_hcd_pci_shutdown(struct pci_dev *dev);
+ 
+ extern int usb_hcd_amd_remote_wakeup_quirk(struct pci_dev *dev);
+ 
++#ifdef CONFIG_PM
+ extern const struct dev_pm_ops usb_hcd_pci_pm_ops;
++#endif
+ #endif /* CONFIG_USB_PCI */
+ 
+ /* pci-ish (pdev null is ok) buffer alloc/mapping support */
+-- 
+2.43.0
+
 
