@@ -1,138 +1,156 @@
-Return-Path: <stable+bounces-109495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54D5BA16317
-	for <lists+stable@lfdr.de>; Sun, 19 Jan 2025 18:00:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54C2DA16399
+	for <lists+stable@lfdr.de>; Sun, 19 Jan 2025 19:36:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B3C73A6092
-	for <lists+stable@lfdr.de>; Sun, 19 Jan 2025 16:59:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 653EF3A5DEB
+	for <lists+stable@lfdr.de>; Sun, 19 Jan 2025 18:36:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A3351DF988;
-	Sun, 19 Jan 2025 16:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C441DFD9C;
+	Sun, 19 Jan 2025 18:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NKaV1550"
+	dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b="zZVQV/Yl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD891DF721
-	for <stable@vger.kernel.org>; Sun, 19 Jan 2025 16:59:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EDE42A80
+	for <stable@vger.kernel.org>; Sun, 19 Jan 2025 18:36:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737305992; cv=none; b=aox900LFTTxij+OeR8HBiESoMHluzMDs1S1zlb6WK+j5sdaMh6QOaaUoEiIdjRI+ZzxbXF0TafYX25fZDp3wUtrdHMlGh5u5tQfYm2deHe1thk61aUDYODFr99VQVbwmirhnMmma5XtoNf4DUbrkRXizb7eCBubIlSKyfXuOS9U=
+	t=1737311807; cv=none; b=CKWjuUn0kCX2r4w58bU9OavS0MsXx2dt1Q6uq/IJwsLS94QIlPQgzLBnpHFyjjRwjqigUJSOjldXl9ESe0eL9dJf7VBozAZiJNrZGJKoC9jR3s6dQ9eWe/YS7zehwNV+8LiNBqFGbZZzbCt7oF/0bgfn5LJBm//Z2HcyWhVS67g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737305992; c=relaxed/simple;
-	bh=moQ4Sx1R9uDF15Ros1s1+SmGuBjFhQZ7Ns8wG2ntmxU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B6OsygO/uhEr69ys90O7JktVV/4hKlUzzlv6p1zooqZN+9KDSK2PgDiIsYREq2uoe9L6h1nXZrZDnqkK6qwn31KPBQTaO59jxoS+S10cFsNJHNB6e2ZTwHaB+QyMRZmJYDY/8JSSKoFHGWFcgaaWVx+St/uO5HkzMkiAOJ7FWGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NKaV1550; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-437a92d7b96so36516115e9.2
-        for <stable@vger.kernel.org>; Sun, 19 Jan 2025 08:59:50 -0800 (PST)
+	s=arc-20240116; t=1737311807; c=relaxed/simple;
+	bh=ktKEZA/m9Kckb1kexLNbvMJLiO5gVTsHXasZeG9BXMk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iUNXTgZVSajRhyRXVBU3x5GZxjk7xxzvdXuryM8YEbhx98tn5hGiTgGw/yCZ6UNmlmiMVPKsHEvI1K4rl0IVoHS4e0gZ3LwqbF+2bvORKfotmCYwoyX/F7pbvluKQlW9YmiIjLTBc3+y4fPe5D25kgVelsTPcGU/eyyL1KEB2R4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net; spf=pass smtp.mailfrom=amacapital.net; dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b=zZVQV/Yl; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amacapital.net
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ab2aea81cd8so648353166b.2
+        for <stable@vger.kernel.org>; Sun, 19 Jan 2025 10:36:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1737305989; x=1737910789; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gU2K4r4ZzM/BRR+Tyo710S/yU02b9d5jbFwsNMfd6eQ=;
-        b=NKaV1550pNQjUbFDK6asjoj7qqXbwZ3MOAucx0FuXEkIQHLix1SuyidZnP9cjtrque
-         URgsqlqYkf/SXwhMB6xyf9d5eHop8jgyWcoy3+Fhk7Xur2023UBq1nfQOrKRkbVOdYN3
-         3Hd5tkWS8rFwkdlF8ndBkURsYNlFqRtjWJfgHd0nCFLnjhT3gTLZ4Z4UWrKaZP7qJa/z
-         98r6SruD/3BuHT76vhsgUzGEZR0k9zysLqM6TRWOC/w2CkcEAexcS1DLVZdFZaM0Jfhx
-         KIzMIv7FK4tE/DcDd8VzuAc1Rhs+MJTFAOMZWFAnUmg5jo3nSXjh4UEKRdZLqDac09ly
-         nNFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737305989; x=1737910789;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=amacapital-net.20230601.gappssmtp.com; s=20230601; t=1737311804; x=1737916604; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gU2K4r4ZzM/BRR+Tyo710S/yU02b9d5jbFwsNMfd6eQ=;
-        b=jXYyxnKjyGHueQy3tR/GMHzuiiGgi2UvDhhSCq6rPJunwWjs7jnjaQu/BAme5jHqhH
-         W9CWOHs032KP2+YdoYW5gU68GmA6zol4BQ26Nk4yqDAGtNJ+hJNSbW4fE79tIJmDEBsi
-         AUIV4VyMU+lmc6cHglvtVG+93/UEL59OFvBfFou3BISDp7rs2wo9xApKTyqWnjHV2W2n
-         ZNIreFFa0VkoVlXH8b4nk0KHH5I3AhfGKRn0euDUpOG//l1w2PhxHxd29R9zuK6HIaUF
-         l1ALECV1CIiqsUECQe6RAN8rY9g9L5ioID2LSrcFvnxCxyXgSRUXzPdi80cYSvFrrjvM
-         7s/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVFwayti+vVhxeFBADe3DdpJOUrAEeT0ZPuqgFC+BGD83A9YKiMNnhgfikzqGA8K0t+6s2uLH4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwutkFrQW/KXIfkO/AsQr48v/CSTx+wvNntuhg361Af162yar/S
-	cmU9grO4xbv8gQiyuXgxgU7gUGzQCBDcQqE48vNXWLJ9PMkMuh78aePScA10Y1c=
-X-Gm-Gg: ASbGnctpHi6XkEnN+/5MBukg7Vak0ig1RxVWDSXf6TKSZtURm0FovBpbi1hyTCBaXmD
-	Czt7sHSjx8Wqoofk+lDysHCK0rTwlkIuwqp2tDBx/+4ukgR5dEW/19KKen/id2cnxPlW2zoEEx2
-	CUWELF826LpN1eM+uZro0bwEBZzYmXD89jyPEPrShVYqFGQcxkDbgTMbdiNuAHbdcavWydp+dFp
-	Vaouv+NG7isiPmXl6osg7mS44xf3+fMSusyG1JGzTKnKCsEW+m8ETrzRKdr6v+7GNki
-X-Google-Smtp-Source: AGHT+IGecv9i+IP+93WZa2OpzfUcrFBdgsvIOe06ZTegWk6SGd3ckOy9AuooWsDdbYCE9mFC7/pmGQ==
-X-Received: by 2002:a05:600c:4510:b0:434:a30b:5455 with SMTP id 5b1f17b1804b1-4389144f671mr88149435e9.27.1737305989481;
-        Sun, 19 Jan 2025 08:59:49 -0800 (PST)
-Received: from linaro.org ([86.123.96.125])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bf3221b5asm7939547f8f.21.2025.01.19.08.59.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Jan 2025 08:59:48 -0800 (PST)
-Date: Sun, 19 Jan 2025 18:59:47 +0200
-From: Abel Vesa <abel.vesa@linaro.org>
-To: Tudor Ambarus <tudor.ambarus@linaro.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Eric Biggers <ebiggers@google.com>, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
-	linux-scsi@vger.kernel.org, andre.draszik@linaro.org,
-	peter.griffin@linaro.org, willmcvicker@google.com,
-	kernel-team@android.com, stable@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v2 2/4] mmc: sdhci-msm: fix dev reference leaked through
- of_qcom_ice_get
-Message-ID: <Z40vg9CZQ60HRBoa@linaro.org>
-References: <20250117-qcom-ice-fix-dev-leak-v2-0-1ffa5b6884cb@linaro.org>
- <20250117-qcom-ice-fix-dev-leak-v2-2-1ffa5b6884cb@linaro.org>
+        bh=w3Zdmxu5MPiX9Zes0b7wDyPvwS0wm8oE6bxgPE9wOSU=;
+        b=zZVQV/YltzZY4OUPKzLRV+4npSY46V275bNCuL7gtSGsauXn1x0WZp/y2s0vdU/5Qa
+         xfsHS221eD27ieMPFX4/B5sQjYhP0HLoiuageH8k8anUZPolPYVbv6vc8DfUnvXE6q7H
+         ZOAjMXUy7hrH+FgKsLlRXcLmiXxGsNo184z80i9UOlIG3CxjATu+sfL0699NFjyio0fk
+         cBWPwRIfVNc1WC/hZw+mx+R1Av6b0CiLX4j0UxGbG38QhLHD/fLZTwVFBSqTaR502S9d
+         Vbnf3TxnTX+um294VTo7+El0D2ARPb/R9olfG+5iKn6c19/FbXik+if3mNakQiak5ts1
+         aeEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737311804; x=1737916604;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=w3Zdmxu5MPiX9Zes0b7wDyPvwS0wm8oE6bxgPE9wOSU=;
+        b=f7LJ0FIBDaUhoARYYBO1h+11Xya6tf8PjjC9BtCfSuHKCeQDY+jEQwliPWUA31s9lh
+         b6mymzqo5I8Nenk0PpK5RRBGVmiynwxkgs1W6eiO+kPOuGM8lkuhlwzjLfsNRec6M1Rv
+         lP/ajNI9drPlm+o5pFBZWHpcQ5fX9lFlqEmFdHnjg5EzZ3im+u/280Xz4N/9+Blkn8Kb
+         8R2sBPRjC19Q1ymXNyRWK6x8Gi84EOe5B1hqINcKpP/gNECRyprt4HdknExor2+Jtqsc
+         vKKpG5EsuBEBtfC9SpmIQIEYTyBr4xZdmockUnXd907af/TVbiIACQbYhHOPdPNVycZG
+         MfXw==
+X-Forwarded-Encrypted: i=1; AJvYcCVTkeQwzhg9HHaeElPEYtD6aA00QG3JP6KeXjaRJDaWvnBJfset4Y5KDfhGtnmauH6u90AyLZM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXM32zm3QXFTSZppoq0WLJw5NM9EqsecawIe7Gvin86DjDmMQw
+	l+gR2B8/ghNu+KIKAv7mKIsE61WBu4F573rFCuDDDbviWxJy6eUSM6NANYObb75bOFAzYf9ksKX
+	Mnu59wTvXzwYP7oYexp7/atA+4zbrBRzz7vUz
+X-Gm-Gg: ASbGncsWkIQCBGaxX7W8vtMCxoyExDL3Lq3nZg6ZDpe31E75N0GaNH7M7Z+xNwimUkd
+	1zbY1RGR8RGG0wytFd3xxbDZBpV4WVMgUOuPBsjI7g170qz3GSw==
+X-Google-Smtp-Source: AGHT+IGpC+/AvwptvqRydDb5Zj0eMi2xtddvB/zSoMfs5AVyLa0djFfoPKt73GzvJi014dMnq37C2/o8DW9oYr4Va0Q=
+X-Received: by 2002:a17:907:1ca8:b0:aaf:ab71:bf79 with SMTP id
+ a640c23a62f3a-ab38b11281cmr871028066b.19.1737311803527; Sun, 19 Jan 2025
+ 10:36:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250117-qcom-ice-fix-dev-leak-v2-2-1ffa5b6884cb@linaro.org>
+References: <20250117005539.325887-1-eyal.birger@gmail.com>
+ <202501181212.4C515DA02@keescook> <CAHsH6GuifA9nUzNR-eW5ZaXyhzebJOCjBSpfZCksoiyCuG=yYw@mail.gmail.com>
+ <8B2624AC-E739-4BBE-8725-010C2344F61C@kernel.org>
+In-Reply-To: <8B2624AC-E739-4BBE-8725-010C2344F61C@kernel.org>
+From: Andy Lutomirski <luto@amacapital.net>
+Date: Sun, 19 Jan 2025 10:36:32 -0800
+X-Gm-Features: AbW1kvYl9WJOKS89hZXPE8Kch1rIFhznB2Beo-6EHl-4XtuMMOKO1t6RXeDBLAM
+Message-ID: <CALCETrV4vGS1brr9r=+GJu0n_WyAMxqT8x_wOJ2Gz7-yOfSzKA@mail.gmail.com>
+Subject: Re: [PATCH] seccomp: passthrough uretprobe systemcall without filtering
+To: Kees Cook <kees@kernel.org>
+Cc: Eyal Birger <eyal.birger@gmail.com>, wad@chromium.org, oleg@redhat.com, ldv@strace.io, 
+	mhiramat@kernel.org, andrii@kernel.org, jolsa@kernel.org, 
+	alexei.starovoitov@gmail.com, olsajiri@gmail.com, cyphar@cyphar.com, 
+	songliubraving@fb.com, yhs@fb.com, john.fastabend@gmail.com, 
+	peterz@infradead.org, tglx@linutronix.de, bp@alien8.de, daniel@iogearbox.net, 
+	ast@kernel.org, andrii.nakryiko@gmail.com, rostedt@goodmis.org, rafi@rbk.io, 
+	shmulik.ladkani@gmail.com, bpf@vger.kernel.org, linux-api@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 25-01-17 14:18:51, Tudor Ambarus wrote:
-> The driver leaks the device reference taken with
-> of_find_device_by_node(). Fix the leak by using devm_of_qcom_ice_get().
-> 
-> Fixes: c7eed31e235c ("mmc: sdhci-msm: Switch to the new ICE API")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
+On Sat, Jan 18, 2025 at 6:25=E2=80=AFPM Kees Cook <kees@kernel.org> wrote:
+>
+>
+>
+> On January 18, 2025 12:45:47 PM PST, Eyal Birger <eyal.birger@gmail.com> =
+wrote:
+> >I think the difference is that this syscall is not part of the process's
+> >code - it is inserted there by another process tracing it.
+>
+> Well that's nothing like syscall_restart, and now I'm convinced seccomp m=
+ust never ignore uretprobe -- a process might want to block uretprobe!
+>
 
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+I've been contemplating this.  uretprobe is a very odd syscall: it's a
+syscall that emulates a breakpoint.  So, before uretprobe-the-syscall
+was added, the process would breakpoint via a non-syscall vector, and
+the tracing code would do its thing, and seccomp would be none the
+wiser.
 
-> ---
->  drivers/mmc/host/sdhci-msm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
-> index 4610f067faca..559ea5af27f2 100644
-> --- a/drivers/mmc/host/sdhci-msm.c
-> +++ b/drivers/mmc/host/sdhci-msm.c
-> @@ -1824,7 +1824,7 @@ static int sdhci_msm_ice_init(struct sdhci_msm_host *msm_host,
->  	if (!(cqhci_readl(cq_host, CQHCI_CAP) & CQHCI_CAP_CS))
->  		return 0;
->  
-> -	ice = of_qcom_ice_get(dev);
-> +	ice = devm_of_qcom_ice_get(dev);
->  	if (ice == ERR_PTR(-EOPNOTSUPP)) {
->  		dev_warn(dev, "Disabling inline encryption support\n");
->  		ice = NULL;
-> 
-> -- 
-> 2.48.0.rc2.279.g1de40edade-goog
-> 
+There's a distinction between different types of operations that
+seccomp is entirely unaware of right now: is the task trying to:
+
+a) do something *to itself*
+
+b) do something that doesn't have meaningful side effects on the rest
+of the world, at least in a non-buggy kernel, but where the process is
+actually trying to restrict its own actions
+
+c) interacting with something outside the process, that has privilege
+over the process, where the interaction in question should absolutely
+be subject to security policy, but that security policy really ought
+to apply to the outside process.
+
+uretprobe is very much in category c, and it's kind of unique in this
+sense *as a syscall*.  But there are plenty of other examples that
+just happen to not be syscalls.  For example, ptrace breakpoints use
+the #DB vector, which isn't a syscall.
+
+Here are few factors that may be vaguely relevant:
+
+ - uretprobe is conceptually a bit like sigreturn in the sense that
+both of them are having the kernel help with something that process
+can kind-of-sort-of do all by itself.
+
+ - BUT: sigreturn is not supposed to have side effects reaching
+outside the calling task.  uretprobe does, and that's the whole point.
+
+ - uretprobe-the-syscall is, in a rather optimistic sense, obsolete.
+Once FRED becomes common (if ever...), it won't really serve much
+purpose any more.  FRED, for those not watching, at least in theory,
+makes "event delivery" and "return" fast, for all (hah!) events.
+Including breakpoints.  And returns to usermode where rcx !=3D rip, etc.
+
+
+So I don't know what the right answer is.  There's a real argument to
+be made that seccomp ought to decide that its policy permits whomever
+installed the uretprobe to do so, and that this decision means that
+the uretprobe machinery is therefore permissible.
 
