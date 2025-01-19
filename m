@@ -1,163 +1,190 @@
-Return-Path: <stable+bounces-109491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C70FDA16276
-	for <lists+stable@lfdr.de>; Sun, 19 Jan 2025 16:05:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDFDDA162CE
+	for <lists+stable@lfdr.de>; Sun, 19 Jan 2025 16:48:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0281D3A2DB5
-	for <lists+stable@lfdr.de>; Sun, 19 Jan 2025 15:05:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24B743A06F0
+	for <lists+stable@lfdr.de>; Sun, 19 Jan 2025 15:48:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86281DF251;
-	Sun, 19 Jan 2025 15:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECF21DB14C;
+	Sun, 19 Jan 2025 15:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="f59fuqJO";
-	dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="UrtWtyC7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mEOup5qs"
 X-Original-To: stable@vger.kernel.org
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.164])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00EB6BE40;
-	Sun, 19 Jan 2025 15:05:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.164
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737299142; cv=pass; b=TxGWRFhd76GG9B+CiQpX87gUpeCTndfxNC0xm8TyxJ4wOimH0ZmvIWN7p9QiA0N1yldZefJrisB9p2NKfPYR+ZIRP++mRACHZUEk9TnzE3kulP48fq0YotUc1upq24vC+WHSLAjIDlKOVPQj7EPntaEbuhUvxbIqVQJF6BsqsLs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737299142; c=relaxed/simple;
-	bh=js7MiuK4yn6yvesb1udJDB3nTTEempwvNv9RBIWTwdA=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=IdLCBkTCIyR1HGfVr2GglScaEjZQlOWIfbFsDCZGyepUVwnPxAw64Zggi3O2LUyvK85c87d6HN0DWfhtrAH26MguyY5GIVq8m9+MCqYwTr8Gb6TVb17eE8OOGb7ABOHzT7aEjbD5IfDF+D2TEfD6+Nr4Mh7FvT6nOZLZLPuN04M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=f59fuqJO; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=UrtWtyC7; arc=pass smtp.client-ip=81.169.146.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goldelico.com
-ARC-Seal: i=1; a=rsa-sha256; t=1737299110; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=bSXmu4WOTHRfKsrej9J3zsXOR6/Kbt1eyMB2N/o6py7VqQhue1UztLJrR8CvLzaqmf
-    NANZ/G5dJhsFf+GKkwEo01Lv7oNbs0oNe+vpX+T29B7V3DSoKi9ox47NN8BNq8yhsfQo
-    0p1StBHr7sBWW501cAokO0+CzQEYk7PZ4FZrAv6Mn3gdjHUUcSFmGJi+IW24qUDws09f
-    3jRiSvtOzQOE4nMq0vqNYAwH5/AkLPeUzxv28zUIaVFao/SQI9nfk6h8PXgPoLRWkpMl
-    OlneP9C53OCfUyGuJqcPFdf75j0Aos6Ob7ZehlN7alEjck3DtUqW5eJuKt69NCIM24DF
-    n+IQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1737299110;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=ki3UxbLnk4PHDC41vZYF1ruM9tY2wjl13iVYeUH1NHY=;
-    b=i5rjdMAv3GZ8RydOUedYM+BfjUisUNGEcVZHwCxbmnhUpqPdRYF4xrzcvJfS1n3elS
-    D2sfwUsyifAmG31mefUGycQCYFdXqu/sqAaiX64JyJ5NxCbCjaH/4ZM5p1fJiM5RHHRg
-    qf/P9LcyOuYm6c4s1ZPeznc2qcDWPIJ+UhbFQTNjLB14IQKJHPazzKGx16z7++hBZGVM
-    iVGK6lrYE9AsZcba2lPhSrIshtTtephmiRFcUlr0X+7AvAYboSFaOF+V//n/smm/ia9f
-    zSMJMc5g04SPJ/Vz37xvtIICh2jj42+lI2moNPeMVEXedRb9ILqMF0zD2H/+mFaSrpBm
-    cXVA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1737299110;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=ki3UxbLnk4PHDC41vZYF1ruM9tY2wjl13iVYeUH1NHY=;
-    b=f59fuqJOhq80fXEmX0sFflckjIM1m5tZKvKPmzZsUKqGWdRUqjLInek8CHFmXzBHvu
-    xWcwfYh8TsY4NnYg5LWpENoDgXQIpbKN0CRMFCTW8yJD6vadgGT9Vw9dM3EtSucdnCQR
-    tK/kM8t832OFa6g8ELbq5EHQeuGD9kYdgzizCNFqKYxVXvoQ5hcv1ysLo9VsBAZO/36b
-    Rh/SUwvMG/1/YcynQnX5T/JwxOqNas9P3wp2qMXSZ3SvEXDrOCoKgmqn+5TguuuVqsRm
-    EKAhbPl51yeTs9OmPEBdgl6x9NhGHDJFen9Le18p4WUeR/MoV2z5LuoZGNBj7PuziPeX
-    78ww==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1737299110;
-    s=strato-dkim-0003; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=ki3UxbLnk4PHDC41vZYF1ruM9tY2wjl13iVYeUH1NHY=;
-    b=UrtWtyC7bYw4S06ht8+lbB7RjWsxMQF7HjdSiZiJUXAqfQKlVduNARsBtBqR+G+xOl
-    kn5ODwTgxbva8sKAMxAg==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o12DNOsPj0lFzL1yeD4Z"
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 51.2.21 DYNA|AUTH)
-    with ESMTPSA id Qeb5b110JF5AjqT
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-	(Client did not present a certificate);
-    Sun, 19 Jan 2025 16:05:10 +0100 (CET)
-Content-Type: text/plain;
-	charset=us-ascii
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A816D531;
+	Sun, 19 Jan 2025 15:48:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737301691; cv=none; b=OuVUMA0A3DlBVPd0JK8JC8k49F8ZbvOA006NuQaR3EKWGKhVV4HjETCL5bT3k5gqLLpCrJIXNsUXgmlFTwrYSWspgLRhlr9q0x29Bp0cfng7oQd1BJkij0MST1FxSRurCM8w3F+nANzb5k7rbesVFBPiHvx7HzJxgu6sllVIsvs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737301691; c=relaxed/simple;
+	bh=ehwc0vdpZCpoJmRBWoRXEisDHYD83uzGJx7P+nUyies=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nrqrElOASk+jKHJCNYSu1bplJPjcoyFdgwIvufCBSa8dv4gMfzSKhydFTwAHo6RY+FO5mOdjHRoBZz+ykCx7acWRv9h1HYtLlabGMOqVCS0Tq5fa4FnAUmJXjlWw4+T6Mz9l4l4RxkicNcpzkBsC9AoOz544l8IIQdZ+WmgKLFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mEOup5qs; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2ee9a780de4so4692755a91.3;
+        Sun, 19 Jan 2025 07:48:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737301689; x=1737906489; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TZAYLxkgTuJqE+KNkFf+UOOQy4pcqWaU6mHRJg10BxY=;
+        b=mEOup5qsZ23oeODtzlaowv0301MVnZacndP23aG64Er9eINP1x7e40n66moEHXaZqd
+         zNda2HrwQ+hCy3aQdloBo4QgQQJqWittni4ThgivKx1J9OsR5Cxahc4rm+1e5v1aQhJe
+         BPC5QLbAzm+epZ7i81GwbhBjBUGHBELbGeX3GkGYYhEBo1goh2Yr+V/K/1OjsT2j71D9
+         Xizwc2umVFBbnWX0Jbk7slq37tEbRsXh9QDuor6Ogn6W8wuV3AXph1OxT6HgvkGT9vPx
+         lJ2Rdr1nFkluX2g33jG0M4onrmJD67T8UF9al3qITz2zbmS+ZGVG68arcJo1a2KUPXa3
+         +t+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737301689; x=1737906489;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=TZAYLxkgTuJqE+KNkFf+UOOQy4pcqWaU6mHRJg10BxY=;
+        b=OJsbB1Ju4N7vunAC/cm2pIRwyTaPdx5HqL3EdgiDKqGhEcpjJLXfbwbk43ibaT1VIB
+         7508aordGrDcUGL2F47CNeGNQ9yPHmTRwvNb5rt1I2ZpjtoKBCKJO/b1Z0FBaVSkRumq
+         e8YfnnbzDEK77jPoMuGsQ6NW9+DX+3PBeQY4oyKb7XDibrQYJxccgq0zCJn/bkUvYTFV
+         l137K/eBekm9mjTaQiCU2U+n0m3JB8akocW4t08WnQ4/2SGYPqp5gbwmiXmkjNmTlk9s
+         OQ9MmuedWlcYMbjo6hgsdIPtRrvjCXLfqpP0KiWlp+/0W93K/9scDdjxq2KGaiIrNiRq
+         dqzw==
+X-Forwarded-Encrypted: i=1; AJvYcCW+3eE8gnZQt6Iyp/pym4lOTuhvswctObPkGjcc5/8L6JJfswV+kJtIo2cyYNTObDggplD2oAXwUzdT@vger.kernel.org, AJvYcCWeiocWwkIzjPMh6SDYQwBBc6t2fvCD5wBhSTyAY61b4lTk7TCCXwcIC7BWwBRk58TJ9P1ADIT/BAqTAg0k@vger.kernel.org, AJvYcCWjAnrx1LKL01AxKjdA7W9Ahlg3+RAvYW6sqth2s5E/fBH3Ww0uPnE75d/RZ6yz1v0BHTSFxDQG@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNoy9pVJm7h0nput8HNBa8gs3IYkxsy+t8w626y6UyAgi8Z036
+	opm4LZqS6l5gVG0+G6uYRFS5iR+NBJpEk7e2OGroOBuHq+q2b+s1
+X-Gm-Gg: ASbGnctjLXkTn6pQ5/JurwdF3QDGHiSOaHIH7rDbZPCXy3O2xX5+/PC6TZxvlbGShVR
+	bF2zTW4JtPPjPcx2MimYFv8qCL9TYIJKYXKknIJFhzNzJ2oV93knt70gZstQhjaFpGT21xcfEsy
+	vLQalPDRKA0vSO0Y+wGC4Qq4t7HHxG5iOJEY3EOprmFFBTR49OR8pRp6wamLG1NScTHcMWlW2ns
+	IZeTNegp1WfUm9LxSYWsZphF0UKSZFUlT7NiJLz0SsPwqp3WQIWGbjRJtMGJC9VI8hZoIe0Cjxk
+	kItUs0be7arIFR0kYTA9gFK//DtYR88k4nMn
+X-Google-Smtp-Source: AGHT+IGvCdSeQSGbyX+8aN4u/Fdvmx1BdTLz8cpVCt8/MNmK2Wh5evJPRODkKIm2pkBBFPhYUCnl6A==
+X-Received: by 2002:a17:90b:6c3:b0:2f6:d266:f461 with SMTP id 98e67ed59e1d1-2f782d8c839mr14076613a91.30.1737301688910;
+        Sun, 19 Jan 2025 07:48:08 -0800 (PST)
+Received: from ?IPV6:2408:8362:245d:4738:bc4b:53ff:fead:2724? ([2401:b60:5:867d:3631:b7db:c3f4:aae2])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f72c14ffaasm8954154a91.4.2025.01.19.07.48.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 19 Jan 2025 07:48:08 -0800 (PST)
+Message-ID: <65f4e27f-3dc4-4eaf-be4d-265ce0325ade@gmail.com>
+Date: Sun, 19 Jan 2025 23:48:03 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.1\))
-Subject: Re: [PATCH v2] Revert v6.2-rc1 and later "ARM: dts: bcm2835-rpi: Use
- firmware clocks for display"
-From: "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <808a325f-81bc-4f5d-8c07-fa255ef2d25a@gmx.net>
-Date: Sun, 19 Jan 2025 16:04:59 +0100
-Cc: Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Florian Fainelli <f.fainelli@gmail.com>,
- Ray Jui <rjui@broadcom.com>,
- Scott Branden <sbranden@broadcom.com>,
- devicetree <devicetree@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- stable <stable@vger.kernel.org>,
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
- linux-rpi-kernel@lists.infradead.org,
- arm-soc <linux-arm-kernel@lists.infradead.org>,
- Discussions about the Letux Kernel <letux-kernel@openphoenux.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <8F33BB1D-2210-421B-A788-8484C23DF4C6@goldelico.com>
-References: <cb9e10dfb4f50207e33ddac16794ee6b806744da.1737217627.git.hns@goldelico.com>
- <808a325f-81bc-4f5d-8c07-fa255ef2d25a@gmx.net>
-To: wahrenst@gmx.net
-X-Mailer: Apple Mail (2.3776.700.51.11.1)
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: rockchip: change eth phy mode to rgmii-id for
+ orangepi r1 plus lts
+To: Dragan Simic <dsimic@manjaro.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+ Jonas Karlman <jonas@kwiboo.se>, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Peter Geis <pgwipeout@gmail.com>
+References: <20250119091154.1110762-1-cnsztl@gmail.com>
+ <ce15f141688c4c537ac3307b6fbed283@manjaro.org>
+ <59893a67-18c7-4ab3-9b2a-5a17091d4b6c@gmail.com>
+ <dffd06a341b58e9689f578c3456cc11d@manjaro.org>
+From: Tianling Shen <cnsztl@gmail.com>
+In-Reply-To: <dffd06a341b58e9689f578c3456cc11d@manjaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Stefan,
+On 2025/1/19 19:36, Dragan Simic wrote:
+> On 2025-01-19 12:15, Tianling Shen wrote:
+>> On 2025/1/19 17:54, Dragan Simic wrote:
+>>> Thanks for the patch.  Please, see a comment below.
+>>>
+>>> On 2025-01-19 10:11, Tianling Shen wrote:
+>>>> In general the delay should be added by the PHY instead of the MAC,
+>>>> and this improves network stability on some boards which seem to
+>>>> need different delay.
+>>>>
+>>>> Fixes: 387b3bbac5ea ("arm64: dts: rockchip: Add Xunlong OrangePi R1 
+>>>> Plus LTS")
+>>>> Cc: stable@vger.kernel.org # 6.6+
+>>>> Signed-off-by: Tianling Shen <cnsztl@gmail.com>
+>>>> ---
+>>>>  arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts | 3 +--
+>>>>  arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts     | 1 +
+>>>>  arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi    | 1 -
+>>>>  3 files changed, 2 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git
+>>>> a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
+>>>> b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
+>>>> index 67c246ad8b8c..ec2ce894da1f 100644
+>>>> --- a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
+>>>> +++ b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
+>>>> @@ -17,8 +17,7 @@ / {
+>>>>
+>>>>  &gmac2io {
+>>>>      phy-handle = <&yt8531c>;
+>>>> -    tx_delay = <0x19>;
+>>>> -    rx_delay = <0x05>;
+>>>> +    phy-mode = "rgmii-id";
+>>>
+>>> Shouldn't the "tx_delay" and "rx_delay" DT parameters be converted
+>>> into the "tx-internal-delay-ps" and "rx-internal-delay-ps" parameters,
+>>> respectively, so the Motorcomm PHY driver can pick them up and
+>>> actually configure the internal PHY delays?
+>>
+>> The documentation[1] says "{t,r}x-internal-delay-ps" default to 1950
+>> and that value already works fine on my board.
+>>
+>> 1. https://www.kernel.org/doc/Documentation/devicetree/bindings/net/ 
+>> motorcomm%2Cyt8xxx.yaml
+> 
+> I see, but those values differ from the values found in the
+> "tx_delay" and "rx_delay" DT parameters, so I think this patch
+> should be tested with at least one more Orange Pi R1 Plus LTS
+> board, to make sure it's all still fine.
 
-> Am 19.01.2025 um 01:36 schrieb Stefan Wahren <wahrenst@gmx.net>:
->=20
-> Hi,
->=20
-> Am 18.01.25 um 17:27 schrieb H. Nikolaus Schaller:
->> This reverts commit 27ab05e1b7e5c5ec9b4f658e1b2464c0908298a6.
->>=20
->> I tried to upgrade a RasPi 3B+ with Waveshare 7inch HDMI LCD
->> from 6.1.y to 6.6.y but found that the display is broken with
->> this log message:
->>=20
->> [   17.776315] vc4-drm soc:gpu: bound 3f400000.hvs (ops =
-vc4_drm_unregister [vc4])
->> [   17.784034] platform 3f806000.vec: deferred probe pending
->>=20
->> Some tests revealed that while 6.1.y works, 6.2-rc1 is already broken =
-but all
->> newer kernels as well. And a bisect did lead me to this patch.
-> I successfully tested every Kernel release until Linux 6.13-rc with =
-the
-> Raspberry Pi 3B+, so i prefer to step back and analyze this issue =
-further.
+This patch has been tested on 2 boards, and we will do more tests in 
+next week.
 
-Yes, I would be happy with any solution.
+Thanks,
+Tianling.
 
-> What kernel config do you use ?
+> 
+>>>
+>>>>      status = "okay";
+>>>>
+>>>>      mdio {
+>>>> diff --git a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts
+>>>> b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts
+>>>> index 324a8e951f7e..846b931e16d2 100644
+>>>> --- a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts
+>>>> +++ b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts
+>>>> @@ -15,6 +15,7 @@ / {
+>>>>
+>>>>  &gmac2io {
+>>>>      phy-handle = <&rtl8211e>;
+>>>> +    phy-mode = "rgmii";
+>>>>      tx_delay = <0x24>;
+>>>>      rx_delay = <0x18>;
+>>>>      status = "okay";
+>>>> diff --git a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi
+>>>> b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi
+>>>> index 4f193704e5dc..09508e324a28 100644
+>>>> --- a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi
+>>>> +++ b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi
+>>>> @@ -109,7 +109,6 @@ &gmac2io {
+>>>>      assigned-clocks = <&cru SCLK_MAC2IO>, <&cru SCLK_MAC2IO_EXT>;
+>>>>      assigned-clock-parents = <&gmac_clk>, <&gmac_clk>;
+>>>>      clock_in_out = "input";
+>>>> -    phy-mode = "rgmii";
+>>>>      phy-supply = <&vcc_io>;
+>>>>      pinctrl-0 = <&rgmiim1_pins>;
+>>>>      pinctrl-names = "default";
 
-a private one which enables application specific drivers.
-
-> What is the value of CONFIG_CLK_RASPBERRYPI ?
-
-CONFIG_CLK_RASPBERRYPI is not set
-
-I checked where this is defined and it is in bcm2835_defconfig and
-multi_v7_defconfig by
-
-4c6f5d4038af2c ("ARM: defconfig: enable cpufreq driver for RPi")
-
-which hides this requirement quite well and got therefore unnoticed...
-
-Setting CONFIG_CLK_RASPBERRYPI=3Dy makes HDMI work without my proposed =
-revert.
-Tested with v6.2.16, v6.6.72, v6.12.10 and v6.13-rc7.
-
-BR and thanks,
-Nikolaus=
 
