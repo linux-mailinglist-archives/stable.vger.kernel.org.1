@@ -1,155 +1,169 @@
-Return-Path: <stable+bounces-109485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C173DA16163
-	for <lists+stable@lfdr.de>; Sun, 19 Jan 2025 12:37:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E51A16171
+	for <lists+stable@lfdr.de>; Sun, 19 Jan 2025 12:49:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D08FA3A6804
-	for <lists+stable@lfdr.de>; Sun, 19 Jan 2025 11:36:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9CF91886199
+	for <lists+stable@lfdr.de>; Sun, 19 Jan 2025 11:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6621B21AA;
-	Sun, 19 Jan 2025 11:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674161ACEA6;
+	Sun, 19 Jan 2025 11:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="fowsOrqX"
+	dkim=pass (2048-bit key) header.d=o2.pl header.i=@o2.pl header.b="yg2p8vqK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15DD2F2F;
-	Sun, 19 Jan 2025 11:36:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F1C19E7F8
+	for <stable@vger.kernel.org>; Sun, 19 Jan 2025 11:49:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737286616; cv=none; b=EOwE+Wjn5rB30hcdR0JShm4jGn6iAOpnr+i6HjhkogckDLl91bqFn/+Hvg2m9sNfbv/G8wHVpNix0pk1z3GYa9kd0so2McMHMBo7AxgCQ7FfHW1+52ROPIydi+/pOf1Lzsn5T96pzMWezXvUiK1FDf9m9z8Ng0MANCca9LgR6sc=
+	t=1737287359; cv=none; b=r5IVaJdhLxBDfaa1bvzTz6c/K8Oj6GV0OPkFtQu6xxfRaqFPUeWc1TGnPvFe/jPUC66DzQqjTI/OBUNAeIBtH24JmepEoubNnCWJPcjhNYBdaWO7vxPxo63KjUozwEXIfG92xW5M32ML4YSsWLyQXzSs7ZTAr4IfydzEOdJaHUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737286616; c=relaxed/simple;
-	bh=tnC3cVs+hRwTDlHKVY2GWtqM6FUVAyHNOTtxstrZ6I0=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=Vhzt61pbe3bgM+BVK37c56PM1D+VVOUxbL80/f8AxjP5sx8u8tbyzkWNgvodcnr+t2miH9KwvL3lPngJE6LK6/p08Csk9HCBRAsJwFSmeuRkcOyGNUvayFhOjMbTLAT6M98ptvTX5BniPWpyI5s1HhJ739qzpySWyeBJw+YtYjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=fowsOrqX; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1737287359; c=relaxed/simple;
+	bh=9AvbpD/4VYDe3mBnX5PuXOfKlbvCeXAWJECqqjLeN70=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=iQ5/so9cCEJ/jvyZF+uyR6DkFJeihbH/+OP/LshXiOUMPQ94Y0ZWG+Ijqmy2h1pHshhhyNOgX2hWF7iqPdpZud/x0hFcPLsNyo5j2ZlUT5h5fDqCsOA2Gf32qp++RKI+QhWn3SjH4LAyidsiS4jViDgLvX5KNJuzv2bnlmHGJl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (2048-bit key) header.d=o2.pl header.i=@o2.pl header.b=yg2p8vqK; arc=none smtp.client-ip=193.222.135.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
+Received: (wp-smtpd smtp.tlen.pl 49114 invoked from network); 19 Jan 2025 12:42:32 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=20241105;
+          t=1737286952; bh=xceQI/c5L0JUp9/0lwcIT4V1H2vgf5/EZpyZJD+6pVc=;
+          h=Subject:From:To:Cc;
+          b=yg2p8vqKyKJjmd7i/3N8u0WB+W32FzSdWJdBmnbSUzvm+etAVV3c7rUReDWoWgfwP
+           zHAWWynbe6os+whtLUzC7s7O7y9Y04U48xC49qjnvwlhd+b+gNnuTRFBYYh40mQ3Ys
+           VIjOrBXVGLqf25ODugJKdUcdwGZPVOQkHgTSZc7rUpls55hVsJdfzkM4qcCdj4X3yQ
+           8DCf5UGeLTg/OdPwRu+Et/6Od0E0f7GN7LfJWZqnOY+kf0EHvC8c2sV8ys5M6WcBWo
+           tia5NeiTwUeYaWWvXcpVYNMRLfGe+bbx64MuRJFw/dXunBUaPY+fwESC8Glf26A2OS
+           Epbcg34ALWZ4Q==
+Received: from unknown (HELO [192.168.1.22]) (mat.jonczyk@o2.pl@[37.109.147.248])
+          (envelope-sender <mat.jonczyk@o2.pl>)
+          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <jiaxun.yang@flygoat.com>; 19 Jan 2025 12:42:32 +0100
+Message-ID: <017febf1-b801-4bdf-99bc-2e3c348c6643@o2.pl>
+Date: Sun, 19 Jan 2025 12:42:30 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1737286612;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=INVDIv/HWfQ/VgBF6o3bOQpBfdqdzLV30nK1vf4ycdw=;
-	b=fowsOrqXCmNuhDPRWhfaMHpCXeNNY9+gEwBhJYXcWhfjuicO50pAZEm6kv8Tnc5DD2B6he
-	QeRLQIuNb9lQTG6n+xjB+r9KRLQeRNfqlfNW6sZxQ4Sygc5UMbBT0jiN7xHExkiey1w5SB
-	gWKeHiuKIsjglMi9NAToLapjsZFGH7jaCfpi3SruDewz2UFaM8ini85tLbLRDePtRCaMo+
-	FH2B/peXfqOqBV5dq3225qf/mpA4xpshLXNjuF8HP302aHsd/a53BsTdBTwaDt7pPGOPxb
-	OiS5fWzadzwZmfYZkB9Ud6csyb1YSzqJ/31DlngJQidPxyKfmJFtxl5NReZLjQ==
-Date: Sun, 19 Jan 2025 12:36:52 +0100
-From: Dragan Simic <dsimic@manjaro.org>
-To: Tianling Shen <cnsztl@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, Jonas
- Karlman <jonas@kwiboo.se>, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, Peter Geis
- <pgwipeout@gmail.com>
-Subject: Re: [PATCH] arm64: dts: rockchip: change eth phy mode to rgmii-id for
- orangepi r1 plus lts
-In-Reply-To: <59893a67-18c7-4ab3-9b2a-5a17091d4b6c@gmail.com>
-References: <20250119091154.1110762-1-cnsztl@gmail.com>
- <ce15f141688c4c537ac3307b6fbed283@manjaro.org>
- <59893a67-18c7-4ab3-9b2a-5a17091d4b6c@gmail.com>
-Message-ID: <dffd06a341b58e9689f578c3456cc11d@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MIPS: pci-legacy: Override pci_address_to_pio
+From: =?UTF-8?Q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Arnd Bergmann <arnd@arndb.de>, Baoquan He <bhe@redhat.com>
+Cc: linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250114-malta-io-fixes-v1-1-74ef1dc402ec@flygoat.com>
+ <6946ae6b-814c-4916-9428-e823c83aed3d@o2.pl>
+Content-Language: en-GB, pl
+Autocrypt: addr=mat.jonczyk@o2.pl; keydata=
+ xsFNBFqMDyQBEAC2VYhOvwXdcGfmMs9amNUFjGFgLixeS2C1uYwaC3tYqjgDQNo/qDoPh52f
+ ExoTMJRqx48qvvY/i6iwia7wOTBxbYCBDqGYxDudjtL41ko8AmbGOSkxJww5X/2ZAtFjUJxO
+ QjNESFlRscMfDv5vcCvtH7PaJJob4TBZvKxdL4VCDCgEsmOadTy5hvwv0rjNjohau1y4XfxU
+ DdvOcl6LpWMEezsHGc/PbSHNAKtVht4BZYg66kSEAhs2rOTN6pnWJVd7ErauehrET2xo2JbO
+ 4lAv0nbXmCpPj37ZvURswCeP8PcHoA1QQKWsCnHU2WeVw+XcvR/hmFMI2QnE6V/ObHAb9bzg
+ jxSYVZRAWVsdNakfT7xhkaeHjEQMVRQYBL6bqrJMFFXyh9YDj+MALjyb5hDG3mUcB4Wg7yln
+ DRrda+1EVObfszfBWm2pC9Vz1QUQ4CD88FcmrlC7n2witke3gr38xmiYBzDqi1hRmrSj2WnS
+ RP/s9t+C8M8SweQ2WuoVBLWUvcULYMzwy6mte0aSA8XV6+02a3VuBjP/6Y8yZUd0aZfAHyPi
+ Rf60WVjYNRSeg27lZ9DJmHjSfZNn1FrtZi3W9Ff6bry/SY9D136qXBQxPYxXQfaGDhVeLUVF
+ Q+NIZ6NEjqrLQ07LEvUW2Qzk2q851/IaXZPtP6swx0gqrpjNrwARAQABzSRNYXRldXN6IEpv
+ xYRjenlrIDxtYXQuam9uY3p5a0BvMi5wbD7CwX4EEwECACgFAlqMDyQCGwMFCRLMAwAGCwkI
+ BwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEPvWWrhhCv7Gb0MQAJVIpJ1KAOH6WaT8e65xZulI
+ 1jkwGwNp+3bWWc5eLjKUnXtOYpa9oIsUUAqvh/L8MofGtM1V11kSX9dEloyqlqDyNSQk0h52
+ hZxMsCQyzjGOcBAi0zmWGYB4xu6SXj4LpVpIPW0sogduEOfbC0i7uAIyotHgepQ8RPGmZoXU
+ 9bzFCyqZ8kAqwOoCCx+ccnXtbnlAXQmDb88cIprAU+Elk4k4t7Bpjn2ek4fv35PsvsBdRTq3
+ ADg8sGuq4KQXhbY53n1tyiab3M88uv6Cv//Ncgx+AqMdXq2AJ7amFsYdvkTC98sx20qk6Cul
+ oHggmCre4MBcDD4S0qDXo5Z9NxVR/e9yUHxGLc5BlNj+FJPO7zwvkmIaMMnMlbydWVke0FSR
+ AzJaEV/NNZKYctw2wYThdXPiz/y7aKd6/sM1jgPlleQhs3tZAIdjPfFjGdeeggv668M7GmKl
+ +SEzpeFQ4b0x64XfLfLXX8GP/ArTuxEfJX4L05/Y9w9AJwXCVEwW4q17v8gNsPyVUVEdIroK
+ cve6cgNNSWoxTaYcATePmkKnrAPqfg+6qFM4TuOWmyzCLQ1YoUZMxH+ddivDQtlKCp6JgGCz
+ c9YCESxVii0vo8TsHdIAjQ/px9KsuYBmOlKnHXKbj6BsE/pkMMKQg/L415dvKzhLm2qVih7I
+ U16IAtK5b7RpzsFNBFqMDyQBEACclVvbzpor4XfU6WLUofqnO3QSTwDuNyoNQaE4GJKEXA+p
+ Bw5/D2ruHhj1Bgs6Qx7G4XL3odzO1xT3Iz6w26ZrxH69hYjeTdT8VW4EoYFvliUvgye2cC01
+ ltYrMYV1IBXwJqSEAImU0Xb+AItAnHA1NNUUb9wKHvOLrW4Y7Ntoy1tp7Vww2ecAWEIYjcO6
+ AMoUX8Q6gfVPxVEQv1EpspSwww+x/VlDGEiiYO4Ewm4MMSP4bmxsTmPb/f/K3rv830ZCQ5Ds
+ U0rzUMG2CkyF45qXVWZ974NqZIeVCTE+liCTU7ARX1bN8VlU/yRs/nP2ISO0OAAMBKea7slr
+ mu93to9gXNt3LEt+5aVIQdwEwPcqR09vGvTWdRaEQPqgkOJFyiZ0vYAUTwtITyjYxZWJbKJh
+ JFaHpMds9kZLF9bH45SGb64uZrrE2eXTyI3DSeUS1YvMlJwKGumRTPXIzmVQ5PHiGXr2/9S4
+ 16W9lBDJeHhmcVOsn+04x5KIxHtqAP3mkMjDBYa0A3ksqD84qUBNuEKkZKgibBbs4qT35oXf
+ kgWJtW+JziZf6LYx4WvRa80VDIIYCcQM6TrpsXIJI+su5qpzON1XJQG2iswY8PJ40pkRI9Sm
+ kfTFrHOgiTpwZnI9saWqJh2ABavtnKZ1CtAY2VA8gmEqQeqs2hjdiNHAmRxR2wARAQABwsFl
+ BBgBAgAPBQJajA8kAhsMBQkSzAMAAAoJEPvWWrhhCv7GhpYP/1tH/Kc35OgWu2lsgJxR9Z49
+ 4q+yYAuu11p0aQidL5utMFiemYHvxh/sJ4vMq65uPQXoQ3vo8lu9YR/p8kEt8jbljJusw6xQ
+ iKA1Cc68xtseiKcUrjmN/rk3csbT+Qj2rZwkgod8v9GlKo6BJXMcKGbHb1GJtLF5HyI1q4j/
+ zfeu7G1gVjGTx8e2OLyuBJp0HlFXWs2vWSMesmZQIBVNyyL9mmDLEwO4ULK2quF6RYtbvg+2
+ PMyomNAaQB4s1UbXAO87s75hM79iszIzak2am4dEjTx+uYCWpvcw3rRDz7aMs401CphrlMKr
+ WndS5qYcdiS9fvAfu/Jp5KIawpM0tVrojnKWCKHG4UnJIn+RF26+E7bjzE/Q5/NpkMblKD/Y
+ 6LHzJWsnLnL1o7MUARU++ztOl2Upofyuj7BSath0N632+XCTXk9m5yeDCl/UzPbP9brIChuw
+ gF7DbkdscM7fkYzkUVRJM45rKOupy5Z03EtAzuT5Z/If3qJPU0txAJsquDohppFsGHrzn/X2
+ 0nI2LedLnIMUWwLRT4EvdYzsbP6im/7FXps15jaBOreobCaWTWtKtwD2LNI0l9LU9/RF+4Ac
+ gwYu1CerMmdFbSo8ZdnaXlbEHinySUPqKmLHmPgDfxKNhfRDm1jJcGATkHCP80Fww8Ihl8aS
+ TANkZ3QqXNX2
+In-Reply-To: <6946ae6b-814c-4916-9428-e823c83aed3d@o2.pl>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
+X-WP-MailID: 98180e53ed90edec5f872ee9e4e7866e
+X-WP-AV: skaner antywirusowy Poczty o2
+X-WP-SPAM: NO 0000000 [8fOk]                               
 
-On 2025-01-19 12:15, Tianling Shen wrote:
-> On 2025/1/19 17:54, Dragan Simic wrote:
->> Thanks for the patch.  Please, see a comment below.
->> 
->> On 2025-01-19 10:11, Tianling Shen wrote:
->>> In general the delay should be added by the PHY instead of the MAC,
->>> and this improves network stability on some boards which seem to
->>> need different delay.
->>> 
->>> Fixes: 387b3bbac5ea ("arm64: dts: rockchip: Add Xunlong OrangePi R1 
->>> Plus LTS")
->>> Cc: stable@vger.kernel.org # 6.6+
->>> Signed-off-by: Tianling Shen <cnsztl@gmail.com>
->>> ---
->>>  arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts | 3 +--
->>>  arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts     | 1 +
->>>  arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi    | 1 -
->>>  3 files changed, 2 insertions(+), 3 deletions(-)
->>> 
->>> diff --git
->>> a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
->>> b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
->>> index 67c246ad8b8c..ec2ce894da1f 100644
->>> --- a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
->>> +++ b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
->>> @@ -17,8 +17,7 @@ / {
->>> 
->>>  &gmac2io {
->>>      phy-handle = <&yt8531c>;
->>> -    tx_delay = <0x19>;
->>> -    rx_delay = <0x05>;
->>> +    phy-mode = "rgmii-id";
->> 
->> Shouldn't the "tx_delay" and "rx_delay" DT parameters be converted
->> into the "tx-internal-delay-ps" and "rx-internal-delay-ps" parameters,
->> respectively, so the Motorcomm PHY driver can pick them up and
->> actually configure the internal PHY delays?
-> 
-> The documentation[1] says "{t,r}x-internal-delay-ps" default to 1950
-> and that value already works fine on my board.
-> 
-> 1. 
-> https://www.kernel.org/doc/Documentation/devicetree/bindings/net/motorcomm%2Cyt8xxx.yaml
+W dniu 14.01.2025 o 19:42, Mateusz Jończyk pisze:
+> W dniu 14.01.2025 o 19:11, Jiaxun Yang pisze:
+>> pci-legacy systems are not using logic_pio to managed PIO
+>> allocations, thus the generic pci_address_to_pio won't work
+>> when PCI_IOBASE is defined.
+>>
+>> Override the function to use architecture implementation to
+>> fix the problem.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 4bfb53e7d317 ("mips: add <asm-generic/io.h> including")
+>> Reported-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+>> Closes: 
+>> https://lore.kernel.org/r/99f75c66-4c2d-45dc-a808-b5ba440c7551@app.fastmail.com/
+>> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-I see, but those values differ from the values found in the
-"tx_delay" and "rx_delay" DT parameters, so I think this patch
-should be tested with at least one more Orange Pi R1 Plus LTS
-board, to make sure it's all still fine.
+Hello,
 
->> 
->>>      status = "okay";
->>> 
->>>      mdio {
->>> diff --git a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts
->>> b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts
->>> index 324a8e951f7e..846b931e16d2 100644
->>> --- a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts
->>> +++ b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts
->>> @@ -15,6 +15,7 @@ / {
->>> 
->>>  &gmac2io {
->>>      phy-handle = <&rtl8211e>;
->>> +    phy-mode = "rgmii";
->>>      tx_delay = <0x24>;
->>>      rx_delay = <0x18>;
->>>      status = "okay";
->>> diff --git 
->>> a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi
->>> b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi
->>> index 4f193704e5dc..09508e324a28 100644
->>> --- a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi
->>> +++ b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi
->>> @@ -109,7 +109,6 @@ &gmac2io {
->>>      assigned-clocks = <&cru SCLK_MAC2IO>, <&cru SCLK_MAC2IO_EXT>;
->>>      assigned-clock-parents = <&gmac_clk>, <&gmac_clk>;
->>>      clock_in_out = "input";
->>> -    phy-mode = "rgmii";
->>>      phy-supply = <&vcc_io>;
->>>      pinctrl-0 = <&rgmiim1_pins>;
->>>      pinctrl-names = "default";
+Tested on:
+
+- mips64el, QEMU malta - RTC is working, no suspicious warnings in dmesg,
+
+- mipsel, QEMU malta - RTC is working, no suspicious warnings in dmesg,
+
+- fuloong2e_defconfig, in QEMU on Ubuntu 24.04 - kernel does not boot, 
+with or without this patch:
+
+         [...]
+         pps_core: LinuxPPS API ver. 1 registered
+         pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo 
+Giometti <giometti@linux.it>
+         PTP clock support registered
+         PCI host bridge to bus 0000:00
+         pci_bus 0000:00: root bus resource [mem 0x14000000-0x1c000000]
+         pci_bus 0000:00: root bus resource [io  0x4000-0xffff]
+         pci_bus 0000:00: No busn resource found for root bus, will use 
+[bus 00-ff]
+         pci 0000:00:00.0: [df53:00d5] type 00 class 0x060000 
+conventional PCI endpoint
+         pci 0000:00:05.0: [1106:0686] type 00 class 0x060100 
+conventional PCI endpoint
+         qemu-system-mips64el: hw/pci/pci.c:297: 
+pci_bus_change_irq_level: Assertion `irq_num < bus->nirq' failed.
+
+- loongson3_defconfig, in QEMU (target loongson3-virt) - no important 
+differences in dmesg output, but this
+   platform does not use RTC CMOS, but a Goldfish RTC,
+
+Greetings,
+
+Mateusz
+
 
