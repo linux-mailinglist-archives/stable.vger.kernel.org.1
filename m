@@ -1,212 +1,181 @@
-Return-Path: <stable+bounces-109483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96A34A16146
-	for <lists+stable@lfdr.de>; Sun, 19 Jan 2025 11:44:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACA4CA16157
+	for <lists+stable@lfdr.de>; Sun, 19 Jan 2025 12:16:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFFD8165104
-	for <lists+stable@lfdr.de>; Sun, 19 Jan 2025 10:44:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D095316538B
+	for <lists+stable@lfdr.de>; Sun, 19 Jan 2025 11:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B06E1B86EF;
-	Sun, 19 Jan 2025 10:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE711B0420;
+	Sun, 19 Jan 2025 11:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K8+psl9g"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g0sfad/e"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A91213C80E;
-	Sun, 19 Jan 2025 10:44:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D401C2905;
+	Sun, 19 Jan 2025 11:16:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737283484; cv=none; b=mqXTQxxDZO8lj6lVNXire5heCv16NrUM8IjvLRVFkcuc4dZg64Rl0aF9bv/0vRhZJLZ6FPyppmq9MyXPZOHyDlojmu527JtVXVGaJK0QfF9vWAaRVbSfuS/GGrG7qQs11CheKOnRnIQCdmS1ythXBuBirjLKUrqlGxhFrZKNLmw=
+	t=1737285364; cv=none; b=mRtjBH3bGFhOdJ23DYxUUCHWbxirpJ2sC7FimKs8rCR0McqbzbEHhLhSCbZoagT/83F/2unvVXHkQ/eUZu5wnLtpv4R3cXJTMSsTYlwK2TT9d5iDnNWlbhFYCi4zSpSr7K0TNEpCpIk/YxeuQfyEQGXwQL/4V3uWZMXEu0iMtVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737283484; c=relaxed/simple;
-	bh=lb55ckuAR8lfHsBUK+wyTlK9di7ed3BL2MRAC9jPiQw=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OkWIfuVQhVrGQtjbyTAc0UhYOieo8M8NzxwvHEmyTyyB6Dezgqdw0rlNiMDY9+vHjNDHrD6sVBSrRl1IyeCYe5lnrWlAEKINq2sIPA2Y0HEfIs1sDNYygIQoHSaLehG1kmoBtwchSSulu7D/psLpexm0kxyjpL+9bxOF0t929ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K8+psl9g; arc=none smtp.client-ip=209.85.218.44
+	s=arc-20240116; t=1737285364; c=relaxed/simple;
+	bh=IDueMa37i4dWX7Tn9RD3kf9FqIjkgnSgpD61uu7O6iM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V+M3BHkjFRPGcmSJio3HvexA/prWqoAxGA67tgmb8SP08F9NsX+/XczdndX2uxjGAXPvZ8hVWRztdQPWgZByp57mQj/1avEJAXP5jFDlHmTHiOVxGnJyYvUd0GiZobDFiPjE5zr1Y31YI3Lu5fwOil+RNnpI3H3l8GOH/i2f5kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g0sfad/e; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ab2bb0822a4so710123466b.3;
-        Sun, 19 Jan 2025 02:44:42 -0800 (PST)
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-218c8aca5f1so84957195ad.0;
+        Sun, 19 Jan 2025 03:16:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737283481; x=1737888281; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=3iIRit5OxlfyRRtJQo/bMu4Bqq6EWcAF4iWmraH3mXE=;
-        b=K8+psl9gnlHnjgHpRX+2DQJYD41Jq9F1K3GtdJDNKtLkMhItM/xXw0j/ChvxQm/asU
-         etGvmEPa12Rq36kzeDjeuoU1ddcCzzqxI00bwDJwPp13llr92Rot0cDe52qWK3UuKbBt
-         V/Jg9J9v/Nhqjo35hP8Rotpn8sZ61T5krV02vuDleto3G/DlDSHaqaXIp5+xR6AgYxUF
-         eP5ODDED/trOe9a52Xjl9BbE1+pHve02/mevgeEQqTuTvSRTdFyg+QJGAcc/K2RQP/Xh
-         6H2wnp0hM790j5/evxXrkbz6IKkL16+QQl4YO9Y/ZV0hpB4jK/HCpNIaE4oAbuoOx8dZ
-         RVBg==
+        d=gmail.com; s=20230601; t=1737285362; x=1737890162; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jFwAN4NPK1DZJMX46y1FOD2OnkFuCtYDMQ81C7qA/Ns=;
+        b=g0sfad/eMuB5RZd9AWdHEXl/cdxd2jIy0gLsOsNYbZNb7kTh64hWZaqBI3x/mnE3EQ
+         t4Ws1T4HmULfOqSEGMZiLtSfcE9TiLNtLqRcRM6uB1WtIrstLtzJTd+He8DXUxEMreVP
+         gnOG7CzUOb6Udtpv62Vj+xwuM+GbSesaVeWiZif0ODQl6G9Xy2uz/uyZIECy9b6P+28g
+         XZnnErVbmi78cHuxJr9vus85jaLa8Q77XfzfWl6wHcjAejSt+uNCxjl+WIXnSIrhsy8L
+         juEYvtYONyYmOtrWD3ZItDXL4Tx60owL+23ZJc6x87FTV4idxZi2M/XuZy5Ed7LcjfFG
+         qcTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737283481; x=1737888281;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3iIRit5OxlfyRRtJQo/bMu4Bqq6EWcAF4iWmraH3mXE=;
-        b=A3vhLGtvbMLO18HBbrsAGa3hqkWwTBTccXzySbMMnt9jb19ES4o3ok1eqqo5EoDTPV
-         Kw5E6XC5I2xRV3xB5K3Tlbf7MbNdA+zdEvqCJVlsCembkZEDB/FDAmFLdhQDz5SHzGYe
-         KmIaLJVDxuD36F4HN5D24S8IpABOxswgdGs2xxzXBWvz7N/y1P3gN7+SfxfXqMM52WJ2
-         LGazdqexAQlU7fZgW7Nu8Evko5G4mPjHNazJbRdXCjXQVFPDIxIU7NxBWccNPZXKk3PJ
-         KjILVznvSoxpX3Laon3ss2izvDfosTmZi/uSeGIHbsPwwt5pCcw/lG+EF/DqRFn0lItp
-         2sfg==
-X-Forwarded-Encrypted: i=1; AJvYcCUzDXUBI3Kj2lGwBcGMAn6VYgemfm0EBcKAH1GB6JOVMbJG5y0Wdwzz9BmxALbTSxAn/0E0Z0F/pgbU@vger.kernel.org, AJvYcCVMSxAztRuQKDiYMRMkEPHfNpq36RLbCzijDionSOnOgqZ7m8eNvfQWl/sRraINzfU2UDmzKdqZ@vger.kernel.org, AJvYcCW2BMMoSWLsRgHkXglk6EPUWLF/ys+ICZxTg1CNB3Z93ijA13ZgMPRdv62VFPcD+jNdDbNI+854AjjLssAj@vger.kernel.org, AJvYcCWi8w48FdgpPT0n2l/9KiNZcPhHSSi5fLXe5MH5pK28IlM6QSrvcCrgddTROBIjbiBogk+Ip9pEChxKRRd7axDgLVf1@vger.kernel.org, AJvYcCX8Woo0cN+wLcOKn7RsAV3BfoJ4pQbw8UaJo7B+ZH87ZCGb7wjw3mwyjGR+Z0XhAfvs/e4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnxSpQQ0IXP/MGTWw0+xmZro9MIkWqMHb4w3LT7WRdSiRuVqk3
-	9Im12MGztLdkfyB6OJZsoKInvRHPEO2ITgMWuSCcwS1LL+WdvLLB
-X-Gm-Gg: ASbGnctRf+9qLiq4ZnLfBCuYPD3ISYRpKEPX2khISyoQzd3eWEhhAhgDW0JczpRYnp+
-	Foji+C5RSo8uv3jJr2SvzF6GP12cOnTW2TMTXNronMKKLCr3eNBTXgrINFHkaiTmXb+DaZKpAIR
-	1H5RdUQYjfMl+7pu5To0Zc0SE17JXY2rEu0vsBtXShURq2ge5Qa0tOfQRAsPAGtfpP4bwG6E740
-	l3V3HmDCj8SCGE0uvg63BV3ijDzYvoFXCR7AV4u6jkVyYOrKD7r0LqCn9L6aMzjwTSJYya5D3gK
-X-Google-Smtp-Source: AGHT+IFqATT8PvJpKvb/VVEjpa3TsYRrBDKVeIlHRc2lfKM3C5t9z2K7SPemjwkQsLz7s3W0rPP7Tg==
-X-Received: by 2002:a17:907:1c11:b0:ab2:f74f:3f82 with SMTP id a640c23a62f3a-ab38b3da0cemr816685566b.57.1737283480433;
-        Sun, 19 Jan 2025 02:44:40 -0800 (PST)
-Received: from krava (85-193-35-24.rib.o2.cz. [85.193.35.24])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab384f1e404sm474837666b.98.2025.01.19.02.44.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Jan 2025 02:44:39 -0800 (PST)
-From: Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Sun, 19 Jan 2025 11:44:37 +0100
-To: Eyal Birger <eyal.birger@gmail.com>
-Cc: Kees Cook <kees@kernel.org>, luto@amacapital.net, wad@chromium.org,
-	oleg@redhat.com, ldv@strace.io, mhiramat@kernel.org,
-	andrii@kernel.org, alexei.starovoitov@gmail.com, olsajiri@gmail.com,
-	cyphar@cyphar.com, songliubraving@fb.com, yhs@fb.com,
-	john.fastabend@gmail.com, peterz@infradead.org, tglx@linutronix.de,
-	bp@alien8.de, daniel@iogearbox.net, ast@kernel.org,
-	andrii.nakryiko@gmail.com, rostedt@goodmis.org, rafi@rbk.io,
-	shmulik.ladkani@gmail.com, bpf@vger.kernel.org,
-	linux-api@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	x86@kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] seccomp: passthrough uretprobe systemcall without
- filtering
-Message-ID: <Z4zXlaEMPbiYYlQ8@krava>
-References: <20250117005539.325887-1-eyal.birger@gmail.com>
- <202501181212.4C515DA02@keescook>
- <CAHsH6GuifA9nUzNR-eW5ZaXyhzebJOCjBSpfZCksoiyCuG=yYw@mail.gmail.com>
- <8B2624AC-E739-4BBE-8725-010C2344F61C@kernel.org>
- <CAHsH6GtpXMswVKytv7_JMGca=3wxKRUK4rZmBBxJPRh1WYdObg@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1737285362; x=1737890162;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=jFwAN4NPK1DZJMX46y1FOD2OnkFuCtYDMQ81C7qA/Ns=;
+        b=sgDzF0+ygCeBql7PwtSBAAxCAfhcnDqSJq5h5IfspluerbjIi6JLnKZo9HgLYz1bVn
+         OrjjTJ8qRr15L88UUNfheUAACuLAcoVRLft2hTGTtyy0Iq/uhU96Nrbz4squ7+mHVApN
+         I2CH28lSyx/MzvLf7xO4X/xjZYF/Zg9pYgQV0qaKY1DWrnpdrArl48J1MeU+qUp8DKW2
+         bcyxtqWw5Bxm8hrfX7zUvqaKCUGiIyqCrJIlFfNO16vi5N40xlQ4NCSBpGW5ZVnZh14Z
+         Cj7b83WwSIhfwqEaRBvpNXJnn8OnR8HPaoaVe6uLnIO5GSv9h4ToA3cb0tF/gge6WwVg
+         J2DA==
+X-Forwarded-Encrypted: i=1; AJvYcCUD/Q92Qu9pICsx/zMkBhvlHlrGXoRWJCG5GRuD+BMxW6Xkqx4mFXpfe031i8xHcVEtjMKW8axfrqa47mEK@vger.kernel.org, AJvYcCURmhFsG7Ke0+61rzBkTkclQ6G+RjI9ao5CmNRDAIyt37FegMu0cjrcDJVtjP+CJxqjxGJ2c/97@vger.kernel.org, AJvYcCWSaNyZyeQis6CchL/fNzPVuxbosiBSa2H8XSM9xH5MxbXleN9I1he6pC8OaPZNXk3RHr9JAyOzPt56@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIi+5t4DeBi6ChEktX09ruQPqLDuuNorW7m3v35668lz25fnyl
+	LVCUi1DDdt1CY/RFrFUtfLx8YV77HGUBTo/DWNV6UjuCOQBGQVdn
+X-Gm-Gg: ASbGncuXhoMWMQ2Gj8A5VqPNOGESdRvCuwczBX7W9UT5zxdMIfEp1ntMiByOMqOMnlo
+	BOUbsQ6MOMQW+QLyEJ/Ms4Lhlq6vQn4EQX5vOPajfLnunWu1GBJKZvApIniBBG1SEV31vnJwshF
+	8S0J5UqaS7p7u0GIQd80dHjtHQ6LaiIsN7DibNC0bOepjfUbi/mQ5kIM/GYvUqNyvg4ftJXX9Jb
+	oF/0MLiG0q3sL/1thj8WB2iy2dX/YlbuuSMiMR/ivXpznfYWhLCDmRp6IRYDAe7DxnxbBu2iERw
+	yTg6uRllvtIx2QmZBGbM/hoqUMS9SI/N9Po+
+X-Google-Smtp-Source: AGHT+IHaTt00aOKIg9mcDnsHrjnAg6faqbxOOHMpsfBN2LwzL1GNhhYFrCUK2KkmLZAv0vVu7zGv+Q==
+X-Received: by 2002:a17:903:186:b0:216:69ca:772a with SMTP id d9443c01a7336-21c3563ee3fmr144590885ad.53.1737285361827;
+        Sun, 19 Jan 2025 03:16:01 -0800 (PST)
+Received: from ?IPV6:2408:8362:245d:4738:bc4b:53ff:fead:2724? ([2401:b60:5:867d:3631:b7db:c3f4:aae2])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21c2d3a87e4sm43606145ad.111.2025.01.19.03.15.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 19 Jan 2025 03:16:01 -0800 (PST)
+Message-ID: <59893a67-18c7-4ab3-9b2a-5a17091d4b6c@gmail.com>
+Date: Sun, 19 Jan 2025 19:15:55 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: rockchip: change eth phy mode to rgmii-id for
+ orangepi r1 plus lts
+To: Dragan Simic <dsimic@manjaro.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+ Jonas Karlman <jonas@kwiboo.se>, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Peter Geis <pgwipeout@gmail.com>
+References: <20250119091154.1110762-1-cnsztl@gmail.com>
+ <ce15f141688c4c537ac3307b6fbed283@manjaro.org>
+From: Tianling Shen <cnsztl@gmail.com>
+In-Reply-To: <ce15f141688c4c537ac3307b6fbed283@manjaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHsH6GtpXMswVKytv7_JMGca=3wxKRUK4rZmBBxJPRh1WYdObg@mail.gmail.com>
 
-On Sat, Jan 18, 2025 at 07:39:25PM -0800, Eyal Birger wrote:
-> Hi,
-> 
-> Thank you for the detailed response.
-> 
-> On Sat, Jan 18, 2025 at 6:25 PM Kees Cook <kees@kernel.org> wrote:
-> 
-> >
-> > On January 18, 2025 12:45:47 PM PST, Eyal Birger <eyal.birger@gmail.com> wrote:
-> > >I think the difference is that this syscall is not part of the process's
-> > >code - it is inserted there by another process tracing it.
-> >
-> > Well that's nothing like syscall_restart, and now I'm convinced seccomp must never ignore uretprobe -- a process might want to block uretprobe!
-> >
-> 
-> I think I understand your point. But do you think this is intentional?
-> i.e. seccomp couldn't have been used to block uretprobes before this
-> syscall implementation afaict.
-> 
-> > So, no, sorry, this needs to be handled by the seccomp policy that is applied to the process.
-> >
-> 
-> The problem we're facing is that existing workloads are breaking, and
-> as mentioned I'm not sure how practical it is to demand replacing a
-> working docker environment because of a new syscall that was added for
-> performance reasons.
-> 
-> > >So this is different than desiring to deploy a new version of a binary
-> > >that uses a new libc or a new syscall.
-> >
-> > Uh, no, the case I used as an example was no changes to anything except the kernel. Libc noticed the available syscall, uses it, and is instantly killed by the Docker seccomp policy which didn't know about that syscall.
-> >
-> 
-> That's an interesting situation and quite unexpected :) I'm glad I didn't
-> have to face that one in production.
-> 
-> > > Here the case is that there are
-> > >three players - the tracer running out of docker, the tracee running in docker,
-> > >and docker itself. All three were running fine in a specific kernel version,
-> > >but upgrading the kernel now crashes the traced process.
-> >
-> > If uretprobe used to work without a syscall, then that seems to be the problem.
-> 
-> I agree.
-> 
-> > But I think easiest is just fixing the Docker policy. (Which is a text file configuration change; no new binaries, no rebuilds!).
-> 
-> As far as I can tell libseccomp needs to provide support for this new
-> syscall and a new docker version would need to be deployed, so It's not
-> just a configuration change. Also the default policy which comes packed in
-> docker would probably need to be changed to avoid having to explicitly
-> provide a seccomp configuration for each deployment.
-> 
-> >
-> > >I think this syscall is different in that respect for the reasons described.
-> >
-> > I don't agree, sorry. Seccomp has a really singular and specific purpose, which is explicitly *externalizing* policy. I do not want to have policy within seccomp itself.
-> >
-> 
-> Understood.
-> 
-> > >I don't know if seccomp is behaving correctly when it blocks a kernel
-> > >implementation detail that isn't user created.
-> >
-> > But it is user created? Something added a uretprobe to a process who's seccomp policy is not expecting it. This seems precisely by design.
-> 
-> I think I wasn't accurate in my wording.
-> The uretprobe syscall is added to the tracee by the kernel.
-> The tracer itself is merely requesting to attach a uretprobe bpf
-> function. In previous versions, this was implemented by the kernel
-> installing an int3 instruction, and in the new implementation the kernel
-> is installing a uretprobe syscall.
-> The "user" in this case - the tracer program - didn't deliberately install
-> the syscall, but anyway this is semantics.
+Hi Dragan,
 
-that's correct, uretprobe syscall is installed by kernel to special user
-memory map and it can be executed only from there and if process calls it
-from another place it receives sigill
+On 2025/1/19 17:54, Dragan Simic wrote:
+> Hello Tianling,
+> 
+> Thanks for the patch.  Please, see a comment below.
+> 
+> On 2025-01-19 10:11, Tianling Shen wrote:
+>> In general the delay should be added by the PHY instead of the MAC,
+>> and this improves network stability on some boards which seem to
+>> need different delay.
+>>
+>> Fixes: 387b3bbac5ea ("arm64: dts: rockchip: Add Xunlong OrangePi R1 
+>> Plus LTS")
+>> Cc: stable@vger.kernel.org # 6.6+
+>> Signed-off-by: Tianling Shen <cnsztl@gmail.com>
+>> ---
+>>  arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts | 3 +--
+>>  arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts     | 1 +
+>>  arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi    | 1 -
+>>  3 files changed, 2 insertions(+), 3 deletions(-)
+>>
+>> diff --git
+>> a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
+>> b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
+>> index 67c246ad8b8c..ec2ce894da1f 100644
+>> --- a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
+>> +++ b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
+>> @@ -17,8 +17,7 @@ / {
+>>
+>>  &gmac2io {
+>>      phy-handle = <&yt8531c>;
+>> -    tx_delay = <0x19>;
+>> -    rx_delay = <0x05>;
+>> +    phy-mode = "rgmii-id";
+> 
+> Shouldn't the "tx_delay" and "rx_delay" DT parameters be converted
+> into the "tx-internal-delay-ps" and "rx-internal-delay-ps" parameters,
+> respectively, so the Motorcomm PHY driver can pick them up and
+> actually configure the internal PHY delays?
 
-so at the end the process executes the uretprobe syscall, but it's up to
-kernel to decide that and set it up..  but I don't know if that's strong
-enough reason for seccomp to ignore the syscall
+The documentation[1] says "{t,r}x-internal-delay-ps" default to 1950 and 
+that value already works fine on my board.
+
+1. 
+https://www.kernel.org/doc/Documentation/devicetree/bindings/net/motorcomm%2Cyt8xxx.yaml
+
+Thanks,
+Tianling.
 
 > 
-> I think I understand your point that it is regarded as "policy", only that
-> it creates a problem in actual deployments, where in order to be able to
-> run the tracer software which has been working on newer kernels a new docker
-> has to be deployed.
-> 
-> I'm trying to find a pragmatic solution to this problem, and I understand
-> the motivation to avoid policy in seccomp.
+>>      status = "okay";
+>>
+>>      mdio {
+>> diff --git a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts
+>> b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts
+>> index 324a8e951f7e..846b931e16d2 100644
+>> --- a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts
+>> +++ b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts
+>> @@ -15,6 +15,7 @@ / {
+>>
+>>  &gmac2io {
+>>      phy-handle = <&rtl8211e>;
+>> +    phy-mode = "rgmii";
+>>      tx_delay = <0x24>;
+>>      rx_delay = <0x18>;
+>>      status = "okay";
+>> diff --git a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi
+>> b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi
+>> index 4f193704e5dc..09508e324a28 100644
+>> --- a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi
+>> +++ b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi
+>> @@ -109,7 +109,6 @@ &gmac2io {
+>>      assigned-clocks = <&cru SCLK_MAC2IO>, <&cru SCLK_MAC2IO_EXT>;
+>>      assigned-clock-parents = <&gmac_clk>, <&gmac_clk>;
+>>      clock_in_out = "input";
+>> -    phy-mode = "rgmii";
+>>      phy-supply = <&vcc_io>;
+>>      pinctrl-0 = <&rgmiim1_pins>;
+>>      pinctrl-names = "default";
 
-I could think of sysctl for that.. you complained earlier about weird
-semantics for that [1], but I think it's better than to remove it
-
-jirka
-
-> 
-> Alternatively, maybe this syscall implementation should be reverted?
-> 
-> Thanks again,
-> Eyal.
-
-[1] https://lore.kernel.org/bpf/CAHsH6Gs03iJt-ziWt5Bye_DuqCbk3TpMmgPbkYh64XBvpGaDtw@mail.gmail.com/
 
