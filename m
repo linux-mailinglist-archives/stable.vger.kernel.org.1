@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-109524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A46A16D8B
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 14:40:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCE54A16D90
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 14:43:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 835061881C69
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 13:41:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FEC71881F31
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 13:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A5B1E1A25;
-	Mon, 20 Jan 2025 13:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1661E1C32;
+	Mon, 20 Jan 2025 13:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PV0V5kWv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtAuj08X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8350F1FC8
-	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 13:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0BB1FC8
+	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 13:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737380453; cv=none; b=sMq+bm7rciE0+r7+2APEdWkvsTNDFMYsbSSFL/y0UpBNrlhP0+itdPq0KOb0tz6fV/lUZfurjj5IeX6G0SRnOdPzrkG3KyZqhJ3CCybw2lfXY0O6XkC4tOpdyKLxHGN9glWWLv5fqkOjsculc27KU+wlN44KDqIvCavuvhqCAy8=
+	t=1737380599; cv=none; b=XmOVluHr8hSgCsk7TKX1vy8oGY1EkspOQvuR1rvGkImNZO1dASD56et2ivegC7cg0KBiHbpNddoyc5t7JouaZAhwdph0fIk4gLoni93ViOOgEKBo6H0dpknbh78NnofqsCcMn7wZO50k+Cy0/NKLq2bCASNXYzH3vs/NtmEJ4p4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737380453; c=relaxed/simple;
-	bh=6IbB/A8Y8W2ZM/Um3K1P6W0FwxqfWW+2SxgAq5uwie8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XsuaG0LIO0fjnmMTLy41XiZ6Y1deZTvgSMu0MjKBvornE5K0xcM3f1aBPWA23MQaQJPU4aJ8JbHY36V/UYH4T+56K+yow0qk95M18+SxThDXGOh93CqHBVb6/UWO/V5JgmChVoUhmjd7ufdr9GysrY5+I0ajzaIAxOTiO6q6dOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PV0V5kWv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94394C4CEDD;
-	Mon, 20 Jan 2025 13:40:52 +0000 (UTC)
+	s=arc-20240116; t=1737380599; c=relaxed/simple;
+	bh=mnryM714hoRQ2L51px0j7extA7TwMcHMKjWv7wSq8Ug=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VlZANG9q7c47d7vYqsFfSNkE0zwJXJ48+zcceg0JG0+hqq3/q/xBciZ1xh+JqZemRfs1AxiQw3tVhOXcJZfHEQdR2fbtBZBOX7PQURdIy/SyrggDN3NdsTL4w1uQKEkYxQC29RgdrFqPKp4z+Zr+1qazf62Ccnbv6JKzMZXql8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtAuj08X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAEECC4CEDD;
+	Mon, 20 Jan 2025 13:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737380453;
-	bh=6IbB/A8Y8W2ZM/Um3K1P6W0FwxqfWW+2SxgAq5uwie8=;
+	s=korg; t=1737380599;
+	bh=mnryM714hoRQ2L51px0j7extA7TwMcHMKjWv7wSq8Ug=;
 	h=Subject:To:Cc:From:Date:From;
-	b=PV0V5kWv5m6CzKrsNJDhzd0eLLp9Gr2vUozEBeXFqROyUmR2/k+c+FONAuZMIwmB5
-	 BGAjTxmo0Wlem8KXxKFYjMVsStYHDaTyl5uD3M6NKeDKErlPKYeDhZLUOaiyuPIpfb
-	 yf7K9092vUKtF0tZKPIg1mM/xuwAWrqkzxEpjtgw=
-Subject: FAILED: patch "[PATCH] vsock: prevent null-ptr-deref in vsock_*[has_data|has_space]" failed to apply to 5.10-stable tree
-To: sgarzare@redhat.com,leonardi@redhat.com,pabeni@redhat.com,qwerty@theori.io,v4bel@theori.io
+	b=KtAuj08XMpRK+K28dAW7iigkSyATwVmbIoAevuJu2XyrMGqOrdoOtyKgY+5BmNWWO
+	 Tvm1RKmK+KXns2WrCXlLaLz/LCBjXrbZOGx5v2h+S6Ev2rVgZN5c82VjdM9U0TG5OB
+	 NoF8iinyWTzf1uAWEoy+/xen/vLZjKvLdQO2i+9Y=
+Subject: FAILED: patch "[PATCH] net/ncsi: fix locking in Get MAC Address handling" failed to apply to 6.6-stable tree
+To: fercerpav@gmail.com,kuba@kernel.org,potin.lai.pt@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 20 Jan 2025 14:40:45 +0100
-Message-ID: <2025012045-irritably-duplex-5af0@gregkh>
+Date: Mon, 20 Jan 2025 14:43:16 +0100
+Message-ID: <2025012016-wireless-premium-a086@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 91751e248256efc111e52e15115840c35d85abaf
+git cherry-pick -x 9e2bbab94b88295dcc57c7580393c9ee08d7314d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025012045-irritably-duplex-5af0@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025012016-wireless-premium-a086@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,69 +77,129 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 91751e248256efc111e52e15115840c35d85abaf Mon Sep 17 00:00:00 2001
-From: Stefano Garzarella <sgarzare@redhat.com>
-Date: Fri, 10 Jan 2025 09:35:11 +0100
-Subject: [PATCH] vsock: prevent null-ptr-deref in vsock_*[has_data|has_space]
+From 9e2bbab94b88295dcc57c7580393c9ee08d7314d Mon Sep 17 00:00:00 2001
+From: Paul Fertser <fercerpav@gmail.com>
+Date: Thu, 9 Jan 2025 17:50:54 +0300
+Subject: [PATCH] net/ncsi: fix locking in Get MAC Address handling
 
-Recent reports have shown how we sometimes call vsock_*_has_data()
-when a vsock socket has been de-assigned from a transport (see attached
-links), but we shouldn't.
+Obtaining RTNL lock in a response handler is not allowed since it runs
+in an atomic softirq context. Postpone setting the MAC address by adding
+a dedicated step to the configuration FSM.
 
-Previous commits should have solved the real problems, but we may have
-more in the future, so to avoid null-ptr-deref, we can return 0
-(no space, no data available) but with a warning.
-
-This way the code should continue to run in a nearly consistent state
-and have a warning that allows us to debug future problems.
-
-Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
+Fixes: 790071347a0a ("net/ncsi: change from ndo_set_mac_address to dev_set_mac_address")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/netdev/Z2K%2FI4nlHdfMRTZC@v4bel-B760M-AORUS-ELITE-AX/
-Link: https://lore.kernel.org/netdev/5ca20d4c-1017-49c2-9516-f6f75fd331e9@rbox.co/
-Link: https://lore.kernel.org/netdev/677f84a8.050a0220.25a300.01b3.GAE@google.com/
-Co-developed-by: Hyunwoo Kim <v4bel@theori.io>
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Co-developed-by: Wongi Lee <qwerty@theori.io>
-Signed-off-by: Wongi Lee <qwerty@theori.io>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Reviewed-by: Hyunwoo Kim <v4bel@theori.io>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/20241129-potin-revert-ncsi-set-mac-addr-v1-1-94ea2cb596af@gmail.com
+Signed-off-by: Paul Fertser <fercerpav@gmail.com>
+Tested-by: Potin Lai <potin.lai.pt@gmail.com>
+Link: https://patch.msgid.link/20250109145054.30925-1-fercerpav@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 74d35a871644..fa9d1b49599b 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -879,6 +879,9 @@ EXPORT_SYMBOL_GPL(vsock_create_connected);
+diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
+index ef0f8f73826f..4e0842df5234 100644
+--- a/net/ncsi/internal.h
++++ b/net/ncsi/internal.h
+@@ -289,6 +289,7 @@ enum {
+ 	ncsi_dev_state_config_sp	= 0x0301,
+ 	ncsi_dev_state_config_cis,
+ 	ncsi_dev_state_config_oem_gma,
++	ncsi_dev_state_config_apply_mac,
+ 	ncsi_dev_state_config_clear_vids,
+ 	ncsi_dev_state_config_svf,
+ 	ncsi_dev_state_config_ev,
+@@ -322,6 +323,7 @@ struct ncsi_dev_priv {
+ #define NCSI_DEV_RESHUFFLE	4
+ #define NCSI_DEV_RESET		8            /* Reset state of NC          */
+ 	unsigned int        gma_flag;        /* OEM GMA flag               */
++	struct sockaddr     pending_mac;     /* MAC address received from GMA */
+ 	spinlock_t          lock;            /* Protect the NCSI device    */
+ 	unsigned int        package_probe_id;/* Current ID during probe    */
+ 	unsigned int        package_num;     /* Number of packages         */
+diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+index 5cf55bde366d..bf276eaf9330 100644
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -1038,7 +1038,7 @@ static void ncsi_configure_channel(struct ncsi_dev_priv *ndp)
+ 			  : ncsi_dev_state_config_clear_vids;
+ 		break;
+ 	case ncsi_dev_state_config_oem_gma:
+-		nd->state = ncsi_dev_state_config_clear_vids;
++		nd->state = ncsi_dev_state_config_apply_mac;
  
- s64 vsock_stream_has_data(struct vsock_sock *vsk)
- {
-+	if (WARN_ON(!vsk->transport))
-+		return 0;
+ 		nca.package = np->id;
+ 		nca.channel = nc->id;
+@@ -1050,10 +1050,22 @@ static void ncsi_configure_channel(struct ncsi_dev_priv *ndp)
+ 			nca.type = NCSI_PKT_CMD_OEM;
+ 			ret = ncsi_gma_handler(&nca, nc->version.mf_id);
+ 		}
+-		if (ret < 0)
++		if (ret < 0) {
++			nd->state = ncsi_dev_state_config_clear_vids;
+ 			schedule_work(&ndp->work);
++		}
+ 
+ 		break;
++	case ncsi_dev_state_config_apply_mac:
++		rtnl_lock();
++		ret = dev_set_mac_address(dev, &ndp->pending_mac, NULL);
++		rtnl_unlock();
++		if (ret < 0)
++			netdev_warn(dev, "NCSI: 'Writing MAC address to device failed\n");
 +
- 	return vsk->transport->stream_has_data(vsk);
++		nd->state = ncsi_dev_state_config_clear_vids;
++
++		fallthrough;
+ 	case ncsi_dev_state_config_clear_vids:
+ 	case ncsi_dev_state_config_svf:
+ 	case ncsi_dev_state_config_ev:
+diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
+index e28be33bdf2c..14bd66909ca4 100644
+--- a/net/ncsi/ncsi-rsp.c
++++ b/net/ncsi/ncsi-rsp.c
+@@ -628,16 +628,14 @@ static int ncsi_rsp_handler_snfc(struct ncsi_request *nr)
+ static int ncsi_rsp_handler_oem_gma(struct ncsi_request *nr, int mfr_id)
+ {
+ 	struct ncsi_dev_priv *ndp = nr->ndp;
++	struct sockaddr *saddr = &ndp->pending_mac;
+ 	struct net_device *ndev = ndp->ndev.dev;
+ 	struct ncsi_rsp_oem_pkt *rsp;
+-	struct sockaddr saddr;
+ 	u32 mac_addr_off = 0;
+-	int ret = 0;
+ 
+ 	/* Get the response header */
+ 	rsp = (struct ncsi_rsp_oem_pkt *)skb_network_header(nr->rsp);
+ 
+-	saddr.sa_family = ndev->type;
+ 	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
+ 	if (mfr_id == NCSI_OEM_MFR_BCM_ID)
+ 		mac_addr_off = BCM_MAC_ADDR_OFFSET;
+@@ -646,22 +644,17 @@ static int ncsi_rsp_handler_oem_gma(struct ncsi_request *nr, int mfr_id)
+ 	else if (mfr_id == NCSI_OEM_MFR_INTEL_ID)
+ 		mac_addr_off = INTEL_MAC_ADDR_OFFSET;
+ 
+-	memcpy(saddr.sa_data, &rsp->data[mac_addr_off], ETH_ALEN);
++	saddr->sa_family = ndev->type;
++	memcpy(saddr->sa_data, &rsp->data[mac_addr_off], ETH_ALEN);
+ 	if (mfr_id == NCSI_OEM_MFR_BCM_ID || mfr_id == NCSI_OEM_MFR_INTEL_ID)
+-		eth_addr_inc((u8 *)saddr.sa_data);
+-	if (!is_valid_ether_addr((const u8 *)saddr.sa_data))
++		eth_addr_inc((u8 *)saddr->sa_data);
++	if (!is_valid_ether_addr((const u8 *)saddr->sa_data))
+ 		return -ENXIO;
+ 
+ 	/* Set the flag for GMA command which should only be called once */
+ 	ndp->gma_flag = 1;
+ 
+-	rtnl_lock();
+-	ret = dev_set_mac_address(ndev, &saddr, NULL);
+-	rtnl_unlock();
+-	if (ret < 0)
+-		netdev_warn(ndev, "NCSI: 'Writing mac address to device failed\n");
+-
+-	return ret;
++	return 0;
  }
- EXPORT_SYMBOL_GPL(vsock_stream_has_data);
-@@ -887,6 +890,9 @@ s64 vsock_connectible_has_data(struct vsock_sock *vsk)
- {
- 	struct sock *sk = sk_vsock(vsk);
  
-+	if (WARN_ON(!vsk->transport))
-+		return 0;
-+
- 	if (sk->sk_type == SOCK_SEQPACKET)
- 		return vsk->transport->seqpacket_has_data(vsk);
- 	else
-@@ -896,6 +902,9 @@ EXPORT_SYMBOL_GPL(vsock_connectible_has_data);
- 
- s64 vsock_stream_has_space(struct vsock_sock *vsk)
- {
-+	if (WARN_ON(!vsk->transport))
-+		return 0;
-+
- 	return vsk->transport->stream_has_space(vsk);
- }
- EXPORT_SYMBOL_GPL(vsock_stream_has_space);
+ /* Response handler for Mellanox card */
 
 
