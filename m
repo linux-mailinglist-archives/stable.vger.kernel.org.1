@@ -1,76 +1,77 @@
-Return-Path: <stable+bounces-109565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BE5BA17035
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 17:33:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB84BA17042
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 17:34:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D1AB169001
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 16:33:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E300F1888B0F
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 16:34:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D5B1E9B07;
-	Mon, 20 Jan 2025 16:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D196A1E9B3D;
+	Mon, 20 Jan 2025 16:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="XAZI2Gme"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="fCSMKACy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80ED536124
-	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 16:33:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240261E9B2E
+	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 16:34:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737390793; cv=none; b=VhT4sHreQLTEruAdXppSFmRxzt/YaNVx08gTV+CjCWWKFRIdYhPLFHsyqYcbHn9kAWw50pHD5w3e6YQUuri99sAdA1Umf1TOSAx93I8/X615cfhRwy10JW43fuPeojn1Crwjr0rRgn+IwwwCmdGg4GU52jx5CItD1RDxWeqCcjs=
+	t=1737390856; cv=none; b=ZKcYUopf8Y99CevyX2JcAHaSWPChBrNEOvfHj2gzknFyVTxkfKGYpNxz5P0+VkFAR7fflqlGXOf8Bi28wDSP6l25etsyyIJpk8KynOp+vIwFGN5nfbO1TEMIj8v94Tm0FAq33MmzaFWR1+Fe+BmoAir8qgn0E4dHezfbw6BXfjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737390793; c=relaxed/simple;
-	bh=FiUWQlpYfrA8YD6qvNL+vrYo5ZVa5Q5qHvNjyjkjU9M=;
+	s=arc-20240116; t=1737390856; c=relaxed/simple;
+	bh=11BqZOKZbS21vCnCKgb/oDcRArTLZiBOzpFwNHd6yBE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c6yiulYxwEg3v0djTjBLvhxJJlN5KD3aFhnRbu+245Rjm76LAFAhBE+RlX7zxPhegrmbuJ1Uc6wZAA7Z5eYnKPlCAxYcorx2nGpqNnovdwS5bI1/49rXWz5aJ2+c3o9PUpNgMGLXoDh0RkDC7cCORXIlTRUOOo4v2QKryIfLt1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=XAZI2Gme; arc=none smtp.client-ip=209.85.214.178
+	 In-Reply-To:Content-Type; b=FlPN7t2Fc50PKK4N/svdz8NPF+TEJWrhxsjfuVg8KMgt+F9zIE3/qQdxjYv2bpVxqiuhPcDYcsjHc9//7WjURSN7Pujqgjg9iGlUKdZ/GDd+++cz/ZduQ6rfCh8p21ndxQFeYNJMsWqIcnxFYCf6wnisA/CUc3A4vpQ4H4AQZmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=fCSMKACy; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2165448243fso101472035ad.1
-        for <stable@vger.kernel.org>; Mon, 20 Jan 2025 08:33:11 -0800 (PST)
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2161eb95317so84081185ad.1
+        for <stable@vger.kernel.org>; Mon, 20 Jan 2025 08:34:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1737390791; x=1737995591; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1737390854; x=1737995654; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=C9UtmECkUOGKbPSUc5188JHwLBFmNC0aGmF3i6qmQOo=;
-        b=XAZI2Gme8/SYlDvIMRwUN/5kLrWgZANIb2+n2RrOZVEMF8pFTG0Wi6aiTmVw8c5Vei
-         dT84Ht13Nf0C1WSrh+nHQOYS66zzUu2lDL/AhPAi57pIr9B2JdG/u3hHpgMVRzfkpX6R
-         k9xzEl/SLCXLx6pUBFzJCCrcZlgz65GDtpDyQ=
+        bh=hc/ZqEmmixzSD5Bu7Z0mbu3TO+Ae4GIVwW02q/UqdSc=;
+        b=fCSMKACygoMBbqZHdSTCj5CsryQOzkOz/0Cfbg5BffQsNQa00KWUTRjP0NBXGH0auv
+         EN1FeNHMLXwfL0WzSKajIsdHNJwqRipeLPPeenLNilgw2LZSh45o+bT5AQXrT31FuDCw
+         CMxPKumNpWlcxzVGuoglUqbHmRkkzZL5JGAYo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737390791; x=1737995591;
+        d=1e100.net; s=20230601; t=1737390854; x=1737995654;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=C9UtmECkUOGKbPSUc5188JHwLBFmNC0aGmF3i6qmQOo=;
-        b=hGT6L1QhEQM2KdyI3rMl5ysvV90YS0yiRDU8EZjBdldeamfe2gW5FCyHShe/F8hj7t
-         sWp3Rpa/qTpEZnfYva7SuuWvwN1c1Ytygcrj+kb2syQ+Dx/QjLR4e4SWRmSvbGHOO8w/
-         f/wbiCtalWR+/u/WiHV0RgwvoaA7wI++uRyoDKgQHVzdvNB7EcCHZTho0ViO2w4Rh7BQ
-         jsr8fwwQkgcUglBjNPp9ENWdXz/jIgroPFl/tcHbOpcIofQ1jxqF5jl0wgUkOPu5b1j7
-         MFGGIsgk6f5L1TQg13lkMCR4rOlrSnh7hCskK03MB9DtPFLwcZ0lL/g+xK7u6O+RMJD+
-         9LNg==
-X-Gm-Message-State: AOJu0YzvNMUiINrKaQPz55lbpQZ1UWHFz8y/Kx1XkS/oOocnrG7brSXz
-	rAjJxugvQ4YuL/2no+gEybyWgitmAYzdWrfDP7It/wmtUMJOZteS4C3c2uX8RQ==
-X-Gm-Gg: ASbGnctWwxoWqma1aRDtky0Q5KI79xfAepUdDtfEqI1tBTNScmVezGDH7PTm8vjSVOy
-	8nt5u3q4ocq9cuVOwg1nWpcFMijGqgkoGEcBX0PkyXK/wotLkEDqDDfMZUoth14XCqkE79w9vqd
-	voK8PLLGB1UYhCbsKF6xqzMn3nVWIlDCnxFR/C7wAO4f674+I+eogMwYpzXaEtE/e8T8xcUT5kK
-	k+ceE+VEpq3msnjoKrCJjfHQ+sGxLK/Dw15UimIr0/wNeL0YyqfzUqvXlrMj+HutoPtxMO3wQcb
-	JnAX4AeO40JoGcs5tgmm3zHSu0Ni7ZQ/AJyAfeRXQbGa
-X-Google-Smtp-Source: AGHT+IFMpRo8h8RDCjagWiVwQZq/mBuVjymV9n8680cV1bdSUPqob1X9eEp6TCLVDGnqJlSrty23Sw==
-X-Received: by 2002:a17:903:2449:b0:21c:1140:136d with SMTP id d9443c01a7336-21c355fb6bbmr230924425ad.40.1737390790581;
-        Mon, 20 Jan 2025 08:33:10 -0800 (PST)
+        bh=hc/ZqEmmixzSD5Bu7Z0mbu3TO+Ae4GIVwW02q/UqdSc=;
+        b=OdmdioU5IaHPdNP/5FcQajm3zJo6pPyvPnEOJY8ooPszAx7bbLbjjELt/rQuUFr01Y
+         qyP9kJ+SEnheFUPXPeS9q35FldpWqLOOSnnXBO0o++FBK9JI/aZ7eVGUYP2kmIY/C3bu
+         NNb5bw1SYe5ZA2fzrpsKmPKT7FSft/E3VeWscxfps9b4jf3g4jqSQeHY4wqRY5RnICNk
+         9t0nK4r/50yVgfG7zYh7MfFxAJybqPGfSH74X6XQ6makWaGAShOLmlQrL9GAaEDHgRFl
+         Cm+7OBR/BNwyu+NzubY36nMRh8LKb8mqkCvUZL1LonfqcNt3tm+Xs4g4VpLiq3jk2y73
+         xk0A==
+X-Forwarded-Encrypted: i=1; AJvYcCV9lghGAoxWBZ7pqlCmwKWO4FJg8zF/NL8IefZ19vPYYUL7uYsGHe+vhymo9QAtnHTtxTh/t2I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy74M80titZkQ5IYSbq5whBoDG8zXhzLyTv1YZSaWIvZqt5l2rb
+	cFN86YoTELVPcpFlcz/odYgfT/3W3lTjxCQ/bQ8/O2JKOxhrG3HJtpOozAPsDg==
+X-Gm-Gg: ASbGnctQi9Kg8DGnBw+rj7brUR6644w1pnrTTFW1yKXmeZ6zBI56wZyPH9FNGfbXwWg
+	F/6cLN4ZjzjAaY/cgekCqHNjArYf6lyi0bWBQx5LdB0Obp+yo7I8McybTUhBEWVhOwOXpsdjy8n
+	RUINNtOMciXSwbotLdPNjm+4P70su1LnMTpPqPnnJIlZQYZG+E4D500epGKnLR+eeCtq+6+q9yx
+	Lp9zzbpLYMLjbYP47Z4uFdKujhNs80uC8wJzwhr47HcDJzrf4IdbuZMQOrR/SxcMriBbcOk7eI0
+	1vYq+omAK0pm4RwFLAV+01+6ZIEvsxiXNoKt/E/2lSaU
+X-Google-Smtp-Source: AGHT+IGFknju+kWVSBOp9BPZgBBPSVkuNeYiYnQdiNz8F7xrFuFxwOdpgjSGtaYldVORL1NpfOAfKg==
+X-Received: by 2002:a17:902:c411:b0:216:84e9:d334 with SMTP id d9443c01a7336-21c35577e88mr191930655ad.33.1737390854386;
+        Mon, 20 Jan 2025 08:34:14 -0800 (PST)
 Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21c2d3acf2csm62483555ad.121.2025.01.20.08.33.08
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21c2cea2014sm62571685ad.41.2025.01.20.08.34.10
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Jan 2025 08:33:09 -0800 (PST)
-Message-ID: <41550c7f-1313-41b4-aa2e-cb4809ad68c2@broadcom.com>
-Date: Mon, 20 Jan 2025 08:33:12 -0800
+        Mon, 20 Jan 2025 08:34:13 -0800 (PST)
+Message-ID: <5221f64e-fda4-4daa-add7-1d0b26765113@broadcom.com>
+Date: Mon, 20 Jan 2025 08:34:14 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,26 +79,24 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: mm: account for hotplug memory when randomizing
- the linear region
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>, Will Deacon
- <will@kernel.org>, Steven Price <steven.price@arm.com>,
- Robin Murphy <robin.murphy@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Baruch Siach <baruch@tkos.co.il>,
- Petr Tesarik <ptesarik@suse.com>, Mark Rutland <mark.rutland@arm.com>,
- Joey Gouly <joey.gouly@arm.com>, "Mike Rapoport (IBM)" <rppt@kernel.org>,
- Yang Shi <yang@os.amperecomputing.com>,
- "moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <20250109165419.1623683-1-florian.fainelli@broadcom.com>
- <20250109165419.1623683-2-florian.fainelli@broadcom.com>
- <62786457-d4a1-4861-8bec-7e478626f4db@broadcom.com>
- <2025011247-enable-freezing-ffa2@gregkh>
- <27bbea11-61fa-4f41-8b39-8508f2d2e385@broadcom.com>
- <2025012002-tactics-murky-aaab@gregkh>
+Subject: Re: [PATCH v2] Revert v6.2-rc1 and later "ARM: dts: bcm2835-rpi: Use
+ firmware clocks for display"
+To: "H. Nikolaus Schaller" <hns@goldelico.com>, wahrenst@gmx.net
+Cc: Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Florian Fainelli <f.fainelli@gmail.com>, Ray Jui <rjui@broadcom.com>,
+ Scott Branden <sbranden@broadcom.com>,
+ devicetree <devicetree@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ stable <stable@vger.kernel.org>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ linux-rpi-kernel@lists.infradead.org,
+ arm-soc <linux-arm-kernel@lists.infradead.org>,
+ Discussions about the Letux Kernel <letux-kernel@openphoenux.org>
+References: <cb9e10dfb4f50207e33ddac16794ee6b806744da.1737217627.git.hns@goldelico.com>
+ <808a325f-81bc-4f5d-8c07-fa255ef2d25a@gmx.net>
+ <8F33BB1D-2210-421B-A788-8484C23DF4C6@goldelico.com>
 Content-Language: en-US
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
@@ -132,76 +131,62 @@ Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
  MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
  7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
  95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <2025012002-tactics-murky-aaab@gregkh>
+In-Reply-To: <8F33BB1D-2210-421B-A788-8484C23DF4C6@goldelico.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
-On 1/20/2025 5:59 AM, Greg KH wrote:
-> On Mon, Jan 13, 2025 at 07:44:50AM -0800, Florian Fainelli wrote:
+On 1/19/2025 7:04 AM, 'H. Nikolaus Schaller' via 
+BCM-KERNEL-FEEDBACK-LIST,PDL wrote:
+> Hi Stefan,
+> 
+>> Am 19.01.2025 um 01:36 schrieb Stefan Wahren <wahrenst@gmx.net>:
 >>
+>> Hi,
 >>
->> On 1/12/2025 3:54 AM, Greg KH wrote:
->>> On Thu, Jan 09, 2025 at 09:01:13AM -0800, Florian Fainelli wrote:
->>>> On 1/9/25 08:54, Florian Fainelli wrote:
->>>>> From: Ard Biesheuvel <ardb@kernel.org>
->>>>>
->>>>> commit 97d6786e0669daa5c2f2d07a057f574e849dfd3e upstream
->>>>>
->>>>> As a hardening measure, we currently randomize the placement of
->>>>> physical memory inside the linear region when KASLR is in effect.
->>>>> Since the random offset at which to place the available physical
->>>>> memory inside the linear region is chosen early at boot, it is
->>>>> based on the memblock description of memory, which does not cover
->>>>> hotplug memory. The consequence of this is that the randomization
->>>>> offset may be chosen such that any hotplugged memory located above
->>>>> memblock_end_of_DRAM() that appears later is pushed off the end of
->>>>> the linear region, where it cannot be accessed.
->>>>>
->>>>> So let's limit this randomization of the linear region to ensure
->>>>> that this can no longer happen, by using the CPU's addressable PA
->>>>> range instead. As it is guaranteed that no hotpluggable memory will
->>>>> appear that falls outside of that range, we can safely put this PA
->>>>> range sized window anywhere in the linear region.
->>>>>
->>>>> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
->>>>> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
->>>>> Cc: Will Deacon <will@kernel.org>
->>>>> Cc: Steven Price <steven.price@arm.com>
->>>>> Cc: Robin Murphy <robin.murphy@arm.com>
->>>>> Link: https://lore.kernel.org/r/20201014081857.3288-1-ardb@kernel.org
->>>>> Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
->>>>> Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
->>>>
->>>> Forgot to update the patch subject, but this one is for 5.10.
+>> Am 18.01.25 um 17:27 schrieb H. Nikolaus Schaller:
+>>> This reverts commit 27ab05e1b7e5c5ec9b4f658e1b2464c0908298a6.
 >>>
->>> You also forgot to tell us _why_ this is needed :(
->>
->> This is explained in the second part of the first paragraph:
->>
->> The consequence of this is that the randomization offset may be chosen such
->> that any hotplugged memory located above memblock_end_of_DRAM() that appears
->> later is pushed off the end of the linear region, where it cannot be
->> accessed.
->>
->> We use both memory hotplug and KASLR on our systems and that's how we
->> eventually found out about the bug.
+>>> I tried to upgrade a RasPi 3B+ with Waveshare 7inch HDMI LCD
+>>> from 6.1.y to 6.6.y but found that the display is broken with
+>>> this log message:
+>>>
+>>> [   17.776315] vc4-drm soc:gpu: bound 3f400000.hvs (ops vc4_drm_unregister [vc4])
+>>> [   17.784034] platform 3f806000.vec: deferred probe pending
+>>>
+>>> Some tests revealed that while 6.1.y works, 6.2-rc1 is already broken but all
+>>> newer kernels as well. And a bisect did lead me to this patch.
+>> I successfully tested every Kernel release until Linux 6.13-rc with the
+>> Raspberry Pi 3B+, so i prefer to step back and analyze this issue further.
 > 
-> And you still have 5.10.y ARM64 systems that need this?  Why not move to
-> a newer kernel version already?
-
-We still have ARM64 systems running 5.4 that need this, and the same bug 
-applies to 5.10 that we used to support but dropped in favor of 
-5.15/6.1. Those are the kernel versions used by Android, and Android TV 
-in particular, so it's kind of the way it goes for us.
-
+> Yes, I would be happy with any solution.
 > 
-> Anyway, I need an ack from the ARM64 maintainers that this is ok to
-> apply here before I can take it.
+>> What kernel config do you use ?
+> 
+> a private one which enables application specific drivers.
+> 
+>> What is the value of CONFIG_CLK_RASPBERRYPI ?
+> 
+> CONFIG_CLK_RASPBERRYPI is not set
+> 
+> I checked where this is defined and it is in bcm2835_defconfig and
+> multi_v7_defconfig by
+> 
+> 4c6f5d4038af2c ("ARM: defconfig: enable cpufreq driver for RPi")
+> 
+> which hides this requirement quite well and got therefore unnoticed...
+> 
+> Setting CONFIG_CLK_RASPBERRYPI=y makes HDMI work without my proposed revert.
+> Tested with v6.2.16, v6.6.72, v6.12.10 and v6.13-rc7.
 
-Just out of curiosity, the change is pretty innocuous and simple to 
-review, why the extra scrutiny needed here?
+I have been burned before by something similar and came up with this 
+patch series that I should resubmit after addressing Conor's comment:
+
+https://lore.kernel.org/all/20240513235234.1474619-1-florian.fainelli@broadcom.com/
+
+Essentially, it removes the guess work, all you have to do is enable 
+CONFIG_ARCH_BCM2835 and it just works, which is how it should be IMHO.
 -- 
 Florian
 
