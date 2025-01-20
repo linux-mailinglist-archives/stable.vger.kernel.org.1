@@ -1,199 +1,672 @@
-Return-Path: <stable+bounces-109567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EBEBA170CA
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 17:51:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D02EBA17102
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 18:09:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 664133A0394
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 16:51:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3C7516A720
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 17:09:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2751EBFF7;
-	Mon, 20 Jan 2025 16:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AAC01EBFFA;
+	Mon, 20 Jan 2025 17:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b="WzbnlDRV"
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="FHXXLcWn"
 X-Original-To: stable@vger.kernel.org
-Received: from MA0PR01CU009.outbound.protection.outlook.com (mail-southindiaazolkn19010009.outbound.protection.outlook.com [52.103.67.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802381E9B37;
-	Mon, 20 Jan 2025 16:50:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.67.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737391857; cv=fail; b=LUjdipt6ayq0duODUedZc7bv/7cWMDydwBCMjEHaB80W61BMG4bw6LgkanGzBB7T18fc3Vk0XOgk+orLW9GuBwi5EpPILdoYBB9SXs+ngz1RA9KWrMxWBtB1RuPW33/t9YKGO9Ul8uojGZzcuxmxEqVHupi0kXY9TDqpd240j8o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737391857; c=relaxed/simple;
-	bh=EHzjaZWIXVDuchesRu1Mw/ybYuqofthYxASuGlPDiUM=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Mw6D2O2DOpITM6P1pxjL1XPWZP3ZusqTXO3C+DBzgmYDdOxCRV+ucahpwF1YnWO/Zvnv/RgU/LAW1y76VAyETBgxA2qXg7wQvsAAEWxE6xx6mJkoH1536oTox7rswyShGzMenMmxBjrx5w83OYOb/MiD0iUwpe1Cf7Vs/NcopUM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com; spf=pass smtp.mailfrom=live.com; dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b=WzbnlDRV; arc=fail smtp.client-ip=52.103.67.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=live.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NGYhkwBK2j/iuG52Is0/DQt9FKz5DdtkcRRQbw+nkIaI8f5IJ0CXjISCrQQdCXXCnDgAbzo5hVC3Z65CeRX99Z2mepmCa34Q4BcajNhH9Nqp1joFY1BYkWy6ZyyNIx+2ZB15Z6E7l1kTrxPGg3G+ky9EiSrSxEMk0rzMqZajBDA8Um5Dns4kXULWuicA1oA42UeV7nXyPVg3EEukOwY7DJTD2Qp4xoEPdO/qzD/lODI6WB0DoAFrJFeaw/NHsPyQyMoofqrgOWbTBmfT2CSiBgwsYwZdRQjH0R7sgEmMOGM/0rQXwY4fofxCkIAGFJZdr6H+Fi8W8/iHMn1zYKHc5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8Btzavl53HHeTbQ/uROUfvWR582fRgyouaTqAWccQUE=;
- b=zG9YrHpBjqbfjoeTqkuuppY6+HzUVVf3FfnllHWO9lbRkzwUb5UzN70dPM/+qoY2TnxyHcA1ZHsJ8x8Oi7V2lsaTD6gfcqnrzGztwENbYdgKJjhZZkElX4vZ6YvbQZ2dxny4qCT8O5adPOTPhHSx2cvHd40jBH2N8h6q1lwrVBoWWuZeE7UIWRxEIGvHZmYdCPOI6WW6E5tPE5+B10pV8hf9Rt/W+E6o7yAiU8XwdP8lMlnxNmKFY02nY5OfdM0ye3/lv5WJ4tThBsK5qq7BuYCgneZTY9zUGt35DJ+vRgxOW6ko3k6EC6+m6u206WDQE1hk6+p12L1qQd7rMbX+Gg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8Btzavl53HHeTbQ/uROUfvWR582fRgyouaTqAWccQUE=;
- b=WzbnlDRV9FHkUoQ3YF4g4IX2nrwXHOaWr3pSLBJX6gx1HhFXNi3uqncgejlNaqbyhAFPvnklplyx6fcEzlk+qm2FSZc/VOH4+NhhE4Vxz9zvb7K7PHVN8f5pRlUq/loYtguCvWMY6vr9Nns6kEnBqukJh3q1jSPO9REhu8Y2aBeEoMl+0uWeUB6zdJ5NBtvbS4JC8u5lyXNBr1Ixc/mwPse12NrQX95hfWx78Ai+7ec5nR2T9b0C/ktu8cS6rji74ql/UiLkoljNTBUV6F1Yw9fxLxPbRz1VZVhzVt5UZZy1II8kzteo7eAu0rU1v9y7gm3BY+BCaz0jY+/GPCtwpg==
-Received: from MA1PR01MB2555.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a00:3e::12)
- by PN2PR01MB9923.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:129::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.21; Mon, 20 Jan
- 2025 16:50:49 +0000
-Received: from MA1PR01MB2555.INDPRD01.PROD.OUTLOOK.COM
- ([fe80::8d8:4de:ff79:7668]) by MA1PR01MB2555.INDPRD01.PROD.OUTLOOK.COM
- ([fe80::8d8:4de:ff79:7668%5]) with mapi id 15.20.8356.020; Mon, 20 Jan 2025
- 16:50:48 +0000
-From: Aditya Garg <gargaditya08@live.com>
-To: Arend van Spriel <arend.vanspriel@broadcom.com>, Arend van Spriel
-	<aspriel@gmail.com>, Kalle Valo <kvalo@kernel.org>, Hector Martin
-	<marcan@marcan.st>, Janne Grunau <j@jannau.net>
-CC: Orlando Chamberlain <orlandoch.dev@gmail.com>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>, "brcm80211@lists.linux.dev"
-	<brcm80211@lists.linux.dev>, "brcm80211-dev-list.pdl@broadcom.com"
-	<brcm80211-dev-list.pdl@broadcom.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH] wifi: brcmfmac: use random seed flag for BCM4355 and BCM4364
- firmware
-Thread-Topic: [PATCH] wifi: brcmfmac: use random seed flag for BCM4355 and
- BCM4364 firmware
-Thread-Index: AQHba1t06RYmbdFGZUWJR5WG2iWgEA==
-Date: Mon, 20 Jan 2025 16:50:47 +0000
-Message-ID: <47E43F07-E11D-478C-86D4-23627154AC7C@live.com>
-Accept-Language: en-IN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MA1PR01MB2555:EE_|PN2PR01MB9923:EE_
-x-ms-office365-filtering-correlation-id: c77e38e5-606d-45dd-678e-08dd3972971e
-x-ms-exchange-slblob-mailprops:
- AZnQBsB9XmpI8tRyoOXaSUmOkLVCBKasc5E2meS7BDtk6cJoQT0Zy8hfvN+USgr5EDr0Jzq2tvjdqFngV9I4QZy93Fwlsr4oyZh0aborHiMu2gdl4K1+3nTCKaW5MM73X2/eN6Octn3mgto4s9beqh4i5+TYlASwr5wROiksHSDxdbz1bEI5k0/0Oxxwb8YUtiOjfBZlCqxYgRyWerfd8f9JHWJ/Tkymm97Fs3Ex/+EqsLSFdm1I4yUpXLrz9n8UssGxKt3D+cHNyKLVTyPkvheaGOQNmyp/IGeR6aapcm1gxXQ4yZeZoYm6WfxbS1TEXOPIYlcf+NI2itxKh5zq7UsSm6vaStZiaG2l8UsISzxHOEf9W4yZVedhFKPChxByLEWQ/XQpKJWR5V+p+jfy79r3+bEIgxA5OboII85vDF7V+ZtEE3olc5Qjvknigia3F47MoxoqaWVUgfB23Y5oQ+7Sq3yjeKVF5kBo+5n5MGUedoheaYLTIAlsUtirvRXfJI+tfV+lWKTcBggnZRZggjrNKz2DX6zT2u7KQ7afYAepKg9ZXRcbafxbnAryQu2fsF+0D7tigE42C9vg5+xBWBXKEobBUK0Zh68MNjsL/AsVh43zXl9PV+qW4jxwiGUiA5r5XVy9qnwypHy9dNcRKWiTo7JwCf9fJUcI15VThQu530UPkt6jwXRENXKf8hKYsWn/m2aUKBB/1l7D5aXdNZ/HdmNu53pzBrKlPf46aFJdKCeUjZ5QKRQxrBKYByws4QQTb9+pFIw=
-x-microsoft-antispam:
- BCL:0;ARA:14566002|5062599005|19110799003|8062599003|461199028|15080799006|7092599003|8060799006|102099032|3412199025|440099028;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?nQ53R7HK9yG17z+dj8OHSiknN/arT3pLZVVqlj8d+dsJbhtB8l4LNuz1gFhM?=
- =?us-ascii?Q?9mV3TvQh5vUFh92qd+LItdfKNhYXceMzKnJDl6UNvFgn7FX4wZ1TBP8Oit7A?=
- =?us-ascii?Q?LXkwI6SPZ4gpGHdLLbqeystvoXWEVMRj1TmBZE+jn+dB2Os4zOYi7aibkS8j?=
- =?us-ascii?Q?dOwag3/pUblE6+MavKV1Er/YDtYIKwPXuaJ57xqOR1eaWAPSV++Xo2FeqDzF?=
- =?us-ascii?Q?KuLC1aTRFwzPeRr+ntG54rEx4fbFQ55XaVTdC2RTNaD3PDt8mRWHL4lktX3v?=
- =?us-ascii?Q?yRyWvN5ltlNM2WP/pyt/ErjPHDBfsR0Eg1n08oXTA1lMdhZXbyEYv8EUmVpl?=
- =?us-ascii?Q?qpNWEbdBSAos9c+9Bx4QFMiOeOpNggNaY6VjvXkTHNTS3hE0xyXOv8S0zhwL?=
- =?us-ascii?Q?/15UNn21tzs/BbJdp7ZK9tR82fpvef7JKmP2WBwQGlnuxF2nh3qMNPu8gxjs?=
- =?us-ascii?Q?jrRfeFcGPXlke0m3AKwN+plmeHnvwupszlRl3kSwMPdhvzGTkmFBVN9wBaxY?=
- =?us-ascii?Q?Nx5JMSGuVlu/HBklz0gtRRANo5x/SABMXC7YwZ7wZH0iQKVbIysSQPNiZjGC?=
- =?us-ascii?Q?JeBwyo5kh2NE8BiyKEaLrwxml9ZrOBYjaqwDq7Ngua1Z3JgP+iz1lhXI7CHs?=
- =?us-ascii?Q?E7Ao6AV/fsu0cZL+pJ+PL4ScaKeNP85TsepxI5LCseVuHU1C7HbN10RkfJkC?=
- =?us-ascii?Q?FNcdYie/ssxSakuPYg6YQ/ER6ZOcy3DbmRREZQAKhbz3PGqM9ZwuCqr/uPaG?=
- =?us-ascii?Q?h7ZWlFHwxOQ10R7RAy8P4ROD+nb4/OAthKUDs6DuUuiC4pmeBxUuzVvYDzVB?=
- =?us-ascii?Q?SvNIoqAdiwAeAri5eZve5zuTIa+fj5PCVU79anFcIaxi+boLFVR+IrCQ0rnp?=
- =?us-ascii?Q?VEZttKCtz5rTAm+cBsz7rOPk4Prb/+2aasjUJ+NyLKpPWZ04MTtK4rCS6Wh8?=
- =?us-ascii?Q?+ghU0EnISqsdOKDZrkQECTlh2B+f4LNvWSECwe9znvp16je313uT7b6zfWjV?=
- =?us-ascii?Q?SKFYXxWU+S2GZwPc9DitZmWoeJljhGVhaZD5IjfA0cbOQHIc1u/mPuHx/Otk?=
- =?us-ascii?Q?KGKoljhlehO+pExTnhZ8jtg6InHbAP+wg0Xxs9J/7MM8gEVQmiM=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?aC2FCI5Xybb3Ye1sP2Gm50H41uVGDga52VFMlwMJ8uiGFiKXJypEKXlkn5zr?=
- =?us-ascii?Q?LIKDbTOC2tfhc96RM0cuG3GBOswWadztDkmOnJKFTDUHMyjuXQMSUiaUgLS8?=
- =?us-ascii?Q?Rc4R6wVUgKBrORt+KcR6v+J1TP2pVf8i+f3Dlbcp6vNiCiilWPmP5V8jQqkO?=
- =?us-ascii?Q?JxJSN6Z6dddcNo5hBptWuAyxzKFDQyIKbrpmMgG8iJZ+IlbLNlc2Bh6WLLG/?=
- =?us-ascii?Q?nRijjoaTndrnGs50VJncnSuYEmx8i6GMVLfR4xYl9pjdW+kyExhMU3iR7uE9?=
- =?us-ascii?Q?bKywuaZ3b2vOqPhZuSfFzxuL6um/DTJ7uLxFA6jmMi3gbP2P6Ehv2736EZUi?=
- =?us-ascii?Q?5jtx80hMZBJaEg5Yi/1xDSKtwgs6SqUB3SLCkk+/2H/HA25gQpHoHEfAtkTR?=
- =?us-ascii?Q?xNyR4oQdB0ELnnN6rwWOYXEDIZNdPuvZk3SxoSjrDMJP4a2MBx/Daq2y0CJs?=
- =?us-ascii?Q?53oyQWXVOMeZLTFnepi1BUiPlAwSz0UbM52xQYLQooLdOP9+ITb3FZX7b0oW?=
- =?us-ascii?Q?qkSCQt7gri4nr7vmwgkbI0in1Zcr/JXczGcz2bzgV+V8xlrnfXMqkIsg35A+?=
- =?us-ascii?Q?xVFGdH4OyaRIFaCQrgtdPt0tJG288/ZyKoF+VqiDcuOnXm1rXuZ3y1cmBvBD?=
- =?us-ascii?Q?3CXAAOak2seVh2h9KP5AZ0pX5ZYAyDLKh1ZuleV1ASNCna0MEFAu8Veo03pc?=
- =?us-ascii?Q?t3K+tkTEqAmyDrtNDBIh9ErcQrZg8GjUVPnGCP+28Ssjch6/zuqiu7aVdQ9h?=
- =?us-ascii?Q?mDrfdlBLJMAMVMVRVOSo4Rp3kH1kX+llp20+UwPq+Fwkiw3VnmTlGrvw6eBr?=
- =?us-ascii?Q?4xd+rymtSxqXpvl2Tobg2Rs/aVC9bGsS295wzRFGeJ6+fqYDgnEVGJvSJyqm?=
- =?us-ascii?Q?X7dJGeb/Mzc4GzxNDBIcl05ZunDBVUhxkSwtglo/UpyES567m59cgmZVypXL?=
- =?us-ascii?Q?UFONJM1H3eKgIfdzzTt6un8Da9/q/vTaVITSz5eswzNMaPulcgDgIHAdts0N?=
- =?us-ascii?Q?s/Wlfq/n2DHc6sZX4zul8Nl/3iAXX4xUt2Z5QbvLpzTAtFgVffi8HUMuxaf2?=
- =?us-ascii?Q?9lDnsfQDxyS7DoF2V5vYz+t/6Hh87mgBA5pknvG9XwlyWWCPeyrzxGL5rma9?=
- =?us-ascii?Q?TwagYX4bPc2aUT50f1UW0Z1hnxOZbKRjPphG7gs7h1kgPBIaxDrkX+8RTy0E?=
- =?us-ascii?Q?15UJIvBMf7c3iLPO7so+lAJS1nASOhztAThleh5zaZLjVvCcsRiBJnhs/ZjP?=
- =?us-ascii?Q?goUKGaQGlfXT71P1ir3FSY1aQ/qRxwPmJLyXwfOCJbIYSWy0xwAD52gWQn0S?=
- =?us-ascii?Q?uFGkRllr2BM37QelSG8Om+EK?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <33D6DC4152FB744E9B8E42B0DE1C753B@INDPRD01.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4381EC009
+	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 17:09:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737392970; cv=none; b=ErpD3LcOrETvflvo/nEGSeqwAANmpLyu8/+2TmCmHw9C5kXagooZ4prAWGYvGJrqxBQlIAu0FEZgEcr8eU7J9SciUg5FH/7YeYYoRU7A1USbaBIoIPXxzQaYxKfXVred2Uq/ChD7N/R/utBhZ++0h5ymoBB7B7hOTqhVNinto6c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737392970; c=relaxed/simple;
+	bh=fyS5YWpdPWUDSW9MQD8/qYtsGTtLGowRSbzIEbhuoZY=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=EqE3X2pLpm2xwmvX8+Sk+4HxgrNTTxh4WDr3GYeQcoxjokOWvTTCQGiX73jgKfjHLSiouHEpWBC9n5CO9HP/JHyFvcOBJc+mxPrAqX2qHAl5OZjgp7g4S3ystg3C6ebPW4qtzo6zuE0naWz26vwvli3l0q73ohQv9RHnd9vnbJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=FHXXLcWn; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43625c4a50dso32853605e9.0
+        for <stable@vger.kernel.org>; Mon, 20 Jan 2025 09:09:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1737392965; x=1737997765; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nr1y38ufeJALflwuVe1SFU70QoP9WOKKKxgqQ3bthxE=;
+        b=FHXXLcWnuNqjpzn1fvL9b31ZZHO4YfnGHeeIJI/nsh9KwoJGT1Ztau52auZYYWk46c
+         h0VLsjPeYNrw015owZSOQzNWxlNSIBO0+/V6oGm/AIK3j5C2ZdHrXbCC04ilv1gldcb0
+         +hNSB7jlWERc0aHOtCvnT9Lx64pblQawkUd1c5iCfUeB8ahjs8kugpyeERRWdPM72kL9
+         WONwfFESsIITE2nlDRyUPPR9xZP04DNZ+RkaK4GbrPZIrMeUZyxqVH2iboGYO8MMSDsb
+         Sywx/TlHUaREPrTnS58hXeO3ALDjwlVW9mFE2bMuWW5+CObp2jF94P8I8FohB5JVbfan
+         a/MA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737392965; x=1737997765;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nr1y38ufeJALflwuVe1SFU70QoP9WOKKKxgqQ3bthxE=;
+        b=uQymRfw2Iqeg0WxBU6rm4aDkKHkpznyWEBQlB+0jDZTSRbJzYUic7CyRjFBehf2BXl
+         +rVjDi+6CItH40/dPMCpl5AoZuniem+T9dyapw3aGImE5WrJJTaygabCvSBk82gi/scG
+         TIV9YGTs8xM5H5MmlGN7yDmqFcMnWHSAzNIvbNBu9kNRUDSya7xLaXxMssnThrFHcYcL
+         UVvan4e/CKEkef9BjoV+N8XGOZjacnenV20bUANx1K66HnSRFYGbC80ccD7awn6WoxqW
+         F19QX8AUq5WYVVfUfIJoDYa0AkgiBAxSUZFUf9GYO9foKOcv9jooSp+CU/H6VwLmbdHd
+         jRJg==
+X-Gm-Message-State: AOJu0YwTm6Wq33L4URqIJfGVy+9kbTKlxgb+GkJy2TbUpsvOxzOYWlIn
+	ZlDFHUb3+SQ4oWto94DCTnIYSGjjQieQ/IVbjKjE/3ux2zBlV0Fd8OgVzLWfIvw=
+X-Gm-Gg: ASbGnctLFQt4BOQeM90tnB8CdB40sRmnTNymn2IAhY29OVd/fTxaW+9pqMpE1DgoymA
+	6VHB8YaVFuUHWFter14DEIdUSOcvk0PwgJqr7Fry/ufqJw1uhFKZoAoVe1pWYb3B7mRnt9Wj+Rr
+	ofosTqISBzdbVU9qK4Rp/XxaIvr5L7F+GntWx5I6HwDKUbWb02/3DwAaF45W12GvT7UQojquNYx
+	zq80B5vpjhoSSn6YAFgHte5OSd8a7/QzA6xKE64C3cLRBifwCH9sXPdGw/8rFCTKMMfEwArQiOp
+	LQ==
+X-Google-Smtp-Source: AGHT+IGFa01kzsP341kFau49gPPQFE0Dv3uLKviYZaha+issmbSb7Z6d+WzLmwoPq1upw5nurlQFFA==
+X-Received: by 2002:a05:600c:1d16:b0:436:a3a3:a70c with SMTP id 5b1f17b1804b1-438914390dbmr117049435e9.28.1737392965180;
+        Mon, 20 Jan 2025 09:09:25 -0800 (PST)
+Received: from smtpclient.apple ([104.28.154.122])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4389046bab0sm144280535e9.38.2025.01.20.09.09.23
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 20 Jan 2025 09:09:24 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-ae5c4.templateTenant
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MA1PR01MB2555.INDPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: c77e38e5-606d-45dd-678e-08dd3972971e
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jan 2025 16:50:48.0270
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN2PR01MB9923
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
+Subject: Re: [PATCH 6.6 010/129] ovl: do not encode lower fh with upper
+ sb_writers held
+From: Ignat Korchagin <ignat@cloudflare.com>
+In-Reply-To: <20250115103554.776405922@linuxfoundation.org>
+Date: Mon, 20 Jan 2025 17:09:12 +0000
+Cc: stable@vger.kernel.org,
+ patches@lists.linux.dev,
+ Sasha Levin <sashal@kernel.org>,
+ kernel-team@cloudflare.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <ACD4D6CC-C4D5-4657-A805-03C34559046E@cloudflare.com>
+References: <20250115103554.357917208@linuxfoundation.org>
+ <20250115103554.776405922@linuxfoundation.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Amir Goldstein <amir73il@gmail.com>
+X-Mailer: Apple Mail (2.3826.300.87.4.3)
 
-From: Aditya Garg <gargaditya08@live.com>
 
-Before 6.13, random seed to the firmware was given based on the logic
-whether the device had valid OTP or not, and such devices were found
-mainly on the T2 and Apple Silicon Macs. In 6.13, the logic was changed,
-and the device table was used for this purpose, so as to cover the special
-case of BCM43752 chip.
 
-During the transition, the device table for BCM4364 and BCM4355 Wi-Fi chips
-which had valid OTP was not modified, thus breaking Wi-Fi on these devices.
-This patch adds does the necessary changes, similar to the ones done for
-other chips.
+> On 15 Jan 2025, at 10:36, Greg Kroah-Hartman =
+<gregkh@linuxfoundation.org> wrote:
+>=20
+> 6.6-stable review patch.  If anyone has any objections, please let me =
+know.
+>=20
+> ------------------
+>=20
+> From: Amir Goldstein <amir73il@gmail.com>
+>=20
+> [ Upstream commit 5b02bfc1e7e3811c5bf7f0fa626a0694d0dbbd77 ]
+>=20
+> When lower fs is a nested overlayfs, calling encode_fh() on a lower
+> directory dentry may trigger copy up and take sb_writers on the upper =
+fs
+> of the lower nested overlayfs.
+>=20
+> The lower nested overlayfs may have the same upper fs as this =
+overlayfs,
+> so nested sb_writers lock is illegal.
+>=20
+> Move all the callers that encode lower fh to before ovl_want_write().
+>=20
+> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+> Stable-dep-of: c45beebfde34 ("ovl: support encoding fid from inode =
+with no alias")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
 
-Fixes: ea11a89c3ac6 ("wifi: brcmfmac: add flag for random seed during firmw=
-are download")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Hi,
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/driv=
-ers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-index e4395b1f8..d2caa80e9 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-@@ -2712,7 +2712,7 @@ static const struct pci_device_id brcmf_pcie_devid_ta=
-ble[] =3D {
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4350_DEVICE_ID, WCC),
- 	BRCMF_PCIE_DEVICE_SUB(0x4355, BRCM_PCIE_VENDOR_ID_BROADCOM, 0x4355, WCC),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4354_RAW_DEVICE_ID, WCC),
--	BRCMF_PCIE_DEVICE(BRCM_PCIE_4355_DEVICE_ID, WCC),
-+	BRCMF_PCIE_DEVICE(BRCM_PCIE_4355_DEVICE_ID, WCC_SEED),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4356_DEVICE_ID, WCC),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43567_DEVICE_ID, WCC),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43570_DEVICE_ID, WCC),
-@@ -2723,7 +2723,7 @@ static const struct pci_device_id brcmf_pcie_devid_ta=
-ble[] =3D {
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43602_2G_DEVICE_ID, WCC),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43602_5G_DEVICE_ID, WCC),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43602_RAW_DEVICE_ID, WCC),
--	BRCMF_PCIE_DEVICE(BRCM_PCIE_4364_DEVICE_ID, WCC),
-+	BRCMF_PCIE_DEVICE(BRCM_PCIE_4364_DEVICE_ID, WCC_SEED),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4365_DEVICE_ID, BCA),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4365_2G_DEVICE_ID, BCA),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4365_5G_DEVICE_ID, BCA),
---=20
-2.39.5 (Apple Git-154)
+This patch seems to trigger the following warning on 6.6.72, when =
+running simple =E2=80=9C$ docker run --rm -it debian=E2=80=9D (creating =
+a container):
+
+------------[ cut here ]------------
+WARNING: CPU: 12 PID: 668 at fs/namespace.c:1245 cleanup_mnt+0x130/0x150
+Modules linked in: xt_conntrack(E) nft_chain_nat(E) xt_MASQUERADE(E) =
+nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) bridge(E) =
+stp(E) llc(E) xfrm_user(E) xfrm_algo(E) xt_addrtype(E) nft_compat(E) =
+nf_tables(E) overlay(E) kvm_amd(E) ccp(E) kvm(E) irqbypass(E) =
+crc32_pclmul(E) sha512_ssse3(E) sha256_ssse3(E) sha1_ssse3(E) =
+aesni_intel(E) crypto_simd(E) cryptd(E) iTCO_wdt(E) virtio_console(E) =
+virtio_balloon(E) iTCO_vendor_support(E) tiny_power_button(E) button(E) =
+sch_fq_codel(E) fuse(E) nfnetlink(E) vsock_loopback(E) =
+vmw_vsock_virtio_transport_common(E) vsock(E) efivarfs(E) ip_tables(E) =
+x_tables(E) virtio_net(E) net_failover(E) virtio_blk(E) virtio_scsi(E) =
+failover(E) crc32c_intel(E) i2c_i801(E) virtio_pci(E) =
+virtio_pci_legacy_dev(E) i2c_smbus(E) lpc_ich(E) =
+virtio_pci_modern_dev(E) mfd_core(E) virtio(E) virtio_ring(E)
+CPU: 12 PID: 668 Comm: dockerd Tainted: G E 6.6.71+ #18
+Hardware name: KubeVirt None/RHEL, BIOS edk2-20230524-3.el9 05/24/2023
+RIP: 0010:cleanup_mnt+0x130/0x150
+Code: 2c 01 00 00 85 c0 75 16 e8 6d fb ff ff eb 8a c7 87 2c 01 00 00 00 =
+00 00 00 e9 6a ff ff ff c7 87 2c 01 00 00 00 00 00 00 eb de <0f> 0b 48 =
+83 bd 30 01 00 00 00 0f 84 e9 fe ff ff 48 89 ef e8 18 e7
+RSP: 0018:ffffc9000095fec8 EFLAGS: 00010282
+RAX: 00000000fffffffe RBX: 0000000000000000 RCX: 0000000000000010
+RDX: 0000000000000010 RSI: 0000000000000010 RDI: 0000000000000010
+RBP: ffff888109ea57c0 R08: ffffffffbc27ab60 R09: 0000000000000000
+R10: 0000000000037420 R11: 0000000000000000 R12: ffff88810acba9bc
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+FS: 00007f1041ffb6c0(0000) GS:ffff88903fc00000(0000) =
+knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000c000b7f02f CR3: 00000001034ca002 CR4: 0000000000770ee0
+PKRU: 55555554
+Call Trace:
+<TASK>
+? cleanup_mnt+0x130/0x150
+? __warn+0x81/0x130
+? cleanup_mnt+0x130/0x150
+? report_bug+0x16f/0x1a0
+? handle_bug+0x53/0x90
+? exc_invalid_op+0x17/0x70
+? asm_exc_invalid_op+0x1a/0x20
+? cleanup_mnt+0x130/0x150
+? cleanup_mnt+0x13/0x150
+task_work_run+0x5d/0x90
+exit_to_user_mode_prepare+0xf8/0x100
+syscall_exit_to_user_mode+0x21/0x40
+? srso_alias_return_thunk+0x5/0xfbef5
+do_syscall_64+0x45/0x90
+entry_SYSCALL_64_after_hwframe+0x60/0xca
+RIP: 0033:0x55d0e0726dee
+Code: 48 83 ec 38 e8 13 00 00 00 48 83 c4 38 5d c3 cc cc cc cc cc cc cc =
+cc cc cc cc cc cc 49 89 f2 48 89 fa 48 89 ce 48 89 df 0f 05 <48> 3d 01 =
+f0 ff ff 76 15 48 f7 d8 48 89 c1 48 c7 c0 ff ff ff ff 48
+RSP: 002b:000000c000145a10 EFLAGS: 00000216 ORIG_RAX: 00000000000000a6
+RAX: 0000000000000000 RBX: 000000c000b7fce0 RCX: 000055d0e0726dee
+RDX: 0000000000000000 RSI: 0000000000000002 RDI: 000000c000b7fce0
+RBP: 000000c000145a50 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000216 R12: 000000c000b7fce0
+R13: 0000000000000000 R14: 000000c000b06e00 R15: 1fffffffffffffff
+</TASK>
+---[ end trace 0000000000000000 ]=E2=80=94
+
+This commit was pointed by my bisecting 6.6.71..6.6.72, but to =
+double-check it I had to revert the following commits to make 6.6.72 =
+compile and not exhibit the issue:
+
+  * a3f8a2b13a277d942c810d2ccc654d5bc824a430 (=E2=80=9Covl: pass =
+realinode to ovl_encode_real_fh() instead of realdentry
+=E2=80=9D) [ Upstream commit 07aeefae7ff44d80524375253980b1bdee2396b0 ]
+  * 26423e18cd6f709ca4fe7194c29c11658cd0cdd0 (=E2=80=9Covl: do not =
+encode lower fh with upper sb_writers held=E2=80=9D) [ Upstream commit =
+5b02bfc1e7e3811c5bf7f0fa626a0694d0dbbd77 ]
+  * a1a541fbfa7e97c1100144db34b57553d7164ce5 ("ovl: support encoding fid =
+from inode with no alias=E2=80=9D) [ Upstream commit =
+c45beebfde34aa71afbc48b2c54cdda623515037 ]
+
+I can also confirm we don=E2=80=99t see this warning on the latest =
+6.12.10 release, so perhaps we have missed some dependencies in 6.6?
+
+Ignat
+
+> fs/overlayfs/copy_up.c   | 53 +++++++++++++++++++++++++---------------
+> fs/overlayfs/namei.c     | 37 +++++++++++++++++++++-------
+> fs/overlayfs/overlayfs.h | 26 ++++++++++++++------
+> fs/overlayfs/super.c     | 20 ++++++++++-----
+> fs/overlayfs/util.c      | 10 ++++++++
+> 5 files changed, 104 insertions(+), 42 deletions(-)
+>=20
+> diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+> index ada3fcc9c6d5..5c9af24bae4a 100644
+> --- a/fs/overlayfs/copy_up.c
+> +++ b/fs/overlayfs/copy_up.c
+> @@ -426,29 +426,29 @@ struct ovl_fh *ovl_encode_real_fh(struct ovl_fs =
+*ofs, struct dentry *real,
+> return ERR_PTR(err);
+> }
+>=20
+> -int ovl_set_origin(struct ovl_fs *ofs, struct dentry *lower,
+> -   struct dentry *upper)
+> +struct ovl_fh *ovl_get_origin_fh(struct ovl_fs *ofs, struct dentry =
+*origin)
+> {
+> - const struct ovl_fh *fh =3D NULL;
+> - int err;
+> -
+> /*
+> * When lower layer doesn't support export operations store a 'null' =
+fh,
+> * so we can use the overlay.origin xattr to distignuish between a copy
+> * up and a pure upper inode.
+> */
+> - if (ovl_can_decode_fh(lower->d_sb)) {
+> - fh =3D ovl_encode_real_fh(ofs, lower, false);
+> - if (IS_ERR(fh))
+> - return PTR_ERR(fh);
+> - }
+> + if (!ovl_can_decode_fh(origin->d_sb))
+> + return NULL;
+> +
+> + return ovl_encode_real_fh(ofs, origin, false);
+> +}
+> +
+> +int ovl_set_origin_fh(struct ovl_fs *ofs, const struct ovl_fh *fh,
+> +      struct dentry *upper)
+> +{
+> + int err;
+>=20
+> /*
+> * Do not fail when upper doesn't support xattrs.
+> */
+> err =3D ovl_check_setxattr(ofs, upper, OVL_XATTR_ORIGIN, fh->buf,
+> fh ? fh->fb.len : 0, 0);
+> - kfree(fh);
+>=20
+> /* Ignore -EPERM from setting "user.*" on symlink/special */
+> return err =3D=3D -EPERM ? 0 : err;
+> @@ -476,7 +476,7 @@ static int ovl_set_upper_fh(struct ovl_fs *ofs, =
+struct dentry *upper,
+>  *
+>  * Caller must hold i_mutex on indexdir.
+>  */
+> -static int ovl_create_index(struct dentry *dentry, struct dentry =
+*origin,
+> +static int ovl_create_index(struct dentry *dentry, const struct =
+ovl_fh *fh,
+>    struct dentry *upper)
+> {
+> struct ovl_fs *ofs =3D OVL_FS(dentry->d_sb);
+> @@ -502,7 +502,7 @@ static int ovl_create_index(struct dentry *dentry, =
+struct dentry *origin,
+> if (WARN_ON(ovl_test_flag(OVL_INDEX, d_inode(dentry))))
+> return -EIO;
+>=20
+> - err =3D ovl_get_index_name(ofs, origin, &name);
+> + err =3D ovl_get_index_name_fh(fh, &name);
+> if (err)
+> return err;
+>=20
+> @@ -541,6 +541,7 @@ struct ovl_copy_up_ctx {
+> struct dentry *destdir;
+> struct qstr destname;
+> struct dentry *workdir;
+> + const struct ovl_fh *origin_fh;
+> bool origin;
+> bool indexed;
+> bool metacopy;
+> @@ -637,7 +638,7 @@ static int ovl_copy_up_metadata(struct =
+ovl_copy_up_ctx *c, struct dentry *temp)
+> * hard link.
+> */
+> if (c->origin) {
+> - err =3D ovl_set_origin(ofs, c->lowerpath.dentry, temp);
+> + err =3D ovl_set_origin_fh(ofs, c->origin_fh, temp);
+> if (err)
+> return err;
+> }
+> @@ -749,7 +750,7 @@ static int ovl_copy_up_workdir(struct =
+ovl_copy_up_ctx *c)
+> goto cleanup;
+>=20
+> if (S_ISDIR(c->stat.mode) && c->indexed) {
+> - err =3D ovl_create_index(c->dentry, c->lowerpath.dentry, temp);
+> + err =3D ovl_create_index(c->dentry, c->origin_fh, temp);
+> if (err)
+> goto cleanup;
+> }
+> @@ -861,6 +862,8 @@ static int ovl_do_copy_up(struct ovl_copy_up_ctx =
+*c)
+> {
+> int err;
+> struct ovl_fs *ofs =3D OVL_FS(c->dentry->d_sb);
+> + struct dentry *origin =3D c->lowerpath.dentry;
+> + struct ovl_fh *fh =3D NULL;
+> bool to_index =3D false;
+>=20
+> /*
+> @@ -877,17 +880,25 @@ static int ovl_do_copy_up(struct ovl_copy_up_ctx =
+*c)
+> to_index =3D true;
+> }
+>=20
+> - if (S_ISDIR(c->stat.mode) || c->stat.nlink =3D=3D 1 || to_index)
+> + if (S_ISDIR(c->stat.mode) || c->stat.nlink =3D=3D 1 || to_index) {
+> + fh =3D ovl_get_origin_fh(ofs, origin);
+> + if (IS_ERR(fh))
+> + return PTR_ERR(fh);
+> +
+> + /* origin_fh may be NULL */
+> + c->origin_fh =3D fh;
+> c->origin =3D true;
+> + }
+>=20
+> if (to_index) {
+> c->destdir =3D ovl_indexdir(c->dentry->d_sb);
+> - err =3D ovl_get_index_name(ofs, c->lowerpath.dentry, &c->destname);
+> + err =3D ovl_get_index_name(ofs, origin, &c->destname);
+> if (err)
+> - return err;
+> + goto out_free_fh;
+> } else if (WARN_ON(!c->parent)) {
+> /* Disconnected dentry must be copied up to index dir */
+> - return -EIO;
+> + err =3D -EIO;
+> + goto out_free_fh;
+> } else {
+> /*
+> * Mark parent "impure" because it may now contain non-pure
+> @@ -895,7 +906,7 @@ static int ovl_do_copy_up(struct ovl_copy_up_ctx =
+*c)
+> */
+> err =3D ovl_set_impure(c->parent, c->destdir);
+> if (err)
+> - return err;
+> + goto out_free_fh;
+> }
+>=20
+> /* Should we copyup with O_TMPFILE or with workdir? */
+> @@ -927,6 +938,8 @@ static int ovl_do_copy_up(struct ovl_copy_up_ctx =
+*c)
+> out:
+> if (to_index)
+> kfree(c->destname.name);
+> +out_free_fh:
+> + kfree(fh);
+> return err;
+> }
+>=20
+> diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
+> index 80391c687c2a..f10ac4ae35f0 100644
+> --- a/fs/overlayfs/namei.c
+> +++ b/fs/overlayfs/namei.c
+> @@ -507,6 +507,19 @@ static int ovl_verify_fh(struct ovl_fs *ofs, =
+struct dentry *dentry,
+> return err;
+> }
+>=20
+> +int ovl_verify_set_fh(struct ovl_fs *ofs, struct dentry *dentry,
+> +      enum ovl_xattr ox, const struct ovl_fh *fh,
+> +      bool is_upper, bool set)
+> +{
+> + int err;
+> +
+> + err =3D ovl_verify_fh(ofs, dentry, ox, fh);
+> + if (set && err =3D=3D -ENODATA)
+> + err =3D ovl_setxattr(ofs, dentry, ox, fh->buf, fh->fb.len);
+> +
+> + return err;
+> +}
+> +
+> /*
+>  * Verify that @real dentry matches the file handle stored in xattr =
+@name.
+>  *
+> @@ -515,9 +528,9 @@ static int ovl_verify_fh(struct ovl_fs *ofs, =
+struct dentry *dentry,
+>  *
+>  * Return 0 on match, -ESTALE on mismatch, -ENODATA on no xattr, < 0 =
+on error.
+>  */
+> -int ovl_verify_set_fh(struct ovl_fs *ofs, struct dentry *dentry,
+> -      enum ovl_xattr ox, struct dentry *real, bool is_upper,
+> -      bool set)
+> +int ovl_verify_origin_xattr(struct ovl_fs *ofs, struct dentry =
+*dentry,
+> +    enum ovl_xattr ox, struct dentry *real,
+> +    bool is_upper, bool set)
+> {
+> struct inode *inode;
+> struct ovl_fh *fh;
+> @@ -530,9 +543,7 @@ int ovl_verify_set_fh(struct ovl_fs *ofs, struct =
+dentry *dentry,
+> goto fail;
+> }
+>=20
+> - err =3D ovl_verify_fh(ofs, dentry, ox, fh);
+> - if (set && err =3D=3D -ENODATA)
+> - err =3D ovl_setxattr(ofs, dentry, ox, fh->buf, fh->fb.len);
+> + err =3D ovl_verify_set_fh(ofs, dentry, ox, fh, is_upper, set);
+> if (err)
+> goto fail;
+>=20
+> @@ -548,6 +559,7 @@ int ovl_verify_set_fh(struct ovl_fs *ofs, struct =
+dentry *dentry,
+> goto out;
+> }
+>=20
+> +
+> /* Get upper dentry from index */
+> struct dentry *ovl_index_upper(struct ovl_fs *ofs, struct dentry =
+*index,
+>       bool connected)
+> @@ -684,7 +696,7 @@ int ovl_verify_index(struct ovl_fs *ofs, struct =
+dentry *index)
+> goto out;
+> }
+>=20
+> -static int ovl_get_index_name_fh(struct ovl_fh *fh, struct qstr =
+*name)
+> +int ovl_get_index_name_fh(const struct ovl_fh *fh, struct qstr *name)
+> {
+> char *n, *s;
+>=20
+> @@ -873,20 +885,27 @@ int ovl_path_next(int idx, struct dentry =
+*dentry, struct path *path)
+> static int ovl_fix_origin(struct ovl_fs *ofs, struct dentry *dentry,
+>  struct dentry *lower, struct dentry *upper)
+> {
+> + const struct ovl_fh *fh;
+> int err;
+>=20
+> if (ovl_check_origin_xattr(ofs, upper))
+> return 0;
+>=20
+> + fh =3D ovl_get_origin_fh(ofs, lower);
+> + if (IS_ERR(fh))
+> + return PTR_ERR(fh);
+> +
+> err =3D ovl_want_write(dentry);
+> if (err)
+> - return err;
+> + goto out;
+>=20
+> - err =3D ovl_set_origin(ofs, lower, upper);
+> + err =3D ovl_set_origin_fh(ofs, fh, upper);
+> if (!err)
+> err =3D ovl_set_impure(dentry->d_parent, upper->d_parent);
+>=20
+> ovl_drop_write(dentry);
+> +out:
+> + kfree(fh);
+> return err;
+> }
+>=20
+> diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
+> index 09ca82ed0f8c..61e03d664d7d 100644
+> --- a/fs/overlayfs/overlayfs.h
+> +++ b/fs/overlayfs/overlayfs.h
+> @@ -632,11 +632,15 @@ struct dentry *ovl_decode_real_fh(struct ovl_fs =
+*ofs, struct ovl_fh *fh,
+> int ovl_check_origin_fh(struct ovl_fs *ofs, struct ovl_fh *fh, bool =
+connected,
+> struct dentry *upperdentry, struct ovl_path **stackp);
+> int ovl_verify_set_fh(struct ovl_fs *ofs, struct dentry *dentry,
+> -      enum ovl_xattr ox, struct dentry *real, bool is_upper,
+> -      bool set);
+> +      enum ovl_xattr ox, const struct ovl_fh *fh,
+> +      bool is_upper, bool set);
+> +int ovl_verify_origin_xattr(struct ovl_fs *ofs, struct dentry =
+*dentry,
+> +    enum ovl_xattr ox, struct dentry *real,
+> +    bool is_upper, bool set);
+> struct dentry *ovl_index_upper(struct ovl_fs *ofs, struct dentry =
+*index,
+>       bool connected);
+> int ovl_verify_index(struct ovl_fs *ofs, struct dentry *index);
+> +int ovl_get_index_name_fh(const struct ovl_fh *fh, struct qstr =
+*name);
+> int ovl_get_index_name(struct ovl_fs *ofs, struct dentry *origin,
+>       struct qstr *name);
+> struct dentry *ovl_get_index_fh(struct ovl_fs *ofs, struct ovl_fh =
+*fh);
+> @@ -648,17 +652,24 @@ struct dentry *ovl_lookup(struct inode *dir, =
+struct dentry *dentry,
+>  unsigned int flags);
+> bool ovl_lower_positive(struct dentry *dentry);
+>=20
+> +static inline int ovl_verify_origin_fh(struct ovl_fs *ofs, struct =
+dentry *upper,
+> +       const struct ovl_fh *fh, bool set)
+> +{
+> + return ovl_verify_set_fh(ofs, upper, OVL_XATTR_ORIGIN, fh, false, =
+set);
+> +}
+> +
+> static inline int ovl_verify_origin(struct ovl_fs *ofs, struct dentry =
+*upper,
+>    struct dentry *origin, bool set)
+> {
+> - return ovl_verify_set_fh(ofs, upper, OVL_XATTR_ORIGIN, origin,
+> - false, set);
+> + return ovl_verify_origin_xattr(ofs, upper, OVL_XATTR_ORIGIN, origin,
+> +       false, set);
+> }
+>=20
+> static inline int ovl_verify_upper(struct ovl_fs *ofs, struct dentry =
+*index,
+>   struct dentry *upper, bool set)
+> {
+> - return ovl_verify_set_fh(ofs, index, OVL_XATTR_UPPER, upper, true, =
+set);
+> + return ovl_verify_origin_xattr(ofs, index, OVL_XATTR_UPPER, upper,
+> +       true, set);
+> }
+>=20
+> /* readdir.c */
+> @@ -823,8 +834,9 @@ int ovl_copy_xattr(struct super_block *sb, const =
+struct path *path, struct dentr
+> int ovl_set_attr(struct ovl_fs *ofs, struct dentry *upper, struct =
+kstat *stat);
+> struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry =
+*real,
+>  bool is_upper);
+> -int ovl_set_origin(struct ovl_fs *ofs, struct dentry *lower,
+> -   struct dentry *upper);
+> +struct ovl_fh *ovl_get_origin_fh(struct ovl_fs *ofs, struct dentry =
+*origin);
+> +int ovl_set_origin_fh(struct ovl_fs *ofs, const struct ovl_fh *fh,
+> +      struct dentry *upper);
+>=20
+> /* export.c */
+> extern const struct export_operations ovl_export_operations;
+> diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+> index 2c056d737c27..e2574034c3fa 100644
+> --- a/fs/overlayfs/super.c
+> +++ b/fs/overlayfs/super.c
+> @@ -879,15 +879,20 @@ static int ovl_get_indexdir(struct super_block =
+*sb, struct ovl_fs *ofs,
+> {
+> struct vfsmount *mnt =3D ovl_upper_mnt(ofs);
+> struct dentry *indexdir;
+> + struct dentry *origin =3D ovl_lowerstack(oe)->dentry;
+> + const struct ovl_fh *fh;
+> int err;
+>=20
+> + fh =3D ovl_get_origin_fh(ofs, origin);
+> + if (IS_ERR(fh))
+> + return PTR_ERR(fh);
+> +
+> err =3D mnt_want_write(mnt);
+> if (err)
+> - return err;
+> + goto out_free_fh;
+>=20
+> /* Verify lower root is upper root origin */
+> - err =3D ovl_verify_origin(ofs, upperpath->dentry,
+> - ovl_lowerstack(oe)->dentry, true);
+> + err =3D ovl_verify_origin_fh(ofs, upperpath->dentry, fh, true);
+> if (err) {
+> pr_err("failed to verify upper root origin\n");
+> goto out;
+> @@ -919,9 +924,10 @@ static int ovl_get_indexdir(struct super_block =
+*sb, struct ovl_fs *ofs,
+> * directory entries.
+> */
+> if (ovl_check_origin_xattr(ofs, ofs->indexdir)) {
+> - err =3D ovl_verify_set_fh(ofs, ofs->indexdir,
+> - OVL_XATTR_ORIGIN,
+> - upperpath->dentry, true, false);
+> + err =3D ovl_verify_origin_xattr(ofs, ofs->indexdir,
+> +      OVL_XATTR_ORIGIN,
+> +      upperpath->dentry, true,
+> +      false);
+> if (err)
+> pr_err("failed to verify index dir 'origin' xattr\n");
+> }
+> @@ -939,6 +945,8 @@ static int ovl_get_indexdir(struct super_block =
+*sb, struct ovl_fs *ofs,
+>=20
+> out:
+> mnt_drop_write(mnt);
+> +out_free_fh:
+> + kfree(fh);
+> return err;
+> }
+>=20
+> diff --git a/fs/overlayfs/util.c b/fs/overlayfs/util.c
+> index 0bf3ffcd072f..4e6b747e0f2e 100644
+> --- a/fs/overlayfs/util.c
+> +++ b/fs/overlayfs/util.c
+> @@ -976,12 +976,18 @@ static void ovl_cleanup_index(struct dentry =
+*dentry)
+> struct dentry *index =3D NULL;
+> struct inode *inode;
+> struct qstr name =3D { };
+> + bool got_write =3D false;
+> int err;
+>=20
+> err =3D ovl_get_index_name(ofs, lowerdentry, &name);
+> if (err)
+> goto fail;
+>=20
+> + err =3D ovl_want_write(dentry);
+> + if (err)
+> + goto fail;
+> +
+> + got_write =3D true;
+> inode =3D d_inode(upperdentry);
+> if (!S_ISDIR(inode->i_mode) && inode->i_nlink !=3D 1) {
+> pr_warn_ratelimited("cleanup linked index (%pd2, ino=3D%lu, =
+nlink=3D%u)\n",
+> @@ -1019,6 +1025,8 @@ static void ovl_cleanup_index(struct dentry =
+*dentry)
+> goto fail;
+>=20
+> out:
+> + if (got_write)
+> + ovl_drop_write(dentry);
+> kfree(name.name);
+> dput(index);
+> return;
+> @@ -1089,6 +1097,8 @@ void ovl_nlink_end(struct dentry *dentry)
+> {
+> struct inode *inode =3D d_inode(dentry);
+>=20
+> + ovl_drop_write(dentry);
+> +
+> if (ovl_test_flag(OVL_INDEX, inode) && inode->i_nlink =3D=3D 0) {
+> const struct cred *old_cred;
+>=20
+> --=20
+> 2.39.5
+>=20
+>=20
+>=20
+>=20
 
 
