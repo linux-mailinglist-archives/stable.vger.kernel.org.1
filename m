@@ -1,193 +1,199 @@
-Return-Path: <stable+bounces-109566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB84BA17042
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 17:34:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EBEBA170CA
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 17:51:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E300F1888B0F
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 16:34:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 664133A0394
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 16:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D196A1E9B3D;
-	Mon, 20 Jan 2025 16:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2751EBFF7;
+	Mon, 20 Jan 2025 16:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="fCSMKACy"
+	dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b="WzbnlDRV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MA0PR01CU009.outbound.protection.outlook.com (mail-southindiaazolkn19010009.outbound.protection.outlook.com [52.103.67.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240261E9B2E
-	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 16:34:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737390856; cv=none; b=ZKcYUopf8Y99CevyX2JcAHaSWPChBrNEOvfHj2gzknFyVTxkfKGYpNxz5P0+VkFAR7fflqlGXOf8Bi28wDSP6l25etsyyIJpk8KynOp+vIwFGN5nfbO1TEMIj8v94Tm0FAq33MmzaFWR1+Fe+BmoAir8qgn0E4dHezfbw6BXfjc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737390856; c=relaxed/simple;
-	bh=11BqZOKZbS21vCnCKgb/oDcRArTLZiBOzpFwNHd6yBE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FlPN7t2Fc50PKK4N/svdz8NPF+TEJWrhxsjfuVg8KMgt+F9zIE3/qQdxjYv2bpVxqiuhPcDYcsjHc9//7WjURSN7Pujqgjg9iGlUKdZ/GDd+++cz/ZduQ6rfCh8p21ndxQFeYNJMsWqIcnxFYCf6wnisA/CUc3A4vpQ4H4AQZmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=fCSMKACy; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2161eb95317so84081185ad.1
-        for <stable@vger.kernel.org>; Mon, 20 Jan 2025 08:34:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1737390854; x=1737995654; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=hc/ZqEmmixzSD5Bu7Z0mbu3TO+Ae4GIVwW02q/UqdSc=;
-        b=fCSMKACygoMBbqZHdSTCj5CsryQOzkOz/0Cfbg5BffQsNQa00KWUTRjP0NBXGH0auv
-         EN1FeNHMLXwfL0WzSKajIsdHNJwqRipeLPPeenLNilgw2LZSh45o+bT5AQXrT31FuDCw
-         CMxPKumNpWlcxzVGuoglUqbHmRkkzZL5JGAYo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737390854; x=1737995654;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hc/ZqEmmixzSD5Bu7Z0mbu3TO+Ae4GIVwW02q/UqdSc=;
-        b=OdmdioU5IaHPdNP/5FcQajm3zJo6pPyvPnEOJY8ooPszAx7bbLbjjELt/rQuUFr01Y
-         qyP9kJ+SEnheFUPXPeS9q35FldpWqLOOSnnXBO0o++FBK9JI/aZ7eVGUYP2kmIY/C3bu
-         NNb5bw1SYe5ZA2fzrpsKmPKT7FSft/E3VeWscxfps9b4jf3g4jqSQeHY4wqRY5RnICNk
-         9t0nK4r/50yVgfG7zYh7MfFxAJybqPGfSH74X6XQ6makWaGAShOLmlQrL9GAaEDHgRFl
-         Cm+7OBR/BNwyu+NzubY36nMRh8LKb8mqkCvUZL1LonfqcNt3tm+Xs4g4VpLiq3jk2y73
-         xk0A==
-X-Forwarded-Encrypted: i=1; AJvYcCV9lghGAoxWBZ7pqlCmwKWO4FJg8zF/NL8IefZ19vPYYUL7uYsGHe+vhymo9QAtnHTtxTh/t2I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy74M80titZkQ5IYSbq5whBoDG8zXhzLyTv1YZSaWIvZqt5l2rb
-	cFN86YoTELVPcpFlcz/odYgfT/3W3lTjxCQ/bQ8/O2JKOxhrG3HJtpOozAPsDg==
-X-Gm-Gg: ASbGnctQi9Kg8DGnBw+rj7brUR6644w1pnrTTFW1yKXmeZ6zBI56wZyPH9FNGfbXwWg
-	F/6cLN4ZjzjAaY/cgekCqHNjArYf6lyi0bWBQx5LdB0Obp+yo7I8McybTUhBEWVhOwOXpsdjy8n
-	RUINNtOMciXSwbotLdPNjm+4P70su1LnMTpPqPnnJIlZQYZG+E4D500epGKnLR+eeCtq+6+q9yx
-	Lp9zzbpLYMLjbYP47Z4uFdKujhNs80uC8wJzwhr47HcDJzrf4IdbuZMQOrR/SxcMriBbcOk7eI0
-	1vYq+omAK0pm4RwFLAV+01+6ZIEvsxiXNoKt/E/2lSaU
-X-Google-Smtp-Source: AGHT+IGFknju+kWVSBOp9BPZgBBPSVkuNeYiYnQdiNz8F7xrFuFxwOdpgjSGtaYldVORL1NpfOAfKg==
-X-Received: by 2002:a17:902:c411:b0:216:84e9:d334 with SMTP id d9443c01a7336-21c35577e88mr191930655ad.33.1737390854386;
-        Mon, 20 Jan 2025 08:34:14 -0800 (PST)
-Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21c2cea2014sm62571685ad.41.2025.01.20.08.34.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Jan 2025 08:34:13 -0800 (PST)
-Message-ID: <5221f64e-fda4-4daa-add7-1d0b26765113@broadcom.com>
-Date: Mon, 20 Jan 2025 08:34:14 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802381E9B37;
+	Mon, 20 Jan 2025 16:50:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.67.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737391857; cv=fail; b=LUjdipt6ayq0duODUedZc7bv/7cWMDydwBCMjEHaB80W61BMG4bw6LgkanGzBB7T18fc3Vk0XOgk+orLW9GuBwi5EpPILdoYBB9SXs+ngz1RA9KWrMxWBtB1RuPW33/t9YKGO9Ul8uojGZzcuxmxEqVHupi0kXY9TDqpd240j8o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737391857; c=relaxed/simple;
+	bh=EHzjaZWIXVDuchesRu1Mw/ybYuqofthYxASuGlPDiUM=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Mw6D2O2DOpITM6P1pxjL1XPWZP3ZusqTXO3C+DBzgmYDdOxCRV+ucahpwF1YnWO/Zvnv/RgU/LAW1y76VAyETBgxA2qXg7wQvsAAEWxE6xx6mJkoH1536oTox7rswyShGzMenMmxBjrx5w83OYOb/MiD0iUwpe1Cf7Vs/NcopUM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com; spf=pass smtp.mailfrom=live.com; dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b=WzbnlDRV; arc=fail smtp.client-ip=52.103.67.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=live.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NGYhkwBK2j/iuG52Is0/DQt9FKz5DdtkcRRQbw+nkIaI8f5IJ0CXjISCrQQdCXXCnDgAbzo5hVC3Z65CeRX99Z2mepmCa34Q4BcajNhH9Nqp1joFY1BYkWy6ZyyNIx+2ZB15Z6E7l1kTrxPGg3G+ky9EiSrSxEMk0rzMqZajBDA8Um5Dns4kXULWuicA1oA42UeV7nXyPVg3EEukOwY7DJTD2Qp4xoEPdO/qzD/lODI6WB0DoAFrJFeaw/NHsPyQyMoofqrgOWbTBmfT2CSiBgwsYwZdRQjH0R7sgEmMOGM/0rQXwY4fofxCkIAGFJZdr6H+Fi8W8/iHMn1zYKHc5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8Btzavl53HHeTbQ/uROUfvWR582fRgyouaTqAWccQUE=;
+ b=zG9YrHpBjqbfjoeTqkuuppY6+HzUVVf3FfnllHWO9lbRkzwUb5UzN70dPM/+qoY2TnxyHcA1ZHsJ8x8Oi7V2lsaTD6gfcqnrzGztwENbYdgKJjhZZkElX4vZ6YvbQZ2dxny4qCT8O5adPOTPhHSx2cvHd40jBH2N8h6q1lwrVBoWWuZeE7UIWRxEIGvHZmYdCPOI6WW6E5tPE5+B10pV8hf9Rt/W+E6o7yAiU8XwdP8lMlnxNmKFY02nY5OfdM0ye3/lv5WJ4tThBsK5qq7BuYCgneZTY9zUGt35DJ+vRgxOW6ko3k6EC6+m6u206WDQE1hk6+p12L1qQd7rMbX+Gg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8Btzavl53HHeTbQ/uROUfvWR582fRgyouaTqAWccQUE=;
+ b=WzbnlDRV9FHkUoQ3YF4g4IX2nrwXHOaWr3pSLBJX6gx1HhFXNi3uqncgejlNaqbyhAFPvnklplyx6fcEzlk+qm2FSZc/VOH4+NhhE4Vxz9zvb7K7PHVN8f5pRlUq/loYtguCvWMY6vr9Nns6kEnBqukJh3q1jSPO9REhu8Y2aBeEoMl+0uWeUB6zdJ5NBtvbS4JC8u5lyXNBr1Ixc/mwPse12NrQX95hfWx78Ai+7ec5nR2T9b0C/ktu8cS6rji74ql/UiLkoljNTBUV6F1Yw9fxLxPbRz1VZVhzVt5UZZy1II8kzteo7eAu0rU1v9y7gm3BY+BCaz0jY+/GPCtwpg==
+Received: from MA1PR01MB2555.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a00:3e::12)
+ by PN2PR01MB9923.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:129::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.21; Mon, 20 Jan
+ 2025 16:50:49 +0000
+Received: from MA1PR01MB2555.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::8d8:4de:ff79:7668]) by MA1PR01MB2555.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::8d8:4de:ff79:7668%5]) with mapi id 15.20.8356.020; Mon, 20 Jan 2025
+ 16:50:48 +0000
+From: Aditya Garg <gargaditya08@live.com>
+To: Arend van Spriel <arend.vanspriel@broadcom.com>, Arend van Spriel
+	<aspriel@gmail.com>, Kalle Valo <kvalo@kernel.org>, Hector Martin
+	<marcan@marcan.st>, Janne Grunau <j@jannau.net>
+CC: Orlando Chamberlain <orlandoch.dev@gmail.com>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>, "brcm80211@lists.linux.dev"
+	<brcm80211@lists.linux.dev>, "brcm80211-dev-list.pdl@broadcom.com"
+	<brcm80211-dev-list.pdl@broadcom.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH] wifi: brcmfmac: use random seed flag for BCM4355 and BCM4364
+ firmware
+Thread-Topic: [PATCH] wifi: brcmfmac: use random seed flag for BCM4355 and
+ BCM4364 firmware
+Thread-Index: AQHba1t06RYmbdFGZUWJR5WG2iWgEA==
+Date: Mon, 20 Jan 2025 16:50:47 +0000
+Message-ID: <47E43F07-E11D-478C-86D4-23627154AC7C@live.com>
+Accept-Language: en-IN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MA1PR01MB2555:EE_|PN2PR01MB9923:EE_
+x-ms-office365-filtering-correlation-id: c77e38e5-606d-45dd-678e-08dd3972971e
+x-ms-exchange-slblob-mailprops:
+ AZnQBsB9XmpI8tRyoOXaSUmOkLVCBKasc5E2meS7BDtk6cJoQT0Zy8hfvN+USgr5EDr0Jzq2tvjdqFngV9I4QZy93Fwlsr4oyZh0aborHiMu2gdl4K1+3nTCKaW5MM73X2/eN6Octn3mgto4s9beqh4i5+TYlASwr5wROiksHSDxdbz1bEI5k0/0Oxxwb8YUtiOjfBZlCqxYgRyWerfd8f9JHWJ/Tkymm97Fs3Ex/+EqsLSFdm1I4yUpXLrz9n8UssGxKt3D+cHNyKLVTyPkvheaGOQNmyp/IGeR6aapcm1gxXQ4yZeZoYm6WfxbS1TEXOPIYlcf+NI2itxKh5zq7UsSm6vaStZiaG2l8UsISzxHOEf9W4yZVedhFKPChxByLEWQ/XQpKJWR5V+p+jfy79r3+bEIgxA5OboII85vDF7V+ZtEE3olc5Qjvknigia3F47MoxoqaWVUgfB23Y5oQ+7Sq3yjeKVF5kBo+5n5MGUedoheaYLTIAlsUtirvRXfJI+tfV+lWKTcBggnZRZggjrNKz2DX6zT2u7KQ7afYAepKg9ZXRcbafxbnAryQu2fsF+0D7tigE42C9vg5+xBWBXKEobBUK0Zh68MNjsL/AsVh43zXl9PV+qW4jxwiGUiA5r5XVy9qnwypHy9dNcRKWiTo7JwCf9fJUcI15VThQu530UPkt6jwXRENXKf8hKYsWn/m2aUKBB/1l7D5aXdNZ/HdmNu53pzBrKlPf46aFJdKCeUjZ5QKRQxrBKYByws4QQTb9+pFIw=
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|5062599005|19110799003|8062599003|461199028|15080799006|7092599003|8060799006|102099032|3412199025|440099028;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?nQ53R7HK9yG17z+dj8OHSiknN/arT3pLZVVqlj8d+dsJbhtB8l4LNuz1gFhM?=
+ =?us-ascii?Q?9mV3TvQh5vUFh92qd+LItdfKNhYXceMzKnJDl6UNvFgn7FX4wZ1TBP8Oit7A?=
+ =?us-ascii?Q?LXkwI6SPZ4gpGHdLLbqeystvoXWEVMRj1TmBZE+jn+dB2Os4zOYi7aibkS8j?=
+ =?us-ascii?Q?dOwag3/pUblE6+MavKV1Er/YDtYIKwPXuaJ57xqOR1eaWAPSV++Xo2FeqDzF?=
+ =?us-ascii?Q?KuLC1aTRFwzPeRr+ntG54rEx4fbFQ55XaVTdC2RTNaD3PDt8mRWHL4lktX3v?=
+ =?us-ascii?Q?yRyWvN5ltlNM2WP/pyt/ErjPHDBfsR0Eg1n08oXTA1lMdhZXbyEYv8EUmVpl?=
+ =?us-ascii?Q?qpNWEbdBSAos9c+9Bx4QFMiOeOpNggNaY6VjvXkTHNTS3hE0xyXOv8S0zhwL?=
+ =?us-ascii?Q?/15UNn21tzs/BbJdp7ZK9tR82fpvef7JKmP2WBwQGlnuxF2nh3qMNPu8gxjs?=
+ =?us-ascii?Q?jrRfeFcGPXlke0m3AKwN+plmeHnvwupszlRl3kSwMPdhvzGTkmFBVN9wBaxY?=
+ =?us-ascii?Q?Nx5JMSGuVlu/HBklz0gtRRANo5x/SABMXC7YwZ7wZH0iQKVbIysSQPNiZjGC?=
+ =?us-ascii?Q?JeBwyo5kh2NE8BiyKEaLrwxml9ZrOBYjaqwDq7Ngua1Z3JgP+iz1lhXI7CHs?=
+ =?us-ascii?Q?E7Ao6AV/fsu0cZL+pJ+PL4ScaKeNP85TsepxI5LCseVuHU1C7HbN10RkfJkC?=
+ =?us-ascii?Q?FNcdYie/ssxSakuPYg6YQ/ER6ZOcy3DbmRREZQAKhbz3PGqM9ZwuCqr/uPaG?=
+ =?us-ascii?Q?h7ZWlFHwxOQ10R7RAy8P4ROD+nb4/OAthKUDs6DuUuiC4pmeBxUuzVvYDzVB?=
+ =?us-ascii?Q?SvNIoqAdiwAeAri5eZve5zuTIa+fj5PCVU79anFcIaxi+boLFVR+IrCQ0rnp?=
+ =?us-ascii?Q?VEZttKCtz5rTAm+cBsz7rOPk4Prb/+2aasjUJ+NyLKpPWZ04MTtK4rCS6Wh8?=
+ =?us-ascii?Q?+ghU0EnISqsdOKDZrkQECTlh2B+f4LNvWSECwe9znvp16je313uT7b6zfWjV?=
+ =?us-ascii?Q?SKFYXxWU+S2GZwPc9DitZmWoeJljhGVhaZD5IjfA0cbOQHIc1u/mPuHx/Otk?=
+ =?us-ascii?Q?KGKoljhlehO+pExTnhZ8jtg6InHbAP+wg0Xxs9J/7MM8gEVQmiM=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?aC2FCI5Xybb3Ye1sP2Gm50H41uVGDga52VFMlwMJ8uiGFiKXJypEKXlkn5zr?=
+ =?us-ascii?Q?LIKDbTOC2tfhc96RM0cuG3GBOswWadztDkmOnJKFTDUHMyjuXQMSUiaUgLS8?=
+ =?us-ascii?Q?Rc4R6wVUgKBrORt+KcR6v+J1TP2pVf8i+f3Dlbcp6vNiCiilWPmP5V8jQqkO?=
+ =?us-ascii?Q?JxJSN6Z6dddcNo5hBptWuAyxzKFDQyIKbrpmMgG8iJZ+IlbLNlc2Bh6WLLG/?=
+ =?us-ascii?Q?nRijjoaTndrnGs50VJncnSuYEmx8i6GMVLfR4xYl9pjdW+kyExhMU3iR7uE9?=
+ =?us-ascii?Q?bKywuaZ3b2vOqPhZuSfFzxuL6um/DTJ7uLxFA6jmMi3gbP2P6Ehv2736EZUi?=
+ =?us-ascii?Q?5jtx80hMZBJaEg5Yi/1xDSKtwgs6SqUB3SLCkk+/2H/HA25gQpHoHEfAtkTR?=
+ =?us-ascii?Q?xNyR4oQdB0ELnnN6rwWOYXEDIZNdPuvZk3SxoSjrDMJP4a2MBx/Daq2y0CJs?=
+ =?us-ascii?Q?53oyQWXVOMeZLTFnepi1BUiPlAwSz0UbM52xQYLQooLdOP9+ITb3FZX7b0oW?=
+ =?us-ascii?Q?qkSCQt7gri4nr7vmwgkbI0in1Zcr/JXczGcz2bzgV+V8xlrnfXMqkIsg35A+?=
+ =?us-ascii?Q?xVFGdH4OyaRIFaCQrgtdPt0tJG288/ZyKoF+VqiDcuOnXm1rXuZ3y1cmBvBD?=
+ =?us-ascii?Q?3CXAAOak2seVh2h9KP5AZ0pX5ZYAyDLKh1ZuleV1ASNCna0MEFAu8Veo03pc?=
+ =?us-ascii?Q?t3K+tkTEqAmyDrtNDBIh9ErcQrZg8GjUVPnGCP+28Ssjch6/zuqiu7aVdQ9h?=
+ =?us-ascii?Q?mDrfdlBLJMAMVMVRVOSo4Rp3kH1kX+llp20+UwPq+Fwkiw3VnmTlGrvw6eBr?=
+ =?us-ascii?Q?4xd+rymtSxqXpvl2Tobg2Rs/aVC9bGsS295wzRFGeJ6+fqYDgnEVGJvSJyqm?=
+ =?us-ascii?Q?X7dJGeb/Mzc4GzxNDBIcl05ZunDBVUhxkSwtglo/UpyES567m59cgmZVypXL?=
+ =?us-ascii?Q?UFONJM1H3eKgIfdzzTt6un8Da9/q/vTaVITSz5eswzNMaPulcgDgIHAdts0N?=
+ =?us-ascii?Q?s/Wlfq/n2DHc6sZX4zul8Nl/3iAXX4xUt2Z5QbvLpzTAtFgVffi8HUMuxaf2?=
+ =?us-ascii?Q?9lDnsfQDxyS7DoF2V5vYz+t/6Hh87mgBA5pknvG9XwlyWWCPeyrzxGL5rma9?=
+ =?us-ascii?Q?TwagYX4bPc2aUT50f1UW0Z1hnxOZbKRjPphG7gs7h1kgPBIaxDrkX+8RTy0E?=
+ =?us-ascii?Q?15UJIvBMf7c3iLPO7so+lAJS1nASOhztAThleh5zaZLjVvCcsRiBJnhs/ZjP?=
+ =?us-ascii?Q?goUKGaQGlfXT71P1ir3FSY1aQ/qRxwPmJLyXwfOCJbIYSWy0xwAD52gWQn0S?=
+ =?us-ascii?Q?uFGkRllr2BM37QelSG8Om+EK?=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <33D6DC4152FB744E9B8E42B0DE1C753B@INDPRD01.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] Revert v6.2-rc1 and later "ARM: dts: bcm2835-rpi: Use
- firmware clocks for display"
-To: "H. Nikolaus Schaller" <hns@goldelico.com>, wahrenst@gmx.net
-Cc: Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Florian Fainelli <f.fainelli@gmail.com>, Ray Jui <rjui@broadcom.com>,
- Scott Branden <sbranden@broadcom.com>,
- devicetree <devicetree@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- stable <stable@vger.kernel.org>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,
- linux-rpi-kernel@lists.infradead.org,
- arm-soc <linux-arm-kernel@lists.infradead.org>,
- Discussions about the Letux Kernel <letux-kernel@openphoenux.org>
-References: <cb9e10dfb4f50207e33ddac16794ee6b806744da.1737217627.git.hns@goldelico.com>
- <808a325f-81bc-4f5d-8c07-fa255ef2d25a@gmx.net>
- <8F33BB1D-2210-421B-A788-8484C23DF4C6@goldelico.com>
-Content-Language: en-US
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
- xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
- M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
- JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
- PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
- KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
- AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
- IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
- ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
- bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
- Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
- tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
- TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
- zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
- WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
- IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
- U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
- 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
- pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
- MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
- IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
- gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
- obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
- N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
- CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
- C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
- wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
- EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
- fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
- MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
- 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
- 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <8F33BB1D-2210-421B-A788-8484C23DF4C6@goldelico.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-ae5c4.templateTenant
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MA1PR01MB2555.INDPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: c77e38e5-606d-45dd-678e-08dd3972971e
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jan 2025 16:50:48.0270
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN2PR01MB9923
 
+From: Aditya Garg <gargaditya08@live.com>
 
+Before 6.13, random seed to the firmware was given based on the logic
+whether the device had valid OTP or not, and such devices were found
+mainly on the T2 and Apple Silicon Macs. In 6.13, the logic was changed,
+and the device table was used for this purpose, so as to cover the special
+case of BCM43752 chip.
 
-On 1/19/2025 7:04 AM, 'H. Nikolaus Schaller' via 
-BCM-KERNEL-FEEDBACK-LIST,PDL wrote:
-> Hi Stefan,
-> 
->> Am 19.01.2025 um 01:36 schrieb Stefan Wahren <wahrenst@gmx.net>:
->>
->> Hi,
->>
->> Am 18.01.25 um 17:27 schrieb H. Nikolaus Schaller:
->>> This reverts commit 27ab05e1b7e5c5ec9b4f658e1b2464c0908298a6.
->>>
->>> I tried to upgrade a RasPi 3B+ with Waveshare 7inch HDMI LCD
->>> from 6.1.y to 6.6.y but found that the display is broken with
->>> this log message:
->>>
->>> [   17.776315] vc4-drm soc:gpu: bound 3f400000.hvs (ops vc4_drm_unregister [vc4])
->>> [   17.784034] platform 3f806000.vec: deferred probe pending
->>>
->>> Some tests revealed that while 6.1.y works, 6.2-rc1 is already broken but all
->>> newer kernels as well. And a bisect did lead me to this patch.
->> I successfully tested every Kernel release until Linux 6.13-rc with the
->> Raspberry Pi 3B+, so i prefer to step back and analyze this issue further.
-> 
-> Yes, I would be happy with any solution.
-> 
->> What kernel config do you use ?
-> 
-> a private one which enables application specific drivers.
-> 
->> What is the value of CONFIG_CLK_RASPBERRYPI ?
-> 
-> CONFIG_CLK_RASPBERRYPI is not set
-> 
-> I checked where this is defined and it is in bcm2835_defconfig and
-> multi_v7_defconfig by
-> 
-> 4c6f5d4038af2c ("ARM: defconfig: enable cpufreq driver for RPi")
-> 
-> which hides this requirement quite well and got therefore unnoticed...
-> 
-> Setting CONFIG_CLK_RASPBERRYPI=y makes HDMI work without my proposed revert.
-> Tested with v6.2.16, v6.6.72, v6.12.10 and v6.13-rc7.
+During the transition, the device table for BCM4364 and BCM4355 Wi-Fi chips
+which had valid OTP was not modified, thus breaking Wi-Fi on these devices.
+This patch adds does the necessary changes, similar to the ones done for
+other chips.
 
-I have been burned before by something similar and came up with this 
-patch series that I should resubmit after addressing Conor's comment:
+Fixes: ea11a89c3ac6 ("wifi: brcmfmac: add flag for random seed during firmw=
+are download")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-https://lore.kernel.org/all/20240513235234.1474619-1-florian.fainelli@broadcom.com/
-
-Essentially, it removes the guess work, all you have to do is enable 
-CONFIG_ARCH_BCM2835 and it just works, which is how it should be IMHO.
--- 
-Florian
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/driv=
+ers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+index e4395b1f8..d2caa80e9 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+@@ -2712,7 +2712,7 @@ static const struct pci_device_id brcmf_pcie_devid_ta=
+ble[] =3D {
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4350_DEVICE_ID, WCC),
+ 	BRCMF_PCIE_DEVICE_SUB(0x4355, BRCM_PCIE_VENDOR_ID_BROADCOM, 0x4355, WCC),
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4354_RAW_DEVICE_ID, WCC),
+-	BRCMF_PCIE_DEVICE(BRCM_PCIE_4355_DEVICE_ID, WCC),
++	BRCMF_PCIE_DEVICE(BRCM_PCIE_4355_DEVICE_ID, WCC_SEED),
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4356_DEVICE_ID, WCC),
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43567_DEVICE_ID, WCC),
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43570_DEVICE_ID, WCC),
+@@ -2723,7 +2723,7 @@ static const struct pci_device_id brcmf_pcie_devid_ta=
+ble[] =3D {
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43602_2G_DEVICE_ID, WCC),
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43602_5G_DEVICE_ID, WCC),
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43602_RAW_DEVICE_ID, WCC),
+-	BRCMF_PCIE_DEVICE(BRCM_PCIE_4364_DEVICE_ID, WCC),
++	BRCMF_PCIE_DEVICE(BRCM_PCIE_4364_DEVICE_ID, WCC_SEED),
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4365_DEVICE_ID, BCA),
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4365_2G_DEVICE_ID, BCA),
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4365_5G_DEVICE_ID, BCA),
+--=20
+2.39.5 (Apple Git-154)
 
 
