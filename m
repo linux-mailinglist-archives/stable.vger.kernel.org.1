@@ -1,98 +1,84 @@
-Return-Path: <stable+bounces-109570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51CE9A1727D
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 19:01:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A83A3A172AB
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 19:27:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7364D164A4B
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 18:01:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A83B53A5A7F
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 18:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9247F1EC00B;
-	Mon, 20 Jan 2025 18:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A561EEA46;
+	Mon, 20 Jan 2025 18:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wr0AgaHp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PQWB07SU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B60EC0;
-	Mon, 20 Jan 2025 18:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51B11E9B3A;
+	Mon, 20 Jan 2025 18:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737396106; cv=none; b=LoYmB1fUr8DLONcNuk6c6dAcOgFB10zCuJ3QuVY0qKOD8uzTlMN5KWmpXFtf3IEW9wERwsIjy0fM7X6iG2JjwQEGa3R2s3ogC212qTy9aDl+zLAcJHU8fJl9MnNovz2+KrYpWPNGhavlEIMhVQX9zBlC3C1u17V5FDwW6eJ+rRQ=
+	t=1737397613; cv=none; b=PUXyCsf8Hlik3dpr+0eIm8Nu1vX1D+hVuUWf+NEALhuACA45zBxqP0Yio+IzIK3jvPz1hHXqG9nxuqMrCsiJpwPxRHJDrUuPCWWCoC8T9LKP0x/57u4pqqc8jFbIUM0Uu0HK7HM/Yy4U76IZ2GnDSL+htPmlzZniMMOZtV18C8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737396106; c=relaxed/simple;
-	bh=RRKi2WIwPIMTJbi4FhUzSOVkairuWsLduXVttsjJ4mU=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=i11yKKnwIekQza3h2MUZy9rE6n4HKH8BhvwbVTtfnt4Q/y1GMYupKeDyATdP/ZkzX8kNv5jEe+z41UaSNfYESZ3AUEJZixokLZ7lc0R4HQpB/vxvixExFWr3n0RJ1RHALESfyOGmVnxoi60Zcvt9U7J/NVLkvrRvLmYYNKOMncA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wr0AgaHp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FFF3C4CEDD;
-	Mon, 20 Jan 2025 18:01:43 +0000 (UTC)
+	s=arc-20240116; t=1737397613; c=relaxed/simple;
+	bh=oh4XG0k1wiyb4ciLC+LsJtjwpJlpzCNaNP0e4izg59E=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=nQXigULKd0ETdo8rjiYUwkGyz8wxDlx001gBNzs6auQ1vCaGS171N+qIIMirBKhf4RlkGoQ2NMpL9M8wwczX6V3lVlVeeJCDJ1asXXC/k3ldp1EwXrbbqCWPP51Y9H8fjzLv3GH9Wsyjh9nbHJJbncDqwcdOSfhlRphDqWb1f0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PQWB07SU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B2DC4CEE2;
+	Mon, 20 Jan 2025 18:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737396105;
-	bh=RRKi2WIwPIMTJbi4FhUzSOVkairuWsLduXVttsjJ4mU=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=Wr0AgaHpmG+nqSwTUJxsBlrmxiBHrJA72mWa3Qs+T6zbmbApupsgqQZmsvCXsgQDf
-	 sSVc75YKarwTytDGwPfS0nAVJAm2P8SFr+lBpH0rW8I5tuO64SwXHmzLCeGoZm6n7a
-	 sbvAnfB4cAJG4QcK4BMGj49ARzIxinHLSaI8r8fTBx07HjZDzwQE+rZuLlGH+lqw0a
-	 txFvhC2aXwPXb+FpmtHByj0zbFH7uSlt6jcuwklzleIJ5Fvk/nIuAtl6f/SXNgwLRt
-	 qcVjA/Yd4+eA573yvry8FhugavEVvfkmcZUJJCCU5D2vISLRmwyY0Ku9BPsmIJJCil
-	 EtpBd+TcmOUKg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc: Aditya Garg <gargaditya08@live.com>,  Arend van Spriel
- <aspriel@gmail.com>,  Hector Martin <marcan@marcan.st>,  Janne Grunau
- <j@jannau.net>,  Orlando Chamberlain <orlandoch.dev@gmail.com>,
-  <stable@vger.kernel.org>,  <linux-wireless@vger.kernel.org>,
-  <brcm80211@lists.linux.dev>,  <brcm80211-dev-list.pdl@broadcom.com>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] wifi: brcmfmac: use random seed flag for BCM4355 and
- BCM4364 firmware
-References: <47E43F07-E11D-478C-86D4-23627154AC7C@live.com>
-	<19484c927b8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-Date: Mon, 20 Jan 2025 20:01:41 +0200
-In-Reply-To: <19484c927b8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-	(Arend Van Spriel's message of "Mon, 20 Jan 2025 18:36:03 +0100")
-Message-ID: <87tt9tjrei.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1737397613;
+	bh=oh4XG0k1wiyb4ciLC+LsJtjwpJlpzCNaNP0e4izg59E=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=PQWB07SUH1LhTBmx6q4Sn6iZ0i2WewQ4kDE7Srj4R6BVy8sRf4uVWGWWwt6tv1JYq
+	 a1muJCItdAWAixDzEAhISFuErH23CLl+N6/SJmkTQuxUGPtAk8ai18IFW799Lg1owc
+	 FpOVqVUjxyYFkdO3wPKHgE4x6BKUNwpttzPPnEbI2cq0RSHcLCtjXJq+K+z3HD2i/M
+	 VyncKAYGPpyVCXzL3S5DC/I/SNVfIc4AAGltaKT9JHS+z4t90jjTocP9AZ0dTGpoVa
+	 JGTei1QRwRSOWCT8V8K+mQCzrOW+HPcAYaZfHLU9jofbkGZopftkb/rj0jZrv2Lpw4
+	 vrze8hFxuVRAA==
+From: Namhyung Kim <namhyung@kernel.org>
+To: peterz@infradead.org, mingo@redhat.com, acme@kernel.org, 
+ Kuan-Wei Chiu <visitorckw@gmail.com>
+Cc: mark.rutland@arm.com, alexander.shishkin@linux.intel.com, 
+ jolsa@kernel.org, irogers@google.com, adrian.hunter@intel.com, 
+ kan.liang@linux.intel.com, Ching-Chun Huang <jserv@ccns.ncku.edu.tw>, 
+ Chun-Ying Huang <chuang@cs.nycu.edu.tw>, linux-perf-users@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, James Clark <james.clark@linaro.org>, 
+ stable@vger.kernel.org
+In-Reply-To: <20250116110842.4087530-1-visitorckw@gmail.com>
+References: <20250116110842.4087530-1-visitorckw@gmail.com>
+Subject: Re: [PATCH v3] perf bench: Fix undefined behavior in cmpworker()
+Message-Id: <173739761304.3950752.5970208244862437457.b4-ty@kernel.org>
+Date: Mon, 20 Jan 2025 10:26:53 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-c04d2
 
-Arend Van Spriel <arend.vanspriel@broadcom.com> writes:
+On Thu, 16 Jan 2025 19:08:42 +0800, Kuan-Wei Chiu wrote:
 
-> On January 20, 2025 5:50:56 PM Aditya Garg <gargaditya08@live.com> wrote:
->
->> From: Aditya Garg <gargaditya08@live.com>
->>
->> Before 6.13, random seed to the firmware was given based on the logic
->> whether the device had valid OTP or not, and such devices were found
->> mainly on the T2 and Apple Silicon Macs. In 6.13, the logic was changed,
->> and the device table was used for this purpose, so as to cover the special
->> case of BCM43752 chip.
->>
->> During the transition, the device table for BCM4364 and BCM4355 Wi-Fi chips
->> which had valid OTP was not modified, thus breaking Wi-Fi on these devices.
->> This patch adds does the necessary changes, similar to the ones done for
->> other chips.
->>
->> Fixes: ea11a89c3ac6 ("wifi: brcmfmac: add flag for random seed
->> during firmware download")
->> Cc: stable@vger.kernel.org
->
-> Acked-by: Arend van Spriel  <arend.vanspriel@broadcom.com>
+> The comparison function cmpworker() violates the C standard's
+> requirements for qsort() comparison functions, which mandate symmetry
+> and transitivity:
+> 
+> Symmetry: If x < y, then y > x.
+> Transitivity: If x < y and y < z, then x < z.
+> 
+> [...]
 
-I'll queue this to wireless tree for v6.14.
+Applied to perf-tools-next, thanks!
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Best regards,
+Namhyung
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
