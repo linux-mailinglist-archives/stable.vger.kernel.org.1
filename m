@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-109546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69D02A16E45
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 15:17:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 505ECA16E47
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 15:18:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A4DF7A23AC
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 14:17:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD4F11889AF7
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 14:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634221E515;
-	Mon, 20 Jan 2025 14:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56208383A2;
+	Mon, 20 Jan 2025 14:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQkqt/Q0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MbDU5+Ao"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22828383A2
-	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 14:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F8A3FE4
+	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 14:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737382652; cv=none; b=Ve0cGvN3dNJFtUSQb+/FmMzFeKb4YIAWCsfc4VpX87M+joXuyNNni2HFGBNAy0nO4nPcH0L/RWizcovl1W/Y5D9ugFp28MCYljskkNNlsYxhlMkp8/zcNVzUZ6+VSyhPWJoZuE1oaoothQx+iRFAfT2symnHAg5mm9azNDdmBeo=
+	t=1737382716; cv=none; b=OSdtGoeZLZiHBSxssrQxJdwdH2WIYb6XolBjuZ/9K/9uJEiEi4fKisIdoV++KHM4F8SkAhcjNMOwV53Mh4ubFY5HwqaYJJilYAJuPU+H44K+r1DI+ISh/iP5fvqAuOFUlvzzJxpqps6Y3/z2bVhASLM7VGPYxMKR8L14U678Pa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737382652; c=relaxed/simple;
-	bh=Dh7Fupez4tDBWpKganz6pnJ/jKzPU1AUBERH8PhuxPg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FXiX/SAyAg9b5rXp53O8F9BDjw8NKpqgOsRboik+qengy+klOfQpWvAVJfu/4q5f9xc3tG80iYD19y8e1vQYteKICb5c5guXlW3iDNHXKNALMmcfml2sDaBCsf1A6BLP5F2RIYt5Q1L0myQSqqOo1SPiEPFZUD4lA3Dj2x68tow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQkqt/Q0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B32AC4CEDD;
-	Mon, 20 Jan 2025 14:17:31 +0000 (UTC)
+	s=arc-20240116; t=1737382716; c=relaxed/simple;
+	bh=lS8iP0JC9l4/0D+NQNw+LGwAe0oA+PF/EQJNfqL3BK4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uxwSbCHVnF9WAKe3qSsOceG/7XnCslwMJDlGFFocYzMdrjPuuYKesSezMFnBKiP84/9VWzeeyxvEwq4WeJ5Dmllnt0uPlhswoVaRNiTVOXUH0w+Arf9zxkyPxXu3/J7edGBg0pG3hUSaS/M1LzGXAfdeluIW6N7S7hDDMsQvML0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MbDU5+Ao; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264D6C4CEDD;
+	Mon, 20 Jan 2025 14:18:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737382651;
-	bh=Dh7Fupez4tDBWpKganz6pnJ/jKzPU1AUBERH8PhuxPg=;
+	s=korg; t=1737382715;
+	bh=lS8iP0JC9l4/0D+NQNw+LGwAe0oA+PF/EQJNfqL3BK4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=iQkqt/Q0dnA2cFpueksa2LQcQw3441bg/G+pdsJ7PiIM1fA6Qar2iml12aqmExy5n
-	 3T+PVaQwAshKe2kVASZt0o2vkzeQepuRr3dhIX12ea/epR/baFYEOICt1IZuUoqOay
-	 BMSuSTBis1J+BpLhg2vptE6zZscnegDpKYKEQwR8=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: Fix Circular Locking Dependency in AMDGPU GFX" failed to apply to 6.12-stable tree
-To: srinivasan.shanmugam@amd.com,alexander.deucher@amd.com,christian.koenig@amd.com
+	b=MbDU5+Ao8Rbq2tSED/qb9E/ndrsG1dk/kaPWHn9YBPRMRixCfvRTiRcAKT4MaHXcN
+	 QAZoiEkx8MZPIeHX19j9t5bnys7pjdjC105QVFr2PbynHNItZxHz9Wo4whsBHcGzfY
+	 nPrv8BI0j3zM6XN35qgaNW32qqWzGDqnxSOR55DM=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Reduce accessing remote DPCD overhead" failed to apply to 6.12-stable tree
+To: Wayne.Lin@amd.com,alexander.deucher@amd.com,chiahsuan.chung@amd.com,daniel.wheeler@amd.com,jerry.zuo@amd.com,mario.limonciello@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 20 Jan 2025 15:17:28 +0100
-Message-ID: <2025012028-crayfish-squiggly-c66c@gregkh>
+Date: Mon, 20 Jan 2025 15:18:32 +0100
+Message-ID: <2025012032-phoenix-crushing-da7a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1e8c193f8ca7ab7dff4f4747b45a55dca23c00f4
+git cherry-pick -x adb4998f4928a17d91be054218a902ba9f8c1f93
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025012028-crayfish-squiggly-c66c@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025012032-phoenix-crushing-da7a@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,217 +77,116 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1e8c193f8ca7ab7dff4f4747b45a55dca23c00f4 Mon Sep 17 00:00:00 2001
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Date: Thu, 9 Jan 2025 21:33:51 +0530
-Subject: [PATCH] drm/amdgpu: Fix Circular Locking Dependency in AMDGPU GFX
- Isolation
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From adb4998f4928a17d91be054218a902ba9f8c1f93 Mon Sep 17 00:00:00 2001
+From: Wayne Lin <Wayne.Lin@amd.com>
+Date: Mon, 9 Dec 2024 15:25:35 +0800
+Subject: [PATCH] drm/amd/display: Reduce accessing remote DPCD overhead
 
-This commit addresses a circular locking dependency issue within the GFX
-isolation mechanism. The problem was identified by a warning indicating
-a potential deadlock due to inconsistent lock acquisition order.
+[Why]
+Observed frame rate get dropped by tool like glxgear. Even though the
+output to monitor is 60Hz, the rendered frame rate drops to 30Hz lower.
 
-- The `amdgpu_gfx_enforce_isolation_ring_begin_use` and
-  `amdgpu_gfx_enforce_isolation_ring_end_use` functions previously
-  acquired `enforce_isolation_mutex` and called `amdgpu_gfx_kfd_sch_ctrl`,
-  leading to potential deadlocks. ie., If `amdgpu_gfx_kfd_sch_ctrl` is
-  called while `enforce_isolation_mutex` is held, and
-  `amdgpu_gfx_enforce_isolation_handler` is called while `kfd_sch_mutex` is
-  held, it can create a circular dependency.
+It's due to code path in some cases will trigger
+dm_dp_mst_is_port_support_mode() to read out remote Link status to
+assess the available bandwidth for dsc maniplation. Overhead of keep
+reading remote DPCD is considerable.
 
-By ensuring consistent lock usage, this fix resolves the issue:
+[How]
+Store the remote link BW in mst_local_bw and use end-to-end full_pbn
+as an indicator to decide whether update the remote link bw or not.
 
-[  606.297333] ======================================================
-[  606.297343] WARNING: possible circular locking dependency detected
-[  606.297353] 6.10.0-amd-mlkd-610-311224-lof #19 Tainted: G           OE
-[  606.297365] ------------------------------------------------------
-[  606.297375] kworker/u96:3/3825 is trying to acquire lock:
-[  606.297385] ffff9aa64e431cb8 ((work_completion)(&(&adev->gfx.enforce_isolation[i].work)->work)){+.+.}-{0:0}, at: __flush_work+0x232/0x610
-[  606.297413]
-               but task is already holding lock:
-[  606.297423] ffff9aa64e432338 (&adev->gfx.kfd_sch_mutex){+.+.}-{3:3}, at: amdgpu_gfx_kfd_sch_ctrl+0x51/0x4d0 [amdgpu]
-[  606.297725]
-               which lock already depends on the new lock.
+Whenever we need the info to assess the BW, visit the stored one first.
 
-[  606.297738]
-               the existing dependency chain (in reverse order) is:
-[  606.297749]
-               -> #2 (&adev->gfx.kfd_sch_mutex){+.+.}-{3:3}:
-[  606.297765]        __mutex_lock+0x85/0x930
-[  606.297776]        mutex_lock_nested+0x1b/0x30
-[  606.297786]        amdgpu_gfx_kfd_sch_ctrl+0x51/0x4d0 [amdgpu]
-[  606.298007]        amdgpu_gfx_enforce_isolation_ring_begin_use+0x2a4/0x5d0 [amdgpu]
-[  606.298225]        amdgpu_ring_alloc+0x48/0x70 [amdgpu]
-[  606.298412]        amdgpu_ib_schedule+0x176/0x8a0 [amdgpu]
-[  606.298603]        amdgpu_job_run+0xac/0x1e0 [amdgpu]
-[  606.298866]        drm_sched_run_job_work+0x24f/0x430 [gpu_sched]
-[  606.298880]        process_one_work+0x21e/0x680
-[  606.298890]        worker_thread+0x190/0x350
-[  606.298899]        kthread+0xe7/0x120
-[  606.298908]        ret_from_fork+0x3c/0x60
-[  606.298919]        ret_from_fork_asm+0x1a/0x30
-[  606.298929]
-               -> #1 (&adev->enforce_isolation_mutex){+.+.}-{3:3}:
-[  606.298947]        __mutex_lock+0x85/0x930
-[  606.298956]        mutex_lock_nested+0x1b/0x30
-[  606.298966]        amdgpu_gfx_enforce_isolation_handler+0x87/0x370 [amdgpu]
-[  606.299190]        process_one_work+0x21e/0x680
-[  606.299199]        worker_thread+0x190/0x350
-[  606.299208]        kthread+0xe7/0x120
-[  606.299217]        ret_from_fork+0x3c/0x60
-[  606.299227]        ret_from_fork_asm+0x1a/0x30
-[  606.299236]
-               -> #0 ((work_completion)(&(&adev->gfx.enforce_isolation[i].work)->work)){+.+.}-{0:0}:
-[  606.299257]        __lock_acquire+0x16f9/0x2810
-[  606.299267]        lock_acquire+0xd1/0x300
-[  606.299276]        __flush_work+0x250/0x610
-[  606.299286]        cancel_delayed_work_sync+0x71/0x80
-[  606.299296]        amdgpu_gfx_kfd_sch_ctrl+0x287/0x4d0 [amdgpu]
-[  606.299509]        amdgpu_gfx_enforce_isolation_ring_begin_use+0x2a4/0x5d0 [amdgpu]
-[  606.299723]        amdgpu_ring_alloc+0x48/0x70 [amdgpu]
-[  606.299909]        amdgpu_ib_schedule+0x176/0x8a0 [amdgpu]
-[  606.300101]        amdgpu_job_run+0xac/0x1e0 [amdgpu]
-[  606.300355]        drm_sched_run_job_work+0x24f/0x430 [gpu_sched]
-[  606.300369]        process_one_work+0x21e/0x680
-[  606.300378]        worker_thread+0x190/0x350
-[  606.300387]        kthread+0xe7/0x120
-[  606.300396]        ret_from_fork+0x3c/0x60
-[  606.300406]        ret_from_fork_asm+0x1a/0x30
-[  606.300416]
-               other info that might help us debug this:
-
-[  606.300428] Chain exists of:
-                 (work_completion)(&(&adev->gfx.enforce_isolation[i].work)->work) --> &adev->enforce_isolation_mutex --> &adev->gfx.kfd_sch_mutex
-
-[  606.300458]  Possible unsafe locking scenario:
-
-[  606.300468]        CPU0                    CPU1
-[  606.300476]        ----                    ----
-[  606.300484]   lock(&adev->gfx.kfd_sch_mutex);
-[  606.300494]                                lock(&adev->enforce_isolation_mutex);
-[  606.300508]                                lock(&adev->gfx.kfd_sch_mutex);
-[  606.300521]   lock((work_completion)(&(&adev->gfx.enforce_isolation[i].work)->work));
-[  606.300536]
-                *** DEADLOCK ***
-
-[  606.300546] 5 locks held by kworker/u96:3/3825:
-[  606.300555]  #0: ffff9aa5aa1f5d58 ((wq_completion)comp_1.1.0){+.+.}-{0:0}, at: process_one_work+0x3f5/0x680
-[  606.300577]  #1: ffffaa53c3c97e40 ((work_completion)(&sched->work_run_job)){+.+.}-{0:0}, at: process_one_work+0x1d6/0x680
-[  606.300600]  #2: ffff9aa64e463c98 (&adev->enforce_isolation_mutex){+.+.}-{3:3}, at: amdgpu_gfx_enforce_isolation_ring_begin_use+0x1c3/0x5d0 [amdgpu]
-[  606.300837]  #3: ffff9aa64e432338 (&adev->gfx.kfd_sch_mutex){+.+.}-{3:3}, at: amdgpu_gfx_kfd_sch_ctrl+0x51/0x4d0 [amdgpu]
-[  606.301062]  #4: ffffffff8c1a5660 (rcu_read_lock){....}-{1:2}, at: __flush_work+0x70/0x610
-[  606.301083]
-               stack backtrace:
-[  606.301092] CPU: 14 PID: 3825 Comm: kworker/u96:3 Tainted: G           OE      6.10.0-amd-mlkd-610-311224-lof #19
-[  606.301109] Hardware name: Gigabyte Technology Co., Ltd. X570S GAMING X/X570S GAMING X, BIOS F7 03/22/2024
-[  606.301124] Workqueue: comp_1.1.0 drm_sched_run_job_work [gpu_sched]
-[  606.301140] Call Trace:
-[  606.301146]  <TASK>
-[  606.301154]  dump_stack_lvl+0x9b/0xf0
-[  606.301166]  dump_stack+0x10/0x20
-[  606.301175]  print_circular_bug+0x26c/0x340
-[  606.301187]  check_noncircular+0x157/0x170
-[  606.301197]  ? register_lock_class+0x48/0x490
-[  606.301213]  __lock_acquire+0x16f9/0x2810
-[  606.301230]  lock_acquire+0xd1/0x300
-[  606.301239]  ? __flush_work+0x232/0x610
-[  606.301250]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  606.301261]  ? mark_held_locks+0x54/0x90
-[  606.301274]  ? __flush_work+0x232/0x610
-[  606.301284]  __flush_work+0x250/0x610
-[  606.301293]  ? __flush_work+0x232/0x610
-[  606.301305]  ? __pfx_wq_barrier_func+0x10/0x10
-[  606.301318]  ? mark_held_locks+0x54/0x90
-[  606.301331]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  606.301345]  cancel_delayed_work_sync+0x71/0x80
-[  606.301356]  amdgpu_gfx_kfd_sch_ctrl+0x287/0x4d0 [amdgpu]
-[  606.301661]  amdgpu_gfx_enforce_isolation_ring_begin_use+0x2a4/0x5d0 [amdgpu]
-[  606.302050]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  606.302069]  amdgpu_ring_alloc+0x48/0x70 [amdgpu]
-[  606.302452]  amdgpu_ib_schedule+0x176/0x8a0 [amdgpu]
-[  606.302862]  ? drm_sched_entity_error+0x82/0x190 [gpu_sched]
-[  606.302890]  amdgpu_job_run+0xac/0x1e0 [amdgpu]
-[  606.303366]  drm_sched_run_job_work+0x24f/0x430 [gpu_sched]
-[  606.303388]  process_one_work+0x21e/0x680
-[  606.303409]  worker_thread+0x190/0x350
-[  606.303424]  ? __pfx_worker_thread+0x10/0x10
-[  606.303437]  kthread+0xe7/0x120
-[  606.303449]  ? __pfx_kthread+0x10/0x10
-[  606.303463]  ret_from_fork+0x3c/0x60
-[  606.303476]  ? __pfx_kthread+0x10/0x10
-[  606.303489]  ret_from_fork_asm+0x1a/0x30
-[  606.303512]  </TASK>
-
-v2: Refactor lock handling to resolve circular dependency (Alex)
-
-- Introduced a `sched_work` flag to defer the call to
-  `amdgpu_gfx_kfd_sch_ctrl` until after releasing
-  `enforce_isolation_mutex`.
-- This change ensures that `amdgpu_gfx_kfd_sch_ctrl` is called outside
-  the critical section, preventing the circular dependency and deadlock.
-- The `sched_work` flag is set within the mutex-protected section if
-  conditions are met, and the actual function call is made afterward.
-- This approach ensures consistent lock acquisition order.
-
-Fixes: afefd6f24502 ("drm/amdgpu: Implement Enforce Isolation Handler for KGD/KFD serialization")
-Cc: Christian König <christian.koenig@amd.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3720
+Fixes: fa57924c76d9 ("drm/amd/display: Refactor function dm_dp_mst_is_port_support_mode()")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Suggested-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 0b6b2dd38336d5fd49214f0e4e6495e658e3ab44)
+(cherry picked from commit 4a9a918545455a5979c6232fcf61ed3d8f0db3ae)
 Cc: stable@vger.kernel.org
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-index 69a6b6dba0a5..1d155463d044 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-@@ -1989,6 +1989,7 @@ void amdgpu_gfx_enforce_isolation_ring_begin_use(struct amdgpu_ring *ring)
- {
- 	struct amdgpu_device *adev = ring->adev;
- 	u32 idx;
-+	bool sched_work = false;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+index 6464a8378387..2227cd8e4a89 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+@@ -697,6 +697,8 @@ struct amdgpu_dm_connector {
+ 	struct drm_dp_mst_port *mst_output_port;
+ 	struct amdgpu_dm_connector *mst_root;
+ 	struct drm_dp_aux *dsc_aux;
++	uint32_t mst_local_bw;
++	uint16_t vc_full_pbn;
+ 	struct mutex handle_mst_msg_ready;
  
- 	if (!adev->gfx.enable_cleaner_shader)
- 		return;
-@@ -2007,15 +2008,19 @@ void amdgpu_gfx_enforce_isolation_ring_begin_use(struct amdgpu_ring *ring)
- 	mutex_lock(&adev->enforce_isolation_mutex);
- 	if (adev->enforce_isolation[idx]) {
- 		if (adev->kfd.init_complete)
--			amdgpu_gfx_kfd_sch_ctrl(adev, idx, false);
-+			sched_work = true;
- 	}
- 	mutex_unlock(&adev->enforce_isolation_mutex);
-+
-+	if (sched_work)
-+		amdgpu_gfx_kfd_sch_ctrl(adev, idx, false);
+ 	/* TODO see if we can merge with ddc_bus or make a dm_connector */
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index aadaa61ac5ac..1080075ccb17 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -155,6 +155,17 @@ amdgpu_dm_mst_connector_late_register(struct drm_connector *connector)
+ 	return 0;
  }
  
- void amdgpu_gfx_enforce_isolation_ring_end_use(struct amdgpu_ring *ring)
- {
- 	struct amdgpu_device *adev = ring->adev;
- 	u32 idx;
-+	bool sched_work = false;
- 
- 	if (!adev->gfx.enable_cleaner_shader)
- 		return;
-@@ -2031,9 +2036,12 @@ void amdgpu_gfx_enforce_isolation_ring_end_use(struct amdgpu_ring *ring)
- 	mutex_lock(&adev->enforce_isolation_mutex);
- 	if (adev->enforce_isolation[idx]) {
- 		if (adev->kfd.init_complete)
--			amdgpu_gfx_kfd_sch_ctrl(adev, idx, true);
-+			sched_work = true;
- 	}
- 	mutex_unlock(&adev->enforce_isolation_mutex);
 +
-+	if (sched_work)
-+		amdgpu_gfx_kfd_sch_ctrl(adev, idx, true);
- }
++static inline void
++amdgpu_dm_mst_reset_mst_connector_setting(struct amdgpu_dm_connector *aconnector)
++{
++	aconnector->drm_edid = NULL;
++	aconnector->dsc_aux = NULL;
++	aconnector->mst_output_port->passthrough_aux = NULL;
++	aconnector->mst_local_bw = 0;
++	aconnector->vc_full_pbn = 0;
++}
++
+ static void
+ amdgpu_dm_mst_connector_early_unregister(struct drm_connector *connector)
+ {
+@@ -182,9 +193,7 @@ amdgpu_dm_mst_connector_early_unregister(struct drm_connector *connector)
  
- /*
+ 		dc_sink_release(dc_sink);
+ 		aconnector->dc_sink = NULL;
+-		aconnector->drm_edid = NULL;
+-		aconnector->dsc_aux = NULL;
+-		port->passthrough_aux = NULL;
++		amdgpu_dm_mst_reset_mst_connector_setting(aconnector);
+ 	}
+ 
+ 	aconnector->mst_status = MST_STATUS_DEFAULT;
+@@ -504,9 +513,7 @@ dm_dp_mst_detect(struct drm_connector *connector,
+ 
+ 		dc_sink_release(aconnector->dc_sink);
+ 		aconnector->dc_sink = NULL;
+-		aconnector->drm_edid = NULL;
+-		aconnector->dsc_aux = NULL;
+-		port->passthrough_aux = NULL;
++		amdgpu_dm_mst_reset_mst_connector_setting(aconnector);
+ 
+ 		amdgpu_dm_set_mst_status(&aconnector->mst_status,
+ 			MST_REMOTE_EDID | MST_ALLOCATE_NEW_PAYLOAD | MST_CLEAR_ALLOCATED_PAYLOAD,
+@@ -1819,9 +1826,18 @@ enum dc_status dm_dp_mst_is_port_support_mode(
+ 			struct drm_dp_mst_port *immediate_upstream_port = NULL;
+ 			uint32_t end_link_bw = 0;
+ 
+-			/*Get last DP link BW capability*/
+-			if (dp_get_link_current_set_bw(&aconnector->mst_output_port->aux, &end_link_bw)) {
+-				if (stream_kbps > end_link_bw) {
++			/*Get last DP link BW capability. Mode shall be supported by Legacy peer*/
++			if (aconnector->mst_output_port->pdt != DP_PEER_DEVICE_DP_LEGACY_CONV &&
++				aconnector->mst_output_port->pdt != DP_PEER_DEVICE_NONE) {
++				if (aconnector->vc_full_pbn != aconnector->mst_output_port->full_pbn) {
++					dp_get_link_current_set_bw(&aconnector->mst_output_port->aux, &end_link_bw);
++					aconnector->vc_full_pbn = aconnector->mst_output_port->full_pbn;
++					aconnector->mst_local_bw = end_link_bw;
++				} else {
++					end_link_bw = aconnector->mst_local_bw;
++				}
++
++				if (end_link_bw > 0 && stream_kbps > end_link_bw) {
+ 					DRM_DEBUG_DRIVER("MST_DSC dsc decode at last link."
+ 							 "Mode required bw can't fit into last link\n");
+ 					return DC_FAIL_BANDWIDTH_VALIDATE;
 
 
