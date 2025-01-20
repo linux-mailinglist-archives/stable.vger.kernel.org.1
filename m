@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-109523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 371C4A16D8A
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 14:40:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8A46A16D8B
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 14:40:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4C6218813B4
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 13:40:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 835061881C69
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 13:41:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E8F1E1A3E;
-	Mon, 20 Jan 2025 13:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A5B1E1A25;
+	Mon, 20 Jan 2025 13:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqPBNqel"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PV0V5kWv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838D01E1A1F
-	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 13:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8350F1FC8
+	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 13:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737380416; cv=none; b=REcoFNf7LIBlow43LIpnIS71aoNt/hwsBtQZCAk9WjgYecEuIfNhH1aqtjzipoOXnGySPC7nS9eqx5oNuoBdmJUFNlWgPSEDXrh1QHNIaBCTC8Us+MdyZf+EbZxmFWC5u5fPGGtquUoy3JJEeEAOSxlRRutpuU83jn9nw+qnw+s=
+	t=1737380453; cv=none; b=sMq+bm7rciE0+r7+2APEdWkvsTNDFMYsbSSFL/y0UpBNrlhP0+itdPq0KOb0tz6fV/lUZfurjj5IeX6G0SRnOdPzrkG3KyZqhJ3CCybw2lfXY0O6XkC4tOpdyKLxHGN9glWWLv5fqkOjsculc27KU+wlN44KDqIvCavuvhqCAy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737380416; c=relaxed/simple;
-	bh=33UeKWhtVB9WmGBEsjt1qkX6U+ZNjJobuZ2WmY6seEs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kNyGPkmbNAhh41NeCdcx6SG9mtaVE4iK5chOC4NHzKbRUKtwrKNKAl7iPim5atCYQbsyex4OF6myepqDLFA6cMKqHsd93psAlT3cQ5Pxa9yJ9czxXb3DoO4z1Fj0zDCzdHjjItKTx6OSi9NQ+K6OrPx9ayvxlE6yCJvr9HAb8ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqPBNqel; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB17C4CEDD;
-	Mon, 20 Jan 2025 13:40:15 +0000 (UTC)
+	s=arc-20240116; t=1737380453; c=relaxed/simple;
+	bh=6IbB/A8Y8W2ZM/Um3K1P6W0FwxqfWW+2SxgAq5uwie8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XsuaG0LIO0fjnmMTLy41XiZ6Y1deZTvgSMu0MjKBvornE5K0xcM3f1aBPWA23MQaQJPU4aJ8JbHY36V/UYH4T+56K+yow0qk95M18+SxThDXGOh93CqHBVb6/UWO/V5JgmChVoUhmjd7ufdr9GysrY5+I0ajzaIAxOTiO6q6dOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PV0V5kWv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94394C4CEDD;
+	Mon, 20 Jan 2025 13:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737380416;
-	bh=33UeKWhtVB9WmGBEsjt1qkX6U+ZNjJobuZ2WmY6seEs=;
+	s=korg; t=1737380453;
+	bh=6IbB/A8Y8W2ZM/Um3K1P6W0FwxqfWW+2SxgAq5uwie8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=VqPBNqel962GzgxodTaiVdNKRWP9J+GgLukVxbpbsbpwftfcbwyitjAkpyTGU2lLe
-	 En8xusGeZOqnY2YotraDgXjgKQ/xb43o9TBPg5Hzv4yObnx3dvYDOqU9efclNo0ROu
-	 qK7ccD0u8ruUqYWeApZp/Lo+TDdklQtzhQh6+y4Y=
-Subject: FAILED: patch "[PATCH] vsock/virtio: discard packets if the transport changes" failed to apply to 5.10-stable tree
-To: sgarzare@redhat.com,pabeni@redhat.com,qwerty@theori.io,v4bel@theori.io
+	b=PV0V5kWv5m6CzKrsNJDhzd0eLLp9Gr2vUozEBeXFqROyUmR2/k+c+FONAuZMIwmB5
+	 BGAjTxmo0Wlem8KXxKFYjMVsStYHDaTyl5uD3M6NKeDKErlPKYeDhZLUOaiyuPIpfb
+	 yf7K9092vUKtF0tZKPIg1mM/xuwAWrqkzxEpjtgw=
+Subject: FAILED: patch "[PATCH] vsock: prevent null-ptr-deref in vsock_*[has_data|has_space]" failed to apply to 5.10-stable tree
+To: sgarzare@redhat.com,leonardi@redhat.com,pabeni@redhat.com,qwerty@theori.io,v4bel@theori.io
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 20 Jan 2025 14:40:05 +0100
-Message-ID: <2025012005-supervise-armband-ab52@gregkh>
+Date: Mon, 20 Jan 2025 14:40:45 +0100
+Message-ID: <2025012045-irritably-duplex-5af0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2cb7c756f605ec02ffe562fb26828e4bcc5fdfc1
+git cherry-pick -x 91751e248256efc111e52e15115840c35d85abaf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025012005-supervise-armband-ab52@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025012045-irritably-duplex-5af0@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,46 +77,69 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2cb7c756f605ec02ffe562fb26828e4bcc5fdfc1 Mon Sep 17 00:00:00 2001
+From 91751e248256efc111e52e15115840c35d85abaf Mon Sep 17 00:00:00 2001
 From: Stefano Garzarella <sgarzare@redhat.com>
-Date: Fri, 10 Jan 2025 09:35:07 +0100
-Subject: [PATCH] vsock/virtio: discard packets if the transport changes
+Date: Fri, 10 Jan 2025 09:35:11 +0100
+Subject: [PATCH] vsock: prevent null-ptr-deref in vsock_*[has_data|has_space]
 
-If the socket has been de-assigned or assigned to another transport,
-we must discard any packets received because they are not expected
-and would cause issues when we access vsk->transport.
+Recent reports have shown how we sometimes call vsock_*_has_data()
+when a vsock socket has been de-assigned from a transport (see attached
+links), but we shouldn't.
 
-A possible scenario is described by Hyunwoo Kim in the attached link,
-where after a first connect() interrupted by a signal, and a second
-connect() failed, we can find `vsk->transport` at NULL, leading to a
-NULL pointer dereference.
+Previous commits should have solved the real problems, but we may have
+more in the future, so to avoid null-ptr-deref, we can return 0
+(no space, no data available) but with a warning.
+
+This way the code should continue to run in a nearly consistent state
+and have a warning that allows us to debug future problems.
 
 Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
 Cc: stable@vger.kernel.org
-Reported-by: Hyunwoo Kim <v4bel@theori.io>
-Reported-by: Wongi Lee <qwerty@theori.io>
-Closes: https://lore.kernel.org/netdev/Z2LvdTTQR7dBmPb5@v4bel-B760M-AORUS-ELITE-AX/
+Link: https://lore.kernel.org/netdev/Z2K%2FI4nlHdfMRTZC@v4bel-B760M-AORUS-ELITE-AX/
+Link: https://lore.kernel.org/netdev/5ca20d4c-1017-49c2-9516-f6f75fd331e9@rbox.co/
+Link: https://lore.kernel.org/netdev/677f84a8.050a0220.25a300.01b3.GAE@google.com/
+Co-developed-by: Hyunwoo Kim <v4bel@theori.io>
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Co-developed-by: Wongi Lee <qwerty@theori.io>
+Signed-off-by: Wongi Lee <qwerty@theori.io>
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
 Reviewed-by: Hyunwoo Kim <v4bel@theori.io>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 9acc13ab3f82..51a494b69be8 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1628,8 +1628,11 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 74d35a871644..fa9d1b49599b 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -879,6 +879,9 @@ EXPORT_SYMBOL_GPL(vsock_create_connected);
  
- 	lock_sock(sk);
+ s64 vsock_stream_has_data(struct vsock_sock *vsk)
+ {
++	if (WARN_ON(!vsk->transport))
++		return 0;
++
+ 	return vsk->transport->stream_has_data(vsk);
+ }
+ EXPORT_SYMBOL_GPL(vsock_stream_has_data);
+@@ -887,6 +890,9 @@ s64 vsock_connectible_has_data(struct vsock_sock *vsk)
+ {
+ 	struct sock *sk = sk_vsock(vsk);
  
--	/* Check if sk has been closed before lock_sock */
--	if (sock_flag(sk, SOCK_DONE)) {
-+	/* Check if sk has been closed or assigned to another transport before
-+	 * lock_sock (note: listener sockets are not assigned to any transport)
-+	 */
-+	if (sock_flag(sk, SOCK_DONE) ||
-+	    (sk->sk_state != TCP_LISTEN && vsk->transport != &t->transport)) {
- 		(void)virtio_transport_reset_no_sock(t, skb);
- 		release_sock(sk);
- 		sock_put(sk);
++	if (WARN_ON(!vsk->transport))
++		return 0;
++
+ 	if (sk->sk_type == SOCK_SEQPACKET)
+ 		return vsk->transport->seqpacket_has_data(vsk);
+ 	else
+@@ -896,6 +902,9 @@ EXPORT_SYMBOL_GPL(vsock_connectible_has_data);
+ 
+ s64 vsock_stream_has_space(struct vsock_sock *vsk)
+ {
++	if (WARN_ON(!vsk->transport))
++		return 0;
++
+ 	return vsk->transport->stream_has_space(vsk);
+ }
+ EXPORT_SYMBOL_GPL(vsock_stream_has_space);
 
 
