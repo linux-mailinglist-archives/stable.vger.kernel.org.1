@@ -1,114 +1,124 @@
-Return-Path: <stable+bounces-109557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2FEA16F0D
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 16:12:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68805A16F13
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 16:15:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A52CD1887F5E
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 15:12:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4906C7A0642
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 15:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47A01E5705;
-	Mon, 20 Jan 2025 15:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C651E5713;
+	Mon, 20 Jan 2025 15:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dfv/XI87"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XEp+Nghs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7278C1B4F02
-	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 15:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BC01E5705
+	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 15:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737385964; cv=none; b=bmfzAu3VRLvq/X996TpYGNYArmtExJiAK9ZtJzJZjkBnsk2c2DpwSPH3lN+cKUipdEbJtUPCv/OPNVfV32SG0z4Ih5f7Aym+kSj1odA1U0/mLVie9tB5jKK5T5hJ3uVOOEceewi/KEblHzeMwW+akpk6TEchWtWS+XdIH4xWlgk=
+	t=1737386102; cv=none; b=mmL99WlPJ4Tqq/y9QJ0Py4CBHcc6KPtGdDSP9MYmaetTHlcHZRZYjX1dsE0rMbAfuJs4cbGEbg6k6EQxXNhoqt1XJ6KOzgIY/93Psr6sWLHBUjS1NqMr2LaWoapw9CG/dRF6m2Gmz5XC6V6j6ZwCbEazkOaIHv+d/YitUm2YtvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737385964; c=relaxed/simple;
-	bh=QlhSkcAl1M7PmNCAnKIs8xjgzuLF4J/vugDv2A5x/do=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FXYXLknke+OBLtoXgwYiHxRg+KS4tHJObkiKJB2gimYqHkCXwqdQECCEdpQhJVQwSxRx7qOrXYzpyHFb1yj3vzyTxB7DBKabqrAotxJkxcDcEhVJrzEhrVLAt5ODk/gqec+MplqHIsCFRsfjNiFvSyvFhLBnPVN3FSXzWRv9FUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dfv/XI87; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80966C4CEDD;
-	Mon, 20 Jan 2025 15:12:43 +0000 (UTC)
+	s=arc-20240116; t=1737386102; c=relaxed/simple;
+	bh=mvPoPXd+AIQ5G2C9HTE9B8pmhHElZVw/Woug1mwke6I=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tW/3LEL4vkV5wSsfIF0f4OA1ioAtHmT9ZFD1U9QHUiIMx27RR7hnlGLROi7MixpvXNOV6m56PdZWzGGn1QG1cUw2eOCC8xeHXKXvXyX709k4OjFi5t5O2zyZ4r6TpLrZJ+rTjkbXxqRjylJFqVMezx4kQnHkuJ8vUMUZjdm9gO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XEp+Nghs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17216C4CEDD;
+	Mon, 20 Jan 2025 15:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737385963;
-	bh=QlhSkcAl1M7PmNCAnKIs8xjgzuLF4J/vugDv2A5x/do=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Dfv/XI87B/t8H6VMAUxA2lcWGbxkWA1NxAHTwg1ROzXnDyk4IKfNfuchYRwwLLFUJ
-	 biFawu/X0j7Ja19fnRGHrDzpGM52crYHRp9oaTWcNt8dfKVaYYw6v92QEqj5Gg/y72
-	 /+KUaHCBMfdfZMTQB8vIOonSEHcn1iC/g2tHWkZ4=
-Date: Mon, 20 Jan 2025 16:12:41 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: inv.git-commit@tdk.com
-Cc: stable@vger.kernel.org,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 5.15.y] iio: imu: inv_icm42600: fix spi burst write not
- supported
-Message-ID: <2025012012-drearily-bonding-0904@gregkh>
-References: <2025011348-amaretto-wasabi-3e96@gregkh>
- <20250113131918.128606-1-inv.git-commit@tdk.com>
+	s=korg; t=1737386101;
+	bh=mvPoPXd+AIQ5G2C9HTE9B8pmhHElZVw/Woug1mwke6I=;
+	h=Subject:To:Cc:From:Date:From;
+	b=XEp+Nghst97e6Jk0P1+sUIvebsWUukpp4YNwjsbROmHyhYqFDU+omUCtPtVh0DPYM
+	 zQEG8rYh9FIBpWX592dQ3dJHTqCdKwl1EHDfAHrXPDbdsBjh1Upv+kY6RfO8N7fFwy
+	 JSLZaX82qu0RlXNnm4U7QlfujanAk+Dp+wKuOA04=
+Subject: FAILED: patch "[PATCH] irqchip: Plug a OF node reference leak in" failed to apply to 5.15-stable tree
+To: joe@pf.is.s.u-tokyo.ac.jp,tglx@linutronix.de
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 20 Jan 2025 16:14:50 +0100
+Message-ID: <2025012050-motor-prevalent-e802@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250113131918.128606-1-inv.git-commit@tdk.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 13, 2025 at 01:19:18PM +0000, inv.git-commit@tdk.com wrote:
-> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> 
-> Burst write with SPI is not working for all icm42600 chips. It was
-> only used for setting user offsets with regmap_bulk_write.
-> 
-> Add specific SPI regmap config for using only single write with SPI.
-> 
-> Fixes: 9f9ff91b775b ("iio: imu: inv_icm42600: add SPI driver for inv_icm42600 driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> Link: https://patch.msgid.link/20241112-inv-icm42600-fix-spi-burst-write-not-supported-v2-1-97690dc03607@tdk.com
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> (cherry picked from commit c0f866de4ce447bca3191b9cefac60c4b36a7922)
-> ---
->  drivers/iio/imu/inv_icm42600/inv_icm42600.h      |  1 +
->  drivers/iio/imu/inv_icm42600/inv_icm42600_core.c | 12 ++++++++++++
->  drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c  |  3 ++-
->  3 files changed, 15 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-> index 995a9dc06521..f5df2e13b063 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-> @@ -360,6 +360,7 @@ struct inv_icm42600_state {
->  typedef int (*inv_icm42600_bus_setup)(struct inv_icm42600_state *);
->  
->  extern const struct regmap_config inv_icm42600_regmap_config;
-> +extern const struct regmap_config inv_icm42600_spi_regmap_config;
->  extern const struct dev_pm_ops inv_icm42600_pm_ops;
->  
->  const struct iio_mount_matrix *
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-> index ca85fccc9839..a562d7476955 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-> @@ -43,6 +43,18 @@ const struct regmap_config inv_icm42600_regmap_config = {
->  };
->  EXPORT_SYMBOL_GPL(inv_icm42600_regmap_config);
->  
-> +/* define specific regmap for SPI not supporting burst write */
-> +const struct regmap_config inv_icm42600_spi_regmap_config = {
-> +	.name = "inv_icm42600",
 
-Why does just this one have the .name field set?
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-I've taken the backports you did for the other branches here, if you
-really need .name set please let me know.
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 9322d1915f9d976ee48c09d800fbd5169bc2ddcc
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025012050-motor-prevalent-e802@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+
 
 thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 9322d1915f9d976ee48c09d800fbd5169bc2ddcc Mon Sep 17 00:00:00 2001
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Date: Sun, 15 Dec 2024 12:39:45 +0900
+Subject: [PATCH] irqchip: Plug a OF node reference leak in
+ platform_irqchip_probe()
+
+platform_irqchip_probe() leaks a OF node when irq_init_cb() fails. Fix it
+by declaring par_np with the __free(device_node) cleanup construct.
+
+This bug was found by an experimental static analysis tool that I am
+developing.
+
+Fixes: f8410e626569 ("irqchip: Add IRQCHIP_PLATFORM_DRIVER_BEGIN/END and IRQCHIP_MATCH helper macros")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241215033945.3414223-1-joe@pf.is.s.u-tokyo.ac.jp
+
+diff --git a/drivers/irqchip/irqchip.c b/drivers/irqchip/irqchip.c
+index 1eeb0d0156ce..0ee7b6b71f5f 100644
+--- a/drivers/irqchip/irqchip.c
++++ b/drivers/irqchip/irqchip.c
+@@ -35,11 +35,10 @@ void __init irqchip_init(void)
+ int platform_irqchip_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *np = pdev->dev.of_node;
+-	struct device_node *par_np = of_irq_find_parent(np);
++	struct device_node *par_np __free(device_node) = of_irq_find_parent(np);
+ 	of_irq_init_cb_t irq_init_cb = of_device_get_match_data(&pdev->dev);
+ 
+ 	if (!irq_init_cb) {
+-		of_node_put(par_np);
+ 		return -EINVAL;
+ 	}
+ 
+@@ -55,7 +54,6 @@ int platform_irqchip_probe(struct platform_device *pdev)
+ 	 * interrupt controller can check for specific domains as necessary.
+ 	 */
+ 	if (par_np && !irq_find_matching_host(par_np, DOMAIN_BUS_ANY)) {
+-		of_node_put(par_np);
+ 		return -EPROBE_DEFER;
+ 	}
+ 
+
 
