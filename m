@@ -1,92 +1,92 @@
-Return-Path: <stable+bounces-109550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A7ABA16E8E
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 15:42:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40A80A16EB4
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 15:45:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 541D07A2498
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 14:42:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B4B73A38A7
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 14:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191BD1E3770;
-	Mon, 20 Jan 2025 14:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B5BA1E47BC;
+	Mon, 20 Jan 2025 14:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D8DaokOc"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dVOYR024"
 X-Original-To: stable@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317511E376E
-	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 14:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589B71E4110
+	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 14:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737384139; cv=none; b=gbfM8Jw4AJIEmCgwKopV9N9pWkxEIHX/HkzH396GlH/2Ld6tSy3CcKzTFtZZNZLpENEzpZAV855pS7SwDm533872JJ5uip4q77UYuuthkS4JXfH99HBnfF83DqbM1EGdd/Ap06yAQmyAb2JQo9x//slBTE5oXLOfApZQjmIvWyY=
+	t=1737384218; cv=none; b=smW4/948Cye3Sd7pxrWR+0i3qsKWfRjY2V8G/NBcy5VtQou3nw+Bp4WRfbTDYpRKMqZCzpmranKVAu5a7R4V1o3bXGNKfAN0Q1LoKSQBet7UL1YkTzj8dkGAcNcRoo1GtRHesEXTsCHaix3xMzTRhoPDOf32DKrBkJR4RKlCuwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737384139; c=relaxed/simple;
-	bh=Z4ooKYFFdHdmFp5mp0BImC3/4VdGL6EEZVRPnP0XlY0=;
+	s=arc-20240116; t=1737384218; c=relaxed/simple;
+	bh=CTrcNSpU7Oxb65ObIlVDcjPqjRxm2DQJ8/i6ugfDSm0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SNp1ll5uDSgdW9rlr5rVDggBYQGIwSjIP3EebSC9Chn5jrEP0qzyV3d1BZHvtOaItZYBnUYB6ltIsENT9eW5SXOq2u8zZGEhj5WlCfrXVlGenUJ6sYBUVDvQGh30jSbplKQnbdpDp8Y0pDe/2GRWtbJesVOf85LAgsatq1G1+Rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D8DaokOc; arc=none smtp.client-ip=170.10.133.124
+	 Content-Type:Content-Disposition:In-Reply-To; b=UbwbDOcnAn7mr+ldIWyS6CgECKy7UOwPQT7lI3n3bOxQ0erO+pRun1EX/nCrWK3EDMQrO4nrCr8yFVns5ZtH9TAnOmik5N3G7VpiVJKQoVGwY47TNxUehwc/aLcAD8OAM7AHCQrf1K4hH5UsH/mi39cLXqjlgSxOyC+l3m0CTqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dVOYR024; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1737384135;
+	s=mimecast20190719; t=1737384214;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xr9JMAk2+Cc37UHUpd0JdIZB4AAeMafD4YMNeYqFqFU=;
-	b=D8DaokOcpjntcsxsB9NsMTnrf2fClEFRI7urulZdqjkoiu39Kz10lvXGdg42ktjlRbgcwY
-	QJJ6HnVlRq6pyoTnprApVzCMPEbnzh2V8McEiWkyMOfjz/aGtbgiFmp+UJV3dh1U53IywR
-	j8fOZpILGx3bcDBlR6xJpmJE3ke9kN0=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=4Ez+3AQAinpyMg7LzTCv1W5bYpFZwoVTj3YiSPOQ/0c=;
+	b=dVOYR024Nv3T9hQsoaCLEfLL3wUSWQ2L2DQROIbV8tvOFBC+KtW6QK5Zv+ScBEEq2Tr2vA
+	4/ciWIELao9hHZXT3oN4B/DmmWrd4pi0wcWGsYdF1jCpioE5NfPB8mQKBSgj5v9Ywqqr/K
+	smpDD47fPxKSB6vMVOH0o3YL6ei2WRc=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-534-LyFTmeOdMIievQ796XxjEw-1; Mon, 20 Jan 2025 09:42:13 -0500
-X-MC-Unique: LyFTmeOdMIievQ796XxjEw-1
-X-Mimecast-MFC-AGG-ID: LyFTmeOdMIievQ796XxjEw
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43626224274so24877475e9.0
-        for <stable@vger.kernel.org>; Mon, 20 Jan 2025 06:42:13 -0800 (PST)
+ us-mta-478-VB3-lfuZNzKg25FNxD8HdA-1; Mon, 20 Jan 2025 09:43:33 -0500
+X-MC-Unique: VB3-lfuZNzKg25FNxD8HdA-1
+X-Mimecast-MFC-AGG-ID: VB3-lfuZNzKg25FNxD8HdA
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-43631d8d9c7so22874185e9.1
+        for <stable@vger.kernel.org>; Mon, 20 Jan 2025 06:43:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737384132; x=1737988932;
+        d=1e100.net; s=20230601; t=1737384212; x=1737989012;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xr9JMAk2+Cc37UHUpd0JdIZB4AAeMafD4YMNeYqFqFU=;
-        b=vDJtRxtgktqYhsQ48XYQiwxw4Uz83MM1AgfFDOqVeBgTwH/a8pB8BX3PJGLgm0gzT3
-         s7rOJzXsG1wJjp8FmhHtHpbXgTDqg0S17ZNj1GPO6Duwa68sSMXZP2YiZ+XMrys7Oycd
-         Jsb/UYQVVXxmzRz0cFp3kRiaQtplfEo+FTtrHUZuJzb41+ST9pAEHWj+kSaGngOlyV4L
-         Kdmki+acjYDNbAbP8G88abZonPjbb6KKLlzAQlNGzPGK1bRLG2NJt3v+ywIctJkicFqm
-         UbvkIF1bdYqWxSiodDDb5OuFcPu7z8xLJy6YRG3Ocxpjb7h3OFbAkv2IIvAkeb+gGAWL
-         73Nw==
-X-Forwarded-Encrypted: i=1; AJvYcCVICrxXe5zSAYQrbW5PM8G/RTVnV4l5N/SphjUChLj0mZNob7gRDdCp+MRq533pzBN1kxU9o9g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLy6SgA9uPXUPJeOWdXik6bcxq+gnNXshnw00aqRNeiPFAdBZX
-	lS+DEOcxwxNpPpJsZaruk+2oJ5NunvgAsmx59nR7PksflqHARh0byUL6GEtLNJt5J6d66tU3nBN
-	NzEslSM7AlwgtyzO20XjUbiafUfFELysSRf8botIQ2xYPu1MJS5jeK/hbZ4gkDg==
-X-Gm-Gg: ASbGncvE46tjk2fsPMNa8G1P+RxyKSjnwXJlWStH6zfb3dT5WRycR6bROus8Q4G9M+q
-	rQwNweIL9LY7brFuUk3tOnNy/NuSWPuYoAS+u5PTWfn1fT6Yaz6+2a93h9Y5EoFQ9MQGacamiL8
-	f9RkDZwvEIcgJ0GLNJOHLjBYIrykhOn4YaBbXAyWqCrlRCcgTFsW9VvI7GoISq6NvGrZ5PkXY0F
-	73xOTg6OBpwQOxUI5YB6/R8So3N8RNHHP1ROSEJ1LarrAZNhV6moK1zVUpnDTIVy+sOwYeEQEk1
-	wy2dnNzMlB+sUUIk/Hdjn/N51cDSBd9e4dlzQm5seb9SDg==
-X-Received: by 2002:a05:600c:a09:b0:435:9ed3:5688 with SMTP id 5b1f17b1804b1-438913f86dcmr125714985e9.18.1737384131737;
-        Mon, 20 Jan 2025 06:42:11 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGOTtS+eyAgLS72NOusBwB/vLbIPSeLgvYLbFpIs+SCTNOD923oCIAI+8D9w+SWeY1DKBGV3Q==
-X-Received: by 2002:a05:600c:a09:b0:435:9ed3:5688 with SMTP id 5b1f17b1804b1-438913f86dcmr125714465e9.18.1737384130979;
-        Mon, 20 Jan 2025 06:42:10 -0800 (PST)
+        bh=4Ez+3AQAinpyMg7LzTCv1W5bYpFZwoVTj3YiSPOQ/0c=;
+        b=uL/oB3utU/05XJHwyi5UIh0e24A+701BMr3awmUBvpD6z5MwG2vY8bhiA7BCqoIfTw
+         nu2bsadtv5kjKwv5Ca1bz38iEEV/ZkdlJzc/eHYx3j9uMj/qkC+idSbY+GtRDPgg6c9s
+         +QP/mOufhk5QEbybZeplzVoldLUWgiRW3E19H0SHJi7L4EEL86zVshclcBjmIrK/w4o5
+         RRngEdCspJ0XTiGRS4B6ZNTpflOl6TAtE7qtnOj28Z3DopLUyu2yFHh0KHicXHMq2Nuy
+         ARIl2WSKOTY0ZvWYbRN1IFt8Y2rh28PJgTECM0efgLxTpcyNAwk8sqHJg29tew9p/W6m
+         +K1g==
+X-Forwarded-Encrypted: i=1; AJvYcCU/X64H/D/3zN/KJlujwhL7iw4r0WTeiC7HArNLkwJr4SJL9ch1DAaIblxnSIZ2X+YCAPOP2uY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfzAszPUblDqAvU9fhPgNd3kuKiUYCZtbJlRWCxhU05X18JbHk
+	Enpbe63Fy7xa0wfdKjZqLtl0f5n3RXVlKRhUpCrbhAr/P23lxIxp+7wBw1kqBet3YvhtpB0XUhV
+	+ha4jhkMY4d5MYVN2gVQJcEPBWvHgLcM1bxQ+L7i37UR3nvi5LKDHtCvhuBGkUQ==
+X-Gm-Gg: ASbGncu1tCw7qR2ysimRVw6YY8OQq0Rg//vuYVHSan5+jYFz3puEFP+j1TNGIIrLX9o
+	zmJNR3q4v5mySq/ESOAQ4qBEooSCZa8JaE8J+SChTUkXYeloqGeKMxJeXF8KlnrhHYN2XTdTTsa
+	Xrdxpz17tIKrPQcI5hby4KLKfbkYXKGVmnOXMdAwneVXz6TpEhets6Kt0koGqQRxWZYtKGBdN4h
+	oXm7mwmJEPzeBaOI2JOccBCynsqtqup/0h8YsixiNhwUlLbgOsC6dvP96iYLzg9a84Bhw5IOP2X
+	+ON0PrFnr2rMmv7gWNUm26KI38Efiha2IqY11oxUQ/lKPA==
+X-Received: by 2002:a05:600c:26c6:b0:436:1af3:5b13 with SMTP id 5b1f17b1804b1-437c6b475f9mr200936445e9.15.1737384211779;
+        Mon, 20 Jan 2025 06:43:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGNB/+AfOTSXjaug5tAAO1CLyrUblqSFa17id0YcFrXCgO9kP3iwxiNfo8B0koDWdJMA/dFMQ==
+X-Received: by 2002:a05:600c:26c6:b0:436:1af3:5b13 with SMTP id 5b1f17b1804b1-437c6b475f9mr200935995e9.15.1737384211107;
+        Mon, 20 Jan 2025 06:43:31 -0800 (PST)
 Received: from sgarzare-redhat (host-82-53-134-100.retail.telecomitalia.it. [82.53.134.100])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43890408a66sm144383755e9.5.2025.01.20.06.42.10
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c16640bcsm134165535e9.1.2025.01.20.06.43.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jan 2025 06:42:10 -0800 (PST)
-Date: Mon, 20 Jan 2025 15:42:06 +0100
+        Mon, 20 Jan 2025 06:43:30 -0800 (PST)
+Date: Mon, 20 Jan 2025 15:43:26 +0100
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: gregkh@linuxfoundation.org
 Cc: pabeni@redhat.com, qwerty@theori.io, v4bel@theori.io, 
 	stable@vger.kernel.org
 Subject: Re: FAILED: patch "[PATCH] vsock/virtio: discard packets if the
- transport changes" failed to apply to 5.15-stable tree
-Message-ID: <d2ezui7sujjbhqueo4hokoryqnym3l3qa7d7n5i6trspqbdfan@mqlkfrawbxeu>
-References: <2025012004-rise-cavity-58aa@gregkh>
+ transport changes" failed to apply to 5.10-stable tree
+Message-ID: <lidnpv7sgfy2r4h73nvz53ngbsm74zwkvzdccbdqnyyuvdhzok@uimd2vukfuly>
+References: <2025012005-supervise-armband-ab52@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -95,14 +95,14 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <2025012004-rise-cavity-58aa@gregkh>
+In-Reply-To: <2025012005-supervise-armband-ab52@gregkh>
 
-On Mon, Jan 20, 2025 at 02:40:04PM +0100, gregkh@linuxfoundation.org wrote:
+On Mon, Jan 20, 2025 at 02:40:05PM +0100, gregkh@linuxfoundation.org wrote:
 >
->The patch below does not apply to the 5.15-stable tree.
+>The patch below does not apply to the 5.10-stable tree.
 
-There is a "context" conflict due to the fact that we do not have the
-following patch in the 5.15-stable tree:
+As for the 5.15-stable tree, there is a "context" conflict due to the 
+fact that we do not have the following patch:
 
 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
 
@@ -118,12 +118,12 @@ Stefano
 >
 >To reproduce the conflict and resubmit, you may use the following commands:
 >
->git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+>git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 >git checkout FETCH_HEAD
 >git cherry-pick -x 2cb7c756f605ec02ffe562fb26828e4bcc5fdfc1
 ># <resolve conflicts, build, test, etc.>
 >git commit -s
->git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025012004-rise-cavity-58aa@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+>git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025012005-supervise-armband-ab52@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 >
 >Possible dependencies:
 >
