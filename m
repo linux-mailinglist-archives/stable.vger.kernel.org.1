@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-109545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2B3AA16E2E
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 15:12:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D02A16E45
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 15:17:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8E923A382A
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 14:12:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A4DF7A23AC
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 14:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD3161E0DFE;
-	Mon, 20 Jan 2025 14:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634221E515;
+	Mon, 20 Jan 2025 14:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wd3qWjCn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQkqt/Q0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DEE1195FE5
-	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 14:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22828383A2
+	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 14:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737382339; cv=none; b=ep0gB1CBgsnHhOcc/ou063MMnGAWZQxyOql/xLpm4H8Nzl/IeN9qEeOj3Zcj2rwy10t4mOqF7BJ2tjzb9VGkbGSx3LB+k5isPHx0jUUTl2UZDQwy+gP+hErUQTa6R8IB4Qzl/vzQJANzumwOPHuDth0Se/YxheqSxufbWUtSWjQ=
+	t=1737382652; cv=none; b=Ve0cGvN3dNJFtUSQb+/FmMzFeKb4YIAWCsfc4VpX87M+joXuyNNni2HFGBNAy0nO4nPcH0L/RWizcovl1W/Y5D9ugFp28MCYljskkNNlsYxhlMkp8/zcNVzUZ6+VSyhPWJoZuE1oaoothQx+iRFAfT2symnHAg5mm9azNDdmBeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737382339; c=relaxed/simple;
-	bh=CX4IfvZ22uuiGsqGuhlnH/dm/UWVIoIWSWf8yuss7T4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=O7V8eZymro61K9onVA0gOliArTdycVhl5x6z7+cwVnE7L8axADPHuVKwNhkoyilrORS2RpeNjQoCnQWkT59Ox8EByrEIxh0brv7H/C6NexPq6RMDZQOyIEM1/Tx27KiFxFLkq/RO4hVs2vmxGlBMYZcYQFGtCtPZgfsotv5jgk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wd3qWjCn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85093C4CEDD;
-	Mon, 20 Jan 2025 14:12:18 +0000 (UTC)
+	s=arc-20240116; t=1737382652; c=relaxed/simple;
+	bh=Dh7Fupez4tDBWpKganz6pnJ/jKzPU1AUBERH8PhuxPg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FXiX/SAyAg9b5rXp53O8F9BDjw8NKpqgOsRboik+qengy+klOfQpWvAVJfu/4q5f9xc3tG80iYD19y8e1vQYteKICb5c5guXlW3iDNHXKNALMmcfml2sDaBCsf1A6BLP5F2RIYt5Q1L0myQSqqOo1SPiEPFZUD4lA3Dj2x68tow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQkqt/Q0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B32AC4CEDD;
+	Mon, 20 Jan 2025 14:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737382338;
-	bh=CX4IfvZ22uuiGsqGuhlnH/dm/UWVIoIWSWf8yuss7T4=;
+	s=korg; t=1737382651;
+	bh=Dh7Fupez4tDBWpKganz6pnJ/jKzPU1AUBERH8PhuxPg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Wd3qWjCnpCms/Q8xYhkxUK9O1bKSkeXYcNl9TMRNqN/rvsJbA5xzX5NjtJRVYBGcO
-	 CTEzVXrL+tpYFAw/DKtSIWJqZc9Xn4F3UvuxtsGeY902FoIIZxdLPY+N7ZnYvsPrMX
-	 wck/LpRN8ArzrW0wOWDKc83gcSQXfyQ8BtRKRMuw=
-Subject: FAILED: patch "[PATCH] mm: clear uffd-wp PTE/PMD state on mremap()" failed to apply to 5.10-stable tree
-To: ryan.roberts@arm.com,Liam.Howlett@Oracle.com,akpm@linux-foundation.org,david@redhat.com,jannh@google.com,lorenzo.stoakes@oracle.com,mark.rutland@arm.com,miko.lenczewski@arm.com,muchun.song@linux.dev,peterx@redhat.com,shuah@kernel.org,stable@vger.kernel.org,vbabka@suse.cz
+	b=iQkqt/Q0dnA2cFpueksa2LQcQw3441bg/G+pdsJ7PiIM1fA6Qar2iml12aqmExy5n
+	 3T+PVaQwAshKe2kVASZt0o2vkzeQepuRr3dhIX12ea/epR/baFYEOICt1IZuUoqOay
+	 BMSuSTBis1J+BpLhg2vptE6zZscnegDpKYKEQwR8=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: Fix Circular Locking Dependency in AMDGPU GFX" failed to apply to 6.12-stable tree
+To: srinivasan.shanmugam@amd.com,alexander.deucher@amd.com,christian.koenig@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 20 Jan 2025 15:12:06 +0100
-Message-ID: <2025012006-abnormal-unnoticed-6f89@gregkh>
+Date: Mon, 20 Jan 2025 15:17:28 +0100
+Message-ID: <2025012028-crayfish-squiggly-c66c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0cef0bb836e3cfe00f08f9606c72abd72fe78ca3
+git cherry-pick -x 1e8c193f8ca7ab7dff4f4747b45a55dca23c00f4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025012006-abnormal-unnoticed-6f89@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025012028-crayfish-squiggly-c66c@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,201 +77,217 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0cef0bb836e3cfe00f08f9606c72abd72fe78ca3 Mon Sep 17 00:00:00 2001
-From: Ryan Roberts <ryan.roberts@arm.com>
-Date: Tue, 7 Jan 2025 14:47:52 +0000
-Subject: [PATCH] mm: clear uffd-wp PTE/PMD state on mremap()
+From 1e8c193f8ca7ab7dff4f4747b45a55dca23c00f4 Mon Sep 17 00:00:00 2001
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Date: Thu, 9 Jan 2025 21:33:51 +0530
+Subject: [PATCH] drm/amdgpu: Fix Circular Locking Dependency in AMDGPU GFX
+ Isolation
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-When mremap()ing a memory region previously registered with userfaultfd as
-write-protected but without UFFD_FEATURE_EVENT_REMAP, an inconsistency in
-flag clearing leads to a mismatch between the vma flags (which have
-uffd-wp cleared) and the pte/pmd flags (which do not have uffd-wp
-cleared).  This mismatch causes a subsequent mprotect(PROT_WRITE) to
-trigger a warning in page_table_check_pte_flags() due to setting the pte
-to writable while uffd-wp is still set.
+This commit addresses a circular locking dependency issue within the GFX
+isolation mechanism. The problem was identified by a warning indicating
+a potential deadlock due to inconsistent lock acquisition order.
 
-Fix this by always explicitly clearing the uffd-wp pte/pmd flags on any
-such mremap() so that the values are consistent with the existing clearing
-of VM_UFFD_WP.  Be careful to clear the logical flag regardless of its
-physical form; a PTE bit, a swap PTE bit, or a PTE marker.  Cover PTE,
-huge PMD and hugetlb paths.
+- The `amdgpu_gfx_enforce_isolation_ring_begin_use` and
+  `amdgpu_gfx_enforce_isolation_ring_end_use` functions previously
+  acquired `enforce_isolation_mutex` and called `amdgpu_gfx_kfd_sch_ctrl`,
+  leading to potential deadlocks. ie., If `amdgpu_gfx_kfd_sch_ctrl` is
+  called while `enforce_isolation_mutex` is held, and
+  `amdgpu_gfx_enforce_isolation_handler` is called while `kfd_sch_mutex` is
+  held, it can create a circular dependency.
 
-Link: https://lkml.kernel.org/r/20250107144755.1871363-2-ryan.roberts@arm.com
-Co-developed-by: Mikołaj Lenczewski <miko.lenczewski@arm.com>
-Signed-off-by: Mikołaj Lenczewski <miko.lenczewski@arm.com>
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Closes: https://lore.kernel.org/linux-mm/810b44a8-d2ae-4107-b665-5a42eae2d948@arm.com/
-Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+By ensuring consistent lock usage, this fix resolves the issue:
 
-diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-index cb40f1a1d081..75342022d144 100644
---- a/include/linux/userfaultfd_k.h
-+++ b/include/linux/userfaultfd_k.h
-@@ -247,6 +247,13 @@ static inline bool vma_can_userfault(struct vm_area_struct *vma,
- 	    vma_is_shmem(vma);
- }
- 
-+static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
-+{
-+	struct userfaultfd_ctx *uffd_ctx = vma->vm_userfaultfd_ctx.ctx;
-+
-+	return uffd_ctx && (uffd_ctx->features & UFFD_FEATURE_EVENT_REMAP) == 0;
-+}
-+
- extern int dup_userfaultfd(struct vm_area_struct *, struct list_head *);
- extern void dup_userfaultfd_complete(struct list_head *);
- void dup_userfaultfd_fail(struct list_head *);
-@@ -402,6 +409,11 @@ static inline bool userfaultfd_wp_async(struct vm_area_struct *vma)
- 	return false;
- }
- 
-+static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
-+{
-+	return false;
-+}
-+
- #endif /* CONFIG_USERFAULTFD */
- 
- static inline bool userfaultfd_wp_use_markers(struct vm_area_struct *vma)
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index e53d83b3e5cf..db64116a4f84 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2206,6 +2206,16 @@ static pmd_t move_soft_dirty_pmd(pmd_t pmd)
- 	return pmd;
- }
- 
-+static pmd_t clear_uffd_wp_pmd(pmd_t pmd)
-+{
-+	if (pmd_present(pmd))
-+		pmd = pmd_clear_uffd_wp(pmd);
-+	else if (is_swap_pmd(pmd))
-+		pmd = pmd_swp_clear_uffd_wp(pmd);
-+
-+	return pmd;
-+}
-+
- bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
- 		  unsigned long new_addr, pmd_t *old_pmd, pmd_t *new_pmd)
+[  606.297333] ======================================================
+[  606.297343] WARNING: possible circular locking dependency detected
+[  606.297353] 6.10.0-amd-mlkd-610-311224-lof #19 Tainted: G           OE
+[  606.297365] ------------------------------------------------------
+[  606.297375] kworker/u96:3/3825 is trying to acquire lock:
+[  606.297385] ffff9aa64e431cb8 ((work_completion)(&(&adev->gfx.enforce_isolation[i].work)->work)){+.+.}-{0:0}, at: __flush_work+0x232/0x610
+[  606.297413]
+               but task is already holding lock:
+[  606.297423] ffff9aa64e432338 (&adev->gfx.kfd_sch_mutex){+.+.}-{3:3}, at: amdgpu_gfx_kfd_sch_ctrl+0x51/0x4d0 [amdgpu]
+[  606.297725]
+               which lock already depends on the new lock.
+
+[  606.297738]
+               the existing dependency chain (in reverse order) is:
+[  606.297749]
+               -> #2 (&adev->gfx.kfd_sch_mutex){+.+.}-{3:3}:
+[  606.297765]        __mutex_lock+0x85/0x930
+[  606.297776]        mutex_lock_nested+0x1b/0x30
+[  606.297786]        amdgpu_gfx_kfd_sch_ctrl+0x51/0x4d0 [amdgpu]
+[  606.298007]        amdgpu_gfx_enforce_isolation_ring_begin_use+0x2a4/0x5d0 [amdgpu]
+[  606.298225]        amdgpu_ring_alloc+0x48/0x70 [amdgpu]
+[  606.298412]        amdgpu_ib_schedule+0x176/0x8a0 [amdgpu]
+[  606.298603]        amdgpu_job_run+0xac/0x1e0 [amdgpu]
+[  606.298866]        drm_sched_run_job_work+0x24f/0x430 [gpu_sched]
+[  606.298880]        process_one_work+0x21e/0x680
+[  606.298890]        worker_thread+0x190/0x350
+[  606.298899]        kthread+0xe7/0x120
+[  606.298908]        ret_from_fork+0x3c/0x60
+[  606.298919]        ret_from_fork_asm+0x1a/0x30
+[  606.298929]
+               -> #1 (&adev->enforce_isolation_mutex){+.+.}-{3:3}:
+[  606.298947]        __mutex_lock+0x85/0x930
+[  606.298956]        mutex_lock_nested+0x1b/0x30
+[  606.298966]        amdgpu_gfx_enforce_isolation_handler+0x87/0x370 [amdgpu]
+[  606.299190]        process_one_work+0x21e/0x680
+[  606.299199]        worker_thread+0x190/0x350
+[  606.299208]        kthread+0xe7/0x120
+[  606.299217]        ret_from_fork+0x3c/0x60
+[  606.299227]        ret_from_fork_asm+0x1a/0x30
+[  606.299236]
+               -> #0 ((work_completion)(&(&adev->gfx.enforce_isolation[i].work)->work)){+.+.}-{0:0}:
+[  606.299257]        __lock_acquire+0x16f9/0x2810
+[  606.299267]        lock_acquire+0xd1/0x300
+[  606.299276]        __flush_work+0x250/0x610
+[  606.299286]        cancel_delayed_work_sync+0x71/0x80
+[  606.299296]        amdgpu_gfx_kfd_sch_ctrl+0x287/0x4d0 [amdgpu]
+[  606.299509]        amdgpu_gfx_enforce_isolation_ring_begin_use+0x2a4/0x5d0 [amdgpu]
+[  606.299723]        amdgpu_ring_alloc+0x48/0x70 [amdgpu]
+[  606.299909]        amdgpu_ib_schedule+0x176/0x8a0 [amdgpu]
+[  606.300101]        amdgpu_job_run+0xac/0x1e0 [amdgpu]
+[  606.300355]        drm_sched_run_job_work+0x24f/0x430 [gpu_sched]
+[  606.300369]        process_one_work+0x21e/0x680
+[  606.300378]        worker_thread+0x190/0x350
+[  606.300387]        kthread+0xe7/0x120
+[  606.300396]        ret_from_fork+0x3c/0x60
+[  606.300406]        ret_from_fork_asm+0x1a/0x30
+[  606.300416]
+               other info that might help us debug this:
+
+[  606.300428] Chain exists of:
+                 (work_completion)(&(&adev->gfx.enforce_isolation[i].work)->work) --> &adev->enforce_isolation_mutex --> &adev->gfx.kfd_sch_mutex
+
+[  606.300458]  Possible unsafe locking scenario:
+
+[  606.300468]        CPU0                    CPU1
+[  606.300476]        ----                    ----
+[  606.300484]   lock(&adev->gfx.kfd_sch_mutex);
+[  606.300494]                                lock(&adev->enforce_isolation_mutex);
+[  606.300508]                                lock(&adev->gfx.kfd_sch_mutex);
+[  606.300521]   lock((work_completion)(&(&adev->gfx.enforce_isolation[i].work)->work));
+[  606.300536]
+                *** DEADLOCK ***
+
+[  606.300546] 5 locks held by kworker/u96:3/3825:
+[  606.300555]  #0: ffff9aa5aa1f5d58 ((wq_completion)comp_1.1.0){+.+.}-{0:0}, at: process_one_work+0x3f5/0x680
+[  606.300577]  #1: ffffaa53c3c97e40 ((work_completion)(&sched->work_run_job)){+.+.}-{0:0}, at: process_one_work+0x1d6/0x680
+[  606.300600]  #2: ffff9aa64e463c98 (&adev->enforce_isolation_mutex){+.+.}-{3:3}, at: amdgpu_gfx_enforce_isolation_ring_begin_use+0x1c3/0x5d0 [amdgpu]
+[  606.300837]  #3: ffff9aa64e432338 (&adev->gfx.kfd_sch_mutex){+.+.}-{3:3}, at: amdgpu_gfx_kfd_sch_ctrl+0x51/0x4d0 [amdgpu]
+[  606.301062]  #4: ffffffff8c1a5660 (rcu_read_lock){....}-{1:2}, at: __flush_work+0x70/0x610
+[  606.301083]
+               stack backtrace:
+[  606.301092] CPU: 14 PID: 3825 Comm: kworker/u96:3 Tainted: G           OE      6.10.0-amd-mlkd-610-311224-lof #19
+[  606.301109] Hardware name: Gigabyte Technology Co., Ltd. X570S GAMING X/X570S GAMING X, BIOS F7 03/22/2024
+[  606.301124] Workqueue: comp_1.1.0 drm_sched_run_job_work [gpu_sched]
+[  606.301140] Call Trace:
+[  606.301146]  <TASK>
+[  606.301154]  dump_stack_lvl+0x9b/0xf0
+[  606.301166]  dump_stack+0x10/0x20
+[  606.301175]  print_circular_bug+0x26c/0x340
+[  606.301187]  check_noncircular+0x157/0x170
+[  606.301197]  ? register_lock_class+0x48/0x490
+[  606.301213]  __lock_acquire+0x16f9/0x2810
+[  606.301230]  lock_acquire+0xd1/0x300
+[  606.301239]  ? __flush_work+0x232/0x610
+[  606.301250]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  606.301261]  ? mark_held_locks+0x54/0x90
+[  606.301274]  ? __flush_work+0x232/0x610
+[  606.301284]  __flush_work+0x250/0x610
+[  606.301293]  ? __flush_work+0x232/0x610
+[  606.301305]  ? __pfx_wq_barrier_func+0x10/0x10
+[  606.301318]  ? mark_held_locks+0x54/0x90
+[  606.301331]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  606.301345]  cancel_delayed_work_sync+0x71/0x80
+[  606.301356]  amdgpu_gfx_kfd_sch_ctrl+0x287/0x4d0 [amdgpu]
+[  606.301661]  amdgpu_gfx_enforce_isolation_ring_begin_use+0x2a4/0x5d0 [amdgpu]
+[  606.302050]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  606.302069]  amdgpu_ring_alloc+0x48/0x70 [amdgpu]
+[  606.302452]  amdgpu_ib_schedule+0x176/0x8a0 [amdgpu]
+[  606.302862]  ? drm_sched_entity_error+0x82/0x190 [gpu_sched]
+[  606.302890]  amdgpu_job_run+0xac/0x1e0 [amdgpu]
+[  606.303366]  drm_sched_run_job_work+0x24f/0x430 [gpu_sched]
+[  606.303388]  process_one_work+0x21e/0x680
+[  606.303409]  worker_thread+0x190/0x350
+[  606.303424]  ? __pfx_worker_thread+0x10/0x10
+[  606.303437]  kthread+0xe7/0x120
+[  606.303449]  ? __pfx_kthread+0x10/0x10
+[  606.303463]  ret_from_fork+0x3c/0x60
+[  606.303476]  ? __pfx_kthread+0x10/0x10
+[  606.303489]  ret_from_fork_asm+0x1a/0x30
+[  606.303512]  </TASK>
+
+v2: Refactor lock handling to resolve circular dependency (Alex)
+
+- Introduced a `sched_work` flag to defer the call to
+  `amdgpu_gfx_kfd_sch_ctrl` until after releasing
+  `enforce_isolation_mutex`.
+- This change ensures that `amdgpu_gfx_kfd_sch_ctrl` is called outside
+  the critical section, preventing the circular dependency and deadlock.
+- The `sched_work` flag is set within the mutex-protected section if
+  conditions are met, and the actual function call is made afterward.
+- This approach ensures consistent lock acquisition order.
+
+Fixes: afefd6f24502 ("drm/amdgpu: Implement Enforce Isolation Handler for KGD/KFD serialization")
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Suggested-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 0b6b2dd38336d5fd49214f0e4e6495e658e3ab44)
+Cc: stable@vger.kernel.org
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+index 69a6b6dba0a5..1d155463d044 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+@@ -1989,6 +1989,7 @@ void amdgpu_gfx_enforce_isolation_ring_begin_use(struct amdgpu_ring *ring)
  {
-@@ -2244,6 +2254,8 @@ bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
- 			pgtable_trans_huge_deposit(mm, new_pmd, pgtable);
- 		}
- 		pmd = move_soft_dirty_pmd(pmd);
-+		if (vma_has_uffd_without_event_remap(vma))
-+			pmd = clear_uffd_wp_pmd(pmd);
- 		set_pmd_at(mm, new_addr, new_pmd, pmd);
- 		if (force_flush)
- 			flush_pmd_tlb_range(vma, old_addr, old_addr + PMD_SIZE);
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index c498874a7170..eaaec19caa7c 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5402,6 +5402,7 @@ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
- 			  unsigned long new_addr, pte_t *src_pte, pte_t *dst_pte,
- 			  unsigned long sz)
- {
-+	bool need_clear_uffd_wp = vma_has_uffd_without_event_remap(vma);
- 	struct hstate *h = hstate_vma(vma);
- 	struct mm_struct *mm = vma->vm_mm;
- 	spinlock_t *src_ptl, *dst_ptl;
-@@ -5418,7 +5419,18 @@ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
- 		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+ 	struct amdgpu_device *adev = ring->adev;
+ 	u32 idx;
++	bool sched_work = false;
  
- 	pte = huge_ptep_get_and_clear(mm, old_addr, src_pte);
--	set_huge_pte_at(mm, new_addr, dst_pte, pte, sz);
-+
-+	if (need_clear_uffd_wp && pte_marker_uffd_wp(pte))
-+		huge_pte_clear(mm, new_addr, dst_pte, sz);
-+	else {
-+		if (need_clear_uffd_wp) {
-+			if (pte_present(pte))
-+				pte = huge_pte_clear_uffd_wp(pte);
-+			else if (is_swap_pte(pte))
-+				pte = pte_swp_clear_uffd_wp(pte);
-+		}
-+		set_huge_pte_at(mm, new_addr, dst_pte, pte, sz);
-+	}
- 
- 	if (src_ptl != dst_ptl)
- 		spin_unlock(src_ptl);
-diff --git a/mm/mremap.c b/mm/mremap.c
-index 60473413836b..cff7f552f909 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -138,6 +138,7 @@ static int move_ptes(struct vm_area_struct *vma, pmd_t *old_pmd,
- 		struct vm_area_struct *new_vma, pmd_t *new_pmd,
- 		unsigned long new_addr, bool need_rmap_locks)
- {
-+	bool need_clear_uffd_wp = vma_has_uffd_without_event_remap(vma);
- 	struct mm_struct *mm = vma->vm_mm;
- 	pte_t *old_pte, *new_pte, pte;
- 	pmd_t dummy_pmdval;
-@@ -216,7 +217,18 @@ static int move_ptes(struct vm_area_struct *vma, pmd_t *old_pmd,
- 			force_flush = true;
- 		pte = move_pte(pte, old_addr, new_addr);
- 		pte = move_soft_dirty_pte(pte);
--		set_pte_at(mm, new_addr, new_pte, pte);
-+
-+		if (need_clear_uffd_wp && pte_marker_uffd_wp(pte))
-+			pte_clear(mm, new_addr, new_pte);
-+		else {
-+			if (need_clear_uffd_wp) {
-+				if (pte_present(pte))
-+					pte = pte_clear_uffd_wp(pte);
-+				else if (is_swap_pte(pte))
-+					pte = pte_swp_clear_uffd_wp(pte);
-+			}
-+			set_pte_at(mm, new_addr, new_pte, pte);
-+		}
+ 	if (!adev->gfx.enable_cleaner_shader)
+ 		return;
+@@ -2007,15 +2008,19 @@ void amdgpu_gfx_enforce_isolation_ring_begin_use(struct amdgpu_ring *ring)
+ 	mutex_lock(&adev->enforce_isolation_mutex);
+ 	if (adev->enforce_isolation[idx]) {
+ 		if (adev->kfd.init_complete)
+-			amdgpu_gfx_kfd_sch_ctrl(adev, idx, false);
++			sched_work = true;
  	}
- 
- 	arch_leave_lazy_mmu_mode();
-@@ -278,6 +290,15 @@ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
- 	if (WARN_ON_ONCE(!pmd_none(*new_pmd)))
- 		return false;
- 
-+	/* If this pmd belongs to a uffd vma with remap events disabled, we need
-+	 * to ensure that the uffd-wp state is cleared from all pgtables. This
-+	 * means recursing into lower page tables in move_page_tables(), and we
-+	 * can reuse the existing code if we simply treat the entry as "not
-+	 * moved".
-+	 */
-+	if (vma_has_uffd_without_event_remap(vma))
-+		return false;
+ 	mutex_unlock(&adev->enforce_isolation_mutex);
 +
- 	/*
- 	 * We don't have to worry about the ordering of src and dst
- 	 * ptlocks because exclusive mmap_lock prevents deadlock.
-@@ -333,6 +354,15 @@ static bool move_normal_pud(struct vm_area_struct *vma, unsigned long old_addr,
- 	if (WARN_ON_ONCE(!pud_none(*new_pud)))
- 		return false;
++	if (sched_work)
++		amdgpu_gfx_kfd_sch_ctrl(adev, idx, false);
+ }
  
-+	/* If this pud belongs to a uffd vma with remap events disabled, we need
-+	 * to ensure that the uffd-wp state is cleared from all pgtables. This
-+	 * means recursing into lower page tables in move_page_tables(), and we
-+	 * can reuse the existing code if we simply treat the entry as "not
-+	 * moved".
-+	 */
-+	if (vma_has_uffd_without_event_remap(vma))
-+		return false;
+ void amdgpu_gfx_enforce_isolation_ring_end_use(struct amdgpu_ring *ring)
+ {
+ 	struct amdgpu_device *adev = ring->adev;
+ 	u32 idx;
++	bool sched_work = false;
+ 
+ 	if (!adev->gfx.enable_cleaner_shader)
+ 		return;
+@@ -2031,9 +2036,12 @@ void amdgpu_gfx_enforce_isolation_ring_end_use(struct amdgpu_ring *ring)
+ 	mutex_lock(&adev->enforce_isolation_mutex);
+ 	if (adev->enforce_isolation[idx]) {
+ 		if (adev->kfd.init_complete)
+-			amdgpu_gfx_kfd_sch_ctrl(adev, idx, true);
++			sched_work = true;
+ 	}
+ 	mutex_unlock(&adev->enforce_isolation_mutex);
 +
- 	/*
- 	 * We don't have to worry about the ordering of src and dst
- 	 * ptlocks because exclusive mmap_lock prevents deadlock.
++	if (sched_work)
++		amdgpu_gfx_kfd_sch_ctrl(adev, idx, true);
+ }
+ 
+ /*
 
 
