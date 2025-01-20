@@ -1,158 +1,109 @@
-Return-Path: <stable+bounces-109504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73417A16A07
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 10:55:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFF5BA16AF9
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 11:44:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E9E33A3064
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 09:55:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77E2E18821BD
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 10:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A0C51AD403;
-	Mon, 20 Jan 2025 09:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B677A1B85F6;
+	Mon, 20 Jan 2025 10:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G+aQZ2CS"
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="cn9D4d0s"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B37618801A;
-	Mon, 20 Jan 2025 09:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D97314387B;
+	Mon, 20 Jan 2025 10:44:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737366934; cv=none; b=dJRlv0YrX+j7irnepia+CJ9SvEzMo5wvcantJx6B1Z0WY6ws1hVyRQmDMqKY3LQ2oAlsDNKvA8KRzjh0SN0eEypM569ZJiKbie92TmgmWRt0BvNFvkBMqiLfBYtv302ju7Ve1IInYeJrWQOIRtGPNQYuthOXcgdqUzp88hb7CWo=
+	t=1737369850; cv=none; b=uzBBCChUYQKfxSnkSo0f8oQzoha2uKzIWCXspf4+BG/NudL2sTup+VCF1kzUTR+TAyCtrzHHmY4fIPXehKThL8UYpkCYOeazCI5sdLzjfrpVNu7NeVnz7omFs1SF2loVoMf1VeT2C9COyKPLvO4s6aGHjHAMGAFWzY3xf7XG51c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737366934; c=relaxed/simple;
-	bh=Ar0s3S+/G7GZxdK7Sqlra642dLMDXszVe/6GQA5xyGI=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=tcsmdfC7OkADcagnmc6d4xSjQuOVZCxVRn9n26i3Vdcxoys3j9Le5BYTply8DvmJiZBhpX8MHNupPVGPANtRn6IIoN8wE7RzHmh/EtmBzWzRgKvtLBYJ8cTeSxTLe9V7CqH+h9mcT3bEdg9+Tgm/dwQRMmEiDlb52zY/bhZHfaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G+aQZ2CS; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737366932; x=1768902932;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Ar0s3S+/G7GZxdK7Sqlra642dLMDXszVe/6GQA5xyGI=;
-  b=G+aQZ2CSZGRQBq5bVdkx/Zr0H32PYB8FoVxxtspNqwmJg5FZAMN+MXop
-   nBDQ++dTcnZWOUIPaTRRo3CTvPP3koApq9hesa8NGGUSnaLIB95BvIheF
-   D28Sb8NH7OcZ6eCNOj9RIcysXVP7o+AEpPow0s7iDzPWU6K912ZdSnUmu
-   rlkCUz0CstMFe0EI0P17PvTiF2SG2KHsHXCE0au8Goe6ZBuIV4QpWBNv5
-   u77Ju8kYyzoz4qGQkzzdbtVpxWwvQ6RQxxkyE8yR+TBn/Tu4rY2GSbm64
-   kXLH14kfxm8C9lUhhbfck0E1klEChiPas95NhDxXuw/biMnnXiWNPpn0G
-   Q==;
-X-CSE-ConnectionGUID: X+f4iK/uQ4uE9MDb7Gbmgw==
-X-CSE-MsgGUID: EmJ0c2mGSeijvQkMCVXDaA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11320"; a="37904108"
-X-IronPort-AV: E=Sophos;i="6.13,218,1732608000"; 
-   d="scan'208";a="37904108"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2025 01:55:21 -0800
-X-CSE-ConnectionGUID: FE3aNI6aRii8xJ0YKo7J6g==
-X-CSE-MsgGUID: dKPl5HXmSiGxrHiYL77IIw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,218,1732608000"; 
-   d="scan'208";a="106468051"
-Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.124.242.149]) ([10.124.242.149])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2025 01:55:19 -0800
-Message-ID: <a58b8c10-2d7d-4b26-9e9b-fa0f1cb90d2e@linux.intel.com>
-Date: Mon, 20 Jan 2025 17:54:49 +0800
+	s=arc-20240116; t=1737369850; c=relaxed/simple;
+	bh=GxV3g3AVZ7Hjv5VGE/3z76p6K6JyCTtgXGpii5Ce31E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QrNUFZwIUXJmY8UlJ2PwL7bXKfH/r01nZmXsbmQIPPFkK87OU4vrgFzEvtUFY8dp3g/anGzFD/VDtTr1Y/m+vraWkdT/AxXQhUxHCZzIoYDpAAyOwLlZ2nGoyrZ1GSpKLbmwT46KjR0YcEJP68cVLM+AllADYdahvHUwfRmLEsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=cn9D4d0s; arc=none smtp.client-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
+From: Denis Arefev <arefev@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+	t=1737369838;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DLQ6qsNzGZFppIPo7gttmGGIzVGvIyXbtulBIFZZLno=;
+	b=cn9D4d0s0CRBeGp00S5Mm/qLFQDsax3ac1mXJEGQYpHuL0r1FrspxekTqeHzSwlDwJ59se
+	XEfsJBUuHtlDbDOwx+0+81uAikVQgbIa506TxsOh4q4za3rorR3p3uIZIrv1y9O3u47Cjf
+	Fb+NFGg/oOfQEA1sRfBY+IylUlNiMQE=
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Willem de Bruijn <willemb@google.com>,
+	Eric Dumazet <edumazet@google.com>
+Subject: [PATCH 5.10] fou: remove warn in gue_gro_receive on unsupported protocol
+Date: Mon, 20 Jan 2025 13:43:57 +0300
+Message-ID: <20250120104358.21574-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, "iommu@lists.linux.dev"
- <iommu@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH 1/1] iommu/vt-d: Make intel_iommu_drain_pasid_prq() cover
- faults for RID
-To: "Tian, Kevin" <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- "Liu, Yi L" <yi.l.liu@intel.com>
-References: <20250120080144.810455-1-baolu.lu@linux.intel.com>
- <BN9PR11MB5276B3F78599A00476AA2CDC8CE72@BN9PR11MB5276.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <BN9PR11MB5276B3F78599A00476AA2CDC8CE72@BN9PR11MB5276.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 2025/1/20 17:26, Tian, Kevin wrote:
->> From: Lu Baolu <baolu.lu@linux.intel.com>
->> Sent: Monday, January 20, 2025 4:02 PM
->>
->> This driver supports page faults on PCI RID since commit <9f831c16c69e>
->> ("iommu/vt-d: Remove the pasid present check in prq_event_thread") by
->> allowing the reporting of page faults with the pasid_present field cleared
->> to the upper layer for further handling. The fundamental assumption here
->> is that the detach or replace operations act as a fence for page faults.
->> This implies that all pending page faults associated with a specific RID
->> or PASID are flushed when a domain is detached or replaced from a device
->> RID or PASID.
->>
->> However, the intel_iommu_drain_pasid_prq() helper does not correctly
->> handle faults for RID. This leads to faults potentially remaining pending
->> in the iommu hardware queue even after the domain is detached, thereby
->> violating the aforementioned assumption.
->>
->> Fix this issue by extending intel_iommu_drain_pasid_prq() to cover faults
->> for RID.
->>
->> Fixes: 9f831c16c69e ("iommu/vt-d: Remove the pasid present check in
->> prq_event_thread")
->> Cc: stable@vger.kernel.org
->> Suggested-by: Kevin Tian <kevin.tian@intel.com>
->> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
->> ---
->>   drivers/iommu/intel/prq.c | 3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/iommu/intel/prq.c b/drivers/iommu/intel/prq.c
->> index c2d792db52c3..043f02d7b460 100644
->> --- a/drivers/iommu/intel/prq.c
->> +++ b/drivers/iommu/intel/prq.c
->> @@ -87,7 +87,8 @@ void intel_iommu_drain_pasid_prq(struct device *dev,
->> u32 pasid)
->>   		struct page_req_dsc *req;
->>
->>   		req = &iommu->prq[head / sizeof(*req)];
->> -		if (!req->pasid_present || req->pasid != pasid) {
->> +		if (req->rid != sid ||
->> +		    (req->pasid_present && req->pasid != pasid)) {
->>   			head = (head + sizeof(*req)) & PRQ_RING_MASK;
->>   			continue;
->>   		}
-> 
-> Ah you'd also want to skip (!req->pasid_present &&
-> pasid != IOMMU_NO_PASID)
-> 
+From: Willem de Bruijn <willemb@google.com>
 
-Yes. Will make it like this,
+commit dd89a81d850fa9a65f67b4527c0e420d15bf836c upstream.
 
-diff --git a/drivers/iommu/intel/prq.c b/drivers/iommu/intel/prq.c
-index c2d792db52c3..064194399b38 100644
---- a/drivers/iommu/intel/prq.c
-+++ b/drivers/iommu/intel/prq.c
-@@ -87,7 +87,9 @@ void intel_iommu_drain_pasid_prq(struct device *dev, 
-u32 pasid)
-                 struct page_req_dsc *req;
+Drop the WARN_ON_ONCE inn gue_gro_receive if the encapsulated type is
+not known or does not have a GRO handler.
 
-                 req = &iommu->prq[head / sizeof(*req)];
--               if (!req->pasid_present || req->pasid != pasid) {
-+               if (req->rid != sid ||
-+                   (req->pasid_present && pasid != req->pasid) ||
-+                   (!req->pasid_present && pasid != IOMMU_NO_PASID)) {
-                         head = (head + sizeof(*req)) & PRQ_RING_MASK;
-                         continue;
-                 }
+Such a packet is easily constructed. Syzbot generates them and sets
+off this warning.
 
-Thanks,
-baolu
+Remove the warning as it is expected and not actionable.
+
+The warning was previously reduced from WARN_ON to WARN_ON_ONCE in
+commit 270136613bf7 ("fou: Do WARN_ON_ONCE in gue_gro_receive for bad
+proto callbacks").
+
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240614122552.1649044-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+---
+Backport fix for CVE-2024-44940
+Link: https://www.cve.org/CVERecord/?id=CVE-2024-44940
+---
+ net/ipv4/fou.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/ipv4/fou.c b/net/ipv4/fou.c
+index 1d67df4d8ed6..b1a8e4eec3f6 100644
+--- a/net/ipv4/fou.c
++++ b/net/ipv4/fou.c
+@@ -453,7 +453,7 @@ static struct sk_buff *gue_gro_receive(struct sock *sk,
+ 
+ 	offloads = NAPI_GRO_CB(skb)->is_ipv6 ? inet6_offloads : inet_offloads;
+ 	ops = rcu_dereference(offloads[proto]);
+-	if (WARN_ON_ONCE(!ops || !ops->callbacks.gro_receive))
++	if (!ops || !ops->callbacks.gro_receive)
+ 		goto out;
+ 
+ 	pp = call_gro_receive(ops->callbacks.gro_receive, head, skb);
+-- 
+2.43.0
+
 
