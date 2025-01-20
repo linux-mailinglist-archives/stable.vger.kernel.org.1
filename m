@@ -1,189 +1,208 @@
-Return-Path: <stable+bounces-109564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC413A16FED
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 17:15:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BE5BA17035
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 17:33:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D091D3A8A4E
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 16:14:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D1AB169001
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 16:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65B751E98E6;
-	Mon, 20 Jan 2025 16:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D5B1E9B07;
+	Mon, 20 Jan 2025 16:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="1sz1fhfB"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="XAZI2Gme"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2066.outbound.protection.outlook.com [40.107.100.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B3654765
-	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 16:14:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737389701; cv=fail; b=tnj7iAABYtzMJ04CjjvHgjA/6fujKHPtc9qu7bsVKFQfvHKIK3YbVXpemm4SDzRLK79qnFgla8CTOJNh962MwfW0vlMPn+cgk9M9AFgOFA8ujs39LGkupW6Ese6Qo8X5KX2sApIRquKk1vH6ImpgHx77KfDOJZPAXncNUk8sZU0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737389701; c=relaxed/simple;
-	bh=YGTOiyuoOG3dEKPEt7AJJUT5eG2tRg/pMJeZjKyiCBA=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=WlEn0N7v+IJiIhAgYQaixcVxUdds8ft4fwvtv/BXlGVqBPvl2/OChYtvsptoJiGNzghx17VdMlFPx9E9JV9tojsb09Vmc4cjH9h7Tj7gHfPBQGHQ/MGOEH30jzKrW078/dnZMZJRcputbjYETJXXRzn5JpmG+jnzU1Xnq87cPas=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=1sz1fhfB; arc=fail smtp.client-ip=40.107.100.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ESH8RoMa7J4UA7agFp7Y6DiJiuADz2U2cD1qsvpS/7YQjscDwfYZNiX6tup+cNT1NcpsfHHv7oIKzUyBwmozUXbQNBN25j900U1tfnSiEgIAAPE4CNv/Pr3HuucDUxrfm5fAAn4xCqD69c4tzRqNx2TP78Vi/mX0PfO1DGPHMtfaQyAq9H6SztJejlkFxGdWR0/gtG+KAoxhafXnavjjCUGPHdxfJfzeSRY0NONA6ZD18UMqthmXQzohs9epZBJziPfhj3r7Pznp8E9pY8WNAcNirKF9bpLE2zmPxJsjnwxdYJl1PUjeKSqHHbbJF4DkWjZrkh8T4hsFbL1MyKnpWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=05hOvvDcKUBBllZcot3U8LhLf8NjHH671GExhXNCKEg=;
- b=ufF7Re4EzT+2uq3knp8qXUhcrd6rMumRtUCI+haf/mAjPcNRRv8ZFyxL5bIt36uHcziFKzj5FpSRa76Fxvmt1vOOFWr+SC1Q84cNgTQGu5KxQzHu+JclO5kV7p4x8DX+qV+ZHa8Y7YnTuH54UibVEMS5JZdNQPNi/bBi3iAzo3z9eoHo5cyl9DjWbABM66ZiSH2OWibJ/T+irPCspG5Igk2MZjLpCLxNsOdLmnfLC4GuchT0Y115cfv3v5BE6WDtcPuuTsVmz0YwhMkWPvOY+DXTZJmB8k9rZc1CRMZsNegktrNRN8Zs+m7oi+UX6pWXn/dqa5xNfqUsBneZUMDTBw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=05hOvvDcKUBBllZcot3U8LhLf8NjHH671GExhXNCKEg=;
- b=1sz1fhfBSTn0rFBzZq93UuY1sbteB8KtzMSF8REFP/Ese9JBqA5vgaSXHDrdu6G6GfaazzlTWwoPNAu7tFL/oEdT1fcZgRiIRqi29m7IawgqqlBd0x9QTHfom1Tk6ImBNt/ZBLb9FqOGpj0nVi+ys5GyVQZoct+kAEfTKgQ18yI=
-Received: from BL1PR12MB5144.namprd12.prod.outlook.com (2603:10b6:208:316::6)
- by SJ2PR12MB8955.namprd12.prod.outlook.com (2603:10b6:a03:542::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.20; Mon, 20 Jan
- 2025 16:14:56 +0000
-Received: from BL1PR12MB5144.namprd12.prod.outlook.com
- ([fe80::491a:cce3:e531:3c42]) by BL1PR12MB5144.namprd12.prod.outlook.com
- ([fe80::491a:cce3:e531:3c42%3]) with mapi id 15.20.8356.020; Mon, 20 Jan 2025
- 16:14:56 +0000
-From: "Deucher, Alexander" <Alexander.Deucher@amd.com>
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, Sasha Levin
-	<sashal@kernel.org>
-Subject: Reverts for 6.6, 6.1, 5.15
-Thread-Topic: Reverts for 6.6, 6.1, 5.15
-Thread-Index: AdtrU/ut/zy5rmCfRsiyFWsKDtl2VQ==
-Date: Mon, 20 Jan 2025 16:14:56 +0000
-Message-ID:
- <BL1PR12MB5144D5363FCE6F2FD3502534F7E72@BL1PR12MB5144.namprd12.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ActionId=96dbbc58-4315-4912-827f-149ee7ab1641;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ContentBits=0;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Enabled=true;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Method=Privileged;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Name=Open
- Source;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SetDate=2025-01-20T15:56:58Z;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL1PR12MB5144:EE_|SJ2PR12MB8955:EE_
-x-ms-office365-filtering-correlation-id: e8cfb9c3-9f80-4828-cd15-08dd396d94e4
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?UhgiPkpNxYJKmKQMnQgqOv+Vpl7GEfhfSDrkqNAvb5aOAZwOlh/qA1upazaF?=
- =?us-ascii?Q?VGXJ9iKTY+PwzJJ0O5nBPnbSdvPlkpJdYD19m5RexRzNLw4yUtfbyjrfchwN?=
- =?us-ascii?Q?gC6FlzH/NIW7U1hXHxJBPtxBHXGVlkdMg1L64QO9rmpFPa3pGPzkVxqr+Tbn?=
- =?us-ascii?Q?5bf7ZFdyeNaBB0pxY3XdelJWSFK7u6PvcslMtDjA8PQVB0oPlv6DSptPSGZj?=
- =?us-ascii?Q?GpAQBZbxtCLD/QqQ0L4g+ZLELy59sfaqLBiwS6Vkhyue1VX33d5qxbNN98A5?=
- =?us-ascii?Q?eNhcdm17tnOIHUMYPNIMqwHWKF8rxSjH8S0tpuaJLcPjE4X9RZx+ZW3lh49g?=
- =?us-ascii?Q?x4v2Qk2zV706KUaAbt+mAdiy2zkctsxp8MDhOBwING+I9iKOlonUh9mKL/qX?=
- =?us-ascii?Q?xUp/GC6jF+CjK4X6y6MuvtB0E7yMmu95NQ1g7cauBlLOOdlX9GL8pFMTgV+u?=
- =?us-ascii?Q?JmAk3w94B5wNjBfywogAYPBYBAOpN/1EGPzAz9UzkitjW6VkmMCmkmPY33UE?=
- =?us-ascii?Q?VPeW8U4v+duxVNLEAdWYhhhuCk142g8JwKBEhHY2ErNhVMVScgs+fMukH+OF?=
- =?us-ascii?Q?rDfyoQHF3OlBCNt6GdR0s42hYbgAvtoygnxL1MSRYEIXIlamMTtSUD69AvLc?=
- =?us-ascii?Q?ZqjFCI/QbcQ87BscNEK0KzHmpPqwEPqEz8ZUNdA6+TrdfuVEuvUYgWdiV0IY?=
- =?us-ascii?Q?kqMSGIT3N7QUK+aKQDsdHu5+zdPMWS7AvBh9gSe0E8hNSYoAFrEAGkAOyx0P?=
- =?us-ascii?Q?HxfoxgOFMVk8EfkGpZuYrtn/XMVWREuOHw6uetkKQDJPJ7oc071YBn7YHe/p?=
- =?us-ascii?Q?yY3pZp6vZvcMFD8iw3YhJjEkZDG1HAX9KM2spLFiQMzXmCtdae+s4rG5gZLK?=
- =?us-ascii?Q?MsDmH0zchO1n6Pr+MbiKXKAO/ARBxcgpl50JB5IrBbZqoDu6FNveqFcUpAhX?=
- =?us-ascii?Q?SWDGguL92wf69Gixg5Xyq3zKVt/hnCTs2vGRpzH+2cHMwqcvXnr6GZExnrz+?=
- =?us-ascii?Q?Z+4ZNvnyiEWR70m33+N006wjYEn/7+ue0gAeleOrBTGfQejNyGMD+7Cy0xNq?=
- =?us-ascii?Q?UgLzajIsXDmYsRxUfdatC5tWMsQIqx8qMXdE3TwgtuAhTUH7YPSBwtxmGEWO?=
- =?us-ascii?Q?xoUHeMnHT6xZ5GFmLCJD/iuMCGHndPu7SKA31GzL5t0wL2lU8EfugHfCdYPR?=
- =?us-ascii?Q?YbbHe5Htc5ejwkQuQjCwECilapd45DFzd1FOQeHWP8TM9sEataxrtykNCdMx?=
- =?us-ascii?Q?SbuFrtQkigj+U3ra2WrCxA2Y3HnvggEcmDedUQ2exK3Vo0x2Mi0/63qG9+p9?=
- =?us-ascii?Q?hOPQZZTw8jZjdU6jMMoYy4ehvxpgoXS2+xTRDNRlnnVAEAvgMgv+DyDMZU3A?=
- =?us-ascii?Q?GnzH4JS/CnZw7/KWuLHuWeammEZdD6ahsKiiQnkKEffM98iTFE125p+S5b02?=
- =?us-ascii?Q?iE2h1ZIkGt24x4SjlmAj+B6X5F+1M6xO?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5144.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?Vj+r2bPHjIuz1ir4bwNVoAj/MEyh69qlDMeglkn9q+1Gpqhx/PuGiTWVY/sv?=
- =?us-ascii?Q?eu00q2r3zMaokzIcAM1N5hpDii3N4YFzelqgL6bS6PW9s5adHtXW6IDUAmOc?=
- =?us-ascii?Q?u/sVXeL2mKQJ2ZIFr8R3GVoVRwk5EAFBld0weCdHcYsg3nrWVoAcbPlECOCY?=
- =?us-ascii?Q?BU/HRLVzhCEHaawJzahE28SUoMCrnIGEx6umDqLmecN8zLE6AHwY7McHZ2vD?=
- =?us-ascii?Q?oLXjOYbqpd6duG4eOtd/IVv+Xi2e5kx+XBCutEMrTDx/DSeAToK7GMvI3cYZ?=
- =?us-ascii?Q?UacLzVdYF8PkRkDQlKvLgi4khkVfliE19crm7R0lVZod5O9607X8hlRhiEVD?=
- =?us-ascii?Q?LfHApQrQvJw6m0CZ5CbAxPQE7pnuwXPGb5EQAjv/GOk5XrLIQPOMC/Izq3OO?=
- =?us-ascii?Q?d+1eoa9dNmJSQ6UrXI12cpr7UJZc3PkuK2HKeKgHldKt878+tCXPpcnZ6py9?=
- =?us-ascii?Q?n3seeHUTptH1eIXoo3XhRuhymb/9Hm/H9aCFP3rxVN8ou5tYIJKqZTBRlSBU?=
- =?us-ascii?Q?/tk7J9x0VLq23lbd/YuelhfsM6S0agPp7SBOR3zse1Lgsmt/ZQdEnNHtNls7?=
- =?us-ascii?Q?eEpIKM741hPbFkShjAV8MkzN0hUqcI86AApREXw8efm6XuGeMrX4JpdNu4Rs?=
- =?us-ascii?Q?TDHUuie82Z8nSf/Rgyu1152K8IgmQDjOU+zpnJKKps7jLMClEkLWDanmTYhJ?=
- =?us-ascii?Q?wQL0NRpSf3M/w/nnOILDaPI7T13jDDLmhC15KRw2Tw2ZXOXaGw48EKUUsRXk?=
- =?us-ascii?Q?ahD1ApxAda84D3Gnp192G7vDe8GztMQEjNoidX3Qgslq+cyHyUQgXO04TE4L?=
- =?us-ascii?Q?+RiV1rBkFAN8NTXkg4MLJD3AUHgMw0qgFJKQ3QhfglRqrHHyYjwjfoj5/hY9?=
- =?us-ascii?Q?xPYV1LPYL3RdOJ34+49hpRh2CrqdB6WjUk+q43pblYKvVd1F9VV9Re7quvMs?=
- =?us-ascii?Q?QEYncA6czqFcOaJSbF+fnthJgIiAvV+z8JftLgjHjqUoRxvVqoAC1DHDxc7/?=
- =?us-ascii?Q?IWw0cinZtcShCO29jVyILsFAnIrhZHX+HvXTqd2WCsg4QktFkpCCMix2fwBn?=
- =?us-ascii?Q?i2lESqalvAOeBP3AwDNp6WH76OyZndD8ILXYR1wK4cO2CpHsOCH7q+54rwG4?=
- =?us-ascii?Q?og1V35IRoWBY+s7Bwga6IgUQbgfFUFXRT5G45rgr3pcJ4U9VqIWBnVfcYrI4?=
- =?us-ascii?Q?xk/lETRNt7KiHqcwYKQI2P/ci4UY6RsNE5PmtmI6d0s04sy6PpJb05eoPqYm?=
- =?us-ascii?Q?kTefqQ7bjWafSB4TmesFKi0n046OMGP/r0CGCP2NaMiApnOv3+ekdF8jFA43?=
- =?us-ascii?Q?pnqpm1YyywnwBeQn8WleoOO5RT2xTp6CIKcBPNLRpQOugk6+xyQjkpZl97i2?=
- =?us-ascii?Q?nIOzKdecFT9ljlRAh7Pc1OhOUefDWqYql00pQZP0HA7bIJFB541eo7y75OT+?=
- =?us-ascii?Q?VA17lLgrDuK6S/7V3p24Gzxk3ttgp74WK6iYTtoO+NMGdSgslTArBo/KzHCb?=
- =?us-ascii?Q?v11Gn9pUTedCinnzxMePrVP0lPhtS2uwzh+oPibNGJS9SBMppcZlMTvJ8Nvr?=
- =?us-ascii?Q?vuV5Tkgzy/PCZk8bmTU=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80ED536124
+	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 16:33:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737390793; cv=none; b=VhT4sHreQLTEruAdXppSFmRxzt/YaNVx08gTV+CjCWWKFRIdYhPLFHsyqYcbHn9kAWw50pHD5w3e6YQUuri99sAdA1Umf1TOSAx93I8/X615cfhRwy10JW43fuPeojn1Crwjr0rRgn+IwwwCmdGg4GU52jx5CItD1RDxWeqCcjs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737390793; c=relaxed/simple;
+	bh=FiUWQlpYfrA8YD6qvNL+vrYo5ZVa5Q5qHvNjyjkjU9M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c6yiulYxwEg3v0djTjBLvhxJJlN5KD3aFhnRbu+245Rjm76LAFAhBE+RlX7zxPhegrmbuJ1Uc6wZAA7Z5eYnKPlCAxYcorx2nGpqNnovdwS5bI1/49rXWz5aJ2+c3o9PUpNgMGLXoDh0RkDC7cCORXIlTRUOOo4v2QKryIfLt1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=XAZI2Gme; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2165448243fso101472035ad.1
+        for <stable@vger.kernel.org>; Mon, 20 Jan 2025 08:33:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1737390791; x=1737995591; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=C9UtmECkUOGKbPSUc5188JHwLBFmNC0aGmF3i6qmQOo=;
+        b=XAZI2Gme8/SYlDvIMRwUN/5kLrWgZANIb2+n2RrOZVEMF8pFTG0Wi6aiTmVw8c5Vei
+         dT84Ht13Nf0C1WSrh+nHQOYS66zzUu2lDL/AhPAi57pIr9B2JdG/u3hHpgMVRzfkpX6R
+         k9xzEl/SLCXLx6pUBFzJCCrcZlgz65GDtpDyQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737390791; x=1737995591;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=C9UtmECkUOGKbPSUc5188JHwLBFmNC0aGmF3i6qmQOo=;
+        b=hGT6L1QhEQM2KdyI3rMl5ysvV90YS0yiRDU8EZjBdldeamfe2gW5FCyHShe/F8hj7t
+         sWp3Rpa/qTpEZnfYva7SuuWvwN1c1Ytygcrj+kb2syQ+Dx/QjLR4e4SWRmSvbGHOO8w/
+         f/wbiCtalWR+/u/WiHV0RgwvoaA7wI++uRyoDKgQHVzdvNB7EcCHZTho0ViO2w4Rh7BQ
+         jsr8fwwQkgcUglBjNPp9ENWdXz/jIgroPFl/tcHbOpcIofQ1jxqF5jl0wgUkOPu5b1j7
+         MFGGIsgk6f5L1TQg13lkMCR4rOlrSnh7hCskK03MB9DtPFLwcZ0lL/g+xK7u6O+RMJD+
+         9LNg==
+X-Gm-Message-State: AOJu0YzvNMUiINrKaQPz55lbpQZ1UWHFz8y/Kx1XkS/oOocnrG7brSXz
+	rAjJxugvQ4YuL/2no+gEybyWgitmAYzdWrfDP7It/wmtUMJOZteS4C3c2uX8RQ==
+X-Gm-Gg: ASbGnctWwxoWqma1aRDtky0Q5KI79xfAepUdDtfEqI1tBTNScmVezGDH7PTm8vjSVOy
+	8nt5u3q4ocq9cuVOwg1nWpcFMijGqgkoGEcBX0PkyXK/wotLkEDqDDfMZUoth14XCqkE79w9vqd
+	voK8PLLGB1UYhCbsKF6xqzMn3nVWIlDCnxFR/C7wAO4f674+I+eogMwYpzXaEtE/e8T8xcUT5kK
+	k+ceE+VEpq3msnjoKrCJjfHQ+sGxLK/Dw15UimIr0/wNeL0YyqfzUqvXlrMj+HutoPtxMO3wQcb
+	JnAX4AeO40JoGcs5tgmm3zHSu0Ni7ZQ/AJyAfeRXQbGa
+X-Google-Smtp-Source: AGHT+IFMpRo8h8RDCjagWiVwQZq/mBuVjymV9n8680cV1bdSUPqob1X9eEp6TCLVDGnqJlSrty23Sw==
+X-Received: by 2002:a17:903:2449:b0:21c:1140:136d with SMTP id d9443c01a7336-21c355fb6bbmr230924425ad.40.1737390790581;
+        Mon, 20 Jan 2025 08:33:10 -0800 (PST)
+Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21c2d3acf2csm62483555ad.121.2025.01.20.08.33.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Jan 2025 08:33:09 -0800 (PST)
+Message-ID: <41550c7f-1313-41b4-aa2e-cb4809ad68c2@broadcom.com>
+Date: Mon, 20 Jan 2025 08:33:12 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5144.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e8cfb9c3-9f80-4828-cd15-08dd396d94e4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jan 2025 16:14:56.8124
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Y/4lHNh6YXPxgzwZXFJfmNgDrlyGrdfqe6/4iCO3J+uzvBVPkL0QjBfnLMiDOcX7s1dUJNIaa+h/LwA23yRxxA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8955
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: mm: account for hotplug memory when randomizing
+ the linear region
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, Will Deacon
+ <will@kernel.org>, Steven Price <steven.price@arm.com>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Baruch Siach <baruch@tkos.co.il>,
+ Petr Tesarik <ptesarik@suse.com>, Mark Rutland <mark.rutland@arm.com>,
+ Joey Gouly <joey.gouly@arm.com>, "Mike Rapoport (IBM)" <rppt@kernel.org>,
+ Yang Shi <yang@os.amperecomputing.com>,
+ "moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>
+References: <20250109165419.1623683-1-florian.fainelli@broadcom.com>
+ <20250109165419.1623683-2-florian.fainelli@broadcom.com>
+ <62786457-d4a1-4861-8bec-7e478626f4db@broadcom.com>
+ <2025011247-enable-freezing-ffa2@gregkh>
+ <27bbea11-61fa-4f41-8b39-8508f2d2e385@broadcom.com>
+ <2025012002-tactics-murky-aaab@gregkh>
+Content-Language: en-US
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <2025012002-tactics-murky-aaab@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-[Public]
-
-Hi Greg, Sasha,
-
-The original patch 73dae652dcac (drm/amdgpu: rework resume handling for dis=
-play (v2)), was only targeted at kernels 6.11 and newer.  It did not apply =
-cleanly to 6.12 so I backported it and it backport landed as 99a02eab8251 (=
-"drm/amdgpu: rework resume handling for display (v2)"), however there was a=
- bug in the backport that was subsequently fixed in 063d380ca28e ("drm/amdg=
-pu: fix backport of commit 73dae652dcac").  None of this was intended for k=
-ernels older than 6.11, however the original backport eventually landed in =
-6.6, 6.1, and 5.15.  Please revert the change from kernels 6.6, 6.1, and 5.=
-15.
-
-6.6.y:
-Please revert 2daba7d857e4 ("drm/amdgpu: rework resume handling for display=
- (v2)").
-
-6.1.y:
-Please revert c807ab3a861f ("drm/amdgpu: rework resume handling for display=
- (v2)").
-
-5.15.y:
-Please revert d897650c5897 ("drm/amdgpu: rework resume handling for display=
- (v2)").
 
 
-Thanks,
+On 1/20/2025 5:59 AM, Greg KH wrote:
+> On Mon, Jan 13, 2025 at 07:44:50AM -0800, Florian Fainelli wrote:
+>>
+>>
+>> On 1/12/2025 3:54 AM, Greg KH wrote:
+>>> On Thu, Jan 09, 2025 at 09:01:13AM -0800, Florian Fainelli wrote:
+>>>> On 1/9/25 08:54, Florian Fainelli wrote:
+>>>>> From: Ard Biesheuvel <ardb@kernel.org>
+>>>>>
+>>>>> commit 97d6786e0669daa5c2f2d07a057f574e849dfd3e upstream
+>>>>>
+>>>>> As a hardening measure, we currently randomize the placement of
+>>>>> physical memory inside the linear region when KASLR is in effect.
+>>>>> Since the random offset at which to place the available physical
+>>>>> memory inside the linear region is chosen early at boot, it is
+>>>>> based on the memblock description of memory, which does not cover
+>>>>> hotplug memory. The consequence of this is that the randomization
+>>>>> offset may be chosen such that any hotplugged memory located above
+>>>>> memblock_end_of_DRAM() that appears later is pushed off the end of
+>>>>> the linear region, where it cannot be accessed.
+>>>>>
+>>>>> So let's limit this randomization of the linear region to ensure
+>>>>> that this can no longer happen, by using the CPU's addressable PA
+>>>>> range instead. As it is guaranteed that no hotpluggable memory will
+>>>>> appear that falls outside of that range, we can safely put this PA
+>>>>> range sized window anywhere in the linear region.
+>>>>>
+>>>>> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+>>>>> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+>>>>> Cc: Will Deacon <will@kernel.org>
+>>>>> Cc: Steven Price <steven.price@arm.com>
+>>>>> Cc: Robin Murphy <robin.murphy@arm.com>
+>>>>> Link: https://lore.kernel.org/r/20201014081857.3288-1-ardb@kernel.org
+>>>>> Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+>>>>> Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+>>>>
+>>>> Forgot to update the patch subject, but this one is for 5.10.
+>>>
+>>> You also forgot to tell us _why_ this is needed :(
+>>
+>> This is explained in the second part of the first paragraph:
+>>
+>> The consequence of this is that the randomization offset may be chosen such
+>> that any hotplugged memory located above memblock_end_of_DRAM() that appears
+>> later is pushed off the end of the linear region, where it cannot be
+>> accessed.
+>>
+>> We use both memory hotplug and KASLR on our systems and that's how we
+>> eventually found out about the bug.
+> 
+> And you still have 5.10.y ARM64 systems that need this?  Why not move to
+> a newer kernel version already?
 
-Alex
+We still have ARM64 systems running 5.4 that need this, and the same bug 
+applies to 5.10 that we used to support but dropped in favor of 
+5.15/6.1. Those are the kernel versions used by Android, and Android TV 
+in particular, so it's kind of the way it goes for us.
+
+> 
+> Anyway, I need an ack from the ARM64 maintainers that this is ok to
+> apply here before I can take it.
+
+Just out of curiosity, the change is pretty innocuous and simple to 
+review, why the extra scrutiny needed here?
+-- 
+Florian
 
 
