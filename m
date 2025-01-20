@@ -1,139 +1,114 @@
-Return-Path: <stable+bounces-109556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F1FAA16F0B
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 16:11:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2FEA16F0D
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 16:12:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7023C1696C3
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 15:11:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A52CD1887F5E
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 15:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 139611E570A;
-	Mon, 20 Jan 2025 15:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47A01E5705;
+	Mon, 20 Jan 2025 15:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bjIGIDca"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dfv/XI87"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7211B4F02;
-	Mon, 20 Jan 2025 15:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7278C1B4F02
+	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 15:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737385856; cv=none; b=eyWBcwk9kjcgyhN2fhw/68nUGqcS6W625/BX395RnrUOeHNMfIPhVdlKmR83uIqADmI8/fwPaEJFoRptWlIzs/5Tp8/G/ZRRlXxkOqMpVgxzzLfhTCv3EIzKlJxWHJKqhv1w2ux1l8w31nhqBixdPcwpmhlCFNUhW2Hx1alY3Bg=
+	t=1737385964; cv=none; b=bmfzAu3VRLvq/X996TpYGNYArmtExJiAK9ZtJzJZjkBnsk2c2DpwSPH3lN+cKUipdEbJtUPCv/OPNVfV32SG0z4Ih5f7Aym+kSj1odA1U0/mLVie9tB5jKK5T5hJ3uVOOEceewi/KEblHzeMwW+akpk6TEchWtWS+XdIH4xWlgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737385856; c=relaxed/simple;
-	bh=6ZwK+wzhierXb8EDYkagmDzg4l+1lODP+tkjuW0DeeI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rHsbAarMgiPwOtpt3DpKgx3WNSVcE2jFW4s7ri3jIWFYMm+l8ttdlMSM8kiSlQf0KinfNjkB1l6R57Kf3DPv1OxJzxEYBR3e0jlP0mCyS49mP96iLwiYJJpRhaGalcK93H+546QVdSf1dyoHuOaLaBqB3mrAmoXt9jSs7DY8JKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bjIGIDca; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D679C4CEDD;
-	Mon, 20 Jan 2025 15:10:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737385856;
-	bh=6ZwK+wzhierXb8EDYkagmDzg4l+1lODP+tkjuW0DeeI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=bjIGIDcae9LEftF+M+GKAp5TOuPD5ZClv99hjZx3x/kKz+fMupdcqyEfw9BxLLv2N
-	 ds4RHGDR8pvcdaX5/W7K50SjNBLSk6pOKepEAWBS7+cdlqUXouPONQNX5QiFyUWWyj
-	 XnIvWOqBUU138mXoB/V9+kLNsd+IM7dEPCZvQ+h8F8vMes/RNgoSTKfcyn0NUnGCUq
-	 Ze2B/JtqqBs0Ns0FOHGV3vbli0ljo7oW1pxaTOvElVaaCzZbJsOs5a1emxlCv4F/T0
-	 cUCQSUrDPvLAJJ5oPbCHoQRCGY3gL+FmTljk6DxWnpoLd/GFVapZBJcazzAEiiJagm
-	 tOh9skRMw2rpQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1tZtQZ-000000003co-2IDx;
-	Mon, 20 Jan 2025 16:11:00 +0100
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Maximilian Luz <luzmaximilian@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Cc: Konrad Dybcio <konradybcio@kernel.org>,
-	Elliot Berman <quic_eberman@quicinc.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] firmware: qcom: uefisecapp: fix efivars registration race
-Date: Mon, 20 Jan 2025 16:10:00 +0100
-Message-ID: <20250120151000.13870-1-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1737385964; c=relaxed/simple;
+	bh=QlhSkcAl1M7PmNCAnKIs8xjgzuLF4J/vugDv2A5x/do=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FXYXLknke+OBLtoXgwYiHxRg+KS4tHJObkiKJB2gimYqHkCXwqdQECCEdpQhJVQwSxRx7qOrXYzpyHFb1yj3vzyTxB7DBKabqrAotxJkxcDcEhVJrzEhrVLAt5ODk/gqec+MplqHIsCFRsfjNiFvSyvFhLBnPVN3FSXzWRv9FUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dfv/XI87; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80966C4CEDD;
+	Mon, 20 Jan 2025 15:12:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1737385963;
+	bh=QlhSkcAl1M7PmNCAnKIs8xjgzuLF4J/vugDv2A5x/do=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Dfv/XI87B/t8H6VMAUxA2lcWGbxkWA1NxAHTwg1ROzXnDyk4IKfNfuchYRwwLLFUJ
+	 biFawu/X0j7Ja19fnRGHrDzpGM52crYHRp9oaTWcNt8dfKVaYYw6v92QEqj5Gg/y72
+	 /+KUaHCBMfdfZMTQB8vIOonSEHcn1iC/g2tHWkZ4=
+Date: Mon, 20 Jan 2025 16:12:41 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: inv.git-commit@tdk.com
+Cc: stable@vger.kernel.org,
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 5.15.y] iio: imu: inv_icm42600: fix spi burst write not
+ supported
+Message-ID: <2025012012-drearily-bonding-0904@gregkh>
+References: <2025011348-amaretto-wasabi-3e96@gregkh>
+ <20250113131918.128606-1-inv.git-commit@tdk.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250113131918.128606-1-inv.git-commit@tdk.com>
 
-Since the conversion to using the TZ allocator, the efivars service is
-registered before the memory pool has been allocated, something which
-can lead to a NULL-pointer dereference in case of a racing EFI variable
-access.
+On Mon, Jan 13, 2025 at 01:19:18PM +0000, inv.git-commit@tdk.com wrote:
+> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> 
+> Burst write with SPI is not working for all icm42600 chips. It was
+> only used for setting user offsets with regmap_bulk_write.
+> 
+> Add specific SPI regmap config for using only single write with SPI.
+> 
+> Fixes: 9f9ff91b775b ("iio: imu: inv_icm42600: add SPI driver for inv_icm42600 driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> Link: https://patch.msgid.link/20241112-inv-icm42600-fix-spi-burst-write-not-supported-v2-1-97690dc03607@tdk.com
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> (cherry picked from commit c0f866de4ce447bca3191b9cefac60c4b36a7922)
+> ---
+>  drivers/iio/imu/inv_icm42600/inv_icm42600.h      |  1 +
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_core.c | 12 ++++++++++++
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c  |  3 ++-
+>  3 files changed, 15 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
+> index 995a9dc06521..f5df2e13b063 100644
+> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
+> @@ -360,6 +360,7 @@ struct inv_icm42600_state {
+>  typedef int (*inv_icm42600_bus_setup)(struct inv_icm42600_state *);
+>  
+>  extern const struct regmap_config inv_icm42600_regmap_config;
+> +extern const struct regmap_config inv_icm42600_spi_regmap_config;
+>  extern const struct dev_pm_ops inv_icm42600_pm_ops;
+>  
+>  const struct iio_mount_matrix *
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+> index ca85fccc9839..a562d7476955 100644
+> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+> @@ -43,6 +43,18 @@ const struct regmap_config inv_icm42600_regmap_config = {
+>  };
+>  EXPORT_SYMBOL_GPL(inv_icm42600_regmap_config);
+>  
+> +/* define specific regmap for SPI not supporting burst write */
+> +const struct regmap_config inv_icm42600_spi_regmap_config = {
+> +	.name = "inv_icm42600",
 
-Make sure that all resources have been set up before registering the
-efivars.
+Why does just this one have the .name field set?
 
-Fixes: 6612103ec35a ("firmware: qcom: qseecom: convert to using the TZ allocator")
-Cc: stable@vger.kernel.org	# 6.11
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
+I've taken the backports you did for the other branches here, if you
+really need .name set please let me know.
 
-Note that commit 40289e35ca52 ("firmware: qcom: scm: enable the TZ mem
-allocator") looks equally broken as it allocates the tzmem pool only
-after qcom_scm_is_available() returns true and other driver can start
-making SCM calls.
+thanks,
 
-That one appears to be a bit harder to fix as qcom_tzmem_enable()
-currently depends on SCM being available, but someone should definitely
-look into untangling that mess.
-
-Johan
-
-
-
-
- .../firmware/qcom/qcom_qseecom_uefisecapp.c    | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/firmware/qcom/qcom_qseecom_uefisecapp.c b/drivers/firmware/qcom/qcom_qseecom_uefisecapp.c
-index 447246bd04be..98a463e9774b 100644
---- a/drivers/firmware/qcom/qcom_qseecom_uefisecapp.c
-+++ b/drivers/firmware/qcom/qcom_qseecom_uefisecapp.c
-@@ -814,15 +814,6 @@ static int qcom_uefisecapp_probe(struct auxiliary_device *aux_dev,
- 
- 	qcuefi->client = container_of(aux_dev, struct qseecom_client, aux_dev);
- 
--	auxiliary_set_drvdata(aux_dev, qcuefi);
--	status = qcuefi_set_reference(qcuefi);
--	if (status)
--		return status;
--
--	status = efivars_register(&qcuefi->efivars, &qcom_efivar_ops);
--	if (status)
--		qcuefi_set_reference(NULL);
--
- 	memset(&pool_config, 0, sizeof(pool_config));
- 	pool_config.initial_size = SZ_4K;
- 	pool_config.policy = QCOM_TZMEM_POLICY_MULTIPLIER;
-@@ -833,6 +824,15 @@ static int qcom_uefisecapp_probe(struct auxiliary_device *aux_dev,
- 	if (IS_ERR(qcuefi->mempool))
- 		return PTR_ERR(qcuefi->mempool);
- 
-+	auxiliary_set_drvdata(aux_dev, qcuefi);
-+	status = qcuefi_set_reference(qcuefi);
-+	if (status)
-+		return status;
-+
-+	status = efivars_register(&qcuefi->efivars, &qcom_efivar_ops);
-+	if (status)
-+		qcuefi_set_reference(NULL);
-+
- 	return status;
- }
- 
--- 
-2.45.2
-
+greg k-h
 
