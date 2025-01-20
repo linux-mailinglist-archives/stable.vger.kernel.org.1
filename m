@@ -1,63 +1,124 @@
-Return-Path: <stable+bounces-109509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4C0A16C83
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 13:46:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3985A16CD7
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 14:04:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14BA71889B6A
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 12:46:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E669F169E63
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 13:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3761B87D7;
-	Mon, 20 Jan 2025 12:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99D671E47A6;
+	Mon, 20 Jan 2025 13:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="oai8Q/QK"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="r8slo6MB";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="RJNbFmPJ";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="r8slo6MB";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="RJNbFmPJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63271FC8;
-	Mon, 20 Jan 2025 12:46:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C201E3770;
+	Mon, 20 Jan 2025 13:01:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737377176; cv=none; b=JSMjZi5rQHYzUwhhBHD2CATgmAmCalUeXe0cIjLHADKE83kOWcxM/L7yHagQaqYh6PsGuGFSC1ZzGAMJF6NHge6KCbgq/lATrg+w+HvrGQrZ18Im9lHOcOL4QO+bC/WURVyGFQ823n42rSQ5lHjmQldU7f6DHL3tmLvZkAdEYn8=
+	t=1737378118; cv=none; b=FvVfcL3dQjzwljOWZ9Letci2bpl59s8joGCdLNHw2YFP+297DviiMu5m7BZvXbaAykPwvCM8bFzCkNlvAMb85HjrOxwWFYo9UFcNvQPFEnP15shejLGRkMl87sUGOzx2gcZ5zmYSgGIjK/8OHFoGxpBs/OdJglYLms6nJNoig48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737377176; c=relaxed/simple;
-	bh=ckmUieoQ6c7b2h5qvdikaklIDj7v6vTDGluUVK1/L88=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WUhtJvOaqVjPUicDiGfkrSrysJgd2hdGUP1o2R2O+wE8VtDNnvSXSZ80fGxp+D1e8qQyJLpOEdJMS5r2q8P85f4T8j/7L5T8mb1I7ftfjPyfQXJQ+514QbVBlIKQilgYaca/gjXgpXJZ4sMwxoDivoU4ZB85Z6zqEyHq5DO0juk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=oai8Q/QK; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1737377171;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=mXZ3I+8rEu5hC7Bbr/07M4uZY5uMU2tu8N9VtF7I1iA=;
-	b=oai8Q/QKw5LqOWxxqAprZkqYpgoN8NZC/ObNCToUubGbEn/gh/nB7CRoHqDAkGqcegZSie
-	W94FUdMXxAEa6f+YMfQ1Cxato7KLUzk2lCNMiEWVD63EuGJfOkqxUPSddTfEoLjGmSlKQL
-	o9v/OvTZbUY9iASnWG4hyWlVn87tQy0=
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Nick Child <nnac123@linux.ibm.com>,
-	Dany Madden <drt@linux.ibm.com>,
-	Lijun Pan <ljp@linux.ibm.com>,
-	Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Paul Mackerras <paulus@samba.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10] ibmvnic: Add tx check to prevent skb leak
-Date: Mon, 20 Jan 2025 15:46:10 +0300
-Message-ID: <20250120124611.51436-1-arefev@swemel.ru>
+	s=arc-20240116; t=1737378118; c=relaxed/simple;
+	bh=OvGyxJnRyha3uiyCUy3QRAIbE+N4hVHgdTlB+68Z8e4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NGlyTJk49WIX6JnswzzFZe81vLsmmtMw1TiXkL0L2fECDvfutl5NvArx08rKvdvyUp/aF1MWrwd9/MARZq5xkcPHhdVS+dM69ovYala/2Vpb8ojPmi0tKODHhZDAuTWTLjHwYjwcelBSgNcQ7V2YQYX25ykQXDD4i7riHc3gehc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=r8slo6MB; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=RJNbFmPJ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=r8slo6MB; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=RJNbFmPJ; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 769C71F7B8;
+	Mon, 20 Jan 2025 13:01:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1737378114; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sMuASHgpa8xlLCWpcGu3D5FxO0uCIpRpMtTeVpDuzaU=;
+	b=r8slo6MBReEKeRECYCX41llP2LPCBAFZh6gEpi9ZdA+ITFEXQUgjKAbvKG69Za3lIZ1mKh
+	bu/64xDeNym0OKbfbL2gaN9erykjSofV7gBOgdalESsB7BA3tEbBnifw9gZgAEYevh/o2e
+	gkbkkCyJOjuUkKgUweU6YpXAdY7CoZY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1737378114;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sMuASHgpa8xlLCWpcGu3D5FxO0uCIpRpMtTeVpDuzaU=;
+	b=RJNbFmPJ0+AY6R0Zb4j9DtKQlZEZrZ+FhETFHabXXh3shH/iEhvX/ac9O0CT9XUYiuzl5E
+	ue995al4MEa35NCg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=r8slo6MB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RJNbFmPJ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1737378114; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sMuASHgpa8xlLCWpcGu3D5FxO0uCIpRpMtTeVpDuzaU=;
+	b=r8slo6MBReEKeRECYCX41llP2LPCBAFZh6gEpi9ZdA+ITFEXQUgjKAbvKG69Za3lIZ1mKh
+	bu/64xDeNym0OKbfbL2gaN9erykjSofV7gBOgdalESsB7BA3tEbBnifw9gZgAEYevh/o2e
+	gkbkkCyJOjuUkKgUweU6YpXAdY7CoZY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1737378114;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sMuASHgpa8xlLCWpcGu3D5FxO0uCIpRpMtTeVpDuzaU=;
+	b=RJNbFmPJ0+AY6R0Zb4j9DtKQlZEZrZ+FhETFHabXXh3shH/iEhvX/ac9O0CT9XUYiuzl5E
+	ue995al4MEa35NCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7344E139D2;
+	Mon, 20 Jan 2025 13:01:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id qETRGUFJjmc4XQAAD6G6ig
+	(envelope-from <svarbanov@suse.de>); Mon, 20 Jan 2025 13:01:53 +0000
+From: Stanimir Varbanov <svarbanov@suse.de>
+To: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-pci@vger.kernel.org,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jim Quinlan <jim2101024@gmail.com>,
+	Nicolas Saenz Julienne <nsaenz@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	kw@linux.com,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Andrea della Porta <andrea.porta@suse.com>,
+	Phil Elwell <phil@raspberrypi.com>,
+	Jonathan Bell <jonathan@raspberrypi.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Stanimir Varbanov <svarbanov@suse.de>,
+	stable@vger.kernel.org
+Subject: [PATCH v5 -next 09/11] PCI: brcmstb: Fix for missing of_node_put
+Date: Mon, 20 Jan 2025 15:01:17 +0200
+Message-ID: <20250120130119.671119-10-svarbanov@suse.de>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250120130119.671119-1-svarbanov@suse.de>
+References: <20250120130119.671119-1-svarbanov@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,69 +126,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 769C71F7B8
+X-Spam-Score: -1.51
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-1.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FREEMAIL_CC(0.00)[linutronix.de,kernel.org,broadcom.com,gmail.com,google.com,linux.com,pengutronix.de,suse.com,raspberrypi.com,suse.de,vger.kernel.org];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:mid,suse.de:email];
+	TAGGED_RCPT(0.00)[dt];
+	R_RATELIMIT(0.00)[to_ip_from(RLw7mkaud87zuqqztkur5718rm)];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-From: Nick Child <nnac123@linux.ibm.com>
+A call to of_parse_phandle() increments refcount, of_node_put must be
+called when done the work on it. Fix missing of_node_put() on the
+msi_np device node by using scope based of_node_put() cleanups.
 
-From: Nick Child <nnac123@linux.ibm.com>
-
-commit 0983d288caf984de0202c66641577b739caad561 upstream.
-
-Below is a summary of how the driver stores a reference to an skb during
-transmit:
-    tx_buff[free_map[consumer_index]]->skb = new_skb;
-    free_map[consumer_index] = IBMVNIC_INVALID_MAP;
-    consumer_index ++;
-Where variable data looks like this:
-    free_map == [4, IBMVNIC_INVALID_MAP, IBMVNIC_INVALID_MAP, 0, 3]
-                                               	consumer_index^
-    tx_buff == [skb=null, skb=<ptr>, skb=<ptr>, skb=null, skb=null]
-
-The driver has checks to ensure that free_map[consumer_index] pointed to
-a valid index but there was no check to ensure that this index pointed
-to an unused/null skb address. So, if, by some chance, our free_map and
-tx_buff lists become out of sync then we were previously risking an
-skb memory leak. This could then cause tcp congestion control to stop
-sending packets, eventually leading to ETIMEDOUT.
-
-Therefore, add a conditional to ensure that the skb address is null. If
-not then warn the user (because this is still a bug that should be
-patched) and free the old pointer to prevent memleak/tcp problems.
-
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[Denis: minor fix to resolve merge conflict.]
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Cc: stable@vger.kernel.org # v5.10+
+Fixes: 40ca1bf580ef ("PCI: brcmstb: Add MSI support")
+Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
 ---
-Backport fix for CVE-2024-41066
-Link: https://nvd.nist.gov/vuln/detail/CVE-2024-41066
----
- drivers/net/ethernet/ibm/ibmvnic.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+v4 -> v5:
+ - New patch in the series.
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 84da6ccaf339..439796975cbf 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -1625,6 +1625,18 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 	    (tx_pool->consumer_index + 1) % tx_pool->num_buffers;
+ drivers/pci/controller/pcie-brcmstb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
+index 744fe1a4cf9c..546056f7f0d3 100644
+--- a/drivers/pci/controller/pcie-brcmstb.c
++++ b/drivers/pci/controller/pcie-brcmstb.c
+@@ -1844,7 +1844,8 @@ static struct pci_ops brcm7425_pcie_ops = {
  
- 	tx_buff = &tx_pool->tx_buff[index];
-+
-+	/* Sanity checks on our free map to make sure it points to an index
-+	 * that is not being occupied by another skb. If skb memory is
-+	 * not freed then we see congestion control kick in and halt tx.
-+	 */
-+	if (unlikely(tx_buff->skb)) {
-+		dev_warn_ratelimited(dev, "TX free map points to untracked skb (%s %d idx=%d)\n",
-+				     skb_is_gso(skb) ? "tso_pool" : "tx_pool",
-+				     queue_num, bufidx);
-+		dev_kfree_skb_any(tx_buff->skb);
-+	}
-+
- 	tx_buff->skb = skb;
- 	tx_buff->data_dma[0] = data_dma_addr;
- 	tx_buff->data_len[0] = skb->len;
+ static int brcm_pcie_probe(struct platform_device *pdev)
+ {
+-	struct device_node *np = pdev->dev.of_node, *msi_np;
++	struct device_node *msi_np __free(device_node) = NULL;
++	struct device_node *np = pdev->dev.of_node;
+ 	struct pci_host_bridge *bridge;
+ 	const struct pcie_cfg_data *data;
+ 	struct brcm_pcie *pcie;
 -- 
-2.43.0
+2.47.0
 
 
