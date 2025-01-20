@@ -1,118 +1,300 @@
-Return-Path: <stable+bounces-109512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D1DBA16D34
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 14:15:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7359EA16D7A
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 14:37:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88E157A3D0E
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 13:14:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FAEB3A15EC
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 13:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E03F1E5739;
-	Mon, 20 Jan 2025 13:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61721E1A08;
+	Mon, 20 Jan 2025 13:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="f9LdA8b7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MN/yjnBN"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C661E0E07;
-	Mon, 20 Jan 2025 13:11:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635F11FC8
+	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 13:37:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737378709; cv=none; b=Sst7/OwaQ3QJRaO/AumQLQHFHmJD/b0LBUyuxHqnNqBNtaV9lT8Eiy74n6vMtAycKwsZbnchlAPgI1sEde/NRxz/jZY1tB49mglx3LlRSRkOeCtNIupD7Gi4+4Ia4DRvHxVsWfv/S4+Tfy6BQzXOF6V1xy1h7glVejP1kInSqtA=
+	t=1737380234; cv=none; b=kl+LW6QCirn4XrciHTB+x+vtRy6aDmJMrNHsOOLkFj3r271Vxiolm74yaabQYvJKKb4YoQg5DqE0Dw5ARk0yj5p2Vs/W3QnKepuhMjpAbiWY4REzMdyXydlF/oDkLsY8j9W+25irw+VQWoEnAvlIFiCfnMQPwKe1YIa89wnOILY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737378709; c=relaxed/simple;
-	bh=j8n0lhPwozEF5mJltErcdu7MzBnBbbc/Nt0TogD/GrY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GMmiyZo7OXEkz0aFhqAbdrw44Wz8onTILxlhx3K905Ak4K+7fEyZjSpmiHbCjrKSoFeyVCkT88mT9esIL+OapQueT1zTfrINnz+Uc8qxuSLFDPzWs3y4oYQJs6iJSVxKdwtWjNHs59mpprAnMHvro70VAfoOvp3zSYT21hxVbsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=f9LdA8b7; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1737378704;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kgQPI+dNQX5S/d0yPfZSHZR915JjJBF9kW4q/ixBVA0=;
-	b=f9LdA8b7v6MSGh7BU/HowFhKAigEspScXw1+OfWMxtCcagXWe4DSGkL+E1m+7kstjED6sZ
-	0SRpxHuTHAKD5+RjRLekGcuHb6jYUydMxWlOrlpAvG7z9ZMpgNKYdTHPcRrCYAo5BiIREQ
-	EC/OaRxorHyFl8OsX3QgxQuw42FtKyU=
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Amir Goldstein <amir73il@gmail.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	linux-xfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lei lu <llfamsec@gmail.com>,
-	Dave Chinner <dchinner@redhat.com>,
-	Chandan Babu R <chandanbabu@kernel.org>
-Subject: [PATCH 5.10] xfs: add bounds checking to xlog_recover_process_data
-Date: Mon, 20 Jan 2025 16:11:43 +0300
-Message-ID: <20250120131144.52763-1-arefev@swemel.ru>
+	s=arc-20240116; t=1737380234; c=relaxed/simple;
+	bh=oJaK5leq3oE4VL4ofswoS07kbyF1609sQG6gV/60Iys=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=D+wcsYbrYApBeqap8Yh9tdkW2P27e/4Di+Dor1EVvbFmmMmHylpzwazUCTszPdAlvnhkmIeaB6LMaSI39+39PGrTQdNfRRj0zzORqm3FHqIJ2VHM1RxiSDofityalXLtwtjRWdyDXJomvPQgmDUoKVea+KbM944qbDDMQ4oTH5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MN/yjnBN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF503C4CEE1;
+	Mon, 20 Jan 2025 13:37:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1737380234;
+	bh=oJaK5leq3oE4VL4ofswoS07kbyF1609sQG6gV/60Iys=;
+	h=Subject:To:Cc:From:Date:From;
+	b=MN/yjnBN2LKQkgtEGPuoWxJaBfJvTTnxR3xw0v9MUPdiekpblu7Ie+/+/G5XCQMe6
+	 lYw+fTLHicxmCxqmFr+EhNNyMHB3xblVbC1WciyJPsTIqMYOnZQA7Ne/mhIxtBPH/h
+	 exxKXzWezbzLFYXfIM97Hu5EpbKpvfMP1WYqmhWo=
+Subject: FAILED: patch "[PATCH] mm: zswap: properly synchronize freeing resources during CPU" failed to apply to 6.12-stable tree
+To: yosryahmed@google.com,akpm@linux-foundation.org,baohua@kernel.org,chengming.zhou@linux.dev,hannes@cmpxchg.org,kanchana.p.sridhar@intel.com,nphamcs@gmail.com,samsun1006219@gmail.com,stable@vger.kernel.org,vitalywool@gmail.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 20 Jan 2025 14:37:11 +0100
+Message-ID: <2025012011-urgency-shredder-353e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-From: lei lu <llfamsec@gmail.com>
 
-commit fb63435b7c7dc112b1ae1baea5486e0a6e27b196 upstream.
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-There is a lack of verification of the space occupied by fixed members
-of xlog_op_header in the xlog_recover_process_data.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-We can create a crafted image to trigger an out of bounds read by
-following these steps:
-    1) Mount an image of xfs, and do some file operations to leave records
-    2) Before umounting, copy the image for subsequent steps to simulate
-       abnormal exit. Because umount will ensure that tail_blk and
-       head_blk are the same, which will result in the inability to enter
-       xlog_recover_process_data
-    3) Write a tool to parse and modify the copied image in step 2
-    4) Make the end of the xlog_op_header entries only 1 byte away from
-       xlog_rec_header->h_size
-    5) xlog_rec_header->h_num_logops++
-    6) Modify xlog_rec_header->h_crc
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 12dcb0ef540629a281533f9dedc1b6b8e14cfb65
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025012011-urgency-shredder-353e@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-Fix:
-Add a check to make sure there is sufficient space to access fixed members
-of xlog_op_header.
+Possible dependencies:
 
-Signed-off-by: lei lu <llfamsec@gmail.com>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Denis Arefev <arefev@swemel.ru>                                    
----
-Backport fix for CVE-2024-41014        
-Link: https://nvd.nist.gov/vuln/detail/cve-2024-41014
----
- fs/xfs/xfs_log_recover.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/xfs/xfs_log_recover.c b/fs/xfs/xfs_log_recover.c
-index e61f28ce3e44..eafe76f304ef 100644
---- a/fs/xfs/xfs_log_recover.c
-+++ b/fs/xfs/xfs_log_recover.c
-@@ -2419,7 +2419,10 @@ xlog_recover_process_data(
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 12dcb0ef540629a281533f9dedc1b6b8e14cfb65 Mon Sep 17 00:00:00 2001
+From: Yosry Ahmed <yosryahmed@google.com>
+Date: Wed, 8 Jan 2025 22:24:41 +0000
+Subject: [PATCH] mm: zswap: properly synchronize freeing resources during CPU
+ hotunplug
+
+In zswap_compress() and zswap_decompress(), the per-CPU acomp_ctx of the
+current CPU at the beginning of the operation is retrieved and used
+throughout.  However, since neither preemption nor migration are disabled,
+it is possible that the operation continues on a different CPU.
+
+If the original CPU is hotunplugged while the acomp_ctx is still in use,
+we run into a UAF bug as some of the resources attached to the acomp_ctx
+are freed during hotunplug in zswap_cpu_comp_dead() (i.e.
+acomp_ctx.buffer, acomp_ctx.req, or acomp_ctx.acomp).
+
+The problem was introduced in commit 1ec3b5fe6eec ("mm/zswap: move to use
+crypto_acomp API for hardware acceleration") when the switch to the
+crypto_acomp API was made.  Prior to that, the per-CPU crypto_comp was
+retrieved using get_cpu_ptr() which disables preemption and makes sure the
+CPU cannot go away from under us.  Preemption cannot be disabled with the
+crypto_acomp API as a sleepable context is needed.
+
+Use the acomp_ctx.mutex to synchronize CPU hotplug callbacks allocating
+and freeing resources with compression/decompression paths.  Make sure
+that acomp_ctx.req is NULL when the resources are freed.  In the
+compression/decompression paths, check if acomp_ctx.req is NULL after
+acquiring the mutex (meaning the CPU was offlined) and retry on the new
+CPU.
+
+The initialization of acomp_ctx.mutex is moved from the CPU hotplug
+callback to the pool initialization where it belongs (where the mutex is
+allocated).  In addition to adding clarity, this makes sure that CPU
+hotplug cannot reinitialize a mutex that is already locked by
+compression/decompression.
+
+Previously a fix was attempted by holding cpus_read_lock() [1].  This
+would have caused a potential deadlock as it is possible for code already
+holding the lock to fall into reclaim and enter zswap (causing a
+deadlock).  A fix was also attempted using SRCU for synchronization, but
+Johannes pointed out that synchronize_srcu() cannot be used in CPU hotplug
+notifiers [2].
+
+Alternative fixes that were considered/attempted and could have worked:
+- Refcounting the per-CPU acomp_ctx. This involves complexity in
+  handling the race between the refcount dropping to zero in
+  zswap_[de]compress() and the refcount being re-initialized when the
+  CPU is onlined.
+- Disabling migration before getting the per-CPU acomp_ctx [3], but
+  that's discouraged and is a much bigger hammer than needed, and could
+  result in subtle performance issues.
+
+[1]https://lkml.kernel.org/20241219212437.2714151-1-yosryahmed@google.com/
+[2]https://lkml.kernel.org/20250107074724.1756696-2-yosryahmed@google.com/
+[3]https://lkml.kernel.org/20250107222236.2715883-2-yosryahmed@google.com/
+
+[yosryahmed@google.com: remove comment]
+  Link: https://lkml.kernel.org/r/CAJD7tkaxS1wjn+swugt8QCvQ-rVF5RZnjxwPGX17k8x9zSManA@mail.gmail.com
+Link: https://lkml.kernel.org/r/20250108222441.3622031-1-yosryahmed@google.com
+Fixes: 1ec3b5fe6eec ("mm/zswap: move to use crypto_acomp API for hardware acceleration")
+Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
+Reported-by: Johannes Weiner <hannes@cmpxchg.org>
+Closes: https://lore.kernel.org/lkml/20241113213007.GB1564047@cmpxchg.org/
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Closes: https://lore.kernel.org/lkml/CAEkJfYMtSdM5HceNsXUDf5haghD5+o2e7Qv4OcuruL4tPg6OaQ@mail.gmail.com/
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: Vitaly Wool <vitalywool@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/zswap.c b/mm/zswap.c
+index f6316b66fb23..30f5a27a6862 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -251,7 +251,7 @@ static struct zswap_pool *zswap_pool_create(char *type, char *compressor)
+ 	struct zswap_pool *pool;
+ 	char name[38]; /* 'zswap' + 32 char (max) num + \0 */
+ 	gfp_t gfp = __GFP_NORETRY | __GFP_NOWARN | __GFP_KSWAPD_RECLAIM;
+-	int ret;
++	int ret, cpu;
  
- 		ohead = (struct xlog_op_header *)dp;
- 		dp += sizeof(*ohead);
--		ASSERT(dp <= end);
-+		if (dp > end) {
-+			xfs_warn(log->l_mp, "%s: op header overrun", __func__);
-+			return -EFSCORRUPTED;
-+		}
+ 	if (!zswap_has_pool) {
+ 		/* if either are unset, pool initialization failed, and we
+@@ -285,6 +285,9 @@ static struct zswap_pool *zswap_pool_create(char *type, char *compressor)
+ 		goto error;
+ 	}
  
- 		/* errors will abort recovery */
- 		error = xlog_recover_process_ophdr(log, rhash, rhead, ohead,
--- 
-2.43.0
++	for_each_possible_cpu(cpu)
++		mutex_init(&per_cpu_ptr(pool->acomp_ctx, cpu)->mutex);
++
+ 	ret = cpuhp_state_add_instance(CPUHP_MM_ZSWP_POOL_PREPARE,
+ 				       &pool->node);
+ 	if (ret)
+@@ -821,11 +824,12 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+ 	struct acomp_req *req;
+ 	int ret;
+ 
+-	mutex_init(&acomp_ctx->mutex);
+-
++	mutex_lock(&acomp_ctx->mutex);
+ 	acomp_ctx->buffer = kmalloc_node(PAGE_SIZE * 2, GFP_KERNEL, cpu_to_node(cpu));
+-	if (!acomp_ctx->buffer)
+-		return -ENOMEM;
++	if (!acomp_ctx->buffer) {
++		ret = -ENOMEM;
++		goto buffer_fail;
++	}
+ 
+ 	acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
+ 	if (IS_ERR(acomp)) {
+@@ -855,12 +859,15 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+ 	acomp_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
+ 				   crypto_req_done, &acomp_ctx->wait);
+ 
++	mutex_unlock(&acomp_ctx->mutex);
+ 	return 0;
+ 
+ req_fail:
+ 	crypto_free_acomp(acomp_ctx->acomp);
+ acomp_fail:
+ 	kfree(acomp_ctx->buffer);
++buffer_fail:
++	mutex_unlock(&acomp_ctx->mutex);
+ 	return ret;
+ }
+ 
+@@ -869,17 +876,45 @@ static int zswap_cpu_comp_dead(unsigned int cpu, struct hlist_node *node)
+ 	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
+ 	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
+ 
++	mutex_lock(&acomp_ctx->mutex);
+ 	if (!IS_ERR_OR_NULL(acomp_ctx)) {
+ 		if (!IS_ERR_OR_NULL(acomp_ctx->req))
+ 			acomp_request_free(acomp_ctx->req);
++		acomp_ctx->req = NULL;
+ 		if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
+ 			crypto_free_acomp(acomp_ctx->acomp);
+ 		kfree(acomp_ctx->buffer);
+ 	}
++	mutex_unlock(&acomp_ctx->mutex);
+ 
+ 	return 0;
+ }
+ 
++static struct crypto_acomp_ctx *acomp_ctx_get_cpu_lock(struct zswap_pool *pool)
++{
++	struct crypto_acomp_ctx *acomp_ctx;
++
++	for (;;) {
++		acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
++		mutex_lock(&acomp_ctx->mutex);
++		if (likely(acomp_ctx->req))
++			return acomp_ctx;
++		/*
++		 * It is possible that we were migrated to a different CPU after
++		 * getting the per-CPU ctx but before the mutex was acquired. If
++		 * the old CPU got offlined, zswap_cpu_comp_dead() could have
++		 * already freed ctx->req (among other things) and set it to
++		 * NULL. Just try again on the new CPU that we ended up on.
++		 */
++		mutex_unlock(&acomp_ctx->mutex);
++	}
++}
++
++static void acomp_ctx_put_unlock(struct crypto_acomp_ctx *acomp_ctx)
++{
++	mutex_unlock(&acomp_ctx->mutex);
++}
++
+ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+ 			   struct zswap_pool *pool)
+ {
+@@ -893,10 +928,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+ 	gfp_t gfp;
+ 	u8 *dst;
+ 
+-	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
+-
+-	mutex_lock(&acomp_ctx->mutex);
+-
++	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
+ 	dst = acomp_ctx->buffer;
+ 	sg_init_table(&input, 1);
+ 	sg_set_page(&input, page, PAGE_SIZE, 0);
+@@ -949,7 +981,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+ 	else if (alloc_ret)
+ 		zswap_reject_alloc_fail++;
+ 
+-	mutex_unlock(&acomp_ctx->mutex);
++	acomp_ctx_put_unlock(acomp_ctx);
+ 	return comp_ret == 0 && alloc_ret == 0;
+ }
+ 
+@@ -960,9 +992,7 @@ static void zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+ 	struct crypto_acomp_ctx *acomp_ctx;
+ 	u8 *src;
+ 
+-	acomp_ctx = raw_cpu_ptr(entry->pool->acomp_ctx);
+-	mutex_lock(&acomp_ctx->mutex);
+-
++	acomp_ctx = acomp_ctx_get_cpu_lock(entry->pool);
+ 	src = zpool_map_handle(zpool, entry->handle, ZPOOL_MM_RO);
+ 	/*
+ 	 * If zpool_map_handle is atomic, we cannot reliably utilize its mapped buffer
+@@ -986,10 +1016,10 @@ static void zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+ 	acomp_request_set_params(acomp_ctx->req, &input, &output, entry->length, PAGE_SIZE);
+ 	BUG_ON(crypto_wait_req(crypto_acomp_decompress(acomp_ctx->req), &acomp_ctx->wait));
+ 	BUG_ON(acomp_ctx->req->dlen != PAGE_SIZE);
+-	mutex_unlock(&acomp_ctx->mutex);
+ 
+ 	if (src != acomp_ctx->buffer)
+ 		zpool_unmap_handle(zpool, entry->handle);
++	acomp_ctx_put_unlock(acomp_ctx);
+ }
+ 
+ /*********************************
 
 
