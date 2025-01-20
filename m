@@ -1,277 +1,148 @@
-Return-Path: <stable+bounces-109552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E798DA16ED8
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 15:52:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BF12A16EF6
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 16:04:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 093B57A418C
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 14:52:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 606E7168E42
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 15:04:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30591E47BE;
-	Mon, 20 Jan 2025 14:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95351E47BC;
+	Mon, 20 Jan 2025 15:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQgceKkq"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aqqffAIW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C351E47B4
-	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 14:51:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F931B4F02
+	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 15:04:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737384695; cv=none; b=Lq5kaGap4JyIEM1ws93z9lI2vapBw/fYBp9ZaatRek2oSXpOU/GHWgkOAY2bTswf26HbEEMXtioLSroNSCKBUqJiALZ2vrLyXmcv7/QFw2jvTvV54A5vK4J9RgaCy/vjoKuC4RXsKYh6+uSlGTlByE7/aiFwEFhqt0FWc22PD9A=
+	t=1737385462; cv=none; b=HFvtgIYrNI7xVGaBsJhkku8SxTijjwtB/RDy132Z1ElCWYf/4THgVbGIgqZltCH5uBvAwdkpSVg/NfBRTNWWaX1R1k1o/N/2ZHH6TwXWvj+HXMNgxjEaQCvZEzjlz7cu2c1SmDMUgI7rIzBJV6CoDy+6uocx3BR0Kp8oizPigq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737384695; c=relaxed/simple;
-	bh=k+Ji2zeOL2em3dGyVB6p8WfAx9Z40Tf8U/WrwVjBV2s=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PFZ+xSNI0248JNbkCl9dLrU8IgJ6rGufxgKk7PwStwDChdl9For1TkGXKd6AMsb/9eMNhjf9yr7FQvwxPwZvF28VuiNZv+dh1qwXLWVsvmjbie9Wvz4C2GZvNnBmFyCildIztEphDA/9l3zbFhO6mJoYFFsi8uJg+f/5kkIOx6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQgceKkq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F38C4CEDD;
-	Mon, 20 Jan 2025 14:51:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737384695;
-	bh=k+Ji2zeOL2em3dGyVB6p8WfAx9Z40Tf8U/WrwVjBV2s=;
-	h=Subject:To:Cc:From:Date:From;
-	b=eQgceKkqTgrNYV4a0A6W3Mvn41mcdTYpG2gIU6CsK4tertOlhtJp8EexSN4e+BEgt
-	 dtj+nfUxXrh4UDLg7c6aZAaqThX/i1eJcfv8KiCsjVTFzUhgSSATizRu4NwnK24Edg
-	 +DZ6l4dCLcH8+OcmOfZdeIUFv1aL4aKvQyRfAZuo=
-Subject: FAILED: patch "[PATCH] mm: clear uffd-wp PTE/PMD state on mremap()" failed to apply to 6.6-stable tree
-To: ryan.roberts@arm.com,Liam.Howlett@Oracle.com,akpm@linux-foundation.org,david@redhat.com,jannh@google.com,lorenzo.stoakes@oracle.com,mark.rutland@arm.com,miko.lenczewski@arm.com,muchun.song@linux.dev,peterx@redhat.com,shuah@kernel.org,stable@vger.kernel.org,vbabka@suse.cz
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 20 Jan 2025 15:51:32 +0100
-Message-ID: <2025012032-buffoon-cabbie-1e42@gregkh>
+	s=arc-20240116; t=1737385462; c=relaxed/simple;
+	bh=Mp9wPnZvahoTfrcxj7IbLva+CGbtXm6HhyL++sgSPfs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YlcyNUVmIOosQk6T7SAHdxVrQ+8bEzdxvh+E5Ij2XAS2DoqKWBiyl9PozsFVC+62EPo8K7QRtubgRqDAlpwI8LTpniaXODQiJs/LIi0fmWXI0KxxNGQvZ6n6tI8fX5TIogrdGw+E/2NrAh+kOe4FuZFS6mEZzqRenenbT086dIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aqqffAIW; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1737385459;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=quucddcR/Yty1LzeCGy5sYBm3Eiv2uPTwCdl4JJA1hk=;
+	b=aqqffAIWvcgxZOxXaPEm5R78DFA+5Smik0WLoFbf4RbcAEyJWniVQqCn1KVmzGVKm3ko+r
+	CIIq+jx9stxqEH1a793ec7/+4W9GjS1PhzTlRg0gLgRX7IQJNwyeyFQTn4oxmfZpdUj1sr
+	TQIB+O+a+IAgKFr1+PSUScHwOV0yWwk=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-519-cF2dxSp6PNeNshPXtg3xFg-1; Mon, 20 Jan 2025 10:04:18 -0500
+X-MC-Unique: cF2dxSp6PNeNshPXtg3xFg-1
+X-Mimecast-MFC-AGG-ID: cF2dxSp6PNeNshPXtg3xFg
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4362153dcd6so24042625e9.2
+        for <stable@vger.kernel.org>; Mon, 20 Jan 2025 07:04:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737385457; x=1737990257;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=quucddcR/Yty1LzeCGy5sYBm3Eiv2uPTwCdl4JJA1hk=;
+        b=IcWpIydAQ1yhWONYQ4p56Ge0MDnS9NR+7zICJNsc6C2V+3cN+dz7Cv0D8AY4U3RViy
+         nYIzbJYjRPTKAc/8AWCVMDjQVEwoqq4m5B0dy7X2ULuaibR4VqutDeIn0Uj2wXICL1Ge
+         +vUu1C3eEJUKtP+DLE2i/otvXqjCSy5Azg74bsgvSokvdKBZ+rBrsVX+kNiWDW2RNEXq
+         etzmhFe8di6XYK6Vy6gox1THK98ymkMFfAiAun2EA9rIM+0dJfhASV9klTvS8RgTSTd2
+         5m9u96neqlDQis1TZSiCCUIH4DhTTdV2gs3HgMhJjZpmG+tEYCwtbw4fhglDBm02zWw6
+         S2vg==
+X-Gm-Message-State: AOJu0Yy0zsRC/8+QF3ayQMeW4xOxJInruUa8SGdk2EDCu2JyAygpA9Tf
+	Qej8X2J0ZMGrucvnlz/08L078QP6NLyMjvBxhKBo+FWEmKvGcYbon8yVaiiS0bJYCuhI0DfY9J7
+	SukEwkZWLhxnRVudcldgHJ53I1+Jh3DY08ej/MyDKBAtN+hhMREKy/Ns72InR8iTGT/6O3VhfdG
+	CCZ3vk0ghnX1NmN7wfJA+fy4e8tL4UuEUGvIlS0w==
+X-Gm-Gg: ASbGncsScDz46vtKmQWjP+8kP9vmEmATtqr/KS6DDnkUZUCr8iQxdSe/JjtAu39C1fm
+	QJTPe3sklx+unKsDO/yZEwGJyTH4DkINzNd71pMabFbaEFSww9yhLQgkkDQEHZiATI+p2GzUhpu
+	hL020jHCbYudZ7u/eYXNhvgFVvG6O5NCMFrMRev5T4HpaWcJHjSUwkqkBrqNcUr6DAAVgbeXnoz
+	oeUIdXFgucTEDtT0CPIIiyRNZ1VqH1II2TnX3jMPeX8WKHuY14C15MVcSm2/qM9onYZVM5tpfPz
+	CpA6MQQGu0Feu71/noII8MKZtjph3S6kHQkfmRA1LbRIf94=
+X-Received: by 2002:a7b:c8c9:0:b0:436:fb02:e68 with SMTP id 5b1f17b1804b1-438913bdd6cmr123792625e9.2.1737385456413;
+        Mon, 20 Jan 2025 07:04:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEw9cUAiD74oJKONeEwGyEN5+hF1yb1s5WBFMS+h/TrFbGi5ROWRqJVMoppZ5MD26BpP7ROAw==
+X-Received: by 2002:a7b:c8c9:0:b0:436:fb02:e68 with SMTP id 5b1f17b1804b1-438913bdd6cmr123791055e9.2.1737385455101;
+        Mon, 20 Jan 2025 07:04:15 -0800 (PST)
+Received: from step1.redhat.com (host-82-53-134-100.retail.telecomitalia.it. [82.53.134.100])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c753caf3sm199005525e9.38.2025.01.20.07.04.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jan 2025 07:04:14 -0800 (PST)
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: stable@vger.kernel.org
+Cc: Stefano Garzarella <sgarzare@redhat.com>,
+	Hyunwoo Kim <v4bel@theori.io>,
+	Wongi Lee <qwerty@theori.io>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10.y] vsock/virtio: discard packets if the transport changes
+Date: Mon, 20 Jan 2025 16:04:11 +0100
+Message-ID: <20250120150411.101681-1-sgarzare@redhat.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <2025012005-supervise-armband-ab52@gregkh>
+References: <2025012005-supervise-armband-ab52@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+If the socket has been de-assigned or assigned to another transport,
+we must discard any packets received because they are not expected
+and would cause issues when we access vsk->transport.
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+A possible scenario is described by Hyunwoo Kim in the attached link,
+where after a first connect() interrupted by a signal, and a second
+connect() failed, we can find `vsk->transport` at NULL, leading to a
+NULL pointer dereference.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
+Cc: stable@vger.kernel.org
+Reported-by: Hyunwoo Kim <v4bel@theori.io>
+Reported-by: Wongi Lee <qwerty@theori.io>
+Closes: https://lore.kernel.org/netdev/Z2LvdTTQR7dBmPb5@v4bel-B760M-AORUS-ELITE-AX/
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Hyunwoo Kim <v4bel@theori.io>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+(cherry picked from commit 2cb7c756f605ec02ffe562fb26828e4bcc5fdfc1)
+[SG: fixed context conflict since this tree is missing commit 71dc9ec9ac7d
+ ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")]
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+---
+ net/vmw_vsock/virtio_transport_common.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 0cef0bb836e3cfe00f08f9606c72abd72fe78ca3
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025012032-buffoon-cabbie-1e42@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 0cef0bb836e3cfe00f08f9606c72abd72fe78ca3 Mon Sep 17 00:00:00 2001
-From: Ryan Roberts <ryan.roberts@arm.com>
-Date: Tue, 7 Jan 2025 14:47:52 +0000
-Subject: [PATCH] mm: clear uffd-wp PTE/PMD state on mremap()
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-When mremap()ing a memory region previously registered with userfaultfd as
-write-protected but without UFFD_FEATURE_EVENT_REMAP, an inconsistency in
-flag clearing leads to a mismatch between the vma flags (which have
-uffd-wp cleared) and the pte/pmd flags (which do not have uffd-wp
-cleared).  This mismatch causes a subsequent mprotect(PROT_WRITE) to
-trigger a warning in page_table_check_pte_flags() due to setting the pte
-to writable while uffd-wp is still set.
-
-Fix this by always explicitly clearing the uffd-wp pte/pmd flags on any
-such mremap() so that the values are consistent with the existing clearing
-of VM_UFFD_WP.  Be careful to clear the logical flag regardless of its
-physical form; a PTE bit, a swap PTE bit, or a PTE marker.  Cover PTE,
-huge PMD and hugetlb paths.
-
-Link: https://lkml.kernel.org/r/20250107144755.1871363-2-ryan.roberts@arm.com
-Co-developed-by: Mikołaj Lenczewski <miko.lenczewski@arm.com>
-Signed-off-by: Mikołaj Lenczewski <miko.lenczewski@arm.com>
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Closes: https://lore.kernel.org/linux-mm/810b44a8-d2ae-4107-b665-5a42eae2d948@arm.com/
-Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-index cb40f1a1d081..75342022d144 100644
---- a/include/linux/userfaultfd_k.h
-+++ b/include/linux/userfaultfd_k.h
-@@ -247,6 +247,13 @@ static inline bool vma_can_userfault(struct vm_area_struct *vma,
- 	    vma_is_shmem(vma);
- }
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index ccbee1723b07..90ed4ccd329c 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1158,8 +1158,11 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
  
-+static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
-+{
-+	struct userfaultfd_ctx *uffd_ctx = vma->vm_userfaultfd_ctx.ctx;
-+
-+	return uffd_ctx && (uffd_ctx->features & UFFD_FEATURE_EVENT_REMAP) == 0;
-+}
-+
- extern int dup_userfaultfd(struct vm_area_struct *, struct list_head *);
- extern void dup_userfaultfd_complete(struct list_head *);
- void dup_userfaultfd_fail(struct list_head *);
-@@ -402,6 +409,11 @@ static inline bool userfaultfd_wp_async(struct vm_area_struct *vma)
- 	return false;
- }
+ 	lock_sock(sk);
  
-+static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
-+{
-+	return false;
-+}
-+
- #endif /* CONFIG_USERFAULTFD */
- 
- static inline bool userfaultfd_wp_use_markers(struct vm_area_struct *vma)
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index e53d83b3e5cf..db64116a4f84 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2206,6 +2206,16 @@ static pmd_t move_soft_dirty_pmd(pmd_t pmd)
- 	return pmd;
- }
- 
-+static pmd_t clear_uffd_wp_pmd(pmd_t pmd)
-+{
-+	if (pmd_present(pmd))
-+		pmd = pmd_clear_uffd_wp(pmd);
-+	else if (is_swap_pmd(pmd))
-+		pmd = pmd_swp_clear_uffd_wp(pmd);
-+
-+	return pmd;
-+}
-+
- bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
- 		  unsigned long new_addr, pmd_t *old_pmd, pmd_t *new_pmd)
- {
-@@ -2244,6 +2254,8 @@ bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
- 			pgtable_trans_huge_deposit(mm, new_pmd, pgtable);
- 		}
- 		pmd = move_soft_dirty_pmd(pmd);
-+		if (vma_has_uffd_without_event_remap(vma))
-+			pmd = clear_uffd_wp_pmd(pmd);
- 		set_pmd_at(mm, new_addr, new_pmd, pmd);
- 		if (force_flush)
- 			flush_pmd_tlb_range(vma, old_addr, old_addr + PMD_SIZE);
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index c498874a7170..eaaec19caa7c 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5402,6 +5402,7 @@ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
- 			  unsigned long new_addr, pte_t *src_pte, pte_t *dst_pte,
- 			  unsigned long sz)
- {
-+	bool need_clear_uffd_wp = vma_has_uffd_without_event_remap(vma);
- 	struct hstate *h = hstate_vma(vma);
- 	struct mm_struct *mm = vma->vm_mm;
- 	spinlock_t *src_ptl, *dst_ptl;
-@@ -5418,7 +5419,18 @@ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
- 		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
- 
- 	pte = huge_ptep_get_and_clear(mm, old_addr, src_pte);
--	set_huge_pte_at(mm, new_addr, dst_pte, pte, sz);
-+
-+	if (need_clear_uffd_wp && pte_marker_uffd_wp(pte))
-+		huge_pte_clear(mm, new_addr, dst_pte, sz);
-+	else {
-+		if (need_clear_uffd_wp) {
-+			if (pte_present(pte))
-+				pte = huge_pte_clear_uffd_wp(pte);
-+			else if (is_swap_pte(pte))
-+				pte = pte_swp_clear_uffd_wp(pte);
-+		}
-+		set_huge_pte_at(mm, new_addr, dst_pte, pte, sz);
-+	}
- 
- 	if (src_ptl != dst_ptl)
- 		spin_unlock(src_ptl);
-diff --git a/mm/mremap.c b/mm/mremap.c
-index 60473413836b..cff7f552f909 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -138,6 +138,7 @@ static int move_ptes(struct vm_area_struct *vma, pmd_t *old_pmd,
- 		struct vm_area_struct *new_vma, pmd_t *new_pmd,
- 		unsigned long new_addr, bool need_rmap_locks)
- {
-+	bool need_clear_uffd_wp = vma_has_uffd_without_event_remap(vma);
- 	struct mm_struct *mm = vma->vm_mm;
- 	pte_t *old_pte, *new_pte, pte;
- 	pmd_t dummy_pmdval;
-@@ -216,7 +217,18 @@ static int move_ptes(struct vm_area_struct *vma, pmd_t *old_pmd,
- 			force_flush = true;
- 		pte = move_pte(pte, old_addr, new_addr);
- 		pte = move_soft_dirty_pte(pte);
--		set_pte_at(mm, new_addr, new_pte, pte);
-+
-+		if (need_clear_uffd_wp && pte_marker_uffd_wp(pte))
-+			pte_clear(mm, new_addr, new_pte);
-+		else {
-+			if (need_clear_uffd_wp) {
-+				if (pte_present(pte))
-+					pte = pte_clear_uffd_wp(pte);
-+				else if (is_swap_pte(pte))
-+					pte = pte_swp_clear_uffd_wp(pte);
-+			}
-+			set_pte_at(mm, new_addr, new_pte, pte);
-+		}
- 	}
- 
- 	arch_leave_lazy_mmu_mode();
-@@ -278,6 +290,15 @@ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
- 	if (WARN_ON_ONCE(!pmd_none(*new_pmd)))
- 		return false;
- 
-+	/* If this pmd belongs to a uffd vma with remap events disabled, we need
-+	 * to ensure that the uffd-wp state is cleared from all pgtables. This
-+	 * means recursing into lower page tables in move_page_tables(), and we
-+	 * can reuse the existing code if we simply treat the entry as "not
-+	 * moved".
+-	/* Check if sk has been closed before lock_sock */
+-	if (sock_flag(sk, SOCK_DONE)) {
++	/* Check if sk has been closed or assigned to another transport before
++	 * lock_sock (note: listener sockets are not assigned to any transport)
 +	 */
-+	if (vma_has_uffd_without_event_remap(vma))
-+		return false;
-+
- 	/*
- 	 * We don't have to worry about the ordering of src and dst
- 	 * ptlocks because exclusive mmap_lock prevents deadlock.
-@@ -333,6 +354,15 @@ static bool move_normal_pud(struct vm_area_struct *vma, unsigned long old_addr,
- 	if (WARN_ON_ONCE(!pud_none(*new_pud)))
- 		return false;
- 
-+	/* If this pud belongs to a uffd vma with remap events disabled, we need
-+	 * to ensure that the uffd-wp state is cleared from all pgtables. This
-+	 * means recursing into lower page tables in move_page_tables(), and we
-+	 * can reuse the existing code if we simply treat the entry as "not
-+	 * moved".
-+	 */
-+	if (vma_has_uffd_without_event_remap(vma))
-+		return false;
-+
- 	/*
- 	 * We don't have to worry about the ordering of src and dst
- 	 * ptlocks because exclusive mmap_lock prevents deadlock.
++	if (sock_flag(sk, SOCK_DONE) ||
++	    (sk->sk_state != TCP_LISTEN && vsk->transport != &t->transport)) {
+ 		(void)virtio_transport_reset_no_sock(t, pkt);
+ 		release_sock(sk);
+ 		sock_put(sk);
+-- 
+2.48.1
 
 
