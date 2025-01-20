@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-109508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0102CA16C80
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 13:45:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A4C0A16C83
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 13:46:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C9D1163A30
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 12:45:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14BA71889B6A
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 12:46:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1721DA5F;
-	Mon, 20 Jan 2025 12:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3761B87D7;
+	Mon, 20 Jan 2025 12:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="Av2D9gLK"
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="oai8Q/QK"
 X-Original-To: stable@vger.kernel.org
 Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6521FC8;
-	Mon, 20 Jan 2025 12:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63271FC8;
+	Mon, 20 Jan 2025 12:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737377118; cv=none; b=uLf0Np/1V+oeqIC4CfdK4X1qTKnSI3eiM+SBuc1XTaOngcOudCaki2AH/ranMt3OKUb8iiKG9PQjf200P4jVMHREbdo5/uNh0xLVBoq0DqFifg8kMWjVimNRyG5KEuCQe6hIjHdRU2qKznU3pyM/v79ElknhnYR9cptMlI6NLWY=
+	t=1737377176; cv=none; b=JSMjZi5rQHYzUwhhBHD2CATgmAmCalUeXe0cIjLHADKE83kOWcxM/L7yHagQaqYh6PsGuGFSC1ZzGAMJF6NHge6KCbgq/lATrg+w+HvrGQrZ18Im9lHOcOL4QO+bC/WURVyGFQ823n42rSQ5lHjmQldU7f6DHL3tmLvZkAdEYn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737377118; c=relaxed/simple;
-	bh=g9/VXHOw8Ibg9+BQ+ablv0wI7AHFvf6VP9Dkz30lxAs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=vCKzaFBcwArv/71s8zHLe2SmZMDCAU9c2szSUGJAtcJ1MfcHxTjtRcs12zM8orEa7zd514NUlyXCwrRoQpz2eg1P0z5Vz8dl+6HsXr4i8iCKmAFTUTGFeeRs3aZitAD6Ks7UcXKVq9jPMP/4O00I/8LZEQDx86QivizsY/iRZmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=Av2D9gLK; arc=none smtp.client-ip=95.143.211.150
+	s=arc-20240116; t=1737377176; c=relaxed/simple;
+	bh=ckmUieoQ6c7b2h5qvdikaklIDj7v6vTDGluUVK1/L88=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WUhtJvOaqVjPUicDiGfkrSrysJgd2hdGUP1o2R2O+wE8VtDNnvSXSZ80fGxp+D1e8qQyJLpOEdJMS5r2q8P85f4T8j/7L5T8mb1I7ftfjPyfQXJQ+514QbVBlIKQilgYaca/gjXgpXJZ4sMwxoDivoU4ZB85Z6zqEyHq5DO0juk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=oai8Q/QK; arc=none smtp.client-ip=95.143.211.150
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
 From: Denis Arefev <arefev@swemel.ru>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1737377112;
+	t=1737377171;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=V4/psA0m1o91XWq5sYUPCRXkQJFrjno5ZMVOnvX30W8=;
-	b=Av2D9gLKJ24lX1xYUUICaEbd9qvYO5S3JgPfwHedLQJ9aU4ScS7VfHfipILbjCx543ff2H
-	H7IigcTUbAAgYHo+rHf8vW6F1QzkjtiJupux9aH/cxRU7QKlwAklYb1UCYtVtRp+TbWerj
-	Kz/RX/6YdfyeTU/ocG+TynV6l53mxHg=
+	bh=mXZ3I+8rEu5hC7Bbr/07M4uZY5uMU2tu8N9VtF7I1iA=;
+	b=oai8Q/QKw5LqOWxxqAprZkqYpgoN8NZC/ObNCToUubGbEn/gh/nB7CRoHqDAkGqcegZSie
+	W94FUdMXxAEa6f+YMfQ1Cxato7KLUzk2lCNMiEWVD63EuGJfOkqxUPSddTfEoLjGmSlKQL
+	o9v/OvTZbUY9iASnWG4hyWlVn87tQy0=
 To: stable@vger.kernel.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	David Airlie <airlied@linux.ie>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
+Cc: Nick Child <nnac123@linux.ibm.com>,
+	Dany Madden <drt@linux.ibm.com>,
+	Lijun Pan <ljp@linux.ibm.com>,
+	Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Paul Mackerras <paulus@samba.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
-	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Subject: [PATCH 5.10] drm/radeon: check bo_va->bo is non-NULL before using it
-Date: Mon, 20 Jan 2025 15:45:09 +0300
-Message-ID: <20250120124512.51418-1-arefev@swemel.ru>
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10] ibmvnic: Add tx check to prevent skb leak
+Date: Mon, 20 Jan 2025 15:46:10 +0300
+Message-ID: <20250120124611.51436-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,38 +66,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+From: Nick Child <nnac123@linux.ibm.com>
 
-commit 6fb15dcbcf4f212930350eaee174bb60ed40a536 upstream.
+From: Nick Child <nnac123@linux.ibm.com>
 
-The call to radeon_vm_clear_freed might clear bo_va->bo, so
-we have to check it before dereferencing it.
+commit 0983d288caf984de0202c66641577b739caad561 upstream.
 
-Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[Denis: minor fix to resolve merge conflict.] 
-Signed-off-by: Denis Arefev <arefev@swemel.ru> 
+Below is a summary of how the driver stores a reference to an skb during
+transmit:
+    tx_buff[free_map[consumer_index]]->skb = new_skb;
+    free_map[consumer_index] = IBMVNIC_INVALID_MAP;
+    consumer_index ++;
+Where variable data looks like this:
+    free_map == [4, IBMVNIC_INVALID_MAP, IBMVNIC_INVALID_MAP, 0, 3]
+                                               	consumer_index^
+    tx_buff == [skb=null, skb=<ptr>, skb=<ptr>, skb=null, skb=null]
+
+The driver has checks to ensure that free_map[consumer_index] pointed to
+a valid index but there was no check to ensure that this index pointed
+to an unused/null skb address. So, if, by some chance, our free_map and
+tx_buff lists become out of sync then we were previously risking an
+skb memory leak. This could then cause tcp congestion control to stop
+sending packets, eventually leading to ETIMEDOUT.
+
+Therefore, add a conditional to ensure that the skb address is null. If
+not then warn the user (because this is still a bug that should be
+patched) and free the old pointer to prevent memleak/tcp problems.
+
+Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[Denis: minor fix to resolve merge conflict.]
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
 ---
-Backport fix CVE-2024-41060
-Link: https://nvd.nist.gov/vuln/detail/CVE-2024-41060
+Backport fix for CVE-2024-41066
+Link: https://nvd.nist.gov/vuln/detail/CVE-2024-41066
 ---
- drivers/gpu/drm/radeon/radeon_gem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/ibm/ibmvnic.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/gpu/drm/radeon/radeon_gem.c b/drivers/gpu/drm/radeon/radeon_gem.c
-index 75053917d213..51b6f38b5c47 100644
---- a/drivers/gpu/drm/radeon/radeon_gem.c
-+++ b/drivers/gpu/drm/radeon/radeon_gem.c
-@@ -582,7 +582,7 @@ static void radeon_gem_va_update_vm(struct radeon_device *rdev,
- 	if (r)
- 		goto error_unlock;
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index 84da6ccaf339..439796975cbf 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -1625,6 +1625,18 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 	    (tx_pool->consumer_index + 1) % tx_pool->num_buffers;
  
--	if (bo_va->it.start)
-+	if (bo_va->it.start && bo_va->bo)
- 		r = radeon_vm_bo_update(rdev, bo_va, &bo_va->bo->tbo.mem);
- 
- error_unlock:
+ 	tx_buff = &tx_pool->tx_buff[index];
++
++	/* Sanity checks on our free map to make sure it points to an index
++	 * that is not being occupied by another skb. If skb memory is
++	 * not freed then we see congestion control kick in and halt tx.
++	 */
++	if (unlikely(tx_buff->skb)) {
++		dev_warn_ratelimited(dev, "TX free map points to untracked skb (%s %d idx=%d)\n",
++				     skb_is_gso(skb) ? "tso_pool" : "tx_pool",
++				     queue_num, bufidx);
++		dev_kfree_skb_any(tx_buff->skb);
++	}
++
+ 	tx_buff->skb = skb;
+ 	tx_buff->data_dma[0] = data_dma_addr;
+ 	tx_buff->data_len[0] = skb->len;
 -- 
 2.43.0
 
