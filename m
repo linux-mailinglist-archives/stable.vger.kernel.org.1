@@ -1,133 +1,141 @@
-Return-Path: <stable+bounces-109507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ACEDA16BD4
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 12:54:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E240CA16C9C
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 13:57:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20DF01885E16
-	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 11:54:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B99417A28E6
+	for <lists+stable@lfdr.de>; Mon, 20 Jan 2025 12:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9CC1DF26F;
-	Mon, 20 Jan 2025 11:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8F01E0DBB;
+	Mon, 20 Jan 2025 12:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="jqOCzB7p"
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="aU4fQmq7"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic307-1.consmr.mail.bf2.yahoo.com (sonic307-1.consmr.mail.bf2.yahoo.com [74.6.134.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E02E18FDC8;
-	Mon, 20 Jan 2025 11:53:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102EF1FC8
+	for <stable@vger.kernel.org>; Mon, 20 Jan 2025 12:56:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.6.134.40
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737374040; cv=none; b=b10PdnXcQGMbDP/t2QhqLjOjokH5HCVl88/ckAHx7JJY8fWzi1fZRN0Jjs31ylGRht3M5wkmjMrqrwENET4sphNnv6dNvqYcxjyMvPWvpEcRMHzDsQHwzD+O2f02DdWYRmkr143eaPZGhTqesU2pMUGJBjVtUEfQuPKfWNQadk8=
+	t=1737377816; cv=none; b=Q5MxeArK5nXsEuwsmM90dNuLMJoHImynF4jhsvhutKtPJJ0WQVoo36fEUAoc3ecQefELT4Xry2ONAC/tBc9ao5DJ8a+2A+g1u9njW7QReZtTziE0qHYtha7RHgtqj4eTICrQseyQWtcFd2AQuhvRJ+jvwoi2COBdxbkYI6uwXjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737374040; c=relaxed/simple;
-	bh=ckmUieoQ6c7b2h5qvdikaklIDj7v6vTDGluUVK1/L88=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=grziisnd40EC5/OYo3p99T2a4s8vm78d+r7v4BGkWL3ZznDqTeWVZRUMudddUo/wQXTSGZt7RLnHMIDTo+V8wkTBJFPCHIaT/aiX6tbru46KNIOPdUYYNRV+8GAdzDhfmI3EEJKhVjjOLnAW4D3mpSZa/Vj/WoCm2s2PL3noxwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=jqOCzB7p; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1737374034;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=mXZ3I+8rEu5hC7Bbr/07M4uZY5uMU2tu8N9VtF7I1iA=;
-	b=jqOCzB7pFmmic5jfsD/stli7oRpav9Pv1HpqWYAbYMGjlBbhNW/x4/xgl1Ne942/izqIzb
-	KsLDTvokPyL03Z9hXWk12SPJlnJeCnKfyYnAmUWYjxkPwn5rNYj+9NyLQSqvy1wZtgkVSs
-	vqRoDwi8z3B4ygD7q98J9L/5cIQ9lEc=
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Nick Child <nnac123@linux.ibm.com>,
-	Dany Madden <drt@linux.ibm.com>,
-	Lijun Pan <ljp@linux.ibm.com>,
-	Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Paul Mackerras <paulus@samba.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH] ibmvnic: Add tx check to prevent skb leak
-Date: Mon, 20 Jan 2025 14:53:53 +0300
-Message-ID: <20250120115354.49654-1-arefev@swemel.ru>
+	s=arc-20240116; t=1737377816; c=relaxed/simple;
+	bh=awoA4f9sL5W63XhDxfMWAOf9cG6/2ina8dOwCzpXbXE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MzES0+HrpdyoRW48H/22BKiN8crz6pEGZc4Q6DsTZRdbZSHLDAKuErIic4WWwuIfB9pbXTCrXJhWNQsNI3DhrsduBf3L9ICw7s7ASJntqNLtO6sj8lMAzSS7A8/RRBspAmiDKSPHrwCwySHFwqyNfDqbmrf2m5w+1WxBxjc69cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=aU4fQmq7; arc=none smtp.client-ip=74.6.134.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1737377808; bh=fQYkZCImzzOwlRwH2mZG/bc5/vHITdYcTTfQQ26okDU=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=aU4fQmq7eGK9Xu2UlQ5RHwmYWgMWqnD5rNVZWr2p3YzFIGnaw5imtyET6iIoNdGQAiWJ1nNA8zvbQx2Ij6yGPBaaiDpOzNrPQv9onSmBiqHKP18lETO6h5MId8pjZj55RduWAWXOYwk7mZpEVEU4Ub5/gC8juULRjW82zmuVZQex2n5O1qXNPVSDoV/6RawCI3Gj3tw5TKwA7bjezIGOs1ru+/mTcY+1npkvcgrTNoyuRj2bOVHLRNviEMZLGgz+4swsoQh63u4cRyZH+lS1vElhe0cmQSE+HD9U8zukb6KeBy+7S3clzXdzj1/pOP3ifUCW2cdHNqUD+aBl71kZwQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1737377808; bh=ZjQDT8hxV8LNQHPUbjURxRLBPiM93Or0brglODveL8Z=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=Wg8+xibHRoNtuJk8FXDS/ddgnWDPhYp4JWjRTia+tmbOJB6q+lmDrI8jkUa1ktV30+MhVLoDtWaG5PHkufkyTtXvqQc59ogHGPavrAH3Vf2UYXK5ADG1OXimglzCYk/q3wnmA2jTgumSC2yg61VMKx/bP9v6b1OsVw1facOVTS3lhqrbU6lyjILnKgkWOSLxjixjmFWlsVM3XvNYGQFVVqjTDdp8lIQmZ+G1V+R7XdDj4E/6ZwsqMLtl3qIriGgWzk0JIIwM+9uo9kgkiXSeZUDRRt5Zo+UrYVWymDXu7FHlbA2C2tJ3fDbSv33yhcabkG6rjDQFsMY0Q0Lsojbyyw==
+X-YMail-OSG: 69vWWBoVM1liWpYkcOO4Cc8dWfv6BCtEjW5TeGi_O_nxoD2tZkrJ7HZWWVBU7Td
+ DDIbwqCpXvAFXl8j5InDgVC.95zE23z1rTIim3PmoX.zpSNb1uRmK99x4Y7NwC20WXaEnqqaneHE
+ JondmTQCeZ0AJP1LqsejZOPP0ViqrdyXZ3GZR96Kp2FaWnHHaRobTpMcMsPObTaPl8cZyLacOr2P
+ fo2eYWMBwnjKbTKaoxf7amu09bk7VC9634RGWftXYIRhntS5LmIe_x50qMTzfML7ktZ0Tbx7_1nL
+ yvh0jYhJhLTaeMlVyu_lK3C8a142TRirRZPb..TYHRvZ11fS2CKtu6f2f0HQEQUyvTqVuasXJLNT
+ g298xaABbXQ_Bl4JwloXlwvtffS6Ta.sR7R4Y2W8Kw5jL5ZtzXabz32xZcoPs66anQLuhrThq.hA
+ KOx6dpSP0e9AgxIpPH.Wiqph1OdAiCnHdEqOviZzt2ZpIvOHiv4R0lUhxerMkN8r_CJJG.jChaIL
+ fg5Ph0Kefe7TP7wytxlM.swELmBnjnfxT0mGdaBrz57o9Z1CFHqcH7NqXRDEb6NclR1xgCzsN5rp
+ ohLzxBn9OnRJtL0DTFZHr7IojC_PeODDsktCEZFP_Ub73jye3ySyl.L07JE0Zi3ahgmkMJwSDHtW
+ XZi0Nu4.WZn41afkSIjr3U3d8xQ_TaqID__VWKCDiAZXcoyg2VGiLRjbiJsX09mMGCF2SeUhYsln
+ gvxh5xbAWmaR3RW.MSYUobyeZ8oDa00MBasyAHkp7x0jOPNio2dI_viiHD3nXuzgdR0mdjH9a0XE
+ 0QwEBdYmEk24UqmFAYmgYdkMwAVTOVYQ0k9QPoGxBLePyPUaI8w1DXSKArUtR083JXxrrfOUFK7b
+ 4kzuUPDeyQ2u.IQsk8IHGzD6Iu9gdGVQEr6_wh4vpPdIIGh_fuyC92AKQoqJl0RSCGUwg6V9Fr6g
+ .ScYqmcxEiBmCYSrG8xMa_Y3LGBeYvuAA72geqJQ.jHS0hwe2sH_CtH.uIct_72V7veIHXqKs9TX
+ 3Py6a14.RwILO2FJWX4PtnLxRggvYqsaAQAYrxP_q1az3S8Q6oY3jgSVIFSndR1W2iE3w9XvYfgh
+ 5yGdD1RZJMb6VGsWor1r_gUqNLzaIM3kOp6d6YQVv5c6TGBFoM2C2SNcqXTDRbmtIfJHooHdc1I3
+ RQR88ZzkuFjyVpohIawdecaE0ZOdsTNKwwQedjgUngZUZTPar17u94omoLnSjn2bx9l7Wn5KmXe5
+ vd38LcmXdDoFtWlYdSsk2X3GpoUJZMYtN5ac6s81LEeDhaAUBcq9yKNC7WA_VEwKxH9JimI9TdXR
+ qPsXjYwgkWJIoh0OBRzXWpgSO2nAPLHW6bltAYgVD5ObalJoI494caDuTXc1Cqphy1ZM9W41mnXR
+ ZdCpnUyeNTfj_Oag18lqz7CxP7v4Ahey4oE_pUfdtuFrdPnJJiga2RsgD4JJralTVVGl8zWrLOZB
+ 2PyA8Dczidx_4YPFEYoRH0DVsPvpPkVlIVqORCLpAA3NrbYvm.dTJoXafSAcV57jwNnyMOYMiimU
+ g0mIAe_lJCuwFiSed3aoTwUL9SAoE99J0rOfCl13eF9CVv1NkKXP_4O6S_QrAqXeeLWMcMWQsXum
+ 2zfsfy7l15Z.8WvwlW_JlKk.LCkNKQ6WwbFculTlaP0CfzGTIOfEgU7HeOMqXPftWgoQiU4zcilY
+ ajqhf5H5vWPPckRydbFZ0oKymtne8AkmX9TQ7eTMehPKYWcMZGOzm3mb9kk5tTnZybGBJBhPVxeT
+ fF5aSk0mwdX_3XoVveS_29satTwFWg_Iuq4wK92jTJEsNp33EcjWlqOqYFy8Wnp4xLJ7fUNMicI0
+ gs8eC1c5o6QFxpoJKaK.usrAZbrVGvi7rkUnqcL6yaTWqK6o7kdfG9Yk3fS2JE3UbvR2c3eqoGTO
+ sf6lELZLQOiiLKaOngPlmokg8c0THfH_F14Coru8euLDeNKKarxaJKrQDxEB8s7x6aMVa4Vrrti5
+ nhSzN0uUEMOhoNNoxXFQFXuWHTxFjUINvnJOyj0o7FbbUA91NGfMDz.GJWETCruWS36.MzPfIu.L
+ wjw3jalqbJTnf6nYeqSht6sJiConcDZX9iDTZbOHAPhreUg2OB0LDpumhJfRByqntTgmxPG7F.SP
+ CyRc_zrbFSHLpAWmtFWWi5qYQ2RtVcr6cLwEwQzgUIbr.DiNK7o65OKV.g2U_a0nApbdBX1U9a_Q
+ EsBcZWecjxK.dJPwy_TET8X0omoMIoMugMUphcLejbCWZMPrPOcWejpI5vt40VqXZ
+X-Sonic-MF: <dullfire@yahoo.com>
+X-Sonic-ID: ef09f872-6111-460c-81c7-1702da353bc6
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.bf2.yahoo.com with HTTP; Mon, 20 Jan 2025 12:56:48 +0000
+Received: by hermes--production-ne1-bfc75c9cd-scmkf (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 288457ee09884436370c264f9119b1d1;
+          Mon, 20 Jan 2025 12:56:46 +0000 (UTC)
+Message-ID: <5a580609-aa5e-4153-b8dd-a6751af72685@yahoo.com>
+Date: Mon, 20 Jan 2025 06:38:19 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] PCI/MSI: Add MSIX option to write to ENTRY_DATA
+ before any reads
+Content-Language: en-US
+To: Paolo Abeni <pabeni@redhat.com>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Jacob Keller <jacob.e.keller@intel.com>, Simon Horman <horms@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Mostafa Saleh <smostafa@google.com>,
+ Marc Zyngier <maz@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20241117234843.19236-1-dullfire@yahoo.com>
+ <20241117234843.19236-2-dullfire@yahoo.com>
+ <a292cdfe-e319-4bbd-bcc0-a74c16db9053@redhat.com>
+ <07726755-f9e7-4c01-9a3f-1762e90734af@yahoo.com>
+ <4f621a9d-f527-4148-831b-aad577a6e097@redhat.com>
+From: Dullfire <dullfire@yahoo.com>
+In-Reply-To: <4f621a9d-f527-4148-831b-aad577a6e097@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.23187 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-From: Nick Child <nnac123@linux.ibm.com>
 
-From: Nick Child <nnac123@linux.ibm.com>
+On 11/21/24 04:28, Paolo Abeni wrote:
+> On 11/21/24 10:22, Dullfire wrote:
+>> On 11/21/24 02:55, Paolo Abeni wrote:
+>>> On 11/18/24 00:48, dullfire@yahoo.com wrote:
+>>>> From: Jonathan Currier <dullfire@yahoo.com>
+>>>>
+>>>> Commit 7d5ec3d36123 ("PCI/MSI: Mask all unused MSI-X entries")
+>>>> introduces a readl() from ENTRY_VECTOR_CTRL before the writel() to
+>>>> ENTRY_DATA. This is correct, however some hardware, like the Sun Neptune
+>>>> chips, the niu module, will cause an error and/or fatal trap if any MSIX
+>>>> table entry is read before the corresponding ENTRY_DATA field is written
+>>>> to. This patch adds an optional early writel() in msix_prepare_msi_desc().
+>>> Why the issue can't be addressed into the relevant device driver? It
+>>> looks like an H/W bug, a driver specific fix looks IMHO more fitting.
+>>
+>> I considered this approach, and thus asked about it in the mailing lists here:
+>> https://lore.kernel.org/sparclinux/7de14cca-e2fa-49f7-b83e-5f8322cc9e56@yahoo.com/T/
+> 
+> I forgot about such thread, thank you for the reminder. Since the more
+> hackish code is IRQ specific, if Thomas is fine with that, I'll not oppose.
+> 
+>>> A cross subsystem series, like this one, gives some extra complication
+>>> to maintainers.
+> 
+> The niu driver is not exactly under very active development, I guess the
+> whole series could go via the IRQ subsystem, if Thomas agrees.
+> 
+> Cheers,
+> 
+> Paolo
+> 
 
-commit 0983d288caf984de0202c66641577b739caad561 upstream.
+Thomas, does this work for you, or is there something else you would to see in this series?
 
-Below is a summary of how the driver stores a reference to an skb during
-transmit:
-    tx_buff[free_map[consumer_index]]->skb = new_skb;
-    free_map[consumer_index] = IBMVNIC_INVALID_MAP;
-    consumer_index ++;
-Where variable data looks like this:
-    free_map == [4, IBMVNIC_INVALID_MAP, IBMVNIC_INVALID_MAP, 0, 3]
-                                               	consumer_index^
-    tx_buff == [skb=null, skb=<ptr>, skb=<ptr>, skb=null, skb=null]
 
-The driver has checks to ensure that free_map[consumer_index] pointed to
-a valid index but there was no check to ensure that this index pointed
-to an unused/null skb address. So, if, by some chance, our free_map and
-tx_buff lists become out of sync then we were previously risking an
-skb memory leak. This could then cause tcp congestion control to stop
-sending packets, eventually leading to ETIMEDOUT.
-
-Therefore, add a conditional to ensure that the skb address is null. If
-not then warn the user (because this is still a bug that should be
-patched) and free the old pointer to prevent memleak/tcp problems.
-
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[Denis: minor fix to resolve merge conflict.]
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
----
-Backport fix for CVE-2024-41066
-Link: https://nvd.nist.gov/vuln/detail/CVE-2024-41066
----
- drivers/net/ethernet/ibm/ibmvnic.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 84da6ccaf339..439796975cbf 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -1625,6 +1625,18 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 	    (tx_pool->consumer_index + 1) % tx_pool->num_buffers;
- 
- 	tx_buff = &tx_pool->tx_buff[index];
-+
-+	/* Sanity checks on our free map to make sure it points to an index
-+	 * that is not being occupied by another skb. If skb memory is
-+	 * not freed then we see congestion control kick in and halt tx.
-+	 */
-+	if (unlikely(tx_buff->skb)) {
-+		dev_warn_ratelimited(dev, "TX free map points to untracked skb (%s %d idx=%d)\n",
-+				     skb_is_gso(skb) ? "tso_pool" : "tx_pool",
-+				     queue_num, bufidx);
-+		dev_kfree_skb_any(tx_buff->skb);
-+	}
-+
- 	tx_buff->skb = skb;
- 	tx_buff->data_dma[0] = data_dma_addr;
- 	tx_buff->data_len[0] = skb->len;
--- 
-2.43.0
-
+Sincerely,
+Jonathan Currier
 
