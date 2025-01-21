@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-109787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0895EA183EA
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0BD6A18359
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17F2616BEC9
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E04B169853
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291371F55F5;
-	Tue, 21 Jan 2025 18:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1A71F5611;
+	Tue, 21 Jan 2025 17:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nkHBc7Lc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQpmhcj0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA46E571;
-	Tue, 21 Jan 2025 18:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5C61F55ED;
+	Tue, 21 Jan 2025 17:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482437; cv=none; b=Q1/+oos6WcztG+Ef6rtXocQt2zYzYHuWpqECuUHn6kPduxPjOBlkn86m92VNjogjdk60fFZ2By5VyNKemhvwSEcUUUcTSQzIa67/iYBgLra+fPrIzH/eGjhepfVJRQIXXZZlz/B3HPa0Bui4f0dxQZy96YZnzNznItcM44fYek0=
+	t=1737482119; cv=none; b=GrG28V7UpZoe6OA9PRtX8YouxIDqP7kChr71OcE0ERl4U0wnOmtJ/W0M3yHz84ab15oPI69XxHhyxN6zefTkRfOiGiewoHzeDpL29AO43XdMqNSamEw4d14kUIpsO82JmJqBbs6CfjMp9e2UwCGzq2zBoOhMRAgaWv/3gtqSXeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482437; c=relaxed/simple;
-	bh=DikL7T/B3rxqIpkp2rzyjBpsdR8aZjV9xVpyLBB0hEE=;
+	s=arc-20240116; t=1737482119; c=relaxed/simple;
+	bh=2BxWNNrboKBiP9WCYb14QQnmNH7iYELSHPUq7HZ4xs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mc1g5FT2TFnFs3+Fm03TJl7DbXLvM4oP+p9desLSjpncm+WSbfCr7IQaVMRsUh44rUmJG00OUH1u+VWsZUyQhK4Ox2UrqoMSREbvJztgxCbNEJZJcyCnjJTuGMI7Pe040lLzBTt2tAQOyZQIgzwgoZlZAPEHJ0qLy3So3/EZzZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkHBc7Lc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2625C4CEDF;
-	Tue, 21 Jan 2025 18:00:36 +0000 (UTC)
+	 MIME-Version; b=u8BDFo1EChdZGifLVhysloqqcjZO0Km4OwBduxzUJbst+nG3SsAn5v/pDlXQXNBlUhS4UIpfgwKaXH1mPV2ikf1UvrlFGxDVJqrFjxQfyihrBOgtQ05NRRjcHUf1WunIcVjeHI/EEEKsv8SXcsiufcY66My8//Z0JtTSgpWY4p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQpmhcj0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2F6AC4CEDF;
+	Tue, 21 Jan 2025 17:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482437;
-	bh=DikL7T/B3rxqIpkp2rzyjBpsdR8aZjV9xVpyLBB0hEE=;
+	s=korg; t=1737482117;
+	bh=2BxWNNrboKBiP9WCYb14QQnmNH7iYELSHPUq7HZ4xs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nkHBc7Lc8PdiiF5pZ4dZsCQdMvR1jKnt4Io/0YuEfmUSe/Zngtxt9i5+ISTNyvWDf
-	 lXvGZ+SPNNBBMmFjrKeUPKSgZgsJ3Xp88MH3m4U7cS5/bejVigl1U78hjCL6tJyoX1
-	 LDijqi4umsX79ivGMRkdR7eK0h6WZbg0segqTJnA=
+	b=WQpmhcj05byBJplBTsW7KPi8yQvIt7jmz8FVa66PIsJWgCqfM8sXQUjyB86mneMBi
+	 PpJNP1lobN33STpQtTpfIJyzsfYAY8P/w3nh3SalYMDfqI2t3BjyEXuofHv5/TXRG8
+	 VHrIn58NsJ2vB0FrkOgaW0RuYmO1lAjX/oN4zrmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luke D. Jones" <luke@ljones.dev>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 077/122] ALSA: hda/realtek: fixup ASUS H7606W
+	Kairui Song <kasong@tencent.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 39/72] zram: fix potential UAF of zram table
 Date: Tue, 21 Jan 2025 18:52:05 +0100
-Message-ID: <20250121174535.977249938@linuxfoundation.org>
+Message-ID: <20250121174524.928767055@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luke D. Jones <luke@ljones.dev>
+From: Kairui Song <kasong@tencent.com>
 
-commit 44a48b26639e591e53f6f72000c16576ce107274 upstream.
+commit 212fe1c0df4a150fb6298db2cfff267ceaba5402 upstream.
 
-The H7606W laptop has almost the exact same codec setup as the GA403
-and so the same quirks apply to it.
+If zram_meta_alloc failed early, it frees allocated zram->table without
+setting it NULL.  Which will potentially cause zram_meta_free to access
+the table if user reset an failed and uninitialized device.
 
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Link: https://lkml.kernel.org/r/20250107065446.86928-1-ryncsn@gmail.com
+Fixes: 74363ec674cb ("zram: fix uninitialized ZRAM not releasing backing device")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Reviewed-by:  Sergey Senozhatsky <senozhatsky@chromium.org>
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250111022754.177551-2-luke@ljones.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
+ drivers/block/zram/zram_drv.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10625,6 +10625,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x1043, 0x1e1f, "ASUS Vivobook 15 X1504VAP", ALC2XX_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1e51, "ASUS Zephyrus M15", ALC294_FIXUP_ASUS_GU502_PINS),
- 	SND_PCI_QUIRK(0x1043, 0x1e5e, "ASUS ROG Strix G513", ALC294_FIXUP_ASUS_G513_PINS),
-+	SND_PCI_QUIRK(0x1043, 0x1e63, "ASUS H7606W", ALC285_FIXUP_ASUS_GU605_SPI_SPEAKER2_TO_DAC1),
- 	SND_PCI_QUIRK(0x1043, 0x1e83, "ASUS GA605W", ALC285_FIXUP_ASUS_GU605_SPI_SPEAKER2_TO_DAC1),
- 	SND_PCI_QUIRK(0x1043, 0x1e8e, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1eb3, "ASUS Ally RCLA72", ALC287_FIXUP_TAS2781_I2C),
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1262,6 +1262,7 @@ static bool zram_meta_alloc(struct zram
+ 	zram->mem_pool = zs_create_pool(zram->disk->disk_name);
+ 	if (!zram->mem_pool) {
+ 		vfree(zram->table);
++		zram->table = NULL;
+ 		return false;
+ 	}
+ 
 
 
 
