@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-109996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 523B0A184CF
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:12:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA5B1A18412
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:03:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6808162EF7
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:11:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE44C3A8856
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C43B1F76BE;
-	Tue, 21 Jan 2025 18:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C951F472D;
+	Tue, 21 Jan 2025 18:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPmGBZuc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tC8n/JjR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E7A1F76AF;
-	Tue, 21 Jan 2025 18:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757B31F3FFE;
+	Tue, 21 Jan 2025 18:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737483040; cv=none; b=TjFWVHb2KtWyNJGPNKIL7ysFvdLcYnXKYgjLWsKW+E66AUgI7rJr9uEtYO/8tbUVp+4hXI48I11/eQf//3X6Qh14uajgF6Dx/q1aJojBzQmPY5fghp8EPakJ7HQEDUQnFSsDbr4VV1Nj0Ia1poba5BAYg6WGxyd1R/vj8swzAP8=
+	t=1737482565; cv=none; b=SSWgPSHMuXPKaelXpHcmtqlBsqgl+qTTtaHaGycHfdLSw//c8MMdlymnwY1MUXfVqkLc+OhGXnPh7mA4kFJ/UL7qqruSda8NgmrbPGwNhrmuyp+YcYPG2k+7Z4OoXjvCNkz97CCbARBi5iIi3qExp1yOj+KxUTZS7D8p0vI7tus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737483040; c=relaxed/simple;
-	bh=2v4nc1GZ53z9RP0Z3kHP5SgffKdOzBKqWBW5qlTQSt0=;
+	s=arc-20240116; t=1737482565; c=relaxed/simple;
+	bh=pC91bgrX18y2Ey7N9DKAM5W4twk8wCaD7d5LCeB8aos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=byr1buY5Yx8cu2hiIcXPRBjXE7p9vPEDl6XlKidZmV9BksJMORzR8qVMgcCww5bNNTTf9ewd3me06VCo3eDsTMghAEg4W5qU5r9McG+FRl8kMUDmN/h4Z4W5gCw+pwdgiZk3X45G0jJNB++AzECq49cX8VdlI+2ifh5MReKFODY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPmGBZuc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7312C4CEDF;
-	Tue, 21 Jan 2025 18:10:39 +0000 (UTC)
+	 MIME-Version; b=Cizg+f/gNfAvN1CYvzk4j5euMW5XW0APJVLHyGHy5NcGbZjoI/yF6sBbSp4zR+Yn/+fSYO0rgu57AU8wsIC/tFAFKHiYI08X6YF7JrQFsznwIePGFkthytRVQTYq8OYGte7CVhKKW+QzHxd8/y0WIZ/6ff4DNBbhd6AjGCJ8wk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tC8n/JjR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A34C4CEDF;
+	Tue, 21 Jan 2025 18:02:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737483040;
-	bh=2v4nc1GZ53z9RP0Z3kHP5SgffKdOzBKqWBW5qlTQSt0=;
+	s=korg; t=1737482565;
+	bh=pC91bgrX18y2Ey7N9DKAM5W4twk8wCaD7d5LCeB8aos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GPmGBZuck6fkCs0HwYVHMFwoLL6ipAhd3QVMmQS9eeGrImIb7jkDUGiczQ87xKAWx
-	 l/QJbjxD5y9yprV3rit7qt3VgJcUwfiuhxWPKZcMzNWKqwsMu6FKzLrgLwBismfQji
-	 xcmW7BhhYGr5gMlkbw4ukoUf3y6i2Vwb87bmu6PA=
+	b=tC8n/JjR/DCGmTpu5y4JXxDSEjkmQ2g687Sz81c4h4U/E9znZlAt83vwjossmmLXg
+	 8wmkFuFgcn4YA6yByrpd03B/tJr9ibrkYuOxTS7ImhZd3Dayk5RyY+BWzwJQZbojbk
+	 d303VuyyC9phIe1vCLEvL3OfMIlwK9srxzc+yIKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 095/127] i2c: rcar: fix NACK handling when being a target
-Date: Tue, 21 Jan 2025 18:52:47 +0100
-Message-ID: <20250121174533.310746907@linuxfoundation.org>
+	Charlene Liu <charlene.liu@amd.com>,
+	Nicholas Susanto <Nicholas.Susanto@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 120/122] Revert "drm/amd/display: Enable urgent latency adjustments for DCN35"
+Date: Tue, 21 Jan 2025 18:52:48 +0100
+Message-ID: <20250121174537.687113589@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,100 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Nicholas Susanto <Nicholas.Susanto@amd.com>
 
-[ Upstream commit 093f70c134f70e4632b295240f07d2b50b74e247 ]
+commit 3412860cc4c0c484f53f91b371483e6e4440c3e5 upstream.
 
-When this controller is a target, the NACK handling had two issues.
-First, the return value from the backend was not checked on the initial
-WRITE_REQUESTED. So, the driver missed to send a NACK in this case.
-Also, the NACK always arrives one byte late on the bus, even in the
-WRITE_RECEIVED case. This seems to be a HW issue. We should then not
-rely on the backend to correctly NACK the superfluous byte as well. Fix
-both issues by introducing a flag which gets set whenever the backend
-requests a NACK and keep sending it until we get a STOP condition.
+Revert commit 284f141f5ce5 ("drm/amd/display: Enable urgent latency adjustments for DCN35")
 
-Fixes: de20d1857dd6 ("i2c: rcar: add slave support")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Why & How]
+
+Urgent latency increase caused  2.8K OLED monitor caused it to
+block this panel support P0.
+
+Reverting this change does not reintroduce the netflix corruption issue
+which it fixed.
+
+Fixes: 284f141f5ce5 ("drm/amd/display: Enable urgent latency adjustments for DCN35")
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Signed-off-by: Nicholas Susanto <Nicholas.Susanto@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit c7ccfc0d4241a834c25a9a9e1e78b388b4445d23)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-rcar.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
-index 316dd378fb8c4..afefe99129001 100644
---- a/drivers/i2c/busses/i2c-rcar.c
-+++ b/drivers/i2c/busses/i2c-rcar.c
-@@ -112,6 +112,8 @@
- #define ID_P_PM_BLOCKED		BIT(31)
- #define ID_P_MASK		GENMASK(31, 28)
- 
-+#define ID_SLAVE_NACK		BIT(0)
-+
- enum rcar_i2c_type {
- 	I2C_RCAR_GEN1,
- 	I2C_RCAR_GEN2,
-@@ -146,6 +148,7 @@ struct rcar_i2c_priv {
- 	int irq;
- 
- 	struct i2c_client *host_notify_client;
-+	u8 slave_flags;
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
+@@ -195,9 +195,9 @@ struct _vcs_dpi_soc_bounding_box_st dcn3
+ 	.dcn_downspread_percent = 0.5,
+ 	.gpuvm_min_page_size_bytes = 4096,
+ 	.hostvm_min_page_size_bytes = 4096,
+-	.do_urgent_latency_adjustment = 1,
++	.do_urgent_latency_adjustment = 0,
+ 	.urgent_latency_adjustment_fabric_clock_component_us = 0,
+-	.urgent_latency_adjustment_fabric_clock_reference_mhz = 3000,
++	.urgent_latency_adjustment_fabric_clock_reference_mhz = 0,
  };
  
- #define rcar_i2c_priv_to_dev(p)		((p)->adap.dev.parent)
-@@ -576,6 +579,7 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
- {
- 	u32 ssr_raw, ssr_filtered;
- 	u8 value;
-+	int ret;
- 
- 	ssr_raw = rcar_i2c_read(priv, ICSSR) & 0xff;
- 	ssr_filtered = ssr_raw & rcar_i2c_read(priv, ICSIER);
-@@ -591,7 +595,10 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
- 			rcar_i2c_write(priv, ICRXTX, value);
- 			rcar_i2c_write(priv, ICSIER, SDE | SSR | SAR);
- 		} else {
--			i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_REQUESTED, &value);
-+			ret = i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_REQUESTED, &value);
-+			if (ret)
-+				priv->slave_flags |= ID_SLAVE_NACK;
-+
- 			rcar_i2c_read(priv, ICRXTX);	/* dummy read */
- 			rcar_i2c_write(priv, ICSIER, SDR | SSR | SAR);
- 		}
-@@ -604,18 +611,21 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
- 	if (ssr_filtered & SSR) {
- 		i2c_slave_event(priv->slave, I2C_SLAVE_STOP, &value);
- 		rcar_i2c_write(priv, ICSCR, SIE | SDBS); /* clear our NACK */
-+		priv->slave_flags &= ~ID_SLAVE_NACK;
- 		rcar_i2c_write(priv, ICSIER, SAR);
- 		rcar_i2c_write(priv, ICSSR, ~SSR & 0xff);
- 	}
- 
- 	/* master wants to write to us */
- 	if (ssr_filtered & SDR) {
--		int ret;
--
- 		value = rcar_i2c_read(priv, ICRXTX);
- 		ret = i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_RECEIVED, &value);
--		/* Send NACK in case of error */
--		rcar_i2c_write(priv, ICSCR, SIE | SDBS | (ret < 0 ? FNA : 0));
-+		if (ret)
-+			priv->slave_flags |= ID_SLAVE_NACK;
-+
-+		/* Send NACK in case of error, but it will come 1 byte late :( */
-+		rcar_i2c_write(priv, ICSCR, SIE | SDBS |
-+			       (priv->slave_flags & ID_SLAVE_NACK ? FNA : 0));
- 		rcar_i2c_write(priv, ICSSR, ~SDR & 0xff);
- 	}
- 
--- 
-2.39.5
-
+ void dcn35_build_wm_range_table_fpu(struct clk_mgr *clk_mgr)
 
 
 
