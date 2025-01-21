@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-109918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E606EA18488
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:08:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 194B5A183C1
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:00:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C1C37A5479
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:07:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC1643A8AD6
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:59:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DDD81F560C;
-	Tue, 21 Jan 2025 18:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F11A1F7569;
+	Tue, 21 Jan 2025 17:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X1uoit/N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZReQBh0h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D013E1F0E36;
-	Tue, 21 Jan 2025 18:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAE01F709E;
+	Tue, 21 Jan 2025 17:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482820; cv=none; b=JfIv1wpRjFE6DTFeHQX78vrfLUOmWmPLiWCSXeGfMj7W1F9Arf4zSOw0ti0B81+A/qF8uFX6B6TxECRy3+1/6yImzOjtrC3owWNZvs3kP6IIkvaDAzxxNypwYDSpQ3L1hTigjsPKqzf4QPaFEO+J5KUKxoq2IMxPgZejx0teRSw=
+	t=1737482344; cv=none; b=FL+1KVlVetRCUa0oJA68BCMVJ5CBwF4cMyGdIjvE0+UCNi5LfLa8GjpVAqqXbsMdFOIOd+MCtrFuJYZky0vyTMAANYIZy4D+sdAiiGYwnfmKZFdGEynBBtRWatXiCRi5A43jOAQ9EqKozJ8F/WfLiXcu5A6vHZKFVlwDbvdDvYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482820; c=relaxed/simple;
-	bh=MFC2MdanUD1PfAlC0cSkdsSFJJxabNjOl+L9Tp+hGmw=;
+	s=arc-20240116; t=1737482344; c=relaxed/simple;
+	bh=LBS9kixFXUf4YVEqYnElRQ7hE6RGsU6E2dNsVPXhsmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jg+W5GR7nFquhDowyS3wa2aPCKh0ST2op7opPAQYMnFgUJUddn9KdV8htlSBPl+9PA2RmJ6RgjYSfx6rnzG93GxQa5kN0c0uU6mBonfLM55A5hffZj45qy2K3cSHdr8BQkGnDTiQ7eJQ958sf1JgiOYl8osely8hojqNsTB+vDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X1uoit/N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56DC4C4CEDF;
-	Tue, 21 Jan 2025 18:07:00 +0000 (UTC)
+	 MIME-Version; b=F3MCcE5Yk+SlvUWqwQNTs8aydAOC/Drtiuf9tq0R+ern0diufHmbsUWIOutopTmpHNLqEHanmmQbxIk2HKB1wmRkrSsF9+xVN/2WTuJ0Y/c86grYBHeewU2AExnr4pQDedOYOrQQecyfLrSKxDpDjOCEwhWAcsqbX7R9HxPyFM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZReQBh0h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA971C4CEDF;
+	Tue, 21 Jan 2025 17:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482820;
-	bh=MFC2MdanUD1PfAlC0cSkdsSFJJxabNjOl+L9Tp+hGmw=;
+	s=korg; t=1737482344;
+	bh=LBS9kixFXUf4YVEqYnElRQ7hE6RGsU6E2dNsVPXhsmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X1uoit/N2WTdD8hAskSJ/SBmbx+oXGqbYBhsjKe7DScRpXvzL8cR29nqmHMDJaIMA
-	 qAGBzEwCbn7SSqhwJVJu7kTjMEtDwD+YwJDJaNjdT8Se+BiNNxF1lUPaSX0VQdWKpp
-	 pQhiLt0IZJDjEXi/Bt0alBNYrFcMRtz72gYG26n0=
+	b=ZReQBh0hlSeNTzaCG+LlgfY9drgul1OvwU2R6mjyLk4j1DcrHLt/Xx9woQ72zsLH9
+	 um7onADKrtySe0ims9N3u2Y2NcDGN96OMaHHCMt4KvQE3G/E5dykyYZqItU2Pq2GKh
+	 Ti12csT0SAK/0DdwxEgddswS3M4hpGNgR0EC0FcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <liangwentao@iscas.ac.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 020/127] ksmbd: fix a missing return value check bug
-Date: Tue, 21 Jan 2025 18:51:32 +0100
-Message-ID: <20250121174530.454506304@linuxfoundation.org>
+Subject: [PATCH 6.12 045/122] i2c: rcar: fix NACK handling when being a target
+Date: Tue, 21 Jan 2025 18:51:33 +0100
+Message-ID: <20250121174534.721279848@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <liangwentao@iscas.ac.cn>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 4c16e1cadcbcaf3c82d5fc310fbd34d0f5d0db7c ]
+[ Upstream commit 093f70c134f70e4632b295240f07d2b50b74e247 ]
 
-In the smb2_send_interim_resp(), if ksmbd_alloc_work_struct()
-fails to allocate a node, it returns a NULL pointer to the
-in_work pointer. This can lead to an illegal memory write of
-in_work->response_buf when allocate_interim_rsp_buf() attempts
-to perform a kzalloc() on it.
+When this controller is a target, the NACK handling had two issues.
+First, the return value from the backend was not checked on the initial
+WRITE_REQUESTED. So, the driver missed to send a NACK in this case.
+Also, the NACK always arrives one byte late on the bus, even in the
+WRITE_RECEIVED case. This seems to be a HW issue. We should then not
+rely on the backend to correctly NACK the superfluous byte as well. Fix
+both issues by introducing a flag which gets set whenever the backend
+requests a NACK and keep sending it until we get a STOP condition.
 
-To address this issue, incorporating a check for the return
-value of ksmbd_alloc_work_struct() ensures that the function
-returns immediately upon allocation failure, thereby preventing
-the aforementioned illegal memory access.
-
-Fixes: 041bba4414cd ("ksmbd: fix wrong interim response on compound")
-Signed-off-by: Wentao Liang <liangwentao@iscas.ac.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: de20d1857dd6 ("i2c: rcar: add slave support")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ksmbd/smb2pdu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/i2c/busses/i2c-rcar.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
-index 7f9297a5f3ef..82b6be188ad4 100644
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -714,6 +714,9 @@ void smb2_send_interim_resp(struct ksmbd_work *work, __le32 status)
- 	struct smb2_hdr *rsp_hdr;
- 	struct ksmbd_work *in_work = ksmbd_alloc_work_struct();
+diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
+index 9267df38c2d0a..3991224148214 100644
+--- a/drivers/i2c/busses/i2c-rcar.c
++++ b/drivers/i2c/busses/i2c-rcar.c
+@@ -130,6 +130,8 @@
+ #define ID_P_PM_BLOCKED		BIT(31)
+ #define ID_P_MASK		GENMASK(31, 27)
  
-+	if (!in_work)
-+		return;
++#define ID_SLAVE_NACK		BIT(0)
 +
- 	if (allocate_interim_rsp_buf(in_work)) {
- 		pr_err("smb_allocate_rsp_buf failed!\n");
- 		ksmbd_free_work_struct(in_work);
+ enum rcar_i2c_type {
+ 	I2C_RCAR_GEN1,
+ 	I2C_RCAR_GEN2,
+@@ -166,6 +168,7 @@ struct rcar_i2c_priv {
+ 	int irq;
+ 
+ 	struct i2c_client *host_notify_client;
++	u8 slave_flags;
+ };
+ 
+ #define rcar_i2c_priv_to_dev(p)		((p)->adap.dev.parent)
+@@ -655,6 +658,7 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
+ {
+ 	u32 ssr_raw, ssr_filtered;
+ 	u8 value;
++	int ret;
+ 
+ 	ssr_raw = rcar_i2c_read(priv, ICSSR) & 0xff;
+ 	ssr_filtered = ssr_raw & rcar_i2c_read(priv, ICSIER);
+@@ -670,7 +674,10 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
+ 			rcar_i2c_write(priv, ICRXTX, value);
+ 			rcar_i2c_write(priv, ICSIER, SDE | SSR | SAR);
+ 		} else {
+-			i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_REQUESTED, &value);
++			ret = i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_REQUESTED, &value);
++			if (ret)
++				priv->slave_flags |= ID_SLAVE_NACK;
++
+ 			rcar_i2c_read(priv, ICRXTX);	/* dummy read */
+ 			rcar_i2c_write(priv, ICSIER, SDR | SSR | SAR);
+ 		}
+@@ -683,18 +690,21 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
+ 	if (ssr_filtered & SSR) {
+ 		i2c_slave_event(priv->slave, I2C_SLAVE_STOP, &value);
+ 		rcar_i2c_write(priv, ICSCR, SIE | SDBS); /* clear our NACK */
++		priv->slave_flags &= ~ID_SLAVE_NACK;
+ 		rcar_i2c_write(priv, ICSIER, SAR);
+ 		rcar_i2c_write(priv, ICSSR, ~SSR & 0xff);
+ 	}
+ 
+ 	/* master wants to write to us */
+ 	if (ssr_filtered & SDR) {
+-		int ret;
+-
+ 		value = rcar_i2c_read(priv, ICRXTX);
+ 		ret = i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_RECEIVED, &value);
+-		/* Send NACK in case of error */
+-		rcar_i2c_write(priv, ICSCR, SIE | SDBS | (ret < 0 ? FNA : 0));
++		if (ret)
++			priv->slave_flags |= ID_SLAVE_NACK;
++
++		/* Send NACK in case of error, but it will come 1 byte late :( */
++		rcar_i2c_write(priv, ICSCR, SIE | SDBS |
++			       (priv->slave_flags & ID_SLAVE_NACK ? FNA : 0));
+ 		rcar_i2c_write(priv, ICSSR, ~SDR & 0xff);
+ 	}
+ 
 -- 
 2.39.5
 
