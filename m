@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-109637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E320EA18225
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:42:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3BCBA18226
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:42:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3B98188A200
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 16:42:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 171267A30E8
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 16:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954171F03D8;
-	Tue, 21 Jan 2025 16:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36C41F4715;
+	Tue, 21 Jan 2025 16:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RHYP+43S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W+EgY0uw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564F11F428C
-	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 16:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FAD1F4297
+	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 16:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737477727; cv=none; b=Benm/HA4hvNRcIjZ4zZH7zi1QU1qSX4W8SSKE+xOFv8lwXDXAaKQcPJ5AYtrFNgXaSGb/7hAREhcNzpZjNCAj3D16AyBucZx24Nq5/JjcKjuLc60T7r8+jUszdeczpqvRLvN7cLzk8WBZYQmWqhFAZkWKb8bmYbdRkIVmM7jEBo=
+	t=1737477729; cv=none; b=K2rpXgiKlMxkAUQF8vMoo3bDovgFoWX8aY4P07GakvT6O26cTzGsToLkJodXr7Nbpwrs9D1pzyN/eqMozYlNs9pghKELJ3pTq8FEqbfa9vIfKg+mpa1B1xFHfkD7B5MfQC9puEWWegk6mn5AYJPhkg7KJ1KL5W83M3axxruneOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737477727; c=relaxed/simple;
-	bh=ERTNqVInCg0XJqqBHzREeOMGHm1XPAOhgvdngMI2GiM=;
+	s=arc-20240116; t=1737477729; c=relaxed/simple;
+	bh=c6bgl1qhrl2+HytPaMLcpdJ495Uz1JQFluvnoRy30qA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=csB3eUmdNdovGM1gl/bVtlDzUsSSZIqUIRSPmTXH3x1uWlmOjG/y5yfpoufvCYOSdQOl/P9G2aV1ykxc76mqTgpwnUNYpnk5Wcqtv7b/+snLCQEp2X0nuxg6dPj/CR3RWu1LWaqScPrNcdzK5kr4xMURPDvCk+Jgfh+RonV+ofg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RHYP+43S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ECD4C4CEDF;
-	Tue, 21 Jan 2025 16:42:06 +0000 (UTC)
+	 MIME-Version; b=Y7byzhOx/4mXF5/CgR8mMNI8Lh/A3oif78VwoVz+cUoLpmpvrM6TpcyU3i1E0/wtvfkRe8drhLjAcqB2c7UHf5VrYoST8Eyap5pNxg5amMCmpGviU+4YfkjYZjT7S1Lo07Iapzbcls6/dE8uc2RJ0YFcpkEFrcsIX2Kskk3WLrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W+EgY0uw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B63CC4CEDF;
+	Tue, 21 Jan 2025 16:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737477726;
-	bh=ERTNqVInCg0XJqqBHzREeOMGHm1XPAOhgvdngMI2GiM=;
+	s=k20201202; t=1737477728;
+	bh=c6bgl1qhrl2+HytPaMLcpdJ495Uz1JQFluvnoRy30qA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RHYP+43Sm3zkiIHXTbLn/YcUSNhevHEW8BOQxnMDPtKO1WMixT05sDfg6LcIzL47X
-	 jEIM2bqQdj8Q7zFZY1+OubVC50A2B/zrBoFrdL2N8IOl5C5hxaD+/hBnLnG6H0FTjm
-	 34g4z0NVwmcvrfz7sPkG9Dvub7v2+PM4VZeefMz199JlBWw4pq6ZPex0ky5kt1AKKD
-	 jBreM7TtSFQ7G2bySPKoNk3w20Ec2YvU1qK6BP3oWnWX9fBNkJSbwHxwc95Y/ywTT2
-	 Yq+ObShSRqiyS2jvjHRMaoawZXCLIEG4pERj18ppLqV2UmJGVlAHiXZmvyaeqYPXN8
-	 mradJyfWI3JYg==
+	b=W+EgY0uwF+1QcDbkp3Mjozy9tp9c9navDLxRfsTIMfI3/7lsBWYWhKebgW0F27NE+
+	 KgS2w7Sxql+vkDZTRt1e/3sqGvVVKaukNxLJ7/4mZ+ca3+Jy3vSufVMUSvHo83UQAp
+	 joDu+cmImwdYox9HjLd1HwGCaJ+VIn/SW6rmWVQlf1jQ0C0qJ5XmNTIU524twx/onn
+	 arPL/AaVRwg+Gz5TBegXTmQJpB9cabYzjPtNJM1WgIe1XI6R/EwC5DXOWatLRxfN79
+	 orJBHdVBm7Ykq4PjZm2pjaYfqy8EJ1Bcvrxlmh/7z7FuNsRogcpTZwfth5BM5/VWdV
+	 pfoCm6YspXf8w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Stefano Garzarella <sgarzare@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y] vsock/virtio: discard packets if the transport changes
-Date: Tue, 21 Jan 2025 11:42:04 -0500
-Message-Id: <20250120102325-1625ef492b77d8e6@stable.kernel.org>
+Subject: Re: [PATCH 5.10.y] vsock/virtio: discard packets if the transport changes
+Date: Tue, 21 Jan 2025 11:42:07 -0500
+Message-Id: <20250120101635-2c3e5b4fe22dde1f@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250120150704.103935-1-sgarzare@redhat.com>
+In-Reply-To:  <20250120150411.101681-1-sgarzare@redhat.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -71,10 +71,11 @@ Status in newer kernel trees:
 6.6.y | Not found
 6.1.y | Not found
 5.15.y | Not found
+5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  2cb7c756f605e ! 1:  95bc6e4a9a892 vsock/virtio: discard packets if the transport changes
+1:  2cb7c756f605e ! 1:  f64fe81908cab vsock/virtio: discard packets if the transport changes
     @@ Commit message
          Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
          Reviewed-by: Hyunwoo Kim <v4bel@theori.io>
@@ -100,5 +101,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-5.10.y       |  Success    |  Success   |
 
