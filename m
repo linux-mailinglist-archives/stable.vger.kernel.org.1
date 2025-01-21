@@ -1,172 +1,262 @@
-Return-Path: <stable+bounces-110039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA869A18541
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:32:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42BC2A18554
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:42:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76656188B4B5
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:32:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 413C43A4046
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D59031F63EF;
-	Tue, 21 Jan 2025 18:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9CF81F4E4A;
+	Tue, 21 Jan 2025 18:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="YfhaSojQ"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="H+fELepm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-185.mta1.migadu.com (out-185.mta1.migadu.com [95.215.58.185])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3B6185920
-	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 18:32:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3AC1DA0F1
+	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 18:41:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737484345; cv=none; b=IoVFzj9UbNp0iEcECaLX+C6jZb2vlP/j4jMqsBAWLIy5TH0J/q93zO9rlXisr/FFegcQuK+enR5ljiBq32ccq3TDDHGEdVTSbX0P3sty8JM6ZOV/aar/0HYgq9VpsGJjV1fsgxb1XnZNg5VUabMRHthpuAuavYqAP5i56Pdy0qE=
+	t=1737484919; cv=none; b=o2HUsEYVEMIeLBChVqeRyf4rJsx3PHMpdE8lFUyEHj1SmwSNlr/fTtJza97sebor5yhA7rXHBYFWaXgfuw0XaA6gQHC8uRl9vLoTRdQoICYhrHbxQr6PdnpsCmdFVu5R6JSs160yFAjCKmpbyXb2No3mbPbv2GnrUn1tfsc4gPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737484345; c=relaxed/simple;
-	bh=Zicm6hmx+Ya5yupv+MwT6SD1/ZogZGxbyz7z3euwhls=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CCvE4fGTtP72kOCfmcOQ8zus3Q/dnqlj3KLzDgmrkwy5ytv/1FiefDluAo5wSXidEUbz4J7cNJybvBNtrUU9PgtTdH4NQsumK7Mk2O826kFcnLRNK3xMmV9L22jiPAmnG+Y9ljLHe87izRBWVzv42I72N3HWfFUBw0dkCwnBgBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=YfhaSojQ; arc=none smtp.client-ip=209.85.167.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3eb87127854so1573976b6e.2
-        for <stable@vger.kernel.org>; Tue, 21 Jan 2025 10:32:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1737484342; x=1738089142; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=I6g/CX+/dSwtyMMTLVD/KiU50D2jdXyznwECf80QCyY=;
-        b=YfhaSojQz3ZC1U7/d1TlBrV+83po+BkDcy6D0YmTuGOZV85lRIIiA6+6H/Sg5yrRYo
-         SSUBnoy8Y3JlCKEhWiWftCwcQWTfjBAB/Gp7R3bXdQ2BXt7xiEeeQIBSDwaj1agNtCBs
-         AbBWHWqlFrsP9EmLJ9KPFxkIEsNOj2oGFxpkU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737484342; x=1738089142;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I6g/CX+/dSwtyMMTLVD/KiU50D2jdXyznwECf80QCyY=;
-        b=BHg5WiP3i7Ua7ZlZUdp/ntzDx2G3hIwHFHO/gic+06DvyAZk3U/WZ+xiwu6pPi9nNm
-         e02ALDlML6zN0HXXnPP1AaHI8xd1hu8o+vkZdwVn/bvn2/xzTlFoORbw/tC8ALOupe+4
-         MiDvEGxS5UsxiqIsBPHwI8hih2yjYuIw4RMvBkTBu7WMSnH97ag9X91zSf95KDavu1wy
-         egq2dW1ql8YDnlTIVWGGlFLLeDary58jsbBRunGFq48Pq3Ke1R4gLTuIZwqwa2y8+bbt
-         TvSAXNPiMF2fzyHwFHaCGxmAnQM2Fl6aJgmdbLGJjgYPjhlgth6LRpzLUgxM12IaiO6h
-         1xqw==
-X-Forwarded-Encrypted: i=1; AJvYcCXBwIL2qeoJuwlB6ImqdJ91QhSWFHxF+8VxMjizMQFtz4Agj3jRhmwR4tc+LzVXj24OpwzcMDk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+djS1HwbDz7n5qg88BwQXoLuTTvRv1rW92aJ1bkTsjWSdQhac
-	T6PnvMu5oR1VOcsnrcSmyGigar1rqp+iWnvTorqZgaFEx6UY+lGaa21AkMY10A==
-X-Gm-Gg: ASbGncsMU/gaAbT6gaXCtGAXI/S2zBWIyNiCQ3Dab659ikGjS3VFa/d0zqtrQiiGbPv
-	1zEUKiGAg7j0wtMnbNXEXYFJEPHRiEvX+stUAAX7/muIFRNfAduAHuTKEdcde8Umi9EzUWWwcmp
-	odw1Mvpa0BHEDyizJBbp6ydSVifp6swY6DWud3aALDP/eCeH2xTaa3YrZEJE9TrbUD6hp7dWSB/
-	aqyd2Yyfztt+6nYB9RG13gl1KKD+KyMEW8USgYhA9GpAE+BOA85nf4+Qha0F8DM/P6nLivKU3kS
-	Fr54uwKWYaELD+7maEAIUcWGImALEiIt2Q==
-X-Google-Smtp-Source: AGHT+IEdmBRPRkWmokta3IssK592zHSuLuOAdbq0f0sxdCFGkG6xlMjxeEXZTzeb5T9HD5OCPu6HQw==
-X-Received: by 2002:a05:6870:4f17:b0:29e:5df2:3e50 with SMTP id 586e51a60fabf-2b1c09c5d8fmr10307404fac.15.1737484342205;
-        Tue, 21 Jan 2025 10:32:22 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2b1b8cef45bsm3757647fac.20.2025.01.21.10.32.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Jan 2025 10:32:19 -0800 (PST)
-Message-ID: <1abdd175-280a-442a-a27a-9bc01c0a04c0@broadcom.com>
-Date: Tue, 21 Jan 2025 10:32:16 -0800
+	s=arc-20240116; t=1737484919; c=relaxed/simple;
+	bh=0EljVzE7a0ZWPbyuQh5Agxhzo7h+fSZ6IpomFZa/dRQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=P+aD7mSm7EIPAZE2uTNNiyTgL3rvKE1GevqvkAOWv9DrxyZz+eQJm/fu3BvkcosVGxxPBoMl3YGXcomgaoyn6vGc86sX4ngDXW+AsNSHDeGkC0LSNZBiYQCK2zw2td8SKtyeX2qGZeUCHj+uU20gVE6CAbVe2VznjdTBthq1jxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=H+fELepm; arc=none smtp.client-ip=95.215.58.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1737484914;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iP6koW23a2s3bpyORK17i3Rbf8CIBPCVEJXke/YdAWc=;
+	b=H+fELepmKJHV+B+RvcxKOAZZdi5cWX46Hv3X/6FLHwvQ8I3XvwJl7+xPmdfLi6lgJ1RMpf
+	qO9ekqROdf6PWoBX6y+gVwF/aGuDRT4x5MHjKVFbGUdvDBmiuve2695Q1YXPsekZ7SAdWY
+	EqhBiCJ32kscrSEfz7awguKkZnBkbQg=
+From: Sean Anderson <sean.anderson@linux.dev>
+To: stable@vger.kernel.org
+Cc: Sean Anderson <sean.anderson@linux.dev>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.1.y] gpio: xilinx: Convert gpio_lock to raw spinlock
+Date: Tue, 21 Jan 2025 13:41:48 -0500
+Message-Id: <20250121184148.3378693-1-sean.anderson@linux.dev>
+In-Reply-To: <2025012027-shaft-catalyst-2d69@gregkh>
+References: <2025012027-shaft-catalyst-2d69@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 -next 09/11] PCI: brcmstb: Fix for missing of_node_put
-To: Stanimir Varbanov <svarbanov@suse.de>, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rpi-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jim Quinlan <jim2101024@gmail.com>,
- Nicolas Saenz Julienne <nsaenz@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, kw@linux.com,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Andrea della Porta <andrea.porta@suse.com>,
- Phil Elwell <phil@raspberrypi.com>, Jonathan Bell
- <jonathan@raspberrypi.com>, Dave Stevenson <dave.stevenson@raspberrypi.com>,
- stable@vger.kernel.org
-References: <20250120130119.671119-1-svarbanov@suse.de>
- <20250120130119.671119-10-svarbanov@suse.de>
-Content-Language: en-US
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
- xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
- M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
- JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
- PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
- KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
- AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
- IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
- ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
- bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
- Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
- tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
- TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
- zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
- WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
- IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
- U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
- 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
- pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
- MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
- IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
- gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
- obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
- N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
- CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
- C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
- wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
- EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
- fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
- MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
- 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
- 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <20250120130119.671119-10-svarbanov@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On 1/20/25 05:01, Stanimir Varbanov wrote:
-> A call to of_parse_phandle() increments refcount, of_node_put must be
-> called when done the work on it. Fix missing of_node_put() on the
-> msi_np device node by using scope based of_node_put() cleanups.
-> 
-> Cc: stable@vger.kernel.org # v5.10+
-> Fixes: 40ca1bf580ef ("PCI: brcmstb: Add MSI support")
-> Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
-> ---
-> v4 -> v5:
->   - New patch in the series.
-> 
->   drivers/pci/controller/pcie-brcmstb.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
-> index 744fe1a4cf9c..546056f7f0d3 100644
-> --- a/drivers/pci/controller/pcie-brcmstb.c
-> +++ b/drivers/pci/controller/pcie-brcmstb.c
-> @@ -1844,7 +1844,8 @@ static struct pci_ops brcm7425_pcie_ops = {
->   
->   static int brcm_pcie_probe(struct platform_device *pdev)
->   {
-> -	struct device_node *np = pdev->dev.of_node, *msi_np;
-> +	struct device_node *msi_np __free(device_node) = NULL;
+[ Upstream commit c17ff476f53afb30f90bb3c2af77de069c81a622 ]
 
-In the interest of making this a straight back port to 5.10 that does 
-not have all of the __free() goodies, I would just add the missing 
-of_node_put() where necessary.
+irq_chip functions may be called in raw spinlock context. Therefore, we
+must also use a raw spinlock for our own internal locking.
 
-Also, since this is a bug fix, you should probably make it appear 
-earlier in the patch series, or even sent it as a separate fix entirely.
+This fixes the following lockdep splat:
+
+[    5.349336] =============================
+[    5.353349] [ BUG: Invalid wait context ]
+[    5.357361] 6.13.0-rc5+ #69 Tainted: G        W
+[    5.363031] -----------------------------
+[    5.367045] kworker/u17:1/44 is trying to lock:
+[    5.371587] ffffff88018b02c0 (&chip->gpio_lock){....}-{3:3}, at: xgpio_irq_unmask (drivers/gpio/gpio-xilinx.c:433 (discriminator 8))
+[    5.380079] other info that might help us debug this:
+[    5.385138] context-{5:5}
+[    5.387762] 5 locks held by kworker/u17:1/44:
+[    5.392123] #0: ffffff8800014958 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work (kernel/workqueue.c:3204)
+[    5.402260] #1: ffffffc082fcbdd8 (deferred_probe_work){+.+.}-{0:0}, at: process_one_work (kernel/workqueue.c:3205)
+[    5.411528] #2: ffffff880172c900 (&dev->mutex){....}-{4:4}, at: __device_attach (drivers/base/dd.c:1006)
+[    5.419929] #3: ffffff88039c8268 (request_class#2){+.+.}-{4:4}, at: __setup_irq (kernel/irq/internals.h:156 kernel/irq/manage.c:1596)
+[    5.428331] #4: ffffff88039c80c8 (lock_class#2){....}-{2:2}, at: __setup_irq (kernel/irq/manage.c:1614)
+[    5.436472] stack backtrace:
+[    5.439359] CPU: 2 UID: 0 PID: 44 Comm: kworker/u17:1 Tainted: G        W          6.13.0-rc5+ #69
+[    5.448690] Tainted: [W]=WARN
+[    5.451656] Hardware name: xlnx,zynqmp (DT)
+[    5.455845] Workqueue: events_unbound deferred_probe_work_func
+[    5.461699] Call trace:
+[    5.464147] show_stack+0x18/0x24 C
+[    5.467821] dump_stack_lvl (lib/dump_stack.c:123)
+[    5.471501] dump_stack (lib/dump_stack.c:130)
+[    5.474824] __lock_acquire (kernel/locking/lockdep.c:4828 kernel/locking/lockdep.c:4898 kernel/locking/lockdep.c:5176)
+[    5.478758] lock_acquire (arch/arm64/include/asm/percpu.h:40 kernel/locking/lockdep.c:467 kernel/locking/lockdep.c:5851 kernel/locking/lockdep.c:5814)
+[    5.482429] _raw_spin_lock_irqsave (include/linux/spinlock_api_smp.h:111 kernel/locking/spinlock.c:162)
+[    5.486797] xgpio_irq_unmask (drivers/gpio/gpio-xilinx.c:433 (discriminator 8))
+[    5.490737] irq_enable (kernel/irq/internals.h:236 kernel/irq/chip.c:170 kernel/irq/chip.c:439 kernel/irq/chip.c:432 kernel/irq/chip.c:345)
+[    5.494060] __irq_startup (kernel/irq/internals.h:241 kernel/irq/chip.c:180 kernel/irq/chip.c:250)
+[    5.497645] irq_startup (kernel/irq/chip.c:270)
+[    5.501143] __setup_irq (kernel/irq/manage.c:1807)
+[    5.504728] request_threaded_irq (kernel/irq/manage.c:2208)
+
+Fixes: a32c7caea292 ("gpio: gpio-xilinx: Add interrupt support")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250110163354.2012654-1-sean.anderson@linux.dev
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+[ resolved conflicts ]
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+---
+ drivers/gpio/gpio-xilinx.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/gpio/gpio-xilinx.c b/drivers/gpio/gpio-xilinx.c
+index 2fc6b6ff7f16..58cbf763ee21 100644
+--- a/drivers/gpio/gpio-xilinx.c
++++ b/drivers/gpio/gpio-xilinx.c
+@@ -66,7 +66,7 @@ struct xgpio_instance {
+ 	DECLARE_BITMAP(state, 64);
+ 	DECLARE_BITMAP(last_irq_read, 64);
+ 	DECLARE_BITMAP(dir, 64);
+-	spinlock_t gpio_lock;	/* For serializing operations */
++	raw_spinlock_t gpio_lock;	/* For serializing operations */
+ 	int irq;
+ 	struct irq_chip irqchip;
+ 	DECLARE_BITMAP(enable, 64);
+@@ -181,14 +181,14 @@ static void xgpio_set(struct gpio_chip *gc, unsigned int gpio, int val)
+ 	struct xgpio_instance *chip = gpiochip_get_data(gc);
+ 	int bit = xgpio_to_bit(chip, gpio);
+ 
+-	spin_lock_irqsave(&chip->gpio_lock, flags);
++	raw_spin_lock_irqsave(&chip->gpio_lock, flags);
+ 
+ 	/* Write to GPIO signal and set its direction to output */
+ 	__assign_bit(bit, chip->state, val);
+ 
+ 	xgpio_write_ch(chip, XGPIO_DATA_OFFSET, bit, chip->state);
+ 
+-	spin_unlock_irqrestore(&chip->gpio_lock, flags);
++	raw_spin_unlock_irqrestore(&chip->gpio_lock, flags);
+ }
+ 
+ /**
+@@ -212,7 +212,7 @@ static void xgpio_set_multiple(struct gpio_chip *gc, unsigned long *mask,
+ 	bitmap_remap(hw_mask, mask, chip->sw_map, chip->hw_map, 64);
+ 	bitmap_remap(hw_bits, bits, chip->sw_map, chip->hw_map, 64);
+ 
+-	spin_lock_irqsave(&chip->gpio_lock, flags);
++	raw_spin_lock_irqsave(&chip->gpio_lock, flags);
+ 
+ 	bitmap_replace(state, chip->state, hw_bits, hw_mask, 64);
+ 
+@@ -220,7 +220,7 @@ static void xgpio_set_multiple(struct gpio_chip *gc, unsigned long *mask,
+ 
+ 	bitmap_copy(chip->state, state, 64);
+ 
+-	spin_unlock_irqrestore(&chip->gpio_lock, flags);
++	raw_spin_unlock_irqrestore(&chip->gpio_lock, flags);
+ }
+ 
+ /**
+@@ -238,13 +238,13 @@ static int xgpio_dir_in(struct gpio_chip *gc, unsigned int gpio)
+ 	struct xgpio_instance *chip = gpiochip_get_data(gc);
+ 	int bit = xgpio_to_bit(chip, gpio);
+ 
+-	spin_lock_irqsave(&chip->gpio_lock, flags);
++	raw_spin_lock_irqsave(&chip->gpio_lock, flags);
+ 
+ 	/* Set the GPIO bit in shadow register and set direction as input */
+ 	__set_bit(bit, chip->dir);
+ 	xgpio_write_ch(chip, XGPIO_TRI_OFFSET, bit, chip->dir);
+ 
+-	spin_unlock_irqrestore(&chip->gpio_lock, flags);
++	raw_spin_unlock_irqrestore(&chip->gpio_lock, flags);
+ 
+ 	return 0;
+ }
+@@ -267,7 +267,7 @@ static int xgpio_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
+ 	struct xgpio_instance *chip = gpiochip_get_data(gc);
+ 	int bit = xgpio_to_bit(chip, gpio);
+ 
+-	spin_lock_irqsave(&chip->gpio_lock, flags);
++	raw_spin_lock_irqsave(&chip->gpio_lock, flags);
+ 
+ 	/* Write state of GPIO signal */
+ 	__assign_bit(bit, chip->state, val);
+@@ -277,7 +277,7 @@ static int xgpio_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
+ 	__clear_bit(bit, chip->dir);
+ 	xgpio_write_ch(chip, XGPIO_TRI_OFFSET, bit, chip->dir);
+ 
+-	spin_unlock_irqrestore(&chip->gpio_lock, flags);
++	raw_spin_unlock_irqrestore(&chip->gpio_lock, flags);
+ 
+ 	return 0;
+ }
+@@ -405,7 +405,7 @@ static void xgpio_irq_mask(struct irq_data *irq_data)
+ 	int bit = xgpio_to_bit(chip, irq_offset);
+ 	u32 mask = BIT(bit / 32), temp;
+ 
+-	spin_lock_irqsave(&chip->gpio_lock, flags);
++	raw_spin_lock_irqsave(&chip->gpio_lock, flags);
+ 
+ 	__clear_bit(bit, chip->enable);
+ 
+@@ -415,7 +415,7 @@ static void xgpio_irq_mask(struct irq_data *irq_data)
+ 		temp &= ~mask;
+ 		xgpio_writereg(chip->regs + XGPIO_IPIER_OFFSET, temp);
+ 	}
+-	spin_unlock_irqrestore(&chip->gpio_lock, flags);
++	raw_spin_unlock_irqrestore(&chip->gpio_lock, flags);
+ }
+ 
+ /**
+@@ -431,7 +431,7 @@ static void xgpio_irq_unmask(struct irq_data *irq_data)
+ 	u32 old_enable = xgpio_get_value32(chip->enable, bit);
+ 	u32 mask = BIT(bit / 32), val;
+ 
+-	spin_lock_irqsave(&chip->gpio_lock, flags);
++	raw_spin_lock_irqsave(&chip->gpio_lock, flags);
+ 
+ 	__set_bit(bit, chip->enable);
+ 
+@@ -450,7 +450,7 @@ static void xgpio_irq_unmask(struct irq_data *irq_data)
+ 		xgpio_writereg(chip->regs + XGPIO_IPIER_OFFSET, val);
+ 	}
+ 
+-	spin_unlock_irqrestore(&chip->gpio_lock, flags);
++	raw_spin_unlock_irqrestore(&chip->gpio_lock, flags);
+ }
+ 
+ /**
+@@ -515,7 +515,7 @@ static void xgpio_irqhandler(struct irq_desc *desc)
+ 
+ 	chained_irq_enter(irqchip, desc);
+ 
+-	spin_lock(&chip->gpio_lock);
++	raw_spin_lock(&chip->gpio_lock);
+ 
+ 	xgpio_read_ch_all(chip, XGPIO_DATA_OFFSET, all);
+ 
+@@ -532,7 +532,7 @@ static void xgpio_irqhandler(struct irq_desc *desc)
+ 	bitmap_copy(chip->last_irq_read, all, 64);
+ 	bitmap_or(all, rising, falling, 64);
+ 
+-	spin_unlock(&chip->gpio_lock);
++	raw_spin_unlock(&chip->gpio_lock);
+ 
+ 	dev_dbg(gc->parent, "IRQ rising %*pb falling %*pb\n", 64, rising, 64, falling);
+ 
+@@ -623,7 +623,7 @@ static int xgpio_probe(struct platform_device *pdev)
+ 	bitmap_set(chip->hw_map,  0, width[0]);
+ 	bitmap_set(chip->hw_map, 32, width[1]);
+ 
+-	spin_lock_init(&chip->gpio_lock);
++	raw_spin_lock_init(&chip->gpio_lock);
+ 
+ 	chip->gc.base = -1;
+ 	chip->gc.ngpio = bitmap_weight(chip->hw_map, 64);
 -- 
-Florian
+2.35.1.1320.gc452695387.dirty
+
 
