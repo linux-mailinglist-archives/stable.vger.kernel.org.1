@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-109937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 849B2A18495
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:09:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE22BA183E1
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 192EE16556A
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0000F16A43C
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B33D1F6675;
-	Tue, 21 Jan 2025 18:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D71E571;
+	Tue, 21 Jan 2025 18:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mui/f7xu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iz91+dYA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A251F55E3;
-	Tue, 21 Jan 2025 18:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101821F7080;
+	Tue, 21 Jan 2025 18:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482869; cv=none; b=rAhV/9/8ocflZ9orjCe4cAra1GjIQSRMFvxoJU3StsA0suny3DN+xIymMXIAhrztMedvPj2aeS3UedOP46hxXSU166o0LKvxAs5hdqvhvC+ZJHN512z//DsAIitiUiTCnjmeg1cky4iOQeB22oud03vVIcSgRrymPTx0Wl10SxA=
+	t=1737482420; cv=none; b=g2SkQwiWkaU9f3DtMud8Hu2rhVVDpcTmibmrWLhQl9HJkCUWdLOV21K3XYA7gBLX513+729Eb9/CfkLB074GMqeWI61jqdYhYd+q9KEI+3UvS39qzS8GYAYI1qBnx09JIBmUdGfVS1VrEEo2f4ieQ/2MN/diK1LqWO6D6XNSh8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482869; c=relaxed/simple;
-	bh=hsYYrNCceu0D5WdIM+j5sCVDHL4t1SbquTBzL352WDQ=;
+	s=arc-20240116; t=1737482420; c=relaxed/simple;
+	bh=3NAa/ZBY5rQLwCSII+NqW1Br2e7xSM+CiwvFOHjIyfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p7OYihgrq1NYu4Ui+oBzkj+Cgzs/zNUX/EukXDvwGNlGzPPGa5RzpJM0oYZJO4iCcA6/ujuNZr8WlrAX8uhmaACt+FGryJX3WRHrpcvJA5Ru2ffTYiCisXEJ1x8t9Dx+iuH9pjkcWcnAbFOI2P8Qgpw7T1cPwP2RxByLqGHdrVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mui/f7xu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2EC3C4CEDF;
-	Tue, 21 Jan 2025 18:07:48 +0000 (UTC)
+	 MIME-Version; b=HaIYZWIXOO4MdORAsrlVinaA4+B01UAH60Gh/hu3gmvnLnnoxrBqqttlLABLWYhd3lDC0jm269+wm15XEkpugicKmjSKahsd9BVpMd+0kskGuTaHIL0yAySu6PURbeKdmDd97WA0SylK5fc1aaaQn92LFrnbDwYlCdFFRY7R+WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iz91+dYA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83196C4CEE3;
+	Tue, 21 Jan 2025 18:00:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482869;
-	bh=hsYYrNCceu0D5WdIM+j5sCVDHL4t1SbquTBzL352WDQ=;
+	s=korg; t=1737482419;
+	bh=3NAa/ZBY5rQLwCSII+NqW1Br2e7xSM+CiwvFOHjIyfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mui/f7xuy3vHneVVhL3q9O4nMLN77gXwLPYr06yg8Wg5VXKwNGs6dD4WbbdHN5eMw
-	 Ig4bsJr85oDGYNlIYOQwNdhorMl0YYSMY9d+32qS9nBG+L5/fITMdz9c7SNb19x4ta
-	 4nI1kbCkg+GKmUYY7QjCpSERswQ+6ltQdawXXMAM=
+	b=iz91+dYATN+1ij1qmF1SZIXBVuIlnX9ItNrQjC74rQCfcgp5nIB/a/o6pg9PiBZ5r
+	 k3IECFdVukCfjLXvKULihTsus4xmJxv+Wp2/DSLEbKCnTEGv1mNPdCOnJ+1O755h+3
+	 1ayDYic5qeYRUwSIMMzfyVZ8WjnJleDtDDegB3r4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+205c2644abdff9d3f9fc@syzkaller.appspotmail.com,
-	Yuezhang Mo <Yuezhang.Mo@sony.com>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 006/127] exfat: fix the infinite loop in exfat_readdir()
+Subject: [PATCH 6.12 030/122] net/mlx5e: Rely on reqid in IPsec tunnel mode
 Date: Tue, 21 Jan 2025 18:51:18 +0100
-Message-ID: <20250121174529.920282352@linuxfoundation.org>
+Message-ID: <20250121174534.154843023@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +64,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuezhang Mo <Yuezhang.Mo@sony.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit fee873761bd978d077d8c55334b4966ac4cb7b59 ]
+[ Upstream commit 25f23524dfa227959beb3b2c2c0f38e0222f4cfa ]
 
-If the file system is corrupted so that a cluster is linked to
-itself in the cluster chain, and there is an unused directory
-entry in the cluster, 'dentry' will not be incremented, causing
-condition 'dentry < max_dentries' unable to prevent an infinite
-loop.
+All packet offloads SAs have reqid in it to make sure they have
+corresponding policy. While it is not strictly needed for transparent
+mode, it is extremely important in tunnel mode. In that mode, policy and
+SAs have different match criteria.
 
-This infinite loop causes s_lock not to be released, and other
-tasks will hang, such as exfat_sync_fs().
+Policy catches the whole subnet addresses, and SA catches the tunnel gateways
+addresses. The source address of such tunnel is not known during egress packet
+traversal in flow steering as it is added only after successful encryption.
 
-This commit stops traversing the cluster chain when there is unused
-directory entry in the cluster to avoid this infinite loop.
+As reqid is required for packet offload and it is unique for every SA,
+we can safely rely on it only.
 
-Reported-by: syzbot+205c2644abdff9d3f9fc@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=205c2644abdff9d3f9fc
-Tested-by: syzbot+205c2644abdff9d3f9fc@syzkaller.appspotmail.com
-Fixes: ca06197382bd ("exfat: add directory operations")
-Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
-Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+The output below shows the configured egress policy and SA by strongswan:
+
+[leonro@vm ~]$ sudo ip x s
+src 192.169.101.2 dst 192.169.101.1
+        proto esp spi 0xc88b7652 reqid 1 mode tunnel
+        replay-window 0 flag af-unspec esn
+        aead rfc4106(gcm(aes)) 0xe406a01083986e14d116488549094710e9c57bc6 128
+        anti-replay esn context:
+         seq-hi 0x0, seq 0x0, oseq-hi 0x0, oseq 0x0
+         replay_window 1, bitmap-length 1
+         00000000
+        crypto offload parameters: dev eth2 dir out mode packet
+
+[leonro@064 ~]$ sudo ip x p
+src 192.170.0.0/16 dst 192.170.0.0/16
+        dir out priority 383615 ptype main
+        tmpl src 192.169.101.2 dst 192.169.101.1
+                proto esp spi 0xc88b7652 reqid 1 mode tunnel
+        crypto offload parameters: dev eth2 mode packet
+
+Fixes: b3beba1fb404 ("net/mlx5e: Allow policies with reqid 0, to support IKE policy holes")
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exfat/dir.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c  | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/fs/exfat/dir.c b/fs/exfat/dir.c
-index 0a1b1de032ef..70d0849826f2 100644
---- a/fs/exfat/dir.c
-+++ b/fs/exfat/dir.c
-@@ -126,7 +126,7 @@ static int exfat_readdir(struct inode *inode, loff_t *cpos, struct exfat_dir_ent
- 			type = exfat_get_entry_type(ep);
- 			if (type == TYPE_UNUSED) {
- 				brelse(bh);
--				break;
-+				goto out;
- 			}
- 
- 			if (type != TYPE_FILE && type != TYPE_DIR) {
-@@ -186,6 +186,7 @@ static int exfat_readdir(struct inode *inode, loff_t *cpos, struct exfat_dir_ent
- 		}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+index e51b03d4c717f..57861d34d46f8 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+@@ -1718,23 +1718,21 @@ static int tx_add_rule(struct mlx5e_ipsec_sa_entry *sa_entry)
+ 		goto err_alloc;
  	}
  
-+out:
- 	dir_entry->namebuf.lfn[0] = '\0';
- 	*cpos = EXFAT_DEN_TO_B(dentry);
- 	return 0;
+-	if (attrs->family == AF_INET)
+-		setup_fte_addr4(spec, &attrs->saddr.a4, &attrs->daddr.a4);
+-	else
+-		setup_fte_addr6(spec, attrs->saddr.a6, attrs->daddr.a6);
+-
+ 	setup_fte_no_frags(spec);
+ 	setup_fte_upper_proto_match(spec, &attrs->upspec);
+ 
+ 	switch (attrs->type) {
+ 	case XFRM_DEV_OFFLOAD_CRYPTO:
++		if (attrs->family == AF_INET)
++			setup_fte_addr4(spec, &attrs->saddr.a4, &attrs->daddr.a4);
++		else
++			setup_fte_addr6(spec, attrs->saddr.a6, attrs->daddr.a6);
+ 		setup_fte_spi(spec, attrs->spi, false);
+ 		setup_fte_esp(spec);
+ 		setup_fte_reg_a(spec);
+ 		break;
+ 	case XFRM_DEV_OFFLOAD_PACKET:
+-		if (attrs->reqid)
+-			setup_fte_reg_c4(spec, attrs->reqid);
++		setup_fte_reg_c4(spec, attrs->reqid);
+ 		err = setup_pkt_reformat(ipsec, attrs, &flow_act);
+ 		if (err)
+ 			goto err_pkt_reformat;
 -- 
 2.39.5
 
