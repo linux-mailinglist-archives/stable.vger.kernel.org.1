@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-109936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01E0FA1847E
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:08:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35084A183D8
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C27283A206F
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:07:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE442188D4F1
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2E51F666B;
-	Tue, 21 Jan 2025 18:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6886C185935;
+	Tue, 21 Jan 2025 17:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GC9NYW1O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMET7TM9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FBF1F540C;
-	Tue, 21 Jan 2025 18:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270BD1F238E;
+	Tue, 21 Jan 2025 17:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482866; cv=none; b=hORTK3ZZ8XjbmA5k3FDf5dhfKNlpHUvdpbVWPF6xiNoT4yvxYMX+/2+zLK9WxYaLmNvpPXoW9f2MQS4c34UYV8IGU8naMqHgHJKaWtHW3Zp22F8XtzjilHdMZ8lxCmA0JIEecrBjBHS4FTKJyMJL5ZYq7HoutJbGvoihyU0GJ88=
+	t=1737482388; cv=none; b=eCS43wOGv/RXbJkBUPp/yTXugDae4L3gN9zsHlTboL4JT6TFmosCAp3JtAVCRVYoNTU7/4x2QXI+q7JucqSsCDU+YstNy6tOiGrbeWeAdoFoLCIKHMXJ0F5VJercnkiUENo66IarMiDeHMxPZ064sFO31iS8E3EWS6NTtI2x8VE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482866; c=relaxed/simple;
-	bh=EpCy4vQ8k2J8q+fH98U+2+d+zaMsErQ4yez0J2L+TyQ=;
+	s=arc-20240116; t=1737482388; c=relaxed/simple;
+	bh=wsPPv+GVoGTBivP1yGxtbESVKRuc7f1HaqcenU5J3+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O7Kz+0l27qHFGAwA+nUsZXAYYkMakOigm0U70x0IudF1CvbzOcSFMGL87bNym1YTtlGoLbDXq4M79/6jEPt2UAoYKSA+A8AW4z28uTvOY5lML86VJC38Bytc9R1VR58Cq6e/IahXudyp51Kds0U92A6PIe31TYY4Z1KqnKRmYy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GC9NYW1O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 010E3C4CEDF;
-	Tue, 21 Jan 2025 18:07:45 +0000 (UTC)
+	 MIME-Version; b=BS4SInszH3XtJp8HwL4ExqtVp0S/Sr/sm6xUB9/xm4RxOzt2hxAMIw+le5I8v5F3oR82rcoDhWSforSLtqDJa4OEQ7F2/eXbb1rQEp47L6XoV9ueqWSzFghh6Zr4kDOx1JuwLuArvKUXZHZ9X3/bRzNRLGTj3CP1mj0aH2wdKpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMET7TM9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2398C4CEDF;
+	Tue, 21 Jan 2025 17:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482866;
-	bh=EpCy4vQ8k2J8q+fH98U+2+d+zaMsErQ4yez0J2L+TyQ=;
+	s=korg; t=1737482388;
+	bh=wsPPv+GVoGTBivP1yGxtbESVKRuc7f1HaqcenU5J3+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GC9NYW1Ov+9dtV1JvWj+v86eXfJfXqo1NLjhcuXyY67SwBCbPEAyK24U2Rt9ZN+6k
-	 JEP557Q5WzCMugml7tDMI5G0o8rk/fLoTZh/M6V9yOxQqQY+NbbsaPwYweh2ERY1O5
-	 RHn8D1LeS/Z7624LNR0BP68jErGtEkXffmBL4yTI=
+	b=GMET7TM9LcFhzHTHQk3tAwwRnObpa5r0rokDuC2BSUXCXfF5SFifAX7gxrsP7h6xv
+	 Eb6DHxKIYcKeQYnXCBL8rNyLwe7G7GZAD1tD5I8oDJDXopPjhEPc70kqbVkdBtIWhh
+	 W2A0fM3BKf8LOBoXO3txKCgwqcYdMBcaHkJM+W40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Nitin Gupta <ngupta@vflare.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Dominique Martinet <dominique.martinet@atmark-techno.com>
-Subject: [PATCH 5.15 034/127] drivers/block/zram/zram_drv.c: do not keep dangling zcomp pointer after zram reset
-Date: Tue, 21 Jan 2025 18:51:46 +0100
-Message-ID: <20250121174530.999716773@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 059/122] selftests: tc-testing: reduce rshift value
+Date: Tue, 21 Jan 2025 18:51:47 +0100
+Message-ID: <20250121174535.269601654@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 6d2453c3dbc5f70eafc1c866289a90a1fc57ce18 upstream.
+[ Upstream commit e95274dfe86490ec2a5633035c24b2de6722841f ]
 
-We do all reset operations under write lock, so we don't need to save
-->disksize and ->comp to stack variables.  Another thing is that ->comp is
-freed during zram reset, but comp pointer is not NULL-ed, so zram keeps
-the freed pointer value.
+After previous change rshift >= 32 is no longer allowed.
+Modify the test to use 31, the test doesn't seem to send
+any traffic so the exact value shouldn't matter.
 
-Link: https://lkml.kernel.org/r/20220824035100.971816-1-senozhatsky@chromium.org
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Nitin Gupta <ngupta@vflare.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 74363ec674cb ("zram: fix uninitialized ZRAM not releasing backing device")
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250103182458.1213486-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/zram/zram_drv.c |   13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ tools/testing/selftests/tc-testing/tc-tests/filters/flow.json | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1695,9 +1695,6 @@ out:
- 
- static void zram_reset_device(struct zram *zram)
- {
--	struct zcomp *comp;
--	u64 disksize;
--
- 	down_write(&zram->init_lock);
- 
- 	zram->limit_pages = 0;
-@@ -1707,18 +1704,16 @@ static void zram_reset_device(struct zra
- 		return;
- 	}
- 
--	comp = zram->comp;
--	disksize = zram->disksize;
--	zram->disksize = 0;
--
- 	set_capacity_and_notify(zram->disk, 0);
- 	part_stat_set_all(zram->disk->part0, 0);
- 
- 	up_write(&zram->init_lock);
- 	/* I/O operation under all of CPU are done so let's free */
--	zram_meta_free(zram, disksize);
-+	zram_meta_free(zram, zram->disksize);
-+	zram->disksize = 0;
- 	memset(&zram->stats, 0, sizeof(zram->stats));
--	zcomp_destroy(comp);
-+	zcomp_destroy(zram->comp);
-+	zram->comp = NULL;
- 	reset_bdev(zram);
- }
- 
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/filters/flow.json b/tools/testing/selftests/tc-testing/tc-tests/filters/flow.json
+index 58189327f6444..383fbda07245c 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/filters/flow.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/filters/flow.json
+@@ -78,10 +78,10 @@
+         "setup": [
+             "$TC qdisc add dev $DEV1 ingress"
+         ],
+-        "cmdUnderTest": "$TC filter add dev $DEV1 parent ffff: handle 1 prio 1 protocol ip flow map key dst rshift 0xff",
++        "cmdUnderTest": "$TC filter add dev $DEV1 parent ffff: handle 1 prio 1 protocol ip flow map key dst rshift 0x1f",
+         "expExitCode": "0",
+         "verifyCmd": "$TC filter get dev $DEV1 parent ffff: handle 1 protocol ip prio 1 flow",
+-        "matchPattern": "filter parent ffff: protocol ip pref 1 flow chain [0-9]+ handle 0x1 map keys dst rshift 255 baseclass",
++        "matchPattern": "filter parent ffff: protocol ip pref 1 flow chain [0-9]+ handle 0x1 map keys dst rshift 31 baseclass",
+         "matchCount": "1",
+         "teardown": [
+             "$TC qdisc del dev $DEV1 ingress"
+-- 
+2.39.5
+
 
 
 
