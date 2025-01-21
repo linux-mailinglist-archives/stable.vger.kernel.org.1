@@ -1,199 +1,138 @@
-Return-Path: <stable+bounces-109592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B62AA179AA
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 09:58:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 156D5A17A1E
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 10:26:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4112E3A2540
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 08:57:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4675E162914
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 09:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F0F1BAED6;
-	Tue, 21 Jan 2025 08:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2F81BEF77;
+	Tue, 21 Jan 2025 09:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCHHt1U7"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CgFOLCrA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFA92AF0A;
-	Tue, 21 Jan 2025 08:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BDD1BE251
+	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 09:26:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737449876; cv=none; b=aaXiZH9P0NUMD04Ta0wqmDX3uOA65RGm8wZ/3XELzBoQlB92eUQLBseBJMDp+PG0jbtvbQE0/E+twHBQGYlOIxjN307B4X+42JdksptVq9CjmHft/ziW8Ya0wumfJGd8P4cjOBMA+I6RnkHDF9y20gKbdK8QRaO3+A7LqRSEY+c=
+	t=1737451594; cv=none; b=BCb21XlXhY9AklHZAaH+V3fQ3Y9pnqCM05hTWfHjSmK7ApjfEyBbZm/0A052LHbFl6lfPzscWFw1GCwt3dzsQFPlq3/8b+8GNjSxA1vBsGboFUKwZ0B7OGYc4pLhLsJ2MO9353MaBhdIuL7fYTiGv1yxs+munQE09LVHOd7Mnvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737449876; c=relaxed/simple;
-	bh=6HnqX3VCFDhuDjSDwacvYyOvrqz6ME2+QgKkkPjkotg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=STGVQ9kBEyGnJpDADPH6iavBiTMvBW3ig9mATQulUWyInVi2oPVd4KI3z9hyxSydcjp/7JdOli/ItRZ4fT0zyT2rRSjjgY+xTVW//PLWDgquvXyzOOIhpEA6lGzFNqBlj39GqROYsjf7dd652pJOC91Rsj2FcmohZrF92Xh7zYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCHHt1U7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C8E0C4CEDF;
-	Tue, 21 Jan 2025 08:57:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737449875;
-	bh=6HnqX3VCFDhuDjSDwacvYyOvrqz6ME2+QgKkkPjkotg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lCHHt1U7TEYBIMgXG7pFyLq4JajBuSzJt6wm1hQVJLVpuSz3W0PT2QQcsNThmN8D0
-	 84O4sT5vKS5A2CbfDbzbHWJsYVSsdU7xka/6Igsz2P2nWSTP4obuJ25dP4c4keBL7p
-	 Q7mJXR0a/3VobOJEdfSQOUPRVRTq+cmO3r91TDLQ=
-Date: Tue, 21 Jan 2025 09:57:52 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Ignat Korchagin <ignat@cloudflare.com>, stable@vger.kernel.org,
-	patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>,
-	kernel-team@cloudflare.com
-Subject: Re: [PATCH 6.6 010/129] ovl: do not encode lower fh with upper
- sb_writers held
-Message-ID: <2025012123-cable-reburial-568e@gregkh>
-References: <20250115103554.357917208@linuxfoundation.org>
- <20250115103554.776405922@linuxfoundation.org>
- <ACD4D6CC-C4D5-4657-A805-03C34559046E@cloudflare.com>
- <CAOQ4uxj21U_=_Lj0AfDHmLt2wAjQG3vhYh9hXyZ=KG-J+AUOxg@mail.gmail.com>
- <CALrw=nH2gMfZUf=7rFSDRwD7bYzm5isvaY8rVPSG-6cf21OAfA@mail.gmail.com>
- <CAOQ4uxj+dRP2MwaOzKPbaryv9HuxmmONhug_95ATCpZHP-pzWw@mail.gmail.com>
- <2025012118-handclap-encounter-af04@gregkh>
+	s=arc-20240116; t=1737451594; c=relaxed/simple;
+	bh=ZcMl9T7RlCjxuLKbwC1f+xswYX0vEeEEzXWmHSpA/RQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u36N2U8WIckzs+5YYhMzNBEnz6Zae6SCBLT+G9aSIJPDfJIEfIowep/RVyBGqg3caFg6JJsXw2N0/Bt/dizrPi2LyIKYO87pkwbojm4CLdkutwXD2hWJMUoFsdz/ybNvfeUEi5OE/h9hbXhcze06TpW9lPEn3XnxuxMn4DigOgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CgFOLCrA; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1737451591;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZcMl9T7RlCjxuLKbwC1f+xswYX0vEeEEzXWmHSpA/RQ=;
+	b=CgFOLCrA+D8frHpG+D6DN1+NG6mGXuwK9j0GUn77OR9dpWKX/Qjlml5QhKuehTXLuZnsTS
+	LrjvEQgdGQ/GarORehSiYNSxt6DrDyJleFXQLc3adZN7cO9MIiG6btS467DwGh32lmOlB3
+	OpZKGxjDwhGG/cx0e0vyIOt1B3mpydY=
+Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
+ [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-124-flt5p7mCPuyK9iWxiWwprg-1; Tue, 21 Jan 2025 04:26:30 -0500
+X-MC-Unique: flt5p7mCPuyK9iWxiWwprg-1
+X-Mimecast-MFC-AGG-ID: flt5p7mCPuyK9iWxiWwprg
+Received: by mail-yb1-f198.google.com with SMTP id 3f1490d57ef6-e549b6c54a0so14434666276.3
+        for <stable@vger.kernel.org>; Tue, 21 Jan 2025 01:26:30 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737451589; x=1738056389;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZcMl9T7RlCjxuLKbwC1f+xswYX0vEeEEzXWmHSpA/RQ=;
+        b=cxi9IMEtxW9CQ+aVoNu5ZBPGFQPVob7P+ZULr6jVnCx9NGjEKoWzL+Bu2BLloTT8uY
+         2EzCSVzyvstBxTe7xvVwXiTDFEeDIH8tnP9puANkdB0To1YBstL+gi1Y8KUkVErvx01t
+         BYGyQYkC1Krq8Z1dHZHPRjOYbPyh7PlUJghk8FCL27707zZDwkUXYgnK0kTstbqv4EZi
+         w6EvYr+aHGFJcwrWWE5DsZllVohJfvJpwIAnNTzh9Pk5DHLc6coLV/fXWkiZPa8PCqoH
+         Ungm2Xz85Pv9dzVtZEE7S7E5Ge/+RuQ9SM621Dt0z2BNiMN20bPLSMj3SNZhWvgQy3Es
+         JTYQ==
+X-Gm-Message-State: AOJu0YzdrqHmmpzsK+1YGK6YpxJG9aWoKDd/RqgdTEI9p0DyJSqBTD0U
+	GN6xZ1lemhlAfHMjWk/yiRIVPYLDBdNdDgsg7ktijscev+vrhBxgXSbhp0Jzxw+jRYqSEyKR781
+	egwwQTL59+bcJZz9wusli/irct2iuni6qwUK+g8LAfvVWSFS1L9vuILWQLSszQiwzvcN3HYscUT
+	YqPpVyCZoofIs36j3Np+RDwjFCWQlS
+X-Gm-Gg: ASbGncsF7SDS7b+Vco47EPBydV3Twlm7Rcxdl6j0WUEP5To7JpcbyYW21h3YN4y40Pk
+	q2FXo5X1CgfJPZXLSzx4rI+elcKkxKGqymgOYFj3ZV1Im0FN31iE=
+X-Received: by 2002:a05:690c:6d88:b0:6ef:9017:3cc8 with SMTP id 00721157ae682-6f6eb93dd94mr132985687b3.31.1737451589600;
+        Tue, 21 Jan 2025 01:26:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEPfcV3sMJ9miaggCNDkRQsuOLJFKzmLYHRfMh84OmMxnALANbXEYiHiQp4ay5q/2m8lQnVzMY1CSPQvi2vReo=
+X-Received: by 2002:a05:690c:6d88:b0:6ef:9017:3cc8 with SMTP id
+ 00721157ae682-6f6eb93dd94mr132985577b3.31.1737451589172; Tue, 21 Jan 2025
+ 01:26:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2025012118-handclap-encounter-af04@gregkh>
+References: <CACW2H-7QEMKA+LUAzFJ+srmRCzSuLk2G7shWt0SGR9SfmxwOjA@mail.gmail.com>
+In-Reply-To: <CACW2H-7QEMKA+LUAzFJ+srmRCzSuLk2G7shWt0SGR9SfmxwOjA@mail.gmail.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Tue, 21 Jan 2025 10:26:17 +0100
+X-Gm-Features: AbW1kva06TUn80yX_7OVZOe0yUvWm_8e1UQkb-uvcAJGduBS1LrlbXRwFdyFD3Q
+Message-ID: <CAGxU2F4_59X-Fj7vRCoDqM394699uxqLQZ5yCuH+jXUYcYO81g@mail.gmail.com>
+Subject: Re: [REGRESSION] vsocket timeout with kata containers agent 3.10.1
+ and kernel 6.6.70
+To: Simon Kaegi <simon.kaegi@gmail.com>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev, 
+	Eric Dumazet <edumazet@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Martin KaFai Lau <kafai@fb.com>, Kuniyuki Iwashima <kuniyu@amazon.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Jan 21, 2025 at 08:55:41AM +0100, Greg Kroah-Hartman wrote:
-> On Mon, Jan 20, 2025 at 09:45:40PM +0100, Amir Goldstein wrote:
-> > On Mon, Jan 20, 2025 at 9:14 PM Ignat Korchagin <ignat@cloudflare.com> wrote:
-> > >
-> > > On Mon, Jan 20, 2025 at 6:54 PM Amir Goldstein <amir73il@gmail.com> wrote:
-> > > >
-> > > > On Mon, Jan 20, 2025 at 6:09 PM Ignat Korchagin <ignat@cloudflare.com> wrote:
-> > > > >
-> > > > >
-> > > > >
-> > > > > > On 15 Jan 2025, at 10:36, Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> > > > > >
-> > > > > > 6.6-stable review patch.  If anyone has any objections, please let me know.
-> > > > > >
-> > > > > > ------------------
-> > > > > >
-> > > > > > From: Amir Goldstein <amir73il@gmail.com>
-> > > > > >
-> > > > > > [ Upstream commit 5b02bfc1e7e3811c5bf7f0fa626a0694d0dbbd77 ]
-> > > > > >
-> > > > > > When lower fs is a nested overlayfs, calling encode_fh() on a lower
-> > > > > > directory dentry may trigger copy up and take sb_writers on the upper fs
-> > > > > > of the lower nested overlayfs.
-> > > > > >
-> > > > > > The lower nested overlayfs may have the same upper fs as this overlayfs,
-> > > > > > so nested sb_writers lock is illegal.
-> > > > > >
-> > > > > > Move all the callers that encode lower fh to before ovl_want_write().
-> > > > > >
-> > > > > > Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-> > > > > > Stable-dep-of: c45beebfde34 ("ovl: support encoding fid from inode with no alias")
-> > > > > > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > > > > > ---
-> > > > >
-> > > > > Hi,
-> > > > >
-> > > > > This patch seems to trigger the following warning on 6.6.72, when running simple “$ docker run --rm -it debian” (creating a container):
-> > > > >
-> > > > > ------------[ cut here ]------------
-> > > > > WARNING: CPU: 12 PID: 668 at fs/namespace.c:1245 cleanup_mnt+0x130/0x150
-> > > > > Modules linked in: xt_conntrack(E) nft_chain_nat(E) xt_MASQUERADE(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) bridge(E) stp(E) llc(E) xfrm_user(E) xfrm_algo(E) xt_addrtype(E) nft_compat(E) nf_tables(E) overlay(E) kvm_amd(E) ccp(E) kvm(E) irqbypass(E) crc32_pclmul(E) sha512_ssse3(E) sha256_ssse3(E) sha1_ssse3(E) aesni_intel(E) crypto_simd(E) cryptd(E) iTCO_wdt(E) virtio_console(E) virtio_balloon(E) iTCO_vendor_support(E) tiny_power_button(E) button(E) sch_fq_codel(E) fuse(E) nfnetlink(E) vsock_loopback(E) vmw_vsock_virtio_transport_common(E) vsock(E) efivarfs(E) ip_tables(E) x_tables(E) virtio_net(E) net_failover(E) virtio_blk(E) virtio_scsi(E) failover(E) crc32c_intel(E) i2c_i801(E) virtio_pci(E) virtio_pci_legacy_dev(E) i2c_smbus(E) lpc_ich(E) virtio_pci_modern_dev(E) mfd_core(E) virtio(E) virtio_ring(E)
-> > > > > CPU: 12 PID: 668 Comm: dockerd Tainted: G E 6.6.71+ #18
-> > > > > Hardware name: KubeVirt None/RHEL, BIOS edk2-20230524-3.el9 05/24/2023
-> > > > > RIP: 0010:cleanup_mnt+0x130/0x150
-> > > > > Code: 2c 01 00 00 85 c0 75 16 e8 6d fb ff ff eb 8a c7 87 2c 01 00 00 00 00 00 00 e9 6a ff ff ff c7 87 2c 01 00 00 00 00 00 00 eb de <0f> 0b 48 83 bd 30 01 00 00 00 0f 84 e9 fe ff ff 48 89 ef e8 18 e7
-> > > > > RSP: 0018:ffffc9000095fec8 EFLAGS: 00010282
-> > > > > RAX: 00000000fffffffe RBX: 0000000000000000 RCX: 0000000000000010
-> > > > > RDX: 0000000000000010 RSI: 0000000000000010 RDI: 0000000000000010
-> > > > > RBP: ffff888109ea57c0 R08: ffffffffbc27ab60 R09: 0000000000000000
-> > > > > R10: 0000000000037420 R11: 0000000000000000 R12: ffff88810acba9bc
-> > > > > R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-> > > > > FS: 00007f1041ffb6c0(0000) GS:ffff88903fc00000(0000) knlGS:0000000000000000
-> > > > > CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > > > > CR2: 000000c000b7f02f CR3: 00000001034ca002 CR4: 0000000000770ee0
-> > > > > PKRU: 55555554
-> > > > > Call Trace:
-> > > > > <TASK>
-> > > > > ? cleanup_mnt+0x130/0x150
-> > > > > ? __warn+0x81/0x130
-> > > > > ? cleanup_mnt+0x130/0x150
-> > > > > ? report_bug+0x16f/0x1a0
-> > > > > ? handle_bug+0x53/0x90
-> > > > > ? exc_invalid_op+0x17/0x70
-> > > > > ? asm_exc_invalid_op+0x1a/0x20
-> > > > > ? cleanup_mnt+0x130/0x150
-> > > > > ? cleanup_mnt+0x13/0x150
-> > > > > task_work_run+0x5d/0x90
-> > > > > exit_to_user_mode_prepare+0xf8/0x100
-> > > > > syscall_exit_to_user_mode+0x21/0x40
-> > > > > ? srso_alias_return_thunk+0x5/0xfbef5
-> > > > > do_syscall_64+0x45/0x90
-> > > > > entry_SYSCALL_64_after_hwframe+0x60/0xca
-> > > > > RIP: 0033:0x55d0e0726dee
-> > > > > Code: 48 83 ec 38 e8 13 00 00 00 48 83 c4 38 5d c3 cc cc cc cc cc cc cc cc cc cc cc cc cc 49 89 f2 48 89 fa 48 89 ce 48 89 df 0f 05 <48> 3d 01 f0 ff ff 76 15 48 f7 d8 48 89 c1 48 c7 c0 ff ff ff ff 48
-> > > > > RSP: 002b:000000c000145a10 EFLAGS: 00000216 ORIG_RAX: 00000000000000a6
-> > > > > RAX: 0000000000000000 RBX: 000000c000b7fce0 RCX: 000055d0e0726dee
-> > > > > RDX: 0000000000000000 RSI: 0000000000000002 RDI: 000000c000b7fce0
-> > > > > RBP: 000000c000145a50 R08: 0000000000000000 R09: 0000000000000000
-> > > > > R10: 0000000000000000 R11: 0000000000000216 R12: 000000c000b7fce0
-> > > > > R13: 0000000000000000 R14: 000000c000b06e00 R15: 1fffffffffffffff
-> > > > > </TASK>
-> > > > > ---[ end trace 0000000000000000 ]—
-> > > > >
-> > > > > This commit was pointed by my bisecting 6.6.71..6.6.72, but to double-check it I had to revert the following commits to make 6.6.72 compile and not exhibit the issue:
-> > > >
-> > > > Can you say what the compile error was?
-> > > > Maybe it is easy to fix without reverting the entire bunch.
-> > >
-> > > Just to revert 26423e18cd6f I needed to revert a3f8a2b13a27 as well
-> > > (otherwise there were conflicts). But then the compilation failed with
-> > >
-> > > fs/overlayfs/export.c: In function ‘ovl_dentry_to_fid’:
-> > > fs/overlayfs/export.c:255:67: error: ‘dentry’ undeclared (first use in
-> > > this function)
-> > >   255 |         fh = ovl_encode_real_fh(ofs, enc_lower ?
-> > > ovl_dentry_lower(dentry) :
-> > >       |                                                                   ^~~~~~
-> > >
-> > > so I had to revert a1a541fbfa7e as well
-> > 
-> > Care to try this backport branch without the buggy dependency
-> > based off of v6.6.71:
-> > 
-> > https://github.com/amir73il/linux/commits/ovl-6.6.y/
-> > 
-> > Sorry, I had no time to test this, but the conflicts are pretty trivial.
-> > I also added a manual backport of another related patch from 6.12.y
-> > while at it.
-> > 
-> > >
-> > > > Just by looking, it is hard for me to guess what caused the scripts to
-> > > > pull in this dependency patch.
-> > > >
-> > > > >
-> > > > >   * a3f8a2b13a277d942c810d2ccc654d5bc824a430 (“ovl: pass realinode to ovl_encode_real_fh() instead of realdentry
-> > > > > ”) [ Upstream commit 07aeefae7ff44d80524375253980b1bdee2396b0 ]
-> > > > >   * 26423e18cd6f709ca4fe7194c29c11658cd0cdd0 (“ovl: do not encode lower fh with upper sb_writers held”) [ Upstream commit 5b02bfc1e7e3811c5bf7f0fa626a0694d0dbbd77 ]
-> > > > >   * a1a541fbfa7e97c1100144db34b57553d7164ce5 ("ovl: support encoding fid from inode with no alias”) [ Upstream commit c45beebfde34aa71afbc48b2c54cdda623515037 ]
-> > > > >
-> > 
-> > These should be reverted in 6.6.y apply the backports from my branch instead.
-> 
-> Ok, let me revert them now, do a release, and then can you submit a
-> working set of patches we can apply again?
+Hi Simon,
 
-Ok, 6.6.73 is out with the reverts, can you send me the patches to queue
-up for a future release?
+On Tue, 21 Jan 2025 at 05:53, Simon Kaegi <simon.kaegi@gmail.com> wrote:
+>
+> #regzbot introduced v6.6.69..v6.6.70
+> #regzbot introduced: ad91a2dacbf8c26a446658cdd55e8324dfeff1e7
+>
+> We hit this regression when updating our guest vm kernel from 6.6.69
+> to 6.6.70 -- bisecting, this problem was introduced in
+> ad91a2dacbf8c26a446658cdd55e8324dfeff1e7 -- net: restrict SO_REUSEPORT
+> to inet sockets
+>
+> We're getting a timeout when trying to connect to the vsocket in the
+> guest VM when launching a kata containers 3.10.1 agent which
+> unsurprisingly ... uses a vsocket to communicate back to the host.
+>
+> We updated this commit and added an additional sk_is_vsock check and
+> recompiled and this works correctly for us.
+> - if (valbool && !sk_is_inet(sk))
+> + if (valbool && !(sk_is_inet(sk) || sk_is_vsock(sk)))
+>
+> My understanding is limited here so I've added Stefano as he is likely
+> to better understand what makes sense here.
 
-thanks,
+Thanks for adding me, do you have a reproducer here?
 
-greg k-h
+AFAIK in AF_VSOCK we never supported SO_REUSEPORT, so it seems strange to me.
+
+I understand that the patch you refer to actually changes the behavior
+of setsockopt(..., SO_REUSEPORT, ...) on an AF_VSOCK socket, where it
+used to return successfully before that change, but now returns an
+error, but subsequent binds should have still failed even without this
+patch.
+
+Do you actually use the SO_REUSEPORT feature on AF_VSOCK?
+
+If so, I need to better understand if the core socket does anything,
+but as I recall AF_VSOCK allocates ports internally, so I don't think
+multiple binds on the same port have ever been supported.
+
+Thanks,
+Stefano
+
 
