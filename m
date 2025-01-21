@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-109749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4E42A183BC
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:00:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F2DA18481
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:08:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B6CF188C849
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:59:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C0673A4FE9
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1010F1F76B5;
-	Tue, 21 Jan 2025 17:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FBCD1F7060;
+	Tue, 21 Jan 2025 18:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqdYBPGe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfFpuzGh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B521F63E2;
-	Tue, 21 Jan 2025 17:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2551F3FFE;
+	Tue, 21 Jan 2025 18:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482326; cv=none; b=GGd/8u1IUary1E1178HfkSsQYGdNQ3n4SbPRsJgMN3eNflFGd0le5Ol/q+8ZGPhttGjgPz17KXX7VBXistESv0DqQ1DuKx6u2GSfyAPpZjXQJlXi9Ma+hbi6h8AIC3354QnLY2LlZHoyOjZ3I53nKvttW2BIIHJ0wylXG26Iy1A=
+	t=1737482872; cv=none; b=EOD79kqNaqZRrc/ecrWNTeQmbjQ6GQ8P8/PusTYuqAVTlwVgJwzRB9cMokWyIKZAjPVFFtwh78KU4RO+Y0DCIrc6rnmatc/dKsNBzvbxAvKfTTFALdwXf7cSbwB5JyX9VL0UPGvyj1Zwnwgyl4bvTmCRPhQ5iK+AkHEkz8zSuXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482326; c=relaxed/simple;
-	bh=NiUQtnSlTzSjuoN9hyG2hkAw4fu55r8mgzWsvt7n16k=;
+	s=arc-20240116; t=1737482872; c=relaxed/simple;
+	bh=ryUJMSpHDhfVOiEwMrYCeKDFhkdtbE3/o7HINqPgAog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sn8iKCvuuH9dXbYzyorkqdYd/4bsQ0u5ibVRJ3e1J55IHgtpQDykENsu3LWYgrVoU81wSm3CalpOkcNFfPdx4wKuI8IB7kstVdWcqWBttEZJhFimVsHLthORQW5aqm+5j7XVYLlZSPoa201xG/D0YeHg/dN9G6brXcO4+zQmjg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqdYBPGe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A47C4CEDF;
-	Tue, 21 Jan 2025 17:58:46 +0000 (UTC)
+	 MIME-Version; b=O6FYLV+f2hDWO6S9YzCPB3QbMyv7AJmotPbQvD//k8nO9YbAm8PL+U6Gl/H6H7NSYlN6dJhIAsH9hE//4QklldelIQSR2/ssAMp4+M2iz4LSrdB5y04Q3j2ZwSXOZTdKt4AlRACyW+wxD2/smzZtsunx4RRFc1h6ZyxP7wT2zO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfFpuzGh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8909C4CEDF;
+	Tue, 21 Jan 2025 18:07:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482326;
-	bh=NiUQtnSlTzSjuoN9hyG2hkAw4fu55r8mgzWsvt7n16k=;
+	s=korg; t=1737482872;
+	bh=ryUJMSpHDhfVOiEwMrYCeKDFhkdtbE3/o7HINqPgAog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eqdYBPGeSha27b2PQUuYMrHRSv4MnD1FkQrYtJNina0MkOHf4/F66xnn+DTeZSNb+
-	 ujWqD1A0AninRdKyCGjIOTwWA/Pz86fEsBtT1jHK8POiWbB8sT9jKBOBqupdKwS4vq
-	 4j5GdcmLLCAIxkKFaaX4mIsA4syMc/kEmCSBY4Qc=
+	b=IfFpuzGhpRL+U9BMaBeweQfY1m7fIvVUCJOJwLPDxvf9EnHXXKWFRqGrX+XOLF7Uq
+	 /5wpGVYq6WkHM0Aalop1UfUB+KNE5G/2sAqObK+90TeaKibLbQUoBG9bfBOBNt1U9j
+	 Ga1p82KU2iX02T1UdXEosZ6D9xdXbWX9yAsvrGgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	syzbot+1de5a37cb85a2d536330@syzkaller.appspotmail.com,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 031/122] net/mlx5e: Always start IPsec sequence number from 1
+Subject: [PATCH 5.15 007/127] exfat: fix the infinite loop in __exfat_free_cluster()
 Date: Tue, 21 Jan 2025 18:51:19 +0100
-Message-ID: <20250121174534.191063369@linuxfoundation.org>
+Message-ID: <20250121174529.958173617@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-[ Upstream commit 7f95b0247764acd739d949ff247db4b76138e55a ]
+[ Upstream commit a5324b3a488d883aa2d42f72260054e87d0940a0 ]
 
-According to RFC4303, section "3.3.3. Sequence Number Generation",
-the first packet sent using a given SA will contain a sequence
-number of 1.
+In __exfat_free_cluster(), the cluster chain is traversed until the
+EOF cluster. If the cluster chain includes a loop due to file system
+corruption, the EOF cluster cannot be traversed, resulting in an
+infinite loop.
 
-This is applicable to both ESN and non-ESN mode, which was not covered
-in commit mentioned in Fixes line.
+This commit uses the total number of clusters to prevent this infinite
+loop.
 
-Fixes: 3d42c8cc67a8 ("net/mlx5e: Ensure that IPsec sequence packet number starts from 1")
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: syzbot+1de5a37cb85a2d536330@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1de5a37cb85a2d536330
+Tested-by: syzbot+1de5a37cb85a2d536330@syzkaller.appspotmail.com
+Fixes: 31023864e67a ("exfat: add fat entry operations")
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c  |  6 ++++++
- .../mellanox/mlx5/core/en_accel/ipsec_offload.c       | 11 ++++++++---
- 2 files changed, 14 insertions(+), 3 deletions(-)
+ fs/exfat/fatent.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-index 21857474ad83f..1baf8933a07cb 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-@@ -724,6 +724,12 @@ static int mlx5e_xfrm_add_state(struct xfrm_state *x,
- 	/* check esn */
- 	if (x->props.flags & XFRM_STATE_ESN)
- 		mlx5e_ipsec_update_esn_state(sa_entry);
-+	else
-+		/* According to RFC4303, section "3.3.3. Sequence Number Generation",
-+		 * the first packet sent using a given SA will contain a sequence
-+		 * number of 1.
-+		 */
-+		sa_entry->esn_state.esn = 1;
+diff --git a/fs/exfat/fatent.c b/fs/exfat/fatent.c
+index 421c27353104..8f07504e5345 100644
+--- a/fs/exfat/fatent.c
++++ b/fs/exfat/fatent.c
+@@ -215,6 +215,16 @@ static int __exfat_free_cluster(struct inode *inode, struct exfat_chain *p_chain
  
- 	mlx5e_ipsec_build_accel_xfrm_attrs(sa_entry, &sa_entry->attrs);
+ 			if (err)
+ 				goto dec_used_clus;
++
++			if (num_clusters >= sbi->num_clusters - EXFAT_FIRST_CLUSTER) {
++				/*
++				 * The cluster chain includes a loop, scan the
++				 * bitmap to get the number of used clusters.
++				 */
++				exfat_count_used_clusters(sb, &sbi->used_clusters);
++
++				return 0;
++			}
+ 		} while (clu != EXFAT_EOF_CLUSTER);
+ 	}
  
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
-index 53cfa39188cb0..820debf3fbbf2 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
-@@ -91,8 +91,9 @@ u32 mlx5_ipsec_device_caps(struct mlx5_core_dev *mdev)
- EXPORT_SYMBOL_GPL(mlx5_ipsec_device_caps);
- 
- static void mlx5e_ipsec_packet_setup(void *obj, u32 pdn,
--				     struct mlx5_accel_esp_xfrm_attrs *attrs)
-+				     struct mlx5e_ipsec_sa_entry *sa_entry)
- {
-+	struct mlx5_accel_esp_xfrm_attrs *attrs = &sa_entry->attrs;
- 	void *aso_ctx;
- 
- 	aso_ctx = MLX5_ADDR_OF(ipsec_obj, obj, ipsec_aso);
-@@ -120,8 +121,12 @@ static void mlx5e_ipsec_packet_setup(void *obj, u32 pdn,
- 	 * active.
- 	 */
- 	MLX5_SET(ipsec_obj, obj, aso_return_reg, MLX5_IPSEC_ASO_REG_C_4_5);
--	if (attrs->dir == XFRM_DEV_OFFLOAD_OUT)
-+	if (attrs->dir == XFRM_DEV_OFFLOAD_OUT) {
- 		MLX5_SET(ipsec_aso, aso_ctx, mode, MLX5_IPSEC_ASO_INC_SN);
-+		if (!attrs->replay_esn.trigger)
-+			MLX5_SET(ipsec_aso, aso_ctx, mode_parameter,
-+				 sa_entry->esn_state.esn);
-+	}
- 
- 	if (attrs->lft.hard_packet_limit != XFRM_INF) {
- 		MLX5_SET(ipsec_aso, aso_ctx, remove_flow_pkt_cnt,
-@@ -175,7 +180,7 @@ static int mlx5_create_ipsec_obj(struct mlx5e_ipsec_sa_entry *sa_entry)
- 
- 	res = &mdev->mlx5e_res.hw_objs;
- 	if (attrs->type == XFRM_DEV_OFFLOAD_PACKET)
--		mlx5e_ipsec_packet_setup(obj, res->pdn, attrs);
-+		mlx5e_ipsec_packet_setup(obj, res->pdn, sa_entry);
- 
- 	err = mlx5_cmd_exec(mdev, in, sizeof(in), out, sizeof(out));
- 	if (!err)
 -- 
 2.39.5
 
