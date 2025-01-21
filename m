@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-109678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 056C5A1835C
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 092E5A183EE
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:02:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69956188B9A5
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E8661887D3E
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02C81F63CD;
-	Tue, 21 Jan 2025 17:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112EB1F543F;
+	Tue, 21 Jan 2025 18:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VRUn2fI6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LfU0nn7c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626D01F63C4;
-	Tue, 21 Jan 2025 17:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C491E1F470A;
+	Tue, 21 Jan 2025 18:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482120; cv=none; b=iKpSY9RSfRTX6imxTraLTtJ2zFwwbLiHKDAP4ViDTd7Ld/wkwrXa5uyTw3XdvWQDGIJ87q1v+mtyGsmypeVyi04wPLnythNMv69PKCWF3pGTTr+yaWWiUq7pCiSsD2A9ZjEeUiEw9QQf1YdrNIPT8FDddq2gqoHt9GcoP+IztZw=
+	t=1737482441; cv=none; b=OrbwybviR5DM9z9uW2ZGfJv78W0abC4SdsInsIkYRdAQdQFwwbrb817XDb30ndq405PIgNsTz5OIlqQkJ+ZVCZam8PYzYg+wqcWxftW9TfnksztKRzqsE8jM2vIPdw+uuMB/DEJUla2GSkT/vw6yAHPVvbJ+7JtGafm6u/8TZWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482120; c=relaxed/simple;
-	bh=nBkRJmcWaRG8n5NTTnI8f56I2/NgzX84fKLkMV5T4xw=;
+	s=arc-20240116; t=1737482441; c=relaxed/simple;
+	bh=liFYInXowpa4b16cRHpUyNkVuOtXOFDWZAOeXvSV3fc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bBVV/mT46BpfNJ63tC0f1Ax9H9tjbIpt8rfluGkoASxKDhnO60uOd6kPl0jJjkgMhjrI2nQNjjqyCR7TvLhALjOh/2jNvBRc3CXF7IsB1VwhegVBM/IGlDtFM/LsOQSTQY8dg8qoQ4N94kHlVUTyHo68CMXjlxbRUTbBkgd1R1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VRUn2fI6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB0D8C4CEE0;
-	Tue, 21 Jan 2025 17:55:19 +0000 (UTC)
+	 MIME-Version; b=LkXbn1CNTPh5AZATpbiKEcBPBKiJQCHwo4XXaG276QNfqDdCTX8aQamK9OjXOD69GaASNsYGyh2ebrLEuLD7i7PjAIw3tHcP/x4/ivXNSCe9FCWmx8tlWo4aAFTRnJuL8pEVr/Trbog/b5RwYX75USAjEIorhJeLDA27+I0Y7EU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LfU0nn7c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAC5C4CEDF;
+	Tue, 21 Jan 2025 18:00:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482120;
-	bh=nBkRJmcWaRG8n5NTTnI8f56I2/NgzX84fKLkMV5T4xw=;
+	s=korg; t=1737482440;
+	bh=liFYInXowpa4b16cRHpUyNkVuOtXOFDWZAOeXvSV3fc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VRUn2fI6tHszIYaQkfKpfV9grXDcasggNQRDWGmQFtyNWU2qZVtVpo7oP2Rkae9cD
-	 CYQaMRo2NgboAYbeFliKitBsQBIlNdy8YM2V00KpmkySB8bJZeR9ODAd05C0NuFlv/
-	 Zrh2CLOqU/7aej/Qa1HAOACV22RAQqyD0BppWOr4=
+	b=LfU0nn7cJa3GZvqETnX2zlKCnram6txxC7zIkeD5sxR6jdHCqFbNn0IYBRY3x18ao
+	 Uk03Yqeq7NzgujkDsPR2cNeVFd23feRONfN1ODIrsNAl4zjXACBo2EARR4nw29Y/bk
+	 rnqgXRJsyqMeRQw1FXTh4oSj9fuI5b2JT40WsXl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH 6.6 40/72] i2c: atr: Fix client detach
+	Kairui Song <kasong@tencent.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 078/122] zram: fix potential UAF of zram table
 Date: Tue, 21 Jan 2025 18:52:06 +0100
-Message-ID: <20250121174524.966219903@linuxfoundation.org>
+Message-ID: <20250121174536.019761751@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+From: Kairui Song <kasong@tencent.com>
 
-commit cefc479cbb50399dec0c8e996f3539c48a1ee9dd upstream.
+commit 212fe1c0df4a150fb6298db2cfff267ceaba5402 upstream.
 
-i2c-atr catches the BUS_NOTIFY_DEL_DEVICE event on the bus and removes
-the translation by calling i2c_atr_detach_client().
+If zram_meta_alloc failed early, it frees allocated zram->table without
+setting it NULL.  Which will potentially cause zram_meta_free to access
+the table if user reset an failed and uninitialized device.
 
-However, BUS_NOTIFY_DEL_DEVICE happens when the device is about to be
-removed from this bus, i.e. before removal, and thus before calling
-.remove() on the driver. If the driver happens to do any i2c
-transactions in its remove(), they will fail.
-
-Fix this by catching BUS_NOTIFY_REMOVED_DEVICE instead, thus removing
-the translation only after the device is actually removed.
-
-Fixes: a076a860acae ("media: i2c: add I2C Address Translator (ATR) support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Romain Gantois <romain.gantois@bootlin.com>
-Tested-by: Romain Gantois <romain.gantois@bootlin.com>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Link: https://lkml.kernel.org/r/20250107065446.86928-1-ryncsn@gmail.com
+Fixes: 74363ec674cb ("zram: fix uninitialized ZRAM not releasing backing device")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Reviewed-by:  Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/i2c-atr.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/zram/zram_drv.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/i2c/i2c-atr.c
-+++ b/drivers/i2c/i2c-atr.c
-@@ -412,7 +412,7 @@ static int i2c_atr_bus_notifier_call(str
- 				dev_name(dev), ret);
- 		break;
- 
--	case BUS_NOTIFY_DEL_DEVICE:
-+	case BUS_NOTIFY_REMOVED_DEVICE:
- 		i2c_atr_detach_client(client->adapter, client);
- 		break;
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1349,6 +1349,7 @@ static bool zram_meta_alloc(struct zram
+ 	zram->mem_pool = zs_create_pool(zram->disk->disk_name);
+ 	if (!zram->mem_pool) {
+ 		vfree(zram->table);
++		zram->table = NULL;
+ 		return false;
+ 	}
  
 
 
