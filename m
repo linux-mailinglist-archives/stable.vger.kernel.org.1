@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-109971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F605A184BD
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:11:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96442A183D3
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78C2E161E7E
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6AAED7A0445
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C691F7915;
-	Tue, 21 Jan 2025 18:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD901F5404;
+	Tue, 21 Jan 2025 18:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OD9Bwm0G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q120UFmP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147811F757F;
-	Tue, 21 Jan 2025 18:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694FBE571;
+	Tue, 21 Jan 2025 18:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482968; cv=none; b=UBcib4dq23HY5huAebu5kTsbCGpHwHoz6A0mMDT8HLpNZ2WkzFc/p+cyiHJzR+Hn/l3CJWeIZfi7YO/u9QN3dNLwvLXmVSsNTtGuF53l/P628BOA2CnfN77RKBJ1yxdCO/OVFCmWBNrVH5Jd9k9C8hTBulZaDxW8ZGPx2GKVFk0=
+	t=1737482455; cv=none; b=lt79YCD4wtKbTGYrZF1VjOULrNHd4Vz5j5aVqS5RPulk9hbQVXm9PPdSTKm50LZryLkaPL5IHdgqPz5qoRKIQqik53eABb+wbkSkMaoNhL/2OItDSMBDLD0TlggkUeJoVAI4TVAiOJG0AIdykFt0VNuiUjxPVOiwR7bvMKaRQ9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482968; c=relaxed/simple;
-	bh=DOI2kV2Z/Ogbzfr0jg5Q1HUke2pE4JWzLWYmNYYJfsI=;
+	s=arc-20240116; t=1737482455; c=relaxed/simple;
+	bh=w+xs83tv6xklk7WgfWuDjxymha0G3iCTBG0tKccIlHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Swhnlo/6I2TA+fX1VlofCiqX+2p8wVlrU4RaU4CdaBNMiWE8+nOD4Keqkj4qPtJ1R1pEZY22p8sJANU/gn68gdGP8JUmHGsdf+Vq1Q9yF7JRvPrR7WLxui50TjFKE6wiq2MxfLazRpPolNRgCxtm6vkhPzSnjxo0oNnuND+afGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OD9Bwm0G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8064FC4CEDF;
-	Tue, 21 Jan 2025 18:09:27 +0000 (UTC)
+	 MIME-Version; b=U3shaRpQFR+9sg7e3BQorAjxlBPP5XNvfiMnE1bhVtcJ69u7KtKcEJI/rbx/stFdmIfJzjtLbpox5JYDbFoWM14ZiPVygtV3rL/i6knxF9SH4dQQ8sPmTajK3j30PIt4UTyxnZiIXdAMP6uLDQUwav2QHcDThLr31RaK/yHRAi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q120UFmP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F993C4CEDF;
+	Tue, 21 Jan 2025 18:00:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482967;
-	bh=DOI2kV2Z/Ogbzfr0jg5Q1HUke2pE4JWzLWYmNYYJfsI=;
+	s=korg; t=1737482454;
+	bh=w+xs83tv6xklk7WgfWuDjxymha0G3iCTBG0tKccIlHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OD9Bwm0GfSN1mlQ2HwtPWPCjbLsnYmRuI+65pOFVErqVjPRDWSLpKhqALmgaWrAM6
-	 XAzA5/kjgXKiuIuBEj4J1Anc4l0LzpBEKPWW220o0h1nX02C4fckoEstDcYhQaqVCh
-	 DnHCM4DEE4DAdZ0vI5odlQKs1QVeBGzj+Nl0gRio=
+	b=q120UFmPB1lx47RvkJsCv6dTBfV4bYhlYsI5EKJjkT99VwO3qknTlX0cer/pk2zwA
+	 QwPHCFdMnb3umzLYkl9F8FANrPLbBmrKhjF/HR7DoINfPEJg6XIEMjf//5nMl7mMVW
+	 D0jF1ii2MYM7atVZtM45oIItGIPu0KrLzXlqDGSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Hrusecky <michal.hrusecky@turris.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 040/127] USB: serial: option: add Neoway N723-EA support
-Date: Tue, 21 Jan 2025 18:51:52 +0100
-Message-ID: <20250121174531.223530315@linuxfoundation.org>
+	syzbot+76f33569875eb708e575@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 065/122] afs: Fix merge preference rule failure condition
+Date: Tue, 21 Jan 2025 18:51:53 +0100
+Message-ID: <20250121174535.501629770@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +66,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Hrusecky <michal.hrusecky@turris.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-commit f5b435be70cb126866fa92ffc6f89cda9e112c75 upstream.
+[ Upstream commit 17a4fde81d3a7478d97d15304a6d61094a10c2e3 ]
 
-Update the USB serial option driver to support Neoway N723-EA.
+syzbot reported a lock held when returning to userspace[1].  This is
+because if argc is less than 0 and the function returns directly, the held
+inode lock is not released.
 
-ID 2949:8700 Marvell Mobile Composite Device Bus
+Fix this by store the error in ret and jump to done to clean up instead of
+returning directly.
 
-T:  Bus=02 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2949 ProdID=8700 Rev= 1.00
-S:  Manufacturer=Marvell
-S:  Product=Mobile Composite Device Bus
-S:  SerialNumber=200806006809080000
-C:* #Ifs= 5 Cfg#= 1 Atr=c0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=03
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
-E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=89(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0e(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 6 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+[dh: Modified Lizhi Xu's original patch to make it honour the error code
+from afs_split_string()]
 
-Tested successfully connecting to the Internet via rndis interface after
-dialing via AT commands on If#=4 or If#=6.
+[1]
+WARNING: lock held when returning to user space!
+6.13.0-rc3-syzkaller-00209-g499551201b5f #0 Not tainted
+------------------------------------------------
+syz-executor133/5823 is leaving the kernel with locks still held!
+1 lock held by syz-executor133/5823:
+ #0: ffff888071cffc00 (&sb->s_type->i_mutex_key#9){++++}-{4:4}, at: inode_lock include/linux/fs.h:818 [inline]
+ #0: ffff888071cffc00 (&sb->s_type->i_mutex_key#9){++++}-{4:4}, at: afs_proc_addr_prefs_write+0x2bb/0x14e0 fs/afs/addr_prefs.c:388
 
-Not sure of the purpose of the other serial interface.
-
-Signed-off-by: Michal Hrusecky <michal.hrusecky@turris.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+76f33569875eb708e575@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=76f33569875eb708e575
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20241226012616.2348907-1-lizhi.xu@windriver.com/
+Link: https://lore.kernel.org/r/529850.1736261552@warthog.procyon.org.uk
+Tested-by: syzbot+76f33569875eb708e575@syzkaller.appspotmail.com
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/afs/addr_prefs.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2413,6 +2413,7 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(1) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0640, 0xff),			/* TCL IK512 ECM */
- 	  .driver_info = NCTRL(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2949, 0x8700, 0xff) },			/* Neoway N723-EA */
- 	{ } /* Terminating entry */
- };
- MODULE_DEVICE_TABLE(usb, option_ids);
+diff --git a/fs/afs/addr_prefs.c b/fs/afs/addr_prefs.c
+index a189ff8a5034e..c0384201b8feb 100644
+--- a/fs/afs/addr_prefs.c
++++ b/fs/afs/addr_prefs.c
+@@ -413,8 +413,10 @@ int afs_proc_addr_prefs_write(struct file *file, char *buf, size_t size)
+ 
+ 	do {
+ 		argc = afs_split_string(&buf, argv, ARRAY_SIZE(argv));
+-		if (argc < 0)
+-			return argc;
++		if (argc < 0) {
++			ret = argc;
++			goto done;
++		}
+ 		if (argc < 2)
+ 			goto inval;
+ 
+-- 
+2.39.5
+
 
 
 
