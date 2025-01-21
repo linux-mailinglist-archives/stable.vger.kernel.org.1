@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-109827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1C0A18415
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:03:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE2CA18446
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:05:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC31F188C40B
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:02:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCA163A253C
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:05:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B9071F5419;
-	Tue, 21 Jan 2025 18:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8E61F7075;
+	Tue, 21 Jan 2025 18:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DrTjYyEo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TxLhllJs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AFC51F0E36;
-	Tue, 21 Jan 2025 18:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4F91F4275;
+	Tue, 21 Jan 2025 18:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482554; cv=none; b=KtIM2gbruqdSKEhYd4dMKTBwFegZis7Xan3wxpHPDZSNA6V7TbdW09obfw9duBWYrXdA7Fn9j7alGgSqYqPMYh0nyb6qe2/VI6QW6Cc7VkFRwbFkMoSRlJ1pGnTbElpoXpK4HXKh8uNiRi3oQObIAMuJB4SPj+cvpOERcgi8sAU=
+	t=1737482703; cv=none; b=EjxYtjdgkD4gSfSvwG2vcrN2hPtVImN1mZdiE0skfiXY5omWQ2GH8iDhf004sUmXAY4MzJxHh0WEk1VmXNz4A95VJWIrFoIfBmbaMcbNeWXDTFtC4p8KjJg6UIBTMN1/QTJjWxdSzDYyO0lB6qLLrzI2XgGLZrIVuTVlQnqWhCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482554; c=relaxed/simple;
-	bh=EHlVmuw7tqYC+zPv5GroqenWuzEnW+rd9xwhDCgZ9v8=;
+	s=arc-20240116; t=1737482703; c=relaxed/simple;
+	bh=WPtl9qLesxiNmG3LXvmt3m81cHPKaiHfFJJ2Y5x5Xs4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ibb1fcIyeejz7Dppiyb8mS78M8jIzCqHhGs+THv5hHZuwJJp+dWQ/zl+dgkMlXBycv3nivNcMfnf4vcsiO00s2KCTUTVvQFrc2Tw5nlAPnF7m3+mS59I5CTJdgmoPbxSEMt305xBXQuVIZulzcBgGAb0mYPA9QakYeMd25Lj4ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DrTjYyEo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA84C4CEE1;
-	Tue, 21 Jan 2025 18:02:33 +0000 (UTC)
+	 MIME-Version; b=SBGLSm7YfGOoa2bZbTF3oYUbJ7OnuxsyEn+NTlwyNh7Jhj1hJ27E/mI6Do7EzV+rCcz8ZYcuhLZhVZQtoLeQcIciikIDjdO96uGITJW4cmOAAb9EpUmbAiDbaXxQWU2nsVJmAonq+1FYwHRT7a7yB4EBUN96V3IfidnMq9q7vxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TxLhllJs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42762C4CEDF;
+	Tue, 21 Jan 2025 18:05:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482553;
-	bh=EHlVmuw7tqYC+zPv5GroqenWuzEnW+rd9xwhDCgZ9v8=;
+	s=korg; t=1737482703;
+	bh=WPtl9qLesxiNmG3LXvmt3m81cHPKaiHfFJJ2Y5x5Xs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DrTjYyEow6l2jI4xjWNo3BvBHBFu2uWOHO7iAr4EQWDS3zVAe9iODUra5fodq9POA
-	 1efX9WKBfGeCcyafHaXRW/+7lLpEMLz9ItFSJR1XVzfrtumrd74MjGS8OFN4d8SPB9
-	 BuuXEzJlnBEZCxPiL9KUfwVBHxBLkPZg4eroVS7k=
+	b=TxLhllJsuKUnWgXRViI8Qn4dAC31aS+rEBKSkI4wyrAojpHIMfnuA+fjHJgjaYu9z
+	 Ayg9iO2C0wzThtzURYSZF//YIsrOR6n0MMl9O3VEWr9IrQfMhk6X2OJ3CDKSoEWVx8
+	 wA14r2oy9G0I+hCAjxjushn4SNE5uUnyId3FVnSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 116/122] drm/amdgpu: always sync the GFX pipe on ctx switch
+	Tomas Krcka <krckatom@amazon.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.1 45/64] irqchip/gic-v3-its: Dont enable interrupts in its_irq_set_vcpu_affinity()
 Date: Tue, 21 Jan 2025 18:52:44 +0100
-Message-ID: <20250121174537.527783583@linuxfoundation.org>
+Message-ID: <20250121174523.272309618@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
+References: <20250121174521.568417761@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Tomas Krcka <krckatom@amazon.de>
 
-commit af04b320c71c4b59971f021615876808a36e5038 upstream.
+commit 35cb2c6ce7da545f3b5cb1e6473ad7c3a6f08310 upstream.
 
-That is needed to enforce isolation between contexts.
+The following call-chain leads to enabling interrupts in a nested interrupt
+disabled section:
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit def59436fb0d3ca0f211d14873d0273d69ebb405)
+irq_set_vcpu_affinity()
+  irq_get_desc_lock()
+     raw_spin_lock_irqsave()   <--- Disable interrupts
+  its_irq_set_vcpu_affinity()
+     guard(raw_spinlock_irq)   <--- Enables interrupts when leaving the guard()
+  irq_put_desc_unlock()        <--- Warns because interrupts are enabled
+
+This was broken in commit b97e8a2f7130, which replaced the original
+raw_spin_[un]lock() pair with guard(raw_spinlock_irq).
+
+Fix the issue by using guard(raw_spinlock).
+
+[ tglx: Massaged change log ]
+
+Fixes: b97e8a2f7130 ("irqchip/gic-v3-its: Fix potential race condition in its_vlpi_prop_update()")
+Signed-off-by: Tomas Krcka <krckatom@amazon.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241230150825.62894-1-krckatom@amazon.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
-@@ -193,8 +193,8 @@ int amdgpu_ib_schedule(struct amdgpu_rin
- 	need_ctx_switch = ring->current_ctx != fence_ctx;
- 	if (ring->funcs->emit_pipeline_sync && job &&
- 	    ((tmp = amdgpu_sync_get_fence(&job->explicit_sync)) ||
--	     (amdgpu_sriov_vf(adev) && need_ctx_switch) ||
--	     amdgpu_vm_need_pipeline_sync(ring, job))) {
-+	     need_ctx_switch || amdgpu_vm_need_pipeline_sync(ring, job))) {
-+
- 		need_pipe_sync = true;
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -1967,7 +1967,7 @@ static int its_irq_set_vcpu_affinity(str
+ 	if (!is_v4(its_dev->its))
+ 		return -EINVAL;
  
- 		if (tmp)
+-	guard(raw_spinlock_irq)(&its_dev->event_map.vlpi_lock);
++	guard(raw_spinlock)(&its_dev->event_map.vlpi_lock);
+ 
+ 	/* Unmap request? */
+ 	if (!info)
 
 
 
