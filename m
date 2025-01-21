@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-109834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E19F2A18416
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:03:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 139FFA1844E
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:05:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 839553A235B
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:02:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E95C816A362
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:04:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BD01F5438;
-	Tue, 21 Jan 2025 18:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69501F7546;
+	Tue, 21 Jan 2025 18:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bffD4Uhz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1VLGdvp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3404A1F5404;
-	Tue, 21 Jan 2025 18:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921BE1F708C;
+	Tue, 21 Jan 2025 18:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482574; cv=none; b=KbaVd8scwTgEY7//DrosSR5Xp7AuTe2Uspd/itHljEa+DBWKYGPr1WIvZJc3nS0l43tZFuED5fEA2vfEdpRs5SWK58eudOG2wMIsxG7jHzISmDyA6mR2BVE1aGBRgmR2ODsnoqdmXXmeyYaPj/WurYfQqrk+crsulxAg/EEqL+0=
+	t=1737482653; cv=none; b=M83DMqwMyj5ysjlfRoEJxTe/q3Bq6xrirbeFgkHORuQclbHYivr89erAaa0ZkDI0ZwTWMtW7PDK5WNF0HhFQXqsCQJxDaXwVmk+vDIngA2836ABFyTXZop4FNsrhrA8Kw4hcVvbOqsolPGvxdWI6U80hf6XwV1tCdc5GOv4N+nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482574; c=relaxed/simple;
-	bh=pSHzfc3LV5aEz3xE9MkKSfOLJOCawAQA4Gh2aBMrSFQ=;
+	s=arc-20240116; t=1737482653; c=relaxed/simple;
+	bh=R7rIrg2Uad/PB8V0YTB7TdFLhjlUMVJR47j71DeRu6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fmNDsFfYr2HOjS+G5AcCdhJUMFTd/hTrEOfUmrT5kUuYb8wKbjrAxv1V163G6CLmW0kIDfiMgqJW7XppbItdVrParueihVcu18Z3pGAYSlLM0lcuUmlLJV9bs3mRVF4HBZ7Rcv9hWm0QjIYpUn1jrV5f4Ux+Hj3CUEYS5p6rLPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bffD4Uhz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B108CC4CEDF;
-	Tue, 21 Jan 2025 18:02:53 +0000 (UTC)
+	 MIME-Version; b=uf2MQDDkcA9EyP5KF47X6SgMjzEeH/OEi+lGHMDqCBJZzymdbZigOfacxx5At2zQ/NRmuqrF0XXWi3CP6zh+MLCSODl6wArSAt272CCpwnGw6+5BZvdRl2gUuaoNSHHkVQMCvSO2oXc1IOqTL5p+5O7pXSXsyT/h82ohvi0JGaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1VLGdvp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102DBC4CEE1;
+	Tue, 21 Jan 2025 18:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482574;
-	bh=pSHzfc3LV5aEz3xE9MkKSfOLJOCawAQA4Gh2aBMrSFQ=;
+	s=korg; t=1737482653;
+	bh=R7rIrg2Uad/PB8V0YTB7TdFLhjlUMVJR47j71DeRu6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bffD4Uhz/zWtS2PzlQivAs8w1Qc3nvZyJ3k/p2djeto0il4yDSwDRnM5nBMb42Bkx
-	 2fSGJq0KgLlIKV2P1Pfct2AdqfTPQkMWM6z9BhzXAVaO2qHNMAQzCD3W2uV26PW4XU
-	 ym472cRYxotUN9uuVolnKNijSKvC8LF1gmDrchEA=
+	b=c1VLGdvpBiBb84/+prdYcRMC6qyM/eL270dTv9QgPEj+rT6k3B0UcZn/KaibT/h0K
+	 gPqqp0AJ/Y9/KUyhqaOuXdlEnJ24q0w8ialWMqwYFmI/BL25I6PBqAKV0Rxu3mvXli
+	 3JeRf9vP6AaOEWKEc1MSwyzHe9ni0k+xMPjuDsEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Usama Arif <usamaarif642@gmail.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 098/122] selftests/mm: set allocated memory to non-zero content in cow test
+	Marco Nelissen <marco.nelissen@gmail.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 27/64] iomap: avoid avoid truncating 64-bit offset to 32 bits
 Date: Tue, 21 Jan 2025 18:52:26 +0100
-Message-ID: <20250121174536.809993058@linuxfoundation.org>
+Message-ID: <20250121174522.591576761@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
+References: <20250121174521.568417761@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Marco Nelissen <marco.nelissen@gmail.com>
 
-commit a32bf5bb7933fde6f39747499f8ec232b5b5400f upstream.
+[ Upstream commit c13094b894de289514d84b8db56d1f2931a0bade ]
 
-After commit b1f202060afe ("mm: remap unused subpages to shared zeropage
-when splitting isolated thp"), cow test cases involving swapping out THPs
-via madvise(MADV_PAGEOUT) started to be skipped due to the subsequent
-check via pagemap determining that the memory was not actually swapped
-out.  Logs similar to this were emitted:
+on 32-bit kernels, iomap_write_delalloc_scan() was inadvertently using a
+32-bit position due to folio_next_index() returning an unsigned long.
+This could lead to an infinite loop when writing to an xfs filesystem.
 
-   ...
-
-   # [RUN] Basic COW after fork() ... with swapped-out, PTE-mapped THP (16 kB)
-   ok 2 # SKIP MADV_PAGEOUT did not work, is swap enabled?
-   # [RUN] Basic COW after fork() ... with single PTE of swapped-out THP (16 kB)
-   ok 3 # SKIP MADV_PAGEOUT did not work, is swap enabled?
-   # [RUN] Basic COW after fork() ... with swapped-out, PTE-mapped THP (32 kB)
-   ok 4 # SKIP MADV_PAGEOUT did not work, is swap enabled?
-
-   ...
-
-The commit in question introduces the behaviour of scanning THPs and if
-their content is predominantly zero, it splits them and replaces the pages
-which are wholly zero with the zero page.  These cow test cases were
-getting caught up in this.
-
-So let's avoid that by filling the contents of all allocated memory with
-a non-zero value. With this in place, the tests are passing again.
-
-Link: https://lkml.kernel.org/r/20250107142555.1870101-1-ryan.roberts@arm.com
-Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Usama Arif <usamaarif642@gmail.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Marco Nelissen <marco.nelissen@gmail.com>
+Link: https://lore.kernel.org/r/20250109041253.2494374-1-marco.nelissen@gmail.com
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/cow.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/iomap/buffered-io.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/mm/cow.c
-+++ b/tools/testing/selftests/mm/cow.c
-@@ -758,7 +758,7 @@ static void do_run_with_base_page(test_f
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 47f44b02c17de..70e246f7e8fe8 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -907,7 +907,7 @@ static int iomap_write_delalloc_scan(struct inode *inode,
+ 		}
+ 
+ 		/* move offset to start of next folio in range */
+-		start_byte = folio_next_index(folio) << PAGE_SHIFT;
++		start_byte = folio_pos(folio) + folio_size(folio);
+ 		folio_unlock(folio);
+ 		folio_put(folio);
  	}
- 
- 	/* Populate a base page. */
--	memset(mem, 0, pagesize);
-+	memset(mem, 1, pagesize);
- 
- 	if (swapout) {
- 		madvise(mem, pagesize, MADV_PAGEOUT);
-@@ -824,12 +824,12 @@ static void do_run_with_thp(test_fn fn,
- 	 * Try to populate a THP. Touch the first sub-page and test if
- 	 * we get the last sub-page populated automatically.
- 	 */
--	mem[0] = 0;
-+	mem[0] = 1;
- 	if (!pagemap_is_populated(pagemap_fd, mem + thpsize - pagesize)) {
- 		ksft_test_result_skip("Did not get a THP populated\n");
- 		goto munmap;
- 	}
--	memset(mem, 0, thpsize);
-+	memset(mem, 1, thpsize);
- 
- 	size = thpsize;
- 	switch (thp_run) {
-@@ -1012,7 +1012,7 @@ static void run_with_hugetlb(test_fn fn,
- 	}
- 
- 	/* Populate an huge page. */
--	memset(mem, 0, hugetlbsize);
-+	memset(mem, 1, hugetlbsize);
- 
- 	/*
- 	 * We need a total of two hugetlb pages to handle COW/unsharing
+-- 
+2.39.5
+
 
 
 
