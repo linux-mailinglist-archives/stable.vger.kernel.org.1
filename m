@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-109880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8167BA18449
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:05:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 285BDA18410
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:03:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59B0E7A2172
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:05:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35D923AC541
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83761F55F7;
-	Tue, 21 Jan 2025 18:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3B8E571;
+	Tue, 21 Jan 2025 18:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjTNwonA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQYE+jQf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950F61F4275;
-	Tue, 21 Jan 2025 18:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D051F3FFE;
+	Tue, 21 Jan 2025 18:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482709; cv=none; b=eI8eG2TFT7bX3purTrovhuyRL4Fh0M9ZUCuF1s0XApcqGoYvcd5i+ZFYZKw4IrP/OsqN7oR4fiyqdWR9RgC0Srwed2lYHAQH6tK3Xn0y9t7/7X3H4CLogGTddceN7pZDhb4z8wXJ7B52lXWrqKlSsSuOR2wcnY2WDUSvPGsBh8I=
+	t=1737482559; cv=none; b=iLX9Gu2jzcWsRzHf3xL2ez1Cnpcfw7cMeKhtGNuFqK3H2dDtC4KcRbSQCsLS4wSpwJrAKaLzvpYJ4uhSMuft3Gj+MrDQnfmnAGLxbmvkeucGHjiOEIZYNast8O/ACzHrMV5Cc1h0OQExyyenniwEopPQQhsHwUIFTPP7VNbaKSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482709; c=relaxed/simple;
-	bh=UUGU7bYLylqngRYmnbybCc8924AID9S46lMDLGyaTsE=;
+	s=arc-20240116; t=1737482559; c=relaxed/simple;
+	bh=CBZ6VDLrRieJFnq+SYzah5QKuOiyzD7y1dUK6Pr0tGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pjWope3014KsU/aWK5rtrs/mHVreaV0HZWDlSWo5e6YR6bnOXSwiEMwu6rPU9z9wXxihsavnZgAfJ7Jnw679t6RHY1hnB1JD/V6USP9GblF/KWNjBcyskvCVjjeFRfA1uxefPHfcVipjoF6JkXXm6fzNpgEHJc3ZoLPOKyIWbRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjTNwonA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BDD9C4CEDF;
-	Tue, 21 Jan 2025 18:05:08 +0000 (UTC)
+	 MIME-Version; b=UG4IGRFd38C+AyIZb/lUfKkQZjd6tPKVj5gi67jdE7492HlVCCPlWRvvOb8ky7jVEZyvZLOFrb2P9qHip37EEoVUYAjZnikN5H/WUC/unNwaqVdHCG+oI39hiYNow2JfkiWEPmmUpEEyyyxZ1/pBgzDN7924mSRGwawT7d/kcpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cQYE+jQf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35EABC4CEE1;
+	Tue, 21 Jan 2025 18:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482709;
-	bh=UUGU7bYLylqngRYmnbybCc8924AID9S46lMDLGyaTsE=;
+	s=korg; t=1737482559;
+	bh=CBZ6VDLrRieJFnq+SYzah5QKuOiyzD7y1dUK6Pr0tGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gjTNwonAj28Gy3eP3kjA8CSKm0kFulahYlJO74Jzjg+WuowYKafQIvBJG7DX2aOGe
-	 3QKO1h51ftUKc2ctXdWICUY6nU57OlaFogUCB6cP9deU/N1/VvHV7l2pqSjmfRR2eZ
-	 ZBiS/E9LUcR7bD3qiZBEXT9VHI6NuvkqJ0708WkE=
+	b=cQYE+jQfNb8xOPNhVVwOL8ZuBIqqqtf68PUlSnWDyK1TTJc5x+9gU+PghD0XIhLKS
+	 iGlDTCrf1dADmrX050/K7WyFGerVvXBRqWfLdqTCSBIdzxsLz1/WJzCPPIGj7CXq4V
+	 teDjaNS1xAn+0bTAr/mB9DqAGZq7g4brSgNitG/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagar Ghuge <sagar.ghuge@intel.com>,
-	Nanley Chery <nanley.g.chery@intel.com>,
-	Xi Ruoyao <xry111@xry111.site>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.1 47/64] drm/i915/fb: Relax clear color alignment to 64 bytes
+	Sun peng Li <sunpeng.li@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 118/122] drm/amd/display: Disable replay and psr while VRR is enabled
 Date: Tue, 21 Jan 2025 18:52:46 +0100
-Message-ID: <20250121174523.345975512@linuxfoundation.org>
+Message-ID: <20250121174537.603358473@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
-References: <20250121174521.568417761@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Tom Chung <chiahsuan.chung@amd.com>
 
-commit 1a5401ec3018c101c456cdbda2eaef9482db6786 upstream.
+commit 67edb81d6e9af43a0d58edf74630f82cfda4155d upstream.
 
-Mesa changed its clear color alignment from 4k to 64 bytes
-without informing the kernel side about the change. This
-is now likely to cause framebuffer creation to fail.
+[Why]
+Replay and PSR will cause some video corruption while VRR is enabled.
 
-The only thing we do with the clear color buffer in i915 is:
-1. map a single page
-2. read out bytes 16-23 from said page
-3. unmap the page
+[How]
+1. Disable the Replay and PSR while VRR is enabled.
+2. Change the amdgpu_dm_crtc_vrr_active() parameter to const.
+   Because the function will only read data from dm_crtc_state.
 
-So the only requirement we really have is that those 8 bytes
-are all contained within one page. Thus we can deal with the
-Mesa regression by reducing the alignment requiment from 4k
-to the same 64 bytes in the kernel. We could even go as low as
-32 bytes, but IIRC 64 bytes is the hardware requirement on
-the 3D engine side so matching that seems sensible.
-
-Note that the Mesa alignment chages were partially undone
-so the regression itself was already fixed on userspace
-side.
-
+Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit d7879340e987b3056b8ae39db255b6c19c170a0d)
 Cc: stable@vger.kernel.org
-Cc: Sagar Ghuge <sagar.ghuge@intel.com>
-Cc: Nanley Chery <nanley.g.chery@intel.com>
-Reported-by: Xi Ruoyao <xry111@xry111.site>
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13057
-Closes: https://lore.kernel.org/all/45a5bba8de009347262d86a4acb27169d9ae0d9f.camel@xry111.site/
-Link: https://gitlab.freedesktop.org/mesa/mesa/-/commit/17f97a69c13832a6c1b0b3aad45b06f07d4b852f
-Link: https://gitlab.freedesktop.org/mesa/mesa/-/commit/888f63cf1baf34bc95e847a30a041dc7798edddb
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241129065014.8363-2-ville.syrjala@linux.intel.com
-Tested-by: Xi Ruoyao <xry111@xry111.site>
-Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
-(cherry picked from commit ed3a892e5e3d6b3f6eeb76db7c92a968aeb52f3d)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_fb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c      |    6 ++++--
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c |    2 +-
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.h |    2 +-
+ 3 files changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_fb.c
-+++ b/drivers/gpu/drm/i915/display/intel_fb.c
-@@ -1571,7 +1571,7 @@ int intel_fill_fb_info(struct drm_i915_p
- 		 * arithmetic related to alignment and offset calculation.
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -8889,6 +8889,7 @@ static void amdgpu_dm_enable_self_refres
+ 	struct replay_settings *pr = &acrtc_state->stream->link->replay_settings;
+ 	struct amdgpu_dm_connector *aconn =
+ 		(struct amdgpu_dm_connector *)acrtc_state->stream->dm_stream_context;
++	bool vrr_active = amdgpu_dm_crtc_vrr_active(acrtc_state);
+ 
+ 	if (acrtc_state->update_type > UPDATE_TYPE_FAST) {
+ 		if (pr->config.replay_supported && !pr->replay_feature_enabled)
+@@ -8915,7 +8916,8 @@ static void amdgpu_dm_enable_self_refres
+ 		 * adequate number of fast atomic commits to notify KMD
+ 		 * of update events. See `vblank_control_worker()`.
  		 */
- 		if (is_gen12_ccs_cc_plane(&fb->base, i)) {
--			if (IS_ALIGNED(fb->base.offsets[i], PAGE_SIZE))
-+			if (IS_ALIGNED(fb->base.offsets[i], 64))
- 				continue;
- 			else
- 				return -EINVAL;
+-		if (acrtc_attach->dm_irq_params.allow_sr_entry &&
++		if (!vrr_active &&
++		    acrtc_attach->dm_irq_params.allow_sr_entry &&
+ #ifdef CONFIG_DRM_AMD_SECURE_DISPLAY
+ 		    !amdgpu_dm_crc_window_is_activated(acrtc_state->base.crtc) &&
+ #endif
+@@ -9259,7 +9261,7 @@ static void amdgpu_dm_commit_planes(stru
+ 			bundle->stream_update.abm_level = &acrtc_state->abm_level;
+ 
+ 		mutex_lock(&dm->dc_lock);
+-		if (acrtc_state->update_type > UPDATE_TYPE_FAST) {
++		if ((acrtc_state->update_type > UPDATE_TYPE_FAST) || vrr_active) {
+ 			if (acrtc_state->stream->link->replay_settings.replay_allow_active)
+ 				amdgpu_dm_replay_disable(acrtc_state->stream);
+ 			if (acrtc_state->stream->link->psr_settings.psr_allow_active)
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+@@ -93,7 +93,7 @@ int amdgpu_dm_crtc_set_vupdate_irq(struc
+ 	return rc;
+ }
+ 
+-bool amdgpu_dm_crtc_vrr_active(struct dm_crtc_state *dm_state)
++bool amdgpu_dm_crtc_vrr_active(const struct dm_crtc_state *dm_state)
+ {
+ 	return dm_state->freesync_config.state == VRR_STATE_ACTIVE_VARIABLE ||
+ 	       dm_state->freesync_config.state == VRR_STATE_ACTIVE_FIXED;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.h
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.h
+@@ -37,7 +37,7 @@ int amdgpu_dm_crtc_set_vupdate_irq(struc
+ 
+ bool amdgpu_dm_crtc_vrr_active_irq(struct amdgpu_crtc *acrtc);
+ 
+-bool amdgpu_dm_crtc_vrr_active(struct dm_crtc_state *dm_state);
++bool amdgpu_dm_crtc_vrr_active(const struct dm_crtc_state *dm_state);
+ 
+ int amdgpu_dm_crtc_enable_vblank(struct drm_crtc *crtc);
+ 
 
 
 
