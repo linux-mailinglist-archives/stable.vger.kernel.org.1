@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-109664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DDD7A1834C
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:54:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA6BA183D6
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35095188736F
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:54:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9EB3188D4B3
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329EB1F5613;
-	Tue, 21 Jan 2025 17:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C6F1F63C9;
+	Tue, 21 Jan 2025 17:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbXvCvp8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERQ51317"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E198C1F5614;
-	Tue, 21 Jan 2025 17:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435AB1F238E;
+	Tue, 21 Jan 2025 17:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482079; cv=none; b=QPVzwhrG/Ameg4pY4U988lSCqw9GVgLzAxsRX+khWilE+O4L3laGUP8mw6jxl0adTwzecbrF0AlvYXDfD1GPZ8I1jmEfX1jHCR4kXrVzpyzHcQ/UhCkjT0+1IFVv80vozs2pc+D9bc9+MUhmwdb75P/P96efgpaniruDQxWHT94=
+	t=1737482385; cv=none; b=MsG31FCdiorqCtWvrbfuiTLJMS57TeMkSc/8lTbFWVamhMLRhNPCLYy5FEzf149XqaC/HXqbfe5IxH6cRY2OjBI0ZbKO+yyQ9M3nD/CeK7Y3nnRyPoSalXTudloD/83kZTrGa94V8JAMndily8LakDe3xfOmETnvE11U4w2YjSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482079; c=relaxed/simple;
-	bh=RhxWKOt1M0qplYHgK+A0ok9d7DAnOv2TKN9q1zh9Bfw=;
+	s=arc-20240116; t=1737482385; c=relaxed/simple;
+	bh=d8WkeqpKl1KcEYmGwL1tzrPc6LuSjrQ8D8AsAWCYNQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kIlE/e3ato6ojp3WQbeIB3ZvMpREcoGURX+cqM89l/55lXxopS4Xpmri00LYd94r1/NgR3Y0pKM2RdsAQUadAAnxaZmzqvfcGpz4myriVlAlAxqI/WoeuKNF0troGV9YN56HHDM4M/bdqXv88UhcNhzE4eSifE1+i+nCFnnH+X8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbXvCvp8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63E7EC4CEDF;
-	Tue, 21 Jan 2025 17:54:38 +0000 (UTC)
+	 MIME-Version; b=pBs7oS4xDzYaI9Td70uiKRrMVntIZnhtklLH9dgkgbXmk1z/yiNXwNh5VHwXfUlW5Nl7HtE9D7xAMxISmwVIu9zlhPzPw+jLv9OA07bJE3v5VYsxHusajpJkVCptaohyAoKDELw39+RjFIHoKMdPUxb6SBwsf+hhn6G9U+nP2EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERQ51317; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC895C4CEDF;
+	Tue, 21 Jan 2025 17:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482078;
-	bh=RhxWKOt1M0qplYHgK+A0ok9d7DAnOv2TKN9q1zh9Bfw=;
+	s=korg; t=1737482385;
+	bh=d8WkeqpKl1KcEYmGwL1tzrPc6LuSjrQ8D8AsAWCYNQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sbXvCvp82Jen19Wi60Gh6FnmhgBAf0GkVNpg1FKxrIZhK1hzJ0DPJoV0oHSmYKYKA
-	 AwVUpihL9fiNvjyuDMyLVVnnJKpLzkmUfJK4E5FFSRFvvQP+RCqdZQ5Zc5A8qLjHz5
-	 azauInBSR8ZS+bfIOakDN6qYlgAKbO3NzTU9n+Vc=
+	b=ERQ51317qXC+eVHOwoGk6FJeT1C7WXwtvrBeJx4e1qnV1mEVZVnLhiPaMq8wqAJiQ
+	 MU3YA/ZtU+6kpCWsLGgYF9NB0+Dohuc4wbOWhYeMHpg+Y8E33o7lirg9fRkqkqe9A5
+	 Cczu9KPxAPgsQ+/K427NHOXVSGouCqwtdhBfQ5eY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Nishanth Menon <nm@ti.com>,
+	Koichiro Den <koichiro.den@canonical.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 19/72] soc: ti: pruss: Fix pruss APIs
-Date: Tue, 21 Jan 2025 18:51:45 +0100
-Message-ID: <20250121174524.166949474@linuxfoundation.org>
+Subject: [PATCH 6.12 058/122] gpio: sim: lock up configfs that an instantiated device depends on
+Date: Tue, 21 Jan 2025 18:51:46 +0100
+Message-ID: <20250121174535.226280096@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: MD Danish Anwar <danishanwar@ti.com>
+From: Koichiro Den <koichiro.den@canonical.com>
 
-[ Upstream commit 202580b60229345dc2637099f10c8a8857c1fdc2 ]
+[ Upstream commit 8bd76b3d3f3af7ac2898b6a27ad90c444fec418f ]
 
-PRUSS APIs in pruss_driver.h produce lots of compilation errors when
-CONFIG_TI_PRUSS is not set.
+Once a sim device is instantiated and actively used, allowing rmdir for
+its configfs serves no purpose and can be confusing. Effectively,
+arbitrary users start depending on its existence.
 
-The errors and warnings,
-warning: returning 'void *' from a function with return type 'int' makes
-	integer from pointer without a cast [-Wint-conversion]
-error: expected identifier or '(' before '{' token
+Make the subsystem itself depend on the configfs entry for a sim device
+while it is in active use.
 
-Fix these warnings and errors by fixing the return type of pruss APIs as
-well as removing the misplaced semicolon from pruss_cfg_xfr_enable()
-
-Fixes: 0211cc1e4fbb ("soc: ti: pruss: Add helper functions to set GPI mode, MII_RT_event and XFR")
-Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Link: https://lore.kernel.org/r/20241220100508.1554309-2-danishanwar@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
+Link: https://lore.kernel.org/r/20250103141829.430662-5-koichiro.den@canonical.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pruss_driver.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpio/gpio-sim.c | 48 +++++++++++++++++++++++++++++++++++------
+ 1 file changed, 41 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/pruss_driver.h b/include/linux/pruss_driver.h
-index c9a31c567e85b..2e18fef1a2e10 100644
---- a/include/linux/pruss_driver.h
-+++ b/include/linux/pruss_driver.h
-@@ -144,32 +144,32 @@ static inline int pruss_release_mem_region(struct pruss *pruss,
- static inline int pruss_cfg_get_gpmux(struct pruss *pruss,
- 				      enum pruss_pru_id pru_id, u8 *mux)
- {
--	return ERR_PTR(-EOPNOTSUPP);
-+	return -EOPNOTSUPP;
+diff --git a/drivers/gpio/gpio-sim.c b/drivers/gpio/gpio-sim.c
+index dcca1d7f173e5..deedacdeb2395 100644
+--- a/drivers/gpio/gpio-sim.c
++++ b/drivers/gpio/gpio-sim.c
+@@ -1030,6 +1030,30 @@ static void gpio_sim_device_deactivate(struct gpio_sim_device *dev)
+ 	dev->pdev = NULL;
  }
  
- static inline int pruss_cfg_set_gpmux(struct pruss *pruss,
- 				      enum pruss_pru_id pru_id, u8 mux)
- {
--	return ERR_PTR(-EOPNOTSUPP);
-+	return -EOPNOTSUPP;
- }
++static void
++gpio_sim_device_lockup_configfs(struct gpio_sim_device *dev, bool lock)
++{
++	struct configfs_subsystem *subsys = dev->group.cg_subsys;
++	struct gpio_sim_bank *bank;
++	struct gpio_sim_line *line;
++
++	/*
++	 * The device only needs to depend on leaf line entries. This is
++	 * sufficient to lock up all the configfs entries that the
++	 * instantiated, alive device depends on.
++	 */
++	list_for_each_entry(bank, &dev->bank_list, siblings) {
++		list_for_each_entry(line, &bank->line_list, siblings) {
++			if (lock)
++				WARN_ON(configfs_depend_item_unlocked(
++						subsys, &line->group.cg_item));
++			else
++				configfs_undepend_item_unlocked(
++						&line->group.cg_item);
++		}
++	}
++}
++
+ static ssize_t
+ gpio_sim_device_config_live_store(struct config_item *item,
+ 				  const char *page, size_t count)
+@@ -1042,14 +1066,24 @@ gpio_sim_device_config_live_store(struct config_item *item,
+ 	if (ret)
+ 		return ret;
  
- static inline int pruss_cfg_gpimode(struct pruss *pruss,
- 				    enum pruss_pru_id pru_id,
- 				    enum pruss_gpi_mode mode)
- {
--	return ERR_PTR(-EOPNOTSUPP);
-+	return -EOPNOTSUPP;
- }
+-	guard(mutex)(&dev->lock);
++	if (live)
++		gpio_sim_device_lockup_configfs(dev, true);
  
- static inline int pruss_cfg_miirt_enable(struct pruss *pruss, bool enable)
- {
--	return ERR_PTR(-EOPNOTSUPP);
-+	return -EOPNOTSUPP;
- }
+-	if (live == gpio_sim_device_is_live(dev))
+-		ret = -EPERM;
+-	else if (live)
+-		ret = gpio_sim_device_activate(dev);
+-	else
+-		gpio_sim_device_deactivate(dev);
++	scoped_guard(mutex, &dev->lock) {
++		if (live == gpio_sim_device_is_live(dev))
++			ret = -EPERM;
++		else if (live)
++			ret = gpio_sim_device_activate(dev);
++		else
++			gpio_sim_device_deactivate(dev);
++	}
++
++	/*
++	 * Undepend is required only if device disablement (live == 0)
++	 * succeeds or if device enablement (live == 1) fails.
++	 */
++	if (live == !!ret)
++		gpio_sim_device_lockup_configfs(dev, false);
  
- static inline int pruss_cfg_xfr_enable(struct pruss *pruss,
- 				       enum pru_type pru_type,
--				       bool enable);
-+				       bool enable)
- {
--	return ERR_PTR(-EOPNOTSUPP);
-+	return -EOPNOTSUPP;
+ 	return ret ?: count;
  }
- 
- #endif /* CONFIG_TI_PRUSS */
 -- 
 2.39.5
 
