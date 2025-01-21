@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-109851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EE96A18427
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:04:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EC9EA1837D
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 437333A10E3
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:03:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C13E1614BA
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237B71F55F3;
-	Tue, 21 Jan 2025 18:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858281F7087;
+	Tue, 21 Jan 2025 17:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TfQ+Gj+n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HhIumPlW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31921F543F;
-	Tue, 21 Jan 2025 18:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CD81F542C;
+	Tue, 21 Jan 2025 17:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482625; cv=none; b=s7zILf/2FiJfqUkDGXVujmGn4PXNyeciYI8jkWlwazcNt/0/tomqhfR9qjX8viadrpTTSTdcE3fUdC8XTuVADRxCG9V9Ksg5z0f2KXCx0lMX1/j484DueSZoNZA/wRFUCtbtbivSFqDGMusCu8atNASuheWsP1oxxwD+ICg5lw8=
+	t=1737482175; cv=none; b=tLEcZC5h3x64hxNFEnKv83Lzu+lG/8TUsTo4yxqJ3OAkfBI6bnmBeXqdEDkqZMwPvV7KVclb6Bahkt2AHfJV+FmToLqWqrr6wxWOv6LpnhMymj1u5tpAfImRpRo/WkghqcfAu56pkflyT51KGvuS+kAta5KCyey4SndQgYd8ZdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482625; c=relaxed/simple;
-	bh=i2srAFijowdsL01s4BH1+MPPHMHzGqndnZyNpXqjNbc=;
+	s=arc-20240116; t=1737482175; c=relaxed/simple;
+	bh=HvDTkC9KkoGMORhrQXavJ6HW2DkR4AXKm0692BCdmcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DAGaVSdw+guXoK6JIuBxfn2KDkQKbrZZk/P7VCwEv1afms9w7Oa1X8b0ZnswXSEIOTjgJbTG6czxI4XK/25T+oyszPdJh30C9ivJ2zOOrqSU4uUyMLQ8bjztPzn4PuEmk+y8EX0ZfzOcoBNKUuTKgEQFAVe5CJIgcm7lhPcUo5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TfQ+Gj+n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1787C4CEDF;
-	Tue, 21 Jan 2025 18:03:43 +0000 (UTC)
+	 MIME-Version; b=u5K6C5iRS+2WuB8u8DdUvpvmHdMt6FScXG4PPEMbV04KsoxKQA7A6leXWw9a8vOO93S0JR8MUFg8lebdbF7pTULxcVrrUW+ciijm2pcaujeWBBPQA9b9Ll3uuCMzwLC1oST29DkCUEv62I0IwaE0d6aaohJXLsz1pok0Ggr8FgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HhIumPlW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF745C4CEDF;
+	Tue, 21 Jan 2025 17:56:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482624;
-	bh=i2srAFijowdsL01s4BH1+MPPHMHzGqndnZyNpXqjNbc=;
+	s=korg; t=1737482175;
+	bh=HvDTkC9KkoGMORhrQXavJ6HW2DkR4AXKm0692BCdmcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TfQ+Gj+nvOXFHgOusnvFm+EHPgxXzjXw1MmLDNnzgJbfVzz1W8ixlWs+9rhCr2gUU
-	 ueRYxFuWl6pD0/rhW0VNaQCnSJDEJn+zC6e+2pdqaxF58RuM4dVzHK8BOaA2KrJCV7
-	 veJXkfRMHEX8LNfdSoO6NXl2aB2KhBh338QykFKA=
+	b=HhIumPlWPs3iA69C1ptTJlnND2gisbBaI3xCns4gsojvn2+nzIAEQpIlgavANMoae
+	 nC7lYciUFkCKHPcktaBhLC5ojyU3efHg8Y27LvV7ZB7YDfbl5en0t/eyGnsmkgJ3mK
+	 QWF2Klxz0DQXHBJnk5+N4/C1J7Eg9uPSxKvu1K5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 18/64] nvmet: propagate npwg topology
-Date: Tue, 21 Jan 2025 18:52:17 +0100
-Message-ID: <20250121174522.254052155@linuxfoundation.org>
+	Rik van Riel <riel@surriel.com>,
+	Breno Leitao <leitao@debian.org>,
+	Baoquan He <bhe@redhat.com>,
+	Dave Young <dyoung@redhat.com>,
+	Vivek Goyal <vgoyal@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 52/72] fs/proc: fix softlockup in __read_vmcore (part 2)
+Date: Tue, 21 Jan 2025 18:52:18 +0100
+Message-ID: <20250121174525.434324681@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
-References: <20250121174521.568417761@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luis Chamberlain <mcgrof@kernel.org>
+From: Rik van Riel <riel@surriel.com>
 
-[ Upstream commit b579d6fdc3a9149bb4d2b3133cc0767130ed13e6 ]
+commit cbc5dde0a461240046e8a41c43d7c3b76d5db952 upstream.
 
-Ensure we propagate npwg to the target as well instead
-of assuming its the same logical blocks per physical block.
+Since commit 5cbcb62dddf5 ("fs/proc: fix softlockup in __read_vmcore") the
+number of softlockups in __read_vmcore at kdump time have gone down, but
+they still happen sometimes.
 
-This ensures devices with large IUs information properly
-propagated on the target.
+In a memory constrained environment like the kdump image, a softlockup is
+not just a harmless message, but it can interfere with things like RCU
+freeing memory, causing the crashdump to get stuck.
 
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The second loop in __read_vmcore has a lot more opportunities for natural
+sleep points, like scheduling out while waiting for a data write to
+happen, but apparently that is not always enough.
+
+Add a cond_resched() to the second loop in __read_vmcore to (hopefully)
+get rid of the softlockups.
+
+Link: https://lkml.kernel.org/r/20250110102821.2a37581b@fangorn
+Fixes: 5cbcb62dddf5 ("fs/proc: fix softlockup in __read_vmcore")
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/io-cmd-bdev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/proc/vmcore.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/nvme/target/io-cmd-bdev.c b/drivers/nvme/target/io-cmd-bdev.c
-index c2d6cea0236b0..ada58a4d0d0cf 100644
---- a/drivers/nvme/target/io-cmd-bdev.c
-+++ b/drivers/nvme/target/io-cmd-bdev.c
-@@ -36,7 +36,7 @@ void nvmet_bdev_set_limits(struct block_device *bdev, struct nvme_id_ns *id)
- 	 */
- 	id->nsfeat |= 1 << 4;
- 	/* NPWG = Namespace Preferred Write Granularity. 0's based */
--	id->npwg = lpp0b;
-+	id->npwg = to0based(bdev_io_min(bdev) / bdev_logical_block_size(bdev));
- 	/* NPWA = Namespace Preferred Write Alignment. 0's based */
- 	id->npwa = id->npwg;
- 	/* NPDG = Namespace Preferred Deallocate Granularity. 0's based */
--- 
-2.39.5
-
+--- a/fs/proc/vmcore.c
++++ b/fs/proc/vmcore.c
+@@ -404,6 +404,8 @@ static ssize_t __read_vmcore(struct iov_
+ 			if (!iov_iter_count(iter))
+ 				return acc;
+ 		}
++
++		cond_resched();
+ 	}
+ 
+ 	return acc;
 
 
 
