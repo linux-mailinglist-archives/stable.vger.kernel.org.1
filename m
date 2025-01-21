@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-109990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93565A184CD
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:12:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20B57A1840A
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:03:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74EB83A3B65
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:11:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D71E3AC2F2
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF761F7572;
-	Tue, 21 Jan 2025 18:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38FD1F470A;
+	Tue, 21 Jan 2025 18:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jIqzF/C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXtGXRMF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C91A1F3FFE;
-	Tue, 21 Jan 2025 18:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A781F0E36;
+	Tue, 21 Jan 2025 18:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737483023; cv=none; b=OVJUvzD/O2+dnpues7XjiILaH9Jr0ouYGJL4E0t9CebV0cu7Seb3UFP1xCXJKW0mhDDR3hO5yX8eG4cgLBWIHTLpHkjffxsP9UjdP1JswLJKwoEp99KSrG3+GlGl5CErOjottFmjjiGGyeBXB1/KodNi69g1hsHyClPHSgiRD1s=
+	t=1737482542; cv=none; b=agunObmefQz7L3h2yzXJNjf3i6aJvDlKW9Cwi7b21J+DfqW9B2qJHqrIZC/Jz0FlT69caK6feZhK+O7/3t0zawkxx+csXRcwvwDPDrc1/6xtXbUqx/VYNgdwbmUMEOCD9uflFfdtYdXDc1eTs0V27Wxa6MgbfgROEe/tlcVYxz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737483023; c=relaxed/simple;
-	bh=FX9JeJmLxoCId+k4eX06GjVRA6QY64d6YFo2EJu2Lm8=;
+	s=arc-20240116; t=1737482542; c=relaxed/simple;
+	bh=xncZy2yHzvmOkInKR/9jPJrVO/LyDaHR6ZzkyFu/RsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uk1B1f8NJdQNIBOQzlPU3nPc1Z4sQnCUwatctgMmzi+wAfDxe9eagqoGmu5o9O0RStTNYHCLj7LFs0djP6lxTTjmMyCPZL7QTn7UL2g5vEqGqM1FTjuiWbChx3dyq/LmEhZs4sbzWWJ+6njg6vaXPWa7CY+AMlfX19ZpuOrOSf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jIqzF/C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAEE6C4CEDF;
-	Tue, 21 Jan 2025 18:10:22 +0000 (UTC)
+	 MIME-Version; b=dCJFdtDeY7LFsXX4Bhr1sj39zj/sTm5VmwWcDBV0mxQPyef0Gyu9T978d9mltEpV8MQmRiSMu5/tbWdbDhuCbjHySmcyy46A5BF3/4fUm1K0vXPNmGYoa1bSaDPsX/g5bodvJya/+bkGIFN3ecAOVYoxvjzaRrN/GaakYsIwOlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXtGXRMF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E03C4CEDF;
+	Tue, 21 Jan 2025 18:02:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737483023;
-	bh=FX9JeJmLxoCId+k4eX06GjVRA6QY64d6YFo2EJu2Lm8=;
+	s=korg; t=1737482542;
+	bh=xncZy2yHzvmOkInKR/9jPJrVO/LyDaHR6ZzkyFu/RsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1jIqzF/Cq1Fr4CNPk4++jPN69x/FxbKzZ7b/i9PEHPF78njHx+rQKsFp35OMp5U22
-	 qUGNGe8XIBej8+WPV/XgvI+px4DccutbykjcsrJlkVdq0luDtveQUCroq/Gccre6Lt
-	 dpZAfZ5R8aSGhN0UuzBGcPAaxxoWxRqfFJztljLw=
+	b=IXtGXRMFI7WLDYYwJNTxhH/poAxwn9BJdG738A59N6z5dPwMoRbT385jxDS/91M6G
+	 gsplixsl1XZwn33FhBUX/jMdkx1S2ZSMNyZbgSMk9DCL8oWxUhdvNtI+HVedfW27aQ
+	 ioc5g3xu8t2Bnl3PHmk5oMc3Jkjsx/X90K897Xl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maor Gottlieb <maorg@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 089/127] net/mlx5: Refactor mlx5_get_flow_namespace
+	Kenneth Feng <kenneth.feng@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 113/122] drm/amdgpu/smu13: update powersave optimizations
 Date: Tue, 21 Jan 2025 18:52:41 +0100
-Message-ID: <20250121174533.081654871@linuxfoundation.org>
+Message-ID: <20250121174537.408158449@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maor Gottlieb <maorg@nvidia.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 4588fed7beae6d54ef4c67c77fc39364f8fc42af ]
+commit 11510e67d0bd956878ab4ffa03c45766788092c1 upstream.
 
-Have all the namespace type check in the same switch case.
+Only apply when compute profile is selected.  This is
+the only supported configuration.  Selecting other
+profiles can lead to performane degradations.
 
-Signed-off-by: Maor Gottlieb <maorg@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Stable-dep-of: c08d3e62b2e7 ("net/mlx5: Fix RDMA TX steering prio")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit d477e39532d725b1cdb3c8005c689c74ffbf3b94)
+Cc: stable@vger.kernel.org # 6.12.x
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/fs_core.c | 44 ++++++++++++++-----
- 1 file changed, 32 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-index 54409a9307c2d..9632abb83f04c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-@@ -2310,6 +2310,22 @@ struct mlx5_flow_namespace *mlx5_get_fdb_sub_ns(struct mlx5_core_dev *dev,
- }
- EXPORT_SYMBOL(mlx5_get_fdb_sub_ns);
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -2549,11 +2549,12 @@ static int smu_v13_0_0_set_power_profile
+ 					  &backend_workload_mask);
  
-+static bool is_nic_rx_ns(enum mlx5_flow_namespace_type type)
-+{
-+	switch (type) {
-+	case MLX5_FLOW_NAMESPACE_BYPASS:
-+	case MLX5_FLOW_NAMESPACE_LAG:
-+	case MLX5_FLOW_NAMESPACE_OFFLOADS:
-+	case MLX5_FLOW_NAMESPACE_ETHTOOL:
-+	case MLX5_FLOW_NAMESPACE_KERNEL:
-+	case MLX5_FLOW_NAMESPACE_LEFTOVERS:
-+	case MLX5_FLOW_NAMESPACE_ANCHOR:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
- struct mlx5_flow_namespace *mlx5_get_flow_namespace(struct mlx5_core_dev *dev,
- 						    enum mlx5_flow_namespace_type type)
- {
-@@ -2335,31 +2351,35 @@ struct mlx5_flow_namespace *mlx5_get_flow_namespace(struct mlx5_core_dev *dev,
- 		if (steering->sniffer_tx_root_ns)
- 			return &steering->sniffer_tx_root_ns->ns;
- 		return NULL;
--	default:
--		break;
--	}
--
--	if (type == MLX5_FLOW_NAMESPACE_EGRESS ||
--	    type == MLX5_FLOW_NAMESPACE_EGRESS_KERNEL) {
-+	case MLX5_FLOW_NAMESPACE_EGRESS:
-+	case MLX5_FLOW_NAMESPACE_EGRESS_KERNEL:
- 		root_ns = steering->egress_root_ns;
- 		prio = type - MLX5_FLOW_NAMESPACE_EGRESS;
--	} else if (type == MLX5_FLOW_NAMESPACE_RDMA_RX) {
-+		break;
-+	case MLX5_FLOW_NAMESPACE_RDMA_RX:
- 		root_ns = steering->rdma_rx_root_ns;
- 		prio = RDMA_RX_BYPASS_PRIO;
--	} else if (type == MLX5_FLOW_NAMESPACE_RDMA_RX_KERNEL) {
-+		break;
-+	case MLX5_FLOW_NAMESPACE_RDMA_RX_KERNEL:
- 		root_ns = steering->rdma_rx_root_ns;
- 		prio = RDMA_RX_KERNEL_PRIO;
--	} else if (type == MLX5_FLOW_NAMESPACE_RDMA_TX) {
-+		break;
-+	case MLX5_FLOW_NAMESPACE_RDMA_TX:
- 		root_ns = steering->rdma_tx_root_ns;
--	} else if (type == MLX5_FLOW_NAMESPACE_RDMA_RX_COUNTERS) {
-+		break;
-+	case MLX5_FLOW_NAMESPACE_RDMA_RX_COUNTERS:
- 		root_ns = steering->rdma_rx_root_ns;
- 		prio = RDMA_RX_COUNTERS_PRIO;
--	} else if (type == MLX5_FLOW_NAMESPACE_RDMA_TX_COUNTERS) {
-+		break;
-+	case MLX5_FLOW_NAMESPACE_RDMA_TX_COUNTERS:
- 		root_ns = steering->rdma_tx_root_ns;
- 		prio = RDMA_TX_COUNTERS_PRIO;
--	} else { /* Must be NIC RX */
-+		break;
-+	default: /* Must be NIC RX */
-+		WARN_ON(!is_nic_rx_ns(type));
- 		root_ns = steering->root_ns;
- 		prio = type;
-+		break;
- 	}
- 
- 	if (!root_ns)
--- 
-2.39.5
-
+ 	/* Add optimizations for SMU13.0.0/10.  Reuse the power saving profile */
+-	if ((amdgpu_ip_version(smu->adev, MP1_HWIP, 0) == IP_VERSION(13, 0, 0) &&
+-	     ((smu->adev->pm.fw_version == 0x004e6601) ||
+-	      (smu->adev->pm.fw_version >= 0x004e7300))) ||
+-	    (amdgpu_ip_version(smu->adev, MP1_HWIP, 0) == IP_VERSION(13, 0, 10) &&
+-	     smu->adev->pm.fw_version >= 0x00504500)) {
++	if ((workload_mask & (1 << PP_SMC_POWER_PROFILE_COMPUTE)) &&
++	    ((amdgpu_ip_version(smu->adev, MP1_HWIP, 0) == IP_VERSION(13, 0, 0) &&
++	      ((smu->adev->pm.fw_version == 0x004e6601) ||
++	       (smu->adev->pm.fw_version >= 0x004e7300))) ||
++	     (amdgpu_ip_version(smu->adev, MP1_HWIP, 0) == IP_VERSION(13, 0, 10) &&
++	      smu->adev->pm.fw_version >= 0x00504500))) {
+ 		workload_type = smu_cmn_to_asic_specific_index(smu,
+ 							       CMN2ASIC_MAPPING_WORKLOAD,
+ 							       PP_SMC_POWER_PROFILE_POWERSAVING);
 
 
 
