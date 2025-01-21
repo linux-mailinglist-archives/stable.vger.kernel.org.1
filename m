@@ -1,56 +1,92 @@
-Return-Path: <stable+bounces-110060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D3A7A185D9
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 20:52:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40DE0A185E8
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 21:00:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 690123AA876
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:52:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E2EC188B941
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 20:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 272AB1F63EF;
-	Tue, 21 Jan 2025 19:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10081F76D3;
+	Tue, 21 Jan 2025 20:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cABdOi8S"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BC7/wyUV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89021F5433
-	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 19:52:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1F71F707F;
+	Tue, 21 Jan 2025 20:00:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737489174; cv=none; b=kp31S9+puAzGnJpBRTD0I33riPYNJwXfpdGf2RW68I8qpLsSQ1q65riT7pc/SXd4fLI/OdNN+eG6ue8EUclRIT5tzsgP8ewNCATIERVTlgGSXU08J9KgJaJH/xBF9qypjS/pFQmlwWHBbRHTpPbM0l4g0gXDw+DDMzdYfQf62o8=
+	t=1737489634; cv=none; b=s+eGPuMBQkgH1RVftJsrFmjJslLwSQuGXhSsK92MMhcX6WuQKzAnFV/RWboHdOLIIjfrynsT4j4/DH7mGkpYPKNS8aNPuKxoPwfjxyj353Oi4bFfvd8Fl2FosMMg0vNPYM2cjemVOgLDXALdhrkWFQa0JQb57+jOjYYli1fsZvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737489174; c=relaxed/simple;
-	bh=VmlewI+91NhmCnDukRt8t045813cQVd4AgOtG2LFYl8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kqEoDVBCmsIfriWClTAasmSVqVi+qdEMDRC2tMpxXnbVvOo1gQlgWliDhSkFNJ4CZnTWLLhCazwuFrHfMPK8Hwbwj/9X2w3bDzXWOYE7QW6lwEWImdoz44VJovDfUnTdw65QRXnwys8m4sL9JeXGHfvOwIkiVvzetx6G6PxU1/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cABdOi8S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4187AC4CEDF;
-	Tue, 21 Jan 2025 19:52:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737489174;
-	bh=VmlewI+91NhmCnDukRt8t045813cQVd4AgOtG2LFYl8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cABdOi8STwgQI0iaPkSNlpZMpkfnK9aPUYCG20KA1jeyggwfg9zlTSwE+e9tktP7S
-	 ZdSNEatY+F72j3gVDCCTLItjx1ANrz9hVStIpJL+Ia7qYJxWqnhohDvMaJlmNF/kjj
-	 EV+uTx9pUQ8juHJuAkwZd5/7mfiMoFx7il8N0PPvLW1eHeIgzjGKCklIm7OTeAzzT3
-	 La2/LqOrl4FExikQHc37rG8IY6wFZHRLAG9TyJ1y2+ty5LbD1k+hNyD7r7SwKLVt8b
-	 pSA6KRLTuEfne1ZyKxBfMyHjHXbxZPxY+Cl40pmxTvt86O1aiMDDtQCfOd9qA+SohA
-	 EaRtDLSQHNxmQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Amir Goldstein <amir73il@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 1/3] ovl: pass realinode to ovl_encode_real_fh() instead of realdentry
-Date: Tue, 21 Jan 2025 14:52:52 -0500
-Message-Id: <20250121131434-f734405aee7c8bc1@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250121110815.416785-2-amir73il@gmail.com>
-References: 
+	s=arc-20240116; t=1737489634; c=relaxed/simple;
+	bh=4kizRe2rgXySp8A1jCGinFKGSl5lHwSo1HF/xS0Okwk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CPsbM8HVSVPHm7KGwC2tkwk0D3tNHHst3ARmwVlkMB4X9zXzm0F+KzfIU5PA3zJuudagpiL0VsdFzV0URhCNziNh5DKyctzDLLlOExK2Hq9VKM9mpu2/8LDFPhLdpplf6J77TwH4OqluA1kiha8RCmoAQsb5Y2blYaDrZITqZsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BC7/wyUV; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-435f8f29f8aso43930345e9.2;
+        Tue, 21 Jan 2025 12:00:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737489630; x=1738094430; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/BQt4u1Y3GeikF9g8y57XTCh9Gzrta3TPR2hq1BQ24g=;
+        b=BC7/wyUVBpERzesWOU4JBv1Zr4f3h0hMkuVH/u8PbGW0gyMeIhZEHN7deAxmuiq6eK
+         4QP/klsXr/STeaPrRH0KTYMchJ3joAIFfrufRJWieEno32AcwBNkKpJUSfb3zXN2dv44
+         etlKJmFrsfB24ncmhXN7vAHrZtWTdKphcCb6os4ShnFSHg6fnrFn7zs/KPxgo7h/841U
+         OO40jcTaq3jZNZSDQ9lS5IHcXxiipfHDxWRGR5qxU7bpniiYqHXGUOlPyhlQQuUqTSjk
+         +qZrpcHGUvTQF3XH4oFddOs6HmKD8Vcc7HPBd9YwphxZHqd5iZ01X34Sq223I4VCafP4
+         IqkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737489630; x=1738094430;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/BQt4u1Y3GeikF9g8y57XTCh9Gzrta3TPR2hq1BQ24g=;
+        b=UOuxoQWpvR3r2caPGUMO2bA2FtdlGhxshu78wTA9ADX4+uty27bdUzugPmNQFxWizs
+         UWxnX+r8lX1EFukPI0QHxMmbK/iPaSeSY1BWsnCuN7jCxBG6wgwC7SQJuMbkwKGZLfQh
+         CY5PC4AJ/tdqNCfh1/w9yv5BBTogoyh3Y/OSs1Bu087VkBFs8nm4TutQGf79C7FmN9Bk
+         Mdd/aE61EIJsUoQvjVwgUrVWGm/4aaYy+YJep9w3EjgcYW/tJ57Unr5sJvOAeyy1+y5e
+         bG9BINqZJrKrL5lVopaGEyyeCur+C8Et1/pqj5u+QdFx+RxbatOcP+toTDqnEWwDvDmx
+         ypYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUB+mQli3FxLZ6XHsMdFM8Qswq/64zui8IfGKxJypOUvf5ozIAHr2iPHBivSn+3tSiTha3Onns=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywa+0zbfVbAT80eDOrigEMxo69apt1VM+SLnWDDpaJ9mPj7b7Cw
+	TbUzD1KiqfOAzqDsmaFoZ82mvXrQOMhekmCyGQHq4lJ8JmD6Gpb33XvdB3gG
+X-Gm-Gg: ASbGncseymvbE+AXIbrPhiweYlvYS7yChC0T0ERv04JT0ipJrmgq4kWHqdNomTJce7V
+	YfOIACZHFcroRKIlfusFo5R+p7/eiUlstNYh7DTXe4R0GdP4LqnJOmBbxoN/dhaBIG99WMEMqkp
+	JrccP6rBNSLrOFJrrlyNF5WFTuVZtezyh9k+TMgQuqRlR/mMOFpA3erdRcE/044HewfERmTULYn
+	mkJgzmpVIc8avAdxQDZh1SF5wj7FFpFN5dUTvh0n4099kGQbdFbNepawPUTjmAkyVbOseYQ4QOF
+	oo+DDBY6SiZ5rMR28A==
+X-Google-Smtp-Source: AGHT+IHPiKuUNeHZz5XZ8lEdQrC0/wbhc1G+3Fo1l8UhrAQPh2eWw8N4VZmW7twvCncAJLXPU3yAnw==
+X-Received: by 2002:adf:f811:0:b0:385:e3c5:61ae with SMTP id ffacd0b85a97d-38bf56785f2mr14944300f8f.31.1737489629444;
+        Tue, 21 Jan 2025 12:00:29 -0800 (PST)
+Received: from localhost.localdomain ([109.175.243.75])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bf3221761sm14118153f8f.22.2025.01.21.12.00.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jan 2025 12:00:28 -0800 (PST)
+From: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-input@vger.kernel.org,
+	stuart.a.hayhurst@gmail.com,
+	bentiss@kernel.org,
+	jikos@kernel.org,
+	kangyan91@outlook.com,
+	yue sun <samsun1006219@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/2] HID: corsair-void: Add missing delayed work cancel for headset status
+Date: Tue, 21 Jan 2025 20:00:07 +0000
+Message-ID: <20250121200017.33966-2-stuart.a.hayhurst@gmail.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250121200017.33966-1-stuart.a.hayhurst@gmail.com>
+References: <20250121200017.33966-1-stuart.a.hayhurst@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,105 +95,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-[ Sasha's backport helper bot ]
+The cancel_delayed_work_sync() call was missed, causing a use-after-free
+in corsair_void_remove().
 
-Hi,
+Reported-by: yan kang <kangyan91@outlook.com>
+Reported-by: yue sun <samsun1006219@gmail.com>
+Closes: https://lore.kernel.org/all/SY8P300MB042106286A2536707D2FB736A1E42@SY8P300MB0421.AUSP300.PROD.OUTLOOK.COM/
+Closes: https://lore.kernel.org/all/SY8P300MB0421872E0AE934C9616FA61EA1E42@SY8P300MB0421.AUSP300.PROD.OUTLOOK.COM/
 
-The upstream commit SHA1 provided is correct: 07aeefae7ff44d80524375253980b1bdee2396b0
-
-
-Status in newer kernel trees:
-6.12.y | Present (different SHA1: 668d8dea2cee)
-6.6.y | Present (different SHA1: a3f8a2b13a27)
-
-Note: The patch differs from the upstream commit:
+Fixes: 6ea2a6fd3872 ("HID: corsair-void: Add Corsair Void headset family driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
 ---
-1:  07aeefae7ff44 ! 1:  8f1f4e6b34fc1 ovl: pass realinode to ovl_encode_real_fh() instead of realdentry
-    @@ Metadata
-      ## Commit message ##
-         ovl: pass realinode to ovl_encode_real_fh() instead of realdentry
-     
-    +    [ Upstream commit 07aeefae7ff44d80524375253980b1bdee2396b0 ]
-    +
-         We want to be able to encode an fid from an inode with no alias.
-     
-         Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-         Link: https://lore.kernel.org/r/20250105162404.357058-2-amir73il@gmail.com
-         Signed-off-by: Christian Brauner <brauner@kernel.org>
-    +    Stable-dep-of: c45beebfde34 ("ovl: support encoding fid from inode with no alias")
-    +    Signed-off-by: Sasha Levin <sashal@kernel.org>
-    +    [re-applied over v6.6.71 with conflict resolved]
-    +    Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-     
-      ## fs/overlayfs/copy_up.c ##
-     @@ fs/overlayfs/copy_up.c: int ovl_set_attr(struct ovl_fs *ofs, struct dentry *upperdentry,
-    @@ fs/overlayfs/copy_up.c: struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, st
-      	buflen = (dwords << 2);
-      
-      	err = -EIO;
-    -@@ fs/overlayfs/copy_up.c: struct ovl_fh *ovl_get_origin_fh(struct ovl_fs *ofs, struct dentry *origin)
-    - 	if (!ovl_can_decode_fh(origin->d_sb))
-    - 		return NULL;
-    - 
-    --	return ovl_encode_real_fh(ofs, origin, false);
-    -+	return ovl_encode_real_fh(ofs, d_inode(origin), false);
-    - }
-    - 
-    - int ovl_set_origin_fh(struct ovl_fs *ofs, const struct ovl_fh *fh,
-    +@@ fs/overlayfs/copy_up.c: int ovl_set_origin(struct ovl_fs *ofs, struct dentry *lower,
-    + 	 * up and a pure upper inode.
-    + 	 */
-    + 	if (ovl_can_decode_fh(lower->d_sb)) {
-    +-		fh = ovl_encode_real_fh(ofs, lower, false);
-    ++		fh = ovl_encode_real_fh(ofs, d_inode(lower), false);
-    + 		if (IS_ERR(fh))
-    + 			return PTR_ERR(fh);
-    + 	}
-     @@ fs/overlayfs/copy_up.c: static int ovl_set_upper_fh(struct ovl_fs *ofs, struct dentry *upper,
-      	const struct ovl_fh *fh;
-      	int err;
-    @@ fs/overlayfs/export.c: static int ovl_dentry_to_fid(struct ovl_fs *ofs, struct d
-      
-     
-      ## fs/overlayfs/namei.c ##
-    -@@ fs/overlayfs/namei.c: int ovl_verify_origin_xattr(struct ovl_fs *ofs, struct dentry *dentry,
-    +@@ fs/overlayfs/namei.c: int ovl_verify_set_fh(struct ovl_fs *ofs, struct dentry *dentry,
-      	struct ovl_fh *fh;
-      	int err;
-      
-    @@ fs/overlayfs/overlayfs.h: int ovl_copy_up_with_data(struct dentry *dentry);
-     -struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry *real,
-     +struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct inode *realinode,
-      				  bool is_upper);
-    - struct ovl_fh *ovl_get_origin_fh(struct ovl_fs *ofs, struct dentry *origin);
-    - int ovl_set_origin_fh(struct ovl_fs *ofs, const struct ovl_fh *fh,
-    + int ovl_set_origin(struct ovl_fs *ofs, struct dentry *lower,
-    + 		   struct dentry *upper);
----
+ drivers/hid/hid-corsair-void.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Results of testing on various branches:
+diff --git a/drivers/hid/hid-corsair-void.c b/drivers/hid/hid-corsair-void.c
+index 6ece56b850fc..bd8f3d849b58 100644
+--- a/drivers/hid/hid-corsair-void.c
++++ b/drivers/hid/hid-corsair-void.c
+@@ -726,6 +726,7 @@ static void corsair_void_remove(struct hid_device *hid_dev)
+ 	if (drvdata->battery)
+ 		power_supply_unregister(drvdata->battery);
+ 
++	cancel_delayed_work_sync(&drvdata->delayed_status_work);
+ 	cancel_delayed_work_sync(&drvdata->delayed_firmware_work);
+ 	sysfs_remove_group(&hid_dev->dev.kobj, &corsair_void_attr_group);
+ }
+-- 
+2.47.1
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
-| stable/linux-6.1.y        |  Success    |  Failed    |
-
-Build Errors:
-Build error for stable/linux-6.1.y:
-    fs/overlayfs/copy_up.c: In function 'ovl_encode_real_fh':
-    fs/overlayfs/copy_up.c:360:19: error: too many arguments to function 'exportfs_encode_inode_fh'
-      360 |         fh_type = exportfs_encode_inode_fh(realinode, (void *)fh->fb.fid,
-          |                   ^~~~~~~~~~~~~~~~~~~~~~~~
-    In file included from fs/overlayfs/copy_up.c:21:
-    ./include/linux/exportfs.h:228:12: note: declared here
-      228 | extern int exportfs_encode_inode_fh(struct inode *inode, struct fid *fid,
-          |            ^~~~~~~~~~~~~~~~~~~~~~~~
-    make[3]: *** [scripts/Makefile.build:250: fs/overlayfs/copy_up.o] Error 1
-    make[3]: Target 'fs/overlayfs/' not remade because of errors.
-    make[2]: *** [scripts/Makefile.build:503: fs/overlayfs] Error 2
-    make[2]: Target 'fs/' not remade because of errors.
-    make[1]: *** [scripts/Makefile.build:503: fs] Error 2
-    make[1]: Target './' not remade because of errors.
-    make: *** [Makefile:2009: .] Error 2
-    make: Target '__all' not remade because of errors.
 
