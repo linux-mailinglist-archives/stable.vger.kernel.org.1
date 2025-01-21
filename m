@@ -1,97 +1,114 @@
-Return-Path: <stable+bounces-110053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76C5A185D1
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 20:47:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E02A185D3
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 20:52:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BBF618856CE
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:47:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22376188B39E
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE471F55F3;
-	Tue, 21 Jan 2025 19:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F3D1F4E50;
+	Tue, 21 Jan 2025 19:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cTKBi3F0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NOfKvGLy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955791EB2F;
-	Tue, 21 Jan 2025 19:47:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81651EB2F
+	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 19:52:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737488861; cv=none; b=ivo5Yq5xzZL7h367GqUTjfKgtSRt7UjLBRFDoEdn7XRbN43mrq3VV/Zk0oZCzQogtgL3bRBWrtVIHvcgKlYmfNusvMnzMQ509tGjlOmw7ZtNgd8SzvptpM6ehc8WX6mFujrOEYlmQa5H8MaHNJfWFzTHGjnWrjsxvfXibYxVssQ=
+	t=1737489162; cv=none; b=HFQZ2lJHr7YIS0I4Fs19RCErlFc92hZhjGl2JGh4odYfxtHKzNQjbptE4mKnnW9IdgXM0JM8jCKKtg7LEhNt0ijoL4i4uuoB8smfvBjcFrgnenbp5PNfi+tsx23hzVmOinCJmt5E4p9rQKr+KSafSSna4hM2u+u9JbZdAAuBybE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737488861; c=relaxed/simple;
-	bh=LIdX0OZPc62iBlZNknRKXsaW2F0Mq3ALwvzERoG1wJ8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uQoIzv/EhVTDRUnKKQ4Bnpwxl+AzXTuH24RQnynfg3sUhwnplwR7pUkqXTysztadBJiVjcdA9o5R4tY9valvAJilOT+JCeeWtsyR+kK9l+kawxjUZLiYDFTtdfSYjZOx3KjT05USLi0y+hX6Vx5fhJlNmQ9r+Q/BdYZmcck2AOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cTKBi3F0; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-385e27c75f4so5045218f8f.2;
-        Tue, 21 Jan 2025 11:47:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737488858; x=1738093658; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=LIdX0OZPc62iBlZNknRKXsaW2F0Mq3ALwvzERoG1wJ8=;
-        b=cTKBi3F0l+HDSCDUl9s/sveYLe3CixSI3+7OPMNdWOGt1KYP/gUJKrqJUj+2f/iJdA
-         cPJHIji1dHWzbc3Ag4SbRW7SYfz9oyh04vaVLibLvjbUk97X6RxqSZckqcQVoZHmwIMw
-         BkLBAriORQdAYByZSRz++qzRrTHs3FQgjLyFwsy18Ulk2WfRu7AZG0YV4/ibEee36jYv
-         QFuqPALHFb0Eh4UihtUId3vLXr7uvmjrkPyv8Wh/GyWvkHL47DKAoeaLQd8wv1hTb9Ht
-         k7B41xTzhxQXkPP7P1gq30G2Ep8ZJunthFq7hzsfP41V7+M8p+B4ZQ3le0CXmOLEC9jn
-         4qWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737488858; x=1738093658;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LIdX0OZPc62iBlZNknRKXsaW2F0Mq3ALwvzERoG1wJ8=;
-        b=VoqdyIo87vPD0StVwHa9h3xfHybNTmkU6ZaNPh2vXJyP2DK0W93KTTqXUDnmITZgwn
-         xfaMLstsyWm65tqrzvFMob44zL2WGZkgkxljC/qAAFGgMTkLYo4LkJ/pHXzC8b+DkiAg
-         Zj4aIU3WcfxBNH9JLXoUDXTtq7wpm1+qxmH9XIKdeoRKy7aKdN4oS5PuJAWqsKwiBtWu
-         3ZNjDatSxzJi8/yETd78kM5ieluKTU5197L3ncUaM/Qp23b+I3fijIMiHTTt4wN8Iifc
-         LVYKoj2yd3Et0pPuXk35PANomAZHLpyR448Ff28kwItmeKyXfMB9sFZw9TKwMsxkob0W
-         su/A==
-X-Forwarded-Encrypted: i=1; AJvYcCUph92MhDoGlkABqssPIch90lYDkmjgy6Vf5XITkNjFMr/u62Crlg21dlfAWs8lnUNXaJTxRroW@vger.kernel.org, AJvYcCVuKp7mFpB/TJysZCTplqhB8BOku2MUpqYP/wNShRfZIXSRhVxD0XleNHlB9SIaj8LF4Xhvm17xEsWX+A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyf62HuK3E9L0si5QihriEnCRaxvUH5vVnJvKTGazhNY9eIZhk2
-	mDXIx9cDxYVH0WDAtNINgvuGgLULEZXuCKUcwRv+YbbYgxwMd15ot/j4lytj+JixjDsRT1/CYzk
-	feCG8upJkhmVQPPCOFXFcDszXuBg=
-X-Gm-Gg: ASbGnctutULxKJhgE6p0SJD7svAVdiGNW9f0413AHwlszSOldivYZo0aCIc9adKyGIe
-	9yV7fzP+Ip51T3YNvCaEr4sJZ+eDGx+8YOZPKrYsN2/SDl7Y18zEJ
-X-Google-Smtp-Source: AGHT+IGjBlIa+jSUNCbzGDIp/uDnWT1jNz1apHM9LKSyGLppoOfC5xXFWJDxpCvhtiscn3n/s+2qae8fyQeZaeH43eM=
-X-Received: by 2002:a05:6000:1a87:b0:38b:da31:3e3b with SMTP id
- ffacd0b85a97d-38bf5678466mr17208861f8f.3.1737488857835; Tue, 21 Jan 2025
- 11:47:37 -0800 (PST)
+	s=arc-20240116; t=1737489162; c=relaxed/simple;
+	bh=AyyFEcvog/xNMAfrVVXD9cgH6xxjAv8kdujkkLFnLXc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Y98CDHBebS9dp4qjFGCAT9JUClZyub/msK3+Fpem+PC9b28Dax0alOKT4Tx6nTXXfZB4toPZIOT/PQzp7P3u7l5MC+i6/k2G906nzVzd+OG9cjyQkIssqEfH/6ftsQxfwMfiTIMWDZVXK+5Akioe3GquknyVre0F88PWtwRX6zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NOfKvGLy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5A8C4CEDF;
+	Tue, 21 Jan 2025 19:52:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737489162;
+	bh=AyyFEcvog/xNMAfrVVXD9cgH6xxjAv8kdujkkLFnLXc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=NOfKvGLy83gENLZo5bOivwZcHwTozmVQix8NTd545Oalt/0JylPQFp9ObuvPn+W1c
+	 QriiDGDVPRa1aipQ6oRlLOANWNt5XK/tzqN5m+dSbx2PR5DbiVFjLKxwdBJ8elHTzM
+	 cbAfdjZmzdKnMj79bPoW/FPHRoOS/wxxGaqqwSdYwpYuM1qnMdGkY5Sg6gCJ/U2MHe
+	 uhaX/4KgiW/xfu9XikpstjvFgfc0B8w08CFD9DAj+0Ay8BnN2oMiHpVXI/xach6jH+
+	 0VYPmkJ6qTIk7HCKZP9cZsMTvDAB0wUPBfmDmEJVd3OuN3rTUT9kgHrbkZClKJ3q21
+	 kQoVmU1dJchmw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: hsimeliere.opensource@witekio.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH v6.1-v5.4] scsi: sg: Fix slab-use-after-free read in sg_release()
+Date: Tue, 21 Jan 2025 14:52:40 -0500
+Message-Id: <20250121122350-735f0951dcfbdf8e@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250121141509.201877-1-hsimeliere.opensource@witekio.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250121192444.31127-2-stuart.a.hayhurst@gmail.com> <3q9oq173-09p5-o64r-pns9-44q308nsnr01@xreary.bet>
-In-Reply-To: <3q9oq173-09p5-o64r-pns9-44q308nsnr01@xreary.bet>
-From: Stuart <stuart.a.hayhurst@gmail.com>
-Date: Tue, 21 Jan 2025 19:47:26 +0000
-X-Gm-Features: AbW1kvYh-S7TyBLm55dLBUUOuCkI6yVRVxBTFpPFJluT6Jy_E0k3MkVsGj5PVKY
-Message-ID: <CALTg27mHHtWrOrgw8GvbcKK_+QqkS6AV2GH1s6On3_dL4yaVgQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] HID: corsair-void: Fix various memory issues
-To: Jiri Kosina <jikos@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Benjamin Tissoires <bentiss@kernel.org>, 
-	linux-input@vger.kernel.org, 
-	"syzkaller@googlegroups.com" <syzkaller@googlegroups.com>, YAN KANG <kangyan91@outlook.com>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-> Are you sure you got this time this time though? I again got only cover
-> letter and not the actual patches :)
+[ Sasha's backport helper bot ]
 
-Yeah thanks I just saw I emailed it to myself instead somehow
-I'll have a couple tries with --dry-run otherwise I'll clutter
-everyone's inboxes, sorry for the extra emails
+Hi,
 
-Stuart
+The upstream commit SHA1 provided is correct: f10593ad9bc36921f623361c9e3dd96bd52d85ee
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: hsimeliere.opensource@witekio.com
+Commit author: Suraj Sonawane<surajsonawane0215@gmail.com>
+
+
+Status in newer kernel trees:
+6.12.y | Present (different SHA1: 1f5e2f1ca587)
+6.6.y | Present (different SHA1: 59b30afa5786)
+6.1.y | Not found
+
+Note: The patch differs from the upstream commit:
+---
+1:  f10593ad9bc36 ! 1:  6931ce4ecfe44 scsi: sg: Fix slab-use-after-free read in sg_release()
+    @@ Metadata
+      ## Commit message ##
+         scsi: sg: Fix slab-use-after-free read in sg_release()
+     
+    +    [ Upstream commit f10593ad9bc36921f623361c9e3dd96bd52d85ee ]
+    +
+         Fix a use-after-free bug in sg_release(), detected by syzbot with KASAN:
+     
+         BUG: KASAN: slab-use-after-free in lock_release+0x151/0xa30
+    @@ Commit message
+         Link: https://lore.kernel.org/r/20241120125944.88095-1-surajsonawane0215@gmail.com
+         Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+         Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+    +    Signed-off-by: BRUNO VERNAY <bruno.vernay@se.com>
+    +    Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+     
+      ## drivers/scsi/sg.c ##
+     @@ drivers/scsi/sg.c: sg_release(struct inode *inode, struct file *filp)
+    - 	SCSI_LOG_TIMEOUT(3, sg_printk(KERN_INFO, sdp, "sg_release\n"));
+      
+      	mutex_lock(&sdp->open_rel_lock);
+    + 	scsi_autopm_put_device(sdp->device);
+     -	kref_put(&sfp->f_ref, sg_remove_sfp);
+      	sdp->open_cnt--;
+      
+---
+
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-5.4.y        |  Success    |  Success   |
 
