@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-109711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5C20A1838D
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85715A18404
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:02:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C400188CD43
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:58:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ED96188D38A
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56F861F758A;
-	Tue, 21 Jan 2025 17:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C465F1F543F;
+	Tue, 21 Jan 2025 18:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uA6cR0w4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oP27npwM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FC61F63CF;
-	Tue, 21 Jan 2025 17:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FDB1F3FFE;
+	Tue, 21 Jan 2025 18:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482217; cv=none; b=Dv1Up0EwAnFfobBRkb4h5tIuIaHul49D/Qz6Fe23+MlOeA1iABfX6j42LUMsSMQ5zSNCcJagIxVn7tm8pOsVGGz6jv8LFPOv6D1a2dU8xQzypkyjjyhwJhQNROA6K5w9KD85MHT7NA0/4DPEXkQ00o9fl+dymoFNuDuG96Wrn0M=
+	t=1737482490; cv=none; b=JJ/Zh6i75dBwjBNYibURzz6g0cdrfl4RcWrMoMH67f7icjuRd8LmqR8JeWXwrA0wg2YVi6ys/rdTO9kJir9RnJIITxN0/KLIeRyLEsYzymNXQVgah76zE3pEXx89qKhf8sinEkTj7kW8zCTSCC1ex5GcObVJtJRNuiT2UO3E1Uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482217; c=relaxed/simple;
-	bh=AbO53n0scCZuKIQjF45P8pHB7ymhHMZ0RwMhXSF7GsE=;
+	s=arc-20240116; t=1737482490; c=relaxed/simple;
+	bh=Udxng/LlAxACw6O3UV8aZxrOC/B/q8UXwgdQUPlvtPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DUt1qnJ2DmVRESv3egwoQ99OO4nNWMRXQHwcqjWDlIXTIh5Td1RgVQpku8v8STBfcay2blc1SvCCvSB2yWEl+jolIbuokC0yIgiwAB1izP91S7lC7bihanJZIaikYQZds6fp8Q433KGGRMIOZ9O9KX7R+dLsxzqXz53olJDQ3KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uA6cR0w4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1B3C4CEE1;
-	Tue, 21 Jan 2025 17:56:55 +0000 (UTC)
+	 MIME-Version; b=otFRrCJfZrnyeqFcozSOdcRZ4YrszJbpQPru4MYc466cK1wXNlflnuFpZD6Ksm+FNT7UgdaSKP4NEb9Alc/HUd8tRf5sT3GjnE+1T+65EFR/lvP3TZRVEtifL7u+FuhCyoBpRNuH4PK67V4guV7y9Ui8oBnhQ40Ev+Ms61bjAgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oP27npwM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F0AFC4CEDF;
+	Tue, 21 Jan 2025 18:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482216;
-	bh=AbO53n0scCZuKIQjF45P8pHB7ymhHMZ0RwMhXSF7GsE=;
+	s=korg; t=1737482489;
+	bh=Udxng/LlAxACw6O3UV8aZxrOC/B/q8UXwgdQUPlvtPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uA6cR0w4k786wCI0Oz5udfr9dWFYdPb2XI2GgtBRXuDH9Q3W12g++it0NmdOzrKZ+
-	 iQSCZf47mlf62WMIyiXcyk3yvX90Q/4wMguMTdsosexJkWI3crsn1uCWZI3VoTZTS3
-	 XfyifBSwSlWaekTzqGusM3B+i+t7Gsd81aoEEXzc=
+	b=oP27npwM9ciwc3zZiWJs98RfRd/W3NCrQBTQWCaKFI1LSP8DDSSQ9KNdazDRTawXL
+	 pgRmX7kbkpeLxZQ1tg5b4j1sWVnrvlpDn2jpqFtHsEenz70NIx0t7Vm2rsrPoutKSE
+	 /LvQSBdsifsdMxHF7rdMQYysPfJTOaBE9fxTmrFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 54/72] pmdomain: imx8mp-blk-ctrl: add missing loop break condition
-Date: Tue, 21 Jan 2025 18:52:20 +0100
-Message-ID: <20250121174525.508668811@linuxfoundation.org>
+	Rik van Riel <riel@surriel.com>,
+	Breno Leitao <leitao@debian.org>,
+	Baoquan He <bhe@redhat.com>,
+	Dave Young <dyoung@redhat.com>,
+	Vivek Goyal <vgoyal@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 093/122] fs/proc: fix softlockup in __read_vmcore (part 2)
+Date: Tue, 21 Jan 2025 18:52:21 +0100
+Message-ID: <20250121174536.607129165@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Rik van Riel <riel@surriel.com>
 
-commit 726efa92e02b460811e8bc6990dd742f03b645ea upstream.
+commit cbc5dde0a461240046e8a41c43d7c3b76d5db952 upstream.
 
-Currently imx8mp_blk_ctrl_remove() will continue the for loop
-until an out-of-bounds exception occurs.
+Since commit 5cbcb62dddf5 ("fs/proc: fix softlockup in __read_vmcore") the
+number of softlockups in __read_vmcore at kdump time have gone down, but
+they still happen sometimes.
 
-pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : dev_pm_domain_detach+0x8/0x48
-lr : imx8mp_blk_ctrl_shutdown+0x58/0x90
-sp : ffffffc084f8bbf0
-x29: ffffffc084f8bbf0 x28: ffffff80daf32ac0 x27: 0000000000000000
-x26: ffffffc081658d78 x25: 0000000000000001 x24: ffffffc08201b028
-x23: ffffff80d0db9490 x22: ffffffc082340a78 x21: 00000000000005b0
-x20: ffffff80d19bc180 x19: 000000000000000a x18: ffffffffffffffff
-x17: ffffffc080a39e08 x16: ffffffc080a39c98 x15: 4f435f464f006c72
-x14: 0000000000000004 x13: ffffff80d0172110 x12: 0000000000000000
-x11: ffffff80d0537740 x10: ffffff80d05376c0 x9 : ffffffc0808ed2d8
-x8 : ffffffc084f8bab0 x7 : 0000000000000000 x6 : 0000000000000000
-x5 : ffffff80d19b9420 x4 : fffffffe03466e60 x3 : 0000000080800077
-x2 : 0000000000000000 x1 : 0000000000000001 x0 : 0000000000000000
-Call trace:
- dev_pm_domain_detach+0x8/0x48
- platform_shutdown+0x2c/0x48
- device_shutdown+0x158/0x268
- kernel_restart_prepare+0x40/0x58
- kernel_kexec+0x58/0xe8
- __do_sys_reboot+0x198/0x258
- __arm64_sys_reboot+0x2c/0x40
- invoke_syscall+0x5c/0x138
- el0_svc_common.constprop.0+0x48/0xf0
- do_el0_svc+0x24/0x38
- el0_svc+0x38/0xc8
- el0t_64_sync_handler+0x120/0x130
- el0t_64_sync+0x190/0x198
-Code: 8128c2d0 ffffffc0 aa1e03e9 d503201f
+In a memory constrained environment like the kdump image, a softlockup is
+not just a harmless message, but it can interfere with things like RCU
+freeing memory, causing the crashdump to get stuck.
 
-Fixes: 556f5cf9568a ("soc: imx: add i.MX8MP HSIO blk-ctrl")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250115014118.4086729-1-xiaolei.wang@windriver.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+The second loop in __read_vmcore has a lot more opportunities for natural
+sleep points, like scheduling out while waiting for a data write to
+happen, but apparently that is not always enough.
+
+Add a cond_resched() to the second loop in __read_vmcore to (hopefully)
+get rid of the softlockups.
+
+Link: https://lkml.kernel.org/r/20250110102821.2a37581b@fangorn
+Fixes: 5cbcb62dddf5 ("fs/proc: fix softlockup in __read_vmcore")
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/imx/imx8mp-blk-ctrl.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/proc/vmcore.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-+++ b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-@@ -767,7 +767,7 @@ static int imx8mp_blk_ctrl_remove(struct
+--- a/fs/proc/vmcore.c
++++ b/fs/proc/vmcore.c
+@@ -404,6 +404,8 @@ static ssize_t __read_vmcore(struct iov_
+ 			if (!iov_iter_count(iter))
+ 				return acc;
+ 		}
++
++		cond_resched();
+ 	}
  
- 	of_genpd_del_provider(pdev->dev.of_node);
- 
--	for (i = 0; bc->onecell_data.num_domains; i++) {
-+	for (i = 0; i < bc->onecell_data.num_domains; i++) {
- 		struct imx8mp_blk_ctrl_domain *domain = &bc->domains[i];
- 
- 		pm_genpd_remove(&domain->genpd);
+ 	return acc;
 
 
 
