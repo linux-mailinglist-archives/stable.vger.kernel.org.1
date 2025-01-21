@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-109766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD457A183D0
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:00:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 843F3A184A1
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:10:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC4EA16C471
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:59:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 068907A5B13
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69751F55F7;
-	Tue, 21 Jan 2025 17:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 897851F55F5;
+	Tue, 21 Jan 2025 18:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVvcUzsL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axJRf+fR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8316F1F7071;
-	Tue, 21 Jan 2025 17:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46FA61F5439;
+	Tue, 21 Jan 2025 18:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482376; cv=none; b=vCTsydu93N4VRJYO9rwsT+xa1gPs+OnPpVJI46Qik85Oy8suSaiG/ENiQUuKCrMfg4+j76iD0AKn7Fb0gKgAWfVyYZv3fLnt8IafgQbqKiwwJ/RBZ/ZTRsCzhxHu2EHRfoU4S6HMLOgWGsNvR6veT7PluUqn6Whh/Mc4y3OPnqE=
+	t=1737482855; cv=none; b=PZjrgTeu4Nzw57RQgPTJMo/CliIXC+FNvJjo0HTKlXaGulOKQwrcQngf9gH11x8+9Q6+CEwH4NlVSE+6UVhGJKYmvyhGPBncLv5ZHlV3Y8Bu+yyrmHHe1pk3QtKguF9Rn5Avp4nZtiawAKFq611wzLmpp86r6BbHLDO7AJxqGe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482376; c=relaxed/simple;
-	bh=YDPWKXu6piHgKTp4Rl+1OUnHF9jtJekDjuNJwa8sJ2g=;
+	s=arc-20240116; t=1737482855; c=relaxed/simple;
+	bh=aOkyX8HyZLN4PyfEQHVZqDnpBgSu8zCQd+MraqZK0rI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C78kBOjDBf4LEPPLbHVbwXag6j8fQPWhK1/t9aAaRA+1uVjbIu0v1mVOcp3+RzAI27kv1y7A3u9snVif0hbrb7hmVWDCto+9WUTnxujMlL4aGBsE463gfABrw9g7EgytulfQ+mfgqrne25OpB27WDL79yjLzxSDhUKfn2IBFDEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVvcUzsL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E43C4CEE0;
-	Tue, 21 Jan 2025 17:59:35 +0000 (UTC)
+	 MIME-Version; b=SWkLdJITBMqA/jW4haTqBo/uS1Dtb9uIsvwurKr65poRNGw5jTMODRRPHVeRsZN1hK8FATGNNf0suVp6c97GT9ybfAUTq+MkB2D3kaqk4MS7nPsswAgpbA+40TgDSMSTujAI7ungmpLbe4OubMwd6aYIN+aCXLhdrACBAETW8cI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axJRf+fR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A632C4CEDF;
+	Tue, 21 Jan 2025 18:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482376;
-	bh=YDPWKXu6piHgKTp4Rl+1OUnHF9jtJekDjuNJwa8sJ2g=;
+	s=korg; t=1737482854;
+	bh=aOkyX8HyZLN4PyfEQHVZqDnpBgSu8zCQd+MraqZK0rI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MVvcUzsLHMvCRb0lxonkvS3+0w91MhRXXDDql2U9JzhiwvnaK+QYsQabtzZfUqUfZ
-	 aYz5i7iPcaTZeDVYGOyQEDc55kPayn6+1b5NZcbs2SlNFEY779F+MDQKdT++iO5eNl
-	 O1y3vduRE8rXyZPOaJPurA5YY1GuKv/Urhni71/c=
+	b=axJRf+fRo/iQHzUWxSWyoAL3xruSSOOVu0+fbFoRaYK7vZ0whL5kRXe8BJv9RFQeU
+	 N2o3Fh8bcggGkVPJQOx+Z9Cb9XfU4mFwk1Wgcrkcc9ZHuon2jAL1DrpPf8LrsAKbsQ
+	 /KwoCBAQSn29CQ+mvGK0WYRrA4qNc7ejYdR+xcBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Kellermann <max.kellermann@ionos.com>,
-	David Howells <dhowells@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/122] cachefiles: Parse the "secctx" immediately
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.15 031/127] ACPI: resource: Add TongFang GM5HG0A to irq1_edge_low_force_override[]
 Date: Tue, 21 Jan 2025 18:51:43 +0100
-Message-ID: <20250121174535.110466886@linuxfoundation.org>
+Message-ID: <20250121174530.882685111@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,141 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit e5a8b6446c0d370716f193771ccacf3260a57534 ]
+commit 7ed4e4a659d99499dc6968c61970d41b64feeac0 upstream.
 
-Instead of storing an opaque string, call security_secctx_to_secid()
-right in the "secctx" command handler and store only the numeric
-"secid".  This eliminates an unnecessary string allocation and allows
-the daemon to receive errors when writing the "secctx" command instead
-of postponing the error to the "bind" command handler.  For example,
-if the kernel was built without `CONFIG_SECURITY`, "bind" will return
-`EOPNOTSUPP`, but the daemon doesn't know why.  With this patch, the
-"secctx" will instead return `EOPNOTSUPP` which is the right context
-for this error.
+The TongFang GM5HG0A is a TongFang barebone design which is sold under
+various brand names.
 
-This patch adds a boolean flag `have_secid` because I'm not sure if we
-can safely assume that zero is the special secid value for "not set".
-This appears to be true for SELinux, Smack and AppArmor, but since
-this attribute is not documented, I'm unable to derive a stable
-guarantee for that.
+The ACPI IRQ override for the keyboard IRQ must be used on these AMD Zen
+laptops in order for the IRQ to work.
 
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20241209141554.638708-1-max.kellermann@ionos.com/
-Link: https://lore.kernel.org/r/20241213135013.2964079-6-dhowells@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+At least on the SKIKK Vanaheim variant the DMI product- and board-name
+strings have been replaced by the OEM with "Vanaheim" so checking that
+board-name contains "GM5HG0A" as is usually done for TongFang barebones
+quirks does not work.
+
+The DMI OEM strings do contain "GM5HG0A". I have looked at the dmidecode
+for a few other TongFang devices and the TongFang code-name string being
+in the OEM strings seems to be something which is consistently true.
+
+Add a quirk checking one of the DMI_OEM_STRING(s) is "GM5HG0A" in the hope
+that this will work for other OEM versions of the "GM5HG0A" too.
+
+Link: https://www.skikk.eu/en/laptops/vanaheim-15-rtx-4060
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219614
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20241228164845.42381-1-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cachefiles/daemon.c   | 14 +++++++-------
- fs/cachefiles/internal.h |  3 ++-
- fs/cachefiles/security.c |  6 +++---
- 3 files changed, 12 insertions(+), 11 deletions(-)
+ drivers/acpi/resource.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
-index 89b11336a8369..1806bff8e59bc 100644
---- a/fs/cachefiles/daemon.c
-+++ b/fs/cachefiles/daemon.c
-@@ -15,6 +15,7 @@
- #include <linux/namei.h>
- #include <linux/poll.h>
- #include <linux/mount.h>
-+#include <linux/security.h>
- #include <linux/statfs.h>
- #include <linux/ctype.h>
- #include <linux/string.h>
-@@ -576,7 +577,7 @@ static int cachefiles_daemon_dir(struct cachefiles_cache *cache, char *args)
-  */
- static int cachefiles_daemon_secctx(struct cachefiles_cache *cache, char *args)
- {
--	char *secctx;
-+	int err;
- 
- 	_enter(",%s", args);
- 
-@@ -585,16 +586,16 @@ static int cachefiles_daemon_secctx(struct cachefiles_cache *cache, char *args)
- 		return -EINVAL;
- 	}
- 
--	if (cache->secctx) {
-+	if (cache->have_secid) {
- 		pr_err("Second security context specified\n");
- 		return -EINVAL;
- 	}
- 
--	secctx = kstrdup(args, GFP_KERNEL);
--	if (!secctx)
--		return -ENOMEM;
-+	err = security_secctx_to_secid(args, strlen(args), &cache->secid);
-+	if (err)
-+		return err;
- 
--	cache->secctx = secctx;
-+	cache->have_secid = true;
- 	return 0;
- }
- 
-@@ -820,7 +821,6 @@ static void cachefiles_daemon_unbind(struct cachefiles_cache *cache)
- 	put_cred(cache->cache_cred);
- 
- 	kfree(cache->rootdirname);
--	kfree(cache->secctx);
- 	kfree(cache->tag);
- 
- 	_leave("");
-diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
-index 7b99bd98de75b..38c236e38cef8 100644
---- a/fs/cachefiles/internal.h
-+++ b/fs/cachefiles/internal.h
-@@ -122,7 +122,6 @@ struct cachefiles_cache {
- #define CACHEFILES_STATE_CHANGED	3	/* T if state changed (poll trigger) */
- #define CACHEFILES_ONDEMAND_MODE	4	/* T if in on-demand read mode */
- 	char				*rootdirname;	/* name of cache root directory */
--	char				*secctx;	/* LSM security context */
- 	char				*tag;		/* cache binding tag */
- 	refcount_t			unbind_pincount;/* refcount to do daemon unbind */
- 	struct xarray			reqs;		/* xarray of pending on-demand requests */
-@@ -130,6 +129,8 @@ struct cachefiles_cache {
- 	struct xarray			ondemand_ids;	/* xarray for ondemand_id allocation */
- 	u32				ondemand_id_next;
- 	u32				msg_id_next;
-+	u32				secid;		/* LSM security id */
-+	bool				have_secid;	/* whether "secid" was set */
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -618,6 +618,17 @@ static const struct dmi_system_id lg_lap
+ 			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
+ 		},
+ 	},
++	{
++		/*
++		 * TongFang GM5HG0A in case of the SKIKK Vanaheim relabel the
++		 * board-name is changed, so check OEM strings instead. Note
++		 * OEM string matches are always exact matches.
++		 * https://bugzilla.kernel.org/show_bug.cgi?id=219614
++		 */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_OEM_STRING, "GM5HG0A"),
++		},
++	},
+ 	{ }
  };
  
- static inline bool cachefiles_in_ondemand_mode(struct cachefiles_cache *cache)
-diff --git a/fs/cachefiles/security.c b/fs/cachefiles/security.c
-index fe777164f1d89..fc6611886b3b5 100644
---- a/fs/cachefiles/security.c
-+++ b/fs/cachefiles/security.c
-@@ -18,7 +18,7 @@ int cachefiles_get_security_ID(struct cachefiles_cache *cache)
- 	struct cred *new;
- 	int ret;
- 
--	_enter("{%s}", cache->secctx);
-+	_enter("{%u}", cache->have_secid ? cache->secid : 0);
- 
- 	new = prepare_kernel_cred(current);
- 	if (!new) {
-@@ -26,8 +26,8 @@ int cachefiles_get_security_ID(struct cachefiles_cache *cache)
- 		goto error;
- 	}
- 
--	if (cache->secctx) {
--		ret = set_security_override_from_ctx(new, cache->secctx);
-+	if (cache->have_secid) {
-+		ret = set_security_override(new, cache->secid);
- 		if (ret < 0) {
- 			put_cred(new);
- 			pr_err("Security denies permission to nominate security context: error %d\n",
--- 
-2.39.5
-
 
 
 
