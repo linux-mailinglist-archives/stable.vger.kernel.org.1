@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-109677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0BD6A18359
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FC64A184A0
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:10:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E04B169853
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1479188C49A
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1A71F5611;
-	Tue, 21 Jan 2025 17:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F381F561E;
+	Tue, 21 Jan 2025 18:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQpmhcj0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOMTzVJT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5C61F55ED;
-	Tue, 21 Jan 2025 17:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFB81F55E3;
+	Tue, 21 Jan 2025 18:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482119; cv=none; b=GrG28V7UpZoe6OA9PRtX8YouxIDqP7kChr71OcE0ERl4U0wnOmtJ/W0M3yHz84ab15oPI69XxHhyxN6zefTkRfOiGiewoHzeDpL29AO43XdMqNSamEw4d14kUIpsO82JmJqBbs6CfjMp9e2UwCGzq2zBoOhMRAgaWv/3gtqSXeE=
+	t=1737482915; cv=none; b=ETOo8J7Bbx+OMELDTzKX22OBZytPcOL+3y8Sb3qCiBAwLd/lAxxr1P7nZgXfQTXRdunTaAtXSZuU3oK08/EgNaw3ztBuMr6HVpFexEfPmH/bQYwzI7AWkAaAg0Zfv1zEHf8bL/3d/HUPlSusgeCIPJr2UwpPuC+YweXM2IVNPho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482119; c=relaxed/simple;
-	bh=2BxWNNrboKBiP9WCYb14QQnmNH7iYELSHPUq7HZ4xs0=;
+	s=arc-20240116; t=1737482915; c=relaxed/simple;
+	bh=JyUEwIspsvJzZovhblB7eQQLdqRyoQuTTifPPMa4lLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u8BDFo1EChdZGifLVhysloqqcjZO0Km4OwBduxzUJbst+nG3SsAn5v/pDlXQXNBlUhS4UIpfgwKaXH1mPV2ikf1UvrlFGxDVJqrFjxQfyihrBOgtQ05NRRjcHUf1WunIcVjeHI/EEEKsv8SXcsiufcY66My8//Z0JtTSgpWY4p0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQpmhcj0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2F6AC4CEDF;
-	Tue, 21 Jan 2025 17:55:16 +0000 (UTC)
+	 MIME-Version; b=eD8jstrzlXiOLhMdhRgXYCpLfBsQDTZwaOt7COwn3upCIlRFeKCe7p1Ts+elpfJbQO3jXBPMjfbVviZdltZzp0LGed8B25ikYgzuLXYmnpEE7STRm3twFd0i+fLs9UNRmR2UqzAk/L3vARqKCI1PxbsaZpHmcOYaReF57csAtmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOMTzVJT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FC5C4CEE1;
+	Tue, 21 Jan 2025 18:08:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482117;
-	bh=2BxWNNrboKBiP9WCYb14QQnmNH7iYELSHPUq7HZ4xs0=;
+	s=korg; t=1737482915;
+	bh=JyUEwIspsvJzZovhblB7eQQLdqRyoQuTTifPPMa4lLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WQpmhcj05byBJplBTsW7KPi8yQvIt7jmz8FVa66PIsJWgCqfM8sXQUjyB86mneMBi
-	 PpJNP1lobN33STpQtTpfIJyzsfYAY8P/w3nh3SalYMDfqI2t3BjyEXuofHv5/TXRG8
-	 VHrIn58NsJ2vB0FrkOgaW0RuYmO1lAjX/oN4zrmQ=
+	b=eOMTzVJTBBlEfILlAmaHAEInmwVTZPVFZg+RONVmRwJgTwQkoM/jnuCucWhZFnFms
+	 gYBfAqd1cNuuRaSDpsEUZqmFMfnzT+LZJNgPWGUkDAIK9052hh3wc/RNtuQaAOxKbA
+	 iR5L0k/6QnKY+Z9pDvOeLNJEQgYoNW8R4Z8sj9Wk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kairui Song <kasong@tencent.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 39/72] zram: fix potential UAF of zram table
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 053/127] iio: pressure: zpa2326: fix information leak in triggered buffer
 Date: Tue, 21 Jan 2025 18:52:05 +0100
-Message-ID: <20250121174524.928767055@linuxfoundation.org>
+Message-ID: <20250121174531.712001355@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kairui Song <kasong@tencent.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 212fe1c0df4a150fb6298db2cfff267ceaba5402 upstream.
+commit 6007d10c5262f6f71479627c1216899ea7f09073 upstream.
 
-If zram_meta_alloc failed early, it frees allocated zram->table without
-setting it NULL.  Which will potentially cause zram_meta_free to access
-the table if user reset an failed and uninitialized device.
+The 'sample' local struct is used to push data to user space from a
+triggered buffer, but it has a hole between the temperature and the
+timestamp (u32 pressure, u16 temperature, GAP, u64 timestamp).
+This hole is never initialized.
 
-Link: https://lkml.kernel.org/r/20250107065446.86928-1-ryncsn@gmail.com
-Fixes: 74363ec674cb ("zram: fix uninitialized ZRAM not releasing backing device")
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Reviewed-by:  Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Initialize the struct to zero before using it to avoid pushing
+uninitialized information to userspace.
+
+Cc: stable@vger.kernel.org
+Fixes: 03b262f2bbf4 ("iio:pressure: initial zpa2326 barometer support")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-3-0cb6e98d895c@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/zram/zram_drv.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/pressure/zpa2326.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1262,6 +1262,7 @@ static bool zram_meta_alloc(struct zram
- 	zram->mem_pool = zs_create_pool(zram->disk->disk_name);
- 	if (!zram->mem_pool) {
- 		vfree(zram->table);
-+		zram->table = NULL;
- 		return false;
- 	}
+--- a/drivers/iio/pressure/zpa2326.c
++++ b/drivers/iio/pressure/zpa2326.c
+@@ -586,6 +586,8 @@ static int zpa2326_fill_sample_buffer(st
+ 	}   sample;
+ 	int err;
  
++	memset(&sample, 0, sizeof(sample));
++
+ 	if (test_bit(0, indio_dev->active_scan_mask)) {
+ 		/* Get current pressure from hardware FIFO. */
+ 		err = zpa2326_dequeue_pressure(indio_dev, &sample.pressure);
 
 
 
