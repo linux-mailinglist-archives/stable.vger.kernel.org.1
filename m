@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-109853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61AFDA18428
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:04:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59C53A1849C
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:09:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A76333A23D0
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:03:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE9CE163CEB
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6A21F4275;
-	Tue, 21 Jan 2025 18:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325FC1F55E5;
+	Tue, 21 Jan 2025 18:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OW4vmikg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iNeHQL9Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA711F3FFE;
-	Tue, 21 Jan 2025 18:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40151F5404;
+	Tue, 21 Jan 2025 18:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482630; cv=none; b=Z0kpGxdYhBDd9q6fHIDSTFEi0MPQIS+dYdkvXcwYf01x6aJCtdFdYXmPv2YxYHtP98hZnJoQeaMmqVVQeuSR4jv4DTEg5OaikUMytJhyXMoWk/jt+bRhLRLf09TrQFCUhcL/I9PnDKo+gF9wJWtamEpn9nqGX2821zEiCx/i23c=
+	t=1737482907; cv=none; b=E/EMPoJDW6rJNnqvtJCPIYjjX5LDohnj7Ir7rQ2VSLMT5lPLDQ4SXAHzDfnMQiEDOyIv0LeGo/S5TO9lY1qgyVXrsh70VNakKZk++cwyPQbGSRSo2hQ9lxGOxRr4+Ne8OTrjaG8GpB+7616kcR6B/fSiOFuzJXjm+9jUSxaBl/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482630; c=relaxed/simple;
-	bh=WtBLRQJKcI5R6e8/SlKBpAE5mdI8YftEsALfkqHCEPQ=;
+	s=arc-20240116; t=1737482907; c=relaxed/simple;
+	bh=f0r6p6LpnYE9L+/RSGYmvXGEsYl+rXrTnh99A59kGLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d0Nbma0IYgGy8S2OOjEotYuHBbD8h6u5gk2bOKUP5fIOdIpjGmVJwXXuifS15tAHUbyt/O0CmxsjUcGac5gERYdgwc1h4LiBWvSYhqX3QrgLAZHTAuqOPTpU2TPe5ATh5HQ7YikZIsB8iDkevyRI4sxNE/2AKolq0hrwFO4DUOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OW4vmikg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B98A3C4CEDF;
-	Tue, 21 Jan 2025 18:03:49 +0000 (UTC)
+	 MIME-Version; b=csK0e0vvM3Ma8NJnUCQPkIqFhyOk2qX/mk8vv4mF4km2aVko569vQe1CJjQzj5RaFxHCIitvhRgdL9lWdmEAhlc5ssP4Ub74+cSQwzugceQBNqL7bpFWR9CJuJAQgpkT2PGVMHt6yi3SctiVdxrTyAJE6iyGTbpk2eBnaI+gkIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iNeHQL9Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7F4C4CEDF;
+	Tue, 21 Jan 2025 18:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482630;
-	bh=WtBLRQJKcI5R6e8/SlKBpAE5mdI8YftEsALfkqHCEPQ=;
+	s=korg; t=1737482906;
+	bh=f0r6p6LpnYE9L+/RSGYmvXGEsYl+rXrTnh99A59kGLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OW4vmikgZwBVDUqhKU4UUhbyt8c0l/UqZlvAJjkASe1V9hPa/DcWLxLvn3P4nY8+K
-	 H2FmQekTC3/E9tHg7xR9owmEvORhXIMeHtACiTG2L6aECWuRgntoj7rkCyQ7LNYPDz
-	 NRXT1383zcMQunoMOX2yR42dVN+tbDfxuk22T+qs=
+	b=iNeHQL9QsxWK0fdkbcSzWS75mvvC6VyCNED8UbzvpraO8ru7STX5uaJeD3HECpPqr
+	 8d1A1hkm1pUAKoVjr96EblrIhvz3DWAyliK+bAx6ElNQuIDd8ict/1w5pDjgcLb6ds
+	 4dlpA1Conq0wgpYonXF1G3DrvvBmHdqRmhg4d428=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 02/64] bpf: Fix bpf_sk_select_reuseport() memory leak
-Date: Tue, 21 Jan 2025 18:52:01 +0100
-Message-ID: <20250121174521.662633316@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Ma Ke <make_ruc2021@163.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.15 050/127] usb: fix reference leak in usb_new_device()
+Date: Tue, 21 Jan 2025 18:52:02 +0100
+Message-ID: <20250121174531.599437254@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
-References: <20250121174521.568417761@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Ma Ke <make_ruc2021@163.com>
 
-[ Upstream commit b3af60928ab9129befa65e6df0310d27300942bf ]
+commit 0df11fa8cee5a9cf8753d4e2672bb3667138c652 upstream.
 
-As pointed out in the original comment, lookup in sockmap can return a TCP
-ESTABLISHED socket. Such TCP socket may have had SO_ATTACH_REUSEPORT_EBPF
-set before it was ESTABLISHED. In other words, a non-NULL sk_reuseport_cb
-does not imply a non-refcounted socket.
+When device_add(&udev->dev) succeeds and a later call fails,
+usb_new_device() does not properly call device_del(). As comment of
+device_add() says, 'if device_add() succeeds, you should call
+device_del() when you want to get rid of it. If device_add() has not
+succeeded, use only put_device() to drop the reference count'.
 
-Drop sk's reference in both error paths.
+Found by code review.
 
-unreferenced object 0xffff888101911800 (size 2048):
-  comm "test_progs", pid 44109, jiffies 4297131437
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    80 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc 9336483b):
-    __kmalloc_noprof+0x3bf/0x560
-    __reuseport_alloc+0x1d/0x40
-    reuseport_alloc+0xca/0x150
-    reuseport_attach_prog+0x87/0x140
-    sk_reuseport_attach_bpf+0xc8/0x100
-    sk_setsockopt+0x1181/0x1990
-    do_sock_setsockopt+0x12b/0x160
-    __sys_setsockopt+0x7b/0xc0
-    __x64_sys_setsockopt+0x1b/0x30
-    do_syscall_64+0x93/0x180
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Fixes: 64d85290d79c ("bpf: Allow bpf_map_lookup_elem for SOCKMAP and SOCKHASH")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Reviewed-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20250110-reuseport-memleak-v1-1-fa1ddab0adfe@rbox.co
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 9f8b17e643fe ("USB: make usbdevices export their device nodes instead of using a separate class")
+Signed-off-by: Ma Ke <make_ruc2021@163.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20241218071346.2973980-1-make_ruc2021@163.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/filter.c | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+ drivers/usb/core/hub.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 7f9d703b00e7c..b35615c469e27 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -11109,6 +11109,7 @@ BPF_CALL_4(sk_select_reuseport, struct sk_reuseport_kern *, reuse_kern,
- 	bool is_sockarray = map->map_type == BPF_MAP_TYPE_REUSEPORT_SOCKARRAY;
- 	struct sock_reuseport *reuse;
- 	struct sock *selected_sk;
-+	int err;
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -2605,13 +2605,13 @@ int usb_new_device(struct usb_device *ud
+ 		err = sysfs_create_link(&udev->dev.kobj,
+ 				&port_dev->dev.kobj, "port");
+ 		if (err)
+-			goto fail;
++			goto out_del_dev;
  
- 	selected_sk = map->ops->map_lookup_elem(map, key);
- 	if (!selected_sk)
-@@ -11116,10 +11117,6 @@ BPF_CALL_4(sk_select_reuseport, struct sk_reuseport_kern *, reuse_kern,
+ 		err = sysfs_create_link(&port_dev->dev.kobj,
+ 				&udev->dev.kobj, "device");
+ 		if (err) {
+ 			sysfs_remove_link(&udev->dev.kobj, "port");
+-			goto fail;
++			goto out_del_dev;
+ 		}
  
- 	reuse = rcu_dereference(selected_sk->sk_reuseport_cb);
- 	if (!reuse) {
--		/* Lookup in sock_map can return TCP ESTABLISHED sockets. */
--		if (sk_is_refcounted(selected_sk))
--			sock_put(selected_sk);
--
- 		/* reuseport_array has only sk with non NULL sk_reuseport_cb.
- 		 * The only (!reuse) case here is - the sk has already been
- 		 * unhashed (e.g. by close()), so treat it as -ENOENT.
-@@ -11127,24 +11124,33 @@ BPF_CALL_4(sk_select_reuseport, struct sk_reuseport_kern *, reuse_kern,
- 		 * Other maps (e.g. sock_map) do not provide this guarantee and
- 		 * the sk may never be in the reuseport group to begin with.
- 		 */
--		return is_sockarray ? -ENOENT : -EINVAL;
-+		err = is_sockarray ? -ENOENT : -EINVAL;
-+		goto error;
- 	}
+ 		if (!test_and_set_bit(port1, hub->child_usage_bits))
+@@ -2623,6 +2623,8 @@ int usb_new_device(struct usb_device *ud
+ 	pm_runtime_put_sync_autosuspend(&udev->dev);
+ 	return err;
  
- 	if (unlikely(reuse->reuseport_id != reuse_kern->reuseport_id)) {
- 		struct sock *sk = reuse_kern->sk;
- 
--		if (sk->sk_protocol != selected_sk->sk_protocol)
--			return -EPROTOTYPE;
--		else if (sk->sk_family != selected_sk->sk_family)
--			return -EAFNOSUPPORT;
--
--		/* Catch all. Likely bound to a different sockaddr. */
--		return -EBADFD;
-+		if (sk->sk_protocol != selected_sk->sk_protocol) {
-+			err = -EPROTOTYPE;
-+		} else if (sk->sk_family != selected_sk->sk_family) {
-+			err = -EAFNOSUPPORT;
-+		} else {
-+			/* Catch all. Likely bound to a different sockaddr. */
-+			err = -EBADFD;
-+		}
-+		goto error;
- 	}
- 
- 	reuse_kern->selected_sk = selected_sk;
- 
- 	return 0;
-+error:
-+	/* Lookup in sock_map can return TCP ESTABLISHED sockets. */
-+	if (sk_is_refcounted(selected_sk))
-+		sock_put(selected_sk);
-+
-+	return err;
- }
- 
- static const struct bpf_func_proto sk_select_reuseport_proto = {
--- 
-2.39.5
-
++out_del_dev:
++	device_del(&udev->dev);
+ fail:
+ 	usb_set_device_state(udev, USB_STATE_NOTATTACHED);
+ 	pm_runtime_disable(&udev->dev);
 
 
 
