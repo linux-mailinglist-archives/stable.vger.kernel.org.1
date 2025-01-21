@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-109916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8323AA18477
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:07:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DE75A18345
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:54:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3733616BDE7
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:07:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EEC707A4314
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:54:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7F51F5613;
-	Tue, 21 Jan 2025 18:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F401F5421;
+	Tue, 21 Jan 2025 17:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tV41eqgo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upk26Mf/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062731F543F;
-	Tue, 21 Jan 2025 18:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C57A1E9B38;
+	Tue, 21 Jan 2025 17:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482815; cv=none; b=GyCHfTOVpjlwJBDwQdPv66nwy5vJYsooBsrjPXVSoYdfkoxOKrqc1GbGBB7+rtfRb0rK3dG4Hhdi0paelp/OXcV0nUqeWl1jNVPFoyBz6eVxBXbgsFSMDaM5OWGgLgTHc1LqmgGA3ItHcpXpibmygPqYDKOLb8sJ3npH+Y39pVo=
+	t=1737482058; cv=none; b=erfxWI7r05zat74XxghNzkJp/K3nU6OCx4/BidtA+rHR/fUu/wKLOFZ2ZBxrc1L1BPee3nAPwOYnHNewEGvSMEk785Y1B8DWsuGTxH/ZAX0exsA1CESpM6fsK5S3Ed1y6qy41R09qTrl7cd9tI4Pn0LG2nieEYT7BS5gezkhHog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482815; c=relaxed/simple;
-	bh=gYDnXxhjroIFCS6Dlw5a6jqprzTm3b8PajVn8HEocm4=;
+	s=arc-20240116; t=1737482058; c=relaxed/simple;
+	bh=wT1wktZcr0HOvG1o0qQ4CFMh/E4ZvfGKx1zqJMBAaNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qluP70GR+2KnP2a6DmArcSNNsitnpUcftk5FmgH64zxZKmmOAOvXXek50qzzWw/oPb4/GdE2RScmh5poFswxs3tsSWiqQezR+8/DrDnnxsf3SS9ruyGsJSObun7+4FX+17PUH1h1KJYGhniG4haWLjggzpoUuMNzofBh1Qr2rUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tV41eqgo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D1FC4CEDF;
-	Tue, 21 Jan 2025 18:06:54 +0000 (UTC)
+	 MIME-Version; b=T/Cwdr9XQoh2H6bEvM/7DuylDcnb9UUfMZhf5eEh8ER3vv88ia27a0f04gUM6iKd/u6CBECNBo1ry00LSFLU+IBPk6UTIlv21lB+ZHb1VR09NzktdhP4S6jGtRpc4bRvjdNeuE5x8kIRuJFy9x6++Wc7d/zv2VpCEBOTWuIgw2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=upk26Mf/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8460C4CEDF;
+	Tue, 21 Jan 2025 17:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482814;
-	bh=gYDnXxhjroIFCS6Dlw5a6jqprzTm3b8PajVn8HEocm4=;
+	s=korg; t=1737482058;
+	bh=wT1wktZcr0HOvG1o0qQ4CFMh/E4ZvfGKx1zqJMBAaNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tV41eqgo7+igMccKuaKeEO28PYh6PLwS0/5HGD/KA+OY+cGQrgTS6lkmmR68p9/u6
-	 +iJniUl8RcZ9+UPwVx50lEz35RDNuxmy2aRb/34rXiAhhPdW+yhMUtEw+wGTe3nxJK
-	 DVTuqbS4rxX8VkGQpgk+OoBd4yVa01hTUbROhSLg=
+	b=upk26Mf/3LL5ow1Ab9/QsL+3loqsymaI9HhxNQM1CkD0QR64WMrvYrmqCxoBi1hCb
+	 9cbNIF8pciYAN7CQBdOu3Z4pu39PZtOWLL95NkLC/1nMiOweolhs1vZ0XlDZGPAoKG
+	 oByoS0TA6vXoizrfmAOwOpCYOyejYjeri/4/8rgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Artem Chernyshev <artem.chernyshev@red-soft.ru>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 018/127] netfilter: conntrack: clamp maximum hashtable size to INT_MAX
+Subject: [PATCH 6.6 04/72] pktgen: Avoid out-of-bounds access in get_imix_entries
 Date: Tue, 21 Jan 2025 18:51:30 +0100
-Message-ID: <20250121174530.375677325@linuxfoundation.org>
+Message-ID: <20250121174523.602080189@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
 
-[ Upstream commit b541ba7d1f5a5b7b3e2e22dc9e40e18a7d6dbc13 ]
+[ Upstream commit 76201b5979768500bca362871db66d77cb4c225e ]
 
-Use INT_MAX as maximum size for the conntrack hashtable. Otherwise, it
-is possible to hit WARN_ON_ONCE in __kvmalloc_node_noprof() when
-resizing hashtable because __GFP_NOWARN is unset. See:
+Passing a sufficient amount of imix entries leads to invalid access to the
+pkt_dev->imix_entries array because of the incorrect boundary check.
 
-  0708a0afe291 ("mm: Consider __GFP_NOWARN flag for oversized kvmalloc() calls")
+UBSAN: array-index-out-of-bounds in net/core/pktgen.c:874:24
+index 20 is out of range for type 'imix_pkt [20]'
+CPU: 2 PID: 1210 Comm: bash Not tainted 6.10.0-rc1 #121
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+Call Trace:
+<TASK>
+dump_stack_lvl lib/dump_stack.c:117
+__ubsan_handle_out_of_bounds lib/ubsan.c:429
+get_imix_entries net/core/pktgen.c:874
+pktgen_if_write net/core/pktgen.c:1063
+pde_write fs/proc/inode.c:334
+proc_reg_write fs/proc/inode.c:346
+vfs_write fs/read_write.c:593
+ksys_write fs/read_write.c:644
+do_syscall_64 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe arch/x86/entry/entry_64.S:130
 
-Note: hashtable resize is only possible from init_netns.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 9cc1c73ad666 ("netfilter: conntrack: avoid integer overflow when resizing")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 52a62f8603f9 ("pktgen: Parse internet mix (imix) input")
+Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+[ fp: allow to fill the array completely; minor changelog cleanup ]
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_core.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/core/pktgen.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_core.c b/net/netfilter/nf_conntrack_core.c
-index be6031886f94..00a97743507d 100644
---- a/net/netfilter/nf_conntrack_core.c
-+++ b/net/netfilter/nf_conntrack_core.c
-@@ -2589,12 +2589,15 @@ void *nf_ct_alloc_hashtable(unsigned int *sizep, int nulls)
- 	struct hlist_nulls_head *hash;
- 	unsigned int nr_slots, i;
+diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+index 0e472f6fab853..359e24c3f22ca 100644
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -850,6 +850,9 @@ static ssize_t get_imix_entries(const char __user *buffer,
+ 		unsigned long weight;
+ 		unsigned long size;
  
--	if (*sizep > (UINT_MAX / sizeof(struct hlist_nulls_head)))
-+	if (*sizep > (INT_MAX / sizeof(struct hlist_nulls_head)))
- 		return NULL;
- 
- 	BUILD_BUG_ON(sizeof(struct hlist_nulls_head) != sizeof(struct hlist_head));
- 	nr_slots = *sizep = roundup(*sizep, PAGE_SIZE / sizeof(struct hlist_nulls_head));
- 
-+	if (nr_slots > (INT_MAX / sizeof(struct hlist_nulls_head)))
-+		return NULL;
++		if (pkt_dev->n_imix_entries >= MAX_IMIX_ENTRIES)
++			return -E2BIG;
 +
- 	hash = kvcalloc(nr_slots, sizeof(struct hlist_nulls_head), GFP_KERNEL);
+ 		len = num_arg(&buffer[i], max_digits, &size);
+ 		if (len < 0)
+ 			return len;
+@@ -879,9 +882,6 @@ static ssize_t get_imix_entries(const char __user *buffer,
  
- 	if (hash && nulls)
+ 		i++;
+ 		pkt_dev->n_imix_entries++;
+-
+-		if (pkt_dev->n_imix_entries > MAX_IMIX_ENTRIES)
+-			return -E2BIG;
+ 	} while (c == ' ');
+ 
+ 	return i;
 -- 
 2.39.5
 
