@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-109906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EE81A18460
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:06:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A5AA184FD
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:13:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B03AB3A34FB
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:06:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6D18188165C
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB0F1F55F3;
-	Tue, 21 Jan 2025 18:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429A91F7071;
+	Tue, 21 Jan 2025 18:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5fw7eAD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoASPK3P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC17F1F540C;
-	Tue, 21 Jan 2025 18:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24E71F3FFE;
+	Tue, 21 Jan 2025 18:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482785; cv=none; b=jbkGSGGKIkQG2a7Mb72u0Y/UGAApgee5mxGf1LTbOoeQ3DTMpQsT9lEXMOk+GbU8Ms/SkymdY4qODwE66IJTb3Rpo7NC9mpjoj2t3MF/TYkuoXPXrbfr3kziNl0GTjeDLbbaJrmJISnxzV6Y36NmPNrr2WhLWM6QzoswNPE8jTs=
+	t=1737483151; cv=none; b=i1OntW0yYIG8OcGr7li2lLPcUVQPvTcrizHmN+xVzBmuVjPuqWdvNFAHcMrduYDueeV+VQ0nrntbGjGDn1VbdctDmMhUpe8gavSOFJmPHdSMpsxk4uc2TdL/Oxrs9VRoKU890pS10Pk8DGRXHpyZReAvdrDsSQCG4YnO4KLq31E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482785; c=relaxed/simple;
-	bh=ZHEQSy7nKCohJvpNZjNbBZP2jI1R13WoVvy0mT0SRQw=;
+	s=arc-20240116; t=1737483151; c=relaxed/simple;
+	bh=PmzLvH569dSSRg7rjhPPiwbNn8IluZMrSVYsbF6z8RM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nHXPx4yEtOTwOawHLz2JsvDsf67UtuQzk8NWRf7nA72OTMgBqQUIHOhEljhjjKKWhMfxHPFYmR4Hpp6Ncv+OKhEuPX3MGYNsJ81ZCBw/k1Sntfayl5tnXRN6qLxB8OE+S5SJQfGxKYij2c5GI3CbLfp0NcNjCiiOTj8+mzG9+DU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5fw7eAD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351FEC4CEDF;
-	Tue, 21 Jan 2025 18:06:25 +0000 (UTC)
+	 MIME-Version; b=g93ZzenN+cbdB7UwpF5w51hp1dU1kvcOXaf4ZbN3Gmo2yHSi/4vbMlLouKIp/+0KqehyPTg7x83Vw88IEh2+87WBdNulOeR7cQW9moIfLkR2uCX7dRe68cSeuxIeZBTdHj/dleZd21tK1ydyWlJMFD/s4gmZTqh9gn4ncXnKy9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoASPK3P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C399C4CEDF;
+	Tue, 21 Jan 2025 18:12:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482785;
-	bh=ZHEQSy7nKCohJvpNZjNbBZP2jI1R13WoVvy0mT0SRQw=;
+	s=korg; t=1737483150;
+	bh=PmzLvH569dSSRg7rjhPPiwbNn8IluZMrSVYsbF6z8RM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D5fw7eADWOtfmXjSU28LEA/3NP3CmFjOq5tStLnFNEexz42B7iuTdJ8EmFli4MeES
-	 9IR/pbtb6ijXIbWhcYzqGzYt1bitfp6K4Fj12hQeIzCNWpSyRjpx3mS8mfpKlllF2e
-	 ec1W3jdB5d1J8dSa+Jp+mVo61BGCGWDNvjoEhEmY=
+	b=CoASPK3PchQgRwgGDrS10pqLSFiub4EZGTxFFB7e0UmhPUd6SNTusY3STAwM2OixA
+	 PI5/NXSqY0+O/HBlWP1uaAz0eUjuQBHmiQT437hJoOjAwQy8xaguVFZ3a89C3xI5Ng
+	 2yvFxjbYbwZyDAFxHbXDhZoEHqI7up8MGjAT+m7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6c0b301317aa0156f9eb@syzkaller.appspotmail.com,
-	Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 6.1 61/64] erofs: handle NONHEAD !delta[1] lclusters gracefully
+	Hyunwoo Kim <v4bel@theori.io>,
+	Wongi Lee <qwerty@theori.io>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 108/127] vsock: prevent null-ptr-deref in vsock_*[has_data|has_space]
 Date: Tue, 21 Jan 2025 18:53:00 +0100
-Message-ID: <20250121174523.886309044@linuxfoundation.org>
+Message-ID: <20250121174533.816676881@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
-References: <20250121174521.568417761@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-commit 0bc8061ffc733a0a246b8689b2d32a3e9204f43c upstream.
+commit 91751e248256efc111e52e15115840c35d85abaf upstream.
 
-syzbot reported a WARNING in iomap_iter_done:
- iomap_fiemap+0x73b/0x9b0 fs/iomap/fiemap.c:80
- ioctl_fiemap fs/ioctl.c:220 [inline]
+Recent reports have shown how we sometimes call vsock_*_has_data()
+when a vsock socket has been de-assigned from a transport (see attached
+links), but we shouldn't.
 
-Generally, NONHEAD lclusters won't have delta[1]==0, except for crafted
-images and filesystems created by pre-1.0 mkfs versions.
+Previous commits should have solved the real problems, but we may have
+more in the future, so to avoid null-ptr-deref, we can return 0
+(no space, no data available) but with a warning.
 
-Previously, it would immediately bail out if delta[1]==0, which led to
-inadequate decompressed lengths (thus FIEMAP is impacted).  Treat it as
-delta[1]=1 to work around these legacy mkfs versions.
+This way the code should continue to run in a nearly consistent state
+and have a warning that allows us to debug future problems.
 
-`lclusterbits > 14` is illegal for compact indexes, error out too.
-
-Reported-by: syzbot+6c0b301317aa0156f9eb@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/67373c0c.050a0220.2a2fcc.0079.GAE@google.com
-Tested-by: syzbot+6c0b301317aa0156f9eb@syzkaller.appspotmail.com
-Fixes: d95ae5e25326 ("erofs: add support for the full decompressed length")
-Fixes: 001b8ccd0650 ("erofs: fix compact 4B support for 16k block size")
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20241115173651.3339514-1-hsiangkao@linux.alibaba.com
+Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/netdev/Z2K%2FI4nlHdfMRTZC@v4bel-B760M-AORUS-ELITE-AX/
+Link: https://lore.kernel.org/netdev/5ca20d4c-1017-49c2-9516-f6f75fd331e9@rbox.co/
+Link: https://lore.kernel.org/netdev/677f84a8.050a0220.25a300.01b3.GAE@google.com/
+Co-developed-by: Hyunwoo Kim <v4bel@theori.io>
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Co-developed-by: Wongi Lee <qwerty@theori.io>
+Signed-off-by: Wongi Lee <qwerty@theori.io>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Reviewed-by: Hyunwoo Kim <v4bel@theori.io>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/zmap.c |   17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ net/vmw_vsock/af_vsock.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/fs/erofs/zmap.c
-+++ b/fs/erofs/zmap.c
-@@ -256,7 +256,7 @@ static int compacted_load_cluster_from_d
- 	unsigned int amortizedshift;
- 	erofs_off_t pos;
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -870,6 +870,9 @@ EXPORT_SYMBOL_GPL(vsock_create_connected
  
--	if (lcn >= totalidx)
-+	if (lcn >= totalidx || vi->z_logical_clusterbits > 14)
- 		return -EINVAL;
- 
- 	m->lcn = lcn;
-@@ -441,7 +441,7 @@ static int z_erofs_get_extent_decompress
- 	u64 lcn = m->lcn, headlcn = map->m_la >> lclusterbits;
- 	int err;
- 
--	do {
-+	while (1) {
- 		/* handle the last EOF pcluster (no next HEAD lcluster) */
- 		if ((lcn << lclusterbits) >= inode->i_size) {
- 			map->m_llen = inode->i_size - map->m_la;
-@@ -453,14 +453,16 @@ static int z_erofs_get_extent_decompress
- 			return err;
- 
- 		if (m->type == Z_EROFS_LCLUSTER_TYPE_NONHEAD) {
--			DBG_BUGON(!m->delta[1] &&
--				  m->clusterofs != 1 << lclusterbits);
-+			/* work around invalid d1 generated by pre-1.0 mkfs */
-+			if (unlikely(!m->delta[1])) {
-+				m->delta[1] = 1;
-+				DBG_BUGON(1);
-+			}
- 		} else if (m->type == Z_EROFS_LCLUSTER_TYPE_PLAIN ||
- 			   m->type == Z_EROFS_LCLUSTER_TYPE_HEAD1 ||
- 			   m->type == Z_EROFS_LCLUSTER_TYPE_HEAD2) {
--			/* go on until the next HEAD lcluster */
- 			if (lcn != headlcn)
--				break;
-+				break;	/* ends at the next HEAD lcluster */
- 			m->delta[1] = 1;
- 		} else {
- 			erofs_err(inode->i_sb, "unknown type %u @ lcn %llu of nid %llu",
-@@ -469,8 +471,7 @@ static int z_erofs_get_extent_decompress
- 			return -EOPNOTSUPP;
- 		}
- 		lcn += m->delta[1];
--	} while (m->delta[1]);
--
-+	}
- 	map->m_llen = (lcn << lclusterbits) + m->clusterofs - map->m_la;
- 	return 0;
+ s64 vsock_stream_has_data(struct vsock_sock *vsk)
+ {
++	if (WARN_ON(!vsk->transport))
++		return 0;
++
+ 	return vsk->transport->stream_has_data(vsk);
  }
+ EXPORT_SYMBOL_GPL(vsock_stream_has_data);
+@@ -878,6 +881,9 @@ static s64 vsock_connectible_has_data(st
+ {
+ 	struct sock *sk = sk_vsock(vsk);
+ 
++	if (WARN_ON(!vsk->transport))
++		return 0;
++
+ 	if (sk->sk_type == SOCK_SEQPACKET)
+ 		return vsk->transport->seqpacket_has_data(vsk);
+ 	else
+@@ -886,6 +892,9 @@ static s64 vsock_connectible_has_data(st
+ 
+ s64 vsock_stream_has_space(struct vsock_sock *vsk)
+ {
++	if (WARN_ON(!vsk->transport))
++		return 0;
++
+ 	return vsk->transport->stream_has_space(vsk);
+ }
+ EXPORT_SYMBOL_GPL(vsock_stream_has_space);
 
 
 
