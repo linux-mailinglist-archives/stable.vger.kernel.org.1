@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-109850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF2B9A18439
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:04:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D53DCA184B5
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:11:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4180316C2B7
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:03:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 562F116B1C4
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E6B1F5404;
-	Tue, 21 Jan 2025 18:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5DB1F756A;
+	Tue, 21 Jan 2025 18:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Scnf+Nvr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CCnzTv1a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5FA81F3FFE;
-	Tue, 21 Jan 2025 18:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6D91F3FFE;
+	Tue, 21 Jan 2025 18:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482623; cv=none; b=XkX1lab0NlpOuT6NEYUyyXklSRYl1OxlUJQcX8AQ0L2WJn+QnPLjkTw1DLlpyFr5lTglFNVY+v3ePjIZ/U7BWR3CfvmMdWcI4GjXHmwG+ZYtMf0FrPwNydyN9JnsvJwdCXsqt6EeYe4ZVBTXudoHW6Xqx5WsIzSq4tGHG96IXIM=
+	t=1737482956; cv=none; b=g83f1o6K2bGZ6xQ5Doldvo6n5xMAQyG6Q3jla3WnbwPlpDDvxONEcntf6LnXGukXdOaC5AHccT9VPiiIkkzoShIX89w03C/8pICGJL4f6fedWxWrlIunFz7Kp6fMGO8lzBYawWyMsDpd+Fy986R58F4nguxD/KotcK37zimXhs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482623; c=relaxed/simple;
-	bh=DL0Wf3pX2OVzRnzmqBSQk+6+J35Od01fbZkWriomsYE=;
+	s=arc-20240116; t=1737482956; c=relaxed/simple;
+	bh=DHHYcJ+RoQ6savV9ac+uIg6SauULp+1tk3yfp/ev56Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NVLDKPTeTYKHxzoTjapxXXCTqC6poGIkaTZviyYXwGIAgDFD9+solstTV/xnj3QTfIYAIVYMSwji0bnZcJY0hBbIAfMPGrI/u1bHVP4zQyYDQNlBpFPn2JVrH12IpyeA1QyKH5BEq6ViHE//bGOXvbwHMfVqCoRUaogUfjRs2tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Scnf+Nvr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0063AC4CEDF;
-	Tue, 21 Jan 2025 18:03:40 +0000 (UTC)
+	 MIME-Version; b=T6uTUj+VhofpjEJDlzTl4fFTZe35D3MGLb3meSqfbayjbWZS81jQuYtczfqXvljG3IU5m949Lc+/AoaK7qJE4NL0gLb5yjLTIZfQx8hqblUdHTvul+8YSx6I66Kl01EDLMwlB+OHse9ASjcRGd6hnEw2gMIbMnIVXFF3SFUOyls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CCnzTv1a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2040C4CEDF;
+	Tue, 21 Jan 2025 18:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482621;
-	bh=DL0Wf3pX2OVzRnzmqBSQk+6+J35Od01fbZkWriomsYE=;
+	s=korg; t=1737482956;
+	bh=DHHYcJ+RoQ6savV9ac+uIg6SauULp+1tk3yfp/ev56Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Scnf+NvrHCc2gM0RbSNfUiyjxSxbrPLz6xLBaja7eNGm72lCPOPPvyOujMajdY28l
-	 wllE4DtwYCa3x5WtZT9OGNK3HgM7sfEsHYsY+XweUATT/ADaaGeYts0kq8/I0wAncH
-	 yBs26rvFbS4ozkJFPpgGrRAILe7V5zSeKvLb15vE=
+	b=CCnzTv1a/cJrRITvn+xu9BlYdUAb6WD0OGz3OMU6dR6iZgii5U2PDkyf/Wsz1U0Zc
+	 38Q53O4zJoo3YoYlBVswKtVVR5Jag1BElLV5tioXlFljV4TdMgQkPEgmdba+uMZugV
+	 sSrtlpetuWlq3Cxg0lbQexKwjkHs+FVcUN5Oo0Kg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Rob Herring <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 17/64] i2c: rcar: fix NACK handling when being a target
-Date: Tue, 21 Jan 2025 18:52:16 +0100
-Message-ID: <20250121174522.217304262@linuxfoundation.org>
+Subject: [PATCH 5.15 065/127] of: unittest: Add bus address range parsing tests
+Date: Tue, 21 Jan 2025 18:52:17 +0100
+Message-ID: <20250121174532.178032127@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
-References: <20250121174521.568417761@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Rob Herring <robh@kernel.org>
 
-[ Upstream commit 093f70c134f70e4632b295240f07d2b50b74e247 ]
+[ Upstream commit 6d32dadb11a6480be62c6ada901bbdcbda1775c9 ]
 
-When this controller is a target, the NACK handling had two issues.
-First, the return value from the backend was not checked on the initial
-WRITE_REQUESTED. So, the driver missed to send a NACK in this case.
-Also, the NACK always arrives one byte late on the bus, even in the
-WRITE_RECEIVED case. This seems to be a HW issue. We should then not
-rely on the backend to correctly NACK the superfluous byte as well. Fix
-both issues by introducing a flag which gets set whenever the backend
-requests a NACK and keep sending it until we get a STOP condition.
+While there are tests for "dma-ranges" helpers, "ranges" is missing any
+tests. It's the same underlying code, but for completeness add a test
+for "ranges" parsing iterators. This is in preparation to add some
+additional "ranges" helpers.
 
-Fixes: de20d1857dd6 ("i2c: rcar: add slave support")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Link: https://lore.kernel.org/r/20230328-dt-address-helpers-v1-1-e2456c3e77ab@kernel.org
+Signed-off-by: Rob Herring <robh@kernel.org>
+Stable-dep-of: 7f05e20b989a ("of: address: Preserve the flags portion on 1:1 dma-ranges mapping")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-rcar.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/of/unittest.c | 53 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
-index d0098e342ba22..c7f2a9d8bcd56 100644
---- a/drivers/i2c/busses/i2c-rcar.c
-+++ b/drivers/i2c/busses/i2c-rcar.c
-@@ -110,6 +110,8 @@
- #define ID_P_PM_BLOCKED		BIT(31)
- #define ID_P_MASK		GENMASK(31, 28)
+diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
+index 5a8d37cef0ba..a020296fbf41 100644
+--- a/drivers/of/unittest.c
++++ b/drivers/of/unittest.c
+@@ -1019,6 +1019,58 @@ static void __init of_unittest_pci_dma_ranges(void)
+ 	of_node_put(np);
+ }
  
-+#define ID_SLAVE_NACK		BIT(0)
++static void __init of_unittest_bus_ranges(void)
++{
++	struct device_node *np;
++	struct of_range range;
++	struct of_range_parser parser;
++	int i = 0;
 +
- enum rcar_i2c_type {
- 	I2C_RCAR_GEN1,
- 	I2C_RCAR_GEN2,
-@@ -143,6 +145,7 @@ struct rcar_i2c_priv {
- 	int irq;
- 
- 	struct i2c_client *host_notify_client;
-+	u8 slave_flags;
- };
- 
- #define rcar_i2c_priv_to_dev(p)		((p)->adap.dev.parent)
-@@ -597,6 +600,7 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
++	np = of_find_node_by_path("/testcase-data/address-tests");
++	if (!np) {
++		pr_err("missing testcase data\n");
++		return;
++	}
++
++	if (of_range_parser_init(&parser, np)) {
++		pr_err("missing ranges property\n");
++		return;
++	}
++
++	/*
++	 * Get the "ranges" from the device tree
++	 */
++	for_each_of_range(&parser, &range) {
++		unittest(range.flags == IORESOURCE_MEM,
++			"for_each_of_range wrong flags on node %pOF flags=%x (expected %x)\n",
++			np, range.flags, IORESOURCE_MEM);
++		if (!i) {
++			unittest(range.size == 0x40000000,
++				 "for_each_of_range wrong size on node %pOF size=%llx\n",
++				 np, range.size);
++			unittest(range.cpu_addr == 0x70000000,
++				 "for_each_of_range wrong CPU addr (%llx) on node %pOF",
++				 range.cpu_addr, np);
++			unittest(range.bus_addr == 0x70000000,
++				 "for_each_of_range wrong bus addr (%llx) on node %pOF",
++				 range.pci_addr, np);
++		} else {
++			unittest(range.size == 0x20000000,
++				 "for_each_of_range wrong size on node %pOF size=%llx\n",
++				 np, range.size);
++			unittest(range.cpu_addr == 0xd0000000,
++				 "for_each_of_range wrong CPU addr (%llx) on node %pOF",
++				 range.cpu_addr, np);
++			unittest(range.bus_addr == 0x00000000,
++				 "for_each_of_range wrong bus addr (%llx) on node %pOF",
++				 range.pci_addr, np);
++		}
++		i++;
++	}
++
++	of_node_put(np);
++}
++
+ static void __init of_unittest_parse_interrupts(void)
  {
- 	u32 ssr_raw, ssr_filtered;
- 	u8 value;
-+	int ret;
- 
- 	ssr_raw = rcar_i2c_read(priv, ICSSR) & 0xff;
- 	ssr_filtered = ssr_raw & rcar_i2c_read(priv, ICSIER);
-@@ -612,7 +616,10 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
- 			rcar_i2c_write(priv, ICRXTX, value);
- 			rcar_i2c_write(priv, ICSIER, SDE | SSR | SAR);
- 		} else {
--			i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_REQUESTED, &value);
-+			ret = i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_REQUESTED, &value);
-+			if (ret)
-+				priv->slave_flags |= ID_SLAVE_NACK;
-+
- 			rcar_i2c_read(priv, ICRXTX);	/* dummy read */
- 			rcar_i2c_write(priv, ICSIER, SDR | SSR | SAR);
- 		}
-@@ -625,18 +632,21 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
- 	if (ssr_filtered & SSR) {
- 		i2c_slave_event(priv->slave, I2C_SLAVE_STOP, &value);
- 		rcar_i2c_write(priv, ICSCR, SIE | SDBS); /* clear our NACK */
-+		priv->slave_flags &= ~ID_SLAVE_NACK;
- 		rcar_i2c_write(priv, ICSIER, SAR);
- 		rcar_i2c_write(priv, ICSSR, ~SSR & 0xff);
- 	}
- 
- 	/* master wants to write to us */
- 	if (ssr_filtered & SDR) {
--		int ret;
--
- 		value = rcar_i2c_read(priv, ICRXTX);
- 		ret = i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_RECEIVED, &value);
--		/* Send NACK in case of error */
--		rcar_i2c_write(priv, ICSCR, SIE | SDBS | (ret < 0 ? FNA : 0));
-+		if (ret)
-+			priv->slave_flags |= ID_SLAVE_NACK;
-+
-+		/* Send NACK in case of error, but it will come 1 byte late :( */
-+		rcar_i2c_write(priv, ICSCR, SIE | SDBS |
-+			       (priv->slave_flags & ID_SLAVE_NACK ? FNA : 0));
- 		rcar_i2c_write(priv, ICSSR, ~SDR & 0xff);
- 	}
- 
+ 	struct device_node *np;
+@@ -3324,6 +3376,7 @@ static int __init of_unittest(void)
+ 	of_unittest_dma_get_max_cpu_address();
+ 	of_unittest_parse_dma_ranges();
+ 	of_unittest_pci_dma_ranges();
++	of_unittest_bus_ranges();
+ 	of_unittest_match_node();
+ 	of_unittest_platform_populate();
+ 	of_unittest_overlay();
 -- 
 2.39.5
 
