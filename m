@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-109866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B783BA18437
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:04:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BED74A1835D
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FAC73A2B5E
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:04:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 845897A4396
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 086AC1F543F;
-	Tue, 21 Jan 2025 18:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69E21E9B38;
+	Tue, 21 Jan 2025 17:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oB6+/X+1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUZiCfOB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F481F4275;
-	Tue, 21 Jan 2025 18:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646291F5603;
+	Tue, 21 Jan 2025 17:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482668; cv=none; b=fBHX0rZrKAFxJ7vWyVR6d+7CDQGcPBybf0C+HOHM2Pa6ECD3/0eFCumtXXe2xtGaqG1HwMTr4jD9kCjZ/uI11HVvLu7+4JG/1qNV+lrXUpTh8pViCRoFeo8OUkRDtJhb/2NwF1Ki75gcH4FdEpLWx3shw3AA9zlBHxPMZ3dG+DA=
+	t=1737482123; cv=none; b=R8CKkG3r090cgt7vx/nX4thtLHNFwTmgPcXwKqcgQIaFroJAPwboGyETxDb4hwl59qrTI24h2GTZQDiHnHzueSiOgfD/h54uCmZ8nBz0sneP3X1q1c1nd18n/hQhdiPQsoKmUO3E70cT3B2rDAml7ZOJel1RqOkrYSVN+kRX5i8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482668; c=relaxed/simple;
-	bh=xK/PezKhwTFHoH8HvWJr6+PgFmCRsdEtmmosgRHQWVg=;
+	s=arc-20240116; t=1737482123; c=relaxed/simple;
+	bh=Asv5ifyQUXQE0jEV5v5zQ292qx85aCFozgf03Ybn2UU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ncGla4Ho/P7V6XdnCipeFy6/CstJM87icA9ra7fPA7eFnl1uijsvrgPpfcyQRhdUVU3xxO+t6Jzcv0eWBQY4AbotEwZ7sO6UZdy+UFaHQf+q3ZMsgw+9kk0d4vtVo1XJy2tcCiYQMTejtwYHzTwzxChLRAVH1m+JGgFfdv2tiIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oB6+/X+1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 378ECC4CEDF;
-	Tue, 21 Jan 2025 18:04:28 +0000 (UTC)
+	 MIME-Version; b=k5TcqY9GJ5PXpCIuO5VJYopFs6T2z7buaU/RC9RntLm7GoBSKZaQtlf7bHiBDoFf0BtdRsJt4vqWa6UfQBFMojSpKaI5Dy1maOO0PLX65/aKCvM68Iv+JNTZUAJuREml7eOfMm0taudiQhv2kyxmMlXDplx53Ehm4domxsmbCt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUZiCfOB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD03C4CEDF;
+	Tue, 21 Jan 2025 17:55:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482668;
-	bh=xK/PezKhwTFHoH8HvWJr6+PgFmCRsdEtmmosgRHQWVg=;
+	s=korg; t=1737482123;
+	bh=Asv5ifyQUXQE0jEV5v5zQ292qx85aCFozgf03Ybn2UU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oB6+/X+1glJNSDY3Ia3urb1PPGWAF2NWE2x1hcI/XhTH/XKUQjmhO8sEHh1jdpLBw
-	 uOSgKRWXc0UM1qtyU3pZ1uiA+sgtNa5wS9IzwoaWWOPcILJOe3LvkvXeAVC9NP5k+o
-	 4i29zQK29cvo8+4pO9bJWUzUSyKwb1wUJ6NMMSpE=
+	b=AUZiCfOBqe56FmaYbyKyo7vnctw0DcZvu11ftljNJUe/mraW9OTC7JeHa0/MlhVFE
+	 cPfSJh0YXH9+xuBTLByz+SdRmIc6B16VCN5SMZs4cfAqn7/X7WWojmrXLx/6wCrIS7
+	 k+A0ddYN9tL//hFgviLY7na7eU61TcJLZMVs9Jno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiao Liang <shaw.leon@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 07/64] gtp: Use for_each_netdev_rcu() in gtp_genl_dump_pdp().
-Date: Tue, 21 Jan 2025 18:52:06 +0100
-Message-ID: <20250121174521.848120427@linuxfoundation.org>
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.6 41/72] mptcp: be sure to send ack when mptcp-level window re-opens
+Date: Tue, 21 Jan 2025 18:52:07 +0100
+Message-ID: <20250121174525.005986706@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
-References: <20250121174521.568417761@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 46841c7053e6d25fb33e0534ef023833bf03e382 ]
+commit 2ca06a2f65310aeef30bb69b7405437a14766e4d upstream.
 
-gtp_newlink() links the gtp device to a list in dev_net(dev).
+mptcp_cleanup_rbuf() is responsible to send acks when the user-space
+reads enough data to update the receive windows significantly.
 
-However, even after the gtp device is moved to another netns,
-it stays on the list but should be invisible.
+It tries hard to avoid acquiring the subflow sockets locks by checking
+conditions similar to the ones implemented at the TCP level.
 
-Let's use for_each_netdev_rcu() for netdev traversal in
-gtp_genl_dump_pdp().
+To avoid too much code duplication - the MPTCP protocol can't reuse the
+TCP helpers as part of the relevant status is maintained into the msk
+socket - and multiple costly window size computation, mptcp_cleanup_rbuf
+uses a rough estimate for the most recently advertised window size:
+the MPTCP receive free space, as recorded as at last-ack time.
 
-Note that gtp_dev_list is no longer used under RCU, so list
-helpers are converted to the non-RCU variant.
+Unfortunately the above does not allow mptcp_cleanup_rbuf() to detect
+a zero to non-zero win change in some corner cases, skipping the
+tcp_cleanup_rbuf call and leaving the peer stuck.
 
-Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
-Reported-by: Xiao Liang <shaw.leon@gmail.com>
-Closes: https://lore.kernel.org/netdev/CABAhCOQdBL6h9M2C+kd+bGivRJ9Q72JUxW+-gur0nub_=PmFPA@mail.gmail.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+After commit ea66758c1795 ("tcp: allow MPTCP to update the announced
+window"), MPTCP has actually cheap access to the announced window value.
+Use it in mptcp_cleanup_rbuf() for a more accurate ack generation.
+
+Fixes: e3859603ba13 ("mptcp: better msk receive window updates")
+Cc: stable@vger.kernel.org
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://lore.kernel.org/20250107131845.5e5de3c5@kernel.org
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250113-net-mptcp-connect-st-flakes-v1-1-0d986ee7b1b6@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/gtp.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ net/mptcp/options.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-index 0e1dfc6157224..f360b9a51b645 100644
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -1095,7 +1095,7 @@ static int gtp_newlink(struct net *src_net, struct net_device *dev,
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -607,7 +607,6 @@ static bool mptcp_established_options_ds
+ 	}
+ 	opts->ext_copy.use_ack = 1;
+ 	opts->suboptions = OPTION_MPTCP_DSS;
+-	WRITE_ONCE(msk->old_wspace, __mptcp_space((struct sock *)msk));
+ 
+ 	/* Add kind/length/subtype/flag overhead if mapping is not populated */
+ 	if (dss_size == 0)
+@@ -1287,7 +1286,7 @@ static void mptcp_set_rwin(struct tcp_so
+ 			}
+ 			MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_RCVWNDCONFLICT);
+ 		}
+-		return;
++		goto update_wspace;
  	}
  
- 	gn = net_generic(dev_net(dev), gtp_net_id);
--	list_add_rcu(&gtp->list, &gn->gtp_dev_list);
-+	list_add(&gtp->list, &gn->gtp_dev_list);
- 	dev->priv_destructor = gtp_destructor;
- 
- 	netdev_dbg(dev, "registered new GTP interface\n");
-@@ -1121,7 +1121,7 @@ static void gtp_dellink(struct net_device *dev, struct list_head *head)
- 		hlist_for_each_entry_safe(pctx, next, &gtp->tid_hash[i], hlist_tid)
- 			pdp_context_delete(pctx);
- 
--	list_del_rcu(&gtp->list);
-+	list_del(&gtp->list);
- 	unregister_netdevice_queue(dev, head);
- }
- 
-@@ -1689,16 +1689,19 @@ static int gtp_genl_dump_pdp(struct sk_buff *skb,
- 	struct gtp_dev *last_gtp = (struct gtp_dev *)cb->args[2], *gtp;
- 	int i, j, bucket = cb->args[0], skip = cb->args[1];
- 	struct net *net = sock_net(skb->sk);
-+	struct net_device *dev;
- 	struct pdp_ctx *pctx;
--	struct gtp_net *gn;
--
--	gn = net_generic(net, gtp_net_id);
- 
- 	if (cb->args[4])
- 		return 0;
- 
- 	rcu_read_lock();
--	list_for_each_entry_rcu(gtp, &gn->gtp_dev_list, list) {
-+	for_each_netdev_rcu(net, dev) {
-+		if (dev->rtnl_link_ops != &gtp_link_ops)
-+			continue;
-+
-+		gtp = netdev_priv(dev);
-+
- 		if (last_gtp && last_gtp != gtp)
- 			continue;
- 		else
-@@ -1890,9 +1893,9 @@ static void __net_exit gtp_net_exit_batch_rtnl(struct list_head *net_list,
- 
- 	list_for_each_entry(net, net_list, exit_list) {
- 		struct gtp_net *gn = net_generic(net, gtp_net_id);
--		struct gtp_dev *gtp;
-+		struct gtp_dev *gtp, *gtp_next;
- 
--		list_for_each_entry(gtp, &gn->gtp_dev_list, list)
-+		list_for_each_entry_safe(gtp, gtp_next, &gn->gtp_dev_list, list)
- 			gtp_dellink(gtp->dev, dev_to_kill);
+ 	if (rcv_wnd_new != rcv_wnd_old) {
+@@ -1312,6 +1311,9 @@ raise_win:
+ 		th->window = htons(new_win);
+ 		MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_RCVWNDSHARED);
  	}
++
++update_wspace:
++	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
  }
--- 
-2.39.5
-
+ 
+ __sum16 __mptcp_make_csum(u64 data_seq, u32 subflow_seq, u16 data_len, __wsum sum)
 
 
 
