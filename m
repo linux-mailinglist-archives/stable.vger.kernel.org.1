@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-109800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E4EA183F9
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:02:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE4FA18397
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 625C4188C656
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:01:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87EB0188C585
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:58:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C316A1F55F0;
-	Tue, 21 Jan 2025 18:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE4331F76B5;
+	Tue, 21 Jan 2025 17:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RrzAzLzk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oryVYX3N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816511F470A;
-	Tue, 21 Jan 2025 18:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A43B1F76AB;
+	Tue, 21 Jan 2025 17:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482475; cv=none; b=tLMuYiSHS6a6DavXlmMcvfg9L4EVgi6ziOlolaLHxQLGVsieYOY3Wyy10cqZ/JD5WNWut6JOCt0YRh6GE0p/eh9fFbwFpAOqf5R2UGHatHtLOSU5H6SQexKxqV4IL7pgFPWoPff51czrUhY55bnNf1U44ZGbzcbMf/I5G0OSD68=
+	t=1737482236; cv=none; b=ChLcSp7hYicY7KywOi6YVFARZ6gUsaGzCnS4z0TTIIbZ3i3bAVmSiZGo1ZLVE/a+fTpXLZg+rSZAtV/62OVG/oJRcz8VwlQguqCNjT63ePWfkUTTGUJqQUikRlEPO9IvSG6zKi//qNwqnNPT4gahcBWLsYSDvam4KI64GMHl9b4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482475; c=relaxed/simple;
-	bh=rVJSzcP5GfbgK6iuHl2zRNcBlUpHv/jAG+NmlUT0Mrc=;
+	s=arc-20240116; t=1737482236; c=relaxed/simple;
+	bh=YWRLoJHxoym7MbkIxtPkWqDkIlAxytW33BQKMPGQ6ps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BiIX82CCEbRClUgxm6m9mwLcdQms/4N1Bq9p0aB0PVhI4T9lokFVZvKEtf0CLXfmX01Iin9ySgXfy3mluAiu/6GCPE8rIkrPy27ELWDhkxs47t9FCmcQU9O6Zwrc7cxppSaSzYz1vO/jIKHX46EUJpoFwUyMNw3tGSRkOaKVlr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrzAzLzk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04031C4CEDF;
-	Tue, 21 Jan 2025 18:01:14 +0000 (UTC)
+	 MIME-Version; b=Q+NhkgUCuOfmpldahHYCHrPouR4Nrp0FZX0d2hVUCWgdgH4DbxMQlJovC9M8tsJe+PMdDDLgxPqIN26u1X/G3b+6AHCVu7IcH+LH6j8pyboTTpqrPcR2MOUj+La8G+ExUz4iJZv07AuxYxP+FO2XCR2eY9/AJiuIcsO9YB+lIWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oryVYX3N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C86C4CEDF;
+	Tue, 21 Jan 2025 17:57:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482475;
-	bh=rVJSzcP5GfbgK6iuHl2zRNcBlUpHv/jAG+NmlUT0Mrc=;
+	s=korg; t=1737482236;
+	bh=YWRLoJHxoym7MbkIxtPkWqDkIlAxytW33BQKMPGQ6ps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RrzAzLzkcwrAa6hdzE4xEpNTMDikDv4DFY1dAgSsAJtrmrtrQjc6RR7hwAxpn+/OY
-	 HezYwBVBtlQ5910LMyshrMsHxupCrTaUee2jB1bTovOKm1Sv8R7sjxmCKRMpzgVvTH
-	 2zICbM/wOZNVLvKe2mi0gXITbNIUpy1eaHzZ+hus=
+	b=oryVYX3N6QmUQhNWBc4TmH8jnLlI2fbgonaKIE0IQmNOPnB0oa3zFufLEuClx6eK7
+	 4wNptZrpSEr1wotOpiUsgIHSlOTnQqHVhPXvEUVcO7t9DksGvJZ+2RaeG4MBMNJDH/
+	 28Opgsl6wWRIdI3UYgZvD8iY9qXAy6AWrfkinTcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Airlie <airlied@redhat.com>,
-	Ben Skeggs <bskeggs@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.12 089/122] nouveau/fence: handle cross device fences properly
+	Marco Nelissen <marco.nelissen@gmail.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 51/72] filemap: avoid truncating 64-bit offset to 32 bits
 Date: Tue, 21 Jan 2025 18:52:17 +0100
-Message-ID: <20250121174536.449809284@linuxfoundation.org>
+Message-ID: <20250121174525.391502560@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Airlie <airlied@redhat.com>
+From: Marco Nelissen <marco.nelissen@gmail.com>
 
-commit 1f9910b41c857a892b83801feebdc7bdf38c5985 upstream.
+commit f505e6c91e7a22d10316665a86d79f84d9f0ba76 upstream.
 
-The fence sync logic doesn't handle a fence sync across devices
-as it tries to write to a channel offset from one device into
-the fence bo from a different device, which won't work so well.
+On 32-bit kernels, folio_seek_hole_data() was inadvertently truncating a
+64-bit value to 32 bits, leading to a possible infinite loop when writing
+to an xfs filesystem.
 
-This patch fixes that to avoid using the sync path in the case
-where the fences come from different nouveau drm devices.
-
-This works fine on a single device as the fence bo is shared
-across the devices, and mapped into each channels vma space,
-the channel offsets are therefore okay to pass between sides,
-so one channel can sync on the seqnos from the other by using
-the offset into it's vma.
-
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
-[ Fix compilation issue; remove version log from commit messsage.
-  - Danilo ]
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250109005553.623947-1-airlied@gmail.com
+Link: https://lkml.kernel.org/r/20250102190540.1356838-1-marco.nelissen@gmail.com
+Fixes: 54fa39ac2e00 ("iomap: use mapping_seek_hole_data")
+Signed-off-by: Marco Nelissen <marco.nelissen@gmail.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_fence.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ mm/filemap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/nouveau/nouveau_fence.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_fence.c
-@@ -387,11 +387,13 @@ nouveau_fence_sync(struct nouveau_bo *nv
- 			if (f) {
- 				struct nouveau_channel *prev;
- 				bool must_wait = true;
-+				bool local;
- 
- 				rcu_read_lock();
- 				prev = rcu_dereference(f->channel);
--				if (prev && (prev == chan ||
--					     fctx->sync(f, prev, chan) == 0))
-+				local = prev && prev->cli->drm == chan->cli->drm;
-+				if (local && (prev == chan ||
-+					      fctx->sync(f, prev, chan) == 0))
- 					must_wait = false;
- 				rcu_read_unlock();
- 				if (!must_wait)
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3037,7 +3037,7 @@ static inline loff_t folio_seek_hole_dat
+ 		if (ops->is_partially_uptodate(folio, offset, bsz) ==
+ 							seek_data)
+ 			break;
+-		start = (start + bsz) & ~(bsz - 1);
++		start = (start + bsz) & ~((u64)bsz - 1);
+ 		offset += bsz;
+ 	} while (offset < folio_size(folio));
+ unlock:
 
 
 
