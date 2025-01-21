@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-109868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C10EA18459
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:05:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2C6BA183ED
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EFB6188D10C
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:04:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD9D7161766
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4ED61F55F5;
-	Tue, 21 Jan 2025 18:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596141F543F;
+	Tue, 21 Jan 2025 18:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+ffchsI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TkgnZ6OG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F9E1F4275;
-	Tue, 21 Jan 2025 18:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192821F5404;
+	Tue, 21 Jan 2025 18:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482674; cv=none; b=hTuJltDiBuFmgeqHmWATbriDdo7RNtsUkVsq07YzJmfIDAWAqhi0B8cgpHM+DkIaZK9w+godydhrOFCbSjxntgzP2z0iP/K0rRwJskBz1avHYPzBrB/n16UcPBvJEpz7yGW+jRYvniWUBStbL06AQ3X/QHvQSEix/F2hDZqoUfw=
+	t=1737482449; cv=none; b=rc22RNsLJgs0sHygHFjH71HO05Y8d3vp9TCAwobtv162rn2oCVyGdVRKVw5By91Eoin5ARJHa29fdLegri32C+MjN8ifgjQUUBjOm7ao5JjN+BkAWR6BHAHlSA4fXkaDqFx/zDWxNTZOXPKgxm2XZZf6leucf2kwnuFYxJabB5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482674; c=relaxed/simple;
-	bh=qe3OX2k8EkjZRYVCZQB4VscNIqlfyFyU5pi2VoKKkxI=;
+	s=arc-20240116; t=1737482449; c=relaxed/simple;
+	bh=cNDiuF/FqNVWFgCpr8tvq4uAq4ClICzzuSgegD7JSs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aBDiGjGtkRxb0KWr4cw94GOnPbzIJlPxmp2FPD8P8/59tl2Ur7W5QJ6ONwTsVzNYUPz9Bcm2Zl96q+MFvySuYgiqp/aIGINPKWCRdEmlTxHy6Jlcyod+ohWCT+Oxt9ZRPt7+tJeNAMxnhsATkScimdCGqGGNek8QmkuJR+4sKm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+ffchsI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD72C4CEDF;
-	Tue, 21 Jan 2025 18:04:33 +0000 (UTC)
+	 MIME-Version; b=KQTz/29ZH/XOdam7wnkSeJVhMBv0BugrhZQ0oD7T19p+6HmIprup3Cq89RIFpcsqjQDgw28K4QpzpP9EVGPJlYqIu2w0ip/+DszUhR249/lOb0ttyhMNsPbSRSNwlBBBnHPRRfVKcH7+04Ccqm2+wzxUnZDI75E3Ap5ecF9E3AY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TkgnZ6OG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95819C4CEDF;
+	Tue, 21 Jan 2025 18:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482674;
-	bh=qe3OX2k8EkjZRYVCZQB4VscNIqlfyFyU5pi2VoKKkxI=;
+	s=korg; t=1737482449;
+	bh=cNDiuF/FqNVWFgCpr8tvq4uAq4ClICzzuSgegD7JSs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y+ffchsI6MkCxvXSzMfjMq0R3iHXdrPydjGxNWK8hQ4YadfLczv8xqfwLhgg5T4ZK
-	 6tp3DMCqeTJwDNHmqRtUeNptbFP2x8bqArbt1mgNgBYRn2CIu20VnISbn9IsbsaHj8
-	 /asb1UMS3One881/iEueL2NmmwMiXSVO1tiU6NNk=
+	b=TkgnZ6OGp6EQ+CO9egcSxDi5Uq72vZy7gviWWdqXGHRucvfgV/1NwFpNWWXRBQQOO
+	 ByvL8LqydU68FiYSbYX9+82pPU+/SWvvPjRakxrfIISpyX2dT2kdjn6DuoLNyj2TuI
+	 J59kDgDBlWO9rofIDIGjpsGlPBV3yYRqk+8xU4vI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 09/64] nfp: bpf: prevent integer overflow in nfp_bpf_event_output()
-Date: Tue, 21 Jan 2025 18:52:08 +0100
-Message-ID: <20250121174521.921866271@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 081/122] mptcp: fix spurious wake-up on under memory pressure
+Date: Tue, 21 Jan 2025 18:52:09 +0100
+Message-ID: <20250121174536.132771540@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
-References: <20250121174521.568417761@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 16ebb6f5b6295c9688749862a39a4889c56227f8 ]
+commit e226d9259dc4f5d2c19e6682ad1356fa97cf38f4 upstream.
 
-The "sizeof(struct cmsg_bpf_event) + pkt_size + data_size" math could
-potentially have an integer wrapping bug on 32bit systems.  Check for
-this and return an error.
+The wake-up condition currently implemented by mptcp_epollin_ready()
+is wrong, as it could mark the MPTCP socket as readable even when
+no data are present and the system is under memory pressure.
 
-Fixes: 9816dd35ecec ("nfp: bpf: perf event output helpers support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/6074805b-e78d-4b8a-bf05-e929b5377c28@stanley.mountain
+Explicitly check for some data being available in the receive queue.
+
+Fixes: 5684ab1a0eff ("mptcp: give rcvlowat some love")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250113-net-mptcp-connect-st-flakes-v1-2-0d986ee7b1b6@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/netronome/nfp/bpf/offload.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mptcp/protocol.h |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/netronome/nfp/bpf/offload.c b/drivers/net/ethernet/netronome/nfp/bpf/offload.c
-index 9d97cd281f18e..c03558adda91e 100644
---- a/drivers/net/ethernet/netronome/nfp/bpf/offload.c
-+++ b/drivers/net/ethernet/netronome/nfp/bpf/offload.c
-@@ -458,7 +458,8 @@ int nfp_bpf_event_output(struct nfp_app_bpf *bpf, const void *data,
- 	map_id_full = be64_to_cpu(cbe->map_ptr);
- 	map_id = map_id_full;
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -760,10 +760,15 @@ static inline u64 mptcp_data_avail(const
  
--	if (len < sizeof(struct cmsg_bpf_event) + pkt_size + data_size)
-+	if (size_add(pkt_size, data_size) > INT_MAX ||
-+	    len < sizeof(struct cmsg_bpf_event) + pkt_size + data_size)
- 		return -EINVAL;
- 	if (cbe->hdr.ver != NFP_CCM_ABI_VERSION)
- 		return -EINVAL;
--- 
-2.39.5
-
+ static inline bool mptcp_epollin_ready(const struct sock *sk)
+ {
++	u64 data_avail = mptcp_data_avail(mptcp_sk(sk));
++
++	if (!data_avail)
++		return false;
++
+ 	/* mptcp doesn't have to deal with small skbs in the receive queue,
+-	 * at it can always coalesce them
++	 * as it can always coalesce them
+ 	 */
+-	return (mptcp_data_avail(mptcp_sk(sk)) >= sk->sk_rcvlowat) ||
++	return (data_avail >= sk->sk_rcvlowat) ||
+ 	       (mem_cgroup_sockets_enabled && sk->sk_memcg &&
+ 		mem_cgroup_under_socket_pressure(sk->sk_memcg)) ||
+ 	       READ_ONCE(tcp_memory_pressure);
 
 
 
