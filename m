@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-109939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113D1A18496
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:09:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FE4EA183C5
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:00:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96D751623B4
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78B463AC7B7
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 723D81F707B;
-	Tue, 21 Jan 2025 18:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113481F55E3;
+	Tue, 21 Jan 2025 17:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ft4onkRT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0ja6fCu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9F51F3FFE;
-	Tue, 21 Jan 2025 18:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11481F238E;
+	Tue, 21 Jan 2025 17:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482875; cv=none; b=VY+z04ZduHTw6UlFc1ayQCbx/fgaAKLbk40N3Qzd14rnEbO2KfqIZBTwTRt7CIEylQVL+EBk5deV7nIyQLWQf7fRsAUudZddRGz4wheYRAoP7oadWdAxj8Jv81gzeNIQx1YpN28aHZSKfL3XzZhi6q3srnZVYiO2S5izkk8WBro=
+	t=1737482358; cv=none; b=OjdHp53pmi9GMcc+bH7npduhJNGTYksQOcSQfgZ5PFzSKmNAiSddT5w0MneUtj3DLir24EBOw+ZS48Jn64N4rbRBB5Kbgg5FmkDyJSZu16jK8XZaXOuL3Fh2j4dy9XmMpFjdwLaRsFq+P82RU07wgwbjje3Rdfpi1fUv96bgzcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482875; c=relaxed/simple;
-	bh=xAIhfAz3y4t74k8OUwBQySNC9Dc8MaSZlcqMlbyDz4I=;
+	s=arc-20240116; t=1737482358; c=relaxed/simple;
+	bh=789Kw0Dc/H00kViCFCwPkpeR54lb9shiMugzIUPWmDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=shNICVuglAqjw7uC4DnZ8mPvap2pf4FEOzM7RytronzU7jGEnS5LLq/3DkViX3xc/0ZhGAOtwUggqu4RTiPZaJWfceXIfWvszf7v2NIcOTxzoI0w9EsStw+8VqNUo7fzGOb8GifCfiwFu1meS0FgeCYLViyUuuJH/cgD363iFSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ft4onkRT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A66C4CEDF;
-	Tue, 21 Jan 2025 18:07:54 +0000 (UTC)
+	 MIME-Version; b=gAgCy86C54NFtDTOMfpJOSQXzXDhIloNSvskZ3Q0FeCvjyX8FIsG5t+83IHOzr0KiWuS5xnsy3mV6IXqD9Z9l4SW5C8y8UJLcLU4rqFbXDJY4tqhmXiixOiMeHUXfGqBOo1lnQhL5DovKy0mNPxVIg+BCWhenJDHud+tZPVrC2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0ja6fCu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47C7DC4CEDF;
+	Tue, 21 Jan 2025 17:59:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482875;
-	bh=xAIhfAz3y4t74k8OUwBQySNC9Dc8MaSZlcqMlbyDz4I=;
+	s=korg; t=1737482358;
+	bh=789Kw0Dc/H00kViCFCwPkpeR54lb9shiMugzIUPWmDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ft4onkRTmghTV+a74gUtuQkkxIvHkwaoDx8mbmCiVGJ45MhUGF+CrMsPzzx5rewfK
-	 oXYD81qz/8CJB/KAwmfbEpJPMu6lxcX2PsADw1Heoc619Y6CTPIRpCXx8l8PeYZL9d
-	 wzGK3B6r2GY0wGMCUyVdYHtj/dZsRJ3Bd7NIQHrQ=
+	b=i0ja6fCuJg/qmap4K16hS7nysSImL8hSz6/QEEd4kKa71fSl9Y37DlmYLM9RUJ+Oj
+	 kj3J4rUerXw5wCregSpBrLUDlTQJr8Lgo6oGDUHUpGVW9mJi76KBkEgA3/yqMSzNcy
+	 m7qRs/D7lzSifk38A83vbCKH3SnxTIOF42qrtRuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Li Li <dualli@chromium.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Mina Almasry <almasrymina@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 008/127] ASoC: mediatek: disable buffer pre-allocation
+Subject: [PATCH 6.12 032/122] netdev: avoid CFI problems with sock priv helpers
 Date: Tue, 21 Jan 2025 18:51:20 +0100
-Message-ID: <20250121174529.995089269@linuxfoundation.org>
+Message-ID: <20250121174534.226946917@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 32c9c06adb5b157ef259233775a063a43746d699 ]
+[ Upstream commit a50da36562cd62b41de9bef08edbb3e8af00f118 ]
 
-On Chromebooks based on Mediatek MT8195 or MT8188, the audio frontend
-(AFE) is limited to accessing a very small window (1 MiB) of memory,
-which is described as a reserved memory region in the device tree.
+Li Li reports that casting away callback type may cause issues
+for CFI. Let's generate a small wrapper for each callback,
+to make sure compiler sees the anticipated types.
 
-On these two platforms, the maximum buffer size is given as 512 KiB.
-The MediaTek common code uses the same value for preallocations. This
-means that only the first two PCM substreams get preallocations, and
-then the whole space is exhausted, barring any other substreams from
-working. Since the substreams used are not always the first two, this
-means audio won't work correctly.
-
-This is observed on the MT8188 Geralt Chromebooks, on which the
-"mediatek,dai-link" property was dropped when it was upstreamed. That
-property causes the driver to only register the PCM substreams listed
-in the property, and in the order given.
-
-Instead of trying to compute an optimal value and figuring out which
-streams are used, simply disable preallocation. The PCM buffers are
-managed by the core and are allocated and released on the fly. There
-should be no impact to any of the other MediaTek platforms.
-
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patch.msgid.link/20241219105303.548437-1-wenst@chromium.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: Li Li <dualli@chromium.org>
+Link: https://lore.kernel.org/CANBPYPjQVqmzZ4J=rVQX87a9iuwmaetULwbK_5_3YWk2eGzkaA@mail.gmail.com
+Fixes: 170aafe35cb9 ("netdev: support binding dma-buf to netdevice")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Link: https://patch.msgid.link/20250115161436.648646-1-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/common/mtk-afe-platform-driver.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/netdev-genl-gen.c | 14 ++++++++++++--
+ tools/net/ynl/ynl-gen-c.py | 16 +++++++++++++---
+ 2 files changed, 25 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/mediatek/common/mtk-afe-platform-driver.c b/sound/soc/mediatek/common/mtk-afe-platform-driver.c
-index 01501d5747a7..52495c930ca3 100644
---- a/sound/soc/mediatek/common/mtk-afe-platform-driver.c
-+++ b/sound/soc/mediatek/common/mtk-afe-platform-driver.c
-@@ -120,8 +120,8 @@ int mtk_afe_pcm_new(struct snd_soc_component *component,
- 	struct mtk_base_afe *afe = snd_soc_component_get_drvdata(component);
+diff --git a/net/core/netdev-genl-gen.c b/net/core/netdev-genl-gen.c
+index b28424ae06d5f..8614988fc67b9 100644
+--- a/net/core/netdev-genl-gen.c
++++ b/net/core/netdev-genl-gen.c
+@@ -178,6 +178,16 @@ static const struct genl_multicast_group netdev_nl_mcgrps[] = {
+ 	[NETDEV_NLGRP_PAGE_POOL] = { "page-pool", },
+ };
  
- 	size = afe->mtk_afe_hardware->buffer_bytes_max;
--	snd_pcm_set_managed_buffer_all(pcm, SNDRV_DMA_TYPE_DEV,
--				       afe->dev, size, size);
-+	snd_pcm_set_managed_buffer_all(pcm, SNDRV_DMA_TYPE_DEV, afe->dev, 0, size);
++static void __netdev_nl_sock_priv_init(void *priv)
++{
++	netdev_nl_sock_priv_init(priv);
++}
 +
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(mtk_afe_pcm_new);
++static void __netdev_nl_sock_priv_destroy(void *priv)
++{
++	netdev_nl_sock_priv_destroy(priv);
++}
++
+ struct genl_family netdev_nl_family __ro_after_init = {
+ 	.name		= NETDEV_FAMILY_NAME,
+ 	.version	= NETDEV_FAMILY_VERSION,
+@@ -189,6 +199,6 @@ struct genl_family netdev_nl_family __ro_after_init = {
+ 	.mcgrps		= netdev_nl_mcgrps,
+ 	.n_mcgrps	= ARRAY_SIZE(netdev_nl_mcgrps),
+ 	.sock_priv_size	= sizeof(struct list_head),
+-	.sock_priv_init	= (void *)netdev_nl_sock_priv_init,
+-	.sock_priv_destroy = (void *)netdev_nl_sock_priv_destroy,
++	.sock_priv_init	= __netdev_nl_sock_priv_init,
++	.sock_priv_destroy = __netdev_nl_sock_priv_destroy,
+ };
+diff --git a/tools/net/ynl/ynl-gen-c.py b/tools/net/ynl/ynl-gen-c.py
+index 717530bc9c52e..463f1394ab971 100755
+--- a/tools/net/ynl/ynl-gen-c.py
++++ b/tools/net/ynl/ynl-gen-c.py
+@@ -2361,6 +2361,17 @@ def print_kernel_family_struct_src(family, cw):
+     if not kernel_can_gen_family_struct(family):
+         return
+ 
++    if 'sock-priv' in family.kernel_family:
++        # Generate "trampolines" to make CFI happy
++        cw.write_func("static void", f"__{family.c_name}_nl_sock_priv_init",
++                      [f"{family.c_name}_nl_sock_priv_init(priv);"],
++                      ["void *priv"])
++        cw.nl()
++        cw.write_func("static void", f"__{family.c_name}_nl_sock_priv_destroy",
++                      [f"{family.c_name}_nl_sock_priv_destroy(priv);"],
++                      ["void *priv"])
++        cw.nl()
++
+     cw.block_start(f"struct genl_family {family.ident_name}_nl_family __ro_after_init =")
+     cw.p('.name\t\t= ' + family.fam_key + ',')
+     cw.p('.version\t= ' + family.ver_key + ',')
+@@ -2378,9 +2389,8 @@ def print_kernel_family_struct_src(family, cw):
+         cw.p(f'.n_mcgrps\t= ARRAY_SIZE({family.c_name}_nl_mcgrps),')
+     if 'sock-priv' in family.kernel_family:
+         cw.p(f'.sock_priv_size\t= sizeof({family.kernel_family["sock-priv"]}),')
+-        # Force cast here, actual helpers take pointer to the real type.
+-        cw.p(f'.sock_priv_init\t= (void *){family.c_name}_nl_sock_priv_init,')
+-        cw.p(f'.sock_priv_destroy = (void *){family.c_name}_nl_sock_priv_destroy,')
++        cw.p(f'.sock_priv_init\t= __{family.c_name}_nl_sock_priv_init,')
++        cw.p(f'.sock_priv_destroy = __{family.c_name}_nl_sock_priv_destroy,')
+     cw.block_end(';')
+ 
+ 
 -- 
 2.39.5
 
