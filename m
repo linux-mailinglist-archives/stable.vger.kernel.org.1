@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-110003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A11A184DC
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:12:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB3CFA18391
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EEC03A2B7F
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:11:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7ACEA16BC0E
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160BF1F7087;
-	Tue, 21 Jan 2025 18:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED4181F63CF;
+	Tue, 21 Jan 2025 17:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WqUPOc51"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQI+Hlwd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7CE51F6675;
-	Tue, 21 Jan 2025 18:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3271F7577;
+	Tue, 21 Jan 2025 17:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737483060; cv=none; b=kUvRfmVSY6fTFXU5+pzAetf/6VWShsH0HXhXw/kFPxp4pmcGHiSelVO/46NyXAS78jO7vErvNhc0FjE4ylMcOVuohVj45aoPLvH3+cHhGf4o79fLPrZ2S0QV1ZvOX7cG453wj6WMVjl1qIeB3IsA8/uhaf3heNeYxLaNW5s6uls=
+	t=1737482233; cv=none; b=iwqN4knRanFickFPjhzNRQf9xlDPW3wpimDTwD21320HyotsDvNkf/W2DHrJ8XbaJqQkB3zkv3JLmxgbyDoX9KGYhtIWT2G+WzhFn/JADX1M8UwHoU1/llRPDrZgWMB21iBCrmvY4waUV30QWyJ+7xERjvdPdiuCqNXW5qxwBng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737483060; c=relaxed/simple;
-	bh=++Th5RWli3M+6FX1TZOzJ+fPCmV6p8zVNZv74rkdQ5M=;
+	s=arc-20240116; t=1737482233; c=relaxed/simple;
+	bh=IlGE7L4RwwugqGiNdGuZKvFOd5z9YPQr1zD+4GSUcPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HioThMsZQr7lOTuQN1n5hwoFfpd+YU0pRq3UchCI8nBxFndkQneZDQKK/BljqZyb/GKDot0bgjO1nQjKbIzBnPkezalXha5O4+zxNzONrZ7Lj56+8OeYEsD0qqkLJksqQAuWiylDvmXQdmqSWCAgpNsl7FbeXdORXR4/yizcvVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WqUPOc51; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2B7C4CEDF;
-	Tue, 21 Jan 2025 18:11:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rsnSyidDim/W1M1hofhwRzWrHxxB+EHfbKxeBTxRmO61KUeOeFyxG+fEUYQcyvwJbkKxXND5EHAqFHe41307o0e7DmGUY44LKPVHkQPQYvsi+9aP1W1O1qvs/4EgJrmj0Ac5sB8VN0Y9Ge2jfdINEy7xlHAzTX7OXHivAmYaS6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQI+Hlwd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2793DC4CEDF;
+	Tue, 21 Jan 2025 17:57:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737483060;
-	bh=++Th5RWli3M+6FX1TZOzJ+fPCmV6p8zVNZv74rkdQ5M=;
+	s=korg; t=1737482233;
+	bh=IlGE7L4RwwugqGiNdGuZKvFOd5z9YPQr1zD+4GSUcPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WqUPOc51gS6TIZxG42Qdx9306ckhWET2McW0ez0mLJO5Tgg7ypJ3yNjpeF9a9ecOg
-	 G/wYAwyq2/Dw4tiAkm1LxtWMerFtP+pSvj2FMIDlr+xVvxNHHcYD+GPKsfl0nu/+Ie
-	 W7TVl9KTIpZP7uB73JZ0X7GzAdsCrMMyqO6ZtVfo=
+	b=MQI+Hlwd+iqEH8J3iQHiYQTg+waT8zb1ve4cX8Qcn759jr2qadspEfDPQ1utUX5bs
+	 ZU9+nOjdbeVjao+YLL5ZvlPFjzjBBn+tPXLuzHHQTAXkXhO31H4LrO69/Stc1o2FWl
+	 V5gNzgNvfJBFdcnTu78mzvnVfcd78QJviAbCe4bk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Joseph Qi <jiangqi903@gmail.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 073/127] ocfs2: correct return value of ocfs2_local_free_info()
-Date: Tue, 21 Jan 2025 18:52:25 +0100
-Message-ID: <20250121174532.480154372@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 60/72] drm/amdgpu: always sync the GFX pipe on ctx switch
+Date: Tue, 21 Jan 2025 18:52:26 +0100
+Message-ID: <20250121174525.745823594@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,73 +59,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit d32840ad4a111c6abd651fbf6b5996e6123913da ]
+commit af04b320c71c4b59971f021615876808a36e5038 upstream.
 
-Now in ocfs2_local_free_info(), it returns 0 even if it actually fails.
-Though it doesn't cause any real problem since the only caller
-dquot_disable() ignores the return value, we'd better return correct as it
-is.
+That is needed to enforce isolation between contexts.
 
-Link: https://lkml.kernel.org/r/20230528132033.217664-1-joseph.qi@linux.alibaba.com
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Joseph Qi <jiangqi903@gmail.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 5f3fd772d152 ("ocfs2: fix slab-use-after-free due to dangling pointer dqi_priv")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit def59436fb0d3ca0f211d14873d0273d69ebb405)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/quota_local.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ocfs2/quota_local.c b/fs/ocfs2/quota_local.c
-index 7a1c8da9e44b..fbab536741e2 100644
---- a/fs/ocfs2/quota_local.c
-+++ b/fs/ocfs2/quota_local.c
-@@ -815,7 +815,7 @@ static int ocfs2_local_free_info(struct super_block *sb, int type)
- 	struct ocfs2_quota_chunk *chunk;
- 	struct ocfs2_local_disk_chunk *dchunk;
- 	int mark_clean = 1, len;
--	int status;
-+	int status = 0;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
+@@ -193,8 +193,8 @@ int amdgpu_ib_schedule(struct amdgpu_rin
+ 	need_ctx_switch = ring->current_ctx != fence_ctx;
+ 	if (ring->funcs->emit_pipeline_sync && job &&
+ 	    ((tmp = amdgpu_sync_get_fence(&job->explicit_sync)) ||
+-	     (amdgpu_sriov_vf(adev) && need_ctx_switch) ||
+-	     amdgpu_vm_need_pipeline_sync(ring, job))) {
++	     need_ctx_switch || amdgpu_vm_need_pipeline_sync(ring, job))) {
++
+ 		need_pipe_sync = true;
  
- 	iput(oinfo->dqi_gqinode);
- 	ocfs2_simple_drop_lockres(OCFS2_SB(sb), &oinfo->dqi_gqlock);
-@@ -857,17 +857,14 @@ static int ocfs2_local_free_info(struct super_block *sb, int type)
- 				 oinfo->dqi_libh,
- 				 olq_update_info,
- 				 info);
--	if (status < 0) {
-+	if (status < 0)
- 		mlog_errno(status);
--		goto out;
--	}
--
- out:
- 	ocfs2_inode_unlock(sb_dqopt(sb)->files[type], 1);
- 	brelse(oinfo->dqi_libh);
- 	brelse(oinfo->dqi_lqi_bh);
- 	kfree(oinfo);
--	return 0;
-+	return status;
- }
- 
- static void olq_set_dquot(struct buffer_head *bh, void *private)
--- 
-2.39.5
-
+ 		if (tmp)
 
 
 
