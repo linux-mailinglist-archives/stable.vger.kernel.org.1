@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-109769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BA6BA183D6
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F28C6A1835A
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9EB3188D4B3
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD07A1881D59
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C6F1F63C9;
-	Tue, 21 Jan 2025 17:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781651E9B38;
+	Tue, 21 Jan 2025 17:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERQ51317"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HS7Mwcpm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435AB1F238E;
-	Tue, 21 Jan 2025 17:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341F71F55E3;
+	Tue, 21 Jan 2025 17:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482385; cv=none; b=MsG31FCdiorqCtWvrbfuiTLJMS57TeMkSc/8lTbFWVamhMLRhNPCLYy5FEzf149XqaC/HXqbfe5IxH6cRY2OjBI0ZbKO+yyQ9M3nD/CeK7Y3nnRyPoSalXTudloD/83kZTrGa94V8JAMndily8LakDe3xfOmETnvE11U4w2YjSg=
+	t=1737482112; cv=none; b=kYqBfRmd6pKNTuKphNJZT/pL8DVu+kgM7hkCGZmDn4KeryljLk3gfmY+Wf5HT3WHeAYB3tXKApUGJycWYFyHV74RDvnBPEwwvouVJxlsbnO4R9zr9fe2NZH+mVX5UZc85hVU4UZSC9Ql3zINuLaz6x3oPUMQPwEFAey623rHJf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482385; c=relaxed/simple;
-	bh=d8WkeqpKl1KcEYmGwL1tzrPc6LuSjrQ8D8AsAWCYNQc=;
+	s=arc-20240116; t=1737482112; c=relaxed/simple;
+	bh=7nolpJGFDh0enFkOGmiK62CVcU5USwh4IhU5YTbkMBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pBs7oS4xDzYaI9Td70uiKRrMVntIZnhtklLH9dgkgbXmk1z/yiNXwNh5VHwXfUlW5Nl7HtE9D7xAMxISmwVIu9zlhPzPw+jLv9OA07bJE3v5VYsxHusajpJkVCptaohyAoKDELw39+RjFIHoKMdPUxb6SBwsf+hhn6G9U+nP2EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERQ51317; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC895C4CEDF;
-	Tue, 21 Jan 2025 17:59:44 +0000 (UTC)
+	 MIME-Version; b=g9RBfwqi+rinm8dC7kjR4YwV2KjctVj5ddSvDRbHVmq0PXaSuBpWWNKv5Yc+sD0pYYWl+MbhnowF+SMok5l7GXUrtPO+wNQHmgF3Ug/Cf7+ud9Zr2I+x76X6JRhNys9SmNLjv2yrPRoFklLEHvImUXugRhn5m14C0WL1tx8tO88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HS7Mwcpm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E48C4CEDF;
+	Tue, 21 Jan 2025 17:55:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482385;
-	bh=d8WkeqpKl1KcEYmGwL1tzrPc6LuSjrQ8D8AsAWCYNQc=;
+	s=korg; t=1737482111;
+	bh=7nolpJGFDh0enFkOGmiK62CVcU5USwh4IhU5YTbkMBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ERQ51317qXC+eVHOwoGk6FJeT1C7WXwtvrBeJx4e1qnV1mEVZVnLhiPaMq8wqAJiQ
-	 MU3YA/ZtU+6kpCWsLGgYF9NB0+Dohuc4wbOWhYeMHpg+Y8E33o7lirg9fRkqkqe9A5
-	 Cczu9KPxAPgsQ+/K427NHOXVSGouCqwtdhBfQ5eY=
+	b=HS7MwcpmV4RlzKd4C7Koe22cXY2v8g7bU21eBKG+BZjVmn03p6aA9D8HlQGmD9MR6
+	 OjxLox64oZ5dhYmlJhiuEDSKwgODidE356WzvEWjfVFNC9JCHsYG+8MWM2v+1tL3hr
+	 j4Rnc2qt9gWLzo8IKgduZrWuUn3N0a1dP5KTXXqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <koichiro.den@canonical.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 058/122] gpio: sim: lock up configfs that an instantiated device depends on
+Subject: [PATCH 6.6 20/72] hwmon: (tmp513) Fix division of negative numbers
 Date: Tue, 21 Jan 2025 18:51:46 +0100
-Message-ID: <20250121174535.226280096@linuxfoundation.org>
+Message-ID: <20250121174524.205580304@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <koichiro.den@canonical.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 8bd76b3d3f3af7ac2898b6a27ad90c444fec418f ]
+[ Upstream commit e2c68cea431d65292b592c9f8446c918d45fcf78 ]
 
-Once a sim device is instantiated and actively used, allowing rmdir for
-its configfs serves no purpose and can be confusing. Effectively,
-arbitrary users start depending on its existence.
+Fix several issues with division of negative numbers in the tmp513
+driver.
 
-Make the subsystem itself depend on the configfs entry for a sim device
-while it is in active use.
+The docs on the DIV_ROUND_CLOSEST macro explain that dividing a negative
+value by an unsigned type is undefined behavior. The driver was doing
+this in several places, i.e. data->shunt_uohms has type of u32. The
+actual "undefined" behavior is that it converts both values to unsigned
+before doing the division, for example:
 
-Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
-Link: https://lore.kernel.org/r/20250103141829.430662-5-koichiro.den@canonical.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+    int ret = DIV_ROUND_CLOSEST(-100, 3U);
+
+results in ret == 1431655732 instead of -33.
+
+Furthermore the MILLI macro has a type of unsigned long. Multiplying a
+signed long by an unsigned long results in an unsigned long.
+
+So, we need to cast both MILLI and data data->shunt_uohms to long when
+using the DIV_ROUND_CLOSEST macro.
+
+Fixes: f07f9d2467f4 ("hwmon: (tmp513) Use SI constants from units.h")
+Fixes: 59dfa75e5d82 ("hwmon: Add driver for Texas Instruments TMP512/513 sensor chips.")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://lore.kernel.org/r/20250114-fix-si-prefix-macro-sign-bugs-v1-1-696fd8d10f00@baylibre.com
+[groeck: Drop some continuation lines]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-sim.c | 48 +++++++++++++++++++++++++++++++++++------
- 1 file changed, 41 insertions(+), 7 deletions(-)
+ drivers/hwmon/tmp513.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpio/gpio-sim.c b/drivers/gpio/gpio-sim.c
-index dcca1d7f173e5..deedacdeb2395 100644
---- a/drivers/gpio/gpio-sim.c
-+++ b/drivers/gpio/gpio-sim.c
-@@ -1030,6 +1030,30 @@ static void gpio_sim_device_deactivate(struct gpio_sim_device *dev)
- 	dev->pdev = NULL;
- }
- 
-+static void
-+gpio_sim_device_lockup_configfs(struct gpio_sim_device *dev, bool lock)
-+{
-+	struct configfs_subsystem *subsys = dev->group.cg_subsys;
-+	struct gpio_sim_bank *bank;
-+	struct gpio_sim_line *line;
+diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
+index 070f93226ed69..62d31aadda4bb 100644
+--- a/drivers/hwmon/tmp513.c
++++ b/drivers/hwmon/tmp513.c
+@@ -203,7 +203,8 @@ static int tmp51x_get_value(struct tmp51x_data *data, u8 reg, u8 pos,
+ 		*val = sign_extend32(regval,
+ 				     reg == TMP51X_SHUNT_CURRENT_RESULT ?
+ 				     16 - tmp51x_get_pga_shift(data) : 15);
+-		*val = DIV_ROUND_CLOSEST(*val * 10 * MILLI, data->shunt_uohms);
++		*val = DIV_ROUND_CLOSEST(*val * 10 * (long)MILLI, (long)data->shunt_uohms);
 +
-+	/*
-+	 * The device only needs to depend on leaf line entries. This is
-+	 * sufficient to lock up all the configfs entries that the
-+	 * instantiated, alive device depends on.
-+	 */
-+	list_for_each_entry(bank, &dev->bank_list, siblings) {
-+		list_for_each_entry(line, &bank->line_list, siblings) {
-+			if (lock)
-+				WARN_ON(configfs_depend_item_unlocked(
-+						subsys, &line->group.cg_item));
-+			else
-+				configfs_undepend_item_unlocked(
-+						&line->group.cg_item);
-+		}
-+	}
-+}
-+
- static ssize_t
- gpio_sim_device_config_live_store(struct config_item *item,
- 				  const char *page, size_t count)
-@@ -1042,14 +1066,24 @@ gpio_sim_device_config_live_store(struct config_item *item,
- 	if (ret)
- 		return ret;
- 
--	guard(mutex)(&dev->lock);
-+	if (live)
-+		gpio_sim_device_lockup_configfs(dev, true);
- 
--	if (live == gpio_sim_device_is_live(dev))
--		ret = -EPERM;
--	else if (live)
--		ret = gpio_sim_device_activate(dev);
--	else
--		gpio_sim_device_deactivate(dev);
-+	scoped_guard(mutex, &dev->lock) {
-+		if (live == gpio_sim_device_is_live(dev))
-+			ret = -EPERM;
-+		else if (live)
-+			ret = gpio_sim_device_activate(dev);
-+		else
-+			gpio_sim_device_deactivate(dev);
-+	}
-+
-+	/*
-+	 * Undepend is required only if device disablement (live == 0)
-+	 * succeeds or if device enablement (live == 1) fails.
-+	 */
-+	if (live == !!ret)
-+		gpio_sim_device_lockup_configfs(dev, false);
- 
- 	return ret ?: count;
- }
+ 		break;
+ 	case TMP51X_BUS_VOLTAGE_RESULT:
+ 	case TMP51X_BUS_VOLTAGE_H_LIMIT:
+@@ -219,7 +220,7 @@ static int tmp51x_get_value(struct tmp51x_data *data, u8 reg, u8 pos,
+ 	case TMP51X_BUS_CURRENT_RESULT:
+ 		// Current = (ShuntVoltage * CalibrationRegister) / 4096
+ 		*val = sign_extend32(regval, 15) * (long)data->curr_lsb_ua;
+-		*val = DIV_ROUND_CLOSEST(*val, MILLI);
++		*val = DIV_ROUND_CLOSEST(*val, (long)MILLI);
+ 		break;
+ 	case TMP51X_LOCAL_TEMP_RESULT:
+ 	case TMP51X_REMOTE_TEMP_RESULT_1:
+@@ -259,7 +260,7 @@ static int tmp51x_set_value(struct tmp51x_data *data, u8 reg, long val)
+ 		 * The user enter current value and we convert it to
+ 		 * voltage. 1lsb = 10uV
+ 		 */
+-		val = DIV_ROUND_CLOSEST(val * data->shunt_uohms, 10 * MILLI);
++		val = DIV_ROUND_CLOSEST(val * (long)data->shunt_uohms, 10 * (long)MILLI);
+ 		max_val = U16_MAX >> tmp51x_get_pga_shift(data);
+ 		regval = clamp_val(val, -max_val, max_val);
+ 		break;
 -- 
 2.39.5
 
