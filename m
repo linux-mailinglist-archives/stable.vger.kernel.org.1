@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-109955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F175AA184B2
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:10:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A568AA183BD
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:00:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BE781883F44
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:09:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82C9E7A041B
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B431F7060;
-	Tue, 21 Jan 2025 18:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF8841F666C;
+	Tue, 21 Jan 2025 17:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DO8uOlb4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bfsl1pbg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83AD91F8936;
-	Tue, 21 Jan 2025 18:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1271F55F5;
+	Tue, 21 Jan 2025 17:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482921; cv=none; b=BDyeyic2z175tqQHGZvtHt8n0qR4Zo1xWkvI2lHoumClozXJMpyx8whCKIqpNZq15QTZ507AjTjRmmif9qt37meaa6aO3fzJaHLiA4SIo09Ef4eCXW3kT+/pI3uGTUKpMqbW4jJwyylccjjTqFLvnw25toIfD7SRI9XjV+ntErE=
+	t=1737482399; cv=none; b=E5QIsh/+5+15YOr6wqwthzci0XbAojoMBOsWf3AgqeqE0kYL6KJOTGetL/3u1r6+C6ZY6srhHPP+ZPF7zUXArOjzyNHhmOsMxJks0pSOLLwTB0n3/YERfyuRx+IXZLd6W8of9rqTEa6LawkrmJw/sDZNSKnL3PCV7VsgQ2wDUB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482921; c=relaxed/simple;
-	bh=u/h+VP4rrsj0c105nm2/Zj4X7+aDXgEibbdbEDlarmA=;
+	s=arc-20240116; t=1737482399; c=relaxed/simple;
+	bh=8CCIlaPObFe/qq48KKRNIINj4w6xKHkBlytEmJZXsHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tr+12j1LPKlcaXo4Kscr7WclAg1rbsyomyKeaGpRlwd7n6QQXT61CUIeuQqP3KPCkHdHTTCJMR9gji6kPTQGz93Z8WD6c+AQZXKTFQtF79CBsXyfxiFqf2hynODmVcc0DLugiY1V0HsLX9JLUCexcuS2gjxl7oiSVIpHFzx3KR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DO8uOlb4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD12C4CEE3;
-	Tue, 21 Jan 2025 18:08:40 +0000 (UTC)
+	 MIME-Version; b=fJbwKDMGX5pnTvy5oyvogsI4/xrfrTc+uHgxnw95rjVOABpAkwWmDBZebj5b4VdFNldjovwmKmZ8o4XK13u1lH5MuXuiEqbGYKcLbcYMD3StIe9i4hfVOl96EaPd15kjxfErx9L0A5wYQwq3cmr/JOySBNndErxFdTa/QJhUXY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bfsl1pbg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 084BBC4CEDF;
+	Tue, 21 Jan 2025 17:59:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482921;
-	bh=u/h+VP4rrsj0c105nm2/Zj4X7+aDXgEibbdbEDlarmA=;
+	s=korg; t=1737482399;
+	bh=8CCIlaPObFe/qq48KKRNIINj4w6xKHkBlytEmJZXsHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DO8uOlb42mgdFUXc6f8JiWjoqSHSW0sQ255XPIcmcbc45PubtpSoq2e9OLYZOPifN
-	 iDKkKB+a4q6kaKGDsSEubXgW1vJm+T4ZOzZ7uv530hy4FD7TK02QkAxHBGs2N/KfsZ
-	 7hK+s1Lh8gtXv2XzGTpQXv9ljatSYWl0VawSu+Og=
+	b=Bfsl1pbgeLXen/IKXMiH08pUTbLIKh7ppFPXHIKYbeKpxe7yute2gYlYE8JS5w3l5
+	 WWfS2V74yzOOJS2WMAxlJfG1GAAsS7VF6qbc1A1nte3N8ULdxvQiUUjjq0tZT9ghkB
+	 WCVEZmszmCvgTAQx7X0cAzqCJnI09hqS0+vh/5S8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	"Ching-Chun (Jim) Huang" <jserv@ccns.ncku.edu.tw>,
-	chuang@cs.nycu.edu.tw,
-	Ingo Molnar <mingo@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Shile Zhang <shile.zhang@linux.alibaba.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 037/127] scripts/sorttable: fix orc_sort_cmp() to maintain symmetry and transitivity
-Date: Tue, 21 Jan 2025 18:51:49 +0100
-Message-ID: <20250121174531.109325914@linuxfoundation.org>
+	Hans de Goede <hdegoede@redhat.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 062/122] ACPI: resource: acpi_dev_irq_override(): Check DMI match last
+Date: Tue, 21 Jan 2025 18:51:50 +0100
+Message-ID: <20250121174535.384508190@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,69 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 0210d251162f4033350a94a43f95b1c39ec84a90 upstream.
+[ Upstream commit cd4a7b2e6a2437a5502910c08128ea3bad55a80b ]
 
-The orc_sort_cmp() function, used with qsort(), previously violated the
-symmetry and transitivity rules required by the C standard.  Specifically,
-when both entries are ORC_TYPE_UNDEFINED, it could result in both a < b
-and b < a, which breaks the required symmetry and transitivity.  This can
-lead to undefined behavior and incorrect sorting results, potentially
-causing memory corruption in glibc implementations [1].
+acpi_dev_irq_override() gets called approx. 30 times during boot (15 legacy
+IRQs * 2 override_table entries). Of these 30 calls at max 1 will match
+the non DMI checks done by acpi_dev_irq_override(). The dmi_check_system()
+check is by far the most expensive check done by acpi_dev_irq_override(),
+make this call the last check done by acpi_dev_irq_override() so that it
+will be called at max 1 time instead of 30 times.
 
-Symmetry: If x < y, then y > x.
-Transitivity: If x < y and y < z, then x < z.
-
-Fix the comparison logic to return 0 when both entries are
-ORC_TYPE_UNDEFINED, ensuring compliance with qsort() requirements.
-
-Link: https://www.qualys.com/2024/01/30/qsort.txt [1]
-Link: https://lkml.kernel.org/r/20241226140332.2670689-1-visitorckw@gmail.com
-Fixes: 57fa18994285 ("scripts/sorttable: Implement build-time ORC unwind table sorting")
-Fixes: fb799447ae29 ("x86,objtool: Split UNWIND_HINT_EMPTY in two")
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Cc: Ching-Chun (Jim) Huang <jserv@ccns.ncku.edu.tw>
-Cc: <chuang@cs.nycu.edu.tw>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Shile Zhang <shile.zhang@linux.alibaba.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/20241228165253.42584-1-hdegoede@redhat.com
+[ rjw: Subject edit ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/sorttable.h |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/acpi/resource.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/scripts/sorttable.h
-+++ b/scripts/sorttable.h
-@@ -103,7 +103,7 @@ static inline unsigned long orc_ip(const
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index d27a3bf96f80d..90aaec923889c 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -689,11 +689,11 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
+ 	for (i = 0; i < ARRAY_SIZE(override_table); i++) {
+ 		const struct irq_override_cmp *entry = &override_table[i];
  
- static int orc_sort_cmp(const void *_a, const void *_b)
- {
--	struct orc_entry *orc_a;
-+	struct orc_entry *orc_a, *orc_b;
- 	const int *a = g_orc_ip_table + *(int *)_a;
- 	const int *b = g_orc_ip_table + *(int *)_b;
- 	unsigned long a_val = orc_ip(a);
-@@ -121,6 +121,10 @@ static int orc_sort_cmp(const void *_a,
- 	 * whitelisted .o files which didn't get objtool generation.
- 	 */
- 	orc_a = g_orc_table + (a - g_orc_ip_table);
-+	orc_b = g_orc_table + (b - g_orc_ip_table);
-+	if (orc_a->sp_reg == ORC_REG_UNDEFINED && !orc_a->end &&
-+	    orc_b->sp_reg == ORC_REG_UNDEFINED && !orc_b->end)
-+		return 0;
- 	return orc_a->sp_reg == ORC_REG_UNDEFINED && !orc_a->end ? -1 : 1;
- }
+-		if (dmi_check_system(entry->system) &&
+-		    entry->irq == gsi &&
++		if (entry->irq == gsi &&
+ 		    entry->triggering == triggering &&
+ 		    entry->polarity == polarity &&
+-		    entry->shareable == shareable)
++		    entry->shareable == shareable &&
++		    dmi_check_system(entry->system))
+ 			return entry->override;
+ 	}
  
+-- 
+2.39.5
+
 
 
 
