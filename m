@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-109861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 139FFA1844E
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:05:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA117A184DD
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:12:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E95C816A362
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:04:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE1603ABE4D
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69501F7546;
-	Tue, 21 Jan 2025 18:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB6E1F63FD;
+	Tue, 21 Jan 2025 18:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1VLGdvp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ELYiP2MV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921BE1F708C;
-	Tue, 21 Jan 2025 18:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70221F7064;
+	Tue, 21 Jan 2025 18:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482653; cv=none; b=M83DMqwMyj5ysjlfRoEJxTe/q3Bq6xrirbeFgkHORuQclbHYivr89erAaa0ZkDI0ZwTWMtW7PDK5WNF0HhFQXqsCQJxDaXwVmk+vDIngA2836ABFyTXZop4FNsrhrA8Kw4hcVvbOqsolPGvxdWI6U80hf6XwV1tCdc5GOv4N+nI=
+	t=1737483063; cv=none; b=gbzVfY3s4Eja+apyGpGmGOBsoaVd2QXv96UZ0ewtHFyX2NPeaa8FteE2PNtpBTyxElZaQRAhN6W5Z5BWI6Yo3K8sI47m+BLigRBoFMNQ4qY8XYaRHDqCJZzagXI40eL4Zcrn4F5dne64S+arZLfrvwHhTkRNy+XZDWy7O90ylzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482653; c=relaxed/simple;
-	bh=R7rIrg2Uad/PB8V0YTB7TdFLhjlUMVJR47j71DeRu6I=;
+	s=arc-20240116; t=1737483063; c=relaxed/simple;
+	bh=iz8OqMBey3cetOexMm8RC4pzNQm1ElmzfitWzDuA9FQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uf2MQDDkcA9EyP5KF47X6SgMjzEeH/OEi+lGHMDqCBJZzymdbZigOfacxx5At2zQ/NRmuqrF0XXWi3CP6zh+MLCSODl6wArSAt272CCpwnGw6+5BZvdRl2gUuaoNSHHkVQMCvSO2oXc1IOqTL5p+5O7pXSXsyT/h82ohvi0JGaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1VLGdvp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102DBC4CEE1;
-	Tue, 21 Jan 2025 18:04:12 +0000 (UTC)
+	 MIME-Version; b=rnFNcDUmfWuJ0caeNMUvm2tvhpXL1GF0TpRTpC36PfzTxQSMmhmpyssYxRzwe/VVNGjFDHjKpuUe1ax61WFt9PuHEbl3KSh49LWoP9qkI/GmXDk2BwqjcWgKbDjh02cCBHHIW3jl9RlBEHbOqD8jCrb1gkUSgNoOQ/PlW7WrOuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ELYiP2MV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA8EC4CEDF;
+	Tue, 21 Jan 2025 18:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482653;
-	bh=R7rIrg2Uad/PB8V0YTB7TdFLhjlUMVJR47j71DeRu6I=;
+	s=korg; t=1737483063;
+	bh=iz8OqMBey3cetOexMm8RC4pzNQm1ElmzfitWzDuA9FQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c1VLGdvpBiBb84/+prdYcRMC6qyM/eL270dTv9QgPEj+rT6k3B0UcZn/KaibT/h0K
-	 gPqqp0AJ/Y9/KUyhqaOuXdlEnJ24q0w8ialWMqwYFmI/BL25I6PBqAKV0Rxu3mvXli
-	 3JeRf9vP6AaOEWKEc1MSwyzHe9ni0k+xMPjuDsEY=
+	b=ELYiP2MVQwqFX8KG5lMXaBJ+X/+dRiVhoZNjf8H6yUFPuSIlaoa0iPKQ0aZtQeovZ
+	 mPktAWz3TUHljG6jng7tPRrkQG20qnYmTtzkf4jfO5TD28fLjDskMR7qJ1/zipwiYx
+	 /FW+VlEGLr5FOoqYu1epFdpygXGEyko7dmjF9BYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Nelissen <marco.nelissen@gmail.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Christian Brauner <brauner@kernel.org>,
+	Dennis Lam <dennis.lamerice@gmail.com>,
+	syzbot+d173bf8a5a7faeede34c@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 27/64] iomap: avoid avoid truncating 64-bit offset to 32 bits
+Subject: [PATCH 5.15 074/127] ocfs2: fix slab-use-after-free due to dangling pointer dqi_priv
 Date: Tue, 21 Jan 2025 18:52:26 +0100
-Message-ID: <20250121174522.591576761@linuxfoundation.org>
+Message-ID: <20250121174532.516728286@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
-References: <20250121174521.568417761@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +69,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Nelissen <marco.nelissen@gmail.com>
+From: Dennis Lam <dennis.lamerice@gmail.com>
 
-[ Upstream commit c13094b894de289514d84b8db56d1f2931a0bade ]
+[ Upstream commit 5f3fd772d152229d94602bca243fbb658068a597 ]
 
-on 32-bit kernels, iomap_write_delalloc_scan() was inadvertently using a
-32-bit position due to folio_next_index() returning an unsigned long.
-This could lead to an infinite loop when writing to an xfs filesystem.
+When mounting ocfs2 and then remounting it as read-only, a
+slab-use-after-free occurs after the user uses a syscall to
+quota_getnextquota.  Specifically, sb_dqinfo(sb, type)->dqi_priv is the
+dangling pointer.
 
-Signed-off-by: Marco Nelissen <marco.nelissen@gmail.com>
-Link: https://lore.kernel.org/r/20250109041253.2494374-1-marco.nelissen@gmail.com
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+During the remounting process, the pointer dqi_priv is freed but is never
+set as null leaving it to be accessed.  Additionally, the read-only option
+for remounting sets the DQUOT_SUSPENDED flag instead of setting the
+DQUOT_USAGE_ENABLED flags.  Moreover, later in the process of getting the
+next quota, the function ocfs2_get_next_id is called and only checks the
+quota usage flags and not the quota suspended flags.
+
+To fix this, I set dqi_priv to null when it is freed after remounting with
+read-only and put a check for DQUOT_SUSPENDED in ocfs2_get_next_id.
+
+[akpm@linux-foundation.org: coding-style cleanups]
+Link: https://lkml.kernel.org/r/20241218023924.22821-2-dennis.lamerice@gmail.com
+Fixes: 8f9e8f5fcc05 ("ocfs2: Fix Q_GETNEXTQUOTA for filesystem without quotas")
+Signed-off-by: Dennis Lam <dennis.lamerice@gmail.com>
+Reported-by: syzbot+d173bf8a5a7faeede34c@syzkaller.appspotmail.com
+Tested-by: syzbot+d173bf8a5a7faeede34c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6731d26f.050a0220.1fb99c.014b.GAE@google.com/T/
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/iomap/buffered-io.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ocfs2/quota_global.c | 2 +-
+ fs/ocfs2/quota_local.c  | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index 47f44b02c17de..70e246f7e8fe8 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -907,7 +907,7 @@ static int iomap_write_delalloc_scan(struct inode *inode,
- 		}
+diff --git a/fs/ocfs2/quota_global.c b/fs/ocfs2/quota_global.c
+index effe92c7d693..cc464c9560e2 100644
+--- a/fs/ocfs2/quota_global.c
++++ b/fs/ocfs2/quota_global.c
+@@ -881,7 +881,7 @@ static int ocfs2_get_next_id(struct super_block *sb, struct kqid *qid)
+ 	int status = 0;
  
- 		/* move offset to start of next folio in range */
--		start_byte = folio_next_index(folio) << PAGE_SHIFT;
-+		start_byte = folio_pos(folio) + folio_size(folio);
- 		folio_unlock(folio);
- 		folio_put(folio);
+ 	trace_ocfs2_get_next_id(from_kqid(&init_user_ns, *qid), type);
+-	if (!sb_has_quota_loaded(sb, type)) {
++	if (!sb_has_quota_active(sb, type)) {
+ 		status = -ESRCH;
+ 		goto out;
  	}
+diff --git a/fs/ocfs2/quota_local.c b/fs/ocfs2/quota_local.c
+index fbab536741e2..77d5aa90338f 100644
+--- a/fs/ocfs2/quota_local.c
++++ b/fs/ocfs2/quota_local.c
+@@ -864,6 +864,7 @@ static int ocfs2_local_free_info(struct super_block *sb, int type)
+ 	brelse(oinfo->dqi_libh);
+ 	brelse(oinfo->dqi_lqi_bh);
+ 	kfree(oinfo);
++	info->dqi_priv = NULL;
+ 	return status;
+ }
+ 
 -- 
 2.39.5
 
