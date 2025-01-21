@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-109674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9836BA18355
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA1ACA183E4
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8307169A62
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85D4C3AC118
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA2D1F63C9;
-	Tue, 21 Jan 2025 17:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444521F427B;
+	Tue, 21 Jan 2025 18:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVF54E01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWTYhk21"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B2D1F55FA;
-	Tue, 21 Jan 2025 17:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3DDF1F4283;
+	Tue, 21 Jan 2025 18:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482108; cv=none; b=rmbne/QCVpwX4EisPeMk45rHWkWZLKo/FTI2v+AOR1F80iH9WJWi0JWuVz9f4QMyvaUwTdgeKZqigc9RRnMEH4kNClq3Uzdb74WhGCfRbsRvDW8Li+cY32qKtu6vfK8+eIJIY5Z9igzYdo5WZXwmaH/KAUvIhDP163Tlvs56Xik=
+	t=1737482433; cv=none; b=mjkv09EjHy4gAQHk7A+0Ra/sJSLkou1nJ+vPqBrR6JBS5pEw65vuXGsSHRfMTsjmJo+cZwm9vphWQpvPFmw1VRFc3vtvSkJCxfCkAr4HSpKUYobdkzWUjsJdZxG1w01nW3TyzaLncW3A6y4x6UBEROZzper1TqejnuKr2OhvO+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482108; c=relaxed/simple;
-	bh=NQCif2Xe8eiMevXikx/YVtWWDamGGgbld6qv95jykbU=;
+	s=arc-20240116; t=1737482433; c=relaxed/simple;
+	bh=SJgD87Ed1Kwf+CQjonBgC9iGyNZU9/muRxeyRAZWw9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V3rI1d2/UXICJPM3trvW8Qp/vRjvhvJb1rJK7qOrbvGGZ2wy04ok92LzN2/grM/NFEdRgwW/USo0KPdxDPo63GqVI/7j4/TIgRYduC2Jqm34FrqqDTEKpvVavTy1/i4A82N0+dQAInjK57ZkUrcu9euZR4YHFmpEhoTNZiKSuC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVF54E01; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65FD7C4CEDF;
-	Tue, 21 Jan 2025 17:55:07 +0000 (UTC)
+	 MIME-Version; b=d8yYkvRpgt7fzIyarIjSLcQ9vwCB2X5SXKHpR+Si2N1sBsvSCmBx/U1b2sgRHbhGfm15RAgk3UupYCaPEtJZk1R0fvkpoINR+sF+oWWSIK/wXgp7OppLWGxLNeMgH+A17IEn66Rqc+IJJBI9riKJiA3z6LxhBC8oIfYrykSSxo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWTYhk21; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C3A7C4CEDF;
+	Tue, 21 Jan 2025 18:00:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482107;
-	bh=NQCif2Xe8eiMevXikx/YVtWWDamGGgbld6qv95jykbU=;
+	s=korg; t=1737482431;
+	bh=SJgD87Ed1Kwf+CQjonBgC9iGyNZU9/muRxeyRAZWw9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VVF54E01+CQffKgXKlOwF9uZ/N0DDp7pVTv6d82E4/9tydIZRQmmUX0yDwpOSptAz
-	 8eRtCZ6wjryrqrox0iT8RQEIHD1qoREPNKPZzoPPbWss7wE7j6z38hhuSwLXszxbZ4
-	 jlSBmo+NPGvfW9f5vpQpGkWY6O4atCjdYqv2YgsM=
+	b=lWTYhk219nWkahRnriHSe9ufVDVhwpAUk4f9UqXyBLkHzw82yq9F5D+k8mwwMNqjd
+	 DIXpDoEv1Al3hGupjUy1FGHDkiXJ5tbUzRKgbIxPIsBrCZKeUSWxT3mIC4kYVOtnkj
+	 sKvlrTHSvA6p/0pbAc8oznMyY6GToy+W/d0IyvYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Juergen Gross <jgross@suse.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 37/72] x86/asm: Make serialize() always_inline
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 075/122] ALSA: hda/realtek: Add support for Ayaneo System using CS35L41 HDA
 Date: Tue, 21 Jan 2025 18:52:03 +0100
-Message-ID: <20250121174524.853285084@linuxfoundation.org>
+Message-ID: <20250121174535.883319430@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit ae02ae16b76160f0aeeae2c5fb9b15226d00a4ef ]
+commit de5afaddd5a7af6b9c48900741b410ca03e453ae upstream.
 
-In order to allow serialize() to be used from noinstr code, make it
-__always_inline.
+Add support for Ayaneo Portable Game System.
 
-Fixes: 0ef8047b737d ("x86/static-call: provide a way to do very early static-call updates")
-Closes: https://lore.kernel.org/oe-kbuild-all/202412181756.aJvzih2K-lkp@intel.com/
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20241218100918.22167-1-jgross@suse.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+System use 2 CS35L41 Amps with HDA, using Internal boost, with I2C
+
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250109165455.645810-1-sbinding@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/special_insns.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/special_insns.h
-index 48f8dd47cf688..1c5513b04f038 100644
---- a/arch/x86/include/asm/special_insns.h
-+++ b/arch/x86/include/asm/special_insns.h
-@@ -217,7 +217,7 @@ static inline int write_user_shstk_64(u64 __user *addr, u64 val)
- 
- #define nop() asm volatile ("nop")
- 
--static inline void serialize(void)
-+static __always_inline void serialize(void)
- {
- 	/* Instruction opcode for SERIALIZE; supported in binutils >= 2.35. */
- 	asm volatile(".byte 0xf, 0x1, 0xe8" ::: "memory");
--- 
-2.39.5
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10979,6 +10979,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
++	SND_PCI_QUIRK(0x1f66, 0x0105, "Ayaneo Portable Game Player", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
+ 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
 
 
 
