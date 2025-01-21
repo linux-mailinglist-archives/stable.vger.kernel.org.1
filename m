@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-109972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 903D1A18504
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:14:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D6D9A1834E
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:54:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4F287A695C
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B732D16995D
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:54:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C4C71F7919;
-	Tue, 21 Jan 2025 18:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25D11F63FD;
+	Tue, 21 Jan 2025 17:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TPzmVLEw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kgtPiiXR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6371F76D8;
-	Tue, 21 Jan 2025 18:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95BA1F5421;
+	Tue, 21 Jan 2025 17:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482971; cv=none; b=jfigdcEwxbLeAG7QzTWMCOFbHf8ax/1kBHgzh+txKby11AuXP9tzm2RAV7ENuDUZa90KGbLjR+7GHMvrjlE6rtptMHeZyVaKFC7ochuufUbprzBU798f/yfkzzB/3B3J/KaK12GL4LORL0bfvocJGMQcVG3glZqTBC5UheOgSow=
+	t=1737482081; cv=none; b=VuYJvipfWCD1tt0aplOnAMmWjHBO97LIKLPBjEpcnu4uwFTSh7YM5hdpZLWXavp3f1xZgpQAbandxgidvu8S4cK+MSlh2ugrvx8mAkbiTrMa6RXLfiAhWeNL8GyunN8qdw0BwhogwC9nHFjbd0VRJURcnEDjvig9TkvLeHvAzFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482971; c=relaxed/simple;
-	bh=DMgKNrFEiihWmEivZOdGcM/5Wy17FKsqMA4WpTs8AsE=;
+	s=arc-20240116; t=1737482081; c=relaxed/simple;
+	bh=LznHj3P0y4u3InOUm0GqT5gUP/G3uHRNGk1MzYvIRN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DaazaKIqNdXk/87CzbgFOUVxgXr1piHNrnz+uZweryy/PLNYBlwVDS21Ov0Rm6THsESWHb7wTBLzSBFT7W8Ddji3FaKhOwLqiw+6vgf11cdDSwrLxJ8isUurlXR1N3sy0JhKU5LwgXocwe1e9RddgqdEyzrmR4zpFN+R1r+QI1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TPzmVLEw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 748F3C4CEDF;
-	Tue, 21 Jan 2025 18:09:30 +0000 (UTC)
+	 MIME-Version; b=Z6YGeB0I4OBu6jIDjPvGg14yyRCxps38xLxUhXVQOOxwOJ1+LYZmCBkTlZwPYw4JPUJ1jqpOiDBKYGdLvrUf0CGr32KB5ciK0Iz7HH26yGOUlKBZarJuqRx+0U+Iy3Y5eUxC+CrpqDEXS/kxf4/34IlGwVm9cK3c0LeDta40XdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kgtPiiXR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 331F9C4CEE0;
+	Tue, 21 Jan 2025 17:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482970;
-	bh=DMgKNrFEiihWmEivZOdGcM/5Wy17FKsqMA4WpTs8AsE=;
+	s=korg; t=1737482081;
+	bh=LznHj3P0y4u3InOUm0GqT5gUP/G3uHRNGk1MzYvIRN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TPzmVLEwQXZ/bCZOh6lSBbhknwTdINqe0cD4YQK4bsfqxPBSBFHAX/zYNhg4Gx7Dc
-	 mcT6DgHVaEqLOkPmDT777/y/9emF1CRA1wchDErjLMyQY6/ZwTTGB4jjLek52RhyRV
-	 XAFM85qcQA4l4wVbjQrmxyVK3kwrTQa8FBSysfVc=
+	b=kgtPiiXR8bNPItu47uih0g77igx8nvp7AEYKuz9y/bcXtAzefSTSGi+AnmymmRg5W
+	 j6z/ZOV4ygVJR2MvYgQhNGee7WUwQKE0AI+fralcKHkIy/0aClANcElTws9YI7ZRs7
+	 EssyJ9EKE4egNBn5QhcRSuiHxIEy/Xc6uFK141VQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zicheng Qu <quzicheng@huawei.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 041/127] staging: iio: ad9834: Correct phase range check
-Date: Tue, 21 Jan 2025 18:51:53 +0100
-Message-ID: <20250121174531.261321301@linuxfoundation.org>
+	David Howells <dhowells@redhat.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	linux-nfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 28/72] kheaders: Ignore silly-rename files
+Date: Tue, 21 Jan 2025 18:51:54 +0100
+Message-ID: <20250121174524.509553308@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +67,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zicheng Qu <quzicheng@huawei.com>
+From: David Howells <dhowells@redhat.com>
 
-commit c0599762f0c7e260b99c6b7bceb8eae69b804c94 upstream.
+[ Upstream commit 973b710b8821c3401ad7a25360c89e94b26884ac ]
 
-User Perspective:
-When a user sets the phase value, the ad9834_write_phase() is called.
-The phase register has a 12-bit resolution, so the valid range is 0 to
-4095. If the phase offset value of 4096 is input, it effectively exactly
-equals 0 in the lower 12 bits, meaning no offset.
+Tell tar to ignore silly-rename files (".__afs*" and ".nfs*") when building
+the header archive.  These occur when a file that is open is unlinked
+locally, but hasn't yet been closed.  Such files are visible to the user
+via the getdents() syscall and so programs may want to do things with them.
 
-Reasons for the Change:
-1) Original Condition (phase > BIT(AD9834_PHASE_BITS)):
-This condition allows a phase value equal to 2^12, which is 4096.
-However, this value exceeds the valid 12-bit range, as the maximum valid
-phase value should be 4095.
-2) Modified Condition (phase >= BIT(AD9834_PHASE_BITS)):
-Ensures that the phase value is within the valid range, preventing
-invalid datafrom being written.
+During the kernel build, such files may be made during the processing of
+header files and the cleanup may get deferred by fput() which may result in
+tar seeing these files when it reads the directory, but they may have
+disappeared by the time it tries to open them, causing tar to fail with an
+error.  Further, we don't want to include them in the tarball if they still
+exist.
 
-Impact on Subsequent Logic: st->data = cpu_to_be16(addr | phase):
-If the phase value is 2^12, i.e., 4096 (0001 0000 0000 0000), and addr
-is AD9834_REG_PHASE0 (1100 0000 0000 0000), then addr | phase results in
-1101 0000 0000 0000, occupying DB12. According to the section of WRITING
-TO A PHASE REGISTER in the datasheet, the MSB 12 PHASE0 bits should be
-DB11. The original condition leads to incorrect DB12 usage, which
-contradicts the datasheet and could pose potential issues for future
-updates if DB12 is used in such related cases.
+With CONFIG_HEADERS_INSTALL=y, something like the following may be seen:
 
-Fixes: 12b9d5bf76bf ("Staging: IIO: DDS: AD9833 / AD9834 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20241107011015.2472600-2-quzicheng@huawei.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+   find: './kernel/.tmp_cpio_dir/include/dt-bindings/reset/.__afs2080': No such file or directory
+   tar: ./include/linux/greybus/.__afs3C95: File removed before we read it
+
+The find warning doesn't seem to cause a problem.
+
+Fix this by telling tar when called from in gen_kheaders.sh to exclude such
+files.  This only affects afs and nfs; cifs uses the Windows Hidden
+attribute to prevent the file from being seen.
+
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20241213135013.2964079-2-dhowells@redhat.com
+cc: Masahiro Yamada <masahiroy@kernel.org>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+cc: linux-nfs@vger.kernel.org
+cc: linux-kernel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/iio/frequency/ad9834.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/gen_kheaders.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/staging/iio/frequency/ad9834.c
-+++ b/drivers/staging/iio/frequency/ad9834.c
-@@ -131,7 +131,7 @@ static int ad9834_write_frequency(struct
- static int ad9834_write_phase(struct ad9834_state *st,
- 			      unsigned long addr, unsigned long phase)
- {
--	if (phase > BIT(AD9834_PHASE_BITS))
-+	if (phase >= BIT(AD9834_PHASE_BITS))
- 		return -EINVAL;
- 	st->data = cpu_to_be16(addr | phase);
+diff --git a/kernel/gen_kheaders.sh b/kernel/gen_kheaders.sh
+index 383fd43ac6122..7e1340da5acae 100755
+--- a/kernel/gen_kheaders.sh
++++ b/kernel/gen_kheaders.sh
+@@ -89,6 +89,7 @@ find $cpio_dir -type f -print0 |
  
+ # Create archive and try to normalize metadata for reproducibility.
+ tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
++    --exclude=".__afs*" --exclude=".nfs*" \
+     --owner=0 --group=0 --sort=name --numeric-owner --mode=u=rw,go=r,a+X \
+     -I $XZ -cf $tarfile -C $cpio_dir/ . > /dev/null
+ 
+-- 
+2.39.5
+
 
 
 
