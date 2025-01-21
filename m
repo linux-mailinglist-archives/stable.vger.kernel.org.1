@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-109646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4378A18339
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:53:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5DC5A18475
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:07:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23CEA16976A
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:53:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AC8A16B3A7
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05121F5439;
-	Tue, 21 Jan 2025 17:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A661F55F3;
+	Tue, 21 Jan 2025 18:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJwnAKBo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rfbpKxXS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1881F3FFD;
-	Tue, 21 Jan 2025 17:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A811F472D;
+	Tue, 21 Jan 2025 18:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482026; cv=none; b=O+gpdq1Yb+Rq+xSNC2mQ52qQYly3rlOoC5sKuB2PmiHPHbkBbX7PdMvf7tmrEfay1JZsuwEEgBiXNaQJvH8J6OnXOr6QdUvSAwJc8M6OgfVTP+rBTHM9HXkLcFc22jeMk/4ML0E8adnKLTUngdvtpBXKrU7WY3BMlvFoaVFl/Sc=
+	t=1737482806; cv=none; b=lA1703QRr5ceazZ5fjnwgCV27Y2JtgA0Efwte9oYlSOJ5o0KTo0Jn42UFdgn9NrFlGkgIFSKj+u2aIrGZjc/QSgN99BSrYKk4+Xb6WU+jkQL42hQznjkCZwvPgnJD7+rtbi3ggtR2rfM54hrS3YUNb4Bqa4RFCtfqFUbOn+jMWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482026; c=relaxed/simple;
-	bh=xo4f18HqKoR4Ve1TXBEk/9eRiugtEcBI7FmHNhfVNkY=;
+	s=arc-20240116; t=1737482806; c=relaxed/simple;
+	bh=iSWaF/BrCf1lOKtu2FHv0fR9qW9rzWhENiXaYuBBFWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TW5MwpC4g3vczyHnpGtIRSNBm6IGuPnQpoOxaI5DVCuyK5/5JwdjAgTQwGIqItRVWkD4noTMMecW1wtS2SPMWY+ydsau64w5H7nICF1aCWcmWL7N8ljOEOHJAAvMz6jjssHtKQFDqnSt55h+6ufIPBLicInlqxGSdAf48Sjf0QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJwnAKBo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E4E0C4CEDF;
-	Tue, 21 Jan 2025 17:53:44 +0000 (UTC)
+	 MIME-Version; b=RuFsqFFL+Jx0aE9Ofqbj2VKNJOg0hRCNiinXJH4fyfXrTwhVaJf1ASm5alKqRgCf6PSRFjsskNCxrXDGRqfSC4GhK7kTsMgiSSloOEVx7A0v9SQiBjt6KnTc8ODYvwfNl8H0H3iELlx4ez4ZkO55wJAZ+9bcQQBBcURHh6J0MGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rfbpKxXS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD1B8C4CEDF;
+	Tue, 21 Jan 2025 18:06:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482024;
-	bh=xo4f18HqKoR4Ve1TXBEk/9eRiugtEcBI7FmHNhfVNkY=;
+	s=korg; t=1737482806;
+	bh=iSWaF/BrCf1lOKtu2FHv0fR9qW9rzWhENiXaYuBBFWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vJwnAKBorSctspXewPAkFuYZj3D4xUQX/OSLntiS6T/SIXkjXawbzLnoIKSCHGIUl
-	 g5HJsicni5/UaDatxsWSwbI8NHTlxamkXnV5tSXJBAG6Hr7HAzP/bnXl1YqQgF3EYC
-	 1Wp1r5+1U+ZE13BHuEgYdeAZFeK9J5VJmJ/4oVv4=
+	b=rfbpKxXSnaJqPI9buWXD8rLb1c4pNf8vop33RpemXiNXwTZ8LcVDZDYarhuFKws2i
+	 EXVSUOsrPSnDlyz8b0hXTg4AN3LzkFy5qQOQuqiUrNldthza8v9ls4c6CFBJpo6+3X
+	 1g3GhMYKKRi0k4nh+4aRZs2YTWZPqYKdUaYq1v4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudheer Kumar Doredla <s-doredla@ti.com>,
-	Simon Horman <horms@kernel.org>,
-	Roger Quadros <rogerq@kernel.org>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Anumula Murali Mohan Reddy <anumula@chelsio.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 01/72] net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()
+Subject: [PATCH 5.15 015/127] cxgb4: Avoid removal of uninserted tid
 Date: Tue, 21 Jan 2025 18:51:27 +0100
-Message-ID: <20250121174523.488020487@linuxfoundation.org>
+Message-ID: <20250121174530.260014374@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudheer Kumar Doredla <s-doredla@ti.com>
+From: Anumula Murali Mohan Reddy <anumula@chelsio.com>
 
-[ Upstream commit 03d120f27d050336f7e7d21879891542c4741f81 ]
+[ Upstream commit 4c1224501e9d6c5fd12d83752f1c1b444e0e3418 ]
 
-CPSW ALE has 75-bit ALE entries stored across three 32-bit words.
-The cpsw_ale_get_field() and cpsw_ale_set_field() functions support
-ALE field entries spanning up to two words at the most.
+During ARP failure, tid is not inserted but _c4iw_free_ep()
+attempts to remove tid which results in error.
+This patch fixes the issue by avoiding removal of uninserted tid.
 
-The cpsw_ale_get_field() and cpsw_ale_set_field() functions work as
-expected when ALE field spanned across word1 and word2, but fails when
-ALE field spanned across word2 and word3.
-
-For example, while reading the ALE field spanned across word2 and word3
-(i.e. bits 62 to 64), the word3 data shifted to an incorrect position
-due to the index becoming zero while flipping.
-The same issue occurred when setting an ALE entry.
-
-This issue has not been seen in practice but will be an issue in the future
-if the driver supports accessing ALE fields spanning word2 and word3
-
-Fix the methods to handle getting/setting fields spanning up to two words.
-
-Fixes: b685f1a58956 ("net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()/cpsw_ale_set_field()")
-Signed-off-by: Sudheer Kumar Doredla <s-doredla@ti.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Link: https://patch.msgid.link/20250108172433.311694-1-s-doredla@ti.com
+Fixes: 59437d78f088 ("cxgb4/chtls: fix ULD connection failures due to wrong TID base")
+Signed-off-by: Anumula Murali Mohan Reddy <anumula@chelsio.com>
+Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
+Link: https://patch.msgid.link/20250103092327.1011925-1-anumula@chelsio.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/cpsw_ale.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index 64bf22cd860c9..9eccc7064c2b0 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.c
-+++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -106,15 +106,15 @@ struct cpsw_ale_dev_id {
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+index 21afaa81697e..47529c77654c 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+@@ -1800,7 +1800,10 @@ void cxgb4_remove_tid(struct tid_info *t, unsigned int chan, unsigned int tid,
+ 	struct adapter *adap = container_of(t, struct adapter, tids);
+ 	struct sk_buff *skb;
  
- static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
- {
--	int idx, idx2;
-+	int idx, idx2, index;
- 	u32 hi_val = 0;
+-	WARN_ON(tid_out_of_range(&adap->tids, tid));
++	if (tid_out_of_range(&adap->tids, tid)) {
++		dev_err(adap->pdev_dev, "tid %d out of range\n", tid);
++		return;
++	}
  
- 	idx    = start / 32;
- 	idx2 = (start + bits - 1) / 32;
- 	/* Check if bits to be fetched exceed a word */
- 	if (idx != idx2) {
--		idx2 = 2 - idx2; /* flip */
--		hi_val = ale_entry[idx2] << ((idx2 * 32) - start);
-+		index = 2 - idx2; /* flip */
-+		hi_val = ale_entry[index] << ((idx2 * 32) - start);
- 	}
- 	start -= idx * 32;
- 	idx    = 2 - idx; /* flip */
-@@ -124,16 +124,16 @@ static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
- static inline void cpsw_ale_set_field(u32 *ale_entry, u32 start, u32 bits,
- 				      u32 value)
- {
--	int idx, idx2;
-+	int idx, idx2, index;
- 
- 	value &= BITMASK(bits);
- 	idx = start / 32;
- 	idx2 = (start + bits - 1) / 32;
- 	/* Check if bits to be set exceed a word */
- 	if (idx != idx2) {
--		idx2 = 2 - idx2; /* flip */
--		ale_entry[idx2] &= ~(BITMASK(bits + start - (idx2 * 32)));
--		ale_entry[idx2] |= (value >> ((idx2 * 32) - start));
-+		index = 2 - idx2; /* flip */
-+		ale_entry[index] &= ~(BITMASK(bits + start - (idx2 * 32)));
-+		ale_entry[index] |= (value >> ((idx2 * 32) - start));
- 	}
- 	start -= idx * 32;
- 	idx = 2 - idx; /* flip */
+ 	if (t->tid_tab[tid - adap->tids.tid_base]) {
+ 		t->tid_tab[tid - adap->tids.tid_base] = NULL;
 -- 
 2.39.5
 
