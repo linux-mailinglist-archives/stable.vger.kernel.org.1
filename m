@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-109963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27DDDA184B9
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:11:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EB66A1836D
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:56:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B6C01881F4F
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C695C7A1BD4
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80311F7569;
-	Tue, 21 Jan 2025 18:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4EEC1F55FA;
+	Tue, 21 Jan 2025 17:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7tgDtJ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZPeZRSu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE661F5614;
-	Tue, 21 Jan 2025 18:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C091F55E5;
+	Tue, 21 Jan 2025 17:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482944; cv=none; b=Dzffod7zb9tM40HwKxYqA/hWtpB1HuojvXiOBVOceqKtmLF1QI3jukjoZl0/cINwSKdc0wTszv+c/9CKdBAGehSo9mYwvbDxa+jFpr/zYkCo00pU2S4BfhHQ3oxKFeydEorDQNT6Z80xDiWZo7i9u0FW8fUji74GNucv72FNyVs=
+	t=1737482149; cv=none; b=D7dA8LuESiTYwPBdR0rcO/9M5XmRWhsE663bb324f2A3FWmNBKWOy8m9zqTvGHIpHAQh/CQGI8trdhmVEKCK36K76p/pUBxy5tUekAXcGhkLpCzabhZlpMuxAwJdNlFnUCiZGVo5co0do/aAOO+/iCs2hai6aRv1bQPovyQeWQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482944; c=relaxed/simple;
-	bh=Cj1+s0406oGT38aYwYNILtoQsuGahFBCRdA+jMKMyzc=;
+	s=arc-20240116; t=1737482149; c=relaxed/simple;
+	bh=Lcn0pEuOguYoUp7Z56z/3FSA0SL9KJIO3Yj+hi678dA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V4BPWCnfy3Wrn75quT9EOlUTexT9LomS6Q7GJr7w85v469jLGpsDKcx/TdGqmdWAZUVm6RXFpkuAelJdDYq05QSwMNVOwlX77g/O8YZ+DP8XSNy/WMIsQANyY5p758kbdPVbdpxmZOQEbaLStdY7PQk8rqMnmWe+N7ZqZXa7wG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7tgDtJ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00DF9C4CEDF;
-	Tue, 21 Jan 2025 18:09:03 +0000 (UTC)
+	 MIME-Version; b=CFxJpwhATkRwEkAnAjtQ2g2p4ZWHqqZNFFoHf4AEABHCiiQBwtWtJ5/kiwMowEopv7bxH2T5b33kzDqIPpr5dxDvEtxhwCA750qGiYVdrEAFR9sFRkpvdmz7d25+b+8S+fZoXx/Il5rSjp7ygJX2PArC6ARwSnX1b6bq7zHq9R4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZPeZRSu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97EDC4CEDF;
+	Tue, 21 Jan 2025 17:55:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482944;
-	bh=Cj1+s0406oGT38aYwYNILtoQsuGahFBCRdA+jMKMyzc=;
+	s=korg; t=1737482149;
+	bh=Lcn0pEuOguYoUp7Z56z/3FSA0SL9KJIO3Yj+hi678dA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o7tgDtJ1XyRstdwDNOjKfN/24abn9enU5QqDjfoTrkWomkSyTOMb+SNA/I+Nvy3rX
-	 h4wEOFDhgJvcwKv3Iz/beutRcmrR0UjZa6wnDKxDPCq7kz5CSAX429ROV7nVfTHSUA
-	 9dTx7dIr2ExglL4QAA/ALFOAPg5HNCuw7MqDf03s=
+	b=jZPeZRSufREQyI3uS5AMaeuVG2QyX4/HHQJwBIFwSU4Bnq5k84oFH8L/ljyWFf2IK
+	 JCV6v4yHtl2viMpP46ahhWhcBKBIgv11oxW08PlY7g6JqHMMkiCmSJHIhpSmtFJdZe
+	 Kde4JPIfK5e4G57Cz8SLUndtF7AvXsRW1mJhjirQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 062/127] iio: adc: ad7124: Disable all channels at probe time
-Date: Tue, 21 Jan 2025 18:52:14 +0100
-Message-ID: <20250121174532.058483592@linuxfoundation.org>
+	Hyunwoo Kim <v4bel@theori.io>,
+	Wongi Lee <qwerty@theori.io>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 49/72] vsock: prevent null-ptr-deref in vsock_*[has_data|has_space]
+Date: Tue, 21 Jan 2025 18:52:15 +0100
+Message-ID: <20250121174525.315078934@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +62,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-commit 4be339af334c283a1a1af3cb28e7e448a0aa8a7c upstream.
+commit 91751e248256efc111e52e15115840c35d85abaf upstream.
 
-When during a measurement two channels are enabled, two measurements are
-done that are reported sequencially in the DATA register. As the code
-triggered by reading one of the sysfs properties expects that only one
-channel is enabled it only reads the first data set which might or might
-not belong to the intended channel.
+Recent reports have shown how we sometimes call vsock_*_has_data()
+when a vsock socket has been de-assigned from a transport (see attached
+links), but we shouldn't.
 
-To prevent this situation disable all channels during probe. This fixes
-a problem in practise because the reset default for channel 0 is
-enabled. So all measurements before the first measurement on channel 0
-(which disables channel 0 at the end) might report wrong values.
+Previous commits should have solved the real problems, but we may have
+more in the future, so to avoid null-ptr-deref, we can return 0
+(no space, no data available) but with a warning.
 
-Fixes: 7b8d045e497a ("iio: adc: ad7124: allow more than 8 channels")
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/20241104101905.845737-2-u.kleine-koenig@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This way the code should continue to run in a nearly consistent state
+and have a warning that allows us to debug future problems.
+
+Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/netdev/Z2K%2FI4nlHdfMRTZC@v4bel-B760M-AORUS-ELITE-AX/
+Link: https://lore.kernel.org/netdev/5ca20d4c-1017-49c2-9516-f6f75fd331e9@rbox.co/
+Link: https://lore.kernel.org/netdev/677f84a8.050a0220.25a300.01b3.GAE@google.com/
+Co-developed-by: Hyunwoo Kim <v4bel@theori.io>
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Co-developed-by: Wongi Lee <qwerty@theori.io>
+Signed-off-by: Wongi Lee <qwerty@theori.io>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Reviewed-by: Hyunwoo Kim <v4bel@theori.io>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7124.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/vmw_vsock/af_vsock.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -856,6 +856,9 @@ static int ad7124_setup(struct ad7124_st
- 		 * set all channels to this default value.
- 		 */
- 		ad7124_set_channel_odr(st, i, 10);
-+
-+		/* Disable all channels to prevent unintended conversions. */
-+		ad_sd_write_reg(&st->sd, AD7124_CHANNEL(i), 2, 0);
- 	}
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -875,6 +875,9 @@ EXPORT_SYMBOL_GPL(vsock_create_connected
  
- 	return ret;
+ s64 vsock_stream_has_data(struct vsock_sock *vsk)
+ {
++	if (WARN_ON(!vsk->transport))
++		return 0;
++
+ 	return vsk->transport->stream_has_data(vsk);
+ }
+ EXPORT_SYMBOL_GPL(vsock_stream_has_data);
+@@ -883,6 +886,9 @@ s64 vsock_connectible_has_data(struct vs
+ {
+ 	struct sock *sk = sk_vsock(vsk);
+ 
++	if (WARN_ON(!vsk->transport))
++		return 0;
++
+ 	if (sk->sk_type == SOCK_SEQPACKET)
+ 		return vsk->transport->seqpacket_has_data(vsk);
+ 	else
+@@ -892,6 +898,9 @@ EXPORT_SYMBOL_GPL(vsock_connectible_has_
+ 
+ s64 vsock_stream_has_space(struct vsock_sock *vsk)
+ {
++	if (WARN_ON(!vsk->transport))
++		return 0;
++
+ 	return vsk->transport->stream_has_space(vsk);
+ }
+ EXPORT_SYMBOL_GPL(vsock_stream_has_space);
 
 
 
