@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-109740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D84A9A183B4
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:59:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 849B2A18495
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:09:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F977188B6DB
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:59:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 192EE16556A
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98E51F75B3;
-	Tue, 21 Jan 2025 17:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B33D1F6675;
+	Tue, 21 Jan 2025 18:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/3oSBPl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mui/f7xu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E5C1F5439;
-	Tue, 21 Jan 2025 17:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A251F55E3;
+	Tue, 21 Jan 2025 18:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482300; cv=none; b=b6JmBiPLtkufSmVAOn75PlLOGq4KPBYmKN7OCx4YAaWat+sywO8UgQcEjxIGcH+jeXUVHL0/JSaLEHLqc3gQxd1lXTeYX1ePEALAQdu0VDTgVHdD5/oKi1oPIHRopyjUerFEQ7PanS0hvKSkUJ3+N3tftEPXkjSdzJCvtm+x/x4=
+	t=1737482869; cv=none; b=rAhV/9/8ocflZ9orjCe4cAra1GjIQSRMFvxoJU3StsA0suny3DN+xIymMXIAhrztMedvPj2aeS3UedOP46hxXSU166o0LKvxAs5hdqvhvC+ZJHN512z//DsAIitiUiTCnjmeg1cky4iOQeB22oud03vVIcSgRrymPTx0Wl10SxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482300; c=relaxed/simple;
-	bh=LydtA9mjfqBhDd2JZMlWp/v8v4DXmsCqnA/IMiaHwxc=;
+	s=arc-20240116; t=1737482869; c=relaxed/simple;
+	bh=hsYYrNCceu0D5WdIM+j5sCVDHL4t1SbquTBzL352WDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T9zKiI7fTQn4MBqIJUeN70P1i0ASJ7TjJifz2mRRtHH5gbtFGBUhjiwL4uhA16w940FCMk0FR9VAs/wvhmr7MuE+KNt6sq0ghlxLUdsPjORozVq99JsmB7t0FP254hTphwfoYo+HxYfu7sILVBXNLhN97OzGjbR5cnBBbd43b4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/3oSBPl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE324C4CEDF;
-	Tue, 21 Jan 2025 17:58:19 +0000 (UTC)
+	 MIME-Version; b=p7OYihgrq1NYu4Ui+oBzkj+Cgzs/zNUX/EukXDvwGNlGzPPGa5RzpJM0oYZJO4iCcA6/ujuNZr8WlrAX8uhmaACt+FGryJX3WRHrpcvJA5Ru2ffTYiCisXEJ1x8t9Dx+iuH9pjkcWcnAbFOI2P8Qgpw7T1cPwP2RxByLqGHdrVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mui/f7xu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2EC3C4CEDF;
+	Tue, 21 Jan 2025 18:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482300;
-	bh=LydtA9mjfqBhDd2JZMlWp/v8v4DXmsCqnA/IMiaHwxc=;
+	s=korg; t=1737482869;
+	bh=hsYYrNCceu0D5WdIM+j5sCVDHL4t1SbquTBzL352WDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X/3oSBPl8DVCZ6HTx5F2BPh10tXCJlodqVpwBgLFcwD8OFsj3U2/ul55qsmMw0bfX
-	 5SInny9t1lM7ncTr5wEC8rnJnhB9thNhkiiuOXW7TRoeHDE6VEnWn4SkbJaTK8SsEh
-	 VGxk95eRxsTJEkiViJLaLKgKpCvjDSTg0wK/aiiE=
+	b=Mui/f7xuy3vHneVVhL3q9O4nMLN77gXwLPYr06yg8Wg5VXKwNGs6dD4WbbdHN5eMw
+	 Ig4bsJr85oDGYNlIYOQwNdhorMl0YYSMY9d+32qS9nBG+L5/fITMdz9c7SNb19x4ta
+	 4nI1kbCkg+GKmUYY7QjCpSERswQ+6ltQdawXXMAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	syzbot+205c2644abdff9d3f9fc@syzkaller.appspotmail.com,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 029/122] net/mlx5e: Fix inversion dependency warning while enabling IPsec tunnel
-Date: Tue, 21 Jan 2025 18:51:17 +0100
-Message-ID: <20250121174534.115992654@linuxfoundation.org>
+Subject: [PATCH 5.15 006/127] exfat: fix the infinite loop in exfat_readdir()
+Date: Tue, 21 Jan 2025 18:51:18 +0100
+Message-ID: <20250121174529.920282352@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,343 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-[ Upstream commit 2c3688090f8a1f085230aa839cc63e4a7b977df0 ]
+[ Upstream commit fee873761bd978d077d8c55334b4966ac4cb7b59 ]
 
-Attempt to enable IPsec packet offload in tunnel mode in debug kernel
-generates the following kernel panic, which is happening due to two
-issues:
-1. In SA add section, the should be _bh() variant when marking SA mode.
-2. There is not needed flush_workqueue in SA delete routine. It is not
-needed as at this stage as it is removed from SADB and the running work
-will be canceled later in SA free.
+If the file system is corrupted so that a cluster is linked to
+itself in the cluster chain, and there is an unused directory
+entry in the cluster, 'dentry' will not be incremented, causing
+condition 'dentry < max_dentries' unable to prevent an infinite
+loop.
 
- =====================================================
- WARNING: SOFTIRQ-safe -> SOFTIRQ-unsafe lock order detected
- 6.12.0+ #4 Not tainted
- -----------------------------------------------------
- charon/1337 [HC0[0]:SC0[4]:HE1:SE0] is trying to acquire:
- ffff88810f365020 (&xa->xa_lock#24){+.+.}-{3:3}, at: mlx5e_xfrm_del_state+0xca/0x1e0 [mlx5_core]
+This infinite loop causes s_lock not to be released, and other
+tasks will hang, such as exfat_sync_fs().
 
- and this task is already holding:
- ffff88813e0f0d48 (&x->lock){+.-.}-{3:3}, at: xfrm_state_delete+0x16/0x30
- which would create a new lock dependency:
-  (&x->lock){+.-.}-{3:3} -> (&xa->xa_lock#24){+.+.}-{3:3}
+This commit stops traversing the cluster chain when there is unused
+directory entry in the cluster to avoid this infinite loop.
 
- but this new dependency connects a SOFTIRQ-irq-safe lock:
-  (&x->lock){+.-.}-{3:3}
-
- ... which became SOFTIRQ-irq-safe at:
-   lock_acquire+0x1be/0x520
-   _raw_spin_lock_bh+0x34/0x40
-   xfrm_timer_handler+0x91/0xd70
-   __hrtimer_run_queues+0x1dd/0xa60
-   hrtimer_run_softirq+0x146/0x2e0
-   handle_softirqs+0x266/0x860
-   irq_exit_rcu+0x115/0x1a0
-   sysvec_apic_timer_interrupt+0x6e/0x90
-   asm_sysvec_apic_timer_interrupt+0x16/0x20
-   default_idle+0x13/0x20
-   default_idle_call+0x67/0xa0
-   do_idle+0x2da/0x320
-   cpu_startup_entry+0x50/0x60
-   start_secondary+0x213/0x2a0
-   common_startup_64+0x129/0x138
-
- to a SOFTIRQ-irq-unsafe lock:
-  (&xa->xa_lock#24){+.+.}-{3:3}
-
- ... which became SOFTIRQ-irq-unsafe at:
- ...
-   lock_acquire+0x1be/0x520
-   _raw_spin_lock+0x2c/0x40
-   xa_set_mark+0x70/0x110
-   mlx5e_xfrm_add_state+0xe48/0x2290 [mlx5_core]
-   xfrm_dev_state_add+0x3bb/0xd70
-   xfrm_add_sa+0x2451/0x4a90
-   xfrm_user_rcv_msg+0x493/0x880
-   netlink_rcv_skb+0x12e/0x380
-   xfrm_netlink_rcv+0x6d/0x90
-   netlink_unicast+0x42f/0x740
-   netlink_sendmsg+0x745/0xbe0
-   __sock_sendmsg+0xc5/0x190
-   __sys_sendto+0x1fe/0x2c0
-   __x64_sys_sendto+0xdc/0x1b0
-   do_syscall_64+0x6d/0x140
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
- other info that might help us debug this:
-
-  Possible interrupt unsafe locking scenario:
-
-        CPU0                    CPU1
-        ----                    ----
-   lock(&xa->xa_lock#24);
-                                local_irq_disable();
-                                lock(&x->lock);
-                                lock(&xa->xa_lock#24);
-   <Interrupt>
-     lock(&x->lock);
-
-  *** DEADLOCK ***
-
- 2 locks held by charon/1337:
-  #0: ffffffff87f8f858 (&net->xfrm.xfrm_cfg_mutex){+.+.}-{4:4}, at: xfrm_netlink_rcv+0x5e/0x90
-  #1: ffff88813e0f0d48 (&x->lock){+.-.}-{3:3}, at: xfrm_state_delete+0x16/0x30
-
- the dependencies between SOFTIRQ-irq-safe lock and the holding lock:
- -> (&x->lock){+.-.}-{3:3} ops: 29 {
-    HARDIRQ-ON-W at:
-                     lock_acquire+0x1be/0x520
-                     _raw_spin_lock_bh+0x34/0x40
-                     xfrm_alloc_spi+0xc0/0xe60
-                     xfrm_alloc_userspi+0x5f6/0xbc0
-                     xfrm_user_rcv_msg+0x493/0x880
-                     netlink_rcv_skb+0x12e/0x380
-                     xfrm_netlink_rcv+0x6d/0x90
-                     netlink_unicast+0x42f/0x740
-                     netlink_sendmsg+0x745/0xbe0
-                     __sock_sendmsg+0xc5/0x190
-                     __sys_sendto+0x1fe/0x2c0
-                     __x64_sys_sendto+0xdc/0x1b0
-                     do_syscall_64+0x6d/0x140
-                     entry_SYSCALL_64_after_hwframe+0x4b/0x53
-    IN-SOFTIRQ-W at:
-                     lock_acquire+0x1be/0x520
-                     _raw_spin_lock_bh+0x34/0x40
-                     xfrm_timer_handler+0x91/0xd70
-                     __hrtimer_run_queues+0x1dd/0xa60
-                     hrtimer_run_softirq+0x146/0x2e0
-                     handle_softirqs+0x266/0x860
-                     irq_exit_rcu+0x115/0x1a0
-                     sysvec_apic_timer_interrupt+0x6e/0x90
-                     asm_sysvec_apic_timer_interrupt+0x16/0x20
-                     default_idle+0x13/0x20
-                     default_idle_call+0x67/0xa0
-                     do_idle+0x2da/0x320
-                     cpu_startup_entry+0x50/0x60
-                     start_secondary+0x213/0x2a0
-                     common_startup_64+0x129/0x138
-    INITIAL USE at:
-                    lock_acquire+0x1be/0x520
-                    _raw_spin_lock_bh+0x34/0x40
-                    xfrm_alloc_spi+0xc0/0xe60
-                    xfrm_alloc_userspi+0x5f6/0xbc0
-                    xfrm_user_rcv_msg+0x493/0x880
-                    netlink_rcv_skb+0x12e/0x380
-                    xfrm_netlink_rcv+0x6d/0x90
-                    netlink_unicast+0x42f/0x740
-                    netlink_sendmsg+0x745/0xbe0
-                    __sock_sendmsg+0xc5/0x190
-                    __sys_sendto+0x1fe/0x2c0
-                    __x64_sys_sendto+0xdc/0x1b0
-                    do_syscall_64+0x6d/0x140
-                    entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  }
-  ... key      at: [<ffffffff87f9cd20>] __key.18+0x0/0x40
-
- the dependencies between the lock to be acquired
-  and SOFTIRQ-irq-unsafe lock:
- -> (&xa->xa_lock#24){+.+.}-{3:3} ops: 9 {
-    HARDIRQ-ON-W at:
-                     lock_acquire+0x1be/0x520
-                     _raw_spin_lock_bh+0x34/0x40
-                     mlx5e_xfrm_add_state+0xc5b/0x2290 [mlx5_core]
-                     xfrm_dev_state_add+0x3bb/0xd70
-                     xfrm_add_sa+0x2451/0x4a90
-                     xfrm_user_rcv_msg+0x493/0x880
-                     netlink_rcv_skb+0x12e/0x380
-                     xfrm_netlink_rcv+0x6d/0x90
-                     netlink_unicast+0x42f/0x740
-                     netlink_sendmsg+0x745/0xbe0
-                     __sock_sendmsg+0xc5/0x190
-                     __sys_sendto+0x1fe/0x2c0
-                     __x64_sys_sendto+0xdc/0x1b0
-                     do_syscall_64+0x6d/0x140
-                     entry_SYSCALL_64_after_hwframe+0x4b/0x53
-    SOFTIRQ-ON-W at:
-                     lock_acquire+0x1be/0x520
-                     _raw_spin_lock+0x2c/0x40
-                     xa_set_mark+0x70/0x110
-                     mlx5e_xfrm_add_state+0xe48/0x2290 [mlx5_core]
-                     xfrm_dev_state_add+0x3bb/0xd70
-                     xfrm_add_sa+0x2451/0x4a90
-                     xfrm_user_rcv_msg+0x493/0x880
-                     netlink_rcv_skb+0x12e/0x380
-                     xfrm_netlink_rcv+0x6d/0x90
-                     netlink_unicast+0x42f/0x740
-                     netlink_sendmsg+0x745/0xbe0
-                     __sock_sendmsg+0xc5/0x190
-                     __sys_sendto+0x1fe/0x2c0
-                     __x64_sys_sendto+0xdc/0x1b0
-                     do_syscall_64+0x6d/0x140
-                     entry_SYSCALL_64_after_hwframe+0x4b/0x53
-    INITIAL USE at:
-                    lock_acquire+0x1be/0x520
-                    _raw_spin_lock_bh+0x34/0x40
-                    mlx5e_xfrm_add_state+0xc5b/0x2290 [mlx5_core]
-                    xfrm_dev_state_add+0x3bb/0xd70
-                    xfrm_add_sa+0x2451/0x4a90
-                    xfrm_user_rcv_msg+0x493/0x880
-                    netlink_rcv_skb+0x12e/0x380
-                    xfrm_netlink_rcv+0x6d/0x90
-                    netlink_unicast+0x42f/0x740
-                    netlink_sendmsg+0x745/0xbe0
-                    __sock_sendmsg+0xc5/0x190
-                    __sys_sendto+0x1fe/0x2c0
-                    __x64_sys_sendto+0xdc/0x1b0
-                    do_syscall_64+0x6d/0x140
-                    entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  }
-  ... key      at: [<ffffffffa078ff60>] __key.48+0x0/0xfffffffffff210a0 [mlx5_core]
-  ... acquired at:
-    __lock_acquire+0x30a0/0x5040
-    lock_acquire+0x1be/0x520
-    _raw_spin_lock_bh+0x34/0x40
-    mlx5e_xfrm_del_state+0xca/0x1e0 [mlx5_core]
-    xfrm_dev_state_delete+0x90/0x160
-    __xfrm_state_delete+0x662/0xae0
-    xfrm_state_delete+0x1e/0x30
-    xfrm_del_sa+0x1c2/0x340
-    xfrm_user_rcv_msg+0x493/0x880
-    netlink_rcv_skb+0x12e/0x380
-    xfrm_netlink_rcv+0x6d/0x90
-    netlink_unicast+0x42f/0x740
-    netlink_sendmsg+0x745/0xbe0
-    __sock_sendmsg+0xc5/0x190
-    __sys_sendto+0x1fe/0x2c0
-    __x64_sys_sendto+0xdc/0x1b0
-    do_syscall_64+0x6d/0x140
-    entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
- stack backtrace:
- CPU: 7 UID: 0 PID: 1337 Comm: charon Not tainted 6.12.0+ #4
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x74/0xd0
-  check_irq_usage+0x12e8/0x1d90
-  ? print_shortest_lock_dependencies_backwards+0x1b0/0x1b0
-  ? check_chain_key+0x1bb/0x4c0
-  ? __lockdep_reset_lock+0x180/0x180
-  ? check_path.constprop.0+0x24/0x50
-  ? mark_lock+0x108/0x2fb0
-  ? print_circular_bug+0x9b0/0x9b0
-  ? mark_lock+0x108/0x2fb0
-  ? print_usage_bug.part.0+0x670/0x670
-  ? check_prev_add+0x1c4/0x2310
-  check_prev_add+0x1c4/0x2310
-  __lock_acquire+0x30a0/0x5040
-  ? lockdep_set_lock_cmp_fn+0x190/0x190
-  ? lockdep_set_lock_cmp_fn+0x190/0x190
-  lock_acquire+0x1be/0x520
-  ? mlx5e_xfrm_del_state+0xca/0x1e0 [mlx5_core]
-  ? lockdep_hardirqs_on_prepare+0x400/0x400
-  ? __xfrm_state_delete+0x5f0/0xae0
-  ? lock_downgrade+0x6b0/0x6b0
-  _raw_spin_lock_bh+0x34/0x40
-  ? mlx5e_xfrm_del_state+0xca/0x1e0 [mlx5_core]
-  mlx5e_xfrm_del_state+0xca/0x1e0 [mlx5_core]
-  xfrm_dev_state_delete+0x90/0x160
-  __xfrm_state_delete+0x662/0xae0
-  xfrm_state_delete+0x1e/0x30
-  xfrm_del_sa+0x1c2/0x340
-  ? xfrm_get_sa+0x250/0x250
-  ? check_chain_key+0x1bb/0x4c0
-  xfrm_user_rcv_msg+0x493/0x880
-  ? copy_sec_ctx+0x270/0x270
-  ? check_chain_key+0x1bb/0x4c0
-  ? lockdep_set_lock_cmp_fn+0x190/0x190
-  ? lockdep_set_lock_cmp_fn+0x190/0x190
-  netlink_rcv_skb+0x12e/0x380
-  ? copy_sec_ctx+0x270/0x270
-  ? netlink_ack+0xd90/0xd90
-  ? netlink_deliver_tap+0xcd/0xb60
-  xfrm_netlink_rcv+0x6d/0x90
-  netlink_unicast+0x42f/0x740
-  ? netlink_attachskb+0x730/0x730
-  ? lock_acquire+0x1be/0x520
-  netlink_sendmsg+0x745/0xbe0
-  ? netlink_unicast+0x740/0x740
-  ? __might_fault+0xbb/0x170
-  ? netlink_unicast+0x740/0x740
-  __sock_sendmsg+0xc5/0x190
-  ? fdget+0x163/0x1d0
-  __sys_sendto+0x1fe/0x2c0
-  ? __x64_sys_getpeername+0xb0/0xb0
-  ? do_user_addr_fault+0x856/0xe30
-  ? lock_acquire+0x1be/0x520
-  ? __task_pid_nr_ns+0x117/0x410
-  ? lock_downgrade+0x6b0/0x6b0
-  __x64_sys_sendto+0xdc/0x1b0
-  ? lockdep_hardirqs_on_prepare+0x284/0x400
-  do_syscall_64+0x6d/0x140
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
- RIP: 0033:0x7f7d31291ba4
- Code: 7d e8 89 4d d4 e8 4c 42 f7 ff 44 8b 4d d0 4c 8b 45 c8 89 c3 44 8b 55 d4 8b 7d e8 b8 2c 00 00 00 48 8b 55 d8 48 8b 75 e0 0f 05 <48> 3d 00 f0 ff ff 77 34 89 df 48 89 45 e8 e8 99 42 f7 ff 48 8b 45
- RSP: 002b:00007f7d2ccd94f0 EFLAGS: 00000297 ORIG_RAX: 000000000000002c
- RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007f7d31291ba4
- RDX: 0000000000000028 RSI: 00007f7d2ccd96a0 RDI: 000000000000000a
- RBP: 00007f7d2ccd9530 R08: 00007f7d2ccd9598 R09: 000000000000000c
- R10: 0000000000000000 R11: 0000000000000297 R12: 0000000000000028
- R13: 00007f7d2ccd9598 R14: 00007f7d2ccd96a0 R15: 00000000000000e1
-  </TASK>
-
-Fixes: 4c24272b4e2b ("net/mlx5e: Listen to ARP events to update IPsec L2 headers in tunnel mode")
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: syzbot+205c2644abdff9d3f9fc@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=205c2644abdff9d3f9fc
+Tested-by: syzbot+205c2644abdff9d3f9fc@syzkaller.appspotmail.com
+Fixes: ca06197382bd ("exfat: add directory operations")
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlx5/core/en_accel/ipsec.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ fs/exfat/dir.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-index ca92e518be766..21857474ad83f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-@@ -768,9 +768,12 @@ static int mlx5e_xfrm_add_state(struct xfrm_state *x,
- 				   MLX5_IPSEC_RESCHED);
+diff --git a/fs/exfat/dir.c b/fs/exfat/dir.c
+index 0a1b1de032ef..70d0849826f2 100644
+--- a/fs/exfat/dir.c
++++ b/fs/exfat/dir.c
+@@ -126,7 +126,7 @@ static int exfat_readdir(struct inode *inode, loff_t *cpos, struct exfat_dir_ent
+ 			type = exfat_get_entry_type(ep);
+ 			if (type == TYPE_UNUSED) {
+ 				brelse(bh);
+-				break;
++				goto out;
+ 			}
  
- 	if (x->xso.type == XFRM_DEV_OFFLOAD_PACKET &&
--	    x->props.mode == XFRM_MODE_TUNNEL)
--		xa_set_mark(&ipsec->sadb, sa_entry->ipsec_obj_id,
--			    MLX5E_IPSEC_TUNNEL_SA);
-+	    x->props.mode == XFRM_MODE_TUNNEL) {
-+		xa_lock_bh(&ipsec->sadb);
-+		__xa_set_mark(&ipsec->sadb, sa_entry->ipsec_obj_id,
-+			      MLX5E_IPSEC_TUNNEL_SA);
-+		xa_unlock_bh(&ipsec->sadb);
-+	}
+ 			if (type != TYPE_FILE && type != TYPE_DIR) {
+@@ -186,6 +186,7 @@ static int exfat_readdir(struct inode *inode, loff_t *cpos, struct exfat_dir_ent
+ 		}
+ 	}
  
- out:
- 	x->xso.offload_handle = (unsigned long)sa_entry;
-@@ -797,7 +800,6 @@ static int mlx5e_xfrm_add_state(struct xfrm_state *x,
- static void mlx5e_xfrm_del_state(struct xfrm_state *x)
- {
- 	struct mlx5e_ipsec_sa_entry *sa_entry = to_ipsec_sa_entry(x);
--	struct mlx5_accel_esp_xfrm_attrs *attrs = &sa_entry->attrs;
- 	struct mlx5e_ipsec *ipsec = sa_entry->ipsec;
- 	struct mlx5e_ipsec_sa_entry *old;
- 
-@@ -806,12 +808,6 @@ static void mlx5e_xfrm_del_state(struct xfrm_state *x)
- 
- 	old = xa_erase_bh(&ipsec->sadb, sa_entry->ipsec_obj_id);
- 	WARN_ON(old != sa_entry);
--
--	if (attrs->mode == XFRM_MODE_TUNNEL &&
--	    attrs->type == XFRM_DEV_OFFLOAD_PACKET)
--		/* Make sure that no ARP requests are running in parallel */
--		flush_workqueue(ipsec->wq);
--
- }
- 
- static void mlx5e_xfrm_free_state(struct xfrm_state *x)
++out:
+ 	dir_entry->namebuf.lfn[0] = '\0';
+ 	*cpos = EXFAT_DEN_TO_B(dentry);
+ 	return 0;
 -- 
 2.39.5
 
