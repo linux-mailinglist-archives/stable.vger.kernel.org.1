@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-109680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2E85A1835E
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4236EA184A4
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:10:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD1721882B00
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E27853A2718
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E931F7081;
-	Tue, 21 Jan 2025 17:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F6A1F7087;
+	Tue, 21 Jan 2025 18:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BsqwBhj9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVuw0M7L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270F11F5612;
-	Tue, 21 Jan 2025 17:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA23E1F7086;
+	Tue, 21 Jan 2025 18:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482126; cv=none; b=QuDvLzTyuWOwQRzt5a+5jm2PlpCFGJkc3aCDY3F2OXKZMkhEBM9LBlspURGOhlAPADQuQmVLC4BrjfPdxYLSMPRhDMwI4a/VmQuMRscJBYXFp3h5o9ZiFBKAE5yKqSRLHOND5mpVvfy0P0mbGQSEK3CaVmT3yU8CALOMYd2mCxw=
+	t=1737482927; cv=none; b=hTeorr4pp1RLVJXkWi207Zsy96PN11ZN61r/tcaWuH5e7jzYe3v6i2eWflAIxExy/4wt68dW1/rue3xBidca5fqsll/yddR/2IZ8y2Odm3/0V6H7v30yYa+MXfgKRREKdD9xiMRgmRWm46YaFoEaw35JXAlqpWEwAhP1FHP9KiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482126; c=relaxed/simple;
-	bh=S/6OH3P3KMRKwKrHZcdGTa/PUlESFUTnWEeAsXb33kk=;
+	s=arc-20240116; t=1737482927; c=relaxed/simple;
+	bh=Bci5YagbuAt0ytqfzJ+MbbY0s5ijpMhtjedimFNlsu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lkjkS66M08pZ7okmbtzP31W5ItcY5f27f7KijxAeS80XbhZr16jFud1JsQH4TyyN6+I1NaPtPTDsVxSA2UicBcY3eh/Ag84bBrlPteSvLvpkegFo7KLaD/NFxZexiQejMBt0TLi+X8t3ClrCOKJ0zxKmAFRy02fcErYKdpXpLnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BsqwBhj9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4903C4CEE1;
-	Tue, 21 Jan 2025 17:55:25 +0000 (UTC)
+	 MIME-Version; b=XePGTrEDsRqhcpGUv9c0CSF+I9HKXjTM87tI0kyVdj4hoWh/z+dYxXTLg9p/8UBw4ht9fzxTDZ03036eOV1yWFojPX/7gpyTX5fi9dlmsGvWzonHvRV7zhIZrsp2GsduEtxmHWhciGiQXmcuLvU4l9vcwOC+HxgQmCh0SuunfTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVuw0M7L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDEDBC4CEDF;
+	Tue, 21 Jan 2025 18:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482126;
-	bh=S/6OH3P3KMRKwKrHZcdGTa/PUlESFUTnWEeAsXb33kk=;
+	s=korg; t=1737482927;
+	bh=Bci5YagbuAt0ytqfzJ+MbbY0s5ijpMhtjedimFNlsu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BsqwBhj90gqVReNdJkM8tNS+s0UTs48HZe2vrTEUj23VjblulXQBYcwhXZNoNbGBN
-	 BTOcBtnaSHwFKOggynIViwd7bDrOFaadTRgiOhlbYDe0AGf3aSNZ6GS3q+ViWvLaDz
-	 9X2qTLjmh3Kv+6IBcKt4l3aeWhjizujuRBx63HPc=
+	b=MVuw0M7LSmEP9AzSarWtpfma7GJavQbfkENEH60Is/MaQhZxZLlNEJf+c4EkPuCc4
+	 4E4geki2IUKd2MV8stwdyatESlULgQhJabUiS/V3CYEaDDf4x1CdG33Kfvh/bc25Nv
+	 xNwZ0lG/Den57gJr1c34x6XO6VsYVpqjVVQUin0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 42/72] mptcp: fix spurious wake-up on under memory pressure
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 056/127] iio: imu: kmx61: fix information leak in triggered buffer
 Date: Tue, 21 Jan 2025 18:52:08 +0100
-Message-ID: <20250121174525.044117629@linuxfoundation.org>
+Message-ID: <20250121174531.827153750@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit e226d9259dc4f5d2c19e6682ad1356fa97cf38f4 upstream.
+commit 6ae053113f6a226a2303caa4936a4c37f3bfff7b upstream.
 
-The wake-up condition currently implemented by mptcp_epollin_ready()
-is wrong, as it could mark the MPTCP socket as readable even when
-no data are present and the system is under memory pressure.
+The 'buffer' local array is used to push data to user space from a
+triggered buffer, but it does not set values for inactive channels, as
+it only uses iio_for_each_active_channel() to assign new values.
 
-Explicitly check for some data being available in the receive queue.
+Initialize the array to zero before using it to avoid pushing
+uninitialized information to userspace.
 
-Fixes: 5684ab1a0eff ("mptcp: give rcvlowat some love")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250113-net-mptcp-connect-st-flakes-v1-2-0d986ee7b1b6@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c3a23ecc0901 ("iio: imu: kmx61: Add support for data ready triggers")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-5-0cb6e98d895c@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.h |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/iio/imu/kmx61.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -685,10 +685,15 @@ static inline u64 mptcp_data_avail(const
+--- a/drivers/iio/imu/kmx61.c
++++ b/drivers/iio/imu/kmx61.c
+@@ -1192,7 +1192,7 @@ static irqreturn_t kmx61_trigger_handler
+ 	struct kmx61_data *data = kmx61_get_data(indio_dev);
+ 	int bit, ret, i = 0;
+ 	u8 base;
+-	s16 buffer[8];
++	s16 buffer[8] = { };
  
- static inline bool mptcp_epollin_ready(const struct sock *sk)
- {
-+	u64 data_avail = mptcp_data_avail(mptcp_sk(sk));
-+
-+	if (!data_avail)
-+		return false;
-+
- 	/* mptcp doesn't have to deal with small skbs in the receive queue,
--	 * at it can always coalesce them
-+	 * as it can always coalesce them
- 	 */
--	return (mptcp_data_avail(mptcp_sk(sk)) >= sk->sk_rcvlowat) ||
-+	return (data_avail >= sk->sk_rcvlowat) ||
- 	       (mem_cgroup_sockets_enabled && sk->sk_memcg &&
- 		mem_cgroup_under_socket_pressure(sk->sk_memcg)) ||
- 	       READ_ONCE(tcp_memory_pressure);
+ 	if (indio_dev == data->acc_indio_dev)
+ 		base = KMX61_ACC_XOUT_L;
 
 
 
