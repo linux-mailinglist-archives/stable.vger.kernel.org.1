@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-109973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A0BEA184C3
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:11:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D2CA183FC
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:02:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA6A51881799
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8966D16ABFB
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20BD51F8663;
-	Tue, 21 Jan 2025 18:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E381F7574;
+	Tue, 21 Jan 2025 18:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5+esxAW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SKxMWMaZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26491F543D;
-	Tue, 21 Jan 2025 18:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448AC1F756E;
+	Tue, 21 Jan 2025 18:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482973; cv=none; b=StXpNjIJpfKmiLTb/GfEzmU3qMgP4DBD7fcUwDe3/9zc6vxlehzzW7edOHY0KULV8zmaXJFBMiXo63H54DxCv514LyLjtdQDHa8hg4pzRO5pGbUI3gDDmaLWQjUtt/Pb0X6MNHOudSzfI0SRL/dhDpw2dehcxseFiT2xOy9dcgs=
+	t=1737482487; cv=none; b=Lt4ojZsyCkUhs5zjZzSKktctJTG/tbtN9pZUuGIRgr6ZAPWWyx7nm+JxE9HdACFnhUOIM8Bb4YkU+mYLrb0w7z4sDITzvnYswvGttNqvcvQgV7gEbtRI739M1BNGN8xX2ZcFBRFd6wW7K4iqwpzE4d+J8eN60taBwnI0So9O1eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482973; c=relaxed/simple;
-	bh=CMFNfzIoUPPLmqNuNZB3B2tAPKc2WtjLS7HUH1iwpLs=;
+	s=arc-20240116; t=1737482487; c=relaxed/simple;
+	bh=4oJaTfRVpe9U3mP2ku2FXnhvC/6biN7oKb2m83VmKTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nH3Jy69qfH9kDJ0DGuu+P7JlxJYwF3UrTAmAkcObZ2aGKxGL661FK7swonP38iQ2OwgfI0wy0O7dBd534rlSo8C+uuBelis1ip62p+NGq6UdfTokqgVs5LVj8OMcOkCgf+0I4pTuvAR8xmjn3K2elNe06dyJujnriS5vxHQDBkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q5+esxAW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A39FC4CEDF;
-	Tue, 21 Jan 2025 18:09:33 +0000 (UTC)
+	 MIME-Version; b=WKyY3DEE4LKRbkUmYH/+E3aOl6IlU5EK2Xusp+Xsqi2n6JqyvtMFpJN7GweOgXCiMo5OsE9vfhgFpgdiVUx5q2Bym7fg5d4qACsM4h3sduae/gz+zp/hlyDZLaN0vxz1DZIXLRBP/wte7dJcAyY/JZz91t7VIYqF1eXqVJ/AP90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKxMWMaZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB28DC4CEE0;
+	Tue, 21 Jan 2025 18:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482973;
-	bh=CMFNfzIoUPPLmqNuNZB3B2tAPKc2WtjLS7HUH1iwpLs=;
+	s=korg; t=1737482487;
+	bh=4oJaTfRVpe9U3mP2ku2FXnhvC/6biN7oKb2m83VmKTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q5+esxAWR32MiiDyhSUyA2RKFQSOJuI04ZuBcGxYRGXxGm/ibn76AQmdlHqdRul45
-	 /Ml2Kl9Eijy8t09Rhjc/lVadElIDUGyL32pMQ3jBZXjMrHkICkAqqPP/PGlFgNHpOm
-	 J3O1Eg1DN4QvW67x5MoCrC7RHuU87T9LmN1xQv6Y=
+	b=SKxMWMaZEK85trYv7xjmsH8V+2MruR2f1SAl78yp6Ew1oIGanxTcdwB8ILHOF/gRf
+	 AeWwOOqI8HZDiGXX+9/wPtIvX1IKyuT4z56jRqnSLcfRM1WP4VqVc6s5jI5Im4u08V
+	 mPN1fnVGrf++vhcxxDABjcfsKdyHDzCI3p/kb+QQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zicheng Qu <quzicheng@huawei.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 042/127] staging: iio: ad9832: Correct phase range check
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 066/122] poll_wait: add mb() to fix theoretical race between waitqueue_active() and .poll()
 Date: Tue, 21 Jan 2025 18:51:54 +0100
-Message-ID: <20250121174531.299454104@linuxfoundation.org>
+Message-ID: <20250121174535.539571245@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zicheng Qu <quzicheng@huawei.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-commit 4636e859ebe0011f41e35fa79bab585b8004e9a3 upstream.
+[ Upstream commit cacd9ae4bf801ff4125d8961bb9a3ba955e51680 ]
 
-User Perspective:
-When a user sets the phase value, the ad9832_write_phase() is called.
-The phase register has a 12-bit resolution, so the valid range is 0 to
-4095. If the phase offset value of 4096 is input, it effectively exactly
-equals 0 in the lower 12 bits, meaning no offset.
+As the comment above waitqueue_active() explains, it can only be used
+if both waker and waiter have mb()'s that pair with each other. However
+__pollwait() is broken in this respect.
 
-Reasons for the Change:
-1) Original Condition (phase > BIT(AD9832_PHASE_BITS)):
-This condition allows a phase value equal to 2^12, which is 4096.
-However, this value exceeds the valid 12-bit range, as the maximum valid
-phase value should be 4095.
-2) Modified Condition (phase >= BIT(AD9832_PHASE_BITS)):
-Ensures that the phase value is within the valid range, preventing
-invalid datafrom being written.
+This is not pipe-specific, but let's look at pipe_poll() for example:
 
-Impact on Subsequent Logic: st->data = cpu_to_be16(addr | phase):
-If the phase value is 2^12, i.e., 4096 (0001 0000 0000 0000), and addr
-is AD9832_REG_PHASE0 (1100 0000 0000 0000), then addr | phase results in
-1101 0000 0000 0000, occupying DB12. According to the section of WRITING
-TO A PHASE REGISTER in the datasheet, the MSB 12 PHASE0 bits should be
-DB11. The original condition leads to incorrect DB12 usage, which
-contradicts the datasheet and could pose potential issues for future
-updates if DB12 is used in such related cases.
+	poll_wait(...); // -> __pollwait() -> add_wait_queue()
 
-Fixes: ea707584bac1 ("Staging: IIO: DDS: AD9832 / AD9835 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
-Link: https://patch.msgid.link/20241107011015.2472600-3-quzicheng@huawei.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	LOAD(pipe->head);
+	LOAD(pipe->head);
+
+In theory these LOAD()'s can leak into the critical section inside
+add_wait_queue() and can happen before list_add(entry, wq_head), in this
+case pipe_poll() can race with wakeup_pipe_readers/writers which do
+
+	smp_mb();
+	if (waitqueue_active(wq_head))
+		wake_up_interruptible(wq_head);
+
+There are more __pollwait()-like functions (grep init_poll_funcptr), and
+it seems that at least ep_ptable_queue_proc() has the same problem, so the
+patch adds smp_mb() into poll_wait().
+
+Link: https://lore.kernel.org/all/20250102163320.GA17691@redhat.com/
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20250107162717.GA18922@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/iio/frequency/ad9832.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/poll.h | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/staging/iio/frequency/ad9832.c
-+++ b/drivers/staging/iio/frequency/ad9832.c
-@@ -158,7 +158,7 @@ static int ad9832_write_frequency(struct
- static int ad9832_write_phase(struct ad9832_state *st,
- 			      unsigned long addr, unsigned long phase)
- {
--	if (phase > BIT(AD9832_PHASE_BITS))
-+	if (phase >= BIT(AD9832_PHASE_BITS))
- 		return -EINVAL;
+diff --git a/include/linux/poll.h b/include/linux/poll.h
+index d1ea4f3714a84..fc641b50f1298 100644
+--- a/include/linux/poll.h
++++ b/include/linux/poll.h
+@@ -41,8 +41,16 @@ typedef struct poll_table_struct {
  
- 	st->phase_data[0] = cpu_to_be16((AD9832_CMD_PHA8BITSW << CMD_SHIFT) |
+ static inline void poll_wait(struct file * filp, wait_queue_head_t * wait_address, poll_table *p)
+ {
+-	if (p && p->_qproc && wait_address)
++	if (p && p->_qproc && wait_address) {
+ 		p->_qproc(filp, wait_address, p);
++		/*
++		 * This memory barrier is paired in the wq_has_sleeper().
++		 * See the comment above prepare_to_wait(), we need to
++		 * ensure that subsequent tests in this thread can't be
++		 * reordered with __add_wait_queue() in _qproc() paths.
++		 */
++		smp_mb();
++	}
+ }
+ 
+ /*
+-- 
+2.39.5
+
 
 
 
