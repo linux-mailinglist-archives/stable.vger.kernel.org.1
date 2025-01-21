@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-109979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3D3FA184CA
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:11:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31471A18385
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8357B1883AEF
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98FDD188CC46
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB00A1F669F;
-	Tue, 21 Jan 2025 18:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A09291F7092;
+	Tue, 21 Jan 2025 17:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NcubZvBj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h16aiutY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770FD1F667C;
-	Tue, 21 Jan 2025 18:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E99E185935;
+	Tue, 21 Jan 2025 17:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482991; cv=none; b=iNOdEE8jfGhNPnZ0CGSrnlZ3ONW1q8odNx/Uzv2G8u7mAdch+wr2AJTVnziIQErLKZZ7oJPG6UJKYvTJRRHySsl4MR5+OyUraByNM4HP0o+wZn4fV5EOuai5+FEsxP2FAQahL92w0vCjtLME66P9hLMsNX0OzvshTaZrb4QeWpk=
+	t=1737482190; cv=none; b=QAHSDX2QIBfFfC5xkilSwG7MR7TJPICGnCl9zKMdcl1ZyeF8aX7gZg5+NnUu3edCDbuKy5QPrr2zRRc+ASckdLyEeMCtOOFIa/nh3Q+//dFOyg844LW2RwIczVQ1z6mBl4Z2iEh1nokUp9/sjDTxPmbGO9RJNagLKgUO2Gh2OWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482991; c=relaxed/simple;
-	bh=gNfjIRPqYptJd4ei6ce+CFivfsxfRtEXpQBUhCv7QoI=;
+	s=arc-20240116; t=1737482190; c=relaxed/simple;
+	bh=gaXI52KyD0JZTUtOwW8lRcQSu/zKHs74tXY+TLqD1Pw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KxKtTiWv8YNx2D7l+0M4oDThgpRcjdQKfVZGIGcyS5DoIBDwsODymeZWQi63zyFIpWK0v78x3PtrRGVK9c/JEIOB9xtE7HLfSNBtY6aXqmqQMjSQXTs4favuuj1Sk93ng/+g0crZAKIvkGW2PeKlQaVEznsJsALSETBpQs1ItDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NcubZvBj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE72C4CEDF;
-	Tue, 21 Jan 2025 18:09:50 +0000 (UTC)
+	 MIME-Version; b=sln5UwWVznTSmBX2u2FowXu1yVhg3mjmFbL6HZYDbc9vo6S62Jrg8VSn/I9wQUR51Ehh/qjuphrOROMLElQ2QJrx+UDxpVcnOnMLKHpTBTH9INzfaPp+gVNaV7lHyksI1AoAzKDGEnLXsotfx5WiBVT6d1Lueac2GXIjwyIYcHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h16aiutY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50DF1C4CEDF;
+	Tue, 21 Jan 2025 17:56:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482991;
-	bh=gNfjIRPqYptJd4ei6ce+CFivfsxfRtEXpQBUhCv7QoI=;
+	s=korg; t=1737482189;
+	bh=gaXI52KyD0JZTUtOwW8lRcQSu/zKHs74tXY+TLqD1Pw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NcubZvBj0gIcg4pfTAiv2O3dnhJkfWW5NdzwRN7hCQf/bW6oxLU4UPcXWR+9y8V2A
-	 gPonq5GY3TtWPrhS0ff24Z2r6bX4i3ZLHQ9exb/bjRpFzab6aTGgaN8WW3/FJMA0F1
-	 olKmtlHc6smPGrt0atBWJVuaeLyyukAg6zeEnYFs=
+	b=h16aiutYSne+wRaErrUIPETJiATh3bEaBb7tbFIsV7HJ5WQUrt3C8oQHSa8Ky8JNE
+	 wFElZXC+HvoxiSyxOZtr5EyTTIxGpHNuxeZ4m/QM61wZKY2YriE6HvftWZRBNZ5oWb
+	 bNnzyc1sIf8QhcZS2NpCEXjge1LrU9FFS/sltD3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudheer Kumar Doredla <s-doredla@ti.com>,
-	Simon Horman <horms@kernel.org>,
-	Roger Quadros <rogerq@kernel.org>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 079/127] net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()
+	Mohammed Anees <pvmohammedanees2003@gmail.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	syzbot+e0055ea09f1f5e6fabdd@syzkaller.appspotmail.com,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Xingyu Li <xli399@ucr.edu>,
+	Zheng Zhang <zzhan173@ucr.edu>
+Subject: [PATCH 6.6 65/72] ocfs2: fix deadlock in ocfs2_get_system_file_inode
 Date: Tue, 21 Jan 2025 18:52:31 +0100
-Message-ID: <20250121174532.704222513@linuxfoundation.org>
+Message-ID: <20250121174525.940188035@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,91 +71,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudheer Kumar Doredla <s-doredla@ti.com>
+From: Mohammed Anees <pvmohammedanees2003@gmail.com>
 
-[ Upstream commit 03d120f27d050336f7e7d21879891542c4741f81 ]
+commit 7bf1823e010e8db2fb649c790bd1b449a75f52d8 upstream.
 
-CPSW ALE has 75-bit ALE entries stored across three 32-bit words.
-The cpsw_ale_get_field() and cpsw_ale_set_field() functions support
-ALE field entries spanning up to two words at the most.
+syzbot has found a possible deadlock in ocfs2_get_system_file_inode [1].
 
-The cpsw_ale_get_field() and cpsw_ale_set_field() functions work as
-expected when ALE field spanned across word1 and word2, but fails when
-ALE field spanned across word2 and word3.
+The scenario is depicted here,
 
-For example, while reading the ALE field spanned across word2 and word3
-(i.e. bits 62 to 64), the word3 data shifted to an incorrect position
-due to the index becoming zero while flipping.
-The same issue occurred when setting an ALE entry.
+	CPU0					CPU1
+lock(&ocfs2_file_ip_alloc_sem_key);
+                               lock(&osb->system_file_mutex);
+                               lock(&ocfs2_file_ip_alloc_sem_key);
+lock(&osb->system_file_mutex);
 
-This issue has not been seen in practice but will be an issue in the future
-if the driver supports accessing ALE fields spanning word2 and word3
+The function calls which could lead to this are:
 
-Fix the methods to handle getting/setting fields spanning up to two words.
+CPU0
+ocfs2_mknod - lock(&ocfs2_file_ip_alloc_sem_key);
+.
+.
+.
+ocfs2_get_system_file_inode - lock(&osb->system_file_mutex);
 
-Fixes: b685f1a58956 ("net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()/cpsw_ale_set_field()")
-Signed-off-by: Sudheer Kumar Doredla <s-doredla@ti.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Link: https://patch.msgid.link/20250108172433.311694-1-s-doredla@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CPU1 -
+ocfs2_fill_super - lock(&osb->system_file_mutex);
+.
+.
+.
+ocfs2_read_virt_blocks - lock(&ocfs2_file_ip_alloc_sem_key);
+
+This issue can be resolved by making the down_read -> down_read_try
+in the ocfs2_read_virt_blocks.
+
+[1] https://syzkaller.appspot.com/bug?extid=e0055ea09f1f5e6fabdd
+
+Link: https://lkml.kernel.org/r/20240924093257.7181-1-pvmohammedanees2003@gmail.com
+Signed-off-by: Mohammed Anees <pvmohammedanees2003@gmail.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reported-by: <syzbot+e0055ea09f1f5e6fabdd@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=e0055ea09f1f5e6fabdd
+Tested-by: syzbot+e0055ea09f1f5e6fabdd@syzkaller.appspotmail.com
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Xingyu Li <xli399@ucr.edu>
+Cc: Zheng Zhang <zzhan173@ucr.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/cpsw_ale.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ fs/ocfs2/extent_map.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index 8c59e34d8bcaf..348a05454fcaa 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.c
-+++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -104,15 +104,15 @@ struct cpsw_ale_dev_id {
- 
- static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
- {
--	int idx, idx2;
-+	int idx, idx2, index;
- 	u32 hi_val = 0;
- 
- 	idx    = start / 32;
- 	idx2 = (start + bits - 1) / 32;
- 	/* Check if bits to be fetched exceed a word */
- 	if (idx != idx2) {
--		idx2 = 2 - idx2; /* flip */
--		hi_val = ale_entry[idx2] << ((idx2 * 32) - start);
-+		index = 2 - idx2; /* flip */
-+		hi_val = ale_entry[index] << ((idx2 * 32) - start);
+--- a/fs/ocfs2/extent_map.c
++++ b/fs/ocfs2/extent_map.c
+@@ -973,7 +973,13 @@ int ocfs2_read_virt_blocks(struct inode
  	}
- 	start -= idx * 32;
- 	idx    = 2 - idx; /* flip */
-@@ -122,16 +122,16 @@ static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
- static inline void cpsw_ale_set_field(u32 *ale_entry, u32 start, u32 bits,
- 				      u32 value)
- {
--	int idx, idx2;
-+	int idx, idx2, index;
  
- 	value &= BITMASK(bits);
- 	idx = start / 32;
- 	idx2 = (start + bits - 1) / 32;
- 	/* Check if bits to be set exceed a word */
- 	if (idx != idx2) {
--		idx2 = 2 - idx2; /* flip */
--		ale_entry[idx2] &= ~(BITMASK(bits + start - (idx2 * 32)));
--		ale_entry[idx2] |= (value >> ((idx2 * 32) - start));
-+		index = 2 - idx2; /* flip */
-+		ale_entry[index] &= ~(BITMASK(bits + start - (idx2 * 32)));
-+		ale_entry[index] |= (value >> ((idx2 * 32) - start));
- 	}
- 	start -= idx * 32;
- 	idx = 2 - idx; /* flip */
--- 
-2.39.5
-
+ 	while (done < nr) {
+-		down_read(&OCFS2_I(inode)->ip_alloc_sem);
++		if (!down_read_trylock(&OCFS2_I(inode)->ip_alloc_sem)) {
++			rc = -EAGAIN;
++			mlog(ML_ERROR,
++				 "Inode #%llu ip_alloc_sem is temporarily unavailable\n",
++				 (unsigned long long)OCFS2_I(inode)->ip_blkno);
++			break;
++		}
+ 		rc = ocfs2_extent_map_get_blocks(inode, v_block + done,
+ 						 &p_block, &p_count, NULL);
+ 		up_read(&OCFS2_I(inode)->ip_alloc_sem);
 
 
 
