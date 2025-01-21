@@ -1,220 +1,145 @@
-Return-Path: <stable+bounces-109630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A738A18112
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 16:23:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14E9CA18125
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 16:29:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97A80168A9E
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 15:22:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF1953AB12C
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 15:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8DA41F4734;
-	Tue, 21 Jan 2025 15:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A311F4E33;
+	Tue, 21 Jan 2025 15:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AxADSQS8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eay1iWH6"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7361F4297;
-	Tue, 21 Jan 2025 15:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1060D1F4729
+	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 15:29:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737472963; cv=none; b=Biblbb3SCI4R1sa9fygx9Tzqf/VqXwKgw1L4lQoHqJP1fikewplMFzlMPE1yqsjDJf4HPhFw2nSquLMEZSygC1N9TRRhEK3XwcASP3qeTzXAV7fTyrQkScRdq6x3de1LJdeMktPZr3Nl2ZqcXGWg0bbCRjY4ZWT8qDFU/OmVzjU=
+	t=1737473378; cv=none; b=mkNf2JbntbfFosdJBGpjSF+n9XTOL9da69THALl1BGFMrfJGlEKPgO9EtGZVWkrqKMTeysBk2SlUHIAv/DyqYPeMKXeiJOrN5oD0QrSJD2dwOaxneJTE2yQczvOWSznAd79rspLdztP9+JsND1Pz0NFqVVYseLC/ag+ElQuy8U8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737472963; c=relaxed/simple;
-	bh=Kz9mJ9t3kA+N2jdvTnXBiLejb5f3aS69s1KMlJ4zwy0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RqS0uCVxwnSFrABTOM6RPkou2ZT3O1e0nuhEgpke9PSFSoQEwFKxly16PoVEwanJ9BSqMMtfuU0EO7Dh7e4+LKtbc6YvHbmYHEuTrb9f4KfjViKIHUD5h1TG9yPVxnhOBFAy9moN9IFoFueecBtZLqbSABWu/U6YnufmwAsPIR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AxADSQS8; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737472962; x=1769008962;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Kz9mJ9t3kA+N2jdvTnXBiLejb5f3aS69s1KMlJ4zwy0=;
-  b=AxADSQS8/0Vv1q3rEZCS1cUtznoAstz2XenMKec3Va8Ou6BSaQgjc81H
-   SJm0zm/VscpYpVlcSyrM3porKC6cnM+5qXn4J4r7/AqOXQ/xbUXKqak0C
-   DFvIcsI5n8NeZAXDI1YM2ttBJOTNyfSW4kRDaTZj9GPmc/HWawPoMr2Gj
-   RHiWUyBMhrbO6GwzHoTJj3AVZIvL+mrdvqHfhQrIeGc6P6lKuzrMBwicj
-   rBGVdQ0sGFqpRikpmGnV0KSLWO9d91UjL1k3c/cTZbTQlIqYZlzc9Iq56
-   OrjSD+Oe6sDB+VGQv3WwTESQVyYHrzY7VTgUWPRGV5d8ps7z1IF4bwaWj
-   w==;
-X-CSE-ConnectionGUID: gZ6kxaECQ56tI5m1fM5fpA==
-X-CSE-MsgGUID: /zTDOYGsRdOQZBcPzXAL8Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="37161460"
-X-IronPort-AV: E=Sophos;i="6.13,222,1732608000"; 
-   d="scan'208";a="37161460"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2025 07:22:38 -0800
-X-CSE-ConnectionGUID: sPHBX0lZRkSx3AgpoxwrxA==
-X-CSE-MsgGUID: FOLLjXtZTEOsFzNyC67RNg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="111925744"
-Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
-  by orviesa005.jf.intel.com with ESMTP; 21 Jan 2025 07:22:38 -0800
-From: kan.liang@linux.intel.com
-To: peterz@infradead.org,
-	mingo@redhat.com,
-	acme@kernel.org,
-	namhyung@kernel.org,
-	irogers@google.com,
-	adrian.hunter@intel.com,
-	linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org
-Cc: ak@linux.intel.com,
-	eranian@google.com,
-	dapeng1.mi@linux.intel.com,
-	Kan Liang <kan.liang@linux.intel.com>,
+	s=arc-20240116; t=1737473378; c=relaxed/simple;
+	bh=rRdlSEuIlKqdrfnuUR/QAUCw5t4cYuBzo0hVt20kNjs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EMZKuyckflnw9aYS1ifEUQcMkxOwMcvbdZPZkx2s1/rAjVGo0n5khle8fCk3YfFIsBaxK1FgUndEjmRHbgV5gydS3Ki4n9ZhT5TrQD2zFivC91n4gY112CK3IPEOJwl0bb9fMol1OJ2zHqvXiYudNOuuoXSl5bLyUW5hmPnI5i8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eay1iWH6; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1737473375;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2nKhFItvInbGy3x2gDKCK0wEWBuvzDIeDEmci5k4cFk=;
+	b=eay1iWH612qJ1ewjyatBZbjvh8171m2P1cDEJ7nlcWVHkKW4Ocxg6Doq3gHIb+FhurJPYu
+	dss0TIktMqAceg2ngjPCKBhBOpU6IVQVCFH3Lfc3D2LmRaHUNAr+oMfqo3H6ehreLWsecd
+	Bw40gFp9uYbN3IBRekM6DPD9w5p+Lts=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-412-nzKq0IOnPwqlDunPUEV6iQ-1; Tue,
+ 21 Jan 2025 10:29:28 -0500
+X-MC-Unique: nzKq0IOnPwqlDunPUEV6iQ-1
+X-Mimecast-MFC-AGG-ID: nzKq0IOnPwqlDunPUEV6iQ
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4225619560A3;
+	Tue, 21 Jan 2025 15:29:20 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.224.31])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id D03A61956094;
+	Tue, 21 Jan 2025 15:29:10 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Tue, 21 Jan 2025 16:28:54 +0100 (CET)
+Date: Tue, 21 Jan 2025 16:28:43 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Kees Cook <kees@kernel.org>
+Cc: Eyal Birger <eyal.birger@gmail.com>, luto@amacapital.net,
+	wad@chromium.org, ldv@strace.io, mhiramat@kernel.org,
+	andrii@kernel.org, jolsa@kernel.org, alexei.starovoitov@gmail.com,
+	olsajiri@gmail.com, cyphar@cyphar.com, songliubraving@fb.com,
+	yhs@fb.com, john.fastabend@gmail.com, peterz@infradead.org,
+	tglx@linutronix.de, bp@alien8.de, daniel@iogearbox.net,
+	ast@kernel.org, andrii.nakryiko@gmail.com, rostedt@goodmis.org,
+	rafi@rbk.io, shmulik.ladkani@gmail.com, bpf@vger.kernel.org,
+	linux-api@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	x86@kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH V10 2/4] perf/x86/intel: Avoid disable PMU if !cpuc->enabled in sample read
-Date: Tue, 21 Jan 2025 07:23:01 -0800
-Message-Id: <20250121152303.3128733-2-kan.liang@linux.intel.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20250121152303.3128733-1-kan.liang@linux.intel.com>
-References: <20250121152303.3128733-1-kan.liang@linux.intel.com>
+Subject: Re: [PATCH] seccomp: passthrough uretprobe systemcall without
+ filtering
+Message-ID: <20250121152843.GC3422@redhat.com>
+References: <20250117005539.325887-1-eyal.birger@gmail.com>
+ <202501181212.4C515DA02@keescook>
+ <20250119123955.GA5281@redhat.com>
+ <202501201331.83DB01794@keescook>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202501201331.83DB01794@keescook>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-From: Kan Liang <kan.liang@linux.intel.com>
+On 01/20, Kees Cook wrote:
+>
+> > The only difference is that sys_uretprobe() is new and existing setups
+> > doesn't know about it. Suppose you have
+> >
+> > 	int func(void)
+> > 	{
+> > 		return 123;
+> > 	}
+> >
+> > 	int main(void)
+> > 	{
+> > 		seccomp(SECCOMP_SET_MODE_STRICT, 0,0);
+> > 		for (;;)
+> > 			func();
+> > 	}
+> >
+> > and it runs with func() uretprobed.
+> >
+> > If you install the new kernel, this application will crash immediately.
+> >
+> > I understand your objections, but what do you think we can do instead?
+> > I don't think a new "try_to_speedup_uretprobes_at_your_own_risk" sysctl
+> > makes sense, it will be almost never enabled...
+>
+> This seems like a uretprobes design problem. If it's going to use
+> syscalls, it must take things like seccomp into account.
 
-The WARN_ON(this_cpu_read(cpu_hw_events.enabled)) in the
-intel_pmu_save_and_restart_reload() is triggered, when sampling read
-topdown events.
+True. I reviewed that patch, and I forgot about seccomp too.
 
-In a NMI handler, the cpu_hw_events.enabled is set and used to indicate
-the status of core PMU. The generic pmu->pmu_disable_count, updated in
-the perf_pmu_disable/enable pair, is not touched.
-However, the perf_pmu_disable/enable pair is invoked when sampling read
-in a NMI handler. The cpuc->enabled is mistakenly set by the
-perf_pmu_enable().
+> SECCOMP_SET_MODE_STRICT will also crash in the face of syscall_restart...
 
-Avoid disabling PMU if the core PMU is already disabled.
-Merge the logic together.
+Yes, I guess SECCOMP_SET_MODE_STRICT assumes that read/write can't return
+ERESTART_RESTARTBLOCK.
 
-Fixes: 7b2c05a15d29 ("perf/x86/intel: Generic support for hardware TopDown metrics")
-Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: stable@vger.kernel.org
----
+But again, what can we do right now?
 
-Changes since V9:
-- Merge the read_event related codes together
+I do not like the idea to revert the patch which adds sys_uretprobe().
+Don't get me wrong, I do not use uprobes, so personally I don't really
+care about the performance improvements it adds. Not to mention FRED,
+although I have no idea when it will be available.
 
- arch/x86/events/intel/core.c | 41 ++++++++++++++++++++----------------
- arch/x86/events/intel/ds.c   | 11 +---------
- arch/x86/events/perf_event.h |  2 +-
- 3 files changed, 25 insertions(+), 29 deletions(-)
+Lets forget about sys_uretprobe(). Lets suppose the kernel doesn't have
+ERESTART_RESTARTBLOCK/sys_restart_syscall and we want to add this feature
+today.
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 4daa45ae9bd2..762b140c4953 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -2775,28 +2775,33 @@ static u64 icl_update_topdown_event(struct perf_event *event)
- 
- DEFINE_STATIC_CALL(intel_pmu_update_topdown_event, x86_perf_event_update);
- 
--static void intel_pmu_read_topdown_event(struct perf_event *event)
-+static void intel_pmu_read_event(struct perf_event *event)
- {
--	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-+	if (event->hw.flags & (PERF_X86_EVENT_AUTO_RELOAD | PERF_X86_EVENT_TOPDOWN)) {
-+		struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-+		bool pmu_enabled = cpuc->enabled;
- 
--	/* Only need to call update_topdown_event() once for group read. */
--	if ((cpuc->txn_flags & PERF_PMU_TXN_READ) &&
--	    !is_slots_event(event))
--		return;
-+		/* Only need to call update_topdown_event() once for group read. */
-+		if (is_metric_event(event) && (cpuc->txn_flags & PERF_PMU_TXN_READ))
-+			return;
- 
--	perf_pmu_disable(event->pmu);
--	static_call(intel_pmu_update_topdown_event)(event);
--	perf_pmu_enable(event->pmu);
--}
-+		cpuc->enabled = 0;
-+		if (pmu_enabled)
-+			intel_pmu_disable_all();
- 
--static void intel_pmu_read_event(struct perf_event *event)
--{
--	if (event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD)
--		intel_pmu_auto_reload_read(event);
--	else if (is_topdown_count(event))
--		intel_pmu_read_topdown_event(event);
--	else
--		x86_perf_event_update(event);
-+		if (is_topdown_event(event))
-+			static_call(intel_pmu_update_topdown_event)(event);
-+		else
-+			intel_pmu_drain_pebs_buffer();
-+
-+		cpuc->enabled = pmu_enabled;
-+		if (pmu_enabled)
-+			intel_pmu_enable_all(0);
-+
-+		return;
-+	}
-+
-+	x86_perf_event_update(event);
- }
- 
- static void intel_pmu_enable_fixed(struct perf_event *event)
-diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
-index 322963b02a91..eb14b46423e5 100644
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -953,7 +953,7 @@ int intel_pmu_drain_bts_buffer(void)
- 	return 1;
- }
- 
--static inline void intel_pmu_drain_pebs_buffer(void)
-+void intel_pmu_drain_pebs_buffer(void)
- {
- 	struct perf_sample_data data;
- 
-@@ -2094,15 +2094,6 @@ get_next_pebs_record_by_bit(void *base, void *top, int bit)
- 	return NULL;
- }
- 
--void intel_pmu_auto_reload_read(struct perf_event *event)
--{
--	WARN_ON(!(event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD));
--
--	perf_pmu_disable(event->pmu);
--	intel_pmu_drain_pebs_buffer();
--	perf_pmu_enable(event->pmu);
--}
--
- /*
-  * Special variant of intel_pmu_save_and_restart() for auto-reload.
-  */
-diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
-index 084e9196b458..536a112f6353 100644
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -1644,7 +1644,7 @@ void intel_pmu_pebs_disable_all(void);
- 
- void intel_pmu_pebs_sched_task(struct perf_event_pmu_context *pmu_ctx, bool sched_in);
- 
--void intel_pmu_auto_reload_read(struct perf_event *event);
-+void intel_pmu_drain_pebs_buffer(void);
- 
- void intel_pmu_store_pebs_lbrs(struct lbr_entry *lbr);
- 
--- 
-2.38.1
+How do you think we can do this without breaking the existing setups which
+use seccomp ?
+
+Oleg.
 
 
