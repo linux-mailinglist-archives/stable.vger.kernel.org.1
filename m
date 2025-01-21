@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-110055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 630C3A185D4
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 20:52:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63863A185D5
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 20:52:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A3AC188B2F5
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:52:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48FDF1613D0
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432E91F5433;
-	Tue, 21 Jan 2025 19:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4623A1F560C;
+	Tue, 21 Jan 2025 19:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S0BIsE6i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R5zGBHdk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E1A1EB2F
-	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 19:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068301EB2F
+	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 19:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737489165; cv=none; b=iSl/4qX0XPfob42NZkD0tkfR+UviSTKki0eY7+5Gk/91R7l8R+QxnGEc7t0EWwLpT5Ox9wbfUGkJKZ9QY7z8Gh5t+EP9eLSELL1Dka3SSgTDmS22zaIuiC9q6qmd1GsNFp0zwP215HLEiXLlXqZz+flVaE8khEpN4dh+j3mLzs4=
+	t=1737489167; cv=none; b=P7zaZkICD32yI/NtxeNpfiewpyOZGvAHvYMiZ8Lb+Pm+bImqX9tcRqwCN/UlhOCOPgPYkw247IgLT0orpnPYAAfVxlRs0sNl4sZ7n8X91PmU2Q1LittVL9LUjmqImx2/Vww4ifIhX0lgeG51IpqX+qW+pgdDRHiNEYP6H/emoyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737489165; c=relaxed/simple;
-	bh=XNPdPcCOcAn5Of4pejcezfWknHKC1UzZ+/hIK+UCN0c=;
+	s=arc-20240116; t=1737489167; c=relaxed/simple;
+	bh=5HrrEA7dmkFWYFA8BeGT0jiUMzSxqf9gzByGSU1GYhU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=t5cgue/aGiahXqE6oL9VqACB7uSwo4Eb2wJX/UFNNZii3A45kldonHBPaL94czKVX2RorUL7I6PLcM4hyljjomjgZMSF1O1352vv2epvp3x5UWhZySiju6TDReWNmhJrf1ngdLLXDleINneiItCvEtm6pxMcL4mnTbHBbHyZHEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S0BIsE6i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6EAC4CEDF;
-	Tue, 21 Jan 2025 19:52:43 +0000 (UTC)
+	 MIME-Version; b=HD8RQ2fM8cTMSsoxN7leICbYmd+MFFSKmAl7uBjHZGhHQkG4VZVWBYa4ApillOZxkXCwAJ98BIdF5+ryE7gyra6eMRVSRc/miFX9DKaaNFatFNWB9Bp6uXriVylfLEckkmBOFo9tLAdMAZhH1sLPiEU5eMKWDF/I3WuWwW45qeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R5zGBHdk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191F9C4CEDF;
+	Tue, 21 Jan 2025 19:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737489164;
-	bh=XNPdPcCOcAn5Of4pejcezfWknHKC1UzZ+/hIK+UCN0c=;
+	s=k20201202; t=1737489166;
+	bh=5HrrEA7dmkFWYFA8BeGT0jiUMzSxqf9gzByGSU1GYhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0BIsE6ilmZBLyIlx31wL6Se0eM2gx4z313GUlhyluVhBFoK2yq9UsLGoBjVtbppz
-	 aBZmPdAFFENFJLG/R6RDiR0/sPD7FbkKmAsrSSHjs9Fz9NMtb1MVHWOrBlXepP7HGK
-	 4pgu79bMco+vSvW4Y1AKwDQHCF3z6akgG43igcj5vqLuNNp5kz9k0KwZNQmz0gQkdt
-	 QzcC0dURtIAZOFb4tOsDHsuAp0bIlt0LOM3AePZAaDHo/1jBz6M4Jk2gmwkQEmyPKz
-	 /AQYfQZT7fTi9PHVtl1ZpHDQaPJfIIQqWhwRfdsw6nHYySoqqhs3FRO+WBbtXnFADm
-	 C4yCbRIcuVDGg==
+	b=R5zGBHdk5lZjULHflaSZfpHo6tHxOU4wXhibTesTrUn7aWYsjbfGPoQ+0JBs3zVC5
+	 0Qi2DhBBKj/10nwx0Q1fk4sNAk3If/RdydhbjaSsDrpQeqEfCgBav6ESt/rEz5NKAi
+	 6rZ5F2FE955KH1t6hn+K8Vo3n6Jv4DxGFwkegAVUqbekTpeY1qbpOJHb/T6VE3HFql
+	 eJ6Vt0GUt/eSnCFUqnj+XJNzDT0KxtAc1knKfq+5vJwjU7p7ZhsJcG0xjdq5pnWWd0
+	 KAZFVm7Okl9cJtjUJWkwebn43DUdCqUR7xP0hgg8QfsxYfIgZBsjVtK6bBXOeZlfAE
+	 41W+HQ8f8ptqw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: alvalan9@foxmail.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y] net: fix data-races around sk->sk_forward_alloc
-Date: Tue, 21 Jan 2025 14:52:42 -0500
-Message-Id: <20250121123722-6ca75290b4d810cc@stable.kernel.org>
+Subject: Re: [PATCH 6.6.y] net: fix data-races around sk->sk_forward_alloc
+Date: Tue, 21 Jan 2025 14:52:44 -0500
+Message-Id: <20250121134847-fe71ea367df24cde@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <tencent_A0C9136B409C0E18FC860D5AE51A950F5007@qq.com>
+In-Reply-To:  <tencent_8BB43C35671F0A929BD6A938E8302B0DB808@qq.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -73,11 +73,10 @@ Commit author: Wang Liang<wangliang74@huawei.com>
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
 6.6.y | Not found
-6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  073d89808c065 ! 1:  b42ede0a73c71 net: fix data-races around sk->sk_forward_alloc
+1:  073d89808c065 ! 1:  fbdaa519ebbda net: fix data-races around sk->sk_forward_alloc
     @@ Metadata
       ## Commit message ##
          net: fix data-races around sk->sk_forward_alloc
@@ -117,5 +116,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
