@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-109799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EFF3A183F8
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:02:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A7C7A18500
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:13:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73D46188C611
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:01:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1E387A5B99
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9189E571;
-	Tue, 21 Jan 2025 18:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FBBF1F708D;
+	Tue, 21 Jan 2025 18:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YsgQZon"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xl/HAR0V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A790C1F470A;
-	Tue, 21 Jan 2025 18:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6331F3FFE;
+	Tue, 21 Jan 2025 18:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482472; cv=none; b=Pg+F/rhvoQ+p11B0zuUHvwyvmQuVYzqqEi6YkA10MUA1t24gMRnKJqHA0qPVigRyDhG3WOJoT9giZ26MSSodH5OMU+OetLXJATC4Ndc7agYX45ht3BI5FGQMRdP6hqu08XKIB/MnTjQrCdsK1AV5jWKjA/9rSz5EOKNE8XksIcQ=
+	t=1737482951; cv=none; b=dPy77LNqj84lqqB7DzF8B4B5WhDtScZB9NOs4ubM5et7OzzZXVnhpG+v8DMkJW0GOgGItrTGSypgZwH0bdvvpTaxTBrzukRNZ29HUXdo/5CJ9dlG5SvXfJC9+k/Muwnzvk5iWB9VyeayZO5L/l0IDWy/Di66UzBeDdP2NK4Am60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482472; c=relaxed/simple;
-	bh=Eb0Zrk8A14PckJMlsWZrz6whEwrZIRzKWtNQosD9oLM=;
+	s=arc-20240116; t=1737482951; c=relaxed/simple;
+	bh=zIcgYjiG2FdHPmt3JKzb/aK4wHBGSFOUewCDr1l0lgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A91DkwuPcI+ct4LLRxyZmIoZ3d+dvn1wfs5oQ6p0bRwiugEc/IRMsQn9L/6PfJ1JKfKhCyokU9QSQMxZ76IAv/1/kpRIm4Wo5nA6YEwWEK8/Fs1iV1yOCKg4LOmnOd4IK46DEB9Kvm4jeEdyhbGHIFQyaWhatvtlExTHZGr5Jhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YsgQZon; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE98C4CEDF;
-	Tue, 21 Jan 2025 18:01:12 +0000 (UTC)
+	 MIME-Version; b=fb1hgte8RBUzTkIms+TzA+041q5cjI8ixM5nOvjZdDYoBLvfUPnTMfD2jknuRHr+k1g5KDkBXess+DiFlvH4DZF0tYk79YV9RW76L77YPVqpO6N7ed36LdSQ55/KjYtFNop5t0pDTJNxiMO9BlRk9EgLGPtZ7mxDzZbmuIxWuZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xl/HAR0V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C88C4CEDF;
+	Tue, 21 Jan 2025 18:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482472;
-	bh=Eb0Zrk8A14PckJMlsWZrz6whEwrZIRzKWtNQosD9oLM=;
+	s=korg; t=1737482950;
+	bh=zIcgYjiG2FdHPmt3JKzb/aK4wHBGSFOUewCDr1l0lgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0YsgQZonvMgIL62KB8wb9JqH01DXSr1JrtiG+0rDVfyuvEyI2Ma/hP3sm0fXqYxBI
-	 XI60R6BcretbDlyrZvBG0e/afRiaDtM8nC1/V6FWBaTfC/gXaWxUi6NyvUKOvCwRMt
-	 VSo20d4TxSpynn1EM1OdbOdJBfVy/lKBYxR4ZAOc=
+	b=Xl/HAR0VrGE2ZByCZ8F+7l1ZTDSB+yglM7ShnDl4QDC7jAg1FDq4msvO4QZ49vXWF
+	 CgTAXO7b0y5rsAFaDb2SDdA1N/6yMI16svUo5q1YDEIyapdA1B8cRXPefbmlnR0BVY
+	 TgDtPjjYj4zC6hZapM4PxPu3Wb67unLrG2C+JoZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
-	Wongi Lee <qwerty@theori.io>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Luigi Leonardi <leonardi@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 088/122] vsock: prevent null-ptr-deref in vsock_*[has_data|has_space]
+	Peter Geis <pgwipeout@gmail.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 064/127] arm64: dts: rockchip: add hevc power domain clock to rk3328
 Date: Tue, 21 Jan 2025 18:52:16 +0100
-Message-ID: <20250121174536.411800070@linuxfoundation.org>
+Message-ID: <20250121174532.141652802@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Peter Geis <pgwipeout@gmail.com>
 
-commit 91751e248256efc111e52e15115840c35d85abaf upstream.
+[ Upstream commit 3699f2c43ea9984e00d70463f8c29baaf260ea97 ]
 
-Recent reports have shown how we sometimes call vsock_*_has_data()
-when a vsock socket has been de-assigned from a transport (see attached
-links), but we shouldn't.
+There is a race condition at startup between disabling power domains not
+used and disabling clocks not used on the rk3328. When the clocks are
+disabled first, the hevc power domain fails to shut off leading to a
+splat of failures. Add the hevc core clock to the rk3328 power domain
+node to prevent this condition.
 
-Previous commits should have solved the real problems, but we may have
-more in the future, so to avoid null-ptr-deref, we can return 0
-(no space, no data available) but with a warning.
+rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: { 3-.... }
+1087 jiffies s: 89 root: 0x8/.
+rcu: blocking rcu_node structures (internal RCU debug):
+Sending NMI from CPU 0 to CPUs 3:
+NMI backtrace for cpu 3
+CPU: 3 UID: 0 PID: 86 Comm: kworker/3:3 Not tainted 6.12.0-rc5+ #53
+Hardware name: Firefly ROC-RK3328-CC (DT)
+Workqueue: pm genpd_power_off_work_fn
+pstate: 20400005 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : regmap_unlock_spinlock+0x18/0x30
+lr : regmap_read+0x60/0x88
+sp : ffff800081123c00
+x29: ffff800081123c00 x28: ffff2fa4c62cad80 x27: 0000000000000000
+x26: ffffd74e6e660eb8 x25: ffff2fa4c62cae00 x24: 0000000000000040
+x23: ffffd74e6d2f3ab8 x22: 0000000000000001 x21: ffff800081123c74
+x20: 0000000000000000 x19: ffff2fa4c0412000 x18: 0000000000000000
+x17: 77202c31203d2065 x16: 6c6469203a72656c x15: 6c6f72746e6f632d
+x14: 7265776f703a6e6f x13: 2063766568206e69 x12: 616d6f64202c3431
+x11: 347830206f742030 x10: 3430303034783020 x9 : ffffd74e6c7369e0
+x8 : 3030316666206e69 x7 : 205d383738353733 x6 : 332e31202020205b
+x5 : ffffd74e6c73fc88 x4 : ffffd74e6c73fcd4 x3 : ffffd74e6c740b40
+x2 : ffff800080015484 x1 : 0000000000000000 x0 : ffff2fa4c0412000
+Call trace:
+regmap_unlock_spinlock+0x18/0x30
+rockchip_pmu_set_idle_request+0xac/0x2c0
+rockchip_pd_power+0x144/0x5f8
+rockchip_pd_power_off+0x1c/0x30
+_genpd_power_off+0x9c/0x180
+genpd_power_off.part.0.isra.0+0x130/0x2a8
+genpd_power_off_work_fn+0x6c/0x98
+process_one_work+0x170/0x3f0
+worker_thread+0x290/0x4a8
+kthread+0xec/0xf8
+ret_from_fork+0x10/0x20
+rockchip-pm-domain ff100000.syscon:power-controller: failed to get ack on domain 'hevc', val=0x88220
 
-This way the code should continue to run in a nearly consistent state
-and have a warning that allows us to debug future problems.
-
-Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/netdev/Z2K%2FI4nlHdfMRTZC@v4bel-B760M-AORUS-ELITE-AX/
-Link: https://lore.kernel.org/netdev/5ca20d4c-1017-49c2-9516-f6f75fd331e9@rbox.co/
-Link: https://lore.kernel.org/netdev/677f84a8.050a0220.25a300.01b3.GAE@google.com/
-Co-developed-by: Hyunwoo Kim <v4bel@theori.io>
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Co-developed-by: Wongi Lee <qwerty@theori.io>
-Signed-off-by: Wongi Lee <qwerty@theori.io>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Reviewed-by: Hyunwoo Kim <v4bel@theori.io>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 52e02d377a72 ("arm64: dts: rockchip: add core dtsi file for RK3328 SoCs")
+Signed-off-by: Peter Geis <pgwipeout@gmail.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://lore.kernel.org/r/20241214224339.24674-1-pgwipeout@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/af_vsock.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3328.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -879,6 +879,9 @@ EXPORT_SYMBOL_GPL(vsock_create_connected
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
+index f73cb7667bab..93ef90315cda 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
+@@ -302,6 +302,7 @@
  
- s64 vsock_stream_has_data(struct vsock_sock *vsk)
- {
-+	if (WARN_ON(!vsk->transport))
-+		return 0;
-+
- 	return vsk->transport->stream_has_data(vsk);
- }
- EXPORT_SYMBOL_GPL(vsock_stream_has_data);
-@@ -887,6 +890,9 @@ s64 vsock_connectible_has_data(struct vs
- {
- 	struct sock *sk = sk_vsock(vsk);
- 
-+	if (WARN_ON(!vsk->transport))
-+		return 0;
-+
- 	if (sk->sk_type == SOCK_SEQPACKET)
- 		return vsk->transport->seqpacket_has_data(vsk);
- 	else
-@@ -896,6 +902,9 @@ EXPORT_SYMBOL_GPL(vsock_connectible_has_
- 
- s64 vsock_stream_has_space(struct vsock_sock *vsk)
- {
-+	if (WARN_ON(!vsk->transport))
-+		return 0;
-+
- 	return vsk->transport->stream_has_space(vsk);
- }
- EXPORT_SYMBOL_GPL(vsock_stream_has_space);
+ 			power-domain@RK3328_PD_HEVC {
+ 				reg = <RK3328_PD_HEVC>;
++				clocks = <&cru SCLK_VENC_CORE>;
+ 				#power-domain-cells = <0>;
+ 			};
+ 			power-domain@RK3328_PD_VIDEO {
+-- 
+2.39.5
+
 
 
 
