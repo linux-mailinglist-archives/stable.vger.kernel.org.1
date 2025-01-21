@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-109974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A0FA184BE
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:11:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBE4CA18352
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E1F5162A6A
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDB5C188C233
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1632E1F8662;
-	Tue, 21 Jan 2025 18:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97891F543D;
+	Tue, 21 Jan 2025 17:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPZr+fWh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GffJO0JT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C892F1F757F;
-	Tue, 21 Jan 2025 18:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9601D1F7087;
+	Tue, 21 Jan 2025 17:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482976; cv=none; b=Uoq2ggB34TKg34aES30Ir49Hy9BXaCyhN8zYc3XuptaLamRZe7Dqlz0R9M/EhpbjI+FdpBwcY2NvQZGuHMcOiBSW5sU2dwCme5Zr09/SFJrUHxU101HDOLqolgQKYeCtoTbgPDSiel521xAZJTPpSNJQfdB3vrYNMc1KZEb1bk0=
+	t=1737482084; cv=none; b=ENFRTCWq3vNcwoWpjL5qfvxF+mx40ADhgPMjXKT4InWeumtxJ8x+38Ju/vSlO3y7Ns6rh4ErmHttWbjsfp/nX0OmAOWyevgqR7ctkvbrY4+TsYP4pQ/IltF/bgZ2I0wH4UgDNZFWOifRtBQQCh15d4+9kL3W+wBmR7EVUFb6jqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482976; c=relaxed/simple;
-	bh=M3sN1nyfYDdSRnZKPGB9gEEcZFvdZPw/FwYhYQxnOiE=;
+	s=arc-20240116; t=1737482084; c=relaxed/simple;
+	bh=J+anIHbwtfdbf8kurZ1HnNOg/H6Uyc6DB/TX0jkYwcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G67RMzWDA4VGicFQ/Z0GagZSUg8UERR7zhGX4Hkb2mf8odPaXsEPSb1nfumWZg1txx2syuHjjlowVoQ1kgLom/Tw7wDiK73iRPoJzCl3OV4S7+Ad5t+m1RXWjjv++t8M2coPiqpd60rz/ZQJVtjldmIkKuNQtBhj6bwhEWgqO7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPZr+fWh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4666EC4CEDF;
-	Tue, 21 Jan 2025 18:09:36 +0000 (UTC)
+	 MIME-Version; b=Ciqn8HI7P69cZE8hC22EWSOtEAo7CNnhY5USJ64IGEvUbMmOiyiNDs0LO/6GqZj5wJO9LCXUrwxMLH449MnnhsnwW1sPZADwR/WVRUx9hjkHzBw83vnI4+hXeGf/J7XURylP4Zg/MzDr5YpGfI839/XgK0nQX/VHQ5QL8LPglHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GffJO0JT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE4AC4CEE1;
+	Tue, 21 Jan 2025 17:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482976;
-	bh=M3sN1nyfYDdSRnZKPGB9gEEcZFvdZPw/FwYhYQxnOiE=;
+	s=korg; t=1737482084;
+	bh=J+anIHbwtfdbf8kurZ1HnNOg/H6Uyc6DB/TX0jkYwcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZPZr+fWh3ZY/miw6FN/cmRtHTANgbKHFMOWR0e5TmruKEQ1MiUbK7p7eSZTSVfTL4
-	 F+bJ45s98IrMU9BpBjgZBRXn/AOfn/6gwRi/t35tuRAX0nOK2w0bXaNPgqo4xpI5eo
-	 6FTpdHM56YfDxTbn1dKBmsSc31bjAE94DblygVcg=
+	b=GffJO0JTGieRzGopNFZMhFeWFNKybf1x/AlWDsGGWwOR+3oFFdYRnf+eyfIzeel9c
+	 VnOkbaRDMISb11VoigPiMmlLsy3EAFOThTQoSfwWSvOFL6Uk28UAiDWLB9860ZoYPP
+	 9yKrtIFIxv0JAIgNBa9/K6IJfhMAeFFxKYREHOaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lubomir Rintel <lkundrak@v3.sk>,
-	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.15 043/127] usb-storage: Add max sectors quirk for Nokia 208
+	Max Kellermann <max.kellermann@ionos.com>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 29/72] cachefiles: Parse the "secctx" immediately
 Date: Tue, 21 Jan 2025 18:51:55 +0100
-Message-ID: <20250121174531.337069541@linuxfoundation.org>
+Message-ID: <20250121174524.547035125@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lubomir Rintel <lrintel@redhat.com>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-commit cdef30e0774802df2f87024d68a9d86c3b99ca2a upstream.
+[ Upstream commit e5a8b6446c0d370716f193771ccacf3260a57534 ]
 
-This fixes data corruption when accessing the internal SD card in mass
-storage mode.
+Instead of storing an opaque string, call security_secctx_to_secid()
+right in the "secctx" command handler and store only the numeric
+"secid".  This eliminates an unnecessary string allocation and allows
+the daemon to receive errors when writing the "secctx" command instead
+of postponing the error to the "bind" command handler.  For example,
+if the kernel was built without `CONFIG_SECURITY`, "bind" will return
+`EOPNOTSUPP`, but the daemon doesn't know why.  With this patch, the
+"secctx" will instead return `EOPNOTSUPP` which is the right context
+for this error.
 
-I am actually not too sure why. I didn't figure a straightforward way to
-reproduce the issue, but i seem to get garbage when issuing a lot (over 50)
-of large reads (over 120 sectors) are done in a quick succession. That is,
-time seems to matter here -- larger reads are fine if they are done with
-some delay between them.
+This patch adds a boolean flag `have_secid` because I'm not sure if we
+can safely assume that zero is the special secid value for "not set".
+This appears to be true for SELinux, Smack and AppArmor, but since
+this attribute is not documented, I'm unable to derive a stable
+guarantee for that.
 
-But I'm not great at understanding this sort of things, so I'll assume
-the issue other, smarter, folks were seeing with similar phones is the
-same problem and I'll just put my quirk next to theirs.
-
-The "Software details" screen on the phone is as follows:
-
-  V 04.06
-  07-08-13
-  RM-849
-  (c) Nokia
-
-TL;DR version of the device descriptor:
-
-  idVendor           0x0421 Nokia Mobile Phones
-  idProduct          0x06c2
-  bcdDevice            4.06
-  iManufacturer           1 Nokia
-  iProduct                2 Nokia 208
-
-The patch assumes older firmwares are broken too (I'm unable to test, but
-no biggie if they aren't I guess), and I have no idea if newer firmware
-exists.
-
-Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-Cc: stable <stable@kernel.org>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250101212206.2386207-1-lkundrak@v3.sk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20241209141554.638708-1-max.kellermann@ionos.com/
+Link: https://lore.kernel.org/r/20241213135013.2964079-6-dhowells@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/unusual_devs.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/cachefiles/daemon.c   | 14 +++++++-------
+ fs/cachefiles/internal.h |  3 ++-
+ fs/cachefiles/security.c |  6 +++---
+ 3 files changed, 12 insertions(+), 11 deletions(-)
 
---- a/drivers/usb/storage/unusual_devs.h
-+++ b/drivers/usb/storage/unusual_devs.h
-@@ -255,6 +255,13 @@ UNUSUAL_DEV(  0x0421, 0x06aa, 0x1110, 0x
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_MAX_SECTORS_64 ),
+diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
+index 89b11336a8369..1806bff8e59bc 100644
+--- a/fs/cachefiles/daemon.c
++++ b/fs/cachefiles/daemon.c
+@@ -15,6 +15,7 @@
+ #include <linux/namei.h>
+ #include <linux/poll.h>
+ #include <linux/mount.h>
++#include <linux/security.h>
+ #include <linux/statfs.h>
+ #include <linux/ctype.h>
+ #include <linux/string.h>
+@@ -576,7 +577,7 @@ static int cachefiles_daemon_dir(struct cachefiles_cache *cache, char *args)
+  */
+ static int cachefiles_daemon_secctx(struct cachefiles_cache *cache, char *args)
+ {
+-	char *secctx;
++	int err;
  
-+/* Added by Lubomir Rintel <lkundrak@v3.sk>, a very fine chap */
-+UNUSUAL_DEV(  0x0421, 0x06c2, 0x0000, 0x0406,
-+		"Nokia",
-+		"Nokia 208",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_MAX_SECTORS_64 ),
-+
- #ifdef NO_SDDR09
- UNUSUAL_DEV(  0x0436, 0x0005, 0x0100, 0x0100,
- 		"Microtech",
+ 	_enter(",%s", args);
+ 
+@@ -585,16 +586,16 @@ static int cachefiles_daemon_secctx(struct cachefiles_cache *cache, char *args)
+ 		return -EINVAL;
+ 	}
+ 
+-	if (cache->secctx) {
++	if (cache->have_secid) {
+ 		pr_err("Second security context specified\n");
+ 		return -EINVAL;
+ 	}
+ 
+-	secctx = kstrdup(args, GFP_KERNEL);
+-	if (!secctx)
+-		return -ENOMEM;
++	err = security_secctx_to_secid(args, strlen(args), &cache->secid);
++	if (err)
++		return err;
+ 
+-	cache->secctx = secctx;
++	cache->have_secid = true;
+ 	return 0;
+ }
+ 
+@@ -820,7 +821,6 @@ static void cachefiles_daemon_unbind(struct cachefiles_cache *cache)
+ 	put_cred(cache->cache_cred);
+ 
+ 	kfree(cache->rootdirname);
+-	kfree(cache->secctx);
+ 	kfree(cache->tag);
+ 
+ 	_leave("");
+diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
+index 111ad6ecd4baf..4421a12960a66 100644
+--- a/fs/cachefiles/internal.h
++++ b/fs/cachefiles/internal.h
+@@ -122,7 +122,6 @@ struct cachefiles_cache {
+ #define CACHEFILES_STATE_CHANGED	3	/* T if state changed (poll trigger) */
+ #define CACHEFILES_ONDEMAND_MODE	4	/* T if in on-demand read mode */
+ 	char				*rootdirname;	/* name of cache root directory */
+-	char				*secctx;	/* LSM security context */
+ 	char				*tag;		/* cache binding tag */
+ 	refcount_t			unbind_pincount;/* refcount to do daemon unbind */
+ 	struct xarray			reqs;		/* xarray of pending on-demand requests */
+@@ -130,6 +129,8 @@ struct cachefiles_cache {
+ 	struct xarray			ondemand_ids;	/* xarray for ondemand_id allocation */
+ 	u32				ondemand_id_next;
+ 	u32				msg_id_next;
++	u32				secid;		/* LSM security id */
++	bool				have_secid;	/* whether "secid" was set */
+ };
+ 
+ static inline bool cachefiles_in_ondemand_mode(struct cachefiles_cache *cache)
+diff --git a/fs/cachefiles/security.c b/fs/cachefiles/security.c
+index fe777164f1d89..fc6611886b3b5 100644
+--- a/fs/cachefiles/security.c
++++ b/fs/cachefiles/security.c
+@@ -18,7 +18,7 @@ int cachefiles_get_security_ID(struct cachefiles_cache *cache)
+ 	struct cred *new;
+ 	int ret;
+ 
+-	_enter("{%s}", cache->secctx);
++	_enter("{%u}", cache->have_secid ? cache->secid : 0);
+ 
+ 	new = prepare_kernel_cred(current);
+ 	if (!new) {
+@@ -26,8 +26,8 @@ int cachefiles_get_security_ID(struct cachefiles_cache *cache)
+ 		goto error;
+ 	}
+ 
+-	if (cache->secctx) {
+-		ret = set_security_override_from_ctx(new, cache->secctx);
++	if (cache->have_secid) {
++		ret = set_security_override(new, cache->secid);
+ 		if (ret < 0) {
+ 			put_cred(new);
+ 			pr_err("Security denies permission to nominate security context: error %d\n",
+-- 
+2.39.5
+
 
 
 
