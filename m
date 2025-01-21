@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-109924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F1FA1848D
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:09:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55DF5A1833B
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:53:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1FEA188D255
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:07:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0959D7A421B
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395421F7087;
-	Tue, 21 Jan 2025 18:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237E01F543D;
+	Tue, 21 Jan 2025 17:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nII64vCR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rex2QUjf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89901F7064;
-	Tue, 21 Jan 2025 18:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE601E9B38;
+	Tue, 21 Jan 2025 17:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482838; cv=none; b=TjQZj9t7CxQsFaWGOLsTznVL5F3sBb527UoFFtih8JqaGQeBforBLMJyu4Zxgy5batK1SZt9zx3O6x65zG5opTSYt4Mxl6yVu3s6NIfPBZ+eA3S0x6p7iWWJMTBSAfWpdvOmKy10HY7XpkeOwDT1VeCe16FFa3+ZBc80GC6U2nw=
+	t=1737482031; cv=none; b=hu/9oYAzMrNwwzbRrkuEda0RF+BPFAV6NlRhoweK/Q9MyOJGoFtbW+hb0bHY3KlWiQac2UzsJCrb+um9zYc94yHsB7QglzLhZdxGrr5quIuCCGwYZMvg5l2sLeN0jQuuxV/me37aZaIwc9gruimCOJ5BtdfaG4l7bLy9hGRQ2sA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482838; c=relaxed/simple;
-	bh=68PTr0uGuNFS/zI+xkBWcdH7EdiXDHElxKebOq+h6oI=;
+	s=arc-20240116; t=1737482031; c=relaxed/simple;
+	bh=0pxxFqZ5wFYqfj3EHSpZW5L2CiMM9XadsjEYUOMahEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OxWgixxwiELiTdHHgrqXEtns3Bof5W1yN16p7JtIUEgexbS6T40Q5c+MVXG0C/k0w17cAhAjnV7+gJgHx/ZAbeH4IAUPBDixAJljQyzEG2itYLf1ggmqIeopCeJMruS7JKyzmcbWS/KjyYGl6h4J3T1+VwPF+GUf5GZXyl/SHrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nII64vCR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B46C4CEE3;
-	Tue, 21 Jan 2025 18:07:17 +0000 (UTC)
+	 MIME-Version; b=Q92uWsloQtIP5jHRa8gOxx0YpJWpoYIUO6NYOVXv4NYyfdeXMGQglF3C84V2CFUMVXBEESNUGZI0+oSFxXuUoxeb9ATDZW/WcixRUoO+g8krnvpbIreFd7QT8MvriDbnQlOUkfB58KZkJYY2rOdfFowRHySqhrGUvEiquvWofAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rex2QUjf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBBAC4CEDF;
+	Tue, 21 Jan 2025 17:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482837;
-	bh=68PTr0uGuNFS/zI+xkBWcdH7EdiXDHElxKebOq+h6oI=;
+	s=korg; t=1737482031;
+	bh=0pxxFqZ5wFYqfj3EHSpZW5L2CiMM9XadsjEYUOMahEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nII64vCRfKmdTHdfCMB+r08Ai4Ppfcg7FahEX+hLQnDUmpKmjsraAmOqjWYRwrXB8
-	 cU14ZnJ10vfMFpyM3AfoIgmnbyXp94DGzb6+KL7NDTGw+fQcz3Hn25YHO7MNBIJCFL
-	 5AcgHQtReX08jtzJyRe+G8DBO6pQKLVJINyI3h/g=
+	b=Rex2QUjfrS1ZwmS4pgS0xkTiaeFl0ww+ZGzR5yba15J+PPUpcdwCudicoW+DfnKKZ
+	 Sw+R6KITFCZi0UTplj1Ro0mdIpg4mErq4cukAQnptW/7Rd7ckvt9KsWtIooW8q5jcA
+	 bBMA4adifYRrOHSuED38hBp4Mq/cZeGV2TmJvcWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 025/127] sctp: sysctl: rto_min/max: avoid using current->nsproxy
+	Kevin Groeneveld <kgroeneveld@lenbrook.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 11/72] net: fec: handle page_pool_dev_alloc_pages error
 Date: Tue, 21 Jan 2025 18:51:37 +0100
-Message-ID: <20250121174530.642442349@linuxfoundation.org>
+Message-ID: <20250121174523.864731959@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +64,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Kevin Groeneveld <kgroeneveld@lenbrook.com>
 
-commit 9fc17b76fc70763780aa78b38fcf4742384044a5 upstream.
+[ Upstream commit 001ba0902046cb6c352494df610718c0763e77a5 ]
 
-As mentioned in a previous commit of this series, using the 'net'
-structure via 'current' is not recommended for different reasons:
+The fec_enet_update_cbd function calls page_pool_dev_alloc_pages but did
+not handle the case when it returned NULL. There was a WARN_ON(!new_page)
+but it would still proceed to use the NULL pointer and then crash.
 
-- Inconsistency: getting info from the reader's/writer's netns vs only
-  from the opener's netns.
+This case does seem somewhat rare but when the system is under memory
+pressure it can happen. One case where I can duplicate this with some
+frequency is when writing over a smbd share to a SATA HDD attached to an
+imx6q.
 
-- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
-  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
-  syzbot [1] using acct(2).
+Setting /proc/sys/vm/min_free_kbytes to higher values also seems to solve
+the problem for my test case. But it still seems wrong that the fec driver
+ignores the memory allocation error and can crash.
 
-The 'net' structure can be obtained from the table->data using
-container_of().
+This commit handles the allocation error by dropping the current packet.
 
-Note that table->data could also be used directly, as this is the only
-member needed from the 'net' structure, but that would increase the size
-of this fix, to use '*data' everywhere 'net->sctp.rto_min/max' is used.
-
-Fixes: 4f3fdf3bc59c ("sctp: add check rto_min and rto_max in sysctl")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-5-5df34b2083e8@kernel.org
+Fixes: 95698ff6177b5 ("net: fec: using page pool to manage RX buffers")
+Signed-off-by: Kevin Groeneveld <kgroeneveld@lenbrook.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20250113154846.1765414-1-kgroeneveld@lenbrook.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sysctl.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
---- a/net/sctp/sysctl.c
-+++ b/net/sctp/sysctl.c
-@@ -426,7 +426,7 @@ static int proc_sctp_do_hmac_alg(struct
- static int proc_sctp_do_rto_min(struct ctl_table *ctl, int write,
- 				void *buffer, size_t *lenp, loff_t *ppos)
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index e8d9a0eba4d6b..8f5cc1f233188 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -1572,19 +1572,22 @@ static void fec_enet_tx(struct net_device *ndev, int budget)
+ 		fec_enet_tx_queue(ndev, i, budget);
+ }
+ 
+-static void fec_enet_update_cbd(struct fec_enet_priv_rx_q *rxq,
++static int fec_enet_update_cbd(struct fec_enet_priv_rx_q *rxq,
+ 				struct bufdesc *bdp, int index)
  {
--	struct net *net = current->nsproxy->net_ns;
-+	struct net *net = container_of(ctl->data, struct net, sctp.rto_min);
- 	unsigned int min = *(unsigned int *) ctl->extra1;
- 	unsigned int max = *(unsigned int *) ctl->extra2;
- 	struct ctl_table tbl;
-@@ -454,7 +454,7 @@ static int proc_sctp_do_rto_min(struct c
- static int proc_sctp_do_rto_max(struct ctl_table *ctl, int write,
- 				void *buffer, size_t *lenp, loff_t *ppos)
- {
--	struct net *net = current->nsproxy->net_ns;
-+	struct net *net = container_of(ctl->data, struct net, sctp.rto_max);
- 	unsigned int min = *(unsigned int *) ctl->extra1;
- 	unsigned int max = *(unsigned int *) ctl->extra2;
- 	struct ctl_table tbl;
+ 	struct page *new_page;
+ 	dma_addr_t phys_addr;
+ 
+ 	new_page = page_pool_dev_alloc_pages(rxq->page_pool);
+-	WARN_ON(!new_page);
+-	rxq->rx_skb_info[index].page = new_page;
++	if (unlikely(!new_page))
++		return -ENOMEM;
+ 
++	rxq->rx_skb_info[index].page = new_page;
+ 	rxq->rx_skb_info[index].offset = FEC_ENET_XDP_HEADROOM;
+ 	phys_addr = page_pool_get_dma_addr(new_page) + FEC_ENET_XDP_HEADROOM;
+ 	bdp->cbd_bufaddr = cpu_to_fec32(phys_addr);
++
++	return 0;
+ }
+ 
+ static u32
+@@ -1679,6 +1682,7 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
+ 	int cpu = smp_processor_id();
+ 	struct xdp_buff xdp;
+ 	struct page *page;
++	__fec32 cbd_bufaddr;
+ 	u32 sub_len = 4;
+ 
+ #if !defined(CONFIG_M5272)
+@@ -1743,12 +1747,17 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
+ 
+ 		index = fec_enet_get_bd_index(bdp, &rxq->bd);
+ 		page = rxq->rx_skb_info[index].page;
++		cbd_bufaddr = bdp->cbd_bufaddr;
++		if (fec_enet_update_cbd(rxq, bdp, index)) {
++			ndev->stats.rx_dropped++;
++			goto rx_processing_done;
++		}
++
+ 		dma_sync_single_for_cpu(&fep->pdev->dev,
+-					fec32_to_cpu(bdp->cbd_bufaddr),
++					fec32_to_cpu(cbd_bufaddr),
+ 					pkt_len,
+ 					DMA_FROM_DEVICE);
+ 		prefetch(page_address(page));
+-		fec_enet_update_cbd(rxq, bdp, index);
+ 
+ 		if (xdp_prog) {
+ 			xdp_buff_clear_frags_flag(&xdp);
+-- 
+2.39.5
+
 
 
 
