@@ -1,266 +1,315 @@
-Return-Path: <stable+bounces-110048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F179A185A1
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 20:27:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE13BA185A3
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 20:28:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 907E03AC22F
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:27:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 896ED188CB53
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1431BCA0E;
-	Tue, 21 Jan 2025 19:27:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ChGRWyO3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E261F2C2F;
+	Tue, 21 Jan 2025 19:28:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26263192B84
-	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 19:27:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02ED24B34;
+	Tue, 21 Jan 2025 19:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737487644; cv=none; b=rd0tWRy/5ypwfCKGqpFL3DdM6sCr8dAacYHWKUq8cV70vtbUdFYmjb4gHR0UvJBQd5lNvCBY3uz+34nMYcVhO2w6ZWlgj+S6EV9MtGWVPP4eO3mA6gJQ8Cc9e+eRqin1u6WyrfNWAmfj8tIjI8FRXrER3/lR+6GsH/CnKVe+0bY=
+	t=1737487681; cv=none; b=TBGIxUTiWDvKkmmsn4R9N7/KgRtURy2cysFfGPmW5izXI4bkBirZdTiA0oZO9ixmAN9IGTc6MFaZByyKwjVESBUAJw5wCYnioDhgcOTklxy+GJMj9UR6bDcMf+qlppDP/OigK+MyLemjHlRxa6rFq/5Yv832Q7B9bwvnUHnkL2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737487644; c=relaxed/simple;
-	bh=hFfFdjjpF4++JUqLnRNV4qBt05TlBtC6E5bQhrfzMjs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bZS7FEyosZlWQOQXN/Pp1s38uvTHmekUGz8DFJHagl4pp+swJelCs/Ir7BdroLtEjLp2+2O5roosmkpoLS8ull0X836bwayZ8abgRw11xjTHQngwk1UUO8PqaeDdCyL3K9WgOGLlgAGoIjsRtlTnEsXhj2uO2D4YD4OhwiEr5uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ChGRWyO3; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <b1bdc02e-fd8c-4018-b6ae-01c1f5e74a2c@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1737487634;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WgE/jprC2tr/0w7GSTIuDQiAw0VoiL+b67zdp70RXpg=;
-	b=ChGRWyO3YcBP3WnfcbyLZZvnALBxlmM4kPd8Xz6g1/3GbFbJGEf3Wi+24uJfdjZugbca6B
-	hviTToJG7Vo5a3JiIchcVI1qoktgNumHBpYZCY5GSQrdjfV1u1PDiqBv6aFqWWbF4diLs1
-	EoCBwwHB+D18n0WwJbkTHOVkFJslrxw=
-Date: Tue, 21 Jan 2025 14:27:10 -0500
+	s=arc-20240116; t=1737487681; c=relaxed/simple;
+	bh=DEvS4lDwXwjcPh44+r1JD5DOdeBiSnACeUVFv659FiI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hrBhX70R5BOFWEBMoJWfPwaW0uwHuKZ0AmjL7h54ZoeFQzMQ6lLvRXzVpwml37FBDUjzVn1eBvEy3sK3Z9vt9cXVxh8ES6qGHjOgBejyO04U26eeiDYpjFoqyqwzYdf8Fbhs1CKD3PvmvD3om88pWh/UybFlUWFQbV1jk+2Votk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
+	(Authenticated sender: kovalevvv)
+	by air.basealt.ru (Postfix) with ESMTPSA id 832622336B;
+	Tue, 21 Jan 2025 22:27:48 +0300 (MSK)
+From: Vasiliy Kovalev <kovalev@altlinux.org>
+To: stable@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	kovalev@altlinux.org,
+	Eric Dumazet <edumazet@google.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH v2 5.10] net: defer final 'struct net' free in netns dismantle
+Date: Tue, 21 Jan 2025 22:27:30 +0300
+Message-Id: <20250121192730.155559-1-kovalev@altlinux.org>
+X-Mailer: git-send-email 2.33.8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 6.1.y] gpio: xilinx: Convert gpio_lock to raw spinlock
-To: stable@vger.kernel.org
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-References: <2025012027-shaft-catalyst-2d69@gregkh>
- <20250121184148.3378693-1-sean.anderson@linux.dev>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <20250121184148.3378693-1-sean.anderson@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-On 1/21/25 13:41, Sean Anderson wrote:
-> [ Upstream commit c17ff476f53afb30f90bb3c2af77de069c81a622 ]
+From: Eric Dumazet <edumazet@google.com>
 
-Whoops, wrong upstream commit
+commit 0f6ede9fbc747e2553612271bce108f7517e7a45 upstream.
 
-> 
-> irq_chip functions may be called in raw spinlock context. Therefore, we
-> must also use a raw spinlock for our own internal locking.
-> 
-> This fixes the following lockdep splat:
-> 
-> [    5.349336] =============================
-> [    5.353349] [ BUG: Invalid wait context ]
-> [    5.357361] 6.13.0-rc5+ #69 Tainted: G        W
-> [    5.363031] -----------------------------
-> [    5.367045] kworker/u17:1/44 is trying to lock:
-> [    5.371587] ffffff88018b02c0 (&chip->gpio_lock){....}-{3:3}, at: xgpio_irq_unmask (drivers/gpio/gpio-xilinx.c:433 (discriminator 8))
-> [    5.380079] other info that might help us debug this:
-> [    5.385138] context-{5:5}
-> [    5.387762] 5 locks held by kworker/u17:1/44:
-> [    5.392123] #0: ffffff8800014958 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work (kernel/workqueue.c:3204)
-> [    5.402260] #1: ffffffc082fcbdd8 (deferred_probe_work){+.+.}-{0:0}, at: process_one_work (kernel/workqueue.c:3205)
-> [    5.411528] #2: ffffff880172c900 (&dev->mutex){....}-{4:4}, at: __device_attach (drivers/base/dd.c:1006)
-> [    5.419929] #3: ffffff88039c8268 (request_class#2){+.+.}-{4:4}, at: __setup_irq (kernel/irq/internals.h:156 kernel/irq/manage.c:1596)
-> [    5.428331] #4: ffffff88039c80c8 (lock_class#2){....}-{2:2}, at: __setup_irq (kernel/irq/manage.c:1614)
-> [    5.436472] stack backtrace:
-> [    5.439359] CPU: 2 UID: 0 PID: 44 Comm: kworker/u17:1 Tainted: G        W          6.13.0-rc5+ #69
-> [    5.448690] Tainted: [W]=WARN
-> [    5.451656] Hardware name: xlnx,zynqmp (DT)
-> [    5.455845] Workqueue: events_unbound deferred_probe_work_func
-> [    5.461699] Call trace:
-> [    5.464147] show_stack+0x18/0x24 C
-> [    5.467821] dump_stack_lvl (lib/dump_stack.c:123)
-> [    5.471501] dump_stack (lib/dump_stack.c:130)
-> [    5.474824] __lock_acquire (kernel/locking/lockdep.c:4828 kernel/locking/lockdep.c:4898 kernel/locking/lockdep.c:5176)
-> [    5.478758] lock_acquire (arch/arm64/include/asm/percpu.h:40 kernel/locking/lockdep.c:467 kernel/locking/lockdep.c:5851 kernel/locking/lockdep.c:5814)
-> [    5.482429] _raw_spin_lock_irqsave (include/linux/spinlock_api_smp.h:111 kernel/locking/spinlock.c:162)
-> [    5.486797] xgpio_irq_unmask (drivers/gpio/gpio-xilinx.c:433 (discriminator 8))
-> [    5.490737] irq_enable (kernel/irq/internals.h:236 kernel/irq/chip.c:170 kernel/irq/chip.c:439 kernel/irq/chip.c:432 kernel/irq/chip.c:345)
-> [    5.494060] __irq_startup (kernel/irq/internals.h:241 kernel/irq/chip.c:180 kernel/irq/chip.c:250)
-> [    5.497645] irq_startup (kernel/irq/chip.c:270)
-> [    5.501143] __setup_irq (kernel/irq/manage.c:1807)
-> [    5.504728] request_threaded_irq (kernel/irq/manage.c:2208)
-> 
-> Fixes: a32c7caea292 ("gpio: gpio-xilinx: Add interrupt support")
-> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-> Cc: stable@vger.kernel.org
-> Link: https://lore.kernel.org/r/20250110163354.2012654-1-sean.anderson@linux.dev
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> [ resolved conflicts ]
-> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-> ---
->  drivers/gpio/gpio-xilinx.c | 32 ++++++++++++++++----------------
->  1 file changed, 16 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/gpio/gpio-xilinx.c b/drivers/gpio/gpio-xilinx.c
-> index 2fc6b6ff7f16..58cbf763ee21 100644
-> --- a/drivers/gpio/gpio-xilinx.c
-> +++ b/drivers/gpio/gpio-xilinx.c
-> @@ -66,7 +66,7 @@ struct xgpio_instance {
->  	DECLARE_BITMAP(state, 64);
->  	DECLARE_BITMAP(last_irq_read, 64);
->  	DECLARE_BITMAP(dir, 64);
-> -	spinlock_t gpio_lock;	/* For serializing operations */
-> +	raw_spinlock_t gpio_lock;	/* For serializing operations */
->  	int irq;
->  	struct irq_chip irqchip;
->  	DECLARE_BITMAP(enable, 64);
-> @@ -181,14 +181,14 @@ static void xgpio_set(struct gpio_chip *gc, unsigned int gpio, int val)
->  	struct xgpio_instance *chip = gpiochip_get_data(gc);
->  	int bit = xgpio_to_bit(chip, gpio);
->  
-> -	spin_lock_irqsave(&chip->gpio_lock, flags);
-> +	raw_spin_lock_irqsave(&chip->gpio_lock, flags);
->  
->  	/* Write to GPIO signal and set its direction to output */
->  	__assign_bit(bit, chip->state, val);
->  
->  	xgpio_write_ch(chip, XGPIO_DATA_OFFSET, bit, chip->state);
->  
-> -	spin_unlock_irqrestore(&chip->gpio_lock, flags);
-> +	raw_spin_unlock_irqrestore(&chip->gpio_lock, flags);
->  }
->  
->  /**
-> @@ -212,7 +212,7 @@ static void xgpio_set_multiple(struct gpio_chip *gc, unsigned long *mask,
->  	bitmap_remap(hw_mask, mask, chip->sw_map, chip->hw_map, 64);
->  	bitmap_remap(hw_bits, bits, chip->sw_map, chip->hw_map, 64);
->  
-> -	spin_lock_irqsave(&chip->gpio_lock, flags);
-> +	raw_spin_lock_irqsave(&chip->gpio_lock, flags);
->  
->  	bitmap_replace(state, chip->state, hw_bits, hw_mask, 64);
->  
-> @@ -220,7 +220,7 @@ static void xgpio_set_multiple(struct gpio_chip *gc, unsigned long *mask,
->  
->  	bitmap_copy(chip->state, state, 64);
->  
-> -	spin_unlock_irqrestore(&chip->gpio_lock, flags);
-> +	raw_spin_unlock_irqrestore(&chip->gpio_lock, flags);
->  }
->  
->  /**
-> @@ -238,13 +238,13 @@ static int xgpio_dir_in(struct gpio_chip *gc, unsigned int gpio)
->  	struct xgpio_instance *chip = gpiochip_get_data(gc);
->  	int bit = xgpio_to_bit(chip, gpio);
->  
-> -	spin_lock_irqsave(&chip->gpio_lock, flags);
-> +	raw_spin_lock_irqsave(&chip->gpio_lock, flags);
->  
->  	/* Set the GPIO bit in shadow register and set direction as input */
->  	__set_bit(bit, chip->dir);
->  	xgpio_write_ch(chip, XGPIO_TRI_OFFSET, bit, chip->dir);
->  
-> -	spin_unlock_irqrestore(&chip->gpio_lock, flags);
-> +	raw_spin_unlock_irqrestore(&chip->gpio_lock, flags);
->  
->  	return 0;
->  }
-> @@ -267,7 +267,7 @@ static int xgpio_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
->  	struct xgpio_instance *chip = gpiochip_get_data(gc);
->  	int bit = xgpio_to_bit(chip, gpio);
->  
-> -	spin_lock_irqsave(&chip->gpio_lock, flags);
-> +	raw_spin_lock_irqsave(&chip->gpio_lock, flags);
->  
->  	/* Write state of GPIO signal */
->  	__assign_bit(bit, chip->state, val);
-> @@ -277,7 +277,7 @@ static int xgpio_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
->  	__clear_bit(bit, chip->dir);
->  	xgpio_write_ch(chip, XGPIO_TRI_OFFSET, bit, chip->dir);
->  
-> -	spin_unlock_irqrestore(&chip->gpio_lock, flags);
-> +	raw_spin_unlock_irqrestore(&chip->gpio_lock, flags);
->  
->  	return 0;
->  }
-> @@ -405,7 +405,7 @@ static void xgpio_irq_mask(struct irq_data *irq_data)
->  	int bit = xgpio_to_bit(chip, irq_offset);
->  	u32 mask = BIT(bit / 32), temp;
->  
-> -	spin_lock_irqsave(&chip->gpio_lock, flags);
-> +	raw_spin_lock_irqsave(&chip->gpio_lock, flags);
->  
->  	__clear_bit(bit, chip->enable);
->  
-> @@ -415,7 +415,7 @@ static void xgpio_irq_mask(struct irq_data *irq_data)
->  		temp &= ~mask;
->  		xgpio_writereg(chip->regs + XGPIO_IPIER_OFFSET, temp);
->  	}
-> -	spin_unlock_irqrestore(&chip->gpio_lock, flags);
-> +	raw_spin_unlock_irqrestore(&chip->gpio_lock, flags);
->  }
->  
->  /**
-> @@ -431,7 +431,7 @@ static void xgpio_irq_unmask(struct irq_data *irq_data)
->  	u32 old_enable = xgpio_get_value32(chip->enable, bit);
->  	u32 mask = BIT(bit / 32), val;
->  
-> -	spin_lock_irqsave(&chip->gpio_lock, flags);
-> +	raw_spin_lock_irqsave(&chip->gpio_lock, flags);
->  
->  	__set_bit(bit, chip->enable);
->  
-> @@ -450,7 +450,7 @@ static void xgpio_irq_unmask(struct irq_data *irq_data)
->  		xgpio_writereg(chip->regs + XGPIO_IPIER_OFFSET, val);
->  	}
->  
-> -	spin_unlock_irqrestore(&chip->gpio_lock, flags);
-> +	raw_spin_unlock_irqrestore(&chip->gpio_lock, flags);
->  }
->  
->  /**
-> @@ -515,7 +515,7 @@ static void xgpio_irqhandler(struct irq_desc *desc)
->  
->  	chained_irq_enter(irqchip, desc);
->  
-> -	spin_lock(&chip->gpio_lock);
-> +	raw_spin_lock(&chip->gpio_lock);
->  
->  	xgpio_read_ch_all(chip, XGPIO_DATA_OFFSET, all);
->  
-> @@ -532,7 +532,7 @@ static void xgpio_irqhandler(struct irq_desc *desc)
->  	bitmap_copy(chip->last_irq_read, all, 64);
->  	bitmap_or(all, rising, falling, 64);
->  
-> -	spin_unlock(&chip->gpio_lock);
-> +	raw_spin_unlock(&chip->gpio_lock);
->  
->  	dev_dbg(gc->parent, "IRQ rising %*pb falling %*pb\n", 64, rising, 64, falling);
->  
-> @@ -623,7 +623,7 @@ static int xgpio_probe(struct platform_device *pdev)
->  	bitmap_set(chip->hw_map,  0, width[0]);
->  	bitmap_set(chip->hw_map, 32, width[1]);
->  
-> -	spin_lock_init(&chip->gpio_lock);
-> +	raw_spin_lock_init(&chip->gpio_lock);
->  
->  	chip->gc.base = -1;
->  	chip->gc.ngpio = bitmap_weight(chip->hw_map, 64);
+Ilya reported a slab-use-after-free in dst_destroy [1]
+
+Issue is in xfrm6_net_init() and xfrm4_net_init() :
+
+They copy xfrm[46]_dst_ops_template into net->xfrm.xfrm[46]_dst_ops.
+
+But net structure might be freed before all the dst callbacks are
+called. So when dst_destroy() calls later :
+
+if (dst->ops->destroy)
+    dst->ops->destroy(dst);
+
+dst->ops points to the old net->xfrm.xfrm[46]_dst_ops, which has been freed.
+
+See a relevant issue fixed in :
+
+ac888d58869b ("net: do not delay dst_entries_add() in dst_release()")
+
+A fix is to queue the 'struct net' to be freed after one
+another cleanup_net() round (and existing rcu_barrier())
+
+[1]
+
+BUG: KASAN: slab-use-after-free in dst_destroy (net/core/dst.c:112)
+Read of size 8 at addr ffff8882137ccab0 by task swapper/37/0
+Dec 03 05:46:18 kernel:
+CPU: 37 UID: 0 PID: 0 Comm: swapper/37 Kdump: loaded Not tainted 6.12.0 #67
+Hardware name: Red Hat KVM/RHEL, BIOS 1.16.1-1.el9 04/01/2014
+Call Trace:
+ <IRQ>
+dump_stack_lvl (lib/dump_stack.c:124)
+print_address_description.constprop.0 (mm/kasan/report.c:378)
+? dst_destroy (net/core/dst.c:112)
+print_report (mm/kasan/report.c:489)
+? dst_destroy (net/core/dst.c:112)
+? kasan_addr_to_slab (mm/kasan/common.c:37)
+kasan_report (mm/kasan/report.c:603)
+? dst_destroy (net/core/dst.c:112)
+? rcu_do_batch (kernel/rcu/tree.c:2567)
+dst_destroy (net/core/dst.c:112)
+rcu_do_batch (kernel/rcu/tree.c:2567)
+? __pfx_rcu_do_batch (kernel/rcu/tree.c:2491)
+? lockdep_hardirqs_on_prepare (kernel/locking/lockdep.c:4339 kernel/locking/lockdep.c:4406)
+rcu_core (kernel/rcu/tree.c:2825)
+handle_softirqs (kernel/softirq.c:554)
+__irq_exit_rcu (kernel/softirq.c:589 kernel/softirq.c:428 kernel/softirq.c:637)
+irq_exit_rcu (kernel/softirq.c:651)
+sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1049 arch/x86/kernel/apic/apic.c:1049)
+ </IRQ>
+ <TASK>
+asm_sysvec_apic_timer_interrupt (./arch/x86/include/asm/idtentry.h:702)
+RIP: 0010:default_idle (./arch/x86/include/asm/irqflags.h:37 ./arch/x86/include/asm/irqflags.h:92 arch/x86/kernel/process.c:743)
+Code: 00 4d 29 c8 4c 01 c7 4c 29 c2 e9 6e ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 90 0f 00 2d c7 c9 27 00 fb f4 <fa> c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 90
+RSP: 0018:ffff888100d2fe00 EFLAGS: 00000246
+RAX: 00000000001870ed RBX: 1ffff110201a5fc2 RCX: ffffffffb61a3e46
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffffb3d4d123
+RBP: 0000000000000000 R08: 0000000000000001 R09: ffffed11c7e1835d
+R10: ffff888e3f0c1aeb R11: 0000000000000000 R12: 0000000000000000
+R13: ffff888100d20000 R14: dffffc0000000000 R15: 0000000000000000
+? ct_kernel_exit.constprop.0 (kernel/context_tracking.c:148)
+? cpuidle_idle_call (kernel/sched/idle.c:186)
+default_idle_call (./include/linux/cpuidle.h:143 kernel/sched/idle.c:118)
+cpuidle_idle_call (kernel/sched/idle.c:186)
+? __pfx_cpuidle_idle_call (kernel/sched/idle.c:168)
+? lock_release (kernel/locking/lockdep.c:467 kernel/locking/lockdep.c:5848)
+? lockdep_hardirqs_on_prepare (kernel/locking/lockdep.c:4347 kernel/locking/lockdep.c:4406)
+? tsc_verify_tsc_adjust (arch/x86/kernel/tsc_sync.c:59)
+do_idle (kernel/sched/idle.c:326)
+cpu_startup_entry (kernel/sched/idle.c:423 (discriminator 1))
+start_secondary (arch/x86/kernel/smpboot.c:202 arch/x86/kernel/smpboot.c:282)
+? __pfx_start_secondary (arch/x86/kernel/smpboot.c:232)
+? soft_restart_cpu (arch/x86/kernel/head_64.S:452)
+common_startup_64 (arch/x86/kernel/head_64.S:414)
+ </TASK>
+Dec 03 05:46:18 kernel:
+Allocated by task 12184:
+kasan_save_stack (mm/kasan/common.c:48)
+kasan_save_track (./arch/x86/include/asm/current.h:49 mm/kasan/common.c:60 mm/kasan/common.c:69)
+__kasan_slab_alloc (mm/kasan/common.c:319 mm/kasan/common.c:345)
+kmem_cache_alloc_noprof (mm/slub.c:4085 mm/slub.c:4134 mm/slub.c:4141)
+copy_net_ns (net/core/net_namespace.c:421 net/core/net_namespace.c:480)
+create_new_namespaces (kernel/nsproxy.c:110)
+unshare_nsproxy_namespaces (kernel/nsproxy.c:228 (discriminator 4))
+ksys_unshare (kernel/fork.c:3313)
+__x64_sys_unshare (kernel/fork.c:3382)
+do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+Dec 03 05:46:18 kernel:
+Freed by task 11:
+kasan_save_stack (mm/kasan/common.c:48)
+kasan_save_track (./arch/x86/include/asm/current.h:49 mm/kasan/common.c:60 mm/kasan/common.c:69)
+kasan_save_free_info (mm/kasan/generic.c:582)
+__kasan_slab_free (mm/kasan/common.c:271)
+kmem_cache_free (mm/slub.c:4579 mm/slub.c:4681)
+cleanup_net (net/core/net_namespace.c:456 net/core/net_namespace.c:446 net/core/net_namespace.c:647)
+process_one_work (kernel/workqueue.c:3229)
+worker_thread (kernel/workqueue.c:3304 kernel/workqueue.c:3391)
+kthread (kernel/kthread.c:389)
+ret_from_fork (arch/x86/kernel/process.c:147)
+ret_from_fork_asm (arch/x86/entry/entry_64.S:257)
+Dec 03 05:46:18 kernel:
+Last potentially related work creation:
+kasan_save_stack (mm/kasan/common.c:48)
+__kasan_record_aux_stack (mm/kasan/generic.c:541)
+insert_work (./include/linux/instrumented.h:68 ./include/asm-generic/bitops/instrumented-non-atomic.h:141 kernel/workqueue.c:788 kernel/workqueue.c:795 kernel/workqueue.c:2186)
+__queue_work (kernel/workqueue.c:2340)
+queue_work_on (kernel/workqueue.c:2391)
+xfrm_policy_insert (net/xfrm/xfrm_policy.c:1610)
+xfrm_add_policy (net/xfrm/xfrm_user.c:2116)
+xfrm_user_rcv_msg (net/xfrm/xfrm_user.c:3321)
+netlink_rcv_skb (net/netlink/af_netlink.c:2536)
+xfrm_netlink_rcv (net/xfrm/xfrm_user.c:3344)
+netlink_unicast (net/netlink/af_netlink.c:1316 net/netlink/af_netlink.c:1342)
+netlink_sendmsg (net/netlink/af_netlink.c:1886)
+sock_write_iter (net/socket.c:729 net/socket.c:744 net/socket.c:1165)
+vfs_write (fs/read_write.c:590 fs/read_write.c:683)
+ksys_write (fs/read_write.c:736)
+do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+Dec 03 05:46:18 kernel:
+Second to last potentially related work creation:
+kasan_save_stack (mm/kasan/common.c:48)
+__kasan_record_aux_stack (mm/kasan/generic.c:541)
+insert_work (./include/linux/instrumented.h:68 ./include/asm-generic/bitops/instrumented-non-atomic.h:141 kernel/workqueue.c:788 kernel/workqueue.c:795 kernel/workqueue.c:2186)
+__queue_work (kernel/workqueue.c:2340)
+queue_work_on (kernel/workqueue.c:2391)
+__xfrm_state_insert (./include/linux/workqueue.h:723 net/xfrm/xfrm_state.c:1150 net/xfrm/xfrm_state.c:1145 net/xfrm/xfrm_state.c:1513)
+xfrm_state_update (./include/linux/spinlock.h:396 net/xfrm/xfrm_state.c:1940)
+xfrm_add_sa (net/xfrm/xfrm_user.c:912)
+xfrm_user_rcv_msg (net/xfrm/xfrm_user.c:3321)
+netlink_rcv_skb (net/netlink/af_netlink.c:2536)
+xfrm_netlink_rcv (net/xfrm/xfrm_user.c:3344)
+netlink_unicast (net/netlink/af_netlink.c:1316 net/netlink/af_netlink.c:1342)
+netlink_sendmsg (net/netlink/af_netlink.c:1886)
+sock_write_iter (net/socket.c:729 net/socket.c:744 net/socket.c:1165)
+vfs_write (fs/read_write.c:590 fs/read_write.c:683)
+ksys_write (fs/read_write.c:736)
+do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+
+Fixes: a8a572a6b5f2 ("xfrm: dst_entries_init() per-net dst_ops")
+Reported-by: Ilya Maximets <i.maximets@ovn.org>
+Closes: https://lore.kernel.org/netdev/CANn89iKKYDVpB=MtmfH7nyv2p=rJWSLedO5k7wSZgtY_tO8WQg@mail.gmail.com/T/#m02c98c3009fe66382b73cfb4db9cf1df6fab3fbf
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20241204125455.3871859-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+---
+Backport to fix CVE-2024-56658
+Link: https://www.cve.org/CVERecord/?id=CVE-2024-56658
+---
+v2: replace `net_drop_ns()` with `net_free()` to fix UAF:
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 0 PID: 7 at lib/refcount.c:28 refcount_warn_saturate+0x155/0x290
+Call Trace:
+  ? __warn+0xe7/0x1f0
+  ? refcount_warn_saturate+0x155/0x290
+  ? report_bug+0x1c1/0x210
+  ? handle_bug+0x38/0x90
+  ? __warn_printk+0xcb/0xfc
+  ? exc_invalid_op+0x14/0x50
+  ? asm_exc_invalid_op+0x12/0x20
+  ? vprintk_func+0x98/0x140
+  ? refcount_warn_saturate+0x155/0x290
+  net_drop_ns.part.0+0xcf/0x130
+  cleanup_net+0x655/0x970
+  ? ops_free_list.part.0+0x4a0/0x4a0
+  ? _raw_spin_unlock_irq+0x24/0x80
+  ? lockdep_hardirqs_on_prepare+0x2b3/0x430
+  process_one_work+0x9ad/0x14e0
+  ? pwq_dec_nr_in_flight+0x300/0x300
+  ? rwlock_bug.part.0+0x90/0x90
+  worker_thread+0x622/0x1320
+  ? process_one_work+0x14e0/0x14e0
+  kthread+0x3ae/0x4a0
+  ? _raw_spin_unlock_irq+0x24/0x80
+  ? __kthread_bind_mask+0xc0/0xc0
+  ret_from_fork+0x1f/0x30
+---
+ include/net/net_namespace.h |  1 +
+ net/core/net_namespace.c    | 27 ++++++++++++++++++++++++---
+ 2 files changed, 25 insertions(+), 3 deletions(-)
+
+diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
+index eb0e7731f3b1c8..df95d553923937 100644
+--- a/include/net/net_namespace.h
++++ b/include/net/net_namespace.h
+@@ -80,6 +80,7 @@ struct net {
+ 						 * or to unregister pernet ops
+ 						 * (pernet_ops_rwsem write locked).
+ 						 */
++	struct llist_node	defer_free_list;
+ 	struct llist_node	cleanup_list;	/* namespaces on death row */
+ 
+ #ifdef CONFIG_KEYS
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index 6192a05ebcce2c..842637744ad690 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -452,10 +452,29 @@ static struct net *net_alloc(void)
+ 	goto out;
+ }
+ 
++static LLIST_HEAD(defer_free_list);
++
++static void net_complete_free(void)
++{
++	struct llist_node *kill_list;
++	struct net *net, *next;
++
++	/* Get the list of namespaces to free from last round. */
++	kill_list = llist_del_all(&defer_free_list);
++
++	llist_for_each_entry_safe(net, next, kill_list, defer_free_list)
++		kmem_cache_free(net_cachep, net);
++
++}
++
+ static void net_free(struct net *net)
+ {
+-	kfree(rcu_access_pointer(net->gen));
+-	kmem_cache_free(net_cachep, net);
++	if (refcount_dec_and_test(&net->passive)) {
++		kfree(rcu_access_pointer(net->gen));
++
++		/* Wait for an extra rcu_barrier() before final free. */
++		llist_add(&net->defer_free_list, &defer_free_list);
++	}
+ }
+ 
+ void net_drop_ns(void *p)
+@@ -628,6 +647,8 @@ static void cleanup_net(struct work_struct *work)
+ 	 */
+ 	rcu_barrier();
+ 
++	net_complete_free();
++
+ 	/* Finally it is safe to free my network namespace structure */
+ 	list_for_each_entry_safe(net, tmp, &net_exit_list, exit_list) {
+ 		list_del_init(&net->exit_list);
+@@ -636,7 +657,7 @@ static void cleanup_net(struct work_struct *work)
+ 		key_remove_domain(net->key_domain);
+ #endif
+ 		put_user_ns(net->user_ns);
+-		net_drop_ns(net);
++		net_free(net);
+ 	}
+ }
+ 
+-- 
+2.33.8
 
 
