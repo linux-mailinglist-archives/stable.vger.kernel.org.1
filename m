@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-109919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4C69A18489
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:08:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41459A18347
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:54:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BC917A54B9
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:07:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E17917A4210
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:54:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD8B1F5613;
-	Tue, 21 Jan 2025 18:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D7F1F55E3;
+	Tue, 21 Jan 2025 17:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xlS0Fid6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0g03K+Bu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A9B1F0E36;
-	Tue, 21 Jan 2025 18:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36EF1E9B38;
+	Tue, 21 Jan 2025 17:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482823; cv=none; b=iV5OEShdR7i5Z9xbCR+2PLrXbh5qJXW3BAHxbyp65TAsgvRmCjpKCe8XjmDxRxwkEqP5VnH9jX8VRc8YU9Eqg3XlXAuozA0U4DpD3Jn/mMOGJGtqc4pQPQoUrCePr4i6wLfbVhesxG5xFQ83YT8NH0aQrc53GohSRSC7X5mFQr4=
+	t=1737482067; cv=none; b=Qt8Ob+2S0zU2RIrYAgjTf/dTky1Dfis3TOI2733ajCqTVESyGpw7naZZ2JSIjFMe4GXJ6C63/iTAzjER6RwSjDUm0mOC/L6nh1ciDcenL6AZO+lWwKzjcuAw1gaWeffpJ92DIOv5gF1YZuWTcmGTttvSQY55GobimQT/dRTDMwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482823; c=relaxed/simple;
-	bh=2AadXVLgZ6EQYqT1EMXjPWrrKr1XmmZnl1emmjvWmpU=;
+	s=arc-20240116; t=1737482067; c=relaxed/simple;
+	bh=p0jRT7Q9dPY+VmcObAm2CI+E8Sk2FfBftoQipE7zBYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F1YHiTSPmEVQ7ELfz73oRMo9V2ZABG0HqU5LdOCuKZEQ5Hd3wuO+uytXx/MBWKzvhpCRFJunhYbzXUnxCqxHUjDNTBLMCPAqVW9mONrMBsD8yFSa7gxlSG8PqeX0yY8kYB/gnywBCcH+yONigsYTNgRmA3oyrd4W2wHBMd2SfYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xlS0Fid6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27B31C4CEDF;
-	Tue, 21 Jan 2025 18:07:02 +0000 (UTC)
+	 MIME-Version; b=MPgy+2EPwYUJgQ1wPa7N4x1IUW9nNT8yBpDanwYq4eFFsHMh/FMTt5USXMIA/eaOUMCix3ilICAWm77JUVmspwoqW0OOimc649QO7Nb+IO1Ja0rM8DeWP0KskXuu61kQOsu6QmoKZ2SDJ5CUrIxhLCXiVsPSrgjxXDWWq/7HUdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0g03K+Bu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB8BC4CEDF;
+	Tue, 21 Jan 2025 17:54:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482823;
-	bh=2AadXVLgZ6EQYqT1EMXjPWrrKr1XmmZnl1emmjvWmpU=;
+	s=korg; t=1737482066;
+	bh=p0jRT7Q9dPY+VmcObAm2CI+E8Sk2FfBftoQipE7zBYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xlS0Fid6i9b0ZK5pxRKnAYMOblJy/vZGcFHaTih+stBNy/wJHBuJ0ZXCjQPUMTZB8
-	 eUxwyL7TbHbgYJBbV1d4vDlPOebaM2OG7fsaZ0873vQtGCrzqrN2RFL60Mj/V1UmLk
-	 nMD2Bc8EFj84nOdCvy/90nSLob9yNIsR11BVXn4Y=
+	b=0g03K+BudBV7bxBHRqG5lnLTvwxaQsGrPDQx/d7QY6IedyulTk+hojW/Xru10Bmlf
+	 FJV2jzy5lgTDwbMVlV3QMGbcuYqXu6DQQ3eApH9mcm6aJkhe5pmHgOy+vS/U7jNzsa
+	 D2yrGA7Pb3fzR5CP2VzNOMHgHZfxXfhL3sbal764=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7848fee1f1e5c53f912b@syzkaller.appspotmail.com,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	Christian Brauner <brauner@kernel.org>,
+	Xiao Liang <shaw.leon@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 021/127] afs: Fix the maximum cell name length
+Subject: [PATCH 6.6 07/72] gtp: Use for_each_netdev_rcu() in gtp_genl_dump_pdp().
 Date: Tue, 21 Jan 2025 18:51:33 +0100
-Message-ID: <20250121174530.492325680@linuxfoundation.org>
+Message-ID: <20250121174523.713277849@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,114 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 8fd56ad6e7c90ac2bddb0741c6b248c8c5d56ac8 ]
+[ Upstream commit 46841c7053e6d25fb33e0534ef023833bf03e382 ]
 
-The kafs filesystem limits the maximum length of a cell to 256 bytes, but a
-problem occurs if someone actually does that: kafs tries to create a
-directory under /proc/net/afs/ with the name of the cell, but that fails
-with a warning:
+gtp_newlink() links the gtp device to a list in dev_net(dev).
 
-        WARNING: CPU: 0 PID: 9 at fs/proc/generic.c:405
+However, even after the gtp device is moved to another netns,
+it stays on the list but should be invisible.
 
-because procfs limits the maximum filename length to 255.
+Let's use for_each_netdev_rcu() for netdev traversal in
+gtp_genl_dump_pdp().
 
-However, the DNS limits the maximum lookup length and, by extension, the
-maximum cell name, to 255 less two (length count and trailing NUL).
+Note that gtp_dev_list is no longer used under RCU, so list
+helpers are converted to the non-RCU variant.
 
-Fix this by limiting the maximum acceptable cellname length to 253.  This
-also allows us to be sure we can create the "/afs/.<cell>/" mountpoint too.
-
-Further, split the YFS VL record cell name maximum to be the 256 allowed by
-the protocol and ignore the record retrieved by YFSVL.GetCellName if it
-exceeds 253.
-
-Fixes: c3e9f888263b ("afs: Implement client support for the YFSVL.GetCellName RPC op")
-Reported-by: syzbot+7848fee1f1e5c53f912b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/6776d25d.050a0220.3a8527.0048.GAE@google.com/
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/376236.1736180460@warthog.procyon.org.uk
-Tested-by: syzbot+7848fee1f1e5c53f912b@syzkaller.appspotmail.com
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
+Reported-by: Xiao Liang <shaw.leon@gmail.com>
+Closes: https://lore.kernel.org/netdev/CABAhCOQdBL6h9M2C+kd+bGivRJ9Q72JUxW+-gur0nub_=PmFPA@mail.gmail.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/afs.h      | 2 +-
- fs/afs/afs_vl.h   | 1 +
- fs/afs/vl_alias.c | 8 ++++++--
- fs/afs/vlclient.c | 2 +-
- 4 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/gtp.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/fs/afs/afs.h b/fs/afs/afs.h
-index 432cb4b23961..3ea5f3e3c922 100644
---- a/fs/afs/afs.h
-+++ b/fs/afs/afs.h
-@@ -10,7 +10,7 @@
- 
- #include <linux/in.h>
- 
--#define AFS_MAXCELLNAME		256  	/* Maximum length of a cell name */
-+#define AFS_MAXCELLNAME		253  	/* Maximum length of a cell name (DNS limited) */
- #define AFS_MAXVOLNAME		64  	/* Maximum length of a volume name */
- #define AFS_MAXNSERVERS		8   	/* Maximum servers in a basic volume record */
- #define AFS_NMAXNSERVERS	13  	/* Maximum servers in a N/U-class volume record */
-diff --git a/fs/afs/afs_vl.h b/fs/afs/afs_vl.h
-index 9c65ffb8a523..8da0899fbc08 100644
---- a/fs/afs/afs_vl.h
-+++ b/fs/afs/afs_vl.h
-@@ -13,6 +13,7 @@
- #define AFS_VL_PORT		7003	/* volume location service port */
- #define VL_SERVICE		52	/* RxRPC service ID for the Volume Location service */
- #define YFS_VL_SERVICE		2503	/* Service ID for AuriStor upgraded VL service */
-+#define YFS_VL_MAXCELLNAME	256  	/* Maximum length of a cell name in YFS protocol */
- 
- enum AFSVL_Operations {
- 	VLGETENTRYBYID		= 503,	/* AFS Get VLDB entry by ID */
-diff --git a/fs/afs/vl_alias.c b/fs/afs/vl_alias.c
-index f04a80e4f5c3..83cf1bfbe343 100644
---- a/fs/afs/vl_alias.c
-+++ b/fs/afs/vl_alias.c
-@@ -302,6 +302,7 @@ static char *afs_vl_get_cell_name(struct afs_cell *cell, struct key *key)
- static int yfs_check_canonical_cell_name(struct afs_cell *cell, struct key *key)
- {
- 	struct afs_cell *master;
-+	size_t name_len;
- 	char *cell_name;
- 
- 	cell_name = afs_vl_get_cell_name(cell, key);
-@@ -313,8 +314,11 @@ static int yfs_check_canonical_cell_name(struct afs_cell *cell, struct key *key)
- 		return 0;
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index 60c950066ec5b..69b89483f1b50 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -1096,7 +1096,7 @@ static int gtp_newlink(struct net *src_net, struct net_device *dev,
  	}
  
--	master = afs_lookup_cell(cell->net, cell_name, strlen(cell_name),
--				 NULL, false);
-+	name_len = strlen(cell_name);
-+	if (!name_len || name_len > AFS_MAXCELLNAME)
-+		master = ERR_PTR(-EOPNOTSUPP);
-+	else
-+		master = afs_lookup_cell(cell->net, cell_name, name_len, NULL, false);
- 	kfree(cell_name);
- 	if (IS_ERR(master))
- 		return PTR_ERR(master);
-diff --git a/fs/afs/vlclient.c b/fs/afs/vlclient.c
-index 00fca3c66ba6..16653f2ffe4f 100644
---- a/fs/afs/vlclient.c
-+++ b/fs/afs/vlclient.c
-@@ -671,7 +671,7 @@ static int afs_deliver_yfsvl_get_cell_name(struct afs_call *call)
- 			return ret;
+ 	gn = net_generic(dev_net(dev), gtp_net_id);
+-	list_add_rcu(&gtp->list, &gn->gtp_dev_list);
++	list_add(&gtp->list, &gn->gtp_dev_list);
+ 	dev->priv_destructor = gtp_destructor;
  
- 		namesz = ntohl(call->tmp);
--		if (namesz > AFS_MAXCELLNAME)
-+		if (namesz > YFS_VL_MAXCELLNAME)
- 			return afs_protocol_error(call, afs_eproto_cellname_len);
- 		paddedsz = (namesz + 3) & ~3;
- 		call->count = namesz;
+ 	netdev_dbg(dev, "registered new GTP interface\n");
+@@ -1122,7 +1122,7 @@ static void gtp_dellink(struct net_device *dev, struct list_head *head)
+ 		hlist_for_each_entry_safe(pctx, next, &gtp->tid_hash[i], hlist_tid)
+ 			pdp_context_delete(pctx);
+ 
+-	list_del_rcu(&gtp->list);
++	list_del(&gtp->list);
+ 	unregister_netdevice_queue(dev, head);
+ }
+ 
+@@ -1690,16 +1690,19 @@ static int gtp_genl_dump_pdp(struct sk_buff *skb,
+ 	struct gtp_dev *last_gtp = (struct gtp_dev *)cb->args[2], *gtp;
+ 	int i, j, bucket = cb->args[0], skip = cb->args[1];
+ 	struct net *net = sock_net(skb->sk);
++	struct net_device *dev;
+ 	struct pdp_ctx *pctx;
+-	struct gtp_net *gn;
+-
+-	gn = net_generic(net, gtp_net_id);
+ 
+ 	if (cb->args[4])
+ 		return 0;
+ 
+ 	rcu_read_lock();
+-	list_for_each_entry_rcu(gtp, &gn->gtp_dev_list, list) {
++	for_each_netdev_rcu(net, dev) {
++		if (dev->rtnl_link_ops != &gtp_link_ops)
++			continue;
++
++		gtp = netdev_priv(dev);
++
+ 		if (last_gtp && last_gtp != gtp)
+ 			continue;
+ 		else
+@@ -1891,9 +1894,9 @@ static void __net_exit gtp_net_exit_batch_rtnl(struct list_head *net_list,
+ 
+ 	list_for_each_entry(net, net_list, exit_list) {
+ 		struct gtp_net *gn = net_generic(net, gtp_net_id);
+-		struct gtp_dev *gtp;
++		struct gtp_dev *gtp, *gtp_next;
+ 
+-		list_for_each_entry(gtp, &gn->gtp_dev_list, list)
++		list_for_each_entry_safe(gtp, gtp_next, &gn->gtp_dev_list, list)
+ 			gtp_dellink(gtp->dev, dev_to_kill);
+ 	}
+ }
 -- 
 2.39.5
 
