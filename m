@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-109659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00411A18346
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:54:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E606EA18488
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:08:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CCA8169703
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:54:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C1C37A5479
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64EEC1F5421;
-	Tue, 21 Jan 2025 17:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DDD81F560C;
+	Tue, 21 Jan 2025 18:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiV2vaIZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X1uoit/N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C381E9B38;
-	Tue, 21 Jan 2025 17:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D013E1F0E36;
+	Tue, 21 Jan 2025 18:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482064; cv=none; b=Rj/iK48WOOUp6DfqU+ef5h+r3W2xbHD7xoBiasF2wnJ/+JY9HFuWbi208BJgoSCDiyXVv0ZuiqYVesnS5UsU6V8Fzn6wtxFB02JHTe3/Q79Ig5hEvuwTEQFwOdarONn8uslambn3RpDnxmmu+xiXOug56TiVm+zf6GjXWCaq9uw=
+	t=1737482820; cv=none; b=JfIv1wpRjFE6DTFeHQX78vrfLUOmWmPLiWCSXeGfMj7W1F9Arf4zSOw0ti0B81+A/qF8uFX6B6TxECRy3+1/6yImzOjtrC3owWNZvs3kP6IIkvaDAzxxNypwYDSpQ3L1hTigjsPKqzf4QPaFEO+J5KUKxoq2IMxPgZejx0teRSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482064; c=relaxed/simple;
-	bh=A1LdJ6JRjWf0tGO9TZxTlBtBLtFX1qdShYcU0wIWWzY=;
+	s=arc-20240116; t=1737482820; c=relaxed/simple;
+	bh=MFC2MdanUD1PfAlC0cSkdsSFJJxabNjOl+L9Tp+hGmw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YUUwJBXtpDCjoSEFNA9bXeDKY4cK/Qq5UhlNc6IJnB9DKp/+rCDppuiYhiLRdTgryhlLjCRl4jA9hABgz0oykTN/36MnYAdqXJMGXxBASYpHgYhwonUdVoFGpGKObq/RXK0B+olGpUPEGNYSu+keaG2dBvJv8nkdTNqD+ZUiRXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiV2vaIZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CE62C4CEDF;
-	Tue, 21 Jan 2025 17:54:23 +0000 (UTC)
+	 MIME-Version; b=jg+W5GR7nFquhDowyS3wa2aPCKh0ST2op7opPAQYMnFgUJUddn9KdV8htlSBPl+9PA2RmJ6RgjYSfx6rnzG93GxQa5kN0c0uU6mBonfLM55A5hffZj45qy2K3cSHdr8BQkGnDTiQ7eJQ958sf1JgiOYl8osely8hojqNsTB+vDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X1uoit/N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56DC4C4CEDF;
+	Tue, 21 Jan 2025 18:07:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482064;
-	bh=A1LdJ6JRjWf0tGO9TZxTlBtBLtFX1qdShYcU0wIWWzY=;
+	s=korg; t=1737482820;
+	bh=MFC2MdanUD1PfAlC0cSkdsSFJJxabNjOl+L9Tp+hGmw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tiV2vaIZHHxwn08C9ODm+/F7m0sMzAObUP2HNW8ZEAcQ03knHglKdqtpuOT9HRInu
-	 w2Dfmf9oEtnX6vu1+EMVWCPRZcVl18ztkwsoXA3ltHfZ7GscD4ymmcdFTr1TdYnqnZ
-	 +YSsj8JRLe6nB5z+43PKku+GhxCMLNV3RQ/8rHCE=
+	b=X1uoit/N2WTdD8hAskSJ/SBmbx+oXGqbYBhsjKe7DScRpXvzL8cR29nqmHMDJaIMA
+	 qAGBzEwCbn7SSqhwJVJu7kTjMEtDwD+YwJDJaNjdT8Se+BiNNxF1lUPaSX0VQdWKpp
+	 pQhiLt0IZJDjEXi/Bt0alBNYrFcMRtz72gYG26n0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Antoine Tenart <atenart@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Wentao Liang <liangwentao@iscas.ac.cn>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 06/72] gtp: use exit_batch_rtnl() method
+Subject: [PATCH 5.15 020/127] ksmbd: fix a missing return value check bug
 Date: Tue, 21 Jan 2025 18:51:32 +0100
-Message-ID: <20250121174523.676678436@linuxfoundation.org>
+Message-ID: <20250121174530.454506304@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Wentao Liang <liangwentao@iscas.ac.cn>
 
-[ Upstream commit 6eedda01b2bfdcf427b37759e053dc27232f3af1 ]
+[ Upstream commit 4c16e1cadcbcaf3c82d5fc310fbd34d0f5d0db7c ]
 
-exit_batch_rtnl() is called while RTNL is held,
-and devices to be unregistered can be queued in the dev_kill_list.
+In the smb2_send_interim_resp(), if ksmbd_alloc_work_struct()
+fails to allocate a node, it returns a NULL pointer to the
+in_work pointer. This can lead to an illegal memory write of
+in_work->response_buf when allocate_interim_rsp_buf() attempts
+to perform a kzalloc() on it.
 
-This saves one rtnl_lock()/rtnl_unlock() pair per netns
-and one unregister_netdevice_many() call per netns.
+To address this issue, incorporating a check for the return
+value of ksmbd_alloc_work_struct() ensures that the function
+returns immediately upon allocation failure, thereby preventing
+the aforementioned illegal memory access.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Antoine Tenart <atenart@kernel.org>
-Link: https://lore.kernel.org/r/20240206144313.2050392-8-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 46841c7053e6 ("gtp: Use for_each_netdev_rcu() in gtp_genl_dump_pdp().")
+Fixes: 041bba4414cd ("ksmbd: fix wrong interim response on compound")
+Signed-off-by: Wentao Liang <liangwentao@iscas.ac.cn>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/gtp.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ fs/ksmbd/smb2pdu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-index 9dd8f66610ce6..60c950066ec5b 100644
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -1884,23 +1884,23 @@ static int __net_init gtp_net_init(struct net *net)
- 	return 0;
- }
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index 7f9297a5f3ef..82b6be188ad4 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -714,6 +714,9 @@ void smb2_send_interim_resp(struct ksmbd_work *work, __le32 status)
+ 	struct smb2_hdr *rsp_hdr;
+ 	struct ksmbd_work *in_work = ksmbd_alloc_work_struct();
  
--static void __net_exit gtp_net_exit(struct net *net)
-+static void __net_exit gtp_net_exit_batch_rtnl(struct list_head *net_list,
-+					       struct list_head *dev_to_kill)
- {
--	struct gtp_net *gn = net_generic(net, gtp_net_id);
--	struct gtp_dev *gtp;
--	LIST_HEAD(list);
-+	struct net *net;
- 
--	rtnl_lock();
--	list_for_each_entry(gtp, &gn->gtp_dev_list, list)
--		gtp_dellink(gtp->dev, &list);
-+	list_for_each_entry(net, net_list, exit_list) {
-+		struct gtp_net *gn = net_generic(net, gtp_net_id);
-+		struct gtp_dev *gtp;
- 
--	unregister_netdevice_many(&list);
--	rtnl_unlock();
-+		list_for_each_entry(gtp, &gn->gtp_dev_list, list)
-+			gtp_dellink(gtp->dev, dev_to_kill);
-+	}
- }
- 
- static struct pernet_operations gtp_net_ops = {
- 	.init	= gtp_net_init,
--	.exit	= gtp_net_exit,
-+	.exit_batch_rtnl = gtp_net_exit_batch_rtnl,
- 	.id	= &gtp_net_id,
- 	.size	= sizeof(struct gtp_net),
- };
++	if (!in_work)
++		return;
++
+ 	if (allocate_interim_rsp_buf(in_work)) {
+ 		pr_err("smb_allocate_rsp_buf failed!\n");
+ 		ksmbd_free_work_struct(in_work);
 -- 
 2.39.5
 
