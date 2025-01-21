@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-109667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2766CA18353
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB11A18407
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:03:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEE71188BA64
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DC47188D53A
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:01:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE6D1F5611;
-	Tue, 21 Jan 2025 17:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 354981F707D;
+	Tue, 21 Jan 2025 18:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqxizEzQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfAo5Y+G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786311F5439;
-	Tue, 21 Jan 2025 17:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3EA81F55F7;
+	Tue, 21 Jan 2025 18:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482087; cv=none; b=D6JJW5LesPe4dybG9CFRawIHfhqGDr0dgykY0muBRk42z3ULodnuCJI6brrXb2B6Boen7nGa8YAGb/BCspoKtk/cTKEn3BhZ56SNia2UFrgCWQ0PNJ8VyEoT8MB0nmd4B4KpTIXTnTzVrLEtywsew/1IWbAvdIL6e1pqcnWZtSA=
+	t=1737482499; cv=none; b=MtF5jKMWhXrQr0D+yo8oVDK4LIhC1hopDIjqXn2JJbaCIJbDNYT+q4jXSfTHPlcp2xs1m8Dc7hRczPknmXBKUlatabm1ZNsnl17IUXiyGN35OERQiJRD702sqAZzWbmgV1ouqEyhyQ7Y+MZD0WcdSY3LoSE1r5qLZBt+WXqoJfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482087; c=relaxed/simple;
-	bh=PJf7nNvcuXdYuZc3P3lmqsDOe6Iv4X3bkRpWu+3+t2w=;
+	s=arc-20240116; t=1737482499; c=relaxed/simple;
+	bh=yc10w2QZBHD1UOZ6mUyjsVv1GCJrBWM4DNjS+XkPmVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=meu8pgaJqRde8r5UsMMwiqCGW5eaL5IuG681v6rDiUubqqJAOXORUTfm/2zdzTvt7EFGRQI38qrWTQn/SDBgSuymdKchKeIf5ayKqtc4K0t+BKpRWF0Bs9RpWNsD1Rq/VYmB08H2kL8JLnlc2Mr5rfz826wqZzFu7dSpHEC3Hj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqxizEzQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3348C4CEDF;
-	Tue, 21 Jan 2025 17:54:46 +0000 (UTC)
+	 MIME-Version; b=hHzC+/Q+ZokhnrAvAtoQSPoo9SMIUfWyT3qIutVBkX51CJza5TV3Jz/Kjq0jSrKavRfrcfGmXFcyt1AQ3vCIMqp6AjEbOdRNRBGY7RjtvuY+a9Y0PZEUcP3WDZ7JOaimNMDex/v7Rgh1Q4SBJERPYgJ1TmjDIHJ3RLxn11CO6hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UfAo5Y+G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60511C4CEDF;
+	Tue, 21 Jan 2025 18:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482087;
-	bh=PJf7nNvcuXdYuZc3P3lmqsDOe6Iv4X3bkRpWu+3+t2w=;
+	s=korg; t=1737482498;
+	bh=yc10w2QZBHD1UOZ6mUyjsVv1GCJrBWM4DNjS+XkPmVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uqxizEzQg17LvJjKkgptJYhUkyhC0l3zQ7fUikv8kpEuwplM0dEXhz3Av/pWmxj1n
-	 6e3KbNUkDE0JWOeHBalTtWRm8dCVhi94uToixV8ry2Lqu7uf3YJQ2lr58UgTHxdwfz
-	 QQYqshWqwumdQ4dziN8+i+U8InIaS704PSDNjJsU=
+	b=UfAo5Y+G4lZW1Giyw/97QGuG4c673l9qmHeP/Z8MXH8POD+dbnfQ39xrx5geworU+
+	 ivVuu7qNMyY2fNWLd9kWX/Bzikoe7bPpGhv7WIg+nves90o6IL1BZ+zepucZzcyM6A
+	 aDPPg9TtW5qOMIw54y+SPwSEL0uf+gFzVa3vSHHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	David Vernet <void@manifault.com>,
+	Andrea Righi <arighi@nvidia.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 30/72] scsi: ufs: core: Honor runtime/system PM levels if set by host controller drivers
+Subject: [PATCH 6.12 068/122] scx: Fix maximal BPF selftest prog
 Date: Tue, 21 Jan 2025 18:51:56 +0100
-Message-ID: <20250121174524.584881111@linuxfoundation.org>
+Message-ID: <20250121174535.616787055@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: David Vernet <void@manifault.com>
 
-[ Upstream commit bb9850704c043e48c86cc9df90ee102e8a338229 ]
+[ Upstream commit b8f614207b0d5e4abd6df8d5cb3cc11f009d1d93 ]
 
-Otherwise, the default levels will override the levels set by the host
-controller drivers.
+maximal.bpf.c is still dispatching to and consuming from SCX_DSQ_GLOBAL.
+Let's have it use its own DSQ to avoid any runtime errors.
 
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20241219-ufs-qcom-suspend-fix-v3-2-63c4b95a70b9@linaro.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: David Vernet <void@manifault.com>
+Tested-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tools/testing/selftests/sched_ext/maximal.bpf.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 02696c7f9beff..0ac0b6aaf9c62 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -10483,14 +10483,17 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
- 	}
+diff --git a/tools/testing/selftests/sched_ext/maximal.bpf.c b/tools/testing/selftests/sched_ext/maximal.bpf.c
+index 4c005fa718103..430f5e13bf554 100644
+--- a/tools/testing/selftests/sched_ext/maximal.bpf.c
++++ b/tools/testing/selftests/sched_ext/maximal.bpf.c
+@@ -12,6 +12,8 @@
  
- 	/*
--	 * Set the default power management level for runtime and system PM.
-+	 * Set the default power management level for runtime and system PM if
-+	 * not set by the host controller drivers.
- 	 * Default power saving mode is to keep UFS link in Hibern8 state
- 	 * and UFS device in sleep state.
- 	 */
--	hba->rpm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
-+	if (!hba->rpm_lvl)
-+		hba->rpm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
- 						UFS_SLEEP_PWR_MODE,
- 						UIC_LINK_HIBERN8_STATE);
--	hba->spm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
-+	if (!hba->spm_lvl)
-+		hba->spm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
- 						UFS_SLEEP_PWR_MODE,
- 						UIC_LINK_HIBERN8_STATE);
+ char _license[] SEC("license") = "GPL";
  
++#define DSQ_ID 0
++
+ s32 BPF_STRUCT_OPS(maximal_select_cpu, struct task_struct *p, s32 prev_cpu,
+ 		   u64 wake_flags)
+ {
+@@ -20,7 +22,7 @@ s32 BPF_STRUCT_OPS(maximal_select_cpu, struct task_struct *p, s32 prev_cpu,
+ 
+ void BPF_STRUCT_OPS(maximal_enqueue, struct task_struct *p, u64 enq_flags)
+ {
+-	scx_bpf_dsq_insert(p, SCX_DSQ_GLOBAL, SCX_SLICE_DFL, enq_flags);
++	scx_bpf_dsq_insert(p, DSQ_ID, SCX_SLICE_DFL, enq_flags);
+ }
+ 
+ void BPF_STRUCT_OPS(maximal_dequeue, struct task_struct *p, u64 deq_flags)
+@@ -28,7 +30,7 @@ void BPF_STRUCT_OPS(maximal_dequeue, struct task_struct *p, u64 deq_flags)
+ 
+ void BPF_STRUCT_OPS(maximal_dispatch, s32 cpu, struct task_struct *prev)
+ {
+-	scx_bpf_dsq_move_to_local(SCX_DSQ_GLOBAL);
++	scx_bpf_dsq_move_to_local(DSQ_ID);
+ }
+ 
+ void BPF_STRUCT_OPS(maximal_runnable, struct task_struct *p, u64 enq_flags)
+@@ -123,7 +125,7 @@ void BPF_STRUCT_OPS(maximal_cgroup_set_weight, struct cgroup *cgrp, u32 weight)
+ 
+ s32 BPF_STRUCT_OPS_SLEEPABLE(maximal_init)
+ {
+-	return 0;
++	return scx_bpf_create_dsq(DSQ_ID, -1);
+ }
+ 
+ void BPF_STRUCT_OPS(maximal_exit, struct scx_exit_info *info)
 -- 
 2.39.5
 
