@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-109930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94D97A18493
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:09:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9922DA183CA
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:00:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B128188DC04
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B31A16B002
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:59:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669561F5438;
-	Tue, 21 Jan 2025 18:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D92EC1F666C;
+	Tue, 21 Jan 2025 17:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QLe5vzE9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="euRbX2+y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24BDB1F5439;
-	Tue, 21 Jan 2025 18:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD7B1F55FA;
+	Tue, 21 Jan 2025 17:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482849; cv=none; b=LNUYrGPsulKGnI7IBB+IfinDu0gQFwfqL+Bxk8dDyauRnf2f0Ta4b5kf/t/ivoX+nSaeKJ/x70+mEErVO53AkWlLTX6H8JDWcwrTetpqlFSCJW4mxo72hSrLyUQJ0FNmyrCrlk9RBzbeZCWMIo0F2T7JqYWfBerhE2OZbmSHS78=
+	t=1737482370; cv=none; b=gcljuwHDlrDlsNDmAEtX5axvnVpVtrkyDHU7zW9bpwxOLZkb2iZbk34okS6LSJN1Iy69rPEXViUBSXHuM6Ladx2caNAQ/TreKIP2nzjpa9kgFi1RXRqeN0taMzIPVKI+G3xfADPMEyecIeLnbmrFe6wCf1PJPcWtpdzLkvUurKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482849; c=relaxed/simple;
-	bh=GB4WSE6Y3s8z+vpEptHi/IYx3i2HIZ1t/EW/+y1DwWc=;
+	s=arc-20240116; t=1737482370; c=relaxed/simple;
+	bh=NeWPTQYT0qHEsZtlgGXDfysNKBT3N5hNvfadcDAzhNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DAAvwnj18kGQfoeLUCciyLrf5FuPYedIoP3djY1CGrcKKA+R70G/bgRpKrLwapRTP23iCE/pNoSNzUCX5wyZmnKa1Nwjbo2CMZxY4aOdikKUhT93zgdEyYYeO2rZTQkz/D30kYsdxhV1TpUD4sCRipReFInOGU6ZQO/mwNoL1fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QLe5vzE9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4797C4CEDF;
-	Tue, 21 Jan 2025 18:07:28 +0000 (UTC)
+	 MIME-Version; b=OOspgNvas3cxx/EKjPoPv8q1HhXX0FoqCjkrSZuSaJswymw1eBM6GQXzGaVwCC+Yov/uyBvQ6LLS5o1mFKtmo01pFPhkx73kRy5PuAKdK6qMhCx9qDRb5twblQ6fs8I5AsJrN+UA7BBDc8g76KUR3OFw7QQ7MV2TP5sVfddEVG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=euRbX2+y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D340C4CEDF;
+	Tue, 21 Jan 2025 17:59:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482849;
-	bh=GB4WSE6Y3s8z+vpEptHi/IYx3i2HIZ1t/EW/+y1DwWc=;
+	s=korg; t=1737482370;
+	bh=NeWPTQYT0qHEsZtlgGXDfysNKBT3N5hNvfadcDAzhNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QLe5vzE9RLRjVH1mw70kYA3j+cxo2Sw+tOihaeT93FPQ/y7XjKap31VDcGmKP8atj
-	 gsTwd/PVxoqHzbuIZQngM+9Yr9+o8BlOk14813JA/Hu8I1S+GFAoEvk7GrRtpZd1H7
-	 I25RnkCZQ4uJmrn9Wzk192FPCdl8Aht17Vly5Sow=
+	b=euRbX2+yUC7/PmfKW3++SuvDgjvEgD2z3lzaVE240fLfOD7myPZgSMSdseTpRwJhY
+	 O4WK26zwAmonNlrwHSkGXacr3mextL9Y4374o7q8mtSuP+6PWQbdy8p8/O5mrY5pK6
+	 G1BYzaH8ZLzIWt9Z40vbeqOGT9zR5A9NnRGPXgB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Roman Li <Roman.Li@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 029/127] drm/amd/display: Add check for granularity in dml ceil/floor helpers
+	David Howells <dhowells@redhat.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	linux-nfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 053/122] kheaders: Ignore silly-rename files
 Date: Tue, 21 Jan 2025 18:51:41 +0100
-Message-ID: <20250121174530.792665928@linuxfoundation.org>
+Message-ID: <20250121174535.034891265@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +67,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Li <Roman.Li@amd.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 0881fbc4fd62e00a2b8e102725f76d10351b2ea8 upstream.
+[ Upstream commit 973b710b8821c3401ad7a25360c89e94b26884ac ]
 
-[Why]
-Wrapper functions for dcn_bw_ceil2() and dcn_bw_floor2()
-should check for granularity is non zero to avoid assert and
-divide-by-zero error in dcn_bw_ functions.
+Tell tar to ignore silly-rename files (".__afs*" and ".nfs*") when building
+the header archive.  These occur when a file that is open is unlinked
+locally, but hasn't yet been closed.  Such files are visible to the user
+via the getdents() syscall and so programs may want to do things with them.
 
-[How]
-Add check for granularity 0.
+During the kernel build, such files may be made during the processing of
+header files and the cleanup may get deferred by fput() which may result in
+tar seeing these files when it reads the directory, but they may have
+disappeared by the time it tries to open them, causing tar to fail with an
+error.  Further, we don't want to include them in the tarball if they still
+exist.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Signed-off-by: Roman Li <Roman.Li@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit f6e09701c3eb2ccb8cb0518e0b67f1c69742a4ec)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+With CONFIG_HEADERS_INSTALL=y, something like the following may be seen:
+
+   find: './kernel/.tmp_cpio_dir/include/dt-bindings/reset/.__afs2080': No such file or directory
+   tar: ./include/linux/greybus/.__afs3C95: File removed before we read it
+
+The find warning doesn't seem to cause a problem.
+
+Fix this by telling tar when called from in gen_kheaders.sh to exclude such
+files.  This only affects afs and nfs; cifs uses the Windows Hidden
+attribute to prevent the file from being seen.
+
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20241213135013.2964079-2-dhowells@redhat.com
+cc: Masahiro Yamada <masahiroy@kernel.org>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+cc: linux-nfs@vger.kernel.org
+cc: linux-kernel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dml_inline_defs.h |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ kernel/gen_kheaders.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/display/dc/dml/dml_inline_defs.h
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dml_inline_defs.h
-@@ -66,11 +66,15 @@ static inline double dml_max5(double a,
+diff --git a/kernel/gen_kheaders.sh b/kernel/gen_kheaders.sh
+index 383fd43ac6122..7e1340da5acae 100755
+--- a/kernel/gen_kheaders.sh
++++ b/kernel/gen_kheaders.sh
+@@ -89,6 +89,7 @@ find $cpio_dir -type f -print0 |
  
- static inline double dml_ceil(double a, double granularity)
- {
-+	if (granularity == 0)
-+		return 0;
- 	return (double) dcn_bw_ceil2(a, granularity);
- }
+ # Create archive and try to normalize metadata for reproducibility.
+ tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
++    --exclude=".__afs*" --exclude=".nfs*" \
+     --owner=0 --group=0 --sort=name --numeric-owner --mode=u=rw,go=r,a+X \
+     -I $XZ -cf $tarfile -C $cpio_dir/ . > /dev/null
  
- static inline double dml_floor(double a, double granularity)
- {
-+	if (granularity == 0)
-+		return 0;
- 	return (double) dcn_bw_floor2(a, granularity);
- }
- 
-@@ -119,11 +123,15 @@ static inline double dml_ceil_2(double f
- 
- static inline double dml_ceil_ex(double x, double granularity)
- {
-+	if (granularity == 0)
-+		return 0;
- 	return (double) dcn_bw_ceil2(x, granularity);
- }
- 
- static inline double dml_floor_ex(double x, double granularity)
- {
-+	if (granularity == 0)
-+		return 0;
- 	return (double) dcn_bw_floor2(x, granularity);
- }
- 
+-- 
+2.39.5
+
 
 
 
