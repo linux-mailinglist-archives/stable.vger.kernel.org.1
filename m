@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-109980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1586CA184BA
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:11:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1487A18387
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6C2F3A8E8D
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFF06188C96E
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:57:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB781F869E;
-	Tue, 21 Jan 2025 18:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B9A1F63E2;
+	Tue, 21 Jan 2025 17:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ITUIWqaw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cW75nArx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67651F667C;
-	Tue, 21 Jan 2025 18:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA831F5439;
+	Tue, 21 Jan 2025 17:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482994; cv=none; b=VLyLC0s9YB7lKT2vfOcbhKSsEqkR4HfTJFNfUVkpv3S3/ejumeEfExv+ev3Db978P2I1XIRG7q9QBXJhvqKViiQCTWDLAeSrsaOWUArW3jX9WSXEZs9tgSBYphwYgCmY3OZ4jbXN7w9u66BRHw82rMzzvZGZRr51SkgqK/z8jvY=
+	t=1737482193; cv=none; b=ttjeigapbQevMYO7+xtmvx3vn8h+c8iwXDNAlR1DpNX0qz+NMOsFzQLTN9R2B4HwLWFIkeNbY3FOXp7Y6y//mw+8fIrJM5lRN1A/3FmbbcInZ1HO1OahpnnIVnqCUS+92fox9qmty5++3l8OaZX66GnFvnUuJsLU9VbwqbuMUQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482994; c=relaxed/simple;
-	bh=aPaGfQW9//d91fy3Ulbjp1JNUdq8dLzb9iaFO/KuoFQ=;
+	s=arc-20240116; t=1737482193; c=relaxed/simple;
+	bh=IjODkHgrH5tojHz/7BLzQpePxh43RwnNA89bJx8aqpI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aXa0CxTOaoQV8ss5KDp3pEqNNpO5wqomybrKGvwUautAf4eYOewm3CCEbVsUDiAcPCC71w7qNbD68yo+q+WthV1n6VZleUEvxIgu8aNA4yS1bh2hHhUdAM1MalQzjYzc1542UAtHBGQU/+KTiUHO8P2OrxZ/ie2S/glnCEYcb7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ITUIWqaw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09F4C4CEDF;
-	Tue, 21 Jan 2025 18:09:53 +0000 (UTC)
+	 MIME-Version; b=l7J5K+o3NGA67xRgvZdu72Scn5sFiydMkjHA0I74zwWn9QgsNFC52+Jgf/HXtLOln8UBo99l6M4trg9FixKjQroJmsOyHFCjyrsVINh1/rGnpCbyu6g+2pLqkPuQBnrIEMue2yAU9MV6YwYKMgKXP7VR6aK+tFiX91P0JPIu4eU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cW75nArx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF6BC4CEDF;
+	Tue, 21 Jan 2025 17:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482994;
-	bh=aPaGfQW9//d91fy3Ulbjp1JNUdq8dLzb9iaFO/KuoFQ=;
+	s=korg; t=1737482192;
+	bh=IjODkHgrH5tojHz/7BLzQpePxh43RwnNA89bJx8aqpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ITUIWqawVZgjSptgpEws1omYNiG2tcnA6M01ijpQZwq9jp3CwrDfeSUgMRWmYlKDd
-	 Krj43cbUEB9yUb6Dxx7OtWMLVRjxugK/RPhiM1jNYdgKlBmI0FJ2U0b2D58TJBbSMq
-	 LHEeHsPg7ug7tfNqA3C+9DLUBaKpTG0+Mj7pmprY=
+	b=cW75nArxcH6w1JU/JmKTDqGbbFtH1jaR3k0RWyK1NjFUzqkCCbB5NmE9P4XM61GvO
+	 vY5QoD8gCN+mkkrrBxweeyPFxPamGyHqPXOxPLUopjDJdMoBMJDtrQ0YfSqGrYxADS
+	 WTwrMOYeUVVYY7K5CNem8Sbe4/HkBBaP+cjVlMyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 080/127] bpf: Fix bpf_sk_select_reuseport() memory leak
+Subject: [PATCH 6.6 66/72] ovl: pass realinode to ovl_encode_real_fh() instead of realdentry
 Date: Tue, 21 Jan 2025 18:52:32 +0100
-Message-ID: <20250121174532.740869715@linuxfoundation.org>
+Message-ID: <20250121174525.977509294@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +62,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit b3af60928ab9129befa65e6df0310d27300942bf ]
+commit 07aeefae7ff44d80524375253980b1bdee2396b0 upstream.
 
-As pointed out in the original comment, lookup in sockmap can return a TCP
-ESTABLISHED socket. Such TCP socket may have had SO_ATTACH_REUSEPORT_EBPF
-set before it was ESTABLISHED. In other words, a non-NULL sk_reuseport_cb
-does not imply a non-refcounted socket.
+We want to be able to encode an fid from an inode with no alias.
 
-Drop sk's reference in both error paths.
-
-unreferenced object 0xffff888101911800 (size 2048):
-  comm "test_progs", pid 44109, jiffies 4297131437
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    80 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc 9336483b):
-    __kmalloc_noprof+0x3bf/0x560
-    __reuseport_alloc+0x1d/0x40
-    reuseport_alloc+0xca/0x150
-    reuseport_attach_prog+0x87/0x140
-    sk_reuseport_attach_bpf+0xc8/0x100
-    sk_setsockopt+0x1181/0x1990
-    do_sock_setsockopt+0x12b/0x160
-    __sys_setsockopt+0x7b/0xc0
-    __x64_sys_setsockopt+0x1b/0x30
-    do_syscall_64+0x93/0x180
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Fixes: 64d85290d79c ("bpf: Allow bpf_map_lookup_elem for SOCKMAP and SOCKHASH")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Reviewed-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20250110-reuseport-memleak-v1-1-fa1ddab0adfe@rbox.co
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Link: https://lore.kernel.org/r/20250105162404.357058-2-amir73il@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: c45beebfde34 ("ovl: support encoding fid from inode with no alias")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+[re-applied over v6.6.71 with conflict resolved]
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/filter.c | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+ fs/overlayfs/copy_up.c   |   11 ++++++-----
+ fs/overlayfs/export.c    |    5 +++--
+ fs/overlayfs/namei.c     |    4 ++--
+ fs/overlayfs/overlayfs.h |    2 +-
+ 4 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index d6042d285aa21..84ec1b14b23f3 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -10509,6 +10509,7 @@ BPF_CALL_4(sk_select_reuseport, struct sk_reuseport_kern *, reuse_kern,
- 	bool is_sockarray = map->map_type == BPF_MAP_TYPE_REUSEPORT_SOCKARRAY;
- 	struct sock_reuseport *reuse;
- 	struct sock *selected_sk;
-+	int err;
- 
- 	selected_sk = map->ops->map_lookup_elem(map, key);
- 	if (!selected_sk)
-@@ -10516,10 +10517,6 @@ BPF_CALL_4(sk_select_reuseport, struct sk_reuseport_kern *, reuse_kern,
- 
- 	reuse = rcu_dereference(selected_sk->sk_reuseport_cb);
- 	if (!reuse) {
--		/* Lookup in sock_map can return TCP ESTABLISHED sockets. */
--		if (sk_is_refcounted(selected_sk))
--			sock_put(selected_sk);
--
- 		/* reuseport_array has only sk with non NULL sk_reuseport_cb.
- 		 * The only (!reuse) case here is - the sk has already been
- 		 * unhashed (e.g. by close()), so treat it as -ENOENT.
-@@ -10527,24 +10524,33 @@ BPF_CALL_4(sk_select_reuseport, struct sk_reuseport_kern *, reuse_kern,
- 		 * Other maps (e.g. sock_map) do not provide this guarantee and
- 		 * the sk may never be in the reuseport group to begin with.
- 		 */
--		return is_sockarray ? -ENOENT : -EINVAL;
-+		err = is_sockarray ? -ENOENT : -EINVAL;
-+		goto error;
- 	}
- 
- 	if (unlikely(reuse->reuseport_id != reuse_kern->reuseport_id)) {
- 		struct sock *sk = reuse_kern->sk;
- 
--		if (sk->sk_protocol != selected_sk->sk_protocol)
--			return -EPROTOTYPE;
--		else if (sk->sk_family != selected_sk->sk_family)
--			return -EAFNOSUPPORT;
--
--		/* Catch all. Likely bound to a different sockaddr. */
--		return -EBADFD;
-+		if (sk->sk_protocol != selected_sk->sk_protocol) {
-+			err = -EPROTOTYPE;
-+		} else if (sk->sk_family != selected_sk->sk_family) {
-+			err = -EAFNOSUPPORT;
-+		} else {
-+			/* Catch all. Likely bound to a different sockaddr. */
-+			err = -EBADFD;
-+		}
-+		goto error;
- 	}
- 
- 	reuse_kern->selected_sk = selected_sk;
- 
- 	return 0;
-+error:
-+	/* Lookup in sock_map can return TCP ESTABLISHED sockets. */
-+	if (sk_is_refcounted(selected_sk))
-+		sock_put(selected_sk);
-+
-+	return err;
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -371,13 +371,13 @@ int ovl_set_attr(struct ovl_fs *ofs, str
+ 	return err;
  }
  
- static const struct bpf_func_proto sk_select_reuseport_proto = {
--- 
-2.39.5
-
+-struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry *real,
++struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct inode *realinode,
+ 				  bool is_upper)
+ {
+ 	struct ovl_fh *fh;
+ 	int fh_type, dwords;
+ 	int buflen = MAX_HANDLE_SZ;
+-	uuid_t *uuid = &real->d_sb->s_uuid;
++	uuid_t *uuid = &realinode->i_sb->s_uuid;
+ 	int err;
+ 
+ 	/* Make sure the real fid stays 32bit aligned */
+@@ -394,7 +394,8 @@ struct ovl_fh *ovl_encode_real_fh(struct
+ 	 * the price or reconnecting the dentry.
+ 	 */
+ 	dwords = buflen >> 2;
+-	fh_type = exportfs_encode_fh(real, (void *)fh->fb.fid, &dwords, 0);
++	fh_type = exportfs_encode_inode_fh(realinode, (void *)fh->fb.fid,
++					   &dwords, NULL, 0);
+ 	buflen = (dwords << 2);
+ 
+ 	err = -EIO;
+@@ -438,7 +439,7 @@ int ovl_set_origin(struct ovl_fs *ofs, s
+ 	 * up and a pure upper inode.
+ 	 */
+ 	if (ovl_can_decode_fh(lower->d_sb)) {
+-		fh = ovl_encode_real_fh(ofs, lower, false);
++		fh = ovl_encode_real_fh(ofs, d_inode(lower), false);
+ 		if (IS_ERR(fh))
+ 			return PTR_ERR(fh);
+ 	}
+@@ -461,7 +462,7 @@ static int ovl_set_upper_fh(struct ovl_f
+ 	const struct ovl_fh *fh;
+ 	int err;
+ 
+-	fh = ovl_encode_real_fh(ofs, upper, true);
++	fh = ovl_encode_real_fh(ofs, d_inode(upper), true);
+ 	if (IS_ERR(fh))
+ 		return PTR_ERR(fh);
+ 
+--- a/fs/overlayfs/export.c
++++ b/fs/overlayfs/export.c
+@@ -228,6 +228,7 @@ static int ovl_check_encode_origin(struc
+ static int ovl_dentry_to_fid(struct ovl_fs *ofs, struct dentry *dentry,
+ 			     u32 *fid, int buflen)
+ {
++	struct inode *inode = d_inode(dentry);
+ 	struct ovl_fh *fh = NULL;
+ 	int err, enc_lower;
+ 	int len;
+@@ -241,8 +242,8 @@ static int ovl_dentry_to_fid(struct ovl_
+ 		goto fail;
+ 
+ 	/* Encode an upper or lower file handle */
+-	fh = ovl_encode_real_fh(ofs, enc_lower ? ovl_dentry_lower(dentry) :
+-				ovl_dentry_upper(dentry), !enc_lower);
++	fh = ovl_encode_real_fh(ofs, enc_lower ? ovl_inode_lower(inode) :
++				ovl_inode_upper(inode), !enc_lower);
+ 	if (IS_ERR(fh))
+ 		return PTR_ERR(fh);
+ 
+--- a/fs/overlayfs/namei.c
++++ b/fs/overlayfs/namei.c
+@@ -523,7 +523,7 @@ int ovl_verify_set_fh(struct ovl_fs *ofs
+ 	struct ovl_fh *fh;
+ 	int err;
+ 
+-	fh = ovl_encode_real_fh(ofs, real, is_upper);
++	fh = ovl_encode_real_fh(ofs, d_inode(real), is_upper);
+ 	err = PTR_ERR(fh);
+ 	if (IS_ERR(fh)) {
+ 		fh = NULL;
+@@ -720,7 +720,7 @@ int ovl_get_index_name(struct ovl_fs *of
+ 	struct ovl_fh *fh;
+ 	int err;
+ 
+-	fh = ovl_encode_real_fh(ofs, origin, false);
++	fh = ovl_encode_real_fh(ofs, d_inode(origin), false);
+ 	if (IS_ERR(fh))
+ 		return PTR_ERR(fh);
+ 
+--- a/fs/overlayfs/overlayfs.h
++++ b/fs/overlayfs/overlayfs.h
+@@ -821,7 +821,7 @@ int ovl_copy_up_with_data(struct dentry
+ int ovl_maybe_copy_up(struct dentry *dentry, int flags);
+ int ovl_copy_xattr(struct super_block *sb, const struct path *path, struct dentry *new);
+ int ovl_set_attr(struct ovl_fs *ofs, struct dentry *upper, struct kstat *stat);
+-struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry *real,
++struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct inode *realinode,
+ 				  bool is_upper);
+ int ovl_set_origin(struct ovl_fs *ofs, struct dentry *lower,
+ 		   struct dentry *upper);
 
 
 
