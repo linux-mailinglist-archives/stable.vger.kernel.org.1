@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-109718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE4FA18397
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EE96A18427
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:04:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87EB0188C585
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:58:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 437333A10E3
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE4331F76B5;
-	Tue, 21 Jan 2025 17:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237B71F55F3;
+	Tue, 21 Jan 2025 18:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oryVYX3N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TfQ+Gj+n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A43B1F76AB;
-	Tue, 21 Jan 2025 17:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31921F543F;
+	Tue, 21 Jan 2025 18:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482236; cv=none; b=ChLcSp7hYicY7KywOi6YVFARZ6gUsaGzCnS4z0TTIIbZ3i3bAVmSiZGo1ZLVE/a+fTpXLZg+rSZAtV/62OVG/oJRcz8VwlQguqCNjT63ePWfkUTTGUJqQUikRlEPO9IvSG6zKi//qNwqnNPT4gahcBWLsYSDvam4KI64GMHl9b4=
+	t=1737482625; cv=none; b=s7zILf/2FiJfqUkDGXVujmGn4PXNyeciYI8jkWlwazcNt/0/tomqhfR9qjX8viadrpTTSTdcE3fUdC8XTuVADRxCG9V9Ksg5z0f2KXCx0lMX1/j484DueSZoNZA/wRFUCtbtbivSFqDGMusCu8atNASuheWsP1oxxwD+ICg5lw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482236; c=relaxed/simple;
-	bh=YWRLoJHxoym7MbkIxtPkWqDkIlAxytW33BQKMPGQ6ps=;
+	s=arc-20240116; t=1737482625; c=relaxed/simple;
+	bh=i2srAFijowdsL01s4BH1+MPPHMHzGqndnZyNpXqjNbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q+NhkgUCuOfmpldahHYCHrPouR4Nrp0FZX0d2hVUCWgdgH4DbxMQlJovC9M8tsJe+PMdDDLgxPqIN26u1X/G3b+6AHCVu7IcH+LH6j8pyboTTpqrPcR2MOUj+La8G+ExUz4iJZv07AuxYxP+FO2XCR2eY9/AJiuIcsO9YB+lIWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oryVYX3N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C86C4CEDF;
-	Tue, 21 Jan 2025 17:57:15 +0000 (UTC)
+	 MIME-Version; b=DAGaVSdw+guXoK6JIuBxfn2KDkQKbrZZk/P7VCwEv1afms9w7Oa1X8b0ZnswXSEIOTjgJbTG6czxI4XK/25T+oyszPdJh30C9ivJ2zOOrqSU4uUyMLQ8bjztPzn4PuEmk+y8EX0ZfzOcoBNKUuTKgEQFAVe5CJIgcm7lhPcUo5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TfQ+Gj+n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1787C4CEDF;
+	Tue, 21 Jan 2025 18:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482236;
-	bh=YWRLoJHxoym7MbkIxtPkWqDkIlAxytW33BQKMPGQ6ps=;
+	s=korg; t=1737482624;
+	bh=i2srAFijowdsL01s4BH1+MPPHMHzGqndnZyNpXqjNbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oryVYX3N6QmUQhNWBc4TmH8jnLlI2fbgonaKIE0IQmNOPnB0oa3zFufLEuClx6eK7
-	 4wNptZrpSEr1wotOpiUsgIHSlOTnQqHVhPXvEUVcO7t9DksGvJZ+2RaeG4MBMNJDH/
-	 28Opgsl6wWRIdI3UYgZvD8iY9qXAy6AWrfkinTcI=
+	b=TfQ+Gj+nvOXFHgOusnvFm+EHPgxXzjXw1MmLDNnzgJbfVzz1W8ixlWs+9rhCr2gUU
+	 ueRYxFuWl6pD0/rhW0VNaQCnSJDEJn+zC6e+2pdqaxF58RuM4dVzHK8BOaA2KrJCV7
+	 veJXkfRMHEX8LNfdSoO6NXl2aB2KhBh338QykFKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Nelissen <marco.nelissen@gmail.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 51/72] filemap: avoid truncating 64-bit offset to 32 bits
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 18/64] nvmet: propagate npwg topology
 Date: Tue, 21 Jan 2025 18:52:17 +0100
-Message-ID: <20250121174525.391502560@linuxfoundation.org>
+Message-ID: <20250121174522.254052155@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
+References: <20250121174521.568417761@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Nelissen <marco.nelissen@gmail.com>
+From: Luis Chamberlain <mcgrof@kernel.org>
 
-commit f505e6c91e7a22d10316665a86d79f84d9f0ba76 upstream.
+[ Upstream commit b579d6fdc3a9149bb4d2b3133cc0767130ed13e6 ]
 
-On 32-bit kernels, folio_seek_hole_data() was inadvertently truncating a
-64-bit value to 32 bits, leading to a possible infinite loop when writing
-to an xfs filesystem.
+Ensure we propagate npwg to the target as well instead
+of assuming its the same logical blocks per physical block.
 
-Link: https://lkml.kernel.org/r/20250102190540.1356838-1-marco.nelissen@gmail.com
-Fixes: 54fa39ac2e00 ("iomap: use mapping_seek_hole_data")
-Signed-off-by: Marco Nelissen <marco.nelissen@gmail.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This ensures devices with large IUs information properly
+propagated on the target.
+
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/filemap.c |    2 +-
+ drivers/nvme/target/io-cmd-bdev.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3037,7 +3037,7 @@ static inline loff_t folio_seek_hole_dat
- 		if (ops->is_partially_uptodate(folio, offset, bsz) ==
- 							seek_data)
- 			break;
--		start = (start + bsz) & ~(bsz - 1);
-+		start = (start + bsz) & ~((u64)bsz - 1);
- 		offset += bsz;
- 	} while (offset < folio_size(folio));
- unlock:
+diff --git a/drivers/nvme/target/io-cmd-bdev.c b/drivers/nvme/target/io-cmd-bdev.c
+index c2d6cea0236b0..ada58a4d0d0cf 100644
+--- a/drivers/nvme/target/io-cmd-bdev.c
++++ b/drivers/nvme/target/io-cmd-bdev.c
+@@ -36,7 +36,7 @@ void nvmet_bdev_set_limits(struct block_device *bdev, struct nvme_id_ns *id)
+ 	 */
+ 	id->nsfeat |= 1 << 4;
+ 	/* NPWG = Namespace Preferred Write Granularity. 0's based */
+-	id->npwg = lpp0b;
++	id->npwg = to0based(bdev_io_min(bdev) / bdev_logical_block_size(bdev));
+ 	/* NPWA = Namespace Preferred Write Alignment. 0's based */
+ 	id->npwa = id->npwg;
+ 	/* NPDG = Namespace Preferred Deallocate Granularity. 0's based */
+-- 
+2.39.5
+
 
 
 
