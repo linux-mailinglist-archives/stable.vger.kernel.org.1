@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-109691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75A87A1836F
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:56:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C9F3A183D2
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08AA9188BF7E
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:56:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 644B416398A
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6A31F75A1;
-	Tue, 21 Jan 2025 17:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6681F668A;
+	Tue, 21 Jan 2025 17:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NyAhlvp3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PD0GOOvJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9A81F7577;
-	Tue, 21 Jan 2025 17:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4DC1F63CD;
+	Tue, 21 Jan 2025 17:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482158; cv=none; b=mCYdp4AR+OelQnH+sV1NtBoJlXsKsp8ITcta3O3KgdKaNFolRxKuEqGXdlRp3qXClMBMVq/PL0/XD0UGiOV4VInEHZP/HNK7gftTMkq56gGv2sDDRt3iKXSPNCCVzlKqvtmgq2bN6JaxTbAHePlKMeLMD278LcyNwGZdQZvC4XI=
+	t=1737482396; cv=none; b=CGxissElXXAOipEtm2M+ZChG+lE5BXADqhEqy841jo2lysAfvZt0wvQfjI5FgkKNqfqqoqTPNX3ERVqExy6ku2vqZYW/roY6GDjZ66YBoZ4aZEXeRJ9HgD3Rik+iQ+it1rFzdjymbGH3XcLftMn6gpZpWfHHEOhN+7aKTFcYKBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482158; c=relaxed/simple;
-	bh=+PqTqKD/RgAXNcJlGdHI09WuIew3Uj+nvssVWvgUYPg=;
+	s=arc-20240116; t=1737482396; c=relaxed/simple;
+	bh=xZwENK5k0IoolO1nuZWI/Qtp2avJfFcd2ZFq5y0mTD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MrImBDBbstfAzPQlu6MscMqPqjbfWZxXPu6wGy+sppymoMnNw69sSas//LOQBffwLOg5TxJ8J8quPnGxz6pmsKi/v/NO+cC7jJlmBEVXedYPmlwgrPDKdGN7ib0P0+8GH6TA26+POl4zGuYiKQ5Jg3Sc6KbnRzmg4dw1aWNMYL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NyAhlvp3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ABD2C4CEDF;
-	Tue, 21 Jan 2025 17:55:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IgKP6aQf0+qCBe8dop4DNUqDQ+UVNQ4FmdHVwZfbd5JyOcZ/SkDxEcVvDPzTpF/ITQRoT797IH9Wpko6i+rSxY0+CwRnClYu5GOpj+J1PePZnnFHhXNZ+sqxAxzTDtFMYSY2zpB7JumMMY4h6fytjjbVI/yJERv8xi7GyGkD+64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PD0GOOvJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A2BC4CEDF;
+	Tue, 21 Jan 2025 17:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482157;
-	bh=+PqTqKD/RgAXNcJlGdHI09WuIew3Uj+nvssVWvgUYPg=;
+	s=korg; t=1737482396;
+	bh=xZwENK5k0IoolO1nuZWI/Qtp2avJfFcd2ZFq5y0mTD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NyAhlvp3igQUwuv7ai2R0vePBQPk42M61LUbBqWGlzCrA9Bz0kl7ioI1EPavyFE0K
-	 jesdI+CN2A0RMDszDbIea1sUJsqih0c26swD2NYzQxcoSs9DhujseRoYJHCG9cZ7eh
-	 IP09lWh9mUsqpX8NxOVYplRS8FVmxxvkgEpMNTdc=
+	b=PD0GOOvJWJiTC5EspSf9yfXEfrv5vU0jnQool/QlwHhzkr/TlYAsdX+TFFPr5aS9W
+	 KQCceEMEFu0GnQT2eZOR5DSR0GqPHit5xwD4KltQPuPuWggpLWgSgLYlDFcDRC0j6p
+	 FtTp3JksZ8GiLKTZvEpP3syE0jmXIsjK2lhtOUyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 23/72] i2c: rcar: fix NACK handling when being a target
+Subject: [PATCH 6.12 061/122] platform/x86: ISST: Add Clearwater Forest to support list
 Date: Tue, 21 Jan 2025 18:51:49 +0100
-Message-ID: <20250121174524.318777892@linuxfoundation.org>
+Message-ID: <20250121174535.346451487@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,99 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 093f70c134f70e4632b295240f07d2b50b74e247 ]
+[ Upstream commit cc1ff7bc1bb378e7c46992c977b605e97d908801 ]
 
-When this controller is a target, the NACK handling had two issues.
-First, the return value from the backend was not checked on the initial
-WRITE_REQUESTED. So, the driver missed to send a NACK in this case.
-Also, the NACK always arrives one byte late on the bus, even in the
-WRITE_RECEIVED case. This seems to be a HW issue. We should then not
-rely on the backend to correctly NACK the superfluous byte as well. Fix
-both issues by introducing a flag which gets set whenever the backend
-requests a NACK and keep sending it until we get a STOP condition.
+Add Clearwater Forest (INTEL_ATOM_DARKMONT_X) to SST support list by
+adding to isst_cpu_ids.
 
-Fixes: de20d1857dd6 ("i2c: rcar: add slave support")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://lore.kernel.org/r/20250103155255.1488139-2-srinivas.pandruvada@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-rcar.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/platform/x86/intel/speed_select_if/isst_if_common.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
-index 84fdd3f5cc844..610df67cedaad 100644
---- a/drivers/i2c/busses/i2c-rcar.c
-+++ b/drivers/i2c/busses/i2c-rcar.c
-@@ -110,6 +110,8 @@
- #define ID_P_PM_BLOCKED		BIT(31)
- #define ID_P_MASK		GENMASK(31, 28)
- 
-+#define ID_SLAVE_NACK		BIT(0)
-+
- enum rcar_i2c_type {
- 	I2C_RCAR_GEN1,
- 	I2C_RCAR_GEN2,
-@@ -143,6 +145,7 @@ struct rcar_i2c_priv {
- 	int irq;
- 
- 	struct i2c_client *host_notify_client;
-+	u8 slave_flags;
- };
- 
- #define rcar_i2c_priv_to_dev(p)		((p)->adap.dev.parent)
-@@ -597,6 +600,7 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
- {
- 	u32 ssr_raw, ssr_filtered;
- 	u8 value;
-+	int ret;
- 
- 	ssr_raw = rcar_i2c_read(priv, ICSSR) & 0xff;
- 	ssr_filtered = ssr_raw & rcar_i2c_read(priv, ICSIER);
-@@ -612,7 +616,10 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
- 			rcar_i2c_write(priv, ICRXTX, value);
- 			rcar_i2c_write(priv, ICSIER, SDE | SSR | SAR);
- 		} else {
--			i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_REQUESTED, &value);
-+			ret = i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_REQUESTED, &value);
-+			if (ret)
-+				priv->slave_flags |= ID_SLAVE_NACK;
-+
- 			rcar_i2c_read(priv, ICRXTX);	/* dummy read */
- 			rcar_i2c_write(priv, ICSIER, SDR | SSR | SAR);
- 		}
-@@ -625,18 +632,21 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
- 	if (ssr_filtered & SSR) {
- 		i2c_slave_event(priv->slave, I2C_SLAVE_STOP, &value);
- 		rcar_i2c_write(priv, ICSCR, SIE | SDBS); /* clear our NACK */
-+		priv->slave_flags &= ~ID_SLAVE_NACK;
- 		rcar_i2c_write(priv, ICSIER, SAR);
- 		rcar_i2c_write(priv, ICSSR, ~SSR & 0xff);
- 	}
- 
- 	/* master wants to write to us */
- 	if (ssr_filtered & SDR) {
--		int ret;
--
- 		value = rcar_i2c_read(priv, ICRXTX);
- 		ret = i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_RECEIVED, &value);
--		/* Send NACK in case of error */
--		rcar_i2c_write(priv, ICSCR, SIE | SDBS | (ret < 0 ? FNA : 0));
-+		if (ret)
-+			priv->slave_flags |= ID_SLAVE_NACK;
-+
-+		/* Send NACK in case of error, but it will come 1 byte late :( */
-+		rcar_i2c_write(priv, ICSCR, SIE | SDBS |
-+			       (priv->slave_flags & ID_SLAVE_NACK ? FNA : 0));
- 		rcar_i2c_write(priv, ICSSR, ~SDR & 0xff);
- 	}
- 
+diff --git a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
+index 1e46e30dae966..dbcd3087aaa4b 100644
+--- a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
++++ b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
+@@ -804,6 +804,7 @@ EXPORT_SYMBOL_GPL(isst_if_cdev_unregister);
+ static const struct x86_cpu_id isst_cpu_ids[] = {
+ 	X86_MATCH_VFM(INTEL_ATOM_CRESTMONT,	SST_HPM_SUPPORTED),
+ 	X86_MATCH_VFM(INTEL_ATOM_CRESTMONT_X,	SST_HPM_SUPPORTED),
++	X86_MATCH_VFM(INTEL_ATOM_DARKMONT_X,	SST_HPM_SUPPORTED),
+ 	X86_MATCH_VFM(INTEL_EMERALDRAPIDS_X,	0),
+ 	X86_MATCH_VFM(INTEL_GRANITERAPIDS_D,	SST_HPM_SUPPORTED),
+ 	X86_MATCH_VFM(INTEL_GRANITERAPIDS_X,	SST_HPM_SUPPORTED),
 -- 
 2.39.5
 
