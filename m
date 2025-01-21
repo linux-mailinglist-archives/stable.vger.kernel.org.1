@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-109931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 801ABA18494
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:09:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F183A18341
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:54:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9653E188D5D7
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1DA218818A8
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:54:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF9F11F543D;
-	Tue, 21 Jan 2025 18:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3CFD1F5439;
+	Tue, 21 Jan 2025 17:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hLjtYPcn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gfj/oUnx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8151F543F;
-	Tue, 21 Jan 2025 18:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17401E9B38;
+	Tue, 21 Jan 2025 17:54:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482852; cv=none; b=hz/x1IHbJBa2x/ouygp2aHVDFD7t/OE4cuFkM16oHWD9UCvj67U6wvVsXE5pALqoqGMq0DfAlhbcCzyEJj63KYhfgxXcl3g6Tq5koTWmhO0Fu7gxzOog99lbO/Qr75eZEY77MhoeRf8yhp7IyFeO2tsopiXwQX5QEpDRr1wLkvI=
+	t=1737482050; cv=none; b=pVgMiyIAdbn/z/qIcEPoGS4vw/SgEKHJcVZSVPjEdk83IAPm1gEHQX0X0rF6S6dXONyPOTBsoYIzEjaI13QmtaBOsRPL4LpzKKBK9mel7F2wGlfB0QKPVE0ztekGFpM2fuMql8CW2le4L3MGDPdAuwsUALK+RZOLelU/hFVQSiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482852; c=relaxed/simple;
-	bh=1xVD8KAgdgcRC/ErQDJHCHL7lg/OKD9zrnqEMe0CezQ=;
+	s=arc-20240116; t=1737482050; c=relaxed/simple;
+	bh=z/ok41YhEHhjSX8OZIhD+XHjUFu3RlDTBMoSa3FLW2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V3WToIv6JmnGizVb7aQaf91tC5K9hP0eFLr+F6Du5UOHazWdk/6G6935Fh+R+4UcEIyu+l20OGauTCis0/3p6Ke0ZuvyK3nh5o+50GNTSh/t9NHu03Q+QL3fkMAg/iNSIpO3N/nFXviXUWwbwX9Jqw1TaxcutfrKqQr13L/bGDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hLjtYPcn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C85FC4CEDF;
-	Tue, 21 Jan 2025 18:07:31 +0000 (UTC)
+	 MIME-Version; b=dwGWbbBdXqDYW8EJaFYt79hTC90x2/o2qMNMOey4QMU1M/xQSgR/9raBfy8theg4PNypr5tRwve374G8f4RVzKcFul0HDG19mmPKHtzKdXc8MuWJ3kojB9BoecQ5OwEUjax9rJu2r5hENzWibZiqcVl5Y/Ld35aZMzptVQUkqAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gfj/oUnx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20B9C4CEDF;
+	Tue, 21 Jan 2025 17:54:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482852;
-	bh=1xVD8KAgdgcRC/ErQDJHCHL7lg/OKD9zrnqEMe0CezQ=;
+	s=korg; t=1737482049;
+	bh=z/ok41YhEHhjSX8OZIhD+XHjUFu3RlDTBMoSa3FLW2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hLjtYPcnDK6dtRRhYqvkUXXNqquDnBQ4/qkoE84hgakdsyLTApXsnjmMiFmye+iTY
-	 FJ5JPLtSZKgG5h3qMXJngkxNikxsejBM4jISA9ts0oqgNB4r63lY/S+EWrImk1bhGG
-	 9tTHTfm1SS3lUTt8DeZVg4acugVSykWoay1UQFf0=
+	b=Gfj/oUnxAeMHYG60rYXFA60fBV9JCv6GARwlPu65HcBgPLy1GssZIgFPPT5uEgoXb
+	 o1RnQW/bVDLQyxyYpsIuvk7NCQP9BAf1ls0HN1COvHKDeXBXzkzDdncpIprKfzdAHc
+	 i5425dGVUqUpzM/ILRhHptdtyqPIiGm2W9Lh1VHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 5.15 030/127] riscv: Fix sleeping in invalid context in die()
-Date: Tue, 21 Jan 2025 18:51:42 +0100
-Message-ID: <20250121174530.831080839@linuxfoundation.org>
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 17/72] drm/vmwgfx: Add new keep_resv BO param
+Date: Tue, 21 Jan 2025 18:51:43 +0100
+Message-ID: <20250121174524.090299000@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-commit 6a97f4118ac07cfdc316433f385dbdc12af5025e upstream.
+[ Upstream commit b7d40627813799870e72729c6fc979a8a40d9ba6 ]
 
-die() can be called in exception handler, and therefore cannot sleep.
-However, die() takes spinlock_t which can sleep with PREEMPT_RT enabled.
-That causes the following warning:
+Adds a new BO param that keeps the reservation locked after creation.
+This removes the need to re-reserve the BO after creation which is a
+waste of cycles.
 
-BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 285, name: mutex
-preempt_count: 110001, expected: 0
-RCU nest depth: 0, expected: 0
-CPU: 0 UID: 0 PID: 285 Comm: mutex Not tainted 6.12.0-rc7-00022-ge19049cf7d56-dirty #234
-Hardware name: riscv-virtio,qemu (DT)
-Call Trace:
-    dump_backtrace+0x1c/0x24
-    show_stack+0x2c/0x38
-    dump_stack_lvl+0x5a/0x72
-    dump_stack+0x14/0x1c
-    __might_resched+0x130/0x13a
-    rt_spin_lock+0x2a/0x5c
-    die+0x24/0x112
-    do_trap_insn_illegal+0xa0/0xea
-    _new_vmalloc_restore_context_a0+0xcc/0xd8
-Oops - illegal instruction [#1]
+This also fixes a bug in vmw_prime_import_sg_table where the imported
+reservation is unlocked twice.
 
-Switch to use raw_spinlock_t, which does not sleep even with PREEMPT_RT
-enabled.
-
-Fixes: 76d2a0493a17 ("RISC-V: Init and Halt Code")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Cc: stable@vger.kernel.org
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20241118091333.1185288-1-namcao@linutronix.de
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Fixes: b32233acceff ("drm/vmwgfx: Fix prime import/export")
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250110185335.15301-1-ian.forbes@broadcom.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/traps.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_bo.c         | 3 ++-
+ drivers/gpu/drm/vmwgfx/vmwgfx_bo.h         | 3 ++-
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.c        | 7 ++-----
+ drivers/gpu/drm/vmwgfx/vmwgfx_gem.c        | 1 +
+ drivers/gpu/drm/vmwgfx/vmwgfx_shader.c     | 7 ++-----
+ drivers/gpu/drm/vmwgfx/vmwgfx_ttm_buffer.c | 5 ++---
+ 6 files changed, 11 insertions(+), 15 deletions(-)
 
---- a/arch/riscv/kernel/traps.c
-+++ b/arch/riscv/kernel/traps.c
-@@ -27,7 +27,7 @@
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
+index fdc34283eeb97..ec6ca264ce11f 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
+@@ -412,7 +412,8 @@ static int vmw_bo_init(struct vmw_private *dev_priv,
  
- int show_unhandled_signals = 1;
+ 	if (params->pin)
+ 		ttm_bo_pin(&vmw_bo->tbo);
+-	ttm_bo_unreserve(&vmw_bo->tbo);
++	if (!params->keep_resv)
++		ttm_bo_unreserve(&vmw_bo->tbo);
  
--static DEFINE_SPINLOCK(die_lock);
-+static DEFINE_RAW_SPINLOCK(die_lock);
+ 	return 0;
+ }
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
+index 156ea612fc2a4..a3ac61b991bf6 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
+@@ -53,8 +53,9 @@ struct vmw_bo_params {
+ 	u32 domain;
+ 	u32 busy_domain;
+ 	enum ttm_bo_type bo_type;
+-	size_t size;
+ 	bool pin;
++	bool keep_resv;
++	size_t size;
+ 	struct dma_resv *resv;
+ 	struct sg_table *sg;
+ };
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+index bea576434e475..4655c266924fe 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+@@ -399,7 +399,8 @@ static int vmw_dummy_query_bo_create(struct vmw_private *dev_priv)
+ 		.busy_domain = VMW_BO_DOMAIN_SYS,
+ 		.bo_type = ttm_bo_type_kernel,
+ 		.size = PAGE_SIZE,
+-		.pin = true
++		.pin = true,
++		.keep_resv = true,
+ 	};
  
- void die(struct pt_regs *regs, const char *str)
- {
-@@ -38,7 +38,7 @@ void die(struct pt_regs *regs, const cha
+ 	/*
+@@ -411,10 +412,6 @@ static int vmw_dummy_query_bo_create(struct vmw_private *dev_priv)
+ 	if (unlikely(ret != 0))
+ 		return ret;
  
- 	oops_enter();
+-	ret = ttm_bo_reserve(&vbo->tbo, false, true, NULL);
+-	BUG_ON(ret != 0);
+-	vmw_bo_pin_reserved(vbo, true);
+-
+ 	ret = ttm_bo_kmap(&vbo->tbo, 0, 1, &map);
+ 	if (likely(ret == 0)) {
+ 		result = ttm_kmap_obj_virtual(&map, &dummy);
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_gem.c b/drivers/gpu/drm/vmwgfx/vmwgfx_gem.c
+index d6bcaf078b1f4..0dc3dacc5beee 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_gem.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_gem.c
+@@ -163,6 +163,7 @@ struct drm_gem_object *vmw_prime_import_sg_table(struct drm_device *dev,
+ 		.bo_type = ttm_bo_type_sg,
+ 		.size = attach->dmabuf->size,
+ 		.pin = false,
++		.keep_resv = true,
+ 		.resv = attach->dmabuf->resv,
+ 		.sg = table,
  
--	spin_lock_irqsave(&die_lock, flags);
-+	raw_spin_lock_irqsave(&die_lock, flags);
- 	console_verbose();
- 	bust_spinlocks(1);
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
+index a01ca3226d0af..7fb1c88bcc475 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
+@@ -896,7 +896,8 @@ int vmw_compat_shader_add(struct vmw_private *dev_priv,
+ 		.busy_domain = VMW_BO_DOMAIN_SYS,
+ 		.bo_type = ttm_bo_type_device,
+ 		.size = size,
+-		.pin = true
++		.pin = true,
++		.keep_resv = true,
+ 	};
  
-@@ -55,7 +55,7 @@ void die(struct pt_regs *regs, const cha
+ 	if (!vmw_shader_id_ok(user_key, shader_type))
+@@ -906,10 +907,6 @@ int vmw_compat_shader_add(struct vmw_private *dev_priv,
+ 	if (unlikely(ret != 0))
+ 		goto out;
  
- 	bust_spinlocks(0);
- 	add_taint(TAINT_DIE, LOCKDEP_NOW_UNRELIABLE);
--	spin_unlock_irqrestore(&die_lock, flags);
-+	raw_spin_unlock_irqrestore(&die_lock, flags);
- 	oops_exit();
+-	ret = ttm_bo_reserve(&buf->tbo, false, true, NULL);
+-	if (unlikely(ret != 0))
+-		goto no_reserve;
+-
+ 	/* Map and copy shader bytecode. */
+ 	ret = ttm_bo_kmap(&buf->tbo, 0, PFN_UP(size), &map);
+ 	if (unlikely(ret != 0)) {
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_ttm_buffer.c b/drivers/gpu/drm/vmwgfx/vmwgfx_ttm_buffer.c
+index fcb87d83760ef..75cf9e76df2ed 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_ttm_buffer.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_ttm_buffer.c
+@@ -604,15 +604,14 @@ int vmw_bo_create_and_populate(struct vmw_private *dev_priv,
+ 		.busy_domain = domain,
+ 		.bo_type = ttm_bo_type_kernel,
+ 		.size = bo_size,
+-		.pin = true
++		.pin = true,
++		.keep_resv = true,
+ 	};
  
- 	if (in_interrupt())
+ 	ret = vmw_bo_create(dev_priv, &bo_params, &vbo);
+ 	if (unlikely(ret != 0))
+ 		return ret;
+ 
+-	ret = ttm_bo_reserve(&vbo->tbo, false, true, NULL);
+-	BUG_ON(ret != 0);
+ 	ret = vmw_ttm_populate(vbo->tbo.bdev, vbo->tbo.ttm, &ctx);
+ 	if (likely(ret == 0)) {
+ 		struct vmw_ttm_tt *vmw_tt =
+-- 
+2.39.5
+
 
 
 
