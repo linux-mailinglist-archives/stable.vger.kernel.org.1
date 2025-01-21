@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-109772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B597A183D1
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:00:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6D11A1849A
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:09:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60907162B48
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77F341883762
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357281F63FD;
-	Tue, 21 Jan 2025 17:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23AB1F55F0;
+	Tue, 21 Jan 2025 18:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vFNxWpZ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SkFz5nsc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D091F238E;
-	Tue, 21 Jan 2025 17:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7A71F540C;
+	Tue, 21 Jan 2025 18:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482394; cv=none; b=NO144yna4j0tXPm0kHqCB5H9P8yVjzFY1FUcsHCGI3Howxsi/woMyMo/4UrF91utHmZjencrE0kysLJN3J046XHGXRILfa73W81/DOumOTkSKRqhF47DQm3WpYAShKWqDlOSFum2+KmwMhdJvBhmf7kpYTzKT30smn/yCRkyC2c=
+	t=1737482889; cv=none; b=abvBRVumkfO91byoPZmX/yFMjbt5fGyDWfy+A+y5qhzNNVTk+T+G4o1Xla5lxkvNL1dwk7hJlSj2OpSFamI6WFLD88dxhp95QX1r9zV+h7SgWOCw1WeArJSjKYMDvT0sfKJi2ej0+H6nVO4ReQ84LZX9Vm/n3jqXizY7cHrCYnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482394; c=relaxed/simple;
-	bh=FEdcJLdOJ/xloKXYQnum3mihLhYuKofuxWT8LJB9A0c=;
+	s=arc-20240116; t=1737482889; c=relaxed/simple;
+	bh=mJ+dX22eAwZUhxAokep3eAm4cwBEqV8UpooUdfxG0QI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dw7wNLCnEIVr3/KEtXT59S8L6E028rXCJp1zwecA5NYbqD67SrHr/qqLJ/C+zCkHhokLpuJG6yoFMSFxL3Fe6jx1MAGhg6xulV4FIw2klJxqGd9T2a0DJymwVG3I3N7YEU9roG0LOV6vBOEZH2VZAR0tSA9A8ArNY+IR9ewI5jE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vFNxWpZ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C832C4CEDF;
-	Tue, 21 Jan 2025 17:59:53 +0000 (UTC)
+	 MIME-Version; b=Xu6ABWUqL/8mglwlTGXbLnMyFDr8Ej0ohre8uV6lfzEqGyXzvoAs+p70aTfBPgFNeHNe7FjQISZs7z2/2WE6yXbTwe4O0bUbPfofimVF0fx3M51MCY6TEEhrBnXyOxRib+bu4RoHlzRQmD9+xwKjjoei+YIkbM8COe3ch79Kjcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkFz5nsc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3B1C4CEDF;
+	Tue, 21 Jan 2025 18:08:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482393;
-	bh=FEdcJLdOJ/xloKXYQnum3mihLhYuKofuxWT8LJB9A0c=;
+	s=korg; t=1737482889;
+	bh=mJ+dX22eAwZUhxAokep3eAm4cwBEqV8UpooUdfxG0QI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vFNxWpZ/7bAkMjy8M0MTHtHmPA0OFpGKBkjUOqA45F9nxVYaNtlYJiZB/rDH3SShE
-	 utUOcO5tRjm4uLq5wzI+yHwPyDAPKDUI/TJ1IYq01Hwkepf9yj2+wy2wi4X7IzfnTa
-	 +gtG0uip36yK8XV7bGk3zPxkNo+W5hV4mCpBHTuU=
+	b=SkFz5nscLn6DI3fUVtdRhvwaIV8iBG2Kef3fJxTOh/diMQ3vUe+7hIAChISz2wiLX
+	 qkOodO6MmxhGQqRLJO7nd2VRJ5/LFuNzGln4nJhMTit5Q8Bn4Nh1Nc/ibSmXXUwOtl
+	 GMR83GyYzYatJLbp23TljOP6TdkB+ZmE+XkekWyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 060/122] platform/x86/intel: power-domains: Add Clearwater Forest support
+	Kairui Song <kasong@tencent.com>,
+	Desheng Wu <deshengwu@tencent.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dominique Martinet <dominique.martinet@atmark-techno.com>
+Subject: [PATCH 5.15 036/127] zram: fix uninitialized ZRAM not releasing backing device
 Date: Tue, 21 Jan 2025 18:51:48 +0100
-Message-ID: <20250121174535.307774247@linuxfoundation.org>
+Message-ID: <20250121174531.071973846@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Kairui Song <kasong@tencent.com>
 
-[ Upstream commit bee9a0838fd223823e5a6d85c055ab1691dc738e ]
+commit 74363ec674cb172d8856de25776c8f3103f05e2f upstream.
 
-Add Clearwater Forest support (INTEL_ATOM_DARKMONT_X) to tpmi_cpu_ids
-to support domaid id mappings.
+Setting backing device is done before ZRAM initialization.  If we set the
+backing device, then remove the ZRAM module without initializing the
+device, the backing device reference will be leaked and the device will be
+hold forever.
 
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://lore.kernel.org/r/20250103155255.1488139-1-srinivas.pandruvada@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by always reset the ZRAM fully on rmmod or reset store.
+
+Link: https://lkml.kernel.org/r/20241209165717.94215-3-ryncsn@gmail.com
+Fixes: 013bf95a83ec ("zram: add interface to specif backing device")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Reported-by: Desheng Wu <deshengwu@tencent.com>
+Suggested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/tpmi_power_domains.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/block/zram/zram_drv.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/tpmi_power_domains.c b/drivers/platform/x86/intel/tpmi_power_domains.c
-index 0609a8320f7ec..12fb0943b5dc3 100644
---- a/drivers/platform/x86/intel/tpmi_power_domains.c
-+++ b/drivers/platform/x86/intel/tpmi_power_domains.c
-@@ -81,6 +81,7 @@ static const struct x86_cpu_id tpmi_cpu_ids[] = {
- 	X86_MATCH_VFM(INTEL_GRANITERAPIDS_X,	NULL),
- 	X86_MATCH_VFM(INTEL_ATOM_CRESTMONT_X,	NULL),
- 	X86_MATCH_VFM(INTEL_ATOM_CRESTMONT,	NULL),
-+	X86_MATCH_VFM(INTEL_ATOM_DARKMONT_X,	NULL),
- 	X86_MATCH_VFM(INTEL_GRANITERAPIDS_D,	NULL),
- 	X86_MATCH_VFM(INTEL_PANTHERCOVE_X,	NULL),
- 	{}
--- 
-2.39.5
-
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1150,12 +1150,16 @@ static void zram_meta_free(struct zram *
+ 	size_t num_pages = disksize >> PAGE_SHIFT;
+ 	size_t index;
+ 
++	if (!zram->table)
++		return;
++
+ 	/* Free all pages that are still in this zram device */
+ 	for (index = 0; index < num_pages; index++)
+ 		zram_free_page(zram, index);
+ 
+ 	zs_destroy_pool(zram->mem_pool);
+ 	vfree(zram->table);
++	zram->table = NULL;
+ }
+ 
+ static bool zram_meta_alloc(struct zram *zram, u64 disksize)
+@@ -1699,11 +1703,6 @@ static void zram_reset_device(struct zra
+ 
+ 	zram->limit_pages = 0;
+ 
+-	if (!init_done(zram)) {
+-		up_write(&zram->init_lock);
+-		return;
+-	}
+-
+ 	set_capacity_and_notify(zram->disk, 0);
+ 	part_stat_set_all(zram->disk->part0, 0);
+ 
 
 
 
