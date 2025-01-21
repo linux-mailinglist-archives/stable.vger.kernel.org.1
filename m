@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-109736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2181A183AC
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:59:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7FFDA1846F
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:07:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB1973ABFC8
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:58:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A3EE16C23C
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF431F754F;
-	Tue, 21 Jan 2025 17:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BCF1F472D;
+	Tue, 21 Jan 2025 18:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zg9bs/Qd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JocjkZSt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEECD1F63EF;
-	Tue, 21 Jan 2025 17:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917A51F5438;
+	Tue, 21 Jan 2025 18:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482288; cv=none; b=k4edQZuo6h+q3EUQAAxf5bFUoPix3X78bun8g9RLKKeYmfhkvnn3Y9kUG+d6ZDMnpENs+7iDGqcBXLYaAF4vcBrLkRG/7yqV+Zrw0JtBhvfYOaf0zuDNQE8uefcIfcV00K2unsqNMjr6Zkn++DGyUBFv0NFyOTlCH8GXn+mOrvw=
+	t=1737482788; cv=none; b=thDF86E44xVWLVqabiV6bCyGn2B0VHKPzmPfaP1jbotmk4XHcBWGgVtuh4fNZTFU6YXigq6j1b2B1Gex/g5YGs3+zIgztDkV/mqcmAlpfHKNdVHUttnwoRCIbww5BEtSVU2OEE0pCbATMcbXnQbXFdJZcmfJoAvxLi8ZXYUP1Io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482288; c=relaxed/simple;
-	bh=6aWUOQIx5iuhehR10qAp103YeTsWfjEYU4xSmHrt+nI=;
+	s=arc-20240116; t=1737482788; c=relaxed/simple;
+	bh=HtiltThA024Y+0u5Oo0UOsCzzRo2PTnC1OzGdmxBVoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/bmum/Y3WrcaBTmDs4JF5rtEpWYRH1JXhZ6ivCr3yulzRUyw8e1J4E6cxsx9V8IaGQOCUT69vLr5HHXu5S0w0BaC+8jskGTGDfSR35ivVzr3LjVIVfsaBID6MSHgC1BRNt0mpcbPqEeD8w1XJK2/BhjmsgYTjdbvBdU66E9tYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zg9bs/Qd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E96C4CEDF;
-	Tue, 21 Jan 2025 17:58:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YDianU96SaVNrTPXdJB/aanpnAG4kUjN5pRjtdBxa6NbEF8envdMcDhY9ECA/sMdQMw9khcrY00UX9j+TWMcsyI8L1WPqAhaTBhBQt5xp/WqGdRFgyyy+KoV7OKzd17WfcPHs1MkWNr9s9S/8A1JicYN24Asj3NpNRBzpCNgAXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JocjkZSt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A662C4CEDF;
+	Tue, 21 Jan 2025 18:06:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482288;
-	bh=6aWUOQIx5iuhehR10qAp103YeTsWfjEYU4xSmHrt+nI=;
+	s=korg; t=1737482788;
+	bh=HtiltThA024Y+0u5Oo0UOsCzzRo2PTnC1OzGdmxBVoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zg9bs/QdXzNTYpAkNfPKLa7sYoOffB9wrbBJ+dEvwLvYshH3o1dTfFDuuVPrYZy0t
-	 oWZ6Ilspqqjb4LHbY7PzwfUEtGrlfSlGQ2OxTREG+/WwWdiijFuXPZ6G1dlTS/5kpO
-	 pzzx3MukmVMnrAHtg2F8coipZXz45nE5ZM/VCFTw=
+	b=JocjkZSthGvWZ8l9AX5JF5PAQEh3/kM7cI8BwgjZ/2EStvSkhUrOvMYeMoIK4Gh7X
+	 MNYFU8gnQYmUxOnLJMldPqhToNplcTtNvF0oRftxnIMNr30lgp6NwTJWxi9c3c7a7p
+	 0VUC1BMomIXgYG92IBRjMbNQyqAa8nB/oIkSodVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 025/122] net/mlx5: Fix RDMA TX steering prio
+	=?UTF-8?q?Dario=20Wei=C3=9Fer?= <dario@cure53.de>,
+	Max Kellermann <max.kellermann@ionos.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 5.15 001/127] ceph: give up on paths longer than PATH_MAX
 Date: Tue, 21 Jan 2025 18:51:13 +0100
-Message-ID: <20250121174533.967410224@linuxfoundation.org>
+Message-ID: <20250121174529.733285041@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-[ Upstream commit c08d3e62b2e73e14da318a1d20b52d0486a28ee0 ]
+commit 550f7ca98ee028a606aa75705a7e77b1bd11720f upstream.
 
-User added steering rules at RDMA_TX were being added to the first prio,
-which is the counters prio.
-Fix that so that they are correctly added to the BYPASS_PRIO instead.
+If the full path to be built by ceph_mdsc_build_path() happens to be
+longer than PATH_MAX, then this function will enter an endless (retry)
+loop, effectively blocking the whole task.  Most of the machine
+becomes unusable, making this a very simple and effective DoS
+vulnerability.
 
-Fixes: 24670b1a3166 ("net/mlx5: Add support for RDMA TX steering")
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+I cannot imagine why this retry was ever implemented, but it seems
+rather useless and harmful to me.  Let's remove it and fail with
+ENAMETOOLONG instead.
+
+Cc: stable@vger.kernel.org
+Reported-by: Dario Weißer <dario@cure53.de>
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Reviewed-by: Alex Markuze <amarkuze@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+[idryomov@gmail.com: backport to 6.1: pr_warn() is still in use]
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ceph/mds_client.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-index 2eabfcc247c6a..0ce999706d412 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-@@ -2709,6 +2709,7 @@ struct mlx5_flow_namespace *mlx5_get_flow_namespace(struct mlx5_core_dev *dev,
- 		break;
- 	case MLX5_FLOW_NAMESPACE_RDMA_TX:
- 		root_ns = steering->rdma_tx_root_ns;
-+		prio = RDMA_TX_BYPASS_PRIO;
- 		break;
- 	case MLX5_FLOW_NAMESPACE_RDMA_RX_COUNTERS:
- 		root_ns = steering->rdma_rx_root_ns;
--- 
-2.39.5
-
+--- a/fs/ceph/mds_client.c
++++ b/fs/ceph/mds_client.c
+@@ -2432,12 +2432,11 @@ retry:
+ 
+ 	if (pos < 0) {
+ 		/*
+-		 * A rename didn't occur, but somehow we didn't end up where
+-		 * we thought we would. Throw a warning and try again.
++		 * The path is longer than PATH_MAX and this function
++		 * cannot ever succeed.  Creating paths that long is
++		 * possible with Ceph, but Linux cannot use them.
+ 		 */
+-		pr_warn("build_path did not end path lookup where "
+-			"expected, pos is %d\n", pos);
+-		goto retry;
++		return ERR_PTR(-ENAMETOOLONG);
+ 	}
+ 
+ 	*pbase = base;
 
 
 
