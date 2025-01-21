@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-109978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF286A184C9
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:11:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C331A1841D
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:03:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C77E1884F8A
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8DCB3A426F
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C631F5439;
-	Tue, 21 Jan 2025 18:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD001F543D;
+	Tue, 21 Jan 2025 18:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FytNX8dY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pkqy86ax"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902811F667C;
-	Tue, 21 Jan 2025 18:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D1C1F5419;
+	Tue, 21 Jan 2025 18:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482988; cv=none; b=Xuq3zBGdiT8XjBz4lAGMs2e4ztKYQFvo7azKRAarFlSJSSANhxeO0WdGOrh86dHdevox3g/hzzU+T/McDJBClQzML2T4v5aWr23q4iY5k47UzqdhhUmjAJVZnzk+25Uhia0Wny6l2WoWmVqyZaacXLUJkt4bJ/3TAw241wzwavA=
+	t=1737482586; cv=none; b=sWty6LdagLyj3j2d7p5obc09BCLGDwO7vyf0u8QTc68JnGhvx0PsMVuxjJiWyYqlr9xrrPWfnKA9X18PB73lA/nKDklWiyo0mkUfXy0Y8TNqQHxUNGXIt15xzPSwQZ+s6/IBUc41o7cZ2i6QaDasx+p7WukWH8Sghu6IyJOBArs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482988; c=relaxed/simple;
-	bh=yzPo/8TVQEEXBE1OmG5i41Oi70k1erWmladbmNNvw1s=;
+	s=arc-20240116; t=1737482586; c=relaxed/simple;
+	bh=kjbnfexezi43pgUg3LqjBhXkw/WWsGTax+1QnD/2bvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DhVYpTQXx3/hdsj5T55zKGyhCVTRV5vTGyVuHB4F3wkPDJD+GQjNMJTVvrS3xl6+J+3TwnHjun2+wXgd/RxpBIgXkBZhNRLixT4G3RD2Y9YTuTDBgN1cZMAm6aVPa5sEjO2b2KfsrCemx1dMeinWDVOpEaWdill60t8XUUkdev8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FytNX8dY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FAB1C4CEDF;
-	Tue, 21 Jan 2025 18:09:47 +0000 (UTC)
+	 MIME-Version; b=aHJlOuAyz72T/vM0se7ohtJ9K8txkK2/MHzKhaXIJ6siP2FHsSpNUgXEnQpKLd5mD6USU6azi2zh+KxD5nwJL+php8H1epb9OAGIgf1utWt+RzyqaR9PYj++L+qGF5ub6sHKz01vjuwM5GzfI+Ffp5bXHLmz2vIREeuOfbe4rck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pkqy86ax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92614C4CEDF;
+	Tue, 21 Jan 2025 18:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482988;
-	bh=yzPo/8TVQEEXBE1OmG5i41Oi70k1erWmladbmNNvw1s=;
+	s=korg; t=1737482586;
+	bh=kjbnfexezi43pgUg3LqjBhXkw/WWsGTax+1QnD/2bvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FytNX8dYpvpIScpcTLJarfGy9uih/QCT1qko/p/yjnaYLmYf3Ys6t+PtU4B8PQBR3
-	 Dn2lc1yi4gWPsTonwDyaOvCBN+VOTzevMoPUXlqbVivljBD3jzVkOH87xNxqmDP3ys
-	 Y9PX2jC5FUu/Vh4NhFhYz9zCS+rvmvOvBU7fCygc=
+	b=Pkqy86axW2Yy2IEWhozSSljeFLEXD3nzdjU0BUKLpQj6gzDE5v2hcddGdOx7SPc6s
+	 12GMy3nNUBySsdUPJkFIqJtlj1I4lhf1lQ9IOMB48kyITj3gL1LLWMH/WMErPleBvq
+	 G4Bma9bFfCGWycOaMRW82G1y2vXTOrRcSprnWaAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Chen <justinpopo6@gmail.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.15 078/127] phy: usb: Fix clock imbalance for suspend/resume
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Veronika Molnarova <vmolnaro@redhat.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Michael Petlan <mpetlan@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 102/122] tracing: gfp: Fix the GFP enum values shown for user space tracing tools
 Date: Tue, 21 Jan 2025 18:52:30 +0100
-Message-ID: <20250121174532.666823195@linuxfoundation.org>
+Message-ID: <20250121174536.969456933@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +68,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Chen <justinpopo6@gmail.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 8484199c09347bdd5d81ee8a2bc530850f900797 upstream.
+commit 60295b944ff6805e677c48ae4178532b207d43be upstream.
 
-We should be disabling clocks when wake from USB is not needed. Since
-this wasn't done, we had a clock imbalance since clocks were always
-being enabled on resume.
+Tracing tools like perf and trace-cmd read the /sys/kernel/tracing/events/*/*/format
+files to know how to parse the data and also how to print it. For the
+"print fmt" portion of that file, if anything uses an enum that is not
+exported to the tracing system, user space will not be able to parse it.
 
-Fixes: ae532b2b7aa5 ("phy: usb: Add "wake on" functionality for newer Synopsis XHCI controllers")
-Fixes: b0c0b66c0b43 ("phy: usb: Add support for wake and USB low power mode for 7211 S2/S5")
-Signed-off-by: Justin Chen <justinpopo6@gmail.com>
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-Link: https://lore.kernel.org/r/1665005418-15807-7-git-send-email-justinpopo6@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+The GFP flags use to be defines, and defines get translated in the print
+fmt sections. But now they are converted to use enums, which is not.
+
+The mm_page_alloc trace event format use to have:
+
+  print fmt: "page=%p pfn=0x%lx order=%d migratetype=%d gfp_flags=%s",
+    REC->pfn != -1UL ? (((struct page *)vmemmap_base) + (REC->pfn)) : ((void
+    *)0), REC->pfn != -1UL ? REC->pfn : 0, REC->order, REC->migratetype,
+    (REC->gfp_flags) ? __print_flags(REC->gfp_flags, "|", {( unsigned
+    long)(((((((( gfp_t)(0x400u|0x800u)) | (( gfp_t)0x40u) | (( gfp_t)0x80u) |
+    (( gfp_t)0x100000u)) | (( gfp_t)0x02u)) | (( gfp_t)0x08u) | (( gfp_t)0)) |
+    (( gfp_t)0x40000u) | (( gfp_t)0x80000u) | (( gfp_t)0x2000u)) & ~((
+    gfp_t)(0x400u|0x800u))) | (( gfp_t)0x400u)), "GFP_TRANSHUGE"}, {( unsigned
+    long)((((((( gfp_t)(0x400u|0x800u)) | (( gfp_t)0x40u) | (( gfp_t)0x80u) |
+    (( gfp_t)0x100000u)) | (( gfp_t)0x02u)) | (( gfp_t)0x08u) | (( gfp_t)0)) ...
+
+Where the GFP values are shown and not their names. But after the GFP
+flags were converted to use enums, it has:
+
+  print fmt: "page=%p pfn=0x%lx order=%d migratetype=%d gfp_flags=%s",
+    REC->pfn != -1UL ? (vmemmap + (REC->pfn)) : ((void *)0), REC->pfn != -1UL
+    ? REC->pfn : 0, REC->order, REC->migratetype, (REC->gfp_flags) ?
+    __print_flags(REC->gfp_flags, "|", {( unsigned long)((((((((
+    gfp_t)(((((1UL))) << (___GFP_DIRECT_RECLAIM_BIT))|((((1UL))) <<
+    (___GFP_KSWAPD_RECLAIM_BIT)))) | (( gfp_t)((((1UL))) << (___GFP_IO_BIT)))
+    | (( gfp_t)((((1UL))) << (___GFP_FS_BIT))) | (( gfp_t)((((1UL))) <<
+    (___GFP_HARDWALL_BIT)))) | (( gfp_t)((((1UL))) << (___GFP_HIGHMEM_BIT))))
+    | (( gfp_t)((((1UL))) << (___GFP_MOVABLE_BIT))) | (( gfp_t)0)) | ((
+    gfp_t)((((1UL))) << (___GFP_COMP_BIT))) ...
+
+Where the enums names like ___GFP_KSWAPD_RECLAIM_BIT are shown and not their
+values. User space has no way to convert these names to their values and
+the output will fail to parse. What is shown is now:
+
+  mm_page_alloc:  page=0xffffffff981685f3 pfn=0x1d1ac1 order=0 migratetype=1 gfp_flags=0x140cca
+
+The TRACE_DEFINE_ENUM() macro was created to handle enums in the print fmt
+files. This causes them to be replaced at boot up with the numbers, so
+that user space tooling can parse it. By using this macro, the output is
+back to the human readable:
+
+  mm_page_alloc: page=0xffffffff981685f3 pfn=0x122233 order=0 migratetype=1 gfp_flags=GFP_HIGHUSER_MOVABLE|__GFP_COMP
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Veronika  Molnarova <vmolnaro@redhat.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/20250116214438.749504792@goodmis.org
+Reported-by: Michael Petlan <mpetlan@redhat.com>
+Closes: https://lore.kernel.org/all/87be5f7c-1a0-dad-daa0-54e342efaea7@redhat.com/
+Fixes: 772dd0342727c ("mm: enumerate all gfp flags")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c |    2 --
- drivers/phy/broadcom/phy-brcm-usb-init.h          |    1 -
- drivers/phy/broadcom/phy-brcm-usb.c               |    8 +++++---
- 3 files changed, 5 insertions(+), 6 deletions(-)
+ include/trace/events/mmflags.h | 63 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 63 insertions(+)
 
---- a/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c
-+++ b/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c
-@@ -430,7 +430,6 @@ void brcm_usb_dvr_init_7216(struct brcm_
+diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags.h
+index bb8a59c6caa2..d36c857dd249 100644
+--- a/include/trace/events/mmflags.h
++++ b/include/trace/events/mmflags.h
+@@ -13,6 +13,69 @@
+  * Thus most bits set go first.
+  */
  
- 	params->family_name = "7216";
- 	params->ops = &bcm7216_ops;
--	params->suspend_with_clocks = true;
- }
++/* These define the values that are enums (the bits) */
++#define TRACE_GFP_FLAGS_GENERAL			\
++	TRACE_GFP_EM(DMA)			\
++	TRACE_GFP_EM(HIGHMEM)			\
++	TRACE_GFP_EM(DMA32)			\
++	TRACE_GFP_EM(MOVABLE)			\
++	TRACE_GFP_EM(RECLAIMABLE)		\
++	TRACE_GFP_EM(HIGH)			\
++	TRACE_GFP_EM(IO)			\
++	TRACE_GFP_EM(FS)			\
++	TRACE_GFP_EM(ZERO)			\
++	TRACE_GFP_EM(DIRECT_RECLAIM)		\
++	TRACE_GFP_EM(KSWAPD_RECLAIM)		\
++	TRACE_GFP_EM(WRITE)			\
++	TRACE_GFP_EM(NOWARN)			\
++	TRACE_GFP_EM(RETRY_MAYFAIL)		\
++	TRACE_GFP_EM(NOFAIL)			\
++	TRACE_GFP_EM(NORETRY)			\
++	TRACE_GFP_EM(MEMALLOC)			\
++	TRACE_GFP_EM(COMP)			\
++	TRACE_GFP_EM(NOMEMALLOC)		\
++	TRACE_GFP_EM(HARDWALL)			\
++	TRACE_GFP_EM(THISNODE)			\
++	TRACE_GFP_EM(ACCOUNT)			\
++	TRACE_GFP_EM(ZEROTAGS)
++
++#ifdef CONFIG_KASAN_HW_TAGS
++# define TRACE_GFP_FLAGS_KASAN			\
++	TRACE_GFP_EM(SKIP_ZERO)			\
++	TRACE_GFP_EM(SKIP_KASAN)
++#else
++# define TRACE_GFP_FLAGS_KASAN
++#endif
++
++#ifdef CONFIG_LOCKDEP
++# define TRACE_GFP_FLAGS_LOCKDEP		\
++	TRACE_GFP_EM(NOLOCKDEP)
++#else
++# define TRACE_GFP_FLAGS_LOCKDEP
++#endif
++
++#ifdef CONFIG_SLAB_OBJ_EXT
++# define TRACE_GFP_FLAGS_SLAB			\
++	TRACE_GFP_EM(NO_OBJ_EXT)
++#else
++# define TRACE_GFP_FLAGS_SLAB
++#endif
++
++#define TRACE_GFP_FLAGS				\
++	TRACE_GFP_FLAGS_GENERAL			\
++	TRACE_GFP_FLAGS_KASAN			\
++	TRACE_GFP_FLAGS_LOCKDEP			\
++	TRACE_GFP_FLAGS_SLAB
++
++#undef TRACE_GFP_EM
++#define TRACE_GFP_EM(a) TRACE_DEFINE_ENUM(___GFP_##a##_BIT);
++
++TRACE_GFP_FLAGS
++
++/* Just in case these are ever used */
++TRACE_DEFINE_ENUM(___GFP_UNUSED_BIT);
++TRACE_DEFINE_ENUM(___GFP_LAST_BIT);
++
+ #define gfpflag_string(flag) {(__force unsigned long)flag, #flag}
  
- void brcm_usb_dvr_init_7211b0(struct brcm_usb_init_params *params)
-@@ -440,5 +439,4 @@ void brcm_usb_dvr_init_7211b0(struct brc
- 
- 	params->family_name = "7211";
- 	params->ops = &bcm7211b0_ops;
--	params->suspend_with_clocks = true;
- }
---- a/drivers/phy/broadcom/phy-brcm-usb-init.h
-+++ b/drivers/phy/broadcom/phy-brcm-usb-init.h
-@@ -61,7 +61,6 @@ struct  brcm_usb_init_params {
- 	const struct brcm_usb_init_ops *ops;
- 	struct regmap *syscon_piarbctl;
- 	bool wake_enabled;
--	bool suspend_with_clocks;
- };
- 
- void brcm_usb_dvr_init_4908(struct brcm_usb_init_params *params);
---- a/drivers/phy/broadcom/phy-brcm-usb.c
-+++ b/drivers/phy/broadcom/phy-brcm-usb.c
-@@ -598,7 +598,7 @@ static int brcm_usb_phy_suspend(struct d
- 		 * and newer XHCI->2.0-clks/3.0-clks.
- 		 */
- 
--		if (!priv->ini.suspend_with_clocks) {
-+		if (!priv->ini.wake_enabled) {
- 			if (priv->phys[BRCM_USB_PHY_3_0].inited)
- 				clk_disable_unprepare(priv->usb_30_clk);
- 			if (priv->phys[BRCM_USB_PHY_2_0].inited ||
-@@ -615,8 +615,10 @@ static int brcm_usb_phy_resume(struct de
- {
- 	struct brcm_usb_phy_data *priv = dev_get_drvdata(dev);
- 
--	clk_prepare_enable(priv->usb_20_clk);
--	clk_prepare_enable(priv->usb_30_clk);
-+	if (!priv->ini.wake_enabled) {
-+		clk_prepare_enable(priv->usb_20_clk);
-+		clk_prepare_enable(priv->usb_30_clk);
-+	}
- 	brcm_usb_init_ipp(&priv->ini);
- 
- 	/*
+ #define __def_gfpflag_names			\
+-- 
+2.48.1
+
 
 
 
