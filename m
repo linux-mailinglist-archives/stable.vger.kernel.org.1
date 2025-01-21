@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-109671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51161A18354
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F9FFA18486
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:08:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D4C53AAC70
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A83D3A46F7
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B2A1F561E;
-	Tue, 21 Jan 2025 17:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751011F540C;
+	Tue, 21 Jan 2025 18:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/Oy0BBW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+0ZrTvr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FEF1F55E3;
-	Tue, 21 Jan 2025 17:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A6A1F0E36;
+	Tue, 21 Jan 2025 18:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482099; cv=none; b=Lbcq2+WDNlDLK5i/EVtep54N43qUlppunUnSPMmAjnh1F3eut53KGrqtKjYN/637guDoqikZfFmXEc6bpMDqH6mKOksBxEgINO08uGv0w3NxFK2eOmNtpLbWq6CaCrboydvjqge7bnGMuSODJiL36qTVc46W9UTLVY+4xDO+0ms=
+	t=1737482901; cv=none; b=Mei8azlI8x7Pz8JMwzFA4V7YzN0Xl2ir5RY11tsk+y0OO36zuf1Dt4OqHIEb20X6Hp7EylAPGl+YCtiOASuwvXlOLSTxIpfbVQlq8uhkYK8VTj0ZSkxnyRE0b6zrGNolsffS/7ZmOw/KsxyflOfQrT0nUh1519PDLBZ9mUMe9oQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482099; c=relaxed/simple;
-	bh=nmcLxghLpavFelkmunwhmgsbCStfGTUVeB2pBHaRwaM=;
+	s=arc-20240116; t=1737482901; c=relaxed/simple;
+	bh=AFOo5YpIP/XQMWoTi/2JABjsBOX/GAUBAehReRU12BE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vexjd4fc1zHEBmYmfpVZLITiuo63PMlgc/FL4E1glYLclv5uOfRDZfRZdejZ85KVeOI4D3+yFNmmJAEbxmpEkWBifcv8y5AAtRzuACZbhYH7h1PTlelE9xZkvIg+On4qLB+VnlF9WPWoyn8UT+2Nez2S1rRsI3qMY//wPpkfcss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/Oy0BBW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08FEC4CEDF;
-	Tue, 21 Jan 2025 17:54:58 +0000 (UTC)
+	 MIME-Version; b=RQyJqxsd/i/m1GqLS5x/i3/TTlbKe96RiToJe3Q+SKgTBrjvxne/WcH3hNJRvmD1lc3ONaJgVn2nQYd0Ie+TFXMy0C4uyi66DXNbnLOSUdoZkoH/EDu11MFRIc9Ft67AqbrfHNsiBV2JyOe+IbYOgtpuqAuEvGuLn/mxR6rzLGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+0ZrTvr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6951C4CEE0;
+	Tue, 21 Jan 2025 18:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482099;
-	bh=nmcLxghLpavFelkmunwhmgsbCStfGTUVeB2pBHaRwaM=;
+	s=korg; t=1737482901;
+	bh=AFOo5YpIP/XQMWoTi/2JABjsBOX/GAUBAehReRU12BE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r/Oy0BBWospFdf26A8jsSFKKgZszVuqe3oooPA5co/PWcYYDs3MkgqRc0Qsn/E8Bb
-	 7hYpciNTaxydmc8JCSJzweGpEl0S2SVDGVtApoG+EEmS993KGxs5krr3E/ySPnAd4X
-	 opqizdUrewO6ljmzETEaQYn4BD40737ksrN8qZ30=
+	b=B+0ZrTvr/Q+3jKt+v7/Np67Ee4jGzhGCjakCVAeHsfGcerHeE6I6ekRGJS4qCsp89
+	 oS6xFYUkl/RJLhbdR59dd9x6+L9crSLrXWN55Wwpp9TiBdGUSUXsFU7UCSmUdiU+9g
+	 nkSP2bvWxFWTH0z+VsAhftVLnIw7AZQhka4zf9sY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 34/72] poll_wait: add mb() to fix theoretical race between waitqueue_active() and .poll()
+	stable <stable@kernel.org>,
+	Jun Yan <jerrysteve1101@gmail.com>
+Subject: [PATCH 5.15 048/127] USB: usblp: return error when setting unsupported protocol
 Date: Tue, 21 Jan 2025 18:52:00 +0100
-Message-ID: <20250121174524.736780078@linuxfoundation.org>
+Message-ID: <20250121174531.525247534@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Jun Yan <jerrysteve1101@gmail.com>
 
-[ Upstream commit cacd9ae4bf801ff4125d8961bb9a3ba955e51680 ]
+commit 7a3d76a0b60b3f6fc3375e4de2174bab43f64545 upstream.
 
-As the comment above waitqueue_active() explains, it can only be used
-if both waker and waiter have mb()'s that pair with each other. However
-__pollwait() is broken in this respect.
+Fix the regression introduced by commit d8c6edfa3f4e ("USB:
+usblp: don't call usb_set_interface if there's a single alt"),
+which causes that unsupported protocols can also be set via
+ioctl when the num_altsetting of the device is 1.
 
-This is not pipe-specific, but let's look at pipe_poll() for example:
+Move the check for protocol support to the earlier stage.
 
-	poll_wait(...); // -> __pollwait() -> add_wait_queue()
-
-	LOAD(pipe->head);
-	LOAD(pipe->head);
-
-In theory these LOAD()'s can leak into the critical section inside
-add_wait_queue() and can happen before list_add(entry, wq_head), in this
-case pipe_poll() can race with wakeup_pipe_readers/writers which do
-
-	smp_mb();
-	if (waitqueue_active(wq_head))
-		wake_up_interruptible(wq_head);
-
-There are more __pollwait()-like functions (grep init_poll_funcptr), and
-it seems that at least ep_ptable_queue_proc() has the same problem, so the
-patch adds smp_mb() into poll_wait().
-
-Link: https://lore.kernel.org/all/20250102163320.GA17691@redhat.com/
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20250107162717.GA18922@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d8c6edfa3f4e ("USB: usblp: don't call usb_set_interface if there's a single alt")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jun Yan <jerrysteve1101@gmail.com>
+Link: https://lore.kernel.org/r/20241212143852.671889-1-jerrysteve1101@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/poll.h | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/usb/class/usblp.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/poll.h b/include/linux/poll.h
-index d1ea4f3714a84..fc641b50f1298 100644
---- a/include/linux/poll.h
-+++ b/include/linux/poll.h
-@@ -41,8 +41,16 @@ typedef struct poll_table_struct {
+--- a/drivers/usb/class/usblp.c
++++ b/drivers/usb/class/usblp.c
+@@ -1337,11 +1337,12 @@ static int usblp_set_protocol(struct usb
+ 	if (protocol < USBLP_FIRST_PROTOCOL || protocol > USBLP_LAST_PROTOCOL)
+ 		return -EINVAL;
  
- static inline void poll_wait(struct file * filp, wait_queue_head_t * wait_address, poll_table *p)
- {
--	if (p && p->_qproc && wait_address)
-+	if (p && p->_qproc && wait_address) {
- 		p->_qproc(filp, wait_address, p);
-+		/*
-+		 * This memory barrier is paired in the wq_has_sleeper().
-+		 * See the comment above prepare_to_wait(), we need to
-+		 * ensure that subsequent tests in this thread can't be
-+		 * reordered with __add_wait_queue() in _qproc() paths.
-+		 */
-+		smp_mb();
-+	}
- }
- 
- /*
--- 
-2.39.5
-
++	alts = usblp->protocol[protocol].alt_setting;
++	if (alts < 0)
++		return -EINVAL;
++
+ 	/* Don't unnecessarily set the interface if there's a single alt. */
+ 	if (usblp->intf->num_altsetting > 1) {
+-		alts = usblp->protocol[protocol].alt_setting;
+-		if (alts < 0)
+-			return -EINVAL;
+ 		r = usb_set_interface(usblp->dev, usblp->ifnum, alts);
+ 		if (r < 0) {
+ 			printk(KERN_ERR "usblp: can't set desired altsetting %d on interface %d\n",
 
 
 
