@@ -1,52 +1,56 @@
-Return-Path: <stable+bounces-109719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B69CA18394
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A7EA183A6
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:59:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C79C16BCEF
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:58:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2AE1188CFA3
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D1D1F76BB;
-	Tue, 21 Jan 2025 17:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2710D1F5614;
+	Tue, 21 Jan 2025 17:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KL/7eZGs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rDNLC+ld"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBEF1F667C;
-	Tue, 21 Jan 2025 17:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6ADD1F55FA;
+	Tue, 21 Jan 2025 17:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482239; cv=none; b=BS/SZ8fCSX4TOTg06QYJUW2OEc67I9gr7/KY1M0nJaEXCST/uIK7PVJqrUQ8zcnVvt2KQ3G4ALe6uG6/0Pz5p1AD5oREoN9EfrK8+l14aPpiAXgX7n3ts4N3wDDpb/G8tHGw9Adr7c2q8tTcO5FgFR3XrTQCosGmEaw9THxSR+w=
+	t=1737482271; cv=none; b=bXQGI+a7SaRCmLSIyBOLud0+nJZwTARWUX5Lw45t+KV/lPUQoSkNfGmyqKeeeFAX8BF/XQMaTVjS9knUPCyqXpdIStq4nM9OotQP52822I2faqYppJ+7qDHgwCMoRs7TrmBb+Jk8IJVEzT7zruiRoyOdmRMLrcHA4OcsRNY78GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482239; c=relaxed/simple;
-	bh=n/28BHZlRDKBVmIUgq1vc8/tLxo+VcUKXSB5jFTfJF8=;
+	s=arc-20240116; t=1737482271; c=relaxed/simple;
+	bh=98+ONffxtdK9v7KHMjWWfG9YCKa58ISu8/m56G5pkE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mnKMbwGE58U0DImL7dbPHTn8tf37WYXl+eXW+EHCqIBOsBzq7TrulYwSHvP0QPee6kAzxYEbaTXw2VcJwBaVqmKJNhU7k1NxkNuEwe39XRLAzNnc+Rd99jDAHvMUNvs/qOH+85/zprF+U7KXKVSyJME2WvBpH5lF5TX3Ojbe0Fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KL/7eZGs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C56C4CEE1;
-	Tue, 21 Jan 2025 17:57:18 +0000 (UTC)
+	 MIME-Version; b=vDtB5ALm7WV4po5yFBSgG3jSdBTn5j0zax5D2j4QVAEB5fTuAjSSBnGj34wM7AHSmYvX3XOfRCCKtbmr1Ir3YUUw0hDEWbaqBG57dmWQVyfmekkb3aOoMZXnwohh0dWN6WYkadSt7mdse294HRcBfAmXmkqqCxbivD8P4tPPE0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rDNLC+ld; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E48C4CEDF;
+	Tue, 21 Jan 2025 17:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482239;
-	bh=n/28BHZlRDKBVmIUgq1vc8/tLxo+VcUKXSB5jFTfJF8=;
+	s=korg; t=1737482271;
+	bh=98+ONffxtdK9v7KHMjWWfG9YCKa58ISu8/m56G5pkE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KL/7eZGsKCyDP9GczEqPO6APuyi7PBacvlTEy1zhDXE7zi400KAdtDxISC6BY77kl
-	 0dJ8qJvibcFL7Q/2fquMLO0pTerDefUUClEyCEezV42qK6PHiSaNomeluzUDRSCrdV
-	 SyUjFaZeoXGuol7r3eXGXoBZvi17ZKpnOBK1pEX4=
+	b=rDNLC+ldrugWx//nzFcmQny7wUWt5aISTd+m5dHhnVLOhNiFIIMxipnVmw7M74Xjr
+	 KweYJXERX0fu9Y+bsQKthy2CrABWpEuxglXE0Qo2eYvprqiH5d39jRXJCFPVrTexZ5
+	 MXcO8DG5N1E3nL4A29FH1Gz2LCzOnBB7TPMrvHDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.12 001/122] efi/zboot: Limit compression options to GZIP and ZSTD
-Date: Tue, 21 Jan 2025 18:50:49 +0100
-Message-ID: <20250121174533.049821905@linuxfoundation.org>
+	Sudheer Kumar Doredla <s-doredla@ti.com>,
+	Simon Horman <horms@kernel.org>,
+	Roger Quadros <rogerq@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 002/122] net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()
+Date: Tue, 21 Jan 2025 18:50:50 +0100
+Message-ID: <20250121174533.087896159@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
 References: <20250121174532.991109301@linuxfoundation.org>
@@ -65,83 +69,87 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Sudheer Kumar Doredla <s-doredla@ti.com>
 
-commit 0b2c29fb68f8bf3e87a9d88404aa6fdd486223e5 upstream.
+[ Upstream commit 03d120f27d050336f7e7d21879891542c4741f81 ]
 
-For historical reasons, the legacy decompressor code on various
-architectures supports 7 different compression types for the compressed
-kernel image.
+CPSW ALE has 75-bit ALE entries stored across three 32-bit words.
+The cpsw_ale_get_field() and cpsw_ale_set_field() functions support
+ALE field entries spanning up to two words at the most.
 
-EFI zboot is not a compression library museum, and so the options can be
-limited to what is likely to be useful in practice:
+The cpsw_ale_get_field() and cpsw_ale_set_field() functions work as
+expected when ALE field spanned across word1 and word2, but fails when
+ALE field spanned across word2 and word3.
 
-- GZIP is tried and tested, and is still one of the fastest at
-  decompression time, although the compression ratio is not very high;
-  moreover, Fedora is already shipping EFI zboot kernels for arm64 that
-  use GZIP, and QEMU implements direct support for it when booting a
-  kernel without firmware loaded;
+For example, while reading the ALE field spanned across word2 and word3
+(i.e. bits 62 to 64), the word3 data shifted to an incorrect position
+due to the index becoming zero while flipping.
+The same issue occurred when setting an ALE entry.
 
-- ZSTD has a very high compression ratio (although not the highest), and
-  is almost as fast as GZIP at decompression time.
+This issue has not been seen in practice but will be an issue in the future
+if the driver supports accessing ALE fields spanning word2 and word3
 
-Reducing the number of options makes it less of a hassle for other
-consumers of the EFI zboot format (such as QEMU today, and kexec in the
-future) to support it transparently without having to carry 7 different
-decompression libraries.
+Fix the methods to handle getting/setting fields spanning up to two words.
 
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b685f1a58956 ("net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()/cpsw_ale_set_field()")
+Signed-off-by: Sudheer Kumar Doredla <s-doredla@ti.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://patch.msgid.link/20250108172433.311694-1-s-doredla@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/Kconfig                |    4 ----
- drivers/firmware/efi/libstub/Makefile.zboot |   18 ++++++------------
- 2 files changed, 6 insertions(+), 16 deletions(-)
+ drivers/net/ethernet/ti/cpsw_ale.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/firmware/efi/Kconfig
-+++ b/drivers/firmware/efi/Kconfig
-@@ -76,10 +76,6 @@ config EFI_ZBOOT
- 	bool "Enable the generic EFI decompressor"
- 	depends on EFI_GENERIC_STUB && !ARM
- 	select HAVE_KERNEL_GZIP
--	select HAVE_KERNEL_LZ4
--	select HAVE_KERNEL_LZMA
--	select HAVE_KERNEL_LZO
--	select HAVE_KERNEL_XZ
- 	select HAVE_KERNEL_ZSTD
- 	help
- 	  Create the bootable image as an EFI application that carries the
---- a/drivers/firmware/efi/libstub/Makefile.zboot
-+++ b/drivers/firmware/efi/libstub/Makefile.zboot
-@@ -12,22 +12,16 @@ quiet_cmd_copy_and_pad = PAD     $@
- $(obj)/vmlinux.bin: $(obj)/$(EFI_ZBOOT_PAYLOAD) FORCE
- 	$(call if_changed,copy_and_pad)
+diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+index 8d02d2b214293..dc5e247ca5d1a 100644
+--- a/drivers/net/ethernet/ti/cpsw_ale.c
++++ b/drivers/net/ethernet/ti/cpsw_ale.c
+@@ -127,15 +127,15 @@ struct cpsw_ale_dev_id {
  
--comp-type-$(CONFIG_KERNEL_GZIP)		:= gzip
--comp-type-$(CONFIG_KERNEL_LZ4)		:= lz4
--comp-type-$(CONFIG_KERNEL_LZMA)		:= lzma
--comp-type-$(CONFIG_KERNEL_LZO)		:= lzo
--comp-type-$(CONFIG_KERNEL_XZ)		:= xzkern
--comp-type-$(CONFIG_KERNEL_ZSTD)		:= zstd22
--
- # in GZIP, the appended le32 carrying the uncompressed size is part of the
- # format, but in other cases, we just append it at the end for convenience,
- # causing the original tools to complain when checking image integrity.
--# So disregard it when calculating the payload size in the zimage header.
--zboot-method-y                         := $(comp-type-y)_with_size
--zboot-size-len-y                       := 4
-+comp-type-y				:= gzip
-+zboot-method-y				:= gzip
-+zboot-size-len-y			:= 0
+ static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
+ {
+-	int idx, idx2;
++	int idx, idx2, index;
+ 	u32 hi_val = 0;
  
--zboot-method-$(CONFIG_KERNEL_GZIP)     := gzip
--zboot-size-len-$(CONFIG_KERNEL_GZIP)   := 0
-+comp-type-$(CONFIG_KERNEL_ZSTD)		:= zstd
-+zboot-method-$(CONFIG_KERNEL_ZSTD)	:= zstd22_with_size
-+zboot-size-len-$(CONFIG_KERNEL_ZSTD)	:= 4
+ 	idx    = start / 32;
+ 	idx2 = (start + bits - 1) / 32;
+ 	/* Check if bits to be fetched exceed a word */
+ 	if (idx != idx2) {
+-		idx2 = 2 - idx2; /* flip */
+-		hi_val = ale_entry[idx2] << ((idx2 * 32) - start);
++		index = 2 - idx2; /* flip */
++		hi_val = ale_entry[index] << ((idx2 * 32) - start);
+ 	}
+ 	start -= idx * 32;
+ 	idx    = 2 - idx; /* flip */
+@@ -145,16 +145,16 @@ static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
+ static inline void cpsw_ale_set_field(u32 *ale_entry, u32 start, u32 bits,
+ 				      u32 value)
+ {
+-	int idx, idx2;
++	int idx, idx2, index;
  
- $(obj)/vmlinuz: $(obj)/vmlinux.bin FORCE
- 	$(call if_changed,$(zboot-method-y))
+ 	value &= BITMASK(bits);
+ 	idx = start / 32;
+ 	idx2 = (start + bits - 1) / 32;
+ 	/* Check if bits to be set exceed a word */
+ 	if (idx != idx2) {
+-		idx2 = 2 - idx2; /* flip */
+-		ale_entry[idx2] &= ~(BITMASK(bits + start - (idx2 * 32)));
+-		ale_entry[idx2] |= (value >> ((idx2 * 32) - start));
++		index = 2 - idx2; /* flip */
++		ale_entry[index] &= ~(BITMASK(bits + start - (idx2 * 32)));
++		ale_entry[index] |= (value >> ((idx2 * 32) - start));
+ 	}
+ 	start -= idx * 32;
+ 	idx = 2 - idx; /* flip */
+-- 
+2.39.5
+
 
 
 
