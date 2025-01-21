@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-109752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED69A183C2
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:00:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8323AA18477
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:07:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1172188CC28
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:59:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3733616BDE7
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5E91F7094;
-	Tue, 21 Jan 2025 17:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7F51F5613;
+	Tue, 21 Jan 2025 18:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IbfKB8ty"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tV41eqgo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659611F55FA;
-	Tue, 21 Jan 2025 17:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062731F543F;
+	Tue, 21 Jan 2025 18:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482335; cv=none; b=XkX01cFEBjVQND2Edo9EIJLg/k6NcZeZZNFXBuCWvUjRtOXuysBmOoz920YdjN/hsaJiYKo7ORx6GybXe7MbE0h9WJN1F5QIPowZe4kOCvMwNjZcDHWWRj7sxPzj1YknL9dnw4i0aNQgxJRITc24F/GZlybVHd88Zm0kcRNaOO0=
+	t=1737482815; cv=none; b=GyCHfTOVpjlwJBDwQdPv66nwy5vJYsooBsrjPXVSoYdfkoxOKrqc1GbGBB7+rtfRb0rK3dG4Hhdi0paelp/OXcV0nUqeWl1jNVPFoyBz6eVxBXbgsFSMDaM5OWGgLgTHc1LqmgGA3ItHcpXpibmygPqYDKOLb8sJ3npH+Y39pVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482335; c=relaxed/simple;
-	bh=8roqt6+uL2ovENah1bIfHFCCRxkyEq52CyEkuH5n36w=;
+	s=arc-20240116; t=1737482815; c=relaxed/simple;
+	bh=gYDnXxhjroIFCS6Dlw5a6jqprzTm3b8PajVn8HEocm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SRDCDoQQiMNHXuwgiWLZp1lyUiD6B/O+v3dvaXpy5264RZDQpfMqxispPNZTFGMVOJYca+1j/BKS3AteKM+lhajMt8GVJCAMQm2rM6xy+Uwlrfe5jiX0+g459pgZ0ZPYmm4+RuAW5XXrYVTTXqmvdFcTgpGXwRFSWJi2OaS01qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IbfKB8ty; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04F1C4CEDF;
-	Tue, 21 Jan 2025 17:58:54 +0000 (UTC)
+	 MIME-Version; b=qluP70GR+2KnP2a6DmArcSNNsitnpUcftk5FmgH64zxZKmmOAOvXXek50qzzWw/oPb4/GdE2RScmh5poFswxs3tsSWiqQezR+8/DrDnnxsf3SS9ruyGsJSObun7+4FX+17PUH1h1KJYGhniG4haWLjggzpoUuMNzofBh1Qr2rUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tV41eqgo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D1FC4CEDF;
+	Tue, 21 Jan 2025 18:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482335;
-	bh=8roqt6+uL2ovENah1bIfHFCCRxkyEq52CyEkuH5n36w=;
+	s=korg; t=1737482814;
+	bh=gYDnXxhjroIFCS6Dlw5a6jqprzTm3b8PajVn8HEocm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IbfKB8tyh6guWz8IerzW8xu1g3bg/sIs3qVEJHuvrO6bIm7WNmSPaNeZlmA6tKpQu
-	 0UgPYq7dD+jVTprSyDeRU5j5ltWhWV1EFWBmMAEN9i17F+69hvqFQH+ne47XIs11CS
-	 fLDasM5E+8p3I5ZfK39qGTXhWoSDqO01NDVY0GJs=
+	b=tV41eqgo7+igMccKuaKeEO28PYh6PLwS0/5HGD/KA+OY+cGQrgTS6lkmmR68p9/u6
+	 +iJniUl8RcZ9+UPwVx50lEz35RDNuxmy2aRb/34rXiAhhPdW+yhMUtEw+wGTe3nxJK
+	 DVTuqbS4rxX8VkGQpgk+OoBd4yVa01hTUbROhSLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 042/122] hwmon: (tmp513) Fix division of negative numbers
+Subject: [PATCH 5.15 018/127] netfilter: conntrack: clamp maximum hashtable size to INT_MAX
 Date: Tue, 21 Jan 2025 18:51:30 +0100
-Message-ID: <20250121174534.601384925@linuxfoundation.org>
+Message-ID: <20250121174530.375677325@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit e2c68cea431d65292b592c9f8446c918d45fcf78 ]
+[ Upstream commit b541ba7d1f5a5b7b3e2e22dc9e40e18a7d6dbc13 ]
 
-Fix several issues with division of negative numbers in the tmp513
-driver.
+Use INT_MAX as maximum size for the conntrack hashtable. Otherwise, it
+is possible to hit WARN_ON_ONCE in __kvmalloc_node_noprof() when
+resizing hashtable because __GFP_NOWARN is unset. See:
 
-The docs on the DIV_ROUND_CLOSEST macro explain that dividing a negative
-value by an unsigned type is undefined behavior. The driver was doing
-this in several places, i.e. data->shunt_uohms has type of u32. The
-actual "undefined" behavior is that it converts both values to unsigned
-before doing the division, for example:
+  0708a0afe291 ("mm: Consider __GFP_NOWARN flag for oversized kvmalloc() calls")
 
-    int ret = DIV_ROUND_CLOSEST(-100, 3U);
+Note: hashtable resize is only possible from init_netns.
 
-results in ret == 1431655732 instead of -33.
-
-Furthermore the MILLI macro has a type of unsigned long. Multiplying a
-signed long by an unsigned long results in an unsigned long.
-
-So, we need to cast both MILLI and data data->shunt_uohms to long when
-using the DIV_ROUND_CLOSEST macro.
-
-Fixes: f07f9d2467f4 ("hwmon: (tmp513) Use SI constants from units.h")
-Fixes: 59dfa75e5d82 ("hwmon: Add driver for Texas Instruments TMP512/513 sensor chips.")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://lore.kernel.org/r/20250114-fix-si-prefix-macro-sign-bugs-v1-1-696fd8d10f00@baylibre.com
-[groeck: Drop some continuation lines]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 9cc1c73ad666 ("netfilter: conntrack: avoid integer overflow when resizing")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/tmp513.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/netfilter/nf_conntrack_core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
-index 1c2cb12071b80..5acbfd7d088dd 100644
---- a/drivers/hwmon/tmp513.c
-+++ b/drivers/hwmon/tmp513.c
-@@ -207,7 +207,8 @@ static int tmp51x_get_value(struct tmp51x_data *data, u8 reg, u8 pos,
- 		*val = sign_extend32(regval,
- 				     reg == TMP51X_SHUNT_CURRENT_RESULT ?
- 				     16 - tmp51x_get_pga_shift(data) : 15);
--		*val = DIV_ROUND_CLOSEST(*val * 10 * MILLI, data->shunt_uohms);
-+		*val = DIV_ROUND_CLOSEST(*val * 10 * (long)MILLI, (long)data->shunt_uohms);
+diff --git a/net/netfilter/nf_conntrack_core.c b/net/netfilter/nf_conntrack_core.c
+index be6031886f94..00a97743507d 100644
+--- a/net/netfilter/nf_conntrack_core.c
++++ b/net/netfilter/nf_conntrack_core.c
+@@ -2589,12 +2589,15 @@ void *nf_ct_alloc_hashtable(unsigned int *sizep, int nulls)
+ 	struct hlist_nulls_head *hash;
+ 	unsigned int nr_slots, i;
+ 
+-	if (*sizep > (UINT_MAX / sizeof(struct hlist_nulls_head)))
++	if (*sizep > (INT_MAX / sizeof(struct hlist_nulls_head)))
+ 		return NULL;
+ 
+ 	BUILD_BUG_ON(sizeof(struct hlist_nulls_head) != sizeof(struct hlist_head));
+ 	nr_slots = *sizep = roundup(*sizep, PAGE_SIZE / sizeof(struct hlist_nulls_head));
+ 
++	if (nr_slots > (INT_MAX / sizeof(struct hlist_nulls_head)))
++		return NULL;
 +
- 		break;
- 	case TMP51X_BUS_VOLTAGE_RESULT:
- 	case TMP51X_BUS_VOLTAGE_H_LIMIT:
-@@ -223,7 +224,7 @@ static int tmp51x_get_value(struct tmp51x_data *data, u8 reg, u8 pos,
- 	case TMP51X_BUS_CURRENT_RESULT:
- 		// Current = (ShuntVoltage * CalibrationRegister) / 4096
- 		*val = sign_extend32(regval, 15) * (long)data->curr_lsb_ua;
--		*val = DIV_ROUND_CLOSEST(*val, MILLI);
-+		*val = DIV_ROUND_CLOSEST(*val, (long)MILLI);
- 		break;
- 	case TMP51X_LOCAL_TEMP_RESULT:
- 	case TMP51X_REMOTE_TEMP_RESULT_1:
-@@ -263,7 +264,7 @@ static int tmp51x_set_value(struct tmp51x_data *data, u8 reg, long val)
- 		 * The user enter current value and we convert it to
- 		 * voltage. 1lsb = 10uV
- 		 */
--		val = DIV_ROUND_CLOSEST(val * data->shunt_uohms, 10 * MILLI);
-+		val = DIV_ROUND_CLOSEST(val * (long)data->shunt_uohms, 10 * (long)MILLI);
- 		max_val = U16_MAX >> tmp51x_get_pga_shift(data);
- 		regval = clamp_val(val, -max_val, max_val);
- 		break;
+ 	hash = kvcalloc(nr_slots, sizeof(struct hlist_nulls_head), GFP_KERNEL);
+ 
+ 	if (hash && nulls)
 -- 
 2.39.5
 
