@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-109871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7B84A1843F
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:05:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 547ADA1838B
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C03B3A1354
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:05:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F35A21883FD6
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:58:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 775951F76AF;
-	Tue, 21 Jan 2025 18:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903431F7574;
+	Tue, 21 Jan 2025 17:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGSVu2ro"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WkPamKDo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326D91F4275;
-	Tue, 21 Jan 2025 18:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5331F7578;
+	Tue, 21 Jan 2025 17:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482683; cv=none; b=E3b5K3pLvQ+coxYVHQA0BDnmBSxQ3eXdmmn6BIwdsluJmMFEwF3W1ImM3T7uhfbFdv1+Mpz9Av7uV3cSlZLF3frehP1YcH+OVjgSL+X3KpPh9LTItzFd6VUxMa/xVyLe0pSuYoq68tkPnQiUfPJjp2sBM/XWy4ow14elMVcLBvk=
+	t=1737482211; cv=none; b=Q9P+9OrSc0iZW6iFL6nh3sGvxgtABkurXVVCRdGwyRv5lBbySZvASq0vSLRcvlmLAJkcecuD7nkB6II7wXvDv18P5S60IvuUa6yI/qXLJBsiR5bnlrhf3s9d8H01QUE7fNhNpBwqmDn9YAAaj/lLastkfD06++At7+rIbJUS5ZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482683; c=relaxed/simple;
-	bh=3NxHsCxMcJk+PygIVTmEVR6BV1F+jtRz2DZRsqTTbNE=;
+	s=arc-20240116; t=1737482211; c=relaxed/simple;
+	bh=EE0ZojvnZGfV46b003ctVwVurCABehLUwX22FKZd/v0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=smssKSZtFpqeej4ybpDSFG3G58jsSgQtPwqpcv2D1q5VbyXEbzCzQnaSz2A/OOrDbZbepv+iCFwciirdDMYsq08Wve5sYih7JOtUbdFpEVVRPfcEwsQppOFsvsIOAw620SggrYZXhqIOL+5Og4HcnFcVgK7WF5raZwG1jrXNCUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGSVu2ro; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB0DCC4CEDF;
-	Tue, 21 Jan 2025 18:04:42 +0000 (UTC)
+	 MIME-Version; b=da05BFKqpTZX2fXNYp65Pm6Vz7My4zWc88QEuLUxkp9LakV9h5pBEX1TaSdI0MotYHVhPsPIicy3TAxep5A7AcBst8AW+BcuUvDlrB7Am1sZUTcYmOIFiU5QBaewNaISi7EwuCRpq/QRScfDWl0ZwYcPbL5UafvRsML8ZF+L2pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WkPamKDo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF00C4CEDF;
+	Tue, 21 Jan 2025 17:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482683;
-	bh=3NxHsCxMcJk+PygIVTmEVR6BV1F+jtRz2DZRsqTTbNE=;
+	s=korg; t=1737482210;
+	bh=EE0ZojvnZGfV46b003ctVwVurCABehLUwX22FKZd/v0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OGSVu2rorRyQFG+DPn+BZqc3TrUNGAeF4IllMn5qpvNOU08rjnEubjKLCgS/Alf24
-	 UAckafes5O4K6ik+sarasNsHRGu6S5/5GkwsAuzrn/W4EjtRFB8kqv/FhLN1j2EM3S
-	 9lnplta8GLwJwD884MPiYGn5WaLVjL10COGXsmNc=
+	b=WkPamKDokzxVCYrU+I9PBd5h9+QWYGWgrCZaYnFjRQ9fExOEpxjWl9BcvHGO9ivc9
+	 8tXcIrR2mXu7venakpwESgrldOu8X7es6osV1e5pDuYxYQXKj1UU8tys6Q+it1oIvY
+	 ib37bw0dNZlI2LHgnVjGMdknylyEiW66nESNGI+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
-	Wongi Lee <qwerty@theori.io>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Luigi Leonardi <leonardi@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 38/64] vsock: prevent null-ptr-deref in vsock_*[has_data|has_space]
+	"stable@vger.kernel.org, Juergen Gross" <jgross@suse.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.6 71/72] x86/xen: fix SLS mitigation in xen_hypercall_iret()
 Date: Tue, 21 Jan 2025 18:52:37 +0100
-Message-ID: <20250121174523.004791309@linuxfoundation.org>
+Message-ID: <20250121174526.168510888@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
-References: <20250121174521.568417761@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +61,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Juergen Gross <jgross@suse.com>
 
-commit 91751e248256efc111e52e15115840c35d85abaf upstream.
+The backport of upstream patch a2796dff62d6 ("x86/xen: don't do PV iret
+hypercall through hypercall page") missed to adapt the SLS mitigation
+config check from CONFIG_MITIGATION_SLS to CONFIG_SLS.
 
-Recent reports have shown how we sometimes call vsock_*_has_data()
-when a vsock socket has been de-assigned from a transport (see attached
-links), but we shouldn't.
-
-Previous commits should have solved the real problems, but we may have
-more in the future, so to avoid null-ptr-deref, we can return 0
-(no space, no data available) but with a warning.
-
-This way the code should continue to run in a nearly consistent state
-and have a warning that allows us to debug future problems.
-
-Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/netdev/Z2K%2FI4nlHdfMRTZC@v4bel-B760M-AORUS-ELITE-AX/
-Link: https://lore.kernel.org/netdev/5ca20d4c-1017-49c2-9516-f6f75fd331e9@rbox.co/
-Link: https://lore.kernel.org/netdev/677f84a8.050a0220.25a300.01b3.GAE@google.com/
-Co-developed-by: Hyunwoo Kim <v4bel@theori.io>
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Co-developed-by: Wongi Lee <qwerty@theori.io>
-Signed-off-by: Wongi Lee <qwerty@theori.io>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Reviewed-by: Hyunwoo Kim <v4bel@theori.io>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/af_vsock.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/x86/xen/xen-asm.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -873,6 +873,9 @@ EXPORT_SYMBOL_GPL(vsock_create_connected
- 
- s64 vsock_stream_has_data(struct vsock_sock *vsk)
- {
-+	if (WARN_ON(!vsk->transport))
-+		return 0;
-+
- 	return vsk->transport->stream_has_data(vsk);
- }
- EXPORT_SYMBOL_GPL(vsock_stream_has_data);
-@@ -881,6 +884,9 @@ static s64 vsock_connectible_has_data(st
- {
- 	struct sock *sk = sk_vsock(vsk);
- 
-+	if (WARN_ON(!vsk->transport))
-+		return 0;
-+
- 	if (sk->sk_type == SOCK_SEQPACKET)
- 		return vsk->transport->seqpacket_has_data(vsk);
- 	else
-@@ -889,6 +895,9 @@ static s64 vsock_connectible_has_data(st
- 
- s64 vsock_stream_has_space(struct vsock_sock *vsk)
- {
-+	if (WARN_ON(!vsk->transport))
-+		return 0;
-+
- 	return vsk->transport->stream_has_space(vsk);
- }
- EXPORT_SYMBOL_GPL(vsock_stream_has_space);
+--- a/arch/x86/xen/xen-asm.S
++++ b/arch/x86/xen/xen-asm.S
+@@ -221,7 +221,7 @@ SYM_CODE_END(xen_early_idt_handler_array
+ 	push %rax
+ 	mov  $__HYPERVISOR_iret, %eax
+ 	syscall		/* Do the IRET. */
+-#ifdef CONFIG_MITIGATION_SLS
++#ifdef CONFIG_SLS
+ 	int3
+ #endif
+ .endm
 
 
 
