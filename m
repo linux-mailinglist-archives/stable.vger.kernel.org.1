@@ -1,135 +1,95 @@
-Return-Path: <stable+bounces-109600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E6F0A17C48
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 11:52:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40E9DA17C57
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 11:55:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65E9D3A0804
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 10:52:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D892188382E
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 10:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594B71F0E2D;
-	Tue, 21 Jan 2025 10:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA07D1F0E32;
+	Tue, 21 Jan 2025 10:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="j8iHg7Wc"
+	dkim=pass (2048-bit key) header.d=digitalmanufaktur-com.20230601.gappssmtp.com header.i=@digitalmanufaktur-com.20230601.gappssmtp.com header.b="oZ2/jqRS"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D486E1A8409;
-	Tue, 21 Jan 2025 10:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38381B87C2
+	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 10:55:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737456771; cv=none; b=kf6fOwbZo0sxb3DmPFfHLg6YwYxPtrszZ61c4A6MU0t33wNOEt/cDrLV/Lo9piQGBrt8LsOSfEPDt9WGZniCPMapkPkHTNvmS0uiAM2CmI+r18sT+jxVvvRM17OR+TWM8eT0CrziNYpABq4/CwM6k4Jna4XXlT0+EI7vaJipVKc=
+	t=1737456937; cv=none; b=cZZjOUkoW4BPIaBF09dGmy7d5NND0LktKV93IB2upMcaMu4M2KomYpLxKls4nEp2qwsxDr1snEsYpm3x4JGextUNaTZzGX9Yul+P/oRQnzwoJqnPTpIpUV6/GHmytkEcXyHHwFRfSl6+VEYVgFWCTVYHqA6T+K+qydye69DZFN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737456771; c=relaxed/simple;
-	bh=0R48WJkUpGKSFqPeM7L4K3mJRPAcN5JYm/BLNSGSXIY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N6Uya5bTX660jfMwrx0wsX2XeLTqeF1TUaft2Kgg8aGCF4QFSAxO3xRJyZzXSQ5MWUQ/hUc6nogZb/tyBnUmsSzh1HIpD+VERP5mC1Jdo5WEcHgb8+NDFtBfPXlrMia2BYJZvQ8GfZO/ZlaCORPVyvw7FGS+RqscmphrXcLdAWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=j8iHg7Wc; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1737456758;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=o2UMJAE0rSMu4do0LJ3F7njadk4L3n4HwNwxYUayb9w=;
-	b=j8iHg7WcbcSJ/ENqDEUU36RgLKCJvxwYbLOH0SMsRBGcFWkyPXMFNXUqEmDVod+ZBFIQ73
-	i1mNfkWtwoENlHw4hqtqh/m0b9MDt9w8VOfRmRtIeY5MDyt3wIWC0wU/zm0zkHFXA/YbrM
-	OPmAIPvNHtkFyGRQv3qKkjP/qH7TckM=
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Lijun Ou <oulijun@huawei.com>,
-	"Wei Hu(Xavier)" <huwei87@hisilicon.com>,
-	Weihang Li <liweihang@huawei.com>,
-	Doug Ledford <dledford@redhat.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 5.10] RDMA/hns: Fix deadlock on SRQ async events.
-Date: Tue, 21 Jan 2025 13:52:36 +0300
-Message-ID: <20250121105238.15409-1-arefev@swemel.ru>
+	s=arc-20240116; t=1737456937; c=relaxed/simple;
+	bh=yYLbv2H4PS2A8iSMuVaol0jbiJfxxhLrYtmEIS+BllY=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=SIv/61cs8qwH4oZRAvHaJnrYCoxGGNj1mcrqAvVbjJ0glVtzrB5nau9v3g1ce8bqtv60iBsOMYpSmVhW+F9wgGdo4G6DQrjkHAkOpESCd9iX8nSyZcPdvSZaT3inH8ymToIDnCy9k1hQjXnS40QG2bchm2+ODivoQhrIJGpHYF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=digitalmanufaktur.com; spf=pass smtp.mailfrom=digitalmanufaktur.com; dkim=pass (2048-bit key) header.d=digitalmanufaktur-com.20230601.gappssmtp.com header.i=@digitalmanufaktur-com.20230601.gappssmtp.com header.b=oZ2/jqRS; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=digitalmanufaktur.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digitalmanufaktur.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5da12292b67so8812543a12.3
+        for <stable@vger.kernel.org>; Tue, 21 Jan 2025 02:55:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=digitalmanufaktur-com.20230601.gappssmtp.com; s=20230601; t=1737456932; x=1738061732; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=yYLbv2H4PS2A8iSMuVaol0jbiJfxxhLrYtmEIS+BllY=;
+        b=oZ2/jqRS2Un7WOb/r+Hh4FvR4ENWTp6dKPbGKK430NnCge9JE+15cBQJAriN6IgKgW
+         HptBZ/G7NHfzM8Ww+zzKwS9zCjwDKLHoIy7MfwwpkERfB/rcGKmVQW3vePEV+7+nWOAj
+         37N2mdIVMcGbEZ62p+u2dtVPBuKRlVAMs7bnYHsPGCJHvWvyf81Wtczv5pDobsmSRMJJ
+         DuOaP3rNMkyVao8g25nxOvrbr29DuidtZb0e5J9fcS8rOkjCS4QPjlchcqUOdR0GkNkL
+         SewglDDQRglrh98zNDL1nTQsjeR+jC9UQNP5/pod1M+SfpWsb62Amkca2tFC8N3f0ijb
+         /pzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737456932; x=1738061732;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yYLbv2H4PS2A8iSMuVaol0jbiJfxxhLrYtmEIS+BllY=;
+        b=QL894FhiYZWnHCMzYKcPZW/AVCvqqq8KLvVwCxOgGKE8tkl+0H7RjMMy9pnR6wp6oG
+         oesH2dG9dPNkLaAGOJbQNv/Gr2TMt0NsV6fko8PbEGdzqADt8HgXY0YtRJslsqnxWEbf
+         GTPeT4nY3vcuazKSTDQfECPLH9+ZfSNrXlvD2GX9xalN848LVKIYg1WI72wX6TC7oLa+
+         QQHmj3yPSvwfOU5fc1PeBGmCMZH33ZeZrPXdx3VowumHjhAmvFyiR5j8P2DzL1CoXGd4
+         w7kbqgCcwmjB9qMJGZRE8le9lKd0PVcMvJrpykHwGf1UvPjk5mGkwqzVXUgSzkbk1q/n
+         d6Wg==
+X-Gm-Message-State: AOJu0Yzgqc3VvW567XCSAqfb58Omteg+LNL9rpNK7A2Ez9Hcj/X9ur8+
+	o+jvggo9BvsOsmzaKqz9+D9slHMB2VUhpI0WXYp+dH2RXD5vAHKI6aJNn5Bu0imuTEZq5G+rZWm
+	X0K0iy+zDgpc5zTPG3FXsx8G8nnJkH7vwhgjWZVrGgw+SOc8XTbU=
+X-Gm-Gg: ASbGncusIdeOiU/NemtNIatrD7Rs/mLxiToaLpnWLWIe9/ZcnTVQrElyI3ubz0mRLrC
+	zh7hdKwonPdcecbr6a/nmA0MT6/w6XAzQ5SX43w4zVGNTB+t/3a8=
+X-Google-Smtp-Source: AGHT+IEUhCYkF3GiAfEYnkmD9EdDQTrM/bQfadBLCtfMRGyaC7dwuufR/UCaxD9s6ztPd4s61i9DSjRzwrbsikT4sHs=
+X-Received: by 2002:a05:6402:2706:b0:5d4:2ef7:1c with SMTP id
+ 4fb4d7f45d1cf-5db7db078c2mr38457653a12.24.1737456932368; Tue, 21 Jan 2025
+ 02:55:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: Paul Kramme <kramme@digitalmanufaktur.com>
+Date: Tue, 21 Jan 2025 11:55:21 +0100
+X-Gm-Features: AbW1kvZREuWR7wePK90njNPREs_5Ri04znGTW0giqoc29Af3OaX9He4zb1v7PkE
+Message-ID: <CAHcPAXTDE-X28xU2ngUASXQdgrQdOAffSh1qYbPgS98u3mSKOA@mail.gmail.com>
+Subject: NULL pointer dereference in apparmor's profile_transition v6.12
+To: stable@vger.kernel.org
+Cc: john.johansen@canonical.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+Hello,
 
-commit b46494b6f9c19f141114a57729e198698f40af37 upstream.  
+with v6.12 we encountered a kernel BUG (panic on our systems) that is
+caused by a NULL pointer dereference inside the apparmor's
+profile_transition code. I've contacted John Johansen as the
+maintainer for the apparmor system, and he pointed me to 17d0d04f3c99
+as a fix for that issue. That commit has now landed in v6.13, would it
+be possible to backport this to v6.12? Commit is
 
-xa_lock for SRQ table may be required in AEQ. Use xa_store_irq()/
-xa_erase_irq() to avoid deadlock.
+17d0d04f3c99 apparmor: allocate xmatch for nullpdb inside aa_alloc_null
 
-Fixes: 81fce6291d99 ("RDMA/hns: Add SRQ asynchronous event support")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20240412091616.370789-5-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-[Denis: minor fix to resolve merge conflict.]                                           
-Signed-off-by: Denis Arefev <arefev@swemel.ru>                                    
----
-Backport fix for CVE-2024-38591 
-Link: https://nvd.nist.gov/vuln/detail/cve-2024-38591
----
- drivers/infiniband/hw/hns/hns_roce_main.c | 1 +
- drivers/infiniband/hw/hns/hns_roce_srq.c  | 6 +++---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+Thanks,
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
-index f62162771db5..a0f243ffa5b5 100644
---- a/drivers/infiniband/hw/hns/hns_roce_main.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_main.c
-@@ -37,6 +37,7 @@
- #include <rdma/ib_smi.h>
- #include <rdma/ib_user_verbs.h>
- #include <rdma/ib_cache.h>
-+#include "hnae3.h"
- #include "hns_roce_common.h"
- #include "hns_roce_device.h"
- #include <rdma/hns-abi.h>
-diff --git a/drivers/infiniband/hw/hns/hns_roce_srq.c b/drivers/infiniband/hw/hns/hns_roce_srq.c
-index 02e2416b5fed..6a510dbe5849 100644
---- a/drivers/infiniband/hw/hns/hns_roce_srq.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_srq.c
-@@ -120,7 +120,7 @@ static int alloc_srqc(struct hns_roce_dev *hr_dev, struct hns_roce_srq *srq,
- 		goto err_out;
- 	}
- 
--	ret = xa_err(xa_store(&srq_table->xa, srq->srqn, srq, GFP_KERNEL));
-+	ret = xa_err(xa_store_irq(&srq_table->xa, srq->srqn, srq, GFP_KERNEL));
- 	if (ret) {
- 		ibdev_err(ibdev, "failed to store SRQC, ret = %d.\n", ret);
- 		goto err_put;
-@@ -149,7 +149,7 @@ static int alloc_srqc(struct hns_roce_dev *hr_dev, struct hns_roce_srq *srq,
- 	return ret;
- 
- err_xa:
--	xa_erase(&srq_table->xa, srq->srqn);
-+	xa_erase_irq(&srq_table->xa, srq->srqn);
- 
- err_put:
- 	hns_roce_table_put(hr_dev, &srq_table->table, srq->srqn);
-@@ -169,7 +169,7 @@ static void free_srqc(struct hns_roce_dev *hr_dev, struct hns_roce_srq *srq)
- 		dev_err(hr_dev->dev, "DESTROY_SRQ failed (%d) for SRQN %06lx\n",
- 			ret, srq->srqn);
- 
--	xa_erase(&srq_table->xa, srq->srqn);
-+	xa_erase_irq(&srq_table->xa, srq->srqn);
- 
- 	if (atomic_dec_and_test(&srq->refcount))
- 		complete(&srq->free);
--- 
-2.43.0
-
+Paul
 
