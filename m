@@ -1,91 +1,56 @@
-Return-Path: <stable+bounces-110061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 762C4A185E5
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 21:00:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FACAA185F6
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 21:08:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE2C83A853E
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 20:00:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 071563A1572
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 20:08:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F961F75AF;
-	Tue, 21 Jan 2025 20:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89861F4725;
+	Tue, 21 Jan 2025 20:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZW6ofRgV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="glQlnJGM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB1F1F4725;
-	Tue, 21 Jan 2025 20:00:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881861A2550
+	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 20:08:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737489634; cv=none; b=Et3yfuwz3vqh0aM4O+aWRsxVGQf7H3gdUiw5E1yp3oQdY3C0srSYY1PlChPWpJzezAc3wyPg+b9wPMD7yBNuxKtw+iUFzqMFCdH7lAEjSLw2RYKCPthwcqJf4XwCb4iCANCECsyYFx6VleaNryNbQ156FOzxU3jp7UXk7eBAb04=
+	t=1737490116; cv=none; b=VaWGd4mzFuRqHfhSPryNZwD5M+A7IqDJe3xpiupht0Bocs7Zg339+dliXiFJv0tOC6uMiIL7lNBo9UXf9IBr2+iMzJrqo7oPF2jd099mT5efzqB4PYGWh/QoOEEG4tbvtt2vNYuJWFZD27laImadkvxrDfQGQgG7Vjm6Kui1da8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737489634; c=relaxed/simple;
-	bh=dHV4n/DsK8cs7MIzV8hr4pqFbAX0fyfGvU+4VCWC2A8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tkG44G+8kTsSI6K25ArFKXB9UJ5ktm1BuLeY1uL5U7OGq2OF7AM3Axi51YiLNaxUemr1PqeJnshDknVKMagF7wNolJaleypHrUNdB1HFQoJsepASo0595dMgqtLL68vYR5CCAYfgbv2WL1zNp5XeR2FbesLU8RA6psr9SyPzT3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZW6ofRgV; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-385e0e224cbso3212081f8f.2;
-        Tue, 21 Jan 2025 12:00:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737489630; x=1738094430; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k2N1YlgQNdx7LxlrloC7QMkubugmuO/YtGTHs/05i/8=;
-        b=ZW6ofRgVOY8AJhX9W3VlfSrtUBNG1mUbapMh3D3RUtlo7o/vua/mOHaB4HtnjooaFz
-         UwUGXOVuLJ0KAtBFPd02I0x17L8V9m00KGGPBwNIHzNGo4WmsnebmF8Dhhhjfa1EwMT1
-         sOSZjRrbhFUv/kFGTncpZVUnKRJy+T4nFUg4CSQkZCc0Pw44f9tOuKcG7+U415ew2GAf
-         PpYvNGmu9MNGeg5Y+dQJqvv4+hZ+5aNQq8hmwSQesTdt9fAWRKFGRCGrlLIU8Dkgu0pR
-         7VAnwxc/eRK8+KnSVXxh6FjeCypex6lvdWYBBB17qD7K1zQkxJsuVBaxPwAa2u0SSKAT
-         EHnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737489630; x=1738094430;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=k2N1YlgQNdx7LxlrloC7QMkubugmuO/YtGTHs/05i/8=;
-        b=rptX8yuxDVcLIe4ga7yiinH/McdYpyvPAjY5IgC6r75HsQ4mW32SOXc0RPqcfUfTqo
-         /MI/xEw+uP31BvEcEXxweKOM/IkN7x2TX26OhtGWrH9knQTQFm0VjJBlTSN6KuJTZOl+
-         lEFcLt40uWwaILGEfP47c38gw2aqemntp6s4lwdPEydRMltiHP4T/zsoUspFtR5mDB+M
-         6atOHNWDZXNlBiC7YJqD97xiNV/PptPhB+Zl3Hwwni5tZ+qYaj+cslFecyNlVazdm16Y
-         ksruE5vROxm2kDFccdqLSYOIfsLe2pzHX7FWq/vVA5u+Hin7osvOXwsXtWX4NZfAVYl6
-         /zTA==
-X-Forwarded-Encrypted: i=1; AJvYcCV6hIoJveexwu1346qgL7w2nfzUjxuUYwTo2R4vfVp53kw0RsrBmXPgopryctXny33D912iujc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/6sO+9LrZabNMhZIbj9ErbIURZGl/sCgq7RPCJqR+c1UZiYNG
-	VXO8Wrg/9QUGZz92TiM5WyTT8EFnPDJ3Ce8Y3Yk46bkPz5329c9o7paMyerC
-X-Gm-Gg: ASbGncs8sE64X/GoxRCc1eIkc4neCN3cLlH8TyXZt6p/alzxqtPVDt6JlhDaYS1HL0d
-	67hzjbHHMnVtN68JZ9S2Ub1/mOgG7Oe7hi3jJhx0OrIpZlIUNwKruqnOfX9upwC54DPpJ4zcD4U
-	XHQMCWChiK3EmUuLhdcTQ52HxZAAYp+6fBCWIvGvf8IyqaN8sPPKX6b1dDOvNEcF71iljABoMr7
-	MgNaDPAJiMonvXpOQ9UjNu9Om5IbkAi/caAIR2gLenyFkpE8Ww1uPBGzHz+9pLfRH76tNXYjsmP
-	h6QKd2Nc0as5566ckw==
-X-Google-Smtp-Source: AGHT+IH11nOzlyATB1hkkRENeqT/0e9t9i8wxeN5gd45RNy8t4U54W26NVQs9Kt/GZhIuToDpx/3+Q==
-X-Received: by 2002:a5d:47c4:0:b0:38c:1281:260d with SMTP id ffacd0b85a97d-38c12813249mr7010385f8f.31.1737489630028;
-        Tue, 21 Jan 2025 12:00:30 -0800 (PST)
-Received: from localhost.localdomain ([109.175.243.75])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bf3221761sm14118153f8f.22.2025.01.21.12.00.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jan 2025 12:00:29 -0800 (PST)
-From: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-input@vger.kernel.org,
-	stuart.a.hayhurst@gmail.com,
-	bentiss@kernel.org,
-	jikos@kernel.org,
-	kangyan91@outlook.com,
-	stable@vger.kernel.org
-Subject: [PATCH v3 2/2] HID: corsair-void: Initialise memory for psy_cfg
-Date: Tue, 21 Jan 2025 20:00:08 +0000
-Message-ID: <20250121200017.33966-3-stuart.a.hayhurst@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250121200017.33966-1-stuart.a.hayhurst@gmail.com>
-References: <20250121200017.33966-1-stuart.a.hayhurst@gmail.com>
+	s=arc-20240116; t=1737490116; c=relaxed/simple;
+	bh=2ozRUKxYtDqMRoGknG55dc79sbT2VbdW99CaswczXK8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=pTCDTlscKmqhAtZL+QOqRtmp05v8cb7qeBj0LEfADRFr9sJXhs84PiSkJwXPDvFrBfhXT5XALpjBK9YdNt26FP50bIf+TEx11H0ei+jzWoSYvYjtU1WP4Cgw+nUZ61viezo4SRMrs4Y26Eqnm4+wxG4PqIW2bXYZ3AXJ5LcuZ2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=glQlnJGM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828D3C4CEDF;
+	Tue, 21 Jan 2025 20:08:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737490116;
+	bh=2ozRUKxYtDqMRoGknG55dc79sbT2VbdW99CaswczXK8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=glQlnJGMd5sM/abaB/9G1vDy4gf4J66/Vz/qWL54DWxisoPrTaLaLtuHKXxIDQuyZ
+	 suFug48ovjYsgOmC2xQxGmWLrPC3h/VNU3CTTKLbWYKm2HYVQfBEEDukxHbKu522E7
+	 mJ02RiYaTULU+oiB5++t5/UOfSjFNNGQpQXCRSB5kLsUWB7IERfIF//IU1DwVSHuzX
+	 IpUtcc3ApTtBAzZXmRwviiRDq9PBhJh1jAIDs3faqeLNkzDfI7wuOoG38b+P0qI9qt
+	 TgZS1jD+AIui5dNq9DaaUSJc4mJPmbKT7lf2IQjButjU/132ASmllA9eJxR1tpFUEj
+	 EEIXrJOgdFNgQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sean Anderson <sean.anderson@linux.dev>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1.y v2] gpio: xilinx: Convert gpio_lock to raw spinlock
+Date: Tue, 21 Jan 2025 15:08:34 -0500
+Message-Id: <20250121150444-679d58b2f8a11294@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250121193205.3386351-1-sean.anderson@linux.dev>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -94,29 +59,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-power_supply_config psy_cfg was missing its initialiser, add it in.
+[ Sasha's backport helper bot ]
 
-Fixes: 6ea2a6fd3872 ("HID: corsair-void: Add Corsair Void headset family driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
+Hi,
+
+The upstream commit SHA1 provided is correct: 9860370c2172704b6b4f0075a0c2a29fd84af96a
+
+
+Status in newer kernel trees:
+6.12.y | Not found
+6.6.y | Not found
+6.1.y | Not found
+
+Note: The patch differs from the upstream commit:
 ---
- drivers/hid/hid-corsair-void.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+1:  9860370c21727 ! 1:  849f99ff428f2 gpio: xilinx: Convert gpio_lock to raw spinlock
+    @@ Metadata
+      ## Commit message ##
+         gpio: xilinx: Convert gpio_lock to raw spinlock
+     
+    +    [ Upstream commit 9860370c2172704b6b4f0075a0c2a29fd84af96a ]
+    +
+         irq_chip functions may be called in raw spinlock context. Therefore, we
+         must also use a raw spinlock for our own internal locking.
+     
+    @@ Commit message
+         Cc: stable@vger.kernel.org
+         Link: https://lore.kernel.org/r/20250110163354.2012654-1-sean.anderson@linux.dev
+         Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+    +    [ resolved conflicts ]
+    +    Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+     
+      ## drivers/gpio/gpio-xilinx.c ##
+     @@ drivers/gpio/gpio-xilinx.c: struct xgpio_instance {
+    @@ drivers/gpio/gpio-xilinx.c: struct xgpio_instance {
+     -	spinlock_t gpio_lock;	/* For serializing operations */
+     +	raw_spinlock_t gpio_lock;	/* For serializing operations */
+      	int irq;
+    + 	struct irq_chip irqchip;
+      	DECLARE_BITMAP(enable, 64);
+    - 	DECLARE_BITMAP(rising_edge, 64);
+     @@ drivers/gpio/gpio-xilinx.c: static void xgpio_set(struct gpio_chip *gc, unsigned int gpio, int val)
+      	struct xgpio_instance *chip = gpiochip_get_data(gc);
+      	int bit = xgpio_to_bit(chip, gpio);
+    @@ drivers/gpio/gpio-xilinx.c: static void xgpio_irq_mask(struct irq_data *irq_data
+      	}
+     -	spin_unlock_irqrestore(&chip->gpio_lock, flags);
+     +	raw_spin_unlock_irqrestore(&chip->gpio_lock, flags);
+    - 
+    - 	gpiochip_disable_irq(&chip->gc, irq_offset);
+      }
+    -@@ drivers/gpio/gpio-xilinx.c: static void xgpio_irq_unmask(struct irq_data *irq_data)
+      
+    - 	gpiochip_enable_irq(&chip->gc, irq_offset);
+    + /**
+    +@@ drivers/gpio/gpio-xilinx.c: static void xgpio_irq_unmask(struct irq_data *irq_data)
+    + 	u32 old_enable = xgpio_get_value32(chip->enable, bit);
+    + 	u32 mask = BIT(bit / 32), val;
+      
+     -	spin_lock_irqsave(&chip->gpio_lock, flags);
+     +	raw_spin_lock_irqsave(&chip->gpio_lock, flags);
+---
 
-diff --git a/drivers/hid/hid-corsair-void.c b/drivers/hid/hid-corsair-void.c
-index bd8f3d849b58..56e858066c3c 100644
---- a/drivers/hid/hid-corsair-void.c
-+++ b/drivers/hid/hid-corsair-void.c
-@@ -553,7 +553,7 @@ static void corsair_void_battery_remove_work_handler(struct work_struct *work)
- static void corsair_void_battery_add_work_handler(struct work_struct *work)
- {
- 	struct corsair_void_drvdata *drvdata;
--	struct power_supply_config psy_cfg;
-+	struct power_supply_config psy_cfg = {};
- 	struct power_supply *new_supply;
- 
- 	drvdata = container_of(work, struct corsair_void_drvdata,
--- 
-2.47.1
+Results of testing on various branches:
 
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.1.y        |  Success    |  Success   |
 
