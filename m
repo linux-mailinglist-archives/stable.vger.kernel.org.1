@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-109967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D53DCA184B5
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:11:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E4EA183F9
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:02:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 562F116B1C4
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 625C4188C656
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:01:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5DB1F756A;
-	Tue, 21 Jan 2025 18:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C316A1F55F0;
+	Tue, 21 Jan 2025 18:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CCnzTv1a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RrzAzLzk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6D91F3FFE;
-	Tue, 21 Jan 2025 18:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816511F470A;
+	Tue, 21 Jan 2025 18:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482956; cv=none; b=g83f1o6K2bGZ6xQ5Doldvo6n5xMAQyG6Q3jla3WnbwPlpDDvxONEcntf6LnXGukXdOaC5AHccT9VPiiIkkzoShIX89w03C/8pICGJL4f6fedWxWrlIunFz7Kp6fMGO8lzBYawWyMsDpd+Fy986R58F4nguxD/KotcK37zimXhs4=
+	t=1737482475; cv=none; b=tLMuYiSHS6a6DavXlmMcvfg9L4EVgi6ziOlolaLHxQLGVsieYOY3Wyy10cqZ/JD5WNWut6JOCt0YRh6GE0p/eh9fFbwFpAOqf5R2UGHatHtLOSU5H6SQexKxqV4IL7pgFPWoPff51czrUhY55bnNf1U44ZGbzcbMf/I5G0OSD68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482956; c=relaxed/simple;
-	bh=DHHYcJ+RoQ6savV9ac+uIg6SauULp+1tk3yfp/ev56Y=;
+	s=arc-20240116; t=1737482475; c=relaxed/simple;
+	bh=rVJSzcP5GfbgK6iuHl2zRNcBlUpHv/jAG+NmlUT0Mrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T6uTUj+VhofpjEJDlzTl4fFTZe35D3MGLb3meSqfbayjbWZS81jQuYtczfqXvljG3IU5m949Lc+/AoaK7qJE4NL0gLb5yjLTIZfQx8hqblUdHTvul+8YSx6I66Kl01EDLMwlB+OHse9ASjcRGd6hnEw2gMIbMnIVXFF3SFUOyls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CCnzTv1a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2040C4CEDF;
-	Tue, 21 Jan 2025 18:09:15 +0000 (UTC)
+	 MIME-Version; b=BiIX82CCEbRClUgxm6m9mwLcdQms/4N1Bq9p0aB0PVhI4T9lokFVZvKEtf0CLXfmX01Iin9ySgXfy3mluAiu/6GCPE8rIkrPy27ELWDhkxs47t9FCmcQU9O6Zwrc7cxppSaSzYz1vO/jIKHX46EUJpoFwUyMNw3tGSRkOaKVlr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrzAzLzk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04031C4CEDF;
+	Tue, 21 Jan 2025 18:01:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482956;
-	bh=DHHYcJ+RoQ6savV9ac+uIg6SauULp+1tk3yfp/ev56Y=;
+	s=korg; t=1737482475;
+	bh=rVJSzcP5GfbgK6iuHl2zRNcBlUpHv/jAG+NmlUT0Mrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CCnzTv1a/cJrRITvn+xu9BlYdUAb6WD0OGz3OMU6dR6iZgii5U2PDkyf/Wsz1U0Zc
-	 38Q53O4zJoo3YoYlBVswKtVVR5Jag1BElLV5tioXlFljV4TdMgQkPEgmdba+uMZugV
-	 sSrtlpetuWlq3Cxg0lbQexKwjkHs+FVcUN5Oo0Kg=
+	b=RrzAzLzkcwrAa6hdzE4xEpNTMDikDv4DFY1dAgSsAJtrmrtrQjc6RR7hwAxpn+/OY
+	 HezYwBVBtlQ5910LMyshrMsHxupCrTaUee2jB1bTovOKm1Sv8R7sjxmCKRMpzgVvTH
+	 2zICbM/wOZNVLvKe2mi0gXITbNIUpy1eaHzZ+hus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 065/127] of: unittest: Add bus address range parsing tests
+	Dave Airlie <airlied@redhat.com>,
+	Ben Skeggs <bskeggs@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.12 089/122] nouveau/fence: handle cross device fences properly
 Date: Tue, 21 Jan 2025 18:52:17 +0100
-Message-ID: <20250121174532.178032127@linuxfoundation.org>
+Message-ID: <20250121174536.449809284@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Dave Airlie <airlied@redhat.com>
 
-[ Upstream commit 6d32dadb11a6480be62c6ada901bbdcbda1775c9 ]
+commit 1f9910b41c857a892b83801feebdc7bdf38c5985 upstream.
 
-While there are tests for "dma-ranges" helpers, "ranges" is missing any
-tests. It's the same underlying code, but for completeness add a test
-for "ranges" parsing iterators. This is in preparation to add some
-additional "ranges" helpers.
+The fence sync logic doesn't handle a fence sync across devices
+as it tries to write to a channel offset from one device into
+the fence bo from a different device, which won't work so well.
 
-Link: https://lore.kernel.org/r/20230328-dt-address-helpers-v1-1-e2456c3e77ab@kernel.org
-Signed-off-by: Rob Herring <robh@kernel.org>
-Stable-dep-of: 7f05e20b989a ("of: address: Preserve the flags portion on 1:1 dma-ranges mapping")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch fixes that to avoid using the sync path in the case
+where the fences come from different nouveau drm devices.
+
+This works fine on a single device as the fence bo is shared
+across the devices, and mapped into each channels vma space,
+the channel offsets are therefore okay to pass between sides,
+so one channel can sync on the seqnos from the other by using
+the offset into it's vma.
+
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
+[ Fix compilation issue; remove version log from commit messsage.
+  - Danilo ]
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250109005553.623947-1-airlied@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/unittest.c | 53 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
+ drivers/gpu/drm/nouveau/nouveau_fence.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-index 5a8d37cef0ba..a020296fbf41 100644
---- a/drivers/of/unittest.c
-+++ b/drivers/of/unittest.c
-@@ -1019,6 +1019,58 @@ static void __init of_unittest_pci_dma_ranges(void)
- 	of_node_put(np);
- }
+--- a/drivers/gpu/drm/nouveau/nouveau_fence.c
++++ b/drivers/gpu/drm/nouveau/nouveau_fence.c
+@@ -387,11 +387,13 @@ nouveau_fence_sync(struct nouveau_bo *nv
+ 			if (f) {
+ 				struct nouveau_channel *prev;
+ 				bool must_wait = true;
++				bool local;
  
-+static void __init of_unittest_bus_ranges(void)
-+{
-+	struct device_node *np;
-+	struct of_range range;
-+	struct of_range_parser parser;
-+	int i = 0;
-+
-+	np = of_find_node_by_path("/testcase-data/address-tests");
-+	if (!np) {
-+		pr_err("missing testcase data\n");
-+		return;
-+	}
-+
-+	if (of_range_parser_init(&parser, np)) {
-+		pr_err("missing ranges property\n");
-+		return;
-+	}
-+
-+	/*
-+	 * Get the "ranges" from the device tree
-+	 */
-+	for_each_of_range(&parser, &range) {
-+		unittest(range.flags == IORESOURCE_MEM,
-+			"for_each_of_range wrong flags on node %pOF flags=%x (expected %x)\n",
-+			np, range.flags, IORESOURCE_MEM);
-+		if (!i) {
-+			unittest(range.size == 0x40000000,
-+				 "for_each_of_range wrong size on node %pOF size=%llx\n",
-+				 np, range.size);
-+			unittest(range.cpu_addr == 0x70000000,
-+				 "for_each_of_range wrong CPU addr (%llx) on node %pOF",
-+				 range.cpu_addr, np);
-+			unittest(range.bus_addr == 0x70000000,
-+				 "for_each_of_range wrong bus addr (%llx) on node %pOF",
-+				 range.pci_addr, np);
-+		} else {
-+			unittest(range.size == 0x20000000,
-+				 "for_each_of_range wrong size on node %pOF size=%llx\n",
-+				 np, range.size);
-+			unittest(range.cpu_addr == 0xd0000000,
-+				 "for_each_of_range wrong CPU addr (%llx) on node %pOF",
-+				 range.cpu_addr, np);
-+			unittest(range.bus_addr == 0x00000000,
-+				 "for_each_of_range wrong bus addr (%llx) on node %pOF",
-+				 range.pci_addr, np);
-+		}
-+		i++;
-+	}
-+
-+	of_node_put(np);
-+}
-+
- static void __init of_unittest_parse_interrupts(void)
- {
- 	struct device_node *np;
-@@ -3324,6 +3376,7 @@ static int __init of_unittest(void)
- 	of_unittest_dma_get_max_cpu_address();
- 	of_unittest_parse_dma_ranges();
- 	of_unittest_pci_dma_ranges();
-+	of_unittest_bus_ranges();
- 	of_unittest_match_node();
- 	of_unittest_platform_populate();
- 	of_unittest_overlay();
--- 
-2.39.5
-
+ 				rcu_read_lock();
+ 				prev = rcu_dereference(f->channel);
+-				if (prev && (prev == chan ||
+-					     fctx->sync(f, prev, chan) == 0))
++				local = prev && prev->cli->drm == chan->cli->drm;
++				if (local && (prev == chan ||
++					      fctx->sync(f, prev, chan) == 0))
+ 					must_wait = false;
+ 				rcu_read_unlock();
+ 				if (!must_wait)
 
 
 
