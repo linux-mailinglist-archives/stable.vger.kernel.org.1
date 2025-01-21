@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-109804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61D2CA183FC
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:02:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A0FA184BE
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:11:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8966D16ABFB
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:01:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E1F5162A6A
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E381F7574;
-	Tue, 21 Jan 2025 18:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1632E1F8662;
+	Tue, 21 Jan 2025 18:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SKxMWMaZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPZr+fWh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448AC1F756E;
-	Tue, 21 Jan 2025 18:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C892F1F757F;
+	Tue, 21 Jan 2025 18:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482487; cv=none; b=Lt4ojZsyCkUhs5zjZzSKktctJTG/tbtN9pZUuGIRgr6ZAPWWyx7nm+JxE9HdACFnhUOIM8Bb4YkU+mYLrb0w7z4sDITzvnYswvGttNqvcvQgV7gEbtRI739M1BNGN8xX2ZcFBRFd6wW7K4iqwpzE4d+J8eN60taBwnI0So9O1eg=
+	t=1737482976; cv=none; b=Uoq2ggB34TKg34aES30Ir49Hy9BXaCyhN8zYc3XuptaLamRZe7Dqlz0R9M/EhpbjI+FdpBwcY2NvQZGuHMcOiBSW5sU2dwCme5Zr09/SFJrUHxU101HDOLqolgQKYeCtoTbgPDSiel521xAZJTPpSNJQfdB3vrYNMc1KZEb1bk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482487; c=relaxed/simple;
-	bh=4oJaTfRVpe9U3mP2ku2FXnhvC/6biN7oKb2m83VmKTU=;
+	s=arc-20240116; t=1737482976; c=relaxed/simple;
+	bh=M3sN1nyfYDdSRnZKPGB9gEEcZFvdZPw/FwYhYQxnOiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKyY3DEE4LKRbkUmYH/+E3aOl6IlU5EK2Xusp+Xsqi2n6JqyvtMFpJN7GweOgXCiMo5OsE9vfhgFpgdiVUx5q2Bym7fg5d4qACsM4h3sduae/gz+zp/hlyDZLaN0vxz1DZIXLRBP/wte7dJcAyY/JZz91t7VIYqF1eXqVJ/AP90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKxMWMaZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB28DC4CEE0;
-	Tue, 21 Jan 2025 18:01:26 +0000 (UTC)
+	 MIME-Version; b=G67RMzWDA4VGicFQ/Z0GagZSUg8UERR7zhGX4Hkb2mf8odPaXsEPSb1nfumWZg1txx2syuHjjlowVoQ1kgLom/Tw7wDiK73iRPoJzCl3OV4S7+Ad5t+m1RXWjjv++t8M2coPiqpd60rz/ZQJVtjldmIkKuNQtBhj6bwhEWgqO7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPZr+fWh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4666EC4CEDF;
+	Tue, 21 Jan 2025 18:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482487;
-	bh=4oJaTfRVpe9U3mP2ku2FXnhvC/6biN7oKb2m83VmKTU=;
+	s=korg; t=1737482976;
+	bh=M3sN1nyfYDdSRnZKPGB9gEEcZFvdZPw/FwYhYQxnOiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SKxMWMaZEK85trYv7xjmsH8V+2MruR2f1SAl78yp6Ew1oIGanxTcdwB8ILHOF/gRf
-	 AeWwOOqI8HZDiGXX+9/wPtIvX1IKyuT4z56jRqnSLcfRM1WP4VqVc6s5jI5Im4u08V
-	 mPN1fnVGrf++vhcxxDABjcfsKdyHDzCI3p/kb+QQ=
+	b=ZPZr+fWh3ZY/miw6FN/cmRtHTANgbKHFMOWR0e5TmruKEQ1MiUbK7p7eSZTSVfTL4
+	 F+bJ45s98IrMU9BpBjgZBRXn/AOfn/6gwRi/t35tuRAX0nOK2w0bXaNPgqo4xpI5eo
+	 6FTpdHM56YfDxTbn1dKBmsSc31bjAE94DblygVcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 066/122] poll_wait: add mb() to fix theoretical race between waitqueue_active() and .poll()
-Date: Tue, 21 Jan 2025 18:51:54 +0100
-Message-ID: <20250121174535.539571245@linuxfoundation.org>
+	Lubomir Rintel <lkundrak@v3.sk>,
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.15 043/127] usb-storage: Add max sectors quirk for Nokia 208
+Date: Tue, 21 Jan 2025 18:51:55 +0100
+Message-ID: <20250121174531.337069541@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Lubomir Rintel <lrintel@redhat.com>
 
-[ Upstream commit cacd9ae4bf801ff4125d8961bb9a3ba955e51680 ]
+commit cdef30e0774802df2f87024d68a9d86c3b99ca2a upstream.
 
-As the comment above waitqueue_active() explains, it can only be used
-if both waker and waiter have mb()'s that pair with each other. However
-__pollwait() is broken in this respect.
+This fixes data corruption when accessing the internal SD card in mass
+storage mode.
 
-This is not pipe-specific, but let's look at pipe_poll() for example:
+I am actually not too sure why. I didn't figure a straightforward way to
+reproduce the issue, but i seem to get garbage when issuing a lot (over 50)
+of large reads (over 120 sectors) are done in a quick succession. That is,
+time seems to matter here -- larger reads are fine if they are done with
+some delay between them.
 
-	poll_wait(...); // -> __pollwait() -> add_wait_queue()
+But I'm not great at understanding this sort of things, so I'll assume
+the issue other, smarter, folks were seeing with similar phones is the
+same problem and I'll just put my quirk next to theirs.
 
-	LOAD(pipe->head);
-	LOAD(pipe->head);
+The "Software details" screen on the phone is as follows:
 
-In theory these LOAD()'s can leak into the critical section inside
-add_wait_queue() and can happen before list_add(entry, wq_head), in this
-case pipe_poll() can race with wakeup_pipe_readers/writers which do
+  V 04.06
+  07-08-13
+  RM-849
+  (c) Nokia
 
-	smp_mb();
-	if (waitqueue_active(wq_head))
-		wake_up_interruptible(wq_head);
+TL;DR version of the device descriptor:
 
-There are more __pollwait()-like functions (grep init_poll_funcptr), and
-it seems that at least ep_ptable_queue_proc() has the same problem, so the
-patch adds smp_mb() into poll_wait().
+  idVendor           0x0421 Nokia Mobile Phones
+  idProduct          0x06c2
+  bcdDevice            4.06
+  iManufacturer           1 Nokia
+  iProduct                2 Nokia 208
 
-Link: https://lore.kernel.org/all/20250102163320.GA17691@redhat.com/
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20250107162717.GA18922@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The patch assumes older firmwares are broken too (I'm unable to test, but
+no biggie if they aren't I guess), and I have no idea if newer firmware
+exists.
+
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+Cc: stable <stable@kernel.org>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250101212206.2386207-1-lkundrak@v3.sk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/poll.h | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/usb/storage/unusual_devs.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/include/linux/poll.h b/include/linux/poll.h
-index d1ea4f3714a84..fc641b50f1298 100644
---- a/include/linux/poll.h
-+++ b/include/linux/poll.h
-@@ -41,8 +41,16 @@ typedef struct poll_table_struct {
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -255,6 +255,13 @@ UNUSUAL_DEV(  0x0421, 0x06aa, 0x1110, 0x
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 		US_FL_MAX_SECTORS_64 ),
  
- static inline void poll_wait(struct file * filp, wait_queue_head_t * wait_address, poll_table *p)
- {
--	if (p && p->_qproc && wait_address)
-+	if (p && p->_qproc && wait_address) {
- 		p->_qproc(filp, wait_address, p);
-+		/*
-+		 * This memory barrier is paired in the wq_has_sleeper().
-+		 * See the comment above prepare_to_wait(), we need to
-+		 * ensure that subsequent tests in this thread can't be
-+		 * reordered with __add_wait_queue() in _qproc() paths.
-+		 */
-+		smp_mb();
-+	}
- }
- 
- /*
--- 
-2.39.5
-
++/* Added by Lubomir Rintel <lkundrak@v3.sk>, a very fine chap */
++UNUSUAL_DEV(  0x0421, 0x06c2, 0x0000, 0x0406,
++		"Nokia",
++		"Nokia 208",
++		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
++		US_FL_MAX_SECTORS_64 ),
++
+ #ifdef NO_SDDR09
+ UNUSUAL_DEV(  0x0436, 0x0005, 0x0100, 0x0100,
+ 		"Microtech",
 
 
 
