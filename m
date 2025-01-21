@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-109855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF473A1842A
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:04:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DFEDA18517
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:17:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 175763A2B68
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:03:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 995B37A7003
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:12:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC721F470A;
-	Tue, 21 Jan 2025 18:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F8E1F7569;
+	Tue, 21 Jan 2025 18:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbsPkZSk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nULLktH8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209BC1F0E36;
-	Tue, 21 Jan 2025 18:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B261F540C;
+	Tue, 21 Jan 2025 18:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482636; cv=none; b=fPJAp9CQIHI/MSNcclvsTA52i9I9WGSuaC3XD+4IaPwaKZMv28tF5cIUKkaSWN5EuhO24BHExqRGjEcp9nXGvZQkXZySztwi3gHkh6ed8nRizVWY4ua0MjK0i+cKKieGFnZAAumjP/aER6y3W1cGb79K0ucWwFkLEhIvZNZ73zo=
+	t=1737483078; cv=none; b=Uxlxqg90CuJu1Oc27PEFZ/14yBdkLEt1NZlOBsOUFzhuAzHwylZW8ybjz/cpmSZKo2PuWVBIl0F52emvxl2JgD3PlILdIp7OGmxYJknG6h890hd6mj2WF90RgxTXyeX/Gu5RLA4X1zaBMyWKM36E/4gHGH0NdN5GdDFFmk9PunI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482636; c=relaxed/simple;
-	bh=GoFJ7L+769UDBwyNR2KHSWhtHH0S+/Wi2ji4cOgFiUI=;
+	s=arc-20240116; t=1737483078; c=relaxed/simple;
+	bh=e3cI1qhS+nRcxM7965Z9w1JE8dUprZKk0RgetsEKu+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MnO9zirfAySjyJ+7XXeo+kfh0GWvsgMJocpci6ov8rXSLPAJdERtj4qbucj+lRoNLMgHrtoMGPj5NyIHK4J831ZL9U+RzF6ob98NXqfV1ji+pNWnitNWiqoafSbN3GVAgWU8zkuUhfFrPmA5k6gktbbzuSWCHg45Zx/SSpdXFMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbsPkZSk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99724C4CEDF;
-	Tue, 21 Jan 2025 18:03:55 +0000 (UTC)
+	 MIME-Version; b=X+LJaaJe8ysXAW7maQhqnBWs1E/if1kItsTtgyih9ShK5RwnVbgrPoZbMD8/i7HJobZLa3bN7vRhW8cvoeMYZnKFZBSBuJUO7pMxiy8yqlHpmgk+tcNay99kEp3/gkcAuM1g1Uzku8wiyNvNHkjjleK3qan+6FlwDknV9oFtSAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nULLktH8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC313C4CEDF;
+	Tue, 21 Jan 2025 18:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482636;
-	bh=GoFJ7L+769UDBwyNR2KHSWhtHH0S+/Wi2ji4cOgFiUI=;
+	s=korg; t=1737483075;
+	bh=e3cI1qhS+nRcxM7965Z9w1JE8dUprZKk0RgetsEKu+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DbsPkZSktbh3pGYNe3vXipUjyl8RtSaWSfH18tbhA1oIU9eKobjs51xSkNHI6URLX
-	 PRruzXFLs3YTURzAZQDCOj7FbW4VFDHbdfAashZb2lxg4GswJOEWhWxZ82nZYWB3oF
-	 Ty/pGSxs040YN41/AvH4sU+72igw6hnBc7c8fHaQ=
+	b=nULLktH8+/zNrK5Uu/L6sfbY570CBjQceDIAxh8IKZ6dLfZQmDHDt3AJpVn3hgv2y
+	 bI9QQopjExfd2eZ9vJHBISI2KMZ1M2pqq5Nu4Jbi4MMcNoTFNS8hlAmGtrQhhq5Uhb
+	 VitzwNOJshNmNvDT44TlRlpi/q0Vdiok0A0LMuL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Kunbo <zhangkunbo@huawei.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Rob Herring <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 21/64] fs: fix missing declaration of init_files
+Subject: [PATCH 5.15 068/127] of: address: Remove duplicated functions
 Date: Tue, 21 Jan 2025 18:52:20 +0100
-Message-ID: <20250121174522.367193093@linuxfoundation.org>
+Message-ID: <20250121174532.292172488@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
-References: <20250121174521.568417761@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Kunbo <zhangkunbo@huawei.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit 2b2fc0be98a828cf33a88a28e9745e8599fb05cf ]
+[ Upstream commit 3eb030c60835668997d5763b1a0c7938faf169f6 ]
 
-fs/file.c should include include/linux/init_task.h  for
- declaration of init_files. This fixes the sparse warning:
+The recently added of_bus_default_flags_translate() performs the exact
+same operation as of_bus_pci_translate() and of_bus_isa_translate().
 
-fs/file.c:501:21: warning: symbol 'init_files' was not declared. Should it be static?
+Avoid duplicated code replacing both of_bus_pci_translate() and
+of_bus_isa_translate() with of_bus_default_flags_translate().
 
-Signed-off-by: Zhang Kunbo <zhangkunbo@huawei.com>
-Link: https://lore.kernel.org/r/20241217071836.2634868-1-zhangkunbo@huawei.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Link: https://lore.kernel.org/r/20231017110221.189299-3-herve.codina@bootlin.com
+Signed-off-by: Rob Herring <robh@kernel.org>
+Stable-dep-of: 7f05e20b989a ("of: address: Preserve the flags portion on 1:1 dma-ranges mapping")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/file.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/of/address.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/fs/file.c b/fs/file.c
-index 48f0b28da5247..bc0c087b31bbd 100644
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -21,6 +21,7 @@
- #include <linux/rcupdate.h>
- #include <linux/close_range.h>
- #include <net/sock.h>
-+#include <linux/init_task.h>
+diff --git a/drivers/of/address.c b/drivers/of/address.c
+index 7e74fe909282..b8e015af59df 100644
+--- a/drivers/of/address.c
++++ b/drivers/of/address.c
+@@ -221,10 +221,6 @@ static u64 of_bus_pci_map(__be32 *addr, const __be32 *range, int na, int ns,
+ 	return da - cp;
+ }
  
- #include "internal.h"
+-static int of_bus_pci_translate(__be32 *addr, u64 offset, int na)
+-{
+-	return of_bus_default_translate(addr + 1, offset, na - 1);
+-}
+ #endif /* CONFIG_PCI */
  
+ int of_pci_address_to_resource(struct device_node *dev, int bar,
+@@ -334,11 +330,6 @@ static u64 of_bus_isa_map(__be32 *addr, const __be32 *range, int na, int ns,
+ 	return da - cp;
+ }
+ 
+-static int of_bus_isa_translate(__be32 *addr, u64 offset, int na)
+-{
+-	return of_bus_default_translate(addr + 1, offset, na - 1);
+-}
+-
+ static unsigned int of_bus_isa_get_flags(const __be32 *addr)
+ {
+ 	unsigned int flags = 0;
+@@ -369,7 +360,7 @@ static struct of_bus of_busses[] = {
+ 		.match = of_bus_pci_match,
+ 		.count_cells = of_bus_pci_count_cells,
+ 		.map = of_bus_pci_map,
+-		.translate = of_bus_pci_translate,
++		.translate = of_bus_default_flags_translate,
+ 		.has_flags = true,
+ 		.get_flags = of_bus_pci_get_flags,
+ 	},
+@@ -381,7 +372,7 @@ static struct of_bus of_busses[] = {
+ 		.match = of_bus_isa_match,
+ 		.count_cells = of_bus_isa_count_cells,
+ 		.map = of_bus_isa_map,
+-		.translate = of_bus_isa_translate,
++		.translate = of_bus_default_flags_translate,
+ 		.has_flags = true,
+ 		.get_flags = of_bus_isa_get_flags,
+ 	},
 -- 
 2.39.5
 
