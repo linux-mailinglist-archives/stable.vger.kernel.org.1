@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-109710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8347EA1838C
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02855A18461
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:06:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 069FA188CA06
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:58:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E38C18867DC
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:05:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A2B51F7552;
-	Tue, 21 Jan 2025 17:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691221F543D;
+	Tue, 21 Jan 2025 18:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rkTq5TeE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KvGxuI2z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2638F1F63CF;
-	Tue, 21 Jan 2025 17:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A8F1F4275;
+	Tue, 21 Jan 2025 18:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482214; cv=none; b=ga5zI5/2GwlzXWETz98RFuTThZXmKAy/3Ub1Ne6KQMgFsksp2iYkgxaOC/Y76dayI71lQ6LVLKiZIEJeqoXb0AC6566i5X1l3MC2bHxADUxPedpc6zvHoTYt+vTyDpX7N/DkXElEj7fUtf80275MA6i3zV6N6WW1ltUGGf2QLgE=
+	t=1737482686; cv=none; b=pz1Z+FsngDoRbIyzUPCGAyRC7VUsq9ZHZZ6RLUh82YL9fq/+JWJ882sSjGsu2YjTYIl2mjmu+mtQOy9aoQuWg9sLXLHIAMoHyaXewl1tFBuQpTYI54RhgM2g+s4DbdBB2nOtXThGEDv76CC4JxdJuNpqjoe13M2hDE86oPSV+JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482214; c=relaxed/simple;
-	bh=b903vsDj30meASA8X754zeNUzqHkwjXR6337gOZU6C0=;
+	s=arc-20240116; t=1737482686; c=relaxed/simple;
+	bh=h3wv/Ly/3ERIObe/ZBmeVv1dQbvGzxWXKBGYJAVQnpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uc692QIEm7xuvJgc5Sv4wM+iy/mx4rwcK5/h/bld9ftnuXcos0HSuiYJS0ytx51nvwa/jEXBX93JVIwxJdQPB78Lf6YUuE45VaeNlEqZ+H4VNavQ9ZvERTStkIyWNVunNF1Cn41XCoqpKAnv47Z/RHSB9/5EmyOPWGvI6VfaqB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rkTq5TeE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E22C4CEDF;
-	Tue, 21 Jan 2025 17:56:53 +0000 (UTC)
+	 MIME-Version; b=Ecci3557MtOBP3YDHvM+kZ87sr0pieUy58YFkN6ynkqDKaVnBZrZw6iwznjEt5V7tgSZZoMFYOelUJfPwW4vM0COGQJMWtUaTBcpWGH+0o+1reVvvo3+ybEYY+lDNb9zOylWlP7zoSJ/L361vD5gyYq4z7ryK4BV17OD9t8xAP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KvGxuI2z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A10F3C4CEDF;
+	Tue, 21 Jan 2025 18:04:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482213;
-	bh=b903vsDj30meASA8X754zeNUzqHkwjXR6337gOZU6C0=;
+	s=korg; t=1737482686;
+	bh=h3wv/Ly/3ERIObe/ZBmeVv1dQbvGzxWXKBGYJAVQnpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rkTq5TeErHVz7AC5ah/Dacg0Tkwg5I8maKDX/nG2jM6CdnCO6K4mVsAxKsOutSUxv
-	 /+jCdezgMZ87tJhCFsBn5w124TXF/Xr6Vv2nN61aLusUv0VxOaBiw+3kAgX8VOEXsy
-	 JLP1b4CXfJAt/oc6IHy7meiW/jTxTGOaes48vxEs=
+	b=KvGxuI2ztVcMyAofHbFjUKuk+7S3o/Wa1undTKMgd52tyX/5dvbl8N82M9IzaSlwv
+	 mLwqyLJ4jGuyK5rb+bl2AVj/R/8tcDm7WpmqREbgrHawdTO8paX+ru/o6lOKRyu4sx
+	 9ML/dcRJxwsdrybm9Zc+WwP03uh6T6BeoA8n5BTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Wang Liang <wangliang74@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.6 72/72] net: fix data-races around sk->sk_forward_alloc
+	Marco Nelissen <marco.nelissen@gmail.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 39/64] filemap: avoid truncating 64-bit offset to 32 bits
 Date: Tue, 21 Jan 2025 18:52:38 +0100
-Message-ID: <20250121174526.205256599@linuxfoundation.org>
+Message-ID: <20250121174523.041178965@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
+References: <20250121174521.568417761@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,146 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Marco Nelissen <marco.nelissen@gmail.com>
 
-commit 073d89808c065ac4c672c0a613a71b27a80691cb upstream.
+commit f505e6c91e7a22d10316665a86d79f84d9f0ba76 upstream.
 
-Syzkaller reported this warning:
- ------------[ cut here ]------------
- WARNING: CPU: 0 PID: 16 at net/ipv4/af_inet.c:156 inet_sock_destruct+0x1c5/0x1e0
- Modules linked in:
- CPU: 0 UID: 0 PID: 16 Comm: ksoftirqd/0 Not tainted 6.12.0-rc5 #26
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
- RIP: 0010:inet_sock_destruct+0x1c5/0x1e0
- Code: 24 12 4c 89 e2 5b 48 c7 c7 98 ec bb 82 41 5c e9 d1 18 17 ff 4c 89 e6 5b 48 c7 c7 d0 ec bb 82 41 5c e9 bf 18 17 ff 0f 0b eb 83 <0f> 0b eb 97 0f 0b eb 87 0f 0b e9 68 ff ff ff 66 66 2e 0f 1f 84 00
- RSP: 0018:ffffc9000008bd90 EFLAGS: 00010206
- RAX: 0000000000000300 RBX: ffff88810b172a90 RCX: 0000000000000007
- RDX: 0000000000000002 RSI: 0000000000000300 RDI: ffff88810b172a00
- RBP: ffff88810b172a00 R08: ffff888104273c00 R09: 0000000000100007
- R10: 0000000000020000 R11: 0000000000000006 R12: ffff88810b172a00
- R13: 0000000000000004 R14: 0000000000000000 R15: ffff888237c31f78
- FS:  0000000000000000(0000) GS:ffff888237c00000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007ffc63fecac8 CR3: 000000000342e000 CR4: 00000000000006f0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- Call Trace:
-  <TASK>
-  ? __warn+0x88/0x130
-  ? inet_sock_destruct+0x1c5/0x1e0
-  ? report_bug+0x18e/0x1a0
-  ? handle_bug+0x53/0x90
-  ? exc_invalid_op+0x18/0x70
-  ? asm_exc_invalid_op+0x1a/0x20
-  ? inet_sock_destruct+0x1c5/0x1e0
-  __sk_destruct+0x2a/0x200
-  rcu_do_batch+0x1aa/0x530
-  ? rcu_do_batch+0x13b/0x530
-  rcu_core+0x159/0x2f0
-  handle_softirqs+0xd3/0x2b0
-  ? __pfx_smpboot_thread_fn+0x10/0x10
-  run_ksoftirqd+0x25/0x30
-  smpboot_thread_fn+0xdd/0x1d0
-  kthread+0xd3/0x100
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork+0x34/0x50
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
- ---[ end trace 0000000000000000 ]---
+On 32-bit kernels, folio_seek_hole_data() was inadvertently truncating a
+64-bit value to 32 bits, leading to a possible infinite loop when writing
+to an xfs filesystem.
 
-Its possible that two threads call tcp_v6_do_rcv()/sk_forward_alloc_add()
-concurrently when sk->sk_state == TCP_LISTEN with sk->sk_lock unlocked,
-which triggers a data-race around sk->sk_forward_alloc:
-tcp_v6_rcv
-    tcp_v6_do_rcv
-        skb_clone_and_charge_r
-            sk_rmem_schedule
-                __sk_mem_schedule
-                    sk_forward_alloc_add()
-            skb_set_owner_r
-                sk_mem_charge
-                    sk_forward_alloc_add()
-        __kfree_skb
-            skb_release_all
-                skb_release_head_state
-                    sock_rfree
-                        sk_mem_uncharge
-                            sk_forward_alloc_add()
-                            sk_mem_reclaim
-                                // set local var reclaimable
-                                __sk_mem_reclaim
-                                    sk_forward_alloc_add()
-
-In this syzkaller testcase, two threads call
-tcp_v6_do_rcv() with skb->truesize=768, the sk_forward_alloc changes like
-this:
- (cpu 1)             | (cpu 2)             | sk_forward_alloc
- ...                 | ...                 | 0
- __sk_mem_schedule() |                     | +4096 = 4096
-                     | __sk_mem_schedule() | +4096 = 8192
- sk_mem_charge()     |                     | -768  = 7424
-                     | sk_mem_charge()     | -768  = 6656
- ...                 |    ...              |
- sk_mem_uncharge()   |                     | +768  = 7424
- reclaimable=7424    |                     |
-                     | sk_mem_uncharge()   | +768  = 8192
-                     | reclaimable=8192    |
- __sk_mem_reclaim()  |                     | -4096 = 4096
-                     | __sk_mem_reclaim()  | -8192 = -4096 != 0
-
-The skb_clone_and_charge_r() should not be called in tcp_v6_do_rcv() when
-sk->sk_state is TCP_LISTEN, it happens later in tcp_v6_syn_recv_sock().
-Fix the same issue in dccp_v6_do_rcv().
-
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Link: https://patch.msgid.link/20241107023405.889239-1-wangliang74@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Link: https://lkml.kernel.org/r/20250102190540.1356838-1-marco.nelissen@gmail.com
+Fixes: 54fa39ac2e00 ("iomap: use mapping_seek_hole_data")
+Signed-off-by: Marco Nelissen <marco.nelissen@gmail.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/dccp/ipv6.c     |    2 +-
- net/ipv6/tcp_ipv6.c |    4 +---
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ mm/filemap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/dccp/ipv6.c
-+++ b/net/dccp/ipv6.c
-@@ -616,7 +616,7 @@ static int dccp_v6_do_rcv(struct sock *s
- 	   by tcp. Feel free to propose better solution.
- 					       --ANK (980728)
- 	 */
--	if (np->rxopt.all)
-+	if (np->rxopt.all && sk->sk_state != DCCP_LISTEN)
- 		opt_skb = skb_clone_and_charge_r(skb, sk);
- 
- 	if (sk->sk_state == DCCP_OPEN) { /* Fast path */
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -1456,7 +1456,7 @@ int tcp_v6_do_rcv(struct sock *sk, struc
- 	   by tcp. Feel free to propose better solution.
- 					       --ANK (980728)
- 	 */
--	if (np->rxopt.all)
-+	if (np->rxopt.all && sk->sk_state != TCP_LISTEN)
- 		opt_skb = skb_clone_and_charge_r(skb, sk);
- 
- 	reason = SKB_DROP_REASON_NOT_SPECIFIED;
-@@ -1495,8 +1495,6 @@ int tcp_v6_do_rcv(struct sock *sk, struc
- 		if (nsk != sk) {
- 			if (tcp_child_process(sk, nsk, skb))
- 				goto reset;
--			if (opt_skb)
--				__kfree_skb(opt_skb);
- 			return 0;
- 		}
- 	} else
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2938,7 +2938,7 @@ static inline loff_t folio_seek_hole_dat
+ 		if (ops->is_partially_uptodate(folio, offset, bsz) ==
+ 							seek_data)
+ 			break;
+-		start = (start + bsz) & ~(bsz - 1);
++		start = (start + bsz) & ~((u64)bsz - 1);
+ 		offset += bsz;
+ 	} while (offset < folio_size(folio));
+ unlock:
 
 
 
