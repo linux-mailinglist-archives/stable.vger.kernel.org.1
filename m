@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-109755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 194B5A183C1
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:00:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4C69A18489
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:08:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC1643A8AD6
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:59:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BC917A54B9
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:07:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F11A1F7569;
-	Tue, 21 Jan 2025 17:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD8B1F5613;
+	Tue, 21 Jan 2025 18:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZReQBh0h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xlS0Fid6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAE01F709E;
-	Tue, 21 Jan 2025 17:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A9B1F0E36;
+	Tue, 21 Jan 2025 18:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482344; cv=none; b=FL+1KVlVetRCUa0oJA68BCMVJ5CBwF4cMyGdIjvE0+UCNi5LfLa8GjpVAqqXbsMdFOIOd+MCtrFuJYZky0vyTMAANYIZy4D+sdAiiGYwnfmKZFdGEynBBtRWatXiCRi5A43jOAQ9EqKozJ8F/WfLiXcu5A6vHZKFVlwDbvdDvYo=
+	t=1737482823; cv=none; b=iV5OEShdR7i5Z9xbCR+2PLrXbh5qJXW3BAHxbyp65TAsgvRmCjpKCe8XjmDxRxwkEqP5VnH9jX8VRc8YU9Eqg3XlXAuozA0U4DpD3Jn/mMOGJGtqc4pQPQoUrCePr4i6wLfbVhesxG5xFQ83YT8NH0aQrc53GohSRSC7X5mFQr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482344; c=relaxed/simple;
-	bh=LBS9kixFXUf4YVEqYnElRQ7hE6RGsU6E2dNsVPXhsmo=;
+	s=arc-20240116; t=1737482823; c=relaxed/simple;
+	bh=2AadXVLgZ6EQYqT1EMXjPWrrKr1XmmZnl1emmjvWmpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F3MCcE5Yk+SlvUWqwQNTs8aydAOC/Drtiuf9tq0R+ern0diufHmbsUWIOutopTmpHNLqEHanmmQbxIk2HKB1wmRkrSsF9+xVN/2WTuJ0Y/c86grYBHeewU2AExnr4pQDedOYOrQQecyfLrSKxDpDjOCEwhWAcsqbX7R9HxPyFM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZReQBh0h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA971C4CEDF;
-	Tue, 21 Jan 2025 17:59:03 +0000 (UTC)
+	 MIME-Version; b=F1YHiTSPmEVQ7ELfz73oRMo9V2ZABG0HqU5LdOCuKZEQ5Hd3wuO+uytXx/MBWKzvhpCRFJunhYbzXUnxCqxHUjDNTBLMCPAqVW9mONrMBsD8yFSa7gxlSG8PqeX0yY8kYB/gnywBCcH+yONigsYTNgRmA3oyrd4W2wHBMd2SfYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xlS0Fid6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27B31C4CEDF;
+	Tue, 21 Jan 2025 18:07:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482344;
-	bh=LBS9kixFXUf4YVEqYnElRQ7hE6RGsU6E2dNsVPXhsmo=;
+	s=korg; t=1737482823;
+	bh=2AadXVLgZ6EQYqT1EMXjPWrrKr1XmmZnl1emmjvWmpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZReQBh0hlSeNTzaCG+LlgfY9drgul1OvwU2R6mjyLk4j1DcrHLt/Xx9woQ72zsLH9
-	 um7onADKrtySe0ims9N3u2Y2NcDGN96OMaHHCMt4KvQE3G/E5dykyYZqItU2Pq2GKh
-	 Ti12csT0SAK/0DdwxEgddswS3M4hpGNgR0EC0FcQ=
+	b=xlS0Fid6i9b0ZK5pxRKnAYMOblJy/vZGcFHaTih+stBNy/wJHBuJ0ZXCjQPUMTZB8
+	 eUxwyL7TbHbgYJBbV1d4vDlPOebaM2OG7fsaZ0873vQtGCrzqrN2RFL60Mj/V1UmLk
+	 nMD2Bc8EFj84nOdCvy/90nSLob9yNIsR11BVXn4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	syzbot+7848fee1f1e5c53f912b@syzkaller.appspotmail.com,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 045/122] i2c: rcar: fix NACK handling when being a target
+Subject: [PATCH 5.15 021/127] afs: Fix the maximum cell name length
 Date: Tue, 21 Jan 2025 18:51:33 +0100
-Message-ID: <20250121174534.721279848@linuxfoundation.org>
+Message-ID: <20250121174530.492325680@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +65,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 093f70c134f70e4632b295240f07d2b50b74e247 ]
+[ Upstream commit 8fd56ad6e7c90ac2bddb0741c6b248c8c5d56ac8 ]
 
-When this controller is a target, the NACK handling had two issues.
-First, the return value from the backend was not checked on the initial
-WRITE_REQUESTED. So, the driver missed to send a NACK in this case.
-Also, the NACK always arrives one byte late on the bus, even in the
-WRITE_RECEIVED case. This seems to be a HW issue. We should then not
-rely on the backend to correctly NACK the superfluous byte as well. Fix
-both issues by introducing a flag which gets set whenever the backend
-requests a NACK and keep sending it until we get a STOP condition.
+The kafs filesystem limits the maximum length of a cell to 256 bytes, but a
+problem occurs if someone actually does that: kafs tries to create a
+directory under /proc/net/afs/ with the name of the cell, but that fails
+with a warning:
 
-Fixes: de20d1857dd6 ("i2c: rcar: add slave support")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+        WARNING: CPU: 0 PID: 9 at fs/proc/generic.c:405
+
+because procfs limits the maximum filename length to 255.
+
+However, the DNS limits the maximum lookup length and, by extension, the
+maximum cell name, to 255 less two (length count and trailing NUL).
+
+Fix this by limiting the maximum acceptable cellname length to 253.  This
+also allows us to be sure we can create the "/afs/.<cell>/" mountpoint too.
+
+Further, split the YFS VL record cell name maximum to be the 256 allowed by
+the protocol and ignore the record retrieved by YFSVL.GetCellName if it
+exceeds 253.
+
+Fixes: c3e9f888263b ("afs: Implement client support for the YFSVL.GetCellName RPC op")
+Reported-by: syzbot+7848fee1f1e5c53f912b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/6776d25d.050a0220.3a8527.0048.GAE@google.com/
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/376236.1736180460@warthog.procyon.org.uk
+Tested-by: syzbot+7848fee1f1e5c53f912b@syzkaller.appspotmail.com
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-rcar.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ fs/afs/afs.h      | 2 +-
+ fs/afs/afs_vl.h   | 1 +
+ fs/afs/vl_alias.c | 8 ++++++--
+ fs/afs/vlclient.c | 2 +-
+ 4 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
-index 9267df38c2d0a..3991224148214 100644
---- a/drivers/i2c/busses/i2c-rcar.c
-+++ b/drivers/i2c/busses/i2c-rcar.c
-@@ -130,6 +130,8 @@
- #define ID_P_PM_BLOCKED		BIT(31)
- #define ID_P_MASK		GENMASK(31, 27)
+diff --git a/fs/afs/afs.h b/fs/afs/afs.h
+index 432cb4b23961..3ea5f3e3c922 100644
+--- a/fs/afs/afs.h
++++ b/fs/afs/afs.h
+@@ -10,7 +10,7 @@
  
-+#define ID_SLAVE_NACK		BIT(0)
-+
- enum rcar_i2c_type {
- 	I2C_RCAR_GEN1,
- 	I2C_RCAR_GEN2,
-@@ -166,6 +168,7 @@ struct rcar_i2c_priv {
- 	int irq;
+ #include <linux/in.h>
  
- 	struct i2c_client *host_notify_client;
-+	u8 slave_flags;
- };
+-#define AFS_MAXCELLNAME		256  	/* Maximum length of a cell name */
++#define AFS_MAXCELLNAME		253  	/* Maximum length of a cell name (DNS limited) */
+ #define AFS_MAXVOLNAME		64  	/* Maximum length of a volume name */
+ #define AFS_MAXNSERVERS		8   	/* Maximum servers in a basic volume record */
+ #define AFS_NMAXNSERVERS	13  	/* Maximum servers in a N/U-class volume record */
+diff --git a/fs/afs/afs_vl.h b/fs/afs/afs_vl.h
+index 9c65ffb8a523..8da0899fbc08 100644
+--- a/fs/afs/afs_vl.h
++++ b/fs/afs/afs_vl.h
+@@ -13,6 +13,7 @@
+ #define AFS_VL_PORT		7003	/* volume location service port */
+ #define VL_SERVICE		52	/* RxRPC service ID for the Volume Location service */
+ #define YFS_VL_SERVICE		2503	/* Service ID for AuriStor upgraded VL service */
++#define YFS_VL_MAXCELLNAME	256  	/* Maximum length of a cell name in YFS protocol */
  
- #define rcar_i2c_priv_to_dev(p)		((p)->adap.dev.parent)
-@@ -655,6 +658,7 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
+ enum AFSVL_Operations {
+ 	VLGETENTRYBYID		= 503,	/* AFS Get VLDB entry by ID */
+diff --git a/fs/afs/vl_alias.c b/fs/afs/vl_alias.c
+index f04a80e4f5c3..83cf1bfbe343 100644
+--- a/fs/afs/vl_alias.c
++++ b/fs/afs/vl_alias.c
+@@ -302,6 +302,7 @@ static char *afs_vl_get_cell_name(struct afs_cell *cell, struct key *key)
+ static int yfs_check_canonical_cell_name(struct afs_cell *cell, struct key *key)
  {
- 	u32 ssr_raw, ssr_filtered;
- 	u8 value;
-+	int ret;
+ 	struct afs_cell *master;
++	size_t name_len;
+ 	char *cell_name;
  
- 	ssr_raw = rcar_i2c_read(priv, ICSSR) & 0xff;
- 	ssr_filtered = ssr_raw & rcar_i2c_read(priv, ICSIER);
-@@ -670,7 +674,10 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
- 			rcar_i2c_write(priv, ICRXTX, value);
- 			rcar_i2c_write(priv, ICSIER, SDE | SSR | SAR);
- 		} else {
--			i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_REQUESTED, &value);
-+			ret = i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_REQUESTED, &value);
-+			if (ret)
-+				priv->slave_flags |= ID_SLAVE_NACK;
-+
- 			rcar_i2c_read(priv, ICRXTX);	/* dummy read */
- 			rcar_i2c_write(priv, ICSIER, SDR | SSR | SAR);
- 		}
-@@ -683,18 +690,21 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
- 	if (ssr_filtered & SSR) {
- 		i2c_slave_event(priv->slave, I2C_SLAVE_STOP, &value);
- 		rcar_i2c_write(priv, ICSCR, SIE | SDBS); /* clear our NACK */
-+		priv->slave_flags &= ~ID_SLAVE_NACK;
- 		rcar_i2c_write(priv, ICSIER, SAR);
- 		rcar_i2c_write(priv, ICSSR, ~SSR & 0xff);
+ 	cell_name = afs_vl_get_cell_name(cell, key);
+@@ -313,8 +314,11 @@ static int yfs_check_canonical_cell_name(struct afs_cell *cell, struct key *key)
+ 		return 0;
  	}
  
- 	/* master wants to write to us */
- 	if (ssr_filtered & SDR) {
--		int ret;
--
- 		value = rcar_i2c_read(priv, ICRXTX);
- 		ret = i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_RECEIVED, &value);
--		/* Send NACK in case of error */
--		rcar_i2c_write(priv, ICSCR, SIE | SDBS | (ret < 0 ? FNA : 0));
-+		if (ret)
-+			priv->slave_flags |= ID_SLAVE_NACK;
-+
-+		/* Send NACK in case of error, but it will come 1 byte late :( */
-+		rcar_i2c_write(priv, ICSCR, SIE | SDBS |
-+			       (priv->slave_flags & ID_SLAVE_NACK ? FNA : 0));
- 		rcar_i2c_write(priv, ICSSR, ~SDR & 0xff);
- 	}
+-	master = afs_lookup_cell(cell->net, cell_name, strlen(cell_name),
+-				 NULL, false);
++	name_len = strlen(cell_name);
++	if (!name_len || name_len > AFS_MAXCELLNAME)
++		master = ERR_PTR(-EOPNOTSUPP);
++	else
++		master = afs_lookup_cell(cell->net, cell_name, name_len, NULL, false);
+ 	kfree(cell_name);
+ 	if (IS_ERR(master))
+ 		return PTR_ERR(master);
+diff --git a/fs/afs/vlclient.c b/fs/afs/vlclient.c
+index 00fca3c66ba6..16653f2ffe4f 100644
+--- a/fs/afs/vlclient.c
++++ b/fs/afs/vlclient.c
+@@ -671,7 +671,7 @@ static int afs_deliver_yfsvl_get_cell_name(struct afs_call *call)
+ 			return ret;
  
+ 		namesz = ntohl(call->tmp);
+-		if (namesz > AFS_MAXCELLNAME)
++		if (namesz > YFS_VL_MAXCELLNAME)
+ 			return afs_protocol_error(call, afs_eproto_cellname_len);
+ 		paddedsz = (namesz + 3) & ~3;
+ 		call->count = namesz;
 -- 
 2.39.5
 
