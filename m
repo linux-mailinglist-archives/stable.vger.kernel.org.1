@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-110009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 089A9A184DE
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:12:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C299CA1844F
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:05:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17CA4161AA7
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:12:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A28E27A19F3
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:05:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F341F7552;
-	Tue, 21 Jan 2025 18:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03621F542D;
+	Tue, 21 Jan 2025 18:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGGH74eL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iTI5rMST"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B7E1F55E5;
-	Tue, 21 Jan 2025 18:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7C91F4275;
+	Tue, 21 Jan 2025 18:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737483078; cv=none; b=prRYKbT+WLoBoZBWBKbnUqIWk3h7tW0tYdMKPhFRA2xKC+D9dM1g+7GKAQRxFfP825naZtcrC3FofsFIxzttzF0zDP2dVunLmhi/8gOeM7YE2RvvYFp9kZl7hWpynliEaQOzr3iRBiO6pPWFwp581MYzNFZxB2Dhr+Zj8wDMY/0=
+	t=1737482736; cv=none; b=fJL5oxXNfueamnb9vmQjyV3zlLsl6qJY7Ci3UBzTA2QtNCzmKVhtcPbivkdi0C5rKq9d3A7K2QrX765OtY8Ro6wBT6ieo5GBnKg4aFh6MgG9m4rmqqMxY3Zd73qmjK5y6ocT6Thp3G6BdJJpWdlZvRj766xK1uN5R6QJp/U1zjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737483078; c=relaxed/simple;
-	bh=AztWnKitjxvibDih7de6Iiesr38ORTwj8yIhgPKxzSw=;
+	s=arc-20240116; t=1737482736; c=relaxed/simple;
+	bh=w1RrjY3cNoK25Y1Jvyey4gh+tnZ8tHjgcixsr+Nm+eM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fu0OJn2kX2yU+1nVaLQSkCWj0tcixlcCbNlx5IQHa4CQUM2Wlhq+DVUg9lwdZALzyrgIY503+brU5MrwclaCcyf0twugm+UFAVOZ8xCBuMf3usVlk76G1rDHO+0zgqkM5uBAxngoR9WcTF20346uN8dDN2Mvaltn9Txb+w4ptT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGGH74eL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD51AC4CEE0;
-	Tue, 21 Jan 2025 18:11:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XMTAUoUTvUYIGxPnogvoMpnJFUxCQSnk5Bt5lK9K/AQ9TZqkzne8Ma+ZVKbJCo6Mzssh1+AFBJq8C9yVZ1Y+3BVqn+pESYmG5BLSFS6/hCZVkreYI4hIcrJCELTKcFOQqGWSGoqgL/NqzFpIIHiD+0rPXC7lpS1jd9Xm6vdj8Qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iTI5rMST; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 749D8C4CEDF;
+	Tue, 21 Jan 2025 18:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737483078;
-	bh=AztWnKitjxvibDih7de6Iiesr38ORTwj8yIhgPKxzSw=;
+	s=korg; t=1737482735;
+	bh=w1RrjY3cNoK25Y1Jvyey4gh+tnZ8tHjgcixsr+Nm+eM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DGGH74eLAO/n/J/ie1S4myLRFWWr/kHYo9HD/Yg402FeRKrrUy5rAfWIm9PYFMTp+
-	 UKwrfmvrSsNyCQt08j2KfIbi7cyMFMYb3/KKvRcXnLpKKqYFLj4n/gyqPzkGBRlTTV
-	 R5YqSnfNy2JetQqS1NVTSjR4AFa9NfJIe9jeWuW0=
+	b=iTI5rMSTsUpZsACsONQnF6bumL1L67+wErJFmcEUmRqp1PIpvB7t4GLtLEqXJCkwZ
+	 3egSLT3c0G6d8IdQ5X830e3SMyOpcjjc6jSmNiSpIoeb5OB3qxJXyrqG8XfJ9or2jf
+	 hstQirmtEydoaULCY5BsI00+WZtGNgjx94f2uZLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 101/127] poll_wait: add mb() to fix theoretical race between waitqueue_active() and .poll()
-Date: Tue, 21 Jan 2025 18:52:53 +0100
-Message-ID: <20250121174533.549930266@linuxfoundation.org>
+	Salvatore Bonaccorso <carnil@debian.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 55/64] Revert "drm/amdgpu: rework resume handling for display (v2)"
+Date: Tue, 21 Jan 2025 18:52:54 +0100
+Message-ID: <20250121174523.659629130@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
+References: <20250121174521.568417761@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +60,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit cacd9ae4bf801ff4125d8961bb9a3ba955e51680 ]
+This reverts commit c807ab3a861f656bc39471a20a16b36632ac6b04 which is
+commit 73dae652dcac776296890da215ee7dec357a1032 upstream.
 
-As the comment above waitqueue_active() explains, it can only be used
-if both waker and waiter have mb()'s that pair with each other. However
-__pollwait() is broken in this respect.
+The original patch 73dae652dcac (drm/amdgpu: rework resume handling for
+display (v2)), was only targeted at kernels 6.11 and newer.  It did not
+apply cleanly to 6.12 so I backported it and it backport landed as
+99a02eab8251 ("drm/amdgpu: rework resume handling for display (v2)"),
+however there was a bug in the backport that was subsequently fixed in
+063d380ca28e ("drm/amdgpu: fix backport of commit 73dae652dcac").  None
+of this was intended for kernels older than 6.11, however the original
+backport eventually landed in 6.6, 6.1, and 5.15.
 
-This is not pipe-specific, but let's look at pipe_poll() for example:
+Please revert the change from kernels 6.6, 6.1, and 5.15.
 
-	poll_wait(...); // -> __pollwait() -> add_wait_queue()
-
-	LOAD(pipe->head);
-	LOAD(pipe->head);
-
-In theory these LOAD()'s can leak into the critical section inside
-add_wait_queue() and can happen before list_add(entry, wq_head), in this
-case pipe_poll() can race with wakeup_pipe_readers/writers which do
-
-	smp_mb();
-	if (waitqueue_active(wq_head))
-		wake_up_interruptible(wq_head);
-
-There are more __pollwait()-like functions (grep init_poll_funcptr), and
-it seems that at least ep_ptable_queue_proc() has the same problem, so the
-patch adds smp_mb() into poll_wait().
-
-Link: https://lore.kernel.org/all/20250102163320.GA17691@redhat.com/
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20250107162717.GA18922@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/BL1PR12MB5144D5363FCE6F2FD3502534F7E72@BL1PR12MB5144.namprd12.prod.outlook.com
+Link: https://lore.kernel.org/r/BL1PR12MB51449ADCFBF2314431F8BCFDF7132@BL1PR12MB5144.namprd12.prod.outlook.com
+Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+Reported-by: Christian König <christian.koenig@amd.com>
+Reported-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/poll.h | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |   45 +----------------------------
+ 1 file changed, 2 insertions(+), 43 deletions(-)
 
-diff --git a/include/linux/poll.h b/include/linux/poll.h
-index 7e0fdcf905d2e..a4af5e14dffed 100644
---- a/include/linux/poll.h
-+++ b/include/linux/poll.h
-@@ -43,8 +43,16 @@ typedef struct poll_table_struct {
- 
- static inline void poll_wait(struct file * filp, wait_queue_head_t * wait_address, poll_table *p)
- {
--	if (p && p->_qproc && wait_address)
-+	if (p && p->_qproc && wait_address) {
- 		p->_qproc(filp, wait_address, p);
-+		/*
-+		 * This memory barrier is paired in the wq_has_sleeper().
-+		 * See the comment above prepare_to_wait(), we need to
-+		 * ensure that subsequent tests in this thread can't be
-+		 * reordered with __add_wait_queue() in _qproc() paths.
-+		 */
-+		smp_mb();
-+	}
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3242,7 +3242,7 @@ static int amdgpu_device_ip_resume_phase
+  *
+  * @adev: amdgpu_device pointer
+  *
+- * Second resume function for hardware IPs.  The list of all the hardware
++ * First resume function for hardware IPs.  The list of all the hardware
+  * IPs that make up the asic is walked and the resume callbacks are run for
+  * all blocks except COMMON, GMC, and IH.  resume puts the hardware into a
+  * functional state after a suspend and updates the software state as
+@@ -3260,7 +3260,6 @@ static int amdgpu_device_ip_resume_phase
+ 		if (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_COMMON ||
+ 		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_GMC ||
+ 		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_IH ||
+-		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_DCE ||
+ 		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_PSP)
+ 			continue;
+ 		r = adev->ip_blocks[i].version->funcs->resume(adev);
+@@ -3285,36 +3284,6 @@ static int amdgpu_device_ip_resume_phase
  }
  
- /*
--- 
-2.39.5
-
+ /**
+- * amdgpu_device_ip_resume_phase3 - run resume for hardware IPs
+- *
+- * @adev: amdgpu_device pointer
+- *
+- * Third resume function for hardware IPs.  The list of all the hardware
+- * IPs that make up the asic is walked and the resume callbacks are run for
+- * all DCE.  resume puts the hardware into a functional state after a suspend
+- * and updates the software state as necessary.  This function is also used
+- * for restoring the GPU after a GPU reset.
+- *
+- * Returns 0 on success, negative error code on failure.
+- */
+-static int amdgpu_device_ip_resume_phase3(struct amdgpu_device *adev)
+-{
+-	int i, r;
+-
+-	for (i = 0; i < adev->num_ip_blocks; i++) {
+-		if (!adev->ip_blocks[i].status.valid || adev->ip_blocks[i].status.hw)
+-			continue;
+-		if (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_DCE) {
+-			r = adev->ip_blocks[i].version->funcs->resume(adev);
+-			if (r)
+-				return r;
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+-/**
+  * amdgpu_device_ip_resume - run resume for hardware IPs
+  *
+  * @adev: amdgpu_device pointer
+@@ -3344,13 +3313,6 @@ static int amdgpu_device_ip_resume(struc
+ 
+ 	r = amdgpu_device_ip_resume_phase2(adev);
+ 
+-	if (r)
+-		return r;
+-
+-	amdgpu_fence_driver_hw_init(adev);
+-
+-	r = amdgpu_device_ip_resume_phase3(adev);
+-
+ 	return r;
+ }
+ 
+@@ -4349,6 +4311,7 @@ int amdgpu_device_resume(struct drm_devi
+ 		dev_err(adev->dev, "amdgpu_device_ip_resume failed (%d).\n", r);
+ 		return r;
+ 	}
++	amdgpu_fence_driver_hw_init(adev);
+ 
+ 	r = amdgpu_device_ip_late_init(adev);
+ 	if (r)
+@@ -5102,10 +5065,6 @@ int amdgpu_do_asic_reset(struct list_hea
+ 				if (r)
+ 					goto out;
+ 
+-				r = amdgpu_device_ip_resume_phase3(tmp_adev);
+-				if (r)
+-					goto out;
+-
+ 				if (vram_lost)
+ 					amdgpu_device_fill_reset_magic(tmp_adev);
+ 
 
 
 
