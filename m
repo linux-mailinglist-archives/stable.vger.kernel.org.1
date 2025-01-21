@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-109935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E4DDA18492
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:09:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5484A183D5
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97089164B67
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABEAB188D488
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3E21F561E;
-	Tue, 21 Jan 2025 18:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF791F55FA;
+	Tue, 21 Jan 2025 17:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SEGgijlS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QFVdRnGv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99411F5439;
-	Tue, 21 Jan 2025 18:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D399185935;
+	Tue, 21 Jan 2025 17:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482865; cv=none; b=Nw96Wg57rBOUnwen97g9gZO21Ny81URuCko9LtKUBI9AdgeLTBI2t0bcwT/YNw1yYoASwgDw3xldof7/666V4Qp/a2+jZCZzl2fLfdyPPL1NiuJ5l8Ttfq4lpDDnW4xPjSoViCkI+BJmKy2+EAkhgACFbqkjXjBdY2aRKrDsDT0=
+	t=1737482382; cv=none; b=HcS5f2+L25GxGqkKGXablf3epsanpj12O4oUhfTov9wVp5ajhO7wxWYPerQCNnbnx0xolrK5xZKbJlpjRWpxAZV31VeVkT9n/tsbJMYd49M0jOSnaGMlrPknVDJJOLHC4bJH0+Eq25pe7YXtXh7s9e+LC8qd2Kcu6SW7fo4y+XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482865; c=relaxed/simple;
-	bh=SvHFDnB59H2/VqgMwt2fCZSYD57ee/tT517BonVQo2A=;
+	s=arc-20240116; t=1737482382; c=relaxed/simple;
+	bh=ymLFT1EDL29LEZm2yVvEnLs8/loDn75iPFNA+yy1pWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0e7pd6q0gq2MPhD9iS9OdE9PP5GqAQCfJgUTU1R/GpivqARPyEyYTOfcnQjbZ9Rw8lCnkouF+Gwexcak+IzCHE8il2ZfZbg15u5kJvn6KndaP+PgcQ+T5PjvhyNV7Gec8qQaXWnrikq+JRxQ2OxvABTp5dODUK29+y+bTHRPME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SEGgijlS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17DAAC4CEDF;
-	Tue, 21 Jan 2025 18:07:42 +0000 (UTC)
+	 MIME-Version; b=abmfpF2yRek5/g2CdPPnB/dC0WxwT+a7szMvCNe+YvaHdpN5xFwXfcOJFeVAbS56nC0c3hpTLXHbCBgiubXUNEy0/YR6KCfkPLubG7MTHuE/JZGJgQQZq0W4TnPij8TqRyZz65e8mcgTFNYwKgOPR1C+jcCeTz5JW75XiDQuYyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QFVdRnGv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99B1C4CEDF;
+	Tue, 21 Jan 2025 17:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482863;
-	bh=SvHFDnB59H2/VqgMwt2fCZSYD57ee/tT517BonVQo2A=;
+	s=korg; t=1737482382;
+	bh=ymLFT1EDL29LEZm2yVvEnLs8/loDn75iPFNA+yy1pWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SEGgijlSgmI2vnVauznMJGBAUSqCmPo44obLD6+2bdNx25MEraYqCtjuZ0YyW6dRK
-	 j2orPzWcW0kuQ9V1Y6clvsTNYRZtaaJSqwNQcSq3L1+qKtlEVocekVX298LCnw9h9m
-	 jijE3b5p2cyrF62Iu6EN5kGfFuaDGhfaxLa9qRoQ=
+	b=QFVdRnGvulmWOUue/2zL+P5Ma3kMcyKEiOopemhUDFDxZco7QOHwPVlBK+9YnrQI4
+	 aX88f3uH1nvzLY/1KCiLLnDwg02DGLkYbTyXmi7uLV/D7YF6TngyxdsTA6mmzE312E
+	 be4W1BNJHiybV1Of2YtWYRY8D9MJBI5advGvz0Ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Melissa Wen <mwen@igalia.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 033/127] drm/amd/display: increase MAX_SURFACES to the value supported by hw
+	Koichiro Den <koichiro.den@canonical.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 057/122] gpio: virtuser: lock up configfs that an instantiated device depends on
 Date: Tue, 21 Jan 2025 18:51:45 +0100
-Message-ID: <20250121174530.963029880@linuxfoundation.org>
+Message-ID: <20250121174535.186561523@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Melissa Wen <mwen@igalia.com>
+From: Koichiro Den <koichiro.den@canonical.com>
 
-commit 21541bc6b44241e3f791f9e552352d8440b2b29e upstream.
+[ Upstream commit c7c434c1dba955005f5161dae73f09c0a922cfa7 ]
 
-As the hw supports up to 4 surfaces, increase the maximum number of
-surfaces to prevent the DC error when trying to use more than three
-planes.
+Once a virtuser device is instantiated and actively used, allowing rmdir
+for its configfs serves no purpose and can be confusing. Userspace
+interacts with the virtual consumer at arbitrary times, meaning it
+depends on its existence.
 
-[drm:dc_state_add_plane [amdgpu]] *ERROR* Surface: can not attach plane_state 000000003e2cb82c! Maximum is: 3
+Make the subsystem itself depend on the configfs entry for a virtuser
+device while it is in active use.
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3693
-Signed-off-by: Melissa Wen <mwen@igalia.com>
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b8d6daffc871a42026c3c20bff7b8fa0302298c1)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
+Link: https://lore.kernel.org/r/20250103141829.430662-4-koichiro.den@canonical.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpio-virtuser.c | 47 ++++++++++++++++++++++++++++++------
+ 1 file changed, 40 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dc.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc.h
-@@ -47,7 +47,7 @@ struct aux_payload;
+diff --git a/drivers/gpio/gpio-virtuser.c b/drivers/gpio/gpio-virtuser.c
+index d6244f0d3bc75..e89f299f21400 100644
+--- a/drivers/gpio/gpio-virtuser.c
++++ b/drivers/gpio/gpio-virtuser.c
+@@ -1546,6 +1546,30 @@ gpio_virtuser_device_deactivate(struct gpio_virtuser_device *dev)
+ 	dev->pdev = NULL;
+ }
  
- #define DC_VER "3.2.149"
++static void
++gpio_virtuser_device_lockup_configfs(struct gpio_virtuser_device *dev, bool lock)
++{
++	struct configfs_subsystem *subsys = dev->group.cg_subsys;
++	struct gpio_virtuser_lookup_entry *entry;
++	struct gpio_virtuser_lookup *lookup;
++
++	/*
++	 * The device only needs to depend on leaf lookup entries. This is
++	 * sufficient to lock up all the configfs entries that the
++	 * instantiated, alive device depends on.
++	 */
++	list_for_each_entry(lookup, &dev->lookup_list, siblings) {
++		list_for_each_entry(entry, &lookup->entry_list, siblings) {
++			if (lock)
++				WARN_ON(configfs_depend_item_unlocked(
++						subsys, &entry->group.cg_item));
++			else
++				configfs_undepend_item_unlocked(
++						&entry->group.cg_item);
++		}
++	}
++}
++
+ static ssize_t
+ gpio_virtuser_device_config_live_store(struct config_item *item,
+ 				       const char *page, size_t count)
+@@ -1558,15 +1582,24 @@ gpio_virtuser_device_config_live_store(struct config_item *item,
+ 	if (ret)
+ 		return ret;
  
--#define MAX_SURFACES 3
-+#define MAX_SURFACES 4
- #define MAX_PLANES 6
- #define MAX_STREAMS 6
- #define MAX_SINKS_PER_LINK 4
+-	guard(mutex)(&dev->lock);
++	if (live)
++		gpio_virtuser_device_lockup_configfs(dev, true);
+ 
+-	if (live == gpio_virtuser_device_is_live(dev))
+-		return -EPERM;
++	scoped_guard(mutex, &dev->lock) {
++		if (live == gpio_virtuser_device_is_live(dev))
++			ret = -EPERM;
++		else if (live)
++			ret = gpio_virtuser_device_activate(dev);
++		else
++			gpio_virtuser_device_deactivate(dev);
++	}
+ 
+-	if (live)
+-		ret = gpio_virtuser_device_activate(dev);
+-	else
+-		gpio_virtuser_device_deactivate(dev);
++	/*
++	 * Undepend is required only if device disablement (live == 0)
++	 * succeeds or if device enablement (live == 1) fails.
++	 */
++	if (live == !!ret)
++		gpio_virtuser_device_lockup_configfs(dev, false);
+ 
+ 	return ret ?: count;
+ }
+-- 
+2.39.5
+
 
 
 
