@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-109925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0368EA18490
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:09:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C12C5A183C8
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:00:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEBCC188D6A6
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:07:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 054A23AB0E4
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E57E1F76A7;
-	Tue, 21 Jan 2025 18:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019311F561E;
+	Tue, 21 Jan 2025 17:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzHjwzpo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2h3wvj2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD761F756A;
-	Tue, 21 Jan 2025 18:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E6BE571;
+	Tue, 21 Jan 2025 17:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482841; cv=none; b=BPdwPO0kY1TbrqjOAn0YQ2TEiTbeqdGGZQOw3Mrh1T1721EgdNGd8z6a90aHbb7EsnFoaUbyIr+exHBf5iC+QpFP2ywqcpBzAohBsp2y1itjVO7q52Ay8HwFEAwmUyB6i4kkAjIZ8qMifiHp/BCbOqljVO0jeLIZ9oHVgwsOhDU=
+	t=1737482361; cv=none; b=nGNYLmohMh4JuOc+7eyfMMIGhEq2lOX0Ea+f378QbtXrlDwFs1PVbUcL5Ka5OaZ5NM0c6j9JDo5KN2KJEjRVx1IinL9naDv+ePLM+rm92PXZ4nh4D6wHXDTHHgeDP9Fa1HOas1PRcCpaQEhleBuaCL9PFgaIuPl3ETXHJtd/CO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482841; c=relaxed/simple;
-	bh=pbJadYfwB1mEm+HPHBGHqVnghArJxfWunR/F5UAWzqU=;
+	s=arc-20240116; t=1737482361; c=relaxed/simple;
+	bh=FGoX/OgZgbKyk6WO6mrh+YKtekh+m1LpsQ+3RHMPVXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cch0aojrAmURmfbapBAAxI+aukdB3RPIoEPGx1ppAWaQBhdeLJopKEQIU9x3Zaur2iBU0GkIsTMWzQDJqK5bVh7SH5xfNIeJuc3yrRxpuoZ9LOaC9ZywqXdL77aBz0kUxkJzVt5MoBehcOZxKGgOTO7eGoJ4x3RqSct2EtgwtUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzHjwzpo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF21C4CEE5;
-	Tue, 21 Jan 2025 18:07:20 +0000 (UTC)
+	 MIME-Version; b=kk1PVzdHMpTwM+7ow02puvNPOI0zeW3twmSEVS9lcqUTlgUwjCLbERmt/mU+yJsQwAWnpY3QhWfzmUBwYhjgg4cktS89pGPBkAcZ2bGGDATmGyy0cwjNm7dpWqIiKrkUr2bB5USXcPB9pVJrCC+saBlQ5/3RqjNN4o+R2Nuqg7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2h3wvj2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37857C4CEDF;
+	Tue, 21 Jan 2025 17:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482840;
-	bh=pbJadYfwB1mEm+HPHBGHqVnghArJxfWunR/F5UAWzqU=;
+	s=korg; t=1737482361;
+	bh=FGoX/OgZgbKyk6WO6mrh+YKtekh+m1LpsQ+3RHMPVXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pzHjwzpoy5ZAtdyMtFKYn+nvJRf23o622WVlRYHtiHEuTNHjYGc4Ko/YjMfyfDYAp
-	 Yaq8o5/WIvaN2S2AQGePbKpbhDIHSZxylcJ0ONgD33RPGWAGCSFbVuNDQMqtpfbpX5
-	 tKV2b3ZZaw9XoM8G+5dETcRwI4/AUcnq/kUMsZh8=
+	b=P2h3wvj29o8zWOMeK1z+f2ZD+i9U8vAkvAFJOx2dwkqESuEAxYKlZiVXoTTrLvyxy
+	 0o0QifnTNWXV/EwgLO8PCbJoYEap+OFqWQjbko06RBXU0AYIHdhsIDN07ERpiswjSy
+	 a36EHSjChfVbINg7qhKEghvEAWv7qXx5efV/OXBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 026/127] sctp: sysctl: auth_enable: avoid using current->nsproxy
+	syzbot+2db3c7526ba68f4ea776@syzkaller.appspotmail.com,
+	Leo Stone <leocstone@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 050/122] hfs: Sanity check the root record
 Date: Tue, 21 Jan 2025 18:51:38 +0100
-Message-ID: <20250121174530.681063539@linuxfoundation.org>
+Message-ID: <20250121174534.919322323@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Leo Stone <leocstone@gmail.com>
 
-commit 15649fd5415eda664ef35780c2013adeb5d9c695 upstream.
+[ Upstream commit b905bafdea21a75d75a96855edd9e0b6051eee30 ]
 
-As mentioned in a previous commit of this series, using the 'net'
-structure via 'current' is not recommended for different reasons:
+In the syzbot reproducer, the hfs_cat_rec for the root dir has type
+HFS_CDR_FIL after being read with hfs_bnode_read() in hfs_super_fill().
+This indicates it should be used as an hfs_cat_file, which is 102 bytes.
+Only the first 70 bytes of that struct are initialized, however,
+because the entrylength passed into hfs_bnode_read() is still the length of
+a directory record. This causes uninitialized values to be used later on,
+when the hfs_cat_rec union is treated as the larger hfs_cat_file struct.
 
-- Inconsistency: getting info from the reader's/writer's netns vs only
-  from the opener's netns.
+Add a check to make sure the retrieved record has the correct type
+for the root directory (HFS_CDR_DIR), and make sure we load the correct
+number of bytes for a directory record.
 
-- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
-  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
-  syzbot [1] using acct(2).
-
-The 'net' structure can be obtained from the table->data using
-container_of().
-
-Note that table->data could also be used directly, but that would
-increase the size of this fix, while 'sctp.ctl_sock' still needs to be
-retrieved from 'net' structure.
-
-Fixes: b14878ccb7fa ("net: sctp: cache auth_enable per endpoint")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-6-5df34b2083e8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+2db3c7526ba68f4ea776@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2db3c7526ba68f4ea776
+Tested-by: syzbot+2db3c7526ba68f4ea776@syzkaller.appspotmail.com
+Tested-by: Leo Stone <leocstone@gmail.com>
+Signed-off-by: Leo Stone <leocstone@gmail.com>
+Link: https://lore.kernel.org/r/20241201051420.77858-1-leocstone@gmail.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sysctl.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/hfs/super.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/sctp/sysctl.c
-+++ b/net/sctp/sysctl.c
-@@ -492,7 +492,7 @@ static int proc_sctp_do_alpha_beta(struc
- static int proc_sctp_do_auth(struct ctl_table *ctl, int write,
- 			     void *buffer, size_t *lenp, loff_t *ppos)
- {
--	struct net *net = current->nsproxy->net_ns;
-+	struct net *net = container_of(ctl->data, struct net, sctp.auth_enable);
- 	struct ctl_table tbl;
- 	int new_value, ret;
- 
+diff --git a/fs/hfs/super.c b/fs/hfs/super.c
+index eeac99765f0d6..cf13b5cc10848 100644
+--- a/fs/hfs/super.c
++++ b/fs/hfs/super.c
+@@ -419,11 +419,13 @@ static int hfs_fill_super(struct super_block *sb, void *data, int silent)
+ 		goto bail_no_root;
+ 	res = hfs_cat_find_brec(sb, HFS_ROOT_CNID, &fd);
+ 	if (!res) {
+-		if (fd.entrylength > sizeof(rec) || fd.entrylength < 0) {
++		if (fd.entrylength != sizeof(rec.dir)) {
+ 			res =  -EIO;
+ 			goto bail_hfs_find;
+ 		}
+ 		hfs_bnode_read(fd.bnode, &rec, fd.entryoffset, fd.entrylength);
++		if (rec.type != HFS_CDR_DIR)
++			res = -EIO;
+ 	}
+ 	if (res)
+ 		goto bail_hfs_find;
+-- 
+2.39.5
+
 
 
 
