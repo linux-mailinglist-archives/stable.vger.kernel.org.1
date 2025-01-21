@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-109846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26F41A18433
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:04:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 687FAA18362
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E86D61679BD
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:03:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6F9E3A99B6
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4244D1F427B;
-	Tue, 21 Jan 2025 18:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCA71F55ED;
+	Tue, 21 Jan 2025 17:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwbKU4OT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uP/62rMd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00EA91F3FFE;
-	Tue, 21 Jan 2025 18:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C031F5439;
+	Tue, 21 Jan 2025 17:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482610; cv=none; b=OU4gbF6LPeetXQCMVzJtgtWzGfU77mNfiR7xZ+WCxblWnOLszmYbbUs9OjYTfEwUwwknDFXEdHTUD7fmsnHyiublBKJgIab5IOSz9RpkDgcfYXstJ3neL+SoXvSK3h3aFKFok81stCyH4Oaw/uTh79ZDFiSmokVUvxsdIggmM9s=
+	t=1737482140; cv=none; b=Z1hZCuqtNAdmxZRidAzZxV1oi2IabQ69fybRdtyQqTz7R4D4LAxt6gMVQrqON1uz/CR4UG8J2qIeEQWrPvzLPMi9Bp4DZP8wIaeqNYpIFnjlvfSDvF20xliPhUNL18nRx9hBpCmqJPDiAo77tBdqy9AAMtaS/zQZqso06gxJP1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482610; c=relaxed/simple;
-	bh=fH76gxSMNDMeIszm1ksHI7vefpF97Cy0KiPmMZFLxrY=;
+	s=arc-20240116; t=1737482140; c=relaxed/simple;
+	bh=z/1ZVJt+NWJwa/D7bo/TaxPPlVed0/JyJ9jDVltRBfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WxEWaNXQLuUkMIV/8gY1H6EPlWGpYjwWZPA0O5TEZlg0SuGwVRop6rWkDR3HmOItl1X40XWGfoSlhjKI3W2/C3HoxOe4rzlKItcDXnGXSi1f4MAN+r41wdFQkW3NYA6vKvJ6GIQk7VKYQOU3zj5Otg3r65bmLiHDX+G3tglLwZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwbKU4OT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1D7C4CEDF;
-	Tue, 21 Jan 2025 18:03:29 +0000 (UTC)
+	 MIME-Version; b=TWU3pBYim8ryqA28G7mBqJF9MDwu8Pgv0/Knacou2HqdUK+aDkOPHXP9P1xMrmdAhFOMN8uxQjfeg8J90VRx1BZCStEU3ZFCEHO5VmG91RqKS//CNdajl7qrpG97ijqvh6eQVudZHnqfZs2NlW8hySkwpOdzH5HI/76G/LZn+V4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uP/62rMd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB09EC4CEDF;
+	Tue, 21 Jan 2025 17:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482609;
-	bh=fH76gxSMNDMeIszm1ksHI7vefpF97Cy0KiPmMZFLxrY=;
+	s=korg; t=1737482140;
+	bh=z/1ZVJt+NWJwa/D7bo/TaxPPlVed0/JyJ9jDVltRBfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZwbKU4OTHydzOLwliQrPC7a9ZP0INsZYcK3bC13P3fhvsyGObHZdfFe6Ygi6TSd8X
-	 Ju7KNdkBCkeQO68GBLVqBDV1Mib3WtU9kEZiBY0ebm0BcaW60yhrg0JvsIhXLAqemi
-	 SrgC2EHg/hQOLBvqRNxSazH/8zN5XcyiaqfkO9HA=
+	b=uP/62rMdHZcTicBSJlBBsFFn9/wmELev2IS49SXjOgKgOVWTSpXv8X/37FY63JEvj
+	 fV9fLxWd1ZTnJwbRzpp7sfUeC3IsdlovPYN8F1EmxgAeQ6G91BbRKu/QYRSpaBUsCc
+	 NHQa2UKuN17iwVw56nBMK/RO++1pBq1I/bZB7LEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 13/64] drm/v3d: Ensure job pointer is set to NULL after job completion
-Date: Tue, 21 Jan 2025 18:52:12 +0100
-Message-ID: <20250121174522.069175809@linuxfoundation.org>
+	Hyunwoo Kim <v4bel@theori.io>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 47/72] vsock/virtio: cancel close work in the destructor
+Date: Tue, 21 Jan 2025 18:52:13 +0100
+Message-ID: <20250121174525.235320091@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
-References: <20250121174521.568417761@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +61,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit e4b5ccd392b92300a2b341705cc4805681094e49 ]
+commit df137da9d6d166e87e40980e36eb8e0bc90483ef upstream.
 
-After a job completes, the corresponding pointer in the device must
-be set to NULL. Failing to do so triggers a warning when unloading
-the driver, as it appears the job is still active. To prevent this,
-assign the job pointer to NULL after completing the job, indicating
-the job has finished.
+During virtio_transport_release() we can schedule a delayed work to
+perform the closing of the socket before destruction.
 
-Fixes: 14d1d1908696 ("drm/v3d: Remove the bad signaled() implementation.")
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Reviewed-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250113154741.67520-1-mcanal@igalia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The destructor is called either when the socket is really destroyed
+(reference counter to zero), or it can also be called when we are
+de-assigning the transport.
+
+In the former case, we are sure the delayed work has completed, because
+it holds a reference until it completes, so the destructor will
+definitely be called after the delayed work is finished.
+But in the latter case, the destructor is called by AF_VSOCK core, just
+after the release(), so there may still be delayed work scheduled.
+
+Refactor the code, moving the code to delete the close work already in
+the do_close() to a new function. Invoke it during destruction to make
+sure we don't leave any pending work.
+
+Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
+Cc: stable@vger.kernel.org
+Reported-by: Hyunwoo Kim <v4bel@theori.io>
+Closes: https://lore.kernel.org/netdev/Z37Sh+utS+iV3+eb@v4bel-B760M-AORUS-ELITE-AX/
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Tested-by: Hyunwoo Kim <v4bel@theori.io>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/v3d/v3d_irq.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/vmw_vsock/virtio_transport_common.c |   29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
-index e714d5318f309..76806039691a2 100644
---- a/drivers/gpu/drm/v3d/v3d_irq.c
-+++ b/drivers/gpu/drm/v3d/v3d_irq.c
-@@ -103,6 +103,7 @@ v3d_irq(int irq, void *arg)
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -26,6 +26,9 @@
+ /* Threshold for detecting small packets to copy */
+ #define GOOD_COPY_LEN  128
  
- 		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
- 		dma_fence_signal(&fence->base);
-+		v3d->bin_job = NULL;
- 		status = IRQ_HANDLED;
++static void virtio_transport_cancel_close_work(struct vsock_sock *vsk,
++					       bool cancel_timeout);
++
+ static const struct virtio_transport *
+ virtio_transport_get_ops(struct vsock_sock *vsk)
+ {
+@@ -922,6 +925,8 @@ void virtio_transport_destruct(struct vs
+ {
+ 	struct virtio_vsock_sock *vvs = vsk->trans;
+ 
++	virtio_transport_cancel_close_work(vsk, true);
++
+ 	kfree(vvs);
+ 	vsk->trans = NULL;
+ }
+@@ -1004,17 +1009,11 @@ static void virtio_transport_wait_close(
  	}
+ }
  
-@@ -112,6 +113,7 @@ v3d_irq(int irq, void *arg)
+-static void virtio_transport_do_close(struct vsock_sock *vsk,
+-				      bool cancel_timeout)
++static void virtio_transport_cancel_close_work(struct vsock_sock *vsk,
++					       bool cancel_timeout)
+ {
+ 	struct sock *sk = sk_vsock(vsk);
  
- 		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
- 		dma_fence_signal(&fence->base);
-+		v3d->render_job = NULL;
- 		status = IRQ_HANDLED;
+-	sock_set_flag(sk, SOCK_DONE);
+-	vsk->peer_shutdown = SHUTDOWN_MASK;
+-	if (vsock_stream_has_data(vsk) <= 0)
+-		sk->sk_state = TCP_CLOSING;
+-	sk->sk_state_change(sk);
+-
+ 	if (vsk->close_work_scheduled &&
+ 	    (!cancel_timeout || cancel_delayed_work(&vsk->close_work))) {
+ 		vsk->close_work_scheduled = false;
+@@ -1026,6 +1025,20 @@ static void virtio_transport_do_close(st
  	}
+ }
  
-@@ -121,6 +123,7 @@ v3d_irq(int irq, void *arg)
- 
- 		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
- 		dma_fence_signal(&fence->base);
-+		v3d->csd_job = NULL;
- 		status = IRQ_HANDLED;
- 	}
- 
-@@ -157,6 +160,7 @@ v3d_hub_irq(int irq, void *arg)
- 
- 		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
- 		dma_fence_signal(&fence->base);
-+		v3d->tfu_job = NULL;
- 		status = IRQ_HANDLED;
- 	}
- 
--- 
-2.39.5
-
++static void virtio_transport_do_close(struct vsock_sock *vsk,
++				      bool cancel_timeout)
++{
++	struct sock *sk = sk_vsock(vsk);
++
++	sock_set_flag(sk, SOCK_DONE);
++	vsk->peer_shutdown = SHUTDOWN_MASK;
++	if (vsock_stream_has_data(vsk) <= 0)
++		sk->sk_state = TCP_CLOSING;
++	sk->sk_state_change(sk);
++
++	virtio_transport_cancel_close_work(vsk, cancel_timeout);
++}
++
+ static void virtio_transport_close_timeout(struct work_struct *work)
+ {
+ 	struct vsock_sock *vsk =
 
 
 
