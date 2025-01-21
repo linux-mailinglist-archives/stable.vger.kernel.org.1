@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-110054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57E02A185D3
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 20:52:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 630C3A185D4
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 20:52:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22376188B39E
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:52:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A3AC188B2F5
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:52:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F3D1F4E50;
-	Tue, 21 Jan 2025 19:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432E91F5433;
+	Tue, 21 Jan 2025 19:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NOfKvGLy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S0BIsE6i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81651EB2F
-	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 19:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E1A1EB2F
+	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 19:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737489162; cv=none; b=HFQZ2lJHr7YIS0I4Fs19RCErlFc92hZhjGl2JGh4odYfxtHKzNQjbptE4mKnnW9IdgXM0JM8jCKKtg7LEhNt0ijoL4i4uuoB8smfvBjcFrgnenbp5PNfi+tsx23hzVmOinCJmt5E4p9rQKr+KSafSSna4hM2u+u9JbZdAAuBybE=
+	t=1737489165; cv=none; b=iSl/4qX0XPfob42NZkD0tkfR+UviSTKki0eY7+5Gk/91R7l8R+QxnGEc7t0EWwLpT5Ox9wbfUGkJKZ9QY7z8Gh5t+EP9eLSELL1Dka3SSgTDmS22zaIuiC9q6qmd1GsNFp0zwP215HLEiXLlXqZz+flVaE8khEpN4dh+j3mLzs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737489162; c=relaxed/simple;
-	bh=AyyFEcvog/xNMAfrVVXD9cgH6xxjAv8kdujkkLFnLXc=;
+	s=arc-20240116; t=1737489165; c=relaxed/simple;
+	bh=XNPdPcCOcAn5Of4pejcezfWknHKC1UzZ+/hIK+UCN0c=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Y98CDHBebS9dp4qjFGCAT9JUClZyub/msK3+Fpem+PC9b28Dax0alOKT4Tx6nTXXfZB4toPZIOT/PQzp7P3u7l5MC+i6/k2G906nzVzd+OG9cjyQkIssqEfH/6ftsQxfwMfiTIMWDZVXK+5Akioe3GquknyVre0F88PWtwRX6zE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NOfKvGLy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5A8C4CEDF;
-	Tue, 21 Jan 2025 19:52:41 +0000 (UTC)
+	 MIME-Version; b=t5cgue/aGiahXqE6oL9VqACB7uSwo4Eb2wJX/UFNNZii3A45kldonHBPaL94czKVX2RorUL7I6PLcM4hyljjomjgZMSF1O1352vv2epvp3x5UWhZySiju6TDReWNmhJrf1ngdLLXDleINneiItCvEtm6pxMcL4mnTbHBbHyZHEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S0BIsE6i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6EAC4CEDF;
+	Tue, 21 Jan 2025 19:52:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737489162;
-	bh=AyyFEcvog/xNMAfrVVXD9cgH6xxjAv8kdujkkLFnLXc=;
+	s=k20201202; t=1737489164;
+	bh=XNPdPcCOcAn5Of4pejcezfWknHKC1UzZ+/hIK+UCN0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NOfKvGLy83gENLZo5bOivwZcHwTozmVQix8NTd545Oalt/0JylPQFp9ObuvPn+W1c
-	 QriiDGDVPRa1aipQ6oRlLOANWNt5XK/tzqN5m+dSbx2PR5DbiVFjLKxwdBJ8elHTzM
-	 cbAfdjZmzdKnMj79bPoW/FPHRoOS/wxxGaqqwSdYwpYuM1qnMdGkY5Sg6gCJ/U2MHe
-	 uhaX/4KgiW/xfu9XikpstjvFgfc0B8w08CFD9DAj+0Ay8BnN2oMiHpVXI/xach6jH+
-	 0VYPmkJ6qTIk7HCKZP9cZsMTvDAB0wUPBfmDmEJVd3OuN3rTUT9kgHrbkZClKJ3q21
-	 kQoVmU1dJchmw==
+	b=S0BIsE6ilmZBLyIlx31wL6Se0eM2gx4z313GUlhyluVhBFoK2yq9UsLGoBjVtbppz
+	 aBZmPdAFFENFJLG/R6RDiR0/sPD7FbkKmAsrSSHjs9Fz9NMtb1MVHWOrBlXepP7HGK
+	 4pgu79bMco+vSvW4Y1AKwDQHCF3z6akgG43igcj5vqLuNNp5kz9k0KwZNQmz0gQkdt
+	 QzcC0dURtIAZOFb4tOsDHsuAp0bIlt0LOM3AePZAaDHo/1jBz6M4Jk2gmwkQEmyPKz
+	 /AQYfQZT7fTi9PHVtl1ZpHDQaPJfIIQqWhwRfdsw6nHYySoqqhs3FRO+WBbtXnFADm
+	 C4yCbRIcuVDGg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: hsimeliere.opensource@witekio.com,
+Cc: alvalan9@foxmail.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v6.1-v5.4] scsi: sg: Fix slab-use-after-free read in sg_release()
-Date: Tue, 21 Jan 2025 14:52:40 -0500
-Message-Id: <20250121122350-735f0951dcfbdf8e@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y] net: fix data-races around sk->sk_forward_alloc
+Date: Tue, 21 Jan 2025 14:52:42 -0500
+Message-Id: <20250121123722-6ca75290b4d810cc@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250121141509.201877-1-hsimeliere.opensource@witekio.com>
+In-Reply-To:  <tencent_A0C9136B409C0E18FC860D5AE51A950F5007@qq.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,46 +63,54 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: f10593ad9bc36921f623361c9e3dd96bd52d85ee
+The upstream commit SHA1 provided is correct: 073d89808c065ac4c672c0a613a71b27a80691cb
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: hsimeliere.opensource@witekio.com
-Commit author: Suraj Sonawane<surajsonawane0215@gmail.com>
+Backport author: alvalan9@foxmail.com
+Commit author: Wang Liang<wangliang74@huawei.com>
 
 
 Status in newer kernel trees:
-6.12.y | Present (different SHA1: 1f5e2f1ca587)
-6.6.y | Present (different SHA1: 59b30afa5786)
+6.12.y | Present (exact SHA1)
+6.6.y | Not found
 6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  f10593ad9bc36 ! 1:  6931ce4ecfe44 scsi: sg: Fix slab-use-after-free read in sg_release()
+1:  073d89808c065 ! 1:  b42ede0a73c71 net: fix data-races around sk->sk_forward_alloc
     @@ Metadata
       ## Commit message ##
-         scsi: sg: Fix slab-use-after-free read in sg_release()
+         net: fix data-races around sk->sk_forward_alloc
      
-    +    [ Upstream commit f10593ad9bc36921f623361c9e3dd96bd52d85ee ]
+    +    commit 073d89808c065ac4c672c0a613a71b27a80691cb upstream.
     +
-         Fix a use-after-free bug in sg_release(), detected by syzbot with KASAN:
-     
-         BUG: KASAN: slab-use-after-free in lock_release+0x151/0xa30
+         Syzkaller reported this warning:
+          ------------[ cut here ]------------
+          WARNING: CPU: 0 PID: 16 at net/ipv4/af_inet.c:156 inet_sock_destruct+0x1c5/0x1e0
     @@ Commit message
-         Link: https://lore.kernel.org/r/20241120125944.88095-1-surajsonawane0215@gmail.com
-         Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-         Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-    +    Signed-off-by: BRUNO VERNAY <bruno.vernay@se.com>
-    +    Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+         Signed-off-by: Wang Liang <wangliang74@huawei.com>
+         Link: https://patch.msgid.link/20241107023405.889239-1-wangliang74@huawei.com
+         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    +    Signed-off-by: Alva Lan <alvalan9@foxmail.com>
      
-      ## drivers/scsi/sg.c ##
-     @@ drivers/scsi/sg.c: sg_release(struct inode *inode, struct file *filp)
-    - 	SCSI_LOG_TIMEOUT(3, sg_printk(KERN_INFO, sdp, "sg_release\n"));
+      ## net/dccp/ipv6.c ##
+     @@ net/dccp/ipv6.c: static int dccp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
+    @@ net/ipv6/tcp_ipv6.c: int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
+     +	if (np->rxopt.all && sk->sk_state != TCP_LISTEN)
+      		opt_skb = skb_clone_and_charge_r(skb, sk);
       
-      	mutex_lock(&sdp->open_rel_lock);
-    + 	scsi_autopm_put_device(sdp->device);
-     -	kref_put(&sfp->f_ref, sg_remove_sfp);
-      	sdp->open_cnt--;
-      
+    - 	if (sk->sk_state == TCP_ESTABLISHED) { /* Fast path */
+    + 	reason = SKB_DROP_REASON_NOT_SPECIFIED;
+     @@ net/ipv6/tcp_ipv6.c: int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
+    - 				if (reason)
+    - 					goto reset;
+    - 			}
+    + 		if (nsk != sk) {
+    + 			if (tcp_child_process(sk, nsk, skb))
+    + 				goto reset;
+     -			if (opt_skb)
+     -				__kfree_skb(opt_skb);
+      			return 0;
 ---
 
 Results of testing on various branches:
@@ -110,5 +118,4 @@ Results of testing on various branches:
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
 | stable/linux-6.1.y        |  Success    |  Success   |
-| stable/linux-5.4.y        |  Success    |  Success   |
 
