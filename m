@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-109946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D2AA1849B
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:09:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 936C4A183FE
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:02:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D663D1884219
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 820DB3AB164
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB221F543D;
-	Tue, 21 Jan 2025 18:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15BDB1F543F;
+	Tue, 21 Jan 2025 18:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wjrwxa19"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDaHRVgC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E391F3FFE;
-	Tue, 21 Jan 2025 18:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60F21F3FFE;
+	Tue, 21 Jan 2025 18:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482895; cv=none; b=GPj/1Yz/UkyFumBOkaUVlA84BLA6lDprW9CXxJ5jgFpPTrflmeCxBdU8NYYxC0KotkS03PFTCbHEvaeo1nQISVDq+VIRp6vUhN+S8M2rvutedQL5I5uqN4D9yjmcYchQaoZpA1ePQE+cFPPTgcdwsPnq9hDbe3EwdFVwtMGjstA=
+	t=1737482504; cv=none; b=ByGFYXMJpOxwNyl3m6oY5OtLFjpYE1NCMDwDM9lxqzJTV34TQ5vrQ5UXjIBKceD51iLG+bu6m0G/lc8xEy0dwPTosZPbt9XsTJ0aGklB4UhTKwSxYa/comkxe/Fn1GbZpoXQmN3YsS13BlnUAQ2UhjGEzc75um8ZuCbwCa/nFgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482895; c=relaxed/simple;
-	bh=J4c9Fo9njWVUH2diVprDkh4r8AyZmC7Vf553DYX+ljY=;
+	s=arc-20240116; t=1737482504; c=relaxed/simple;
+	bh=Z53k8x7MxsYN9nQ2n1EIe6pWVqvH+otrwKTzxFs4ZfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xhx/aGA7WBvDUG8hio/bTM79yJaZ8soeDSdFEhmzywOtUmDpTcR2VLzs8v8W4m/CKIZQbVVAZUKrjWErDFYBjLg/nQmEH03kC5mv34G9AV6Uyw/sFySAVk4TZpBrLnacIDmBbdzCniFgcbcJCGZU8Z0Yw8INOxbpk1v9C926R7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wjrwxa19; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15FBC4CEDF;
-	Tue, 21 Jan 2025 18:08:14 +0000 (UTC)
+	 MIME-Version; b=bHJprdgd7auBD+4gGdabcAPFc+NDOHhRqqJyuvjFumJYgP8Cc7l/bktYSXVnmjKHGN0DCiQBzaO6dDIxyvcbcf0of6qVyMtQSLetb/uj2O61UEcHkIakLvaO0E6sS74yXm1p32txxq4rv4TH+7AvsSoDNHS2Di5JApJzDT4ZSiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDaHRVgC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A64C4CEDF;
+	Tue, 21 Jan 2025 18:01:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482895;
-	bh=J4c9Fo9njWVUH2diVprDkh4r8AyZmC7Vf553DYX+ljY=;
+	s=korg; t=1737482504;
+	bh=Z53k8x7MxsYN9nQ2n1EIe6pWVqvH+otrwKTzxFs4ZfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wjrwxa198tpuEZFPNbsDcz76uSfVit5YC4/GMnRU94gNrYem4jlWnSsGGRAddDffw
-	 i1XiDXCIDM2VFVC8zZ7pMJKaaMBZrE66wCMD8Vq++VG6LAGy1GLWMftkhHoxY4hZqY
-	 UFfTBhV1hGK02mp/MJwrKEB7s7PDmgTOo37hnMSE=
+	b=JDaHRVgC0aWp0abc5L5FF41t5CYSU6uhkkVXx2thE0epSFsuAhGXnmgJZwRr1x7hh
+	 U0XcNppdwsQS59iEsV1asm8daORWheLpT5EW8sVc7GSuOyfkHfdS8fCDg4IlxBmMuc
+	 0qMW4xDBt7wDVLBkZc+ysb/Gg3iQ2BoNQ2a3c5FM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Li Huafei <lihuafei1@huawei.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 046/127] topology: Keep the cpumask unchanged when printing cpumap
+	Tejun Heo <tj@kernel.org>,
+	Ihor Solodrai <ihor.solodrai@pm.me>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 070/122] sched_ext: Fix dsq_local_on selftest
 Date: Tue, 21 Jan 2025 18:51:58 +0100
-Message-ID: <20250121174531.450853675@linuxfoundation.org>
+Message-ID: <20250121174535.690648958@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Huafei <lihuafei1@huawei.com>
+From: Tejun Heo <tj@kernel.org>
 
-commit cbd399f78e23ad4492c174fc5e6b3676dba74a52 upstream.
+[ Upstream commit ce2b93fc1dfa1c82f2576aa571731c4e5dcc8dd7 ]
 
-During fuzz testing, the following warning was discovered:
+The dsp_local_on selftest expects the scheduler to fail by trying to
+schedule an e.g. CPU-affine task to the wrong CPU. However, this isn't
+guaranteed to happen in the 1 second window that the test is running.
+Besides, it's odd to have this particular exception path tested when there
+are no other tests that verify that the interface is working at all - e.g.
+the test would pass if dsp_local_on interface is completely broken and fails
+on any attempt.
 
- different return values (15 and 11) from vsnprintf("%*pbl
- ", ...)
+Flip the test so that it verifies that the feature works. While at it, fix a
+typo in the info message.
 
- test:keyward is WARNING in kvasprintf
- WARNING: CPU: 55 PID: 1168477 at lib/kasprintf.c:30 kvasprintf+0x121/0x130
- Call Trace:
-  kvasprintf+0x121/0x130
-  kasprintf+0xa6/0xe0
-  bitmap_print_to_buf+0x89/0x100
-  core_siblings_list_read+0x7e/0xb0
-  kernfs_file_read_iter+0x15b/0x270
-  new_sync_read+0x153/0x260
-  vfs_read+0x215/0x290
-  ksys_read+0xb9/0x160
-  do_syscall_64+0x56/0x100
-  entry_SYSCALL_64_after_hwframe+0x78/0xe2
-
-The call trace shows that kvasprintf() reported this warning during the
-printing of core_siblings_list. kvasprintf() has several steps:
-
- (1) First, calculate the length of the resulting formatted string.
-
- (2) Allocate a buffer based on the returned length.
-
- (3) Then, perform the actual string formatting.
-
- (4) Check whether the lengths of the formatted strings returned in
-     steps (1) and (2) are consistent.
-
-If the core_cpumask is modified between steps (1) and (3), the lengths
-obtained in these two steps may not match. Indeed our test includes cpu
-hotplugging, which should modify core_cpumask while printing.
-
-To fix this issue, cache the cpumask into a temporary variable before
-calling cpumap_print_{list, cpumask}_to_buf(), to keep it unchanged
-during the printing process.
-
-Fixes: bb9ec13d156e ("topology: use bin_attribute to break the size limitation of cpumap ABI")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Li Huafei <lihuafei1@huawei.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://lore.kernel.org/r/20241114110141.94725-1-lihuafei1@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reported-by: Ihor Solodrai <ihor.solodrai@pm.me>
+Link: http://lkml.kernel.org/r/Z1n9v7Z6iNJ-wKmq@slm.duckdns.org
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/topology.c |   24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ tools/testing/selftests/sched_ext/dsp_local_on.bpf.c | 5 ++++-
+ tools/testing/selftests/sched_ext/dsp_local_on.c     | 5 +++--
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/base/topology.c
-+++ b/drivers/base/topology.c
-@@ -27,9 +27,17 @@ static ssize_t name##_read(struct file *
- 			   loff_t off, size_t count)				\
- {										\
- 	struct device *dev = kobj_to_dev(kobj);                                 \
-+	cpumask_var_t mask;							\
-+	ssize_t n;								\
- 										\
--	return cpumap_print_bitmask_to_buf(buf, topology_##mask(dev->id),	\
--					   off, count);                         \
-+	if (!alloc_cpumask_var(&mask, GFP_KERNEL))				\
-+		return -ENOMEM;							\
-+										\
-+	cpumask_copy(mask, topology_##mask(dev->id));				\
-+	n = cpumap_print_bitmask_to_buf(buf, mask, off, count);			\
-+	free_cpumask_var(mask);							\
-+										\
-+	return n;								\
- }										\
- 										\
- static ssize_t name##_list_read(struct file *file, struct kobject *kobj,	\
-@@ -37,9 +45,17 @@ static ssize_t name##_list_read(struct f
- 				loff_t off, size_t count)			\
- {										\
- 	struct device *dev = kobj_to_dev(kobj);					\
-+	cpumask_var_t mask;							\
-+	ssize_t n;								\
-+										\
-+	if (!alloc_cpumask_var(&mask, GFP_KERNEL))				\
-+		return -ENOMEM;							\
-+										\
-+	cpumask_copy(mask, topology_##mask(dev->id));				\
-+	n = cpumap_print_list_to_buf(buf, mask, off, count);			\
-+	free_cpumask_var(mask);							\
- 										\
--	return cpumap_print_list_to_buf(buf, topology_##mask(dev->id),		\
--					off, count);				\
-+	return n;								\
+diff --git a/tools/testing/selftests/sched_ext/dsp_local_on.bpf.c b/tools/testing/selftests/sched_ext/dsp_local_on.bpf.c
+index 6325bf76f47ee..fbda6bf546712 100644
+--- a/tools/testing/selftests/sched_ext/dsp_local_on.bpf.c
++++ b/tools/testing/selftests/sched_ext/dsp_local_on.bpf.c
+@@ -43,7 +43,10 @@ void BPF_STRUCT_OPS(dsp_local_on_dispatch, s32 cpu, struct task_struct *prev)
+ 	if (!p)
+ 		return;
+ 
+-	target = bpf_get_prandom_u32() % nr_cpus;
++	if (p->nr_cpus_allowed == nr_cpus)
++		target = bpf_get_prandom_u32() % nr_cpus;
++	else
++		target = scx_bpf_task_cpu(p);
+ 
+ 	scx_bpf_dsq_insert(p, SCX_DSQ_LOCAL_ON | target, SCX_SLICE_DFL, 0);
+ 	bpf_task_release(p);
+diff --git a/tools/testing/selftests/sched_ext/dsp_local_on.c b/tools/testing/selftests/sched_ext/dsp_local_on.c
+index 472851b568548..0ff27e57fe430 100644
+--- a/tools/testing/selftests/sched_ext/dsp_local_on.c
++++ b/tools/testing/selftests/sched_ext/dsp_local_on.c
+@@ -34,9 +34,10 @@ static enum scx_test_status run(void *ctx)
+ 	/* Just sleeping is fine, plenty of scheduling events happening */
+ 	sleep(1);
+ 
+-	SCX_EQ(skel->data->uei.kind, EXIT_KIND(SCX_EXIT_ERROR));
+ 	bpf_link__destroy(link);
+ 
++	SCX_EQ(skel->data->uei.kind, EXIT_KIND(SCX_EXIT_UNREG));
++
+ 	return SCX_TEST_PASS;
  }
  
- define_id_show_func(physical_package_id);
+@@ -50,7 +51,7 @@ static void cleanup(void *ctx)
+ struct scx_test dsp_local_on = {
+ 	.name = "dsp_local_on",
+ 	.description = "Verify we can directly dispatch tasks to a local DSQs "
+-		       "from osp.dispatch()",
++		       "from ops.dispatch()",
+ 	.setup = setup,
+ 	.run = run,
+ 	.cleanup = cleanup,
+-- 
+2.39.5
+
 
 
 
