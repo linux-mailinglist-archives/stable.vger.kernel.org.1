@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-109805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85715A18404
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:02:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6363EA18507
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:14:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ED96188D38A
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:01:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B5DA7A6A50
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C465F1F543F;
-	Tue, 21 Jan 2025 18:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1131A1F757F;
+	Tue, 21 Jan 2025 18:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oP27npwM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBVNxAXF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FDB1F3FFE;
-	Tue, 21 Jan 2025 18:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21EA1F666C;
+	Tue, 21 Jan 2025 18:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482490; cv=none; b=JJ/Zh6i75dBwjBNYibURzz6g0cdrfl4RcWrMoMH67f7icjuRd8LmqR8JeWXwrA0wg2YVi6ys/rdTO9kJir9RnJIITxN0/KLIeRyLEsYzymNXQVgah76zE3pEXx89qKhf8sinEkTj7kW8zCTSCC1ex5GcObVJtJRNuiT2UO3E1Uc=
+	t=1737482985; cv=none; b=f9LZGEQp5pLLSdMdgZeddKr7YBb7Nig9WHfYCRVeDJHfdxtlcvW5GeUKN6s4U+U3+oRURBYugA/Ivc3jmamLhmVQcJI1RXPCSY+CfSfmhM1m0koMzGnzin0lytGvEQoJ3bN43kpJZfEmonaMsLECMOEi2nRj5FdXu/ZSoU7AnvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482490; c=relaxed/simple;
-	bh=Udxng/LlAxACw6O3UV8aZxrOC/B/q8UXwgdQUPlvtPc=;
+	s=arc-20240116; t=1737482985; c=relaxed/simple;
+	bh=XzVTT46amEJkyj5zYaocMDNYwdnhXT1ssF2akmjEouc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=otFRrCJfZrnyeqFcozSOdcRZ4YrszJbpQPru4MYc466cK1wXNlflnuFpZD6Ksm+FNT7UgdaSKP4NEb9Alc/HUd8tRf5sT3GjnE+1T+65EFR/lvP3TZRVEtifL7u+FuhCyoBpRNuH4PK67V4guV7y9Ui8oBnhQ40Ev+Ms61bjAgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oP27npwM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F0AFC4CEDF;
-	Tue, 21 Jan 2025 18:01:29 +0000 (UTC)
+	 MIME-Version; b=GfKfmd3PAFg3eLvn3PjSlVSO2FoQSvbzwBJJqCRln1IiyGT8yPLukuMhMdNeyH3BqljISOhHKoHPwJiuKx4e+bXeu5o1I1VuBfa12ZayLD8OvtpxzG3V4NjJgyvEkWQ8C23AGZDoevMPk1GG20bVgDU/VpvInIUoulwGc5wgrCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBVNxAXF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 107B5C4CEDF;
+	Tue, 21 Jan 2025 18:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482489;
-	bh=Udxng/LlAxACw6O3UV8aZxrOC/B/q8UXwgdQUPlvtPc=;
+	s=korg; t=1737482985;
+	bh=XzVTT46amEJkyj5zYaocMDNYwdnhXT1ssF2akmjEouc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oP27npwM9ciwc3zZiWJs98RfRd/W3NCrQBTQWCaKFI1LSP8DDSSQ9KNdazDRTawXL
-	 pgRmX7kbkpeLxZQ1tg5b4j1sWVnrvlpDn2jpqFtHsEenz70NIx0t7Vm2rsrPoutKSE
-	 /LvQSBdsifsdMxHF7rdMQYysPfJTOaBE9fxTmrFA=
+	b=MBVNxAXFHM9+MwlTD6n4QDsv13SClsfT/TVJtDO/T057lLYIMtWVmBL0SLygPuFjs
+	 hWVv68ekhNAYNGygyucjOg7bj0kcWNvxWsQFHEMraqEmsO/CMwxte0cOTsoqo7fBt3
+	 ehA7yVpzkSBzwwkR+eanASMztz/7YvmPWcUygue4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rik van Riel <riel@surriel.com>,
-	Breno Leitao <leitao@debian.org>,
-	Baoquan He <bhe@redhat.com>,
-	Dave Young <dyoung@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 093/122] fs/proc: fix softlockup in __read_vmcore (part 2)
+	Herve Codina <herve.codina@bootlin.com>,
+	Rob Herring <robh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 069/127] of: address: Store number of bus flag cells rather than bool
 Date: Tue, 21 Jan 2025 18:52:21 +0100
-Message-ID: <20250121174536.607129165@linuxfoundation.org>
+Message-ID: <20250121174532.329825444@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rik van Riel <riel@surriel.com>
+From: Rob Herring <robh@kernel.org>
 
-commit cbc5dde0a461240046e8a41c43d7c3b76d5db952 upstream.
+[ Upstream commit 88696db08b7efa3b6bb722014ea7429e78f6be32 ]
 
-Since commit 5cbcb62dddf5 ("fs/proc: fix softlockup in __read_vmcore") the
-number of softlockups in __read_vmcore at kdump time have gone down, but
-they still happen sometimes.
+It is more useful to know how many flags cells a bus has rather than
+whether a bus has flags or not as ultimately the number of cells is the
+information used. Replace 'has_flags' boolean with 'flag_cells' count.
 
-In a memory constrained environment like the kdump image, a softlockup is
-not just a harmless message, but it can interfere with things like RCU
-freeing memory, causing the crashdump to get stuck.
-
-The second loop in __read_vmcore has a lot more opportunities for natural
-sleep points, like scheduling out while waiting for a data write to
-happen, but apparently that is not always enough.
-
-Add a cond_resched() to the second loop in __read_vmcore to (hopefully)
-get rid of the softlockups.
-
-Link: https://lkml.kernel.org/r/20250110102821.2a37581b@fangorn
-Fixes: 5cbcb62dddf5 ("fs/proc: fix softlockup in __read_vmcore")
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Reported-by: Breno Leitao <leitao@debian.org>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Herve Codina <herve.codina@bootlin.com>
+Link: https://lore.kernel.org/r/20231026135358.3564307-2-robh@kernel.org
+Signed-off-by: Rob Herring <robh@kernel.org>
+Stable-dep-of: 7f05e20b989a ("of: address: Preserve the flags portion on 1:1 dma-ranges mapping")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/vmcore.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/of/address.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
---- a/fs/proc/vmcore.c
-+++ b/fs/proc/vmcore.c
-@@ -404,6 +404,8 @@ static ssize_t __read_vmcore(struct iov_
- 			if (!iov_iter_count(iter))
- 				return acc;
- 		}
-+
-+		cond_resched();
- 	}
+diff --git a/drivers/of/address.c b/drivers/of/address.c
+index b8e015af59df..123a75a19bc1 100644
+--- a/drivers/of/address.c
++++ b/drivers/of/address.c
+@@ -50,7 +50,7 @@ struct of_bus {
+ 	u64		(*map)(__be32 *addr, const __be32 *range,
+ 				int na, int ns, int pna);
+ 	int		(*translate)(__be32 *addr, u64 offset, int na);
+-	bool	has_flags;
++	int		flag_cells;
+ 	unsigned int	(*get_flags)(const __be32 *addr);
+ };
  
- 	return acc;
+@@ -361,7 +361,7 @@ static struct of_bus of_busses[] = {
+ 		.count_cells = of_bus_pci_count_cells,
+ 		.map = of_bus_pci_map,
+ 		.translate = of_bus_default_flags_translate,
+-		.has_flags = true,
++		.flag_cells = 1,
+ 		.get_flags = of_bus_pci_get_flags,
+ 	},
+ #endif /* CONFIG_PCI */
+@@ -373,7 +373,7 @@ static struct of_bus of_busses[] = {
+ 		.count_cells = of_bus_isa_count_cells,
+ 		.map = of_bus_isa_map,
+ 		.translate = of_bus_default_flags_translate,
+-		.has_flags = true,
++		.flag_cells = 1,
+ 		.get_flags = of_bus_isa_get_flags,
+ 	},
+ 	/* Default with flags cell */
+@@ -384,7 +384,7 @@ static struct of_bus of_busses[] = {
+ 		.count_cells = of_bus_default_count_cells,
+ 		.map = of_bus_default_flags_map,
+ 		.translate = of_bus_default_flags_translate,
+-		.has_flags = true,
++		.flag_cells = 1,
+ 		.get_flags = of_bus_default_flags_get_flags,
+ 	},
+ 	/* Default */
+@@ -751,7 +751,7 @@ struct of_pci_range *of_pci_range_parser_one(struct of_pci_range_parser *parser,
+ 	int na = parser->na;
+ 	int ns = parser->ns;
+ 	int np = parser->pna + na + ns;
+-	int busflag_na = 0;
++	int busflag_na = parser->bus->flag_cells;
+ 
+ 	if (!range)
+ 		return NULL;
+@@ -761,10 +761,6 @@ struct of_pci_range *of_pci_range_parser_one(struct of_pci_range_parser *parser,
+ 
+ 	range->flags = parser->bus->get_flags(parser->range);
+ 
+-	/* A extra cell for resource flags */
+-	if (parser->bus->has_flags)
+-		busflag_na = 1;
+-
+ 	range->bus_addr = of_read_number(parser->range + busflag_na, na - busflag_na);
+ 
+ 	if (parser->dma)
+-- 
+2.39.5
+
 
 
 
