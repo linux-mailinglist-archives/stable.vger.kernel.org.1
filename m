@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-109865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6156CA18435
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:04:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0895EA183EA
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 173673A12FB
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:04:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17F2616BEC9
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8901F542D;
-	Tue, 21 Jan 2025 18:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291371F55F5;
+	Tue, 21 Jan 2025 18:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0v4DjqYW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nkHBc7Lc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84E71F0E36;
-	Tue, 21 Jan 2025 18:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA46E571;
+	Tue, 21 Jan 2025 18:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482665; cv=none; b=JecyoQj12rUOMCY1Ad/RI5jaPVOOrrlanK2k8JqJaeHYZQzsTbNjKFfyxbsc/l8PX7lkph2LEwSnMvekQ54KyugILpz8qyS+ydqKb2X2qJFS/yAvpf+Qkpl36xbdsSHncBqDPMmm98lGtxmMRFmh8oF3VlHSGtYt5Y1G/YXSdxg=
+	t=1737482437; cv=none; b=Q1/+oos6WcztG+Ef6rtXocQt2zYzYHuWpqECuUHn6kPduxPjOBlkn86m92VNjogjdk60fFZ2By5VyNKemhvwSEcUUUcTSQzIa67/iYBgLra+fPrIzH/eGjhepfVJRQIXXZZlz/B3HPa0Bui4f0dxQZy96YZnzNznItcM44fYek0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482665; c=relaxed/simple;
-	bh=D74e8k910RYjlaSRHO7qtvngjxm73lt2kGPKm2SDtzg=;
+	s=arc-20240116; t=1737482437; c=relaxed/simple;
+	bh=DikL7T/B3rxqIpkp2rzyjBpsdR8aZjV9xVpyLBB0hEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CyIzB8/gv/eQYl3pvoR53KBQFYci5YRqGMYUVHz240qZE6NtGSsZxmyGSsM9Z9C9zVLJNaGcwHeXzPDRiiEK/qJ9Jt++yONa0vPfCD6NHT810oyONHP+1VbbV9h4lSIEgq0EPZnkm9SzjB9OYvgFbRA0CXGsybsxvI27tknHnEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0v4DjqYW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C89FC4CEDF;
-	Tue, 21 Jan 2025 18:04:24 +0000 (UTC)
+	 MIME-Version; b=mc1g5FT2TFnFs3+Fm03TJl7DbXLvM4oP+p9desLSjpncm+WSbfCr7IQaVMRsUh44rUmJG00OUH1u+VWsZUyQhK4Ox2UrqoMSREbvJztgxCbNEJZJcyCnjJTuGMI7Pe040lLzBTt2tAQOyZQIgzwgoZlZAPEHJ0qLy3So3/EZzZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkHBc7Lc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2625C4CEDF;
+	Tue, 21 Jan 2025 18:00:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482665;
-	bh=D74e8k910RYjlaSRHO7qtvngjxm73lt2kGPKm2SDtzg=;
+	s=korg; t=1737482437;
+	bh=DikL7T/B3rxqIpkp2rzyjBpsdR8aZjV9xVpyLBB0hEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0v4DjqYWeZx4C0zRT4K9O3Wpzo+RAHiBIOcGJxBi7+EQieIm81MGN419cvMW7UavT
-	 f1tCtoIIcUgq0k4PI1sGeP+xdE3iVjSvIDmmMMyabYxHSnNuxvYgB2GDlVj83QojSa
-	 p7pULz/kTo33ZvEVuCyPGpnidU5ldqVrnmUpTIfk=
+	b=nkHBc7Lc8PdiiF5pZ4dZsCQdMvR1jKnt4Io/0YuEfmUSe/Zngtxt9i5+ISTNyvWDf
+	 lXvGZ+SPNNBBMmFjrKeUPKSgZgsJ3Xp88MH3m4U7cS5/bejVigl1U78hjCL6tJyoX1
+	 LDijqi4umsX79ivGMRkdR7eK0h6WZbg0segqTJnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Antoine Tenart <atenart@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 06/64] gtp: use exit_batch_rtnl() method
+	"Luke D. Jones" <luke@ljones.dev>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 077/122] ALSA: hda/realtek: fixup ASUS H7606W
 Date: Tue, 21 Jan 2025 18:52:05 +0100
-Message-ID: <20250121174521.811557953@linuxfoundation.org>
+Message-ID: <20250121174535.977249938@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
-References: <20250121174521.568417761@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Luke D. Jones <luke@ljones.dev>
 
-[ Upstream commit 6eedda01b2bfdcf427b37759e053dc27232f3af1 ]
+commit 44a48b26639e591e53f6f72000c16576ce107274 upstream.
 
-exit_batch_rtnl() is called while RTNL is held,
-and devices to be unregistered can be queued in the dev_kill_list.
+The H7606W laptop has almost the exact same codec setup as the GA403
+and so the same quirks apply to it.
 
-This saves one rtnl_lock()/rtnl_unlock() pair per netns
-and one unregister_netdevice_many() call per netns.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Antoine Tenart <atenart@kernel.org>
-Link: https://lore.kernel.org/r/20240206144313.2050392-8-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 46841c7053e6 ("gtp: Use for_each_netdev_rcu() in gtp_genl_dump_pdp().")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250111022754.177551-2-luke@ljones.dev
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/gtp.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-index 5e0332c9d0d73..0e1dfc6157224 100644
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -1883,23 +1883,23 @@ static int __net_init gtp_net_init(struct net *net)
- 	return 0;
- }
- 
--static void __net_exit gtp_net_exit(struct net *net)
-+static void __net_exit gtp_net_exit_batch_rtnl(struct list_head *net_list,
-+					       struct list_head *dev_to_kill)
- {
--	struct gtp_net *gn = net_generic(net, gtp_net_id);
--	struct gtp_dev *gtp;
--	LIST_HEAD(list);
-+	struct net *net;
- 
--	rtnl_lock();
--	list_for_each_entry(gtp, &gn->gtp_dev_list, list)
--		gtp_dellink(gtp->dev, &list);
-+	list_for_each_entry(net, net_list, exit_list) {
-+		struct gtp_net *gn = net_generic(net, gtp_net_id);
-+		struct gtp_dev *gtp;
- 
--	unregister_netdevice_many(&list);
--	rtnl_unlock();
-+		list_for_each_entry(gtp, &gn->gtp_dev_list, list)
-+			gtp_dellink(gtp->dev, dev_to_kill);
-+	}
- }
- 
- static struct pernet_operations gtp_net_ops = {
- 	.init	= gtp_net_init,
--	.exit	= gtp_net_exit,
-+	.exit_batch_rtnl = gtp_net_exit_batch_rtnl,
- 	.id	= &gtp_net_id,
- 	.size	= sizeof(struct gtp_net),
- };
--- 
-2.39.5
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10625,6 +10625,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x1043, 0x1e1f, "ASUS Vivobook 15 X1504VAP", ALC2XX_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1e51, "ASUS Zephyrus M15", ALC294_FIXUP_ASUS_GU502_PINS),
+ 	SND_PCI_QUIRK(0x1043, 0x1e5e, "ASUS ROG Strix G513", ALC294_FIXUP_ASUS_G513_PINS),
++	SND_PCI_QUIRK(0x1043, 0x1e63, "ASUS H7606W", ALC285_FIXUP_ASUS_GU605_SPI_SPEAKER2_TO_DAC1),
+ 	SND_PCI_QUIRK(0x1043, 0x1e83, "ASUS GA605W", ALC285_FIXUP_ASUS_GU605_SPI_SPEAKER2_TO_DAC1),
+ 	SND_PCI_QUIRK(0x1043, 0x1e8e, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA401),
+ 	SND_PCI_QUIRK(0x1043, 0x1eb3, "ASUS Ally RCLA72", ALC287_FIXUP_TAS2781_I2C),
 
 
 
