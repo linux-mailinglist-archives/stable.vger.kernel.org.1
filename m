@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-109738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 674FDA183AD
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:59:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2580DA18472
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:07:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44B7B3AB2CA
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:58:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EDFB169C79
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:06:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E896D1F75AB;
-	Tue, 21 Jan 2025 17:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323821F55FA;
+	Tue, 21 Jan 2025 18:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JyoFRgSF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tyz9U+u8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60571F5439;
-	Tue, 21 Jan 2025 17:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0ABC1F5439;
+	Tue, 21 Jan 2025 18:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482294; cv=none; b=DHBoOKJuAT/3exUi/cyrzofKq6MrYhFLqIvRC6p1OBxIsJ/55EHJLyhu6wAl3L6VlJrsBftbIAknUEDbkbFD91oNQDjo7LIKjukef6RkJn1Kruuz7PUbT9lNcyCiA3IrmbgAAP5oIkOYseiG+gDIWVhJWKXkll1PaQbWbCge8bk=
+	t=1737482796; cv=none; b=EitFQACvbfiTUirQX+Eph0YgKvuzSo946yWxrigHhKBp68W2C5eUA701wOLA/VYjS2puSqsbx6M4ponDQ7GruelDOgyciZirdAFSKKcfNTpefxdJJ34n4bjVvsKDLuI2jQNXzl7hhW7A8pO7k6KT9j/wFpQy9FDVZyIxW4RDARM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482294; c=relaxed/simple;
-	bh=qT1LSqneCTeAcXi6Hw0N/elDq2F98JzZUKX+BtWHMAo=;
+	s=arc-20240116; t=1737482796; c=relaxed/simple;
+	bh=W2wg8waDcXUxiw8vW+UWz4/rCEOzGeAsO5knFYpUhhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A9YD+Y0fVo1Eul+tm+TFUq8axLf1FpOySMYSgzvqM+gmIQd2wZyjmROhAIfPp16zEL95LNY5B4+HjGzY2/Z19f59GIvYXezT/Azu5goEOfo3ZRNd2VzGSakBjaZNmNcgy9n2i/K3uYUezWFJ/atwCNaeRv6BAR5xM4o4Ds5wAQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JyoFRgSF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EABBC4CEDF;
-	Tue, 21 Jan 2025 17:58:14 +0000 (UTC)
+	 MIME-Version; b=sKJwBDyBRve6Jypv1JHoF06yqw6q6PJZDwz8GxSezO9MiS5s8wMY8kuGkzKTBi5iXY6J7NQBTIO/MOwiLZL4rWcFZN1wUf96Yzy11caYBY84SrlW+6sVHbFtYt7B5eh5SOzbSMsYwiupqFEiU5fUFXFNuMJFUIXhqTaqjn2qpbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tyz9U+u8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006DAC4CEE0;
+	Tue, 21 Jan 2025 18:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482294;
-	bh=qT1LSqneCTeAcXi6Hw0N/elDq2F98JzZUKX+BtWHMAo=;
+	s=korg; t=1737482794;
+	bh=W2wg8waDcXUxiw8vW+UWz4/rCEOzGeAsO5knFYpUhhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JyoFRgSF6k624n9Z8sxpUtZqf4rnq4GKYVZzZHE/4kSNDoiHP4+5YuwPE6ylDWays
-	 StmjFQHRGC99N13g0BXwJe0vz42h0Tjk+7KKWQbl6a+z6wvZVdmDqINQjsS4GETXOT
-	 iSIoj25ErZU9lQjnR1zNJ33Gtr+kMMWSjeApmLwc=
+	b=Tyz9U+u8SzKEtlUPAiIFnZsAghXi2WAxj16rj/QaJ9oUlIyCueoZ37wysyGDflrie
+	 666yjKNYa8bvtFtDZDUUyVX6HHlW4q26sb5h2ZHMZKn4uRcd54HFB/Lu0X4CZzOz1M
+	 rpmtMhPYRWPMmcLIuRT3vJn4cBNoBgHBKDas4hfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Mi <cmi@nvidia.com>,
-	Shay Drori <shayd@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Joe Thornber <thornber@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 027/122] net/mlx5: SF, Fix add port error handling
+Subject: [PATCH 5.15 003/127] dm array: fix releasing a faulty array block twice in dm_array_cursor_end
 Date: Tue, 21 Jan 2025 18:51:15 +0100
-Message-ID: <20250121174534.042026232@linuxfoundation.org>
+Message-ID: <20250121174529.808850073@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +63,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Mi <cmi@nvidia.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit 2011a2a18ef00b5b8e4b753acbe6451a8c5f2260 ]
+[ Upstream commit f2893c0804d86230ffb8f1c8703fdbb18648abc8 ]
 
-If failed to add SF, error handling doesn't delete the SF from the
-SF table. But the hw resources are deleted. So when unload driver,
-hw resources will be deleted again. Firmware will report syndrome
-0x68def3 which means "SF is not allocated can not deallocate".
+When dm_bm_read_lock() fails due to locking or checksum errors, it
+releases the faulty block implicitly while leaving an invalid output
+pointer behind. The caller of dm_bm_read_lock() should not operate on
+this invalid dm_block pointer, or it will lead to undefined result.
+For example, the dm_array_cursor incorrectly caches the invalid pointer
+on reading a faulty array block, causing a double release in
+dm_array_cursor_end(), then hitting the BUG_ON in dm-bufio cache_put().
 
-Fix it by delete SF from SF table if failed to add SF.
+Reproduce steps:
 
-Fixes: 2597ee190b4e ("net/mlx5: Call mlx5_sf_id_erase() once in mlx5_sf_dealloc()")
-Signed-off-by: Chris Mi <cmi@nvidia.com>
-Reviewed-by: Shay Drori <shayd@nvidia.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+1. initialize a cache device
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc $262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1
+dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. wipe the second array block offline
+
+dmsteup remove cache cmeta cdata corig
+mapping_root=$(dd if=/dev/sdc bs=1c count=8 skip=192 \
+2>/dev/null | hexdump -e '1/8 "%u\n"')
+ablock=$(dd if=/dev/sdc bs=1c count=8 skip=$((4096*mapping_root+2056)) \
+2>/dev/null | hexdump -e '1/8 "%u\n"')
+dd if=/dev/zero of=/dev/sdc bs=4k count=1 seek=$ablock
+
+3. try reopen the cache device
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc $262144"
+dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+Kernel logs:
+
+(snip)
+device-mapper: array: array_block_check failed: blocknr 0 != wanted 10
+device-mapper: block manager: array validator check failed for block 10
+device-mapper: array: get_ablock failed
+device-mapper: cache metadata: dm_array_cursor_next for mapping failed
+------------[ cut here ]------------
+kernel BUG at drivers/md/dm-bufio.c:638!
+
+Fix by setting the cached block pointer to NULL on errors.
+
+In addition to the reproducer described above, this fix can be
+verified using the "array_cursor/damaged" test in dm-unit:
+  dm-unit run /pdata/array_cursor/damaged --kernel-dir <KERNEL_DIR>
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: fdd1315aa5f0 ("dm array: introduce cursor api")
+Reviewed-by: Joe Thornber <thornber@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/md/persistent-data/dm-array.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c
-index a96be98be032f..b96909fbeb12d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c
-@@ -257,6 +257,7 @@ static int mlx5_sf_add(struct mlx5_core_dev *dev, struct mlx5_sf_table *table,
- 	return 0;
+diff --git a/drivers/md/persistent-data/dm-array.c b/drivers/md/persistent-data/dm-array.c
+index 3a963d783a86..33bc4b38911a 100644
+--- a/drivers/md/persistent-data/dm-array.c
++++ b/drivers/md/persistent-data/dm-array.c
+@@ -911,23 +911,27 @@ static int load_ablock(struct dm_array_cursor *c)
+ 	if (c->block)
+ 		unlock_ablock(c->info, c->block);
  
- esw_err:
-+	mlx5_sf_function_id_erase(table, sf);
- 	mlx5_sf_free(table, sf);
- 	return err;
+-	c->block = NULL;
+-	c->ab = NULL;
+ 	c->index = 0;
+ 
+ 	r = dm_btree_cursor_get_value(&c->cursor, &key, &value_le);
+ 	if (r) {
+ 		DMERR("dm_btree_cursor_get_value failed");
+-		dm_btree_cursor_end(&c->cursor);
++		goto out;
+ 
+ 	} else {
+ 		r = get_ablock(c->info, le64_to_cpu(value_le), &c->block, &c->ab);
+ 		if (r) {
+ 			DMERR("get_ablock failed");
+-			dm_btree_cursor_end(&c->cursor);
++			goto out;
+ 		}
+ 	}
+ 
++	return 0;
++
++out:
++	dm_btree_cursor_end(&c->cursor);
++	c->block = NULL;
++	c->ab = NULL;
+ 	return r;
  }
+ 
 -- 
 2.39.5
 
