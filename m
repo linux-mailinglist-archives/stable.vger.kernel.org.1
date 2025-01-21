@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-109876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97D43A18443
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:05:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C0F5A1840B
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:03:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65A233A1496
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:05:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 579503AC345
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:02:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242571F63C9;
-	Tue, 21 Jan 2025 18:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49E41F427B;
+	Tue, 21 Jan 2025 18:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fT9HQMkq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tpc+acmB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63091F427B;
-	Tue, 21 Jan 2025 18:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83616E571;
+	Tue, 21 Jan 2025 18:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482697; cv=none; b=k6xKhKAn7/av5RPe/G2t0AEvRvpiK2ZG3M5L5YE+TWo/BIgnhyfzhpDV/MOubAZAln/GW810Q1nXNMlChBvv1Itx+kSEtj+GVDtDrDLRcpM1wUAmHklawm9JOJWDHRVgRdjU1Rp5gw/lO5BpBgeO4mZ1BjD3a3o6ASSfvi2+Z6o=
+	t=1737482545; cv=none; b=dXS8GiXnQWfrXTr3Doo34PxBEbmVU3uC2oPaTjhcClkVHsjqky7uV9R5LakUQeKkGedmgVZu8RyfRxfFMuV2dMnq2oZu5dYfesaD3UVzQvrw5uOJODEIUeKMqQujp8xFlW6oEDBh8DFTal9Yj2s+qlBglUJaKuaTqCcBxDzkN5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482697; c=relaxed/simple;
-	bh=FAnrHkdo3s6Tr6o9JCz7yRk4KTwpoMGa8vexHefjl7I=;
+	s=arc-20240116; t=1737482545; c=relaxed/simple;
+	bh=IdVkltVoqI445IukCtZ5gdoTJJejFDtDTAnIx8YcLFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a4nSQ3enOFw8ZxBH6WaH7z2m1KrwGiDkHKFX/zOUdATMfk/qcjM1bItN2EkYR+Jek5MdIV6tQwRPbAj7E4TC91wo3DTfsmHbw4bq9R6Rn6JE/QJQ9lB5jSyukma67HEZELV+SHgQXjbZjDF69OpaZcNkUhb3PH4VuS96OI35BSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fT9HQMkq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61ED4C4CEDF;
-	Tue, 21 Jan 2025 18:04:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GmzVqDqsmnyVkU9MT1KS/azJRKrhhEXcxeS/3AQqtox9gmsMAVmBGegxGNuKS9muw0YkH/Epq69cldI1D68aN0B+vKyKz+mLtHnPGR2GZpVozFXN4bPuY7DI4nAEvP6ZoXr90wuZdaEDCqoD9yV/jJs1WmwTtw5Ao+2pHDET13w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tpc+acmB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE03C4CEDF;
+	Tue, 21 Jan 2025 18:02:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482697;
-	bh=FAnrHkdo3s6Tr6o9JCz7yRk4KTwpoMGa8vexHefjl7I=;
+	s=korg; t=1737482545;
+	bh=IdVkltVoqI445IukCtZ5gdoTJJejFDtDTAnIx8YcLFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fT9HQMkq1lR2FOcYzlbbcZC7qh0clGe9YTxSjQw/hkcxgAEMTq5qy+FAK/NXH5tYq
-	 LuUvhNjjlp7dPuDqmIhzNckYdp9zBpZF7kbFcHz3IZ3VOHW+//kydx0fsaAkkpdgRt
-	 m+zpcv2oeobwJYnX+5g/cP1FK91DhZz27zDf1rAc=
+	b=Tpc+acmB4SJ+Di3p1reMMvYU7n2IsGOYASAadlvLVf0sF66K4zScCTKdCvI6HlXol
+	 LbgsRLrMbbY1zZOcseLeC3yYHbWUQfcw5UXQBCOnFV+K5+y0/3HhVhFxJCsquvV4yJ
+	 pPCl0nL0aL7Y3bT1jVfhBP/TXO5gZ9s0zO9Y/Ono=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.1 43/64] irqchip: Plug a OF node reference leak in platform_irqchip_probe()
+	Gui Chengming <Jack.Gui@amd.com>,
+	"Frank.Min" <Frank.Min@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <Christian.Koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 114/122] drm/amdgpu: fix fw attestation for MP0_14_0_{2/3}
 Date: Tue, 21 Jan 2025 18:52:42 +0100
-Message-ID: <20250121174523.197158964@linuxfoundation.org>
+Message-ID: <20250121174537.448383448@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
-References: <20250121174521.568417761@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Gui Chengming <Jack.Gui@amd.com>
 
-commit 9322d1915f9d976ee48c09d800fbd5169bc2ddcc upstream.
+commit bd275e6cfc972329d39c6406a3c6d2ba2aba7db6 upstream.
 
-platform_irqchip_probe() leaks a OF node when irq_init_cb() fails. Fix it
-by declaring par_np with the __free(device_node) cleanup construct.
+FW attestation was disabled on MP0_14_0_{2/3}.
 
-This bug was found by an experimental static analysis tool that I am
-developing.
+V2:
+Move check into is_fw_attestation_support func. (Frank)
+Remove DRM_WARN log info. (Alex)
+Fix format. (Christian)
 
-Fixes: f8410e626569 ("irqchip: Add IRQCHIP_PLATFORM_DRIVER_BEGIN/END and IRQCHIP_MATCH helper macros")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20241215033945.3414223-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Gui Chengming <Jack.Gui@amd.com>
+Reviewed-by: Frank.Min <Frank.Min@amd.com>
+Reviewed-by: Christian König <Christian.Koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 62952a38d9bcf357d5ffc97615c48b12c9cd627c)
+Cc: stable@vger.kernel.org # 6.12.x
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irqchip.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_fw_attestation.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/irqchip/irqchip.c
-+++ b/drivers/irqchip/irqchip.c
-@@ -35,11 +35,10 @@ void __init irqchip_init(void)
- int platform_irqchip_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
--	struct device_node *par_np = of_irq_find_parent(np);
-+	struct device_node *par_np __free(device_node) = of_irq_find_parent(np);
- 	of_irq_init_cb_t irq_init_cb = of_device_get_match_data(&pdev->dev);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_fw_attestation.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_fw_attestation.c
+index 2d4b67175b55..328a1b963548 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_fw_attestation.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_fw_attestation.c
+@@ -122,6 +122,10 @@ static int amdgpu_is_fw_attestation_supported(struct amdgpu_device *adev)
+ 	if (adev->flags & AMD_IS_APU)
+ 		return 0;
  
- 	if (!irq_init_cb) {
--		of_node_put(par_np);
- 		return -EINVAL;
- 	}
++	if (amdgpu_ip_version(adev, MP0_HWIP, 0) == IP_VERSION(14, 0, 2) ||
++	    amdgpu_ip_version(adev, MP0_HWIP, 0) == IP_VERSION(14, 0, 3))
++		return 0;
++
+ 	if (adev->asic_type >= CHIP_SIENNA_CICHLID)
+ 		return 1;
  
-@@ -55,7 +54,6 @@ int platform_irqchip_probe(struct platfo
- 	 * interrupt controller can check for specific domains as necessary.
- 	 */
- 	if (par_np && !irq_find_matching_host(par_np, DOMAIN_BUS_ANY)) {
--		of_node_put(par_np);
- 		return -EPROBE_DEFER;
- 	}
- 
+-- 
+2.48.1
+
 
 
 
