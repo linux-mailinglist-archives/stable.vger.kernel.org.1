@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-109932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 843F3A184A1
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:10:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10402A18381
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 068907A5B13
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:07:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37959188C700
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:57:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 897851F55F5;
-	Tue, 21 Jan 2025 18:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0288A1F8EFE;
+	Tue, 21 Jan 2025 17:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axJRf+fR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+f/f+cr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46FA61F5439;
-	Tue, 21 Jan 2025 18:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47911F8EFB;
+	Tue, 21 Jan 2025 17:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482855; cv=none; b=PZjrgTeu4Nzw57RQgPTJMo/CliIXC+FNvJjo0HTKlXaGulOKQwrcQngf9gH11x8+9Q6+CEwH4NlVSE+6UVhGJKYmvyhGPBncLv5ZHlV3Y8Bu+yyrmHHe1pk3QtKguF9Rn5Avp4nZtiawAKFq611wzLmpp86r6BbHLDO7AJxqGe0=
+	t=1737482172; cv=none; b=nW730j4BijV2u1shh/0w56D3A4B3zflbBBOwGh+OCOLaj0BTvwz/f3jolQ5mFNFXE5IJm1wE9Cm9g1EtTWJnZoeIHGoQbS7I6hWrb20MYmLg8uC20QdkN4TK6xbp7GqwdRX3Twi00JTde3WmTbimhsTAHP1V+UUgUo3VOeRiM80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482855; c=relaxed/simple;
-	bh=aOkyX8HyZLN4PyfEQHVZqDnpBgSu8zCQd+MraqZK0rI=;
+	s=arc-20240116; t=1737482172; c=relaxed/simple;
+	bh=2fZ0zs0fvlydzVFjrJsl1AVbHrZp7fEshKQTFgo4Snw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SWkLdJITBMqA/jW4haTqBo/uS1Dtb9uIsvwurKr65poRNGw5jTMODRRPHVeRsZN1hK8FATGNNf0suVp6c97GT9ybfAUTq+MkB2D3kaqk4MS7nPsswAgpbA+40TgDSMSTujAI7ungmpLbe4OubMwd6aYIN+aCXLhdrACBAETW8cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axJRf+fR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A632C4CEDF;
-	Tue, 21 Jan 2025 18:07:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bwNzIVH5bMP5SiuXZh/yvPQqS/GFmUAUlteyn6Ey0B9/mpGR1qT8bbyTxfQuhP4m6LVGqtT23h5fIO6dwMlgGoBfnZ9WiZuyIvnNOBgEG9MoTdUtGqwKhmI9MjtL0DAQVvwiYaGTcTdhGY1FHP8P5343PUwlwpTE5tbaO/vsOlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+f/f+cr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9FA5C4CEDF;
+	Tue, 21 Jan 2025 17:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482854;
-	bh=aOkyX8HyZLN4PyfEQHVZqDnpBgSu8zCQd+MraqZK0rI=;
+	s=korg; t=1737482172;
+	bh=2fZ0zs0fvlydzVFjrJsl1AVbHrZp7fEshKQTFgo4Snw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=axJRf+fRo/iQHzUWxSWyoAL3xruSSOOVu0+fbFoRaYK7vZ0whL5kRXe8BJv9RFQeU
-	 N2o3Fh8bcggGkVPJQOx+Z9Cb9XfU4mFwk1Wgcrkcc9ZHuon2jAL1DrpPf8LrsAKbsQ
-	 /KwoCBAQSn29CQ+mvGK0WYRrA4qNc7ejYdR+xcBU=
+	b=o+f/f+crP/A8JpAuzC7kgG3Z06pyEuUND0xe4qx+IiTzhCsHKnL0b3BhzIaRHH3+F
+	 1m1d7W5TvBKQVaD39DAd7144m8Z2C5XO/XALHYlcXXGBDdBmRDFEXlBjOMUcQBVhbG
+	 mbd2CHnkcLGZ+9xQpLCoBf58DbWC/Jy2gtxItM58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.15 031/127] ACPI: resource: Add TongFang GM5HG0A to irq1_edge_low_force_override[]
-Date: Tue, 21 Jan 2025 18:51:43 +0100
-Message-ID: <20250121174530.882685111@linuxfoundation.org>
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 18/72] drm/v3d: Ensure job pointer is set to NULL after job completion
+Date: Tue, 21 Jan 2025 18:51:44 +0100
+Message-ID: <20250121174524.129586426@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,65 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-commit 7ed4e4a659d99499dc6968c61970d41b64feeac0 upstream.
+[ Upstream commit e4b5ccd392b92300a2b341705cc4805681094e49 ]
 
-The TongFang GM5HG0A is a TongFang barebone design which is sold under
-various brand names.
+After a job completes, the corresponding pointer in the device must
+be set to NULL. Failing to do so triggers a warning when unloading
+the driver, as it appears the job is still active. To prevent this,
+assign the job pointer to NULL after completing the job, indicating
+the job has finished.
 
-The ACPI IRQ override for the keyboard IRQ must be used on these AMD Zen
-laptops in order for the IRQ to work.
-
-At least on the SKIKK Vanaheim variant the DMI product- and board-name
-strings have been replaced by the OEM with "Vanaheim" so checking that
-board-name contains "GM5HG0A" as is usually done for TongFang barebones
-quirks does not work.
-
-The DMI OEM strings do contain "GM5HG0A". I have looked at the dmidecode
-for a few other TongFang devices and the TongFang code-name string being
-in the OEM strings seems to be something which is consistently true.
-
-Add a quirk checking one of the DMI_OEM_STRING(s) is "GM5HG0A" in the hope
-that this will work for other OEM versions of the "GM5HG0A" too.
-
-Link: https://www.skikk.eu/en/laptops/vanaheim-15-rtx-4060
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219614
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241228164845.42381-1-hdegoede@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 14d1d1908696 ("drm/v3d: Remove the bad signaled() implementation.")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250113154741.67520-1-mcanal@igalia.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/gpu/drm/v3d/v3d_irq.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -618,6 +618,17 @@ static const struct dmi_system_id lg_lap
- 			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
- 		},
- 	},
-+	{
-+		/*
-+		 * TongFang GM5HG0A in case of the SKIKK Vanaheim relabel the
-+		 * board-name is changed, so check OEM strings instead. Note
-+		 * OEM string matches are always exact matches.
-+		 * https://bugzilla.kernel.org/show_bug.cgi?id=219614
-+		 */
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_OEM_STRING, "GM5HG0A"),
-+		},
-+	},
- 	{ }
- };
+diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
+index e714d5318f309..76806039691a2 100644
+--- a/drivers/gpu/drm/v3d/v3d_irq.c
++++ b/drivers/gpu/drm/v3d/v3d_irq.c
+@@ -103,6 +103,7 @@ v3d_irq(int irq, void *arg)
  
+ 		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
+ 		dma_fence_signal(&fence->base);
++		v3d->bin_job = NULL;
+ 		status = IRQ_HANDLED;
+ 	}
+ 
+@@ -112,6 +113,7 @@ v3d_irq(int irq, void *arg)
+ 
+ 		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
+ 		dma_fence_signal(&fence->base);
++		v3d->render_job = NULL;
+ 		status = IRQ_HANDLED;
+ 	}
+ 
+@@ -121,6 +123,7 @@ v3d_irq(int irq, void *arg)
+ 
+ 		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
+ 		dma_fence_signal(&fence->base);
++		v3d->csd_job = NULL;
+ 		status = IRQ_HANDLED;
+ 	}
+ 
+@@ -157,6 +160,7 @@ v3d_hub_irq(int irq, void *arg)
+ 
+ 		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
+ 		dma_fence_signal(&fence->base);
++		v3d->tfu_job = NULL;
+ 		status = IRQ_HANDLED;
+ 	}
+ 
+-- 
+2.39.5
+
 
 
 
