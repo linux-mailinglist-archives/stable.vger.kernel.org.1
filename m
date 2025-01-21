@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-109704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C3C7A18383
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCBEDA18508
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:15:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2DD216543E
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:57:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A0B27A5CA0
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 704061F63C9;
-	Tue, 21 Jan 2025 17:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BDD31F869C;
+	Tue, 21 Jan 2025 18:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDrYwq5J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gSaIUVhQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C008185935;
-	Tue, 21 Jan 2025 17:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2725E1F7060;
+	Tue, 21 Jan 2025 18:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482196; cv=none; b=f+u3yHPR2soHibVZgWGO/7h1zN5wZ5AgMz/YLgp39msByutmnCjP0MZNAn5BuKFELtiMgPIp1EFdFUz7qW/VBQ97rf9CBmmZ5CKbL5p8nDNTM0lhjWfcNB8sKN1FAtkVb7q3qJYmkdeZ+Cw3cE5RXldh0OXMjN8htr1YrXwVgRE=
+	t=1737482997; cv=none; b=ll7jnNU6pqmRB3NRcIUeBzyS9YpCQP09jzj//g61yLSbwk4szo4tEqB06YppeE+fStfu22wH6CULhuB70aWG1sxgMBrDk6DvLBuvPR0Of59zAeZA3q55NkySjO+kWuzQJMnA6kzOsREO8/yzx+0AFN3AwZl0PiZCC096LsJaDbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482196; c=relaxed/simple;
-	bh=UD1Ay8Ucb7h8Fpv36e1qxNby2aCrRlYGEl03fyTNBrI=;
+	s=arc-20240116; t=1737482997; c=relaxed/simple;
+	bh=HwHU/jR5YPPAvD+mMxKEMawjuWUzBXhBSt05Vcko4Tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WxbRPEtNMruz59FUP/SUWqK1QgAKm2lI9AtkEInWCLW5GAPbGHfGbQrBRBZcVk/FBIaE5wzziGwXeEaUJWX3VMce1c7Hn7KJ8bahT8HKeeNPJJefhfH2Iu40PZXR2VM0OOpz/t82+oG1bJfyhsdNR126Ov1HGxJEV7zlY4IENZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDrYwq5J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE2AC4CEE0;
-	Tue, 21 Jan 2025 17:56:35 +0000 (UTC)
+	 MIME-Version; b=T2SdDP02mGBWsGx6DNffXA4Np29RqcSjneXeprBengWlssSwmEiFP8+d+Z6gtxeatQAPzEynu2nmmI/5Y55eZKyspNSySD4r5p3dc02iU5y0UogJ1L2mUkx+h4Mb4nmal+18FzU230VBfekc0qaCS8Gb4kVPAZdAMuVssRRglKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gSaIUVhQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE64C4CEDF;
+	Tue, 21 Jan 2025 18:09:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482196;
-	bh=UD1Ay8Ucb7h8Fpv36e1qxNby2aCrRlYGEl03fyTNBrI=;
+	s=korg; t=1737482997;
+	bh=HwHU/jR5YPPAvD+mMxKEMawjuWUzBXhBSt05Vcko4Tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RDrYwq5J0bE4YZgZa/GuzNN4BkKnsVqZrtZqSY47gawwrFg+VMS+bOMQG35PWIgev
-	 9cIfDBRhwAZ2JadBPE+2RE7yM2pAq1EIH8+ZQkRMH0Bug+3wqF337/F9nfPXaYfYQY
-	 wulS8y0h3yOAohWb6B6EvdZlLNg/Bi808ftTKwfk=
+	b=gSaIUVhQPMsLmsSxB5O+pjz0mIBi9SmVZ2UUB7/o6fED34OH35RS1cpnAGNjFbmo5
+	 X0tNeBElanJQB0eyvo1ATEgo1fEc1svD4z0Mc3/UMnuiInzUVeZe/G132Bue/Hg/GA
+	 gMyv36eJNCEK/0xXxBbYMNnMDL3SFy/oUD+v39v8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Safonov <dima@arista.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Artem Chernyshev <artem.chernyshev@red-soft.ru>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 67/72] ovl: support encoding fid from inode with no alias
+Subject: [PATCH 5.15 081/127] pktgen: Avoid out-of-bounds access in get_imix_entries
 Date: Tue, 21 Jan 2025 18:52:33 +0100
-Message-ID: <20250121174526.015766656@linuxfoundation.org>
+Message-ID: <20250121174532.777668928@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,166 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
 
-commit c45beebfde34aa71afbc48b2c54cdda623515037 upstream.
+[ Upstream commit 76201b5979768500bca362871db66d77cb4c225e ]
 
-Dmitry Safonov reported that a WARN_ON() assertion can be trigered by
-userspace when calling inotify_show_fdinfo() for an overlayfs watched
-inode, whose dentry aliases were discarded with drop_caches.
+Passing a sufficient amount of imix entries leads to invalid access to the
+pkt_dev->imix_entries array because of the incorrect boundary check.
 
-The WARN_ON() assertion in inotify_show_fdinfo() was removed, because
-it is possible for encoding file handle to fail for other reason, but
-the impact of failing to encode an overlayfs file handle goes beyond
-this assertion.
+UBSAN: array-index-out-of-bounds in net/core/pktgen.c:874:24
+index 20 is out of range for type 'imix_pkt [20]'
+CPU: 2 PID: 1210 Comm: bash Not tainted 6.10.0-rc1 #121
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+Call Trace:
+<TASK>
+dump_stack_lvl lib/dump_stack.c:117
+__ubsan_handle_out_of_bounds lib/ubsan.c:429
+get_imix_entries net/core/pktgen.c:874
+pktgen_if_write net/core/pktgen.c:1063
+pde_write fs/proc/inode.c:334
+proc_reg_write fs/proc/inode.c:346
+vfs_write fs/read_write.c:593
+ksys_write fs/read_write.c:644
+do_syscall_64 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe arch/x86/entry/entry_64.S:130
 
-As shown in the LTP test case mentioned in the link below, failure to
-encode an overlayfs file handle from a non-aliased inode also leads to
-failure to report an fid with FAN_DELETE_SELF fanotify events.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-As Dmitry notes in his analyzis of the problem, ovl_encode_fh() fails
-if it cannot find an alias for the inode, but this failure can be fixed.
-ovl_encode_fh() seldom uses the alias and in the case of non-decodable
-file handles, as is often the case with fanotify fid info,
-ovl_encode_fh() never needs to use the alias to encode a file handle.
-
-Defer finding an alias until it is actually needed so ovl_encode_fh()
-will not fail in the common case of FAN_DELETE_SELF fanotify events.
-
-Fixes: 16aac5ad1fa9 ("ovl: support encoding non-decodable file handles")
-Reported-by: Dmitry Safonov <dima@arista.com>
-Closes: https://lore.kernel.org/linux-fsdevel/CAOQ4uxiie81voLZZi2zXS1BziXZCM24nXqPAxbu8kxXCUWdwOg@mail.gmail.com/
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Link: https://lore.kernel.org/r/20250105162404.357058-3-amir73il@gmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 52a62f8603f9 ("pktgen: Parse internet mix (imix) input")
+Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+[ fp: allow to fill the array completely; minor changelog cleanup ]
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/overlayfs/export.c |   46 +++++++++++++++++++++++++---------------------
- 1 file changed, 25 insertions(+), 21 deletions(-)
+ net/core/pktgen.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/overlayfs/export.c
-+++ b/fs/overlayfs/export.c
-@@ -181,35 +181,37 @@ static int ovl_connect_layer(struct dent
-  *
-  * Return 0 for upper file handle, > 0 for lower file handle or < 0 on error.
-  */
--static int ovl_check_encode_origin(struct dentry *dentry)
-+static int ovl_check_encode_origin(struct inode *inode)
- {
--	struct ovl_fs *ofs = OVL_FS(dentry->d_sb);
-+	struct ovl_fs *ofs = OVL_FS(inode->i_sb);
- 	bool decodable = ofs->config.nfs_export;
-+	struct dentry *dentry;
-+	int err;
+diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+index a539f26fe4bea..5d5f03471eb0c 100644
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -849,6 +849,9 @@ static ssize_t get_imix_entries(const char __user *buffer,
+ 		unsigned long weight;
+ 		unsigned long size;
  
- 	/* No upper layer? */
- 	if (!ovl_upper_mnt(ofs))
- 		return 1;
- 
- 	/* Lower file handle for non-upper non-decodable */
--	if (!ovl_dentry_upper(dentry) && !decodable)
-+	if (!ovl_inode_upper(inode) && !decodable)
- 		return 1;
- 
- 	/* Upper file handle for pure upper */
--	if (!ovl_dentry_lower(dentry))
-+	if (!ovl_inode_lower(inode))
- 		return 0;
- 
- 	/*
- 	 * Root is never indexed, so if there's an upper layer, encode upper for
- 	 * root.
- 	 */
--	if (dentry == dentry->d_sb->s_root)
-+	if (inode == d_inode(inode->i_sb->s_root))
- 		return 0;
- 
- 	/*
- 	 * Upper decodable file handle for non-indexed upper.
- 	 */
--	if (ovl_dentry_upper(dentry) && decodable &&
--	    !ovl_test_flag(OVL_INDEX, d_inode(dentry)))
-+	if (ovl_inode_upper(inode) && decodable &&
-+	    !ovl_test_flag(OVL_INDEX, inode))
- 		return 0;
- 
- 	/*
-@@ -218,17 +220,25 @@ static int ovl_check_encode_origin(struc
- 	 * ovl_connect_layer() will try to make origin's layer "connected" by
- 	 * copying up a "connectable" ancestor.
- 	 */
--	if (d_is_dir(dentry) && decodable)
--		return ovl_connect_layer(dentry);
-+	if (!decodable || !S_ISDIR(inode->i_mode))
-+		return 1;
++		if (pkt_dev->n_imix_entries >= MAX_IMIX_ENTRIES)
++			return -E2BIG;
 +
-+	dentry = d_find_any_alias(inode);
-+	if (!dentry)
-+		return -ENOENT;
-+
-+	err = ovl_connect_layer(dentry);
-+	dput(dentry);
-+	if (err < 0)
-+		return err;
+ 		len = num_arg(&buffer[i], max_digits, &size);
+ 		if (len < 0)
+ 			return len;
+@@ -878,9 +881,6 @@ static ssize_t get_imix_entries(const char __user *buffer,
  
- 	/* Lower file handle for indexed and non-upper dir/non-dir */
- 	return 1;
- }
- 
--static int ovl_dentry_to_fid(struct ovl_fs *ofs, struct dentry *dentry,
-+static int ovl_dentry_to_fid(struct ovl_fs *ofs, struct inode *inode,
- 			     u32 *fid, int buflen)
- {
--	struct inode *inode = d_inode(dentry);
- 	struct ovl_fh *fh = NULL;
- 	int err, enc_lower;
- 	int len;
-@@ -237,7 +247,7 @@ static int ovl_dentry_to_fid(struct ovl_
- 	 * Check if we should encode a lower or upper file handle and maybe
- 	 * copy up an ancestor to make lower file handle connectable.
- 	 */
--	err = enc_lower = ovl_check_encode_origin(dentry);
-+	err = enc_lower = ovl_check_encode_origin(inode);
- 	if (enc_lower < 0)
- 		goto fail;
- 
-@@ -257,8 +267,8 @@ out:
- 	return err;
- 
- fail:
--	pr_warn_ratelimited("failed to encode file handle (%pd2, err=%i)\n",
--			    dentry, err);
-+	pr_warn_ratelimited("failed to encode file handle (ino=%lu, err=%i)\n",
-+			    inode->i_ino, err);
- 	goto out;
- }
- 
-@@ -266,19 +276,13 @@ static int ovl_encode_fh(struct inode *i
- 			 struct inode *parent)
- {
- 	struct ovl_fs *ofs = OVL_FS(inode->i_sb);
--	struct dentry *dentry;
- 	int bytes, buflen = *max_len << 2;
- 
- 	/* TODO: encode connectable file handles */
- 	if (parent)
- 		return FILEID_INVALID;
- 
--	dentry = d_find_any_alias(inode);
--	if (!dentry)
--		return FILEID_INVALID;
+ 		i++;
+ 		pkt_dev->n_imix_entries++;
 -
--	bytes = ovl_dentry_to_fid(ofs, dentry, fid, buflen);
--	dput(dentry);
-+	bytes = ovl_dentry_to_fid(ofs, inode, fid, buflen);
- 	if (bytes <= 0)
- 		return FILEID_INVALID;
+-		if (pkt_dev->n_imix_entries > MAX_IMIX_ENTRIES)
+-			return -E2BIG;
+ 	} while (c == ' ');
  
+ 	return i;
+-- 
+2.39.5
+
 
 
 
