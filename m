@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-109647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F2DFA1833A
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:53:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F511A1848C
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:09:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 600D1169852
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:53:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01790188D127
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:07:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C938E1F55E3;
-	Tue, 21 Jan 2025 17:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC881F7060;
+	Tue, 21 Jan 2025 18:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Omt6hxkj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i1ImT2n9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ABAF1F3FFD;
-	Tue, 21 Jan 2025 17:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A09A1F540C;
+	Tue, 21 Jan 2025 18:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482028; cv=none; b=Nkf/0TeR03PPTOBwY4VnnBYT6VA3f5jDaVXUuRhLbrpR5aZzP15D0GK23Ixe5u5CGSeGailG11U9MXgPwkAtFkrOiYXEuN760bBhYeUmx8B958y1eEfNIPh2+JrTXw6UiOMIBOHpOyBFRBqsxE+wh2OMF3SUAIrCahckKBvC4Tw=
+	t=1737482837; cv=none; b=CsBTrukxCKwo6Vk96tz8a4Jyd/IfSt8jW2/383zs1JIZI+9gB9XH5R4mNpAyoCi3dz8QZczuR4hLRPEmX2TBf+nNnD7S18cU9nTjTe+etsCEbTxu80AamlvzDie9PmWUWv+JeWY8gwJjBqeKJgLv5ZDZhzCmvNMHDHAl+Sb8fl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482028; c=relaxed/simple;
-	bh=nghB27j/AEmiS+uR//a4U6bxXmuvPXm2u4iJ0+u1oXA=;
+	s=arc-20240116; t=1737482837; c=relaxed/simple;
+	bh=2nQUHW9ATwQxlY4gl9GqosFLqec8ISuPVFNmBk4da+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TXFlulAGPai6aBb3KIpHmkY/Z8U2WTFXewRFzy+8Ps1Vk33fjqpq8SeB/ir90l4C9sl2Z0TgumK5vPQ4qEfNHTsxm2gqF9Q+SLtVez5/xRjUCeRtyH5dZKt80nXJUKphxvQDq/rm6c/4Mpl31ZS4adSGT+TXUpPxQeJuCxFERhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Omt6hxkj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A95CC4CEDF;
-	Tue, 21 Jan 2025 17:53:47 +0000 (UTC)
+	 MIME-Version; b=OETjXeElTUAoxfhE9FlT8DoycrLCOneKwE5dzXcvhf9BOquYubUnj0EYoO9ADYXa9sDnrF+3/3i2/mMAKQVoYAnytW0JMR9FimqbOB325ni3Lf2/5KupvDRTltaIr8pAvXy71N76biYDVvw+4emO1imwiquwjEVJomdDH7onti8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i1ImT2n9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90AE4C4CEDF;
+	Tue, 21 Jan 2025 18:07:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482028;
-	bh=nghB27j/AEmiS+uR//a4U6bxXmuvPXm2u4iJ0+u1oXA=;
+	s=korg; t=1737482835;
+	bh=2nQUHW9ATwQxlY4gl9GqosFLqec8ISuPVFNmBk4da+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Omt6hxkjKEXueh27GUNZSMwsNnaIOLALquftcvxylaE9/vNuD3QXlns0SrPMpmKq3
-	 boI6+VqQyGQbLWfsPWAj+oVKqmdveyUVjZBT20cigIK2QaQ8uWsC12hriT10ACsIzF
-	 rjTCBVtopO61wqMERlB3lg2Tw20fPI7HuN42uCvU=
+	b=i1ImT2n92gvme+jHrwUAqwmq4U26LFOFaztvVWQf9Qop/bseA8MphijrEnJrb0wX8
+	 F2KaE49SPWezoCbER7be5TtFCS/jnweiqaD59EDaSydbBY7nrMfbcnXSecTaccofrD
+	 66Fsc/9LA4nZ0q8DhPzhcsr/UHYk23m4a9uHGq6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 10/72] net: xilinx: axienet: Fix IRQ coalescing packet count overflow
+	Al Viro <viro@zeniv.linux.org.uk>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 024/127] sctp: sysctl: cookie_hmac_alg: avoid using current->nsproxy
 Date: Tue, 21 Jan 2025 18:51:36 +0100
-Message-ID: <20250121174523.826548067@linuxfoundation.org>
+Message-ID: <20250121174530.605953925@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit c17ff476f53afb30f90bb3c2af77de069c81a622 ]
+commit ea62dd1383913b5999f3d16ae99d411f41b528d4 upstream.
 
-If coalesce_count is greater than 255 it will not fit in the register and
-will overflow. This can be reproduced by running
+As mentioned in a previous commit of this series, using the 'net'
+structure via 'current' is not recommended for different reasons:
 
-    # ethtool -C ethX rx-frames 256
+- Inconsistency: getting info from the reader's/writer's netns vs only
+  from the opener's netns.
 
-which will result in a timeout of 0us instead. Fix this by checking for
-invalid values and reporting an error.
+- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
+  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
+  syzbot [1] using acct(2).
 
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Link: https://patch.msgid.link/20250113163001.2335235-1-sean.anderson@linux.dev
+The 'net' structure can be obtained from the table->data using
+container_of().
+
+Note that table->data could also be used directly, as this is the only
+member needed from the 'net' structure, but that would increase the size
+of this fix, to use '*data' everywhere 'net->sctp.sctp_hmac_alg' is
+used.
+
+Fixes: 3c68198e7511 ("sctp: Make hmac algorithm selection for cookie generation dynamic")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-4-5df34b2083e8@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/sctp/sysctl.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 9f779653ed622..02e11827440b5 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -1571,6 +1571,12 @@ axienet_ethtools_set_coalesce(struct net_device *ndev,
- 		return -EFAULT;
- 	}
- 
-+	if (ecoalesce->rx_max_coalesced_frames > 255 ||
-+	    ecoalesce->tx_max_coalesced_frames > 255) {
-+		NL_SET_ERR_MSG(extack, "frames must be less than 256");
-+		return -EINVAL;
-+	}
-+
- 	if (ecoalesce->rx_max_coalesced_frames)
- 		lp->coalesce_count_rx = ecoalesce->rx_max_coalesced_frames;
- 	if (ecoalesce->rx_coalesce_usecs)
--- 
-2.39.5
-
+--- a/net/sctp/sysctl.c
++++ b/net/sctp/sysctl.c
+@@ -380,7 +380,8 @@ static struct ctl_table sctp_net_table[]
+ static int proc_sctp_do_hmac_alg(struct ctl_table *ctl, int write,
+ 				 void *buffer, size_t *lenp, loff_t *ppos)
+ {
+-	struct net *net = current->nsproxy->net_ns;
++	struct net *net = container_of(ctl->data, struct net,
++				       sctp.sctp_hmac_alg);
+ 	struct ctl_table tbl;
+ 	bool changed = false;
+ 	char *none = "none";
 
 
 
