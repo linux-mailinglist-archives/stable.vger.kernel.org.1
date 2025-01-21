@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-109675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F28C6A1835A
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E0FA1847E
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:08:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD07A1881D59
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C27283A206F
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:07:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781651E9B38;
-	Tue, 21 Jan 2025 17:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2E51F666B;
+	Tue, 21 Jan 2025 18:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HS7Mwcpm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GC9NYW1O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341F71F55E3;
-	Tue, 21 Jan 2025 17:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FBF1F540C;
+	Tue, 21 Jan 2025 18:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482112; cv=none; b=kYqBfRmd6pKNTuKphNJZT/pL8DVu+kgM7hkCGZmDn4KeryljLk3gfmY+Wf5HT3WHeAYB3tXKApUGJycWYFyHV74RDvnBPEwwvouVJxlsbnO4R9zr9fe2NZH+mVX5UZc85hVU4UZSC9Ql3zINuLaz6x3oPUMQPwEFAey623rHJf4=
+	t=1737482866; cv=none; b=hORTK3ZZ8XjbmA5k3FDf5dhfKNlpHUvdpbVWPF6xiNoT4yvxYMX+/2+zLK9WxYaLmNvpPXoW9f2MQS4c34UYV8IGU8naMqHgHJKaWtHW3Zp22F8XtzjilHdMZ8lxCmA0JIEecrBjBHS4FTKJyMJL5ZYq7HoutJbGvoihyU0GJ88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482112; c=relaxed/simple;
-	bh=7nolpJGFDh0enFkOGmiK62CVcU5USwh4IhU5YTbkMBw=;
+	s=arc-20240116; t=1737482866; c=relaxed/simple;
+	bh=EpCy4vQ8k2J8q+fH98U+2+d+zaMsErQ4yez0J2L+TyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g9RBfwqi+rinm8dC7kjR4YwV2KjctVj5ddSvDRbHVmq0PXaSuBpWWNKv5Yc+sD0pYYWl+MbhnowF+SMok5l7GXUrtPO+wNQHmgF3Ug/Cf7+ud9Zr2I+x76X6JRhNys9SmNLjv2yrPRoFklLEHvImUXugRhn5m14C0WL1tx8tO88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HS7Mwcpm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E48C4CEDF;
-	Tue, 21 Jan 2025 17:55:11 +0000 (UTC)
+	 MIME-Version; b=O7Kz+0l27qHFGAwA+nUsZXAYYkMakOigm0U70x0IudF1CvbzOcSFMGL87bNym1YTtlGoLbDXq4M79/6jEPt2UAoYKSA+A8AW4z28uTvOY5lML86VJC38Bytc9R1VR58Cq6e/IahXudyp51Kds0U92A6PIe31TYY4Z1KqnKRmYy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GC9NYW1O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 010E3C4CEDF;
+	Tue, 21 Jan 2025 18:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482111;
-	bh=7nolpJGFDh0enFkOGmiK62CVcU5USwh4IhU5YTbkMBw=;
+	s=korg; t=1737482866;
+	bh=EpCy4vQ8k2J8q+fH98U+2+d+zaMsErQ4yez0J2L+TyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HS7MwcpmV4RlzKd4C7Koe22cXY2v8g7bU21eBKG+BZjVmn03p6aA9D8HlQGmD9MR6
-	 OjxLox64oZ5dhYmlJhiuEDSKwgODidE356WzvEWjfVFNC9JCHsYG+8MWM2v+1tL3hr
-	 j4Rnc2qt9gWLzo8IKgduZrWuUn3N0a1dP5KTXXqE=
+	b=GC9NYW1Ov+9dtV1JvWj+v86eXfJfXqo1NLjhcuXyY67SwBCbPEAyK24U2Rt9ZN+6k
+	 JEP557Q5WzCMugml7tDMI5G0o8rk/fLoTZh/M6V9yOxQqQY+NbbsaPwYweh2ERY1O5
+	 RHn8D1LeS/Z7624LNR0BP68jErGtEkXffmBL4yTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 20/72] hwmon: (tmp513) Fix division of negative numbers
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Nitin Gupta <ngupta@vflare.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Dominique Martinet <dominique.martinet@atmark-techno.com>
+Subject: [PATCH 5.15 034/127] drivers/block/zram/zram_drv.c: do not keep dangling zcomp pointer after zram reset
 Date: Tue, 21 Jan 2025 18:51:46 +0100
-Message-ID: <20250121174524.205580304@linuxfoundation.org>
+Message-ID: <20250121174530.999716773@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-[ Upstream commit e2c68cea431d65292b592c9f8446c918d45fcf78 ]
+commit 6d2453c3dbc5f70eafc1c866289a90a1fc57ce18 upstream.
 
-Fix several issues with division of negative numbers in the tmp513
-driver.
+We do all reset operations under write lock, so we don't need to save
+->disksize and ->comp to stack variables.  Another thing is that ->comp is
+freed during zram reset, but comp pointer is not NULL-ed, so zram keeps
+the freed pointer value.
 
-The docs on the DIV_ROUND_CLOSEST macro explain that dividing a negative
-value by an unsigned type is undefined behavior. The driver was doing
-this in several places, i.e. data->shunt_uohms has type of u32. The
-actual "undefined" behavior is that it converts both values to unsigned
-before doing the division, for example:
-
-    int ret = DIV_ROUND_CLOSEST(-100, 3U);
-
-results in ret == 1431655732 instead of -33.
-
-Furthermore the MILLI macro has a type of unsigned long. Multiplying a
-signed long by an unsigned long results in an unsigned long.
-
-So, we need to cast both MILLI and data data->shunt_uohms to long when
-using the DIV_ROUND_CLOSEST macro.
-
-Fixes: f07f9d2467f4 ("hwmon: (tmp513) Use SI constants from units.h")
-Fixes: 59dfa75e5d82 ("hwmon: Add driver for Texas Instruments TMP512/513 sensor chips.")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://lore.kernel.org/r/20250114-fix-si-prefix-macro-sign-bugs-v1-1-696fd8d10f00@baylibre.com
-[groeck: Drop some continuation lines]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lkml.kernel.org/r/20220824035100.971816-1-senozhatsky@chromium.org
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Nitin Gupta <ngupta@vflare.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 74363ec674cb ("zram: fix uninitialized ZRAM not releasing backing device")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/tmp513.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/block/zram/zram_drv.c |   13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
-index 070f93226ed69..62d31aadda4bb 100644
---- a/drivers/hwmon/tmp513.c
-+++ b/drivers/hwmon/tmp513.c
-@@ -203,7 +203,8 @@ static int tmp51x_get_value(struct tmp51x_data *data, u8 reg, u8 pos,
- 		*val = sign_extend32(regval,
- 				     reg == TMP51X_SHUNT_CURRENT_RESULT ?
- 				     16 - tmp51x_get_pga_shift(data) : 15);
--		*val = DIV_ROUND_CLOSEST(*val * 10 * MILLI, data->shunt_uohms);
-+		*val = DIV_ROUND_CLOSEST(*val * 10 * (long)MILLI, (long)data->shunt_uohms);
-+
- 		break;
- 	case TMP51X_BUS_VOLTAGE_RESULT:
- 	case TMP51X_BUS_VOLTAGE_H_LIMIT:
-@@ -219,7 +220,7 @@ static int tmp51x_get_value(struct tmp51x_data *data, u8 reg, u8 pos,
- 	case TMP51X_BUS_CURRENT_RESULT:
- 		// Current = (ShuntVoltage * CalibrationRegister) / 4096
- 		*val = sign_extend32(regval, 15) * (long)data->curr_lsb_ua;
--		*val = DIV_ROUND_CLOSEST(*val, MILLI);
-+		*val = DIV_ROUND_CLOSEST(*val, (long)MILLI);
- 		break;
- 	case TMP51X_LOCAL_TEMP_RESULT:
- 	case TMP51X_REMOTE_TEMP_RESULT_1:
-@@ -259,7 +260,7 @@ static int tmp51x_set_value(struct tmp51x_data *data, u8 reg, long val)
- 		 * The user enter current value and we convert it to
- 		 * voltage. 1lsb = 10uV
- 		 */
--		val = DIV_ROUND_CLOSEST(val * data->shunt_uohms, 10 * MILLI);
-+		val = DIV_ROUND_CLOSEST(val * (long)data->shunt_uohms, 10 * (long)MILLI);
- 		max_val = U16_MAX >> tmp51x_get_pga_shift(data);
- 		regval = clamp_val(val, -max_val, max_val);
- 		break;
--- 
-2.39.5
-
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1695,9 +1695,6 @@ out:
+ 
+ static void zram_reset_device(struct zram *zram)
+ {
+-	struct zcomp *comp;
+-	u64 disksize;
+-
+ 	down_write(&zram->init_lock);
+ 
+ 	zram->limit_pages = 0;
+@@ -1707,18 +1704,16 @@ static void zram_reset_device(struct zra
+ 		return;
+ 	}
+ 
+-	comp = zram->comp;
+-	disksize = zram->disksize;
+-	zram->disksize = 0;
+-
+ 	set_capacity_and_notify(zram->disk, 0);
+ 	part_stat_set_all(zram->disk->part0, 0);
+ 
+ 	up_write(&zram->init_lock);
+ 	/* I/O operation under all of CPU are done so let's free */
+-	zram_meta_free(zram, disksize);
++	zram_meta_free(zram, zram->disksize);
++	zram->disksize = 0;
+ 	memset(&zram->stats, 0, sizeof(zram->stats));
+-	zcomp_destroy(comp);
++	zcomp_destroy(zram->comp);
++	zram->comp = NULL;
+ 	reset_bdev(zram);
+ }
+ 
 
 
 
