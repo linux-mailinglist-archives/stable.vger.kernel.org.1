@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-109950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C53A1849C
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:09:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD1FA18434
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:04:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE9CE163CEB
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE39F7A1ADC
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:04:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325FC1F55E5;
-	Tue, 21 Jan 2025 18:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672AE1F6667;
+	Tue, 21 Jan 2025 18:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iNeHQL9Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mw8f2OXX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40151F5404;
-	Tue, 21 Jan 2025 18:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227D81F0E36;
+	Tue, 21 Jan 2025 18:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482907; cv=none; b=E/EMPoJDW6rJNnqvtJCPIYjjX5LDohnj7Ir7rQ2VSLMT5lPLDQ4SXAHzDfnMQiEDOyIv0LeGo/S5TO9lY1qgyVXrsh70VNakKZk++cwyPQbGSRSo2hQ9lxGOxRr4+Ne8OTrjaG8GpB+7616kcR6B/fSiOFuzJXjm+9jUSxaBl/c=
+	t=1737482658; cv=none; b=YkFmF2Xvvn5TUsxQCT1VUweL5UuDu/OdgcZjIXntrBgcxaSsjIuWeBLpb9LmnnMay++IE14PJaCEb0grH7iNq4p38MWBaH7Dg50gm9u/rjVfUw3KWfnwwdIOMQrfYNdP+zjMk/KnojGMuIDMXEpStrdA2YuPe33TVQ6IX8yAieA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482907; c=relaxed/simple;
-	bh=f0r6p6LpnYE9L+/RSGYmvXGEsYl+rXrTnh99A59kGLg=;
+	s=arc-20240116; t=1737482658; c=relaxed/simple;
+	bh=E5gq1dvVkuIDpcNTUMbIeJXC1dMFbkVbsLa8pE/Jr/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=csK0e0vvM3Ma8NJnUCQPkIqFhyOk2qX/mk8vv4mF4km2aVko569vQe1CJjQzj5RaFxHCIitvhRgdL9lWdmEAhlc5ssP4Ub74+cSQwzugceQBNqL7bpFWR9CJuJAQgpkT2PGVMHt6yi3SctiVdxrTyAJE6iyGTbpk2eBnaI+gkIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iNeHQL9Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7F4C4CEDF;
-	Tue, 21 Jan 2025 18:08:26 +0000 (UTC)
+	 MIME-Version; b=RCFF+Yu309AtmA0wOJjusZIixM7L1Vxxgg7H3Iq1bVM982/SF8yS0yk7zGQbHXycGE2imdMNKtfdOG+ngnyEzo5KBWo2PNwLUdUVg7a/AEr+A7L40N8SebRDIdq/itwlHqorDQRac65+0dvN0mSZYT1hIvGlyuETRlHfKOhNz+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mw8f2OXX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 093BDC4CEDF;
+	Tue, 21 Jan 2025 18:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482906;
-	bh=f0r6p6LpnYE9L+/RSGYmvXGEsYl+rXrTnh99A59kGLg=;
+	s=korg; t=1737482656;
+	bh=E5gq1dvVkuIDpcNTUMbIeJXC1dMFbkVbsLa8pE/Jr/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iNeHQL9QsxWK0fdkbcSzWS75mvvC6VyCNED8UbzvpraO8ru7STX5uaJeD3HECpPqr
-	 8d1A1hkm1pUAKoVjr96EblrIhvz3DWAyliK+bAx6ElNQuIDd8ict/1w5pDjgcLb6ds
-	 4dlpA1Conq0wgpYonXF1G3DrvvBmHdqRmhg4d428=
+	b=Mw8f2OXX6GeL6FogHF9ch8YgmArtVKx7xTWAH7jzcNkdAWQ6KaM2gCt1lv0myTNED
+	 lK74BWYcw9K51ocwnePO5s/lDg8vh2gq9jBRexLbR6XGjOoy1ThLuqkfA52vjEgYds
+	 o3hZa0IN7G7CEm/IPbdKvd7IkI1N6uWmW+dn5JBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ma Ke <make_ruc2021@163.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.15 050/127] usb: fix reference leak in usb_new_device()
+	Friedrich Weber <f.weber@proxmox.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 03/64] openvswitch: fix lockup on tx to unregistering netdev with carrier
 Date: Tue, 21 Jan 2025 18:52:02 +0100
-Message-ID: <20250121174531.599437254@linuxfoundation.org>
+Message-ID: <20250121174521.699851425@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
+References: <20250121174521.568417761@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make_ruc2021@163.com>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-commit 0df11fa8cee5a9cf8753d4e2672bb3667138c652 upstream.
+[ Upstream commit 47e55e4b410f7d552e43011baa5be1aab4093990 ]
 
-When device_add(&udev->dev) succeeds and a later call fails,
-usb_new_device() does not properly call device_del(). As comment of
-device_add() says, 'if device_add() succeeds, you should call
-device_del() when you want to get rid of it. If device_add() has not
-succeeded, use only put_device() to drop the reference count'.
+Commit in a fixes tag attempted to fix the issue in the following
+sequence of calls:
 
-Found by code review.
+    do_output
+    -> ovs_vport_send
+       -> dev_queue_xmit
+          -> __dev_queue_xmit
+             -> netdev_core_pick_tx
+                -> skb_tx_hash
 
-Cc: stable <stable@kernel.org>
-Fixes: 9f8b17e643fe ("USB: make usbdevices export their device nodes instead of using a separate class")
-Signed-off-by: Ma Ke <make_ruc2021@163.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20241218071346.2973980-1-make_ruc2021@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When device is unregistering, the 'dev->real_num_tx_queues' goes to
+zero and the 'while (unlikely(hash >= qcount))' loop inside the
+'skb_tx_hash' becomes infinite, locking up the core forever.
+
+But unfortunately, checking just the carrier status is not enough to
+fix the issue, because some devices may still be in unregistering
+state while reporting carrier status OK.
+
+One example of such device is a net/dummy.  It sets carrier ON
+on start, but it doesn't implement .ndo_stop to set the carrier off.
+And it makes sense, because dummy doesn't really have a carrier.
+Therefore, while this device is unregistering, it's still easy to hit
+the infinite loop in the skb_tx_hash() from the OVS datapath.  There
+might be other drivers that do the same, but dummy by itself is
+important for the OVS ecosystem, because it is frequently used as a
+packet sink for tcpdump while debugging OVS deployments.  And when the
+issue is hit, the only way to recover is to reboot.
+
+Fix that by also checking if the device is running.  The running
+state is handled by the net core during unregistering, so it covers
+unregistering case better, and we don't really need to send packets
+to devices that are not running anyway.
+
+While only checking the running state might be enough, the carrier
+check is preserved.  The running and the carrier states seem disjoined
+throughout the code and different drivers.  And other core functions
+like __dev_direct_xmit() check both before attempting to transmit
+a packet.  So, it seems safer to check both flags in OVS as well.
+
+Fixes: 066b86787fa3 ("net: openvswitch: fix race on port output")
+Reported-by: Friedrich Weber <f.weber@proxmox.com>
+Closes: https://mail.openvswitch.org/pipermail/ovs-discuss/2025-January/053423.html
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Tested-by: Friedrich Weber <f.weber@proxmox.com>
+Reviewed-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/20250109122225.4034688-1-i.maximets@ovn.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/openvswitch/actions.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -2605,13 +2605,13 @@ int usb_new_device(struct usb_device *ud
- 		err = sysfs_create_link(&udev->dev.kobj,
- 				&port_dev->dev.kobj, "port");
- 		if (err)
--			goto fail;
-+			goto out_del_dev;
+diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
+index 21102ffe44709..18d360aaf09bc 100644
+--- a/net/openvswitch/actions.c
++++ b/net/openvswitch/actions.c
+@@ -913,7 +913,9 @@ static void do_output(struct datapath *dp, struct sk_buff *skb, int out_port,
+ {
+ 	struct vport *vport = ovs_vport_rcu(dp, out_port);
  
- 		err = sysfs_create_link(&port_dev->dev.kobj,
- 				&udev->dev.kobj, "device");
- 		if (err) {
- 			sysfs_remove_link(&udev->dev.kobj, "port");
--			goto fail;
-+			goto out_del_dev;
- 		}
+-	if (likely(vport && netif_carrier_ok(vport->dev))) {
++	if (likely(vport &&
++		   netif_running(vport->dev) &&
++		   netif_carrier_ok(vport->dev))) {
+ 		u16 mru = OVS_CB(skb)->mru;
+ 		u32 cutlen = OVS_CB(skb)->cutlen;
  
- 		if (!test_and_set_bit(port1, hub->child_usage_bits))
-@@ -2623,6 +2623,8 @@ int usb_new_device(struct usb_device *ud
- 	pm_runtime_put_sync_autosuspend(&udev->dev);
- 	return err;
- 
-+out_del_dev:
-+	device_del(&udev->dev);
- fail:
- 	usb_set_device_state(udev, USB_STATE_NOTATTACHED);
- 	pm_runtime_disable(&udev->dev);
+-- 
+2.39.5
+
 
 
 
