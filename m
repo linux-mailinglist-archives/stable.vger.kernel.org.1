@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-109819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E37FA1840C
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:03:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8347EA1838C
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 389B316BCD8
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:02:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 069FA188CA06
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AC3A1F470A;
-	Tue, 21 Jan 2025 18:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A2B51F7552;
+	Tue, 21 Jan 2025 17:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9exXBvl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rkTq5TeE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A5EE571;
-	Tue, 21 Jan 2025 18:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2638F1F63CF;
+	Tue, 21 Jan 2025 17:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482531; cv=none; b=GZ7fNBcN9vfik73u5tUHr8qDQL+Fj5an2hWy3Sghfvh0DOchQyCyeTTyglJS3Oma6TBpmg/3HgVxbfeuFrOpf3s3urK+bzBf8A2pezVxX14JxsGKmdhAEh9sAEyvKr4VTWOVi6SWjIViv3D6nQ7SZs0BPrXmrRXz+n0J1SnhEFA=
+	t=1737482214; cv=none; b=ga5zI5/2GwlzXWETz98RFuTThZXmKAy/3Ub1Ne6KQMgFsksp2iYkgxaOC/Y76dayI71lQ6LVLKiZIEJeqoXb0AC6566i5X1l3MC2bHxADUxPedpc6zvHoTYt+vTyDpX7N/DkXElEj7fUtf80275MA6i3zV6N6WW1ltUGGf2QLgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482531; c=relaxed/simple;
-	bh=aKQc8Sjf54HF1sgfm82JFlv1B4SWswt0x9rlLLIUIqg=;
+	s=arc-20240116; t=1737482214; c=relaxed/simple;
+	bh=b903vsDj30meASA8X754zeNUzqHkwjXR6337gOZU6C0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rf42CzmQQ6bZ0Yb83UamIok62qlYwMyk+ca7NzN2EitLHWNBwQtzzg4Gfle0HxaeFWCSx8NWWfDGnChdfZBMjaFbMJax0h+kDg0Eyd6gbAEhu5qZQJPP0acVpDqlef4npZocGa6wEd2DOfhAnXPc2A2VLB+J49MDdxw6X60ra3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9exXBvl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0D1C4CEDF;
-	Tue, 21 Jan 2025 18:02:10 +0000 (UTC)
+	 MIME-Version; b=uc692QIEm7xuvJgc5Sv4wM+iy/mx4rwcK5/h/bld9ftnuXcos0HSuiYJS0ytx51nvwa/jEXBX93JVIwxJdQPB78Lf6YUuE45VaeNlEqZ+H4VNavQ9ZvERTStkIyWNVunNF1Cn41XCoqpKAnv47Z/RHSB9/5EmyOPWGvI6VfaqB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rkTq5TeE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E22C4CEDF;
+	Tue, 21 Jan 2025 17:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482531;
-	bh=aKQc8Sjf54HF1sgfm82JFlv1B4SWswt0x9rlLLIUIqg=;
+	s=korg; t=1737482213;
+	bh=b903vsDj30meASA8X754zeNUzqHkwjXR6337gOZU6C0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b9exXBvlxOIAPrpt4SoTc8Ajvgc1pq0+CrQCe1ntvIpUDMH8RCOezlKBRZBUlixiS
-	 dG7xojUWoUBKni9wkeLu2qGqt5MbtNUHqLOtaHmzkwOhwJrOZLAnZUW06HSgQrHZ0s
-	 2zEn/8qiSXLhXPOCLyNwGjeDwlHMXS3WdWhtn8uk=
+	b=rkTq5TeErHVz7AC5ah/Dacg0Tkwg5I8maKDX/nG2jM6CdnCO6K4mVsAxKsOutSUxv
+	 /+jCdezgMZ87tJhCFsBn5w124TXF/Xr6Vv2nN61aLusUv0VxOaBiw+3kAgX8VOEXsy
+	 JLP1b4CXfJAt/oc6IHy7meiW/jTxTGOaes48vxEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Xin Li (Intel)" <xin@zytor.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 6.12 109/122] x86/fred: Fix the FRED RSP0 MSR out of sync with its per-CPU cache
-Date: Tue, 21 Jan 2025 18:52:37 +0100
-Message-ID: <20250121174537.246196339@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Wang Liang <wangliang74@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 6.6 72/72] net: fix data-races around sk->sk_forward_alloc
+Date: Tue, 21 Jan 2025 18:52:38 +0100
+Message-ID: <20250121174526.205256599@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +63,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Li (Intel) <xin@zytor.com>
+From: Wang Liang <wangliang74@huawei.com>
 
-commit de31b3cd706347044e1a57d68c3a683d58e8cca4 upstream.
+commit 073d89808c065ac4c672c0a613a71b27a80691cb upstream.
 
-The FRED RSP0 MSR is only used for delivering events when running
-userspace.  Linux leverages this property to reduce expensive MSR
-writes and optimize context switches.  The kernel only writes the
-MSR when about to run userspace *and* when the MSR has actually
-changed since the last time userspace ran.
+Syzkaller reported this warning:
+ ------------[ cut here ]------------
+ WARNING: CPU: 0 PID: 16 at net/ipv4/af_inet.c:156 inet_sock_destruct+0x1c5/0x1e0
+ Modules linked in:
+ CPU: 0 UID: 0 PID: 16 Comm: ksoftirqd/0 Not tainted 6.12.0-rc5 #26
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+ RIP: 0010:inet_sock_destruct+0x1c5/0x1e0
+ Code: 24 12 4c 89 e2 5b 48 c7 c7 98 ec bb 82 41 5c e9 d1 18 17 ff 4c 89 e6 5b 48 c7 c7 d0 ec bb 82 41 5c e9 bf 18 17 ff 0f 0b eb 83 <0f> 0b eb 97 0f 0b eb 87 0f 0b e9 68 ff ff ff 66 66 2e 0f 1f 84 00
+ RSP: 0018:ffffc9000008bd90 EFLAGS: 00010206
+ RAX: 0000000000000300 RBX: ffff88810b172a90 RCX: 0000000000000007
+ RDX: 0000000000000002 RSI: 0000000000000300 RDI: ffff88810b172a00
+ RBP: ffff88810b172a00 R08: ffff888104273c00 R09: 0000000000100007
+ R10: 0000000000020000 R11: 0000000000000006 R12: ffff88810b172a00
+ R13: 0000000000000004 R14: 0000000000000000 R15: ffff888237c31f78
+ FS:  0000000000000000(0000) GS:ffff888237c00000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00007ffc63fecac8 CR3: 000000000342e000 CR4: 00000000000006f0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ Call Trace:
+  <TASK>
+  ? __warn+0x88/0x130
+  ? inet_sock_destruct+0x1c5/0x1e0
+  ? report_bug+0x18e/0x1a0
+  ? handle_bug+0x53/0x90
+  ? exc_invalid_op+0x18/0x70
+  ? asm_exc_invalid_op+0x1a/0x20
+  ? inet_sock_destruct+0x1c5/0x1e0
+  __sk_destruct+0x2a/0x200
+  rcu_do_batch+0x1aa/0x530
+  ? rcu_do_batch+0x13b/0x530
+  rcu_core+0x159/0x2f0
+  handle_softirqs+0xd3/0x2b0
+  ? __pfx_smpboot_thread_fn+0x10/0x10
+  run_ksoftirqd+0x25/0x30
+  smpboot_thread_fn+0xdd/0x1d0
+  kthread+0xd3/0x100
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork+0x34/0x50
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
+ ---[ end trace 0000000000000000 ]---
 
-This optimization is implemented by maintaining a per-CPU cache of
-FRED RSP0 and then checking that against the value for the top of
-current task stack before running userspace.
+Its possible that two threads call tcp_v6_do_rcv()/sk_forward_alloc_add()
+concurrently when sk->sk_state == TCP_LISTEN with sk->sk_lock unlocked,
+which triggers a data-race around sk->sk_forward_alloc:
+tcp_v6_rcv
+    tcp_v6_do_rcv
+        skb_clone_and_charge_r
+            sk_rmem_schedule
+                __sk_mem_schedule
+                    sk_forward_alloc_add()
+            skb_set_owner_r
+                sk_mem_charge
+                    sk_forward_alloc_add()
+        __kfree_skb
+            skb_release_all
+                skb_release_head_state
+                    sock_rfree
+                        sk_mem_uncharge
+                            sk_forward_alloc_add()
+                            sk_mem_reclaim
+                                // set local var reclaimable
+                                __sk_mem_reclaim
+                                    sk_forward_alloc_add()
 
-However cpu_init_fred_exceptions() writes the MSR without updating
-the per-CPU cache.  This means that the kernel might return to
-userspace with MSR_IA32_FRED_RSP0==0 when it needed to point to the
-top of current task stack.  This would induce a double fault (#DF),
-which is bad.
+In this syzkaller testcase, two threads call
+tcp_v6_do_rcv() with skb->truesize=768, the sk_forward_alloc changes like
+this:
+ (cpu 1)             | (cpu 2)             | sk_forward_alloc
+ ...                 | ...                 | 0
+ __sk_mem_schedule() |                     | +4096 = 4096
+                     | __sk_mem_schedule() | +4096 = 8192
+ sk_mem_charge()     |                     | -768  = 7424
+                     | sk_mem_charge()     | -768  = 6656
+ ...                 |    ...              |
+ sk_mem_uncharge()   |                     | +768  = 7424
+ reclaimable=7424    |                     |
+                     | sk_mem_uncharge()   | +768  = 8192
+                     | reclaimable=8192    |
+ __sk_mem_reclaim()  |                     | -4096 = 4096
+                     | __sk_mem_reclaim()  | -8192 = -4096 != 0
 
-A context switch after cpu_init_fred_exceptions() can paper over
-the issue since it updates the cached value.  That evidently
-happens most of the time explaining how this bug got through.
+The skb_clone_and_charge_r() should not be called in tcp_v6_do_rcv() when
+sk->sk_state is TCP_LISTEN, it happens later in tcp_v6_syn_recv_sock().
+Fix the same issue in dccp_v6_do_rcv().
 
-Fix the bug through resynchronizing the FRED RSP0 MSR with its
-per-CPU cache in cpu_init_fred_exceptions().
-
-Fixes: fe85ee391966 ("x86/entry: Set FRED RSP0 on return to userspace instead of context switch")
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250110174639.1250829-1-xin%40zytor.com
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Link: https://patch.msgid.link/20241107023405.889239-1-wangliang74@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/fred.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/dccp/ipv6.c     |    2 +-
+ net/ipv6/tcp_ipv6.c |    4 +---
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/fred.c b/arch/x86/kernel/fred.c
-index 8d32c3f48abc..5e2cd1004980 100644
---- a/arch/x86/kernel/fred.c
-+++ b/arch/x86/kernel/fred.c
-@@ -50,7 +50,13 @@ void cpu_init_fred_exceptions(void)
- 	       FRED_CONFIG_ENTRYPOINT(asm_fred_entrypoint_user));
+--- a/net/dccp/ipv6.c
++++ b/net/dccp/ipv6.c
+@@ -616,7 +616,7 @@ static int dccp_v6_do_rcv(struct sock *s
+ 	   by tcp. Feel free to propose better solution.
+ 					       --ANK (980728)
+ 	 */
+-	if (np->rxopt.all)
++	if (np->rxopt.all && sk->sk_state != DCCP_LISTEN)
+ 		opt_skb = skb_clone_and_charge_r(skb, sk);
  
- 	wrmsrl(MSR_IA32_FRED_STKLVLS, 0);
--	wrmsrl(MSR_IA32_FRED_RSP0, 0);
-+
-+	/*
-+	 * Ater a CPU offline/online cycle, the FRED RSP0 MSR should be
-+	 * resynchronized with its per-CPU cache.
-+	 */
-+	wrmsrl(MSR_IA32_FRED_RSP0, __this_cpu_read(fred_rsp0));
-+
- 	wrmsrl(MSR_IA32_FRED_RSP1, 0);
- 	wrmsrl(MSR_IA32_FRED_RSP2, 0);
- 	wrmsrl(MSR_IA32_FRED_RSP3, 0);
--- 
-2.48.1
-
+ 	if (sk->sk_state == DCCP_OPEN) { /* Fast path */
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -1456,7 +1456,7 @@ int tcp_v6_do_rcv(struct sock *sk, struc
+ 	   by tcp. Feel free to propose better solution.
+ 					       --ANK (980728)
+ 	 */
+-	if (np->rxopt.all)
++	if (np->rxopt.all && sk->sk_state != TCP_LISTEN)
+ 		opt_skb = skb_clone_and_charge_r(skb, sk);
+ 
+ 	reason = SKB_DROP_REASON_NOT_SPECIFIED;
+@@ -1495,8 +1495,6 @@ int tcp_v6_do_rcv(struct sock *sk, struc
+ 		if (nsk != sk) {
+ 			if (tcp_child_process(sk, nsk, skb))
+ 				goto reset;
+-			if (opt_skb)
+-				__kfree_skb(opt_skb);
+ 			return 0;
+ 		}
+ 	} else
 
 
 
