@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-109885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB0ECA18465
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:07:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51309A18413
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:03:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C571188DC48
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:05:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC9903A12C7
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA0E1F63C9;
-	Tue, 21 Jan 2025 18:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951331F3FFE;
+	Tue, 21 Jan 2025 18:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WAEy9x8m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFBi7bXW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D8B1F472D;
-	Tue, 21 Jan 2025 18:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52AA6E571;
+	Tue, 21 Jan 2025 18:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482724; cv=none; b=GtxlOrxLvHKx1NwS0F+IfZT9FSNVEj1zzDBtZfRCI4+yqSrzFwyJMt28CQhOHtqoGiJCtJpnmgPS7Rse0RWB7yvejruRQnLdY7qGyvHJXGEooONEwOO8c2Yap/Z1JeBCgF79kpOaeuFFBMeB4S/AXz1gG5sr42rxKq7TmE8Bmi4=
+	t=1737482571; cv=none; b=g1W/C84VpqtdCQOoiKk23BtadJhq5DfYCed5881hU7tdkSZwY0yaspCxruncsekZWv/8Yq7+CyEzYo9Z2Hz+ZD4qGafmmX09ycY8fwT8d4gk6N+tnTC3APXKbkhOUQRGCLx0GjrFxcZGU8/cXG5yCdKR8jmCLDGfQSqBTIN/wGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482724; c=relaxed/simple;
-	bh=fLXYgzZeui2qdx7G3ydbiZCdTkEQ0Oc/4+dPAAY72t8=;
+	s=arc-20240116; t=1737482571; c=relaxed/simple;
+	bh=c0EvetZpJEePMr4juIsAAkpoyWAsadgNFVzZ2Xd90ok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=liRH+++aqTVQJSx0KZpedpZsaf4kMHvFNyQfqIW3YPYpEaO6XcqnXtjNPTW1GQEXI7wYiqDFRKAc46wYwbKZ2EVMP/2KavwkqvGH9yqsfNU06bhLWSI5K31y2qhIi6ti74dGiM9ywl/bDavuSzScZgZA52ftn4K0ehoqYdN55Lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WAEy9x8m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE6FEC4CEDF;
-	Tue, 21 Jan 2025 18:05:23 +0000 (UTC)
+	 MIME-Version; b=d2eQly27blYOTKRaKbSaTVT2bs7h3+V+6S7feT4K7VAzPcxi8tx9m7Qisw6oOBcN1YLHQuasV8EMloVpiY2C7d8razc2vx/DH6ggPmX2oRzX+VsbbfUXYlFEylAGZZVGe41h17lyfOFyTpBa/0Mx8EUBbti9uyoEM26Y9J7/EtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFBi7bXW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0A0C4CEDF;
+	Tue, 21 Jan 2025 18:02:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482724;
-	bh=fLXYgzZeui2qdx7G3ydbiZCdTkEQ0Oc/4+dPAAY72t8=;
+	s=korg; t=1737482571;
+	bh=c0EvetZpJEePMr4juIsAAkpoyWAsadgNFVzZ2Xd90ok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WAEy9x8mUjdstZxJigZhZVhokHvYcHQzgkgfqYUPwb7nB2Snrt1RawagxMuK9N3kj
-	 3kUWl3FS360yxJ1RNHCWWyhAK6ZotBHoHU6WVyNiTTN7/qzv/P+NoycBJdELI+Nyk6
-	 UcrUWULNhhXeBp/Bqdg8b9q1GUxccmyFhREfn7D4=
+	b=zFBi7bXWO4/duqksF2L7XlkUvKfOuxoFy63Fi1Tz3jMzaAV3MvTRe1IZEoGd5JOz3
+	 M0c7b7ZJtzvEKmObf58MbwO+9L6IZgne//4zLnakCvcM0stAaGF1gJ/DWPTyfbBmlv
+	 Pg82tr546Q8VpyV7blGhVNdS7g1yewp/7FVf4pNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Bin Lan <lanbincn@qq.com>
-Subject: [PATCH 6.1 51/64] iio: adc: rockchip_saradc: fix information leak in triggered buffer
+	Ryan Lee <ryan.lee@canonical.com>,
+	John Johansen <john.johansen@canonical.com>,
+	Paul Kramme <kramme@digitalmanufaktur.com>
+Subject: [PATCH 6.12 122/122] apparmor: allocate xmatch for nullpdb inside aa_alloc_null
 Date: Tue, 21 Jan 2025 18:52:50 +0100
-Message-ID: <20250121174523.496379060@linuxfoundation.org>
+Message-ID: <20250121174537.764233969@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
-References: <20250121174521.568417761@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Ryan Lee <ryan.lee@canonical.com>
 
-commit 38724591364e1e3b278b4053f102b49ea06ee17c upstream.
+commit 17d0d04f3c999e7784648bad70ce1766c3b49d69 upstream.
 
-The 'data' local struct is used to push data to user space from a
-triggered buffer, but it does not set values for inactive channels, as
-it only uses iio_for_each_active_channel() to assign new values.
+attach->xmatch was not set when allocating a null profile, which is used in
+complain mode to allocate a learning profile. This was causing downstream
+failures in find_attach, which expected a valid xmatch but did not find
+one under a certain sequence of profile transitions in complain mode.
 
-Initialize the struct to zero before using it to avoid pushing
-uninitialized information to userspace.
+This patch ensures the xmatch is set up properly for null profiles.
 
-Cc: stable@vger.kernel.org
-Fixes: 4e130dc7b413 ("iio: adc: rockchip_saradc: Add support iio buffers")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-4-0cb6e98d895c@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Bin Lan <lanbincn@qq.com>
+Signed-off-by: Ryan Lee <ryan.lee@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
+Cc: Paul Kramme <kramme@digitalmanufaktur.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/rockchip_saradc.c |    2 ++
- 1 file changed, 2 insertions(+)
+ security/apparmor/policy.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iio/adc/rockchip_saradc.c
-+++ b/drivers/iio/adc/rockchip_saradc.c
-@@ -270,6 +270,8 @@ static irqreturn_t rockchip_saradc_trigg
- 	int ret;
- 	int i, j = 0;
+--- a/security/apparmor/policy.c
++++ b/security/apparmor/policy.c
+@@ -626,6 +626,7 @@ struct aa_profile *aa_alloc_null(struct
  
-+	memset(&data, 0, sizeof(data));
-+
- 	mutex_lock(&i_dev->mlock);
- 
- 	for_each_set_bit(i, i_dev->active_scan_mask, i_dev->masklength) {
+ 	/* TODO: ideally we should inherit abi from parent */
+ 	profile->label.flags |= FLAG_NULL;
++	profile->attach.xmatch = aa_get_pdb(nullpdb);
+ 	rules = list_first_entry(&profile->rules, typeof(*rules), list);
+ 	rules->file = aa_get_pdb(nullpdb);
+ 	rules->policy = aa_get_pdb(nullpdb);
 
 
 
