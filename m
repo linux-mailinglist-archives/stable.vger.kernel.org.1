@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-109844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4EDAA18420
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:03:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B5EEA1835F
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E32C3A4618
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:03:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 051CB3AA4B4
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A481F0E36;
-	Tue, 21 Jan 2025 18:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F081F7085;
+	Tue, 21 Jan 2025 17:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UOhLU/ed"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bciuZva8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868361F4275;
-	Tue, 21 Jan 2025 18:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAD71F543D;
+	Tue, 21 Jan 2025 17:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482603; cv=none; b=lQZYAtNpJD7wLPTbsV8n5d+aiOLMO9mZet6lcC59eZ/KH3sDeg9goWr+3BdUdyzgYAP5JCYddkh3r40uuy4Ft3fTSNU9UV5JDz4xuE4QkGX3bs2JUo7U90LO5q+z/LNQ6jHrMBpc28gN6GMNWMFJWl0FlugC+Y0F249AcCGLRro=
+	t=1737482131; cv=none; b=LYiA2Ts38NHw27VUkOSfwUaUF/WZ9NL83sf13AnTSMdPGnwU/m6/zJyqH6mwCA66UjdVusJ7evEryhwyGYFlY7SnS6z9TQxSUiOtIS5pCfxL77F78c5u0diM/weHgRAUE8fYCS1JacwgUBqcJWf8nPXZOzxZL2Vy2s0AuK75tng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482603; c=relaxed/simple;
-	bh=PyqewibvtKPx2SI5DVEZN8+3qIi1h9zV6vCyfI8XjF8=;
+	s=arc-20240116; t=1737482131; c=relaxed/simple;
+	bh=GM4ShhBMHzIbpifoRt5HZzjWh4B/rgW4pNZX/HB1tCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sRy7RsMqHl/lUrq3GKxb6vw3DTcejXnlVhz5BOB8z3UhXMtZzaa3kOPk3zPH+uaZckMPZLn3kNR7fPTs9g0D/3LGh9WUJ/yOjpvcZZLVeYtjkm85UEOXognZZ+xtN9H4sbOBrMALW/k3Hdtd25m+lVXqmZCuOyi1cJlfIsn+7y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOhLU/ed; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A92C4CEDF;
-	Tue, 21 Jan 2025 18:03:22 +0000 (UTC)
+	 MIME-Version; b=DX5JkhZeMc7o+mkk0PVoJUNi7f3uM1ryeaUULIeRMKOzL7OR1IDsGs/LoGpyw7Za2vgHxzfXissxlhe2njsaVVW4o0U0EXwbeifSAfApIGtWnI9Wgx3r6YBhX9+rrZsBuZZEkYEoOVIKB0yErxjX3MVrXAatDnMVtxCpBQ0WTqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bciuZva8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62393C4CEE1;
+	Tue, 21 Jan 2025 17:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482603;
-	bh=PyqewibvtKPx2SI5DVEZN8+3qIi1h9zV6vCyfI8XjF8=;
+	s=korg; t=1737482131;
+	bh=GM4ShhBMHzIbpifoRt5HZzjWh4B/rgW4pNZX/HB1tCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UOhLU/ed2R9uVrSbVvVUVuqC0uNQggC/vlNKs2Vg/0+QNoxsT4rLEx2eRwVyWoLRF
-	 VMnJrhHo/rLUtoelWF4wHl6prSQmYROm4nffZoxukznvupAH3EPsrF6q8NQ0D+Ys1S
-	 TpZgyfOz2E+myAn4YwRBEVMvJSGd5OKmU0LJRl70=
+	b=bciuZva8yu37utScb/axwFeHbuDRAZGUzhhXBghUkZniVsB9xb2yoJbMBY48pLTzW
+	 hdO77K4NPHTH2jedmV29vfcoO0wqs7wbNV/Z7e0YCpeeoHcIOyvQGINEIkM9SmFvVY
+	 2eVDB6Qab/5nDf1v5k8Qhf7BrjgD7n6ihaXZg9Cs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 11/64] net/mlx5: Fix RDMA TX steering prio
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 44/72] net: ethernet: xgbe: re-add aneg to supported features in PHY quirks
 Date: Tue, 21 Jan 2025 18:52:10 +0100
-Message-ID: <20250121174521.994924769@linuxfoundation.org>
+Message-ID: <20250121174525.117860872@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
-References: <20250121174521.568417761@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit c08d3e62b2e73e14da318a1d20b52d0486a28ee0 ]
+commit 6be7aca91009865d8c2b73589270224a6b6e67ab upstream.
 
-User added steering rules at RDMA_TX were being added to the first prio,
-which is the counters prio.
-Fix that so that they are correctly added to the BYPASS_PRIO instead.
+In 4.19, before the switch to linkmode bitmaps, PHY_GBIT_FEATURES
+included feature bits for aneg and TP/MII ports.
 
-Fixes: 24670b1a3166 ("net/mlx5: Add support for RDMA TX steering")
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+				 SUPPORTED_TP | \
+				 SUPPORTED_MII)
+
+				 SUPPORTED_10baseT_Full)
+
+				 SUPPORTED_100baseT_Full)
+
+				 SUPPORTED_1000baseT_Full)
+
+				 PHY_100BT_FEATURES | \
+				 PHY_DEFAULT_FEATURES)
+
+				 PHY_1000BT_FEATURES)
+
+Referenced commit expanded PHY_GBIT_FEATURES, silently removing
+PHY_DEFAULT_FEATURES. The removed part can be re-added by using
+the new PHY_GBIT_FEATURES definition.
+Not clear to me is why nobody seems to have noticed this issue.
+
+I stumbled across this when checking what it takes to make
+phy_10_100_features_array et al private to phylib.
+
+Fixes: d0939c26c53a ("net: ethernet: xgbe: expand PHY_GBIT_FEAUTRES")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/46521973-7738-4157-9f5e-0bb6f694acba@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c |   19 ++-----------------
+ 1 file changed, 2 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-index 50fdc3cbb778e..2717450e96661 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-@@ -2421,6 +2421,7 @@ struct mlx5_flow_namespace *mlx5_get_flow_namespace(struct mlx5_core_dev *dev,
- 		break;
- 	case MLX5_FLOW_NAMESPACE_RDMA_TX:
- 		root_ns = steering->rdma_tx_root_ns;
-+		prio = RDMA_TX_BYPASS_PRIO;
- 		break;
- 	case MLX5_FLOW_NAMESPACE_RDMA_RX_COUNTERS:
- 		root_ns = steering->rdma_rx_root_ns;
--- 
-2.39.5
-
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
+@@ -923,7 +923,6 @@ static void xgbe_phy_free_phy_device(str
+ 
+ static bool xgbe_phy_finisar_phy_quirks(struct xgbe_prv_data *pdata)
+ {
+-	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported) = { 0, };
+ 	struct xgbe_phy_data *phy_data = pdata->phy_data;
+ 	unsigned int phy_id = phy_data->phydev->phy_id;
+ 
+@@ -945,14 +944,7 @@ static bool xgbe_phy_finisar_phy_quirks(
+ 	phy_write(phy_data->phydev, 0x04, 0x0d01);
+ 	phy_write(phy_data->phydev, 0x00, 0x9140);
+ 
+-	linkmode_set_bit_array(phy_10_100_features_array,
+-			       ARRAY_SIZE(phy_10_100_features_array),
+-			       supported);
+-	linkmode_set_bit_array(phy_gbit_features_array,
+-			       ARRAY_SIZE(phy_gbit_features_array),
+-			       supported);
+-
+-	linkmode_copy(phy_data->phydev->supported, supported);
++	linkmode_copy(phy_data->phydev->supported, PHY_GBIT_FEATURES);
+ 
+ 	phy_support_asym_pause(phy_data->phydev);
+ 
+@@ -964,7 +956,6 @@ static bool xgbe_phy_finisar_phy_quirks(
+ 
+ static bool xgbe_phy_belfuse_phy_quirks(struct xgbe_prv_data *pdata)
+ {
+-	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported) = { 0, };
+ 	struct xgbe_phy_data *phy_data = pdata->phy_data;
+ 	struct xgbe_sfp_eeprom *sfp_eeprom = &phy_data->sfp_eeprom;
+ 	unsigned int phy_id = phy_data->phydev->phy_id;
+@@ -1028,13 +1019,7 @@ static bool xgbe_phy_belfuse_phy_quirks(
+ 	reg = phy_read(phy_data->phydev, 0x00);
+ 	phy_write(phy_data->phydev, 0x00, reg & ~0x00800);
+ 
+-	linkmode_set_bit_array(phy_10_100_features_array,
+-			       ARRAY_SIZE(phy_10_100_features_array),
+-			       supported);
+-	linkmode_set_bit_array(phy_gbit_features_array,
+-			       ARRAY_SIZE(phy_gbit_features_array),
+-			       supported);
+-	linkmode_copy(phy_data->phydev->supported, supported);
++	linkmode_copy(phy_data->phydev->supported, PHY_GBIT_FEATURES);
+ 	phy_support_asym_pause(phy_data->phydev);
+ 
+ 	netif_dbg(pdata, drv, pdata->netdev,
 
 
 
