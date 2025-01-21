@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-109964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9F7BA184FF
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:13:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 222BCA1836A
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:56:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 998417A5BA3
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE6163AABF7
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C3A91F63E2;
-	Tue, 21 Jan 2025 18:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7559F1F5614;
+	Tue, 21 Jan 2025 17:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PYXiRleE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="woEHNQ2o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73631F5614;
-	Tue, 21 Jan 2025 18:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319051F542A;
+	Tue, 21 Jan 2025 17:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482947; cv=none; b=OCwN/EZPy+JP66emuMCsmi+sechVEnrzvjIMVT6X3gfkQBs97rgrLuWK/hNq/dWHuwz7Uu+oAO66Nwp56sw8qMD6Sft7aCCLyIG5nIx2crEccGFQVfps18JDLCquPqaQzJ0gCYuzREuZ58ihPjOQ/urhAdwC59ZZ3MQS44pXaaU=
+	t=1737482152; cv=none; b=RE3FIP+MHIcHY5qPq9/5bwdS/DeoQ3oIvtvGY30i4wflXuoARbo6C15D5OtGut685s6z+a46chy4Qn3JFPKYaTeXBfEL41Pqyq3ML91HNtVef/5cuRyrBSAo0W+kiJ/BwAAGSH6Qb+uo3LkAYwTXJHhSf5JP5rCgKgg2O7LX8is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482947; c=relaxed/simple;
-	bh=SFW/KTSbYql5+tpsMh5V6qb00GqMso41Uu0RRBHJ4MM=;
+	s=arc-20240116; t=1737482152; c=relaxed/simple;
+	bh=Okvqtvbx9QvCekuXeYMKD2aSpxnvEVaP7Uk9LhK2gcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bcsDvB8Jt6GpHpFJXG1V+crdxwg4M2CWD4xnDhm/CLRovLDShD3gpATZdYESAc5V5REzfeS/FNwBOrtiSmOKnnrcrC9njwtsDQQGRgFiAYITTd4sUIlx0j1UWjFGwTaeXz7BYslo0o30XgL0rADjk3bS7VaJujAc+yBMCHeCvGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PYXiRleE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8CEC4CEDF;
-	Tue, 21 Jan 2025 18:09:06 +0000 (UTC)
+	 MIME-Version; b=Oy7/xE5FLiLbHy9nJIUHFcrYdgGu3kZXfX2iGeN5+PQGp++hDtBiaUNSXsV9uxF9Klw1U/09oRZj9Z9a9zLNUJmd4MeHkH8Hs2E6M1BK/FlwtqYsGNIjjWCB0cx4xAydif6H5C2AJj8d4G3FEn+G94Gu98YiUgq1sQJcYZPqMsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=woEHNQ2o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D84C4CEDF;
+	Tue, 21 Jan 2025 17:55:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482947;
-	bh=SFW/KTSbYql5+tpsMh5V6qb00GqMso41Uu0RRBHJ4MM=;
+	s=korg; t=1737482152;
+	bh=Okvqtvbx9QvCekuXeYMKD2aSpxnvEVaP7Uk9LhK2gcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PYXiRleE9W85Id7r/RZ8/VWNdZMGnrChvVPNvR/4Zomt99LEyCBACeLVpT2Juqmge
-	 pIrK32e7pXcyYrK8YFB9oQwu3LLj6lzyogHWmOoyZA28gxkSccoMUtWO8k4t4YMsTt
-	 jFrDbjt5/hKKUbI0V7Tg+CFnbTADx8Tc6KO2aS04=
+	b=woEHNQ2o3Vn+RUXfTtx2LoLkRMBEVLcEmS37cVyaOGLaNGWlj0J61Fush+UciKrx/
+	 tuT3+Up34tQqbLvr7q1aYwrYPqtOtGUIskuXf56FIkoXBOjh9YVKKOBY34fFW661P8
+	 MZJz+9WIaorxGot2JeWVPhRYfejHwan5HnbVUDkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 063/127] block, bfq: fix waker_bfqq UAF after bfq_split_bfqq()
-Date: Tue, 21 Jan 2025 18:52:15 +0100
-Message-ID: <20250121174532.104484082@linuxfoundation.org>
+	Dave Airlie <airlied@redhat.com>,
+	Ben Skeggs <bskeggs@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.6 50/72] nouveau/fence: handle cross device fences properly
+Date: Tue, 21 Jan 2025 18:52:16 +0100
+Message-ID: <20250121174525.351971946@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,204 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Dave Airlie <airlied@redhat.com>
 
-[ Upstream commit fcede1f0a043ccefe9bc6ad57f12718e42f63f1d ]
+commit 1f9910b41c857a892b83801feebdc7bdf38c5985 upstream.
 
-Our syzkaller report a following UAF for v6.6:
+The fence sync logic doesn't handle a fence sync across devices
+as it tries to write to a channel offset from one device into
+the fence bo from a different device, which won't work so well.
 
-BUG: KASAN: slab-use-after-free in bfq_init_rq+0x175d/0x17a0 block/bfq-iosched.c:6958
-Read of size 8 at addr ffff8881b57147d8 by task fsstress/232726
+This patch fixes that to avoid using the sync path in the case
+where the fences come from different nouveau drm devices.
 
-CPU: 2 PID: 232726 Comm: fsstress Not tainted 6.6.0-g3629d1885222 #39
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x91/0xf0 lib/dump_stack.c:106
- print_address_description.constprop.0+0x66/0x300 mm/kasan/report.c:364
- print_report+0x3e/0x70 mm/kasan/report.c:475
- kasan_report+0xb8/0xf0 mm/kasan/report.c:588
- hlist_add_head include/linux/list.h:1023 [inline]
- bfq_init_rq+0x175d/0x17a0 block/bfq-iosched.c:6958
- bfq_insert_request.isra.0+0xe8/0xa20 block/bfq-iosched.c:6271
- bfq_insert_requests+0x27f/0x390 block/bfq-iosched.c:6323
- blk_mq_insert_request+0x290/0x8f0 block/blk-mq.c:2660
- blk_mq_submit_bio+0x1021/0x15e0 block/blk-mq.c:3143
- __submit_bio+0xa0/0x6b0 block/blk-core.c:639
- __submit_bio_noacct_mq block/blk-core.c:718 [inline]
- submit_bio_noacct_nocheck+0x5b7/0x810 block/blk-core.c:747
- submit_bio_noacct+0xca0/0x1990 block/blk-core.c:847
- __ext4_read_bh fs/ext4/super.c:205 [inline]
- ext4_read_bh+0x15e/0x2e0 fs/ext4/super.c:230
- __read_extent_tree_block+0x304/0x6f0 fs/ext4/extents.c:567
- ext4_find_extent+0x479/0xd20 fs/ext4/extents.c:947
- ext4_ext_map_blocks+0x1a3/0x2680 fs/ext4/extents.c:4182
- ext4_map_blocks+0x929/0x15a0 fs/ext4/inode.c:660
- ext4_iomap_begin_report+0x298/0x480 fs/ext4/inode.c:3569
- iomap_iter+0x3dd/0x1010 fs/iomap/iter.c:91
- iomap_fiemap+0x1f4/0x360 fs/iomap/fiemap.c:80
- ext4_fiemap+0x181/0x210 fs/ext4/extents.c:5051
- ioctl_fiemap.isra.0+0x1b4/0x290 fs/ioctl.c:220
- do_vfs_ioctl+0x31c/0x11a0 fs/ioctl.c:811
- __do_sys_ioctl fs/ioctl.c:869 [inline]
- __se_sys_ioctl+0xae/0x190 fs/ioctl.c:857
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x70/0x120 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x78/0xe2
+This works fine on a single device as the fence bo is shared
+across the devices, and mapped into each channels vma space,
+the channel offsets are therefore okay to pass between sides,
+so one channel can sync on the seqnos from the other by using
+the offset into it's vma.
 
-Allocated by task 232719:
- kasan_save_stack+0x22/0x50 mm/kasan/common.c:45
- kasan_set_track+0x25/0x30 mm/kasan/common.c:52
- __kasan_slab_alloc+0x87/0x90 mm/kasan/common.c:328
- kasan_slab_alloc include/linux/kasan.h:188 [inline]
- slab_post_alloc_hook mm/slab.h:768 [inline]
- slab_alloc_node mm/slub.c:3492 [inline]
- kmem_cache_alloc_node+0x1b8/0x6f0 mm/slub.c:3537
- bfq_get_queue+0x215/0x1f00 block/bfq-iosched.c:5869
- bfq_get_bfqq_handle_split+0x167/0x5f0 block/bfq-iosched.c:6776
- bfq_init_rq+0x13a4/0x17a0 block/bfq-iosched.c:6938
- bfq_insert_request.isra.0+0xe8/0xa20 block/bfq-iosched.c:6271
- bfq_insert_requests+0x27f/0x390 block/bfq-iosched.c:6323
- blk_mq_insert_request+0x290/0x8f0 block/blk-mq.c:2660
- blk_mq_submit_bio+0x1021/0x15e0 block/blk-mq.c:3143
- __submit_bio+0xa0/0x6b0 block/blk-core.c:639
- __submit_bio_noacct_mq block/blk-core.c:718 [inline]
- submit_bio_noacct_nocheck+0x5b7/0x810 block/blk-core.c:747
- submit_bio_noacct+0xca0/0x1990 block/blk-core.c:847
- __ext4_read_bh fs/ext4/super.c:205 [inline]
- ext4_read_bh_nowait+0x15a/0x240 fs/ext4/super.c:217
- ext4_read_bh_lock+0xac/0xd0 fs/ext4/super.c:242
- ext4_bread_batch+0x268/0x500 fs/ext4/inode.c:958
- __ext4_find_entry+0x448/0x10f0 fs/ext4/namei.c:1671
- ext4_lookup_entry fs/ext4/namei.c:1774 [inline]
- ext4_lookup.part.0+0x359/0x6f0 fs/ext4/namei.c:1842
- ext4_lookup+0x72/0x90 fs/ext4/namei.c:1839
- __lookup_slow+0x257/0x480 fs/namei.c:1696
- lookup_slow fs/namei.c:1713 [inline]
- walk_component+0x454/0x5c0 fs/namei.c:2004
- link_path_walk.part.0+0x773/0xda0 fs/namei.c:2331
- link_path_walk fs/namei.c:3826 [inline]
- path_openat+0x1b9/0x520 fs/namei.c:3826
- do_filp_open+0x1b7/0x400 fs/namei.c:3857
- do_sys_openat2+0x5dc/0x6e0 fs/open.c:1428
- do_sys_open fs/open.c:1443 [inline]
- __do_sys_openat fs/open.c:1459 [inline]
- __se_sys_openat fs/open.c:1454 [inline]
- __x64_sys_openat+0x148/0x200 fs/open.c:1454
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x70/0x120 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x78/0xe2
-
-Freed by task 232726:
- kasan_save_stack+0x22/0x50 mm/kasan/common.c:45
- kasan_set_track+0x25/0x30 mm/kasan/common.c:52
- kasan_save_free_info+0x2b/0x50 mm/kasan/generic.c:522
- ____kasan_slab_free mm/kasan/common.c:236 [inline]
- __kasan_slab_free+0x12a/0x1b0 mm/kasan/common.c:244
- kasan_slab_free include/linux/kasan.h:164 [inline]
- slab_free_hook mm/slub.c:1827 [inline]
- slab_free_freelist_hook mm/slub.c:1853 [inline]
- slab_free mm/slub.c:3820 [inline]
- kmem_cache_free+0x110/0x760 mm/slub.c:3842
- bfq_put_queue+0x6a7/0xfb0 block/bfq-iosched.c:5428
- bfq_forget_entity block/bfq-wf2q.c:634 [inline]
- bfq_put_idle_entity+0x142/0x240 block/bfq-wf2q.c:645
- bfq_forget_idle+0x189/0x1e0 block/bfq-wf2q.c:671
- bfq_update_vtime block/bfq-wf2q.c:1280 [inline]
- __bfq_lookup_next_entity block/bfq-wf2q.c:1374 [inline]
- bfq_lookup_next_entity+0x350/0x480 block/bfq-wf2q.c:1433
- bfq_update_next_in_service+0x1c0/0x4f0 block/bfq-wf2q.c:128
- bfq_deactivate_entity+0x10a/0x240 block/bfq-wf2q.c:1188
- bfq_deactivate_bfqq block/bfq-wf2q.c:1592 [inline]
- bfq_del_bfqq_busy+0x2e8/0xad0 block/bfq-wf2q.c:1659
- bfq_release_process_ref+0x1cc/0x220 block/bfq-iosched.c:3139
- bfq_split_bfqq+0x481/0xdf0 block/bfq-iosched.c:6754
- bfq_init_rq+0xf29/0x17a0 block/bfq-iosched.c:6934
- bfq_insert_request.isra.0+0xe8/0xa20 block/bfq-iosched.c:6271
- bfq_insert_requests+0x27f/0x390 block/bfq-iosched.c:6323
- blk_mq_insert_request+0x290/0x8f0 block/blk-mq.c:2660
- blk_mq_submit_bio+0x1021/0x15e0 block/blk-mq.c:3143
- __submit_bio+0xa0/0x6b0 block/blk-core.c:639
- __submit_bio_noacct_mq block/blk-core.c:718 [inline]
- submit_bio_noacct_nocheck+0x5b7/0x810 block/blk-core.c:747
- submit_bio_noacct+0xca0/0x1990 block/blk-core.c:847
- __ext4_read_bh fs/ext4/super.c:205 [inline]
- ext4_read_bh+0x15e/0x2e0 fs/ext4/super.c:230
- __read_extent_tree_block+0x304/0x6f0 fs/ext4/extents.c:567
- ext4_find_extent+0x479/0xd20 fs/ext4/extents.c:947
- ext4_ext_map_blocks+0x1a3/0x2680 fs/ext4/extents.c:4182
- ext4_map_blocks+0x929/0x15a0 fs/ext4/inode.c:660
- ext4_iomap_begin_report+0x298/0x480 fs/ext4/inode.c:3569
- iomap_iter+0x3dd/0x1010 fs/iomap/iter.c:91
- iomap_fiemap+0x1f4/0x360 fs/iomap/fiemap.c:80
- ext4_fiemap+0x181/0x210 fs/ext4/extents.c:5051
- ioctl_fiemap.isra.0+0x1b4/0x290 fs/ioctl.c:220
- do_vfs_ioctl+0x31c/0x11a0 fs/ioctl.c:811
- __do_sys_ioctl fs/ioctl.c:869 [inline]
- __se_sys_ioctl+0xae/0x190 fs/ioctl.c:857
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x70/0x120 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x78/0xe2
-
-commit 1ba0403ac644 ("block, bfq: fix uaf for accessing waker_bfqq after
-splitting") fix the problem that if waker_bfqq is in the merge chain,
-and current is the only procress, waker_bfqq can be freed from
-bfq_split_bfqq(). However, the case that waker_bfqq is not in the merge
-chain is missed, and if the procress reference of waker_bfqq is 0,
-waker_bfqq can be freed as well.
-
-Fix the problem by checking procress reference if waker_bfqq is not in
-the merge_chain.
-
-Fixes: 1ba0403ac644 ("block, bfq: fix uaf for accessing waker_bfqq after splitting")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20250108084148.1549973-1-yukuai1@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
+[ Fix compilation issue; remove version log from commit messsage.
+  - Danilo ]
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250109005553.623947-1-airlied@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/bfq-iosched.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_fence.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
-index c985c944fa65..d830ed169e65 100644
---- a/block/bfq-iosched.c
-+++ b/block/bfq-iosched.c
-@@ -6577,16 +6577,24 @@ static struct bfq_queue *bfq_waker_bfqq(struct bfq_queue *bfqq)
- 		if (new_bfqq == waker_bfqq) {
- 			/*
- 			 * If waker_bfqq is in the merge chain, and current
--			 * is the only procress.
-+			 * is the only process, waker_bfqq can be freed.
- 			 */
- 			if (bfqq_process_refs(waker_bfqq) == 1)
- 				return NULL;
--			break;
-+
-+			return waker_bfqq;
- 		}
+--- a/drivers/gpu/drm/nouveau/nouveau_fence.c
++++ b/drivers/gpu/drm/nouveau/nouveau_fence.c
+@@ -386,11 +386,13 @@ nouveau_fence_sync(struct nouveau_bo *nv
+ 			if (f) {
+ 				struct nouveau_channel *prev;
+ 				bool must_wait = true;
++				bool local;
  
- 		new_bfqq = new_bfqq->new_bfqq;
- 	}
- 
-+	/*
-+	 * If waker_bfqq is not in the merge chain, and it's procress reference
-+	 * is 0, waker_bfqq can be freed.
-+	 */
-+	if (bfqq_process_refs(waker_bfqq) == 0)
-+		return NULL;
-+
- 	return waker_bfqq;
- }
- 
--- 
-2.39.5
-
+ 				rcu_read_lock();
+ 				prev = rcu_dereference(f->channel);
+-				if (prev && (prev == chan ||
+-					     fctx->sync(f, prev, chan) == 0))
++				local = prev && prev->cli->drm == chan->cli->drm;
++				if (local && (prev == chan ||
++					      fctx->sync(f, prev, chan) == 0))
+ 					must_wait = false;
+ 				rcu_read_unlock();
+ 				if (!must_wait)
 
 
 
