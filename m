@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-109998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E2E3A184D2
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:12:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 231F9A18421
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:03:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06F3E3A5395
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:11:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 087F416230D
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:02:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54771F76D4;
-	Tue, 21 Jan 2025 18:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70AF1F472D;
+	Tue, 21 Jan 2025 18:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmBh7PVi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gh/RjwDh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717131F76D1;
-	Tue, 21 Jan 2025 18:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C191F542D;
+	Tue, 21 Jan 2025 18:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737483046; cv=none; b=HnKic3LjQ4+Fy6DYNHYl93qEqbNyu+KTStZwFnUW88YjPPpoyFsnanuFWqxoMajYd0X3iMJt8DVnBB93XctyclLF/dZ399MM4zaEHCL/wXzNKGCDOX8zBGFZWLs129l+vr/5AciIEWQ+lelqeI2uy+j4UutNGsYbpZ9RW6svrvg=
+	t=1737482568; cv=none; b=ZaV5h21gUR1DJMFGNkPbvJnBekhSTBr4o6JVqBa8vZCaK1iZvLvRmqBhGU0XqqOvVTPbuLVaaYwXJFYoLxLAx5vaBUYto2LJyL1Ta80zMDzpL/TugyOivlHdD0HD7F4GgkCLXPXqHLzoMnI/d/Yo8GPCo5se9hHdjc7RfTi7Dak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737483046; c=relaxed/simple;
-	bh=Z1z8SCfaUeiz0SpZjEe/5nPZS9/pTiXXeXhYoZfVLhU=;
+	s=arc-20240116; t=1737482568; c=relaxed/simple;
+	bh=5Dk/YAaRbnPPDLq41w//j5gVBUW0Rnk+weIlCbWsLok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rKPWouPrasmw8+80LzQxbNopoc7weAI+yIfXtNLOy4EgLSJHiD4v6mwbfFrsVkyRld1JmYBsBFhYs1aevyHjhjZL8MKgGknZciQjOTCryb1D1RJyJW4PeUtNAAOUetQJ5DEUDYFyx6FkV4OKtzroU7bCEXYsx/7ndPeAICPSJ7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmBh7PVi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6F2C4CEDF;
-	Tue, 21 Jan 2025 18:10:45 +0000 (UTC)
+	 MIME-Version; b=coNSck7K4vTP5wQReTDwLUahTogCT3IIS9MG+Hg6P1RPfCwOZ6hBOSveXa3Gk1HOOqOOLuN+52yAmab8btW1ByFCZsCmkUVkv+BTI5xofi0K4r7JvzRDcpTe9l6XVyhb9sINnZnVPwlSy9dM4UpqmcPUcXiaNuLFIjAvRSLi12I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gh/RjwDh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD532C4CEE0;
+	Tue, 21 Jan 2025 18:02:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737483045;
-	bh=Z1z8SCfaUeiz0SpZjEe/5nPZS9/pTiXXeXhYoZfVLhU=;
+	s=korg; t=1737482568;
+	bh=5Dk/YAaRbnPPDLq41w//j5gVBUW0Rnk+weIlCbWsLok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nmBh7PViTGa8qCJ85vHkNlv7qevnF3ABKIlFco+CvPeHJQQq9YxGlEN45UFAGtbrk
-	 gzE8NSgiiYmjDIePMRYT6cdtLkN1WbJ30IwJrejfZL0JZAFvBfVvlOfMlgAHsQPcSj
-	 cLbfZbpjwh4ig6+8TfWFZnaHeXsUSyfwLcgyesfQ=
+	b=gh/RjwDhnAZKGBpFYa5FbLvWApgQhuTnUS0D50uSeAxT5FGcFz+W9IfXbEud6Tgvs
+	 DXzxTv/N4X79cRUQjAmNz1vDx7vzgyGQiIRhMTxw+mGOCSWx/tJlE2D4SVQtCZZEmg
+	 RZAAjCXjm4557gPjZQXUV46FxHESZnl3SG+8b8Sg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2db3c7526ba68f4ea776@syzkaller.appspotmail.com,
-	Leo Stone <leocstone@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 097/127] hfs: Sanity check the root record
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.12 121/122] drm/amd/display: Validate mdoe under MST LCT=1 case as well
 Date: Tue, 21 Jan 2025 18:52:49 +0100
-Message-ID: <20250121174533.394513753@linuxfoundation.org>
+Message-ID: <20250121174537.725091763@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Stone <leocstone@gmail.com>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-[ Upstream commit b905bafdea21a75d75a96855edd9e0b6051eee30 ]
+commit b5cd418f016fb801be413fd52fe4711d2d13018c upstream.
 
-In the syzbot reproducer, the hfs_cat_rec for the root dir has type
-HFS_CDR_FIL after being read with hfs_bnode_read() in hfs_super_fill().
-This indicates it should be used as an hfs_cat_file, which is 102 bytes.
-Only the first 70 bytes of that struct are initialized, however,
-because the entrylength passed into hfs_bnode_read() is still the length of
-a directory record. This causes uninitialized values to be used later on,
-when the hfs_cat_rec union is treated as the larger hfs_cat_file struct.
+[Why & How]
+Currently in dm_dp_mst_is_port_support_mode(), when valdidating mode
+under dsc decoding at the last DP link config, we only validate the
+case when there is an UFP. However, if the MSTB LCT=1, there is no
+UFP.
 
-Add a check to make sure the retrieved record has the correct type
-for the root directory (HFS_CDR_DIR), and make sure we load the correct
-number of bytes for a directory record.
+Under this case, use root_link_bw_in_kbps as the available bw to
+compare.
 
-Reported-by: syzbot+2db3c7526ba68f4ea776@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2db3c7526ba68f4ea776
-Tested-by: syzbot+2db3c7526ba68f4ea776@syzkaller.appspotmail.com
-Tested-by: Leo Stone <leocstone@gmail.com>
-Signed-off-by: Leo Stone <leocstone@gmail.com>
-Link: https://lore.kernel.org/r/20241201051420.77858-1-leocstone@gmail.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3720
+Fixes: fa57924c76d9 ("drm/amd/display: Refactor function dm_dp_mst_is_port_support_mode()")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit a04d9534a8a75b2806c5321c387be450c364b55e)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hfs/super.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |   14 +++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/fs/hfs/super.c b/fs/hfs/super.c
-index 12d9bae393631..699dd94b1a864 100644
---- a/fs/hfs/super.c
-+++ b/fs/hfs/super.c
-@@ -418,11 +418,13 @@ static int hfs_fill_super(struct super_block *sb, void *data, int silent)
- 		goto bail_no_root;
- 	res = hfs_cat_find_brec(sb, HFS_ROOT_CNID, &fd);
- 	if (!res) {
--		if (fd.entrylength > sizeof(rec) || fd.entrylength < 0) {
-+		if (fd.entrylength != sizeof(rec.dir)) {
- 			res =  -EIO;
- 			goto bail_hfs_find;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -1831,11 +1831,15 @@ enum dc_status dm_dp_mst_is_port_support
+ 			if (immediate_upstream_port) {
+ 				virtual_channel_bw_in_kbps = kbps_from_pbn(immediate_upstream_port->full_pbn);
+ 				virtual_channel_bw_in_kbps = min(root_link_bw_in_kbps, virtual_channel_bw_in_kbps);
+-				if (bw_range.min_kbps > virtual_channel_bw_in_kbps) {
+-					DRM_DEBUG_DRIVER("MST_DSC dsc decode at last link."
+-							 "Max dsc compression can't fit into MST available bw\n");
+-					return DC_FAIL_BANDWIDTH_VALIDATE;
+-				}
++			} else {
++				/* For topology LCT 1 case - only one mstb*/
++				virtual_channel_bw_in_kbps = root_link_bw_in_kbps;
++			}
++
++			if (bw_range.min_kbps > virtual_channel_bw_in_kbps) {
++				DRM_DEBUG_DRIVER("MST_DSC dsc decode at last link."
++						 "Max dsc compression can't fit into MST available bw\n");
++				return DC_FAIL_BANDWIDTH_VALIDATE;
+ 			}
  		}
- 		hfs_bnode_read(fd.bnode, &rec, fd.entryoffset, fd.entrylength);
-+		if (rec.type != HFS_CDR_DIR)
-+			res = -EIO;
- 	}
- 	if (res)
- 		goto bail_hfs_find;
--- 
-2.39.5
-
+ 
 
 
 
