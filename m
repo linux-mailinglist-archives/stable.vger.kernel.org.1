@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-109821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB6EDA18411
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:03:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE83DA184D4
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:12:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06243188AAAE
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:02:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 013E1188016B
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF6DE571;
-	Tue, 21 Jan 2025 18:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F851F55E3;
+	Tue, 21 Jan 2025 18:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWdKT9o4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yBzlZwhI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5EA1F4275;
-	Tue, 21 Jan 2025 18:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866491F666B;
+	Tue, 21 Jan 2025 18:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482537; cv=none; b=uyDerZJmq17Vw495yVrvJy2y4oUuHTeJ5F8ZkbRDm+GdckePwn3o1JN9V3BfgL96U9xzUL2DZZ64uwH7PDLqNvHr5nP1l9RXgVhjHGkFAJD+PBPo9j9AZ4KOJLvlIzXIuW4P1hkloPmy2Zj34Rq2ZhZ36rL9msBdxN1LkkT0xy4=
+	t=1737483020; cv=none; b=IFu7cQxnHjWLQ2exNuUZq4YWp4WsUWaEkvhe+OWE6qNSZy4taWYUsXOfiIOwK4EvkxululvOGr1us6+N6V7aeCED2JL3tKphMZzAPRTjpaxz4GESjyUAYirOgG/7Bt6VOp1bly8pgeJ+DXYG9ci0dok66ubObGctZpLL81VbHvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482537; c=relaxed/simple;
-	bh=FjLuERB5l8DH0xmfp20NRH2wrtDDfhjnXP9Re8i90x0=;
+	s=arc-20240116; t=1737483020; c=relaxed/simple;
+	bh=4BG//LDR/3M++WMKVXGPZg9ZLKEtaDT0COUdka2HltY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nXZqfLwU0RIIyx2UUXAtkvQvy6NLsqrthRowDKNMWWNBkEmIlevX3w6RbFeUFsz4ggTXqhYi/yqKntEaotKK6/DpuNz3/M4u8GqPBQdINq63mHPr5d6Hfzu2wRJogBUIl+QfxWXnQyF4Stywi6rAVeebxPocKD9cOEi7xwwXfg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XWdKT9o4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89948C4CEDF;
-	Tue, 21 Jan 2025 18:02:16 +0000 (UTC)
+	 MIME-Version; b=knBFMECO/K8iQpn2trDvxRxe+6uQVezZctUJ4DYbnjnx2Ph9Jyt6sgB/y7Tslu/CCC+zCHDCbSDniiijQ9pTUhU7bw3fmWshYaQHun+zQQIcuct9cvQc22bvuoYH7od5zrhbx5siII801Gq6FZGokWmrqYNUixVK3lLUQyuSEdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yBzlZwhI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7EBC4CEDF;
+	Tue, 21 Jan 2025 18:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482536;
-	bh=FjLuERB5l8DH0xmfp20NRH2wrtDDfhjnXP9Re8i90x0=;
+	s=korg; t=1737483020;
+	bh=4BG//LDR/3M++WMKVXGPZg9ZLKEtaDT0COUdka2HltY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XWdKT9o4IyRpq/rMEIJFNWhBZeYcA2XE+Jr64W3Z59v+GLJBixoRfyO8/JzLQPzV2
-	 hQiZQ/yQ3ck45srwzSV8WxC3Q0tlBC9xsBW+94xpp6yZcArRLDpknFJLc3SxhtjKgy
-	 keFtzAyU/uVseSlSSa5vjyZwKRS1hQ7SFUijpm00=
+	b=yBzlZwhIlUdKQY7QXOaRaUAMYPfr8hyZLjJsHzXIz+jhurzFTOm8iIzS9HnYfK4ND
+	 /VvhQrwgfh+onIqMnPbZKMBhra5Z+OXkH1728kfTd6ewCaEUCpyn1ZukSoS2R5v+Vf
+	 6XsHC9r9mWJ2JRcO60Ju4/90FzjrRHvaxb0AGRgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
-	Michal Mrozek <michal.mrozek@intel.com>,
-	Paulo Zanoni <paulo.r.zanoni@intel.com>,
-	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Stuart Summers <stuart.summers@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH 6.12 111/122] drm/xe: Mark ComputeCS read mode as UC on iGPU
-Date: Tue, 21 Jan 2025 18:52:39 +0100
-Message-ID: <20250121174537.329748707@linuxfoundation.org>
+	Aharon Landau <aharonl@nvidia.com>,
+	Maor Gottlieb <maorg@nvidia.com>,
+	Mark Zhang <markzhang@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 088/127] net/mlx5: Add priorities for counters in RDMA namespaces
+Date: Tue, 21 Jan 2025 18:52:40 +0100
+Message-ID: <20250121174533.045413855@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +62,160 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Aharon Landau <aharonl@nvidia.com>
 
-commit b1231ff7ea0689d04040a44864c265bc11612fa8 upstream.
+[ Upstream commit b8dfed636fc6239396c3a2ae5f812505906cf215 ]
 
-RING_CMD_CCTL read index should be UC on iGPU parts due to L3 caching
-structure. Having this as WB blocks ULLS from being enabled. Change to
-UC to unblock ULLS on iGPU.
+Add additional flow steering priorities in the RDMA namespace.
+This allows adding flow counters to count filtered RDMA traffic and then
+continue processing in the regular RDMA steering flow.
 
-v2:
- - Drop internal communications commnet, bspec is updated
-
-Cc: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-Cc: Michal Mrozek <michal.mrozek@intel.com>
-Cc: Paulo Zanoni <paulo.r.zanoni@intel.com>
-Cc: José Roberto de Souza <jose.souza@intel.com>
-Cc: stable@vger.kernel.org
-Fixes: 328e089bfb37 ("drm/xe: Leverage ComputeCS read L3 caching")
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Acked-by: Michal Mrozek <michal.mrozek@intel.com>
-Reviewed-by: Stuart Summers <stuart.summers@intel.com>
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250114002507.114087-1-matthew.brost@intel.com
-(cherry picked from commit 758debf35b9cda5450e40996991a6e4b222899bd)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Aharon Landau <aharonl@nvidia.com>
+Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
+Signed-off-by: Mark Zhang <markzhang@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Stable-dep-of: c08d3e62b2e7 ("net/mlx5: Fix RDMA TX steering prio")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_hw_engine.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/mellanox/mlx5/core/fs_core.c | 54 ++++++++++++++++---
+ include/linux/mlx5/device.h                   |  2 +
+ include/linux/mlx5/fs.h                       |  2 +
+ 3 files changed, 50 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_hw_engine.c
-+++ b/drivers/gpu/drm/xe/xe_hw_engine.c
-@@ -417,7 +417,7 @@ hw_engine_setup_default_state(struct xe_
- 	 * Bspec: 72161
- 	 */
- 	const u8 mocs_write_idx = gt->mocs.uc_index;
--	const u8 mocs_read_idx = hwe->class == XE_ENGINE_CLASS_COMPUTE &&
-+	const u8 mocs_read_idx = hwe->class == XE_ENGINE_CLASS_COMPUTE && IS_DGFX(xe) &&
- 				 (GRAPHICS_VER(xe) >= 20 || xe->info.platform == XE_PVC) ?
- 				 gt->mocs.wb_index : gt->mocs.uc_index;
- 	u32 ring_cmd_cctl_val = REG_FIELD_PREP(CMD_CCTL_WRITE_OVERRIDE_MASK, mocs_write_idx) |
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+index 665619ce46746..54409a9307c2d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+@@ -99,6 +99,9 @@
+ #define LEFTOVERS_NUM_LEVELS 1
+ #define LEFTOVERS_NUM_PRIOS 1
+ 
++#define RDMA_RX_COUNTERS_PRIO_NUM_LEVELS 1
++#define RDMA_TX_COUNTERS_PRIO_NUM_LEVELS 1
++
+ #define BY_PASS_PRIO_NUM_LEVELS 1
+ #define BY_PASS_MIN_LEVEL (ETHTOOL_MIN_LEVEL + MLX5_BY_PASS_NUM_PRIOS +\
+ 			   LEFTOVERS_NUM_PRIOS)
+@@ -206,34 +209,63 @@ static struct init_tree_node egress_root_fs = {
+ 	}
+ };
+ 
+-#define RDMA_RX_BYPASS_PRIO 0
+-#define RDMA_RX_KERNEL_PRIO 1
++enum {
++	RDMA_RX_COUNTERS_PRIO,
++	RDMA_RX_BYPASS_PRIO,
++	RDMA_RX_KERNEL_PRIO,
++};
++
++#define RDMA_RX_BYPASS_MIN_LEVEL MLX5_BY_PASS_NUM_REGULAR_PRIOS
++#define RDMA_RX_KERNEL_MIN_LEVEL (RDMA_RX_BYPASS_MIN_LEVEL + 1)
++#define RDMA_RX_COUNTERS_MIN_LEVEL (RDMA_RX_KERNEL_MIN_LEVEL + 2)
++
+ static struct init_tree_node rdma_rx_root_fs = {
+ 	.type = FS_TYPE_NAMESPACE,
+-	.ar_size = 2,
++	.ar_size = 3,
+ 	.children = (struct init_tree_node[]) {
++		[RDMA_RX_COUNTERS_PRIO] =
++		ADD_PRIO(0, RDMA_RX_COUNTERS_MIN_LEVEL, 0,
++			 FS_CHAINING_CAPS,
++			 ADD_NS(MLX5_FLOW_TABLE_MISS_ACTION_DEF,
++				ADD_MULTIPLE_PRIO(MLX5_RDMA_RX_NUM_COUNTERS_PRIOS,
++						  RDMA_RX_COUNTERS_PRIO_NUM_LEVELS))),
+ 		[RDMA_RX_BYPASS_PRIO] =
+-		ADD_PRIO(0, MLX5_BY_PASS_NUM_REGULAR_PRIOS, 0,
++		ADD_PRIO(0, RDMA_RX_BYPASS_MIN_LEVEL, 0,
+ 			 FS_CHAINING_CAPS,
+ 			 ADD_NS(MLX5_FLOW_TABLE_MISS_ACTION_DEF,
+ 				ADD_MULTIPLE_PRIO(MLX5_BY_PASS_NUM_REGULAR_PRIOS,
+ 						  BY_PASS_PRIO_NUM_LEVELS))),
+ 		[RDMA_RX_KERNEL_PRIO] =
+-		ADD_PRIO(0, MLX5_BY_PASS_NUM_REGULAR_PRIOS + 1, 0,
++		ADD_PRIO(0, RDMA_RX_KERNEL_MIN_LEVEL, 0,
+ 			 FS_CHAINING_CAPS,
+ 			 ADD_NS(MLX5_FLOW_TABLE_MISS_ACTION_SWITCH_DOMAIN,
+ 				ADD_MULTIPLE_PRIO(1, 1))),
+ 	}
+ };
+ 
++enum {
++	RDMA_TX_COUNTERS_PRIO,
++	RDMA_TX_BYPASS_PRIO,
++};
++
++#define RDMA_TX_BYPASS_MIN_LEVEL MLX5_BY_PASS_NUM_PRIOS
++#define RDMA_TX_COUNTERS_MIN_LEVEL (RDMA_TX_BYPASS_MIN_LEVEL + 1)
++
+ static struct init_tree_node rdma_tx_root_fs = {
+ 	.type = FS_TYPE_NAMESPACE,
+-	.ar_size = 1,
++	.ar_size = 2,
+ 	.children = (struct init_tree_node[]) {
+-		ADD_PRIO(0, MLX5_BY_PASS_NUM_PRIOS, 0,
++		[RDMA_TX_COUNTERS_PRIO] =
++		ADD_PRIO(0, RDMA_TX_COUNTERS_MIN_LEVEL, 0,
++			 FS_CHAINING_CAPS,
++			 ADD_NS(MLX5_FLOW_TABLE_MISS_ACTION_DEF,
++				ADD_MULTIPLE_PRIO(MLX5_RDMA_TX_NUM_COUNTERS_PRIOS,
++						  RDMA_TX_COUNTERS_PRIO_NUM_LEVELS))),
++		[RDMA_TX_BYPASS_PRIO] =
++		ADD_PRIO(0, RDMA_TX_BYPASS_MIN_LEVEL, 0,
+ 			 FS_CHAINING_CAPS_RDMA_TX,
+ 			 ADD_NS(MLX5_FLOW_TABLE_MISS_ACTION_DEF,
+-				ADD_MULTIPLE_PRIO(MLX5_BY_PASS_NUM_PRIOS,
++				ADD_MULTIPLE_PRIO(RDMA_TX_BYPASS_MIN_LEVEL,
+ 						  BY_PASS_PRIO_NUM_LEVELS))),
+ 	}
+ };
+@@ -2319,6 +2351,12 @@ struct mlx5_flow_namespace *mlx5_get_flow_namespace(struct mlx5_core_dev *dev,
+ 		prio = RDMA_RX_KERNEL_PRIO;
+ 	} else if (type == MLX5_FLOW_NAMESPACE_RDMA_TX) {
+ 		root_ns = steering->rdma_tx_root_ns;
++	} else if (type == MLX5_FLOW_NAMESPACE_RDMA_RX_COUNTERS) {
++		root_ns = steering->rdma_rx_root_ns;
++		prio = RDMA_RX_COUNTERS_PRIO;
++	} else if (type == MLX5_FLOW_NAMESPACE_RDMA_TX_COUNTERS) {
++		root_ns = steering->rdma_tx_root_ns;
++		prio = RDMA_TX_COUNTERS_PRIO;
+ 	} else { /* Must be NIC RX */
+ 		root_ns = steering->root_ns;
+ 		prio = type;
+diff --git a/include/linux/mlx5/device.h b/include/linux/mlx5/device.h
+index 1bb4945885cec..476d8fd5a7e5b 100644
+--- a/include/linux/mlx5/device.h
++++ b/include/linux/mlx5/device.h
+@@ -1462,6 +1462,8 @@ static inline u16 mlx5_to_sw_pkey_sz(int pkey_sz)
+ 	return MLX5_MIN_PKEY_TABLE_SIZE << pkey_sz;
+ }
+ 
++#define MLX5_RDMA_RX_NUM_COUNTERS_PRIOS 2
++#define MLX5_RDMA_TX_NUM_COUNTERS_PRIOS 1
+ #define MLX5_BY_PASS_NUM_REGULAR_PRIOS 16
+ #define MLX5_BY_PASS_NUM_DONT_TRAP_PRIOS 16
+ #define MLX5_BY_PASS_NUM_MULTICAST_PRIOS 1
+diff --git a/include/linux/mlx5/fs.h b/include/linux/mlx5/fs.h
+index 0e43f0fb6d73a..29db7677827d7 100644
+--- a/include/linux/mlx5/fs.h
++++ b/include/linux/mlx5/fs.h
+@@ -83,6 +83,8 @@ enum mlx5_flow_namespace_type {
+ 	MLX5_FLOW_NAMESPACE_RDMA_RX,
+ 	MLX5_FLOW_NAMESPACE_RDMA_RX_KERNEL,
+ 	MLX5_FLOW_NAMESPACE_RDMA_TX,
++	MLX5_FLOW_NAMESPACE_RDMA_RX_COUNTERS,
++	MLX5_FLOW_NAMESPACE_RDMA_TX_COUNTERS,
+ };
+ 
+ enum {
+-- 
+2.39.5
+
 
 
 
