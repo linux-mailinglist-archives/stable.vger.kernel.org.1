@@ -1,65 +1,55 @@
-Return-Path: <stable+bounces-109702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31471A18385
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE92A18426
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:04:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98FDD188CC46
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:57:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C25D1883261
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:03:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A09291F7092;
-	Tue, 21 Jan 2025 17:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4801F5404;
+	Tue, 21 Jan 2025 18:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h16aiutY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zodxX1ME"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E99E185935;
-	Tue, 21 Jan 2025 17:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4191F472D;
+	Tue, 21 Jan 2025 18:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482190; cv=none; b=QAHSDX2QIBfFfC5xkilSwG7MR7TJPICGnCl9zKMdcl1ZyeF8aX7gZg5+NnUu3edCDbuKy5QPrr2zRRc+ASckdLyEeMCtOOFIa/nh3Q+//dFOyg844LW2RwIczVQ1z6mBl4Z2iEh1nokUp9/sjDTxPmbGO9RJNagLKgUO2Gh2OWc=
+	t=1737482589; cv=none; b=jI6GXcRl8ZV3iEtHBFr199ISp3UvuDbRBO24mTgsQMsuxS1O4JKwvYejw23EZwVeQkdz3vkfyrWHifhdAF5FgqeUCcfaSbQKgTyISioK28xNcuPV7osn7RKN4txc8O9P/USOR4HwnUmHjXqFFKfGuSxF42ozQisnyyJmWp2aoAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482190; c=relaxed/simple;
-	bh=gaXI52KyD0JZTUtOwW8lRcQSu/zKHs74tXY+TLqD1Pw=;
+	s=arc-20240116; t=1737482589; c=relaxed/simple;
+	bh=OahGTnNgpmzQEq/jXTq6ADvDp/X7D2pIuw4VROCR3C0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sln5UwWVznTSmBX2u2FowXu1yVhg3mjmFbL6HZYDbc9vo6S62Jrg8VSn/I9wQUR51Ehh/qjuphrOROMLElQ2QJrx+UDxpVcnOnMLKHpTBTH9INzfaPp+gVNaV7lHyksI1AoAzKDGEnLXsotfx5WiBVT6d1Lueac2GXIjwyIYcHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h16aiutY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50DF1C4CEDF;
-	Tue, 21 Jan 2025 17:56:29 +0000 (UTC)
+	 MIME-Version; b=QQT+ilyZAImwptV3C20MvLGVEPjJqkjvanT41ketrwRCXrAiOwpoAkjDYoQz+BGbk6gdWzlDayMimVh4CynlQ6pQskZndqjO9yLLWB0HM00X4GlihLHcoZpf5jGFe8gnjWQGCgFDK7HNSLpeBOfBWk7wjVDbrWOgr6I6Xwnbl8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zodxX1ME; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83632C4CEDF;
+	Tue, 21 Jan 2025 18:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482189;
-	bh=gaXI52KyD0JZTUtOwW8lRcQSu/zKHs74tXY+TLqD1Pw=;
+	s=korg; t=1737482588;
+	bh=OahGTnNgpmzQEq/jXTq6ADvDp/X7D2pIuw4VROCR3C0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h16aiutYSne+wRaErrUIPETJiATh3bEaBb7tbFIsV7HJ5WQUrt3C8oQHSa8Ky8JNE
-	 wFElZXC+HvoxiSyxOZtr5EyTTIxGpHNuxeZ4m/QM61wZKY2YriE6HvftWZRBNZ5oWb
-	 bNnzyc1sIf8QhcZS2NpCEXjge1LrU9FFS/sltD3M=
+	b=zodxX1MEND6bBVsiOdNidJn+frs9mZdUwU8rxLEPmSuYWKkAJPTQLCD2DVVgEmAXO
+	 NN1GDZzmZQDGcKYp8s11IMFRPw2soU0WLJb4UfvvH3NDoRX/AISSRYHj/VPQlHesV0
+	 ZSxbvs7qje7kKm/VKSH7M4KXhcMdzidultvxjXUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohammed Anees <pvmohammedanees2003@gmail.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	syzbot+e0055ea09f1f5e6fabdd@syzkaller.appspotmail.com,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Xingyu Li <xli399@ucr.edu>,
-	Zheng Zhang <zzhan173@ucr.edu>
-Subject: [PATCH 6.6 65/72] ocfs2: fix deadlock in ocfs2_get_system_file_inode
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.12 103/122] irqchip: Plug a OF node reference leak in platform_irqchip_probe()
 Date: Tue, 21 Jan 2025 18:52:31 +0100
-Message-ID: <20250121174525.940188035@linuxfoundation.org>
+Message-ID: <20250121174537.009729712@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,83 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohammed Anees <pvmohammedanees2003@gmail.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-commit 7bf1823e010e8db2fb649c790bd1b449a75f52d8 upstream.
+commit 9322d1915f9d976ee48c09d800fbd5169bc2ddcc upstream.
 
-syzbot has found a possible deadlock in ocfs2_get_system_file_inode [1].
+platform_irqchip_probe() leaks a OF node when irq_init_cb() fails. Fix it
+by declaring par_np with the __free(device_node) cleanup construct.
 
-The scenario is depicted here,
+This bug was found by an experimental static analysis tool that I am
+developing.
 
-	CPU0					CPU1
-lock(&ocfs2_file_ip_alloc_sem_key);
-                               lock(&osb->system_file_mutex);
-                               lock(&ocfs2_file_ip_alloc_sem_key);
-lock(&osb->system_file_mutex);
-
-The function calls which could lead to this are:
-
-CPU0
-ocfs2_mknod - lock(&ocfs2_file_ip_alloc_sem_key);
-.
-.
-.
-ocfs2_get_system_file_inode - lock(&osb->system_file_mutex);
-
-CPU1 -
-ocfs2_fill_super - lock(&osb->system_file_mutex);
-.
-.
-.
-ocfs2_read_virt_blocks - lock(&ocfs2_file_ip_alloc_sem_key);
-
-This issue can be resolved by making the down_read -> down_read_try
-in the ocfs2_read_virt_blocks.
-
-[1] https://syzkaller.appspot.com/bug?extid=e0055ea09f1f5e6fabdd
-
-Link: https://lkml.kernel.org/r/20240924093257.7181-1-pvmohammedanees2003@gmail.com
-Signed-off-by: Mohammed Anees <pvmohammedanees2003@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reported-by: <syzbot+e0055ea09f1f5e6fabdd@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=e0055ea09f1f5e6fabdd
-Tested-by: syzbot+e0055ea09f1f5e6fabdd@syzkaller.appspotmail.com
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: Xingyu Li <xli399@ucr.edu>
-Cc: Zheng Zhang <zzhan173@ucr.edu>
+Fixes: f8410e626569 ("irqchip: Add IRQCHIP_PLATFORM_DRIVER_BEGIN/END and IRQCHIP_MATCH helper macros")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241215033945.3414223-1-joe@pf.is.s.u-tokyo.ac.jp
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/extent_map.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/irqchip/irqchip.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/fs/ocfs2/extent_map.c
-+++ b/fs/ocfs2/extent_map.c
-@@ -973,7 +973,13 @@ int ocfs2_read_virt_blocks(struct inode
+--- a/drivers/irqchip/irqchip.c
++++ b/drivers/irqchip/irqchip.c
+@@ -35,11 +35,10 @@ void __init irqchip_init(void)
+ int platform_irqchip_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *np = pdev->dev.of_node;
+-	struct device_node *par_np = of_irq_find_parent(np);
++	struct device_node *par_np __free(device_node) = of_irq_find_parent(np);
+ 	of_irq_init_cb_t irq_init_cb = of_device_get_match_data(&pdev->dev);
+ 
+ 	if (!irq_init_cb) {
+-		of_node_put(par_np);
+ 		return -EINVAL;
  	}
  
- 	while (done < nr) {
--		down_read(&OCFS2_I(inode)->ip_alloc_sem);
-+		if (!down_read_trylock(&OCFS2_I(inode)->ip_alloc_sem)) {
-+			rc = -EAGAIN;
-+			mlog(ML_ERROR,
-+				 "Inode #%llu ip_alloc_sem is temporarily unavailable\n",
-+				 (unsigned long long)OCFS2_I(inode)->ip_blkno);
-+			break;
-+		}
- 		rc = ocfs2_extent_map_get_blocks(inode, v_block + done,
- 						 &p_block, &p_count, NULL);
- 		up_read(&OCFS2_I(inode)->ip_alloc_sem);
+@@ -55,7 +54,6 @@ int platform_irqchip_probe(struct platfo
+ 	 * interrupt controller can check for specific domains as necessary.
+ 	 */
+ 	if (par_np && !irq_find_matching_host(par_np, DOMAIN_BUS_ANY)) {
+-		of_node_put(par_np);
+ 		return -EPROBE_DEFER;
+ 	}
+ 
 
 
 
