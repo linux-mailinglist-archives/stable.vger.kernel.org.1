@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-109676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0845EA1835B
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6156CA18435
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:04:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0764188C28C
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 173673A12FB
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9F91F55ED;
-	Tue, 21 Jan 2025 17:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8901F542D;
+	Tue, 21 Jan 2025 18:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjO8O4fG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0v4DjqYW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999FF1F543D;
-	Tue, 21 Jan 2025 17:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84E71F0E36;
+	Tue, 21 Jan 2025 18:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482114; cv=none; b=QJ0m64+IFZLWlB7mjs3sO6Q3LHckg9DBauUF6q1bn9Z9wHsVZot08CjskTY3rpfXSohkNVJszk7mSGJG8WaLbrpts6tHUa/23Wg918dwppbW7iI70rjXT52oCs49TP9IasXlbU/Ur+31g8qqObGcuYH7Ttib+Y8775qaNJyz/uY=
+	t=1737482665; cv=none; b=JecyoQj12rUOMCY1Ad/RI5jaPVOOrrlanK2k8JqJaeHYZQzsTbNjKFfyxbsc/l8PX7lkph2LEwSnMvekQ54KyugILpz8qyS+ydqKb2X2qJFS/yAvpf+Qkpl36xbdsSHncBqDPMmm98lGtxmMRFmh8oF3VlHSGtYt5Y1G/YXSdxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482114; c=relaxed/simple;
-	bh=DvhX/w7a5vcw8ySerIyxmZY1mfWhDE+4lyR2i2kBSRg=;
+	s=arc-20240116; t=1737482665; c=relaxed/simple;
+	bh=D74e8k910RYjlaSRHO7qtvngjxm73lt2kGPKm2SDtzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NrqnYnS/myjip1mu8eXmDIFZZGlM45lRnTastwReJjQYmn8CnTYs6/7vsw7PTzc7E7r4hZavune7w4HLS7dJlNd77cdlSKmmupx8FgB+ZehPIg8bdumPe5Cya+GkuGdiftK47+xGKqROaNBa5ty29QmnJcyWPzqNaMQXcV3m3jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjO8O4fG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C6BC4CEDF;
-	Tue, 21 Jan 2025 17:55:13 +0000 (UTC)
+	 MIME-Version; b=CyIzB8/gv/eQYl3pvoR53KBQFYci5YRqGMYUVHz240qZE6NtGSsZxmyGSsM9Z9C9zVLJNaGcwHeXzPDRiiEK/qJ9Jt++yONa0vPfCD6NHT810oyONHP+1VbbV9h4lSIEgq0EPZnkm9SzjB9OYvgFbRA0CXGsybsxvI27tknHnEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0v4DjqYW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C89FC4CEDF;
+	Tue, 21 Jan 2025 18:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482114;
-	bh=DvhX/w7a5vcw8ySerIyxmZY1mfWhDE+4lyR2i2kBSRg=;
+	s=korg; t=1737482665;
+	bh=D74e8k910RYjlaSRHO7qtvngjxm73lt2kGPKm2SDtzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kjO8O4fGm17WT2gmPgXDUrXbY18WZivkypOthhiB/ZAsmsTOsUjzZdZ6BkROJ+Y62
-	 EEzZNK/1/ko2+g+O48KZJv7mBYaucicyxxuXWaSf1/peT2bkcs2pleDF33rB6T2ogH
-	 8ggrWbfX17N5cSuo/LODeHF6Skn1YNAERCd4AoeY=
+	b=0v4DjqYWeZx4C0zRT4K9O3Wpzo+RAHiBIOcGJxBi7+EQieIm81MGN419cvMW7UavT
+	 f1tCtoIIcUgq0k4PI1sGeP+xdE3iVjSvIDmmMMyabYxHSnNuxvYgB2GDlVj83QojSa
+	 p7pULz/kTo33ZvEVuCyPGpnidU5ldqVrnmUpTIfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 38/72] ALSA: hda/realtek: Add support for Ayaneo System using CS35L41 HDA
-Date: Tue, 21 Jan 2025 18:52:04 +0100
-Message-ID: <20250121174524.891953963@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Antoine Tenart <atenart@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 06/64] gtp: use exit_batch_rtnl() method
+Date: Tue, 21 Jan 2025 18:52:05 +0100
+Message-ID: <20250121174521.811557953@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
+References: <20250121174521.568417761@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit de5afaddd5a7af6b9c48900741b410ca03e453ae upstream.
+[ Upstream commit 6eedda01b2bfdcf427b37759e053dc27232f3af1 ]
 
-Add support for Ayaneo Portable Game System.
+exit_batch_rtnl() is called while RTNL is held,
+and devices to be unregistered can be queued in the dev_kill_list.
 
-System use 2 CS35L41 Amps with HDA, using Internal boost, with I2C
+This saves one rtnl_lock()/rtnl_unlock() pair per netns
+and one unregister_netdevice_many() call per netns.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250109165455.645810-1-sbinding@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Antoine Tenart <atenart@kernel.org>
+Link: https://lore.kernel.org/r/20240206144313.2050392-8-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 46841c7053e6 ("gtp: Use for_each_netdev_rcu() in gtp_genl_dump_pdp().")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/gtp.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10430,6 +10430,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x1f66, 0x0105, "Ayaneo Portable Game Player", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
- 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index 5e0332c9d0d73..0e1dfc6157224 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -1883,23 +1883,23 @@ static int __net_init gtp_net_init(struct net *net)
+ 	return 0;
+ }
+ 
+-static void __net_exit gtp_net_exit(struct net *net)
++static void __net_exit gtp_net_exit_batch_rtnl(struct list_head *net_list,
++					       struct list_head *dev_to_kill)
+ {
+-	struct gtp_net *gn = net_generic(net, gtp_net_id);
+-	struct gtp_dev *gtp;
+-	LIST_HEAD(list);
++	struct net *net;
+ 
+-	rtnl_lock();
+-	list_for_each_entry(gtp, &gn->gtp_dev_list, list)
+-		gtp_dellink(gtp->dev, &list);
++	list_for_each_entry(net, net_list, exit_list) {
++		struct gtp_net *gn = net_generic(net, gtp_net_id);
++		struct gtp_dev *gtp;
+ 
+-	unregister_netdevice_many(&list);
+-	rtnl_unlock();
++		list_for_each_entry(gtp, &gn->gtp_dev_list, list)
++			gtp_dellink(gtp->dev, dev_to_kill);
++	}
+ }
+ 
+ static struct pernet_operations gtp_net_ops = {
+ 	.init	= gtp_net_init,
+-	.exit	= gtp_net_exit,
++	.exit_batch_rtnl = gtp_net_exit_batch_rtnl,
+ 	.id	= &gtp_net_id,
+ 	.size	= sizeof(struct gtp_net),
+ };
+-- 
+2.39.5
+
 
 
 
