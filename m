@@ -1,193 +1,392 @@
-Return-Path: <stable+bounces-109927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 759C4A18491
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:09:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2FF8A18522
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:21:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7ADFA18827CD
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:07:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4ED50188781A
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7EA51F76BB;
-	Tue, 21 Jan 2025 18:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F4619F424;
+	Tue, 21 Jan 2025 18:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LZU+e32X"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0VeDm8Ll"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCDC1F7574
-	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 18:07:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFF71714B3
+	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 18:21:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482843; cv=none; b=tGnL85dkuaE2by05aeAATNoDaaJ6YVktjHzI9XC2thKPNryTxkcvRCbIRbS6J9BIGM/RXNGYnybFQUWERBBClKkOg2msSr4LNc9w+gwSkdlrf0TZqFmvyFUB/psArw+l78DfL8tIsREZCBSfjpkdMN+O8DRFgv/rVm9oI/v13OA=
+	t=1737483682; cv=none; b=L3HlzCtNwkkUu/NuIk8hGjjMjOUx6UWtngpVpLKbRIRSkQhhQ8YCTBRjdXZcja4FclO9M2VG8np2nTIgHM0DEaH7UmqQ5l7B2MnXCnBK9wlJdujrgG3Nz75muJV1spIfVcPxjWUvPJJ5IciqlQc06EAOeTqaL4wk4GQfgXNxYTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482843; c=relaxed/simple;
-	bh=IyHg7X+QkwUdqUMVJBD1PeK6UL9Y4rVeMZ0OOoNAh6s=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=p/nlX/N0pT5lPbMPC+oH6yPgtjgF7/wd1xdyHbLUrOZPiti1/452V2OgWtgiagELTovASMOWq5le2RyxFHpvKpCcBT5eMh5j5rOoFB3z/2IEzP2w/OZZbOxuU9IO25fq3SdJMNPoIh+2rVjbVkzUkKbO+apwq265eHTn1KT8Oqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--yosryahmed.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LZU+e32X; arc=none smtp.client-ip=209.85.216.74
+	s=arc-20240116; t=1737483682; c=relaxed/simple;
+	bh=j8z5TJxGfqbdgrbwg62tJeVyyOpLB+Oen3Ogt6ggOX0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=af3Ux1ezOVKWTR5reLyygAE8sK7RyfQx2Aq++Zd2yCqufQRprdwR12KNNB/9SHCEM5b+DrmbnIBy6w6xmcRbiXeESxFHYK7BWIrZSaU9eaM95OFmO1mTUmbhG+fAWMNLEx5KO+acvDVf1KlSdEmqs+Tl8QI678RfPc/W2V14XLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0VeDm8Ll; arc=none smtp.client-ip=209.85.219.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--yosryahmed.bounces.google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2ef728e36d5so11069078a91.3
-        for <stable@vger.kernel.org>; Tue, 21 Jan 2025 10:07:21 -0800 (PST)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-6dd5c544813so62786206d6.1
+        for <stable@vger.kernel.org>; Tue, 21 Jan 2025 10:21:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737482841; x=1738087641; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ixE5bJ2VBGNpKnJDfDYxHIngEU7l3RP52SCVRnLO0ss=;
-        b=LZU+e32XHdZAwNchFH1kDc5WVabpOnmoz6GBoeQSK7t1mPIE1d6SB7pz+Q8DpLNQw1
-         b+XXZ7gs70PvVmUjaTGShVNpPVlcqEsEB0BymT875PxM9K3inKR9EPq0ZorKSA71U3EN
-         oPY5XiEEGwYf70etZxlSrjkP8EyU6pgUfNE8IcRifme7VeIL0Sx6qwMrflwYC9XLXwiR
-         KFFlbeDhPzIwlp0C+fGjqBqx1pLjxrc11RkkEDLx81B0BtfKhZDyUaGLHh8MNu/VFkdb
-         j3/ou+4up/NVM0aE9XkK4uK03cBcpQkaB0JyEOHNKvqgN8aWYjsGLcnltNwSAEEa2y6K
-         eS5Q==
+        d=google.com; s=20230601; t=1737483679; x=1738088479; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PkA5SSuKYJ5f6lWdE4BUrHKd8uVmK9XKfQsEboi6hgs=;
+        b=0VeDm8LlkOvUTTKgPcmjFnmLCpcdyov0IOB71DeVT7HtE8q5hWCYpqyNfKb4wqpf6m
+         X59RaXBcs8nl76WWYVB3nCo/EDmfMIIezCJQMl6BkOwsb6263ZJGU4bs2SIJpG9xfk71
+         /XNmptD6UEp28Ly5/8ojpBr+ekLWFiCk/vSZAAdadZWPRyLR5L87qy0xLz5/RitSm1MS
+         gp2DwcQdsdYxNZZV8yKtpXats5sOBUdu1JeONgNVisuvmz3XjwZiwm6nlEYefFNKhsqM
+         9oU1KRdhQYfP15DieGYtqJO9+fTrdejC3lJMKvYefz0XdpyZ3wG4ffUOhunt1+lKAIY3
+         shEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737482841; x=1738087641;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ixE5bJ2VBGNpKnJDfDYxHIngEU7l3RP52SCVRnLO0ss=;
-        b=uCKnTIz0+WhYqSrlg4egZq0tY9v+iNdqVSq9U+9+QzIzDPfyILvK4JTgRS9cJ8hpEw
-         S3wVFhquPhwlMqACHAhSutIeSLpcwswAQUgOeD7vuMsucQVaYcpbggyvHSEn8zXiy7d4
-         vQeBqFbIzgMqCEYS+JkirDRP4uYiF2UFeWipA2HDxP165VmmgF5gNX+lBYHq9XIPodVT
-         blANqUd8L4v0ZIs6aWgDO6N6bzfRXBKr3ZL2gzUsEGj4R95GpDTmB/A+CQrpQxRD6P2V
-         Svgvu+DLU7mAR1kHzyLgFhtoeRfyT+dUxFWl9INMv21yA0t0lhxDI233TimQE+26orzX
-         b9hQ==
-X-Gm-Message-State: AOJu0Yy/8uBx1uau7yTJpBZeBgt9i/5/fzTIg41HO7/0lRDLeyryOEa/
-	C1EsSkXcwrfkEOGtRucM5hU9f1nx6Mpt71WSOwvWfQBGSIjcLcjYsjqv1kxdQj1IGjTSPI/yF2M
-	HWDFDy7JkvZI87X56qU++l1FxunVGlpz0LsbnrgAsXdFpKzlRUb3xbl88zrzhxyGlz41Bbn1LV+
-	hX1uSdn974f2YdLPipx5/zOrbUcuXqZ9oNNDIhP1pGxLPYsuT9WhJ5wQ==
-X-Google-Smtp-Source: AGHT+IEZHJFKNDfIrVW3lbenX+msigoipO84qsvIWekc+wDkUBFir/JADu2QB220/1mwUWFO7tY9W/emQqijJxrx
-X-Received: from pfbay27.prod.google.com ([2002:a05:6a00:301b:b0:72d:261f:af23])
- (user=yosryahmed job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:13a0:b0:72d:9ec5:922 with SMTP id d2e1a72fcca58-72dafbf04f5mr25883261b3a.24.1737482841034;
- Tue, 21 Jan 2025 10:07:21 -0800 (PST)
-Date: Tue, 21 Jan 2025 18:07:16 +0000
-In-Reply-To: <20250121180716.3590378-1-yosryahmed@google.com>
+        d=1e100.net; s=20230601; t=1737483679; x=1738088479;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PkA5SSuKYJ5f6lWdE4BUrHKd8uVmK9XKfQsEboi6hgs=;
+        b=G5iTs5e/A86jyOZbZKECrV28Kf5wk7olO32UsKCHBLeYku/dBMPiKab+TzHJasaqL0
+         WUv99epbSW8PNmW86qfauhLt0O5ppuSSz5ZZ99iXlpQ4/vKYlFpK5kEBHYo8qW7900lH
+         EV5oAkfOtle5n5vr7ubdeogMcb4snyqv8opztcmna80O5YxqLquhRj5j3PWHk8DxbQBQ
+         caPKk/BUYYqDSPc8qiqqMacvX6LxxIRLyB1hgXGlT0O4bEciyXF/zuHQ10ULQdKxqL/w
+         pWbzIQlkapVhmv4uM5wUvzVTX+2FIptwUMe0G4asL0+5YKHeN5eovLQmNQj0SPA0Mxb3
+         cvwA==
+X-Forwarded-Encrypted: i=1; AJvYcCV98cLtZfZ6zgSrH5duDpimixAHNSF9TxJ0Eml/8Sd+T+9mI+GRrGJB3VdxxgPPk/4Er1wMgdU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyiQsocUBpfHtl8P+sedxyTBoUDpDN8XXKQr9nam3hGFuyT2xRm
+	VmoQkLMMjozvLvzrDpYKw9qfy8tGzakJYxDVrVVjfpvboizRKwMFWr91L5xpS/lXOOFtTLgopc9
+	g/wT3WHoo+g05kiSwmW5CJ4NomHbf9mO6Ld4L
+X-Gm-Gg: ASbGncv4YfpLYCIO4JTVrsdmBSAxVkOVN5oNLXB7iSzheDIXUoCrw0aAeG1wDXfM5bv
+	5SVOT97Gc+NbPhgLZyfSM3nmrO+3MewMMba8z4m6qmhb1MxaI9+KRUBTmCXIJRvdHLeOigDwqa3
+	Ekv+5sSA==
+X-Google-Smtp-Source: AGHT+IFpijw7Nc4+bNvTAGOO8tVq4d6QgFfp0zvRE2y/qX8EC8r1ftGr33gMJhgH4JwPgbb92O+d2gPWqWzTjAwZ+ck=
+X-Received: by 2002:a05:6214:23ca:b0:6d8:9e16:d07e with SMTP id
+ 6a1803df08f44-6e1b21713b7mr238899956d6.4.1737483678942; Tue, 21 Jan 2025
+ 10:21:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <2025012011-urgency-shredder-353e@gregkh> <20250121180716.3590378-1-yosryahmed@google.com>
-X-Mailer: git-send-email 2.48.0.rc2.279.g1de40edade-goog
-Message-ID: <20250121180716.3590378-2-yosryahmed@google.com>
-Subject: [PATCH 6.12.y 2/2] mm: zswap: move allocations during CPU init
- outside the lock
+MIME-Version: 1.0
+References: <2025012012-capacity-swiftly-0214@gregkh>
+In-Reply-To: <2025012012-capacity-swiftly-0214@gregkh>
 From: Yosry Ahmed <yosryahmed@google.com>
-To: stable@vger.kernel.org
-Cc: Yosry Ahmed <yosryahmed@google.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>
+Date: Tue, 21 Jan 2025 10:20:42 -0800
+X-Gm-Features: AbW1kvbwlarFDEBzRbvLNRhKkDcwd2mTiPo17YEHE_BnJurRhnLUUTomQ19s21I
+Message-ID: <CAJD7tka_cQm2mpi7BPh9igxkuoaSOFiV_D6hfRR7Fpd55hORvw@mail.gmail.com>
+Subject: Re: FAILED: patch "[PATCH] mm: zswap: properly synchronize freeing
+ resources during CPU" failed to apply to 6.6-stable tree
+To: gregkh@linuxfoundation.org
+Cc: akpm@linux-foundation.org, baohua@kernel.org, chengming.zhou@linux.dev, 
+	hannes@cmpxchg.org, kanchana.p.sridhar@intel.com, nphamcs@gmail.com, 
+	samsun1006219@gmail.com, stable@vger.kernel.org, vitalywool@gmail.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In zswap_cpu_comp_prepare(), allocations are made and assigned to various
-members of acomp_ctx under acomp_ctx->mutex.  However, allocations may
-recurse into zswap through reclaim, trying to acquire the same mutex and
-deadlocking.
+On Mon, Jan 20, 2025 at 5:37=E2=80=AFAM <gregkh@linuxfoundation.org> wrote:
+>
+>
+> The patch below does not apply to the 6.6-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+>
+> To reproduce the conflict and resubmit, you may use the following command=
+s:
+>
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi=
+t/ linux-6.6.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 12dcb0ef540629a281533f9dedc1b6b8e14cfb65
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025012012-=
+capacity-swiftly-0214@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-Move the allocations before the mutex critical section.  Only the
-initialization of acomp_ctx needs to be done with the mutex held.
+I sent a backport for this (and the followup fix) to v6.12. However,
+for v6.6 (and previous kernels), it's more complicated. It's back when
+we had a separate hotplug notifier to allocate the buffers (when they
+were shared by different acomp_ctxs), and before a lot of refactoring
+was done (e.g. before writeback shared code with decompression).
 
-Link: https://lkml.kernel.org/r/20250113214458.2123410-1-yosryahmed@google.com
-Fixes: 12dcb0ef5406 ("mm: zswap: properly synchronize freeing resources during CPU hotunplug")
-Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
-Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 779b9955f64327c339a16f68055af98252fd3315)
----
- mm/zswap.c | 42 ++++++++++++++++++++++++------------------
- 1 file changed, 24 insertions(+), 18 deletions(-)
+Given that the problem has existed since v5.11 but was only reported
+now, and is a rare race condition with CPU hotunplug, I think it's not
+worth backporting the fix before v6.12 given the complexity.
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index db81fd7c3f1b2..7fefb2eb3fcd8 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -815,15 +815,15 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
- {
- 	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
- 	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
--	struct crypto_acomp *acomp;
--	struct acomp_req *req;
-+	struct crypto_acomp *acomp = NULL;
-+	struct acomp_req *req = NULL;
-+	u8 *buffer = NULL;
- 	int ret;
- 
--	mutex_lock(&acomp_ctx->mutex);
--	acomp_ctx->buffer = kmalloc_node(PAGE_SIZE * 2, GFP_KERNEL, cpu_to_node(cpu));
--	if (!acomp_ctx->buffer) {
-+	buffer = kmalloc_node(PAGE_SIZE * 2, GFP_KERNEL, cpu_to_node(cpu));
-+	if (!buffer) {
- 		ret = -ENOMEM;
--		goto buffer_fail;
-+		goto fail;
- 	}
- 
- 	acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
-@@ -831,21 +831,25 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
- 		pr_err("could not alloc crypto acomp %s : %ld\n",
- 				pool->tfm_name, PTR_ERR(acomp));
- 		ret = PTR_ERR(acomp);
--		goto acomp_fail;
-+		goto fail;
- 	}
--	acomp_ctx->acomp = acomp;
--	acomp_ctx->is_sleepable = acomp_is_async(acomp);
- 
--	req = acomp_request_alloc(acomp_ctx->acomp);
-+	req = acomp_request_alloc(acomp);
- 	if (!req) {
- 		pr_err("could not alloc crypto acomp_request %s\n",
- 		       pool->tfm_name);
- 		ret = -ENOMEM;
--		goto req_fail;
-+		goto fail;
- 	}
--	acomp_ctx->req = req;
- 
-+	/*
-+	 * Only hold the mutex after completing allocations, otherwise we may
-+	 * recurse into zswap through reclaim and attempt to hold the mutex
-+	 * again resulting in a deadlock.
-+	 */
-+	mutex_lock(&acomp_ctx->mutex);
- 	crypto_init_wait(&acomp_ctx->wait);
-+
- 	/*
- 	 * if the backend of acomp is async zip, crypto_req_done() will wakeup
- 	 * crypto_wait_req(); if the backend of acomp is scomp, the callback
-@@ -854,15 +858,17 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
- 	acomp_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
- 				   crypto_req_done, &acomp_ctx->wait);
- 
-+	acomp_ctx->buffer = buffer;
-+	acomp_ctx->acomp = acomp;
-+	acomp_ctx->is_sleepable = acomp_is_async(acomp);
-+	acomp_ctx->req = req;
- 	mutex_unlock(&acomp_ctx->mutex);
- 	return 0;
- 
--req_fail:
--	crypto_free_acomp(acomp_ctx->acomp);
--acomp_fail:
--	kfree(acomp_ctx->buffer);
--buffer_fail:
--	mutex_unlock(&acomp_ctx->mutex);
-+fail:
-+	if (acomp)
-+		crypto_free_acomp(acomp);
-+	kfree(buffer);
- 	return ret;
- }
- 
--- 
-2.48.0.rc2.279.g1de40edade-goog
+If anyone objects please let me know. Otherwise I won't send backports
+further back than v6.12.
 
+>
+> Possible dependencies:
+>
+>
+>
+> thanks,
+>
+> greg k-h
+>
+> ------------------ original commit in Linus's tree ------------------
+>
+> From 12dcb0ef540629a281533f9dedc1b6b8e14cfb65 Mon Sep 17 00:00:00 2001
+> From: Yosry Ahmed <yosryahmed@google.com>
+> Date: Wed, 8 Jan 2025 22:24:41 +0000
+> Subject: [PATCH] mm: zswap: properly synchronize freeing resources during=
+ CPU
+>  hotunplug
+>
+> In zswap_compress() and zswap_decompress(), the per-CPU acomp_ctx of the
+> current CPU at the beginning of the operation is retrieved and used
+> throughout.  However, since neither preemption nor migration are disabled=
+,
+> it is possible that the operation continues on a different CPU.
+>
+> If the original CPU is hotunplugged while the acomp_ctx is still in use,
+> we run into a UAF bug as some of the resources attached to the acomp_ctx
+> are freed during hotunplug in zswap_cpu_comp_dead() (i.e.
+> acomp_ctx.buffer, acomp_ctx.req, or acomp_ctx.acomp).
+>
+> The problem was introduced in commit 1ec3b5fe6eec ("mm/zswap: move to use
+> crypto_acomp API for hardware acceleration") when the switch to the
+> crypto_acomp API was made.  Prior to that, the per-CPU crypto_comp was
+> retrieved using get_cpu_ptr() which disables preemption and makes sure th=
+e
+> CPU cannot go away from under us.  Preemption cannot be disabled with the
+> crypto_acomp API as a sleepable context is needed.
+>
+> Use the acomp_ctx.mutex to synchronize CPU hotplug callbacks allocating
+> and freeing resources with compression/decompression paths.  Make sure
+> that acomp_ctx.req is NULL when the resources are freed.  In the
+> compression/decompression paths, check if acomp_ctx.req is NULL after
+> acquiring the mutex (meaning the CPU was offlined) and retry on the new
+> CPU.
+>
+> The initialization of acomp_ctx.mutex is moved from the CPU hotplug
+> callback to the pool initialization where it belongs (where the mutex is
+> allocated).  In addition to adding clarity, this makes sure that CPU
+> hotplug cannot reinitialize a mutex that is already locked by
+> compression/decompression.
+>
+> Previously a fix was attempted by holding cpus_read_lock() [1].  This
+> would have caused a potential deadlock as it is possible for code already
+> holding the lock to fall into reclaim and enter zswap (causing a
+> deadlock).  A fix was also attempted using SRCU for synchronization, but
+> Johannes pointed out that synchronize_srcu() cannot be used in CPU hotplu=
+g
+> notifiers [2].
+>
+> Alternative fixes that were considered/attempted and could have worked:
+> - Refcounting the per-CPU acomp_ctx. This involves complexity in
+>   handling the race between the refcount dropping to zero in
+>   zswap_[de]compress() and the refcount being re-initialized when the
+>   CPU is onlined.
+> - Disabling migration before getting the per-CPU acomp_ctx [3], but
+>   that's discouraged and is a much bigger hammer than needed, and could
+>   result in subtle performance issues.
+>
+> [1]https://lkml.kernel.org/20241219212437.2714151-1-yosryahmed@google.com=
+/
+> [2]https://lkml.kernel.org/20250107074724.1756696-2-yosryahmed@google.com=
+/
+> [3]https://lkml.kernel.org/20250107222236.2715883-2-yosryahmed@google.com=
+/
+>
+> [yosryahmed@google.com: remove comment]
+>   Link: https://lkml.kernel.org/r/CAJD7tkaxS1wjn+swugt8QCvQ-rVF5RZnjxwPGX=
+17k8x9zSManA@mail.gmail.com
+> Link: https://lkml.kernel.org/r/20250108222441.3622031-1-yosryahmed@googl=
+e.com
+> Fixes: 1ec3b5fe6eec ("mm/zswap: move to use crypto_acomp API for hardware=
+ acceleration")
+> Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
+> Reported-by: Johannes Weiner <hannes@cmpxchg.org>
+> Closes: https://lore.kernel.org/lkml/20241113213007.GB1564047@cmpxchg.org=
+/
+> Reported-by: Sam Sun <samsun1006219@gmail.com>
+> Closes: https://lore.kernel.org/lkml/CAEkJfYMtSdM5HceNsXUDf5haghD5+o2e7Qv=
+4OcuruL4tPg6OaQ@mail.gmail.com/
+> Cc: Barry Song <baohua@kernel.org>
+> Cc: Chengming Zhou <chengming.zhou@linux.dev>
+> Cc: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
+> Cc: Nhat Pham <nphamcs@gmail.com>
+> Cc: Vitaly Wool <vitalywool@gmail.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+>
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index f6316b66fb23..30f5a27a6862 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -251,7 +251,7 @@ static struct zswap_pool *zswap_pool_create(char *typ=
+e, char *compressor)
+>         struct zswap_pool *pool;
+>         char name[38]; /* 'zswap' + 32 char (max) num + \0 */
+>         gfp_t gfp =3D __GFP_NORETRY | __GFP_NOWARN | __GFP_KSWAPD_RECLAIM=
+;
+> -       int ret;
+> +       int ret, cpu;
+>
+>         if (!zswap_has_pool) {
+>                 /* if either are unset, pool initialization failed, and w=
+e
+> @@ -285,6 +285,9 @@ static struct zswap_pool *zswap_pool_create(char *typ=
+e, char *compressor)
+>                 goto error;
+>         }
+>
+> +       for_each_possible_cpu(cpu)
+> +               mutex_init(&per_cpu_ptr(pool->acomp_ctx, cpu)->mutex);
+> +
+>         ret =3D cpuhp_state_add_instance(CPUHP_MM_ZSWP_POOL_PREPARE,
+>                                        &pool->node);
+>         if (ret)
+> @@ -821,11 +824,12 @@ static int zswap_cpu_comp_prepare(unsigned int cpu,=
+ struct hlist_node *node)
+>         struct acomp_req *req;
+>         int ret;
+>
+> -       mutex_init(&acomp_ctx->mutex);
+> -
+> +       mutex_lock(&acomp_ctx->mutex);
+>         acomp_ctx->buffer =3D kmalloc_node(PAGE_SIZE * 2, GFP_KERNEL, cpu=
+_to_node(cpu));
+> -       if (!acomp_ctx->buffer)
+> -               return -ENOMEM;
+> +       if (!acomp_ctx->buffer) {
+> +               ret =3D -ENOMEM;
+> +               goto buffer_fail;
+> +       }
+>
+>         acomp =3D crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_no=
+de(cpu));
+>         if (IS_ERR(acomp)) {
+> @@ -855,12 +859,15 @@ static int zswap_cpu_comp_prepare(unsigned int cpu,=
+ struct hlist_node *node)
+>         acomp_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
+>                                    crypto_req_done, &acomp_ctx->wait);
+>
+> +       mutex_unlock(&acomp_ctx->mutex);
+>         return 0;
+>
+>  req_fail:
+>         crypto_free_acomp(acomp_ctx->acomp);
+>  acomp_fail:
+>         kfree(acomp_ctx->buffer);
+> +buffer_fail:
+> +       mutex_unlock(&acomp_ctx->mutex);
+>         return ret;
+>  }
+>
+> @@ -869,17 +876,45 @@ static int zswap_cpu_comp_dead(unsigned int cpu, st=
+ruct hlist_node *node)
+>         struct zswap_pool *pool =3D hlist_entry(node, struct zswap_pool, =
+node);
+>         struct crypto_acomp_ctx *acomp_ctx =3D per_cpu_ptr(pool->acomp_ct=
+x, cpu);
+>
+> +       mutex_lock(&acomp_ctx->mutex);
+>         if (!IS_ERR_OR_NULL(acomp_ctx)) {
+>                 if (!IS_ERR_OR_NULL(acomp_ctx->req))
+>                         acomp_request_free(acomp_ctx->req);
+> +               acomp_ctx->req =3D NULL;
+>                 if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
+>                         crypto_free_acomp(acomp_ctx->acomp);
+>                 kfree(acomp_ctx->buffer);
+>         }
+> +       mutex_unlock(&acomp_ctx->mutex);
+>
+>         return 0;
+>  }
+>
+> +static struct crypto_acomp_ctx *acomp_ctx_get_cpu_lock(struct zswap_pool=
+ *pool)
+> +{
+> +       struct crypto_acomp_ctx *acomp_ctx;
+> +
+> +       for (;;) {
+> +               acomp_ctx =3D raw_cpu_ptr(pool->acomp_ctx);
+> +               mutex_lock(&acomp_ctx->mutex);
+> +               if (likely(acomp_ctx->req))
+> +                       return acomp_ctx;
+> +               /*
+> +                * It is possible that we were migrated to a different CP=
+U after
+> +                * getting the per-CPU ctx but before the mutex was acqui=
+red. If
+> +                * the old CPU got offlined, zswap_cpu_comp_dead() could =
+have
+> +                * already freed ctx->req (among other things) and set it=
+ to
+> +                * NULL. Just try again on the new CPU that we ended up o=
+n.
+> +                */
+> +               mutex_unlock(&acomp_ctx->mutex);
+> +       }
+> +}
+> +
+> +static void acomp_ctx_put_unlock(struct crypto_acomp_ctx *acomp_ctx)
+> +{
+> +       mutex_unlock(&acomp_ctx->mutex);
+> +}
+> +
+>  static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+>                            struct zswap_pool *pool)
+>  {
+> @@ -893,10 +928,7 @@ static bool zswap_compress(struct page *page, struct=
+ zswap_entry *entry,
+>         gfp_t gfp;
+>         u8 *dst;
+>
+> -       acomp_ctx =3D raw_cpu_ptr(pool->acomp_ctx);
+> -
+> -       mutex_lock(&acomp_ctx->mutex);
+> -
+> +       acomp_ctx =3D acomp_ctx_get_cpu_lock(pool);
+>         dst =3D acomp_ctx->buffer;
+>         sg_init_table(&input, 1);
+>         sg_set_page(&input, page, PAGE_SIZE, 0);
+> @@ -949,7 +981,7 @@ static bool zswap_compress(struct page *page, struct =
+zswap_entry *entry,
+>         else if (alloc_ret)
+>                 zswap_reject_alloc_fail++;
+>
+> -       mutex_unlock(&acomp_ctx->mutex);
+> +       acomp_ctx_put_unlock(acomp_ctx);
+>         return comp_ret =3D=3D 0 && alloc_ret =3D=3D 0;
+>  }
+>
+> @@ -960,9 +992,7 @@ static void zswap_decompress(struct zswap_entry *entr=
+y, struct folio *folio)
+>         struct crypto_acomp_ctx *acomp_ctx;
+>         u8 *src;
+>
+> -       acomp_ctx =3D raw_cpu_ptr(entry->pool->acomp_ctx);
+> -       mutex_lock(&acomp_ctx->mutex);
+> -
+> +       acomp_ctx =3D acomp_ctx_get_cpu_lock(entry->pool);
+>         src =3D zpool_map_handle(zpool, entry->handle, ZPOOL_MM_RO);
+>         /*
+>          * If zpool_map_handle is atomic, we cannot reliably utilize its =
+mapped buffer
+> @@ -986,10 +1016,10 @@ static void zswap_decompress(struct zswap_entry *e=
+ntry, struct folio *folio)
+>         acomp_request_set_params(acomp_ctx->req, &input, &output, entry->=
+length, PAGE_SIZE);
+>         BUG_ON(crypto_wait_req(crypto_acomp_decompress(acomp_ctx->req), &=
+acomp_ctx->wait));
+>         BUG_ON(acomp_ctx->req->dlen !=3D PAGE_SIZE);
+> -       mutex_unlock(&acomp_ctx->mutex);
+>
+>         if (src !=3D acomp_ctx->buffer)
+>                 zpool_unmap_handle(zpool, entry->handle);
+> +       acomp_ctx_put_unlock(acomp_ctx);
+>  }
+>
+>  /*********************************
+>
 
