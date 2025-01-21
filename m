@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-109771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7385A183D9
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42A0DA18498
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:09:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A87D188D51C
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08C8D162701
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD001F63EF;
-	Tue, 21 Jan 2025 17:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3B91F3FFE;
+	Tue, 21 Jan 2025 18:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mSr9Fkdp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghs7SHsL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7C21F561E;
-	Tue, 21 Jan 2025 17:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1830F1F0E36;
+	Tue, 21 Jan 2025 18:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482391; cv=none; b=kApDvrfiBUFLps4BIWRaHtdD3nEGQhn8hGibqyPtfzSG57vJEb1kQG5q0oeHM8G82MBpnY5LfRVnAYSmjQAtT17HGS/uR22ARpWoUJmImBHf/4eMT9UyGgRRxzge22hvPjVWSkJRmgWF2A4PEalQPIVlNLA3B0yy2baIMsPcv2Y=
+	t=1737482881; cv=none; b=sFswi6oczPAbxnZiiIKD3xRSj+oHmBi3kR4aji+hYTumm9P34iGWhWjnqBxWv5kRZnClQw2hq/bEooNf1EMkgv80K5ZGy0rjVnsbR0VZuxPu1/7rIBUXqPFjlYXT9fP/D2ETvqJCl+uDgk8tY8EMchFeEp/tbgCa4f+Py66AaAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482391; c=relaxed/simple;
-	bh=thGXBkC61MdyeZF7R1QaNJtp1hFvUpfNwlh7kvLE1gg=;
+	s=arc-20240116; t=1737482881; c=relaxed/simple;
+	bh=VRMy5xyb5vLWbNNUnK3OVIhDcc0RQBktenDtRFd/V88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TpIDRTj4t5yNhfR9fiS/mBAd0PiRDqJ7FRDQtp+ITNlsIPWP9r60+tAFXSvHcOllF5kcPfR2pECLFH++awxxnnUQ7bd7BKhsXu+Z6iz86vjWy99iG0WWr3qEeJqgFmEzUFBYf5iZ+eRQqqMtMGLbRrI6zlRFLaUuAL2zltZF+Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mSr9Fkdp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DC8C4CEDF;
-	Tue, 21 Jan 2025 17:59:50 +0000 (UTC)
+	 MIME-Version; b=ag+KTlp7ArwtMq6VjAK0OVEZJNf6/4HPiJgBZgb0MXqWvumGXDTbo1qKPvVI4LOgiwnW0JolG/t1ed8G0UN9xnH3EKddbeT8DtntmlDZ8TAKG30qqh57PnOiGPyt+XjVqvyp3LHPVE22UwJBzLTNqk2Rzmj2ArksXZ75honcI8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghs7SHsL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94332C4CEDF;
+	Tue, 21 Jan 2025 18:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482390;
-	bh=thGXBkC61MdyeZF7R1QaNJtp1hFvUpfNwlh7kvLE1gg=;
+	s=korg; t=1737482881;
+	bh=VRMy5xyb5vLWbNNUnK3OVIhDcc0RQBktenDtRFd/V88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mSr9FkdpboZdiJMiCru1CXK6bN5kedsJivJprq0LaqJ0Yfl/87Zp5WXTi0HDRFJzw
-	 CxIWkXrW7a86wIJvVaF3AHO6mBtzimOUO8NZ1SSBusUDbC6k2PiWZ0px1y7Nzd3rPu
-	 l1WgqqlMbwIj2SAJ9zDTXshUAyEsz2K2nXQAT8DI=
+	b=ghs7SHsL82VMOjFQ3pStyz7pjHh8ysbwS5QGf6UdMu4kgXYnDF9hquXRoOci619Yf
+	 uJReskhiVn32xN//AmqaZaGZwNrWi8rKhDI+UFIDfip6iTjNmwiMlBQY6tFAFVIauv
+	 EAvRa91xZTjsLOGe73zKNkhTnKa1hyrjxUNN3Qi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Yu-Chun Lin <eleanor15x@gmail.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Antonio Pastor <antonio.pastor@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 033/122] drm/tests: helpers: Fix compiler warning
-Date: Tue, 21 Jan 2025 18:51:21 +0100
-Message-ID: <20250121174534.264451485@linuxfoundation.org>
+Subject: [PATCH 5.15 010/127] net: 802: LLC+SNAP OID:PID lookup on start of skb data
+Date: Tue, 21 Jan 2025 18:51:22 +0100
+Message-ID: <20250121174530.072352519@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu-Chun Lin <eleanor15x@gmail.com>
+From: Antonio Pastor <antonio.pastor@gmail.com>
 
-[ Upstream commit b9097e4c8bf3934e4e07e6f9b88741957fef351e ]
+[ Upstream commit 1e9b0e1c550c42c13c111d1a31e822057232abc4 ]
 
-Delete one line break to make the format correct, resolving the
-following warning during a W=1 build:
+802.2+LLC+SNAP frames received by napi_complete_done() with GRO and DSA
+have skb->transport_header set two bytes short, or pointing 2 bytes
+before network_header & skb->data. This was an issue as snap_rcv()
+expected offset to point to SNAP header (OID:PID), causing packet to
+be dropped.
 
->> drivers/gpu/drm/tests/drm_kunit_helpers.c:324: warning: bad line: for a KUnit test
+A fix at llc_fixup_skb() (a024e377efed) resets transport_header for any
+LLC consumers that may care about it, and stops SNAP packets from being
+dropped, but doesn't fix the problem which is that LLC and SNAP should
+not use transport_header offset.
 
-Fixes: caa714f86699 ("drm/tests: helpers: Add helper for drm_display_mode_from_cea_vic()")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501032001.O6WY1VCW-lkp@intel.com/
-Reviewed-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Tested-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250104165134.1695864-1-eleanor15x@gmail.com
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Ths patch eliminates the use of transport_header offset for SNAP lookup
+of OID:PID so that SNAP does not rely on the offset at all.
+The offset is reset after pull for any SNAP packet consumers that may
+(but shouldn't) use it.
+
+Fixes: fda55eca5a33 ("net: introduce skb_transport_header_was_set()")
+Signed-off-by: Antonio Pastor <antonio.pastor@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250103012303.746521-1-antonio.pastor@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tests/drm_kunit_helpers.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/802/psnap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/tests/drm_kunit_helpers.c b/drivers/gpu/drm/tests/drm_kunit_helpers.c
-index 04a6b8cc62ac6..3c0b7824c0be3 100644
---- a/drivers/gpu/drm/tests/drm_kunit_helpers.c
-+++ b/drivers/gpu/drm/tests/drm_kunit_helpers.c
-@@ -320,8 +320,7 @@ static void kunit_action_drm_mode_destroy(void *ptr)
- }
+diff --git a/net/802/psnap.c b/net/802/psnap.c
+index 4492e8d7ad20..ed6e17c8cce9 100644
+--- a/net/802/psnap.c
++++ b/net/802/psnap.c
+@@ -55,11 +55,11 @@ static int snap_rcv(struct sk_buff *skb, struct net_device *dev,
+ 		goto drop;
  
- /**
-- * drm_kunit_display_mode_from_cea_vic() - return a mode for CEA VIC
--					   for a KUnit test
-+ * drm_kunit_display_mode_from_cea_vic() - return a mode for CEA VIC for a KUnit test
-  * @test: The test context object
-  * @dev: DRM device
-  * @video_code: CEA VIC of the mode
+ 	rcu_read_lock();
+-	proto = find_snap_client(skb_transport_header(skb));
++	proto = find_snap_client(skb->data);
+ 	if (proto) {
+ 		/* Pass the frame on. */
+-		skb->transport_header += 5;
+ 		skb_pull_rcsum(skb, 5);
++		skb_reset_transport_header(skb);
+ 		rc = proto->rcvfunc(skb, dev, &snap_packet_type, orig_dev);
+ 	}
+ 	rcu_read_unlock();
 -- 
 2.39.5
 
