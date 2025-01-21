@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-109959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECBBEA184A5
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:10:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4EDAA18420
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:03:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EFF03A3770
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:09:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E32C3A4618
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:03:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46DC21F63FD;
-	Tue, 21 Jan 2025 18:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A481F0E36;
+	Tue, 21 Jan 2025 18:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="htSwWQDR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UOhLU/ed"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0483C1F55E5;
-	Tue, 21 Jan 2025 18:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868361F4275;
+	Tue, 21 Jan 2025 18:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482933; cv=none; b=VH48bF/Daqc/W7XXT8EzXli3SS3ytsAws0n3ePxQdYSZPPVotTSNdULRP2BrblhqaChJ2tNRDed/u3+ppUAG/PvQCKJh1d/KgEx0zje2qD+ZWh/JQjxksF4RcwX1QODAnfgpdyxONR/Vc9Yvn9lwtG5T33pHUapxBkmS7AmWgcg=
+	t=1737482603; cv=none; b=lQZYAtNpJD7wLPTbsV8n5d+aiOLMO9mZet6lcC59eZ/KH3sDeg9goWr+3BdUdyzgYAP5JCYddkh3r40uuy4Ft3fTSNU9UV5JDz4xuE4QkGX3bs2JUo7U90LO5q+z/LNQ6jHrMBpc28gN6GMNWMFJWl0FlugC+Y0F249AcCGLRro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482933; c=relaxed/simple;
-	bh=xtwVaDidhGFKx3VUWOo9bT0ehfyd6gp09U+pIIGbdUA=;
+	s=arc-20240116; t=1737482603; c=relaxed/simple;
+	bh=PyqewibvtKPx2SI5DVEZN8+3qIi1h9zV6vCyfI8XjF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eyMCgaXliOTNMqgLIJIlaeUqWVsvDq4ppF3WxYY3WAPc0CPEEWpfmCuwK5ykgwCZDNbaSm18vJcjyw+iunuxRnYamOJFsCFJ0+qE+gtZJPLoVy+SUooOXyQC3hBxP8A0Jb4vVUozQQQE29/kPydEgah37I0D4u2w3gUju8r3fz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=htSwWQDR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B3AC4CEDF;
-	Tue, 21 Jan 2025 18:08:52 +0000 (UTC)
+	 MIME-Version; b=sRy7RsMqHl/lUrq3GKxb6vw3DTcejXnlVhz5BOB8z3UhXMtZzaa3kOPk3zPH+uaZckMPZLn3kNR7fPTs9g0D/3LGh9WUJ/yOjpvcZZLVeYtjkm85UEOXognZZ+xtN9H4sbOBrMALW/k3Hdtd25m+lVXqmZCuOyi1cJlfIsn+7y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOhLU/ed; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A92C4CEDF;
+	Tue, 21 Jan 2025 18:03:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482932;
-	bh=xtwVaDidhGFKx3VUWOo9bT0ehfyd6gp09U+pIIGbdUA=;
+	s=korg; t=1737482603;
+	bh=PyqewibvtKPx2SI5DVEZN8+3qIi1h9zV6vCyfI8XjF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=htSwWQDRkp8nT2N9JYVQzoKmEEKvVhTSBPXlnZ81VHVo5Sutosv0YKQzMGFmtMRWi
-	 fcq7DjaQDNI6F23iMEpAUWVCHPGHL25SVrJ6bnaWOSJdGEIrLzKZnFUlTbIwFQ/yS1
-	 IkYQf45S8PZ8aCgrvJpeDMz6PGJAeeuqTK/sjTHE=
+	b=UOhLU/ed2R9uVrSbVvVUVuqC0uNQggC/vlNKs2Vg/0+QNoxsT4rLEx2eRwVyWoLRF
+	 VMnJrhHo/rLUtoelWF4wHl6prSQmYROm4nffZoxukznvupAH3EPsrF6q8NQ0D+Ys1S
+	 TpZgyfOz2E+myAn4YwRBEVMvJSGd5OKmU0LJRl70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Song <carlos.song@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 058/127] iio: gyro: fxas21002c: Fix missing data update in trigger handler
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 11/64] net/mlx5: Fix RDMA TX steering prio
 Date: Tue, 21 Jan 2025 18:52:10 +0100
-Message-ID: <20250121174531.901226411@linuxfoundation.org>
+Message-ID: <20250121174521.994924769@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
+References: <20250121174521.568417761@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Song <carlos.song@nxp.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-commit fa13ac6cdf9b6c358e7d77c29fb60145c7a87965 upstream.
+[ Upstream commit c08d3e62b2e73e14da318a1d20b52d0486a28ee0 ]
 
-The fxas21002c_trigger_handler() may fail to acquire sample data because
-the runtime PM enters the autosuspend state and sensor can not return
-sample data in standby mode..
+User added steering rules at RDMA_TX were being added to the first prio,
+which is the counters prio.
+Fix that so that they are correctly added to the BYPASS_PRIO instead.
 
-Resume the sensor before reading the sample data into the buffer within the
-trigger handler. After the data is read, place the sensor back into the
-autosuspend state.
-
-Fixes: a0701b6263ae ("iio: gyro: add core driver for fxas21002c")
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20241116152945.4006374-1-Frank.Li@nxp.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 24670b1a3166 ("net/mlx5: Add support for RDMA TX steering")
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/gyro/fxas21002c_core.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iio/gyro/fxas21002c_core.c
-+++ b/drivers/iio/gyro/fxas21002c_core.c
-@@ -730,14 +730,21 @@ static irqreturn_t fxas21002c_trigger_ha
- 	int ret;
- 
- 	mutex_lock(&data->lock);
-+	ret = fxas21002c_pm_get(data);
-+	if (ret < 0)
-+		goto out_unlock;
-+
- 	ret = regmap_bulk_read(data->regmap, FXAS21002C_REG_OUT_X_MSB,
- 			       data->buffer, CHANNEL_SCAN_MAX * sizeof(s16));
- 	if (ret < 0)
--		goto out_unlock;
-+		goto out_pm_put;
- 
- 	iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
- 					   data->timestamp);
- 
-+out_pm_put:
-+	fxas21002c_pm_put(data);
-+
- out_unlock:
- 	mutex_unlock(&data->lock);
- 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+index 50fdc3cbb778e..2717450e96661 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+@@ -2421,6 +2421,7 @@ struct mlx5_flow_namespace *mlx5_get_flow_namespace(struct mlx5_core_dev *dev,
+ 		break;
+ 	case MLX5_FLOW_NAMESPACE_RDMA_TX:
+ 		root_ns = steering->rdma_tx_root_ns;
++		prio = RDMA_TX_BYPASS_PRIO;
+ 		break;
+ 	case MLX5_FLOW_NAMESPACE_RDMA_RX_COUNTERS:
+ 		root_ns = steering->rdma_rx_root_ns;
+-- 
+2.39.5
+
 
 
 
