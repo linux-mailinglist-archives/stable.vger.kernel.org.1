@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-109816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34886A18408
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:03:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58A77A18384
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4051016BB86
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:02:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20A09166548
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 902F81F5404;
-	Tue, 21 Jan 2025 18:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1D61F754F;
+	Tue, 21 Jan 2025 17:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRfN3SDs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QntTq0Na"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA3AE571;
-	Tue, 21 Jan 2025 18:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B861F55E3;
+	Tue, 21 Jan 2025 17:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482522; cv=none; b=Vm/G0AA2R0rs4ylHyscRfRdXhaFHAjSPh01MCcdPNzDswC8C/DtG5CbpZcL77NUKDRxYP4b4QtDq0Ynr+TXN+wxe4axlcSxDst3ywTt5KMvQIa1ydX4yEB4em9eS8Bg8jfqVvu0MQXucnrYWIWDrXPPFWw2PUtjalR2MxIYlJ78=
+	t=1737482202; cv=none; b=EM9FYa69xXo+2yJ3amU+sH7bJOWxFVlXinI86QF1ULN0nbb+Bffr4YcqIjbwMq3Tpfj/VqIOE7uXA3+QIvkNkg8AiHXBUthUJ70AbAeKvuesNEtc6oEXdeatvBfHRi7YgSyEp1/wfv1whHwKP3Y4x6Kc7DA3Gr+kC/SrVmmbLKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482522; c=relaxed/simple;
-	bh=2P/HjZrHK3YPmmqIl5o+WqF+6RizUSlMd5ktSeAoxn8=;
+	s=arc-20240116; t=1737482202; c=relaxed/simple;
+	bh=YYtY8PznlmxQXCUY/a5qUjj0a0zPZ5UxP8jj9W6q3J8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sjyb8HoXnlU+gHz4DcToM7/XBkliJBt8o5kyw8Qx7Mv+hONoItAhoBWbc/MNPbLAdQJzMhD2E4wzQ7K+01rM5utcEGEaJVPEGXuMadOIyK5Wg8TdINKD+G0hr7rpcfcdcj05o61uhxFLo1yQEGZIf3LA5bQQw+uGd6U9XjPcBGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRfN3SDs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61A4C4CEDF;
-	Tue, 21 Jan 2025 18:02:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=g6jd2ZBbxEweFmgNRZ4FLbyMlYaG3TJWQi++/GDxeg5zfI1tJ2eEiShz/fDwDD3WIbOORp7r+nKA0HvqL9S49bU0+YUYNC74r5f86TC6wn7VrKRZBX8h63klubj95ZctfxTE+7Hd9B5+9AfMJ4Xg5OZGLo25Z2iBbd5mWfmD0h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QntTq0Na; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819BFC4CEDF;
+	Tue, 21 Jan 2025 17:56:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482522;
-	bh=2P/HjZrHK3YPmmqIl5o+WqF+6RizUSlMd5ktSeAoxn8=;
+	s=korg; t=1737482201;
+	bh=YYtY8PznlmxQXCUY/a5qUjj0a0zPZ5UxP8jj9W6q3J8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eRfN3SDsOQIs+TMuMemum2GtXBJk0oGEw+OeRa0XUEBc4Kklgy7lhD4bAu6j6a7gS
-	 e/97S37WiiSbBw2InPBS7lDqDdEjsnikF/jgNDGNhZc4zR0I+z9rqvHybyOUmRXKl2
-	 JjqSg1aLZFniZm0ZlcuyzpsC0P9qFmbC0gEUohdk=
+	b=QntTq0NaxXvs9XwLQkEQNiu/QxP8PeQaqr98NaSDUTXl7xijEMnoATeunSi+KJzJU
+	 XpeEmgYhe2+M4zJl6dU6OCuW2vSAdPfWyuUwLAtYhgW0LSK/wu5ohM6XUS5QhjvBp5
+	 TOs2Nyklt63QwVzxlyZufg1RInzv014WYRR7VfR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <koichiro.den@canonical.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.12 106/122] hrtimers: Handle CPU state correctly on hotplug
-Date: Tue, 21 Jan 2025 18:52:34 +0100
-Message-ID: <20250121174537.126406386@linuxfoundation.org>
+	Salvatore Bonaccorso <carnil@debian.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 69/72] Revert "drm/amdgpu: rework resume handling for display (v2)"
+Date: Tue, 21 Jan 2025 18:52:35 +0100
+Message-ID: <20250121174526.091107929@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,107 +60,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <koichiro.den@canonical.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 2f8dea1692eef2b7ba6a256246ed82c365fdc686 upstream.
+This reverts commit 2daba7d857e48035d71cdd95964350b6d0d51545 which is
+commit 73dae652dcac776296890da215ee7dec357a1032 upstream.
 
-Consider a scenario where a CPU transitions from CPUHP_ONLINE to halfway
-through a CPU hotunplug down to CPUHP_HRTIMERS_PREPARE, and then back to
-CPUHP_ONLINE:
+The original patch 73dae652dcac (drm/amdgpu: rework resume handling for
+display (v2)), was only targeted at kernels 6.11 and newer.  It did not
+apply cleanly to 6.12 so I backported it and it backport landed as
+99a02eab8251 ("drm/amdgpu: rework resume handling for display (v2)"),
+however there was a bug in the backport that was subsequently fixed in
+063d380ca28e ("drm/amdgpu: fix backport of commit 73dae652dcac").  None
+of this was intended for kernels older than 6.11, however the original
+backport eventually landed in 6.6, 6.1, and 5.15.
 
-Since hrtimers_prepare_cpu() does not run, cpu_base.hres_active remains set
-to 1 throughout. However, during a CPU unplug operation, the tick and the
-clockevents are shut down at CPUHP_AP_TICK_DYING. On return to the online
-state, for instance CFS incorrectly assumes that the hrtick is already
-active, and the chance of the clockevent device to transition to oneshot
-mode is also lost forever for the CPU, unless it goes back to a lower state
-than CPUHP_HRTIMERS_PREPARE once.
+Please revert the change from kernels 6.6, 6.1, and 5.15.
 
-This round-trip reveals another issue; cpu_base.online is not set to 1
-after the transition, which appears as a WARN_ON_ONCE in enqueue_hrtimer().
-
-Aside of that, the bulk of the per CPU state is not reset either, which
-means there are dangling pointers in the worst case.
-
-Address this by adding a corresponding startup() callback, which resets the
-stale per CPU state and sets the online flag.
-
-[ tglx: Make the new callback unconditionally available, remove the online
-  	modification in the prepare() callback and clear the remaining
-  	state in the starting callback instead of the prepare callback ]
-
-Fixes: 5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
-Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20241220134421.3809834-1-koichiro.den@canonical.com
+Link: https://lore.kernel.org/r/BL1PR12MB5144D5363FCE6F2FD3502534F7E72@BL1PR12MB5144.namprd12.prod.outlook.com
+Link: https://lore.kernel.org/r/BL1PR12MB51449ADCFBF2314431F8BCFDF7132@BL1PR12MB5144.namprd12.prod.outlook.com
+Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+Reported-by: Christian König <christian.koenig@amd.com>
+Reported-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/hrtimer.h |    1 +
- kernel/cpu.c            |    2 +-
- kernel/time/hrtimer.c   |   11 ++++++++++-
- 3 files changed, 12 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |   45 +----------------------------
+ 1 file changed, 2 insertions(+), 43 deletions(-)
 
---- a/include/linux/hrtimer.h
-+++ b/include/linux/hrtimer.h
-@@ -379,6 +379,7 @@ extern void __init hrtimers_init(void);
- extern void sysrq_timer_list_show(void);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3172,7 +3172,7 @@ static int amdgpu_device_ip_resume_phase
+  *
+  * @adev: amdgpu_device pointer
+  *
+- * Second resume function for hardware IPs.  The list of all the hardware
++ * First resume function for hardware IPs.  The list of all the hardware
+  * IPs that make up the asic is walked and the resume callbacks are run for
+  * all blocks except COMMON, GMC, and IH.  resume puts the hardware into a
+  * functional state after a suspend and updates the software state as
+@@ -3190,7 +3190,6 @@ static int amdgpu_device_ip_resume_phase
+ 		if (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_COMMON ||
+ 		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_GMC ||
+ 		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_IH ||
+-		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_DCE ||
+ 		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_PSP)
+ 			continue;
+ 		r = adev->ip_blocks[i].version->funcs->resume(adev);
+@@ -3206,36 +3205,6 @@ static int amdgpu_device_ip_resume_phase
+ }
  
- int hrtimers_prepare_cpu(unsigned int cpu);
-+int hrtimers_cpu_starting(unsigned int cpu);
- #ifdef CONFIG_HOTPLUG_CPU
- int hrtimers_cpu_dying(unsigned int cpu);
- #else
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -2179,7 +2179,7 @@ static struct cpuhp_step cpuhp_hp_states
- 	},
- 	[CPUHP_AP_HRTIMERS_DYING] = {
- 		.name			= "hrtimers:dying",
--		.startup.single		= NULL,
-+		.startup.single		= hrtimers_cpu_starting,
- 		.teardown.single	= hrtimers_cpu_dying,
- 	},
- 	[CPUHP_AP_TICK_DYING] = {
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -2156,6 +2156,15 @@ int hrtimers_prepare_cpu(unsigned int cp
+ /**
+- * amdgpu_device_ip_resume_phase3 - run resume for hardware IPs
+- *
+- * @adev: amdgpu_device pointer
+- *
+- * Third resume function for hardware IPs.  The list of all the hardware
+- * IPs that make up the asic is walked and the resume callbacks are run for
+- * all DCE.  resume puts the hardware into a functional state after a suspend
+- * and updates the software state as necessary.  This function is also used
+- * for restoring the GPU after a GPU reset.
+- *
+- * Returns 0 on success, negative error code on failure.
+- */
+-static int amdgpu_device_ip_resume_phase3(struct amdgpu_device *adev)
+-{
+-	int i, r;
+-
+-	for (i = 0; i < adev->num_ip_blocks; i++) {
+-		if (!adev->ip_blocks[i].status.valid || adev->ip_blocks[i].status.hw)
+-			continue;
+-		if (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_DCE) {
+-			r = adev->ip_blocks[i].version->funcs->resume(adev);
+-			if (r)
+-				return r;
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+-/**
+  * amdgpu_device_ip_resume - run resume for hardware IPs
+  *
+  * @adev: amdgpu_device pointer
+@@ -3261,13 +3230,6 @@ static int amdgpu_device_ip_resume(struc
+ 
+ 	r = amdgpu_device_ip_resume_phase2(adev);
+ 
+-	if (r)
+-		return r;
+-
+-	amdgpu_fence_driver_hw_init(adev);
+-
+-	r = amdgpu_device_ip_resume_phase3(adev);
+-
+ 	return r;
+ }
+ 
+@@ -4267,6 +4229,7 @@ int amdgpu_device_resume(struct drm_devi
+ 		dev_err(adev->dev, "amdgpu_device_ip_resume failed (%d).\n", r);
+ 		goto exit;
  	}
++	amdgpu_fence_driver_hw_init(adev);
  
- 	cpu_base->cpu = cpu;
-+	hrtimer_cpu_base_init_expiry_lock(cpu_base);
-+	return 0;
-+}
-+
-+int hrtimers_cpu_starting(unsigned int cpu)
-+{
-+	struct hrtimer_cpu_base *cpu_base = this_cpu_ptr(&hrtimer_bases);
-+
-+	/* Clear out any left over state from a CPU down operation */
- 	cpu_base->active_bases = 0;
- 	cpu_base->hres_active = 0;
- 	cpu_base->hang_detected = 0;
-@@ -2164,7 +2173,6 @@ int hrtimers_prepare_cpu(unsigned int cp
- 	cpu_base->expires_next = KTIME_MAX;
- 	cpu_base->softirq_expires_next = KTIME_MAX;
- 	cpu_base->online = 1;
--	hrtimer_cpu_base_init_expiry_lock(cpu_base);
- 	return 0;
- }
+ 	r = amdgpu_device_ip_late_init(adev);
+ 	if (r)
+@@ -5036,10 +4999,6 @@ int amdgpu_do_asic_reset(struct list_hea
+ 				if (r)
+ 					goto out;
  
-@@ -2240,6 +2248,7 @@ int hrtimers_cpu_dying(unsigned int dyin
- void __init hrtimers_init(void)
- {
- 	hrtimers_prepare_cpu(smp_processor_id());
-+	hrtimers_cpu_starting(smp_processor_id());
- 	open_softirq(HRTIMER_SOFTIRQ, hrtimer_run_softirq);
- }
+-				r = amdgpu_device_ip_resume_phase3(tmp_adev);
+-				if (r)
+-					goto out;
+-
+ 				if (vram_lost)
+ 					amdgpu_device_fill_reset_magic(tmp_adev);
  
 
 
