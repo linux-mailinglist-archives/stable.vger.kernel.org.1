@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-109768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5484A183D5
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DDD7A1834C
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:54:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABEAB188D488
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35095188736F
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:54:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF791F55FA;
-	Tue, 21 Jan 2025 17:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329EB1F5613;
+	Tue, 21 Jan 2025 17:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QFVdRnGv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbXvCvp8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D399185935;
-	Tue, 21 Jan 2025 17:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E198C1F5614;
+	Tue, 21 Jan 2025 17:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482382; cv=none; b=HcS5f2+L25GxGqkKGXablf3epsanpj12O4oUhfTov9wVp5ajhO7wxWYPerQCNnbnx0xolrK5xZKbJlpjRWpxAZV31VeVkT9n/tsbJMYd49M0jOSnaGMlrPknVDJJOLHC4bJH0+Eq25pe7YXtXh7s9e+LC8qd2Kcu6SW7fo4y+XA=
+	t=1737482079; cv=none; b=QPVzwhrG/Ameg4pY4U988lSCqw9GVgLzAxsRX+khWilE+O4L3laGUP8mw6jxl0adTwzecbrF0AlvYXDfD1GPZ8I1jmEfX1jHCR4kXrVzpyzHcQ/UhCkjT0+1IFVv80vozs2pc+D9bc9+MUhmwdb75P/P96efgpaniruDQxWHT94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482382; c=relaxed/simple;
-	bh=ymLFT1EDL29LEZm2yVvEnLs8/loDn75iPFNA+yy1pWM=;
+	s=arc-20240116; t=1737482079; c=relaxed/simple;
+	bh=RhxWKOt1M0qplYHgK+A0ok9d7DAnOv2TKN9q1zh9Bfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=abmfpF2yRek5/g2CdPPnB/dC0WxwT+a7szMvCNe+YvaHdpN5xFwXfcOJFeVAbS56nC0c3hpTLXHbCBgiubXUNEy0/YR6KCfkPLubG7MTHuE/JZGJgQQZq0W4TnPij8TqRyZz65e8mcgTFNYwKgOPR1C+jcCeTz5JW75XiDQuYyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QFVdRnGv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99B1C4CEDF;
-	Tue, 21 Jan 2025 17:59:41 +0000 (UTC)
+	 MIME-Version; b=kIlE/e3ato6ojp3WQbeIB3ZvMpREcoGURX+cqM89l/55lXxopS4Xpmri00LYd94r1/NgR3Y0pKM2RdsAQUadAAnxaZmzqvfcGpz4myriVlAlAxqI/WoeuKNF0troGV9YN56HHDM4M/bdqXv88UhcNhzE4eSifE1+i+nCFnnH+X8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbXvCvp8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63E7EC4CEDF;
+	Tue, 21 Jan 2025 17:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482382;
-	bh=ymLFT1EDL29LEZm2yVvEnLs8/loDn75iPFNA+yy1pWM=;
+	s=korg; t=1737482078;
+	bh=RhxWKOt1M0qplYHgK+A0ok9d7DAnOv2TKN9q1zh9Bfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QFVdRnGvulmWOUue/2zL+P5Ma3kMcyKEiOopemhUDFDxZco7QOHwPVlBK+9YnrQI4
-	 aX88f3uH1nvzLY/1KCiLLnDwg02DGLkYbTyXmi7uLV/D7YF6TngyxdsTA6mmzE312E
-	 be4W1BNJHiybV1Of2YtWYRY8D9MJBI5advGvz0Ts=
+	b=sbXvCvp82Jen19Wi60Gh6FnmhgBAf0GkVNpg1FKxrIZhK1hzJ0DPJoV0oHSmYKYKA
+	 AwVUpihL9fiNvjyuDMyLVVnnJKpLzkmUfJK4E5FFSRFvvQP+RCqdZQ5Zc5A8qLjHz5
+	 azauInBSR8ZS+bfIOakDN6qYlgAKbO3NzTU9n+Vc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <koichiro.den@canonical.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 057/122] gpio: virtuser: lock up configfs that an instantiated device depends on
+Subject: [PATCH 6.6 19/72] soc: ti: pruss: Fix pruss APIs
 Date: Tue, 21 Jan 2025 18:51:45 +0100
-Message-ID: <20250121174535.186561523@linuxfoundation.org>
+Message-ID: <20250121174524.166949474@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <koichiro.den@canonical.com>
+From: MD Danish Anwar <danishanwar@ti.com>
 
-[ Upstream commit c7c434c1dba955005f5161dae73f09c0a922cfa7 ]
+[ Upstream commit 202580b60229345dc2637099f10c8a8857c1fdc2 ]
 
-Once a virtuser device is instantiated and actively used, allowing rmdir
-for its configfs serves no purpose and can be confusing. Userspace
-interacts with the virtual consumer at arbitrary times, meaning it
-depends on its existence.
+PRUSS APIs in pruss_driver.h produce lots of compilation errors when
+CONFIG_TI_PRUSS is not set.
 
-Make the subsystem itself depend on the configfs entry for a virtuser
-device while it is in active use.
+The errors and warnings,
+warning: returning 'void *' from a function with return type 'int' makes
+	integer from pointer without a cast [-Wint-conversion]
+error: expected identifier or '(' before '{' token
 
-Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
-Link: https://lore.kernel.org/r/20250103141829.430662-4-koichiro.den@canonical.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fix these warnings and errors by fixing the return type of pruss APIs as
+well as removing the misplaced semicolon from pruss_cfg_xfr_enable()
+
+Fixes: 0211cc1e4fbb ("soc: ti: pruss: Add helper functions to set GPI mode, MII_RT_event and XFR")
+Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Link: https://lore.kernel.org/r/20241220100508.1554309-2-danishanwar@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-virtuser.c | 47 ++++++++++++++++++++++++++++++------
- 1 file changed, 40 insertions(+), 7 deletions(-)
+ include/linux/pruss_driver.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpio/gpio-virtuser.c b/drivers/gpio/gpio-virtuser.c
-index d6244f0d3bc75..e89f299f21400 100644
---- a/drivers/gpio/gpio-virtuser.c
-+++ b/drivers/gpio/gpio-virtuser.c
-@@ -1546,6 +1546,30 @@ gpio_virtuser_device_deactivate(struct gpio_virtuser_device *dev)
- 	dev->pdev = NULL;
+diff --git a/include/linux/pruss_driver.h b/include/linux/pruss_driver.h
+index c9a31c567e85b..2e18fef1a2e10 100644
+--- a/include/linux/pruss_driver.h
++++ b/include/linux/pruss_driver.h
+@@ -144,32 +144,32 @@ static inline int pruss_release_mem_region(struct pruss *pruss,
+ static inline int pruss_cfg_get_gpmux(struct pruss *pruss,
+ 				      enum pruss_pru_id pru_id, u8 *mux)
+ {
+-	return ERR_PTR(-EOPNOTSUPP);
++	return -EOPNOTSUPP;
  }
  
-+static void
-+gpio_virtuser_device_lockup_configfs(struct gpio_virtuser_device *dev, bool lock)
-+{
-+	struct configfs_subsystem *subsys = dev->group.cg_subsys;
-+	struct gpio_virtuser_lookup_entry *entry;
-+	struct gpio_virtuser_lookup *lookup;
-+
-+	/*
-+	 * The device only needs to depend on leaf lookup entries. This is
-+	 * sufficient to lock up all the configfs entries that the
-+	 * instantiated, alive device depends on.
-+	 */
-+	list_for_each_entry(lookup, &dev->lookup_list, siblings) {
-+		list_for_each_entry(entry, &lookup->entry_list, siblings) {
-+			if (lock)
-+				WARN_ON(configfs_depend_item_unlocked(
-+						subsys, &entry->group.cg_item));
-+			else
-+				configfs_undepend_item_unlocked(
-+						&entry->group.cg_item);
-+		}
-+	}
-+}
-+
- static ssize_t
- gpio_virtuser_device_config_live_store(struct config_item *item,
- 				       const char *page, size_t count)
-@@ -1558,15 +1582,24 @@ gpio_virtuser_device_config_live_store(struct config_item *item,
- 	if (ret)
- 		return ret;
- 
--	guard(mutex)(&dev->lock);
-+	if (live)
-+		gpio_virtuser_device_lockup_configfs(dev, true);
- 
--	if (live == gpio_virtuser_device_is_live(dev))
--		return -EPERM;
-+	scoped_guard(mutex, &dev->lock) {
-+		if (live == gpio_virtuser_device_is_live(dev))
-+			ret = -EPERM;
-+		else if (live)
-+			ret = gpio_virtuser_device_activate(dev);
-+		else
-+			gpio_virtuser_device_deactivate(dev);
-+	}
- 
--	if (live)
--		ret = gpio_virtuser_device_activate(dev);
--	else
--		gpio_virtuser_device_deactivate(dev);
-+	/*
-+	 * Undepend is required only if device disablement (live == 0)
-+	 * succeeds or if device enablement (live == 1) fails.
-+	 */
-+	if (live == !!ret)
-+		gpio_virtuser_device_lockup_configfs(dev, false);
- 
- 	return ret ?: count;
+ static inline int pruss_cfg_set_gpmux(struct pruss *pruss,
+ 				      enum pruss_pru_id pru_id, u8 mux)
+ {
+-	return ERR_PTR(-EOPNOTSUPP);
++	return -EOPNOTSUPP;
  }
+ 
+ static inline int pruss_cfg_gpimode(struct pruss *pruss,
+ 				    enum pruss_pru_id pru_id,
+ 				    enum pruss_gpi_mode mode)
+ {
+-	return ERR_PTR(-EOPNOTSUPP);
++	return -EOPNOTSUPP;
+ }
+ 
+ static inline int pruss_cfg_miirt_enable(struct pruss *pruss, bool enable)
+ {
+-	return ERR_PTR(-EOPNOTSUPP);
++	return -EOPNOTSUPP;
+ }
+ 
+ static inline int pruss_cfg_xfr_enable(struct pruss *pruss,
+ 				       enum pru_type pru_type,
+-				       bool enable);
++				       bool enable)
+ {
+-	return ERR_PTR(-EOPNOTSUPP);
++	return -EOPNOTSUPP;
+ }
+ 
+ #endif /* CONFIG_TI_PRUSS */
 -- 
 2.39.5
 
