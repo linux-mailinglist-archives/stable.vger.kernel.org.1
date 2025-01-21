@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-109672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51076A18351
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD7D2A184B1
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:10:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91F201697D9
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 342587A5145
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65EAD1F63CC;
-	Tue, 21 Jan 2025 17:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65CAE1F542F;
+	Tue, 21 Jan 2025 18:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFEMet2Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouLAMI7S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF781F55F5;
-	Tue, 21 Jan 2025 17:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24CF41F0E36;
+	Tue, 21 Jan 2025 18:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482102; cv=none; b=rC7Bl2cewg8Whkm2zIYOoPZ413qkNDdu0vYjw+ReiC7uPFevDACpA2s+9IgI5d8nT1pmNxwpwpnjUDYNXeUHpPMSiekNzqdEwtrQwrRj/Du9SzAGAE0+pihWEwmB0w77ML24UfrlZ9j1HzjvBy0e7AP8D+6uRoAr1e2URYopNk0=
+	t=1737482904; cv=none; b=DCPD9/9U4jfqquxBpLNU4b2HQ1MjhnERZjFjJPq/DDEGSNYi+UVunvSfhiRl7IVwwWazTrqtll6hz4EnNIIPb4x8zrt3Ln1q3UO3+xosKZlxSp4NRaHo6plJSVcyLw8blS6DDa5Ov0SkC3JTMq+wxiGdcn0l+jF/Cz5yp07kzmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482102; c=relaxed/simple;
-	bh=U+F3Tz94q1ZaMs/gD9L67wpU97MEqEAGzI3fHx5VRO4=;
+	s=arc-20240116; t=1737482904; c=relaxed/simple;
+	bh=zZn6hoKCJOe25O6LmZwSI11KQ7eBQljBLlE+X1lWiBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eFgmmcvivJ11tuNUFAuLLba9fw2dwvRLfeJWK5/FwqEzDdRieOUYweWTyaQvW83xZVPuO66VsYSEuojxKaENwy0lFvOR5yXawAjcDNGHnGQltPy0iBqn5ti7C8nYe58f7Wi+m9pHqxV7rhZ5CwXEWumPwO+inqkmTMwWpu+CF6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFEMet2Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B89C4CEDF;
-	Tue, 21 Jan 2025 17:55:01 +0000 (UTC)
+	 MIME-Version; b=ugOSsOe6eom2LCxN1EAJLrVIn92GrX3OJKpPyZSWRZ9i+KAMKSalJXJoWlGR+nXRx+NUyAKBRGWs+UwljOAxDMEgGlSCsV8P482yvaz/vx76WDsq4Hh4RE+GqFOJ46EpfzkSgs9aHdG4GmAATyzu5ijGjK8PsHMyGVjSfziCuJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ouLAMI7S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B926C4CEDF;
+	Tue, 21 Jan 2025 18:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482102;
-	bh=U+F3Tz94q1ZaMs/gD9L67wpU97MEqEAGzI3fHx5VRO4=;
+	s=korg; t=1737482904;
+	bh=zZn6hoKCJOe25O6LmZwSI11KQ7eBQljBLlE+X1lWiBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jFEMet2ZMlGMcupZ6YS0A6NeCMwnEXibZJQE1hOuWB2OG+4sIg1g/qktjp2s18d0Y
-	 EV3JRdeA4h4t34CK8DG2vYidahhbsicUcEVhwPvIEic/oIepIpCNEjQqAMblMqtfS3
-	 JvRpuROfZ3vEDXJiii75mgxxiTmYrubx/eJimU40=
+	b=ouLAMI7S3N02SgtrZEkpsIdQEiJlhD2YGwrLH+Nk9RCwk8lERvVFPjUNR5w8FVprZ
+	 Suhkkcf7bDQJhR4LYmeWUHrwCdEiijj7kXEyuPQSYwFADxwPDTEw+fstJlS2oV9+kT
+	 tAFSzqANAMSCuD2xHicGZ3uXyCHXYpI7mkE9b9Us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Hongguang Gao <hongguang.gao@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 35/72] RDMA/bnxt_re: Fix to export port num to ib_query_qp
+	Wayne Chang <waynec@nvidia.com>,
+	stable <stable@kernel.org>,
+	Kai-Heng Feng <kaihengf@nvidia.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Jon Hunter <jonathanh@nvidia.com>
+Subject: [PATCH 5.15 049/127] USB: core: Disable LPM only for non-suspended ports
 Date: Tue, 21 Jan 2025 18:52:01 +0100
-Message-ID: <20250121174524.775140460@linuxfoundation.org>
+Message-ID: <20250121174531.562357424@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,86 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hongguang Gao <hongguang.gao@broadcom.com>
+From: Kai-Heng Feng <kaihengf@nvidia.com>
 
-[ Upstream commit 34db8ec931b84d1426423f263b1927539e73b397 ]
+commit 59bfeaf5454b7e764288d84802577f4a99bf0819 upstream.
 
-Current driver implementation doesn't populate the port_num
-field in query_qp. Adding the code to convert internal firmware
-port id to ibv defined port number and export it.
+There's USB error when tegra board is shutting down:
+[  180.919315] usb 2-3: Failed to set U1 timeout to 0x0,error code -113
+[  180.919995] usb 2-3: Failed to set U1 timeout to 0xa,error code -113
+[  180.920512] usb 2-3: Failed to set U2 timeout to 0x4,error code -113
+[  186.157172] tegra-xusb 3610000.usb: xHCI host controller not responding, assume dead
+[  186.157858] tegra-xusb 3610000.usb: HC died; cleaning up
+[  186.317280] tegra-xusb 3610000.usb: Timeout while waiting for evaluate context command
 
-Reviewed-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Hongguang Gao <hongguang.gao@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/20241211083931.968831-5-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The issue is caused by disabling LPM on already suspended ports.
+
+For USB2 LPM, the LPM is already disabled during port suspend. For USB3
+LPM, port won't transit to U1/U2 when it's already suspended in U3,
+hence disabling LPM is only needed for ports that are not suspended.
+
+Cc: Wayne Chang <waynec@nvidia.com>
+Cc: stable <stable@kernel.org>
+Fixes: d920a2ed8620 ("usb: Disable USB3 LPM at shutdown")
+Signed-off-by: Kai-Heng Feng <kaihengf@nvidia.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20241206074817.89189-1-kaihengf@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 1 +
- drivers/infiniband/hw/bnxt_re/ib_verbs.h | 4 ++++
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 1 +
- drivers/infiniband/hw/bnxt_re/qplib_fp.h | 1 +
- 4 files changed, 7 insertions(+)
+ drivers/usb/core/port.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index 13c65ec582568..08da793969ee5 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -2220,6 +2220,7 @@ int bnxt_re_query_qp(struct ib_qp *ib_qp, struct ib_qp_attr *qp_attr,
- 	qp_attr->retry_cnt = qplib_qp->retry_cnt;
- 	qp_attr->rnr_retry = qplib_qp->rnr_retry;
- 	qp_attr->min_rnr_timer = qplib_qp->min_rnr_timer;
-+	qp_attr->port_num = __to_ib_port_num(qplib_qp->port_id);
- 	qp_attr->rq_psn = qplib_qp->rq.psn;
- 	qp_attr->max_rd_atomic = qplib_qp->max_rd_atomic;
- 	qp_attr->sq_psn = qplib_qp->sq.psn;
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.h b/drivers/infiniband/hw/bnxt_re/ib_verbs.h
-index 98baea98fc176..ef910e6e2ccb7 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.h
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.h
-@@ -245,6 +245,10 @@ void bnxt_re_dealloc_ucontext(struct ib_ucontext *context);
- int bnxt_re_mmap(struct ib_ucontext *context, struct vm_area_struct *vma);
- void bnxt_re_mmap_free(struct rdma_user_mmap_entry *rdma_entry);
+--- a/drivers/usb/core/port.c
++++ b/drivers/usb/core/port.c
+@@ -294,10 +294,11 @@ static int usb_port_runtime_suspend(stru
+ static void usb_port_shutdown(struct device *dev)
+ {
+ 	struct usb_port *port_dev = to_usb_port(dev);
++	struct usb_device *udev = port_dev->child;
  
-+static inline u32 __to_ib_port_num(u16 port_id)
-+{
-+	return (u32)port_id + 1;
-+}
+-	if (port_dev->child) {
+-		usb_disable_usb2_hardware_lpm(port_dev->child);
+-		usb_unlocked_disable_lpm(port_dev->child);
++	if (udev && !udev->port_is_suspended) {
++		usb_disable_usb2_hardware_lpm(udev);
++		usb_unlocked_disable_lpm(udev);
+ 	}
+ }
  
- unsigned long bnxt_re_lock_cqs(struct bnxt_re_qp *qp);
- void bnxt_re_unlock_cqs(struct bnxt_re_qp *qp, unsigned long flags);
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index 871a49315c880..c4f10498c79d8 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -1460,6 +1460,7 @@ int bnxt_qplib_query_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
- 	qp->dest_qpn = le32_to_cpu(sb->dest_qp_id);
- 	memcpy(qp->smac, sb->src_mac, 6);
- 	qp->vlan_id = le16_to_cpu(sb->vlan_pcp_vlan_dei_vlan_id);
-+	qp->port_id = le16_to_cpu(sb->port_id);
- bail:
- 	dma_free_coherent(&rcfw->pdev->dev, sbuf.size,
- 			  sbuf.sb, sbuf.dma_addr);
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-index b5c53e864fbb3..55fd840359ef2 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-@@ -297,6 +297,7 @@ struct bnxt_qplib_qp {
- 	u32				dest_qpn;
- 	u8				smac[6];
- 	u16				vlan_id;
-+	u16				port_id;
- 	u8				nw_type;
- 	struct bnxt_qplib_ah		ah;
- 
--- 
-2.39.5
-
 
 
 
