@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-109802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CB6FA183F7
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:02:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC43A18438
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:04:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 653C716C107
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:01:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14F101882786
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:04:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C4A1F55F7;
-	Tue, 21 Jan 2025 18:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E821F470A;
+	Tue, 21 Jan 2025 18:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BOkK6oXB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IOAvwFQQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601B61F55F3;
-	Tue, 21 Jan 2025 18:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71751F0E36;
+	Tue, 21 Jan 2025 18:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482481; cv=none; b=LTI1gyyQg1WqVN2nOt93oPYtZTL4fi395zUAK3bauZoY785205k+mc8LK5V8AsQs+0azRYaO1TMjoRpUZUd+bsq77h/okCmmMmGdZt90VotME996S+aTK3MqDqkXt2+A6OJv5Yh9PFFzFKbyp+Cpbj57TuxTX57j99n4vFullmI=
+	t=1737482634; cv=none; b=JmmfMlnK4KXRxiIORgNKqbqNlE1gSIcIMQfnNr+3nAmFO/a2MlO3zoU1/YCnU9eVy0Mw89dSqm/7Hb9oTXHpIyNSI8wdhaDXhQJ11mf9erGF6tCEyVRJJuriOl6HXilJUw+6jwzmLT0DDoPn5gVKi4JTu5toIAln+yJt3VnSQVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482481; c=relaxed/simple;
-	bh=1hkL/RLyctsffJnL/PNO+bveif4uPJOq7LY8k0BHrLM=;
+	s=arc-20240116; t=1737482634; c=relaxed/simple;
+	bh=kJmagaQTKJe9zcYDIFr34dg7OdJ5fIpBxWRCaxwev5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B0icam9/iJ5q6ESUMb7AuWAhpUItGBOSSa30WDjmOFYrOjCQ7y0WqSHhurflqsdf/iNw9Q1qLThoukUk4wXuX9PLQt/0MhrIxs5H9xWSUvuG7PVt5eKgA/XmFrQphAE+oiRiUwWUC5FryvYNkTHBO5aDdIM4Gu3OhyLC9QKNI/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOkK6oXB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40EEC4CEDF;
-	Tue, 21 Jan 2025 18:01:20 +0000 (UTC)
+	 MIME-Version; b=tIGrBKlhOInQ5Sii2KMcqa0YwxPdkh8HDswF8fxyfgcY1p+zIvqMWC6wZgEhtkQiBDMa1QjBjykt71YP/eLYHwZay6P3Sl+tceP+1D2+n0lYSJTDqvHiwTPUgvdbggrWJhGxOL6bE6X4esZ9DDT1PvA1rGaAAvgNpCiKoF9AokQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IOAvwFQQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A5BC4CEDF;
+	Tue, 21 Jan 2025 18:03:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482481;
-	bh=1hkL/RLyctsffJnL/PNO+bveif4uPJOq7LY8k0BHrLM=;
+	s=korg; t=1737482633;
+	bh=kJmagaQTKJe9zcYDIFr34dg7OdJ5fIpBxWRCaxwev5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BOkK6oXBTLQNmJlOgIcIkeOECCfFicHZMKc44xzfhRGyFx4q/ifNhMpqVYsEpndWw
-	 vSo192ULFZkGy65auiqogW4gW3o8F0jxpYBNreUCCqkzwaPBS8LvmLd2RtoEvzA3Cj
-	 zANHRg8TMssKWPtB45QYkASL+ahCYZsvb+9bjHlQ=
+	b=IOAvwFQQ5eA/LMEqQhLaqXOCScVpZrNEKE/CT29UU2VBaKqqQi5O+rUHDgBfrzWxQ
+	 rLTXyHLcqA8ynDzoZsUEI2ygIFySYXjrtrs4PGpk66KTztdfy9km8+IK/UrpgST6qV
+	 ivnzaBmC30CFngpy9vLNCyR4t6P8BBhN6prtOMzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Fertser <fercerpav@gmail.com>,
-	Potin Lai <potin.lai.pt@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 091/122] net/ncsi: fix locking in Get MAC Address handling
+	syzbot+2db3c7526ba68f4ea776@syzkaller.appspotmail.com,
+	Leo Stone <leocstone@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 20/64] hfs: Sanity check the root record
 Date: Tue, 21 Jan 2025 18:52:19 +0100
-Message-ID: <20250121174536.527206333@linuxfoundation.org>
+Message-ID: <20250121174522.329847275@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
+References: <20250121174521.568417761@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,133 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Fertser <fercerpav@gmail.com>
+From: Leo Stone <leocstone@gmail.com>
 
-commit 9e2bbab94b88295dcc57c7580393c9ee08d7314d upstream.
+[ Upstream commit b905bafdea21a75d75a96855edd9e0b6051eee30 ]
 
-Obtaining RTNL lock in a response handler is not allowed since it runs
-in an atomic softirq context. Postpone setting the MAC address by adding
-a dedicated step to the configuration FSM.
+In the syzbot reproducer, the hfs_cat_rec for the root dir has type
+HFS_CDR_FIL after being read with hfs_bnode_read() in hfs_super_fill().
+This indicates it should be used as an hfs_cat_file, which is 102 bytes.
+Only the first 70 bytes of that struct are initialized, however,
+because the entrylength passed into hfs_bnode_read() is still the length of
+a directory record. This causes uninitialized values to be used later on,
+when the hfs_cat_rec union is treated as the larger hfs_cat_file struct.
 
-Fixes: 790071347a0a ("net/ncsi: change from ndo_set_mac_address to dev_set_mac_address")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20241129-potin-revert-ncsi-set-mac-addr-v1-1-94ea2cb596af@gmail.com
-Signed-off-by: Paul Fertser <fercerpav@gmail.com>
-Tested-by: Potin Lai <potin.lai.pt@gmail.com>
-Link: https://patch.msgid.link/20250109145054.30925-1-fercerpav@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a check to make sure the retrieved record has the correct type
+for the root directory (HFS_CDR_DIR), and make sure we load the correct
+number of bytes for a directory record.
+
+Reported-by: syzbot+2db3c7526ba68f4ea776@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2db3c7526ba68f4ea776
+Tested-by: syzbot+2db3c7526ba68f4ea776@syzkaller.appspotmail.com
+Tested-by: Leo Stone <leocstone@gmail.com>
+Signed-off-by: Leo Stone <leocstone@gmail.com>
+Link: https://lore.kernel.org/r/20241201051420.77858-1-leocstone@gmail.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ncsi/internal.h    |    2 ++
- net/ncsi/ncsi-manage.c |   16 ++++++++++++++--
- net/ncsi/ncsi-rsp.c    |   19 ++++++-------------
- 3 files changed, 22 insertions(+), 15 deletions(-)
+ fs/hfs/super.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/ncsi/internal.h
-+++ b/net/ncsi/internal.h
-@@ -289,6 +289,7 @@ enum {
- 	ncsi_dev_state_config_sp	= 0x0301,
- 	ncsi_dev_state_config_cis,
- 	ncsi_dev_state_config_oem_gma,
-+	ncsi_dev_state_config_apply_mac,
- 	ncsi_dev_state_config_clear_vids,
- 	ncsi_dev_state_config_svf,
- 	ncsi_dev_state_config_ev,
-@@ -322,6 +323,7 @@ struct ncsi_dev_priv {
- #define NCSI_DEV_RESHUFFLE	4
- #define NCSI_DEV_RESET		8            /* Reset state of NC          */
- 	unsigned int        gma_flag;        /* OEM GMA flag               */
-+	struct sockaddr     pending_mac;     /* MAC address received from GMA */
- 	spinlock_t          lock;            /* Protect the NCSI device    */
- 	unsigned int        package_probe_id;/* Current ID during probe    */
- 	unsigned int        package_num;     /* Number of packages         */
---- a/net/ncsi/ncsi-manage.c
-+++ b/net/ncsi/ncsi-manage.c
-@@ -1038,7 +1038,7 @@ static void ncsi_configure_channel(struc
- 			  : ncsi_dev_state_config_clear_vids;
- 		break;
- 	case ncsi_dev_state_config_oem_gma:
--		nd->state = ncsi_dev_state_config_clear_vids;
-+		nd->state = ncsi_dev_state_config_apply_mac;
- 
- 		nca.package = np->id;
- 		nca.channel = nc->id;
-@@ -1050,10 +1050,22 @@ static void ncsi_configure_channel(struc
- 			nca.type = NCSI_PKT_CMD_OEM;
- 			ret = ncsi_gma_handler(&nca, nc->version.mf_id);
+diff --git a/fs/hfs/super.c b/fs/hfs/super.c
+index 6764afa98a6ff..431bdc65f7231 100644
+--- a/fs/hfs/super.c
++++ b/fs/hfs/super.c
+@@ -418,11 +418,13 @@ static int hfs_fill_super(struct super_block *sb, void *data, int silent)
+ 		goto bail_no_root;
+ 	res = hfs_cat_find_brec(sb, HFS_ROOT_CNID, &fd);
+ 	if (!res) {
+-		if (fd.entrylength > sizeof(rec) || fd.entrylength < 0) {
++		if (fd.entrylength != sizeof(rec.dir)) {
+ 			res =  -EIO;
+ 			goto bail_hfs_find;
  		}
--		if (ret < 0)
-+		if (ret < 0) {
-+			nd->state = ncsi_dev_state_config_clear_vids;
- 			schedule_work(&ndp->work);
-+		}
- 
- 		break;
-+	case ncsi_dev_state_config_apply_mac:
-+		rtnl_lock();
-+		ret = dev_set_mac_address(dev, &ndp->pending_mac, NULL);
-+		rtnl_unlock();
-+		if (ret < 0)
-+			netdev_warn(dev, "NCSI: 'Writing MAC address to device failed\n");
-+
-+		nd->state = ncsi_dev_state_config_clear_vids;
-+
-+		fallthrough;
- 	case ncsi_dev_state_config_clear_vids:
- 	case ncsi_dev_state_config_svf:
- 	case ncsi_dev_state_config_ev:
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -628,16 +628,14 @@ static int ncsi_rsp_handler_snfc(struct
- static int ncsi_rsp_handler_oem_gma(struct ncsi_request *nr, int mfr_id)
- {
- 	struct ncsi_dev_priv *ndp = nr->ndp;
-+	struct sockaddr *saddr = &ndp->pending_mac;
- 	struct net_device *ndev = ndp->ndev.dev;
- 	struct ncsi_rsp_oem_pkt *rsp;
--	struct sockaddr saddr;
- 	u32 mac_addr_off = 0;
--	int ret = 0;
- 
- 	/* Get the response header */
- 	rsp = (struct ncsi_rsp_oem_pkt *)skb_network_header(nr->rsp);
- 
--	saddr.sa_family = ndev->type;
- 	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
- 	if (mfr_id == NCSI_OEM_MFR_BCM_ID)
- 		mac_addr_off = BCM_MAC_ADDR_OFFSET;
-@@ -646,22 +644,17 @@ static int ncsi_rsp_handler_oem_gma(stru
- 	else if (mfr_id == NCSI_OEM_MFR_INTEL_ID)
- 		mac_addr_off = INTEL_MAC_ADDR_OFFSET;
- 
--	memcpy(saddr.sa_data, &rsp->data[mac_addr_off], ETH_ALEN);
-+	saddr->sa_family = ndev->type;
-+	memcpy(saddr->sa_data, &rsp->data[mac_addr_off], ETH_ALEN);
- 	if (mfr_id == NCSI_OEM_MFR_BCM_ID || mfr_id == NCSI_OEM_MFR_INTEL_ID)
--		eth_addr_inc((u8 *)saddr.sa_data);
--	if (!is_valid_ether_addr((const u8 *)saddr.sa_data))
-+		eth_addr_inc((u8 *)saddr->sa_data);
-+	if (!is_valid_ether_addr((const u8 *)saddr->sa_data))
- 		return -ENXIO;
- 
- 	/* Set the flag for GMA command which should only be called once */
- 	ndp->gma_flag = 1;
- 
--	rtnl_lock();
--	ret = dev_set_mac_address(ndev, &saddr, NULL);
--	rtnl_unlock();
--	if (ret < 0)
--		netdev_warn(ndev, "NCSI: 'Writing mac address to device failed\n");
--
--	return ret;
-+	return 0;
- }
- 
- /* Response handler for Mellanox card */
+ 		hfs_bnode_read(fd.bnode, &rec, fd.entryoffset, fd.entrylength);
++		if (rec.type != HFS_CDR_DIR)
++			res = -EIO;
+ 	}
+ 	if (res)
+ 		goto bail_hfs_find;
+-- 
+2.39.5
+
 
 
 
