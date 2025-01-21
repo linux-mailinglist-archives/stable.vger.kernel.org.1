@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-109944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6D11A1849A
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:09:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 581CCA1836E
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:56:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77F341883762
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D7417A14A7
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23AB1F55F0;
-	Tue, 21 Jan 2025 18:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BEEC1F708A;
+	Tue, 21 Jan 2025 17:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SkFz5nsc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TXO6rkpK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7A71F540C;
-	Tue, 21 Jan 2025 18:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E941F5439;
+	Tue, 21 Jan 2025 17:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482889; cv=none; b=abvBRVumkfO91byoPZmX/yFMjbt5fGyDWfy+A+y5qhzNNVTk+T+G4o1Xla5lxkvNL1dwk7hJlSj2OpSFamI6WFLD88dxhp95QX1r9zV+h7SgWOCw1WeArJSjKYMDvT0sfKJi2ej0+H6nVO4ReQ84LZX9Vm/n3jqXizY7cHrCYnI=
+	t=1737482155; cv=none; b=GhiJrLE7KUamHECpHQBsC+m6F4YQTT31TIxuxiHAmCEx1SPO77jfieDnDP+e/u9pPL4UeQ3+ezLa8jblGbXHjIOSjM6Oh2OT0uxYrMLpNrXAVv+Q3RT7w4IW4vYer74dUAzhlkCwLAtUg2YT+q/TRDwQxslhRbaK7rnmPMivyHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482889; c=relaxed/simple;
-	bh=mJ+dX22eAwZUhxAokep3eAm4cwBEqV8UpooUdfxG0QI=;
+	s=arc-20240116; t=1737482155; c=relaxed/simple;
+	bh=OUh21iAEyfSTLofXVmRpg/KmkFsIAPrWc+snX2aaHow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xu6ABWUqL/8mglwlTGXbLnMyFDr8Ej0ohre8uV6lfzEqGyXzvoAs+p70aTfBPgFNeHNe7FjQISZs7z2/2WE6yXbTwe4O0bUbPfofimVF0fx3M51MCY6TEEhrBnXyOxRib+bu4RoHlzRQmD9+xwKjjoei+YIkbM8COe3ch79Kjcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkFz5nsc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3B1C4CEDF;
-	Tue, 21 Jan 2025 18:08:08 +0000 (UTC)
+	 MIME-Version; b=GMFgLhHysKjRF3PtmsdM7mnv9pe8y/Eh30k9yV9ucdScThWJkRXTYy9tJzR4a8nRiQFLqZ06KsEQIcJpdZrG6lSKtE4H/PiKxkrxALkOv//Haz2JP25rBkQrzGVfziz0Zk0IaSqRbBdqamM3tpauK1J9VPZMGfUqy9evpSoogDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TXO6rkpK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A81C4CEE3;
+	Tue, 21 Jan 2025 17:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482889;
-	bh=mJ+dX22eAwZUhxAokep3eAm4cwBEqV8UpooUdfxG0QI=;
+	s=korg; t=1737482155;
+	bh=OUh21iAEyfSTLofXVmRpg/KmkFsIAPrWc+snX2aaHow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SkFz5nscLn6DI3fUVtdRhvwaIV8iBG2Kef3fJxTOh/diMQ3vUe+7hIAChISz2wiLX
-	 qkOodO6MmxhGQqRLJO7nd2VRJ5/LFuNzGln4nJhMTit5Q8Bn4Nh1Nc/ibSmXXUwOtl
-	 GMR83GyYzYatJLbp23TljOP6TdkB+ZmE+XkekWyY=
+	b=TXO6rkpKcu318SyaIA/kACLXG3cLw22VekYhbzgFMYFoylJpvyl1bJwa3UC6hXqRE
+	 NY9EBcN+5043X/HWq1/FrCCLWQrXxWp+CgvhQ+y2XA9Sc9/YBPeC2kSAe9KX5rpxZb
+	 6fVZinuftgf8KadDEXmgpHDIiGOv5iL9kTIKyG1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kairui Song <kasong@tencent.com>,
-	Desheng Wu <deshengwu@tencent.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dominique Martinet <dominique.martinet@atmark-techno.com>
-Subject: [PATCH 5.15 036/127] zram: fix uninitialized ZRAM not releasing backing device
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 22/72] i2c: mux: demux-pinctrl: check initial mux selection, too
 Date: Tue, 21 Jan 2025 18:51:48 +0100
-Message-ID: <20250121174531.071973846@linuxfoundation.org>
+Message-ID: <20250121174524.281218105@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kairui Song <kasong@tencent.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 74363ec674cb172d8856de25776c8f3103f05e2f upstream.
+[ Upstream commit ca89f73394daf92779ddaa37b42956f4953f3941 ]
 
-Setting backing device is done before ZRAM initialization.  If we set the
-backing device, then remove the ZRAM module without initializing the
-device, the backing device reference will be leaked and the device will be
-hold forever.
+When misconfigured, the initial setup of the current mux channel can
+fail, too. It must be checked as well.
 
-Fix this by always reset the ZRAM fully on rmmod or reset store.
-
-Link: https://lkml.kernel.org/r/20241209165717.94215-3-ryncsn@gmail.com
-Fixes: 013bf95a83ec ("zram: add interface to specif backing device")
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Reported-by: Desheng Wu <deshengwu@tencent.com>
-Suggested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 50a5ba876908 ("i2c: mux: demux-pinctrl: add driver")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/zram/zram_drv.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/i2c/muxes/i2c-demux-pinctrl.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1150,12 +1150,16 @@ static void zram_meta_free(struct zram *
- 	size_t num_pages = disksize >> PAGE_SHIFT;
- 	size_t index;
+diff --git a/drivers/i2c/muxes/i2c-demux-pinctrl.c b/drivers/i2c/muxes/i2c-demux-pinctrl.c
+index 9f2e4aa281593..299abb6dd9423 100644
+--- a/drivers/i2c/muxes/i2c-demux-pinctrl.c
++++ b/drivers/i2c/muxes/i2c-demux-pinctrl.c
+@@ -261,7 +261,9 @@ static int i2c_demux_pinctrl_probe(struct platform_device *pdev)
+ 	pm_runtime_no_callbacks(&pdev->dev);
  
-+	if (!zram->table)
-+		return;
-+
- 	/* Free all pages that are still in this zram device */
- 	for (index = 0; index < num_pages; index++)
- 		zram_free_page(zram, index);
+ 	/* switch to first parent as active master */
+-	i2c_demux_activate_master(priv, 0);
++	err = i2c_demux_activate_master(priv, 0);
++	if (err)
++		goto err_rollback;
  
- 	zs_destroy_pool(zram->mem_pool);
- 	vfree(zram->table);
-+	zram->table = NULL;
- }
- 
- static bool zram_meta_alloc(struct zram *zram, u64 disksize)
-@@ -1699,11 +1703,6 @@ static void zram_reset_device(struct zra
- 
- 	zram->limit_pages = 0;
- 
--	if (!init_done(zram)) {
--		up_write(&zram->init_lock);
--		return;
--	}
--
- 	set_capacity_and_notify(zram->disk, 0);
- 	part_stat_set_all(zram->disk->part0, 0);
- 
+ 	err = device_create_file(&pdev->dev, &dev_attr_available_masters);
+ 	if (err)
+-- 
+2.39.5
+
 
 
 
