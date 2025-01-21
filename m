@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-109774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A568AA183BD
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:00:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C194A18371
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:56:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82C9E7A041B
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C30DF169E39
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:56:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF8841F666C;
-	Tue, 21 Jan 2025 17:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF0B1F76D4;
+	Tue, 21 Jan 2025 17:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bfsl1pbg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WNa4/DtP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1271F55F5;
-	Tue, 21 Jan 2025 17:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8041F76BE;
+	Tue, 21 Jan 2025 17:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482399; cv=none; b=E5QIsh/+5+15YOr6wqwthzci0XbAojoMBOsWf3AgqeqE0kYL6KJOTGetL/3u1r6+C6ZY6srhHPP+ZPF7zUXArOjzyNHhmOsMxJks0pSOLLwTB0n3/YERfyuRx+IXZLd6W8of9rqTEa6LawkrmJw/sDZNSKnL3PCV7VsgQ2wDUB0=
+	t=1737482160; cv=none; b=BhhbzsyuvDEykS/G49K1lRmTu9BNS5G9USUUNE2IYBei28m6K0/3PrmqzglXkQ1qaAORi6IaC+9cxPjYJLdVXoqXDCvyO2dXyFwrQLhVEBeQddhoCFHptmjP2t6OWrl5DvaLjVcoRWBBa8DTXT8T00fBoH/dH/6IdsGiDpxeZ6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482399; c=relaxed/simple;
-	bh=8CCIlaPObFe/qq48KKRNIINj4w6xKHkBlytEmJZXsHw=;
+	s=arc-20240116; t=1737482160; c=relaxed/simple;
+	bh=6SnpA3vxnod8s10e47B4ZgBZgPrbCEeqhdvmH/IIYfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fJbwKDMGX5pnTvy5oyvogsI4/xrfrTc+uHgxnw95rjVOABpAkwWmDBZebj5b4VdFNldjovwmKmZ8o4XK13u1lH5MuXuiEqbGYKcLbcYMD3StIe9i4hfVOl96EaPd15kjxfErx9L0A5wYQwq3cmr/JOySBNndErxFdTa/QJhUXY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bfsl1pbg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 084BBC4CEDF;
-	Tue, 21 Jan 2025 17:59:58 +0000 (UTC)
+	 MIME-Version; b=OvimwrkCeMHyKoRfwEjgvS2jwnpHL4TxzYcsCVa7Hq++uIyKDq8R7Lpq38LPhdP9Do6ctCNlK5Hv5OWUQGW3FGTio/C6Kzq9QbWlNQvPE3A81UtcwuNtRBtZmmAM0I8TSTC03n9M9EV7xzP4+uYLAmzrUg3sX6HNlGTXpcuz2uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WNa4/DtP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A8BCC4CEE8;
+	Tue, 21 Jan 2025 17:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482399;
-	bh=8CCIlaPObFe/qq48KKRNIINj4w6xKHkBlytEmJZXsHw=;
+	s=korg; t=1737482160;
+	bh=6SnpA3vxnod8s10e47B4ZgBZgPrbCEeqhdvmH/IIYfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bfsl1pbgeLXen/IKXMiH08pUTbLIKh7ppFPXHIKYbeKpxe7yute2gYlYE8JS5w3l5
-	 WWfS2V74yzOOJS2WMAxlJfG1GAAsS7VF6qbc1A1nte3N8ULdxvQiUUjjq0tZT9ghkB
-	 WCVEZmszmCvgTAQx7X0cAzqCJnI09hqS0+vh/5S8=
+	b=WNa4/DtPNHIDFt2xLILSuY5EbkxH02vC2D+SUC1BCWc4DKlKuN+NkT9Pz/rE87X61
+	 1o0+kOfpl9lBT4xog5hsWCYeiu7KrYlAhT32NTkGl9wupzi+KHGC1BprY06bL9DSwF
+	 3x9t75r+bKJ6Ub3TpKqBkDSySrdtgQ/OvEHottdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jay Shin <jaeshin@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 062/122] ACPI: resource: acpi_dev_irq_override(): Check DMI match last
+Subject: [PATCH 6.6 24/72] smb: client: fix double free of TCP_Server_Info::hostname
 Date: Tue, 21 Jan 2025 18:51:50 +0100
-Message-ID: <20250121174535.384508190@linuxfoundation.org>
+Message-ID: <20250121174524.355766853@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit cd4a7b2e6a2437a5502910c08128ea3bad55a80b ]
+[ Upstream commit fa2f9906a7b333ba757a7dbae0713d8a5396186e ]
 
-acpi_dev_irq_override() gets called approx. 30 times during boot (15 legacy
-IRQs * 2 override_table entries). Of these 30 calls at max 1 will match
-the non DMI checks done by acpi_dev_irq_override(). The dmi_check_system()
-check is by far the most expensive check done by acpi_dev_irq_override(),
-make this call the last check done by acpi_dev_irq_override() so that it
-will be called at max 1 time instead of 30 times.
+When shutting down the server in cifs_put_tcp_session(), cifsd thread
+might be reconnecting to multiple DFS targets before it realizes it
+should exit the loop, so @server->hostname can't be freed as long as
+cifsd thread isn't done.  Otherwise the following can happen:
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20241228165253.42584-1-hdegoede@redhat.com
-[ rjw: Subject edit ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+  RIP: 0010:__slab_free+0x223/0x3c0
+  Code: 5e 41 5f c3 cc cc cc cc 4c 89 de 4c 89 cf 44 89 44 24 08 4c 89
+  1c 24 e8 fb cf 8e 00 44 8b 44 24 08 4c 8b 1c 24 e9 5f fe ff ff <0f>
+  0b 41 f7 45 08 00 0d 21 00 0f 85 2d ff ff ff e9 1f ff ff ff 80
+  RSP: 0018:ffffb26180dbfd08 EFLAGS: 00010246
+  RAX: ffff8ea34728e510 RBX: ffff8ea34728e500 RCX: 0000000000800068
+  RDX: 0000000000800068 RSI: 0000000000000000 RDI: ffff8ea340042400
+  RBP: ffffe112041ca380 R08: 0000000000000001 R09: 0000000000000000
+  R10: 6170732e31303000 R11: 70726f632e786563 R12: ffff8ea34728e500
+  R13: ffff8ea340042400 R14: ffff8ea34728e500 R15: 0000000000800068
+  FS: 0000000000000000(0000) GS:ffff8ea66fd80000(0000)
+  000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00007ffc25376080 CR3: 000000012a2ba001 CR4:
+  PKRU: 55555554
+  Call Trace:
+   <TASK>
+   ? show_trace_log_lvl+0x1c4/0x2df
+   ? show_trace_log_lvl+0x1c4/0x2df
+   ? __reconnect_target_unlocked+0x3e/0x160 [cifs]
+   ? __die_body.cold+0x8/0xd
+   ? die+0x2b/0x50
+   ? do_trap+0xce/0x120
+   ? __slab_free+0x223/0x3c0
+   ? do_error_trap+0x65/0x80
+   ? __slab_free+0x223/0x3c0
+   ? exc_invalid_op+0x4e/0x70
+   ? __slab_free+0x223/0x3c0
+   ? asm_exc_invalid_op+0x16/0x20
+   ? __slab_free+0x223/0x3c0
+   ? extract_hostname+0x5c/0xa0 [cifs]
+   ? extract_hostname+0x5c/0xa0 [cifs]
+   ? __kmalloc+0x4b/0x140
+   __reconnect_target_unlocked+0x3e/0x160 [cifs]
+   reconnect_dfs_server+0x145/0x430 [cifs]
+   cifs_handle_standard+0x1ad/0x1d0 [cifs]
+   cifs_demultiplex_thread+0x592/0x730 [cifs]
+   ? __pfx_cifs_demultiplex_thread+0x10/0x10 [cifs]
+   kthread+0xdd/0x100
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork+0x29/0x50
+   </TASK>
+
+Fixes: 7be3248f3139 ("cifs: To match file servers, make sure the server hostname matches")
+Reported-by: Jay Shin <jaeshin@redhat.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/smb/client/connect.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index d27a3bf96f80d..90aaec923889c 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -689,11 +689,11 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
- 	for (i = 0; i < ARRAY_SIZE(override_table); i++) {
- 		const struct irq_override_cmp *entry = &override_table[i];
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index 20f303f2a5d75..dbcaaa274abdb 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -1061,6 +1061,7 @@ clean_demultiplex_info(struct TCP_Server_Info *server)
+ 	/* Release netns reference for this server. */
+ 	put_net(cifs_net_ns(server));
+ 	kfree(server->leaf_fullpath);
++	kfree(server->hostname);
+ 	kfree(server);
  
--		if (dmi_check_system(entry->system) &&
--		    entry->irq == gsi &&
-+		if (entry->irq == gsi &&
- 		    entry->triggering == triggering &&
- 		    entry->polarity == polarity &&
--		    entry->shareable == shareable)
-+		    entry->shareable == shareable &&
-+		    dmi_check_system(entry->system))
- 			return entry->override;
- 	}
+ 	length = atomic_dec_return(&tcpSesAllocCount);
+@@ -1684,8 +1685,6 @@ cifs_put_tcp_session(struct TCP_Server_Info *server, int from_reconnect)
+ 	kfree_sensitive(server->session_key.response);
+ 	server->session_key.response = NULL;
+ 	server->session_key.len = 0;
+-	kfree(server->hostname);
+-	server->hostname = NULL;
  
+ 	task = xchg(&server->tsk, NULL);
+ 	if (task)
 -- 
 2.39.5
 
