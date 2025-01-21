@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-109975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7CBFA184C0
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:11:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93A7EA184AE
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:10:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C92AC163037
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E96157A51AD
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677631F867F;
-	Tue, 21 Jan 2025 18:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF8F1F540C;
+	Tue, 21 Jan 2025 18:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPB02qcc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hiQKdcd4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2659B1F757F;
-	Tue, 21 Jan 2025 18:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D761F543D;
+	Tue, 21 Jan 2025 18:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482981; cv=none; b=FgKmhsmqrWw02mji54lKPbUZZmenjRMy2uhmMH4Ai6fnFdXHdx/oKU71CTTOPcyfMpDyNrGxK5wiBHi1EuE94LXEzOlMAyDAAnmyBNDdv+L2Ew4xsHWYeX/nRoYEzypv8kLfnZPdb84u1zKG+VHIaTLPBstNulz3ohrCo3Mpj2I=
+	t=1737482892; cv=none; b=C3GPe+g63U3g3i62pZgwL9jhgR+UwS+AAWZa4XAW32AW17H1G9B8AFZpalJf9VpOci6Q3KZx5SnTj1GyYUFycdNISJQOny1Y7OeCZR/JEvpzMLjwckJ2TJrxRhlQEBgvEbs2U9/ThoCDjRb5vzXVlYGhCF9kUEhPAuIWC+EgkKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482981; c=relaxed/simple;
-	bh=51qGPWiRRrY0hpE+rMwIsWqa8Bx3j8wCqa0MTgHqfrc=;
+	s=arc-20240116; t=1737482892; c=relaxed/simple;
+	bh=IC9TMpPX4pO+H0gTsV9yGEjoQvHiXffJ+581PPFUR0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JBU6W/7R35BxyrRSOvNg40Z9pJ6sNebxPsdZ/LYh9G/NqR3InI0JKSn7QZv3gYQyyg/tjWQw9X3vX0FumSgR0B4xUocj1v3avEYXF8f91vKyWLiDqKXsuAi6wetIrpXWv2YoMD5T9rVoMarNYQPe5I2UD/wdZUek2ZEHvD41ORY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPB02qcc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38312C4CEE0;
-	Tue, 21 Jan 2025 18:09:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sStkpSJ/T29QEhxisjV7siM0YTsAZhEI8/aOlQa7pVcvo90RetpndvPs3pYffOABwhKJIWW/CpTUw4jTbLqwVufxsv3i114x73N76tWFa85szDSXoYmTeMKHcLlaOyESOnJzQ/rfV6Kx8hd4mERmwEf/jg+NfV74/8CzMACgxek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hiQKdcd4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B6AC4CEDF;
+	Tue, 21 Jan 2025 18:08:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482979;
-	bh=51qGPWiRRrY0hpE+rMwIsWqa8Bx3j8wCqa0MTgHqfrc=;
+	s=korg; t=1737482892;
+	bh=IC9TMpPX4pO+H0gTsV9yGEjoQvHiXffJ+581PPFUR0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EPB02qcc4134ku1LXekplqfPhsM/y/0Rv5rJ6aFrH9uOFV8KHZ0WYVfRMgKQYyEd/
-	 56jFs+TxlOCZsnj7GVi1tZFCV3psBrCEQ04VeVnV8kY/0eHOHmjI1lmGa5YLVmUD37
-	 QlboJ745WdsmHv6uqhaaIdHQm35Y8B5JYZcL2l9s=
+	b=hiQKdcd4ZRr75EqAn4AT5e+KusmHC3O/UGkJ40cFHtT8HjzismsEGYQR3hIGaFGPc
+	 qcm80SfoDEvGUM/UhSNMwmGDDbHTyuU1/supKA7Fzwwy7DunYbxisahCA80AwZ+mbV
+	 4BD4LedAhfLH6QC4yprEklQkEdodF2Fw5Ti1+Z5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giuseppe Corbelli <giuseppe.corbelli@antaresvision.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 044/127] USB: serial: cp210x: add Phoenix Contact UPS Device
-Date: Tue, 21 Jan 2025 18:51:56 +0100
-Message-ID: <20250121174531.375532892@linuxfoundation.org>
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.15 045/127] usb: dwc3: gadget: fix writing NYET threshold
+Date: Tue, 21 Jan 2025 18:51:57 +0100
+Message-ID: <20250121174531.411617229@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
 References: <20250121174529.674452028@linuxfoundation.org>
@@ -59,97 +59,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: André Draszik <andre.draszik@linaro.org>
 
-commit 854eee93bd6e3dca619d47087af4d65b2045828e upstream.
+commit 01ea6bf5cb58b20cc1bd159f0cf74a76cf04bb69 upstream.
 
-Phoenix Contact sells UPS Quint devices [1] with a custom datacable [2]
-that embeds a Silicon Labs converter:
+Before writing a new value to the register, the old value needs to be
+masked out for the new value to be programmed as intended, because at
+least in some cases the reset value of that field is 0xf (max value).
 
-Bus 001 Device 003: ID 1b93:1013 Silicon Labs Phoenix Contact UPS Device
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.00
-  bDeviceClass            0
-  bDeviceSubClass         0
-  bDeviceProtocol         0
-  bMaxPacketSize0        64
-  idVendor           0x1b93
-  idProduct          0x1013
-  bcdDevice            1.00
-  iManufacturer           1 Silicon Labs
-  iProduct                2 Phoenix Contact UPS Device
-  iSerial                 3 <redacted>
-  bNumConfigurations	 1
-  Configuration Descriptor:
-    bLength                 9
-    bDescriptorType         2
-    wTotalLength       0x0020
-    bNumInterfaces          1
-    bConfigurationValue     1
-    iConfiguration          0
-    bmAttributes         0x80
-      (Bus Powered)
-    MaxPower              100mA
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        0
-      bAlternateSetting       0
-      bNumEndpoints           2
-      bInterfaceClass       255 Vendor Specific Class
-      bInterfaceSubClass      0
-      bInterfaceProtocol      0
-      iInterface              2 Phoenix Contact UPS Device
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x01  EP 1 OUT
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0040  1x 64 bytes
-        bInterval               0
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x82  EP 2 IN
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0040  1x 64 bytes
-        bInterval               0
+At the moment, the dwc3 core initialises the threshold to the maximum
+value (0xf), with the option to override it via a DT. No upstream DTs
+seem to override it, therefore this commit doesn't change behaviour for
+any upstream platform. Nevertheless, the code should be fixed to have
+the desired outcome.
 
-[1] https://www.phoenixcontact.com/en-pc/products/power-supply-unit-quint-ps-1ac-24dc-10-2866763
-[2] https://www.phoenixcontact.com/en-il/products/data-cable-preassembled-ifs-usb-datacable-2320500
+Do so.
 
-Reported-by: Giuseppe Corbelli <giuseppe.corbelli@antaresvision.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: 80caf7d21adc ("usb: dwc3: add lpm erratum support")
+Cc: stable@vger.kernel.org # 5.10+ (needs adjustment for 5.4)
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20241209-dwc3-nyet-fix-v2-1-02755683345b@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/cp210x.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/dwc3/core.h   |    1 +
+ drivers/usb/dwc3/gadget.c |    4 +++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/serial/cp210x.c
-+++ b/drivers/usb/serial/cp210x.c
-@@ -223,6 +223,7 @@ static const struct usb_device_id id_tab
- 	{ USB_DEVICE(0x19CF, 0x3000) }, /* Parrot NMEA GPS Flight Recorder */
- 	{ USB_DEVICE(0x1ADB, 0x0001) }, /* Schweitzer Engineering C662 Cable */
- 	{ USB_DEVICE(0x1B1C, 0x1C00) }, /* Corsair USB Dongle */
-+	{ USB_DEVICE(0x1B93, 0x1013) }, /* Phoenix Contact UPS Device */
- 	{ USB_DEVICE(0x1BA4, 0x0002) },	/* Silicon Labs 358x factory default */
- 	{ USB_DEVICE(0x1BE3, 0x07A6) }, /* WAGO 750-923 USB Service Cable */
- 	{ USB_DEVICE(0x1D6F, 0x0010) }, /* Seluxit ApS RF Dongle */
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -430,6 +430,7 @@
+ #define DWC3_DCTL_TRGTULST_SS_INACT	(DWC3_DCTL_TRGTULST(6))
+ 
+ /* These apply for core versions 1.94a and later */
++#define DWC3_DCTL_NYET_THRES_MASK	(0xf << 20)
+ #define DWC3_DCTL_NYET_THRES(n)		(((n) & 0xf) << 20)
+ 
+ #define DWC3_DCTL_KEEP_CONNECT		BIT(19)
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4004,8 +4004,10 @@ static void dwc3_gadget_conndone_interru
+ 		WARN_ONCE(DWC3_VER_IS_PRIOR(DWC3, 240A) && dwc->has_lpm_erratum,
+ 				"LPM Erratum not available on dwc3 revisions < 2.40a\n");
+ 
+-		if (dwc->has_lpm_erratum && !DWC3_VER_IS_PRIOR(DWC3, 240A))
++		if (dwc->has_lpm_erratum && !DWC3_VER_IS_PRIOR(DWC3, 240A)) {
++			reg &= ~DWC3_DCTL_NYET_THRES_MASK;
+ 			reg |= DWC3_DCTL_NYET_THRES(dwc->lpm_nyet_threshold);
++		}
+ 
+ 		dwc3_gadget_dctl_write_safe(dwc, reg);
+ 	} else {
 
 
 
