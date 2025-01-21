@@ -1,146 +1,227 @@
-Return-Path: <stable+bounces-109606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC7B7A17CCA
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 12:15:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C766A17CE3
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 12:20:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07B4E164163
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 11:15:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D30CC188B90E
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 11:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 455301F1516;
-	Tue, 21 Jan 2025 11:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480051F0E2A;
+	Tue, 21 Jan 2025 11:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OTzACL/u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PRnkPNm0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DFEF1F1514;
-	Tue, 21 Jan 2025 11:14:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CFD1BBBEA
+	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 11:20:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737458083; cv=none; b=SlD5/Ch/sfpfbhsmx22RQzzPdaLcbinB5yGxV0DEwEt1eG28BqVhlVzAjvVao6XagBjvr6KmjtOxH+w6/Fc5HOY0qyEzZssRq4PbmU4Tyiy8Hl0STsrYO/wv5JkH8S5nlRdx6i5Ug3frls7iRvz/ceBt7fHjebNksMZnfQWhmW8=
+	t=1737458408; cv=none; b=XfibZ2FrqWFzniA/F0nJphwl8tfygt/hr0TC1h3B3dU/D4PKgKZRa2JUHLDxxc3QDjYSiTLfHzNPByxug9NMRZZdlWLetRHFupz1izn4oasC6BLORa+Yf8dOwIeyq1y1rR+9A1I1Gsvz/plsHfMKG8jAMe+Acf6ZKy/kOzVjjxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737458083; c=relaxed/simple;
-	bh=irCW3h1QxLaI8q46pNPNTc+3wQCFUYHnIIDbFy1fLJo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lVg3lTzl1Iz+fj+wA5Xcp0qiZbz0qUAEd96SvEmJX4lheCtChJzw84yqWpTc1jCgSV+V6joWytoXx4i1I76aY4YMeDyUqYCzyve8yZ2YhMhZKjIyO764+3NLIq7VHxhQKdgPCv3ay34/Ew85C0Pqd/lchwQPmTOHjlQq2Uo0s/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OTzACL/u; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-aaee2c5ee6eso927806666b.1;
-        Tue, 21 Jan 2025 03:14:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737458079; x=1738062879; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dfL31C5SkfpnPUklSIvB0X0xW2/MmtrNueBSnIvz/YA=;
-        b=OTzACL/uV4GC3r+Z6kM3byTmxb5T4vBeYtfjrlQE8wQg+3TtY9TQikSeI05XWNIdOU
-         9Uj7tTWOoYkDrkbPR7RQZ2RJGacykIluh+shnJtOg180lU6s1DMtM3oXWGjelns008i2
-         RKuw1j8m8bDQlukb7+txPy0Wl0uPppA5cY3UXs3fuBjQNDRzZC2BoJsoZ3zylibR0oon
-         t4Frg+d+LeYf/Rb8FyCYLXxyaXywRGcIql1zoB/35e18pjwlnVso6TtHOsseQSe1U7u9
-         cVW49OFh0wBNxz6UTHDQHpdbLqpKpCqU8vIkHKdpf56aXdPntnbDG9fhGg7ThDv6pphg
-         OcvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737458079; x=1738062879;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dfL31C5SkfpnPUklSIvB0X0xW2/MmtrNueBSnIvz/YA=;
-        b=VFu13M9JBfVl3zuVFB9j4/PEQ9G/eRGgtzGiXHj+1+9xlVZ3+F9W3yVP33NFjpD9T+
-         Rs/mFyoyMCO7skV5OdLAzRIP6ksyyXHZFgMj6M4J8KKot7c01ipip/GbHvemVG0QzDox
-         AEp9WDRxBGj0mg/gMABUgjOmUzk5WTzG47JMiNwjNPuvQuz7TEG56hWu7qPzqn9yq3zS
-         Uu3ZNRRTa7IAFfezefZUDDornflN5ArkXVimok3cq9j1oz9Yy/88AUoR7buZJczqg5Fq
-         4yWfVZyvGjHA9a5MYuy1lPVNLVnrnjASgorQX2VUTrTtJKQp+pOml6KHhg/PRg1VlX0l
-         aF1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWBBJhjZiQFPgwrgR4aJizT0vzLK0Z0xj6G45e+NW7oExaPXVXzsB+ziWCrH5chgConDawASqxYNMgiwctx@vger.kernel.org, AJvYcCX3gpVPSxFMdENa2JzNwbJAaRxMAfRPgFe9GYz171LbaPvg9WgHRrPs2BblE+QxDnE30kNc54tjMIXA58DJYA==@vger.kernel.org, AJvYcCXZnPkWrpsFYDndUaY+hIvH7mPUVASjUMIGBZE7E13aXnVwIay+pSl4WksqNNyNCzn3tBLtwMma@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9IYonUu7/dqFF7wkHqLv7kC9kbWv+LIBAAFDBGgifl9RBvDYt
-	K2ledHXB/EjueUVs8YezeXzmA8jwWxhhb32cgUN8CizM73zgeZctGrI2QoVeZ2KkNNaKQm09QDl
-	AqUsKb0GAP6izGuFtR+3gIUCxxes=
-X-Gm-Gg: ASbGncsjYGqSrCJ20iTR4oddoF+Db3jXfHoceiQSscH3cK6v2YmHSQDKQQy7k+Olm4E
-	jMABYI+f6T0VE+JCNN8wS72kZ322XRGm/flu7Uio1f+HndPXR3Y8=
-X-Google-Smtp-Source: AGHT+IFJIxWSVZE0dlP2IniBWyiO3x4ZjBobjyj7voUHXif4tJdvAl/FWXsgEg8Fy369LfQVWzoY++jE50xRxTzaZTs=
-X-Received: by 2002:a17:907:1c8b:b0:ab3:83c2:755a with SMTP id
- a640c23a62f3a-ab38b402651mr1575817566b.49.1737458079107; Tue, 21 Jan 2025
- 03:14:39 -0800 (PST)
+	s=arc-20240116; t=1737458408; c=relaxed/simple;
+	bh=v1d0SASIxkzavbdWB0Z8uWsRdIMGWtVVeSjXeHT91kk=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GtNBiYj/mGGJSYr1aS1OjsfAicKLFSf/D98f99sdUd2nK2J5mteMb+iERlzlKqGq3rbtCIY71R6lTOacmqOr3Q6IDInv81gfMMC/ZhTmE2TlG0880qXL0+LR9bDACBLXippAyjMyBwQzz5NNarip6LFIHh4ntZVf/onP9YWr/iQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PRnkPNm0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 592AAC4CEDF;
+	Tue, 21 Jan 2025 11:20:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737458407;
+	bh=v1d0SASIxkzavbdWB0Z8uWsRdIMGWtVVeSjXeHT91kk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=PRnkPNm0Z4fBkrAmSfPZPGnNqXC0MbV5Xy+ik+MIbO66xYXdS+HE4UneKhisMOA2a
+	 qiCGdihhFLfjJV18XL4gMLIK0M+OKoTm5RDN8oLgpTIMaFPa2nVXS/WPd4J78p6l0n
+	 eQkiVXtrasNKqAZJzNH9rpa2xlwFcL+EUfvMC2Eg/zlwqisPZ4cMJUlJPhDrvitSp5
+	 Q8KMY7w+s57nfJ2CB1y6a5iV1JHU7ovoHFZiJ2E/C7NaVqaFhAt5MSng79807hdSdR
+	 rU2R/gBSQSyxLsnGfHrX16S6jLwE3pJCLYCgN8oCQWs4SrWkiPCjTOgNa8Lo6Ia+gO
+	 gjKTTezXEtWNA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1taCIf-00E31i-2j;
+	Tue, 21 Jan 2025 11:20:05 +0000
+Date: Tue, 21 Jan 2025 11:20:04 +0000
+Message-ID: <86r04wv2fv.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+	broonie@kernel.org,
+	catalin.marinas@arm.com,
+	eauger@redhat.com,
+	fweimer@redhat.com,
+	jeremy.linton@arm.com,
+	oliver.upton@linux.dev,
+	pbonzini@redhat.com,
+	stable@vger.kernel.org,
+	wilco.dijkstra@arm.com,
+	will@kernel.org
+Subject: Re: [PATCH] KVM: arm64/sve: Ensure SVE is trapped after guest exit
+In-Reply-To: <20250121100026.3974971-1-mark.rutland@arm.com>
+References: <20250121100026.3974971-1-mark.rutland@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250121110815.416785-1-amir73il@gmail.com>
-In-Reply-To: <20250121110815.416785-1-amir73il@gmail.com>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Tue, 21 Jan 2025 12:14:28 +0100
-X-Gm-Features: AbW1kvbNw22VX20HmoC_SNhy14TG3L-nywgI3RoArCS5Xpk4sf1STkqh6Wd08v8
-Message-ID: <CAOQ4uxj+LF602e3ypBHLpgWhO46CUaqn+sQ6Fcbq8r2cLJu8iA@mail.gmail.com>
-Subject: Re: [PATCH 6.6 0/3] Manual backport of overlayfs fixes from v6.6.72
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Sasha Levin <sashal@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>, Jan Kara <jack@suse.cz>, 
-	Dmitry Safonov <dima@arista.com>, Ignat Korchagin <ignat@cloudflare.com>, linux-fsdevel@vger.kernel.org, 
-	linux-unionfs@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org, broonie@kernel.org, catalin.marinas@arm.com, eauger@redhat.com, fweimer@redhat.com, jeremy.linton@arm.com, oliver.upton@linux.dev, pbonzini@redhat.com, stable@vger.kernel.org, wilco.dijkstra@arm.com, will@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Tue, Jan 21, 2025 at 12:08=E2=80=AFPM Amir Goldstein <amir73il@gmail.com=
-> wrote:
->
-> Greg,
->
-> Per your request, here is a manual backport of the overlayfs fixes that
-> were applied in v6.6.72 and reverted in v6.6.73.
->
+Hi Mark,
 
-Forgot to mention that I backported one extra patch from 6.12.y.
-It is not an overlayfs patch, but it fixes in a more generic way
-(removing an unneeded assertion) the same bug report that the
-overlayfs patches fix.
+On Tue, 21 Jan 2025 10:00:26 +0000,
+Mark Rutland <mark.rutland@arm.com> wrote:
+> 
+> There is a period of time after returning from a KVM_RUN ioctl where
+> userspace may use SVE without trapping, but the kernel can unexpectedly
+> discard the live SVE state. Eric Auger has observed this causing QEMU
+> crashes where SVE is used by memmove():
+> 
+>   https://issues.redhat.com/browse/RHEL-68997
+> 
+> The only state discarded is the user SVE state of the task which issued
+> the KVM_RUN ioctl. Other tasks are unaffected, plain FPSIMD state is
+> unaffected, and kernel state is unaffected.
+> 
+> This happens because fpsimd_kvm_prepare() incorrectly manipulates the
+> FPSIMD/SVE state. When the vCPU is loaded, fpsimd_kvm_prepare()
+> unconditionally clears TIF_SVE but does not reconfigure CPACR_EL1.ZEN to
+> trap userspace SVE usage. If the vCPU does not use FPSIMD/SVE and hyp
+> does not save the host's FPSIMD/SVE state, the kernel may return to
+> userspace with TIF_SVE clear while SVE is still enabled in
+> CPACR_EL1.ZEN. Subsequent userspace usage of SVE will not be trapped,
+> and the next save of userspace FPSIMD/SVE state will only store the
+> FPSIMD portion due to TIF_SVE being clear, discarding any SVE state.
+> 
+> The broken logic was originally introduced in commit:
+> 
+>   93ae6b01bafee8fa ("KVM: arm64: Discard any SVE state when entering KVM guests")
+> 
+> ... though at the time fp_user_discard() would reconfigure CPACR_EL1.ZEN
+> to trap subsequent SVE usage, masking the issue until that logic was
+> removed in commit:
+> 
+>   8c845e2731041f0f ("arm64/sve: Leave SVE enabled on syscall if we don't context switch")
+> 
+> Avoid this issue by reconfiguring CPACR_EL1.ZEN when clearing
+> TIF_SVE. At the same time, add a comment to explain why
+> current->thread.fp_type must be set even though the FPSIMD state is not
+> foreign. A similar issue exists when SME is enabled, and will require
+> further rework. As SME currently depends on BROKEN, a BUILD_BUG() and
+> comment are added for now, and this issue will need to be fixed properly
+> in a follow-up patch.
+> 
+> Commit 93ae6b01bafee8fa also introduced an unintended ptrace ABI change.
+> Unconditionally clearing TIF_SVE regardless of whether the state is
+> foreign discards saved SVE state created by ptrace after syscall entry.
+> Avoid this by only clearing TIF_SVE when the FPSIMD/SVE state is not
+> foreign. When the state is foreign, KVM hyp code does not need to save
+> any host state, and so this will not affect KVM.
+> 
+> There appear to be further issues with unintentional SVE state
+> discarding, largely impacting ptrace and signal handling, which will
+> need to be addressed in separate patches.
+> 
+> Reported-by: Eric Auger <eauger@redhat.com>
+> Reported-by: Wilco Dijkstra <wilco.dijkstra@arm.com>
+> Cc: stable@vger.kernel.org
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Florian Weimer <fweimer@redhat.com>
+> Cc: Jeremy Linton <jeremy.linton@arm.com>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Oliver Upton <oliver.upton@linux.dev>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Will Deacon <will@kernel.org>
+> Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+> ---
+>  arch/arm64/kernel/fpsimd.c | 20 ++++++++++++++++++--
+>  1 file changed, 18 insertions(+), 2 deletions(-)
+> 
+> I believe there are some other issues in this area, but I'm sending this
+> out on its own because I beleive the other issues are more complex while
+> this is self-contained, and people are actively hitting this case in
+> production.
+> 
+> I intend to follow-up with fixes for the other cases I mention in the
+> commit message, and for the SME case with the BUILD_BUG_ON().
+> 
+> Mark.
+> 
+> diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+> index 8c4c1a2186cc5..e4053a90ed240 100644
+> --- a/arch/arm64/kernel/fpsimd.c
+> +++ b/arch/arm64/kernel/fpsimd.c
+> @@ -1711,8 +1711,24 @@ void fpsimd_kvm_prepare(void)
+>  	 */
+>  	get_cpu_fpsimd_context();
+>  
+> -	if (test_and_clear_thread_flag(TIF_SVE)) {
+> -		sve_to_fpsimd(current);
+> +	if (!test_thread_flag(TIF_FOREIGN_FPSTATE) &&
+> +	    test_and_clear_thread_flag(TIF_SVE)) {
+> +		sve_user_disable();
 
-Both fixes are needed, because the assertion could have been hit
-without overlayfs and because the overlayfs fixes are needed to
-fix bugs other than the assertion.
+I'm pretty happy with this fix. However...
+
+> +
+> +		/*
+> +		 * The KVM hyp code doesn't set fp_type when saving the host's
+> +		 * FPSIMD state. Set fp_type here in case the hyp code saves
+> +		 * the host state.
+
+Should KVM do that? The comment seems to indicate that this is
+papering over yet another bug...
+
+> +		 *
+> +		 * If hyp code does not save the host state, then the host
+> +		 * state remains live on the CPU and saved fp_type is
+> +		 * irrelevant until it is overwritten by a later call to
+> +		 * fpsimd_save_user_state().
+
+I'm not sure I understand this. If fp_type is irrelevant, surely it is
+*forever* irrelevant, not until something else happens. Or am I
+missing something?
+
+> +		 *
+> +		 * This is *NOT* sufficient when CONFIG_ARM64_SME=y, where
+> +		 * fp_type can be FP_STATE_SVE regardless of TIF_SVE.
+> +		 */
+> +		BUILD_BUG_ON(IS_ENABLED(CONFIG_ARM64_SME));
+
+I'd rather not have this build-time failure, as this is very likely to
+annoy a lot of people. Instead, just make SME unselectable with KVM:
+
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 100570a048c5e..88bedf95a3662 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -2271,6 +2271,7 @@ config ARM64_SME
+ 	default y
+ 	depends on ARM64_SVE
+ 	depends on BROKEN
++	depends on !KVM
+ 	help
+ 	  The Scalable Matrix Extension (SME) is an extension to the AArch64
+ 	  execution state which utilises a substantial subset of the SVE
 
 Thanks,
-Amir.
 
-> For the record, this overlayfs series from v6.7 [2] changes subtle
-> internal semantics across overlayfs code, which are not detectable by
-> build error and therefore are a backporting landmine.
->
-> This is exactly what happened with the automatic apply of dependecy
-> patch in v6.6.72.
->
-> I will try to be extra diligent about review of auto backports below
-> v6.7 from now on.
->
-> Luckily, the leaked mount reference was caught by a vfs assertion and
-> promptly reported by Ignat from Cloudflare team.
->
-> Thanks!
-> Amir.
->
-> [1] https://lore.kernel.org/stable/2025012123-cable-reburial-568e@gregkh/
-> [2] https://lore.kernel.org/linux-unionfs/20230816152334.924960-1-amir73i=
-l@gmail.com/
->
-> Amir Goldstein (3):
->   ovl: pass realinode to ovl_encode_real_fh() instead of realdentry
->   ovl: support encoding fid from inode with no alias
->   fs: relax assertions on failure to encode file handles
->
->  fs/notify/fdinfo.c       |  4 +---
->  fs/overlayfs/copy_up.c   | 16 ++++++-------
->  fs/overlayfs/export.c    | 49 ++++++++++++++++++++++------------------
->  fs/overlayfs/namei.c     |  4 ++--
->  fs/overlayfs/overlayfs.h |  2 +-
->  5 files changed, 39 insertions(+), 36 deletions(-)
->
-> --
-> 2.34.1
->
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
 
