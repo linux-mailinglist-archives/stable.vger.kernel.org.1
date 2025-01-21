@@ -1,262 +1,158 @@
-Return-Path: <stable+bounces-110040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42BC2A18554
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:42:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E70A18556
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:44:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 413C43A4046
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:41:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93EB41887026
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9CF81F4E4A;
-	Tue, 21 Jan 2025 18:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C3A1F5433;
+	Tue, 21 Jan 2025 18:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="H+fELepm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FYMuDnWv"
 X-Original-To: stable@vger.kernel.org
-Received: from out-185.mta1.migadu.com (out-185.mta1.migadu.com [95.215.58.185])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3AC1DA0F1
-	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 18:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2AAF1DA0F1;
+	Tue, 21 Jan 2025 18:44:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737484919; cv=none; b=o2HUsEYVEMIeLBChVqeRyf4rJsx3PHMpdE8lFUyEHj1SmwSNlr/fTtJza97sebor5yhA7rXHBYFWaXgfuw0XaA6gQHC8uRl9vLoTRdQoICYhrHbxQr6PdnpsCmdFVu5R6JSs160yFAjCKmpbyXb2No3mbPbv2GnrUn1tfsc4gPY=
+	t=1737485061; cv=none; b=IsE12dSy8W6KVLjlwF63RPhlPmEZGD8WIE7KLsfg6QjmfrWL50aXPebmx4A41ot2mGFC1XrdAjW68CF1Jcm0XYyk3RtGbrJJR++dMvL41STF1q1PZq7v2ZMAAeEcXXh6uCyKOSKzuIckaHHBDUhO0NiEgJXx5k2rLUhok7pqsjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737484919; c=relaxed/simple;
-	bh=0EljVzE7a0ZWPbyuQh5Agxhzo7h+fSZ6IpomFZa/dRQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=P+aD7mSm7EIPAZE2uTNNiyTgL3rvKE1GevqvkAOWv9DrxyZz+eQJm/fu3BvkcosVGxxPBoMl3YGXcomgaoyn6vGc86sX4ngDXW+AsNSHDeGkC0LSNZBiYQCK2zw2td8SKtyeX2qGZeUCHj+uU20gVE6CAbVe2VznjdTBthq1jxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=H+fELepm; arc=none smtp.client-ip=95.215.58.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1737484914;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iP6koW23a2s3bpyORK17i3Rbf8CIBPCVEJXke/YdAWc=;
-	b=H+fELepmKJHV+B+RvcxKOAZZdi5cWX46Hv3X/6FLHwvQ8I3XvwJl7+xPmdfLi6lgJ1RMpf
-	qO9ekqROdf6PWoBX6y+gVwF/aGuDRT4x5MHjKVFbGUdvDBmiuve2695Q1YXPsekZ7SAdWY
-	EqhBiCJ32kscrSEfz7awguKkZnBkbQg=
-From: Sean Anderson <sean.anderson@linux.dev>
-To: stable@vger.kernel.org
-Cc: Sean Anderson <sean.anderson@linux.dev>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.1.y] gpio: xilinx: Convert gpio_lock to raw spinlock
-Date: Tue, 21 Jan 2025 13:41:48 -0500
-Message-Id: <20250121184148.3378693-1-sean.anderson@linux.dev>
-In-Reply-To: <2025012027-shaft-catalyst-2d69@gregkh>
-References: <2025012027-shaft-catalyst-2d69@gregkh>
+	s=arc-20240116; t=1737485061; c=relaxed/simple;
+	bh=O5sM6WxyDgfaS95qbllWleaelTQFOs8RpqIiYrTLnEw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e8cRdS1XtSkD1DD6fdCxkAJkTVgzJEFPbyW1czDG5RKHQwdmZKddvWa3Kmt16y+xSBqxz5PxTRSDDRUTTK4V9igDqjqD6Pmm7yQJJ25i0hfbihRk+KW17e/XxnK6vLVgmGa/fbRykBo5Lo3oOQ3YxBiyn1VQXN+wlHMgwX7hN0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FYMuDnWv; arc=none smtp.client-ip=209.85.210.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-71e2bb84fe3so3145077a34.1;
+        Tue, 21 Jan 2025 10:44:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737485059; x=1738089859; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=RlKJ3LgGHjZxMuE1TB21WJyzLambGQ/GuKtdAmXNl0A=;
+        b=FYMuDnWv2WUBY5Ro3HHyWpUBIH99EQ+w/I0QaDLNqcwVEA3o60znfwF8Ex56iu0/Gv
+         epQbMOrq+c3GFZgv3QsHoHGRY5fhMskWfrWylqL/LB4sXVr/Okq+4GpAdwjLYK436gvX
+         3AsisC71Ka674sjeO48aTQMATIbAz/YAq0/bwT7kw4AbUsWTwPGkKDyjYejY19dedGYW
+         dyAPKKAfmqMtV/M32QSH2eJFNu86br94Y+qDfiykGVqfmizj76s3y+atn1QO5yxiu6ta
+         u0fgGq+2Avc7cBgRrGCRwPz2SakaU+YReq8/RvFZDxUGUlpISUGEXFmCbg59XTRuRF4u
+         SzWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737485059; x=1738089859;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RlKJ3LgGHjZxMuE1TB21WJyzLambGQ/GuKtdAmXNl0A=;
+        b=av8Dmi4sLULnCSm5I4fGOvzCxGU6iPLrf6shRbEg8rouy9mVrAQ+w1qJBrBwLAj9Xu
+         lVc23176TejohklBSsouw1L8omPheAuswgc4IG9EZI5NlxkcFfik29ZL/aNdU89aALQL
+         HBcOXFirydPBqydGgvuLcyAG/s/3Dbnq7KPS04dJfUIMmE4LpQcrEEI4RQ/tA7cmqSZP
+         icoOSF2b38NVpmVntD1Ywz3wxQuN+AocUL8UDFjjW/lqw1iYNy8WuuaWGckqhKDWNz1u
+         ed4IjXJmbnDWGBbp+Zcsq0bi9ujXurW96urhFu61mmZNQUHGDk9uVJoDhP6NwbRzl1FZ
+         OtmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVBzlP9zYqCNltdscMqqb2eUIGGqc17ml2mmDrcy/6GTOoDU974F8EwnYxfXxL5BVGAO5THxH66MG597u4=@vger.kernel.org, AJvYcCXWUayM/mpqtNfp0PV5wcTvkGPPn7/utdYDNo06gG40EHX6x4JvOBH0eyMgKeRss/tjjd3odxL2@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7q2x91+OM8WBYoe5JCzReE8sPAPJP6WeEgsRvN7EkEdjGGVZP
+	x74JVd9kwCzICDBrMT6q8IxPdzw2h/nHw9sqcP7LiWxKBPqyE39L
+X-Gm-Gg: ASbGncv/TfNajzoYGjXcaG0czCgmz4q9QH2hqc4A3oPbgcxOupjvOuCc0qCfD1BbBRm
+	iixCQn4mfJX/1Nqsz8QMfZcZ8DIgIl/HNH/E/L67HLO9bpxPCcmvu0nCpC7+qd+P2ptxVqa5K9o
+	3XnIJC8DzET1JaTaWOXvEgSHrfMirvMlMMWtkVwafFwfpfWZDio/ydn14VggI4MWHob9Vt/q773
+	a1t/ko1SAYD/cGzgOExKX+CVPJveWQwg1oFFKOpMDctjucvrzb6SNu1dPBY3fs3R9vbKIkC7gTv
+	s9nI3D5SncvzyJOPDesfug==
+X-Google-Smtp-Source: AGHT+IESuhzJ8tC07LO6zfeSt9aRTR9FwfUMTg7k2e4mxkqPXU0IKjDJ5LS3GKmqxUADK/sZBZBAkw==
+X-Received: by 2002:a05:6871:4003:b0:29e:3bea:7e60 with SMTP id 586e51a60fabf-2b1c0cdc022mr10166837fac.38.1737485058780;
+        Tue, 21 Jan 2025 10:44:18 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7249b3a485csm3402733a34.21.2025.01.21.10.44.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Jan 2025 10:44:18 -0800 (PST)
+Message-ID: <a9afa90f-2a2f-4ae4-8d0f-b136251b831a@gmail.com>
+Date: Tue, 21 Jan 2025 10:44:15 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 00/64] 6.1.127-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250121174521.568417761@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-[ Upstream commit c17ff476f53afb30f90bb3c2af77de069c81a622 ]
+On 1/21/25 09:51, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.127 release.
+> There are 64 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 23 Jan 2025 17:45:02 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.127-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-irq_chip functions may be called in raw spinlock context. Therefore, we
-must also use a raw spinlock for our own internal locking.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-This fixes the following lockdep splat:
-
-[    5.349336] =============================
-[    5.353349] [ BUG: Invalid wait context ]
-[    5.357361] 6.13.0-rc5+ #69 Tainted: G        W
-[    5.363031] -----------------------------
-[    5.367045] kworker/u17:1/44 is trying to lock:
-[    5.371587] ffffff88018b02c0 (&chip->gpio_lock){....}-{3:3}, at: xgpio_irq_unmask (drivers/gpio/gpio-xilinx.c:433 (discriminator 8))
-[    5.380079] other info that might help us debug this:
-[    5.385138] context-{5:5}
-[    5.387762] 5 locks held by kworker/u17:1/44:
-[    5.392123] #0: ffffff8800014958 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work (kernel/workqueue.c:3204)
-[    5.402260] #1: ffffffc082fcbdd8 (deferred_probe_work){+.+.}-{0:0}, at: process_one_work (kernel/workqueue.c:3205)
-[    5.411528] #2: ffffff880172c900 (&dev->mutex){....}-{4:4}, at: __device_attach (drivers/base/dd.c:1006)
-[    5.419929] #3: ffffff88039c8268 (request_class#2){+.+.}-{4:4}, at: __setup_irq (kernel/irq/internals.h:156 kernel/irq/manage.c:1596)
-[    5.428331] #4: ffffff88039c80c8 (lock_class#2){....}-{2:2}, at: __setup_irq (kernel/irq/manage.c:1614)
-[    5.436472] stack backtrace:
-[    5.439359] CPU: 2 UID: 0 PID: 44 Comm: kworker/u17:1 Tainted: G        W          6.13.0-rc5+ #69
-[    5.448690] Tainted: [W]=WARN
-[    5.451656] Hardware name: xlnx,zynqmp (DT)
-[    5.455845] Workqueue: events_unbound deferred_probe_work_func
-[    5.461699] Call trace:
-[    5.464147] show_stack+0x18/0x24 C
-[    5.467821] dump_stack_lvl (lib/dump_stack.c:123)
-[    5.471501] dump_stack (lib/dump_stack.c:130)
-[    5.474824] __lock_acquire (kernel/locking/lockdep.c:4828 kernel/locking/lockdep.c:4898 kernel/locking/lockdep.c:5176)
-[    5.478758] lock_acquire (arch/arm64/include/asm/percpu.h:40 kernel/locking/lockdep.c:467 kernel/locking/lockdep.c:5851 kernel/locking/lockdep.c:5814)
-[    5.482429] _raw_spin_lock_irqsave (include/linux/spinlock_api_smp.h:111 kernel/locking/spinlock.c:162)
-[    5.486797] xgpio_irq_unmask (drivers/gpio/gpio-xilinx.c:433 (discriminator 8))
-[    5.490737] irq_enable (kernel/irq/internals.h:236 kernel/irq/chip.c:170 kernel/irq/chip.c:439 kernel/irq/chip.c:432 kernel/irq/chip.c:345)
-[    5.494060] __irq_startup (kernel/irq/internals.h:241 kernel/irq/chip.c:180 kernel/irq/chip.c:250)
-[    5.497645] irq_startup (kernel/irq/chip.c:270)
-[    5.501143] __setup_irq (kernel/irq/manage.c:1807)
-[    5.504728] request_threaded_irq (kernel/irq/manage.c:2208)
-
-Fixes: a32c7caea292 ("gpio: gpio-xilinx: Add interrupt support")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250110163354.2012654-1-sean.anderson@linux.dev
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-[ resolved conflicts ]
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
----
- drivers/gpio/gpio-xilinx.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/gpio/gpio-xilinx.c b/drivers/gpio/gpio-xilinx.c
-index 2fc6b6ff7f16..58cbf763ee21 100644
---- a/drivers/gpio/gpio-xilinx.c
-+++ b/drivers/gpio/gpio-xilinx.c
-@@ -66,7 +66,7 @@ struct xgpio_instance {
- 	DECLARE_BITMAP(state, 64);
- 	DECLARE_BITMAP(last_irq_read, 64);
- 	DECLARE_BITMAP(dir, 64);
--	spinlock_t gpio_lock;	/* For serializing operations */
-+	raw_spinlock_t gpio_lock;	/* For serializing operations */
- 	int irq;
- 	struct irq_chip irqchip;
- 	DECLARE_BITMAP(enable, 64);
-@@ -181,14 +181,14 @@ static void xgpio_set(struct gpio_chip *gc, unsigned int gpio, int val)
- 	struct xgpio_instance *chip = gpiochip_get_data(gc);
- 	int bit = xgpio_to_bit(chip, gpio);
- 
--	spin_lock_irqsave(&chip->gpio_lock, flags);
-+	raw_spin_lock_irqsave(&chip->gpio_lock, flags);
- 
- 	/* Write to GPIO signal and set its direction to output */
- 	__assign_bit(bit, chip->state, val);
- 
- 	xgpio_write_ch(chip, XGPIO_DATA_OFFSET, bit, chip->state);
- 
--	spin_unlock_irqrestore(&chip->gpio_lock, flags);
-+	raw_spin_unlock_irqrestore(&chip->gpio_lock, flags);
- }
- 
- /**
-@@ -212,7 +212,7 @@ static void xgpio_set_multiple(struct gpio_chip *gc, unsigned long *mask,
- 	bitmap_remap(hw_mask, mask, chip->sw_map, chip->hw_map, 64);
- 	bitmap_remap(hw_bits, bits, chip->sw_map, chip->hw_map, 64);
- 
--	spin_lock_irqsave(&chip->gpio_lock, flags);
-+	raw_spin_lock_irqsave(&chip->gpio_lock, flags);
- 
- 	bitmap_replace(state, chip->state, hw_bits, hw_mask, 64);
- 
-@@ -220,7 +220,7 @@ static void xgpio_set_multiple(struct gpio_chip *gc, unsigned long *mask,
- 
- 	bitmap_copy(chip->state, state, 64);
- 
--	spin_unlock_irqrestore(&chip->gpio_lock, flags);
-+	raw_spin_unlock_irqrestore(&chip->gpio_lock, flags);
- }
- 
- /**
-@@ -238,13 +238,13 @@ static int xgpio_dir_in(struct gpio_chip *gc, unsigned int gpio)
- 	struct xgpio_instance *chip = gpiochip_get_data(gc);
- 	int bit = xgpio_to_bit(chip, gpio);
- 
--	spin_lock_irqsave(&chip->gpio_lock, flags);
-+	raw_spin_lock_irqsave(&chip->gpio_lock, flags);
- 
- 	/* Set the GPIO bit in shadow register and set direction as input */
- 	__set_bit(bit, chip->dir);
- 	xgpio_write_ch(chip, XGPIO_TRI_OFFSET, bit, chip->dir);
- 
--	spin_unlock_irqrestore(&chip->gpio_lock, flags);
-+	raw_spin_unlock_irqrestore(&chip->gpio_lock, flags);
- 
- 	return 0;
- }
-@@ -267,7 +267,7 @@ static int xgpio_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
- 	struct xgpio_instance *chip = gpiochip_get_data(gc);
- 	int bit = xgpio_to_bit(chip, gpio);
- 
--	spin_lock_irqsave(&chip->gpio_lock, flags);
-+	raw_spin_lock_irqsave(&chip->gpio_lock, flags);
- 
- 	/* Write state of GPIO signal */
- 	__assign_bit(bit, chip->state, val);
-@@ -277,7 +277,7 @@ static int xgpio_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
- 	__clear_bit(bit, chip->dir);
- 	xgpio_write_ch(chip, XGPIO_TRI_OFFSET, bit, chip->dir);
- 
--	spin_unlock_irqrestore(&chip->gpio_lock, flags);
-+	raw_spin_unlock_irqrestore(&chip->gpio_lock, flags);
- 
- 	return 0;
- }
-@@ -405,7 +405,7 @@ static void xgpio_irq_mask(struct irq_data *irq_data)
- 	int bit = xgpio_to_bit(chip, irq_offset);
- 	u32 mask = BIT(bit / 32), temp;
- 
--	spin_lock_irqsave(&chip->gpio_lock, flags);
-+	raw_spin_lock_irqsave(&chip->gpio_lock, flags);
- 
- 	__clear_bit(bit, chip->enable);
- 
-@@ -415,7 +415,7 @@ static void xgpio_irq_mask(struct irq_data *irq_data)
- 		temp &= ~mask;
- 		xgpio_writereg(chip->regs + XGPIO_IPIER_OFFSET, temp);
- 	}
--	spin_unlock_irqrestore(&chip->gpio_lock, flags);
-+	raw_spin_unlock_irqrestore(&chip->gpio_lock, flags);
- }
- 
- /**
-@@ -431,7 +431,7 @@ static void xgpio_irq_unmask(struct irq_data *irq_data)
- 	u32 old_enable = xgpio_get_value32(chip->enable, bit);
- 	u32 mask = BIT(bit / 32), val;
- 
--	spin_lock_irqsave(&chip->gpio_lock, flags);
-+	raw_spin_lock_irqsave(&chip->gpio_lock, flags);
- 
- 	__set_bit(bit, chip->enable);
- 
-@@ -450,7 +450,7 @@ static void xgpio_irq_unmask(struct irq_data *irq_data)
- 		xgpio_writereg(chip->regs + XGPIO_IPIER_OFFSET, val);
- 	}
- 
--	spin_unlock_irqrestore(&chip->gpio_lock, flags);
-+	raw_spin_unlock_irqrestore(&chip->gpio_lock, flags);
- }
- 
- /**
-@@ -515,7 +515,7 @@ static void xgpio_irqhandler(struct irq_desc *desc)
- 
- 	chained_irq_enter(irqchip, desc);
- 
--	spin_lock(&chip->gpio_lock);
-+	raw_spin_lock(&chip->gpio_lock);
- 
- 	xgpio_read_ch_all(chip, XGPIO_DATA_OFFSET, all);
- 
-@@ -532,7 +532,7 @@ static void xgpio_irqhandler(struct irq_desc *desc)
- 	bitmap_copy(chip->last_irq_read, all, 64);
- 	bitmap_or(all, rising, falling, 64);
- 
--	spin_unlock(&chip->gpio_lock);
-+	raw_spin_unlock(&chip->gpio_lock);
- 
- 	dev_dbg(gc->parent, "IRQ rising %*pb falling %*pb\n", 64, rising, 64, falling);
- 
-@@ -623,7 +623,7 @@ static int xgpio_probe(struct platform_device *pdev)
- 	bitmap_set(chip->hw_map,  0, width[0]);
- 	bitmap_set(chip->hw_map, 32, width[1]);
- 
--	spin_lock_init(&chip->gpio_lock);
-+	raw_spin_lock_init(&chip->gpio_lock);
- 
- 	chip->gc.base = -1;
- 	chip->gc.ngpio = bitmap_weight(chip->hw_map, 64);
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.35.1.1320.gc452695387.dirty
-
+Florian
 
