@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-109989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE83DA184D4
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:12:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F549A18441
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:05:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 013E1188016B
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:11:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E096D3A235B
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:05:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F851F55E3;
-	Tue, 21 Jan 2025 18:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2550E1F6667;
+	Tue, 21 Jan 2025 18:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yBzlZwhI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSGMNtMZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866491F666B;
-	Tue, 21 Jan 2025 18:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A9F1F472D;
+	Tue, 21 Jan 2025 18:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737483020; cv=none; b=IFu7cQxnHjWLQ2exNuUZq4YWp4WsUWaEkvhe+OWE6qNSZy4taWYUsXOfiIOwK4EvkxululvOGr1us6+N6V7aeCED2JL3tKphMZzAPRTjpaxz4GESjyUAYirOgG/7Bt6VOp1bly8pgeJ+DXYG9ci0dok66ubObGctZpLL81VbHvk=
+	t=1737482691; cv=none; b=Z11fDbpwArxEwfxcUF9I7+oyfwn/YDRxaiN8IfRD9PRYuu+Or2qXOlmIAywCBcpVcfTl4vQ+SOC2Zcu4Emyj/uK63nqfjt5YYO8bzRKyrwalDUjY5aGTUQH0uIevbadSJm2h7QXdVTjShGhLIjRrOHocCmSv3qpAFgF+UkxZcDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737483020; c=relaxed/simple;
-	bh=4BG//LDR/3M++WMKVXGPZg9ZLKEtaDT0COUdka2HltY=;
+	s=arc-20240116; t=1737482691; c=relaxed/simple;
+	bh=8hqvfw4LVyRrJoFAQFI8kCZ/STF449EKTtM0RkhEVGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=knBFMECO/K8iQpn2trDvxRxe+6uQVezZctUJ4DYbnjnx2Ph9Jyt6sgB/y7Tslu/CCC+zCHDCbSDniiijQ9pTUhU7bw3fmWshYaQHun+zQQIcuct9cvQc22bvuoYH7od5zrhbx5siII801Gq6FZGokWmrqYNUixVK3lLUQyuSEdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yBzlZwhI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7EBC4CEDF;
-	Tue, 21 Jan 2025 18:10:19 +0000 (UTC)
+	 MIME-Version; b=msANcA/l5g1qZU33jw+7vw7YVLJCIvh3d1HWGz15hRNZaV9e73f0ZNDFmQVp59/ci8rWCOVlD3nb7IF2ZjB65IHVkacG0Rf+JjMhqQUfZhbM2WbimK8UL4wMPaNYLJ8xaLh0Ofr6tRtWjo0kFtdlb/N9BqIjeS4fH04v+6C8NFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSGMNtMZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A64C4CEDF;
+	Tue, 21 Jan 2025 18:04:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737483020;
-	bh=4BG//LDR/3M++WMKVXGPZg9ZLKEtaDT0COUdka2HltY=;
+	s=korg; t=1737482691;
+	bh=8hqvfw4LVyRrJoFAQFI8kCZ/STF449EKTtM0RkhEVGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yBzlZwhIlUdKQY7QXOaRaUAMYPfr8hyZLjJsHzXIz+jhurzFTOm8iIzS9HnYfK4ND
-	 /VvhQrwgfh+onIqMnPbZKMBhra5Z+OXkH1728kfTd6ewCaEUCpyn1ZukSoS2R5v+Vf
-	 6XsHC9r9mWJ2JRcO60Ju4/90FzjrRHvaxb0AGRgU=
+	b=jSGMNtMZLOmbxzVpMH0b9MOsIUaMpKL1AO3Nb7sMpJ5C2FfJ4QaR9gzy2mSB9zpwK
+	 VLwCCtu5i2c1+BaJgR4qtIFjhC1ZxNVn/DCIXGX1lctubl3U07CvgrG7wwkRTDROh9
+	 JTqZ0IZJJKIwTRBWUQct3pCkPMDj3YH9tQs2EW8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aharon Landau <aharonl@nvidia.com>,
-	Maor Gottlieb <maorg@nvidia.com>,
-	Mark Zhang <markzhang@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 088/127] net/mlx5: Add priorities for counters in RDMA namespaces
+	Zhongqiu Han <quic_zhonhan@quicinc.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Bruno VERNAY <bruno.vernay@se.com>,
+	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Subject: [PATCH 6.1 41/64] gpiolib: cdev: Fix use after free in lineinfo_changed_notify
 Date: Tue, 21 Jan 2025 18:52:40 +0100
-Message-ID: <20250121174533.045413855@linuxfoundation.org>
+Message-ID: <20250121174523.122432737@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
+References: <20250121174521.568417761@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,158 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aharon Landau <aharonl@nvidia.com>
+From: Zhongqiu Han <quic_zhonhan@quicinc.com>
 
-[ Upstream commit b8dfed636fc6239396c3a2ae5f812505906cf215 ]
+commit 02f6b0e1ec7e0e7d059dddc893645816552039da upstream.
 
-Add additional flow steering priorities in the RDMA namespace.
-This allows adding flow counters to count filtered RDMA traffic and then
-continue processing in the regular RDMA steering flow.
+The use-after-free issue occurs as follows: when the GPIO chip device file
+is being closed by invoking gpio_chrdev_release(), watched_lines is freed
+by bitmap_free(), but the unregistration of lineinfo_changed_nb notifier
+chain failed due to waiting write rwsem. Additionally, one of the GPIO
+chip's lines is also in the release process and holds the notifier chain's
+read rwsem. Consequently, a race condition leads to the use-after-free of
+watched_lines.
 
-Signed-off-by: Aharon Landau <aharonl@nvidia.com>
-Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Mark Zhang <markzhang@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Stable-dep-of: c08d3e62b2e7 ("net/mlx5: Fix RDMA TX steering prio")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Here is the typical stack when issue happened:
+
+[free]
+gpio_chrdev_release()
+  --> bitmap_free(cdev->watched_lines)                  <-- freed
+  --> blocking_notifier_chain_unregister()
+    --> down_write(&nh->rwsem)                          <-- waiting rwsem
+          --> __down_write_common()
+            --> rwsem_down_write_slowpath()
+                  --> schedule_preempt_disabled()
+                    --> schedule()
+
+[use]
+st54spi_gpio_dev_release()
+  --> gpio_free()
+    --> gpiod_free()
+      --> gpiod_free_commit()
+        --> gpiod_line_state_notify()
+          --> blocking_notifier_call_chain()
+            --> down_read(&nh->rwsem);                  <-- held rwsem
+            --> notifier_call_chain()
+              --> lineinfo_changed_notify()
+                --> test_bit(xxxx, cdev->watched_lines) <-- use after free
+
+The side effect of the use-after-free issue is that a GPIO line event is
+being generated for userspace where it shouldn't. However, since the chrdev
+is being closed, userspace won't have the chance to read that event anyway.
+
+To fix the issue, call the bitmap_free() function after the unregistration
+of lineinfo_changed_nb notifier chain.
+
+Fixes: 51c1064e82e7 ("gpiolib: add new ioctl() for monitoring changes in line info")
+Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
+Link: https://lore.kernel.org/r/20240505141156.2944912-1-quic_zhonhan@quicinc.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Bruno VERNAY <bruno.vernay@se.com>
+Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/fs_core.c | 54 ++++++++++++++++---
- include/linux/mlx5/device.h                   |  2 +
- include/linux/mlx5/fs.h                       |  2 +
- 3 files changed, 50 insertions(+), 8 deletions(-)
+ drivers/gpio/gpiolib-cdev.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-index 665619ce46746..54409a9307c2d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-@@ -99,6 +99,9 @@
- #define LEFTOVERS_NUM_LEVELS 1
- #define LEFTOVERS_NUM_PRIOS 1
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -2860,9 +2860,9 @@ static int gpio_chrdev_release(struct in
+ 	struct gpio_chardev_data *cdev = file->private_data;
+ 	struct gpio_device *gdev = cdev->gdev;
  
-+#define RDMA_RX_COUNTERS_PRIO_NUM_LEVELS 1
-+#define RDMA_TX_COUNTERS_PRIO_NUM_LEVELS 1
-+
- #define BY_PASS_PRIO_NUM_LEVELS 1
- #define BY_PASS_MIN_LEVEL (ETHTOOL_MIN_LEVEL + MLX5_BY_PASS_NUM_PRIOS +\
- 			   LEFTOVERS_NUM_PRIOS)
-@@ -206,34 +209,63 @@ static struct init_tree_node egress_root_fs = {
- 	}
- };
+-	bitmap_free(cdev->watched_lines);
+ 	blocking_notifier_chain_unregister(&gdev->notifier,
+ 					   &cdev->lineinfo_changed_nb);
++	bitmap_free(cdev->watched_lines);
+ 	put_device(&gdev->dev);
+ 	kfree(cdev);
  
--#define RDMA_RX_BYPASS_PRIO 0
--#define RDMA_RX_KERNEL_PRIO 1
-+enum {
-+	RDMA_RX_COUNTERS_PRIO,
-+	RDMA_RX_BYPASS_PRIO,
-+	RDMA_RX_KERNEL_PRIO,
-+};
-+
-+#define RDMA_RX_BYPASS_MIN_LEVEL MLX5_BY_PASS_NUM_REGULAR_PRIOS
-+#define RDMA_RX_KERNEL_MIN_LEVEL (RDMA_RX_BYPASS_MIN_LEVEL + 1)
-+#define RDMA_RX_COUNTERS_MIN_LEVEL (RDMA_RX_KERNEL_MIN_LEVEL + 2)
-+
- static struct init_tree_node rdma_rx_root_fs = {
- 	.type = FS_TYPE_NAMESPACE,
--	.ar_size = 2,
-+	.ar_size = 3,
- 	.children = (struct init_tree_node[]) {
-+		[RDMA_RX_COUNTERS_PRIO] =
-+		ADD_PRIO(0, RDMA_RX_COUNTERS_MIN_LEVEL, 0,
-+			 FS_CHAINING_CAPS,
-+			 ADD_NS(MLX5_FLOW_TABLE_MISS_ACTION_DEF,
-+				ADD_MULTIPLE_PRIO(MLX5_RDMA_RX_NUM_COUNTERS_PRIOS,
-+						  RDMA_RX_COUNTERS_PRIO_NUM_LEVELS))),
- 		[RDMA_RX_BYPASS_PRIO] =
--		ADD_PRIO(0, MLX5_BY_PASS_NUM_REGULAR_PRIOS, 0,
-+		ADD_PRIO(0, RDMA_RX_BYPASS_MIN_LEVEL, 0,
- 			 FS_CHAINING_CAPS,
- 			 ADD_NS(MLX5_FLOW_TABLE_MISS_ACTION_DEF,
- 				ADD_MULTIPLE_PRIO(MLX5_BY_PASS_NUM_REGULAR_PRIOS,
- 						  BY_PASS_PRIO_NUM_LEVELS))),
- 		[RDMA_RX_KERNEL_PRIO] =
--		ADD_PRIO(0, MLX5_BY_PASS_NUM_REGULAR_PRIOS + 1, 0,
-+		ADD_PRIO(0, RDMA_RX_KERNEL_MIN_LEVEL, 0,
- 			 FS_CHAINING_CAPS,
- 			 ADD_NS(MLX5_FLOW_TABLE_MISS_ACTION_SWITCH_DOMAIN,
- 				ADD_MULTIPLE_PRIO(1, 1))),
- 	}
- };
- 
-+enum {
-+	RDMA_TX_COUNTERS_PRIO,
-+	RDMA_TX_BYPASS_PRIO,
-+};
-+
-+#define RDMA_TX_BYPASS_MIN_LEVEL MLX5_BY_PASS_NUM_PRIOS
-+#define RDMA_TX_COUNTERS_MIN_LEVEL (RDMA_TX_BYPASS_MIN_LEVEL + 1)
-+
- static struct init_tree_node rdma_tx_root_fs = {
- 	.type = FS_TYPE_NAMESPACE,
--	.ar_size = 1,
-+	.ar_size = 2,
- 	.children = (struct init_tree_node[]) {
--		ADD_PRIO(0, MLX5_BY_PASS_NUM_PRIOS, 0,
-+		[RDMA_TX_COUNTERS_PRIO] =
-+		ADD_PRIO(0, RDMA_TX_COUNTERS_MIN_LEVEL, 0,
-+			 FS_CHAINING_CAPS,
-+			 ADD_NS(MLX5_FLOW_TABLE_MISS_ACTION_DEF,
-+				ADD_MULTIPLE_PRIO(MLX5_RDMA_TX_NUM_COUNTERS_PRIOS,
-+						  RDMA_TX_COUNTERS_PRIO_NUM_LEVELS))),
-+		[RDMA_TX_BYPASS_PRIO] =
-+		ADD_PRIO(0, RDMA_TX_BYPASS_MIN_LEVEL, 0,
- 			 FS_CHAINING_CAPS_RDMA_TX,
- 			 ADD_NS(MLX5_FLOW_TABLE_MISS_ACTION_DEF,
--				ADD_MULTIPLE_PRIO(MLX5_BY_PASS_NUM_PRIOS,
-+				ADD_MULTIPLE_PRIO(RDMA_TX_BYPASS_MIN_LEVEL,
- 						  BY_PASS_PRIO_NUM_LEVELS))),
- 	}
- };
-@@ -2319,6 +2351,12 @@ struct mlx5_flow_namespace *mlx5_get_flow_namespace(struct mlx5_core_dev *dev,
- 		prio = RDMA_RX_KERNEL_PRIO;
- 	} else if (type == MLX5_FLOW_NAMESPACE_RDMA_TX) {
- 		root_ns = steering->rdma_tx_root_ns;
-+	} else if (type == MLX5_FLOW_NAMESPACE_RDMA_RX_COUNTERS) {
-+		root_ns = steering->rdma_rx_root_ns;
-+		prio = RDMA_RX_COUNTERS_PRIO;
-+	} else if (type == MLX5_FLOW_NAMESPACE_RDMA_TX_COUNTERS) {
-+		root_ns = steering->rdma_tx_root_ns;
-+		prio = RDMA_TX_COUNTERS_PRIO;
- 	} else { /* Must be NIC RX */
- 		root_ns = steering->root_ns;
- 		prio = type;
-diff --git a/include/linux/mlx5/device.h b/include/linux/mlx5/device.h
-index 1bb4945885cec..476d8fd5a7e5b 100644
---- a/include/linux/mlx5/device.h
-+++ b/include/linux/mlx5/device.h
-@@ -1462,6 +1462,8 @@ static inline u16 mlx5_to_sw_pkey_sz(int pkey_sz)
- 	return MLX5_MIN_PKEY_TABLE_SIZE << pkey_sz;
- }
- 
-+#define MLX5_RDMA_RX_NUM_COUNTERS_PRIOS 2
-+#define MLX5_RDMA_TX_NUM_COUNTERS_PRIOS 1
- #define MLX5_BY_PASS_NUM_REGULAR_PRIOS 16
- #define MLX5_BY_PASS_NUM_DONT_TRAP_PRIOS 16
- #define MLX5_BY_PASS_NUM_MULTICAST_PRIOS 1
-diff --git a/include/linux/mlx5/fs.h b/include/linux/mlx5/fs.h
-index 0e43f0fb6d73a..29db7677827d7 100644
---- a/include/linux/mlx5/fs.h
-+++ b/include/linux/mlx5/fs.h
-@@ -83,6 +83,8 @@ enum mlx5_flow_namespace_type {
- 	MLX5_FLOW_NAMESPACE_RDMA_RX,
- 	MLX5_FLOW_NAMESPACE_RDMA_RX_KERNEL,
- 	MLX5_FLOW_NAMESPACE_RDMA_TX,
-+	MLX5_FLOW_NAMESPACE_RDMA_RX_COUNTERS,
-+	MLX5_FLOW_NAMESPACE_RDMA_TX_COUNTERS,
- };
- 
- enum {
--- 
-2.39.5
-
 
 
 
