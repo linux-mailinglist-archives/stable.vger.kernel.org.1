@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-109941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42A0DA18498
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:09:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF17A183DA
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08C8D162701
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEF813ACBEB
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3B91F3FFE;
-	Tue, 21 Jan 2025 18:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60D21F55F0;
+	Tue, 21 Jan 2025 18:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghs7SHsL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQN7pCax"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1830F1F0E36;
-	Tue, 21 Jan 2025 18:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827E71F7089;
+	Tue, 21 Jan 2025 18:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482881; cv=none; b=sFswi6oczPAbxnZiiIKD3xRSj+oHmBi3kR4aji+hYTumm9P34iGWhWjnqBxWv5kRZnClQw2hq/bEooNf1EMkgv80K5ZGy0rjVnsbR0VZuxPu1/7rIBUXqPFjlYXT9fP/D2ETvqJCl+uDgk8tY8EMchFeEp/tbgCa4f+Py66AaAQ=
+	t=1737482402; cv=none; b=DXcoQnrRyaWgTQHjlHgcTUtFb22fvSuJZ40MTBkerBhARO0OjuVYYQ8pr+SC5ZXV48+lExq/wsWUBAEHO9NNjPzI+iheGQdLgcy3RvADhCEhTwmZbTPat5uYiQBD2FiOuJhQSgscMx+yuSr+xDLt5ujPdshf5+iGNQ2DrLaaW7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482881; c=relaxed/simple;
-	bh=VRMy5xyb5vLWbNNUnK3OVIhDcc0RQBktenDtRFd/V88=;
+	s=arc-20240116; t=1737482402; c=relaxed/simple;
+	bh=17KwfBAAGY0Hyu4tia3ehFG8CSJ7UP58JLcCRmoXXPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ag+KTlp7ArwtMq6VjAK0OVEZJNf6/4HPiJgBZgb0MXqWvumGXDTbo1qKPvVI4LOgiwnW0JolG/t1ed8G0UN9xnH3EKddbeT8DtntmlDZ8TAKG30qqh57PnOiGPyt+XjVqvyp3LHPVE22UwJBzLTNqk2Rzmj2ArksXZ75honcI8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghs7SHsL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94332C4CEDF;
-	Tue, 21 Jan 2025 18:08:00 +0000 (UTC)
+	 MIME-Version; b=LSmsevGxL3H9DIzH+WryPZjX6NM1X8+RL4e2eNpo2vQkY1KgEEMkjTT6lkPn+sKOca8O/29aF/TBs01TnFDh8g+qLok1dmA533aD7+J6R/UR4CA8e8/NskenUbxbN3FGr1UXW0L4b0nXHpaZoUdLcJEiaWvj9faTk7oQzMt670E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQN7pCax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC690C4CEDF;
+	Tue, 21 Jan 2025 18:00:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482881;
-	bh=VRMy5xyb5vLWbNNUnK3OVIhDcc0RQBktenDtRFd/V88=;
+	s=korg; t=1737482402;
+	bh=17KwfBAAGY0Hyu4tia3ehFG8CSJ7UP58JLcCRmoXXPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ghs7SHsL82VMOjFQ3pStyz7pjHh8ysbwS5QGf6UdMu4kgXYnDF9hquXRoOci619Yf
-	 uJReskhiVn32xN//AmqaZaGZwNrWi8rKhDI+UFIDfip6iTjNmwiMlBQY6tFAFVIauv
-	 EAvRa91xZTjsLOGe73zKNkhTnKa1hyrjxUNN3Qi0=
+	b=TQN7pCaxYoTNgNOFgTlRyQaWMorVJtZAFQNQaOmTysZpS0E1i36lcJRuwdzJJkV2Q
+	 F594M/+Bg4XBK6gDEoXghRfD9hCIm2gyOCefQlLMGD/CGN3kHt3yPkzDa6EyzOX/Z/
+	 nQaoR1unxVnjJq7pMF3KxzU+d82Uq5dRDlhIqjQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonio Pastor <antonio.pastor@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 010/127] net: 802: LLC+SNAP OID:PID lookup on start of skb data
+Subject: [PATCH 6.12 034/122] drm/vmwgfx: Unreserve BO on error
 Date: Tue, 21 Jan 2025 18:51:22 +0100
-Message-ID: <20250121174530.072352519@linuxfoundation.org>
+Message-ID: <20250121174534.301704853@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antonio Pastor <antonio.pastor@gmail.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit 1e9b0e1c550c42c13c111d1a31e822057232abc4 ]
+[ Upstream commit cb343ded122e0bf41e4b2a9f89386296451be109 ]
 
-802.2+LLC+SNAP frames received by napi_complete_done() with GRO and DSA
-have skb->transport_header set two bytes short, or pointing 2 bytes
-before network_header & skb->data. This was an issue as snap_rcv()
-expected offset to point to SNAP header (OID:PID), causing packet to
-be dropped.
+Unlock BOs in reverse order.
+Add an acquire context so that lockdep doesn't complain.
 
-A fix at llc_fixup_skb() (a024e377efed) resets transport_header for any
-LLC consumers that may care about it, and stops SNAP packets from being
-dropped, but doesn't fix the problem which is that LLC and SNAP should
-not use transport_header offset.
-
-Ths patch eliminates the use of transport_header offset for SNAP lookup
-of OID:PID so that SNAP does not rely on the offset at all.
-The offset is reset after pull for any SNAP packet consumers that may
-(but shouldn't) use it.
-
-Fixes: fda55eca5a33 ("net: introduce skb_transport_header_was_set()")
-Signed-off-by: Antonio Pastor <antonio.pastor@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250103012303.746521-1-antonio.pastor@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d6667f0ddf46 ("drm/vmwgfx: Fix handling of dumb buffers")
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241210195535.2074918-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/802/psnap.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/net/802/psnap.c b/net/802/psnap.c
-index 4492e8d7ad20..ed6e17c8cce9 100644
---- a/net/802/psnap.c
-+++ b/net/802/psnap.c
-@@ -55,11 +55,11 @@ static int snap_rcv(struct sk_buff *skb, struct net_device *dev,
- 		goto drop;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+index 10d596cb4b402..5f99f7437ae61 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -750,6 +750,7 @@ vmw_du_cursor_plane_atomic_update(struct drm_plane *plane,
+ 	struct vmw_plane_state *old_vps = vmw_plane_state_to_vps(old_state);
+ 	struct vmw_bo *old_bo = NULL;
+ 	struct vmw_bo *new_bo = NULL;
++	struct ww_acquire_ctx ctx;
+ 	s32 hotspot_x, hotspot_y;
+ 	int ret;
  
- 	rcu_read_lock();
--	proto = find_snap_client(skb_transport_header(skb));
-+	proto = find_snap_client(skb->data);
- 	if (proto) {
- 		/* Pass the frame on. */
--		skb->transport_header += 5;
- 		skb_pull_rcsum(skb, 5);
-+		skb_reset_transport_header(skb);
- 		rc = proto->rcvfunc(skb, dev, &snap_packet_type, orig_dev);
+@@ -769,9 +770,11 @@ vmw_du_cursor_plane_atomic_update(struct drm_plane *plane,
+ 	if (du->cursor_surface)
+ 		du->cursor_age = du->cursor_surface->snooper.age;
+ 
++	ww_acquire_init(&ctx, &reservation_ww_class);
++
+ 	if (!vmw_user_object_is_null(&old_vps->uo)) {
+ 		old_bo = vmw_user_object_buffer(&old_vps->uo);
+-		ret = ttm_bo_reserve(&old_bo->tbo, false, false, NULL);
++		ret = ttm_bo_reserve(&old_bo->tbo, false, false, &ctx);
+ 		if (ret != 0)
+ 			return;
  	}
- 	rcu_read_unlock();
+@@ -779,9 +782,14 @@ vmw_du_cursor_plane_atomic_update(struct drm_plane *plane,
+ 	if (!vmw_user_object_is_null(&vps->uo)) {
+ 		new_bo = vmw_user_object_buffer(&vps->uo);
+ 		if (old_bo != new_bo) {
+-			ret = ttm_bo_reserve(&new_bo->tbo, false, false, NULL);
+-			if (ret != 0)
++			ret = ttm_bo_reserve(&new_bo->tbo, false, false, &ctx);
++			if (ret != 0) {
++				if (old_bo) {
++					ttm_bo_unreserve(&old_bo->tbo);
++					ww_acquire_fini(&ctx);
++				}
+ 				return;
++			}
+ 		} else {
+ 			new_bo = NULL;
+ 		}
+@@ -803,10 +811,12 @@ vmw_du_cursor_plane_atomic_update(struct drm_plane *plane,
+ 						hotspot_x, hotspot_y);
+ 	}
+ 
+-	if (old_bo)
+-		ttm_bo_unreserve(&old_bo->tbo);
+ 	if (new_bo)
+ 		ttm_bo_unreserve(&new_bo->tbo);
++	if (old_bo)
++		ttm_bo_unreserve(&old_bo->tbo);
++
++	ww_acquire_fini(&ctx);
+ 
+ 	du->cursor_x = new_state->crtc_x + du->set_gui_x;
+ 	du->cursor_y = new_state->crtc_y + du->set_gui_y;
 -- 
 2.39.5
 
