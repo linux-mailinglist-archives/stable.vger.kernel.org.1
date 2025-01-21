@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-109977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6363EA18507
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:14:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B95A7A1838A
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B5DA7A6A50
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43DD416B25A
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:58:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1131A1F757F;
-	Tue, 21 Jan 2025 18:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0DE1F55E3;
+	Tue, 21 Jan 2025 17:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBVNxAXF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zaR6jJHu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21EA1F666C;
-	Tue, 21 Jan 2025 18:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FB31F63CF;
+	Tue, 21 Jan 2025 17:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482985; cv=none; b=f9LZGEQp5pLLSdMdgZeddKr7YBb7Nig9WHfYCRVeDJHfdxtlcvW5GeUKN6s4U+U3+oRURBYugA/Ivc3jmamLhmVQcJI1RXPCSY+CfSfmhM1m0koMzGnzin0lytGvEQoJ3bN43kpJZfEmonaMsLECMOEi2nRj5FdXu/ZSoU7AnvY=
+	t=1737482219; cv=none; b=RPek/4NkM4zOTL0W+k80xPA9uH0BkF4McOI7FkAD5NUMCeQdM0vH8baP9sbQpIp7HAqnNfNk6kDmCG0vNBbEjopqpGXM9A3+dLKviowx6XqnlIJtroD+77eutQaFspKk/ze0VuNm2mxh7Nym+lKieRgYN2Paf3274QnnsxFBCbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482985; c=relaxed/simple;
-	bh=XzVTT46amEJkyj5zYaocMDNYwdnhXT1ssF2akmjEouc=;
+	s=arc-20240116; t=1737482219; c=relaxed/simple;
+	bh=cVsTlaCbwU7v706YRjeO063J+WipywhNhUQfjvsIX+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GfKfmd3PAFg3eLvn3PjSlVSO2FoQSvbzwBJJqCRln1IiyGT8yPLukuMhMdNeyH3BqljISOhHKoHPwJiuKx4e+bXeu5o1I1VuBfa12ZayLD8OvtpxzG3V4NjJgyvEkWQ8C23AGZDoevMPk1GG20bVgDU/VpvInIUoulwGc5wgrCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBVNxAXF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 107B5C4CEDF;
-	Tue, 21 Jan 2025 18:09:44 +0000 (UTC)
+	 MIME-Version; b=B1iNE4Uu4eRTrsKtyQ4ym+knQUsuyUn93FbeTaWSVZZlv/hMdvEZ1Fv+XejXNk3keClxmMtHvE5CpcKMjvQyc3qVeBbhcdBSahszgBBOgn37OEjwBVhx8eWEmfV4X+/W7A0gYjJnp4weCfsbxVw+meKPHQwUvlN9lY1YHxEYZ+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zaR6jJHu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4758C4CEDF;
+	Tue, 21 Jan 2025 17:56:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482985;
-	bh=XzVTT46amEJkyj5zYaocMDNYwdnhXT1ssF2akmjEouc=;
+	s=korg; t=1737482219;
+	bh=cVsTlaCbwU7v706YRjeO063J+WipywhNhUQfjvsIX+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MBVNxAXFHM9+MwlTD6n4QDsv13SClsfT/TVJtDO/T057lLYIMtWVmBL0SLygPuFjs
-	 hWVv68ekhNAYNGygyucjOg7bj0kcWNvxWsQFHEMraqEmsO/CMwxte0cOTsoqo7fBt3
-	 ehA7yVpzkSBzwwkR+eanASMztz/7YvmPWcUygue4=
+	b=zaR6jJHuyCEZdN2NiZXS4qxciWrjNSM9bCbcrqCQbgotWt5qII/er0TIFlqTp7Utb
+	 3CzqUE8y9mRbzm9xghmUGQULzmssJtkVDaB2/fmv81EA7iFtkL9nYybE0yhO8uDU5u
+	 e61U7S95SnQpI52sRUmz0jMD4yczGDu81XRD42eQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Rob Herring <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 069/127] of: address: Store number of bus flag cells rather than bool
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.6 55/72] irqchip: Plug a OF node reference leak in platform_irqchip_probe()
 Date: Tue, 21 Jan 2025 18:52:21 +0100
-Message-ID: <20250121174532.329825444@linuxfoundation.org>
+Message-ID: <20250121174525.548169455@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 88696db08b7efa3b6bb722014ea7429e78f6be32 ]
+commit 9322d1915f9d976ee48c09d800fbd5169bc2ddcc upstream.
 
-It is more useful to know how many flags cells a bus has rather than
-whether a bus has flags or not as ultimately the number of cells is the
-information used. Replace 'has_flags' boolean with 'flag_cells' count.
+platform_irqchip_probe() leaks a OF node when irq_init_cb() fails. Fix it
+by declaring par_np with the __free(device_node) cleanup construct.
 
-Acked-by: Herve Codina <herve.codina@bootlin.com>
-Link: https://lore.kernel.org/r/20231026135358.3564307-2-robh@kernel.org
-Signed-off-by: Rob Herring <robh@kernel.org>
-Stable-dep-of: 7f05e20b989a ("of: address: Preserve the flags portion on 1:1 dma-ranges mapping")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This bug was found by an experimental static analysis tool that I am
+developing.
+
+Fixes: f8410e626569 ("irqchip: Add IRQCHIP_PLATFORM_DRIVER_BEGIN/END and IRQCHIP_MATCH helper macros")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241215033945.3414223-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/address.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/irqchip/irqchip.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/of/address.c b/drivers/of/address.c
-index b8e015af59df..123a75a19bc1 100644
---- a/drivers/of/address.c
-+++ b/drivers/of/address.c
-@@ -50,7 +50,7 @@ struct of_bus {
- 	u64		(*map)(__be32 *addr, const __be32 *range,
- 				int na, int ns, int pna);
- 	int		(*translate)(__be32 *addr, u64 offset, int na);
--	bool	has_flags;
-+	int		flag_cells;
- 	unsigned int	(*get_flags)(const __be32 *addr);
- };
+--- a/drivers/irqchip/irqchip.c
++++ b/drivers/irqchip/irqchip.c
+@@ -35,11 +35,10 @@ void __init irqchip_init(void)
+ int platform_irqchip_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *np = pdev->dev.of_node;
+-	struct device_node *par_np = of_irq_find_parent(np);
++	struct device_node *par_np __free(device_node) = of_irq_find_parent(np);
+ 	of_irq_init_cb_t irq_init_cb = of_device_get_match_data(&pdev->dev);
  
-@@ -361,7 +361,7 @@ static struct of_bus of_busses[] = {
- 		.count_cells = of_bus_pci_count_cells,
- 		.map = of_bus_pci_map,
- 		.translate = of_bus_default_flags_translate,
--		.has_flags = true,
-+		.flag_cells = 1,
- 		.get_flags = of_bus_pci_get_flags,
- 	},
- #endif /* CONFIG_PCI */
-@@ -373,7 +373,7 @@ static struct of_bus of_busses[] = {
- 		.count_cells = of_bus_isa_count_cells,
- 		.map = of_bus_isa_map,
- 		.translate = of_bus_default_flags_translate,
--		.has_flags = true,
-+		.flag_cells = 1,
- 		.get_flags = of_bus_isa_get_flags,
- 	},
- 	/* Default with flags cell */
-@@ -384,7 +384,7 @@ static struct of_bus of_busses[] = {
- 		.count_cells = of_bus_default_count_cells,
- 		.map = of_bus_default_flags_map,
- 		.translate = of_bus_default_flags_translate,
--		.has_flags = true,
-+		.flag_cells = 1,
- 		.get_flags = of_bus_default_flags_get_flags,
- 	},
- 	/* Default */
-@@ -751,7 +751,7 @@ struct of_pci_range *of_pci_range_parser_one(struct of_pci_range_parser *parser,
- 	int na = parser->na;
- 	int ns = parser->ns;
- 	int np = parser->pna + na + ns;
--	int busflag_na = 0;
-+	int busflag_na = parser->bus->flag_cells;
+ 	if (!irq_init_cb) {
+-		of_node_put(par_np);
+ 		return -EINVAL;
+ 	}
  
- 	if (!range)
- 		return NULL;
-@@ -761,10 +761,6 @@ struct of_pci_range *of_pci_range_parser_one(struct of_pci_range_parser *parser,
+@@ -55,7 +54,6 @@ int platform_irqchip_probe(struct platfo
+ 	 * interrupt controller can check for specific domains as necessary.
+ 	 */
+ 	if (par_np && !irq_find_matching_host(par_np, DOMAIN_BUS_ANY)) {
+-		of_node_put(par_np);
+ 		return -EPROBE_DEFER;
+ 	}
  
- 	range->flags = parser->bus->get_flags(parser->range);
- 
--	/* A extra cell for resource flags */
--	if (parser->bus->has_flags)
--		busflag_na = 1;
--
- 	range->bus_addr = of_read_number(parser->range + busflag_na, na - busflag_na);
- 
- 	if (parser->dma)
--- 
-2.39.5
-
 
 
 
