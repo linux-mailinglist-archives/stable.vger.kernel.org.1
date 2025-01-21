@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-109713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1AF6A1838E
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2C63A184D3
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:12:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31A0B3AC19D
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:57:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C66D4188285B
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81CC11F75A7;
-	Tue, 21 Jan 2025 17:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2F261F7596;
+	Tue, 21 Jan 2025 18:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1c4znwn2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9cWm8Ik"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB1C1F63CF;
-	Tue, 21 Jan 2025 17:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B691F55E3;
+	Tue, 21 Jan 2025 18:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482222; cv=none; b=WMNBkoDmIwpFTuoa+AkLtk9OTSqw8PeagzC4An9CXnGsJ0BECn2n38Xl319xqbhptt6BDEflwTZXs//H0KRJZ10QO18xrJWgJi51/l+fFRn0vtMlYJTJrxgP3oaNimj/SRCcsXtFO6T8u1bFdQU7E72+yuA59mI1jBoPVE26aoc=
+	t=1737483019; cv=none; b=L+7WyYG1uZTrbZbT1GiFKNOiU/u6VRefcwrKbVxKGcMSMlRUis6WpN+EYPlTgcbK97tNbV/qZct47cYzWbJYgVHUOFQ8K0AFei8UWgMyqiePbJEY2mB40fK8DeNheT/mOqkm5doGlbeyO4gIfhstAM4dNv+DQ+o+aa4oaElSOZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482222; c=relaxed/simple;
-	bh=zdyxfKRh5aRBs1gGvXlbrHZVsIlODjImCXxsfhMJk5w=;
+	s=arc-20240116; t=1737483019; c=relaxed/simple;
+	bh=Ots7sys9kh0ggyBjHPi+9M7xNUDTFcAx9YVeV/xwyxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lxgRco/ZwnxLuy/6K5SWflRfxlbfn5mNWIMb6u/4soWyQ5tuhOCrMFSC+FnYm1HW6HgMBmFSQlGP9ItdqY7NNLsWLjRr7MvA4ehdBJ/Dsyx0EsEfTxpxheuVrLQhKc2F89gbPtV38gnPaSJOaYBwXnvEms80Q3RSRMBQo1E8/Wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1c4znwn2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0160C4CEDF;
-	Tue, 21 Jan 2025 17:57:01 +0000 (UTC)
+	 MIME-Version; b=Q0FCIC9fOJjB3lPFDJtrO4kfxiWas7oze48WQqqktK0xKN0o5O2XdA4yYt9UdWYNj/SUZ4S7RX59SC6SeBMLnEVLP69TXMFl0MTb3Tv2nZLYvc/Ibge0wjjMv9KFbu8HFR4OsWQsANV+RP0dtuwwphlNMgBPVXhbJTxUeM1UI1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9cWm8Ik; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074EAC4CEDF;
+	Tue, 21 Jan 2025 18:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482222;
-	bh=zdyxfKRh5aRBs1gGvXlbrHZVsIlODjImCXxsfhMJk5w=;
+	s=korg; t=1737483017;
+	bh=Ots7sys9kh0ggyBjHPi+9M7xNUDTFcAx9YVeV/xwyxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1c4znwn2snetHkZ0tRUQ5GW2SFMB9Av33iFwmSKCTBFOx5fF32cHAz1TUloFWd+rK
-	 A0iicAv751xKfnHujbiPuJ2gcAFF6HjX18FCWx/kZnRx4uRwwfyVJ13wdVYiwtHi/H
-	 TPiPFDGcJL278biUboO+wWBFqvirkM1jdPCvjryQ=
+	b=R9cWm8Ikq+AOeMhd6EeZEoPN0IRUmmNXOvNa9WbsaI5CEVwRkneTxviCTSL9+Rc/Q
+	 7sf2YL96CrTD1DlSfHJXnY0Mor765qiSg2Ssr7iSJrIsK8A2p1LTBy99YRJc11Yh1n
+	 BZxbWnATXd6kzzbDwUj/8XY5CJ8S1yxhoyArm2OY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yogesh Lal <quic_ylal@quicinc.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.6 56/72] irqchip/gic-v3: Handle CPU_PM_ENTER_FAILED correctly
+	Andrea della Porta <andrea.porta@suse.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 070/127] of: address: Preserve the flags portion on 1:1 dma-ranges mapping
 Date: Tue, 21 Jan 2025 18:52:22 +0100
-Message-ID: <20250121174525.588397734@linuxfoundation.org>
+Message-ID: <20250121174532.367024393@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yogesh Lal <quic_ylal@quicinc.com>
+From: Andrea della Porta <andrea.porta@suse.com>
 
-commit 0d62a49ab55c99e8deb4593b8d9f923de1ab5c18 upstream.
+[ Upstream commit 7f05e20b989ac33c9c0f8c2028ec0a566493548f ]
 
-When a CPU attempts to enter low power mode, it disables the redistributor
-and Group 1 interrupts and reinitializes the system registers upon wakeup.
+A missing or empty dma-ranges in a DT node implies a 1:1 mapping for dma
+translations. In this specific case, the current behaviour is to zero out
+the entire specifier so that the translation could be carried on as an
+offset from zero. This includes address specifier that has flags (e.g.
+PCI ranges).
 
-If the transition into low power mode fails, then the CPU_PM framework
-invokes the PM notifier callback with CPU_PM_ENTER_FAILED to allow the
-drivers to undo the state changes.
+Once the flags portion has been zeroed, the translation chain is broken
+since the mapping functions will check the upcoming address specifier
+against mismatching flags, always failing the 1:1 mapping and its entire
+purpose of always succeeding.
 
-The GIC V3 driver ignores CPU_PM_ENTER_FAILED, which leaves the GIC in
-disabled state.
+Set to zero only the address portion while passing the flags through.
 
-Handle CPU_PM_ENTER_FAILED in the same way as CPU_PM_EXIT to restore normal
-operation.
-
-[ tglx: Massage change log, add Fixes tag ]
-
-Fixes: 3708d52fc6bb ("irqchip: gic-v3: Implement CPU PM notifier")
-Signed-off-by: Yogesh Lal <quic_ylal@quicinc.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Marc Zyngier <maz@kernel.org>
+Fixes: dbbdee94734b ("of/address: Merge all of the bus translation code")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20241220093907.2747601-1-quic_ylal@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andrea della Porta <andrea.porta@suse.com>
+Tested-by: Herve Codina <herve.codina@bootlin.com>
+Link: https://lore.kernel.org/r/e51ae57874e58a9b349c35e2e877425ebc075d7a.1732441813.git.andrea.porta@suse.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-v3.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/of/address.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -1460,7 +1460,7 @@ static int gic_retrigger(struct irq_data
- static int gic_cpu_pm_notifier(struct notifier_block *self,
- 			       unsigned long cmd, void *v)
- {
--	if (cmd == CPU_PM_EXIT) {
-+	if (cmd == CPU_PM_EXIT || cmd == CPU_PM_ENTER_FAILED) {
- 		if (gic_dist_security_disabled())
- 			gic_enable_redist(true);
- 		gic_cpu_sys_reg_init();
+diff --git a/drivers/of/address.c b/drivers/of/address.c
+index 123a75a19bc1..9454725af850 100644
+--- a/drivers/of/address.c
++++ b/drivers/of/address.c
+@@ -466,7 +466,8 @@ static int of_translate_one(struct device_node *parent, struct of_bus *bus,
+ 	}
+ 	if (ranges == NULL || rlen == 0) {
+ 		offset = of_read_number(addr, na);
+-		memset(addr, 0, pna * 4);
++		/* set address to zero, pass flags through */
++		memset(addr + pbus->flag_cells, 0, (pna - pbus->flag_cells) * 4);
+ 		pr_debug("empty ranges; 1:1 translation\n");
+ 		goto finish;
+ 	}
+-- 
+2.39.5
+
 
 
 
