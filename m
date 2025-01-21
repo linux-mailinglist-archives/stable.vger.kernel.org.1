@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-109951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5DBBA1849F
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:09:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9836BA18355
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48CF9188C2CC
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8307169A62
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0641F7081;
-	Tue, 21 Jan 2025 18:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA2D1F63C9;
+	Tue, 21 Jan 2025 17:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G83Y5fbn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVF54E01"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26A91F7064;
-	Tue, 21 Jan 2025 18:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B2D1F55FA;
+	Tue, 21 Jan 2025 17:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482909; cv=none; b=ioiLRT8ho7QHLf3SO/7ZzBWx/THMP+RJrhCki7szqG3bkCX5rGNUCMTDjnRCarEBQ1J2e+rS4gaqd2jgpuQvrTmZHJbtz7knovY9Ye5UBHsLdcAKF3lcTeRq7QWNp//UVWoFzlUjrwzQRNYmbDuWc2z/bwAKb3ejrqdEHC4gDqQ=
+	t=1737482108; cv=none; b=rmbne/QCVpwX4EisPeMk45rHWkWZLKo/FTI2v+AOR1F80iH9WJWi0JWuVz9f4QMyvaUwTdgeKZqigc9RRnMEH4kNClq3Uzdb74WhGCfRbsRvDW8Li+cY32qKtu6vfK8+eIJIY5Z9igzYdo5WZXwmaH/KAUvIhDP163Tlvs56Xik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482909; c=relaxed/simple;
-	bh=w/UO+j0UUMHIVNNgLsWi8/9mVYVfQfsYIwFcOVuv9q0=;
+	s=arc-20240116; t=1737482108; c=relaxed/simple;
+	bh=NQCif2Xe8eiMevXikx/YVtWWDamGGgbld6qv95jykbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gcHmDh1xdTCMFUqwruYbN8koSC0ubKFxfKXoRRBoH9fxEytAUa1gVYm+dgX5B8r2P8Y0AmfYUFbjVL+QjYplvybOoKpR38vrOowdYzeZfRxxO/Kgi/+AxdFvfBLfbvV7bbEB5Nz1PEuvVGzoMCrl25t2mdNdDd60AYSOBSKa7+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G83Y5fbn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44552C4CEDF;
-	Tue, 21 Jan 2025 18:08:29 +0000 (UTC)
+	 MIME-Version; b=V3rI1d2/UXICJPM3trvW8Qp/vRjvhvJb1rJK7qOrbvGGZ2wy04ok92LzN2/grM/NFEdRgwW/USo0KPdxDPo63GqVI/7j4/TIgRYduC2Jqm34FrqqDTEKpvVavTy1/i4A82N0+dQAInjK57ZkUrcu9euZR4YHFmpEhoTNZiKSuC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVF54E01; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65FD7C4CEDF;
+	Tue, 21 Jan 2025 17:55:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482909;
-	bh=w/UO+j0UUMHIVNNgLsWi8/9mVYVfQfsYIwFcOVuv9q0=;
+	s=korg; t=1737482107;
+	bh=NQCif2Xe8eiMevXikx/YVtWWDamGGgbld6qv95jykbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G83Y5fbny0xD5EvhiN2F1LatTr5riUzgyWw7HJhxjXqFyTH5QEtpgX1xHaBKDISin
-	 mHK8COZECJX8Ydd9/RL1z/Pt6XQn/xWtotbJZ2xdYnyA4+iuHH2VfQHuHqVnZGaFCp
-	 +sS4PhQ2uXjnurnyz8HlhDPB8ESuumHCvAxNYURY=
+	b=VVF54E01+CQffKgXKlOwF9uZ/N0DDp7pVTv6d82E4/9tydIZRQmmUX0yDwpOSptAz
+	 8eRtCZ6wjryrqrox0iT8RQEIHD1qoREPNKPZzoPPbWss7wE7j6z38hhuSwLXszxbZ4
+	 jlSBmo+NPGvfW9f5vpQpGkWY6O4atCjdYqv2YgsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Prashanth K <quic_prashk@quicinc.com>
-Subject: [PATCH 5.15 051/127] usb: gadget: f_uac2: Fix incorrect setting of bNumEndpoints
+	kernel test robot <lkp@intel.com>,
+	Juergen Gross <jgross@suse.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 37/72] x86/asm: Make serialize() always_inline
 Date: Tue, 21 Jan 2025 18:52:03 +0100
-Message-ID: <20250121174531.636271985@linuxfoundation.org>
+Message-ID: <20250121174524.853285084@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashanth K <quic_prashk@quicinc.com>
+From: Juergen Gross <jgross@suse.com>
 
-commit 057bd54dfcf68b1f67e6dfc32a47a72e12198495 upstream.
+[ Upstream commit ae02ae16b76160f0aeeae2c5fb9b15226d00a4ef ]
 
-Currently afunc_bind sets std_ac_if_desc.bNumEndpoints to 1 if
-controls (mute/volume) are enabled. During next afunc_bind call,
-bNumEndpoints would be unchanged and incorrectly set to 1 even
-if the controls aren't enabled.
+In order to allow serialize() to be used from noinstr code, make it
+__always_inline.
 
-Fix this by resetting the value of bNumEndpoints to 0 on every
-afunc_bind call.
-
-Fixes: eaf6cbe09920 ("usb: gadget: f_uac2: add volume and mute support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
-Link: https://lore.kernel.org/r/20241211115915.159864-1-quic_prashk@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0ef8047b737d ("x86/static-call: provide a way to do very early static-call updates")
+Closes: https://lore.kernel.org/oe-kbuild-all/202412181756.aJvzih2K-lkp@intel.com/
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20241218100918.22167-1-jgross@suse.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_uac2.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/include/asm/special_insns.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_uac2.c
-+++ b/drivers/usb/gadget/function/f_uac2.c
-@@ -1103,6 +1103,7 @@ afunc_bind(struct usb_configuration *cfg
- 		uac2->as_in_alt = 0;
- 	}
+diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/special_insns.h
+index 48f8dd47cf688..1c5513b04f038 100644
+--- a/arch/x86/include/asm/special_insns.h
++++ b/arch/x86/include/asm/special_insns.h
+@@ -217,7 +217,7 @@ static inline int write_user_shstk_64(u64 __user *addr, u64 val)
  
-+	std_ac_if_desc.bNumEndpoints = 0;
- 	if (FUOUT_EN(uac2_opts) || FUIN_EN(uac2_opts)) {
- 		uac2->int_ep = usb_ep_autoconfig(gadget, &fs_ep_int_desc);
- 		if (!uac2->int_ep) {
+ #define nop() asm volatile ("nop")
+ 
+-static inline void serialize(void)
++static __always_inline void serialize(void)
+ {
+ 	/* Instruction opcode for SERIALIZE; supported in binutils >= 2.35. */
+ 	asm volatile(".byte 0xf, 0x1, 0xe8" ::: "memory");
+-- 
+2.39.5
+
 
 
 
