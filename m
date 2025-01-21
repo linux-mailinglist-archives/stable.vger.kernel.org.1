@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-109982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A3FA184C1
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:11:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34886A18408
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:03:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BB961626BC
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4051016BB86
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD581F7075;
-	Tue, 21 Jan 2025 18:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 902F81F5404;
+	Tue, 21 Jan 2025 18:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fWsK0/sA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRfN3SDs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0371F55E4;
-	Tue, 21 Jan 2025 18:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA3AE571;
+	Tue, 21 Jan 2025 18:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737483000; cv=none; b=Oa2GgZ3AqIkDXGo/99kY65QlBxbBCB6CwMDnXaM44//Fxncr0Ldp0wka0twONtKV7i8zjSNCPF3kOtjZvR7U7vUGTakt54b0ib8gEmB2//nvrWtJqL4Lb/XCuCd4uoxviUW6Ao8WDIHkPahn9+bRfeLuFJCufNKbCRAZPARNeXk=
+	t=1737482522; cv=none; b=Vm/G0AA2R0rs4ylHyscRfRdXhaFHAjSPh01MCcdPNzDswC8C/DtG5CbpZcL77NUKDRxYP4b4QtDq0Ynr+TXN+wxe4axlcSxDst3ywTt5KMvQIa1ydX4yEB4em9eS8Bg8jfqVvu0MQXucnrYWIWDrXPPFWw2PUtjalR2MxIYlJ78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737483000; c=relaxed/simple;
-	bh=wwCljFcI4a3OR/mrRavRSmr/xXazSZ0sGFj519F70ew=;
+	s=arc-20240116; t=1737482522; c=relaxed/simple;
+	bh=2P/HjZrHK3YPmmqIl5o+WqF+6RizUSlMd5ktSeAoxn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQN4nP9ezVbsYwlyZJO9688BuY7YjJxDPj0RppRDUwLY3zD8Wj8w9Bj9VEg6ZKPLMmoADj7BYiTL7MhuQ1Sz3DniT2d7pluhIbpIfx/orlEN2xbgarAndV90RZy5ILUzDiFFFS0ECRlMG2ZWrNNTE6b1wOJz7EWocrGTMFQVi+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fWsK0/sA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B155C4CEDF;
-	Tue, 21 Jan 2025 18:09:59 +0000 (UTC)
+	 MIME-Version; b=Sjyb8HoXnlU+gHz4DcToM7/XBkliJBt8o5kyw8Qx7Mv+hONoItAhoBWbc/MNPbLAdQJzMhD2E4wzQ7K+01rM5utcEGEaJVPEGXuMadOIyK5Wg8TdINKD+G0hr7rpcfcdcj05o61uhxFLo1yQEGZIf3LA5bQQw+uGd6U9XjPcBGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRfN3SDs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61A4C4CEDF;
+	Tue, 21 Jan 2025 18:02:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482999;
-	bh=wwCljFcI4a3OR/mrRavRSmr/xXazSZ0sGFj519F70ew=;
+	s=korg; t=1737482522;
+	bh=2P/HjZrHK3YPmmqIl5o+WqF+6RizUSlMd5ktSeAoxn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fWsK0/sAiMVIs/3GmZxT814KElbDWo/W6i4hqd9ZxbvdFYmuB0BzGnWya2bOXibIs
-	 N5ybmMcUqnz/W6SP6JnP+H20hiqbaaRUK2eV3beOqcHRNlApZpouHg1C5+OWxRh7BI
-	 XdFqsJtYVsUB5z2pE4TD/3pkB47zbP6kvPmXqN2I=
+	b=eRfN3SDsOQIs+TMuMemum2GtXBJk0oGEw+OeRa0XUEBc4Kklgy7lhD4bAu6j6a7gS
+	 e/97S37WiiSbBw2InPBS7lDqDdEjsnikF/jgNDGNhZc4zR0I+z9rqvHybyOUmRXKl2
+	 JjqSg1aLZFniZm0ZlcuyzpsC0P9qFmbC0gEUohdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Antoine Tenart <atenart@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 082/127] net: add exit_batch_rtnl() method
+	Koichiro Den <koichiro.den@canonical.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.12 106/122] hrtimers: Handle CPU state correctly on hotplug
 Date: Tue, 21 Jan 2025 18:52:34 +0100
-Message-ID: <20250121174532.813984483@linuxfoundation.org>
+Message-ID: <20250121174537.126406386@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,133 +61,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Koichiro Den <koichiro.den@canonical.com>
 
-[ Upstream commit fd4f101edbd9f99567ab2adb1f2169579ede7c13 ]
+commit 2f8dea1692eef2b7ba6a256246ed82c365fdc686 upstream.
 
-Many (struct pernet_operations)->exit_batch() methods have
-to acquire rtnl.
+Consider a scenario where a CPU transitions from CPUHP_ONLINE to halfway
+through a CPU hotunplug down to CPUHP_HRTIMERS_PREPARE, and then back to
+CPUHP_ONLINE:
 
-In presence of rtnl mutex pressure, this makes cleanup_net()
-very slow.
+Since hrtimers_prepare_cpu() does not run, cpu_base.hres_active remains set
+to 1 throughout. However, during a CPU unplug operation, the tick and the
+clockevents are shut down at CPUHP_AP_TICK_DYING. On return to the online
+state, for instance CFS incorrectly assumes that the hrtick is already
+active, and the chance of the clockevent device to transition to oneshot
+mode is also lost forever for the CPU, unless it goes back to a lower state
+than CPUHP_HRTIMERS_PREPARE once.
 
-This patch adds a new exit_batch_rtnl() method to reduce
-number of rtnl acquisitions from cleanup_net().
+This round-trip reveals another issue; cpu_base.online is not set to 1
+after the transition, which appears as a WARN_ON_ONCE in enqueue_hrtimer().
 
-exit_batch_rtnl() handlers are called while rtnl is locked,
-and devices to be killed can be queued in a list provided
-as their second argument.
+Aside of that, the bulk of the per CPU state is not reset either, which
+means there are dangling pointers in the worst case.
 
-A single unregister_netdevice_many() is called right
-before rtnl is released.
+Address this by adding a corresponding startup() callback, which resets the
+stale per CPU state and sets the online flag.
 
-exit_batch_rtnl() handlers are called before ->exit() and
-->exit_batch() handlers.
+[ tglx: Make the new callback unconditionally available, remove the online
+  	modification in the prepare() callback and clear the remaining
+  	state in the starting callback instead of the prepare callback ]
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Antoine Tenart <atenart@kernel.org>
-Link: https://lore.kernel.org/r/20240206144313.2050392-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 46841c7053e6 ("gtp: Use for_each_netdev_rcu() in gtp_genl_dump_pdp().")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
+Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241220134421.3809834-1-koichiro.den@canonical.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/net_namespace.h |  3 +++
- net/core/net_namespace.c    | 31 ++++++++++++++++++++++++++++++-
- 2 files changed, 33 insertions(+), 1 deletion(-)
+ include/linux/hrtimer.h |    1 +
+ kernel/cpu.c            |    2 +-
+ kernel/time/hrtimer.c   |   11 ++++++++++-
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
-index c47baa623ba58..d184b832166b6 100644
---- a/include/net/net_namespace.h
-+++ b/include/net/net_namespace.h
-@@ -389,6 +389,9 @@ struct pernet_operations {
- 	void (*pre_exit)(struct net *net);
- 	void (*exit)(struct net *net);
- 	void (*exit_batch)(struct list_head *net_exit_list);
-+	/* Following method is called with RTNL held. */
-+	void (*exit_batch_rtnl)(struct list_head *net_exit_list,
-+				struct list_head *dev_kill_list);
- 	unsigned int *id;
- 	size_t size;
- };
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index 3addbce20f8ed..1e9e76c4ff5be 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -313,8 +313,9 @@ static __net_init int setup_net(struct net *net, struct user_namespace *user_ns)
- {
- 	/* Must be called with pernet_ops_rwsem held */
- 	const struct pernet_operations *ops, *saved_ops;
--	int error = 0;
- 	LIST_HEAD(net_exit_list);
-+	LIST_HEAD(dev_kill_list);
-+	int error = 0;
+--- a/include/linux/hrtimer.h
++++ b/include/linux/hrtimer.h
+@@ -379,6 +379,7 @@ extern void __init hrtimers_init(void);
+ extern void sysrq_timer_list_show(void);
  
- 	refcount_set(&net->ns.count, 1);
- 	refcount_set(&net->passive, 1);
-@@ -350,6 +351,15 @@ static __net_init int setup_net(struct net *net, struct user_namespace *user_ns)
+ int hrtimers_prepare_cpu(unsigned int cpu);
++int hrtimers_cpu_starting(unsigned int cpu);
+ #ifdef CONFIG_HOTPLUG_CPU
+ int hrtimers_cpu_dying(unsigned int cpu);
+ #else
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -2179,7 +2179,7 @@ static struct cpuhp_step cpuhp_hp_states
+ 	},
+ 	[CPUHP_AP_HRTIMERS_DYING] = {
+ 		.name			= "hrtimers:dying",
+-		.startup.single		= NULL,
++		.startup.single		= hrtimers_cpu_starting,
+ 		.teardown.single	= hrtimers_cpu_dying,
+ 	},
+ 	[CPUHP_AP_TICK_DYING] = {
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -2156,6 +2156,15 @@ int hrtimers_prepare_cpu(unsigned int cp
+ 	}
  
- 	synchronize_rcu();
- 
-+	ops = saved_ops;
-+	rtnl_lock();
-+	list_for_each_entry_continue_reverse(ops, &pernet_list, list) {
-+		if (ops->exit_batch_rtnl)
-+			ops->exit_batch_rtnl(&net_exit_list, &dev_kill_list);
-+	}
-+	unregister_netdevice_many(&dev_kill_list);
-+	rtnl_unlock();
+ 	cpu_base->cpu = cpu;
++	hrtimer_cpu_base_init_expiry_lock(cpu_base);
++	return 0;
++}
 +
- 	ops = saved_ops;
- 	list_for_each_entry_continue_reverse(ops, &pernet_list, list)
- 		ops_exit_list(ops, &net_exit_list);
-@@ -554,6 +564,7 @@ static void cleanup_net(struct work_struct *work)
- 	struct net *net, *tmp, *last;
- 	struct llist_node *net_kill_list;
- 	LIST_HEAD(net_exit_list);
-+	LIST_HEAD(dev_kill_list);
- 
- 	/* Atomically snapshot the list of namespaces to cleanup */
- 	net_kill_list = llist_del_all(&cleanup_list);
-@@ -594,6 +605,14 @@ static void cleanup_net(struct work_struct *work)
- 	 */
- 	synchronize_rcu();
- 
-+	rtnl_lock();
-+	list_for_each_entry_reverse(ops, &pernet_list, list) {
-+		if (ops->exit_batch_rtnl)
-+			ops->exit_batch_rtnl(&net_exit_list, &dev_kill_list);
-+	}
-+	unregister_netdevice_many(&dev_kill_list);
-+	rtnl_unlock();
++int hrtimers_cpu_starting(unsigned int cpu)
++{
++	struct hrtimer_cpu_base *cpu_base = this_cpu_ptr(&hrtimer_bases);
 +
- 	/* Run all of the network namespace exit methods */
- 	list_for_each_entry_reverse(ops, &pernet_list, list)
- 		ops_exit_list(ops, &net_exit_list);
-@@ -1134,7 +1153,17 @@ static void free_exit_list(struct pernet_operations *ops, struct list_head *net_
- {
- 	ops_pre_exit_list(ops, net_exit_list);
- 	synchronize_rcu();
-+
-+	if (ops->exit_batch_rtnl) {
-+		LIST_HEAD(dev_kill_list);
-+
-+		rtnl_lock();
-+		ops->exit_batch_rtnl(net_exit_list, &dev_kill_list);
-+		unregister_netdevice_many(&dev_kill_list);
-+		rtnl_unlock();
-+	}
- 	ops_exit_list(ops, net_exit_list);
-+
- 	ops_free_list(ops, net_exit_list);
++	/* Clear out any left over state from a CPU down operation */
+ 	cpu_base->active_bases = 0;
+ 	cpu_base->hres_active = 0;
+ 	cpu_base->hang_detected = 0;
+@@ -2164,7 +2173,6 @@ int hrtimers_prepare_cpu(unsigned int cp
+ 	cpu_base->expires_next = KTIME_MAX;
+ 	cpu_base->softirq_expires_next = KTIME_MAX;
+ 	cpu_base->online = 1;
+-	hrtimer_cpu_base_init_expiry_lock(cpu_base);
+ 	return 0;
  }
  
--- 
-2.39.5
-
+@@ -2240,6 +2248,7 @@ int hrtimers_cpu_dying(unsigned int dyin
+ void __init hrtimers_init(void)
+ {
+ 	hrtimers_prepare_cpu(smp_processor_id());
++	hrtimers_cpu_starting(smp_processor_id());
+ 	open_softirq(HRTIMER_SOFTIRQ, hrtimer_run_softirq);
+ }
+ 
 
 
 
