@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-109696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10402A18381
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F72A184A3
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:10:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37959188C700
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:57:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60DD57A5B8C
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:07:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0288A1F8EFE;
-	Tue, 21 Jan 2025 17:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C97B1F63FD;
+	Tue, 21 Jan 2025 18:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+f/f+cr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWj5FQi8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47911F8EFB;
-	Tue, 21 Jan 2025 17:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5721F540C;
+	Tue, 21 Jan 2025 18:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482172; cv=none; b=nW730j4BijV2u1shh/0w56D3A4B3zflbBBOwGh+OCOLaj0BTvwz/f3jolQ5mFNFXE5IJm1wE9Cm9g1EtTWJnZoeIHGoQbS7I6hWrb20MYmLg8uC20QdkN4TK6xbp7GqwdRX3Twi00JTde3WmTbimhsTAHP1V+UUgUo3VOeRiM80=
+	t=1737482860; cv=none; b=MtomA5m0eHrU5tvWCnQrL8kt9Gkodm9cqOG9YfHogG9Kcw+eLDyKWUYbSV1fHLTcLejwY5sJ3NLmtHra9pv2k06kLMS6ecBowQDivUZn6ikiSGsjORXuoSqPpv3dwrwV2nTPhuLWpsEcovGpwY+ZWIc5hhamCtBiM339MUH1ht4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482172; c=relaxed/simple;
-	bh=2fZ0zs0fvlydzVFjrJsl1AVbHrZp7fEshKQTFgo4Snw=;
+	s=arc-20240116; t=1737482860; c=relaxed/simple;
+	bh=s8UwKUtOzwoEnpMBsAsHza1DH/EeL1cD/6MDBTZrFDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bwNzIVH5bMP5SiuXZh/yvPQqS/GFmUAUlteyn6Ey0B9/mpGR1qT8bbyTxfQuhP4m6LVGqtT23h5fIO6dwMlgGoBfnZ9WiZuyIvnNOBgEG9MoTdUtGqwKhmI9MjtL0DAQVvwiYaGTcTdhGY1FHP8P5343PUwlwpTE5tbaO/vsOlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+f/f+cr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9FA5C4CEDF;
-	Tue, 21 Jan 2025 17:56:11 +0000 (UTC)
+	 MIME-Version; b=K5i9f2DkgNqJoSOupx0+5D/J07EADUipj8Q2wkwLAfWJj9Lknlr384ruEetZOcIAY7Y4z/y5RF49xUp7fG/GnQE/nDarlK8dO7geibSaRR1tEd/TzA/E60g1HwMGhnJHIunmogRW6DJuLW4akFazKafk1DmW7Ilw9Xqyw/oOyo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XWj5FQi8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447A6C4CEDF;
+	Tue, 21 Jan 2025 18:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482172;
-	bh=2fZ0zs0fvlydzVFjrJsl1AVbHrZp7fEshKQTFgo4Snw=;
+	s=korg; t=1737482860;
+	bh=s8UwKUtOzwoEnpMBsAsHza1DH/EeL1cD/6MDBTZrFDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o+f/f+crP/A8JpAuzC7kgG3Z06pyEuUND0xe4qx+IiTzhCsHKnL0b3BhzIaRHH3+F
-	 1m1d7W5TvBKQVaD39DAd7144m8Z2C5XO/XALHYlcXXGBDdBmRDFEXlBjOMUcQBVhbG
-	 mbd2CHnkcLGZ+9xQpLCoBf58DbWC/Jy2gtxItM58=
+	b=XWj5FQi8f7Sz0INMTTZvLbkas+95wXzhDi0ZDh5GatfW74+sGwDOpAyHznYveysKT
+	 pm03UzbMORV4NUOAkLmQlkQCvrOgkOe5M9pOLKfEAckJ6FBDSh8CX5TEJUc3VL8luI
+	 UpiGG4xvsA3keETyT/2tqXmNUS7VQjj6xvdsERvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 18/72] drm/v3d: Ensure job pointer is set to NULL after job completion
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.15 032/127] ACPI: resource: Add Asus Vivobook X1504VAP to irq1_level_low_skip_override[]
 Date: Tue, 21 Jan 2025 18:51:44 +0100
-Message-ID: <20250121174524.129586426@linuxfoundation.org>
+Message-ID: <20250121174530.923963123@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +59,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit e4b5ccd392b92300a2b341705cc4805681094e49 ]
+commit 66d337fede44dcbab4107d37684af8fcab3d648e upstream.
 
-After a job completes, the corresponding pointer in the device must
-be set to NULL. Failing to do so triggers a warning when unloading
-the driver, as it appears the job is still active. To prevent this,
-assign the job pointer to NULL after completing the job, indicating
-the job has finished.
+Like the Vivobook X1704VAP the X1504VAP has its keyboard IRQ (1) described
+as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh which
+breaks the keyboard.
 
-Fixes: 14d1d1908696 ("drm/v3d: Remove the bad signaled() implementation.")
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Reviewed-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250113154741.67520-1-mcanal@igalia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add the X1504VAP to the irq1_level_low_skip_override[] quirk table to fix
+this.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219224
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20241220181352.25974-1-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/v3d/v3d_irq.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/acpi/resource.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
-index e714d5318f309..76806039691a2 100644
---- a/drivers/gpu/drm/v3d/v3d_irq.c
-+++ b/drivers/gpu/drm/v3d/v3d_irq.c
-@@ -103,6 +103,7 @@ v3d_irq(int irq, void *arg)
- 
- 		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
- 		dma_fence_signal(&fence->base);
-+		v3d->bin_job = NULL;
- 		status = IRQ_HANDLED;
- 	}
- 
-@@ -112,6 +113,7 @@ v3d_irq(int irq, void *arg)
- 
- 		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
- 		dma_fence_signal(&fence->base);
-+		v3d->render_job = NULL;
- 		status = IRQ_HANDLED;
- 	}
- 
-@@ -121,6 +123,7 @@ v3d_irq(int irq, void *arg)
- 
- 		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
- 		dma_fence_signal(&fence->base);
-+		v3d->csd_job = NULL;
- 		status = IRQ_HANDLED;
- 	}
- 
-@@ -157,6 +160,7 @@ v3d_hub_irq(int irq, void *arg)
- 
- 		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
- 		dma_fence_signal(&fence->base);
-+		v3d->tfu_job = NULL;
- 		status = IRQ_HANDLED;
- 	}
- 
--- 
-2.39.5
-
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -443,6 +443,13 @@ static const struct dmi_system_id asus_l
+ 		},
+ 	},
+ 	{
++		/* Asus Vivobook X1504VAP */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "X1504VAP"),
++		},
++	},
++	{
+ 		/* Asus Vivobook X1704VAP */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
 
 
 
