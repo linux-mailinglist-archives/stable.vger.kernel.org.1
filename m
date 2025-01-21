@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-109729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97A35A183A3
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:59:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90840A183A5
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:59:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A336B1612DB
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:58:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E91261622F9
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB87D1F7086;
-	Tue, 21 Jan 2025 17:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F7B1F63C9;
+	Tue, 21 Jan 2025 17:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xmzbOQie"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Obh/RAm6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74001F5614;
-	Tue, 21 Jan 2025 17:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C167D1F543F;
+	Tue, 21 Jan 2025 17:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482268; cv=none; b=N4LeFoL9ogaCYsdtQb+rMxqOtTphfs5vaql0XWO9nvaF/pwIp3h59SigbdDHlgAMLfVqpcNRUq//ST8qXrV9NWJJEu3YLO7Lonvv5RWT+RA3fSIRbHAwF7D1TT5kY+ISUpqIJMrEJL8RMc8wGVVbLm/chZ6+VO8gwW//x2RS8hk=
+	t=1737482274; cv=none; b=OcBCsBC4OL67XR+EgR3G2Isqqgpei73fixvCnAmsF+Hq1M0oh1NX3VXerqgUb7EHl76LVvt4992XiXD+c1S+kgajtv/eGWeTDWowG2gnjYzGwrWKkyHqFZW3jakbyC+4o6fw1SepSEpH8V/xBQkNQ4/uh31LghnZgF9RDe5hrUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482268; c=relaxed/simple;
-	bh=TPajd4G+i4Jg/t8YYrrcna1X2rn0Sf24IhHWGxNzdko=;
+	s=arc-20240116; t=1737482274; c=relaxed/simple;
+	bh=k9KPK/G2oM2/0kRt9QoEUf8WmC/X2CapHPMPnqVAWMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AE3JoSuvLf4YRTvTHa25m0ziivL2EGS4ShFA1IUyE4/kZgOtMfKzExINtAEx5NTaw1Y9dvhSCyQ4z8txDjvo5hspig1N75D9/kepHLg7sepVl4s1iy8hj+TTcZG1jWaYlyFeFsyCLFT7Cl8NahZCx6SFOy4HwXCXrYFuXJ1QB00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xmzbOQie; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A11C4CEDF;
-	Tue, 21 Jan 2025 17:57:47 +0000 (UTC)
+	 MIME-Version; b=P6kfwmASYbQRCmYLun6sZpQMHZzzOyG95fydyKQXGfeO7p4R38UYba6NwlC3Lc0UKcCacpk7n+z5r0zcbGpw60OU/+DRmW/hof3oMA2XuhMgyYWWbPrRaKG+FGZa8cCWFHn5wxXHPsx2LD1m/pIm+UEuYNk/RqaOlhe/JMZBOAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Obh/RAm6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21A4C4CEDF;
+	Tue, 21 Jan 2025 17:57:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482268;
-	bh=TPajd4G+i4Jg/t8YYrrcna1X2rn0Sf24IhHWGxNzdko=;
+	s=korg; t=1737482274;
+	bh=k9KPK/G2oM2/0kRt9QoEUf8WmC/X2CapHPMPnqVAWMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xmzbOQie7tPcz6d2P+e2gfOhnMmWMx2q7mx/3CcBXqEVRTQYxzbQl+2bEfE5VXHBX
-	 0SjGar6qtL6sQ7LVh3QV/DW1SFt/XU43fKhzggdJJJZnmpsz4EMFRD6uPFpBIG9r8K
-	 E5eaDLYK8aOG/Kzv26fBE3o70LAuIDe7j1cwsMGc=
+	b=Obh/RAm6oc/e3JI3WayGjozuhRuS7uDlRg3LzqadFJ4QIZJ83lY+aNpwSv9Kf53ci
+	 aFx1XjDY7hrpgM+EXteiH0PhCHSIKVyrJymJ8WaPK9RBDoKG1vTNMuHnb/dkoOvk/z
+	 /bgw13T44UjZKT1KdiFCbCz8kXTSR7Vh0WZ+yGYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiao Liang <shaw.leon@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Pierre Gondois <pierre.gondois@arm.com>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/122] pfcp: Destroy device along with udp sockets netns dismantle.
-Date: Tue, 21 Jan 2025 18:51:07 +0100
-Message-ID: <20250121174533.740971480@linuxfoundation.org>
+Subject: [PATCH 6.12 020/122] cpufreq: Move endif to the end of Kconfig file
+Date: Tue, 21 Jan 2025 18:51:08 +0100
+Message-ID: <20250121174533.777841002@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
 References: <20250121174532.991109301@linuxfoundation.org>
@@ -67,146 +69,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-[ Upstream commit ffc90e9ca61b0f619326a1417ff32efd6cc71ed2 ]
+[ Upstream commit 7e265fc04690d449a40b413b0348b15c748cea6f ]
 
-pfcp_newlink() links the device to a list in dev_net(dev) instead
-of net, where a udp tunnel socket is created.
+It is possible to enable few cpufreq drivers, without the framework
+being enabled. This happened due to a bug while moving the entries
+earlier. Fix it.
 
-Even when net is removed, the device stays alive on dev_net(dev).
-Then, removing net triggers the splat below. [0]
-
-In this example, pfcp0 is created in ns2, but the udp socket is
-created in ns1.
-
-  ip netns add ns1
-  ip netns add ns2
-  ip -n ns1 link add netns ns2 name pfcp0 type pfcp
-  ip netns del ns1
-
-Let's link the device to the socket's netns instead.
-
-Now, pfcp_net_exit() needs another netdev iteration to remove
-all pfcp devices in the netns.
-
-pfcp_dev_list is not used under RCU, so the list API is converted
-to the non-RCU variant.
-
-pfcp_net_exit() can be converted to .exit_batch_rtnl() in net-next.
-
-[0]:
-ref_tracker: net notrefcnt@00000000128b34dc has 1/1 users at
-     sk_alloc (./include/net/net_namespace.h:345 net/core/sock.c:2236)
-     inet_create (net/ipv4/af_inet.c:326 net/ipv4/af_inet.c:252)
-     __sock_create (net/socket.c:1558)
-     udp_sock_create4 (net/ipv4/udp_tunnel_core.c:18)
-     pfcp_create_sock (drivers/net/pfcp.c:168)
-     pfcp_newlink (drivers/net/pfcp.c:182 drivers/net/pfcp.c:197)
-     rtnl_newlink (net/core/rtnetlink.c:3786 net/core/rtnetlink.c:3897 net/core/rtnetlink.c:4012)
-     rtnetlink_rcv_msg (net/core/rtnetlink.c:6922)
-     netlink_rcv_skb (net/netlink/af_netlink.c:2542)
-     netlink_unicast (net/netlink/af_netlink.c:1321 net/netlink/af_netlink.c:1347)
-     netlink_sendmsg (net/netlink/af_netlink.c:1891)
-     ____sys_sendmsg (net/socket.c:711 net/socket.c:726 net/socket.c:2583)
-     ___sys_sendmsg (net/socket.c:2639)
-     __sys_sendmsg (net/socket.c:2669)
-     do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-     entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-WARNING: CPU: 1 PID: 11 at lib/ref_tracker.c:179 ref_tracker_dir_exit (lib/ref_tracker.c:179)
-Modules linked in:
-CPU: 1 UID: 0 PID: 11 Comm: kworker/u16:0 Not tainted 6.13.0-rc5-00147-g4c1224501e9d #5
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-Workqueue: netns cleanup_net
-RIP: 0010:ref_tracker_dir_exit (lib/ref_tracker.c:179)
-Code: 00 00 00 fc ff df 4d 8b 26 49 bd 00 01 00 00 00 00 ad de 4c 39 f5 0f 85 df 00 00 00 48 8b 74 24 08 48 89 df e8 a5 cc 12 02 90 <0f> 0b 90 48 8d 6b 44 be 04 00 00 00 48 89 ef e8 80 de 67 ff 48 89
-RSP: 0018:ff11000007f3fb60 EFLAGS: 00010286
-RAX: 00000000000020ef RBX: ff1100000d6481e0 RCX: 1ffffffff0e40d82
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff8423ee3c
-RBP: ff1100000d648230 R08: 0000000000000001 R09: fffffbfff0e395af
-R10: 0000000000000001 R11: 0000000000000000 R12: ff1100000d648230
-R13: dead000000000100 R14: ff1100000d648230 R15: dffffc0000000000
-FS:  0000000000000000(0000) GS:ff1100006ce80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005620e1363990 CR3: 000000000eeb2002 CR4: 0000000000771ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __warn (kernel/panic.c:748)
- ? ref_tracker_dir_exit (lib/ref_tracker.c:179)
- ? report_bug (lib/bug.c:201 lib/bug.c:219)
- ? handle_bug (arch/x86/kernel/traps.c:285)
- ? exc_invalid_op (arch/x86/kernel/traps.c:309 (discriminator 1))
- ? asm_exc_invalid_op (./arch/x86/include/asm/idtentry.h:621)
- ? _raw_spin_unlock_irqrestore (./arch/x86/include/asm/irqflags.h:42 ./arch/x86/include/asm/irqflags.h:97 ./arch/x86/include/asm/irqflags.h:155 ./include/linux/spinlock_api_smp.h:151 kernel/locking/spinlock.c:194)
- ? ref_tracker_dir_exit (lib/ref_tracker.c:179)
- ? __pfx_ref_tracker_dir_exit (lib/ref_tracker.c:158)
- ? kfree (mm/slub.c:4613 mm/slub.c:4761)
- net_free (net/core/net_namespace.c:476 net/core/net_namespace.c:467)
- cleanup_net (net/core/net_namespace.c:664 (discriminator 3))
- process_one_work (kernel/workqueue.c:3229)
- worker_thread (kernel/workqueue.c:3304 kernel/workqueue.c:3391)
- kthread (kernel/kthread.c:389)
- ret_from_fork (arch/x86/kernel/process.c:147)
- ret_from_fork_asm (arch/x86/entry/entry_64.S:257)
-  </TASK>
-
-Fixes: 76c8764ef36a ("pfcp: add PFCP module")
-Reported-by: Xiao Liang <shaw.leon@gmail.com>
-Closes: https://lore.kernel.org/netdev/20250104125732.17335-1-shaw.leon@gmail.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 7ee1378736f0 ("cpufreq: Move CPPC configs to common Kconfig and add RISC-V")
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Reviewed-by: Pierre Gondois <pierre.gondois@arm.com>
+Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Link: https://patch.msgid.link/84ac7a8fa72a8fe20487bb0a350a758bce060965.1736488384.git.viresh.kumar@linaro.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/pfcp.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/cpufreq/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/pfcp.c b/drivers/net/pfcp.c
-index 69434fd13f961..68d0d9e92a220 100644
---- a/drivers/net/pfcp.c
-+++ b/drivers/net/pfcp.c
-@@ -206,8 +206,8 @@ static int pfcp_newlink(struct net *net, struct net_device *dev,
- 		goto exit_del_pfcp_sock;
- 	}
+diff --git a/drivers/cpufreq/Kconfig b/drivers/cpufreq/Kconfig
+index 2561b215432a8..588ab1cc6d557 100644
+--- a/drivers/cpufreq/Kconfig
++++ b/drivers/cpufreq/Kconfig
+@@ -311,8 +311,6 @@ config QORIQ_CPUFREQ
+ 	  This adds the CPUFreq driver support for Freescale QorIQ SoCs
+ 	  which are capable of changing the CPU's frequency dynamically.
  
--	pn = net_generic(dev_net(dev), pfcp_net_id);
--	list_add_rcu(&pfcp->list, &pn->pfcp_dev_list);
-+	pn = net_generic(net, pfcp_net_id);
-+	list_add(&pfcp->list, &pn->pfcp_dev_list);
+-endif
+-
+ config ACPI_CPPC_CPUFREQ
+ 	tristate "CPUFreq driver based on the ACPI CPPC spec"
+ 	depends on ACPI_PROCESSOR
+@@ -341,4 +339,6 @@ config ACPI_CPPC_CPUFREQ_FIE
  
- 	netdev_dbg(dev, "registered new PFCP interface\n");
+ 	  If in doubt, say N.
  
-@@ -224,7 +224,7 @@ static void pfcp_dellink(struct net_device *dev, struct list_head *head)
- {
- 	struct pfcp_dev *pfcp = netdev_priv(dev);
- 
--	list_del_rcu(&pfcp->list);
-+	list_del(&pfcp->list);
- 	unregister_netdevice_queue(dev, head);
- }
- 
-@@ -247,11 +247,16 @@ static int __net_init pfcp_net_init(struct net *net)
- static void __net_exit pfcp_net_exit(struct net *net)
- {
- 	struct pfcp_net *pn = net_generic(net, pfcp_net_id);
--	struct pfcp_dev *pfcp;
-+	struct pfcp_dev *pfcp, *pfcp_next;
-+	struct net_device *dev;
- 	LIST_HEAD(list);
- 
- 	rtnl_lock();
--	list_for_each_entry(pfcp, &pn->pfcp_dev_list, list)
-+	for_each_netdev(net, dev)
-+		if (dev->rtnl_link_ops == &pfcp_link_ops)
-+			pfcp_dellink(dev, &list);
++endif
 +
-+	list_for_each_entry_safe(pfcp, pfcp_next, &pn->pfcp_dev_list, list)
- 		pfcp_dellink(pfcp->dev, &list);
- 
- 	unregister_netdevice_many(&list);
+ endmenu
 -- 
 2.39.5
 
