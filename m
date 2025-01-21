@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-109767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66CECA183D4
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E4DDA18492
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:09:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB148188D45A
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97089164B67
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03191F236B;
-	Tue, 21 Jan 2025 17:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3E21F561E;
+	Tue, 21 Jan 2025 18:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hjd6I+CQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SEGgijlS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4D11F707B;
-	Tue, 21 Jan 2025 17:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99411F5439;
+	Tue, 21 Jan 2025 18:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482379; cv=none; b=ttWsq7o72OLjmRcRxRM9V2Tnk2DGa2DjX1eM0UKFetyOfPf8WnVaQd0K+RevRSbvxboWFHEODOsaWLx2N1bcUi9WmxnM8AdcGiFICKRosIK7IWYH+RR/yzo5/Q6UtJHy3Sn7RiSUOCY1pUV3FIfyWMJYHi5ntQKImLlSQ6I59y0=
+	t=1737482865; cv=none; b=Nw96Wg57rBOUnwen97g9gZO21Ny81URuCko9LtKUBI9AdgeLTBI2t0bcwT/YNw1yYoASwgDw3xldof7/666V4Qp/a2+jZCZzl2fLfdyPPL1NiuJ5l8Ttfq4lpDDnW4xPjSoViCkI+BJmKy2+EAkhgACFbqkjXjBdY2aRKrDsDT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482379; c=relaxed/simple;
-	bh=63RR5c3VC1qfAkCaGsDtnPnsl+RYub2pENbjk9j+/7w=;
+	s=arc-20240116; t=1737482865; c=relaxed/simple;
+	bh=SvHFDnB59H2/VqgMwt2fCZSYD57ee/tT517BonVQo2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MP5oe+Y/LvZbn7OisfD+Y97fMAA91EOLaTQWWP1NQg5aPyYjR694u2SwdMp9yhc1FsTGBpvYH+8bQa70OkA1P1wSXywXwO4hEGvRSBN2qQQ5o9GuJUFjvcVCwZKn5W2RxKEj9U3NE3XgGLwa4FKQhpTpdMmb117ZTBWZbnm6oms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hjd6I+CQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E488DC4CEE0;
-	Tue, 21 Jan 2025 17:59:38 +0000 (UTC)
+	 MIME-Version; b=X0e7pd6q0gq2MPhD9iS9OdE9PP5GqAQCfJgUTU1R/GpivqARPyEyYTOfcnQjbZ9Rw8lCnkouF+Gwexcak+IzCHE8il2ZfZbg15u5kJvn6KndaP+PgcQ+T5PjvhyNV7Gec8qQaXWnrikq+JRxQ2OxvABTp5dODUK29+y+bTHRPME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SEGgijlS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17DAAC4CEDF;
+	Tue, 21 Jan 2025 18:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482379;
-	bh=63RR5c3VC1qfAkCaGsDtnPnsl+RYub2pENbjk9j+/7w=;
+	s=korg; t=1737482863;
+	bh=SvHFDnB59H2/VqgMwt2fCZSYD57ee/tT517BonVQo2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hjd6I+CQpu+a/zMj9ZNvCB9kZ8OQVfv2s7A50gAiK4bXOfnSzlEFXZyA+7SMiNNTg
-	 81MG84hkOcWToqfP6CyMIF6nJUu+sH52n7JgzvRTjezTXiKsAvHbhsQCn3ojam8ilv
-	 Lj0AD4OQjC4SSh10FhtJY1e2ZhFs0Gp8V4HaCd2s=
+	b=SEGgijlSgmI2vnVauznMJGBAUSqCmPo44obLD6+2bdNx25MEraYqCtjuZ0YyW6dRK
+	 j2orPzWcW0kuQ9V1Y6clvsTNYRZtaaJSqwNQcSq3L1+qKtlEVocekVX298LCnw9h9m
+	 jijE3b5p2cyrF62Iu6EN5kGfFuaDGhfaxLa9qRoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 056/122] scsi: ufs: core: Honor runtime/system PM levels if set by host controller drivers
-Date: Tue, 21 Jan 2025 18:51:44 +0100
-Message-ID: <20250121174535.148427260@linuxfoundation.org>
+	Melissa Wen <mwen@igalia.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 033/127] drm/amd/display: increase MAX_SURFACES to the value supported by hw
+Date: Tue, 21 Jan 2025 18:51:45 +0100
+Message-ID: <20250121174530.963029880@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Melissa Wen <mwen@igalia.com>
 
-[ Upstream commit bb9850704c043e48c86cc9df90ee102e8a338229 ]
+commit 21541bc6b44241e3f791f9e552352d8440b2b29e upstream.
 
-Otherwise, the default levels will override the levels set by the host
-controller drivers.
+As the hw supports up to 4 surfaces, increase the maximum number of
+surfaces to prevent the DC error when trying to use more than three
+planes.
 
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20241219-ufs-qcom-suspend-fix-v3-2-63c4b95a70b9@linaro.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[drm:dc_state_add_plane [amdgpu]] *ERROR* Surface: can not attach plane_state 000000003e2cb82c! Maximum is: 3
+
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3693
+Signed-off-by: Melissa Wen <mwen@igalia.com>
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit b8d6daffc871a42026c3c20bff7b8fa0302298c1)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dc.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 05b936ad353be..6cc9e61cca07d 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -10589,14 +10589,17 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
- 	}
+--- a/drivers/gpu/drm/amd/display/dc/dc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc.h
+@@ -47,7 +47,7 @@ struct aux_payload;
  
- 	/*
--	 * Set the default power management level for runtime and system PM.
-+	 * Set the default power management level for runtime and system PM if
-+	 * not set by the host controller drivers.
- 	 * Default power saving mode is to keep UFS link in Hibern8 state
- 	 * and UFS device in sleep state.
- 	 */
--	hba->rpm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
-+	if (!hba->rpm_lvl)
-+		hba->rpm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
- 						UFS_SLEEP_PWR_MODE,
- 						UIC_LINK_HIBERN8_STATE);
--	hba->spm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
-+	if (!hba->spm_lvl)
-+		hba->spm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
- 						UFS_SLEEP_PWR_MODE,
- 						UIC_LINK_HIBERN8_STATE);
+ #define DC_VER "3.2.149"
  
--- 
-2.39.5
-
+-#define MAX_SURFACES 3
++#define MAX_SURFACES 4
+ #define MAX_PLANES 6
+ #define MAX_STREAMS 6
+ #define MAX_SINKS_PER_LINK 4
 
 
 
