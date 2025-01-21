@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-110007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92F2EA18516
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:17:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34A76A18452
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:05:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 746617A56DE
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:12:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10C967A1730
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:05:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D9DF1F6675;
-	Tue, 21 Jan 2025 18:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 283801F0E36;
+	Tue, 21 Jan 2025 18:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XnqqUsiJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcswT38V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0BD1F890F;
-	Tue, 21 Jan 2025 18:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D835E1F4275;
+	Tue, 21 Jan 2025 18:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737483072; cv=none; b=d5L69Y6I2R7Yphtgmy5kKdat7URPJ25PWdWAggbqK3R4bQOVSN+n+bG7Ckxfx3bYS65SmOwSlTGf5WC9ar1R6RnqOD2yih/voC4kLnyh7QGGvLYF63za0aL0AubzmwZoL6urOKjmvIaGbRSaexrSONu12nT5Q5KxzOxnmG+LsSc=
+	t=1737482744; cv=none; b=NjHyXfDwWjga6h7q3oRIAGhghuH55dUGag8S8Hh0Be0kGKpboKt1qXOO0Ra5tMTHESwEXDxSWyuL97ILX0i/fSclKC9SysFzR/Q7Is/B9LPRFgQGFeAKq4bILV8YcCPby7y37ILXgZIlH5KlMv1IGUQwNtHBEaMF5577UoKNq70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737483072; c=relaxed/simple;
-	bh=qBo1T62zOja2KvKG+Df3KguH6Howrt9LRJc+GJ9J8F4=;
+	s=arc-20240116; t=1737482744; c=relaxed/simple;
+	bh=y3+0ayntGGK5Qc6D5iumBg6+HoxBqqImns6xgkcPzjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aeGYXW9pReF2TzzeOq+xKRqtR5nJD4CLwLjkHa8Nkx3oWr3O8bLiOM4/JcMxwQzsnmlSXElOf4ZtX6wW6MxhOxuRVN+2ClpOhAPDpTuvZzv0o0QqMWghF3YkCrtVsxQcI6Kom3gFwulcxSMT6rYoWPm5M4Ese73dPpfVWpwM2BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XnqqUsiJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5607C4CEE0;
-	Tue, 21 Jan 2025 18:11:11 +0000 (UTC)
+	 MIME-Version; b=seTrDh/QhfvbLHb55Z1UmNvAXGMHYooqFEsqH+8wMlpU06wjLaEqI1aU1Rcd2HWu+m99m6c/05ifVRONUuTaRO+cZ59Rbbv9JmT+VWU38PN61QUU6b1IioGPSY7jTIc8eDQlS7T8e2tdq1Gv2zFWVCsXDI3Y9tVQ1Q3Hc5jTiLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcswT38V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D647C4CEDF;
+	Tue, 21 Jan 2025 18:05:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737483072;
-	bh=qBo1T62zOja2KvKG+Df3KguH6Howrt9LRJc+GJ9J8F4=;
+	s=korg; t=1737482744;
+	bh=y3+0ayntGGK5Qc6D5iumBg6+HoxBqqImns6xgkcPzjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XnqqUsiJ05NWoUdftTN0leiwFlD71VPCdu19pC5L6DQHG8Dim9bLLsyQ+8+2QNmYh
-	 jMC2zlqGrDOkvnIecPsPaFO2wF6AxwVO6q+zvL8yIDzamYgNGSXekpBA+f1CBjgg3j
-	 AE9GrbpOaMUHU6WfqXQjc6KJUQ1LOmxgDWAYsMoY=
+	b=zcswT38VxYfdlb0ZLwmEswClfScdncl0DFjGavcYPmF9J4If7NyaIbJGUxqGRZQQ3
+	 YunBF5TxxLjVh/IgOm9ptNDwdg/ypo/r3kXd7TiqAriKFor1WYozqSQTFFTOT3tU7w
+	 6nrlY27w5m9dAClcl4FlDtZiRT0hqJN3uSIrupaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Chen <justinpopo6@gmail.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.15 077/127] phy: usb: Use slow clock for wake enabled suspend
-Date: Tue, 21 Jan 2025 18:52:29 +0100
-Message-ID: <20250121174532.629110369@linuxfoundation.org>
+	Kairui Song <kasong@tencent.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 31/64] zram: fix potential UAF of zram table
+Date: Tue, 21 Jan 2025 18:52:30 +0100
+Message-ID: <20250121174522.742601364@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
+References: <20250121174521.568417761@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Chen <justinpopo6@gmail.com>
+From: Kairui Song <kasong@tencent.com>
 
-commit 700c44b508020a3ea29d297c677f8d4ab14b7e6a upstream.
+commit 212fe1c0df4a150fb6298db2cfff267ceaba5402 upstream.
 
-The logic was incorrect when switching to slow clock. We want the slow
-clock if wake_enabled is set.
+If zram_meta_alloc failed early, it frees allocated zram->table without
+setting it NULL.  Which will potentially cause zram_meta_free to access
+the table if user reset an failed and uninitialized device.
 
-Fixes: ae532b2b7aa5 ("phy: usb: Add "wake on" functionality for newer Synopsis XHCI controllers")
-Signed-off-by: Justin Chen <justinpopo6@gmail.com>
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-Link: https://lore.kernel.org/r/1665005418-15807-6-git-send-email-justinpopo6@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Link: https://lkml.kernel.org/r/20250107065446.86928-1-ryncsn@gmail.com
+Fixes: 74363ec674cb ("zram: fix uninitialized ZRAM not releasing backing device")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Reviewed-by:  Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/block/zram/zram_drv.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c
-+++ b/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c
-@@ -337,13 +337,12 @@ static void usb_uninit_common_7216(struc
- 
- 	pr_debug("%s\n", __func__);
- 
--	if (!params->wake_enabled) {
--		USB_CTRL_SET(ctrl, USB_PM, USB_PWRDN);
--
-+	if (params->wake_enabled) {
- 		/* Switch to using slower clock during suspend to save power */
- 		USB_CTRL_SET(ctrl, USB_PM, XHC_S2_CLK_SWITCH_EN);
--	} else {
- 		usb_wake_enable_7216(params, true);
-+	} else {
-+		USB_CTRL_SET(ctrl, USB_PM, USB_PWRDN);
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1192,6 +1192,7 @@ static bool zram_meta_alloc(struct zram
+ 	zram->mem_pool = zs_create_pool(zram->disk->disk_name);
+ 	if (!zram->mem_pool) {
+ 		vfree(zram->table);
++		zram->table = NULL;
+ 		return false;
  	}
- }
  
 
 
