@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-109777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E8F5A183DC
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DC87A18469
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:07:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5ABA9165331
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F6A27A312A
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718481F7086;
-	Tue, 21 Jan 2025 18:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27CE1F63FD;
+	Tue, 21 Jan 2025 18:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XEjzhCEw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vs/ouNBK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2AE1F543F;
-	Tue, 21 Jan 2025 18:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4551F667C;
+	Tue, 21 Jan 2025 18:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482408; cv=none; b=K1l/Zr3uODLP2pzfvB7YNwDjfhStywX475fp/BGsyfdz4Fg83hlNN9lK0ozSAUvTRU8Dyl2pb+Ece2s9sPybTBCy8mjN8LCPqtG9fgo4AbvOI7sWaE9H/1JH79pqLoiIwo9/SqN8ZXaNgFYoFjOJyQ35FXrqzVzUCZxBIqshAoI=
+	t=1737482797; cv=none; b=gm975IySr6scST0907Xv4gsjCT8XWHWR04Nr39nynYBi1c1viVXpqfwxmA25HjSN02Vqru//a5Z6wKanL1ZKjmLtYyklk3iOwaWcUK2nLRxF/wDvJJuU7XWmIlKKeGfUy4tBjsbteJxiLVcSFoRx9pBWQTKMrGLedthnME7vGWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482408; c=relaxed/simple;
-	bh=LlLsbX51iGabUdBiX5/0Qaf0ofJSS+0u2jl9/N4NmRM=;
+	s=arc-20240116; t=1737482797; c=relaxed/simple;
+	bh=moj7Gre4nx1D6TY0SvDeFftU+31RPYv7obMNwpioWA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hfR7mN6aCrAJt3JO9zkm3Ve7FZB2mWNBmVHBZ2bIruar/OL/CjqTrEsU9jX1wP/Y9ZXltfaz0ucLu4RWX145GGI3Tdlp/DVBtjDsyPzh9EumyKNkJJbFh5fP98GKKND9PNBfectmmXVFxTvffgKBXPreoaq4cHVQs7EfA5cZwME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XEjzhCEw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA1B9C4CEE0;
-	Tue, 21 Jan 2025 18:00:07 +0000 (UTC)
+	 MIME-Version; b=jyW6iz8mbcaJ5TKeYMOjpW6HS4/CBn1avwBo/OC7OAY36svDUnG7PN/51GSk2ciQrr6qfgW90CXeIcR23EFxMQaBjl3ydihHQi1Obf27/RUahWSBevlxgln5gsshlHRvPzxG8N4kq5FODJXx2yFfmJtq7d6oqXhHR9kzv3GuTG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vs/ouNBK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3818C4CEE0;
+	Tue, 21 Jan 2025 18:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482408;
-	bh=LlLsbX51iGabUdBiX5/0Qaf0ofJSS+0u2jl9/N4NmRM=;
+	s=korg; t=1737482797;
+	bh=moj7Gre4nx1D6TY0SvDeFftU+31RPYv7obMNwpioWA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XEjzhCEwed3sdEPs4hC5xgc/aW5xIfufUNVnEPULzq9EQRUlM8iRz497ayF46dY/H
-	 T6Qtccia+NO35PY8V4LV0pq95d6aznx9Jy9zjS7lrJCeQiUCMvs6LVSMkYoB5lqh4t
-	 oaUWwNBmF7KIarHwMWhFUgoHuWdzwtK+K9UvK4IQ=
+	b=Vs/ouNBKyfEgFu5QgLnAgbLDgKFEZ8lakZBGY8mQgYsI6cS9C83FF2KGkK/Enh6yp
+	 CgbcNKyIA+2hpu4qUr+YpJd3rw9jCiEaTOylb303d4csM9rNKd7/7cfpegBd0jYmzt
+	 aa+t6f9sR1iFbVNUQI8WpgI+PsyydnR1gb4MpAZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
+	Zhongqiu Duan <dzq.aishenghu0@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 036/122] drm/v3d: Ensure job pointer is set to NULL after job completion
+Subject: [PATCH 5.15 012/127] tcp/dccp: allow a connection when sk_max_ack_backlog is zero
 Date: Tue, 21 Jan 2025 18:51:24 +0100
-Message-ID: <20250121174534.379364190@linuxfoundation.org>
+Message-ID: <20250121174530.148221838@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +63,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Zhongqiu Duan <dzq.aishenghu0@gmail.com>
 
-[ Upstream commit e4b5ccd392b92300a2b341705cc4805681094e49 ]
+[ Upstream commit 3479c7549fb1dfa7a1db4efb7347c7b8ef50de4b ]
 
-After a job completes, the corresponding pointer in the device must
-be set to NULL. Failing to do so triggers a warning when unloading
-the driver, as it appears the job is still active. To prevent this,
-assign the job pointer to NULL after completing the job, indicating
-the job has finished.
+If the backlog of listen() is set to zero, sk_acceptq_is_full() allows
+one connection to be made, but inet_csk_reqsk_queue_is_full() does not.
+When the net.ipv4.tcp_syncookies is zero, inet_csk_reqsk_queue_is_full()
+will cause an immediate drop before the sk_acceptq_is_full() check in
+tcp_conn_request(), resulting in no connection can be made.
 
-Fixes: 14d1d1908696 ("drm/v3d: Remove the bad signaled() implementation.")
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Reviewed-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250113154741.67520-1-mcanal@igalia.com
+This patch tries to keep consistent with 64a146513f8f ("[NET]: Revert
+incorrect accept queue backlog changes.").
+
+Link: https://lore.kernel.org/netdev/20250102080258.53858-1-kuniyu@amazon.com/
+Fixes: ef547f2ac16b ("tcp: remove max_qlen_log")
+Signed-off-by: Zhongqiu Duan <dzq.aishenghu0@gmail.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250102171426.915276-1-dzq.aishenghu0@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_irq.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/net/inet_connection_sock.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
-index 20bf33702c3c4..da203045df9be 100644
---- a/drivers/gpu/drm/v3d/v3d_irq.c
-+++ b/drivers/gpu/drm/v3d/v3d_irq.c
-@@ -108,6 +108,7 @@ v3d_irq(int irq, void *arg)
- 		v3d_job_update_stats(&v3d->bin_job->base, V3D_BIN);
- 		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
- 		dma_fence_signal(&fence->base);
-+		v3d->bin_job = NULL;
- 		status = IRQ_HANDLED;
- 	}
+diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
+index 0bf19c1926ee..7a015055fe6d 100644
+--- a/include/net/inet_connection_sock.h
++++ b/include/net/inet_connection_sock.h
+@@ -278,7 +278,7 @@ static inline int inet_csk_reqsk_queue_len(const struct sock *sk)
  
-@@ -118,6 +119,7 @@ v3d_irq(int irq, void *arg)
- 		v3d_job_update_stats(&v3d->render_job->base, V3D_RENDER);
- 		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
- 		dma_fence_signal(&fence->base);
-+		v3d->render_job = NULL;
- 		status = IRQ_HANDLED;
- 	}
+ static inline int inet_csk_reqsk_queue_is_full(const struct sock *sk)
+ {
+-	return inet_csk_reqsk_queue_len(sk) >= READ_ONCE(sk->sk_max_ack_backlog);
++	return inet_csk_reqsk_queue_len(sk) > READ_ONCE(sk->sk_max_ack_backlog);
+ }
  
-@@ -128,6 +130,7 @@ v3d_irq(int irq, void *arg)
- 		v3d_job_update_stats(&v3d->csd_job->base, V3D_CSD);
- 		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
- 		dma_fence_signal(&fence->base);
-+		v3d->csd_job = NULL;
- 		status = IRQ_HANDLED;
- 	}
- 
-@@ -165,6 +168,7 @@ v3d_hub_irq(int irq, void *arg)
- 		v3d_job_update_stats(&v3d->tfu_job->base, V3D_TFU);
- 		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
- 		dma_fence_signal(&fence->base);
-+		v3d->tfu_job = NULL;
- 		status = IRQ_HANDLED;
- 	}
- 
+ bool inet_csk_reqsk_queue_drop(struct sock *sk, struct request_sock *req);
 -- 
 2.39.5
 
