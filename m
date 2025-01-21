@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-109849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23407A18422
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:03:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 429C9A183DB
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01FE07A1700
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:03:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1EB127A03F9
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FAE1F5439;
-	Tue, 21 Jan 2025 18:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8841F55F5;
+	Tue, 21 Jan 2025 18:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zo1Gy9Z/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aFLYNiyF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060981F0E36;
-	Tue, 21 Jan 2025 18:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC4D1F5439;
+	Tue, 21 Jan 2025 18:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482620; cv=none; b=Scm8w915xk/rn7RizKXUpyTGwJY9velCAxGIQJWRwXn4FILMTDdold4SPsUKcInmR+GVxG9IH0wWL2YEIiPvGwelJNftjVQo9BAqTrumF4qVGHsE//UMUVJ59HsURtYIzteflxNl5byugQ26tgT/90myZnl4Tn1Gon/3HTJD0+c=
+	t=1737482469; cv=none; b=SvRG4UFCHNl8Yj1u8sbWYERDy//AlWhuYiQLxLXFtHAOdfwqJvubdf1Xi8achqhPVSJGRHMRVMrf0znbyqwkqS8pvdVnUI9YJUwBQlkfH6mzNO931DU+7zFFJ6kAJfUXi97N5HfZ7k8Ar6nAGl1TnAbKP5T6sfZ8AiH2QmJDwWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482620; c=relaxed/simple;
-	bh=qv6zUguRZ/0WG7qJWvk//ckyW5cUNvHoRyGwrghbpAI=;
+	s=arc-20240116; t=1737482469; c=relaxed/simple;
+	bh=Dgq1oX+bSWMOtkyMl/Dubo5g9genSl+TcyL8NVlPLqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G87Gp+A5mn/A6bxJeLFJBDNWZP0WengIyUS44xQpZ3j1opxhjkLGG4HMXZ3FtdEcvtPEsuxtWy62sb1SK5HyyXsJMhOWl5oClgitSS73p/935W9uwTkB80bs6SrdJCHCf9SMy/BehRIt/3SE2C/80IdH9iG9BVSsh9iOb14cSgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zo1Gy9Z/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14DDAC4CEE3;
-	Tue, 21 Jan 2025 18:03:37 +0000 (UTC)
+	 MIME-Version; b=CWDiOthnX1a+LNjktwFD3VO7ySoVYpET2xO3qKtUCjZzNCRVK/dliHApTfjkxko5csWvAbsRlsSAg6nx8hi6hJHtcg26qupUGmVWTU73u7f2XhFSBxgFsSu+dcvanj8optexOc7YyH7uXm4uR4u/ae3OYtGToxSBiCbd9ZhvLjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aFLYNiyF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44914C4CEDF;
+	Tue, 21 Jan 2025 18:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482618;
-	bh=qv6zUguRZ/0WG7qJWvk//ckyW5cUNvHoRyGwrghbpAI=;
+	s=korg; t=1737482469;
+	bh=Dgq1oX+bSWMOtkyMl/Dubo5g9genSl+TcyL8NVlPLqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zo1Gy9Z/PVUI/odjflnKOrCegSt0nuZCGPsiC0LVDizPdQc3i20SARBa8sLwhwPVt
-	 pNnumy/YVYsXqh1fAiVg9p6C8VPkEm4AnwvEDjdEzcKbKV1wMoF5vYsE3WmgaEXbdx
-	 U9w7hgbjJehuXgV9BYeutYHA191roVTcTtzFdGuI=
+	b=aFLYNiyFiavjjEI+LCQ1vffu/1z7xH7F0pprvEz3QZ2zb5gP+4Q3EzqmUQh+kW7Sx
+	 Ayn+WBrMqYDC4xu1KGtkmobBzLBA7gsPB3wuFnCApawd5w8fCQoXeO+2vNhBuTdfCW
+	 yE/BaaMjMT0hewFzu3NnhoFGauUYZgI/hWZw5GDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 16/64] i2c: mux: demux-pinctrl: check initial mux selection, too
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 087/122] vsock: reset socket state when de-assigning the transport
 Date: Tue, 21 Jan 2025 18:52:15 +0100
-Message-ID: <20250121174522.179002150@linuxfoundation.org>
+Message-ID: <20250121174536.372098197@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
-References: <20250121174521.568417761@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit ca89f73394daf92779ddaa37b42956f4953f3941 ]
+commit a24009bc9be60242651a21702609381b5092459e upstream.
 
-When misconfigured, the initial setup of the current mux channel can
-fail, too. It must be checked as well.
+Transport's release() and destruct() are called when de-assigning the
+vsock transport. These callbacks can touch some socket state like
+sock flags, sk_state, and peer_shutdown.
 
-Fixes: 50a5ba876908 ("i2c: mux: demux-pinctrl: add driver")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since we are reassigning the socket to a new transport during
+vsock_connect(), let's reset these fields to have a clean state with
+the new transport.
+
+Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/muxes/i2c-demux-pinctrl.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/vmw_vsock/af_vsock.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/i2c/muxes/i2c-demux-pinctrl.c b/drivers/i2c/muxes/i2c-demux-pinctrl.c
-index 45a3f7e7b3f68..cea057704c00c 100644
---- a/drivers/i2c/muxes/i2c-demux-pinctrl.c
-+++ b/drivers/i2c/muxes/i2c-demux-pinctrl.c
-@@ -261,7 +261,9 @@ static int i2c_demux_pinctrl_probe(struct platform_device *pdev)
- 	pm_runtime_no_callbacks(&pdev->dev);
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -491,6 +491,15 @@ int vsock_assign_transport(struct vsock_
+ 		 */
+ 		vsk->transport->release(vsk);
+ 		vsock_deassign_transport(vsk);
++
++		/* transport's release() and destruct() can touch some socket
++		 * state, since we are reassigning the socket to a new transport
++		 * during vsock_connect(), let's reset these fields to have a
++		 * clean state.
++		 */
++		sock_reset_flag(sk, SOCK_DONE);
++		sk->sk_state = TCP_CLOSE;
++		vsk->peer_shutdown = 0;
+ 	}
  
- 	/* switch to first parent as active master */
--	i2c_demux_activate_master(priv, 0);
-+	err = i2c_demux_activate_master(priv, 0);
-+	if (err)
-+		goto err_rollback;
- 
- 	err = device_create_file(&pdev->dev, &dev_attr_available_masters);
- 	if (err)
--- 
-2.39.5
-
+ 	/* We increase the module refcnt to prevent the transport unloading
 
 
 
