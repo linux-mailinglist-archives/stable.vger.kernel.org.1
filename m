@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-109683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93422A18361
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D69B0A183F2
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:02:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4AD4169954
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B884188C1FD
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C2A1F7060;
-	Tue, 21 Jan 2025 17:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49EB91F666C;
+	Tue, 21 Jan 2025 18:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EuX24wfZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gEq6oSpy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C171F55ED;
-	Tue, 21 Jan 2025 17:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C7D1F427B;
+	Tue, 21 Jan 2025 18:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482134; cv=none; b=hgrPHF47k14gajBVq1yQ5zwz93cjP5bRjz2x5z/ReHW9n+xof3DvQF2u519SDqnw4zx3Ph1/Dxt7nNg1DxJ7a+RhjJyM/Qfjod3gb8M8tYz9fuZDjt/iT1qyBkKkObLzrf35yUfi1zSz8rmNlZUKIycyv5DSjHHXuRCeRjqrq+c=
+	t=1737482458; cv=none; b=qFkZr4TnnBGqxUFc80TAveZmWo0Zu4+uivMTFZlcH05ybPGmXyXP4H/DMPFMyRcdlcQk/7+h5ZZfyxsHIUNH6SQb+aCYXiDZByEjOn68DD5H8DVcxctTwWdInbqYaK7vZrJYUyfaughai/52G473+8hEGtDshXMPh11VgnDcuPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482134; c=relaxed/simple;
-	bh=rxf7ZTS0zaTnLeS36J72oj9h57rnlBLwwxLVIpTMfxs=;
+	s=arc-20240116; t=1737482458; c=relaxed/simple;
+	bh=Cww9yStY+A3Ez+vTlkRr/Lhxdwf1M0K7gUEEoXiv1JY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lp9KYWypXjP2c+jHm//wAdPMoUg9XqTO1ZBezyi2a1MzXg+8DVNNaKjeTFeVdy9gzbCHFyXcisW4RE/qfj4b79b7d83vRFz5QWR83UphKs4/inGJUHZVaoFgiGPegA/esaL79wHUxThQeSLCGIVRQ59gbXM5G+egV7j77UhKrSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EuX24wfZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2727BC4CEDF;
-	Tue, 21 Jan 2025 17:55:33 +0000 (UTC)
+	 MIME-Version; b=OaWdtCLmr9fgJDwEqZbs7RFzRi4PyaCl5CHpsIqbARKcwLjQjg+5mYl3hz0FIt9EVwACEftiZQvDivI5ZBw+82Stn6CbuWLuhv7I8klIKPQujCmTBN+INSV/sEXvJHsyVhH28JaURO2aqGhPmxNCaRrs1ZFlRgUIRDreZbe83C4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gEq6oSpy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF09C4CEDF;
+	Tue, 21 Jan 2025 18:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482134;
-	bh=rxf7ZTS0zaTnLeS36J72oj9h57rnlBLwwxLVIpTMfxs=;
+	s=korg; t=1737482457;
+	bh=Cww9yStY+A3Ez+vTlkRr/Lhxdwf1M0K7gUEEoXiv1JY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EuX24wfZo+c2lEHZSRR4j3QiWMhl1llLD5yt9qQ79GgLnxQ+LOIYRX6tSInKNQFQo
-	 qzUDOWnHyOvk30dZZiA/XZkkQGi/rGm30Kn7A3Xxh3Lb0W3kdynHW6Z0CCxvXYf0Hq
-	 ktElC8yq9m2GWuX1NTYQOElr4L7Chl2lAqEZTCt4=
+	b=gEq6oSpy+T1BD6n9I7ZfIoIB65Dwfjy5R5pfHa2nsfs5ftq8sFfgcOWbunYyU01+V
+	 qudzpAHufl2WhAHZDuM/1i++PeMdZa9EDZ8nQnaBJjsXnllIYGJxoYYIkxztmI+7GM
+	 QDS16i2vx2ZEAW+tRlGmDQ6P84iRB3BejApmeYiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	syzbot+3affdbfc986ecd9200fd@syzkaller.appspotmail.com,
-	Hyunwoo Kim <v4bel@theori.io>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Luigi Leonardi <leonardi@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 45/72] vsock/bpf: return early if transport is not assigned
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 083/122] net: ethernet: xgbe: re-add aneg to supported features in PHY quirks
 Date: Tue, 21 Jan 2025 18:52:11 +0100
-Message-ID: <20250121174525.158011882@linuxfoundation.org>
+Message-ID: <20250121174536.210678964@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,94 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit f6abafcd32f9cfc4b1a2f820ecea70773e26d423 upstream.
+commit 6be7aca91009865d8c2b73589270224a6b6e67ab upstream.
 
-Some of the core functions can only be called if the transport
-has been assigned.
+In 4.19, before the switch to linkmode bitmaps, PHY_GBIT_FEATURES
+included feature bits for aneg and TP/MII ports.
 
-As Michal reported, a socket might have the transport at NULL,
-for example after a failed connect(), causing the following trace:
+				 SUPPORTED_TP | \
+				 SUPPORTED_MII)
 
-    BUG: kernel NULL pointer dereference, address: 00000000000000a0
-    #PF: supervisor read access in kernel mode
-    #PF: error_code(0x0000) - not-present page
-    PGD 12faf8067 P4D 12faf8067 PUD 113670067 PMD 0
-    Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
-    CPU: 15 UID: 0 PID: 1198 Comm: a.out Not tainted 6.13.0-rc2+
-    RIP: 0010:vsock_connectible_has_data+0x1f/0x40
-    Call Trace:
-     vsock_bpf_recvmsg+0xca/0x5e0
-     sock_recvmsg+0xb9/0xc0
-     __sys_recvfrom+0xb3/0x130
-     __x64_sys_recvfrom+0x20/0x30
-     do_syscall_64+0x93/0x180
-     entry_SYSCALL_64_after_hwframe+0x76/0x7e
+				 SUPPORTED_10baseT_Full)
 
-So we need to check the `vsk->transport` in vsock_bpf_recvmsg(),
-especially for connected sockets (stream/seqpacket) as we already
-do in __vsock_connectible_recvmsg().
+				 SUPPORTED_100baseT_Full)
 
-Fixes: 634f1a7110b4 ("vsock: support sockmap")
+				 SUPPORTED_1000baseT_Full)
+
+				 PHY_100BT_FEATURES | \
+				 PHY_DEFAULT_FEATURES)
+
+				 PHY_1000BT_FEATURES)
+
+Referenced commit expanded PHY_GBIT_FEATURES, silently removing
+PHY_DEFAULT_FEATURES. The removed part can be re-added by using
+the new PHY_GBIT_FEATURES definition.
+Not clear to me is why nobody seems to have noticed this issue.
+
+I stumbled across this when checking what it takes to make
+phy_10_100_features_array et al private to phylib.
+
+Fixes: d0939c26c53a ("net: ethernet: xgbe: expand PHY_GBIT_FEAUTRES")
 Cc: stable@vger.kernel.org
-Reported-by: Michal Luczaj <mhal@rbox.co>
-Closes: https://lore.kernel.org/netdev/5ca20d4c-1017-49c2-9516-f6f75fd331e9@rbox.co/
-Tested-by: Michal Luczaj <mhal@rbox.co>
-Reported-by: syzbot+3affdbfc986ecd9200fd@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/677f84a8.050a0220.25a300.01b3.GAE@google.com/
-Tested-by: syzbot+3affdbfc986ecd9200fd@syzkaller.appspotmail.com
-Reviewed-by: Hyunwoo Kim <v4bel@theori.io>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/46521973-7738-4157-9f5e-0bb6f694acba@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/vsock_bpf.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c |   19 ++-----------------
+ 1 file changed, 2 insertions(+), 17 deletions(-)
 
-diff --git a/net/vmw_vsock/vsock_bpf.c b/net/vmw_vsock/vsock_bpf.c
-index 4aa6e74ec295..f201d9eca1df 100644
---- a/net/vmw_vsock/vsock_bpf.c
-+++ b/net/vmw_vsock/vsock_bpf.c
-@@ -77,6 +77,7 @@ static int vsock_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
- 			     size_t len, int flags, int *addr_len)
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
+@@ -923,7 +923,6 @@ static void xgbe_phy_free_phy_device(str
+ 
+ static bool xgbe_phy_finisar_phy_quirks(struct xgbe_prv_data *pdata)
  {
- 	struct sk_psock *psock;
-+	struct vsock_sock *vsk;
- 	int copied;
+-	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported) = { 0, };
+ 	struct xgbe_phy_data *phy_data = pdata->phy_data;
+ 	unsigned int phy_id = phy_data->phydev->phy_id;
  
- 	psock = sk_psock_get(sk);
-@@ -84,6 +85,13 @@ static int vsock_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
- 		return __vsock_recvmsg(sk, msg, len, flags);
+@@ -945,14 +944,7 @@ static bool xgbe_phy_finisar_phy_quirks(
+ 	phy_write(phy_data->phydev, 0x04, 0x0d01);
+ 	phy_write(phy_data->phydev, 0x00, 0x9140);
  
- 	lock_sock(sk);
-+	vsk = vsock_sk(sk);
-+
-+	if (!vsk->transport) {
-+		copied = -ENODEV;
-+		goto out;
-+	}
-+
- 	if (vsock_has_data(sk, psock) && sk_psock_queue_empty(psock)) {
- 		release_sock(sk);
- 		sk_psock_put(sk, psock);
-@@ -108,6 +116,7 @@ static int vsock_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
- 		copied = sk_msg_recvmsg(sk, psock, msg, len, flags);
- 	}
+-	linkmode_set_bit_array(phy_10_100_features_array,
+-			       ARRAY_SIZE(phy_10_100_features_array),
+-			       supported);
+-	linkmode_set_bit_array(phy_gbit_features_array,
+-			       ARRAY_SIZE(phy_gbit_features_array),
+-			       supported);
+-
+-	linkmode_copy(phy_data->phydev->supported, supported);
++	linkmode_copy(phy_data->phydev->supported, PHY_GBIT_FEATURES);
  
-+out:
- 	release_sock(sk);
- 	sk_psock_put(sk, psock);
+ 	phy_support_asym_pause(phy_data->phydev);
  
--- 
-2.48.1
-
+@@ -964,7 +956,6 @@ static bool xgbe_phy_finisar_phy_quirks(
+ 
+ static bool xgbe_phy_belfuse_phy_quirks(struct xgbe_prv_data *pdata)
+ {
+-	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported) = { 0, };
+ 	struct xgbe_phy_data *phy_data = pdata->phy_data;
+ 	struct xgbe_sfp_eeprom *sfp_eeprom = &phy_data->sfp_eeprom;
+ 	unsigned int phy_id = phy_data->phydev->phy_id;
+@@ -1028,13 +1019,7 @@ static bool xgbe_phy_belfuse_phy_quirks(
+ 	reg = phy_read(phy_data->phydev, 0x00);
+ 	phy_write(phy_data->phydev, 0x00, reg & ~0x00800);
+ 
+-	linkmode_set_bit_array(phy_10_100_features_array,
+-			       ARRAY_SIZE(phy_10_100_features_array),
+-			       supported);
+-	linkmode_set_bit_array(phy_gbit_features_array,
+-			       ARRAY_SIZE(phy_gbit_features_array),
+-			       supported);
+-	linkmode_copy(phy_data->phydev->supported, supported);
++	linkmode_copy(phy_data->phydev->supported, PHY_GBIT_FEATURES);
+ 	phy_support_asym_pause(phy_data->phydev);
+ 
+ 	netif_dbg(pdata, drv, pdata->netdev,
 
 
 
