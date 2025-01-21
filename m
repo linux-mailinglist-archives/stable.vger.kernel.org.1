@@ -1,72 +1,73 @@
-Return-Path: <stable+bounces-109623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF3BA17F9B
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 15:21:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C94A18026
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 15:42:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0766418816F4
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 14:21:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3336D168464
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 14:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB4E1F37BC;
-	Tue, 21 Jan 2025 14:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE621F473A;
+	Tue, 21 Jan 2025 14:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="xOPTquQT"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="AniIpdqe"
 X-Original-To: stable@vger.kernel.org
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.53])
+Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1A01F03DC
-	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 14:21:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389C01F3FDE
+	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 14:40:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737469293; cv=none; b=MjpXCGa+9wRQEvT7Mj/F21drtwb2H2vdr8ru7NtoTtCrEsTM2niHZYQrlxm8lh0IUqbdj0J0ww50D+0AaFokcsU5IcU35BddQzRil9sNkGPHyoPqqOEVR+HMg5yFUKwDxDSWyu31OOkddEtcqJ992xICyskWpj+WWQ2QWtsyoeo=
+	t=1737470441; cv=none; b=BM9Pxl9kV8NjH9gsRnTXt7O8MVDNn9UhZzI8R1IIoNjrdMwgCct/Tt1nz6ZTPgWG/tqSqBM1lEjMywyYxqAat6SwJscQtOItmr0bQ0xlUZ9SHaP8yu5xMTrFQwuYWAsiNgj0mSGK7fNrLBAF7EMwnibKVm6bKd3TC7w9fjH23nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737469293; c=relaxed/simple;
-	bh=9knAtGh0/GIDd802jcbPcyMQXYDupyouv9XAIgwEM/w=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=QVu65Qz3wj3EZeFSUznvg5MWfFKP8/6+bq/URE6h7WwvMZXSo9eWj7/QXDKhO89t1HUSDsHg3Da20nRJAxXn1BKblXgjvAejjrCqRCoJLkj7IfhSlIMTl3Mup4FwXda7dyEVx8VPeZPclvZ2f27sJfyHJ8v5vJxUc08VO25UfOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=xOPTquQT; arc=none smtp.client-ip=43.163.128.53
+	s=arc-20240116; t=1737470441; c=relaxed/simple;
+	bh=Noln/25our2QOnRN8xWHv7+OXONefvzLOzn7wozz0CA=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=tvEnzqvlew6jcXGYr5Kj9WfSn+gZctpz5fT2I19yT1JJS3cWlP4PqiQ4POiT/vEkH/P587ZLl1ZjRBYucMnsOTyulzc9TO+pVhCAPajwRb8aK80ZbpELxb/nZcUjnXbuJ5aunQLC2sLAuhLnIKEw0Co28ODO6xKeh+50OKWbNGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=AniIpdqe; arc=none smtp.client-ip=162.62.58.211
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1737469285;
-	bh=Nffq1Jir3ue4NKpHrXr002xyHfX/mQmj1kui1Hb7sKE=;
+	s=s201512; t=1737470425;
+	bh=1b9nqOLaHQiA617CC+iMUWDBMshR+HhEkRMqv3X/lNo=;
 	h=From:To:Cc:Subject:Date;
-	b=xOPTquQT5dziJtZ07kiND87yIvSoxLlbYNInPaN0i6KhYSVwVUcMQ+qnZfpYN+RFZ
-	 Pomtu0glMNzzRtTHZAX+JrZunKYlr3uZ+BGDmJ+zslrkuDHAVjbhNEWGp4aYVmJaBV
-	 ONiGx92/wMYruzBMhFeB5zQngbLHXXVQoPKY+Pdk=
+	b=AniIpdqeZr0mk7Oip+CMIHzFL1Pip/CpujNzrSswMxMOJPRS3lM3z4VrqKob1KWBT
+	 Swoa19ts/0iroxY2y131c39M6ag/758HWllwGiLuyMqdzNEAOpxVKGt0Qkx7qlcMRh
+	 B40bLvw7Y6/VLYCukFEzNNH6Bn/qKVs2CeJYFmCs=
 Received: from public ([120.244.194.224])
-	by newxmesmtplogicsvrszgpuc5-0.qq.com (NewEsmtp) with SMTP
-	id 54B9A243; Tue, 21 Jan 2025 22:21:11 +0800
-X-QQ-mid: xmsmtpt1737469271t4gfx12iu
-Message-ID: <tencent_8BB43C35671F0A929BD6A938E8302B0DB808@qq.com>
-X-QQ-XMAILINFO: OFGKNgQ2L1vP3qktqbCvkZHorT45NBzVn4k8cEgUiDjMnnF6lRcLPjxasc9c0+
-	 EmY3qW3UwgB+RGKu+YdPM4gUbYGDINU4rmNUSRj46GYkWsDYAsEssVSrKHo5IDxAMnGFhXvKYOV3
-	 QPAvKp1ESGyL/i21RWsG64f4pahBCXQRt/K0UOSnsgtsOXxdQuqSfn/13te4uo1sqAFPToad9R/i
-	 WrR4ABLX2Zqn4xejvG57tkivqlhEKrDOUq5ngVgH6i28Kslk6Z0FkDYqpVw/DTHgVyTzi7UQJTnL
-	 MD7UUo9Y1i9eyNdmqfIX7Lp0Pu0B90qwRkmWpPu3V0YuGWE8BF7MpJ8UhYftTJthg59ptbBUWIRE
-	 rx2NfwgCbKR7p6YncotqCIjB9d8vMMq133zucLHX5A+vQVkD/vN+zk6FASThiIwdnMf5eC1vHp4r
-	 PJKuGQjv6Y3LaFY7w3aVcaQyQa/nQTplhnyqVDXHOqpm8DVQ5bhf3WhnPnJLOI6VgAyJC2q/yWDX
-	 WoSSRxWnlFTwR9dGtGxCPnPYdRFV3ZHbcYaaEo1b0/HmStam40O1faZT1okFr7VOKnafcJPMrDMH
-	 ChyF1I17AIfXMZvzOx+FU9Gk3LaWOkTjx313s9B/D+pV5AdbKtxdQlNA6c7FtobgeNdKrK2RIUAs
-	 CL6ZwrnsceJR/CSbbcgfLpXmnI7GqDXtPFCt2dWJNFULAX2R75MGOYeE7g4bsJvi2I0wTU5X8/9g
-	 kFIcMwVovFKWB2AErYg4YgVTFmAGzlnH1yqGOrhBSHMErbby5CczzEA/69QrcR6wdw6C7ozFdbUF
-	 5ydleX/Dl8CpVE0cx7vUbhUiuxrGgVVQGJ35mSmIHMmizqiGKd9XhE3w5pY2UWbVukfXm2N5Y6qH
-	 k/sL8DyK7smX82amPz3WmZr95kW+vQzd/9AOVZUpIwdkLLR+5Kxrs2OE6ky3K5Kb7cZx8Vijg3ED
-	 l51sc4va7yHIjzriLPUr4n7G16i04yA6lsiQM1OkiD9eLXVXt7CEjmjP6+7zdQ69iU++z7dL8YEO
-	 BToeRzVXgWxkW6P6rVOUQtjfZwI7RvLr/aibL0Ew==
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+	by newxmesmtplogicsvrszc13-0.qq.com (NewEsmtp) with SMTP
+	id 5AC34EAD; Tue, 21 Jan 2025 22:22:44 +0800
+X-QQ-mid: xmsmtpt1737469364tujflrsvp
+Message-ID: <tencent_D660CC1BB869156A7C3EBA24B5ACF371BA09@qq.com>
+X-QQ-XMAILINFO: NnYhxYSyuBnLdQCpGilq5Wr//XjqveifxvomagUpoOUWkz2RRV5pes6BkiDUJR
+	 QD23ZHyzuVXj+dqOy4ecLsF3hJFASHfUiO4I2BnW2a+s0IBcXd7IliDdMsaa+t2NWqsoeUvCG06V
+	 iELduoXf50QT76F9FLaD/kAigX/7Jp7GVgyta/OgpenhYvBool7byGqTZEQ8Y6UNaUaeeeN5tcOP
+	 YlCdL1ILcG9DpZqmwkcy6kTc/PMpPYS8AXRkv/ysg5oIkz4nFuOFAbEVXLOBimAnxrKjaG4s/Sro
+	 xGE1J82bw6o60xBenHBQE/v1yDlCTYqHht4/vkE9DwjSmGlYB2JVpAbvQ2Np94ONUrBg+x6yWk7E
+	 Zr99NNwKM6GC7fKlM/NXRNwa0cU0IzJljwzCr6M6IVXIP+mpEOsuuJQIDJPQXwxXe5JyBRbupMVn
+	 qj8qxr7HCW9y07TwoyrQNPvMqKP9hHbo7683y6vVtIhMAHaFgHeBZxgNAvjLxOmEeJqyD+Jt5YOg
+	 fMbqATzIWB7pLut7PlPGZuoeS7qlBPX8b1t5wN3bEcKVb3emBpOH6WA8zCRqNTJ33IDlY7rN5c77
+	 ATrsDxYqQuLhEZ9ItboHlea7QV+Ytd3f3xfkhcocAYtw/bP4a46mujMwMB+6+C7dI8oLozvD/pYA
+	 Q0pHafd2EhTDojmpkshyhJnyZN1SUuHu6h/cdsNP6FClMk7oKEOcJ/5O0ZLzY50RDSt69zh3HmGm
+	 fTRWCX39iDiIsFnK2TzMx7pZ4auoKuA6FOPdmrQz/pwBgLfxs1E5YyDLvqu+pZqUhddowiyqR+KL
+	 C6U9UhnFAKQC8DLYwnMHG2LUxN0dPGTVmp1/FGLCQM2vgOBtY1XcHtBGwFhDVDawjTXIf12kA8Qf
+	 XsMs2xPR3weeeM7ffIDghq8hJgocw5fqnVdSKPsT9P5Pw/bQvrbcIWvxKUVYVVJ/kQVOOgdAtSPG
+	 Mqpocv1q58YK/iHrjaZWVGMbDLWpzF5UC4bxaNMNXX7u35JfOmKl56qSy75DZU7wNi5ZHmkWat91
+	 TZyn+nrt8SJB5LyCRrTtUpzkXtQElzVLAj3zL9OQld4SzvDwCVbeSxGkag1EqlF29WjChrEOobxb
+	 Oc1FDT2IAg4HSXUR3rz0Nw6v6XnQ==
+X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
 From: alvalan9@foxmail.com
 To: stable@vger.kernel.org
 Cc: Wang Liang <wangliang74@huawei.com>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.6.y] net: fix data-races around sk->sk_forward_alloc
-Date: Tue, 21 Jan 2025 22:21:10 +0800
-X-OQ-MSGID: <20250121142110.2605-1-alvalan9@foxmail.com>
+Subject: [PATCH 6.1.y] net: fix data-races around sk->sk_forward_alloc
+Date: Tue, 21 Jan 2025 22:22:43 +0800
+X-OQ-MSGID: <20250121142243.3066-1-alvalan9@foxmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -184,10 +185,10 @@ Link: https://nvd.nist.gov/vuln/detail/CVE-2024-53124
  2 files changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/net/dccp/ipv6.c b/net/dccp/ipv6.c
-index d25e962b18a5..2839ca8053ba 100644
+index d90bb941f2ad..8f5f56b1e5f8 100644
 --- a/net/dccp/ipv6.c
 +++ b/net/dccp/ipv6.c
-@@ -616,7 +616,7 @@ static int dccp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
+@@ -615,7 +615,7 @@ static int dccp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
  	   by tcp. Feel free to propose better solution.
  					       --ANK (980728)
  	 */
@@ -197,10 +198,10 @@ index d25e962b18a5..2839ca8053ba 100644
  
  	if (sk->sk_state == DCCP_OPEN) { /* Fast path */
 diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index 64bdb6d978ee..f285e52b8b85 100644
+index 06b4acbfd314..0ccaa78f6ff3 100644
 --- a/net/ipv6/tcp_ipv6.c
 +++ b/net/ipv6/tcp_ipv6.c
-@@ -1456,7 +1456,7 @@ int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
+@@ -1463,7 +1463,7 @@ int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
  	   by tcp. Feel free to propose better solution.
  					       --ANK (980728)
  	 */
@@ -209,7 +210,7 @@ index 64bdb6d978ee..f285e52b8b85 100644
  		opt_skb = skb_clone_and_charge_r(skb, sk);
  
  	reason = SKB_DROP_REASON_NOT_SPECIFIED;
-@@ -1495,8 +1495,6 @@ int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
+@@ -1502,8 +1502,6 @@ int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
  		if (nsk != sk) {
  			if (tcp_child_process(sk, nsk, skb))
  				goto reset;
