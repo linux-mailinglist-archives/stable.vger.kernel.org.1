@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-109673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD293A18358
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0D36A18451
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:05:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7035A188C232
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DBC3188C64E
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:04:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638F01F5603;
-	Tue, 21 Jan 2025 17:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECDB21F5404;
+	Tue, 21 Jan 2025 18:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGmwdNoE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AA2m7x+x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC4A1F55E3;
-	Tue, 21 Jan 2025 17:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9EED1F0E36;
+	Tue, 21 Jan 2025 18:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482105; cv=none; b=unl+hP78ZgezqNNiNaiy+hPSid6H+RHrFutcgruOi+tcuSfudToIPkXASaWLHQj6KxiU2sncpCukcB//fOoydLnCNW4nMp3Tleu37mCTzIFeHWdEd7oEm9AQUR3wJqqe0ifVY3GXO+u6Xg0scFQ1bAJyiDnMJgynx7NVrssAHqM=
+	t=1737482659; cv=none; b=a0kf9b3fXUOtszJBwJvbeRZReLuN2c9p0HpCZuC4NV7geYDytjxYIGEBrA+XNqVUiUkpDo0MpGVujmuxHWjc7c2HDLtdv5WLf9FQ1L75tyc8mB1BIOeldhfkWCZz8vDwRwVoyFe2JKAk/Ijrwu3a02e8GBFkh9zGpI6f5GGCCQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482105; c=relaxed/simple;
-	bh=Gf8/PfrpdDtwhyMK0PTWq7pTdRb8llqqaTJ1WE/gKIU=;
+	s=arc-20240116; t=1737482659; c=relaxed/simple;
+	bh=b9v1UpAu/YDMKaGTWKBg74vfWBJle+dQ9soawflD/c4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eQx5jeOkSbvvHjinHaZ7MVaJv5yFQ7q0OzkXrjviYZPnPZW8XGe+MtW9W18VzSzGqVBtJ7i6y6wlk9LlK8QZ0yPC+Rg4zqCRDVrXQidmxiN+sHHT/Jfcbp3jviD6PfPsFhhyDE3hNPOY9DOvqTHoUXivtHTr4rwme0VbYcvdJuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGmwdNoE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C0B5C4CEDF;
-	Tue, 21 Jan 2025 17:55:04 +0000 (UTC)
+	 MIME-Version; b=od51LLNEMlhVWN9IDj23oQ7ftQWOuTuaj8EYR1qld9yCdISsLijU23FXk6EFMLQHl71SHwPz+XlBh2geipExsjopfnkhjeUAg1Y512CkSPZlgB+m4YNboInACx+SKMZfELY4yhctHDbnUTSEQwI8qXvmcZXu69LmfUxHYQ5WKsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AA2m7x+x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4A7C4CEDF;
+	Tue, 21 Jan 2025 18:04:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482104;
-	bh=Gf8/PfrpdDtwhyMK0PTWq7pTdRb8llqqaTJ1WE/gKIU=;
+	s=korg; t=1737482659;
+	bh=b9v1UpAu/YDMKaGTWKBg74vfWBJle+dQ9soawflD/c4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BGmwdNoEbkXjJB+ngNXZPvcF19H6ko17yQ1E/d/ub6av76aRQA1znwnRuv2AeT8Ah
-	 LjBcTJKSW0cJl5ozl80R5MMRZTBAvN7Q+IuBPDZab8w6bkOfpdZMrGQCmLYsAbNSXS
-	 bKqNxOR0Scedqirb/ekVRfjIbl66ZZntSHS44dcY=
+	b=AA2m7x+xRILz0xmRJ6GuZaigrA31V0urcldm1DeY/f/4i0b5+d+dabjIMGE2dOn5E
+	 W73ngJTdWxvCEZ06WSHW+8trBv/frVdOWqhJB89/2EUGFysv9u2GA5LyfsWKhV/45n
+	 dEk7g+ZzKxoYom/zwnpymh3eDCW1FO57UYIEsqmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Artem Chernyshev <artem.chernyshev@red-soft.ru>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 36/72] nvmet: propagate npwg topology
-Date: Tue, 21 Jan 2025 18:52:02 +0100
-Message-ID: <20250121174524.814808803@linuxfoundation.org>
+Subject: [PATCH 6.1 04/64] pktgen: Avoid out-of-bounds access in get_imix_entries
+Date: Tue, 21 Jan 2025 18:52:03 +0100
+Message-ID: <20250121174521.737846150@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
+References: <20250121174521.568417761@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luis Chamberlain <mcgrof@kernel.org>
+From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
 
-[ Upstream commit b579d6fdc3a9149bb4d2b3133cc0767130ed13e6 ]
+[ Upstream commit 76201b5979768500bca362871db66d77cb4c225e ]
 
-Ensure we propagate npwg to the target as well instead
-of assuming its the same logical blocks per physical block.
+Passing a sufficient amount of imix entries leads to invalid access to the
+pkt_dev->imix_entries array because of the incorrect boundary check.
 
-This ensures devices with large IUs information properly
-propagated on the target.
+UBSAN: array-index-out-of-bounds in net/core/pktgen.c:874:24
+index 20 is out of range for type 'imix_pkt [20]'
+CPU: 2 PID: 1210 Comm: bash Not tainted 6.10.0-rc1 #121
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+Call Trace:
+<TASK>
+dump_stack_lvl lib/dump_stack.c:117
+__ubsan_handle_out_of_bounds lib/ubsan.c:429
+get_imix_entries net/core/pktgen.c:874
+pktgen_if_write net/core/pktgen.c:1063
+pde_write fs/proc/inode.c:334
+proc_reg_write fs/proc/inode.c:346
+vfs_write fs/read_write.c:593
+ksys_write fs/read_write.c:644
+do_syscall_64 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe arch/x86/entry/entry_64.S:130
 
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 52a62f8603f9 ("pktgen: Parse internet mix (imix) input")
+Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+[ fp: allow to fill the array completely; minor changelog cleanup ]
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/io-cmd-bdev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/pktgen.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvme/target/io-cmd-bdev.c b/drivers/nvme/target/io-cmd-bdev.c
-index 468833675cc94..c0b342cc93db3 100644
---- a/drivers/nvme/target/io-cmd-bdev.c
-+++ b/drivers/nvme/target/io-cmd-bdev.c
-@@ -36,7 +36,7 @@ void nvmet_bdev_set_limits(struct block_device *bdev, struct nvme_id_ns *id)
- 	 */
- 	id->nsfeat |= 1 << 4;
- 	/* NPWG = Namespace Preferred Write Granularity. 0's based */
--	id->npwg = lpp0b;
-+	id->npwg = to0based(bdev_io_min(bdev) / bdev_logical_block_size(bdev));
- 	/* NPWA = Namespace Preferred Write Alignment. 0's based */
- 	id->npwa = id->npwg;
- 	/* NPDG = Namespace Preferred Deallocate Granularity. 0's based */
+diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+index 471d4effa8b49..a2fb951996b85 100644
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -850,6 +850,9 @@ static ssize_t get_imix_entries(const char __user *buffer,
+ 		unsigned long weight;
+ 		unsigned long size;
+ 
++		if (pkt_dev->n_imix_entries >= MAX_IMIX_ENTRIES)
++			return -E2BIG;
++
+ 		len = num_arg(&buffer[i], max_digits, &size);
+ 		if (len < 0)
+ 			return len;
+@@ -879,9 +882,6 @@ static ssize_t get_imix_entries(const char __user *buffer,
+ 
+ 		i++;
+ 		pkt_dev->n_imix_entries++;
+-
+-		if (pkt_dev->n_imix_entries > MAX_IMIX_ENTRIES)
+-			return -E2BIG;
+ 	} while (c == ' ');
+ 
+ 	return i;
 -- 
 2.39.5
 
