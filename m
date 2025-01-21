@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-109785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA1ACA183E4
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1D0A18454
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:05:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85D4C3AC118
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D49ED188C6C9
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:04:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444521F427B;
-	Tue, 21 Jan 2025 18:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A501F472D;
+	Tue, 21 Jan 2025 18:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWTYhk21"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7SrRKxL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3DDF1F4283;
-	Tue, 21 Jan 2025 18:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28621F0E36;
+	Tue, 21 Jan 2025 18:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482433; cv=none; b=mjkv09EjHy4gAQHk7A+0Ra/sJSLkou1nJ+vPqBrR6JBS5pEw65vuXGsSHRfMTsjmJo+cZwm9vphWQpvPFmw1VRFc3vtvSkJCxfCkAr4HSpKUYobdkzWUjsJdZxG1w01nW3TyzaLncW3A6y4x6UBEROZzper1TqejnuKr2OhvO+M=
+	t=1737482662; cv=none; b=IOw4u9n6y117GbaNOsMMRte8xejFnRqiomGE9eqald/k7s7Kt4lZ9luUTx94/96g0rut9u9qWTv02uN36R49h7cS4cYPy+dNN1Gx08c4D9zy2e/5SR511ExFlnXWsFz6tp4abVZm3Z470ovvNYp/j+uFGTBUpXxqDPTpGlujlos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482433; c=relaxed/simple;
-	bh=SJgD87Ed1Kwf+CQjonBgC9iGyNZU9/muRxeyRAZWw9I=;
+	s=arc-20240116; t=1737482662; c=relaxed/simple;
+	bh=oG7DkdfnBrFPyeuoD2ycTSqsyPV2hjGsyGoHd/9kHTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d8yYkvRpgt7fzIyarIjSLcQ9vwCB2X5SXKHpR+Si2N1sBsvSCmBx/U1b2sgRHbhGfm15RAgk3UupYCaPEtJZk1R0fvkpoINR+sF+oWWSIK/wXgp7OppLWGxLNeMgH+A17IEn66Rqc+IJJBI9riKJiA3z6LxhBC8oIfYrykSSxo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWTYhk21; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C3A7C4CEDF;
-	Tue, 21 Jan 2025 18:00:30 +0000 (UTC)
+	 MIME-Version; b=UlB5Lg/Hy9SqaS3uN6yjnYG5GQkNN9sc6o60ZAOKg9lVcyoNWpHodZGULJkOEWcGgZslJM3vrf+wwflXPtMKAMJRJrLUbwf8ckzHiK/9k6nkpAkTJ/VcBh6dmBXNLO+LAt8PFjHGZTsjE4ktUCABmlnpiIOmNd2qZW1Gfihu6dM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7SrRKxL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB15C4CEDF;
+	Tue, 21 Jan 2025 18:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482431;
-	bh=SJgD87Ed1Kwf+CQjonBgC9iGyNZU9/muRxeyRAZWw9I=;
+	s=korg; t=1737482662;
+	bh=oG7DkdfnBrFPyeuoD2ycTSqsyPV2hjGsyGoHd/9kHTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lWTYhk219nWkahRnriHSe9ufVDVhwpAUk4f9UqXyBLkHzw82yq9F5D+k8mwwMNqjd
-	 DIXpDoEv1Al3hGupjUy1FGHDkiXJ5tbUzRKgbIxPIsBrCZKeUSWxT3mIC4kYVOtnkj
-	 sKvlrTHSvA6p/0pbAc8oznMyY6GToy+W/d0IyvYo=
+	b=P7SrRKxLDOzkUOou6/clQTEx9qOOBui5gJMHGO8SocC4mghtTF0sfRQvv/V5jTK9S
+	 iEubOCqPuXM0k9g4oOoQ773pgvOgAJxoovpqpDs5XAXIuNdCTC1jXWKjgdOBQP9GdI
+	 bj7pnih6u7aavcKmKPYlVvcWzYLF1vMk5V49N6Eg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 075/122] ALSA: hda/realtek: Add support for Ayaneo System using CS35L41 HDA
-Date: Tue, 21 Jan 2025 18:52:03 +0100
-Message-ID: <20250121174535.883319430@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Antoine Tenart <atenart@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 05/64] net: add exit_batch_rtnl() method
+Date: Tue, 21 Jan 2025 18:52:04 +0100
+Message-ID: <20250121174521.774480523@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
+References: <20250121174521.568417761@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit de5afaddd5a7af6b9c48900741b410ca03e453ae upstream.
+[ Upstream commit fd4f101edbd9f99567ab2adb1f2169579ede7c13 ]
 
-Add support for Ayaneo Portable Game System.
+Many (struct pernet_operations)->exit_batch() methods have
+to acquire rtnl.
 
-System use 2 CS35L41 Amps with HDA, using Internal boost, with I2C
+In presence of rtnl mutex pressure, this makes cleanup_net()
+very slow.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250109165455.645810-1-sbinding@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch adds a new exit_batch_rtnl() method to reduce
+number of rtnl acquisitions from cleanup_net().
+
+exit_batch_rtnl() handlers are called while rtnl is locked,
+and devices to be killed can be queued in a list provided
+as their second argument.
+
+A single unregister_netdevice_many() is called right
+before rtnl is released.
+
+exit_batch_rtnl() handlers are called before ->exit() and
+->exit_batch() handlers.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Antoine Tenart <atenart@kernel.org>
+Link: https://lore.kernel.org/r/20240206144313.2050392-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 46841c7053e6 ("gtp: Use for_each_netdev_rcu() in gtp_genl_dump_pdp().")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/net/net_namespace.h |  3 +++
+ net/core/net_namespace.c    | 31 ++++++++++++++++++++++++++++++-
+ 2 files changed, 33 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10979,6 +10979,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x1f66, 0x0105, "Ayaneo Portable Game Player", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
- 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
+diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
+index 7ca4b7af57ca6..17c7a88418345 100644
+--- a/include/net/net_namespace.h
++++ b/include/net/net_namespace.h
+@@ -426,6 +426,9 @@ struct pernet_operations {
+ 	void (*pre_exit)(struct net *net);
+ 	void (*exit)(struct net *net);
+ 	void (*exit_batch)(struct list_head *net_exit_list);
++	/* Following method is called with RTNL held. */
++	void (*exit_batch_rtnl)(struct list_head *net_exit_list,
++				struct list_head *dev_kill_list);
+ 	unsigned int *id;
+ 	size_t size;
+ };
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index 6c6d2a785c004..abf1e1751d6c8 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -314,8 +314,9 @@ static __net_init int setup_net(struct net *net, struct user_namespace *user_ns)
+ {
+ 	/* Must be called with pernet_ops_rwsem held */
+ 	const struct pernet_operations *ops, *saved_ops;
+-	int error = 0;
+ 	LIST_HEAD(net_exit_list);
++	LIST_HEAD(dev_kill_list);
++	int error = 0;
+ 
+ 	refcount_set(&net->ns.count, 1);
+ 	ref_tracker_dir_init(&net->refcnt_tracker, 128);
+@@ -353,6 +354,15 @@ static __net_init int setup_net(struct net *net, struct user_namespace *user_ns)
+ 
+ 	synchronize_rcu();
+ 
++	ops = saved_ops;
++	rtnl_lock();
++	list_for_each_entry_continue_reverse(ops, &pernet_list, list) {
++		if (ops->exit_batch_rtnl)
++			ops->exit_batch_rtnl(&net_exit_list, &dev_kill_list);
++	}
++	unregister_netdevice_many(&dev_kill_list);
++	rtnl_unlock();
++
+ 	ops = saved_ops;
+ 	list_for_each_entry_continue_reverse(ops, &pernet_list, list)
+ 		ops_exit_list(ops, &net_exit_list);
+@@ -576,6 +586,7 @@ static void cleanup_net(struct work_struct *work)
+ 	struct net *net, *tmp, *last;
+ 	struct llist_node *net_kill_list;
+ 	LIST_HEAD(net_exit_list);
++	LIST_HEAD(dev_kill_list);
+ 
+ 	/* Atomically snapshot the list of namespaces to cleanup */
+ 	net_kill_list = llist_del_all(&cleanup_list);
+@@ -616,6 +627,14 @@ static void cleanup_net(struct work_struct *work)
+ 	 */
+ 	synchronize_rcu();
+ 
++	rtnl_lock();
++	list_for_each_entry_reverse(ops, &pernet_list, list) {
++		if (ops->exit_batch_rtnl)
++			ops->exit_batch_rtnl(&net_exit_list, &dev_kill_list);
++	}
++	unregister_netdevice_many(&dev_kill_list);
++	rtnl_unlock();
++
+ 	/* Run all of the network namespace exit methods */
+ 	list_for_each_entry_reverse(ops, &pernet_list, list)
+ 		ops_exit_list(ops, &net_exit_list);
+@@ -1159,7 +1178,17 @@ static void free_exit_list(struct pernet_operations *ops, struct list_head *net_
+ {
+ 	ops_pre_exit_list(ops, net_exit_list);
+ 	synchronize_rcu();
++
++	if (ops->exit_batch_rtnl) {
++		LIST_HEAD(dev_kill_list);
++
++		rtnl_lock();
++		ops->exit_batch_rtnl(net_exit_list, &dev_kill_list);
++		unregister_netdevice_many(&dev_kill_list);
++		rtnl_unlock();
++	}
+ 	ops_exit_list(ops, net_exit_list);
++
+ 	ops_free_list(ops, net_exit_list);
+ }
+ 
+-- 
+2.39.5
+
 
 
 
