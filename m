@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-109780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA0E3A183E0
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DEB4A183BF
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:00:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD099188C3ED
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13B92188CAF6
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07061F55F7;
-	Tue, 21 Jan 2025 18:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442C61F76D2;
+	Tue, 21 Jan 2025 17:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X58nOzJE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLOX18ef"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EDA11F0E44;
-	Tue, 21 Jan 2025 18:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0901F7089;
+	Tue, 21 Jan 2025 17:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482418; cv=none; b=b+IP82WiDpJ1BIh9ZsD2Ot0jVCwinEcQa5wy0Bb+GZcjhDtKv9fTtfK1AAH2SUs1jWCa3Co4KTUP+cubPg5B6cxxHhK0ediOidbyq3xqr976Od3vLuCwEISKmMhAs7WhomR8dygL04vZdtHuEJ0CX2QAnFe8/7kieUdlxP1Mi3Q=
+	t=1737482330; cv=none; b=HJktsY6ukqyJxFyjTaHhV0QKZoB7ijWNgXTFUuLDt6A60lZJzbrvihLxmo7vSMH5XeLQTcDQyAbSGqNm6hiljcVoQavi7yfGi4+sdXy5zomcbvF4QzYME4Fvih0G5HqbhR4f1XLJQ6GrKbznTHz0xruUwAdoGbYvss8+EUtgLPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482418; c=relaxed/simple;
-	bh=Xw5khCM+XjYe+IG94e2Q9gPWVC4hCOJot0xOCsN1ZMI=;
+	s=arc-20240116; t=1737482330; c=relaxed/simple;
+	bh=tqWNI3YGsPp7axxVsS5R2aIA1j6yTTl9KJSbVom3uJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a3c11Ii+IGpVgmcbiQTiJSQKO7te34p1kSWpebdnnmOnvGkTzNkkBhCBV90LanKOmpcXm5rcJNKxAKreM1eNpmIn3XyR4Jg/8/eJuMXzB8QA2PBOSuV86lpp2wUcQ1gCw9qqSa9EJ+cIbUSVUpjxLnrDvYWpYoINgnC/iQ+Wh80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X58nOzJE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B371C4CEE3;
-	Tue, 21 Jan 2025 18:00:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kY3wbAgl3N2WaVW/kiK7ATqWry9UAqbw5A4FH1hYclBIfv36CnkhXlxYsJxhX/2OQSm8HW1FgQR+uaM8rYxwG49kE16ush4A4Aeq/caRE9IeVl9ivMf+ELygKa516vf9/KIi9LLXQrQ2nctNA/FZJKPuNRrRco0w32kibavYyPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLOX18ef; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CEBCC4CEE0;
+	Tue, 21 Jan 2025 17:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482417;
-	bh=Xw5khCM+XjYe+IG94e2Q9gPWVC4hCOJot0xOCsN1ZMI=;
+	s=korg; t=1737482329;
+	bh=tqWNI3YGsPp7axxVsS5R2aIA1j6yTTl9KJSbVom3uJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X58nOzJEdSI4RcChKK5Tyeiqsos235383REyO4dIEyS2R6pxJLwVqVHtuIjvqahO3
-	 +IACOKlz4Uhqp22K3K9obEHl/btt+Azg4RNsbUO+G4k8buuBzzPDaBkmWKqtW7QpzW
-	 1yGbS7U2vSm5cueorsLzUE69QellEJ4PV+0x+LM4=
+	b=bLOX18efM4AlHSHAJXGSVoVfbkHCc1rJJZgFCniV1oLNEmzPj1fRmIzNDO4yQGTRt
+	 Cp2FBPJ6bXB/b/jt89PGm41lP/KQ9GbJUMOoj6uY4vzQWg4KwxKv849jC+ugPXhbYf
+	 /looroemNV88PJn/jrgLSD1HTxGpJ1THruriJNgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 039/122] i2c: core: fix reference leak in i2c_register_adapter()
-Date: Tue, 21 Jan 2025 18:51:27 +0100
-Message-ID: <20250121174534.491586824@linuxfoundation.org>
+Subject: [PATCH 6.12 040/122] platform/x86: dell-uart-backlight: fix serdev race
+Date: Tue, 21 Jan 2025 18:51:28 +0100
+Message-ID: <20250121174534.528129518@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
 References: <20250121174532.991109301@linuxfoundation.org>
@@ -60,43 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 3f8c4f5e9a57868fa107016c81165686d23325f2 ]
+[ Upstream commit 1b2128aa2d45ab20b22548dcf4b48906298ca7fd ]
 
-The reference count of the device incremented in device_initialize() is
-not decremented when device_add() fails. Add a put_device() call before
-returning from the function.
+The dell_uart_bl_serdev_probe() function calls devm_serdev_device_open()
+before setting the client ops via serdev_device_set_client_ops(). This
+ordering can trigger a NULL pointer dereference in the serdev controller's
+receive_buf handler, as it assumes serdev->ops is valid when
+SERPORT_ACTIVE is set.
 
-This bug was found by an experimental static analysis tool that I am
-developing.
+This is similar to the issue fixed in commit 5e700b384ec1
+("platform/chrome: cros_ec_uart: properly fix race condition") where
+devm_serdev_device_open() was called before fully initializing the
+device.
 
-Fixes: 60f68597024d ("i2c: core: Setup i2c_adapter runtime-pm before calling device_add()")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Fix the race by ensuring client ops are set before enabling the port via
+devm_serdev_device_open().
+
+Note, serdev_device_set_baudrate() and serdev_device_set_flow_control()
+calls should be after the devm_serdev_device_open() call.
+
+Fixes: 484bae9e4d6a ("platform/x86: Add new Dell UART backlight driver")
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20250111180118.2274516-1-chenyuan0y@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-core-base.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/x86/dell/dell-uart-backlight.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index 7c810893bfa33..75d30861ffe21 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -1562,6 +1562,7 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
- 	res = device_add(&adap->dev);
- 	if (res) {
- 		pr_err("adapter '%s': can't register device (%d)\n", adap->name, res);
-+		put_device(&adap->dev);
- 		goto out_list;
- 	}
+diff --git a/drivers/platform/x86/dell/dell-uart-backlight.c b/drivers/platform/x86/dell/dell-uart-backlight.c
+index 3995f90add456..c45bc332af7a0 100644
+--- a/drivers/platform/x86/dell/dell-uart-backlight.c
++++ b/drivers/platform/x86/dell/dell-uart-backlight.c
+@@ -283,6 +283,9 @@ static int dell_uart_bl_serdev_probe(struct serdev_device *serdev)
+ 	init_waitqueue_head(&dell_bl->wait_queue);
+ 	dell_bl->dev = dev;
  
++	serdev_device_set_drvdata(serdev, dell_bl);
++	serdev_device_set_client_ops(serdev, &dell_uart_bl_serdev_ops);
++
+ 	ret = devm_serdev_device_open(dev, serdev);
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "opening UART device\n");
+@@ -290,8 +293,6 @@ static int dell_uart_bl_serdev_probe(struct serdev_device *serdev)
+ 	/* 9600 bps, no flow control, these are the default but set them to be sure */
+ 	serdev_device_set_baudrate(serdev, 9600);
+ 	serdev_device_set_flow_control(serdev, false);
+-	serdev_device_set_drvdata(serdev, dell_bl);
+-	serdev_device_set_client_ops(serdev, &dell_uart_bl_serdev_ops);
+ 
+ 	get_version[0] = DELL_SOF(GET_CMD_LEN);
+ 	get_version[1] = CMD_GET_VERSION;
 -- 
 2.39.5
 
