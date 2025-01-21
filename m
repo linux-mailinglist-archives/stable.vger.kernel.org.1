@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-109686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E5C8A18366
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B597A183D1
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:00:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F8B03AA66B
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60907162B48
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B43501F63FD;
-	Tue, 21 Jan 2025 17:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357281F63FD;
+	Tue, 21 Jan 2025 17:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Itf+JCPt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vFNxWpZ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70CBC1F63CF;
-	Tue, 21 Jan 2025 17:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D091F238E;
+	Tue, 21 Jan 2025 17:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482143; cv=none; b=ZRJGvBFd2ov5w05Ide/mEYFJNsU757qtzig732WEvZqTAPmVffp9ih9Uh7xumsctoOtlXgeDIm9lVw+rlp/HNoKshCHW0HL8VGjliuaOV58Xsp4ky9iI4ioRsd0Kn467cwpD1IgBv2o/rzBikYxG+oXYHGW66DP6Cs0wDXyiVUw=
+	t=1737482394; cv=none; b=NO144yna4j0tXPm0kHqCB5H9P8yVjzFY1FUcsHCGI3Howxsi/woMyMo/4UrF91utHmZjencrE0kysLJN3J046XHGXRILfa73W81/DOumOTkSKRqhF47DQm3WpYAShKWqDlOSFum2+KmwMhdJvBhmf7kpYTzKT30smn/yCRkyC2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482143; c=relaxed/simple;
-	bh=Alh9ABgvDAHIs4G8BAVSB9uLrPFHog/bM7wjhlv0Lr0=;
+	s=arc-20240116; t=1737482394; c=relaxed/simple;
+	bh=FEdcJLdOJ/xloKXYQnum3mihLhYuKofuxWT8LJB9A0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YWmr6WXPRGhJj1PzlzK7mW/KcifM3x5EomPDGjTvzEGr3MDloRu/gjmjQxr37HvhaNTRQh6QTCjCuNMnuMhBzrtqd74fwgW2H15ibnJr+w9s1i8lL42JhQ6ZqYZ4RH0Ub5eSofB+C0s3i6j+M66Kkuyhjlsbpy8uhXPVX6nVQRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Itf+JCPt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7B8C4CEE0;
-	Tue, 21 Jan 2025 17:55:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Dw7wNLCnEIVr3/KEtXT59S8L6E028rXCJp1zwecA5NYbqD67SrHr/qqLJ/C+zCkHhokLpuJG6yoFMSFxL3Fe6jx1MAGhg6xulV4FIw2klJxqGd9T2a0DJymwVG3I3N7YEU9roG0LOV6vBOEZH2VZAR0tSA9A8ArNY+IR9ewI5jE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vFNxWpZ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C832C4CEDF;
+	Tue, 21 Jan 2025 17:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482143;
-	bh=Alh9ABgvDAHIs4G8BAVSB9uLrPFHog/bM7wjhlv0Lr0=;
+	s=korg; t=1737482393;
+	bh=FEdcJLdOJ/xloKXYQnum3mihLhYuKofuxWT8LJB9A0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Itf+JCPtC2C+42FWuV4wxTAVOE0hEZbstkfrciHlIBjm26dbGGEpE850Cz6O92wNV
-	 cT4DnusI4twsATUop9EFRF5h42LOYdBL8WTaYGP2l3Eib2+F66HLl7oCxcewqI/ak0
-	 Wqs/OHCjLfbegvn2GyytBL/sI5ERbD5bfzh2ttDE=
+	b=vFNxWpZ/7bAkMjy8M0MTHtHmPA0OFpGKBkjUOqA45F9nxVYaNtlYJiZB/rDH3SShE
+	 utUOcO5tRjm4uLq5wzI+yHwPyDAPKDUI/TJ1IYq01Hwkepf9yj2+wy2wi4X7IzfnTa
+	 +gtG0uip36yK8XV7bGk3zPxkNo+W5hV4mCpBHTuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 21/72] Revert "mtd: spi-nor: core: replace dummy buswidth from addr to data"
-Date: Tue, 21 Jan 2025 18:51:47 +0100
-Message-ID: <20250121174524.243421410@linuxfoundation.org>
+Subject: [PATCH 6.12 060/122] platform/x86/intel: power-domains: Add Clearwater Forest support
+Date: Tue, 21 Jan 2025 18:51:48 +0100
+Message-ID: <20250121174535.307774247@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pratyush Yadav <pratyush@kernel.org>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit d15638bf76ad47874ecb5dc386f0945fc0b2a875 ]
+[ Upstream commit bee9a0838fd223823e5a6d85c055ab1691dc738e ]
 
-This reverts commit 98d1fb94ce75f39febd456d6d3cbbe58b6678795.
+Add Clearwater Forest support (INTEL_ATOM_DARKMONT_X) to tpmi_cpu_ids
+to support domaid id mappings.
 
-The commit uses data nbits instead of addr nbits for dummy phase. This
-causes a regression for all boards where spi-tx-bus-width is smaller
-than spi-rx-bus-width. It is a common pattern for boards to have
-spi-tx-bus-width == 1 and spi-rx-bus-width > 1. The regression causes
-all reads with a dummy phase to become unavailable for such boards,
-leading to a usually slower 0-dummy-cycle read being selected.
-
-Most controllers' supports_op hooks call spi_mem_default_supports_op().
-In spi_mem_default_supports_op(), spi_mem_check_buswidth() is called to
-check if the buswidths for the op can actually be supported by the
-board's wiring. This wiring information comes from (among other things)
-the spi-{tx,rx}-bus-width DT properties. Based on these properties,
-SPI_TX_* or SPI_RX_* flags are set by of_spi_parse_dt().
-spi_mem_check_buswidth() then uses these flags to make the decision
-whether an op can be supported by the board's wiring (in a way,
-indirectly checking against spi-{rx,tx}-bus-width).
-
-Now the tricky bit here is that spi_mem_check_buswidth() does:
-
-	if (op->dummy.nbytes &&
-	    spi_check_buswidth_req(mem, op->dummy.buswidth, true))
-		return false;
-
-The true argument to spi_check_buswidth_req() means the op is treated as
-a TX op. For a board that has say 1-bit TX and 4-bit RX, a 4-bit dummy
-TX is considered as unsupported, and the op gets rejected.
-
-The commit being reverted uses the data buswidth for dummy buswidth. So
-for reads, the RX buswidth gets used for the dummy phase, uncovering
-this issue. In reality, a dummy phase is neither RX nor TX. As the name
-suggests, these are just dummy cycles that send or receive no data, and
-thus don't really need to have any buswidth at all.
-
-Ideally, dummy phases should not be checked against the board's wiring
-capabilities at all, and should only be sanity-checked for having a sane
-buswidth value. Since we are now at rc7 and such a change might
-introduce many unexpected bugs, revert the commit for now. It can be
-sent out later along with the spi_mem_check_buswidth() fix.
-
-Fixes: 98d1fb94ce75 ("mtd: spi-nor: core: replace dummy buswidth from addr to data")
-Reported-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Closes: https://lore.kernel.org/linux-mtd/3342163.44csPzL39Z@steina-w/
-Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://lore.kernel.org/r/20250103155255.1488139-1-srinivas.pandruvada@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/intel/tpmi_power_domains.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
-index 8d75a66775cb1..1b0c6770c14e4 100644
---- a/drivers/mtd/spi-nor/core.c
-+++ b/drivers/mtd/spi-nor/core.c
-@@ -89,7 +89,7 @@ void spi_nor_spimem_setup_op(const struct spi_nor *nor,
- 		op->addr.buswidth = spi_nor_get_protocol_addr_nbits(proto);
- 
- 	if (op->dummy.nbytes)
--		op->dummy.buswidth = spi_nor_get_protocol_data_nbits(proto);
-+		op->dummy.buswidth = spi_nor_get_protocol_addr_nbits(proto);
- 
- 	if (op->data.nbytes)
- 		op->data.buswidth = spi_nor_get_protocol_data_nbits(proto);
+diff --git a/drivers/platform/x86/intel/tpmi_power_domains.c b/drivers/platform/x86/intel/tpmi_power_domains.c
+index 0609a8320f7ec..12fb0943b5dc3 100644
+--- a/drivers/platform/x86/intel/tpmi_power_domains.c
++++ b/drivers/platform/x86/intel/tpmi_power_domains.c
+@@ -81,6 +81,7 @@ static const struct x86_cpu_id tpmi_cpu_ids[] = {
+ 	X86_MATCH_VFM(INTEL_GRANITERAPIDS_X,	NULL),
+ 	X86_MATCH_VFM(INTEL_ATOM_CRESTMONT_X,	NULL),
+ 	X86_MATCH_VFM(INTEL_ATOM_CRESTMONT,	NULL),
++	X86_MATCH_VFM(INTEL_ATOM_DARKMONT_X,	NULL),
+ 	X86_MATCH_VFM(INTEL_GRANITERAPIDS_D,	NULL),
+ 	X86_MATCH_VFM(INTEL_PANTHERCOVE_X,	NULL),
+ 	{}
 -- 
 2.39.5
 
