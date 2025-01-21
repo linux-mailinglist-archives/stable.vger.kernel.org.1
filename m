@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-109669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F28A18350
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97502A184AF
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:10:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A67516990A
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA1B77A12ED
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D19D1F55E4;
-	Tue, 21 Jan 2025 17:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 890C91F5404;
+	Tue, 21 Jan 2025 18:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0Sdhl1r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKp3B3H5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B85B1E9B38;
-	Tue, 21 Jan 2025 17:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4348A1F540C;
+	Tue, 21 Jan 2025 18:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482093; cv=none; b=CWa705+F5nxDkXDKBZa0vFmgUfvzJjqSWFQ4qnRmlakGeFKExGEV8K6tCetrv8lDyaQRH/YbUIRlxxxAGIa2qAFXJNc+t1SypuTTWFUh8d5dnJjY2hzK0X/c2CIz872qDvto78oTn100MC7ZUtSpX8Mzz6iroAW+R2l1uRuWCSI=
+	t=1737482898; cv=none; b=Xtq88LCYTGbMVu4XjrbZJgKoRrsNW4h8dhyH42kzrM0b5kSivPfUtBsDx22jVf+Z42uc6wNFViejvrJdi2TUCINp1JNC7wzRYeRc7AOQO8LCUrCJ3sUFCEuwbnOIGqWogIFk1yTUMxpPEqWnEB8KriFOJ5AuBipJPc4mi2NEfPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482093; c=relaxed/simple;
-	bh=rU6KI3MRIRosZmIm0s/p+uUsIlyBnmwYl7ExBbDrZmA=;
+	s=arc-20240116; t=1737482898; c=relaxed/simple;
+	bh=Oxi9uy4X8QG1gOxgWW46xt8HFSV+b6GWglzDU14QjPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dUyPv0QsX/Sgfk6XQIsvVgULOFiZrJmirn4+Q8BE+/lE+/XTwxF26YiGFdKq3HlnJ6RpMWKyt03jHZ6tMLtZUPyXvWEMlLdhYd9ONHhrX8Y5H8CicPek5G8dNo7iW/Ajv9q2fmL7ofiw8h1lKloqIa18CVNj+lvi+My4YFJ8pu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0Sdhl1r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8A0C4CEE0;
-	Tue, 21 Jan 2025 17:54:52 +0000 (UTC)
+	 MIME-Version; b=Ct3AXi7iNOlqAdYmfJi4VXwsDV8UW/j1IYQz3Trlcm9rGQcN7qjwhaLkHxNv47UvPBhEQPgM0wwZQjmdvioSQrFSx0zjLKWkPJu2VJwohtIgygNcMy8joJBO4tN0VeW3/UApPT4B3xJkVZ6CriHm8SV4h4LDTwwklMfCqjfxxg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKp3B3H5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC639C4CEDF;
+	Tue, 21 Jan 2025 18:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482093;
-	bh=rU6KI3MRIRosZmIm0s/p+uUsIlyBnmwYl7ExBbDrZmA=;
+	s=korg; t=1737482898;
+	bh=Oxi9uy4X8QG1gOxgWW46xt8HFSV+b6GWglzDU14QjPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L0Sdhl1rE5nlFzypueqOSvu8dIXS+YsImM3A/TpBclglYimYBJZnQp4tjuLlPdF48
-	 hjZ98iVFzs4t8fksTeAaw6eUJS8cRgdLJzgB9vmg4b/iTwU2zi2keorsZf1UilFilS
-	 0DfYZ8vJtCnMnfZydmTzQt4F76A5sMST0ynykoPw=
+	b=WKp3B3H53gkHMd1JFLcYuD+/mB9tarDjBg88D0ZA5gIGuF+0SbXiVy6sE7Hr+1aNS
+	 xBskAsquoi/AoC06ZbA1x4swLnzma/zToUfoUP5XZOwpoDLK5/BpkKB/21E4sp4/vU
+	 0ya3QK8Kau5Tf2FloFOUO8xf4F6E/n+fkLnb6i44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 32/72] ACPI: resource: acpi_dev_irq_override(): Check DMI match last
-Date: Tue, 21 Jan 2025 18:51:58 +0100
-Message-ID: <20250121174524.661571924@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Lianqin Hu <hulianqin@vivo.com>
+Subject: [PATCH 5.15 047/127] usb: gadget: u_serial: Disable ep before setting port to null to fix the crash caused by port being null
+Date: Tue, 21 Jan 2025 18:51:59 +0100
+Message-ID: <20250121174531.487803436@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Lianqin Hu <hulianqin@vivo.com>
 
-[ Upstream commit cd4a7b2e6a2437a5502910c08128ea3bad55a80b ]
+commit 13014969cbf07f18d62ceea40bd8ca8ec9d36cec upstream.
 
-acpi_dev_irq_override() gets called approx. 30 times during boot (15 legacy
-IRQs * 2 override_table entries). Of these 30 calls at max 1 will match
-the non DMI checks done by acpi_dev_irq_override(). The dmi_check_system()
-check is by far the most expensive check done by acpi_dev_irq_override(),
-make this call the last check done by acpi_dev_irq_override() so that it
-will be called at max 1 time instead of 30 times.
+Considering that in some extreme cases, when performing the
+unbinding operation, gserial_disconnect has cleared gser->ioport,
+which triggers gadget reconfiguration, and then calls gs_read_complete,
+resulting in access to a null pointer. Therefore, ep is disabled before
+gserial_disconnect sets port to null to prevent this from happening.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20241228165253.42584-1-hdegoede@redhat.com
-[ rjw: Subject edit ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Call trace:
+ gs_read_complete+0x58/0x240
+ usb_gadget_giveback_request+0x40/0x160
+ dwc3_remove_requests+0x170/0x484
+ dwc3_ep0_out_start+0xb0/0x1d4
+ __dwc3_gadget_start+0x25c/0x720
+ kretprobe_trampoline.cfi_jt+0x0/0x8
+ kretprobe_trampoline.cfi_jt+0x0/0x8
+ udc_bind_to_driver+0x1d8/0x300
+ usb_gadget_probe_driver+0xa8/0x1dc
+ gadget_dev_desc_UDC_store+0x13c/0x188
+ configfs_write_iter+0x160/0x1f4
+ vfs_write+0x2d0/0x40c
+ ksys_write+0x7c/0xf0
+ __arm64_sys_write+0x20/0x30
+ invoke_syscall+0x60/0x150
+ el0_svc_common+0x8c/0xf8
+ do_el0_svc+0x28/0xa0
+ el0_svc+0x24/0x84
+
+Fixes: c1dca562be8a ("usb gadget: split out serial core")
+Cc: stable <stable@kernel.org>
+Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Lianqin Hu <hulianqin@vivo.com>
+Link: https://lore.kernel.org/r/TYUPR06MB621733B5AC690DBDF80A0DCCD2042@TYUPR06MB6217.apcprd06.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/function/u_serial.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index c82b255f82bc4..64d83ff3c0d90 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -680,11 +680,11 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
- 	for (i = 0; i < ARRAY_SIZE(override_table); i++) {
- 		const struct irq_override_cmp *entry = &override_table[i];
+--- a/drivers/usb/gadget/function/u_serial.c
++++ b/drivers/usb/gadget/function/u_serial.c
+@@ -1393,6 +1393,10 @@ void gserial_disconnect(struct gserial *
+ 	/* REVISIT as above: how best to track this? */
+ 	port->port_line_coding = gser->port_line_coding;
  
--		if (dmi_check_system(entry->system) &&
--		    entry->irq == gsi &&
-+		if (entry->irq == gsi &&
- 		    entry->triggering == triggering &&
- 		    entry->polarity == polarity &&
--		    entry->shareable == shareable)
-+		    entry->shareable == shareable &&
-+		    dmi_check_system(entry->system))
- 			return entry->override;
- 	}
++	/* disable endpoints, aborting down any active I/O */
++	usb_ep_disable(gser->out);
++	usb_ep_disable(gser->in);
++
+ 	port->port_usb = NULL;
+ 	gser->ioport = NULL;
+ 	if (port->port.count > 0) {
+@@ -1404,10 +1408,6 @@ void gserial_disconnect(struct gserial *
+ 	spin_unlock(&port->port_lock);
+ 	spin_unlock_irqrestore(&serial_port_lock, flags);
  
--- 
-2.39.5
-
+-	/* disable endpoints, aborting down any active I/O */
+-	usb_ep_disable(gser->out);
+-	usb_ep_disable(gser->in);
+-
+ 	/* finally, free any unused/unusable I/O buffers */
+ 	spin_lock_irqsave(&port->port_lock, flags);
+ 	if (port->port.count == 0)
 
 
 
