@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-109840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A731A1842D
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:04:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C3C7A18383
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB890169C52
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:03:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2DD216543E
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:57:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B871F3FFE;
-	Tue, 21 Jan 2025 18:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 704061F63C9;
+	Tue, 21 Jan 2025 17:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Er6vwevO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDrYwq5J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044F81F4275;
-	Tue, 21 Jan 2025 18:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C008185935;
+	Tue, 21 Jan 2025 17:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482592; cv=none; b=U7dJZxbDds7VGxYNDLwYNNoAkflvt5pXwJv3DUpnhqQtavjaMAgwQp4HyRIKX/uTDzSdMm4hRIaNLG6ADgP7F+1KXdlOb9bnTDIEgtAFgo7y6g/L+C+cXWmgBQd4gRmPqLEClbvznBVqHMtCF9Zwi2XgrhK/itRDvE4zkjBBQu4=
+	t=1737482196; cv=none; b=f+u3yHPR2soHibVZgWGO/7h1zN5wZ5AgMz/YLgp39msByutmnCjP0MZNAn5BuKFELtiMgPIp1EFdFUz7qW/VBQ97rf9CBmmZ5CKbL5p8nDNTM0lhjWfcNB8sKN1FAtkVb7q3qJYmkdeZ+Cw3cE5RXldh0OXMjN8htr1YrXwVgRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482592; c=relaxed/simple;
-	bh=HuAwQqCjBxPjnqafluIV/yDNARuGzgcq3/aEjc5lrQI=;
+	s=arc-20240116; t=1737482196; c=relaxed/simple;
+	bh=UD1Ay8Ucb7h8Fpv36e1qxNby2aCrRlYGEl03fyTNBrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KcwJEuOlLzCGuhji6yb3osQr/PPph7EF1PiC7vdyZR8FW4IbxPuYD01INrpjqSx4LtVINkoL26egEippPD5LpWpJ7Zc0HRx6RblRnwNH7dp/Z7qZalgzQqrxpMAEb5CqMFOhHmSNbnXM9emSdg8wqaaakUiFcdPfT7Pq9Gn2ZTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Er6vwevO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D61C4CEDF;
-	Tue, 21 Jan 2025 18:03:11 +0000 (UTC)
+	 MIME-Version; b=WxbRPEtNMruz59FUP/SUWqK1QgAKm2lI9AtkEInWCLW5GAPbGHfGbQrBRBZcVk/FBIaE5wzziGwXeEaUJWX3VMce1c7Hn7KJ8bahT8HKeeNPJJefhfH2Iu40PZXR2VM0OOpz/t82+oG1bJfyhsdNR126Ov1HGxJEV7zlY4IENZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDrYwq5J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE2AC4CEE0;
+	Tue, 21 Jan 2025 17:56:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482591;
-	bh=HuAwQqCjBxPjnqafluIV/yDNARuGzgcq3/aEjc5lrQI=;
+	s=korg; t=1737482196;
+	bh=UD1Ay8Ucb7h8Fpv36e1qxNby2aCrRlYGEl03fyTNBrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Er6vwevOknHsDPzmTuh7Ot+ABJJ6xMFv/L+RDolE8NjMI76ROGEeusMXCIOv99CbQ
-	 NeX2Rdb4EhXxR6jmsG9zSDWa0lEpO/1qGVCH2fH5QlbBEu1SDABVlZ9IlpYaMwFSl6
-	 GPznY4hRm4otPQn4uL5FVE1A7fTdR745xMPrtrxc=
+	b=RDrYwq5J0bE4YZgZa/GuzNN4BkKnsVqZrtZqSY47gawwrFg+VMS+bOMQG35PWIgev
+	 9cIfDBRhwAZ2JadBPE+2RE7yM2pAq1EIH8+ZQkRMH0Bug+3wqF337/F9nfPXaYfYQY
+	 wulS8y0h3yOAohWb6B6EvdZlLNg/Bi808ftTKwfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yogesh Lal <quic_ylal@quicinc.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.12 104/122] irqchip/gic-v3: Handle CPU_PM_ENTER_FAILED correctly
-Date: Tue, 21 Jan 2025 18:52:32 +0100
-Message-ID: <20250121174537.048718499@linuxfoundation.org>
+	Dmitry Safonov <dima@arista.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 67/72] ovl: support encoding fid from inode with no alias
+Date: Tue, 21 Jan 2025 18:52:33 +0100
+Message-ID: <20250121174526.015766656@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yogesh Lal <quic_ylal@quicinc.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-commit 0d62a49ab55c99e8deb4593b8d9f923de1ab5c18 upstream.
+commit c45beebfde34aa71afbc48b2c54cdda623515037 upstream.
 
-When a CPU attempts to enter low power mode, it disables the redistributor
-and Group 1 interrupts and reinitializes the system registers upon wakeup.
+Dmitry Safonov reported that a WARN_ON() assertion can be trigered by
+userspace when calling inotify_show_fdinfo() for an overlayfs watched
+inode, whose dentry aliases were discarded with drop_caches.
 
-If the transition into low power mode fails, then the CPU_PM framework
-invokes the PM notifier callback with CPU_PM_ENTER_FAILED to allow the
-drivers to undo the state changes.
+The WARN_ON() assertion in inotify_show_fdinfo() was removed, because
+it is possible for encoding file handle to fail for other reason, but
+the impact of failing to encode an overlayfs file handle goes beyond
+this assertion.
 
-The GIC V3 driver ignores CPU_PM_ENTER_FAILED, which leaves the GIC in
-disabled state.
+As shown in the LTP test case mentioned in the link below, failure to
+encode an overlayfs file handle from a non-aliased inode also leads to
+failure to report an fid with FAN_DELETE_SELF fanotify events.
 
-Handle CPU_PM_ENTER_FAILED in the same way as CPU_PM_EXIT to restore normal
-operation.
+As Dmitry notes in his analyzis of the problem, ovl_encode_fh() fails
+if it cannot find an alias for the inode, but this failure can be fixed.
+ovl_encode_fh() seldom uses the alias and in the case of non-decodable
+file handles, as is often the case with fanotify fid info,
+ovl_encode_fh() never needs to use the alias to encode a file handle.
 
-[ tglx: Massage change log, add Fixes tag ]
+Defer finding an alias until it is actually needed so ovl_encode_fh()
+will not fail in the common case of FAN_DELETE_SELF fanotify events.
 
-Fixes: 3708d52fc6bb ("irqchip: gic-v3: Implement CPU PM notifier")
-Signed-off-by: Yogesh Lal <quic_ylal@quicinc.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20241220093907.2747601-1-quic_ylal@quicinc.com
+Fixes: 16aac5ad1fa9 ("ovl: support encoding non-decodable file handles")
+Reported-by: Dmitry Safonov <dima@arista.com>
+Closes: https://lore.kernel.org/linux-fsdevel/CAOQ4uxiie81voLZZi2zXS1BziXZCM24nXqPAxbu8kxXCUWdwOg@mail.gmail.com/
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Link: https://lore.kernel.org/r/20250105162404.357058-3-amir73il@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-gic-v3.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/overlayfs/export.c |   46 +++++++++++++++++++++++++---------------------
+ 1 file changed, 25 insertions(+), 21 deletions(-)
 
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -1522,7 +1522,7 @@ static int gic_retrigger(struct irq_data
- static int gic_cpu_pm_notifier(struct notifier_block *self,
- 			       unsigned long cmd, void *v)
+--- a/fs/overlayfs/export.c
++++ b/fs/overlayfs/export.c
+@@ -181,35 +181,37 @@ static int ovl_connect_layer(struct dent
+  *
+  * Return 0 for upper file handle, > 0 for lower file handle or < 0 on error.
+  */
+-static int ovl_check_encode_origin(struct dentry *dentry)
++static int ovl_check_encode_origin(struct inode *inode)
  {
--	if (cmd == CPU_PM_EXIT) {
-+	if (cmd == CPU_PM_EXIT || cmd == CPU_PM_ENTER_FAILED) {
- 		if (gic_dist_security_disabled())
- 			gic_enable_redist(true);
- 		gic_cpu_sys_reg_enable();
+-	struct ovl_fs *ofs = OVL_FS(dentry->d_sb);
++	struct ovl_fs *ofs = OVL_FS(inode->i_sb);
+ 	bool decodable = ofs->config.nfs_export;
++	struct dentry *dentry;
++	int err;
+ 
+ 	/* No upper layer? */
+ 	if (!ovl_upper_mnt(ofs))
+ 		return 1;
+ 
+ 	/* Lower file handle for non-upper non-decodable */
+-	if (!ovl_dentry_upper(dentry) && !decodable)
++	if (!ovl_inode_upper(inode) && !decodable)
+ 		return 1;
+ 
+ 	/* Upper file handle for pure upper */
+-	if (!ovl_dentry_lower(dentry))
++	if (!ovl_inode_lower(inode))
+ 		return 0;
+ 
+ 	/*
+ 	 * Root is never indexed, so if there's an upper layer, encode upper for
+ 	 * root.
+ 	 */
+-	if (dentry == dentry->d_sb->s_root)
++	if (inode == d_inode(inode->i_sb->s_root))
+ 		return 0;
+ 
+ 	/*
+ 	 * Upper decodable file handle for non-indexed upper.
+ 	 */
+-	if (ovl_dentry_upper(dentry) && decodable &&
+-	    !ovl_test_flag(OVL_INDEX, d_inode(dentry)))
++	if (ovl_inode_upper(inode) && decodable &&
++	    !ovl_test_flag(OVL_INDEX, inode))
+ 		return 0;
+ 
+ 	/*
+@@ -218,17 +220,25 @@ static int ovl_check_encode_origin(struc
+ 	 * ovl_connect_layer() will try to make origin's layer "connected" by
+ 	 * copying up a "connectable" ancestor.
+ 	 */
+-	if (d_is_dir(dentry) && decodable)
+-		return ovl_connect_layer(dentry);
++	if (!decodable || !S_ISDIR(inode->i_mode))
++		return 1;
++
++	dentry = d_find_any_alias(inode);
++	if (!dentry)
++		return -ENOENT;
++
++	err = ovl_connect_layer(dentry);
++	dput(dentry);
++	if (err < 0)
++		return err;
+ 
+ 	/* Lower file handle for indexed and non-upper dir/non-dir */
+ 	return 1;
+ }
+ 
+-static int ovl_dentry_to_fid(struct ovl_fs *ofs, struct dentry *dentry,
++static int ovl_dentry_to_fid(struct ovl_fs *ofs, struct inode *inode,
+ 			     u32 *fid, int buflen)
+ {
+-	struct inode *inode = d_inode(dentry);
+ 	struct ovl_fh *fh = NULL;
+ 	int err, enc_lower;
+ 	int len;
+@@ -237,7 +247,7 @@ static int ovl_dentry_to_fid(struct ovl_
+ 	 * Check if we should encode a lower or upper file handle and maybe
+ 	 * copy up an ancestor to make lower file handle connectable.
+ 	 */
+-	err = enc_lower = ovl_check_encode_origin(dentry);
++	err = enc_lower = ovl_check_encode_origin(inode);
+ 	if (enc_lower < 0)
+ 		goto fail;
+ 
+@@ -257,8 +267,8 @@ out:
+ 	return err;
+ 
+ fail:
+-	pr_warn_ratelimited("failed to encode file handle (%pd2, err=%i)\n",
+-			    dentry, err);
++	pr_warn_ratelimited("failed to encode file handle (ino=%lu, err=%i)\n",
++			    inode->i_ino, err);
+ 	goto out;
+ }
+ 
+@@ -266,19 +276,13 @@ static int ovl_encode_fh(struct inode *i
+ 			 struct inode *parent)
+ {
+ 	struct ovl_fs *ofs = OVL_FS(inode->i_sb);
+-	struct dentry *dentry;
+ 	int bytes, buflen = *max_len << 2;
+ 
+ 	/* TODO: encode connectable file handles */
+ 	if (parent)
+ 		return FILEID_INVALID;
+ 
+-	dentry = d_find_any_alias(inode);
+-	if (!dentry)
+-		return FILEID_INVALID;
+-
+-	bytes = ovl_dentry_to_fid(ofs, dentry, fid, buflen);
+-	dput(dentry);
++	bytes = ovl_dentry_to_fid(ofs, inode, fid, buflen);
+ 	if (bytes <= 0)
+ 		return FILEID_INVALID;
+ 
 
 
 
