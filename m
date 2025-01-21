@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-109920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFD2AA1847F
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:08:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2089AA183B3
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:59:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A247016546E
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:07:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D38E188AF00
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDDE51F5404;
-	Tue, 21 Jan 2025 18:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB5881F75B0;
+	Tue, 21 Jan 2025 17:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OAbJIZXd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kvhlc8zf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8CF1F540C;
-	Tue, 21 Jan 2025 18:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992B01F7572;
+	Tue, 21 Jan 2025 17:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482826; cv=none; b=R5MuTkjsIDAAvyDeZ/CV75FJbrrtbALvv5ivPZxktmSYsF81Uc6tHR8AcIP0QCEBiJW/EYG3P6AwVbMbaOXgEdtQawwHFQVcGuVXnaL4h8geGjueIKe/wwF3tiBfeDUi6d8vEAbI6oO9LqeBQ7e44NAD1sbRoixcTqamLmrFC5Q=
+	t=1737482297; cv=none; b=paIb0A/P/3a6NCmNwxz2z+nM6ksXsEAKvDf6nC4lU1vyi5y0t2OfMtYusyZiAIZ/xPZqaPaPMsiyhVl5FcE1BOW76FoMIfrm97JM1sQofQx5XlOL1BEET6ZGyq6dICVvaIkjjJmyu2HKiQBzglWx1LM9m/pwtLD8MBB0l/VOgck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482826; c=relaxed/simple;
-	bh=469MClTjW5jlMESj3ilpsbtZDZpjCrN19yHoCUpVoNA=;
+	s=arc-20240116; t=1737482297; c=relaxed/simple;
+	bh=4v8lalRaNoeK8Vf1XDD3pXDObHCijLVXdLyL6n9JdXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pjzQQw+wWNkruTLT6zAu5PaEb9AbPIMyJO+gGQnWh+yIvnUCpqKpen8FAzWyoW3JCjIHdv1BfXqk45OHVY0wjsTB6lIsrqFykLEKi2BUQe/yA8i+0qULEiqO7gldZKnSe2Qvn8rGd4ZQbteq4IihKEnmiWK8rF5/eNDMEJbPqJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OAbJIZXd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 032CAC4CEDF;
-	Tue, 21 Jan 2025 18:07:05 +0000 (UTC)
+	 MIME-Version; b=sOspzX4IuKl0QGdtQDGAFfaEWcYoYilS+dmm6a7wdcBxVgqeyuIFnkmX+Ygk6/Jc8VWqMVB/h1B+B78ixoLxxaQt8cM9Rzm2mpvuIf6mgiE9MJrKXakRDVkUOpXOSPTPeLc42LzL6bB0sdyB7v4EsNawV0zC3f3HK3b167GWFmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kvhlc8zf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12EC1C4CEE0;
+	Tue, 21 Jan 2025 17:58:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482826;
-	bh=469MClTjW5jlMESj3ilpsbtZDZpjCrN19yHoCUpVoNA=;
+	s=korg; t=1737482297;
+	bh=4v8lalRaNoeK8Vf1XDD3pXDObHCijLVXdLyL6n9JdXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OAbJIZXdSVfdJRPaA00C0Pm4XwGscuPNDESZuQVrEK/q0ewca4cSviFXAptmp0+18
-	 cWrvuYLWgexvrkVRsC6pX5rGGYY9jPku5rxnoTV6Wk2qD2b13JcHo6MImBs4XFs0bJ
-	 hoiKu3hVIBpXg7iMa32xUORNM0b/mpUFB9v7My2Y=
+	b=kvhlc8zfNN8eS1wQG/7MKeQV6SgMmpc/Vkf8bvP6RtiHnj+twX5Qh6p+vIK+VXOfh
+	 RdY7q6eHYEwBeqYOzkqxLqPNRflkgiL5KaEToPDN6QM7jifcmjUVXfzbfZ8xXRzZQq
+	 BL5n/lJOF1fz/wAKYEYvhWIJ2+mK4toE4Lgoy4i0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Joe Thornber <thornber@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
+	Mark Zhang <markzhang@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 004/127] dm array: fix unreleased btree blocks on closing a faulty array cursor
+Subject: [PATCH 6.12 028/122] net/mlx5: Clear port select structure when fail to create
 Date: Tue, 21 Jan 2025 18:51:16 +0100
-Message-ID: <20250121174529.846017872@linuxfoundation.org>
+Message-ID: <20250121174534.079234892@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +66,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Mark Zhang <markzhang@nvidia.com>
 
-[ Upstream commit 626f128ee9c4133b1cfce4be2b34a1508949370e ]
+[ Upstream commit 5641e82cb55b4ecbc6366a499300917d2f3e6790 ]
 
-The cached block pointer in dm_array_cursor might be NULL if it reaches
-an unreadable array block, or the array is empty. Therefore,
-dm_array_cursor_end() should call dm_btree_cursor_end() unconditionally,
-to prevent leaving unreleased btree blocks.
+Clear the port select structure on error so no stale values left after
+definers are destroyed. That's because the mlx5_lag_destroy_definers()
+always try to destroy all lag definers in the tt_map, so in the flow
+below lag definers get double-destroyed and cause kernel crash:
 
-This fix can be verified using the "array_cursor/iterate/empty" test
-in dm-unit:
-  dm-unit run /pdata/array_cursor/iterate/empty --kernel-dir <KERNEL_DIR>
+  mlx5_lag_port_sel_create()
+    mlx5_lag_create_definers()
+      mlx5_lag_create_definer()     <- Failed on tt 1
+        mlx5_lag_destroy_definers() <- definers[tt=0] gets destroyed
+  mlx5_lag_port_sel_create()
+    mlx5_lag_create_definers()
+      mlx5_lag_create_definer()     <- Failed on tt 0
+        mlx5_lag_destroy_definers() <- definers[tt=0] gets double-destroyed
 
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Fixes: fdd1315aa5f0 ("dm array: introduce cursor api")
-Reviewed-by: Joe Thornber <thornber@redhat.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+ Unable to handle kernel NULL pointer dereference at virtual address 0000000000000008
+ Mem abort info:
+   ESR = 0x0000000096000005
+   EC = 0x25: DABT (current EL), IL = 32 bits
+   SET = 0, FnV = 0
+   EA = 0, S1PTW = 0
+   FSC = 0x05: level 1 translation fault
+ Data abort info:
+   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
+   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+ user pgtable: 64k pages, 48-bit VAs, pgdp=0000000112ce2e00
+ [0000000000000008] pgd=0000000000000000, p4d=0000000000000000, pud=0000000000000000
+ Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+ Modules linked in: iptable_raw bonding ip_gre ip6_gre gre ip6_tunnel tunnel6 geneve ip6_udp_tunnel udp_tunnel ipip tunnel4 ip_tunnel rdma_ucm(OE) rdma_cm(OE) iw_cm(OE) ib_ipoib(OE) ib_cm(OE) ib_umad(OE) mlx5_ib(OE) ib_uverbs(OE) mlx5_fwctl(OE) fwctl(OE) mlx5_core(OE) mlxdevm(OE) ib_core(OE) mlxfw(OE) memtrack(OE) mlx_compat(OE) openvswitch nsh nf_conncount psample xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink xfrm_user xfrm_algo xt_addrtype iptable_filter iptable_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 br_netfilter bridge stp llc netconsole overlay efi_pstore sch_fq_codel zram ip_tables crct10dif_ce qemu_fw_cfg fuse ipv6 crc_ccitt [last unloaded: mlx_compat(OE)]
+  CPU: 3 UID: 0 PID: 217 Comm: kworker/u53:2 Tainted: G           OE      6.11.0+ #2
+  Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+  Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
+  Workqueue: mlx5_lag mlx5_do_bond_work [mlx5_core]
+  pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : mlx5_del_flow_rules+0x24/0x2c0 [mlx5_core]
+  lr : mlx5_lag_destroy_definer+0x54/0x100 [mlx5_core]
+  sp : ffff800085fafb00
+  x29: ffff800085fafb00 x28: ffff0000da0c8000 x27: 0000000000000000
+  x26: ffff0000da0c8000 x25: ffff0000da0c8000 x24: ffff0000da0c8000
+  x23: ffff0000c31f81a0 x22: 0400000000000000 x21: ffff0000da0c8000
+  x20: 0000000000000000 x19: 0000000000000001 x18: 0000000000000000
+  x17: 0000000000000000 x16: 0000000000000000 x15: 0000ffff8b0c9350
+  x14: 0000000000000000 x13: ffff800081390d18 x12: ffff800081dc3cc0
+  x11: 0000000000000001 x10: 0000000000000b10 x9 : ffff80007ab7304c
+  x8 : ffff0000d00711f0 x7 : 0000000000000004 x6 : 0000000000000190
+  x5 : ffff00027edb3010 x4 : 0000000000000000 x3 : 0000000000000000
+  x2 : ffff0000d39b8000 x1 : ffff0000d39b8000 x0 : 0400000000000000
+  Call trace:
+   mlx5_del_flow_rules+0x24/0x2c0 [mlx5_core]
+   mlx5_lag_destroy_definer+0x54/0x100 [mlx5_core]
+   mlx5_lag_destroy_definers+0xa0/0x108 [mlx5_core]
+   mlx5_lag_port_sel_create+0x2d4/0x6f8 [mlx5_core]
+   mlx5_activate_lag+0x60c/0x6f8 [mlx5_core]
+   mlx5_do_bond_work+0x284/0x5c8 [mlx5_core]
+   process_one_work+0x170/0x3e0
+   worker_thread+0x2d8/0x3e0
+   kthread+0x11c/0x128
+   ret_from_fork+0x10/0x20
+  Code: a9025bf5 aa0003f6 a90363f7 f90023f9 (f9400400)
+  ---[ end trace 0000000000000000 ]---
+
+Fixes: dc48516ec7d3 ("net/mlx5: Lag, add support to create definers for LAG")
+Signed-off-by: Mark Zhang <markzhang@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/persistent-data/dm-array.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/persistent-data/dm-array.c b/drivers/md/persistent-data/dm-array.c
-index 33bc4b38911a..a2d9493d3593 100644
---- a/drivers/md/persistent-data/dm-array.c
-+++ b/drivers/md/persistent-data/dm-array.c
-@@ -954,10 +954,10 @@ EXPORT_SYMBOL_GPL(dm_array_cursor_begin);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c
+index ab2717012b79b..39e80704b1c42 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c
+@@ -530,7 +530,7 @@ int mlx5_lag_port_sel_create(struct mlx5_lag *ldev,
+ 	set_tt_map(port_sel, hash_type);
+ 	err = mlx5_lag_create_definers(ldev, hash_type, ports);
+ 	if (err)
+-		return err;
++		goto clear_port_sel;
  
- void dm_array_cursor_end(struct dm_array_cursor *c)
- {
--	if (c->block) {
-+	if (c->block)
- 		unlock_ablock(c->info, c->block);
--		dm_btree_cursor_end(&c->cursor);
--	}
-+
-+	dm_btree_cursor_end(&c->cursor);
+ 	if (port_sel->tunnel) {
+ 		err = mlx5_lag_create_inner_ttc_table(ldev);
+@@ -549,6 +549,8 @@ int mlx5_lag_port_sel_create(struct mlx5_lag *ldev,
+ 		mlx5_destroy_ttc_table(port_sel->inner.ttc);
+ destroy_definers:
+ 	mlx5_lag_destroy_definers(ldev);
++clear_port_sel:
++	memset(port_sel, 0, sizeof(*port_sel));
+ 	return err;
  }
- EXPORT_SYMBOL_GPL(dm_array_cursor_end);
  
 -- 
 2.39.5
