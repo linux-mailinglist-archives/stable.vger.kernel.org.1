@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-109660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41459A18347
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:54:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99FD8A183C6
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:00:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E17917A4210
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:54:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE17A188D071
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:59:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D7F1F55E3;
-	Tue, 21 Jan 2025 17:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8863A1F7547;
+	Tue, 21 Jan 2025 17:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0g03K+Bu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVlA2ULt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36EF1E9B38;
-	Tue, 21 Jan 2025 17:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B8D1F709E;
+	Tue, 21 Jan 2025 17:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482067; cv=none; b=Qt8Ob+2S0zU2RIrYAgjTf/dTky1Dfis3TOI2733ajCqTVESyGpw7naZZ2JSIjFMe4GXJ6C63/iTAzjER6RwSjDUm0mOC/L6nh1ciDcenL6AZO+lWwKzjcuAw1gaWeffpJ92DIOv5gF1YZuWTcmGTttvSQY55GobimQT/dRTDMwU=
+	t=1737482347; cv=none; b=Ra2zNaeQ1TKOxAVvIRUdDemSBTA/cioKxawhD30icYGe0blfXyQUqHideredN12NLRV08TI7N1OdH94FWd0j9AIRzSceGONfRus6SE9NBRhwpdkEvCBtf2M922xS62MyD6hm0O5SrpORch4FzZhy+2PDHvT7pfYe26Wa7mnniPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482067; c=relaxed/simple;
-	bh=p0jRT7Q9dPY+VmcObAm2CI+E8Sk2FfBftoQipE7zBYY=;
+	s=arc-20240116; t=1737482347; c=relaxed/simple;
+	bh=JXMPapz3PPwPVzXMYBIZuKDo9TYzUCzPWTWOMlljSxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MPgy+2EPwYUJgQ1wPa7N4x1IUW9nNT8yBpDanwYq4eFFsHMh/FMTt5USXMIA/eaOUMCix3ilICAWm77JUVmspwoqW0OOimc649QO7Nb+IO1Ja0rM8DeWP0KskXuu61kQOsu6QmoKZ2SDJ5CUrIxhLCXiVsPSrgjxXDWWq/7HUdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0g03K+Bu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB8BC4CEDF;
-	Tue, 21 Jan 2025 17:54:26 +0000 (UTC)
+	 MIME-Version; b=DxDim+K/Fkg+goGTWXbJsTRc6TSNMWjUDh+740RaguLPCcu/cM0/JU1e/bjiXgv175PRLnW2/DPrhf3wt2xxip1/Cigvnnq4r1CD+pFpVeDcUVPkAOCWbxD4+SsQc7W5bnzbRCGf50iXxLjlLSVEHWjHKZssOSiEnoT39xzDfoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVlA2ULt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE58C4CEDF;
+	Tue, 21 Jan 2025 17:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482066;
-	bh=p0jRT7Q9dPY+VmcObAm2CI+E8Sk2FfBftoQipE7zBYY=;
+	s=korg; t=1737482347;
+	bh=JXMPapz3PPwPVzXMYBIZuKDo9TYzUCzPWTWOMlljSxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0g03K+BudBV7bxBHRqG5lnLTvwxaQsGrPDQx/d7QY6IedyulTk+hojW/Xru10Bmlf
-	 FJV2jzy5lgTDwbMVlV3QMGbcuYqXu6DQQ3eApH9mcm6aJkhe5pmHgOy+vS/U7jNzsa
-	 D2yrGA7Pb3fzR5CP2VzNOMHgHZfxXfhL3sbal764=
+	b=wVlA2ULtDWEhome90jJzVIch/9yjZJVshPinl2rS0CWKWS/HohKHpyxmUAjMJR0YG
+	 k1DTRZ1anzFPTqGfHuBzyALnRhhDyVHjH/2L2Ns+XtjHcBQPyKyX9P1vm9GP9zafLR
+	 DFxGqzvQlnPwz1nDLRAXAF7Dn14vmfPybyh2w8Qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiao Liang <shaw.leon@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 07/72] gtp: Use for_each_netdev_rcu() in gtp_genl_dump_pdp().
-Date: Tue, 21 Jan 2025 18:51:33 +0100
-Message-ID: <20250121174523.713277849@linuxfoundation.org>
+Subject: [PATCH 6.12 046/122] i2c: testunit: on errors, repeat NACK until STOP
+Date: Tue, 21 Jan 2025 18:51:34 +0100
+Message-ID: <20250121174534.759740908@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 46841c7053e6d25fb33e0534ef023833bf03e382 ]
+[ Upstream commit 6ad30f7890423341f4b79329af1f9b9bb3cdec03 ]
 
-gtp_newlink() links the gtp device to a list in dev_net(dev).
+This backend requests a NACK from the controller driver when it detects
+an error. If that request gets ignored from some reason, subsequent
+accesses will wrongly be handled OK. To fix this, an error now changes
+the state machine, so the backend will report NACK until a STOP
+condition has been detected. This make the driver more robust against
+controllers which will sadly apply the NACK not to the current byte but
+the next one.
 
-However, even after the gtp device is moved to another netns,
-it stays on the list but should be invisible.
-
-Let's use for_each_netdev_rcu() for netdev traversal in
-gtp_genl_dump_pdp().
-
-Note that gtp_dev_list is no longer used under RCU, so list
-helpers are converted to the non-RCU variant.
-
-Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
-Reported-by: Xiao Liang <shaw.leon@gmail.com>
-Closes: https://lore.kernel.org/netdev/CABAhCOQdBL6h9M2C+kd+bGivRJ9Q72JUxW+-gur0nub_=PmFPA@mail.gmail.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: a8335c64c5f0 ("i2c: add slave testunit driver")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/gtp.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ drivers/i2c/i2c-slave-testunit.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-index 60c950066ec5b..69b89483f1b50 100644
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -1096,7 +1096,7 @@ static int gtp_newlink(struct net *src_net, struct net_device *dev,
+diff --git a/drivers/i2c/i2c-slave-testunit.c b/drivers/i2c/i2c-slave-testunit.c
+index 9fe3150378e86..7ae0c7902f670 100644
+--- a/drivers/i2c/i2c-slave-testunit.c
++++ b/drivers/i2c/i2c-slave-testunit.c
+@@ -38,6 +38,7 @@ enum testunit_regs {
+ 
+ enum testunit_flags {
+ 	TU_FLAG_IN_PROCESS,
++	TU_FLAG_NACK,
+ };
+ 
+ struct testunit_data {
+@@ -90,8 +91,10 @@ static int i2c_slave_testunit_slave_cb(struct i2c_client *client,
+ 
+ 	switch (event) {
+ 	case I2C_SLAVE_WRITE_REQUESTED:
+-		if (test_bit(TU_FLAG_IN_PROCESS, &tu->flags))
+-			return -EBUSY;
++		if (test_bit(TU_FLAG_IN_PROCESS | TU_FLAG_NACK, &tu->flags)) {
++			ret = -EBUSY;
++			break;
++		}
+ 
+ 		memset(tu->regs, 0, TU_NUM_REGS);
+ 		tu->reg_idx = 0;
+@@ -99,8 +102,10 @@ static int i2c_slave_testunit_slave_cb(struct i2c_client *client,
+ 		break;
+ 
+ 	case I2C_SLAVE_WRITE_RECEIVED:
+-		if (test_bit(TU_FLAG_IN_PROCESS, &tu->flags))
+-			return -EBUSY;
++		if (test_bit(TU_FLAG_IN_PROCESS | TU_FLAG_NACK, &tu->flags)) {
++			ret = -EBUSY;
++			break;
++		}
+ 
+ 		if (tu->reg_idx < TU_NUM_REGS)
+ 			tu->regs[tu->reg_idx] = *val;
+@@ -129,6 +134,8 @@ static int i2c_slave_testunit_slave_cb(struct i2c_client *client,
+ 		 * here because we still need them in the workqueue!
+ 		 */
+ 		tu->reg_idx = 0;
++
++		clear_bit(TU_FLAG_NACK, &tu->flags);
+ 		break;
+ 
+ 	case I2C_SLAVE_READ_PROCESSED:
+@@ -151,6 +158,10 @@ static int i2c_slave_testunit_slave_cb(struct i2c_client *client,
+ 		break;
  	}
  
- 	gn = net_generic(dev_net(dev), gtp_net_id);
--	list_add_rcu(&gtp->list, &gn->gtp_dev_list);
-+	list_add(&gtp->list, &gn->gtp_dev_list);
- 	dev->priv_destructor = gtp_destructor;
- 
- 	netdev_dbg(dev, "registered new GTP interface\n");
-@@ -1122,7 +1122,7 @@ static void gtp_dellink(struct net_device *dev, struct list_head *head)
- 		hlist_for_each_entry_safe(pctx, next, &gtp->tid_hash[i], hlist_tid)
- 			pdp_context_delete(pctx);
- 
--	list_del_rcu(&gtp->list);
-+	list_del(&gtp->list);
- 	unregister_netdevice_queue(dev, head);
++	/* If an error occurred somewhen, we NACK everything until next STOP */
++	if (ret)
++		set_bit(TU_FLAG_NACK, &tu->flags);
++
+ 	return ret;
  }
  
-@@ -1690,16 +1690,19 @@ static int gtp_genl_dump_pdp(struct sk_buff *skb,
- 	struct gtp_dev *last_gtp = (struct gtp_dev *)cb->args[2], *gtp;
- 	int i, j, bucket = cb->args[0], skip = cb->args[1];
- 	struct net *net = sock_net(skb->sk);
-+	struct net_device *dev;
- 	struct pdp_ctx *pctx;
--	struct gtp_net *gn;
--
--	gn = net_generic(net, gtp_net_id);
- 
- 	if (cb->args[4])
- 		return 0;
- 
- 	rcu_read_lock();
--	list_for_each_entry_rcu(gtp, &gn->gtp_dev_list, list) {
-+	for_each_netdev_rcu(net, dev) {
-+		if (dev->rtnl_link_ops != &gtp_link_ops)
-+			continue;
-+
-+		gtp = netdev_priv(dev);
-+
- 		if (last_gtp && last_gtp != gtp)
- 			continue;
- 		else
-@@ -1891,9 +1894,9 @@ static void __net_exit gtp_net_exit_batch_rtnl(struct list_head *net_list,
- 
- 	list_for_each_entry(net, net_list, exit_list) {
- 		struct gtp_net *gn = net_generic(net, gtp_net_id);
--		struct gtp_dev *gtp;
-+		struct gtp_dev *gtp, *gtp_next;
- 
--		list_for_each_entry(gtp, &gn->gtp_dev_list, list)
-+		list_for_each_entry_safe(gtp, gtp_next, &gn->gtp_dev_list, list)
- 			gtp_dellink(gtp->dev, dev_to_kill);
- 	}
- }
 -- 
 2.39.5
 
