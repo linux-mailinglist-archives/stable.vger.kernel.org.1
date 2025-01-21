@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-109684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17E64A18363
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26F41A18433
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:04:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE7787A44BC
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E86D61679BD
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:03:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D31B91F55F7;
-	Tue, 21 Jan 2025 17:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4244D1F427B;
+	Tue, 21 Jan 2025 18:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUdnupYL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwbKU4OT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1CF1F55ED;
-	Tue, 21 Jan 2025 17:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00EA91F3FFE;
+	Tue, 21 Jan 2025 18:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482137; cv=none; b=Hxx11yE6fgMY9IqOw5aixAZyqjzQsidOOvgcqCpAgBXYtveE1xsGzrtxePi9iU3HX7gdQOjVcrwFthspV3lOdijG3Y1G0c7wxXMP+HjHfCbpUhXf4PqKd33plQdxi/KWatMtrgHE5fwIZgWB2xB41L4YT3SWEKm05Jbn2exri/8=
+	t=1737482610; cv=none; b=OU4gbF6LPeetXQCMVzJtgtWzGfU77mNfiR7xZ+WCxblWnOLszmYbbUs9OjYTfEwUwwknDFXEdHTUD7fmsnHyiublBKJgIab5IOSz9RpkDgcfYXstJ3neL+SoXvSK3h3aFKFok81stCyH4Oaw/uTh79ZDFiSmokVUvxsdIggmM9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482137; c=relaxed/simple;
-	bh=6WW0uPutusef+ZSUr6pWzt/Sj5/USnnBvKYl1tnqbds=;
+	s=arc-20240116; t=1737482610; c=relaxed/simple;
+	bh=fH76gxSMNDMeIszm1ksHI7vefpF97Cy0KiPmMZFLxrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y1+sedg/lqnWGKjUKYIzPPuQR+stztmpGWJsMmM3moeYGlAstsZAJPBhmJTn3alvoXYyMwtcH495ZdhDSsohtmqewWPYhfcRXogTTLdcI1XM32NHJSMnIR5kA09d4DZxZLau/WtIHp+Sf5W8Gux73ISVaFtS0jMDddgLsGlb7Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hUdnupYL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07ED6C4CEDF;
-	Tue, 21 Jan 2025 17:55:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WxEWaNXQLuUkMIV/8gY1H6EPlWGpYjwWZPA0O5TEZlg0SuGwVRop6rWkDR3HmOItl1X40XWGfoSlhjKI3W2/C3HoxOe4rzlKItcDXnGXSi1f4MAN+r41wdFQkW3NYA6vKvJ6GIQk7VKYQOU3zj5Otg3r65bmLiHDX+G3tglLwZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwbKU4OT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1D7C4CEDF;
+	Tue, 21 Jan 2025 18:03:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482137;
-	bh=6WW0uPutusef+ZSUr6pWzt/Sj5/USnnBvKYl1tnqbds=;
+	s=korg; t=1737482609;
+	bh=fH76gxSMNDMeIszm1ksHI7vefpF97Cy0KiPmMZFLxrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hUdnupYL88bSN7qpdZtofFjQpfexz0HkRdt4AR2b1TLOnrUnY0jSqAo4RgQqQXMma
-	 oD4lxLRZda63RBFfxnKYfqZDPsO6AwBM4l5PUf4lSnD07POdIWz/9BlZCLXlqRCHay
-	 9g/Cel2GvbWb3PkYYZ/Z8cMMnjMB89liihHjW/UU=
+	b=ZwbKU4OTHydzOLwliQrPC7a9ZP0INsZYcK3bC13P3fhvsyGObHZdfFe6Ygi6TSd8X
+	 Ju7KNdkBCkeQO68GBLVqBDV1Mib3WtU9kEZiBY0ebm0BcaW60yhrg0JvsIhXLAqemi
+	 SrgC2EHg/hQOLBvqRNxSazH/8zN5XcyiaqfkO9HA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
-	Wongi Lee <qwerty@theori.io>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 46/72] vsock/virtio: discard packets if the transport changes
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 13/64] drm/v3d: Ensure job pointer is set to NULL after job completion
 Date: Tue, 21 Jan 2025 18:52:12 +0100
-Message-ID: <20250121174525.196595352@linuxfoundation.org>
+Message-ID: <20250121174522.069175809@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
+References: <20250121174521.568417761@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-commit 2cb7c756f605ec02ffe562fb26828e4bcc5fdfc1 upstream.
+[ Upstream commit e4b5ccd392b92300a2b341705cc4805681094e49 ]
 
-If the socket has been de-assigned or assigned to another transport,
-we must discard any packets received because they are not expected
-and would cause issues when we access vsk->transport.
+After a job completes, the corresponding pointer in the device must
+be set to NULL. Failing to do so triggers a warning when unloading
+the driver, as it appears the job is still active. To prevent this,
+assign the job pointer to NULL after completing the job, indicating
+the job has finished.
 
-A possible scenario is described by Hyunwoo Kim in the attached link,
-where after a first connect() interrupted by a signal, and a second
-connect() failed, we can find `vsk->transport` at NULL, leading to a
-NULL pointer dereference.
-
-Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
-Cc: stable@vger.kernel.org
-Reported-by: Hyunwoo Kim <v4bel@theori.io>
-Reported-by: Wongi Lee <qwerty@theori.io>
-Closes: https://lore.kernel.org/netdev/Z2LvdTTQR7dBmPb5@v4bel-B760M-AORUS-ELITE-AX/
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Hyunwoo Kim <v4bel@theori.io>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 14d1d1908696 ("drm/v3d: Remove the bad signaled() implementation.")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250113154741.67520-1-mcanal@igalia.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport_common.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/v3d/v3d_irq.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1428,8 +1428,11 @@ void virtio_transport_recv_pkt(struct vi
+diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
+index e714d5318f309..76806039691a2 100644
+--- a/drivers/gpu/drm/v3d/v3d_irq.c
++++ b/drivers/gpu/drm/v3d/v3d_irq.c
+@@ -103,6 +103,7 @@ v3d_irq(int irq, void *arg)
  
- 	lock_sock(sk);
+ 		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
+ 		dma_fence_signal(&fence->base);
++		v3d->bin_job = NULL;
+ 		status = IRQ_HANDLED;
+ 	}
  
--	/* Check if sk has been closed before lock_sock */
--	if (sock_flag(sk, SOCK_DONE)) {
-+	/* Check if sk has been closed or assigned to another transport before
-+	 * lock_sock (note: listener sockets are not assigned to any transport)
-+	 */
-+	if (sock_flag(sk, SOCK_DONE) ||
-+	    (sk->sk_state != TCP_LISTEN && vsk->transport != &t->transport)) {
- 		(void)virtio_transport_reset_no_sock(t, skb);
- 		release_sock(sk);
- 		sock_put(sk);
+@@ -112,6 +113,7 @@ v3d_irq(int irq, void *arg)
+ 
+ 		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
+ 		dma_fence_signal(&fence->base);
++		v3d->render_job = NULL;
+ 		status = IRQ_HANDLED;
+ 	}
+ 
+@@ -121,6 +123,7 @@ v3d_irq(int irq, void *arg)
+ 
+ 		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
+ 		dma_fence_signal(&fence->base);
++		v3d->csd_job = NULL;
+ 		status = IRQ_HANDLED;
+ 	}
+ 
+@@ -157,6 +160,7 @@ v3d_hub_irq(int irq, void *arg)
+ 
+ 		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
+ 		dma_fence_signal(&fence->base);
++		v3d->tfu_job = NULL;
+ 		status = IRQ_HANDLED;
+ 	}
+ 
+-- 
+2.39.5
+
 
 
 
