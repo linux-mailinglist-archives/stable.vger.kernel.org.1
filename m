@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-109953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FC64A184A0
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:10:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 056C5A1835C
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:55:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1479188C49A
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:08:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69956188B9A5
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F381F561E;
-	Tue, 21 Jan 2025 18:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02C81F63CD;
+	Tue, 21 Jan 2025 17:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOMTzVJT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VRUn2fI6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFB81F55E3;
-	Tue, 21 Jan 2025 18:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626D01F63C4;
+	Tue, 21 Jan 2025 17:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482915; cv=none; b=ETOo8J7Bbx+OMELDTzKX22OBZytPcOL+3y8Sb3qCiBAwLd/lAxxr1P7nZgXfQTXRdunTaAtXSZuU3oK08/EgNaw3ztBuMr6HVpFexEfPmH/bQYwzI7AWkAaAg0Zfv1zEHf8bL/3d/HUPlSusgeCIPJr2UwpPuC+YweXM2IVNPho=
+	t=1737482120; cv=none; b=iKpSY9RSfRTX6imxTraLTtJ2zFwwbLiHKDAP4ViDTd7Ld/wkwrXa5uyTw3XdvWQDGIJ87q1v+mtyGsmypeVyi04wPLnythNMv69PKCWF3pGTTr+yaWWiUq7pCiSsD2A9ZjEeUiEw9QQf1YdrNIPT8FDddq2gqoHt9GcoP+IztZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482915; c=relaxed/simple;
-	bh=JyUEwIspsvJzZovhblB7eQQLdqRyoQuTTifPPMa4lLo=;
+	s=arc-20240116; t=1737482120; c=relaxed/simple;
+	bh=nBkRJmcWaRG8n5NTTnI8f56I2/NgzX84fKLkMV5T4xw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eD8jstrzlXiOLhMdhRgXYCpLfBsQDTZwaOt7COwn3upCIlRFeKCe7p1Ts+elpfJbQO3jXBPMjfbVviZdltZzp0LGed8B25ikYgzuLXYmnpEE7STRm3twFd0i+fLs9UNRmR2UqzAk/L3vARqKCI1PxbsaZpHmcOYaReF57csAtmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOMTzVJT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FC5C4CEE1;
-	Tue, 21 Jan 2025 18:08:34 +0000 (UTC)
+	 MIME-Version; b=bBVV/mT46BpfNJ63tC0f1Ax9H9tjbIpt8rfluGkoASxKDhnO60uOd6kPl0jJjkgMhjrI2nQNjjqyCR7TvLhALjOh/2jNvBRc3CXF7IsB1VwhegVBM/IGlDtFM/LsOQSTQY8dg8qoQ4N94kHlVUTyHo68CMXjlxbRUTbBkgd1R1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VRUn2fI6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB0D8C4CEE0;
+	Tue, 21 Jan 2025 17:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482915;
-	bh=JyUEwIspsvJzZovhblB7eQQLdqRyoQuTTifPPMa4lLo=;
+	s=korg; t=1737482120;
+	bh=nBkRJmcWaRG8n5NTTnI8f56I2/NgzX84fKLkMV5T4xw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eOMTzVJTBBlEfILlAmaHAEInmwVTZPVFZg+RONVmRwJgTwQkoM/jnuCucWhZFnFms
-	 gYBfAqd1cNuuRaSDpsEUZqmFMfnzT+LZJNgPWGUkDAIK9052hh3wc/RNtuQaAOxKbA
-	 iR5L0k/6QnKY+Z9pDvOeLNJEQgYoNW8R4Z8sj9Wk=
+	b=VRUn2fI6tHszIYaQkfKpfV9grXDcasggNQRDWGmQFtyNWU2qZVtVpo7oP2Rkae9cD
+	 CYQaMRo2NgboAYbeFliKitBsQBIlNdy8YM2V00KpmkySB8bJZeR9ODAd05C0NuFlv/
+	 Zrh2CLOqU/7aej/Qa1HAOACV22RAQqyD0BppWOr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 053/127] iio: pressure: zpa2326: fix information leak in triggered buffer
-Date: Tue, 21 Jan 2025 18:52:05 +0100
-Message-ID: <20250121174531.712001355@linuxfoundation.org>
+	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH 6.6 40/72] i2c: atr: Fix client detach
+Date: Tue, 21 Jan 2025 18:52:06 +0100
+Message-ID: <20250121174524.966219903@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
 
-commit 6007d10c5262f6f71479627c1216899ea7f09073 upstream.
+commit cefc479cbb50399dec0c8e996f3539c48a1ee9dd upstream.
 
-The 'sample' local struct is used to push data to user space from a
-triggered buffer, but it has a hole between the temperature and the
-timestamp (u32 pressure, u16 temperature, GAP, u64 timestamp).
-This hole is never initialized.
+i2c-atr catches the BUS_NOTIFY_DEL_DEVICE event on the bus and removes
+the translation by calling i2c_atr_detach_client().
 
-Initialize the struct to zero before using it to avoid pushing
-uninitialized information to userspace.
+However, BUS_NOTIFY_DEL_DEVICE happens when the device is about to be
+removed from this bus, i.e. before removal, and thus before calling
+.remove() on the driver. If the driver happens to do any i2c
+transactions in its remove(), they will fail.
 
+Fix this by catching BUS_NOTIFY_REMOVED_DEVICE instead, thus removing
+the translation only after the device is actually removed.
+
+Fixes: a076a860acae ("media: i2c: add I2C Address Translator (ATR) support")
 Cc: stable@vger.kernel.org
-Fixes: 03b262f2bbf4 ("iio:pressure: initial zpa2326 barometer support")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-3-0cb6e98d895c@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Romain Gantois <romain.gantois@bootlin.com>
+Tested-by: Romain Gantois <romain.gantois@bootlin.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/pressure/zpa2326.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/i2c/i2c-atr.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/pressure/zpa2326.c
-+++ b/drivers/iio/pressure/zpa2326.c
-@@ -586,6 +586,8 @@ static int zpa2326_fill_sample_buffer(st
- 	}   sample;
- 	int err;
+--- a/drivers/i2c/i2c-atr.c
++++ b/drivers/i2c/i2c-atr.c
+@@ -412,7 +412,7 @@ static int i2c_atr_bus_notifier_call(str
+ 				dev_name(dev), ret);
+ 		break;
  
-+	memset(&sample, 0, sizeof(sample));
-+
- 	if (test_bit(0, indio_dev->active_scan_mask)) {
- 		/* Get current pressure from hardware FIFO. */
- 		err = zpa2326_dequeue_pressure(indio_dev, &sample.pressure);
+-	case BUS_NOTIFY_DEL_DEVICE:
++	case BUS_NOTIFY_REMOVED_DEVICE:
+ 		i2c_atr_detach_client(client->adapter, client);
+ 		break;
+ 
 
 
 
