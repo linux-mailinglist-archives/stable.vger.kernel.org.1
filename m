@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-109987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C88A1850B
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:15:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6EDA18411
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:03:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8D9C7A5339
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:11:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06243188AAAE
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49C11F8936;
-	Tue, 21 Jan 2025 18:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF6DE571;
+	Tue, 21 Jan 2025 18:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEtqCPGj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWdKT9o4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4871F755D;
-	Tue, 21 Jan 2025 18:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5EA1F4275;
+	Tue, 21 Jan 2025 18:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737483014; cv=none; b=oO3KH/OAUvlpWmD+KSmeiTF/A13UF+EQ9x+mgVY2m8uXdt992wp4/og3+c00fY//BPXjpWDkvCAlikMz5nCL2Gyelp1iQfPXgnfDIitancXiQxfZhzXMZ15NOcGi0oiK2DnGSMPkaXtdS7MkbV84g6oSlDZPnNgXYCcYea/13xw=
+	t=1737482537; cv=none; b=uyDerZJmq17Vw495yVrvJy2y4oUuHTeJ5F8ZkbRDm+GdckePwn3o1JN9V3BfgL96U9xzUL2DZZ64uwH7PDLqNvHr5nP1l9RXgVhjHGkFAJD+PBPo9j9AZ4KOJLvlIzXIuW4P1hkloPmy2Zj34Rq2ZhZ36rL9msBdxN1LkkT0xy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737483014; c=relaxed/simple;
-	bh=4A6Oy770ZL4OvFZIl4q/dlOI6eh9dsjpkRl0sqDASJI=;
+	s=arc-20240116; t=1737482537; c=relaxed/simple;
+	bh=FjLuERB5l8DH0xmfp20NRH2wrtDDfhjnXP9Re8i90x0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=flsSb2h/OVLDTAKf4Ng5lpwoF5EAED3+GJ+m4vLGRiUnrPZPKrrhJYD/wHZNKDJxcM90ZJ68wIIYtwXf2abnR6QsL+xS2bBXXj3mWQrymMkIlhZdlaTj7a1Cff2wF8gIiXax1IMbVSawuZM0NVP+2A9R8rC7iC76dZ4MyAvyvOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEtqCPGj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7C6C4CEE1;
-	Tue, 21 Jan 2025 18:10:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nXZqfLwU0RIIyx2UUXAtkvQvy6NLsqrthRowDKNMWWNBkEmIlevX3w6RbFeUFsz4ggTXqhYi/yqKntEaotKK6/DpuNz3/M4u8GqPBQdINq63mHPr5d6Hfzu2wRJogBUIl+QfxWXnQyF4Stywi6rAVeebxPocKD9cOEi7xwwXfg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XWdKT9o4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89948C4CEDF;
+	Tue, 21 Jan 2025 18:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737483014;
-	bh=4A6Oy770ZL4OvFZIl4q/dlOI6eh9dsjpkRl0sqDASJI=;
+	s=korg; t=1737482536;
+	bh=FjLuERB5l8DH0xmfp20NRH2wrtDDfhjnXP9Re8i90x0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TEtqCPGjE6fBVbiGwVNekEiu/iDQR3wlFed6K56yEieRpEFUMUr9m6SuWThRpUvyf
-	 ijPETXJYndGJclclU89KzWMr2Tt3M+hnhP1EVjWaz4A9cO9RPPA+Zm0BTonnG9QIuW
-	 9gpWOh2G3XzcTPTUXOHDFsnNU/xpwfaKjZqv0KGc=
+	b=XWdKT9o4IyRpq/rMEIJFNWhBZeYcA2XE+Jr64W3Z59v+GLJBixoRfyO8/JzLQPzV2
+	 hQiZQ/yQ3ck45srwzSV8WxC3Q0tlBC9xsBW+94xpp6yZcArRLDpknFJLc3SxhtjKgy
+	 keFtzAyU/uVseSlSSa5vjyZwKRS1hQ7SFUijpm00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 087/127] net: xilinx: axienet: Fix IRQ coalescing packet count overflow
+	Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
+	Michal Mrozek <michal.mrozek@intel.com>,
+	Paulo Zanoni <paulo.r.zanoni@intel.com>,
+	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Stuart Summers <stuart.summers@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Subject: [PATCH 6.12 111/122] drm/xe: Mark ComputeCS read mode as UC on iGPU
 Date: Tue, 21 Jan 2025 18:52:39 +0100
-Message-ID: <20250121174533.007492050@linuxfoundation.org>
+Message-ID: <20250121174537.329748707@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +65,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit c17ff476f53afb30f90bb3c2af77de069c81a622 ]
+commit b1231ff7ea0689d04040a44864c265bc11612fa8 upstream.
 
-If coalesce_count is greater than 255 it will not fit in the register and
-will overflow. This can be reproduced by running
+RING_CMD_CCTL read index should be UC on iGPU parts due to L3 caching
+structure. Having this as WB blocks ULLS from being enabled. Change to
+UC to unblock ULLS on iGPU.
 
-    # ethtool -C ethX rx-frames 256
+v2:
+ - Drop internal communications commnet, bspec is updated
 
-which will result in a timeout of 0us instead. Fix this by checking for
-invalid values and reporting an error.
-
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Link: https://patch.msgid.link/20250113163001.2335235-1-sean.anderson@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+Cc: Michal Mrozek <michal.mrozek@intel.com>
+Cc: Paulo Zanoni <paulo.r.zanoni@intel.com>
+Cc: José Roberto de Souza <jose.souza@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: 328e089bfb37 ("drm/xe: Leverage ComputeCS read L3 caching")
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Acked-by: Michal Mrozek <michal.mrozek@intel.com>
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250114002507.114087-1-matthew.brost@intel.com
+(cherry picked from commit 758debf35b9cda5450e40996991a6e4b222899bd)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/xe/xe_hw_engine.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 56a970357f450..f63d2224ba91a 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -1584,6 +1584,12 @@ axienet_ethtools_set_coalesce(struct net_device *ndev,
- 		return -EFAULT;
- 	}
- 
-+	if (ecoalesce->rx_max_coalesced_frames > 255 ||
-+	    ecoalesce->tx_max_coalesced_frames > 255) {
-+		NL_SET_ERR_MSG(extack, "frames must be less than 256");
-+		return -EINVAL;
-+	}
-+
- 	if (ecoalesce->rx_max_coalesced_frames)
- 		lp->coalesce_count_rx = ecoalesce->rx_max_coalesced_frames;
- 	if (ecoalesce->rx_coalesce_usecs)
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/xe/xe_hw_engine.c
++++ b/drivers/gpu/drm/xe/xe_hw_engine.c
+@@ -417,7 +417,7 @@ hw_engine_setup_default_state(struct xe_
+ 	 * Bspec: 72161
+ 	 */
+ 	const u8 mocs_write_idx = gt->mocs.uc_index;
+-	const u8 mocs_read_idx = hwe->class == XE_ENGINE_CLASS_COMPUTE &&
++	const u8 mocs_read_idx = hwe->class == XE_ENGINE_CLASS_COMPUTE && IS_DGFX(xe) &&
+ 				 (GRAPHICS_VER(xe) >= 20 || xe->info.platform == XE_PVC) ?
+ 				 gt->mocs.wb_index : gt->mocs.uc_index;
+ 	u32 ring_cmd_cctl_val = REG_FIELD_PREP(CMD_CCTL_WRITE_OVERRIDE_MASK, mocs_write_idx) |
 
 
 
