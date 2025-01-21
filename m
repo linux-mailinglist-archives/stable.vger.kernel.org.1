@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-110008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DFEDA18517
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:17:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0972AA183F6
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:02:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 995B37A7003
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:12:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 261EA3A1C6B
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F8E1F7569;
-	Tue, 21 Jan 2025 18:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88CFD1F667C;
+	Tue, 21 Jan 2025 18:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nULLktH8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GeaNr6FK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B261F540C;
-	Tue, 21 Jan 2025 18:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E381F470A;
+	Tue, 21 Jan 2025 18:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737483078; cv=none; b=Uxlxqg90CuJu1Oc27PEFZ/14yBdkLEt1NZlOBsOUFzhuAzHwylZW8ybjz/cpmSZKo2PuWVBIl0F52emvxl2JgD3PlILdIp7OGmxYJknG6h890hd6mj2WF90RgxTXyeX/Gu5RLA4X1zaBMyWKM36E/4gHGH0NdN5GdDFFmk9PunI=
+	t=1737482484; cv=none; b=ufG+RMn3v5al9eDdnvxM9gJvyvQvtWp8iQMUK4xevWGdFCo98VgqpRO14eR32rvAEBoV/p2/mz1RkkpWmEOig041dA5NNpyHLS+vEmwQ/nufAdEPNf7J8BtY/iNIgmuZIT9Ul/jpTXe5vey9pySO122mDg9H7XYgRIyvOb/I75A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737483078; c=relaxed/simple;
-	bh=e3cI1qhS+nRcxM7965Z9w1JE8dUprZKk0RgetsEKu+c=;
+	s=arc-20240116; t=1737482484; c=relaxed/simple;
+	bh=win7LY7PuD5mTZHhB+nhrTDhpaCS56lPs51cweQHKsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X+LJaaJe8ysXAW7maQhqnBWs1E/if1kItsTtgyih9ShK5RwnVbgrPoZbMD8/i7HJobZLa3bN7vRhW8cvoeMYZnKFZBSBuJUO7pMxiy8yqlHpmgk+tcNay99kEp3/gkcAuM1g1Uzku8wiyNvNHkjjleK3qan+6FlwDknV9oFtSAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nULLktH8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC313C4CEDF;
-	Tue, 21 Jan 2025 18:11:14 +0000 (UTC)
+	 MIME-Version; b=tSGF2yccK5mKTBW46py6RTBgKDP/qHokWQxaIyQaEfw9PpxohojJzUsCCRoO2rpLoVVApgqQJj60UYlvMAH5qbQmBAjtT53PYrepVSoXnzbE4GtGwjzF30h+T1rDIuU7Yiu0RQ4cowGGnYIgGSdR6CHN0cOWgDT5frb3nLKuhpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GeaNr6FK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A05C4CEDF;
+	Tue, 21 Jan 2025 18:01:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737483075;
-	bh=e3cI1qhS+nRcxM7965Z9w1JE8dUprZKk0RgetsEKu+c=;
+	s=korg; t=1737482484;
+	bh=win7LY7PuD5mTZHhB+nhrTDhpaCS56lPs51cweQHKsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nULLktH8+/zNrK5Uu/L6sfbY570CBjQceDIAxh8IKZ6dLfZQmDHDt3AJpVn3hgv2y
-	 bI9QQopjExfd2eZ9vJHBISI2KMZ1M2pqq5Nu4Jbi4MMcNoTFNS8hlAmGtrQhhq5Uhb
-	 VitzwNOJshNmNvDT44TlRlpi/q0Vdiok0A0LMuL0=
+	b=GeaNr6FKQ0+dwr4nGANAy2xRyCoPd9HswwvmdojjrMh1dZOnbIfJtqugBCwrw3Or5
+	 z09VwQaK98CeyuKK6W8RDVZMKgb6qrePb2EoweOY8cBtpKn2aDdsCme5oSLW5km0xT
+	 KBBwnS1WRQmF68mFZozuhTwJZneesE+xiLztWxzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Rob Herring <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 068/127] of: address: Remove duplicated functions
+	Marco Nelissen <marco.nelissen@gmail.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 092/122] filemap: avoid truncating 64-bit offset to 32 bits
 Date: Tue, 21 Jan 2025 18:52:20 +0100
-Message-ID: <20250121174532.292172488@linuxfoundation.org>
+Message-ID: <20250121174536.565017918@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Marco Nelissen <marco.nelissen@gmail.com>
 
-[ Upstream commit 3eb030c60835668997d5763b1a0c7938faf169f6 ]
+commit f505e6c91e7a22d10316665a86d79f84d9f0ba76 upstream.
 
-The recently added of_bus_default_flags_translate() performs the exact
-same operation as of_bus_pci_translate() and of_bus_isa_translate().
+On 32-bit kernels, folio_seek_hole_data() was inadvertently truncating a
+64-bit value to 32 bits, leading to a possible infinite loop when writing
+to an xfs filesystem.
 
-Avoid duplicated code replacing both of_bus_pci_translate() and
-of_bus_isa_translate() with of_bus_default_flags_translate().
-
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Link: https://lore.kernel.org/r/20231017110221.189299-3-herve.codina@bootlin.com
-Signed-off-by: Rob Herring <robh@kernel.org>
-Stable-dep-of: 7f05e20b989a ("of: address: Preserve the flags portion on 1:1 dma-ranges mapping")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250102190540.1356838-1-marco.nelissen@gmail.com
+Fixes: 54fa39ac2e00 ("iomap: use mapping_seek_hole_data")
+Signed-off-by: Marco Nelissen <marco.nelissen@gmail.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/address.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ mm/filemap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/of/address.c b/drivers/of/address.c
-index 7e74fe909282..b8e015af59df 100644
---- a/drivers/of/address.c
-+++ b/drivers/of/address.c
-@@ -221,10 +221,6 @@ static u64 of_bus_pci_map(__be32 *addr, const __be32 *range, int na, int ns,
- 	return da - cp;
- }
- 
--static int of_bus_pci_translate(__be32 *addr, u64 offset, int na)
--{
--	return of_bus_default_translate(addr + 1, offset, na - 1);
--}
- #endif /* CONFIG_PCI */
- 
- int of_pci_address_to_resource(struct device_node *dev, int bar,
-@@ -334,11 +330,6 @@ static u64 of_bus_isa_map(__be32 *addr, const __be32 *range, int na, int ns,
- 	return da - cp;
- }
- 
--static int of_bus_isa_translate(__be32 *addr, u64 offset, int na)
--{
--	return of_bus_default_translate(addr + 1, offset, na - 1);
--}
--
- static unsigned int of_bus_isa_get_flags(const __be32 *addr)
- {
- 	unsigned int flags = 0;
-@@ -369,7 +360,7 @@ static struct of_bus of_busses[] = {
- 		.match = of_bus_pci_match,
- 		.count_cells = of_bus_pci_count_cells,
- 		.map = of_bus_pci_map,
--		.translate = of_bus_pci_translate,
-+		.translate = of_bus_default_flags_translate,
- 		.has_flags = true,
- 		.get_flags = of_bus_pci_get_flags,
- 	},
-@@ -381,7 +372,7 @@ static struct of_bus of_busses[] = {
- 		.match = of_bus_isa_match,
- 		.count_cells = of_bus_isa_count_cells,
- 		.map = of_bus_isa_map,
--		.translate = of_bus_isa_translate,
-+		.translate = of_bus_default_flags_translate,
- 		.has_flags = true,
- 		.get_flags = of_bus_isa_get_flags,
- 	},
--- 
-2.39.5
-
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3004,7 +3004,7 @@ static inline loff_t folio_seek_hole_dat
+ 		if (ops->is_partially_uptodate(folio, offset, bsz) ==
+ 							seek_data)
+ 			break;
+-		start = (start + bsz) & ~(bsz - 1);
++		start = (start + bsz) & ~((u64)bsz - 1);
+ 		offset += bsz;
+ 	} while (offset < folio_size(folio));
+ unlock:
 
 
 
