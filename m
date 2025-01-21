@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-109654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F183A18341
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:54:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD457A183D0
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:00:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1DA218818A8
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:54:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC4EA16C471
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3CFD1F5439;
-	Tue, 21 Jan 2025 17:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69751F55F7;
+	Tue, 21 Jan 2025 17:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gfj/oUnx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVvcUzsL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17401E9B38;
-	Tue, 21 Jan 2025 17:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8316F1F7071;
+	Tue, 21 Jan 2025 17:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482050; cv=none; b=pVgMiyIAdbn/z/qIcEPoGS4vw/SgEKHJcVZSVPjEdk83IAPm1gEHQX0X0rF6S6dXONyPOTBsoYIzEjaI13QmtaBOsRPL4LpzKKBK9mel7F2wGlfB0QKPVE0ztekGFpM2fuMql8CW2le4L3MGDPdAuwsUALK+RZOLelU/hFVQSiY=
+	t=1737482376; cv=none; b=vCTsydu93N4VRJYO9rwsT+xa1gPs+OnPpVJI46Qik85Oy8suSaiG/ENiQUuKCrMfg4+j76iD0AKn7Fb0gKgAWfVyYZv3fLnt8IafgQbqKiwwJ/RBZ/ZTRsCzhxHu2EHRfoU4S6HMLOgWGsNvR6veT7PluUqn6Whh/Mc4y3OPnqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482050; c=relaxed/simple;
-	bh=z/ok41YhEHhjSX8OZIhD+XHjUFu3RlDTBMoSa3FLW2g=;
+	s=arc-20240116; t=1737482376; c=relaxed/simple;
+	bh=YDPWKXu6piHgKTp4Rl+1OUnHF9jtJekDjuNJwa8sJ2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dwGWbbBdXqDYW8EJaFYt79hTC90x2/o2qMNMOey4QMU1M/xQSgR/9raBfy8theg4PNypr5tRwve374G8f4RVzKcFul0HDG19mmPKHtzKdXc8MuWJ3kojB9BoecQ5OwEUjax9rJu2r5hENzWibZiqcVl5Y/Ld35aZMzptVQUkqAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gfj/oUnx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20B9C4CEDF;
-	Tue, 21 Jan 2025 17:54:08 +0000 (UTC)
+	 MIME-Version; b=C78kBOjDBf4LEPPLbHVbwXag6j8fQPWhK1/t9aAaRA+1uVjbIu0v1mVOcp3+RzAI27kv1y7A3u9snVif0hbrb7hmVWDCto+9WUTnxujMlL4aGBsE463gfABrw9g7EgytulfQ+mfgqrne25OpB27WDL79yjLzxSDhUKfn2IBFDEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVvcUzsL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E43C4CEE0;
+	Tue, 21 Jan 2025 17:59:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482049;
-	bh=z/ok41YhEHhjSX8OZIhD+XHjUFu3RlDTBMoSa3FLW2g=;
+	s=korg; t=1737482376;
+	bh=YDPWKXu6piHgKTp4Rl+1OUnHF9jtJekDjuNJwa8sJ2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gfj/oUnxAeMHYG60rYXFA60fBV9JCv6GARwlPu65HcBgPLy1GssZIgFPPT5uEgoXb
-	 o1RnQW/bVDLQyxyYpsIuvk7NCQP9BAf1ls0HN1COvHKDeXBXzkzDdncpIprKfzdAHc
-	 i5425dGVUqUpzM/ILRhHptdtyqPIiGm2W9Lh1VHg=
+	b=MVvcUzsLHMvCRb0lxonkvS3+0w91MhRXXDDql2U9JzhiwvnaK+QYsQabtzZfUqUfZ
+	 aYz5i7iPcaTZeDVYGOyQEDc55kPayn6+1b5NZcbs2SlNFEY779F+MDQKdT++iO5eNl
+	 O1y3vduRE8rXyZPOaJPurA5YY1GuKv/Urhni71/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	Max Kellermann <max.kellermann@ionos.com>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 17/72] drm/vmwgfx: Add new keep_resv BO param
+Subject: [PATCH 6.12 055/122] cachefiles: Parse the "secctx" immediately
 Date: Tue, 21 Jan 2025 18:51:43 +0100
-Message-ID: <20250121174524.090299000@linuxfoundation.org>
+Message-ID: <20250121174535.110466886@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,149 +63,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-[ Upstream commit b7d40627813799870e72729c6fc979a8a40d9ba6 ]
+[ Upstream commit e5a8b6446c0d370716f193771ccacf3260a57534 ]
 
-Adds a new BO param that keeps the reservation locked after creation.
-This removes the need to re-reserve the BO after creation which is a
-waste of cycles.
+Instead of storing an opaque string, call security_secctx_to_secid()
+right in the "secctx" command handler and store only the numeric
+"secid".  This eliminates an unnecessary string allocation and allows
+the daemon to receive errors when writing the "secctx" command instead
+of postponing the error to the "bind" command handler.  For example,
+if the kernel was built without `CONFIG_SECURITY`, "bind" will return
+`EOPNOTSUPP`, but the daemon doesn't know why.  With this patch, the
+"secctx" will instead return `EOPNOTSUPP` which is the right context
+for this error.
 
-This also fixes a bug in vmw_prime_import_sg_table where the imported
-reservation is unlocked twice.
+This patch adds a boolean flag `have_secid` because I'm not sure if we
+can safely assume that zero is the special secid value for "not set".
+This appears to be true for SELinux, Smack and AppArmor, but since
+this attribute is not documented, I'm unable to derive a stable
+guarantee for that.
 
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Fixes: b32233acceff ("drm/vmwgfx: Fix prime import/export")
-Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250110185335.15301-1-ian.forbes@broadcom.com
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20241209141554.638708-1-max.kellermann@ionos.com/
+Link: https://lore.kernel.org/r/20241213135013.2964079-6-dhowells@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_bo.c         | 3 ++-
- drivers/gpu/drm/vmwgfx/vmwgfx_bo.h         | 3 ++-
- drivers/gpu/drm/vmwgfx/vmwgfx_drv.c        | 7 ++-----
- drivers/gpu/drm/vmwgfx/vmwgfx_gem.c        | 1 +
- drivers/gpu/drm/vmwgfx/vmwgfx_shader.c     | 7 ++-----
- drivers/gpu/drm/vmwgfx/vmwgfx_ttm_buffer.c | 5 ++---
- 6 files changed, 11 insertions(+), 15 deletions(-)
+ fs/cachefiles/daemon.c   | 14 +++++++-------
+ fs/cachefiles/internal.h |  3 ++-
+ fs/cachefiles/security.c |  6 +++---
+ 3 files changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-index fdc34283eeb97..ec6ca264ce11f 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-@@ -412,7 +412,8 @@ static int vmw_bo_init(struct vmw_private *dev_priv,
+diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
+index 89b11336a8369..1806bff8e59bc 100644
+--- a/fs/cachefiles/daemon.c
++++ b/fs/cachefiles/daemon.c
+@@ -15,6 +15,7 @@
+ #include <linux/namei.h>
+ #include <linux/poll.h>
+ #include <linux/mount.h>
++#include <linux/security.h>
+ #include <linux/statfs.h>
+ #include <linux/ctype.h>
+ #include <linux/string.h>
+@@ -576,7 +577,7 @@ static int cachefiles_daemon_dir(struct cachefiles_cache *cache, char *args)
+  */
+ static int cachefiles_daemon_secctx(struct cachefiles_cache *cache, char *args)
+ {
+-	char *secctx;
++	int err;
  
- 	if (params->pin)
- 		ttm_bo_pin(&vmw_bo->tbo);
--	ttm_bo_unreserve(&vmw_bo->tbo);
-+	if (!params->keep_resv)
-+		ttm_bo_unreserve(&vmw_bo->tbo);
+ 	_enter(",%s", args);
  
+@@ -585,16 +586,16 @@ static int cachefiles_daemon_secctx(struct cachefiles_cache *cache, char *args)
+ 		return -EINVAL;
+ 	}
+ 
+-	if (cache->secctx) {
++	if (cache->have_secid) {
+ 		pr_err("Second security context specified\n");
+ 		return -EINVAL;
+ 	}
+ 
+-	secctx = kstrdup(args, GFP_KERNEL);
+-	if (!secctx)
+-		return -ENOMEM;
++	err = security_secctx_to_secid(args, strlen(args), &cache->secid);
++	if (err)
++		return err;
+ 
+-	cache->secctx = secctx;
++	cache->have_secid = true;
  	return 0;
  }
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
-index 156ea612fc2a4..a3ac61b991bf6 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
-@@ -53,8 +53,9 @@ struct vmw_bo_params {
- 	u32 domain;
- 	u32 busy_domain;
- 	enum ttm_bo_type bo_type;
--	size_t size;
- 	bool pin;
-+	bool keep_resv;
-+	size_t size;
- 	struct dma_resv *resv;
- 	struct sg_table *sg;
+ 
+@@ -820,7 +821,6 @@ static void cachefiles_daemon_unbind(struct cachefiles_cache *cache)
+ 	put_cred(cache->cache_cred);
+ 
+ 	kfree(cache->rootdirname);
+-	kfree(cache->secctx);
+ 	kfree(cache->tag);
+ 
+ 	_leave("");
+diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
+index 7b99bd98de75b..38c236e38cef8 100644
+--- a/fs/cachefiles/internal.h
++++ b/fs/cachefiles/internal.h
+@@ -122,7 +122,6 @@ struct cachefiles_cache {
+ #define CACHEFILES_STATE_CHANGED	3	/* T if state changed (poll trigger) */
+ #define CACHEFILES_ONDEMAND_MODE	4	/* T if in on-demand read mode */
+ 	char				*rootdirname;	/* name of cache root directory */
+-	char				*secctx;	/* LSM security context */
+ 	char				*tag;		/* cache binding tag */
+ 	refcount_t			unbind_pincount;/* refcount to do daemon unbind */
+ 	struct xarray			reqs;		/* xarray of pending on-demand requests */
+@@ -130,6 +129,8 @@ struct cachefiles_cache {
+ 	struct xarray			ondemand_ids;	/* xarray for ondemand_id allocation */
+ 	u32				ondemand_id_next;
+ 	u32				msg_id_next;
++	u32				secid;		/* LSM security id */
++	bool				have_secid;	/* whether "secid" was set */
  };
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-index bea576434e475..4655c266924fe 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-@@ -399,7 +399,8 @@ static int vmw_dummy_query_bo_create(struct vmw_private *dev_priv)
- 		.busy_domain = VMW_BO_DOMAIN_SYS,
- 		.bo_type = ttm_bo_type_kernel,
- 		.size = PAGE_SIZE,
--		.pin = true
-+		.pin = true,
-+		.keep_resv = true,
- 	};
  
- 	/*
-@@ -411,10 +412,6 @@ static int vmw_dummy_query_bo_create(struct vmw_private *dev_priv)
- 	if (unlikely(ret != 0))
- 		return ret;
+ static inline bool cachefiles_in_ondemand_mode(struct cachefiles_cache *cache)
+diff --git a/fs/cachefiles/security.c b/fs/cachefiles/security.c
+index fe777164f1d89..fc6611886b3b5 100644
+--- a/fs/cachefiles/security.c
++++ b/fs/cachefiles/security.c
+@@ -18,7 +18,7 @@ int cachefiles_get_security_ID(struct cachefiles_cache *cache)
+ 	struct cred *new;
+ 	int ret;
  
--	ret = ttm_bo_reserve(&vbo->tbo, false, true, NULL);
--	BUG_ON(ret != 0);
--	vmw_bo_pin_reserved(vbo, true);
--
- 	ret = ttm_bo_kmap(&vbo->tbo, 0, 1, &map);
- 	if (likely(ret == 0)) {
- 		result = ttm_kmap_obj_virtual(&map, &dummy);
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_gem.c b/drivers/gpu/drm/vmwgfx/vmwgfx_gem.c
-index d6bcaf078b1f4..0dc3dacc5beee 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_gem.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_gem.c
-@@ -163,6 +163,7 @@ struct drm_gem_object *vmw_prime_import_sg_table(struct drm_device *dev,
- 		.bo_type = ttm_bo_type_sg,
- 		.size = attach->dmabuf->size,
- 		.pin = false,
-+		.keep_resv = true,
- 		.resv = attach->dmabuf->resv,
- 		.sg = table,
+-	_enter("{%s}", cache->secctx);
++	_enter("{%u}", cache->have_secid ? cache->secid : 0);
  
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-index a01ca3226d0af..7fb1c88bcc475 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-@@ -896,7 +896,8 @@ int vmw_compat_shader_add(struct vmw_private *dev_priv,
- 		.busy_domain = VMW_BO_DOMAIN_SYS,
- 		.bo_type = ttm_bo_type_device,
- 		.size = size,
--		.pin = true
-+		.pin = true,
-+		.keep_resv = true,
- 	};
+ 	new = prepare_kernel_cred(current);
+ 	if (!new) {
+@@ -26,8 +26,8 @@ int cachefiles_get_security_ID(struct cachefiles_cache *cache)
+ 		goto error;
+ 	}
  
- 	if (!vmw_shader_id_ok(user_key, shader_type))
-@@ -906,10 +907,6 @@ int vmw_compat_shader_add(struct vmw_private *dev_priv,
- 	if (unlikely(ret != 0))
- 		goto out;
- 
--	ret = ttm_bo_reserve(&buf->tbo, false, true, NULL);
--	if (unlikely(ret != 0))
--		goto no_reserve;
--
- 	/* Map and copy shader bytecode. */
- 	ret = ttm_bo_kmap(&buf->tbo, 0, PFN_UP(size), &map);
- 	if (unlikely(ret != 0)) {
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_ttm_buffer.c b/drivers/gpu/drm/vmwgfx/vmwgfx_ttm_buffer.c
-index fcb87d83760ef..75cf9e76df2ed 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_ttm_buffer.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_ttm_buffer.c
-@@ -604,15 +604,14 @@ int vmw_bo_create_and_populate(struct vmw_private *dev_priv,
- 		.busy_domain = domain,
- 		.bo_type = ttm_bo_type_kernel,
- 		.size = bo_size,
--		.pin = true
-+		.pin = true,
-+		.keep_resv = true,
- 	};
- 
- 	ret = vmw_bo_create(dev_priv, &bo_params, &vbo);
- 	if (unlikely(ret != 0))
- 		return ret;
- 
--	ret = ttm_bo_reserve(&vbo->tbo, false, true, NULL);
--	BUG_ON(ret != 0);
- 	ret = vmw_ttm_populate(vbo->tbo.bdev, vbo->tbo.ttm, &ctx);
- 	if (likely(ret == 0)) {
- 		struct vmw_ttm_tt *vmw_tt =
+-	if (cache->secctx) {
+-		ret = set_security_override_from_ctx(new, cache->secctx);
++	if (cache->have_secid) {
++		ret = set_security_override(new, cache->secid);
+ 		if (ret < 0) {
+ 			put_cred(new);
+ 			pr_err("Security denies permission to nominate security context: error %d\n",
 -- 
 2.39.5
 
