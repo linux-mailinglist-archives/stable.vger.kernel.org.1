@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-109841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1233CA18429
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:04:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC4EA18390
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81F7018833C4
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:03:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4907A188CD84
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0601F5404;
-	Tue, 21 Jan 2025 18:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B661F75B0;
+	Tue, 21 Jan 2025 17:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3UedjzQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fWy4csg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16081F427B;
-	Tue, 21 Jan 2025 18:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CA01F667C;
+	Tue, 21 Jan 2025 17:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482594; cv=none; b=ijb/RMoyvBpbFzWNsHRQYI2acnW8lwxfnDgL/8F3p0vEoinTS76/ocGVlb990lvi1dkAYNBZI0e9rUADR4Vw++jyIcKxbBZOPxpP23WSoXxHChZpJe14wzlKB67vwXTC7XTnkFVa8yvBJdnd/7m1MDH0JfpBgqSGdXIEg1cZtOE=
+	t=1737482225; cv=none; b=CCXNwM0hpxoZsIuc0+C2KIgnASvyoD1pNl7bAyvLEnrGvzqP/8D9bhhm/eRs7Ef+axGff23Ac2p4U+icTF/2IK8pFPfGD9lhRGUHFBZgiQl2xGLXbg/sv4B59JW1DoVfPGw3Ilu2mojuXw+5PUwvW5JEN5ZJmDwR8x/znKKipfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482594; c=relaxed/simple;
-	bh=BGeaN7N9jnjR2aRts8pXbr9ITfE8xuPpm6oxWipvXoQ=;
+	s=arc-20240116; t=1737482225; c=relaxed/simple;
+	bh=vJ2WiCiCtFuRWDjJsKeNTr6GEwjmH+qfTsCq0cXi2h8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SHVVkOqZSrRRqystrq+c1F0sRFaPcSO8qVx1ENXD9qpVhemtUZXLfT6zqB+F1peVvGtwMV+AOuuF545ejJoKr7C7UtD0pofE4Vye4pKySKs/cV4hfg6KvRzDoDp8oT3PLZw/F+DGqD5IbhBBqNQpvlNj7fhqIsD3GeHRgHkHAIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3UedjzQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432CFC4CEDF;
-	Tue, 21 Jan 2025 18:03:14 +0000 (UTC)
+	 MIME-Version; b=n+GhdZZPUG7jrgnFM7kQqW16yf5sDPqzLgjv5Q2pvqWgURL2NtK4f37TYU2VtwDeFFfmMr/1x8tCU/s0zkPvLu7LZn+Knw6wSdYv5VxXyY43hWBv0Jd6akzXQ0GAg7dfpF7K5Vyfi9xBT07YWUhrYWLIlweBx7Mv7PIxahhqB98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fWy4csg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80122C4CEDF;
+	Tue, 21 Jan 2025 17:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482594;
-	bh=BGeaN7N9jnjR2aRts8pXbr9ITfE8xuPpm6oxWipvXoQ=;
+	s=korg; t=1737482224;
+	bh=vJ2WiCiCtFuRWDjJsKeNTr6GEwjmH+qfTsCq0cXi2h8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T3UedjzQDnroO1Ot4xv/y6oR6Z5PLZGt0LZ6PLdzzdfkwTjUsJ8iqu9FTAvQayfOo
-	 j/sQP54RNLf+/+1am8EaAKzhLCPOOqj/YzatzLKMQEGjbtjBtkp4P6ttvtz3bZ1kTo
-	 GMTC2qAzoiH873TIq0XLPBYhJ95rUbI+vhkY0CIk=
+	b=1fWy4csgBls67D5bOArWynCNLkoRDPOurR5jYt6sPVKQ7VXQygXf9MPVNdBcmKWWk
+	 mRs8YXrqjttKdw1coRqREbj/8cwBRIkKIkW9z16L6GJIdY7zb9PTJXO6c4iUNomvwl
+	 phNEZX5EIO/S6PbjPnJIFk0j2LZ9hj1c9q092TJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suren Baghdasaryan <surenb@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Jann Horn <jannh@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 095/122] tools: fix atomic_set() definition to set the value correctly
+	Tomas Krcka <krckatom@amazon.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.6 57/72] irqchip/gic-v3-its: Dont enable interrupts in its_irq_set_vcpu_affinity()
 Date: Tue, 21 Jan 2025 18:52:23 +0100
-Message-ID: <20250121174536.689048433@linuxfoundation.org>
+Message-ID: <20250121174525.632955994@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suren Baghdasaryan <surenb@google.com>
+From: Tomas Krcka <krckatom@amazon.de>
 
-commit 4bbb6df62c54e6a2c1fcce4908df768f0cfa1e91 upstream.
+commit 35cb2c6ce7da545f3b5cb1e6473ad7c3a6f08310 upstream.
 
-Currently vma test is failing because of the new vma_assert_attached()
-assertion.  The check is failing because previous refcount_set() inside
-vma_mark_attached() is a NoOp.  Fix the definition of atomic_set() to
-correctly set the value of the atomic.
+The following call-chain leads to enabling interrupts in a nested interrupt
+disabled section:
 
-Link: https://lkml.kernel.org/r/20241227222220.1726384-1-surenb@google.com
-Fixes: 9325b8b5a1cb ("tools: add skeleton code for userland testing of VMA logic")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+irq_set_vcpu_affinity()
+  irq_get_desc_lock()
+     raw_spin_lock_irqsave()   <--- Disable interrupts
+  its_irq_set_vcpu_affinity()
+     guard(raw_spinlock_irq)   <--- Enables interrupts when leaving the guard()
+  irq_put_desc_unlock()        <--- Warns because interrupts are enabled
+
+This was broken in commit b97e8a2f7130, which replaced the original
+raw_spin_[un]lock() pair with guard(raw_spinlock_irq).
+
+Fix the issue by using guard(raw_spinlock).
+
+[ tglx: Massaged change log ]
+
+Fixes: b97e8a2f7130 ("irqchip/gic-v3-its: Fix potential race condition in its_vlpi_prop_update()")
+Signed-off-by: Tomas Krcka <krckatom@amazon.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241230150825.62894-1-krckatom@amazon.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/shared/linux/maple_tree.h |    2 +-
- tools/testing/vma/linux/atomic.h        |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/shared/linux/maple_tree.h
-+++ b/tools/testing/shared/linux/maple_tree.h
-@@ -2,6 +2,6 @@
- #define atomic_t int32_t
- #define atomic_inc(x) uatomic_inc(x)
- #define atomic_read(x) uatomic_read(x)
--#define atomic_set(x, y) do {} while (0)
-+#define atomic_set(x, y) uatomic_set(x, y)
- #define U8_MAX UCHAR_MAX
- #include "../../../../include/linux/maple_tree.h"
---- a/tools/testing/vma/linux/atomic.h
-+++ b/tools/testing/vma/linux/atomic.h
-@@ -6,7 +6,7 @@
- #define atomic_t int32_t
- #define atomic_inc(x) uatomic_inc(x)
- #define atomic_read(x) uatomic_read(x)
--#define atomic_set(x, y) do {} while (0)
-+#define atomic_set(x, y) uatomic_set(x, y)
- #define U8_MAX UCHAR_MAX
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -1970,7 +1970,7 @@ static int its_irq_set_vcpu_affinity(str
+ 	if (!is_v4(its_dev->its))
+ 		return -EINVAL;
  
- #endif	/* _LINUX_ATOMIC_H */
+-	guard(raw_spinlock_irq)(&its_dev->event_map.vlpi_lock);
++	guard(raw_spinlock)(&its_dev->event_map.vlpi_lock);
+ 
+ 	/* Unmap request? */
+ 	if (!info)
 
 
 
