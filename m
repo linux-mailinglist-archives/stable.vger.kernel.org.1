@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-109965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7C7A18500
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:13:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF2B9A18439
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:04:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1E387A5B99
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4180316C2B7
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FBBF1F708D;
-	Tue, 21 Jan 2025 18:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E6B1F5404;
+	Tue, 21 Jan 2025 18:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xl/HAR0V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Scnf+Nvr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6331F3FFE;
-	Tue, 21 Jan 2025 18:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5FA81F3FFE;
+	Tue, 21 Jan 2025 18:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482951; cv=none; b=dPy77LNqj84lqqB7DzF8B4B5WhDtScZB9NOs4ubM5et7OzzZXVnhpG+v8DMkJW0GOgGItrTGSypgZwH0bdvvpTaxTBrzukRNZ29HUXdo/5CJ9dlG5SvXfJC9+k/Muwnzvk5iWB9VyeayZO5L/l0IDWy/Di66UzBeDdP2NK4Am60=
+	t=1737482623; cv=none; b=XkX1lab0NlpOuT6NEYUyyXklSRYl1OxlUJQcX8AQ0L2WJn+QnPLjkTw1DLlpyFr5lTglFNVY+v3ePjIZ/U7BWR3CfvmMdWcI4GjXHmwG+ZYtMf0FrPwNydyN9JnsvJwdCXsqt6EeYe4ZVBTXudoHW6Xqx5WsIzSq4tGHG96IXIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482951; c=relaxed/simple;
-	bh=zIcgYjiG2FdHPmt3JKzb/aK4wHBGSFOUewCDr1l0lgk=;
+	s=arc-20240116; t=1737482623; c=relaxed/simple;
+	bh=DL0Wf3pX2OVzRnzmqBSQk+6+J35Od01fbZkWriomsYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fb1hgte8RBUzTkIms+TzA+041q5cjI8ixM5nOvjZdDYoBLvfUPnTMfD2jknuRHr+k1g5KDkBXess+DiFlvH4DZF0tYk79YV9RW76L77YPVqpO6N7ed36LdSQ55/KjYtFNop5t0pDTJNxiMO9BlRk9EgLGPtZ7mxDzZbmuIxWuZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xl/HAR0V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C88C4CEDF;
-	Tue, 21 Jan 2025 18:09:09 +0000 (UTC)
+	 MIME-Version; b=NVLDKPTeTYKHxzoTjapxXXCTqC6poGIkaTZviyYXwGIAgDFD9+solstTV/xnj3QTfIYAIVYMSwji0bnZcJY0hBbIAfMPGrI/u1bHVP4zQyYDQNlBpFPn2JVrH12IpyeA1QyKH5BEq6ViHE//bGOXvbwHMfVqCoRUaogUfjRs2tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Scnf+Nvr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0063AC4CEDF;
+	Tue, 21 Jan 2025 18:03:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482950;
-	bh=zIcgYjiG2FdHPmt3JKzb/aK4wHBGSFOUewCDr1l0lgk=;
+	s=korg; t=1737482621;
+	bh=DL0Wf3pX2OVzRnzmqBSQk+6+J35Od01fbZkWriomsYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xl/HAR0VrGE2ZByCZ8F+7l1ZTDSB+yglM7ShnDl4QDC7jAg1FDq4msvO4QZ49vXWF
-	 CgTAXO7b0y5rsAFaDb2SDdA1N/6yMI16svUo5q1YDEIyapdA1B8cRXPefbmlnR0BVY
-	 TgDtPjjYj4zC6hZapM4PxPu3Wb67unLrG2C+JoZ0=
+	b=Scnf+NvrHCc2gM0RbSNfUiyjxSxbrPLz6xLBaja7eNGm72lCPOPPvyOujMajdY28l
+	 wllE4DtwYCa3x5WtZT9OGNK3HgM7sfEsHYsY+XweUATT/ADaaGeYts0kq8/I0wAncH
+	 yBs26rvFbS4ozkJFPpgGrRAILe7V5zSeKvLb15vE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Geis <pgwipeout@gmail.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 064/127] arm64: dts: rockchip: add hevc power domain clock to rk3328
+Subject: [PATCH 6.1 17/64] i2c: rcar: fix NACK handling when being a target
 Date: Tue, 21 Jan 2025 18:52:16 +0100
-Message-ID: <20250121174532.141652802@linuxfoundation.org>
+Message-ID: <20250121174522.217304262@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
+References: <20250121174521.568417761@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Geis <pgwipeout@gmail.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 3699f2c43ea9984e00d70463f8c29baaf260ea97 ]
+[ Upstream commit 093f70c134f70e4632b295240f07d2b50b74e247 ]
 
-There is a race condition at startup between disabling power domains not
-used and disabling clocks not used on the rk3328. When the clocks are
-disabled first, the hevc power domain fails to shut off leading to a
-splat of failures. Add the hevc core clock to the rk3328 power domain
-node to prevent this condition.
+When this controller is a target, the NACK handling had two issues.
+First, the return value from the backend was not checked on the initial
+WRITE_REQUESTED. So, the driver missed to send a NACK in this case.
+Also, the NACK always arrives one byte late on the bus, even in the
+WRITE_RECEIVED case. This seems to be a HW issue. We should then not
+rely on the backend to correctly NACK the superfluous byte as well. Fix
+both issues by introducing a flag which gets set whenever the backend
+requests a NACK and keep sending it until we get a STOP condition.
 
-rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: { 3-.... }
-1087 jiffies s: 89 root: 0x8/.
-rcu: blocking rcu_node structures (internal RCU debug):
-Sending NMI from CPU 0 to CPUs 3:
-NMI backtrace for cpu 3
-CPU: 3 UID: 0 PID: 86 Comm: kworker/3:3 Not tainted 6.12.0-rc5+ #53
-Hardware name: Firefly ROC-RK3328-CC (DT)
-Workqueue: pm genpd_power_off_work_fn
-pstate: 20400005 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : regmap_unlock_spinlock+0x18/0x30
-lr : regmap_read+0x60/0x88
-sp : ffff800081123c00
-x29: ffff800081123c00 x28: ffff2fa4c62cad80 x27: 0000000000000000
-x26: ffffd74e6e660eb8 x25: ffff2fa4c62cae00 x24: 0000000000000040
-x23: ffffd74e6d2f3ab8 x22: 0000000000000001 x21: ffff800081123c74
-x20: 0000000000000000 x19: ffff2fa4c0412000 x18: 0000000000000000
-x17: 77202c31203d2065 x16: 6c6469203a72656c x15: 6c6f72746e6f632d
-x14: 7265776f703a6e6f x13: 2063766568206e69 x12: 616d6f64202c3431
-x11: 347830206f742030 x10: 3430303034783020 x9 : ffffd74e6c7369e0
-x8 : 3030316666206e69 x7 : 205d383738353733 x6 : 332e31202020205b
-x5 : ffffd74e6c73fc88 x4 : ffffd74e6c73fcd4 x3 : ffffd74e6c740b40
-x2 : ffff800080015484 x1 : 0000000000000000 x0 : ffff2fa4c0412000
-Call trace:
-regmap_unlock_spinlock+0x18/0x30
-rockchip_pmu_set_idle_request+0xac/0x2c0
-rockchip_pd_power+0x144/0x5f8
-rockchip_pd_power_off+0x1c/0x30
-_genpd_power_off+0x9c/0x180
-genpd_power_off.part.0.isra.0+0x130/0x2a8
-genpd_power_off_work_fn+0x6c/0x98
-process_one_work+0x170/0x3f0
-worker_thread+0x290/0x4a8
-kthread+0xec/0xf8
-ret_from_fork+0x10/0x20
-rockchip-pm-domain ff100000.syscon:power-controller: failed to get ack on domain 'hevc', val=0x88220
-
-Fixes: 52e02d377a72 ("arm64: dts: rockchip: add core dtsi file for RK3328 SoCs")
-Signed-off-by: Peter Geis <pgwipeout@gmail.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://lore.kernel.org/r/20241214224339.24674-1-pgwipeout@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: de20d1857dd6 ("i2c: rcar: add slave support")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3328.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/busses/i2c-rcar.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-index f73cb7667bab..93ef90315cda 100644
---- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-@@ -302,6 +302,7 @@
+diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
+index d0098e342ba22..c7f2a9d8bcd56 100644
+--- a/drivers/i2c/busses/i2c-rcar.c
++++ b/drivers/i2c/busses/i2c-rcar.c
+@@ -110,6 +110,8 @@
+ #define ID_P_PM_BLOCKED		BIT(31)
+ #define ID_P_MASK		GENMASK(31, 28)
  
- 			power-domain@RK3328_PD_HEVC {
- 				reg = <RK3328_PD_HEVC>;
-+				clocks = <&cru SCLK_VENC_CORE>;
- 				#power-domain-cells = <0>;
- 			};
- 			power-domain@RK3328_PD_VIDEO {
++#define ID_SLAVE_NACK		BIT(0)
++
+ enum rcar_i2c_type {
+ 	I2C_RCAR_GEN1,
+ 	I2C_RCAR_GEN2,
+@@ -143,6 +145,7 @@ struct rcar_i2c_priv {
+ 	int irq;
+ 
+ 	struct i2c_client *host_notify_client;
++	u8 slave_flags;
+ };
+ 
+ #define rcar_i2c_priv_to_dev(p)		((p)->adap.dev.parent)
+@@ -597,6 +600,7 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
+ {
+ 	u32 ssr_raw, ssr_filtered;
+ 	u8 value;
++	int ret;
+ 
+ 	ssr_raw = rcar_i2c_read(priv, ICSSR) & 0xff;
+ 	ssr_filtered = ssr_raw & rcar_i2c_read(priv, ICSIER);
+@@ -612,7 +616,10 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
+ 			rcar_i2c_write(priv, ICRXTX, value);
+ 			rcar_i2c_write(priv, ICSIER, SDE | SSR | SAR);
+ 		} else {
+-			i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_REQUESTED, &value);
++			ret = i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_REQUESTED, &value);
++			if (ret)
++				priv->slave_flags |= ID_SLAVE_NACK;
++
+ 			rcar_i2c_read(priv, ICRXTX);	/* dummy read */
+ 			rcar_i2c_write(priv, ICSIER, SDR | SSR | SAR);
+ 		}
+@@ -625,18 +632,21 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
+ 	if (ssr_filtered & SSR) {
+ 		i2c_slave_event(priv->slave, I2C_SLAVE_STOP, &value);
+ 		rcar_i2c_write(priv, ICSCR, SIE | SDBS); /* clear our NACK */
++		priv->slave_flags &= ~ID_SLAVE_NACK;
+ 		rcar_i2c_write(priv, ICSIER, SAR);
+ 		rcar_i2c_write(priv, ICSSR, ~SSR & 0xff);
+ 	}
+ 
+ 	/* master wants to write to us */
+ 	if (ssr_filtered & SDR) {
+-		int ret;
+-
+ 		value = rcar_i2c_read(priv, ICRXTX);
+ 		ret = i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_RECEIVED, &value);
+-		/* Send NACK in case of error */
+-		rcar_i2c_write(priv, ICSCR, SIE | SDBS | (ret < 0 ? FNA : 0));
++		if (ret)
++			priv->slave_flags |= ID_SLAVE_NACK;
++
++		/* Send NACK in case of error, but it will come 1 byte late :( */
++		rcar_i2c_write(priv, ICSCR, SIE | SDBS |
++			       (priv->slave_flags & ID_SLAVE_NACK ? FNA : 0));
+ 		rcar_i2c_write(priv, ICSSR, ~SDR & 0xff);
+ 	}
+ 
 -- 
 2.39.5
 
