@@ -1,175 +1,148 @@
-Return-Path: <stable+bounces-109628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B9E2A18085
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 15:54:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98EECA1810F
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 16:22:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1B94168187
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 14:54:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6496018898BC
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 15:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE1B1F3FD6;
-	Tue, 21 Jan 2025 14:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FF31F4703;
+	Tue, 21 Jan 2025 15:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpA6i2sy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Eg/O4xRp"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5993254F81
-	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 14:54:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F6B23A9;
+	Tue, 21 Jan 2025 15:22:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737471249; cv=none; b=HDm/2yJOIAI25Dgrlcl0uiUebxZus++YaITpbKeFcGQy0ZUvARqD6JapwSZYx+gZS2Bj/4g3W6KUkqjJ8xnqbKQlqewurlo9FWMNY8zueqqRCxwhDXt3vv3KOixgK8JnxhLGc1ap+a5n1xUDS3IuB0N+dnkkUPsI7eCqMF48QOk=
+	t=1737472961; cv=none; b=s4GEtm32tEZqfWt/fOU+p+k6kTRAyM2Mfzyf0kJDBKkpTATlg9Q4LCX5ftxwI/Jfi/NAQMzEVTXWDF9Z8RgSBCpi6Y+Y5GhDQq+T09iUMwsMpI8FEv21ZWoB6O8XzZv/vakfFVX6LxLC5UKrFMpTV0qliJKmL7qQ9e+faz8cW2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737471249; c=relaxed/simple;
-	bh=OQh0OuRT7E/Oc027pUy8V3DuO7TBJZWl50+TXp7+Lio=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q0wW0NUMr/P8Ofy8fpbvfrC02WLEot30tngg0WMKPzjMiLwj+7AHnfnbLDeTvnnB7/oZCOwq/HpeaQtXnYnNtjMQpsEPcl4mlqkFu0KeHt9ANPT27O++Wph19GrgHHIzDe42N/JMwXaaR8/wNvRs+6jfjtEt+LQz2JtSh5F+RAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpA6i2sy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B82C4CEDF;
-	Tue, 21 Jan 2025 14:54:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737471248;
-	bh=OQh0OuRT7E/Oc027pUy8V3DuO7TBJZWl50+TXp7+Lio=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DpA6i2syhHM5gs25cbw4W2z08CjpfRjB35ymxP/C7clmLr2ucU9PMFt0nMsyp4x3b
-	 DoH33sc4rSNs/qjnj1Sap0GL0y923mNK9grS05+Ie9a/gG3RwKLKgXf6V92ogyWWc8
-	 t4oHnG3CW3Km78etgU0tOCyEi+FDzGSK/V7QVCSU=
-Date: Tue, 21 Jan 2025 15:54:05 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: alvalan9@foxmail.com
-Cc: stable@vger.kernel.org, Wang Liang <wangliang74@huawei.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH 6.1.y] net: fix data-races around sk->sk_forward_alloc
-Message-ID: <2025012102-zero-tidiness-4632@gregkh>
-References: <tencent_D660CC1BB869156A7C3EBA24B5ACF371BA09@qq.com>
+	s=arc-20240116; t=1737472961; c=relaxed/simple;
+	bh=ayEVt7ToU1rh5WGkoEX9FOAU1+7+Q10pEjmaIDV6fVM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=B2BxHBQITUPOKe9eChH6QlBBkwfaPs+PKXvv5EKovuzGqxufyRVa08ZcZ1CN0G/sCQweyw4a8U5XWiaRrQRxhfxM6YjqmDIrWPJbsuH6YtVn9hJXgstHrWROIi3jQkLW93z7jO3YRc6Eg4hW1x1AC4l6OJxPnaZ/q7PwPdZwPAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Eg/O4xRp; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737472960; x=1769008960;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ayEVt7ToU1rh5WGkoEX9FOAU1+7+Q10pEjmaIDV6fVM=;
+  b=Eg/O4xRpHfrl+TkSn6FRCCXtWPk360ERbdOo0YTucu5ATUDuzDzwpqTC
+   mFk/2dXNUfnu0ffBa7YN2WI4n3yW/WudLis2fXtigAzPrfrgxPSdQTpUc
+   jhXY6gq7pYhsh9RddDuh1rGypTb4Tv6tXPMP3ssKNjRdBrENfOoTkK5ZV
+   cXc+n1Grjzgg32idaHKUT8/4vePEVO5LqsqVcsHjnt4htRPQEa539NwzO
+   FphamBomvsWc3nkQXSQZjWG54mH52vzrCl6I4F6hCRQmLZYfryBlBluoJ
+   pCAhH2a+5qFx8ZUP5Rjp5aED7RYAt7CKQxHVnSdWcCa0NCZHWZzPIbcDf
+   Q==;
+X-CSE-ConnectionGUID: yGEPzkxDQ0qBK6ik1mseeA==
+X-CSE-MsgGUID: NpUQZmFFSNalngmr+wC0tg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="37161451"
+X-IronPort-AV: E=Sophos;i="6.13,222,1732608000"; 
+   d="scan'208";a="37161451"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2025 07:22:38 -0800
+X-CSE-ConnectionGUID: M+ssqkmNScOiKEZJ6WhveQ==
+X-CSE-MsgGUID: fpAZIaqhRiCwzCsOEJZQgg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="111925741"
+Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
+  by orviesa005.jf.intel.com with ESMTP; 21 Jan 2025 07:22:38 -0800
+From: kan.liang@linux.intel.com
+To: peterz@infradead.org,
+	mingo@redhat.com,
+	acme@kernel.org,
+	namhyung@kernel.org,
+	irogers@google.com,
+	adrian.hunter@intel.com,
+	linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org
+Cc: ak@linux.intel.com,
+	eranian@google.com,
+	dapeng1.mi@linux.intel.com,
+	Kan Liang <kan.liang@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH V10 1/4] perf/x86/intel: Apply static call for drain_pebs
+Date: Tue, 21 Jan 2025 07:23:00 -0800
+Message-Id: <20250121152303.3128733-1-kan.liang@linux.intel.com>
+X-Mailer: git-send-email 2.38.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tencent_D660CC1BB869156A7C3EBA24B5ACF371BA09@qq.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 21, 2025 at 10:22:43PM +0800, alvalan9@foxmail.com wrote:
-> From: Wang Liang <wangliang74@huawei.com>
-> 
-> commit 073d89808c065ac4c672c0a613a71b27a80691cb upstream.
-> 
-> Syzkaller reported this warning:
->  ------------[ cut here ]------------
->  WARNING: CPU: 0 PID: 16 at net/ipv4/af_inet.c:156 inet_sock_destruct+0x1c5/0x1e0
->  Modules linked in:
->  CPU: 0 UID: 0 PID: 16 Comm: ksoftirqd/0 Not tainted 6.12.0-rc5 #26
->  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
->  RIP: 0010:inet_sock_destruct+0x1c5/0x1e0
->  Code: 24 12 4c 89 e2 5b 48 c7 c7 98 ec bb 82 41 5c e9 d1 18 17 ff 4c 89 e6 5b 48 c7 c7 d0 ec bb 82 41 5c e9 bf 18 17 ff 0f 0b eb 83 <0f> 0b eb 97 0f 0b eb 87 0f 0b e9 68 ff ff ff 66 66 2e 0f 1f 84 00
->  RSP: 0018:ffffc9000008bd90 EFLAGS: 00010206
->  RAX: 0000000000000300 RBX: ffff88810b172a90 RCX: 0000000000000007
->  RDX: 0000000000000002 RSI: 0000000000000300 RDI: ffff88810b172a00
->  RBP: ffff88810b172a00 R08: ffff888104273c00 R09: 0000000000100007
->  R10: 0000000000020000 R11: 0000000000000006 R12: ffff88810b172a00
->  R13: 0000000000000004 R14: 0000000000000000 R15: ffff888237c31f78
->  FS:  0000000000000000(0000) GS:ffff888237c00000(0000) knlGS:0000000000000000
->  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->  CR2: 00007ffc63fecac8 CR3: 000000000342e000 CR4: 00000000000006f0
->  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
->  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
->  Call Trace:
->   <TASK>
->   ? __warn+0x88/0x130
->   ? inet_sock_destruct+0x1c5/0x1e0
->   ? report_bug+0x18e/0x1a0
->   ? handle_bug+0x53/0x90
->   ? exc_invalid_op+0x18/0x70
->   ? asm_exc_invalid_op+0x1a/0x20
->   ? inet_sock_destruct+0x1c5/0x1e0
->   __sk_destruct+0x2a/0x200
->   rcu_do_batch+0x1aa/0x530
->   ? rcu_do_batch+0x13b/0x530
->   rcu_core+0x159/0x2f0
->   handle_softirqs+0xd3/0x2b0
->   ? __pfx_smpboot_thread_fn+0x10/0x10
->   run_ksoftirqd+0x25/0x30
->   smpboot_thread_fn+0xdd/0x1d0
->   kthread+0xd3/0x100
->   ? __pfx_kthread+0x10/0x10
->   ret_from_fork+0x34/0x50
->   ? __pfx_kthread+0x10/0x10
->   ret_from_fork_asm+0x1a/0x30
->   </TASK>
->  ---[ end trace 0000000000000000 ]---
-> 
-> Its possible that two threads call tcp_v6_do_rcv()/sk_forward_alloc_add()
-> concurrently when sk->sk_state == TCP_LISTEN with sk->sk_lock unlocked,
-> which triggers a data-race around sk->sk_forward_alloc:
-> tcp_v6_rcv
->     tcp_v6_do_rcv
->         skb_clone_and_charge_r
->             sk_rmem_schedule
->                 __sk_mem_schedule
->                     sk_forward_alloc_add()
->             skb_set_owner_r
->                 sk_mem_charge
->                     sk_forward_alloc_add()
->         __kfree_skb
->             skb_release_all
->                 skb_release_head_state
->                     sock_rfree
->                         sk_mem_uncharge
->                             sk_forward_alloc_add()
->                             sk_mem_reclaim
->                                 // set local var reclaimable
->                                 __sk_mem_reclaim
->                                     sk_forward_alloc_add()
-> 
-> In this syzkaller testcase, two threads call
-> tcp_v6_do_rcv() with skb->truesize=768, the sk_forward_alloc changes like
-> this:
->  (cpu 1)             | (cpu 2)             | sk_forward_alloc
->  ...                 | ...                 | 0
->  __sk_mem_schedule() |                     | +4096 = 4096
->                      | __sk_mem_schedule() | +4096 = 8192
->  sk_mem_charge()     |                     | -768  = 7424
->                      | sk_mem_charge()     | -768  = 6656
->  ...                 |    ...              |
->  sk_mem_uncharge()   |                     | +768  = 7424
->  reclaimable=7424    |                     |
->                      | sk_mem_uncharge()   | +768  = 8192
->                      | reclaimable=8192    |
->  __sk_mem_reclaim()  |                     | -4096 = 4096
->                      | __sk_mem_reclaim()  | -8192 = -4096 != 0
-> 
-> The skb_clone_and_charge_r() should not be called in tcp_v6_do_rcv() when
-> sk->sk_state is TCP_LISTEN, it happens later in tcp_v6_syn_recv_sock().
-> Fix the same issue in dccp_v6_do_rcv().
-> 
-> Suggested-by: Eric Dumazet <edumazet@google.com>
-> Reviewed-by: Eric Dumazet <edumazet@google.com>
-> Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
-> Signed-off-by: Wang Liang <wangliang74@huawei.com>
-> Link: https://patch.msgid.link/20241107023405.889239-1-wangliang74@huawei.com
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Alva Lan <alvalan9@foxmail.com>
-> ---
+From: "Peter Zijlstra (Intel)" <peterz@infradead.org>
 
-You sent this twice, which one is correct?  I'll drop both from my inbox
-just to be sure :)
+The x86_pmu_drain_pebs static call was introduced in commit 7c9903c9bf71
+("x86/perf, static_call: Optimize x86_pmu methods"), but it's not really
+used to replace the old method.
 
-> Backport to fix CVE-2024-53124.
-> Link: https://nvd.nist.gov/vuln/detail/CVE-2024-53124
+Apply the static call for drain_pebs.
 
-Please don't point to random cve "enhancers" with unknown ways that they
-have modified our original cve record.  Just point at the cve.org record
-if you really want to link to something.
+Fixes: 7c9903c9bf71 ("x86/perf, static_call: Optimize x86_pmu methods")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+---
 
-thanks,
+New for V10
 
-greg k-h
+ arch/x86/events/intel/core.c | 2 +-
+ arch/x86/events/intel/ds.c   | 2 +-
+ arch/x86/events/perf_event.h | 1 +
+ 3 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 2a2824e9c50d..4daa45ae9bd2 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -3066,7 +3066,7 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
+ 
+ 		handled++;
+ 		x86_pmu_handle_guest_pebs(regs, &data);
+-		x86_pmu.drain_pebs(regs, &data);
++		static_call(x86_pmu_drain_pebs)(regs, &data);
+ 		status &= intel_ctrl | GLOBAL_STATUS_TRACE_TOPAPMI;
+ 
+ 		/*
+diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
+index ba74e1198328..322963b02a91 100644
+--- a/arch/x86/events/intel/ds.c
++++ b/arch/x86/events/intel/ds.c
+@@ -957,7 +957,7 @@ static inline void intel_pmu_drain_pebs_buffer(void)
+ {
+ 	struct perf_sample_data data;
+ 
+-	x86_pmu.drain_pebs(NULL, &data);
++	static_call(x86_pmu_drain_pebs)(NULL, &data);
+ }
+ 
+ /*
+diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
+index 31c2771545a6..084e9196b458 100644
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -1107,6 +1107,7 @@ extern struct x86_pmu x86_pmu __read_mostly;
+ 
+ DECLARE_STATIC_CALL(x86_pmu_set_period, *x86_pmu.set_period);
+ DECLARE_STATIC_CALL(x86_pmu_update,     *x86_pmu.update);
++DECLARE_STATIC_CALL(x86_pmu_drain_pebs,	*x86_pmu.drain_pebs);
+ 
+ static __always_inline struct x86_perf_task_context_opt *task_context_opt(void *ctx)
+ {
+-- 
+2.38.1
+
 
