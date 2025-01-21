@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-109910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DC87A18469
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:07:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20AEFA183DF
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F6A27A312A
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:06:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69E3A188CAE3
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27CE1F63FD;
-	Tue, 21 Jan 2025 18:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1CA1F7569;
+	Tue, 21 Jan 2025 18:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vs/ouNBK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+ozXKKz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4551F667C;
-	Tue, 21 Jan 2025 18:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC971F7076;
+	Tue, 21 Jan 2025 18:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482797; cv=none; b=gm975IySr6scST0907Xv4gsjCT8XWHWR04Nr39nynYBi1c1viVXpqfwxmA25HjSN02Vqru//a5Z6wKanL1ZKjmLtYyklk3iOwaWcUK2nLRxF/wDvJJuU7XWmIlKKeGfUy4tBjsbteJxiLVcSFoRx9pBWQTKMrGLedthnME7vGWU=
+	t=1737482411; cv=none; b=P1jBa1oNcM8CxiBo+ZlV7nEp2pdf6VyVdYnwaI3W3W2/W78aL1FNlslvFvj5OCImYv8+xBN4+qQgyKlFviWZP00Q3Jy9N9fW8yre9DXvMUyi+WctzLyEZwISSC57dYV1IYErCJx9mHuyv9KSAHzdrGjNJ6IbPV/4EOg3baJZiA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482797; c=relaxed/simple;
-	bh=moj7Gre4nx1D6TY0SvDeFftU+31RPYv7obMNwpioWA0=;
+	s=arc-20240116; t=1737482411; c=relaxed/simple;
+	bh=1RlGcdRK0G/dC5OHtUpLyFiGaPzuqFAVV8Fws9lIS8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jyW6iz8mbcaJ5TKeYMOjpW6HS4/CBn1avwBo/OC7OAY36svDUnG7PN/51GSk2ciQrr6qfgW90CXeIcR23EFxMQaBjl3ydihHQi1Obf27/RUahWSBevlxgln5gsshlHRvPzxG8N4kq5FODJXx2yFfmJtq7d6oqXhHR9kzv3GuTG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vs/ouNBK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3818C4CEE0;
-	Tue, 21 Jan 2025 18:06:36 +0000 (UTC)
+	 MIME-Version; b=qulFwwFwb+vdxK4h4gD0NaLOfOBXHfEWroDQs0Pbu4AeoZkFwmYHoVvxZY3By1gkKwi+1n+EUqr/OCmHStuXpiOOaNweiSP2tClsdzc94ag07SSmo7yqOerTqtSfuVYZg/EH0sm2oyiKKuHco+UCKjNw+68kNydMfPUNhQ3q004=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+ozXKKz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAFA5C4CEDF;
+	Tue, 21 Jan 2025 18:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482797;
-	bh=moj7Gre4nx1D6TY0SvDeFftU+31RPYv7obMNwpioWA0=;
+	s=korg; t=1737482411;
+	bh=1RlGcdRK0G/dC5OHtUpLyFiGaPzuqFAVV8Fws9lIS8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vs/ouNBKyfEgFu5QgLnAgbLDgKFEZ8lakZBGY8mQgYsI6cS9C83FF2KGkK/Enh6yp
-	 CgbcNKyIA+2hpu4qUr+YpJd3rw9jCiEaTOylb303d4csM9rNKd7/7cfpegBd0jYmzt
-	 aa+t6f9sR1iFbVNUQI8WpgI+PsyydnR1gb4MpAZI=
+	b=o+ozXKKzDAr47CfpwxCgMIuzM6oU+XdVGKDqtaKU12AkfOP/ccInNSzfTHJJkN6qC
+	 Oc8iq7owShmIu+pF+8UnS9mr/hNYOnkonFZgJhHMhAzTo7WUTWQa+uvgtHSSlkmzYY
+	 7Db9PSxxg6bXDP5L7+k/c6IroXMuLXiwy+erE36I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhongqiu Duan <dzq.aishenghu0@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 012/127] tcp/dccp: allow a connection when sk_max_ack_backlog is zero
-Date: Tue, 21 Jan 2025 18:51:24 +0100
-Message-ID: <20250121174530.148221838@linuxfoundation.org>
+Subject: [PATCH 6.12 037/122] reset: rzg2l-usbphy-ctrl: Assign proper of node to the allocated device
+Date: Tue, 21 Jan 2025 18:51:25 +0100
+Message-ID: <20250121174534.416934507@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhongqiu Duan <dzq.aishenghu0@gmail.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 3479c7549fb1dfa7a1db4efb7347c7b8ef50de4b ]
+[ Upstream commit 1f8af9712413f456849fdf3f3a782cbe099476d7 ]
 
-If the backlog of listen() is set to zero, sk_acceptq_is_full() allows
-one connection to be made, but inet_csk_reqsk_queue_is_full() does not.
-When the net.ipv4.tcp_syncookies is zero, inet_csk_reqsk_queue_is_full()
-will cause an immediate drop before the sk_acceptq_is_full() check in
-tcp_conn_request(), resulting in no connection can be made.
+The platform device named "rzg2l-usb-vbus-regulator", allocated by
+the rzg2l-usbphy-ctrl driver, is used to instantiate a regulator driver.
+This regulator driver is associated with a device tree (DT) node, which
+is a child of the rzg2l-usbphy-ctrl DT node. The regulator's DT node allows
+consumer nodes to reference the regulator and configure the regulator as
+needed.
 
-This patch tries to keep consistent with 64a146513f8f ("[NET]: Revert
-incorrect accept queue backlog changes.").
+Starting with commit cd7a38c40b23 ("regulator: core: do not silently ignore
+provided init_data") the struct regulator_dev::dev::of_node is no longer
+populated using of_node_get(config->of_node) if the regulator does not
+provide init_data. Since the rzg2l-usb-vbus-regulator does not provide
+init_data, this behaviour causes the of_find_regulator_by_node() function
+to fails, resulting in errors when attempting to request the regulator.
 
-Link: https://lore.kernel.org/netdev/20250102080258.53858-1-kuniyu@amazon.com/
-Fixes: ef547f2ac16b ("tcp: remove max_qlen_log")
-Signed-off-by: Zhongqiu Duan <dzq.aishenghu0@gmail.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250102171426.915276-1-dzq.aishenghu0@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+To fix this issue, call device_set_of_node_from_dev() for the
+"rzg2l-usb-vbus-regulator" platform device.
+
+Fixes: 84fbd6198766 ("regulator: Add Renesas RZ/G2L USB VBUS regulator driver")
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://lore.kernel.org/r/20241119085554.1035881-1-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/inet_connection_sock.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/reset/reset-rzg2l-usbphy-ctrl.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
-index 0bf19c1926ee..7a015055fe6d 100644
---- a/include/net/inet_connection_sock.h
-+++ b/include/net/inet_connection_sock.h
-@@ -278,7 +278,7 @@ static inline int inet_csk_reqsk_queue_len(const struct sock *sk)
+diff --git a/drivers/reset/reset-rzg2l-usbphy-ctrl.c b/drivers/reset/reset-rzg2l-usbphy-ctrl.c
+index 1cd157f4f03b4..4e2ac1f0060c0 100644
+--- a/drivers/reset/reset-rzg2l-usbphy-ctrl.c
++++ b/drivers/reset/reset-rzg2l-usbphy-ctrl.c
+@@ -176,6 +176,7 @@ static int rzg2l_usbphy_ctrl_probe(struct platform_device *pdev)
+ 	vdev->dev.parent = dev;
+ 	priv->vdev = vdev;
  
- static inline int inet_csk_reqsk_queue_is_full(const struct sock *sk)
- {
--	return inet_csk_reqsk_queue_len(sk) >= READ_ONCE(sk->sk_max_ack_backlog);
-+	return inet_csk_reqsk_queue_len(sk) > READ_ONCE(sk->sk_max_ack_backlog);
- }
- 
- bool inet_csk_reqsk_queue_drop(struct sock *sk, struct request_sock *req);
++	device_set_of_node_from_dev(&vdev->dev, dev);
+ 	error = platform_device_add(vdev);
+ 	if (error)
+ 		goto err_device_put;
 -- 
 2.39.5
 
