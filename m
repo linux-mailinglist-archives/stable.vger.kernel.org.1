@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-109913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5DC5A18475
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:07:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0E3A183E0
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:01:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AC8A16B3A7
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:06:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD099188C3ED
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A661F55F3;
-	Tue, 21 Jan 2025 18:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07061F55F7;
+	Tue, 21 Jan 2025 18:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rfbpKxXS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X58nOzJE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A811F472D;
-	Tue, 21 Jan 2025 18:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EDA11F0E44;
+	Tue, 21 Jan 2025 18:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482806; cv=none; b=lA1703QRr5ceazZ5fjnwgCV27Y2JtgA0Efwte9oYlSOJ5o0KTo0Jn42UFdgn9NrFlGkgIFSKj+u2aIrGZjc/QSgN99BSrYKk4+Xb6WU+jkQL42hQznjkCZwvPgnJD7+rtbi3ggtR2rfM54hrS3YUNb4Bqa4RFCtfqFUbOn+jMWk=
+	t=1737482418; cv=none; b=b+IP82WiDpJ1BIh9ZsD2Ot0jVCwinEcQa5wy0Bb+GZcjhDtKv9fTtfK1AAH2SUs1jWCa3Co4KTUP+cubPg5B6cxxHhK0ediOidbyq3xqr976Od3vLuCwEISKmMhAs7WhomR8dygL04vZdtHuEJ0CX2QAnFe8/7kieUdlxP1Mi3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482806; c=relaxed/simple;
-	bh=iSWaF/BrCf1lOKtu2FHv0fR9qW9rzWhENiXaYuBBFWQ=;
+	s=arc-20240116; t=1737482418; c=relaxed/simple;
+	bh=Xw5khCM+XjYe+IG94e2Q9gPWVC4hCOJot0xOCsN1ZMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RuFsqFFL+Jx0aE9Ofqbj2VKNJOg0hRCNiinXJH4fyfXrTwhVaJf1ASm5alKqRgCf6PSRFjsskNCxrXDGRqfSC4GhK7kTsMgiSSloOEVx7A0v9SQiBjt6KnTc8ODYvwfNl8H0H3iELlx4ez4ZkO55wJAZ+9bcQQBBcURHh6J0MGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rfbpKxXS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD1B8C4CEDF;
-	Tue, 21 Jan 2025 18:06:45 +0000 (UTC)
+	 MIME-Version; b=a3c11Ii+IGpVgmcbiQTiJSQKO7te34p1kSWpebdnnmOnvGkTzNkkBhCBV90LanKOmpcXm5rcJNKxAKreM1eNpmIn3XyR4Jg/8/eJuMXzB8QA2PBOSuV86lpp2wUcQ1gCw9qqSa9EJ+cIbUSVUpjxLnrDvYWpYoINgnC/iQ+Wh80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X58nOzJE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B371C4CEE3;
+	Tue, 21 Jan 2025 18:00:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482806;
-	bh=iSWaF/BrCf1lOKtu2FHv0fR9qW9rzWhENiXaYuBBFWQ=;
+	s=korg; t=1737482417;
+	bh=Xw5khCM+XjYe+IG94e2Q9gPWVC4hCOJot0xOCsN1ZMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rfbpKxXSnaJqPI9buWXD8rLb1c4pNf8vop33RpemXiNXwTZ8LcVDZDYarhuFKws2i
-	 EXVSUOsrPSnDlyz8b0hXTg4AN3LzkFy5qQOQuqiUrNldthza8v9ls4c6CFBJpo6+3X
-	 1g3GhMYKKRi0k4nh+4aRZs2YTWZPqYKdUaYq1v4U=
+	b=X58nOzJEdSI4RcChKK5Tyeiqsos235383REyO4dIEyS2R6pxJLwVqVHtuIjvqahO3
+	 +IACOKlz4Uhqp22K3K9obEHl/btt+Azg4RNsbUO+G4k8buuBzzPDaBkmWKqtW7QpzW
+	 1yGbS7U2vSm5cueorsLzUE69QellEJ4PV+0x+LM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anumula Murali Mohan Reddy <anumula@chelsio.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 015/127] cxgb4: Avoid removal of uninserted tid
+Subject: [PATCH 6.12 039/122] i2c: core: fix reference leak in i2c_register_adapter()
 Date: Tue, 21 Jan 2025 18:51:27 +0100
-Message-ID: <20250121174530.260014374@linuxfoundation.org>
+Message-ID: <20250121174534.491586824@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anumula Murali Mohan Reddy <anumula@chelsio.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 4c1224501e9d6c5fd12d83752f1c1b444e0e3418 ]
+[ Upstream commit 3f8c4f5e9a57868fa107016c81165686d23325f2 ]
 
-During ARP failure, tid is not inserted but _c4iw_free_ep()
-attempts to remove tid which results in error.
-This patch fixes the issue by avoiding removal of uninserted tid.
+The reference count of the device incremented in device_initialize() is
+not decremented when device_add() fails. Add a put_device() call before
+returning from the function.
 
-Fixes: 59437d78f088 ("cxgb4/chtls: fix ULD connection failures due to wrong TID base")
-Signed-off-by: Anumula Murali Mohan Reddy <anumula@chelsio.com>
-Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
-Link: https://patch.msgid.link/20250103092327.1011925-1-anumula@chelsio.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This bug was found by an experimental static analysis tool that I am
+developing.
+
+Fixes: 60f68597024d ("i2c: core: Setup i2c_adapter runtime-pm before calling device_add()")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/i2c/i2c-core-base.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-index 21afaa81697e..47529c77654c 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-@@ -1800,7 +1800,10 @@ void cxgb4_remove_tid(struct tid_info *t, unsigned int chan, unsigned int tid,
- 	struct adapter *adap = container_of(t, struct adapter, tids);
- 	struct sk_buff *skb;
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index 7c810893bfa33..75d30861ffe21 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -1562,6 +1562,7 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
+ 	res = device_add(&adap->dev);
+ 	if (res) {
+ 		pr_err("adapter '%s': can't register device (%d)\n", adap->name, res);
++		put_device(&adap->dev);
+ 		goto out_list;
+ 	}
  
--	WARN_ON(tid_out_of_range(&adap->tids, tid));
-+	if (tid_out_of_range(&adap->tids, tid)) {
-+		dev_err(adap->pdev_dev, "tid %d out of range\n", tid);
-+		return;
-+	}
- 
- 	if (t->tid_tab[tid - adap->tids.tid_base]) {
- 		t->tid_tab[tid - adap->tids.tid_base] = NULL;
 -- 
 2.39.5
 
