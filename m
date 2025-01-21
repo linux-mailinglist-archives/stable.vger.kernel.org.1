@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-109960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F44AA184A6
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:10:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8A6A183F3
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:02:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F78C3AA215
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:09:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 280F5188C313
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:01:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E461F7086;
-	Tue, 21 Jan 2025 18:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16731F543F;
+	Tue, 21 Jan 2025 18:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MaQP22X4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTN59sDZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E477D1F55F3;
-	Tue, 21 Jan 2025 18:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3BC1F427B;
+	Tue, 21 Jan 2025 18:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482936; cv=none; b=ANQlMbWbX8VNmvXBIdu9RshUjTq5PwzggSp+zw23wwNrpE5c4tjaNaGWHkGS11NPEW/Ot7pI5OVOfOkHbqVSlEJ+Q8XL/OEeQQ8Cg3nTE3cwxoDlk5ikL4K/8Te3kV8oEgzyQ8MNTNtYTcMQRC0c/pFMMmVMddCZOruNbnWisys=
+	t=1737482461; cv=none; b=iDqpokxyvhBaz5QVmugdJtaZfunv8wo1mZg5Tqwqpi16tfPfUm9JW3OhJxblDFDM1D25sE5qRMjH9WJ+fmsCOeHvmtGbXlEnLt1uzdPdqEpm6h0vtZBgB5goL3oWjmYfBCwbDdTAZrIz71pU2ONbwKRRB2UYKwk3WoV96KRSeew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482936; c=relaxed/simple;
-	bh=I85g4DXsvhiGd5k2b2XIBCrHMLkgYvWTTKSJLxG/n/w=;
+	s=arc-20240116; t=1737482461; c=relaxed/simple;
+	bh=7JWwulHiaheW4LInWpKCwPwF6vgUf6kBLNy+aRuHTfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T4J6Yd34O9+Qn5hg9lBYlpSx/8vYIghNUnB93lY0F829cRra6aXruPIttvUOeUoHJjH9IfZNn3lhyPZQCKcltSO9Y7QcA+qcv30KH65fnY4FteWtA6md1RdkDCT6yaVpYAvwtKSV6AUIdbI41s2yorPcnNrcsR39cuo5ENV9q0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MaQP22X4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 600AEC4CEE1;
-	Tue, 21 Jan 2025 18:08:55 +0000 (UTC)
+	 MIME-Version; b=m/LJrZkKy0mmA80/TJ0mNHdOUKiHB/iPff4sYGbGYZE93pSSu6P7anxoQMTXI6ERCGyPgaHWshRdtpZ0HyCO+eLMOibmgMFcDRP5H4rqrdjHj0+tdc0FH9C3+D1dt2WJXSk1cBhdWW1LUbIx81sTKDpA88hj52ALAImvcpqCv8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTN59sDZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74976C4CEDF;
+	Tue, 21 Jan 2025 18:01:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482935;
-	bh=I85g4DXsvhiGd5k2b2XIBCrHMLkgYvWTTKSJLxG/n/w=;
+	s=korg; t=1737482460;
+	bh=7JWwulHiaheW4LInWpKCwPwF6vgUf6kBLNy+aRuHTfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MaQP22X4OF2hLnabPyid96mtPY/KQfiJEdWh19PAWflyT07pK39XrKwglOj5bLQod
-	 NTGr5ANfKI4AiR9pI6iC/OB5xqN1Et8LJjl3XkqcQXegAifWCmllpnEXXUWD1QiwhN
-	 uo2tuVA9pZgWOLGuoM48qIcQ9lQhSEjgoRn1VMEs=
+	b=CTN59sDZ5LR8dlr+gKawefe8CVM2qHzCtxsXrrvGOCH+2PM6IZaF2Kf/hOvCqRMC2
+	 EUSFlD7SsBLGjPVrelPjhRtsowB/Z9Av56I0XFbL64r2ne8gKlxkKlE4cGLsOR40bM
+	 9uPclZPMwNKx3QKPxTnNrLPyjr3qKQnBnkqZyUjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Fabio Estevam <festevam@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 059/127] iio: adc: ti-ads124s08: Use gpiod_set_value_cansleep()
-Date: Tue, 21 Jan 2025 18:52:11 +0100
-Message-ID: <20250121174531.938011974@linuxfoundation.org>
+	Michal Luczaj <mhal@rbox.co>,
+	syzbot+3affdbfc986ecd9200fd@syzkaller.appspotmail.com,
+	Hyunwoo Kim <v4bel@theori.io>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 084/122] vsock/bpf: return early if transport is not assigned
+Date: Tue, 21 Jan 2025 18:52:12 +0100
+Message-ID: <20250121174536.251232291@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +66,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@gmail.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-commit 2a8e34096ec70d73ebb6d9920688ea312700cbd9 upstream.
+commit f6abafcd32f9cfc4b1a2f820ecea70773e26d423 upstream.
 
-Using gpiod_set_value() to control the reset GPIO causes some verbose
-warnings during boot when the reset GPIO is controlled by an I2C IO
-expander.
+Some of the core functions can only be called if the transport
+has been assigned.
 
-As the caller can sleep, use the gpiod_set_value_cansleep() variant to
-fix the issue.
+As Michal reported, a socket might have the transport at NULL,
+for example after a failed connect(), causing the following trace:
 
-Tested on a custom i.MX93 board with a ADS124S08 ADC.
+    BUG: kernel NULL pointer dereference, address: 00000000000000a0
+    #PF: supervisor read access in kernel mode
+    #PF: error_code(0x0000) - not-present page
+    PGD 12faf8067 P4D 12faf8067 PUD 113670067 PMD 0
+    Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+    CPU: 15 UID: 0 PID: 1198 Comm: a.out Not tainted 6.13.0-rc2+
+    RIP: 0010:vsock_connectible_has_data+0x1f/0x40
+    Call Trace:
+     vsock_bpf_recvmsg+0xca/0x5e0
+     sock_recvmsg+0xb9/0xc0
+     __sys_recvfrom+0xb3/0x130
+     __x64_sys_recvfrom+0x20/0x30
+     do_syscall_64+0x93/0x180
+     entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Cc: stable@kernel.org
-Fixes: e717f8c6dfec ("iio: adc: Add the TI ads124s08 ADC code")
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
-Link: https://patch.msgid.link/20241122164308.390340-1-festevam@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+So we need to check the `vsk->transport` in vsock_bpf_recvmsg(),
+especially for connected sockets (stream/seqpacket) as we already
+do in __vsock_connectible_recvmsg().
+
+Fixes: 634f1a7110b4 ("vsock: support sockmap")
+Cc: stable@vger.kernel.org
+Reported-by: Michal Luczaj <mhal@rbox.co>
+Closes: https://lore.kernel.org/netdev/5ca20d4c-1017-49c2-9516-f6f75fd331e9@rbox.co/
+Tested-by: Michal Luczaj <mhal@rbox.co>
+Reported-by: syzbot+3affdbfc986ecd9200fd@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/677f84a8.050a0220.25a300.01b3.GAE@google.com/
+Tested-by: syzbot+3affdbfc986ecd9200fd@syzkaller.appspotmail.com
+Reviewed-by: Hyunwoo Kim <v4bel@theori.io>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ti-ads124s08.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/vmw_vsock/vsock_bpf.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/iio/adc/ti-ads124s08.c
-+++ b/drivers/iio/adc/ti-ads124s08.c
-@@ -184,9 +184,9 @@ static int ads124s_reset(struct iio_dev
- 	struct ads124s_private *priv = iio_priv(indio_dev);
+--- a/net/vmw_vsock/vsock_bpf.c
++++ b/net/vmw_vsock/vsock_bpf.c
+@@ -77,6 +77,7 @@ static int vsock_bpf_recvmsg(struct sock
+ 			     size_t len, int flags, int *addr_len)
+ {
+ 	struct sk_psock *psock;
++	struct vsock_sock *vsk;
+ 	int copied;
  
- 	if (priv->reset_gpio) {
--		gpiod_set_value(priv->reset_gpio, 0);
-+		gpiod_set_value_cansleep(priv->reset_gpio, 0);
- 		udelay(200);
--		gpiod_set_value(priv->reset_gpio, 1);
-+		gpiod_set_value_cansleep(priv->reset_gpio, 1);
- 	} else {
- 		return ads124s_write_cmd(indio_dev, ADS124S08_CMD_RESET);
+ 	psock = sk_psock_get(sk);
+@@ -84,6 +85,13 @@ static int vsock_bpf_recvmsg(struct sock
+ 		return __vsock_recvmsg(sk, msg, len, flags);
+ 
+ 	lock_sock(sk);
++	vsk = vsock_sk(sk);
++
++	if (!vsk->transport) {
++		copied = -ENODEV;
++		goto out;
++	}
++
+ 	if (vsock_has_data(sk, psock) && sk_psock_queue_empty(psock)) {
+ 		release_sock(sk);
+ 		sk_psock_put(sk, psock);
+@@ -108,6 +116,7 @@ static int vsock_bpf_recvmsg(struct sock
+ 		copied = sk_msg_recvmsg(sk, psock, msg, len, flags);
  	}
+ 
++out:
+ 	release_sock(sk);
+ 	sk_psock_put(sk, psock);
+ 
 
 
 
