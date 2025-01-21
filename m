@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-109901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D0E2A18468
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:07:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEAD9A18509
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:15:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 658F316C153
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:06:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68E937A05B1
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FE2E1F55FA;
-	Tue, 21 Jan 2025 18:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE341F890B;
+	Tue, 21 Jan 2025 18:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gCPnOlox"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cY5nVI5A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8CA1F3FFE;
-	Tue, 21 Jan 2025 18:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98FF1F668A;
+	Tue, 21 Jan 2025 18:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482771; cv=none; b=u1d1Z+JbOWPWNkHbcTriuNUkm3/VYt0koaEvE9nabYj30PSjSZOJwDADbHpRcaRkW03MS1NnwJ1fDnGu5AikSAqCPlrkXmpDexux7xyJ7Q+mzsnWCxdI4WI5jxzxytsYCuIfyxF+5QqID9a+kHuRUpDbXiJ7wYPCwyAhUEwQPDE=
+	t=1737483005; cv=none; b=ZI+zsNlHhj7qr4i+mb/nLIelLb99oXkdrmmqSq2vpJ7DxAVX7J8nXKuGHBzJSRZPgv+K+WOAMEQDq2RqpfirYZMvJCZ+c9zuqAPR//IhLst+4ghiNpOXgg/M36k8vf7EtONC0uJn46w0qrREuOopkpCb8jK4dBOKYMzh5xBLpAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482771; c=relaxed/simple;
-	bh=iFzBgWtzABx0FeXN5jeQnkVpVumIA9oyn5CPGxkmC8Y=;
+	s=arc-20240116; t=1737483005; c=relaxed/simple;
+	bh=o1u39yU1xJmNb1A975VBI+M1ALbZ0gJe3rQmWZKe3zM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=toseVw+GXeHJtr8a6JL3iUpIq8O189rldS/u3AOJbwdiyb1cA7AvaOqA6l4cEm+x/lqXgMq7B2FF02PoVs2qJWjq8a+RI4wjl49FKt7xA0jAOYDXTO6jcQDsVM3RItLfmIGwlHx/uk7s8xvG23OaXd6SjNeExVVqUdcKmjvLemk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gCPnOlox; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ACE1C4CEDF;
-	Tue, 21 Jan 2025 18:06:10 +0000 (UTC)
+	 MIME-Version; b=Pq+MDBbPw8T8sEAeSFHL41IA4wa5oMKy9ZJshTI5NuS0vKKj9VFsHVN6ab6HyEkJqplsTnD4aedUuR/C2MINroF13Yt0zsJAVnQ5Rz/10GRZOjnVhDSlY4vdp06fh97J/pVW+c7STcG3e1hfujUMMiq5hLzmjnK3D4IiWFhiC1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cY5nVI5A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26081C4CEE1;
+	Tue, 21 Jan 2025 18:10:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482770;
-	bh=iFzBgWtzABx0FeXN5jeQnkVpVumIA9oyn5CPGxkmC8Y=;
+	s=korg; t=1737483005;
+	bh=o1u39yU1xJmNb1A975VBI+M1ALbZ0gJe3rQmWZKe3zM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gCPnOloxcxy05zS4tQKiAYil8cS+LWFhN1Q8p6IrhR6ierZNnl8ohWeZjUKTIoGO4
-	 BWGMfp7vSw+7clRTKvKeWfN+QxNfGaXGYx7GraLY68GC/QxSJYMyaOM9JPt9mTyew4
-	 XlEIVQ1XiIYfx3/9qcPDSpji5mYu0LnKMi53q1H4=
+	b=cY5nVI5AOTVvbohvXO3/au16lZjBQfAMF3Z4KGt9ccOUfmZHzikEjP5w7UHmtL8oi
+	 S2F5pz9NFZcpOBacXTT1GVCb3XcCHiNoLR9OBPuhSQ+2e7mGttvt7Fta7D4HtztkrX
+	 e/bVmn1LlR9/go1CaCd8URD69nyXfOIBm0QVR2C8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Luigi Leonardi <leonardi@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 37/64] vsock: reset socket state when de-assigning the transport
+	Xiao Liang <shaw.leon@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 084/127] gtp: Use for_each_netdev_rcu() in gtp_genl_dump_pdp().
 Date: Tue, 21 Jan 2025 18:52:36 +0100
-Message-ID: <20250121174522.968434294@linuxfoundation.org>
+Message-ID: <20250121174532.893149210@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
-References: <20250121174521.568417761@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit a24009bc9be60242651a21702609381b5092459e upstream.
+[ Upstream commit 46841c7053e6d25fb33e0534ef023833bf03e382 ]
 
-Transport's release() and destruct() are called when de-assigning the
-vsock transport. These callbacks can touch some socket state like
-sock flags, sk_state, and peer_shutdown.
+gtp_newlink() links the gtp device to a list in dev_net(dev).
 
-Since we are reassigning the socket to a new transport during
-vsock_connect(), let's reset these fields to have a clean state with
-the new transport.
+However, even after the gtp device is moved to another netns,
+it stays on the list but should be invisible.
 
-Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Let's use for_each_netdev_rcu() for netdev traversal in
+gtp_genl_dump_pdp().
+
+Note that gtp_dev_list is no longer used under RCU, so list
+helpers are converted to the non-RCU variant.
+
+Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
+Reported-by: Xiao Liang <shaw.leon@gmail.com>
+Closes: https://lore.kernel.org/netdev/CABAhCOQdBL6h9M2C+kd+bGivRJ9Q72JUxW+-gur0nub_=PmFPA@mail.gmail.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/af_vsock.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/gtp.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -485,6 +485,15 @@ int vsock_assign_transport(struct vsock_
- 		 */
- 		vsk->transport->release(vsk);
- 		vsock_deassign_transport(vsk);
-+
-+		/* transport's release() and destruct() can touch some socket
-+		 * state, since we are reassigning the socket to a new transport
-+		 * during vsock_connect(), let's reset these fields to have a
-+		 * clean state.
-+		 */
-+		sock_reset_flag(sk, SOCK_DONE);
-+		sk->sk_state = TCP_CLOSE;
-+		vsk->peer_shutdown = 0;
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index 67dcdd471a659..e4d29c22a0a79 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -698,7 +698,7 @@ static int gtp_newlink(struct net *src_net, struct net_device *dev,
  	}
  
- 	/* We increase the module refcnt to prevent the transport unloading
+ 	gn = net_generic(dev_net(dev), gtp_net_id);
+-	list_add_rcu(&gtp->list, &gn->gtp_dev_list);
++	list_add(&gtp->list, &gn->gtp_dev_list);
+ 	dev->priv_destructor = gtp_destructor;
+ 
+ 	netdev_dbg(dev, "registered new GTP interface\n");
+@@ -724,7 +724,7 @@ static void gtp_dellink(struct net_device *dev, struct list_head *head)
+ 		hlist_for_each_entry_safe(pctx, next, &gtp->tid_hash[i], hlist_tid)
+ 			pdp_context_delete(pctx);
+ 
+-	list_del_rcu(&gtp->list);
++	list_del(&gtp->list);
+ 	unregister_netdevice_queue(dev, head);
+ }
+ 
+@@ -1305,16 +1305,19 @@ static int gtp_genl_dump_pdp(struct sk_buff *skb,
+ 	struct gtp_dev *last_gtp = (struct gtp_dev *)cb->args[2], *gtp;
+ 	int i, j, bucket = cb->args[0], skip = cb->args[1];
+ 	struct net *net = sock_net(skb->sk);
++	struct net_device *dev;
+ 	struct pdp_ctx *pctx;
+-	struct gtp_net *gn;
+-
+-	gn = net_generic(net, gtp_net_id);
+ 
+ 	if (cb->args[4])
+ 		return 0;
+ 
+ 	rcu_read_lock();
+-	list_for_each_entry_rcu(gtp, &gn->gtp_dev_list, list) {
++	for_each_netdev_rcu(net, dev) {
++		if (dev->rtnl_link_ops != &gtp_link_ops)
++			continue;
++
++		gtp = netdev_priv(dev);
++
+ 		if (last_gtp && last_gtp != gtp)
+ 			continue;
+ 		else
+@@ -1410,9 +1413,9 @@ static void __net_exit gtp_net_exit_batch_rtnl(struct list_head *net_list,
+ 
+ 	list_for_each_entry(net, net_list, exit_list) {
+ 		struct gtp_net *gn = net_generic(net, gtp_net_id);
+-		struct gtp_dev *gtp;
++		struct gtp_dev *gtp, *gtp_next;
+ 
+-		list_for_each_entry(gtp, &gn->gtp_dev_list, list)
++		list_for_each_entry_safe(gtp, gtp_next, &gn->gtp_dev_list, list)
+ 			gtp_dellink(gtp->dev, dev_to_kill);
+ 	}
+ }
+-- 
+2.39.5
+
 
 
 
