@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-109999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FD91A184D1
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:12:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1233CA18429
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:04:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4677916358C
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:11:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81F7018833C4
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5585F1F78E3;
-	Tue, 21 Jan 2025 18:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0601F5404;
+	Tue, 21 Jan 2025 18:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUeZoTR7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3UedjzQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D251F76D1;
-	Tue, 21 Jan 2025 18:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16081F427B;
+	Tue, 21 Jan 2025 18:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737483049; cv=none; b=e6+TchCp8i/4ZvXyP9zjWCRJ0OiBbblwHY9vD5Rr3vMXGpd7BREbUn/wXlq68ljuTAC8b4Uog6gPtpga3tH+3jqqmC80vRjCE1TkQaOb4n6quyehNcC/mbZnOnGv1p8C9F0rydWJR8+tItWOCVcNLVkMH6eYkM9CeBDv7Ro7YDI=
+	t=1737482594; cv=none; b=ijb/RMoyvBpbFzWNsHRQYI2acnW8lwxfnDgL/8F3p0vEoinTS76/ocGVlb990lvi1dkAYNBZI0e9rUADR4Vw++jyIcKxbBZOPxpP23WSoXxHChZpJe14wzlKB67vwXTC7XTnkFVa8yvBJdnd/7m1MDH0JfpBgqSGdXIEg1cZtOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737483049; c=relaxed/simple;
-	bh=yhTleYkSfh8RGwgyNW9e5HhplRDSHI2aFXmiCJGU3nw=;
+	s=arc-20240116; t=1737482594; c=relaxed/simple;
+	bh=BGeaN7N9jnjR2aRts8pXbr9ITfE8xuPpm6oxWipvXoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nARAdnGsKetMpJDV9YdJZhWaFtXD7x/HK7gIGY4CS28xnvAfc5GT1xmNvD1ZRn4ji88vNZdW25XvdLGrFuM4Ap+4/oK4eQfwbXRcdWhONJUGM0sbAaSkbZIpPAtFE2oyJoo9zcnUJPJdbqUjE1zk5CBqeEY0U06gaVcfRkmWEB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUeZoTR7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 886FAC4CEDF;
-	Tue, 21 Jan 2025 18:10:48 +0000 (UTC)
+	 MIME-Version; b=SHVVkOqZSrRRqystrq+c1F0sRFaPcSO8qVx1ENXD9qpVhemtUZXLfT6zqB+F1peVvGtwMV+AOuuF545ejJoKr7C7UtD0pofE4Vye4pKySKs/cV4hfg6KvRzDoDp8oT3PLZw/F+DGqD5IbhBBqNQpvlNj7fhqIsD3GeHRgHkHAIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3UedjzQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432CFC4CEDF;
+	Tue, 21 Jan 2025 18:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737483048;
-	bh=yhTleYkSfh8RGwgyNW9e5HhplRDSHI2aFXmiCJGU3nw=;
+	s=korg; t=1737482594;
+	bh=BGeaN7N9jnjR2aRts8pXbr9ITfE8xuPpm6oxWipvXoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iUeZoTR7ju0fmyCtL8pKt53nXNunsTcWknxHTpHJ48yT8wjlbVC2wkeYiipVvmlZd
-	 R+AkTTOri4HMAiyQCu0qrev0BgMll+bRW0usu5GsNOqUR6QuPs1NAksmcJ+1u0mZOV
-	 ScwdE3BE29ipiFY/J8yZQOL0CHagP+NsCjli1ifU=
+	b=T3UedjzQDnroO1Ot4xv/y6oR6Z5PLZGt0LZ6PLdzzdfkwTjUsJ8iqu9FTAvQayfOo
+	 j/sQP54RNLf+/+1am8EaAKzhLCPOOqj/YzatzLKMQEGjbtjBtkp4P6ttvtz3bZ1kTo
+	 GMTC2qAzoiH873TIq0XLPBYhJ95rUbI+vhkY0CIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Cooper <alcooperx@gmail.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 071/127] phy: usb: Add "wake on" functionality for newer Synopsis XHCI controllers
+	Suren Baghdasaryan <surenb@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Jann Horn <jannh@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 095/122] tools: fix atomic_set() definition to set the value correctly
 Date: Tue, 21 Jan 2025 18:52:23 +0100
-Message-ID: <20250121174532.404850069@linuxfoundation.org>
+Message-ID: <20250121174536.689048433@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,139 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Cooper <alcooperx@gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
 
-[ Upstream commit ae532b2b7aa5a3dad036aef4e0b177607172d276 ]
+commit 4bbb6df62c54e6a2c1fcce4908df768f0cfa1e91 upstream.
 
-Add "wake on" support for the newer Synopsis based XHCI only controller.
-This works on the 72165 and 72164 and newer chips and does not work
-on 7216 based systems. Also switch the USB sysclk to a slower clock
-on suspend to save additional power in S2. The clock switch will only
-save power on the 72165b0 and newer chips and is a nop on older chips.
+Currently vma test is failing because of the new vma_assert_attached()
+assertion.  The check is failing because previous refcount_set() inside
+vma_mark_attached() is a NoOp.  Fix the definition of atomic_set() to
+correctly set the value of the atomic.
 
-Signed-off-by: Al Cooper <alcooperx@gmail.com>
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-Link: https://lore.kernel.org/r/20220215032422.5179-1-f.fainelli@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 0a92ea87bdd6 ("phy: usb: Toggle the PHY power during init")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20241227222220.1726384-1-surenb@google.com
+Fixes: 9325b8b5a1cb ("tools: add skeleton code for userland testing of VMA logic")
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../phy/broadcom/phy-brcm-usb-init-synopsys.c | 46 +++++++++++++++----
- 1 file changed, 38 insertions(+), 8 deletions(-)
+ tools/testing/shared/linux/maple_tree.h |    2 +-
+ tools/testing/vma/linux/atomic.h        |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c b/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c
-index e63457e145c7..d2524b70ea16 100644
---- a/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c
-+++ b/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c
-@@ -47,6 +47,8 @@
- #define   USB_CTRL_USB_PM_SOFT_RESET_MASK		0x40000000
- #define   USB_CTRL_USB_PM_BDC_SOFT_RESETB_MASK		0x00800000
- #define   USB_CTRL_USB_PM_XHC_SOFT_RESETB_MASK		0x00400000
-+#define   USB_CTRL_USB_PM_XHC_PME_EN_MASK		0x00000010
-+#define   USB_CTRL_USB_PM_XHC_S2_CLK_SWITCH_EN_MASK	0x00000008
- #define USB_CTRL_USB_PM_STATUS		0x08
- #define USB_CTRL_USB_DEVICE_CTL1	0x10
- #define   USB_CTRL_USB_DEVICE_CTL1_PORT_MODE_MASK	0x00000003
-@@ -190,10 +192,6 @@ static void usb_init_common(struct brcm_usb_init_params *params)
+--- a/tools/testing/shared/linux/maple_tree.h
++++ b/tools/testing/shared/linux/maple_tree.h
+@@ -2,6 +2,6 @@
+ #define atomic_t int32_t
+ #define atomic_inc(x) uatomic_inc(x)
+ #define atomic_read(x) uatomic_read(x)
+-#define atomic_set(x, y) do {} while (0)
++#define atomic_set(x, y) uatomic_set(x, y)
+ #define U8_MAX UCHAR_MAX
+ #include "../../../../include/linux/maple_tree.h"
+--- a/tools/testing/vma/linux/atomic.h
++++ b/tools/testing/vma/linux/atomic.h
+@@ -6,7 +6,7 @@
+ #define atomic_t int32_t
+ #define atomic_inc(x) uatomic_inc(x)
+ #define atomic_read(x) uatomic_read(x)
+-#define atomic_set(x, y) do {} while (0)
++#define atomic_set(x, y) uatomic_set(x, y)
+ #define U8_MAX UCHAR_MAX
  
- 	pr_debug("%s\n", __func__);
- 
--	USB_CTRL_UNSET(ctrl, USB_PM, USB_PWRDN);
--	/* 1 millisecond - for USB clocks to settle down */
--	usleep_range(1000, 2000);
--
- 	if (USB_CTRL_MASK(USB_DEVICE_CTL1, PORT_MODE)) {
- 		reg = brcm_usb_readl(USB_CTRL_REG(ctrl, USB_DEVICE_CTL1));
- 		reg &= ~USB_CTRL_MASK(USB_DEVICE_CTL1, PORT_MODE);
-@@ -222,6 +220,17 @@ static void usb_wake_enable_7211b0(struct brcm_usb_init_params *params,
- 		USB_CTRL_UNSET(ctrl, CTLR_CSHCR, ctl_pme_en);
- }
- 
-+static void usb_wake_enable_7216(struct brcm_usb_init_params *params,
-+				 bool enable)
-+{
-+	void __iomem *ctrl = params->regs[BRCM_REGS_CTRL];
-+
-+	if (enable)
-+		USB_CTRL_SET(ctrl, USB_PM, XHC_PME_EN);
-+	else
-+		USB_CTRL_UNSET(ctrl, USB_PM, XHC_PME_EN);
-+}
-+
- static void usb_init_common_7211b0(struct brcm_usb_init_params *params)
- {
- 	void __iomem *ctrl = params->regs[BRCM_REGS_CTRL];
-@@ -295,6 +304,20 @@ static void usb_init_common_7211b0(struct brcm_usb_init_params *params)
- 	usb2_eye_fix_7211b0(params);
- }
- 
-+static void usb_init_common_7216(struct brcm_usb_init_params *params)
-+{
-+	void __iomem *ctrl = params->regs[BRCM_REGS_CTRL];
-+
-+	USB_CTRL_UNSET(ctrl, USB_PM, XHC_S2_CLK_SWITCH_EN);
-+	USB_CTRL_UNSET(ctrl, USB_PM, USB_PWRDN);
-+
-+	/* 1 millisecond - for USB clocks to settle down */
-+	usleep_range(1000, 2000);
-+
-+	usb_wake_enable_7216(params, false);
-+	usb_init_common(params);
-+}
-+
- static void usb_init_xhci(struct brcm_usb_init_params *params)
- {
- 	pr_debug("%s\n", __func__);
-@@ -302,14 +325,20 @@ static void usb_init_xhci(struct brcm_usb_init_params *params)
- 	xhci_soft_reset(params, 0);
- }
- 
--static void usb_uninit_common(struct brcm_usb_init_params *params)
-+static void usb_uninit_common_7216(struct brcm_usb_init_params *params)
- {
- 	void __iomem *ctrl = params->regs[BRCM_REGS_CTRL];
- 
- 	pr_debug("%s\n", __func__);
- 
--	USB_CTRL_SET(ctrl, USB_PM, USB_PWRDN);
-+	if (!params->wake_enabled) {
-+		USB_CTRL_SET(ctrl, USB_PM, USB_PWRDN);
- 
-+		/* Switch to using slower clock during suspend to save power */
-+		USB_CTRL_SET(ctrl, USB_PM, XHC_S2_CLK_SWITCH_EN);
-+	} else {
-+		usb_wake_enable_7216(params, true);
-+	}
- }
- 
- static void usb_uninit_common_7211b0(struct brcm_usb_init_params *params)
-@@ -371,9 +400,9 @@ static void usb_set_dual_select(struct brcm_usb_init_params *params, int mode)
- 
- static const struct brcm_usb_init_ops bcm7216_ops = {
- 	.init_ipp = usb_init_ipp,
--	.init_common = usb_init_common,
-+	.init_common = usb_init_common_7216,
- 	.init_xhci = usb_init_xhci,
--	.uninit_common = usb_uninit_common,
-+	.uninit_common = usb_uninit_common_7216,
- 	.uninit_xhci = usb_uninit_xhci,
- 	.get_dual_select = usb_get_dual_select,
- 	.set_dual_select = usb_set_dual_select,
-@@ -396,6 +425,7 @@ void brcm_usb_dvr_init_7216(struct brcm_usb_init_params *params)
- 
- 	params->family_name = "7216";
- 	params->ops = &bcm7216_ops;
-+	params->suspend_with_clocks = true;
- }
- 
- void brcm_usb_dvr_init_7211b0(struct brcm_usb_init_params *params)
--- 
-2.39.5
-
+ #endif	/* _LINUX_ATOMIC_H */
 
 
 
