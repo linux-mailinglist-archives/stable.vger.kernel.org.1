@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-109716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF5AA18395
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E43A18447
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:05:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46B6F188C544
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:58:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 154EA168507
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F751F76AC;
-	Tue, 21 Jan 2025 17:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551BA1F543F;
+	Tue, 21 Jan 2025 18:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qqJk2djI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jryo1Vde"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83051F76A3;
-	Tue, 21 Jan 2025 17:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D86F1F427B;
+	Tue, 21 Jan 2025 18:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482230; cv=none; b=L27dxhX4DyuH/rxSdmIebHKUIEnt6ZgGlB6OLFjuJTf9Vl0ojvvXgNrKEyNvcBiEllewzUOiLtgk+xPTR/8y09ZdmzdSLYLJy6JRTruKdOYsJf3hjK2uzxq1WZSnFyiOiX4Dc+tiAgHrR3Q5tbyuSXDdHsMCgj4sRAb9Olx4i4M=
+	t=1737482651; cv=none; b=HJ//NMh1Ra301XKA8pQAJKPcMKpzNBhGMLIlrDPzMCNqtsRc4sWvTUQItvALjFYt0IqW/lqvGlmhMX/JvSqGS2JCt6mUuJ+wMiWcDcsudsYBk1FYxOjAk7DMWnMBsul4kIeL9+QYMMvj3j5rs25DEPHgvHvwcd3krpm9Y8vVMG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482230; c=relaxed/simple;
-	bh=Dy+olRLkoBxR6uscuihe4PH9EZeKeGcV0RdFHWrhtO4=;
+	s=arc-20240116; t=1737482651; c=relaxed/simple;
+	bh=342yvIiHyrGHBeU8+eYkUsgQ/y/YcY43svtIwywKv/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qg28AboUoVrjDcaSQAaC6owZ1jI46lQqayp7vY2RzcoQDkqeqFqK/CpD2QcK2blzFKCqjpziDr7PCVSzBue8B2VQbOxP2+gZ7Jw80L/7eLcIQ1UxhQy3KDK8lf/P4tMMatVwj3EwSB+3ik4vcX0ixy1nsCLRZ52mcRvaOVsiKB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qqJk2djI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41422C4CEDF;
-	Tue, 21 Jan 2025 17:57:10 +0000 (UTC)
+	 MIME-Version; b=N5z9qNNGjfcyU5F5c0hbRrjWDBgfhYxt5hN9BkcShTtHtqrzWG6/WSVKGDU8qBlsIyRCUZRQOKW89G6WRyRaOGej/XYdemK713ZnVSsqu5gh+c85aD52O3e9Itxy0hWrUabxvmEK34Sfk0w71BJtHCdx+p7PTfTmOLvFn3x0ynM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jryo1Vde; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3825EC4CEDF;
+	Tue, 21 Jan 2025 18:04:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482230;
-	bh=Dy+olRLkoBxR6uscuihe4PH9EZeKeGcV0RdFHWrhtO4=;
+	s=korg; t=1737482650;
+	bh=342yvIiHyrGHBeU8+eYkUsgQ/y/YcY43svtIwywKv/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qqJk2djI8LO/UI3NQjYglRPf68lS3gyXVP7ofbhNinoDzkMr2qyRVqas385rcr9nq
-	 NuY2GvOaD798ZCBrU/iNFhGmxnn2h/QYyfD10Klka76A5blBsTlUU3eYkVwqvzJ32B
-	 lLSyL27Sj1XkTPS4FNp4sgleyP5gdpc3o8s2wMGw=
+	b=Jryo1VdeXmeV1JwsqeTN6K5+4j8svz5mB5qXimSX3B4jgXEBqdlPXH6T3ye7nCgfR
+	 zpe9qdoAZ61HAuR5gndo2kfC1sj5/6YnVVfSzW1qGq2REF/+xJ2UIvyvZOcB2Cbkqx
+	 5E2ZQnnikd7ssL0/9Hfwqr1UZ0HpIjAdwgggmhp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagar Ghuge <sagar.ghuge@intel.com>,
-	Nanley Chery <nanley.g.chery@intel.com>,
-	Xi Ruoyao <xry111@xry111.site>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.6 59/72] drm/i915/fb: Relax clear color alignment to 64 bytes
+	Hans de Goede <hdegoede@redhat.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 26/64] ACPI: resource: acpi_dev_irq_override(): Check DMI match last
 Date: Tue, 21 Jan 2025 18:52:25 +0100
-Message-ID: <20250121174525.708079158@linuxfoundation.org>
+Message-ID: <20250121174522.553832255@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
+References: <20250121174521.568417761@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 1a5401ec3018c101c456cdbda2eaef9482db6786 upstream.
+[ Upstream commit cd4a7b2e6a2437a5502910c08128ea3bad55a80b ]
 
-Mesa changed its clear color alignment from 4k to 64 bytes
-without informing the kernel side about the change. This
-is now likely to cause framebuffer creation to fail.
+acpi_dev_irq_override() gets called approx. 30 times during boot (15 legacy
+IRQs * 2 override_table entries). Of these 30 calls at max 1 will match
+the non DMI checks done by acpi_dev_irq_override(). The dmi_check_system()
+check is by far the most expensive check done by acpi_dev_irq_override(),
+make this call the last check done by acpi_dev_irq_override() so that it
+will be called at max 1 time instead of 30 times.
 
-The only thing we do with the clear color buffer in i915 is:
-1. map a single page
-2. read out bytes 16-23 from said page
-3. unmap the page
-
-So the only requirement we really have is that those 8 bytes
-are all contained within one page. Thus we can deal with the
-Mesa regression by reducing the alignment requiment from 4k
-to the same 64 bytes in the kernel. We could even go as low as
-32 bytes, but IIRC 64 bytes is the hardware requirement on
-the 3D engine side so matching that seems sensible.
-
-Note that the Mesa alignment chages were partially undone
-so the regression itself was already fixed on userspace
-side.
-
-Cc: stable@vger.kernel.org
-Cc: Sagar Ghuge <sagar.ghuge@intel.com>
-Cc: Nanley Chery <nanley.g.chery@intel.com>
-Reported-by: Xi Ruoyao <xry111@xry111.site>
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13057
-Closes: https://lore.kernel.org/all/45a5bba8de009347262d86a4acb27169d9ae0d9f.camel@xry111.site/
-Link: https://gitlab.freedesktop.org/mesa/mesa/-/commit/17f97a69c13832a6c1b0b3aad45b06f07d4b852f
-Link: https://gitlab.freedesktop.org/mesa/mesa/-/commit/888f63cf1baf34bc95e847a30a041dc7798edddb
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241129065014.8363-2-ville.syrjala@linux.intel.com
-Tested-by: Xi Ruoyao <xry111@xry111.site>
-Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
-(cherry picked from commit ed3a892e5e3d6b3f6eeb76db7c92a968aeb52f3d)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/20241228165253.42584-1-hdegoede@redhat.com
+[ rjw: Subject edit ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_fb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/resource.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_fb.c
-+++ b/drivers/gpu/drm/i915/display/intel_fb.c
-@@ -1625,7 +1625,7 @@ int intel_fill_fb_info(struct drm_i915_p
- 		 * arithmetic related to alignment and offset calculation.
- 		 */
- 		if (is_gen12_ccs_cc_plane(&fb->base, i)) {
--			if (IS_ALIGNED(fb->base.offsets[i], PAGE_SIZE))
-+			if (IS_ALIGNED(fb->base.offsets[i], 64))
- 				continue;
- 			else
- 				return -EINVAL;
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 6e041d40cad50..34cb7894e54ee 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -663,11 +663,11 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
+ 	for (i = 0; i < ARRAY_SIZE(override_table); i++) {
+ 		const struct irq_override_cmp *entry = &override_table[i];
+ 
+-		if (dmi_check_system(entry->system) &&
+-		    entry->irq == gsi &&
++		if (entry->irq == gsi &&
+ 		    entry->triggering == triggering &&
+ 		    entry->polarity == polarity &&
+-		    entry->shareable == shareable)
++		    entry->shareable == shareable &&
++		    dmi_check_system(entry->system))
+ 			return entry->override;
+ 	}
+ 
+-- 
+2.39.5
+
 
 
 
