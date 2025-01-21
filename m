@@ -1,171 +1,175 @@
-Return-Path: <stable+bounces-109627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69639A1804F
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 15:47:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B9E2A18085
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 15:54:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C679D3A4894
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 14:47:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1B94168187
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 14:54:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124F41F3D4B;
-	Tue, 21 Jan 2025 14:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE1B1F3FD6;
+	Tue, 21 Jan 2025 14:54:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y827Eh4J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpA6i2sy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6117049641;
-	Tue, 21 Jan 2025 14:47:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5993254F81
+	for <stable@vger.kernel.org>; Tue, 21 Jan 2025 14:54:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737470869; cv=none; b=UjV0ohieQULgz/B0sjZ9YJLBe2LlT9iy8dX1RuBf1b+UNNHMhbqouIi34cnQivHiOcdjZ+bj4sXGvesCQaiIZFAFgjruy0oDjJaBx92ygpwY8vIpN+c9y90gr7zMhmF6DZaIZGm5l4IRQ9e6eHdh95VZRHw2ofvYRLuJAytXPyE=
+	t=1737471249; cv=none; b=HDm/2yJOIAI25Dgrlcl0uiUebxZus++YaITpbKeFcGQy0ZUvARqD6JapwSZYx+gZS2Bj/4g3W6KUkqjJ8xnqbKQlqewurlo9FWMNY8zueqqRCxwhDXt3vv3KOixgK8JnxhLGc1ap+a5n1xUDS3IuB0N+dnkkUPsI7eCqMF48QOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737470869; c=relaxed/simple;
-	bh=Cktml07LPmg2xZ25NCIPiVqzfxD6P8TDXY7hcsNSf6I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DULSEvgNVIWI4v52NsjFp3LQf9BAIbrkKd7sWvShZshs/qWnNVONOuGiPzJXwvlh59ddXZZuAu/t9axPkbxyM6gMi0wS/jJKNgh9f6yBvTXP9CGZUHb5fnnXh5ly7qLqXaU8oinG75nnS9tJO6TE7zlRrC5OCfxICUxlj28ndZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y827Eh4J; arc=none smtp.client-ip=209.85.210.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-71e181fb288so2893707a34.2;
-        Tue, 21 Jan 2025 06:47:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737470867; x=1738075667; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4rAyOm3vvC9cyzYtwh1nipyUHmipDItlmipd/RY8fXQ=;
-        b=Y827Eh4JiB7zZuR6zWZl4bEpau+kai9XLkFup/ISfD5h/uoQiTmTnRjhSMfe8CvY96
-         JLqc9STOXnLjga6LjLxEsl5Mv0Go/Ue37xejEMfksWFRneFYi7ue0WtqwuAC6ciYBv9B
-         8F9bndcrHQ4/EvTsIVpIop4jln0Vy6/1ixVvyhnrg3qtelMsLHGNEegdvqjsXrkifSCe
-         6eTMt/MRtgRU5hB2WAHiUr/rf32g/SjdjZy0tzY42N6rtUZ1D1W8Gt3szKm0qfdN97Q1
-         ZXk/klG5yLM682rlgxbMMuFdP+kLlpPsrn6WeBRBXNtaGMSpATg62AO0n/iTOWN8uOLq
-         bvsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737470867; x=1738075667;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4rAyOm3vvC9cyzYtwh1nipyUHmipDItlmipd/RY8fXQ=;
-        b=OkhymSszyg1NsfKUu5wsmZ5GzRwIqIhJsaeNhajdOX4m4yD+X38evjLDtAVF2iPEsb
-         YSy9BKTC2nx/ebo0IG221lhsoZGFi1PPbWc6W6EebDeG5DcF3aipYZ3gCquF5mpTbOOa
-         25ZvFJQjN4zdjfWdsKBFmT1JyY997+4vBEEa7tgulprR0yYRsF1PEoeE0J0YTniLInux
-         G48NvP9EftG7EUzZAM2fzw9Z1rM1j5XFGELmU7/NtBtKq1LB/liTCOBOKo06gdO0HysJ
-         bDWUZygbT0y1aIbVEExRifAMgzukkT2qCRQf9mlnVqYxhXPixXU+13PTlfS41wtyMZaL
-         ubMw==
-X-Forwarded-Encrypted: i=1; AJvYcCUep4V1ODFe4hZdTxQqU2YhYu0qqVwyXMFiej9/d+2zmEyCeUNgVhKTzGXSpSxSvqdTHJbWb/FL@vger.kernel.org, AJvYcCWlZfyneTixHPijkG9+uXR1fnE1BiMQedtuzfcxrdWdaoHOwEDHyVxBSbDGz0mGp5ohiOE1lNTXoFoeimInp6IfkzdF@vger.kernel.org, AJvYcCWpr3Yc+Y+5YdfO26W74ZnVB3vZdcjFFy6JNTx6UZs7+X8hufNgVNQvgz541OR2PU2Baik6HRCbPOoS@vger.kernel.org, AJvYcCX9qWUC1F2g3rYpR3hHzY3OHKAppYhF5sZqnZvte0LNbGsEdxQ1shZlGINW+J5x7fXucqWUhtzRxqZDOBKM@vger.kernel.org, AJvYcCXVvCIxWXxnQQRRW7iQaW/hQ0YzVVn859LkF8MsCmgxGxwzv0iUsaAT3eBJijdtjCjMPDU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzygC086BtCZ/8YHBNDjOwM8tOG6ws02CDLlYEiypTlJ/PeoNln
-	tRu5cV5A2DN82YMlniEm2kfMa5Emk7D4lIApKQTCBOermrvZVO2kRyhdc5ksvLPh5cL9gK00C/P
-	hQ4IC0AzEU1IXVk/NjWyebwTFtvY=
-X-Gm-Gg: ASbGnctixg367ty6j3cgNOTy+0uFp0GvbPAsN+Jdw581yBe0h7xBovcvLf6V2yPu9pC
-	MHKHmc4RbgyoqKm026D+9H4N9748TwcWszztJvXesoDOJyo7BO8g=
-X-Google-Smtp-Source: AGHT+IHg70+kf9daAdil3t4gCIdHjAkzcSAk4ar4AK/QnIG6lVbxav1MbIKq4eCM3GctTzC1y/vvNy0sX+8+TR1jSO8=
-X-Received: by 2002:a05:6830:628b:b0:71d:f239:c091 with SMTP id
- 46e09a7af769-7249da56cedmr10066983a34.6.1737470867304; Tue, 21 Jan 2025
- 06:47:47 -0800 (PST)
+	s=arc-20240116; t=1737471249; c=relaxed/simple;
+	bh=OQh0OuRT7E/Oc027pUy8V3DuO7TBJZWl50+TXp7+Lio=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q0wW0NUMr/P8Ofy8fpbvfrC02WLEot30tngg0WMKPzjMiLwj+7AHnfnbLDeTvnnB7/oZCOwq/HpeaQtXnYnNtjMQpsEPcl4mlqkFu0KeHt9ANPT27O++Wph19GrgHHIzDe42N/JMwXaaR8/wNvRs+6jfjtEt+LQz2JtSh5F+RAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpA6i2sy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B82C4CEDF;
+	Tue, 21 Jan 2025 14:54:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1737471248;
+	bh=OQh0OuRT7E/Oc027pUy8V3DuO7TBJZWl50+TXp7+Lio=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DpA6i2syhHM5gs25cbw4W2z08CjpfRjB35ymxP/C7clmLr2ucU9PMFt0nMsyp4x3b
+	 DoH33sc4rSNs/qjnj1Sap0GL0y923mNK9grS05+Ie9a/gG3RwKLKgXf6V92ogyWWc8
+	 t4oHnG3CW3Km78etgU0tOCyEi+FDzGSK/V7QVCSU=
+Date: Tue, 21 Jan 2025 15:54:05 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: alvalan9@foxmail.com
+Cc: stable@vger.kernel.org, Wang Liang <wangliang74@huawei.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH 6.1.y] net: fix data-races around sk->sk_forward_alloc
+Message-ID: <2025012102-zero-tidiness-4632@gregkh>
+References: <tencent_D660CC1BB869156A7C3EBA24B5ACF371BA09@qq.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250117005539.325887-1-eyal.birger@gmail.com>
- <202501181212.4C515DA02@keescook> <CAHsH6GuifA9nUzNR-eW5ZaXyhzebJOCjBSpfZCksoiyCuG=yYw@mail.gmail.com>
- <8B2624AC-E739-4BBE-8725-010C2344F61C@kernel.org> <CAHsH6GtpXMswVKytv7_JMGca=3wxKRUK4rZmBBxJPRh1WYdObg@mail.gmail.com>
- <Z4-xeFH0Mgo3llga@krava>
-In-Reply-To: <Z4-xeFH0Mgo3llga@krava>
-From: Eyal Birger <eyal.birger@gmail.com>
-Date: Tue, 21 Jan 2025 06:47:35 -0800
-X-Gm-Features: AbW1kva2mCUZaFs5Ipo6EUmEB_SwjaLJCjqhvhI-g9qn-B9oSM16KZSJKWgpihY
-Message-ID: <CAHsH6GsXacPXiEz7amTcgBfWdiOJx2G3cAMdSdnkqOnJ+opqQg@mail.gmail.com>
-Subject: Re: [PATCH] seccomp: passthrough uretprobe systemcall without filtering
-To: Jiri Olsa <olsajiri@gmail.com>
-Cc: Kees Cook <kees@kernel.org>, luto@amacapital.net, wad@chromium.org, oleg@redhat.com, 
-	ldv@strace.io, mhiramat@kernel.org, andrii@kernel.org, 
-	alexei.starovoitov@gmail.com, cyphar@cyphar.com, songliubraving@fb.com, 
-	yhs@fb.com, john.fastabend@gmail.com, peterz@infradead.org, 
-	tglx@linutronix.de, bp@alien8.de, daniel@iogearbox.net, ast@kernel.org, 
-	andrii.nakryiko@gmail.com, rostedt@goodmis.org, rafi@rbk.io, 
-	shmulik.ladkani@gmail.com, bpf@vger.kernel.org, linux-api@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <tencent_D660CC1BB869156A7C3EBA24B5ACF371BA09@qq.com>
 
-Hi,
+On Tue, Jan 21, 2025 at 10:22:43PM +0800, alvalan9@foxmail.com wrote:
+> From: Wang Liang <wangliang74@huawei.com>
+> 
+> commit 073d89808c065ac4c672c0a613a71b27a80691cb upstream.
+> 
+> Syzkaller reported this warning:
+>  ------------[ cut here ]------------
+>  WARNING: CPU: 0 PID: 16 at net/ipv4/af_inet.c:156 inet_sock_destruct+0x1c5/0x1e0
+>  Modules linked in:
+>  CPU: 0 UID: 0 PID: 16 Comm: ksoftirqd/0 Not tainted 6.12.0-rc5 #26
+>  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+>  RIP: 0010:inet_sock_destruct+0x1c5/0x1e0
+>  Code: 24 12 4c 89 e2 5b 48 c7 c7 98 ec bb 82 41 5c e9 d1 18 17 ff 4c 89 e6 5b 48 c7 c7 d0 ec bb 82 41 5c e9 bf 18 17 ff 0f 0b eb 83 <0f> 0b eb 97 0f 0b eb 87 0f 0b e9 68 ff ff ff 66 66 2e 0f 1f 84 00
+>  RSP: 0018:ffffc9000008bd90 EFLAGS: 00010206
+>  RAX: 0000000000000300 RBX: ffff88810b172a90 RCX: 0000000000000007
+>  RDX: 0000000000000002 RSI: 0000000000000300 RDI: ffff88810b172a00
+>  RBP: ffff88810b172a00 R08: ffff888104273c00 R09: 0000000000100007
+>  R10: 0000000000020000 R11: 0000000000000006 R12: ffff88810b172a00
+>  R13: 0000000000000004 R14: 0000000000000000 R15: ffff888237c31f78
+>  FS:  0000000000000000(0000) GS:ffff888237c00000(0000) knlGS:0000000000000000
+>  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>  CR2: 00007ffc63fecac8 CR3: 000000000342e000 CR4: 00000000000006f0
+>  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+>  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+>  Call Trace:
+>   <TASK>
+>   ? __warn+0x88/0x130
+>   ? inet_sock_destruct+0x1c5/0x1e0
+>   ? report_bug+0x18e/0x1a0
+>   ? handle_bug+0x53/0x90
+>   ? exc_invalid_op+0x18/0x70
+>   ? asm_exc_invalid_op+0x1a/0x20
+>   ? inet_sock_destruct+0x1c5/0x1e0
+>   __sk_destruct+0x2a/0x200
+>   rcu_do_batch+0x1aa/0x530
+>   ? rcu_do_batch+0x13b/0x530
+>   rcu_core+0x159/0x2f0
+>   handle_softirqs+0xd3/0x2b0
+>   ? __pfx_smpboot_thread_fn+0x10/0x10
+>   run_ksoftirqd+0x25/0x30
+>   smpboot_thread_fn+0xdd/0x1d0
+>   kthread+0xd3/0x100
+>   ? __pfx_kthread+0x10/0x10
+>   ret_from_fork+0x34/0x50
+>   ? __pfx_kthread+0x10/0x10
+>   ret_from_fork_asm+0x1a/0x30
+>   </TASK>
+>  ---[ end trace 0000000000000000 ]---
+> 
+> Its possible that two threads call tcp_v6_do_rcv()/sk_forward_alloc_add()
+> concurrently when sk->sk_state == TCP_LISTEN with sk->sk_lock unlocked,
+> which triggers a data-race around sk->sk_forward_alloc:
+> tcp_v6_rcv
+>     tcp_v6_do_rcv
+>         skb_clone_and_charge_r
+>             sk_rmem_schedule
+>                 __sk_mem_schedule
+>                     sk_forward_alloc_add()
+>             skb_set_owner_r
+>                 sk_mem_charge
+>                     sk_forward_alloc_add()
+>         __kfree_skb
+>             skb_release_all
+>                 skb_release_head_state
+>                     sock_rfree
+>                         sk_mem_uncharge
+>                             sk_forward_alloc_add()
+>                             sk_mem_reclaim
+>                                 // set local var reclaimable
+>                                 __sk_mem_reclaim
+>                                     sk_forward_alloc_add()
+> 
+> In this syzkaller testcase, two threads call
+> tcp_v6_do_rcv() with skb->truesize=768, the sk_forward_alloc changes like
+> this:
+>  (cpu 1)             | (cpu 2)             | sk_forward_alloc
+>  ...                 | ...                 | 0
+>  __sk_mem_schedule() |                     | +4096 = 4096
+>                      | __sk_mem_schedule() | +4096 = 8192
+>  sk_mem_charge()     |                     | -768  = 7424
+>                      | sk_mem_charge()     | -768  = 6656
+>  ...                 |    ...              |
+>  sk_mem_uncharge()   |                     | +768  = 7424
+>  reclaimable=7424    |                     |
+>                      | sk_mem_uncharge()   | +768  = 8192
+>                      | reclaimable=8192    |
+>  __sk_mem_reclaim()  |                     | -4096 = 4096
+>                      | __sk_mem_reclaim()  | -8192 = -4096 != 0
+> 
+> The skb_clone_and_charge_r() should not be called in tcp_v6_do_rcv() when
+> sk->sk_state is TCP_LISTEN, it happens later in tcp_v6_syn_recv_sock().
+> Fix the same issue in dccp_v6_do_rcv().
+> 
+> Suggested-by: Eric Dumazet <edumazet@google.com>
+> Reviewed-by: Eric Dumazet <edumazet@google.com>
+> Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
+> Signed-off-by: Wang Liang <wangliang74@huawei.com>
+> Link: https://patch.msgid.link/20241107023405.889239-1-wangliang74@huawei.com
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+> ---
 
-On Tue, Jan 21, 2025 at 6:38=E2=80=AFAM Jiri Olsa <olsajiri@gmail.com> wrot=
-e:
->
-> On Sat, Jan 18, 2025 at 07:39:25PM -0800, Eyal Birger wrote:
->
-> SNIP
->
-> > I think I wasn't accurate in my wording.
-> > The uretprobe syscall is added to the tracee by the kernel.
-> > The tracer itself is merely requesting to attach a uretprobe bpf
-> > function. In previous versions, this was implemented by the kernel
-> > installing an int3 instruction, and in the new implementation the kerne=
-l
-> > is installing a uretprobe syscall.
-> > The "user" in this case - the tracer program - didn't deliberately inst=
-all
-> > the syscall, but anyway this is semantics.
-> >
-> > I think I understand your point that it is regarded as "policy", only t=
-hat
-> > it creates a problem in actual deployments, where in order to be able t=
-o
-> > run the tracer software which has been working on newer kernels a new d=
-ocker
-> > has to be deployed.
-> >
-> > I'm trying to find a pragmatic solution to this problem, and I understa=
-nd
-> > the motivation to avoid policy in seccomp.
-> >
-> > Alternatively, maybe this syscall implementation should be reverted?
->
-> you mentioned in the previous reply:
->
-> > > As far as I can tell libseccomp needs to provide support for this new
-> > >  syscall and a new docker version would need to be deployed, so It's =
-not
-> > > just a configuration change. Also the default policy which comes pack=
-ed in
-> > > docker would probably need to be changed to avoid having to explicitl=
-y
-> > > provide a seccomp configuration for each deployment.
->
-> please disregard if this is too stupid.. but could another way out be jus=
-t
-> to disable it (easy to do) and meanwhile teach libseccomp to allow uretpr=
-obe
-> (or whatever mechanism needs to be added to libseccomp) plus the needed
-> docker change ... to minimize the impact ?
+You sent this twice, which one is correct?  I'll drop both from my inbox
+just to be sure :)
 
-Right. the patch I was thinking to suggest wouldn't revert the entire
-thing, but instead disable its use for now and allow a careful
-reconsideration of the available options.
+> Backport to fix CVE-2024-53124.
+> Link: https://nvd.nist.gov/vuln/detail/CVE-2024-53124
 
-If that makes sense, I'll post it.
+Please don't point to random cve "enhancers" with unknown ways that they
+have modified our original cve record.  Just point at the cve.org record
+if you really want to link to something.
 
->
-> or there's just too many other seccomp user space libraries
+thanks,
 
-I think in theory, the example of a simple binary using "restrict" mode
-makes it problematic to assume that this can be fixed solely from userspace
-i.e. for such binary, uretprobes would still work in one kernel version and
-break on another. It's hard to tell how common this is.
-
->
-> I'm still trying to come up with some other solution but wanted
-> to exhaust all the options I could think of
->
-> thanks,
-> jirka
+greg k-h
 
