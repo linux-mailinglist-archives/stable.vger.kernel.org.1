@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-109714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC4EA18390
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52581A184D6
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:12:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4907A188CD84
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:58:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87EED161E46
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B661F75B0;
-	Tue, 21 Jan 2025 17:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5001F63EF;
+	Tue, 21 Jan 2025 18:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fWy4csg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JliOpd7L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CA01F667C;
-	Tue, 21 Jan 2025 17:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7261F63FD;
+	Tue, 21 Jan 2025 18:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482225; cv=none; b=CCXNwM0hpxoZsIuc0+C2KIgnASvyoD1pNl7bAyvLEnrGvzqP/8D9bhhm/eRs7Ef+axGff23Ac2p4U+icTF/2IK8pFPfGD9lhRGUHFBZgiQl2xGLXbg/sv4B59JW1DoVfPGw3Ilu2mojuXw+5PUwvW5JEN5ZJmDwR8x/znKKipfE=
+	t=1737483058; cv=none; b=r/W2wvuBchb+K8YFMN7p9Sl3EP09kZkld850LlYcVep7sszqgJXQlQrXA6uPesTbbMWsu4ABs2HILOViGi7CJiLjFJNj5WyW1BGrAm9f8yrlZWbYfGFfZddo6Rfc8VDc14iWPNm2M9iZJ72B5fGhAsI193w96eWZVDpj6drEJTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482225; c=relaxed/simple;
-	bh=vJ2WiCiCtFuRWDjJsKeNTr6GEwjmH+qfTsCq0cXi2h8=;
+	s=arc-20240116; t=1737483058; c=relaxed/simple;
+	bh=JLvwYs+EK3PXsZBq2SZwdtAXJ1SlgWe11lxBPusU528=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n+GhdZZPUG7jrgnFM7kQqW16yf5sDPqzLgjv5Q2pvqWgURL2NtK4f37TYU2VtwDeFFfmMr/1x8tCU/s0zkPvLu7LZn+Knw6wSdYv5VxXyY43hWBv0Jd6akzXQ0GAg7dfpF7K5Vyfi9xBT07YWUhrYWLIlweBx7Mv7PIxahhqB98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fWy4csg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80122C4CEDF;
-	Tue, 21 Jan 2025 17:57:04 +0000 (UTC)
+	 MIME-Version; b=iN95nkBA/t3C/ah4yoeTuBlhVI8bpXkjoO9SUzfcMgUbuYhORxuOVtQk9lRJd5vye0dI0/Hh2E9anMJlEnXipHB4m268sjUliJrBxns02o1Jr3kazy7uLnB1Aa7flggpS7F92H4jsvCvMrq/DHp2rP5+UsYfardZmgGPQzhZ9Hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JliOpd7L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66018C4CEE0;
+	Tue, 21 Jan 2025 18:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482224;
-	bh=vJ2WiCiCtFuRWDjJsKeNTr6GEwjmH+qfTsCq0cXi2h8=;
+	s=korg; t=1737483057;
+	bh=JLvwYs+EK3PXsZBq2SZwdtAXJ1SlgWe11lxBPusU528=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1fWy4csgBls67D5bOArWynCNLkoRDPOurR5jYt6sPVKQ7VXQygXf9MPVNdBcmKWWk
-	 mRs8YXrqjttKdw1coRqREbj/8cwBRIkKIkW9z16L6GJIdY7zb9PTJXO6c4iUNomvwl
-	 phNEZX5EIO/S6PbjPnJIFk0j2LZ9hj1c9q092TJY=
+	b=JliOpd7L97mebU4tWeJSICuf3h5fWprLDbm7+azkgM/QUAwzZR2D7FkNnm2QxJl4L
+	 Qwd9RQzTbMt+KXP4mJbN+Z1wLl+0u1ciBSiuIjDHq4rpzNJIpU8xu/2RWuvu3NgQl/
+	 cC/b9rhbj1smwZCr+dkIn5YG7a2AyxFHyjT2vdMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomas Krcka <krckatom@amazon.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.6 57/72] irqchip/gic-v3-its: Dont enable interrupts in its_irq_set_vcpu_affinity()
-Date: Tue, 21 Jan 2025 18:52:23 +0100
-Message-ID: <20250121174525.632955994@linuxfoundation.org>
+	Justin Chen <justin.chen@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 072/127] phy: usb: Toggle the PHY power during init
+Date: Tue, 21 Jan 2025 18:52:24 +0100
+Message-ID: <20250121174532.442494785@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Krcka <krckatom@amazon.de>
+From: Justin Chen <justin.chen@broadcom.com>
 
-commit 35cb2c6ce7da545f3b5cb1e6473ad7c3a6f08310 upstream.
+[ Upstream commit 0a92ea87bdd6f77ca4e17fe19649882cf5209edd ]
 
-The following call-chain leads to enabling interrupts in a nested interrupt
-disabled section:
+When bringing up the PHY, it might be in a bad state if left powered.
+One case is we lose the PLL lock if the PLL is gated while the PHY
+is powered. Toggle the PHY power so we can start from a known state.
 
-irq_set_vcpu_affinity()
-  irq_get_desc_lock()
-     raw_spin_lock_irqsave()   <--- Disable interrupts
-  its_irq_set_vcpu_affinity()
-     guard(raw_spinlock_irq)   <--- Enables interrupts when leaving the guard()
-  irq_put_desc_unlock()        <--- Warns because interrupts are enabled
-
-This was broken in commit b97e8a2f7130, which replaced the original
-raw_spin_[un]lock() pair with guard(raw_spinlock_irq).
-
-Fix the issue by using guard(raw_spinlock).
-
-[ tglx: Massaged change log ]
-
-Fixes: b97e8a2f7130 ("irqchip/gic-v3-its: Fix potential race condition in its_vlpi_prop_update()")
-Signed-off-by: Tomas Krcka <krckatom@amazon.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20241230150825.62894-1-krckatom@amazon.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4e5b9c9a73b3 ("phy: usb: Add support for new Synopsys USB controller on the 7216")
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20241024213540.1059412-1-justin.chen@broadcom.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -1970,7 +1970,7 @@ static int its_irq_set_vcpu_affinity(str
- 	if (!is_v4(its_dev->its))
- 		return -EINVAL;
+diff --git a/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c b/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c
+index d2524b70ea16..fa54da35719f 100644
+--- a/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c
++++ b/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c
+@@ -309,6 +309,12 @@ static void usb_init_common_7216(struct brcm_usb_init_params *params)
+ 	void __iomem *ctrl = params->regs[BRCM_REGS_CTRL];
  
--	guard(raw_spinlock_irq)(&its_dev->event_map.vlpi_lock);
-+	guard(raw_spinlock)(&its_dev->event_map.vlpi_lock);
+ 	USB_CTRL_UNSET(ctrl, USB_PM, XHC_S2_CLK_SWITCH_EN);
++
++	/*
++	 * The PHY might be in a bad state if it is already powered
++	 * up. Toggle the power just in case.
++	 */
++	USB_CTRL_SET(ctrl, USB_PM, USB_PWRDN);
+ 	USB_CTRL_UNSET(ctrl, USB_PM, USB_PWRDN);
  
- 	/* Unmap request? */
- 	if (!info)
+ 	/* 1 millisecond - for USB clocks to settle down */
+-- 
+2.39.5
+
 
 
 
