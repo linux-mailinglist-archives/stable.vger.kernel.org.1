@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-109838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C331A1841D
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:03:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00607A18380
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8DCB3A426F
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:03:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6F641631CA
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:57:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD001F543D;
-	Tue, 21 Jan 2025 18:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 500341F63FD;
+	Tue, 21 Jan 2025 17:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pkqy86ax"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TbQJuwTX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D1C1F5419;
-	Tue, 21 Jan 2025 18:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD001F561E;
+	Tue, 21 Jan 2025 17:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482586; cv=none; b=sWty6LdagLyj3j2d7p5obc09BCLGDwO7vyf0u8QTc68JnGhvx0PsMVuxjJiWyYqlr9xrrPWfnKA9X18PB73lA/nKDklWiyo0mkUfXy0Y8TNqQHxUNGXIt15xzPSwQZ+s6/IBUc41o7cZ2i6QaDasx+p7WukWH8Sghu6IyJOBArs=
+	t=1737482187; cv=none; b=u1hANQ7JblO23PpFjmuNDjODdRgzYtQCldyrUr6gzCE/ka1oZQ4KTHy160rR8an7t/K/gq/Bq7DMSpfSOCVRx/vrVktSpClYhB6Ayn5dP8gwCSiZjCKvthQpfy2xZwt79ucZdFVNnwXYlU1GM4V9fPRpe6AM/Xps0r5JEzZmqG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482586; c=relaxed/simple;
-	bh=kjbnfexezi43pgUg3LqjBhXkw/WWsGTax+1QnD/2bvE=;
+	s=arc-20240116; t=1737482187; c=relaxed/simple;
+	bh=hOTfGOSUgWmAc4tiNlDimyqtZVmUMgqnU/Bj1Vqn8rU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aHJlOuAyz72T/vM0se7ohtJ9K8txkK2/MHzKhaXIJ6siP2FHsSpNUgXEnQpKLd5mD6USU6azi2zh+KxD5nwJL+php8H1epb9OAGIgf1utWt+RzyqaR9PYj++L+qGF5ub6sHKz01vjuwM5GzfI+Ffp5bXHLmz2vIREeuOfbe4rck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pkqy86ax; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92614C4CEDF;
-	Tue, 21 Jan 2025 18:03:05 +0000 (UTC)
+	 MIME-Version; b=ZL+Xgxk/D/G9Gzh5xCLExGxHS3Pp+ZcDvKb7c6ha8Xhkb2uIW8e3Z97pvsVC9E+1wQPK9QMRDyamk5LFhe5iQyPIdzlCOMoGrSocZlxqXRncIRLUYj9TWn0c4kSYDy2sVcQfv7IzVlH/cEFn5i8OLwNsR/P+VequOyccG7UYRus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TbQJuwTX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86FD8C4CEDF;
+	Tue, 21 Jan 2025 17:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482586;
-	bh=kjbnfexezi43pgUg3LqjBhXkw/WWsGTax+1QnD/2bvE=;
+	s=korg; t=1737482186;
+	bh=hOTfGOSUgWmAc4tiNlDimyqtZVmUMgqnU/Bj1Vqn8rU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pkqy86axW2Yy2IEWhozSSljeFLEXD3nzdjU0BUKLpQj6gzDE5v2hcddGdOx7SPc6s
-	 12GMy3nNUBySsdUPJkFIqJtlj1I4lhf1lQ9IOMB48kyITj3gL1LLWMH/WMErPleBvq
-	 G4Bma9bFfCGWycOaMRW82G1y2vXTOrRcSprnWaAE=
+	b=TbQJuwTXiaHEPlkjFktz/OxMmUC768pIKUGBO+tLj7HxZljoW0MTXHhojXmZhj/Bu
+	 SjKyimdA8ndoVGAX+pEhpQLqRoLD0tX/P2igzAHMFeNZu0ktH4lNcigaBrrKhYouIF
+	 S4JLHAGHMWuxTzaeVgBrHDIcErtlqR29ikFL9zh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Veronika Molnarova <vmolnaro@redhat.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Michael Petlan <mpetlan@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 102/122] tracing: gfp: Fix the GFP enum values shown for user space tracing tools
+	Yu Kuai <yukuai3@huawei.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	BRUNO VERNAY <bruno.vernay@se.com>,
+	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Subject: [PATCH 6.6 64/72] block: fix uaf for flush rq while iterating tags
 Date: Tue, 21 Jan 2025 18:52:30 +0100
-Message-ID: <20250121174536.969456933@linuxfoundation.org>
+Message-ID: <20250121174525.902117162@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
-References: <20250121174532.991109301@linuxfoundation.org>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+References: <20250121174523.429119852@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,157 +64,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit 60295b944ff6805e677c48ae4178532b207d43be upstream.
+commit 3802f73bd80766d70f319658f334754164075bc3 upstream.
 
-Tracing tools like perf and trace-cmd read the /sys/kernel/tracing/events/*/*/format
-files to know how to parse the data and also how to print it. For the
-"print fmt" portion of that file, if anything uses an enum that is not
-exported to the tracing system, user space will not be able to parse it.
+blk_mq_clear_flush_rq_mapping() is not called during scsi probe, by
+checking blk_queue_init_done(). However, QUEUE_FLAG_INIT_DONE is cleared
+in del_gendisk by commit aec89dc5d421 ("block: keep q_usage_counter in
+atomic mode after del_gendisk"), hence for disk like scsi, following
+blk_mq_destroy_queue() will not clear flush rq from tags->rqs[] as well,
+cause following uaf that is found by our syzkaller for v6.6:
 
-The GFP flags use to be defines, and defines get translated in the print
-fmt sections. But now they are converted to use enums, which is not.
+==================================================================
+BUG: KASAN: slab-use-after-free in blk_mq_find_and_get_req+0x16e/0x1a0 block/blk-mq-tag.c:261
+Read of size 4 at addr ffff88811c969c20 by task kworker/1:2H/224909
 
-The mm_page_alloc trace event format use to have:
+CPU: 1 PID: 224909 Comm: kworker/1:2H Not tainted 6.6.0-ga836a5060850 #32
+Workqueue: kblockd blk_mq_timeout_work
+Call Trace:
 
-  print fmt: "page=%p pfn=0x%lx order=%d migratetype=%d gfp_flags=%s",
-    REC->pfn != -1UL ? (((struct page *)vmemmap_base) + (REC->pfn)) : ((void
-    *)0), REC->pfn != -1UL ? REC->pfn : 0, REC->order, REC->migratetype,
-    (REC->gfp_flags) ? __print_flags(REC->gfp_flags, "|", {( unsigned
-    long)(((((((( gfp_t)(0x400u|0x800u)) | (( gfp_t)0x40u) | (( gfp_t)0x80u) |
-    (( gfp_t)0x100000u)) | (( gfp_t)0x02u)) | (( gfp_t)0x08u) | (( gfp_t)0)) |
-    (( gfp_t)0x40000u) | (( gfp_t)0x80000u) | (( gfp_t)0x2000u)) & ~((
-    gfp_t)(0x400u|0x800u))) | (( gfp_t)0x400u)), "GFP_TRANSHUGE"}, {( unsigned
-    long)((((((( gfp_t)(0x400u|0x800u)) | (( gfp_t)0x40u) | (( gfp_t)0x80u) |
-    (( gfp_t)0x100000u)) | (( gfp_t)0x02u)) | (( gfp_t)0x08u) | (( gfp_t)0)) ...
+__dump_stack lib/dump_stack.c:88 [inline]
+dump_stack_lvl+0x91/0xf0 lib/dump_stack.c:106
+print_address_description.constprop.0+0x66/0x300 mm/kasan/report.c:364
+print_report+0x3e/0x70 mm/kasan/report.c:475
+kasan_report+0xb8/0xf0 mm/kasan/report.c:588
+blk_mq_find_and_get_req+0x16e/0x1a0 block/blk-mq-tag.c:261
+bt_iter block/blk-mq-tag.c:288 [inline]
+__sbitmap_for_each_set include/linux/sbitmap.h:295 [inline]
+sbitmap_for_each_set include/linux/sbitmap.h:316 [inline]
+bt_for_each+0x455/0x790 block/blk-mq-tag.c:325
+blk_mq_queue_tag_busy_iter+0x320/0x740 block/blk-mq-tag.c:534
+blk_mq_timeout_work+0x1a3/0x7b0 block/blk-mq.c:1673
+process_one_work+0x7c4/0x1450 kernel/workqueue.c:2631
+process_scheduled_works kernel/workqueue.c:2704 [inline]
+worker_thread+0x804/0xe40 kernel/workqueue.c:2785
+kthread+0x346/0x450 kernel/kthread.c:388
+ret_from_fork+0x4d/0x80 arch/x86/kernel/process.c:147
+ret_from_fork_asm+0x1b/0x30 arch/x86/entry/entry_64.S:293
 
-Where the GFP values are shown and not their names. But after the GFP
-flags were converted to use enums, it has:
+Allocated by task 942:
+kasan_save_stack+0x22/0x50 mm/kasan/common.c:45
+kasan_set_track+0x25/0x30 mm/kasan/common.c:52
+____kasan_kmalloc mm/kasan/common.c:374 [inline]
+__kasan_kmalloc mm/kasan/common.c:383 [inline]
+__kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:380
+kasan_kmalloc include/linux/kasan.h:198 [inline]
+__do_kmalloc_node mm/slab_common.c:1007 [inline]
+__kmalloc_node+0x69/0x170 mm/slab_common.c:1014
+kmalloc_node include/linux/slab.h:620 [inline]
+kzalloc_node include/linux/slab.h:732 [inline]
+blk_alloc_flush_queue+0x144/0x2f0 block/blk-flush.c:499
+blk_mq_alloc_hctx+0x601/0x940 block/blk-mq.c:3788
+blk_mq_alloc_and_init_hctx+0x27f/0x330 block/blk-mq.c:4261
+blk_mq_realloc_hw_ctxs+0x488/0x5e0 block/blk-mq.c:4294
+blk_mq_init_allocated_queue+0x188/0x860 block/blk-mq.c:4350
+blk_mq_init_queue_data block/blk-mq.c:4166 [inline]
+blk_mq_init_queue+0x8d/0x100 block/blk-mq.c:4176
+scsi_alloc_sdev+0x843/0xd50 drivers/scsi/scsi_scan.c:335
+scsi_probe_and_add_lun+0x77c/0xde0 drivers/scsi/scsi_scan.c:1189
+__scsi_scan_target+0x1fc/0x5a0 drivers/scsi/scsi_scan.c:1727
+scsi_scan_channel drivers/scsi/scsi_scan.c:1815 [inline]
+scsi_scan_channel+0x14b/0x1e0 drivers/scsi/scsi_scan.c:1791
+scsi_scan_host_selected+0x2fe/0x400 drivers/scsi/scsi_scan.c:1844
+scsi_scan+0x3a0/0x3f0 drivers/scsi/scsi_sysfs.c:151
+store_scan+0x2a/0x60 drivers/scsi/scsi_sysfs.c:191
+dev_attr_store+0x5c/0x90 drivers/base/core.c:2388
+sysfs_kf_write+0x11c/0x170 fs/sysfs/file.c:136
+kernfs_fop_write_iter+0x3fc/0x610 fs/kernfs/file.c:338
+call_write_iter include/linux/fs.h:2083 [inline]
+new_sync_write+0x1b4/0x2d0 fs/read_write.c:493
+vfs_write+0x76c/0xb00 fs/read_write.c:586
+ksys_write+0x127/0x250 fs/read_write.c:639
+do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+do_syscall_64+0x70/0x120 arch/x86/entry/common.c:81
+entry_SYSCALL_64_after_hwframe+0x78/0xe2
 
-  print fmt: "page=%p pfn=0x%lx order=%d migratetype=%d gfp_flags=%s",
-    REC->pfn != -1UL ? (vmemmap + (REC->pfn)) : ((void *)0), REC->pfn != -1UL
-    ? REC->pfn : 0, REC->order, REC->migratetype, (REC->gfp_flags) ?
-    __print_flags(REC->gfp_flags, "|", {( unsigned long)((((((((
-    gfp_t)(((((1UL))) << (___GFP_DIRECT_RECLAIM_BIT))|((((1UL))) <<
-    (___GFP_KSWAPD_RECLAIM_BIT)))) | (( gfp_t)((((1UL))) << (___GFP_IO_BIT)))
-    | (( gfp_t)((((1UL))) << (___GFP_FS_BIT))) | (( gfp_t)((((1UL))) <<
-    (___GFP_HARDWALL_BIT)))) | (( gfp_t)((((1UL))) << (___GFP_HIGHMEM_BIT))))
-    | (( gfp_t)((((1UL))) << (___GFP_MOVABLE_BIT))) | (( gfp_t)0)) | ((
-    gfp_t)((((1UL))) << (___GFP_COMP_BIT))) ...
+Freed by task 244687:
+kasan_save_stack+0x22/0x50 mm/kasan/common.c:45
+kasan_set_track+0x25/0x30 mm/kasan/common.c:52
+kasan_save_free_info+0x2b/0x50 mm/kasan/generic.c:522
+____kasan_slab_free mm/kasan/common.c:236 [inline]
+__kasan_slab_free+0x12a/0x1b0 mm/kasan/common.c:244
+kasan_slab_free include/linux/kasan.h:164 [inline]
+slab_free_hook mm/slub.c:1815 [inline]
+slab_free_freelist_hook mm/slub.c:1841 [inline]
+slab_free mm/slub.c:3807 [inline]
+__kmem_cache_free+0xe4/0x520 mm/slub.c:3820
+blk_free_flush_queue+0x40/0x60 block/blk-flush.c:520
+blk_mq_hw_sysfs_release+0x4a/0x170 block/blk-mq-sysfs.c:37
+kobject_cleanup+0x136/0x410 lib/kobject.c:689
+kobject_release lib/kobject.c:720 [inline]
+kref_put include/linux/kref.h:65 [inline]
+kobject_put+0x119/0x140 lib/kobject.c:737
+blk_mq_release+0x24f/0x3f0 block/blk-mq.c:4144
+blk_free_queue block/blk-core.c:298 [inline]
+blk_put_queue+0xe2/0x180 block/blk-core.c:314
+blkg_free_workfn+0x376/0x6e0 block/blk-cgroup.c:144
+process_one_work+0x7c4/0x1450 kernel/workqueue.c:2631
+process_scheduled_works kernel/workqueue.c:2704 [inline]
+worker_thread+0x804/0xe40 kernel/workqueue.c:2785
+kthread+0x346/0x450 kernel/kthread.c:388
+ret_from_fork+0x4d/0x80 arch/x86/kernel/process.c:147
+ret_from_fork_asm+0x1b/0x30 arch/x86/entry/entry_64.S:293
 
-Where the enums names like ___GFP_KSWAPD_RECLAIM_BIT are shown and not their
-values. User space has no way to convert these names to their values and
-the output will fail to parse. What is shown is now:
+Other than blk_mq_clear_flush_rq_mapping(), the flag is only used in
+blk_register_queue() from initialization path, hence it's safe not to
+clear the flag in del_gendisk. And since QUEUE_FLAG_REGISTERED already
+make sure that queue should only be registered once, there is no need
+to test the flag as well.
 
-  mm_page_alloc:  page=0xffffffff981685f3 pfn=0x1d1ac1 order=0 migratetype=1 gfp_flags=0x140cca
-
-The TRACE_DEFINE_ENUM() macro was created to handle enums in the print fmt
-files. This causes them to be replaced at boot up with the numbers, so
-that user space tooling can parse it. By using this macro, the output is
-back to the human readable:
-
-  mm_page_alloc: page=0xffffffff981685f3 pfn=0x122233 order=0 migratetype=1 gfp_flags=GFP_HIGHUSER_MOVABLE|__GFP_COMP
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Veronika  Molnarova <vmolnaro@redhat.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/20250116214438.749504792@goodmis.org
-Reported-by: Michael Petlan <mpetlan@redhat.com>
-Closes: https://lore.kernel.org/all/87be5f7c-1a0-dad-daa0-54e342efaea7@redhat.com/
-Fixes: 772dd0342727c ("mm: enumerate all gfp flags")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 6cfeadbff3f8 ("blk-mq: don't clear flush_rq from tags->rqs[]")
+Depends-on: commit aec89dc5d421 ("block: keep q_usage_counter in atomic mode after del_gendisk")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20241104110005.1412161-1-yukuai1@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: BRUNO VERNAY <bruno.vernay@se.com>
+Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/mmflags.h | 63 ++++++++++++++++++++++++++++++++++
- 1 file changed, 63 insertions(+)
+ block/blk-sysfs.c |    6 ++----
+ block/genhd.c     |    9 +++------
+ 2 files changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags.h
-index bb8a59c6caa2..d36c857dd249 100644
---- a/include/trace/events/mmflags.h
-+++ b/include/trace/events/mmflags.h
-@@ -13,6 +13,69 @@
-  * Thus most bits set go first.
-  */
+--- a/block/blk-sysfs.c
++++ b/block/blk-sysfs.c
+@@ -842,10 +842,8 @@ int blk_register_queue(struct gendisk *d
+ 	 * faster to shut down and is made fully functional here as
+ 	 * request_queues for non-existent devices never get registered.
+ 	 */
+-	if (!blk_queue_init_done(q)) {
+-		blk_queue_flag_set(QUEUE_FLAG_INIT_DONE, q);
+-		percpu_ref_switch_to_percpu(&q->q_usage_counter);
+-	}
++	blk_queue_flag_set(QUEUE_FLAG_INIT_DONE, q);
++	percpu_ref_switch_to_percpu(&q->q_usage_counter);
  
-+/* These define the values that are enums (the bits) */
-+#define TRACE_GFP_FLAGS_GENERAL			\
-+	TRACE_GFP_EM(DMA)			\
-+	TRACE_GFP_EM(HIGHMEM)			\
-+	TRACE_GFP_EM(DMA32)			\
-+	TRACE_GFP_EM(MOVABLE)			\
-+	TRACE_GFP_EM(RECLAIMABLE)		\
-+	TRACE_GFP_EM(HIGH)			\
-+	TRACE_GFP_EM(IO)			\
-+	TRACE_GFP_EM(FS)			\
-+	TRACE_GFP_EM(ZERO)			\
-+	TRACE_GFP_EM(DIRECT_RECLAIM)		\
-+	TRACE_GFP_EM(KSWAPD_RECLAIM)		\
-+	TRACE_GFP_EM(WRITE)			\
-+	TRACE_GFP_EM(NOWARN)			\
-+	TRACE_GFP_EM(RETRY_MAYFAIL)		\
-+	TRACE_GFP_EM(NOFAIL)			\
-+	TRACE_GFP_EM(NORETRY)			\
-+	TRACE_GFP_EM(MEMALLOC)			\
-+	TRACE_GFP_EM(COMP)			\
-+	TRACE_GFP_EM(NOMEMALLOC)		\
-+	TRACE_GFP_EM(HARDWALL)			\
-+	TRACE_GFP_EM(THISNODE)			\
-+	TRACE_GFP_EM(ACCOUNT)			\
-+	TRACE_GFP_EM(ZEROTAGS)
-+
-+#ifdef CONFIG_KASAN_HW_TAGS
-+# define TRACE_GFP_FLAGS_KASAN			\
-+	TRACE_GFP_EM(SKIP_ZERO)			\
-+	TRACE_GFP_EM(SKIP_KASAN)
-+#else
-+# define TRACE_GFP_FLAGS_KASAN
-+#endif
-+
-+#ifdef CONFIG_LOCKDEP
-+# define TRACE_GFP_FLAGS_LOCKDEP		\
-+	TRACE_GFP_EM(NOLOCKDEP)
-+#else
-+# define TRACE_GFP_FLAGS_LOCKDEP
-+#endif
-+
-+#ifdef CONFIG_SLAB_OBJ_EXT
-+# define TRACE_GFP_FLAGS_SLAB			\
-+	TRACE_GFP_EM(NO_OBJ_EXT)
-+#else
-+# define TRACE_GFP_FLAGS_SLAB
-+#endif
-+
-+#define TRACE_GFP_FLAGS				\
-+	TRACE_GFP_FLAGS_GENERAL			\
-+	TRACE_GFP_FLAGS_KASAN			\
-+	TRACE_GFP_FLAGS_LOCKDEP			\
-+	TRACE_GFP_FLAGS_SLAB
-+
-+#undef TRACE_GFP_EM
-+#define TRACE_GFP_EM(a) TRACE_DEFINE_ENUM(___GFP_##a##_BIT);
-+
-+TRACE_GFP_FLAGS
-+
-+/* Just in case these are ever used */
-+TRACE_DEFINE_ENUM(___GFP_UNUSED_BIT);
-+TRACE_DEFINE_ENUM(___GFP_LAST_BIT);
-+
- #define gfpflag_string(flag) {(__force unsigned long)flag, #flag}
+ 	return ret;
  
- #define __def_gfpflag_names			\
--- 
-2.48.1
-
+--- a/block/genhd.c
++++ b/block/genhd.c
+@@ -710,13 +710,10 @@ void del_gendisk(struct gendisk *disk)
+ 	 * If the disk does not own the queue, allow using passthrough requests
+ 	 * again.  Else leave the queue frozen to fail all I/O.
+ 	 */
+-	if (!test_bit(GD_OWNS_QUEUE, &disk->state)) {
+-		blk_queue_flag_clear(QUEUE_FLAG_INIT_DONE, q);
++	if (!test_bit(GD_OWNS_QUEUE, &disk->state))
+ 		__blk_mq_unfreeze_queue(q, true);
+-	} else {
+-		if (queue_is_mq(q))
+-			blk_mq_exit_queue(q);
+-	}
++	else if (queue_is_mq(q))
++		blk_mq_exit_queue(q);
+ }
+ EXPORT_SYMBOL(del_gendisk);
+ 
 
 
 
