@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-109872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02855A18461
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:06:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E370BA1840D
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:03:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E38C18867DC
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:05:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26ECE164F00
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:02:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691221F543D;
-	Tue, 21 Jan 2025 18:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764081F427B;
+	Tue, 21 Jan 2025 18:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KvGxuI2z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/CmwODy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A8F1F4275;
-	Tue, 21 Jan 2025 18:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360B2E571;
+	Tue, 21 Jan 2025 18:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482686; cv=none; b=pz1Z+FsngDoRbIyzUPCGAyRC7VUsq9ZHZZ6RLUh82YL9fq/+JWJ882sSjGsu2YjTYIl2mjmu+mtQOy9aoQuWg9sLXLHIAMoHyaXewl1tFBuQpTYI54RhgM2g+s4DbdBB2nOtXThGEDv76CC4JxdJuNpqjoe13M2hDE86oPSV+JE=
+	t=1737482534; cv=none; b=sJZQZ3Ze0VOBYqm9XqXYuwXObLRLtbRA8AKWsrMmi27Pa+EJJXrZNgWss1TUDWmvhGyZ3hJOgnoFd2Y0B5BiQRsjxrXzV5aYEfyjbAqDfobBVgujMDjDZmVrHXK+iw+gnjgkpJ+71Oon282FXbQmMC679cAoeTXvzMjld8o4nsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482686; c=relaxed/simple;
-	bh=h3wv/Ly/3ERIObe/ZBmeVv1dQbvGzxWXKBGYJAVQnpg=;
+	s=arc-20240116; t=1737482534; c=relaxed/simple;
+	bh=oFUDr33oSiEZ+KjxYYBq/Q4AAQM/s48yyFXq48N//VA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ecci3557MtOBP3YDHvM+kZ87sr0pieUy58YFkN6ynkqDKaVnBZrZw6iwznjEt5V7tgSZZoMFYOelUJfPwW4vM0COGQJMWtUaTBcpWGH+0o+1reVvvo3+ybEYY+lDNb9zOylWlP7zoSJ/L361vD5gyYq4z7ryK4BV17OD9t8xAP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KvGxuI2z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A10F3C4CEDF;
-	Tue, 21 Jan 2025 18:04:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LPN2XCz10LmjMTXtzlFyKZe0sAgmLKhh1upfYe10a0XZjY4jIFmC7AKCR+8Gky0mwLNGxXUJ1HbdOcNBjCNZgdJI1CttRuATEk2jcr+JHV329GcM0tCvJf2Bh14cyHSz+QV+Q5AFV8yERnFqzFvZzqAxZRULJbVqrXT8zFrR6aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/CmwODy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACBB3C4CEDF;
+	Tue, 21 Jan 2025 18:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482686;
-	bh=h3wv/Ly/3ERIObe/ZBmeVv1dQbvGzxWXKBGYJAVQnpg=;
+	s=korg; t=1737482534;
+	bh=oFUDr33oSiEZ+KjxYYBq/Q4AAQM/s48yyFXq48N//VA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KvGxuI2ztVcMyAofHbFjUKuk+7S3o/Wa1undTKMgd52tyX/5dvbl8N82M9IzaSlwv
-	 mLwqyLJ4jGuyK5rb+bl2AVj/R/8tcDm7WpmqREbgrHawdTO8paX+ru/o6lOKRyu4sx
-	 9ML/dcRJxwsdrybm9Zc+WwP03uh6T6BeoA8n5BTk=
+	b=P/CmwODyg6pRP/GGVSOjGgOXXqEYr28rTIz0ylvSXadDI4kacb9rLvnG1SdIq4aY6
+	 5ZYLEZ+8fZEPv5N8JkpWboy9BpbPOVB0aCodsfP9QaXaed2oHpa0w+4nqqAj7oe4yo
+	 N7Yrmj9c0YY+wJh+47WwS+xX0kkjh4QzDvo1LPkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Nelissen <marco.nelissen@gmail.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 39/64] filemap: avoid truncating 64-bit offset to 32 bits
+	Sagar Ghuge <sagar.ghuge@intel.com>,
+	Nanley Chery <nanley.g.chery@intel.com>,
+	Xi Ruoyao <xry111@xry111.site>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: [PATCH 6.12 110/122] drm/i915/fb: Relax clear color alignment to 64 bytes
 Date: Tue, 21 Jan 2025 18:52:38 +0100
-Message-ID: <20250121174523.041178965@linuxfoundation.org>
+Message-ID: <20250121174537.289237359@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
-References: <20250121174521.568417761@linuxfoundation.org>
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +63,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Nelissen <marco.nelissen@gmail.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit f505e6c91e7a22d10316665a86d79f84d9f0ba76 upstream.
+commit 1a5401ec3018c101c456cdbda2eaef9482db6786 upstream.
 
-On 32-bit kernels, folio_seek_hole_data() was inadvertently truncating a
-64-bit value to 32 bits, leading to a possible infinite loop when writing
-to an xfs filesystem.
+Mesa changed its clear color alignment from 4k to 64 bytes
+without informing the kernel side about the change. This
+is now likely to cause framebuffer creation to fail.
 
-Link: https://lkml.kernel.org/r/20250102190540.1356838-1-marco.nelissen@gmail.com
-Fixes: 54fa39ac2e00 ("iomap: use mapping_seek_hole_data")
-Signed-off-by: Marco Nelissen <marco.nelissen@gmail.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The only thing we do with the clear color buffer in i915 is:
+1. map a single page
+2. read out bytes 16-23 from said page
+3. unmap the page
+
+So the only requirement we really have is that those 8 bytes
+are all contained within one page. Thus we can deal with the
+Mesa regression by reducing the alignment requiment from 4k
+to the same 64 bytes in the kernel. We could even go as low as
+32 bytes, but IIRC 64 bytes is the hardware requirement on
+the 3D engine side so matching that seems sensible.
+
+Note that the Mesa alignment chages were partially undone
+so the regression itself was already fixed on userspace
+side.
+
+Cc: stable@vger.kernel.org
+Cc: Sagar Ghuge <sagar.ghuge@intel.com>
+Cc: Nanley Chery <nanley.g.chery@intel.com>
+Reported-by: Xi Ruoyao <xry111@xry111.site>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13057
+Closes: https://lore.kernel.org/all/45a5bba8de009347262d86a4acb27169d9ae0d9f.camel@xry111.site/
+Link: https://gitlab.freedesktop.org/mesa/mesa/-/commit/17f97a69c13832a6c1b0b3aad45b06f07d4b852f
+Link: https://gitlab.freedesktop.org/mesa/mesa/-/commit/888f63cf1baf34bc95e847a30a041dc7798edddb
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241129065014.8363-2-ville.syrjala@linux.intel.com
+Tested-by: Xi Ruoyao <xry111@xry111.site>
+Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
+(cherry picked from commit ed3a892e5e3d6b3f6eeb76db7c92a968aeb52f3d)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/filemap.c |    2 +-
+ drivers/gpu/drm/i915/display/intel_fb.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -2938,7 +2938,7 @@ static inline loff_t folio_seek_hole_dat
- 		if (ops->is_partially_uptodate(folio, offset, bsz) ==
- 							seek_data)
- 			break;
--		start = (start + bsz) & ~(bsz - 1);
-+		start = (start + bsz) & ~((u64)bsz - 1);
- 		offset += bsz;
- 	} while (offset < folio_size(folio));
- unlock:
+--- a/drivers/gpu/drm/i915/display/intel_fb.c
++++ b/drivers/gpu/drm/i915/display/intel_fb.c
+@@ -1613,7 +1613,7 @@ int intel_fill_fb_info(struct drm_i915_p
+ 		 * arithmetic related to alignment and offset calculation.
+ 		 */
+ 		if (is_gen12_ccs_cc_plane(&fb->base, i)) {
+-			if (IS_ALIGNED(fb->base.offsets[i], PAGE_SIZE))
++			if (IS_ALIGNED(fb->base.offsets[i], 64))
+ 				continue;
+ 			else
+ 				return -EINVAL;
 
 
 
