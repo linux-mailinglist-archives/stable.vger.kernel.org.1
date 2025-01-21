@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-109988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2C63A184D3
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:12:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C9FA18431
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:04:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C66D4188285B
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:11:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A6B23A8790
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:04:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2F261F7596;
-	Tue, 21 Jan 2025 18:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6211F7081;
+	Tue, 21 Jan 2025 18:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9cWm8Ik"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zCHm95bk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B691F55E3;
-	Tue, 21 Jan 2025 18:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7191F7064;
+	Tue, 21 Jan 2025 18:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737483019; cv=none; b=L+7WyYG1uZTrbZbT1GiFKNOiU/u6VRefcwrKbVxKGcMSMlRUis6WpN+EYPlTgcbK97tNbV/qZct47cYzWbJYgVHUOFQ8K0AFei8UWgMyqiePbJEY2mB40fK8DeNheT/mOqkm5doGlbeyO4gIfhstAM4dNv+DQ+o+aa4oaElSOZQ=
+	t=1737482642; cv=none; b=RhRLQKtvkvf8+pL2L7ALNrT2gQxo3eJyp5hcFCRyBxn15Bd4MEfxawHif1x3e1ag2HI4evLOs5gPunWHmhNdQ9bPfcEIfpSe04vuUefCLogS/rmlahR2XplWJoAgYoF2I6kNQexsTvZcmH6wRAhOA5uil/JES+g9ZrAot+B64wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737483019; c=relaxed/simple;
-	bh=Ots7sys9kh0ggyBjHPi+9M7xNUDTFcAx9YVeV/xwyxw=;
+	s=arc-20240116; t=1737482642; c=relaxed/simple;
+	bh=AAIvjk1NINsJ5wYGZjTt8PdxsUe58KurXt5XArFToLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q0FCIC9fOJjB3lPFDJtrO4kfxiWas7oze48WQqqktK0xKN0o5O2XdA4yYt9UdWYNj/SUZ4S7RX59SC6SeBMLnEVLP69TXMFl0MTb3Tv2nZLYvc/Ibge0wjjMv9KFbu8HFR4OsWQsANV+RP0dtuwwphlNMgBPVXhbJTxUeM1UI1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9cWm8Ik; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074EAC4CEDF;
-	Tue, 21 Jan 2025 18:10:16 +0000 (UTC)
+	 MIME-Version; b=k3A3ZnLlgDLgmBtSr5GPJv+tGlH+gWuIggAgZvFkojDV+sqhwGf8ht4otR3Yz1/8xPL66xOzCSXu9mCX+imnbpIVGZ4mjo4as82zBtfLpmUexJD06WE21isIeHVG2i8pB5ngU8CMlGEzifJcuVzn3gHuG83MWB8eoBb8ecw1//A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zCHm95bk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 807A3C4CEE3;
+	Tue, 21 Jan 2025 18:04:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737483017;
-	bh=Ots7sys9kh0ggyBjHPi+9M7xNUDTFcAx9YVeV/xwyxw=;
+	s=korg; t=1737482641;
+	bh=AAIvjk1NINsJ5wYGZjTt8PdxsUe58KurXt5XArFToLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R9cWm8Ikq+AOeMhd6EeZEoPN0IRUmmNXOvNa9WbsaI5CEVwRkneTxviCTSL9+Rc/Q
-	 7sf2YL96CrTD1DlSfHJXnY0Mor765qiSg2Ssr7iSJrIsK8A2p1LTBy99YRJc11Yh1n
-	 BZxbWnATXd6kzzbDwUj/8XY5CJ8S1yxhoyArm2OY=
+	b=zCHm95bkoAV1feLA5hc+JVPEZXvJG26dhoDZBAXgfBmddUtHedyDZL2QexphDbvN9
+	 q/qywQw9NjD+dpQhxt2Nqaf3LwjXUpWE7CbS8sjG6xJt4g2O+94+Rz2D8EedyEKP1z
+	 u4ReDckYLqBgGMOWRsjsvjXdLM06nhRpL1bRoPAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea della Porta <andrea.porta@suse.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Max Kellermann <max.kellermann@ionos.com>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 070/127] of: address: Preserve the flags portion on 1:1 dma-ranges mapping
+Subject: [PATCH 6.1 23/64] cachefiles: Parse the "secctx" immediately
 Date: Tue, 21 Jan 2025 18:52:22 +0100
-Message-ID: <20250121174532.367024393@linuxfoundation.org>
+Message-ID: <20250121174522.441412434@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
-References: <20250121174529.674452028@linuxfoundation.org>
+In-Reply-To: <20250121174521.568417761@linuxfoundation.org>
+References: <20250121174521.568417761@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea della Porta <andrea.porta@suse.com>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-[ Upstream commit 7f05e20b989ac33c9c0f8c2028ec0a566493548f ]
+[ Upstream commit e5a8b6446c0d370716f193771ccacf3260a57534 ]
 
-A missing or empty dma-ranges in a DT node implies a 1:1 mapping for dma
-translations. In this specific case, the current behaviour is to zero out
-the entire specifier so that the translation could be carried on as an
-offset from zero. This includes address specifier that has flags (e.g.
-PCI ranges).
+Instead of storing an opaque string, call security_secctx_to_secid()
+right in the "secctx" command handler and store only the numeric
+"secid".  This eliminates an unnecessary string allocation and allows
+the daemon to receive errors when writing the "secctx" command instead
+of postponing the error to the "bind" command handler.  For example,
+if the kernel was built without `CONFIG_SECURITY`, "bind" will return
+`EOPNOTSUPP`, but the daemon doesn't know why.  With this patch, the
+"secctx" will instead return `EOPNOTSUPP` which is the right context
+for this error.
 
-Once the flags portion has been zeroed, the translation chain is broken
-since the mapping functions will check the upcoming address specifier
-against mismatching flags, always failing the 1:1 mapping and its entire
-purpose of always succeeding.
+This patch adds a boolean flag `have_secid` because I'm not sure if we
+can safely assume that zero is the special secid value for "not set".
+This appears to be true for SELinux, Smack and AppArmor, but since
+this attribute is not documented, I'm unable to derive a stable
+guarantee for that.
 
-Set to zero only the address portion while passing the flags through.
-
-Fixes: dbbdee94734b ("of/address: Merge all of the bus translation code")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrea della Porta <andrea.porta@suse.com>
-Tested-by: Herve Codina <herve.codina@bootlin.com>
-Link: https://lore.kernel.org/r/e51ae57874e58a9b349c35e2e877425ebc075d7a.1732441813.git.andrea.porta@suse.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20241209141554.638708-1-max.kellermann@ionos.com/
+Link: https://lore.kernel.org/r/20241213135013.2964079-6-dhowells@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/address.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/cachefiles/daemon.c   | 14 +++++++-------
+ fs/cachefiles/internal.h |  3 ++-
+ fs/cachefiles/security.c |  6 +++---
+ 3 files changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/of/address.c b/drivers/of/address.c
-index 123a75a19bc1..9454725af850 100644
---- a/drivers/of/address.c
-+++ b/drivers/of/address.c
-@@ -466,7 +466,8 @@ static int of_translate_one(struct device_node *parent, struct of_bus *bus,
+diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
+index 89b11336a8369..1806bff8e59bc 100644
+--- a/fs/cachefiles/daemon.c
++++ b/fs/cachefiles/daemon.c
+@@ -15,6 +15,7 @@
+ #include <linux/namei.h>
+ #include <linux/poll.h>
+ #include <linux/mount.h>
++#include <linux/security.h>
+ #include <linux/statfs.h>
+ #include <linux/ctype.h>
+ #include <linux/string.h>
+@@ -576,7 +577,7 @@ static int cachefiles_daemon_dir(struct cachefiles_cache *cache, char *args)
+  */
+ static int cachefiles_daemon_secctx(struct cachefiles_cache *cache, char *args)
+ {
+-	char *secctx;
++	int err;
+ 
+ 	_enter(",%s", args);
+ 
+@@ -585,16 +586,16 @@ static int cachefiles_daemon_secctx(struct cachefiles_cache *cache, char *args)
+ 		return -EINVAL;
  	}
- 	if (ranges == NULL || rlen == 0) {
- 		offset = of_read_number(addr, na);
--		memset(addr, 0, pna * 4);
-+		/* set address to zero, pass flags through */
-+		memset(addr + pbus->flag_cells, 0, (pna - pbus->flag_cells) * 4);
- 		pr_debug("empty ranges; 1:1 translation\n");
- 		goto finish;
+ 
+-	if (cache->secctx) {
++	if (cache->have_secid) {
+ 		pr_err("Second security context specified\n");
+ 		return -EINVAL;
  	}
+ 
+-	secctx = kstrdup(args, GFP_KERNEL);
+-	if (!secctx)
+-		return -ENOMEM;
++	err = security_secctx_to_secid(args, strlen(args), &cache->secid);
++	if (err)
++		return err;
+ 
+-	cache->secctx = secctx;
++	cache->have_secid = true;
+ 	return 0;
+ }
+ 
+@@ -820,7 +821,6 @@ static void cachefiles_daemon_unbind(struct cachefiles_cache *cache)
+ 	put_cred(cache->cache_cred);
+ 
+ 	kfree(cache->rootdirname);
+-	kfree(cache->secctx);
+ 	kfree(cache->tag);
+ 
+ 	_leave("");
+diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
+index 111ad6ecd4baf..4421a12960a66 100644
+--- a/fs/cachefiles/internal.h
++++ b/fs/cachefiles/internal.h
+@@ -122,7 +122,6 @@ struct cachefiles_cache {
+ #define CACHEFILES_STATE_CHANGED	3	/* T if state changed (poll trigger) */
+ #define CACHEFILES_ONDEMAND_MODE	4	/* T if in on-demand read mode */
+ 	char				*rootdirname;	/* name of cache root directory */
+-	char				*secctx;	/* LSM security context */
+ 	char				*tag;		/* cache binding tag */
+ 	refcount_t			unbind_pincount;/* refcount to do daemon unbind */
+ 	struct xarray			reqs;		/* xarray of pending on-demand requests */
+@@ -130,6 +129,8 @@ struct cachefiles_cache {
+ 	struct xarray			ondemand_ids;	/* xarray for ondemand_id allocation */
+ 	u32				ondemand_id_next;
+ 	u32				msg_id_next;
++	u32				secid;		/* LSM security id */
++	bool				have_secid;	/* whether "secid" was set */
+ };
+ 
+ static inline bool cachefiles_in_ondemand_mode(struct cachefiles_cache *cache)
+diff --git a/fs/cachefiles/security.c b/fs/cachefiles/security.c
+index fe777164f1d89..fc6611886b3b5 100644
+--- a/fs/cachefiles/security.c
++++ b/fs/cachefiles/security.c
+@@ -18,7 +18,7 @@ int cachefiles_get_security_ID(struct cachefiles_cache *cache)
+ 	struct cred *new;
+ 	int ret;
+ 
+-	_enter("{%s}", cache->secctx);
++	_enter("{%u}", cache->have_secid ? cache->secid : 0);
+ 
+ 	new = prepare_kernel_cred(current);
+ 	if (!new) {
+@@ -26,8 +26,8 @@ int cachefiles_get_security_ID(struct cachefiles_cache *cache)
+ 		goto error;
+ 	}
+ 
+-	if (cache->secctx) {
+-		ret = set_security_override_from_ctx(new, cache->secctx);
++	if (cache->have_secid) {
++		ret = set_security_override(new, cache->secid);
+ 		if (ret < 0) {
+ 			put_cred(new);
+ 			pr_err("Security denies permission to nominate security context: error %d\n",
 -- 
 2.39.5
 
