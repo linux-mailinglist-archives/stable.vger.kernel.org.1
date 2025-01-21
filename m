@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-109697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EC9EA1837D
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:58:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0FFEA184B6
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 19:11:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C13E1614BA
-	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 17:57:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8664216018C
+	for <lists+stable@lfdr.de>; Tue, 21 Jan 2025 18:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858281F7087;
-	Tue, 21 Jan 2025 17:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA071F75A1;
+	Tue, 21 Jan 2025 18:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HhIumPlW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pS3GD/q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CD81F542C;
-	Tue, 21 Jan 2025 17:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D2F1F0E36;
+	Tue, 21 Jan 2025 18:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737482175; cv=none; b=tLEcZC5h3x64hxNFEnKv83Lzu+lG/8TUsTo4yxqJ3OAkfBI6bnmBeXqdEDkqZMwPvV7KVclb6Bahkt2AHfJV+FmToLqWqrr6wxWOv6LpnhMymj1u5tpAfImRpRo/WkghqcfAu56pkflyT51KGvuS+kAta5KCyey4SndQgYd8ZdQ=
+	t=1737482959; cv=none; b=ZDwXJQk4ccxjI+WXSyxr4WvfZnM47vfIxOHHE2PVFBwlA9AUHcVbpFoklVR8/ClkAaX7V/cDVYW2qW6vT+8co6Y7Xq7mKB/dl8UR+OMm/gRhwmSwG6IIvCNkMC/q8w8kpOHuUEWQaVNYodIzQnDJX5DGIEsO/FnXWv6lWfhyADk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737482175; c=relaxed/simple;
-	bh=HvDTkC9KkoGMORhrQXavJ6HW2DkR4AXKm0692BCdmcI=;
+	s=arc-20240116; t=1737482959; c=relaxed/simple;
+	bh=xwSi6YDx05EgVd7uQK6IpsSolf1ukVkdm8q/Ec9TEfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u5K6C5iRS+2WuB8u8DdUvpvmHdMt6FScXG4PPEMbV04KsoxKQA7A6leXWw9a8vOO93S0JR8MUFg8lebdbF7pTULxcVrrUW+ciijm2pcaujeWBBPQA9b9Ll3uuCMzwLC1oST29DkCUEv62I0IwaE0d6aaohJXLsz1pok0Ggr8FgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HhIumPlW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF745C4CEDF;
-	Tue, 21 Jan 2025 17:56:14 +0000 (UTC)
+	 MIME-Version; b=tLxUaYmtkEt1uHXtLyVqTchVGfVE1R6Pdk/RKaeS/W+ufr15AKSfZ4+ocRfHEoxMnHRUr7NAjfKWioWlnjHjn9WwQ8+mAJFOkDO3q1LUwngu+ebVdaNNX+foJM+pdEl+fVH0WHdCf8DlIJT6xoC20LCes+uG6pLYIYMsbCfH4xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pS3GD/q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4844C4CEDF;
+	Tue, 21 Jan 2025 18:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737482175;
-	bh=HvDTkC9KkoGMORhrQXavJ6HW2DkR4AXKm0692BCdmcI=;
+	s=korg; t=1737482959;
+	bh=xwSi6YDx05EgVd7uQK6IpsSolf1ukVkdm8q/Ec9TEfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HhIumPlWPs3iA69C1ptTJlnND2gisbBaI3xCns4gsojvn2+nzIAEQpIlgavANMoae
-	 nC7lYciUFkCKHPcktaBhLC5ojyU3efHg8Y27LvV7ZB7YDfbl5en0t/eyGnsmkgJ3mK
-	 QWF2Klxz0DQXHBJnk5+N4/C1J7Eg9uPSxKvu1K5s=
+	b=1pS3GD/qmoqn8rPIpsJOvXgcCewfW558Wmacp4L9YNRxZgBi7nQSQn7DPYqE7NJPK
+	 VpcLZsWqWJYyLk4q9su3cTGcrxnyBbumxfKKLaTg0eNbWghNcWrXWNOrZtsphRbLl+
+	 xp/CF907HZP6DXrzRTYNiZayt5gqVBn+bSepnUtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rik van Riel <riel@surriel.com>,
-	Breno Leitao <leitao@debian.org>,
-	Baoquan He <bhe@redhat.com>,
-	Dave Young <dyoung@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 52/72] fs/proc: fix softlockup in __read_vmcore (part 2)
+	Rob Herring <robh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 066/127] of/address: Add support for 3 address cell bus
 Date: Tue, 21 Jan 2025 18:52:18 +0100
-Message-ID: <20250121174525.434324681@linuxfoundation.org>
+Message-ID: <20250121174532.215689974@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
-References: <20250121174523.429119852@linuxfoundation.org>
+In-Reply-To: <20250121174529.674452028@linuxfoundation.org>
+References: <20250121174529.674452028@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +61,194 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rik van Riel <riel@surriel.com>
+From: Rob Herring <robh@kernel.org>
 
-commit cbc5dde0a461240046e8a41c43d7c3b76d5db952 upstream.
+[ Upstream commit 3d5089c4263d3594dc055e0f9c5cb990505cdd64 ]
 
-Since commit 5cbcb62dddf5 ("fs/proc: fix softlockup in __read_vmcore") the
-number of softlockups in __read_vmcore at kdump time have gone down, but
-they still happen sometimes.
+There's a few custom bus bindings (e.g. fsl,qoriq-mc) which use a
+3 cell format with custom flags in the high cell. We can match these
+buses as a fallback if we didn't match on PCI bus which is the only
+standard bus binding with 3 address cells.
 
-In a memory constrained environment like the kdump image, a softlockup is
-not just a harmless message, but it can interfere with things like RCU
-freeing memory, causing the crashdump to get stuck.
-
-The second loop in __read_vmcore has a lot more opportunities for natural
-sleep points, like scheduling out while waiting for a data write to
-happen, but apparently that is not always enough.
-
-Add a cond_resched() to the second loop in __read_vmcore to (hopefully)
-get rid of the softlockups.
-
-Link: https://lkml.kernel.org/r/20250110102821.2a37581b@fangorn
-Fixes: 5cbcb62dddf5 ("fs/proc: fix softlockup in __read_vmcore")
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Reported-by: Breno Leitao <leitao@debian.org>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20230328-dt-address-helpers-v1-3-e2456c3e77ab@kernel.org
+Signed-off-by: Rob Herring <robh@kernel.org>
+Stable-dep-of: 7f05e20b989a ("of: address: Preserve the flags portion on 1:1 dma-ranges mapping")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/vmcore.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/of/address.c                        | 22 ++++++++
+ drivers/of/unittest-data/tests-address.dtsi |  9 +++-
+ drivers/of/unittest.c                       | 58 ++++++++++++++++++++-
+ 3 files changed, 87 insertions(+), 2 deletions(-)
 
---- a/fs/proc/vmcore.c
-+++ b/fs/proc/vmcore.c
-@@ -404,6 +404,8 @@ static ssize_t __read_vmcore(struct iov_
- 			if (!iov_iter_count(iter))
- 				return acc;
- 		}
-+
-+		cond_resched();
- 	}
+diff --git a/drivers/of/address.c b/drivers/of/address.c
+index 60ead6105471..a95b57cea0d0 100644
+--- a/drivers/of/address.c
++++ b/drivers/of/address.c
+@@ -95,11 +95,17 @@ static int of_bus_default_translate(__be32 *addr, u64 offset, int na)
+ 	return 0;
+ }
  
- 	return acc;
++static unsigned int of_bus_default_flags_get_flags(const __be32 *addr)
++{
++	return of_read_number(addr, 1);
++}
++
+ static unsigned int of_bus_default_get_flags(const __be32 *addr)
+ {
+ 	return IORESOURCE_MEM;
+ }
+ 
++
+ #ifdef CONFIG_PCI
+ static unsigned int of_bus_pci_get_flags(const __be32 *addr)
+ {
+@@ -319,6 +325,11 @@ static unsigned int of_bus_isa_get_flags(const __be32 *addr)
+ 	return flags;
+ }
+ 
++static int of_bus_default_flags_match(struct device_node *np)
++{
++	return of_bus_n_addr_cells(np) == 3;
++}
++
+ /*
+  * Array of bus specific translators
+  */
+@@ -348,6 +359,17 @@ static struct of_bus of_busses[] = {
+ 		.has_flags = true,
+ 		.get_flags = of_bus_isa_get_flags,
+ 	},
++	/* Default with flags cell */
++	{
++		.name = "default-flags",
++		.addresses = "reg",
++		.match = of_bus_default_flags_match,
++		.count_cells = of_bus_default_count_cells,
++		.map = of_bus_default_map,
++		.translate = of_bus_default_translate,
++		.has_flags = true,
++		.get_flags = of_bus_default_flags_get_flags,
++	},
+ 	/* Default */
+ 	{
+ 		.name = "default",
+diff --git a/drivers/of/unittest-data/tests-address.dtsi b/drivers/of/unittest-data/tests-address.dtsi
+index 6604a52bf6cb..bc0029cbf8ea 100644
+--- a/drivers/of/unittest-data/tests-address.dtsi
++++ b/drivers/of/unittest-data/tests-address.dtsi
+@@ -14,7 +14,7 @@
+ 			#size-cells = <1>;
+ 			/* ranges here is to make sure we don't use it for
+ 			 * dma-ranges translation */
+-			ranges = <0x70000000 0x70000000 0x40000000>,
++			ranges = <0x70000000 0x70000000 0x50000000>,
+ 				 <0x00000000 0xd0000000 0x20000000>;
+ 			dma-ranges = <0x0 0x20000000 0x40000000>;
+ 
+@@ -43,6 +43,13 @@
+ 					     <0x42000000 0x0 0xc0000000 0x20000000 0x0 0x10000000>;
+ 			};
+ 
++			bus@a0000000 {
++				#address-cells = <3>;
++				#size-cells = <2>;
++				ranges = <0xf00baa 0x0 0x0 0xa0000000 0x0 0x100000>,
++					 <0xf00bee 0x1 0x0 0xb0000000 0x0 0x200000>;
++			};
++
+ 		};
+ 	};
+ };
+diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
+index a020296fbf41..d6a250cd7a40 100644
+--- a/drivers/of/unittest.c
++++ b/drivers/of/unittest.c
+@@ -1045,7 +1045,7 @@ static void __init of_unittest_bus_ranges(void)
+ 			"for_each_of_range wrong flags on node %pOF flags=%x (expected %x)\n",
+ 			np, range.flags, IORESOURCE_MEM);
+ 		if (!i) {
+-			unittest(range.size == 0x40000000,
++			unittest(range.size == 0x50000000,
+ 				 "for_each_of_range wrong size on node %pOF size=%llx\n",
+ 				 np, range.size);
+ 			unittest(range.cpu_addr == 0x70000000,
+@@ -1071,6 +1071,61 @@ static void __init of_unittest_bus_ranges(void)
+ 	of_node_put(np);
+ }
+ 
++static void __init of_unittest_bus_3cell_ranges(void)
++{
++	struct device_node *np;
++	struct of_range range;
++	struct of_range_parser parser;
++	int i = 0;
++
++	np = of_find_node_by_path("/testcase-data/address-tests/bus@a0000000");
++	if (!np) {
++		pr_err("missing testcase data\n");
++		return;
++	}
++
++	if (of_range_parser_init(&parser, np)) {
++		pr_err("missing ranges property\n");
++		return;
++	}
++
++	/*
++	 * Get the "ranges" from the device tree
++	 */
++	for_each_of_range(&parser, &range) {
++		if (!i) {
++			unittest(range.flags == 0xf00baa,
++				 "for_each_of_range wrong flags on node %pOF flags=%x\n",
++				 np, range.flags);
++			unittest(range.size == 0x100000,
++				 "for_each_of_range wrong size on node %pOF size=%llx\n",
++				 np, range.size);
++			unittest(range.cpu_addr == 0xa0000000,
++				 "for_each_of_range wrong CPU addr (%llx) on node %pOF",
++				 range.cpu_addr, np);
++			unittest(range.bus_addr == 0x0,
++				 "for_each_of_range wrong bus addr (%llx) on node %pOF",
++				 range.pci_addr, np);
++		} else {
++			unittest(range.flags == 0xf00bee,
++				 "for_each_of_range wrong flags on node %pOF flags=%x\n",
++				 np, range.flags);
++			unittest(range.size == 0x200000,
++				 "for_each_of_range wrong size on node %pOF size=%llx\n",
++				 np, range.size);
++			unittest(range.cpu_addr == 0xb0000000,
++				 "for_each_of_range wrong CPU addr (%llx) on node %pOF",
++				 range.cpu_addr, np);
++			unittest(range.bus_addr == 0x100000000,
++				 "for_each_of_range wrong bus addr (%llx) on node %pOF",
++				 range.pci_addr, np);
++		}
++		i++;
++	}
++
++	of_node_put(np);
++}
++
+ static void __init of_unittest_parse_interrupts(void)
+ {
+ 	struct device_node *np;
+@@ -3377,6 +3432,7 @@ static int __init of_unittest(void)
+ 	of_unittest_parse_dma_ranges();
+ 	of_unittest_pci_dma_ranges();
+ 	of_unittest_bus_ranges();
++	of_unittest_bus_3cell_ranges();
+ 	of_unittest_match_node();
+ 	of_unittest_platform_populate();
+ 	of_unittest_overlay();
+-- 
+2.39.5
+
 
 
 
