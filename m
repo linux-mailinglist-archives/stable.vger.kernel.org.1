@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-110098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EA27A18A5A
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 04:08:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C347A18A5B
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 04:08:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3D417A3374
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 03:08:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C1DD3AAF48
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 03:08:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 158B71494A9;
-	Wed, 22 Jan 2025 03:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC2114A614;
+	Wed, 22 Jan 2025 03:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DF5151R6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bLQyJYu/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53691DFF0
-	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 03:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0789145B0B
+	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 03:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737515304; cv=none; b=Nitokk9bLucpHzz/6XB7zDWZSo4zrnkOOM18nDB+NKZ1qC0zKFJU4RIt8aUczfgHOVKWpW8S0Enl14xQKEpP3SB38h/eCq+RVfgbzplmZ8Ba60es9e12hYidzkVzt8iURWWKhDZ8KNklGFM+NxmvF45D5FeOdFA6qs0hWeAxhm4=
+	t=1737515316; cv=none; b=cHdN5KpnyBS93T/hnjo7BfhPlBVGvpBYoiOf4ZWSN1z2UVGAOTzlDVJlscLeaSEbwNOkUvh/GtkpZ2rvR//Qyj/MBkGacVuPmQ0c7qLPbM1OWi8sXG++qURMVXua1r7AQBEEQj7w7wNa3IPKCVqLh74VokhwUM5AQIUDSFtE5j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737515304; c=relaxed/simple;
-	bh=mraXNu2t/S4MHu2NkG57rmLSMxeuSH1yg3RheRkRpY4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tC5+9WPYTNQvLN7MwvNWUxFYp9cacciuQjQutPXeeyNqX7X+Be8a8kVPecWsxKDuLwoNLnnlpDcg3G25+iIiviACCA/WmfjM2wSWTk5I7NOshfy5O6/qtx4DQBHTw13F43OzublBs/9adY1O/YjQUB5Xjebf3DUTv4Y8f9Gp1tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DF5151R6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA3FC4CEDF;
-	Wed, 22 Jan 2025 03:08:22 +0000 (UTC)
+	s=arc-20240116; t=1737515316; c=relaxed/simple;
+	bh=VZIyMamhD0oIz9TM98CR2ZhTsCq1Z47HfDRhhNyD7bU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Cn3xTDj1fdQ8etME8eCxSkFm8MaD1ozoawCuIvyC9xsU5fcHeISs3E0NfNV2lyeZtffEBQeOeeHj7dz3PFi85bwJvTUAJilVXWq5eTkppPHs3hdgHH4cJXvFc3TYgy28ZNiNzat+SEQRj+X/CrX5evaOguegNMO2k+zFtgCi3eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bLQyJYu/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A03C4CEDF;
+	Wed, 22 Jan 2025 03:08:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737515304;
-	bh=mraXNu2t/S4MHu2NkG57rmLSMxeuSH1yg3RheRkRpY4=;
+	s=k20201202; t=1737515315;
+	bh=VZIyMamhD0oIz9TM98CR2ZhTsCq1Z47HfDRhhNyD7bU=;
 	h=From:To:Cc:Subject:Date:From;
-	b=DF5151R65Vbm8nKL+vKOQ5zZOfKbygjf21whvcNZLMAgOjBd+Hx/1ihsOUzQyKaYq
-	 QeemAmx1fCLWV4DKnXg6UUZaU1kjft5As4hMq595JY25veZlNUnGoxyGAc+2CmUfoa
-	 oTKSPdvhVUaAJXYm01m9dgnnTKeq49Uk6XM2Lhbye9uO49QoLlxx1wQGmoEgD/sbBt
-	 bYCNiWR241DIbLjzaGANRyXGtPWnQpOHQ3r+eZXz2Tg+XklU5cG9iNsHRiANNUpuRH
-	 kL7F8Tgj/kCXjJLfwCi/k/hqamrTOyH+16Kj4S+HeVLVvj1dsCMSBiY+Fo/GcGkYib
-	 AhhPS7eZrRNyw==
+	b=bLQyJYu/YFc2bWuuBV5B8DsBq9WHKTF4FyBEO4MRKkpIMKLuEaYSLDPWzlWQ2RFcH
+	 BaWlEdABKFihc6TQtJWUAWICMb5Zl5gmp57ffB0novhjW8qoMf2Uzq0bKRat66enZi
+	 uvCeMH05am/UjfyYBxGXBAPr6cQhGm+IimiY29hnkh12ZWcesLnS/3A6Yz3l9QhfvW
+	 NVxa5PD4jgm+H0C2a1sGANYLxrRQSZ/NTebJQjhtKxcPTJ7TGxH/xL7NDYEO8qr1gc
+	 vMDzLrx1Hcu+VQhVoe9EVyq43YhFr1A+ZjT+55jph5q90mpzVmXFMshUaimoDBj7v1
+	 rJIvqtROEeOVw==
 From: Tzung-Bi Shih <tzungbi@kernel.org>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
@@ -47,9 +47,9 @@ Cc: broonie@kernel.org,
 	rafael@kernel.org,
 	demonsingur@gmail.com,
 	tzungbi@kernel.org
-Subject: [PATCH 6.1.y] regmap: detach regmap from dev on regmap_exit
-Date: Wed, 22 Jan 2025 03:08:10 +0000
-Message-ID: <20250122030810.1484801-1-tzungbi@kernel.org>
+Subject: [PATCH 5.15.y] regmap: detach regmap from dev on regmap_exit
+Date: Wed, 22 Jan 2025 03:08:27 +0000
+Message-ID: <20250122030827.1484879-1-tzungbi@kernel.org>
 X-Mailer: git-send-email 2.48.0.rc2.279.g1de40edade-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,8 +64,8 @@ From: Cosmin Tanislav <demonsingur@gmail.com>
 commit 3061e170381af96d1e66799d34264e6414d428a7 upstream.
 
 This is a reland commit:
-- 48dc44f3c1afa29390cb2fbc8badad1b1111cea4 backported it incorrectly.
-- 276185236bd8281dca88863b751b481e027cada7 reverted the wrong commit.
+- f373a189817584d0af5f922e91cad40e45f12314 backported it incorrectly.
+- 7aee9bcc5c56086af6c063b4aaef59d4e42e0a69 reverted the wrong commit.
 - This re-backports it.
 
 At the end of __regmap_init(), if dev is not NULL, regmap_attach_dev()
@@ -85,6 +85,7 @@ Rule: add
 Link: https://lore.kernel.org/stable/20241128130554.362486-1-demonsingur%40gmail.com
 Link: https://patch.msgid.link/20241128131625.363835-1-demonsingur@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20250115033314.2540588-1-tzungbi@kernel.org
 Link: https://lore.kernel.org/r/20250115033244.2540522-1-tzungbi@kernel.org
 Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 ---
@@ -92,10 +93,10 @@ Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
  1 file changed, 12 insertions(+)
 
 diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index 15b37a4163d3..f0e314abcafc 100644
+index 85d324fd6a87..6d94ad8bf1eb 100644
 --- a/drivers/base/regmap/regmap.c
 +++ b/drivers/base/regmap/regmap.c
-@@ -652,6 +652,17 @@ int regmap_attach_dev(struct device *dev, struct regmap *map,
+@@ -663,6 +663,17 @@ int regmap_attach_dev(struct device *dev, struct regmap *map,
  }
  EXPORT_SYMBOL_GPL(regmap_attach_dev);
  
@@ -113,7 +114,7 @@ index 15b37a4163d3..f0e314abcafc 100644
  static enum regmap_endian regmap_get_reg_endian(const struct regmap_bus *bus,
  					const struct regmap_config *config)
  {
-@@ -1536,6 +1547,7 @@ void regmap_exit(struct regmap *map)
+@@ -1531,6 +1542,7 @@ void regmap_exit(struct regmap *map)
  {
  	struct regmap_async *async;
  
