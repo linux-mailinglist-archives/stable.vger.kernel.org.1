@@ -1,169 +1,212 @@
-Return-Path: <stable+bounces-110149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D255A19075
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 12:15:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F16A190D8
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 12:47:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3706F3ADC61
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 11:15:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BFB51668B1
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 11:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1042211A1D;
-	Wed, 22 Jan 2025 11:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59FB021148F;
+	Wed, 22 Jan 2025 11:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q9F5mgGQ"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="LXocdvys"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E7B211A0A;
-	Wed, 22 Jan 2025 11:15:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736201BDA99
+	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 11:47:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737544547; cv=none; b=cOoab1EWlduLODQW7zZzN/ZdfNqpOR3k3J9Lt/PppiX4aXEzt7GZBVpw0TN90Uvt6NjVkf9VfHJlOKGl0vhExS+GtUWldavlNnOfhSFx3qASTxlNvC9Ytr/1gUQAOIzlsqgXkOFsoMvyk7ypBWT996E5p2cbuXXvFrqOILSOMWU=
+	t=1737546439; cv=none; b=aXxOsaBfdIjYzay47vL+HUTNY8f0bhxr3gRcLuqHkNjwq2BeGQaFDe2/pvSX3kMu7y7CPhKXQ5gsMVMar7QzamD1CC9dSjfAbQ1UwCvslimmIDOE2tkT3oRGhME1Gn07n9vKrd4bQbeGJWhM+5S/11MxJsT2Up9+2CssBxR6hes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737544547; c=relaxed/simple;
-	bh=YDrOx5B7d2Y5Le84CZjOgzWnXTAdpeR9BU8Kc84Gtb0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JQa4GvMMEZ4Z5paPLc6L/SUadZPXJ0GLrnKxMw1V9FetEdJr0HFaAHRYl2nYPHWZeVbVIEqlaEANulfe3GiYFGd6TCJLTTSZsXO817IiYN3Kf8AcWdM6O5dvDC/5FXGAigjMC0QHuYqk4k5/ToMBW6wXnu2veiE/OzmAzJdEdtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q9F5mgGQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F302C4CED6;
-	Wed, 22 Jan 2025 11:15:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737544547;
-	bh=YDrOx5B7d2Y5Le84CZjOgzWnXTAdpeR9BU8Kc84Gtb0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q9F5mgGQAAK91l+p7k1eK+vU1NOBhywJMs1UycS3TB6wFF0DFNwab4HEa2iVY0sWv
-	 opd9wywzdIPKYRPibr6EJZ0PKFdcGQHiEzaw7oGS/vxstOL8XM5QqvcJRzRhDN374s
-	 7fN3VzuTL2obkjYXOc+ursBCaa/E2qYwzEVdHpdDQ1FBSS/be+XvKmwvgVNhBS+Djt
-	 FbljRif9YoAJEXTZ8S0hbypyHzK/Cure6hPPEBKjQedAXzozGMaGbMJ5J/PcPBrrMl
-	 UMjZS8y+UmdtVrEMHveXF4T61+FzrfCu5x+wN/nUaNQaYxvIwuuDhomAKeRjHL4UJo
-	 r0CN8Ainydevg==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15.y] mptcp: don't always assume copied data in mptcp_cleanup_rbuf()
-Date: Wed, 22 Jan 2025 12:15:18 +0100
-Message-ID: <20250122111517.3284651-2-matttbe@kernel.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <2025010605-obscurity-buckshot-fc5f@gregkh>
-References: <2025010605-obscurity-buckshot-fc5f@gregkh>
+	s=arc-20240116; t=1737546439; c=relaxed/simple;
+	bh=BsbeqEpFi+vU4QPLahP59yAGT9BngWdKvBhqyz27YlQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bdjeFGtpPT0fhSkA0ZhsW7iLmMRT849LDQQq+wxU6wn5PT4XnGAiadBMFCEVreTiuFxo3Dcb0nf7/BeNKY6/vm9t0bqPjlgPTebCS0VPfWhmGdksDpNzM9rgowIcBn8pF++KRveGkY8YCnyPSzmmaaErA7tiJ+L0DtXc9ihl7gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=LXocdvys; arc=none smtp.client-ip=162.62.57.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1737546124;
+	bh=BoQPBjKLgj7d9q7mtrzhIrsES8m1Xcw1erjLsLE1E9I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LXocdvysgOhRMl+0pCqmmt1RYV+3iSjNdMkTgWBTBejz3EIa2kbtrFOq3dJznyZWr
+	 DpUEtV4WChgtAvoLEvvpxNfl5ukteyNpXP+E7dx8CSoPGDpFX2AdnSeK+3znME2hTU
+	 tQAUrd4XG+JWK8QcOhSPHzorJdo8r8/NdVsnst4A=
+Received: from [192.168.3.47] ([120.244.194.224])
+	by newxmesmtplogicsvrszb16-1.qq.com (NewEsmtp) with SMTP
+	id 73539823; Wed, 22 Jan 2025 19:28:53 +0800
+X-QQ-mid: xmsmtpt1737545333tkuslqv0f
+Message-ID: <tencent_CB5AB91ABE8F1D4917EB399C5598FC864107@qq.com>
+X-QQ-XMAILINFO: M/k+jFccxxwBgVn+GntShCcuPRuhnr9hlSODoEDAEtnw3dx7H8uNZFs9j8O5IY
+	 GV3Pv/nqDktdsx48Z9j1KqBKaYuFYJT55ePAbvaSm6aIE1bpbgbleS9BwzrZVMORl38CJWUOHIa5
+	 VxDu3N2iYHO9EXYHsLWCeL6rivwo8KhbKTzOONxfPlInHc5Nzrz5c1mRSgfGbXQrpZG+pxwtOm7N
+	 wIsQHPGIeBPKRRhX7vcpjqaLKGAUgkcxpUMDoWkxO7jjZak3q69mlBLHAGeKzb71u+e8kkM2/nDK
+	 rvN0ZpIxus+/QkbKPJ5L0ujw+tcM70BJHPyk94KwvpyNnwWjc9KWeBgw4XLUZ1TJ4bxWMABqh58V
+	 ZDCHASFVDRvJNiGDSIdsPh+eBxVH0/e9arGFkpDgWxopNuPQQjdxTU631YgLOd2wkbErb1YzsbbP
+	 bL60MSO3I3fTDL566HocVwPphCBcIPJRT+MYXiIGQmbiUEfQieWjsBRP7eSiJFdQtrg7V2qea/pc
+	 wjkOfPLfljyJyxjf1mZLfXyt4hprUC2sNjv1QR622ZlMdYrwrxc5yyELPgEC8b10NWbCStufVquz
+	 BaLUq1OhWNM2jdjcW+QQJB1HJqhcqE5gjrtxcdEra+skOret4nc4zlHPb1Ej9bACOZOQoSma0m/S
+	 m81Qiw+xtNwotqbuBbxnRxFJVP+TUGaLNGyb9QZ3s3E36BYFQevbj926zq+UN1ZjorYwqJaDgDWq
+	 z+lc/VLSwi7B7oJJgQMSQhsMnxBCRSh++Cswdc5O52Moyhl3Y50QY5ZqD5nxf/a21GtXrRbcbVQI
+	 K6SmSUhuAYc3lfKaF1Y5Rkn+8Vw5jswqJ0vv6s1EqJEvPbIh6zuLCrlOewO8xu5H2i+gcHfxxJWQ
+	 hxqSr2ey1/fyhk4AAbRIjje5ZBmLOvf5V6dwDZw3pQSoxIZgdDvFGeHKrl8UkNYnRVY49ZptdJyI
+	 Dit+mceAbtIoHycbHUJ6iS/tQmQnGWEsgUP7imgCj1AFWp13oL5A==
+X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
+X-OQ-MSGID: <07d6fcab-bf1a-4475-b0ed-96b396628b80@foxmail.com>
+Date: Wed, 22 Jan 2025 19:28:53 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3522; i=matttbe@kernel.org; h=from:subject; bh=g3aq2QVbK0t4f2yTFf2FQj1+Op3wV1YhRslbMg0d5rQ=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnkNNFRFpCNYxI1LVQ1w0B6btz6D8a30qGpPMDu bjj8OGbvjuJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ5DTRQAKCRD2t4JPQmmg cwP+D/95WKnrpvM6f5SR5bnh9f6mMvMaTNBZznbGfLeUi264iS2FIlOqBepKfDHQKsu5qLeCqdT oVbUZWAtO6YWizXC0Yxdw6AVy0ypOUARSHNB3uUF0ArKC0mTCPV8xh1LNEzBxVPP83lHqPoXpWw L/bfaaXAy/hY1tjfZwiI4lWtRXTu6ppqfU5M1aNkgNQh1AxrfT3Sz1MQBgUk94zCtyLtk4MFSF0 i+fQSXdPdLnlwAiD5mxmApvBQG1EAEE9jSgQ7Fr+EMVfzwQo1C/9uU+49djJ27g6Mu5ePceD0Pe GoLxHVdpMJapw9X0aQLUe67EdbdCJr0Hb2SO07KpYdCSsMVHWqHe60cU1cM52UtkkHHG/EkBvuU jkKwnBZ2LcQM6b4p7CV2CDTHGuEHuJGgy8jNl2PZqcrRf9TCWHqPyya5Hnd9KrtYE+F/7fLKwyt 7NWtfECfn3aTBuXd7D8E2/B4xYiOREe8UyiR0oF/6qsK//RHvmHtEMXGYRGDrqg9X5qAafOta4U ZJ32IuK75zzKQ/lVTMyAmmOV7b+ptWpPXjmvyvQ4YSNe60qKFxt/ddH4Rn4CeWxw5KWX0GsJLIS FQD2q6iBTvf26I8QSUPkJVlohyVkFlxjQu5REnQQGH9u+qsnsr2jHQXdy1F5GO5oLjDet2jDzEU bmmZWQ3dhe99d4g==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1.y] net: fix data-races around sk->sk_forward_alloc
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Wang Liang <wangliang74@huawei.com>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>
+References: <tencent_D660CC1BB869156A7C3EBA24B5ACF371BA09@qq.com>
+ <2025012102-zero-tidiness-4632@gregkh>
+Content-Language: en-US
+From: Alva Lan <alvalan9@foxmail.com>
+In-Reply-To: <2025012102-zero-tidiness-4632@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Paolo Abeni <pabeni@redhat.com>
 
-commit 551844f26da2a9f76c0a698baaffa631d1178645 upstream.
+On 1/21/2025 10:54 PM, Greg KH wrote:
+> On Tue, Jan 21, 2025 at 10:22:43PM +0800, alvalan9@foxmail.com wrote:
+>> From: Wang Liang <wangliang74@huawei.com>
+>>
+>> commit 073d89808c065ac4c672c0a613a71b27a80691cb upstream.
+>>
+>> Syzkaller reported this warning:
+>>   ------------[ cut here ]------------
+>>   WARNING: CPU: 0 PID: 16 at net/ipv4/af_inet.c:156 inet_sock_destruct+0x1c5/0x1e0
+>>   Modules linked in:
+>>   CPU: 0 UID: 0 PID: 16 Comm: ksoftirqd/0 Not tainted 6.12.0-rc5 #26
+>>   Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+>>   RIP: 0010:inet_sock_destruct+0x1c5/0x1e0
+>>   Code: 24 12 4c 89 e2 5b 48 c7 c7 98 ec bb 82 41 5c e9 d1 18 17 ff 4c 89 e6 5b 48 c7 c7 d0 ec bb 82 41 5c e9 bf 18 17 ff 0f 0b eb 83 <0f> 0b eb 97 0f 0b eb 87 0f 0b e9 68 ff ff ff 66 66 2e 0f 1f 84 00
+>>   RSP: 0018:ffffc9000008bd90 EFLAGS: 00010206
+>>   RAX: 0000000000000300 RBX: ffff88810b172a90 RCX: 0000000000000007
+>>   RDX: 0000000000000002 RSI: 0000000000000300 RDI: ffff88810b172a00
+>>   RBP: ffff88810b172a00 R08: ffff888104273c00 R09: 0000000000100007
+>>   R10: 0000000000020000 R11: 0000000000000006 R12: ffff88810b172a00
+>>   R13: 0000000000000004 R14: 0000000000000000 R15: ffff888237c31f78
+>>   FS:  0000000000000000(0000) GS:ffff888237c00000(0000) knlGS:0000000000000000
+>>   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>>   CR2: 00007ffc63fecac8 CR3: 000000000342e000 CR4: 00000000000006f0
+>>   DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+>>   DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+>>   Call Trace:
+>>    <TASK>
+>>    ? __warn+0x88/0x130
+>>    ? inet_sock_destruct+0x1c5/0x1e0
+>>    ? report_bug+0x18e/0x1a0
+>>    ? handle_bug+0x53/0x90
+>>    ? exc_invalid_op+0x18/0x70
+>>    ? asm_exc_invalid_op+0x1a/0x20
+>>    ? inet_sock_destruct+0x1c5/0x1e0
+>>    __sk_destruct+0x2a/0x200
+>>    rcu_do_batch+0x1aa/0x530
+>>    ? rcu_do_batch+0x13b/0x530
+>>    rcu_core+0x159/0x2f0
+>>    handle_softirqs+0xd3/0x2b0
+>>    ? __pfx_smpboot_thread_fn+0x10/0x10
+>>    run_ksoftirqd+0x25/0x30
+>>    smpboot_thread_fn+0xdd/0x1d0
+>>    kthread+0xd3/0x100
+>>    ? __pfx_kthread+0x10/0x10
+>>    ret_from_fork+0x34/0x50
+>>    ? __pfx_kthread+0x10/0x10
+>>    ret_from_fork_asm+0x1a/0x30
+>>    </TASK>
+>>   ---[ end trace 0000000000000000 ]---
+>>
+>> Its possible that two threads call tcp_v6_do_rcv()/sk_forward_alloc_add()
+>> concurrently when sk->sk_state == TCP_LISTEN with sk->sk_lock unlocked,
+>> which triggers a data-race around sk->sk_forward_alloc:
+>> tcp_v6_rcv
+>>      tcp_v6_do_rcv
+>>          skb_clone_and_charge_r
+>>              sk_rmem_schedule
+>>                  __sk_mem_schedule
+>>                      sk_forward_alloc_add()
+>>              skb_set_owner_r
+>>                  sk_mem_charge
+>>                      sk_forward_alloc_add()
+>>          __kfree_skb
+>>              skb_release_all
+>>                  skb_release_head_state
+>>                      sock_rfree
+>>                          sk_mem_uncharge
+>>                              sk_forward_alloc_add()
+>>                              sk_mem_reclaim
+>>                                  // set local var reclaimable
+>>                                  __sk_mem_reclaim
+>>                                      sk_forward_alloc_add()
+>>
+>> In this syzkaller testcase, two threads call
+>> tcp_v6_do_rcv() with skb->truesize=768, the sk_forward_alloc changes like
+>> this:
+>>   (cpu 1)             | (cpu 2)             | sk_forward_alloc
+>>   ...                 | ...                 | 0
+>>   __sk_mem_schedule() |                     | +4096 = 4096
+>>                       | __sk_mem_schedule() | +4096 = 8192
+>>   sk_mem_charge()     |                     | -768  = 7424
+>>                       | sk_mem_charge()     | -768  = 6656
+>>   ...                 |    ...              |
+>>   sk_mem_uncharge()   |                     | +768  = 7424
+>>   reclaimable=7424    |                     |
+>>                       | sk_mem_uncharge()   | +768  = 8192
+>>                       | reclaimable=8192    |
+>>   __sk_mem_reclaim()  |                     | -4096 = 4096
+>>                       | __sk_mem_reclaim()  | -8192 = -4096 != 0
+>>
+>> The skb_clone_and_charge_r() should not be called in tcp_v6_do_rcv() when
+>> sk->sk_state is TCP_LISTEN, it happens later in tcp_v6_syn_recv_sock().
+>> Fix the same issue in dccp_v6_do_rcv().
+>>
+>> Suggested-by: Eric Dumazet <edumazet@google.com>
+>> Reviewed-by: Eric Dumazet <edumazet@google.com>
+>> Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
+>> Signed-off-by: Wang Liang <wangliang74@huawei.com>
+>> Link: https://patch.msgid.link/20241107023405.889239-1-wangliang74@huawei.com
+>> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+>> Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+>> ---
+> You sent this twice, which one is correct?  I'll drop both from my inbox
+> just to be sure :)
 
-Under some corner cases the MPTCP protocol can end-up invoking
-mptcp_cleanup_rbuf() when no data has been copied, but such helper
-assumes the opposite condition.
+No problem, please drop both. Thank you.
 
-Explicitly drop such assumption and performs the costly call only
-when strictly needed - before releasing the msk socket lock.
+Actually, I did not see the patch in the mail list after I had sent this 
+patch twenty minutes. It might have failed to send so I sent the patch 
+again. Sorry for my mistake.
 
-Fixes: fd8976790a6c ("mptcp: be careful on MPTCP-level ack.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241230-net-mptcp-rbuf-fixes-v1-2-8608af434ceb@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in this version, because commit 581302298524 ("mptcp: error
-  out earlier on disconnect") has not been backported to this version,
-  and there was no need to do so. The only conflict was in protocol.c,
-  and easy to resolve: the context was different, but the same addition
-  can still be made at the same spot in mptcp_recvmsg(). ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/protocol.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+>
+>> Backport to fix CVE-2024-53124.
+>> Link: https://nvd.nist.gov/vuln/detail/CVE-2024-53124
+> Please don't point to random cve "enhancers" with unknown ways that they
+> have modified our original cve record.  Just point at the cve.org record
+> if you really want to link to something.
+>
+> thanks,
+>
+> greg k-h
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index bcbb1f92ce24..f337dd3323a0 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -462,13 +462,13 @@ static void mptcp_send_ack(struct mptcp_sock *msk)
- 		mptcp_subflow_send_ack(mptcp_subflow_tcp_sock(subflow));
- }
- 
--static void mptcp_subflow_cleanup_rbuf(struct sock *ssk)
-+static void mptcp_subflow_cleanup_rbuf(struct sock *ssk, int copied)
- {
- 	bool slow;
- 
- 	slow = lock_sock_fast(ssk);
- 	if (tcp_can_send_ack(ssk))
--		tcp_cleanup_rbuf(ssk, 1);
-+		tcp_cleanup_rbuf(ssk, copied);
- 	unlock_sock_fast(ssk, slow);
- }
- 
-@@ -485,7 +485,7 @@ static bool mptcp_subflow_could_cleanup(const struct sock *ssk, bool rx_empty)
- 			      (ICSK_ACK_PUSHED2 | ICSK_ACK_PUSHED)));
- }
- 
--static void mptcp_cleanup_rbuf(struct mptcp_sock *msk)
-+static void mptcp_cleanup_rbuf(struct mptcp_sock *msk, int copied)
- {
- 	int old_space = READ_ONCE(msk->old_wspace);
- 	struct mptcp_subflow_context *subflow;
-@@ -493,14 +493,14 @@ static void mptcp_cleanup_rbuf(struct mptcp_sock *msk)
- 	int space =  __mptcp_space(sk);
- 	bool cleanup, rx_empty;
- 
--	cleanup = (space > 0) && (space >= (old_space << 1));
--	rx_empty = !__mptcp_rmem(sk);
-+	cleanup = (space > 0) && (space >= (old_space << 1)) && copied;
-+	rx_empty = !__mptcp_rmem(sk) && copied;
- 
- 	mptcp_for_each_subflow(msk, subflow) {
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
- 
- 		if (cleanup || mptcp_subflow_could_cleanup(ssk, rx_empty))
--			mptcp_subflow_cleanup_rbuf(ssk);
-+			mptcp_subflow_cleanup_rbuf(ssk, copied);
- 	}
- }
- 
-@@ -2098,9 +2098,6 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 
- 		copied += bytes_read;
- 
--		/* be sure to advertise window change */
--		mptcp_cleanup_rbuf(msk);
--
- 		if (skb_queue_empty(&msk->receive_queue) && __mptcp_move_skbs(msk))
- 			continue;
- 
-@@ -2152,9 +2149,12 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 		}
- 
- 		pr_debug("block timeout %ld\n", timeo);
-+		mptcp_cleanup_rbuf(msk, copied);
- 		sk_wait_data(sk, &timeo, NULL);
- 	}
- 
-+	mptcp_cleanup_rbuf(msk, copied);
-+
- out_err:
- 	if (cmsg_flags && copied >= 0) {
- 		if (cmsg_flags & MPTCP_CMSG_TS)
--- 
-2.47.1
+OK.
+
+B.R.
+
+Alva Lan
+
 
 
