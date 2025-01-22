@@ -1,134 +1,114 @@
-Return-Path: <stable+bounces-110190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6115A1944B
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 15:45:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6452BA19450
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 15:45:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DD881886912
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 14:44:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 643DA3ADE68
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 14:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076E72144CA;
-	Wed, 22 Jan 2025 14:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEA40214238;
+	Wed, 22 Jan 2025 14:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b="Y+lICDYE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tMWmIjqA"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7BD215190;
-	Wed, 22 Jan 2025 14:41:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737556917; cv=pass; b=HeJ6fiaDwnFOJHlc/1DAwM7D1JFwDKdqrQL+sP+KmaG3r1gpsPBumx2TkwavLL7XlJW7PZHH8ts4xKLh+LDdaRiUnhEr8BSGnN0979JaUax9l+jud/NLyB7fI/qS+WzZSdVY+T8qzGoMLpgLl/FRrb4yJnbvbGuuODK4NXZWq3I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737556917; c=relaxed/simple;
-	bh=YA+RQM0a5qkAQoUGV++EX1qBWaHNqu6JJKPDEdniyTQ=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=OvSBz4ca09orvO0BcYjgCc6MHfhsUwMQ/O5DYfi7ROnNxiCjS/Ygvh7DqB2NV7Q7tXT7u1vD1umpJXk05OLzg49f7YZmaxiBHzWKmWztgFsUCxmz72vI9tKTQE7t7TU6Oqa+fsbbpBq8f7iSzfXo3RXFNakSNf9a1lLcMfHKLnI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b=Y+lICDYE; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1737556885; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Ib/RQvh599pytkqKpDRiJVtqcZsG0AECgeVMEi7+lu72SMQvBcren758Tq2H+VUMTB3CbMaaovbTd6zMQ37Covm1ljmHMeni96Y9jzQ/GUA2bPi9k/DvgIkwOUjBhKYHBmGX0ZlFqN6EHMDoHUS8/WSAxSTkJ12HT3sivarzLRk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1737556885; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=YvaJmiw5hv6alLjsc1pr9qxQCVLsmUq8/2FINskPFiU=; 
-	b=fvJXXVIRMn31bvkmpHplKgVUT83Tyja/oBqxhyOiwXWhQ/b0RJ3m48tx4ZtnjmmB+1xTfpAs/mKY51hfo3EjCB3LBQ51Ml/q0LHWx6RylJirNUFUEFs0+TOAsUMvWbsTdoGuUS0xlLgC9rK+3N/V+UFDQa+twZT2Gihl+tkqU5U=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=Usama.Anjum@collabora.com;
-	dmarc=pass header.from=<Usama.Anjum@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1737556885;
-	s=zohomail; d=collabora.com; i=Usama.Anjum@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=YvaJmiw5hv6alLjsc1pr9qxQCVLsmUq8/2FINskPFiU=;
-	b=Y+lICDYE7vx9/UZEei7zmlpeQ1qhhvPW8GnLD9tVZuDePGhlJI68vLOBvBjuRd8r
-	lInyaEwi5ZB1VKxk6ubVwPRbZs5ZECOFK6RWVTc68+fRoyQbeD8NPBN0ALjS7djdEKT
-	sZ/PxkeSnMXQYvL2XognLUlHBisjMIQ4/c0KO+oI=
-Received: by mx.zohomail.com with SMTPS id 1737556882115818.7757853209004;
-	Wed, 22 Jan 2025 06:41:22 -0800 (PST)
-Message-ID: <91967262-578a-4b68-8c1f-e013f9f72ac8@collabora.com>
-Date: Wed, 22 Jan 2025 19:41:46 +0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1ED8214205;
+	Wed, 22 Jan 2025 14:43:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737556988; cv=none; b=BJycw+hoDndUr201NBIW18n/9kCzDEwBUXTdwvpYN/vnt9Zqo+BD9PRfumdJijwqGs02c8om0l5FzOT8f8a1ZppsSFglPXj6YYtfyzifhykOHjm0o3RqBVbLJMrRETSdILtqSXgIUdfPvskz6mAf5d3Ug9cueJOPScf3ol1GNXA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737556988; c=relaxed/simple;
+	bh=TVGwxVO0xo3+rnxUovKfF7pi5C/YVzpJ6q00Yo/Sl/s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=deP/PL65eFy9zWrO8h1GAFn40crgUMI71Emk1DTSHAci83/bRqgm56orXBbQw4pfumPuWdkGIZEbzuhCQtwD/KAeUtBQZDnlZoFEmXarGfLsVtE9ayCND98gg9i5t98LI2pcAtg9ValBRfehQFT1nIIDmG/NAL/O/2xEFOrHHL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tMWmIjqA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA16C4CED2;
+	Wed, 22 Jan 2025 14:43:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737556988;
+	bh=TVGwxVO0xo3+rnxUovKfF7pi5C/YVzpJ6q00Yo/Sl/s=;
+	h=From:To:Cc:Subject:Date:From;
+	b=tMWmIjqAM50kqyx9x8ezias9Q8mc9I5ZW62KDHIAAYYM+z71GPHnKqg8ZCwDW5wjm
+	 tooDO2w0wFkNE8U+HQkrStNVxlJ6ibFKkKTmtISEOQg3scY/GdaHyuvOEJVRE5bduL
+	 PU2DuSRwrIZJf+4G2GolB6nv6v+jhklLPTgMrEpbDOJXChgk0njJagZ5MyvURxh+yl
+	 aOOT7Z2DGf2AXLONvVyHyfL2BUg3TmaDPThOQyjlnpQhhiG8b6SF6llNrkZFuwlR1s
+	 Y6ajzssoW6C/9C7lCtyoY7YbBReZqzVmGkPWbCXSELcNPkVJf2blPkWzHGD8BDbxro
+	 TTjdqf0yR7zWA==
+From: Conor Dooley <conor@kernel.org>
+To: linux-pwm@vger.kernel.org
+Cc: conor@kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>,
+	stable@vger.kernel.org,
+	Daire McNamara <daire.mcnamara@microchip.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1] pwm: microchip-core: fix incorrect comparison with max period
+Date: Wed, 22 Jan 2025 14:42:56 +0000
+Message-ID: <20250122-pastor-fancied-0b993da2d2d2@spud>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: Usama.Anjum@collabora.com, patches@lists.linux.dev,
- linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
- akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
- patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
- jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
- srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.6 00/72] 6.6.74-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-References: <20250121174523.429119852@linuxfoundation.org>
-Content-Language: en-US
-From: Muhammad Usama Anjum <Usama.Anjum@collabora.com>
-In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1830; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=IP8gdxD3c/+7SedNCJbFyJgVZrvNpro1QIADMns2ttI=; b=owGbwMvMwCFWscWwfUFT0iXG02pJDOkTmd+nyzruLhHZa30qnifycQfv8dTE19Oq+iccKY+cn 7dVcMLmjlIWBjEOBlkxRZbE230tUuv/uOxw7nkLM4eVCWQIAxenAExES4Thn6pso/z0OYfEOvPO pO9eu1bU8ZCB+quqG3JMEzecaXq46ynDXxnWhObFK1U/K4eq9FnonWy745kpkHTu1xMmG77/G27 a8wIA
+X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
+Content-Transfer-Encoding: 8bit
 
-On 1/21/25 10:51 PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.74 release.
-> There are 72 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 23 Jan 2025 17:45:02 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.74-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+From: Conor Dooley <conor.dooley@microchip.com>
 
-OVERVIEW
+In mchp_core_pwm_apply_locked(), if hw_period_steps is equal to its max,
+an error is reported and .apply fails. The max value is actually a
+permitted value however, and so this check can fail where multiple
+channels are enabled.
 
-        Builds: 42 passed, 0 failed
+For example, the first channel to be configured requests a period that
+sets hw_period_steps to the maximum value, and when a second channel
+is enabled the driver reads hw_period_steps back from the hardware and
+finds it to be the maximum possible value, triggering the warning on a
+permitted value. The value to be avoided is 255 (PERIOD_STEPS_MAX + 1),
+as that will produce undesired behaviour, so test for greater than,
+rather than equal to.
 
-    Boot tests: 585 passed, 0 failed
+Fixes: 2bf7ecf7b4ff ("pwm: add microchip soft ip corePWM driver")
+CC: stable@vger.kernel.org
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+---
+CC: Conor Dooley <conor.dooley@microchip.com>
+CC: Daire McNamara <daire.mcnamara@microchip.com>
+CC: Uwe Kleine-König <ukleinek@kernel.org>
+CC: Thierry Reding <thierry.reding@gmail.com>
+CC: linux-riscv@lists.infradead.org
+CC: linux-pwm@vger.kernel.org
+CC: linux-kernel@vger.kernel.org
+---
+ drivers/pwm/pwm-microchip-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-    CI systems: maestro
-
-REVISION
-
-    Commit
-        name: v6.6.73-73-g429148729681
-        hash: 429148729681ff93db022c19a17ce00dff9c04f9
-    Checked out from
-        https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-
-
-BUILDS
-
-    No build failures found
-
-BOOT TESTS
-
-    No build failures
-
-See complete and up-to-date report at:
-
-    https://kcidb.kernelci.org/d/revision/revision?orgId=1&var-git_commit_hash=429148729681ff93db022c19a17ce00dff9c04f9&var-patchset_hash=
-
-
-Tested-by: kernelci.org bot <bot@kernelci.org>
-
-Thanks,
-KernelCI team
+diff --git a/drivers/pwm/pwm-microchip-core.c b/drivers/pwm/pwm-microchip-core.c
+index c1f2287b8e97..12821b4bbf97 100644
+--- a/drivers/pwm/pwm-microchip-core.c
++++ b/drivers/pwm/pwm-microchip-core.c
+@@ -327,7 +327,7 @@ static int mchp_core_pwm_apply_locked(struct pwm_chip *chip, struct pwm_device *
+ 		 * mchp_core_pwm_calc_period().
+ 		 * The period is locked and we cannot change this, so we abort.
+ 		 */
+-		if (hw_period_steps == MCHPCOREPWM_PERIOD_STEPS_MAX)
++		if (hw_period_steps > MCHPCOREPWM_PERIOD_STEPS_MAX)
+ 			return -EINVAL;
+ 
+ 		prescale = hw_prescale;
+-- 
+2.45.2
 
 
