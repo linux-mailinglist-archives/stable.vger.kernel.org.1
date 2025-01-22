@@ -1,108 +1,100 @@
-Return-Path: <stable+bounces-110192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8926A1945E
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 15:50:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63B55A1946E
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 15:56:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC8D43A736B
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 14:50:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A990A163DB9
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 14:56:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 133B5170A15;
-	Wed, 22 Jan 2025 14:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB492135CF;
+	Wed, 22 Jan 2025 14:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Ej19VAxc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uWKuKHK0"
 X-Original-To: stable@vger.kernel.org
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2713477111
-	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 14:50:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF971213E99;
+	Wed, 22 Jan 2025 14:56:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737557440; cv=none; b=tmesZc6pzw9/Snuka2V2gS2Jn93qyE96Q5gkEPsJ32oaHrYB34ZU1JjPvyNq3jWP+8zFSh6Aqp2/ESMUcgI8QWVkqJdJrF5rSmpQgk+CHAIQepSat9hCFhgCojiq1v+PsyF5ddnDL3IKEv97UDZ44gymviSfvf1iKua1a17eY+I=
+	t=1737557812; cv=none; b=Ep1IhZ4M6kiDQdFqGB64xdbWZqTaNBjBF9K+/momL8cy7JGI5kB6yVUb5RfQ61z+2DM6XNuiPzsiF4Lr5+0e8Whna9KvGJED2rGhfwiBeh3zjQZIxEFoDFQDMxuZKM9uNV3VHIaaLwLGCw9gnRsgNt6iP3QSZFkbJ7vQnVDazsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737557440; c=relaxed/simple;
-	bh=iFdH7dpM1O1CXxbLyuKzYy9dWZAIWs1K+e4HmsNrue0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rtj2Ligcqb9Kttv1YfQ+Tl7Eiwho2BV/LCb3wlSC7d+Thw4QiZBF4WF5jKPU+YaYaXRKpQzraMsbjXgB4DlyK1NiYx+Ks2qK0h4U2urORtet919YcGDt6vlFMOhmaeMHoYVhOfnvqyIG8/BdAn0U91h7BK8dI3cj9dZME1Ic6Hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Ej19VAxc; arc=none smtp.client-ip=95.215.58.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <b812d344-d507-479b-a086-5a36cb6e27a3@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1737557436;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EVepUB8wNc5o/qy4cZIKZFKgWZyZswKdukCpSAPj37g=;
-	b=Ej19VAxcsUvhezxaX0uloN/wcxKKvTXMdPAgfW0IZxhMKvFKxJ6Mnd/U8AZnGMjco7aKLf
-	JaC7flAnQsDhg0jT2fF2q9CpeacgMbidm0iPsifRsP0b1+Z3m/zZcRq2QEtOqLK+6mEUIE
-	vFzECwFVDwfojEio8AC6gWoY8ZMaUTU=
-Date: Wed, 22 Jan 2025 22:49:41 +0800
+	s=arc-20240116; t=1737557812; c=relaxed/simple;
+	bh=55PFLsFoEltYFgfsyNLmyyR53/uMhwaNH9mEvYQPIsQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LolN3qNDWZjmSgl6JBavIUPjDV0d5vNaW9wIMQpgPEy//rgpfQvNJ2nM7BKZ2dKnx6F1hRBTG09DbJs8HQfuGXuXQuywKOhBpWO68gvRA+0cfxPQ43hfIR4s2esd+AZ8lXKcvksb2zZIeI1H+MLdxMeiL5H4u1nDmWe/IBT3pJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uWKuKHK0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D84C4CED2;
+	Wed, 22 Jan 2025 14:56:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737557812;
+	bh=55PFLsFoEltYFgfsyNLmyyR53/uMhwaNH9mEvYQPIsQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uWKuKHK0PvVE5y3AJTA18/x7biF1Uy7ZiyPpcq+NsuJjNI/DvFrQ4ZSXyN6mZsf8Y
+	 Ao4Sy2/qoq45n3mWdAFhqpptawODaPWnucBpIEgbw0t05HOHNzKPGCfPTPjwtwQ2D6
+	 erET/S+VHDDoxZA4EsqwTfKQDTc8WI61GWapkCpdf3kynsW39kG75MkAHysxSC6Rcq
+	 w0LOsB5c7TYdT+BMez4l/slRavXYaXCFIm7aBMYVIuB0y4b0uQ9KzdMAJuWe97HDvB
+	 /T/nw6i2vVyXGZ/OgKgpdgU/lC5yefAhyFh940CCkPv/tJhPwHCWtacncIMg2GlPEE
+	 UWc+5EUnH7iOA==
+Date: Wed, 22 Jan 2025 07:56:49 -0700
+From: Keith Busch <kbusch@kernel.org>
+To: Alyssa Ross <hi@alyssa.is>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	michael.christie@oracle.com, Tejun Heo <tj@kernel.org>,
+	Luca Boccassi <bluca@debian.org>, stable@vger.kernel.org,
+	regressions@lists.linux.dev
+Subject: Re: [PATCH] KVM: x86: switch hugepage recovery thread to vhost_task
+Message-ID: <Z5EHMbv8uezcRM3l@kbusch-mbp>
+References: <fdb5aac8-a657-40ec-9e0b-5340bc144b7b@redhat.com>
+ <Z2RhNcJbP67CRqaM@kbusch-mbp.dhcp.thefacebook.com>
+ <CABgObfYUztpGfBep4ewQXUVJ2vqG_BLrn7c19srBoiXbV+O3+w@mail.gmail.com>
+ <Z4Uy1beVh78KoBqN@kbusch-mbp>
+ <0862979d-cb85-44a8-904b-7318a5be0460@redhat.com>
+ <Z4cmLAu4kdb3cCKo@google.com>
+ <Z4fnkL5-clssIKc-@kbusch-mbp>
+ <CABgObfZWdwsmfT-Y5pzcOKwhjkAdy99KB9OUiMCKDe7UPybkUQ@mail.gmail.com>
+ <Z4gGf5SAJwnGEFK0@kbusch-mbp>
+ <twoqrb4bdyujvnf432lqvm3eqzvhqsbotag3q3snecgqwm7lzw@izuns3gun2a6>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] net: stmmac: dwmac-loongson: Set correct
- {tx,rx}_fifo_size
-To: Huacai Chen <chenhuacai@loongson.cn>, Huacai Chen
- <chenhuacai@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- loongarch@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Chong Qiao <qiaochong@loongson.cn>, linux-arm-kernel@lists.infradead.org,
- fancer.lancer@gmail.com, Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>
-References: <20250121093703.2660482-1-chenhuacai@loongson.cn>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yanteng Si <si.yanteng@linux.dev>
-In-Reply-To: <20250121093703.2660482-1-chenhuacai@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <twoqrb4bdyujvnf432lqvm3eqzvhqsbotag3q3snecgqwm7lzw@izuns3gun2a6>
 
-在 1/21/25 17:37, Huacai Chen 写道:
-> Now for dwmac-loongson {tx,rx}_fifo_size are uninitialised, which means
-> zero. This means dwmac-loongson doesn't support changing MTU, so set the
-> correct tx_fifo_size and rx_fifo_size for it (16KB multiplied by channel
-> counts).
+On Wed, Jan 22, 2025 at 12:38:25PM +0100, Alyssa Ross wrote:
+> On Wed, Jan 15, 2025 at 12:03:27PM -0700, Keith Busch wrote:
+> > On Wed, Jan 15, 2025 at 06:10:05PM +0100, Paolo Bonzini wrote:
+> > > You can implement something like pthread_once():
+> >
+> > ...
+> >
+> > > Where to put it I don't know.  It doesn't belong in
+> > > include/linux/once.h.  I'm okay with arch/x86/kvm/call_once.h and just
+> > > pull it with #include "call_once.h".
+> >
+> > Thanks for the suggestion, I can work with that. As to where to put it,
+> > I think the new 'struct once' needs to be a member of struct kvm_arch,
+> > so I've put it in arch/x86/include/asm/.
+> >
+> > Here's the result with that folded in. If this is okay, I'll send a v2,
+> > and can split out the call_once as a prep patch with your attribution if
+> > you like.
 > 
-> Note: the Fixes tag is not exactly right, but it is a key commit of the
-> dwmac-loongson series.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: ad72f783de06827a1f ("net: stmmac: Add multi-channel support")
-> Signed-off-by: Chong Qiao <qiaochong@loongson.cn>
-> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Acked-by: Yanteng Si <si.yanteng@linux.dev>
+> Has there been any progress here?  I'm also affected by the crosvm
+> regression, and it's been backported to the LTS stable kernel.
 
-Thanks,
-Yanteng
-> ---
->   drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-> index bfe6e2d631bd..79acdf38c525 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-> @@ -574,6 +574,9 @@ static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id
->   	if (ret)
->   		goto err_disable_device;
->   
-> +	plat->tx_fifo_size = SZ_16K * plat->tx_queues_to_use;
-> +	plat->rx_fifo_size = SZ_16K * plat->rx_queues_to_use;
-> +
->   	if (dev_of_node(&pdev->dev))
->   		ret = loongson_dwmac_dt_config(pdev, plat, &res);
->   	else
-
+Would you be able to try the proposed patch here and reply with a
+Tested-by if it's successful for you? I'd also like to unblock this,
+whether this patch is in the right direction or try something else.
 
