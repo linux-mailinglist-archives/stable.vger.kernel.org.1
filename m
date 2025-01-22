@@ -1,161 +1,123 @@
-Return-Path: <stable+bounces-110103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2630CA18BAD
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 07:06:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 308B9A18C78
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 08:00:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A23516BB57
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 06:06:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17C2B3AB162
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 07:00:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70FD0190674;
-	Wed, 22 Jan 2025 06:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4747B1B4F25;
+	Wed, 22 Jan 2025 07:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rdkC43p3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jf/EmdUN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E011537CB
-	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 06:06:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEB414F9F9;
+	Wed, 22 Jan 2025 06:59:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737525985; cv=none; b=THhQZ12At29TLDn5uTML5V5uAk2eKKrqAE860zuTHD160CpU1ys6AJYpvWuU126VFLHhZFlLKes5lmpkMyW8xqE4W8cr5wPiuGtf15RFwINux8KhAF1zJzVL4/185HOuTZ7zACHD6DQhNTfbP3GPdUVOZHYswA8MfQJmR6P0zWM=
+	t=1737529201; cv=none; b=cmNgWN8UsXhl4zOwRs5bscVBp/XXoqVGRKi0DU8JWUWRYckKCF25gSN5G4Zd5MwPB+Bw+ua/s2o+5T+9oVDgZJ82LV6yv2Bz3uH8hnSbDf87gJL223M8Q2/FamnZxJ3bFE6tlpOOYNmIuwdwGQYaxWxlJ9sJF4tiupTXk0P3u3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737525985; c=relaxed/simple;
-	bh=Ex439rGdFdfUdYHc9niaz10rACr4snOI2Q6IBNyOfDo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jrwm22qQQEoMNXESQt3KCG2A16kQZvVFD+44UE7gidWBQiSVf3IOwuQB/W2VqZ1oJ6h7lMJrJAtUKEWsJYq3d6Lx2EDVOoZjf02J79v3blaqJR86JUR99EQjn+4xWG6eUYDBjoVP3Y2uFG1rEzK+gGfvp1mqwv7KvYAl2E1C1Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rdkC43p3; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2ee786b3277so8419980a91.1
-        for <stable@vger.kernel.org>; Tue, 21 Jan 2025 22:06:23 -0800 (PST)
+	s=arc-20240116; t=1737529201; c=relaxed/simple;
+	bh=Qac9ZsyKN9zy2Kv2WAAPDqc3jak3MQY2mUqOwW5HBTQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hk6xmRU9Bv4TR1EG71UR7NgARJ0A6WZ/eZYEx9mRmcQMrUS/en69xvOwhaAKcydBRHHgJhhZyDyic1acc4gd7byFmiV0jJARJZMaOMDFNwPK0T6DhPVuXxEvrLJ77BRvVdlSurjbXmpjSREHHzBdKXqJQvJXZTgn/jD8/xOjhlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jf/EmdUN; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43621d27adeso44461045e9.2;
+        Tue, 21 Jan 2025 22:59:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1737525983; x=1738130783; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0W20+yxBOW7S58mPqEOjxHOWXZCgIN0XLLUDfARBjDU=;
-        b=rdkC43p3zZqu42eS4hh8xuJAWdf2ZKYPQ0PRxy58msDFeJF4hgHYqM8cEXwix4D1HY
-         uZ7k2d/5YiDKoD8FB4w5gTVyclwnYHQv/NNpQWLt+JG8ikqbPTlfwdBUI8f1hoFNzk7y
-         a8Fh+nKrp1yB0n53xVuV12uy/k8nNjDx3goH1sMG2B0QoriTb4e/ept+SGhxbnDvhPyn
-         kG/TEE0Lp6Me5L5Q/qWuOuSupb93GSHySBBDSbCrdncoFNt0xFRz6466ZPFpkBIC67Sz
-         7mTqFfnsjkrOnCCxkvEomyqfMVrLxfEBKaKvFIIjrfmiAJvUjZ12YYjJEsbhGJvm2csr
-         8KhQ==
+        d=gmail.com; s=20230601; t=1737529197; x=1738133997; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-transfer-encoding
+         :content-disposition:mime-version:references:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=J3Yibl1DTsw5hMa93yGIy606M41eaMPfp8i87nVBP6k=;
+        b=Jf/EmdUN6LvCKTav1MO2unrNwSvD5YnlVDY8l+3u/gvvyEmpKxBZx0f6Uzw88STYTN
+         mQbRqAIz1IQbtU0Nm6kUbJjqGdTEA7b+9OfEOTVWIk/6mbaUEOnEo7MoEpI1tg22rGnf
+         +9c3MX4UPwAY0DDMnlnr8t8pRmooD+2PgmSnyy82nrHuWVq9CeOaaPLrzC4mPEGgNGLm
+         uAJ1qkziFsxa0NXVIBOE7pKYT15ktfgXIrUx0emvmg+zX/aQ9CDuno+HvLAUsKSFlQoc
+         +FaPT6YqY/dQCTLnm7/VwZDY9sa5eXerLLTW9C5OOOiRLBnP0hS1R3ZtpyqLbLwTYutt
+         NK1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737525983; x=1738130783;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1737529197; x=1738133997;
+        h=user-agent:in-reply-to:content-transfer-encoding
+         :content-disposition:mime-version:references:message-id:subject:cc
+         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0W20+yxBOW7S58mPqEOjxHOWXZCgIN0XLLUDfARBjDU=;
-        b=V44dAi9flRyCvoxuOtp2CdDhQcwMXNBzj8hQRmVVz3uLbwi2U0g+HSLy9JCSWIzZeF
-         jpH2uHTuHazH3i/zbfcrQkBfbPvuUJKge0j3C4CLbneoUAVloluyGYIMCLVlfP2DtxMO
-         ldcr4Ug8QR62lRr/f4f22rWnX06uWgIAu7eKsTTW31gTK1bHiR8Mn3SM7Pov+5Evvk29
-         qEvrD1ZiwIz+spL1BRdoUVDDBCC6wwm73Gx6UgAx6VlObqqvd24H/vPUgBm81M7bwxtU
-         P0KJnH6BgK/Q9tsTsSyooc87bCu5huBrZ4gvfg1KE/3MrJeXDcmUgcAk+c5PkZFJeVRu
-         ix2w==
-X-Forwarded-Encrypted: i=1; AJvYcCUtxvlrtyss/mQ6Iuy8LcE6yThUASpdyzxJ8vRqVKgmUJO7KSlBaAORXFNpLbp+LXgXPyqL5O4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnvBUhvB3Ms6f6EyYvHmg4QF7j5k+mmNpAzdm/T0dYglARd/YR
-	Y1hLDx2H1VZ1pq686xNr1ph8Yo0rQT1Z7UijDXbMG0aFhujyq9GkqIx1cmqtdGs=
-X-Gm-Gg: ASbGnctto3HWKLVlZ/SWc0e/YZfCdU1InZADW+3ntdGUpsl1odvURwKrD9AfD7zJVDW
-	SF8Y9Idr3ZQ3cXsaU2eHfD7UuGRkfw1EfmsEBN+xUs8GhPOARzhl3KjZEurLGxgXmLFUEDOAEdJ
-	zePaTIdzuh3qCpppxTVypYMPuPTEg41w/Knqttgvu29CApN2zuzV7VCFHnVH4wfwM1i32YHcfD6
-	0gYE+1gZ33g6PDlb8N6RozPdvKGLBuzJIFXgHkD0WN5C85Dm/YWXt2/j+F6X9DorwmME4gh
-X-Google-Smtp-Source: AGHT+IE4ag6j6hEEpyPWZk0VRFVk6mkVLAwHWJ2F4Qn9kdzng8UiejuaFtPP8B6RnjwiXV6/Vg4wEg==
-X-Received: by 2002:a17:90b:2748:b0:2ea:59e3:2d2e with SMTP id 98e67ed59e1d1-2f782c73b7fmr31718132a91.10.1737525982910;
-        Tue, 21 Jan 2025 22:06:22 -0800 (PST)
-Received: from localhost ([122.172.84.139])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f7e6a65966sm648044a91.1.2025.01.21.22.06.21
+        bh=J3Yibl1DTsw5hMa93yGIy606M41eaMPfp8i87nVBP6k=;
+        b=ppCFEN/Kyc7acJkoXYy7bETYOB6v6QPIDvhYluDKe64Nz29blvSfULBrg6I/bzO7p2
+         aayAz92yIBrieGNSn2VQVZNf+Kyh4eV7xHe145aGpMEE0OjnKMDJxnAbbQRsuBr4alvO
+         jfqgBCqWLeHSciWcv6etRzhp005K2+0Fgs9m/JYFvz/dSkfAI1N1+T3ukhCeyETOwduG
+         3zrJDpUN2HWoe3JLAETME/TUK6hRR0ctNqyPWbbSwDXNQNTsbDne2Fh6RmiEhFf8FCxh
+         UL80ds7XYLDhuC9X0fb7ITFX2wBbXqeHZDMXWYWQoQT/j+VyGGk5UTouZ1wh5fD+VM53
+         8rHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUzwOEJvw2lhAgZcZ/YBn+MvDC1kiJ46H1P4JFn/woOkbZZHQYaRyAo3r7OFxscudhNUvWKi11A@vger.kernel.org, AJvYcCVnyeAzBimtgVlx/tUqpdcydNM0hFWvnLN89Y3x/GeoqTQ2iFaeOvLQqBGDKI2P1jSImWG63TZXtTlhlOw=@vger.kernel.org, AJvYcCWqoyKeQJyZblkcNHS6fA5KcGvSUpB43eJcXv1IyQBnW9lyVCGkJwSXLvXbbaV3smjBNEBexHWv@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDxKBwxv+p7ngreaSnmz7Emf67HWcUDogDjKwbzJPHotx4tFoc
+	a2tPcHNrfC6EUM0M4vc8res7g+MYcgNLSEunC59Pa7Dm96Okkdeo
+X-Gm-Gg: ASbGncs+cXKGXiJerZMU1XKll774BGtipcGE3y5cfpjUmeIWTIAprsysoHwTnmQDmCm
+	t0khFWmI+QWgbXAKuIdIeC27IIZ/RX2fdnfxjC5tp9TOVAzFHGqOZXHbZ/oJsD+91y4xVLunsFO
+	yEGN6sdkclI2MJtWb7KmwS3i4aFd6aQ2rS0+kD3Ii3th4vRxHay+6BHJOQPTg28qKyX4F7ddmx7
+	bHYxxzw3sfofL8hcnKODQJdtIffoWBldUbWKY/zcunnzO1lw8krp+RSeATiUjR+6CSUxjcY
+X-Google-Smtp-Source: AGHT+IHTeVqdKFv/mqmajh9ZY75b/iR/e1QnWbOpmYFTnjck1LwK4oWXUoWipA6IBNTcWFUpES2ENA==
+X-Received: by 2002:a05:6000:1a8c:b0:38a:888c:6786 with SMTP id ffacd0b85a97d-38bf57c063fmr18594600f8f.52.1737529197200;
+        Tue, 21 Jan 2025 22:59:57 -0800 (PST)
+Received: from grain.localdomain ([5.18.253.97])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bf3221b5asm15158131f8f.21.2025.01.21.22.59.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jan 2025 22:06:22 -0800 (PST)
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>
-Cc: linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	kernel test robot <lkp@intel.com>,
-	stable@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH V2] cpufreq: s3c64xx: Fix compilation warning
-Date: Wed, 22 Jan 2025 11:36:16 +0530
-Message-Id: <236b227e929e5adc04d1e9e7af6845a46c8e9432.1737525916.git.viresh.kumar@linaro.org>
-X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
+        Tue, 21 Jan 2025 22:59:56 -0800 (PST)
+Received: by grain.localdomain (Postfix, from userid 1000)
+	id 55A0E5A003F; Wed, 22 Jan 2025 09:59:55 +0300 (MSK)
+Date: Wed, 22 Jan 2025 09:59:55 +0300
+From: Cyrill Gorcunov <gorcunov@gmail.com>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Cc: Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	John Stultz <johnstul@us.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] posix-clock: Explicitly handle compat ioctls
+Message-ID: <Z5CXa0HAhdNo22Gk@grain>
+References: <20250121-posix-clock-compat_ioctl-v1-1-c70d5433a825@weissschuh.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250121-posix-clock-compat_ioctl-v1-1-c70d5433a825@weissschuh.net>
+User-Agent: Mutt/2.2.13 (2024-03-09)
 
-The driver generates following warning when regulator support isn't
-enabled in the kernel. Fix it.
+On Tue, Jan 21, 2025 at 11:41:24PM +0100, Thomas Weiﬂschuh wrote:
+> Pointer arguments passed to ioctls need to pass through compat_ptr() to
+> work correctly on s390; as explained in Documentation/driver-api/ioctl.rst.
+> Plumb the compat_ioctl callback through 'struct posix_clock_operations'
+> and handle the different ioctls cmds in the new ptp_compat_ioctl().
+> 
+> Using compat_ptr_ioctl is not possible.
+> For the commands PTP_ENABLE_PPS/PTP_ENABLE_PPS2 on s390
+> it would corrupt the argument 0x80000000, aka BIT(31) to zero.
+> 
+> Fixes: 0606f422b453 ("posix clocks: Introduce dynamic clocks")
+> Fixes: d94ba80ebbea ("ptp: Added a brand new class driver for ptp clocks.")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thomas Weiﬂschuh <linux@weissschuh.net>
+Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
 
-   drivers/cpufreq/s3c64xx-cpufreq.c: In function 's3c64xx_cpufreq_set_target':
->> drivers/cpufreq/s3c64xx-cpufreq.c:55:22: warning: variable 'old_freq' set but not used [-Wunused-but-set-variable]
-      55 |         unsigned int old_freq, new_freq;
-         |                      ^~~~~~~~
->> drivers/cpufreq/s3c64xx-cpufreq.c:54:30: warning: variable 'dvfs' set but not used [-Wunused-but-set-variable]
-      54 |         struct s3c64xx_dvfs *dvfs;
-         |                              ^~~~
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501191803.CtfT7b2o-lkp@intel.com/
-Cc: <stable@vger.kernel.org> # v5.4+
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
----
-V2: Move s3c64xx_dvfs_table too inside ifdef.
-
- drivers/cpufreq/s3c64xx-cpufreq.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/cpufreq/s3c64xx-cpufreq.c b/drivers/cpufreq/s3c64xx-cpufreq.c
-index c6bdfc308e99..9cef71528076 100644
---- a/drivers/cpufreq/s3c64xx-cpufreq.c
-+++ b/drivers/cpufreq/s3c64xx-cpufreq.c
-@@ -24,6 +24,7 @@ struct s3c64xx_dvfs {
- 	unsigned int vddarm_max;
- };
- 
-+#ifdef CONFIG_REGULATOR
- static struct s3c64xx_dvfs s3c64xx_dvfs_table[] = {
- 	[0] = { 1000000, 1150000 },
- 	[1] = { 1050000, 1150000 },
-@@ -31,6 +32,7 @@ static struct s3c64xx_dvfs s3c64xx_dvfs_table[] = {
- 	[3] = { 1200000, 1350000 },
- 	[4] = { 1300000, 1350000 },
- };
-+#endif
- 
- static struct cpufreq_frequency_table s3c64xx_freq_table[] = {
- 	{ 0, 0,  66000 },
-@@ -51,15 +53,16 @@ static struct cpufreq_frequency_table s3c64xx_freq_table[] = {
- static int s3c64xx_cpufreq_set_target(struct cpufreq_policy *policy,
- 				      unsigned int index)
- {
--	struct s3c64xx_dvfs *dvfs;
--	unsigned int old_freq, new_freq;
-+	unsigned int new_freq = s3c64xx_freq_table[index].frequency;
- 	int ret;
- 
-+#ifdef CONFIG_REGULATOR
-+	struct s3c64xx_dvfs *dvfs;
-+	unsigned int old_freq;
-+
- 	old_freq = clk_get_rate(policy->clk) / 1000;
--	new_freq = s3c64xx_freq_table[index].frequency;
- 	dvfs = &s3c64xx_dvfs_table[s3c64xx_freq_table[index].driver_data];
- 
--#ifdef CONFIG_REGULATOR
- 	if (vddarm && new_freq > old_freq) {
- 		ret = regulator_set_voltage(vddarm,
- 					    dvfs->vddarm_min,
--- 
-2.31.1.272.g89b43f80a514
-
+Thanks, Thomas!
 
