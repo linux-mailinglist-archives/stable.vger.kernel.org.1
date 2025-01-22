@@ -1,71 +1,73 @@
-Return-Path: <stable+bounces-110155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1E45A190CB
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 12:42:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E0AA190BD
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 12:38:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFA5D165279
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 11:42:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD7E71656BE
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 11:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E498211492;
-	Wed, 22 Jan 2025 11:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2766C211A32;
+	Wed, 22 Jan 2025 11:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="yOp90+YB"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="PY1+N8bD"
 X-Original-To: stable@vger.kernel.org
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.53])
+Received: from out203-205-221-239.mail.qq.com (out203-205-221-239.mail.qq.com [203.205.221.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360B0189902
-	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 11:41:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6857E20FA9A
+	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 11:37:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737546116; cv=none; b=dN5r37N3oEnshvD5ZC0/SMBoYiZu2iJG6QuVzjeitW0YKhu6m0w30yfA2OGFatEOOdRvzs1FtsT4CecAFQmVDWu64VKvnsdzf7HA5TsZe2FdWim1gFMZOQOG7TGQBujNKGKSzMhYsr4IXFH3loLEo7JEiUcHRKp0Nodgle4m8fM=
+	t=1737545875; cv=none; b=KVOV7E9apPbPJfCnYpCh+fnW8OktXUBAoCUSqMVOOn4xTrUlD4BwXWCVDv9o+bc0m3/byCXT20TEqrQjPaO6sHkcJIaVzVAUhSXiUG/27StAvdLW76snYz5gj0DoHb9pQvDQI+z48D9TYDebQRb9DcT9KgtqFZmMKLTILjCrSHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737546116; c=relaxed/simple;
-	bh=gNIwvmGRTIBCTR3fl88Pr2UAvT4mrz9x/4d64Tbftxc=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=TapLiYaYcVV6M1iHc2/Ow5FLNshDa+XplqvJIcmof92DJSKGsI2ouLSyC3420WGts9QURppfQNDDDcvYbUP7WUwC+axmQF0XyMSts1b/sC64DLrB8BDP/6PcLA4agXni1Gaa4i7xViZt2BYrWAn1ZKqMJQDX+tosXTrRe3SKVKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=yOp90+YB; arc=none smtp.client-ip=43.163.128.53
+	s=arc-20240116; t=1737545875; c=relaxed/simple;
+	bh=+NHbohwkpxI53A1CDLdxMfW9WYxK8vT7iEtFaPnFzRY=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=nbRZR+DvnJhyqNY0wotdUCpkBrysOh+bbOPmQQssNykSo5Xge2etDXQ12nMZ2q2HPQG9O6I3lJEGz6aqt6wYHzU8YKxQalmopDZEBqlXEAoX5zBEAGRUYHHz6VVzKcBUI6d10fg1WVBcf8nnC0lR7hl1QIN79boHdMr1elAct8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=PY1+N8bD; arc=none smtp.client-ip=203.205.221.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1737546109;
-	bh=qb4Ogy5qj+Q9Si/BMU+XzJFy6cgjKofjVXkNndiEgWo=;
+	s=s201512; t=1737545870;
+	bh=1LrXgti5zqf2aJw0Ag5frAOnN1gKc/aUo0+QuZol2dI=;
 	h=From:To:Cc:Subject:Date;
-	b=yOp90+YBcJF37M22msE9Izjj7V7IY6ZgdE2KVo7qAs0+MI54+V+GG18UUaLu4GXGK
-	 qcOfYdsKdhhcuO1O3eq5tNZttI7yVkUbHvV3U90eJbboCdcWHf1TUxaX91u0LSoSRT
-	 Kz95+QrNJpKum7Og6Knzi9GMVWc/SghbqVCslwVQ=
+	b=PY1+N8bD7/jh8/zwxR98WoXWcO26QyS7CS+VlMPr1j59cYzWuGdwwUMtu8NVNG0of
+	 V+F4NQYwBZOAKiWF+XH7y/pCQxEMaL2pHwtYLy6ae2axV7AAE4C0aipKPTFuqLJ6xN
+	 y7rJ6BR3zrKvSWhe9U6V4fQldY/8IrbT/p7DZjds=
 Received: from public ([120.244.194.224])
-	by newxmesmtplogicsvrszb20-0.qq.com (NewEsmtp) with SMTP
-	id 8D4B6C2F; Wed, 22 Jan 2025 19:35:20 +0800
-X-QQ-mid: xmsmtpt1737545720txz07ob67
-Message-ID: <tencent_CBAD5F0DF387BE24BC3518CE3A4C56833D06@qq.com>
-X-QQ-XMAILINFO: OL2sWtCwO8Ndx6fWG4SMWVrilnI3YXLlNpWEsHYBaYSoAGDFJ0gSs9ATSc6p93
-	 CZqMAuu5bz2XKVDxlquuQWUfW7TLDLaRSsjtKosw9WcpM8SIEMqWVQ/8ld5NHB3thOuo7l+ihuMq
-	 N/MGDeCkAnKimNyaq+WFDRREOr4QN9tYeZhriabi2W/zs08CfYVUjbpk5/Ok7WuKfWUf6YI1Cdu+
-	 mU5noehwH3gDqIRR/3WVo8cXJv+HQMTfCGj5IvfTDnEnZpmSGOGa/UlR2z+ka08SM5oCzM/ddt75
-	 b/DmAETH0KsnDqyuhbDf1RDMfz3NpBP5GJI8SACqlvd147niur6n7tl/Fq84OqsYlPYq1ZtrDp5O
-	 RMMDSDLmwY+2kI+AYAC2HA7RvZXRBYovEhugpz2SX/FWdvZUBiQZ8wJcPqkn1fm1p39Zr6QXyGdE
-	 YoG1exIVzGE/4u/1plZn4kx9w5b5P7xdk0aKnNBSRbi96I5pA+a3+aKOUhy67LKTFztPN2oRZSKx
-	 mHolmBSQUMcN23iEXB8h1wnXZ9EOqfgVdO/4+tAvcYekzq3awu4kjMwPMKFLDZm082RQ5xmydDQ9
-	 MAprK4zB/Haj+2la85mgUJv2Ftkz47pwturQ6S7Yq6Hg0oVE4WgDJXooeyWIxza/Kz3bKNdTjEI+
-	 BBpGoZaL1ZMsudxjSFOv0MXf9VeuIneNulpAGyj/a+8mUsFTE6A0ZKhvsImBpUVwPQ+8zSjxJ3UQ
-	 cY1YzIHzLWK5s+UN8urlVufuZX+Hnkq6y1EBdBjSuzPxRJyuDtNcw85XlnX9RaKERespch9/ZcUB
-	 DUxB8yBwkSBcc7tinwzdHi0hjfybgXMmpVElEXZlw78QCaJkNm4Sywy5GmZ7T2Uotc8+wrBFf/tu
-	 Ot1RAWnF3R24s7gv1CQM7SmvN7ouyOzk6yFDq3tQ3ewQAmvgflL7qtrw5gR5FnwJGlYk9rmXFNyn
-	 7VV1mUifHq7oWQXLrDoI5/ffl3wbbZjd2DeaeWe400UpotpjiQ/X87u4hIWrKf
-X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
+	by newxmesmtplogicsvrszb21-0.qq.com (NewEsmtp) with SMTP
+	id 963B8C6F; Wed, 22 Jan 2025 19:37:35 +0800
+X-QQ-mid: xmsmtpt1737545855tfcvv72yo
+Message-ID: <tencent_ABAD564DE407BF249EF53E0E184C5CC30006@qq.com>
+X-QQ-XMAILINFO: MDbayGdXPuoe9tlIgDnrlMhQpCOAeabs896fe9P7GGZILTrQ8wAiCRY1qKrJJ3
+	 nLgFMxTst3ndKKeJZVZpEgJPXiop7bzT1Z+OlxxmyLcUhKFqQyf+gnzJ1GERswUTfyT+AxVZyKEd
+	 /FvsFldLO119+/zjyAJ1sSRkJyRFq6I0QDMH3NFkn4rzJU3Q/ru3wBlyMC6Is/Avt6qGkiCOJ0az
+	 TLNHUdpgDBjj0w0qIZqEEMB0equu5QGUNWMyDd6zYBi0aKaQWn+/7Nw7AkK+HCDsEMsL86iCaHdk
+	 AziqUfOSzcW8id66WHIGdZZ+Ph4JLal/owZ9sHrTU9VdcPLFSVtznx72ndJewfRo3pU3FNwmjda/
+	 DjUP1F81shpnf3xH9S/WQmFLvXfUgQB2hWa0efpHaPSipbQKyZ0VqKQK69N34z4rjh8yX2KCGqoL
+	 IXw7FdLVngrZRcG+qHh4Aa2o3ViOS0PrH2h0v8nzih+elbL1ojWv+IF5dJsMOfFHVGuHoh3cDDSP
+	 y2I3idFzga7z3odDkdYv5ur2/q8t7ITB8HgIr6iqAbp4+CF6UNXv6EN/SxaNjtdPiPvxAq2hyyA6
+	 vAcm04iJhQ7zabqgXaOfaALr9Q7LkNzrHadfibPB4ptetftHdLQ90yysZu8YpB/37avXGU81Dyc8
+	 3oDRxcm9gRwkSLB/21KXYKGzIk/2+ugFqYo9B8O0LG9QMgohJrgV+GE0+pd8+pnT6Jhz9iSANhsF
+	 JbFZI6TTBDOLWBtdlY8oeoC3+u3y5QWgO3VKpzPx8kVXA4GXuGIRZneNIYdqFJzoel/E7cnaNNpw
+	 ieyRqh5s2Js1WaR1xecR5LxtixjJTfF5zekerHuD2izSJCTErlv+rLQ9iRyy0MZZl2sEWYlhpWOW
+	 eKnnldSWH20pOWy6zVT8Q2LmFFpR4HAWfBpKjSa78S+t8ZhR8IH0/m6oeTG5TZt1jOeyf119P5R9
+	 mbR4wPF2pOc96k27DJ47vPlexc1Wsy1IuA8Fk0t1S9AJZPFqyE5Wd9mC34yi5Vxh6ome/ur03vxF
+	 pjiO3gkaDNIqIo3Hq9R0umaC+Ynhs=
+X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
 From: alvalan9@foxmail.com
 To: stable@vger.kernel.org
-Cc: Wang Liang <wangliang74@huawei.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Selvin Xavier <selvin.xavier@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Chandramohan Akula <chandramohan.akula@broadcom.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.1.y v2] net: fix data-races around sk->sk_forward_alloc
-Date: Wed, 22 Jan 2025 19:35:21 +0800
-X-OQ-MSGID: <20250122113521.1924-1-alvalan9@foxmail.com>
+Subject: [PATCH 6.6.y] RDMA/bnxt_re: Avoid CPU lockups due fifo occupancy check loop
+Date: Wed, 22 Jan 2025 19:37:36 +0800
+X-OQ-MSGID: <20250122113736.2474-1-alvalan9@foxmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -75,147 +77,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Selvin Xavier <selvin.xavier@broadcom.com>
 
-commit 073d89808c065ac4c672c0a613a71b27a80691cb upstream.
+[ Upstream commit 8be3e5b0c96beeefe9d5486b96575d104d3e7d17 ]
 
-Syzkaller reported this warning:
- ------------[ cut here ]------------
- WARNING: CPU: 0 PID: 16 at net/ipv4/af_inet.c:156 inet_sock_destruct+0x1c5/0x1e0
- Modules linked in:
- CPU: 0 UID: 0 PID: 16 Comm: ksoftirqd/0 Not tainted 6.12.0-rc5 #26
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
- RIP: 0010:inet_sock_destruct+0x1c5/0x1e0
- Code: 24 12 4c 89 e2 5b 48 c7 c7 98 ec bb 82 41 5c e9 d1 18 17 ff 4c 89 e6 5b 48 c7 c7 d0 ec bb 82 41 5c e9 bf 18 17 ff 0f 0b eb 83 <0f> 0b eb 97 0f 0b eb 87 0f 0b e9 68 ff ff ff 66 66 2e 0f 1f 84 00
- RSP: 0018:ffffc9000008bd90 EFLAGS: 00010206
- RAX: 0000000000000300 RBX: ffff88810b172a90 RCX: 0000000000000007
- RDX: 0000000000000002 RSI: 0000000000000300 RDI: ffff88810b172a00
- RBP: ffff88810b172a00 R08: ffff888104273c00 R09: 0000000000100007
- R10: 0000000000020000 R11: 0000000000000006 R12: ffff88810b172a00
- R13: 0000000000000004 R14: 0000000000000000 R15: ffff888237c31f78
- FS:  0000000000000000(0000) GS:ffff888237c00000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007ffc63fecac8 CR3: 000000000342e000 CR4: 00000000000006f0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- Call Trace:
-  <TASK>
-  ? __warn+0x88/0x130
-  ? inet_sock_destruct+0x1c5/0x1e0
-  ? report_bug+0x18e/0x1a0
-  ? handle_bug+0x53/0x90
-  ? exc_invalid_op+0x18/0x70
-  ? asm_exc_invalid_op+0x1a/0x20
-  ? inet_sock_destruct+0x1c5/0x1e0
-  __sk_destruct+0x2a/0x200
-  rcu_do_batch+0x1aa/0x530
-  ? rcu_do_batch+0x13b/0x530
-  rcu_core+0x159/0x2f0
-  handle_softirqs+0xd3/0x2b0
-  ? __pfx_smpboot_thread_fn+0x10/0x10
-  run_ksoftirqd+0x25/0x30
-  smpboot_thread_fn+0xdd/0x1d0
-  kthread+0xd3/0x100
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork+0x34/0x50
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
- ---[ end trace 0000000000000000 ]---
+Driver waits indefinitely for the fifo occupancy to go below a threshold
+as soon as the pacing interrupt is received. This can cause soft lockup on
+one of the processors, if the rate of DB is very high.
 
-Its possible that two threads call tcp_v6_do_rcv()/sk_forward_alloc_add()
-concurrently when sk->sk_state == TCP_LISTEN with sk->sk_lock unlocked,
-which triggers a data-race around sk->sk_forward_alloc:
-tcp_v6_rcv
-    tcp_v6_do_rcv
-        skb_clone_and_charge_r
-            sk_rmem_schedule
-                __sk_mem_schedule
-                    sk_forward_alloc_add()
-            skb_set_owner_r
-                sk_mem_charge
-                    sk_forward_alloc_add()
-        __kfree_skb
-            skb_release_all
-                skb_release_head_state
-                    sock_rfree
-                        sk_mem_uncharge
-                            sk_forward_alloc_add()
-                            sk_mem_reclaim
-                                // set local var reclaimable
-                                __sk_mem_reclaim
-                                    sk_forward_alloc_add()
+Add a loop count for FPGA and exit the __wait_for_fifo_occupancy_below_th
+if the loop is taking more time. Pacing will be continuing until the
+occupancy is below the threshold. This is ensured by the checks in
+bnxt_re_pacing_timer_exp and further scheduling the work for pacing based
+on the fifo occupancy.
 
-In this syzkaller testcase, two threads call
-tcp_v6_do_rcv() with skb->truesize=768, the sk_forward_alloc changes like
-this:
- (cpu 1)             | (cpu 2)             | sk_forward_alloc
- ...                 | ...                 | 0
- __sk_mem_schedule() |                     | +4096 = 4096
-                     | __sk_mem_schedule() | +4096 = 8192
- sk_mem_charge()     |                     | -768  = 7424
-                     | sk_mem_charge()     | -768  = 6656
- ...                 |    ...              |
- sk_mem_uncharge()   |                     | +768  = 7424
- reclaimable=7424    |                     |
-                     | sk_mem_uncharge()   | +768  = 8192
-                     | reclaimable=8192    |
- __sk_mem_reclaim()  |                     | -4096 = 4096
-                     | __sk_mem_reclaim()  | -8192 = -4096 != 0
-
-The skb_clone_and_charge_r() should not be called in tcp_v6_do_rcv() when
-sk->sk_state is TCP_LISTEN, it happens later in tcp_v6_syn_recv_sock().
-Fix the same issue in dccp_v6_do_rcv().
-
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Link: https://patch.msgid.link/20241107023405.889239-1-wangliang74@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2ad4e6303a6d ("RDMA/bnxt_re: Implement doorbell pacing algorithm")
+Link: https://patch.msgid.link/r/1728373302-19530-7-git-send-email-selvin.xavier@broadcom.com
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Chandramohan Akula <chandramohan.akula@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+[ Add the declaration of variable pacing_data to make it work on 6.6.y ]
 Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 ---
-v2: For I had sent the patch two times, I added v2 to the subject to distinguish it from the v1 version.
----
- net/dccp/ipv6.c     | 2 +-
- net/ipv6/tcp_ipv6.c | 4 +---
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/bnxt_re/main.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/net/dccp/ipv6.c b/net/dccp/ipv6.c
-index d90bb941f2ad..8f5f56b1e5f8 100644
---- a/net/dccp/ipv6.c
-+++ b/net/dccp/ipv6.c
-@@ -615,7 +615,7 @@ static int dccp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
- 	   by tcp. Feel free to propose better solution.
- 					       --ANK (980728)
- 	 */
--	if (np->rxopt.all)
-+	if (np->rxopt.all && sk->sk_state != DCCP_LISTEN)
- 		opt_skb = skb_clone_and_charge_r(skb, sk);
+diff --git a/drivers/infiniband/hw/bnxt_re/main.c b/drivers/infiniband/hw/bnxt_re/main.c
+index c7e51cc2ea26..082a383c4913 100644
+--- a/drivers/infiniband/hw/bnxt_re/main.c
++++ b/drivers/infiniband/hw/bnxt_re/main.c
+@@ -485,6 +485,8 @@ static void bnxt_re_set_default_pacing_data(struct bnxt_re_dev *rdev)
+ static void __wait_for_fifo_occupancy_below_th(struct bnxt_re_dev *rdev)
+ {
+ 	u32 read_val, fifo_occup;
++	struct bnxt_qplib_db_pacing_data *pacing_data = rdev->qplib_res.pacing_data;
++	u32 retry_fifo_check = 1000;
  
- 	if (sk->sk_state == DCCP_OPEN) { /* Fast path */
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index 06b4acbfd314..0ccaa78f6ff3 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -1463,7 +1463,7 @@ int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
- 	   by tcp. Feel free to propose better solution.
- 					       --ANK (980728)
- 	 */
--	if (np->rxopt.all)
-+	if (np->rxopt.all && sk->sk_state != TCP_LISTEN)
- 		opt_skb = skb_clone_and_charge_r(skb, sk);
+ 	/* loop shouldn't run infintely as the occupancy usually goes
+ 	 * below pacing algo threshold as soon as pacing kicks in.
+@@ -500,6 +502,14 @@ static void __wait_for_fifo_occupancy_below_th(struct bnxt_re_dev *rdev)
  
- 	reason = SKB_DROP_REASON_NOT_SPECIFIED;
-@@ -1502,8 +1502,6 @@ int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
- 		if (nsk != sk) {
- 			if (tcp_child_process(sk, nsk, skb))
- 				goto reset;
--			if (opt_skb)
--				__kfree_skb(opt_skb);
- 			return 0;
- 		}
- 	} else
+ 		if (fifo_occup < rdev->qplib_res.pacing_data->pacing_th)
+ 			break;
++		if (!retry_fifo_check--) {
++			dev_info_once(rdev_to_dev(rdev),
++				      "%s: fifo_occup = 0x%xfifo_max_depth = 0x%x pacing_th = 0x%x\n",
++				      __func__, fifo_occup, pacing_data->fifo_max_depth,
++					pacing_data->pacing_th);
++			break;
++		}
++
+ 	}
+ }
+ 
 -- 
 2.43.0
 
