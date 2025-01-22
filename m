@@ -1,189 +1,195 @@
-Return-Path: <stable+bounces-110195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9A35A194CF
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 16:12:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 641B3A194FC
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 16:20:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 017A17A4B97
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 15:11:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 163B8188119C
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 15:20:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A282144B9;
-	Wed, 22 Jan 2025 15:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0838B14AD3F;
+	Wed, 22 Jan 2025 15:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CW3oxtr/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fvu5zYb7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1EFF214216;
-	Wed, 22 Jan 2025 15:11:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DD32135B9;
+	Wed, 22 Jan 2025 15:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737558697; cv=none; b=Z8Tdr4wq+wNPA14hSFhOU/4E89P1IjgMO3Kt8aINGXSiTm0U3iZO1b01ovH/x7VCUogHUnZcfTJuRKJs6oo72HdeybXmqI7P0Ixl4PGUlJmm9VNyB3donxlSnHipEwKWBcxPwAYx88sY8/16vEUD98h55RIFCcmfVE0tG3p31Tc=
+	t=1737559237; cv=none; b=AnZNq4jWVcSr8iTBF98JNtQPNUzXFw+3ut5qWJaiu060IWT4ck5UTsHbu9WV6aTBYyoHkJqRB/6V+GTve1cyi30EDRbh/5+PSjej4YIppNIQAGGpe3KSNmhbL19UOyD2YFecTMo1k+x749T0ioduA316iVchIo2IKujQl1wf8R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737558697; c=relaxed/simple;
-	bh=9vQhFq9g0lb6Y0ZgvUv/HGm4Wh9t8ZPVZzS4OxSVGNY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ArhSV8rzogMtC5E0sJZNZwzJHr2tSPvPSkwJtIbVOa2oafa59q/dKTOHq9fdiuj5dtn0WCCW5jvXgDftO44/Z+/nNCunUcVlpE6FrYFvegSfbCc+wrJgK2aVfdEvQxUfmdNxIZLU9qr57To60qxDhAhGxC4VnMJNHx2XMwnJE9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CW3oxtr/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C13C4CED2;
-	Wed, 22 Jan 2025 15:11:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737558697;
-	bh=9vQhFq9g0lb6Y0ZgvUv/HGm4Wh9t8ZPVZzS4OxSVGNY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CW3oxtr/BGzr4Tflp/hVvLJfHDoMXvXWznwY/WOuGOq3pkYL9AWjllGYYqScTUbCl
-	 HpcwMXX9XDNX9uvbmmxuNAWCW5UNRy4Wysc7oUCLYbi7mZbBtVUOuOOpt8vHk7+LAr
-	 jV746vmROMcKU82f7Gp3m4B1ZwPr63Zp129Obosyhn/k0NMHPlCC9HiI9OJ/yRrut0
-	 xbuwni6ybynfxVjmolSK21TQY/+epcPfV7USbiTetKy11sZTmeBYvpX/uXQh8ro11z
-	 0p/jy6n6ygOMoyxx6yMXI1U4fzv8AZxDLzQcojNt9SBA0xiKyYZzgisT6wBkyU4LpY
-	 43y1thbOhEfzQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1tacOL-000000008Ft-1Lz4;
-	Wed, 22 Jan 2025 16:11:42 +0100
-Date: Wed, 22 Jan 2025 16:11:41 +0100
-From: Johan Hovold <johan@kernel.org>
-To: manivannan.sadhasivam@linaro.org
-Cc: mhi@lists.linux.dev, Loic Poulain <loic.poulain@linaro.org>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] bus: mhi: host: pci_generic: Use
- pci_try_reset_function() to avoid deadlock
-Message-ID: <Z5EKrbXMTK9WBsbq@hovoldconsulting.com>
-References: <20250108-mhi_recovery_fix-v1-0-a0a00a17da46@linaro.org>
- <20250108-mhi_recovery_fix-v1-1-a0a00a17da46@linaro.org>
+	s=arc-20240116; t=1737559237; c=relaxed/simple;
+	bh=TFe7TLpqiWeZb+aHyLVSjqITj76OAk1X34uRdT9r40U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KIWMsBcqGxlEOqmo6NX83xKUSVcwlYQW2Gh/mcqh2QI0/5BC2434b27LZA6Pj8QIpu1RytRwZxkrBxYaBml110+41H+oMClfW145YknCTec/X/KCUqDVo8CTHQV8CosELhqfA953ouXh7ukIayZDxUB7CnR0JCmvCnJ+cT5SofI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fvu5zYb7; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-54298ec925bso8465073e87.3;
+        Wed, 22 Jan 2025 07:20:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737559234; x=1738164034; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GMWsl+1FyaK0pmlH/yptJB2iaflZrW4THtOJkeRTP5Q=;
+        b=fvu5zYb7ybcdeO3fmNgG3grHRiCb63nPGsNBcs5RDSZZsEnagPUWWVTXoVLIi/o3mT
+         ifC/+RhIx58RRIdaR9fzy+ZDPpU7yP49pUrM1mP6y8KlyPFPwMVjLfgoPt1dst60hLtm
+         6DdilvXPHP9/GMhrFk1AwcfZi3H8ZrlDYREY+YDZ+e2xAAVZovHaoh86tR+Phg7lq7HL
+         makWCVB2hVpEarhfXZiumIg5RmtTIVuZF9k3XgoepiWmmZhsTgWf2/HR7N9MJZuhO/Kk
+         QZSrtKoYAhtCFcTjszgdFDeWcgelx5P3bPkAtB4mfSiRbNKRl61UDQi2o+uTf8mP4pS7
+         KPqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737559234; x=1738164034;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GMWsl+1FyaK0pmlH/yptJB2iaflZrW4THtOJkeRTP5Q=;
+        b=X10qT4hBUTJnH9jyWqZDav5vcCNCgy08iR7gxPSdIceKUMAAtZaHyeip1RZPeLlIgd
+         vl02timCkAewOa08t+5du4VwjPmEiLp4LI3FTNWsRg79iAUFDgZTbKPQLqm9rLoGwBSE
+         /cZGTdaetC1h37h/oSS95SCMZtRegsAXzhtwfdo7LJa0QLUL5BRgU+C+l9peoi14HflB
+         FF0zPxeP/nHERTHaETSIHxHj8Ycl+gO9ad8n2/DOvGMQ38Z68Ya1wG9QJBKXs2slCAEW
+         KoEVBXHZh0M2vd1CAKYeGUp2wMgAJMbIkC3ptS1EmIbr+pajXTCkj69lt4Gc6MhZ5lTq
+         TPXw==
+X-Forwarded-Encrypted: i=1; AJvYcCUxSmX93AZ+3VpeNGju/AXtH5Shux0pkupOaJCoi266zli/ElWpz8T5QuWCjPfMsQZneEmxqgQ9@vger.kernel.org, AJvYcCVZSHLF+4uPzzVfxsQxaSoOavR74sfpmMvt2dmAWq0cEO/wKJPyPOBz2qUaazPATV1sIbiJXB0G9mU=@vger.kernel.org, AJvYcCXT/62QunbwOGq89fDZsL4taUgX/7rzS3nURLmUX16xwSEdhylZAj9FUv4r0UFUhFaqcCsjoQg6un6p5y5w@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXacToAcA8snOvQd9TXueKzoyQ2Pq5e/v00Q9ugFpFtOahfLGt
+	SCkrnejzRKdy5m2TQu/dyT+cqOi6wM1Sa3kKvASaPuOhzRJtFyoN
+X-Gm-Gg: ASbGncv5gWtMzq6+1rxX7J4awONlEY/oyWRgZ7ID0E0rcBYAMsU1IUJtNteQ2Trsqqy
+	tzFKB2DlulJUcsNKKmc+01t9kBmbOG/H4zeH5FiAI6qcDPUqVXtGgTy6pWvM2MiUS4yKmSv2zS4
+	LsVfc8Z0z/IIwHZzjyRgQs9qZOESr2iGtyMlxETug0G5JRcH9amH8KmUHsCroFdK+O3+AvxZPzt
+	fdsLJ5v1daXmI0z1sp3Zt/kI75rzx5dJdX0U8YVghvJizofkdknXgCvodY4P/0YdnSbFdqvQdh4
+	TUQ8wQMAluKv1pwxpaw56J5bOnAq0r8Z/K5Av7/1eBDTZRRZr2Ayqk0DJmWe3kJGbj/bvXmx5jE
+	HCsayR6h/uwXfNJM=
+X-Google-Smtp-Source: AGHT+IFXTNmRUQhmv4rjYJyVtcOLCyDN8VePHfe1+bdclTyyKXKUAWPR75wwEtdQp+t0HcM1w9ichQ==
+X-Received: by 2002:ac2:4e0e:0:b0:53e:2f9d:6a73 with SMTP id 2adb3069b0e04-5439c1c60e7mr8857787e87.0.1737559233841;
+        Wed, 22 Jan 2025 07:20:33 -0800 (PST)
+Received: from ?IPV6:2001:999:584:a1be:41d4:8b85:aace:5430? (n5ykva7sx9871hnihio-1.v6.elisa-mobile.fi. [2001:999:584:a1be:41d4:8b85:aace:5430])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5439af0ebcfsm2255437e87.84.2025.01.22.07.20.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Jan 2025 07:20:33 -0800 (PST)
+Message-ID: <dc9b9b53-dbca-49f5-a7e6-3a6a3112f1bb@gmail.com>
+Date: Wed, 22 Jan 2025 17:22:55 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250108-mhi_recovery_fix-v1-1-a0a00a17da46@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] dmaengine: ti: k3-udma: Add missing locking
+To: Ronald Wahl <rwahl@gmx.de>, linux-kernel@vger.kernel.org
+Cc: Ronald Wahl <ronald.wahl@legrand.com>,
+ Vignesh Raghavendra <vigneshr@ti.com>, Vinod Koul <vkoul@kernel.org>,
+ dmaengine@vger.kernel.org, stable@vger.kernel.org
+References: <20250120144131.792609-1-rwahl@gmx.de>
+From: =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
+Content-Language: en-US
+In-Reply-To: <20250120144131.792609-1-rwahl@gmx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jan 08, 2025 at 07:09:27PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
-> From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
+
+On 20/01/2025 16:41, Ronald Wahl wrote:
+> From: Ronald Wahl <ronald.wahl@legrand.com>
 > 
-> There are multiple places from where the recovery work gets scheduled
-> asynchronously. Also, there are multiple places where the caller waits
-> synchronously for the recovery to be completed. One such place is during
-> the PM shutdown() callback.
+> Recent kernels complain about a missing lock in k3-udma.c when the lock
+> validator is enabled:
 > 
-> If the device is not alive during recovery_work, it will try to reset the
-> device using pci_reset_function(). This function internally will take the
-> device_lock() first before resetting the device. By this time, if the lock
-> has already been acquired, then recovery_work will get stalled while
-> waiting for the lock. And if the lock was already acquired by the caller
-> which waits for the recovery_work to be completed, it will lead to
-> deadlock.
+> [    4.128073] WARNING: CPU: 0 PID: 746 at drivers/dma/ti/../virt-dma.h:169 udma_start.isra.0+0x34/0x238
+> [    4.137352] CPU: 0 UID: 0 PID: 746 Comm: kworker/0:3 Not tainted 6.12.9-arm64 #28
+> [    4.144867] Hardware name: pp-v12 (DT)
+> [    4.148648] Workqueue: events udma_check_tx_completion
+> [    4.153841] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> [    4.160834] pc : udma_start.isra.0+0x34/0x238
+> [    4.165227] lr : udma_start.isra.0+0x30/0x238
+> [    4.169618] sp : ffffffc083cabcf0
+> [    4.172963] x29: ffffffc083cabcf0 x28: 0000000000000000 x27: ffffff800001b005
+> [    4.180167] x26: ffffffc0812f0000 x25: 0000000000000000 x24: 0000000000000000
+> [    4.187370] x23: 0000000000000001 x22: 00000000e21eabe9 x21: ffffff8000fa0670
+> [    4.194571] x20: ffffff8001b6bf00 x19: ffffff8000fa0430 x18: ffffffc083b95030
+> [    4.201773] x17: 0000000000000000 x16: 00000000f0000000 x15: 0000000000000048
+> [    4.208976] x14: 0000000000000048 x13: 0000000000000000 x12: 0000000000000001
+> [    4.216179] x11: ffffffc08151a240 x10: 0000000000003ea1 x9 : ffffffc08046ab68
+> [    4.223381] x8 : ffffffc083cabac0 x7 : ffffffc081df3718 x6 : 0000000000029fc8
+> [    4.230583] x5 : ffffffc0817ee6d8 x4 : 0000000000000bc0 x3 : 0000000000000000
+> [    4.237784] x2 : 0000000000000000 x1 : 00000000001fffff x0 : 0000000000000000
+> [    4.244986] Call trace:
+> [    4.247463]  udma_start.isra.0+0x34/0x238
+> [    4.251509]  udma_check_tx_completion+0xd0/0xdc
+> [    4.256076]  process_one_work+0x244/0x3fc
+> [    4.260129]  process_scheduled_works+0x6c/0x74
+> [    4.264610]  worker_thread+0x150/0x1dc
+> [    4.268398]  kthread+0xd8/0xe8
+> [    4.271492]  ret_from_fork+0x10/0x20
+> [    4.275107] irq event stamp: 220
+> [    4.278363] hardirqs last  enabled at (219): [<ffffffc080a27c7c>] _raw_spin_unlock_irq+0x38/0x50
+> [    4.287183] hardirqs last disabled at (220): [<ffffffc080a1c154>] el1_dbg+0x24/0x50
+> [    4.294879] softirqs last  enabled at (182): [<ffffffc080037e68>] handle_softirqs+0x1c0/0x3cc
+> [    4.303437] softirqs last disabled at (177): [<ffffffc080010170>] __do_softirq+0x1c/0x28
+> [    4.311559] ---[ end trace 0000000000000000 ]---
 > 
-> This is what happened on the X1E80100 CRD device when the device died
-> before shutdown() callback. Driver core calls the driver's shutdown()
-> callback while holding the device_lock() leading to deadlock.
+> This commit adds the missing locking.
+
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+
 > 
-> And this deadlock scenario can occur on other paths as well, like during
-> the PM suspend() callback, where the driver core would hold the
-> device_lock() before calling driver's suspend() callback. And if the
-> recovery_work was already started, it could lead to deadlock. This is also
-> observed on the X1E80100 CRD.
-> 
-> So to fix both issues, use pci_try_reset_function() in recovery_work. This
-> function first checks for the availability of the device_lock() before
-> trying to reset the device. If the lock is available, it will acquire it
-> and reset the device. Otherwise, it will return -EAGAIN. If that happens,
-> recovery_work will fail with the error message "Recovery failed" as not
-> much could be done.
-
-I can confirm that this patch (alone) fixes the deadlock on shutdown
-and suspend as expected, but it does leave the system state that blocks
-further suspend (this is with patches that tear down the PCI link).
-Looks like the modem is also hosed.
-
-[  267.454616] mhi-pci-generic 0005:01:00.0: mhi_pci_runtime_resume
-[  267.461165] mhi mhi0: Resuming from non M3 state (SYS ERROR)
-[  267.467102] mhi-pci-generic 0005:01:00.0: failed to resume device: -22
-[  267.473968] mhi-pci-generic 0005:01:00.0: device recovery started
-[  267.477460] mhi-pci-generic 0005:01:00.0: mhi_pci_suspend
-[  267.480331] mhi-pci-generic 0005:01:00.0: __mhi_power_down
-[  267.485917] mhi-pci-generic 0005:01:00.0: mhi_pci_runtime_suspend
-[  267.498339] mhi-pci-generic 0005:01:00.0: __mhi_power_down - pm mutex taken
-[  267.505618] mhi-pci-generic 0005:01:00.0: __mhi_power_down - pm lock taken
-[  267.513372] wwan wwan0: port wwan0qcdm0 disconnected
-[  267.519556] wwan wwan0: port wwan0mbim0 disconnected
-[  267.525544] wwan wwan0: port wwan0qmi0 disconnected
-[  267.573773] mhi-pci-generic 0005:01:00.0: __mhi_power_down - returns
-[  267.591199] mhi mhi0: Requested to power ON
-[  267.914688] mhi mhi0: Power on setup success
-[  267.914875] mhi mhi0: Wait for device to enter SBL or Mission mode
-[  267.919179] mhi-pci-generic 0005:01:00.0: mhi_sync_power_up - wait event timeout_ms = 8000
-[  276.189399] mhi-pci-generic 0005:01:00.0: mhi_sync_power_up - wait event returns, ret = -110
-[  276.198240] mhi-pci-generic 0005:01:00.0: __mhi_power_down
-[  276.203990] mhi-pci-generic 0005:01:00.0: __mhi_power_down - pm mutex taken
-[  276.211269] mhi-pci-generic 0005:01:00.0: __mhi_power_down - pm lock taken
-[  276.220024] mhi-pci-generic 0005:01:00.0: __mhi_power_down - returns
-[  276.226680] mhi-pci-generic 0005:01:00.0: mhi_sync_power_up - returns
-[  276.233417] mhi-pci-generic 0005:01:00.0: mhi_pci_recovery_work - mhi unprepare after power down
-[  276.242604] mhi-pci-generic 0005:01:00.0: mhi_pci_recovery_work - pci reset
-[  276.249881] mhi-pci-generic 0005:01:00.0: Recovery failed
-[  276.255536] mhi-pci-generic 0005:01:00.0: mhi_pci_recovery_work - returns
-[  276.328878] qcom-pcie 1bf8000.pci: qcom_pcie_suspend_noirq
-[  276.368851] qcom-pcie 1c00000.pci: qcom_pcie_suspend_noirq
-[  276.477900] qcom-pcie 1c00000.pci: Failed to enter L2/L3
-[  276.483535] qcom-pcie 1c00000.pci: PM: dpm_run_callback(): genpd_suspend_noirq returns -110
-[  276.492292] qcom-pcie 1c00000.pci: PM: failed to suspend noirq: error -110
-[  276.500218] qcom-pcie 1bf8000.pci: qcom_pcie_resume_noirq
-[  276.721401] qcom-pcie 1bf8000.pci: PCIe Gen.4 x4 link up
-[  276.730639] PM: noirq suspend of devices failed
-[  276.818943] mhi-pci-generic 0005:01:00.0: mhi_pci_resume
-[  276.824582] mhi-pci-generic 0005:01:00.0: mhi_pci_runtime_resume
-
-Still better than hanging the machine, but perhaps not much point in
-having recovery code that can't recover the device.
-
-We obviously need to track down what is causing the modem to fail to
-resume since 6.13-rc1 too.
-
-> Cc: stable@vger.kernel.org # 5.12
-> Reported-by: Johan Hovold <johan@kernel.org>
-> Closes: https://lore.kernel.org/mhi/Z1me8iaK7cwgjL92@hovoldconsulting.com
-
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-
-And since I've spent way to much time debugging this and provided the
-analysis of the deadlock:
-
-Analyzed-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/mhi/Z2KKjWY2mPen6GPL@hovoldconsulting.com/
-
-> Fixes: 7389337f0a78 ("mhi: pci_generic: Add suspend/resume/recovery procedure")
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
+> Cc: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+> Cc: Vignesh Raghavendra <vigneshr@ti.com>
+> Cc: Vinod Koul <vkoul@kernel.org>
+> Cc: dmaengine@vger.kernel.org
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ronald Wahl <ronald.wahl@legrand.com>
 > ---
->  drivers/bus/mhi/host/pci_generic.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/dma/ti/k3-udma.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
-> diff --git a/drivers/bus/mhi/host/pci_generic.c b/drivers/bus/mhi/host/pci_generic.c
-> index 07645ce2119a..e92df380c785 100644
-> --- a/drivers/bus/mhi/host/pci_generic.c
-> +++ b/drivers/bus/mhi/host/pci_generic.c
-> @@ -1040,7 +1040,7 @@ static void mhi_pci_recovery_work(struct work_struct *work)
->  err_unprepare:
->  	mhi_unprepare_after_power_down(mhi_cntrl);
->  err_try_reset:
-> -	if (pci_reset_function(pdev))
-> +	if (pci_try_reset_function(pdev))
->  		dev_err(&pdev->dev, "Recovery failed\n");
-
-Perhaps you should log the returned error here as a part of this patch
-so we can tell when the recovery code failed due to the device lock
-being held.
-
+> diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
+> index b3f27b3f9209..b9e497e8134b 100644
+> --- a/drivers/dma/ti/k3-udma.c
+> +++ b/drivers/dma/ti/k3-udma.c
+> @@ -1091,8 +1091,11 @@ static void udma_check_tx_completion(struct work_struct *work)
+>  	u32 residue_diff;
+>  	ktime_t time_diff;
+>  	unsigned long delay;
+> +	unsigned long flags;
+> 
+>  	while (1) {
+> +		spin_lock_irqsave(&uc->vc.lock, flags);
+> +
+>  		if (uc->desc) {
+>  			/* Get previous residue and time stamp */
+>  			residue_diff = uc->tx_drain.residue;
+> @@ -1127,6 +1130,8 @@ static void udma_check_tx_completion(struct work_struct *work)
+>  				break;
+>  			}
+> 
+> +			spin_unlock_irqrestore(&uc->vc.lock, flags);
+> +
+>  			usleep_range(ktime_to_us(delay),
+>  				     ktime_to_us(delay) + 10);
+>  			continue;
+> @@ -1143,6 +1148,8 @@ static void udma_check_tx_completion(struct work_struct *work)
+> 
+>  		break;
+>  	}
+> +
+> +	spin_unlock_irqrestore(&uc->vc.lock, flags);
 >  }
+> 
+>  static irqreturn_t udma_ring_irq_handler(int irq, void *data)
+> --
+> 2.48.0
+> 
 
-Johan
+-- 
+Péter
+
 
