@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-110223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CBBDA19951
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 20:46:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C81A19966
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 20:56:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E65A53A1256
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 19:45:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 239E816AA66
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 19:56:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D19E62153CF;
-	Wed, 22 Jan 2025 19:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C6A216385;
+	Wed, 22 Jan 2025 19:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ewwDdBHV"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="arTgccGC"
 X-Original-To: stable@vger.kernel.org
 Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0FE2153C1;
-	Wed, 22 Jan 2025 19:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF88215784;
+	Wed, 22 Jan 2025 19:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737575154; cv=none; b=mFUCK6lkPDyFW6mkJpCNpCgD/g04W2oIDlxaoECkbb+37U6kJwkg6c+2kEehBjKRsxfUuCe+ersxEOXtVYkJCtwdr5xZvzR2Rwv2Z+hcuwbMHKejzB0BwJih6QU4yKJXKTdOtK41V+5bS9Qlv6CRYB1FtAsk2cFN4o97UYpaCo4=
+	t=1737575806; cv=none; b=awFKp0VIw7xPY+qAGmyB+dLtT5FucyITA7z9PqijMUTPv8D1gLu15C1etN/D1AYKrmKEh4wiXsbrVSV5X6RkWduEjpTG4zsCNY+TF/1IAZfSX4Wk62MM8mdph4fPoQmmUUHNWjGjwgt9kXmqMUUPCvy9spfAikVvXV8tnCkh7mM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737575154; c=relaxed/simple;
-	bh=ZTnXFWzRpEsh9p3bJxanO3I3YeldFUGJXpCKXzP5TmA=;
+	s=arc-20240116; t=1737575806; c=relaxed/simple;
+	bh=XC3r42SIYZietkN1h4UcaPkAw8SYYwYJQ3gWVUBFrC0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a98O2baJQtbAbsHGAgBufYczHe65gYEv2RJ+JgzG1ubfE9ksgZAY8V6Ozo6GMyzgCku36ZBlT1wECXKsBj0FnoosBXtqNMS4MOHikxWoihWU5F2LnfrvnxpDJlpKMwOGvGNfy3iFiJGCVgSv4Ck1ImErmQMDgbBfhoxOksGjmX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=ewwDdBHV; arc=none smtp.client-ip=89.58.32.78
+	 Content-Type:Content-Disposition:In-Reply-To; b=buBG5ADzqH3OuVfR4r2aMw95gREVC2tKuK+JqqX0TZlsxEuJa1rEFSNtR7jBYfnBH4IlFVAMPjX8dmDm0gSABtcwoNnNNsFArqPo78AaDTBmh5YKqEObAPpKLfan2tLkRVVdbK25Yl7BV63aR58d/BIrOYNjOdRjK+OYj4t8SwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=arTgccGC; arc=none smtp.client-ip=89.58.32.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1B77A10090383;
-	Wed, 22 Jan 2025 20:45:36 +0100 (CET)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AA855104858BC;
+	Wed, 22 Jan 2025 20:56:33 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1737575143;
+	t=1737575800;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AkuPd9GUv8SlJEcUQ42HZ/1LC3FwuTsrn3mijrcBYM8=;
-	b=ewwDdBHVltVw2wk4KGML1D/u/mXxNuGIotqwZTT/p/3wyu/7eDUfBNCGioOuMoRyiwPTO1
-	05ixHDXlZlEhgEXR/gYcSpel3/hEFkxUN9tQM6lI4bxStJUKpPrDQBXBayB/me09TZ6U0x
-	oZtPgaTmMDCIUG0eIB1dhCNJEu/3Ci6LGJDYsY4WjiOjAPJH6kvdCGGqpMVBhwjFyqUkG1
-	Q6ODhPluR/91+tAPn7w2o3f/i1FrIo0L/CBuuWgMoRtJzKcspuAd8CVPBr9ToY/81X3K3p
-	h1HKn7r0hYir49tcCQMWtfDGmDAoavvTIt2/6IZygDglUJj0MMvqGbRKFDVIFg==
-Date: Wed, 22 Jan 2025 20:45:32 +0100
+	bh=LN9jpEkMvM6XLEFTPaF/Eqg/KZXCoYNRJBCIYSwxTjk=;
+	b=arTgccGCq/9SmV7ppGGaOCF0ZuD+fkSHHq2ZhfehUSnPilW0BKhrBlMUsAlqSkhL2uYq5V
+	uexYVe4dKlpL5TO9nAL4VIliV9TwWyjTICf/ascsqalQ6ENYqBPD4DnG2W5zmErsvKRwyy
+	CcfwkbPuQvABRuGi0U3OE0h1Rjkue5Lm+xCZxZbXJE9ymxLUp3gHTVAT6/nkqtxdGtLc3/
+	dMK75p6vAWkoMpCBscYsSUDvMq3GxkGVlLXz3WypmzJJzO+kpLIC/hC5rUDVjkop+uCySE
+	Jbh8eqtnJfGnhSBnpIkUz6xMRGU6PFR/jr3eTZSjEmPxZzXNtWHWGSmtLeftAA==
+Date: Wed, 22 Jan 2025 20:56:28 +0100
 From: Pavel Machek <pavel@denx.de>
-To: Ron Economos <re@w6rz.net>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 5.15 000/127] 5.15.177-rc2 review
-Message-ID: <Z5FK3Ev5KE25avDQ@duo.ucw.cz>
-References: <20250122073830.779239943@linuxfoundation.org>
- <010553d5-4504-40d9-a358-8404f57ebe9a@w6rz.net>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 6.1 00/64] 6.1.127-rc2 review
+Message-ID: <Z5FNbP8Mavw3M2BK@duo.ucw.cz>
+References: <20250122073827.056636718@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,74 +64,46 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="QS5ReBQbHdYnDOHm"
+	protocol="application/pgp-signature"; boundary="SXQB6mp3LGiS5xp3"
 Content-Disposition: inline
-In-Reply-To: <010553d5-4504-40d9-a358-8404f57ebe9a@w6rz.net>
+In-Reply-To: <20250122073827.056636718@linuxfoundation.org>
 X-Last-TLS-Session-Version: TLSv1.3
 
 
---QS5ReBQbHdYnDOHm
-Content-Type: text/plain; charset=iso-8859-1
+--SXQB6mp3LGiS5xp3
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> > This is the start of the stable review cycle for the 5.15.177 release.
-> > There are 127 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >=20
-> > Responses should be made by Fri, 24 Jan 2025 07:38:04 +0000.
-> > Anything received after that time might be too late.
-> >=20
-> > The whole patch series can be found in one patch at:
-> > 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.=
-177-rc2.gz
-> > or in the git tree and branch at:
-> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.g=
-it linux-5.15.y
-> > and the diffstat can be found below.
-> >=20
-> > thanks,
-> >=20
-> > greg k-h
->=20
-> The build fails with:
->=20
-> drivers/usb/core/port.c: In function 'usb_port_shutdown':
-> drivers/usb/core/port.c:299:26: error: 'struct usb_device' has no member
-> named 'port_is_suspended'
-> =A0 299 |=A0=A0=A0=A0=A0=A0=A0=A0 if (udev && !udev->port_is_suspended) {
-> =A0=A0=A0=A0=A0 |=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0 ^~
-> make[3]: *** [scripts/Makefile.build:289: drivers/usb/core/port.o] Error 1
-> make[2]: *** [scripts/Makefile.build:552: drivers/usb/core] Error 2
-> make[1]: *** [scripts/Makefile.build:552: drivers/usb] Error 2
->=20
-> Same issue as with 6.1.125-rc1 last week. Needs the fixup patch in 6.1.12=
-6.
+> This is the start of the stable review cycle for the 6.1.127 release.
+> There are 64 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Yep, we see that too in CIP testing... on risc-v.
+CIP testing did not find any problems here:
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/pipelines/1=
-635635910
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.1.y
+
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
 
 Best regards,
-									Pavel
+                                                                Pavel
 --=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---QS5ReBQbHdYnDOHm
+--SXQB6mp3LGiS5xp3
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ5FK3AAKCRAw5/Bqldv6
-8oXCAJ4x7n03sX6zB5zLBhA9eBx66Tsl4ACeNV7D0xd9/XJBhihrP33gnYIIQvo=
-=RAoj
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ5FNbAAKCRAw5/Bqldv6
+8mHCAKDAPc3mTwKVsDFRGCTfIfniVNOA1wCgqK6jp4ET7bHAhjDkK8L8Kh6Lye4=
+=XNVO
 -----END PGP SIGNATURE-----
 
---QS5ReBQbHdYnDOHm--
+--SXQB6mp3LGiS5xp3--
 
