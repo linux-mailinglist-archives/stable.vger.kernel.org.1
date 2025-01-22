@@ -1,100 +1,124 @@
-Return-Path: <stable+bounces-110193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B55A1946E
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 15:56:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AF9DA194AF
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 16:08:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A990A163DB9
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 14:56:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DFA3163232
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 15:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB492135CF;
-	Wed, 22 Jan 2025 14:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2284D2144B1;
+	Wed, 22 Jan 2025 15:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uWKuKHK0"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="S1rnwkEK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF971213E99;
-	Wed, 22 Jan 2025 14:56:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C689214226;
+	Wed, 22 Jan 2025 15:07:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737557812; cv=none; b=Ep1IhZ4M6kiDQdFqGB64xdbWZqTaNBjBF9K+/momL8cy7JGI5kB6yVUb5RfQ61z+2DM6XNuiPzsiF4Lr5+0e8Whna9KvGJED2rGhfwiBeh3zjQZIxEFoDFQDMxuZKM9uNV3VHIaaLwLGCw9gnRsgNt6iP3QSZFkbJ7vQnVDazsE=
+	t=1737558464; cv=none; b=dImubD2hY2rSrr7+4n0BgzJeqqo+GxfKxCPqmiKQy0xTTQct38sbZ/NZsiOJ3SWRBHfgaWtpz7Iga0Y9ZTOlEUtdlYmgPiv5cdL1i4SSC73X57mM73pIPZTRKY6VapdseC7aC/h+3e0q4KSxkxtND2v6oBPYYfL1IfGMm0ufaT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737557812; c=relaxed/simple;
-	bh=55PFLsFoEltYFgfsyNLmyyR53/uMhwaNH9mEvYQPIsQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LolN3qNDWZjmSgl6JBavIUPjDV0d5vNaW9wIMQpgPEy//rgpfQvNJ2nM7BKZ2dKnx6F1hRBTG09DbJs8HQfuGXuXQuywKOhBpWO68gvRA+0cfxPQ43hfIR4s2esd+AZ8lXKcvksb2zZIeI1H+MLdxMeiL5H4u1nDmWe/IBT3pJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uWKuKHK0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D84C4CED2;
-	Wed, 22 Jan 2025 14:56:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737557812;
-	bh=55PFLsFoEltYFgfsyNLmyyR53/uMhwaNH9mEvYQPIsQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uWKuKHK0PvVE5y3AJTA18/x7biF1Uy7ZiyPpcq+NsuJjNI/DvFrQ4ZSXyN6mZsf8Y
-	 Ao4Sy2/qoq45n3mWdAFhqpptawODaPWnucBpIEgbw0t05HOHNzKPGCfPTPjwtwQ2D6
-	 erET/S+VHDDoxZA4EsqwTfKQDTc8WI61GWapkCpdf3kynsW39kG75MkAHysxSC6Rcq
-	 w0LOsB5c7TYdT+BMez4l/slRavXYaXCFIm7aBMYVIuB0y4b0uQ9KzdMAJuWe97HDvB
-	 /T/nw6i2vVyXGZ/OgKgpdgU/lC5yefAhyFh940CCkPv/tJhPwHCWtacncIMg2GlPEE
-	 UWc+5EUnH7iOA==
-Date: Wed, 22 Jan 2025 07:56:49 -0700
-From: Keith Busch <kbusch@kernel.org>
-To: Alyssa Ross <hi@alyssa.is>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	michael.christie@oracle.com, Tejun Heo <tj@kernel.org>,
-	Luca Boccassi <bluca@debian.org>, stable@vger.kernel.org,
-	regressions@lists.linux.dev
-Subject: Re: [PATCH] KVM: x86: switch hugepage recovery thread to vhost_task
-Message-ID: <Z5EHMbv8uezcRM3l@kbusch-mbp>
-References: <fdb5aac8-a657-40ec-9e0b-5340bc144b7b@redhat.com>
- <Z2RhNcJbP67CRqaM@kbusch-mbp.dhcp.thefacebook.com>
- <CABgObfYUztpGfBep4ewQXUVJ2vqG_BLrn7c19srBoiXbV+O3+w@mail.gmail.com>
- <Z4Uy1beVh78KoBqN@kbusch-mbp>
- <0862979d-cb85-44a8-904b-7318a5be0460@redhat.com>
- <Z4cmLAu4kdb3cCKo@google.com>
- <Z4fnkL5-clssIKc-@kbusch-mbp>
- <CABgObfZWdwsmfT-Y5pzcOKwhjkAdy99KB9OUiMCKDe7UPybkUQ@mail.gmail.com>
- <Z4gGf5SAJwnGEFK0@kbusch-mbp>
- <twoqrb4bdyujvnf432lqvm3eqzvhqsbotag3q3snecgqwm7lzw@izuns3gun2a6>
+	s=arc-20240116; t=1737558464; c=relaxed/simple;
+	bh=DHP2J8XZ0Yw8nMyu9kCS/XAFXBvYiIwgCfWQx3cVQgk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EXWNnVD4bsCp5jcYHTde8pm3wdkk69QmSJhLXLlbnIa5apCWWhMPDJTAbzhwCMGkFkSlO0eEbmxEwJUu8PoZVq1ZXqdUNDslAY+cgnTIMHj5+FglUnf9LryZj1VOXZL62oC95CmihUQgJreV11gqm5NdEiHjPDVaChwQgb9HXlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=S1rnwkEK; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43626213fffso6649335e9.1;
+        Wed, 22 Jan 2025 07:07:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1737558461; x=1738163261; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MaTimNfRI0T0HB8tXAjuRGpTIWGEQknAsF8nU3K8A8k=;
+        b=S1rnwkEKZjQ8DSEWSYvmoYReW6ZoDTkLik5zJKa4zZOgF86/Sb0U6cu6DoddQb+c5H
+         bbTEmsx4VJaIiHLa6Lx038oCONT4SFqNVf2h4sViildF3EfzR5IF48dvOhrhCHXRxWI6
+         rZV1pj9qCunikPV2EMWDcDzZldvmV0C8yZNTnIeC/bGFMThQkBBzbMh/chhEgBzymrGA
+         xFiMQecEcnMYNxuM83yB1SCTOkStL+Rw7mYuM4TZFnlANqz9AhvA50PVSoJOtZ+K6hUt
+         plP7tFxkGPn6hfdi9YJauiEMw2js2HQmbslPrrl6bS1nfOFNilnZ+NfhAuTHB+S1+myB
+         yQqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737558461; x=1738163261;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MaTimNfRI0T0HB8tXAjuRGpTIWGEQknAsF8nU3K8A8k=;
+        b=EUH/Gje7OVg4Ue9O7rOeaKZBFpi1fWEODAcL0CZoKZ7tEMz6TkyOHQrF8Y4QGavuNj
+         u/Udz3mICCCBnwkQ24CkkDNffrl3v2i2qYKWMLOHwQk5u5SxvniFijocY0/siYdE7kFe
+         QoMyQTDab/pfBOOKMUFY3trHYpOJBJJnsWZ1PTj8NUQT19yH/p8iBAs6sGV6FGN8h417
+         hNkCVSICVT5lAkzQgODAfaUoa2YcSl/CIQFviSEhirS3CaTYG7d+9CxuamQ70NIEUdzW
+         LpgY7Zrh6p0iDpagCLF3fpHARPGFnhbRn3edmAedbyRLv5GrVs/PXx3VNOuLh04v7Im8
+         Jjew==
+X-Forwarded-Encrypted: i=1; AJvYcCU3ZXOIxcgsSbNBS7STwWMYiaW0nfBQLJQP9Psf5EpGyhzD3Fo3Wfc3viftQhjDFYlgFJRII+k4@vger.kernel.org, AJvYcCW6oE6G25hr0DIFM0DDnKcoF3S3/zhxjkT4LCZytYKW+YZj27ulh3P9g1L9PfhZ4W4j0g/bZyi7b/PwCDw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUyflFszAnG10FyJGFTs0zsciYmYBKdR7kwX/kvbvXG5ZuYc8P
+	cq1TmVAqMrOvvJDpqjhp5mf9+OlKfj61TCNaUW4nBQ4/OtZwNJM=
+X-Gm-Gg: ASbGncsT0YptWKCCytJ7VDaWuLJrSAegPs64vDrbw9hkW9ALMtqwZxOs7+1ljHZeH+B
+	RPJevSW4uYIj8dgbjCMBlDi0wn1os9q5e494qKVnORpI+eNR7um4uarfddWWZeGPnFsrGkjSEJ/
+	J8n/9M4EESHJCWSZh2xaEav62mA6WXdCBHHgrviojFeRpgTwknjnUNRP+xlsYFOam9T+uAXppg6
+	Y0+dLAwGmRAf5uYwFBbxcQHdg3Ao7IzEStDHiflmEhs5EN4I/aUhSEWdTPJu49OuNQ0ZXpOqke1
+	mR95cdxXIbtoAnh6hXuc13/OEr8RqleBec4YVr65PX1k0x0=
+X-Google-Smtp-Source: AGHT+IEIKbkIRLYp5myGXq8eDJly5JbN6mshFFEn98fe+1seNHprdQpW0B6bkbLl70rpHC3nMxfmrQ==
+X-Received: by 2002:a05:6000:2c1:b0:38a:4df5:a08 with SMTP id ffacd0b85a97d-38bec542ba4mr25939146f8f.22.1737558461113;
+        Wed, 22 Jan 2025 07:07:41 -0800 (PST)
+Received: from [192.168.1.3] (p5b2b407b.dip0.t-ipconnect.de. [91.43.64.123])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bf3275556sm16821801f8f.72.2025.01.22.07.07.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Jan 2025 07:07:40 -0800 (PST)
+Message-ID: <573e476b-de65-41a1-8c66-d5f8ae61637d@googlemail.com>
+Date: Wed, 22 Jan 2025 16:07:39 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <twoqrb4bdyujvnf432lqvm3eqzvhqsbotag3q3snecgqwm7lzw@izuns3gun2a6>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.1 00/64] 6.1.127-rc2 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250122073827.056636718@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250122073827.056636718@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jan 22, 2025 at 12:38:25PM +0100, Alyssa Ross wrote:
-> On Wed, Jan 15, 2025 at 12:03:27PM -0700, Keith Busch wrote:
-> > On Wed, Jan 15, 2025 at 06:10:05PM +0100, Paolo Bonzini wrote:
-> > > You can implement something like pthread_once():
-> >
-> > ...
-> >
-> > > Where to put it I don't know.  It doesn't belong in
-> > > include/linux/once.h.  I'm okay with arch/x86/kvm/call_once.h and just
-> > > pull it with #include "call_once.h".
-> >
-> > Thanks for the suggestion, I can work with that. As to where to put it,
-> > I think the new 'struct once' needs to be a member of struct kvm_arch,
-> > so I've put it in arch/x86/include/asm/.
-> >
-> > Here's the result with that folded in. If this is okay, I'll send a v2,
-> > and can split out the call_once as a prep patch with your attribution if
-> > you like.
-> 
-> Has there been any progress here?  I'm also affected by the crosvm
-> regression, and it's been backported to the LTS stable kernel.
+Am 22.01.2025 um 09:04 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.1.127 release.
+> There are 64 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Would you be able to try the proposed patch here and reply with a
-Tested-by if it's successful for you? I'd also like to unblock this,
-whether this patch is in the right direction or try something else.
+
+rc2 fixes the -rc1 build error for me, thanks! Builds, boots and works on my 2-socket Ivy 
+Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+
+
+Beste Grüße,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
