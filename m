@@ -1,226 +1,142 @@
-Return-Path: <stable+bounces-110156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBA4FA190D7
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 12:46:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE3C0A19102
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 12:55:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E675166A9C
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 11:46:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D9587A0F97
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 11:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224B21BDA99;
-	Wed, 22 Jan 2025 11:46:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S8p9UURg"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC6A7211A31;
+	Wed, 22 Jan 2025 11:55:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47FA21148E
-	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 11:46:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A678B20FA85
+	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 11:55:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737546394; cv=none; b=XyggXWaIKLDKXKu6Aen3REuGxXnMVyeYbnckGEsHaf10w80tkkS42bt9rkieM3ea0Hz+//T1ELdZpz3rEb66nsNHJNUG5G0ZDyu5szMRg+4ucrS7DF/INLSR2TBHisqOIbCDjPsPzfnDO1B+n2y/NmETPLHHlJHFilJ+K8WqrWU=
+	t=1737546913; cv=none; b=b/zLe4M+5rzKElpBT2UVkoJnUJea6ce16/9aCQVHnCQO8ggonVqxWDe+karsDlG2Az635le7heJV/Of1uWOCcLx5iYvyF793XsGV30bbSHGrK4xgHbgos7LqwyssY4+3DFZjtXEOmlQhG4Tf894gs52YbPcE1GMdIX25ePPaEVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737546394; c=relaxed/simple;
-	bh=J/3Uv76izXM3DkFhHTfwqy9MkTyaRA0S84/pyF38QyA=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o11NoBJ90nm5H3XOaTtD4wO9LmiIyu3AbBXjFk+B4ZxjnPPKI8kCeZ4/qwrgQRZctcH4QP2yQtuXpJgTDR4nBtGRQIOP3DzqpX3KUgVoj8CpG4yd7SKncVzcigjkDlvcdvsruFWjueMLLiViGPwQvLvaoq/k7UH2dPNC8NPZqxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S8p9UURg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C966C4CEE3;
-	Wed, 22 Jan 2025 11:46:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737546394;
-	bh=J/3Uv76izXM3DkFhHTfwqy9MkTyaRA0S84/pyF38QyA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=S8p9UURgZao9lh+1de2TLrojnarOYcZZl77vvfSAh0m7M/vUtsPqLrKrMetuZFpkr
-	 qItQoglvTuDwQfHpB3FRZqI+b05vv2uKE1KyWH4AzZwFDciv6bO3MDG48Tp8Hr4q1e
-	 SVPUUX0g1/HrHCcPIVxB+nqbHWMOWinv0C5+08ABgHeebXz4qKg2O2OWrBbVpQInUZ
-	 sYGY/47MMVqT3AV6elgSgSy0tQ/gnRJlbZmHotRHsT8mN4PbJzL65Jm4taOOrmlLab
-	 Kz0Jw3aBn0qjZN30BcFLdNEhiHhWHf30ZKW9J2uZ7TBHibgWkkvMCtWZ/XgOMdfb69
-	 K3gChKxlEK74A==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1taZBn-00ENrU-Gu;
-	Wed, 22 Jan 2025 11:46:32 +0000
-Date: Wed, 22 Jan 2025 11:46:31 +0000
-Message-ID: <86plkful48.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org,
-	broonie@kernel.org,
-	catalin.marinas@arm.com,
-	eauger@redhat.com,
-	fweimer@redhat.com,
-	jeremy.linton@arm.com,
-	oliver.upton@linux.dev,
-	pbonzini@redhat.com,
-	stable@vger.kernel.org,
-	wilco.dijkstra@arm.com,
-	will@kernel.org
+	s=arc-20240116; t=1737546913; c=relaxed/simple;
+	bh=v9TzIPPL+L5NtlVdVOp9hjTC4FUeT6bj5Q3a45lh3hM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Md5GxhTqxKSqXvVXTn7Isw+G0D66NidMxw3KtA+Lo3kJP3GYOM81xtba16oX29LV2lgHpcjcrJ9+EJDzKPGt/H4IUJkwZT5H88aHFnDTRbnzFKXkigib4eudoMHJLPairwulzVR31djIHvErtchSToM5n1AF+ukLwwL+9g40tgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6A9BE1007;
+	Wed, 22 Jan 2025 03:55:39 -0800 (PST)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CDC733F738;
+	Wed, 22 Jan 2025 03:55:08 -0800 (PST)
+Date: Wed, 22 Jan 2025 11:55:03 +0000
+From: Mark Rutland <mark.rutland@arm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, broonie@kernel.org,
+	catalin.marinas@arm.com, eauger@redhat.com, fweimer@redhat.com,
+	jeremy.linton@arm.com, oliver.upton@linux.dev, pbonzini@redhat.com,
+	stable@vger.kernel.org, wilco.dijkstra@arm.com, will@kernel.org
 Subject: Re: [PATCH] KVM: arm64/sve: Ensure SVE is trapped after guest exit
-In-Reply-To: <Z4--YuG5SWrP_pW7@J2N7QTR9R3>
+Message-ID: <Z5DclwGtm_6TMCTJ@J2N7QTR9R3>
 References: <20250121100026.3974971-1-mark.rutland@arm.com>
-	<86r04wv2fv.wl-maz@kernel.org>
-	<Z4--YuG5SWrP_pW7@J2N7QTR9R3>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+ <86r04wv2fv.wl-maz@kernel.org>
+ <Z4--YuG5SWrP_pW7@J2N7QTR9R3>
+ <86plkful48.wl-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org, broonie@kernel.org, catalin.marinas@arm.com, eauger@redhat.com, fweimer@redhat.com, jeremy.linton@arm.com, oliver.upton@linux.dev, pbonzini@redhat.com, stable@vger.kernel.org, wilco.dijkstra@arm.com, will@kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <86plkful48.wl-maz@kernel.org>
 
-On Tue, 21 Jan 2025 15:37:13 +0000,
-Mark Rutland <mark.rutland@arm.com> wrote:
+On Wed, Jan 22, 2025 at 11:46:31AM +0000, Marc Zyngier wrote:
+> On Tue, 21 Jan 2025 15:37:13 +0000, Mark Rutland <mark.rutland@arm.com> wrote:
+
+> > Alternatively, we could take the large hammer approach and always save
+> > and unbind the host state prior to entering the guest, so that hyp
+> > doesn't need to save anything. An unconditional call to
+> > fpsimd_save_and_flush_cpu_state() would suffice, and that'd also
+> > implicitly fix the SME issue below.
 > 
-> On Tue, Jan 21, 2025 at 11:20:04AM +0000, Marc Zyngier wrote:
-> > Hi Mark,
-> >
+> I think I'd rather see that. Even if that costs us a few hundred
+> cycles on vcpu_load(), I would take that any time over the current
+> fragile/broken behaviour.
+
+Cool -- I'll go do that. I'm also happier with that approach.
+
+> > > > +		 *
+> > > > +		 * If hyp code does not save the host state, then the host
+> > > > +		 * state remains live on the CPU and saved fp_type is
+> > > > +		 * irrelevant until it is overwritten by a later call to
+> > > > +		 * fpsimd_save_user_state().
+> > > 
+> > > I'm not sure I understand this. If fp_type is irrelevant, surely it is
+> > > *forever* irrelevant, not until something else happens. Or am I
+> > > missing something?
+> > 
+> > Sorry, this was not very clear.
+> > 
+> > What this is trying to say is that *while the state is live on a CPU*
+> > fp_type is irrelevant, and it's only meaningful when saving/restoring
+> > state. As above, the only reason to set it here is so that *if* hyp
+> > saves and unbinds the state, fp_type will accurately describe what the
+> > hyp code saved.
+> > 
+> > The key thing is that there are two possibilities:
+> > 
+> > (1) The guest doesn't use FPSIMD/SVE, and no trap is taken to save the
+> >     host state. In this case, fp_type is not consumed before the next
+> >     time state has to be written back to memory (the act of which will
+> >     set fp_type).
+> > 
+> >     So in this case, setting fp_type is redundant but benign.
+> > 
+> > (2) The guest *does* use FPSIMD/SVE, and a trap is taken to hyp to save
+> >     the host state. In this case the hyp code will save the task's
+> >     FPSIMD state to task->thread.uw.fpsimd_state, but will not update
+> >     task->thread.fp_type accordingly, and:
+> > 
+> >     * If fp_type happened to be FP_STATE_FPSIMD, all is good and a later
+> >       restore will load the state saved by the hyp code.
+> > 
+> >     * If fp_type happened to be FP_STATE_SVE, a later restore will load
+> >       stale state from task->thread.sve_state.
+> > 
+> > ... does that make sense?
+> 
+> It does now, thanks. But with your above alternative suggestion, this
+> becomes completely moot, right?
+
+Yep.
 
 [...]
 
-> > > diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-> > > index 8c4c1a2186cc5..e4053a90ed240 100644
-> > > --- a/arch/arm64/kernel/fpsimd.c
-> > > +++ b/arch/arm64/kernel/fpsimd.c
-> > > @@ -1711,8 +1711,24 @@ void fpsimd_kvm_prepare(void)
-> > >  	 */
-> > >  	get_cpu_fpsimd_context();
-> > >  
-> > > -	if (test_and_clear_thread_flag(TIF_SVE)) {
-> > > -		sve_to_fpsimd(current);
-> > > +	if (!test_thread_flag(TIF_FOREIGN_FPSTATE) &&
-> > > +	    test_and_clear_thread_flag(TIF_SVE)) {
-> > > +		sve_user_disable();
+> > So I can:
 > > 
-> > I'm pretty happy with this fix. However...
+> > (a) Add the dependency, as you suggest.
 > > 
-> > > +
-> > > +		/*
-> > > +		 * The KVM hyp code doesn't set fp_type when saving the host's
-> > > +		 * FPSIMD state. Set fp_type here in case the hyp code saves
-> > > +		 * the host state.
+> > (b) Leave that as-is.
 > > 
-> > Should KVM do that? The comment seems to indicate that this is
-> > papering over yet another bug...
-> 
-> Yes; really this should be done at hyp (and at that point, hyp could
-> actually save the entire host SVE state), but that's a larger change and
-> more painful for backporting, which is why I didn't go that route. I'm
-> happy to go try to fix hyp to do that, or I can make the comment more
-> explicit that this is a bodge, if that's all you're after?
-> 
-> Alternatively, we could take the large hammer approach and always save
-> and unbind the host state prior to entering the guest, so that hyp
-> doesn't need to save anything. An unconditional call to
-> fpsimd_save_and_flush_cpu_state() would suffice, and that'd also
-> implicitly fix the SME issue below.
-
-I think I'd rather see that. Even if that costs us a few hundred
-cycles on vcpu_load(), I would take that any time over the current
-fragile/broken behaviour.
-
->
-> > > +		 *
-> > > +		 * If hyp code does not save the host state, then the host
-> > > +		 * state remains live on the CPU and saved fp_type is
-> > > +		 * irrelevant until it is overwritten by a later call to
-> > > +		 * fpsimd_save_user_state().
+> > (c) Solve this in a different way so that we don't need a BUILD_BUG() or
+> >     dependency. e.g. fix the SME case at the same time, at the cost of
+> >     possibly needing to do a bit more work when backporting.
 > > 
-> > I'm not sure I understand this. If fp_type is irrelevant, surely it is
-> > *forever* irrelevant, not until something else happens. Or am I
-> > missing something?
+> > ... any preference?
 > 
-> Sorry, this was not very clear.
+> My preference would be on (c), if at all possible. My understanding is
+> now that the fpsimd_save_and_flush_cpu_state() approach solves all of
+> these problems, at the expense of a bit of overhead.
 > 
-> What this is trying to say is that *while the state is live on a CPU*
-> fp_type is irrelevant, and it's only meaningful when saving/restoring
-> state. As above, the only reason to set it here is so that *if* hyp
-> saves and unbinds the state, fp_type will accurately describe what the
-> hyp code saved.
-> 
-> The key thing is that there are two possibilities:
-> 
-> (1) The guest doesn't use FPSIMD/SVE, and no trap is taken to save the
->     host state. In this case, fp_type is not consumed before the next
->     time state has to be written back to memory (the act of which will
->     set fp_type).
-> 
->     So in this case, setting fp_type is redundant but benign.
-> 
-> (2) The guest *does* use FPSIMD/SVE, and a trap is taken to hyp to save
->     the host state. In this case the hyp code will save the task's
->     FPSIMD state to task->thread.uw.fpsimd_state, but will not update
->     task->thread.fp_type accordingly, and:
-> 
->     * If fp_type happened to be FP_STATE_FPSIMD, all is good and a later
->       restore will load the state saved by the hyp code.
-> 
->     * If fp_type happened to be FP_STATE_SVE, a later restore will load
->       stale state from task->thread.sve_state.
-> 
-> ... does that make sense?
+> Did I get that correctly?
 
-It does now, thanks. But with your above alternative suggestion, this
-becomes completely moot, right?
+Yep -- I'll go spin that now.
 
-> 
-> > > +		 *
-> > > +		 * This is *NOT* sufficient when CONFIG_ARM64_SME=y, where
-> > > +		 * fp_type can be FP_STATE_SVE regardless of TIF_SVE.
-> > > +		 */
-> > > +		BUILD_BUG_ON(IS_ENABLED(CONFIG_ARM64_SME));
-> > 
-> > I'd rather not have this build-time failure, as this is very likely to
-> > annoy a lot of people. Instead, just make SME unselectable with KVM:
-> 
-> I'm happy to change this, but FWIW I'd used BUILD_BUG() here because it
-> kept that associated with the comment and logic, and because we disabled
-> SME in commit:
-> 
->   81235ae0c846e1fb4 ("arm64: Kconfig: Make SME depend on BROKEN for now)"
-> 
-> ... which was CC'd stable, and so this *shouldn't* blow up on anything
-> with that commit.
-
-My experience is that people do set CONFIG_BROKEN, and don't expect
-the kernel to fail to compile -- they "only" expect it to misbehave.
-
-> 
-> So I can:
-> 
-> (a) Add the dependency, as you suggest.
-> 
-> (b) Leave that as-is.
-> 
-> (c) Solve this in a different way so that we don't need a BUILD_BUG() or
->     dependency. e.g. fix the SME case at the same time, at the cost of
->     possibly needing to do a bit more work when backporting.
-> 
-> ... any preference?
-
-My preference would be on (c), if at all possible. My understanding is
-now that the fpsimd_save_and_flush_cpu_state() approach solves all of
-these problems, at the expense of a bit of overhead.
-
-Did I get that correctly?
-
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+Mark.
 
