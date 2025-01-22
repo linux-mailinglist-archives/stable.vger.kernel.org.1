@@ -1,151 +1,123 @@
-Return-Path: <stable+bounces-110211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA1DEA19791
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 18:26:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1721A1980A
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 18:51:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4EE527A3E42
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 17:26:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1747188EFFB
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 17:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACED52153D0;
-	Wed, 22 Jan 2025 17:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CFD215F7F;
+	Wed, 22 Jan 2025 17:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AECjqbSR"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="C4zerS2n"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-9106.amazon.com (smtp-fw-9106.amazon.com [207.171.188.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C602153C6;
-	Wed, 22 Jan 2025 17:25:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614F3215F64
+	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 17:44:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737566747; cv=none; b=asrgZ3gz8X8IiyZgz2yX8Hr1VZo4wpJhKYpkoSP652OVlg6fpqg3RrWPe2FEZE2UkcX4GDXPA2VA8JakHOAgZH4bajoEjOllhF9jHe+gHuqEXb3SshwEwsviLY5u3TfNULhRk1dPT7Md/93BSlHyLnjamK1OORnHIHBUh2AYEeg=
+	t=1737567852; cv=none; b=XtyPBsIbkSLv2jXuMGKCxtB+Uik0S0nYihR3KXN+UDkCZRY1ck5GfWkJ3/DH9rSNDxgTUMZ4eDZd0Ju+LZfD5bXuruByylMnZT0QV/MWThJyC16hLklsWCNjGprJyWq2MYVq/72SodWZ5VvJCeDbADvRsaO3HsFSZm0CUwES2AU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737566747; c=relaxed/simple;
-	bh=LWiOetpLYWj2C9G4oYP4XduNRB4PwJbMWrmJI504OZc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YUzhlG2ed4Yno5QfRsN1f6Lz0nT8FnRAvqewEQLlTh74cCR4+NaPzOun8DdSs9PqMWgZRsmjb2HbYFHSgVT8p6RaL2O4PaZ23P3c5GFakXoppSzT89K9JQc56Xtp2pHNXW3H7D0odE5Ysa/ZltPfEykNDsNOCCc3reXrev3crlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AECjqbSR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79A7C4CED2;
-	Wed, 22 Jan 2025 17:25:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737566746;
-	bh=LWiOetpLYWj2C9G4oYP4XduNRB4PwJbMWrmJI504OZc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AECjqbSRoylzOg99N7HHnH4L7nZlP01GDR5u3/stuxPD5A1z2wgyy25382cMfRkkE
-	 mpeu2n1wpFZfaBylK0B/1voGzdJ5kEJ8n49leN4rxeHXgUJ03E+D9QAxj9iHD2ROEM
-	 lURR02gRvAV5yTMbaSPv81ZuCdKVHyoXymL/QZXKg5qM6/OujiEN0TUwyvV4yUTOew
-	 9gEePS0VY/gFRDIXiZe1cwfyBdTi6NJfP33G+EcsYli1fsZDycDJ5W2XVPLzN73VUo
-	 D6puM5Vc8O0krk4WF6uo9EWgPeiIJ/dDLQhKe63rO/Cf54thkYqTvYNdEEzF4HiKwc
-	 j0GnNAzYxeXmw==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1taeUB-000000002TY-3MDU;
-	Wed, 22 Jan 2025 18:25:51 +0100
-Date: Wed, 22 Jan 2025 18:25:51 +0100
-From: Johan Hovold <johan@kernel.org>
-To: manivannan.sadhasivam@linaro.org
-Cc: mhi@lists.linux.dev, Loic Poulain <loic.poulain@linaro.org>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] bus: mhi: host: pci_generic: Recover the device
- synchronously from mhi_pci_runtime_resume()
-Message-ID: <Z5EqH95TWIGJhPG9@hovoldconsulting.com>
-References: <20250108-mhi_recovery_fix-v1-0-a0a00a17da46@linaro.org>
- <20250108-mhi_recovery_fix-v1-2-a0a00a17da46@linaro.org>
- <Z5ENq9EMPlNvxNOF@hovoldconsulting.com>
+	s=arc-20240116; t=1737567852; c=relaxed/simple;
+	bh=KqsHtKXxfGP2I4i7DHGmcJWXwfp+mgVRvl/P75xg3Oc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IAzgFVybNT+JKZkcwT9xomObRwu2jGAySPWOumiKhxEWueicp4rtjhdFNEPqLM/mCo5ZBhm2UekrrFKjRRPSS0VOtt6IonfgF3hGdWW/5yLyk+oH8+rzWaNZ8B2no1gs3/nT3enGO7T3M4pWKcAnQntvxFuhXHWIIGAW+SlM258=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=C4zerS2n; arc=none smtp.client-ip=207.171.188.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1737567851; x=1769103851;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=UDpqeoO+ccQM9VAf9qPAbaUbyC4Fo6a2wxtZ7836Scw=;
+  b=C4zerS2n0lgeN9nn4PHXpPiqec37t6p0/9Jn8TApURR4DRerXs/aJ80N
+   t/6kzUqF1Ydsh72VupGKJIAFySTin/fTsdzyNOfu98+o+gXG0GJjFO5E3
+   wuZYtsDi47SvhFiPf/A3LeVrqoiPfvoWy2B4KEH7QrGTPbSFIwVWTPls/
+   Y=;
+X-IronPort-AV: E=Sophos;i="6.13,225,1732579200"; 
+   d="scan'208";a="792927805"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2025 17:44:05 +0000
+Received: from EX19MTAUEB002.ant.amazon.com [10.0.29.78:48099]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.8.105:2525] with esmtp (Farcaster)
+ id 0b55e2df-eaf2-43ce-b2b4-91c046ef41d1; Wed, 22 Jan 2025 17:44:04 +0000 (UTC)
+X-Farcaster-Flow-ID: 0b55e2df-eaf2-43ce-b2b4-91c046ef41d1
+Received: from EX19EXOUEB002.ant.amazon.com (10.252.135.74) by
+ EX19MTAUEB002.ant.amazon.com (10.252.135.47) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Wed, 22 Jan 2025 17:43:59 +0000
+Received: from EX19MTAUEA002.ant.amazon.com (10.252.134.9) by
+ EX19EXOUEB002.ant.amazon.com (10.252.135.74) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Wed, 22 Jan 2025 17:43:57 +0000
+Received: from email-imr-corp-prod-iad-all-1b-a03c1db8.us-east-1.amazon.com
+ (10.43.8.2) by mail-relay.amazon.com (10.252.134.34) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
+ 15.2.1258.39 via Frontend Transport; Wed, 22 Jan 2025 17:43:57 +0000
+Received: from dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com [10.253.65.58])
+	by email-imr-corp-prod-iad-all-1b-a03c1db8.us-east-1.amazon.com (Postfix) with ESMTP id EF58D8010E;
+	Wed, 22 Jan 2025 17:43:56 +0000 (UTC)
+Received: by dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (Postfix, from userid 23002382)
+	id ACBF820DAC; Wed, 22 Jan 2025 17:43:56 +0000 (UTC)
+From: Hagar Hemdan <hagarhem@amazon.com>
+To:
+CC: <stable@vger.kernel.org>, Madhuparna Bhowmik
+	<madhuparnabhowmik04@gmail.com>, Wei Liu <wei.liu@kernel.org>, "David S .
+ Miller" <davem@davemloft.net>, Hagar Hemdan <hagarhem@amazon.com>
+Subject: [PATCH 5.4] net: xen-netback: hash.c: Use built-in RCU list checking
+Date: Wed, 22 Jan 2025 17:43:43 +0000
+Message-ID: <20250122174344.10000-1-hagarhem@amazon.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z5ENq9EMPlNvxNOF@hovoldconsulting.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Wed, Jan 22, 2025 at 04:24:27PM +0100, Johan Hovold wrote:
-> On Wed, Jan 08, 2025 at 07:09:28PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
-> > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > 
-> > Currently, in mhi_pci_runtime_resume(), if the resume fails, recovery_work
-> > is started asynchronously and success is returned. But this doesn't align
-> > with what PM core expects as documented in
-> > Documentation/power/runtime_pm.rst:
+From: Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>
 
-> > Cc: stable@vger.kernel.org # 5.13
-> > Reported-by: Johan Hovold <johan@kernel.org>
-> > Closes: https://lore.kernel.org/mhi/Z2PbEPYpqFfrLSJi@hovoldconsulting.com
-> > Fixes: d3800c1dce24 ("bus: mhi: pci_generic: Add support for runtime PM")
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> 
-> Reasoning above makes sense, and I do indeed see resume taking five
-> seconds longer with this patch as Loic suggested it would.
+commit f3265971ded98a069ad699b51b8a5ab95e9e5be1 upstream.
 
-I forgot to mention the following warnings that now show up when system
-resume succeeds. Recovery was run also before this patch but the "parent
-mhi0 should not be sleeping" warnings are new:
+list_for_each_entry_rcu has built-in RCU and lock checking.
+Pass cond argument to list_for_each_entry_rcu.
 
-[   68.753288] qcom_mhi_qrtr mhi0_IPCR: failed to prepare for autoqueue transfer -22
-[   68.761109] qcom_mhi_qrtr mhi0_IPCR: PM: dpm_run_callback(): qcom_mhi_qrtr_pm_resume_early [qrtr_mhi] returns -22
-[   68.771804] qcom_mhi_qrtr mhi0_IPCR: PM: failed to resume early: error -22
-[   68.795053] mhi-pci-generic 0005:01:00.0: mhi_pci_resume
-[   68.800709] mhi-pci-generic 0005:01:00.0: mhi_pci_runtime_resume
-[   68.800794] mhi mhi0: Resuming from non M3 state (RESET)
-[   68.800804] mhi-pci-generic 0005:01:00.0: failed to resume device: -22
-[   68.819517] mhi-pci-generic 0005:01:00.0: device recovery started
-[   68.819532] mhi-pci-generic 0005:01:00.0: __mhi_power_down
-[   68.819543] mhi-pci-generic 0005:01:00.0: __mhi_power_down - pm mutex taken
-[   68.819554] mhi-pci-generic 0005:01:00.0: __mhi_power_down - pm lock taken
-[   68.820060] wwan wwan0: port wwan0qcdm0 disconnected
-[   68.824839] nvme nvme0: 12/0/0 default/read/poll queues
-[   68.857908] wwan wwan0: port wwan0mbim0 disconnected
-[   68.864012] wwan wwan0: port wwan0qmi0 disconnected
-[   68.943307] mhi-pci-generic 0005:01:00.0: __mhi_power_down - returns
-[   68.956253] mhi mhi0: Requested to power ON
-[   68.960753] mhi mhi0: Power on setup success
-[   68.965262] mhi-pci-generic 0005:01:00.0: mhi_sync_power_up - wait event timeout_ms = 8000
-[   73.183086] mhi mhi0: Wait for device to enter SBL or Mission mode
-[   73.653462] mhi-pci-generic 0005:01:00.0: mhi_sync_power_up - wait event returns, ret = 0
-[   73.653752] mhi mhi0_DIAG: PM: parent mhi0 should not be sleeping
-[   73.661955] mhi-pci-generic 0005:01:00.0: mhi_sync_power_up - returns
-[   73.668461] mhi mhi0_MBIM: PM: parent mhi0 should not be sleeping
-[   73.674950] mhi-pci-generic 0005:01:00.0: Recovery completed
-[   73.681428] mhi mhi0_QMI: PM: parent mhi0 should not be sleeping
-[   74.315919] OOM killer enabled.
-[   74.316475] wwan wwan0: port wwan0qcdm0 attached
-[   74.319206] Restarting tasks ...
-[   74.322825] done.
-[   74.322870] random: crng reseeded on system resumption
-[   74.325956] wwan wwan0: port wwan0mbim0 attached
-[   74.334467] wwan wwan0: port wwan0qmi0 attached
+Signed-off-by: Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>
+Acked-by: Wei Liu <wei.liu@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+---
+This is a dependency to fix CVE-2024-49936 in 5.4.
 
-> Unfortunately, something else is broken as the recovery code now
-> deadlocks again when the modem fails to resume (with both patches
-> applied):
-> 
-> [  729.833701] PM: suspend entry (deep)
-> [  729.841377] Filesystems sync: 0.000 seconds
-> [  729.867672] Freezing user space processes
-> [  729.869494] Freezing user space processes completed (elapsed 0.001 seconds)
-> [  729.869499] OOM killer disabled.
-> [  729.869501] Freezing remaining freezable tasks
-> [  729.870882] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
-> [  730.184254] mhi-pci-generic 0005:01:00.0: mhi_pci_runtime_resume
-> [  730.190643] mhi mhi0: Resuming from non M3 state (SYS ERROR)
-> [  730.196587] mhi-pci-generic 0005:01:00.0: failed to resume device: -22
-> [  730.203412] mhi-pci-generic 0005:01:00.0: device recovery started
-> 
-> I've reproduced this three times in three different paths (runtime
-> resume before suspend; runtime resume during suspend; and during system
-> resume).
-> 
-> I didn't try to figure what causes the deadlock this time (and lockdep
-> does not trigger), but you should be able to reproduce this by
-> instrumenting a resume failure.
-
-Johan
+diff --git a/drivers/net/xen-netback/hash.c b/drivers/net/xen-netback/hash.c
+--- a/drivers/net/xen-netback/hash.c
++++ b/drivers/net/xen-netback/hash.c
+@@ -51,7 +51,8 @@ static void xenvif_add_hash(struct xenvif *vif, const u8 *tag,
+ 
+ 	found = false;
+ 	oldest = NULL;
+-	list_for_each_entry_rcu(entry, &vif->hash.cache.list, link) {
++	list_for_each_entry_rcu(entry, &vif->hash.cache.list, link,
++				lockdep_is_held(&vif->hash.cache.lock)) {
+ 		/* Make sure we don't add duplicate entries */
+ 		if (entry->len == len &&
+ 		    memcmp(entry->tag, tag, len) == 0)
+@@ -102,7 +103,8 @@ static void xenvif_flush_hash(struct xenvif *vif)
+ 
+ 	spin_lock_irqsave(&vif->hash.cache.lock, flags);
+ 
+-	list_for_each_entry_rcu(entry, &vif->hash.cache.list, link) {
++	list_for_each_entry_rcu(entry, &vif->hash.cache.list, link,
++				lockdep_is_held(&vif->hash.cache.lock)) {
+ 		list_del_rcu(&entry->link);
+ 		vif->hash.cache.count--;
+ 		kfree_rcu(entry, rcu);
 
