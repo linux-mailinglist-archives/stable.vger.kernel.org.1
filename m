@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-110186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59758A193AD
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 15:17:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BBF4A193A8
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 15:17:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24A9A168E47
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 14:17:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D0C91886A03
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 14:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86CB213E86;
-	Wed, 22 Jan 2025 14:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5070D212FA9;
+	Wed, 22 Jan 2025 14:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uvb1wlxa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W/iMZXlu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96EB4212FA9
-	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 14:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E102211A3D
+	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 14:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737555402; cv=none; b=hYr0JiumwdygwB7p0bpfmf2W6z156V5gCv2NRHwT7ZkfrFpiYBnpaYxtCC8Z7/eDy9j+3SNJOSCHd1yOvRR0CyxXWBMdQnQWKpo9YVsI7wrvH+txmlerjzeiahf6l9vK7gdnMrlQ2FRyczMXZPCsZ8PcRb6n5dvj2QLhYIVR2/k=
+	t=1737555405; cv=none; b=CUD7Jcn7zDEXEPUjkkFNTEnpqk3DmeYmp8WhmKMiBWnt9DRoXletASRb5QP8HE+zPzO4I83flktxtHniZ++QgDUnlufgrCMxDzdvtZTfSgeyyrFHXDAH9BQDv9HvJ61W5Wwj0/hxV3oiP9fNtvE2nbg9wLPjeuO6i5g86oPQANU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737555402; c=relaxed/simple;
-	bh=wwiAc4uHzDhzN1y0pYvy+Vh6nvBwu8EpslXxawGUIyw=;
+	s=arc-20240116; t=1737555405; c=relaxed/simple;
+	bh=od4b9q7Br+VKyB7QT5lHfpb/+sLNMcXf/70GC3RC5D4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CB0va6OKvfAZKEboBt3UcJYGY5NU3x6VTp6O1jVLzYNfd+i56AmjaJflGPJIjjaFz8sroLP5+6YGXl8S3IwrepanvUnhK6DMgKTf/SxMSuKqogQgg0Qrygyd+/+qslKaZ+o6/cvXRM9s2jPDdANVoXP10LPMYMYIVWlAUdHzhhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uvb1wlxa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08DCEC4CED2;
-	Wed, 22 Jan 2025 14:16:41 +0000 (UTC)
+	 MIME-Version; b=BYB1JCv1XnxLuv/pookNSxmAX7Yw0a/IkqZiPcM/kXhyL84urk1kr9b3qY7LgUMl5mFjYZjwbwlnG3SLflC3TmgmY1LB1qsHCOYIYMYO4Mkb0iApIpr4gWqRYMphYT7H+BNtAErT/466RotbNtgWvArvQmd15UwGg1fnUUGNgio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W/iMZXlu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A4CCC4CED2;
+	Wed, 22 Jan 2025 14:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737555402;
-	bh=wwiAc4uHzDhzN1y0pYvy+Vh6nvBwu8EpslXxawGUIyw=;
+	s=k20201202; t=1737555404;
+	bh=od4b9q7Br+VKyB7QT5lHfpb/+sLNMcXf/70GC3RC5D4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uvb1wlxas3g1dDn/CfN82msZXJGaqMKSZmsACngRGlLDclKfX22AB1qQb7TbGcD9I
-	 bYo4WHuKilIxOZli1F+NSEEfiJ6BJiuyisbM6AHgzvyZRYRwJzmOXBXRBLACwSZbKw
-	 qGfYLmMOJt909A/GSY5u8BzebxPdAz80XOyRQrkoMuSWVioV9olgEeYfEzL2Waz5QS
-	 +eciunUH9qFmRnCNZRk5jDzm1lIEKODW8Rjn9/dlmaywwcLHCVYSgILYzFmUkEN9JQ
-	 7dzNZ7XNrKpL1ZHVpIQbT5bnT3JqW7gQVfRWBr8b4tJS3oSJMaSbyXGD3S0iNifkS5
-	 b3MK2wJEOSJOQ==
+	b=W/iMZXlulJyWQosCRLWfd1zsUgNCc9IBDef8pOcccLMYHEnihUyOp5r2pz0CLVTp7
+	 2aLLkdXThOXXnlD752m3UPPc6rKYsGx/BhLmM09drl/pDmHiFEsZYHqi3vNURUu2h3
+	 qTMKzuZszUtipr7sJIfzDvJk0Qsxxpgg5XrV7SoKr4Mj6hkqsVuspOhW0nUEjqyZKZ
+	 htWEU64S6spOxKgst1KupPGT7NX8UXGXUL3T9B+xnxyIQTU9bVxiU/jGOqqbBonN6d
+	 NF+b9BpSCGUYU36dZiO5RP1R7MUQkmNQnaL4MRKZ3RUXQSp3gfSVGLqo5fzjgXe/D2
+	 z3QBBiDlJTgFA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Finn Thain <fthain@linux-m68k.org>,
+Cc: alvalan9@foxmail.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4.y] m68k: Add missing mmap_read_lock() to sys_cacheflush()
-Date: Wed, 22 Jan 2025 09:16:40 -0500
-Message-Id: <20250122081011-e522c933a100f4f1@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y v2] net: fix data-races around sk->sk_forward_alloc
+Date: Wed, 22 Jan 2025 09:16:42 -0500
+Message-Id: <20250122083706-1913b97462cb8ee8@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <d0c39a02fd50c3ac2fc187d08b942c69@linux-m68k.org>
+In-Reply-To:  <tencent_CBAD5F0DF387BE24BC3518CE3A4C56833D06@qq.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,56 +63,59 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: f829b4b212a315b912cb23fd10aaf30534bb5ce9
+The upstream commit SHA1 provided is correct: 073d89808c065ac4c672c0a613a71b27a80691cb
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Finn Thain<fthain@linux-m68k.org>
-Commit author: Liam Howlett<liam.howlett@oracle.com>
+Backport author: alvalan9@foxmail.com
+Commit author: Wang Liang<wangliang74@huawei.com>
 
 
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (exact SHA1)
-5.15.y | Present (exact SHA1)
-5.10.y | Present (different SHA1: 58ee5a0de192)
-5.4.y | Not found
+6.6.y | Not found
+6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  f829b4b212a31 ! 1:  9f4fbaa4b6d79 m68k: Add missing mmap_read_lock() to sys_cacheflush()
+1:  073d89808c065 ! 1:  524df761055b8 net: fix data-races around sk->sk_forward_alloc
     @@ Metadata
       ## Commit message ##
-         m68k: Add missing mmap_read_lock() to sys_cacheflush()
+         net: fix data-races around sk->sk_forward_alloc
      
-    +    [ Upstream commit f829b4b212a315b912cb23fd10aaf30534bb5ce9 ]
+    +    commit 073d89808c065ac4c672c0a613a71b27a80691cb upstream.
     +
-         When the superuser flushes the entire cache, the mmap_read_lock() is not
-         taken, but mmap_read_unlock() is called.  Add the missing
-         mmap_read_lock() call.
+         Syzkaller reported this warning:
+          ------------[ cut here ]------------
+          WARNING: CPU: 0 PID: 16 at net/ipv4/af_inet.c:156 inet_sock_destruct+0x1c5/0x1e0
     @@ Commit message
-         Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-         Link: https://lore.kernel.org/r/20210407200032.764445-1-Liam.Howlett@Oracle.com
-         Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-    +    [ mmap_read_lock() open-coded using down_read() as was done prior to v5.8 ]
-    +    Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+         Signed-off-by: Wang Liang <wangliang74@huawei.com>
+         Link: https://patch.msgid.link/20241107023405.889239-1-wangliang74@huawei.com
+         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    +    Signed-off-by: Alva Lan <alvalan9@foxmail.com>
      
-      ## arch/m68k/kernel/sys_m68k.c ##
-     @@ arch/m68k/kernel/sys_m68k.c: sys_cacheflush (unsigned long addr, int scope, int cache, unsigned long len)
-    @@ arch/m68k/kernel/sys_m68k.c: sys_cacheflush (unsigned long addr, int scope, int
-      		if (!capable(CAP_SYS_ADMIN))
-      			goto out;
-     +
-    -+		mmap_read_lock(current->mm);
-    ++		down_read(&current->mm->mmap_sem);
-      	} else {
-      		struct vm_area_struct *vma;
+      ## net/dccp/ipv6.c ##
+     @@ net/dccp/ipv6.c: static int dccp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
+    @@ net/ipv6/tcp_ipv6.c: int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
+     +	if (np->rxopt.all && sk->sk_state != TCP_LISTEN)
+      		opt_skb = skb_clone_and_charge_r(skb, sk);
       
+    - 	if (sk->sk_state == TCP_ESTABLISHED) { /* Fast path */
+    + 	reason = SKB_DROP_REASON_NOT_SPECIFIED;
+     @@ net/ipv6/tcp_ipv6.c: int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
+    - 				if (reason)
+    - 					goto reset;
+    - 			}
+    + 		if (nsk != sk) {
+    + 			if (tcp_child_process(sk, nsk, skb))
+    + 				goto reset;
+     -			if (opt_skb)
+     -				__kfree_skb(opt_skb);
+      			return 0;
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
