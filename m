@@ -1,114 +1,127 @@
-Return-Path: <stable+bounces-110216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6D2BA1981E
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 18:57:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 716C4A19838
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 19:12:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B66A93A822A
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 17:57:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7B9316874B
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 18:12:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CCDB21506C;
-	Wed, 22 Jan 2025 17:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF242153CB;
+	Wed, 22 Jan 2025 18:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="bwr001e8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I/p5aWw/"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E8820FAAB;
-	Wed, 22 Jan 2025 17:57:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0761170A11;
+	Wed, 22 Jan 2025 18:12:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737568637; cv=none; b=kkV2a0DTva1hD27fRhlq0BfcfDXPkayhLWQhVEWilwl2kI6xuLsmz1/2OKO+xlbHrcyWaidDC00+S6qFG6HDiBr0NAnAo2ru2RqPcIEP1pM7DGq6wPoNfVYraIrfvyaA6wZzN2r7NvkThFWOq+TCYAb1eaCsdhDXblNedaiw51A=
+	t=1737569552; cv=none; b=NyaWpUEWaCxWDNbB2XYv8gF++5PKQM9QNuvdbpw3Cvc8grJszbtQTGRKZoYIBCNy8KXG8VExQcmSyEqoZKI6Eh4Veg17kw86GeerGYMZfhF2EvviriQGg4XmTpC9r00YI6EsAtV9Z+5gfd/CFgH3/ZdCVd9W4SBnYKGoNBp6dX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737568637; c=relaxed/simple;
-	bh=nd9P4tlvMQVFC/XPJnfoX6DriEXfQG1HhytdC+4qu1A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JsAjnwobWNwEKQ5A5gOJPpy4EBH/3kP7gk7tZEYlimfZmuHDdwC7CO+AUu0lbDib3obbZSRFtRr53c3fWzX9khr7GPufqCp6+zmunIIWHkTf6QA5ini6z7M4vAafOzBkJAfQnyiIGYJ/XLpKWBwIekX98Zr0DdGdqQQKL1msK/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=bwr001e8; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=pU6aV6WjrIb1qr6ZDVu0xD+ep8AT8mTNrCCro/Qbhqk=; b=bwr001e8vd0McI+hMdv3W6jK02
-	HfBvYr12WYEAz3oSvGtIFutjljjADWWIfBNekwHU7TeUkX2erRCyiQqb7TP0CLKT7wBCsavgFrAXe
-	qa02HRMQ5Y/eDNGDgwTL/dSHX7EBP08fzOcxVR1Qb8ZWODOR/pbwl8uarF1KDj2su4CQkyTOOYef0
-	Xqxahv5XNwEq1IPfMA8/QDXI594IR0qN/BjDW468WQrJe/gs1zDPYIOehwMB56CKDyW2BzwXBi11j
-	pWG3wlxdNuQ+0PBrLvVJ5zVWQ+3uR6hshIlR+JHtge82TgkyVCz2TE3cv46tioPbrwPL++KIPuqoH
-	ey2TQh2A==;
-Received: from 77-249-17-89.cable.dynamic.v4.ziggo.nl ([77.249.17.89] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1taeyM-000000053eL-1cEL;
-	Wed, 22 Jan 2025 17:57:02 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id BF852300599; Wed, 22 Jan 2025 18:57:01 +0100 (CET)
-Date: Wed, 22 Jan 2025 18:57:01 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: linux-kernel@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Ludwig Rydberg <ludwig.rydberg@gaisler.com>
-Subject: Re: [for-next][PATCH 2/2] atomic64: Use arch_spin_locks instead of
- raw_spin_locks
-Message-ID: <20250122175701.GA34562@noisy.programming.kicks-ass.net>
-References: <20250121201942.978460684@goodmis.org>
- <20250121202123.224056304@goodmis.org>
- <20250122101457.GG7145@noisy.programming.kicks-ass.net>
- <20250122105517.4f80bf23@gandalf.local.home>
+	s=arc-20240116; t=1737569552; c=relaxed/simple;
+	bh=vKqdUV1xA/kUlfYDw/aCQUiUt7IP55zeYFN7Eec5YwI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UwZF+DLxy9e3LhnvjLodLz6C0xRlcFiXJ/E3f32iwbdJmAzLlkixns+IiLYxqq/rG7JdFfkZ8EAh5Af5h1Yoiu8SlKEtsWs0duGqlDsaKvdax+24mxXlgLdonDC9Ny9bj09Iazh64QZ1duuMA6fRVBA6K/pnKQ6BSuF1qjvDSLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I/p5aWw/; arc=none smtp.client-ip=209.85.160.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-29fc424237bso74294fac.0;
+        Wed, 22 Jan 2025 10:12:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737569550; x=1738174350; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fNvGAAWWGFQC9Zo5194H+eGcmqmXeFUSRJ5hz1QrILM=;
+        b=I/p5aWw/lbSyDe224Hks2WjpKshU9G5WoXhAYtSXi7dIZUrGZeR8a7Q6haQiNemACT
+         a410nxJSIiBGJAE9pNI9AD2k7xJX4g26tkyTs/cEqetFB/Id0hhNpIDkpnW8utcu15Xi
+         PO+iEpI0R8UmE/HojWm12O9TvREbYApSE4JZQ14A4mu5ptSaeFuG+xEfC1tT5/RNBnWd
+         TivkCR8ieWlyYF0yo4vu35A33XkDl4UmpcglQkIqirQwdTT5IuwkfotOkhChjhpR8+Hh
+         WuWa1ul96oTwHUQy/Sm6JrnMJYnBEHpu3m6SbGI+yHRYzw3Ignct471y3eSEM8+vzRqn
+         lz4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737569550; x=1738174350;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fNvGAAWWGFQC9Zo5194H+eGcmqmXeFUSRJ5hz1QrILM=;
+        b=jQSHwsdgxd5zSfu94RC5InIlZ/BlNN8ejZOrsHTpG/LIJO34XHJE2KcUpRLXUJrbYg
+         O6ip5/ewLG9MHGdKS894OTKmc161iNMWNO4E8BRa9qDQPVtuEi63c1l2dQuu2BUknU9e
+         4MvURqNBQYu7aAVZI4bcjDfYTxdcmZVVnUCTmL9TMh3xfAqcst26kNsuFO1Q/3GxqCjP
+         x6/oEqzaVm0mc0vlM745O/a3faD8GKdPCcDjWwqmvPmwlLmdSqsmc98tJKAewf+ORhGp
+         N10kjBMbwomZjDxlz0Q0lBe4FXZsoBocZ7S5LNa6Q5qRUcL2coOljxbyUxdYZVhDPkZH
+         iDww==
+X-Forwarded-Encrypted: i=1; AJvYcCUHB9tPwtuzdJwDuJOmBf0WzYW0QmuUTFRUq6/hlEHEnc56Q0/JGi3YDHJdBCfBHgW6CccUVS6/@vger.kernel.org, AJvYcCUhEA4CXJ9PxKBV3hRnxhYbjGcAfybRmi7SPgwnGY7i2TUPzSeKDA1Lrb6rz+BNNQQmWOAxpgx9RjOyKOw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyiWxQB5Efd18lsxRZWzZAaqUwTwdzq45mOwl4WBhCbo4RvFak0
+	3o4YR/rEdSVB8qOOWSgkiY+ie74TwdoWWugYYteKXJdjzBDAC3T6
+X-Gm-Gg: ASbGncsKGYwlR14kL0Ls2AEEWNsWR902pimOKhhtPI1pBdpm0fQyezxdv3Qwvxar/Ip
+	xZXhFxtypfxrE3eCCeyk9dDEI7eFBvdBQ+YpjIJ3e+Ww4ydokcgGKSkCfhqxA2vkGxM0KP2UlJ7
+	sP2vpGkhT5j1VNrb+u100uTlyZy2QO4bqdv0/ZqcvA7m1jslHmd4DuKybhFvG50wgt8NvNu5EfW
+	g64bKkf9hvWR2f1RUz4taFodEkH/7vfKfbRmJFuti6uqny5mwWkx7OsKLGVnvBZclZpDuKzTJLb
+	yP1YQlVnup948DUKdGmQeEMh2kWP5HVn
+X-Google-Smtp-Source: AGHT+IHRrPNlZ+6TzEel53Z/cUZsBfLNG4QPsxpB4GRxkYJwe3fS38wsqgFel3dj4z2ruZvUtfJe1Q==
+X-Received: by 2002:a05:6870:7d8d:b0:2ac:2937:299d with SMTP id 586e51a60fabf-2b1c0d030eamr12304609fac.39.1737569548316;
+        Wed, 22 Jan 2025 10:12:28 -0800 (PST)
+Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2b1b8ff440dsm4496753fac.45.2025.01.22.10.12.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Jan 2025 10:12:27 -0800 (PST)
+Message-ID: <ebd9fed9-11e8-470d-860b-a019a707378d@gmail.com>
+Date: Wed, 22 Jan 2025 10:12:25 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250122105517.4f80bf23@gandalf.local.home>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 00/64] 6.1.127-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250122073827.056636718@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20250122073827.056636718@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 22, 2025 at 10:55:17AM -0500, Steven Rostedt wrote:
 
-> > >  s64 generic_atomic64_read(const atomic64_t *v)
-> > >  {
-> > >  	unsigned long flags;
-> > > -	raw_spinlock_t *lock = lock_addr(v);
-> > > +	arch_spinlock_t *lock = lock_addr(v);
-> > >  	s64 val;
-> > >  
-> > > -	raw_spin_lock_irqsave(lock, flags);
-> > > +	local_irq_save(flags);
-> > > +	arch_spin_lock(lock);  
-> > 
-> > Note that this is not an equivalent change. It's probably sufficient,
-> > but at the very least the Changelog should call out what went missing
-> > and how that is okay.
+
+On 1/22/2025 12:04 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.127 release.
+> There are 64 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> What exactly is the difference here that you are talking about? I know that
-> raw_spin_lock_irqsave() has lots of different variants depending on the
-> config options, but I'm not sure which you are talking about? Is it the fact
-> that you can't do the different variants with this?
+> Responses should be made by Fri, 24 Jan 2025 07:38:08 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.127-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-If I followed the maze right, then I get something like:
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-raw_spin_lock_irqsave(lock, flags)
-  local_irq_save(flags);
-  preempt_disable();
-  arch_spin_lock(lock);
-  mmiowb_spin_lock();
-
-
-And here you leave out that preempt_disable() and mmiowb stuff. The
-former is fine because local_irq_save() already makes things
-non-preemptible and there are no irq-state games. The mmiowb thing is
-fine because nothing inside this critical section cares about mmio.
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
 
