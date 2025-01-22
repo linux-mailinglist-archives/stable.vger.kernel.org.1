@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-110187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BBF4A193A8
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 15:17:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 629D9A193AA
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 15:17:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D0C91886A03
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 14:17:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 541F53A3F71
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 14:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5070D212FA9;
-	Wed, 22 Jan 2025 14:16:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C04213E6C;
+	Wed, 22 Jan 2025 14:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W/iMZXlu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OZRQ61WY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E102211A3D
-	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 14:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054DB2135DB
+	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 14:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737555405; cv=none; b=CUD7Jcn7zDEXEPUjkkFNTEnpqk3DmeYmp8WhmKMiBWnt9DRoXletASRb5QP8HE+zPzO4I83flktxtHniZ++QgDUnlufgrCMxDzdvtZTfSgeyyrFHXDAH9BQDv9HvJ61W5Wwj0/hxV3oiP9fNtvE2nbg9wLPjeuO6i5g86oPQANU=
+	t=1737555407; cv=none; b=Hv/QNWIZFIKeHAOrF6LE+9hhdzpAEJeUSiZ87sFFJlxNG7cjGa+TF8iZff7Pw/fhr/VyoCDHf4LMGW4bUhmtNz6HpL6D4mnECcUCpztGRKEsPHelvDkkOh7ESyO34+4xmDOLNhFqxejVQiS7pZegZ1TNFAUWoVg6nm/z7Nsx5HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737555405; c=relaxed/simple;
-	bh=od4b9q7Br+VKyB7QT5lHfpb/+sLNMcXf/70GC3RC5D4=;
+	s=arc-20240116; t=1737555407; c=relaxed/simple;
+	bh=Un9dAuLiJgfQrkhhneZmx5WdAFp5lYnh1IAyQX8U3uo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BYB1JCv1XnxLuv/pookNSxmAX7Yw0a/IkqZiPcM/kXhyL84urk1kr9b3qY7LgUMl5mFjYZjwbwlnG3SLflC3TmgmY1LB1qsHCOYIYMYO4Mkb0iApIpr4gWqRYMphYT7H+BNtAErT/466RotbNtgWvArvQmd15UwGg1fnUUGNgio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W/iMZXlu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A4CCC4CED2;
-	Wed, 22 Jan 2025 14:16:43 +0000 (UTC)
+	 MIME-Version; b=vDhWtn/thOnjREgGUpMrMnT9gOLkF+cVPRAJ8gBs6oqF0V3jhW/wLkvGxfUcjHYRWbeiYAFt6Wk5l6xM+JGpl1VJ3MnD4Qdc1JNoaJ+eu+x0SBxvdAvCcWPgqEAAGCuglPCrwA7/JV3SVnedmYGjBRHRMO6cbuJoxtxMA4MC77w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OZRQ61WY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074EFC4CED2;
+	Wed, 22 Jan 2025 14:16:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737555404;
-	bh=od4b9q7Br+VKyB7QT5lHfpb/+sLNMcXf/70GC3RC5D4=;
+	s=k20201202; t=1737555406;
+	bh=Un9dAuLiJgfQrkhhneZmx5WdAFp5lYnh1IAyQX8U3uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W/iMZXlulJyWQosCRLWfd1zsUgNCc9IBDef8pOcccLMYHEnihUyOp5r2pz0CLVTp7
-	 2aLLkdXThOXXnlD752m3UPPc6rKYsGx/BhLmM09drl/pDmHiFEsZYHqi3vNURUu2h3
-	 qTMKzuZszUtipr7sJIfzDvJk0Qsxxpgg5XrV7SoKr4Mj6hkqsVuspOhW0nUEjqyZKZ
-	 htWEU64S6spOxKgst1KupPGT7NX8UXGXUL3T9B+xnxyIQTU9bVxiU/jGOqqbBonN6d
-	 NF+b9BpSCGUYU36dZiO5RP1R7MUQkmNQnaL4MRKZ3RUXQSp3gfSVGLqo5fzjgXe/D2
-	 z3QBBiDlJTgFA==
+	b=OZRQ61WYrDrgDGgeEUeCiYhFthYS8oePPrnqrhEf081CCejm85P0MN0aM1V94sZ3s
+	 pxdKA2qOWiRGzaQics/1DRrCBzVO0FFInwcJL2oxbwub9SxZA1BhoVbFJoVGYZKaYv
+	 7wW76mUMmnz31MdjPr5hQ4L748O/Lm6BgElkZ4L4Huj6dahVmyKGLJrgFSxptCxOTr
+	 IcHHOBibVv2tZhSNN20h5gpJOQO0l8IV7UmaE6PwfrgvWJ2Zr5o5OAeMVwPwlrUbBj
+	 PsXOpZ5XfHx6CSit4CcutHSijrJmD+YlaAPp5PJn0AP/psa4hcYvvYlttf9OP1k7MG
+	 sGqilPMkf03TQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: alvalan9@foxmail.com,
+Cc: Finn Thain <fthain@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y v2] net: fix data-races around sk->sk_forward_alloc
-Date: Wed, 22 Jan 2025 09:16:42 -0500
-Message-Id: <20250122083706-1913b97462cb8ee8@stable.kernel.org>
+Subject: Re: [PATCH 5.4.y] signal/m68k: Use force_sigsegv(SIGSEGV) in fpsp040_die
+Date: Wed, 22 Jan 2025 09:16:44 -0500
+Message-Id: <20250122085539-621c490778d361b8@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <tencent_CBAD5F0DF387BE24BC3518CE3A4C56833D06@qq.com>
+In-Reply-To:  <dd7ca3ed8cfac012d6001fe4d3e8d604@linux-m68k.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,59 +63,59 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 073d89808c065ac4c672c0a613a71b27a80691cb
+The upstream commit SHA1 provided is correct: a3616a3c02722d1edb95acc7fceade242f6553ba
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: alvalan9@foxmail.com
-Commit author: Wang Liang<wangliang74@huawei.com>
+Backport author: Finn Thain<fthain@linux-m68k.org>
+Commit author: Eric W. Biederman<ebiederm@xmission.com>
 
 
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
-6.6.y | Not found
-6.1.y | Not found
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
+5.15.y | Present (exact SHA1)
+5.10.y | Not found
+5.4.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  073d89808c065 ! 1:  524df761055b8 net: fix data-races around sk->sk_forward_alloc
+1:  a3616a3c02722 ! 1:  bf9f85b11138f signal/m68k: Use force_sigsegv(SIGSEGV) in fpsp040_die
     @@ Metadata
       ## Commit message ##
-         net: fix data-races around sk->sk_forward_alloc
+         signal/m68k: Use force_sigsegv(SIGSEGV) in fpsp040_die
      
-    +    commit 073d89808c065ac4c672c0a613a71b27a80691cb upstream.
+    +    [ Upstream commit a3616a3c02722d1edb95acc7fceade242f6553ba ]
     +
-         Syzkaller reported this warning:
-          ------------[ cut here ]------------
-          WARNING: CPU: 0 PID: 16 at net/ipv4/af_inet.c:156 inet_sock_destruct+0x1c5/0x1e0
-    @@ Commit message
-         Signed-off-by: Wang Liang <wangliang74@huawei.com>
-         Link: https://patch.msgid.link/20241107023405.889239-1-wangliang74@huawei.com
-         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+         In the fpsp040 code when copyin or copyout fails call
+         force_sigsegv(SIGSEGV) instead of do_exit(SIGSEGV).
      
-      ## net/dccp/ipv6.c ##
-     @@ net/dccp/ipv6.c: static int dccp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
-    @@ net/ipv6/tcp_ipv6.c: int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
-     +	if (np->rxopt.all && sk->sk_state != TCP_LISTEN)
-      		opt_skb = skb_clone_and_charge_r(skb, sk);
+    @@ Commit message
+         Link: https://lkml.kernel.org/r/87tukghjfs.fsf_-_@disp2133
+         Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+         Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
+    +    Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+     
+      ## arch/m68k/fpsp040/skeleton.S ##
+     @@ arch/m68k/fpsp040/skeleton.S: in_ea:
+    - 	.section .fixup,#alloc,#execinstr
+    + 	.section .fixup,"ax"
+      	.even
+      1:
+     -	jbra	fpsp040_die
+     +	jbsr	fpsp040_die
+     +	jbra	.Lnotkern
       
-    - 	if (sk->sk_state == TCP_ESTABLISHED) { /* Fast path */
-    + 	reason = SKB_DROP_REASON_NOT_SPECIFIED;
-     @@ net/ipv6/tcp_ipv6.c: int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
-    - 				if (reason)
-    - 					goto reset;
-    - 			}
-    + 		if (nsk != sk) {
-    + 			if (tcp_child_process(sk, nsk, skb))
-    + 				goto reset;
-     -			if (opt_skb)
-     -				__kfree_skb(opt_skb);
-      			return 0;
+    - 	.section __ex_table,#alloc
+    + 	.section __ex_table,"a"
+      	.align	4
+     
+      ## arch/m68k/kernel/traps.c ##
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-5.4.y        |  Success    |  Success   |
 
