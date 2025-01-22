@@ -1,89 +1,149 @@
-Return-Path: <stable+bounces-110118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F84A18D54
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 09:06:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37AB9A18D55
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 09:06:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BB2016A13C
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 08:05:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 203C33A034B
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 08:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D218F7D;
-	Wed, 22 Jan 2025 08:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1AF1C3BE5;
+	Wed, 22 Jan 2025 08:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RW5lBauS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LZmtW4yr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD5D1C3C05;
-	Wed, 22 Jan 2025 08:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41448F7D;
+	Wed, 22 Jan 2025 08:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737533151; cv=none; b=j0aHs1QL6qlNMo5OHB8l1Y9T0s/GuKr35yErV5LQFDKCiywrF3L6KyLoORDPVnDmGFxiyAamoz5wqbkIA5CHBRszylewD7PivG9mPl1nZl5NgedLQX9CQeivACRLMIo0CxkS693z9jmEf8rg7ppEGMWoHIbx5LBRGrhn0ZfCyUA=
+	t=1737533175; cv=none; b=W5U6AlCJtJGRh4U10O3zwlZFsb0thcK7P8QgFRQt/I0sdco9vGiK2+0BhcMRzpldcqkMDMY3eeWNzCWVWUF5zrKTBq2ZDJIpLRMqTkiOssLlvtqLZi4eh5RyHSDivOBmrLVxqpBR5l8N3e6XDTffrFkFXZxPm4HLU38kpYq67kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737533151; c=relaxed/simple;
-	bh=Ssuh11iJ4NtkmtHrghP5zrU7Jhn24FfclP0o0vOkqqo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ruKPysqJqEYRMJ/oELkjv4GPY8Axlk4iVYgA64loBW2N0bojKhnwNiA064fNZVSa7lxz3o3zUKmcn0KALGdTJN5utXjkn7p93/Jm8hvY/fzKF2Pe/kv+fwNHalQ9pBVydEzVuiFcmBQO9K15jexyRsX7gIY5Jfy9o983z8swWWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RW5lBauS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F7BAC4CED6;
-	Wed, 22 Jan 2025 08:05:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737533150;
-	bh=Ssuh11iJ4NtkmtHrghP5zrU7Jhn24FfclP0o0vOkqqo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RW5lBauSF/a7MrUa02yd9cfrjOBX0DGPBRON4QHAxVxSGHY42dlpEH+6inGaxv3yj
-	 umELATpD0pU+6i68SzypAv5R0SXc7NXvmF9D3fP8sWxkIi7GcM4zKRQKtHOqz9Q34G
-	 P92QnbhKLq9KerYOjbppU0ehiDyiWrNK1IKWNElA=
-Date: Wed, 22 Jan 2025 09:05:47 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Minchan Kim <minchan@kernel.org>, Nitin Gupta <ngupta@vflare.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15 034/127] drivers/block/zram/zram_drv.c: do not keep
- dangling zcomp pointer after zram reset
-Message-ID: <2025012238-earpiece-wobbly-94a8@gregkh>
-References: <20250121174529.674452028@linuxfoundation.org>
- <20250121174530.999716773@linuxfoundation.org>
- <Z5A59tcFS22YMZAt@atmark-techno.com>
+	s=arc-20240116; t=1737533175; c=relaxed/simple;
+	bh=vTyHnhvRW9VyumFezYy1LbSefMo0zhGQhJdvbirTvus=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NK8WGb1HUYMlJiCm5Cu3YRE/51IRO04DlenONVBc3bIOGdWcxdV7db9mDj7n0+sv4xrEs32pRHTPRl1gIVwnR58UUpe55gy5XMd14yY0obxdE8zOh7U1OpaCd7q7XRWEKVrA+oSgA9cEG/Sx/oARUe3wHY8ZClp1bPiEkUvHuZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LZmtW4yr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D7AC4CEE2;
+	Wed, 22 Jan 2025 08:06:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737533175;
+	bh=vTyHnhvRW9VyumFezYy1LbSefMo0zhGQhJdvbirTvus=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=LZmtW4yrIT3grMzw6LaV1qdt/U5XNyeSaHtjWZpLp8//NfhI5XehbSE2AdPqDVBp9
+	 SinxIMlvvsMTn8W0iJgMWPuSlSH5mEAh5RY90ztBt5m7lWJbwQGMptP3VGgpyNyoED
+	 pbVsgwu7Zy6nBs6AMGv/1gzgxXoPI7wG+zbh2SWYi0oWrZmQ3N0Pmz4EKiRS6/A8or
+	 kkNlgasiKNi5MnReSEWaRJ+FMjpCw4C/ZVS9Qprct5gNrTJNtqxEmgmNyXFdmjlKvr
+	 8+/eYZZVMhHdnEGCQB+eSHEHbg4HLakTAN99xJRymlFhnwNAPq1JM7/uQwq5H5kGye
+	 muKHfGfCsd2ZA==
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ab651f1dd36so143467966b.0;
+        Wed, 22 Jan 2025 00:06:15 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU9hIApu0d0l7KXMy4U6VhUaraZGVzLtKK3NiTACW2N2R/o5AHfOmhPxDYP/KKIX4SWm5Ojo72t@vger.kernel.org, AJvYcCUnnJ8YornN/RQGclGSVuKQC0UsOb2QEGo1nChotZfrlAQMfoZVyNpX787Q7awN66nsqCDQKD7pFmoY7Co=@vger.kernel.org, AJvYcCWxutWvezFfl6xUm7/roL3RrylWlFMFUbtx5FtBHrr7ksau/g4dkGKXQvZ7V9lzgWt32sndiUO/5b7g@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNyBc1WSXasc0HRyhoTUwWMczNV3wOhG69zUNR+mywYRV75XP6
+	F44jQ3g4CJW4/VcQWUzFKk03vS5856ljgX/FqKYAmqGxCqe93auJivp1EZQHxlTW6hy/F/fiK4W
+	sMXyXsWt+Zef7H6W8mCXgMvLmlC0=
+X-Google-Smtp-Source: AGHT+IEqdNQPkcdgwV2S6Ycf6gfq3Wp1MlPTEdyAPi1hC9cu7CfF2C7JSmBCsk2tpf3GeVK2Bwf3y92MZ+sTdlpXnK0=
+X-Received: by 2002:a17:907:746:b0:ab3:2b85:5d5 with SMTP id
+ a640c23a62f3a-ab38b4aa1c6mr1954220166b.49.1737533174012; Wed, 22 Jan 2025
+ 00:06:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z5A59tcFS22YMZAt@atmark-techno.com>
+References: <20250122025013.37155-1-guoren@kernel.org> <TYCPR01MB11040EA25C858F700C3AC9694D8E12@TYCPR01MB11040.jpnprd01.prod.outlook.com>
+In-Reply-To: <TYCPR01MB11040EA25C858F700C3AC9694D8E12@TYCPR01MB11040.jpnprd01.prod.outlook.com>
+From: Guo Ren <guoren@kernel.org>
+Date: Wed, 22 Jan 2025 16:06:02 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTQTLHjKa9SJLnh1fpQK-kVC1_pjFD3geiusa-QKzh4FQg@mail.gmail.com>
+X-Gm-Features: AbW1kvZkqNU4VV84qLvqjbaXXVaIogoR-XnGOINsng-2aloA7Q-ncoSdLBv6QYk
+Message-ID: <CAJF2gTQTLHjKa9SJLnh1fpQK-kVC1_pjFD3geiusa-QKzh4FQg@mail.gmail.com>
+Subject: Re: [PATCH] usb: gadget: udc: renesas_usb3: Fix compiler warning
+To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Cc: "palmer@dabbelt.com" <palmer@dabbelt.com>, "conor@kernel.org" <conor@kernel.org>, 
+	"geert+renesas@glider.be" <geert+renesas@glider.be>, 
+	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, 
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, Guo Ren <guoren@linux.alibaba.com>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, kernel test robot <lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 22, 2025 at 09:21:10AM +0900, Dominique Martinet wrote:
-> Greg Kroah-Hartman wrote on Tue, Jan 21, 2025 at 06:51:46PM +0100:
-> > 5.15-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Sergey Senozhatsky <senozhatsky@chromium.org>
-> > 
-> > commit 6d2453c3dbc5f70eafc1c866289a90a1fc57ce18 upstream.
+On Wed, Jan 22, 2025 at 12:59=E2=80=AFPM Yoshihiro Shimoda
+<yoshihiro.shimoda.uh@renesas.com> wrote:
+>
+> Hello,
+>
+> Thank you for the patch!
+>
+> > From: guoren@kernel.org, Sent: Wednesday, January 22, 2025 11:50 AM
 > >
-> > We do all reset operations under write lock, so we don't need to save
-> 
-> This branch does not have said write lock, please either also pick
-> 6f1637795f28 ("zram: fix race between zram_reset_device() and
-> disksize_store()") or drop the 3 zram patches from 5.15
-> (see https://lore.kernel.org/all/Z4YUmMI5e2yPmzHl@atmark-techno.com/T/#u ;
-> sorry I didn't follow up more thoroughly. As said there, I believe that
-> with the extra patch this backport is now sound, but given this isn't a
-> security fix my opinion is that this was too complex of a backport for
-> an uninvolved party like me to do)
+> > From: Guo Ren <guoren@linux.alibaba.com>
+> >
+> > drivers/usb/gadget/udc/renesas_usb3.c: In function 'renesas_usb3_probe'=
+:
+> > drivers/usb/gadget/udc/renesas_usb3.c:2638:73: warning: '%d'
+> > directive output may be truncated writing between 1 and 11 bytes into a
+> > region of size 6 [-Wformat-truncation=3D]
+> > 2638 |   snprintf(usb3_ep->ep_name, sizeof(usb3_ep->ep_name), "ep%d", i=
+);
+> >                                     ^~~~~~~~~~~~~~~~~~~~~~~~     ^~   ^
+>
+> Just a record. Since the maximum number of ep is up to 16, such an overfl=
+ow
+> will not occur actually. Anyway, fixing this compiler warning is good.
+>
+> > Fixes: 8292493c22c8 ("riscv: Kconfig.socs: Add ARCH_RENESAS kconfig opt=
+ion")
+>
+> Please use the following Fixes tag:
+>
+> Fixes: 746bfe63bba3 ("usb: gadget: renesas_usb3: add support for Renesas =
+USB3.0 peripheral controller")
+Okay
 
-Now all dropped, thanks for reminding me.
+>
+> Best regards,
+> Yoshihiro Shimoda
+>
+> > Cc: stable@vger.kernel.org
+> > Reported-by: kernel test robot <lkp@intel.com>
+> <snip URL>
+> > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> > Signed-off-by: Guo Ren <guoren@kernel.org>
+> > ---
+> >  drivers/usb/gadget/udc/renesas_usb3.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/usb/gadget/udc/renesas_usb3.c b/drivers/usb/gadget=
+/udc/renesas_usb3.c
+> > index fce5c41d9f29..89b304cf6d03 100644
+> > --- a/drivers/usb/gadget/udc/renesas_usb3.c
+> > +++ b/drivers/usb/gadget/udc/renesas_usb3.c
+> > @@ -310,7 +310,7 @@ struct renesas_usb3_request {
+> >       struct list_head        queue;
+> >  };
+> >
+> > -#define USB3_EP_NAME_SIZE    8
+> > +#define USB3_EP_NAME_SIZE    16
+> >  struct renesas_usb3_ep {
+> >       struct usb_ep ep;
+> >       struct renesas_usb3 *usb3;
+> > --
+> > 2.40.1
+> >
+>
 
-greg k-h
+
+--=20
+Best Regards
+ Guo Ren
 
