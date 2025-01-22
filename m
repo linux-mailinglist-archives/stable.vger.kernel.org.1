@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-110122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 480A5A18DC5
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 09:48:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 520F2A18DC7
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 09:48:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 253E5188BC8D
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 08:48:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB1503A3C04
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 08:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 723E11F75B0;
-	Wed, 22 Jan 2025 08:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 813A71537D4;
+	Wed, 22 Jan 2025 08:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="m8FxBIqD"
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="sVBWNlSK"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A491537D4;
-	Wed, 22 Jan 2025 08:47:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325871F7569;
+	Wed, 22 Jan 2025 08:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737535681; cv=none; b=Ir4S1G7BJ2wAn34ev4qYAASJ6fxaa/x8JpHYMf3wKUcE2d1lEKIa07huZGWTWjd5EKh+xZqRl6vMaw4N+MqFFTX8ckIfjWZiel7w7Sa7G6hXZF9Izn2JRsSULXcAmCYE+02pY/m0aaso0Xi9SUHRZ4pwibPKLak3pPFgfCArTnc=
+	t=1737535691; cv=none; b=iMMB3Sdhtr6LrgF20FlwiKCmfk534bsoOFRVEuJ/hm2BvO7u2QiZM+48y8mE5dym/SP6S9YySl92QVoQ9oh3zC9pDZd7C54OZERv/12Ez5D7B0jBLgMS/KpfdkCJ7qLWZKEUSZw0uRqqnLIDiUkNXZJyXEIWUIqRzteNUdYD/7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737535681; c=relaxed/simple;
+	s=arc-20240116; t=1737535691; c=relaxed/simple;
 	bh=PBw+2l4k/U/8zjU5cemT5owgK8Rdjbs+7eB+L9/Ycbc=;
-	h=Date:Message-ID:From:To:Cc:Subject; b=ldcRoH79qzYZPNxQi4H5zZC5LNZLpFlb4lUHR3e45X+ubcBfPZ1hJFh5y5DCZJQe+amTfX4ow/REv+SGZjz5AezONkyg4uXR2u8Q5kfsZwc7mf4AfX7FMhy9+rvKvsPASeMkB5ksP8SAGBxhm9QKSl8c8enKj1J/2LRqlIGyUaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=m8FxBIqD; arc=none smtp.client-ip=103.168.172.155
+	h=Date:Message-ID:From:To:Cc:Subject; b=jy4IFLPXlmn548AxRa22tSlceOrCtOjWW16LCrR1t+hJ7U4598vIfbx3B0fskjH4IKKLRgDjLrmWym6Pu/EsDrNVVDTEzUUGRiW4zRE/O7EdAEdBri242iqzEGJ09uGS5HTvTcfzMAZuzwPTM4tZiRVTvOvFXC1yOE89lsndAQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=sVBWNlSK; arc=none smtp.client-ip=103.168.172.144
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id EE24D11401B8;
-	Wed, 22 Jan 2025 03:47:58 -0500 (EST)
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id 3D6F3138019D;
+	Wed, 22 Jan 2025 03:48:08 -0500 (EST)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Wed, 22 Jan 2025 03:47:58 -0500
+  by phl-compute-04.internal (MEProxy); Wed, 22 Jan 2025 03:48:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
 	:feedback-id:from:from:in-reply-to:message-id:reply-to:subject
 	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1737535678; x=1737622078; bh=r29dMPQRv+Gn3SilhPT9HklbBYac
-	hEKIULVz8FVwt98=; b=m8FxBIqD8AFx7QDjZKK09qEyoeP8JSHS9J24rTlRDaTh
-	YX9nVwE1MIrRJe/lM7O5StPm5Ie2w3qeWJNDYROB8YAoBtUUZXNdapgPNh1MtLGM
-	o2cJ7xGrxf0tYOVrhlGn3qe41Zugacl4175g+Cp5IdP1WRS7/WKyE15ZwZIJ5aSU
-	UNmaVGVO1CFM9vAhhQUgHkSPoRZ70HtTfAOemvH4FWAUMuvggDOHDpGaeBgHARNr
-	lc/Tmqryy2H4IdfORIMg5vNVv03M/ioKk0zKXwA/sEAl3ypjuyHA46w5ew0Cp7dw
-	S2ODsLL4Np8EdNSejRQILzB2Xc76qSFvLkZYSEaJvw==
-X-ME-Sender: <xms:vrCQZ6UOq3u7jqcfUJE4ODxVrzeJSxfHiT12uYKskoIRK63sra9NSQ>
-    <xme:vrCQZ2mWDzXdVSc8CvZ3w8pREdwMqhf48x_hOTjY1FbwKzjbvNAxCtvnvdvtNOrrp
-    K0CaQ0ukMc4nUVLpIM>
-X-ME-Received: <xmr:vrCQZ-a48UZEF5_yPgIQrTGCepPaTt_z_hb1QwOwkK979k69VkyBsCQLhF55xTeqz8iahz_e1p-IRti3j51NaJAU-igej_cEgxw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudejfedguddvvdcutefuodetggdotefrod
+	fm3; t=1737535688; x=1737622088; bh=r29dMPQRv+Gn3SilhPT9HklbBYac
+	hEKIULVz8FVwt98=; b=sVBWNlSKkTwm5W9vXSEs6umn0p8aMZm8VvntWbo/ugzW
+	a413P9y3eao45N3+c2eWgRsg9weBYZZ0fuzwuRS7UfMg9QsLbm99pI2Z4SMB6X+p
+	egTRIcrZyc73LV7jq+9c1oaZkAS0Zy8a+33Gmm2y7SYfNm10vubpttHVIO1+9lRr
+	ajPhZgh0afVS+zmfyW9oMWmdwVrTb+89Gd66QzDAI+k+NAflevL5HD5Ze6luIx9q
+	OLiUQULKyawVB1FVT+CirYOH3P6ZPzm/u6Q0HzQicN35qgi0WJGgqfTEDXBSMyF7
+	doPbuXVdSbHDHlEStVXQOsEe/Toc5sOzeHXCbHk7ug==
+X-ME-Sender: <xms:x7CQZ04cIDBpbmxRgP9YU1qefIr80sWeLvBoFXQBEigGvAdIFMy6DQ>
+    <xme:x7CQZ149-FpLKw6ZtctGrtEVaMbsqnMxBgprA0V0vxFGB7MnDq46klzIHeTr8YGI8
+    Rft8GPEwYaNr3-PC9Q>
+X-ME-Received: <xmr:x7CQZzft3NABW2WdgUObfWt2pY2BbisDy2RIjgoXVslOq3mzsKqZuXnpebyDG-vBqm7Gr5nrzVVJvAovxJ-pfVPe3mMU59yFmcU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudejfedguddvudcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
     uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
     hnthhsucdlqddutddtmdenucfjughrpeffkffhvfevufestddtjhdttddttdenucfhrhho
@@ -64,20 +64,20 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudejfedguddvvdcutefuodetgg
     hrtghpthhtohepvhhirhhoseiivghnihhvrdhlihhnuhigrdhorhhgrdhukhdprhgtphht
     thhopehlihhnuhigqdhmieekkheslhhishhtshdrlhhinhhugidqmheikehkrdhorhhgpd
     hrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:vrCQZxXK9Y1izOnWDIf3lWDLTaKKyVG71fqjY0Sh95MIZWW9mWTheA>
-    <xmx:vrCQZ0mt1QLwMsxqRRuL6Y2TM9sVpkM4HPKRPhokHZX5IYFIepchxQ>
-    <xmx:vrCQZ2f63LykdBitRqeK-9fXb5UKlAj_ngZhqKLp0b7BtD1z6YKXiA>
-    <xmx:vrCQZ2G5oI48qEuGz-c96RPHP98iOOJLY2oxQyzlDk9M5sbNKI-OZA>
-    <xmx:vrCQZ1Cz0ZT_Azkj8Lwq2Je-6buv1h8_sjHngF-lNS0wY36y9OooHMvr>
+X-ME-Proxy: <xmx:x7CQZ5LWxxB-Xfc2hwJCtIbTAVhzFiD3em1PBS4Dc70El7v5E15DBQ>
+    <xmx:x7CQZ4JMuVbsJz6RlB2EwqFgw_QlpHHYKUpF0hV_3PksTtNiGXAXRA>
+    <xmx:x7CQZ6z7YCz65E9nr6ziqkGV_pnB0bcrIz5yhhjGw4Zc2T1TaOOE1g>
+    <xmx:x7CQZ8JBlaR33R6OVUpY286W9dtfkRNKQEo9zOHub2feJbRg7xilhQ>
+    <xmx:yLCQZ9GGED8H5URbWwBKNdFe9FgUixn2qIAKoEIANyFq2KtdcnpablqA>
 Feedback-ID: i58a146ae:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Jan 2025 03:47:56 -0500 (EST)
-Date: Wed, 22 Jan 2025 19:47:50 +1100
-Message-ID: <8073f191a5759ba3bf582e4f88fde267@linux-m68k.org>
+ 22 Jan 2025 03:48:05 -0500 (EST)
+Date: Wed, 22 Jan 2025 19:47:59 +1100
+Message-ID: <590189176a007c7526f041dbf1ff0eea@linux-m68k.org>
 From: Finn Thain <fthain@linux-m68k.org>
 To: stable@vger.kernel.org
 Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Al Viro <viro@zeniv.linux.org.uk>, linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 5.10.y] m68k: Update ->thread.esp0 before calling syscall_trace() in ret_from_signal
+Subject: [PATCH 5.4.y] m68k: Update ->thread.esp0 before calling syscall_trace() in ret_from_signal
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
