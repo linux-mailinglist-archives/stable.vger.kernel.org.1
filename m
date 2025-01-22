@@ -1,136 +1,134 @@
-Return-Path: <stable+bounces-110189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7712EA19421
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 15:40:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6115A1944B
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 15:45:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC466164101
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 14:40:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DD881886912
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 14:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741F721420F;
-	Wed, 22 Jan 2025 14:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076E72144CA;
+	Wed, 22 Jan 2025 14:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="cFaxq8aR"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b="Y+lICDYE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEAEB145A18
-	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 14:40:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737556845; cv=none; b=GYiDfDCY/PCRQHqcZyoCAOfWnXL9XpVI3ez+YJsHvWAWLrxYS5EWM6jfntSLyrBe3p/ZJFUvIsSTLJfzAVX7IhBDAapgZq/oa50WTNacw9QZW4NUlnYfYi8le3AbXrpCpHbU2WLDy8uoGOEL4P0WSZtfn9VhJwSMOUnvBegbmX4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737556845; c=relaxed/simple;
-	bh=LsfukF/yBfh1ci0CeM4YPAlN1I2R2qkAxmEyopkVvGc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T7aeFs5us190mDZ53H8EziOnne3CEyAow6MuetxUwwTdNdc5qfbgdT8rOrAlVJELV53S9Y8uE/knk32p002FbB/2ZagW3s/hsM0iZKY6hHBNawXnJwvm5/N1E2XLoN+532I7Yak7X/44mMzybvk9WH1uRadWQylcH3bUth+to78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=cFaxq8aR; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2ee46851b5eso9503425a91.1
-        for <stable@vger.kernel.org>; Wed, 22 Jan 2025 06:40:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl.com; s=google; t=1737556843; x=1738161643; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t6McvFRaJ5osHAYhUEUYsvwZIqCtrxvJxDD2sjjhlt4=;
-        b=cFaxq8aRkpQh8jWyqzJ2PuZmKGvS+P+O4KB1So/qyc8/Y+gTb4MzLPO4IqD+tGyyiI
-         0bUbIpTFb3XXjmVua+a1xsKEhrVAQ9qFwXmw060dipEUdztXhV1dC0b+QzIPe6q628Rz
-         NYbX1G0rXAdI2HpFA+2YVm3VuAY6ta85OsLSx4w8a9Xuo0IZO3STKddfpOrs7nvl3O/k
-         ++a5ARAyLMJzY2y5QL8zIn8fxIED7Pb/o4RMitoE4r19YmKM1DzNgC8WFofNbR6WUgWq
-         AVsvRWEDaMW0MuLtsRGNN6ZCNXHDvo4V6zA2i0Aq/OhlvIjGRXo/p3OAwDkfZo03Uizy
-         PIPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737556843; x=1738161643;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=t6McvFRaJ5osHAYhUEUYsvwZIqCtrxvJxDD2sjjhlt4=;
-        b=GLGYVi/MB6Y6k+tsURvidY6pLBRmrLn4MfAgmJS4SlOCPY1wk6laZZixWJet7r6C7U
-         YTzOwBjote71aidc6P7AbgThu10pJkH8Wxze8AescE8Z4/7xXPsYP8Hr1Cr8XMItPxHc
-         4EmOcqvFa71yZOTirtlHanPXugfghp8AwNOZQZ7XafIXVfzK5Oxjg184vAn1N4nXnHte
-         kaPnbrr2TWqcyRcvolGrsSLmSKFX7ZJxy8E6YZMALZi/vYWdtxXMiHKMKI8KHBZMcJLN
-         59z8ENv+adH0BwGr3xmEKlGCo+0l8TzHK27zIwnOyqmXmHn2arDGrZMjBvPMamkEt7I8
-         krRA==
-X-Gm-Message-State: AOJu0YyCLpfoTxG5Hek9M2p2HBcdqcrWJp8RPDTRS/Zt1es89k20ByC5
-	Iaiu5Q9MqF0anJtcbSLf/muDLJCLZ91JQf0UBzLTldA5gxZLMeCoZ/qRto8JRYVT7u3VnN6Lkq6
-	IJxaEEg+vL+vIyvr9wDawneiSOZjuCwLuedidTw==
-X-Gm-Gg: ASbGncuMt58zhzcD7LiTwOd+0SlQt+g3dxFZDofr2eko2ZfqY5hCnTGzjsa7W5h0GYB
-	ageqWQ6N7c/yAiZSya1k0zYkPqh5I+KKJQRzN/VcFdqDuE5zFP0E=
-X-Google-Smtp-Source: AGHT+IGv+GlnSom+dKcknTxqk+ZtvCUMMUd9EnJqMxMxHc4PjBjG5A40osvTg2dwXP9e/EwXwhDwjK1mVEA5Iz+pJ9U=
-X-Received: by 2002:a17:90b:2c84:b0:2f6:d266:f462 with SMTP id
- 98e67ed59e1d1-2f782d8c84fmr31882295a91.35.1737556842998; Wed, 22 Jan 2025
- 06:40:42 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7BD215190;
+	Wed, 22 Jan 2025 14:41:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737556917; cv=pass; b=HeJ6fiaDwnFOJHlc/1DAwM7D1JFwDKdqrQL+sP+KmaG3r1gpsPBumx2TkwavLL7XlJW7PZHH8ts4xKLh+LDdaRiUnhEr8BSGnN0979JaUax9l+jud/NLyB7fI/qS+WzZSdVY+T8qzGoMLpgLl/FRrb4yJnbvbGuuODK4NXZWq3I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737556917; c=relaxed/simple;
+	bh=YA+RQM0a5qkAQoUGV++EX1qBWaHNqu6JJKPDEdniyTQ=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=OvSBz4ca09orvO0BcYjgCc6MHfhsUwMQ/O5DYfi7ROnNxiCjS/Ygvh7DqB2NV7Q7tXT7u1vD1umpJXk05OLzg49f7YZmaxiBHzWKmWztgFsUCxmz72vI9tKTQE7t7TU6Oqa+fsbbpBq8f7iSzfXo3RXFNakSNf9a1lLcMfHKLnI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b=Y+lICDYE; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1737556885; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Ib/RQvh599pytkqKpDRiJVtqcZsG0AECgeVMEi7+lu72SMQvBcren758Tq2H+VUMTB3CbMaaovbTd6zMQ37Covm1ljmHMeni96Y9jzQ/GUA2bPi9k/DvgIkwOUjBhKYHBmGX0ZlFqN6EHMDoHUS8/WSAxSTkJ12HT3sivarzLRk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1737556885; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=YvaJmiw5hv6alLjsc1pr9qxQCVLsmUq8/2FINskPFiU=; 
+	b=fvJXXVIRMn31bvkmpHplKgVUT83Tyja/oBqxhyOiwXWhQ/b0RJ3m48tx4ZtnjmmB+1xTfpAs/mKY51hfo3EjCB3LBQ51Ml/q0LHWx6RylJirNUFUEFs0+TOAsUMvWbsTdoGuUS0xlLgC9rK+3N/V+UFDQa+twZT2Gihl+tkqU5U=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=Usama.Anjum@collabora.com;
+	dmarc=pass header.from=<Usama.Anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1737556885;
+	s=zohomail; d=collabora.com; i=Usama.Anjum@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=YvaJmiw5hv6alLjsc1pr9qxQCVLsmUq8/2FINskPFiU=;
+	b=Y+lICDYE7vx9/UZEei7zmlpeQ1qhhvPW8GnLD9tVZuDePGhlJI68vLOBvBjuRd8r
+	lInyaEwi5ZB1VKxk6ubVwPRbZs5ZECOFK6RWVTc68+fRoyQbeD8NPBN0ALjS7djdEKT
+	sZ/PxkeSnMXQYvL2XognLUlHBisjMIQ4/c0KO+oI=
+Received: by mx.zohomail.com with SMTPS id 1737556882115818.7757853209004;
+	Wed, 22 Jan 2025 06:41:22 -0800 (PST)
+Message-ID: <91967262-578a-4b68-8c1f-e013f9f72ac8@collabora.com>
+Date: Wed, 22 Jan 2025 19:41:46 +0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250122093007.141759421@linuxfoundation.org>
-In-Reply-To: <20250122093007.141759421@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Wed, 22 Jan 2025 23:40:32 +0900
-X-Gm-Features: AbW1kvaxMa-1XgosJuFYYbAaAUZODb3Ltxzlan0oN98CplTBoHkdtELScykbKVA
-Message-ID: <CAKL4bV72AK1qSnPFE2JK18D-Q4mBvNPef3u5sqHKoOP4UvB0Vw@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/121] 6.12.11-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Cc: Usama.Anjum@collabora.com, patches@lists.linux.dev,
+ linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+ akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 6.6 00/72] 6.6.74-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+References: <20250121174523.429119852@linuxfoundation.org>
+Content-Language: en-US
+From: Muhammad Usama Anjum <Usama.Anjum@collabora.com>
+In-Reply-To: <20250121174523.429119852@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 
-Hi Greg
-
-On Wed, Jan 22, 2025 at 6:30=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.12.11 release.
-> There are 121 patches in this series, all will be posted as a response
+On 1/21/25 10:51 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.74 release.
+> There are 72 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
->
-> Responses should be made by Fri, 24 Jan 2025 09:29:33 +0000.
+> 
+> Responses should be made by Thu, 23 Jan 2025 17:45:02 +0000.
 > Anything received after that time might be too late.
->
+> 
 > The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.12.11-rc2.gz
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.74-rc1.gz
 > or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.12.y
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
 > and the diffstat can be found below.
->
+> 
 > thanks,
->
+> 
 > greg k-h
->
 
-6.12.11-rc2 tested.
+OVERVIEW
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+        Builds: 42 passed, 0 failed
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+    Boot tests: 585 passed, 0 failed
 
-[    0.000000] Linux version 6.12.11-rc2rv
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.2.1 20240910, GNU ld (GNU
-Binutils) 2.43.1) #1 SMP PREEMPT_DYNAMIC Wed Jan 22 23:19:39 JST 2025
+    CI systems: maestro
 
-Thanks
+REVISION
 
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+    Commit
+        name: v6.6.73-73-g429148729681
+        hash: 429148729681ff93db022c19a17ce00dff9c04f9
+    Checked out from
+        https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+
+
+BUILDS
+
+    No build failures found
+
+BOOT TESTS
+
+    No build failures
+
+See complete and up-to-date report at:
+
+    https://kcidb.kernelci.org/d/revision/revision?orgId=1&var-git_commit_hash=429148729681ff93db022c19a17ce00dff9c04f9&var-patchset_hash=
+
+
+Tested-by: kernelci.org bot <bot@kernelci.org>
+
+Thanks,
+KernelCI team
+
 
