@@ -1,121 +1,136 @@
-Return-Path: <stable+bounces-110188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629D9A193AA
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 15:17:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7712EA19421
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 15:40:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 541F53A3F71
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 14:17:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC466164101
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 14:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C04213E6C;
-	Wed, 22 Jan 2025 14:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741F721420F;
+	Wed, 22 Jan 2025 14:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OZRQ61WY"
+	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="cFaxq8aR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054DB2135DB
-	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 14:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEAEB145A18
+	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 14:40:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737555407; cv=none; b=Hv/QNWIZFIKeHAOrF6LE+9hhdzpAEJeUSiZ87sFFJlxNG7cjGa+TF8iZff7Pw/fhr/VyoCDHf4LMGW4bUhmtNz6HpL6D4mnECcUCpztGRKEsPHelvDkkOh7ESyO34+4xmDOLNhFqxejVQiS7pZegZ1TNFAUWoVg6nm/z7Nsx5HU=
+	t=1737556845; cv=none; b=GYiDfDCY/PCRQHqcZyoCAOfWnXL9XpVI3ez+YJsHvWAWLrxYS5EWM6jfntSLyrBe3p/ZJFUvIsSTLJfzAVX7IhBDAapgZq/oa50WTNacw9QZW4NUlnYfYi8le3AbXrpCpHbU2WLDy8uoGOEL4P0WSZtfn9VhJwSMOUnvBegbmX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737555407; c=relaxed/simple;
-	bh=Un9dAuLiJgfQrkhhneZmx5WdAFp5lYnh1IAyQX8U3uo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=vDhWtn/thOnjREgGUpMrMnT9gOLkF+cVPRAJ8gBs6oqF0V3jhW/wLkvGxfUcjHYRWbeiYAFt6Wk5l6xM+JGpl1VJ3MnD4Qdc1JNoaJ+eu+x0SBxvdAvCcWPgqEAAGCuglPCrwA7/JV3SVnedmYGjBRHRMO6cbuJoxtxMA4MC77w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OZRQ61WY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074EFC4CED2;
-	Wed, 22 Jan 2025 14:16:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737555406;
-	bh=Un9dAuLiJgfQrkhhneZmx5WdAFp5lYnh1IAyQX8U3uo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OZRQ61WYrDrgDGgeEUeCiYhFthYS8oePPrnqrhEf081CCejm85P0MN0aM1V94sZ3s
-	 pxdKA2qOWiRGzaQics/1DRrCBzVO0FFInwcJL2oxbwub9SxZA1BhoVbFJoVGYZKaYv
-	 7wW76mUMmnz31MdjPr5hQ4L748O/Lm6BgElkZ4L4Huj6dahVmyKGLJrgFSxptCxOTr
-	 IcHHOBibVv2tZhSNN20h5gpJOQO0l8IV7UmaE6PwfrgvWJ2Zr5o5OAeMVwPwlrUbBj
-	 PsXOpZ5XfHx6CSit4CcutHSijrJmD+YlaAPp5PJn0AP/psa4hcYvvYlttf9OP1k7MG
-	 sGqilPMkf03TQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Finn Thain <fthain@linux-m68k.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4.y] signal/m68k: Use force_sigsegv(SIGSEGV) in fpsp040_die
-Date: Wed, 22 Jan 2025 09:16:44 -0500
-Message-Id: <20250122085539-621c490778d361b8@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <dd7ca3ed8cfac012d6001fe4d3e8d604@linux-m68k.org>
-References: 
+	s=arc-20240116; t=1737556845; c=relaxed/simple;
+	bh=LsfukF/yBfh1ci0CeM4YPAlN1I2R2qkAxmEyopkVvGc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T7aeFs5us190mDZ53H8EziOnne3CEyAow6MuetxUwwTdNdc5qfbgdT8rOrAlVJELV53S9Y8uE/knk32p002FbB/2ZagW3s/hsM0iZKY6hHBNawXnJwvm5/N1E2XLoN+532I7Yak7X/44mMzybvk9WH1uRadWQylcH3bUth+to78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=cFaxq8aR; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2ee46851b5eso9503425a91.1
+        for <stable@vger.kernel.org>; Wed, 22 Jan 2025 06:40:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl.com; s=google; t=1737556843; x=1738161643; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t6McvFRaJ5osHAYhUEUYsvwZIqCtrxvJxDD2sjjhlt4=;
+        b=cFaxq8aRkpQh8jWyqzJ2PuZmKGvS+P+O4KB1So/qyc8/Y+gTb4MzLPO4IqD+tGyyiI
+         0bUbIpTFb3XXjmVua+a1xsKEhrVAQ9qFwXmw060dipEUdztXhV1dC0b+QzIPe6q628Rz
+         NYbX1G0rXAdI2HpFA+2YVm3VuAY6ta85OsLSx4w8a9Xuo0IZO3STKddfpOrs7nvl3O/k
+         ++a5ARAyLMJzY2y5QL8zIn8fxIED7Pb/o4RMitoE4r19YmKM1DzNgC8WFofNbR6WUgWq
+         AVsvRWEDaMW0MuLtsRGNN6ZCNXHDvo4V6zA2i0Aq/OhlvIjGRXo/p3OAwDkfZo03Uizy
+         PIPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737556843; x=1738161643;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=t6McvFRaJ5osHAYhUEUYsvwZIqCtrxvJxDD2sjjhlt4=;
+        b=GLGYVi/MB6Y6k+tsURvidY6pLBRmrLn4MfAgmJS4SlOCPY1wk6laZZixWJet7r6C7U
+         YTzOwBjote71aidc6P7AbgThu10pJkH8Wxze8AescE8Z4/7xXPsYP8Hr1Cr8XMItPxHc
+         4EmOcqvFa71yZOTirtlHanPXugfghp8AwNOZQZ7XafIXVfzK5Oxjg184vAn1N4nXnHte
+         kaPnbrr2TWqcyRcvolGrsSLmSKFX7ZJxy8E6YZMALZi/vYWdtxXMiHKMKI8KHBZMcJLN
+         59z8ENv+adH0BwGr3xmEKlGCo+0l8TzHK27zIwnOyqmXmHn2arDGrZMjBvPMamkEt7I8
+         krRA==
+X-Gm-Message-State: AOJu0YyCLpfoTxG5Hek9M2p2HBcdqcrWJp8RPDTRS/Zt1es89k20ByC5
+	Iaiu5Q9MqF0anJtcbSLf/muDLJCLZ91JQf0UBzLTldA5gxZLMeCoZ/qRto8JRYVT7u3VnN6Lkq6
+	IJxaEEg+vL+vIyvr9wDawneiSOZjuCwLuedidTw==
+X-Gm-Gg: ASbGncuMt58zhzcD7LiTwOd+0SlQt+g3dxFZDofr2eko2ZfqY5hCnTGzjsa7W5h0GYB
+	ageqWQ6N7c/yAiZSya1k0zYkPqh5I+KKJQRzN/VcFdqDuE5zFP0E=
+X-Google-Smtp-Source: AGHT+IGv+GlnSom+dKcknTxqk+ZtvCUMMUd9EnJqMxMxHc4PjBjG5A40osvTg2dwXP9e/EwXwhDwjK1mVEA5Iz+pJ9U=
+X-Received: by 2002:a17:90b:2c84:b0:2f6:d266:f462 with SMTP id
+ 98e67ed59e1d1-2f782d8c84fmr31882295a91.35.1737556842998; Wed, 22 Jan 2025
+ 06:40:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250122093007.141759421@linuxfoundation.org>
+In-Reply-To: <20250122093007.141759421@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Wed, 22 Jan 2025 23:40:32 +0900
+X-Gm-Features: AbW1kvaxMa-1XgosJuFYYbAaAUZODb3Ltxzlan0oN98CplTBoHkdtELScykbKVA
+Message-ID: <CAKL4bV72AK1qSnPFE2JK18D-Q4mBvNPef3u5sqHKoOP4UvB0Vw@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/121] 6.12.11-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[ Sasha's backport helper bot ]
+Hi Greg
 
-Hi,
+On Wed, Jan 22, 2025 at 6:30=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.11 release.
+> There are 121 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 24 Jan 2025 09:29:33 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.12.11-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-The upstream commit SHA1 provided is correct: a3616a3c02722d1edb95acc7fceade242f6553ba
+6.12.11-rc2 tested.
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Finn Thain<fthain@linux-m68k.org>
-Commit author: Eric W. Biederman<ebiederm@xmission.com>
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
-Status in newer kernel trees:
-6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (exact SHA1)
-5.15.y | Present (exact SHA1)
-5.10.y | Not found
-5.4.y | Not found
+[    0.000000] Linux version 6.12.11-rc2rv
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.2.1 20240910, GNU ld (GNU
+Binutils) 2.43.1) #1 SMP PREEMPT_DYNAMIC Wed Jan 22 23:19:39 JST 2025
 
-Note: The patch differs from the upstream commit:
----
-1:  a3616a3c02722 ! 1:  bf9f85b11138f signal/m68k: Use force_sigsegv(SIGSEGV) in fpsp040_die
-    @@ Metadata
-      ## Commit message ##
-         signal/m68k: Use force_sigsegv(SIGSEGV) in fpsp040_die
-     
-    +    [ Upstream commit a3616a3c02722d1edb95acc7fceade242f6553ba ]
-    +
-         In the fpsp040 code when copyin or copyout fails call
-         force_sigsegv(SIGSEGV) instead of do_exit(SIGSEGV).
-     
-    @@ Commit message
-         Link: https://lkml.kernel.org/r/87tukghjfs.fsf_-_@disp2133
-         Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-         Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
-    +    Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-     
-      ## arch/m68k/fpsp040/skeleton.S ##
-     @@ arch/m68k/fpsp040/skeleton.S: in_ea:
-    - 	.section .fixup,#alloc,#execinstr
-    + 	.section .fixup,"ax"
-      	.even
-      1:
-     -	jbra	fpsp040_die
-     +	jbsr	fpsp040_die
-     +	jbra	.Lnotkern
-      
-    - 	.section __ex_table,#alloc
-    + 	.section __ex_table,"a"
-      	.align	4
-     
-      ## arch/m68k/kernel/traps.c ##
----
+Thanks
 
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
