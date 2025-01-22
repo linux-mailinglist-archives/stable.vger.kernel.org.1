@@ -1,150 +1,127 @@
-Return-Path: <stable+bounces-110108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA443A18C99
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 08:12:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9368DA18C9D
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 08:13:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96A693A68D5
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 07:12:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EB0A1886440
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 07:14:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E311A8419;
-	Wed, 22 Jan 2025 07:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6E91A8419;
+	Wed, 22 Jan 2025 07:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ucr.edu header.i=@ucr.edu header.b="p4TY34E3";
-	dkim=pass (1024-bit key) header.d=ucr.edu header.i=@ucr.edu header.b="E8hfVqUB"
+	dkim=pass (2048-bit key) header.d=ucr.edu header.i=@ucr.edu header.b="l27EBmlT";
+	dkim=pass (1024-bit key) header.d=ucr.edu header.i=@ucr.edu header.b="g8b/d1af"
 X-Original-To: stable@vger.kernel.org
-Received: from mx2.ucr.edu (mx.ucr.edu [138.23.62.3])
+Received: from mx5.ucr.edu (mx5.ucr.edu [138.23.62.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A18F170A30
-	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 07:12:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=138.23.62.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D9A170A30
+	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 07:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=138.23.62.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737529933; cv=none; b=QCP6uW778CBGu3/T82XI6Ml2a1XSLWtD/R0B41e7+mt97C3P9M+fpBZ2jHeTLjD6fhMfLt4h0mailx1aQCpCupA/Rfcn0lDjo8kLdo7zeQB5RJdTsYScckp4yP4AAushq9Jl5Y+b7cCIp9sZdiPGN+M+st/Wzxkiz1Yfdl0Ddlg=
+	t=1737530033; cv=none; b=bwCcv2wYBIQY6QX4liWIfQdxlwCS4XHMBWvzA+tfVuk1LpUQzjSuJNPUnEpOQrV0JtEZZEgbeH2rXwgS5ESIkci3nlBNweAOvRURlEMU7cohBa+N9PtaXMpsc6VGofGgWfVzFMp4W67syZ7h1dqMy4iq3jzhlVB2f6UXYME6HPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737529933; c=relaxed/simple;
-	bh=TQz2qqf5Shgqge9WozRd1qIA2G6yah0yJXzRQ8/mjDw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d9gW7CiaNVXMbl4pZF4ZbUfKgZGfwIuwyAY7Uy5xqGw0ARRZl1JWSyEl4rJHOtuu1DFOM6ZoY7aBX++f9k07kh5aEXJC/3ByvnPbYnmffFGy1icPMb/fQYXt2spiiWyoyKe4yc/S3uhGZoYarKHIMVYRZv6UbnKzLiKMA8ra3/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ucr.edu; spf=pass smtp.mailfrom=ucr.edu; dkim=pass (2048-bit key) header.d=ucr.edu header.i=@ucr.edu header.b=p4TY34E3; dkim=pass (1024-bit key) header.d=ucr.edu header.i=@ucr.edu header.b=E8hfVqUB; arc=none smtp.client-ip=138.23.62.3
+	s=arc-20240116; t=1737530033; c=relaxed/simple;
+	bh=LoGh3/SmT47JkQWbEFBNmTIWXKte0sRayQqRU0OUAqc=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=sSJ35T19cYUA+pmyuSOLeihN01LCWkEY4RKhtpR3SsfqANJWGqvX7jhal3luhu4r0tING65hcBpdIFxYY6YKYE8UWZhlr4SVYx/s70rU94TXt+QCei60iRTH638PETKCK64bVCqrPjMC2EVrBpfTMNnecY0qnd+Y2C2evX8uhU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ucr.edu; spf=pass smtp.mailfrom=ucr.edu; dkim=pass (2048-bit key) header.d=ucr.edu header.i=@ucr.edu header.b=l27EBmlT; dkim=pass (1024-bit key) header.d=ucr.edu header.i=@ucr.edu header.b=g8b/d1af; arc=none smtp.client-ip=138.23.62.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ucr.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucr.edu
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=ucr.edu; i=@ucr.edu; q=dns/txt; s=selector3;
-  t=1737529932; x=1769065932;
+  t=1737530032; x=1769066032;
   h=dkim-signature:x-google-dkim-signature:
    x-gm-message-state:x-gm-gg:x-google-smtp-source:
-   mime-version:references:in-reply-to:from:date:
-   x-gm-features:message-id:subject:to:cc:content-type:
-   content-transfer-encoding:x-cse-connectionguid:
-   x-cse-msgguid;
-  bh=TQz2qqf5Shgqge9WozRd1qIA2G6yah0yJXzRQ8/mjDw=;
-  b=p4TY34E3Qi0heA9hjmjjBK+i9RrIbgQQOcWOLBcsx75tewQT61v4Ynbt
-   L6n7dernb6bpbCs3FsOVFIeWdEiSyZXWvphkyZoq4UIErIiRL/3npAg9c
-   LKR3tmwuKUWAgjKJQ9qpXuVIfnnS6DESc8PC3Nzzw31/RIPXmKuaK9iew
-   KVvk+ybcYdZ2/mBJsxueJV8dmh5YM3SSZYYQNTvmgl4v3xU7Swi89EVXh
-   Y7GDuwEdRcv2jxh+R8pAkApIaiv6nHGfkgZDU+DWbYTF8U0zkumdYgQEz
-   vSVfwxQv0eb0LskxdkWAlAteYRGYwaZQpEYGhtQ22f2ebb6rwFcW3ndsi
-   w==;
-X-CSE-ConnectionGUID: obwAXyFrQViIX1oZECeiiQ==
-X-CSE-MsgGUID: xnYGM65ISiGNX0sZpEuWJA==
-Received: from mail-pj1-f70.google.com ([209.85.216.70])
-  by smtp2.ucr.edu with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 21 Jan 2025 23:12:10 -0800
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-2ee9f66cb12so12529067a91.1
-        for <stable@vger.kernel.org>; Tue, 21 Jan 2025 23:12:09 -0800 (PST)
+   mime-version:from:date:x-gm-features:message-id:subject:
+   to:cc:content-type:x-cse-connectionguid:x-cse-msgguid;
+  bh=LoGh3/SmT47JkQWbEFBNmTIWXKte0sRayQqRU0OUAqc=;
+  b=l27EBmlTZDvBr20eWrzQinCUVsPTFxnBo6SI+u2+DygehLkdnSJ71XdR
+   TndL29iJgTQymhpZVovEg1Yr1GkO6vHRvXvKdpc3df+9LNFmJVUbYNroU
+   D4Hf0/roVIRfVafM0v9Fl2twgD6//4Eg1rFk2akRmbPgxn+1V2gW6bTWQ
+   nxqKeMPfCVEwFkduV4BOhqkOAKNWYsrXqcSbmkVXqpHsjsGe+OjhKiXcL
+   Mx1rYQbID8GIeclTjEPLrc0JLwCNSO4hDH+BXMz4NA36bD94tdUBjhDu6
+   IUHdsiI5muGrdFHOfutS2+fzRZPiBMBRtuIxyKVwZmZ4vWS5InWSOQK86
+   Q==;
+X-CSE-ConnectionGUID: SlS/ya4zQKmZMw2X1+Z9BQ==
+X-CSE-MsgGUID: tBjsJ/3LSZmqOPA2GzUPgw==
+Received: from mail-pl1-f200.google.com ([209.85.214.200])
+  by smtpmx5.ucr.edu with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 21 Jan 2025 23:13:51 -0800
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-216405eea1fso121246495ad.0
+        for <stable@vger.kernel.org>; Tue, 21 Jan 2025 23:13:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ucr.edu; s=rmail; t=1737529928; x=1738134728; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9JtFTMdvg7whXWi9Q/m0jbPA+gIiwJLFdv9DoR71Kbg=;
-        b=E8hfVqUBggrayY9gmbQireTwWsLUKn2LpHfNWFYGHGrAtx0RSwwdDCxDy8dOFAnO+g
-         EXpPPl0lt0MFUpYcYQIoHZQeWH5u5ngwXY3reaDA5mLpBvsN9Fg56+roZuI4AXJ/7vu1
-         Esjpb3s+Nn8cPuydhwaCcSaZoDMmlWQbf4mjc=
+        d=ucr.edu; s=rmail; t=1737530030; x=1738134830; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=cZd+e9Bm6sgA/Q7lktjj1y+ZA1qolJ2/x+9a5MZ7yIs=;
+        b=g8b/d1afCmsBnhJGs2X9Nu3l+X84YPrRiZ3a6umDHvHVb4nEblefkED6OTCqVlvkxv
+         xyJ9OTESORoogUX+QWINZeXCVtJ9DrL9yECIDnQi3Q4EQ3CGgS+Dz0RJEa3tg+0P6z6i
+         hJivueUgCnf380Yv/mVIpfROHuKL+fEcnpbx0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737529928; x=1738134728;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9JtFTMdvg7whXWi9Q/m0jbPA+gIiwJLFdv9DoR71Kbg=;
-        b=Ufewlmfw2y1JkwR/Pn7Otpj7hT6CQDYo9IzqyBqJlFeUqGb7AcDtS5PQlimguxtWw+
-         gxR8sGQ/xtmPvZ5pDdezYzeqqW7n0uHyS2VN6Iem9NM0ob2Ep4xcCCMFsrBmtbsG4KKb
-         egKGwXWC3FG0gQC3dx5xV7Xek4kEjFKzbmobSwcBEf6WPwfeJJrs4TJ1ZLId7tPacy0q
-         YQ1Dy2xLBKObEDZu67MU3BFvEE8yxi5mSbBZqXXVmn9fEArl5t1Pj2dRdWGusnmU41XW
-         pWC4ao9r9+MePkTmp35M452Pp5/6HGWd97hXqOzRElKLoA2AtTiefzm3/w7pRebP7XQO
-         3Dag==
-X-Gm-Message-State: AOJu0YwcEJueknV/QMv+pdx662bJpqROUvH3Uf+XBu8dZqYQ2aH0lZM3
-	cdFxe2IsURbFtChS7G+RB68fQ94lEO1g2b9VrMPxFZQZBBgOEJQqsV+Fn4zFqiw8RW2PB53Y0IU
-	YrSfW9ezyAtKzSP/jGkZDptZpb09NKuTFQytINAYXrxCmZq2fQ8r0u8ctoRQddgRcG7qi+Y7id9
-	ywe/4z6l7H7sS3bmAB14lss9cEROo2KaM4C4zZHA==
-X-Gm-Gg: ASbGncsj0saIUtVO+YbeHWe4epIqcIgUydRbCQNG7Zf5KU3K9HGmIHXazncKZDQi8xU
-	B5OKdDwBVlqxLc/tTgAmvWoaAkDcdyk8VLliXpH/nW0vAAba/MXGWvEEVROkMlQd/U4Stb5q3zu
-	Omo/nJYkuIXw==
-X-Received: by 2002:a17:90b:2e41:b0:2ee:f19b:86e5 with SMTP id 98e67ed59e1d1-2f782c71ec7mr33198725a91.14.1737529928120;
-        Tue, 21 Jan 2025 23:12:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHIt3sqoe33Sw1A1te78e/BC2B9bumvVRKplpPiKcucmkreg1Qp8W+Lh2q9ZsFx+B4ooJNoWyroD0jln4+VUMQ=
-X-Received: by 2002:a17:90b:2e41:b0:2ee:f19b:86e5 with SMTP id
- 98e67ed59e1d1-2f782c71ec7mr33198704a91.14.1737529927807; Tue, 21 Jan 2025
- 23:12:07 -0800 (PST)
+        d=1e100.net; s=20230601; t=1737530030; x=1738134830;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cZd+e9Bm6sgA/Q7lktjj1y+ZA1qolJ2/x+9a5MZ7yIs=;
+        b=algzxmKI7QlOf8FtTZlkms7Oj8OMDtq9BlkJQYcd4+9yMJhZYBPRmc8iiVQlbc2A/d
+         NTW2B3ncdD9WLTTrV47NpW74A7sXDecRJjbjS2mL80ZXOO43xLM9NZnwe4y6G6vD+SGr
+         jNfwtWmOsJh4FHLDaUMJSqd7w/QDBfhLoyLEBj53L4S0ynrfc10F190rDe8epKmn8ZDZ
+         LPyGyWaNUfn9EoVXOzhbXwwvv+4rX+85SiDyFDtxJe+VAxZky+rgj8pH6irsf2eeDj7u
+         bGPAj1akFo5IZJVmh/jsJojjTVin4RcGuKiiUpJ4uN2ijhzExMk4mXLZqgthj79hYFzl
+         kuYw==
+X-Gm-Message-State: AOJu0YyLeTuac93/OIWvgZhmGvU7YFh0CRrG8171tMgM9fdMAnCHD3mq
+	8MBhDgJ6N1GWOrCdJd259IOC5tRtVqIqbuQJO+qaHyVELg8gS75z0/n9pSUonmtmWra5eOnq7gS
+	dXpGwHApIFQKsI6RuhU1tSbpJKP8+EOgVnq5zb+ivvNmLs4NdgXAefVQPMUlT5Oig1h3Hood3p+
+	+stBz+4l3EtKKpG/+1KGp4AxZ9T32FTVN5Sx4ha8D4
+X-Gm-Gg: ASbGnctLamTFw+TdgkTq95t40z2LDJQtkH3pQ64edCUB9cX6KjP7rkpLKHvU8a8b8fI
+	m1Sb9xtUzPp0ddhRoukUotgXXYb8dfqrEiGEKj0fSoa+HTFsBUlEbjoNldhyHBuco+stvn2hqhF
+	dInri1K4e9Iw==
+X-Received: by 2002:a17:903:32cb:b0:215:54a1:8584 with SMTP id d9443c01a7336-21c35503ae9mr308370565ad.17.1737530029969;
+        Tue, 21 Jan 2025 23:13:49 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEyGSQDmKdLk3CJiGFEEeq6tgrcj/w2VL8+UGLm8XtY9xkY0CMBkPgHTMtpZkOkbzLuKk1tLWRUjm9ZoflOOr8=
+X-Received: by 2002:a17:903:32cb:b0:215:54a1:8584 with SMTP id
+ d9443c01a7336-21c35503ae9mr308370305ad.17.1737530029712; Tue, 21 Jan 2025
+ 23:13:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CALAgD-5WmCEvNQMkQBk+XhRFQbKCoC8XP_eMP4U7N9RTOqWmQQ@mail.gmail.com>
-In-Reply-To: <CALAgD-5WmCEvNQMkQBk+XhRFQbKCoC8XP_eMP4U7N9RTOqWmQQ@mail.gmail.com>
 From: Xingyu Li <xli399@ucr.edu>
-Date: Tue, 21 Jan 2025 23:11:57 -0800
-X-Gm-Features: AbW1kvbWSxk3ie4B1RSwZI0DowaOiaVKMgCpzbkZ5LClLiZa5mIDpjYhmvcR6TU
-Message-ID: <CALAgD-7=RP8cop-dt3mxBL3k=Kkw+Q2YniHgq+UpicbPtSBdmw@mail.gmail.com>
-Subject: Re: Patch "net/sched: Fix mirred deadlock on device recursion" should
- probably be ported to 5.4, 5.10 and 5.15 LTS.
+Date: Tue, 21 Jan 2025 23:13:38 -0800
+X-Gm-Features: AbW1kvaPzNZPf8MYs7dqohqD2ONT-DAoaoWd2cl3ijPiVPyfAG2fsEXnPAp-PC8
+Message-ID: <CALAgD-4Wd2M01V2P8DRCMU0Lg+zJzGYSNgGQCdEpRWxrrkjHvA@mail.gmail.com>
+Subject: Patch "tipc: fix kernel warning when sending SYN message" should be
+ probably ported to 5.10 and 5.15 LTS
 To: stable@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Zheng Zhang <zzhan173@ucr.edu>
+Cc: tung.q.nguyen@dektech.com.au, Jakub Kicinski <kuba@kernel.org>, 
+	Zheng Zhang <zzhan173@ucr.edu>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Sorry, the title is wrong. It should be ported to 6.1 and 6.6 LTS as
-mentioned in the email contents.
+Hi,
 
+We noticed that the patch 11a4d6f67cf5 should be ported to  5.10 and
+5.15 LTS according to the bug introducing commit. Also, it can be
+applied
+to the latest version of these two LTS branches without conflicts. Its
+bug introducing commit is f25dcc7687d4. The kernel warning and stack
+trace indicate a problem when sending a SYN message in TIPC
+(Transparent Inter-Process Communication). The issue arises because
+`copy_from_iter()` is being called with an uninitialized `iov_iter`
+structure, leading to invalid memory operations. The commit
+(`f25dcc7687d4`) introduces the vulnerability by replacing the old
+data copying mechanisms with the new `copy_from_iter()` function
+without ensuring that the `iov_iter` structure is properly initialized
+in all code paths. The patch adds initialization of `iov_iter` with
+"iov_iter_kvec(&m.msg_iter, ITER_SOURCE, NULL, 0, 0);", which ensures
+that even when there's no data to send, the `iov_iter` is correctly
+set up, preventing the kernel warning/crash when `copy_from_iter()` is
+called.
 
-On Tue, Jan 21, 2025 at 11:10=E2=80=AFPM Xingyu Li <xli399@ucr.edu> wrote:
->
-> Hi,
->
-> We noticed that the patch 0f022d32c3ec should be probably ported to 6.1 a=
-nd 6.6
-> LTS according to the bug introducing commit. Also, it can be applied
-> to the latest version of these two LTS branches without conflicts. Its
-> bug introducing commit is 3bcb846ca4cf. According to our
-> manual analysis,  the vulnerability is a deadlock caused by recursive
-> locking of the qdisc lock (`sch->q.lock`) when packets are redirected
-> in a loop (e.g., mirroring or redirecting packets to the same device).
-> This happens because the same qdisc lock is attempted to be acquired
-> multiple times by the same CPU, leading to a deadlock. The commit
-> 3bcb846ca4cf removes the `spin_trylock()` in `net_tx_action()` and
-> replaces it with `spin_lock()`. By doing so, it eliminates the
-> non-blocking lock attempt (`spin_trylock()`), which would fail if the
-> lock was already held, preventing recursive locking.  The
-> `spin_lock()` will block (wait) if the lock is already held, allowing
-> for the possibility of the same CPU attempting to acquire the same
-> lock recursively, leading to a deadlock. The patch adds an `owner`
-> field to the `Qdisc` structure to track the CPU that currently owns
-> the qdisc. Before enqueueing a packet to the qdisc, it checks if the
-> current CPU is the owner. If so, it drops the packet to prevent the
-> recursive locking. This effectively prevents the deadlock by ensuring
-> that the same CPU doesn't attempt to acquire the lock recursively.
-> --
-> Yours sincerely,
-> Xingyu
-
-
-
---
+-- 
 Yours sincerely,
 Xingyu
 
