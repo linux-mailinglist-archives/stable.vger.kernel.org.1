@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-110178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 782C1A193A2
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 15:16:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCA29A1939D
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 15:16:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 771BF3AD377
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 14:16:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D14D31883F7B
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 14:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28BEB213E67;
-	Wed, 22 Jan 2025 14:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56FB213E77;
+	Wed, 22 Jan 2025 14:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lBeFTwW2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bn6+MyIQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3CE2135CA
-	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 14:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8793C2135CA
+	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 14:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737555386; cv=none; b=uyB3m9tKZHYf6aa9BsIM9yHPu0hS4Gp+LOWdq7fBcdNDSQc1owi1exAv0bKcbeizuDlhO7tcugVZeSZX2WrU0tFLka11EM0RvVXVBpcCLZp3mMKCk3ohtVGYUlQ74kRb72RueK62I/Uwuy0hSrIA0fXl2F3tPyB3ll5lBFPyMeo=
+	t=1737555388; cv=none; b=Bs/M5NjrDfqABAKylBtZ7gucc4/VgJ5d88qinhOdoMSA3887Sl9D8Z4O7KHerh0Sz5thIiiSpCjgIAMo9oFtwT0Gx9qsyuiSZNOOkRLZ7qOdjGdz2BPjMlTVWj6UraX8EiU/yLUUBIr5jU/zIabB5hQKt5scP798CsTm1RbX+3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737555386; c=relaxed/simple;
-	bh=5CGREItGbE8OAaJTNgyg9O9BorpY3zmGQeRk5d3jaiY=;
+	s=arc-20240116; t=1737555388; c=relaxed/simple;
+	bh=swg7fyyF/HDI3SWKPXR/zHvlhIQNJRrAzjMRvu6Zq+c=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qA5EdQraUgUt3PRqRtA2Yvht5grZHgCT3+n8x4hEE/qzs4j0ZAV+p1wLH1Cdv8pDfV/6s/u8MJ1ajo8xdROWkKUCa3oxMpvpTt8tiUfE7eaMsiG3eybnX+aCnaktkO1u/vy+MEGiVdnGHDjDAoANHDU4fmbLJU8Zjfu66k596lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lBeFTwW2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1748C4CED2;
-	Wed, 22 Jan 2025 14:16:25 +0000 (UTC)
+	 MIME-Version; b=l5Vet8htjuZ/cEgNvI/ScBH56p9C8nS9eIXa6Ps1aVzgcef14vCmDlkle5O+T0LNUroVGvDoYEvKIIa+zFoMnVjZWFC1xBzxedOAwo+2UtIxHprZ932zdov2wekMSKU75FK2eHj/QgjJ9E41WXt66XU64K4+094+NmvB/lKF9Ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bn6+MyIQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F195EC4CED2;
+	Wed, 22 Jan 2025 14:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737555386;
-	bh=5CGREItGbE8OAaJTNgyg9O9BorpY3zmGQeRk5d3jaiY=;
+	s=k20201202; t=1737555388;
+	bh=swg7fyyF/HDI3SWKPXR/zHvlhIQNJRrAzjMRvu6Zq+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lBeFTwW2jXvxq2hq0FIS14NhGDVEX7fpiEKKAnC1dFHpWvK9NtoGrYLBJMayNxiKh
-	 CDDi6t4PzgMNwB6Paz3aWbfRXuAV2AGWxKRdggHr6bPTHQxX4exPra/pWebGg2q3l6
-	 nOlUGw8dGTu2rcWC/mr59sEYn1iKYIwqrStOijp5xab1Ax2evPb+bXRPNk46fRbb1L
-	 4XythBi1J1Dr9GwW2vhKT9ZFGJj+rpf4i41Ws+zmXX3mp0vDXY3KMel1ZG0Y1UkUPk
-	 nhnR06D2prAcuRIv3NGF2NyD7EEpIkpx+4kW65pUIkWDFu9ddxd/FFGlXDFi8gBXd/
-	 8VF1k/PxaqoTw==
+	b=bn6+MyIQzuWu+dM9Id95wyo3QaDpBTx3GyjY8HenYbdo3y2eBEB62jLXfLQf6iMHn
+	 q10OTh8TBwMExqLJkTlcRvR4ryKOjRjFQYtdBKDWbmtWAHt9WsmxHJ5ipC3hEYqam0
+	 RyhwDKVlNXhcv11izcLD6gQJuho1BmM8p3NgZh/jHGFVnWzpERLbmaYvdAk/B/yjo+
+	 zeMN9AXYKg7xzHrod71jhfTrmPxt2Rku6nEdwjhO//5NCw+OL7ghM6l0H+g0f8Q5zN
+	 S9EWkqw4q/ef1yv+82T6ARvX6GzhD1B3gpPPvWObedMnaWa2gqzw4jJY1bzlkq2Mht
+	 EibvybtwWJqOg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Denis Arefev <arefev@swemel.ru>,
+Cc: Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10] serial: imx: Introduce timeout when waiting on transmitter empty
-Date: Wed, 22 Jan 2025 09:16:24 -0500
-Message-Id: <20250122075707-de20e4a8c2154637@stable.kernel.org>
+Subject: Re: [PATCH] KVM: x86: switch hugepage recovery thread to vhost_task
+Date: Wed, 22 Jan 2025 09:16:26 -0500
+Message-Id: <20250122085621-2ab1779fc4c3e277@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250122113927.301596-1-arefev@swemel.ru>
+In-Reply-To:  <ZzU8qY92Q2QNtuyg@google.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,65 +63,29 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: e533e4c62e9993e62e947ae9bbec34e4c7ae81c2
+Found matching upstream commit: d96c77bd4eeba469bddbbb14323d2191684da82a
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Denis Arefev<arefev@swemel.ru>
-Commit author: Esben Haabendal<esben@geanix.com>
+WARNING: Author mismatch between patch and found commit:
+Backport author: Sean Christopherson<seanjc@google.com>
+Commit author: Paolo Bonzini<pbonzini@redhat.com>
 
 
 Status in newer kernel trees:
-6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 982ae3376c4c)
-6.1.y | Present (different SHA1: 7f9e70c68b7a)
-5.15.y | Present (different SHA1: 7f2b9ab6d0b2)
-5.10.y | Not found
+6.12.y | Present (different SHA1: 91248a2e4101)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  e533e4c62e999 ! 1:  703b785835e66 serial: imx: Introduce timeout when waiting on transmitter empty
-    @@ Metadata
-      ## Commit message ##
-         serial: imx: Introduce timeout when waiting on transmitter empty
-     
-    +    commit e533e4c62e9993e62e947ae9bbec34e4c7ae81c2 upstream.
-    +
-         By waiting at most 1 second for USR2_TXDC to be set, we avoid a potential
-         deadlock.
-     
-    @@ Commit message
-         Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
-         Link: https://lore.kernel.org/r/919647898c337a46604edcabaf13d42d80c0915d.1712837613.git.esben@geanix.com
-         Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    +    [Denis: minor fix to resolve merge conflict.]
-    +    Signed-off-by: Denis Arefev <arefev@swemel.ru>
-     
-      ## drivers/tty/serial/imx.c ##
-     @@
-    - #include <linux/slab.h>
-      #include <linux/of.h>
-    + #include <linux/of_device.h>
-      #include <linux/io.h>
-     +#include <linux/iopoll.h>
-      #include <linux/dma-mapping.h>
-      
-      #include <asm/irq.h>
-     @@ drivers/tty/serial/imx.c: imx_uart_console_write(struct console *co, const char *s, unsigned int count)
-    + {
-      	struct imx_port *sport = imx_uart_ports[co->index];
-      	struct imx_port_ucrs old_ucr;
-    - 	unsigned long flags;
-     -	unsigned int ucr1;
-    +-	unsigned long flags = 0;
-    ++	unsigned long flags;
-     +	unsigned int ucr1, usr2;
-      	int locked = 1;
-      
+Failed to apply patch cleanly, falling back to interdiff...
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-6.12.y       |  Failed     |  N/A       |
+| stable/linux-6.6.y        |  Failed     |  N/A       |
+| stable/linux-6.1.y        |  Failed     |  N/A       |
+| stable/linux-5.15.y       |  Failed     |  N/A       |
+| stable/linux-5.10.y       |  Failed     |  N/A       |
+| stable/linux-5.4.y        |  Failed     |  N/A       |
 
