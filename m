@@ -1,128 +1,226 @@
-Return-Path: <stable+bounces-110154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B2D0A190C4
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 12:39:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBA4FA190D7
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 12:46:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEBD9164121
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 11:39:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E675166A9C
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 11:46:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7330E189902;
-	Wed, 22 Jan 2025 11:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224B21BDA99;
+	Wed, 22 Jan 2025 11:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="HmfKgzt8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S8p9UURg"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A18A211A2B;
-	Wed, 22 Jan 2025 11:39:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47FA21148E
+	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 11:46:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737545981; cv=none; b=OVH33wu+EzsjW9gg+tKWevVxD61mvcnSZPr+kOaZAzHfKMSLSdv2HHDIAavXePTnWte/hNDd4jvwbY5d42tix/UDLGzSr3hzrKbUSy9cOJa3cxzgvSPku0V9Z8CSA2wsfaGHe8cOtGo+piTcWn1p89mL17R6l5WFi4aK2KPFp0s=
+	t=1737546394; cv=none; b=XyggXWaIKLDKXKu6Aen3REuGxXnMVyeYbnckGEsHaf10w80tkkS42bt9rkieM3ea0Hz+//T1ELdZpz3rEb66nsNHJNUG5G0ZDyu5szMRg+4ucrS7DF/INLSR2TBHisqOIbCDjPsPzfnDO1B+n2y/NmETPLHHlJHFilJ+K8WqrWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737545981; c=relaxed/simple;
-	bh=+dVhSQUvLzcvSSYXfU/4UkSbcl4EP9qLyCUDk1YeA8I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M3ikXjh0sEnColZcUPn6ekQSzBoNz3BqBf4+YdealxCbyUruEERCiS/S5zumCxH5l1HQio97etlL2l9VQD5QlEY1e+BH1RA23mYTnr4IznIgQGlR+iIzh04fJ1NIivuVXwZVifj24eZysd8pI0Rbh3RlorRV/fOCONOlHO8Ob88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=HmfKgzt8; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1737545967;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=uvXoMozXSUq7ECwRvOIW2A8tWpZ7jbIGzymPHm6Jvjg=;
-	b=HmfKgzt8BUKnKCByrmvAc7jYejozQtTKXhFPQO2ZlaDjE7uqLoeulo4MU1o6x/B6pG0CUS
-	iLq8RCru4oNQnLHQ1cGUDLn3n/l6wkTF2itevxnVifj6jgvyEnrF9PwiLvYWP2NsJWAJpW
-	lxFrZti5R9Fa4NOmuXh1UQE7g+ma0cs=
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	linux-serial@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Esben Haabendal <esben@geanix.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.10] serial: imx: Introduce timeout when waiting on transmitter empty
-Date: Wed, 22 Jan 2025 14:39:26 +0300
-Message-ID: <20250122113927.301596-1-arefev@swemel.ru>
+	s=arc-20240116; t=1737546394; c=relaxed/simple;
+	bh=J/3Uv76izXM3DkFhHTfwqy9MkTyaRA0S84/pyF38QyA=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=o11NoBJ90nm5H3XOaTtD4wO9LmiIyu3AbBXjFk+B4ZxjnPPKI8kCeZ4/qwrgQRZctcH4QP2yQtuXpJgTDR4nBtGRQIOP3DzqpX3KUgVoj8CpG4yd7SKncVzcigjkDlvcdvsruFWjueMLLiViGPwQvLvaoq/k7UH2dPNC8NPZqxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S8p9UURg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C966C4CEE3;
+	Wed, 22 Jan 2025 11:46:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737546394;
+	bh=J/3Uv76izXM3DkFhHTfwqy9MkTyaRA0S84/pyF38QyA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=S8p9UURgZao9lh+1de2TLrojnarOYcZZl77vvfSAh0m7M/vUtsPqLrKrMetuZFpkr
+	 qItQoglvTuDwQfHpB3FRZqI+b05vv2uKE1KyWH4AzZwFDciv6bO3MDG48Tp8Hr4q1e
+	 SVPUUX0g1/HrHCcPIVxB+nqbHWMOWinv0C5+08ABgHeebXz4qKg2O2OWrBbVpQInUZ
+	 sYGY/47MMVqT3AV6elgSgSy0tQ/gnRJlbZmHotRHsT8mN4PbJzL65Jm4taOOrmlLab
+	 Kz0Jw3aBn0qjZN30BcFLdNEhiHhWHf30ZKW9J2uZ7TBHibgWkkvMCtWZ/XgOMdfb69
+	 K3gChKxlEK74A==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1taZBn-00ENrU-Gu;
+	Wed, 22 Jan 2025 11:46:32 +0000
+Date: Wed, 22 Jan 2025 11:46:31 +0000
+Message-ID: <86plkful48.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+	broonie@kernel.org,
+	catalin.marinas@arm.com,
+	eauger@redhat.com,
+	fweimer@redhat.com,
+	jeremy.linton@arm.com,
+	oliver.upton@linux.dev,
+	pbonzini@redhat.com,
+	stable@vger.kernel.org,
+	wilco.dijkstra@arm.com,
+	will@kernel.org
+Subject: Re: [PATCH] KVM: arm64/sve: Ensure SVE is trapped after guest exit
+In-Reply-To: <Z4--YuG5SWrP_pW7@J2N7QTR9R3>
+References: <20250121100026.3974971-1-mark.rutland@arm.com>
+	<86r04wv2fv.wl-maz@kernel.org>
+	<Z4--YuG5SWrP_pW7@J2N7QTR9R3>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org, broonie@kernel.org, catalin.marinas@arm.com, eauger@redhat.com, fweimer@redhat.com, jeremy.linton@arm.com, oliver.upton@linux.dev, pbonzini@redhat.com, stable@vger.kernel.org, wilco.dijkstra@arm.com, will@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-From: Esben Haabendal <esben@geanix.com>
+On Tue, 21 Jan 2025 15:37:13 +0000,
+Mark Rutland <mark.rutland@arm.com> wrote:
+> 
+> On Tue, Jan 21, 2025 at 11:20:04AM +0000, Marc Zyngier wrote:
+> > Hi Mark,
+> >
 
-commit e533e4c62e9993e62e947ae9bbec34e4c7ae81c2 upstream. 
+[...]
 
-By waiting at most 1 second for USR2_TXDC to be set, we avoid a potential
-deadlock.
+> > > diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+> > > index 8c4c1a2186cc5..e4053a90ed240 100644
+> > > --- a/arch/arm64/kernel/fpsimd.c
+> > > +++ b/arch/arm64/kernel/fpsimd.c
+> > > @@ -1711,8 +1711,24 @@ void fpsimd_kvm_prepare(void)
+> > >  	 */
+> > >  	get_cpu_fpsimd_context();
+> > >  
+> > > -	if (test_and_clear_thread_flag(TIF_SVE)) {
+> > > -		sve_to_fpsimd(current);
+> > > +	if (!test_thread_flag(TIF_FOREIGN_FPSTATE) &&
+> > > +	    test_and_clear_thread_flag(TIF_SVE)) {
+> > > +		sve_user_disable();
+> > 
+> > I'm pretty happy with this fix. However...
+> > 
+> > > +
+> > > +		/*
+> > > +		 * The KVM hyp code doesn't set fp_type when saving the host's
+> > > +		 * FPSIMD state. Set fp_type here in case the hyp code saves
+> > > +		 * the host state.
+> > 
+> > Should KVM do that? The comment seems to indicate that this is
+> > papering over yet another bug...
+> 
+> Yes; really this should be done at hyp (and at that point, hyp could
+> actually save the entire host SVE state), but that's a larger change and
+> more painful for backporting, which is why I didn't go that route. I'm
+> happy to go try to fix hyp to do that, or I can make the comment more
+> explicit that this is a bodge, if that's all you're after?
+> 
+> Alternatively, we could take the large hammer approach and always save
+> and unbind the host state prior to entering the guest, so that hyp
+> doesn't need to save anything. An unconditional call to
+> fpsimd_save_and_flush_cpu_state() would suffice, and that'd also
+> implicitly fix the SME issue below.
 
-In case of the timeout, there is not much we can do, so we simply ignore
-the transmitter state and optimistically try to continue.
+I think I'd rather see that. Even if that costs us a few hundred
+cycles on vcpu_load(), I would take that any time over the current
+fragile/broken behaviour.
 
-Signed-off-by: Esben Haabendal <esben@geanix.com>
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Link: https://lore.kernel.org/r/919647898c337a46604edcabaf13d42d80c0915d.1712837613.git.esben@geanix.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Denis: minor fix to resolve merge conflict.]                                           
-Signed-off-by: Denis Arefev <arefev@swemel.ru>                                    
----
-Backport fix for CVE-2024-40967
-Link: https://nvd.nist.gov/vuln/detail/CVE-2024-40967
----
- drivers/tty/serial/imx.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+>
+> > > +		 *
+> > > +		 * If hyp code does not save the host state, then the host
+> > > +		 * state remains live on the CPU and saved fp_type is
+> > > +		 * irrelevant until it is overwritten by a later call to
+> > > +		 * fpsimd_save_user_state().
+> > 
+> > I'm not sure I understand this. If fp_type is irrelevant, surely it is
+> > *forever* irrelevant, not until something else happens. Or am I
+> > missing something?
+> 
+> Sorry, this was not very clear.
+> 
+> What this is trying to say is that *while the state is live on a CPU*
+> fp_type is irrelevant, and it's only meaningful when saving/restoring
+> state. As above, the only reason to set it here is so that *if* hyp
+> saves and unbinds the state, fp_type will accurately describe what the
+> hyp code saved.
+> 
+> The key thing is that there are two possibilities:
+> 
+> (1) The guest doesn't use FPSIMD/SVE, and no trap is taken to save the
+>     host state. In this case, fp_type is not consumed before the next
+>     time state has to be written back to memory (the act of which will
+>     set fp_type).
+> 
+>     So in this case, setting fp_type is redundant but benign.
+> 
+> (2) The guest *does* use FPSIMD/SVE, and a trap is taken to hyp to save
+>     the host state. In this case the hyp code will save the task's
+>     FPSIMD state to task->thread.uw.fpsimd_state, but will not update
+>     task->thread.fp_type accordingly, and:
+> 
+>     * If fp_type happened to be FP_STATE_FPSIMD, all is good and a later
+>       restore will load the state saved by the hyp code.
+> 
+>     * If fp_type happened to be FP_STATE_SVE, a later restore will load
+>       stale state from task->thread.sve_state.
+> 
+> ... does that make sense?
 
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 6e49928bb864..5abf6685fe3c 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -27,6 +27,7 @@
- #include <linux/of.h>
- #include <linux/of_device.h>
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- #include <linux/dma-mapping.h>
- 
- #include <asm/irq.h>
-@@ -2006,8 +2007,8 @@ imx_uart_console_write(struct console *co, const char *s, unsigned int count)
- {
- 	struct imx_port *sport = imx_uart_ports[co->index];
- 	struct imx_port_ucrs old_ucr;
--	unsigned int ucr1;
--	unsigned long flags = 0;
-+	unsigned long flags;
-+	unsigned int ucr1, usr2;
- 	int locked = 1;
- 
- 	if (sport->port.sysrq)
-@@ -2038,8 +2039,8 @@ imx_uart_console_write(struct console *co, const char *s, unsigned int count)
- 	 *	Finally, wait for transmitter to become empty
- 	 *	and restore UCR1/2/3
- 	 */
--	while (!(imx_uart_readl(sport, USR2) & USR2_TXDC));
--
-+	read_poll_timeout_atomic(imx_uart_readl, usr2, usr2 & USR2_TXDC,
-+				 0, USEC_PER_SEC, false, sport, USR2);
- 	imx_uart_ucrs_restore(sport, &old_ucr);
- 
- 	if (locked)
+It does now, thanks. But with your above alternative suggestion, this
+becomes completely moot, right?
+
+> 
+> > > +		 *
+> > > +		 * This is *NOT* sufficient when CONFIG_ARM64_SME=y, where
+> > > +		 * fp_type can be FP_STATE_SVE regardless of TIF_SVE.
+> > > +		 */
+> > > +		BUILD_BUG_ON(IS_ENABLED(CONFIG_ARM64_SME));
+> > 
+> > I'd rather not have this build-time failure, as this is very likely to
+> > annoy a lot of people. Instead, just make SME unselectable with KVM:
+> 
+> I'm happy to change this, but FWIW I'd used BUILD_BUG() here because it
+> kept that associated with the comment and logic, and because we disabled
+> SME in commit:
+> 
+>   81235ae0c846e1fb4 ("arm64: Kconfig: Make SME depend on BROKEN for now)"
+> 
+> ... which was CC'd stable, and so this *shouldn't* blow up on anything
+> with that commit.
+
+My experience is that people do set CONFIG_BROKEN, and don't expect
+the kernel to fail to compile -- they "only" expect it to misbehave.
+
+> 
+> So I can:
+> 
+> (a) Add the dependency, as you suggest.
+> 
+> (b) Leave that as-is.
+> 
+> (c) Solve this in a different way so that we don't need a BUILD_BUG() or
+>     dependency. e.g. fix the SME case at the same time, at the cost of
+>     possibly needing to do a bit more work when backporting.
+> 
+> ... any preference?
+
+My preference would be on (c), if at all possible. My understanding is
+now that the fpsimd_save_and_flush_cpu_state() approach solves all of
+these problems, at the expense of a bit of overhead.
+
+Did I get that correctly?
+
+Thanks,
+
+	M.
+
 -- 
-2.43.0
-
+Without deviation from the norm, progress is not possible.
 
