@@ -1,60 +1,52 @@
-Return-Path: <stable+bounces-110113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83C8CA18CD7
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 08:38:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54DFEA18CF7
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 08:45:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F4753AC2AB
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 07:38:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40B003A944F
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 07:45:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 348B21BD4F1;
-	Wed, 22 Jan 2025 07:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 334A71C3C00;
+	Wed, 22 Jan 2025 07:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VFDA8WLn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6hLvSZZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75A31DFFD;
-	Wed, 22 Jan 2025 07:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15371C3C17
+	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 07:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737531528; cv=none; b=QQOkA0AYDhJGL/rd+FIBHK5gCqyAHOEXaLO5luP6wjbo8VxdbLs2+Sk6UZ6QquexA5Hbgk1eb2Y8p4EN00AxrIYSSD8s25wyg0bzLoh4kWnoc8C2bUIaMefc5GBQ6BYYPKBfyKvCTWaaDzeQ5FWEq3mCSX4qlugRt2gBQXhrDWU=
+	t=1737531910; cv=none; b=FgFqC50v9pPMQQgHsXuIrMKB4+NEGURZ3sDWrutPYLInpiOQh5ymI9rtHL8momLnl13V9VCNGGgG9a29nkhi51ib9BFbPeJwoPYuY6TIezF0gYsoHgiEXKwttk2yJy+9a08Bn+snzjuiZ1TX0vPyyjxL5WtDhElwySWmVDs1qHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737531528; c=relaxed/simple;
-	bh=yZ5+lSIuOVgbFngowQBADMtIw4biT9MQ7x58OGMT+BA=;
+	s=arc-20240116; t=1737531910; c=relaxed/simple;
+	bh=6RZyfuz6lhQK19gAQVSgYquO/z9AT9OpNNPY6buKVto=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tEbTJDQ5MS0gEnBOhVY3tSuaxdhd2A8Ad+PgD31gjj5Z4AXK8MeGnwayeZ5RgMHIgjHPQ0qfjVjTggrMKhL2rKiGBuEnaZzZZop1MVOCzaRt3W+p8PhZkUYcuUquaFT8c6EWf9RxjQlOWHNAHb7+ORqjx8KsFPc6kzrgikZzA/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VFDA8WLn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C037BC4CED6;
-	Wed, 22 Jan 2025 07:38:45 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=iWNcNkTUdX93LflN2kRUSnrCl28pp27c+TgjQIjOw75HZvxiHYOCzMFBK1K7C64CHW6ylh+df35P+LLm0zgCcEgBjtSY2uNklSjSCj3jWfaVH7x4k66o519VgxVLFGOatZFB2xrErkG7HFYyMKSBmcloBFY+Hxw+j+oE2pJjo4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6hLvSZZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10848C4CEE3;
+	Wed, 22 Jan 2025 07:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737531526;
-	bh=yZ5+lSIuOVgbFngowQBADMtIw4biT9MQ7x58OGMT+BA=;
+	s=korg; t=1737531909;
+	bh=6RZyfuz6lhQK19gAQVSgYquO/z9AT9OpNNPY6buKVto=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VFDA8WLn9sGaV2DpXEcmvw6darJEj4LpHMmmG98Ec1PsjUm5XFkGn2I5/Sjiyjyx5
-	 IoBL1S0nmWT4r+uqNkYS8L945v4bQnep/JTHYrK3D6swa+JX3Zg7MznmaoWjl+02Tl
-	 8IokE/d3SCTDRNjfQU4YFfdYwvWfrmEr3WMzQLgI=
-Date: Wed, 22 Jan 2025 08:38:43 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Peter Schneider <pschneider1968@googlemail.com>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.1 00/64] 6.1.127-rc1 review
-Message-ID: <2025012221-whenever-sterile-11e2@gregkh>
-References: <20250121174521.568417761@linuxfoundation.org>
- <b5f7b88a-0f6a-4815-8344-bf6bf941bc91@googlemail.com>
- <Z5AYNaxIm-SwmUHb@eldamar.lan>
- <2025012244-rigor-boat-b44d@gregkh>
+	b=J6hLvSZZ14+eevJBqRIkRlW0NStPezOAdzrWxwGXvZ1HFjcd0QT4+N5dhrsgzFOkv
+	 PgKCYo3YlbVFNtX4rqQg7jbA0c2oCc4mVmZlqAHhcitB0IecMe10Z5LvhFb/mZDK4k
+	 BWS9h36nwFPWaimy0WL8b829cJm0g6nKVCKBKe4I=
+Date: Wed, 22 Jan 2025 08:45:06 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Xingyu Li <xli399@ucr.edu>
+Cc: stable@vger.kernel.org, tung.q.nguyen@dektech.com.au,
+	Jakub Kicinski <kuba@kernel.org>, Zheng Zhang <zzhan173@ucr.edu>
+Subject: Re: Patch "tipc: fix kernel warning when sending SYN message" should
+ be probably ported to 5.10 and 5.15 LTS
+Message-ID: <2025012231-tiger-litigate-a372@gregkh>
+References: <CALAgD-4Wd2M01V2P8DRCMU0Lg+zJzGYSNgGQCdEpRWxrrkjHvA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,59 +55,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2025012244-rigor-boat-b44d@gregkh>
+In-Reply-To: <CALAgD-4Wd2M01V2P8DRCMU0Lg+zJzGYSNgGQCdEpRWxrrkjHvA@mail.gmail.com>
 
-On Wed, Jan 22, 2025 at 08:35:11AM +0100, Greg Kroah-Hartman wrote:
-> On Tue, Jan 21, 2025 at 10:57:09PM +0100, Salvatore Bonaccorso wrote:
-> > Hi,
-> > 
-> > On Tue, Jan 21, 2025 at 08:32:01PM +0100, Peter Schneider wrote:
-> > > Am 21.01.2025 um 18:51 schrieb Greg Kroah-Hartman:
-> > > > This is the start of the stable review cycle for the 6.1.127 release.
-> > > > There are 64 patches in this series, all will be posted as a response
-> > > > to this one.  If anyone has any issues with these being applied, please
-> > > > let me know.
-> > > 
-> > > 
-> > > On my 2-socket Ivy Bridge Xeon E5-2697 v2 server, I get a build error:
-> > > 
-> > >   CC [M]  drivers/gpu/drm/amd/amdgpu/../display/dmub/src/dmub_dcn303.o
-> > >   CC [M]  drivers/gpu/drm/amd/amdgpu/../display/dmub/src/dmub_dcn31.o
-> > >   CC [M]  drivers/gpu/drm/amd/amdgpu/../display/dmub/src/dmub_dcn314.o
-> > >   CC [M]  drivers/gpu/drm/amd/amdgpu/../display/dmub/src/dmub_dcn315.o
-> > >   CC [M]  drivers/gpu/drm/amd/amdgpu/../display/dmub/src/dmub_dcn316.o
-> > >   CC [M]  drivers/gpu/drm/amd/amdgpu/../display/dmub/src/dmub_dcn32.o
-> > >   LD [M]  drivers/gpu/drm/amd/amdgpu/amdgpu.o
-> > >   AR      drivers/gpu/built-in.a
-> > >   AR      drivers/built-in.a
-> > >   AR      built-in.a
-> > >   AR      vmlinux.a
-> > >   LD      vmlinux.o
-> > >   OBJCOPY modules.builtin.modinfo
-> > >   GEN     modules.builtin
-> > >   GEN     .vmlinux.objs
-> > >   MODPOST Module.symvers
-> > > ERROR: modpost: module inv-icm42600-spi uses symbol
-> > > inv_icm42600_spi_regmap_config from namespace IIO_ICM42600, but does not
-> > > import it.
-> > > make[1]: *** [scripts/Makefile.modpost:127: Module.symvers] Fehler 1
-> > > make: *** [Makefile:1961: modpost] Fehler 2
-> > > root@linus:/usr/src/linux-stable-rc#
-> > > 
-> > > I have attached my .config file.
-> > 
-> > Reverting c0f866de4ce447bca3191b9cefac60c4b36a7922 would solve the
-> > problem, but then maybe the other icm42600 related commits are
-> > incorrect? Guess it's a missing prequisite for that commit missing in
-> > 6.1.y.
-> > 
-> > Can confirm the failure as well in a test build for Debian.
+On Tue, Jan 21, 2025 at 11:13:38PM -0800, Xingyu Li wrote:
+> Hi,
 > 
-> Ok, let me go fix this up, it's due to the namespace symbol stuff not
-> being in 6.1.y, I'll hand edit the offending commit and push out a -rc2.
+> We noticed that the patch 11a4d6f67cf5 should be ported to  5.10 and
+> 5.15 LTS according to the bug introducing commit. Also, it can be
+> applied
+> to the latest version of these two LTS branches without conflicts. Its
+> bug introducing commit is f25dcc7687d4. The kernel warning and stack
+> trace indicate a problem when sending a SYN message in TIPC
+> (Transparent Inter-Process Communication). The issue arises because
+> `copy_from_iter()` is being called with an uninitialized `iov_iter`
+> structure, leading to invalid memory operations. The commit
+> (`f25dcc7687d4`) introduces the vulnerability by replacing the old
+> data copying mechanisms with the new `copy_from_iter()` function
+> without ensuring that the `iov_iter` structure is properly initialized
+> in all code paths. The patch adds initialization of `iov_iter` with
+> "iov_iter_kvec(&m.msg_iter, ITER_SOURCE, NULL, 0, 0);", which ensures
+> that even when there's no data to send, the `iov_iter` is correctly
+> set up, preventing the kernel warning/crash when `copy_from_iter()` is
+> called.
 
-Same issue should be present in the 5.15-rc release, I'll go fix it up
-there too.  Odd it didn't get caught in my build testing...
+This change fails to build on those older kernels, which is perhaps why
+it was not backported there.  If you wish to see it there, please
+provide a working backport.
+
+thanks,
 
 greg k-h
 
