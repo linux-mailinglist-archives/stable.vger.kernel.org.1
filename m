@@ -1,148 +1,151 @@
-Return-Path: <stable+bounces-110212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70DD1A197A6
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 18:27:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA1DEA19791
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 18:26:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55503188E8A4
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 17:27:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4EE527A3E42
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 17:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519F12165E4;
-	Wed, 22 Jan 2025 17:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACED52153D0;
+	Wed, 22 Jan 2025 17:25:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AECjqbSR"
 X-Original-To: stable@vger.kernel.org
-Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF0B2163B3;
-	Wed, 22 Jan 2025 17:26:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C602153C6;
+	Wed, 22 Jan 2025 17:25:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737566776; cv=none; b=V218HmTnYOXtlwwAFWr4rtqS1qt6cqPRg+8jbAyU2KG6RYE6PRoDfZFJiuxZ4VjkJF6Z6YGKHuWU8CSKbtAimWLtC6gb2mMJntYRYprYzcvjL5H+OH/odvNC3O3sVl4yOQ79bAkLE+RnnR8i6V/k6HEAg4mnIy/3i+t+NIOrQtg=
+	t=1737566747; cv=none; b=asrgZ3gz8X8IiyZgz2yX8Hr1VZo4wpJhKYpkoSP652OVlg6fpqg3RrWPe2FEZE2UkcX4GDXPA2VA8JakHOAgZH4bajoEjOllhF9jHe+gHuqEXb3SshwEwsviLY5u3TfNULhRk1dPT7Md/93BSlHyLnjamK1OORnHIHBUh2AYEeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737566776; c=relaxed/simple;
-	bh=+G54zyLYx4ceeWfGoCy64lc7WrHPNoQcsdY8qK53ikE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bJPum4dLrV7b8gLl6MB7zbUH6Hp07WA+Xv+c1xwlFi2hXT115nw7VKqUvLss+DHcnqimnXUXU78fSGjnn1tdi87quvAgPTcOfERBNsLHMZYsSWFSpbVTObXLCq30xzQPLyQDP5DZBGx0UPqgOGvAo5vDWjkjAiALx1bIMptcCX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.186.29])
-	by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4YdVc466Yzz9v7JQ;
-	Thu, 23 Jan 2025 00:57:08 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.47])
-	by mail.maildlp.com (Postfix) with ESMTP id ED4E3140521;
-	Thu, 23 Jan 2025 01:26:05 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.204.63.22])
-	by APP1 (Coremail) with SMTP id LxC2BwDnbEvkKZFnsGscAQ--.5068S8;
-	Wed, 22 Jan 2025 18:26:05 +0100 (CET)
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: corbet@lwn.net,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	jack@suse.cz,
-	zohar@linux.ibm.com,
-	dmitry.kasatkin@gmail.com,
-	eric.snowberg@oracle.com,
-	paul@paul-moore.com,
-	jmorris@namei.org,
-	serge@hallyn.com
-Cc: linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-integrity@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	Roberto Sassu <roberto.sassu@huawei.com>,
+	s=arc-20240116; t=1737566747; c=relaxed/simple;
+	bh=LWiOetpLYWj2C9G4oYP4XduNRB4PwJbMWrmJI504OZc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YUzhlG2ed4Yno5QfRsN1f6Lz0nT8FnRAvqewEQLlTh74cCR4+NaPzOun8DdSs9PqMWgZRsmjb2HbYFHSgVT8p6RaL2O4PaZ23P3c5GFakXoppSzT89K9JQc56Xtp2pHNXW3H7D0odE5Ysa/ZltPfEykNDsNOCCc3reXrev3crlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AECjqbSR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79A7C4CED2;
+	Wed, 22 Jan 2025 17:25:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737566746;
+	bh=LWiOetpLYWj2C9G4oYP4XduNRB4PwJbMWrmJI504OZc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AECjqbSRoylzOg99N7HHnH4L7nZlP01GDR5u3/stuxPD5A1z2wgyy25382cMfRkkE
+	 mpeu2n1wpFZfaBylK0B/1voGzdJ5kEJ8n49leN4rxeHXgUJ03E+D9QAxj9iHD2ROEM
+	 lURR02gRvAV5yTMbaSPv81ZuCdKVHyoXymL/QZXKg5qM6/OujiEN0TUwyvV4yUTOew
+	 9gEePS0VY/gFRDIXiZe1cwfyBdTi6NJfP33G+EcsYli1fsZDycDJ5W2XVPLzN73VUo
+	 D6puM5Vc8O0krk4WF6uo9EWgPeiIJ/dDLQhKe63rO/Cf54thkYqTvYNdEEzF4HiKwc
+	 j0GnNAzYxeXmw==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1taeUB-000000002TY-3MDU;
+	Wed, 22 Jan 2025 18:25:51 +0100
+Date: Wed, 22 Jan 2025 18:25:51 +0100
+From: Johan Hovold <johan@kernel.org>
+To: manivannan.sadhasivam@linaro.org
+Cc: mhi@lists.linux.dev, Loic Poulain <loic.poulain@linaro.org>,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v3 6/6] ima: Reset IMA_NONACTION_RULE_FLAGS after post_setattr
-Date: Wed, 22 Jan 2025 18:24:32 +0100
-Message-Id: <20250122172432.3074180-7-roberto.sassu@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250122172432.3074180-1-roberto.sassu@huaweicloud.com>
-References: <20250122172432.3074180-1-roberto.sassu@huaweicloud.com>
+Subject: Re: [PATCH 2/2] bus: mhi: host: pci_generic: Recover the device
+ synchronously from mhi_pci_runtime_resume()
+Message-ID: <Z5EqH95TWIGJhPG9@hovoldconsulting.com>
+References: <20250108-mhi_recovery_fix-v1-0-a0a00a17da46@linaro.org>
+ <20250108-mhi_recovery_fix-v1-2-a0a00a17da46@linaro.org>
+ <Z5ENq9EMPlNvxNOF@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:LxC2BwDnbEvkKZFnsGscAQ--.5068S8
-X-Coremail-Antispam: 1UD129KBjvJXoWxAr1UCFWUuFWxWry7urW3Jrb_yoW5Jw48pa
-	9a9FyUGr10qFW0krn3J3W3Ca4rK39F9FWUXa15Aw1vyFnxZr1jqFyDtr17CF98Wr1SkFy2
-	qF9IvryYya1qyaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPlb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAV
-	Cq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0
-	rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267
-	AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E
-	14v26r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrV
-	C2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE
-	7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262
-	kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s02
-	6c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GF
-	v_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvE
-	c7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aV
-	AFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZF
-	pf9x07jIPfQUUUUU=
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQAQBGeQmNQFOgAAsR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z5ENq9EMPlNvxNOF@hovoldconsulting.com>
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+On Wed, Jan 22, 2025 at 04:24:27PM +0100, Johan Hovold wrote:
+> On Wed, Jan 08, 2025 at 07:09:28PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+> > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > 
+> > Currently, in mhi_pci_runtime_resume(), if the resume fails, recovery_work
+> > is started asynchronously and success is returned. But this doesn't align
+> > with what PM core expects as documented in
+> > Documentation/power/runtime_pm.rst:
 
-Commit 11c60f23ed13 ("integrity: Remove unused macro
-IMA_ACTION_RULE_FLAGS") removed the IMA_ACTION_RULE_FLAGS mask, due to it
-not being used after commit 0d73a55208e9 ("ima: re-introduce own integrity
-cache lock").
+> > Cc: stable@vger.kernel.org # 5.13
+> > Reported-by: Johan Hovold <johan@kernel.org>
+> > Closes: https://lore.kernel.org/mhi/Z2PbEPYpqFfrLSJi@hovoldconsulting.com
+> > Fixes: d3800c1dce24 ("bus: mhi: pci_generic: Add support for runtime PM")
+> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> 
+> Reasoning above makes sense, and I do indeed see resume taking five
+> seconds longer with this patch as Loic suggested it would.
 
-However, it seems that the latter commit mistakenly used the wrong mask
-when moving the code from ima_inode_post_setattr() to
-process_measurement(). There is no mention in the commit message about this
-change and it looks quite important, since changing from IMA_ACTIONS_FLAGS
-(later renamed to IMA_NONACTION_FLAGS) to IMA_ACTION_RULE_FLAGS was done by
-commit 42a4c603198f0 ("ima: fix ima_inode_post_setattr").
+I forgot to mention the following warnings that now show up when system
+resume succeeds. Recovery was run also before this patch but the "parent
+mhi0 should not be sleeping" warnings are new:
 
-Restore the original change of resetting only the policy-specific flags and
-not the new file status, but with new mask 0xfb000000 since the
-policy-specific flags changed meanwhile. Also rename IMA_ACTION_RULE_FLAGS
-to IMA_NONACTION_RULE_FLAGS, to be consistent with IMA_NONACTION_FLAGS.
+[   68.753288] qcom_mhi_qrtr mhi0_IPCR: failed to prepare for autoqueue transfer -22
+[   68.761109] qcom_mhi_qrtr mhi0_IPCR: PM: dpm_run_callback(): qcom_mhi_qrtr_pm_resume_early [qrtr_mhi] returns -22
+[   68.771804] qcom_mhi_qrtr mhi0_IPCR: PM: failed to resume early: error -22
+[   68.795053] mhi-pci-generic 0005:01:00.0: mhi_pci_resume
+[   68.800709] mhi-pci-generic 0005:01:00.0: mhi_pci_runtime_resume
+[   68.800794] mhi mhi0: Resuming from non M3 state (RESET)
+[   68.800804] mhi-pci-generic 0005:01:00.0: failed to resume device: -22
+[   68.819517] mhi-pci-generic 0005:01:00.0: device recovery started
+[   68.819532] mhi-pci-generic 0005:01:00.0: __mhi_power_down
+[   68.819543] mhi-pci-generic 0005:01:00.0: __mhi_power_down - pm mutex taken
+[   68.819554] mhi-pci-generic 0005:01:00.0: __mhi_power_down - pm lock taken
+[   68.820060] wwan wwan0: port wwan0qcdm0 disconnected
+[   68.824839] nvme nvme0: 12/0/0 default/read/poll queues
+[   68.857908] wwan wwan0: port wwan0mbim0 disconnected
+[   68.864012] wwan wwan0: port wwan0qmi0 disconnected
+[   68.943307] mhi-pci-generic 0005:01:00.0: __mhi_power_down - returns
+[   68.956253] mhi mhi0: Requested to power ON
+[   68.960753] mhi mhi0: Power on setup success
+[   68.965262] mhi-pci-generic 0005:01:00.0: mhi_sync_power_up - wait event timeout_ms = 8000
+[   73.183086] mhi mhi0: Wait for device to enter SBL or Mission mode
+[   73.653462] mhi-pci-generic 0005:01:00.0: mhi_sync_power_up - wait event returns, ret = 0
+[   73.653752] mhi mhi0_DIAG: PM: parent mhi0 should not be sleeping
+[   73.661955] mhi-pci-generic 0005:01:00.0: mhi_sync_power_up - returns
+[   73.668461] mhi mhi0_MBIM: PM: parent mhi0 should not be sleeping
+[   73.674950] mhi-pci-generic 0005:01:00.0: Recovery completed
+[   73.681428] mhi mhi0_QMI: PM: parent mhi0 should not be sleeping
+[   74.315919] OOM killer enabled.
+[   74.316475] wwan wwan0: port wwan0qcdm0 attached
+[   74.319206] Restarting tasks ...
+[   74.322825] done.
+[   74.322870] random: crng reseeded on system resumption
+[   74.325956] wwan wwan0: port wwan0mbim0 attached
+[   74.334467] wwan wwan0: port wwan0qmi0 attached
 
-Cc: stable@vger.kernel.org # v4.16.x
-Fixes: 11c60f23ed13 ("integrity: Remove unused macro IMA_ACTION_RULE_FLAGS")
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
----
- security/integrity/ima/ima.h      | 1 +
- security/integrity/ima/ima_main.c | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+> Unfortunately, something else is broken as the recovery code now
+> deadlocks again when the modem fails to resume (with both patches
+> applied):
+> 
+> [  729.833701] PM: suspend entry (deep)
+> [  729.841377] Filesystems sync: 0.000 seconds
+> [  729.867672] Freezing user space processes
+> [  729.869494] Freezing user space processes completed (elapsed 0.001 seconds)
+> [  729.869499] OOM killer disabled.
+> [  729.869501] Freezing remaining freezable tasks
+> [  729.870882] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
+> [  730.184254] mhi-pci-generic 0005:01:00.0: mhi_pci_runtime_resume
+> [  730.190643] mhi mhi0: Resuming from non M3 state (SYS ERROR)
+> [  730.196587] mhi-pci-generic 0005:01:00.0: failed to resume device: -22
+> [  730.203412] mhi-pci-generic 0005:01:00.0: device recovery started
+> 
+> I've reproduced this three times in three different paths (runtime
+> resume before suspend; runtime resume during suspend; and during system
+> resume).
+> 
+> I didn't try to figure what causes the deadlock this time (and lockdep
+> does not trigger), but you should be able to reproduce this by
+> instrumenting a resume failure.
 
-diff --git a/security/integrity/ima/ima.h b/security/integrity/ima/ima.h
-index e1a3d1239bee..615900d4150d 100644
---- a/security/integrity/ima/ima.h
-+++ b/security/integrity/ima/ima.h
-@@ -141,6 +141,7 @@ struct ima_kexec_hdr {
- 
- /* IMA iint policy rule cache flags */
- #define IMA_NONACTION_FLAGS	0xff000000
-+#define IMA_NONACTION_RULE_FLAGS	0xfb000000
- #define IMA_DIGSIG_REQUIRED	0x01000000
- #define IMA_PERMIT_DIRECTIO	0x02000000
- #define IMA_NEW_FILE		0x04000000
-diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
-index 46adfd524dd8..7173dca20c23 100644
---- a/security/integrity/ima/ima_main.c
-+++ b/security/integrity/ima/ima_main.c
-@@ -275,7 +275,7 @@ static int process_measurement(struct file *file, const struct cred *cred,
- 		/* reset appraisal flags if ima_inode_post_setattr was called */
- 		iint->flags &= ~(IMA_APPRAISE | IMA_APPRAISED |
- 				 IMA_APPRAISE_SUBMASK | IMA_APPRAISED_SUBMASK |
--				 IMA_NONACTION_FLAGS);
-+				 IMA_NONACTION_RULE_FLAGS);
- 
- 	/*
- 	 * Re-evaulate the file if either the xattr has changed or the
--- 
-2.34.1
-
+Johan
 
