@@ -1,169 +1,220 @@
-Return-Path: <stable+bounces-110171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA0B5A192AF
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 14:36:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E90A1935B
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 15:09:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DDCD7A1283
-	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 13:36:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 360E53A45A7
+	for <lists+stable@lfdr.de>; Wed, 22 Jan 2025 14:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B3284E1C;
-	Wed, 22 Jan 2025 13:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF079213E69;
+	Wed, 22 Jan 2025 14:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Xa8vQRyP"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zwJWC4wI"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE9810E0
-	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 13:36:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F25213E6B
+	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 14:08:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737552972; cv=none; b=FfAxrVkyQS8SjuDzsw/EtEkhTRhWJzYsviHT3OzjAeF63nV84JD7xTcFKbPpAoMBb1ZIIgUQ28ufee10k5KlNe4o6YXaQbUtc4SEAbBFmYRltrtmrxbmTg+tId9iiIV5hwQDVNnqK+1iKvKbpscRG9wvzCRazyl55AT8auMHU+k=
+	t=1737554940; cv=none; b=NKTKHT30V06xEADK3bVQReWKSaxOWoenqfx2bp/fQSB9I6s42IDcH/nGeRoVybFNJcCvodxqp8CfVVp6unLjhEDlRkuutg5r55JRYcRBhX/RfbMc/7cShaSXD1wKiujq1ADId6MKG2K/i2HDSxM3tGeSE82l0UOMEwvSnShh6b4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737552972; c=relaxed/simple;
-	bh=2IYadDO2tSTLRjZIcBlqU3xaEaqELXbZPSp+hlgglA4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Oy4Fofq4VzMkg/qHg2UUJcWv7heRKjZhTQ/PWN/uuMd3PQxfMkRSr75OEcVZMUCklMUtGZu4bvvdGPzuqSFwJHRaIJ6HeKem/ULOy8ZD0w9ItjuNMlJ2Pt4doDiiT0G0At73IWlIlx+CNesE/dMk3YiNdLtkHl/TSQLvnDeyEFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Xa8vQRyP; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50MD8k6k001261
-	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 13:36:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=URX8+qaLHaH6gbtuukAc0S+FHF/o
-	P3xNIEBudSejUjA=; b=Xa8vQRyPOGzAxFHOL4RHvJhIKM/mGajnbx/erEc84f1L
-	lgfS1Nv+tnNfsSghPWeKJ8MzRIwyUw60X3C8gtQsT1/3NbfkqzKVejM3tED7LSUY
-	EXRWWcPz7iEUYzIJ0mgGzA8IcwSxWPErw0ouay2fw+XO6PtIj6B0czC7n2EsvFcg
-	YRcQTaIDIKRhn305kH6F8S5uuNsWeFNUN6a8s8EWeEKthx6wBgjsvO6WI6A5GVM8
-	lWfMqAHAUzF9UfXaeqiit75kUPq4hYfrDmzP4G6ld/FSK6IgzOUH5nTdTs2KVj/6
-	SbjbFwRFiB4sD3NnhxMqTENercD4OeeauLYGRpWztA==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44aduywq8k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 13:36:09 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50MABBGC022370
-	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 13:36:08 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 448r4k8g8a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 22 Jan 2025 13:36:08 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50MDa44m32572158
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 22 Jan 2025 13:36:04 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B6B1658053;
-	Wed, 22 Jan 2025 13:36:04 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9A33658059;
-	Wed, 22 Jan 2025 13:36:02 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 22 Jan 2025 13:36:02 +0000 (GMT)
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-Date: Wed, 22 Jan 2025 14:36:01 +0100
-Subject: [PATCH v3] s390/pci: Fix SR-IOV for PFs initially in standby
+	s=arc-20240116; t=1737554940; c=relaxed/simple;
+	bh=BNZe9woVKMvClgDyTngIj+nLNjMov1obNzOfpS+FjwI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XHWglRnoIxNVpkq7W4hEAgEXl4R/LvFrtdqOFC5rYbuDf3t5BpC6rhpnuZtAhamhs9zbTxFBajY1goq3Mlbh3dLIftxrGnruS6xm8ZrFAQD3+JMhBznI925VR5igor5zSF7ERplBuC7E5HrgnOwOsHHmpWEZVPXMyoQK0T9fXQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zwJWC4wI; arc=none smtp.client-ip=209.85.221.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-51c8460328dso1839036e0c.3
+        for <stable@vger.kernel.org>; Wed, 22 Jan 2025 06:08:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1737554938; x=1738159738; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=lr1n+IaBijwJyddBXLLjBeruu5O2QY+sKXQxh8k1Lok=;
+        b=zwJWC4wI0CZfD9jIZMqVj0yk6kDXpJF0rYbMhxhgcVWhV6mqeYEBO6x1dfG0nDol7v
+         0czjiSEflAsvNrfjyy0xaogVlPCQBLh+iw9DFeH/Db/9De833WNKIBYhIg0Tbg/B2v9p
+         M2hJ3GqmFjaw4Yq22kuYz6YxDPbXSMmPTVQaVZmxMQ3YLRTs09Su2k6mU3zjavT8CWz+
+         Rpl72irU17at1HjK88mVP3UiiX5G8JraPaXJ5Egj/kOgpHkJVU+PZh8DksVcoTP7D1SD
+         j8ICgQ37ZFrwGiqFQmXQebOuEywKuobaxwbBT6zDa3paP4+6zZeOLk5zdV02KGeL3btw
+         kgSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737554938; x=1738159738;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lr1n+IaBijwJyddBXLLjBeruu5O2QY+sKXQxh8k1Lok=;
+        b=TZfcQvqgksY6NHNhRW4869EmZsqiwEDPY2BQa4gsN/mOVigkAVR/1W2jSy+pa0u0SC
+         XfSoya0uocAHXqeATlST4y0HvZ2Dlh9fFEDNwbCveILj1DaLSuyzMI8HSCg4AhACLOZD
+         DzPxcPAbx8IJw3j69rpLP2o1ZhoexciIULRWXkfS54tJ9G8td2s0IrtAjlLY+M5Ut5C7
+         Sc5OUhAyKno9x6YBSSXFJc2De0aGGXj9rgfR3SVvhS2PhAOlVtLMHOhKKyS+VRish4eA
+         JzUCkRsP59YcUfLZEjcQ+w49i5SFznvs01iMagqmiEJPWyLjaDLdpFs/tCC6mM9ZC1fI
+         R29A==
+X-Gm-Message-State: AOJu0YwC6sRJOMImbL73rtWqYQgKxxzYJIkAgv4tAQpQAErVo+Jb7QCC
+	neD/MKKgokz6x++/EQM6QwWnN3UCJxPIJGHO1pBt3r3+WACzZxMT834yKNe/YI38aqDhhGikJKx
+	tjKGdC+FSCytHfIn0Ux3KuSQcaoUzMXuijuTS2Q==
+X-Gm-Gg: ASbGncvpJ3nHMZsWF/9LkwXSxdGc019q3RY0DgoEWC1E+ks9Y5W35rmYzZt9gOXaU39
+	e0kN5oMqVuYH8FfG2IwwI/JuOo40SXdz/XIG5jiyi305NxN8MubVvHqXyuDYs5fWKOd1hQiXL6K
+	iUI+X40vGLRg==
+X-Google-Smtp-Source: AGHT+IGLWXwyuXaXwfJs34+xd6SLmksW1fOx6jKIpx1cgMPzurnoBpojdOddNFPnUE9Cisi5OmuhcMLx31lCfxgL008=
+X-Received: by 2002:a05:6122:16a8:b0:517:4fca:86e2 with SMTP id
+ 71dfb90a1353d-51d5b3b081emr16121970e0c.10.1737554937647; Wed, 22 Jan 2025
+ 06:08:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250122-fix_standby_pf-v3-1-63cd58a114e6@linux.ibm.com>
-X-B4-Tracking: v=1; b=H4sIAED0kGcC/2XM0QqDIBTG8VcJr2d4dCXtau8xRmgel7BVaJMie
- vdZMBjt8n84328hAb3DQC7ZQjxGF1zfpRCnjDSt6h5InUlNOOMFAyipdVMdRtUZPdeDpQimAFG
- dsdKCpNHgMX3s4O2eunVh7P28+xG265eSRyoCBWqlMSClZbwR16fr3lPu9Ctv+hfZuMh/CM7+C
- J6IsgDFjQSLSh+JdV0/2waHMfMAAAA=
-X-Change-ID: 20250116-fix_standby_pf-e1d51394e9b3
-To: Gerd Bayer <gbayer@linux.ibm.com>, Matthew Rosato <mjrosato@linux.ibm.com>,
-        Halil Pasic <pasic@linux.ibm.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Peter Oberparleiter <oberpar@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        linux390-list@tuxmaker.boeblingen.de.ibm.com,
-        Niklas Schnelle <schnelle@linux.ibm.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ilCWMO4W1MIi_gBIkYSI1dUp_xAJgXbv
-X-Proofpoint-GUID: ilCWMO4W1MIi_gBIkYSI1dUp_xAJgXbv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-22_06,2025-01-22_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
- adultscore=0 priorityscore=1501 spamscore=0 lowpriorityscore=0
- suspectscore=0 clxscore=1011 bulkscore=0 malwarescore=0 mlxlogscore=999
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501220100
+References: <20250122073830.779239943@linuxfoundation.org>
+In-Reply-To: <20250122073830.779239943@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 22 Jan 2025 19:38:46 +0530
+X-Gm-Features: AWEUYZmm_93N1P23_VAh3-RRUpaVrMKj5gQ3K8-rdVA_HV_VCJkQxpDVG-hIKhg
+Message-ID: <CA+G9fYvacKD7aFkMCW6nwjZ4t-cpH0deLiPY-cFvGkRn5hgK3w@mail.gmail.com>
+Subject: Re: [PATCH 5.15 000/127] 5.15.177-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, Anders Roxell <anders.roxell@linaro.org>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
 
-Since commit 25f39d3dcb48 ("s390/pci: Ignore RID for isolated VFs") PFs
-which are not initially configured but in standby are considered
-isolated. That is they create only a single function PCI domain. Due to
-the PCI domains being created on discovery, this means that even if they
-are configured later on, sibling PFs and their child VFs will not be
-added to their PCI domain breaking SR-IOV expectations.
+On Wed, 22 Jan 2025 at 13:34, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.15.177 release.
+> There are 127 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 24 Jan 2025 07:38:04 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.177-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-The reason the referenced commit ignored standby PFs for the creation of
-multi-function PCI subhierarchies, was to work around a PCI domain
-renumbering scenario on reboot. The renumbering would occur after
-removing a previously in standby PF, whose domain number is used for its
-configured sibling PFs and their child VFs, but which itself remained in
-standby. When this is followed by a reboot, the sibling PF is used
-instead to determine the PCI domain number of it and its child VFs.
 
-In principle it is not possible to know which standby PFs will be
-configured later and which may be removed. The PCI domain and root bus
-are pre-requisites for hotplug slots so the decision of which functions
-belong to which domain can not be postponed. With the renumbering
-occurring only in rare circumstances and being generally benign, accept
-it as an oddity and fix SR-IOV for initially standby PFs simply by
-allowing them to create PCI domains.
+The following build regressions noticed and reported last week and
+found it here again on arc, arm, mips, parisc, powerpc with gcc and clang
+toolchains on Linux 5.15.177-rc1 and Linux 5.15.177-rc2
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
-Fixes: 25f39d3dcb48 ("s390/pci: Ignore RID for isolated VFs")
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
----
-Changes in v3:
-- Add R-b from Gerd
-- Add Cc: stable…
-- Add commas (Sandy)
+Build regression: arc, arm, mips, parisc, powerpc,
+drivers/usb/core/port.c struct usb_device has no member named
+port_is_suspended
 
-Changes in v2:
-- Reword commit message
----
- arch/s390/pci/pci_bus.c | 1 -
- 1 file changed, 1 deletion(-)
+First seen on Linux (Linux 5.15.177-rc2)
+  Good: v5.15.176
+  Bad: Linux 5.15.177-rc2
 
-diff --git a/arch/s390/pci/pci_bus.c b/arch/s390/pci/pci_bus.c
-index d5ace00d10f04285f899284481f1e426187d4ff4..857afbc4828f0c677f88cc80dd4a5fff104a615a 100644
---- a/arch/s390/pci/pci_bus.c
-+++ b/arch/s390/pci/pci_bus.c
-@@ -171,7 +171,6 @@ void zpci_bus_scan_busses(void)
- static bool zpci_bus_is_multifunction_root(struct zpci_dev *zdev)
- {
- 	return !s390_pci_no_rid && zdev->rid_available &&
--		zpci_is_device_configured(zdev) &&
- 		!zdev->vfn;
- }
- 
+* arc:
+  build:
+  - gcc-9-axs103_defconfig
+  - gcc-9-vdk_hs38_smp_defconfig
 
----
-base-commit: 6b7afe1a2b6905e42fe45bd7015f20baa856e28e
-change-id: 20250116-fix_standby_pf-e1d51394e9b3
+* arm:
+  build:
+  - clang-19-axm55xx_defconfig
+  - clang-19-footbridge_defconfig
+  - gcc-12-axm55xx_defconfig
+  - gcc-12-footbridge_defconfig
+  - gcc-8-axm55xx_defconfig
+  - gcc-8-footbridge_defconfig
 
-Best regards,
--- 
-Niklas Schnelle
+* mips:
+  build:
+  - gcc-12-ath79_defconfig
+  - gcc-12-bcm47xx_defconfig
+  - gcc-12-rt305x_defconfig
+  - gcc-8-ath79_defconfig
+  - gcc-8-bcm47xx_defconfig
+  - gcc-8-rt305x_defconfig
 
+* parisc:
+  build:
+  - gcc-11-allyesconfig
+  - gcc-11-defconfig
+
+* powerpc:
+  build:
+  - clang-19-ppc64e_defconfig
+  - gcc-12-cell_defconfig
+  - gcc-12-ppc64e_defconfig
+  - gcc-8-cell_defconfig
+  - gcc-8-ppc64e_defconfig
+
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+
+Build log:
+-------
+fs/ext4/readpage.c: In function 'ext4_mpage_readpages':
+fs/ext4/readpage.c:413:1: warning: the frame size of 1132 bytes is
+larger than 1024 bytes [-Wframe-larger-than=]
+  413 | }
+      | ^
+2025/01/22 08:45:53 socat-internal[1491] W waitpid(-1, {}, WNOHANG):
+no child has exited
+fs/mpage.c: In function 'do_mpage_readpage':
+fs/mpage.c:336:1: warning: the frame size of 1092 bytes is larger than
+1024 bytes [-Wframe-larger-than=]
+  336 | }
+      | ^
+fs/mpage.c: In function '__mpage_writepage':
+fs/mpage.c:672:1: warning: the frame size of 1156 bytes is larger than
+1024 bytes [-Wframe-larger-than=]
+  672 | }
+      | ^
+drivers/usb/core/port.c: In function 'usb_port_shutdown':
+drivers/usb/core/port.c:299:26: error: 'struct usb_device' has no
+member named 'port_is_suspended'
+  299 |         if (udev && !udev->port_is_suspended) {
+      |                          ^~
+
+## Build
+* kernel: 5.15.177-rc2
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+* git commit: a38aec37d68a477d59deca3dad2b2108c482c033
+* git describe: v5.15.176-124-ga38aec37d68a
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.176-124-ga38aec37d68a/
+
+metadata:
+---------
+* Build log: https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.176-124-ga38aec37d68a/testrun/26887549/suite/build/test/gcc-11-defconfig/log
+* Details: https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.176-124-ga38aec37d68a/testrun/26887549/suite/build/test/gcc-11-defconfig/details/
+* build: https://storage.tuxsuite.com/public/linaro/lkft/builds/2rydJdviHEKygtIIXuzF9SBprlr/
+* Kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2rydJdviHEKygtIIXuzF9SBprlr/config
+* Architecures: arc, arm, mips, parisc, powerpc
+* Toolchain version: gcc-12, gcc-11, gcc-8 and clang-19
+
+Steps to reproduce:
+------
+$ tuxmake --runtime podman --target-arch arm --toolchain gcc-12
+--kconfig footbridge_defconfig
+$ tuxmake --runtime podman --target-arch sh --toolchain gcc-11
+--kconfig defconfig
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
