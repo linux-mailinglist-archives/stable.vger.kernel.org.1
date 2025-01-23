@@ -1,133 +1,167 @@
-Return-Path: <stable+bounces-110275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6408A1A4C5
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 14:19:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17CB7A1A511
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 14:33:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E731C3A3C13
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 13:19:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01D41188190D
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 13:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C149F20F094;
-	Thu, 23 Jan 2025 13:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20742101B3;
+	Thu, 23 Jan 2025 13:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="S0R3F1GM"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b="gLrJslGm"
 X-Original-To: stable@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F31938F83;
-	Thu, 23 Jan 2025 13:19:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737638391; cv=none; b=kCvjPceoqE16cw+WlG3Nf39Qfq6Jm3vPuSVqmBS6FLvl97MnNr5P9DLnm/dkSFjleXLHU5a0RynFMzbdeIm+Du25JBrMvpCyQDV5oO+lYikFYTKM4Djyc/n6MLPltMvCdlk0PkiO0yMr0jGnX/cobrxvG/Pyg3oRCVSEkytvpIU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737638391; c=relaxed/simple;
-	bh=/kihfaFGO49thI+Od/KeUYGlC98j80PRn0PUwUiPuTk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TBEzbiPuAn9W1tXo0CQBLnRvL0Fe4UVT+GyS7ED6uPIA1aSy5B52kuUlda6moh2A0gmVXrGHPsUpBsVDAMt3zsPlHJrA2ruxmjl+8xjivb40LWuzU22NfiGCZhe6PH5M7jtJzNI7Lhxq+1i/Q0gr/NA0PgIqjDYhXHN/8h+Cklc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=S0R3F1GM; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1737638386;
-	bh=/kihfaFGO49thI+Od/KeUYGlC98j80PRn0PUwUiPuTk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S0R3F1GMfZfkBmtT3YlsZb/OFPRVhImdlvD7qen0g9S1oCwbLEW839vszuxKJOwT2
-	 lRt6YD2bD6lq9YfErgiYlf4eEgj5h9XRw9l9hhAzBbWetAchgxE4sj/ORcB0i9jD8J
-	 A2rJgCONx/enmCRAfZYdzLMBStrT/6sa7/76/S0U=
-Date: Thu, 23 Jan 2025 14:19:46 +0100
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Cc: Richard Cochran <richardcochran@gmail.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, John Stultz <john.stultz@linaro.org>, 
-	Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH RESEND net] ptp: Ensure info->enable callback is always
- set
-Message-ID: <779708b6-d61c-4688-92cc-6afb987334d6@t-8ch.de>
-References: <20250123-ptp-enable-v1-1-b015834d3a47@weissschuh.net>
- <Z5IOHVu9L+QpyK4Y@mev-dev.igk.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81B226AF5;
+	Thu, 23 Jan 2025 13:33:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737639199; cv=pass; b=fRooJMLSKcR13YtiHIN2cAnMlDUSUqa1shcwICpadjFSYZTqkKgdDv7chK1ksl2qmYnvNE2ZLZzWoBIE2rujrc/4VEf3Z9jkOpI2raCYPHr8RtcQWFL31RWGwfLQ61touBTGzPdeyWJsb1MEJGAbrlJcxE3Hm45+zCozzHbiDPQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737639199; c=relaxed/simple;
+	bh=zcn7EVFrvuAUqMZMollZ4XEXlnBgz0yyuWiz55nFIYM=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=nvFdHLrZlX81Yipw9zcup/IYcoruaubwy0FCNdfAmBkSsep9bQDaM72NNSrxGpm8ir/nnLQ8zbXkwlWjPYOi3NsLNYpD06nT3vlTT5mziZH0g+q9qZ/XXyVhdZtXxuThPbP7huDmJ1ASDCZDv4+NS4k73vP1+xZFnzE9UT6xJpE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b=gLrJslGm; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1737639168; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=fLChuA3w2PBnyfCV8m7CYiHtO2/mfki5IqwK/EYYRRAfxEWMBYJAMhpuKirUQ41z/NQXNOWQunUJow/D+85bB2P7YHQRhLRrzjSkGQ5xpyq0n1/FfQw0SfQ2VWVoqPPmCC9GZ577jxA+cQGwetKKNPQ8SRlVl/aI9E/gfYQSmiA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1737639168; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=pIZVDa5U89pbgaQu1/1prr5QTUjuW5JiG2xL5lvr4ls=; 
+	b=GTLm9Ccgp4mQIQ61YohV6ZzBrK+8ZkbSVf7UdeaS3dZ9rChKmutGUjePRut/jczwrFqsXxiI+d6kHCDm+tMQPJyuFxnFemPez7l4aagCfIaFwKB496TA/sv39VTXX+wWywEumoFaa5Ufmz0Nweq1o3R5e5C8Yjbfhia4aGStlfc=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=Usama.Anjum@collabora.com;
+	dmarc=pass header.from=<Usama.Anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1737639168;
+	s=zohomail; d=collabora.com; i=Usama.Anjum@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=pIZVDa5U89pbgaQu1/1prr5QTUjuW5JiG2xL5lvr4ls=;
+	b=gLrJslGmxJ+VpMRwpvczw8Y6VKna8Zi/YtFPLuKho3dljHPY810T7WGwP9TlODgr
+	7RoDxiV5fMdi9AiYUsD23dkE+9hWynOff7hwaZ8xAEItQK/MJAhk/ftDwiUmmAcGXC4
+	S9H1fBmFcVlM3HJ1wuIpXBnL9PENvaEN8sJY1o48=
+Received: by mx.zohomail.com with SMTPS id 1737639161835774.1822088500033;
+	Thu, 23 Jan 2025 05:32:41 -0800 (PST)
+Message-ID: <53e55a6a-0f80-4798-87e9-ca9cc0d23503@collabora.com>
+Date: Thu, 23 Jan 2025 18:33:06 +0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Cc: Usama.Anjum@collabora.com, patches@lists.linux.dev,
+ linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+ akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 5.15 000/127] 5.15.177-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+References: <20250122073830.779239943@linuxfoundation.org>
+Content-Language: en-US
+From: Muhammad Usama Anjum <Usama.Anjum@collabora.com>
+In-Reply-To: <20250122073830.779239943@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z5IOHVu9L+QpyK4Y@mev-dev.igk.intel.com>
+X-ZohoMailClient: External
 
-On 2025-01-23 10:38:37+0100, Michal Swiatkowski wrote:
-> On Thu, Jan 23, 2025 at 08:22:40AM +0100, Thomas Weißschuh wrote:
-> > The ioctl and sysfs handlers unconditionally call the ->enable callback.
-> > Not all drivers implement that callback, leading to NULL dereferences.
-> > Example of affected drivers: ptp_s390.c, ptp_vclock.c and ptp_mock.c.
-> > 
-> > Instead use a dummy callback if no better was specified by the driver.
-> > 
-> > Fixes: d94ba80ebbea ("ptp: Added a brand new class driver for ptp clocks.")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-> > ---
-> >  drivers/ptp/ptp_clock.c | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> > 
-> > diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
-> > index b932425ddc6a3789504164a69d1b8eba47da462c..35a5994bf64f6373c08269d63aaeac3f4ab31ff0 100644
-> > --- a/drivers/ptp/ptp_clock.c
-> > +++ b/drivers/ptp/ptp_clock.c
-> > @@ -217,6 +217,11 @@ static int ptp_getcycles64(struct ptp_clock_info *info, struct timespec64 *ts)
-> >  		return info->gettime64(info, ts);
-> >  }
-> >  
-> > +static int ptp_enable(struct ptp_clock_info *ptp, struct ptp_clock_request *request, int on)
-> > +{
-> > +	return -EOPNOTSUPP;
-> > +}
-> > +
-> >  static void ptp_aux_kworker(struct kthread_work *work)
-> >  {
-> >  	struct ptp_clock *ptp = container_of(work, struct ptp_clock,
-> > @@ -294,6 +299,9 @@ struct ptp_clock *ptp_clock_register(struct ptp_clock_info *info,
-> >  			ptp->info->getcrosscycles = ptp->info->getcrosststamp;
-> >  	}
-> >  
-> > +	if (!ptp->info->enable)
-> > +		ptp->info->enable = ptp_enable;
-> > +
-> >  	if (ptp->info->do_aux_work) {
-> >  		kthread_init_delayed_work(&ptp->aux_work, ptp_aux_kworker);
-> >  		ptp->kworker = kthread_run_worker(0, "ptp%d", ptp->index);
-> > 
-> > ---
-> > base-commit: c4b9570cfb63501638db720f3bee9f6dfd044b82
-> > change-id: 20250122-ptp-enable-831339c62428
-> > 
-> > Best regards,
-> > -- 
-> > Thomas Weißschuh <linux@weissschuh.net>
+On 1/22/25 1:03 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.177 release.
+> There are 127 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+> Responses should be made by Fri, 24 Jan 2025 07:38:04 +0000.
+> Anything received after that time might be too late.
 > 
-> What about other ops, did you check it too? Looks like it isn't needed,
-> but it sometimes hard to follow.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.177-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
+> -------------
+OVERVIEW
 
-I couldn't find any missing, but I'm not familiar with the subsystem and
-didn't check too hard.
+        Builds: 36 passed, 2 failed
 
-Note:
+    Boot tests: 449 passed, 13 failed
 
-A follow-up fix would be to actually guard the users of ->enable and
-error out. For sysfs the attributes could be hidden completely.
-That would be a nicer user interface but more code change which are not
-so easily backportable.
+    CI systems: broonie, maestro
+
+REVISION
+
+    Commit
+        name: v5.15.176-124-ga38aec37d68a
+        hash: a38aec37d68a477d59deca3dad2b2108c482c033
+    Checked out from
+        https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
 
 
-Thomas
+BUILDS
+
+    Failures
+      -sparc (sparc64_defconfig)
+      Build detail: https://kcidb.kernelci.org/d/build/build?orgId=1&var-id=broonie:a38aec37d68a477d59deca3dad2b2108c482c033-sparc-sparc64_defconfig
+      CI system: broonie
+
+      -riscv (defconfig)
+      Build detail: https://kcidb.kernelci.org/d/build/build?orgId=1&var-id=maestro:6790ba7d09f33884b18d676f
+      Build error: drivers/usb/core/port.c:299:26: error: ‘struct usb_device’ has no member named ‘port_is_suspended’
+      CI system: maestro
+
+
+BOOT TESTS
+
+    Failures
+
+	All of following failed because of:
+	BUG: kernel NULL pointer dereference, address: 00000000000002fc
+
+      i386:(defconfig)
+      -hp-x360-14a-cb0001xx-zork
+      -asus-CM1400CXA-dalboz
+      -lenovo-TPad-C13-Yoga-zork
+      -acer-cp514-2h-1130g7-volteer
+      CI system: maestro
+
+      x86_64:(cros://chromeos-5.15/x86_64/chromeos-amd-stoneyridge.flavour.config,
+              x86_64_defconfig,
+              cros://chromeos-5.15/x86_64/chromeos-intel-pineview.flavour.config)
+      -asus-CM1400CXA-dalboz
+      -hp-x360-14a-cb0001xx-zork
+      -hp-14b-na0052xx-zork
+      -lenovo-TPad-C13-Yoga-zork
+      -acer-chromebox-cxi4-puff
+      -acer-cbv514-1h-34uz-brya
+      -acer-cp514-2h-1160g7-volteer
+      -acer-cb317-1h-c3z6-dedede
+      -acer-cp514-2h-1130g7-volteer
+      CI system: maestro
+
+See complete and up-to-date report at:
+
+    https://kcidb.kernelci.org/d/revision/revision?orgId=1&var-git_commit_hash=a38aec37d68a477d59deca3dad2b2108c482c033&var-patchset_hash=
+
+
+Tested-by: kernelci.org bot <bot@kernelci.org>
+
+Thanks,
+KernelCI team
 
