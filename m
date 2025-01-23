@@ -1,190 +1,138 @@
-Return-Path: <stable+bounces-110256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF2EA19FEF
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 09:29:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56034A19FF8
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 09:36:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A156518867D5
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 08:29:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D32783AE9BB
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 08:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00BB20C02E;
-	Thu, 23 Jan 2025 08:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265F120C024;
+	Thu, 23 Jan 2025 08:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="gaeFDqI7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e0qg/WX2"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D273F320B;
-	Thu, 23 Jan 2025 08:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829C520B80A;
+	Thu, 23 Jan 2025 08:36:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737620970; cv=none; b=P4eseZPiY9K/EXv4izU1RKU4jTvSQvPX9xGR+USCDyuuMnxug4mlHAwYlLQcqwM5/g2J4RZr17nDj05LcD8+4FwNTO2sO/LRerExAA8VtqZD47VdvL+qUd2vnCB2xkbswfA/2AWDQ0OE5DF/SyAXbqXlpPY5bB1AuEf2KFxwIk4=
+	t=1737621361; cv=none; b=OHmd3Hr9d11BYCqPqOTZldN7GzXpS7fpR4BJrGya5CaTUZICBN5uhGdaJNFRDQ2pA6Eq60VAt3oN+32ZzLou4NEQueiBeFDVWJyUQFqPQ44Vdjvp3ub8uwGWoqUMTPRhuy69ruAuaSFzgxBvbF/uluqFm+GVSk/ncuoseLBBXGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737620970; c=relaxed/simple;
-	bh=el8JnaocJDJNIilZYYosfyB/Py/zF97+bTAl1MHRrF4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZlKLeZlWQxHymZyLJWt3zIxsB8qHJuZqp5W29hYUWzptgsiUbCwnYH7J0CD/1tn6hduSxC5BFllL3+FBqluokBuXhxjuQhoSd9ufxt+TqrVGpsu5P07OtMHrgNprHH9HDqIeAxsl/hqVjxW2eV1f8XXOrhXepf4VuEAqjyI3kc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=gaeFDqI7; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50N0pflP027435;
-	Thu, 23 Jan 2025 08:29:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=IGbsc4XAXu1kKgqrUkSDfxp8jL5aoV
-	XaWpN/kwBrMQE=; b=gaeFDqI7wY/rC8UHBu6tocSu5O/OBAIFm+4NEg3PqZykxY
-	FEFd/FQReodL+Y0CeEhEXTl1ttL3fEuQlJsfwbFTnMjt6W1p3nw0vJVtjlVGz7fE
-	XaGTUzM2nSoU4ZSRP7BYVnjEKtehMARxTYDxhOA1FeH/aIlpJ/rhsyEdEf5GuChk
-	N6bwD3VRLZiLhP+l4ZyiXQr+dnyaUPzA8okWzkiLr11Ph2mlmlGrGpWyx1DBlbDV
-	L9AO8nqbu2fzzPrCKxwMadbVjHditn90OpsG/BVduxI2G7hy0W0EJWzJIwmmO3+c
-	lxXjbUO2bDoWOs64PHqDOliVuuYl6J81ldbk5KWA==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44b2xym9ff-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jan 2025 08:29:25 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50N6g88t022387;
-	Thu, 23 Jan 2025 08:29:24 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 448r4kcga0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jan 2025 08:29:24 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50N8TKRV22479304
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Jan 2025 08:29:21 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DFC7D2004F;
-	Thu, 23 Jan 2025 08:29:20 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C0EF820043;
-	Thu, 23 Jan 2025 08:29:20 +0000 (GMT)
-Received: from osiris (unknown [9.152.212.60])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 23 Jan 2025 08:29:20 +0000 (GMT)
-Date: Thu, 23 Jan 2025 09:29:18 +0100
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] s390: Add '-std=gnu11' to decompressor and purgatory
- CFLAGS
-Message-ID: <20250123082918.7753-A-hca@linux.ibm.com>
-References: <20250122-s390-fix-std-for-gcc-15-v1-1-8b00cadee083@kernel.org>
+	s=arc-20240116; t=1737621361; c=relaxed/simple;
+	bh=9d0NMu8Vr9pmkDsrgxwczUM/xGPN56RXc7d3r26kf7o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HSUvAR6aK4zpxQaKlRfvtYxSeeL9Q6UHZdM0+VnkA2Jm+A8mywhnfRatJvAAv6PZczXxT9vkE7MaPGFJ2eUWmwZNxRZHM+sau9jb9DU+4zaBk/dL6+Vj3C8Ei61PEsKv2JnD4PfPkVPdJqEf0zRaBttXVR5nbRwouD2IC8SDkNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e0qg/WX2; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2166651f752so12330905ad.3;
+        Thu, 23 Jan 2025 00:36:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737621359; x=1738226159; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nRuUrZ+X/fNLuM+96mPvasp0f1sEW4x60a4HaBMx6cw=;
+        b=e0qg/WX2unK6eBl8n/UTS2n+cyfazYd5zPTNXCXn5kw3OdKZ1WOxxJsWTwH1kx4OEz
+         i6gpbZ0B/uLYyd5EKJHNk9H+0yTxExUH0HoGEtF5bfkaWPy4djprcV42ltCqO7VOX8y9
+         qIq6J+XSknJwabKyPa+/A2SBGRGVrKxBjBq9pgfJMTq0+ge4SjysoLw/Pqt9Ar5brXPp
+         NRfkXRX73m5lDEn0bxQZkrz28KZjrmeU/FjLQpD6cpuToD/PIaVaYl0gqg+cPrvnUICH
+         DajISJIzUx8+2vygfg88179NqM/nZ1D6nmUwbF4AUlxepFVqFNEosFaBSNzDdrR6wYHi
+         sftA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737621359; x=1738226159;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nRuUrZ+X/fNLuM+96mPvasp0f1sEW4x60a4HaBMx6cw=;
+        b=Cf0UArz2gdIdRE7BJhm/+7YWLS51XEM51jgvLrAjR0nzNu7eJMQclEIIq78/WCqHH1
+         KJ6nMaEYJVdxeIYJzOZ3/Zt9USS8xr4J0Vfyh7b+yeqsiyPqy4jmBNGCGEN4oqnT5MYT
+         TNWFIUY6Q6nzh6n7OTDaK8sdxGcq3R34rGxQ4c2b//rWBVhd2jOu9E3RocBRlqDRwkpx
+         TxPGl7sX3K3Jy7K+Oyyj1Gy4XSjrP89X/cEx03ydZSMViDs/1TRCJ2wLBZu2f+X/OfeM
+         U8CeZPT8SUfAyUdUvHcUAG97H+RZMPB4AzNRqnPRQrj1g/wwdFEphqHt/+YAFx6XV/Pm
+         udLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXLTeC4qz+QG68UaAI3yqT8bUNba3wL9a2r0UT5EF99l1iK6eOgazuE6Sfad7Wlaxdpa1jvReXH3QbodCbB+Z8=@vger.kernel.org, AJvYcCXxazg0i0Ai44CnihVEtoBpFoqy0pDTgeLJp4hxDs1qMfoVCjp2sMhxk54SP5mwZJt2a+PzzSIw4XQ7iDU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxopx9E15pc/kDkQ66ijHf6jmchjm6fSEN3z8djOQkXEfHXwH+d
+	KJLlk9i15SJFUma4l6p3sDl5AutEdwddWs61uG/CT+inUuFSoxkQ8QhOIPXK
+X-Gm-Gg: ASbGncurXwmsBzLM3CUXjQgRy/eK0qVJJg1fNiX3bcpLs6nkiTfwjlUGFWZ1e+hlzvQ
+	4F6kelcavAEWXZAEwQIqiFqfoJMBKMM+y6sv/JwSSrNxENvo60L4KNAlioIAoTw5R4S9Ie8+N4x
+	zCnQMooBO0qQbJ262figjzJabXJFmLa4XWaSczwUbH067TFchZdpOOvQrRrPPQHVUAErFQi4YUv
+	tSgaDyOWA7l5SP3VPkWW80UHDhIyh8B+C9Li12d+1i1dTDIjeWEk9r8G9HrPgznwpH+NT967RdR
+	ehY3R/SKOGqDVUTFpLWsw4rAuh4TU5DjQF+Mt1Dq
+X-Google-Smtp-Source: AGHT+IHzBtes2/AcX/XzEEZhXMZD72Znl2Pf8eP22awI9v2aL/irqO6yWyjhrrziyaCoEGxFd235oA==
+X-Received: by 2002:a05:6a00:369a:b0:726:f7c9:7b28 with SMTP id d2e1a72fcca58-72daf9bec24mr41966633b3a.8.1737621358930;
+        Thu, 23 Jan 2025 00:35:58 -0800 (PST)
+Received: from jren-d3.localdomain ([221.222.62.240])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72dab817385sm12982587b3a.68.2025.01.23.00.35.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jan 2025 00:35:58 -0800 (PST)
+From: Imkanmod Khan <imkanmodkhan@gmail.com>
+To: stable@vger.kernel.org
+Cc: patches@lists.linux.dev,
+	kvalo@kernel.org,
+	rand.sec96@gmail.com,
+	m@bues.ch,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Imkanmod Khan <imkanmodkhan@gmail.com>
+Subject: [PATCH 6.1.y] ssb: Fix potential NULL pointer dereference in ssb_device_uevent()
+Date: Thu, 23 Jan 2025 16:35:51 +0800
+Message-ID: <20250123083551.3400-1-imkanmodkhan@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250122-s390-fix-std-for-gcc-15-v1-1-8b00cadee083@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: RUBcS27Ia6SlVPsDpbvhLACxwgzBbFx3
-X-Proofpoint-ORIG-GUID: RUBcS27Ia6SlVPsDpbvhLACxwgzBbFx3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-23_03,2025-01-22_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
- impostorscore=0 adultscore=0 clxscore=1015 bulkscore=0 suspectscore=0
- mlxlogscore=999 phishscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501230064
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jan 22, 2025 at 07:54:27PM -0700, Nathan Chancellor wrote:
-> GCC changed the default C standard dialect from gnu17 to gnu23,
-> which should not have impacted the kernel because it explicitly requests
-> the gnu11 standard in the main Makefile. However, there are certain
-> places in the s390 code that use their own CFLAGS without a '-std='
-> value, which break with this dialect change because of the kernel's own
-> definitions of bool, false, and true conflicting with the C23 reserved
-> keywords.
-> 
->   include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
->      11 |         false   = 0,
->         |         ^~~~~
->   include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
->   include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
->      35 | typedef _Bool                   bool;
->         |                                 ^~~~
->   include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
-> 
-> Add '-std=gnu11' to the decompressor and purgatory CFLAGS to eliminate
-> these errors and make the C standard version of these areas match the
-> rest of the kernel.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> ---
+From: Rand Deeb <rand.sec96@gmail.com>
 
-Thanks!
-Tested-by: Heiko Carstens <hca@linux.ibm.com>
+[ Upstream commit 789c17185fb0f39560496c2beab9b57ce1d0cbe7 ]
 
-Alexander, can you pick this up, please?
+The ssb_device_uevent() function first attempts to convert the 'dev' pointer
+to 'struct ssb_device *'. However, it mistakenly dereferences 'dev' before
+performing the NULL check, potentially leading to a NULL pointer
+dereference if 'dev' is NULL.
 
-> I only see one other error in various files with a recent GCC 15.0.1
-> snapshot, which I can eliminate by dropping the version part of the
-> condition for CONFIG_GCC_ASM_FLAG_OUTPUT_BROKEN. Is this a regression of
-> the fix for the problem of GCC 14.2.0 or is something else doing on
-> here?
-> 
->   arch/s390/include/asm/bitops.h: Assembler messages:
->   arch/s390/include/asm/bitops.h:60: Error: operand 1: syntax error; missing ')' after base register
->   arch/s390/include/asm/bitops.h:60: Error: operand 2: syntax error; ')' not allowed here
->   arch/s390/include/asm/bitops.h:60: Error: junk at end of line: `,4'
+To fix this issue, move the NULL check before dereferencing the 'dev' pointer,
+ensuring that the pointer is valid before attempting to use it.
 
-That is I bug I recently introduced.
-The patch below fixes that. Thanks for reporting!
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-From 2f58027ec1302714bb4d728b08dc5c88498d18b1 Mon Sep 17 00:00:00 2001
-From: Heiko Carstens <hca@linux.ibm.com>
-Date: Thu, 23 Jan 2025 09:14:15 +0100
-Subject: [PATCH] s390/bitops: Use correct constraint for arch_test_bit()
- inline assembly
-
-Use the "Q" instead of "R" constraint to correctly reflect the instruction
-format of the tm instruction: the first operand is a memory reference
-without index register and short displacement. The "R" constraint indicates
-a memory reference with index register instead.
-
-This may lead to compile errors like:
-
-  arch/s390/include/asm/bitops.h: Assembler messages:
-  arch/s390/include/asm/bitops.h:60: Error: operand 1: syntax error; missing ')' after base register
-  arch/s390/include/asm/bitops.h:60: Error: operand 2: syntax error; ')' not allowed here
-  arch/s390/include/asm/bitops.h:60: Error: junk at end of line: `,4'
-
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Closes: https://lore.kernel.org/r/20250122-s390-fix-std-for-gcc-15-v1-1-8b00cadee083@kernel.org
-Fixes: b2bc1b1a77c0 ("s390/bitops: Provide optimized arch_test_bit()")
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240306123028.164155-1-rand.sec96@gmail.com
+Signed-off-by: Imkanmod Khan <imkanmodkhan@gmail.com>
 ---
- arch/s390/include/asm/bitops.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ssb/main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/include/asm/bitops.h b/arch/s390/include/asm/bitops.h
-index 15aa64e3020e..d5125296ade2 100644
---- a/arch/s390/include/asm/bitops.h
-+++ b/arch/s390/include/asm/bitops.h
-@@ -60,7 +60,7 @@ static __always_inline bool arch_test_bit(unsigned long nr, const volatile unsig
- 		asm volatile(
- 			"	tm	%[addr],%[mask]\n"
- 			: "=@cc" (cc)
--			: [addr] "R" (*addr), [mask] "I" (mask)
-+			: [addr] "Q" (*addr), [mask] "I" (mask)
- 			);
- 		return cc == 3;
- 	}
+diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
+index d52e91258e98..aae50a5dfb57 100644
+--- a/drivers/ssb/main.c
++++ b/drivers/ssb/main.c
+@@ -341,11 +341,13 @@ static int ssb_bus_match(struct device *dev, struct device_driver *drv)
+ 
+ static int ssb_device_uevent(struct device *dev, struct kobj_uevent_env *env)
+ {
+-	struct ssb_device *ssb_dev = dev_to_ssb_dev(dev);
++	struct ssb_device *ssb_dev;
+ 
+ 	if (!dev)
+ 		return -ENODEV;
+ 
++	ssb_dev = dev_to_ssb_dev(dev);
++
+ 	return add_uevent_var(env,
+ 			     "MODALIAS=ssb:v%04Xid%04Xrev%02X",
+ 			     ssb_dev->id.vendor, ssb_dev->id.coreid,
 -- 
-2.45.2
+2.25.1
 
 
