@@ -1,193 +1,139 @@
-Return-Path: <stable+bounces-110247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC3CA19E0D
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 06:46:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86DFCA19E5B
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 07:20:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51822188E05E
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 05:46:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63AD63AE192
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 06:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627611BD504;
-	Thu, 23 Jan 2025 05:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1AA71C5F1F;
+	Thu, 23 Jan 2025 06:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PaGuuetV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UhAqwGXV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682D0450EE;
-	Thu, 23 Jan 2025 05:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F40170A0A;
+	Thu, 23 Jan 2025 06:20:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737611183; cv=none; b=O3aL1pbbJvPllYm9s7AbPKI0K0KJQYq+eULioPW0UhV5EybU5xeUGMIwygdK4N4pQmytPLSh0YboOin2JAaDlVTNo2H6bJRKFkmuFFsT6iOjP/qwDs/Am2lKgywBsJarsfPlp5Shya/Oft43/UNpvc/Ottt3oT1ozC3kbVfI1aM=
+	t=1737613217; cv=none; b=XPlO0DYjVtG5fg5PB8tSE5xjpNj26TGLyXQNguUkgqV0svCvMgGhvFEDHoqBd7xatdjEyce1Mc12JScDhRDRUF9Otr1qa+jT0DGvApncK/zyY9cQOuQRtHnu1gd3brk8g4ChNPs/ElOmVG9szUaiwFluYtmAppWMotoR9MOuSv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737611183; c=relaxed/simple;
-	bh=gYzXEE/fvex94ajgQ4ncNqZBzewWqD0E7mK1feIaoPU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sGpm1ytC7jQoXfrpuAzIczuJ8yTTP5ZPob6W7oOQE8dIgqVDSSxtuubhZyV2hjM2RZeW5NTf85+cRdDoxdPYZaMHd+4LAUcl2drkt9XbI65+ytYhyLxR7rPIdL7eM+JpQ0DsRb/v4yaTS22icuPyIYV3LU2AGpoDOW6bI4z2W8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PaGuuetV; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-385de59c1a0so231282f8f.2;
-        Wed, 22 Jan 2025 21:46:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737611180; x=1738215980; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LXjAxn/9wbJGkC8jm0u2f9YtmtdDoHb2EauDzRQLYR0=;
-        b=PaGuuetVKPFQoaAeyxVw58P45getjiOwWa/eJ0v8VkDTcI2qwpJaZ5SjMMfGpKQi8p
-         lbk9s+sjMbxgJrPrWRuYk2zq5FTkL0w5Om/PAQQBnOVRNB2YqeFdcX0epWB0uAcZi8fk
-         HRsqyymzSrZN3XO9OQKHC1xdX/pntLEoeF25SOaupnZF9sp24FbNQHbnrMOPpPOPGjW6
-         88OcNyMcRGdsUXwIEOxiXi879EVN5zZS5reKEl/6WxzgC8P1j8eRJmKt0MU/YHqemi/9
-         y+gXaVIqbKwOCKG8UHccJQzrjB8OtSEYzSvdCmgHBCRaOtZdkqMV3grz7G1dLRlCvRK+
-         ADGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737611180; x=1738215980;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LXjAxn/9wbJGkC8jm0u2f9YtmtdDoHb2EauDzRQLYR0=;
-        b=QQowVrZT6wIuySGWVMWG43r+lcaUSmGHIL8uqczEx+TozRAxLTBdkioCIeKvQO2ab2
-         fJNp3LottKZsfoh9v5PLZvADQu/zVFSTVXsc9XcKnupX0dBzcLJbb7svC8A+91z3m2j3
-         RCrWgcNUFvBy0xUuS/r8jUOvoyzohXVkAPjE90wccoVAHOBAB+ktzdHJy3QcWiFlBe9d
-         KhqGqdVlUrxpe5qUC7g44KXP2lxeivNHUT+2KN7NXK5HRFinQOxYt4zSjwsvNx8nEle5
-         I+gLIlBKdWMtUg967sW8OTqWHuN2uiup2spy/FxwXMkYNNDrodSTpl21yg59Fu2At80w
-         cpDA==
-X-Forwarded-Encrypted: i=1; AJvYcCX+SNb5h+gxHAeSDADXH0eRTPj3j0DrH7Tixvu2HEPE5xyY9PGoL1py0X/mYj4wHNh3ErA7pyKQEzMndnA=@vger.kernel.org, AJvYcCXJNA3CHGyFQ3xPKJY7EaZTN/lTO2IKRZNT4mgKPvi41+hljbHkiALGUDnNY1FZlRrefTAky/3V@vger.kernel.org, AJvYcCXy2xkhiZbJ9zxEiKJeThA4iHc6Rk0bvHKFxQuVxzjS0GyNaeo5+Of4dq4++lNyAcBBTunO0aUJ63s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQ1GM2Ad/zQeYmCVoMM7cDCg2lmO/E7FlSDeOITYEGLdYFPCJd
-	2IUJWOpHpFr0sccbr2Fovv092D4eID7VV6Yh3QL7kW0FGMC+BJZa
-X-Gm-Gg: ASbGncvGvrG7TJ+KbztCjfOKZgXtYAE9VRk+rYf07lv/8S1t/NkLLIt91B/ZXCpc0RL
-	tPaK1Q1IjopcViBYHPphCYNyrIMtzcJAP4vW7eCDzHo2K2DwGXTwyJoXbfLZp+hfJ++hnP8Bwh3
-	n2CSZu/6ERtZUpjm/CkQV3Z0f2vUmEUa6NB15nW3eP9wQ2eZexZ6FD1mJiC+jfa91gjw23y7zQ7
-	i7i0PyAqcpkkJ7/Jtu7vm6b5sfwM1p4AtaynVWr7pWl5gKW1XSsGlJPxfsHE4fuy9dyZ8lQQoPZ
-	pTB9+bKc
-X-Google-Smtp-Source: AGHT+IG+klG/XbdpMoEklenqILa/Ic39FEOtmc87XAwNqW9ncOi7UGbxA+N/P5FJEPIoUq46Oi+XMw==
-X-Received: by 2002:a05:6000:1561:b0:38c:1270:f965 with SMTP id ffacd0b85a97d-38c1270fb77mr9637593f8f.42.1737611179404;
-        Wed, 22 Jan 2025 21:46:19 -0800 (PST)
-Received: from tp440p.steeds.sam ([41.84.227.230])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bf322ace8sm18292401f8f.53.2025.01.22.21.46.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jan 2025 21:46:17 -0800 (PST)
-Date: Thu, 23 Jan 2025 07:46:10 +0200
-From: Sicelo <absicsz@gmail.com>
-To: Lars Pedersen <lapeddk@gmail.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	regressions@lists.linux.dev, broonie@kernel.org,
-	linux-spi@vger.kernel.org, psiddaiah@mvista.com,
-	phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org
-Subject: Re: SPI regression seen on ARM am335x in kernel 6.12.8 and 6.6.71
-Message-ID: <Z5HXoq8XlduURWmw@tp440p.steeds.sam>
-References: <CAKd8=GsoKj5eG6VAMkrxMbzNyoBX=JiwafrfXman8xMNK+XU_w@mail.gmail.com>
- <2025011703-erupt-oblivion-82a0@gregkh>
- <CAKd8=GtrnvEgZv4y-UYNTJWt0oU9zLxZUYGnm9__H2yXKwyOGg@mail.gmail.com>
+	s=arc-20240116; t=1737613217; c=relaxed/simple;
+	bh=Q7f0JQndshh2AJGcplxnFEAoV0+2mUf/eOiGuWfB/D4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=RE7b8y+R3w+bNOIU0alCeiSjbLJif/cSq3ilUpSzQnVvqdpUVbKt2HUqWa0o+C5WYrB5roIS7x70s0Dd4GzCIdN1nZ5BRamETVrAPWCClCkH1FbiIHIwluPuWJKJiwINdYw3BH+RBgbq4ENQUfMMu9779CnthJelbEZENzb1Pgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UhAqwGXV; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737613217; x=1769149217;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Q7f0JQndshh2AJGcplxnFEAoV0+2mUf/eOiGuWfB/D4=;
+  b=UhAqwGXVAoYdIC6+uWHzXrfBjU4Emo8/vvFkLJm3fDedqIN7SQoWsf/v
+   ZL3xd2GIzUi6qltV4MPx50gwtaKq9E29GvwDUS6uFa8HXtG1QeZQl05f7
+   4H18PF6hvYqbz1/mptgtAN6311g7qbs8PIlgiUSBHURNXJaVqZUM2BmhF
+   uCE5wWIdttAxei2eVigqi6vGZp/9vRoSbyKFv8F8/nsE/VYzJgHwP+G0b
+   bRmbQk+ZyLp+dBWrvT5g+c82HMOkK1R+cEFfhsZ4tLMd6DYpGvOoV60yg
+   nVjnXT75QLgO46nnQY8u+ww0Dmwq0MRGKV3t+K3npRS8+Gm947rUrAzCZ
+   g==;
+X-CSE-ConnectionGUID: cIo1ZoFsS4qTm7xVonexyw==
+X-CSE-MsgGUID: 4iEMtzloQPOoaCUQhFFXUQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="55513032"
+X-IronPort-AV: E=Sophos;i="6.13,227,1732608000"; 
+   d="scan'208";a="55513032"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2025 22:20:16 -0800
+X-CSE-ConnectionGUID: 2YFA9debS46ba63sEM9DoQ==
+X-CSE-MsgGUID: V31eWlYtQIaqQj5j+kf59w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="112334423"
+Received: from emr.sh.intel.com ([10.112.229.56])
+  by orviesa003.jf.intel.com with ESMTP; 22 Jan 2025 22:20:12 -0800
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+To: Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Eranian Stephane <eranian@google.com>
+Cc: linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	Dapeng Mi <dapeng1.mi@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 02/20] perf/x86/intel: Fix ARCH_PERFMON_NUM_COUNTER_LEAF
+Date: Thu, 23 Jan 2025 14:07:03 +0000
+Message-Id: <20250123140721.2496639-3-dapeng1.mi@linux.intel.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20250123140721.2496639-1-dapeng1.mi@linux.intel.com>
+References: <20250123140721.2496639-1-dapeng1.mi@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="LgJ3JBQbceYg8kUL"
-Content-Disposition: inline
-In-Reply-To: <CAKd8=GtrnvEgZv4y-UYNTJWt0oU9zLxZUYGnm9__H2yXKwyOGg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 
+From: Kan Liang <kan.liang@linux.intel.com>
 
---LgJ3JBQbceYg8kUL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The EAX of the CPUID Leaf 023H enumerates the mask of valid sub-leaves.
+To tell the availability of the sub-leaf 1 (enumerate the counter mask),
+perf should check the bit 1 (0x2) of EAS, rather than bit 0 (0x1).
 
-Hi
+The error is not user-visible on bare metal. Because the sub-leaf 0 and
+the sub-leaf 1 are always available. However, it may bring issues in a
+virtualization environment when a VMM only enumerates the sub-leaf 0.
 
-On Fri, Jan 17, 2025 at 03:49:25PM +0100, Lars Pedersen wrote:
-> On Fri, 17 Jan 2025 at 13:32, Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Thu, Jan 16, 2025 at 03:21:13PM +0100, Lars Pedersen wrote:
-> > > Hi. We have discovered an SPI regression when upgrading from 6.1.99 to
-> > > a newer LTS version. Same error on kernel 6.6.71 and 6.12.8.
-
-We have a very similar regression on the Nokia N900, causing everything
-on the SPI bus (WLAN, screen) to stop working or be unreliable.
-
-> > >
-> > > I think we have identified the problem down to the reference clock
-> > > calculation that seems to end up to zero in the spi-omap2-mcspi
-> > > driver.
-> > >
-> > > Also we think it relates to commit
-> > > 4c6ac5446d060f0bf435ccc8bc3aa7b7b5f718ad, where OMAP2_MCSPI_MAX_FREQ
-> > > is used as fallback on error. In our case it seems to hit the else
-> > > case.
-> > >
-> > If you revert the offending commit, does that solve the issue?
-> >
-> > thanks,
-> >
-> > greg k-h
-> 
-> Hi Greg.
-> 
-> No it doesn't solve the issue by reverting the commit. The commit
-> isn't the regression, but it attempts to handle it in the if/else
-> statement. Everything starts to work again if we hard code it to
-> "mcspi->ref_clk_hz = OMAP2_MCSPI_MAX_FREQ;", so it seems like the if
-> else statement isn't 100% foolproof (or we have missed a setting in
-> the device tree).
-
-The commit actually *is* the regression. The subtle issue causing it is
-that devm_clk_get_optional_enabled() may also return NULL. In the
-previous code, the NULL was not considered an error condition. The
-change to the IS_ERR macro causes the NULL condition to be unhandled,
-hence it takes the `else` path. Using IS_ERR_OR_NULL restores the
-previous behavior, since changing it was not the intention of the
-commit in question.
-
-Please check if the attached patch does not fix it for you, and I can
-submit it, perhaps with your Tested-by. It does resolve the issue on
-the Nokia N900, for both WLAN and the screen.
-
-Regards
-Sicelo
-
---LgJ3JBQbceYg8kUL
-Content-Type: text/x-diff; charset=us-ascii
-Content-Disposition: attachment;
-	filename="0001-spi-omap2-mcspi-allow-NULL-from-devm_clk_get_optiona.patch"
-
-From 451b01800b7fde7be3fa64b3eb87d8ff91628eb4 Mon Sep 17 00:00:00 2001
-From: "Sicelo A. Mhlongo" <absicsz@gmail.com>
-Date: Thu, 23 Jan 2025 07:38:02 +0200
-Subject: [PATCH] spi: omap2-mcspi: allow NULL from
- devm_clk_get_optional_enabled
-
-In addition to an error pointer, devm_clk_get_optional_enabled can also
-return NULL, which in omap2-mcspi is not to be considered an error.
-Rework  4c6ac5446d06 ("spi: omap2-mcspi: Fix the IS_ERR() bug for
-devm_clk_get_optional_enabled()") so the NULL is handled correctly.
-
-Fixes: 4c6ac5446d06 ("spi: omap2-mcspi: Fix the IS_ERR() bug for devm_clk_get_optional_enabled()")
-Signed-off-By: Sicelo A. Mhlongo <absicsz@gmail.com>
+Fixes: eb467aaac21e ("perf/x86/intel: Support Architectural PerfMon Extension leaf")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Cc: stable@vger.kernel.org
 ---
- drivers/spi/spi-omap2-mcspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/intel/core.c      | 4 ++--
+ arch/x86/include/asm/perf_event.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index add6247d3481..cde4416f3cb2 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1561,7 +1561,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 	}
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 5e8521a54474..12eb96219740 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -4966,8 +4966,8 @@ static void update_pmu_cap(struct x86_hybrid_pmu *pmu)
+ 	if (ebx & ARCH_PERFMON_EXT_EQ)
+ 		pmu->config_mask |= ARCH_PERFMON_EVENTSEL_EQ;
  
- 	mcspi->ref_clk = devm_clk_get_optional_enabled(&pdev->dev, NULL);
--	if (IS_ERR(mcspi->ref_clk))
-+	if (IS_ERR_OR_NULL(mcspi->ref_clk))
- 		mcspi->ref_clk_hz = OMAP2_MCSPI_MAX_FREQ;
- 	else
- 		mcspi->ref_clk_hz = clk_get_rate(mcspi->ref_clk);
+-	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF_BIT) {
+-		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF,
++	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF) {
++		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF_BIT,
+ 			    &eax, &ebx, &ecx, &edx);
+ 		pmu->cntr_mask64 = eax;
+ 		pmu->fixed_cntr_mask64 = ebx;
+diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+index adaeb8ca3a8a..71e2ae021374 100644
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -197,7 +197,7 @@ union cpuid10_edx {
+ #define ARCH_PERFMON_EXT_UMASK2			0x1
+ #define ARCH_PERFMON_EXT_EQ			0x2
+ #define ARCH_PERFMON_NUM_COUNTER_LEAF_BIT	0x1
+-#define ARCH_PERFMON_NUM_COUNTER_LEAF		0x1
++#define ARCH_PERFMON_NUM_COUNTER_LEAF		BIT(ARCH_PERFMON_NUM_COUNTER_LEAF_BIT)
+ 
+ /*
+  * Intel Architectural LBR CPUID detection/enumeration details:
 -- 
-2.47.1
+2.40.1
 
-
---LgJ3JBQbceYg8kUL--
 
