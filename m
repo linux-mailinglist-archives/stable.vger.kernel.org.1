@@ -1,81 +1,133 @@
-Return-Path: <stable+bounces-110297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9AA7A1A7C7
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 17:23:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82427A1A825
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 17:51:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACDF8188C8BD
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 16:23:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DD19188B91D
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 16:51:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B61F212B06;
-	Thu, 23 Jan 2025 16:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763A714659D;
+	Thu, 23 Jan 2025 16:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="OVdQG0EY"
+	dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b="ZbOn/ynG"
 X-Original-To: stable@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from ksmg02.maxima.ru (ksmg02.maxima.ru [81.200.124.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE521C5D4D;
-	Thu, 23 Jan 2025 16:22:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D56613EFF3;
+	Thu, 23 Jan 2025 16:51:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.200.124.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737649377; cv=none; b=sdtZqZRd4dwvIec6ZjS5yB/rBc0c9nR8TlMD5YTwBkXoM4dRoybxGQrDthIsxKzutVrLFZMfzE4oJsHzvTw1c/7NiIp+e7AkPSZHIpXITH6sKSJt+s+KBsBEneNIQTXUN8qIdhffU799uJa9dI/N/qI0QrLZ9xXja7QBIEH0D0w=
+	t=1737651086; cv=none; b=URINYtObSYc82w9ctN8DKxLMkKSvRmzSOcBd/RBivEJm1f9xuRhXeKLpI1TiJpnIKAeJZJM6bA5q9y9fRS0Yb40JNQzyg8UuwrVoROxK6Jit4Z/NapQKvj7WBHRO2OZqpZr7M+6rWCBzTGCbFQe6M2Gmsxk30JGyj7b4qbiM84c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737649377; c=relaxed/simple;
-	bh=N6HZrAsYICGN9MzebeZPm2VLnTBchujah17HfU33zjc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EOF3s8XdpnqS8Xc4QsJyPDA4yIH0UEcuXNVigtEV9VMh/1YMjXqNt2gCgv3irPqcNIim818CW9tNayNomkUV3ExQmzx0EaKulWYjxUnbJ1HCSqbGJ5NWPolOdv1q1Nzw+FaWsaK0Js7ZJUM3OgNTtGK6+8SIoTIGmwAAyARx3NM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=OVdQG0EY; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1737649370;
-	bh=N6HZrAsYICGN9MzebeZPm2VLnTBchujah17HfU33zjc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OVdQG0EYhyJoVMggmIPGVJN5Kz1UNA8Vd9HJ4dFpeKJ1liSRMc0efxIpxSLpkR8p+
-	 0P7x3WDUSNboHWlpUe7Nr6taiXVz98XIqgkUHuClYOuxZAd8z+Yh7vMW5DovyY+IK6
-	 qfV8x8MND8+WBwTpTeV74XB9E59zgCFBMfSz7slg=
-Date: Thu, 23 Jan 2025 17:22:49 +0100
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To: Arnd Bergmann <arnd@arndb.de>, 
-	Richard Cochran <richardcochran@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Anna-Maria Gleixner <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, John Stultz <johnstul@us.ibm.com>, 
-	Netdev <netdev@vger.kernel.org>, linux-kernel@vger.kernel.org, 
-	Cyrill Gorcunov <gorcunov@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] posix-clock: Explicitly handle compat ioctls
-Message-ID: <82861179-dfd5-4330-86cb-048d124487b0@t-8ch.de>
-References: <20250121-posix-clock-compat_ioctl-v1-1-c70d5433a825@weissschuh.net>
- <603100b4-3895-4b7c-a70e-f207dd961550@app.fastmail.com>
- <Z5Ebh4pbOUGh64BS@hoboy.vegasvil.org>
- <0ecf1a72-d6ae-46ab-ad20-c088c6888747@app.fastmail.com>
+	s=arc-20240116; t=1737651086; c=relaxed/simple;
+	bh=Z7ty9WVbB0M4TxOo48ZyHFsHyJ48xfUCwM0/dhzUu0Q=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=r9OQJG0KprJG1OjAO2g1hXLJKUvVjDlJaPjoZkvYG13MTUqOqUn3bvYdGoN1HSR88AI9Am4Vbr8gCCsG85H2YP57guFt1xEya/HITsDPOMoCDTW6jXtl4iu63dVcQb9/6Qya733nZM7XMsKUGMfXz3qsM5B6PAcOR1jR+OliUXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru; spf=pass smtp.mailfrom=mt-integration.ru; dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b=ZbOn/ynG; arc=none smtp.client-ip=81.200.124.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mt-integration.ru
+Received: from ksmg02.maxima.ru (localhost [127.0.0.1])
+	by ksmg02.maxima.ru (Postfix) with ESMTP id A65341E0003;
+	Thu, 23 Jan 2025 19:42:16 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ksmg02.maxima.ru A65341E0003
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt-integration.ru;
+	s=sl; t=1737650536; bh=YuwjCf1HyLvGPjp3W8Ochs01wpAdi5nVwsFvz0dXPUU=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+	b=ZbOn/ynGiW3Sl3IeYlDSaUSDbUGhwQR67umH5VqTktwh0zHbw67eAPtJgGjBnyp82
+	 rXSuB2Bd6h7rxYGOghtHfFodPhicirO+Rd65jY729GR7bF9w4D5pjbqiaYXvXFMplq
+	 8iQZ8U7FbSuM4VcwHbYRSqBNzz9E2vJrUzTZ24k8Nw7ttlaRYnj0kGPHv+QqMOVAQ4
+	 hEsrxaKJf0/KqX9WLCKDpiw9pYvlw7Gr/TAo+He3Z70mo/LAL8oCRdY0hr5LuMUby9
+	 TIACU8D9MGenae/F2K9Diw9GTPLWjsYRttNDtaWD81t8q8Qlc/sIL2nRrE/cOt64mC
+	 7smuFj8aVPRkA==
+Received: from ksmg02.maxima.ru (autodiscover.maxima.ru [81.200.124.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "*.maxima.ru", Issuer "GlobalSign GCC R3 DV TLS CA 2020" (verified OK))
+	by ksmg02.maxima.ru (Postfix) with ESMTPS;
+	Thu, 23 Jan 2025 19:42:09 +0300 (MSK)
+Received: from GS-NOTE-190.mt.ru (10.0.247.8) by mmail-p-exch02.mt.ru
+ (81.200.124.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1544.4; Thu, 23 Jan
+ 2025 19:42:08 +0300
+From: Murad Masimov <m.masimov@mt-integration.ru>
+To: Dan Williams <dan.j.williams@intel.com>
+CC: Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang
+	<dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>, "Rafael J. Wysocki"
+	<rafael@kernel.org>, Len Brown <lenb@kernel.org>, <nvdimm@lists.linux.dev>,
+	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>, Murad Masimov <m.masimov@mt-integration.ru>,
+	<stable@vger.kernel.org>,
+	<syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com>
+Subject: [PATCH] acpi: nfit: fix narrowing conversion in acpi_nfit_ctl
+Date: Thu, 23 Jan 2025 19:39:45 +0300
+Message-ID: <20250123163945.251-1-m.masimov@mt-integration.ru>
+X-Mailer: git-send-email 2.46.0.windows.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0ecf1a72-d6ae-46ab-ad20-c088c6888747@app.fastmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: mt-exch-01.mt.ru (91.220.120.210) To mmail-p-exch02.mt.ru
+ (81.200.124.62)
+X-KSMG-AntiPhishing: NotDetected, bases: 2025/01/23 15:43:00
+X-KSMG-AntiSpam-Auth: dmarc=none header.from=mt-integration.ru;spf=none smtp.mailfrom=mt-integration.ru;dkim=none
+X-KSMG-AntiSpam-Envelope-From: m.masimov@mt-integration.ru
+X-KSMG-AntiSpam-Info: LuaCore: 50 0.3.50 df4aeb250ed63fd3baa80a493fa6caee5dd9e10f, {rep_avail}, {Tracking_one_url, url3}, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;ksmg02.maxima.ru:7.1.1;mt-integration.ru:7.1.1;127.0.0.199:7.1.2;81.200.124.62:7.1.2;syzkaller.appspot.com:5.0.1,7.1.1, FromAlignment: s, ApMailHostAddress: 81.200.124.62
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 190535 [Jan 23 2025]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.7
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/01/23 13:11:00 #27106774
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2025/01/23 15:43:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 7
 
-On 2025-01-22 18:15:13+0100, Arnd Bergmann wrote:
-> A simpler variant of the patch would move the switch/case logic
-> into posix_clock_compat_ioctl() and avoid the extra function
-> pointer, simply calling posix_clock_ioctl() with the modified
-> argument.
+Syzkaller has reported a warning in to_nfit_bus_uuid(): "only secondary
+bus families can be translated". This warning is emited if the argument
+is equal to NVDIMM_BUS_FAMILY_NFIT == 0. Function acpi_nfit_ctl() first
+verifies that a user-provided value call_pkg->nd_family of type u64 is
+not equal to 0. Then the value is converted to int, and only after that
+is compared to NVDIMM_BUS_FAMILY_MAX. This can lead to passing an invalid
+argument to acpi_nfit_ctl(), if call_pkg->nd_family is non-zero, while
+the lower 32 bits are zero.
 
-That would work, but be a layering violation.
-Or a "compat_mode" argument to ptp_ioctl()
+All checks of the input value should be applied to the original variable
+call_pkg->nd_family.
 
-I'm fine with either approach.
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
+Fixes: 6450ddbd5d8e ("ACPI: NFIT: Define runtime firmware activation commands")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c80d8dc0d9fa81a3cd8c
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+---
+ drivers/acpi/nfit/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thomas
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index a5d47819b3a4..ae035b93da08 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -485,7 +485,7 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+ 		cmd_mask = nd_desc->cmd_mask;
+ 		if (cmd == ND_CMD_CALL && call_pkg->nd_family) {
+ 			family = call_pkg->nd_family;
+-			if (family > NVDIMM_BUS_FAMILY_MAX ||
++			if (call_pkg->nd_family > NVDIMM_BUS_FAMILY_MAX ||
+ 			    !test_bit(family, &nd_desc->bus_family_mask))
+ 				return -EINVAL;
+ 			family = array_index_nospec(family,
+--
+2.39.2
+
 
