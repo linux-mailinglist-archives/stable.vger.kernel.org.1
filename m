@@ -1,171 +1,364 @@
-Return-Path: <stable+bounces-110320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90582A1A969
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 19:08:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D99D6A1A983
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 19:20:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E321169729
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 18:08:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AB483ADCE1
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 18:20:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7C9A1ADC9B;
-	Thu, 23 Jan 2025 18:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F5D148310;
+	Thu, 23 Jan 2025 18:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m0dHP4O4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E4Y60jnB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996171ADC91;
-	Thu, 23 Jan 2025 18:07:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737655656; cv=none; b=DmVCs3eS1RGUM0nAXonzPBCieeu8t6C12Wfr59WMoKGgDrneD0yBQyvy5612V0SWuvjZd97sPV7ors6Mw4aVIFFviwWVGuoPsH7JmkLnq3wUq0psEP2njt0GKbHAW+liU2hzeRg9MSBDtoZ3GR3SfC1zwuK9JdJ/KeWaNmbCTfQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737655656; c=relaxed/simple;
-	bh=Dujc9SjNKabPLpXSHa8ntUQaYoZKKvksmo9oaZoC6Gc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mNGQTjT77Q6k9qnqaeMkyiMK/pRMQ4ehEv5O37ok7fwvaAgxUsH/VRyO1IO/wyFtYUTf20VQKGKaZV2kH4z5WqekLXUbqibfPb8CrNgQkLPN/nwZApFsddpyjkaCjvwHJY49+MrQlA4mSZXEaoAbReREs5B1QwT/Oz3HMI3msho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m0dHP4O4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63237C4AF0C;
-	Thu, 23 Jan 2025 18:07:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737655656;
-	bh=Dujc9SjNKabPLpXSHa8ntUQaYoZKKvksmo9oaZoC6Gc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=m0dHP4O4iykJnQMN/WRI4J0ZcGzGFUZNZR9Mbav1tU4rZIbx2RfLrNv2qAtDi5xNl
-	 ZjbflytSqbIZHsCEVBaP1RWG9lQK5H4wXaevDvovxVa60AYtzUrceNddsOIb2WiUML
-	 ifL9DtRutzSzBNIc8/yU0hAstHIdmNRQiZ2PYdeCDXSeEktz0RG1vfSVRevVzzFvJk
-	 i8Dup6QdRWeRpk6kIjm5dFed9gDmjYK6MC67lDfSyVfe+TXI0iu4/WGsyAebOd8i2/
-	 FJaUogRmQq9dyFdxCHk4B6YLlgnwHnBHYPk7FAW32NJf4VAIrcnZMUXQhlNmxiyvBo
-	 NuVIAZJTcpwZg==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Thu, 23 Jan 2025 19:05:56 +0100
-Subject: [PATCH net 3/3] mptcp: handle fastopen disconnect correctly
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D70C1BC4E
+	for <stable@vger.kernel.org>; Thu, 23 Jan 2025 18:20:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737656424; cv=fail; b=Ozoh2Tpco0Ut8mFqeVzRkCwXpeiLIqEF343AW7wdFvKJX2mlsA8/ghwm8p7wTplkcx1FvQXxNF59UX7gAzcVaXjvJCsUY8KdW2tfoIkEwLscWEwpwQjERafxdlwihkiQJP8+U9AfIW03D30B1TweNbWZc+IBPbzsGpNlUxBrmfs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737656424; c=relaxed/simple;
+	bh=IflAPHUWhT+/qZYlK+0MfKkto6GRZOPBZ3SYsvek+sM=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=cNgCn4sLqP/yFbhDCMbD96sqVEkRuLtWG0HNdo+j9oq51X6Mxx9wzYkP5vF31bN5ukuhLsYlXJyaNBcUWflxTLOEbCmVboTs0VSEOeRsxz5Kd2k0Tpgl7RY2tmGaCi3yjhJdi2h0j2Prq/cQu5ogWbqBnnN2XW0pI87WamqeoEo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E4Y60jnB; arc=fail smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737656422; x=1769192422;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=IflAPHUWhT+/qZYlK+0MfKkto6GRZOPBZ3SYsvek+sM=;
+  b=E4Y60jnBrDfKOC4zh4fM+1VO1JlPvDBGtjGMU+zNqxmG9I96HPuQaH3g
+   NecsbxY9po1CGMUbcIeGZDyi872Spo5peW9pON9TJQ4BCSC8CSAx8SpCW
+   s+DMwMC4ErcM8rZS2cZmYBcpxHfYYkgj5eceSr1VKFD4Lvl0NJGBHIIrE
+   U9sNDD92I8eMBcnIzhMCYQA+8mrJAFSbcI5JQIYcYr6kat10svds3C+OI
+   dTPV/hEsxYAf53xApz0bqrr+58skc3MMPHOKc9MAB2xmkuroQNUJYygNH
+   DIUL8XVpGgckq42u/5PPcfYa1Br5Kj8a7Gjl2qUw/2OZ5u2PcFVshtPMP
+   A==;
+X-CSE-ConnectionGUID: q5EEldq8Que106h1Lkt1wg==
+X-CSE-MsgGUID: kuVF+PVESnmBtk9Mo4zWcg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11324"; a="37871780"
+X-IronPort-AV: E=Sophos;i="6.13,229,1732608000"; 
+   d="scan'208";a="37871780"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2025 10:20:21 -0800
+X-CSE-ConnectionGUID: cJhLUknPS2m13TswXyuFww==
+X-CSE-MsgGUID: gYdlqJzrRKGgWos/4WZ9MA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,229,1732608000"; 
+   d="scan'208";a="108084421"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 23 Jan 2025 10:20:20 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Thu, 23 Jan 2025 10:20:20 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Thu, 23 Jan 2025 10:20:20 -0800
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.45) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Thu, 23 Jan 2025 10:20:19 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bqe5mlFPpTvZfrGsTyV+MOhSO3F3xnVR/ZaLg+/fG+IgpyQJWtQDRU70KqYFi5TjobmR/EXFLfkG1uFR9ufT0fpyEupTqkdSNaQplvIsq3hjTKTU6sppCzXVroLU8k92ZYGrTz9VJl+eG+y11gmxV9fA6mgAl1iEYXK9cTTJo1Y9Zytv+F4GbNdB0KOBmWMbagNmptXKpjE/OdDJAt4up2RGFQFkBLOdPnu65Svkk3+zp4WmTa9cz7bjx4jYedJTHrwnP7j4eL2pyUykP4RaLqZ5nkPX99aT1fGX3bLmCT6OKeDQ4nisfLqz/qvYJGwo5LBC2SXbheQBaLJtkzO03Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8OrVbIww0S3FwQx69PoMfaMTdP/e5XQKkiXcSBdQrD4=;
+ b=OfrF7LI+drKcLPQJF4Ck/4V+85TXshmvuZcBs1nLot0nhmBHzFp0uyNmWRPL28VOEGuvoaiUw8z1J08kD4mergsz1hQi6Ko7Sz4dvPNq4KMWCjksfCQsWzMNqm7Fe11LNOkmU5FmV6ZALQlyQU5WzaoLMY31lyQ3BMTTwyKdpf2BaGHWsbKBQqRfoCYa9zTNJCNGkQAZJBMktcducFCY9I5/+X4P3F5ZprXOZGssYPdj77fLQyJQIe3cSxlBKDKNQprvtlVstiiy1EVtJeT0E71x0YgBFi3WxYAvuJ72twCdB98eNAbCfn71t4YvI7bWGEPfFgXOhiqQrp4/+6RwIA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SJ2PR11MB8450.namprd11.prod.outlook.com (2603:10b6:a03:578::13)
+ by DS7PR11MB6295.namprd11.prod.outlook.com (2603:10b6:8:95::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.18; Thu, 23 Jan
+ 2025 18:20:16 +0000
+Received: from SJ2PR11MB8450.namprd11.prod.outlook.com
+ ([fe80::5c1b:f14a:ef14:121e]) by SJ2PR11MB8450.namprd11.prod.outlook.com
+ ([fe80::5c1b:f14a:ef14:121e%4]) with mapi id 15.20.8377.009; Thu, 23 Jan 2025
+ 18:20:15 +0000
+Message-ID: <270f7646-da91-475e-a0ee-acffc6a1bfc1@intel.com>
+Date: Thu, 23 Jan 2025 10:20:14 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] drm/xe: Fix and re-enable xe_print_blob_ascii85()
+To: =?UTF-8?Q?Jos=C3=A9_Roberto_de_Souza?= <jose.souza@intel.com>,
+	<intel-xe@lists.freedesktop.org>
+CC: Julia Filipchuk <julia.filipchuk@intel.com>, <stable@vger.kernel.org>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+References: <20250123180320.66198-1-jose.souza@intel.com>
+ <20250123180320.66198-2-jose.souza@intel.com>
+Content-Language: en-GB
+From: John Harrison <john.c.harrison@intel.com>
+In-Reply-To: <20250123180320.66198-2-jose.souza@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MW4PR02CA0027.namprd02.prod.outlook.com
+ (2603:10b6:303:16d::32) To SJ2PR11MB8450.namprd11.prod.outlook.com
+ (2603:10b6:a03:578::13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250123-net-mptcp-syzbot-issues-v1-3-af73258a726f@kernel.org>
-References: <20250123-net-mptcp-syzbot-issues-v1-0-af73258a726f@kernel.org>
-In-Reply-To: <20250123-net-mptcp-syzbot-issues-v1-0-af73258a726f@kernel.org>
-To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org, 
- syzbot+ebc0b8ae5d3590b2c074@syzkaller.appspotmail.com
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4428; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=S9jbuUp0DAVRF4aad/ku5eB15W0ks5b8jrDtRGmwV6o=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnkoVbQ09Q5sEHcj6HFHpDlC8R0yHhxl36mTET7
- dy+3zBA7TqJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ5KFWwAKCRD2t4JPQmmg
- c+jZEACFWp4B0CDTBMC9Mw9YeHkFDmzeMAZKMrZfEevktbx2/nqvszs398USMOj6APZ5BFZx1BS
- NKu9VzZRJctclWZ/iCwxuZbkldgj/QVIhxTR51bc1IEPA4XsM1DiwLtg5Y6va7wod4evhi1QYbr
- lAJPaKRzxn52zNkzuYvLDJjpiJmFQj+lhnehPlJI0w0T0TNAkQmxOyWZz/vnBX6sp49buBguNbX
- QW7U4f0+g1MBL15LLqowD6MOdUxAhxXMtd9VMo64nv79b1lxlAQJZsPMx12RaiHdMXqM3mw5nxA
- K0z9iQ59N9B5IXHlAPLXx1ieFtbChbd2me8JabGIssm631okDHMTFcCDiPQPeCTSPRSJc7dJqvz
- mfrt68m2+VZmr8QX59GBNYJoOQ+CPvrxwP31m5R7uBa2JZjh8JEoawQ5JaagKuPpPB0ZPhaWGFm
- ysubSqODMQ7ZbxQaH/OHC07sCs/8Vae3tPI7+rsvFDsOa6UFM5+ic2A4132SYXhM4d5JvG84FG7
- BQsIYn9m3IXcE9CPUkEjwlyOUzf+O1c5nhQkc54DYYiHdUHnwRV4z5n6UGmPwLqVYJmcHvBd6eH
- NRNDaNQ7Z+9BviJQHpwrBExwnXnLx2X5qQu/f1Ql/W04fiAEx9voUQF72Ojr02HLm02F9yt/QvD
- UC4NG+Yz/4Wt0VA==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR11MB8450:EE_|DS7PR11MB6295:EE_
+X-MS-Office365-Filtering-Correlation-Id: eca2f943-3827-4e63-b14a-08dd3bda95ba
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?VmdEdGxabVZrUnNxVnp6V0NnbHE4ZG9uN1pFZGsxcFBucUo2Z3A2UHhDKzJB?=
+ =?utf-8?B?a1M5WXBwU1lzUE80bXRDbzVnbGNtcCtSZjRLeE52eXdNdU9YMHB2Q25GNk9S?=
+ =?utf-8?B?U2lMa0lPRkhpTDdyRlVTK3VqUk93d1NYSDBKcktGQXJ3dStSVGtHSEh5K0tr?=
+ =?utf-8?B?WklkUjM4TFNXTlUrNU1OaU8zR21ja051ZVJkZGJRT24yR0EwMmpuUlc2WkN3?=
+ =?utf-8?B?cmk4Y1g1UmtQc3pOZ0xwWGFCUzVTa3ZuL1ZCKy9laVUwNlZmMTcvdGFYTzlh?=
+ =?utf-8?B?d05jbU5ubko3YjUyNkFxQVhvNi9mZXp0dnBjQk5SeDlFZFg0NkR2QysvSTRU?=
+ =?utf-8?B?VVd3RFhYbXc1eWV3RUdpdyt3c0V5c1pDVHc1RXV3RW5HQUZtUm45RElrbEVk?=
+ =?utf-8?B?YVJ4aitQcm1nYkwzSzZ3dmJHUS9tdyt5MnVlbktCa2ROSC9wSlQxWHlpRUFV?=
+ =?utf-8?B?ZVh4SUZUeFZvdmxCWTBzU2x3U2ZnSHRtMVN2TTBGSUVobE9kKzBVemtqblpV?=
+ =?utf-8?B?MlhZUHZtYlljWjdVN2lSOUNtUDZ5Um9IQ1ZRci8rUjZscGV2a0F0cGJNUTBH?=
+ =?utf-8?B?ekQ1SVJwYnNwVms4VElOcm9MamlCbGVtM1pZbjJISTdINE1hVE0xMFdXV2xB?=
+ =?utf-8?B?MU5ZenNUS2tYZVZHak5zSGx4NjMwaVE5cVBNQnpRUVVudERLZHNFbXp3ZlVR?=
+ =?utf-8?B?MVZxR0p2Ym9UMmhBTlUxeUt6cmtPdm9UbDFLckFCNGhGNUtMSjdzRXE0U2tp?=
+ =?utf-8?B?WXJkUEV4SUtXNEw4QkJWNnBsbjdnQStlS0E4NTRkYnBQVnpzSXBWZ1ZoNjda?=
+ =?utf-8?B?d0xNZ09BTHNzUVBHTnRnUXlRa2lESnRjcFdxWE9tcXVjWGM3U055NjlNaFFI?=
+ =?utf-8?B?UG56WW4xVWFBOXl4TVA0QUtPbW5pQ2hvbXFZY3JFNlcrR3NENkZtRHd1ZGM3?=
+ =?utf-8?B?clRvOEhZNi9vWUthQ0toLzdwWG1RbTU1aU9lT2ZPNFBmVklPWjBXaEQ1eFpx?=
+ =?utf-8?B?NVVORnVtRURydWRkZ3UrMVdlL3VvOVZROU5QTktXaDZBOU5IQ3FGMXNrR3I1?=
+ =?utf-8?B?bzY0U3c2ZjRqbkZVQThQU05rV0dXdllKWThUUnArYXB6anRqWmYvOGsrVGh2?=
+ =?utf-8?B?V283QWhsZkU3VjhUenl1SVZGRWtkWVBhZ3N0eEtEb3BGSzFlWVRzWGVKa1RF?=
+ =?utf-8?B?Tm04SlN5KzVnOVdLT2xQbmlERnkwallCVE4xN1djRFY0T280ZEw0QlNFS1c0?=
+ =?utf-8?B?UU1oWDd2Y2MxaGVOenNMQ1ZZWC9DaS9na2lVZXdBSTNHM0pZUG84T3pHRDFr?=
+ =?utf-8?B?L3FlMmNUdDlDbUZGSnlwSURERmFBaDR1SFErdkpEdWlleGFZeWVUMkJPMXVn?=
+ =?utf-8?B?SzUrSWVhT2gxbDhoRnk2K0NKNENEcVB6azZadzBrOTIyRHlSWjRubFJWUllu?=
+ =?utf-8?B?a21ER1E4MUljdUtVNXdEUXFjb2xnK1duc1VsYnMzM0gwdHJsdHhETFZvb3Bl?=
+ =?utf-8?B?VGZJRCtlMTltZVRQanhjK0hTOEZoT3ArVEVJdHlIV0JXNEJ6VGlyYkpNRmFy?=
+ =?utf-8?B?YkZ0VElrekxyY213Q1VBTlVlRno3OHFscTQralNxcWJYOUEzZkpGdWllVmlJ?=
+ =?utf-8?B?VDhiWHErMW1HS0FXQytDbDkxZHBGUTdaSG4wUEw3dXFMdDZwcVFMRXBYak5L?=
+ =?utf-8?B?TTVFdGJ2VEp5TS9zNjNwYXRDb3htRitTM0hBNXJvanc0TnA2THpQMFVYcVVx?=
+ =?utf-8?B?RWJNT1kyOWx2Q1JYRU0wMlhZMm1WU24zbGFXVGVrWDhkK1JmRDJVQTV3WE5k?=
+ =?utf-8?B?TXA3WFJJQTVLVlIzZldhb3B3bUlrY0Z0R0RweVoxYTErYWFUTi94TDVVM0o0?=
+ =?utf-8?Q?pYRNV2bT4LztK?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB8450.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NVlsWTQva2hsZnp4WEU3MzNaTklOczdLZmh4WU8wVjFVYVhvTng3L0dIUXA5?=
+ =?utf-8?B?VVFlMnh4SzZ1MERkamNEQzR2T2s4MTZpOUh6aGVrVjAwNjRPRXgxbVpsNEhQ?=
+ =?utf-8?B?YVAyNGtDazJMaFI3RE1oWjBTTG1VWG5iRlRKWHY3OEx3UlQ3dWpxK3RNTVV1?=
+ =?utf-8?B?bko4aWJsOG9zMHA2eDB5bC9IWHFzLzNILzNVMEs2L0pZK09MNlU4ZmIxaHZh?=
+ =?utf-8?B?ekpZWis2cXJNOFkvd1RVcHpGR0RnOTV1VTJLc2FkT3hSelZ5bHdOOHJtWmtQ?=
+ =?utf-8?B?ZktucURSN0hsY0VmUUk4a1BDOVJmMUhIdWpHVDJMdVFJcm9GSW1ibGxoU3lL?=
+ =?utf-8?B?SmZpSWRuK250S1JTdFRuVW5aQzlXK1diVDZpdDRKbHl6VnhON0c1SzJxRWpq?=
+ =?utf-8?B?U2MwWkhzRTJPVG5ZVzlYb2ZCU21mMEVnRmxORDQzK1V6cEovSStQTkxoNDlx?=
+ =?utf-8?B?TWU5K2xycUJwS21LK2hCNUhiRmxJK1owSkU4VHAyekdZdEN4Rkg3Qm1sZGJm?=
+ =?utf-8?B?aUVWMUNYVTdxQ2w5L3ZFWGRhUVVJdUdXS3dIL3VkMzk5K2xaYzN4QThrWXB3?=
+ =?utf-8?B?V3lIZFQ2SG1QbVNTKy9sS25aWHNVUGgwTDhUbjlkMGlGSjVWL2cxSldpU3JL?=
+ =?utf-8?B?eWJkcDJCc3IxSEhSc2c3UHpDNnNJYWVZcFNVRElQNzlzLzNpaGJRaGl0V1R6?=
+ =?utf-8?B?WTlYa0M5ejdhaGxyQ2JvZVVzcG1BU0xFYnU2NDEwUjU5VWFqWkQ5RVlCUDlE?=
+ =?utf-8?B?K2dvY2szR1JVUnR2WSt4c2t2WlpxeWEwVTdtY2ZMOTFIWDRueGRRRElMWkpV?=
+ =?utf-8?B?OXNTQTJUUTEzTTd1K0ZSbUVmQW5qNERjQzBHODA2K3Q0MmZ3S3MyYXQwa2sx?=
+ =?utf-8?B?TTEvT2U5WitEWEpnaU9QTGsxcXJybE43T0JqVmFwcmk5WVN1dC9oR1picW5H?=
+ =?utf-8?B?RVRwWStzdHlaWGVEUnUwRGtvTzlkUG1GV2QvTnVsVjMxV1N0amd5M0dIblY0?=
+ =?utf-8?B?empMZ2t3TUhwNjk3T25TbG4ycWdiNXEya0pwSVFVRXFyMHVJSW4yTGJYdWZk?=
+ =?utf-8?B?aE5hSnZlZVdMbzh3cmprVFhaTVJMd3BqR1FMRC9JWlZnOUVkM2pObWxBSno4?=
+ =?utf-8?B?cGR1OW11blBGNnFWMHFKM2puNklUSkJ3SThIR0dhcC8vcHZHOU5pVWZiVTJO?=
+ =?utf-8?B?bG1obmxJVnRieXM4Z0p3eEc5d2dwdmpVbnhFVFhrYUhxQjV2dHJnaVg3aGVs?=
+ =?utf-8?B?MWdxSnNDYXdYYVJEdHZvZUtTL0hSS3RvRGJsYmpUZ2VEOTZzVHVSakpWMVlZ?=
+ =?utf-8?B?bTk0OGFUNS9zR01aT2VGc1BhUGR3em53SUdRSVRsRktYZHd6dXdZK3hVdDFy?=
+ =?utf-8?B?cjIzdWR2T0wwOENSY2VDQWxtNnRtNGdTNlVpcG55OENJU0lsMWJnMDJYeGl2?=
+ =?utf-8?B?dlJxQWwvOHFSQmd3Q09XbDd5dEVIQUJLTndxMHFqdkZxKzdkcWZxbmxzZXVv?=
+ =?utf-8?B?OFlUek9wd0ZKbEpLNTJaODF3N29lTlBsenk3aUs0ck9mTTlVZDBzUytRbnJV?=
+ =?utf-8?B?OC90c0ovbjI2M1E5WEwzS1VLRXhDeHlHOWlBcjJTeDQrdWNUV3lzMFRGWkhB?=
+ =?utf-8?B?bnlDYldZUVoyNHVOS3ZpZXIzaWR3d0IrajJrNUdRUS9wK1UvZTVZTUhGUko3?=
+ =?utf-8?B?NnV1N0QvNHdTSldLL0hJN3BKWnh6Qi9OMjlmUVo0dVMwTEpVcEgvQ2FtNFBL?=
+ =?utf-8?B?eGl2dnUwS04yUlEvZ3VYMGZFcGdqNFFFaDAxeVk0WXFCbEIxZGpCZE5wOFVK?=
+ =?utf-8?B?a1VLcWpoNGZreGhpS09GWTB2MGI3Z1Y4M2RCS0Y0TUUybk0weG96djA4VjJz?=
+ =?utf-8?B?V2MxbXlFMCtmd0RaK1VGdTNPWkpKMTRQQXd1TXc0TTA5Um1yajl3ZlBxdmhE?=
+ =?utf-8?B?aFNYNTR1RThyekZ6NVEySDdoZzhrbGVaZ1VocS9Pdm5KZHFkUFlEUDJpaDFw?=
+ =?utf-8?B?alI1L0dOc1ZpS3RFNDBKTXYvdVJKVVZ0K0h6aE1FYnVWNnFqaGVEdGRJTGdT?=
+ =?utf-8?B?QkFULy9JTlB1UWdwVDB0MGUxTDlPV3BlMGt4bUc4cVN1YmZEUlhDazFCM3hq?=
+ =?utf-8?B?bWg3SjZmdDd6VTNFRVpvNXJvYXVXVnBVVTJjZllyMGtSc1kxR0F4eUxjeXZk?=
+ =?utf-8?B?RUE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: eca2f943-3827-4e63-b14a-08dd3bda95ba
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB8450.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2025 18:20:15.8785
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EDz0y26QuZ0uMLWmGMX8iOFpZ4tLCoP4wL7W2eoG2NqQGr1MEDiIzn2zUy4EJ5J74k4w2c4i1nrbqJDpDKWtwpgwz52BdUCJZhXIXdZMgj0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB6295
+X-OriginatorOrg: intel.com
 
-From: Paolo Abeni <pabeni@redhat.com>
+On 1/23/2025 09:59, José Roberto de Souza wrote:
+> From: Lucas De Marchi <lucas.demarchi@intel.com>
+>
+> Commit 70fb86a85dc9 ("drm/xe: Revert some changes that break a mesa
+> debug tool") partially reverted some changes to workaround breakage
+> caused to mesa tools. However, in doing so it also broke fetching the
+> GuC log via debugfs since xe_print_blob_ascii85() simply bails out.
+>
+> The fix is to avoid the extra newlines: the devcoredump interface is
+> line-oriented and adding random newlines in the middle breaks it. If a
+> tool is able to parse it by looking at the data and checking for chars
+> that are out of the ascii85 space, it can still do so. A format change
+> that breaks the line-oriented output on devcoredump however needs better
+> coordination with existing tools.
+>
+> Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
+> Cc: John Harrison <John.C.Harrison@Intel.com>
+> Cc: Julia Filipchuk <julia.filipchuk@intel.com>
+> Cc: José Roberto de Souza <jose.souza@intel.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 70fb86a85dc9 ("drm/xe: Revert some changes that break a mesa debug tool")
+> Fixes: ec1455ce7e35 ("drm/xe/devcoredump: Add ASCII85 dump helper function")
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> ---
+>   drivers/gpu/drm/xe/xe_devcoredump.c | 30 +++++++++--------------------
+>   drivers/gpu/drm/xe/xe_devcoredump.h |  2 +-
+>   drivers/gpu/drm/xe/xe_guc_ct.c      |  3 ++-
+>   drivers/gpu/drm/xe/xe_guc_log.c     |  4 +++-
+>   4 files changed, 15 insertions(+), 24 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/xe/xe_devcoredump.c b/drivers/gpu/drm/xe/xe_devcoredump.c
+> index 81dc7795c0651..1c86e6456d60f 100644
+> --- a/drivers/gpu/drm/xe/xe_devcoredump.c
+> +++ b/drivers/gpu/drm/xe/xe_devcoredump.c
+> @@ -395,42 +395,30 @@ int xe_devcoredump_init(struct xe_device *xe)
+>   /**
+>    * xe_print_blob_ascii85 - print a BLOB to some useful location in ASCII85
+>    *
+> - * The output is split to multiple lines because some print targets, e.g. dmesg
+> - * cannot handle arbitrarily long lines. Note also that printing to dmesg in
+> - * piece-meal fashion is not possible, each separate call to drm_puts() has a
+> - * line-feed automatically added! Therefore, the entire output line must be
+> - * constructed in a local buffer first, then printed in one atomic output call.
+> + * The output is split to multiple print calls because some print targets, e.g.
+> + * dmesg cannot handle arbitrarily long lines. These targets may add newline
+> + * between calls.
+Newlines between calls does not help.
 
-Syzbot was able to trigger a data stream corruption:
+>    *
+>    * There is also a scheduler yield call to prevent the 'task has been stuck for
+>    * 120s' kernel hang check feature from firing when printing to a slow target
+>    * such as dmesg over a serial port.
+>    *
+> - * TODO: Add compression prior to the ASCII85 encoding to shrink huge buffers down.
+> - *
+>    * @p: the printer object to output to
+>    * @prefix: optional prefix to add to output string
+>    * @blob: the Binary Large OBject to dump out
+>    * @offset: offset in bytes to skip from the front of the BLOB, must be a multiple of sizeof(u32)
+>    * @size: the size in bytes of the BLOB, must be a multiple of sizeof(u32)
+>    */
+> -void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix,
+> +void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix, char suffix,
+>   			   const void *blob, size_t offset, size_t size)
+>   {
+>   	const u32 *blob32 = (const u32 *)blob;
+>   	char buff[ASCII85_BUFSZ], *line_buff;
+>   	size_t line_pos = 0;
+>   
+> -	/*
+> -	 * Splitting blobs across multiple lines is not compatible with the mesa
+> -	 * debug decoder tool. Note that even dropping the explicit '\n' below
+> -	 * doesn't help because the GuC log is so big some underlying implementation
+> -	 * still splits the lines at 512K characters. So just bail completely for
+> -	 * the moment.
+> -	 */
+> -	return;
+> -
+>   #define DMESG_MAX_LINE_LEN	800
+> -#define MIN_SPACE		(ASCII85_BUFSZ + 2)		/* 85 + "\n\0" */
+> +	/* Always leave space for the suffix char and the \0 */
+> +#define MIN_SPACE		(ASCII85_BUFSZ + 2)	/* 85 + "<suffix>\0" */
+>   
+>   	if (size & 3)
+>   		drm_printf(p, "Size not word aligned: %zu", size);
+> @@ -462,7 +450,6 @@ void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix,
+>   		line_pos += strlen(line_buff + line_pos);
+>   
+>   		if ((line_pos + MIN_SPACE) >= DMESG_MAX_LINE_LEN) {
+> -			line_buff[line_pos++] = '\n';
+If you remove this then dmesg output is broken. You can make it optional 
+in some way so it only happens for dmesg output, but removing it 
+completely does not work.
 
-  WARNING: CPU: 0 PID: 9846 at net/mptcp/protocol.c:1024 __mptcp_clean_una+0xddb/0xff0 net/mptcp/protocol.c:1024
-  Modules linked in:
-  CPU: 0 UID: 0 PID: 9846 Comm: syz-executor351 Not tainted 6.13.0-rc2-syzkaller-00059-g00a5acdbf398 #0
-  Hardware name: Google Compute Engine/Google Compute Engine, BIOS Google 11/25/2024
-  RIP: 0010:__mptcp_clean_una+0xddb/0xff0 net/mptcp/protocol.c:1024
-  Code: fa ff ff 48 8b 4c 24 18 80 e1 07 fe c1 38 c1 0f 8c 8e fa ff ff 48 8b 7c 24 18 e8 e0 db 54 f6 e9 7f fa ff ff e8 e6 80 ee f5 90 <0f> 0b 90 4c 8b 6c 24 40 4d 89 f4 e9 04 f5 ff ff 44 89 f1 80 e1 07
-  RSP: 0018:ffffc9000c0cf400 EFLAGS: 00010293
-  RAX: ffffffff8bb0dd5a RBX: ffff888033f5d230 RCX: ffff888059ce8000
-  RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-  RBP: ffffc9000c0cf518 R08: ffffffff8bb0d1dd R09: 1ffff110170c8928
-  R10: dffffc0000000000 R11: ffffed10170c8929 R12: 0000000000000000
-  R13: ffff888033f5d220 R14: dffffc0000000000 R15: ffff8880592b8000
-  FS:  00007f6e866496c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007f6e86f491a0 CR3: 00000000310e6000 CR4: 00000000003526f0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  Call Trace:
-   <TASK>
-   __mptcp_clean_una_wakeup+0x7f/0x2d0 net/mptcp/protocol.c:1074
-   mptcp_release_cb+0x7cb/0xb30 net/mptcp/protocol.c:3493
-   release_sock+0x1aa/0x1f0 net/core/sock.c:3640
-   inet_wait_for_connect net/ipv4/af_inet.c:609 [inline]
-   __inet_stream_connect+0x8bd/0xf30 net/ipv4/af_inet.c:703
-   mptcp_sendmsg_fastopen+0x2a2/0x530 net/mptcp/protocol.c:1755
-   mptcp_sendmsg+0x1884/0x1b10 net/mptcp/protocol.c:1830
-   sock_sendmsg_nosec net/socket.c:711 [inline]
-   __sock_sendmsg+0x1a6/0x270 net/socket.c:726
-   ____sys_sendmsg+0x52a/0x7e0 net/socket.c:2583
-   ___sys_sendmsg net/socket.c:2637 [inline]
-   __sys_sendmsg+0x269/0x350 net/socket.c:2669
-   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-   do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  RIP: 0033:0x7f6e86ebfe69
-  Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 b1 1f 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-  RSP: 002b:00007f6e86649168 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-  RAX: ffffffffffffffda RBX: 00007f6e86f491b8 RCX: 00007f6e86ebfe69
-  RDX: 0000000030004001 RSI: 0000000020000080 RDI: 0000000000000003
-  RBP: 00007f6e86f491b0 R08: 00007f6e866496c0 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000246 R12: 00007f6e86f491bc
-  R13: 000000000000006e R14: 00007ffe445d9420 R15: 00007ffe445d9508
-   </TASK>
+John.
 
-The root cause is the bad handling of disconnect() generated internally
-by the MPTCP protocol in case of connect FASTOPEN errors.
-
-Address the issue increasing the socket disconnect counter even on such
-a case, to allow other threads waiting on the same socket lock to
-properly error out.
-
-Fixes: c2b2ae3925b6 ("mptcp: handle correctly disconnect() failures")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+ebc0b8ae5d3590b2c074@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/67605870.050a0220.37aaf.0137.GAE@google.com
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/537
-Tested-by: syzbot+ebc0b8ae5d3590b2c074@syzkaller.appspotmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/protocol.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index c44c89ecaca658bd2a2fdbfd72bfa2d33a8d95ea..6bd81904747066d8f2c1043dd81b372925f18cbb 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1767,8 +1767,10 @@ static int mptcp_sendmsg_fastopen(struct sock *sk, struct msghdr *msg,
- 		 * see mptcp_disconnect().
- 		 * Attempt it again outside the problematic scope.
- 		 */
--		if (!mptcp_disconnect(sk, 0))
-+		if (!mptcp_disconnect(sk, 0)) {
-+			sk->sk_disconnects++;
- 			sk->sk_socket->state = SS_UNCONNECTED;
-+		}
- 	}
- 	inet_clear_bit(DEFER_CONNECT, sk);
- 
-
--- 
-2.47.1
+>   			line_buff[line_pos++] = 0;
+>   
+>   			drm_puts(p, line_buff);
+> @@ -474,10 +461,11 @@ void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix,
+>   		}
+>   	}
+>   
+> +	if (suffix)
+> +		line_buff[line_pos++] = suffix;
+> +
+>   	if (line_pos) {
+> -		line_buff[line_pos++] = '\n';
+>   		line_buff[line_pos++] = 0;
+> -
+>   		drm_puts(p, line_buff);
+>   	}
+>   
+> diff --git a/drivers/gpu/drm/xe/xe_devcoredump.h b/drivers/gpu/drm/xe/xe_devcoredump.h
+> index 6a17e6d601022..5391a80a4d1ba 100644
+> --- a/drivers/gpu/drm/xe/xe_devcoredump.h
+> +++ b/drivers/gpu/drm/xe/xe_devcoredump.h
+> @@ -29,7 +29,7 @@ static inline int xe_devcoredump_init(struct xe_device *xe)
+>   }
+>   #endif
+>   
+> -void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix,
+> +void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix, char suffix,
+>   			   const void *blob, size_t offset, size_t size);
+>   
+>   #endif
+> diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
+> index 8b65c5e959cc2..50c8076b51585 100644
+> --- a/drivers/gpu/drm/xe/xe_guc_ct.c
+> +++ b/drivers/gpu/drm/xe/xe_guc_ct.c
+> @@ -1724,7 +1724,8 @@ void xe_guc_ct_snapshot_print(struct xe_guc_ct_snapshot *snapshot,
+>   			   snapshot->g2h_outstanding);
+>   
+>   		if (snapshot->ctb)
+> -			xe_print_blob_ascii85(p, "CTB data", snapshot->ctb, 0, snapshot->ctb_size);
+> +			xe_print_blob_ascii85(p, "CTB data", '\n',
+> +					      snapshot->ctb, 0, snapshot->ctb_size);
+>   	} else {
+>   		drm_puts(p, "CT disabled\n");
+>   	}
+> diff --git a/drivers/gpu/drm/xe/xe_guc_log.c b/drivers/gpu/drm/xe/xe_guc_log.c
+> index 80151ff6a71f8..44482ea919924 100644
+> --- a/drivers/gpu/drm/xe/xe_guc_log.c
+> +++ b/drivers/gpu/drm/xe/xe_guc_log.c
+> @@ -207,8 +207,10 @@ void xe_guc_log_snapshot_print(struct xe_guc_log_snapshot *snapshot, struct drm_
+>   	remain = snapshot->size;
+>   	for (i = 0; i < snapshot->num_chunks; i++) {
+>   		size_t size = min(GUC_LOG_CHUNK_SIZE, remain);
+> +		const char *prefix = i ? NULL : "Log data";
+> +		char suffix = i == snapshot->num_chunks - 1 ? '\n' : 0;
+>   
+> -		xe_print_blob_ascii85(p, i ? NULL : "Log data", snapshot->copy[i], 0, size);
+> +		xe_print_blob_ascii85(p, prefix, suffix, snapshot->copy[i], 0, size);
+>   		remain -= size;
+>   	}
+>   }
 
 
