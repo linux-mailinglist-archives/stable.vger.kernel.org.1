@@ -1,142 +1,165 @@
-Return-Path: <stable+bounces-110259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41424A1A0FF
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 10:42:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0BEA1A1F9
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 11:36:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DB0016DE51
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 09:42:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83AB43A596E
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 10:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3565320C028;
-	Thu, 23 Jan 2025 09:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5445820DD7F;
+	Thu, 23 Jan 2025 10:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NW+aVDJr"
+	dkim=pass (2048-bit key) header.d=engineer.com header.i=rajanikantha@engineer.com header.b="BjXQn/QW"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mout.gmx.com (mout.gmx.com [74.208.4.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650D420C492;
-	Thu, 23 Jan 2025 09:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF6520127F
+	for <stable@vger.kernel.org>; Thu, 23 Jan 2025 10:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.208.4.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737625330; cv=none; b=nN728u4wrz3iyDhof4mE38OD+5yHHelE7dICiRcUr8IS7LOSyb19JgPBZ9YfnQ0YJzfwRXYL8EmCUdB2RmXscw1nKevvrlT/ycSINcUR0AO3xb3trvIFZWQmFt0GExwxU6G/BcQmKlJLFpNZHrYfYVWYshk5/r5FzcS22hsbUe8=
+	t=1737628590; cv=none; b=WPOPtJX4feQ1U8+tWpJc4ev3PuDGqGxnsMjnLJ+mTmpfjGLFsxG9ztdVJoHZlVvdx+0YeA7WsympDV+TM3F4TcbNdbrZAMXX1WOX2ZG7jtAh+Tvhfr6Vryoi9ftxvLcEMwZxjNRKsCURCTYk7lvUHlQyrTulIqbBWPGgjwZVO6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737625330; c=relaxed/simple;
-	bh=YrG2Ji3mQLbKulNePHgsKU4kGwK8BTcBIgjmwTWQVaA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Lzr29t/Rb4ZCbC6yPgPNXJbFJUum5ldggY03ANNOSFQfYCti6mSBGjujFl6f66zizJGViVpw1Pkeayz9AfZTwAY1ebzCSN9UAPLg32yFF5CQzYwQB0AcC7vJPTWVsYCblf55SZXVU2n21nYkZ3LH8T+9llm9p1NbjoHIR2Dzr48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NW+aVDJr; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737625329; x=1769161329;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=YrG2Ji3mQLbKulNePHgsKU4kGwK8BTcBIgjmwTWQVaA=;
-  b=NW+aVDJrglSF4O/MmS1jBftL4f4PPcPpVsBNcTj52u8IkSxSGnOMoOXT
-   e1jPHaFMpMxmpsFOAj4e5Y7o5UF/HXkQVj5z4fyE3hpmlYq8foakLg1eG
-   45JABLEqLtJEONw0kHZxs8ebgBH5jdYBAVT+lcW6D+5uHn5O8uebpSmXz
-   viqVw+1/2AK/NfirAE/RNmv6WOEbW/o9s2LkhVdEAexVn60S8HTApzZYa
-   FQWguyJHETK1q6buv/d5YO9vHEW6tnIS3x6af10dm/1O1D3uqtVbMIS3O
-   kXT5cFsTB7sYJ+zU5S8OzoYNPyZy3gWEOjqxqThGvF5TnwxRBRCiOpcqU
-   w==;
-X-CSE-ConnectionGUID: IDtow5M8RBmuzNV1COjfCQ==
-X-CSE-MsgGUID: KDVrn5ViTLaKsPZNnngSfQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="55662645"
-X-IronPort-AV: E=Sophos;i="6.13,228,1732608000"; 
-   d="scan'208";a="55662645"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2025 01:42:08 -0800
-X-CSE-ConnectionGUID: 9oxn64ksRdubNtzQclsuOQ==
-X-CSE-MsgGUID: 9H5eZPi1SmWTleYC98/QGg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="108281813"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2025 01:42:05 -0800
-Date: Thu, 23 Jan 2025 10:38:37 +0100
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Cc: Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	John Stultz <john.stultz@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH RESEND net] ptp: Ensure info->enable callback is always
- set
-Message-ID: <Z5IOHVu9L+QpyK4Y@mev-dev.igk.intel.com>
-References: <20250123-ptp-enable-v1-1-b015834d3a47@weissschuh.net>
+	s=arc-20240116; t=1737628590; c=relaxed/simple;
+	bh=Abv5riCBXDQ+2hxBSuIaWJhAJzTtf+PEGR+aTkYbU40=;
+	h=MIME-Version:Message-ID:From:To:Subject:Content-Type:Date; b=FARXCi6wNLdJCHaUWjNMalCCuwsEC0rqpsAnDe+ed/BoJeDZtboVaBnxaf/msbIm2T4QX0m73vJC85ekgRSxYx7eWvwSjl5Acm4BCf5TqyisxtkJ//shVVT5g3gNaNnCxBCUWNLJIzRvLr1IRH9jrbIPmluvuvyDBdubrqVwqGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=engineer.com; spf=pass smtp.mailfrom=engineer.com; dkim=pass (2048-bit key) header.d=engineer.com header.i=rajanikantha@engineer.com header.b=BjXQn/QW; arc=none smtp.client-ip=74.208.4.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=engineer.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engineer.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=engineer.com;
+	s=s1089575; t=1737628585; x=1738233385;
+	i=rajanikantha@engineer.com;
+	bh=N279YiE5B+4E7dxpmwXqqvU+/L9bQHryW+p7uBaw7nQ=;
+	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Subject:
+	 Content-Type:Date:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=BjXQn/QWuHoEeshYcG9uIvOivkPxFnM10PCoNhrfeqbhWaHW1PrQOTDZlFREioJJ
+	 rYesX5mGM/v78lRNtdsqrq5Ca2ZHHm4UVHOv8n6ZnPpnfrZ8yeE+t3v0gAHTxpbGP
+	 d6VmQS7N2N6hfZVzBHjxK6IC3R46JzYYZfTJneR4Q0mDaKGG+QaLNgLjfS915e5qS
+	 a3KYvPaJOHu7zpFG1wK5mxYwqSIcG1vjMEewyCkH7gul4Tx1wxPvDabZE4NsYAGkY
+	 R9sd4CQ3By5EsG0NOIAFVyJ9V0KGk85hBGEXCyHeO34E6Z5u6Md7A4Jfo0KMIvDRQ
+	 qL8eYNK6AdQU/oJstg==
+X-UI-Sender-Class: f2cb72be-343f-493d-8ec3-b1efb8d6185a
+Received: from [60.247.85.88] ([60.247.85.88]) by web-mail.mail.com
+ (3c-app-mailcom-lxa14.server.lan [10.76.45.15]) (via HTTP); Thu, 23 Jan
+ 2025 11:36:25 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250123-ptp-enable-v1-1-b015834d3a47@weissschuh.net>
+Message-ID: <trinity-76d708b6-92f6-48ff-8fae-1a9f3d4cc38e-1737628584932@3c-app-mailcom-lxa14>
+From: Rajani kantha <rajanikantha@engineer.com>
+To: adobriyan@gmail.com, axboe@kernel.dk, stable@vger.kernel.org
+Subject: [PATCH 6.6.y] block: fix integer overflow in BLKSECDISCARD
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 23 Jan 2025 11:36:25 +0100
+Importance: normal
+Sensitivity: Normal
+X-Priority: 3
+X-Provags-ID: V03:K1:I0iOMlpR+HMpbzn9HKhw6/r44TwI4hlLdY39wrRMgM+jRZKP5LWK7MNHc4QuroC0LlXJ7
+ 1BfARQk2UxFx8ft92t/04868WKIhvGs1zTyjBX5KssCcY5VsSA9r+LKYAgRMbX+ZgshNaZKcsFN8
+ lKzTpql/px4wt3SBKfzKdpjVbTtQDkioeuyB23AOQYrr8/4Btiimkibgww27Rm9mLdciPMoDaooV
+ 6ksjiqE4zxTBauRdjkD4KG1GVzT21m0rRZHH9NsUTFGesHnosd4DF6LO897mHGiMjUVcqC1ghxkw
+ XM=
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:chVA3m40SCA=;YRgwRtHlzg2yUErzgzT9FwBWG36
+ hwB7pVDboCS3TGYENCiPp0wT5Ajjq4ZwBRBOHeLrE/PtYOBtFvxxRUlgHXwg1r/G0A1V/HojR
+ qfykCluvktVUwYk4TNMh+F1qEar15sM5GKB6sLxaWClVtZkFnyel8gZo1WkqTPBuIl0nLHvrq
+ ir2sYldb675d+tUB8Zopd5chJsK33bpg2u0Fzu/8a2bbUq7F2oaIavTwJOlY0IAkWPKmYCLal
+ FDjcB3o3Tj5/KnC4/BCt4uzQBWBfFvki/kcfp5h3QciModwEDNscmmrL2yh4BHsbbf73URiMH
+ y85ByCMV/6UmXCGep1J7Bi36QfqaHdFSAhMxjBchxBZ71K5JEDkqLqvzJLI4U9qnEh/gPALsR
+ SV795dnHHN4NrYnXtx/mOqykCBAMjGmnCUwl4xtwg4t3P9Kbjfwi1wWv2qyvTAPRD7V6o8E1T
+ OerN/sTzHg/aHOXn1jNgPDCmmKOvWZQYBSk9Wc0HEmAmSCAH6qnfM3f78tw5QfNEh4UmFDJ+B
+ jP2nD+suUGIIL2Gh7UF23x2hby/CLnd+xxD65X2xp/dN8DTLnM3r8DvcFGYeKnVoOFqG52QQi
+ C6+xStVVPxtrzt1mMIieeY8B9Od8vgS4p6Jet3uZXGLasadm1wbjVFO/Y74GYfteoi27//S/E
+ y3ocfiJfnLujcuRJA1ur0XrNaa0/3/GVJk/4LXy3EoVs5Drm8YeHtkIOzw+XfN85uH1FE1qbq
+ u/U3foH2Gjic8VjR5gnysGh8yLqevwsRZMyOZYnODXvSDtSSsfoOvoiPonlNcGWgKLNITq7B0
+ utkh7Yh9XB28vOU0wnZwY1eW0SC8C9SUa+SvUfqpVCVbzDAMmG+wu+I+KA+MpgiResFJosg+P
+ UpTHfp5pDkSbDyKsREc8akLgUwjvQliCeBMfzPNSRrFR7aoD/qSDSkoC1mW3zvPm72UfLvP4I
+ pF/62wzbbsQKnPFtjWYOSBpeXgTLKhXeePzzEeSNfTotNkeU7gpLe3heDasItmrVJkvCSmi99
+ UnnUI5jBGJF0oLdoZBIH83NltBIZ/pV+mgf70Ze5pk1hWEnOUPPEq78Vy5X7VM7LA2Za1Rr4n
+ 5YRXfYtvFRg352/XHecbiHV5wcQIOVlyyre1QMet/2qlM30h7Y5cmIfbZ9jUlmIcXN1Ave3E0
+ zGHhTVy/V+n0JtXOVpn8X
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 23, 2025 at 08:22:40AM +0100, Thomas Weiﬂschuh wrote:
-> The ioctl and sysfs handlers unconditionally call the ->enable callback.
-> Not all drivers implement that callback, leading to NULL dereferences.
-> Example of affected drivers: ptp_s390.c, ptp_vclock.c and ptp_mock.c.
-> 
-> Instead use a dummy callback if no better was specified by the driver.
-> 
-> Fixes: d94ba80ebbea ("ptp: Added a brand new class driver for ptp clocks.")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Thomas Weiﬂschuh <linux@weissschuh.net>
-> ---
->  drivers/ptp/ptp_clock.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
-> index b932425ddc6a3789504164a69d1b8eba47da462c..35a5994bf64f6373c08269d63aaeac3f4ab31ff0 100644
-> --- a/drivers/ptp/ptp_clock.c
-> +++ b/drivers/ptp/ptp_clock.c
-> @@ -217,6 +217,11 @@ static int ptp_getcycles64(struct ptp_clock_info *info, struct timespec64 *ts)
->  		return info->gettime64(info, ts);
->  }
->  
-> +static int ptp_enable(struct ptp_clock_info *ptp, struct ptp_clock_request *request, int on)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
->  static void ptp_aux_kworker(struct kthread_work *work)
->  {
->  	struct ptp_clock *ptp = container_of(work, struct ptp_clock,
-> @@ -294,6 +299,9 @@ struct ptp_clock *ptp_clock_register(struct ptp_clock_info *info,
->  			ptp->info->getcrosscycles = ptp->info->getcrosststamp;
->  	}
->  
-> +	if (!ptp->info->enable)
-> +		ptp->info->enable = ptp_enable;
-> +
->  	if (ptp->info->do_aux_work) {
->  		kthread_init_delayed_work(&ptp->aux_work, ptp_aux_kworker);
->  		ptp->kworker = kthread_run_worker(0, "ptp%d", ptp->index);
-> 
-> ---
-> base-commit: c4b9570cfb63501638db720f3bee9f6dfd044b82
-> change-id: 20250122-ptp-enable-831339c62428
-> 
-> Best regards,
-> -- 
-> Thomas Weiﬂschuh <linux@weissschuh.net>
+From: Alexey Dobriyan <adobriyan@gmail.com>
 
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+[ upstream commit 697ba0b6ec4ae04afb67d3911799b5e2043b4455 ]
 
-What about other ops, did you check it too? Looks like it isn't needed,
-but it sometimes hard to follow.
+I independently rediscovered
 
-Thanks
+	commit 22d24a544b0d49bbcbd61c8c0eaf77d3c9297155
+	block: fix overflow in blk_ioctl_discard()
+
+but for secure erase.
+
+Same problem:
+
+	uint64_t r[2] =3D {512, 18446744073709551104ULL};
+	ioctl(fd, BLKSECDISCARD, r);
+
+will enter near infinite loop inside blkdev_issue_secure_erase():
+
+	a.out: attempt to access beyond end of device
+	loop0: rw=3D5, sector=3D3399043073, nr_sectors =3D 1024 limit=3D2048
+	bio_check_eod: 3286214 callbacks suppressed
+
+Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+Link: https://lore.kernel.org/r/9e64057f-650a-46d1-b9f7-34af391536ef@p183
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Rajani Kantha <rajanikantha@engineer.com>
+=2D--
+ block/ioctl.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/block/ioctl.c b/block/ioctl.c
+index 378603334284..231537f79a8c 100644
+=2D-- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -115,7 +115,7 @@ static int blk_ioctl_discard(struct block_device *bdev=
+, blk_mode_t mode,
+ 		return -EINVAL;
+
+ 	filemap_invalidate_lock(inode->i_mapping);
+-	err =3D truncate_bdev_range(bdev, mode, start, start + len - 1);
++	err =3D truncate_bdev_range(bdev, mode, start, end - 1);
+ 	if (err)
+ 		goto fail;
+ 	err =3D blkdev_issue_discard(bdev, start >> 9, len >> 9, GFP_KERNEL);
+@@ -127,7 +127,7 @@ static int blk_ioctl_discard(struct block_device *bdev=
+, blk_mode_t mode,
+ static int blk_ioctl_secure_erase(struct block_device *bdev, blk_mode_t m=
+ode,
+ 		void __user *argp)
+ {
+-	uint64_t start, len;
++	uint64_t start, len, end;
+ 	uint64_t range[2];
+ 	int err;
+
+@@ -142,11 +142,12 @@ static int blk_ioctl_secure_erase(struct block_devic=
+e *bdev, blk_mode_t mode,
+ 	len =3D range[1];
+ 	if ((start & 511) || (len & 511))
+ 		return -EINVAL;
+-	if (start + len > bdev_nr_bytes(bdev))
++	if (check_add_overflow(start, len, &end) ||
++	    end > bdev_nr_bytes(bdev))
+ 		return -EINVAL;
+
+ 	filemap_invalidate_lock(bdev->bd_inode->i_mapping);
+-	err =3D truncate_bdev_range(bdev, mode, start, start + len - 1);
++	err =3D truncate_bdev_range(bdev, mode, start, end - 1);
+ 	if (!err)
+ 		err =3D blkdev_issue_secure_erase(bdev, start >> 9, len >> 9,
+ 						GFP_KERNEL);
+=2D-
+2.35.3
 
