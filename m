@@ -1,100 +1,162 @@
-Return-Path: <stable+bounces-110270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8841A1A3F2
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 13:11:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69548A1A418
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 13:20:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B180D1881439
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 12:11:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A30DC1627F3
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 12:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D76A20E307;
-	Thu, 23 Jan 2025 12:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A9520E6F3;
+	Thu, 23 Jan 2025 12:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RQKJVu3h"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AWUcp+pE"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A6D20CCCF
-	for <stable@vger.kernel.org>; Thu, 23 Jan 2025 12:11:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C09320E035;
+	Thu, 23 Jan 2025 12:20:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737634278; cv=none; b=EeuCwlZpg5IXYqBXUSpSJsi2oeYKX9RLhGzjU8YFjENnXAjI/Q1E05DjQo480UBI0lYttolc0BkZ/2qE8T8R+s20g6B736zs+qYpaC1GH1jARe9KyJo13OU+F0jnkJSPRLwaAfj7l0LH5/mW3aFGDM2SfpGrToEsKFUp8T6fgKQ=
+	t=1737634846; cv=none; b=KiJKMCRrwwstUAzKplamuWA2gS9blhNYVS7yOrAnv3X7kKh+4+EVb0Dj61RXqRPb11qyfuUxTU7/VvLq390pNWOectNRo4PBC2EH6L7YzIpGvsaozCeumEge0NcFf4rlXlTwMj85gBzjSCPnTyGA9n/hvctGdNg24VT7QQW5Jbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737634278; c=relaxed/simple;
-	bh=4DUbtNxlktKbBBd1hn73LeWxk9EhHpL1qrkN3nyliIw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=H9yoGal0L9Aj8BNGGfRO7sRGFl6cD+aWWZJBq8PELjExT5a569cLzA8KMeLGr27vjtbwWBEN06cwuIhcHxspcBMZgXb8hLWDfCAjYbJuyQthyugCCELeC4SkZQoHmXqU/SfZyD/U46SRTnWuHIY6chWIT4rNOCWPQQKyDCqS3kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RQKJVu3h; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737634276; x=1769170276;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=4DUbtNxlktKbBBd1hn73LeWxk9EhHpL1qrkN3nyliIw=;
-  b=RQKJVu3h5Hby8/Ud+zK2YrHUQ44q4eT7Ny0tQWgTboo5Fg1ebrmjDF2O
-   tsRfVN5eo5Y8xE8qP9jWCkihgqMqC8orF5SOhia2QjgiZHS8eFQge9ERt
-   QI6GxU+VX0nO4s19DllhNGL/1StAD3KUcgNbHxdnYM8RYTFS6TNfFhJ5q
-   PJ7of3DgFPyfiy8OBNq6QJkj05I0TKQbRBkGxHdIMW/O8mQlY07xPWyAr
-   HK1EVzBLBqtgpT0A+t5k7c+viKfyC7yNMAt6TF1Ks7iAEy98gkY/tZNEZ
-   duafa3gFaBJFaVUGCixy67ku1S1OXhM2MMxLOXT+cuEOcECZI6IAiu40v
-   Q==;
-X-CSE-ConnectionGUID: 8rRH5OUlRoCrqCIdW26eCA==
-X-CSE-MsgGUID: g/jD660jQ0eLXTtS6Gxv5A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11324"; a="41794847"
-X-IronPort-AV: E=Sophos;i="6.13,228,1732608000"; 
-   d="scan'208";a="41794847"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2025 04:11:15 -0800
-X-CSE-ConnectionGUID: Bkf83a6GS26q5cIPsiXL3A==
-X-CSE-MsgGUID: 49ZF+iQJSr6mNag5uYpiDA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,228,1732608000"; 
-   d="scan'208";a="138311028"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 23 Jan 2025 04:11:15 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1taw3E-000b9P-13;
-	Thu, 23 Jan 2025 12:11:12 +0000
-Date: Thu, 23 Jan 2025 20:10:42 +0800
-From: kernel test robot <lkp@intel.com>
-To: Shubham Pushpkar <spushpka@cisco.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] drm/amd/display: Check link_index before accessing
- dc->links[]
-Message-ID: <Z5IxwrG7d6QFi2AE@34f1432cedf0>
+	s=arc-20240116; t=1737634846; c=relaxed/simple;
+	bh=991pwosZTNeCjRCZvbKHp7Ffpmv7T89c+Civg60jQ/0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ErRM7suNhcWHlUvDAbHpK+F931DrEoqBz7ZexcowfyFt1nPJ3nB6PjZfnSK03d1/9iW6WwReb8ZORfpNViz8PwsbuqAf5T8HXGB6+10wcJU3jLA+FrnN9XlMes30EoEsOABwqqOJfeq94mVJLh5X0ATLoxxeBUk6aA+d/bfQbsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AWUcp+pE; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5401be44b58so991158e87.0;
+        Thu, 23 Jan 2025 04:20:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737634843; x=1738239643; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4qYFQg17lPWWI/P3x77cxigTrSYOa7HHPOEIY0DqiMU=;
+        b=AWUcp+pERtm/jzNybJnqGXZ5mbrbNvNmC+F/SkSsDmZWuP5mXCMFX2Bayd2b2TWOsy
+         zrwyxjuFE5Tuws1a/ZN6Kt4NikOaahWw6vpSxfhbVxLjt6Umvs0bPdMQMji99Ng3NN0a
+         WL3+YCUh0rb+PbO5ZHm+cvRsrerRrYonwdZa+jj3d5MOy/bl+gnyDo8RzfyDQEhhtW5p
+         RCYOHsQTBXlngCYglbyXF6vXApBse1A5Lb83CrkK9z+f7IRcJoA3DfeMgrL8KS1JnRxd
+         goAAZg+kB/b2MJqr+KEPO6d5ZP5BSw85jk9JesPXBzMBSPJHF7LGPPmNslg1xC6C8dcU
+         7CFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737634843; x=1738239643;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4qYFQg17lPWWI/P3x77cxigTrSYOa7HHPOEIY0DqiMU=;
+        b=eYb3hY81ia8kds29hG9vO9p4Qpe1ladgP2sxCg5DxK4j9j+uI3s4W72MvmdUKn5T4e
+         Q+9kLDvEA9506V72e7tcXjKOTprHOtvjgQ5mAbseEL6Q4Kr3fMTSYX2KrI4Syr/g19x/
+         LylinfvGkLA+h8yJiMjaPINm7Vaa8+ciSrTrzN7cR7HRoAPPGNF3UDuvRz0dYCjJBJ3l
+         4Isu1oCCzZf6Sguf6tClK8JLrIRrjv4RdC7pwpZTY5bGIPkYKbETd10AZLpIOebVmWOr
+         /vjoJn1kaFN18WSKcrE+o2xNBPoIodNlhlV7hKUMz1r6d8hTQ1ytesdEg79KhhnDHUh5
+         WWYw==
+X-Forwarded-Encrypted: i=1; AJvYcCW8JWi+v2npFjdK5JzfJt5cetCQ3CYCNDIC4xuycu5cYxQgxksN8FfEzH5nixI/KqpMMx6dl0Mu@vger.kernel.org, AJvYcCXWxSDppbBXCIiKEyOMqfHV4gFXJy3S8kfTwJOmaMJdJdDhWZad+YJ5EFo1SHD8QyXzOBGTtUhjwxz6Jw==@vger.kernel.org, AJvYcCXabo/WjjKo+FvPpKx1LXwOoQPS4dEg2OG4FJpD7QzCspnc9ghKO1YpWR8jvjE0pOIBAr8u5ohGVREV/DG7@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPpGPoDa9VBdVomsHw/SpN65yOGboiiTWWXiPfJpK/E6HGMJiA
+	krMGrblv8POxfWPeCeq/h3k4TUOvwyLmQEzipzuTD9slke/QGGX1
+X-Gm-Gg: ASbGncsyp0bMvS9Usx30IrRUp0ptj6N8c9aGvS6czn1ZshUjbyV7n4ThEhOdfCEmz40
+	fKySUpMT0XPx2Ybi65TZryWz9LRYGTVDNBgLp+StBxIILEbiox+346l7wiLabff8+Py0oKPmsJb
+	aLBA+pV2uCeCWtjl1PaR7/H31n64ejoLBrpaGPMpEhdwqL8K5O9C5ijJN8CSIn77taIGTJKq/lO
+	N2jmQr0Kd1GQi4UJG1H7cXcbRzrKQdPXHyxx6RImMlJQakCFZRGobS52tytYT4Bcmyb11mk1jj0
+	PWvHXvTIp8aVBpSP/1g=
+X-Google-Smtp-Source: AGHT+IFh/38xtOnDXSxnSHxS0Vf37RqJLjOETl12HDi2Hz14nXUfDH/FUeDLCk7E7rFbZ3IaOP/JsQ==
+X-Received: by 2002:ac2:4c56:0:b0:53e:fa8b:8227 with SMTP id 2adb3069b0e04-5439c27b239mr10309500e87.45.1737634842696;
+        Thu, 23 Jan 2025 04:20:42 -0800 (PST)
+Received: from home.paul.comp (paulfertser.info. [2001:470:26:54b:226:9eff:fe70:80c2])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5439af78febsm2604588e87.248.2025.01.23.04.20.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jan 2025 04:20:42 -0800 (PST)
+Received: from home.paul.comp (home.paul.comp [IPv6:0:0:0:0:0:0:0:1])
+	by home.paul.comp (8.15.2/8.15.2/Debian-22+deb11u3) with ESMTP id 50NCKbA6006054;
+	Thu, 23 Jan 2025 15:20:38 +0300
+Received: (from paul@localhost)
+	by home.paul.comp (8.15.2/8.15.2/Submit) id 50NCKYtm006053;
+	Thu, 23 Jan 2025 15:20:34 +0300
+From: Paul Fertser <fercerpav@gmail.com>
+To: Iwona Winiarska <iwona.winiarska@intel.com>,
+        Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+        Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>,
+        Patrick Rudolph <patrick.rudolph@9elements.com>,
+        Naresh Solanki <Naresh.Solanki@9elements.com>
+Cc: Joel Stanley <joel@jms.id.au>, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org, openbmc@lists.ozlabs.org,
+        Ivan Mikhaylov <fr0st61te@gmail.com>,
+        Paul Fertser <fercerpav@gmail.com>, stable@vger.kernel.org
+Subject: [PATCH] hwmon: (peci/dimmtemp) Do not provide fake thresholds data
+Date: Thu, 23 Jan 2025 15:20:02 +0300
+Message-Id: <20250123122003.6010-1-fercerpav@gmail.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250123120822.1983325-1-spushpka@cisco.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+When an Icelake or Sapphire Rapids CPU isn't providing the maximum and
+critical thresholds for particular DIMM the driver should return an
+error to the userspace instead of giving it stale (best case) or wrong
+(the structure contains all zeros after kzalloc() call) data.
 
-Thanks for your patch.
+The issue can be reproduced by binding the peci driver while the host is
+fully booted and idle, this makes PECI interaction unreliable enough.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Fixes: 73bc1b885dae ("hwmon: peci: Add dimmtemp driver")
+Fixes: 621995b6d795 ("hwmon: (peci/dimmtemp) Add Sapphire Rapids support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paul Fertser <fercerpav@gmail.com>
+---
+ drivers/hwmon/peci/dimmtemp.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] drm/amd/display: Check link_index before accessing dc->links[]
-Link: https://lore.kernel.org/stable/20250123120822.1983325-1-spushpka%40cisco.com
-
+diff --git a/drivers/hwmon/peci/dimmtemp.c b/drivers/hwmon/peci/dimmtemp.c
+index d6762259dd69..fbe82d9852e0 100644
+--- a/drivers/hwmon/peci/dimmtemp.c
++++ b/drivers/hwmon/peci/dimmtemp.c
+@@ -127,8 +127,6 @@ static int update_thresholds(struct peci_dimmtemp *priv, int dimm_no)
+ 		return 0;
+ 
+ 	ret = priv->gen_info->read_thresholds(priv, dimm_order, chan_rank, &data);
+-	if (ret == -ENODATA) /* Use default or previous value */
+-		return 0;
+ 	if (ret)
+ 		return ret;
+ 
+@@ -509,11 +507,11 @@ read_thresholds_icx(struct peci_dimmtemp *priv, int dimm_order, int chan_rank, u
+ 
+ 	ret = peci_ep_pci_local_read(priv->peci_dev, 0, 13, 0, 2, 0xd4, &reg_val);
+ 	if (ret || !(reg_val & BIT(31)))
+-		return -ENODATA; /* Use default or previous value */
++		return -ENODATA;
+ 
+ 	ret = peci_ep_pci_local_read(priv->peci_dev, 0, 13, 0, 2, 0xd0, &reg_val);
+ 	if (ret)
+-		return -ENODATA; /* Use default or previous value */
++		return -ENODATA;
+ 
+ 	/*
+ 	 * Device 26, Offset 224e0: IMC 0 channel 0 -> rank 0
+@@ -546,11 +544,11 @@ read_thresholds_spr(struct peci_dimmtemp *priv, int dimm_order, int chan_rank, u
+ 
+ 	ret = peci_ep_pci_local_read(priv->peci_dev, 0, 30, 0, 2, 0xd4, &reg_val);
+ 	if (ret || !(reg_val & BIT(31)))
+-		return -ENODATA; /* Use default or previous value */
++		return -ENODATA;
+ 
+ 	ret = peci_ep_pci_local_read(priv->peci_dev, 0, 30, 0, 2, 0xd0, &reg_val);
+ 	if (ret)
+-		return -ENODATA; /* Use default or previous value */
++		return -ENODATA;
+ 
+ 	/*
+ 	 * Device 26, Offset 219a8: IMC 0 channel 0 -> rank 0
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.34.1
 
 
