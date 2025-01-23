@@ -1,209 +1,124 @@
-Return-Path: <stable+bounces-110238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66531A19C2B
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 02:24:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E67A19D07
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 03:49:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1FB416469E
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 01:24:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E50DE188CEC3
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 02:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0A617993;
-	Thu, 23 Jan 2025 01:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7FA435975;
+	Thu, 23 Jan 2025 02:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="UpG4AYJH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GurgnwFF"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5857A1BC4E
-	for <stable@vger.kernel.org>; Thu, 23 Jan 2025 01:24:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DCDA35953;
+	Thu, 23 Jan 2025 02:49:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737595471; cv=none; b=cyHxFTUQqz7CYrc6oiirl14Dxstqtv+3ZrFr0u4GS4I3GqzYllzMq+ZLBQB+EkATHRXBSeOmBD9i0gI/16PNEzfTD/Ht5zYIOm1i/CsiEc+KR/swwsW8aGcyoFHTJFIRM3h9uid1G56k/Bj6S8i+U2Rn6H2qcEo9fzxcOXjOVtE=
+	t=1737600591; cv=none; b=M+GXTjI3S/DTfyY9jr/VKZPS6nuH+exALOeilYSALfR8lW1eBtUUR1FivDuENBlKTpxeBK6hKTdC02JSZQMwODzlNqbVcTpdHM3VLaBEklmktkBsKgxbBykLKps74XMFedHmNNrkiTZW/HbIjHqzqVkYfqyxdvUPCNQElwcRw9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737595471; c=relaxed/simple;
-	bh=Ub7WA5gSHdUEDl295agJre927Lk2DCzrh8d+AEtVJEY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=RVaZyQyNVcLK9Ala012MbndoWv4r3fQJjf1oU/eTe0ywneB99Pmb1sCIr7qQu2G0Cr0HupxUzR7nhlzZ4xIGAtFZc1jOAkorAlumj9ocqeIxTsprBPUZNTYOCRHWK7LG11zlfPjjGZrOpN4U+0i9Pz7p0ZmJBBwbT0GLjv3cKxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=UpG4AYJH; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:
-	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=QDymnKhFoZtS3uuX3V3VdFbN0qXr2mGgIGPTqDUJwX8=; b=UpG4AYJHkQzhV116u0brLdlAFb
-	SR7Vs24L5l0CObG9KSJCqvPzOAHnj+aN11E9agysD81KpPG+GBKVAeF157dpPP132eEpVudEsYWOv
-	a6aohcBwYx9Afj+YRfHwXlE5kYC/q08S+bkt2oDWF3RTgUF7fy4APrUDKP9m+XjWrDs+0eZL3sG26
-	DIOSuRGQQ/lQqwB1T9AJiJSWtcmIzD6SPxILitkl8lQI0XeW+Vp2X87epm+uDHw+cPErHxeSle1j3
-	8zIJvqMazn8bN52EZqRuE48/9PQUMhA90CKp6/NSdoFf8baT/nccuHUbz0xIAVdnmyCx9gIrdRg2D
-	TwV8qawg==;
-Received: from [187.36.213.55] (helo=localhost.localdomain)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA512__CHACHA20_POLY1305:256) (Exim)
-	id 1talxG-000zCL-8G; Thu, 23 Jan 2025 02:24:22 +0100
-From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-To: Melissa Wen <mwen@igalia.com>,
-	Iago Toral <itoral@igalia.com>,
-	Chema Casanova <jmcasanova@igalia.com>,
-	Phil Elwell <phil@raspberrypi.com>
-Cc: dri-devel@lists.freedesktop.org,
-	kernel-dev@igalia.com,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/v3d: Assign job pointer to NULL before signaling the fence
-Date: Wed, 22 Jan 2025 22:24:03 -0300
-Message-Id: <20250123012403.20447-1-mcanal@igalia.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	s=arc-20240116; t=1737600591; c=relaxed/simple;
+	bh=j1tynmHw4EvxQ0LCZ5A/XsXUIsB+nUovZtTw8a8sGoE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bIw9oEwMu/c11nb7r4+mBmGMlSTORseF3t/mh+KLKz8+oKKsSUjPhx9gx4RuwDp2L2qeYTJEfLHbSBgFLorFUNQSkncMjMQdg+xXu0mAxM2LeIrh7HTZoW+zKUFlbY8iO/41tGzL8ed0Z9AtsKvJa3v3fXizLFs3JnyGDnsmEy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GurgnwFF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E341C4CED2;
+	Thu, 23 Jan 2025 02:49:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737600591;
+	bh=j1tynmHw4EvxQ0LCZ5A/XsXUIsB+nUovZtTw8a8sGoE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GurgnwFFyeQCQmuKSOF0rZbzfYTZ9icniKKxMsBL0wTHKT1e1Bvx5VZhQP6/nhp2B
+	 aP81heCowK4ZEQhWah26o+QG8fqjIPGiOGon4yezqYHlm9m87Md0cTuYcoyl3DDi6+
+	 QseHU6UzFnICu3jLL5sboLSrADzdc0+PygUDGp5vU+kr+YVq/dsaCT1EcS5eDCi6iw
+	 lw13TmEBunCeBG+kcMjv5FhTuodW+O0FxyS0QpagFqi2H4JFqfQwI2Evl4sfJMT2Dj
+	 F8JKGgIlRVMzHyiEMSOZlQTGAs+eyeTV2cSKR7guqumv7wd/exy+hVj8T2SI3+T1qa
+	 nAClMCLooL4Fg==
+From: Mario Limonciello <superm1@kernel.org>
+To: mario.limonciello@amd.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com
+Cc: nijs1@lenovo.com,
+	pgriffais@valvesoftware.com,
+	mpearson-lenovo@squebb.ca,
+	stable@vger.kernel.org,
+	linux-sound@vger.kernel.org
+Subject: [PATCH] ASoC: acp: Support microphone from Lenovo Go S
+Date: Wed, 22 Jan 2025 20:49:13 -0600
+Message-ID: <20250123024915.2457115-1-superm1@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-In commit e4b5ccd392b9 ("drm/v3d: Ensure job pointer is set to NULL
-after job completion"), we introduced a change to assign the job pointer
-to NULL after completing a job, indicating job completion.
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-However, this approach created a race condition between the DRM
-scheduler workqueue and the IRQ execution thread. As soon as the fence is
-signaled in the IRQ execution thread, a new job starts to be executed.
-This results in a race condition where the IRQ execution thread sets the
-job pointer to NULL simultaneously as the `run_job()` function assigns
-a new job to the pointer.
+On Lenovo Go S there is a DMIC connected to the ACP but the firmware
+has no `AcpDmicConnected` ACPI _DSD.
 
-This race condition can lead to a NULL pointer dereference if the IRQ
-execution thread sets the job pointer to NULL after `run_job()` assigns
-it to the new job. When the new job completes and the GPU emits an
-interrupt, `v3d_irq()` is triggered, potentially causing a crash.
+Add a DMI entry for all possible Lenovo Go S SKUs to enable DMIC.
 
-[  466.310099] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000c0
-[  466.318928] Mem abort info:
-[  466.321723]   ESR = 0x0000000096000005
-[  466.325479]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  466.330807]   SET = 0, FnV = 0
-[  466.333864]   EA = 0, S1PTW = 0
-[  466.337010]   FSC = 0x05: level 1 translation fault
-[  466.341900] Data abort info:
-[  466.344783]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-[  466.350285]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[  466.355350]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[  466.360677] user pgtable: 4k pages, 39-bit VAs, pgdp=0000000089772000
-[  466.367140] [00000000000000c0] pgd=0000000000000000, p4d=0000000000000000, pud=0000000000000000
-[  466.375875] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
-[  466.382163] Modules linked in: rfcomm snd_seq_dummy snd_hrtimer snd_seq snd_seq_device algif_hash algif_skcipher af_alg bnep binfmt_misc vc4 snd_soc_hdmi_codec drm_display_helper cec brcmfmac_wcc spidev rpivid_hevc(C) drm_client_lib brcmfmac hci_uart drm_dma_helper pisp_be btbcm brcmutil snd_soc_core aes_ce_blk v4l2_mem2mem bluetooth aes_ce_cipher snd_compress videobuf2_dma_contig ghash_ce cfg80211 gf128mul snd_pcm_dmaengine videobuf2_memops ecdh_generic sha2_ce ecc videobuf2_v4l2 snd_pcm v3d sha256_arm64 rfkill videodev snd_timer sha1_ce libaes gpu_sched snd videobuf2_common sha1_generic drm_shmem_helper mc rp1_pio drm_kms_helper raspberrypi_hwmon spi_bcm2835 gpio_keys i2c_brcmstb rp1 raspberrypi_gpiomem rp1_mailbox rp1_adc nvmem_rmem uio_pdrv_genirq uio i2c_dev drm ledtrig_pattern drm_panel_orientation_quirks backlight fuse dm_mod ip_tables x_tables ipv6
-[  466.458429] CPU: 0 UID: 1000 PID: 2008 Comm: chromium Tainted: G         C         6.13.0-v8+ #18
-[  466.467336] Tainted: [C]=CRAP
-[  466.470306] Hardware name: Raspberry Pi 5 Model B Rev 1.0 (DT)
-[  466.476157] pstate: 404000c9 (nZcv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[  466.483143] pc : v3d_irq+0x118/0x2e0 [v3d]
-[  466.487258] lr : __handle_irq_event_percpu+0x60/0x228
-[  466.492327] sp : ffffffc080003ea0
-[  466.495646] x29: ffffffc080003ea0 x28: ffffff80c0c94200 x27: 0000000000000000
-[  466.502807] x26: ffffffd08dd81d7b x25: ffffff80c0c94200 x24: ffffff8003bdc200
-[  466.509969] x23: 0000000000000001 x22: 00000000000000a7 x21: 0000000000000000
-[  466.517130] x20: ffffff8041bb0000 x19: 0000000000000001 x18: 0000000000000000
-[  466.524291] x17: ffffffafadfb0000 x16: ffffffc080000000 x15: 0000000000000000
-[  466.531452] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-[  466.538613] x11: 0000000000000000 x10: 0000000000000000 x9 : ffffffd08c527eb0
-[  466.545777] x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
-[  466.552941] x5 : ffffffd08c4100d0 x4 : ffffffafadfb0000 x3 : ffffffc080003f70
-[  466.560102] x2 : ffffffc0829e8058 x1 : 0000000000000001 x0 : 0000000000000000
-[  466.567263] Call trace:
-[  466.569711]  v3d_irq+0x118/0x2e0 [v3d] (P)
-[  466.573826]  __handle_irq_event_percpu+0x60/0x228
-[  466.578546]  handle_irq_event+0x54/0xb8
-[  466.582391]  handle_fasteoi_irq+0xac/0x240
-[  466.586498]  generic_handle_domain_irq+0x34/0x58
-[  466.591128]  gic_handle_irq+0x48/0xd8
-[  466.594798]  call_on_irq_stack+0x24/0x58
-[  466.598730]  do_interrupt_handler+0x88/0x98
-[  466.602923]  el0_interrupt+0x44/0xc0
-[  466.606508]  __el0_irq_handler_common+0x18/0x28
-[  466.611050]  el0t_64_irq_handler+0x10/0x20
-[  466.615156]  el0t_64_irq+0x198/0x1a0
-[  466.618740] Code: 52800035 3607faf3 f9442e80 52800021 (f9406018)
-[  466.624853] ---[ end trace 0000000000000000 ]---
-[  466.629483] Kernel panic - not syncing: Oops: Fatal exception in interrupt
-[  466.636384] SMP: stopping secondary CPUs
-[  466.640320] Kernel Offset: 0x100c400000 from 0xffffffc080000000
-[  466.646259] PHYS_OFFSET: 0x0
-[  466.649141] CPU features: 0x100,00000170,00901250,0200720b
-[  466.654644] Memory Limit: none
-[  466.657706] ---[ end Kernel panic - not syncing: Oops: Fatal exception in interrupt ]---
-
-Fix the crash by assigning the job pointer to NULL before signaling the
-fence. This ensures that the job pointer is cleared before any new job
-starts execution, preventing the race condition and the NULL pointer
-dereference crash.
-
+Cc: nijs1@lenovo.com
+Cc: pgriffais@valvesoftware.com
+Cc: mpearson-lenovo@squebb.ca
 Cc: stable@vger.kernel.org
-Fixes: e4b5ccd392b9 ("drm/v3d: Ensure job pointer is set to NULL after job completion")
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
- drivers/gpu/drm/v3d/v3d_irq.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
-index da203045df9b..72b6a119412f 100644
---- a/drivers/gpu/drm/v3d/v3d_irq.c
-+++ b/drivers/gpu/drm/v3d/v3d_irq.c
-@@ -107,8 +107,10 @@ v3d_irq(int irq, void *arg)
- 
- 		v3d_job_update_stats(&v3d->bin_job->base, V3D_BIN);
- 		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
--		dma_fence_signal(&fence->base);
-+
- 		v3d->bin_job = NULL;
-+		dma_fence_signal(&fence->base);
-+
- 		status = IRQ_HANDLED;
- 	}
- 
-@@ -118,8 +120,10 @@ v3d_irq(int irq, void *arg)
- 
- 		v3d_job_update_stats(&v3d->render_job->base, V3D_RENDER);
- 		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
--		dma_fence_signal(&fence->base);
-+
- 		v3d->render_job = NULL;
-+		dma_fence_signal(&fence->base);
-+
- 		status = IRQ_HANDLED;
- 	}
- 
-@@ -129,8 +133,10 @@ v3d_irq(int irq, void *arg)
- 
- 		v3d_job_update_stats(&v3d->csd_job->base, V3D_CSD);
- 		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
--		dma_fence_signal(&fence->base);
-+
- 		v3d->csd_job = NULL;
-+		dma_fence_signal(&fence->base);
-+
- 		status = IRQ_HANDLED;
- 	}
- 
-@@ -167,8 +173,10 @@ v3d_hub_irq(int irq, void *arg)
- 
- 		v3d_job_update_stats(&v3d->tfu_job->base, V3D_TFU);
- 		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
--		dma_fence_signal(&fence->base);
-+
- 		v3d->tfu_job = NULL;
-+		dma_fence_signal(&fence->base);
-+
- 		status = IRQ_HANDLED;
- 	}
- 
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index ecf57a6cb7c37..b16587d8f97a8 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -304,6 +304,34 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "83AS"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83L3"),
++		}
++	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83N6"),
++		}
++	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83Q2"),
++		}
++	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
-2.39.5 (Apple Git-154)
+2.43.0
 
 
