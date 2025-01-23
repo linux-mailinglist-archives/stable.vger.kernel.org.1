@@ -1,147 +1,111 @@
-Return-Path: <stable+bounces-110311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01598A1A8BB
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 18:18:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 573A4A1A8CF
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 18:20:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D86833B00EA
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 17:13:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35AE5189086B
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 17:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF18166F32;
-	Thu, 23 Jan 2025 17:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87AB214600F;
+	Thu, 23 Jan 2025 17:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="aPbocEG4"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=laura.nao@collabora.com header.b="hclYN++n"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C05B147C91
-	for <stable@vger.kernel.org>; Thu, 23 Jan 2025 17:12:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737652364; cv=none; b=CjUxh01nHoHNOQVV9el9ZR3417cGeL+oqbDZyr/3FQ10e+ynu2FYc8I3HpZl7VCHeEaGvna82QHAcxuXT4kt4IObldHOcSl7E/RVOvNYp9WuK9PJVukFt9H11ka8p2LFCHdk7FLBmP9kbKXEGUJ/5BD5eEfm+KGCZQJEbDf4BNQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737652364; c=relaxed/simple;
-	bh=HGU5iSG9x/njAM7pSpVd92El321Yvqs8b6IOX4KPrM0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a+ZX0apWjtvmrQQj8iZ5qwsLKIE3oFsFuvAdqDLFe4pWhe8b7NE+bey0NB0DsQr5rT0BryHZtv2OtnXcb5dGLc8X6zVde5N9xJG56ZtpPvTIMJg3IAmFegeQ9hH08sf8GFN2yVl6B8zTI65PxPrNjsyWwOO8uLo/PhhtmpkOCaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=aPbocEG4; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50NApdsr014155
-	for <stable@vger.kernel.org>; Thu, 23 Jan 2025 17:12:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	d3az1RKU17qwjiOPGrZkVior54Yx4OI9sSB4ahewp44=; b=aPbocEG43Lzi6hRy
-	Q1EjDsZ88n7tVcr24oKDA9eMzFoXg7r0VR7p+mZeXyZN11RGK7ujRv9v3txHA/v2
-	yESOe/bnDYHPxn6OtoJExcWktW+ZAS8cgul1ubpfLVi9gRI4CkuOl62dtLH0MSA+
-	eWfj/sE7yoDObSHVVrZ7zInev/5bCPhDXEbaWALczfsEc5sEsgz072VLWoCuuOEL
-	v30QNAeAfvYz6472+9CFGCxOoFeA2U2wgxW1liwVY3i7a9xppLlEWQbTVjwr8IV5
-	hg8jJyWjR0hMKq0CxyYAWCzMtAODDJCRWfCLNRVeouYhslbBoZK0BAo8pA6fZHbX
-	pm/fXw==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44bmcvgwdx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 23 Jan 2025 17:12:41 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-216717543b7so29040865ad.0
-        for <stable@vger.kernel.org>; Thu, 23 Jan 2025 09:12:41 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737652360; x=1738257160;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=d3az1RKU17qwjiOPGrZkVior54Yx4OI9sSB4ahewp44=;
-        b=kP/nFeJjoCHx3/0sb3AI1ze+BRKQbdt4oMgOnNMQzVwcOE71Zeu/kUUU9d4KZQNxm2
-         e3NDEhTYX+OoKwqTFeIuB0sxS/k6F/yxY4cmv++/X8kENXuI9dCEPCHDbHrombG2Csoq
-         6TLfbGqei7sCNuBDshDo1MhAkwnlolV2QbL+/VUE7yOoViMJeum7BvXwBMPg+A7Fe/Kb
-         5+iGfTAD7UVzKC0QbhWDJp+gBxA+rb874jbnPpdOdIqmv6r0JpeftUsxXJXdxfXRPuy7
-         D55OgFu0puUa8brAbYJPYfz65Zq0qp4AsOUeeh1fBftSnfYmrwbAyXCzjXXGi0SRM+Cz
-         VFbw==
-X-Forwarded-Encrypted: i=1; AJvYcCVv09EAfjiNhi4f4cZ9jewgltqB2fKNNfvmOHxR21lqvd7uUgfVNeTIk5rcibAiQDu9vd/T43Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPJjYdSTWS86IJpCx/wWPZhF/HiQhUbzd3w/gQsx2QleeODkmT
-	4oVyAo3git12T5XukA5NVIGz7dBP8MhaGKpdNR/L1kIJujZOLVQpsgLu7jn6+O3heoooGfi5/WM
-	WtMem4Fwuz2HuD9PQL0/0/IexVF6jzjzjSTlAj8iU47rlEa8yZdop/WM=
-X-Gm-Gg: ASbGncu9Mkvn+SumqUVvkrThg/pmVIUTKqhBfmlbMdmxetNkJblqabT8M2HTl/eOKc6
-	mRnjgHcY0ajH5KXwnuKv65EX2CRN6Ozca4VOY/PZXt08bZcmDbbhOsJycPX3gEhUcVox33+nNN5
-	tuoLqZ2Z7AqIz3wVGichFdxSKZRbemWIgizarpMEeS5qxZreLuPkmg+0mo0JGOavIKkL+VYDCjy
-	Gxc/l8Qst8AZYNdXGqFzMRwnKQkf71lgznDvXvGh05i97m25f+t1Eo3Agchz5HZg9OJg9dRxI85
-	eVEXQXXk3sUyFXtwHPod3fT1jTUIw+YuqJM8yeNjXzKjTavXCtU3sr+t+tcBw8c=
-X-Received: by 2002:a17:903:2290:b0:216:5e6e:68cb with SMTP id d9443c01a7336-21c3540d18cmr423745055ad.16.1737652360407;
-        Thu, 23 Jan 2025 09:12:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG2Q1Ks0mnL3M2R9V9Lg+xPeJhjuHsVJ1yl2ugFUokMhKI673ryaHT2sM/t/6MrSM2ggR2uuQ==
-X-Received: by 2002:a17:903:2290:b0:216:5e6e:68cb with SMTP id d9443c01a7336-21c3540d18cmr423744625ad.16.1737652360030;
-        Thu, 23 Jan 2025 09:12:40 -0800 (PST)
-Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da414e2f6sm1294225ad.197.2025.01.23.09.12.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Jan 2025 09:12:39 -0800 (PST)
-Message-ID: <d39befa5-58cd-4052-a71f-c632462ccce0@oss.qualcomm.com>
-Date: Thu, 23 Jan 2025 09:12:37 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8CA13E02E
+	for <stable@vger.kernel.org>; Thu, 23 Jan 2025 17:15:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737652533; cv=pass; b=sl4soxXoAqmQzIMVe4dTDOkSh5/FK8jd3QiUPWGl8/Snz561BbIAfQltUkJKfbNYSpPNXruru1naCh+40tjkrvmQaIcMRQUC5Hk1G7zSkytwi+zwhHE8PUMhmtvsRyF5BoV80vjlFs6ZkOfdKqtpu0zgT1ZGYK17OaC7h6MeZ+k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737652533; c=relaxed/simple;
+	bh=txvogRLlq36U+AmTqQUDdMV72LyTqNjSCjEcCLiNMQM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kFHsBAc79tKT+9df5bgeVFvb/VeyHpdLphCkQPXqgzpFnRykO931r/DfICGol04zyw8mnB7txgIfNhTXzhm15MMTFv6b06TQtMq/Sd0i9Ot4ZS84FfYYZT0OjNaeENHVHIfnuaFLj8dNVgbl5kI6HtOfQr+UT+eoc6Zjv6JyzQs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=laura.nao@collabora.com header.b=hclYN++n; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1737652520; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Ew/zwLVxjevLTQDSUFdsKGtiI9HYYuXAUr8V4H9RPc1ZKGcn9/WomO5ff4M9LuIZlDcnLXYptR930GessK8JewrcZ8lDyZ8LTEeWWqrGXrtk0c/oO3D7ZT9/Z6/CNcCzE/WI22gc0LeIk+Y6CNpTD+nmqgXbknHFFMuodYlbEcE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1737652520; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=kaI1RePGs9WnWousomVSW4phm7C1en3laBuzQvrTTNI=; 
+	b=aHSiisExs0cu//iLIUhPZnB2h0yI8OoPh6Djcf4NHQPAf32jqIP4BG4SHxSVOPMTa8kcXGbmBIeeL4lfT9wlaVzo/PvQcZk4tSbtvmmmMWP05/kt0koeOj37y7UnfF0FW0zEy7KhyKhdsmWuEtandyxmkPcyiocYieG6CUiJlIc=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=laura.nao@collabora.com;
+	dmarc=pass header.from=<laura.nao@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1737652520;
+	s=zohomail; d=collabora.com; i=laura.nao@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=kaI1RePGs9WnWousomVSW4phm7C1en3laBuzQvrTTNI=;
+	b=hclYN++nqhU/dMRidqvUVnpgOUE4nzY2KKIXzB0NAs9l89sbgvWIHLou+CPB0CFw
+	odThcD9AImtu7RKOmLzV31NG2FiGcz2o7sTB3SYe71r3YNiUS+lMQBb7KJcUmLdP4Hn
+	asyVyjmJ4H6ZVlICBLlfk3rTHc5ueS/SNakgLFHk=
+Received: by mx.zohomail.com with SMTPS id 173765251363692.22556778831415;
+	Thu, 23 Jan 2025 09:15:13 -0800 (PST)
+From: Laura Nao <laura.nao@collabora.com>
+To: stable@vger.kernel.org,
+	akihiko.odaki@gmail.com,
+	groeck@chromium.org,
+	pmalani@chromium.org
+Cc: kernel@collabora.com,
+	Laura Nao <laura.nao@collabora.com>
+Subject: [PATCH 5.15.y] platform/chrome: cros_ec_typec: Check for EC driver
+Date: Thu, 23 Jan 2025 18:15:29 +0100
+Message-Id: <20250123171529.597031-1-laura.nao@collabora.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-current] wifi: ath12k: fix handling of 6 GHz rules
-To: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
-        Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
-        Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>,
-        Baochen Qiang <quic_bqiang@quicinc.com>,
-        Wen Gong <quic_wgong@quicinc.com>,
-        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
-        Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-Cc: Balamurugan Selvarajan <quic_bselvara@quicinc.com>,
-        Ramya Gnanasekar <quic_rgnanase@quicinc.com>,
-        P Praneesh <quic_ppranees@quicinc.com>,
-        Bhagavathi Perumal S <quic_bperumal@quicinc.com>,
-        linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250123-fix_6ghz_rules_handling-v1-1-d734bfa58ff4@oss.qualcomm.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20250123-fix_6ghz_rules_handling-v1-1-d734bfa58ff4@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: ZoHvouVpRDUK-5vQP3RNR-1WoWdWbfZV
-X-Proofpoint-GUID: ZoHvouVpRDUK-5vQP3RNR-1WoWdWbfZV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-23_07,2025-01-23_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1011 malwarescore=0 impostorscore=0 mlxscore=0 bulkscore=0
- phishscore=0 spamscore=0 suspectscore=0 adultscore=0 priorityscore=1501
- mlxlogscore=966 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501230126
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-On 1/23/2025 8:21 AM, Aditya Kumar Singh wrote:
-> In the US country code, to avoid including 6 GHz rules in the 5 GHz rules
-> list, the number of 5 GHz rules is set to a default constant value of 4
-> (REG_US_5G_NUM_REG_RULES). However, if there are more than 4 valid 5 GHz
-> rules, the current logic will bypass the legitimate 6 GHz rules.
-> 
-> For example, if there are 5 valid 5 GHz rules and 1 valid 6 GHz rule, the
-> current logic will only consider 4 of the 5 GHz rules, treating the last
-> valid rule as a 6 GHz rule. Consequently, the actual 6 GHz rule is never
-> processed, leading to the eventual disabling of 6 GHz channels.
-> 
-> To fix this issue, instead of hardcoding the value to 4, use a helper
-> function to determine the number of 6 GHz rules present in the 5 GHz rules
-> list and ignore only those rules.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-> 
-> Cc: stable@vger.kernel.org
+From: Akihiko Odaki <akihiko.odaki@gmail.com>
 
-Note that an upcoming linux-firmware PR will bring in firmware that triggers
-this issue, so want to get all affected versions of the driver patched before
-issuing that PR.
+[ upstream commit 7464ff8bf2d762251b9537863db0e1caf9b0e402 ]
 
-/jeff
+The EC driver may not be initialized when cros_typec_probe is called,
+particulary when CONFIG_CROS_EC_CHARDEV=m.
+
+Signed-off-by: Akihiko Odaki <akihiko.odaki@gmail.com>
+Reviewed-by: Guenter Roeck <groeck@chromium.org>
+Link: https://lore.kernel.org/r/20220404041101.6276-1-akihiko.odaki@gmail.com
+Signed-off-by: Prashant Malani <pmalani@chromium.org>
+Signed-off-by: Laura Nao <laura.nao@collabora.com>
+---
+This solves the kernel NULL pointer dereference exception detected
+by KernelCI on many x86_64 Chromebooks - see e.g.:
+https://staging.dashboard.kernelci.org:9000/test/maestro%3A6790c13e09f33884b18d7b09?df%7Cbp%7Calert=true&p=bt&tf%7Cb=a&tf%7Cbt=f&tf%7Ct=a&ti%7Cc=v5.15.176-124-ga38aec37d68a&ti%7Cch=a38aec37d68a477d59deca3dad2b2108c482c033&ti%7Cgb=linux-5.15.y&ti%7Cgu=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fstable%2Flinux-stable-rc.git&ti%7Ct=stable-rc
+
+
+ drivers/platform/chrome/cros_ec_typec.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/platform/chrome/cros_ec_typec.c b/drivers/platform/chrome/cros_ec_typec.c
+index 2b8bef0d7ee5..c065963b9a42 100644
+--- a/drivers/platform/chrome/cros_ec_typec.c
++++ b/drivers/platform/chrome/cros_ec_typec.c
+@@ -1123,6 +1123,9 @@ static int cros_typec_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	ec_dev = dev_get_drvdata(&typec->ec->ec->dev);
++	if (!ec_dev)
++		return -EPROBE_DEFER;
++
+ 	typec->typec_cmd_supported = !!cros_ec_check_features(ec_dev, EC_FEATURE_TYPEC_CMD);
+ 	typec->needs_mux_ack = !!cros_ec_check_features(ec_dev,
+ 							EC_FEATURE_TYPEC_MUX_REQUIRE_AP_ACK);
+-- 
+2.30.2
+
 
