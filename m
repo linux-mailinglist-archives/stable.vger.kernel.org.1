@@ -1,101 +1,133 @@
-Return-Path: <stable+bounces-110274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A45FA1A4B5
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 14:12:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6408A1A4C5
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 14:19:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D293188C099
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 13:12:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E731C3A3C13
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 13:19:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8185920F087;
-	Thu, 23 Jan 2025 13:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C149F20F094;
+	Thu, 23 Jan 2025 13:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gawXx626"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="S0R3F1GM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9AE2F3B;
-	Thu, 23 Jan 2025 13:12:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F31938F83;
+	Thu, 23 Jan 2025 13:19:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737637956; cv=none; b=nVL2C+eTRRXZ+91QsCOxQS6D3DcKvYIpjdA4Rht4pVT5FXyF6DjipfNAFUgn6kQ8dvv8CQ42lgDRoplOf+6EXUxYnZWofSYEMyDjoJujX6jwOHF5jDD474lVGSTaN3XnHeKYnnlKl+onbj++pjbsVFFFFDjccDc5kvjuthESXZo=
+	t=1737638391; cv=none; b=kCvjPceoqE16cw+WlG3Nf39Qfq6Jm3vPuSVqmBS6FLvl97MnNr5P9DLnm/dkSFjleXLHU5a0RynFMzbdeIm+Du25JBrMvpCyQDV5oO+lYikFYTKM4Djyc/n6MLPltMvCdlk0PkiO0yMr0jGnX/cobrxvG/Pyg3oRCVSEkytvpIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737637956; c=relaxed/simple;
-	bh=edKXsLhx0dhFASUPDNMk4gjPbyfbfJBAyhTL57gxeyQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=nI4sDfWCuXrLF/HySNxAVfplL8LCTTTGrcyfQkbQl5WumfaEEOM1fLe8uzx6KPjTn8TmBdxAili619yfzWI3B131H7725tIVo55eYJDfy5+p2hWU+QlHbypNExqcuzk+Rifb0kBM6x3iA9Gn+A7V+7Lj3/QKu3t1QfvtJwcSjjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gawXx626; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE36CC4CEDD;
-	Thu, 23 Jan 2025 13:12:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737637955;
-	bh=edKXsLhx0dhFASUPDNMk4gjPbyfbfJBAyhTL57gxeyQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=gawXx626mmIA/CMbSoD+p1MYmPUNDQ2XuRiPy167dnkXw66qEnzVkaZfR3n1nvg12
-	 P9fAuEDWjCnO4ZTAlaVEBS6/nXF+xDORerB58Pzh1IRjPSCRl0XR+5BWq6yE5X/YmU
-	 jOunJccecdroFdQ3U8d9qFr+spNsFXldh3iVhF6ns8N6AE7/B9pg9vWOzGuFu3OaSo
-	 9I8CB/q9cBuZrXsxWrJkP11VLVFAo9DXweN/+FORACvCHuEcT8WqwbhlXgo4/BX/Rz
-	 346vP5diZKU+b6Q2cz3i/LjuXkjs8ITbndj90ri3be5fnSPelFaWqiQT9nf7xRW4se
-	 /7Y4drexa9kGA==
-From: Mark Brown <broonie@kernel.org>
-To: mario.limonciello@amd.com, lgirdwood@gmail.com, perex@perex.cz, 
- tiwai@suse.com, Mario Limonciello <superm1@kernel.org>
-Cc: nijs1@lenovo.com, pgriffais@valvesoftware.com, 
- mpearson-lenovo@squebb.ca, stable@vger.kernel.org, 
- linux-sound@vger.kernel.org
-In-Reply-To: <20250123024915.2457115-1-superm1@kernel.org>
-References: <20250123024915.2457115-1-superm1@kernel.org>
-Subject: Re: [PATCH] ASoC: acp: Support microphone from Lenovo Go S
-Message-Id: <173763795340.45842.5572738309580367598.b4-ty@kernel.org>
-Date: Thu, 23 Jan 2025 13:12:33 +0000
+	s=arc-20240116; t=1737638391; c=relaxed/simple;
+	bh=/kihfaFGO49thI+Od/KeUYGlC98j80PRn0PUwUiPuTk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TBEzbiPuAn9W1tXo0CQBLnRvL0Fe4UVT+GyS7ED6uPIA1aSy5B52kuUlda6moh2A0gmVXrGHPsUpBsVDAMt3zsPlHJrA2ruxmjl+8xjivb40LWuzU22NfiGCZhe6PH5M7jtJzNI7Lhxq+1i/Q0gr/NA0PgIqjDYhXHN/8h+Cklc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=S0R3F1GM; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1737638386;
+	bh=/kihfaFGO49thI+Od/KeUYGlC98j80PRn0PUwUiPuTk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=S0R3F1GMfZfkBmtT3YlsZb/OFPRVhImdlvD7qen0g9S1oCwbLEW839vszuxKJOwT2
+	 lRt6YD2bD6lq9YfErgiYlf4eEgj5h9XRw9l9hhAzBbWetAchgxE4sj/ORcB0i9jD8J
+	 A2rJgCONx/enmCRAfZYdzLMBStrT/6sa7/76/S0U=
+Date: Thu, 23 Jan 2025 14:19:46 +0100
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
+To: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Cc: Richard Cochran <richardcochran@gmail.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, John Stultz <john.stultz@linaro.org>, 
+	Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH RESEND net] ptp: Ensure info->enable callback is always
+ set
+Message-ID: <779708b6-d61c-4688-92cc-6afb987334d6@t-8ch.de>
+References: <20250123-ptp-enable-v1-1-b015834d3a47@weissschuh.net>
+ <Z5IOHVu9L+QpyK4Y@mev-dev.igk.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-1b0d6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z5IOHVu9L+QpyK4Y@mev-dev.igk.intel.com>
 
-On Wed, 22 Jan 2025 20:49:13 -0600, Mario Limonciello wrote:
-> On Lenovo Go S there is a DMIC connected to the ACP but the firmware
-> has no `AcpDmicConnected` ACPI _DSD.
+On 2025-01-23 10:38:37+0100, Michal Swiatkowski wrote:
+> On Thu, Jan 23, 2025 at 08:22:40AM +0100, Thomas Weißschuh wrote:
+> > The ioctl and sysfs handlers unconditionally call the ->enable callback.
+> > Not all drivers implement that callback, leading to NULL dereferences.
+> > Example of affected drivers: ptp_s390.c, ptp_vclock.c and ptp_mock.c.
+> > 
+> > Instead use a dummy callback if no better was specified by the driver.
+> > 
+> > Fixes: d94ba80ebbea ("ptp: Added a brand new class driver for ptp clocks.")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+> > ---
+> >  drivers/ptp/ptp_clock.c | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> > 
+> > diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
+> > index b932425ddc6a3789504164a69d1b8eba47da462c..35a5994bf64f6373c08269d63aaeac3f4ab31ff0 100644
+> > --- a/drivers/ptp/ptp_clock.c
+> > +++ b/drivers/ptp/ptp_clock.c
+> > @@ -217,6 +217,11 @@ static int ptp_getcycles64(struct ptp_clock_info *info, struct timespec64 *ts)
+> >  		return info->gettime64(info, ts);
+> >  }
+> >  
+> > +static int ptp_enable(struct ptp_clock_info *ptp, struct ptp_clock_request *request, int on)
+> > +{
+> > +	return -EOPNOTSUPP;
+> > +}
+> > +
+> >  static void ptp_aux_kworker(struct kthread_work *work)
+> >  {
+> >  	struct ptp_clock *ptp = container_of(work, struct ptp_clock,
+> > @@ -294,6 +299,9 @@ struct ptp_clock *ptp_clock_register(struct ptp_clock_info *info,
+> >  			ptp->info->getcrosscycles = ptp->info->getcrosststamp;
+> >  	}
+> >  
+> > +	if (!ptp->info->enable)
+> > +		ptp->info->enable = ptp_enable;
+> > +
+> >  	if (ptp->info->do_aux_work) {
+> >  		kthread_init_delayed_work(&ptp->aux_work, ptp_aux_kworker);
+> >  		ptp->kworker = kthread_run_worker(0, "ptp%d", ptp->index);
+> > 
+> > ---
+> > base-commit: c4b9570cfb63501638db720f3bee9f6dfd044b82
+> > change-id: 20250122-ptp-enable-831339c62428
+> > 
+> > Best regards,
+> > -- 
+> > Thomas Weißschuh <linux@weissschuh.net>
 > 
-> Add a DMI entry for all possible Lenovo Go S SKUs to enable DMIC.
+> Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 > 
-> 
+> What about other ops, did you check it too? Looks like it isn't needed,
+> but it sometimes hard to follow.
 
-Applied to
+I couldn't find any missing, but I'm not familiar with the subsystem and
+didn't check too hard.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+Note:
 
-Thanks!
+A follow-up fix would be to actually guard the users of ->enable and
+error out. For sysfs the attributes could be hidden completely.
+That would be a nicer user interface but more code change which are not
+so easily backportable.
 
-[1/1] ASoC: acp: Support microphone from Lenovo Go S
-      commit: b9a8ea185f3f8024619b2e74b74375493c87df8c
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Thomas
 
