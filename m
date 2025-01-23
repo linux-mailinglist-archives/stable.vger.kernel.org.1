@@ -1,239 +1,165 @@
-Return-Path: <stable+bounces-110330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 101A4A1AB22
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 21:23:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CA93A1AB68
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 21:32:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B95213AB9E1
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 20:23:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F6D3188EF65
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 20:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B989A1C3BE0;
-	Thu, 23 Jan 2025 20:23:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SEvMaBoX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383B31C5F20;
+	Thu, 23 Jan 2025 20:29:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43351C3BF8
-	for <stable@vger.kernel.org>; Thu, 23 Jan 2025 20:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27391B424B;
+	Thu, 23 Jan 2025 20:29:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737663808; cv=none; b=DFV2c+xKq1AWL1hT4m3fkk54ieWYMW5TqosPyAN45/Ltl5oqory1Kiyj7IEUFV/0cOgXE9NWdN/5/GuE4gW42rEgmHJGRK0QNgMNGWVXoT3GiB2gyUBTBTTiPswLVrNBNMcmyu5i/m3jTTU9NvbZFeFprQMwSbvQGJwyievzmjI=
+	t=1737664168; cv=none; b=uih7ZrwQnZYGw5rTdkWM9miB+R0ClnXxUzs0GtCkjmLg6WKhJ/4filedmWYL3blqbLCluYiOP0n8RSp8l22uHicGYREDEvfyQrTNvZojnvKtipW29X2v4YA1UoVU9IEWwCvE9c1w5JkiAgZ48KAdqq6lMfYlEPJ1MgpHEzvpA5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737663808; c=relaxed/simple;
-	bh=+xq0xxT5ZX2m9js4plcbPhC4jdjW07e0d1BbRLOxY1c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=suEwFTZpgtpscaRYIlxMzyI5z5Gc/iNzlZ5PQ4OK4NdRAHtuC5qXiPho5APEiKZ+lWh75z85XVwVl+q6EKX07SMhmakG4ki9HvnUhLqC/S9nzv71lISo6gpCt+DoPbAzgoMgoGfMCS75M/E27xaYt+g4WNWkOjdsz4KpJIIhSCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SEvMaBoX; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737663807; x=1769199807;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=+xq0xxT5ZX2m9js4plcbPhC4jdjW07e0d1BbRLOxY1c=;
-  b=SEvMaBoXhxpBvywFHLH146UQRlXWfINZOPABMbRe0Q/3KHL/0sUUDmWe
-   iIaaR2TKjROLVv+t7S8ENovA046I1Sq4HGS5GyYinvJ3oJnPEFb/zK6n9
-   8x4r7qLRR/E69xg9ucNlwwOnspNA6jm/VSJkFmjsE8mTJ6LxQKoCdXPBl
-   GSEisZ6MBE1vNr4yxMBC0v4oF3l+Q+YNKTnHZ5jbrJckG4F3EVmoBw0+P
-   MVPF4WQZlH++0crcLWKolTGNywYRHOvFCOT9ZvjSx2LnHEin0SP5k7Hoo
-   NpfVmlApVsIr/E6XNnG2JGqtcGr5hbCLmwkNx4KKwdVlbi1OOWbcBwGa5
-   g==;
-X-CSE-ConnectionGUID: ZoUnlSHjRoWGJe8nWZVzPw==
-X-CSE-MsgGUID: zq0BQ5sdQY6stv93YVh1fw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11324"; a="41946309"
-X-IronPort-AV: E=Sophos;i="6.13,229,1732608000"; 
-   d="scan'208";a="41946309"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2025 12:23:21 -0800
-X-CSE-ConnectionGUID: SfJ7UlSHRfOkJnaMUHALqQ==
-X-CSE-MsgGUID: mKmuYcykQeWUp8kWkLon3g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="138437920"
-Received: from josouza-mobl2.bz.intel.com ([10.87.243.88])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2025 12:23:13 -0800
-From: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Julia Filipchuk <julia.filipchuk@intel.com>,
-	stable@vger.kernel.org,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH v2 1/2] drm/xe: Fix and re-enable xe_print_blob_ascii85()
-Date: Thu, 23 Jan 2025 12:22:03 -0800
-Message-ID: <20250123202307.95103-2-jose.souza@intel.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250123202307.95103-1-jose.souza@intel.com>
-References: <20250123202307.95103-1-jose.souza@intel.com>
+	s=arc-20240116; t=1737664168; c=relaxed/simple;
+	bh=pnwh62on35oF9nCa2yi0bKTQ8+BApmfGta6a4WMK9Xk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=c2qTMOyyWocvLQmFWdjh0bX4TTUD7lSvN/aHjWoT6o2fiwIHNybWPvl02Fysv6xtafRDLH3tXw6LmUjHPcUe9vWi57p51FyOBsd0fmoScvIvoPWIoZN9l+Ugp/BUKGj+/SKlwUdaO1ThUCDtOZ7VRYrpRzFT+kdTD9Wm3h5k0sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-51cee9d5013so826621e0c.3;
+        Thu, 23 Jan 2025 12:29:25 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737664164; x=1738268964;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Vd1TkqSq28vmFyt5g4A7LX87fPOL7pqaSEPxXJnJuPk=;
+        b=OxAegnkpxGAg8bDFnQgzYVCeYbR9PYu9w3mBC38V7TuUXTYXG2zWqF1Y7aHTuo87el
+         8i6rJqdv67fa+CTSsHMz+p0AxlIG6vyeZ6XCfBppcw0+qhptAI687O+tuA22KU+YFRbR
+         YJhfTOYBxa33BXA0cdmAxrGjOsJ3ClbBMSn12zA001243YWb+jWWNJBfrHzIBQKH6dKG
+         O1uvcho67gZIMlyZTbPYmLeVsyNZ3ITZpEEEUs/wdhzSuHu36Eb09HyILj4xRLVcnsdi
+         QVoIirZ9W5nRloa9SVd5wQcB/FGG9MEt/PK+JLD9xHg1XrAfi04Dh9fb+pTRH8xOJals
+         cxGg==
+X-Forwarded-Encrypted: i=1; AJvYcCU2xmFhR2FkDEF6DgMNvDljnjgdKGOejG5h8zh3hjeVeq+zN+gb5nogF10i2up41scT7CEK3WOeFOA=@vger.kernel.org, AJvYcCUssFhZ3SzqjOIZ9UqfP+/NshXdLsO+4PLo2Uv/CXa+aqRD1DHUuEzdZSGRWIpfvlY12zLR8jm692PoHE2t@vger.kernel.org, AJvYcCWpoNhlIEWTRFinZghzIngx5+47tLFIexs5N3xzVd0ofkM0MAi6Z6B4IaOGcSUdLaEPaWgmwrLB@vger.kernel.org, AJvYcCXqEO1Q6nLHaCqpzTI+D2MvfCPZeiLzIyt59kjCtZKOysZ+YoaJ9ZPaCpEWFvHD+aeEanF2bk7mwtYYJomNYNIjUTk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx33J8V9dwd463nTgNYgcfDSuCR8c/QXSsDuZcm4UA9vOItDtKu
+	u5OT1ebNkJeBWu17gFEtr0maWJ06QLgBi9xZ3bfXDCnB3H4tbBfzeQqCmGsi
+X-Gm-Gg: ASbGncv2WYaaHf+k0aMe/CisyxlgbbYiLVR8Nycv8muIooCEAiBI/E5DpaUZzmG2cBw
+	dn4wTrvkGaE1oO8KYwnj9RgCUAtNkv68MHcAhg93NvQXLgrTMyZFAzdElCDadR5qDk8c420/uph
+	mp5vyFiOw9vtu2L3wbdA6kb9MDqPw1UHOJAUb8t3kICL71Ig7IL9EYbMvPSIhX8UW8m40XXojkw
+	x95r8J+Oquz+00z3JQz6e361HXFBLmJc8iuVB+wguXWIvuyT6aG1In9nEP0b7QaF+kxgzOmGOEf
+	s1TNooUSkc3JkzUWqw50fkLKSTDYloIeJDf3uC97m+ihNWQ=
+X-Google-Smtp-Source: AGHT+IF0JpaP7SycLmVKkQh1KNy+m9jRLyyph1u4m940IjB+Y+5hMfRDVxoUPPhCjVaAHFbdqZOfpA==
+X-Received: by 2002:a05:6122:2105:b0:51b:8949:c9a8 with SMTP id 71dfb90a1353d-51d5b33f5d8mr24670094e0c.9.1737664163943;
+        Thu, 23 Jan 2025 12:29:23 -0800 (PST)
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com. [209.85.221.173])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-51e4ebea36esm115107e0c.41.2025.01.23.12.29.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Jan 2025 12:29:23 -0800 (PST)
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-517aea3ee2aso796124e0c.2;
+        Thu, 23 Jan 2025 12:29:23 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU/YCHJICbnZ0HqxdBKHzMfvT4tehptGEzafgzr03dlaaDX+Al7PR4RAPGvnFgU9bTLFCHuT5ntkhA=@vger.kernel.org, AJvYcCUuecueWimRVO1oMpyRXI2rSuYMTQJOKty1+ZfVgjOM+bbgNbM/yCrMLWyy6lI/BpCsvWIcocD6wRBRSowH+Wa63UU=@vger.kernel.org, AJvYcCXVzzKnF7QS5Zq/rpqPLAaqnoe8s9pGPjcwsVVgoi0wr7A6ORbdaOdmmpDeu2wp1Q9IgCSNFzrM@vger.kernel.org, AJvYcCXmeQxGgIfyXCHczOkLqlPUf0ZWdV1TgJ1OwNhHiTOS+sZ3iVk5g70jzKBSi9xtF0thHhNl/J8u0ypmAOdi@vger.kernel.org
+X-Received: by 2002:a05:6102:2ad0:b0:4af:597b:ef with SMTP id
+ ada2fe7eead31-4b690bb51d3mr23979878137.8.1737664163332; Thu, 23 Jan 2025
+ 12:29:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250122100828.395091-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+In-Reply-To: <20250122100828.395091-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 23 Jan 2025 21:29:10 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVP8LrqAYK7sPJqiB+Fagk=CrhSwX1CixKOxoiGgyDEoQ@mail.gmail.com>
+X-Gm-Features: AWEUYZnkzUSG80PrWtV5m7mXIgljPubn8AIQbb5HVVIJvBFGHO3N8MKYLmuYOUM
+Message-ID: <CAMuHMdVP8LrqAYK7sPJqiB+Fagk=CrhSwX1CixKOxoiGgyDEoQ@mail.gmail.com>
+Subject: Re: [PATCH] clk: renesas: r9a07g043: Fix HP clock source for RZ/Five SoC
+To: Prabhakar <prabhakar.csengg@gmail.com>
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	linux-renesas-soc@vger.kernel.org, linux-clk@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>, 
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+Hi Prabhakar,
 
-Commit 70fb86a85dc9 ("drm/xe: Revert some changes that break a mesa
-debug tool") partially reverted some changes to workaround breakage
-caused to mesa tools. However, in doing so it also broke fetching the
-GuC log via debugfs since xe_print_blob_ascii85() simply bails out.
+Thanks for your patch!
 
-The fix is to avoid the extra newlines: the devcoredump interface is
-line-oriented and adding random newlines in the middle breaks it. If a
-tool is able to parse it by looking at the data and checking for chars
-that are out of the ascii85 space, it can still do so. A format change
-that breaks the line-oriented output on devcoredump however needs better
-coordination with existing tools.
+On Wed, Jan 22, 2025 at 11:08=E2=80=AFAM Prabhakar <prabhakar.csengg@gmail.=
+com> wrote:
+> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+>
+> According to the Rev.1.20 hardware manual for the RZ/Five SoC, the clock
+> source for HP is derived from PLL6 divided by 2. This patch corrects the
+> implementation by configuring HP as a fixed clock source instead of a MUX=
+.
+>
+> The `CPG_PL6_ETH_SSEL` register, which is available on the RZ/G2UL SoC, i=
+s
+> not present on the RZ/Five SoC, necessitating this change.
 
-v2:
-- added suffix description comment
+While the register is not documented to exist, it reads back the same
+default value as on RZ/G2UL, selecting the right parent that does exist.
 
-Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: Julia Filipchuk <julia.filipchuk@intel.com>
-Cc: José Roberto de Souza <jose.souza@intel.com>
-Cc: stable@vger.kernel.org
-Fixes: 70fb86a85dc9 ("drm/xe: Revert some changes that break a mesa debug tool")
-Fixes: ec1455ce7e35 ("drm/xe/devcoredump: Add ASCII85 dump helper function")
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
- drivers/gpu/drm/xe/xe_devcoredump.c | 33 +++++++++++------------------
- drivers/gpu/drm/xe/xe_devcoredump.h |  2 +-
- drivers/gpu/drm/xe/xe_guc_ct.c      |  3 ++-
- drivers/gpu/drm/xe/xe_guc_log.c     |  4 +++-
- 4 files changed, 18 insertions(+), 24 deletions(-)
+> Fixes: 95d48d270305ad2c ("clk: renesas: r9a07g043: Add support for RZ/Fiv=
+e SoC")
+> Cc: stable@vger.kernel.org
+> Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
+> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-diff --git a/drivers/gpu/drm/xe/xe_devcoredump.c b/drivers/gpu/drm/xe/xe_devcoredump.c
-index 81dc7795c0651..6f73b1ba0f2aa 100644
---- a/drivers/gpu/drm/xe/xe_devcoredump.c
-+++ b/drivers/gpu/drm/xe/xe_devcoredump.c
-@@ -395,42 +395,33 @@ int xe_devcoredump_init(struct xe_device *xe)
- /**
-  * xe_print_blob_ascii85 - print a BLOB to some useful location in ASCII85
-  *
-- * The output is split to multiple lines because some print targets, e.g. dmesg
-- * cannot handle arbitrarily long lines. Note also that printing to dmesg in
-- * piece-meal fashion is not possible, each separate call to drm_puts() has a
-- * line-feed automatically added! Therefore, the entire output line must be
-- * constructed in a local buffer first, then printed in one atomic output call.
-+ * The output is split to multiple print calls because some print targets, e.g.
-+ * dmesg cannot handle arbitrarily long lines. These targets may add newline
-+ * between calls.
-  *
-  * There is also a scheduler yield call to prevent the 'task has been stuck for
-  * 120s' kernel hang check feature from firing when printing to a slow target
-  * such as dmesg over a serial port.
-  *
-- * TODO: Add compression prior to the ASCII85 encoding to shrink huge buffers down.
-- *
-  * @p: the printer object to output to
-  * @prefix: optional prefix to add to output string
-+ * @suffix: optional suffix to add at the end. 0 disables it and is
-+ *          not added to the output, which is useful when using multiple calls
-+ *          to dump data to @p
-  * @blob: the Binary Large OBject to dump out
-  * @offset: offset in bytes to skip from the front of the BLOB, must be a multiple of sizeof(u32)
-  * @size: the size in bytes of the BLOB, must be a multiple of sizeof(u32)
-  */
--void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix,
-+void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix, char suffix,
- 			   const void *blob, size_t offset, size_t size)
- {
- 	const u32 *blob32 = (const u32 *)blob;
- 	char buff[ASCII85_BUFSZ], *line_buff;
- 	size_t line_pos = 0;
- 
--	/*
--	 * Splitting blobs across multiple lines is not compatible with the mesa
--	 * debug decoder tool. Note that even dropping the explicit '\n' below
--	 * doesn't help because the GuC log is so big some underlying implementation
--	 * still splits the lines at 512K characters. So just bail completely for
--	 * the moment.
--	 */
--	return;
--
- #define DMESG_MAX_LINE_LEN	800
--#define MIN_SPACE		(ASCII85_BUFSZ + 2)		/* 85 + "\n\0" */
-+	/* Always leave space for the suffix char and the \0 */
-+#define MIN_SPACE		(ASCII85_BUFSZ + 2)	/* 85 + "<suffix>\0" */
- 
- 	if (size & 3)
- 		drm_printf(p, "Size not word aligned: %zu", size);
-@@ -462,7 +453,6 @@ void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix,
- 		line_pos += strlen(line_buff + line_pos);
- 
- 		if ((line_pos + MIN_SPACE) >= DMESG_MAX_LINE_LEN) {
--			line_buff[line_pos++] = '\n';
- 			line_buff[line_pos++] = 0;
- 
- 			drm_puts(p, line_buff);
-@@ -474,10 +464,11 @@ void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix,
- 		}
- 	}
- 
-+	if (suffix)
-+		line_buff[line_pos++] = suffix;
-+
- 	if (line_pos) {
--		line_buff[line_pos++] = '\n';
- 		line_buff[line_pos++] = 0;
--
- 		drm_puts(p, line_buff);
- 	}
- 
-diff --git a/drivers/gpu/drm/xe/xe_devcoredump.h b/drivers/gpu/drm/xe/xe_devcoredump.h
-index 6a17e6d601022..5391a80a4d1ba 100644
---- a/drivers/gpu/drm/xe/xe_devcoredump.h
-+++ b/drivers/gpu/drm/xe/xe_devcoredump.h
-@@ -29,7 +29,7 @@ static inline int xe_devcoredump_init(struct xe_device *xe)
- }
- #endif
- 
--void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix,
-+void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix, char suffix,
- 			   const void *blob, size_t offset, size_t size);
- 
- #endif
-diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
-index 8b65c5e959cc2..50c8076b51585 100644
---- a/drivers/gpu/drm/xe/xe_guc_ct.c
-+++ b/drivers/gpu/drm/xe/xe_guc_ct.c
-@@ -1724,7 +1724,8 @@ void xe_guc_ct_snapshot_print(struct xe_guc_ct_snapshot *snapshot,
- 			   snapshot->g2h_outstanding);
- 
- 		if (snapshot->ctb)
--			xe_print_blob_ascii85(p, "CTB data", snapshot->ctb, 0, snapshot->ctb_size);
-+			xe_print_blob_ascii85(p, "CTB data", '\n',
-+					      snapshot->ctb, 0, snapshot->ctb_size);
- 	} else {
- 		drm_puts(p, "CT disabled\n");
- 	}
-diff --git a/drivers/gpu/drm/xe/xe_guc_log.c b/drivers/gpu/drm/xe/xe_guc_log.c
-index 80151ff6a71f8..44482ea919924 100644
---- a/drivers/gpu/drm/xe/xe_guc_log.c
-+++ b/drivers/gpu/drm/xe/xe_guc_log.c
-@@ -207,8 +207,10 @@ void xe_guc_log_snapshot_print(struct xe_guc_log_snapshot *snapshot, struct drm_
- 	remain = snapshot->size;
- 	for (i = 0; i < snapshot->num_chunks; i++) {
- 		size_t size = min(GUC_LOG_CHUNK_SIZE, remain);
-+		const char *prefix = i ? NULL : "Log data";
-+		char suffix = i == snapshot->num_chunks - 1 ? '\n' : 0;
- 
--		xe_print_blob_ascii85(p, i ? NULL : "Log data", snapshot->copy[i], 0, size);
-+		xe_print_blob_ascii85(p, prefix, suffix, snapshot->copy[i], 0, size);
- 		remain -= size;
- 	}
- }
--- 
-2.48.1
+> --- a/drivers/clk/renesas/r9a07g043-cpg.c
+> +++ b/drivers/clk/renesas/r9a07g043-cpg.c
+> @@ -138,7 +138,11 @@ static const struct cpg_core_clk r9a07g043_core_clks=
+[] __initconst =3D {
+>         DEF_DIV("P2", R9A07G043_CLK_P2, CLK_PLL3_DIV2_4_2, DIVPL3A, dtabl=
+e_1_32),
+>         DEF_FIXED("M0", R9A07G043_CLK_M0, CLK_PLL3_DIV2_4, 1, 1),
+>         DEF_FIXED("ZT", R9A07G043_CLK_ZT, CLK_PLL3_DIV2_4_2, 1, 1),
+> +#ifdef CONFIG_ARM64
+>         DEF_MUX("HP", R9A07G043_CLK_HP, SEL_PLL6_2, sel_pll6_2),
 
+When building with W=3D1 on non-ARM64:
+
+    error: =E2=80=98sel_pll6_2=E2=80=99 defined but not used
+
+so sel_pll6_2 [] needs to be protected by an #ifdef too (or __maybe_unused,
+but the rest of the file uses __ifdef).
+
+> +#else
+
+The rest of the file uses:
+
+    #endif
+    #ifdef CONFIG_RISCV
+
+instead of #else, so please use the same construct for consistency.
+
+> +       DEF_FIXED("HP", R9A07G043_CLK_HP, CLK_PLL6_250, 1, 1),
+> +#endif
+>         DEF_FIXED("SPI0", R9A07G043_CLK_SPI0, CLK_DIV_PLL3_C, 1, 2),
+>         DEF_FIXED("SPI1", R9A07G043_CLK_SPI1, CLK_DIV_PLL3_C, 1, 4),
+>         DEF_SD_MUX("SD0", R9A07G043_CLK_SD0, SEL_SDHI0, SEL_SDHI0_STS, se=
+l_sdhi,
+
+The actual change LGTM.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
