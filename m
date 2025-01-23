@@ -1,89 +1,104 @@
-Return-Path: <stable+bounces-110281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2105A1A582
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 15:10:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C704FA1A586
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 15:11:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B3B21883085
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 14:10:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91AE03A3D65
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 14:11:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1E320F064;
-	Thu, 23 Jan 2025 14:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242AD21018A;
+	Thu, 23 Jan 2025 14:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJmdgH6D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKmrbb14"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC1238F83;
-	Thu, 23 Jan 2025 14:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B5820F064;
+	Thu, 23 Jan 2025 14:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737641427; cv=none; b=nfqb4BqE+dgtR6s9kM2BJkhde2KySVZyjoG0sMxxunCdwpFV8Bq34Qj/LqGMVJB0zocmDcLH6rcVeSzjKZvV0PjI2tnFmuEoExEoCF60qozcTL5hFUQoQrX3CELEJjEt9CWErBv3997yLLdeUlJOj9hT+GQbZDLCi7BVXT+z4fg=
+	t=1737641481; cv=none; b=eS961sxmdtkE5HXlo6JaBDmIL2tOqQmi3qWGTlvijjc9IKNY5ZxhiCt99cjBqL7cEKLsd00yYskEcGGBhfcG4XJUruSGCd4327w3IqvLvyyKHD865ENpE1uY7XUQafd389QuDdXV6oWOLjb64wv+jGB23Am1BoAuzP+gVeDF7ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737641427; c=relaxed/simple;
-	bh=bNh22GIQvj6gKM/LKOZdH8S/FO8DDQOjXGvCebJl7Aw=;
+	s=arc-20240116; t=1737641481; c=relaxed/simple;
+	bh=aqJKtOWUELsqDb6sVjS+/8vhWARd3/LryBUFJ8VErsM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BeYWokVpLlzw/PGYYORZfJ4ex0k/4AkidTDdnsruUn/0ofNjHKz3N1kqzp/lpMm8nkuuHfLB6qZ+M5GeVU+XJEIKZepMPNJokb7GD35orKtJXVkSvJr/0HKp4tra0HMcF6YvZVn9M7MJLTPdqwXy2t45mnwBbaDSzwbvxHoVRlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJmdgH6D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C522C4CED3;
-	Thu, 23 Jan 2025 14:10:25 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=cLaw4ZuK6XKH9wTC1201rUumBaR7inSBX+LgF0rZ79qNgK6ENnziv64+0/q6QEA4I4UOE2YWEw26PjM1/xzjfiJUV+gYoqD5bKfQlrvPEtSbRkBxfv/0Z0RjE2f0bC8l1EjkhAXe4kbBT2GF+AtF3hwGQ/+zR57OQWhYYptyIR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKmrbb14; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3244C4CED3;
+	Thu, 23 Jan 2025 14:11:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737641426;
-	bh=bNh22GIQvj6gKM/LKOZdH8S/FO8DDQOjXGvCebJl7Aw=;
+	s=korg; t=1737641481;
+	bh=aqJKtOWUELsqDb6sVjS+/8vhWARd3/LryBUFJ8VErsM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EJmdgH6DDWzQx5t9RbpIyxH/ZEXKXUQqUhgfNM7SDDLDEhJmLuDb8mZ9hQ2rqjBLX
-	 WfyKJ4yAIgstny6yj23gyQ+0ymC6P2Xbt72nmovZhhw7GKk9WEWJt5D+YTgc0QtxbN
-	 nfkSqhfLaQsF3Mp3ieSbfqiohG4HKpVkCdiPkCco=
-Date: Thu, 23 Jan 2025 15:10:23 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Shubham Pushpkar <spushpka@cisco.com>
-Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-	deeratho@cisco.com, Harry Wentland <harry.wentland@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: Re: [PATCH] drm/amd/display: Check link_index before accessing
- dc->links[]
-Message-ID: <2025012309-chloride-foil-ad73@gregkh>
-References: <20250123120822.1983325-1-spushpka@cisco.com>
+	b=fKmrbb14b90vwOD45bKGfu8/ZMmCQMeHY6fvI6z5frHGk7hJlL0KHETP4U7c/Qqxj
+	 +q3KW/VTXQggn9HMRHHAQ3AKXEuDnymvkh70AmJl7uqZsqFVgI3zogR1MXIXenwMNM
+	 C6WSbxHIQtP23mX37GoC71Jm9CzsiruWreFKOxeU=
+Date: Thu, 23 Jan 2025 15:11:18 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Ron Economos <re@w6rz.net>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 5.15 000/127] 5.15.177-rc2 review
+Message-ID: <2025012347-storm-dance-adfc@gregkh>
+References: <20250122073830.779239943@linuxfoundation.org>
+ <010553d5-4504-40d9-a358-8404f57ebe9a@w6rz.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250123120822.1983325-1-spushpka@cisco.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <010553d5-4504-40d9-a358-8404f57ebe9a@w6rz.net>
 
-On Thu, Jan 23, 2025 at 04:08:22AM -0800, Shubham Pushpkar wrote:
-> From: Alex Hung <alex.hung@amd.com>
+On Wed, Jan 22, 2025 at 05:20:54AM -0800, Ron Economos wrote:
+> On 1/22/25 00:03, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 5.15.177 release.
+> > There are 127 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Fri, 24 Jan 2025 07:38:04 +0000.
+> > Anything received after that time might be too late.
+> > 
+> > The whole patch series can be found in one patch at:
+> > 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.177-rc2.gz
+> > or in the git tree and branch at:
+> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> > and the diffstat can be found below.
+> > 
+> > thanks,
+> > 
+> > greg k-h
 > 
-> commit 8aa2864044b9d13e95fe224f32e808afbf79ecdf ("drm/amd/display:
-> Check link_index before accessing dc->links[]")
+> The build fails with:
 > 
-> [WHY & HOW]
-> dc->links[] has max size of MAX_LINKS and NULL is return when trying to
-> access with out-of-bound index.
+> drivers/usb/core/port.c: In function 'usb_port_shutdown':
+> drivers/usb/core/port.c:299:26: error: 'struct usb_device' has no member
+> named 'port_is_suspended'
+>   299 |         if (udev && !udev->port_is_suspended) {
+>       |                          ^~
+> make[3]: *** [scripts/Makefile.build:289: drivers/usb/core/port.o] Error 1
+> make[2]: *** [scripts/Makefile.build:552: drivers/usb/core] Error 2
+> make[1]: *** [scripts/Makefile.build:552: drivers/usb] Error 2
 > 
-> This fixes 3 OVERRUN and 1 RESOURCE_LEAK issues reported by Coverity.
-> 
-> Fixes: CVE-2024-46813
-> Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-> Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-> Signed-off-by: Alex Hung <alex.hung@amd.com>
-> Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> (cherry picked from commit 8aa2864044b9d13e95fe224f32e808afbf79ecdf)
-> Signed-off-by: Shubham Pushpkar <spushpka@cisco.com>
-> ---
->  drivers/gpu/drm/amd/display/dc/core/dc_link_exports.c | 3 +++
->  1 file changed, 3 insertions(+)
+> Same issue as with 6.1.125-rc1 last week. Needs the fixup patch in 6.1.126.
 
-What branch is this for?
+Ah, ick.  It's hard for me to build with CONFIG_PM disabled here for
+some reason.  I'll go queue up my fix for this from 6.1, and then your
+fix for my fix :)
 
 thanks,
 
