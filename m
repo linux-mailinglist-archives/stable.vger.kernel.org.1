@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-110332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42C6BA1ABA2
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 21:57:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B23CA1ABA1
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 21:57:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 071C07A3F86
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 20:57:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60FF8161683
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 20:57:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE55C1C4A13;
-	Thu, 23 Jan 2025 20:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8E21C5D4B;
+	Thu, 23 Jan 2025 20:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TdVbZf+h"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u4PsH27L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5061C07DC
-	for <stable@vger.kernel.org>; Thu, 23 Jan 2025 20:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC301C07DC
+	for <stable@vger.kernel.org>; Thu, 23 Jan 2025 20:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737665848; cv=none; b=kGD2IJc/n88Jpu4b9FYiqZ3LHLB0lHXI6KYQvmRNSmU0r6ATVHTYtx9fW3/NWwpElnP/BL2r2qcEfOJMy0NpqjpWehs2tyHc/mAgtLjvJ+jVfVY0jrvw3Uj5folfp2T7wzLvygI5Zwh8VPuz0cU5/Iiflt4zh0GVXgEK05ZWuAc=
+	t=1737665851; cv=none; b=P+7wvnfRbJm3SPXoB9OxDVHfcJQWhk+DmirvM4rWZVBgb9ODlLhSJsFZzwMjLoJfV4BsoC7TDRSFO5+Y29QV2VCrwe6h8DtnA+37SxxYouXa03hVw+lwrDlqrl1Zqkp6Ag9wFWXYcDOmjzokJcjFf4DFWUQxXkuM8bkNzP8cX6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737665848; c=relaxed/simple;
-	bh=LGcHFQeHRvgmZZPbyyb/8FRVtHwMtkyC0+SPZzPwajA=;
+	s=arc-20240116; t=1737665851; c=relaxed/simple;
+	bh=C5PT9/PR6OzuqWqlgRaNU/iCDT2YESmtd9yGI6MxEbg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DXZo2PctsnwRoma8WMw3nb1uzaPrbPIJCO1MCJwSmTN/FpfRAkyWqWpfpPuGcaHWvL7jsMgBHshy8Nr6Z0H3QTqioMLkYPbq0SdUI6XDoLeq/5Nuuu5R+LKPtVLueyimQjXEsIcmS8mL5GSDFPy+jxFCIQttOqcfOSxZPGBHfQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TdVbZf+h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1274FC4CED3;
-	Thu, 23 Jan 2025 20:57:27 +0000 (UTC)
+	 MIME-Version; b=ZbxQRbmQpCKCi7qktj4X9qQPfPr1r9L4m2YKQqZNU785tnZ8hIzpVqJHDTQ8SMGCwbrFblq3GGJThLS8920c5c7kT2B/sDIzIbg3Tm06/TE4hrYtmYrCqiBkA+mFufbNvcBdQBk5/ANmi72llCXLm58DKfZuTf0XUEYGwZ8Akk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u4PsH27L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD9CC4CED3;
+	Thu, 23 Jan 2025 20:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737665848;
-	bh=LGcHFQeHRvgmZZPbyyb/8FRVtHwMtkyC0+SPZzPwajA=;
+	s=k20201202; t=1737665850;
+	bh=C5PT9/PR6OzuqWqlgRaNU/iCDT2YESmtd9yGI6MxEbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TdVbZf+hc8kUW7CTPZMWVTVBHa6C0FIPLpn+h0A66QVwRpKippT88uae5pvXU6mD4
-	 sf466N/U3RYnYBknEiURVllJo0ZQuDhCZ1M6anLXAvYXPHKxXGgEkKEhxU8B6P82J9
-	 Gw3j+F1zT++OXlKjd7tMjbLMJY4CIUgouMa34h6QJN/XMlgzRsYw5Tw/CxmLLp/rFF
-	 HdRtBA12auDKxm64UAatCMBVsoIhwhmHry+G2EYyyC90cYewewkg7tYga9gPzUad06
-	 dNFuX89xRL0RPr0RkE7/EXAzdesX9ynLvo/l2bk+JlOfrfqPf7XFIdU3UolwWLa2y4
-	 f90Bh7/xAZqjw==
+	b=u4PsH27L6M0OFxwC/A1XTOb41+c5eqPbhuS4k4bSZW3SJq17vdaqDxOOcZ/zODR6a
+	 NYjF1WbeGAlADhwgDAI2jSguPy6qekcifATDpRkbl1MVq8oH2X+V7n4Uvg/C3IvUsq
+	 7pTg8MEN+DAqXKNsA/XVhqf496t5vztqJtmEPI/RwMhn1Z/vZzDSNYOEZRTTjPtLCV
+	 9muvizcj3QWKUybIKKB3kE7au0w9A/1tE4lXIfXWmJrBGii60CRVBBM7piqnrEM3ly
+	 ZXknnUENM0A1UmePKh43s7XKNFH/wGP8R8bnyUrJxw9kyp9rjHI1EbgeAbMRgORhzH
+	 D1t0q9bT8sjGg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Laura Nao <laura.nao@collabora.com>,
+Cc: Imkanmod Khan <imkanmodkhan@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y] platform/chrome: cros_ec_typec: Check for EC driver
-Date: Thu, 23 Jan 2025 15:57:26 -0500
-Message-Id: <20250123151818-5082786a5c1895fc@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y] ssb: Fix potential NULL pointer dereference in ssb_device_uevent()
+Date: Thu, 23 Jan 2025 15:57:28 -0500
+Message-Id: <20250123153451-55c7ac098ad381c7@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250123171529.597031-1-laura.nao@collabora.com>
+In-Reply-To:  <20250123083551.3400-1-imkanmodkhan@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,54 +63,54 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Found matching upstream commit: 7464ff8bf2d762251b9537863db0e1caf9b0e402
+The upstream commit SHA1 provided is correct: 789c17185fb0f39560496c2beab9b57ce1d0cbe7
 
-WARNING: Author mismatch between patch and found commit:
-Backport author: Laura Nao<laura.nao@collabora.com>
-Commit author: Akihiko Odaki<akihiko.odaki@gmail.com>
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Imkanmod Khan<imkanmodkhan@gmail.com>
+Commit author: Rand Deeb<rand.sec96@gmail.com>
 
 
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (exact SHA1)
-5.15.y | Not found
+6.6.y | Present (different SHA1: c5dc2d8eb398)
+6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  7464ff8bf2d76 ! 1:  134ad6ddcdeb5 platform/chrome: cros_ec_typec: Check for EC driver
+1:  789c17185fb0f ! 1:  53b764260405d ssb: Fix potential NULL pointer dereference in ssb_device_uevent()
     @@ Metadata
       ## Commit message ##
-         platform/chrome: cros_ec_typec: Check for EC driver
+         ssb: Fix potential NULL pointer dereference in ssb_device_uevent()
      
-    +    [ upstream commit 7464ff8bf2d762251b9537863db0e1caf9b0e402 ]
+    +    [ Upstream commit 789c17185fb0f39560496c2beab9b57ce1d0cbe7 ]
     +
-         The EC driver may not be initialized when cros_typec_probe is called,
-         particulary when CONFIG_CROS_EC_CHARDEV=m.
-     
+         The ssb_device_uevent() function first attempts to convert the 'dev' pointer
+         to 'struct ssb_device *'. However, it mistakenly dereferences 'dev' before
+         performing the NULL check, potentially leading to a NULL pointer
     @@ Commit message
-         Reviewed-by: Guenter Roeck <groeck@chromium.org>
-         Link: https://lore.kernel.org/r/20220404041101.6276-1-akihiko.odaki@gmail.com
-         Signed-off-by: Prashant Malani <pmalani@chromium.org>
-    +    Signed-off-by: Laura Nao <laura.nao@collabora.com>
+         Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+         Signed-off-by: Kalle Valo <kvalo@kernel.org>
+         Link: https://msgid.link/20240306123028.164155-1-rand.sec96@gmail.com
+    +    Signed-off-by: Imkanmod Khan <imkanmodkhan@gmail.com>
      
-      ## drivers/platform/chrome/cros_ec_typec.c ##
-     @@ drivers/platform/chrome/cros_ec_typec.c: static int cros_typec_probe(struct platform_device *pdev)
-    @@ drivers/platform/chrome/cros_ec_typec.c: static int cros_typec_probe(struct plat
-     +	if (!ec_dev)
-     +		return -EPROBE_DEFER;
-     +
-    - 	typec->typec_cmd_supported = cros_ec_check_features(ec_dev, EC_FEATURE_TYPEC_CMD);
-    - 	typec->needs_mux_ack = cros_ec_check_features(ec_dev, EC_FEATURE_TYPEC_MUX_REQUIRE_AP_ACK);
-    - 
-    + 	typec->typec_cmd_supported = !!cros_ec_check_features(ec_dev, EC_FEATURE_TYPEC_CMD);
-    + 	typec->needs_mux_ack = !!cros_ec_check_features(ec_dev,
-    + 							EC_FEATURE_TYPEC_MUX_REQUIRE_AP_ACK);
+      ## drivers/ssb/main.c ##
+     @@ drivers/ssb/main.c: static int ssb_bus_match(struct device *dev, struct device_driver *drv)
+      
+    - static int ssb_device_uevent(const struct device *dev, struct kobj_uevent_env *env)
+    + static int ssb_device_uevent(struct device *dev, struct kobj_uevent_env *env)
+      {
+    --	const struct ssb_device *ssb_dev = dev_to_ssb_dev(dev);
+    -+	const struct ssb_device *ssb_dev;
+    +-	struct ssb_device *ssb_dev = dev_to_ssb_dev(dev);
+    ++	struct ssb_device *ssb_dev;
+      
+      	if (!dev)
+      		return -ENODEV;
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
