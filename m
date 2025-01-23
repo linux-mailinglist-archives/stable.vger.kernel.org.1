@@ -1,212 +1,176 @@
-Return-Path: <stable+bounces-110265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB93A1A2B3
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 12:12:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 454A4A1A382
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 12:47:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93B323A8FC8
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 11:12:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8686F16E80B
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 11:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5036220E314;
-	Thu, 23 Jan 2025 11:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB16D20CCCF;
+	Thu, 23 Jan 2025 11:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="geX5nWmL"
+	dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b="ijfNY9iZ"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from alln-iport-3.cisco.com (alln-iport-3.cisco.com [173.37.142.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550E320E028
-	for <stable@vger.kernel.org>; Thu, 23 Jan 2025 11:12:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BF420D4F2
+	for <stable@vger.kernel.org>; Thu, 23 Jan 2025 11:45:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.142.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737630745; cv=none; b=uQNw9EDkSNqjgh3jpTHFcSakaDJy+2/Vpw1uHLDHZr0tmaAzzcZrqCpUsvG4Svu3M3NdhMf2JcyvScEQUpLkO7aVe3PmBDwJrIECdQL3rqjYpoJYtCa0hH/uJr+NcDheAQSgVwAilxSsLIxY69ilXRYelQS+JKdBSTLIwebB/wQ=
+	t=1737632719; cv=none; b=q/M4RgFveY1KJzi7XWUTVUlYMlec8kVl2ysbqIMvIyAh0S0iptS+7jUvR7AarC2ZTUNpqiSkIblddtpB9ix8WraeNDW+BxhUja05WawCdbDhQrrxcuNYDBihb7ee+HKLhzCEKIdaEIetaxzjikxmcPKFJ9N3sgRo3Tk6sY/6AOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737630745; c=relaxed/simple;
-	bh=YmY1nbgubmRNQIrAVzZWljABDgcj2qrBwfeVYjnjj6E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b3nnIOIFXBPOGdGGEhvh+j73QU4AQT+cQHSSVqW48jrcaSMH9kCDgvyKbGWFEqpDoZ50/Nb+Q7q6OL+6sFzhT6g1PyZK02p43hliu37YoRpjJmjqtHzFYD+eSY9sU2wIVQ8gHKaa5ehy95jr4z1SBDyZ87HV+OF9pSUiYtM3SLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=geX5nWmL; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=OViG7CMAewHBrClcveWqbTq9zu8RDgmBzRyrS69tFTM=; b=geX5nWmLS9V+PIgIeapbnN8dLt
-	0S6hQWsIRArpM0/LSLDO7Vdx0AbYii3Fk6uwuJPXkK4Cbm+XMkrQXqdMLjKBASi0ycd2BKiyHINTW
-	Qpk1kq2d2sI+i1ceCLhv8GIHhZhcaGtvBeALHB70ZFQtSIS/XtTvU30tAxqiMzEZ2MNg87zAK9TaV
-	9271MQBZu4LmDXaXq/RrwQ2p+Ysm77jWXKFLbxt7mg7M/2wQGMzpUIN8w+KiIib1pPVYAoDNVLHXE
-	/zHJDA+7sS6ExdlxYeVPifwcjeJeqzZd9Y8R8JNDvlixYWwlcWlbbmO9FfSyMRgZoNPb3JY6ve0bG
-	xyGWJzzQ==;
-Received: from ip163.dynamic.igalia.com ([192.168.10.163])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1tav8E-001AWP-0o; Thu, 23 Jan 2025 12:12:17 +0100
-Message-ID: <8f890277-079c-4c2d-826e-d9f6fb0c0ca9@igalia.com>
-Date: Thu, 23 Jan 2025 12:12:17 +0100
+	s=arc-20240116; t=1737632719; c=relaxed/simple;
+	bh=RrFQ3aiu7p8FdCgtZ24NAWcI608oc+9FqIZSsKDaHFU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=T1r1KheYP8CwRJKrVubW7R/fbMcdOstzZ5K46U5vbyWOEb/PmjLYaGGlhLcSoSZIy4CL2z31ivnX7RDYOwh0zRJBQvfd0udsKYx/OYeh0LVf6bq80fauRBlTLobCKID3WDnlLJmgvRt5mWEQNxYvZTxlTjqxfEtf+ZyjMILyGyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=fail smtp.mailfrom=cisco.com; dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b=ijfNY9iZ; arc=none smtp.client-ip=173.37.142.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=cisco.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=cisco.com; i=@cisco.com; l=2474; q=dns/txt; s=iport;
+  t=1737632717; x=1738842317;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=oRGxoKt8rjpieXph/y9GqL7UGmEVAGyzjb2VfxbcC28=;
+  b=ijfNY9iZoD4C38z5dUmSZ31QYje+PWXbZVN/s0/rzSpa925FosnyeorS
+   buIeijV6nz7yuA1kzZvJvs0Y1Ttado/n6R1SD3UDlJa4NmVY2Y6SkS8L7
+   46UbYV+qb8cgEmM35JcvKm3sWDTXC/xsU9J6z6YxWu5kYYlCOFjyT9ZNR
+   U=;
+X-CSE-ConnectionGUID: BOr/xM7JT+OZgN5zXE+3ZA==
+X-CSE-MsgGUID: goKEx5s4RO+vFhISbxqb3A==
+X-IPAS-Result: =?us-ascii?q?A0BzAAA6K5Jn/5L/Ja1aHAEBAQEBAQcBARIBAQQEAQFAg?=
+ =?us-ascii?q?T8HAQELAQGCSXZaQhkvhFWIHYlSi3aMSIVdgSUDVg8BAQEPOQsEAQGFB4p1A?=
+ =?us-ascii?q?iY0CQ4BAgQBAQEBAwIDAQEBAQEBAQEBAQELAQEFAQEBAgEHBYEOE4V7DUkBD?=
+ =?us-ascii?q?AEIAYV9JwQLAUYwBQIfBwItRIMBAYJkAgERtQ56fzOBAd4zgWcGgRouAYhNA?=
+ =?us-ascii?q?YR7hWcnG4FJRIEVgTuCLYFSgQ8EGIITgw6CRyIEhCSDP6AJSIEFHANZLAFVE?=
+ =?us-ascii?q?w0KCwcFgXEDOAwLMBUygRd7gkdpSToCDQI1gh58giuEXoRFhFGFW4IUghSFQ?=
+ =?us-ascii?q?h1AAwsYDUgRLBQjFBsGPQFuB5wWATyDMSYggQ4UGFCBQwGTN5I5oQOEJYwYl?=
+ =?us-ascii?q?S4aM6pTLodbCY9xeY4ElkOEZoFnPIFZTSMVgyJSGQ+OLRYWiFa7fCI1AjoCB?=
+ =?us-ascii?q?wEKAQEDCY1AgTiCZwEB?=
+IronPort-Data: A9a23:8Xvcr6MwfrL3LlrvrR3NlsFynXyQoLVcMsEvi/4bfWQNrUon1WEBz
+ mcWDTjQPPyLamr2fogkbYWxpxgC7ZOGndRlHnM5pCpnJ55oRWUpJjg4wmPYZX76whjrFRo/h
+ ykmQoCeaphyFjmE+0/F3oHJ9RFUzbuPSqf3FNnKMyVwQR4MYCo6gHqPocZh6mJTqYb/WljlV
+ e/a+ZWFZQf8gWUsaQr41orawP9RlKWq0N8nlgRWicBj5Df2i3QTBZQDEqC9R1OQapVUBOOzW
+ 9HYx7i/+G7Dlz91Yj9yuu+mGqGiaue60Tmm0hK6aYD76vRxjnBaPpIACRYpQRw/ZwNlMDxG4
+ I4lWZSYEW/FN0BX8QgXe0Ew/ypWZcWq9FJbSJSymZT78qHIT5fj699JFgYmGNI6xqVQM25oq
+ O4oBXNWXDnW0opawJrjIgVtrt4oIM+uOMYUvWttiGmIS/0nWpvEBa7N4Le03h9p2ZsIRqmYP
+ ZdEL2MzMnwsYDUXUrsTIIkmgfyonnr2WzZZs1mS46Ew5gA/ySQti+SwaYaNIIXiqcN9kUG7i
+ 3Kb5DjDJVIEGty+8jCV63j3r7qa9c/8cMdIfFGizdZhgFCVyX4TCR0fUgKToeSwlUO/HdlYL
+ iQ89jEyoLI4/WSwU8LwGRa/pRaspQIVUd5dO/M15RvLyafO5QudQG8eQVZ8hMcOrsQ6Q3kuk
+ 1SOhd6sXW0pu7yOQnXb/bCRxd+vBRUowaY5TXdsZWM4DxPL+enfUjqnog5fLZOI
+IronPort-HdrOrdr: A9a23:dG8JYahb9gTf410YWC0e8UvE83BQXtsji2hC6mlwRA09TyVXra
+ +TdZMgpHvJYVcqKRQdcL+7WZVoLUmwyXcX2/hyAV7dZmnbUQKTRekIh7cKqAePJ8SRzIJgPN
+ 9bAstD4BmaNykdsS48izPIdOod/A==
+X-Talos-CUID: 9a23:weLVD26CKn7ZSRPO5tss3mkOXdAALV/hj1DiLGnlG1ZEC+anYArF
+X-Talos-MUID: 9a23:/8FfNAba3PqWkeBTuDjPqSE/L5tSxOewJkAsqp8WosPfHHkl
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.13,228,1732579200"; 
+   d="scan'208";a="434514021"
+Received: from rcdn-l-core-09.cisco.com ([173.37.255.146])
+  by alln-iport-3.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 23 Jan 2025 11:44:08 +0000
+Received: from sjc-ads-1396.cisco.com (sjc-ads-1396.cisco.com [171.70.59.88])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by rcdn-l-core-09.cisco.com (Postfix) with ESMTPS id 4E5271800022E;
+	Thu, 23 Jan 2025 11:44:08 +0000 (GMT)
+Received: by sjc-ads-1396.cisco.com (Postfix, from userid 1839047)
+	id CFD9FCC128E; Thu, 23 Jan 2025 03:44:07 -0800 (PST)
+From: Shubham Pushpkar <spushpka@cisco.com>
+To: xe-linux-external@cisco.com
+Cc: Zhihao Cheng <chengzhihao1@huawei.com>,
+	stable@vger.kernel.org,
+	David Sterba <dsterba@suse.com>,
+	Shubham Pushpkar <spushpka@cisco.com>
+Subject: [Internal Review] [Patch] btrfs: fix use-after-free of block device file in __btrfs_free_extra_devids()
+Date: Thu, 23 Jan 2025 03:41:41 -0800
+Message-Id: <20250123114141.1955806-1-spushpka@cisco.com>
+X-Mailer: git-send-email 2.35.6
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/v3d: Assign job pointer to NULL before signaling the
- fence
-Content-Language: en-US
-To: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
- Melissa Wen <mwen@igalia.com>, Iago Toral <itoral@igalia.com>,
- Phil Elwell <phil@raspberrypi.com>
-Cc: dri-devel@lists.freedesktop.org, kernel-dev@igalia.com,
- stable@vger.kernel.org
-References: <20250123012403.20447-1-mcanal@igalia.com>
-From: Chema Casanova <jmcasanova@igalia.com>
-Organization: Igalia
-In-Reply-To: <20250123012403.20447-1-mcanal@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Outbound-SMTP-Client: 171.70.59.88, sjc-ads-1396.cisco.com
+X-Outbound-Node: rcdn-l-core-09.cisco.com
 
-Reviewed-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-El 23/1/25 a las 2:24, Maíra Canal escribió:
-> In commit e4b5ccd392b9 ("drm/v3d: Ensure job pointer is set to NULL
-> after job completion"), we introduced a change to assign the job pointer
-> to NULL after completing a job, indicating job completion.
->
-> However, this approach created a race condition between the DRM
-> scheduler workqueue and the IRQ execution thread. As soon as the fence is
-> signaled in the IRQ execution thread, a new job starts to be executed.
-> This results in a race condition where the IRQ execution thread sets the
-> job pointer to NULL simultaneously as the `run_job()` function assigns
-> a new job to the pointer.
->
-> This race condition can lead to a NULL pointer dereference if the IRQ
-> execution thread sets the job pointer to NULL after `run_job()` assigns
-> it to the new job. When the new job completes and the GPU emits an
-> interrupt, `v3d_irq()` is triggered, potentially causing a crash.
->
-> [  466.310099] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000c0
-> [  466.318928] Mem abort info:
-> [  466.321723]   ESR = 0x0000000096000005
-> [  466.325479]   EC = 0x25: DABT (current EL), IL = 32 bits
-> [  466.330807]   SET = 0, FnV = 0
-> [  466.333864]   EA = 0, S1PTW = 0
-> [  466.337010]   FSC = 0x05: level 1 translation fault
-> [  466.341900] Data abort info:
-> [  466.344783]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-> [  466.350285]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-> [  466.355350]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-> [  466.360677] user pgtable: 4k pages, 39-bit VAs, pgdp=0000000089772000
-> [  466.367140] [00000000000000c0] pgd=0000000000000000, p4d=0000000000000000, pud=0000000000000000
-> [  466.375875] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
-> [  466.382163] Modules linked in: rfcomm snd_seq_dummy snd_hrtimer snd_seq snd_seq_device algif_hash algif_skcipher af_alg bnep binfmt_misc vc4 snd_soc_hdmi_codec drm_display_helper cec brcmfmac_wcc spidev rpivid_hevc(C) drm_client_lib brcmfmac hci_uart drm_dma_helper pisp_be btbcm brcmutil snd_soc_core aes_ce_blk v4l2_mem2mem bluetooth aes_ce_cipher snd_compress videobuf2_dma_contig ghash_ce cfg80211 gf128mul snd_pcm_dmaengine videobuf2_memops ecdh_generic sha2_ce ecc videobuf2_v4l2 snd_pcm v3d sha256_arm64 rfkill videodev snd_timer sha1_ce libaes gpu_sched snd videobuf2_common sha1_generic drm_shmem_helper mc rp1_pio drm_kms_helper raspberrypi_hwmon spi_bcm2835 gpio_keys i2c_brcmstb rp1 raspberrypi_gpiomem rp1_mailbox rp1_adc nvmem_rmem uio_pdrv_genirq uio i2c_dev drm ledtrig_pattern drm_panel_orientation_quirks backlight fuse dm_mod ip_tables x_tables ipv6
-> [  466.458429] CPU: 0 UID: 1000 PID: 2008 Comm: chromium Tainted: G         C         6.13.0-v8+ #18
-> [  466.467336] Tainted: [C]=CRAP
-> [  466.470306] Hardware name: Raspberry Pi 5 Model B Rev 1.0 (DT)
-> [  466.476157] pstate: 404000c9 (nZcv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> [  466.483143] pc : v3d_irq+0x118/0x2e0 [v3d]
-> [  466.487258] lr : __handle_irq_event_percpu+0x60/0x228
-> [  466.492327] sp : ffffffc080003ea0
-> [  466.495646] x29: ffffffc080003ea0 x28: ffffff80c0c94200 x27: 0000000000000000
-> [  466.502807] x26: ffffffd08dd81d7b x25: ffffff80c0c94200 x24: ffffff8003bdc200
-> [  466.509969] x23: 0000000000000001 x22: 00000000000000a7 x21: 0000000000000000
-> [  466.517130] x20: ffffff8041bb0000 x19: 0000000000000001 x18: 0000000000000000
-> [  466.524291] x17: ffffffafadfb0000 x16: ffffffc080000000 x15: 0000000000000000
-> [  466.531452] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-> [  466.538613] x11: 0000000000000000 x10: 0000000000000000 x9 : ffffffd08c527eb0
-> [  466.545777] x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
-> [  466.552941] x5 : ffffffd08c4100d0 x4 : ffffffafadfb0000 x3 : ffffffc080003f70
-> [  466.560102] x2 : ffffffc0829e8058 x1 : 0000000000000001 x0 : 0000000000000000
-> [  466.567263] Call trace:
-> [  466.569711]  v3d_irq+0x118/0x2e0 [v3d] (P)
-> [  466.573826]  __handle_irq_event_percpu+0x60/0x228
-> [  466.578546]  handle_irq_event+0x54/0xb8
-> [  466.582391]  handle_fasteoi_irq+0xac/0x240
-> [  466.586498]  generic_handle_domain_irq+0x34/0x58
-> [  466.591128]  gic_handle_irq+0x48/0xd8
-> [  466.594798]  call_on_irq_stack+0x24/0x58
-> [  466.598730]  do_interrupt_handler+0x88/0x98
-> [  466.602923]  el0_interrupt+0x44/0xc0
-> [  466.606508]  __el0_irq_handler_common+0x18/0x28
-> [  466.611050]  el0t_64_irq_handler+0x10/0x20
-> [  466.615156]  el0t_64_irq+0x198/0x1a0
-> [  466.618740] Code: 52800035 3607faf3 f9442e80 52800021 (f9406018)
-> [  466.624853] ---[ end trace 0000000000000000 ]---
-> [  466.629483] Kernel panic - not syncing: Oops: Fatal exception in interrupt
-> [  466.636384] SMP: stopping secondary CPUs
-> [  466.640320] Kernel Offset: 0x100c400000 from 0xffffffc080000000
-> [  466.646259] PHYS_OFFSET: 0x0
-> [  466.649141] CPU features: 0x100,00000170,00901250,0200720b
-> [  466.654644] Memory Limit: none
-> [  466.657706] ---[ end Kernel panic - not syncing: Oops: Fatal exception in interrupt ]---
->
-> Fix the crash by assigning the job pointer to NULL before signaling the
-> fence. This ensures that the job pointer is cleared before any new job
-> starts execution, preventing the race condition and the NULL pointer
-> dereference crash.
->
-> Cc: stable@vger.kernel.org
-> Fixes: e4b5ccd392b9 ("drm/v3d: Ensure job pointer is set to NULL after job completion")
-> Signed-off-by: Maíra Canal <mcanal@igalia.com>
-> ---
->   drivers/gpu/drm/v3d/v3d_irq.c | 16 ++++++++++++----
->   1 file changed, 12 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
-> index da203045df9b..72b6a119412f 100644
-> --- a/drivers/gpu/drm/v3d/v3d_irq.c
-> +++ b/drivers/gpu/drm/v3d/v3d_irq.c
-> @@ -107,8 +107,10 @@ v3d_irq(int irq, void *arg)
->   
->   		v3d_job_update_stats(&v3d->bin_job->base, V3D_BIN);
->   		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
-> -		dma_fence_signal(&fence->base);
-> +
->   		v3d->bin_job = NULL;
-> +		dma_fence_signal(&fence->base);
-> +
->   		status = IRQ_HANDLED;
->   	}
->   
-> @@ -118,8 +120,10 @@ v3d_irq(int irq, void *arg)
->   
->   		v3d_job_update_stats(&v3d->render_job->base, V3D_RENDER);
->   		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
-> -		dma_fence_signal(&fence->base);
-> +
->   		v3d->render_job = NULL;
-> +		dma_fence_signal(&fence->base);
-> +
->   		status = IRQ_HANDLED;
->   	}
->   
-> @@ -129,8 +133,10 @@ v3d_irq(int irq, void *arg)
->   
->   		v3d_job_update_stats(&v3d->csd_job->base, V3D_CSD);
->   		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
-> -		dma_fence_signal(&fence->base);
-> +
->   		v3d->csd_job = NULL;
-> +		dma_fence_signal(&fence->base);
-> +
->   		status = IRQ_HANDLED;
->   	}
->   
-> @@ -167,8 +173,10 @@ v3d_hub_irq(int irq, void *arg)
->   
->   		v3d_job_update_stats(&v3d->tfu_job->base, V3D_TFU);
->   		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
-> -		dma_fence_signal(&fence->base);
-> +
->   		v3d->tfu_job = NULL;
-> +		dma_fence_signal(&fence->base);
-> +
->   		status = IRQ_HANDLED;
->   	}
->   
+commit aec8e6bf839101784f3ef037dcdb9432c3f32343 ("btrfs:
+fix use-after-free of block device file in __btrfs_free_extra_devids()")
+
+Mounting btrfs from two images (which have the same one fsid and two
+different dev_uuids) in certain executing order may trigger an UAF for
+variable 'device->bdev_file' in __btrfs_free_extra_devids(). And
+following are the details:
+
+1. Attach image_1 to loop0, attach image_2 to loop1, and scan btrfs
+   devices by ioctl(BTRFS_IOC_SCAN_DEV):
+
+             /  btrfs_device_1 → loop0
+   fs_device
+             \  btrfs_device_2 → loop1
+2. mount /dev/loop0 /mnt
+   btrfs_open_devices
+    btrfs_device_1->bdev_file = btrfs_get_bdev_and_sb(loop0)
+    btrfs_device_2->bdev_file = btrfs_get_bdev_and_sb(loop1)
+   btrfs_fill_super
+    open_ctree
+     fail: btrfs_close_devices // -ENOMEM
+	    btrfs_close_bdev(btrfs_device_1)
+             fput(btrfs_device_1->bdev_file)
+	      // btrfs_device_1->bdev_file is freed
+	    btrfs_close_bdev(btrfs_device_2)
+             fput(btrfs_device_2->bdev_file)
+
+3. mount /dev/loop1 /mnt
+   btrfs_open_devices
+    btrfs_get_bdev_and_sb(&bdev_file)
+     // EIO, btrfs_device_1->bdev_file is not assigned,
+     // which points to a freed memory area
+    btrfs_device_2->bdev_file = btrfs_get_bdev_and_sb(loop1)
+   btrfs_fill_super
+    open_ctree
+     btrfs_free_extra_devids
+      if (btrfs_device_1->bdev_file)
+       fput(btrfs_device_1->bdev_file) // UAF !
+
+Fix it by setting 'device->bdev_file' as 'NULL' after closing the
+btrfs_device in btrfs_close_one_device().
+
+Fixes: CVE-2024-50217
+Fixes: 142388194191 ("btrfs: do not background blkdev_put()")
+CC: stable@vger.kernel.org # 4.19+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219408
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+(cherry picked from commit aec8e6bf839101784f3ef037dcdb9432c3f32343)
+Signed-off-by: Shubham Pushpkar <spushpka@cisco.com>
+---
+ fs/btrfs/volumes.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index b9a0b26d08e1..ab2412542ce5 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -1176,6 +1176,7 @@ static void btrfs_close_one_device(struct btrfs_device *device)
+ 	if (device->bdev) {
+ 		fs_devices->open_devices--;
+ 		device->bdev = NULL;
++		device->bdev_file = NULL;
+ 	}
+ 	clear_bit(BTRFS_DEV_STATE_WRITEABLE, &device->dev_state);
+ 	btrfs_destroy_dev_zone_info(device);
+-- 
+2.35.6
+
 
