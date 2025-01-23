@@ -1,165 +1,116 @@
-Return-Path: <stable+bounces-110331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA93A1AB68
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 21:32:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42C6BA1ABA2
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 21:57:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F6D3188EF65
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 20:32:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 071C07A3F86
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 20:57:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383B31C5F20;
-	Thu, 23 Jan 2025 20:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE55C1C4A13;
+	Thu, 23 Jan 2025 20:57:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TdVbZf+h"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27391B424B;
-	Thu, 23 Jan 2025 20:29:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5061C07DC
+	for <stable@vger.kernel.org>; Thu, 23 Jan 2025 20:57:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737664168; cv=none; b=uih7ZrwQnZYGw5rTdkWM9miB+R0ClnXxUzs0GtCkjmLg6WKhJ/4filedmWYL3blqbLCluYiOP0n8RSp8l22uHicGYREDEvfyQrTNvZojnvKtipW29X2v4YA1UoVU9IEWwCvE9c1w5JkiAgZ48KAdqq6lMfYlEPJ1MgpHEzvpA5Q=
+	t=1737665848; cv=none; b=kGD2IJc/n88Jpu4b9FYiqZ3LHLB0lHXI6KYQvmRNSmU0r6ATVHTYtx9fW3/NWwpElnP/BL2r2qcEfOJMy0NpqjpWehs2tyHc/mAgtLjvJ+jVfVY0jrvw3Uj5folfp2T7wzLvygI5Zwh8VPuz0cU5/Iiflt4zh0GVXgEK05ZWuAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737664168; c=relaxed/simple;
-	bh=pnwh62on35oF9nCa2yi0bKTQ8+BApmfGta6a4WMK9Xk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c2qTMOyyWocvLQmFWdjh0bX4TTUD7lSvN/aHjWoT6o2fiwIHNybWPvl02Fysv6xtafRDLH3tXw6LmUjHPcUe9vWi57p51FyOBsd0fmoScvIvoPWIoZN9l+Ugp/BUKGj+/SKlwUdaO1ThUCDtOZ7VRYrpRzFT+kdTD9Wm3h5k0sU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-51cee9d5013so826621e0c.3;
-        Thu, 23 Jan 2025 12:29:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737664164; x=1738268964;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Vd1TkqSq28vmFyt5g4A7LX87fPOL7pqaSEPxXJnJuPk=;
-        b=OxAegnkpxGAg8bDFnQgzYVCeYbR9PYu9w3mBC38V7TuUXTYXG2zWqF1Y7aHTuo87el
-         8i6rJqdv67fa+CTSsHMz+p0AxlIG6vyeZ6XCfBppcw0+qhptAI687O+tuA22KU+YFRbR
-         YJhfTOYBxa33BXA0cdmAxrGjOsJ3ClbBMSn12zA001243YWb+jWWNJBfrHzIBQKH6dKG
-         O1uvcho67gZIMlyZTbPYmLeVsyNZ3ITZpEEEUs/wdhzSuHu36Eb09HyILj4xRLVcnsdi
-         QVoIirZ9W5nRloa9SVd5wQcB/FGG9MEt/PK+JLD9xHg1XrAfi04Dh9fb+pTRH8xOJals
-         cxGg==
-X-Forwarded-Encrypted: i=1; AJvYcCU2xmFhR2FkDEF6DgMNvDljnjgdKGOejG5h8zh3hjeVeq+zN+gb5nogF10i2up41scT7CEK3WOeFOA=@vger.kernel.org, AJvYcCUssFhZ3SzqjOIZ9UqfP+/NshXdLsO+4PLo2Uv/CXa+aqRD1DHUuEzdZSGRWIpfvlY12zLR8jm692PoHE2t@vger.kernel.org, AJvYcCWpoNhlIEWTRFinZghzIngx5+47tLFIexs5N3xzVd0ofkM0MAi6Z6B4IaOGcSUdLaEPaWgmwrLB@vger.kernel.org, AJvYcCXqEO1Q6nLHaCqpzTI+D2MvfCPZeiLzIyt59kjCtZKOysZ+YoaJ9ZPaCpEWFvHD+aeEanF2bk7mwtYYJomNYNIjUTk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx33J8V9dwd463nTgNYgcfDSuCR8c/QXSsDuZcm4UA9vOItDtKu
-	u5OT1ebNkJeBWu17gFEtr0maWJ06QLgBi9xZ3bfXDCnB3H4tbBfzeQqCmGsi
-X-Gm-Gg: ASbGncv2WYaaHf+k0aMe/CisyxlgbbYiLVR8Nycv8muIooCEAiBI/E5DpaUZzmG2cBw
-	dn4wTrvkGaE1oO8KYwnj9RgCUAtNkv68MHcAhg93NvQXLgrTMyZFAzdElCDadR5qDk8c420/uph
-	mp5vyFiOw9vtu2L3wbdA6kb9MDqPw1UHOJAUb8t3kICL71Ig7IL9EYbMvPSIhX8UW8m40XXojkw
-	x95r8J+Oquz+00z3JQz6e361HXFBLmJc8iuVB+wguXWIvuyT6aG1In9nEP0b7QaF+kxgzOmGOEf
-	s1TNooUSkc3JkzUWqw50fkLKSTDYloIeJDf3uC97m+ihNWQ=
-X-Google-Smtp-Source: AGHT+IF0JpaP7SycLmVKkQh1KNy+m9jRLyyph1u4m940IjB+Y+5hMfRDVxoUPPhCjVaAHFbdqZOfpA==
-X-Received: by 2002:a05:6122:2105:b0:51b:8949:c9a8 with SMTP id 71dfb90a1353d-51d5b33f5d8mr24670094e0c.9.1737664163943;
-        Thu, 23 Jan 2025 12:29:23 -0800 (PST)
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com. [209.85.221.173])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-51e4ebea36esm115107e0c.41.2025.01.23.12.29.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Jan 2025 12:29:23 -0800 (PST)
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-517aea3ee2aso796124e0c.2;
-        Thu, 23 Jan 2025 12:29:23 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU/YCHJICbnZ0HqxdBKHzMfvT4tehptGEzafgzr03dlaaDX+Al7PR4RAPGvnFgU9bTLFCHuT5ntkhA=@vger.kernel.org, AJvYcCUuecueWimRVO1oMpyRXI2rSuYMTQJOKty1+ZfVgjOM+bbgNbM/yCrMLWyy6lI/BpCsvWIcocD6wRBRSowH+Wa63UU=@vger.kernel.org, AJvYcCXVzzKnF7QS5Zq/rpqPLAaqnoe8s9pGPjcwsVVgoi0wr7A6ORbdaOdmmpDeu2wp1Q9IgCSNFzrM@vger.kernel.org, AJvYcCXmeQxGgIfyXCHczOkLqlPUf0ZWdV1TgJ1OwNhHiTOS+sZ3iVk5g70jzKBSi9xtF0thHhNl/J8u0ypmAOdi@vger.kernel.org
-X-Received: by 2002:a05:6102:2ad0:b0:4af:597b:ef with SMTP id
- ada2fe7eead31-4b690bb51d3mr23979878137.8.1737664163332; Thu, 23 Jan 2025
- 12:29:23 -0800 (PST)
+	s=arc-20240116; t=1737665848; c=relaxed/simple;
+	bh=LGcHFQeHRvgmZZPbyyb/8FRVtHwMtkyC0+SPZzPwajA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=DXZo2PctsnwRoma8WMw3nb1uzaPrbPIJCO1MCJwSmTN/FpfRAkyWqWpfpPuGcaHWvL7jsMgBHshy8Nr6Z0H3QTqioMLkYPbq0SdUI6XDoLeq/5Nuuu5R+LKPtVLueyimQjXEsIcmS8mL5GSDFPy+jxFCIQttOqcfOSxZPGBHfQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TdVbZf+h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1274FC4CED3;
+	Thu, 23 Jan 2025 20:57:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737665848;
+	bh=LGcHFQeHRvgmZZPbyyb/8FRVtHwMtkyC0+SPZzPwajA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TdVbZf+hc8kUW7CTPZMWVTVBHa6C0FIPLpn+h0A66QVwRpKippT88uae5pvXU6mD4
+	 sf466N/U3RYnYBknEiURVllJo0ZQuDhCZ1M6anLXAvYXPHKxXGgEkKEhxU8B6P82J9
+	 Gw3j+F1zT++OXlKjd7tMjbLMJY4CIUgouMa34h6QJN/XMlgzRsYw5Tw/CxmLLp/rFF
+	 HdRtBA12auDKxm64UAatCMBVsoIhwhmHry+G2EYyyC90cYewewkg7tYga9gPzUad06
+	 dNFuX89xRL0RPr0RkE7/EXAzdesX9ynLvo/l2bk+JlOfrfqPf7XFIdU3UolwWLa2y4
+	 f90Bh7/xAZqjw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Laura Nao <laura.nao@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15.y] platform/chrome: cros_ec_typec: Check for EC driver
+Date: Thu, 23 Jan 2025 15:57:26 -0500
+Message-Id: <20250123151818-5082786a5c1895fc@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250123171529.597031-1-laura.nao@collabora.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250122100828.395091-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-In-Reply-To: <20250122100828.395091-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 23 Jan 2025 21:29:10 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVP8LrqAYK7sPJqiB+Fagk=CrhSwX1CixKOxoiGgyDEoQ@mail.gmail.com>
-X-Gm-Features: AWEUYZnkzUSG80PrWtV5m7mXIgljPubn8AIQbb5HVVIJvBFGHO3N8MKYLmuYOUM
-Message-ID: <CAMuHMdVP8LrqAYK7sPJqiB+Fagk=CrhSwX1CixKOxoiGgyDEoQ@mail.gmail.com>
-Subject: Re: [PATCH] clk: renesas: r9a07g043: Fix HP clock source for RZ/Five SoC
-To: Prabhakar <prabhakar.csengg@gmail.com>
-Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	linux-renesas-soc@vger.kernel.org, linux-clk@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>, 
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Prabhakar,
+[ Sasha's backport helper bot ]
 
-Thanks for your patch!
+Hi,
 
-On Wed, Jan 22, 2025 at 11:08=E2=80=AFAM Prabhakar <prabhakar.csengg@gmail.=
-com> wrote:
-> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
->
-> According to the Rev.1.20 hardware manual for the RZ/Five SoC, the clock
-> source for HP is derived from PLL6 divided by 2. This patch corrects the
-> implementation by configuring HP as a fixed clock source instead of a MUX=
-.
->
-> The `CPG_PL6_ETH_SSEL` register, which is available on the RZ/G2UL SoC, i=
-s
-> not present on the RZ/Five SoC, necessitating this change.
+Found matching upstream commit: 7464ff8bf2d762251b9537863db0e1caf9b0e402
 
-While the register is not documented to exist, it reads back the same
-default value as on RZ/G2UL, selecting the right parent that does exist.
+WARNING: Author mismatch between patch and found commit:
+Backport author: Laura Nao<laura.nao@collabora.com>
+Commit author: Akihiko Odaki<akihiko.odaki@gmail.com>
 
-> Fixes: 95d48d270305ad2c ("clk: renesas: r9a07g043: Add support for RZ/Fiv=
-e SoC")
-> Cc: stable@vger.kernel.org
-> Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-> --- a/drivers/clk/renesas/r9a07g043-cpg.c
-> +++ b/drivers/clk/renesas/r9a07g043-cpg.c
-> @@ -138,7 +138,11 @@ static const struct cpg_core_clk r9a07g043_core_clks=
-[] __initconst =3D {
->         DEF_DIV("P2", R9A07G043_CLK_P2, CLK_PLL3_DIV2_4_2, DIVPL3A, dtabl=
-e_1_32),
->         DEF_FIXED("M0", R9A07G043_CLK_M0, CLK_PLL3_DIV2_4, 1, 1),
->         DEF_FIXED("ZT", R9A07G043_CLK_ZT, CLK_PLL3_DIV2_4_2, 1, 1),
-> +#ifdef CONFIG_ARM64
->         DEF_MUX("HP", R9A07G043_CLK_HP, SEL_PLL6_2, sel_pll6_2),
+Status in newer kernel trees:
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
+5.15.y | Not found
 
-When building with W=3D1 on non-ARM64:
+Note: The patch differs from the upstream commit:
+---
+1:  7464ff8bf2d76 ! 1:  134ad6ddcdeb5 platform/chrome: cros_ec_typec: Check for EC driver
+    @@ Metadata
+      ## Commit message ##
+         platform/chrome: cros_ec_typec: Check for EC driver
+     
+    +    [ upstream commit 7464ff8bf2d762251b9537863db0e1caf9b0e402 ]
+    +
+         The EC driver may not be initialized when cros_typec_probe is called,
+         particulary when CONFIG_CROS_EC_CHARDEV=m.
+     
+    @@ Commit message
+         Reviewed-by: Guenter Roeck <groeck@chromium.org>
+         Link: https://lore.kernel.org/r/20220404041101.6276-1-akihiko.odaki@gmail.com
+         Signed-off-by: Prashant Malani <pmalani@chromium.org>
+    +    Signed-off-by: Laura Nao <laura.nao@collabora.com>
+     
+      ## drivers/platform/chrome/cros_ec_typec.c ##
+     @@ drivers/platform/chrome/cros_ec_typec.c: static int cros_typec_probe(struct platform_device *pdev)
+    @@ drivers/platform/chrome/cros_ec_typec.c: static int cros_typec_probe(struct plat
+     +	if (!ec_dev)
+     +		return -EPROBE_DEFER;
+     +
+    - 	typec->typec_cmd_supported = cros_ec_check_features(ec_dev, EC_FEATURE_TYPEC_CMD);
+    - 	typec->needs_mux_ack = cros_ec_check_features(ec_dev, EC_FEATURE_TYPEC_MUX_REQUIRE_AP_ACK);
+    - 
+    + 	typec->typec_cmd_supported = !!cros_ec_check_features(ec_dev, EC_FEATURE_TYPEC_CMD);
+    + 	typec->needs_mux_ack = !!cros_ec_check_features(ec_dev,
+    + 							EC_FEATURE_TYPEC_MUX_REQUIRE_AP_ACK);
+---
 
-    error: =E2=80=98sel_pll6_2=E2=80=99 defined but not used
+Results of testing on various branches:
 
-so sel_pll6_2 [] needs to be protected by an #ifdef too (or __maybe_unused,
-but the rest of the file uses __ifdef).
-
-> +#else
-
-The rest of the file uses:
-
-    #endif
-    #ifdef CONFIG_RISCV
-
-instead of #else, so please use the same construct for consistency.
-
-> +       DEF_FIXED("HP", R9A07G043_CLK_HP, CLK_PLL6_250, 1, 1),
-> +#endif
->         DEF_FIXED("SPI0", R9A07G043_CLK_SPI0, CLK_DIV_PLL3_C, 1, 2),
->         DEF_FIXED("SPI1", R9A07G043_CLK_SPI1, CLK_DIV_PLL3_C, 1, 4),
->         DEF_SD_MUX("SD0", R9A07G043_CLK_SD0, SEL_SDHI0, SEL_SDHI0_STS, se=
-l_sdhi,
-
-The actual change LGTM.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.15.y       |  Success    |  Success   |
 
