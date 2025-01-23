@@ -1,163 +1,133 @@
-Return-Path: <stable+bounces-110261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D27DBA1A1FB
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 11:38:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4E91A1A204
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 11:40:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5BFE188DABF
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 10:38:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8112188DAF0
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 10:41:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962EA20CCF2;
-	Thu, 23 Jan 2025 10:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721DD20DD46;
+	Thu, 23 Jan 2025 10:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=engineer.com header.i=rajanikantha@engineer.com header.b="HICDZkPE"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="oC0kdp9n"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.com (mout.gmx.com [74.208.4.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DF9186A
-	for <stable@vger.kernel.org>; Thu, 23 Jan 2025 10:38:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.208.4.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47C3186A;
+	Thu, 23 Jan 2025 10:40:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737628704; cv=none; b=FmBsifD9ixKXopkLPd51p9oQxNcTLSRKA/4EbGUU0v3Tk7vBi7juQcHMpZbL0YRKMCWiyB+sqOXfPrc8+YpnVAl2gILFkarnFf/TA3LXEbnKJLAwykXxABoOj/7pPCMIgtl+li227SAfym3DIMkflP27b27i7saXakxe7++kgmc=
+	t=1737628852; cv=none; b=ZgcXaRAY4Dgfj844F22iLyGVDMrHN7T0KRyiCCOqsrSb4Mi8+tegvZnxIwJlbNlBGMcOrJsbzbuFWtYVlnkJqk5OReYc+2QefwxA+pv+xIJDTYcs2idDcmd8+PiOjeD6pNi8b1H0lC2vt41YKwlGAhUt+FJ9qeCrsZgGcELAPm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737628704; c=relaxed/simple;
-	bh=3ipf2I6+q7vVkh4kdZLqO3xZG/fhKPe6+yDxxWQIbd8=;
-	h=MIME-Version:Message-ID:From:To:Subject:Content-Type:Date; b=Y1F4g/Ca4rt5wyRw2BGG7AkABoIpdkrh/UVUa/b8gTeWTNr0QQKSASdZ9/IPus1jSaI6v6WWXwcvabZHJF3aNT0Utsiz12964JBn6EEFrQHAPDlL0ga4W3x2lzF9ZBSWsv9PajqrlE8iRfURbXoCzuUyNpS56Df/ChMZa+PWBog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=engineer.com; spf=pass smtp.mailfrom=engineer.com; dkim=pass (2048-bit key) header.d=engineer.com header.i=rajanikantha@engineer.com header.b=HICDZkPE; arc=none smtp.client-ip=74.208.4.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=engineer.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engineer.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=engineer.com;
-	s=s1089575; t=1737628700; x=1738233500;
-	i=rajanikantha@engineer.com;
-	bh=O3dZCfQwazlTbeivtbtm7DdyIYigUYkbozczPay4laI=;
-	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Subject:
-	 Content-Type:Date:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=HICDZkPEF3A1qVcAQfkjL6mQUI1EBdf54y8nb8M/yC0Zlqknsho6FjB2mxUwVNeV
-	 RNI4Edr1uRsTSW/VnZsF9ImE1ln22q28n6hB6KdUv+TMwmSmJZ751Mah0j6ebe7kK
-	 LeUqATxCtcT6wy9Mf3sDyfCq1+Fr5U5/4sbkrE3LHEuGISVcnua1HFZLlDej66IX1
-	 +nCA0o0LF3QUVtk9sGoWMwrVkzFsxforBhPQExWFtl5oXT1RVT0rNKqFDehkxK9Pk
-	 fXGm3GpEbbR8A6hyrAFZm8pcl9K+8wA4qkZNn8VPF47pa+mNO1i9VHfn+xUz559ow
-	 RmlRuqXlskqyhdXkmA==
-X-UI-Sender-Class: f2cb72be-343f-493d-8ec3-b1efb8d6185a
-Received: from [60.247.85.88] ([60.247.85.88]) by web-mail.mail.com
- (3c-app-mailcom-lxa14.server.lan [10.76.45.15]) (via HTTP); Thu, 23 Jan
- 2025 11:38:20 +0100
+	s=arc-20240116; t=1737628852; c=relaxed/simple;
+	bh=zrK5Lsbmf+cSiwB66LeyPvHutSUGEpNi7yG5s/3z69c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sODLsiiDIzp+rb3zaKEkNMui5EwLkQv57NvOqoL+dLROrbNH1P2UdZ6sHm/crjCHGKa08iK5mN1T5Megh6BB4Y1KjFPPehNWsm/zEvhHfHfEehHjmuo+6JKlWNVJB3vB2qwPuBRKpxpwNv55S0EoKcbqxKcOLRlsxzukuQODC9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=oC0kdp9n; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50N5O5le026555;
+	Thu, 23 Jan 2025 10:40:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=I+ZNzz7N8uTr/4N40mx78vosGusiXM
+	z5qq+Jk6d1y2k=; b=oC0kdp9nXiZ1VZRyscU4OMOuplYOVPw0dwHPmu1pRj2S3N
+	Z9rR7Xr6RUkBXsrjHHkUNtQxjq3Zj0PyQ68sIuoTck8uh0LcP7UtVRewW4EGOJL3
+	tdaOax/+rByXqcnmrAt46XzJs5zqJORVEevulSswjZM4BWUkbNrDY3Ir5j7dr9U3
+	aKdaFLePKdUPvA096ivRm3403dxCQ2AAhCmy+VW6i4u0aT7pEfsVOi46y1lS/EZ2
+	LIssj4Gp5vIxisE6JUanJBEZgh8mNx8FO+LnuL9DDnUjOalFRbgU6Xf9zpAnleTs
+	wS1LsjLihAo3W1jXGnbUIe3K3eIAbwU9sjtGbB5w==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44bfk7sdd4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jan 2025 10:40:48 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50N7mxfe032266;
+	Thu, 23 Jan 2025 10:40:47 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 448rujvrvu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jan 2025 10:40:47 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50NAehZT52232508
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Jan 2025 10:40:43 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6BD5F20040;
+	Thu, 23 Jan 2025 10:40:43 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B441D2004D;
+	Thu, 23 Jan 2025 10:40:42 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.171.77.114])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 23 Jan 2025 10:40:42 +0000 (GMT)
+Date: Thu, 23 Jan 2025 11:40:40 +0100
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] s390: Add '-std=gnu11' to decompressor and purgatory
+ CFLAGS
+Message-ID: <Z5IcqJbvLhMGQmUw@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+References: <20250122-s390-fix-std-for-gcc-15-v1-1-8b00cadee083@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <trinity-37824966-97c2-4650-948d-30bef36f6b04-1737628700210@3c-app-mailcom-lxa14>
-From: Rajani kantha <rajanikantha@engineer.com>
-To: adobriyan@gmail.com, axboe@kernel.dk, stable@vger.kernel.org
-Subject: [PATCH 6.1.y] block: fix integer overflow in BLKSECDISCARD
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 23 Jan 2025 11:38:20 +0100
-Importance: normal
-Sensitivity: Normal
-X-Priority: 3
-X-Provags-ID: V03:K1:xXaiBphRsDS8Dv65/qxwLBMw9dGiUm5gf4hNWu8/1UUb98h38UxT9HosxGSygRhNdGRaL
- P2h9CbEgRtAu1ba9uNNUN9yfkaQ4M/GvLzix+ytm94khMmRKDNgNSgKOXHzi25eMDTnBO8MvYztK
- 0Qy0UgrOf/zwDVnjRd+5DPUcMqYJY2+Or+aNXg+i8Hiz8w2RvT5tnDOzUTHNW92inaFxylHRuAUc
- 2SxTCiwPOVolWd909tXkWfQZrKiKc2RQGi3bIfAKmBjjDqM2pWLz1DaWkLtJCvK3iTwLBU+YNfHy
- vY=
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:MYKB/EGyyrI=;6uq95ZQrty/gLLsO+CeNfv78CV0
- +FeNdblAFuGzkbP++N0U4/+rA1RZfn7lOBTDKiYh+v4Dx4QB2SGaGob1hVL/mXsugiJH4rdZH
- AThFz2IPNnUYNcNQ/Hpr8dRSZwCGL+vcWYioITMuOTOUbzjxinTwOy13Pjskl7bKPwhSHbr91
- H7LhLqksfrssS3aEfvGQqekQSwqgJgYLESgJcuRm3Tgub30DXO7TjM8a6aNzR/FtUk4E4d7NR
- 8XrWwB2Vsbse2aHvVtN/cMwo8JVeb9as+84qUiz7ERKes+6RJYcSRnGkFgDPAYre7rdQYpgo/
- 6as2MOP5fGaHR4YmoyU56paE37E3qIGW5h14gj+0RBJi7jFpYAMZx+xJ5DOp0GPIoZKw63s/Q
- g+wQdioW1xnCVmQHIoG0E06rRsc8WG7JyOc5DKsmwdeTDWecdyBAU17OXdOjsRax+pDL5dNJm
- HXVzRwolvKY3WTnuaJcZmXWWzVuz5s1NXCGNcBd9lafJfFf66t6O9FUamjy0ZNokmS6VqH2PI
- kzDu1bczDgTv8TGFlNoV43BntDSvmF7kyk/iN10tfycU6NLFu69qAbclgybLfwsRS3gxyBokw
- 3WkNXCfxRbckA5xjSkQ51lUE/wTibAMgU2LXsELkX92NFQeEF0qgh0aM4ytstxPPXUFrMH8UV
- y6EywOcdPUokN52lUPglZCmC+G8Kk9CCjksEpOPO+WSh9VO6qGNFKgSDK+TDTO4D5ZSuo9ylp
- 0zD5tk8kxg720pgcs+sWsZb1E19jS9HShkjnK/nxmphsniwaFL4lR22G0InXo0X2+722XBH6H
- jVaHn0xQ3vzZNmSQ28Gy7PvdW99J2ETSMgeQbXc5WtO9LCjEWQIZ/SIN8YRq2G9ZLR6TMcmVz
- 6WGHF8bzbdQxbIJQ6N0wvrFW6u4XPRdzd4wZS8b/qpLZdr++sSAhfx1nG29BNZ5wKvK1Vs21J
- GuJ3/UTylfI27uvjcDcCNuooSlPjrwwtVNjx36DJ4U95JhwyMZX24tPsrtgYOpJqslFcn9jbe
- l3RuYC4h2V5jr8txRM=
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250122-s390-fix-std-for-gcc-15-v1-1-8b00cadee083@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: EZCw6DzQknm-F8NCiHtCYL1NERxZl_cu
+X-Proofpoint-ORIG-GUID: EZCw6DzQknm-F8NCiHtCYL1NERxZl_cu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-23_04,2025-01-22_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=692
+ adultscore=0 lowpriorityscore=0 priorityscore=1501 impostorscore=0
+ spamscore=0 malwarescore=0 suspectscore=0 bulkscore=0 clxscore=1011
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501230080
 
-From: Alexey Dobriyan <adobriyan@gmail.com>
+On Wed, Jan 22, 2025 at 07:54:27PM -0700, Nathan Chancellor wrote:
+> GCC changed the default C standard dialect from gnu17 to gnu23,
+> which should not have impacted the kernel because it explicitly requests
+> the gnu11 standard in the main Makefile. However, there are certain
+> places in the s390 code that use their own CFLAGS without a '-std='
+> value, which break with this dialect change because of the kernel's own
+> definitions of bool, false, and true conflicting with the C23 reserved
+> keywords.
+> 
+>   include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
+>      11 |         false   = 0,
+>         |         ^~~~~
+>   include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
+>   include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
+>      35 | typedef _Bool                   bool;
+>         |                                 ^~~~
+>   include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
+> 
+> Add '-std=gnu11' to the decompressor and purgatory CFLAGS to eliminate
+> these errors and make the C standard version of these areas match the
+> rest of the kernel.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+...
+> ---
+>  arch/s390/Makefile           | 2 +-
+>  arch/s390/purgatory/Makefile | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 
-[ upstream commit 697ba0b6ec4ae04afb67d3911799b5e2043b4455 ]
-
-I independently rediscovered
-
-	commit 22d24a544b0d49bbcbd61c8c0eaf77d3c9297155
-	block: fix overflow in blk_ioctl_discard()
-
-but for secure erase.
-
-Same problem:
-
-	uint64_t r[2] =3D {512, 18446744073709551104ULL};
-	ioctl(fd, BLKSECDISCARD, r);
-
-will enter near infinite loop inside blkdev_issue_secure_erase():
-
-	a.out: attempt to access beyond end of device
-	loop0: rw=3D5, sector=3D3399043073, nr_sectors =3D 1024 limit=3D2048
-	bio_check_eod: 3286214 callbacks suppressed
-
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-Link: https://lore.kernel.org/r/9e64057f-650a-46d1-b9f7-34af391536ef@p183
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Rajani Kantha <rajanikantha@engineer.com>
-=2D--
- block/ioctl.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/block/ioctl.c b/block/ioctl.c
-index c7390d8c9fc7..552da0ccbec0 100644
-=2D-- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -115,7 +115,7 @@ static int blk_ioctl_discard(struct block_device *bdev=
-, fmode_t mode,
- 		return -EINVAL;
-
- 	filemap_invalidate_lock(inode->i_mapping);
--	err =3D truncate_bdev_range(bdev, mode, start, start + len - 1);
-+	err =3D truncate_bdev_range(bdev, mode, start, end - 1);
- 	if (err)
- 		goto fail;
- 	err =3D blkdev_issue_discard(bdev, start >> 9, len >> 9, GFP_KERNEL);
-@@ -127,7 +127,7 @@ static int blk_ioctl_discard(struct block_device *bdev=
-, fmode_t mode,
- static int blk_ioctl_secure_erase(struct block_device *bdev, fmode_t mode=
-,
- 		void __user *argp)
- {
--	uint64_t start, len;
-+	uint64_t start, len, end;
- 	uint64_t range[2];
- 	int err;
-
-@@ -142,11 +142,12 @@ static int blk_ioctl_secure_erase(struct block_devic=
-e *bdev, fmode_t mode,
- 	len =3D range[1];
- 	if ((start & 511) || (len & 511))
- 		return -EINVAL;
--	if (start + len > bdev_nr_bytes(bdev))
-+	if (check_add_overflow(start, len, &end) ||
-+	    end > bdev_nr_bytes(bdev))
- 		return -EINVAL;
-
- 	filemap_invalidate_lock(bdev->bd_inode->i_mapping);
--	err =3D truncate_bdev_range(bdev, mode, start, start + len - 1);
-+	err =3D truncate_bdev_range(bdev, mode, start, end - 1);
- 	if (!err)
- 		err =3D blkdev_issue_secure_erase(bdev, start >> 9, len >> 9,
- 						GFP_KERNEL);
-=2D-
-2.35.3
+Applied, thanks!
 
