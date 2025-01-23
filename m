@@ -1,282 +1,142 @@
-Return-Path: <stable+bounces-110258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D193A1A057
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 10:07:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41424A1A0FF
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 10:42:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B96851643F6
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 09:07:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DB0016DE51
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 09:42:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D9020C48A;
-	Thu, 23 Jan 2025 09:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3565320C028;
+	Thu, 23 Jan 2025 09:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b="IaNZCcbB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NW+aVDJr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E994C20C47E
-	for <stable@vger.kernel.org>; Thu, 23 Jan 2025 09:07:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650D420C492;
+	Thu, 23 Jan 2025 09:42:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737623233; cv=none; b=PeRXXPFG0LvoKgr/DWc9SZmWv0FXISSCx6WqiIAV9pPd9MkprVMPVuYwZj1PvlZ6ue3ZDmg4ddqeJsgXv+5tH4Bu6APy8rhP7EHw0Qxe0POtYQoW9mQwvWpgABMOPa2buic3J+hAQ0ajr9zWiDQSl92i3aev/dVcZj7dNLUKfzk=
+	t=1737625330; cv=none; b=nN728u4wrz3iyDhof4mE38OD+5yHHelE7dICiRcUr8IS7LOSyb19JgPBZ9YfnQ0YJzfwRXYL8EmCUdB2RmXscw1nKevvrlT/ycSINcUR0AO3xb3trvIFZWQmFt0GExwxU6G/BcQmKlJLFpNZHrYfYVWYshk5/r5FzcS22hsbUe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737623233; c=relaxed/simple;
-	bh=agb5YA2plJ2AwXUqXsT33JbsxemSvBrWnfL94ZuEn2Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bnMK9hTKBqk8fux6FcNOY6kT7IvPnkeT+ZzZrAhR4vvurPw2uR7S+yaVoI3xD5YESnPBc6tRe2LC0aGn4DYlQlnYOYFiRJyp1qIYHA6W7jqzaGXE+TjkdcqSa+qxOZT6XNqUJczYUq/a+rCaIaXmwcU/JXfqyJih/TqR0DdP1aA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com; spf=pass smtp.mailfrom=raspberrypi.com; dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b=IaNZCcbB; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=raspberrypi.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-aaf6b1a5f2bso365877866b.1
-        for <stable@vger.kernel.org>; Thu, 23 Jan 2025 01:07:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=raspberrypi.com; s=google; t=1737623229; x=1738228029; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8HSlmTn1n1uG4G+haZMwggDDjn2uQ4YQcK0rxL3YhG4=;
-        b=IaNZCcbBzEAGR/C08gU8PMD8QbYKiHtVny0qYpQCu822zD9AUhL8t4aKkC4lcO4UBm
-         WCPIyX3+dWydNhA30IH5knp1qt9Pj6TwRMNPPgOeiYPhVTko1EKrazNSWRokbg7bq87w
-         cIvX7RMGJE+lvJCPYdDJFIXes8iSWvMTE2raDRIFE6K+7ThCtWTQAKVRdyxJXuRRonbn
-         XS0pOGvSzb4i6hReyykabbLo3aTMOi/+sGuV/DzqfQzTfxqH8tlPywzUl80jzFdPe50/
-         jReQgEhUNybJgjt9uM+sCAttd3Ev+90N5I9ofuXZJyC0V2iFyfWan0rzMzkMkPh/77l/
-         Qwjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737623229; x=1738228029;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8HSlmTn1n1uG4G+haZMwggDDjn2uQ4YQcK0rxL3YhG4=;
-        b=d9TIUHICmhB52H0UnHFps8/LIA5J98WqAhkcm8LYYm1yk0TPULBTicIZcHZT4PF6BI
-         F0hDuUNLUMCcFKQ1NfdRZdnuFA5oI9hS4sAUZ6bvHTTx/H+pEcND/+29GMfSg0s2wiyF
-         N+XEtQ2qOgzmOtozAydYk2DBfxayR+AMCbata4K1Mm96NFZubIaK35zjwa19epIQl9fG
-         U3A7FvpRh4Vr0OGNYGVrkZcn0JGJQaSB0de6Dh+TxXqMG+L4SbCqJRxlxxoBy7Ddzx8z
-         f91XBYbrsEiSPPuQsnlh2VsKsHZLEZZRPxzUqirWBB1Kvk4QSMl1cTRhNpS2d+QnB1F5
-         /Pgg==
-X-Forwarded-Encrypted: i=1; AJvYcCUOFMn42S/Aa07kL1vzQACgOZtbktoBaQAcNK0zc1MLAipxkZ9mkgJ+AX7TqupJ3hFNp8HrQMU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLMZC+3wEtGYfyqQjE1iTANQKcHItB3NV1QxIii3nvZYRWBfcG
-	AAN4NgwMjbO2Ilxutw82mkXgOwqWwPgMMqxmrhVAXseQPSHeHd5e0uU1Ebr+J1/iszzWKTh9pi4
-	E0zj+m4mdJqKrXwSKwXImGzleGeVcMiHbgQGs6Q==
-X-Gm-Gg: ASbGncv/qlpDVL1FuiTgvbq/mbcWADpfD9QE4/bML+TWd+Gd/Y3T30dC60AcXAnmWyS
-	QDNFa/g9YqWLgXOorvlu+obg2SaF/0aC2VH8q97HMXeaOy72IKCkCtbmBLDASruEg6Ft58OG8ix
-	PI3W8vsg7KsOXqbKNvcg==
-X-Google-Smtp-Source: AGHT+IF/4fvyI6uXsZSV+GcNNO7v3YZULA/J24C4ZVpMCDvfwke4PwVZWzA2T4Ntlrka3PxWu5Pr3iBWSbfcp3Ufqro=
-X-Received: by 2002:a17:907:7291:b0:ab3:a515:c41 with SMTP id
- a640c23a62f3a-ab6629c61f6mr199943066b.16.1737623229011; Thu, 23 Jan 2025
- 01:07:09 -0800 (PST)
+	s=arc-20240116; t=1737625330; c=relaxed/simple;
+	bh=YrG2Ji3mQLbKulNePHgsKU4kGwK8BTcBIgjmwTWQVaA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lzr29t/Rb4ZCbC6yPgPNXJbFJUum5ldggY03ANNOSFQfYCti6mSBGjujFl6f66zizJGViVpw1Pkeayz9AfZTwAY1ebzCSN9UAPLg32yFF5CQzYwQB0AcC7vJPTWVsYCblf55SZXVU2n21nYkZ3LH8T+9llm9p1NbjoHIR2Dzr48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NW+aVDJr; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737625329; x=1769161329;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=YrG2Ji3mQLbKulNePHgsKU4kGwK8BTcBIgjmwTWQVaA=;
+  b=NW+aVDJrglSF4O/MmS1jBftL4f4PPcPpVsBNcTj52u8IkSxSGnOMoOXT
+   e1jPHaFMpMxmpsFOAj4e5Y7o5UF/HXkQVj5z4fyE3hpmlYq8foakLg1eG
+   45JABLEqLtJEONw0kHZxs8ebgBH5jdYBAVT+lcW6D+5uHn5O8uebpSmXz
+   viqVw+1/2AK/NfirAE/RNmv6WOEbW/o9s2LkhVdEAexVn60S8HTApzZYa
+   FQWguyJHETK1q6buv/d5YO9vHEW6tnIS3x6af10dm/1O1D3uqtVbMIS3O
+   kXT5cFsTB7sYJ+zU5S8OzoYNPyZy3gWEOjqxqThGvF5TnwxRBRCiOpcqU
+   w==;
+X-CSE-ConnectionGUID: IDtow5M8RBmuzNV1COjfCQ==
+X-CSE-MsgGUID: KDVrn5ViTLaKsPZNnngSfQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="55662645"
+X-IronPort-AV: E=Sophos;i="6.13,228,1732608000"; 
+   d="scan'208";a="55662645"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2025 01:42:08 -0800
+X-CSE-ConnectionGUID: 9oxn64ksRdubNtzQclsuOQ==
+X-CSE-MsgGUID: 9H5eZPi1SmWTleYC98/QGg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="108281813"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2025 01:42:05 -0800
+Date: Thu, 23 Jan 2025 10:38:37 +0100
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Cc: Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	John Stultz <john.stultz@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH RESEND net] ptp: Ensure info->enable callback is always
+ set
+Message-ID: <Z5IOHVu9L+QpyK4Y@mev-dev.igk.intel.com>
+References: <20250123-ptp-enable-v1-1-b015834d3a47@weissschuh.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250123012403.20447-1-mcanal@igalia.com> <b60d2a9a374a278256fe290a2a389f59d3062754.camel@igalia.com>
-In-Reply-To: <b60d2a9a374a278256fe290a2a389f59d3062754.camel@igalia.com>
-From: Phil Elwell <phil@raspberrypi.com>
-Date: Thu, 23 Jan 2025 09:06:57 +0000
-X-Gm-Features: AbW1kvYGDAHM3M5b2QiGnQC2QYHyamPOXF5uTlwuSZlFUpcE5zTb2Qb3Dtw66wg
-Message-ID: <CAMEGJJ0=0N2m+GDXF5VU5ZcmzHwZY=gWttk=TtFzK51DNO=gCw@mail.gmail.com>
-Subject: Re: [PATCH] drm/v3d: Assign job pointer to NULL before signaling the fence
-To: Iago Toral <itoral@igalia.com>
-Cc: =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
-	Melissa Wen <mwen@igalia.com>, Chema Casanova <jmcasanova@igalia.com>, dri-devel@lists.freedesktop.org, 
-	kernel-dev@igalia.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250123-ptp-enable-v1-1-b015834d3a47@weissschuh.net>
 
-Thanks for this, Ma=C3=ADra.
+On Thu, Jan 23, 2025 at 08:22:40AM +0100, Thomas Weiﬂschuh wrote:
+> The ioctl and sysfs handlers unconditionally call the ->enable callback.
+> Not all drivers implement that callback, leading to NULL dereferences.
+> Example of affected drivers: ptp_s390.c, ptp_vclock.c and ptp_mock.c.
+> 
+> Instead use a dummy callback if no better was specified by the driver.
+> 
+> Fixes: d94ba80ebbea ("ptp: Added a brand new class driver for ptp clocks.")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thomas Weiﬂschuh <linux@weissschuh.net>
+> ---
+>  drivers/ptp/ptp_clock.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
+> index b932425ddc6a3789504164a69d1b8eba47da462c..35a5994bf64f6373c08269d63aaeac3f4ab31ff0 100644
+> --- a/drivers/ptp/ptp_clock.c
+> +++ b/drivers/ptp/ptp_clock.c
+> @@ -217,6 +217,11 @@ static int ptp_getcycles64(struct ptp_clock_info *info, struct timespec64 *ts)
+>  		return info->gettime64(info, ts);
+>  }
+>  
+> +static int ptp_enable(struct ptp_clock_info *ptp, struct ptp_clock_request *request, int on)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+>  static void ptp_aux_kworker(struct kthread_work *work)
+>  {
+>  	struct ptp_clock *ptp = container_of(work, struct ptp_clock,
+> @@ -294,6 +299,9 @@ struct ptp_clock *ptp_clock_register(struct ptp_clock_info *info,
+>  			ptp->info->getcrosscycles = ptp->info->getcrosststamp;
+>  	}
+>  
+> +	if (!ptp->info->enable)
+> +		ptp->info->enable = ptp_enable;
+> +
+>  	if (ptp->info->do_aux_work) {
+>  		kthread_init_delayed_work(&ptp->aux_work, ptp_aux_kworker);
+>  		ptp->kworker = kthread_run_worker(0, "ptp%d", ptp->index);
+> 
+> ---
+> base-commit: c4b9570cfb63501638db720f3bee9f6dfd044b82
+> change-id: 20250122-ptp-enable-831339c62428
+> 
+> Best regards,
+> -- 
+> Thomas Weiﬂschuh <linux@weissschuh.net>
 
-Tested-by: Phil Elwell <phil@raspberrypi.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-On Thu, 23 Jan 2025 at 07:12, Iago Toral <itoral@igalia.com> wrote:
->
-> Looks good to me:
->
-> Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
->
-> El mi=C3=A9, 22-01-2025 a las 22:24 -0300, Ma=C3=ADra Canal escribi=C3=B3=
-:
-> > In commit e4b5ccd392b9 ("drm/v3d: Ensure job pointer is set to NULL
-> > after job completion"), we introduced a change to assign the job
-> > pointer
-> > to NULL after completing a job, indicating job completion.
-> >
-> > However, this approach created a race condition between the DRM
-> > scheduler workqueue and the IRQ execution thread. As soon as the
-> > fence is
-> > signaled in the IRQ execution thread, a new job starts to be
-> > executed.
-> > This results in a race condition where the IRQ execution thread sets
-> > the
-> > job pointer to NULL simultaneously as the `run_job()` function
-> > assigns
-> > a new job to the pointer.
-> >
-> > This race condition can lead to a NULL pointer dereference if the IRQ
-> > execution thread sets the job pointer to NULL after `run_job()`
-> > assigns
-> > it to the new job. When the new job completes and the GPU emits an
-> > interrupt, `v3d_irq()` is triggered, potentially causing a crash.
-> >
-> > [  466.310099] Unable to handle kernel NULL pointer dereference at
-> > virtual address 00000000000000c0
-> > [  466.318928] Mem abort info:
-> > [  466.321723]   ESR =3D 0x0000000096000005
-> > [  466.325479]   EC =3D 0x25: DABT (current EL), IL =3D 32 bits
-> > [  466.330807]   SET =3D 0, FnV =3D 0
-> > [  466.333864]   EA =3D 0, S1PTW =3D 0
-> > [  466.337010]   FSC =3D 0x05: level 1 translation fault
-> > [  466.341900] Data abort info:
-> > [  466.344783]   ISV =3D 0, ISS =3D 0x00000005, ISS2 =3D 0x00000000
-> > [  466.350285]   CM =3D 0, WnR =3D 0, TnD =3D 0, TagAccess =3D 0
-> > [  466.355350]   GCS =3D 0, Overlay =3D 0, DirtyBit =3D 0, Xs =3D 0
-> > [  466.360677] user pgtable: 4k pages, 39-bit VAs,
-> > pgdp=3D0000000089772000
-> > [  466.367140] [00000000000000c0] pgd=3D0000000000000000,
-> > p4d=3D0000000000000000, pud=3D0000000000000000
-> > [  466.375875] Internal error: Oops: 0000000096000005 [#1] PREEMPT
-> > SMP
-> > [  466.382163] Modules linked in: rfcomm snd_seq_dummy snd_hrtimer
-> > snd_seq snd_seq_device algif_hash algif_skcipher af_alg bnep
-> > binfmt_misc vc4 snd_soc_hdmi_codec drm_display_helper cec
-> > brcmfmac_wcc spidev rpivid_hevc(C) drm_client_lib brcmfmac hci_uart
-> > drm_dma_helper pisp_be btbcm brcmutil snd_soc_core aes_ce_blk
-> > v4l2_mem2mem bluetooth aes_ce_cipher snd_compress
-> > videobuf2_dma_contig ghash_ce cfg80211 gf128mul snd_pcm_dmaengine
-> > videobuf2_memops ecdh_generic sha2_ce ecc videobuf2_v4l2 snd_pcm v3d
-> > sha256_arm64 rfkill videodev snd_timer sha1_ce libaes gpu_sched snd
-> > videobuf2_common sha1_generic drm_shmem_helper mc rp1_pio
-> > drm_kms_helper raspberrypi_hwmon spi_bcm2835 gpio_keys i2c_brcmstb
-> > rp1 raspberrypi_gpiomem rp1_mailbox rp1_adc nvmem_rmem
-> > uio_pdrv_genirq uio i2c_dev drm ledtrig_pattern
-> > drm_panel_orientation_quirks backlight fuse dm_mod ip_tables x_tables
-> > ipv6
-> > [  466.458429] CPU: 0 UID: 1000 PID: 2008 Comm: chromium Tainted:
-> > G         C         6.13.0-v8+ #18
-> > [  466.467336] Tainted: [C]=3DCRAP
-> > [  466.470306] Hardware name: Raspberry Pi 5 Model B Rev 1.0 (DT)
-> > [  466.476157] pstate: 404000c9 (nZcv daIF +PAN -UAO -TCO -DIT -SSBS
-> > BTYPE=3D--)
-> > [  466.483143] pc : v3d_irq+0x118/0x2e0 [v3d]
-> > [  466.487258] lr : __handle_irq_event_percpu+0x60/0x228
-> > [  466.492327] sp : ffffffc080003ea0
-> > [  466.495646] x29: ffffffc080003ea0 x28: ffffff80c0c94200 x27:
-> > 0000000000000000
-> > [  466.502807] x26: ffffffd08dd81d7b x25: ffffff80c0c94200 x24:
-> > ffffff8003bdc200
-> > [  466.509969] x23: 0000000000000001 x22: 00000000000000a7 x21:
-> > 0000000000000000
-> > [  466.517130] x20: ffffff8041bb0000 x19: 0000000000000001 x18:
-> > 0000000000000000
-> > [  466.524291] x17: ffffffafadfb0000 x16: ffffffc080000000 x15:
-> > 0000000000000000
-> > [  466.531452] x14: 0000000000000000 x13: 0000000000000000 x12:
-> > 0000000000000000
-> > [  466.538613] x11: 0000000000000000 x10: 0000000000000000 x9 :
-> > ffffffd08c527eb0
-> > [  466.545777] x8 : 0000000000000000 x7 : 0000000000000000 x6 :
-> > 0000000000000000
-> > [  466.552941] x5 : ffffffd08c4100d0 x4 : ffffffafadfb0000 x3 :
-> > ffffffc080003f70
-> > [  466.560102] x2 : ffffffc0829e8058 x1 : 0000000000000001 x0 :
-> > 0000000000000000
-> > [  466.567263] Call trace:
-> > [  466.569711]  v3d_irq+0x118/0x2e0 [v3d] (P)
-> > [  466.573826]  __handle_irq_event_percpu+0x60/0x228
-> > [  466.578546]  handle_irq_event+0x54/0xb8
-> > [  466.582391]  handle_fasteoi_irq+0xac/0x240
-> > [  466.586498]  generic_handle_domain_irq+0x34/0x58
-> > [  466.591128]  gic_handle_irq+0x48/0xd8
-> > [  466.594798]  call_on_irq_stack+0x24/0x58
-> > [  466.598730]  do_interrupt_handler+0x88/0x98
-> > [  466.602923]  el0_interrupt+0x44/0xc0
-> > [  466.606508]  __el0_irq_handler_common+0x18/0x28
-> > [  466.611050]  el0t_64_irq_handler+0x10/0x20
-> > [  466.615156]  el0t_64_irq+0x198/0x1a0
-> > [  466.618740] Code: 52800035 3607faf3 f9442e80 52800021 (f9406018)
-> > [  466.624853] ---[ end trace 0000000000000000 ]---
-> > [  466.629483] Kernel panic - not syncing: Oops: Fatal exception in
-> > interrupt
-> > [  466.636384] SMP: stopping secondary CPUs
-> > [  466.640320] Kernel Offset: 0x100c400000 from 0xffffffc080000000
-> > [  466.646259] PHYS_OFFSET: 0x0
-> > [  466.649141] CPU features: 0x100,00000170,00901250,0200720b
-> > [  466.654644] Memory Limit: none
-> > [  466.657706] ---[ end Kernel panic - not syncing: Oops: Fatal
-> > exception in interrupt ]---
-> >
-> > Fix the crash by assigning the job pointer to NULL before signaling
-> > the
-> > fence. This ensures that the job pointer is cleared before any new
-> > job
-> > starts execution, preventing the race condition and the NULL pointer
-> > dereference crash.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: e4b5ccd392b9 ("drm/v3d: Ensure job pointer is set to NULL
-> > after job completion")
-> > Signed-off-by: Ma=C3=ADra Canal <mcanal@igalia.com>
-> > ---
-> >  drivers/gpu/drm/v3d/v3d_irq.c | 16 ++++++++++++----
-> >  1 file changed, 12 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/gpu/drm/v3d/v3d_irq.c
-> > b/drivers/gpu/drm/v3d/v3d_irq.c
-> > index da203045df9b..72b6a119412f 100644
-> > --- a/drivers/gpu/drm/v3d/v3d_irq.c
-> > +++ b/drivers/gpu/drm/v3d/v3d_irq.c
-> > @@ -107,8 +107,10 @@ v3d_irq(int irq, void *arg)
-> >
-> >               v3d_job_update_stats(&v3d->bin_job->base, V3D_BIN);
-> >               trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
-> > -             dma_fence_signal(&fence->base);
-> > +
-> >               v3d->bin_job =3D NULL;
-> > +             dma_fence_signal(&fence->base);
-> > +
-> >               status =3D IRQ_HANDLED;
-> >       }
-> >
-> > @@ -118,8 +120,10 @@ v3d_irq(int irq, void *arg)
-> >
-> >               v3d_job_update_stats(&v3d->render_job->base,
-> > V3D_RENDER);
-> >               trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
-> > -             dma_fence_signal(&fence->base);
-> > +
-> >               v3d->render_job =3D NULL;
-> > +             dma_fence_signal(&fence->base);
-> > +
-> >               status =3D IRQ_HANDLED;
-> >       }
-> >
-> > @@ -129,8 +133,10 @@ v3d_irq(int irq, void *arg)
-> >
-> >               v3d_job_update_stats(&v3d->csd_job->base, V3D_CSD);
-> >               trace_v3d_csd_irq(&v3d->drm, fence->seqno);
-> > -             dma_fence_signal(&fence->base);
-> > +
-> >               v3d->csd_job =3D NULL;
-> > +             dma_fence_signal(&fence->base);
-> > +
-> >               status =3D IRQ_HANDLED;
-> >       }
-> >
-> > @@ -167,8 +173,10 @@ v3d_hub_irq(int irq, void *arg)
-> >
-> >               v3d_job_update_stats(&v3d->tfu_job->base, V3D_TFU);
-> >               trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
-> > -             dma_fence_signal(&fence->base);
-> > +
-> >               v3d->tfu_job =3D NULL;
-> > +             dma_fence_signal(&fence->base);
-> > +
-> >               status =3D IRQ_HANDLED;
-> >       }
-> >
->
+What about other ops, did you check it too? Looks like it isn't needed,
+but it sometimes hard to follow.
+
+Thanks
 
