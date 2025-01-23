@@ -1,77 +1,122 @@
-Return-Path: <stable+bounces-110291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9248DA1A6C7
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 16:12:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEDDEA1A6DB
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 16:16:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 376D4188A4F4
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 15:12:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAEEE1882FDB
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 15:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A27212B38;
-	Thu, 23 Jan 2025 15:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9046F211A1E;
+	Thu, 23 Jan 2025 15:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W3VlQ0GN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U4IYR7U/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74CA212B13;
-	Thu, 23 Jan 2025 15:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A9920FA9D;
+	Thu, 23 Jan 2025 15:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737645123; cv=none; b=CnG7qDk7i/eUWhSjt9UcMRLnTGPzbOIsl7uuIazlBmBAgX2HZM1ESl8f197f+jP5tI/axj9mZTSCatW6/h5EALQwBxhdolc4eslItQzdZf+NERfdCOx5P/P/gU9yyxABIBEaqZ+gqgaAdcoAsFgkPKVxBftfUxgPLv2An4uwJ0s=
+	t=1737645361; cv=none; b=eUDT+bGdkrZQNgKzZERga6Ld5ZCY1xcN6UycghrPI9+xM2efZVAd7wkZHIKiRWK97IO3XJnLDdMXyxDnj8iEbzPXzo9r2gp6c9pcZoKlj0zm60Ji4VybSsDZQm7kOEY5O6d2QG7pNf/Qs3H/l8D9mMPKs5Ojmtpmq4pfBbOECDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737645123; c=relaxed/simple;
-	bh=OAPyvyM2d8XjWR8/KefsHREi8FdRrr7wgZo8Qz5PqGM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JmluPuOhwHVSocuc/mKm77P1qzZilpUs3BUW1y6aHTdd9GKc1pegfnMTXN8LWydU6ERTLid3tYRLIK8D3ZLFtGD7/NEHc0RHKNQ/ZdLx1UN2j4srklltiwVDNmhhU1pL8rD2JnDc603E7lYy6YOIimzCItv3cY7ZwNaWcV4RLtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W3VlQ0GN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6881C4CED3;
-	Thu, 23 Jan 2025 15:12:02 +0000 (UTC)
+	s=arc-20240116; t=1737645361; c=relaxed/simple;
+	bh=hO/M+SZqqgKYIoTGLg+jgxAyd+xAFmjSZk4ZQKtWISQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LKSTwu/LxWMR6J4E+l0r4/CjThC1u+UqaR9gpPdevo0EhEn43wvfLglMtKXcuC96ftOlJY++bQr21dDG+zuU8j4yfVA/9rO5a7GQcsabsbiKHPuOya4r8te9hfWnlBUs1Lm8wq7MCpv3op8f3JY2P3ERHpFEQ0gyguZ5xmlCzN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U4IYR7U/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39CC1C4CED3;
+	Thu, 23 Jan 2025 15:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737645123;
-	bh=OAPyvyM2d8XjWR8/KefsHREi8FdRrr7wgZo8Qz5PqGM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=W3VlQ0GNR8FI9zfUkwu/nWIkXA6ynIPFO5U7Ogly/+H1cWiYi5Q+sRvxZ0VWgfV/f
-	 3m0lmBplCI1QXH+dRnXusUw7X/zomZICVOvJqWF2J0XxVhW4aAOowx3wZrbCj+gBpk
-	 U7RfDII/xWjDJ9HWZhtjzRcADZwkEgzTB4vqSQht0Bnmruyt5/NCmoFkhlg1qbLtpb
-	 QyRfgJ3nR54Pke9M4XZD1LzoVTO9ZPRo+8AZh/iLph12NjFecdbOA0Yvt8L9DRDdDQ
-	 V/pgf0Fr0gTEG2rVQDDY+WsHifsPEWRmym6yCWri2vgIte8SCdYF5iA1+EJ0lB72H/
-	 LWUhtVf//WNpQ==
-Date: Thu, 23 Jan 2025 07:12:01 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Gui-Dong Han <2045gemini@gmail.com>
-Cc: 3chas3@gmail.com, linux-atm-general@lists.sourceforge.net,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- baijiaju1990@gmail.com, horms@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] atm/fore200e: Fix possible data race in
- fore200e_open()
-Message-ID: <20250123071201.3d38d8f6@kernel.org>
-In-Reply-To: <20250122023745.584995-1-2045gemini@gmail.com>
-References: <20250122023745.584995-1-2045gemini@gmail.com>
+	s=k20201202; t=1737645360;
+	bh=hO/M+SZqqgKYIoTGLg+jgxAyd+xAFmjSZk4ZQKtWISQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=U4IYR7U/zgYenZLCTxVYUZ3IMKNHciTZEPhw4L/gNt+aTAUX04QIojTIda7KH1+hY
+	 Sp+56BCI5LQ8bi6nBG1hveC3p5Jl5DvuOneHLPIgcsfE/ql3NzBYapPNnU/44uJNdC
+	 FOCkijyLN2WihEL62h5H+3aX3C3EUZhEe9vIePY7MGVW1Uc2jid3faEOiGioGHvP8V
+	 Bn1oj6iI/v+Telmp7f5Ib0jPR82NQDDwmw9WIpq5IFNCWKGd/URhKSiMhmEKkoKTLP
+	 DKB0KsxrRiHreHUhz+fsF/p1T6EGJc3TYbondNiqH6PSho4Gg5jShjIBbR8RYZWil1
+	 22msgHVBZXyOw==
+Date: Thu, 23 Jan 2025 16:15:57 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Conor Dooley <conor@kernel.org>
+Cc: linux-pwm@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>, 
+	stable@vger.kernel.org, Daire McNamara <daire.mcnamara@microchip.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] pwm: microchip-core: fix incorrect comparison with
+ max period
+Message-ID: <r3dybh3ef4lbneruiae4s5co6mkgsowwucba6niqv23tfycyza@qnklz4w5rnnr>
+References: <20250122-pastor-fancied-0b993da2d2d2@spud>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="a56xps3gn2qlgwig"
+Content-Disposition: inline
+In-Reply-To: <20250122-pastor-fancied-0b993da2d2d2@spud>
 
-On Wed, 22 Jan 2025 02:37:45 +0000 Gui-Dong Han wrote:
-> Protect access to fore200e->available_cell_rate with rate_mtx lock to
-> prevent potential data race.
-> 
-> In this case, since the update depends on a prior read, a data race
-> could lead to a wrong fore200e.available_cell_rate value.
-> 
-> The field fore200e.available_cell_rate is generally protected by the lock
-> fore200e.rate_mtx when accessed. In all other read and write cases, this
-> field is consistently protected by the lock, except for this case and
-> during initialization.
 
-Please describe the call paths which interact to cause the race.
+--a56xps3gn2qlgwig
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v1] pwm: microchip-core: fix incorrect comparison with
+ max period
+MIME-Version: 1.0
+
+Hello Conor,
+
+On Wed, Jan 22, 2025 at 02:42:56PM +0000, Conor Dooley wrote:
+> From: Conor Dooley <conor.dooley@microchip.com>
+>=20
+> In mchp_core_pwm_apply_locked(), if hw_period_steps is equal to its max,
+> an error is reported and .apply fails. The max value is actually a
+> permitted value however, and so this check can fail where multiple
+> channels are enabled.
+>=20
+> For example, the first channel to be configured requests a period that
+> sets hw_period_steps to the maximum value, and when a second channel
+> is enabled the driver reads hw_period_steps back from the hardware and
+> finds it to be the maximum possible value, triggering the warning on a
+> permitted value. The value to be avoided is 255 (PERIOD_STEPS_MAX + 1),
+> as that will produce undesired behaviour, so test for greater than,
+> rather than equal to.
+>=20
+> Fixes: 2bf7ecf7b4ff ("pwm: add microchip soft ip corePWM driver")
+> CC: stable@vger.kernel.org
+> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+
+Applied to
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git pwm/fix=
+es
+
+which I intend to send to Linus next week.
+
+Best regards
+Uwe
+
+--a56xps3gn2qlgwig
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmeSXSsACgkQj4D7WH0S
+/k7MxAf9H63osdnsvlMLvftXzklq8mHrUZ0AzQydxMcDuwrFSkDpOV0V4fgOM2Op
+tQHZ7fLR74Hj2XUZpFgMTeZ8ZgsEI6ri9EcDzMQFGZTDV2qbkic2+6B9EOIwaWaX
+E5Vyri0ZoI89mm1hfPIO3Qwe+ApftvMnsAJtgsImP0JX/r0ZxAmFk+5wuBqcakR4
+bJ/kzTmuBdAdypT+yNzf8KpMtmRzdSQKKJd2qM0yE05/HMlgsjqzSmWJkwPI6H5V
+CmxmkAs1y82xZ8jaOSBwFxDNiHj5glGOb0xY/gKf3CWAEr3s6YiA3kdlDV0q6o2P
+Iv0/ROtuw/PVnWvoyweffxJYh22Cdw==
+=fEw6
+-----END PGP SIGNATURE-----
+
+--a56xps3gn2qlgwig--
 
