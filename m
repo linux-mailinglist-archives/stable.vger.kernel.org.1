@@ -1,685 +1,305 @@
-Return-Path: <stable+bounces-110300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30187A1A822
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 17:50:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ED1DA1A85B
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 18:05:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C56BE188B80E
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 16:50:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02296168E25
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 17:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36DDC1448C7;
-	Thu, 23 Jan 2025 16:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63ECB189F3B;
+	Thu, 23 Jan 2025 17:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T7X7/rwi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WJGVIsO/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8566B13EFF3;
-	Thu, 23 Jan 2025 16:50:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737651047; cv=none; b=si8jpIuY31uOTUBt3X42V3jNiuGkHXD+CTABScWL8NAONbqmuiONCqg0bCOxBXb1iBiDwFG1DswTHVG+oBlvwy6MFmwRHAC8uzXNRreruWOGxi1dd+yTbsjH1hUk+H8mOjUur+utnrlmNfCLJbG2zRnMsClpXB1T7zbGzdLgxPU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737651047; c=relaxed/simple;
-	bh=ToMDL2lOQGmi3G1Lc4Vn4DgCIzHMA55FrK3qZVe+/RM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=esGgKsDesw2R5692Mn2pYeKCqqK1Fw9EFVZoA+wnL4L34XoLoSHbfq/sRYUAnLjYk3r7CydTGz3THeFnGos+0ooDv/CU/F5lngEayAJCVAF7BXYx9NSGAQ7D3+W46PqQj34eey3ZwZafV6IGHwqK3ecrGtvzi7dnXBTNYptUy0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T7X7/rwi; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-216395e151bso16193655ad.0;
-        Thu, 23 Jan 2025 08:50:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737651042; x=1738255842; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8k6ed7vSMbDdqWwW7t45co8cRRhstHK4av/6f0AaoEU=;
-        b=T7X7/rwivmGdHdd0cOYxZLsxbT9+Py3OY8x4jgf8U9pZyTwlMhskz7YQGM4CAeUqQN
-         MPXsgA8+Wt8VzhBI4C+NOOytBr/qBseJU2fznTO/UZDl11xNVtprE+CN+fzkoPHMx68j
-         911Zu22iirdlAMv9LMoRbS7krcPKWBVUdo60hq6gCpyu/ZPkwOVuYol+tNKioOjex4Wj
-         mgd27ZjZ94gUAaYOxYQ307UqYZwwLiFdR6mbXIbobP+mdkKTKn9XWSdTMk0/FwNpAkpx
-         azjMBGw3s9UHOnWsSCQ5a41lhKgECLR8DwaqX78j6BHEObnJ5fRfu6nW2skquwGq3aeu
-         CAow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737651042; x=1738255842;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8k6ed7vSMbDdqWwW7t45co8cRRhstHK4av/6f0AaoEU=;
-        b=ErDVirNjK3GWUqryL06UKR2cbvp11jIfZ6Av69kK1lC4X/wcCjtcSM1JFYvGUIkrMS
-         xe2jf55uSxJ1JkMtQu6a/kZ6Q+Qld20VmmY7WNiyoZq9TAUAQnGFNpmUHlunLlxgfAul
-         k3KfkdyOMssylKozZFEc1MfAim03b6CksXXr2RIFhSYuQFrPuAb0TwhEVa4K+TFomHFR
-         t/toB/nq/fGOhWR7Zz4gd7WhGpYPwVnh2G7pxKzUEFQsn5WmPSz8a+4RrGv7RrC91RP5
-         a2Wp+2gvQ0jnx1WWbMBf5EH5dN72OU2Nw8KwysxTJinj4Q9ito3vSFeFAlsmUvrU16qV
-         KgAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUnj58jGIKJRJu+81Un4SiofN6pk5I+U+427oqyqnZ1uw5yEHfMk0cCMhYGMug9DzXUj2o13C//T68OqHA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzcBblpXqdb70GnWQWHjiXyx/Qq+jqaU+t1AmIZlKR/tm89asW
-	GJGOsWnFaxQNBewpU1XaWSiENAlnjC1csRZu/KNrG+oGFCJQqUBiiR9lhiUd1MuI2+mkaJwPkbh
-	Bj/wl27j3EZRIsLz4ua3t/XFUCuE=
-X-Gm-Gg: ASbGnctWQiX9l5vWKHUQJaXDiqDXVDQkvw3+92U1Y2fXyudoQ6zdPr9KrHzO90RcbYH
-	skvqz2LleQO3qzi22h3U3XmMX5hCYyaUMJwOJf1yAdQQaDzL8pgYIWkLbjuowgIcSZtlNMpRGSn
-	08
-X-Google-Smtp-Source: AGHT+IG9SJQBsw56zHxIUCiLCtHfhWsSgSFpl1FZe+/kECU4p29iFVsNW8Djmr3vq1bPoFP200kwFpMl2ueDQuy05T0=
-X-Received: by 2002:a17:903:2f8a:b0:215:ba2b:cd55 with SMTP id
- d9443c01a7336-21d99316638mr66229665ad.2.1737651041482; Thu, 23 Jan 2025
- 08:50:41 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C2F156F21
+	for <stable@vger.kernel.org>; Thu, 23 Jan 2025 17:04:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737651889; cv=fail; b=e0r8KRC3rFeGTr12+1muTLUZ9lJTOqeegxt/mZH5PH07Wv9i+V/N7O8OgYWEQBG/4NFsQb/UG9mWONZXYQFuhgvBnoRHp76caGXses8IeJKzgnn+PHGPRHPzlQRflfW75FB74xN5iuJ5ANc/0FSgtONXaRIeJ6xQwBrNmcm9XfE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737651889; c=relaxed/simple;
+	bh=Vw5No2wWGnJ7T3dESafX0+FZDuMc1Axz7jTGZ8F5ZNM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=DqOubtd3jskHWhXhfDjRZXdIeI8AgHZExP6n5ppSr1mLkQKxyHAm6ShQmI1jjJ6Y2mP8cDEf3IuZEZXP4Sy4J1pFFrWrlXDg+VX6qkhVfTvKF3I66w6euUEnLP23zO9o4q77WUfp6zyly5z0nX4rZyG5N8M+qK4NY08yFqIMFAk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WJGVIsO/; arc=fail smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737651887; x=1769187887;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=Vw5No2wWGnJ7T3dESafX0+FZDuMc1Axz7jTGZ8F5ZNM=;
+  b=WJGVIsO/fIowLIKDmv21iI3+ue4WieWXfzbRqFQyJ8E34rHcKXP/vLpo
+   86owfS8ST0zZTahBlWZe2z+R0CeORNJbzw1t/34rKhQpQTENwnBmE843o
+   jR4e4yBcxB/ec/S4zxBv2oYhvH24NJIa12Q+iq84BNU6r+K1ejM2O2V4s
+   J+7pAFwEI948jQf+Uwp28LG1+oI+gKFhcmF98c5iAZ7l/rgu4k6SIW7vF
+   ctXv53wX4GFHQaxQNw2BgUhzFlBNEfQbsXczrRgoV9OZpGpiraROQACQe
+   zJaVv+QNHZFU0O0/WQWAsPjqxDouIM3j8/qZ2p4GLKI8rlqJqiF22dm3F
+   w==;
+X-CSE-ConnectionGUID: FtXk3gBlQ+aGPXr35reh8Q==
+X-CSE-MsgGUID: c5cNlc/kTSO6IV9I8sSFRQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11324"; a="38043803"
+X-IronPort-AV: E=Sophos;i="6.13,229,1732608000"; 
+   d="scan'208";a="38043803"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2025 09:04:46 -0800
+X-CSE-ConnectionGUID: KMUs427HSeSqtd3VQKg/Ng==
+X-CSE-MsgGUID: IC6ih4TDREqCO7QKyZD88A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="108392094"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 23 Jan 2025 09:04:46 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Thu, 23 Jan 2025 09:04:45 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Thu, 23 Jan 2025 09:04:45 -0800
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.46) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Thu, 23 Jan 2025 09:04:43 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=q5t8va/sf+HfWL4BRjyWnD6GHhVGhXqSFdm08fzL3g0FDxNwpKUvFDVvtxhPQ3l72B8VA6Z1064sQgD/i7I8FSurOg6trMjND1blErsX+JEy34kPwnuUu3vPCf51Eo7DRXfFmALUfqpckyrDlmv6zCqCdk1R58w6k8BqNKAbVe8oXV1WWqZsN7sWJaABJnZN8PwRJO6t2gWqWUkVXimVXbOQxFr42Jlk66T2J4rZEsxUtuQkhI9878/SV4EgaYZ0rmmbO0y2j2n+36Qnn3Rd0wIaVrDfYUiVK5/mhpdDEaYf1Zx7NLYmrazIcYIUs4Ib1moBAxqQAeTK7py3oMLPQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Vw5No2wWGnJ7T3dESafX0+FZDuMc1Axz7jTGZ8F5ZNM=;
+ b=rIjGG0hiq8IPffilDx/ZHKIjC18A3ribXdbEKbZK8SQK2u93589aovhGgoQg7xiZ9+4cQ5jqh8v5FgYLM+bCvtIZVBOOE9UyAokJK/y1yA9qKctRBPBVNvqXF6nzyvZHyvx6dw0i+kWpM/WUp8Hn4G82zby/g1ou0OJUBFESlUoyctvKAI6qm9NzubLD0mY5wZ1iof2Umm+IpzFKX2fvJd1qr3L4zqma75XEpTm7zJlOKRIcCw66/BtKWxYNCfcJGygBkTR82YkXE3WhTfKY6Uxm408ALjlTzpZH15QfO1MdIwcUTlG3yOznp51HAIjkbJg8Okjqjp9iVeObXd3MUg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DM4PR11MB8179.namprd11.prod.outlook.com (2603:10b6:8:18e::22)
+ by SN7PR11MB6969.namprd11.prod.outlook.com (2603:10b6:806:2a9::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.17; Thu, 23 Jan
+ 2025 17:04:27 +0000
+Received: from DM4PR11MB8179.namprd11.prod.outlook.com
+ ([fe80::f5c2:eb59:d98c:e8ba]) by DM4PR11MB8179.namprd11.prod.outlook.com
+ ([fe80::f5c2:eb59:d98c:e8ba%5]) with mapi id 15.20.8356.020; Thu, 23 Jan 2025
+ 17:04:27 +0000
+From: "Souza, Jose" <jose.souza@intel.com>
+To: "De Marchi, Lucas" <lucas.demarchi@intel.com>
+CC: "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>,
+	"Harrison, John C" <john.c.harrison@intel.com>, "Vivi, Rodrigo"
+	<rodrigo.vivi@intel.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"Filipchuk, Julia" <julia.filipchuk@intel.com>
+Subject: Re: [PATCH 1/2] drm/xe/devcoredump: Move exec queue snapshot to
+ Contexts section
+Thread-Topic: [PATCH 1/2] drm/xe/devcoredump: Move exec queue snapshot to
+ Contexts section
+Thread-Index: AQHbbVVMFHgSix08VkSGVxA9T7ZR57MkZ3cAgAAEpgCAAAX6AIAAH5oAgAAFWAA=
+Date: Thu, 23 Jan 2025 17:04:27 +0000
+Message-ID: <7c63b8da8dbf20b630f8dfb33858d7269441f4d8.camel@intel.com>
+References: <20250123051112.1938193-1-lucas.demarchi@intel.com>
+	 <20250123051112.1938193-2-lucas.demarchi@intel.com>
+	 <f16aac40a9ea1ab40d1083228cd0b460e1d217e3.camel@intel.com>
+	 <kw4rrdedc3ye5elnis6bjz2xg34ttrul2d6qye5lm3ixeee36l@ncfk65fdvb4s>
+	 <82a330f4d0c43036e088939cd6ba59790173447f.camel@intel.com>
+	 <eucwwgbk6fctubofysjtkvibcci2p4c76bzl2kdsar2c22xjug@zhvnmqvf7zw3>
+In-Reply-To: <eucwwgbk6fctubofysjtkvibcci2p4c76bzl2kdsar2c22xjug@zhvnmqvf7zw3>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR11MB8179:EE_|SN7PR11MB6969:EE_
+x-ms-office365-filtering-correlation-id: 525189f3-5769-4082-24d6-08dd3bcffe9b
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018;
+x-microsoft-antispam-message-info: =?utf-8?B?OWJBRnJaVVBpSGdhNDFaR1Bsc2J1NUtOd3h2VXVtNUZYbzBCOHYrYUNoOFVV?=
+ =?utf-8?B?MHgwcG1kVExaQnlvZ0xTWGdlVCtxWlFnSEdVRHVsVVFNTWQ1OFZxRTk3clhL?=
+ =?utf-8?B?Qms1VjNzang3OHI2NXVQUHF3RzB3UUpBbm5aV1FlMTJXMHRUcEtEM3pSeU9C?=
+ =?utf-8?B?NkNvbXVXSlQ0Wlk3OHFVOFVHSWM0TnpMVndrMFFwaXNxZWNqRDRHakRLME5t?=
+ =?utf-8?B?QVFtWmt6b2hzbzhqUklxb2R0QzNkb1A0QSs4aVliQXR5azFMdnY1NXBldlRk?=
+ =?utf-8?B?VVdNMUIzVEZqNXBJa2FvcVE1MkJ4V1hOdHRaa2Rmd0lYV004WUlIeTNPZ2lY?=
+ =?utf-8?B?WitRbzUrbys0MjJJSFcyNDFUUWFVWllnVFFTRWVaQkt0N05tNkpOdFdlME9C?=
+ =?utf-8?B?enNuRkh0Q2h1WDZKaDlheVhiU3djeGxPOHQ5VTRQdXVzaXpDM2djaHpjenQ4?=
+ =?utf-8?B?RVhNQTF6TU8wVEpSVGdMTjR2Wmd5SFJlbk9HTWhsT2NVZzBJMHFyNmhJSkpM?=
+ =?utf-8?B?M1ZkZXg2WDF0SUM0TThDb3B4Q0ZDYnFsbUZ0RXNSN0JzSnladFRXQ0xLRVJV?=
+ =?utf-8?B?VzM5R0JFc3h2M29KcE1CRm45bUdMWkhPeUJoTmZtMTArdkkxYW5PQklmaW5p?=
+ =?utf-8?B?Ry9UaERiQnRPTW04bG1xS05KalFpUk42RGNGazl6NlZRdzcxaDZnN3AwYmEy?=
+ =?utf-8?B?VW5sYXJLY0ltQTVpTExMZkYwT084ZHJWQW5mektTVDlVMVE1MnpTc3ZXbnFH?=
+ =?utf-8?B?djJFU2hKUzdUKzF6eVNhWXF4UW9LNmVxUXF3QU12ZDdTMVJjRVRlcUEybnRP?=
+ =?utf-8?B?R2xmVEJyMWJBOW85bS9MY3RlTUZtalc3dmx5V3o3OHBNNzY5RXFUVkJiQkRQ?=
+ =?utf-8?B?Y1dQdnBSQmRwU1Z1dnpUS05RQ0FCQVpBQW5uSXE0bHV0enRnanA1ZDg0Rlgw?=
+ =?utf-8?B?Rm9IUHl1enl4R0VuN2tSRmhuTnE3UEs3dW9Fd09xaDBCWFh1dmxXT1A1eDZi?=
+ =?utf-8?B?MnJqYlpBckNGQmQ2aGVDVjFEWWJCVm9KQmRQVUtadUFzZ0FLekNEcmxHdXJw?=
+ =?utf-8?B?Y2Z1M2tVRlhRWjFKUm5lL1BCbUJVT2Q5d0RwSkJoaG1TQjVHZ3lweXJrc05D?=
+ =?utf-8?B?WXhaVWxMVFZGY3JlVU9UdVNYRTVlWms3M0dVK3RyZUFoaGNsaDhLWUVLMlRU?=
+ =?utf-8?B?NmJYK25hd1I0L2dndFJodVNXRTcwWWl3MnYvUElDMExHUmU2STBkUzVnMWUx?=
+ =?utf-8?B?eHN6MlNqeElsUkZSSXp4WHFCd2lVaUVrRGpySEhpb2lyNDVPaUlydTQzZ2VO?=
+ =?utf-8?B?bitrbU1TamZWaEJsNGhQVkU5QWx6QnlJZzFlTGxrbWZOL3pza1JyNUpOMkg1?=
+ =?utf-8?B?S1ExWVN3ZExoY3p2TkYrVkhqVStTVW9SSkNxRWV4Y2toV2J2UmowYW0zclBi?=
+ =?utf-8?B?Y3l3MWdOS3p0clNpYWpMVGJ3QUJMa0ZHTEE5Qnl4ZVNrcGpob1JvK1pUd2wz?=
+ =?utf-8?B?aGNxd0FZcWVucXhGRXpJVmkyTGFmRks2Qm94b3JWVmdVSkZvTVpkdWNSMUhO?=
+ =?utf-8?B?MVcxSUxONE90OXRjOUIwcUxzNDJBZHNPUFl0NHgxQVZrMDN3L1JVaVNpUFFW?=
+ =?utf-8?B?cXgyZ0xsQkJtdkNoUEJHTk43UnUrUW4yakZ1OEUyL3MvRWNQazNnZWhTWHJ2?=
+ =?utf-8?B?SE9CbDNIVVI3RlRBcmthd3FKbWp4U1lGYlNmTmhacy9zckFGRnpzaW5SNmNO?=
+ =?utf-8?B?andOUWtPS1A2U1Q5ZGFQRFBOUFBrNmZ4cXdoejc3V2dieXNSc0NQRWFGOVBk?=
+ =?utf-8?B?YUhFYU03clpSbnVjWHNKTC8wOVFpWkdaVTJzWlRFNUpUZFVQRDZoNHBtUEpo?=
+ =?utf-8?Q?/WE09uqU1tHpr?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB8179.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NWFKVG1SN0hxWDlpL1lvc3I4VWZjeTZIa0dtMW1hWi9ZRjB5bEcyMldkc01p?=
+ =?utf-8?B?VkhjNXQ5MCszUXd5OXU0ck1YczY2RW54WUlkdFRicVgyaVJROXM5dWljSUp3?=
+ =?utf-8?B?dzRQRVlJakpoRUtQOXFSR3FZUVllYS9CWWxDLzNSaWR3V2pZYVFmUzd2MzFn?=
+ =?utf-8?B?MkJJc3o4L3N3SC9XSVl2Y0ltcnJQeGRCTXVmN2tZU2QwSG9iZDB0SVhUbnpJ?=
+ =?utf-8?B?bWlyM1VTRE9MZXEzZ2hxTFpNT1FLU09CQzRYNjJxUjRKVGpjNFV3bUF2UElO?=
+ =?utf-8?B?WmpwNWd3TEN1Vll6Qnh1VzNqNCtHMUU4c3BheDBTeEFidzh0TFRaWVI3ZlBk?=
+ =?utf-8?B?R2FhV1JEbjFVUU13amVmQlY1RGxTRkxVa0xFUmtiNzZ3akRhYVNsUlFrY0Nw?=
+ =?utf-8?B?N3BwNmo4N1N5ek1jTFRKUmgwSU9CS1dJZjVFdGM5TjZPMzBsMFNKK1lCYTkw?=
+ =?utf-8?B?ZjNNenl2T2pIa1pXOFBua3BCSVFId1RjVCt1REdzT3orN0ZnN1h0R2lXSktn?=
+ =?utf-8?B?RjFJVXRNclZ4ZmlKMVEyWlVkWXE2ODF0YlE3Y2paSXlSRldjNHU2TXVpRFU3?=
+ =?utf-8?B?LzM5UmJ3amx1S3grOTVadXJyOFRPQ2o4MVBpK3R2Z3dlNDVPUXhGNlVMQUlK?=
+ =?utf-8?B?em9naFFWUEM5QzN4ajBnbkJvMnpYR3VWUk8xT2toMFdvYVh3elE2azNUVllI?=
+ =?utf-8?B?blovU2hmd1VTYnBSRmFLUzZEOU13WGdYNzVTc2hOZ2w1b2FqWmJqNUQxb0pB?=
+ =?utf-8?B?dGhIYVVBRkxQTDNrY0RCMzlzWERLZlh5TGIzb2FwaEdjU0RDUXNOUVg1eWJk?=
+ =?utf-8?B?YUU5cXNzYjF2Q3hEVys2MUJaaVFWdWNpOC9pQWdhTWVrYk1VaU1IUkY0cmdq?=
+ =?utf-8?B?eWVVeDkrdUFpVTR3N2xPeW0zaVRXUUl1OW90UjJvYTJOelVaLzNrOGk1Wmcy?=
+ =?utf-8?B?dFlsSUpLaThVbWRjUk5NYW9SNzRjNnpDdmlJWkFhdUpQTTJsdDJ2WFVKK1lN?=
+ =?utf-8?B?aWRJWThRcmRsZnZNellvaWVXVFJtaSs0Q2tEdzBhbS9IbDJGNndrV09ZTFpy?=
+ =?utf-8?B?TEYzc0pNaHoxZnFhV3BlSThMWklSd2hTaXdaSkt4VXhYaDl3ZFRldSs1bUpO?=
+ =?utf-8?B?NU0yYnpKeElSTHBLS0c4ak5za2wxVWFwQ29BRktOcTREVHlhN3lUMDlxK2gz?=
+ =?utf-8?B?eWpWNk9XVXNRaEpsazZKTWVQcUFrbGFTSE5XbWJ0dXk3WTE0NURTUHBwa3l0?=
+ =?utf-8?B?d29weDdmaXFscExkSEZrd0J2SXBQUHZHblM2UFgxN3Qzb1Vtd2orZmxGeDdV?=
+ =?utf-8?B?dHdzY3c3MHROZTJaRVdveWNBaktKZWpmOW1NanRpeUZKVlAyR2hjNVpIVEZw?=
+ =?utf-8?B?NGNjOWpMOHBpUlY1M0kwRHFFNGdzK2RYdGdlSC9UaXVEeG1WQmVmWTB1Tklm?=
+ =?utf-8?B?WHJYTVNOWmpqQlNrbHEyeHQxbThEbzhOTWtRVnlYL2Rid0puSGIwOWErK3hk?=
+ =?utf-8?B?eUNaU254MzhoMWZHTDFHeVZLNFhNa29HYW44Mk51bUhaSmFTdWx0WVQxbXJ5?=
+ =?utf-8?B?dWlVZktlbC9QaysyZTVtK2d0bW9TdDUrb3BsKzdCYjBTTHZiVjlSZmFjQkRZ?=
+ =?utf-8?B?N0hjNnRRK3BPZW9IVW5Kbm5vKy9XWDZqTmFvbTI2dW90R0ZZR0RpN28zL2Rl?=
+ =?utf-8?B?c1A4RDNnbE80SEJrOHMxNTJWai92ZHFrNGNJamlOaUhGK1hYTzB3VGM0Ny9L?=
+ =?utf-8?B?YkNhMVlDV3dEZmxtS21HZHZkcUF4UlpSNXRTOENmQ204R2w5cm1waHNhMWRR?=
+ =?utf-8?B?V2JXVzBRWVkxSytWWTJMOVBvdDNqaG1lbWtsNzRKZWJHNG9WMDgrSEFHSzB3?=
+ =?utf-8?B?WHkvdnZYS1BRM0prcGphbTNMeGlqRWlTZGwyOEN2T2UxQXNRSDRLYlpRTnVp?=
+ =?utf-8?B?bzRXK1RXeFJuaklqNVlWMWpzd0ovaldqQndzWXhtblJoVmRIZ3pnUUxHWnFV?=
+ =?utf-8?B?QVRpS3NjeXFqTXJqeUhHeDU1NDdVcDEvL1JLV3NnZVFmUjUzNm9xbmdSeWsw?=
+ =?utf-8?B?cXpKanRMSmtCUytNeFltK0puaGFoT2pBQjJ1V002eFpRMXZlcEZId0Y1aHU5?=
+ =?utf-8?B?eGdMSXlXRXhaR1M1WW4rcnUrcmNsMWpQNGJRVERZZXlCOXBVUGN0RDUxa3NY?=
+ =?utf-8?B?Z1E9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A62896E0D584C749B0B52B4F4F366305@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250122093007.141759421@linuxfoundation.org> <CADo9pHigk1FHxtJZ9x4Qt6jvBtM=g=etzQfzbfHPN1qHyO5Xqg@mail.gmail.com>
-In-Reply-To: <CADo9pHigk1FHxtJZ9x4Qt6jvBtM=g=etzQfzbfHPN1qHyO5Xqg@mail.gmail.com>
-From: Luna Jernberg <droidbittin@gmail.com>
-Date: Thu, 23 Jan 2025 17:50:28 +0100
-X-Gm-Features: AbW1kvaI3Dz5nW7VQu9X8zC5tE_V3-QHIdqT4q1hlbvw0aI9BnFTHJbSx-4UwB0
-Message-ID: <CADo9pHjMyYFBMsMQgWgi55Nq00uQErEVi9gRWKeC5pbgLP7FHg@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/121] 6.12.11-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Luna Jernberg <droidbittin@gmail.com>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, 
-	Jan Alexander Steffens <heftig@archlinux.org>, anthraxx <anthraxx@archlinux.org>, tpowa@archlinux.org, 
-	David Runge <dave@sleepmap.de>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, linux@roeck-us.net, 
-	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
-	pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, 
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB8179.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 525189f3-5769-4082-24d6-08dd3bcffe9b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jan 2025 17:04:27.2226
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: jKl9DyVdle4izxbRrWbFxyazvQfPgO0Z7iY1vNJ2RxTYNRN4YE1QPPGQsq44REr4zsk7hYKAlE/5cVPN9sI++Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6969
+X-OriginatorOrg: intel.com
 
-and its now released i bumped that machine up to 6.13 too instead:
-https://archlinux.org/packages/core-testing/x86_64/linux/
-
-Den ons 22 jan. 2025 kl 14:15 skrev Luna Jernberg <droidbittin@gmail.com>:
->
-> Works fine on my Dell OptiPlex 3050 Micro
-> with: Intel(R) Core(TM) i5-6500T CPU @ 2.50GHz
-> that runs Arch Linux
->
-> Testing on this machine this time as my other one is already on 6.13
->
-> Tested-by: Luna Jernberg <droidbittin@gmail.com>
->
-> Den ons 22 jan. 2025 kl 10:30 skrev Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org>:
-> >
-> > This is the start of the stable review cycle for the 6.12.11 release.
-> > There are 121 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Fri, 24 Jan 2025 09:29:33 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patc=
-h-6.12.11-rc2.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
-le-rc.git linux-6.12.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
-> >
-> > -------------
-> > Pseudo-Shortlog of commits:
-> >
-> > Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> >     Linux 6.12.11-rc2
-> >
-> > Ryan Lee <ryan.lee@canonical.com>
-> >     apparmor: allocate xmatch for nullpdb inside aa_alloc_null
-> >
-> > Wayne Lin <Wayne.Lin@amd.com>
-> >     drm/amd/display: Validate mdoe under MST LCT=3D1 case as well
-> >
-> > Nicholas Susanto <Nicholas.Susanto@amd.com>
-> >     Revert "drm/amd/display: Enable urgent latency adjustments for DCN3=
-5"
-> >
-> > Leo Li <sunpeng.li@amd.com>
-> >     drm/amd/display: Do not wait for PSR disable on vbl enable
-> >
-> > Tom Chung <chiahsuan.chung@amd.com>
-> >     drm/amd/display: Disable replay and psr while VRR is enabled
-> >
-> > Tom Chung <chiahsuan.chung@amd.com>
-> >     drm/amd/display: Fix PSR-SU not support but still call the amdgpu_d=
-m_psr_enable
-> >
-> > Christian K=C3=B6nig <christian.koenig@amd.com>
-> >     drm/amdgpu: always sync the GFX pipe on ctx switch
-> >
-> > Kenneth Feng <kenneth.feng@amd.com>
-> >     drm/amdgpu: disable gfxoff with the compute workload on gfx12
-> >
-> > Gui Chengming <Jack.Gui@amd.com>
-> >     drm/amdgpu: fix fw attestation for MP0_14_0_{2/3}
-> >
-> > Alex Deucher <alexander.deucher@amd.com>
-> >     drm/amdgpu/smu13: update powersave optimizations
-> >
-> > Ashutosh Dixit <ashutosh.dixit@intel.com>
-> >     drm/xe/oa: Add missing VISACTL mux registers
-> >
-> > Matthew Brost <matthew.brost@intel.com>
-> >     drm/xe: Mark ComputeCS read mode as UC on iGPU
-> >
-> > Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
-> >     drm/i915/fb: Relax clear color alignment to 64 bytes
-> >
-> > Xin Li (Intel) <xin@zytor.com>
-> >     x86/fred: Fix the FRED RSP0 MSR out of sync with its per-CPU cache
-> >
-> > Frederic Weisbecker <frederic@kernel.org>
-> >     timers/migration: Enforce group initialization visibility to tree w=
-alkers
-> >
-> > Frederic Weisbecker <frederic@kernel.org>
-> >     timers/migration: Fix another race between hotplug and idle entry/e=
-xit
-> >
-> > Koichiro Den <koichiro.den@canonical.com>
-> >     hrtimers: Handle CPU state correctly on hotplug
-> >
-> > Tomas Krcka <krckatom@amazon.de>
-> >     irqchip/gic-v3-its: Don't enable interrupts in its_irq_set_vcpu_aff=
-inity()
-> >
-> > Yogesh Lal <quic_ylal@quicinc.com>
-> >     irqchip/gic-v3: Handle CPU_PM_ENTER_FAILED correctly
-> >
-> > Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-> >     irqchip: Plug a OF node reference leak in platform_irqchip_probe()
-> >
-> > Steven Rostedt <rostedt@goodmis.org>
-> >     tracing: gfp: Fix the GFP enum values shown for user space tracing =
-tools
-> >
-> > Donet Tom <donettom@linux.ibm.com>
-> >     mm: vmscan : pgdemote vmstat is not getting updated when MGLRU is e=
-nabled.
-> >
-> > Ryan Roberts <ryan.roberts@arm.com>
-> >     mm: clear uffd-wp PTE/PMD state on mremap()
-> >
-> > Leo Li <sunpeng.li@amd.com>
-> >     drm/amd/display: Do not elevate mem_type change to full update
-> >
-> > Ryan Roberts <ryan.roberts@arm.com>
-> >     selftests/mm: set allocated memory to non-zero content in cow test
-> >
-> > Guo Weikang <guoweikang.kernel@gmail.com>
-> >     mm/kmemleak: fix percpu memory leak detection failure
-> >
-> > Xiaolei Wang <xiaolei.wang@windriver.com>
-> >     pmdomain: imx8mp-blk-ctrl: add missing loop break condition
-> >
-> > Suren Baghdasaryan <surenb@google.com>
-> >     tools: fix atomic_set() definition to set the value correctly
-> >
-> > Sean Anderson <sean.anderson@linux.dev>
-> >     gpio: xilinx: Convert gpio_lock to raw spinlock
-> >
-> > Rik van Riel <riel@surriel.com>
-> >     fs/proc: fix softlockup in __read_vmcore (part 2)
-> >
-> > Marco Nelissen <marco.nelissen@gmail.com>
-> >     filemap: avoid truncating 64-bit offset to 32 bits
-> >
-> > Paul Fertser <fercerpav@gmail.com>
-> >     net/ncsi: fix locking in Get MAC Address handling
-> >
-> > Takashi Iwai <tiwai@suse.de>
-> >     drm/nouveau/disp: Fix missing backlight control on Macbook 5,1
-> >
-> > Dave Airlie <airlied@redhat.com>
-> >     nouveau/fence: handle cross device fences properly
-> >
-> > Stefano Garzarella <sgarzare@redhat.com>
-> >     vsock: prevent null-ptr-deref in vsock_*[has_data|has_space]
-> >
-> > Stefano Garzarella <sgarzare@redhat.com>
-> >     vsock: reset socket state when de-assigning the transport
-> >
-> > Stefano Garzarella <sgarzare@redhat.com>
-> >     vsock/virtio: cancel close work in the destructor
-> >
-> > Stefano Garzarella <sgarzare@redhat.com>
-> >     vsock/virtio: discard packets if the transport changes
-> >
-> > Stefano Garzarella <sgarzare@redhat.com>
-> >     vsock/bpf: return early if transport is not assigned
-> >
-> > Heiner Kallweit <hkallweit1@gmail.com>
-> >     net: ethernet: xgbe: re-add aneg to supported features in PHY quirk=
-s
-> >
-> > Paolo Abeni <pabeni@redhat.com>
-> >     selftests: mptcp: avoid spurious errors on disconnect
-> >
-> > Paolo Abeni <pabeni@redhat.com>
-> >     mptcp: fix spurious wake-up on under memory pressure
-> >
-> > Paolo Abeni <pabeni@redhat.com>
-> >     mptcp: be sure to send ack when mptcp-level window re-opens
-> >
-> > Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
-> >     i2c: atr: Fix client detach
-> >
-> > Kairui Song <kasong@tencent.com>
-> >     zram: fix potential UAF of zram table
-> >
-> > Luke D. Jones <luke@ljones.dev>
-> >     ALSA: hda/realtek: fixup ASUS H7606W
-> >
-> > Luke D. Jones <luke@ljones.dev>
-> >     ALSA: hda/realtek: fixup ASUS GA605W
-> >
-> > Stefan Binding <sbinding@opensource.cirrus.com>
-> >     ALSA: hda/realtek: Add support for Ayaneo System using CS35L41 HDA
-> >
-> > Juergen Gross <jgross@suse.com>
-> >     x86/asm: Make serialize() always_inline
-> >
-> > Peter Zijlstra <peterz@infradead.org>
-> >     sched/fair: Fix update_cfs_group() vs DELAY_DEQUEUE
-> >
-> > Luis Chamberlain <mcgrof@kernel.org>
-> >     nvmet: propagate npwg topology
-> >
-> > Tejun Heo <tj@kernel.org>
-> >     sched_ext: Fix dsq_local_on selftest
-> >
-> > Hongguang Gao <hongguang.gao@broadcom.com>
-> >     RDMA/bnxt_re: Fix to export port num to ib_query_qp
-> >
-> > David Vernet <void@manifault.com>
-> >     scx: Fix maximal BPF selftest prog
-> >
-> > Ihor Solodrai <ihor.solodrai@pm.me>
-> >     selftests/sched_ext: fix build after renames in sched_ext API
-> >
-> > Oleg Nesterov <oleg@redhat.com>
-> >     poll_wait: add mb() to fix theoretical race between waitqueue_activ=
-e() and .poll()
-> >
-> > Lizhi Xu <lizhi.xu@windriver.com>
-> >     afs: Fix merge preference rule failure condition
-> >
-> > Marco Nelissen <marco.nelissen@gmail.com>
-> >     iomap: avoid avoid truncating 64-bit offset to 32 bits
-> >
-> > Henry Huang <henry.hj@antgroup.com>
-> >     sched_ext: keep running prev when prev->scx.slice !=3D 0
-> >
-> > Hans de Goede <hdegoede@redhat.com>
-> >     ACPI: resource: acpi_dev_irq_override(): Check DMI match last
-> >
-> > Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> >     platform/x86: ISST: Add Clearwater Forest to support list
-> >
-> > Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> >     platform/x86/intel: power-domains: Add Clearwater Forest support
-> >
-> > Jakub Kicinski <kuba@kernel.org>
-> >     selftests: tc-testing: reduce rshift value
-> >
-> > Koichiro Den <koichiro.den@canonical.com>
-> >     gpio: sim: lock up configfs that an instantiated device depends on
-> >
-> > Koichiro Den <koichiro.den@canonical.com>
-> >     gpio: virtuser: lock up configfs that an instantiated device depend=
-s on
-> >
-> > Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> >     scsi: ufs: core: Honor runtime/system PM levels if set by host cont=
-roller drivers
-> >
-> > Max Kellermann <max.kellermann@ionos.com>
-> >     cachefiles: Parse the "secctx" immediately
-> >
-> > David Howells <dhowells@redhat.com>
-> >     netfs: Fix non-contiguous donation between completed reads
-> >
-> > David Howells <dhowells@redhat.com>
-> >     kheaders: Ignore silly-rename files
-> >
-> > Zhang Kunbo <zhangkunbo@huawei.com>
-> >     fs: fix missing declaration of init_files
-> >
-> > Brahmajit Das <brahmajit.xyz@gmail.com>
-> >     fs/qnx6: Fix building with GCC 15
-> >
-> > Leo Stone <leocstone@gmail.com>
-> >     hfs: Sanity check the root record
-> >
-> > Lizhi Xu <lizhi.xu@windriver.com>
-> >     mac802154: check local interfaces before deleting sdata list
-> >
-> > Paulo Alcantara <pc@manguebit.com>
-> >     smb: client: fix double free of TCP_Server_Info::hostname
-> >
-> > David Lechner <dlechner@baylibre.com>
-> >     hwmon: (ltc2991) Fix mixed signed/unsigned in DIV_ROUND_CLOSEST
-> >
-> > Wolfram Sang <wsa+renesas@sang-engineering.com>
-> >     i2c: testunit: on errors, repeat NACK until STOP
-> >
-> > Wolfram Sang <wsa+renesas@sang-engineering.com>
-> >     i2c: rcar: fix NACK handling when being a target
-> >
-> > Wolfram Sang <wsa+renesas@sang-engineering.com>
-> >     i2c: mux: demux-pinctrl: check initial mux selection, too
-> >
-> > Pratyush Yadav <pratyush@kernel.org>
-> >     Revert "mtd: spi-nor: core: replace dummy buswidth from addr to dat=
-a"
-> >
-> > David Lechner <dlechner@baylibre.com>
-> >     hwmon: (tmp513) Fix division of negative numbers
-> >
-> > Chenyuan Yang <chenyuan0y@gmail.com>
-> >     platform/x86: lenovo-yoga-tab2-pro-1380-fastcharger: fix serdev rac=
-e
-> >
-> > Chenyuan Yang <chenyuan0y@gmail.com>
-> >     platform/x86: dell-uart-backlight: fix serdev race
-> >
-> > Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-> >     i2c: core: fix reference leak in i2c_register_adapter()
-> >
-> > MD Danish Anwar <danishanwar@ti.com>
-> >     soc: ti: pruss: Fix pruss APIs
-> >
-> > Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-> >     reset: rzg2l-usbphy-ctrl: Assign proper of node to the allocated de=
-vice
-> >
-> > Ma=C3=ADra Canal <mcanal@igalia.com>
-> >     drm/v3d: Ensure job pointer is set to NULL after job completion
-> >
-> > Ian Forbes <ian.forbes@broadcom.com>
-> >     drm/vmwgfx: Add new keep_resv BO param
-> >
-> > Ian Forbes <ian.forbes@broadcom.com>
-> >     drm/vmwgfx: Unreserve BO on error
-> >
-> > Yu-Chun Lin <eleanor15x@gmail.com>
-> >     drm/tests: helpers: Fix compiler warning
-> >
-> > Jakub Kicinski <kuba@kernel.org>
-> >     netdev: avoid CFI problems with sock priv helpers
-> >
-> > Leon Romanovsky <leon@kernel.org>
-> >     net/mlx5e: Always start IPsec sequence number from 1
-> >
-> > Leon Romanovsky <leon@kernel.org>
-> >     net/mlx5e: Rely on reqid in IPsec tunnel mode
-> >
-> > Leon Romanovsky <leon@kernel.org>
-> >     net/mlx5e: Fix inversion dependency warning while enabling IPsec tu=
-nnel
-> >
-> > Mark Zhang <markzhang@nvidia.com>
-> >     net/mlx5: Clear port select structure when fail to create
-> >
-> > Chris Mi <cmi@nvidia.com>
-> >     net/mlx5: SF, Fix add port error handling
-> >
-> > Yishai Hadas <yishaih@nvidia.com>
-> >     net/mlx5: Fix a lockdep warning as part of the write combining test
-> >
-> > Patrisious Haddad <phaddad@nvidia.com>
-> >     net/mlx5: Fix RDMA TX steering prio
-> >
-> > Pavel Begunkov <asml.silence@gmail.com>
-> >     net: make page_pool_ref_netmem work with net iovs
-> >
-> > Kevin Groeneveld <kgroeneveld@lenbrook.com>
-> >     net: fec: handle page_pool_dev_alloc_pages error
-> >
-> > Sean Anderson <sean.anderson@linux.dev>
-> >     net: xilinx: axienet: Fix IRQ coalescing packet count overflow
-> >
-> > Dan Carpenter <dan.carpenter@linaro.org>
-> >     nfp: bpf: prevent integer overflow in nfp_bpf_event_output()
-> >
-> > Viresh Kumar <viresh.kumar@linaro.org>
-> >     cpufreq: Move endif to the end of Kconfig file
-> >
-> > Kuniyuki Iwashima <kuniyu@amazon.com>
-> >     pfcp: Destroy device along with udp socket's netns dismantle.
-> >
-> > Kuniyuki Iwashima <kuniyu@amazon.com>
-> >     gtp: Destroy device along with udp socket's netns dismantle.
-> >
-> > Kuniyuki Iwashima <kuniyu@amazon.com>
-> >     gtp: Use for_each_netdev_rcu() in gtp_genl_dump_pdp().
-> >
-> > Qu Wenruo <wqu@suse.com>
-> >     btrfs: add the missing error handling inside get_canonical_dev_path
-> >
-> > Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >     cpuidle: teo: Update documentation after previous changes
-> >
-> > Karol Kolacinski <karol.kolacinski@intel.com>
-> >     ice: Add correct PHY lane assignment
-> >
-> > Sergey Temerkhanov <sergey.temerkhanov@intel.com>
-> >     ice: Use ice_adapter for PTP shared data instead of auxdev
-> >
-> > Sergey Temerkhanov <sergey.temerkhanov@intel.com>
-> >     ice: Add ice_get_ctrl_ptp() wrapper to simplify the code
-> >
-> > Sergey Temerkhanov <sergey.temerkhanov@intel.com>
-> >     ice: Introduce ice_get_phy_model() wrapper
-> >
-> > Karol Kolacinski <karol.kolacinski@intel.com>
-> >     ice: Fix ETH56G FC-FEC Rx offset value
-> >
-> > Karol Kolacinski <karol.kolacinski@intel.com>
-> >     ice: Fix quad registers read on E825
-> >
-> > Karol Kolacinski <karol.kolacinski@intel.com>
-> >     ice: Fix E825 initialization
-> >
-> > Artem Chernyshev <artem.chernyshev@red-soft.ru>
-> >     pktgen: Avoid out-of-bounds access in get_imix_entries
-> >
-> > Ilya Maximets <i.maximets@ovn.org>
-> >     openvswitch: fix lockup on tx to unregistering netdev with carrier
-> >
-> > Paul Barker <paul.barker.ct@bp.renesas.com>
-> >     net: ravb: Fix max TX frame size for RZ/V2M
-> >
-> > Jakub Kicinski <kuba@kernel.org>
-> >     eth: bnxt: always recalculate features after XDP clearing, fix null=
--deref
-> >
-> > Michal Luczaj <mhal@rbox.co>
-> >     bpf: Fix bpf_sk_select_reuseport() memory leak
-> >
-> > Sudheer Kumar Doredla <s-doredla@ti.com>
-> >     net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()
-> >
-> > Ard Biesheuvel <ardb@kernel.org>
-> >     efi/zboot: Limit compression options to GZIP and ZSTD
-> >
-> >
-> > -------------
-> >
-> > Diffstat:
-> >
-> >  Makefile                                           |   4 +-
-> >  arch/x86/include/asm/special_insns.h               |   2 +-
-> >  arch/x86/kernel/fred.c                             |   8 +-
-> >  drivers/acpi/resource.c                            |   6 +-
-> >  drivers/block/zram/zram_drv.c                      |   1 +
-> >  drivers/cpufreq/Kconfig                            |   4 +-
-> >  drivers/cpuidle/governors/teo.c                    |  91 +++----
-> >  drivers/firmware/efi/Kconfig                       |   4 -
-> >  drivers/firmware/efi/libstub/Makefile.zboot        |  18 +-
-> >  drivers/gpio/gpio-sim.c                            |  48 +++-
-> >  drivers/gpio/gpio-virtuser.c                       |  49 +++-
-> >  drivers/gpio/gpio-xilinx.c                         |  32 +--
-> >  drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c         |   5 +-
-> >  drivers/gpu/drm/amd/amdgpu/amdgpu_fw_attestation.c |   4 +
-> >  drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c             |   4 +-
-> >  drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c  |  41 ++-
-> >  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crc.c  |  25 +-
-> >  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c |   4 +-
-> >  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.h |   2 +-
-> >  .../drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c  |   2 +-
-> >  .../amd/display/amdgpu_dm/amdgpu_dm_mst_types.c    |  14 +-
-> >  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c  |  35 ++-
-> >  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.h  |   3 +-
-> >  .../gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c   |   4 +-
-> >  .../gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c   |  11 +-
-> >  drivers/gpu/drm/i915/display/intel_fb.c            |   2 +-
-> >  drivers/gpu/drm/nouveau/nouveau_fence.c            |   6 +-
-> >  drivers/gpu/drm/nouveau/nvkm/engine/disp/mcp77.c   |   1 +
-> >  drivers/gpu/drm/tests/drm_kunit_helpers.c          |   3 +-
-> >  drivers/gpu/drm/v3d/v3d_irq.c                      |   4 +
-> >  drivers/gpu/drm/vmwgfx/vmwgfx_bo.c                 |   3 +-
-> >  drivers/gpu/drm/vmwgfx/vmwgfx_bo.h                 |   3 +-
-> >  drivers/gpu/drm/vmwgfx/vmwgfx_drv.c                |   7 +-
-> >  drivers/gpu/drm/vmwgfx/vmwgfx_gem.c                |   1 +
-> >  drivers/gpu/drm/vmwgfx/vmwgfx_kms.c                |  20 +-
-> >  drivers/gpu/drm/vmwgfx/vmwgfx_shader.c             |   7 +-
-> >  drivers/gpu/drm/vmwgfx/vmwgfx_ttm_buffer.c         |   5 +-
-> >  drivers/gpu/drm/xe/xe_hw_engine.c                  |   2 +-
-> >  drivers/gpu/drm/xe/xe_oa.c                         |   1 +
-> >  drivers/hwmon/ltc2991.c                            |   2 +-
-> >  drivers/hwmon/tmp513.c                             |   7 +-
-> >  drivers/i2c/busses/i2c-rcar.c                      |  20 +-
-> >  drivers/i2c/i2c-atr.c                              |   2 +-
-> >  drivers/i2c/i2c-core-base.c                        |   1 +
-> >  drivers/i2c/i2c-slave-testunit.c                   |  19 +-
-> >  drivers/i2c/muxes/i2c-demux-pinctrl.c              |   4 +-
-> >  drivers/infiniband/hw/bnxt_re/ib_verbs.c           |   1 +
-> >  drivers/infiniband/hw/bnxt_re/ib_verbs.h           |   4 +
-> >  drivers/infiniband/hw/bnxt_re/qplib_fp.c           |   1 +
-> >  drivers/infiniband/hw/bnxt_re/qplib_fp.h           |   1 +
-> >  drivers/irqchip/irq-gic-v3-its.c                   |   2 +-
-> >  drivers/irqchip/irq-gic-v3.c                       |   2 +-
-> >  drivers/irqchip/irqchip.c                          |   4 +-
-> >  drivers/mtd/spi-nor/core.c                         |   2 +-
-> >  drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c        |  19 +-
-> >  drivers/net/ethernet/broadcom/bnxt/bnxt.c          |  25 +-
-> >  drivers/net/ethernet/broadcom/bnxt/bnxt.h          |   2 +-
-> >  drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c      |   7 -
-> >  drivers/net/ethernet/freescale/fec_main.c          |  19 +-
-> >  drivers/net/ethernet/intel/ice/ice.h               |   5 +
-> >  drivers/net/ethernet/intel/ice/ice_adapter.c       |   6 +
-> >  drivers/net/ethernet/intel/ice/ice_adapter.h       |  22 +-
-> >  drivers/net/ethernet/intel/ice/ice_adminq_cmd.h    |   1 +
-> >  drivers/net/ethernet/intel/ice/ice_common.c        |  51 ++++
-> >  drivers/net/ethernet/intel/ice/ice_common.h        |   1 +
-> >  drivers/net/ethernet/intel/ice/ice_main.c          |   6 +-
-> >  drivers/net/ethernet/intel/ice/ice_ptp.c           | 165 +++++++-----
-> >  drivers/net/ethernet/intel/ice/ice_ptp.h           |   9 +-
-> >  drivers/net/ethernet/intel/ice/ice_ptp_consts.h    |   2 +-
-> >  drivers/net/ethernet/intel/ice/ice_ptp_hw.c        | 285 +++++++++++--=
---------
-> >  drivers/net/ethernet/intel/ice/ice_ptp_hw.h        |   5 +
-> >  drivers/net/ethernet/intel/ice/ice_type.h          |   2 -
-> >  .../ethernet/mellanox/mlx5/core/en_accel/ipsec.c   |  22 +-
-> >  .../mellanox/mlx5/core/en_accel/ipsec_fs.c         |  12 +-
-> >  .../mellanox/mlx5/core/en_accel/ipsec_offload.c    |  11 +-
-> >  drivers/net/ethernet/mellanox/mlx5/core/fs_core.c  |   1 +
-> >  .../net/ethernet/mellanox/mlx5/core/lag/port_sel.c |   4 +-
-> >  .../net/ethernet/mellanox/mlx5/core/sf/devlink.c   |   1 +
-> >  drivers/net/ethernet/mellanox/mlx5/core/wc.c       |  24 +-
-> >  drivers/net/ethernet/netronome/nfp/bpf/offload.c   |   3 +-
-> >  drivers/net/ethernet/renesas/ravb_main.c           |   1 +
-> >  drivers/net/ethernet/ti/cpsw_ale.c                 |  14 +-
-> >  drivers/net/ethernet/xilinx/xilinx_axienet_main.c  |   6 +
-> >  drivers/net/gtp.c                                  |  26 +-
-> >  drivers/net/pfcp.c                                 |  15 +-
-> >  drivers/nvme/target/io-cmd-bdev.c                  |   2 +-
-> >  drivers/platform/x86/dell/dell-uart-backlight.c    |   5 +-
-> >  .../x86/intel/speed_select_if/isst_if_common.c     |   1 +
-> >  drivers/platform/x86/intel/tpmi_power_domains.c    |   1 +
-> >  .../x86/lenovo-yoga-tab2-pro-1380-fastcharger.c    |   5 +-
-> >  drivers/pmdomain/imx/imx8mp-blk-ctrl.c             |   2 +-
-> >  drivers/reset/reset-rzg2l-usbphy-ctrl.c            |   1 +
-> >  drivers/ufs/core/ufshcd.c                          |   9 +-
-> >  fs/afs/addr_prefs.c                                |   6 +-
-> >  fs/btrfs/volumes.c                                 |   4 +
-> >  fs/cachefiles/daemon.c                             |  14 +-
-> >  fs/cachefiles/internal.h                           |   3 +-
-> >  fs/cachefiles/security.c                           |   6 +-
-> >  fs/file.c                                          |   1 +
-> >  fs/hfs/super.c                                     |   4 +-
-> >  fs/iomap/buffered-io.c                             |   2 +-
-> >  fs/netfs/read_collect.c                            |   9 +-
-> >  fs/proc/vmcore.c                                   |   2 +
-> >  fs/qnx6/inode.c                                    |  11 +-
-> >  fs/smb/client/connect.c                            |   3 +-
-> >  include/linux/hrtimer.h                            |   1 +
-> >  include/linux/poll.h                               |  10 +-
-> >  include/linux/pruss_driver.h                       |  12 +-
-> >  include/linux/userfaultfd_k.h                      |  12 +
-> >  include/net/page_pool/helpers.h                    |   2 +-
-> >  include/trace/events/mmflags.h                     |  63 +++++
-> >  kernel/cpu.c                                       |   2 +-
-> >  kernel/gen_kheaders.sh                             |   1 +
-> >  kernel/sched/ext.c                                 |  11 +-
-> >  kernel/sched/fair.c                                |   6 +-
-> >  kernel/time/hrtimer.c                              |  11 +-
-> >  kernel/time/timer_migration.c                      |  43 +++-
-> >  mm/filemap.c                                       |   2 +-
-> >  mm/huge_memory.c                                   |  12 +
-> >  mm/hugetlb.c                                       |  14 +-
-> >  mm/kmemleak.c                                      |   2 +-
-> >  mm/mremap.c                                        |  32 ++-
-> >  mm/vmscan.c                                        |   3 +
-> >  net/core/filter.c                                  |  30 ++-
-> >  net/core/netdev-genl-gen.c                         |  14 +-
-> >  net/core/pktgen.c                                  |   6 +-
-> >  net/mac802154/iface.c                              |   4 +
-> >  net/mptcp/options.c                                |   6 +-
-> >  net/mptcp/protocol.h                               |   9 +-
-> >  net/ncsi/internal.h                                |   2 +
-> >  net/ncsi/ncsi-manage.c                             |  16 +-
-> >  net/ncsi/ncsi-rsp.c                                |  19 +-
-> >  net/openvswitch/actions.c                          |   4 +-
-> >  net/vmw_vsock/af_vsock.c                           |  18 ++
-> >  net/vmw_vsock/virtio_transport_common.c            |  38 ++-
-> >  net/vmw_vsock/vsock_bpf.c                          |   9 +
-> >  security/apparmor/policy.c                         |   1 +
-> >  sound/pci/hda/patch_realtek.c                      |   3 +
-> >  tools/net/ynl/ynl-gen-c.py                         |  16 +-
-> >  tools/testing/selftests/mm/cow.c                   |   8 +-
-> >  tools/testing/selftests/net/mptcp/mptcp_connect.c  |  43 +++-
-> >  .../selftests/sched_ext/ddsp_bogus_dsq_fail.bpf.c  |   2 +-
-> >  .../selftests/sched_ext/ddsp_vtimelocal_fail.bpf.c |   4 +-
-> >  .../testing/selftests/sched_ext/dsp_local_on.bpf.c |   7 +-
-> >  tools/testing/selftests/sched_ext/dsp_local_on.c   |   5 +-
-> >  .../selftests/sched_ext/enq_select_cpu_fails.bpf.c |   2 +-
-> >  tools/testing/selftests/sched_ext/exit.bpf.c       |   4 +-
-> >  tools/testing/selftests/sched_ext/maximal.bpf.c    |   8 +-
-> >  .../selftests/sched_ext/select_cpu_dfl.bpf.c       |   2 +-
-> >  .../sched_ext/select_cpu_dfl_nodispatch.bpf.c      |   2 +-
-> >  .../selftests/sched_ext/select_cpu_dispatch.bpf.c  |   2 +-
-> >  .../sched_ext/select_cpu_dispatch_bad_dsq.bpf.c    |   2 +-
-> >  .../sched_ext/select_cpu_dispatch_dbl_dsp.bpf.c    |   4 +-
-> >  .../selftests/sched_ext/select_cpu_vtime.bpf.c     |   8 +-
-> >  .../tc-testing/tc-tests/filters/flow.json          |   4 +-
-> >  tools/testing/shared/linux/maple_tree.h            |   2 +-
-> >  tools/testing/vma/linux/atomic.h                   |   2 +-
-> >  157 files changed, 1327 insertions(+), 639 deletions(-)
-> >
-> >
-> >
+T24gVGh1LCAyMDI1LTAxLTIzIGF0IDEwOjQ1IC0wNjAwLCBMdWNhcyBEZSBNYXJjaGkgd3JvdGU6
+DQo+IE9uIFRodSwgSmFuIDIzLCAyMDI1IGF0IDA4OjUyOjEzQU0gLTA2MDAsIEpvc2UgU291emEg
+d3JvdGU6DQo+ID4gT24gVGh1LCAyMDI1LTAxLTIzIGF0IDA4OjMwIC0wNjAwLCBMdWNhcyBEZSBN
+YXJjaGkgd3JvdGU6DQo+ID4gPiBPbiBUaHUsIEphbiAyMywgMjAyNSBhdCAwODoxNDoxMUFNIC0w
+NjAwLCBKb3NlIFNvdXphIHdyb3RlOg0KPiA+ID4gPiBPbiBXZWQsIDIwMjUtMDEtMjIgYXQgMjE6
+MTEgLTA4MDAsIEx1Y2FzIERlIE1hcmNoaSB3cm90ZToNCj4gPiA+ID4gPiBIYXZpbmcgdGhlIGV4
+ZWMgcXVldWUgc25hcHNob3QgaW5zaWRlIGEgIkd1QyBDVCIgc2VjdGlvbiB3YXMgYWx3YXlzDQo+
+ID4gPiA+ID4gd3JvbmcuICBDb21taXQgYzI4ZmQ2YzM1OGRiICgiZHJtL3hlL2RldmNvcmVkdW1w
+OiBJbXByb3ZlIHNlY3Rpb24NCj4gPiA+ID4gPiBoZWFkaW5ncyBhbmQgYWRkIHRpbGUgaW5mbyIp
+IHRyaWVkIHRvIGZpeCB0aGF0IGJ1ZywgYnV0IHdpdGggdGhhdCBhbHNvDQo+ID4gPiA+ID4gYnJv
+a2UgdGhlIG1lc2EgdG9vbCB0aGF0IHBhcnNlcyB0aGUgZGV2Y29yZWR1bXAsIGhlbmNlIGl0IHdh
+cyByZXZlcnRlZA0KPiA+ID4gPiA+IGluIGNvbW1pdCA3MGZiODZhODVkYzkgKCJkcm0veGU6IFJl
+dmVydCBzb21lIGNoYW5nZXMgdGhhdCBicmVhayBhIG1lc2ENCj4gPiA+ID4gPiBkZWJ1ZyB0b29s
+IikuDQo+ID4gPiA+ID4gDQo+ID4gPiA+ID4gV2l0aCB0aGUgbWVzYSB0b29sIGFsc28gZml4ZWQs
+IHRoaXMgY2FuIHByb3BhZ2F0ZSBhcyBhIGZpeCBvbiBib3RoDQo+ID4gPiA+ID4ga2VybmVsIGFu
+ZCB1c2Vyc3BhY2Ugc2lkZSB0byBhdm9pZCB1bm5lY2Vzc2FyeSBoZWFkYWNoZSBmb3IgYSBkZWJ1
+Zw0KPiA+ID4gPiA+IGZlYXR1cmUuDQo+ID4gPiA+IA0KPiA+ID4gPiBUaGlzIHdpbGwgYnJlYWsg
+b2xkZXIgdmVyc2lvbnMgb2YgdGhlIE1lc2EgcGFyc2VyLiBJcyB0aGlzIHJlYWxseSBuZWNlc3Nh
+cnk/DQo+ID4gPiANCj4gPiA+IFNlZSBjb3ZlciBsZXR0ZXIgd2l0aCB0aGUgbWVzYSBNUiB0aGF0
+IHdvdWxkIGZpeCB0aGUgdG9vbCB0byBmb2xsb3cgdGhlDQo+ID4gPiBrZXJuZWwgZml4IGFuZCB3
+b3JrIHdpdGggYm90aCBuZXdlciBhbmQgb2xkZXIgZm9ybWF0LiBMaW5raW5nIGl0IGhlcmUNCj4g
+PiA+IGFueXdheTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL21lc2EvbWVzYS8tL21l
+cmdlX3JlcXVlc3RzLzMzMTc3DQo+ID4gDQo+ID4gU3RpbGwgc29tZW9uZSBydW5uaW5nIHRoZSBv
+bGRlciB2ZXJzaW9uIG9mIHRoZSBwYXJzZXIgd2l0aCBhIG5ldyBYZSBLTUQgd291bGQgbm90IGJl
+IGFibGUgdG8gcGFyc2UgaXQuDQo+ID4gSSB1bmRlcnN0YW5kIHRoYXQgd2UgY2FuIGJyZWFrIGl0
+IGJ1dCBpcyB0aGlzIHJlYWxseSB3b3J0aHk/IG5vdCBpbiBteSBvcGluaW9uLg0KPiANCj4gYmVj
+YXVzZSBmb3IgdGhlIGRlYnVnIG5hdHVyZSBvZiB0aGlzIGZpbGUsIGl0J3MgaGFyZCBpZiB3ZSBh
+bHdheXMga2VlcA0KPiB0aGUgY3J1ZnQgYXJvdW5kLiBJbiA1IHllYXJzIGRldmVsb3BlcnMgaW1w
+bGVtZW50aW5nIG5ldyBkZWNvZGVycyB3aWxsDQo+IGhhdmUgdG8gZ2V0IGRhdGEgZnJvbSByYW5k
+b20gcGxhY2VzIGJlY2F1c2Ugd2Ugd2lsbCBub3RpY2UgdGhpbmdzIGFyZQ0KPiB3cm9uZ2x5IHBs
+YWNlZC4NCj4gDQo+IGlzbid0IGl0IGVhc2llciB0byBkbyBkbyBpdCBlYXJseSBzbyB3ZSBkb24n
+dCBpbmNyZWFzZSB0aGUgZXhwb3N1cmUNCj4gYW5kIGp1c3Qgc2F5ICJrZXJuZWwgc2NyZXdlZCB0
+aGF0IHVwIGFuZCBmaXhlZCBpdCIsIHRoZW4gcHJvcGFnYXRlIHRoZQ0KPiBjaGFuZ2UgaW4gbWVz
+YSBpbiBhIHN0YWJsZSByZWxlYXNlLCBqdXN0IGxpa2Ugd2UgYXJlIGRvaW5nIGluIHRoZQ0KPiBr
+ZXJuZWw/DQo+IA0KPiA+IA0KPiA+ID4gDQo+ID4gPiBJdCdzIGEgZml4IHNvIHNpbXBsZSB0aGF0
+IElNTyBpdCdzIGJldHRlciB0aGFuIGNhcnJ5aW5nIHRoZSBjcnVmdCBhZA0KPiA+ID4gaW5maW5p
+dHVtIG9uIGFsbCB0aGUgdG9vbHMgdGhhdCBtYXkgcG9zc2libHkgcGFyc2UgdGhlIGRldmNvcmVk
+dW1wLg0KPiA+ID4gDQo+ID4gPiANCj4gPiA+ID4gSXMgaXQgd29ydGggYnJlYWtpbmcgdGhlIHRv
+b2w/IEluIG15IG9waW5pb24sIGl0IGlzIG5vdC4NCj4gPiA+ID4gDQo+ID4gPiA+IEFsc28sIGRv
+IHdlIG5lZWQgdG8gZGlzY3VzcyB0aGlzIG5vdz8gV291bGRuJ3QgaXQgYmUgYmV0dGVyIHRvIGZv
+Y3VzIG9uIGJyaW5naW5nIHRoZSBHdUMgbG9nIGluIGZpcnN0Pw0KPiA+ID4gDQo+ID4gPiBUaGF0
+J3Mgd2hhdCB0aGUgc2Vjb25kIHBhdGNoIGRvZXMuIFdlIG5lZWQgdG8gZGlzY3VzcyBib3RoIG5v
+dyBhbmQNCj4gPiA+IGRlY2lkZSwgb3RoZXJ3aXNlIHdlIGNhbid0IHJlLWVuYWJsZSBpdCBhbmQg
+aGF2ZSBlaXRoZXIgdGhlIGd1YyBsb2cNCj4gPiA+IHBhcnNlciBvciBtZXNhJ3MgYXViaW5hdG9y
+X2Vycm9yX2RlY29kZV94ZSBicm9rZW4uDQo+ID4gDQo+ID4gSSBjYW4ndCB1bmRlcnN0YW5kIHdo
+eSBpdCBuZWVkcyBib3RoLCBjb3VsZCB5b3UgZXhwbGFpbiBmdXJ0aGVyPw0KPiANCj4gd2UgYXJl
+IGFscmVhZHkgZGlzY3Vzc2luZyBpdCwgd2h5IG5vdD8gIEFsc28gYXMgSSBzYWlkIHRoZXJlJ3Mg
+dGhlIGd1Yw0KPiBsb2cgcGFyc2VyLCBhbm90aGVyIHRvb2wsIHRoYXQgaXMgYWxyZWFkeSBleHBl
+Y3RpbmcgaXQgaW4gdGhlIG90aGVyDQo+IHBsYWNlLiBTbyBpZiB3ZSBhcmUgZ29pbmcgdG8gcmUt
+ZW5hYmxlIHRoZSBndWMgbG9nLCBpdCdzIHRoZSBiZXN0DQo+IG9wcG9ydHVuaXR5IHRvIGZpeCB0
+aGlzLCBvdGhlcndpc2Ugd2Ugd2lsbCBwcm9iYWJseSBuZXZlciBkbyBpdCBhbmQga2VlcA0KPiBh
+Y2N1bXVsYXRpbmcuDQoNCk11Y2ggZWFzaWVyIGNoYW5nZSBhIGludGVybmFsIHRvb2wsIG5vPw0K
+DQpUaGUgR3VDIGxvZyBpcyBpbiBvdGhlciBzZWN0aW9uKCIqKioqIEd1QyBMb2cgKioqKiIpLCB0
+byBtZSB0aGlzIGNoYW5nZSBpcyBtb3JlIGNvc21ldGljIHRoYW4gZnVuY3Rpb24gYW5kIG5vdCB3
+b3J0aHkgdG8gYnJlYWsgb2xkZXIgdmVyc2lvbnMgb2YgdGhlDQpwYXJzZXIuDQoNCkkgY2FuIGxp
+dmUgd2l0aCB0aGF0IGJ1dCB5b3Ugd2lsbCBuZWVkIHRvIGNvbnZpbmNlIG90aGVyIEludGVsIE1l
+c2EgZW5naW5lZXJzLCB3aGVuIEkgbWVudGlvbmVkIHRoYXQgTWVzYSBwYXJzZXIgd2FzIGJyb2tl
+biBpbiBhIE1lc2Egc3RhZmYgbWVldGluZywgSQ0Kd2FzIGFza2VkIHRvIHB1c2ggaGFyZCB0byBn
+ZXQgdGhlIFhlIEtNRCBwYXRjaCByZXZlcnRlZC4NClRoYXQgaXMgd2h5IEkgdGhpbmsgaXQgc2hv
+dWxkIGJlIHRha2VuIGNhcmUgaW4gYW5vdGhlciBwYXRjaCBzZXJpZXMgYXMgaXQgY291bGQgdGFr
+ZSBtb3JlIHRpbWUuLi4NCg0KPiANCj4gTHVjYXMgRGUgTWFyY2hpDQo+IA0KPiA+IA0KPiA+ID4g
+DQo+ID4gPiBMdWNhcyBEZSBNYXJjaGkNCj4gPiA+IA0KPiA+ID4gPiANCj4gPiA+ID4gPiANCj4g
+PiA+ID4gPiBDYzogSm9obiBIYXJyaXNvbiA8Sm9obi5DLkhhcnJpc29uQEludGVsLmNvbT4NCj4g
+PiA+ID4gPiBDYzogSnVsaWEgRmlsaXBjaHVrIDxqdWxpYS5maWxpcGNodWtAaW50ZWwuY29tPg0K
+PiA+ID4gPiA+IENjOiBKb3PDqSBSb2JlcnRvIGRlIFNvdXphIDxqb3NlLnNvdXphQGludGVsLmNv
+bT4NCj4gPiA+ID4gPiBDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZw0KPiA+ID4gPiA+IEZpeGVz
+OiA3MGZiODZhODVkYzkgKCJkcm0veGU6IFJldmVydCBzb21lIGNoYW5nZXMgdGhhdCBicmVhayBh
+IG1lc2EgZGVidWcgdG9vbCIpDQo+ID4gPiA+ID4gU2lnbmVkLW9mZi1ieTogTHVjYXMgRGUgTWFy
+Y2hpIDxsdWNhcy5kZW1hcmNoaUBpbnRlbC5jb20+DQo+ID4gPiA+ID4gLS0tDQo+ID4gPiA+ID4g
+IGRyaXZlcnMvZ3B1L2RybS94ZS94ZV9kZXZjb3JlZHVtcC5jIHwgNiArLS0tLS0NCj4gPiA+ID4g
+PiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCA1IGRlbGV0aW9ucygtKQ0KPiA+ID4g
+PiA+IA0KPiA+ID4gPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2dwdS9kcm0veGUveGVfZGV2Y29y
+ZWR1bXAuYyBiL2RyaXZlcnMvZ3B1L2RybS94ZS94ZV9kZXZjb3JlZHVtcC5jDQo+ID4gPiA+ID4g
+aW5kZXggODFkYzc3OTVjMDY1MS4uYTc5NDZhNzY3NzdlNyAxMDA2NDQNCj4gPiA+ID4gPiAtLS0g
+YS9kcml2ZXJzL2dwdS9kcm0veGUveGVfZGV2Y29yZWR1bXAuYw0KPiA+ID4gPiA+ICsrKyBiL2Ry
+aXZlcnMvZ3B1L2RybS94ZS94ZV9kZXZjb3JlZHVtcC5jDQo+ID4gPiA+ID4gQEAgLTExOSwxMSAr
+MTE5LDcgQEAgc3RhdGljIHNzaXplX3QgX194ZV9kZXZjb3JlZHVtcF9yZWFkKGNoYXIgKmJ1ZmZl
+ciwgc2l6ZV90IGNvdW50LA0KPiA+ID4gPiA+ICAJZHJtX3B1dHMoJnAsICJcbioqKiogR3VDIENU
+ICoqKipcbiIpOw0KPiA+ID4gPiA+ICAJeGVfZ3VjX2N0X3NuYXBzaG90X3ByaW50KHNzLT5ndWMu
+Y3QsICZwKTsNCj4gPiA+ID4gPiANCj4gPiA+ID4gPiAtCS8qDQo+ID4gPiA+ID4gLQkgKiBEb24n
+dCBhZGQgYSBuZXcgc2VjdGlvbiBoZWFkZXIgaGVyZSBiZWNhdXNlIHRoZSBtZXNhIGRlYnVnIGRl
+Y29kZXINCj4gPiA+ID4gPiAtCSAqIHRvb2wgZXhwZWN0cyB0aGUgY29udGV4dCBpbmZvcm1hdGlv
+biB0byBiZSBpbiB0aGUgJ0d1QyBDVCcgc2VjdGlvbi4NCj4gPiA+ID4gPiAtCSAqLw0KPiA+ID4g
+PiA+IC0JLyogZHJtX3B1dHMoJnAsICJcbioqKiogQ29udGV4dHMgKioqKlxuIik7ICovDQo+ID4g
+PiA+ID4gKwlkcm1fcHV0cygmcCwgIlxuKioqKiBDb250ZXh0cyAqKioqXG4iKTsNCj4gPiA+ID4g
+PiAgCXhlX2d1Y19leGVjX3F1ZXVlX3NuYXBzaG90X3ByaW50KHNzLT5nZSwgJnApOw0KPiA+ID4g
+PiA+IA0KPiA+ID4gPiA+ICAJZHJtX3B1dHMoJnAsICJcbioqKiogSm9iICoqKipcbiIpOw0KPiA+
+ID4gPiANCj4gPiANCg0K
 
