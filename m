@@ -1,233 +1,120 @@
-Return-Path: <stable+bounces-110316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B25A1A952
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 19:03:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC44A1A95E
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 19:07:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42FFC3A2F3F
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 18:03:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7FC8188B1B7
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 18:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9544414F9ED;
-	Thu, 23 Jan 2025 18:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B431552E4;
+	Thu, 23 Jan 2025 18:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NqqW6DSI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dEvVc3Kd"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C5B70817
-	for <stable@vger.kernel.org>; Thu, 23 Jan 2025 18:03:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D078113AD03;
+	Thu, 23 Jan 2025 18:07:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737655424; cv=none; b=LtAilEPyyjlMhrsqhfvk4OnSyRo/Gg79E4gWk2pDGAf0BSVrIlSUesaIu7EkbxfR3rS1FtW3gHbZ/LG3ipxzgars6nODLLQ0JBsa4H1htpCSZza0QVAat6iod8FJPPviShgWMPcQycHOSuHVMTRiQUdtvJJvIljZdjmCFwQmz6w=
+	t=1737655646; cv=none; b=Uk7V2bITPR6nNWSYOBtdj0lAN+y5Wfa/nBxSD74uxiK5MNzRs0RuO4wY26u7vSkCDUFh8U4Qz+ww1eGy31GydUNHPZ6/6xUgqPA9KeUD20lJ9bh9YuQhtIOP8isJxxeGLjD+M558nRKUAY8n++us1nfM1N+4Lm0Zfts4Ay/opso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737655424; c=relaxed/simple;
-	bh=27maxQOVid9+Minx7FyXvnK5oYyPcJhXdxqdR53S+nw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p1BIjIg/TvMQMuh6D26KbZCnQjgNR+vtFeFT2TyfSvCYdTeHkLaYqgWp0NiOvq2yUUPMiIOLE4r7dDmrNgwx1oMOZWqpLv/rcvdzzpf585GMAnGv+d7FvEvqAavGGRdO9NqlVg/JkrzzXK3hnyyBh9tVvW4u6H50mbX8rjH9dN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NqqW6DSI; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737655422; x=1769191422;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=27maxQOVid9+Minx7FyXvnK5oYyPcJhXdxqdR53S+nw=;
-  b=NqqW6DSISoH4woIaTrq4yJP5FnJJNlt5qeR+NaV1TeCFiLebWKouSoP7
-   DTKfddUTJooFozYCYDXs5+Ek84p7uyAm5f+OwtTLbCj2Z+VXqlDyKYPZK
-   oZRWnEHExBM2+jJ+Eo32gD4oYf2Qg2p2eQOPyHm3XPRc1CBpoxaaCwztu
-   r0cMVX2lgxwi2nL9YO3c5jMuazyk+EHQYhWXLtnAEwrvr86Tl/cB89Oto
-   YnN0kFGUpP0WMTC5KJ3nizJs1/oEM/FGOw4pG0nOC+MzPiRrmMzoA1Jys
-   pcZ/OGHl5T5fmPA6cARKOzSmlprhPMDAT3JbrRJhhu2Ha18TLVlovVlzY
-   A==;
-X-CSE-ConnectionGUID: K2TjwU5TRoKtCm0uDku2Ag==
-X-CSE-MsgGUID: 5v65B8S4SkirgwI6vcnJhw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11324"; a="49162873"
-X-IronPort-AV: E=Sophos;i="6.13,229,1732608000"; 
-   d="scan'208";a="49162873"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2025 10:03:42 -0800
-X-CSE-ConnectionGUID: k0QDV1qSTaSCelgYAx5YlA==
-X-CSE-MsgGUID: UY1mlTMETbODCfbdoQX77A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="107964037"
-Received: from josouza-mobl2.bz.intel.com ([10.87.243.88])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2025 10:03:40 -0800
-From: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Julia Filipchuk <julia.filipchuk@intel.com>,
-	stable@vger.kernel.org,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 1/3] drm/xe: Fix and re-enable xe_print_blob_ascii85()
-Date: Thu, 23 Jan 2025 09:59:41 -0800
-Message-ID: <20250123180320.66198-2-jose.souza@intel.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250123180320.66198-1-jose.souza@intel.com>
-References: <20250123180320.66198-1-jose.souza@intel.com>
+	s=arc-20240116; t=1737655646; c=relaxed/simple;
+	bh=U0AT/fNbksLg7k8vGYbqOc12SgcUitUxaUC9w9DZcFI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=VtQIktWCNYJTuGBSBpk8SH9RuZMSyTfXlYXyAABuXu1bM3SAUPwZMq6psxK/Z7NUZyMvilTsFdE8XFp9yfll/5pw0jFjHA+PUIwt9rZcjIi0HxvqyAQ7hEeYwCw8zgiF4354SbQJRoXg+eL3xar01TpocogjRKEVuQEqabMA9Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dEvVc3Kd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90DD5C4CEE0;
+	Thu, 23 Jan 2025 18:07:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737655646;
+	bh=U0AT/fNbksLg7k8vGYbqOc12SgcUitUxaUC9w9DZcFI=;
+	h=From:Subject:Date:To:Cc:From;
+	b=dEvVc3KdA7E0hWlyVUjLpxPQ1aRKz3fmfSA3sQB+1hYZNii+d6MpeMjeGchBjjeOx
+	 om1HrCWiwsIPiIt+01cau62llu1jVg6+DiwxKGnGmPyWrEm213yH6Bba1pWNbVgOL2
+	 lKo+8ttihbF0GmKh2+e7UJl4ICJ5dfZHcU4+k/Ts/IcQ5Sg67so70n+sLOO5NWGnk4
+	 bGN/LbWwopOw+LS3nB88DCgPOYmpA1Lxapo0IHJi7JGAFOd1aU4R+CLRr1+/EohbHS
+	 laSQvto4LYRNsCbcxqttQkaQX7bDbwweFTMgUradheIPuFvzZUBCJGtWumz9q7q0Uc
+	 flEP1SpM8glcQ==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 0/3] mptcp: fixes addressing syzbot reports
+Date: Thu, 23 Jan 2025 19:05:53 +0100
+Message-Id: <20250123-net-mptcp-syzbot-issues-v1-0-af73258a726f@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAGFkmcC/x3MMQ6DMAxA0asgz7UEqRDQq1QdMHHAAyGKA4Ii7
+ k7E+If3T1COwgqf4oTIm6gsPkf1KmCYej8yis0NpjR1WZk3ek44hzQE1ONPS0JRXVnROUtEHbW
+ 1bSDrENnJ/py/kBH8rusGoSd8J24AAAA=
+X-Change-ID: 20250123-net-mptcp-syzbot-issues-ffdbbb9b85d7
+To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org, 
+ syzbot+23728c2df58b3bd175ad@syzkaller.appspotmail.com, 
+ syzbot+cd16e79c1e45f3fe0377@syzkaller.appspotmail.com, 
+ syzbot+ebc0b8ae5d3590b2c074@syzkaller.appspotmail.com
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1078; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=U0AT/fNbksLg7k8vGYbqOc12SgcUitUxaUC9w9DZcFI=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnkoVbw3q4Zi7orpFj0hcZgcrEE1nanGfdQjIup
+ iYYnzJJvNeJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ5KFWwAKCRD2t4JPQmmg
+ c4BGEADA4S3AL7PZ0NWrYDFViAxevZenO1qcjxKcK6iER7cW+KG6L1KjQWLVTbCzZyr3BYQZc2N
+ WfF2YKWV5bP5GlqsP/KVMcvEo5GfwAC/gbYomJ7OAaziYMzMdSIH6fMxyz2FNaMOSDQEZi5Mt/7
+ 1E83o3Xpe2w31D+UOyErD/1/PkNjaVhlq4OUSmgTXAsie6BV7MF/Z1HnYu9L6KtsuY3kY2nruUN
+ lfjWa7s3mJbkxVTlsvflhZkArXey1INfrgNY4Sajgm7cdCYRQMIhObfGX0Czb8tC7EL8PwCdr9k
+ SbZ/PvU6ZS5TTj9lxBk8ikI+5gayCFYE3aeQTsLVOq6c9xHBywk7M1JiQvmhA5Wrd/jGcItOUIP
+ GVmi5fXKWuzdJgpkFnScHw9l6gbOxQbBxSNhu5NYYpm0JOcyowBxnE9pTw0sOY5iasqHK7ABdG3
+ K9UL+jwPQ5odrGF+YWruTU+9upcEDC+vqg2ImCx43OtOAvEGJ6fPm34rjEAeZ4NaFlp0X3CrulA
+ cxIa/7PqslON5H3s4iHTAPdVCBBh3uIDYuhr64j5WBElxp4tlYCmCfIy4x5+5A0Z2KFJgD6QIc+
+ EtlBShIscjmq9c8b9lJVRhW3Aw7r2OO1frzBHpRm3/pjEGVKcT+SM2R77QiK/nmpyIwKtHE7yDA
+ +osgSXmjzE22NxQ==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+Recently, a few issues linked to MPTCP have been reported by syzbot. All
+the remaining ones are addressed in this series.
 
-Commit 70fb86a85dc9 ("drm/xe: Revert some changes that break a mesa
-debug tool") partially reverted some changes to workaround breakage
-caused to mesa tools. However, in doing so it also broke fetching the
-GuC log via debugfs since xe_print_blob_ascii85() simply bails out.
+- Patch 1: Address "KMSAN: uninit-value in mptcp_incoming_options (2)".
+  A fix for v5.11.
 
-The fix is to avoid the extra newlines: the devcoredump interface is
-line-oriented and adding random newlines in the middle breaks it. If a
-tool is able to parse it by looking at the data and checking for chars
-that are out of the ascii85 space, it can still do so. A format change
-that breaks the line-oriented output on devcoredump however needs better
-coordination with existing tools.
+- Patch 2: Address "WARNING in mptcp_pm_nl_set_flags (2)". A fix for
+  v5.18.
 
-Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: Julia Filipchuk <julia.filipchuk@intel.com>
-Cc: José Roberto de Souza <jose.souza@intel.com>
-Cc: stable@vger.kernel.org
-Fixes: 70fb86a85dc9 ("drm/xe: Revert some changes that break a mesa debug tool")
-Fixes: ec1455ce7e35 ("drm/xe/devcoredump: Add ASCII85 dump helper function")
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+- Patch 3: Address "WARNING in __mptcp_clean_una (2)". A fix for v6.4,
+  backported up to v6.1.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_devcoredump.c | 30 +++++++++--------------------
- drivers/gpu/drm/xe/xe_devcoredump.h |  2 +-
- drivers/gpu/drm/xe/xe_guc_ct.c      |  3 ++-
- drivers/gpu/drm/xe/xe_guc_log.c     |  4 +++-
- 4 files changed, 15 insertions(+), 24 deletions(-)
+Matthieu Baerts (NGI0) (1):
+      mptcp: pm: only set fullmesh for subflow endp
 
-diff --git a/drivers/gpu/drm/xe/xe_devcoredump.c b/drivers/gpu/drm/xe/xe_devcoredump.c
-index 81dc7795c0651..1c86e6456d60f 100644
---- a/drivers/gpu/drm/xe/xe_devcoredump.c
-+++ b/drivers/gpu/drm/xe/xe_devcoredump.c
-@@ -395,42 +395,30 @@ int xe_devcoredump_init(struct xe_device *xe)
- /**
-  * xe_print_blob_ascii85 - print a BLOB to some useful location in ASCII85
-  *
-- * The output is split to multiple lines because some print targets, e.g. dmesg
-- * cannot handle arbitrarily long lines. Note also that printing to dmesg in
-- * piece-meal fashion is not possible, each separate call to drm_puts() has a
-- * line-feed automatically added! Therefore, the entire output line must be
-- * constructed in a local buffer first, then printed in one atomic output call.
-+ * The output is split to multiple print calls because some print targets, e.g.
-+ * dmesg cannot handle arbitrarily long lines. These targets may add newline
-+ * between calls.
-  *
-  * There is also a scheduler yield call to prevent the 'task has been stuck for
-  * 120s' kernel hang check feature from firing when printing to a slow target
-  * such as dmesg over a serial port.
-  *
-- * TODO: Add compression prior to the ASCII85 encoding to shrink huge buffers down.
-- *
-  * @p: the printer object to output to
-  * @prefix: optional prefix to add to output string
-  * @blob: the Binary Large OBject to dump out
-  * @offset: offset in bytes to skip from the front of the BLOB, must be a multiple of sizeof(u32)
-  * @size: the size in bytes of the BLOB, must be a multiple of sizeof(u32)
-  */
--void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix,
-+void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix, char suffix,
- 			   const void *blob, size_t offset, size_t size)
- {
- 	const u32 *blob32 = (const u32 *)blob;
- 	char buff[ASCII85_BUFSZ], *line_buff;
- 	size_t line_pos = 0;
- 
--	/*
--	 * Splitting blobs across multiple lines is not compatible with the mesa
--	 * debug decoder tool. Note that even dropping the explicit '\n' below
--	 * doesn't help because the GuC log is so big some underlying implementation
--	 * still splits the lines at 512K characters. So just bail completely for
--	 * the moment.
--	 */
--	return;
--
- #define DMESG_MAX_LINE_LEN	800
--#define MIN_SPACE		(ASCII85_BUFSZ + 2)		/* 85 + "\n\0" */
-+	/* Always leave space for the suffix char and the \0 */
-+#define MIN_SPACE		(ASCII85_BUFSZ + 2)	/* 85 + "<suffix>\0" */
- 
- 	if (size & 3)
- 		drm_printf(p, "Size not word aligned: %zu", size);
-@@ -462,7 +450,6 @@ void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix,
- 		line_pos += strlen(line_buff + line_pos);
- 
- 		if ((line_pos + MIN_SPACE) >= DMESG_MAX_LINE_LEN) {
--			line_buff[line_pos++] = '\n';
- 			line_buff[line_pos++] = 0;
- 
- 			drm_puts(p, line_buff);
-@@ -474,10 +461,11 @@ void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix,
- 		}
- 	}
- 
-+	if (suffix)
-+		line_buff[line_pos++] = suffix;
-+
- 	if (line_pos) {
--		line_buff[line_pos++] = '\n';
- 		line_buff[line_pos++] = 0;
--
- 		drm_puts(p, line_buff);
- 	}
- 
-diff --git a/drivers/gpu/drm/xe/xe_devcoredump.h b/drivers/gpu/drm/xe/xe_devcoredump.h
-index 6a17e6d601022..5391a80a4d1ba 100644
---- a/drivers/gpu/drm/xe/xe_devcoredump.h
-+++ b/drivers/gpu/drm/xe/xe_devcoredump.h
-@@ -29,7 +29,7 @@ static inline int xe_devcoredump_init(struct xe_device *xe)
- }
- #endif
- 
--void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix,
-+void xe_print_blob_ascii85(struct drm_printer *p, const char *prefix, char suffix,
- 			   const void *blob, size_t offset, size_t size);
- 
- #endif
-diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
-index 8b65c5e959cc2..50c8076b51585 100644
---- a/drivers/gpu/drm/xe/xe_guc_ct.c
-+++ b/drivers/gpu/drm/xe/xe_guc_ct.c
-@@ -1724,7 +1724,8 @@ void xe_guc_ct_snapshot_print(struct xe_guc_ct_snapshot *snapshot,
- 			   snapshot->g2h_outstanding);
- 
- 		if (snapshot->ctb)
--			xe_print_blob_ascii85(p, "CTB data", snapshot->ctb, 0, snapshot->ctb_size);
-+			xe_print_blob_ascii85(p, "CTB data", '\n',
-+					      snapshot->ctb, 0, snapshot->ctb_size);
- 	} else {
- 		drm_puts(p, "CT disabled\n");
- 	}
-diff --git a/drivers/gpu/drm/xe/xe_guc_log.c b/drivers/gpu/drm/xe/xe_guc_log.c
-index 80151ff6a71f8..44482ea919924 100644
---- a/drivers/gpu/drm/xe/xe_guc_log.c
-+++ b/drivers/gpu/drm/xe/xe_guc_log.c
-@@ -207,8 +207,10 @@ void xe_guc_log_snapshot_print(struct xe_guc_log_snapshot *snapshot, struct drm_
- 	remain = snapshot->size;
- 	for (i = 0; i < snapshot->num_chunks; i++) {
- 		size_t size = min(GUC_LOG_CHUNK_SIZE, remain);
-+		const char *prefix = i ? NULL : "Log data";
-+		char suffix = i == snapshot->num_chunks - 1 ? '\n' : 0;
- 
--		xe_print_blob_ascii85(p, i ? NULL : "Log data", snapshot->copy[i], 0, size);
-+		xe_print_blob_ascii85(p, prefix, suffix, snapshot->copy[i], 0, size);
- 		remain -= size;
- 	}
- }
+Paolo Abeni (2):
+      mptcp: consolidate suboption status
+      mptcp: handle fastopen disconnect correctly
+
+ net/mptcp/options.c    | 13 +++++--------
+ net/mptcp/pm_netlink.c |  3 ++-
+ net/mptcp/protocol.c   |  4 +++-
+ net/mptcp/protocol.h   | 30 ++++++++++++++++--------------
+ 4 files changed, 26 insertions(+), 24 deletions(-)
+---
+base-commit: 15a901361ec3fb1c393f91880e1cbf24ec0a88bd
+change-id: 20250123-net-mptcp-syzbot-issues-ffdbbb9b85d7
+
+Best regards,
 -- 
-2.48.1
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
 
