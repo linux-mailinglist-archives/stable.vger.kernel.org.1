@@ -1,196 +1,157 @@
-Return-Path: <stable+bounces-110313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F22BA1A8EC
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 18:27:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA38A1A90E
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 18:40:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A2161887AA6
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 17:27:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76A9C3A532A
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 17:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA454142E6F;
-	Thu, 23 Jan 2025 17:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E3F91494B3;
+	Thu, 23 Jan 2025 17:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="J83qGHwN"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XciGOaTD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40F513DDD3
-	for <stable@vger.kernel.org>; Thu, 23 Jan 2025 17:27:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713271474A2
+	for <stable@vger.kernel.org>; Thu, 23 Jan 2025 17:40:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737653244; cv=none; b=BtB60mtkaIJ7xht6bP5xE28H0ljzMi2fJ1c+ZRgbOkXpDpQbmWf8THbcnP0z1lWv4OrQ+XESjnrVYwJk1zTEFgkx/K9+sUTj8NV8QUkoIZ5QNpO/OPZpbZTdCQ9gr0FhKiok73QAd1ZHdLbHZ+AsfS4t0HYUo5x68wf1e2pz5oE=
+	t=1737654045; cv=none; b=jefHHkSxDjEFOc2WE3HUuNoIEvMVLNdOwdbI1/m1BaukuQUVIzv954FQQZi50q8E6zVN5xHw0JoB2ZNH7LVu9an/TvaOMjb8kLSOUYXgDEEbE7zHUDKwp6ikdajEsEDnZVfyn/JJAozL8zHAcWldnzteKhbNK0L800uebz3064U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737653244; c=relaxed/simple;
-	bh=5VcL1KJGY48tpjWVdAmlb3DjPOdtc97/ATAxZx5gYXE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dxdhscLQ6cvbVu4Kvk/pp7h6ibliZgSfG5Dqy0fMbOEPDrcCJ7XE5V61gwNvoAyxp7TKiYfmHflyMOR1vMs8Zn/JMfADwjsiOcnF3HsqaxPf0B4WkEgPzrYU5mdcWKLlsTm58f6ma8F14onjpHmtpxjLJ42mSIbLRMO6PhG9OxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=J83qGHwN; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-aa679ad4265so467198966b.0
-        for <stable@vger.kernel.org>; Thu, 23 Jan 2025 09:27:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1737653240; x=1738258040; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OW4Kcq4MU1554DBuiBZTdsTL2Qlr9Xu/MuxWp82QmXc=;
-        b=J83qGHwN/tAIY3I3Yk4nsg8777YWRg5sBEbL53VALz5QuxcyqkcL1+PiA5dHc6yzDs
-         TWn9xbpsIbMYiqq8TOiHoRHRdPszcofPe5bXjMNUMiUPYAkvzr3+U9aFMlEG6nfhMSNx
-         iahhksERYk+uscg05CbqltKhzKE+3myI/3WqT+WjzyWlb/bfrt0Zg3LpYiMPnExSbAfL
-         wwnDRcXAA8aGCfkN0bEoIZeSduMbuyOXXtAP+M/FFdTKsh6j7fkJfLD/t3Qc08p/tLbK
-         gKyCXlXvHpo2UBL4/9KVQrsCD2iyRhmGDkgl85mhNRdgV9Bo9JUx9g5Z+IluzsKpTe5O
-         3TeQ==
+	s=arc-20240116; t=1737654045; c=relaxed/simple;
+	bh=7cjd1Yc0hl2CQdFqJ9Y9P/NXJ/ttmM66Cy4jphvpv58=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JpG1++mvuoZofG3+18YZ2i2DhfYOgWuTaOhCAlY5PXyzOPN2D8DsVLNRq74T37XZepH3IlPzzpkfui0iADToErrwobXUDuYJcVQ9ujHRE/j1i4m44C0TqPzwTGnuS1kn7E55atCeGMFQ9NgxNof2VJe4sMqeZR56gd3CQWO88Ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XciGOaTD; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1737654042;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q3XAX29t0p8K//ChrZkKS09FKeW39YxcTgnGMJjcmuk=;
+	b=XciGOaTDlOwzTclb/t3tFZOs0joBn8FsLe1O6m+bx3pdushLCKgqAUfiYAHkc83VswZL3g
+	If94zPydMq+N0NGxQkfzItfze1s+ztWAYK0sAmDlo0BlumyGh1D8aMTAr40vRwid3roe89
+	jz7zth7LQaYMpqj9OAnW9x2rnu1udOs=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-595-EupyfJ6SMFmMVVLhuinn_w-1; Thu, 23 Jan 2025 12:40:40 -0500
+X-MC-Unique: EupyfJ6SMFmMVVLhuinn_w-1
+X-Mimecast-MFC-AGG-ID: EupyfJ6SMFmMVVLhuinn_w
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6d89a389ee9so27246826d6.2
+        for <stable@vger.kernel.org>; Thu, 23 Jan 2025 09:40:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737653240; x=1738258040;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=OW4Kcq4MU1554DBuiBZTdsTL2Qlr9Xu/MuxWp82QmXc=;
-        b=ZxOc8RHmXxgb0ef2Gy/knQ2VcYXleCfy8yrRcZB7RdRrozjow392g5/8/MXcrBEo6b
-         BQkpSF1NrEicyF0M4nMOhzj36wNZkqMdfy4AhgTyVSl4m9kHBwOC6FhnMIcQO1wNsQt+
-         T+rb3vSXhCU10PDTK6SlmlRGZLrNKs62DUo7tFj9JqXT4IQY9aCnSb1m7xUsaeaLsygT
-         X7h+6uQj26/go6aVonXqNpRHOtUqIMumX6l/zOEhtuhO7b1gaF1FAyHfnC2Gejv8+GvD
-         z7O5NDiE9FxC99p5b+g6iN5GTdOSroTtZbutoRME8VFGjKFk34ix0ZV5hxRf6MyrI8ow
-         MMIw==
-X-Gm-Message-State: AOJu0YzcAppeuoziiqdLQGFaY8GvQsq3HsU0NRBqHqqZi0nrqFs65oDB
-	0o5VptHD5yo0sD/4TWkt3rv6ZSd41GBN2snb9Ip1ga/GAYLZaKoJAWyaEriA8CU=
-X-Gm-Gg: ASbGncud7liXMJm4SnLFO8VkCtt52OPClqa978MY6rPylUewJAR4tGcvI/L9NGUR+a0
-	H3GMXx3PHSJseLD2N+PnXeSaUv17YTPPg13CxG/UKyP5UddkK/aa03zXG7t4fatEHnbYpU+eafe
-	UK51zS+J3FgMAi8w5ju0r+D6G9x+LU2Cg1QtltwgtDC0CfDE2HZi2RfhimOrL1OC0Ggfb1bhSe6
-	nT2Up004FP9FCLZCHTAUFtyi/yLfFUVi97EbdmkmFXUE25OXe6g5Rx8VF9QBM4xP3XxLN92x/Lw
-	BCedTT7AuHzmUFngQKfWGLqYRcy2+St+FN5J4zicE7Izdsw=
-X-Google-Smtp-Source: AGHT+IG+rMtYPI9i1zGELP9CcOm9R4pDZpJOWL7R/bF86HgB0WzYRRkQA427ujy0zDS/T/UeAP/jTA==
-X-Received: by 2002:a17:907:7b96:b0:ab6:36fe:4c73 with SMTP id a640c23a62f3a-ab6745c45dfmr14901666b.10.1737653239936;
-        Thu, 23 Jan 2025 09:27:19 -0800 (PST)
-Received: from localhost (p200300f65f018b0400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f01:8b04::1b9])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab384c60751sm1096903666b.30.2025.01.23.09.27.19
+        d=1e100.net; s=20230601; t=1737654040; x=1738258840;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q3XAX29t0p8K//ChrZkKS09FKeW39YxcTgnGMJjcmuk=;
+        b=X5yS64g+vPZYBd6pvLxuLHUfm4h/OT60TU/WzSoj8nlaAUlExGlWMkPbrW7gyUEBql
+         hVP144wG9Dj13wwNNlo0RQwdCltfB3utphSxDAqOFaSpW9IaRogT+CSbsQDe20P1zxHz
+         nGh+R8f1Bao2o5tELeZEd+594nPiyvjoiHHv5bQGXMv2M4zKxwqtKqEtbfwtANUVpx0L
+         r+hVv2Z93lZ37YQSaMcw3CDION0A8ijleGIl6kzWTK26cnQXcABCdYP9kHZBQz/9J2SW
+         Ubk8uUsH5ibZkZJC1Cu9g7OpixzyRKowqHH1ID1oZgSM6ZTW+CPmdZd8mnW7izxKKCfk
+         nyGw==
+X-Forwarded-Encrypted: i=1; AJvYcCV7yHSg5WBpKlm548HVQmd7QVrPQuVKZzAF0NV0upJfNb5bxznp5mBgNgyCNE/o3XjDB88lR8A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxI3Otj3cY2ioVZRTUd7EzbXS5zYaiTFIR4a9AU23TgVSP49i/Y
+	N6gVArTWscO68dJuMD8icflIb3sx4lpCJMBJa12LlqiW/Pf0cmKa+vtuCW3mVh9fbdm4BZnQ7sI
+	vJMKWq0VljNHUfqju/VRPswTrK7ikAjP9HQPFRAVq75ITwiziQ86xAQ==
+X-Gm-Gg: ASbGncsbI0Fo2rd6Oa3NSAGGINrXwzQKO06gLliyd4liTijnTMpxJUGmHGTYueuUCz8
+	sYRwPINQgGWRZlyJ43BxiVvKmGCsM/LBZfSuMDZwzFGrDae2Ka7NdeZrmGX9VhFcUrP/0jnlOvu
+	EMoxsj52Arms8pc/XxMG12NPsxEUmcwE43SgjasaCY1DRckuUNtlXF3Pva1SuUUx2on7aEu2PsI
+	Y1pYxY+htTCQK7iamSO7wGXPaHo3r+lOPA3xbejqa1ulmH5xj+EQQhl2U7jqLjAkQlsGolgSlZo
+	FN1kB4kq9zKxKr12UkEs6luVmovekBQ=
+X-Received: by 2002:a05:6214:1310:b0:6d8:9bbe:392d with SMTP id 6a1803df08f44-6e1b217141amr290342916d6.6.1737654040281;
+        Thu, 23 Jan 2025 09:40:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHp4As9pxJYPHqbJe7dQDEW7PkmFEro8NdCnUdEyw6JKRvfiOBNyNiaILOnexjjY4E1VYRsDQ==
+X-Received: by 2002:a05:6214:1310:b0:6d8:9bbe:392d with SMTP id 6a1803df08f44-6e1b217141amr290342656d6.6.1737654039996;
+        Thu, 23 Jan 2025 09:40:39 -0800 (PST)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com. [99.254.114.190])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e20514ee9bsm694376d6.30.2025.01.23.09.40.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jan 2025 09:27:19 -0800 (PST)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: linux-pwm@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] pwm: Ensure callbacks exist before calling them
-Date: Thu, 23 Jan 2025 18:27:07 +0100
-Message-ID: <20250123172709.391349-2-u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.47.1
+        Thu, 23 Jan 2025 09:40:39 -0800 (PST)
+Date: Thu, 23 Jan 2025 12:40:36 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+	Shuah Khan <shuah@kernel.org>, David Hildenbrand <david@redhat.com>,
+	=?utf-8?Q?Miko=C5=82aj?= Lenczewski <miko.lenczewski@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] mm: Clear uffd-wp PTE/PMD state on mremap()
+Message-ID: <Z5J_FLry1C2d3BKv@x1n>
+References: <20250107144755.1871363-1-ryan.roberts@arm.com>
+ <20250107144755.1871363-2-ryan.roberts@arm.com>
+ <850479be-000a-45a7-9669-491d4200a988@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3226; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=5VcL1KJGY48tpjWVdAmlb3DjPOdtc97/ATAxZx5gYXE=; b=owGbwMvMwMXY3/A7olbonx/jabUkhvRJ1W+fF+8Lzbn3uFyBycctu+JRcZ+r3ZKUa7PYbyftd 1h4ly25k9GYhYGRi0FWTJHFvnFNplWVXGTn2n+XYQaxMoFMYeDiFICJ+E7nYOh+HWDcNVOk4dW6 5kaGDd90H1tJhM9/1dhUXOPoaW3+icl2gk34ltvV8w43dD8ptZSao1HEqLJ9K/Nxgc/uGbI1JS6 PMn9ZHJQ7Ux/76VSTm9lD26Orrc9q8jAZLWvfbp8xn+nMgQ+nrUWD1nkG3Gm61vi8m8Eg3vr2Jn mFz39Os2zt0eMQmqfwa+8tVuksd6VP21sSe6a0+S97pi3BqmkjMp33+a3Q6gh7MdXljBMtmQ4Yn C+7J/pxKp+Ad/URCz6L1NeFt7aqm3+0PcgUwVQ634iN0UDESEFoe2a5udSkjUeK45lu6W7luV10 hv37C/XG63vW6//Onmq/JOSw+OJ/ulNWWInEPzyRMe0mAA==
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <850479be-000a-45a7-9669-491d4200a988@arm.com>
 
-If one of the waveform functions is called for a chip that only supports
-.apply(), we want that an error code is returned and not a NULL pointer
-exception.
+On Thu, Jan 23, 2025 at 02:38:46PM +0000, Ryan Roberts wrote:
+> > @@ -5470,7 +5471,18 @@ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
+> >  		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+> >  
+> >  	pte = huge_ptep_get_and_clear(mm, old_addr, src_pte);
+> > -	set_huge_pte_at(mm, new_addr, dst_pte, pte, sz);
+> > +
+> > +	if (need_clear_uffd_wp && pte_marker_uffd_wp(pte))
+> > +		huge_pte_clear(mm, new_addr, dst_pte, sz);
+> 
+> This is checking if the source huge_pte is a uffd-wp marker and clearing the
+> destination if so. The destination could have previously held arbitrary valid
+> mappings, I guess?
 
-Fixes: 6c5126c6406d ("pwm: Provide new consumer API functions for waveforms")
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
----
-Hello,
+I think it should be all cleared.  I didn't check all mremap paths, but for
+MREMAP_FIXED at least there should be:
 
-assuming nobody spots a problem I will send this patch to Linus next week for
-inclusion in -rc1.
+	if (flags & MREMAP_FIXED) {
+		/*
+		 * In mremap_to().
+		 * VMA is moved to dst address, and munmap dst first.
+		 * do_munmap will check if dst is sealed.
+		 */
+		ret = do_munmap(mm, new_addr, new_len, uf_unmap_early);
+		if (ret)
+			goto out;
+	}
 
-Best regards
-Uwe
+It also doesn't sound right to leave anything in dest range, e.g. if there
+can be any leftover dest ptes in move_page_tables(), then it means
+HPAGE_P[MU]D won't work, as they install huge entries directly.  For that I
+do see a hint in the comment too in that path:
 
- drivers/pwm/core.c  | 13 +++++++++++--
- include/linux/pwm.h | 17 +++++++++++++++++
- 2 files changed, 28 insertions(+), 2 deletions(-)
+move_normal_pud():
+	/*
+	 * The destination pud shouldn't be established, free_pgtables()
+	 * should have released it.
+	 */
+	if (WARN_ON_ONCE(!pud_none(*new_pud)))
+		return false;
 
-diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
-index 9c733877e98e..1a36ee3cab91 100644
---- a/drivers/pwm/core.c
-+++ b/drivers/pwm/core.c
-@@ -242,6 +242,9 @@ int pwm_round_waveform_might_sleep(struct pwm_device *pwm, struct pwm_waveform *
- 
- 	BUG_ON(WFHWSIZE < ops->sizeof_wfhw);
- 
-+	if (!pwmchip_supports_waveform(chip))
-+		return -EOPNOTSUPP;
-+
- 	if (!pwm_wf_valid(wf))
- 		return -EINVAL;
- 
-@@ -294,6 +297,9 @@ int pwm_get_waveform_might_sleep(struct pwm_device *pwm, struct pwm_waveform *wf
- 
- 	BUG_ON(WFHWSIZE < ops->sizeof_wfhw);
- 
-+	if (!pwmchip_supports_waveform(chip) || !ops->read_waveform)
-+		return -EOPNOTSUPP;
-+
- 	guard(pwmchip)(chip);
- 
- 	if (!chip->operational)
-@@ -320,6 +326,9 @@ static int __pwm_set_waveform(struct pwm_device *pwm,
- 
- 	BUG_ON(WFHWSIZE < ops->sizeof_wfhw);
- 
-+	if (!pwmchip_supports_waveform(chip))
-+		return -EOPNOTSUPP;
-+
- 	if (!pwm_wf_valid(wf))
- 		return -EINVAL;
- 
-@@ -592,7 +601,7 @@ static int __pwm_apply(struct pwm_device *pwm, const struct pwm_state *state)
- 	    state->usage_power == pwm->state.usage_power)
- 		return 0;
- 
--	if (ops->write_waveform) {
-+	if (pwmchip_supports_waveform(chip)) {
- 		struct pwm_waveform wf;
- 		char wfhw[WFHWSIZE];
- 
-@@ -746,7 +755,7 @@ int pwm_get_state_hw(struct pwm_device *pwm, struct pwm_state *state)
- 	if (!chip->operational)
- 		return -ENODEV;
- 
--	if (ops->read_waveform) {
-+	if (pwmchip_supports_waveform(chip) && ops->read_waveform) {
- 		char wfhw[WFHWSIZE];
- 		struct pwm_waveform wf;
- 
-diff --git a/include/linux/pwm.h b/include/linux/pwm.h
-index 78827f312407..b8d78009e779 100644
---- a/include/linux/pwm.h
-+++ b/include/linux/pwm.h
-@@ -347,6 +347,23 @@ struct pwm_chip {
- 	struct pwm_device pwms[] __counted_by(npwm);
- };
- 
-+/**
-+ * pwmchip_supports_waveform() - checks if the given chip supports waveform callbacks
-+ * @chip: The pwm_chip to test
-+ *
-+ * Returns true iff the pwm chip support the waveform functions like
-+ * pwm_set_waveform_might_sleep() and pwm_round_waveform_might_sleep()
-+ */
-+static inline bool pwmchip_supports_waveform(struct pwm_chip *chip)
-+{
-+	/*
-+	 * only check for .write_waveform(). If that is available,
-+	 * .round_waveform_tohw() and .round_waveform_fromhw() asserted to be
-+	 * available, too, in pwmchip_add().
-+	 */
-+	return chip->ops->write_waveform != NULL;
-+}
-+
- static inline struct device *pwmchip_parent(const struct pwm_chip *chip)
- {
- 	return chip->dev.parent;
+PMD path has similar implications.
 
-base-commit: e8c59791ebb60790c74b2c3ab520f04a8a57219a
-prerequisite-patch-id: f5f481d393ddd1fd20a685c86cd4e93dd40d26c7
+Thanks,
+
 -- 
-2.47.1
+Peter Xu
 
 
