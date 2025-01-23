@@ -1,118 +1,245 @@
-Return-Path: <stable+bounces-110294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F624A1A7A8
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 17:15:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04BE9A1A7B2
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 17:18:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6D211663E1
-	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 16:15:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41F65162CF6
+	for <lists+stable@lfdr.de>; Thu, 23 Jan 2025 16:17:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E1212FF69;
-	Thu, 23 Jan 2025 16:15:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WBKtP1WE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBBD020F973;
+	Thu, 23 Jan 2025 16:17:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72FE3328B6;
-	Thu, 23 Jan 2025 16:15:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB95328B6;
+	Thu, 23 Jan 2025 16:17:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737648917; cv=none; b=HcIDaip2ExcPs7yuDXIxBnGr9HrYtiF4h8umlySciPhb9zBZ4ZsAOOl7LPQOuCGITNUxdPiPWXK1jzRCHx5cw/M8Wyijlkf2jxPxKSC7T65Cg5Nf0Amz3ooXgjxUhss3VIJBoC9akdc+bZnXqX7v55CCnPxstv7+BUvCzIt0s0I=
+	t=1737649074; cv=none; b=gyz5CyDAXt9JTnzmlL4oMODmmBrKz5LOCV+zqxBMx0aE7eFb4p2AhPcC9N9c8NInrVEipwKx+yiKCJXgGJdPvtrgM6jUe/PJIfhCrR9ZK7EZH6YUA4L8ILrRgH5hkGvEsMDu/EtwyS8cFfldZKkhtNvJhqrn8xrIyRDggGeGKok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737648917; c=relaxed/simple;
-	bh=ZheSQ6XWBAYsdapP+EdWrfuUmk64oRaRoPYP7mOvu00=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mk6D9GPtTECe9vxP+hUqxPbJW+q5qFpa+j/LlgRZk+xSNJWA7RTn1/PLQYyCzAi7Mx7ahYPzrKT8gCcHbNJ5D8uxjMfhL0x8n7XswwqlbdDxX0Ix7d0Yh4olGFN/fG1Yq+JYgRydrsb//H7/OTGWBNYsef4yyRI1TNETXD+ol6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WBKtP1WE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF85C4CED3;
-	Thu, 23 Jan 2025 16:15:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737648914;
-	bh=ZheSQ6XWBAYsdapP+EdWrfuUmk64oRaRoPYP7mOvu00=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WBKtP1WEAmj6fGypbDot8JLoDo1Leq64kQlnHKoACLAhcKztxpxksIP0jTIJGQ6Ks
-	 fMBPfbXZ+ARgqqlukTRzJ0tG0jyF8dqHs8o58XbMBZFL1rZ7l83D+CFul4cPPsBMyg
-	 EyH0XAEGfkuEsSeSRU2MZHJqD0TQwcmCtYFxWFY8=
-Date: Thu, 23 Jan 2025 17:15:11 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Ron Economos <re@w6rz.net>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 5.15 000/127] 5.15.177-rc2 review
-Message-ID: <2025012303-shawl-citric-9f5f@gregkh>
-References: <20250122073830.779239943@linuxfoundation.org>
- <010553d5-4504-40d9-a358-8404f57ebe9a@w6rz.net>
- <2025012347-storm-dance-adfc@gregkh>
- <65b96357-3c6c-469a-b738-e0576edb958d@w6rz.net>
+	s=arc-20240116; t=1737649074; c=relaxed/simple;
+	bh=masMIEniTZPeVnhoxedNAqD6HzLr+m/CrOIgdJSywoc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ubUH8Tuiy8PNuk6A1LcWF3fXUgoyq4SXqpoiGmc3RbSniopxu71nhfsck4mO5ZlBrFS5JZM/Dg8JzDOAI2flrGztTchXFu8irotKdKN63M5s3r/EDWyL1QydcWWIZ50S3AAgy0HEh/W8ab3D1igF2aVlQjosw9/l3z/ZStJyjGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 77F841063;
+	Thu, 23 Jan 2025 08:18:13 -0800 (PST)
+Received: from [10.1.33.169] (XHFQ2J9959.cambridge.arm.com [10.1.33.169])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 862883F5A1;
+	Thu, 23 Jan 2025 08:17:43 -0800 (PST)
+Message-ID: <d6654c11-234f-4331-a7a1-397ee31398ec@arm.com>
+Date: Thu, 23 Jan 2025 16:17:42 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/2] mm: Clear uffd-wp PTE/PMD state on mremap()
+Content-Language: en-GB
+From: Ryan Roberts <ryan.roberts@arm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+ Shuah Khan <shuah@kernel.org>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Miko=C5=82aj_Lenczewski?= <miko.lenczewski@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+References: <20250107144755.1871363-1-ryan.roberts@arm.com>
+ <20250107144755.1871363-2-ryan.roberts@arm.com>
+ <850479be-000a-45a7-9669-491d4200a988@arm.com>
+In-Reply-To: <850479be-000a-45a7-9669-491d4200a988@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <65b96357-3c6c-469a-b738-e0576edb958d@w6rz.net>
 
-On Thu, Jan 23, 2025 at 06:19:34AM -0800, Ron Economos wrote:
-> On 1/23/25 06:11, Greg Kroah-Hartman wrote:
-> > On Wed, Jan 22, 2025 at 05:20:54AM -0800, Ron Economos wrote:
-> > > On 1/22/25 00:03, Greg Kroah-Hartman wrote:
-> > > > This is the start of the stable review cycle for the 5.15.177 release.
-> > > > There are 127 patches in this series, all will be posted as a response
-> > > > to this one.  If anyone has any issues with these being applied, please
-> > > > let me know.
-> > > > 
-> > > > Responses should be made by Fri, 24 Jan 2025 07:38:04 +0000.
-> > > > Anything received after that time might be too late.
-> > > > 
-> > > > The whole patch series can be found in one patch at:
-> > > > 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.177-rc2.gz
-> > > > or in the git tree and branch at:
-> > > > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> > > > and the diffstat can be found below.
-> > > > 
-> > > > thanks,
-> > > > 
-> > > > greg k-h
-> > > The build fails with:
-> > > 
-> > > drivers/usb/core/port.c: In function 'usb_port_shutdown':
-> > > drivers/usb/core/port.c:299:26: error: 'struct usb_device' has no member
-> > > named 'port_is_suspended'
-> > >  † 299 |†††††††† if (udev && !udev->port_is_suspended) {
-> > >  ††††† |††††††††††††††††††††††††† ^~
-> > > make[3]: *** [scripts/Makefile.build:289: drivers/usb/core/port.o] Error 1
-> > > make[2]: *** [scripts/Makefile.build:552: drivers/usb/core] Error 2
-> > > make[1]: *** [scripts/Makefile.build:552: drivers/usb] Error 2
-> > > 
-> > > Same issue as with 6.1.125-rc1 last week. Needs the fixup patch in 6.1.126.
-> > Ah, ick.  It's hard for me to build with CONFIG_PM disabled here for
-> > some reason.  I'll go queue up my fix for this from 6.1, and then your
-> > fix for my fix :)
-> > 
-> > thanks,
-> > 
-> > greg k-h
+On 23/01/2025 14:38, Ryan Roberts wrote:
+> I think there might be a bug in this after all...
 > 
-> Just FYI, I tested the fixes and it builds okay. I did:
 > 
-> git cherry-pick 9734fd7a27772016b1f6e31a03258338a219d7d6
+> On 07/01/2025 14:47, Ryan Roberts wrote:
+>> When mremap()ing a memory region previously registered with userfaultfd
+>> as write-protected but without UFFD_FEATURE_EVENT_REMAP, an
+>> inconsistency in flag clearing leads to a mismatch between the vma flags
+>> (which have uffd-wp cleared) and the pte/pmd flags (which do not have
+>> uffd-wp cleared). This mismatch causes a subsequent mprotect(PROT_WRITE)
+>> to trigger a warning in page_table_check_pte_flags() due to setting the
+>> pte to writable while uffd-wp is still set.
+>>
+>> Fix this by always explicitly clearing the uffd-wp pte/pmd flags on any
+>> such mremap() so that the values are consistent with the existing
+>> clearing of VM_UFFD_WP. Be careful to clear the logical flag regardless
+>> of its physical form; a PTE bit, a swap PTE bit, or a PTE marker. Cover
+>> PTE, huge PMD and hugetlb paths.
+>>
+>> Co-developed-by: Miko≈Çaj Lenczewski <miko.lenczewski@arm.com>
+>> Signed-off-by: Miko≈Çaj Lenczewski <miko.lenczewski@arm.com>
+>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+>> Closes: https://lore.kernel.org/linux-mm/810b44a8-d2ae-4107-b665-5a42eae2d948@arm.com/
+>> Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
+>> Cc: stable@vger.kernel.org
+>> ---
+>>  include/linux/userfaultfd_k.h | 12 ++++++++++++
+>>  mm/huge_memory.c              | 12 ++++++++++++
+>>  mm/hugetlb.c                  | 14 +++++++++++++-
+>>  mm/mremap.c                   | 32 +++++++++++++++++++++++++++++++-
+>>  4 files changed, 68 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+>> index cb40f1a1d081..75342022d144 100644
+>> --- a/include/linux/userfaultfd_k.h
+>> +++ b/include/linux/userfaultfd_k.h
+>> @@ -247,6 +247,13 @@ static inline bool vma_can_userfault(struct vm_area_struct *vma,
+>>  	    vma_is_shmem(vma);
+>>  }
+>>  
+>> +static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
+>> +{
+>> +	struct userfaultfd_ctx *uffd_ctx = vma->vm_userfaultfd_ctx.ctx;
+>> +
+>> +	return uffd_ctx && (uffd_ctx->features & UFFD_FEATURE_EVENT_REMAP) == 0;
+>> +}
+>> +
+>>  extern int dup_userfaultfd(struct vm_area_struct *, struct list_head *);
+>>  extern void dup_userfaultfd_complete(struct list_head *);
+>>  void dup_userfaultfd_fail(struct list_head *);
+>> @@ -402,6 +409,11 @@ static inline bool userfaultfd_wp_async(struct vm_area_struct *vma)
+>>  	return false;
+>>  }
+>>  
+>> +static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
+>> +{
+>> +	return false;
+>> +}
+>> +
+>>  #endif /* CONFIG_USERFAULTFD */
+>>  
+>>  static inline bool userfaultfd_wp_use_markers(struct vm_area_struct *vma)
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index c89aed1510f1..2654a9548749 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -2212,6 +2212,16 @@ static pmd_t move_soft_dirty_pmd(pmd_t pmd)
+>>  	return pmd;
+>>  }
+>>  
+>> +static pmd_t clear_uffd_wp_pmd(pmd_t pmd)
+>> +{
+>> +	if (pmd_present(pmd))
+>> +		pmd = pmd_clear_uffd_wp(pmd);
+>> +	else if (is_swap_pmd(pmd))
+>> +		pmd = pmd_swp_clear_uffd_wp(pmd);
+>> +
+>> +	return pmd;
+>> +}
+>> +
+>>  bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+>>  		  unsigned long new_addr, pmd_t *old_pmd, pmd_t *new_pmd)
+>>  {
+>> @@ -2250,6 +2260,8 @@ bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+>>  			pgtable_trans_huge_deposit(mm, new_pmd, pgtable);
+>>  		}
+>>  		pmd = move_soft_dirty_pmd(pmd);
+>> +		if (vma_has_uffd_without_event_remap(vma))
+>> +			pmd = clear_uffd_wp_pmd(pmd);
+>>  		set_pmd_at(mm, new_addr, new_pmd, pmd);
+>>  		if (force_flush)
+>>  			flush_pmd_tlb_range(vma, old_addr, old_addr + PMD_SIZE);
+>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>> index 354eec6f7e84..cdbc55d5384f 100644
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -5454,6 +5454,7 @@ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
+>>  			  unsigned long new_addr, pte_t *src_pte, pte_t *dst_pte,
+>>  			  unsigned long sz)
+>>  {
+>> +	bool need_clear_uffd_wp = vma_has_uffd_without_event_remap(vma);
+>>  	struct hstate *h = hstate_vma(vma);
+>>  	struct mm_struct *mm = vma->vm_mm;
+>>  	spinlock_t *src_ptl, *dst_ptl;
+>> @@ -5470,7 +5471,18 @@ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
+>>  		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+>>  
+>>  	pte = huge_ptep_get_and_clear(mm, old_addr, src_pte);
+>> -	set_huge_pte_at(mm, new_addr, dst_pte, pte, sz);
+>> +
+>> +	if (need_clear_uffd_wp && pte_marker_uffd_wp(pte))
+>> +		huge_pte_clear(mm, new_addr, dst_pte, sz);
 > 
-> git cherry-pick f6247d3e3f2d34842d3dcec8fe7a792db969c423
+> This is checking if the source huge_pte is a uffd-wp marker and clearing the
+> destination if so. The destination could have previously held arbitrary valid
+> mappings, I guess?
+> 
+> But huge_pte_clear() does not call page_table_check_pte_clear(). So any previous
+> valid mapping will not have it's page_table_check ref count decremented?
+> 
+> I think it should be replaced with:
+> 		huge_ptep_get_and_clear(mm, new_addr, dst_pte);
+> 
+> Since there is no huge_ptep_clear().
+> 
+> The tests I wrote are always mremapping into PROT_NONE space so they don't hit
+> this condition. If people agree this is a bug, I'll send out a fix.
 
-Thanks, I've now done that!
+OK I'm deep in the rabbit hole now; Could anyone clarify the specs for
+huge_pte_clear() and huge_ptep_get_and_clear()? Specifically, I believe:
 
-greg k-h
+  - huge_pte_clear() can only be called for not-present huge_ptes, because the
+only way to set a huge_pte is via set_huge_pte_at() and that will always execute
+the page_table_check_*_set() functions for present huge_ptes. So clearing a
+present huge_pte using huge_pte_clear(), which does not call
+page_table_check_*_clear(), would cause counter imbalance. It looks like
+existing generic-code callers of huge_pte_clear() only do it for non-present
+huge_ptes.
+
+  - huge_ptep_get_and_clear() can be used to get-and-clear both present and
+non-present huge_ptes? There is a single call site in generic-code where this
+could be called for a non-present huge_pte: move_huge_pte() (and it was there
+prior to my change). BUT, it looks like the arm64 implementation of
+huge_ptep_get_and_clear() is not safe to call if the pte being cleared is
+non-present:
+
+pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+			      unsigned long addr, pte_t *ptep)
+{
+	int ncontig;
+	size_t pgsize;
+	pte_t orig_pte = __ptep_get(ptep);
+
+	if (!pte_cont(orig_pte))
+		return __ptep_get_and_clear(mm, addr, ptep);
+
+	ncontig = find_num_contig(mm, addr, ptep, &pgsize);
+
+	return get_clear_contig(mm, addr, ptep, pgsize, ncontig);
+}
+
+pte_cont() assumes the pte is present, otherwise it's sampling a random bit that
+doesn't have the meaning it thinks it has. It is currently relying on that to
+determine the size of the huge_pte.
+
+So either arm64 has a bug or move_huge_pte() has a bug. If
+huge_ptep_get_and_clear() needs to work for non-present huge_ptes, we will need
+to pass the huge_pte size into this function. I don't think there is another way
+to resolve this.
+
+Thanks,
+Ryan
+
+
+
+> 
+> Thanks,
+> Ryan
+> 
 
