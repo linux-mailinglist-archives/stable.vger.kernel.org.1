@@ -1,154 +1,129 @@
-Return-Path: <stable+bounces-110339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0BF2A1AE01
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 01:51:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37714A1AE27
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 02:23:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE05C1683B4
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 00:51:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A60418882FE
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 01:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8EC1CCEF8;
-	Fri, 24 Jan 2025 00:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD2122075;
+	Fri, 24 Jan 2025 01:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gYJV0qMi"
+	dkim=pass (2048-bit key) header.d=engineer.com header.i=rajanikantha@engineer.com header.b="ULA9+KCD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.com (mout.gmx.com [74.208.4.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F333F2CA8;
-	Fri, 24 Jan 2025 00:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58ED96FB9
+	for <stable@vger.kernel.org>; Fri, 24 Jan 2025 01:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.208.4.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737679892; cv=none; b=cPCR1aSIyYjiQ5RW4VJ8ys/wNlJ4bkXSGH05S0hMrmKRxKRDSlbx3SghccYcijBOv+n2q3NckrscLMY7i9VIJBSQewPE8rMU+HynVARztr0XR6JmFZxM8jhpPWvSX1F4tRV5csQ3P+LiiDxTOZFFxMiRvX0b9U6VWDWoSW1LJP4=
+	t=1737681803; cv=none; b=pIEpg/VciOmMFVCmJFtZUZjoC969Vz8hWveLimhi8gBR6BEh9WCq8x9iMY2rjPYphth8CWJxjh1VmvLCHjnF0SPRDJsiKW6tA+O2R5rVcYChYdCITePrmM4a8rp+EHrOuzGaFuZy9v3YL/iLvo9mn9l2gALocrl99zCtohH5VIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737679892; c=relaxed/simple;
-	bh=zSdHFMEh5R3vcklc5JAWEGNlmIa1A7ADM8hUVCupfww=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tgn9UWpNoOHjLEbpD3kRySaJNZrBSwjZLN5LXHr1X95paL+2y8Rl/CaQ1tjqdbio8Pzg2yx/rJNdkGwHHtUjgixULljtEzdSmSH/uAFsPhOWlUESTaJaUJ3gzY23daSA8jK7oZRJnkWHUo9U3TbB0x+fz1LYrHsn9XcHMV85unU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gYJV0qMi; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5dc10fe4e62so2232921a12.1;
-        Thu, 23 Jan 2025 16:51:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737679889; x=1738284689; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xvSBc19ja4PhXLkU+eKAiQdkfhdLW998VM8F+55O/Pk=;
-        b=gYJV0qMiy1E9yeMmed9O4LZE+yjyQgfFaZU9Wwn8pQh0VOzFPBJhXKBYUTk0GZtNfK
-         tBk67quOSH/dAzmcjYzTUltxX/5a98z40KtWubw7thJKAQhPcFaRSDsR80r0JhSenPXO
-         k9kcj12JSex5/OBCanRBy8t7PS2F6GqXBye5h4iBLa20S3Z2TtjDSHwRnSr5DsiqvVRm
-         ZZbAS4ee/l7e8ezbs7CFSoJAw9u+lQJAEp1Jwta9rz1hLacE5QdhN748Ln3+VPyQ9/ap
-         x2Jv+pbtAiu8mBO5SpoqfC/pRQwmBLx/iP/SPA7ubdts8XP/pHK0kitoLtPlzODvIIlA
-         i/xA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737679889; x=1738284689;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xvSBc19ja4PhXLkU+eKAiQdkfhdLW998VM8F+55O/Pk=;
-        b=iMS4JQBqtwlALfgpmYNPG/GSyqQqoikyN6JgF5f4RVwUbeG2e2ITOwb0md52xvWo8a
-         ojn1dsmuRnKF9LSJAmF/Fkta+kAhnWMyrdiBgKSiQ+XKbG/+UOo6/rfEWs7Pxxo9SbwC
-         W9HUT14Ho3d/cR6pfQzKdc/6pwN6uzLFaj3Q3Xt5b4qqBxDr0BotMKBPpErFMAqPWqDa
-         9rD1t4oG4Mo3+RpREJh7hq+hyhAw27LVUuAkRHpIAABnXdb50vnkyJ1Ay6fmDI5CTyH/
-         XFRIZOprKvsFDr+Kvjbbb86GUgi6zJtcPnYezBRKT2ubFTB1XJ7bp9yGGropqCyUi/k4
-         aqLA==
-X-Forwarded-Encrypted: i=1; AJvYcCUT6csyL1amSwxBAMpZftvb+eszvzjaiRzaXiKUBDgafSwx+1VCVserrKgye/+aa0BskY9ojvG5@vger.kernel.org, AJvYcCUpYR0Ee5oyPEiKIG2POJ4WUXT2KJ89qHDggwNybSN7zZ7YR994Gv9EfBmIQLcnZLF1/OxK6IO2@vger.kernel.org, AJvYcCX1ovOGiaoEtKclVuf2brWPWiexsHAW9E/7cR7DA7Jcw+HGNT8S9sTsXWoQ9RuLUEdp/sum4mPl/I+0DBs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzuq/ztasD4HrY9KRztrkaAv6eiedVQzHVPh6KGRAB9EE0Yjdjo
-	aOr7v2UcnVXHmK3bmwn6TBvlEBTMMIXOPQ9D3CBtUDwv8HYj0nE2W64I6MsBfq7BqASMQiUdCdd
-	pSmBZGav4k6MV9Wcx7pGQ2sB1zUw=
-X-Gm-Gg: ASbGncsYDIurPAsR+vDqEACC8z/esYRrUvYCTtPvMGXPxXPPwhB44NenvbW7m5E8Oa5
-	FNgqNHv0M8uzJldEd1IIJe/kN7mxhH6PybicYE5bPVzFSC2O0sgSa9q7VOXhWgOw=
-X-Google-Smtp-Source: AGHT+IF1tqPGeWCO56Ui3/IF5YtLZ4HffGAy69gdkDNqHgnKMo4KAe5zXHUVSHRRevF0akyAOQ+jxWNHKxrP9D0F6UA=
-X-Received: by 2002:a05:6402:5203:b0:5d3:e766:6143 with SMTP id
- 4fb4d7f45d1cf-5db7db078a1mr28496955a12.30.1737679889079; Thu, 23 Jan 2025
- 16:51:29 -0800 (PST)
+	s=arc-20240116; t=1737681803; c=relaxed/simple;
+	bh=HgulRjWp0FbMY1sWGInZ89Or+EvMoIQzvVn7Bw9tcAk=;
+	h=MIME-Version:Message-ID:From:To:Subject:Content-Type:Date; b=ZSaMWOrtIf2fM4Vc/gp8c6ToVHIELVoBLRxOwQ8XKBA6S3fwSlo9JG0RRZcDfow6aHIKRkBcYb50/JHX8EmMyWUYxXBpsN4wloTc3nlDtCibbucfaItJ8mN2/JVKB2lWRTe0D8pCijXxq3zxeBBwxeBrfHV+8T/Q8RP0Zjobr7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=engineer.com; spf=pass smtp.mailfrom=engineer.com; dkim=pass (2048-bit key) header.d=engineer.com header.i=rajanikantha@engineer.com header.b=ULA9+KCD; arc=none smtp.client-ip=74.208.4.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=engineer.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engineer.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=engineer.com;
+	s=s1089575; t=1737681797; x=1738286597;
+	i=rajanikantha@engineer.com;
+	bh=Z2tF4s6uDEopQT6bLOfZ+NEmhp+ZV9g9P6XEZwiu7HY=;
+	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Subject:
+	 Content-Type:Date:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=ULA9+KCD4d/VALbW7OFrWfCXWnQJvZyVZyliTVwtReRlRdXwIvTsRuvrS0BTlavC
+	 MQP6x0XCvBXhSvdpm+iYCTEchLkWcqAr+ui4dDr9tQWlwMgnI3GbJ+j4Nqj3BhfJc
+	 mRb3r1dR01J09B7ymTnuqYcFaEfSu5IoBv/9cN9WJEYxws9N5fNJSzPWfYIcsjkny
+	 VZ6jsqNmGShIA0UZ6/olTB4srcvypzVOFV5nLxB30el0DUY5UCwfrxbF9NESf+JfD
+	 8XyYZIz7l1MKZbzN3uUuF+6rxWJ1yekj3JLawaMyqDScGmixd1wMMUlNmNrzFHdR+
+	 Wo5iCFf8gNezzMdOhw==
+X-UI-Sender-Class: f2cb72be-343f-493d-8ec3-b1efb8d6185a
+Received: from [60.247.85.88] ([60.247.85.88]) by web-mail.mail.com
+ (3c-app-mailcom-lxa10.server.lan [10.76.45.11]) (via HTTP); Fri, 24 Jan
+ 2025 02:23:17 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250122023745.584995-1-2045gemini@gmail.com> <20250123071201.3d38d8f6@kernel.org>
-In-Reply-To: <20250123071201.3d38d8f6@kernel.org>
-From: Gui-Dong Han <2045gemini@gmail.com>
-Date: Fri, 24 Jan 2025 08:50:50 +0800
-X-Gm-Features: AWEUYZme8_EJ9mqW8EvRGKPAM6vQW9SNxA7jizwJTxsupziLlDboLeknK7dO-_0
-Message-ID: <CAOPYjvbqkDwMt-PdUOhQXQtZEBvryCjyQ3O1=TNtwrYWdhzb2g@mail.gmail.com>
-Subject: Re: [PATCH v2] atm/fore200e: Fix possible data race in fore200e_open()
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: 3chas3@gmail.com, linux-atm-general@lists.sourceforge.net, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, baijiaju1990@gmail.com, 
-	horms@kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <trinity-9fdb9995-866f-4221-8e4b-f08e3d33894b-1737681797536@3c-app-mailcom-lxa10>
+From: Rajani kantha <rajanikantha@engineer.com>
+To: lizhi.xu@windriver.com, tytso@mit.edu, stable@vger.kernel.org
+Subject: [PATCH 6.6.y] ext4: filesystems without casefold feature cannot be
+ mounted with siphash
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 24 Jan 2025 02:23:17 +0100
+Importance: normal
+Sensitivity: Normal
+X-Priority: 3
+X-Provags-ID: V03:K1:0kJ7HAHm1OjLJCnH38boIn3oHhRsGbZGG29vfXkM2GQ6GJMlxWGTNk8AsUqF5AoIDUPp8
+ 4ERmi3PGSyZlKyKGMYB6bfeB72LETKf8JQ7iKbz1OnklM71unBEUq4O5YDauemA7g3r8l7ViRaKA
+ V+L32s4PpgP2K/opbB23JZfD32bKpvZfyd389BoWd+a4VkdNMWd6DDGTZtPAlgFoJbhDrhNvcuBD
+ 418tEvT5pcn+3uoj+DN+DQvfTIxqgVIOTjnH06/TQPr20t0h3pO9t7bRfbNpi/hPDSSbzE0NqryZ
+ 8k=
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:/ob3tWQuYUA=;lwDRnOBQSwe+GAxSX2XiHXPoEZl
+ /Bml1NMoSr02/nkxombtKE0F9pMVjARIl4IGJ0DHzbliOlerdCpyUfTx2leeIzGzBHTtE9l5n
+ HxnHPPZozfmprnf5XNA1flEtmLHRTRY8tzouobWOzPmQthZjTJQOVdhBgnTJNC7vSgw5qlovt
+ +YSd2KZeegKD/dYsBzurz269MbtawNOaRtcU8x7a065kKYtVHXSCEfW2puX/f5PwbmJms0aCa
+ JJuplyLncElPSa0ectPYmB0aNixuahWZmhS52I27/UAnaEO5OdGWyzWDMZXZQS4T6cX/U76ny
+ f3cI7EIyMR/ulEARttt3BPHzqOvy08Q2h34QDzHyiNkTBW/QW9xwSyLT6LYh+RMjtoF1XXUKD
+ toBdfkvBt/KRRmOqINNAp/0r9WzmNmm7bsePkGsf0bShw3qP5o/3R9rWzgLBdtTiVgu4DXASa
+ fiiP3WwM8b42vTLhTrZ1yc3lirT9T/U9PE2vEmw1oqKXNiW4L0UglRRY899oJZrfciF5liys+
+ mWgBnyI6JLcZYHayhP4qVi/5MIlyQTASwhXDVZvBkcB0SCHhznApB94fBO+3R1nGprmY2hFw0
+ jPBo3YOri5uLUs1xtoAkn5LdG36mAQUXjFJSOQhQT9qUOZBTIGTZs/yuK7WpoSF3dODveAg8J
+ ZFFrFJeGBylis+ucLbVT1wVmnS+gidMvtujogCMfPK9Kt9oxy7BrQ0hR0gIyCGuex+XUQUsZp
+ CUWrFVar0aQygPqfxzNPE6flOjd+eazWNWNzgm5tCia/tf0vAH6qZ+iec90Ed9jMuyDdHOTLG
+ meXGo3NBlNCh4yUN2CwhANfSzWzQ+xvcyulYkYYuDo+duboPWmGoJhaTDWI4HQoFSkKE0kXDz
+ t1k7t6GCTldIFaIUUXAos6uyIYDpPqxxn+BnCMnx8LTuTsbhkS/wrxElhdtLBED7vGaVF1eh4
+ pYmLhqGGXg6xVgrjY95fBsl9+IY9US1JUP6ZOrItGqEwC7+NC/xbyzoDM9+PGYVIzeTGF8IHA
+ VXv/SC8X/IOu0ywTXo=
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 23, 2025 at 11:12=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> w=
-rote:
->
-> On Wed, 22 Jan 2025 02:37:45 +0000 Gui-Dong Han wrote:
-> > Protect access to fore200e->available_cell_rate with rate_mtx lock to
-> > prevent potential data race.
-> >
-> > In this case, since the update depends on a prior read, a data race
-> > could lead to a wrong fore200e.available_cell_rate value.
-> >
-> > The field fore200e.available_cell_rate is generally protected by the lo=
-ck
-> > fore200e.rate_mtx when accessed. In all other read and write cases, thi=
-s
-> > field is consistently protected by the lock, except for this case and
-> > during initialization.
->
-> Please describe the call paths which interact to cause the race.
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-The fore200e.available_cell_rate is a shared resource used to track
-the available bandwidth for allocation.
+[ upstream commit 985b67cd86392310d9e9326de941c22fc9340eec ]
 
-The functions fore200e_open(), fore200e_close(), and
-fore200e_change_qos(), which modify fore200e.available_cell_rate to
-reflect bandwidth availability, may interact and cause a race
-condition.
+When mounting the ext4 filesystem, if the default hash version is set to
+DX_HASH_SIPHASH but the casefold feature is not set, exit the mounting.
 
-fore200e_open(struct atm_vcc *vcc)
-{
-    ...
-    /* Pseudo-CBR bandwidth requested? */
-    if ((vcc->qos.txtp.traffic_class =3D=3D ATM_CBR) &&
-(vcc->qos.txtp.max_pcr > 0)) {
+Reported-by: syzbot+340581ba9dceb7e06fb3@syzkaller.appspotmail.com
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Link: https://patch.msgid.link/20240605012335.44086-1-lizhi.xu@windriver.c=
+om
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Rajani Kantha <rajanikantha@engineer.com>
+=2D--
+ fs/ext4/super.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-        mutex_lock(&fore200e->rate_mtx);
-        if (fore200e->available_cell_rate < vcc->qos.txtp.max_pcr) {
-            mutex_unlock(&fore200e->rate_mtx);
-            ... // Error handling code
-            return -EAGAIN;
-        }
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 71ced0ada9a2..7522bd019639 100644
+=2D-- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -3626,6 +3626,13 @@ int ext4_feature_set_ok(struct super_block *sb, int=
+ readonly)
+ 		return 0;
+ 	}
+ #endif
++	if (EXT4_SB(sb)->s_es->s_def_hash_version =3D=3D DX_HASH_SIPHASH &&
++	    !ext4_has_feature_casefold(sb)) {
++		ext4_msg(sb, KERN_ERR,
++			 "Filesystem without casefold feature cannot be "
++			 "mounted with siphash");
++		return 0;
++	}
 
-        /* Reserve bandwidth */
-        fore200e->available_cell_rate -=3D vcc->qos.txtp.max_pcr;
-        mutex_unlock(&fore200e->rate_mtx);
-    }
-    ...
-    if (fore200e_activate_vcin(fore200e, 1, vcc, vcc->qos.rxtp.max_sdu) < 0=
-) {
-        ... // Error handling code
-        fore200e->available_cell_rate +=3D vcc->qos.txtp.max_pcr;
-        ... // Error handling code
-        return -EINVAL;
-    }
-}
-
-There is further evidence within fore200e_open() itself. The function
-correctly takes the lock when subtracting vcc->qos.txtp.max_pcr from
-fore200e.available_cell_rate to reserve bandwidth, but later, in the
-error handling path, it adds vcc->qos.txtp.max_pcr back without
-holding the lock. There is no justification for modifying a shared
-resource without the corresponding lock in this case.
-
-Regards,
-Han
+ 	if (readonly)
+ 		return 1;
+=2D-
+2.35.3
 
