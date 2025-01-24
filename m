@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-110416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA06A1BCFE
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 20:52:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24DBCA1BCFF
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 20:52:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 915463A97FA
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 19:52:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 772C9167C09
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 19:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79952248AC;
-	Fri, 24 Jan 2025 19:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1A52248B5;
+	Fri, 24 Jan 2025 19:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DHTHv9AV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MXLUkkiR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A715C4A1D
-	for <stable@vger.kernel.org>; Fri, 24 Jan 2025 19:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6764A1D
+	for <stable@vger.kernel.org>; Fri, 24 Jan 2025 19:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737748325; cv=none; b=A+VTfacUIDMdCaf+8H6pe3PI5PsMlUaybtRQaQtxdWNQxYh+x1xk44rxMGf5R+u1ejLVRF63uaXuWOIImAocgT6VCrMX//dGrGKxMES949+xOTOt4c2XEwH+r40yLHdEbBLSvGVw5xtznTJYJ/L3aOWRHEatUyArnEW/lbqHQy8=
+	t=1737748328; cv=none; b=KdpVAMBHffPO5uT1sLCx6JpnomWNS4tEr+LMCG98Ar0xUbOue5fmskAja9vgveSj5/jlImPzkzN0M5eM1BiN4Z2ItkIWmqKGjkfbS5qlMXX+t3i28zE9XfHd7KI81kFpz+CFcUEOSMDmDZZZs/JE9Si/96T+eHihPWL7YJmpUC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737748325; c=relaxed/simple;
-	bh=V52vYM8wFXWMHNImNm1EMWnrC1j2cFzM7hXvcE8/Xuk=;
+	s=arc-20240116; t=1737748328; c=relaxed/simple;
+	bh=t6A2UrewOadZeczOXQMHrEZX4uQGcwkjxQYBLjehYr4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ris4W35MGLe4rW4/1jlvwOvD9H7YDURNqjA2/jqNv3ZO7aVfIC+gHJ0q5+RvmXmujPda3mIrqyh/fnDEpxFkPkdyVY8P/tLwMrE0utxrudn8Z03RbH/aINwnkoaElsB7SP5xn+zmsXUuYn1roov2IYhSjuNAawFDtvVe4CZTY4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DHTHv9AV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17396C4CED2;
-	Fri, 24 Jan 2025 19:52:04 +0000 (UTC)
+	 MIME-Version; b=lBLZ39MSSfff+bMhQiNpam/ZKqdqUwVWBS8+zo6idBMGabkAdNy3uDwL+H5rkaRxcmY1DWSiNf/ghTwSfEB+x32d+0etaLfJ0GL80f7VnUNcvfFGu1RlGwPq/0RDjDW6t3uq3weWPhqFGzT1D1xK05QjcGnSPv6ZcRbfPUu1qVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MXLUkkiR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2045CC4CED2;
+	Fri, 24 Jan 2025 19:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737748325;
-	bh=V52vYM8wFXWMHNImNm1EMWnrC1j2cFzM7hXvcE8/Xuk=;
+	s=k20201202; t=1737748327;
+	bh=t6A2UrewOadZeczOXQMHrEZX4uQGcwkjxQYBLjehYr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DHTHv9AVDm6eMNuo7wnde3M+KmDJA7eXs6V7pa7R1fYzYBPYzr1L55IlN0shHs2qb
-	 ye40YpdLz626/ojpGY6Pa9vr/OeYeS0wNZYmx9u+Bsj6PeJiMHevo+YHl8DUZna/Ay
-	 MRDNq//zU5drjhy6VBps5SeD3iYhvL9xmb3W8sqG6YDFOLl/P4z00o2kwhAkcafBmY
-	 CgUQLt7ZHrsVOZFxlgVCN+z91sOkh4/9R8Gzda3tqW0RoVbUp9asrBXhBEKNxDx91z
-	 Sp5LheME3hE0HQkJiOGfy2SOQY0RTnJ6k53zrUomyzPREQh7OttnsCJIaT9khMLKmg
-	 ilIt8Tig+BTGQ==
+	b=MXLUkkiRTWsi8Ph5+iMRnN8MRV4dJhWAf+D3WYiG3FjoIMxG93IuPxZYLFszPv/8a
+	 EGy6myp4pgEVSBjDMW8VXBiP1asLhAz3QrEH68uvQbwB+jjxS5Q3Yeeh6fp94seswm
+	 ZTDdyt/POjcKbwbzPve64ffBMAfIEDnvCx3BO2HSbmX24HgUr1B1ymt8yCAfOXe772
+	 WsY0Jh7EhRd522Uf6KK60oXLpqhsQVR8QcSWlX1JrASkYz6hXZ6JSI8Ofd+OPN5MHO
+	 qp3JxOBLORWotGJqjLDd3ZqKyB86ddZfaE8g7VGXvqwn/cfIFq0KLs+9JtE+hQhR6k
+	 8oSe0GDr5g2pg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Imkanmod Khan <imkanmodkhan@gmail.com>,
+Cc: alvalan9@foxmail.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y] drm/amd/display: fixed integer types and null check locations
-Date: Fri, 24 Jan 2025 14:52:03 -0500
-Message-Id: <20250124101041-1fef2a4a8d743052@stable.kernel.org>
+Subject: Re: [PATCH 6.6.y] ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_find()
+Date: Fri, 24 Jan 2025 14:52:05 -0500
+Message-Id: <20250124093942-02d16d7d0fa5d688@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250124040836.7603-1-imkanmodkhan@gmail.com>
+In-Reply-To:  <tencent_C84F430BAD560DD787812499B5130E0A4C06@qq.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,58 +63,49 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 0484e05d048b66d01d1f3c1d2306010bb57d8738
+The upstream commit SHA1 provided is correct: 90e0569dd3d32f4f4d2ca691d3fa5a8a14a13c12
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Imkanmod Khan<imkanmodkhan@gmail.com>
-Commit author: Sohaib Nadeem<sohaib.nadeem@amd.com>
+Backport author: alvalan9@foxmail.com
+Commit author: Ido Schimmel<idosch@nvidia.com>
 
 
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 71783d1ff652)
-6.1.y | Not found
+6.6.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  0484e05d048b6 ! 1:  1e1b2056735e7 drm/amd/display: fixed integer types and null check locations
+1:  90e0569dd3d32 ! 1:  265c5628cefe6 ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_find()
     @@ Metadata
       ## Commit message ##
-         drm/amd/display: fixed integer types and null check locations
+         ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_find()
      
-    +    [ Upstream commit 0484e05d048b66d01d1f3c1d2306010bb57d8738 ]
+    +    commit 90e0569dd3d32f4f4d2ca691d3fa5a8a14a13c12 upstream.
     +
-         [why]:
-         issues fixed:
-         - comparison with wider integer type in loop condition which can cause
+         The per-netns IP tunnel hash table is protected by the RTNL mutex and
+         ip_tunnel_find() is only called from the control path where the mutex is
+         taken.
     @@ Commit message
-         Signed-off-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
-         Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-         Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-    +    Signed-off-by: Imkanmod Khan <imkanmodkhan@gmail.com>
+         Reviewed-by: Eric Dumazet <edumazet@google.com>
+         Link: https://patch.msgid.link/20241023123009.749764-1-idosch@nvidia.com
+         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    +    Signed-off-by: Alva Lan <alvalan9@foxmail.com>
      
-      ## drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c ##
-     @@ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c: static enum bp_result get_firmware_info_v3_2(
-    @@ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c: static enum bp_result get_in
-      	info->gpu_cap_info =
-      	le32_to_cpu(info_v2_2->gpucapinfo);
-      	/*
-    -
-    - ## drivers/gpu/drm/amd/display/dc/link/link_validation.c ##
-    -@@ drivers/gpu/drm/amd/display/dc/link/link_validation.c: bool link_validate_dpia_bandwidth(const struct dc_stream_state *stream, const un
-    - 	struct dc_link *dpia_link[MAX_DPIA_NUM] = {0};
-    - 	int num_dpias = 0;
+      ## net/ipv4/ip_tunnel.c ##
+     @@ net/ipv4/ip_tunnel.c: static struct ip_tunnel *ip_tunnel_find(struct ip_tunnel_net *itn,
     - 
-    --	for (uint8_t i = 0; i < num_streams; ++i) {
-    -+	for (unsigned int i = 0; i < num_streams; ++i) {
-    - 		if (stream[i].signal == SIGNAL_TYPE_DISPLAY_PORT) {
-    - 			/* new dpia sst stream, check whether it exceeds max dpia */
-    - 			if (num_dpias >= MAX_DPIA_NUM)
+    - 	ip_tunnel_flags_copy(flags, parms->i_flags);
+    + 	struct ip_tunnel *t = NULL;
+    + 	struct hlist_head *head = ip_bucket(itn, parms);
+      
+     -	hlist_for_each_entry_rcu(t, head, hash_node) {
+     +	hlist_for_each_entry_rcu(t, head, hash_node, lockdep_rtnl_is_held()) {
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
