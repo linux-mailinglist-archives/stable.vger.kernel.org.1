@@ -1,47 +1,94 @@
-Return-Path: <stable+bounces-110350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11FCCA1AF1C
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 04:45:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 542B3A1AF49
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 05:06:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B3983AC3ED
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 03:45:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D9EF16B755
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 04:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0DE1D54F4;
-	Fri, 24 Jan 2025 03:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5C31D63C9;
+	Fri, 24 Jan 2025 04:06:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="StgJ7NRf"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2797C29A5;
-	Fri, 24 Jan 2025 03:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A6523B0;
+	Fri, 24 Jan 2025 04:06:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737690350; cv=none; b=VzmvBQs04cJ3K0ZQDTlw3xV7+ZA9lUI6ssqZBI2drGkpPkhh274HvCiGcvpcnnihjq5CdujEUUdkgscbb4UmcKRosIvnpnFq77HAH6DUkG8fKrS9l52pEn/RC4EwSz/VEI4I95KD8yZFDP1ijZlfYnj3Ga4KJlALA8d38/+mkME=
+	t=1737691614; cv=none; b=KphZfhKkg1W5YQF6eZwFS4xm1E8uYofpYvIkDo3juIWeUkbMtZfBMDjqeaaBjsDgludg7tA1B0ynwRv0J8BvZFw2EAAVNVayJUPNYcqC5leT3uJ5Ycz1ylFN4Ximl0U3ViKQNk+TGYOr9gmuKRiDvEcmdtiZczAqVcKWvxtfTHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737690350; c=relaxed/simple;
-	bh=uxo/9/fgtMztGry1fTDswhShRpFNssx5PAayahQIVJw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KlY+c0YLJp9i+s59v78nJhVMCkLJCYbE1722M/TzKetQGdk8rNU7FrujWGBHXp+KzhcoPSXGWOrgJzhecwiNbaO83gdgK4VKejQ/4Bz9c38WmbZsxd0U5x7271WiJrioUIyNfrO+eAp+1g/aE3RjRUf+eWoUDRfLY7BWijWNfMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [220.197.230.228])
-	by APP-01 (Coremail) with SMTP id qwCowAC3vtLkDJNn9uwZCQ--.10404S2;
-	Fri, 24 Jan 2025 11:45:43 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: Carlos Maiolino <cem@kernel.org>,
-	"Darrick J . Wong" <djwong@kernel.org>
-Cc: linux-xfs@vger.kernel.org,
+	s=arc-20240116; t=1737691614; c=relaxed/simple;
+	bh=ea0+XODqA4zgxKtAhQAQx7ZqtBm9OFkMPPtrp7Ln3+A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=njpwXvRWc+SYD6B8vl07r6Ps0HBHfti1GDf6HHAfqVndR2Lpja9GipdB0vVYgO1Yra66g3nsz6jUUIl46PIp9NB5SWBPIZiJGJbpmKTBtY5VKEXvYAXLG8367AnoNxoGkMXmB9/f5OVpsCntgtm8ZPBDETWudYD34PjETdiTQKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=StgJ7NRf; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-21619108a6bso27484995ad.3;
+        Thu, 23 Jan 2025 20:06:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737691612; x=1738296412; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Vj1NaMTUsVA57ckq/QD9h243Rs/TkZbkHkyDFlhTqVQ=;
+        b=StgJ7NRfU+idm/DPdWTZH+xR5eSxrZ+aPXBjmsDrOmn6UMMpgHlZgNSDU6u1mPFfmk
+         +L84nZT1JgBiITXo/M5xWsYGOr6QldSP+u/WLYGt+WA7Cm+ZRHpEZRXVs6GzBE6zG33S
+         1SYyajChUh5TQwfG8uf+3ntseLIVgImIphnzWBBirSWm56WpiCInDdRMjxU4Au8bVg+t
+         /tufCMUaFu/SFQ4JusQlIPi7ZHv242UA/ulkSUb8x4NOr1AW14jqgLVGVkWDCiKBZC6M
+         nfLvKo03Gdo/tYr7XSLKE1X8oi0j9mzoQ3+rtZ5W2FJO2iBMADMR9L2T4SIvyAtycRJr
+         qThA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737691612; x=1738296412;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Vj1NaMTUsVA57ckq/QD9h243Rs/TkZbkHkyDFlhTqVQ=;
+        b=THQNdmBud/xAOE80JiMpgnhhMcS8yYjBtyC9aDUNCIiE0aBBHjT4iQowroa7fH4A6a
+         FDVH4k8YS4auj/qEkhhVuzIf9bO5zeBitr9I9LMiIUhjMsfO4LqAyZ1CGYnZ2Ky7RatO
+         gtsgyoKzodDN1b48KMAX8PlOr/iqaMaocXjNFLqm9UcdaXEAPjnWVDNG36HlCf8P71BM
+         YghPGQtc4+ZGwHrAB0OOWfogaeak2svLUP5DURw20Tdtq7EbjnEuuXYfWhkMxbbhPcNA
+         yRlntqHI5DacFd5M4PCVdsSNoZ6F4huVOa4p7MrfXb6v/MR9ySva/goOcDHy4RIyh7ZS
+         tCDg==
+X-Forwarded-Encrypted: i=1; AJvYcCUZFDR4Zbuf37fk4F0nq+B/xDiDYys0E54B79Ln8zubehChv0SDhgddNHcfTjJKvJ6+rFlUGLIf44Pe7H4=@vger.kernel.org, AJvYcCXfV+vhxq+w6bWP4RmHuGp1i1wclHXatj1TCeJLYUJGlBJetvSYFpNY4QTeBa/A5clVVC6sb+5OQd1lUBE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzt3Vz0iST+BsmhW1tDKS9tSvSULvqsYZHOW64SYuXnIXF39C2B
+	sm+0MT5c8cy4ylfM4aMXPAaFQyRGyluYnCbMHwdlq/gsP3S4rqikwU+ARcNrXgI=
+X-Gm-Gg: ASbGncs89OM2mROtrgZ+TfRszuApZ1cGcE67NxjK2LsDDOH+Jh16fY9VWoJ2Ayuko3/
+	lA5/XTKgQKP9g52QZgBj7zFfE2XYa5Qa5EKV2ygGSiHDWP3iRPLKtDd7HOw2pgSq9Ht26YAfHZZ
+	EShmXtMK+F843dZVR2VPwnMdYTA61pc1NxQlyFP8scJURgQuIveui//AfhdO6bhZrTj/yuYajYu
+	bYEKus2C3zOjRwFB3ck3b19PgCI5BwaB3M9WFjYLlj5izNA+yPcjZbcd4weMtiFYxwNKMWgnRm2
+	Cym7MiFggJdXnHFQSLdSX7RrExMfgA==
+X-Google-Smtp-Source: AGHT+IF3SHS7uGw6j2HUHGRc2o6x9hUUGZICmg9DQKSnpjYz1OzyDi2k9jgSfX5GniU24Huia3n0zA==
+X-Received: by 2002:a05:6a00:a2a:b0:72d:8af9:bc64 with SMTP id d2e1a72fcca58-72daf9ec17dmr31990363b3a.9.1737691611690;
+        Thu, 23 Jan 2025 20:06:51 -0800 (PST)
+Received: from jren-d3.localdomain ([221.222.59.195])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72f8a78f145sm795398b3a.167.2025.01.23.20.06.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jan 2025 20:06:51 -0800 (PST)
+From: Imkanmod Khan <imkanmodkhan@gmail.com>
+To: stable@vger.kernel.org
+Cc: patches@lists.linux.dev,
+	mchehab@kernel.org,
+	fullwaywang@outlook.com,
+	gregkh@linuxfoundation.org,
 	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] xfs: Add error handling for xfs_reflink_cancel_cow_range
-Date: Fri, 24 Jan 2025 11:45:09 +0800
-Message-ID: <20250124034510.672-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	tiffany.lin@mediatek.com,
+	andrew-ct.chen@mediatek.com,
+	yunfei.dong@mediatek.com,
+	matthias.bgg@gmail.com,
+	linux-media@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Imkanmod Khan <imkanmodkhan@gmail.com>
+Subject: [PATCH 6.1.y] media: mtk-vcodec: potential null pointer deference in SCP
+Date: Fri, 24 Jan 2025 12:06:41 +0800
+Message-ID: <20250124040641.7431-1-imkanmodkhan@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,59 +96,38 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAC3vtLkDJNn9uwZCQ--.10404S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrZrW3Kw4fZF18tw1rWw1kAFb_yoWkZFg_Aa
-	10gw10gw1UXr9rCws8Awn0yF1vkw4vkFn3Zr40yFsxt34UJ3Z8Jr4qyFZYkr1kGwn8uF95
-	Jr42vrs3tryxAjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbV8FF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
-	0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
-	6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
-	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v2
-	6r126r1DMxkIecxEwVAFwVW8GwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJV
-	W8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF
-	1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6x
-	IIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvE
-	x4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvj
-	DU0xZFpf9x0JUoKZXUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAgMA2eSkhDXDQAAsm
 
-In xfs_inactive(), xfs_reflink_cancel_cow_range() is called
-without error handling, risking unnoticed failures and
-inconsistent behavior compared to other parts of the code.
+From: Fullway Wang <fullwaywang@outlook.com>
 
-Fix this issue by adding an error handling for the
-xfs_reflink_cancel_cow_range(), improving code robustness.
+[ Upstream commit 53dbe08504442dc7ba4865c09b3bbf5fe849681b ]
 
-Fixes: 6231848c3aa5 ("xfs: check for cow blocks before trying to clear them")
-Cc: <stable@vger.kernel.org> # v4.17
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+The return value of devm_kzalloc() needs to be checked to avoid
+NULL pointer deference. This is similar to CVE-2022-3113.
+
+Link: https://lore.kernel.org/linux-media/PH7PR20MB5925094DAE3FD750C7E39E01BF712@PH7PR20MB5925.namprd20.prod.outlook.com
+Signed-off-by: Fullway Wang <fullwaywang@outlook.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+[ To fix CVE: CVE-2024-40973, modified the file path from drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_scp.c
+ to drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c and minor conflict resolution ]
+Signed-off-by: Imkanmod Khan <imkanmodkhan@gmail.com>
 ---
- fs/xfs/xfs_inode.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
-index c8ad2606f928..1ff514b6c035 100644
---- a/fs/xfs/xfs_inode.c
-+++ b/fs/xfs/xfs_inode.c
-@@ -1404,8 +1404,11 @@ xfs_inactive(
- 		goto out;
+diff --git a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c
+index d8e66b645bd8..27f08b1d34d1 100644
+--- a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c
++++ b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c
+@@ -65,6 +65,8 @@ struct mtk_vcodec_fw *mtk_vcodec_fw_scp_init(struct mtk_vcodec_dev *dev)
+ 	}
  
- 	/* Try to clean out the cow blocks if there are any. */
--	if (xfs_inode_has_cow_data(ip))
--		xfs_reflink_cancel_cow_range(ip, 0, NULLFILEOFF, true);
-+	if (xfs_inode_has_cow_data(ip)) {
-+		error = xfs_reflink_cancel_cow_range(ip, 0, NULLFILEOFF, true);
-+		if (error)
-+			goto out;
-+	}
- 
- 	if (VFS_I(ip)->i_nlink != 0) {
- 		/*
+ 	fw = devm_kzalloc(&dev->plat_dev->dev, sizeof(*fw), GFP_KERNEL);
++	if (!fw)
++		return ERR_PTR(-ENOMEM);
+ 	fw->type = SCP;
+ 	fw->ops = &mtk_vcodec_rproc_msg;
+ 	fw->scp = scp;
 -- 
-2.42.0.windows.2
+2.25.1
 
 
