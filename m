@@ -1,131 +1,293 @@
-Return-Path: <stable+bounces-110341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57631A1AE29
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 02:24:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10C7EA1AE33
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 02:31:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A09BD16B87D
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 01:24:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8D193A7B5B
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 01:31:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77AEF22075;
-	Fri, 24 Jan 2025 01:24:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=engineer.com header.i=rajanikantha@engineer.com header.b="TzI72Sht"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A07D31B424B;
+	Fri, 24 Jan 2025 01:31:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.com (mout.gmx.com [74.208.4.200])
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E7B6FB9
-	for <stable@vger.kernel.org>; Fri, 24 Jan 2025 01:24:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.208.4.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5557E575;
+	Fri, 24 Jan 2025 01:31:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737681890; cv=none; b=RF4rAtgI4+Or5jeA8fCvWNEuSWduPcT36MmhTiJYqdYpF+uEVG9Kj1iSz9sBrvV925WEQDSIpqG+Kd0BSkdtCgxQ0QbkpQH8Q2ZAJK8KgzwhuGyDQ/rp0SSdQfaYdjBarNxXuvVfjVv9fDC41E/u0ZqoA8SBCmKRe/98Ko/ZQ2M=
+	t=1737682264; cv=none; b=XEDLBhAi+qv3I/YqsHxHwTYtDB8ImExDchxK81AOBa3jep8DKeTwNNdao1xcBw+91t9+aZEpxTaRJl7g1wPIgOTK4YgNW4q4okdgV8cW8WbPJ7Lg/IG3+6rXpWTswNGmG1p4852f7K5rYisaqeLR2C3BC6zTacb5CTrIfjXvvy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737681890; c=relaxed/simple;
-	bh=7aLkB85GLbo+iyA+14a2T34f0UhJh4aw2TeDpO/deNY=;
-	h=MIME-Version:Message-ID:From:To:Subject:Content-Type:Date; b=gjXS2QDX22wttCOg83bFZbCz5mU+sbTtdwXErvFXSyKTufQP7D8VvvQTcKUqUXxWYxKUzZ6rpx5XTFGSaRLVQHwb31V2VjucArMwVff0uT3fsrSjuS16c/gN7ASx5ETsAS1u8ME86bK1z6LfFROb2wl7/ec44xoGp+t4IhbFEvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=engineer.com; spf=pass smtp.mailfrom=engineer.com; dkim=pass (2048-bit key) header.d=engineer.com header.i=rajanikantha@engineer.com header.b=TzI72Sht; arc=none smtp.client-ip=74.208.4.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=engineer.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engineer.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=engineer.com;
-	s=s1089575; t=1737681886; x=1738286686;
-	i=rajanikantha@engineer.com;
-	bh=rfjnR3xgtafaBCmAfxjigSmDr4EkNzwqddykpknV21c=;
-	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Subject:
-	 Content-Type:Date:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=TzI72ShtdzEAo/uTp5a9jmrftEeqKfMH7/bmPOVkmsqym3bgv2JMkF8xpSBJy/Yy
-	 G68ZP9SSJvGIbmBNbEylW7py7nE+UufYxesLk8N4nlw8/kxeKr6q4NHvPR6Yfbvgz
-	 L4DfgGQ42FQiyHo+UrLeLV96/7o8N4TChQ8LcNaaXXD/sF5eFKsBaQIPEsAtqvHQB
-	 sm7fGuTRzfN4xgNh1GI1Oum+GXQBTkO4+CoFCa2BJH2semknaxZTX71cBv1gXFTP6
-	 4NaZvtfgEkBq12YiAqvIY3TYiJ0jujbvFD9mdUl30+gNAMrj8pFZau2svuAYE1G4E
-	 AdnoCs1T96VP8mauXg==
-X-UI-Sender-Class: f2cb72be-343f-493d-8ec3-b1efb8d6185a
-Received: from [60.247.85.88] ([60.247.85.88]) by web-mail.mail.com
- (3c-app-mailcom-lxa10.server.lan [10.76.45.11]) (via HTTP); Fri, 24 Jan
- 2025 02:24:46 +0100
+	s=arc-20240116; t=1737682264; c=relaxed/simple;
+	bh=JPdh+pSdtiNvKkqGEVtQWJUAq47E0PZlzlzX6WptKqE=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=IIiPyov8w03m0cCBZvskQ5dCFONUUolezSU1Td4sXSNXb87xLIDKujOQ7N4cgfEz4AEg7jpbxJGJEcmpBt68/vx4sJjHdOuw6x9mTOHsklRXpnuh0DdoV1oEBkW4McEavdpMTbwDDZFAMwxay9UHwLMFDLzY8NqwPfXrTwTbW34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4YfKy46dGbz4f3jqr;
+	Fri, 24 Jan 2025 09:30:36 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.252])
+	by mail.maildlp.com (Postfix) with ESMTP id 68FC71A0B03;
+	Fri, 24 Jan 2025 09:30:52 +0800 (CST)
+Received: from [10.174.176.73] (unknown [10.174.176.73])
+	by APP3 (Coremail) with SMTP id _Ch0CgAne8VI7ZJncrMoBw--.9785S3;
+	Fri, 24 Jan 2025 09:30:50 +0800 (CST)
+Subject: Re: [REGRESSION] kernel panic at bitmap_get_stats+0x2b/0xa0 since
+ 6.12
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+ yukuai1@huaweicloud.com, LKML <linux-kernel@vger.kernel.org>,
+ linux-raid@vger.kernel.org, mariusz.tkaczyk@linux.intel.com,
+ song@kernel.org, pmenzel@molgen.mpg.de
+Cc: Himanshu Madhani <himanshu.madhani@oracle.com>,
+ "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Darren Kenny <darren.kenny@oracle.com>, "yukuai (C)" <yukuai3@huawei.com>
+References: <ca3a91a2-50ae-4f68-b317-abd9889f3907@oracle.com>
+From: Yu Kuai <yukuai1@huaweicloud.com>
+Message-ID: <e6b8d928-36d3-d2e5-a773-2f73b8f92bbc@huaweicloud.com>
+Date: Fri, 24 Jan 2025 09:30:48 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <trinity-ef20cab5-c436-4547-967c-6751277b8964-1737681886348@3c-app-mailcom-lxa10>
-From: Rajani kantha <rajanikantha@engineer.com>
-To: lizhi.xu@windriver.com, tytso@mit.edu, stable@vger.kernel.org
-Subject: [PATCH 6.1.y] ext4: filesystems without casefold feature cannot be
- mounted with siphash
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 24 Jan 2025 02:24:46 +0100
-Importance: normal
-Sensitivity: Normal
-X-Priority: 3
-X-Provags-ID: V03:K1:VViNxXIQxA9mU+a1CoRRsDeYEAbZZXnjIB/jI+dvbcwJ4jGe7COwS5fveX81Lv/QifF2y
- PF1Ur7kRfDPPJwVGIzB1/Aj+ep/sxhbKb4bsUVALIvMq4TO80sWfDr5Gw5wAaRTZAQWSV1004JJI
- Xrkj6enDGNgKFbCwG1svmJ33cDetcizXt9I0qu2FPiqDhorYzGKEK2mSiQjdQ+z71WmoAjF9D/q8
- IQuQWs1NYnqfIJPKdlUZ+QbHVG8qoMJ+VECcH3DS3tzDKCj/Wb1NriTcRfIgE2rdyOXzx3ebZpl/
- x0=
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:8PbbdYFBu5M=;HZZJLtCDDdd1FZAe15QUZTjEa6F
- 0i7LBdfl4bh6LCX5DZKTMCCq9I5inIZHz000zv3R+Iw1BorYmz8WcseNaqGJo+o8wWWj2Sz7e
- mOJsN5jpyEUEs+TCi2TM9WhxmKpvjYfaluQSnTrHvp3fmkIwTqs2SwCy6yrnUQCVOQJTCQCBj
- ThNgtVIXv0nl4F4TeNyWVqOqHDfKaDblyLd2TZ2TdtojgyBhokwVVV3b6Syj/rN1fuwbeqBtr
- ZsgVB7QvQDEOd7ZbixpyOtqEi4DMA+OYGY4Qw06WOfwkyLyO8aIGkb4lzSNu1E0IhKWSH4JMH
- 21U7Idp8Llk1HYahKgr5vVZn3rfNw+8KWmIewPr6PE4kyL0ewVdKA2jiOiZWXV+LF5giXJwF1
- X0u9/on99XWd1FLCPNIp5jWcL2Otyh8h2A5TJPGchnIoCa/wp0XR/BRYrbEW/UMyqDsUQm6Il
- jjUYry/rKrqesy0Uh1IGrozf6CyYsFBpEDMwse5BEpiOPoXBnc5qscYyelH2CJzhnprmkHGbX
- 8J9ayWc6CtLNY39nKa5Df2u/BmULdB47el5JUAIgOLd2BbmX+juhx2zirvFZ9DSx02LrCMXGa
- 2SsWkDcZrkXuS4IzosY3WkWiFz67cCSH+vm1+lp6CXQFueKYQ2vagsHx7xYhUoYxiLeddVQml
- NvD+08PFDLwHfUv4soDITH8cLl3mk8/1JFT4tEkvtYTUxBeXohknO5XYrldaw1PDAE2t5H0I8
- avrkl98UwSfc0zHBr2yzoZD+/WDM9t1Ig4Z+qpd0rv1hqswVxd92JSJKbJUCKgEHAjS57eYsO
- e5G+LYX0TylPHV6+tuN56/HT+6iSbw0R3r+4Wf+V+hn10Zk9wEdoJgaWWjsPDoglqwqY1HNJR
- KuHhcU0KCjXDYHCluRMxVMy42BzzfEb/hx8PVd1zqO6RgrNP4uKVofNm6+xA4Bh9sWewlyLee
- mRNYsF9FemHNgcSEo98XpSwH+xVZGjYL88XhJSkeJgkPzyH7WsVHQa8gullErelgqcHo1inse
- rapwzY7nlMGUVlgWtxZloXkvt8jKyDgYksTRxiVmqIYtIwB6gknD8c1vAwOaTyFDeJ312qndH
- seAAl0AyZotjB4+GxYe9L5Xoj6MpzmzFO8OybSHk/U5BRwCwJ68/YbbYHYL0UKi9JTZyV/42M
- ISOeCZIeZnoLbnXyh8tnE
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <ca3a91a2-50ae-4f68-b317-abd9889f3907@oracle.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_Ch0CgAne8VI7ZJncrMoBw--.9785S3
+X-Coremail-Antispam: 1UD129KBjvJXoW3Xr1DGry8tFWUJw4xJry7ZFb_yoWfGw1Dpr
+	13KFW3Gr48Jr1xJryqqr1UWF18JF4UA3WDJr9rA348JF18WFn8Xr1kXayUtF1DtF4rZry3
+	Kr4Dtwn3t3WUGaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBF14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
+	0xkIwI1lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x
+	0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
+	7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcV
+	C0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF
+	04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7
+	CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
+X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+Hi,
 
-[ upstream commit 985b67cd86392310d9e9326de941c22fc9340eec ]
+在 2025/01/23 5:58, Harshit Mogalapalli 写道:
+> Hi all,
+> 
+> 
+> We started seeing panic during boot cycle on 6.12 upstream kernel.
+> 
+> Data points:
+> * This is reproducible on 6.12.9
+> * Also reproducible on 6.13 from yesterday.
+> * Not reproducible on 6.11
+> 
+> So I looked at commits between 6.11-> 6.12 , and narrowed it down to a 
+> patch series which made changed to md-bitmap.c
+> 
+> https://lore.kernel.org/all/20240826074452.1490072-1-yukuai1@huaweicloud.com/ 
+> 
+> 
+> After narrowing down further: it is narrowed down to this commit
+> 
+> ec6bb299c7c3 md/md-bitmap: add 'sync_size' into struct md_bitmap_stats
+> 
+> 
+> #regzbot introduced: ec6bb299c7c3
+> 
+> 
+> Also, the panic points to the middle line below:
+> 
+>      sb = kmap_local_page(bitmap->storage.sb_page);
+> *    stats->sync_size = le64_to_cpu(sb->sync_size);
+>      kunmap_local(sb);
+> 
+> Call trace is as follows:
+> 
+> [   21.427462] Oops: general protection fault, probably for 
+> non-canonical address 0x8730d3f80000028: 0000 [#1] PREEMPT SMP NOPTI
+> [   21.440104] CPU: 56 UID: 0 PID: 1531 Comm: mdadm Not tainted 
+> 6.13.0-master.20250121.ol8.x86_64 #1
+> [   21.450019] Hardware name: Oracle Corporation ORACLE SERVER 
+> X9-2L/ASM,MTHRBD,2U, BIOS 62110100 07/15/2024
+> [   21.460710] RIP: 0010:bitmap_get_stats+0x2b/0xa0
+> [   21.465872] Code: 0f 1e fa 0f 1f 44 00 00 48 89 f2 48 85 ff 74 7d 48 
+> 8b 4f 50 48 2b 0d dc 9f e5 00 48 8b 35 e5 9f e5 00 48 c1 f9 06 48 c1 e1 
+> 0c <48> 8b 4c 31 28 48 89 4a 20 48 8b 4f 18 48 89 4a 10 48 8b 4f 10 48
+> [   21.486849] RSP: 0018:ff3e5f658fc3fb18 EFLAGS: 00010206
+> [   21.492690] RAX: ffffffff8d17d660 RBX: ff27d0600af69690 RCX: 
+> 094b3d0000000000
+> [   21.500663] RDX: ff3e5f658fc3fb28 RSI: ff27d03f80000000 RDI: 
+> ff27d06008cd9c00
+> [   21.507233] mlx5_core 0000:b1:00.0: Rate limit: 127 rates are 
+> supported, range: 0Mbps to 97656Mbps
+> [   21.508629] RBP: ff27d0604a737418 R08: 0000000000000000 R09: 
+> 0000000000000000
+> [   21.508631] R10: 0000000000000000 R11: 0000000000000000 R12: 
+> 00000000012c2000
+> [   21.508631] R13: ff27d0604a737018 R14: ff27d0604a737000 R15: 
+> ff27d0604a737018
+> [   21.508632] FS:  00007f61a01c98c0(0000) GS:ff27d07f7f600000(0000) 
+> knlGS:0000000000000000
+> [   21.508634] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   21.508635] CR2: 000056503c28f458 CR3: 00000020c000c004 CR4: 
+> 0000000000771ef0
+> [   21.518772] mlx5_core 0000:b1:00.0: E-Switch: Total vports 27, per 
+> vport: max uc(128) max mc(2048)
+> [   21.526600] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 
+> 0000000000000000
+> [   21.526601] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 
+> 0000000000000400
+> [   21.526602] PKRU: 55555554
+> [   21.526603] Call Trace:
+> [   21.526604]  <TASK>
+> [   21.535111] mlx5_core 0000:b1:00.0: Flow counters bulk query buffer 
+> size increased, bulk_query_len(8)
+> [   21.542533]  ? show_trace_log_lvl+0x1b0/0x300
+> [   21.542537]  ? show_trace_log_lvl+0x1b0/0x300
+> [   21.556126] mlx5_core 0000:b1:00.0: mlx5_pcie_event:301:(pid 529): 
+> PCIe slot advertised sufficient power (27W).
+> [   21.557983]  ? md_seq_show+0x2d2/0x5b0
+> [   21.557988]  ? __die_body.cold+0x8/0x12
+> [   21.641128]  ? die_addr+0x3c/0x60
+> [   21.645080]  ? exc_general_protection+0x17d/0x400
+> [   21.650574]  ? asm_exc_general_protection+0x26/0x30
+> [   21.656267]  ? __pfx_bitmap_get_stats+0x10/0x10
+> [   21.661568]  ? bitmap_get_stats+0x2b/0xa0
+> [   21.666277]  md_seq_show+0x2d2/0x5b0
+> [   21.670507]  seq_read_iter+0x2b9/0x470
+> [   21.674924]  seq_read+0x12f/0x180
+> [   21.678853]  proc_reg_read+0x57/0xb0
+> [   21.683074]  vfs_read+0xf6/0x380
+> [   21.686902]  ? __seccomp_filter+0x30b/0x520
+> [   21.691786]  ksys_read+0x6c/0xf0
+> [   21.695607]  do_syscall_64+0x82/0x170
+> [   21.699909]  ? arch_exit_to_user_mode_prepare.isra.0+0x1e/0xd0
+> [   21.706637]  ? syscall_exit_to_user_mode+0x37/0x1a0
+> [   21.712295]  ? __memcg_slab_free_hook+0xf7/0x160
+> [   21.717660]  ? __x64_sys_close+0x3c/0x80
+> [   21.722248]  ? kmem_cache_free+0x400/0x460
+> [   21.727028]  ? syscall_exit_to_user_mode_prepare+0x174/0x1b0
+> [   21.733553]  ? arch_exit_to_user_mode_prepare.isra.0+0x1e/0xd0
+> [   21.740270]  ? syscall_exit_to_user_mode+0x37/0x1a0
+> [   21.745913]  ? do_syscall_64+0x8e/0x170
+> [   21.750388]  ? do_syscall_64+0x8e/0x170
+> [   21.754857]  ? clear_bhb_loop+0x45/0xa0
+> [   21.759318]  ? clear_bhb_loop+0x45/0xa0
+> [   21.763772]  ? clear_bhb_loop+0x45/0xa0
+> [   21.768218]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [   21.774014] RIP: 0033:0x7f619f862585
+> [   21.778170] Code: fe ff ff 50 48 8d 3d 52 a8 06 00 e8 e5 08 02 00 0f 
+> 1f 44 00 00 f3 0f 1e fa 48 8d 05 d5 71 2a 00 8b 00 85 c0 75 0f 31 c0 0f 
+> 05 <48> 3d 00 f0 ff ff 77 53 c3 66 90 41 54 49 89 d4 55 48 89 f5 53 89
+> [   21.799471] RSP: 002b:00007ffe50c2d3c8 EFLAGS: 00000246 ORIG_RAX: 
+> 0000000000000000
+> [   21.808099] RAX: ffffffffffffffda RBX: 000056503c2802a0 RCX: 
+> 00007f619f862585
+> [   21.816240] RDX: 0000000000000400 RSI: 000056503c28d000 RDI: 
+> 0000000000000004
+> [   21.824382] RBP: 0000000000000d68 R08: 0000000000000008 R09: 
+> 0000000000000001
+> [   21.832518] R10: 0000000000000000 R11: 0000000000000246 R12: 
+> 00007f619fb00860
+> [   21.840654] R13: 00007f619fb013a0 R14: 000056503c280a50 R15: 
+> 000056503c281480
+> [   21.848789]  </TASK>
+> [   21.851389] Modules linked in: raid1 mgag200 drm_client_lib 
+> drm_shmem_helper drm_kms_helper sd_mod sg raid0 mlx5_core(+) ahci 
+> libahci drm crct10dif_pclmul ghash_clmulni_intel mlxfw sha512_ssse3 igb 
+> nvme sha256_ssse3 libata tls sha1_ssse3 megaraid_sas nvme_core 
+> pci_hyperv_intf psample dca nvme_auth i2c_algo_bit nfit(+) libnvdimm 
+> aesni_intel gf128mul crypto_simd cryptd
+> [   21.888253] ---[ end trace 0000000000000000 ]---
+> [   22.452319] RIP: 0010:bitmap_get_stats+0x2b/0xa0
+> [   22.457699] Code: 0f 1e fa 0f 1f 44 00 00 48 89 f2 48 85 ff 74 7d 48 
+> 8b 4f 50 48 2b 0d dc 9f e5 00 48 8b 35 e5 9f e5 00 48 c1 f9 06 48 c1 e1 
+> 0c <48> 8b 4c 31 28 48 89 4a 20 48 8b 4f 18 48 89 4a 10 48 8b 4f 10 48
+> [   22.479037] RSP: 0018:ff3e5f658fc3fb18 EFLAGS: 00010206
+> [   22.485067] RAX: ffffffff8d17d660 RBX: ff27d0600af69690 RCX: 
+> 094b3d0000000000
+> [   22.493217] RDX: ff3e5f658fc3fb28 RSI: ff27d03f80000000 RDI: 
+> ff27d06008cd9c00
+> [   22.501372] RBP: ff27d0604a737418 R08: 0000000000000000 R09: 
+> 0000000000000000
+> [   22.509527] R10: 0000000000000000 R11: 0000000000000000 R12: 
+> 00000000012c2000
+> [   22.517686] R13: ff27d0604a737018 R14: ff27d0604a737000 R15: 
+> ff27d0604a737018
+> [   22.525845] FS:  00007f61a01c98c0(0000) GS:ff27d07f7f600000(0000) 
+> knlGS:0000000000000000
+> [   22.535089] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   22.541701] CR2: 000056503c28f458 CR3: 00000020c000c004 CR4: 
+> 0000000000771ef0
+> [   22.549866] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 
+> 0000000000000000
+> [   22.558040] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 
+> 0000000000000400
+> [   22.566202] PKRU: 55555554
+> [   22.569425] Kernel panic - not syncing: Fatal exception
+> [   22.576477] Kernel Offset: 0xb600000 from 0xffffffff81000000 
+> (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+> [   22.654941] Rebooting in 60 seconds..
+> 
+> 
+> I would be happy to try any patches.
 
-When mounting the ext4 filesystem, if the default hash version is set to
-DX_HASH_SIPHASH but the casefold feature is not set, exit the mounting.
+Can you try the following patch on latest kernel?
 
-Reported-by: syzbot+340581ba9dceb7e06fb3@syzkaller.appspotmail.com
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Link: https://patch.msgid.link/20240605012335.44086-1-lizhi.xu@windriver.c=
-om
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Rajani Kantha <rajanikantha@engineer.com>
-=2D--
- fs/ext4/super.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Thanks for the report!
+Kuai
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 0b2591c07166..2e9c14e2370f 100644
-=2D-- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -3546,6 +3546,13 @@ int ext4_feature_set_ok(struct super_block *sb, int=
- readonly)
- 		return 0;
- 	}
- #endif
-+	if (EXT4_SB(sb)->s_es->s_def_hash_version =3D=3D DX_HASH_SIPHASH &&
-+	    !ext4_has_feature_casefold(sb)) {
-+		ext4_msg(sb, KERN_ERR,
-+			 "Filesystem without casefold feature cannot be "
-+			 "mounted with siphash");
-+		return 0;
-+	}
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 94166b2e9512..b07e9c595a7c 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -8429,12 +8429,14 @@ static void md_bitmap_status(struct seq_file 
+*seq, struct mddev *mddev)
+         unsigned long chunk_kb;
+         int err;
 
- 	if (readonly)
- 		return 1;
-=2D-
-2.35.3
++       /* prevent bitmap to be freed after checking */
++       mutex_lock(&mddev->bitmap_info.mutex);
+         if (!md_bitmap_enabled(mddev))
+-               return;
++               goto out;
+
+         err = mddev->bitmap_ops->get_stats(mddev->bitmap, &stats);
+         if (err)
+-               return;
++               goto out;
+
+         chunk_kb = mddev->bitmap_info.chunksize >> 10;
+         used_pages = stats.pages - stats.missing_pages;
+@@ -8450,6 +8452,9 @@ static void md_bitmap_status(struct seq_file *seq, 
+struct mddev *mddev)
+         }
+
+         seq_putc(seq, '\n');
++
++out:
++       mutex_unlock(&mddev->bitmap_info.mutex);
+  }
+
+  static int md_seq_show(struct seq_file *seq, void *v)
+
+> 
+> Thanks,
+> Harshit
+> 
+
 
