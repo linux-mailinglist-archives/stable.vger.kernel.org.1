@@ -1,126 +1,107 @@
-Return-Path: <stable+bounces-110349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFC8BA1AF00
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 04:25:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11FCCA1AF1C
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 04:45:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 618DF3A78B5
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 03:25:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B3983AC3ED
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 03:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862E11D63C5;
-	Fri, 24 Jan 2025 03:25:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KBXt9lEE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0DE1D54F4;
+	Fri, 24 Jan 2025 03:45:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9F319F411
-	for <stable@vger.kernel.org>; Fri, 24 Jan 2025 03:25:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2797C29A5;
+	Fri, 24 Jan 2025 03:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737689110; cv=none; b=T2mD7gSR2P72vBMIQ6b+6vNos3e1HU6Vb28N6502AARoMOSoPdaTOEMKSQhlo5cDCCAin54nj64Au2mB39kf+TDBU7y9cCRTD8llkBvUcVWV69/YZg1EGl0TdbZhXNSBDvv/FuSlaTwQNImQ79U5s2upPZlc04Y/7O3yw1ea22s=
+	t=1737690350; cv=none; b=VzmvBQs04cJ3K0ZQDTlw3xV7+ZA9lUI6ssqZBI2drGkpPkhh274HvCiGcvpcnnihjq5CdujEUUdkgscbb4UmcKRosIvnpnFq77HAH6DUkG8fKrS9l52pEn/RC4EwSz/VEI4I95KD8yZFDP1ijZlfYnj3Ga4KJlALA8d38/+mkME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737689110; c=relaxed/simple;
-	bh=7/SOS7HoIFwX/6lhvUTSOww4LUw/RnVOhKBKWv0uOzk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jQuVNco102vOayReGlFHiXA9Ha/hDF0cPXRd76iQe49ayS0CCAj5LoGsiYm5IDB0YazN21en4MJCHNvY0Z8Oixhekg3kc8SdZ9byVxTPMX+kt0dLDG4szxJYvwkPu0bIBghzzdVdcj97rvvQFxgtB80QmGQ5pLuNwm9ve5vbxI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KBXt9lEE; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2f43da61ba9so2395156a91.2
-        for <stable@vger.kernel.org>; Thu, 23 Jan 2025 19:25:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1737689108; x=1738293908; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=NZVGarXm8F3wmNaZlX6Uo9ZJAp39A7Hk9H8iGkJJROc=;
-        b=KBXt9lEEDX1qM8TX+VH7jnl1qiF5d5ftEFbBOO2MoM7T592VsTequ9zGqnq0xQTLGJ
-         xvg/8JFa/J7E06fA1V8+e6nSp2EhHjKM5cp6LCTOPr/SjjVHP15KhiELb8ECkbDw1dPo
-         l12Kp4PDK1N1RzUBgvqA2MGAb7isBUmmIfcVx2IVwdtxuE35KgcFyADSIZ3wqKGpAS3a
-         zbx2asG8NMgTQAbYa68mkfytpSJN9wrKUEn1h+qO0NGUM9zKXUjCOmAN/VywPVAmmyxp
-         RTJDLuDos9gRmKnnlJI24lldPsjZodLHLbl2GegO12z9qzUI2AGCvJD7inX1bUK5tJ7D
-         /zMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737689108; x=1738293908;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NZVGarXm8F3wmNaZlX6Uo9ZJAp39A7Hk9H8iGkJJROc=;
-        b=J4OdpkadpKKSs4LQpfEVMGA/mB/PhfTF+5hzylG1eWO0uFeHlzFWGSU+tekDHRMZ6g
-         o7GjNPKIE6E8DmCZmtxDTUNKwLrvCWhXVaCVWYrZZIrpFkbyb9iKnMYTXaaWu+gNg1Hc
-         B1A97dZzsuibPl9XuqHEvzz6vOcCwGZV83gn5Hryf9mzsZIbAYxywOhlVMHvXfAWrkLt
-         f4K91ktQ8MNPJhU3HbRGsaH5Nbf1mfkGZkZ1QdvuOa8ZTiGrnHXbX9L69gKyMWphGHkk
-         69Jj+sYqiSSIDfKui9kzKcjaS3NZd+YmIdh1sJMGw1U1FMxHAqGjY90n56sYGzSTasgT
-         gRKA==
-X-Forwarded-Encrypted: i=1; AJvYcCVKxvdVVwt8Me9zfpACE0IUdFaZrRkPNrfOzMa+OK0D/MwCRR2Z9EcgexfhkqLyh9E0VkgxJNk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8aoPJGRlReY+zt5ylQCxpRJXXK5PPkZtv7EqVvoCwSY0tcS7A
-	imx3fyNDsLXHfPxErdj8CTgNHSkQ402yfRRPl7pNgKa2w68ehK7KeNZ/Htg8F5U=
-X-Gm-Gg: ASbGncsXQ9Sy7NFv0SxX2v9SCpQc5CdHzMHbEsfyvpQCstgmoiynzSdN7mUmjHz1eDc
-	ybwruhvCKBA7TxuCgYieOwuA4AELAeEcIcY36wF87pY2OK0H0dR/8d0noTNeT+6tMls2oPVN69e
-	l2IUWGTQbjOamdo7WS0NJ1o3AcjHxmVVDVWCYhaJcu8gU1VGmymA8V7QPK6Lh24D5Tfph7vRI/q
-	oYCzEYpSH/Zi5eiI1z7+S86xaOYyztJG6GKCPN3Fsn79cCOVwxWTL1EOn2lTsUL8gR+u74czb40
-	WLGn3B8=
-X-Google-Smtp-Source: AGHT+IH3EOFfjRy2pHQZCow+ihTX4jvDoolzW8UTSKno/rqcqAGRzh/TvGK8xVaNUiDNlVEdvHjT3Q==
-X-Received: by 2002:a17:90b:258b:b0:2ee:f80c:688d with SMTP id 98e67ed59e1d1-2f782d4f168mr39207230a91.25.1737689107809;
-        Thu, 23 Jan 2025 19:25:07 -0800 (PST)
-Received: from localhost ([122.172.84.139])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f7ffa6acd0sm596795a91.28.2025.01.23.19.25.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jan 2025 19:25:07 -0800 (PST)
-Date: Fri, 24 Jan 2025 08:55:02 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>, linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	kernel test robot <lkp@intel.com>, stable@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V2] cpufreq: s3c64xx: Fix compilation warning
-Message-ID: <20250124032502.nj25mu5mko36qjaq@vireshk-i7>
-References: <236b227e929e5adc04d1e9e7af6845a46c8e9432.1737525916.git.viresh.kumar@linaro.org>
- <CAJZ5v0gz2WLtwJca5oAgZ23C+UmX18k9fvCbzRAEV6zZL4jiiQ@mail.gmail.com>
+	s=arc-20240116; t=1737690350; c=relaxed/simple;
+	bh=uxo/9/fgtMztGry1fTDswhShRpFNssx5PAayahQIVJw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KlY+c0YLJp9i+s59v78nJhVMCkLJCYbE1722M/TzKetQGdk8rNU7FrujWGBHXp+KzhcoPSXGWOrgJzhecwiNbaO83gdgK4VKejQ/4Bz9c38WmbZsxd0U5x7271WiJrioUIyNfrO+eAp+1g/aE3RjRUf+eWoUDRfLY7BWijWNfMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [220.197.230.228])
+	by APP-01 (Coremail) with SMTP id qwCowAC3vtLkDJNn9uwZCQ--.10404S2;
+	Fri, 24 Jan 2025 11:45:43 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: Carlos Maiolino <cem@kernel.org>,
+	"Darrick J . Wong" <djwong@kernel.org>
+Cc: linux-xfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] xfs: Add error handling for xfs_reflink_cancel_cow_range
+Date: Fri, 24 Jan 2025 11:45:09 +0800
+Message-ID: <20250124034510.672-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0gz2WLtwJca5oAgZ23C+UmX18k9fvCbzRAEV6zZL4jiiQ@mail.gmail.com>
+X-CM-TRANSID:qwCowAC3vtLkDJNn9uwZCQ--.10404S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrZrW3Kw4fZF18tw1rWw1kAFb_yoWkZFg_Aa
+	10gw10gw1UXr9rCws8Awn0yF1vkw4vkFn3Zr40yFsxt34UJ3Z8Jr4qyFZYkr1kGwn8uF95
+	Jr42vrs3tryxAjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbV8FF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
+	0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v2
+	6r126r1DMxkIecxEwVAFwVW8GwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJV
+	W8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF
+	1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6x
+	IIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvE
+	x4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvj
+	DU0xZFpf9x0JUoKZXUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAgMA2eSkhDXDQAAsm
 
-On 23-01-25, 20:48, Rafael J. Wysocki wrote:
-> On Wed, Jan 22, 2025 at 7:06 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
-> >
-> > The driver generates following warning when regulator support isn't
-> > enabled in the kernel. Fix it.
-> >
-> >    drivers/cpufreq/s3c64xx-cpufreq.c: In function 's3c64xx_cpufreq_set_target':
-> > >> drivers/cpufreq/s3c64xx-cpufreq.c:55:22: warning: variable 'old_freq' set but not used [-Wunused-but-set-variable]
-> >       55 |         unsigned int old_freq, new_freq;
-> >          |                      ^~~~~~~~
-> > >> drivers/cpufreq/s3c64xx-cpufreq.c:54:30: warning: variable 'dvfs' set but not used [-Wunused-but-set-variable]
-> >       54 |         struct s3c64xx_dvfs *dvfs;
-> >          |                              ^~~~
-> >
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Closes: https://lore.kernel.org/oe-kbuild-all/202501191803.CtfT7b2o-lkp@intel.com/
-> > Cc: <stable@vger.kernel.org> # v5.4+
-> > Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-> > ---
-> > V2: Move s3c64xx_dvfs_table too inside ifdef.
-> 
-> Applied as 6.14-rc material.
+In xfs_inactive(), xfs_reflink_cancel_cow_range() is called
+without error handling, risking unnoticed failures and
+inconsistent behavior compared to other parts of the code.
 
-Thanks.
+Fix this issue by adding an error handling for the
+xfs_reflink_cancel_cow_range(), improving code robustness.
 
+Fixes: 6231848c3aa5 ("xfs: check for cow blocks before trying to clear them")
+Cc: <stable@vger.kernel.org> # v4.17
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ fs/xfs/xfs_inode.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
+index c8ad2606f928..1ff514b6c035 100644
+--- a/fs/xfs/xfs_inode.c
++++ b/fs/xfs/xfs_inode.c
+@@ -1404,8 +1404,11 @@ xfs_inactive(
+ 		goto out;
+ 
+ 	/* Try to clean out the cow blocks if there are any. */
+-	if (xfs_inode_has_cow_data(ip))
+-		xfs_reflink_cancel_cow_range(ip, 0, NULLFILEOFF, true);
++	if (xfs_inode_has_cow_data(ip)) {
++		error = xfs_reflink_cancel_cow_range(ip, 0, NULLFILEOFF, true);
++		if (error)
++			goto out;
++	}
+ 
+ 	if (VFS_I(ip)->i_nlink != 0) {
+ 		/*
 -- 
-viresh
+2.42.0.windows.2
+
 
