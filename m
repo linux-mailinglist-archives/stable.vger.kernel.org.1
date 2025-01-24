@@ -1,156 +1,154 @@
-Return-Path: <stable+bounces-110378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E886A1B3B4
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 11:45:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D048A1B4A2
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 12:23:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 848C71888961
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 10:45:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3A643ADAB6
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 11:22:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F6C1CDFC1;
-	Fri, 24 Jan 2025 10:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE761CDFC1;
+	Fri, 24 Jan 2025 11:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="O0C1Z+uk"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="F6zBhtxw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BAC23B0;
-	Fri, 24 Jan 2025 10:45:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.9])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05101BEF7C;
+	Fri, 24 Jan 2025 11:22:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737715521; cv=none; b=hZJoty0Wfw3bDL7gkpSDBL0kVZ0EC6C11msySIF9EkAoDKm0AcOycsanigzY8R+D7f41bFQ7jflTJuhauGMfUq5d8Vec/dnS/OOZTknONRt7LXdEWybDZ2qDG0xqCgThVNdHiJcvrD/JBE3jvpCmEIm/giEsNaBfSzMSLx5ouF8=
+	t=1737717778; cv=none; b=DSjscS2CXfhpfm9WtE3cEHUIoVd6pr8bn0ix2Wpy64nXJSBpggdN/FXulbcsznbdxO55q2VajgH96rXxEp3YDzGu2u9IdRxaNnq4hq/+wOsDKBi/bioWx/CURpRE0unNQUfvtxTSj7z0ARksSch2byHEfJsmcW+r3PKmZa/jOUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737715521; c=relaxed/simple;
-	bh=UU1D6cLtnNXp1L6yKtrPmNZ2coL0AbJ00Jt9qKxE+hY=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=gc3TpV2+8RWPofs+LXcCG8kPAxjscQnbjcYfre4lOBaPF3NjBdF5zDUIJT9ksvCLU46GhqMf9R9dlhZ7UFgunFlzO+hiPWdM7XYI9xN8uCmoKsij1+5Y6zlPZGU09BMSUIl67C9yrH9FSstMZSwEeAV7mjDqLYRD9dH2p3hMK+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=O0C1Z+uk; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1737717778; c=relaxed/simple;
+	bh=qM3CLA8t6v+UkIrJhqdjv+iYlLksPEg3+3xp1n13rN8=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=OWTIWOSQoWp4rs91o5v2yMNKDwSSU5RYQ9IY4KG1D8srsq+92MB4nrwalwfF83pNeiXNcVO8Mmj3AL3H8ukPsgDO7N1ZpfVMco1xi48jWr/mZtm1ETCbAMJDAqeGiUyBNZexM9ck2N2kWB7BH9bRCfQbS3T2l5Mtr6Rzg1Ae0sA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=F6zBhtxw; arc=none smtp.client-ip=117.135.210.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:Subject:Date:Message-Id; bh=xb0y0bXCsoLutq0MQV
+	Ry9Edyx98Tyx9r7Nct237BMjM=; b=F6zBhtxw8bO95VeEPzsodhhqOcd/3FZUFn
+	zhyZp7O7WM18UjETKwt1LyBQESKRugT7QcsVsHXRqk216eFBpCpXZDoSudc4jkXH
+	hbBzTecPCYg5MAlI78AzeXiVHNCXKCjrpQucKfLA7fqHH88OxaacC6drnOZP/VmV
+	6cP8pGDZc=
+Received: from hg-OptiPlex-7040.hygon.cn (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSkvCgD3b665d5NnpN2BAA--.10824S2;
+	Fri, 24 Jan 2025 19:21:30 +0800 (CST)
+From: yangge1116@126.com
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	21cnbao@gmail.com,
+	david@redhat.com,
+	baolin.wang@linux.alibaba.com,
+	aisheng.dong@nxp.com,
+	liuzixing@hygon.cn,
+	yangge <yangge1116@126.com>
+Subject: [PATCH] mm/cma: add an API to enable/disable concurrent memory allocation for the CMA
+Date: Fri, 24 Jan 2025 19:21:27 +0800
+Message-Id: <1737717687-16744-1-git-send-email-yangge1116@126.com>
+X-Mailer: git-send-email 2.7.4
+X-CM-TRANSID:PSkvCgD3b665d5NnpN2BAA--.10824S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAr17XF17Wryrur1UJFy5urg_yoW5WF48pF
+	4kWw1Yk34rWrn7Zrs7Aw409an8W3s7GF4UGFyS93s3ZFW3Jr12gwn8Kw15uFy5CrWkGF9a
+	vF4Fq34Y9F1UZ3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRoKZXUUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOgXeG2eTWw-7zwAAsu
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1737715517;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TjhryoFxs8c1/zbPEqglA2ihRcdYXJLFxUAIwp/GWlA=;
-	b=O0C1Z+ukiA/GBNKIKb7QiaebB/oX8/9TyasBTQkie/GY6B9toAGa9YfndGBpKWWdII1qiA
-	icN2t8WbhaZuojCcoJ9ExhKI0mgTKghiKcCSQQsx/ExkXBHpQ3VL61Bm5yWsfIoIUdndNX
-	JJyIl8dFszNudd4tSOs145pa/rRlkolsdsKKLQDu82A7BsNxiFLdyauIDmF2ZEE6v1R3KJ
-	pmcoRnH0ZhB98NrD8gEelGFC2x/WMSX31/Lvw9zHWe1UH+qtmuc3V1kqA2Se/SpUnh7Osn
-	ndY9w3S93zbFIdn+kYEnUC02r0D5wDD0vXm/egp4Qcfh5i6j+sycOllEv9faQw==
-Date: Fri, 24 Jan 2025 11:45:17 +0100
-From: Dragan Simic <dsimic@manjaro.org>
-To: Alexey Charkov <alchark@gmail.com>
-Cc: Alexander Shiyan <eagle.alexander923@gmail.com>, Rob Herring
- <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner
- <heiko@sntech.de>, devicetree@vger.kernel.org, Sebastian Reichel
- <sebastian.reichel@collabora.com>, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] arm64: dts: rockchip: Fix broken tsadc pinctrl binding
- for rk3588
-In-Reply-To: <61b494b209d7360d0f36adbf6d5443a4@manjaro.org>
-References: <20250124052611.3705-1-eagle.alexander923@gmail.com>
- <CABjd4YwA8P9LVuDviO6xydkHpuuOY7XT0pk1oa+FDqOo=uZN4A@mail.gmail.com>
- <a76f315f023a3f8f5435e0681119b4eb@manjaro.org>
- <CABjd4Ywh_AkbXHonx-8vL-hNY5LMLJge5e4oqxvUG+qe6OF-Og@mail.gmail.com>
- <61b494b209d7360d0f36adbf6d5443a4@manjaro.org>
-Message-ID: <99f5fca6e9778e20287d807d1830b7a2@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
 
-On 2025-01-24 11:37, Dragan Simic wrote:
-> On 2025-01-24 11:25, Alexey Charkov wrote:
->> On Fri, Jan 24, 2025 at 2:06 PM Dragan Simic <dsimic@manjaro.org> 
->> wrote:
->>> On 2025-01-24 09:33, Alexey Charkov wrote:
->>> > On Fri, Jan 24, 2025 at 9:26 AM Alexander Shiyan
->>> > <eagle.alexander923@gmail.com> wrote:
->>> >>
->>> >> There is no pinctrl "gpio" and "otpout" (probably designed as
->>> >> "output")
->>> >> handling in the tsadc driver.
->>> >> Let's use proper binding "default" and "sleep".
->>> >
->>> > This looks reasonable, however I've tried it on my Radxa Rock 5C and
->>> > the driver still doesn't claim GPIO0 RK_PA1 even with this change. As
->>> > a result, a simulated thermal runaway condition (I've changed the
->>> > tshut temperature to 65000 and tshut mode to 1) doesn't trigger a PMIC
->>> > reset, even though a direct `gpioset 0 1=0` does.
->>> >
->>> > Are any additional changes needed to the driver itself?
->>> 
->>> I've been digging through this patch the whole TSADC/OTP thing in the
->>> last couple of hours, and AFAIK some parts of the upstream driver are
->>> still missing, in comparison with the downstream driver.
->>> 
->>> I've got some small suggestions for the patch itself, but the issue
->>> you observed is obviously of higher priority, and I've singled it out
->>> as well while digging through the code.
->>> 
->>> Could you, please, try the patch below quickly, to see is it going to
->>> fix the issue you observed?  I've got some "IRL stuff" to take care 
->>> of
->>> today, so I can't test it myself, and it would be great to know is it
->>> the right path to the proper fix.
->>> 
->>> diff --git i/drivers/thermal/rockchip_thermal.c
->>> w/drivers/thermal/rockchip_thermal.c
->>> index f551df48eef9..62f0e14a8d98 100644
->>> --- i/drivers/thermal/rockchip_thermal.c
->>> +++ w/drivers/thermal/rockchip_thermal.c
->>> @@ -1568,6 +1568,11 @@ static int rockchip_thermal_probe(struct
->>> platform_device *pdev)
->>>          thermal->chip->initialize(thermal->grf, thermal->regs,
->>>                                    thermal->tshut_polarity);
->>> 
->>> +       if (thermal->tshut_mode == TSHUT_MODE_GPIO)
->>> +               pinctrl_select_default_state(dev);
->>> +       else
->>> +               pinctrl_select_sleep_state(dev);
->> 
->> I believe no 'else' block is needed here, because if tshut_mode is not
->> TSHUT_MODE_GPIO then the TSADC doesn't use this pin at all, so there's
->> no reason for the driver to mess with its pinctrl state. I'd rather
->> put a mirroring block to put the pin back to its 'sleep' state in the
->> removal function for the TSHUT_MODE_GPIO case.
-> 
-> You're right, but the "else block" is what the downstream driver does,
-> so I think it's better to simply stay on the safe side and follow that
-> logic in the upstream driver.  Is it really needed?  Perhaps not, but
-> it also shouldn't hurt.
-> 
->> Will try and revert.
-> 
-> Awesome, thanks!
+From: yangge <yangge1116@126.com>
 
-Actually...  Revert or report? :)
+Commit 60a60e32cf91 ("Revert "mm/cma.c: remove redundant cma_mutex lock"")
+simply reverts to the original method of using the cma_mutex to ensure
+that alloc_contig_range() runs sequentially. This change was made to avoid
+concurrency allocation failures. However, it can negatively impact
+performance when concurrent allocation of CMA memory is required.
 
->> P.S. Just looked at the downstream driver, and it actually calls
->> TSHUT_MODE_GPIO TSHUT_MODE_OTP instead, so it seems that "otpout" was
->> not a typo in the first place. So maybe the right approach here is not
->> to change the device tree but rather fix the "gpio" / "otpout" pinctrl
->> state handling in the driver.
-> 
-> Indeed, "otpout" wasn't a typo, and I've already addressed that in my
-> comments to Alexander's patch.  Will send that response a bit later.
-> 
-> I think it's actually better to accept the approach in Alexander's
-> patch, because the whole thing applies to other Rockchip SoCs as well,
-> not just to the RK3588(S).
+To address this issue, we could introduce an API for concurrency settings,
+allowing users to decide whether their CMA can perform concurrent memory
+allocations or not.
+
+Fixes: 60a60e32cf91 ("Revert "mm/cma.c: remove redundant cma_mutex lock"")
+Signed-off-by: yangge <yangge1116@126.com>
+Cc: <stable@vger.kernel.org>
+---
+ include/linux/cma.h |  2 ++
+ mm/cma.c            | 22 ++++++++++++++++++++--
+ mm/cma.h            |  1 +
+ 3 files changed, 23 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/cma.h b/include/linux/cma.h
+index d15b64f..2384624 100644
+--- a/include/linux/cma.h
++++ b/include/linux/cma.h
+@@ -53,6 +53,8 @@ extern int cma_for_each_area(int (*it)(struct cma *cma, void *data), void *data)
+ 
+ extern void cma_reserve_pages_on_error(struct cma *cma);
+ 
++extern bool cma_set_concurrency(struct cma *cma, bool concurrency);
++
+ #ifdef CONFIG_CMA
+ struct folio *cma_alloc_folio(struct cma *cma, int order, gfp_t gfp);
+ bool cma_free_folio(struct cma *cma, const struct folio *folio);
+diff --git a/mm/cma.c b/mm/cma.c
+index de5bc0c..49a7186 100644
+--- a/mm/cma.c
++++ b/mm/cma.c
+@@ -460,9 +460,17 @@ static struct page *__cma_alloc(struct cma *cma, unsigned long count,
+ 		spin_unlock_irq(&cma->lock);
+ 
+ 		pfn = cma->base_pfn + (bitmap_no << cma->order_per_bit);
+-		mutex_lock(&cma_mutex);
++
++		/*
++		 * If the user sets the concurr_alloc of CMA to true, concurrent
++		 * memory allocation is allowed. If the user sets it to false or
++		 * does not set it, concurrent memory allocation is not allowed.
++		 */
++		if (!cma->concurr_alloc)
++			mutex_lock(&cma_mutex);
+ 		ret = alloc_contig_range(pfn, pfn + count, MIGRATE_CMA, gfp);
+-		mutex_unlock(&cma_mutex);
++		if (!cma->concurr_alloc)
++			mutex_unlock(&cma_mutex);
+ 		if (ret == 0) {
+ 			page = pfn_to_page(pfn);
+ 			break;
+@@ -610,3 +618,13 @@ int cma_for_each_area(int (*it)(struct cma *cma, void *data), void *data)
+ 
+ 	return 0;
+ }
++
++bool cma_set_concurrency(struct cma *cma, bool concurrency)
++{
++	if (!cma)
++		return false;
++
++	cma->concurr_alloc = concurrency;
++
++	return true;
++}
+diff --git a/mm/cma.h b/mm/cma.h
+index 8485ef8..30f489d 100644
+--- a/mm/cma.h
++++ b/mm/cma.h
+@@ -16,6 +16,7 @@ struct cma {
+ 	unsigned long   *bitmap;
+ 	unsigned int order_per_bit; /* Order of pages represented by one bit */
+ 	spinlock_t	lock;
++	bool concurr_alloc;
+ #ifdef CONFIG_CMA_DEBUGFS
+ 	struct hlist_head mem_head;
+ 	spinlock_t mem_head_lock;
+-- 
+2.7.4
+
 
